@@ -483,11 +483,21 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
             Vector v1 = findChildren(MStructuralFeature_type.xmlName__);
             if( v1.size()>0 )
             {
-                Vector v2 = ((MStructuralFeature_type)v1.get(0)).findChildren(MClassifier.xmlName__);
+                MStructuralFeature_type sft = (MStructuralFeature_type)v1.get(0);
+                Vector v2 = sft.findChildren(MClassifier.xmlName__);
                 if( v2.size()>0 )
                 {
                     MClassifier c = (MClassifier)v2.get(0);
                     type_ = c.xmi_idref_;
+                }
+                else
+                {
+                    v2 = sft.findChildren(UmlDataType.xmlName__);
+                    if( v2.size()>0 )
+                    {
+                        UmlDataType dt = (UmlDataType)v2.get(0);
+                        type_ = dt.xmi_idref_;
+                    }
                 }
             }
         }

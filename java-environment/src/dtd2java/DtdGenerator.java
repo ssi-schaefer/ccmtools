@@ -267,6 +267,7 @@ public class DtdGenerator
                  "    SAXParser saxParser = factory.newSAXParser();\n"+
                  "    String xmlName = xmlFile.getName();\n"+
                  "    if( xmlName.endsWith(\".zip\") || xmlName.endsWith(\".ZIP\") ) {\n"+
+                        // ZIP
                  "      xmlName = xmlName.substring(0, xmlName.length()-4);\n"+
                  "      ZipFile zf = new ZipFile(xmlFile);\n"+
                  "      ZipEntry entry = zf.getEntry(xmlName);\n"+
@@ -276,6 +277,16 @@ public class DtdGenerator
                  "          throw new java.io.IOException(\n"+
                  "            \"cannot find Zip-entry '\"+xmlName+\"' or '\"+xmlName+\".xml'\" );\n"+
                  "        }\n"+
+                 "      }\n"+
+                 "      saxParser.parse(zf.getInputStream(entry), handler);\n"+
+                 "    } else if( xmlName.endsWith(\".zuml\") ) {\n"+
+                        // Poseidon
+                 "      xmlName = xmlName.substring(0, xmlName.length()-5)+\".xmi\";\n"+
+                 "      ZipFile zf = new ZipFile(xmlFile);\n"+
+                 "      ZipEntry entry = zf.getEntry(xmlName);\n"+
+                 "      if( entry==null ) {\n"+
+                 "        throw new java.io.IOException(\n"+
+                 "          \"cannot find entry \"+xmlName+\" in Poseidon file\" );\n"+
                  "      }\n"+
                  "      saxParser.parse(zf.getInputStream(entry), handler);\n"+
                  "    } else {\n"+
