@@ -21,6 +21,9 @@ convertFromCorba(const %(StubsNamespace)s%(Identifier)s& in, %(LocalNamespace)s%
 void 
 convertToCorba(const %(LocalNamespace)s%(Identifier)s& in, %(StubsNamespace)s%(Identifier)s& out);
 
+std::ostream& 
+operator<<(std::ostream& o, const %(StubsNamespace)s%(Identifier)s& value);
+
 } // /namespace CCM_Remote
 
 #endif // __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
@@ -63,5 +66,17 @@ convertToCorba(const %(LocalNamespace)s%(Identifier)s& in, %(StubsNamespace)s%(I
     
     LDEBUGNL(CCM_REMOTE, out);
 } 
+
+
+std::ostream& 
+operator<<(std::ostream& o, const %(StubsNamespace)s%(Identifier)s& value)
+{
+    o << endl;
+    o << "enum %(StubsNamespace)s%(Identifier)s = ";
+    switch(value) {    
+%(EnumCorbaOutput)s
+    }   
+    return o;
+}
 
 } // /namespace CCM_Remote

@@ -769,6 +769,17 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             }
             return Text.join("\n", ret);
         }
+        else if (data_type.equals("EnumCorbaOutput")) {
+            // generate output string for a CORBA enum output operator
+            for (Iterator i = enum.getMembers().iterator(); i.hasNext();) {
+                String member = (String) i.next();
+                ret.add(Text.insertTab(1) + "case " + getLocalNamespace("::", "") + member + ":");
+                ret.add(Text.insertTab(2) + "o << \"" + getCorbaStubsNamespace("::") + member 
+                        + "\" << endl;");
+                ret.add(Text.insertTab(2) + "break;");
+            }
+            return Text.join("\n", ret);
+        }
         return super.data_MEnumDef(data_type, data_value);
     }
 
