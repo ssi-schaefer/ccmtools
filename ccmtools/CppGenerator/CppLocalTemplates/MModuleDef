@@ -1,0 +1,20 @@
+namespace %(Identifier)s {
+%(MModuleDef)s
+
+%(MEnumDefFwdDecl)s
+%(MStructDefFwdDecl)s
+%(MUnionDefFwdDecl)s
+
+%(MAliasDef)s
+
+%(MEnumDef)s
+%(MStructDef)s
+%(MUnionDef)s
+
+%(MExceptionDefClass)s
+
+} // /namespace %(Identifier)s
+
+
+
+
