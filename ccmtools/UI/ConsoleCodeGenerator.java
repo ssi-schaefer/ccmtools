@@ -67,7 +67,7 @@ public class ConsoleCodeGenerator
 
     private static final String[] local_language_types =
     {
-        "c++local", "c++mirror",
+        "c++local", "c++local-test",
         "c++remote", "c++remote-test",
 	"c++python",
         "idl3", "idl3mirror", "idl2"
@@ -206,7 +206,7 @@ public class ConsoleCodeGenerator
         try {
             if (lang.equalsIgnoreCase("C++Local"))
                 handler = new CppLocalGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("C++Mirror"))
+            else if (lang.equalsIgnoreCase("c++local-test"))
                 handler = new CppMirrorGeneratorImpl(driver, output_directory);
 	    else if (lang.equalsIgnoreCase("C++Remote"))
 		handler = new CppRemoteGeneratorImpl(driver, output_directory);
