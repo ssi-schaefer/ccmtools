@@ -2,19 +2,6 @@
 
 templatedir = $(TEMPLATE_ROOT)/CppLocalTemplates
 dist_template_DATA = \
-    Blank                                          \
-    CerrDebugWriterHeader                          \
-    CerrDebugWriterImpl                            \
-    DebugHeader                                    \
-    DebugImpl                                      \
-    DebugWriterHeader                              \
-    DebugWriterManagerHeader                       \
-    DebugWriterManagerImpl                         \
-    HomeFinderHeader                               \
-    HomeFinderImpl                                 \
-    LinkAssertHeader                               \
-    LocalComponentsHeader                          \
-    LocalTransactionHeader                         \
     MAliasDef                                      \
     MAttributeDefAdapterDefinition                 \
     MAttributeDefImplDefinition                    \
@@ -106,7 +93,5 @@ dist_template_DATA = \
     MUsesDefGetConnectionPrototypeVV               \
     MUsesDefGetConnectionPrototypeVVMultiple       \
     MUsesDefInclude                                \
-    MUsesDefIncludeMultiple                        \
-    SmartPointerHeader                             \
-    SmartPointerImpl
+    MUsesDefIncludeMultiple
 

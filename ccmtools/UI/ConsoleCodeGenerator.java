@@ -43,8 +43,7 @@ import java.util.*;
 
 public class ConsoleCodeGenerator
 {
-    private static final int GENERATE_ENVIRONMENT_FILES = 0x0001;
-    private static final int GENERATE_APPLICATION_FILES = 0x0002;
+    private static final int GENERATE_APPLICATION_FILES = 0x0001;
 
     private static final String version = Constants.VERSION;
 
@@ -52,16 +51,15 @@ public class ConsoleCodeGenerator
 "Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n" +
 "Options:\n" +
 "  -a, --application             Generate skeletons for business logic *\n" +
-"  -DFOO[=BAR]                   Define FOO (as BAR) for environment files\n" +
-"  -e, --environment             Generate environment files *\n" +
+"  -c N, --code-version=N        Set version of generated component code\n" +
 "  -h, --help                    Display this help\n" +
 "  -I DIR                        Add DIR to the preprocessor include path\n" +
-"  -o DIR, --output=DIR          Base output in DIR (default to .)\n" +
-"  -V, --version                 Display current ccmtools version\n" +
+"  -o DIR, --output=DIR          Base output in DIR (default .)\n" +
+"  -V, --version                 Display CCM Tools version information\n" +
 "      --generator-mask=<flags>  Mask for generator debug output\n" +
 "      --parser-mask=<flags>     Mask for parser debug output\n" +
 "Languages available:\n" +
-"    LANGUAGES\n" +
+"LANGUAGES\n" +
 "Generates code in the given output language after parsing FILES.\n" +
 "Options marked with a star (*) are generally used once per project.\n";
 
@@ -81,15 +79,14 @@ public class ConsoleCodeGenerator
     private static long par_mask = 0x00000000;
 
     private static String include_path = "";
+    private static String code_version = "0.0.0";
 
-    private static Map  defines = new Hashtable();
     private static List filenames = new ArrayList();
 
     private static File output_directory = new File(System.getProperty("user.dir"));
     private static File base_output_directory = new File(output_directory, "");
 
     private static int generate_flags = 0;
-
 
     /**************************************************************************/
     /* USAGE / VERSION INFO */
@@ -99,9 +96,11 @@ public class ConsoleCodeGenerator
         if (err.length() > 0)
             System.err.println("Error: " + err);
 
-        StringBuffer langs = new StringBuffer();
-        for (int i = 0; i < language_types.size(); i++)
+        StringBuffer langs = new StringBuffer("  ");
+        for (int i = 0; i < language_types.size(); i++) {
             langs.append((String) language_types.get(i) + " ");
+            if ((langs.length() % 80) > 60) langs.append("\n  ");
+        }
 
         System.out.print(usage.replaceAll("LANGUAGES", langs.toString()));
 
@@ -116,53 +115,6 @@ public class ConsoleCodeGenerator
         System.out.println("The CCM Tools library is distributed under the");
         System.out.println("terms of the GNU Lesser General Public License.");
         System.exit(0);
-    }
-
-    /**************************************************************************/
-    /* GENERATION */
-
-    /**
-     * Generate "environment files" for the target language. Environment files
-     * are those files that generally only need to be generated once for an
-     * entire project ; they might be global includes (as in C or C++) or static
-     * utility modules (Java or Python).
-     *
-     * @param handler an TemplateHandler object that we will use to request the
-     *        names and retrieve template contents for environment files.
-     */
-    private static void generateEnvironment(TemplateHandler handler,
-                                            Environment env)
-    {
-        Map env_files = handler.getEnvironmentFiles();
-
-        if (env_files == null) return;
-
-        for (Iterator f = env_files.keySet().iterator(); f.hasNext(); ) {
-            File location = (File) f.next();
-            File file = new File(output_directory, location.toString());
-            File parent = file.getParentFile();
-            String template_name = (String) env_files.get(location);
-
-            Template template =
-                handler.getTemplateManager().getRawTemplate(template_name);
-
-            String template_str =
-                template.substituteVariables(env.getParameters());
-
-            if (! parent.isDirectory()) parent.mkdirs();
-
-            if (gen_mask > 0)
-                System.out.println("generating environment file "+file);
-
-            try {
-                FileWriter writer = new FileWriter(file);
-                writer.write(template_str, 0, template_str.length());
-                writer.close();
-            } catch (IOException e) {
-                System.err.println("Error generating environment file " +
-                                   file + ". Skipping.\n(Error: " + e + ")");
-            }
-        }
     }
 
     /**************************************************************************/
@@ -204,21 +156,21 @@ public class ConsoleCodeGenerator
         TemplateHandler handler = null;
 
         try {
-            if (lang.equalsIgnoreCase("C++Local"))
+            if (lang.equalsIgnoreCase("c++local"))
                 handler = new CppLocalGeneratorImpl(driver, output_directory);
             else if (lang.equalsIgnoreCase("c++local-test"))
                 handler = new CppLocalTestGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("C++Remote"))
+	    else if (lang.equalsIgnoreCase("c++remote"))
 		handler = new CppRemoteGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("C++Remote-Test"))
+	    else if (lang.equalsIgnoreCase("c++remote-test"))
 		handler = new CppRemoteTestGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("C++Python"))
+	    else if (lang.equalsIgnoreCase("c++python"))
                 handler = new CppPythonGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("IDL3"))
+            else if (lang.equalsIgnoreCase("idl3"))
                 handler = new IDL3GeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("IDL3Mirror"))
+            else if (lang.equalsIgnoreCase("idl3mirror"))
                 handler = new IDL3MirrorGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("IDL2"))
+            else if (lang.equalsIgnoreCase("idl2"))
                 handler = new IDL2GeneratorImpl(driver, output_directory);
         } catch (IOException e) {
             printUsage("while constructing a generator for "+lang+"\n"+e);
@@ -229,9 +181,6 @@ public class ConsoleCodeGenerator
 
         if ((generate_flags & GENERATE_APPLICATION_FILES) != 0)
             handler.setFlag(((CodeGenerator) handler).FLAG_APPLICATION_FILES);
-
-        if ((generate_flags & GENERATE_ENVIRONMENT_FILES) != 0)
-            handler.setFlag(((CodeGenerator) handler).FLAG_ENVIRONMENT_FILES);
 
         return handler;
     }
@@ -272,7 +221,7 @@ public class ConsoleCodeGenerator
         for (Iterator f = filenames.iterator(); f.hasNext(); ) {
             File source = new File((String) f.next());
             File idlfile = new File(System.getProperty("user.dir"),
-                                     "_CCM_" + source.getName());
+                                    "_CCM_" + source.getName());
 
             // step (0). run the C preprocessor on the input file.
             try {
@@ -335,14 +284,6 @@ public class ConsoleCodeGenerator
             idlfile.deleteOnExit();
         }
 
-        Environment env = new ConsoleEnvironmentImpl(defines);
-
-        for (Iterator h = handlers.iterator(); h.hasNext(); ) {
-            TemplateHandler handler = (TemplateHandler) h.next();
-            generateEnvironment(handler, env);
-            handler.finalize(env.getParameters(), filenames);
-        }
-
         System.exit(0);
     }
 
@@ -369,6 +310,8 @@ public class ConsoleCodeGenerator
         for (int i = 0; i < local_language_types.length; i++)
             language_types.add(local_language_types[i]);
 
+        setHome(System.getProperty("user.dir"));
+
         List argv = new ArrayList();
         for (int i = 0; i < args.length; i++) argv.add(args[i]);
 
@@ -387,24 +330,23 @@ public class ConsoleCodeGenerator
                 setParserMask(arg.split("=")[1]);
             else if (arg.startsWith("--output="))
                 setOutputDirectory(arg.split("=")[1]);
-            else if (arg.startsWith("--env"))
-                generate_flags |= GENERATE_ENVIRONMENT_FILES;
+            else if (arg.startsWith("--code-version="))
+                setCodeVersion(arg.split("=")[1]);
             else if (arg.startsWith("--app"))
                 generate_flags |= GENERATE_APPLICATION_FILES;
+            else if (arg.startsWith("--home="))
+                setHome(arg.split("=")[1]);
             else if (arg.charAt(0) == '-')
                 do {
-                    if (arg.charAt(0) == 'e')
-                        generate_flags |= GENERATE_ENVIRONMENT_FILES;
-                    else if (arg.charAt(0) == 'a')
+                    if (arg.charAt(0) == 'a') {
                         generate_flags |= GENERATE_APPLICATION_FILES;
-                    else if (arg.charAt(0) == 'D') {
-                        addDefine(arg.substring(1));
+                    } else if (arg.charAt(0) == 'c') {
+                        if (a.hasNext()) setCodeVersion((String) a.next());
+                        else printUsage("unspecified code version");
                         break;
                     } else if (arg.charAt(0) == 'o') {
-                        if (a.hasNext())
-                            setOutputDirectory((String) a.next());
-                        else
-                            printUsage("unspecified output directory");
+                        if (a.hasNext()) setOutputDirectory((String) a.next());
+                        else printUsage("unspecified output directory");
                         break;
                     } else if (arg.charAt(0) == 'I') {
                         File path = new File(arg.substring(1));
@@ -459,32 +401,27 @@ public class ConsoleCodeGenerator
 
     private static void setOutputDirectory(String val)
     {
-        File test_directory = new File(val);
-        if (test_directory.isAbsolute())
-            output_directory = test_directory;
-        else
-            output_directory = new File(base_output_directory, val);
+        if (val.trim().equals("")) printUsage("unspecified output directory");
+
+        File test = new File(val);
+        if (test.isAbsolute()) output_directory = test;
+        else output_directory = new File(base_output_directory, val);
     }
 
-    private static void addDefine(String def)
+    private static void setHome(String val)
     {
-        String key = def;
-        String value = "";
-        if (def.indexOf('=') > -1) {
-            String[] parts = def.split("=");
-            key = parts[0];
-            value = parts[1];
-        }
+        if (val.trim().equals("")) printUsage("unspecified CCM Tools home");
 
-        // trap the CCMTOOLS_HOME environment variable here.
+        Properties props = System.getProperties();
+        props.setProperty("CCMTOOLS_HOME", val);
+        System.setProperties(props);
+    }
 
-        if (key.equals("CCMTOOLS_HOME")) {
-            Properties props = System.getProperties();
-            props.setProperty(key, value.substring(1, value.length() - 1));
-            System.setProperties(props);
-        } else {
-            defines.put(key, value);
-        }
+    private static void setCodeVersion(String val)
+    {
+        if (val.trim().equals("")) printUsage("unspecified code version");
+
+        code_version = new String(val);
     }
 }
 

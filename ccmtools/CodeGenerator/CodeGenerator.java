@@ -193,10 +193,6 @@ abstract public class CodeGenerator
     // new identifiers.
     protected Set reserved_words;
 
-    // files and output locations for "environment files", the files that we
-    // need to output once per project.
-    protected Map environment_files;
-
     // language mappings, a map from idl types (actually just from primitive
     // kinds) to target language constructs.
     protected Map language_mappings;
@@ -214,7 +210,6 @@ abstract public class CodeGenerator
     protected int flags = 0x0;
 
     public final static int FLAG_APPLICATION_FILES = 0x0001;
-    public final static int FLAG_ENVIRONMENT_FILES = 0x0002;
 
     private Stack node_stack;
     private Stack name_stack;
@@ -239,12 +234,6 @@ abstract public class CodeGenerator
      *        MInterfaceDef) for which a code file should be generated.
      * @param _reserved_words an array of reserved words specific to the
      *        language being generated.
-     * @param _env_files an array of files giving the output locations (relative
-     *        to the output directory) for environment files. This must be the
-     *        same length as the local_environment_templates array.
-     * @param _env_templates an array of template names to use for generating
-     *        environment files. This must be the same length as the
-     *        local_environment_files array.
      * @param _language_map an array of language types to generate for each of
      *        the CORBA primitive types given in the MPrimitiveKind enumeration.
      *        This must be the same size as said enum, and its elements will be
@@ -253,7 +242,6 @@ abstract public class CodeGenerator
      */
     public CodeGenerator(String language, Driver d, File out_dir,
                          String[] _output_types, String[] _reserved_words,
-                         File[]   _env_files, String[] _env_templates,
                          String[] _language_map)
         throws IOException
     {
@@ -285,21 +273,6 @@ abstract public class CodeGenerator
         if (_reserved_words != null)
             for (int i = 0; i < _reserved_words.length; i++)
                 reserved_words.add(_reserved_words[i]);
-
-        // set up a hash of environment files, those files we generally need to
-        // output only once per project (and not once per graph traversal in
-        // case an idl file in the project gets updated).
-
-        if ((_env_templates != null) && (_env_files != null)) {
-            if (_env_templates.length != _env_files.length)
-                throw new RuntimeException(
-                "Environment file and template lists are not the same length.\n"+
-                "This is a bug in the underlying code generator.");
-
-            environment_files = new Hashtable();
-            for (int i = 0; i < _env_templates.length; i++)
-                environment_files.put(_env_files[i], _env_templates[i]);
-        }
 
         // set up a language map from primitive types to whatever the target
         // language types are.
@@ -480,21 +453,6 @@ abstract public class CodeGenerator
     public void clearFlag(int flag) { flags &= (int) ~ flag; }
 
     /**
-     * Get the Map of environment files to output. This map is expected to be
-     * indexed on a File object, with Strings as keys. The Files indicate the
-     * destination output file, and the Strings indicate the associated template
-     * to use for generating the file.
-     *
-     * @return the map of files to output as environment files, or null if the
-     *         environment files flag is not set.
-     */
-    public Map getEnvironmentFiles()
-    {
-        if ((flags & FLAG_ENVIRONMENT_FILES) == 0) return (Map) null;
-        else return environment_files;
-    }
-
-    /**
      * Get the template manager responsible for handling this node handler's
      * templates.
      *
@@ -506,17 +464,6 @@ abstract public class CodeGenerator
 
     // abstract base class functionality. concrete derived classes must
     // implement these functions.
-
-    /**
-     * Finalize the output files.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    abstract public void finalize(Map defines, List files);
 
     /**
      * Write generated code to an output file.

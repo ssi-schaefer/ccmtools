@@ -55,34 +55,12 @@ public class CppPythonGeneratorImpl
         "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef"
     };
 
-    // output locations and templates for "environment files", the files that we
-    // need to output once per project. the length of this list needs to be the
-    // same as the length of the following list ; this list provides the file
-    // names, and the next one provides the templates to use for each file.
-
-    private final static File[] local_environment_files =
-    {
-        new File("CCM_Test_Python", "_call.h"),
-        new File("CCM_Test_Python", "call.cc"),
-        new File("CCM_Test_Python", "_primitives.h"),
-        new File("CCM_Test_Python", "primitives.cc"),
-        new File("CCM_Test_Python", "Makefile.py"),
-        new File("CCM_Test_Python_External", "Makefile.py"),
-    };
-
-    private final static String[] local_environment_templates =
-    {
-        "CallPythonHeader", "CallPythonImpl", "ConvertPrimitivesHeader",
-        "ConvertPrimitivesImpl", "Blank", "PythonMakefile",
-    };
-
     /**************************************************************************/
 
     public CppPythonGeneratorImpl(Driver d, File out_dir)
         throws IOException
     {
-        super("CppPython", d, out_dir, local_output_types,
-              local_environment_files, local_environment_templates);
+        super("CppPython", d, out_dir, local_output_types);
 
         base_namespace.add("CCM_Test");
         base_namespace.add("Python");

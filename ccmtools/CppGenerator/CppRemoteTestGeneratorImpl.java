@@ -50,7 +50,7 @@ public class CppRemoteTestGeneratorImpl
     public CppRemoteTestGeneratorImpl(Driver d, File out_dir)
         throws IOException
     {
-        super("CppRemoteTest", d, out_dir, local_output_types, null, null);
+        super("CppRemoteTest", d, out_dir, local_output_types);
 
         base_namespace.add("CCM_Remote");
 
@@ -121,25 +121,6 @@ public class CppRemoteTestGeneratorImpl
 	// directory - needed by Confix
 	writeFinalizedFile(file_dir, "Makefile.py", "");
     }
-
-
-    /**
-     * Finalize the output files. This function's implementation does nothing;
-     * it serves only to override the inherited function from CppGeneratorImpl.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files) 
-    { 
-	Debug.println(Debug.METHODS,"finalize(" + defines + ", " + files + ")");
-
-	return; 
-    }
-
 
     /**************************************************************************/
 

@@ -9,9 +9,9 @@
 sandbox_dir=`pwd`/sandbox
 build_dir=${sandbox_dir}/build
 install_dir=${sandbox_dir}/install
-template_dir=${sandbox_dir}/share/${PACKAGE}
+data_dir=${sandbox_dir}/share/${PACKAGE}
 
-${MKDIR} -p ${build_dir} ${install_dir} ${template_dir}
+${MKDIR} -p ${build_dir} ${install_dir} ${data_dir}
 
 # set up the environment so we can change directories safely. this is nast, but
 # necessary if we've got a bunch of relative paths in our environment. also link
@@ -25,7 +25,8 @@ cd ${top_srcdir} ; abssrcdir=`pwd` ; cd ${cwd}
 cd ${top_builddir} ; absbuilddir=`pwd` ; cd ${cwd}
 
 for f in ${abssrcdir}/UI/scripts/ccmtools-* ; do ln -s $f ${sandbox_dir} ; done
-for f in ${abssrcdir}/*Generator/*Templates ; do ln -s $f ${template_dir} ; done
+for f in ${abssrcdir}/*Generator/*Templates ; do ln -s $f ${data_dir} ; done
+for f in ${abssrcdir}/*Generator/*Environment ; do ln -s $f ${data_dir} ; done
 
 PCLASSPATH=${CLASSPATH}
 PPATH=${PATH}

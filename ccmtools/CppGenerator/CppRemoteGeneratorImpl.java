@@ -2,7 +2,6 @@
  * Egon Teiniker <egon.teiniker@tugraz.at>
  * copyright (c) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -59,49 +58,6 @@ public class CppRemoteGeneratorImpl
     { "MHomeDef", "MComponentDef" };
 
     /**
-     * Environment files:
-     * Output locations and templates for "environment files", the files that we
-     * need to output once per project. the length of this list needs to be the
-     * same as the length of the following list ; this list provides the file
-     * names, and the next one provides the templates to use for each file.
-     */
-    private final static File[] local_environment_files =
-    {
-        new File("CCM_Session_Container", "CCMContainer.h"),
-	new File("CCM_Session_Container", "CCMContainer.cc"),
-	new File("CCM_Session_Container", "Makefile.py"),
-
-        new File("remoteComponents", "CCM.idl"),
-        new File("remoteComponents", "Makefile.py"),
-	new File("remoteComponents", "Makefile")
-    };
-
-    /**
-     * Template files:
-     * Defines the templates for the files in local_environment_files.
-     *
-     * Note: order and length of both array must be the same.
-     *
-     * TODOs:
-     * - The ComponentsHeader and the ComponentsImpl files are
-     *   generated from ComponentsIdl using the mico (2.3.10) idl compiler.
-     *   The idl compiler call should be done from the ccmtools while
-     *   creating the environment.
-     * - The CCM.idl file should be installed with the environment's
-     *   header files => ccm-install/include/CCM.idl
-     */
-    private final static String[] local_environment_templates =
-    {
-        "CCMContainerHeader",     // Template for CCMContainer.h
-	"CCMContainerImpl",       // Template for CCMContainer.cc
-	"Blank",                  // Template for Makefile.py
-
-	"ComponentsIdl",          // Template for Components.idl
-	"MakefilePy",             // Template for Makefile.py
-	"MakefileRemote"          // Template for Makefile
-    };
-
-    /**
      * Language type mapping:
      * Defines the IDL to C++ Mappings for primitive types.
      *
@@ -148,8 +104,7 @@ public class CppRemoteGeneratorImpl
     public CppRemoteGeneratorImpl(Driver d, File out_dir)
         throws IOException
     {
-        super("CppRemote", d, out_dir, local_output_types,
-              local_environment_files, local_environment_templates);
+        super("CppRemote", d, out_dir, local_output_types);
 
         base_namespace.add("CCM_Remote");
 
@@ -401,16 +356,15 @@ public class CppRemoteGeneratorImpl
 
         for (int i = 0; i < out_strings.length; i++) {
 	    // If the out_string is empty, skip the file creation
-	    if (out_strings[i].trim().equals("")) 
-		continue;
+	    if (out_strings[i].trim().equals("")) continue;
 
 	    // If the current node is a ComponentDef, create the component's files
   	    if (current_node instanceof MComponentDef) {
 		String component_name = ((MContained) current_node).getIdentifier();
 		String file_dir = handleNamespace("FileNamespace", component_name);
 
-		writeFinalizedFile(file_dir + "_remote",  
-				   component_name + out_file_types[i], 
+		writeFinalizedFile(file_dir + "_remote",
+				   component_name + out_file_types[i],
 				   out_strings[i]);
 	    }
 	    // If the current node is a HomeDef, create the home's files
@@ -421,120 +375,47 @@ public class CppRemoteGeneratorImpl
 		String home_name = home.getIdentifier();
 		String file_dir = handleNamespace("FileNamespace", component_name);
 
-		writeFinalizedFile(file_dir + "_remote", 
-				   home_name + out_file_types[i], 
+		writeFinalizedFile(file_dir + "_remote",
+				   home_name + out_file_types[i],
 				   out_strings[i]);
 
-		// generate an empty Makefile.py in the CCM_Session_*_remote 
+		// generate an empty Makefile.py in the CCM_Session_*_remote
 		// directory - needed by Confix
 		writeFinalizedFile(file_dir + "_remote","Makefile.py","");
 	    }
 	}
     }
 
-
-    /**
-     * Finalize the output files. This function's implementation writes two
-     * global files, a global Remote value conversion header, and a global
-     * user_types.h file based on the individual <file>_user_types.h files.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files)
-    {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.finalize()");
-	// do nothing...
-    }
-
-
-
-
-
     //====================================================================
-    // Handle the C++ data types 
+    // Handle the C++ data types
     //====================================================================
 
     /**
-     * Converts the CCM model type information (MTyped) to the corresponding 
-     * local C++ types. If the MTyped type is used as an operation parameter,
-     * the local C++ parameter passing rules take place.
+     * Converts the CCM model type information (MTyped) to the corresponding
+     * local C++ types.
      *
-     * @param object Reference to a MTyped element of the CCM model.
+     * @param object Reference to an element of the CCM model.
      * @return Generated code for the local C++ type as string.
      */
     protected String getLanguageType(MTyped object)
     {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.getLanguageType()"); 
-
-        MIDLType idl_type = object.getIdlType();
         String base_type = getBaseIdlType(object);
-	String cpp_type;
-        if (language_mappings.containsKey(base_type)) {
-	    // Primitive data types are mapped via map.
-            cpp_type = (String) language_mappings.get(base_type);
-	}
-	else {
-	    // Not primitive types are mapped as they are
-	    cpp_type = base_type;
-	}
 
-	// Handle operation parameter types and passing rules 
-        if (object instanceof MParameterDef) {
-            MParameterDef param = (MParameterDef) object;
-            MParameterMode direction = param.getDirection();
-            String prefix = "";
-            String suffix = "";
-
-            if (direction == MParameterMode.PARAM_IN) {
-		// in
-		prefix = "const ";
-		if ((idl_type instanceof MTypedefDef)
-		    || (idl_type instanceof MStringDef)
-		    || (idl_type instanceof MFixedDef)) {
-		    suffix = "&";
-		}
-	    }
-	    else { 
-		// inout, out
-		prefix = "";
-		suffix = "&";
-	    }
-
-	    return prefix + cpp_type + suffix;
-        } 
-	
-	else if ((object instanceof MAliasDef) &&
-		 (idl_type instanceof MTyped)) {
-            return getLanguageType((MTyped) idl_type);
-        } 
-
-	// Handle IDL sequence mapping
-	else if (object instanceof MSequenceDef) {
-            // FIXME : can we implement bounded sequences in C++ ?
-	    //            return "std::"+sequence_type+"<"+base_type+"> ";
-            return "std::" + sequence_type + "<" + cpp_type + "> ";
-        } 
-
-	// Handle IDL array mapping
-	else if (object instanceof MArrayDef) {
+	// override IDL array mapping from parent function.
+	if (object instanceof MArrayDef) {
             Iterator i = ((MArrayDef) object).getBounds().iterator();
             Long bound = (Long) i.next();
-	    //            String result = base_type + "[" + bound;
-            String result = cpp_type + "[" + bound;
+            String result = base_type + "[" + bound;
             while (i.hasNext()) result += "][" + (Long) i.next();
             return result + "]";
         }
 
-        return cpp_type;
+        return super.getLanguageType(object);
     }
 
 
     //====================================================================
-    // Handle the CORBA data types 
+    // Handle the CORBA data types
     //====================================================================
 
     /**

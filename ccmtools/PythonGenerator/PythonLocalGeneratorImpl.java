@@ -55,59 +55,11 @@ public class CppLocalGeneratorImpl
         "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef"
     };
 
-    // output locations and templates for "environment files", the files that we
-    // need to output once per project. the length of this list needs to be the
-    // same as the length of the following list ; this list provides the file
-    // names, and the next one provides the templates to use for each file.
-
-    private final static File[] local_environment_files =
-    {
-        new File("localComponents", "CCM.h"),
-        new File("localComponents", "dummy.cc"),
-        new File("localComponents", "Makefile.py"),
-
-        new File("localTransaction", "UserTransaction.h"),
-        new File("localTransaction", "dummy.cc"),
-        new File("localTransaction", "Makefile.py"),
-
-        new File("CCM_HomeFinder", "HomeFinder.h"),
-        new File("CCM_HomeFinder", "HomeFinder.cc"),
-        new File("CCM_HomeFinder", "Makefile.py"),
-
-        new File("CCM_Utils", "SmartPointer.h"),
-        new File("CCM_Utils", "SmartPointer.cc"),
-        new File("CCM_Utils", "LinkAssert.h"),
-        new File("CCM_Utils", "Debug.h"),
-        new File("CCM_Utils", "Debug.cc"),
-        new File("CCM_Utils", "DebugWriterManager.h"),
-        new File("CCM_Utils", "DebugWriterManager.cc"),
-        new File("CCM_Utils", "CerrDebugWriter.h"),
-        new File("CCM_Utils", "CerrDebugWriter.cc"),
-        new File("CCM_Utils", "DebugWriter.h"),
-        new File("CCM_Utils", "Makefile.py"),
-    };
-
-    private final static String[] local_environment_templates =
-    {
-        "LocalComponentsHeader", "Blank", "Blank",
-        "LocalTransactionHeader", "Blank", "Blank",
-        "HomeFinderHeader", "HomeFinderImpl", "Blank",
-
-        "SmartPointerHeader", "SmartPointerImpl",
-        "LinkAssertHeader", "DebugHeader", "DebugImpl",
-        "DebugWriterManagerHeader", "DebugWriterManagerImpl",
-        "CerrDebugWriterHeader", "CerrDebugWriterImpl",
-        "DebugWriterHeader", "Blank",
-    };
-
     /**************************************************************************/
 
     public CppLocalGeneratorImpl(Driver d, File out_dir)
         throws IOException
-    {
-        super("CppLocal", d, out_dir, local_output_types,
-              local_environment_files, local_environment_templates);
-    }
+    { super("CppLocal", d, out_dir, local_output_types); }
 
     /**
      * Acknowledge the start of the given node during graph traversal. If the
@@ -128,68 +80,6 @@ public class CppLocalGeneratorImpl
         if ((node instanceof MContainer) &&
             (((MContainer) node).getDefinedIn() == null))
             namespace.push("CCM_Local");
-    }
-
-    /**
-     * Finalize the output files. This function just writes a minimal Confix
-     * configuration file with the -D flags for the compiler.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files)
-    {
-        Template template = template_manager.getRawTemplate("Confix");
-        if (template != null)
-            writeFinalizedFile("", "confix.conf",
-                               template.substituteVariables(defines));
-    }
-
-
-    /**
-     * Overwrites the CppGenerator method, to support the inclusion of
-     * the *_user_types.h file in the component logic.
-     *
-     * @param variable contains the strint that comes from the template
-     *                 file and looks like %(variable)s
-     * @author Egon Teiniker
-     */
-    protected String getLocalValue(String variable)
-    {
-        String value = super.getLocalValue(variable);
-
-	/* If the MComponentDef node does not have any supported interface,
-	 * facet or receptacle, the %(UserTypesInclude)s statement in the
-	 * MComponentDef Template generates a #include<> line that includes the
-	 * user_types.h file (always without the _mirror_ part in the filename).
-         *
-	 * Note that the module names are also part of the include's filename.
-	 */
-	if (current_node instanceof MComponentDef) {
-	    MComponentDef component = (MComponentDef) current_node;
-	    List FacetSet = component.getFacets();
-	    List ReceptacleSet = component.getReceptacles();
-	    List SupportSet = component.getSupportss();
-
-	    if (variable.equals("UserTypesInclude") &&
-                FacetSet.isEmpty() &&
-                ReceptacleSet.isEmpty() &&
-                SupportSet.isEmpty()) {
-
-                String file = component.getIdentifier();
-                String namespace = handleNamespace("IncludeNamespace", "");
-
-                if (file.endsWith("_mirror"))
-                    file = file.substring(0, file.indexOf("_mirror"));
-
-                return "#include <"+namespace+"/"+file+"_user_types.h>";
-	    }
-	}
-
-	return value;
     }
 
     /**

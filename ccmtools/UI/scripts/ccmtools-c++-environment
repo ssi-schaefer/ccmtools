@@ -25,11 +25,6 @@ import os, sys
 VERSION = '0.3.3'
 INSTALL_DIR = ''
 
-pipe = os.popen('ccmtools-generate --version')
-line = pipe.readline()
-pipe.close()
-VERSION = line.split()[-1].strip()
-
 USAGE = '''Usage: ccmtools-c++-environment [OPTION]...
 
 Install C++ component environment.
@@ -49,8 +44,19 @@ def remove(dir):
             if os.path.isdir(new_file): remove(new_file)
             else:                       os.remove(new_file)
         os.rmdir(dir)
-    except:
-        return 1
+    except: return 1
+    return 0
+
+def copy(src, dest):
+    try:
+        if not os.path.isdir(dest): os.makedirs(dest)
+        files = os.listdir(src)
+        for f in files:
+            new_src = os.path.join(src, f)
+            new_dest = os.path.join(dest, f)
+            if os.path.isdir(new_src): copy(new_src, new_dest)
+            else: os.symlink(new_src, new_dest)
+    except: return 1
     return 0
 
 ## handle arguments.
@@ -78,16 +84,20 @@ elif sys.platform.startswith('mac'): tmp = os.pathsep
 
 SOURCE_DIR = os.path.join(tmp, 'ccmtools-cpp-environment')
 
+home = os.getcwd()
+if 'CCMTOOLS_HOME' in os.environ.keys():
+    home = os.environ['CCMTOOLS_HOME']
+env_home = os.path.join(home, 'share', 'ccmtools', 'CppLocalEnvironment')
+
 try:
-    if os.system('ccmtools-generate c++local -e -o ' + SOURCE_DIR):
-        raise
+    if copy(env_home, SOURCE_DIR): raise
     try:
         handle = open(os.path.join(SOURCE_DIR, 'Makefile.py'), 'w')
         handle.write('VERSION("%s")\n' % VERSION)
     finally:
         handle.close()
 except:
-    print 'Error creating the ccmtools environment in %s.' % SOURCE_DIR
+    print 'Error copying the C++ environment to %s.' % SOURCE_DIR
     print 'Please report this as a bug at http://ccmtools.sf.net/.'
     sys.exit(1)
 

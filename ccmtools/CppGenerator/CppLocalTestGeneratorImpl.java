@@ -60,7 +60,7 @@ public class CppLocalTestGeneratorImpl
     public CppLocalTestGeneratorImpl(Driver d, File out_dir)
         throws IOException
     {
-        super("CppLocalTest", d, out_dir, local_output_types, null, null);
+        super("CppLocalTest", d, out_dir, local_output_types);
         base_namespace.add("CCM_Local");
     }
 

@@ -122,6 +122,7 @@ if (sys.platform[:3] == 'win' and not SOURCE_DIR[1:3] == ':\\') or \
 
 cmd = 'ccmtools-generate -o %s %s' % (SOURCE_DIR, DEFINES)
 app = ENABLE_APPLICATION and '-a' or ''
+langs = 'c++local ' + (ENABLE_PYTHON_TEST and 'c++python ' or '')
 
 if ENABLE_DEBUG:
     idl3_dir = os.path.join(SOURCE_DIR, 'idl3')
@@ -137,18 +138,13 @@ if ENABLE_DEBUG:
 
     cwd = os.getcwd()
     os.chdir(idl3_dir)
-    if os.system('%s -I. c++local %s %s *' % (cmd, app, INCLUDES)):
+    if os.system('%s -I. %s %s %s *' % (cmd, app, langs, INCLUDES)):
         print 'Error while generating C++ mirror components.'
         os.chdir(cwd)
         sys.exit(1)
     os.chdir(cwd)
 
-if ENABLE_PYTHON_TEST:
-    if os.system('%s c++python -e %s %s' % (cmd, INCLUDES, FILES)):
-        print 'Error while generating Python bindings.'
-        sys.exit(1)
-
-if os.system('%s c++local %s %s %s' % (cmd, app, INCLUDES, FILES)):
+if os.system('%s %s %s %s %s' % (cmd, app, langs, INCLUDES, FILES)):
     print 'Error generating local C++ components.'
     sys.exit(1)
 

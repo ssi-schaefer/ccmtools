@@ -66,7 +66,7 @@ abstract public class CppGenerator
     // reserved words in C++. identifiers that contain these words will be
     // mapped to new identifiers.
 
-    private final static String[] local_reserved_words =
+    private final static String[] _reserved =
     {
         "and", "and_eq", "asm", "auto", "bitand", "bitor", "bool", "break",
         "case", "catch", "char", "class", "compl", "const", "const_cast",
@@ -83,7 +83,7 @@ abstract public class CppGenerator
 
     // c++ language types that get mapped from corba primitive kinds.
 
-    private final static String[] local_language_map =
+    private final static String[] _language =
     {
         "",
         "localComponents::Any",                     // PK_ANY
@@ -118,13 +118,10 @@ abstract public class CppGenerator
     /**************************************************************************/
 
     public CppGenerator(String sublang, Driver d, File out_dir,
-                        String[] output_types,
-                        File[] env_files, String[] env_templates)
+                        String[] output_types)
         throws IOException
     {
-        super(sublang, d, out_dir, output_types, local_reserved_words,
-              env_files, env_templates, local_language_map);
-
+        super(sublang, d, out_dir, output_types, _reserved, _language);
         base_namespace = new ArrayList();
     }
 
@@ -176,18 +173,6 @@ abstract public class CppGenerator
 
         writeOutputIfNeeded();
     }
-
-    /**
-     * Finalize the output files. This function implementation doesn't do
-     * anything.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files) { return; }
 
     /**************************************************************************/
 
@@ -386,7 +371,7 @@ abstract public class CppGenerator
         String base_type = getBaseLanguageType(object);
 
 	if (idl_type instanceof MInterfaceDef) {
-	    // Handle interfaces using smart pointer
+	    // Handle interfaces using smart pointers
 	    base_type = "CCM_Utils::SmartPtr<" + base_type + ">";
 	}
 
@@ -428,9 +413,7 @@ abstract public class CppGenerator
 
         if (object instanceof MArrayDef) {
 	    /* This code defines the IDL -> C++ mapping of arrays:
-	     * IDL: typedef long x[7]
-	     * C++: typedef std::vector<long>
-	     */
+               long x[7] -> std::vector<long> ... but no bounds checking. */
 
 	    String result = "std::vector<" + base_type + ">";
 	    int dimension = ((MArrayDef) object).getBounds().size();
@@ -442,7 +425,6 @@ abstract public class CppGenerator
 		for(int i = 1; i < dimension; i++) result += " >";
             }
 
-	    // FIXME: how should we map the array bounds to std::vector?
 	    return result + " ";
         }
 

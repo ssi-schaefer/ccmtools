@@ -57,59 +57,12 @@ public class CppLocalGeneratorImpl
         "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef"
     };
 
-    // output locations and templates for "environment files", the files that we
-    // need to output once per project. the length of this list needs to be the
-    // same as the length of the following list ; this list provides the file
-    // names, and the next one provides the templates to use for each file.
-
-    private final static File[] local_environment_files =
-    {
-        new File("localComponents", "CCM.h"),
-        new File("localComponents", "dummy.cc"),
-        new File("localComponents", "Makefile.py"),
-
-        new File("localTransaction", "UserTransaction.h"),
-        new File("localTransaction", "dummy.cc"),
-        new File("localTransaction", "Makefile.py"),
-
-        new File("CCM_HomeFinder", "HomeFinder.h"),
-        new File("CCM_HomeFinder", "HomeFinder.cc"),
-        new File("CCM_HomeFinder", "Makefile.py"),
-
-        new File("CCM_Utils", "SmartPointer.h"),
-        new File("CCM_Utils", "SmartPointer.cc"),
-        new File("CCM_Utils", "LinkAssert.h"),
-        new File("CCM_Utils", "Debug.h"),
-        new File("CCM_Utils", "Debug.cc"),
-        new File("CCM_Utils", "DebugWriterManager.h"),
-        new File("CCM_Utils", "DebugWriterManager.cc"),
-        new File("CCM_Utils", "CerrDebugWriter.h"),
-        new File("CCM_Utils", "CerrDebugWriter.cc"),
-        new File("CCM_Utils", "DebugWriter.h"),
-        new File("CCM_Utils", "Makefile.py"),
-    };
-
-    private final static String[] local_environment_templates =
-    {
-        "LocalComponentsHeader", "Blank", "Blank",
-        "LocalTransactionHeader", "Blank", "Blank",
-        "HomeFinderHeader", "HomeFinderImpl", "Blank",
-
-        "SmartPointerHeader", "SmartPointerImpl",
-        "LinkAssertHeader", "DebugHeader", "DebugImpl",
-        "DebugWriterManagerHeader", "DebugWriterManagerImpl",
-        "CerrDebugWriterHeader", "CerrDebugWriterImpl",
-        "DebugWriterHeader", "Blank",
-    };
-
     /**************************************************************************/
 
     public CppLocalGeneratorImpl(Driver d, File out_dir)
         throws IOException
     {
-        super("CppLocal", d, out_dir, local_output_types,
-              local_environment_files, local_environment_templates);
-
+        super("CppLocal", d, out_dir, local_output_types);
         base_namespace.add("CCM_Local");
     }
 

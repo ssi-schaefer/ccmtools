@@ -55,31 +55,11 @@ public interface TemplateHandler
     void clearFlag(int flag);
 
     /**
-     * Return a Map of files to output as environment files. The map needs to be
-     * indexed using an output file name and have an output template name as the
-     * stored value.
-     *
-     * @return the map of files to output as environment files.
-     */
-    Map getEnvironmentFiles();
-
-    /**
      * Get the template manager object responsible for handling this node
      * handler's templates.
      *
      * @return the current implementing object's template manager.
      */
     TemplateManager getTemplateManager();
-
-    /**
-     * Finalize the generated code using the list of all input files.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    void finalize(Map defines, List files);
 }
 

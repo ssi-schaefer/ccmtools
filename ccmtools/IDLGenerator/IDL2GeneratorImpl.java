@@ -38,34 +38,8 @@ public class IDL2GeneratorImpl
     public IDL2GeneratorImpl(Driver d, File out_dir) throws IOException
     { super("2", d, out_dir); }
 
-    /**
-     * Finalize the output files. This method is used to create the needed
-     * Makefiles : the confix Makefile.py and a Makefile that calls the idl2
-     * compiler (*.idl> *.h *.cc).
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files)
-    {
-	Template template;
-
-	template = template_manager.getRawTemplate("MakefilePy");
-	if (template != null)
-	    writeFinalizedFile("", "Makefile.py", template.getTemplate());
-
-	template = template_manager.getRawTemplate("MakefileIdl");
-	if(template != null)
-	    writeFinalizedFile("", "Makefile", template.getTemplate());
-    }
-
     protected String getLocalValue(String variable)
     {
-        String value = super.getLocalValue(variable);
-
         if (current_node instanceof MComponentDef ||
             current_node instanceof MHomeDef) {
             if (variable.equals("BaseType")) {
@@ -74,7 +48,7 @@ public class IDL2GeneratorImpl
             }
         }
 
-        return value;
+        return super.getLocalValue(variable);
     }
 }
 

@@ -99,7 +99,7 @@ abstract public class IDLGenerator
         throws IOException
     {
         super("IDL" + suffix, d, out_dir, local_output_types,
-              local_reserved_words, null, null, local_language_map);
+              local_reserved_words, local_language_map);
 
         file_separator = "_";
     }
@@ -120,18 +120,6 @@ abstract public class IDLGenerator
         super.endNode(node, scope_id);
         writeOutputIfNeeded();
     }
-
-    /**
-     * Finalize the output files. This function's implementation writes a global
-     * user_types.h file based on the individual <file>_user_types.h files.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files) { return; }
 
     /**************************************************************************/
 
