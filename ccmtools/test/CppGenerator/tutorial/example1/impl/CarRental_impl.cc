@@ -6,7 +6,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "CarRental_app.h"
+#include "CarRental_impl.h"
 
 using namespace std;
 using namespace WX::Utils;

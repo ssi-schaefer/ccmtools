@@ -7,7 +7,7 @@
 #include <cmath>
 #include <WX/Utils/debug.h>
 
-#include "CarRental_mirror_app.h"
+#include "CarRental_mirror_impl.h"
 
 using namespace std;
 using namespace WX::Utils;
