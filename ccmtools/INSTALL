@@ -4,6 +4,71 @@ Foundation, Inc.
    This file is free documentation; the Free Software Foundation gives
 unlimited permission to copy, distribute and modify it.
 
+
+Quick Installation
+==================
+OK, this is not as quick as possible, but we are working on it...
+
+# Install Ant: see http://ant.apache.org
+
+# Install Confix: see  http://confix.sourceforge.net
+# create a ~/.confix file (here an example):
+ccm_tools_profile = {
+    'PREFIX': '<CCM_INSTALL_PATH>',        # set your own install path 
+    'BUILDROOT': '/tmp',
+    'ADVANCED': 'true',
+    'CONFIX': {},
+    'CONFIGURE': {
+       'ENV': {
+          'CC': '/usr/local/gcc/bin/gcc',  # set your path to gcc
+          'CXX': '/usr/local/gcc/bin/g++', # set your path to g++     
+          'CFLAGS': "-g -O0 -Wall -DCCM_DEBUG",
+          'CXXFLAGS': "-g -O0 -Wall -DCCM_DEBUG",
+          },
+       'ARGS': ['--with-external_mico=/usr/local/mico'] # set your path to mico
+       },
+    }
+
+PROFILES = { 'default': ccm_tools_profile, 'ccmtools': ccm_tools_profile }
+
+# Get the following packages from cvs:
+  $ cvs -d :ext:username@cvs.sf.net:/cvsroot/ccmtools co ccmtools
+  $ cvs -d :ext:username@cvs.sf.net:/cvsroot/ccmtools co cpp-environment
+  $ cvs -d :ext:teiniker@cvs.sf.net:/cvsroot/ccmtools co java-environment
+
+# Install java-environment package:
+  $ cd java-environment
+  $ ant install
+
+# Install cpp-environment package:
+# For local components:
+  $ cd CCM_Local       
+  $ confix.py --bootstrap --configure --make --targets="all install"
+# For remote components (note that you will need mico-2.3.10 or later):
+  $ cd external
+  $ confix.py --bootstrap --configure --make --targets="all install"
+  $ cd CCM_Remote
+  $ confix.py --bootstrap --configure --make --targets="all install"
+
+# Install ccmtools
+  $ autogen.py --prefix=<CCM_INSTALL_PATH>
+  $ make; make install
+
+# Set some environment variables
+# For local components:
+  $ export CCMTOOLS_HOME=<CCM_INSTALL_PATH>
+  $ export PATH=$CCMTOOLS_HOME/bin:$PATH
+  $ export CLASSPATH=$CCMTOOLS_HOME/share/java/ccmtools.jar:\
+                     $CCMTOOLS_HOME/share/java/antlr.jar:\
+                     $CCMTOOLS_HOME/share/java/mdr01.jar:\
+                     $CCMTOOLS_HOME/share/java/oclmetamodel.jar:\
+                     $CLASSPATH
+# For remote components:
+  $ export CCM_COMPONENT_REPOSITORY=${CCMTOOLS_HOME}
+  $ export CCM_NAME_SERVICE=corbaloc:iiop:1.2@localhost:5050/NameService
+
+
+
 Basic Installation
 ==================
 
