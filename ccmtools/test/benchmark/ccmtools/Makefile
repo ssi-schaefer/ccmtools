@@ -3,7 +3,7 @@ COMPONENT_DIR = component
 IDL3_DIR = idl3
 IDL_INCLUDE = -I${IDL3_DIR}
 
-all: remote nested dbc
+all: local nested dbc
 server: cppserver
 client: cppclient
 
@@ -30,6 +30,7 @@ dbc:
 
 install:
 	cp impl/Makefile.py ${COMPONENT_DIR} 
+	cp impl/Test_bm_impl.cc ${COMPONENT_DIR}/impl
 	cp impl/SuperTest_bm_impl.h ${COMPONENT_DIR}/impl
 	cp impl/SuperTest_bm_impl.cc ${COMPONENT_DIR}/impl
 	confix.py --profile=benchmark --packageroot=`pwd`/${COMPONENT_DIR} --bootstrap --configure --make --targets=install

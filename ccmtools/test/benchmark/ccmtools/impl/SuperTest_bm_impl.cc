@@ -35,6 +35,55 @@ bm_impl::~bm_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
+const long
+bm_impl::attr_l() const
+    throw(LocalComponents::CCMException)
+{
+    DEBUGNL(" bm_impl->attr_l()");
+    return attr_l_;
+}
+
+void
+bm_impl::attr_l(const long value)
+    throw(LocalComponents::CCMException)
+{
+    DEBUGNL(" bm_impl->attr_l(value)");
+    attr_l_ = value;
+}
+
+const std::string
+bm_impl::attr_s() const
+    throw(LocalComponents::CCMException)
+{
+    DEBUGNL(" bm_impl->attr_s()");
+    return attr_s_;
+}
+
+void
+bm_impl::attr_s(const std::string value)
+    throw(LocalComponents::CCMException)
+{
+    DEBUGNL(" bm_impl->attr_s(value)");
+    attr_s_ = value;
+}
+
+const LongList
+bm_impl::attr_ll() const
+    throw(LocalComponents::CCMException)
+{
+    DEBUGNL(" bm_impl->attr_ll()");
+    return attr_ll_;
+}
+
+void
+bm_impl::attr_ll(const LongList value)
+    throw(LocalComponents::CCMException)
+{
+    DEBUGNL(" bm_impl->attr_ll(value)");
+    attr_ll_ = value;
+}
+
+
 void
 bm_impl::f0()
     throw (LocalComponents::CCMException)
