@@ -1,0 +1,15 @@
+/**
+ * Test case: attribute
+ *
+ */
+
+
+component Hello
+{
+  attribute string id;
+};
+
+home HelloHome manages Hello
+{
+};
+

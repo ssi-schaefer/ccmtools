@@ -1,0 +1,24 @@
+/**
+ * Test case: facet exception 
+ *
+ */
+
+
+exception error{};
+exception super_error{};
+exception fatal_error{};
+
+interface Console {
+  long println(in string s2)
+    raises (error, super_error, fatal_error);
+};
+
+component Hello
+{
+  provides Console console;
+};
+
+home HelloHome manages Hello
+{
+};
+
