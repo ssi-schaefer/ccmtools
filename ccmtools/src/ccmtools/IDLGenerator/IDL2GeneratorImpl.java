@@ -49,7 +49,7 @@ public class IDL2GeneratorImpl extends IDLGenerator
         file_separator = "_";
 
         // Add a namespace to all IDL2 fragments.
-        base_namespace.add("CORBA_Stubs");
+        // base_namespace.add("CORBA_Stubs");
     }
 
     /***************************************************************************

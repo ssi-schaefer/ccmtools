@@ -58,7 +58,7 @@ public class CppRemoteTestGeneratorImpl extends CppGenerator
 
         base_namespace.add("CCM_Remote");
         CorbaStubsNamespace = new ArrayList();
-        CorbaStubsNamespace.add("CORBA_Stubs");
+        // CorbaStubsNamespace.add("CORBA_Stubs");
         LocalNamespace = new ArrayList();
         LocalNamespace.add("CCM_Local");
     }
@@ -74,7 +74,12 @@ public class CppRemoteTestGeneratorImpl extends CppGenerator
      */
     protected String getCorbaStubsNamespace(String separator)
     {
-        return join(separator, CorbaStubsNamespace) + separator;
+        if(CorbaStubsNamespace.size() > 0) {
+            return join(separator, CorbaStubsNamespace) + separator;
+        }
+        else {
+            return "";
+        }
     }
 
     

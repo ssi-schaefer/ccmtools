@@ -13,6 +13,8 @@
 #  include <config.h>
 #endif 
 
+#ifdef HAVE_MICO 
+
 #include <cstdlib> 
 #include <iostream>
 #include <string>
@@ -96,11 +98,11 @@ int main (int argc, char *argv[])
 	
     my%(Identifier)s->configuration_complete();
 
-    cout << "==== Begin Test Case ===================================" << endl;    
+    cout << "==== Begin Test Case ===================================" << endl;
 
     // TODO : IMPLEMENT ME HERE !       
 
-    cout << "==== End Test Case =====================================" << endl;    
+    cout << "==== End Test Case =====================================" << endl; 
 
     // Destroy component instances
     my%(Identifier)s->remove();
@@ -110,3 +112,5 @@ int main (int argc, char *argv[])
 }
 
 #endif // HAVE_MICO
+
+

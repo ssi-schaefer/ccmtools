@@ -137,7 +137,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         super("CppRemote", d, out_dir, local_output_types);
         base_namespace.add("CCM_Remote");
         CorbaStubsNamespace = new ArrayList();
-        CorbaStubsNamespace.add("CORBA_Stubs");
+        // CorbaStubsNamespace.add("CORBA_Stubs");
         LocalNamespace = new ArrayList();
         LocalNamespace.add("CCM_Local");
 
@@ -167,10 +167,12 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
     {
         List scope = getScope(contained);
         StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.join(separator, CorbaStubsNamespace));
-        buffer.append(separator);
-        buffer.append(Text.join(separator, scope));
+        if(CorbaStubsNamespace.size() > 0) {
+            buffer.append(Text.join(separator, CorbaStubsNamespace));
+            buffer.append(separator);
+        }
         if (scope.size() > 0) {
+            buffer.append(Text.join(separator, scope));
             buffer.append(separator);
         }
         return buffer.toString();
@@ -180,10 +182,12 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
     {
         List scope = getScope(contained);
         StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.join(separator, CorbaStubsNamespace));
-        buffer.append(separator);
-        buffer.append(Text.join(separator, scope));
+        if(CorbaStubsNamespace.size() > 0) {
+            buffer.append(Text.join(separator, CorbaStubsNamespace));
+            buffer.append(separator);
+        }
         if (scope.size() > 0) {
+            buffer.append(Text.join(separator, scope));
             buffer.append(separator);
         }
         buffer.append(contained.getIdentifier());
@@ -1350,19 +1354,19 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             // Contained types are mapped with CORBA namespace
             List scope = getScope((MContained) object);
             if (scope.size() > 0) {
-                corba_type = "::CORBA_Stubs::" + Text.join("::", scope) + "::" + base_type;
+                corba_type = /*"::CORBA_Stubs::" +*/ Text.join("::", scope) + "::" + base_type;
             }
             else {
-                corba_type = "::CORBA_Stubs::" + base_type;
+                corba_type = /*"::CORBA_Stubs::" + */ base_type;
             }
         }
         else if (idl_type instanceof MTypedefDef) {
             List scope = getScope((MContained) idl_type);
             if (scope.size() > 0) {
-                corba_type = "::CORBA_Stubs::" + Text.join("::", scope) + "::" + base_type;
+                corba_type = /*"::CORBA_Stubs::" +*/ Text.join("::", scope) + "::" + base_type;
             }
             else {
-                corba_type = "::CORBA_Stubs::" + base_type;
+                corba_type = /*"::CORBA_Stubs::" + */ base_type;
             }
         }
 
@@ -1912,7 +1916,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             MTypedefDef typedef = (MTypedefDef) idlType;
             MContained contained = (MContained) typedef;
             List scope = getScope(contained);
-            String remoteScope = "::CORBA_Stubs::";
+            String remoteScope = "::"; //"::CORBA_Stubs::";
             if(scope.size() > 0)
                 remoteScope += Text.join("::", scope) + "::";
 
@@ -1994,7 +1998,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         MTypedefDef typedef = (MTypedefDef) idlType;
         MContained contained = (MContained) typedef;
         List scope = getScope(contained);
-        String remoteScope = "::CORBA_Stubs::";
+        String remoteScope = "::"; //"::CORBA_Stubs::";
 
         if(scope.size() > 0)
             remoteScope += Text.join("::", scope) + "::";
