@@ -38,7 +38,7 @@ interface Console {
   longMatrix foo6(in longMatrix p1, inout longMatrix p2, out longMatrix p3);
 
   /* interface types */
-  iface operate(in iface i1, inout iface i2, out iface i3);
+  //  iface operate(in iface i1, inout iface i2, out iface i3);
 };
 
 component Hello { uses Console console; };

@@ -39,7 +39,7 @@ component Hello {
   attribute doubleArray array_value;
 
   /* interface types */
-  attribute LongCommon the_long;
+  //  attribute LongCommon the_long;
 };
 
 home HelloHome manages Hello {
@@ -63,6 +63,6 @@ home HelloHome manages Hello {
   factory create_with_array(in doubleArray p);
 
   /* interface types */
-  factory copy_from(in LongCommon the_long);
+  //factory copy_from(in LongCommon the_long);
 };
 

@@ -42,8 +42,8 @@ CCM_Hello_impl::~CCM_Hello_impl (  )
 
 
 void
-CCM_Hello_impl::set_session_context ( localComponents::SessionContext* context )
-  throw ( localComponents::CCMException )
+CCM_Hello_impl::set_session_context ( LocalComponents::SessionContext* context )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_impl->set_session_context (  )" );
   ctx = dynamic_cast<CCM_Hello_Context*>(context);
@@ -51,7 +51,7 @@ CCM_Hello_impl::set_session_context ( localComponents::SessionContext* context )
 
 void
 CCM_Hello_impl::ccm_activate (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_impl->ccm_activate (  )" );
   
@@ -60,22 +60,22 @@ CCM_Hello_impl::ccm_activate (  )
     ctx->get_connection_console().ptr()->println(s);
     assert(false);
   }
-  catch(localComponents::NoConnection& e) {
-    cerr << "ERROR: Receptacle console is not connected!" << endl;
+  catch(LocalComponents::NoConnection& e) {
+    cerr << "!! NoConnection exception: Receptacle console is not connected!" << endl;
   }
 
 }
 
 void
 CCM_Hello_impl::ccm_passivate (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_impl->ccm_passivate (  )" );
 }
 
 void
 CCM_Hello_impl::ccm_remove (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_impl->ccm_remove (  )" );
 }

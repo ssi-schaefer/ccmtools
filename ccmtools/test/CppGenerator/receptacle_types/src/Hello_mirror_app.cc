@@ -276,8 +276,8 @@ CCM_Hello_mirror_impl::~CCM_Hello_mirror_impl (  )
 
 
 void
-CCM_Hello_mirror_impl::set_session_context ( localComponents::SessionContext* context )
-  throw ( localComponents::CCMException )
+CCM_Hello_mirror_impl::set_session_context ( LocalComponents::SessionContext* context )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_mirror_impl->set_session_context (  )" );
   ctx = (CCM_Hello_mirror_Context*) context;
@@ -285,21 +285,21 @@ CCM_Hello_mirror_impl::set_session_context ( localComponents::SessionContext* co
 
 void
 CCM_Hello_mirror_impl::ccm_activate (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_mirror_impl->ccm_activate (  )" );
 }
 
 void
 CCM_Hello_mirror_impl::ccm_passivate (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_mirror_impl->ccm_passivate (  )" );
 }
 
 void
 CCM_Hello_mirror_impl::ccm_remove (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_mirror_impl->ccm_remove (  )" );
 }

@@ -1,4 +1,4 @@
-#include <localComponents/CCM.h>
+#include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 #include <CCM_Utils/Debug.h>
 #include <CCM_Utils/SmartPointer.h>
@@ -31,7 +31,7 @@ int main ( int argc, char *argv[] )
   DEBUGNL ( "test_client_Hello_component_main (  )" );
 
   // Get in instance of the local HomeFinder and register component homes
-  localComponents::HomeFinder* homeFinder = HomeFinder::Instance();
+  LocalComponents::HomeFinder* homeFinder = HomeFinder::Instance();
   try {
     homeFinder->register_home( create_HelloHomeAdapter(), "HelloHome" );
     homeFinder->register_home( create_HelloHome_mirrorAdapter(), "HelloHome_mirror" );
@@ -233,10 +233,10 @@ int main ( int argc, char *argv[] )
     homeFinder->unregister_home ( "HelloHome_mirror" );
 
     DEBUGNL ( "exit test_client_Hello_component_main (  )" );
-  } catch ( localComponents::HomeNotFound ) {
+  } catch ( LocalComponents::HomeNotFound ) {
     cout << "Aut'sch: can't find a home!" << endl;
     result = -1;
-  } catch ( localComponents::NotImplemented& e ) {
+  } catch ( LocalComponents::NotImplemented& e ) {
     cout << "Aut'sch: " << e.what (  ) << endl;
     result = -1;
   } catch ( ... )  {

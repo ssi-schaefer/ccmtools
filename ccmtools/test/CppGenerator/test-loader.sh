@@ -38,16 +38,15 @@ ret=""
 
 cd ${sandbox_dir}
 
-# deploy environment if it doesn't exist.
+# If there is no C++ environment, cancel test case execution 
 
-test -e ${install_dir}/lib/libccmtools-cpp-environment_CCM_Utils.a || \
-  ccmtools-c++-environment -i ${install_dir} || ret=1
+test -e ${install_dir}/lib/libCCM_Local_LocalComponents.a && exit 1 
 
 # generate component code.
 
 rm -rf ${sandbox_dir}/${1}
 
-test -z "${ret}" && ccmtools-c++-generate -d -a -c "1.2.3" -p ${1} \
+test -z "${ret}" && ccmtools-c++-generate -d -a -p ${1} \
   -i ${install_dir} ${2} ${3} || ret=1
 
 # build and check. copy the contents of the package directory, if it exists, to
@@ -56,8 +55,8 @@ test -z "${ret}" && ccmtools-c++-generate -d -a -c "1.2.3" -p ${1} \
 test -d ${abssrcdir}/test/CppGenerator/${1}/src && \
   ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/src ${1}
 
-test -d ${abssrcdir}/test/CppGenerator/${1}/CCM_Test && \
-  ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/CCM_Test ${1}
+test -d ${abssrcdir}/test/CppGenerator/${1}/test && \
+  ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/test ${1}
 
 test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
   ccmtools-c++-configure -p ${1} || ret=1
@@ -65,15 +64,7 @@ test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
 test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
   ccmtools-c++-make -p ${1} || ret=1
 
-# install and uninstall.
 
-test -z "${ret}" && ccmtools-c++-install -p ${1} || ret=1
-
-if test -z "${4}"
-then
-  test -z "${ret}" && ccmtools-c++-uninstall -p ${1} || ret=1
-  ${RM} -f -r share ccmtools-* *.cc *.h *.py
-fi
 
 test -z "${ret}" && ret=0
 
