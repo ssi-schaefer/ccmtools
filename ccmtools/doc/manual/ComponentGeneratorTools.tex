@@ -172,23 +172,102 @@ existing generator and template set.
 
 Creating a new code generator tool necessarily depends on the specific nature of
 the code generation task you want to accomplish. Nevertheless, the creation
-process should generally include several tasks. In general, the tasks involved
-are as follows:
+generally needs to cover several tasks before you can get a working code
+generator. The tasks involved fall into four general categories:
+
+\begin{description}
+\item [Creating a basic class] This category covers the basics of creating a new
+      code generator. You will need to create the basic Java skeleton class,
+      determine the nodes for which generated code should be written to disk,
+      identify files that need to be output only once per generation task, and
+      create a set of language data type mappings.
+\item [Templates] This step involves creating a set of templates for your
+      generator. Most of the work of a code generator goes into these templates.
+\item [Implementing basic functionality] Each code generator requires at least
+      three function implementations. These three basic functions are:
+      \begin{description}
+      \item [{\tt writeOutput}] This function will write generated code to the
+            hard disk.
+      \item [{\tt finalize}] This function can generate global package files
+            based on the set of input IDL source files.
+      \item [{\tt getLanguageType}] This function provides the generator with a
+            mapping between IDL data types and the data types in the target
+            language. The language mapping you create in the first stage usually
+            comes in handy here.
+      \end{description}
+\end{description}
+
+In addition, depending on the complexity of the code generator you want to
+write, you might need to perform some additional coding tasks. This could
+include any of the following:
+
+\begin{enumerate}
+\item hello
+\end{enumerate}
 
 \begin{enumerate}
 \item Create the basic skeleton Java needed for a new code generator class. This
       is usually done by just copying an existing generator class and stripping
-      out language-specific functionality.
+      out the existing language-specific functionality. See the IDL2 generator
+      class for an example of minimal generator Java code.
 \item Determine the nodes for which generated code should be written to disk.
-      These will be referred to as ``top level node types''. Several tasks can
-      be accomplished once these types are identified.
-      and write an appropriate {\tt writeOutput} function.
-\item Create a
+      These will be referred to as ``top level node types''. Store these node
+      types, as strings in a {\tt private final static String[]} array in your
+      new class. Note that ``MContainer'' will be added to these types!
+\item Identify files that need to be output only once per generation task (as
+      opposed to one or more times for each component or operation in an input
+      IDL file, for example). These files are referred to as ``environment
+      files'' and need to be stored in a special array. Figure out the relative
+      paths of the environment files (relative to the generated code root
+      directory) and store these files in your class in a {\tt private final
+      static File[]} array. See the {\tt local\_environment\_files} array in the
+      C++ Python generator for an example of how this works.
+\item Create a set of language mappings in a {\tt private final static String[]}
+      array. This language map array must be the same length as the {\tt
+      MPrimitiveKind} enumeration (located in {\tt
+      Metamodel/BaseIDL/MPrimitiveKind.java} in the source tree). The language
+      map array provides the strings that will be used to translate IDL language
+      types into the data types for the target language. Thus the entries in
+      this language mapping array must be in the same order as the entries in
+      the {\tt MPrimitiveKind} enumeration.
+\item Create templates for your environment files. Since environment files are
+      usually static from project to project, these templates are often just
+      straight code written in the target language. If you absolutely need to
+      include dynamic data in an environment file, you can use the defines
+      variable and provide -D flags on the command line to the ccmtools-generate
+      front end.
+\item Create a set of templates for your generator. These templates are the core
+      of generated code. You must, at a minimum, create a template for
+      ``MContainer'' and for any node types you defined as top level node types.
+      The template creation process is important enough to warrant its own
+      section in this manual; see section~\cite{subsec:template-writing} for
+      details.
+\item Write a {\tt writeOutput} function. This function is called for each top
+      level node type encountered in the graph. This function will produce all
+      generated code. It should accept a {\tt Template} object and have a void
+      return type. This function can be as simple or as complex as you wish; it
+      is the generator's primary source of control over the generation process.
+\item Write a {\tt finalize} function. This function is called when a set of
+      graphs has been completely traversed and provides a code generator the
+      opportunity to generate files based on the input IDL source files. From
+      the user perspective, the {\tt finalize} function is thus called once per
+      run of the ``ccmtools-generate'' command. Normally this function is used
+      to create a set of global (i.e., per-package) header files that include
+      other files that might have been created during each separate graph
+      traversal.
+\item Write a {\tt getLanguageType} function. This function provides the
+      generator with a mapping between IDL data types and the data types in the
+      target language. Sometimes this can be a basic function that simply
+      provides the mapped value from the language map you created earlier. (See
+      the IDL generator base class for an example of a relatively simple
+      language type function implementation.) More often, however, the complex
+      data types will require more special treatment. (See the implementation in
+      the C++ local generator for a complex example.)
 \end{enumerate}
-set of language templates generally proceeds from the top down,
-starting with a template for top level elements such as MContainer or
-MModuleDef, and proceeding through the CCM MOF Library in order of node
-specificity.
+
+set of language templates generally proceeds from the top down, starting with a
+template for top level elements such as MContainer or MModuleDef, and proceeding
+through the CCM MOF Library in order of node specificity.
 
 Using specific code examples can help with syntax when writing templates. Try to
 find some example code go help guide the writing process.
@@ -286,7 +365,7 @@ interface MyInterface
 \end{Example}
 
 For clarity, this template section uses some typographical conventions. CCM MOF
-object types will be printed in bold roman text (e.g. {\bf MParameterDef}). CCM
+object types will be printed in bold roman text (e.g. MParameterDef). CCM
 MOF object variable and function names are printed in italicized roman text
 (e.g. {\it isAbstract\/}). Tag names in templates are indicated by a sans serif
 font (e.g. {\sf MParameterDef}). Note that tag names can be (and indeed often
@@ -299,8 +378,8 @@ excerpts are printed in monospaced (e.g. {\tt filename}).
 
 As stated earlier, template writing can generally proceed from more global
 library elements to more specific elements. Given the example IDL file as a
-guide, we need to write a template for {\bf MInterfaceDef} (since it is the
-highest level element in our IDL3 code example).
+guide, we need to write a template for MInterfaceDef (since it is the highest
+level element in our IDL3 code example).
 
 The first step is to create a directory to hold the templates. The directory
 needs to be named {\tt <language>-templates} and should be somewhere where the
@@ -323,7 +402,7 @@ a {\it getName\/} or {\it isName\/} function (note that capitalization is
 important).
 
 Applying the process to the example code generation task, we might get a
-template for {\bf MInterfaceDef} that looks something like this:
+template for MInterfaceDef that looks something like this:
 
 \begin{verbatim}
 interface %(Identifier)s
@@ -332,12 +411,12 @@ interface %(Identifier)s
 }
 \end{verbatim}
 
-Because an {\bf MInterfaceDef} node does not have a {\it getMOperationDef\/}
-function, the {\sf MOperationDef} tag in this template indicates that the code
-generator should attempt to load a template for {\bf MOperationDef} and fill it
-with the contents of any {\bf MOperationDef} nodes that are children of the
-current node before replacing the appropriate tag in the template. This process
-is explained in greater detail in the next section.
+Because an MInterfaceDef node does not have a {\it getMOperationDef\/} function,
+the {\sf MOperationDef} tag in this template indicates that the code generator
+should attempt to load a template for MOperationDef and fill it with the
+contents of any {\tt MOperationDef} nodes that are children of the current node
+before replacing the appropriate tag in the template. This process is explained
+in greater detail in the next section.
 
 
 %---------------------------------------
@@ -417,14 +496,14 @@ implementation.
 
 
 
-Because an {\bf MInterfaceDef} object has a variable called {\it identifier\/}
+Because an {\tt MInterfaceDef} object has a variable called {\it identifier\/}
 (and a corresponding access function named {\it getIdentifier\/}), it is easy
 for the code generator to simply substitute the value of the current node's
 identifier for the {\sf Identifier} tag in a template.
 
 The difficulty with a top down template like the one shown in the previous
 section is that it is not clear how to generically generate code for a more
-complex tag like {\sf MOperationDef}: {\bf MInterfaceDef} class instances do not
+complex tag like {\sf MOperationDef}: {\tt MInterfaceDef} class instances do not
 have variables and access functions for things like this. To support such keys,
 the code generator uses a recursive template loading and substitution process.
 This scheme simplifies template development in many cases and allows for more
@@ -432,17 +511,17 @@ general template keys. However, it also requires some extra coding in some
 cases.
 
 Consider the parse tree for the example code generation task. When the graph
-traverser starts reading the {\bf MyInterface} node, it will proceed to the {\bf
-MyOperation} node and on to the {\bf MyParameter} node before returning back up
-the tree, leaving the {\bf MyParameter} node, then leaving the {\bf MyOperation}
-node. Next it will visit the {\bf OtherOperation} node (and also that node's
-child elements), and finally it will go all the way back up and leave the {\bf
+traverser starts reading the {\tt MyInterface} node, it will proceed to the {\tt
+MyOperation} node and on to the {\tt MyParameter} node before returning back up
+the tree, leaving the {\tt MyParameter} node, then leaving the {\tt MyOperation}
+node. Next it will visit the {\tt OtherOperation} node (and also that node's
+child elements), and finally it will go all the way back up and leave the {\tt
 MyInterface} node at the top.
 
 At each point during this process, the code generator stores information about
 the nodes it has visited so far. In this way, when the code generator returns to
-the {\bf MyInterface} node after visiting its child nodes, it has all the
-necessary information to fill in an {\bf MOperationDef} tag in the interface
+the {\tt MyInterface} node after visiting its child nodes, it has all the
+necessary information to fill in an {\tt MOperationDef} tag in the interface
 template.
 
 The process that the code generator uses to gather this information is described
@@ -454,10 +533,10 @@ in template creation.
 %---------------------------------------
 
 When the code generator receives an endNode message from the traverser, it
-attempts to load a template for the given node type. Because the {\bf
-MyParameter} node in the example is a {\bf MParameterDef} instance, the code
+attempts to load a template for the given node type. Because the {\tt
+MyParameter} node in the example is a {\tt MParameterDef} instance, the code
 generator will try to load a template from disk located at {\tt
-java-templates/MParameterDef}. If the template for {\bf MParameterDef} looks
+java-templates/MParameterDef}. If the template for {\tt MParameterDef} looks
 like
 \begin{verbatim}
 %(LanguageType)s %(Identifier)s,
@@ -472,14 +551,14 @@ hash.
 The important thing to note here is that the substituted template value will be
 added to the {\em parent node's\/} information, indexed using the node type as a
 key in the hash table. So the above string will be added to the code generator's
-variable hash, indexed under the {\it MParameterDef\/} variable of the {\bf
+variable hash, indexed under the {\it MParameterDef\/} variable of the {\tt
 MyOperation} node.
 
 After descending to read the first parameter node, the graph traverser will exit
-the {\bf MyOperation} node, at which point it will load the template from {\tt
-java-templates/MOperationDef} (because {\bf MyOperation} is an instance of {\bf
+the {\tt MyOperation} node, at which point it will load the template from {\tt
+java-templates/MOperationDef} (because {\tt MyOperation} is an instance of {\tt
 MOperationDef}) and substitute the variables for this node. The template for
-{\bf MOperationDef} nodes should look like the target Java code, with specific
+{\tt MOperationDef} nodes should look like the target Java code, with specific
 identifiers replaced by keys:
 \begin{verbatim}
   %(LanguageType)s
@@ -494,22 +573,22 @@ Then substituting the variables in this template will yield:
 \end{verbatim}
 Again, the important thing to keep in mind is that this information will be
 added to the parent node's {\it MOperationDef\/} variable, so the node
-information for {\bf MyInterface} will contain an {\it MOperationDef\/} variable
+information for {\tt MyInterface} will contain an {\it MOperationDef\/} variable
 that contains this string.
 
-The graph traverser will then continue on and start the {\bf AnotherOperation}
-node. When it has ended the second {\bf MParameterDef} child node, the {\it
-MParameterDef\/} variable for the {\bf AnotherOperation} node will look like:
+The graph traverser will then continue on and start the {\tt AnotherOperation}
+node. When it has ended the second {\tt MParameterDef} child node, the {\it
+MParameterDef\/} variable for the {\tt AnotherOperation} node will look like:
 \begin{verbatim}
 char Letter, int Number, 
 \end{verbatim}
-Then when the graph traverser has visited all children of the {\bf MyOperation}
-node and finally ascends up one layer and signals the end of the {\bf
+Then when the graph traverser has visited all children of the {\tt MyOperation}
+node and finally ascends up one layer and signals the end of the {\tt
 MyOperation} node itself, the code generator will load the template from {\tt
 java-templates/MOperationDef} from disk. After substituting the values for the
 second operation, the code generator adds the resulting value to the {\it
 MOperationDef\/} variable in the parent element. This yields an {\it
-MOperationDef\/} value for the {\bf MyInterface} node:
+MOperationDef\/} value for the {\tt MyInterface} node:
 \begin{verbatim}
   float
   MyOperation
@@ -519,8 +598,8 @@ MOperationDef\/} value for the {\bf MyInterface} node:
     ( char Letter, int Number, );
 \end{verbatim}
 and, as before, this value will be added to the parent node's information. So
-this string will get added to the {\it MOperationDef\/} variable of the {\bf
-MyInterface} node. When the traverser then exits the {\bf MyInterface} node, the
+this string will get added to the {\it MOperationDef\/} variable of the {\tt
+MyInterface} node. When the traverser then exits the {\tt MyInterface} node, the
 code generator again loads a template, this time from {\tt
 java-templates/MInterfaceDef}:
 

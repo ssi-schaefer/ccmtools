@@ -1,5 +1,6 @@
 %******************************************************************************
 \chapter{CCM Metamodel Library}
+\label{chapter:ccm-metamodel-library}
 %******************************************************************************
 
 %==============================================================================
@@ -10,10 +11,11 @@ The CORBA Component Model (CCM) specification defines a CCM metamodel
 (\cite{CCMSpecification}, chapter 8 ``Interface Repository Metamodel'') that can
 be used to represent the syntax of an IDL3 file.
 
-We developed a CCM metamodel library that can be used to establish a CCM model
-in memory. The CCM metamodel library is very similar to the UML metamodel
-library from NovoSoft~\cite{FIXME}. The library supports navigation between the
-different objects of the model as well as access methods to their attributes.
+The CCM Tools implement a CCM metamodel library that can be used to establish a
+CCM model in memory. The CCM metamodel library is very similar to the UML
+metamodel library from NovoSoft~\cite{FIXME}. The library supports navigation
+between the different objects of the model as well as access methods to their
+attributes.
 
 \begin{figure}[htbp]
 \centering
@@ -27,10 +29,10 @@ can be used by a IDL3 parser to represent the syntax in memory. On the other
 side a code generator tool can use the model to create code fragments.
 
 Figure~\ref{fig:metamodel-CCMMetamodelLib} actually describes the particular
-case where the IDL3 parser reads the IDL source code and generates a CCM model
-in memory, while the code generator uses the CCM model to generate IDL source
-code. This is the proof that the CCM metamodel describes the IDL3 syntax
-exhaustively.
+case where the IDL3 parser (see Chapter~\cite{chapter:idl3-parser}reads the IDL3
+source code and generates a CCM model in memory, while the code generator uses
+the CCM model to generate IDL3 source code. This generation task is proof that
+the CCM metamodel describes the IDL3 syntax exhaustively.
 
 %==============================================================================
 \section{CCM Metamodel Library API}
