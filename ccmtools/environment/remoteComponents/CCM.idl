@@ -8,7 +8,7 @@
 
 module Components {
 
-//  typePrefix Components "omg.org";
+  typePrefix Components "omg.org";
 
   /*
    * ----------------------------------------------------------------------
@@ -450,5 +450,4 @@ module Components {
       raises (RemoveFailure);
   };
 }; // /module Components
-
 
