@@ -119,6 +119,7 @@ extern "C" {
 // %(Identifier)s - home class component logic implementation
 //==============================================================================
 
+#include <cassert>
 #include <iostream>
 #include <WX/Utils/debug.h>
 
@@ -348,6 +349,7 @@ class CCM_%(Identifier)s_impl
 // %(Identifier)s - home business logic implementation
 //==============================================================================
 
+#include <cassert>
 #include <iostream>
 #include <WX/Utils/debug.h>
 

@@ -14,14 +14,14 @@
  * To enable DbC adapter use -DCCM_USE_DBC compiler flag
  ***/
 
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
+#include <cassert>
+#include <iostream>
+
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#ifdef CCM_TEST_PYTHON
-#include <Python.h>
-#endif
+#include <LocalComponents/CCM.h>
+#include <CCM_Local/HomeFinder.h>
 
 #include <%(IncludeNamespace)s_mirror/%(Identifier)s_mirror_gen.h>
 #include <%(IncludeNamespace)s_mirror/%(HomeType)s_mirror_gen.h>
@@ -72,9 +72,6 @@ int main(int argc, char *argv[])
     cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
     return(error);
   }
-#ifdef CCM_TEST_PYTHON
-  Py_Initialize();
-#endif
 
 
   // Component deployment:
@@ -189,10 +186,6 @@ int main(int argc, char *argv[])
     cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
     return error;
   }
-#ifdef CCM_TEST_PYTHON
-  Py_Finalize();
-#endif
-
   cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 }
 
