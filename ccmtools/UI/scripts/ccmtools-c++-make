@@ -88,26 +88,25 @@ if not os.path.isdir(SOURCE_DIR):
 ## find the matching application logic and user types files, and copy them from
 ## the current directory to the generated code directory.
 
-for f in glob.glob('*_app.*') + glob.glob('*_user_types.h'):
+for f in glob.glob('*_app.*') + glob.glob('*_user_types.h') + glob.glob('_check_CCM_Session*.cc'):
     dest_file = find(SOURCE_DIR, f)
+    print ' copy file: ' + f
     if not dest_file:
         print 'Warning: unknown destination for %s. Skipping.' % f
         print 'This might cause deployment failure!'
         print
         continue
 
-    try:
-        src_handle = open(f, 'rb')
-        dst_handle = open(dest_file, 'wb')
-        dst_handle.write(src_handle.read())
-    finally:
-        dst_handle.close()
-        src_handle.close()
-
+    if os.system('cp -p ' + f + ' ' +dest_file):
+        print "Error: can't copy " + f + " files!"
+        sys.exit(1)
+        
 ## run confix to build and check components
 
 confix_flags  = ' --packageroot="%s" --profile="ccmtools"' % SOURCE_DIR
 confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
 confix_flags += ' --make --targets="all check"'
 
+
+print 'confix.py ' + confix_flags
 sys.exit(os.system('confix.py ' + confix_flags) != 0)

@@ -22,8 +22,14 @@
 
 import os, sys
 
-VERSION = '0.2.0'
+
+VERSION = '0.3.2'
 INSTALL_DIR = ''
+
+pipe = os.popen('ccmtools-generate --version')
+line = pipe.readline()
+pipe.close()
+VERSION = line.split()[-1].strip()
 
 USAGE = '''Usage: ccmtools-c++-environment [OPTION]...
 

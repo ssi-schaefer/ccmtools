@@ -37,7 +37,6 @@ public class MEnumDefImpl
     private String identifier_;
     private String repositoryId_;
     private String version_;
-    private String sourceFile;
 
     private MContainer Contains_;
     private List MemberList_;
@@ -46,7 +45,6 @@ public class MEnumDefImpl
     public MEnumDefImpl()
     {
 	MemberList_ = new ArrayList();
-        sourceFile = new String("");
     }
 
     public String toString()
@@ -99,10 +97,6 @@ public class MEnumDefImpl
     // attribute version:String
     public String getVersion()                  {return version_;}
     public void setVersion(String __arg)        {version_ = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

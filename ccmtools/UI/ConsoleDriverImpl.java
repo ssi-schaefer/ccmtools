@@ -27,10 +27,11 @@ import java.io.PrintStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class ConsoleDriverImpl
     implements Driver
@@ -204,13 +205,10 @@ public class ConsoleDriverImpl
         if (data instanceof Map) { // hash table format
             ret.append("\n");
 
-            Set tmp_items = ((Map) data).keySet();
-            Set items = new HashSet(tmp_items);
-
+            SortedSet items = new TreeSet(((Map) data).keySet());
             for (Iterator i = items.iterator(); i.hasNext(); ) {
                 Object key = i.next();
                 Object val = ((Map) data).get(key);
-
                 String value = abbreviateString(val);
                 ret.append(pre+"{ "+key+" : "+value+" }\n");
             }

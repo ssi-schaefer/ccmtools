@@ -27,10 +27,12 @@
 
 package ccmtools.IDL3Parser;
 
-import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.SortedSet;
 import java.util.Stack;
+import java.util.TreeSet;
 
 import ccmtools.Metamodel.BaseIDL.MContained;
 
@@ -145,9 +147,9 @@ public class IDL3SymbolTable {
     public String toString()
     {
         StringBuffer buf = new StringBuffer("");
-        Enumeration ke = symTable.keys();
-        while(ke.hasMoreElements())
-            buf.append("[s] "+ke.nextElement().toString()+"\n");
+        SortedSet keys = new TreeSet(symTable.keySet());
+        for (Iterator i = keys.iterator(); i.hasNext(); )
+            buf.append("[s] " + i.next() + "\n");
         String str = buf.toString();
         return (str.length() > 0) ? str.substring(0, str.length() - 1) : "";
     }

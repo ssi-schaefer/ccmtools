@@ -38,7 +38,6 @@ public class MOperationDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private Set CanRaiseSet_;
     private List ParameterList_;
@@ -49,21 +48,19 @@ public class MOperationDefImpl
     {
 	CanRaiseSet_ = new HashSet();
 	ParameterList_ = new ArrayList();
-        sourceFile = new String("");
     }
 
     // override toString()
     public String toString()
     {
 	String tmp = "MOperationDef: " + identifier;
-        if(isOneway_) tmp += " (oneway) ";
-        if(TypedBy_ != null) tmp += " (typed: " + TypedBy_.toString() + ")";
-        if(ParameterList_ != null)
-            tmp += " (parameters: " + ParameterList_.toString() + ")";
-	if(! (CanRaiseSet_.isEmpty()))
+        if (isOneway_) tmp += " (oneway) ";
+        if (TypedBy_ != null) tmp += " (typed: " + TypedBy_.toString() + ")";
+        tmp += " (parameters: " + ParameterList_.toString() + ")";
+	if (! (CanRaiseSet_.isEmpty()))
             tmp += " (raises: " + CanRaiseSet_.toString() + ")";
-	if(contexts_ != null) tmp += " (context: " + contexts_ + ")";
-        return  tmp;
+	if (contexts_ != null) tmp += " (context: " + contexts_ + ")";
+        return tmp;
     }
 
     //----------------------------------------------------------------
@@ -97,16 +94,12 @@ public class MOperationDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
-
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
 
     // association: direct role: [*] --> opposite role: exceptionDef[*]
-    public Set  getExceptionDefs()                        {return (Set)CanRaiseSet_;}
+    public Set  getExceptionDefs()                        {return CanRaiseSet_;}
     public void setExceptionDefs(Set __arg)               {CanRaiseSet_ = new HashSet(__arg);}
     public void addExceptionDef(MExceptionDef __arg)      {CanRaiseSet_.add(__arg);}
     public void removeExceptionDef(MExceptionDef __arg)   {CanRaiseSet_.remove(__arg);}

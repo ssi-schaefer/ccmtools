@@ -77,4 +77,5 @@ confix_flags  = ' --packageroot="%s" --profile="ccmtools"' % SOURCE_DIR
 confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
 confix_flags += ' --make --targets="uninstall distclean"'
 
+print 'confix.py ' + confix_flags
 sys.exit(os.system('confix.py ' + confix_flags) != 0)

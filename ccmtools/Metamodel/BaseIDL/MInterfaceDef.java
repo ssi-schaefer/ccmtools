@@ -34,10 +34,6 @@ public interface MInterfaceDef
     boolean isLocal();
     void setLocal(boolean __arg);
 
-    // attribute isForwardDeclaration:boolean
-    boolean isForwardDeclaration();
-    void setForwardDeclaration(boolean __arg);
-
     // association: direct role: [*] --> opposite role: base[*]
     List getBases();
     void setBases(List __arg);

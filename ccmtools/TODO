@@ -1,0 +1,21 @@
+CCM-Tools TODOs
+===============
+
+ccmtools-0.2.x
+--------------
+
+*) IDL Constants don't work (parser problem).
+   - test/idl/constants 
+
+*) Home factory method exceptions don't work (parser problem).
+   - test/idl/home_exception 
+
+*) Mixed modules within a component are still a problem.
+   - test/idl/module_mixed
+
+*) Integration of Utils/value_simple.h as a mapping for IDL any (CppLocalGenerator).
+
+*) Update Tutorial
+*) Update Developer's Manual
+
+

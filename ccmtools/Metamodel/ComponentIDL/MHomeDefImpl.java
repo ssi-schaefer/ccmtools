@@ -43,11 +43,9 @@ public class MHomeDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private boolean isAbstract;
     private boolean isLocal;
-    private boolean isForwardDeclaration;
 
     private List SupportsList_;
     private List FactoryList_;
@@ -61,13 +59,13 @@ public class MHomeDefImpl
 
     public MHomeDefImpl()
     {
-        isForwardDeclaration = false;
+        isAbstract = false;
+        isLocal = false;
 	SupportsList_= new ArrayList();
 	FactoryList_= new ArrayList();
 	FinderList_ = new ArrayList();
 	ContainsList = new ArrayList();
 	InterfaceDerivedFromList = new ArrayList();
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -78,8 +76,6 @@ public class MHomeDefImpl
             tmp  += " " + ContainsList;
         if (InterfaceDerivedFromList.size() > 0)
             tmp += " (bases: " + InterfaceDerivedFromList + ")";
-        if (! sourceFile.equals(""))
-            tmp += " (defined in '"+ sourceFile + "')";
 	return tmp;
     }
 
@@ -113,14 +109,6 @@ public class MHomeDefImpl
     // attribute isLocal:boolean
     public boolean isLocal()                    {return isLocal;}
     public void setLocal(boolean __arg)         {isLocal = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
-
-    // attribute isForwardDeclaration:boolean
-    public boolean isForwardDeclaration()            {return isForwardDeclaration;}
-    public void setForwardDeclaration(boolean __arg) {isForwardDeclaration = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

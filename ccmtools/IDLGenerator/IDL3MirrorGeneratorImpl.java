@@ -23,18 +23,9 @@ package ccmtools.IDLGenerator;
 
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
-import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.Metamodel.ComponentIDL.MComponentDef;
-import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
-import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
-import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class IDL3MirrorGeneratorImpl
     extends IDLGenerator
@@ -44,80 +35,5 @@ public class IDL3MirrorGeneratorImpl
 
     public void writeOutput(Template template)
         throws IOException { writeOutput(template, "3mirror"); }
-
-    protected String getLocalValue(String variable)
-    {
-        String value = super.getLocalValue(variable);
-        if (current_node instanceof MComponentDef)
-            return data_MComponentDef(variable, value);
-        return value;
-    }
-
-    protected String data_MComponentDef(String data_type, String data_value)
-    {
-        List ifaces = new ArrayList();
-        if (data_type.equals("MProvidesDefInclude")) {
-            List contents = ((MComponentDef) current_node).getFacets();
-            for (Iterator i = contents.iterator(); i.hasNext(); )
-                ifaces.add(((MProvidesDef) i.next()).getProvides());
-            return join("\n", filterIncludes(data_value.split("\n"), ifaces));
-        } else if (data_type.equals("MSupportsDefInclude")) {
-            List contents = ((MComponentDef) current_node).getSupportss();
-            for (Iterator i = contents.iterator(); i.hasNext(); )
-                ifaces.add(((MSupportsDef) i.next()).getSupports());
-            return join("\n", filterIncludes(data_value.split("\n"), ifaces));
-        } else if (data_type.equals("MUsesDefInclude")) {
-            List contents = ((MComponentDef) current_node).getReceptacles();
-            for (Iterator i = contents.iterator(); i.hasNext(); )
-                ifaces.add(((MUsesDef) i.next()).getUses());
-            return join("\n", filterIncludes(data_value.split("\n"), ifaces));
-        }
-        return super.data_MComponentDef(data_type, data_value);
-    }
-
-    /**
-     * Filter the include statements by seeing if each include statement refers
-     * to an interface that's defined in another source IDL file. All interfaces
-     * that are defined locally (i.e. in the same source file as the current
-     * node) will not be #include'd in the generated .idl3mirror file.
-     *
-     * @param includes an array of the include statements that will go in the
-     *        generated .idl3mirror file.
-     * @param contents a list of the interface objects that are referenced by
-     *        the current node.
-     * @return a list of the filtered include statements that are supposed to
-     *         actually be written to the output file. The number of include
-     *         statements in this list will always be less than or equal to the
-     *         length of the original includes array.
-     */
-    private List filterIncludes(String[] includes, List contents)
-    {
-        List filtered_lines = new ArrayList();
-        for (int i = 0; i < includes.length; i++) {
-            String name = includes[i];
-
-            if (name.trim().equals("")) { filtered_lines.add(""); continue; }
-
-            // the include statement is of the form :
-            // #include "<filename>.idl3mirror"
-            // so this retrieves <filename> from the include statement.
-
-            name = name.substring(10, name.length() - 12);
-
-            // see if this interface is in the list of referenced interfaces ...
-            // if so, and if it's not defined in the local file, go ahead and
-            // add it to the filtered lines to output in generated code.
-
-            for (Iterator it = contents.iterator(); it.hasNext(); ) {
-                MInterfaceDef iface = (MInterfaceDef) it.next();
-                if (iface.getIdentifier().equals(name)) {
-                    if (! iface.getSourceFile().equals(""))
-                        filtered_lines.add(includes[i]);
-                    break;
-                }
-            }
-        }
-        return filtered_lines;
-    }
 }
 

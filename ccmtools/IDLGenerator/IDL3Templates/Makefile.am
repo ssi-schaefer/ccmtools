@@ -32,14 +32,10 @@ dist_template_DATA = \
     MOperationDef              \
     MParameterDef              \
     MProvidesDef               \
-    MProvidesDefInclude        \
     MPublishesDef              \
     MStructDef                 \
     MSupportsDef               \
-    MSupportsDefInclude        \
     MUnionDef                  \
     MUnionFieldDef             \
     MUsesDef                   \
-    MUsesDefInclude            \
-    MUsesDefIncludeMultiple    \
     MUsesDefMultiple

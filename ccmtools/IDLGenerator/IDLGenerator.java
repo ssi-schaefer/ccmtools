@@ -87,8 +87,6 @@ abstract public class IDLGenerator
     {
         super(sublang, d, out_dir, null, local_reserved_words,
               null, null, local_language_map);
-
-        clearFlag(FLAG_INCLUDE_EXTERN_NODES);
     }
 
     /**
@@ -213,8 +211,7 @@ abstract public class IDLGenerator
     {
         if (data_type.equals("BaseTypes")) {
             String base = joinBases(", ");
-            if (base.length() > 0)
-                return ": " + base;
+            if (base.length() > 0) return ": " + base;
         } else if (data_type.startsWith("MSupportsDef") &&
                    data_value.endsWith(", ")) {
             return "supports " +
@@ -239,16 +236,14 @@ abstract public class IDLGenerator
     {
         if (data_type.equals("BaseTypes")) {
             String base = joinBases(", ");
-            if (base.length() > 0)
-                return ": " + base;
+            if (base.length() > 0) return ": " + base;
         }
         return data_value;
     }
 
     protected String data_MOperationDef(String data_type, String data_value)
     {
-        if (data_type.equals("MExceptionDefName") &&
-            data_value.endsWith(", "))
+        if (data_type.startsWith("MExceptionDef") && data_value.endsWith(", "))
             return "raises ( " +
                 data_value.substring(0, data_value.length() - 2) + " )";
         else if (data_type.startsWith("MParameterDef") &&

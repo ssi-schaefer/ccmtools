@@ -36,7 +36,6 @@ public class MStructDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private TypeCode typeCode_;
     private List MemberList_;
@@ -45,7 +44,6 @@ public class MStructDefImpl
     public MStructDefImpl()
     {
 	MemberList_ = new ArrayList();
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -84,23 +82,15 @@ public class MStructDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
-
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
 
     // aggregation: direct role: [1] --> opposite role: member[*]
-    public List getMembers()                       {return MemberList_;}
-    public void setMembers(List __arg)
-    {
-	if(__arg != null) MemberList_ = new ArrayList(__arg);
-	else              MemberList_ = __arg;
-    }
-    public void addMember(MFieldDef __arg)         {MemberList_.add(__arg);}
-    public void removeMember(MFieldDef __arg)      {MemberList_.remove(__arg);}
+    public List getMembers()                    {return MemberList_;}
+    public void setMembers(List __arg)          {MemberList_ = new ArrayList(__arg);}
+    public void addMember(MFieldDef __arg)      {MemberList_.add(__arg);}
+    public void removeMember(MFieldDef __arg)   {MemberList_.remove(__arg);}
 
     public void addMember(int __pos, MFieldDef __arg) {MemberList_.add(__pos, __arg);}
     public void removeMember(int __pos)               {MemberList_.remove(__pos);}

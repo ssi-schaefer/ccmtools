@@ -1,5 +1,6 @@
 #include "CCM.idl"
 
+
 module CCM_Remote {
 %(MModuleDef)s
 %(MEnumDefFwdDecl)s
@@ -19,3 +20,4 @@ module CCM_Remote {
 %(MComponentDef)s
 %(MHomeDef)s
 }
+

@@ -31,8 +31,8 @@ import ccmtools.CodeGenerator.GraphTraverserImpl;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.CodeGenerator.TemplateHandler;
 import ccmtools.CppGenerator.CppLocalGeneratorImpl;
-import ccmtools.CppGenerator.CppRemoteGeneratorImpl;
 import ccmtools.CppGenerator.CppMirrorGeneratorImpl;
+import ccmtools.CppGenerator.CppRemoteGeneratorImpl;
 import ccmtools.CppGenerator.CppPythonGeneratorImpl;
 import ccmtools.IDLGenerator.IDL2GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3GeneratorImpl;
@@ -44,7 +44,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -53,44 +52,45 @@ import java.util.Set;
 
 public class ConsoleCodeGenerator
 {
-    private final static int GENERATE_ENVIRONMENT_FILES = 0x0001;
-    private final static int GENERATE_APPLICATION_FILES = 0x0002;
-    private final static int GENERATE_USER_TYPES_FILES  = 0x0004;
+    private static final int GENERATE_ENVIRONMENT_FILES = 0x0001;
+    private static final int GENERATE_APPLICATION_FILES = 0x0002;
+    private static final int GENERATE_USER_TYPES_FILES  = 0x0004;
 
-    private final static String version = Constants.VERSION;
+    private static final String version = Constants.VERSION;
 
-    private final static String usage =
-"Usage: ccmtools-generate LANGUAGE... [OPTIONS]... FILES...\n" +
+    private static final String usage =
+"Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n" +
 "Options:\n" +
 "  -a, --application             Generate skeletons for business logic *\n" +
 "  -DFOO[=BAR]                   Define FOO (as BAR) for environment files\n" +
 "  -e, --environment             Generate environment files *\n" +
 "  -h, --help                    Display this help\n" +
-"  -I DIR                        Add DIR to the include IDL search path\n" +
+"  -I DIR                        Add DIR to the preprocessor include path\n" +
 "  -o DIR, --output=DIR          Base output in DIR (default to .)\n" +
 "  -V, --version                 Display current ccmtools version\n" +
 "  -u, --no-user-types           Disable generating user types files\n" +
 "      --generator-mask=<flags>  Mask for generator debug output\n" +
 "      --parser-mask=<flags>     Mask for parser debug output\n" +
-"Languages available:\n" +
-"    LANGUAGES\n" + 
+"Languages available (specify one):\n" +
+"    LANGUAGES\n" +
 "Generates code in the given output language after parsing FILES.\n" +
 "Options marked with a star (*) are generally used once per project.\n";
 
-    private final static String[] local_language_types =
+    private static final String[] local_language_types =
     {
-        "c++local", "c++mirror", "c++remote", "c++python", "idl3", "idl3mirror", "idl2"
+        "c++local", "c++mirror",  "c++remote", "c++python", "idl3", "idl3mirror", "idl2"
     };
 
-    private static List language_types = new ArrayList();
+    private static List language_types = null;
 
-    private static Set langs = new HashSet();
+    private static String lang = null;
 
     private static long gen_mask = 0x00000040;
     private static long par_mask = 0x00000000;
 
+    private static String include_path = "";
+
     private static Map  defines = new Hashtable();
-    private static List include_path = new ArrayList();
     private static List filenames = new ArrayList();
 
     private static File output_directory = new File(System.getProperty("user.dir"));
@@ -99,18 +99,8 @@ public class ConsoleCodeGenerator
     private static int generate_flags = GENERATE_USER_TYPES_FILES;
 
     /**************************************************************************/
+    /* USAGE / VERSION INFO */
 
-    /**
-     * Print out usage information for the console code generator front end, and
-     * exit. This should normally be accessed by using the '--help' switch from
-     * the command line, in which case the function exits with a success (0)
-     * exit code. If an error string is provided, print out the type of error
-     * and provide the usage information for help, but exit with a failure (1)
-     * error code.
-     *
-     * @param err a string to print out indicating the type of error
-     *        encountered.
-     */
     private static void printUsage(String err)
     {
         if (err.length() > 0)
@@ -126,10 +116,6 @@ public class ConsoleCodeGenerator
         else                  System.exit(0);
     }
 
-    /**
-     * Print out the version information for the console code generator front
-     * end, and exit.
-     */
     private static void printVersion()
     {
         System.out.println("ccmtools version " + version);
@@ -140,45 +126,7 @@ public class ConsoleCodeGenerator
     }
 
     /**************************************************************************/
-
-    /**
-     * Parse and generate code for the given input IDL3 file. For each input
-     * file, we need to (1) parse the file, then (2) generate output code. Exits
-     * if errors are encountered during parsing or generation.
-     *
-     * @param filename the string filename of the file we want to read.
-     */
-    private static void parseAndGenerate(ParserManager manager,
-                                         GraphTraverser traverser,
-                                         String filename)
-    {
-        MContainer kopf = null;
-
-        // step (1).
-
-        try {
-            kopf = manager.parseFile(filename);
-        } catch (Exception e) {
-            System.err.println("Error parsing "+filename+":\n"+e);
-            System.exit(1);
-        }
-
-        // (in between)
-
-        if (kopf == null) System.exit(1);
-
-        File top_file = new File(filename);
-        kopf.setIdentifier(top_file.getName().split("\\.")[0]);
-
-        // step (2).
-
-        try {
-            traverser.traverseGraph(kopf);
-        } catch (Exception e) {
-            System.err.println("Error generating code from "+filename+":\n"+e);
-            System.exit(1);
-        }
-    }
+    /* GENERATION */
 
     /**
      * Generate "environment files" for the target language. Environment files
@@ -225,6 +173,7 @@ public class ConsoleCodeGenerator
     }
 
     /**************************************************************************/
+    /* SETUP FUNCTIONS */
 
     /**
      * Try to create a driver for the code generator. This will handle output
@@ -249,125 +198,142 @@ public class ConsoleCodeGenerator
     }
 
     /**
-     * Set up the node handler (i.e. code generator) objects based on the output
-     * languages provided. Use the given driver to control the handlers.
+     * Set up the node handler (i.e. code generator) object based on the output
+     * language provided. Use the given driver to control the handler.
      *
-     * @param driver the user interface driver object to assign to the handlers.
-     * @return a set of the newly created node handlers, or exit if there was an
-     *         error.
+     * @param driver the user interface driver object to assign to this handler.
+     * @return the newly created node handler (i.e. code generator), or exit if
+     *         there was an error.
      */
-    private static Set setupHandlers(Driver driver)
+    private static TemplateHandler setupHandler(Driver driver)
     {
-        Set handlers = new HashSet();
-        for (Iterator i = langs.iterator(); i.hasNext(); ) {
-            String lang = (String) i.next();
-            TemplateHandler handler = null;
+        TemplateHandler handler = null;
 
-            try {
-                if (lang.equalsIgnoreCase("C++Local"))
-                    handler =
-                        new CppLocalGeneratorImpl(driver, output_directory);
-                else if (lang.equalsIgnoreCase("C++Remote"))
-                    handler =
-                        new CppRemoteGeneratorImpl(driver, output_directory);
-                else if (lang.equalsIgnoreCase("C++Mirror"))
-                    handler =
-                        new CppMirrorGeneratorImpl(driver, output_directory);
-                else if (lang.equalsIgnoreCase("C++Python"))
-                    handler =
-                        new CppPythonGeneratorImpl(driver, output_directory);
-                else if (lang.equalsIgnoreCase("IDL3"))
-                    handler =
-                        new IDL3GeneratorImpl(driver, output_directory);
-                else if (lang.equalsIgnoreCase("IDL3Mirror"))
-                    handler =
-                        new IDL3MirrorGeneratorImpl(driver, output_directory);
-                else if (lang.equalsIgnoreCase("IDL2"))
-                    handler =
-                        new IDL2GeneratorImpl(driver, output_directory);
-            } catch (IOException e) {
-                handler = null;
-            }
-
-            if (handler != null) {
-                CodeGenerator gen = (CodeGenerator) handler;
-                if ((generate_flags & GENERATE_APPLICATION_FILES) != 0)
-                    handler.setFlag(gen.FLAG_APPLICATION_FILES);
-                if ((generate_flags & GENERATE_ENVIRONMENT_FILES) != 0)
-                    handler.setFlag(gen.FLAG_ENVIRONMENT_FILES);
-                if ((generate_flags & GENERATE_USER_TYPES_FILES) != 0)
-                    handler.setFlag(gen.FLAG_USER_TYPES_FILES);
-                handlers.add(handler);
-            } else {
-                System.err.println(
-                    "failed to create a language generator for "+lang);
-            }
+        try {
+            if (lang.equalsIgnoreCase("C++Local"))
+                handler = new CppLocalGeneratorImpl(driver, output_directory);
+            else if (lang.equalsIgnoreCase("C++Mirror"))
+                handler = new CppMirrorGeneratorImpl(driver, output_directory);
+	    else if (lang.equalsIgnoreCase("C++Remote"))
+		handler = new CppRemoteGeneratorImpl(driver, output_directory);
+            else if (lang.equalsIgnoreCase("C++Python"))
+                handler = new CppPythonGeneratorImpl(driver, output_directory);
+            else if (lang.equalsIgnoreCase("IDL3"))
+                handler = new IDL3GeneratorImpl(driver, output_directory);
+            else if (lang.equalsIgnoreCase("IDL3Mirror"))
+                handler = new IDL3MirrorGeneratorImpl(driver, output_directory);
+            else if (lang.equalsIgnoreCase("IDL2"))
+                handler = new IDL2GeneratorImpl(driver, output_directory);
+        } catch (IOException e) {
+            printUsage("while constructing a generator for "+lang+"\n"+e);
         }
-        return handlers;
-    }
 
-    /**
-     * Build a traverser object that will traverse the parse trees. Set the
-     * node handler (code generator) to receive and handle traverser node
-     * events.
-     *
-     * @param handlers the node handler objects to receive and deal with graph
-     *        traversal events.
-     * @return the newly created traverser, or exit if there was an error.
-     */
-    private static GraphTraverser setupTraverser(Set handlers)
-    {
-        GraphTraverser traverser = new GraphTraverserImpl();
+        if (handler == null)
+            printUsage("failed to create a language generator for "+lang);
 
-        if (traverser == null)
-            printUsage("failed to create a graph traverser");
+        if ((generate_flags & GENERATE_APPLICATION_FILES) != 0)
+            handler.setFlag(((CodeGenerator) handler).FLAG_APPLICATION_FILES);
 
-        for (Iterator i = handlers.iterator(); i.hasNext(); )
-            traverser.addHandler((TemplateHandler) i.next());
+        if ((generate_flags & GENERATE_ENVIRONMENT_FILES) != 0)
+            handler.setFlag(((CodeGenerator) handler).FLAG_ENVIRONMENT_FILES);
 
-        return traverser;
-    }
+        if ((generate_flags & GENERATE_USER_TYPES_FILES) != 0)
+            handler.setFlag(((CodeGenerator) handler).FLAG_USER_TYPES_FILES);
 
-    /**
-     * Create a parser manager to handle the input files.
-     *
-     * @return the newly created parser manager, or exit if there was an error.
-     */
-    private static ParserManager setupParserManager()
-    {
-        ParserManager manager = new ParserManager(par_mask, include_path);
-
-        if (manager == null)
-            printUsage("failed to create a parser manager");
-
-        return manager;
+        return handler;
     }
 
     /**************************************************************************/
+    /* MAIN FUNCTION */
 
+    /**
+     * Parse and generate code for each input IDL3 file. For each input file, we
+     * need to (0) run the C preprocessor on the file to assemble includes and
+     * do ifdef parsing and such, then (1) parse the file, then (2) generate
+     * output code. Exits with nonzero status if errors are encountered during
+     * parsing or generation.
+     */
     public static void main(String args[])
     {
         parseArgs(args);
 
-        Set handlers = setupHandlers(setupDriver());
+        Runtime rt = Runtime.getRuntime();
 
-        for (Iterator f = filenames.iterator(); f.hasNext(); )
-            parseAndGenerate(setupParserManager(),
-                             setupTraverser(handlers),
-                             (String) f.next());
+        TemplateHandler handler = setupHandler(setupDriver());
+        GraphTraverser traverser = new GraphTraverserImpl();
+        ParserManager manager = new ParserManager(par_mask);
+
+        if (traverser == null) printUsage("failed to create a graph traverser");
+        if (manager == null) printUsage("failed to create a parser manager");
+
+        traverser.setHandler(handler);
+
+        MContainer kopf = null;
+
+        for (Iterator f = filenames.iterator(); f.hasNext(); ) {
+            File source = new File((String) f.next());
+            File idlfile = new File(System.getProperty("user.dir"),
+                                     "CCM_" + source.getName());
+
+            // step (0). run the C preprocessor on the input file.
+
+            try {
+                // this needs to be updated to use the result of AC_PROG_CPP.
+                // unfortunately on my box this doesn't work ...
+                //
+                // Process preproc = rt.exec(Constants.CPP_PATH + " -P -o " +
+
+                Process preproc = rt.exec("cpp " + " -P -o " +
+                                          idlfile + " " + include_path +
+                                          " " + source);
+                preproc.waitFor();
+                if (preproc.exitValue() != 0)
+                    throw new RuntimeException(
+                        "Preprocessor did not exit cleanly."+
+                        "Please verify your include path.");
+            } catch (Exception e) {
+                System.err.println("Error preprocessing "+source+":\n"+e);
+                System.exit(10);
+            }
+
+            // step (1). parse the resulting preprocessed file.
+
+            manager.reset();
+
+            try {
+                kopf = manager.parseFile(idlfile.toString());
+                if (kopf == null) throw new RuntimeException(
+                        "Parser returned a null container");
+            } catch (Exception e) {
+                System.err.println("Error parsing "+source+":\n"+e);
+                System.exit(20);
+            }
+
+            kopf.setIdentifier(source.getName().split("\\.")[0]);
+
+            // step (2). traverse the resulting metamodel graph.
+
+            try {
+                traverser.traverseGraph(kopf);
+            } catch (Exception e) {
+                System.err.println(
+                    "Error generating code from "+source+":\n"+e);
+                System.exit(30);
+            }
+
+            idlfile.deleteOnExit();
+        }
 
         Environment env = new ConsoleEnvironmentImpl(defines);
 
-        for (Iterator i = handlers.iterator(); i.hasNext(); ) {
-            TemplateHandler handler = (TemplateHandler) i.next();
-            generateEnvironment(handler, env);
-            handler.finalize(env.getParameters(), filenames);
-        }
+        generateEnvironment(handler, env);
+        handler.finalize(env.getParameters(), filenames);
 
         System.exit(0);
     }
 
     /**************************************************************************/
+    /* ARGUMENT PARSING */
 
     /**
      * Parse the command line arguments to the console code generator front end.
@@ -385,6 +351,7 @@ public class ConsoleCodeGenerator
      */
     private static void parseArgs(String args[])
     {
+        language_types = new ArrayList();
         for (int i = 0; i < local_language_types.length; i++)
             language_types.add(local_language_types[i]);
 
@@ -431,21 +398,21 @@ public class ConsoleCodeGenerator
                         break;
                     } else if (arg.charAt(0) == 'I') {
                         File path = new File(arg.substring(1));
-                        if (path.isDirectory()) include_path.add(path);
+                        if (path.isDirectory()) include_path += " -I"+path;
                         break;
                     }
                     arg = arg.substring(1);
                 } while (arg.length() > 0);
-            else if (language_types.contains(arg.toLowerCase()))
-                langs.add(new String(arg));
+            else if ((lang == null) &&
+                     language_types.contains(arg.toLowerCase()))
+                lang = new String(arg);
             else
-                filenames.add(arg.toString());
+                filenames.add(arg);
         }
 
-        if (langs.size() < 1)
-            printUsage("no valid output languages specified");
-
-        include_path.add(new File(System.getProperty("user.dir")));
+        if (lang == null) printUsage("no valid output language specified");
+        if (include_path.trim().equals(""))
+            include_path = " -I"+System.getProperty("user.dir");
     }
 
     private static void setGeneratorMask(String val)

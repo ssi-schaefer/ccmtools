@@ -10,7 +10,6 @@ dist_template_DATA = \
     MComponentDef                            \
     MComponentDefAbstract                    \
     MComponentDefAbstractLocal               \
-    MComponentDefInclude                     \
     MComponentDefLocal                       \
     MConstantDef                             \
     MConsumesDef                             \
@@ -25,7 +24,6 @@ dist_template_DATA = \
     MHomeDef                                 \
     MHomeDefAbstract                         \
     MHomeDefAbstractLocal                    \
-    MHomeDefInclude                          \
     MHomeDefLocal                            \
     MHomeDefPrimaryKeyFunctions              \
     MHomeDefPrimaryKeyFunctionsAbstract      \
@@ -34,7 +32,6 @@ dist_template_DATA = \
     MInterfaceDef                            \
     MInterfaceDefAbstract                    \
     MInterfaceDefAbstractLocal               \
-    MInterfaceDefInclude                     \
     MInterfaceDefLocal                       \
     MModuleDef                               \
     MOperationDef                            \

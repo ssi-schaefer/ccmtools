@@ -1,0 +1,70 @@
+Latest stable release : CCM Tools 0.2.2 ""
+
+This release fixes several bugs from the 0.2.1 "Benadryl" release, 
+including the following :
+
+Python Scripts:
+---------------
+* The build process uses a new python script called ccmtools-c++-configure
+  that forces Confix to bootstrap and configure the generated AND the
+  hand crafted code.
+  Note that the ccmtools-c++-generate script doesn't need a Confix call.
+
+* The ccmtools-c++-make script takes the *_app.* and the *_user_types.h
+  and writes them to the generated source code.
+  Now we copy the files with the option -p to leave the timestamps on their
+  current state. Thus, the compiler only compiles the changed files.
+  
+
+IDL3 Parser and IDL to C++ Mapping:
+-----------------------------------
+* The IDL parser now handles arrays accurately.
+
+
+CppLocalGenerator:
+------------------
+* IDL arrays are now mapped to C++ std::vector<>.
+
+* There was a wrong parameter passing (inout, out) when using basic types.
+  Now the parameters are passed in the right way 
+  e.g. short println(const short p1, short& p2, short& p3);
+
+* If you try to get a reference from an unconnected receptacle,
+  the get_connection_*() method throws a localComponents::NoConnection
+  exception.
+
+* If a component defines some user types but uses no interfaces 
+  (e.g. test/idl/attribute_user_types), the *_user_types.h file must be
+  included from *_gen.h files.
+  
+* The generator now creates using namespace std; in the _app.cc and 
+  _mirror_app.cc files.
+
+
+CppMirrorGenerator:
+------------------
+* The generated test-client (CCM_Test/_check_CCM_Session*.cc) does not 
+  longer call methods on attributes and  supported interfaces on its own.
+  It only instantiates a component and its mirror component and connects 
+  the facet and receptacle ports. All test cases fore these ports must be 
+  implemented in the mirror component's business logic.
+  That solves the compiler problem when using user defined data types
+  (the code generator can't guess the type and test values of user defined 
+  types).
+
+* The generated test client (_check_CCM_Session*.cc) now is handled
+  in the same way as the *_app.* files.
+  They are located beneath the generated directory to be edited
+  manually. At compiletime, the files are cpoied to the generated
+  directory structure.
+  
+ 
+Test-Cases:
+-----------     
+* There are some new test-cases (see test/idl/README) that check the 
+  implementations of IDL parser and code generators.
+  (We used the gcc 3.2 to compile all examples)
+
+* We implemented more test cases within mirror component's business logic
+  and test clients (see test/CppGenerator subdirectories). 
+

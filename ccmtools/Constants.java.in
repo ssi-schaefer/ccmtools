@@ -23,5 +23,6 @@ public class Constants {
     public static final String PACKAGE = "@PACKAGE@";
     public static final String VERSION = "@VERSION@";
     public static final String TEMPLATE_ROOT = "@TEMPLATE_ROOT@";
+    public static final String CPP_PATH = "@CPP_PATH@";
 }
 

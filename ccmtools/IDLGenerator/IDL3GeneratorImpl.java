@@ -36,28 +36,9 @@ public class IDL3GeneratorImpl
     public IDL3GeneratorImpl(Driver d, File out_dir)
         throws IOException { super("IDL3", d, out_dir); }
 
-    /**
-     * Write generated code to an output file.
-     *
-     * @param template the template object to get the generated code structure
-     *        from ; variable values should come from the node handler object.
-     */
     public void writeOutput(Template template)
         throws IOException { writeOutput(template, "3"); }
 
-    /**
-     * Get a local value for the given variable name.
-     *
-     * This function performs some common value parsing in the CCM MOF library.
-     * More specific value parsing needs to be provided in the subclass for a
-     * given language, in the subclass' getLocalValue function. Subclasses
-     * should call this function first and then perform any subclass specific
-     * value manipulation with the returned value.
-     *
-     * @param variable The variable name to get a value for.
-     * @return the value of the variable available from the current
-     *         output_variables hash table. Could be an empty string.
-     */
     protected String getLocalValue(String variable)
     {
         String value = super.getLocalValue(variable);
@@ -67,8 +48,6 @@ public class IDL3GeneratorImpl
 
         return value;
     }
-
-    /**************************************************************************/
 
     protected String data_MHomeDef(String data_type, String data_value)
     {

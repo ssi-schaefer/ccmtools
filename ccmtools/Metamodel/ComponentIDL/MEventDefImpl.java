@@ -44,7 +44,6 @@ public class MEventDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private TypeCode TypeCode;
 
@@ -60,9 +59,11 @@ public class MEventDefImpl
 
     public MEventDefImpl()
     {
+        isAbstract = false;
+        isCustom = false;
+        isTruncatable = false;
 	ContainsList = new ArrayList();
 	AbstractDerivedFromList = new ArrayList();
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -110,10 +111,6 @@ public class MEventDefImpl
     public TypeCode getTypeCode()               {return TypeCode;}
     public void setTypeCode(TypeCode __arg)     {TypeCode = __arg;}
 
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
-
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
@@ -124,7 +121,7 @@ public class MEventDefImpl
 
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
     public List getContentss()                   {return ContainsList;}
-    public void setContentss(List __arg)         {ContainsList = (__arg != null) ? new ArrayList(__arg) : null;}
+    public void setContentss(List __arg)         {ContainsList = new ArrayList(__arg);}
     public void addContents(MContained __arg)    {ContainsList.add(__arg);}
     public void removeContents(MContained __arg) {ContainsList.remove(__arg);}
 

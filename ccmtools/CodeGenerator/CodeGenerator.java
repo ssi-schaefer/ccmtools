@@ -28,6 +28,7 @@ import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MModuleDef;
+import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
@@ -197,10 +198,6 @@ abstract public class CodeGenerator
     // kinds) to target language constructs.
     protected Map language_mappings;
 
-    // names of top level files that need to be included somehow to incorporate
-    // external type information from other packages.
-    protected Set extern_includes;
-
     protected File output_dir;
     protected Map output_variables;
 
@@ -216,7 +213,6 @@ abstract public class CodeGenerator
     public final static int FLAG_APPLICATION_FILES    = 0x0001;
     public final static int FLAG_USER_TYPES_FILES     = 0x0002;
     public final static int FLAG_ENVIRONMENT_FILES    = 0x0004;
-    public final static int FLAG_INCLUDE_EXTERN_NODES = 0x0008;
 
     private Stack node_stack;
     private Stack name_stack;
@@ -256,10 +252,6 @@ abstract public class CodeGenerator
                          String[] _language_map)
         throws IOException
     {
-        // include externally defined node information by default.
-
-        flags = FLAG_INCLUDE_EXTERN_NODES;
-
         template_manager = new TemplateManagerImpl(language);
         driver = d;
 
@@ -350,8 +342,6 @@ abstract public class CodeGenerator
         output_variables = new Hashtable();
 
         namespace = new Stack();
-
-        extern_includes = new HashSet();
     }
 
     /**
@@ -656,6 +646,41 @@ abstract public class CodeGenerator
     }
 
     /**
+     * Find a list of the modules in which the given node is contained. This is
+     * intended as a way to get the full scope of a typedef-type variable ; I
+     * haven't found other uses for it just yet.
+     *
+     * @param node a graph node to investigate.
+     * @return a list of the namespaces that fully scope this node.
+     */
+    protected List getScope(MContained node)
+    {
+        List scope = new ArrayList();
+        MContainer c = node.getDefinedIn();
+        while (c.getDefinedIn() != null) {
+            if (c instanceof MModuleDef) scope.add(0, c.getIdentifier());
+            c = c.getDefinedIn();
+        }
+        return scope;
+    }
+
+    /**
+     * Get the identifier of the top level container of a given node.
+     *
+     * @param contained the node to use for a starting point.
+     * @return the identifier of the node's container. If contained is null, the
+     *         function will return "".
+     */
+    protected String getContainerIdentifier(MContained node)
+    {
+        if (node == null) return "";
+        MContainer c = node.getDefinedIn();
+        if (c == null) return node.getIdentifier();
+        while (c.getDefinedIn() != null) c = c.getDefinedIn();
+        return c.getIdentifier();
+    }
+
+    /**
      * Return a string version of the IDL type corresponding to the given
      * object's CCM IdlType.
      *
@@ -669,7 +694,7 @@ abstract public class CodeGenerator
      */
     protected String getBaseIdlType(MTyped object)
     {
-        MIDLType idl_type = ((MTyped) object).getIdlType();
+        MIDLType idl_type = object.getIdlType();
 
         if (idl_type == null)
             throw new RuntimeException(object + " has no IDL type");
@@ -679,9 +704,6 @@ abstract public class CodeGenerator
 
         if (idl_type instanceof MTypedefDef) {
             MTypedefDef typedef = (MTypedefDef) idl_type;
-            File source = new File(typedef.getSourceFile());
-            if (! source.toString().equals(""))
-                extern_includes.add(source.getName().split("\\.")[0]);
             return typedef.getIdentifier();
         }
 
@@ -826,11 +848,13 @@ abstract public class CodeGenerator
                     throw new RuntimeException("Node '"+id+"' has no home");
                 }
             }
-        } else if (variable.equals("Container") &&
-                   current_node instanceof MContained) {
-            MContainer cont = ((MContained) current_node).getDefinedIn();
-            while (cont.getDefinedIn() != null) cont = cont.getDefinedIn();
-            value = cont.getIdentifier();
+        } else if (variable.equals("Container")) {
+            MContained c = null;
+            if (current_node instanceof MContained)
+                c = (MContained) current_node;
+            else if (current_node instanceof MParameterDef)
+                c = ((MParameterDef) current_node).getOperation();
+            value = getContainerIdentifier(c);
         }
 
         return value;
@@ -845,13 +869,7 @@ abstract public class CodeGenerator
      */
     protected void writeOutputIfNeeded()
     {
-        boolean original = false;
-        boolean correct_type = output_types.contains(current_type);
-
-        if (current_node instanceof MContained)
-            original = ((MContained) current_node).getSourceFile().equals("");
-
-        if (! (correct_type && original)) return;
+        if (! output_types.contains(current_type)) return;
 
         // write out the output strings if the node is defined as global.
 
@@ -997,18 +1015,6 @@ abstract public class CodeGenerator
             // parent node.
 
             if (! var.startsWith(current_type)) continue;
-
-            // also, we ignore non-module MContained nodes that weren't defined
-            // in the current input file, as long as we've been told to do so.
-            // not that code will never be written to disk for nodes that are
-            // externally defined ; this simply prevents code from being
-            // included in other templates along the way.
-
-            if (((flags & FLAG_INCLUDE_EXTERN_NODES) == 0) &&
-                ((current_node instanceof MContained) &&
-                 (! (current_node instanceof MModuleDef)) &&
-                 (! ((MContained) current_node).getSourceFile().equals(""))))
-                continue;
 
             updateSubvariables(template_manager.getVariables(var));
 

@@ -31,16 +31,10 @@ public class  MConstantDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private MIDLType TypedBy_;
     private MContainer Contains;
     private Object constValue_;
-
-    public MConstantDefImpl()
-    {
-        sourceFile = new String("");
-    }
 
     // override toString()
     public String toString()
@@ -48,7 +42,6 @@ public class  MConstantDefImpl
 	return "MConstantDef: "+ identifier + " " + TypedBy_.toString() +
             " = " + constValue_.toString();
     }
-
 
     //----------------------------------------------------------------
     // implementation of attribute access
@@ -76,10 +69,6 @@ public class  MConstantDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

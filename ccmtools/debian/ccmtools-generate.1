@@ -1,0 +1,50 @@
+.TH CCMTOOLS "1" "April 2003" "ccmtools version 0.2.2" "User Commands"
+.SH NAME
+ccmtools \- ccmtools-generate
+.SH SYNOPSIS
+.B ccmtools-generate
+\fILANGUAGE\fR... [\fIOPTIONS\fR]... \fIFILES\fR...
+.SH DESCRIPTION
+The ccmtools-generate command is a command line interface to the CCM Tools. More
+info on the CCM Tools and the CORBA Component Model can be found at the CCM
+Tools project web site, http://ccmtools.sf.net/.
+.PP
+This script generates code in the given output language after parsing FILES.
+Options marked with a star (*) below are generally used once per project.
+.SH OPTIONS
+.TP
+\fB\-a\fR, \fB\-\-application\fR
+Generate skeletons for business logic *
+.TP
+\fB\-DFOO\fR[=\fIBAR\fR]
+Define FOO (as BAR) for environment files
+.TP
+\fB\-e\fR, \fB\-\-environment\fR
+Generate environment files *
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Display this help
+.TP
+\fB\-I\fR DIR
+Add DIR to the include IDL search path
+.TP
+\fB\-o\fR DIR, \fB\-\-output\fR=\fIDIR\fR
+Base output in DIR (default to .)
+.TP
+\fB\-V\fR, \fB\-\-version\fR
+Display current ccmtools version
+.TP
+\fB\-u\fR, \fB\-\-no\-user\-types\fR
+Disable generating user types files
+.TP
+\fB\-\-generator\-mask=\fR<flags>
+Mask for generator debug output
+.TP
+\fB\-\-parser\-mask=\fR<flags>
+Mask for parser debug output
+.SH LANGUAGES
+.I c++local c++mirror c++remote c++python idl3 idl3mirror idl2
+.SH COPYRIGHT
+Copyright \(co 2002, 2003 Salomon Automation
+This program is distributed under the terms of the
+GNU Lesser General Public License.

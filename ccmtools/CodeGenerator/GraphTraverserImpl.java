@@ -27,11 +27,11 @@ import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -47,54 +47,45 @@ import java.lang.reflect.Method;
 public class GraphTraverserImpl
     implements GraphTraverser
 {
-    private Set handlers = null;
+    private NodeHandler handler = null;
 
-    public GraphTraverserImpl() { handlers = new HashSet(); }
+    public GraphTraverserImpl() { }
 
     /**
      * Create a new traverser with a given node handler.
      *
-     * @param h an object to handle node events.
+     * @param h An object to handle node events.
      */
-    public GraphTraverserImpl(NodeHandler h)
-    { handlers = new HashSet(); addHandler(h); }
+    public GraphTraverserImpl(NodeHandler h) { setHandler(h); }
 
     /**
-     * Get the node handler objects for this traverser.
+     * Get the node handler object for this traverser.
      *
-     * @return a set of NodeHandler objects currently used by this traverser.
+     * @return The NodeHandler object currently used by this traverser.
      */
-    public Set getHandlers() { return handlers; }
+    public NodeHandler getHandler() { return handler; }
 
     /**
-     * Add a node handler object for this traverser.
+     * Set the node handler object for this traverser.
      *
-     * @param h a NodeHandler object to assign to this traverser.
+     * @param h A NodeHandler object to assign to this traverser.
      */
-    public void addHandler(NodeHandler h) { handlers.add(h); }
-
-    /**
-     * Remove a node handler object from this traverser.
-     *
-     * @param h a NodeHandler object to remove from this traverser. This
-     *        function does nothing if h is not currently a handler.
-     */
-    public void removeHandler(NodeHandler h)
-    { if (handlers.contains(h)) handlers.remove(h); }
+    public void setHandler(NodeHandler h) { handler = h; }
 
     /**
      * Traverse the subgraph starting at the given node.
      *
-     * @param node a node to use for starting traversal.
+     * @param node A node to use for starting traversal.
      */
     public void traverseGraph(MContained node)
     {
-        if (handlers.size() > 0) {
-            for (Iterator h = handlers.iterator(); h.hasNext(); )
-                ((NodeHandler) h.next()).startGraph();
+        if (handler != null) {
+            handler.startGraph();
             traverseRecursive(node, "", new HashSet());
-            for (Iterator h = handlers.iterator(); h.hasNext(); )
-                ((NodeHandler) h.next()).endGraph();
+            handler.endGraph();
+        } else {
+            throw new RuntimeException(
+                "No node handler object available for traversal");
         }
     }
 
@@ -141,16 +132,14 @@ public class GraphTraverserImpl
         if (visited.contains(scope_id)) return;
         visited.add(scope_id);
 
-        for (Iterator h = handlers.iterator(); h.hasNext(); )
-            ((NodeHandler) h.next()).startNode(node, scope_id);
+        handler.startNode(node, scope_id);
 
         List children = processNodeData(node);
 
         for (Iterator i = children.iterator(); i.hasNext(); )
             traverseRecursive(i.next(), scope_id, visited);
 
-        for (Iterator h = handlers.iterator(); h.hasNext(); )
-            ((NodeHandler) h.next()).endNode(node, scope_id);
+        handler.endNode(node, scope_id);
     }
 
     /**
@@ -222,8 +211,7 @@ public class GraphTraverserImpl
 
             if (type.endsWith("List")) children.addAll((List) value);
             else if (type.endsWith("Set")) children.addAll((Set) value);
-            else for (Iterator h = handlers.iterator(); h.hasNext(); )
-                ((NodeHandler) h.next()).handleNodeData(type, field, value);
+            else handler.handleNodeData(type, field, value);
         }
 
         return children;

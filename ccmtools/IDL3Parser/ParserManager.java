@@ -29,24 +29,22 @@ import antlr.TokenStreamException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.DataInputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 public class ParserManager {
     private long debug;
 
     private IDL3SymbolTable symbolTable;
-    private String originalFilename;
-    private List includedFiles;
-    private List includePath;
+    private String filename;
+    private List errors;
 
     /**
      * Create a new ParserManager class instance with no debug output enabled.
      */
     public ParserManager()
     {
-        includePath = new ArrayList();
         this.debug = 0;
         reset();
     }
@@ -59,38 +57,21 @@ public class ParserManager {
      * @param debug the flags to enable for debug output. Pass -1 to enable all
      *              output.
      */
-    public ParserManager(long debug, List include_path)
+    public ParserManager(long debug)
     {
-        includePath = new ArrayList(include_path);
         this.debug = debug;
         reset();
     }
 
     /**
-     * Reset the parser manager. This clears out the symbol table and list of
-     * include files.
+     * Reset the parser manager. This clears out the symbol table.
      */
     public void reset()
     {
         symbolTable = new IDL3SymbolTable();
-        includedFiles = new ArrayList();
-        originalFilename = null;
+        errors = new ArrayList();
+        filename = null;
     }
-
-    /**
-     * Get a list of all files included from other files during a parse.
-     *
-     * @return the included file list. Could be empty if the original file
-     *         contained no used #include directives.
-     */
-    public List getIncludedFiles() { return includedFiles; }
-
-    /**
-     * Get the include path during a parse.
-     *
-     * @return the include path.
-     */
-    public List getIncludePath() { return includePath; }
 
     /**
      * Get the current symbol table being maintained by the parser manager.
@@ -106,26 +87,7 @@ public class ParserManager {
      *
      * @return the name of the original file given to parse.
      */
-    public String getOriginalFilename() { return originalFilename; }
-
-    /**
-     * Find out if the given file is a file included from some other file during
-     * the parse process (if not, it is likely either the original file, or
-     * nothing is known about the file).
-     *
-     * @param includedFileName the name of a file to check on.
-     * @return true only when the given file was included from another file
-     *         during the parse.
-     */
-    public boolean isIncluded(String includedFileName)
-    {
-        File tester = new File(includedFileName);
-        for (Iterator i = includedFiles.iterator(); i.hasNext(); ) {
-            File next = new File((String) i.next());
-            if (tester.getName().equals(next.getName())) return true;
-        }
-	return false;
-    }
+    public String getFilename() { return filename; }
 
     /**
      * Parse an IDL3 file.
@@ -141,34 +103,51 @@ public class ParserManager {
 	MContainer spec = null;
         IDL3Parser parser = null;
         IDL3Lexer lexer = null;
+        DataInputStream stream = null;
 
-	try
-        {
-            if (isIncluded(filename)) return spec;
+        try {
+            stream = new DataInputStream(new FileInputStream(filename));
+        } catch (Exception e) {
+            throw new RuntimeException(
+                "Error opening input file '"+filename+"': "+e);
+        }
 
-            lexer = new IDL3Lexer
-                (new DataInputStream(new FileInputStream(filename)));
+	try {
+            lexer = new IDL3Lexer(stream);
             lexer.setDebug(debug);
             lexer.setFilename(filename);
             lexer.setManager(this);
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating lexer: " + e);
+        }
 
+        try {
             parser = new IDL3Parser(lexer);
             parser.setDebug(debug);
             parser.setFilename(filename);
             parser.setManager(this);
         } catch (Exception e) {
-            System.err.println("Parser manager exception: " + e);
-            return spec;
+            throw new RuntimeException("Error creating parser: " + e);
         }
 
-        if (originalFilename == null) originalFilename = filename;
-
+        if (this.filename == null) this.filename = filename;
         symbolTable.pushFile();
-        spec = parser.specification();
-        spec.setIdentifier(filename);
+
+        try {
+            spec = parser.specification();
+            spec.setIdentifier(filename);
+        } catch (Exception e) {
+            errors.add(e);
+        }
+
         symbolTable.popFile();
 
-        includedFiles.add(filename);
+        if (errors.size() > 0) {
+            StringBuffer msg = new StringBuffer("Errors during parsing:");
+            for (Iterator i = errors.iterator(); i.hasNext(); )
+                msg.append("\n" + i.next().toString());
+            throw new RuntimeException(msg.toString());
+        }
 
 	return spec;
     }
