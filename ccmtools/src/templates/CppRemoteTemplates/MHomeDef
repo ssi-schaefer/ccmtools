@@ -10,52 +10,38 @@
 
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h>
 
-// Include CORBA stubs generated from the IDL2 files
+// Include CORBA stubs generated from IDL2 files
 #include <%(IdlFileNamespace)s%(Identifier)s.h> 
 
 %(OpenNamespace)s
 
-  //==========================================================================
-  // %(Identifier)s adapter
-  //==========================================================================
+//==========================================================================
+// %(Identifier)s adapter
+//==========================================================================
 
-  class %(Identifier)s_impl :
+class %(Identifier)s_impl :
     virtual public POA_%(ShortNamespace)s%(Identifier)s,
     virtual public PortableServer::RefCountServantBase
-    {
-    private:
-      CCM_Local%(Namespace)s::CCM_%(Identifier)s* local_home;
-      CCM::SessionContainer* ccm_container;
+{
+  private:
+    CCM_Local%(Namespace)s::CCM_%(Identifier)s* local_home;
+    CCM::SessionContainer* ccm_container;
       
-    public:
-      %(Identifier)s_impl(CCM::SessionContainer* c);
-      virtual ~%(Identifier)s_impl();
+  public:
+    %(Identifier)s_impl(CCM::SessionContainer* c);
+    virtual ~%(Identifier)s_impl();
 
-      /*
-       * Implicit operations
-       */
+    // Implicit operations
+    ::%(ShortNamespace)s%(ComponentType)s_ptr create ();
 
-      ::%(ShortNamespace)s%(ComponentType)s_ptr create ();
+    // Explicit operations
+%(MFactoryDefHeader)s
 
-      /*
-       * Explicit operations
-       */
+    // Inherited CCMHome interface
+    void remove_component(Components::CCMObject_ptr comp);
 
-      %(MFactoryDefHeader)s
-
-      /*
-       * Inherited CCMHome interface
-       */
-
-      CORBA::Object_ptr get_component_def ();
-      CORBA::Object_ptr get_home_def ();
-      void remove_component (Components::CCMObject_ptr comp);
-
-      /*
-       * Inherited KeylessCCMHome interface
-       */
-
-      Components::CCMObject_ptr create_component ();
+    // Inherited KeylessCCMHome interface
+    Components::CCMObject_ptr create_component ();
   };
  
 %(CloseNamespace)s
@@ -97,16 +83,17 @@ using namespace WX::Utils;
 %(Identifier)s_impl::%(Identifier)s_impl (CCM::SessionContainer* c)
   : ccm_container (c)
 {
-  DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
-  local_home = dynamic_cast<CCM_Local%(Namespace)s::CCM_%(Identifier)s*>
-    (create_%(Identifier)s());
+    DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
+    local_home = 
+	dynamic_cast<CCM_Local%(Namespace)s::CCM_%(Identifier)s*>(create_%(Identifier)s());
 }
 
 %(Identifier)s_impl::~%(Identifier)s_impl ()
 {
-  DEBUGNL("-%(Identifier)s_impl::~%(Identifier)s_impl()");
-  delete local_home;
+    DEBUGNL("-%(Identifier)s_impl::~%(Identifier)s_impl()");
+    delete local_home;
 }
+
 
 /*
  * Implicit operations
@@ -115,20 +102,21 @@ using namespace WX::Utils;
 ::%(ShortNamespace)s%(ComponentType)s_ptr
 %(Identifier)s_impl::create ()
 {
-  DEBUGNL(" %(Identifier)s_impl::create()");
+    DEBUGNL(" %(Identifier)s_impl::create()");
 
-  // create the local_component
-  CCM_Local%(Namespace)s::CCM_%(ComponentType)s* local_component = 
-    dynamic_cast<CCM_Local%(Namespace)s::CCM_%(ComponentType)s*>(local_home->create());
+    // create the local_component
+    CCM_Local%(Namespace)s::CCM_%(ComponentType)s* local_component = 
+        dynamic_cast<CCM_Local%(Namespace)s::CCM_%(ComponentType)s*>(local_home->create());
 
-  // create component remote adapter
-  PortableServer::ServantBase_var component_adapter =
-    new %(ComponentType)s_impl(local_component, ccm_container);
+    // create component remote adapter
+    PortableServer::ServantBase_var component_adapter =
+        new %(ComponentType)s_impl(local_component, ccm_container);
 
-  Components::CCMObject_var co = 
-    ccm_container->activate_component(local_component,component_adapter.in()); 
-  return ::%(ShortNamespace)s%(ComponentType)s::_narrow(co);
+    Components::CCMObject_var co = 
+        ccm_container->activate_component(local_component,component_adapter.in()); 
+    return ::%(ShortNamespace)s%(ComponentType)s::_narrow(co);
 }
+
 
 /*
  * Explicit operations
@@ -136,36 +124,21 @@ using namespace WX::Utils;
 
 %(MFactoryDefImpl)s
 
+
 /*
  * Inherited CCMHome interface
  */
 
-CORBA::Object_ptr
-%(Identifier)s_impl::get_component_def ()
-{
-  DEBUGNL(" %(Identifier)s_impl::get_component_def()");
-  // TODO
-  return CORBA::Object::_nil ();
-}
-
-CORBA::Object_ptr
-%(Identifier)s_impl::get_home_def ()
-{
-  DEBUGNL(" %(Identifier)s_impl::get_home_def()");
-  // TODO
-  return CORBA::Object::_nil ();
-}
-
 void
-%(Identifier)s_impl::remove_component (Components::CCMObject_ptr _co)
+%(Identifier)s_impl::remove_component(Components::CCMObject_ptr _co)
 {
-  DEBUGNL(" %(Identifier)s_impl::remove_component()");
+    DEBUGNL(" %(Identifier)s_impl::remove_component()");
 
-  PortableServer::ServantBase_var _cs = ccm_container->get_skeleton_for_reference(_co);
-  // TODO
- 
-  ccm_container->deactivate_component(_cs);
+    PortableServer::ServantBase_var _cs = ccm_container->get_skeleton_for_reference(_co);
+    // TODO
+    ccm_container->deactivate_component(_cs);
 }
+
 
 /*
  * Inherited KeylessCCMHome interface
@@ -174,18 +147,20 @@ void
 Components::CCMObject_ptr
 %(Identifier)s_impl::create_component ()
 {
-  DEBUGNL(" %(Identifier)s_impl::create_component()");
-  return create ();
+    DEBUGNL(" %(Identifier)s_impl::create_component()");
+    return create ();
 }
 
 %(CloseNamespace)s
+
 
 //==============================================================================
 // Remote entry point
 //==============================================================================
 extern "C" {
-  int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
-  {
+    
+int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
+{
     DEBUGNL(" deploy_%(Identifier)s(" << registration_name << ")");
 
     CosNaming::NamingContextExt_var ns;
