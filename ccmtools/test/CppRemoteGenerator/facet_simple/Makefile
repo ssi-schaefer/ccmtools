@@ -12,11 +12,12 @@ remote: local
 	ccmtools-generate c++remote-test -o xxx ${APP_NAME}.idl
 
 check: 
-	cp impl/Makefile.py xxx/
-	cp test/_check_CCM_Remote_CCM_Session_Test_remote.cc xxx/test/
+	cp impl/Makefile.py xxx/	
+	cp impl/Test_my_facet_impl.cc xxx/impl
+	cp test/_check_CCM_Remote_CCM_Session_Test_remote.cc xxx/test
 	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=clean	
+	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=clean
 	rm -rf xxx 
 	rm -rf ${HOME}/tmp/ccmtools_tmp/xxx
