@@ -1,2 +1,2 @@
 os.system('make')
-INSTALLDIR_H('')
+INSTALLDIR_H('Components')
