@@ -1,6 +1,7 @@
 #! /bin/sh
 
-idldir=${top_srcdir}/../test/idl/module_reopen
+curdir=`pwd` ; cd ${top_srcdir} ; abssrcdir=`pwd` ; cd ${curdir}
+idldir=${abssrcdir}/test/idl/module_reopen
 
 ${top_srcdir}/test/CppGenerator/test-loader.sh "module-reopen" \
   "-I${idldir}" \
