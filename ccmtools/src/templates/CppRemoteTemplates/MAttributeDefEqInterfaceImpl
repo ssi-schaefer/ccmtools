@@ -1,6 +1,7 @@
 
 
-%(CORBAType)s %(ComponentType)s_impl::%(Identifier)s()
+%(CORBAType)s %(ComponentType)s_impl::%(Identifier)s() 
+    throw(CORBA::SystemException)
 {
     LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::%(Identifier)s()");
     %(LanguageType)s result;
@@ -11,6 +12,7 @@
 }
 
 void %(ComponentType)s_impl::%(Identifier)s(const %(CORBAType)s value)
+    throw(CORBA::SystemException)
 {
     LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::%(Identifier)s(value)");
     %(LanguageType)s parameter_value;

@@ -1,2 +1,7 @@
-      virtual %(CORBAType)s %(Identifier)s ();
-      virtual void %(Identifier)s (const %(CORBAType)s value);
+      virtual %(CORBAType)s %(Identifier)s () 
+          throw(CORBA::SystemException);
+          
+      virtual void %(Identifier)s (const %(CORBAType)s value)
+          throw(CORBA::SystemException);
+
+
