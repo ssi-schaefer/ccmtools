@@ -8,11 +8,12 @@
        Note that a property can be set from command-line:
           $ ant -Dprefix=/usr/local
   -->
-  <property name="src" location="../" />
-  <property name="build" location="build" />
+  <property name="src" location="src" />
+  <property name="test" location="test" />
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
   <property name="prefix" location="dist" />
+  <property name="build" location="build" />
   <property name="sandbox" location="test/CppGenerator/sandbox" />
 
   <!-- Define project related constants in Java -->
@@ -57,8 +58,8 @@
   <!-- Generate IDL3 parser source code using ANTLR -->
   <target name="IDL3ParserGenerator" depends="init"
      description="Generate the idl3_parser using antlr." >
-      <mkdir dir="${src}/IDL3Parser" />
-      <antlr target="${src}/ccmtools/IDL3Parser/idl3.g" dir="${src}/IDL3Parser" >
+      <mkdir dir="${src}/ccmtools/IDL3Parser" />
+      <antlr target="${src}/ccmtools/IDL3Parser/idl3.g" dir="${src}/ccmtools/IDL3Parser" >
            <classpath refid="compile.classpath" />
       </antlr>
   </target>
@@ -93,7 +94,7 @@
   <!-- Run test cases -->
   <target name="test" 
      description="Compile JUnit test cases." >
-      <javac srcdir="${src}/ccmtools/test" destdir="${build}" debug="on" >
+      <javac srcdir="${test}" destdir="${build}" debug="on" >
           <classpath refid="compile.classpath" />  
       </javac>
   </target>
