@@ -103,7 +103,7 @@ namespace LocalComponents {
   private:
     CCMExceptionReason _reason;
   public:
-    CCMException ( const CCMExceptionReason reason ) : _reason(reason) {}
+    CCMException ( const CCMExceptionReason reason ) throw() : _reason(reason) {}
   };
 
 

@@ -17,7 +17,8 @@ namespace CCM_OCL {
 
 
 OclException::OclException( const char* message, const char* function, const char* file, int line ) throw()
-: exception(), message_(message), function_(function), file_(file), line_(line)
+: CCMException(LocalComponents::OCL_ERROR),
+  message_(message), function_(function), file_(file), line_(line)
 {
 	try
 	{
@@ -36,7 +37,8 @@ OclException::OclException( const char* message, const char* function, const cha
 
 
 OclException::OclException( const OclException& rhs ) throw()
-: exception(rhs), message_(rhs.message_), function_(rhs.function_), file_(rhs.file_),
+: CCMException(LocalComponents::OCL_ERROR),
+  message_(rhs.message_), function_(rhs.function_), file_(rhs.file_),
   what_(rhs.what_), line_(rhs.line_)
 {
 }
@@ -44,7 +46,6 @@ OclException::OclException( const OclException& rhs ) throw()
 
 const OclException& OclException::operator=( const OclException& rhs ) throw()
 {
-    exception::operator=(rhs);
     message_ = rhs.message_;
     function_ = rhs.function_;
     file_ = rhs.file_;

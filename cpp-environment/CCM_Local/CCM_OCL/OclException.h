@@ -11,20 +11,20 @@
 \********************/
 
 
-#include <exception>
 #include <string>
+#include <LocalComponents/CCM.h>
 
 
 namespace CCM_OCL {
 
-using std::exception;
 using std::string;
+using LocalComponents::CCMException;
 
 
 /**
  * Base class for all OCL exceptions.
  */
-class OclException : public exception
+class OclException : public CCMException
 {
 protected:
 	/// error message
