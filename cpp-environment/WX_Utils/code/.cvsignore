@@ -1,4 +1,3 @@
 Makefile.am
 Makefile.in
-utils_code.py
-wx-utils_code.py
+WX_Utils_code.py

@@ -1,4 +1,3 @@
 Makefile.am
 Makefile.in
-utils_error.py
-wx-utils_error.py
+WX_Utils_error.py
