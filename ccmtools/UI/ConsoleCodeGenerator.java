@@ -49,7 +49,7 @@ public class ConsoleCodeGenerator
 {
     private static final int GENERATE_APPLICATION_FILES = 0x0001;
 
-    private static final String version = Constants.VERSION;
+    //    private static final String version = Constants.VERSION;
 
     private static final String usage =
 	"Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n" +
@@ -80,128 +80,15 @@ public class ConsoleCodeGenerator
     private static long gen_mask = 0x00000040;
     private static long par_mask = 0x00000000;
 
-    private static String include_path = "";
+    private static String include_path;
     private static String code_version = "0.0.0";
 
     private static List filenames; 
-
-    //    private static File output_directory;
-    //   private static File base_output_directory ;
 
     private static File output_directory = new File(System.getProperty("user.dir"));
     private static File base_output_directory = new File(output_directory, "");
 
     private static int generate_flags = 0;
-
-    /**************************************************************************/
-    /* USAGE / VERSION INFO */
-
-    private static void printUsage(String err)
-    {
-        if (err.length() > 0)
-            System.err.println("Error: " + err);
-
-        StringBuffer langs = new StringBuffer("  ");
-        for (int i = 0; i < language_types.size(); i++) {
-            langs.append((String) language_types.get(i) + " ");
-            if ((langs.length() % 80) > 60) langs.append("\n  ");
-        }
-
-        System.out.print(usage.replaceAll("LANGUAGES", langs.toString()));
-
-        if(err.length() > 0) {
-	    System.exit(1);
-	}
-    }
-
-    private static void printVersion()
-    {
-        System.out.println("ccmtools version " + version);
-        System.out.println("Copyright (C) 2002, 2003, 2004 Salomon Automation");
-        System.out.println("The CCM Tools library is distributed under the");
-        System.out.println("terms of the GNU Lesser General Public License.");
-    }
-
-    /**************************************************************************/
-    /* SETUP FUNCTIONS */
-
-    /**
-     * Try to create a driver for the code generator. This will handle output
-     * messages and could possibly react to input from the user as well.
-     *
-     * @return a newly created driver, or exit if there was an error.
-     */
-    private static Driver setupDriver()
-    {
-        Driver driver = null;
-
-        try {
-            driver = new ConsoleDriverImpl(gen_mask);
-        } 
-	catch (FileNotFoundException e) {
-            printUsage("constructing the driver object\n"+e);
-	    // and exit
-        }
-
-        if (driver == null) {
-            printUsage("failed to create a driver object");
-	    // and exit
-	}
-        return driver;
-    }
-
-    /**
-     * Set up the node handler (i.e. code generator) object based on the output
-     * language provided. Use the given driver to control the handler.
-     *
-     * @param driver the user interface driver object to assign to this handler.
-     * @param lang the language to generate.
-     * @return the newly created node handler (i.e. code generator), or exit if
-     *         there was an error.
-     */
-    private static TemplateHandler setupHandler(Driver driver, String lang)
-    {
-        TemplateHandler handler = null;
-
-        try {
-            if(lang.equalsIgnoreCase("c++local")) {
-                handler = new CppLocalGeneratorImpl(driver, output_directory);
-	    }
-            else if(lang.equalsIgnoreCase("c++local-test")) {
-                handler = new CppLocalTestGeneratorImpl(driver, output_directory);
-	    }
-	    else if(lang.equalsIgnoreCase("c++dbc")) {
-                handler = new CppLocalDbcGeneratorImpl(driver, output_directory);
-	    }
-	    else if(lang.equalsIgnoreCase("c++remote")) {
-		handler = new CppRemoteGeneratorImpl(driver, output_directory);
-	    }
-	    else if(lang.equalsIgnoreCase("c++remote-test")) {
-		handler = new CppRemoteTestGeneratorImpl(driver, output_directory);
-	    }
-            else if(lang.equalsIgnoreCase("idl3")) {
-                handler = new IDL3GeneratorImpl(driver, output_directory);
-	    }
-            else if(lang.equalsIgnoreCase("idl3mirror")) {
-                handler = new IDL3MirrorGeneratorImpl(driver, output_directory);
-	    }
-            else if(lang.equalsIgnoreCase("idl2")) {
-                handler = new IDL2GeneratorImpl(driver, output_directory);
-	    }
-        } 
-	catch (IOException e) {
-            printUsage("while constructing a generator for "+lang+"\n"+e);
-        }
-
-        if(handler == null) {
-            printUsage("ERROR: failed to create a language generator for "+lang);
-	}
-
-        if((generate_flags & GENERATE_APPLICATION_FILES) != 0) {
-            handler.setFlag(((CodeGenerator) handler).FLAG_APPLICATION_FILES);
-	}
-        return handler;
-    }
 
 
     /**************************************************************************/
@@ -216,9 +103,6 @@ public class ConsoleCodeGenerator
      */
     public static void main(String args[])
     {
-	//	output_directory = new File(System.getProperty("user.dir"));
-	//	base_output_directory = new File(output_directory, "");
-
         if(!parseArgs(args))
 	    return; // No further processing needed
 
@@ -307,6 +191,121 @@ public class ConsoleCodeGenerator
 	//        System.exit(0);
     }
 
+
+
+    /**************************************************************************/
+    /* USAGE / VERSION INFO */
+
+    private static void printUsage(String err)
+    {
+        if (err.length() > 0)
+            System.err.println("Error: " + err);
+
+        StringBuffer langs = new StringBuffer("  ");
+        for (int i = 0; i < language_types.size(); i++) {
+            langs.append((String) language_types.get(i) + " ");
+            if ((langs.length() % 80) > 60) langs.append("\n  ");
+        }
+
+        System.out.print(usage.replaceAll("LANGUAGES", langs.toString()));
+
+        if(err.length() > 0) {
+	    System.exit(1);
+	}
+    }
+
+    private static void printVersion()
+    {
+        System.out.println("ccmtools version " + Constants.VERSION);
+        System.out.println("Copyright (C) 2002, 2003, 2004 Salomon Automation");
+        System.out.println("The CCM Tools library is distributed under the");
+        System.out.println("terms of the GNU Lesser General Public License.");
+    }
+
+    /**************************************************************************/
+    /* SETUP FUNCTIONS */
+
+    /**
+     * Try to create a driver for the code generator. This will handle output
+     * messages and could possibly react to input from the user as well.
+     *
+     * @return a newly created driver, or exit if there was an error.
+     */
+    private static Driver setupDriver()
+    {
+        Driver driver = null;
+
+        try {
+            driver = new ConsoleDriverImpl(gen_mask);
+        } 
+	catch (FileNotFoundException e) {
+            printUsage("constructing the driver object\n"+e);
+	    // and exit
+        }
+
+        if (driver == null) {
+            printUsage("failed to create a driver object");
+	    // and exit
+	}
+        return driver;
+    }
+
+    /**
+     * Set up the node handler (i.e. code generator) object based on the output
+     * language provided. Use the given driver to control the handler.
+     *
+     * @param driver the user interface driver object to assign to this handler.
+     * @param lang the language to generate.
+     * @return the newly created node handler (i.e. code generator), or exit if
+     *         there was an error.
+     */
+    private static TemplateHandler setupHandler(Driver driver, String lang)
+    {
+        TemplateHandler handler = null;
+
+        try {
+            if(lang.equalsIgnoreCase("c++local")) {
+                handler = new CppLocalGeneratorImpl(driver, output_directory);
+	    }
+            else if(lang.equalsIgnoreCase("c++local-test")) {
+                handler = new CppLocalTestGeneratorImpl(driver, output_directory);
+	    }
+	    else if(lang.equalsIgnoreCase("c++dbc")) {
+                handler = new CppLocalDbcGeneratorImpl(driver, output_directory);
+	    }
+	    else if(lang.equalsIgnoreCase("c++remote")) {
+		handler = new CppRemoteGeneratorImpl(driver, output_directory);
+	    }
+	    else if(lang.equalsIgnoreCase("c++remote-test")) {
+		handler = new CppRemoteTestGeneratorImpl(driver, output_directory);
+	    }
+            else if(lang.equalsIgnoreCase("idl3")) {
+                handler = new IDL3GeneratorImpl(driver, output_directory);
+	    }
+            else if(lang.equalsIgnoreCase("idl3mirror")) {
+                handler = new IDL3MirrorGeneratorImpl(driver, output_directory);
+	    }
+            else if(lang.equalsIgnoreCase("idl2")) {
+                handler = new IDL2GeneratorImpl(driver, output_directory);
+	    }
+        } 
+	catch (IOException e) {
+            printUsage("while constructing a generator for "+lang+"\n"+e);
+        }
+
+        if(handler == null) {
+            printUsage("ERROR: failed to create a language generator for "+lang);
+	}
+
+        if((generate_flags & GENERATE_APPLICATION_FILES) != 0) {
+            handler.setFlag(((CodeGenerator) handler).FLAG_APPLICATION_FILES);
+	}
+        return handler;
+    }
+
+
+
+
     /**************************************************************************/
     /* ARGUMENT PARSING */
 
@@ -326,9 +325,10 @@ public class ConsoleCodeGenerator
      */
     private static boolean parseArgs(String args[])
     {
-	languages = new ArrayList();; 
+	languages = new ArrayList(); 
         language_types = new ArrayList();
 	filenames= new ArrayList();
+	include_path = "";
 
         for (int i = 0; i < local_language_types.length; i++) {
             language_types.add(local_language_types[i]);
@@ -432,10 +432,15 @@ public class ConsoleCodeGenerator
 
     private static void setOutputDirectory(String val)
     {
-        if (val.trim().equals("")) printUsage("unspecified output directory");
+        if (val.trim().equals("")) 
+	    printUsage("unspecified output directory");
         File test = new File(val);
-        if (test.isAbsolute()) output_directory = test;
-        else output_directory = new File(base_output_directory, val);
+        if (test.isAbsolute()) { 
+	    output_directory = test;
+	}
+        else { 
+	    output_directory = new File(base_output_directory, val);
+	}
     }
 
     private static void setHome(String val)
