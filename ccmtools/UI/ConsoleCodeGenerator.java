@@ -38,17 +38,8 @@ import ccmtools.IDLGenerator.IDL2GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3MirrorGeneratorImpl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 public class ConsoleCodeGenerator
 {
@@ -284,27 +275,39 @@ public class ConsoleCodeGenerator
                                      "_CCM_" + source.getName());
 
             // step (0). run the C preprocessor on the input file.
-
             try {
-                // this needs to be updated to use the result of AC_PROG_CPP.
-                // unfortunately on my box this doesn't work ...
-                //
-                // Process preproc = rt.exec(Constants.CPP_PATH + " -o " +
-
-                Process preproc = rt.exec("cpp -o "+idlfile+" "+
-                                          include_path+" "+source);
+		// Run the GNU preprocessor cpp in a separate process.
+		String s = null;
+		System.out.println("cpp -o " + idlfile + " " + include_path + " " + source);
+                Process preproc = Runtime.getRuntime().exec("cpp -o " +
+                                          idlfile + " " + include_path +
+                                          " " + source);
+		BufferedReader stdInput = new BufferedReader(new
+		    InputStreamReader(preproc.getInputStream()));
+		BufferedReader stdError = new BufferedReader(new
+		    InputStreamReader(preproc.getErrorStream()));
+		// Read the output and any errors from the command
+		while ((s = stdInput.readLine()) != null) {
+		    System.out.println(s);
+		}
+		while ((s = stdError.readLine()) != null) {
+		    System.out.println(s);
+		}
+		// Wait for the process to complete and evaluate the return
+                // value of the attempted command 
                 preproc.waitFor();
-                if (preproc.exitValue() != 0)
-                    throw new RuntimeException(
-                        "Preprocessor failed. "+
-                        "Please verify your include path and ensure "+
-                        "that included files exist.");
+                if (preproc.exitValue() != 0){
+		   throw new RuntimeException();
+		}
             } catch (Exception e) {
-                System.err.println("Error preprocessing "+source+":\n"+e);
+		System.err.println("Error preprocessing " + source 
+				   + ": Please verify your include paths.");
                 System.exit(10);
             }
+	    
 
-            // step (1). parse the resulting preprocessed file.
+            
+	    // step (1). parse the resulting preprocessed file.
 
             manager.reset();
             manager.setOriginalFile(source.toString());
