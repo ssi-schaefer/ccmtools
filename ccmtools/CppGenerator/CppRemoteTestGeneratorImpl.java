@@ -2,6 +2,7 @@
  * Egon Teiniker <egon.teiniker@tugraz.at>
  * copyright (c) 2002, 2003 Salomon Automation
  *
+ * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -20,6 +21,8 @@
 
 package ccmtools.CppGenerator;
 
+import ccmtools.utils.Debug;
+
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 
@@ -33,6 +36,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 public class CppRemoteTestGeneratorImpl
     extends CppGenerator
@@ -51,7 +55,9 @@ public class CppRemoteTestGeneratorImpl
     {
         super("CppRemoteTest", d, out_dir, local_output_types, null, null);
 
-	System.out.println("+CppRemoteTestGeneratorImpl()");
+	Debug.println(Debug.METHODS,"CppRemoteTestGeneratorImpl(" 
+		      + d + ", " + out_dir + ")");
+
     }
 
 
@@ -71,11 +77,64 @@ public class CppRemoteTestGeneratorImpl
     {
         super.startNode(node, scope_id);
 
-	System.out.println("startNode()");
+	Debug.println(Debug.METHODS,"startNode(" + node + ", " + scope_id + ")");
 
         if ((node instanceof MContainer) &&
             (((MContainer) node).getDefinedIn() == null))
             namespace.push("CCM_Remote");
+    }
+
+
+    /**
+     * Overwrites the CppGenerator's method to change between CCM_Local
+     * CCM_Remote.
+     */ 
+    protected String handleNamespace(String data_type, String local)
+    {
+	Debug.println(Debug.METHODS,"CppRemoteTestGenerator.handleNamespace(" + 
+		      data_type + ", " + local + ")");
+
+        List names = new ArrayList(namespace);
+
+	// ShortNamespace corresponds with the module hierarchy in the IDL file,
+	// there is no CCM_Local, CCM_Remote or CCM_Session_ included.
+	if (data_type.equals("ShortNamespace")) {
+            return join("::", slice(names, 1));
+        } 
+
+	if (!local.equals("")) { 
+	    names.add("CCM_Session_" + local); 
+	}
+
+        if (data_type.equals("Namespace")) {
+            return join("::", slice(names, 1));
+        } 
+	else if (data_type.equals("FileNamespace")) {
+            return join("_", slice(names, 1));
+        } 
+	else if (data_type.equals("IncludeNamespace")) {
+            return join("/", slice(names, 1));
+        } 
+	else if (data_type.equals("UsingNamespace")) {
+            List tmp = new ArrayList();
+            for (Iterator i = names.iterator(); i.hasNext(); )
+                tmp.add("using namespace "+i.next()+";\n");
+            return join("", tmp);
+        } 
+	else if (data_type.equals("OpenNamespace")) {
+            List tmp = new ArrayList();
+            for (Iterator i = names.iterator(); i.hasNext(); )
+                tmp.add("namespace "+i.next()+" {\n");
+            return join("", tmp);
+        } 
+	else if (data_type.equals("CloseNamespace")) {
+            Collections.reverse(names);
+            List tmp = new ArrayList();
+            for (Iterator i = names.iterator(); i.hasNext(); )
+                tmp.add("} // /namespace "+i.next()+"\n");
+	    return join("", tmp);
+        }
+        return "";
     }
 
 
@@ -88,7 +147,7 @@ public class CppRemoteTestGeneratorImpl
     public void writeOutput(Template template)
         throws IOException
     {
-	System.out.println("writeOutput()");
+	Debug.println(Debug.METHODS,"writeOutput(" + template + ")");
 
         String generated_code = template.substituteVariables(output_variables);
 
@@ -102,16 +161,66 @@ public class CppRemoteTestGeneratorImpl
         writeFinalizedFile(file_dir, file_name, generated_code);
     }
 
+
+    /**
+     * Finalize the output files. This function's implementation does nothing;
+     * it serves only to override the inherited function from CppGeneratorImpl.
+     *
+     * @param defines a map of environment variables and their associated
+     *        values. This usually contains things like the package name,
+     *        version, and other generation info.
+     * @param files a list of the filenames (usually those that were provided to
+     *        the generator front end).
+     */
+    public void finalize(Map defines, List files) 
+    { 
+	Debug.println(Debug.METHODS,"finalize(" + defines + ", " + files + ")");
+
+	return; 
+    }
+
+
     /**************************************************************************/
 
-    protected Map getTwoStepOperationVariables(MOperationDef operation,
-                                               MContained container)
-    {
-	System.out.println("getTwoStepVariables()");
 
+    /**
+     * Load an appropriate template (based on the value in the template_name
+     * argument) for the given child, and fill out its variable information.
+     *
+     * @param child MInterfaceDef node to gather information from.
+     * @param template_name the name of the template to load for variable
+     *        substitution.
+     * @return a string containing the variable-substituted template requested.
+    protected Map getTwoStepVariables(MInterfaceDef iface,
+                                      MOperationDef operation,
+                                      MContained container)
+    {
+	Debug.println(Debug.METHODS,"getTwoStepVariables(" + iface + ", " 
+		      + operation + ", " + container + ")");
         Map local_vars = new Hashtable();
         return local_vars;
     }
+    */
+   
+    protected Map getTwoStepOperationVariables(MOperationDef operation,
+                                               MContained container)
+    {
+        String lang_type = getLanguageType(operation);
+        Map vars = new Hashtable();
+
+        vars.put("Object",              container.getIdentifier());
+        vars.put("Identifier",          operation.getIdentifier());
+        vars.put("LanguageType",        lang_type);
+        vars.put("MExceptionDefThrows", getOperationExcepts(operation));
+        vars.put("MParameterDefAll",    getOperationParams(operation));
+        vars.put("MParameterDefName",   getOperationParamNames(operation));
+
+        if (! lang_type.equals("void")) vars.put("Return", "return ");
+        else                            vars.put("Return", "");
+
+        return vars;
+    }
+
 }
 
 

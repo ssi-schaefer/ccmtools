@@ -2,7 +2,7 @@
 // %(Identifier)s remote facet adapter
 //============================================================================
 
-%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(%(CCMLocalComponentType)s* lc)
+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl* lc)
   : local_component(lc)
 {
   DEBUGNL("+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");

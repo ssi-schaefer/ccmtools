@@ -1,20 +1,18 @@
 %(LanguageType)s %(Object)sReceptacleAdapter::%(Identifier)s( %(MParameterDefAll)s )
-%(MExceptionDef)s
+  %(MExceptionDef)s
 {
   DEBUGNL(" %(Object)sReceptacleAdapter->%(Identifier)s()"); 
 
-  // convert parameter
-  CORBA::Long parameter_a;  //!!!!!!!!
-  CORBA::Long parameter_b;  //!!!!!!!!
-  parameter_a = CCM::int_to_CORBA_Long(a); //!!!!!!!!!
-  parameter_b = CCM::int_to_CORBA_Long(b); //!!!!!!!!!
-
-  // call method on remote receptacle
-  %(CORBAType)s result; 
-  result = component_adapter->get_connection_%(Object)s()->%(Identifier)s(parameter_a,parameter_b); //!!!!!
-
-  // convert result
-  return CCM::CORBA%(LanguageType)s_to_%(LanguageType)s(result); 
+%(MParameterDefConvertParameterToCorba)s
+%(MParameterDefDeclareCorbaResult)s
+  try {
+%(MParameterDefConvertMethodToCorba)s
+  }
+%(MParameterDefConvertExceptionsToCpp)s  
+  catch(...) {
+    throw; 
+  }
+%(MParameterDefConvertResultToCpp)s
 }
 
 

@@ -1,6 +1,7 @@
 // %(Identifier)s
 
 void %(ComponentType)s_impl::connect_%(Identifier)s(%(UsesType)s_ptr value)
+  throw(Components::AlreadyConnected, Components::InvalidConnection )	
 {
   DEBUGNL(" %(ComponentType)s_impl::connect_%(Identifier)s()");
 
@@ -8,6 +9,7 @@ void %(ComponentType)s_impl::connect_%(Identifier)s(%(UsesType)s_ptr value)
 }
 
 %(UsesType)s_ptr %(ComponentType)s_impl::disconnect_%(Identifier)s()
+  throw(Components::NoConnection)
 {
   DEBUGNL(" %(ComponentType)s_impl::disconnect_%(Identifier)s()");
 

@@ -4,7 +4,14 @@
   DEBUGNL(" %(Object)s_impl::%(Identifier)s()");
 
 %(MParameterDefConvertParameter)s
+%(MParameterDefDeclareResult)s
+  try {
 %(MParameterDefConvertMethod)s
+  }
+%(MParameterDefConvertExceptions)s
+  catch(...) {
+    throw CORBA::SystemException();	
+  } 
 %(MParameterDefConvertResult)s
 }
 

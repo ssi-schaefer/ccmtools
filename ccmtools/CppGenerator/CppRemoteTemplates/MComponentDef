@@ -16,10 +16,8 @@
 %(MSupportsDefInclude)s
 %(MProvidesDefInclude)s
 %(MUsesDefInclude)s
-//#include <%(IncludeNamespace)s/%(Identifier)s_gen.h> 
-//#include <%(IncludeNamespace)s/%(Identifier)s_app.h> 
-#include <CCM_Local/CCM_Session_%(Identifier)s/%(Identifier)s_gen.h> 
-#include <CCM_Local/CCM_Session_%(Identifier)s/%(Identifier)s_app.h>
+#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h> 
+#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_app.h> 
 
 %(OpenNamespace)s
 
@@ -27,22 +25,22 @@
   // Component remote adapter 
   //============================================================================
   class %(Identifier)s_impl :
-      virtual public POA_%(Identifier)s,
+      virtual public %(ShortNamespace)sPOA_%(Identifier)s,
       virtual public PortableServer::RefCountServantBase
   {
       friend class CCM_%(Identifier)s_Context_impl;
 %(MProvidesDefFriend)s
 
     private:
-      CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl* local_adapter;
-      CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_Context* local_context;
+      CCM_Local::%(Namespace)s::CCM_%(Identifier)s_impl* local_adapter;
+      CCM_Local::%(Namespace)s::CCM_%(Identifier)s_Context* local_context;
       CCM::SessionContainer* ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
     public:
-      %(Identifier)s_impl(CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl*, 
+      %(Identifier)s_impl(CCM_Local::%(Namespace)s::CCM_%(Identifier)s_impl*, 
 		      CCM::SessionContainer *);
       virtual ~%(Identifier)s_impl ();
 
@@ -130,7 +128,7 @@
   // Context adapter class
   //==========================================================================
   class CCM_%(Identifier)s_Context_impl
-    : public CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_Context
+    : public CCM_Local::%(Namespace)s::CCM_%(Identifier)s_Context
     {
     private:
       %(Identifier)s_impl* component_adapter;
@@ -198,7 +196,7 @@ using namespace CCM_Utils;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl* i, CCM::SessionContainer * c)
+%(Identifier)s_impl::%(Identifier)s_impl(CCM_Local::%(Namespace)s::CCM_%(Identifier)s_impl* i, CCM::SessionContainer * c)
   : local_adapter(i), ccm_container (c)
 {
   DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
@@ -612,6 +610,8 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 
 
 %(MUsesDefAdapterImpl)s
+
+
 %(CloseNamespace)s
 
 

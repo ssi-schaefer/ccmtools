@@ -7,10 +7,10 @@
       virtual public PortableServer::RefCountServantBase
   {
     private:
-      %(CCMLocalComponentType)s* local_component;
-      %(CCMLocalProvidesType)s* local_adapter; 
+      CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl* local_component;
+      CCM_Local::CCM_%(ProvidesType)s* local_adapter; 
     public:
-      %(Identifier)sFacetAdapter(%(CCMLocalComponentType)s*);
+      %(Identifier)sFacetAdapter(CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl*);
       virtual ~%(Identifier)sFacetAdapter();
 
 %(MOperationProvidesPrototype)s
