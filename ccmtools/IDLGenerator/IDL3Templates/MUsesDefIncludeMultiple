@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s%(UsesIdentifier)s.idl3>
+#include <%(UsesInclude)s.idl3>
 
