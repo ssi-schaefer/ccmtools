@@ -693,8 +693,10 @@ abstract public class CodeGenerator
     {
         MIDLType idl_type = object.getIdlType();
 
-        if (idl_type == null)
-            throw new RuntimeException(object + " has no IDL type");
+        if (idl_type == null) return "";
+        // FIXME : figure out how to define idl types for interfaces and derived
+        // classes.
+        // throw new RuntimeException(object + " has no IDL type");
 
         // first check for aliases and structs and such ... return the
         // identifier.

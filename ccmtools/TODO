@@ -22,6 +22,9 @@ o) IDL constants don't work.
 o) Home factory method exceptions don't work.
    - test/idl/home_exception.idl
 
+o) Interfaces, components, and homes don't have IDL types. I think the MOF needs
+   to be changed so MInterfaceDef inherits from MIDLType and not from MTyped.
+
 Cpp generators
 --------------
 

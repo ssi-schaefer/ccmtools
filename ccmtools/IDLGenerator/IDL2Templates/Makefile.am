@@ -14,7 +14,9 @@ dist_template_DATA = \
     MComponentDefLocal                       \
     MConstantDef                             \
     MConsumesDef                             \
+    MConsumesDefInclude                      \
     MEmitsDef                                \
+    MEmitsDefInclude                         \
     MEnumDef                                 \
     MExceptionDef                            \
     MExceptionDefName                        \
@@ -36,12 +38,14 @@ dist_template_DATA = \
     MOperationDef                            \
     MParameterDef                            \
     MProvidesDef                             \
+    MProvidesDefInclude                      \
     MPublishesDef                            \
+    MPublishesDefInclude                     \
     MStructDef                               \
-    MStructDefFwdDecl                        \
     MUnionDef                                \
-    MUnionDefFwdDecl                         \
     MUnionFieldDef                           \
     MUsesDef                                 \
+    MUsesDefInclude                          \
+    MUsesDefIncludeMultiple                  \
     MUsesDefMultiple                         \
     MSupportsDefBase

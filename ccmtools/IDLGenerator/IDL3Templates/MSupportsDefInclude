@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s%(SupportsType)s.idl3mirror>
+#include <%(IncludeNamespace)s%(SupportsType)s.idl3>
 

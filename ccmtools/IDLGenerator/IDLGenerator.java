@@ -310,6 +310,10 @@ abstract public class IDLGenerator
 	    }
 	}
 
+        if (object instanceof MInterfaceDef) {
+            return ((MInterfaceDef) object).getIdentifier();
+        }
+
 	return base_type;
     }
 

@@ -7,9 +7,24 @@ TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
 dist_noinst_SCRIPTS = test-loader.sh
 
 TESTS = \
-  interface.sh             \
-  interface-inheritance.sh \
-  interface-short-names.sh
+  component.sh                 \
+  enum.sh                      \
+  home.sh                      \
+  interface.sh                 \
+  interface-inheritance.sh     \
+  interface-short-names.sh     \
+  operation-component.sh       \
+  operation-interface.sh       \
+  operations-primitivetypes.sh \
+  provides-operation.sh        \
+  provides.sh                  \
+  struct.sh                    \
+  supports-operation.sh        \
+  supports.sh                  \
+  uses-multiple-operation.sh   \
+  uses-multiple.sh             \
+  uses-operation.sh            \
+  uses.sh
 
 dist_check_SCRIPTS = $(TESTS)
 

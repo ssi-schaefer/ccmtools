@@ -1,5 +1,14 @@
+%(MUnionFieldDefInclude)s
+
+#ifndef __CCM_%(IncludeNamespace)s%(Identifier)s_UNION__
+#define __CCM_%(IncludeNamespace)s%(Identifier)s_UNION__
+
 union %(Identifier)s
 {
 %(MUnionFieldDef)s
 };
+
+#endif /* __CCM_%(IncludeNamespace)s%(Identifier)s_UNION__ */
+
+
 

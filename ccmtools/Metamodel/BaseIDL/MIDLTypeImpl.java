@@ -35,7 +35,7 @@ public class MIDLTypeImpl
     // override toString()
     public String toString()
     {
-	return "MIDLType( typeCode): " + typeCode_.toString();
+	return "MIDLType: " + typeCode_.toString();
     }
 
     //----------------------------------------------------------------

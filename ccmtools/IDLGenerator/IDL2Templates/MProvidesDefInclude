@@ -1,0 +1,2 @@
+#include <%(IncludeNamespace)s%(ProvidesType)s.idl2>
+

@@ -1745,16 +1745,15 @@ op_dcl returns [MOperationDef operation = null]
     String id = null;
     MIDLType type = null;
 }
-    :   ( oneway = op_attribute { operation.setOneway(oneway); } )?
-        type = op_type_spec { operation.setIdlType(type); }
-        id = identifier
+    :   ( oneway = op_attribute )? type = op_type_spec id = identifier
         {
             operation = (MOperationDef) verifyNameEmpty(id, operation);
             operation.setIdentifier(id);
+            operation.setIdlType(type);
+            operation.setOneway(oneway);
             symbolTable.add(id, operation);
         }
-        params = parameter_dcls[id]
-        { checkSetParameters(operation, params); }
+        params = parameter_dcls[id] { checkSetParameters(operation, params); }
         (
             exceptions = raises_expr
             { operation.setExceptionDefs(new HashSet(exceptions)); }
@@ -2086,15 +2085,8 @@ component_dcl returns [MComponentDef component = null]
 
                 if ((debug & DEBUG_COMPONENT) != 0)
                     System.out.print(
-                        "[c] adding "+element.getIdentifier()+" to component "+
-                        component.getIdentifier());
-
-                if ((debug & DEBUG_COMPONENT) != 0) {
-                    System.out.print(
-                        "[c] adding "+element.getIdentifier()+" to component "+
-                        component.getIdentifier());
-
-                }
+                        "[c] adding '"+element.getIdentifier()+
+                        "' to component '"+component.getIdentifier()+"'");
 
                 if (element instanceof MEmitsDef) {
                     ((MEmitsDef) element).setComponent(component);
