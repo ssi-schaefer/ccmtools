@@ -312,9 +312,6 @@ extern "C" {
 
 
 <<<<<<<SPLIT>>>>>>>
-#ifndef __HOME_%(PreprocIdentifier)s_APP__H__
-#define __HOME_%(PreprocIdentifier)s_APP__H__
-
 /***
  * %(Identifier)s home business logic definition.
  * 
@@ -327,6 +324,9 @@ extern "C" {
  * <http://ccmtools.sourceforge.net/> and defines a component home's
  * implementation classes. 
  ***/
+
+#ifndef __HOME_%(PreprocIdentifier)s_APP__H__
+#define __HOME_%(PreprocIdentifier)s_APP__H__
 
 #include <%(HomeInclude)s_share.h>
 #include "%(Identifier)s_entry.h"
@@ -390,7 +390,7 @@ using namespace CCM_Local;
 %(OpenNamespace)s
 
 //==============================================================================
-// CCM_%(Identifier)s home implementation 
+// CCM_%(Identifier)s - home implementation 
 //==============================================================================
 
 CCM_%(Identifier)s_impl::CCM_%(Identifier)s_impl (  )
@@ -418,7 +418,7 @@ CCM_%(Identifier)s_impl::create (  )
 
 
 //==============================================================================
-// CCM_%(Identifier)s home entry point
+// CCM_%(Identifier)s - home entry point
 //==============================================================================
 
 extern "C" {

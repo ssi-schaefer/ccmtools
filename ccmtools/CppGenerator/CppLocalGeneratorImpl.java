@@ -44,6 +44,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 
 public class CppLocalGeneratorImpl
     extends CppGenerator
@@ -81,7 +82,7 @@ public class CppLocalGeneratorImpl
 
         Iterator path_iterator = out_paths.iterator();
         for (int i = 0; i < out_strings.length; i++) {
-            String generated_code = out_strings[i];
+            String generated_code = prettifyCode(out_strings[i]);
 
             List out_path = (List) path_iterator.next(); // out_path = [directory, filename]
 	    
@@ -116,6 +117,58 @@ public class CppLocalGeneratorImpl
                 writeFinalizedFile(file_dir, "Makefile.py", "");
         }
     }
+
+    
+    /**
+     * This method removes empty lines (if more than one) and similar #include
+     * statements from the generated code.
+     *
+     * @param code A string containing generated code that should be prettified.
+     * @return A string containing a prittified version of a given source code.
+     **/
+    protected String prettifyCode(String code)
+    {
+	StringBuffer pretty_code = new StringBuffer();
+	Set include_set = new HashSet();
+	int from_index = 0;
+	int newline_index = 0;
+	boolean isEmptyLineSuccessor = false;
+	do {
+	    newline_index = code.indexOf('\n',from_index);
+	    String code_line = code.substring(from_index, newline_index);
+	    from_index = newline_index + 1;
+	    if(code_line.length() != 0) {
+		isEmptyLineSuccessor = false;
+
+		if(code_line.startsWith("#include")) {
+		    if(include_set.contains(code_line)) {
+			// Ignore similar #include statements 
+		    }
+		    else {
+			include_set.add(code_line);
+			pretty_code.append(code_line);
+			pretty_code.append('\n');
+		    }
+		}
+		else {
+		    pretty_code.append(code_line);
+		    pretty_code.append('\n');
+		}
+	    }
+	    else {
+		if(isEmptyLineSuccessor) {
+		    // Ignore second empty line
+		}
+		else {
+		    isEmptyLineSuccessor = true;
+		    pretty_code.append('\n');
+		}
+	    }
+	}while(from_index < code.length());
+	return pretty_code.toString();
+    }
+
+
 
     /**
      * Get a variable hash table sutable for filling in the template from the

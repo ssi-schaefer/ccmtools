@@ -483,9 +483,6 @@ class CCM_%(Identifier)s_Context
 
 
 <<<<<<<SPLIT>>>>>>>
-#ifndef __COMPONENT_%(PreprocIdentifier)s_APP__H__
-#define __COMPONENT_%(PreprocIdentifier)s_APP__H__
-
 /***
  * %(Identifier)s component business logic definition.
  * 
@@ -498,6 +495,9 @@ class CCM_%(Identifier)s_Context
  * <http://ccmtools.sourceforge.net/> and defines a component's
  * implementation classes. 
  ***/
+
+#ifndef __COMPONENT_%(PreprocIdentifier)s_APP__H__
+#define __COMPONENT_%(PreprocIdentifier)s_APP__H__
 
 #include <%(SelfInclude)s_share.h>
 
@@ -577,7 +577,7 @@ using namespace CCM_Local;
 %(OpenNamespace)s
 
 //==============================================================================
-// CCM_%(Identifier)s component implementation
+// CCM_%(Identifier)s - component implementation
 //==============================================================================
 
 CCM_%(Identifier)s_impl::CCM_%(Identifier)s_impl (  )

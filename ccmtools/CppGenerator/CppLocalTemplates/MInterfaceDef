@@ -4,15 +4,11 @@
  */
 
 //==============================================================================
-// %(Identifier)s - interface class definition
+// %(Identifier)s interface definition
 //==============================================================================
 
 #ifndef __IFACE_%(PreprocIdentifier)s__H__
 #define __IFACE_%(PreprocIdentifier)s__H__
-
-#ifdef CCM_TEST_PYTHON
-#include "%(Identifier)s_python.h"
-#endif
 
 #include <LocalComponents/CCM.h>
 
@@ -22,7 +18,7 @@
 
 %(OpenNamespace)s
 
-// External view of an interface
+// External view of interface %(Identifier)s
 class %(Identifier)s
   : virtual public LocalComponents::Object%(BaseType)s
 {
@@ -32,7 +28,7 @@ class %(Identifier)s
 %(MOperationDefPrototypeVV)s 
 };
 
-// Internal view of an interface
+// Internal view of interface %(Identifier)s
 class  CCM_%(Identifier)s
   : virtual public %(Identifier)s
 {};
