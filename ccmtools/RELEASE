@@ -22,7 +22,8 @@ o) organize generation of namespaces and scoped names across generator hierarchi
 o) use ccmtools.utils.text.* in all generators (instead inheritance of join, etc)
 o) replace bin/Python scripts with shell scripts that define their own CLASSPATH
 o) Use the CCM_INSTALL environment variable from .confix to define prefix
- 
+o) replace ccmtools/bin/* Python scripts with shell scripts
+
 
 c++local generator:
 -------------------
@@ -41,7 +42,7 @@ c++remote generator:
 *) separate deploy_CCM_Local*() from deploy_CCM_Remote*()
 *) generate deploy_CCM_Remote*() functions with coded namespace.
 o) implement a C++ version of deploy_* and undeploy_* too.
-o) remove second context object created by the c++remote generator and use receptacle 
+*) remove second context object created by the c++remote generator and use receptacle 
    Adapter as a local receptacle for connection to a local component 
    - change connect method
    - change disconnect method
@@ -76,7 +77,7 @@ o) generate CCM.{h,cc} from ccmtools/idl/CCM.idl
 
 java-environment:
 -----------------
-o) move uml2java from java-environment to ccmtools package.
+*) move uml2java from java-environment to ccmtools package.
 o) implement utils.CORBA.setDefaultValue() for structures.
 o) add Components.jar build from ccmtools/idl/CCM.idl
 
