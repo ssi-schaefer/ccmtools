@@ -36,7 +36,7 @@ interface Console {
   doubleArray foo5(in doubleArray p1, inout doubleArray p2, out doubleArray p3);
 
   /* interface types */
-  iface println(in iface p1, inout iface p2, out iface p3);
+  //  iface println(in iface p1, inout iface p2, out iface p3);
 };
 
 component Hello { provides Console console; };
