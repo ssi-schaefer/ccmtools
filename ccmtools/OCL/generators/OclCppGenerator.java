@@ -721,13 +721,14 @@ public class OclCppGenerator extends OclStandardGenerator
                                              ConstraintCode conCode )
     {
         String result = getNextHelperName();
-        conCode.helpers_ += "  if("+collVarName+".size()<1)\n"+
-                            "  {\n"+
-                            "    const char* msg=\"collection operation 'any': no element found\";\n"+
-                            "    DEBUGNL(msg);\n"+
-                            "    throw OclException(msg,DbC_FUNCTION_NAME,__FILE__,__LINE__);\n"+
-                            "  }\n"+
-                            "  "+cppItem+" "+result+" = "+collVarName+"[0];\n";
+        conCode.helpers_ +=
+            "  if("+collVarName+".size()<1)\n"+
+            "  {\n"+
+            "    const char* msg=\"collection operation 'any': no element found\";\n"+
+            "    DEBUGNL(msg);\n"+
+            "    throw OclException(msg,DbC_FUNCTION_NAME,__FILE__,__LINE__);\n"+
+            "  }\n"+
+            "  "+cppItem+" "+result+" = "+collVarName+"[OCL_random(0,"+collVarName+".size()-1)];\n";
         return result;
     }
 
@@ -742,16 +743,19 @@ public class OclCppGenerator extends OclStandardGenerator
      * @param inputItemType           item type of the input collection
      * @param iteratorVarName         variable name of the iterator
      * @param expression              source code of the expression
+     * @param extraHelpers            helper statements for 'expression'
      */
     protected String getStatements_collect( String resultCollectionType,
         String resultItemType, String resultVarName, String inputVarName,
-        String inputItemType, String iteratorVarName, String expression )
+        String inputItemType, String iteratorVarName, String expression,
+        String extraHelpers )
     {
         String index = getNextHelperName();
         return "  "+resultCollectionType+"< "+resultItemType+" > "+resultVarName+";\n"+
                "  for(int "+index+"=0; "+index+"<"+inputVarName+".size(); "+index+"++)\n"+
                "  {\n"+
                "    "+inputItemType+" "+iteratorVarName+" = "+inputVarName+"["+index+"];\n"+
+               extraHelpers+
                "    "+resultVarName+".add("+expression+");\n"+
                "  }\n";
     }
@@ -771,5 +775,33 @@ public class OclCppGenerator extends OclStandardGenerator
         conCode.helpers_ += "  OCL_Sortable_Sequence< "+itemType+" > "+result+"("+collVarName+");\n"+
                             "  "+result+".sortBy("+refVarName+");\n";
         return result;
+    }
+
+
+    /**
+     * Returns the statements of the collection operation 'iterate'.
+     *
+     * @param accCppType        language type of the accumulator
+     * @param accName           variable name of the accumulator
+     * @param accInitCode       init. code of the accumulator
+     * @param inputVarName      variable name of the input collection
+     * @param inputItemType     item type of the input collection
+     * @param iteratorVarName   variable name of the iterator
+     * @param expression        source code of the expression
+     * @param extraHelpers      helper statements for 'expression'
+     */
+    protected String getStatements_iterate( String accCppType,
+        String accName, String accInitCode, String inputVarName,
+        String inputItemType, String iteratorVarName, String expression,
+        String extraHelpers )
+    {
+        String index = getNextHelperName();
+        return "  "+accCppType+" "+accName+" = "+accInitCode+";\n"+
+               "  for(int "+index+"=0; "+index+"<"+inputVarName+".size(); "+index+"++)\n"+
+               "  {\n"+
+               "    "+inputItemType+" "+iteratorVarName+" = "+inputVarName+"["+index+"];\n"+
+               extraHelpers+
+               "    "+accName+" = "+expression+";\n"+
+               "  }\n";
     }
 }

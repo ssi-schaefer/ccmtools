@@ -1066,28 +1066,41 @@ public class OclNormalization
      */
     public OclType convertOclType( MTypeSpecifier ts )
     {
+        return convertOclType(ts, creator_);
+    }
+
+
+    /**
+     * Converts a type specifier to an instance of {@link oclmetamodel.OclType}.
+     */
+    public static OclType convertOclType( MTypeSpecifier ts, OclElementCreator creator )
+    {
+        if( ts==null )
+        {
+            return null;
+        }
         if( ts instanceof MSimpleTypeSpec )
         {
-            return getOclTypeByName( ((MSimpleTypeSpec)ts).getName() );
+            return getOclTypeByName( ((MSimpleTypeSpec)ts).getName(), creator );
         }
         if( ts instanceof MCollectionTypeSpec )
         {
             MCollectionTypeSpec cts = (MCollectionTypeSpec)ts;
-            OclType item = getOclTypeByName( cts.getType().getName() );
+            OclType item = getOclTypeByName( cts.getType().getName(), creator );
             String kind = cts.getKind();
             if( kind.equals(OclConstants.COLLECTIONKIND_SEQUENCE) )
             {
-                return creator_.createTypeSequence(item);
+                return creator.createTypeSequence(item);
             }
             if( kind.equals(OclConstants.COLLECTIONKIND_SET) )
             {
-                return creator_.createTypeSet(item);
+                return creator.createTypeSet(item);
             }
             if( kind.equals(OclConstants.COLLECTIONKIND_BAG) )
             {
-                return creator_.createTypeBag(item);
+                return creator.createTypeBag(item);
             }
-            return creator_.createTypeCollection(item);
+            return creator.createTypeCollection(item);
         }
         return null;
     }
@@ -1098,31 +1111,40 @@ public class OclNormalization
      */
     public OclType getOclTypeByName( String name )
     {
+        return getOclTypeByName(name, creator_);
+    }
+
+
+    /**
+     * Converts the name of an OCL type to an instance of {@link oclmetamodel.OclType}.
+     */
+    public static OclType getOclTypeByName( String name, OclElementCreator creator )
+    {
         if( name.equals(OclConstants.TYPE_NAME_INTEGER) )
         {
-            return creator_.createTypeInteger();
+            return creator.createTypeInteger();
         }
         if( name.equals(OclConstants.TYPE_NAME_REAL) )
         {
-            return creator_.createTypeReal();
+            return creator.createTypeReal();
         }
         if( name.equals(OclConstants.TYPE_NAME_BOOLEAN) )
         {
-            return creator_.createTypeBoolean();
+            return creator.createTypeBoolean();
         }
         if( name.equals(OclConstants.TYPE_NAME_STRING) )
         {
-            return creator_.createTypeString();
+            return creator.createTypeString();
         }
         if( name.equals(OclConstants.TYPE_NAME_VOID) )
         {
-            return creator_.createTypeVoid();
+            return creator.createTypeVoid();
         }
         if( name.equals(OclConstants.TYPE_NAME_ENUMERATION) )
         {
-            return creator_.createTypeEnumeration();
+            return creator.createTypeEnumeration();
         }
-        return creator_.createTypeUser(name);
+        return creator.createTypeUser(name);
     }
 
 

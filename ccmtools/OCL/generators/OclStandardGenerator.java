@@ -481,7 +481,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         {
             if( type instanceof OclCollection )
             {
-                return execute_collect(expr,type,pc,conCode,pfe,exprCode);
+                return error("shorthand for 'collect' is not implemented");
             }
             if( type instanceof OclString )
             {
@@ -905,21 +905,24 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         }
         if( name.equals("collect") )
         {
-            return make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem);
+            return make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem, "collect");
         }
         if( name.equals("isUnique") )
         {
-            String c = make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem);
+            String c = make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem, "isUnique");
             parent.setOclType(creator_.createTypeBoolean());
             return getExpr_Collection_isUnique(c, conCode);
         }
         if( name.equals("sortedBy") )
         {
-            String c = make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem);
+            String c = make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem, "sortedBy");
             parent.setOclType(creator_.createTypeSequence(itemType));
             return getExpr_Collection_sortedBy(exprCode, c, cppItem, conCode);
         }
-        // TODO
+        if( name.equals("iterate") )
+        {
+            return make_iterate(pc, conCode, itemType, collType, parent, exprCode, cppItem);
+        }
         return error("unknown collection operation: "+name);
     }
 
@@ -1070,33 +1073,37 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
 
     private String make_collect( MPropertyCall pc, ConstraintCode conCode, OclType itemType,
                                  OclType collType, MExpression parent, String inputVarName,
-                                 String inputItemType )
+                                 String inputItemType, String operationName )
     {
         MPropertyCallParameters pcp = pc.getCallParameters();
         if( pcp==null )
         {
-            return error("[collect]: no parameters");
+            return error("["+operationName+"]: no parameters");
         }
         MDeclarator decl = pcp.getDeclarator();
         if( decl==null )
         {
-            return error("[collect]: no declarator");
+            return error("["+operationName+"]: no declarator");
         }
         Iterator it1 = decl.getNames().iterator();
         if( !it1.hasNext() )
         {
-            return error("[collect]: no iterator");
+            return error("["+operationName+"]: no iterator");
         }
         String iteratorVarName = ((MName)it1.next()).getValue();
         if( it1.hasNext() )
         {
-            conCode.helpers_ += error("[collect]: too much iterators")+"\n";
+            conCode.helpers_ += error("["+operationName+"]: too much iterators")+"\n";
         }
         String resultVarName = getNextHelperName();
         pushLocalVariables();
         iteratorVarName = newLocalVariable(iteratorVarName, itemType);
+        String oldHelperCode = conCode.helpers_;
+        conCode.helpers_ = "";
         String expression = getParameterCode(pc,0,conCode);
         OclType exprType = getParameterType(pc,0,conCode);
+        String extraHelpers = conCode.helpers_;
+        conCode.helpers_ = oldHelperCode;
         String resultItemType = getLanguageType(exprType, true, true);
         String resultCollectionType;
         if( collType instanceof OclSequence )
@@ -1110,7 +1117,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             resultCollectionType = getName_ClassBag();
         }
         conCode.helpers_ += getStatements_collect( resultCollectionType, resultItemType,
-            resultVarName, inputVarName, inputItemType, iteratorVarName, expression );
+            resultVarName, inputVarName, inputItemType, iteratorVarName, expression, extraHelpers );
         popLocalVariables();
         return resultVarName;
     }
@@ -1126,21 +1133,84 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
      * @param inputItemType           item type of the input collection
      * @param iteratorVarName         variable name of the iterator
      * @param expression              source code of the expression
+     * @param extraHelpers            helper statements for 'expression'
      */
     abstract protected String getStatements_collect( String resultCollectionType,
         String resultItemType, String resultVarName, String inputVarName,
-        String inputItemType, String iteratorVarName, String expression );
+        String inputItemType, String iteratorVarName, String expression, String extraHelpers );
 
 
-    //////////////////////////////////////////////////////////////////////////
-
-
-    private String execute_collect( MExpression expr, OclType type, MPropertyCall pc,
-                                    ConstraintCode conCode, MExpression parent, String exprCode )
+    private String make_iterate( MPropertyCall pc, ConstraintCode conCode, OclType itemType,
+                                 OclType collType, MExpression parent, String inputVarName,
+                                 String inputItemType )
     {
-        // TODO
-        return error("'collect' is not implemented");
+        MPropertyCallParameters pcp = pc.getCallParameters();
+        if( pcp==null )
+        {
+            return error("[iterate]: no parameters");
+        }
+        MDeclarator decl = pcp.getDeclarator();
+        if( decl==null )
+        {
+            return error("[iterate]: no declarator");
+        }
+        Iterator it1 = decl.getNames().iterator();
+        if( !it1.hasNext() )
+        {
+            return error("[iterate]: no iterator");
+        }
+        String iteratorVarName = ((MName)it1.next()).getValue();
+        if( it1.hasNext() )
+        {
+            conCode.helpers_ += error("[iterate]: too much iterators")+"\n";
+        }
+        //
+        OclType accType = OclNormalization.convertOclType(decl.getOptType(), creator_);
+        String accName = decl.getOptName();
+        MExpression accExpr = decl.getOptExpression();
+        if( accName==null || accExpr==null )
+        {
+            return error("[iterate]: no valid accumulator");
+        }
+        if( accType==null )
+        {
+            return error("[iterate]: invalid accumulator type");
+        }
+        parent.setOclType(accType);
+        String accInitCode = makeCode(accExpr, conCode);
+        //
+        pushLocalVariables();
+        iteratorVarName = newLocalVariable(iteratorVarName, itemType);
+        accName = newLocalVariable(accName, accType);
+        String oldHelperCode = conCode.helpers_;
+        conCode.helpers_ = "";
+        String expression = getParameterCode(pc,0,conCode);
+        String extraHelpers = conCode.helpers_;
+        conCode.helpers_ = oldHelperCode;
+        String accCppType = getLanguageType(accType, true, true);
+        conCode.helpers_ += getStatements_iterate( accCppType, accName, accInitCode,
+            inputVarName, inputItemType, iteratorVarName, expression, extraHelpers );
+        popLocalVariables();
+        return accName;
     }
+
+
+    /**
+     * Returns the statements of the collection operation 'iterate'.
+     *
+     * @param accCppType        language type of the accumulator
+     * @param accName           variable name of the accumulator
+     * @param accInitCode       init. code of the accumulator
+     * @param inputVarName      variable name of the input collection
+     * @param inputItemType     item type of the input collection
+     * @param iteratorVarName   variable name of the iterator
+     * @param expression        source code of the expression
+     * @param extraHelpers      helper statements for 'expression'
+     */
+    abstract protected String getStatements_iterate( String accCppType,
+        String accName, String accInitCode, String inputVarName,
+        String inputItemType, String iteratorVarName, String expression,
+        String extraHelpers );
 
 
 }
