@@ -1,0 +1,24 @@
+Install java-environment 
+========================
+
+Using Ant:
+----------
+Before you can build the java-environment, you have to install the Ant build tool 
+(see http://ant.apache.org).
+
+After that, you can build the java-environment with a single call:
+
+  # Build dtd2java and uml2idl	
+  $ ant
+
+Additionally, you can use the following ant variants:
+
+  # Clean up the project directory	
+  $ ant clean   
+
+  # Run a uml2idl test 	
+  $ ant test
+
+  # Generate javaDoc
+  $ ant doc		
+
