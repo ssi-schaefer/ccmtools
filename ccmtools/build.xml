@@ -102,7 +102,7 @@
       </javac>
   </target>
 
-  <target name="check" depends="test"
+  <target name="check-local" depends="test"
      description="Run JUnit test cases." >
      <junit printsummary="yes" haltonfailure="yes" showoutput="yes">
           <classpath refid="test.classpath" />

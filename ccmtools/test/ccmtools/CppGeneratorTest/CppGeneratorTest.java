@@ -21,15 +21,6 @@ package ccmtools.CppGeneratorTest;
 
 import ccmtools.CcmtoolsTestCase;
 
-import junit.framework.TestCase;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.FileReader;
-
 
 /***
  * This test case is derived from CcmtoolsTestCase class and implements

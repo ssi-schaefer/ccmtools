@@ -19,18 +19,16 @@
 
 package ccmtools;
 
-import junit.framework.TestCase;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
 
-import ccmtools.CcmtoolsTestCaseException;
+import junit.framework.TestCase;
 
 /***
  * This test case is derived from JUnit's TestCase class and implements

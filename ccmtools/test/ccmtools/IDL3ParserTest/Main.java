@@ -24,11 +24,6 @@ import ccmtools.IDL3Parser.IDL3SymbolTable;
 import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 
-import java.io.File;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main {
     public static IDL3SymbolTable symbolTable = new IDL3SymbolTable();
 
