@@ -18,6 +18,8 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+package ccmtools.test.IDL3Parser;
+
 import ccmtools.IDL3Parser.IDL3SymbolTable;
 import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.Metamodel.BaseIDL.MContainer;
