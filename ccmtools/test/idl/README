@@ -131,65 +131,79 @@ home_user_type: TODO
 Test of source code structure
 =============================
 
-include: TODO
+include: OK
 --------
 A component with an attribute, a facet and a receptacle.
 The interfaces of the facet and receptacles are stored in
 separated idl files and included by the component idl file.
 
-include_dir: TODO
+include_dir: OK
 ------------
 A component with an attribute, a facet and a receptacle, 
 where the component idl and the interface idl of facet and receptacle
 are stored in different files in different directories.
- 
-include_nested: TODO
+(ccmtools-c++-generate -d -p hello -Icomp -Iifaces comp/*.idl ifaces/*.idl) 
+
+include_nested: !!!!!
 ---------------
 A component with an attribute, a facet and a receptacle, 
 where the interfaces are stored in different idl files.
 One interface file includes another idl file that contains
 a structure definition.
+=> error in name verification: the identifier Message is undefined or of the wrong type
+=> error while adding contents '[null]' to container 'MContainer: null[]'
  
 
 Test of source code modularity
 ==============================
 
-module: TODO
+module: OK
 -------
 A component with an attribute that is defined within a
 module definition in a single idl file.
 
-module_nested: TODO
+module_nested: OK
 --------------
 A component with an attribute that is defined within 
 three nested modules in a single IDL file.
 
-module_reopen: TODO
+module_reopen: !!!!!
 --------------
 A compoent with an attribute and a facet defined in two
 IDL files, where in each file there is the same module
 definition.
+=> hello/WORLD_CCM_Session_Hello_mirror/HelloHome_mirror_app.cc:
+   CCM_Local/Console.h: Datei oder Verzeichnis nicht gefunden
 
-module_mixed: TODO
+module_mixed: !!!!!
 -------------
 A component with an attribute and a facet defined in two
 IDL files. The component and the facet interface is defined in 
 their own modules.
+=> error in name verification: the identifier Console is undefined or of the wrong type
 
 
 Real world examples
 ===================
 
-Claculator: TODO
+Claculator: !!!!!!
 -----------
 The main component (Calculator) has an attribute, a facet, a
 singleand a multiple receptacle as well as a home with a
 factory method.
 Two other components (IntegerCalculator and Display) supports
 a facet that can be connected to the Calculator's receptacles.
+=> error in name verification: the identifier Record is undefined or of the wrong type
+=> error in name verification: the identifier RecordSet is undefined or of the wrong type
 
-owudb: TODO
+
+owudb: !!!!!
 ------
 Two components that are connected via two facet/receptacle
 interfaces. The source code is distributed between 10 IDL files.
+=> error in name verification: the identifier PersData is undefined or of the wrong type
+
+
+
+
 
