@@ -1,0 +1,13 @@
+#! /usr/bin/env python
+
+import os, sys
+import string
+
+java = 'JAVA' in os.environ.keys() and os.environ['JAVA'] or 'java'
+src = 'ccmtools.UI.ConsoleCodeGenerator'
+home = ''
+if 'CCMTOOLS_HOME' in os.environ.keys():
+    home = '--home=%s' % os.environ['CCMTOOLS_HOME']
+
+print ' '.join(['>>', java, src, home] + sys.argv[1:])
+os.execvp(java, [java, src, home] + sys.argv[1:])
