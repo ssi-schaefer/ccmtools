@@ -301,10 +301,6 @@ abstract public class CppGenerator
                 (idl_type instanceof MFixedDef)) suffix = "&";
 
             return prefix + base_type + suffix;
-        } else if (object instanceof MOperationDef) {
-            String suffix = "";
-            if (idl_type instanceof MTypedefDef) suffix = "*";
-            return base_type + suffix;
         } else if ((object instanceof MAliasDef) &&
                    (idl_type instanceof MTyped)) {
             return getLanguageType((MTyped) idl_type);

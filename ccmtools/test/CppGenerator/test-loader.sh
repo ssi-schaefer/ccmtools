@@ -40,7 +40,7 @@ export CLASSPATH=./antlr.jar:../../antlr.jar:.:../..:${CLASSPATH}
 ret=0
 if [ "${ret}" = "0" ]
 then
-  ccmtools-c++-generate -d -i ${install_dir} -b ${build_dir} -c "1.2.3" -p ${1} *.idl || ret=1
+  ccmtools-c++-generate -y -d -i ${install_dir} -c "1.2.3" -p ${1} *.idl || ret=1
   if [ "${ret}" = "0" ]
   then
     ccmtools-c++-make -p ${1} || ret=1
