@@ -201,7 +201,7 @@ public class Main
     
 
     /**
-     * Returns the name of a model element (or null).
+     * Returns the name of a model element (or an empty string).
      */
     static String makeModelElementName( DTD_Container element )
     {
@@ -214,7 +214,7 @@ public class Main
                 return name;
             }
         }
-        return null;
+        return "";
     }
 
 
