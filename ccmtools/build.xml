@@ -1,3 +1,7 @@
+<!--
+	$Id$
+-->
+
 <project name="ccmtools" default="jar-ccmtools">
 
   <description>
