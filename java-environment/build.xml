@@ -141,8 +141,6 @@
 
       <delete dir="${src}/uml_parser" />
 
-      <delete file="${lib}/dtd2java.jar" />
-
       <delete dir="${build}" /> 
 
       <delete file="u1.idl" />
