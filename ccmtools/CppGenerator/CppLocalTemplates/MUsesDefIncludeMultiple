@@ -1,9 +1,4 @@
 #include <%(UsesInclude)s.h>
 
-#ifndef __MAPPING__%(PreprocIdentifier)s__
-#define __MAPPING__%(PreprocIdentifier)s__
-typedef std::map<LocalComponents::Cookie, WX::Utils::SmartPtr<CCM_Local::%(CCMUsesType)s> > %(Identifier)sConnections;
-#endif
-
 
 

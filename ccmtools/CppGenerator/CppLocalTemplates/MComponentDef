@@ -446,13 +446,13 @@ LocalComponents::ComponentPortDescription
 %(MConsumesDefInclude)s
 %(MEmitsDefInclude)s
 %(MPublishesDefInclude)s
-%(MUsesDefInclude)s
 %(BaseInclude)s
+%(MUsesDefInclude)s
 
 %(OpenNamespace)s
 
 //==============================================================================
-// Hello component class
+// Component class
 //==============================================================================
 
 class CCM_%(Identifier)s
@@ -466,8 +466,10 @@ class CCM_%(Identifier)s
 
 
 //==============================================================================
-// context class
+// Context class
 //==============================================================================
+
+%(MUsesDefConnectionMap)s
 
 class CCM_%(Identifier)s_Context
   : public LocalComponents::SessionContext
