@@ -20,7 +20,7 @@
 class %(Identifier)s_impl
     : virtual public %(CCMProvidesType)s
 {
-  private:
+  protected:
     %(FullComponentType)s_impl* component;
 %(MAttributeDefVariable)s
 

@@ -1,2 +1,2 @@
-#include <%(ExceptionInclude)s.h>
+%(ExceptionInclude)s
 

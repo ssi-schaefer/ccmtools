@@ -895,9 +895,12 @@ abstract public class CodeGenerator
                     bases.add(getScopedInclude((MInterfaceDef) i.next()));
                 value = join("\n", bases);
             }
-        } else if (variable.equals("ExceptionInclude")) {
-            value = getFullScopeInclude((MExceptionDef) current_node);
-        } else if (variable.equals("HomeInclude")) {
+        } 
+	else if (variable.equals("ExceptionInclude")) {
+	    //            value = getFullScopeInclude((MExceptionDef) current_node);
+            value = getScopedInclude((MExceptionDef) current_node);
+        } 
+	else if (variable.equals("HomeInclude")) {
             if (current_node instanceof MComponentDef) {
                 Iterator homes = ((MComponentDef) current_node).getHomes().iterator();
                 value = getFullScopeInclude((MHomeDef) homes.next());
