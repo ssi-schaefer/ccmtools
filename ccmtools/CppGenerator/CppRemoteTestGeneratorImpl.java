@@ -170,6 +170,10 @@ public class CppRemoteTestGeneratorImpl
             handleNamespace("FileNamespace", node_name) + "_remote.cc";
 
         writeFinalizedFile(file_dir, file_name, generated_code);
+	
+	// generate an empty Makefile.py in the CCM_Test
+	// directory - needed by Confix
+	writeFinalizedFile(file_dir, "Makefile.py", "");
     }
 
 
