@@ -16,7 +16,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_mirror_app.h"
+#include "Test_mirror_impl.h"
 
 #include "MyObject.h"
 

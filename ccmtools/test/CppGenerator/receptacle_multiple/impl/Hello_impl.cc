@@ -7,11 +7,10 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Hello_app.h"
+#include "Hello_impl.h"
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
 
 namespace CCM_Local {
 namespace CCM_Session_Hello {
@@ -55,15 +54,17 @@ CCM_Hello_impl::ccm_activate (  )
   throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_impl->ccm_activate (  )" );
-  
-  try {
-    string s = "1234567890";
-    ctx->get_connection_console().ptr()->println(s);
-    assert(false);
+
+  cout << "=== Begin test case =======================================" << endl;
+  consoleConnections multiCon = ctx->get_connections_console();
+  consoleConnections::const_iterator it;
+  long size;
+  for(it=multiCon.begin();it != multiCon.end(); ++it) {
+    cout << "       ";
+    size = it->second.ptr()->println("String from component");
+    cout << "Number of printed characters = " << size << endl;
   }
-  catch(LocalComponents::NoConnection& e) {
-    cerr << "!! NoConnection exception: Receptacle console is not connected!" << endl;
-  }
+  cout << "=== End test case =========================================" << endl;
 
 }
 

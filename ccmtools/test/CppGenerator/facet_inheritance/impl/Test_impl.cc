@@ -16,7 +16,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_app.h"
+#include "Test_impl.h"
 
 using namespace std;
 using namespace WX::Utils;
@@ -37,33 +37,6 @@ CCM_Test_impl::CCM_Test_impl (  )
 CCM_Test_impl::~CCM_Test_impl (  )
 {
   DEBUGNL ( "-CCM_Test_impl->~CCM_Test_impl (  )" );
-}
-
-long
-CCM_Test_impl::op3(const std::string& str)
-  throw (LocalComponents::CCMException)
-{
-  DEBUGNL(" CCM_Test_impl->op3(str)");
-  cout << str << endl;
-  return str.length();
-}
-
-long
-CCM_Test_impl::op2(const std::string& str)
-  throw (LocalComponents::CCMException)
-{
-  DEBUGNL(" CCM_Test_impl->op2(str)");
-  cout << str << endl;
-  return str.length();
-}
-
-long
-CCM_Test_impl::op1(const std::string& str)
-  throw (LocalComponents::CCMException)
-{
-  DEBUGNL(" CCM_Test_impl->op1(str)");
-  cout << str << endl;
-  return str.length();
 }
 
 void
@@ -93,6 +66,56 @@ CCM_Test_impl::ccm_remove (  )
   throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Test_impl->ccm_remove (  )" );
+}
+
+//==============================================================================
+// CCM_FacetType facet implementation
+//==============================================================================
+
+CCM_InterfaceType*
+CCM_Test_impl::get_a_facet (  )
+{
+  DEBUGNL ( " CCM_Test_impl->get_a_facet (  )" );
+  a_facet_impl* facet = new a_facet_impl(this);
+  return dynamic_cast<CCM_InterfaceType*> ( facet );
+}
+
+a_facet_impl::a_facet_impl ( CCM_Test_impl* component_impl )
+  : component ( component_impl )
+{
+  DEBUGNL ( "+a_facet_impl->a_facet_impl (  )" );
+}
+
+a_facet_impl::~a_facet_impl (  )
+{
+  DEBUGNL ( "-a_facet_impl->~a_facet_impl (  )" );
+}
+
+long
+a_facet_impl::op3 ( const std::string& str )
+  throw (LocalComponents::CCMException)
+{
+  DEBUGNL ( " a_facet_impl->op3 ( str )" );
+  cout << str << endl;
+  return str.length();
+}
+
+long
+a_facet_impl::op2 ( const std::string& str )
+  throw (LocalComponents::CCMException)
+{
+  DEBUGNL ( " a_facet_impl->op2 ( str )" );
+  cout << str << endl;
+  return str.length();
+}
+
+long
+a_facet_impl::op1 ( const std::string& str )
+  throw (LocalComponents::CCMException)
+{
+  DEBUGNL ( " a_facet_impl->op1 ( str )" );
+  cout << str << endl;
+  return str.length();
 }
 
 } // /namespace CCM_Session_Test

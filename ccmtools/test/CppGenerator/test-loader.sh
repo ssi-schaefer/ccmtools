@@ -52,8 +52,8 @@ test -z "${ret}" && ccmtools-c++-generate -d -a -p ${1} \
 # build and check. copy the contents of the package directory, if it exists, to
 # the sandbox (this lets us distribute _app.cc files with the tests).
 
-test -d ${abssrcdir}/test/CppGenerator/${1}/src && \
-  ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/src ${1}
+test -d ${abssrcdir}/test/CppGenerator/${1}/impl && \
+  ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/impl ${1}
 
 test -d ${abssrcdir}/test/CppGenerator/${1}/test && \
   ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/test ${1}

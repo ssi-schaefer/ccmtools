@@ -7,7 +7,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Hello_mirror_app.h"
+#include "Hello_mirror_impl.h"
 
 using namespace std;
 using namespace WX::Utils;

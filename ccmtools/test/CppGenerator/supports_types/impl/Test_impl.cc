@@ -16,7 +16,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_app.h"
+#include "Test_impl.h"
 #include "MyObject.h"
 
 using namespace std;

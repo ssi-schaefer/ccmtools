@@ -7,8 +7,8 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Hello_app.h"
-#include "HelloHome_app.h"
+#include "Hello_impl.h"
+#include "HelloHome_impl.h"
 
 using namespace std;
 using namespace WX::Utils;

@@ -20,34 +20,6 @@ TESTS = \
   module_mixed.sh module_nested.sh  module_reopen.sh
 
 
-# tests are generally in order of decreasing complexity (we want to see whether
-# the hard tests fail ; the easy tests will likely pass later).
-
-#TESTS = \
-#  help.sh                     \
-#  version.sh                  \
-#  owudb.sh                    \
-#  calculator.sh               \
-#  vp10.sh                     \
-#  module_mixed.sh             \
-#  module-reopen.sh            \
-#  module-nested.sh            \
-#  include_nested.sh           \
-#  receptacle-inheritance.sh   \
-#  facet-inheritance.sh        \
-#  supports-inheritance.sh     \
-#  home_exception.sh           \
-#  receptacle_exception.sh     \
-#  facet_exception.sh          \
-#  supports_exception.sh       \
-#  home_types.sh               \
-#  receptacle_types.sh         \
-#  facet_types.sh              \
-#  supports_types.sh           \
-#  facet_attribute.sh          \
-#  receptacle_not_connected.sh \
-#  receptacle_multiple.sh
-
 dist_check_SCRIPTS = $(TESTS)
 
 # these directories hold application logic and python modules for generated

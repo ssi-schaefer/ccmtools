@@ -1,6 +1,6 @@
 
 /***
- * Test component business logic implementation.
+ * Test_mirror component business logic implementation.
  * 
  * // TODO: WRITE YOUR DESCRIPTION HERE! 
  *
@@ -16,45 +16,45 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_app.h"
+#include "Test_mirror_impl.h"
 
 using namespace std;
 using namespace WX::Utils;
 using namespace CCM_Local;
 
 namespace CCM_Local {
-namespace CCM_Session_Test {
+namespace CCM_Session_Test_mirror {
 
 //==============================================================================
-// CCM_Test - component implementation
+// CCM_Test_mirror - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl (  )
+CCM_Test_mirror_impl::CCM_Test_mirror_impl (  )
 {
-  DEBUGNL ( "+CCM_Test_impl->CCM_Test_impl (  )" );
+  DEBUGNL ( "+CCM_Test_mirror_impl->CCM_Test_mirror_impl (  )" );
 }
 
-CCM_Test_impl::~CCM_Test_impl (  )
+CCM_Test_mirror_impl::~CCM_Test_mirror_impl (  )
 {
-  DEBUGNL ( "-CCM_Test_impl->~CCM_Test_impl (  )" );
+  DEBUGNL ( "-CCM_Test_mirror_impl->~CCM_Test_mirror_impl (  )" );
 }
 
 void
-CCM_Test_impl::set_session_context ( LocalComponents::SessionContext* context )
+CCM_Test_mirror_impl::set_session_context ( LocalComponents::SessionContext* context )
   throw ( LocalComponents::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->set_session_context (  )" );
-  ctx = dynamic_cast<CCM_Test_Context*> ( context );
+  DEBUGNL ( " CCM_Test_mirror_impl->set_session_context (  )" );
+  ctx = dynamic_cast<CCM_Test_mirror_Context*> ( context );
 }
 
 void
-CCM_Test_impl::ccm_activate (  )
+CCM_Test_mirror_impl::ccm_activate (  )
   throw ( LocalComponents::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->ccm_activate (  )" );
+  DEBUGNL ( " CCM_Test_mirror_impl->ccm_activate (  )" );
 
   WX::Utils::SmartPtr<CCM_InterfaceType> receptacle = 
-    ctx->get_connection_a_receptacle();
+    ctx->get_connection_a_facet_mirror();
   string str1 = "Hallo to first op()";
   long size1 = receptacle->op1(str1);
   assert(size1 == str1.length());
@@ -69,19 +69,19 @@ CCM_Test_impl::ccm_activate (  )
 }
 
 void
-CCM_Test_impl::ccm_passivate (  )
+CCM_Test_mirror_impl::ccm_passivate (  )
   throw ( LocalComponents::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->ccm_passivate (  )" );
+  DEBUGNL ( " CCM_Test_mirror_impl->ccm_passivate (  )" );
 }
 
 void
-CCM_Test_impl::ccm_remove (  )
+CCM_Test_mirror_impl::ccm_remove (  )
   throw ( LocalComponents::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->ccm_remove (  )" );
+  DEBUGNL ( " CCM_Test_mirror_impl->ccm_remove (  )" );
 }
 
-} // /namespace CCM_Session_Test
+} // /namespace CCM_Session_Test_mirror
 } // /namespace CCM_Local
 
