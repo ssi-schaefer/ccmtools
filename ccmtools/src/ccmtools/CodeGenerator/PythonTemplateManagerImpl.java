@@ -49,21 +49,33 @@ public class PythonTemplateManagerImpl
 	//   IDL3Templates/
 	//   CppLocalTemplates/
 	//   CppRemoteTemplates/
-	//   ...
+	//   etc.
         String templatesDir = language + "Templates";
 
+	// Option 1:
 	// Load templates from src/templates directory of the source tree.
 	// This directory is used as default path for easy development. 
-        source = new File(System.getProperty("user.dir") +
-			  File.separator + 
-			  "src" + 
-			  File.separator +
+        source = new File(System.getProperty("user.dir") + File.separator + 
+			  "src" + File.separator +
 			  "templates", templatesDir);
         if (source.exists() && source.isDirectory()) {
-	    System.out.println(">> Load templates from: " + source);
+	    System.out.println("> load templates from (src): " + source);
 	    return;
 	}
 
+	// Option 2:
+	// Load templates from CCMTOOLS_HOME system property.
+	// This property is set, when calling the ccmtools-generate script,
+	// with a operationg system environment variable value.
+        source = new File(System.getProperty("CCMTOOLS_HOME") +
+			  File.separator + "templates", templatesDir);
+        if (source.exists() && source.isDirectory()) {
+	    System.out.println("> load templates from (CCMTOOLS_HOME): " 
+			       + source);
+	    return;
+	}
+
+	// Option 3:
 	// Load templates from TEMPLATE_ROOT directory specified in 
 	// the Constants.java file.
 	// In the build process, the Constants.java file is generated
@@ -71,7 +83,8 @@ public class PythonTemplateManagerImpl
 	// with current informations.
         source = new File(Constants.TEMPLATE_ROOT, templatesDir);
         if (source.exists() && source.isDirectory()) {
-	    System.out.println(">> Load templates from: " + source);
+	    System.out.println("> load templates from (TEMPLATE_ROOT): " 
+			       + source);
             return;
 	}
 

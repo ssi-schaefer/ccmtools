@@ -105,16 +105,22 @@ public class ConsoleCodeGenerator
      */
     public static void main(String args[]) 
     {
-        if (!parseArgs(args)) 
+        if(!parseArgs(args)) { 
             return; // No further processing needed
+	}
+	else {
+	    printVersion();
+	}
 
         GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
-        if (traverser == null)
-                printUsage("failed to create a graph traverser");
+        if (traverser == null) {
+	    printUsage("failed to create a graph traverser");
+	}
 
         ParserManager manager = new ParserManager(par_mask);
-        if (manager == null) 
+        if (manager == null) { 
 	    printUsage("failed to create a parser manager");
+	}
 
         Driver driver = createDriver();
         ArrayList handlers = new ArrayList();
@@ -137,7 +143,7 @@ public class ConsoleCodeGenerator
             // step (0). run the C preprocessor on the input file.
             try {
                 // Run the GNU preprocessor cpp in a separate process.
-		System.out.println("> run cpp -o " + idlfile + " " 
+		System.out.println("> cpp -o " + idlfile + " " 
 				   + include_path + " "
 				   + source);
 		Process preproc = Runtime.getRuntime()

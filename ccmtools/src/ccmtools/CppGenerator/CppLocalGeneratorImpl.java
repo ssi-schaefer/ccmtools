@@ -22,6 +22,7 @@ package ccmtools.CppGenerator;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -63,6 +64,34 @@ public class CppLocalGeneratorImpl
         super("CppLocal", d, out_dir, local_output_types);
         base_namespace.add("CCM_Local");
     }
+
+    /*
+    // Begin Hack ---------------------------------
+    // This hack is only temporarily to compile generated structures via PMM
+    protected String getScopedInclude(MContained node)
+    {
+        List scope = getScope(node);
+	StringBuffer buffer = new StringBuffer();
+        Collections.reverse(base_namespace);
+        for (Iterator i = base_namespace.iterator(); i.hasNext(); ) {
+            scope.add(0, i.next());
+	}
+        Collections.reverse(base_namespace);
+        scope.add(node.getIdentifier());
+	buffer.append("#ifdef CONFIX_BLA_BLA \n");
+	buffer.append("#include <");
+	buffer.append(join(file_separator, scope));
+	buffer.append(".h> \n");
+	buffer.append("#else \n");
+	buffer.append("#include <");
+	buffer.append(node.getIdentifier());
+	buffer.append(".h> \n");
+	buffer.append("#endif \n");
+	return buffer.toString();
+    }
+    // End Hack -----------------------------------
+    */
+
 
     /**
      * Write generated code to an output file.
@@ -117,12 +146,25 @@ public class CppLocalGeneratorImpl
 		writeFinalizedFile(file_dir, file_name, generated_code);
 	    }
 
-            // output a confix Makefile.py file if it's not in this directory.
-	    File confix_file = new File(output_dir, file_dir);
-            confix_file = new File(confix_file, "Makefile.py");
-            if (! confix_file.isFile())
-                writeFinalizedFile(file_dir, "Makefile.py", "");
+	    writeMakefile(output_dir, file_dir,"py","");
+	    //	    writeMakefile(output_dir, file_dir,"pl", "1;");
         }
+    }
+
+
+    protected boolean writeMakefile(File outDir, String fileDir, String extension, String content)
+    {
+	boolean result;
+	File makeFile = new File(outDir, fileDir);
+	makeFile = new File(makeFile, "Makefile." + extension);
+	if (!makeFile.isFile()) {
+	    writeFinalizedFile(fileDir, "Makefile." + extension, content);
+	    result = true;
+	}
+	else {
+	    result = false; // no Makefile.py written
+	}
+	return result;
     }
 
 

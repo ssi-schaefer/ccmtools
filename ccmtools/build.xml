@@ -34,7 +34,7 @@
   <path id="test.classpath">
       <pathelement path="${lib}/oclmetamodel.jar" />
       <pathelement path="${build}/test" />
-      <pathelement path="${java.class.path}" />
+      <pathelement path="${build}/classes" />
   </path>
 
 
