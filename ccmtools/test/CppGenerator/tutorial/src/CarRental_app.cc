@@ -13,6 +13,7 @@ using namespace WX::Utils;
 using namespace CCM_Local;
 
 namespace CCM_Local {
+namespace BigBusiness {
 namespace CCM_Session_CarRental {
 
 
@@ -70,7 +71,7 @@ maintenance_impl::retrieveCustomer ( const long id )
   throw (LocalComponents::CCMException, NoCustomerException )
 {
   DEBUGNL ( " maintenance_impl->retrieveCustomer ( id )" );
-  std::vector<CCM_Local::Customer>::iterator pos;
+  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
   for(pos = component->CustomerDB.begin(); pos != component->CustomerDB.end(); ++pos) {
     if(pos->id == id) {
       return *pos;
@@ -88,8 +89,8 @@ maintenance_impl::retrieveAllCustomers (  )
   if(component->CustomerDB.size() == 0)
       throw NoCustomerException();
 
-  CCM_Local::CustomerList customer_list;
-  std::vector<CCM_Local::Customer>::iterator pos;
+  CCM_Local::BigBusiness::CustomerList customer_list;
+  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
   for(pos = component->CustomerDB.begin(); pos != component->CustomerDB.end(); ++pos) {
     customer_list.push_back(*pos);
   }
@@ -102,7 +103,7 @@ maintenance_impl::updateCustomer ( const Customer& person )
 {
   DEBUGNL ( " maintenance_impl->updateCustomer (person )" );
   
-  std::vector<CCM_Local::Customer>::iterator pos;
+  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
   for(pos = component->CustomerDB.begin(); pos != component->CustomerDB.end(); ++pos) {
     if(pos->id == person.id) {
       *pos = person;
@@ -118,7 +119,7 @@ maintenance_impl::deleteCustomer ( const long id )
 {
   DEBUGNL ( " maintenance_impl->removeCustomer ( id )" );
   
-  std::vector<CCM_Local::Customer>::iterator pos;
+  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
   for(pos = component->CustomerDB.begin(); pos != component->CustomerDB.end(); ++pos) {
     if(pos->id == id) {
       component->CustomerDB.erase(pos);
@@ -167,7 +168,7 @@ business_impl::addCustomerMiles ( const long id, const double miles )
   throw (LocalComponents::CCMException, NoCustomerException )
 {
   DEBUGNL ( " business_impl->addCustomerMiles ( id, miles )" );
-  std::vector<CCM_Local::Customer>::iterator pos;
+  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
   for(pos = component->CustomerDB.begin(); pos != component->CustomerDB.end(); ++pos) {
     if(pos->id == id) {
       pos->mileage += miles;
@@ -182,7 +183,7 @@ business_impl::resetCustomerMiles ( const long id )
   throw (LocalComponents::CCMException, NoCustomerException )
 {
   DEBUGNL ( " business_impl->resetCustomerMiles ( id )" );
-  std::vector<CCM_Local::Customer>::iterator pos;
+  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
   for(pos = component->CustomerDB.begin(); pos != component->CustomerDB.end(); ++pos) {
     if(pos->id == id) {
       pos->mileage = 0.0;
@@ -197,7 +198,7 @@ business_impl::getCustomerMiles ( const long id )
   throw (LocalComponents::CCMException, NoCustomerException )
 {
   DEBUGNL ( " business_impl->getCustomerMilesValue ( id )" );
-  std::vector<CCM_Local::Customer>::iterator pos;
+  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
   for(pos = component->CustomerDB.begin(); pos != component->CustomerDB.end(); ++pos) {
     if(pos->id == id) {
       return pos->mileage;
@@ -266,6 +267,7 @@ CCM_CarRental_impl::ccm_remove (  )
 }
 
 } // /namespace CCM_Session_CarRental
+} // /namespace BigBusiness
 } // /namespace CCM_Local
 
 

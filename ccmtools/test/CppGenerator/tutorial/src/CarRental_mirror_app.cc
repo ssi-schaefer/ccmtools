@@ -14,6 +14,7 @@ using namespace WX::Utils;
 using namespace CCM_Local;
 
 namespace CCM_Local {
+namespace BigBusiness {
 namespace CCM_Session_CarRental_mirror {
 
 
@@ -58,31 +59,28 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
 
   try {
     {
-      CCM_Local::Customer person;
+      CCM_Local::BigBusiness::Customer person;
       person.id = 1;
       person.first_name = "Franz";
       person.last_name = "Kafka";
-      double mileage = 0.0;
       ctx->get_connection_maintenance_mirror()->createCustomer(person);
     }
     {
-      CCM_Local::Customer person;
+      CCM_Local::BigBusiness::Customer person;
       person.id = 2;
       person.first_name = "Thomas";
       person.last_name = "Bernhard";
-      double mileage = 0.0;
       ctx->get_connection_maintenance_mirror()->createCustomer(person);
     }
     {
-      CCM_Local::Customer person;
+      CCM_Local::BigBusiness::Customer person;
       person.id = 3;
       person.first_name = "Karl";
       person.last_name = "Kraus";
-      double mileage = 0.0;
       ctx->get_connection_maintenance_mirror()->createCustomer(person);
     }
     {
-      CCM_Local::Customer person;
+      CCM_Local::BigBusiness::Customer person;
       long id = 2;
       person = ctx->get_connection_maintenance_mirror()->retrieveCustomer(id);
       assert(person.id == 2);
@@ -91,7 +89,7 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
     }
 
     {
-      CCM_Local::CustomerList person_list;
+      CCM_Local::BigBusiness::CustomerList person_list;
       person_list = ctx->get_connection_maintenance_mirror()->retrieveAllCustomers();
       assert(person_list.at(2).id == 3);
       assert(person_list.at(2).first_name == "Karl");
@@ -107,14 +105,14 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
     }      
 
     {
-      CCM_Local::Customer person;
+      CCM_Local::BigBusiness::Customer person;
       person.id = 1;
       person.first_name = "Werner";
       person.last_name = "Schwab";
       double mileage = 0.0;
       ctx->get_connection_maintenance_mirror()->updateCustomer(person);      
 
-      CCM_Local::Customer another_person;
+      CCM_Local::BigBusiness::Customer another_person;
       another_person = ctx->get_connection_maintenance_mirror()->retrieveCustomer(person.id);
       assert(another_person.id == 1);
       assert(another_person.first_name == "Werner");
@@ -126,15 +124,15 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
       ctx->get_connection_maintenance_mirror()->deleteCustomer(id);
       cout << "Customer removed" << endl;
 
-      CCM_Local::Customer person;
+      CCM_Local::BigBusiness::Customer person;
       person = ctx->get_connection_maintenance_mirror()->retrieveCustomer(id);
       assert(false); // Customer found => failer
     }
   }
-  catch(CCM_Local::CreateCustomerException) {
+  catch(CCM_Local::BigBusiness::CreateCustomerException) {
     cerr << "MAINTENANCE ERROR: Can't create customer!" << endl;
   }
-  catch(CCM_Local::NoCustomerException) {
+  catch(CCM_Local::BigBusiness::NoCustomerException) {
     cerr << "MAINTENANCE ERROR: no customer found!" << endl;
   }
 
@@ -171,7 +169,7 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
       assert( abs(dollars) < 0.001);
     }
   }
-  catch(CCM_Local::NoCustomerException) {
+  catch(CCM_Local::BigBusiness::NoCustomerException) {
     cerr << "MAINTENANCE ERROR: no customer found!" << endl;
     assert(false);
   }
@@ -192,6 +190,7 @@ CCM_CarRental_mirror_impl::ccm_remove (  )
 }
 
 } // /namespace CCM_Session_CarRental_mirror
+} // /namespace BigBusiness
 } // /namespace CCM_Local
 
 

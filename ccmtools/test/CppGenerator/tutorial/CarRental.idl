@@ -1,56 +1,20 @@
-/***
- * CCM Tools Tutorial Example
- *
- * This component example is used in the tutorial to show how to use CCM Tools.
- * 
- ***/
+#ifndef __CAR_RENTAL_IDL__
+#define __CAR_RENTAL_IDL__
 
-struct Customer {
-  long id;
-  string first_name;
-  string last_name;
-  double mileage;
-};
+#include "CustomerMaintenance.idl"
+#include "CustomerBusiness.idl"
 
-typedef sequence<Customer> CustomerList;
+module BigBusiness {
 
-exception CreateCustomerException{};
-exception RemoveCustomerException{};
-exception NoCustomerException{};
-
-interface CustomerMaintenance
-{
-  void createCustomer(in Customer person) 
-    raises (CreateCustomerException);
-  Customer retrieveCustomer(in long id)  
-    raises (NoCustomerException);
-  CustomerList retrieveAllCustomers()  
-    raises (NoCustomerException);
-  void updateCustomer(in Customer person)  
-    raises (NoCustomerException);
-  void deleteCustomer(in long id)  
-    raises (CreateCustomerException);
-};
-
-interface CustomerBusiness
-{
-  attribute double dollars_per_mile;
+  component CarRental 
+  { 
+    provides CustomerMaintenance maintenance;
+    provides CustomerBusiness business;
+  };
   
-  void addCustomerMiles(in long id, in double miles) 
-    raises(NoCustomerException);
-  void resetCustomerMiles(in long id) 
-    raises(NoCustomerException);
-  double getCustomerMiles(in long id) 
-    raises(NoCustomerException);
-  double getCustomerDollars(in long id) 
-    raises(NoCustomerException);
-};
+  home CarRentalHome manages CarRental 
+  { };
+  
+}; // End of module BigBusiness
 
-component CarRental 
-{ 
-  provides CustomerMaintenance maintenance;
-  provides CustomerBusiness business;
-};
-
-home CarRentalHome manages CarRental { };
-
+#endif

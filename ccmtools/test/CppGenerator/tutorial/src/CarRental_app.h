@@ -6,9 +6,10 @@
 #ifndef __COMPONENT_CCM_Local_CCM_Session_CarRental_CarRental_APP__H__
 #define __COMPONENT_CCM_Local_CCM_Session_CarRental_CarRental_APP__H__
 
-#include <CCM_Local/CCM_Session_CarRental/CarRental_share.h>
+#include <CCM_Local/BigBusiness/CCM_Session_CarRental/CarRental_share.h>
 
 namespace CCM_Local {
+namespace BigBusiness {
 namespace CCM_Session_CarRental {
 
 
@@ -24,7 +25,7 @@ class CCM_CarRental_impl
 
  public:
   CCM_CarRental_Context* ctx;
-  std::vector<CCM_Local::Customer> CustomerDB;
+  std::vector<CCM_Local::BigBusiness::Customer> CustomerDB;
 
   CCM_CarRental_impl (  );
   virtual ~CCM_CarRental_impl (  );
@@ -125,6 +126,7 @@ class business_impl
 
 
 } // /namespace CCM_Session_CarRental
+} // /namespace BigBusiness
 } // /namespace CCM_Local
 
 
