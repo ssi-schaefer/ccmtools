@@ -75,5 +75,5 @@
  * http://ccmtools.sourceforge.net/.
  */
 
-package ccmtools.Metamodel;
+package ccmtools.Metamodel.BaseIDL;
 
