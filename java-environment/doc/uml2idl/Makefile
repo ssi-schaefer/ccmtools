@@ -1,12 +1,20 @@
 DOCUMENT_NAME=uml2idl_ger
+LINKED_PDF=$(DOCUMENT_NAME)L.pdf
 
-all: dvi 
+all: dvi
 
 dvi: $(DOCUMENT_NAME).dvi
 $(DOCUMENT_NAME).dvi: $(DOCUMENT_NAME).tex
 	latex $(DOCUMENT_NAME).tex
 	latex $(DOCUMENT_NAME).tex
 	latex $(DOCUMENT_NAME).tex
+
+linkedpdf: $(LINKED_PDF)
+$(LINKED_PDF): $(DOCUMENT_NAME).tex
+	pdflatex $(DOCUMENT_NAME).tex
+	pdflatex $(DOCUMENT_NAME).tex
+	pdflatex $(DOCUMENT_NAME).tex
+	mv $(DOCUMENT_NAME).pdf $(LINKED_PDF)
 
 bi: $(DOCUMENT_NAME).tex
 	bibtex $(DOCUMENT_NAME)
