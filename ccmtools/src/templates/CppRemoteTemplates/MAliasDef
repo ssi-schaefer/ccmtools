@@ -43,7 +43,6 @@ namespace CCM_Remote {
 
 using namespace std;
 
-//(OpenNamespace)s
 namespace CCM_Remote {
 
 %(ConvertFromCorbaImplementation)s
@@ -52,6 +51,5 @@ namespace CCM_Remote {
 
 %(OutputCorbaTypeImplementation)s 
 
-//(CloseNamespace)s
 } // /namespace CCM_Remote
 

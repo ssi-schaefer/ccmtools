@@ -1,5 +1,5 @@
   //============================================================================
-  // Receptacle remote adapter for %(UsesType)s %(Identifier)s
+  // Receptacle remote adapter for %(UsesType)s
   //============================================================================
   
   class %(Identifier)sReceptacleAdapter 

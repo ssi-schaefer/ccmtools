@@ -551,6 +551,7 @@ public class CppRemoteGeneratorImpl
 	else if(dataType.equals("ConvertAliasFromCORBA")) {
 	    String singleValue = data_MSequenceDef("SingleValue", "");
 	    List code = new ArrayList();
+	    code.add("    out.clear();");
 	    code.add("    out.reserve(in.length());");
 	    code.add("    for(unsigned long i=0; i < in.length();i++) {");
 	    code.add("        " + singleValue + " singleValue;");
@@ -1014,7 +1015,7 @@ public class CppRemoteGeneratorImpl
 		buffer.append(super.getBaseLanguageType(object));
 	    }
 	    else {
-		buffer.append(getLocalNamespace("::",""));
+		buffer.append("CCM_Local::");
 		buffer.append(super.getBaseLanguageType(object));
 	    }
 	}
@@ -1066,12 +1067,44 @@ public class CppRemoteGeneratorImpl
     //====================================================================
 
     /**
+     * Extract the scoped CORBA type from a MTyped entity.
+     * TODO: Refactoring, this method is a subset of getCORBALanguageType()
+     */ 
+    protected String getCorbaType(MTyped type)
+    {
+	MIDLType idlType = type.getIdlType();
+	String baseType = getBaseIdlType(type);
+	String corbaType = "";
+
+        if(CORBA_mappings.containsKey(baseType)) {
+	    // Primitive data types are mapped via map.
+	    corbaType = (String) CORBA_mappings.get(baseType);
+	}
+	//	else if(type instanceof MContained
+	//		|| idlType instanceof MTypedefDef) {
+	else if(idlType instanceof MTypedefDef) {
+	    corbaType = getCorbaStubsNamespace("::") + baseType;  
+	}
+	else {
+	    throw new RuntimeException("CppRemoteGeneratorImpl.getCorbaType(" 
+				      + type 
+				      + "): unhandled MTyped!");
+	}
+	return corbaType;
+    }
+
+
+    /**
      * Converts the CCM model type information (MTyped) to the corresponding 
      * CORBA types. If the MTyped type is used as an operation parameter,
      * the CORBA to C++ mapping parameter passing rules take place.
      *
      * @param object Reference to a MTyped element of the CCM model.
      * @return Generated code for the CORBA type as string.
+     *
+     * TODO: - Refactoring, move parameter handling out of this method,
+     *         thus, getCorbaType() can be eliminated!
+     *       - Refactoring, use getCorbaStubsNamespace("::") instead of scope...
      */
     protected String getCORBALanguageType(MTyped object)
     {
@@ -1637,10 +1670,6 @@ public class CppRemoteGeneratorImpl
 		if(containedIdlType instanceof MPrimitiveDef
 		   || containedIdlType instanceof MStringDef
 		   || containedIdlType instanceof MWstringDef) {
-
-		    System.out.println("==>" + getCORBALanguageType(op));
-		    System.out.println("==>" + getCORBALanguageType(p));
-
 		    list.add(convertPrimitiveParameterToCorba(p));
 		}
 		else if(containedIdlType instanceof MStructDef
@@ -1662,7 +1691,7 @@ public class CppRemoteGeneratorImpl
 	MParameterMode direction = p.getDirection();
 	MIDLType idlType = ((MTyped)p).getIdlType();
 	String baseType = getBaseIdlType(p);
-	String corbaType = (String)CORBA_mappings.get(baseType);
+	String corbaType = getCorbaType(p);
 	List list = new ArrayList();
 
 	list.add(insertTab(1) + corbaType + " parameter_" + p.getIdentifier() + ";"); 
@@ -1679,8 +1708,8 @@ public class CppRemoteGeneratorImpl
 	MIDLType idlType = ((MTyped)p).getIdlType();
 	MTypedefDef typedef = (MTypedefDef)idlType;
 	MContained contained = (MContained)typedef;
-	List scope = getScope(contained);
-	String remoteScope;
+	//	List scope = getScope(contained);
+	//	String remoteScope;
 	List list = new ArrayList();
 
 	if(direction == MParameterMode.PARAM_IN
@@ -1712,30 +1741,65 @@ public class CppRemoteGeneratorImpl
      */
     protected String declareReceptacleCorbaResult(MOperationDef op)
     {
-	StringBuffer buffer = new StringBuffer();
 	MIDLType idlType = op.getIdlType(); 
+	String result = "";
 
-	if(idlType instanceof MPrimitiveDef || 
-	   idlType instanceof MStringDef) {
-	    buffer.append(insertTab(1)); 
-	    buffer.append((String)CORBA_mappings.get((String)getBaseIdlType(op))); 
-	    buffer.append(" result;");
+	if(idlType instanceof MPrimitiveDef 
+	   || idlType instanceof MStringDef
+	   || idlType instanceof MWstringDef) {
+	    result = declareReceptacleCorbaPrimitiveResult(op);
 	}
-	else if(idlType instanceof MStructDef
-		|| idlType instanceof MAliasDef) {
-	    MTypedefDef typedef = (MTypedefDef)idlType;
-	    MContained contained = (MContained)typedef;
-	    buffer.append(insertTab(1));
-	    buffer.append(getCorbaStubsNamespace("::"));  
-	    buffer.append(contained.getIdentifier());
-	    buffer.append("_var result;"); 
+	else if(idlType instanceof MStructDef) {
+	    result = declareReceptacleCorbaUserResult(op); 
+	}
+	else if(idlType instanceof MAliasDef) {
+	    MTyped containedType = (MTyped)idlType;
+	    MIDLType containedIdlType = containedType.getIdlType(); 
+	    if(containedIdlType instanceof MPrimitiveDef
+	       || containedIdlType instanceof MStringDef
+	       || containedIdlType instanceof MWstringDef) {
+		result = declareReceptacleCorbaPrimitiveResult(op);
+	    }
+	    else if(containedIdlType instanceof MStructDef
+		    || containedIdlType instanceof MSequenceDef) {
+		result = declareReceptacleCorbaUserResult(op); 
+	    }
+	    else {
+		throw new RuntimeException("CppRemoteGenerator.declareReceptacleCorbaResult(" + op 
+					   + ") : unhandled MAilasDef!");
+	    }
 	}
 	else {
 	    throw new RuntimeException("CppRemoteGenerator.declareReceptacleCorbaResult(" + op 
-				       + ") : unhandled idlType");
+				       + ") : unhandled idlType!");
 	}
+	return result;
+    }
+
+
+    protected  String declareReceptacleCorbaPrimitiveResult(MOperationDef op) 
+    {
+	StringBuffer buffer = new StringBuffer();
+	buffer.append(insertTab(1)); 
+	//	buffer.append((String)CORBA_mappings.get((String)getBaseIdlType(op))); 
+	buffer.append(getCorbaType(op));
+	buffer.append(" result;");
 	return buffer.toString();
     }
+
+    protected  String declareReceptacleCorbaUserResult(MOperationDef op) 
+    {
+	MIDLType idlType = op.getIdlType(); 
+	MTypedefDef typedef = (MTypedefDef)idlType;
+	MContained contained = (MContained)typedef;
+	StringBuffer buffer = new StringBuffer();
+	buffer.append(insertTab(1));
+	buffer.append(getCorbaStubsNamespace("::"));  
+	buffer.append(contained.getIdentifier());
+	buffer.append("_var result;"); 	
+	return buffer.toString();
+    }
+
 
 
     /**
