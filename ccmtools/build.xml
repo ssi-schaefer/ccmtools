@@ -1,4 +1,4 @@
-<project name="ccmtools" default="ccmtools">
+<project name="ccmtools" default="ccmtools.jar">
 
   <description>
 
@@ -37,7 +37,7 @@
   </target>  
 
 
-  <!--  -->
+  <!-- Generate parser source code using ANTLR -->
 
   <target name="IDL3ParserGenerator" depends="init"
      description="Generate the idl3_parser using antlr." >
@@ -47,79 +47,16 @@
   </target>
 
   
+  <!-- Compile whole ccmtools source code -->
   <target name="ccmtools" depends="IDL3ParserGenerator"
-     description="Compile the ccmtools." >
+     description="Compile whole ccmtools code." >
       <javac srcdir="${src}/ccmtools" destdir="${build}" debug="on" >
           <classpath refid="compile.classpath" />  
       </javac>
   </target>
 
-
-  <target name="Metamodel" depends="init"
-     description="Compile the CCM metamodel library" >
-      <javac srcdir="${src}/Metamodel" destdir="${build}" debug="on" >
-          <classpath refid="compile.classpath" />  
-      </javac>
-  </target>
-
-
-  <target name="IDL3Parser" depends="IDL3ParserGenerator"
-     description="Compile the IDL3Parser package." >
-      <javac srcdir="${src}/IDL3Parser" destdir="${build}" debug="on" >
-          <classpath refid="compile.classpath" />  
-      </javac>
-  </target>
-
-
-  <target name="CodeGenerator" depends="Metamodel"
-     description="Compile the CodeGenerator package." >
-      <javac srcdir="${src}/CodeGenerator" destdir="${build}" debug="on" >
-          <classpath refid="compile.classpath" />  
-      </javac>
-  </target>
-
-
-  <target name="IDLGenerator" depends="CodeGenerator"
-     description="Compile the IDLGenerator package." >
-      <javac srcdir="${src}/IDLGenerator" destdir="${build}" debug="on" >
-          <classpath refid="compile.classpath" />  
-      </javac>
-  </target>
-
-
-  <target name="CppGenerator" depends="CodeGenerator"
-     description="Compile the CppGenerator package." >
-      <javac srcdir="${src}/CppGenerator" destdir="${build}" debug="on" >
-          <classpath refid="compile.classpath" />  
-      </javac>
-  </target>
-
-
-  <target name="OCL" depends="CodeGenerator"
-     description="Compile the OCL package." >
-      <javac srcdir="${src}/OCL" destdir="${build}" debug="on" >
-          <classpath refid="compile.classpath" />  
-      </javac>
-  </target>
-
-
-  <target name="utils" depends="init"
-     description="Compile the utils package." >
-      <javac srcdir="${src}/utils" destdir="${build}" debug="on" >
-          <classpath refid="compile.classpath" />  
-      </javac>
-  </target>
-
-
-  <target name="UI" depends="IDL3Parser, IDLGenerator, CppGenerator, OCL, utils"
-     description="Compile the UI package." >
-      <javac srcdir="${src}/UI" destdir="${build}" debug="on" >
-          <classpath refid="compile.classpath" />  
-      </javac>
-  </target>
-
-  <target name="ccmtools.jar" depends="UI"
-     description="Package the ccmtools class files into ccmtools.jar." >
+  <target name="ccmtools.jar" depends="ccmtools"
+     description="Package ccmtools class files into ccmtools.jar." >
       <jar jarfile="${lib}/ccmtools.jar" basedir="${build}" >
          <manifest>
             <attribute name="Main-Class" value="ccmtools.UI.ConsoleCodeGenerator" />
@@ -128,11 +65,10 @@
   </target>
 
 
-  <!-- Create javaDoc -->
-
+  <!-- Create JavaDoc -->
   <target name="doc" 
       description="Generates javadoc for the ccmtools package.">
-      <javadoc packagenames="ccmtools.Metamodel.BaseIDL"
+      <javadoc packagenames="ccmtools.*"
                sourcepath="${src}"
 	       destDir="${doc}/javadoc">
       </javadoc>
@@ -140,7 +76,6 @@
 
 
   <!-- Install java-environment -->
-
   <target name="install"  depends="ccmtools.jar" 
       description="Install java-environment to prefix/.">
       <mkdir dir="${prefix}" />
