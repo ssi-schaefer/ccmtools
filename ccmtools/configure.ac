@@ -71,6 +71,7 @@ test/IDL3Parser/Makefile
 test/IDLGenerator/Makefile
 test/CodeGenerator/Makefile
 test/CppGenerator/Makefile
+test/CppDbcGenerator/Makefile
 test/ocl/Makefile
 Metamodel/Makefile
 Metamodel/BaseIDL/Makefile
