@@ -17,7 +17,6 @@ $Header$
   <property name="src" location="src" />
   <property name="build0" location="build" />
   <property name="build2" location="build/U" />
-  <property name="build3" location="build/M" />
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
   <property name="prefix" location="dist" />
@@ -44,7 +43,6 @@ $Header$
       description="Creates the build directory and deletes the old jar files." >
       <mkdir dir="${build0}" />
       <mkdir dir="${build2}" />
-      <mkdir dir="${build3}" />
   </target>
 
 
@@ -77,41 +75,6 @@ $Header$
       <jar jarfile="${lib}/uml2idl.jar" basedir="${build2}" >
          <manifest>
             <attribute name="Main-Class" value="uml2idl.Main" />
-         </manifest>
-      </jar>
-  </target>
-
-
-  <!-- MOF reader -->
-
-  <target name="mof_xmi_parser" depends="init"
-      description="Run the dtd2java tool to create the mof_xmi_parser package.">
-      <java classname="dtd2java.Main">
-          <classpath refid="run.classpath" />
-      <arg value="${src}/dtd2java/MOF14XMI11.dtd" />
-      <arg value="mof_xmi_parser" />
-      <arg value="src" />
-      <arg value="Id" />
-      </java>
-  </target>
-
-
-  <target name="mof_reader" depends="mof_xmi_parser"
-      description="Compile mof_xmi_parser and mof_reader.">
-        <javac srcdir="${src}/mof_xmi_parser" destdir="${build3}" debug="${DEBUG}" >
-	    <classpath refid="compile.classpath" />
-        </javac>
-        <javac srcdir="${src}/mof_reader" destdir="${build3}" debug="${DEBUG}" >
-	    <classpath refid="compile.classpath" />
-        </javac>
-  </target>
-
-
-  <target name="mof_reader.jar" depends="mof_reader"
-      description="Package the *.class files into mof_reader.jar.">
-      <jar jarfile="${lib}/mof_reader.jar" basedir="${build3}" >
-         <manifest>
-            <attribute name="Main-Class" value="mof_reader.Main" />
          </manifest>
       </jar>
   </target>
@@ -159,13 +122,9 @@ $Header$
   <target name="clean"
       description="Clean up the build and lib directory." >
       <delete dir="${src}/uml_parser" />
-      <delete dir="${src}/mof_xmi_parser" />
-
       <delete dir="${build0}" />
-
-      <delete file="${lib}/uml2idl.jar" /> 
-      <delete file="${lib}/mof_reader.jar" />
-
+      <delete file="${lib}/uml2idl.jar" />
+      
       <delete file="u1.idl" />
       <delete file="u1.ocl" />
   </target>
