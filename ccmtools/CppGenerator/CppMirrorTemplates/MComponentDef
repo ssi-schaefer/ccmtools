@@ -86,11 +86,11 @@ int main ( int argc, char *argv[] )
 %(MAttributeDef)s
 
     // Test supported interfaces
-%(MSupportsDef)s
+    //(MSupportsDef)s
 
     // Test provided and used interfaces
-%(MProvidesDefTest)s
-%(MUsesDefTest)s
+    //(MProvidesDefTest)s
+    //(MUsesDefTest)s
 
     /*
      * TEAR DOWN

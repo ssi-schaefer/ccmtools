@@ -99,7 +99,11 @@ import org.omg.CORBA.Any;
  */
 
 class IDL3Parser extends Parser;
-options { exportVocab = IDL3; }
+options 
+{ 
+  exportVocab = IDL3; 
+  k = 2;
+}
 {
     // debug levels for the parser are allowed to use the lower 24 bits of a
     // long int.

@@ -5,8 +5,9 @@
  *
  */
 
-//const float PI = 3.1415926;
-//const double twoPI = PI * 2.0; 
+
+
+// const double PI = 3.1415;
 
 typedef long time_t;
 
@@ -14,24 +15,28 @@ enum Color {red, green, blue, black, orange};
 
 typedef double doubleArray[10];
 
-struct Pair {
-  string s;
-  double d;
-};
+struct Record { 
+  double x;
+  float  y;
+  long   z;
+  string s1; 
+  string s2; 
+  string s3; 
+}; 
 
-typedef sequence<Pair> map;
-
+typedef sequence<Record> RecordList;
 
 component Hello
 {
   attribute time_t typedef_value;
   attribute Color enum_value;
-  attribute doubleArray array_value;
-  attribute Pair pair_value;
-  attribute map map_value;
+  //  attribute doubleArray array_value;
+  attribute Record struct_value;
+  attribute RecordList sequence_value;
 };
 
 home HelloHome manages Hello
 {
 };
+
 

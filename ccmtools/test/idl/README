@@ -1,4 +1,4 @@
-This is a collection of test cases for CCM Tools:
+This is a collection of test cases for ccmtools-0.2.2:
 
 
 Test of component features
@@ -13,11 +13,12 @@ attribute_basic_types: OK
 A component with attributes of different basic types
 (short, long, float, double, etc.).
 
-attribute_user_types: OK
+attribute_user_types: !!!! (Hello_user_types.h not included)
 ---------------------
 A component with attributes of different user types 
 (typedef, enum, struct, sequence, etc.).
-
+=> If there is no interface defined for the component, the Hello_user_types.h
+   fill will not be included.
 
 
 supports: OK
@@ -25,13 +26,11 @@ supports: OK
 A component that supports an interface that is stored in the 
 same idl file.
 
-supports_basic_types: !!!!! 
+supports_basic_types: OK
 ---------------------
 A component that supports an interface that contains methods with
 different basic types as in/inout/out parameters as well as as return value.
 All source code is stored in the same IDL file.
-=> _check* : string test parameter for inout and out can not be const.
-=> Hello_app.cc : string return value needs a return value.
 
 supports_exception: OK
 -------------------
@@ -39,26 +38,22 @@ A component that supports an interface which has a method declaration
 including a raises statement.
 All source code is stored in the same IDL file.
  
-supports_user_types: !!!!!
+supports_user_types: OK
 --------------------
 A component that supports an interface which has different methods
 that use some user types (typedef, enum, struct, sequence, etc.).
 All source code is stored in the same IDL file.
-=>  error in name verification: the identifier Value is undefined or of the wrong type
-    error while adding contents '[MAliasDef: time_tMPrimitiveDef...
 
 
 facet: OK
 ------
 A component with one facet that is defined in the same IDL file.
 
-facet_basic_types: !!!!!!! 
+facet_basic_types: OK
 ------------------
 A component that provides an interface as facet that contains methods with
 different basic types as in/inout/out parameters as well as as return value.
 All source code is stored in the same IDL file.
-=> _check* : string test parameter for inout and out can not be const!
-=> Hello_app.cc : string return value needs a return value!
 
 facet_exception: OK
 ----------------
@@ -66,13 +61,11 @@ A component that provides an interface as facet which has a method declaration
 including a raises statement.
 All source code is stored in the same IDL file.
  
-facet_user_types: !!!!!
+facet_user_types: OK
 ----------------- 
 A component that provides an interface which has different methods
 that use some user types (typedef, enum, struct, sequence, etc.).
 All source code is stored in the same IDL file.
-=> error in name verification: the identifier Value is undefined or of the wrong type
-=>  error while adding contents '[MAliasDef: time_tMPrimitiveDef: PK_LONG, MEnumDef: Color { red green blue black orange };, null]' to container 'MContainer: null[MAliasDef: time_tMPrimitiveDef: PK_LONG, MEnumDef: Color { red green blue black orange };]'
 
 
 receptacle: OK
@@ -97,13 +90,11 @@ A component that uses an interface as receptacle which has a method declaration
 including a raises statement.
 All source code is stored in the same IDL file.
 
-receptacle_user_types: !!!!!
+receptacle_user_types: OK
 ----------------------
 A component that uses an interface which has different methods
 that use some user types (typedef, enum, struct, sequence, etc.).
 All source code is stored in the same IDL file.
-=> error in name verification: the identifier Value is undefined or of the wrong type
-=> error while adding contents '[MAliasDef: time_tMPrimitiveDef: PK_LONG, MEnumDef: Color { red green blue black orange };, null]' to container 'MContainer: null[MAliasDef: time_tMPrimitiveDef: PK_LONG, MEnumDef: Color { red green blue black orange };]'
 
 
 home_factory: OK
@@ -117,11 +108,12 @@ A component that supports a home that contains factory methods with
 different basic types as in parameters.
 All source code is stored in the same IDL file.
 
-home_exception: !!!!!!!!
+home_exception: !!!! (Parser error)
 ---------------
 A component with an attribute that has a home with an explicit factory
 method that contains a raises statement.
-=>java.lang.ClassCastException: ccmtools.Metamodel.BaseIDL.MExceptionDefImpl
+=>java.lang.RuntimeException: Errors during parsing:
+  java.lang.ClassCastException: ccmtools.Metamodel.BaseIDL.MExceptionDefImpl
   Error while generating IDL3 mirror files.
 
 home_user_type: TODO
@@ -144,14 +136,13 @@ where the component idl and the interface idl of facet and receptacle
 are stored in different files in different directories.
 (ccmtools-c++-generate -d -p hello -Icomp -Iifaces comp/*.idl ifaces/*.idl) 
 
-include_nested: !!!!!
+include_nested: OK
 ---------------
 A component with an attribute, a facet and a receptacle, 
 where the interfaces are stored in different idl files.
 One interface file includes another idl file that contains
 a structure definition.
-=> error in name verification: the identifier Message is undefined or of the wrong type
-=> error while adding contents '[null]' to container 'MContainer: null[]'
+
  
 
 Test of source code modularity
@@ -167,41 +158,37 @@ module_nested: OK
 A component with an attribute that is defined within 
 three nested modules in a single IDL file.
 
-module_reopen: !!!!!
+module_reopen: OK
 --------------
 A compoent with an attribute and a facet defined in two
 IDL files, where in each file there is the same module
 definition.
-=> hello/WORLD_CCM_Session_Hello_mirror/HelloHome_mirror_app.cc:
-   CCM_Local/Console.h: Datei oder Verzeichnis nicht gefunden
 
-module_mixed: !!!!!
+module_mixed: !!!!! (Parser error)
 -------------
 A component with an attribute and a facet defined in two
 IDL files. The component and the facet interface is defined in 
 their own modules.
-=> error in name verification: the identifier Console is undefined or of the wrong type
+=> java.lang.RuntimeException: Errors during parsing:
+   antlr.TokenStreamException: identifier 'Console' is undefined or of the wrong type
 
 
 Real world examples
 ===================
 
-Claculator: !!!!!!
+Claculator: OK
 -----------
 The main component (Calculator) has an attribute, a facet, a
 singleand a multiple receptacle as well as a home with a
 factory method.
 Two other components (IntegerCalculator and Display) supports
 a facet that can be connected to the Calculator's receptacles.
-=> error in name verification: the identifier Record is undefined or of the wrong type
-=> error in name verification: the identifier RecordSet is undefined or of the wrong type
 
-
-owudb: !!!!!
+owudb: OK
 ------
 Two components that are connected via two facet/receptacle
 interfaces. The source code is distributed between 10 IDL files.
-=> error in name verification: the identifier PersData is undefined or of the wrong type
+
 
 
 

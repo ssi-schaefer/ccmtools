@@ -300,10 +300,12 @@ abstract public class CppGenerator
             String suffix = "";
 
             if (direction == MParameterMode.PARAM_IN) prefix = "const ";
+
             if ((idl_type instanceof MTypedefDef)
                 || (idl_type instanceof MStringDef)
-                || (idl_type instanceof MFixedDef)) suffix = "&";
-
+                || (idl_type instanceof MFixedDef)) {
+		suffix = "&";
+	    }
             return prefix + base_type + suffix;
         } else if ((object instanceof MAliasDef) &&
                    (idl_type instanceof MTyped)) {
@@ -311,12 +313,27 @@ abstract public class CppGenerator
         } else if (object instanceof MSequenceDef) {
             // FIXME : can we implement bounded sequences in C++ ?
             return "std::"+sequence_type+"<"+base_type+"> ";
-        } else if (object instanceof MArrayDef) {
-            Iterator i = ((MArrayDef) object).getBounds().iterator();
-            Long bound = (Long) i.next();
-            String result = base_type + "[" + bound;
-            while (i.hasNext()) result += "][" + (Long) i.next();
-            return result + "]";
+        } 
+	else if (object instanceof MArrayDef) { // typedef in *_user_types.h
+//  	    Iterator i = ((MArrayDef) object).getBounds().iterator();
+//  	    Long bound = (Long) i.next();
+//  	    String result = base_type + "[" + bound;
+//  	    while (i.hasNext()) result += "][" + (Long) i.next();
+//  	    return result + "]";
+	    String result;
+	    int dimension = ((MArrayDef) object).getBounds().size();
+	    if(dimension == 1)
+		result = "std::vector<" + base_type + ">";
+	    else {
+		result = "std::vector<";
+		for(int i=1;i<dimension;i++)
+		    result += "vector<";
+		result += base_type + ">";
+		for(int i=1;i<dimension;i++)
+		    result += " >";
+            }
+	    // FIXME: how should we map the array bounds to std::vector? 
+	    return result;
         }
 
         return base_type;
