@@ -1,0 +1,20 @@
+// $Id$
+/**
+ * Test case: supports exception
+ *
+ */
+
+exception error {};
+
+interface Console {
+  long println(in string s2) raises (error);
+};
+
+component Hello supports Console
+{
+};
+
+home HelloHome manages Hello
+{
+};
+

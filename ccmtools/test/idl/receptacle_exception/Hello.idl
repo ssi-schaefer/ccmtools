@@ -1,0 +1,22 @@
+// $Id$
+/**
+ * Test case: receptacle exception
+ *
+ */
+
+exception error {};
+
+interface Console {
+  long println(in string s2)
+    raises (error);
+};
+
+component Hello
+{
+  uses Console console;
+};
+
+home HelloHome manages Hello
+{
+};
+
