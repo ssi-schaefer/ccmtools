@@ -31,6 +31,7 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 public class IDL3MirrorGeneratorImpl
     extends IDLGenerator
@@ -51,6 +52,43 @@ public class IDL3MirrorGeneratorImpl
         if (idl_type instanceof MComponentDef || idl_type instanceof MHomeDef)
             return super_type + "_mirror";
         return super_type;
+    }
+
+
+    /**
+     * Override IDLGenerator method to generate the mirror component files
+     * into a 'component' directory. 
+     *
+     **/
+    protected void writeOutput(Template template)
+        throws IOException
+    {
+        String[] pieces = template.substituteVariables(output_variables).split("\n");
+	
+        List code_pieces = new ArrayList();
+        for (int i = 0; i < pieces.length; i++) {
+            if (! pieces[i].trim().equals("")) {
+                code_pieces.add(pieces[i]);
+	    }
+	}
+        String code = join("\n", code_pieces);
+
+	String dir;
+	String name;
+	if(current_node instanceof MComponentDef ||
+	   current_node instanceof MHomeDef) {
+	    dir = "component";
+	    if(namespace.size() > 0) {
+		dir += File.separator + join(File.separator, namespace) + File.separator;
+	    }
+	    name = ((MContained) current_node).getIdentifier() + "_mirror.idl";
+	    writeFinalizedFile(dir, name, code + "\n\n");
+	}
+	else {
+	    // Don't generate code for other nodes than MComponentDef and
+	    // MHomeDef.
+	    // TODO: cancel all other templates from IDL3MirrorTemplates
+	}
     }
 }
 
