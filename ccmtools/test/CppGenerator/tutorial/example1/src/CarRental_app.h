@@ -63,27 +63,16 @@ class maintenance_impl
   virtual ~maintenance_impl (  );
 
 
-  virtual void createCustomer ( const Customer& person ) throw (LocalComponents::CCMException, CreateCustomerException );
-#ifdef CCM_TEST_PYTHON
-  void call_python_createCustomer ( const Customer& person ) throw (LocalComponents::CCMException, CreateCustomerException );
-#endif
-  virtual Customer retrieveCustomer ( const long id ) throw (LocalComponents::CCMException, NoCustomerException );
-#ifdef CCM_TEST_PYTHON
-  Customer call_python_getCustomer ( const long id ) throw (LocalComponents::CCMException, NoCustomerException );
-#endif
-  virtual CustomerList retrieveAllCustomers (  ) throw (LocalComponents::CCMException, NoCustomerException );
-#ifdef CCM_TEST_PYTHON
-  CustomerList call_python_getAllCustomers (  ) throw (LocalComponents::CCMException, NoCustomerException );
-#endif
-  virtual void updateCustomer ( const Customer& person ) throw (LocalComponents::CCMException, NoCustomerException );
-#ifdef CCM_TEST_PYTHON
-  void call_python_updateCustomer ( const Customer& person ) throw (LocalComponents::CCMException, NoCustomerException );
-#endif
-  virtual void deleteCustomer ( const long id ) throw (LocalComponents::CCMException, CreateCustomerException );
-#ifdef CCM_TEST_PYTHON
-  void call_python_deleteCustomer ( const long id ) throw (LocalComponents::CCMException, CreateCustomerException );
-#endif
-
+  virtual void createCustomer ( const Customer& person ) 
+    throw (LocalComponents::CCMException, CreateCustomerException );
+  virtual Customer retrieveCustomer ( const long id ) 
+    throw (LocalComponents::CCMException, NoCustomerException );
+  virtual CustomerList retrieveAllCustomers (  ) 
+    throw (LocalComponents::CCMException, NoCustomerException );
+  virtual void updateCustomer ( const Customer& person ) 
+    throw (LocalComponents::CCMException, NoCustomerException );
+  virtual void deleteCustomer ( const long id ) 
+    throw (LocalComponents::CCMException, RemoveCustomerException );
 };
 
 //==============================================================================

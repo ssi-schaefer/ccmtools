@@ -114,7 +114,7 @@ maintenance_impl::updateCustomer ( const Customer& person )
 
 void
 maintenance_impl::deleteCustomer ( const long id )
-  throw (LocalComponents::CCMException, CreateCustomerException )
+  throw (LocalComponents::CCMException, RemoveCustomerException )
 {
   DEBUGNL ( " maintenance_impl->removeCustomer ( id )" );
   
@@ -125,7 +125,7 @@ maintenance_impl::deleteCustomer ( const long id )
       return;
     }
   }
-  throw NoCustomerException();  
+  throw RemoveCustomerException();  
 }
 
 

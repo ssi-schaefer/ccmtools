@@ -17,7 +17,7 @@ module BigBusiness {
     void updateCustomer(in Customer person)  
       raises (NoCustomerException);
     void deleteCustomer(in long id)  
-      raises (CreateCustomerException);
+      raises (RemoveCustomerException);
   };
   
 }; // End of module BigBusiness
