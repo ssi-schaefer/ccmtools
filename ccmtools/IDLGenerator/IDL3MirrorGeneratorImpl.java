@@ -1,6 +1,6 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -23,21 +23,18 @@ package ccmtools.IDLGenerator;
 
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MContained;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class IDL3MirrorGeneratorImpl
     extends IDLGenerator
 {
-    public IDL3MirrorGeneratorImpl(Driver d, File out_dir)
-        throws IOException 
-    { 
-	super("IDL3Mirror", d, out_dir, null, null); 
-    }
+    protected String fileSuffix = "3mirror";
 
-    public void writeOutput(Template template)
-        throws IOException { writeOutput(template, "3mirror"); }
+    public IDL3MirrorGeneratorImpl(Driver d, File out_dir) throws IOException
+    { super("IDL3Mirror", d, out_dir); }
 }
-
 

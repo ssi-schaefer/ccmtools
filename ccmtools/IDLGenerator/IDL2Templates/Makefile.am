@@ -35,7 +35,6 @@ dist_template_DATA = \
     MInterfaceDefAbstract                    \
     MInterfaceDefAbstractLocal               \
     MInterfaceDefLocal                       \
-    MModuleDef                               \
     MOperationDef                            \
     MParameterDef                            \
     MProvidesDef                             \
@@ -48,7 +47,3 @@ dist_template_DATA = \
     MUsesDef                                 \
     MUsesDefMultiple                         \
     MSupportsDefBase
-
-
-
-

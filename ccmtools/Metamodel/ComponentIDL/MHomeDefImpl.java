@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -43,6 +43,7 @@ public class MHomeDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean isAbstract;
     private boolean isLocal;
@@ -64,16 +65,20 @@ public class MHomeDefImpl
 	SupportsList_= new ArrayList();
 	FactoryList_= new ArrayList();
 	FinderList_ = new ArrayList();
+        Component_ = null;
+        PrimaryKey_ = null;
+        Contains = null;
+        TypedBy_ = null;
 	ContainsList = new ArrayList();
 	InterfaceDerivedFromList = new ArrayList();
+        sourceFile = "";
     }
 
     // override toString()
     public String toString()
     {
 	String tmp = "MHomeDef: "+ identifier;
-	if (ContainsList.size() > 0)
-            tmp  += " " + ContainsList;
+	if (ContainsList.size() > 0) tmp  += " " + ContainsList;
         if (InterfaceDerivedFromList.size() > 0)
             tmp += " (bases: " + InterfaceDerivedFromList + ")";
 	return tmp;
@@ -101,6 +106,10 @@ public class MHomeDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     // attribute isAbstract:boolean
     public boolean isAbstract()                 {return isAbstract;}

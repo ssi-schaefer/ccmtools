@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -31,7 +31,6 @@ public class MTypedImpl
     {
 	return "MTyped: " + TypedBy_.toString();
     }
-
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -7,8 +7,8 @@
  * ccmtools-c++-make -p Hello
  */
 
-#include"Console.idl"
-#include"Lcd.idl"
+#include "Console.idl"
+#include "Lcd.idl"
 
 component Hello
 {

@@ -1,6 +1,6 @@
 /* CCM Tools : IDL3 Parser
  * Edin Arnautovic <edin.arnautovic@salomon.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -37,7 +37,9 @@ public class ParserManager {
     private long debug;
 
     private IDL3SymbolTable symbolTable;
-    private String filename;
+
+    private String originalFile; // the original file being parsed.
+    private String sourceFile;   // the source of the current section of code.
     private List errors;
 
     /**
@@ -70,7 +72,8 @@ public class ParserManager {
     {
         symbolTable = new IDL3SymbolTable();
         errors = new ArrayList();
-        filename = null;
+        originalFile = null;
+        sourceFile = null;
     }
 
     /**
@@ -87,15 +90,35 @@ public class ParserManager {
      *
      * @return the name of the original file given to parse.
      */
-    public String getFilename() { return filename; }
+    public String getOriginalFile() { return originalFile; }
+
+    /**
+     * Set the name of the file that the parser manager started with.
+     *
+     * @param f the name of the original file to be parsed.
+     */
+    public void setOriginalFile(String f) { originalFile = new String(f); }
+
+    /**
+     * Find out which file the parser is currently handling.
+     *
+     * @return the name of the file that originated the current code section.
+     */
+    public String getSourceFile() { return sourceFile; }
+
+    /**
+     * Set the name of the file that the parser is currently handling.
+     *
+     * @param f the name of the file that provided the current code section.
+     */
+    public void setSourceFile(String f) { sourceFile = new String(f); }
 
     /**
      * Parse an IDL3 file.
      *
      * @param filename the name of a file to open and parse.
-     * @return a <code>ccm.mof.BaseIDL.MContainer</code> object that contains
-     *         a metamodel corresponding to the declarations in the source IDL3
-     *         file.
+     * @return an MContainer object that contains a metamodel corresponding to
+     *         the declarations in the source IDL3 file.
      */
     public MContainer parseFile(String filename)
         throws RecognitionException, TokenStreamException
@@ -109,13 +132,12 @@ public class ParserManager {
             stream = new DataInputStream(new FileInputStream(filename));
         } catch (Exception e) {
             throw new RuntimeException(
-                "Error opening input file '"+filename+"': "+e);
+                "Error opening input file '" + filename + "': " + e);
         }
 
 	try {
             lexer = new IDL3Lexer(stream);
             lexer.setDebug(debug);
-            lexer.setFilename(filename);
             lexer.setManager(this);
         } catch (Exception e) {
             throw new RuntimeException("Error creating lexer: " + e);
@@ -124,13 +146,14 @@ public class ParserManager {
         try {
             parser = new IDL3Parser(lexer);
             parser.setDebug(debug);
-            parser.setFilename(filename);
             parser.setManager(this);
         } catch (Exception e) {
             throw new RuntimeException("Error creating parser: " + e);
         }
 
-        if (this.filename == null) this.filename = filename;
+        if (this.originalFile == null) this.originalFile = new String(filename);
+        if (this.sourceFile == null) this.sourceFile = new String(filename);
+
         symbolTable.pushFile();
 
         try {

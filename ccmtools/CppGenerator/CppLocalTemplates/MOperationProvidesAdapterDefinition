@@ -1,6 +1,6 @@
 %(LanguageType)s
 %(Object)s%(ProvidesType)s::%(Identifier)s ( %(MParameterDefAll)s )
-  %(MExceptionDef)s
+  %(MExceptionDefThrows)s
 {
   DEBUGNL(" %(Object)s%(ProvidesType)s->%(Identifier)s ( %(MParameterDefName)s )");
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );

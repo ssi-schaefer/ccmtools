@@ -40,7 +40,7 @@ public class CppRemoteGeneratorImpl
     extends CppGenerator
 {
     //====================================================================
-    // Definition of arrays that determine the generator's behavior 
+    // Definition of arrays that determine the generator's behavior
     //====================================================================
 
     /**
@@ -51,7 +51,7 @@ public class CppRemoteGeneratorImpl
     private final static String[] local_output_types =
     {
 	//"MContainer",
-        "MHomeDef", 
+        "MHomeDef",
 	"MComponentDef"
     };
 
@@ -124,9 +124,8 @@ public class CppRemoteGeneratorImpl
 	"CORBA::WChar",       // PK_WCHAR
 	"CORBA::WChar*"       // PK_WSTRING
     };
-    
+
     private Map CORBA_mappings;
-    
 
     /**
      * The generator constructor calls the constructor of the base class
@@ -145,7 +144,8 @@ public class CppRemoteGeneratorImpl
 
 	System.out.println("CppRemoteGeneratorImpl.CppRemoteGeneratorImpl()");
 
-	// fill the CORBA_mappings with IDL to C++ Mapping types 
+	// fill the CORBA_mappings with IDL to C++ Mapping types
+
 	String[] labels = MPrimitiveKind.getLabels();
 	CORBA_mappings = new Hashtable();
 	for (int i = 0; i < labels.length; i++)
@@ -191,7 +191,7 @@ public class CppRemoteGeneratorImpl
      *        a string containing the names of ancestor nodes, joined together
      *        with double colons.
      *
-     * Note: this method is only a logging wrapper for the super class method.  
+     * Note: this method is only a logging wrapper for the super class method.
      */
     public void endNode(Object node, String scope_id)
     {
@@ -220,24 +220,23 @@ public class CppRemoteGeneratorImpl
 
         String value = super.getLocalValue(variable);
 
-	if (current_node instanceof MUsesDef) { 
+	if (current_node instanceof MUsesDef) {
             return data_MUsesDef(variable, value);
-	}
-	else if (current_node instanceof MAttributeDef) { 
+        } else if (current_node instanceof MAttributeDef) {
             return data_MAttributeDef(variable, value);
-	} else if (current_node instanceof MFactoryDef) { 
+        } else if (current_node instanceof MFactoryDef) {
             return data_MFactoryDef(variable, value);
 	}
+
 	return value;
     }
-
 
    /**
     * Navigates in the metamodel from MUsesDef to MInterfaceDef to make
     * the template substitution for the MOperationDef possible.
     * @param data_type
     * @param data_value
-    * @return 
+    * @return
     */
     protected String data_MUsesDef(String data_type, String data_value)
     {

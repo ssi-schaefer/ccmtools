@@ -1,6 +1,6 @@
 /* CCM Tools : CORBA Component Descriptor (CCD) Generator
  * Edin Arnautovic <edin.arnautovic@salomon.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *

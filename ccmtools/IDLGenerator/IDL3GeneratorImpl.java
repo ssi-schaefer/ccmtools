@@ -1,6 +1,6 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -23,6 +23,7 @@ package ccmtools.IDLGenerator;
 
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -31,19 +32,16 @@ import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 public class IDL3GeneratorImpl
     extends IDLGenerator
 {
-    public IDL3GeneratorImpl(Driver d, File out_dir)
-        throws IOException 
-    { 
-	super("IDL3", d, out_dir, null, null); 
-    }
+    protected String fileSuffix = "3";
 
-    public void writeOutput(Template template)
-        throws IOException { writeOutput(template, "3"); }
+    public IDL3GeneratorImpl(Driver d, File out_dir) throws IOException
+    { super("IDL3", d, out_dir); }
 
     protected String getLocalValue(String variable)
     {
@@ -51,7 +49,8 @@ public class IDL3GeneratorImpl
 
         if (current_node instanceof MHomeDef) {
             return data_MHomeDef(variable, value);
-	} 
+	}
+
         return value;
     }
 

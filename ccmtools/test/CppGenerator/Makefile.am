@@ -11,55 +11,82 @@ TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
 
 dist_noinst_SCRIPTS = test-loader.sh
 
+TESTS = \
+  attribute-interface.sh \
+  supports-inheritance.sh \
+  home_exception.sh \
+  home-factory-interface.sh \
+  facet-inheritance.sh \
+  receptacle-inheritance.sh \
+  module_mixed.sh
+
 # tests are generally in order of increasing complexity.
 
-# The following tests do not work until now! 
-#TESTS = attribute-interface.sh supports-inheritance.sh home_exception.sh home-factory-interface.sh  facet-inheritance.sh receptacle-inheritance.sh module_mixed.sh
-
-
-#TESTS =  
-
-TESTS =     help.sh                     \
-            version.sh                  \
-            attribute.sh                \
-            attribute_basic_types.sh    \
-            attribute_user_types.sh     \
-            supports.sh                 \
-            supports_basic_types.sh     \
-            supports_exception.sh       \
-            supports_user_types.sh      \
-            facet.sh                    \
-            facet_basic_types.sh        \
-            facet_exception.sh          \
-            facet_user_types.sh         \
-            receptacle.sh               \
-            receptacle_not_connected.sh \
-            receptacle_basic_types.sh   \
-            receptacle_exception.sh     \
-            receptacle_multiple.sh      \
-            receptacle_user_types.sh    \
-            home_factory.sh             \
-            home_basic_types.sh         \
-            home_user_types.sh          \
-            include.sh                  \
-            include_dir.sh              \
-            include_nested.sh           \
-            module.sh                   \
-            module-nested.sh            \
-            module-reopen.sh            \
-            calculator.sh               \
-            owudb.sh
+#TESTS = \
+#  help.sh                     \
+#  version.sh                  \
+#  attribute.sh                \
+#  attribute-interface.sh      \
+#  supports.sh                 \
+#  facet.sh                    \
+#  receptacle.sh               \
+#  receptacle_not_connected.sh \
+#  receptacle_multiple.sh      \
+#  attribute_basic_types.sh    \
+#  supports_basic_types.sh     \
+#  facet_basic_types.sh        \
+#  receptacle_basic_types.sh   \
+#  home_basic_types.sh         \
+#  attribute_user_types.sh     \
+#  supports_user_types.sh      \
+#  facet_user_types.sh         \
+#  receptacle_user_types.sh    \
+#  home_user_types.sh          \
+#  supports_exception.sh       \
+#  facet_exception.sh          \
+#  receptacle_exception.sh     \
+#  home_exception.sh           \
+#  supports-inheritance.sh     \
+#  facet-inheritance.sh        \
+#  receptacle-inheritance.sh   \
+#  home_factory.sh             \
+#  home-factory-interface.sh   \
+#  include.sh                  \
+#  include_dir.sh              \
+#  include_nested.sh           \
+#  module.sh                   \
+#  module-nested.sh            \
+#  module-reopen.sh            \
+#  module_mixed.sh             \
+#  calculator.sh               \
+#  owudb.sh
 
 dist_check_SCRIPTS = $(TESTS)
 
 # these directories hold application logic and python modules for generated
 # code.
 
-EXTRA_DIST = attribute attribute_basic_types attribute_user_types Calculator \
- facet facet_basic_types facet_exception facet_user_types  home_basic_types \
- home_factory home_user_types module-reopen owudb receptacle receptacle_basic_types \
- receptacle_multiple receptacle_not_connected supports supports_basic_types \
- supports_user_types
+EXTRA_DIST = \
+  attribute                \
+  attribute_basic_types    \
+  attribute_user_types     \
+  Calculator               \
+  facet                    \
+  facet_basic_types        \
+  facet_exception          \
+  facet_user_types         \
+  home_basic_types         \
+  home_factory             \
+  home_user_types          \
+  module-reopen            \
+  owudb                    \
+  receptacle               \
+  receptacle_basic_types   \
+  receptacle_multiple      \
+  receptacle_not_connected \
+  supports                 \
+  supports_basic_types     \
+  supports_user_types
 
 clean-local:
 	$(RM) -r -f sandbox

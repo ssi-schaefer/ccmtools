@@ -1,5 +1,18 @@
+%(MUnionFieldDefInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_UNION__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_UNION__
+
+%(OpenNamespace)s
+
 union %(Identifier)s
 {
 %(MUnionFieldDef)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_UNION__ */
+
+
 

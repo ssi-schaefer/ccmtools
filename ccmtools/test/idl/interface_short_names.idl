@@ -1,4 +1,12 @@
+interface ab {
+};
+
+interface _i {
+  attribute long _l;
+  attribute double _d;
+};
+
 interface i { 
   attribute long l;
-  attribute double d;
+  attribute double g;
 };

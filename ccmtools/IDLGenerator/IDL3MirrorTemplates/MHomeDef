@@ -1,3 +1,13 @@
+%(ExternInclude)s
+
+#include "%(ComponentInclude)s.idl3mirror"
+%(MSupportsDefInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_mirror_HOME__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_mirror_HOME__
+
+%(OpenNamespace)s
+
 home %(Identifier)s_mirror manages %(ComponentType)s_mirror
  %(MSupportsDef)s
 {
@@ -23,4 +33,10 @@ home %(Identifier)s_mirror manages %(ComponentType)s_mirror
 %(MFactoryDef)s
 %(MFinderDef)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_mirror_HOME__ */
+
+
 

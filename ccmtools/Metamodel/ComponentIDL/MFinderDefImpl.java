@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -43,6 +43,7 @@ public class MFinderDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean isOneway_;
 
@@ -55,8 +56,14 @@ public class MFinderDefImpl
 
     public MFinderDefImpl()
     {
+        isOneway_ = false;
+        parameters_ = null;
+        Home_ = null;
 	CanRaiseSet_ = new HashSet();
 	ParameterList_ = new ArrayList();
+        Contains = null;
+        TypedBy_ = null;
+        sourceFile = "";
     }
 
     // override toString()
@@ -95,6 +102,10 @@ public class MFinderDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

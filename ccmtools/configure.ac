@@ -1,7 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl $Id$
 
-
 AC_INIT(ccmtools, 0.3.2)
 AC_CONFIG_SRCDIR(Metamodel/BaseIDL/BaseIdl.java)
 AM_INIT_AUTOMAKE
@@ -12,9 +11,9 @@ AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
-AC_PATH_PROG([CP],    [[cp copy]])
-AC_PATH_PROG([RM],    [[rm delete]])
-AC_PATH_PROG([MKDIR], [[mkdir md]])
+AC_PATH_PROG(CP,      [[cp copy]])
+AC_PATH_PROG(RM,      [[rm delete]])
+AC_PATH_PROG(MKDIR,   [[mkdir md]])
 AC_PATH_PROG(LATEX,   [[latex]])
 AC_PATH_PROG(BIBTEX,  [[bibtex]])
 AC_PATH_PROG(DVIPS,   [[dvips]])

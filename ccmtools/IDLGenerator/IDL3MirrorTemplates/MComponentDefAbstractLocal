@@ -1,3 +1,17 @@
+%(ExternInclude)s
+
+%(MSupportsDefInclude)s
+%(MProvidesDefInclude)s
+%(MConsumesDefInclude)s
+%(MEmitsDefInclude)s
+%(MPublishesDefInclude)s
+%(MUsesDefInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_COMPONENT__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_COMPONENT__
+
+%(OpenNamespace)s
+
 abstract local component %(Identifier)s_mirror
  %(BaseTypes)s
  %(MSupportsDef)s
@@ -9,4 +23,10 @@ abstract local component %(Identifier)s_mirror
 %(MConsumesDef)s
 %(MEmitsDef)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_COMPONENT__ */
+
+
 

@@ -1,2 +1,21 @@
+// ===========================================================================
+// typedef definition for %(Identifier)s
+// ===========================================================================
+
+#ifndef __ALIAS_%(FileNamespace)s_%(Identifier)s__H__
+#define __ALIAS_%(FileNamespace)s_%(Identifier)s__H__
+
+%(LanguageTypeInclude)s
+
+using namespace std;
+
+%(OpenNamespace)s
+
 typedef %(LanguageType)s %(Identifier)s;
+
+%(CloseNamespace)s
+
+#endif // __ALIAS_%(FileNamespace)s_%(Identifier)s__H__
+
+
 

@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -39,7 +39,6 @@ public class MUnionFieldDefImpl
 	return "MUnionFieldDef: " + identifier_;
     }
 
-
     //----------------------------------------------------------------
     // implementation of attribute access
     //----------------------------------------------------------------
@@ -54,7 +53,6 @@ public class MUnionFieldDefImpl
     // attribute label:Object (mapped from CORBA Any)
     public Object getLabel()                    {return label_;}
     public void setLabel(Object __arg)          {label_ = __arg;}
-
 
     //----------------------------------------------------------------
     // implementation of navigation

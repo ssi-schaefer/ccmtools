@@ -1,6 +1,6 @@
 /* CCM Tools : IDL3 Parser
  * Edin Arnautovic <edin.arnautovic@salomon.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -101,7 +101,7 @@ public class IDL3SymbolTable {
     /* given a name for a type, append it with the given scope. MBZ */
     public String addScopeToName(String scope, String name)
     {
-        if (scope != null && scope.length() == 0) return name;
+        if (scope != null && scope.length() < 2) return name;
         if (scope.substring(scope.length()-2).equals("::"))
             return scope + name;
         return scope + "::" + name;

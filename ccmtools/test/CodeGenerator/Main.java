@@ -1,7 +1,7 @@
 /* CCM Tools : Testsuite
  * Edin Arnautovic <edin.arnautovic@salomon.at>
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *

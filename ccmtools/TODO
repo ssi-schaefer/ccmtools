@@ -1,49 +1,62 @@
-CCM-Tools TODOs and reported Bugs
-=================================
+$Id$
 
+CCM Tools : TODOs and reported bugs
+===================================
 
-IDL3 Parser
-===========
-o) Identifier with one character does not work
+This file is a brief overview of known CCM Tools bugs and other issues. It would
+be nice to keep this reasonably up to date, but it could also be helpful to do :
 
-o) IDL Constants don't work.
-   - test/idl/constants 
+  $ grep -rwi '\(fixme\|todo\)' .
+
+in the root source dir, and also to look on the project bug page ; see
+http://ccmtools.sf.net/ for more information.
+
+IDL3 parser
+-----------
+
+o) Identifiers named a-f or A-F do not work (apparent conflict with hex digits).
+   - test/idl/interface_short_identifier.idl
+
+o) IDL constants don't work.
+   - test/idl/constants.idl
 
 o) Home factory method exceptions don't work.
-   - test/idl/home_exception 
+   - test/idl/home_exception.idl
 
+Cpp generators
+--------------
 
+Local
+~~~~~
 
-CppLocalGenerator
-=================
-o) A Component adapter does not inherit the supported interfaces as the
-   component does. 
+o) Component adapters do not inherit supported interfaces, but components do.
 
 o) Mixed modules within a component are still a problem.
-   - test/idl/module_mixed
+   - test/idl/module_mixed.idl
 
-o) Integration of Utils/value_simple.h as a mapping for IDL any.
+o) We should integrate Utils/value_simple.h as a mapping for IDL any.
 
-o) IDL to C++ mapping of exceptions should use a base exception class 
+o) Interface inheritance does not work.
 
-o) Interface inheritance does not work
+Remote
+~~~~~~
 
+o) Not implemented yet !
 
+Python wrapper
+~~~~~~~~~~~~~~
 
+o) Not implemented yet !
 
-IDL Generators (IDL3, IDL2, IDL3Mirror)
-=======================================
+IDL generators
+--------------
 
-o) Interface inheritance does not work
-
-
-
+o) Interface inheritance does not work.
 
 Documentation
-=============
+-------------
 
-*) Update Tutorial
+o) Update Tutorial
 
 o) Update Developer's Manual
-
 

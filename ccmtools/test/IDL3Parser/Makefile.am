@@ -15,18 +15,20 @@ XFAIL_TESTS = \
     fail-home-component.sh       \
     fail-interface-syntax.sh     \
     fail-struct-empty.sh
-
 ##    fail-enum-empty.sh \
 ##
 ## i'm taking out the empty enum fail-test because i just can't figure out why
 ## it doesn't work. put it back when the parser behaves more civilly.
 
-TESTS = interface-inheritance.sh \
-    interface-short-names.sh     \
+TESTS = $(XFAIL_TESTS) \
     component.sh                 \
     enum.sh                      \
     home.sh                      \
     interface.sh                 \
+    interface-inheritance.sh     \
+    interface-short-names.sh     \
+    operation-component.sh       \
+    operation-interface.sh       \
     operations-primitivetypes.sh \
     provides-operation.sh        \
     provides.sh                  \
@@ -36,8 +38,7 @@ TESTS = interface-inheritance.sh \
     uses-multiple-operation.sh   \
     uses-multiple.sh             \
     uses-operation.sh            \
-    uses.sh                      \
-    $(XFAIL_TESTS) 
+    uses.sh
 
 dist_check_SCRIPTS = $(TESTS)
 

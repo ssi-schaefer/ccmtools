@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -40,7 +40,6 @@ public class MSequenceDefImpl
 	return "MSequenceDef:";
     }
 
-
     //----------------------------------------------------------------
     // implementation of attribute access
     //----------------------------------------------------------------
@@ -55,7 +54,6 @@ public class MSequenceDefImpl
     // attribute typeCode:TypeCode
     public TypeCode getTypeCode()               {return typeCode_;}
     public void setTypeCode(TypeCode __arg)     {typeCode_ = __arg;}
-
 
     //----------------------------------------------------------------
     // implementation of navigation

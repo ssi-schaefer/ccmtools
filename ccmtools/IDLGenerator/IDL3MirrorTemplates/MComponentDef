@@ -1,30 +1,32 @@
+%(ExternInclude)s
+
+%(MSupportsDefInclude)s
+%(MProvidesDefInclude)s
+%(MConsumesDefInclude)s
+%(MEmitsDefInclude)s
+%(MPublishesDefInclude)s
+%(MUsesDefInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_COMPONENT__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_COMPONENT__
+
+%(OpenNamespace)s
+
 component %(Identifier)s_mirror
  %(BaseTypes)s
  %(MSupportsDef)s
 {
-%(MConstantDef)s
-%(MEnumDef)s
-
-%(MStructDefFwdDecl)s
-%(MUnionDefFwdDecl)s
-
-%(MAliasDef)s
-
 %(MAttributeDef)s
-
-%(MValueMemberDef)s
-%(MValueBoxDef)s
-%(MValueDef)s
-
-%(MStructDef)s
-%(MUnionDef)s
-
-%(MExceptionDef)s
-
 %(MProvidesDef)s
 %(MUsesDef)s
 %(MPublishesDef)s
 %(MConsumesDef)s
 %(MEmitsDef)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_COMPONENT__ */
+
+
 

@@ -1,7 +1,23 @@
+%(ExternInclude)s
+
+#include "%(ComponentInclude)s.idl3"
+%(MSupportsDefInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_HOME__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_HOME__
+
+%(OpenNamespace)s
+
 local home %(Identifier)s manages %(ComponentType)s
  %(MSupportsDef)s
 {
 %(MFactoryDef)s
 %(MFinderDef)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_HOME__ */
+
+
 

@@ -1,6 +1,18 @@
+%(ExternInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_EXCEPTION__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_EXCEPTION__
+
+%(OpenNamespace)s
+
 exception %(Identifier)s
 {
 %(MFieldDef)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_EXCEPTION__ */
+
 
 

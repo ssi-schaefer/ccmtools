@@ -1,3 +1,10 @@
+%(ExternInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
+
+%(OpenNamespace)s
+
 local interface %(Identifier)s
   %(BaseTypes)s
 {
@@ -21,4 +28,10 @@ local interface %(Identifier)s
 %(MExceptionDef)s
 %(MOperationDef)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__ */
+
+
 

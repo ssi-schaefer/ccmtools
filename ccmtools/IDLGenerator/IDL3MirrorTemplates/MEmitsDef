@@ -1,1 +1,2 @@
-  emits %(ConsumesType)s %(Identifier)s;
+  consumes %(ConsumesType)s %(Identifier)s_mirror;
+

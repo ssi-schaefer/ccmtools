@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -33,13 +33,11 @@ public class MParameterDefImpl
     private MIDLType TypedBy_;
     private MOperationDef Operation_;
 
-
     // override toString()
     public String toString()
     {
 	return "MParameterDef: "+ identifier_;
     }
-
 
     //----------------------------------------------------------------
     // implementation of attribute access
@@ -56,7 +54,6 @@ public class MParameterDefImpl
     public String getIdentifier()               {return identifier_;}
     public void setIdentifier(String __arg)     {identifier_ = __arg;}
 
-
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
@@ -69,6 +66,3 @@ public class MParameterDefImpl
     public MOperationDef getOperation()           {return Operation_;}
     public void setOperation(MOperationDef __arg) {Operation_ = __arg;}
 }
-
-
-

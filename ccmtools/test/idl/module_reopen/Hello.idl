@@ -7,7 +7,7 @@
  * The include statement is used to bring the files together.
  */
 
-#include"Console.idl"
+#include "Console.idl"
 
 module WORLD {
 

@@ -1,6 +1,6 @@
 /* CCM Tools : C++ Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -30,6 +30,7 @@ import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
+import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -38,8 +39,11 @@ import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
+import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
+import ccmtools.Metamodel.BaseIDL.MUnionDef;
+import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.Metamodel.ComponentIDL.MFinderDef;
@@ -52,7 +56,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +111,7 @@ abstract public class CppGenerator
         "std::string"                               // PK_WSTRING
     };
 
-    protected final static String sequence_type = "vector";
+    protected final static String sequence_type = "std::vector";
 
     /**************************************************************************/
 
@@ -164,47 +167,6 @@ abstract public class CppGenerator
     }
 
     /**
-     * Build a string containing appropriately formatted namespace information
-     * based on the given data type and local namespace component.
-     *
-     * @param data_type a string referring to a desired type of namespace
-     *        information. This is normally a variable name from a template.
-     * @param local a string giving the name of the current namespace component.
-     * @return a string containing the appropriately formatted namespace
-     *         information.
-     */
-    protected String handleNamespace(String data_type, String local)
-    {
-        List names = new ArrayList(namespace);
-        if (! local.equals("")) names.add("CCM_Session_" + local);
-
-        if (data_type.equals("Namespace")) {
-            return join("::", names);
-        } else if (data_type.equals("FileNamespace")) {
-            return join("_", slice(names, 1));
-        } else if (data_type.equals("IncludeNamespace")) {
-            return join("/", names);
-        } else if (data_type.equals("UsingNamespace")) {
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("using namespace "+i.next()+";\n");
-            return join("", tmp);
-        } else if (data_type.equals("OpenNamespace")) {
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("namespace "+i.next()+" {\n");
-            return join("", tmp);
-        } else if (data_type.equals("CloseNamespace")) {
-            Collections.reverse(names);
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("} // /namespace "+i.next()+"\n");
-            return join("", tmp);
-        }
-        return "";
-    }
-
-    /**
      * Get a local value for the given variable name.
      *
      * This function performs some common value parsing in the CCM MOF library.
@@ -229,6 +191,7 @@ abstract public class CppGenerator
             return data_MFactoryDef(variable, value);
         } else if (current_node instanceof MFinderDef) {
             return data_MFinderDef(variable, value);
+
         } else if (current_node instanceof MProvidesDef) {
             return data_MProvidesDef(variable, value);
         } else if (current_node instanceof MSupportsDef) {
@@ -242,8 +205,14 @@ abstract public class CppGenerator
             return data_MOperationDef(variable, value);
         } else if (current_node instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
+        } else if (current_node instanceof MExceptionDef) {
+            return data_MExceptionDef(variable, value);
         } else if (current_node instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
+        } else if (current_node instanceof MStructDef) {
+            return data_MStructDef(variable, value);
+        } else if (current_node instanceof MUnionDef) {
+            return data_MUnionDef(variable, value);
         }
 
         return value;
@@ -265,8 +234,7 @@ abstract public class CppGenerator
         String base_type = getBaseIdlType(object);
         if (language_mappings.containsKey(base_type)) {
             base_type = (String) language_mappings.get(base_type);
-        } 
-	else if (object instanceof MContained) {
+        } else if (object instanceof MContained) {
             List scope = getScope((MContained) object);
             scope.add(base_type);
             base_type = join("::", scope);
@@ -274,61 +242,57 @@ abstract public class CppGenerator
 
         if (object instanceof MParameterDef) {
 	    /* This code defines the parameter passing rules:
-	     * in    : simple types are passed as const values
-	     *         complex types are passed by const ref
-	     * inout : always passed by ref 
-	     * out   : always passed by ref  
+	     *   in    : simple types are passed as const values
+	     *           complex types are passed by const ref
+	     *   inout : always passed by ref
+	     *   out   : always passed by ref
 	     */
+
             MParameterDef param = (MParameterDef) object;
             MParameterMode direction = param.getDirection();
             String prefix = "";
             String suffix = "";
 
-            if (direction == MParameterMode.PARAM_IN) {
-		// in
+            if (direction == MParameterMode.PARAM_IN) { // in
 		prefix = "const ";
 		if ((idl_type instanceof MTypedefDef)
 		    || (idl_type instanceof MStringDef)
-		    || (idl_type instanceof MFixedDef)) {
-		    suffix = "&";
-		}
-	    }
-	    else { 
-		// inout, out
+		    || (idl_type instanceof MFixedDef)) suffix = "&";
+
+	    } else { // inout, out
 		prefix = "";
 		suffix = "&";
 	    }
+
             return prefix + base_type + suffix;
-        } 
-	else if((object instanceof MAliasDef) 
-                && (idl_type instanceof MTyped)) {
+
+        } else if ((object instanceof MAliasDef) &&
+                   (idl_type instanceof MTyped)) {
             return getLanguageType((MTyped) idl_type);
-        } 
-	else if (object instanceof MSequenceDef) {
+        } else if (object instanceof MSequenceDef) {
             // FIXME : can we implement bounded sequences in C++ ?
-            return "std::"+sequence_type+"<"+base_type+"> ";
-        } 
-	else if (object instanceof MArrayDef) { 
-	    /* This code defines the IDLtoC++ mapping of arrays: 
-	     * IDL: typedef long x[7] 
+            return "std::" + sequence_type + "<" + base_type + "> ";
+        } else if (object instanceof MArrayDef) {
+	    /* This code defines the IDL -> C++ mapping of arrays:
+	     * IDL: typedef long x[7]
 	     * C++: typedef std::vector<long>
 	     * Note that this code is placed into *_user_types.h
 	     */
-	    String result;
+
+	    String result = "std::vector<" + base_type + ">";
 	    int dimension = ((MArrayDef) object).getBounds().size();
-	    if(dimension == 1)
-		result = "std::vector<" + base_type + ">";
-	    else {
+
+	    if (dimension > 1) {
 		result = "std::vector<";
-		for(int i=1;i<dimension;i++)
-		    result += "std::vector<";
+		for(int i = 1; i < dimension; i++) result += "std::vector<";
 		result += base_type + ">";
-		for(int i=1;i<dimension;i++)
-		    result += " >";
+		for(int i = 1; i < dimension; i++) result += " >";
             }
-	    return result;
-	    // FIXME: how should we map the array bounds to std::vector? 
+
+	    // FIXME: how should we map the array bounds to std::vector?
+	    return result + " ";
         }
+
         return base_type;
     }
 
@@ -346,7 +310,16 @@ abstract public class CppGenerator
             for (Iterator i = array.getBounds().iterator(); i.hasNext(); )
                 result += "[" + (Long) i.next() + "]";
             return result;
+        } else if (data_type.equals("ExternInclude")) {
+            if (idl_type instanceof MContained) {
+                MContained node = (MContained) idl_type;
+                if (node.getSourceFile().equals(""))
+                    return getScopedInclude(node);
+            }
+        } else if (data_type.endsWith("Namespace")) {
+            return handleNamespace(data_type, "");
         }
+
         return data_value;
     }
 
@@ -358,6 +331,8 @@ abstract public class CppGenerator
         } else if (data_type.equals("BaseTypes")) {
             String base = joinBases(", public ");
             if (base.length() > 0) return ", public " + base;
+        } else if (data_type.equals("ExternInclude")) {
+            return collectExternIncludes();
         }
         return data_value;
     }
@@ -370,6 +345,14 @@ abstract public class CppGenerator
             for (Iterator i = enum.getMembers().iterator(); i.hasNext(); )
                 b.add((String) i.next());
             return join(", ", b);
+        }
+        return data_value;
+    }
+
+    protected String data_MExceptionDef(String data_type, String data_value)
+    {
+        if (data_type.endsWith("Namespace")) {
+            return handleNamespace(data_type, "");
         }
         return data_value;
     }
@@ -402,15 +385,16 @@ abstract public class CppGenerator
         if (data_type.equals("BaseTypes")) {
             String base = joinBases(", public");
             if (base.length() > 0) return ": public " + base;
-        } else if (data_type.endsWith("Namespace")) {
-            return handleNamespace(data_type, "");
+        } else if (data_type.equals("ExternInclude")) {
+            return collectExternIncludes();
         }
         return data_value;
     }
 
     protected String data_MOperationDef(String data_type, String data_value)
     {
-        if (data_type.equals("MExceptionDef") && data_value.endsWith(", ")) {
+        if (data_type.equals("MExceptionDefThrows") &&
+            data_value.endsWith(", ")) {
             return "throw ( " +
                 data_value.substring(0, data_value.length() - 2) + " )";
         } else if (data_type.startsWith("MParameterDef") &&
@@ -432,6 +416,7 @@ abstract public class CppGenerator
     {
         MProvidesDef provides = (MProvidesDef) current_node;
         MInterfaceDef iface = provides.getProvides();
+
         if (data_type.startsWith("MOperation")) {
             return fillTwoStepTemplates(iface, data_type);
         } else if (data_type.equals("IncludeNamespace")) {
@@ -442,10 +427,31 @@ abstract public class CppGenerator
         return data_value;
     }
 
+    protected String data_MStructDef(String data_type, String data_value)
+    {
+        MStructDef struct = (MStructDef) current_node;
+
+        if (data_type.equals("ExternInclude")) {
+            List lines = new ArrayList();
+            for (Iterator i = struct.getMembers().iterator(); i.hasNext(); ) {
+                MIDLType idl_type = ((MFieldDef) i.next()).getIdlType();
+                if (idl_type instanceof MContained) {
+                    MContained node = (MContained) idl_type;
+                    if (node.getSourceFile().equals(""))
+                        lines.add(getScopedInclude(node));
+                }
+            }
+            return join("\n", lines);
+        }
+
+        return data_value;
+    }
+
     protected String data_MSupportsDef(String data_type, String data_value)
     {
         MSupportsDef supports = (MSupportsDef) current_node;
         MInterfaceDef iface = supports.getSupports();
+
         if (data_type.startsWith("MOperation")) {
             return fillTwoStepTemplates(iface, data_type);
         } else if (data_type.equals("IncludeNamespace")) {
@@ -453,6 +459,26 @@ abstract public class CppGenerator
             scope.add(0, namespace.get(0));
             return join("/", scope);
         }
+        return data_value;
+    }
+
+    protected String data_MUnionDef(String data_type, String data_value)
+    {
+        MUnionDef union = (MUnionDef) current_node;
+
+        if (data_type.equals("ExternInclude")) {
+            List lines = new ArrayList();
+            for (Iterator i = union.getUnionMembers().iterator(); i.hasNext(); ) {
+                MIDLType idl_type = ((MUnionFieldDef) i.next()).getIdlType();
+                if (idl_type instanceof MContained) {
+                    MContained node = (MContained) idl_type;
+                    if (node.getSourceFile().equals(""))
+                        lines.add(getScopedInclude(node));
+                }
+            }
+            return join("\n", lines);
+        }
+
         return data_value;
     }
 
@@ -521,9 +547,7 @@ abstract public class CppGenerator
         List ret = new ArrayList();
         for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext(); )
             ret.add(((MExceptionDef) es.next()).getIdentifier());
-
-        if (ret.size() > 0) return "throw ( " + join(", ", ret) + " )";
-        else                return "";
+        return (ret.size() > 0) ? "throw ( " + join(", ", ret) + " )" : "";
     }
 
     /**
@@ -558,7 +582,8 @@ abstract public class CppGenerator
             }
 
             Template template = template_manager.getRawTemplate(template_name);
-            ret.append(template.substituteVariables(getTwoStepVariables(child, op, cont)));
+            Map vars = getTwoStepVariables(child, op, cont);
+            ret.append(template.substituteVariables(vars));
         }
 
         return ret.toString();

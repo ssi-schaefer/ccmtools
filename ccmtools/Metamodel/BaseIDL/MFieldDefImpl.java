@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -33,10 +33,17 @@ public class MFieldDefImpl
     private MStructDef Structure_;
     private MExceptionDef Exception_;
 
+    public MFieldDefImpl()
+    {
+        TypedBy_ = null;
+        Structure_ = null;
+        Exception_ = null;
+    }
+
     // override toString()
     public String toString()
     {
-	return "MFieldDef: " + identifier_ + TypedBy_.toString();
+	return "MFieldDef: " + identifier_ + " (" + TypedBy_.toString() + ")";
     }
 
     //----------------------------------------------------------------
@@ -49,7 +56,6 @@ public class MFieldDefImpl
     // attribute identifier:string
     public String getIdentifier()               {return identifier_;}
     public void setIdentifier(String __arg)     {identifier_ = __arg;}
-
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -229,6 +229,7 @@ Print out a short description of the available command line parameters.
 After calling {\tt ccmtools-c++-generate}, we have a new subdirectory ({\tt
 hello1.0}) that contains the generated component logic. Also, the skeletons for
 the business logic have been copied into the current directory:
+
 \begin{small}
 \begin{verbatim}
   hello/
@@ -276,9 +277,11 @@ compile it!
 
 The {\tt ccmtools-c++-configure} and {\tt ccmtools-c++-make} scripts also accept 
 command line parameters as described below:
+
 \begin{itemize}
 \item {\tt -p NAME, -\-package=NAME}\\
 Use the package named NAME. The default package name is ``ccmtools-package''.
+
 \item {\tt -h, -\-help}\\
 Print out a short description of the available command line parameters.
 \end{itemize}
@@ -445,6 +448,7 @@ into a component library file. This library file will then be stored in the
 component repository, which is simply a directory on the computer that will
 serve as a component server. The CCM Tools provide this functionality in a
 single call:
+
 \begin{small}
 \begin{verbatim}
 ~/hello> ccmtools-c++-install -p hello1.0
@@ -635,6 +639,7 @@ To compile and install the local test client we use the {\tt Confix} tool, which
 is also used by the component build process. Note that we use the same confix
 profile the CCM Tools, to ensure that the client can access the component
 libraries.
+
 \begin{small}
 \begin{verbatim}
 ~/hello/test> confix.py --bootstrap --configure  \
@@ -643,8 +648,11 @@ libraries.
 \end{small}
 
 Finally, we can run the test client:
+
 \begin{small}
 \begin{verbatim}
+~/hello/test> confix.py --bootstrap --configure  \
+                        --make --targets=install --profile=ccmtools
 ~/hello> test_client_client
 \end{verbatim}
 \end{small}
@@ -714,6 +722,69 @@ After installing the component test, the {\tt Hello\_app.cc} file can be
 modified as shown in Example~\ref{example:one-component-legacy-impl} to
 integrate the separately compiled business code.
 
+%------------------------------------------------------------------------------
+\subsection{Integrate existing business logic}
+%------------------------------------------------------------------------------
+
+The component's business code, in the example above, is very simple and
+therefore directly implemented in the {\tt Hello\_app.[h,cc]} files. Usually,
+however, business code has been already developed in a separated {\tt business}
+directory. Even more likely is that the business logic is contained in some sort
+of legacy code library:
+
+\begin{small}
+\begin{verbatim}
+    hello/
+    |-- hello1.0/
+    |-- test/
+    |   |-- client/
+    |   |-- business/
+    |   |   |-- legacy.h
+    |   |   |-- legacy.cc
+\end{verbatim}
+\end{small}
+
+For this example, we'll use some implemented business logic from legacy code.
+This legacy code provides a {\tt print\_string} method, so all the component
+developer needs to do is call up the legacy function, as shown in
+Example~\ref{example:one-component-legacy-wrapper}.
+
+\begin{Example}
+\begin{minifbox}
+\begin{small}
+\begin{verbatim}
+// legacy.h
+#include<stdio.h>
+extern void print_string(const char* s);
+
+// legacy.cc
+#include "legacy.h"
+void print_string(const char* s)
+{
+  printf(s);
+}
+\end{verbatim}
+\end{small}
+\end{minifbox}
+\caption{A short legacy code library wrapper.}
+\label{example:one-component-legacy-wrapper}
+\end{Example}
+
+We suggest building the business logic in the same way as the test client, using
+the {\it Confix} tool. Always remember to use the Confix ``ccmtools'' profile
+when using the CCM Tools.
+
+\begin{small}
+\begin{verbatim}
+test> confix.py --bootstrap --configure \
+                --make --targets=install --profile=ccmtools
+\end{verbatim}
+\end{small}
+
+After installing the component test, the {\tt Hello\_app.cc} file can be
+modified as shown in Example~\ref{example:one-component-legacy-impl} to
+integrate the separately compiled business code.
+
 \begin{Example}
 \begin{minifbox}
 \begin{small}
@@ -735,6 +806,7 @@ console_impl::println ( const std::string s2 )
 \end{Example}
 
 In conclusion, to build the final component and the test client, we type:
+
 \begin{small}
 \begin{verbatim}
 ~/hello> ccmtools-c++-make -p hello1.0
@@ -756,6 +828,7 @@ software systems in the future.
 %------------------------------------------------------------------------------
 
 To remove the component from the component repository, type:
+
 \begin{small}
 \begin{verbatim}
 ~/hello> ccmtools-c++-uninstall -p hello1.0

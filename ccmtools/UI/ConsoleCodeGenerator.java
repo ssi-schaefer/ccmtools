@@ -1,6 +1,6 @@
 /* CCM Tools : User Interface Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -39,8 +39,17 @@ import ccmtools.IDLGenerator.IDL2GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3MirrorGeneratorImpl;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 public class ConsoleCodeGenerator
 {
@@ -92,113 +101,6 @@ public class ConsoleCodeGenerator
     private static File base_output_directory = new File(output_directory, "");
 
     private static int generate_flags = GENERATE_USER_TYPES_FILES;
-
-
-    /**************************************************************************/
-    /* MAIN FUNCTION */
-
-    /**
-     * Parse and generate code for each input IDL3 file. For each input file, we
-     * need to (0) run the C preprocessor on the file to assemble includes and
-     * do ifdef parsing and such, then (1) parse the file, then (2) generate
-     * output code. Exits with nonzero status if errors are encountered during
-     * parsing or generation.
-     */
-    public static void main(String args[])
-    {
-        parseArgs(args); // Parse the commandline parameter and options
-
-        TemplateHandler handler = setupHandler(setupDriver());
-        GraphTraverser traverser = new GraphTraverserImpl();
-        ParserManager manager = new ParserManager(par_mask);
-
-        if (traverser == null) printUsage("failed to create a graph traverser");
-        if (manager == null) printUsage("failed to create a parser manager");
-
-        traverser.setHandler(handler);
-
-        MContainer kopf = null;
-
-        for (Iterator f = filenames.iterator(); f.hasNext(); ) {
-            File source = new File((String) f.next());
-            File idlfile = new File(System.getProperty("user.dir"),
-                                     "CCM_" + source.getName());
-
-	    /*
-	     * Step (0). run the C preprocessor on the input file.
-	     */
-            try {
-		// Debugging:
-		// System.out.println("cpp -P -o" + idlfile + " " + include_path + " " 
-                //                               + source);
-		
-		// Run the GNU preprocessor cpp in a separate process.
-		String s = null;
-                Process preproc = Runtime.getRuntime().exec("cpp " + " -P -o " +
-                                          idlfile + " " + include_path +
-                                          " " + source);
-		BufferedReader stdInput = new BufferedReader(new
-		    InputStreamReader(preproc.getInputStream()));
-		BufferedReader stdError = new BufferedReader(new
-		    InputStreamReader(preproc.getErrorStream()));
-		// Read the output and any errors from the command
-		while ((s = stdInput.readLine()) != null) {
-		    System.out.println(s);
-		}
-		while ((s = stdError.readLine()) != null) {
-		    System.out.println(s);
-		}
-		// Wait for the process to complete and evaluate the return
-                // value of the attempted command 
-                preproc.waitFor();
-                if (preproc.exitValue() != 0){
-		   throw new RuntimeException();
-		}
-            } catch (Exception e) {
-		System.err.println("Error preprocessing " + source 
-				   + ": Please verify your include paths.");
-                System.exit(10);
-            }
-	    
-
-	    /*
-	     * Step (1). parse the resulting preprocessed file.
-	     */
-            manager.reset();
-
-            try {
-                kopf = manager.parseFile(idlfile.toString());
-                if (kopf == null) throw new RuntimeException(
-                        "Parser returned a null container");
-            } catch (Exception e) {
-                System.err.println("Error parsing "+source+":\n"+e);
-                System.exit(20);
-            }
-
-            kopf.setIdentifier(source.getName().split("\\.")[0]);
-
-
-	    /*
-	     * Step (2). traverse the resulting metamodel graph.
-	     */
-            try {
-                traverser.traverseGraph(kopf);
-            } catch (Exception e) {
-                System.err.println(
-                    "Error generating code from "+source+":\n"+e);
-                System.exit(30);
-            }
-            idlfile.deleteOnExit();
-        }
-
-        Environment env = new ConsoleEnvironmentImpl(defines);
-
-        generateEnvironment(handler, env);
-        handler.finalize(env.getParameters(), filenames);
-
-        System.exit(0);
-    }
-
 
 
     /**************************************************************************/
@@ -348,6 +250,98 @@ public class ConsoleCodeGenerator
         return handler;
     }
 
+    /**************************************************************************/
+    /* MAIN FUNCTION */
+
+    /**
+     * Parse and generate code for each input IDL3 file. For each input file, we
+     * need to (0) run the C preprocessor on the file to assemble includes and
+     * do ifdef parsing and such, then (1) parse the file, then (2) generate
+     * output code. Exits with nonzero status if errors are encountered during
+     * parsing or generation.
+     */
+    public static void main(String args[])
+    {
+        parseArgs(args);
+
+        Runtime rt = Runtime.getRuntime();
+
+        TemplateHandler handler = setupHandler(setupDriver());
+        GraphTraverser traverser = new GraphTraverserImpl();
+        ParserManager manager = new ParserManager(par_mask);
+
+        if (traverser == null) printUsage("failed to create a graph traverser");
+        if (manager == null) printUsage("failed to create a parser manager");
+
+        traverser.setHandler(handler);
+
+        MContainer kopf = null;
+
+        for (Iterator f = filenames.iterator(); f.hasNext(); ) {
+            File source = new File((String) f.next());
+            File idlfile = new File(System.getProperty("user.dir"),
+                                     "_CCM_" + source.getName());
+
+            // step (0). run the C preprocessor on the input file.
+
+            try {
+                // this needs to be updated to use the result of AC_PROG_CPP.
+                // unfortunately on my box this doesn't work ...
+                //
+                // Process preproc = rt.exec(Constants.CPP_PATH + " -o " +
+
+                Process preproc = rt.exec("cpp -o " +
+                                          idlfile + " " + include_path +
+                                          " " + source);
+                preproc.waitFor();
+                if (preproc.exitValue() != 0)
+                    throw new RuntimeException(
+                        "Preprocessor did not exit cleanly."+
+                        "Please verify your include path.");
+            } catch (Exception e) {
+                System.err.println("Error preprocessing "+source+":\n"+e);
+                System.exit(10);
+            }
+
+            // step (1). parse the resulting preprocessed file.
+
+            manager.reset();
+            manager.setOriginalFile(source.toString());
+
+            try {
+                kopf = manager.parseFile(idlfile.toString());
+                if (kopf == null)
+                    throw new RuntimeException(
+                        "Parser returned a null container");
+            } catch (Exception e) {
+                System.err.println("Error parsing "+source+":\n"+e);
+                System.exit(20);
+            }
+
+            kopf.setIdentifier(source.getName().split("\\.")[0]);
+
+            // step (2). traverse the resulting metamodel graph.
+
+            try {
+                traverser.traverseGraph(kopf);
+            } catch (Exception e) {
+                System.err.println(
+                    "Error generating code from "+source+":\n"+e);
+                System.exit(30);
+            }
+
+            // delete the preprocessed temporary file if everything worked.
+
+            idlfile.deleteOnExit();
+        }
+
+        Environment env = new ConsoleEnvironmentImpl(defines);
+
+        generateEnvironment(handler, env);
+        handler.finalize(env.getParameters(), filenames);
+
+        System.exit(0);
+    }
 
     /**************************************************************************/
     /* ARGUMENT PARSING */

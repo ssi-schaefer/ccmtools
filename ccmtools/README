@@ -105,39 +105,44 @@ development process will follow these steps :
     environment variable, or provide the package name with "-p NAME", to point
     to the correct location of the generated code.
 
+Example development session
+---------------------------
+
 An example command line session might look like this :
 
-[edit IDL3 source files in /some/directory/for/development]
+First, you need to edit IDL3 source files in /some/directory/for/development.
+These will define the components, homes, interfaces, etc. that you intend to use
+in your project.
 
-~ $ cd /some/directory/for/development
+  ~ $ cd /some/directory/for/development
+  development $ ls -1
+  my_component1.idl
+  my_component2.idl
+  my_facetA.idl
+  my_facetB.idl
+  my_facetC.idl
+  :
+  :
+  development $ export CCMTOOLS_PACKAGE=my_project
+  development $ ccmtools-c++-generate *.idl
 
-development $ ls -1
-my_component1.idl
-my_component2.idl
-my_facetA.idl
-my_facetB.idl
-my_facetC.idl
-:
-:
-:
+This will generate component code in ./my_project. Application logic files will
+be copied here after they are generated. Confix will bootstrap and configure the
+package, and when that is complete you will probably need to edit the *_app.cc
+and *_user_types.h files.
 
-development $ export CCMTOOLS_PACKAGE=my_project
+  development $ ccmtools-c++-make
 
-development $ ccmtools-c++-generate *.idl
-[this will generate component code in ./my_project]
-[application logic files will be copied here after they are generated]
-[Confix will bootstrap and configure the package]
-[edit the *_app.cc and *_user_types.h files]
+This will copy application logic files to the correct locations in my_project.
+Confix will build and check the components.
 
-development $ ccmtools-c++-make
-[this will copy application logic files to the correct locations in my_project]
-[Confix will build and check the components]
+  development $ ccmtools-c++-install
 
-development $ ccmtools-c++-install
-[Confix will install the components]
+Confix will install the components.
 
-development $ ccmtools-c++-uninstall
-[Confix will uninstall the components]
+  development $ ccmtools-c++-uninstall
+
+Confix will uninstall the components.
 
 All of these scripts support basic --help options, which you should use to find
 out more information. Also see the User Guide for more complete references on

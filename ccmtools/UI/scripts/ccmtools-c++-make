@@ -100,7 +100,7 @@ for f in glob.glob('*_app.*') + glob.glob('*_user_types.h') + glob.glob('_check_
     if os.system('cp -p ' + f + ' ' +dest_file):
         print "Error: can't copy " + f + " files!"
         sys.exit(1)
-        
+
 ## run confix to build and check components
 
 confix_flags  = ' --packageroot="%s" --profile="ccmtools"' % SOURCE_DIR
