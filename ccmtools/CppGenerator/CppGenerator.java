@@ -224,10 +224,9 @@ abstract public class CppGenerator
         MIDLType idl_type = object.getIdlType();
         String base_type = getBaseLanguageType(object);
 
-	// Handle interfaces using smart pointers
-	if (object instanceof MAttributeDef) {
-	    if(idl_type instanceof MInterfaceDef)
-		return "CCM_Utils::SmartPtr<" + base_type + ">";
+	if (idl_type instanceof MInterfaceDef) {
+	    // Handle interfaces using smart pointer
+	    base_type = "CCM_Utils::SmartPtr<" + base_type + ">";
 	}
 
         if (object instanceof MParameterDef) {
@@ -247,14 +246,17 @@ abstract public class CppGenerator
 		prefix = "const ";
 		if ((idl_type instanceof MTypedefDef)
 		    || (idl_type instanceof MStringDef)
-		    || (idl_type instanceof MFixedDef)) suffix = "&";
-
-	    } else { // inout, out
+		    || (idl_type instanceof MFixedDef)
+		    || (idl_type instanceof MInterfaceDef)) {
+		    suffix = "&";
+		}
+	    } 
+	    else { // inout, out
 		prefix = "";
 		suffix = "&";
 	    }
 
-            return prefix + base_type + suffix;
+	    return prefix + base_type + suffix;
         }
 
         if ((object instanceof MAliasDef) && (idl_type instanceof MTyped))
@@ -268,7 +270,6 @@ abstract public class CppGenerator
 	    /* This code defines the IDL -> C++ mapping of arrays:
 	     * IDL: typedef long x[7]
 	     * C++: typedef std::vector<long>
-	     * Note that this code is placed into *_user_types.h
 	     */
 
 	    String result = "std::vector<" + base_type + ">";
@@ -284,7 +285,6 @@ abstract public class CppGenerator
 	    // FIXME: how should we map the array bounds to std::vector?
 	    return result + " ";
         }
-
 
         return base_type;
     }
