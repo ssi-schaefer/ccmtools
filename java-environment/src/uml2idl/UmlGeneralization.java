@@ -34,8 +34,8 @@ Generalization. <br>Children:
 <li>{@link uml_parser.uml.MGeneralization_parent}</li>
 </ul>
 
-@author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@author Robert Lechner (robert.lechner@salomon.at)
+@version $Date$
 */
 class UmlGeneralization extends uml_parser.uml.MGeneralization implements Worker
 {
@@ -132,7 +132,8 @@ class UmlGeneralization extends uml_parser.uml.MGeneralization implements Worker
         }
         if( stereotype_!=null )
         {
-            return stereotype_.equals(type);
+            return stereotype_.equals(type) ||
+                    main.isStereotype(stereotype_, type);
         }
         return main.isModelElementStereotype(this, type);
     }

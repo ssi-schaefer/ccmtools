@@ -35,7 +35,7 @@ import java.util.Iterator;
 /**
  * Reads an UML-file and creates the IDL and OCL files.
  *
- * @author Robert Lechner (rlechner@gmx.at)
+ * @author Robert Lechner (robert.lechner@salomon.at)
  * @version $Date$
  */
 public class Main
@@ -238,12 +238,38 @@ public class Main
      */
     boolean isModelElementStereotype( DTD_Container element, String name )
     {
+        //System.out.println("searching for stereotype "+name);
         Vector children = element.findChildren(UmlModelElementStereotype.xmlName__);
         for( int i=0; i<children.size(); i++ )
         {
             if( ((UmlModelElementStereotype)children.get(i)).isStereotype(name, this) )
             {
                 return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Checks if the stereotype is of a special kind.
+     *
+     * @param id    XML-ID of the stereotype
+     * @param name  special kind
+     */
+    boolean isStereotype( String id, String name )
+    {
+        //System.out.println("stereotype: id=="+id+"  check for "+name);
+        Object o = workers_.get(id);
+        if( o!=null )
+        {
+            if( o instanceof UmlModelElementStereotype )
+            {
+                return ((UmlModelElementStereotype)o).isStereotype(name, this);
+            }
+            if( o instanceof UmlStereotype )
+            {
+                return ((UmlStereotype)o).isStereotype(name, this);
             }
         }
         return false;

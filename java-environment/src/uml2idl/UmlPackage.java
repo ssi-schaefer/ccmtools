@@ -36,7 +36,7 @@ Stereotype 'CORBAModule'. <br>Children:
 <li>{@link uml_parser.uml.MModelElement_comment}</li>
 </ul>
 
-@author Robert Lechner (rlechner@gmx.at)
+@author Robert Lechner (robert.lechner@salomon.at)
 @version $Date$
 */
 class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
@@ -72,7 +72,8 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
     {
         if( stereotype_!=null )
         {
-            return stereotype_.equals(CORBA_MODULE);
+            return stereotype_.equals(CORBA_MODULE) ||
+                    main.isStereotype(stereotype_, CORBA_MODULE);
         }
         return main.isModelElementStereotype(this, CORBA_MODULE);
     }

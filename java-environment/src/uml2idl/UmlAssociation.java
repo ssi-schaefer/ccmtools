@@ -35,7 +35,7 @@ UML-association. <br>Children:
 <li>{@link uml_parser.uml.MModelElement_comment}</li>
 </ul>
 
-@author Robert Lechner (rlechner@gmx.at)
+@author Robert Lechner (robert.lechner@salomon.at)
 @version $Date$
 */
 class UmlAssociation extends uml_parser.uml.MAssociation implements Worker
@@ -156,7 +156,8 @@ class UmlAssociation extends uml_parser.uml.MAssociation implements Worker
         }
         if( stereotype_!=null )
         {
-            return stereotype_.equals(type);
+            return stereotype_.equals(type) ||
+                    main.isStereotype(stereotype_, type);
         }
         return main.isModelElementStereotype(this, type);
     }

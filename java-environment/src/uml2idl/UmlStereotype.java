@@ -30,8 +30,8 @@ UML stereotype. <br>Children:
 <li>{@link UmlModelElementName}</li>
 </ul>
 
-@author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@author Robert Lechner (robert.lechner@salomon.at)
+@version $Date$
 */
 class UmlStereotype extends uml_parser.uml.MStereotype implements Worker
 {

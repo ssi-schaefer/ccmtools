@@ -45,7 +45,7 @@ Class attribute. <br>Children:
 <li>{@link uml_parser.uml.MAttribute_initialValue}</li>
 </ul>
 
-@author Robert Lechner (rlechner@gmx.at)
+@author Robert Lechner (robert.lechner@salomon.at)
 @version $Date$
 */
 class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
@@ -563,7 +563,8 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
     {
         if( stereotype_!=null )
         {
-            return stereotype_.equals(type);
+            return stereotype_.equals(type) ||
+                    main.isStereotype(stereotype_, type);
         }
         return main.isModelElementStereotype(this, type);
     }

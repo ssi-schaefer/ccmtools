@@ -46,7 +46,7 @@ Association end. <br>Children:
 <li>{@link uml_parser.uml.MModelElement_comment}</li>
 </ul>
 
-@author Robert Lechner (rlechner@gmx.at)
+@author Robert Lechner (robert.lechner@salomon.at)
 @version $Date$
 */
 class UmlAssociationEnd extends uml_parser.uml.MAssociationEnd implements Worker
@@ -270,7 +270,8 @@ class UmlAssociationEnd extends uml_parser.uml.MAssociationEnd implements Worker
         }
         if( stereotype_!=null )
         {
-            return stereotype_.equals(type);
+            return stereotype_.equals(type) ||
+                    main.isStereotype(stereotype_, type);
         }
         return main.isModelElementStereotype(this, type);
     }

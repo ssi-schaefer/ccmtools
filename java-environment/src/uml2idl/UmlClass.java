@@ -43,7 +43,7 @@ UML-class. <br>Children:
 <li>{@link uml_parser.uml.MModelElement_clientDependency} == {@link UmlDependency}</li>
 </ul>
 
-@author Robert Lechner (rlechner@gmx.at)
+@author Robert Lechner (robert.lechner@salomon.at)
 @version $Date$
 */
 class UmlClass extends uml_parser.uml.MClass implements IdlContainer
@@ -219,7 +219,8 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
     {
         if( stereotype_!=null )
         {
-            return stereotype_.equals(type);
+            return stereotype_.equals(type) ||
+                    main.isStereotype(stereotype_, type);
         }
         return main.isModelElementStereotype(this, type);
     }
