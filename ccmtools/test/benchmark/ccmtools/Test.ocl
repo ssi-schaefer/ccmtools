@@ -1,0 +1,8 @@
+package GLOBAL
+
+context Benchmark::f_in1(l1:Integer)
+    pre p1: l1 > 0
+    pre p2: l1 < 100
+
+endpackage
+

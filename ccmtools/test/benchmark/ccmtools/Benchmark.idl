@@ -1,3 +1,7 @@
+
+#ifndef __BENCHMARK__H__
+#define __BENCHMARK__H__
+
 typedef sequence<long> LongList;
 
 interface Benchmark {
@@ -21,24 +25,4 @@ interface Benchmark {
   LongList f_ret3();
 };
 
-
-component Test
-{
-  provides Benchmark bm;
-};
-
-home TestHome manages Test
-{
-};
-
-
-component SuperTest
-{
-  provides Benchmark bm;
-  uses Benchmark delegate;
-};
-
-home SuperTestHome manages SuperTest
-{
-};
-
+#endif /* __BENCHMARK__H__ */
