@@ -1,0 +1,23 @@
+/**
+ * Test case: facet_interface 
+ *
+ */
+
+interface iface {
+  long println(in string s);
+};
+
+interface Console 
+{
+  iface println(in iface p1, inout iface p2, out iface p3);
+};
+
+component Hello
+{
+  provides Console console;
+};
+
+home HelloHome manages Hello
+{
+};
+

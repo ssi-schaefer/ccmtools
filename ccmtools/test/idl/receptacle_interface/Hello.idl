@@ -1,0 +1,22 @@
+/**
+ * Test case: receptacle_interface
+ *
+ */
+
+interface iface {
+  long println(in string s);
+};
+
+interface Console {
+  iface println(in iface p1, inout iface p2, out iface p3);
+};
+
+component Hello
+{
+  uses Console console;
+};
+
+home HelloHome manages Hello
+{
+};
+
