@@ -6,54 +6,62 @@
 #ifndef __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
 #define __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
 
-%(OpenNamespace)s
+#include <iostream>
+#include <sstream>
+
+#include <%(StubsIncludeNamespace)s%(Identifier)s.h>
+#include <%(LocalIncludeNamespace)s%(Identifier)s.h>
+
+
+namespace CCM_Remote {
 
 void 
-convertFromCorba(const ::%(Identifier)s& in, CCM_Local::%(Identifier)s& out);
+convertFromCorba(const %(StubsNamespace)s%(Identifier)s& in, %(LocalNamespace)s%(Identifier)s& out);
 
 void 
-convertToCorba(const CCM_Local::%(Identifier)s& in, ::%(Identifier)s& out);
+convertToCorba(const %(LocalNamespace)s%(Identifier)s& in, %(StubsNamespace)s%(Identifier)s& out);
 
-%(CloseNamespace)s
+} // /namespace CCM_Remote
 
-#endif // __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
+#endif // __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
 
 <<<<<<<SPLIT>>>>>>>
 /***
  * CORBA converter for enum %(Identifier)s (implementation file)
  *
  ***/
+ 
+#include <WX/Utils/debug.h>
 
+#include <CCM_Remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
 using namespace std;
-using namespace CCM;
 
-%(OpenNamespace)s
+namespace CCM_Remote {
 
-inline 
 void 
-convertFromCorba(const ::%(Identifier)s& in, CCM_Local::%(Identifier)s& out)
+convertFromCorba(const %(StubsNamespace)s%(Identifier)s& in, %(LocalNamespace)s%(Identifier)s& out)
 {
-    cout << " convertFromCorba(const ::%(Identifier)s&, 
-	CCM_Local::%(Identifier)s&)" << endl;
-	
+    LDEBUGNL(CCM_REMOTE," convertFromCorba(%(StubsNamespace)s%(Identifier)s)");
+    LDEBUGNL(CCM_REMOTE, in);
+
     switch(in) {
 %(MembersFromCorba)s
     }
 } 
 
 
-inline 
 void 
-convertToCorba(const CCM_Local::%(Identifier)s& in, %(Identifier)s& out)
+convertToCorba(const %(LocalNamespace)s%(Identifier)s& in, %(StubsNamespace)s%(Identifier)s& out)
 {
-    cout << " convertToCorba(const CCM_Local::%(Identifier)s&, 
-	%(Identifier)s&)" << endl;
+    LDEBUGNL(CCM_REMOTE," convertToCorba(%(StubsNamespace)s%(Identifier)s)");
 
     switch(in) {
 %(MembersToCorba)s
     }
+    
+    LDEBUGNL(CCM_REMOTE, out);
 } 
 
-%(CloseNamespace)s
+} // /namespace CCM_Remote
