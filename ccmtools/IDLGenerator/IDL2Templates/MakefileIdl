@@ -1,4 +1,4 @@
-IDL_INCLUDE = $(CCMTOOLS_HOME)/include
+IDL_INCLUDE = $(CCM_COMPONENT_REPOSITORY)/include
 
 all: 
 	ccmtools-idl --mico -I$(IDL_INCLUDE) *.idl
