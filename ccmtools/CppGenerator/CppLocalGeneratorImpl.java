@@ -239,16 +239,19 @@ public class CppLocalGeneratorImpl
                 f = new ArrayList(); f.add(base); f.add(""); files.add(f);
                 f = new ArrayList(); f.add(base); f.add(""); files.add(f);
             }
+
         } else if (current_node instanceof MInterfaceDef) {
             f = new ArrayList();
             f.add("CCM_Local"); f.add(node_name + ".h"); files.add(f);
             f = new ArrayList();
             f.add("CCM_Local"); f.add(node_name + "_types.h"); files.add(f);
+
         } else if (current_node instanceof MContainer) {
             f = new ArrayList(); f.add("CCM_Local");
             if ((flags & FLAG_USER_TYPES_FILES) == 0) f.add("");
             else f.add(node_name + "_user_types.h");
             files.add(f);
+
         } else {
             throw new RuntimeException("Invalid output node "+node_name);
         }

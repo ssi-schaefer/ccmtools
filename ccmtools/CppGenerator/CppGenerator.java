@@ -402,6 +402,13 @@ abstract public class CppGenerator
             String base = joinBases(", public");
             if (base.length() > 0)
                 return ": public " + base;
+        } else if (data_type.equals("UserTypesInclude")) {
+            List includes = new ArrayList();
+            for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
+                String id = (String) i.next();
+                includes.add("#include \"" + id + "_user_types.h\"");
+            }
+            return join("\n", includes);
         }
         return data_value;
     }

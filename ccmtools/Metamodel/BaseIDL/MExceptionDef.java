@@ -21,7 +21,7 @@
 
 package ccmtools.Metamodel.BaseIDL;
 
-import java.util.Set;
+import java.util.List;
 
 import org.omg.CORBA.TypeCode;
 
@@ -33,8 +33,8 @@ public interface MExceptionDef
     void setTypeCode(TypeCode __arg);
 
     // aggregation: direct role: exception[0..1] <>- opposite role: member[*]
-    Set getMembers();
-    void setMembers(Set __arg);
+    List getMembers();
+    void setMembers(List __arg);
     void addMember(MFieldDef __arg);
     void removeMember(MFieldDef __arg);
 }

@@ -5,18 +5,18 @@ How to do a CCM Tools release
 
 Basic steps :
 
-1. Branch from CVS HEAD (for a new even numbered release series)
+1. Manage CVS branches
 2. Verify the source
 3. Do the stable release
 4. Merge back to CVS HEAD (from even numbered release series)
 5. Release a development version
 
-1. Branch from CVS HEAD
------------------------
+1. Manage CVS branches
+----------------------
 
-This is only necessary for creating a new even numbered release series, e.g. the
-0.8 series or the 1.6 series. Doing this is fairly straightforward ; we'll say
-the new series number will be "A.B" :
+First, if you're going to start a new even numbered release series, e.g. the 0.8
+series or the 1.6 series, you'll need to create a new CVS branch. Doing this is
+fairly straightforward ; we'll say the new series number will be "A.B" :
 
   ccmtools $ cvs update
   ccmtools $ cvs tag BRANCH-ROOT-A_B
@@ -29,7 +29,14 @@ the new series number will be "A.B" :
    :
    :
 
-Update the configure.ac files in both directories.
+If A.B is a new branch, you'll also need to make a directory on the web site for
+it :
+
+  A.B $ ssh ccmtools.sf.net
+  ~ $ mkdir /home/groups/c/cc/ccmtools/htdocs/releases/A.B
+
+Now you need to update the configure.ac files in both the stable (even numbered
+series) branch, and in CVS head.
 
   my_dir $ cd A.B
   A.B $ emacs configure.ac
@@ -41,15 +48,8 @@ Update the configure.ac files in both directories.
   ccmtools $ cvs ci
 
 Thereafter, do all your main branch edits in the "ccmtools" directory (or
-wherever you have it stored), and do all your A.B series edits in the "A.B"
-directory.
-
-If A.B is a new branch, you'll also need to make a directory on the web site for
-it :
-
-  A.B $ ssh ccmtools.sf.net
-  ~ $ cd /home/groups/c/cc/ccmtools/htdocs/releases
-  releases $ mkdir A.B
+wherever you have the CVS head stored), and do all your A.B series edits in the
+"A.B" directory.
 
 2. Verify the source
 --------------------
@@ -62,14 +62,15 @@ There are a few things to verify before doing the actual distribution.
   directory, build it in a temporary directory, and then run all tests that
   normally run using "make check". Provided that "make check" performs enough
   tests, this is an easy, good, and safe way to test the whole package all at
-  once.
+  once. This test also indirectly checks that the tarball actually functions, so
+  we hopefully won't get any bug reports about nasty build errors.
 
 - Update the ChangeLog.
 
   I use the "cvs2cl" script to do this, and then edit the resulting ChangeLog :
 
   A.B $ cvs2cl --accum
-  A.B $ emacs ChangeLog
+  A.B $ emacsclient ChangeLog
   A.B $ cvs ci
 
 - Update the release notes on the web site.

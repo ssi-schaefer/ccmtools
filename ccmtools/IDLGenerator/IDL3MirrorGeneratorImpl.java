@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class IDL3MirrorGeneratorImpl
     extends IDLGenerator
@@ -58,17 +57,17 @@ public class IDL3MirrorGeneratorImpl
     {
         List ifaces = new ArrayList();
         if (data_type.equals("MProvidesDefInclude")) {
-            Set contents = ((MComponentDef) current_node).getFacets();
+            List contents = ((MComponentDef) current_node).getFacets();
             for (Iterator i = contents.iterator(); i.hasNext(); )
                 ifaces.add(((MProvidesDef) i.next()).getProvides());
             return join("\n", filterIncludes(data_value.split("\n"), ifaces));
         } else if (data_type.equals("MSupportsDefInclude")) {
-            Set contents = ((MComponentDef) current_node).getSupportss();
+            List contents = ((MComponentDef) current_node).getSupportss();
             for (Iterator i = contents.iterator(); i.hasNext(); )
                 ifaces.add(((MSupportsDef) i.next()).getSupports());
             return join("\n", filterIncludes(data_value.split("\n"), ifaces));
         } else if (data_type.equals("MUsesDefInclude")) {
-            Set contents = ((MComponentDef) current_node).getReceptacles();
+            List contents = ((MComponentDef) current_node).getReceptacles();
             for (Iterator i = contents.iterator(); i.hasNext(); )
                 ifaces.add(((MUsesDef) i.next()).getUses());
             return join("\n", filterIncludes(data_value.split("\n"), ifaces));

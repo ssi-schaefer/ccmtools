@@ -136,7 +136,8 @@ public class CppMirrorGeneratorImpl
         writeFinalizedFile(file_dir, file_name, generated_code);
 
         File makefile = new File(file_dir, "Makefile.py");
-        if (! makefile.isFile())
+        File check_file = new File(output_dir, makefile.toString());
+        if (! check_file.isFile())
             writeFinalizedFile(file_dir, "Makefile.py", "");
     }
 

@@ -21,9 +21,9 @@
 
 package ccmtools.Metamodel.ComponentIDL;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
@@ -47,38 +47,46 @@ public class MComponentDefImpl
 
     private boolean isAbstract;
     private boolean isLocal;
-    private boolean isForwardDeclaration = false;
+    private boolean isForwardDeclaration;
 
-    private Set HomeSet_;
-    private Set FacetSet_;
-    private Set ReceptacleSet_;
-    private Set SupportsSet_;
-    private Set EmitsSet_;
-    private Set PublishesSet_;
-    private Set ConsumesSet_;
+    private List HomeList_;
+    private List FacetList_;
+    private List ReceptacleList_;
+    private List SupportsList_;
+    private List EmitsList_;
+    private List PublishesList_;
+    private List ConsumesList_;
     private MIDLType TypedBy_;
     private MContainer Contains;
-    private Set ContainsSet;
-    private Set InterfaceDerivedFromSet;
+    private List ContainsList;
+    private List InterfaceDerivedFromList;
 
     public MComponentDefImpl()
     {
-	HomeSet_ = new HashSet();
-	FacetSet_ = new HashSet();
-	ReceptacleSet_ = new HashSet();
-	SupportsSet_ = new HashSet();
-	EmitsSet_ = new HashSet();
-	PublishesSet_ = new HashSet();
-	ConsumesSet_ = new HashSet();
-	ContainsSet = new HashSet();
-	InterfaceDerivedFromSet = new HashSet();
+        isForwardDeclaration = false;
+	HomeList_ = new ArrayList();
+	FacetList_ = new ArrayList();
+	ReceptacleList_ = new ArrayList();
+	SupportsList_ = new ArrayList();
+	EmitsList_ = new ArrayList();
+	PublishesList_ = new ArrayList();
+	ConsumesList_ = new ArrayList();
+	ContainsList = new ArrayList();
+	InterfaceDerivedFromList = new ArrayList();
         sourceFile = new String("");
     }
 
     // override toString()
     public String toString()
     {
-	return "MComponentDef: "+ identifier;
+	String tmp = "MComponentDef: "+ identifier;
+	if (ContainsList.size() > 0)
+            tmp  += " " + ContainsList;
+        if (InterfaceDerivedFromList.size() > 0)
+            tmp += " (bases: " + InterfaceDerivedFromList + ")";
+        if (! sourceFile.equals(""))
+            tmp += " (defined in '"+ sourceFile + "')";
+	return tmp;
     }
 
     //----------------------------------------------------------------
@@ -129,66 +137,66 @@ public class MComponentDefImpl
     public void setIdlType(MIDLType __arg)      {TypedBy_ = __arg;}
 
     // composition: direct role: component[1] <-> opposite role: facet[*]
-    public Set getFacets()                      {return FacetSet_;}
-    public void setFacets(Set __arg)            {FacetSet_ = new HashSet(__arg);}
-    public void addFacet(MProvidesDef __arg)    {FacetSet_.add(__arg);}
-    public void removeFacet(MProvidesDef __arg) {FacetSet_.remove(__arg);}
+    public List getFacets()                     {return FacetList_;}
+    public void setFacets(List __arg)           {FacetList_ = new ArrayList(__arg);}
+    public void addFacet(MProvidesDef __arg)    {FacetList_.add(__arg);}
+    public void removeFacet(MProvidesDef __arg) {FacetList_.remove(__arg);}
 
     // composition: direct role: component[1] <-> opposite role: receptacle[*]
-    public Set getReceptacles()                  {return ReceptacleSet_;}
-    public void setReceptacles(Set __arg)        {ReceptacleSet_ = new HashSet(__arg);}
-    public void addReceptacle(MUsesDef __arg)    {ReceptacleSet_.add(__arg);}
-    public void removeReceptacle(MUsesDef __arg) {ReceptacleSet_.remove(__arg);}
+    public List getReceptacles()                 {return ReceptacleList_;}
+    public void setReceptacles(List __arg)       {ReceptacleList_ = new ArrayList(__arg);}
+    public void addReceptacle(MUsesDef __arg)    {ReceptacleList_.add(__arg);}
+    public void removeReceptacle(MUsesDef __arg) {ReceptacleList_.remove(__arg);}
 
     // association: direct role: component[*] --> opposite role: supports[*]
-    public Set getSupportss()                      {return SupportsSet_;}
-    public void setSupportss(Set __arg)            {SupportsSet_ = new HashSet(__arg);}
-    public void addSupports(MSupportsDef __arg)    {SupportsSet_.add(__arg);}
-    public void removeSupports(MSupportsDef __arg) {SupportsSet_.remove(__arg);}
+    public List getSupportss()                     {return SupportsList_;}
+    public void setSupportss(List __arg)           {SupportsList_ = new ArrayList(__arg);}
+    public void addSupports(MSupportsDef __arg)    {SupportsList_.add(__arg);}
+    public void removeSupports(MSupportsDef __arg) {SupportsList_.remove(__arg);}
 
     // composition: direct role: component[1] --> opposite role: emits[*]
-    public Set getEmitss()                      {return EmitsSet_;}
-    public void setEmitss(Set __arg)            {EmitsSet_ = new HashSet(__arg);}
-    public void addEmits(MEmitsDef __arg)       {EmitsSet_.add(__arg);}
-    public void removeEmits(MEmitsDef __arg)    {EmitsSet_.remove(__arg);}
+    public List getEmitss()                     {return EmitsList_;}
+    public void setEmitss(List __arg)           {EmitsList_ = new ArrayList(__arg);}
+    public void addEmits(MEmitsDef __arg)       {EmitsList_.add(__arg);}
+    public void removeEmits(MEmitsDef __arg)    {EmitsList_.remove(__arg);}
 
     // composition: direct role: component[1] --> opposite role: publishes[*]
-    public Set getPublishess()                       {return PublishesSet_;}
-    public void setPublishess(Set __arg)             {PublishesSet_ = new HashSet(__arg);}
-    public void addPublishes(MPublishesDef __arg)    {PublishesSet_.add(__arg);}
-    public void removePublishes(MPublishesDef __arg) {PublishesSet_.remove(__arg);}
+    public List getPublishess()                      {return PublishesList_;}
+    public void setPublishess(List __arg)            {PublishesList_ = new ArrayList(__arg);}
+    public void addPublishes(MPublishesDef __arg)    {PublishesList_.add(__arg);}
+    public void removePublishes(MPublishesDef __arg) {PublishesList_.remove(__arg);}
 
      // composition: direct role: component[1] --> opposite role: consumes[*]
-    public Set getConsumess()                      {return ConsumesSet_;}
-    public void setConsumess(Set __arg)            {ConsumesSet_ = new HashSet(__arg);}
-    public void addConsumes(MConsumesDef __arg)    {ConsumesSet_.add(__arg);}
-    public void removeConsumes(MConsumesDef __arg) {ConsumesSet_.remove(__arg);}
+    public List getConsumess()                     {return ConsumesList_;}
+    public void setConsumess(List __arg)           {ConsumesList_ = new ArrayList(__arg);}
+    public void addConsumes(MConsumesDef __arg)    {ConsumesList_.add(__arg);}
+    public void removeConsumes(MConsumesDef __arg) {ConsumesList_.remove(__arg);}
 
     // association: direct role: contants[*] <-> opposite role: definedIn[0..1]
     public MContainer getDefinedIn()            {return Contains;}
     public void setDefinedIn(MContainer __arg)  {Contains = __arg;}
 
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
-    public Set getContentss()                    {return ContainsSet;}
-    public void setContentss(Set __arg)          {ContainsSet = (__arg != null) ? new HashSet(__arg) : null;}
-    public void addContents(MContained __arg)    {ContainsSet.add(__arg);}
-    public void removeContents(MContained __arg) {ContainsSet.remove(__arg);}
+    public List getContentss()                   {return ContainsList;}
+    public void setContentss(List __arg)         {ContainsList = (__arg != null) ? new ArrayList(__arg) : null;}
+    public void addContents(MContained __arg)    {ContainsList.add(__arg);}
+    public void removeContents(MContained __arg) {ContainsList.remove(__arg);}
 
     // association: direct role: [*] --> opposite role: base[*]
-    public Set getBases()                       {return InterfaceDerivedFromSet;}
-    public void setBases(Set __arg)             {InterfaceDerivedFromSet = new HashSet(__arg);}
-    public void addBase(MInterfaceDef __arg)    {InterfaceDerivedFromSet.add(__arg);}
-    public void removeBase(MInterfaceDef __arg) {InterfaceDerivedFromSet.remove(__arg);}
+    public List getBases()                      {return InterfaceDerivedFromList;}
+    public void setBases(List __arg)            {InterfaceDerivedFromList = new ArrayList(__arg);}
+    public void addBase(MInterfaceDef __arg)    {InterfaceDerivedFromList.add(__arg);}
+    public void removeBase(MInterfaceDef __arg) {InterfaceDerivedFromList.remove(__arg);}
 
     // we have extended the CCM MOF specification to ease the navigation from
     // component to its home(s) ; our implementation generally encourages 1-1
-    // relations between homes and components.
+    // relations between homes and components but allows *-0..1 relations.
     //
     // association: direct role: component[1] <--> oposite role: is managed by [*]
-    public Set getHomes()                       {return HomeSet_;}
-    public void setHomes(Set __arg)             {HomeSet_ = new HashSet(__arg);}
-    public void addHome(MHomeDef __arg)         {HomeSet_.add(__arg);}
-    public void removeHome(MHomeDef __arg)      {HomeSet_.remove(__arg);}
+    public List getHomes()                      {return HomeList_;}
+    public void setHomes(List __arg)            {HomeList_ = new ArrayList(__arg);}
+    public void addHome(MHomeDef __arg)         {HomeList_.add(__arg);}
+    public void removeHome(MHomeDef __arg)      {HomeList_.remove(__arg);}
 
     //----------------------------------------------------------------
     // implementation of operations
@@ -216,13 +224,13 @@ public class MComponentDefImpl
     }
 
     // a helper function for the lookupName function below.
-    private MContained searchSet(Set set, String searchName,
+    private MContained searchBin(List bin, String searchName,
                                  long levelsToSearch,
                                  MDefinitionKind limitToType,
                                  boolean excludeInherited)
     {
         MContained elem;
-        Iterator it = set.iterator();
+        Iterator it = bin.iterator();
 
         while (it.hasNext()) {
             elem = (MContained) it.next();
@@ -285,19 +293,19 @@ public class MComponentDefImpl
 
         MContained elem = null;
 
-        elem = searchSet(ContainsSet, searchName, levelsToSearch,limitToType, excludeInherited);
+        elem = searchBin(ContainsList, searchName, levelsToSearch,limitToType, excludeInherited);
         if (elem != null) return elem;
-        elem = searchSet(FacetSet_, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(FacetList_, searchName, levelsToSearch, limitToType, excludeInherited);
         if (elem != null) return elem;
-        elem = searchSet(ReceptacleSet_, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(ReceptacleList_, searchName, levelsToSearch, limitToType, excludeInherited);
         if (elem != null) return elem;
-        elem = searchSet(SupportsSet_, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(SupportsList_, searchName, levelsToSearch, limitToType, excludeInherited);
         if (elem != null) return elem;
-        elem = searchSet(EmitsSet_, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(EmitsList_, searchName, levelsToSearch, limitToType, excludeInherited);
         if (elem != null) return elem;
-        elem = searchSet(PublishesSet_, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(PublishesList_, searchName, levelsToSearch, limitToType, excludeInherited);
         if (elem != null) return elem;
-        elem = searchSet(ConsumesSet_, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(ConsumesList_, searchName, levelsToSearch, limitToType, excludeInherited);
 
         if (elem != null) return elem;
 

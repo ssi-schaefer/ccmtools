@@ -35,59 +35,42 @@ import java.util.Iterator;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * A CCM MOF graph traverser similar in pattern to the SAX XML parser.
+ *
+ * This class is designed to traverse a CORBA Component Model (CCM) Meta Object
+ * Framework (MOF) library graph object. It is conceptually similar to the SAX
+ * XML parsers: This class only performs the task of traversing the graph. It
+ * sends node traversal events to an object derived from the NodeHandler class
+ * to perform task-specific actions with each node.
+ */
 public class GraphTraverserImpl
     implements GraphTraverser
 {
     private NodeHandler handler = null;
 
-    /**
-     * A CCM MOF graph traverser similar in pattern to the SAX XML parser.
-     *
-     * This class is designed to traverse a CORBA Component Model (CCM) Meta
-     * Object Framework (MOF) library graph object. It is conceptually similar
-     * to the SAX XML parsers: This class only performs the task of traversing
-     * the graph. It sends node traversal events to an object derived from the
-     * NodeHandler class to perform task-specific actions with each node.
-     */
-    public GraphTraverserImpl()
-    {
-    }
+    public GraphTraverserImpl() { }
 
     /**
-     * A CCM MOF graph traverser similar in pattern to the SAX XML parser.
-     *
-     * This class is designed to traverse a CORBA Component Model (CCM) Meta
-     * Object Framework (MOF) library graph object. It is conceptually similar
-     * to the SAX XML parsers: This class only performs the task of traversing
-     * the graph. It sends node traversal events to an object derived from the
-     * NodeHandler class to perform task-specific actions with each node.
+     * Create a new traverser with a given node handler.
      *
      * @param h An object to handle node events.
      */
-    public GraphTraverserImpl(NodeHandler h)
-    {
-        setHandler(h);
-    }
+    public GraphTraverserImpl(NodeHandler h) { setHandler(h); }
 
     /**
      * Get the node handler object for this traverser.
      *
      * @return The NodeHandler object currently used by this traverser.
      */
-    public NodeHandler getHandler()
-    {
-        return handler;
-    }
+    public NodeHandler getHandler() { return handler; }
 
     /**
      * Set the node handler object for this traverser.
      *
      * @param h A NodeHandler object to assign to this traverser.
      */
-    public void setHandler(NodeHandler h)
-    {
-        handler = h;
-    }
+    public void setHandler(NodeHandler h) { handler = h; }
 
     /**
      * Traverse the subgraph starting at the given node.
@@ -101,7 +84,8 @@ public class GraphTraverserImpl
             traverseRecursive(node, "", new HashSet());
             handler.endGraph();
         } else {
-            throw new RuntimeException("No node handler object available for traversal");
+            throw new RuntimeException(
+                "No node handler object available for traversal");
         }
     }
 
@@ -117,13 +101,9 @@ public class GraphTraverserImpl
      *                to prevent visiting a node more than once when the graph
      *                contains cycles.
      */
-    private void traverseRecursive(Object node,
-                                   String context,
-                                   Set visited)
+    private void traverseRecursive(Object node, String context, Set visited)
     {
-        if (node == null) {
-            return;
-        }
+        if (node == null) return;
 
         // this type check comb is silly.
 
@@ -138,32 +118,26 @@ public class GraphTraverserImpl
             id = ((MUnionFieldDef) node).getIdentifier();
         }
 
-        if (id == null) {
+        if (id == null)
             throw new RuntimeException("Node "+node+" in context "+context+
                                        " has no identifier");
-        }
 
         // nodes are identified by their scope identifier. we should change this
-        // eventually to use the absoluteName attribute.
+        // eventually to use the absoluteName attribute, but that's more of a
+        // parser issue.
 
         String scope_id = new String(context + "::" + id);
-        if (scope_id.startsWith("::")) {
-            scope_id = scope_id.substring(2);
-        }
+        if (scope_id.startsWith("::")) scope_id = scope_id.substring(2);
 
-        if (visited.contains(scope_id)) {
-            return;
-        } else {
-            visited.add(scope_id);
-        }
+        if (visited.contains(scope_id)) return;
+        visited.add(scope_id);
 
         handler.startNode(node, scope_id);
 
-        List node_children = processNodeData(node);
+        List children = processNodeData(node);
 
-        for (Iterator i = node_children.iterator(); i.hasNext(); ) {
+        for (Iterator i = children.iterator(); i.hasNext(); )
             traverseRecursive(i.next(), scope_id, visited);
-        }
 
         handler.endNode(node, scope_id);
     }
@@ -188,65 +162,56 @@ public class GraphTraverserImpl
     {
         List children = new ArrayList();
 
-        Method[] node_methods = node.getClass().getMethods();
+        Method[] methods = node.getClass().getMethods();
 
-        for (int i = 0; i < node_methods.length; i++) {
-            String method_name = node_methods[i].getName();
-            String method_type = node_methods[i].getReturnType().getName();
+        for (int i = 0; i < methods.length; i++) {
+            String name = methods[i].getName();
+            String type = methods[i].getReturnType().getName();
 
-            if ((node_methods[i].getParameterTypes().length > 0) ||
+            if ((methods[i].getParameterTypes().length > 0) ||
 
                 // only look at data retrieval functions.
 
-                ((! method_name.startsWith("get")) &&
-                 (! method_name.startsWith("is"))) ||
+                ((! name.startsWith("get")) && (! name.startsWith("is"))) ||
 
                 // we don't need reflection for this task.
 
-                method_name.equals("getClass") ||
+                name.equals("getClass") ||
 
                 // we don't want to process the member children of MEnumDef,
                 // since they're simple string constants and don't have
                 // identifiers.
 
-                ((node instanceof MEnumDef) && method_name.equals("getMembers")) ||
+                ((node instanceof MEnumDef) && name.equals("getMembers")) ||
 
                 // we don't want to visit the homes during a visit to the
                 // component. the homes will get their own chance as
                 // self-standing members of the corba community, er, graph.
 
-                method_name.equals("getHomes")) {
+                name.equals("getHomes"))
 
                 continue;
-            }
 
             Object value = null;
             Method access = null;
 
-            // the field_id is the capitalized name of the corresponding data
+            // the field is the capitalized name of the corresponding data
             // field in the class. it's used to fill out template information.
 
-            String field_id = method_name.substring(2);
+            String field = name.substring(2);
+            if (! type.endsWith("oolean")) field = field.substring(1);
 
             try {
-                if (! method_type.endsWith("boolean")) {
-                    field_id = field_id.substring(1);
-                }
-
-                value = node_methods[i].invoke(node, null);
+                value = methods[i].invoke(node, null);
             } catch (IllegalAccessException e) {
                 continue;
             } catch (InvocationTargetException e) {
                 continue;
             }
 
-            if (method_type.endsWith("List")) {
-                children.addAll((List) value);
-            } else if (method_type.endsWith("Set")) {
-                children.addAll((Set) value);
-            } else {
-                handler.handleNodeData(method_type, field_id, value);
-            }
+            if (type.endsWith("List")) children.addAll((List) value);
+            else if (type.endsWith("Set")) children.addAll((Set) value);
+            else handler.handleNodeData(type, field, value);
         }
 
         return children;

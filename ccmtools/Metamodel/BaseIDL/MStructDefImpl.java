@@ -39,7 +39,7 @@ public class MStructDefImpl
     private String sourceFile;
 
     private TypeCode typeCode_;
-    private List MemberList_ = null;
+    private List MemberList_;
     private MContainer Contains;
 
     public MStructDefImpl()
@@ -51,7 +51,9 @@ public class MStructDefImpl
     // override toString()
     public String toString()
     {
-	return "MStructDef: "+ identifier;
+	String tmp = "MStructDef: "+ identifier;
+        if (MemberList_.size() > 0) tmp += " " + MemberList_;
+        return tmp;
     }
 
 

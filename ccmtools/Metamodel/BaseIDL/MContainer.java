@@ -21,14 +21,14 @@
 
 package ccmtools.Metamodel.BaseIDL;
 
-import java.util.Set;
+import java.util.List;
 
 public interface MContainer
     extends MContained
 {
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
-    Set getContentss();
-    void setContentss(Set __arg);
+    List getContentss();
+    void setContentss(List __arg);
     void addContents(MContained __arg);
     void removeContents(MContained __arg);
 

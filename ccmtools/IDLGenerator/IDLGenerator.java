@@ -87,6 +87,8 @@ abstract public class IDLGenerator
     {
         super(sublang, d, out_dir, null, local_reserved_words,
               null, null, local_language_map);
+
+        clearFlag(FLAG_INCLUDE_EXTERN_NODES);
     }
 
     /**
@@ -125,17 +127,25 @@ abstract public class IDLGenerator
      *
      * @param template the template object to get the generated code structure
      *        from ; variable values should come from the node handler object.
-     * @param extension the file extension to use for output files. This
-     *        parameter is intended to allow for easier subclassing of the
-     *        IDL3Generator class for all other versions of IDL.
+     * @param ext the file extension to use for output files. This parameter is
+     *        intended to allow for easier subclassing of the IDL3Generator
+     *        class for all other versions of IDL.
      */
-    protected void writeOutput(Template template, String extension)
+    protected void writeOutput(Template template, String ext)
         throws IOException
     {
-        String out_name =
-            ((MContained) current_node).getIdentifier() + ".idl" + extension;
-        String generated_code = template.substituteVariables(output_variables);
-        writeFinalizedFile("", out_name, generated_code);
+        String[] pieces =
+            template.substituteVariables(output_variables).split("\n");
+
+        List code_pieces = new ArrayList();
+        for (int i = 0; i < pieces.length; i++)
+            if (! pieces[i].trim().equals(""))
+                code_pieces.add(pieces[i]);
+
+        writeFinalizedFile
+            ("",
+             ((MContained) current_node).getIdentifier() + ".idl" + ext,
+             join("\n", code_pieces).replaceAll("};", "};\n"));
     }
 
     /**

@@ -21,9 +21,9 @@
 
 package ccmtools.Metamodel.BaseIDL;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class MInterfaceDefImpl
     implements MInterfaceDef
@@ -39,28 +39,29 @@ public class MInterfaceDefImpl
 
     private boolean isAbstract;
     private boolean isLocal;
-    private boolean isForwardDeclaration = false;
+    private boolean isForwardDeclaration;
 
     private MContainer Contains;
     private MIDLType TypedBy_;
-    private Set ContainsSet = null;
-    private Set InterfaceDerivedFromSet = null;
+    private List ContainsList;
+    private List InterfaceDerivedFromList;
 
     public MInterfaceDefImpl()
     {
-	ContainsSet = new HashSet();
-	InterfaceDerivedFromSet = new HashSet();
+        isForwardDeclaration = false;
+	ContainsList = new ArrayList();
+	InterfaceDerivedFromList = new ArrayList();
         sourceFile = new String("");
     }
 
     // override toString()
     public String toString()
     {
-	String tmp = "MInterfaceDef: "+ identifier;
-	if ((ContainsSet != null) && (ContainsSet.size() > 0))
-            tmp  += ContainsSet.toString();
-        if ((InterfaceDerivedFromSet != null) && (InterfaceDerivedFromSet.size() > 0))
-            tmp += " (bases: " + InterfaceDerivedFromSet.toString() + ")";
+	String tmp = "MInterfaceDef: " + identifier;
+	if ((ContainsList != null) && (ContainsList.size() > 0))
+            tmp  += " " + ContainsList.toString();
+        if ((InterfaceDerivedFromList != null) && (InterfaceDerivedFromList.size() > 0))
+            tmp += " (bases: " + InterfaceDerivedFromList.toString() + ")";
         if (! sourceFile.equals(""))
             tmp += " (defined in '"+ sourceFile + "')";
 	return tmp;
@@ -118,16 +119,16 @@ public class MInterfaceDefImpl
     public void setDefinedIn(MContainer __arg)  {Contains = __arg;}
 
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
-    public Set getContentss()                    {return ContainsSet;}
-    public void setContentss(Set __arg)          {ContainsSet = (__arg != null) ? new HashSet(__arg) : null;}
-    public void addContents(MContained __arg)    {ContainsSet.add(__arg);}
-    public void removeContents(MContained __arg) {ContainsSet.remove(__arg);}
+    public List getContentss()                   {return ContainsList;}
+    public void setContentss(List __arg)         {ContainsList = (__arg != null) ? new ArrayList(__arg) : null;}
+    public void addContents(MContained __arg)    {ContainsList.add(__arg);}
+    public void removeContents(MContained __arg) {ContainsList.remove(__arg);}
 
     // association: direct role: [*] --> opposite role: base[*]
-    public Set getBases()                       {return InterfaceDerivedFromSet;}
-    public void setBases(Set __arg)             {InterfaceDerivedFromSet = new HashSet(__arg);}
-    public void addBase(MInterfaceDef __arg)    {InterfaceDerivedFromSet.add(__arg);}
-    public void removeBase(MInterfaceDef __arg) {InterfaceDerivedFromSet.remove(__arg);}
+    public List getBases()                      {return InterfaceDerivedFromList;}
+    public void setBases(List __arg)            {InterfaceDerivedFromList = new ArrayList(__arg);}
+    public void addBase(MInterfaceDef __arg)    {InterfaceDerivedFromList.add(__arg);}
+    public void removeBase(MInterfaceDef __arg) {InterfaceDerivedFromList.remove(__arg);}
 
     //----------------------------------------------------------------
     // implementation of operations
@@ -188,7 +189,7 @@ public class MInterfaceDefImpl
         if (levelsToSearch < 0) { return null; }
 
         MContained elem;
-        Iterator it = ContainsSet.iterator();
+        Iterator it = ContainsList.iterator();
 
         while (it.hasNext()) {
             elem = (MContained) it.next();

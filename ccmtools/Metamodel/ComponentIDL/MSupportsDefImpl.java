@@ -38,12 +38,14 @@ public class MSupportsDefImpl
     private String sourceFile;
 
     private MInterfaceDef Supports_;
-    private MComponentDef Component_ = null;
-    private MHomeDef Home_ = null;
+    private MComponentDef Component_;
+    private MHomeDef Home_;
     private MContainer Contains;
 
     public MSupportsDefImpl()
     {
+        Component_ = null;
+        Home_ = null;
         sourceFile = new String("");
     }
 

@@ -10,12 +10,14 @@ dist_template_DATA = \
     MComponentDef              \
     MComponentDefAbstract      \
     MComponentDefAbstractLocal \
+    MComponentDefFwdDecl       \
     MComponentDefLocal         \
     MConstantDef               \
     MConsumesDef               \
     MContainer                 \
     MEmitsDef                  \
     MEnumDef                   \
+    MEnumDefFwdDecl            \
     MExceptionDef              \
     MExceptionDefName          \
     MFactoryDef                \
@@ -35,9 +37,11 @@ dist_template_DATA = \
     MProvidesDefInclude        \
     MPublishesDef              \
     MStructDef                 \
+    MStructDefFwdDecl          \
     MSupportsDef               \
     MSupportsDefInclude        \
     MUnionDef                  \
+    MUnionDefFwdDecl           \
     MUnionFieldDef             \
     MUsesDef                   \
     MUsesDefInclude            \

@@ -212,9 +212,10 @@ abstract public class CodeGenerator
 
     protected int flags = 0x0;
 
-    public final static int FLAG_APPLICATION_FILES = 0x0001;
-    public final static int FLAG_USER_TYPES_FILES  = 0x0002;
-    public final static int FLAG_ENVIRONMENT_FILES = 0x0004;
+    public final static int FLAG_APPLICATION_FILES    = 0x0001;
+    public final static int FLAG_USER_TYPES_FILES     = 0x0002;
+    public final static int FLAG_ENVIRONMENT_FILES    = 0x0004;
+    public final static int FLAG_INCLUDE_EXTERN_NODES = 0x0008;
 
     private Stack node_stack;
     private Stack name_stack;
@@ -254,7 +255,9 @@ abstract public class CodeGenerator
                          String[] _language_map)
         throws IOException
     {
-        flags = 0x0;
+        // include externally defined node information by default.
+
+        flags = FLAG_INCLUDE_EXTERN_NODES;
 
         template_manager = new TemplateManagerImpl(language);
         driver = d;
@@ -484,30 +487,21 @@ abstract public class CodeGenerator
      *
      * @return the value of the given flag.
      */
-    public boolean getFlag(int flag)
-    {
-        return ((flags & flag) != 0);
-    }
+    public boolean getFlag(int flag) { return ((flags & flag) != 0); }
 
     /**
      * Set the given flag.
      *
      * @param flag the flag to set.
      */
-    public void setFlag(int flag)
-    {
-        flags |= flag;
-    }
+    public void setFlag(int flag) { flags |= flag; }
 
     /**
      * Clear the given flag.
      *
      * @param flag the flag to clear.
      */
-    public void clearFlag(int flag)
-    {
-        flags &= (int) ~ flag;
-    }
+    public void clearFlag(int flag) { flags &= (int) ~ flag; }
 
     /**
      * Get the Map of environment files to output. This map is expected to be
@@ -520,10 +514,8 @@ abstract public class CodeGenerator
      */
     public Map getEnvironmentFiles()
     {
-        if ((flags & FLAG_ENVIRONMENT_FILES) != 0)
-            return environment_files;
-        else
-            return (Map) null;
+        if ((flags & FLAG_ENVIRONMENT_FILES) == 0) return (Map) null;
+        else return environment_files;
     }
 
     /**
@@ -532,10 +524,7 @@ abstract public class CodeGenerator
      *
      * @return the current object's template manager.
      */
-    public TemplateManager getTemplateManager()
-    {
-        return template_manager;
-    }
+    public TemplateManager getTemplateManager() { return template_manager; }
 
     /**************************************************************************/
 
@@ -998,7 +987,21 @@ abstract public class CodeGenerator
         for (Iterator i = parent_vars.iterator(); i.hasNext(); ) {
             String var = (String) i.next();
 
-            if (! var.startsWith(current_type))
+            // here we're only interested in nodes that are appropriate for the
+            // parent node.
+
+            if (! var.startsWith(current_type)) continue;
+
+            // also, we ignore non-module MContained nodes that weren't defined
+            // in the current input file, as long as we've been told to do so.
+            // not that code will never be written to disk for nodes that are
+            // externally defined ; this simply prevents code from being
+            // included in other templates along the way.
+
+            if (((flags & FLAG_INCLUDE_EXTERN_NODES) == 0) &&
+                ((current_node instanceof MContained) &&
+                 (! (current_node instanceof MModuleDef)) &&
+                 (! ((MContained) current_node).getSourceFile().equals(""))))
                 continue;
 
             updateSubvariables(template_manager.getVariables(var));

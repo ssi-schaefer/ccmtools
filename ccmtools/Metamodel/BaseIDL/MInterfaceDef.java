@@ -21,7 +21,7 @@
 
 package ccmtools.Metamodel.BaseIDL;
 
-import java.util.Set;
+import java.util.List;
 
 public interface MInterfaceDef
     extends MContainer, MTyped
@@ -39,8 +39,8 @@ public interface MInterfaceDef
     void setForwardDeclaration(boolean __arg);
 
     // association: direct role: [*] --> opposite role: base[*]
-    Set getBases();
-    void setBases(Set __arg);
+    List getBases();
+    void setBases(List __arg);
     void addBase(MInterfaceDef __arg);
     void removeBase(MInterfaceDef __arg);
 }

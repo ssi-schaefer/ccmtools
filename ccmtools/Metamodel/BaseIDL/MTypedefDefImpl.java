@@ -21,9 +21,6 @@
 
 package ccmtools.Metamodel.BaseIDL;
 
-import java.util.Set;
-import java.util.HashSet;
-
 import org.omg.CORBA.TypeCode;
 
 public class MTypedefDefImpl

@@ -43,11 +43,10 @@ public class Main
     {
         Document ccdDomDocument = null;
         MContainer container = null;
-        ParserManager parserManager = new ParserManager();
-        parserManager.createParser(args[0]);
+        ParserManager manager = new ParserManager();
 
         try {
-            container = parserManager.parseFile();
+            container = manager.parseFile(args[0]);
         } catch (Exception e) {
             System.err.println("Error parsing file "+args[0]);
             return;

@@ -27,105 +27,106 @@
 
 package ccmtools.IDL3Parser;
 
-import java.util.Vector;
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.ListIterator;
+import java.util.Stack;
 
 import ccmtools.Metamodel.BaseIDL.MContained;
 
 public class IDL3SymbolTable {
     /* holds list of scopes */
-    private Vector scopeStack;
+    private Stack scopeStack;
 
     /* table where all defined names are mapped to parse tree nodes */
     private Hashtable symTable;
 
     public IDL3SymbolTable()
     {
-        scopeStack = new Vector(20);
+        scopeStack = new Stack();
         symTable = new Hashtable(533);
     }
 
     /* clear the state of the symbol table. */
     public void clear()
     {
-        scopeStack = new Vector(20);
+        scopeStack = new Stack();
         symTable = new Hashtable(533);
     }
 
     /* push a new scope onto the scope stack. */
-    public void pushScope(String s)
-    {
-        scopeStack.addElement(s);
-    }
+    public void pushScope(String s) { scopeStack.push(s); }
 
     /* pop the last scope off the scope stack. */
-    public void popScope()
+    public void popScope() { scopeStack.pop(); }
+
+    /* push a new input file onto the scope stack. new files always start out
+     * with an empty scope, represented as a "::" on the stack. */
+    public void pushFile() { scopeStack.push("::"); }
+
+    /* retrieve the last level of the meta-stack ; that is, pop until we find
+     * the preceding empty scope operator. */
+    public void popFile()
     {
-        int size = scopeStack.size();
-        if(size > 0)
-            scopeStack.removeElementAt(size - 1);
+        String toPop = (String) scopeStack.peek();
+        while (! toPop.equals("::")) {
+            scopeStack.pop();
+            toPop = (String) scopeStack.peek();
+        }
+        if (toPop != null && toPop.equals("::")) scopeStack.pop();
     }
 
     /* return the current scope as a string */
-    public String currentScopeAsString() {
-        StringBuffer buf = new StringBuffer(100);
+    public String currentScopeAsString()
+    {
+        StringBuffer buf = new StringBuffer("");
         boolean first = true;
-        Enumeration e = scopeStack.elements();
-
-        while (e.hasMoreElements()) {
-            if (first)
-                first = false;
-            else
-                buf.append("::");
-            buf.append(e.nextElement().toString());
+        ListIterator i = scopeStack.listIterator(scopeStack.size());
+        while (i.hasPrevious()) {
+            String elem = (String) i.previous();
+            if (elem.equals("::")) break;
+            if (first) { first = false; buf.insert(0, elem); }
+            else buf.insert(0, elem + "::");
         }
 
         return buf.toString();
     }
 
     /* given a name for a type, append it with the current scope. */
-    public String addCurrentScopeToName(String name) {
-        String currScope = currentScopeAsString();
-        return addScopeToName(currScope, name);
-    }
+    public String addCurrentScopeToName(String name)
+    { return addScopeToName(currentScopeAsString(), name); }
 
     /* given a name for a type, append it with the given scope. MBZ */
-    public String addScopeToName(String scope, String name) {
-        if(scope == null || scope.length() > 0)
-            return scope + "::" + name;
-        else
-            return name;
+    public String addScopeToName(String scope, String name)
+    {
+        if (scope != null && scope.length() == 0) return name;
+        if (scope.substring(scope.length()-2).equals("::"))
+            return scope + name;
+        return scope + "::" + name;
     }
 
     /* remove one level of scope from name MBZ */
-    public String removeOneLevelScope(String scopeName) {
+    public String removeOneLevelScope(String scopeName)
+    {
         int index = scopeName.lastIndexOf("::");
-        if (index > 0) {
-            return scopeName.substring(0,index);
-        }
-        if (scopeName.length() > 0) {
-            return "";
-        }
+        if (index > 0) return scopeName.substring(0, index);
+        if (scopeName.length() > 0) return "";
         return null;
     }
 
-    /* add a contained to the table with it's key as the current scope and the
-       name */
-    public MContained add(String name, MContained mContained) {
-        return (MContained)symTable.put(addCurrentScopeToName(name),mContained);
-    }
+    /* add a contained to the table with it key as the current scoped name */
+    public MContained add(String name, MContained cont)
+    { return (MContained) symTable.put(addCurrentScopeToName(name), cont); }
 
     /* lookup a fully scoped name in the symbol table */
-    public MContained lookupScopedName(String scopedName) {
-        return (MContained)symTable.get(scopedName);
-    }
+    public MContained lookupScopedName(String scopedName)
+    { return (MContained) symTable.get(scopedName); }
 
-    /* lookup an unscoped name in the table by prepending the current scope. MBZ
-       -- if not found, pop scopes and look again */
-    public MContained lookupNameInCurrentScope(String name) {
-        if (name == null)
-            return null;
+    /* lookup an unscoped name in the table by prepending the current scope.
+       MBZ */
+    public MContained lookupNameInCurrentScope(String name)
+    {
+        if (name == null) return null;
 
         String scope = currentScopeAsString();
         String scopedName;
@@ -141,17 +142,13 @@ public class IDL3SymbolTable {
     }
 
     /* convert this table to a string */
-    public String toString() {
-        StringBuffer buff = new StringBuffer(300);
-        buff.append("=== IDL 3 Symbol Table ===\n");
-        buff.append("Current scope: " + currentScopeAsString() + "\n");
-        buff.append("Defined symbols:\n");
+    public String toString()
+    {
+        StringBuffer buf = new StringBuffer("");
         Enumeration ke = symTable.keys();
-        Enumeration ve = symTable.elements();
-        while(ke.hasMoreElements()) {
-            buff.append(ke.nextElement().toString()+"\n");
-        }
-        buff.append("=== IDL 3 Symbol Table ===\n");
-        return buff.toString();
+        while(ke.hasMoreElements())
+            buf.append("[s] "+ke.nextElement().toString()+"\n");
+        String str = buf.toString();
+        return (str.length() > 0) ? str.substring(0, str.length() - 1) : "";
     }
 };

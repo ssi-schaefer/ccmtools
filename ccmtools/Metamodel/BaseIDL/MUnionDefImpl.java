@@ -52,7 +52,9 @@ public class MUnionDefImpl
     // override toString()
     public String toString()
     {
-	return "MUnionDef: "+ identifier;
+	String tmp = "MUnionDef: "+ identifier;
+        if (UnionMemberList_.size() > 0) tmp += " " + UnionMemberList_;
+        return tmp;
     }
 
     //----------------------------------------------------------------

@@ -13,7 +13,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # tests are generally in order of increasing complexity.
 
-##TESTS = hello-facet.sh
+##TESTS = module-reopen.sh
 TESTS = \
     help.sh                       \
     version.sh                    \
@@ -21,6 +21,9 @@ TESTS = \
     hello-supports.sh             \
     hello-receptacle.sh           \
     hello-multiple-receptacles.sh \
+    module.sh                     \
+    module-nested.sh              \
+    module-reopen.sh              \
     calculator.sh
 
 dist_check_SCRIPTS = $(TESTS)

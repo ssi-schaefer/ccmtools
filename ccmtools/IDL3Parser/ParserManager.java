@@ -37,8 +37,6 @@ public class ParserManager {
     private long debug;
 
     private IDL3SymbolTable symbolTable;
-    private IDL3Parser parser;
-    private IDL3Lexer lexer;
     private String originalFilename;
     private List includedFiles;
     private List includePath;
@@ -48,10 +46,9 @@ public class ParserManager {
      */
     public ParserManager()
     {
-        symbolTable = new IDL3SymbolTable();
-        includedFiles = new ArrayList();
         includePath = new ArrayList();
         this.debug = 0;
+        reset();
     }
 
     /**
@@ -64,32 +61,20 @@ public class ParserManager {
      */
     public ParserManager(long debug, List include_path)
     {
-        symbolTable = new IDL3SymbolTable();
-        includedFiles = new ArrayList();
         includePath = new ArrayList(include_path);
         this.debug = debug;
+        reset();
     }
 
     /**
-     * Add a file to the list of files that were included during a parse. This
-     * function is normally called by an IDL3Parser instance when it encounters
-     * an #include directive.
-     *
-     * @param includedFileName the name of the included file.
+     * Reset the parser manager. This clears out the symbol table and list of
+     * include files.
      */
-    public void addIncludedFile(String includedFileName)
+    public void reset()
     {
-        // locate include files on the include path.
-
-        for (Iterator p = includePath.iterator(); p.hasNext(); ) {
-            File test = new File((File) p.next(), includedFileName);
-            if (test.isFile()) {
-                includedFiles.add(test.toString());
-                return;
-            }
-        }
-
-        throw new RuntimeException("Source IDL file "+includedFileName+" not found.");
+        symbolTable = new IDL3SymbolTable();
+        includedFiles = new ArrayList();
+        originalFilename = null;
     }
 
     /**
@@ -98,10 +83,30 @@ public class ParserManager {
      * @return the included file list. Could be empty if the original file
      *         contained no used #include directives.
      */
-    public List getIncludedFiles()
-    {
-	return includedFiles;
-    }
+    public List getIncludedFiles() { return includedFiles; }
+
+    /**
+     * Get the include path during a parse.
+     *
+     * @return the include path.
+     */
+    public List getIncludePath() { return includePath; }
+
+    /**
+     * Get the current symbol table being maintained by the parser manager.
+     *
+     * @return the current symbol table, normally for debug output. Be careful;
+     *         externally manipulating the symbol table could have severe side
+     *         effects.
+     */
+    public IDL3SymbolTable getSymbolTable() { return symbolTable; }
+
+    /**
+     * Find out which file the parser manager started with.
+     *
+     * @return the name of the original file given to parse.
+     */
+    public String getOriginalFilename() { return originalFilename; }
 
     /**
      * Find out if the given file is a file included from some other file during
@@ -117,25 +122,32 @@ public class ParserManager {
         File tester = new File(includedFileName);
         for (Iterator i = includedFiles.iterator(); i.hasNext(); ) {
             File next = new File((String) i.next());
-            if (tester.equals(next)) return true;
+            if (tester.getName().equals(next.getName())) return true;
         }
 	return false;
     }
 
     /**
-     * Create a new parser (and an associated lexer) object to parse the given
-     * file. Set up the lexer and parser to communicate, and clear the contents
-     * of the current symbol table.
+     * Parse an IDL3 file.
      *
-     * @param filename an input IDL file to parse.
+     * @param filename the name of a file to open and parse.
+     * @return a <code>ccm.mof.BaseIDL.MContainer</code> object that contains
+     *         a metamodel corresponding to the declarations in the source IDL3
+     *         file.
      */
-    public void createParser(String filename)
+    public MContainer parseFile(String filename)
+        throws RecognitionException, TokenStreamException
     {
+	MContainer spec = null;
+        IDL3Parser parser = null;
+        IDL3Lexer lexer = null;
+
 	try
         {
-            // open a simple stream to the input
-            DataInputStream input = new DataInputStream(new FileInputStream(filename));
-            lexer = new IDL3Lexer(input);
+            if (isIncluded(filename)) return spec;
+
+            lexer = new IDL3Lexer
+                (new DataInputStream(new FileInputStream(filename)));
             lexer.setDebug(debug);
             lexer.setFilename(filename);
             lexer.setManager(this);
@@ -144,57 +156,20 @@ public class ParserManager {
             parser.setDebug(debug);
             parser.setFilename(filename);
             parser.setManager(this);
-
-            originalFilename = filename;
-
-            // clear the symbol table for the new parse, and reset the list of
-            // included files.
-            symbolTable.clear();
-            includedFiles = new ArrayList();
-        }
-	catch(Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Parser manager exception: " + e);
+            return spec;
         }
-    }
 
-    /**
-     * Get the current symbol table being maintained by the parser manager.
-     *
-     * @return the current symbol table, normally for debug output. Be careful;
-     *         externally manipulating the symbol table could have severe side
-     *         effects.
-     */
-    public IDL3SymbolTable getSymbolTable()
-    {
-	return symbolTable;
-    }
+        if (originalFilename == null) originalFilename = filename;
 
-    /**
-     * Find out which file the parser manager started with.
-     *
-     * @return the name of the original file given to parse.
-     */
-    public String getOriginalFilename()
-    {
-	return originalFilename;
-    }
-
-    /**
-     * Parse a file specified earlier with a call to createParser. This function
-     * actually sets the parser for a file in motion, whereas the createParser
-     * function merely sets up a parser and lexer.
-     *
-     * @return a <code>ccm.mof.BaseIDL.MContainer</code> object that contains
-     *         a metamodel corresponding to the declarations in the source IDL
-     *         file.
-     */
-    public MContainer parseFile()
-        throws RecognitionException, TokenStreamException
-    {
-	MContainer spec = null;
+        symbolTable.pushFile();
         spec = parser.specification();
-        spec.setIdentifier(originalFilename);
+        spec.setIdentifier(filename);
+        symbolTable.popFile();
+
+        includedFiles.add(filename);
+
 	return spec;
     }
 }

@@ -21,7 +21,7 @@
 
 package ccmtools.Metamodel.ComponentIDL;
 
-import java.util.Set;
+import java.util.List;
 
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MValueDef;
@@ -30,8 +30,8 @@ public interface MHomeDef
     extends MInterfaceDef
 {
     // association: direct role: [*] --> opposite role: supports[*]
-    Set getSupportss();
-    void setSupportss(Set __arg);
+    List getSupportss();
+    void setSupportss(List __arg);
     void addSupports(MSupportsDef __arg);
     void removeSupports(MSupportsDef __arg);
 
@@ -44,14 +44,14 @@ public interface MHomeDef
     void setPrimary_Key(MValueDef __arg);
 
     // association: direct role: home [*] <-> opposite role: factory[*]
-    Set getFactories();
-    void setFactories(Set __arg);
+    List getFactories();
+    void setFactories(List __arg);
     void addFactory(MFactoryDef __arg);
     void removeFactory(MFactoryDef __arg);
 
     // association: direct role: home [*] <-> opposite role: finder[*]
-    Set getFinders();
-    void setFinders(Set __arg);
+    List getFinders();
+    void setFinders(List __arg);
     void addFinder(MFinderDef __arg);
     void removeFinder(MFinderDef __arg);
 }

@@ -21,9 +21,9 @@
 
 package ccmtools.Metamodel.ComponentIDL;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
@@ -47,32 +47,40 @@ public class MHomeDefImpl
 
     private boolean isAbstract;
     private boolean isLocal;
-    private boolean isForwardDeclaration = false;
+    private boolean isForwardDeclaration;
 
-    private Set SupportsSet_;
-    private Set FactorySet_;
-    private Set FinderSet_;
+    private List SupportsList_;
+    private List FactoryList_;
+    private List FinderList_;
     private MComponentDef Component_;
     private MValueDef PrimaryKey_;
     private MContainer Contains;
     private MIDLType TypedBy_;
-    private Set ContainsSet;
-    private Set InterfaceDerivedFromSet;
+    private List ContainsList;
+    private List InterfaceDerivedFromList;
 
     public MHomeDefImpl()
     {
-	 SupportsSet_= new HashSet();
-	 FactorySet_= new HashSet();
-	 FinderSet_ = new HashSet();
-	 ContainsSet = new HashSet();
-	 InterfaceDerivedFromSet = new HashSet();
-         sourceFile = new String("");
+        isForwardDeclaration = false;
+	SupportsList_= new ArrayList();
+	FactoryList_= new ArrayList();
+	FinderList_ = new ArrayList();
+	ContainsList = new ArrayList();
+	InterfaceDerivedFromList = new ArrayList();
+        sourceFile = new String("");
     }
 
     // override toString()
     public String toString()
     {
-	return "MHomeDef: "+ identifier;
+	String tmp = "MHomeDef: "+ identifier;
+	if (ContainsList.size() > 0)
+            tmp  += " " + ContainsList;
+        if (InterfaceDerivedFromList.size() > 0)
+            tmp += " (bases: " + InterfaceDerivedFromList + ")";
+        if (! sourceFile.equals(""))
+            tmp += " (defined in '"+ sourceFile + "')";
+	return tmp;
     }
 
     //----------------------------------------------------------------
@@ -123,10 +131,10 @@ public class MHomeDefImpl
     public void setIdlType(MIDLType __arg)      {TypedBy_ = __arg;}
 
     // association: direct role: [*] --> opposite role: supports[*]
-    public Set getSupportss()                      {return (Set)SupportsSet_;}
-    public void setSupportss(Set __arg)            {SupportsSet_ = new HashSet(__arg);}
-    public void addSupports(MSupportsDef __arg)    {SupportsSet_.add(__arg);}
-    public void removeSupports(MSupportsDef __arg) {SupportsSet_.remove(__arg);}
+    public List getSupportss()                     {return SupportsList_;}
+    public void setSupportss(List __arg)           {SupportsList_ = new ArrayList(__arg);}
+    public void addSupports(MSupportsDef __arg)    {SupportsList_.add(__arg);}
+    public void removeSupports(MSupportsDef __arg) {SupportsList_.remove(__arg);}
 
     // association: direct role: home[*] --> opposite role: component[1]
     public MComponentDef getComponent()           {return Component_;}
@@ -137,32 +145,32 @@ public class MHomeDefImpl
     public void setPrimary_Key(MValueDef __arg) {PrimaryKey_ = __arg;}
 
     // association: direct role: home [*] <-> opposite role: factory[*]
-    public Set getFactories()                    {return (Set)FactorySet_;}
-    public void setFactories(Set __arg)          {FactorySet_ = new HashSet(__arg);}
-    public void addFactory(MFactoryDef __arg)    {FactorySet_.add(__arg);}
-    public void removeFactory(MFactoryDef __arg) {FactorySet_.remove(__arg);}
+    public List getFactories()                   {return FactoryList_;}
+    public void setFactories(List __arg)         {FactoryList_ = new ArrayList(__arg);}
+    public void addFactory(MFactoryDef __arg)    {FactoryList_.add(__arg);}
+    public void removeFactory(MFactoryDef __arg) {FactoryList_.remove(__arg);}
 
     // association: direct role: home [*] <-> opposite role: finder[*]
-    public Set getFinders()                     {return (Set) FinderSet_;}
-    public void setFinders(Set __arg)           {FinderSet_ = new HashSet();}
-    public void addFinder(MFinderDef __arg)     {FinderSet_.add(__arg);}
-    public void removeFinder(MFinderDef __arg)  {FinderSet_.remove(__arg);}
+    public List getFinders()                    {return FinderList_;}
+    public void setFinders(List __arg)          {FinderList_ = new ArrayList();}
+    public void addFinder(MFinderDef __arg)     {FinderList_.add(__arg);}
+    public void removeFinder(MFinderDef __arg)  {FinderList_.remove(__arg);}
 
     // association: direct role: contants[*] <-> opposite role: definedIn[0..1]
     public MContainer getDefinedIn()            {return Contains;}
     public void setDefinedIn(MContainer __arg)  {Contains = __arg;}
 
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
-    public Set getContentss()                    {return (Set)ContainsSet;}
-    public void setContentss(Set __arg)          {ContainsSet = new HashSet(__arg);}
-    public void addContents(MContained __arg)    {ContainsSet.add(__arg);}
-    public void removeContents(MContained __arg) {ContainsSet.remove(__arg);}
+    public List getContentss()                   {return ContainsList;}
+    public void setContentss(List __arg)         {ContainsList = new ArrayList(__arg);}
+    public void addContents(MContained __arg)    {ContainsList.add(__arg);}
+    public void removeContents(MContained __arg) {ContainsList.remove(__arg);}
 
     // association: direct role: [*] --> opposite role: base[*]
-    public Set getBases()                       {return (Set) InterfaceDerivedFromSet;}
-    public void setBases(Set __arg)             {InterfaceDerivedFromSet = new HashSet(__arg);}
-    public void addBase(MInterfaceDef __arg)    {InterfaceDerivedFromSet.add(__arg);}
-    public void removeBase(MInterfaceDef __arg) {InterfaceDerivedFromSet.remove(__arg);}
+    public List getBases()                      {return InterfaceDerivedFromList;}
+    public void setBases(List __arg)            {InterfaceDerivedFromList = new ArrayList(__arg);}
+    public void addBase(MInterfaceDef __arg)    {InterfaceDerivedFromList.add(__arg);}
+    public void removeBase(MInterfaceDef __arg) {InterfaceDerivedFromList.remove(__arg);}
 
     //----------------------------------------------------------------
     // implementation of operations
@@ -191,13 +199,13 @@ public class MHomeDefImpl
     }
 
     // a helper function for the lookupName function below.
-    private MContained searchSet(Set set, String searchName,
+    private MContained searchBin(List bin, String searchName,
                                  long levelsToSearch,
                                  MDefinitionKind limitToType,
                                  boolean excludeInherited)
     {
         MContained elem;
-        Iterator it = set.iterator();
+        Iterator it = bin.iterator();
 
         while (it.hasNext()) {
             elem = (MContained) it.next();
@@ -260,13 +268,13 @@ public class MHomeDefImpl
 
         MContained elem = null;
 
-        elem = searchSet(ContainsSet, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(ContainsList, searchName, levelsToSearch, limitToType, excludeInherited);
         if (elem != null) return elem;
-        elem = searchSet(SupportsSet_, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(SupportsList_, searchName, levelsToSearch, limitToType, excludeInherited);
         if (elem != null) return elem;
-        elem = searchSet(FactorySet_, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(FactoryList_, searchName, levelsToSearch, limitToType, excludeInherited);
         if (elem != null) return elem;
-        elem = searchSet(FinderSet_, searchName, levelsToSearch, limitToType, excludeInherited);
+        elem = searchBin(FinderList_, searchName, levelsToSearch, limitToType, excludeInherited);
         if (elem != null) return elem;
 
 	return null;

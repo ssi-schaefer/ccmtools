@@ -21,9 +21,6 @@
 
 package ccmtools.Metamodel.ComponentIDL;
 
-import java.util.Set;
-import java.util.HashSet;
-
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;

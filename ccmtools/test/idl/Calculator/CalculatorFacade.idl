@@ -29,7 +29,7 @@ interface CalculatorFacade
   long add(in long a, in long b) raises(MathException);
   long sub(in long a, in long b) raises(MathException);
   
-  void print(in string s);
+  void println(in string s);
 
   void write(in Record r) raises(WriteException);
   RecordSet read(in Record r) raises(ReadException);
