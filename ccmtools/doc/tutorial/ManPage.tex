@@ -372,5 +372,35 @@ to create the desired output.
 
 \item [SEE ALSO:]
   {\tt Mico manual, Java IDL documentation}
+\end{description}
+
+
+%------------------------------------------------------------------------------
+\section{uml2idl}
+%------------------------------------------------------------------------------
+
+\begin{description}
+
+\item [NAME:] 
+  {\tt uml2idl} - Convert an UML XMI file into an IDL and an OCL file. 
+
+\item [SYNOPSIS:] 
+  {\tt uml2idl XMI-FILE PREFIX}
+
+\item [DESCRIPTION:]
+  The {\tt uml2idl} script runs a Java program that converts a UML diagram stored
+  in an XMI 1.1 file into corresponding IDL and OCL files.
+  The IDL file is created in respect to the {\it CCM Profile for CCM}, while the
+  OCL file collects all OCL expressions defined in the UML diagram.
+
+\item [XMI-FILE:]
+  That's the name of the input XMI 1.1 file which holds the UML class diagram
+  (e.g. when using MagicDraw, the file name looks like {\tt Name.xml.zip}).
+
+\item [PREFIX:]
+  The generated IDL and OCL files are named {\tt PREFIX.idl} and {\tt PREFIX.ocl}.
+
+\item [SEE ALSO:]
+  {\tt UML Profile for CORBA, UML Profile for CCM}
   
 \end{description}
