@@ -5,12 +5,11 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <CCM_Remote/%(IncludeNamespace)s/%(HomeType)s_remote.h>
+#include <%(IncludeNamespace)s/%(HomeType)s_remote.h>
 #include <%(Identifier)s.h>
 
 using namespace std;
 using namespace CCM_Utils;
-//using namespace %(ShortNamespace)s;
 
 //==============================================================================
 // Implementation of remote client test
@@ -45,6 +44,8 @@ int main (int argc, char *argv[])
     assert(0);
   }
 
+  // orb->run();
+	
 
   /**
    * Client-side code

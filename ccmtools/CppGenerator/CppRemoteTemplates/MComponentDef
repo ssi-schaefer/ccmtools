@@ -222,26 +222,21 @@ using namespace CCM_Utils;
 char* %(Identifier)s_impl::getComponentVersion()
 {
   DEBUGNL(" %(Identifier)s_impl::getComponentVersion()");
-#ifdef HAVE_CONFIG_H
-  return CORBA::string_dup(CCMTOOLS_PACKAGE_VERSION);
-#else
-  return CORBA::string_dup("0.0");
-#endif
+  // TODO
+  return CORBA::string_dup("0.0"); 
 }
 
 char* %(Identifier)s_impl::getComponentDate()
 {
   DEBUGNL(" %(Identifier)s_impl::getComponentDate()");
-#ifdef HAVE_CONFIG_H
-  return CORBA::string_dup(CCMTOOLS_PACKAGE_DATE);
-#else
-  return CORBA::string_dup("0000-00-00");
-#endif
+  // TODO	
+  return CORBA::string_dup("0000-00-00"); 
 }
 
 char* %(Identifier)s_impl::getComponentUUID()
 {
   DEBUGNL(" %(Identifier)s_impl::getComponentUUID()");
+  // TODO
   return CORBA::string_dup("no UUID"); 
 }
 
