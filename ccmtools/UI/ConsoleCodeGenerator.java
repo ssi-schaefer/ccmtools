@@ -1,7 +1,7 @@
 /* CCM Tools : User Interface Library
  * Leif Johnson <leif@ambient.2y.net>
+ * Egon Teiniker <egon.teiniker@salomon.at>
  * Copyright (C) 2002, 2003 Salomon Automation
- *
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -83,7 +83,6 @@ public class ConsoleCodeGenerator
     private static String include_path = "";
     private static String code_version = "0.0.0";
 
-    //    private static List filenames = new ArrayList();
     private static List filenames; 
 
     private static File output_directory = new File(System.getProperty("user.dir"));
@@ -227,8 +226,6 @@ public class ConsoleCodeGenerator
 
         Driver driver = setupDriver();
         ArrayList handlers = new ArrayList();
-
-	System.out.println("languages = " + languages);
 
         for (Iterator l = languages.iterator(); l.hasNext(); ) {
             TemplateHandler handler = setupHandler(driver, (String) l.next());

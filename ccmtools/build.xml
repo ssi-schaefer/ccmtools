@@ -40,7 +40,6 @@
 
 
   <!-- Generate parser source code using ANTLR -->
-
   <target name="IDL3ParserGenerator" depends="init"
      description="Generate the idl3_parser using antlr." >
       <antlr target="${src}/ccmtools/IDL3Parser/idl3.g" dir="${src}/IDL3Parser" >
@@ -75,14 +74,6 @@
 	  <formatter type="brief" />
 	  <test name="ccmtools.test.CppGenerator.CppGeneratorTest" />
      </junit>
-
-     <exec executable="confix.py" >
-         <arg value="--packageroot=${sandbox}" />
-	 <arg value="--bootstrap" />
-	 <arg value="--configure" />
-	 <arg value="--make" />
-	 <arg value="--targets=check" />
-     </exec>
   </target>
   
 
@@ -110,7 +101,6 @@
 
 
   <!-- Clean up -->
-
   <target name="clean"
       description="Clean up the build and lib directory." >
       <delete file="${src}/IDL3Parser/IDL3Lexer.java" />
