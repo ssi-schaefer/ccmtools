@@ -242,8 +242,6 @@ public class CppLocalDbcGeneratorImpl
         Map vars = new Hashtable();
         vars.put("Object",            container.getIdentifier());
         vars.put("Identifier",        operation.getIdentifier());
-	//        vars.put("ProvidesType",      iface.getIdentifier());
-	//        vars.put("SupportsType",      iface.getIdentifier());
         vars.put("LanguageType",      lang_type);
         vars.put("MExceptionDef",     getOperationExcepts(operation));
         vars.put("MParameterDefAll",  getOperationParams(operation));
