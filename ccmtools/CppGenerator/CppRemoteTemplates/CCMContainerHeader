@@ -24,18 +24,18 @@ namespace CCM {
   // Convert C++ to CORBA types
   //============================================================================
   
-  CORBA::Long   int_to_CORBA_Long(int i);
-  CORBA::Double double_to_CORBA_Double(double d);
+  CORBA::Long   long_to_CORBAlong(long value);
+  CORBA::Double double_to_CORBAdouble(double value);
   
-  char*         string_to_char_ptr(std::string s);
+  char*         string_to_CORBAstring(std::string s);
 
 
   //============================================================================
   // Convert CORBA to C++ types
   //============================================================================
   
-  int    CORBA_Long_to_int(CORBA::Long i);
-  double CORBA_Double_to_double(CORBA::Double d);
+  long   CORBAlong_to_long(CORBA::Long value);
+  double CORBAdouble_to_double(CORBA::Double value);
 
 
 

@@ -256,8 +256,9 @@ public class CppRemoteGeneratorImpl
 	}
 	else if (current_node instanceof MAttributeDef) { 
             return data_MAttributeDef(variable, value);
-	} 
-
+	} else if (current_node instanceof MFactoryDef) { 
+            return data_MFactoryDef(variable, value);
+	}
 	return value;
     }
 

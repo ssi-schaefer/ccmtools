@@ -17,19 +17,19 @@
 // Convert C++ to CORBA types
 //============================================================================
 
-CORBA::Long CCM::int_to_CORBA_Long(int i)
+CORBA::Long CCM::long_to_CORBAlong(long value)
 {
-  return (CORBA::Long)i;
+  return (CORBA::Long)value;
 }
 
-CORBA::Double CCM::double_to_CORBA_Double(double d)
+CORBA::Double CCM::double_to_CORBAdouble(double value)
 {
-  return (CORBA::Double)d;
+  return (CORBA::Double)value;
 }
 
-char* CCM::string_to_char_ptr(std::string s)
+char* CCM::string_to_CORBAstring(std::string value)
 {
-  return CORBA::string_dup(s.c_str());
+  return CORBA::string_dup(value.c_str());
 }
 
 
@@ -39,14 +39,14 @@ char* CCM::string_to_char_ptr(std::string s)
 // Convert CORBA to C++ types
 //============================================================================
 
-int CCM::CORBA_Long_to_int(CORBA::Long i)
+int CCM::CORBAlong_to_long(CORBA::Long value)
 {
-  return (int)i;
+  return (int)value;
 }
 
-double CCM::CORBA_Double_to_double(CORBA::Double d)
+double CCM::CORBAdouble_to_double(CORBA::Double value)
 {
-  return (double)d;
+  return (double)value;
 }
 
 

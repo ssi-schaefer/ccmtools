@@ -7,11 +7,11 @@
   parameter_eur = CCM::CORBA_Double_to_double(eur); //!!!!!!!!!
 
   // call local method
-  double result; //!!!!!
+  %(LanguageType)s result;
   result = local_component->%(Identifier)s(parameter_eur); //!!!!!!
 
   // convert result
-  return CCM::double_to_CORBA_Double(result); //!!!!!!!!
+  return CCM::%(LanguageType)s_to_CORBA%(LanguageType)s(result);
 }
 
 
