@@ -52,7 +52,7 @@ $Header$
       description="Run the dtd2java tool to create the uml_parser package.">
       <java classname="dtd2java.Main">
           <classpath refid="run.classpath" />
-	  <arg value="${src}/dtd2java/UML.dtd" />
+	  <arg value="${src}/uml2idl/UML.dtd" />
 	  <arg value="uml_parser" />
 	  <arg value="src" />
       </java>
