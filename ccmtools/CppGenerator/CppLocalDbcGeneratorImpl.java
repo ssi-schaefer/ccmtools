@@ -596,26 +596,6 @@ public class CppLocalDbcGeneratorImpl
         public String getLocalAdapterName( MContainer theClass )
         {
             return "__LOCAL__ADAPTER__NAME__";
-//            if( theClass!=null )
-//            {
-//                if( theClass instanceof MComponentDef )
-//                {
-//                    return getLocalValue("ComponentType",(MInterfaceDef)theClass);
-//                }
-//                if( theClass instanceof MHomeDef )
-//                {
-//                    return getLocalValue("HomeType",(MInterfaceDef)theClass);
-//                }
-                // HACK:
-//                int index = current_name.lastIndexOf(":");
-//                if( index>0 )
-//                {
-//                    String part1 = current_name.substring(index+1);
-//                    String part2 = theClass.getIdentifier();
-//                    return "/*facet adapter*/"+part1+part2;
-//                }
-//            }
-//            return null;
         }
 
         /**
@@ -721,11 +701,11 @@ public class CppLocalDbcGeneratorImpl
                     }
                 }
                 // TODO
-                /*if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
+                if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
                 {
                     System.out.println("TypeCreator.getOclType: could not find '"+
                         name+"' in IDL-type '"+idlType_.getClass().getName()+"'");
-                }*/
+                }
             }
             return null;
         }

@@ -713,7 +713,7 @@ public abstract class OclCodeGenerator
         if( type==null )
         {
             type = typeChecker_.makeType(expr, conCode).oclType_;
-            if( type==null )
+            if( type==null && OCL_DEBUG_OUTPUT )
             {
                 System.err.println("warning: OclCodeGenerator.makeCode : cannot calculate type of expression");
             }

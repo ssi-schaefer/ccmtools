@@ -15,3 +15,4 @@ clean:
 	$(RM) -rf String/*.xml String/test_*
 	$(RM) -rf Example1/*.xml Example1/test_* Example1/mdr.*
 	$(RM) -rf Example2/*.xml Example2/test_* Example2/mdr.*
+	$(RM) -rf Example3/*.xml Example3/test_* Example3/mdr.*

@@ -561,6 +561,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         ElementType etPC = typeChecker_.makeType(pc,fake);
         OclType typePC = etPC.oclType_;
         lastIdlType_ = etPC.idlType_;
+        pfe.setOclType(typePC);
         //
         if( pc.getCallParameters()==null && pc.isPrevious() )
         {
