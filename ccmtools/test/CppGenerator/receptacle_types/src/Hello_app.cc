@@ -121,6 +121,23 @@ CCM_Hello_impl::ccm_activate (  )
       assert(Array_3.at(i) == i+i);
     }
 
+    /* Test Case for: typedef long longMatrix[5][5]; */
+    longMatrix Matrix_1(5,5), Matrix_2(5,5), Matrix_3(5,5), Matrix_r(5,5);
+    for(int i=0;i<5;i++) {
+      for(int j=0;j<5;i++) {
+        Matrix_1.at(i).at(j) = i+j;
+        Matrix_2.at(i).at(j) = i+i+j+j;
+      }
+    }
+    Matrix_r = console.ptr()->foo6(Matrix_1,Matrix_2,Matrix_3);
+    for(int i=0;i<5;i++) {
+      for(int j=0;j<5;j++) {
+        assert(Matrix_r.at(i).at(j) == i+j);
+        assert(Matrix_2.at(i).at(j) == i+j);
+        assert(Matrix_3.at(i).at(j) == i+i+j+j);
+      }
+    }
+
     /* Test case: short println1(in short p1, inout short p2, out short p3); */
     short short_2=3, short_3, short_r;
     short_r = console.ptr()->println1(7,short_2, short_3);

@@ -24,16 +24,9 @@ TESTS = \
   module-reopen.sh            \
   module-nested.sh            \
   include_nested.sh           \
-  include_dir.sh              \
-  include.sh                  \
   receptacle-inheritance.sh   \
   facet-inheritance.sh        \
   supports-inheritance.sh     \
-  home-factory-interface.sh   \
-  receptacle_interface.sh     \
-  facet_interface.sh          \
-  supports_interface.sh       \
-  attribute_interface.sh      \
   home_exception.sh           \
   receptacle_exception.sh     \
   facet_exception.sh          \
@@ -42,7 +35,7 @@ TESTS = \
   receptacle_types.sh         \
   facet_types.sh              \
   supports_types.sh           \
-  attribute_types.sh          \
+  facet_attribute.sh          \
   receptacle_not_connected.sh \
   receptacle_multiple.sh
 
@@ -52,20 +45,14 @@ dist_check_SCRIPTS = $(TESTS)
 # code.
 
 EXTRA_DIST = \
-  attribute_interface      \
-  attribute_types          \
   Calculator               \
   constants                \
   facet_attribute          \
   facet_exception          \
   facet_inheritance        \
-  facet_interface          \
   facet_types              \
   home_exception           \
-  home_factory_interface   \
   home_types               \
-  include                  \
-  include_dir              \
   include_nested           \
   module_mixed             \
   module_nested            \
@@ -73,13 +60,11 @@ EXTRA_DIST = \
   owudb                    \
   receptacle_exception     \
   receptacle_inheritance   \
-  receptacle_interface     \
   receptacle_multiple      \
   receptacle_not_connected \
   receptacle_types         \
   supports_exception       \
   supports_inheritance     \
-  supports_interface       \
   supports_types
 
 clean-local:

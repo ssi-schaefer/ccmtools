@@ -13,6 +13,8 @@ typedef sequence<Value> map;
 
 typedef double doubleArray[10];
 
+interface iface { long println(in string s); };
+
 interface Console {
   /* basic types */
   short println1(in short p1, inout short p2, out short p3);
@@ -32,6 +34,9 @@ interface Console {
   Value  foo3(in Value p1, inout Value p2, out Value p3);
   map  foo4(in map p1, inout map p2, out map p3);
   doubleArray foo5(in doubleArray p1, inout doubleArray p2, out doubleArray p3);
+
+  /* interface types */
+  iface operate(in iface i1, inout iface i2, out iface i3);
 };
 
 component Hello supports Console { };

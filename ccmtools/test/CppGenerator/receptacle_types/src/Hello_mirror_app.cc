@@ -117,6 +117,23 @@ console_mirror_impl::foo5 ( const doubleArray& p1, doubleArray& p2, doubleArray&
   return r;
 }
 
+longMatrix
+console_mirror_impl::foo6 ( const longMatrix& p1, longMatrix& p2, longMatrix& p3 )
+  
+{
+  DEBUGNL ( " console_impl->foo6 ( p1, p2, p3 )" );
+
+  longMatrix r(5,5);
+  for(int i=0; i<p1.size(); i++) {
+    for(int j=0; j<p2.size(); j++) {
+      r.at(i).at(j) = p1.at(i).at(j);
+      p3.at(i).at(j) = p2.at(i).at(j);
+      p2.at(i).at(j) = p1.at(i).at(j);
+    }
+  }
+  return r;
+}
+
 short
 console_mirror_impl::println1 ( const short p1, short& p2, short& p3 )
   
