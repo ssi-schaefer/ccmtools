@@ -1,0 +1,5 @@
+  virtual %(LanguageType)s %(Identifier)s ( %(MParameterDefAll)s ) %(MExceptionDef)s = 0;
+#ifdef CCM_TEST_PYTHON
+  virtual %(LanguageType)s call_python_%(Identifier)s ( %(MParameterDefAll)s ) %(MExceptionDef)s = 0;
+#endif
+

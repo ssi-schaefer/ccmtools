@@ -1,0 +1,12 @@
+local component %(Identifier)s
+ %(BaseTypes)s
+ %(MSupportsDef)s
+{
+%(MAttributeDef)s
+%(MProvidesDef)s
+%(MUsesDef)s
+%(MPublishesDef)s
+%(MConsumesDef)s
+%(MEmitsDef)s
+};
+

@@ -1,0 +1,4 @@
+EXTERNAL_LIBRARY(name='boostpython', defroot='/usr', lib_bases=['boost_python'], provide=['boost/python.hpp'])
+
+
+

@@ -1,0 +1,23 @@
+#include "CCM.idl"
+
+%(MInterfaceDefInclude)s
+%(MComponentDefInclude)s
+%(MHomeDefInclude)s
+
+%(MModuleDef)s
+%(MAttributeDef)s
+%(MConstantDef)s
+%(MEnumDef)s
+%(MExceptionDef)s
+%(MStructDef)s
+%(MTypedefDef)s
+%(MUnionDef)s
+%(MValueDef)s
+%(MValueMemberDef)s
+
+%(MAliasDef)s
+
+%(MInterfaceDef)s
+%(MComponentDef)s
+%(MHomeDef)s
+

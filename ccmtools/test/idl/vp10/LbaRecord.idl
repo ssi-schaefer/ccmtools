@@ -1,0 +1,26 @@
+/******************************************************************************/
+/*  Project: VP1.0                                                            */
+/*  File:    LbaRecord.idl                                                    */
+/*  Version: 0.1                                                              */
+/*  Date:    Juli 2002                                                        */
+/*----------------------------------------------------------------------------*/
+/*  Company: SALOMON Automoation F&E                                          */
+/*  Author : Egon                                                             */
+/*----------------------------------------------------------------------------*/
+/*  Note   :                                                                  */
+/*                                                                            */
+/*  Change1:                                                                  */
+/******************************************************************************/
+
+
+struct LbaRecord
+{
+  string AuftragsNr;
+  string WENr;
+  string Lieferant;
+  string ILN;
+  string HinweisZEausAuftrag;
+  string HinweisLogistik;
+};
+
+typedef sequence<LbaRecord> LbaRecordSet;

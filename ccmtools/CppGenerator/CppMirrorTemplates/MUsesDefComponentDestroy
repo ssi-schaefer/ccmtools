@@ -1,0 +1,2 @@
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s.ptr (  )->remove (  );
+

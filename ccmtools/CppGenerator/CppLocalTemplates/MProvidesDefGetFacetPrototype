@@ -1,0 +1,2 @@
+  CCM_%(ProvidesType)s* get_%(Identifier)s (  );
+

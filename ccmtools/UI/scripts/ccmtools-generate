@@ -1,0 +1,6 @@
+#! /usr/bin/env python
+
+import os, sys
+
+java = 'JAVA' in os.environ.keys() and os.environ['JAVA'] or 'java'
+os.execvp(java, [java, 'ccmtools.UI.ConsoleCodeGenerator'] + sys.argv[1:])

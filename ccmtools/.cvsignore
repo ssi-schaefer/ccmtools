@@ -1,0 +1,16 @@
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache
+config.cache
+config.guess
+config.log
+config.status
+configure
+install-sh
+missing
+mkinstalldirs
+ccmtools
+binary-dist
+classnoinst.stamp
+Constants.java

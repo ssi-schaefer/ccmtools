@@ -1,0 +1,2 @@
+  CCM_%(ProvidesType)s* %(Identifier)s_facet;
+

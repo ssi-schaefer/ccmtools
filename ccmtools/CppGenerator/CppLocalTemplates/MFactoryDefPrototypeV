@@ -1,0 +1,2 @@
+  virtual localComponents::EnterpriseComponent* %(Identifier)s ( %(MParameterDefAll)s )
+    throw ( localComponents::CreateFailure );

@@ -1,0 +1,126 @@
+$Id$
+
+This file describes the basics of building, installing, and running the
+"ccmtools" package, contained in this directory tree. More detailed information
+about APIs, etc., can be found in the "doc" directories in this directory tree.
+
+BUILDING
+========
+
+This package uses a standard GNU "./configure && make && make install" build and
+install process. For detailed instructions on using the configure script and the
+GNU automake build process, see the INSTALL file. There are some package
+specific options available for the configure script:
+
+o --enable-docs. Builds documentation in the form of LaTeX manuals and HTML API
+  documentation. Depends on "javadoc" (for Java API documentation). All
+  documents are located in "doc" subdirectories.
+o --disable-tests. Disables building and running tests. Disables most "make
+  check" targets. All tests are located in "test" subdirectories.
+
+For a full listing of configure options, run "./configure --help".
+
+INSTALLING
+==========
+
+To use the package, you will need to install it. (Otherwise the code generators
+will not be able to locate the template directories in most cases.)
+
+To perform the install, you can use the standard "make install" command to
+install the Java archives. You will then need to alter your CLASSPATH
+environment variable to include the newly-installed jar archive. Unless you
+specifically altered the location of the share directories using the --datadir=
+option to ./configure, the following command will correctly add the needed files
+(using Bash):
+
+export CLASSPATH=<prefix>/share/java/ccmtools.jar:<prefix>/share/java/antlr.jar:<prefix>/share/java/jdom.jar:$CLASSPATH
+
+If you did not alter the prefix at configure time, your prefix will be
+/usr/local, and the following command will set the correct environment variable
+(using Bash):
+
+export CLASSPATH=/usr/local/share/java/ccmtools.jar:/usr/local/share/java/antlr.jar:/usr/local/share/java/jdom.jar:$CLASSPATH
+
+If you installed the ccmtools package to a nonstandard location, you will also
+need to add <prefix>/bin to your PATH environment variable.
+
+RUNNING
+=======
+
+The ccmtools package is currently centered on C++ component generation, so the
+other code generator tools are less well developed. If you want to develop, for
+example, the Java or Python code generators, please send patches !
+
+There are several tools you can use for generating, deploying, and undeploying
+CCM components in C++. In most cases, the development process will follow these
+steps :
+
+1. Write IDL3 files defining the components, homes, and interfaces sufficient
+   for your project. Store all IDL3 files in one directory. (This will be more
+   flexible in the future.)
+
+2. From a command line prompt, go to the directory where your IDL3 files are
+   stored.
+
+3. Set the CCMTOOLS_PACKAGE environment variable to the name of your project.
+   (Alternatively, you can provide command-line options specifying this. Use the
+   --help option for each ccmtools-c++-* script to get more information.)
+
+4. Run ccmtools-c++-generate *.idl to generate the component code in the
+   CCMTOOLS_PACKAGE directory. This script will generate component logic code
+   based on your IDL3 files. It will also generate some basic unit test checks
+   for your components. After code is generated, the script will copy generated
+   application logic files into the working directory.
+
+   If there are already application logic files in the current directory, they
+   will not be overwritten, so if you have old application logic that you wish
+   to remove, be sure to remove all these files before calling
+   ccmtools-c++-generate.
+
+5. Edit the generated application logic files (the ones that were just copied to
+   the current directory) to implement your project's functionality.
+
+6. Run ccmtools-c++-deploy. This script will copy your edited application logic
+   files into the generated source tree. Then it will use confix to configure,
+   build, check, and install your project. If any step of the deployment
+   procedure fails, the deployment will halt and allow you to fix the problem.
+
+7. Use your components.
+
+8. If you need to undeploy your components, use the ccmtools-c++-undeploy
+   script. If this happens much later, remember to set the CCMTOOLS_PACKAGE
+   environment variable to point to the correct location of the generated code.
+
+An example command line session might look like this :
+
+[edit IDL3 source files in /some/directory/for/idl_devel]
+
+$ cd /some/directory/for/idl_devel
+
+$ ls -1
+my_component1.idl
+my_component2.idl
+my_facetA.idl
+my_facetB.idl
+my_facetC.idl
+:
+:
+:
+
+$ export CCMTOOLS_PACKAGE=my_project
+
+$ ccmtools-c++-generate *.idl
+[this will generate component code in ./my_project]
+[application logic files will be copied to . if they don't exist already]
+[edit the *_app.cc and *_user_types.h files]
+
+$ ccmtools-c++-deploy
+[this will copy application logic files to the correct locations in my_project]
+[confix will bootstrap, configure, build, check, and install components]
+
+$ ccmtools-c++-undeploy
+[confix will uninstall components]
+
+All of these scripts support basic --help options, which you should use to find
+out more information.
+

@@ -1,0 +1,5 @@
+  %(LanguageType)s %(Identifier)s ( %(MParameterDefAll)s ) %(MExceptionDef)s;
+#ifdef CCM_TEST_PYTHON
+  %(LanguageType)s call_python_%(Identifier)s ( %(MParameterDefAll)s ) %(MExceptionDef)s;
+#endif
+

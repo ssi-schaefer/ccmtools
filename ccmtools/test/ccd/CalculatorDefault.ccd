@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!-- CORBA Component Descriptor for the Calculator component-->
+
+<!DOCTYPE corbacomponent SYSTEM "corbacomponent.dtd">
+
+<corbacomponent> 
+    <corbaversion> 3.0 </corbaversion> 
+    <componentkind> 
+       <session> 
+          <servant lifetime="component" /> 
+       </session> 
+    </componentkind>
+
+    <threading policy="serialize" /> 
+
+    <configurationcomplete set="true" />
+
+</corbacomponent>
+

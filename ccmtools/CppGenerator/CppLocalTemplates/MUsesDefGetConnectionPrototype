@@ -1,0 +1,2 @@
+  CCM_Utils::SmartPtr<CCM_%(UsesType)s> get_connection_%(Identifier)s (  );
+

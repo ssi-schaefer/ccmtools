@@ -1,0 +1,2 @@
+#include "%(ProvidesType)s.idl3mirror"
+

@@ -1,0 +1,2 @@
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(ProvidesType)s%(Identifier)s = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+

@@ -1,0 +1,2 @@
+    my%(ComponentType)sMirror%(ProvidesType)s%(Identifier)s.ptr (  )->configuration_complete (  );
+

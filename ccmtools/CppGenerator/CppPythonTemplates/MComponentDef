@@ -1,0 +1,34 @@
+//==============================================================================
+// %(Identifier)s - python conversion functions
+//==============================================================================
+
+#ifdef CCM_TEST_PYTHON
+
+#include "%(Identifier)s_gen.h"
+
+#include <CCM_Test/Python/call_python.h>
+#include <CCM_Test/Python/convert_python.h>
+#include <CCM_Utils/Debug.h>
+
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
+using namespace std;
+using namespace CCM_Utils;
+using namespace CCM_Local;
+using namespace CCM_Test::Python;
+
+%(OpenNamespace)s
+
+%(MProvidesDef)s
+%(MSupportsDef)s
+
+%(CloseNamespace)s
+
+#endif
+
+
+
+<<<<<<<SPLIT>>>>>>>
+

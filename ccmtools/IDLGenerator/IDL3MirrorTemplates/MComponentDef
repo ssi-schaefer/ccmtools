@@ -1,0 +1,16 @@
+%(MProvidesDefInclude)s
+%(MUsesDefInclude)s
+%(MSupportsDefInclude)s
+
+component %(Identifier)s_mirror
+ %(BaseTypes)s
+ %(MSupportsDef)s
+{
+%(MAttributeDef)s
+%(MProvidesDef)s
+%(MUsesDef)s
+%(MPublishesDef)s
+%(MConsumesDef)s
+%(MEmitsDef)s
+};
+

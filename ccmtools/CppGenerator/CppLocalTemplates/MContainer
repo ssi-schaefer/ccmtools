@@ -1,0 +1,30 @@
+//==============================================================================
+// global interface type definitions
+//==============================================================================
+
+#ifndef __CCM__LOCAL__%(Identifier)s__GLOBAL__TYPES__H__
+#define __CCM__LOCAL__%(Identifier)s__GLOBAL__TYPES__H__
+
+#include <string>
+#include <vector>
+
+namespace CCM_Local {
+
+%(MEnumDefFwdDecl)s
+%(MStructDefFwdDecl)s
+%(MUnionDefFwdDecl)s
+
+%(MAliasDef)s
+
+%(MEnumDef)s
+%(MStructDef)s
+%(MUnionDef)s
+
+%(MExceptionDefClass)s
+
+} // /namespace CCM_Local
+
+#endif // __CCM__LOCAL__%(Identifier)s__GLOBAL__TYPES__H__
+
+
+

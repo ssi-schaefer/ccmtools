@@ -1,0 +1,3 @@
+    my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s );
+
+

@@ -1,0 +1,27 @@
+/******************************************************************************/
+/*  Project: VP1.0 local                                                      */
+/*  File:    Record.idl                                                       */
+/*  Version: 0.1                                                              */
+/*  Date:    Dezember 2002                                                    */
+/*----------------------------------------------------------------------------*/
+/*  Company: SALOMON Automoation F&E                                          */
+/*  Author : Egon                                                             */
+/*----------------------------------------------------------------------------*/
+/*  Note   :                                                                  */
+/******************************************************************************/
+
+struct KeyValue
+{
+  string key;
+  any value;
+};
+
+typedef sequence<KeyValue> KeyValueList;
+
+struct Record
+{
+  long type;
+  KeyValueList keyvalues;
+};
+
+typedef sequence<Record> RecordList;

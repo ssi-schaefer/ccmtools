@@ -1,0 +1,9 @@
+  // Equivalent operations for single receptacle %(Identifier)s
+
+  void connect_%(Identifier)s ( CCM_Utils::SmartPtr<CCM_%(UsesType)s> i )
+    throw ( localComponents::AlreadyConnected, localComponents::InvalidConnection );
+
+  CCM_Utils::SmartPtr<CCM_%(UsesType)s> disconnect_%(Identifier)s (  )
+    throw ( localComponents::NoConnection );
+
+

@@ -1,0 +1,27 @@
+PyObject *
+convert_%(Identifier)s_to_python ( %(Identifier)s arg )
+{ return NULL; }
+
+PyObject *
+convert_const_%(Identifier)s_to_python ( const %(Identifier)s arg )
+{ return NULL; }
+
+PyObject *
+convert_const_%(Identifier)s_ref_to_python ( const %(Identifier)s& arg )
+{ return NULL; }
+
+%(Identifier)s
+convert_%(Identifier)s_from_python ( PyObject *arg )
+{
+  %(Identifier)s result;
+  return result;
+}
+
+%(Identifier)s *
+convert_%(Identifier)s_ptr_from_python ( PyObject *arg )
+{
+  %(Identifier)s *result = new %(Identifier)s;
+  return result;
+}
+
+

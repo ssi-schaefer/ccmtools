@@ -1,0 +1,14 @@
+%(LanguageType)s
+CCM_%(ComponentIdentifier)s_impl::%(Identifier)s (  )
+{
+  DEBUGNL ( " CCM_%(ComponentIdentifier)s_impl->%(Identifier)s (  )" );
+  return %(Identifier)s_;
+}
+
+void
+CCM_%(ComponentIdentifier)s_impl::%(Identifier)s ( const %(LanguageType)s value )
+{
+  DEBUGNL ( " CCM_%(ComponentIdentifier)s_impl->%(Identifier)s (  )" );
+  %(Identifier)s_ = value;
+}
+

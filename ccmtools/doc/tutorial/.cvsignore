@@ -1,0 +1,15 @@
+Makefile
+Makefile.in
+AssemblyGeneratorTools.aux
+CCMMetamodelLib.aux
+ComponentGeneratorTools.aux
+IDLParser.aux
+Installing.aux
+Introduction.aux
+TestingTools.aux
+ccmtools.aux
+ccmtools.dvi
+ccmtools.log
+ccmtools.pdf
+ccmtools.ps
+ccmtools.toc

@@ -1,0 +1,22 @@
+//==============================================================================
+// %(Identifier)s%(ProvidesType)s - facet adapter implementation
+//==============================================================================
+
+%(Identifier)s%(ProvidesType)s::%(Identifier)s%(ProvidesType)s ( CCM_%(ComponentType)s* lc )
+  : local_component ( lc )
+{
+  assert ( lc );  // precondition: lc != NULL
+  DEBUGNL ( "+%(Identifier)s%(ProvidesType)s->%(Identifier)s%(ProvidesType)s (  )" );
+  ValidConnection = true;
+  facet = local_component->get_%(Identifier)s (  );
+}
+
+%(Identifier)s%(ProvidesType)s::~%(Identifier)s%(ProvidesType)s (  )
+{
+  DEBUGNL ( "-%(Identifier)s%(ProvidesType)s->~%(Identifier)s%(ProvidesType)s (  )" );
+  delete facet;
+}
+
+%(MOperationProvidesAdapterDefinition)s
+
+

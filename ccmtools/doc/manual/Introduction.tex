@@ -1,0 +1,179 @@
+%******************************************************************************
+\chapter{Introduction}
+%******************************************************************************
+
+The CCM tools are a set of programms and libraries used to generate, package and
+deploy CORBA components. We implement parts of the CCM specification
+\cite{CCMSpecification} with some extensions to improve usability and
+performance of the component model.
+
+\begin{figure}
+\centering
+\includegraphics[width=14cm]{ToolsOverview}
+\caption{CCM component tools.}
+\label{fig:intro-ToolsOverview}
+\end{figure}
+
+To help the component developer we provide the following tools, as shown in
+Figure~\ref{fig:intro-ToolsOverview}:
+
+\paragraph{IDL3 Parser}
+
+The IDL3 Parser reads the IDL3 file, checks the syntax of the IDL source code
+and creates a CCM model using the CCM Metamodel Library in the memory. This CCM
+model is the starting point for all code generator tools in the framework.
+
+\paragraph{CCM Metamodel Library}
+
+The CCM specification defines a metamodel for the IDL3 syntax. We implemented a
+metamodel library that allows creation and iteration of CCM models. Using this
+library we can clearly separate the parser and the code generators. The parser
+creates a model object for every part of the source code matching an IDL grammar
+rule.
+
+\paragraph{Mirror Component Generators}
+
+After building a component we have to run a functional test on it. To provide a
+test environment for every component we create a mirror component (a facet
+becomes a receptacle and vice versa) described in a mirror IDL3 file. We use the
+C++ component generators with the mirror IDL3 files to generate the code for
+mirror components. Then we use a C++ mirror test generator to create a basic
+test executable that connects each component with its mirror and calls the
+functions available for each component.
+
+\paragraph{IDL2 Generator}
+
+To implement CORBA components the IDL3 source code is reduced to IDL2 that can
+be interpreted by classic IDL compilers. The transformation from IDL3 to IDL2
+also adds some operations needed for navigation between components and their
+ports (equivalent operations). We support this transformation by a IDL2
+generator tool that creates IDL2 from an existing CCM model.
+
+\paragraph{Component Descriptor Generator}
+
+To describe the component for the deployment and the assembling process the OMG
+defined a {\it CORBA Component Descriptor} (CCD) file. This is an XML file
+containing a short description of a component and its ports. We map the CCM
+model to an XML--DOM tree that can be written as an XML file. The CCD file is
+also used by the code generator to get some additional information about the
+component (version, vendor, etc.).
+
+\paragraph{Local C++ Component Generator}
+
+The component model is realized by the component logic that provides the
+operations for providing, using and connection components and their facets. We
+provide a generator tool that creates the local component logic from a given
+CCM model. After generating the component logic, the component developer only
+has to write the business logic. See the chapter on Component Generator Tools
+for more information.
+
+\paragraph{Remote C++ Component Generator}
+
+Note that the local components can only be used in a common address space and
+must be implemented in the same programming language. To overcome these
+limitations we generate a remote component logic that interfaces the local
+components with CORBA. The remote component logic is thus a superset of the
+local component logic.
+
+\paragraph{UML Parser}
+
+Optionally, the description of the component's interfaces can be made in an UML
+diagram. We need an UML parser that reads the UML--XMI file, builds an UML model
+(based on the UML metamodel defined by the OMG) and transpose the model to a
+ASCII IDL3 file. There is a UML metamodel library called NSUML from NovoSoft we
+can use, but the problem is that the OMG has not defined an UML profile for CCM
+yet.
+
+\paragraph{Component Packaging Tool}
+
+After generating and writing the component and its descriptor file we have to
+package these files into a zip file called component package. The component
+packaging tool provides these functionalities to the component developer.
+
+\paragraph{Component Deployment Tool}
+
+On the target host the component package must be unzipped and the component must
+be deployed in the application server. The component deployment tool provides
+these functionalities to the component deployer.
+
+\section{Assembly tools}
+
+After creating a component (more exactly the component logic) we can fill in the
+business logic and use the component from a simple client program. On the other
+side, a big advantage of the CORBA component model is the facility to connect
+components to greater structures called {\bf component assemblies}.
+
+A component assembly is a set of components (with their component descriptors)
+and a {\it Component Assembly Descriptor} (CAD). Based on the CAD we can
+generate an assembly object that instantiate components and connect them to an
+component assembly.
+
+\begin{figure}
+\includegraphics[width=14cm]{AssemblyTools}
+\caption{CCM component assembly tools.}
+\label{fig:intro-AssemblyTools}
+\end{figure}
+
+The assembly developer is supported by the following tools, as shown in
+Figure~\ref{fig:intro-AssemblyTools}:
+
+\paragraph{Assembly Descriptor Generator}
+
+The component descriptor files are the base for the superior assembly
+descriptor, that describes the components of the assembly and their connections.
+That means that all information of the assembly descriptor comes from the
+component descriptors of the related components (and some additional data from a
+GUI).
+
+\paragraph{Assembly Object Generator}
+
+At runtime an managing object is needed that can establish an assembly instance.
+The assembly object creates the component instances and connects their
+receptacles and facets. All information for generating an assembly object comes
+from the assembly descriptor (or its DOM model in memory). Note that there must
+be the eventuality to create local or local/remote assembly instances.
+
+\paragraph{UML Parser}
+
+As with components, there should be a way to define component assemblies in a
+UML diagram. Therefore we need a UML parser that reads the UML--XMI file and
+translates the data into the DOM model used by the assembly descriptor. Note
+that there is no mapping defined between UML and CCM assemblies by the OMG.
+
+\paragraph{Assembly Packaging Tool}
+
+After generating the component assembly and its descriptor file we have to
+package these files into a zip file called component assembly package. The
+assembly packaging tool provides these functionalities to the assembly
+developer.
+
+\paragraph{Assembly Deployment Tool}
+
+On the target host the component assembly
+package must be unziped and the assembly must be deployed in the
+application server. The assembly deployment tool provides these
+functionalities to the assembly deployer.
+
+\section{Testing}
+
+Another important issue is {\bf testing}. We have to test our applications on
+different levels during development, as listed below:
+
+\paragraph{Class Level Testing}
+
+Every class of the business logic that will be part of a component has to be
+tested.
+
+\paragraph{Component Level Testing}
+
+For every component we create a counter component that looks like a mirror to
+the original component. This counter component has an receptacle for every facet
+of the original component and vice versa.
+
+\paragraph{Assembly Level Testing}
+
+After testing each component we have to be sure that a set of connected
+components, the component assembly works also in the right way.
+
+Of course, there must be tool suport for testing on these different levels of
+development to make this job more efficient.

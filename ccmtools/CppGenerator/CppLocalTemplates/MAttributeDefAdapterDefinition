@@ -1,0 +1,15 @@
+%(LanguageType)s
+%(ComponentIdentifier)s::%(Identifier)s (  )
+{
+  DEBUGNL ( " %(ComponentIdentifier)s->%(Identifier)s (  ) - get semantic");
+  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  return local_component->%(Identifier)s (  );
+}
+
+void
+%(ComponentIdentifier)s::%(Identifier)s ( %(LanguageType)s value )
+{
+  DEBUGNL ( " %(ComponentIdentifier)s->%(Identifier)s (  ) - set semantic");
+  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  local_component->%(Identifier)s ( value );
+}

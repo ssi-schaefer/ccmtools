@@ -1,0 +1,11 @@
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_01.ptr (  )->configuration_complete (  );
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_02.ptr (  )->configuration_complete (  );
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_03.ptr (  )->configuration_complete (  );
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_04.ptr (  )->configuration_complete (  );
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_05.ptr (  )->configuration_complete (  );
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_06.ptr (  )->configuration_complete (  );
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_07.ptr (  )->configuration_complete (  );
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_08.ptr (  )->configuration_complete (  );
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_09.ptr (  )->configuration_complete (  );
+    my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_10.ptr (  )->configuration_complete (  );
+

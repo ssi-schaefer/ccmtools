@@ -1,0 +1,6 @@
+    cout << "> %(Identifier)s = " << my%(ComponentIdentifier)s.ptr (  )->%(Identifier)s (  ) << endl;
+    cout << "> assigning test value of " << %(TestValue)s << endl;
+    my%(ComponentIdentifier)s.ptr (  )->%(Identifier)s ( %(TestValue)s );
+    cout << "> %(Identifier)s = " << my%(ComponentIdentifier)s.ptr (  )->%(Identifier)s (  ) << endl;
+
+

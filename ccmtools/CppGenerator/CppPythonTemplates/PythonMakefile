@@ -1,0 +1,3 @@
+EXTERNAL_LIBRARY(name='python', defroot='/usr', lib_bases=['python2.2'], provide=['Python.h'], incdir='include/python2.2')
+
+

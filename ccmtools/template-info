@@ -1,0 +1,153 @@
+#! /usr/bin/env python
+#
+## template-info - find various information about a ccmtools template set
+## Leif Johnson <leif@ambient.2y.net>
+## copyright (c) 2002, 2003 Salomon Automation
+##
+## $Id$
+##
+## This program is free software; you can redistribute it and/or modify it under
+## the terms of the GNU General Public License as published by the Free Software
+## Foundation; either version 2 of the License, or (at your option) any later
+## version.
+##
+## This program is distributed in the hope that it will be useful, but WITHOUT
+## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+## FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+## details.
+##
+## You should have received a copy of the GNU General Public License along with
+## this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+## Place - Suite 330, Boston, MA 02111-1307, USA.
+
+import glob, os, re, sys
+
+USAGE = '''Usage: template-info [-d FILENAME] [-n] [-s] [-u] [DIRECTORY]
+Options:
+    -d <filename>       write graph to <filename> for processing with dot
+    -h, --help          print out this usage message
+    -n, --names         check variable names
+    -s, --suspicious    look for suspicious keys, e.g. %(Something)S
+    -t, --no-template   look for keys with no corresponding template
+    -u, --unused        locate unused templates
+Analyzes templates in the given DIRECTORY (default is the current directory).'''
+
+VALIDVARS = [
+    'BaseTypes', 'ComponentIdentifier', 'ComponentNamespace', 'ComponentType',
+    'ConsumesType', 'EmitsType', 'OpenNamespace', 'HomeIdentifier',
+    'CloseNamespace', 'HomeType', 'Identifier', 'LanguageType', 'Namespace',
+    'ProvidesType', 'PublishesType', 'UsesType', 'SupportsType',
+    ]
+
+## find the keys in a template.
+def findKeys(template):
+    regexp = re.compile(r'%\(([A-Z][A-Za-z]*)\)s')
+    valid = []
+    index = 0
+    while index < len(template):
+        match = regexp.search(template[index:])
+        if not (match and len(match.groups()) == 1):  break
+        var = match.group(1)
+        if var not in valid:  valid.append(var)
+        index += match.end(1)
+
+    regexp = re.compile(r'(%\(?[A-Za-z]+\)?[sS]?)')
+    sketchy = []
+    index = 0
+    while index < len(template):
+        match = regexp.search(template[index:])
+        if not (match and len(match.groups()) > 0):  break
+        var = match.group(1)
+        if var not in sketchy and var[2:-2] not in valid + VALIDVARS:
+            sketchy.append(var)
+        index += match.end(1)
+
+    return valid, sketchy
+
+## write a graph description for processing with dot.
+def writeToDot(filename, templates):
+    file = open(filename, 'w')
+    file.write('digraph templates {\n')
+    file.write('  ratio=1\n')
+    file.write('  size=5\n')
+    file.write('  node [shape=box,style=filled,fillcolor=red];\n')
+    for t, keys in templates.items():
+        file.write('  %s;\n' % t)
+        for k in keys:  file.write('  %s -> %s;\n' % (t, k))
+    file.write('}\n')
+    file.close()
+
+## print out a hash table with items of the form (template, [variables]).
+def prettyPrintHash(h):
+    temps = h.keys()
+    temps.sort()
+    for t in temps:
+        if h[t]:
+            keys = h[t][:]
+            keys.sort()
+
+            hdr = '\n---%-70.70s' % t
+            print hdr.replace(' ', '-')
+            if len(keys) < 5:
+                for k in keys:  print k
+            else:
+                while keys:
+                    if len(keys) > 1:
+                        print '%-40.40s%-40.40s' % (keys[0], keys[1])
+                    else:
+                        print '%-40.40s' % keys[0]
+                    keys = keys[2:]
+
+## the actual meat of the script :
+## 0. print help if user wants it
+## 1. find target directory, last supplied argument or '.'
+## 2. parse templates in target directory for valid and sketchy (suspicious) keys
+## 3. perform appropriate actions based on supplied arguments
+if __name__ == '__main__':
+    ## step 0.
+    if '-h' in sys.argv or '--help' in sys.argv or len(sys.argv) == 1:
+        print USAGE
+        sys.exit(0)
+
+    ## step 1.
+    dir = '.'
+    if os.path.isdir(sys.argv[-1]):
+        dir = sys.argv[-1]
+
+    ## step 2.
+    valid = {}
+    sketchy = {}
+    files = [f for f in glob.glob(os.path.join(dir, 'M*'))
+             if not (f.endswith('Multiple') or \
+             os.path.basename(f).startswith('Makefile'))]
+    for file in files:
+        t = os.path.basename(file)
+        f = open(file)
+        valid[t], sketchy[t] = findKeys(f.read())
+        f.close()
+
+    ## step 3.
+    if '-u' in sys.argv or '--unused' in sys.argv:
+        for t in valid.keys():
+            keys = [k for k in valid.values() if t in k]
+            if not keys:  print t
+
+    if '-t' in sys.argv or '--no-template' in sys.argv:
+        templateless = {}
+        for t in valid.keys():
+            templateless[t] = [k for k in valid[t] if
+                               k not in valid.keys() and k not in VALIDVARS]
+        prettyPrintHash(templateless)
+
+    if '-s' in sys.argv or '--suspicious' in sys.argv:
+        prettyPrintHash(sketchy)
+
+    if '-n' in sys.argv or '--names' in sys.argv:
+        prettyPrintHash(valid)
+
+    if '-d' in sys.argv:
+        outfile = 'templates.dot'
+        i = sys.argv.index('-d')
+        if len(sys.argv) > (i+1) and dir != sys.argv[i+1]:
+            outfile = sys.argv[i+1]
+        writeToDot(outfile, valid)

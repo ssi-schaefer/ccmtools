@@ -1,0 +1,4 @@
+union %(Identifier)s
+{
+%(MUnionFieldDef)s
+};

@@ -1,0 +1,22 @@
+//==============================================================================
+// %(Identifier)s - facet adapter implementation class
+//==============================================================================
+
+class %(Identifier)s_impl
+  : public CCM_%(ProvidesType)s
+{
+ private:
+  CCM_%(ComponentType)s_impl* component;
+
+ public:
+  %(Identifier)s_impl (  );
+  virtual ~%(Identifier)s_impl (  );
+
+  void
+  set_component
+    ( CCM_%(ComponentType)s_impl* c );
+
+%(MOperationProvidesPrototype)s
+};
+
+

@@ -1,0 +1,11 @@
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_01 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_02 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_03 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_04 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_05 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_06 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_07 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_08 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_09 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+    SmartPtr<%(ComponentType)s_mirror> my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_10 = my%(HomeIdentifier)sMirror.ptr (  )->create (  );
+

@@ -1,0 +1,5 @@
+Makefile
+Makefile.in
+classdist_check.stamp
+Main.class
+classdist_noinst.stamp

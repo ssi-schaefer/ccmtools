@@ -1,0 +1,3 @@
+PyObject *convert_%(Identifier)s_to_python ( %(Identifier)s arg );
+%(Identifier)s convert_%(Identifier)s_from_python ( PyObject *arg );
+

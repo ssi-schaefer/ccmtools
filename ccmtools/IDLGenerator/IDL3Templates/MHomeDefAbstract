@@ -1,0 +1,7 @@
+abstract home %(Identifier)s manages %(ComponentType)s
+ %(MSupportsDef)s
+{
+%(MFactoryDef)s
+%(MFinderDef)s
+};
+

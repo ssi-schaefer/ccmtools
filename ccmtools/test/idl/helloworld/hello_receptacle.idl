@@ -1,0 +1,26 @@
+interface LCD {
+  void display_text(in string s);
+  void display_char(in char c);
+};
+
+component Display {
+  attribute string Prompt;
+  provides LCD lcd;
+};
+
+home DisplayHome manages Display {
+};
+
+
+
+interface Console {
+  void println(in string s2);
+};
+
+component Hello {
+  provides Console console;
+  uses LCD lcd;
+};
+
+home HelloHome manages Hello {
+};

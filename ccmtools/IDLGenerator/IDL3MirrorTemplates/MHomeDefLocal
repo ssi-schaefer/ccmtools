@@ -1,0 +1,7 @@
+local home %(Identifier)s_mirror manages %(ComponentType)s_mirror
+ %(MSupportsDef)s
+{
+%(MFactoryDef)s
+%(MFinderDef)s
+};
+

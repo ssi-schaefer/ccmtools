@@ -1,0 +1,5 @@
+struct %(Identifier)s
+{
+%(MFieldDef)s
+};
+

@@ -1,0 +1,5 @@
+exception %(Identifier)s
+{
+%(MFieldDef)s
+};
+

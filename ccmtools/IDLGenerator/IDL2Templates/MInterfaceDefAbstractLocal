@@ -1,0 +1,14 @@
+abstract local interface %(Identifier)s
+{
+%(MAttributeDef)s
+%(MConstantDef)s
+%(MEnumDef)s
+%(MExceptionDef)s
+%(MOperationDef)s
+%(MStructDef)s
+%(MTypedefDef)s
+%(MUnionDef)s
+%(MValueDef)s
+%(MValueMemberDef)s
+};
+

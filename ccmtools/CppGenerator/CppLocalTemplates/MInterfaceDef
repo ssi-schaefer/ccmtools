@@ -1,0 +1,58 @@
+//==============================================================================
+// %(Identifier)s - interface class definition
+//==============================================================================
+
+#ifndef __%(Identifier)s__H__
+#define __%(Identifier)s__H__
+
+#include <localComponents/CCM.h>
+
+#include "user_types.h"
+#include "%(Identifier)s_types.h"
+
+namespace CCM_Local {
+
+class CCM_%(Identifier)s
+  : public localComponents::Object%(BaseTypes)s
+{
+ public:
+  virtual ~CCM_%(Identifier)s (  ) {  }
+%(MAttributeDefPrototypeVV)s
+%(MOperationDefPrototypeVV)s
+};
+
+} // /namespace CCM_Local
+
+#endif
+
+
+
+<<<<<<<SPLIT>>>>>>>
+
+//==============================================================================
+// %(Identifier)s - interface type definitions
+//==============================================================================
+
+#ifndef __%(Identifier)s__TYPES__H__
+#define __%(Identifier)s__TYPES__H__
+
+namespace CCM_Local {
+
+%(MEnumDefFwdDecl)s
+%(MStructDefFwdDecl)s
+%(MUnionDefFwdDecl)s
+
+%(MAliasDef)s
+
+%(MEnumDef)s
+%(MStructDef)s
+%(MUnionDef)s
+
+%(MExceptionDefClass)s
+
+} // /namespace CCM_Local
+
+#endif
+
+
+

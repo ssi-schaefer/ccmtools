@@ -1,0 +1,11 @@
+abstract local interface %(Identifier)s :
+  Components::CCMObject%(BaseTypes)s%(SupportTypes)s
+{
+%(MAttributeDef)s
+%(MConsumesDef)s
+%(MEmitsDef)s
+%(MProvidesDef)s
+%(MPublishesDef)s
+%(MUsesDef)s
+};
+

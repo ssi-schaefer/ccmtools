@@ -1,0 +1,25 @@
+interface %(Identifier)sExplicit :
+  Components::CCMHome%(BaseTypes)s%(SupportTypes)s
+{
+%(MOperationDef)s
+%(MFinderDef)s
+%(MFactoryDef)s
+};
+
+interface %(Identifier)sImplicit :
+  Components::CCMHome
+{
+  %(ComponentType)s
+  create
+    ( %(MHomeDefPrimaryKeyParameters)s )
+    raises ( Components::CreateFailure%(MHomeDefPrimaryKeyExceptions)s );
+
+%(MHomeDefPrimaryKeyFunctions)s
+};
+
+interface %(Identifier)s :
+  %(Identifier)sExplicit,
+  %(Identifier)sImplicit
+{
+};
+

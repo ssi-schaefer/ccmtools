@@ -1,0 +1,143 @@
+#! /usr/bin/env python
+#
+## ccmtools-c++-install : C++ component installation script
+## Leif Johnson <leif@ambient.2y.net>
+## copyright (c) 2002-2003 Salomon Automation
+##
+## $Id$
+##
+## This program is free software; you can redistribute it and/or modify it unde
+## the terms of the GNU General Public License as published by the Free Softwar
+## Foundation; either version 2 of the License, or (at your option) any later
+## version.
+##
+## This program is distributed in the hope that it will be useful, but WITHOUT
+## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+## FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+## details.
+##
+## You should have received a copy of the GNU General Public License along with
+## this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+## Place - Suite 330, Boston, MA 02111-1307, USA.
+
+import glob, os, sys
+
+INSTALL_ENV = 0
+
+SOURCE_DIR = ''
+CCMTOOLS_PACKAGE = 'ccmtools-package'
+if 'CCMTOOLS_PACKAGE' in os.environ.keys():
+    CCMTOOLS_PACKAGE = os.environ['CCMTOOLS_PACKAGE']
+
+USAGE = '''Usage: ccmtools-c++-install [OPTION]...
+
+Install C++ components and test components.
+
+Options:
+    -e, --environment          Build and install the C++ component environment
+    -h, --help                 Print out this help
+    -i DIR, --install=DIR      Use DIR as the install prefix [Confix default]
+    -p NAME, --package=NAME    Install the package named NAME [%s]
+    -s DIR, --source=DIR       Use DIR as the source for component code
+                               [./<PACKAGE-NAME>]
+    -V, --version              Print out ccmtools version information
+
+The environment variable CCMTOOLS_PACKAGE can be used to set the package
+name.''' % CCMTOOLS_PACKAGE
+
+## utility functions.
+
+def remove(dir):
+    files = os.listdir(dir)
+    for f in files:
+        new_file = os.path.join(dir, f)
+        if os.path.isdir(new_file): remove(new_file)
+        else:                       os.remove(new_file)
+    os.rmdir(dir)
+
+def call_confix(package, source_dir, dest_dir = '', targets = [], args = []):
+    confix_flags  = ' --packagename="%s"' % package
+    confix_flags += ' --configfile="confix.conf"'
+    confix_flags += ' --packageroot="%s"' % source_dir
+    confix_flags += ' --profile="ccmtools"'
+    confix_flags += ' ' + ' '.join(args)
+    if dest_dir: confix_flags += ' --prefix="%s"' % dest_dir
+    if targets:  confix_flags += ' --targets="%s"' % ' '.join(targets)
+
+    return os.system('confix.py ' + confix_flags)
+
+def install_environment(tmp):
+    env_dir = os.path.join(tmp, 'ccmtools-environment')
+
+    try:
+        if os.system('ccmtools-generate c++local -e -o ' + env_dir):
+            raise
+        try:
+            handle = open(os.path.join(env_dir, 'Makefile.py'), 'w')
+            handle.write('')
+        finally:
+            handle.close()
+    except:
+        print 'Error creating the ccmtools environment in %s.' % env_dir
+        print 'Please report this as a bug at http://ccmtools.sf.net/.'
+        sys.exit(1)
+
+    ret = call_confix('ccmtools-environment', env_dir,
+                      ['all', 'install', 'distclean'],
+                      ['--boot', '--configure', '--make'])
+
+    ret = ret or remove(env_dir)
+
+    if ret:
+        print 'The ccmtools environment cannot be installed from %s.' % env_dir
+        print 'Please check that you have a $HOME/.confix file, and that it'
+        print 'contains a "ccmtools" profile, with a valid installation'
+        print 'directory and valid parameters for configure and make.'
+        sys.exit(ret)
+
+## handle arguments.
+
+index = 1
+while index < len(sys.argv):
+    arg = sys.argv[index]
+    index += 1
+
+    if arg == '-e' or arg.startswith('--e'): INSTALL_ENV = 1
+    elif arg == '-h' or arg.startswith('--h'): print USAGE; sys.exit(0)
+    elif arg == '-p': CCMTOOLS_PACKAGE = sys.argv[index]; index += 1
+    elif arg.startswith('--p') and arg.find('=') > 0:
+        CCMTOOLS_PACKAGE = arg.split('=')[1]
+
+    elif arg == '-s': SOURCE_DIR = sys.argv[index]; index += 1
+    elif arg.startswith('--s') and arg.find('=') > 0:
+        SOURCE_DIR = arg.split('=')[1]
+
+    elif arg == '-V' or arg.startswith('--v'):
+        os.execlp('ccmtools-generate', 'ccmtools-generate', '--version')
+
+## if we're deploying the environment, do so first.
+
+tmp = '/tmp'
+if   'TMP'  in os.environ.keys(): tmp = os.environ['TMP']
+elif 'TEMP' in os.environ.keys(): tmp = os.environ['TEMP']
+elif sys.platform.startswith('win'): tmp = 'c:\\'
+elif sys.platform.startswith('mac'): tmp = os.pathsep
+
+if INSTALL_ENV: install_environment(tmp)
+
+## check for a valid source directory.
+
+SOURCE_DIR = SOURCE_DIR or CCMTOOLS_PACKAGE
+if (sys.platform[:3] == 'win' and not SOURCE_DIR[1:3] == ':\\') or \
+       not SOURCE_DIR.startswith(os.sep):
+    SOURCE_DIR = os.path.join(os.getcwd(), SOURCE_DIR)
+
+if not os.path.isdir(SOURCE_DIR):
+    print 'No component source was found in %s.' % SOURCE_DIR
+    print 'You might need to generate the components first with',
+    print '"ccmtools-c++-generate", and build them with "ccmtools-c++-make".'
+    sys.exit(1)
+
+## run confix to install components.
+
+sys.exit(call_confix(CCMTOOLS_PACKAGE, SOURCE_DIR, targets = ['install']))

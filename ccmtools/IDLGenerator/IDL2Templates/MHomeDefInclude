@@ -1,0 +1,4 @@
+interface %(Identifier)sExplicit;
+interface %(Identifier)sImplicit;
+interface %(Identifier)s;
+

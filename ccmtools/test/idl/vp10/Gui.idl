@@ -1,0 +1,27 @@
+/******************************************************************************/
+/*  Project: VP1.0                                                            */
+/*  File:    Gui.idl                                                          */
+/*  Version: 0.1                                                              */
+/*  Date:    Juli 2002                                                        */
+/*----------------------------------------------------------------------------*/
+/*  Company: SALOMON Automoation F&E                                          */
+/*  Author : Egon                                                             */
+/*----------------------------------------------------------------------------*/
+/*  Note   :                                                                  */
+/*                                                                            */
+/*  Change1:                                                                  */
+/******************************************************************************/
+
+#include "LbaRecord.idl"
+
+exception LbaReadException {};
+exception LbaWriteException {};
+
+interface Gui
+{
+  LbaRecordSet read(in LbaRecord r)
+    raises(LbaReadException);
+  void write(in LbaRecord r)
+    raises(LbaWriteException);
+};
+

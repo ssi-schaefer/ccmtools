@@ -1,0 +1,2 @@
+#include <CCM_Local/%(PublishesType)s.h>
+

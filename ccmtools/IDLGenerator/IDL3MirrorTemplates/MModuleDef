@@ -1,0 +1,24 @@
+module %(Identifier)s {
+%(MModuleDef)s
+
+%(MAttributeDef)s
+%(MConstantDef)s
+
+%(MValueDef)s
+%(MValueMemberDef)s
+
+%(MAliasDef)s
+
+%(MEnumDef)s
+%(MStructDef)s
+%(MUnionDef)s
+
+%(MExceptionDef)s
+
+%(MOperationDef)s
+
+%(MInterfaceDef)s
+%(MHomeDef)s
+%(MComponentDef)s
+};
+

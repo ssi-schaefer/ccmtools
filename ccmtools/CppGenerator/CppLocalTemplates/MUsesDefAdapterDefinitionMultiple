@@ -1,0 +1,38 @@
+localComponents::Cookie
+%(ComponentType)s::connect_%(Identifier)s ( SmartPtr<CCM_%(UsesType)s> f )
+  throw ( localComponents::ExceededConnectionLimit, localComponents::InvalidConnection )
+{
+  DEBUGNL ( " %(ComponentType)s->connect_%(Identifier)s (  )" );
+  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  stringstream s;
+  s << "CCM_%(Identifier)s:" << %(Identifier)s_receptacle_counter++;
+  localComponents::Cookie ck ( s.str (  ) );
+  %(Identifier)s_receptacles.insert( make_pair ( ck, f ) );
+  return ck;
+}
+
+SmartPtr<CCM_%(UsesType)s>
+%(ComponentType)s::disconnect_%(Identifier)s ( localComponents::Cookie ck )
+  throw ( localComponents::InvalidConnection )
+{
+  DEBUGNL ( " %(ComponentType)s->disconnect_%(Identifier)s (  )" );
+  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( %(Identifier)s_receptacles.find ( ck ) != %(Identifier)s_receptacles.end (  ) )
+  {
+    SmartPtr<CCM_%(UsesType)s> f ( %(Identifier)s_receptacles[ck] );
+    %(Identifier)s_receptacles.erase ( ck );
+    return f;
+  }
+  else
+    throw localComponents::InvalidConnection (  );
+}
+
+%(Identifier)sConnections&
+%(ComponentType)s::get_connections_%(Identifier)s (  )
+{
+  DEBUGNL ( " %(ComponentType)s->get_connections_%(Identifier)s (  )" );
+  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  return %(Identifier)s_receptacles;
+}
+
+

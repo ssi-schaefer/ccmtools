@@ -1,0 +1,2 @@
+typedef %(LanguageType)s %(Identifier)s;
+

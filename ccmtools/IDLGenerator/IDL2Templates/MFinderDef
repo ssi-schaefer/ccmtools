@@ -1,0 +1,3 @@
+  %(ComponentType)s %(Identifier)s ( %(MParameterDef)s )
+    raises ( Components::FinderFailure%(MExceptionDef)s );
+

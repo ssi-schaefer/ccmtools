@@ -1,0 +1,9 @@
+#! /bin/sh
+
+PACK=@PACKAGE@-@VERSION@
+
+./autogen.py --prefix=`pwd`/$PACK --enable-docs && \
+  make && make install && \
+  cp -pr doc $PACK && cp -p README.binary $PACK && \
+  tar zcf ${PACK}.bin.tar.gz $PACK && \
+  rm -rf $PACK

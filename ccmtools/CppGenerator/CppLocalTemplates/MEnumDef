@@ -1,0 +1,4 @@
+enum %(Identifier)s
+{
+%(Members)s
+};

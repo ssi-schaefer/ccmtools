@@ -1,0 +1,11 @@
+ccmtools = {
+  'CONFIGURE' : {
+    'ENV' : {
+      'CFLAGS':   '%(define)s',
+      'CXXFLAGS': '%(define)s',
+    },
+  },
+}
+
+PROFILES = { 'ccmtools' : ccmtools }
+

@@ -1,0 +1,23 @@
+/******************************************************************************/
+/*  Project: VP1.0 local                                                      */
+/*  File   : Dexer.idl                                                        */
+/*  Version: 0.1                                                              */
+/*  Date   : Dezember 2002                                                    */
+/*----------------------------------------------------------------------------*/
+/*  Company: SALOMON Automoation F&E                                          */
+/*  Autor  : Egon Teiniker                                                    */
+/*----------------------------------------------------------------------------*/
+/*  Note   :                                                                  */
+/******************************************************************************/
+
+#include "RecordConsumer.idl"
+
+component Dexer
+{
+  provides RecordConsumer recConsumerIn;
+  uses RecordConsumer recConsumerOut;
+};
+
+home DexerHome manages Dexer
+{
+};

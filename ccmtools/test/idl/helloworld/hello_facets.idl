@@ -1,0 +1,14 @@
+
+interface Console {
+  void print(in string s);
+  void println(in string s2);
+};
+
+component Hello
+{
+  provides Console tty;
+};
+
+home HelloHome manages Hello
+{
+};

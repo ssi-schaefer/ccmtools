@@ -1,0 +1,55 @@
+## process this file with automake to produce Makefile.in
+## $Id$
+
+DOC_NAME = tutorial
+
+TEX = $(DOC_NAME).tex    \
+      CCMOverview.tex    \
+      FirstAssembly.tex  \
+      FirstComponent.tex \
+      Installation.tex   \
+      LCAC.tex           \
+      Remote.tex
+
+BIBS = cbse.bib doc.bib pattern.bib se.bib wx.bib
+
+FIGS = \
+       Adapter1.fig              \
+       DevelopmentProcess.fig    \
+       TestDrivenDevelopment.fig \
+       Container.fig             \
+       Assembly.fig              \
+       AssemblyGraph.fig         \
+       AssemblyGraph2.fig        \
+       Component.fig             \
+       LCAC_Overview.fig         \
+       LCAC_ProcessModel.fig     \
+       RemoteAssembly.fig
+
+PDFS = $(FIGS:.fig=.pdf)
+EPSS = $(FIGS:.fig=.eps)
+
+dist_noinst_DATA = $(TEX) $(BIBS) $(FIGS)
+noinst_DATA = $(DOC_NAME).ps $(DOC_NAME).pdf
+
+%.pdf: %.fig
+	$(FIG2DEV) -L pdf $< $@
+
+%.eps: %.fig
+	$(FIG2DEV) -L eps $< $@
+
+%.ps: %.dvi $(EPSS)
+	$(DVIPS) $<
+
+%.pdf: %.dvi $(PDFS)
+	$(DVIPDF) $<
+
+$(DOC_NAME).dvi: $(TEX) $(EPSS) $(BIBS)
+	@ $(LATEX) $(DOC_NAME)
+	@ $(BIBTEX) $(DOC_NAME)
+	@ $(LATEX) $(DOC_NAME)
+	$(LATEX) $(DOC_NAME)
+
+clean-local:
+	$(RM) -f *.aux *.toc *.log *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
+

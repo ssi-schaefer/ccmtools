@@ -1,0 +1,6 @@
+  if ( name == "%(Identifier)s" ) {
+    disconnect_%(Identifier)s ( ck );
+    return;
+  }
+
+

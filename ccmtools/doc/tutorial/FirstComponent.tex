@@ -1,0 +1,393 @@
+% $Id$
+%==============================================================================
+\chapter{The First Component}
+%==============================================================================
+\begin{flushright}
+{\it From there to here, \\
+     from here to there \\
+     funny things are everywhere.\\
+		(Dr. Seuss)}
+
+\end{flushright}
+
+
+%------------------------------------------------------------------------------
+\section{Overview}
+%------------------------------------------------------------------------------
+
+This section shows how to implement a simple hello world like component using
+the {\it CCM Tools}.
+Of course, this is not an application and a hello world component is
+a structural overkill, but the example is well suited to demonstrate the use
+of our tool set.
+
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics [width=10cm,angle=0] {DevelopmentProcess}
+        \caption{Component development process}
+        \label{DevelopmentProcess}
+    \end{center}
+\end{figure}
+
+As shown in Fig.~\ref{DevelopmentProcess},
+the development process defines different roles that reflect different abstraction
+levels of components.
+\begin{description}
+\item [Component Designer] specifies the structure of the component by defining
+an {\it Interface Description Language} (IDL) File. This IDL interfaces are only a 
+syntax definition and do not describe the behavior of the component.
+\item [Component Developer] implements the behavior of the component in
+respect to the defined interfaces. 
+\end{description}
+
+The {\it CCM Tools} supports the development process by providing an IDL parser
+and different code generators.
+Generated code is used in both parts of a component:
+\begin{description}
+\item [Component Logic] is the implementation of the component's structure.
+It contains mechanisms to create and destroy component instances as well as access
+and navigation methods for ports and attributes.
+This code can be completely generated from the IDL description. 
+\item [Business Logic] is the implementation of the component's behavior in respect 
+to the application domain. 
+Generator tools can create skeleton code, the component developer, however, 
+implements the business code without care about the overall structure of the application.
+\end{description}
+
+Finally, we use the {\it Confix} build tool to create a library from the generated and
+hand-crafted source code. The component libraries are stored in a component repository on the
+server side and are used to assemble modular applications.
+
+  
+
+%------------------------------------------------------------------------------
+\section{The designer's job}
+%------------------------------------------------------------------------------
+
+Let's start to implement the first component using the {\it CCM Tools}.
+We define an IDL file named {\tt hello.idl} that describes the component's structure
+and is stored in a {\tt hello} directory:
+\begin{verbatim}
+        interface Console {
+          void println(in string s2);
+        };
+
+        component Hello {
+          provides Console console;
+        };
+
+        home HelloHome manages Hello {
+        };
+\end{verbatim}
+
+The IDL file  defines a {\tt Console} interface that contains a method to print 
+out a string. 
+The {\tt Hello} component provides this interface as a facet with the name {\tt console}.
+Finally, the {\tt HelloHome} is defined to manage the {\tt Hello} component.
+Thus, we have created the following file structure:  
+\begin{verbatim}
+        hello/
+        `-- hello.idl
+\end{verbatim}
+
+Well done, we have designed an example component and also created the corresponding
+IDL definition. 
+Note that the designer defines the external view of a component as a part of the
+whole application structure.
+
+
+
+%------------------------------------------------------------------------------
+\section{The developer's job}
+%------------------------------------------------------------------------------
+
+Remember, the component developer implements the behavior of the component in
+respect to the defined interfaces. This section shows how the {\it CCM Tools}
+make this job easier.
+
+
+%------------------------------------------------------------------------------
+\subsection{Create an empty component}
+%------------------------------------------------------------------------------
+
+To get the component logic and the skeletons of the business logic from the IDL file, 
+we start the local C++ code generator:
+\begin{verbatim}
+~/hello> ccmtools-c++-generate -c 1.0 -d -p hello1.0 hello.idl
+\end{verbatim}
+The {\tt ccmtools-c++-generate} call accepts a bunch of command line parameters. In the
+example we only use a few to demonstrate the possibilities.
+An in depth description of the {\it CCM Tools} goes out of this tutorial but 
+here is a short description of the used options:
+\begin{itemize}
+\item {\tt -c VERSION, --code-version=VERSION }\\
+Set VERSION of generated code, the default component version is ``0.1''.
+Note that the component's version number can be asked at runtime.  
+
+\item {\tt -d, --debug }\\
+Enable debugging in generated code. The generated code produces a lot of
+debug messages that can be used to trace the program execution.
+
+\item {\tt -p NAME, --package=NAME}\\
+Set package name to NAME, the default package name is ``ccmtools-package''.
+Note that the package name is used for the name of the generated subdirectory.
+
+\item {\tt -h, --help}\\
+Prints out a short description of the available command line parameter.
+\end{itemize}
+After calling {\tt ccmtools-c++-generate}, we have a new subdirectory ({\tt hello1.0}) that 
+contains the generated component logic. Also, the skeletons for the business logic are
+created in the current directory:
+\begin{verbatim}
+    hello/
+    |-- HelloHome_app.cc
+    |-- HelloHome_mirror_app.cc
+    |-- Hello_app.cc
+    |-- Hello_mirror_app.cc
+    |-- hello_user_types.h
+    |-- confix.conf
+    |-- hello1.0
+    `-- hello.idl
+\end{verbatim}
+The component's developer does not care about the generated component logic in the
+subdirectory. The interesting files are in the current directory as described below:
+\begin{itemize}
+\item {\tt HelloHome\_app.cc} \\
+Contains the factory methods for component creation. 
+Note that the default {\tt create()} method is already implemented.
+\item {\tt Hello\_app.cc} \\
+Contains the component's business logic skeletons.
+\item {\tt hello\_user\_types.h} \\
+Contains the default IDL to C++ mappings. Note that these mappings can be 
+changed by the user.
+\item {\tt confix.conf}\\
+This file is a Confix configuration file which sets the paths for
+the build and install directories. 
+\end{itemize}
+The generated business logic skeletons contains enough code to be compilable.
+Each method includes a debug statement that prints the file name and the
+method name of the executed function.
+Thus, we have an empty but compilable component - let's deploy it!
+
+\vspace{0.3cm}
+To deploy a component means that the component's source code will be compiled
+to a component library file that will be stored in the component repository.
+The {\it CCM Tools} provide this functionality in a single call:
+\begin{verbatim}
+~/hello> ccmtools-c++-deploy -c confix.conf -p hello1.0
+\end{verbatim}
+The {\tt ccmtools-c++-deploy} call also accepts a lot of command line parameters
+as described below:
+\begin{itemize}
+\item {\tt -c FILE, --confix=FILE}\\
+Use FILE for Confix configuration. The generated {\tt confix.conf} file contains
+information about the build and install directory for the {\tt Confix} build tool.
+
+\item {\tt -p NAME, --package=NAME}\\
+Use package named NAME, the default package name is ``ccmtools-package''.
+
+\item {\tt -h, --help}\\
+Prints out a short description of the available command line parameter.
+\end{itemize}
+Now, the component is part of the component repository and can be used in
+a component assembly.
+
+
+
+
+%------------------------------------------------------------------------------
+\subsection{Test driven development}
+%------------------------------------------------------------------------------
+
+Software development is an iterative process. Kent Beck proposed a 
+{\it Test Driven Development} (TDD) that starts by implementing the test -
+before implementing the application!
+
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics [width=6cm,angle=0] {TestDrivenDevelopment}
+        \caption{Test driven development process}
+        \label{DevelopmentProcess}
+    \end{center}
+\end{figure}
+
+As shown in Fig.~\ref{DevelopmentProcess}, we use the TDD idea in context of components.
+The {\it CCM Tools} generate for every component $C$ a mirror component $\overline{C}$.
+Each input port of $C$ corresponds to a output port in $\overline{C}$ and vice versa.
+A test client coordinates the creating and connecting of the components as well as the
+test calls to the facets of $C$.  
+
+While the test client is part of the generated code in the {\tt hello1.0} directory,
+the current component directory contains the skeletons of the mirror component business
+logic:
+\begin{itemize}
+\item {\tt HelloHome\_mirror\_app.cc} \\
+Contains the factory methods for mirror component creation.
+Note that the default {\tt create()} method is already implemented.
+\item {\tt Hello\_mirror\_app.cc} \\
+Contains the skeletons of the mirror component's test code.
+\end{itemize}
+
+\noindent
+Note that the mirror component $\overline{C}$ and the test client are always generated 
+at the same time as the component itself - without additional development effort.
+
+\noindent
+To run the component unit test, that creates a $C$ and a 
+$\overline{C}$ instance and connects these components together as shown in 
+Fig.~\ref{DevelopmentProcess}, type:
+\begin{verbatim}
+~/hello> hello1.0_CCM_Test__check_CCM_Session_Hello_connect
+\end{verbatim} 
+The running unit test prints out a lot of debugging messages
+that documents the execution flow of the program - the first component is running!
+
+
+
+%------------------------------------------------------------------------------
+\subsection{Write the test first}
+%------------------------------------------------------------------------------
+
+That's a good time to start the development of business code.
+First, we have to define the behavior of the business code in an executable
+semantic.
+Thus we write a test case in the mirror component ({\tt Hello\_mirror\_app.cc}):
+\begin{verbatim}
+void
+CCM_Hello_mirror_impl::ccm_activate (  )
+  throw ( localComponents::CCMException )
+{
+  DEBUGNL ( " CCM_Hello_mirror_impl->ccm_activate (  )" );
+
+  cout << "Start of Hello unit test." << endl;
+  ctx->get_connection_console_mirror().ptr()->println("Hello World!");
+  cout << "End of unit test." << endl;
+}
+\end{verbatim}
+
+\noindent
+The test case is implemented in the {\tt ccm\_activate()} callback method of the mirror
+component because this method is called after creating and connecting
+$C$ and $\overline{C}$.  
+We use the context object {\tt ctx} to get a smart pointer to the facet of $C$
+before we call the {\tt println()} operation.
+To run the unit test again, the component must be redeployed:
+\begin{verbatim}
+~/hello> ccmtools-c++-deploy -c confix.conf -p hello1.0
+~/hello> hello1.0_CCM_Test__check_CCM_Session_Hello_connect
+\end{verbatim}
+From the output of the test client we can see that the {\tt println()} method
+of $C$ is called from the mirror component $\overline{C}$ but {\tt println()}
+does nothing - remember, there is no business code implemented in {\tt println()}!
+
+
+
+
+%------------------------------------------------------------------------------
+\subsection{Write the business logic}
+%------------------------------------------------------------------------------
+
+Finally, we can implement the business logic that satisfies the written test case.
+We open the {\tt Hello\_app.cc} file and add a single line:
+\begin{verbatim}
+void
+console_impl::println (const std::string& s2 )
+{
+  DEBUGNL ( " console_impl->println ( s2 )" );
+  cout << s2 <<  endl;
+}
+\end{verbatim}
+
+\noindent
+The {\tt println()} method simply prints out the given string - that's it!
+We run the test again to see if it's working:
+\begin{verbatim}
+~/hello> ccmtools-c++-deploy -c confix.conf -p hello1.0
+~/hello> hello1.0_CCM_Test__check_CCM_Session_Hello_connect
+\end{verbatim}
+
+Note that all the hand crafted code is in the current directory, there is no
+need to touch the generated code in {\tt hello1.0}.
+To protect the business code from overwriting, the {\tt ccmtools-c++-generate} 
+tool creates the {\tt *\_app.[h,cc]} files only if they do not exist. 
+
+
+This is a very simple example of business code implementation.
+Usually, the business code has been already developed in a separated directory 
+structure:
+\begin{verbatim}
+    business
+    |-- test
+    |   |-- Makefile.py
+    |   |-- test.cc
+    |   |-- test.h
+\end{verbatim}
+
+\noindent
+The implemented business code is a test class that provides a 
+{\tt print\_string} method.
+\begin{verbatim}
+    // business.h	
+    class test 
+    {
+     public:
+      test() {};
+      virtual ~test() {};
+      virtual void print_string(const std::string& s);
+    };
+
+    // business.cc
+    void test::print_string(const std::string& s)
+    {
+      cout << "test::print_string(" << s << ")" << endl;
+    }
+\end{verbatim}
+
+\noindent
+We propose that the business logic is build using the Confix tool (with the
+same {\tt confix.conf} file as generated by the {\tt ccmtools-c++-generate tool}):
+\begin{verbatim}
+confix.py --bootstrap --configure --make --targets=install \
+          --configfile=<path_to_component>/hello/confix.conf
+\end{verbatim}
+
+\noindent
+After that, the {\tt Hello\_app.cc} file can be modified in the following way
+to integrate the separate compiled business code:
+\begin{verbatim}
+#include<business.h>
+//...
+void
+console_impl::println ( const std::string s2 )
+{
+  DEBUGNL ( " console_impl->println ( s2 )" );
+  test t;
+  t.print_string(s2);
+}
+\end{verbatim}
+
+\noindent
+In conclusion, to build the final component we call the deployment tool and start the
+component test client:
+\begin{verbatim}
+~/hello> ccmtools-c++-deploy -c confix.conf -p hello1.0
+~/hello> hello1.0_CCM_Test__check_CCM_Session_Hello_connect
+\end{verbatim}
+
+
+
+%------------------------------------------------------------------------------
+\subsection{Undeploy the component}
+%------------------------------------------------------------------------------
+
+To remove the component from the component repository, type:
+\begin{verbatim}
+~/hello> ccmtools-c++-undeploy -c confix.conf -p hello1.0
+\end{verbatim}
+The command line parameters are the same as by {\tt ccmtools-c++-deploy}.
+Note that the source code is not affected by the undeployment process.
+
+
+
+
+
