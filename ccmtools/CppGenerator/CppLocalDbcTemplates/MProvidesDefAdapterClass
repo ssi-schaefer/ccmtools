@@ -9,6 +9,8 @@ class DbC_%(Identifier)sFacetAdapter
   DbC_%(Identifier)sFacetAdapter(%(ComponentType)s* c, CCM_%(ComponentType)s* lc);
   virtual ~DbC_%(Identifier)sFacetAdapter();
 %(MOperationProvidesPrototype)s
+ private:
+  void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool) throw(CCM_OCL::OclException);
 };
 
 

@@ -9,7 +9,7 @@ SUBDIRS = . \
   CppRemoteTestTemplates \
   CppPythonTemplates
 
-CLASSPATH_ENV = CLASSPATH=$(top_builddir)
+CLASSPATH_ENV = CLASSPATH=$(CLASSPATH):$(top_builddir)
 
 AM_JAVACFLAGS = -g
 

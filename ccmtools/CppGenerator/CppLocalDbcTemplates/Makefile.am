@@ -9,7 +9,7 @@ dist_template_DATA = \
     MOperationProvidesPrototype         \
     MProvidesDefAdapterClass            \
     MProvidesDefAdapterClassImpl        \
-    MProvidesDefAdapterVariableInit	\
+    MProvidesDefAdapterVariableInit	    \
     MUsesDefAdapterVariableInit         \
     MHomeDef                            \
     MExceptionDef                       \

@@ -2,6 +2,7 @@ SmartPtr<%(ComponentType)s>
 DbC_%(HomeType)s::%(Identifier)s (%(MParameterDefAll)s)
   throw ( localComponents::CreateFailure )
 {
+  static const char* DbC_FUNCTION_NAME = "%(HomeType)s::%(Identifier)s (%(MParameterDefAll)s)";
   DEBUGNL ( " DbC_%(HomeType)s->%(Identifier)s (%(MParameterDefName)s)");
   %(FactoryPreInvocation)s	
   SmartPtr<%(ComponentType)s> ret(dynamic_cast<%(ComponentType)s*>(

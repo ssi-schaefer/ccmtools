@@ -2,6 +2,7 @@
 DbC_%(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefAll)s)
   %(MExceptionDef)s
 {
+  static const char* DbC_FUNCTION_NAME = "%(Object)s%(ProvidesType)s::%(Identifier)s (%(MParameterDefAll)s)";
   DEBUGNL(" DbC_%(Object)sFacetAdapter->%(Identifier)s (%(MParameterDefName)s )");
 
 %(ProvidesPreInvocation)s

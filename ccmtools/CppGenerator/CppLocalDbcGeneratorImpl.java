@@ -1,7 +1,7 @@
 /* CCM Tools : C++ Code Generator Library
  * Robert Lechner <rlechner@sbox.tugraz.at>
  * Egon Teiniker  <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * copyright (c) 2002-2004 Salomon Automation
  *
  * $Id$
  *
@@ -22,6 +22,7 @@
 
 package ccmtools.CppGenerator;
 
+
 import ccmtools.utils.Debug;
 
 import ccmtools.CodeGenerator.Driver;
@@ -29,8 +30,12 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.*;
 import ccmtools.Metamodel.ComponentIDL.*;
 
+import oclmetamodel.*;
+import ccmtools.OCL.utils.*;
+import ccmtools.OCL.generators.*;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,17 +43,20 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
+
 
 /**
- * Local C++ adapter generator with DbC support
- * 
- * 
+ * Local C++ adapter generator with DbC support.
+ *
+ * @author Egon Teiniker (templates and base implementation)
+ * @author Robert Lechner (DbC code generation)
  */
 public class CppLocalDbcGeneratorImpl
     extends CppGenerator
 {
     //====================================================================
-    // Definition of arrays that determine the generator's behavior 
+    // Definition of arrays that determine the generator's behavior
     //====================================================================
 
     /**
@@ -69,7 +77,7 @@ public class CppLocalDbcGeneratorImpl
     public CppLocalDbcGeneratorImpl(Driver d, File out_dir)
         throws IOException
     {
-        super("CppLocalDbc", d, out_dir, local_output_types);
+        super("CppLocalDbc", d, out_dir, local_output_types );
 
         Debug.setDebugLevel(Debug.NONE);
         Debug.println(Debug.METHODS,"CppLocalDbcGeneratorImpl.CppLocalDbcGeneratorImpl()");
@@ -81,25 +89,88 @@ public class CppLocalDbcGeneratorImpl
     //====================================================================
 
     /**
+     * The parse tree creator.
+     *
+     * @see {@link ccmtools.OCL.utils.Factory#getParsetreeCreator()}
+     */
+    protected OclParsetreeCreator creator_;
+
+    /**
+     * The normalized parse tree.
+     */
+    protected MFile oclParseTree_;
+
+    /**
+     * Calculates the type of OCL expressions by using the IDL parse tree.
+     */
+    protected TypeCreator typeChecker_;
+
+    /**
+     * The OCL generator for C++ code.
+     */
+    protected OclCodeGenerator generator_;
+
+    /**
+     * The current instance of MComponentDef or MHomeDef.
+     */
+    protected MInterfaceDef currentMainModule_;
+
+
+    /**
      * Overwrites the CodeGenerator's method...
+     *
+     * @throws IllegalStateException  if the creation of the OCL parse tree fails
      */
     public void startNode(Object node, String scope_id)
     {
         super.startNode(node, scope_id);
-	Debug.println(Debug.METHODS,"CppLocalDbcGeneratorImpl.startNode()");
+        Debug.println(Debug.METHODS,"CppLocalDbcGeneratorImpl.startNode()");
 
-	// Things that must be done bevor starting the code generation
+        // Things that must be done bevor starting the code generation
         if ((node instanceof MContainer) &&
-            (((MContainer) node).getDefinedIn() == null)) {
+            (((MContainer) node).getDefinedIn() == null))
+        {
             namespace.push("CCM_Local");
 
-	    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	    // TODO Robert
-	    String OclFileName = ((MContainer) node).getIdentifier() + ".ocl";
-	    System.out.println("Parse OCL File: " + OclFileName);
-	    // Parse the OCL file and build the OCL model
-	    // ...
-	}
+            // Parse the OCL file and build the OCL model.
+            try
+            {
+                creator_ = ccmtools.OCL.utils.Factory.getParsetreeCreator();
+                typeChecker_ = new TypeCreator(creator_);
+                String oclFileName = ((MContainer) node).getIdentifier() + ".ocl";
+                if( (new File(oclFileName)).isFile() )
+                {
+                    System.out.println("parse OCL file: " + oclFileName);
+                    MFile oclTree = OclParser.parseFile(oclFileName,creator_);
+                    OclXmlWriter writer0 = new OclXmlWriter(new FileWriter(oclFileName+".org.xml"));
+    	            writer0.write(oclTree);
+    	            writer0.close();
+                    //
+                    OclNormalization normalization = new OclNormalization(creator_);
+                    oclParseTree_ = normalization.normalize(oclTree);
+                    OclXmlWriter writer2 = new OclXmlWriter(new FileWriter(oclFileName+".norm.xml"));
+    	            writer2.write(oclParseTree_);
+    	            writer2.close();
+        		}
+        		else
+        		{
+        		    System.out.println("cannot find OCL file: " + oclFileName);
+        		    oclParseTree_ = creator_.createFile();
+        		    MPackage pkg = creator_.createPackage(OclCodeGenerator.GLOBAL_CONTEXT_NAME);
+        		    creator_.add(oclParseTree_,pkg);
+        		}
+        		generator_ = new OclCppGenerator(creator_, oclParseTree_, typeChecker_);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                throw new IllegalStateException("cannot create OCL parse tree");
+            }
+        }
+        if( (node instanceof MHomeDef)||(node instanceof MComponentDef) )
+        {
+            currentMainModule_ = (MInterfaceDef)node;
+       }
     }
 
 
@@ -124,11 +195,23 @@ public class CppLocalDbcGeneratorImpl
 	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.getLocalValue()");
 
 	String value = super.getLocalValue(variable);
-	if (current_node instanceof MAttributeDef) { 
+	if (current_node instanceof MAttributeDef) {
             return data_MAttributeDef(variable, value);
 	}
 	return value;
     }
+
+
+    private String getLocalValue( String variable, MInterfaceDef theClass )
+    {
+        String value = getLocalValue(variable);
+        if( value.length()>0 )
+        {
+            return value;
+        }
+        return "/*"+variable+"*/"+theClass.getIdentifier();  // HACK !!!
+    }
+
 
     /**
      * Overwrites the CppGenerator's method...
@@ -139,17 +222,18 @@ public class CppLocalDbcGeneratorImpl
     {
 	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.data_MFactoryDef()");
 
-	// Handle %(FactoryPreInvocation)s tag 
+	// Handle %(FactoryPreInvocation)s tag
 	if(data_type.equals("FactoryPreInvocation")) {
 	    return getFactoryPreInvocation((MOperationDef)current_node);
 	}
-	// Handle %(FactoryPostInvocation)s tag 
+	// Handle %(FactoryPostInvocation)s tag
 	else if(data_type.equals("FactoryPostInvocation")) {
 	    return getFactoryPostInvocation((MOperationDef)current_node);
 	}
 	// For any other cases call CppGenerator's method
 	return super.data_MFactoryDef(data_type, data_value);
     }
+
 
     /**
      * Handles the tags that are related to the MAttributeDef* templates
@@ -158,24 +242,84 @@ public class CppLocalDbcGeneratorImpl
     protected String data_MAttributeDef(String data_type, String data_value)
     {
 	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.data_MAttributeDef()");
-	
-	// Handle %(AttributeGetPreInvocation)s tag 
+
+	// Handle %(AttributeGetPreInvocation)s tag
         if (data_type.equals("AttributeGetPreInvocation")) {
 	    return getAttributeGetPreInvocation((MAttributeDef)current_node);
         }
-	// Handle %(AttributeGetPostInvocation)s tag 
+	// Handle %(AttributeGetPostInvocation)s tag
 	else if(data_type.equals("AttributeGetPostInvocation")) {
 	    return getAttributeGetPostInvocation((MAttributeDef)current_node);
 	}
-	// Handle %(AttributeSetPreInvocation)s tag 
+	// Handle %(AttributeSetPreInvocation)s tag
 	else if(data_type.equals("AttributeSetPreInvocation")) {
 	    return getAttributeSetPreInvocation((MAttributeDef)current_node);
 	}
-	// Handle %(AttributeSetPostInvocation)s tag 
+	// Handle %(AttributeSetPostInvocation)s tag
 	else if(data_type.equals("AttributeSetPostInvocation")) {
 	    return getAttributeSetPostInvocation((MAttributeDef)current_node);
 	}
         return data_value;
+    }
+
+
+    /**
+     * Overwrites the CppGenerator's method...
+     * Handles the tags that are related to the MComponentDef* templates
+     * and calls the {@link #getInvariantInvocation} method.
+     */
+    protected String data_MComponentDef(String data_type, String data_value)
+    {
+    	Debug.println(Debug.METHODS,"CppLocalDbcGeneratorImpl.data_MComponentDef()");
+
+    	// Handle %(InvariantInvocation)s tag
+        if( data_type.equals("InvariantInvocation") )
+        {
+	        return getInvariantInvocation((MComponentDef)current_node);
+        }
+
+    	// For any other cases call CppGenerator's method
+    	return super.data_MComponentDef(data_type, data_value);
+    }
+
+
+    /**
+     * Overwrites the CppGenerator's method...
+     * Handles the tags that are related to the MHomeDef* templates
+     * and calls the {@link #getInvariantInvocation} method.
+     */
+    protected String data_MHomeDef(String data_type, String data_value)
+    {
+    	Debug.println(Debug.METHODS,"CppLocalDbcGeneratorImpl.data_MHomeDef)");
+
+    	// Handle %(InvariantInvocation)s tag
+        if( data_type.equals("InvariantInvocation") )
+        {
+	        return getInvariantInvocation((MHomeDef)current_node);
+        }
+
+    	// For any other cases call CppGenerator's method
+    	return super.data_MHomeDef(data_type, data_value);
+    }
+
+
+    /**
+     * Overwrites the CppGenerator's method...
+     * Handles the tags that are related to the MProvidesDef* templates
+     * and calls the {@link #getInvariantInvocation} method.
+     */
+    protected String data_MProvidesDef(String data_type, String data_value)
+    {
+    	Debug.println(Debug.METHODS,"CppLocalDbcGeneratorImpl.data_MProvidesDef)");
+
+    	// Handle %(InvariantInvocation)s tag
+        if( data_type.equals("InvariantInvocation") )
+        {
+	        return getInvariantInvocation( ((MProvidesDef)current_node).getProvides() );
+        }
+
+    	// For any other cases call CppGenerator's method
+    	return super.data_MProvidesDef(data_type, data_value);
     }
 
 
@@ -194,7 +338,7 @@ public class CppLocalDbcGeneratorImpl
 
         for (int i = 0; i < out_strings.length; i++) {
 	    // If the out_string is empty, skip the file creation
-	    if (out_strings[i].trim().equals("")) 
+	    if (out_strings[i].trim().equals(""))
 		continue;
 
 	    // If the current node is a ComponentDef, create the component's files
@@ -202,22 +346,37 @@ public class CppLocalDbcGeneratorImpl
 		String component_name = ((MContained) current_node).getIdentifier();
 		String file_dir = handleNamespace("FileNamespace", component_name);
 
-		writeFinalizedFile(file_dir,  
-				   component_name + out_file_types[i], 
+		writeFinalizedFile(file_dir,
+				   component_name + out_file_types[i],
 				   out_strings[i]);
 	    }
 	    // If the current node is a HomeDef, create the home's files
 	    else if (current_node instanceof MHomeDef)  {
 		MHomeDef home = (MHomeDef)current_node;
-		String component_name = ((MContained)home.getComponent()).getIdentifier();  
+		String component_name = ((MContained)home.getComponent()).getIdentifier();
 		String home_name = home.getIdentifier();
 		String file_dir = handleNamespace("FileNamespace", component_name);
 
-		writeFinalizedFile(file_dir, 
-				   home_name + out_file_types[i], 
+		writeFinalizedFile(file_dir,
+				   home_name + out_file_types[i],
 				   out_strings[i]);
 	    }
 	}
+    }
+
+
+    public void endGraph()
+    {
+        super.endGraph();
+	    Debug.println(Debug.METHODS,"CppLocalDbcGeneratorImpl.endGraph()");
+	    try
+	    {
+	        generator_.writeConstraintInformation("constraints.txt", typeChecker_);
+	    }
+	    catch( Exception e )
+	    {
+	        e.printStackTrace();
+	    }
     }
 
 
@@ -233,7 +392,7 @@ public class CppLocalDbcGeneratorImpl
      * @param container the container in which the given interface is defined.
      * @return a map containing the keys and values needed to fill in the
      *         template for this interface.
-     */   
+     */
     protected Map getTwoStepOperationVariables(MOperationDef operation,
 					       MContained container)
     {
@@ -252,9 +411,9 @@ public class CppLocalDbcGeneratorImpl
 	vars.put("ProvidesPreInvocation"  , getProvidesPreInvocation(operation));
 	vars.put("ProvidesPostInvocation" , getProvidesPostInvocation(operation));
 
-        if (! lang_type.equals("void")) 
+        if (! lang_type.equals("void"))
 	    vars.put("Return", "return ");
-        else                            
+        else
 	    vars.put("Return", "");
         return vars;
     }
@@ -265,25 +424,29 @@ public class CppLocalDbcGeneratorImpl
     // Code generator DbC extensions
     //====================================================================
 
+    private static final String CHECK_INVARIANT_CALL_ON_ENTRY = "  DbC_check_invariant(DbC_FUNCTION_NAME,false);";
+    private static final String CHECK_INVARIANT_CALL_ON_EXIT = "  DbC_check_invariant(DbC_FUNCTION_NAME,true);";
+
+
     /**
      * These methods are used to generate code that is inserted before
-     * and after an adapter's method call.  
+     * and after an adapter's method call.
      */
 
     protected String getFactoryPreInvocation(MOperationDef op)
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getFactoryPreInvocation()");
-	// TODO Robert
-	return "  cout << \"PreInvocation...\" << endl;";
+    	// TODO Robert
+    	return "  /* FactoryPreInvocation */";
     }
 
     protected String getFactoryPostInvocation(MOperationDef op)
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getFactoryPostInvocation()");
-	// TODO Robert
-	return "  cout << \"PostInvocation...\" << endl;";
+    	// TODO Robert
+    	return "  /* FactoryPostInvocation */";
     }
 
 
@@ -291,66 +454,281 @@ public class CppLocalDbcGeneratorImpl
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getAttributeGetPreInvocation()");
-	// TODO Robert
-	return "  cout << \"PreInvocation...\" << endl;";
+        return ""; // nothing to do
     }
 
     protected String getAttributeGetPostInvocation(MAttributeDef attr)
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getAttributeGetPostInvocation()");
-	// TODO Robert
-	return "  cout << \"PostInvocation...\" << endl;";
+        return ""; // nothing to do
     }
+
 
     protected String getAttributeSetPreInvocation(MAttributeDef attr)
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getAttributeSetPreInvocation()");
-	// TODO Robert
-	return "  cout << \"PreInvocation...\" << endl;";
+        //return getCodeForInvariant( attr.getDefinedIn() );
+        return CHECK_INVARIANT_CALL_ON_ENTRY;
     }
 
+    /**
+     * Checks the invariant after the change of an attribute.
+     */
     protected String getAttributeSetPostInvocation(MAttributeDef attr)
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getAttributeSetPostInvocation()");
-	// TODO Robert
-	return "  cout << \"PostInvocation...\" << endl;";
+        //return getCodeForInvariant( attr.getDefinedIn() );
+        return CHECK_INVARIANT_CALL_ON_EXIT;
     }
 
 
+    /**
+     * Checks the precondition of a supported interface.
+     */
     protected String getSupportsPreInvocation(MOperationDef op)
     {
         Debug.println(Debug.METHODS,
 		      "CppLocalDbCGenerator.getSupportsPreInvocation()");
-	// TODO Robert
-	return "  cout << \"PreInvocation...\" << endl;";
+        return getCodeForPrecondition(op,false);
     }
 
+    /**
+     * Checks the postcondition of a supported interface.
+     */
     protected String getSupportsPostInvocation(MOperationDef op)
     {
         Debug.println(Debug.METHODS,
-		      "CppLocalDbCGenerator.getProvidesPostInvocation()");
-	// TODO Robert
-	return "  cout << \"PostInvocation...\" << endl;";
+		      "CppLocalDbCGenerator.getSupportsPostInvocation()");
+        return getCodeForPostcondition(op,false);
     }
 
+
+    /**
+     * Checks the precondition of a provided interface.
+     */
     protected String getProvidesPreInvocation(MOperationDef op)
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getProvidesPreInvocation()");
-	// TODO Robert
-	return "  cout << \"PreInvocation...\" << endl;";
+        return getCodeForPrecondition(op,true);
     }
 
+
+    /**
+     * Checks the postcondition of a provided interface.
+     */
     protected String getProvidesPostInvocation(MOperationDef op)
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getProvidesPostInvocation()");
-	// TODO Robert
-	return "  cout << \"PostInvocation...\" << endl;";
+        return getCodeForPostcondition(op,true);
     }
+
+
+    //////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Handles the %(InvariantInvocation)s tag.
+     *
+     * @param theClass  the class (interface, component, etc.)
+     */
+    protected String getInvariantInvocation( MContainer theClass )
+    {
+        if( theClass==null )
+        {
+            return "/* theClass==null */";
+        }
+        return generator_.makeCodeForInvariant(theClass).statements_;
+    }
+
+
+    /**
+     * Returns the full C++ code of an invariant.
+     *
+     * @param theClass  the class (interface, component, etc.)
+     */
+    protected String getCodeForInvariant( MContainer theClass )
+    {
+        if( theClass==null )
+        {
+            return "/* theClass==null */";
+        }
+        return "  {\n" + generator_.makeCodeForInvariant(theClass).statements_ + "  }";
+    }
+
+
+    /**
+     * Returns the full C++ code of a precondition.
+     *
+     * @param op  the operation definition
+     * @param providedInterface  true if the operation is part of a provided interface
+     */
+    protected String getCodeForPrecondition( MOperationDef op, boolean providedInterface )
+    {
+        MContainer theClass = providedInterface ? op.getDefinedIn() : currentMainModule_;
+        if( theClass==null )
+        {
+            return "/* theClass==null */";
+        }
+        ConstraintCode preCode = generator_.makeCodeForPrecondition(theClass,op);
+        return CHECK_INVARIANT_CALL_ON_ENTRY+"\n" + preCode.statements_;
+    }
+
+
+    /**
+     * Returns the full C++ code of a postcondition.
+     *
+     * @param op  the operation definition
+     * @param providedInterface  true if the operation is part of a provided interface
+     */
+    protected String getCodeForPostcondition( MOperationDef op, boolean providedInterface )
+    {
+        MContainer theClass = providedInterface ? op.getDefinedIn() : currentMainModule_;
+        if( theClass==null )
+        {
+            return "/* theClass==null */";
+        }
+        ConstraintCode postCode = generator_.makeCodeForPostcondition(theClass,op);
+        return CHECK_INVARIANT_CALL_ON_EXIT+"\n" + postCode.statements_;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Calculates the type of OCL expressions by using the IDL parse tree.
+     */
+    class TypeCreator extends OclNormalization implements OclTypeChecker
+    {
+        private MContainer theClass_;
+        private MOperationContext context_;
+        private MTyped returnType_;
+
+        TypeCreator( OclParsetreeCreator creator )
+        {
+            super(creator);
+        }
+
+        /**
+         * Returns the class name of the local adpter.
+         *
+         * @param theClass  home, component or interface
+         * @return class name or null
+         */
+        public String getLocalAdapterName( MContainer theClass )
+        {
+            if( theClass!=null )
+            {
+                if( theClass instanceof MComponentDef )
+                {
+                    return getLocalValue("ComponentType",(MInterfaceDef)theClass);
+                }
+                if( theClass instanceof MHomeDef )
+                {
+                    return getLocalValue("HomeType",(MInterfaceDef)theClass);
+                }
+                // HACK:
+                int index = current_name.lastIndexOf(":");
+                if( index>0 )
+                {
+                    String part1 = current_name.substring(index+1);
+                    String part2 = theClass.getIdentifier();
+                    return "/*facet adapter*/"+part1+part2;
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Calculates and sets the type of an expression.
+         *
+         * @param expr  the expression
+         * @param conCode  no change
+         * @return the type of the expression (or null)
+         */
+        public OclType makeType( MExpression expr, ConstraintCode conCode )
+        {
+            theClass_ = conCode.theClass_;
+            context_ = conCode.opCtxt_;
+            returnType_ = conCode.returnType_;
+            return setAndGetOclType(expr);
+        }
+
+        /**
+         * Returns the type of a property call or null.
+         */
+        protected OclType getOclType( MPropertyCall pc )
+        {
+            String name = pc.getName();
+            if( context_!=null )
+            {
+                if( name.equals(OclConstants.KEYWORD_RESULT) )
+                {
+                    return makeOclType( returnType_ );
+                }
+                Iterator it = context_.getParameters().iterator();
+                while( it.hasNext() )
+                {
+                    MFormalParameter fp = (MFormalParameter)it.next();
+                    if( fp.getName().equals(name) )
+                    {
+                        return convertOclType( fp.getType() );
+                    }
+                }
+            }
+            if( theClass_!=null )
+            {
+                OclType type = getPropertyType(theClass_,name);
+                if( type!=null )
+                {
+                    return type;
+                }
+                ClassIterator it = ClassIterator.getIterator(theClass_,true);
+                while( it.hasNext() )
+                {
+                    type = getPropertyType(it.next(),name);
+                    if( type!=null )
+                    {
+                        return type;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private OclType getPropertyType( MContainer def, String name )
+        {
+            Iterator it1 = def.getContentss().iterator();
+            while( it1.hasNext() )
+            {
+                Object obj = it1.next();
+                if( obj instanceof MAttributeDef )
+                {
+                    MAttributeDef attr = (MAttributeDef)obj;
+                    if( attr.getIdentifier().equals(name) )
+                    {
+                        return makeOclType(attr);
+                    }
+                }
+                else if( obj instanceof MOperationDef )
+                {
+                    MOperationDef op = (MOperationDef)obj;
+                    if( op.getIdentifier().equals(name) )
+                    {
+                        return makeOclType(op);
+                    }
+                }
+            }
+            return null;
+        }
+    }
+
+
 }
 
 
