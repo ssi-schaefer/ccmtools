@@ -2549,13 +2549,7 @@ identifier returns [String identifier = null]
 /* IDL LEXICAL RULES  */
 
 class IDL3Lexer extends Lexer;
-options
-{
-    exportVocab = IDL3;
-    k = 4;
-    charVocabulary = '\u0003'..'\uffff';
-    codeGenBitsetTestThreshold = 20;
-}
+options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377';}
 {
     // debug levels for the lexer. i assume the lexer will have fewer semantic
     // issues (== those that require debugging) so the lexer only gets the top
@@ -2653,10 +2647,7 @@ RSHIFT   options { paraphrase = ">>"; } : ">>" ;
 SCOPEOP  options { paraphrase = "::"; } : "::" ;
 
 WS options { paraphrase = "white space"; }
-    :   (   options { generateAmbigWarnings = false; } : ' ' | '\t' | '\f'
-        |   ( options { generateAmbigWarnings = false; }
-            : "\r\n" | '\r' | '\n' ) { newline(); }
-        )+ { _ttype = Token.SKIP; } ;
+    :   ( ' ' | '\t' | '\n' { newline(); } | '\r') { $setType(Token.SKIP); } ;
 
 protected
 INCLUDE_STRING_LITERAL options { paraphrase = "an include string in angle brackets"; }
@@ -2677,18 +2668,14 @@ PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
             |   i:INCLUDE_STRING_LITERAL { handleIncludedFile(i.getText()); }
             )
         )?
-        ( ' ' | '\t' | '\r' )* '\n' { newline(); } { $setType(Token.SKIP); } ;
+        ( ' ' | '\t' | '\r' )* '\n' { newline(); } { $setType(Token.SKIP);} ;
 
 SL_COMMENT options { paraphrase = "a comment"; }
-    :   "//" ( ~ ( '\n' | '\r' ) )* ( '\n' | '\r' ( '\n' )? )
-		{ $setType(Token.SKIP); newline(); } ;
+	:     "//" (options { warnWhenFollowAmbig = false; } :'$')? ( ~'\n' )* { $setType(Token.SKIP); newline(); } ;
 
 ML_COMMENT options { paraphrase = "a comment"; }
 	:	"/*"
-        ( options { generateAmbigWarnings = false; } : { LA(2) != '/' }? '*'
-        | '\r' '\n' { newline(); } | '\r' { newline(); } | '\n' { newline(); }
-        | ~ ( '*' | '\n' | '\r' )
-        )*
+        ( STRING_LITERAL | CHAR_LITERAL | '\n' { newline(); } | '*' ~'/' | ~'*' )*
         "*/" { $setType(Token.SKIP); } ;
 
 protected
@@ -2696,11 +2683,13 @@ ESC options { paraphrase = "an escape sequence"; }
 	:	'\\'
 		(   'n' | 't' | 'v' | 'b' | 'r' | 'f' | 'a' | '\\' | '?' | '\'' | '"'
 		|	( '0' | '1' | '2' | '3' )
+                /* Since a digit can occur in a string literal, which can follow
+				 * an ESC reference, ANTLR does not know if you want to match
+				 * the digit here (greedy) or in string literal. */
 			(   options { warnWhenFollowAmbig = false; }
-			:	'0'..'3' ( options { warnWhenFollowAmbig = false; } : '0'..'7' )?
+			:	OCTDIGIT ( options { warnWhenFollowAmbig = false; } : OCTDIGIT )?
 			)?
 		|   'x' HEXDIGIT ( options { warnWhenFollowAmbig = false; } : HEXDIGIT )?
-        |   'u' HEXDIGIT HEXDIGIT HEXDIGIT HEXDIGIT
 		) ;
 
 CHAR_LITERAL        options { paraphrase = "a character literal"; }
@@ -2708,11 +2697,13 @@ CHAR_LITERAL        options { paraphrase = "a character literal"; }
 WIDE_CHAR_LITERAL   options { paraphrase = "a character literal"; }
     :   'L' '\'' ( ESC | ~ '\'' ) '\'' ;
 STRING_LITERAL      options { paraphrase = "a string literal"; }
-    :   '"'! ( ESC | ~ ( '"' | '\\' ) )* '"'! ;
+    :   '"'! ( ESC | ~ '"' )* '"'! ;
 WIDE_STRING_LITERAL options { paraphrase = "a string literal"; }
-    :   'L'! '"'! ( ESC | ~ ( '"' | '\\' ) )* '"'! ;
+    :   'L'! '"'! ( ESC | ~ '"' )* '"'! ;
 
-OCT options { paraphrase = "an octal value"; } : "0" ( '0'..'7' )+ ;
+protected
+OCTDIGIT options { paraphrase = "an octal digit"; } : '0'..'7' ;
+OCT options { paraphrase = "an octal value"; } : "0" ( OCTDIGIT )+ ;
 
 protected
 HEXDIGIT options { paraphrase = "a hexadecimal digit"; }
@@ -2720,18 +2711,19 @@ HEXDIGIT options { paraphrase = "a hexadecimal digit"; }
 HEX options { paraphrase = "a hexadecimal value"; }
     :   ( "0x" | "0X" ) ( HEXDIGIT )+ ;
 
+protected
+DIGIT options { paraphrase = "a digit"; } : '0'..'9' ;
 INT options { paraphrase = "an integer value"; }
-    :   '1'..'9' ( '0'..'9' )*
-        ( '.' ( '0'..'9' )* { $setType(FLOAT); } )?
+    :   '1'..'9' ( DIGIT )*
+        ( '.' ( DIGIT )* { $setType(FLOAT); } )?
         ( EXPONENT { $setType(FLOAT); } )? ;
 
 protected
 EXPONENT options { paraphrase = "an exponent"; }
-    :   ( 'e' | 'E' ) ( '+' | '-' )? ( '0'..'9' )+ ;
+    :   ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ ;
 FLOAT options { paraphrase = "a floating point value"; }
-    :   '.' ( '0'..'9' )+ ( EXPONENT )? ;
+    :   '.' ( DIGIT )+ ( EXPONENT )? ;
 
 IDENT options { testLiterals = true; paraphrase = "an identifer"; }
-    :   ( 'a'..'z' | 'A'..'Z' | '_' | '\u0080'..'\ufffe' )
-        ( 'a'..'z' | 'A'..'Z' | '_' | '\u0080'..'\ufffe' | '0'..'9' )* ;
+    :   ( 'a'..'z' | 'A'..'Z' | '_' ) ( 'a'..'z' | 'A'..'Z' | '_' | '0'..'9' )* ;
 
