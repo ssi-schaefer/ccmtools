@@ -1,0 +1,51 @@
+<project name="cpp-environment" default="local">
+
+  <description>
+
+  </description>
+
+  <property name="package.root" location="." />
+
+  <target name="WX_Utils" 
+     description="Build WX::Utils package using confix." >
+     <exec executable="confix.py" >
+         <arg value="--packageroot=${package.root}/WX_Utils" />
+         <arg value="--bootstrap" />
+         <arg value="--configure" />
+         <arg value="--make" />
+         <arg value="--targets=install" />
+     </exec>
+  </target>
+
+  <target name="CCM_Local" 
+     description="Build WX::Utils package using confix." >
+     <exec executable="confix.py" >
+         <arg value="--packageroot=${package.root}/CCM_Local" />
+         <arg value="--bootstrap" />
+         <arg value="--configure" />
+         <arg value="--make" />
+         <arg value="--targets=install" />
+     </exec>
+  </target>
+
+  <target name="local" depends="WX_Utils, CCM_Local"
+     description="Build local runtime environment for ccmtools." >
+  </target>
+
+
+  <!-- Clean up -->
+  <target name="clean"
+      description="Uninstall WX::Utils and CCM_Local package using confix." >
+      <exec executable="confix.py" >
+         <arg value="--packageroot=${package.root}/WX_Utils" />
+         <arg value="--make" />
+         <arg value="--targets=uninstall" />
+      </exec>
+      <exec executable="confix.py" >
+         <arg value="--packageroot=${package.root}/CCM_Local" />
+         <arg value="--make" />
+         <arg value="--targets=uninstall" />
+      </exec>
+  </target>
+
+</project>

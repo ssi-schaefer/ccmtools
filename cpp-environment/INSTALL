@@ -6,12 +6,19 @@ previous instruction.
 
 For the informed, use the following :
 
-o) Install the local component's environment:
-   $ confix.py --packageroot=`pwd`/WX_Utils --bootstrap --configure --make --targets="all install"	
+   # Install the local component's environment:
+   $ confix.py --packageroot=`pwd`/WX_Utils --bootstrap --configure --make --targets="all install"
    $ confix.py --packageroot=`pwd`/CCM_Local --bootstrap --configure --make --targets="all install"
 
-o) Install the remote component's environment:
+   # Install the remote component's environment:
    $ confix.py --packageroot=`pwd`/external --bootstrap --configure --make --targets="all install"
    $ confix.py --packageroot=`pwd`/CCM_Remote --bootstrap --configure --make --targets="all install"
 
-For further questions, please consult the README file.
+
+If you like Ant (as a frontend to Confix ;-), you can say:
+
+   # Install the local component's environment:
+   $ ant local
+
+   # If you only want to install CCM_Local without WX_Utils:
+   $ ant CCM_Local	
