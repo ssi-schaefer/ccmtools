@@ -19,12 +19,12 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
-import ccmtools.uml_parser.uml.MParameter_kind;
-import ccmtools.uml_parser.uml.MParameter_type;
-import ccmtools.uml_parser.uml.MClassifier;
+import uml_parser.uml.MParameter_kind;
+import uml_parser.uml.MParameter_type;
+import uml_parser.uml.MClassifier;
 
 
 /**
@@ -32,14 +32,14 @@ Operation parameter. <br>Children:
 <ul>
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlModelElementConstraint}</li>
-<li>{@link ccmtools.uml_parser.uml.MParameter_kind}</li>
-<li>{@link ccmtools.uml_parser.uml.MParameter_type}</li>
+<li>{@link uml_parser.uml.MParameter_kind}</li>
+<li>{@link uml_parser.uml.MParameter_type}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlParameter extends ccmtools.uml_parser.uml.MParameter implements Worker
+class UmlParameter extends uml_parser.uml.MParameter implements Worker
 {
     private String id_;
     private Worker idlParent_;

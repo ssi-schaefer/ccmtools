@@ -19,36 +19,45 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.dtd2java;
+package dtd2java;
 
 
 /**
  * Reads a DTD-file and calls the code generator.
  *
  * @author Robert Lechner (rlechner@gmx.at)
- * @version November 2003
+ * @version $Date$
  */
 public class Main
 {
     /**
      * Reads a DTD-file and calls the code generator.
      *
-     * @param argv  argv[0] = name of the DTD-file (see {@link DtdParser#parseFile}) <br>
-                    argv[1] = the Java-name of the destination package (see {@link DtdGenerator#run})
+     * @param argv  <br> argv[0] = name of the DTD-file (see {@link DtdParser#parseFile})
+                    <br> argv[1] = the Java-name of the destination package (see {@link DtdGenerator#run})
+                    <br> argv[2] = an optional root directory (default: current directory)
      */
     public static void main( String[] argv )
     {
         try
         {
-            if( argv.length<2 )
+            if( argv.length<2 || argv.length>3 )
             {
-                System.out.println("java ccmtools.dtd2java.Main DTD_filename Java_package");
+                System.out.println("java dtd2java.Main DTD_filename Java_package [root_dir]");
+                System.exit(1);
             }
             else
             {
                 DtdFile f = DtdParser.parseFile(argv[0]);
                 DtdGenerator g = new DtdGenerator();
-                g.run(f, argv[1]);
+                if( argv.length>=3 )
+                {
+                    g.run(f, argv[1], argv[2]);
+                }
+                else
+                {
+                    g.run(f, argv[1], ".");
+                }
             }
         }
         catch( Exception e )

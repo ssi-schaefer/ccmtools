@@ -19,27 +19,27 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.Vector;
-import ccmtools.uml_parser.uml.MConstraint_body;
-import ccmtools.uml_parser.uml.MBooleanExpression;
-import ccmtools.uml_parser.uml.MExpression_body;
+import uml_parser.uml.MConstraint_body;
+import uml_parser.uml.MBooleanExpression;
+import uml_parser.uml.MExpression_body;
 
 
 /**
 Constraints. <br>Children:
 <ul>
 <li>{@link UmlModelElementName}</li>
-<li>{@link ccmtools.uml_parser.uml.MConstraint_body}</li>
-<li>{@link ccmtools.uml_parser.uml.MModelElement_comment}</li>
+<li>{@link uml_parser.uml.MConstraint_body}</li>
+<li>{@link uml_parser.uml.MModelElement_comment}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlConstraint extends ccmtools.uml_parser.uml.MConstraint implements Worker
+class UmlConstraint extends uml_parser.uml.MConstraint implements Worker
 {
     private String id_;
     private Worker idlParent_;

@@ -19,7 +19,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.Vector;
@@ -36,7 +36,7 @@ UML-association. <br>Children:
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlAssociation extends ccmtools.uml_parser.uml.MAssociation implements Worker
+class UmlAssociation extends uml_parser.uml.MAssociation implements Worker
 {
     private String id_;
     private Worker idlParent_;

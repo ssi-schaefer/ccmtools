@@ -19,23 +19,23 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import java.util.Vector;
 import org.xml.sax.Attributes;
-import ccmtools.uml_parser.uml.MExpression_body;
+import uml_parser.uml.MExpression_body;
 
 
 /**
 An expression. <br>Children:
 <ul>
-<li>{@link ccmtools.uml_parser.uml.MExpression_body}</li>
+<li>{@link uml_parser.uml.MExpression_body}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlExpression extends ccmtools.uml_parser.uml.MExpression implements Worker
+class UmlExpression extends uml_parser.uml.MExpression implements Worker
 {
     private String id_;
 

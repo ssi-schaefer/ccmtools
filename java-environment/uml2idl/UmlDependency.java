@@ -19,25 +19,25 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import java.util.Vector;
 import org.xml.sax.Attributes;
-import ccmtools.uml_parser.uml.MDependency_supplier;
-import ccmtools.uml_parser.uml.MModelElement;
+import uml_parser.uml.MDependency_supplier;
+import uml_parser.uml.MModelElement;
 
 
 /**
 Dependency between UML classes. <br>Children:
 <ul>
-<li>{@link ccmtools.uml_parser.uml.MDependency_client}</li>
-<li>{@link ccmtools.uml_parser.uml.MDependency_supplier}</li>
+<li>{@link uml_parser.uml.MDependency_client}</li>
+<li>{@link uml_parser.uml.MDependency_supplier}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlDependency extends ccmtools.uml_parser.uml.MDependency implements Worker
+class UmlDependency extends uml_parser.uml.MDependency implements Worker
 {
     private String id_;
 

@@ -19,7 +19,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 
@@ -33,7 +33,7 @@ A tag definition. <br>Children:
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlTagDefinition extends ccmtools.uml_parser.uml.MTagDefinition implements Worker
+class UmlTagDefinition extends uml_parser.uml.MTagDefinition implements Worker
 {
     private String id_;
 

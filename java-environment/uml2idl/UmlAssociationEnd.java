@@ -19,17 +19,17 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import java.util.Vector;
 import org.xml.sax.Attributes;
-import ccmtools.uml_parser.uml.MAssociationEnd_isNavigable;
-import ccmtools.uml_parser.uml.MAssociationEnd_multiplicity;
-import ccmtools.uml_parser.uml.MAssociationEnd_participant;
-import ccmtools.uml_parser.uml.MMultiplicity;
-import ccmtools.uml_parser.uml.MClassifier;
-import ccmtools.uml_parser.uml.MAssociationEnd_qualifier;
-import ccmtools.uml_parser.uml.MModelElement_visibility;
+import uml_parser.uml.MAssociationEnd_isNavigable;
+import uml_parser.uml.MAssociationEnd_multiplicity;
+import uml_parser.uml.MAssociationEnd_participant;
+import uml_parser.uml.MMultiplicity;
+import uml_parser.uml.MClassifier;
+import uml_parser.uml.MAssociationEnd_qualifier;
+import uml_parser.uml.MModelElement_visibility;
 
 
 /**
@@ -38,17 +38,17 @@ Association end. <br>Children:
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlModelElementStereotype}</li>
 <li>{@link UmlModelElementConstraint}</li>
-<li>{@link ccmtools.uml_parser.uml.MModelElement_visibility}</li>
-<li>{@link ccmtools.uml_parser.uml.MAssociationEnd_participant}</li>
-<li>{@link ccmtools.uml_parser.uml.MAssociationEnd_isNavigable}</li>
-<li>{@link ccmtools.uml_parser.uml.MAssociationEnd_multiplicity} == {@link UmlMultiplicity}</li>
-<li>{@link ccmtools.uml_parser.uml.MAssociationEnd_qualifier} == {@link UmlAttribute}</li>
+<li>{@link uml_parser.uml.MModelElement_visibility}</li>
+<li>{@link uml_parser.uml.MAssociationEnd_participant}</li>
+<li>{@link uml_parser.uml.MAssociationEnd_isNavigable}</li>
+<li>{@link uml_parser.uml.MAssociationEnd_multiplicity} == {@link UmlMultiplicity}</li>
+<li>{@link uml_parser.uml.MAssociationEnd_qualifier} == {@link UmlAttribute}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlAssociationEnd extends ccmtools.uml_parser.uml.MAssociationEnd implements Worker
+class UmlAssociationEnd extends uml_parser.uml.MAssociationEnd implements Worker
 {
     private String id_;
     private UmlMultiplicity multiplicity_;

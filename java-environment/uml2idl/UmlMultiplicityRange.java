@@ -19,25 +19,25 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
-import ccmtools.uml_parser.uml.MMultiplicityRange_lower;
-import ccmtools.uml_parser.uml.MMultiplicityRange_upper;
+import uml_parser.uml.MMultiplicityRange_lower;
+import uml_parser.uml.MMultiplicityRange_upper;
 
 
 /**
 Multiplicity-range of UML elements. <br>Children:
 <ul>
-<li>{@link ccmtools.uml_parser.uml.MMultiplicityRange_lower}</li>
-<li>{@link ccmtools.uml_parser.uml.MMultiplicityRange_upper}</li>
+<li>{@link uml_parser.uml.MMultiplicityRange_lower}</li>
+<li>{@link uml_parser.uml.MMultiplicityRange_upper}</li>
 </ul>
 The range value '*' will be converted to '-1'.
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlMultiplicityRange extends ccmtools.uml_parser.uml.MMultiplicityRange implements Worker
+class UmlMultiplicityRange extends uml_parser.uml.MMultiplicityRange implements Worker
 {
     private String id_;
 

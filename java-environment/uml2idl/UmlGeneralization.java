@@ -19,25 +19,25 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import java.util.Vector;
 import org.xml.sax.Attributes;
-import ccmtools.uml_parser.uml.MGeneralization_parent;
-import ccmtools.uml_parser.uml.MGeneralizableElement;
+import uml_parser.uml.MGeneralization_parent;
+import uml_parser.uml.MGeneralizableElement;
 
 
 /**
 Generalization. <br>Children:
 <ul>
 <li>{@link UmlModelElementStereotype}</li>
-<li>{@link ccmtools.uml_parser.uml.MGeneralization_parent}</li>
+<li>{@link uml_parser.uml.MGeneralization_parent}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlGeneralization extends ccmtools.uml_parser.uml.MGeneralization implements Worker
+class UmlGeneralization extends uml_parser.uml.MGeneralization implements Worker
 {
     private String id_;
 

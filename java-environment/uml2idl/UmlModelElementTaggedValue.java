@@ -19,7 +19,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 
@@ -30,7 +30,7 @@ A container with elements of type {@link UmlTaggedValue}.
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlModelElementTaggedValue extends ccmtools.uml_parser.uml.MModelElement_taggedValue implements Worker
+class UmlModelElementTaggedValue extends uml_parser.uml.MModelElement_taggedValue implements Worker
 {
     private String id_;
 

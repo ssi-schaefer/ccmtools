@@ -19,23 +19,23 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
-import ccmtools.uml_parser.uml.MMultiplicity_range;
-import ccmtools.uml_parser.uml.MMultiplicityRange;
+import uml_parser.uml.MMultiplicity_range;
+import uml_parser.uml.MMultiplicityRange;
 
 
 /**
 Multiplicity of UML elements. <br>Children:
 <ul>
-<li>{@link ccmtools.uml_parser.uml.MMultiplicity_range} == {@link UmlMultiplicityRange}</li>
+<li>{@link uml_parser.uml.MMultiplicity_range} == {@link UmlMultiplicityRange}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlMultiplicity extends ccmtools.uml_parser.uml.MMultiplicity implements Worker
+class UmlMultiplicity extends uml_parser.uml.MMultiplicity implements Worker
 {
     private String id_;
     private UmlMultiplicityRange range_;

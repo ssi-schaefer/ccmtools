@@ -19,11 +19,11 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.Vector;
-import ccmtools.uml_parser.uml.MModelElement_clientDependency;
+import uml_parser.uml.MModelElement_clientDependency;
 
 
 /**
@@ -32,13 +32,13 @@ Stereotype 'CORBAModule'. <br>Children:
 <li>{@link UmlModelElementStereotype}</li>
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlNamespaceElement}</li>
-<li>{@link ccmtools.uml_parser.uml.MModelElement_clientDependency} == {@link UmlDependency}</li>
+<li>{@link uml_parser.uml.MModelElement_clientDependency} == {@link UmlDependency}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlPackage extends ccmtools.uml_parser.uml.MPackage implements IdlContainer
+class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
 {
     private String id_;
     private Worker idlParent_;

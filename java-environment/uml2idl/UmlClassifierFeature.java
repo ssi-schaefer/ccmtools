@@ -19,7 +19,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.Vector;
@@ -35,7 +35,7 @@ Container for children of {@link UmlClass}. <br>Children:
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlClassifierFeature extends ccmtools.uml_parser.uml.MClassifier_feature implements Worker
+class UmlClassifierFeature extends uml_parser.uml.MClassifier_feature implements Worker
 {
     private String id_;
 

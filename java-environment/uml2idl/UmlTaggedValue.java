@@ -19,23 +19,23 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
-import ccmtools.uml_parser.uml.MTaggedValue_dataValue;
+import uml_parser.uml.MTaggedValue_dataValue;
 
 
 /**
 Container for tagged values. <br>Children:
 <ul>
 <li>{@link UmlModelElementName}</li>
-<li>{@link ccmtools.uml_parser.uml.MTaggedValue_dataValue}</li>
+<li>{@link uml_parser.uml.MTaggedValue_dataValue}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlTaggedValue extends ccmtools.uml_parser.uml.MTaggedValue implements Worker
+class UmlTaggedValue extends uml_parser.uml.MTaggedValue implements Worker
 {
     private String id_;
 

@@ -19,7 +19,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.Vector;
@@ -35,7 +35,7 @@ UML model. <br>Children:
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlModel extends ccmtools.uml_parser.uml.MModel implements Worker
+class UmlModel extends uml_parser.uml.MModel implements Worker
 {
     private String id_;
     private Vector myWorkers_ = new Vector();

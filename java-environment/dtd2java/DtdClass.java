@@ -19,7 +19,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.dtd2java;
+package dtd2java;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -32,7 +32,7 @@ import java.util.HashSet;
  * The Java-Class of a DTD-element.
  *
  * @author Robert Lechner (rlechner@gmx.at)
- * @version 2004/02/03
+ * @version $Date$
  */
 public class DtdClass
 {
@@ -127,9 +127,10 @@ public class DtdClass
      * @param javaPackage  the Java-name of the base package
      * @param element  the DTD-element
      * @param attributes  the attribute list
+     * @param rootDirectory  root directory
      */
     public DtdClass( String dtdName, String javaPackage, DtdElement element,
-                     DtdAttributes attributes )
+                     DtdAttributes attributes, String rootDirectory )
     {
         dtdName_ = dtdName;
         dtdCode_ = element.text();
@@ -151,7 +152,7 @@ public class DtdClass
 	        name_ = name.substring(index+1);
 	    }
 	    name_ = "M"+name_;
-	    File directory = new File(package_.replace('.', File.separatorChar));
+	    File directory = new File(rootDirectory, package_.replace('.', File.separatorChar));
         if( !directory.isDirectory() )
         {
             directory.mkdirs();

@@ -19,10 +19,10 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
-import ccmtools.uml_parser.uml.*;
+import uml_parser.uml.*;
 
 
 /**
@@ -31,9 +31,9 @@ import ccmtools.uml_parser.uml.*;
  * @author Robert Lechner (rlechner@gmx.at)
  * @version January 2004
  */
-class Factory extends ccmtools.uml_parser.DTD_Creator
+class Factory extends uml_parser.DTD_Creator
 {
-    public ccmtools.uml_parser.DTD_Container create( String qName, Attributes attrs )
+    public uml_parser.DTD_Container create( String qName, Attributes attrs )
     {
         if(qName.equals(MModel.xmlName__)) return new UmlModel(attrs);
         if(qName.equals(MNamespace_ownedElement.xmlName__)) return new UmlNamespaceElement(attrs);

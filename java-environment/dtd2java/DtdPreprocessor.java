@@ -19,7 +19,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.dtd2java;
+package dtd2java;
 
 import java.io.File;
 import java.io.FileReader;

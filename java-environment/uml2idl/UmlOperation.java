@@ -19,14 +19,14 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.Vector;
 import java.util.HashMap;
-import ccmtools.uml_parser.uml.MModelElement_visibility;
-import ccmtools.uml_parser.uml.MBehavioralFeature_parameter;
-import ccmtools.uml_parser.uml.MParameter;
+import uml_parser.uml.MModelElement_visibility;
+import uml_parser.uml.MBehavioralFeature_parameter;
+import uml_parser.uml.MParameter;
 
 
 /**
@@ -36,14 +36,14 @@ Class operation. <br>Children:
 <li>{@link UmlModelElementStereotype}</li>
 <li>{@link UmlModelElementTaggedValue}</li>
 <li>{@link UmlModelElementConstraint}</li>
-<li>{@link ccmtools.uml_parser.uml.MModelElement_visibility}</li>
-<li>{@link ccmtools.uml_parser.uml.MBehavioralFeature_parameter} == {@link UmlParameter}</li>
+<li>{@link uml_parser.uml.MModelElement_visibility}</li>
+<li>{@link uml_parser.uml.MBehavioralFeature_parameter} == {@link UmlParameter}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlOperation extends ccmtools.uml_parser.uml.MOperation implements Worker
+class UmlOperation extends uml_parser.uml.MOperation implements Worker
 {
     private String id_;
     private UmlClass idlParent_;

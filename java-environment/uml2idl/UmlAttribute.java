@@ -19,18 +19,18 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.Vector;
 import java.util.HashMap;
-import ccmtools.uml_parser.uml.MModelElement_visibility;
-import ccmtools.uml_parser.uml.MStructuralFeature_multiplicity;
-import ccmtools.uml_parser.uml.MMultiplicity;
-import ccmtools.uml_parser.uml.MStructuralFeature_type;
-import ccmtools.uml_parser.uml.MClassifier;
-import ccmtools.uml_parser.uml.MAttribute_initialValue;
-import ccmtools.uml_parser.uml.MExpression;
+import uml_parser.uml.MModelElement_visibility;
+import uml_parser.uml.MStructuralFeature_multiplicity;
+import uml_parser.uml.MMultiplicity;
+import uml_parser.uml.MStructuralFeature_type;
+import uml_parser.uml.MClassifier;
+import uml_parser.uml.MAttribute_initialValue;
+import uml_parser.uml.MExpression;
 
 
 /**
@@ -39,16 +39,16 @@ Class attribute. <br>Children:
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlModelElementStereotype}</li>
 <li>{@link UmlModelElementConstraint}</li>
-<li>{@link ccmtools.uml_parser.uml.MStructuralFeature_type}</li>
-<li>{@link ccmtools.uml_parser.uml.MModelElement_visibility}</li>
-<li>{@link ccmtools.uml_parser.uml.MStructuralFeature_multiplicity} == {@link UmlMultiplicity}</li>
-<li>{@link ccmtools.uml_parser.uml.MAttribute_initialValue}</li>
+<li>{@link uml_parser.uml.MStructuralFeature_type}</li>
+<li>{@link uml_parser.uml.MModelElement_visibility}</li>
+<li>{@link uml_parser.uml.MStructuralFeature_multiplicity} == {@link UmlMultiplicity}</li>
+<li>{@link uml_parser.uml.MAttribute_initialValue}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlAttribute extends ccmtools.uml_parser.uml.MAttribute implements Worker
+class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
 {
     private String id_;
     private UmlMultiplicity multiplicity_;

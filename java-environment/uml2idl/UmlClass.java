@@ -19,14 +19,14 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.HashMap;
 import java.util.Vector;
-import ccmtools.uml_parser.uml.MGeneralizableElement_isAbstract;
-import ccmtools.uml_parser.uml.MGeneralizableElement_generalization;
-import ccmtools.uml_parser.uml.MModelElement_clientDependency;
+import uml_parser.uml.MGeneralizableElement_isAbstract;
+import uml_parser.uml.MGeneralizableElement_generalization;
+import uml_parser.uml.MModelElement_clientDependency;
 
 
 /**
@@ -38,15 +38,15 @@ UML-class. <br>Children:
 <li>{@link UmlModelElementConstraint}</li>
 <li>{@link UmlClassifierFeature}</li>
 <li>{@link UmlNamespaceElement}</li>
-<li>{@link ccmtools.uml_parser.uml.MGeneralizableElement_isAbstract}</li>
-<li>{@link ccmtools.uml_parser.uml.MGeneralizableElement_generalization} == {@link UmlGeneralization}</li>
-<li>{@link ccmtools.uml_parser.uml.MModelElement_clientDependency} == {@link UmlDependency}</li>
+<li>{@link uml_parser.uml.MGeneralizableElement_isAbstract}</li>
+<li>{@link uml_parser.uml.MGeneralizableElement_generalization} == {@link UmlGeneralization}</li>
+<li>{@link uml_parser.uml.MModelElement_clientDependency} == {@link UmlDependency}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlClass extends ccmtools.uml_parser.uml.MClass implements IdlContainer
+class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 {
     private String id_;
     private HashMap tagged_values_;

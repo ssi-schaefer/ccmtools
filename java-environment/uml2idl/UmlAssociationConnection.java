@@ -19,7 +19,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.uml2idl;
+package uml2idl;
 
 import org.xml.sax.Attributes;
 
@@ -30,7 +30,7 @@ Stores two instances of {@link UmlAssociationEnd}.
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlAssociationConnection extends ccmtools.uml_parser.uml.MAssociation_connection implements Worker
+class UmlAssociationConnection extends uml_parser.uml.MAssociation_connection implements Worker
 {
     private String id_;
     private UmlAssociationEnd firstEnd_;
