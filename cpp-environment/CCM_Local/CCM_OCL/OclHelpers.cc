@@ -9,6 +9,7 @@
 
 #include "OclHelpers.h"
 #include <cctype>
+#include <time.h>
 
 using namespace std;
 
@@ -91,6 +92,25 @@ OCL_Boolean OCL_equals( OCL_Real a, OCL_Real b )
     double fb = fabs(b);
     double m = fa>=fb ? fa : fb;
     return fabs(a-b) <= m*(1E-10);  // 9 significant digits
+}
+
+
+/**
+ * Returns a random integer value.
+ */
+int OCL_random( int lowerRange, int upperRange )
+{
+    int range = upperRange-lowerRange+1;
+    if( range<=1 )
+    {
+        return lowerRange;
+    }
+    // We cannot use 'random' (from the C library) because that would be a global side effect.
+    static int t = time(0);
+    t++;
+    int x = t;  // copy 't' to avoid concurrency problems
+    if( x<0 )  x = -x;
+    return lowerRange+(x%range);
 }
 
 

@@ -4,11 +4,11 @@
 /*$Id$*/
 
 
-/******************************************\
-*                                          *
-*   helper functions for OCL expressions   *
-*                                          *
-\******************************************/
+/******************************************************\
+*                                                      *
+*   helper functions and classes for OCL expressions   *
+*                                                      *
+\******************************************************/
 
 
 #include <string>
@@ -35,6 +35,8 @@ OCL_Integer OCL_div( OCL_Integer z, OCL_Integer n );
 OCL_Integer OCL_mod( OCL_Integer z, OCL_Integer n );
 
 OCL_Boolean OCL_equals( OCL_Real a, OCL_Real b );
+
+int OCL_random( int lowerRange, int upperRange );
 
 
 //----------------------------------------------------------------------------
@@ -425,6 +427,108 @@ public:
         for( OCL_Integer value=lower; value<=upper; value++ )
         {
             push_back(value);
+        }
+    }
+};
+
+
+//----------------------------------------------------------------------------
+
+
+template <class T> class OCL_Sortable_Sequence : public OCL_Sequence<T>
+{
+public:
+    OCL_Sortable_Sequence() : OCL_Sequence<T>()
+    {}
+
+    OCL_Sortable_Sequence( const vector<T>& x ) : OCL_Sequence<T>(x)
+    {}
+
+    bool operator!=( const OCL_Sequence<T>& ref ) const
+    {
+        return OCL_Sequence<T>::operator!=(ref);
+    }
+
+    bool operator==( const OCL_Sequence<T>& ref ) const
+    {
+        return OCL_Sequence<T>::operator==(ref);
+    }
+
+    template<class R>
+    void sortBy( vector<R>& ref )
+    {
+        if( size()<2 )
+        {
+            return;
+        }
+        vector<R> buffer1(ref);
+        vector<T> buffer2(*this);
+        sort(ref, 0, size()-1, buffer1, buffer2);
+    }
+
+private:
+    template<class R>
+    void sort( vector<R>& ref, int start1, int end2, vector<R>& buffer1, vector<T>& buffer2 )
+    {
+        int s = end2-start1+1;
+        if( s<2 )
+        {
+            return;
+        }
+        if( s==2 )
+        {
+            if( !(ref[start1]<ref[end2]) )
+            {
+                R h1 = ref[start1];
+                T h2 = operator[](start1);
+                ref[start1] = ref[end2];
+                operator[](start1) = operator[](end2);
+                ref[end2] = h1;
+                operator[](end2) = h2;
+            }
+            return;
+        }
+        int start2 = start1 + s/2;
+        int end1 = start2 - 1;
+        sort(ref, start1, end1, buffer1, buffer2);
+        sort(ref, start2, end2, buffer1, buffer2);
+        int index1=start1, index2=start2, index3=0;
+        while( index3<s )
+        {
+            if( index1>end1 )
+            {
+                buffer1[index3] = ref[index2];
+                buffer2[index3] = operator[](index2);
+                index2++;
+            }
+            else if( index2>end2 )
+            {
+                buffer1[index3] = ref[index1];
+                buffer2[index3] = operator[](index1);
+                index1++;
+            }
+            else
+            {
+                if( ref[index1]<ref[index2] )
+                {
+                    buffer1[index3] = ref[index1];
+                    buffer2[index3] = operator[](index1);
+                    index1++;
+                }
+                else
+                {
+                    buffer1[index3] = ref[index2];
+                    buffer2[index3] = operator[](index2);
+                    index2++;
+                }
+            }
+            index3++;
+        }
+        for( index3=0; index3<s; index3++ )
+        {
+            ref[start1] = buffer1[index3];
+            operator[](start1) = buffer2[index3];
+            start1++;
         }
     }
 };
