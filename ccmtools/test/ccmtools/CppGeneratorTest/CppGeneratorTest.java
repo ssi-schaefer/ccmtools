@@ -17,9 +17,9 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.test.CppGenerator;
+package ccmtools.CppGeneratorTest;
 
-import ccmtools.test.CcmtoolsTestCase;
+import ccmtools.CcmtoolsTestCase;
 
 import junit.framework.TestCase;
 import java.util.List;

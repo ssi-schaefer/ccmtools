@@ -17,7 +17,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.test;
+package ccmtools;
 
 import junit.framework.TestCase;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
-import ccmtools.test.CcmtoolsTestCaseException;
+import ccmtools.CcmtoolsTestCaseException;
 
 /***
  * This test case is derived from JUnit's TestCase class and implements
@@ -134,7 +134,7 @@ public class CcmtoolsTestCase extends TestCase
 
 
     protected void runConfix(String args)
-	throws ccmtools.test.CcmtoolsTestCaseException
+	throws ccmtools.CcmtoolsTestCaseException
     {
 	try {
 	    // Run the GNU preprocessor cpp in a separate process.
