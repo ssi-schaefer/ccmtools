@@ -136,7 +136,7 @@ public class CppLocalGeneratorImpl
         Iterator path_iterator = out_paths.iterator();
         for (int i = 0; i < out_strings.length; i++) {
             String generated_code = out_strings[i];
-            List out_path = (ArrayList) path_iterator.next();
+            List out_path = (List) path_iterator.next();
 
             // from the getOutputFiles function we know each entry in the output
             // file list has exactly two parts ... the dirname and the filename.

@@ -2,6 +2,9 @@
 #include "persdata.idl"
 #include "logindata.idl"
 
+#ifndef __OWUDB__LOGINMGR_IDL__
+#define __OWUDB__LOGINMGR_IDL__
+
 module owil {
 module udb {
 
@@ -26,7 +29,8 @@ interface LoginManager {
           PasswordExpired);
 };
 
-}; // end of namespace udb
-}; // end of namespace owil
+};
+};
 
+#endif
 

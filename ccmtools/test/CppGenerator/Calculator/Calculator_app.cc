@@ -12,7 +12,6 @@ using namespace CCM_Utils;
 
 namespace CCM_Local {
 namespace CCM_Session_Calculator {
-;
 
 //==============================================================================
 // business logic functionality
@@ -75,8 +74,7 @@ calc_impl::read ( const Record& r )
 {
   DEBUGNL ( " calc_impl->read ( r )" );
 
-  // TODO : IMPLEMENT ME HERE !
-  return RecordSet();
+  return RecordSet (  );
 }
 
 long
@@ -85,7 +83,6 @@ calc_impl::sub ( const long a, const long b )
 {
   DEBUGNL ( " calc_impl->sub ( a, b )" );
 
-  // TODO : IMPLEMENT ME HERE !
   return a-b;
 }
 
@@ -95,7 +92,6 @@ calc_impl::add ( const long a, const long b )
 {
   DEBUGNL ( " calc_impl->add ( a, b )" );
 
-  // TODO : IMPLEMENT ME HERE !
   return a+b;
 }
 

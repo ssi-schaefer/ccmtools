@@ -126,30 +126,9 @@ public class CppPythonGeneratorImpl
      * @param files a list of the filenames (usually those that were provided to
      *        the generator front end).
      */
-    public void finalize(Map defines, List files)
-    {
-        return;
-    }
+    public void finalize(Map defines, List files) { return; }
 
     /**************************************************************************/
-
-    /**
-     * Get a local value for the given variable name.
-     *
-     * @param variable The variable name to get a value for.
-     * @return the value of the variable available from the current
-     *         output_variables hash table. Could be an empty string.
-     */
-    protected String getLocalValue(String variable)
-    {
-        String value = super.getLocalValue(variable);
-
-        if (current_node instanceof MAliasDef) {
-            return data_MAliasDef(variable, value);
-        }
-
-        return value;
-    }
 
     /**
      * Return the language type for the given object. This returns the value

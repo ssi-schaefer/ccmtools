@@ -561,7 +561,7 @@ class CCM_%(Identifier)s_impl
 
 using namespace CCM_Utils;
 
-%(OpenNamespace)s;
+%(OpenNamespace)s
 
 //==============================================================================
 // business logic functionality

@@ -3,7 +3,7 @@
 
 module owil {
 module udb {
-      
+
 component UserDB_DBSQL {
    provides UserPassAuthentication auth;
    provides UserDBBrowser browser;
@@ -11,7 +11,8 @@ component UserDB_DBSQL {
    attribute boolean update_stat;
 };
 
-home UserDB_DBSQL_Home manages UserDB_DBSQL {};
+home UserDB_DBSQL_Home manages UserDB_DBSQL { };
 
 }; // end of module udb
 }; // end of module owil
+

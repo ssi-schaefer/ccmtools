@@ -1,6 +1,9 @@
 #include "persdata.idl"
 #include "exc.idl"
 
+#ifndef __OWUDB__USERDBBROWSER_IDL__
+#define __OWUDB__USERDBBROWSER_IDL__
+
 module owil {
 module udb {
 
@@ -12,3 +15,6 @@ interface UserDBBrowser {
 
 };
 };
+
+#endif
+
