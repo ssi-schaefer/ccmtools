@@ -202,10 +202,10 @@ public class CppLocalGeneratorImpl
             }
 
             if ((flags & FLAG_APPLICATION_FILES) != 0) {
-                f = new ArrayList();
-                f.add("impl"); f.add(node_name + "_impl.h"); files.add(f);
-                f = new ArrayList();
-                f.add("impl"); f.add(node_name + "_impl.cc"); files.add(f);
+		f = new ArrayList();
+		f.add("impl"); f.add(node_name + "_impl.h"); files.add(f);
+		f = new ArrayList();
+		f.add("impl"); f.add(node_name + "_impl.cc"); files.add(f);
             } 
 	    else {
                 f = new ArrayList(); f.add("impl"); f.add(""); files.add(f);
@@ -222,19 +222,28 @@ public class CppLocalGeneratorImpl
             f.add(getOutputDirectory("")); f.add(node_name+".h");
             files.add(f);
         } 
-	else if(current_node instanceof MProvidesDef) {
-	    MComponentDef component = ((MProvidesDef)current_node).getComponent();
-	    f = new ArrayList();
-	    f.add("impl");
-	    f.add(component.getIdentifier() + "_" + node_name + "_impl.h");
-	    files.add(f);
-	    f = new ArrayList();
-	    f.add("impl");
-	    f.add(component.getIdentifier() + "_" + node_name + "_impl.cc");
-	    files.add(f);
+	else if((current_node instanceof MProvidesDef)) {
+	    if ((flags & FLAG_APPLICATION_FILES) != 0) {
+		MComponentDef component = ((MProvidesDef)current_node).getComponent();
+		f = new ArrayList();
+		f.add("impl");
+		f.add(component.getIdentifier() + "_" + node_name + "_impl.h");
+		files.add(f);
+		f = new ArrayList();
+		f.add("impl");
+		f.add(component.getIdentifier() + "_" + node_name + "_impl.cc");
+		files.add(f);
+	    }
+	    else {
+                f = new ArrayList(); f.add("impl"); f.add(""); files.add(f);
+                f = new ArrayList(); f.add("impl"); f.add(""); files.add(f);
+	    }
 	}
 	else {
-            f = new ArrayList(); f.add(""); f.add(""); files.add(f);
+            f = new ArrayList(); 
+	    f.add(""); 
+	    f.add(""); 
+	    files.add(f);
         }
 
         return files;
