@@ -1,0 +1,10 @@
+IDL_INCLUDE = $(CCM_COMPONENT_REPOSITORY)/include
+
+all: 
+	ccmtools-idl --mico -I$(IDL_INCLUDE) *.idl
+
+.PHONY : clean
+clean:
+	-rm $(APP_NAME).h
+	-rm $(APP_NAME).cc
+

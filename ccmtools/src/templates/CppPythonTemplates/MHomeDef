@@ -1,0 +1,150 @@
+//==============================================================================
+// %(Identifier)s - python object definition
+//==============================================================================
+
+#ifdef CCM_TEST_PYTHON
+
+#include <CCM_Utils/SmartPtr.h>
+
+#include "%(Identifier)s.h"
+
+#include <Python.h>
+
+%(OpenNamespace)s
+
+PyObject *convert_%(Identifier)s_to_python           (       CCM_Utils::SmartPtr<%(Identifier)s>  arg );
+PyObject *convert_const_%(Identifier)s_to_python     ( const CCM_Utils::SmartPtr<%(Identifier)s>  arg );
+PyObject *convert_const_%(Identifier)s_ref_to_python ( const CCM_Utils::SmartPtr<%(Identifier)s>& arg );
+
+CCM_Utils::SmartPtr<%(Identifier)s>  convert_%(Identifier)s_from_python     ( PyObject *arg );
+CCM_Utils::SmartPtr<%(Identifier)s> *convert_%(Identifier)s_ptr_from_python ( PyObject *arg );
+
+%(CloseNamespace)s
+
+#endif
+<<<<<<<SPLIT>>>>>>>
+//==============================================================================
+// %(Identifier)s : component adapter class wrapper
+//==============================================================================
+
+#include "%(Identifier)s_python.h"
+
+using namespace CCM_Utils;
+
+%(OpenNamespace)s
+
+typedef struct {
+  PyObject_HEAD
+  SmartPtr<%(Identifier)s> home;
+} Py%(Identifier)s_object;
+
+static PyMethodDef Py%(Identifier)s_methods[] {
+  {NULL, NULL, 0} /* end marker */
+};
+
+static PyTypeObject Py%(Identifier)s_type = {
+  PyObject_HEAD_INIT ( NULL )
+
+  0, /* ob_size */
+  "%(PythonNamespace)s.%(Identifier)s", /* tp_name */
+  sizeof ( Py%(Identifier)s_object ), /* tp_basicsize */
+  0, /* tp_itemsize */
+
+  /* methods */
+  0, /* tp_dealloc */
+  0, /* tp_print */
+  0, /* tp_getattr */
+  0, /* tp_setattr */
+  0, /* tp_compare */
+  0, /* tp_repr */
+  0, /* tp_as_number */
+  0, /* tp_as_sequence */
+  0, /* tp_as_mapping */
+  0, /* tp_hash */
+  0, /* tp_call */
+  0, /* tp_str */
+  0, /* tp_getattro */
+  0, /* tp_setattro */
+  0, /* tp_as_buffer */
+
+  Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /* tp_flags */
+
+  NULL, /* tp doc */
+
+  0, /* tp_traverse */
+  0, /* tp_clear */
+  0, /* tp_richcompare */
+  0, /* tp_weaklistoffset */
+  0, /* tp_iter */
+  0, /* tp_iternext */
+
+  Py%(Identifier)s_methods, /* tp_methods */
+
+  0, /* tp_members */
+  0, /* tp_getset */
+  0, /* tp_base */
+  0, /* tp_dict */
+  0, /* tp_descr_get */
+  0, /* tp_descr_set */
+  0, /* tp_dictoffset */
+  0, /* tp_init */
+  0, /* tp_alloc */
+  0, /* tp_new */
+};
+
+// public conversion methods
+
+PyObject *
+convert_%(Identifier)s_to_python ( SmartPtr<%(Identifier)s> arg )
+{
+  Py%(Identifier)s_object *self = Py%(Identifier)s_new (  );
+  if ( self == NULL ) return NULL;
+  Py_INCREF ( self );
+  self->home = arg.ptr (  );
+  return ( PyObject * ) self;
+}
+
+PyObject *
+convert_const_%(Identifier)s_to_python ( const SmartPtr<%(Identifier)s> arg )
+{
+  Py%(Identifier)s_object *self = Py%(Identifier)s_new (  );
+  if ( self == NULL ) return NULL;
+  Py_INCREF ( self );
+  self->home = arg.ptr (  );
+  return ( PyObject * ) self;
+}
+
+PyObject *
+convert_const_%(Identifier)s_ref_to_python ( const SmartPtr<%(Identifier)s>& arg )
+{
+  Py%(Identifier)s_object *self = Py%(Identifier)s_new (  );
+  if ( self == NULL ) return NULL;
+  Py_INCREF ( self );
+  self->home = arg.ptr (  );
+  return ( PyObject * ) self;
+}
+
+SmartPtr<%(Identifier)s>
+convert_%(Identifier)s_from_python ( PyObject *arg )
+{
+  SmartPtr<%(Identifier)s> result;
+  if ( arg == NULL ) return NULL;
+  result = arg->home;
+  Py_DECREF ( arg );
+  return result;
+}
+
+SmartPtr<%(Identifier)s> *
+convert_%(Identifier)s_ptr_from_python ( PyObject *arg )
+{
+  SmartPtr<%(Identifier)s> *result;
+  if ( arg == NULL ) return NULL;
+  result.ptr (  ) = new SmartPtr<%(Identifier)s> ( arg->home );
+  Py_DECREF ( arg );
+  return result;
+}
+
+%(CloseNamespace)s
+
+
+

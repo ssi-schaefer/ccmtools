@@ -1,0 +1,2 @@
+  PyObject *%(Identifier)s;
+
