@@ -114,38 +114,43 @@ int main(int argc, char *argv[])
     // Usually, the test cases for facets and receptacles are implemened in the
     // mirror component. But for supported interfaces and component attributes, 
     // we can realize test cases in the following section.
+
+    string s = "Salomon.Automation";
+    long len =  myTest->print(s);
+    assert(len == s.length());
+  
     try {
-        string s = "Salomon.Automation";
-        long len =  myTest.ptr()->print(s);
-        assert(len == s.length());
-      
-        try {
-	    string s = "Error";
-	    myTest.ptr()->print(s);
-	    assert(0);
-        }
-        catch(CCM_Local::Error& e) {
-	    cout << "OK: Error exception catched!" << endl;
-        }
-      
-        try {
-	    string s = "SuperError";
-	    myTest.ptr()->print(s);
-	    assert(0);
-        }
-        catch(CCM_Local::SuperError& e) {
-	    cout << "OK: SuperError exception catched!" << endl;
-        }
-      
-        try {
-	    string s = "FatalError";
-	    myTest.ptr()->print(s);
-	    assert(0);
-        }
-        catch(CCM_Local::FatalError& e) {
-	    cout << "OK: FatalError exception catched!" << endl;
-        }
-    } 
+        string s = "Error";
+        myTest->print(s);
+        assert(0);
+    }
+    catch(CCM_Local::Error& e) {
+        cout << "OK: error exception catched! ";
+        cout << "(" 
+             << e.info[0].code << ", " 
+             << e.info[0].message << ")" 
+             << endl;
+    }
+    
+    try {
+        string s = "SuperError";
+        myTest->print(s);
+        assert(0);
+    }
+    catch(CCM_Local::SuperError& e) {
+        cout << "OK: super_error exception catched!" << endl;
+    }
+  
+    try {
+        string s = "FatalError";
+        myTest->print(s);
+        assert(0);
+    }
+    catch(CCM_Local::FatalError& e) {
+        cout << "OK: fatal_error exception catched!" << endl;
+    }
+
+
     catch ( LocalComponents::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;

@@ -3,7 +3,17 @@
  *
  */
 
-exception Error{
+struct ErrorInfo
+{
+  long code;
+  string message;
+};
+
+typedef sequence<ErrorInfo> ErrorInfoList;
+
+exception Error
+{
+  ErrorInfoList info;
 };
 
 exception SuperError{

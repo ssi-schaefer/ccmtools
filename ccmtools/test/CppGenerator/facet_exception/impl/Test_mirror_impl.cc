@@ -29,75 +29,83 @@ namespace CCM_Session_Test_mirror {
 // CCM_Test_mirror - component implementation
 //==============================================================================
 
-CCM_Test_mirror_impl::CCM_Test_mirror_impl (  )
+CCM_Test_mirror_impl::CCM_Test_mirror_impl()
 {
-  DEBUGNL ( "+CCM_Test_mirror_impl->CCM_Test_mirror_impl (  )" );
+    DEBUGNL("+CCM_Test_mirror_impl->CCM_Test_mirror_impl()");
 }
 
-CCM_Test_mirror_impl::~CCM_Test_mirror_impl (  )
+CCM_Test_mirror_impl::~CCM_Test_mirror_impl()
 {
-  DEBUGNL ( "-CCM_Test_mirror_impl->~CCM_Test_mirror_impl (  )" );
-}
-
-void
-CCM_Test_mirror_impl::set_session_context ( LocalComponents::SessionContext* context )
-  throw ( LocalComponents::CCMException )
-{
-  DEBUGNL ( " CCM_Test_mirror_impl->set_session_context (  )" );
-  ctx = dynamic_cast<CCM_Test_mirror_Context*> ( context );
+    DEBUGNL("-CCM_Test_mirror_impl->~CCM_Test_mirror_impl()");
 }
 
 void
-CCM_Test_mirror_impl::ccm_activate (  )
-  throw ( LocalComponents::CCMException )
+CCM_Test_mirror_impl::set_session_context(
+    LocalComponents::SessionContext* context)
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_Test_mirror_impl->ccm_activate (  )" );
+    DEBUGNL(" CCM_Test_mirror_impl->set_session_context()");
+    ctx = dynamic_cast<CCM_Test_mirror_Context*>(context);
+}
 
-  string s = "Salomon.Automation";
-  long len =  ctx->get_connection_console_mirror()->println(s);
-  assert(len == s.length());
+void
+CCM_Test_mirror_impl::ccm_activate()
+    throw(LocalComponents::CCMException)
+{
+    DEBUGNL(" CCM_Test_mirror_impl->ccm_activate()");
+
+    string s = "Salomon.Automation";
+    long len =  ctx->get_connection_console_mirror()->println(s);
+    assert(len == s.length());
   
-  try {
-    string s = "Error";
-    ctx->get_connection_console_mirror()->println(s);
-    assert(0);
-  }
-  catch(CCM_Local::Error& e) {
-    cout << "OK: error exception catched! ";
-    cout << "(" << e.info[0].code << ", " << e.info[0].message << ")" << endl;
-  }
+    try {
+        string s = "Error";
+        ctx->get_connection_console_mirror()->println(s);
+        assert(0);
+    }
+    catch(CCM_Local::Error& e) {
+        cout << "OK: error exception catched! ";
+        cout << "(" 
+	     << e.info[0].code << ", " 
+	     << e.info[0].message << ")" 
+	     << endl;
+    }
+    
+    try {
+        string s = "SuperError";
+        ctx->get_connection_console_mirror()->println(s);
+        assert(0);
+    }
+    catch(CCM_Local::SuperError& e) {
+        cout << "OK: super_error exception catched!" << endl;
+    }
   
-  try {
-    string s = "SuperError";
-    ctx->get_connection_console_mirror()->println(s);
-    assert(0);
-  }
-  catch(CCM_Local::SuperError& e) {
-    cout << "OK: super_error exception catched!" << endl;
-  }
-  
-  try {
-    string s = "FatalError";
-    ctx->get_connection_console_mirror()->println(s);
-    assert(0);
-  }
-  catch(CCM_Local::FatalError& e) {
-    cout << "OK: fatal_error exception catched!" << endl;
-  }
+    try {
+        string s = "FatalError";
+        ctx->get_connection_console_mirror()->println(s);
+        assert(0);
+    }
+    catch(CCM_Local::FatalError& e) {
+        cout << "OK: fatal_error exception catched!" << endl;
+    }
 }
 
 void
-CCM_Test_mirror_impl::ccm_passivate (  )
-  throw ( LocalComponents::CCMException )
+CCM_Test_mirror_impl::ccm_passivate()
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_Test_mirror_impl->ccm_passivate (  )" );
+    DEBUGNL(" CCM_Test_mirror_impl->ccm_passivate()");
+
+    // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_mirror_impl::ccm_remove (  )
-  throw ( LocalComponents::CCMException )
+CCM_Test_mirror_impl::ccm_remove()
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_Test_mirror_impl->ccm_remove (  )" );
+    DEBUGNL(" CCM_Test_mirror_impl->ccm_remove()");
+
+    // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 } // /namespace CCM_Session_Test_mirror

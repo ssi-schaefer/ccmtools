@@ -54,6 +54,7 @@ CCM_Test_impl::ccm_activate (  )
   DEBUGNL ( " CCM_Test_impl->ccm_activate (  )" );
 
   cout << "=== Begin test case =======================================" << endl;
+
   consoleConnections multiCon = ctx->get_connections_console();
   consoleConnections::const_iterator it;
   long size;
@@ -62,6 +63,7 @@ CCM_Test_impl::ccm_activate (  )
     size = it->second.ptr()->println("String from component");
     cout << "Number of printed characters = " << size << endl;
   }
+
   cout << "=== End test case =========================================" << endl;
 }
 

@@ -46,12 +46,24 @@ CCM_Test_impl::print(const std::string& msg)
     DEBUGNL(" CCM_Test_impl->print(msg)");
 
     cout << ">> " << msg << endl;
-    if(msg == "Error")
-        throw Error();
+
+    if(msg == "Error") {
+        Error error;
+        ErrorInfoList error_info_list;
+        ErrorInfo error_info;
+        error_info.code = 7;
+        error_info.message = "A simple error!";
+        error_info_list.push_back(error_info);
+        error.info = error_info_list;
+        throw error;
+    }
+
     if(msg == "SuperError")
         throw SuperError();
+
     if(msg == "FatalError")
         throw FatalError();
+
     return msg.length();
 }
 

@@ -29,57 +29,62 @@ namespace CCM_Session_Test_mirror {
 // CCM_Test_mirror - component implementation
 //==============================================================================
 
-CCM_Test_mirror_impl::CCM_Test_mirror_impl (  )
+CCM_Test_mirror_impl::CCM_Test_mirror_impl()
 {
-  DEBUGNL ( "+CCM_Test_mirror_impl->CCM_Test_mirror_impl (  )" );
+    DEBUGNL("+CCM_Test_mirror_impl->CCM_Test_mirror_impl()");
 }
 
-CCM_Test_mirror_impl::~CCM_Test_mirror_impl (  )
+CCM_Test_mirror_impl::~CCM_Test_mirror_impl()
 {
-  DEBUGNL ( "-CCM_Test_mirror_impl->~CCM_Test_mirror_impl (  )" );
-}
-
-void
-CCM_Test_mirror_impl::set_session_context ( LocalComponents::SessionContext* context )
-  throw ( LocalComponents::CCMException )
-{
-  DEBUGNL ( " CCM_Test_mirror_impl->set_session_context (  )" );
-  ctx = dynamic_cast<CCM_Test_mirror_Context*> ( context );
+    DEBUGNL("-CCM_Test_mirror_impl->~CCM_Test_mirror_impl()");
 }
 
 void
-CCM_Test_mirror_impl::ccm_activate (  )
-  throw ( LocalComponents::CCMException )
+CCM_Test_mirror_impl::set_session_context(
+    LocalComponents::SessionContext* context)
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_Test_mirror_impl->ccm_activate (  )" );
-
-  WX::Utils::SmartPtr<CCM_InterfaceType> receptacle = 
-    ctx->get_connection_a_facet_mirror();
-  string str1 = "Hallo to first op()";
-  long size1 = receptacle->op1(str1);
-  assert(size1 == str1.length());
-
-  string str2 = "Hallo to second op()";
-  long size2 = receptacle->op2(str2);
-  assert(size2 == str2.length());
-
-  string str3 = "Hallo to third op()";
-  long size3 = receptacle->op3(str3);
-  assert(size3 == str3.length());
+    DEBUGNL(" CCM_Test_mirror_impl->set_session_context()");
+    ctx = dynamic_cast<CCM_Test_mirror_Context*>(context);
 }
 
 void
-CCM_Test_mirror_impl::ccm_passivate (  )
-  throw ( LocalComponents::CCMException )
+CCM_Test_mirror_impl::ccm_activate()
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_Test_mirror_impl->ccm_passivate (  )" );
+    DEBUGNL(" CCM_Test_mirror_impl->ccm_activate()");
+
+    WX::Utils::SmartPtr<CCM_InterfaceType> receptacle = 
+        ctx->get_connection_a_facet_mirror();
+    string str1 = "Hallo to first op()";
+    long size1 = receptacle->op1(str1);
+    assert(size1 == str1.length());
+
+    string str2 = "Hallo to second op()";
+    long size2 = receptacle->op2(str2);
+    assert(size2 == str2.length());
+    
+    string str3 = "Hallo to third op()";
+    long size3 = receptacle->op3(str3);
+    assert(size3 == str3.length());
 }
 
 void
-CCM_Test_mirror_impl::ccm_remove (  )
-  throw ( LocalComponents::CCMException )
+CCM_Test_mirror_impl::ccm_passivate()
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_Test_mirror_impl->ccm_remove (  )" );
+    DEBUGNL(" CCM_Test_mirror_impl->ccm_passivate()");
+
+    // OPTIONAL : IMPLEMENT ME HERE !
+}
+
+void
+CCM_Test_mirror_impl::ccm_remove()
+    throw(LocalComponents::CCMException)
+{
+    DEBUGNL(" CCM_Test_mirror_impl->ccm_remove()");
+
+    // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 } // /namespace CCM_Session_Test_mirror
