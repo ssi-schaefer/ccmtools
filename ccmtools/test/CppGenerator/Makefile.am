@@ -9,7 +9,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # currently under investigation ... uncomment in local copy to test faster.
 
-#TESTS = owudb.sh
+#TESTS =  supports_interface.sh facet_interface.sh receptacle_interface.sh
 
 # tests are generally in order of increasing complexity.
 
@@ -17,7 +17,6 @@ TESTS = \
   help.sh                     \
   version.sh                  \
   attribute.sh                \
-  attribute-interface.sh      \
   supports.sh                 \
   facet.sh                    \
   receptacle.sh               \
@@ -36,6 +35,10 @@ TESTS = \
   supports_exception.sh       \
   facet_exception.sh          \
   receptacle_exception.sh     \
+  attribute_interface.sh      \
+  supports_interface.sh	      \
+  facet_interface.sh          \
+  receptacle_interface.sh     \
   home_exception.sh           \
   supports-inheritance.sh     \
   facet-inheritance.sh        \
