@@ -22,6 +22,9 @@
 #include <CCM_Utils/SmartPointer.h>
 #include <localComponents/CCM.h>
 
+#include <%(IncludeNamespace)s/%(Identifier)s_share.h>
+#include <%(IncludeNamespace)s/%(HomeType)s_share.h>
+
 %(MAttributeDefInclude)s
 %(MConstantDefInclude)s
 %(MSupportsDefInclude)s
@@ -37,20 +40,6 @@
 class %(HomeType)s;
 class CCM_%(HomeType)s;
 class CCM_%(Identifier)s_Context;
-
-//==============================================================================
-// %(Identifier)s component class
-//==============================================================================
-
-class CCM_%(Identifier)s
-: public localComponents::SessionComponent%(BaseTypes)s%(MSupportsDefBase)s
-{
- public:
-
-%(MAttributeDefPrototypeVV)s
-%(MProvidesDefGetFacetPrototypeVV)s
-%(MSupportsDefImplPrototypeVV)s
-};
 
 //==============================================================================
 // %(Identifier)s local component adapter class
@@ -134,16 +123,6 @@ class %(Identifier)s
   localComponents::ComponentPortDescription get_all_ports (  );
 };
 
-//==============================================================================
-// context class
-//==============================================================================
-
-class CCM_%(Identifier)s_Context
-  : public localComponents::SessionContext
-{
- public:
-%(MUsesDefGetConnectionPrototypeVV)s
-};
 
 //==============================================================================
 // context adapter class
@@ -507,9 +486,47 @@ localComponents::ComponentPortDescription
 #ifndef __%(FileNamespace)s_%(Identifier)s_SHARE__H__
 #define __%(FileNamespace)s_%(Identifier)s_SHARE__H__
 
+#include <CCM_Utils/SmartPointer.h>
+#include <localComponents/CCM.h>
+
+%(MAttributeDefInclude)s
+%(MConstantDefInclude)s
+%(MSupportsDefInclude)s
+%(MProvidesDefInclude)s
+%(MConsumesDefInclude)s
+%(MEmitsDefInclude)s
+%(MPublishesDefInclude)s
+%(MUsesDefInclude)s
+%(BaseInclude)s
+
 %(OpenNamespace)s
 
-// put code here ! :)
+//==============================================================================
+// Hello component class
+//==============================================================================
+
+class CCM_%(Identifier)s
+: public localComponents::SessionComponent%(BaseTypes)s%(MSupportsDefBase)s
+{
+ public:
+
+%(MAttributeDefPrototypeVV)s
+%(MProvidesDefGetFacetPrototypeVV)s
+%(MSupportsDefImplPrototypeVV)s
+};
+
+
+//==============================================================================
+// context class
+//==============================================================================
+
+class CCM_%(Identifier)s_Context
+  : public localComponents::SessionContext
+{
+ public:
+%(MUsesDefGetConnectionPrototypeVV)s
+};
+
 
 %(CloseNamespace)s
 
@@ -524,7 +541,7 @@ localComponents::ComponentPortDescription
 #ifndef __%(FileNamespace)s_%(Identifier)s_APP__H__
 #define __%(FileNamespace)s_%(Identifier)s_APP__H__
 
-#include "%(Identifier)s_gen.h"
+#include <%(IncludeNamespace)s/%(Identifier)s_share.h>
 
 %(OpenNamespace)s
 
