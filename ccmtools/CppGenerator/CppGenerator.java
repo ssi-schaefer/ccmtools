@@ -39,8 +39,11 @@ import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
+import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.Metamodel.ComponentIDL.MFinderDef;
@@ -88,7 +91,7 @@ abstract public class CppGenerator
     private final static String[] _language =
     {
         "",
-        "LocalComponents::Any",                     // PK_ANY
+        "WX::Utils::Value",                         // PK_ANY
         "bool",                                     // PK_BOOLEAN
         "char",                                     // PK_CHAR
         "double",                                   // PK_DOUBLE
@@ -387,11 +390,13 @@ abstract public class CppGenerator
             MParameterMode direction = param.getDirection();
             String prefix = "";
             String suffix = "";
-
             if (direction == MParameterMode.PARAM_IN) { // in
 		prefix = "const ";
 		if ((idl_type instanceof MTypedefDef)
+		    || (idl_type instanceof MPrimitiveDef && 
+			((MPrimitiveDef)idl_type).getKind() == MPrimitiveKind.PK_ANY)
 		    || (idl_type instanceof MStringDef)
+		    || (idl_type instanceof MWstringDef)
 		    || (idl_type instanceof MFixedDef)
 		    || (idl_type instanceof MInterfaceDef)) {
 		    suffix = "&";
