@@ -73,7 +73,7 @@ public class ConsoleCodeGenerator
 "      --generator-mask=<flags>  Mask for generator debug output\n" +
 "      --parser-mask=<flags>     Mask for parser debug output\n" +
 "Languages available:\n" +
-"    LANGUAGES\n" +
+"    LANGUAGES\n" + 
 "Generates code in the given output language after parsing FILES.\n" +
 "Options marked with a star (*) are generally used once per project.\n";
 

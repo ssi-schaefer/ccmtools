@@ -1,5 +1,5 @@
 /* CCM Tools : C++ Code Generator Library
- * Leif Johnson <leif@ambient.2y.net>
+ * Leif Johnson <leif@ambient.2y.net>, Egon Teiniker <egon.teiniker@tugraz.at>
  * copyright (c) 2002, 2003 Salomon Automation
  *
  * $Id$
@@ -49,17 +49,23 @@ import java.util.Map;
     File structure of remote C++ prototype:
 
 Calculator
+|-- Calculator.idl
+|
 |-- CCM_Session_Calculator
-|   |-- Calculator.idl
+|   |-- CalculatorHome_remote.cc
+|   |-- CalculatorHome_remote.h
 |   |-- Calculator_remote.cc
 |   |-- Calculator_remote.h
+|   |-- Calculator_server.cc  // !!!!!!!!
+|   |-- Makefile.py           // from local Generator
+|
+|
+|-- CCM_Session_Calculator_Stubs // created from IDL2 generator 
+|   |-- Calculator.idl
+|       => Calculator.cc            // from IDL generated   
+|       => Calculator.h             // from IDL generated
 |   |-- Makefile.py
 |
-|-- CCM_Session_Calculator_Stubs // from IDL2 generator 
-|   |-- Calculator.idl
-|       => Calculator.cc               
-|       => Calculator.h
-|   |-- Makefile.py
 |
 |-- CCM_Session_Container        // Environment files
 |   |-- CCMContainer.cc
@@ -67,18 +73,10 @@ Calculator
 |   |-- Makefile.py
 |
 |-- remoteComponents             // Environment files
-|   |-- Components.idl
-|       => Components.cc
-|       => Components.h
+|   |-- Components.idl2
+|       => Components.cc            // from IDL generated
+|       => Components.h             // from IDL generated
 |   |-- Makefile.py
-|
-|-- test                         // Test client hand crafted
-|   |-- Makefile.py
-|   |-- client.cc
-|   |-- runClient
-|   |-- runLister
-|   |-- runNameService
-|   |-- runServer
 
 ************************************************************/
 
@@ -86,19 +84,22 @@ Calculator
 public class CppRemoteGeneratorImpl
     extends CppGenerator
 {
-    // types for which we have a global template ; that is, a template that is
-    // not contained inside another template.
+    /**
+     * Types for which we have a global template; that is, a template that is
+     * not contained inside another template.
+     */
     private final static String[] local_output_types =
     {
         "MHomeDef", 
 	"MComponentDef"
     };
 
-    // output locations and templates for "environment files", the files that we
-    // need to output once per project. the length of this list needs to be the
-    // same as the length of the following list ; this list provides the file
-    // names, and the next one provides the templates to use for each file.
-
+    /**
+     * Output locations and templates for "environment files", the files that we
+     * need to output once per project. the length of this list needs to be the
+     * same as the length of the following list ; this list provides the file
+     * names, and the next one provides the templates to use for each file.
+     */
     private final static File[] local_environment_files =
     {
         new File("CCM_Session_Container", "CCMContainer.h"),
@@ -170,30 +171,37 @@ public class CppRemoteGeneratorImpl
      * Write generated code to an output file.
      *
      * @param template the template object to get the generated code structure
-     *        from ; variable values should come from the node handler object.
+     *        from; variable values should come from the node handler object.
      */
     public void writeOutput(Template template)
         throws IOException
     {
 	System.out.println("CppRemoteGeneratorImpl.writeOutput()");
-
-        String node_name = ((MContained) current_node).getIdentifier();
 	
 	// Each template consists of two sections separated by "<<<<<<<SPLIT>>>>>>>"
 	// that are written in two different files node_name + "_remote.h" and
 	// node_name + "_remote.cc"
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
+	String node_name = ((MContained) current_node).getIdentifier();
         String[] out_files = { node_name + "_remote.h",
                                node_name + "_remote.cc" };
 
         for (int i = 0; i < out_strings.length; i++) {
             String generated_code = out_strings[i];
 	    String file_name = out_files[i];
-
-  	    if (current_node instanceof MComponentDef 
-		|| current_node instanceof MHomeDef)  {
-		String file_dir = handleNamespace("FileNamespace", node_name) + "_remote";
+	    String file_dir;
+  	    if (current_node instanceof MComponentDef) {
+		// ComponentDef node
+		file_dir = handleNamespace("FileNamespace", node_name);
+		if (generated_code.trim().equals("")) continue;
+		writeFinalizedFile(file_dir, file_name, generated_code);
+	    }
+	    else if (current_node instanceof MHomeDef)  {
+		// HomeDef node
+		MHomeDef home = (MHomeDef)current_node;
+		node_name = ((MContained)home.getComponent()).getIdentifier();
+		file_dir = handleNamespace("FileNamespace", node_name);
 		if (generated_code.trim().equals("")) continue;
 		writeFinalizedFile(file_dir, file_name, generated_code);
 	    }
