@@ -1,0 +1,17 @@
+#ifndef __RAS_IDL__
+#define __RAS_IDL__
+
+#include "KOO.idl"
+
+/*
+typedef struct _RAS 
+{
+ KOO R;
+} RAS;
+*/
+
+struct RAS {
+  KOO R;
+};
+
+#endif

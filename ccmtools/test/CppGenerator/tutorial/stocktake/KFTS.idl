@@ -1,0 +1,24 @@
+#ifndef __KFTS_IDL__
+#define __KFTS_IDL__
+
+/*
+typedef struct _KFTS {
+  long kftsLFXVR;
+  long kftsRFXVR;
+  long kftsKAPM;
+  long kftsRASM;
+  long kftsVZGM;
+  long kftsRot;
+} KFTS;
+*/
+
+struct KFTS {
+  long kftsLFXVR;
+  long kftsRFXVR;
+  long kftsKAPM;
+  long kftsRASM;
+  long kftsVZGM;
+  long kftsRot;
+};
+
+#endif
