@@ -34,19 +34,10 @@ public class ConsoleEnvironmentImpl
     {
         params = new Hashtable(defines);
 
-        addParameter("PlainPackage", "ccmtools-package");
-        addParameter("PlainVersion", "0.1.0");
-
         StringBuffer defs = new StringBuffer("");
         for (Iterator i = defines.keySet().iterator(); i.hasNext(); ) {
             String key = (String) i.next();
             String val = (String) defines.get(key);
-
-            if (key.equalsIgnoreCase("ccmtools_package_name"))
-                addParameter("PlainPackage", val.replaceAll("[\\\\\"]", ""));
-            if (key.equalsIgnoreCase("ccmtools_package_version"))
-                addParameter("PlainVersion", val.replaceAll("[\\\\\"]", ""));
-
             defs.append(" -D" + key);
             if (! val.equals("")) defs.append("=" + val);
         }

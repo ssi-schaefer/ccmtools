@@ -117,10 +117,9 @@ public class CppLocalGeneratorImpl
      */
     public void finalize(Map defines, List files)
     {
-        // output a confix config file, and a package makefile.
+        // output a confix config file.
 
-        String[][] global_files = { { "confix.conf", "Confix" },
-                                    { "Makefile.py", "PackageMakefile" } };
+        String[][] global_files = { { "confix.conf", "Confix" } };
 
         for (int g = 0; g < global_files.length; g++) {
             Template tmpl = template_manager.getRawTemplate(global_files[g][1]);

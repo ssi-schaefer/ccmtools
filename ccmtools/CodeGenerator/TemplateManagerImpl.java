@@ -45,25 +45,20 @@ public class TemplateManagerImpl
     public TemplateManagerImpl(String language)
         throws IOException
     {
-        String ccmtools_home = System.getProperty("CCMTOOLS_HOME");
-        File template_root = new File(Constants.TEMPLATE_ROOT);
-        String pkg_dir = template_root.getName();
+        String lang_dir = language + "Templates";
 
-        File current_source = new File(System.getProperty("user.dir"));
-        source = new File(current_source, language + "Generator");
+        source = new File(System.getProperty("user.dir"), lang_dir);
         if (source.exists() && source.isDirectory())
             return;
 
+        String ccmtools_home = System.getProperty("CCMTOOLS_HOME");
         if (ccmtools_home != null) {
-            File home_source = new File(System.getProperty("CCMTOOLS_HOME"));
-            home_source = new File(home_source, "share");
-            home_source = new File(home_source, pkg_dir);
-            source = new File(home_source, language + "Generator");
+            source = new File(ccmtools_home, lang_dir);
             if (source.exists() && source.isDirectory())
                 return;
         }
 
-        source = new File(template_root, language + "Generator");
+        source = new File(Constants.TEMPLATE_ROOT, lang_dir);
         if (source.exists() && source.isDirectory())
             return;
 

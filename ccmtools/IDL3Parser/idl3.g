@@ -2671,7 +2671,7 @@ PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
         ( ' ' | '\t' | '\r' )* '\n' { newline(); } { $setType(Token.SKIP);} ;
 
 SL_COMMENT options { paraphrase = "a comment"; }
-	:   "//" ( ~'\n' )* { $setType(Token.SKIP); newline(); } ;
+	:   "//" ( ~'\n' )* '\n' { newline(); } { $setType(Token.SKIP); } ;
 
 ML_COMMENT options { paraphrase = "a comment"; }
 	:	"/*"

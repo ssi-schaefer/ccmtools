@@ -5,7 +5,7 @@ JAVAROOT = .
 CLASSPATH_ENV = CLASSPATH=.:$(top_builddir):$(top_srcdir)/lib/antlr.jar
 TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
                     JAVA=$(JAVA) $(CLASSPATH_ENV) \
-                    PATH=$(top_srcdir)/UI/scripts:${PATH} \
+                    PATH=$(top_srcdir)/UI/scripts::${PATH} \
                     CP=$(CP) RM=$(RM) MKDIR=$(MKDIR)
 
 dist_noinst_SCRIPTS = test-loader.sh

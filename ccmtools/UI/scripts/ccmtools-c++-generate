@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-#
+
 ## ccmtools-c++-generate : C++ component generator wrapper
 ## Leif Johnson <leif@ambient.2y.net>
 ## copyright (c) 2003 Salomon Automation
@@ -29,7 +29,7 @@ ENABLE_PYTHON_TEST = 0
 
 IDL_FILES = ''
 CODE_DEFINES = ''
-CODE_VERSION = '0.1'
+CODE_VERSION = '0.1.0'
 
 BUILD_DIR = ''
 INSTALL_DIR = ''
@@ -99,14 +99,14 @@ def copyhere(file):
         return 1
     return 0
 
-def call_confix(package, source_dir, dest_dir = '', targets = [], args = []):
+def call_confix(package, version, source_dir, dest_dir = '', args = []):
     confix_flags  = ' --packagename="%s"' % package
-    confix_flags += ' --configfile="confix.conf"'
+    confix_flags += ' --packageversion="%s"' % version
     confix_flags += ' --packageroot="%s"' % source_dir
+    confix_flags += ' --configfile="confix.conf"'
     confix_flags += ' --profile="ccmtools"'
     confix_flags += ' ' + ' '.join(args)
     if dest_dir: confix_flags += ' --prefix="%s"' % dest_dir
-    if targets:  confix_flags += ' --targets="%s"' % ' '.join(targets)
 
     return os.system('confix.py ' + confix_flags)
 
@@ -237,5 +237,6 @@ if BUILD_DIR:
             sys.exit(1)
         os.makedirs(pkg_build)
 
-sys.exit(call_confix(CCMTOOLS_PACKAGE, SOURCE_DIR, INSTALL_DIR, args = a))
+sys.exit(call_confix(CCMTOOLS_PACKAGE, CODE_VERSION,
+                     SOURCE_DIR, INSTALL_DIR, args = a))
 
