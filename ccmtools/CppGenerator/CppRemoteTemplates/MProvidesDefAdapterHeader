@@ -2,7 +2,7 @@
   // Facet remote adapter for %(ProvidesType)s
   //============================================================================
 
-  class %(ComponentType)s_%(Identifier)s_impl :
+  class %(Identifier)sFacetAdapter :
       virtual public POA_%(ProvidesType)s,
       virtual public PortableServer::RefCountServantBase
   {
@@ -10,8 +10,8 @@
       CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl* local_component;
       CCM_Local::CCM_%(ProvidesType)s* local_facet; 
     public:
-      %(ComponentType)s_%(Identifier)s_impl(CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl*);
-      virtual ~%(ComponentType)s_%(Identifier)s_impl ();
+      %(Identifier)sFacetAdapter(CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl*);
+      virtual ~%(Identifier)sFacetAdapter();
 
 %(MOperationProvidesPrototype)s
   };

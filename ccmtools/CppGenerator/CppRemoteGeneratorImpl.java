@@ -158,22 +158,23 @@ public class CppRemoteGeneratorImpl
     
     private Map CORBA_mappings;
     
-    //====================================================================
-    // Generator for remote C++ components implementation    
-    //====================================================================
 
     /**
      * The generator constructor calls the constructor of the base class
-     * and changes the values of the language type mapping.
-     * 
-     * TODO: The current language type mapping should be a parameter to 
-     * the CppGenerator constructor!
+     * and sets up the map for the CORBA to C++ mapping.
+     *
+     * @param d
+     * @param out_dir
+     *
+     * @exception IOException
      */
     public CppRemoteGeneratorImpl(Driver d, File out_dir)
         throws IOException
     {
         super("CppRemote", d, out_dir, local_output_types,
               local_environment_files, local_environment_templates);
+
+	System.out.println("CppRemoteGeneratorImpl.CppRemoteGeneratorImpl()");
 
 	// fill the CORBA_mappings with IDL to C++ Mapping types 
 	String[] labels = MPrimitiveKind.getLabels();
@@ -183,6 +184,141 @@ public class CppRemoteGeneratorImpl
     }
 
 
+    //====================================================================
+    // Handle traverser events
+    //====================================================================
+
+    /**
+     * Acknowledge the start of the given node during graph traversal. If the
+     * node is a MContainer type and is not defined in anything, assume it's the
+     * global parse container, and push "CCM_Remote" onto the namespace stack,
+     * indicating that this code is for remote CCM components.
+     *
+     * @param node the node that the GraphTraverser object is about to
+     *        investigate.
+     * @param scope_id the full scope identifier of the node. This identifier is
+     *        a string containing the names of parent nodes, joined together
+     *        with double colons.
+     *
+     * TODO: The decision between CCM_Local and CCM_Remote should be made at
+     *       constructor level...
+     */
+    public void startNode(Object node, String scope_id)
+    {
+	System.out.println("CppRemoteGeneratorImpl.startNode("+scope_id+")");
+
+        super.startNode(node, scope_id);
+
+        if ((node instanceof MContainer) &&
+            (((MContainer) node).getDefinedIn() == null)) {
+	    namespace.pop(); // HACK!!!!!!
+            namespace.push("CCM_Remote");
+	}
+    }
+
+
+    /**
+     * Acknowledge and process a closing node during graph traversal. If the
+     * node is an MContainer type, pop the namespace (this will remove our
+     * CCM_Local that we pushed, in theory (tm)). If the node is of the correct
+     * type and defined in the original parsed file, write code for this node.
+     *
+     * @param node the node that the graph traverser object just finished
+     *        investigating.
+     * @param scope_id the full scope identifier of the node. This identifier is
+     *        a string containing the names of ancestor nodes, joined together
+     *        with double colons.
+     *
+     * Note: this method is only a logging wrapper for the super class method.  
+     */
+    public void endNode(Object node, String scope_id)
+    {
+	System.out.println("CppRemoteGeneratorImpl.endNode("+scope_id+")");
+        super.endNode(node, scope_id);
+    }
+
+
+    /**
+     * Get a local value for the given variable name.
+     *
+     * This function performs some common value parsing in the CCM MOF library.
+     * More specific value parsing needs to be provided in the subclass for a
+     * given language, in the subclass' getLocalValue function.
+     *
+     * Note that the method calls the super class method.
+     *
+     * @param variable The variable name to get a value for.
+     *
+     * @return the value of the variable available from the current
+     *         output_variables hash table. Could be an empty string.
+     */
+    protected String getLocalValue(String variable)
+    {
+	System.out.println("CppRemoteGeneratorImpl.getLocalValue("+ variable+ ")");
+
+        String value = super.getLocalValue(variable);
+
+	if (current_node instanceof MUsesDef) { 
+            return data_MUsesDef(variable, value);
+	}
+	else if (current_node instanceof MAttributeDef) { 
+            return data_MAttributeDef(variable, value);
+	} 
+
+	return value;
+    }
+
+
+   /**
+    * Navigates in the metamodel from MUsesDef to MInterfaceDef to make
+    * the template substitution for the MOperationDef possible.
+    * @param data_type
+    * @param data_value
+    * @return 
+    */
+    protected String data_MUsesDef(String data_type, String data_value)
+    {
+	System.out.println("CppRemoteGeneratorImpl.data_MUsesDef("+data_type+", "+ data_value +")");
+
+        if (data_type.startsWith("MOperation")) {
+            MUsesDef uses = (MUsesDef) current_node;
+            return fillTwoStepTemplates(uses.getUses(), data_type);
+        }
+        return data_value;
+    }
+
+
+    protected String data_MAttributeDef(String data_type, String data_value)
+    {
+	System.out.println("CppRemoteGeneratorImpl.data_MAttributeDef("
+			   + data_type + "," + data_value+ ")");
+
+        if (data_type.equals("CORBAType")) {
+	    data_value =  getCORBALanguageType((MTyped)current_node);
+        }
+        return data_value;
+    }
+
+
+    /**
+     * Overwrites the superclass method to support standard IDL2C++ mapping
+     * of parameters.
+     * MFactoryDef is a MOperationDef so we can use the getCORBAOperationParams()
+     * method to convert the parameter list.
+     * Note that the MFactoryDef templates contains the %(MParameterCORBA)s 
+     * placeholder to indicate the CORBA parameter list.
+     */
+    protected String data_MFactoryDef(String data_type, String data_value)
+    {
+	System.out.println("CppRemoteGeneratorImpl.data_MFactoryDef("
+			   + data_type + "," + data_value+ ")");
+
+	if(data_type.startsWith("MParameterCORBA")) {
+	    return getCORBAOperationParams((MOperationDef)current_node, "");
+	}
+	return data_value;
+    }
+
 
     /**
      * Return the C++ language mapping for the given object. 
@@ -191,7 +327,7 @@ public class CppRemoteGeneratorImpl
      */
     protected String getLanguageType(MTyped object)
     {
-	System.out.println("CppRemoteGeneratorImpl.getLanguageType()");
+	System.out.println("CppRemoteGeneratorImpl.getLanguageType("+object+")");
 
         MIDLType idl_type = object.getIdlType();
 
@@ -207,11 +343,8 @@ public class CppRemoteGeneratorImpl
             String prefix = "";
             String suffix = "";
 
-	    // Henning/Vinoski P296
-	    // simple IDL types are passed as IN parameter witout const 
             if (direction == MParameterMode.PARAM_IN) {
-		if(!(idl_type instanceof MPrimitiveDef)) 
-		    prefix = "const ";
+		prefix = "const ";
 	    }
 		
             if ((idl_type instanceof MTypedefDef) ||
@@ -245,6 +378,119 @@ public class CppRemoteGeneratorImpl
     }
 
 
+
+    /**
+     * Get a variable hash table sutable for filling in the template from the
+     * fillTwoStepTemplates function.
+     *
+     * @param iface the interface from which we're starting the two step
+     *        operation.
+     * @param operation the particular interface operation that we're filling in
+     *        a template for.
+     * @param container the container in which the given interface is defined.
+     * @return a map containing the keys and values needed to fill in the
+     *         template for this interface.
+     */
+    protected Map getTwoStepVariables(MInterfaceDef iface,
+                                      MOperationDef operation,
+                                      MContained container)
+    {
+	System.out.println("CppRemoteGeneratorImpl.getTwoStepVariables()");
+
+	// only calls the overwritten method of the base class
+	//        String lang_type = super.getLanguageType(operation);
+	String lang_type = getLanguageType(operation);
+        Map vars = new Hashtable();
+ 
+	vars.put("Object",              container.getIdentifier());
+        vars.put("Identifier",          operation.getIdentifier());
+	vars.put("ProvidesType",        iface.getIdentifier());
+        vars.put("SupportsType",        iface.getIdentifier());
+	vars.put("UsesType",            iface.getIdentifier());
+        vars.put("LanguageType",        lang_type);
+	vars.put("CORBAType",           getCORBALanguageType(operation));
+        vars.put("MExceptionDef",       getOperationExcepts(operation));
+        vars.put("MParameterDefAll",    getOperationParams(operation, "all"));
+	vars.put("MParameterDefCORBA",  getCORBAOperationParams(operation, "all"));
+        vars.put("MParameterDefName",   getOperationParams(operation, "name"));
+
+	if (! lang_type.equals("void")) 
+	    vars.put("Return", "return ");
+	else 
+	    vars.put("Return", "");
+	
+        return vars;
+    }
+
+
+
+
+
+    //====================================================================
+    // Handle the CORBA Types 
+    //====================================================================
+
+
+    /**
+     * Transforms the local C++ language type to the corresponding CORBA type.
+     *
+     */
+    protected String getCORBALanguageType(MTyped object)
+    {
+	System.out.println("CppRemoteGeneratorImpl.getCORBALanguageType()");
+
+	MIDLType idl_type = object.getIdlType();
+
+	String base_type = getBaseIdlType(object);
+        if (CORBA_mappings.containsKey(base_type))
+            base_type = (String) CORBA_mappings.get(base_type);
+	
+	// handling of operation parameter types and passing rules 
+        if (object instanceof MParameterDef) {
+            MParameterDef param = (MParameterDef) object;
+            MParameterMode direction = param.getDirection();
+
+            String prefix = "";
+            String suffix = "";
+
+	    // Henning/Vinoski P296
+	    // simple IDL types are passed as IN parameter witout const 
+            if (direction == MParameterMode.PARAM_IN) {
+		if(!(idl_type instanceof MPrimitiveDef)) 
+		    prefix = "const ";
+	    }
+		
+            if ((idl_type instanceof MTypedefDef) ||
+                (idl_type instanceof MFixedDef)) {
+		suffix = "&";
+	    }
+
+            return prefix + base_type + suffix;
+        } 
+        return base_type;
+    }
+
+
+    protected String getCORBAOperationParams(MOperationDef op, String type)
+    {
+	System.out.println("CppRemoteGeneratorImpl.getCORBAOperationParams()");
+
+        List ret = new ArrayList();
+        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
+            MParameterDef p = (MParameterDef) params.next();
+            if (type.equals("name"))
+                ret.add(p.getIdentifier());
+            else
+                ret.add(getCORBALanguageType(p) + " " + p.getIdentifier());
+        }
+        return join(", ", ret);
+    }
+
+
+
+    //====================================================================
+    // Write out generated files
+    //====================================================================
 
     /**     
      * Write generated code to an output file.
@@ -305,165 +551,6 @@ public class CppRemoteGeneratorImpl
 	System.out.println("CppRemoteGeneratorImpl.finalize()");
 
 	//...
-    }
-
-
-
-    /**
-     * Get a local value for the given variable name.
-     *
-     * This function performs some common value parsing in the CCM MOF library.
-     * More specific value parsing needs to be provided in the subclass for a
-     * given language, in the subclass' getLocalValue function. Subclasses
-     * should call this function first and then perform any subclass specific
-     * value manipulation with the returned value.
-     *
-     * @param variable The variable name to get a value for.
-     * @return the value of the variable available from the current
-     *         output_variables hash table. Could be an empty string.
-     */
-    protected String getLocalValue(String variable)
-    {
-        String value = super.getLocalValue(variable);
-
-	if (current_node instanceof MUsesDef) { 
-            return data_MUsesDef(variable, value);
-	}
-	else if (current_node instanceof MAttributeDef) { 
-            return data_MAttributeDef(variable, value);
-	}
-
-        return value;
-    }
-
-
-   /**
-    * Navigates in the metamodel from MUsesDef to MInterfaceDef to make
-    * the template substitution for the MOperationDef possible.
-    * @param data_type
-    * @param data_value
-    * @return 
-    */
-    protected String data_MUsesDef(String data_type, String data_value)
-    {
-        if (data_type.startsWith("MOperation")) {
-            MUsesDef uses = (MUsesDef) current_node;
-            return fillTwoStepTemplates(uses.getUses(), data_type);
-        }
-        return data_value;
-    }
-
-
-    protected String data_MAttributeDef(String data_type, String data_value)
-    {
-	System.out.println("CppRemoteGeneratorImpl.data_MAttributeDef("
-			   + data_type + "," + data_value+ ")");
-
-        if (data_type.equals("CORBAType")) {
-	    data_value =  getCORBALanguageType((MTyped)current_node);
-        }
-        return data_value;
-    }
-
-
-    /**
-     * Get a variable hash table sutable for filling in the template from the
-     * fillTwoStepTemplates function.
-     *
-     * @param iface the interface from which we're starting the two step
-     *        operation.
-     * @param operation the particular interface operation that we're filling in
-     *        a template for.
-     * @param container the container in which the given interface is defined.
-     * @return a map containing the keys and values needed to fill in the
-     *         template for this interface.
-     */
-    protected Map getTwoStepVariables(MInterfaceDef iface,
-                                      MOperationDef operation,
-                                      MContained container)
-    {
-	System.out.println("CppRemoteGeneratorImpl.getTwoStepVariables()");
-
-	// only calls the overwritten method of the base class
-        String lang_type = super.getLanguageType(operation);
-        Map vars = new Hashtable();
- 
-	vars.put("Object",            container.getIdentifier());
-        vars.put("Identifier",        operation.getIdentifier());
-	vars.put("ProvidesType",      iface.getIdentifier());
-        vars.put("SupportsType",      iface.getIdentifier());
-	vars.put("UsesType",          iface.getIdentifier());
-        vars.put("LanguageType",      lang_type);
-	vars.put("CORBAType",         getCORBALanguageType(operation));
-        vars.put("MExceptionDef",     getOperationExcepts(operation));
-        vars.put("MParameterDefAll",  getOperationParams(operation, "all"));
-	vars.put("MParameterDefCORBA",  getCORBAOperationParams(operation, "all"));
-        vars.put("MParameterDefName", getOperationParams(operation, "name"));
-
-	 if (! lang_type.equals("void")) 
-	     vars.put("Return", "return ");
-	 else 
-	     vars.put("Return", "");
-
-        return vars;
-    }
-
-    /**
-     * Transforms the local C++ language type to the corresponding CORBA type.
-     *
-     */
-    protected String getCORBALanguageType(MTyped object)
-    {
-	System.out.println("CppRemoteGeneratorImpl.getCORBAType()");
-	MIDLType idl_type = object.getIdlType();
-
-	String base_type = getBaseIdlType(object);
-        if (CORBA_mappings.containsKey(base_type))
-            base_type = (String) CORBA_mappings.get(base_type);
-	
-	// TODO: convert component attribute access methods
-
-	return base_type;
-    }
-
-
-    protected String getCORBAOperationParams(MOperationDef op, String type)
-    {
-	System.out.println("CppRemoteGeneratorImpl.getCORBAOperationParams()");
-        List ret = new ArrayList();
-        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
-            MParameterDef p = (MParameterDef) params.next();
-            if (type.equals("name"))
-                ret.add(p.getIdentifier());
-            else
-                ret.add(getCORBALanguageType(p) + " " + p.getIdentifier());
-        }
-        return join(", ", ret);
-    }
-    /**
-     * Acknowledge the start of the given node during graph traversal. If the
-     * node is a MContainer type and is not defined in anything, assume it's the
-     * global parse container, and push "CCM_Remote" onto the namespace stack,
-     * indicating that this code is for remote CCM components.
-     *
-     * @param node the node that the GraphTraverser object is about to
-     *        investigate.
-     * @param scope_id the full scope identifier of the node. This identifier is
-     *        a string containing the names of parent nodes, joined together
-     *        with double colons.
-     *
-     * TODO: The decision between CCM_Local and CCM_Remote should be made at
-     *       constructor level...
-     */
-    public void startNode(Object node, String scope_id)
-    {
-        super.startNode(node, scope_id);
-
-        if ((node instanceof MContainer) &&
-            (((MContainer) node).getDefinedIn() == null)) {
-	    namespace.pop(); // HACK!!!!!!
-            namespace.push("CCM_Remote");
-	}
     }
 }
 

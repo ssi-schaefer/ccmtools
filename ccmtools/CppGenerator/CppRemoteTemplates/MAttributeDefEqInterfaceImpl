@@ -1,0 +1,23 @@
+%(CORBAType)s %(ComponentType)s_impl::%(Identifier)s()
+{
+  DEBUGNL(" %(ComponentType)s_impl::%(Identifier)s() <get>");
+  
+  // call local method
+  int result; //!!!!!!!!
+  result = local_component->%(Identifier)s();
+
+  // convert result
+  return CCM::int_to_CORBA_Long(result); //!!!!!!
+}
+
+void %(ComponentType)s_impl::%(Identifier)s( %(CORBAType)s value)
+{
+  DEBUGNL(" %(ComponentType)s_impl::%(Identifier)s() <set>");
+
+  // convert parameter(s)
+  int local_value; //!!!!!!
+  local_value = CCM::CORBA_Long_to_int(value); //!!!!!!!
+
+  // call local method
+  local_component->%(Identifier)s(local_value);
+}

@@ -12,9 +12,6 @@ dist_template_DATA = \
     MHomeDef              \
     MFactoryDefHeader     \
     MFactoryDefImpl       \
-    MFinderDefHeader      \
-    MFinderDefImpl        \
-    MParameterDefHeader   \
     MComponentDef         \
     MSupportsDefInclude   \
     MProvidesDefInclude   \
@@ -37,7 +34,26 @@ dist_template_DATA = \
     MUsesDefAdapterHeader  \
     MUsesDefGetAdapterHeader \
     MUsesDefGetLocalAdapterHeader\
-    MUsesDefLocalAdapterHeader
+    MUsesDefLocalAdapterHeader \
+    MAttributeDefEqInterfaceImpl \
+    MSupportsDefEqInterfaceImpl \
+    MOperationSupportsImpl \
+    MProvidesDefEqInterfaceImpl \
+    MUsesDefEqInterfaceImpl \
+    MProvidesDefAdapterVariableInit \
+    MProvidesDefNavigationFacet \
+    MUsesDefReceptacleConnect \
+    MUsesDefReceptacleDisconnect \
+    MUsesDefContextInit \
+    MUsesDefContextGetConnection \
+    MProvidesDefAdapterImpl \
+    MOperationFacetAdapterImpl \
+    MUsesDefAdapterImpl \
+    MOperationReceptacleAdapterImpl
+
+
+
+
 
 
 

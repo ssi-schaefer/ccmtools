@@ -2,15 +2,15 @@
   // Receptacle remote adapter for %(UsesType)s %(Identifier)s
   //============================================================================
   
-  class %(Identifier)s_ReceptacleAdapter 
+  class %(Identifier)sReceptacleAdapter 
     : virtual public CCM_Local::CCM_%(UsesType)s
   {
     private:
       %(ComponentType)s_impl* component_adapter;
 
     public:
-      %(Identifier)s_ReceptacleAdapter(%(ComponentType)s_impl* c);
-      virtual ~%(Identifier)s_ReceptacleAdapter();
+      %(Identifier)sReceptacleAdapter(%(ComponentType)s_impl* c);
+      virtual ~%(Identifier)sReceptacleAdapter();
 
 %(MOperationUsesPrototype)s
   };

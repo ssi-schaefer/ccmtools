@@ -1,0 +1,19 @@
+//============================================================================
+// %(Identifier)s remote facet adapter
+//============================================================================
+
+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(CCM_%(ComponentType)s_impl* lc)
+  : local_component(lc)
+{
+  DEBUGNL("+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");
+  
+  local_facet = local_component->get_%(Identifier)s();
+}
+
+%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()
+{
+  DEBUGNL("-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()");
+  delete local_facet;
+}
+
+%(MOperationFacetAdapterImpl)s
