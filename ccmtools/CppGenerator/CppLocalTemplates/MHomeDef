@@ -155,10 +155,16 @@ SmartPtr<%(ComponentType)s>
 %(Identifier)s::create (  )
   throw ( LocalComponents::CreateFailure )
 {
-  DEBUGNL ( " %(Identifier)s->create (  )" );
-  SmartPtr<%(ComponentType)s> ret ( dynamic_cast<%(ComponentType)s*>
-      ( new %(ComponentType)s ( this,
-        dynamic_cast<CCM_%(ComponentType)s*> ( local_home->create (  ) ) ) ) );
+  DEBUGNL ( " %(Identifier)s->create()" );
+  SmartPtr<%(ComponentType)s> ret(
+    dynamic_cast<%(ComponentType)s*>(
+      new %(ComponentType)s( this,
+        dynamic_cast<CCM_%(ComponentType)s*>(
+          ((CCM_%(Identifier)sImplicit*)local_home)->create()
+        )
+      )
+    )
+  );
   return ret;
 }
 

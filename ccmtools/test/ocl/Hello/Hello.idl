@@ -26,5 +26,6 @@ component Hello supports Math
 
 home HelloHome manages Hello
 {
+    factory create(in string name);
 };
 

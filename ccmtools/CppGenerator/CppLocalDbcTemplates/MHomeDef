@@ -109,14 +109,20 @@ void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool
 %(InvariantInvocation)s
 }
 
-SmartPtr<%(ComponentType)s>
+WX::Utils::SmartPtr<%(ComponentType)s>
 DbC_%(Identifier)s::create()
   throw ( LocalComponents::CreateFailure )
 {
   DEBUGNL(" DbC_%(Identifier)s->create()");
-  SmartPtr<%(ComponentType)s> ret(dynamic_cast<%(ComponentType)s*>(
-      new DbC_%(ComponentType)s(this, 
-	dynamic_cast<CCM_%(ComponentType)s*>(local_home->create()))));
+  WX::Utils::SmartPtr<%(ComponentType)s> ret(
+    dynamic_cast<%(ComponentType)s*>(
+      new DbC_%(ComponentType)s(this,
+        dynamic_cast<CCM_%(ComponentType)s*>(
+          ((CCM_%(Identifier)sImplicit*)local_home)->create()
+        )
+      )
+    )
+  );
   return ret;
 }
 
