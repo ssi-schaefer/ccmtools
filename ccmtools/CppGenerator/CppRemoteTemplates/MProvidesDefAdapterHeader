@@ -1,1 +1,17 @@
-      %(ProvidesType)s_ptr provide_%(Identifier)s();
+  //============================================================================
+  // Facet remote adapter for %(ProvidesType)s
+  //============================================================================
+
+  class %(ComponentType)s_%(Identifier)s_impl :
+      virtual public POA_%(ProvidesType)s,
+      virtual public PortableServer::RefCountServantBase
+  {
+    private:
+      CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl* local_component;
+      CCM_Local::CCM_%(ProvidesType)s* local_facet; 
+    public:
+      %(ComponentType)s_%(Identifier)s_impl(CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl*);
+      virtual ~%(ComponentType)s_%(Identifier)s_impl ();
+
+%(MOperationProvidesPrototype)s
+  };

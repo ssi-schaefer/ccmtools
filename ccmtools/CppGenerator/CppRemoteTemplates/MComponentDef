@@ -19,8 +19,7 @@
 #include <CCM_Session_%(Identifier)s/%(Identifier)s_gen.h>
 #include <CCM_Session_%(Identifier)s/%(Identifier)s_app.h>
 
-namespace CCM_Remote {
-namespace CCM_Session_%(Identifier)s {
+%(OpenNamespace)s
 
   //============================================================================
   // Component remote adapter 
@@ -33,27 +32,27 @@ namespace CCM_Session_%(Identifier)s {
 %(MProvidesDefFriend)s
 
     private:
-      local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl* local_component;
-      local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_Context* local_context;
+      CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl* local_component;
+      CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_Context* local_context;
       CCM::SessionContainer* ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
     public:
-      %(Identifier)s_impl(local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl*, 
+      %(Identifier)s_impl(CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl*, 
 		      CCM::SessionContainer *);
       virtual ~%(Identifier)s_impl ();
 
       /*
        * Component Attributes
        */
-%(MAttributeDefAdapterHeader)s
+%(MAttributeDefEqInterfaceHeader)s
 
       /*
        * Supported Interfaces
        */
-%(MSupportsDefAdapterHeader)s
+%(MSupportsDefEqInterfaceHeader)s
 
       // ReleaseInformation
       char* getComponentVersion();
@@ -65,10 +64,10 @@ namespace CCM_Session_%(Identifier)s {
        */
 
        // Facets
-%(MProvidesDefAdapterHeader)s
+%(MProvidesDefEqInterfaceHeader)s
 
       // Receptacles
-%(MUsesDefAdapterHeader)s
+%(MUsesDefEqInterfaceHeader)s
 %(MUsesDefGetAdapterHeader)s
 
       // Publishers not implemented
@@ -125,107 +124,36 @@ namespace CCM_Session_%(Identifier)s {
   };
 
 
-
-  //============================================================================
-  // Facet remote adapter
-  //============================================================================
-
-  class Calculator_calc_impl :
-      virtual public POA_CalculatorFacade,
-      virtual public PortableServer::RefCountServantBase
-  {
-    private:
-      local::CCM_Session_Calculator::CCM_Calculator_impl* local_component;
-      local::CCM_CalculatorFacade* local_facet; 
-    public:
-      Calculator_calc_impl(local::CCM_Session_Calculator::CCM_Calculator_impl*);
-      ~Calculator_calc_impl ();
-
-      /*
-       * Attributes
-       */
-
-      // none
-
-      /*
-       * Operations
-       */
-
-      CORBA::Long add( CORBA::Long a, CORBA::Long b);
-      CORBA::Long sub( CORBA::Long a, CORBA::Long b);
-      void print( const char* s);
-      void write( const Record& r);
-      RecordSet* read( const Record& r);
-  };
-
-
-  //============================================================================
-  // Receptacle iUnit remote adapter
-  //============================================================================
-  
-  class iUnit_ReceptacleAdapter 
-    : virtual public local::CCM_IntegerFacet
-  {
-    private:
-    Calculator_impl* component_adapter;
-
-    public:
-      iUnit_ReceptacleAdapter(Calculator_impl* c);
-      virtual ~iUnit_ReceptacleAdapter();
-  
-      virtual int add(const int a, const int b);
-      virtual int sub(const int a, const int b);    
-  };
-
-
-  //============================================================================
-  // Receptacle show remote adapter
-  //============================================================================
-  
-  class show_ReceptacleAdapter 
-    : virtual public local::CCM_ShowFacet
-  {
-    private:
-    Calculator_impl* component_adapter;
-
-    public:
-      show_ReceptacleAdapter(Calculator_impl* c);
-      virtual ~show_ReceptacleAdapter();
-
-      virtual void print_string(const std::string& msg);
-  };
-
-
-
   //==========================================================================
-  // Context adapter
+  // Context adapter class
   //==========================================================================
-  class CCM_Calculator_Context_impl
-    : public local::CCM_Session_Calculator::CCM_Calculator_Context
+  class CCM_%(Identifier)s_Context_impl
+    : public local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_Context
     {
     private:
-      Calculator_impl* component_adapter;
+      %(Identifier)s_impl* component_adapter;
       CCM::SessionContainer* ccm_container;
-      WX::Utils::SmartPtr<local::CCM_IntegerFacet> iunit_adapter;
-      local::CCM_Session_Calculator::showConnections receptcales_show;
+
+%(MUsesDefLocalAdapterHeader)s	
       
     public:
-      CCM_Calculator_Context_impl(Calculator_impl* g, CCM::SessionContainer* co);
-      virtual ~CCM_Calculator_Context_impl();
+      CCM_%(Identifier)s_Context_impl(%(Identifier)s_impl* g, CCM::SessionContainer* co);
+      virtual ~CCM_%(Identifier)s_Context_impl();
       
-      WX::Utils::SmartPtr<local::CCM_IntegerFacet> get_connection_iUnit(); 
+%(MUsesDefGetLocalAdapterHeader)s
       
-      local::CCM_Session_Calculator::showConnections& get_connections_show(); 
-      
-      // Methods from the CCMContext interface
+      /**
+       * Methods from the CCMContext interface
+       **/
+
       localComponents::Principal* get_caller_principal();
       
-      WX::Utils::SmartPtr<localComponents::HomeExecutorBase> get_CCM_home();
+      CCM_Utils::SmartPtr<localComponents::HomeExecutorBase> get_CCM_home();
       
       bool get_rollback_only() 
 	throw (localComponents::IllegalState);
       
-      WX::Utils::SmartPtr<localTransaction::UserTransaction> get_user_transaction()
+      CCM_Utils::SmartPtr<localTransaction::UserTransaction> get_user_transaction()
 	throw (localComponents::IllegalState);
       
       bool is_caller_in_role(const std::string& role);
@@ -233,13 +161,20 @@ namespace CCM_Session_%(Identifier)s {
       void set_rollback_only()
 	throw (localComponents::IllegalState);
       
-      // Methods from the SessionContext interface
-      WX::Utils::SmartPtr<localComponents::Object> get_CCM_object()
+      /**
+       * Methods from the SessionContext interface
+       **/
+
+      CCM_Utils::SmartPtr<localComponents::Object> get_CCM_object()
 	throw (localComponents::IllegalState);
     };
 
-} // /namespace CCM_Session_Calculator
-} // /namespace remote
+
+%(MProvidesDefAdapterHeader)s
+
+
+%(MUsesDefAdapterHeader)s
+%(CloseNamespace)s
 #endif
 
 

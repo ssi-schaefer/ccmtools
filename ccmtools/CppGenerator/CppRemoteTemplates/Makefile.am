@@ -22,16 +22,22 @@ dist_template_DATA = \
     MConsumesDefInclude   \
     MEmitsDefInclude      \
     MPublishesDefInclude  \
-    MAttributeDefAdapterHeader   \
+    MAttributeDefEqInterfaceHeader   \
     MProvidesDefFriend    \
     MProvidesDefAdapterVariable \
     MUsesDefAdapterVariable \
-    MSupportsDefAdapterHeader\
+    MSupportsDefEqInterfaceHeader\
     MOperationSupportsHeader \
     MExceptionDef   \
+    MProvidesDefEqInterfaceHeader \
     MProvidesDefAdapterHeader \
+    MOperationProvidesPrototype \
+    MOperationUsesPrototype \
+    MUsesDefEqInterfaceHeader \
     MUsesDefAdapterHeader  \
-    MUsesDefGetAdapterHeader
+    MUsesDefGetAdapterHeader \
+    MUsesDefGetLocalAdapterHeader\
+    MUsesDefLocalAdapterHeader
 
 
 

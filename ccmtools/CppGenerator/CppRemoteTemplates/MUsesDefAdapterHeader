@@ -1,5 +1,18 @@
-     void connect_%(Identifier)s(%(UsesType)s_ptr value)
-         throw(Components::AlreadyConnected, Components::InvalidConnection );
-     %(UsesType)s_ptr disconnect_%(Identifier)s()
-         throw(Components::NoConnection);
+  //============================================================================
+  // Receptacle remote adapter for %(UsesType)s %(Identifier)s
+  //============================================================================
+  
+  class %(Identifier)s_ReceptacleAdapter 
+    : virtual public CCM_Local::CCM_%(UsesType)s
+  {
+    private:
+      %(ComponentType)s_impl* component_adapter;
+
+    public:
+      %(Identifier)s_ReceptacleAdapter(%(ComponentType)s_impl* c);
+      virtual ~%(Identifier)s_ReceptacleAdapter();
+
+%(MOperationUsesPrototype)s
+  };
+
 

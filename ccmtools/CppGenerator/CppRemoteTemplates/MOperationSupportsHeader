@@ -1,1 +1,2 @@
-       %(LanguageType)s %(Identifier)s ( %(MParameterDefAll)s ) %(MExceptionDef)s;
+       %(CORBAType)s %(Identifier)s ( %(MParameterDefCORBA)s ) %(MExceptionDef)s;
+
