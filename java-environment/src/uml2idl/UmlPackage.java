@@ -33,10 +33,11 @@ Stereotype 'CORBAModule'. <br>Children:
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlNamespaceElement}</li>
 <li>{@link uml_parser.uml.MModelElement_clientDependency} == {@link UmlDependency}</li>
+<li>{@link uml_parser.uml.MModelElement_comment}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@version $Date$
 */
 class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
 {
@@ -166,7 +167,7 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
 	        return "";
 	    }
 	    StringBuffer code = new StringBuffer();
-	    //code.append("/* "+dependencyNumber_+" */ ");
+	    code.append(Main.makeModelElementComments(this, prefix));
 	    code.append(prefix);
 	    code.append("module ");
 	    code.append(getName());

@@ -33,7 +33,7 @@ UML model. <br>Children:
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@version $Date$
 */
 class UmlModel extends uml_parser.uml.MModel implements Worker
 {
@@ -102,19 +102,21 @@ class UmlModel extends uml_parser.uml.MModel implements Worker
 	public String getIdlCode( Main main, String prefix )
 	{
 	    StringBuffer code = new StringBuffer();
+	    code.append("\n");
 	    code.append(prefix);
-	    code.append("/* begin model '");
+	    code.append("/*****   begin model '");
 	    code.append(getName());
-	    code.append("' */\n\n");
+	    code.append("'   *****/\n\n\n");
 	    int s = myWorkers_.size();
 	    for( int index=0; index<s; index++ )
 	    {
 	        code.append( ((Worker)myWorkers_.get(index)).getIdlCode(main, prefix) );
 	    }
+	    code.append("\n");
 	    code.append(prefix);
-	    code.append("/* end model '");
+	    code.append("/*****   end model '");
 	    code.append(getName());
-	    code.append("' */\n\n");
+	    code.append("'   *****/\n\n\n");
 	    return code.toString();
 	}
 

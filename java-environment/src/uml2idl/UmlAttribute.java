@@ -282,6 +282,7 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
     public String getIdlCode( Main main, String prefix )
     {
 	    StringBuffer code = new StringBuffer();
+	    code.append(Main.makeModelElementComments(this, prefix));
 	    //code.append("/* "+dependencyNumber_+" */ ");
 	    code.append(prefix);
         String typeId = getTypeId();

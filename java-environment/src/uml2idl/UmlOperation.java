@@ -167,6 +167,7 @@ class UmlOperation extends uml_parser.uml.MOperation implements Worker
     public String getIdlCode( Main main, String prefix )
     {
         StringBuffer code = new StringBuffer();
+	    code.append(Main.makeModelElementComments(this, prefix));
         code.append(prefix);
         StringBuffer params = new StringBuffer();
         boolean addComma = false;

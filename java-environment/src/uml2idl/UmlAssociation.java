@@ -23,6 +23,7 @@ package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.Vector;
+import uml_parser.uml.MModelElement_comment;
 
 
 /**
@@ -31,6 +32,7 @@ UML-association. <br>Children:
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlAssociationConnection}</li>
 <li>{@link UmlModelElementStereotype}</li>
+<li>{@link uml_parser.uml.MModelElement_comment}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
@@ -127,7 +129,8 @@ class UmlAssociation extends uml_parser.uml.MAssociation implements Worker
     	    copyStereotype(UmlAttribute.CCM_EMITS, newStereotypes, main);
     	    copyStereotype(UmlAttribute.CCM_PUBLISHES, newStereotypes, main);
     	    copyStereotype(UmlAttribute.CCM_CONSUMES, newStereotypes, main);
-            connection_.createAttributes(newStereotypes, main);
+    	    Vector comments = findChildren(MModelElement_comment.xmlName__);
+            connection_.createAttributes(newStereotypes, main, comments);
         }
     }
 

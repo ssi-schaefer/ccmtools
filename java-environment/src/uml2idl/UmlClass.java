@@ -290,6 +290,7 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 	public String getIdlCode( Main main, String prefix )
 	{
 	    StringBuffer code = new StringBuffer();
+	    code.append(Main.makeModelElementComments(this, prefix));
 	    //code.append("/* "+dependencyNumber_+" */ ");
 	    if( isCorbaStereotype(CORBA_INTERFACE, main) )
 	    {

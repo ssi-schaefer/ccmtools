@@ -172,7 +172,33 @@ public class Main
             }
         }
     }
-
+    
+    
+    static String makeModelElementComments( DTD_Container element, String prefix )
+    {
+        StringBuffer code = new StringBuffer();
+        Vector vc1 = element.findChildren(MModelElement_comment.xmlName__);
+        for( int i1=0; i1<vc1.size(); i1++ )
+        {
+            MModelElement_comment mec = (MModelElement_comment)vc1.get(i1);
+            Vector vc2 = mec.findChildren(MComment.xmlName__);
+            for( int i2=0; i2<vc2.size(); i2++ )
+            {
+                MComment comment = (MComment)vc2.get(i2);
+                Vector vc3 = comment.findChildren(UmlModelElementName.xmlName__);
+                for( int i3=0; i3<vc3.size(); i3++ )
+                {
+                    UmlModelElementName men = (UmlModelElementName)vc3.get(i3);
+                    code.append(prefix);
+                    code.append("/* ");
+                    code.append(men.getName());
+                    code.append(" */\n");
+                }
+            }
+        }
+        return code.toString();
+    }
+    
 
     /**
      * Returns the name of a model element (or null).

@@ -22,6 +22,7 @@
 package uml2idl;
 
 import org.xml.sax.Attributes;
+import java.util.Vector;
 
 
 /**
@@ -142,25 +143,29 @@ class UmlAssociationConnection extends uml_parser.uml.MAssociation_connection im
     /**
      * Creates attributes on both association ends.
      */
-    void createAttributes( UmlModelElementStereotype newStereotypes, Main main )
+    void createAttributes( UmlModelElementStereotype newStereotypes, Main main, Vector comments )
     {
         if( secondEnd_.isNavigable() )
         {
-            update( createAttribute(firstEnd_, secondEnd_, main), newStereotypes );
+            update( createAttribute(firstEnd_, secondEnd_, main), newStereotypes, comments );
         }
         if( firstEnd_.isNavigable() )
         {
-            update( createAttribute(secondEnd_, firstEnd_, main), newStereotypes );
+            update( createAttribute(secondEnd_, firstEnd_, main), newStereotypes, comments );
         }
     }
 
-    private static void update( UmlAttribute attr, UmlModelElementStereotype newStereotypes )
+    private static void update( UmlAttribute attr, UmlModelElementStereotype newStereotypes, Vector comments )
     {
         if( attr!=null )
         {
             if( newStereotypes.size()>0 )
             {
                 attr.add(newStereotypes);
+            }
+            for( int i=0; i<comments.size(); i++ )
+            {
+                attr.add(comments.get(i));
             }
         }
     }
