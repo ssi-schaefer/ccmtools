@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import mof_xmi_parser.DTD_Container;
 import mof_xmi_parser.model.MTag_tagId;
@@ -54,6 +55,19 @@ class TagImp extends ModelElementImp implements MofTag
             if( tagId_==null )
             {
                 tagId_ = getTextFromChild(MTag_tagId.xmlName__);
+                if( tagId_==null )
+                {
+                    StringBuffer buffer = new StringBuffer();
+                    boolean makePoint=false;
+                    Iterator it = getQualifiedName().iterator();
+                    while( it.hasNext() )
+                    {
+                        if( makePoint )  buffer.append(".");
+                        else  makePoint=true;
+                        buffer.append(it.next().toString());
+                    }
+                    tagId_ = buffer.toString();
+                }
             }
         }
         return tagId_;
