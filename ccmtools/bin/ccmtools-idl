@@ -47,7 +47,7 @@ while index < len(sys.argv):
         IDL_COMPILER = 'idl --relative-paths -I.'
         start += 1
     elif arg.startswith('--java'):
-        IDL_COMPILER = 'idlj'
+        IDL_COMPILER = 'idlj -fall'
         start += 1    
     elif arg == '-h' or arg.startswith('--h'):
         print USAGE;
