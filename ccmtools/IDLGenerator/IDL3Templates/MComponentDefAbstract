@@ -11,8 +11,6 @@
 #ifndef __COMPONENT__%(PreprocIdentifier)s__
 #define __COMPONENT__%(PreprocIdentifier)s__
 
-#include <%(HomeInclude)s.idl3>
-
 %(OpenNamespace)s
 
 abstract component %(Identifier)s
@@ -29,6 +27,8 @@ abstract component %(Identifier)s
 };
 
 %(CloseNamespace)s
+
+#include <%(HomeInclude)s.idl3>
 
 #endif
 

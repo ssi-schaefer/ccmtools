@@ -60,14 +60,15 @@ There are a few things to verify before doing the actual distribution.
   on the same branch. The unstable release will be made after merging in from
   the stable release (see below).
 
-- "make distcheck".
+- Create a RELEASE file.
 
-  Very important ! This will create a distro tarball, install it in a temporary
-  directory, build it in a temporary directory, and then run all tests that
-  normally run using "make check". Provided that "make check" performs enough
-  tests, this is an easy, good, and safe way to test the whole package all at
-  once. This test also indirectly checks that the tarball actually functions, so
-  we hopefully won't get any bug reports about nasty build errors.
+  I use lynx to dump the web site release notes and then emacs to clean up the
+  resulting file.
+
+  A.B $ lynx --dump http://ccmtools.sf.net/releases/ > RELEASE
+  A.B $ emacsclient RELEASE
+  [clean up the dumped release notes]
+  A.B $ cvs ci
 
 - Update the ChangeLog.
 
@@ -86,15 +87,14 @@ There are a few things to verify before doing the actual distribution.
   ~ $ emacs /home/groups/c/cc/ccmtools/htdocs/releases/A.B.X.php
   [describe the A.B.X stable release]
 
-- Create a RELEASE-A.B.X file.
+- "make distcheck".
 
-  I use lynx to dump the web site release notes and then emacs to clean up the
-  resulting file.
-
-  A.B $ lynx --dump http://ccmtools.sf.net/releases/ > RELEASE
-  A.B $ emacsclient RELEASE
-  [clean up the dumped release notes]
-  A.B $ cvs ci
+  Very important ! This will create a distro tarball, install it in a temporary
+  directory, build it in a temporary directory, and then run all tests that
+  normally run using "make check". Provided that "make check" performs enough
+  tests, this is an easy, good, and safe way to test the whole package all at
+  once. This test also indirectly checks that the tarball actually functions, so
+  we hopefully won't get any bug reports about nasty build errors.
 
 - Update the tutorial, manual, and guide on the web site.
 

@@ -1,0 +1,60 @@
+Latest stable release : CCM Tools 0.3.2 "Hog Heaven"
+
+   The CCM Tools have once again reached a stable state in development !
+   After a lot of hard work and conceptual development, the development
+   team is proud to announce the newest toolset for generating CORBA
+   components and support code.
+
+   Please note that this release, though more functional and stable than
+   any previous release to date, is still a development release. Fully
+   functional production releases of the CCM Tools will require
+   additional bug fixing and development effort, but don't let that stop
+   you from trying out the tools.
+
+   The new release includes many feature enhancements from the 0.2 stable
+   branch, and includes several significant bugfixes. This release
+   specifically addresses the following issues :
+     * The IDL parser, IDL code generators, and C++ code generators can
+       handle complex namespaces. Components and homes can access
+       interfaces defined in arbitrary namespaces (but a component and
+       its home must always be defined in the same namespace). The IDL
+       parser currently lacks support for more obscure namespace features
+       like typeid and scope aliasing, but support will be added soon.
+     * Several additional test cases have revealed and allowed us to fix
+       some complex bugs in the C++ generators. Remote C++ generator
+       support will follow in the 0.3.3 release !
+     * Generated test clients and application logic files follow a
+       simpler file structure that allows for generating, building, and
+       compiling C++ components with a single Confix call. Homes for C++
+       components have been isolated with a single code entry point (see
+       the generated CCM_Local_*_CCM_Session_*_share/ directories), and
+       application logic is now generated in the src/ directory.
+     * User types files have been completely removed, allowing for a much
+       more elegant component structure, at the cost of more restricted
+       implementation choices.
+
+   See the [1]CCM Tools description for more details about this package,
+   and [2]read our papers for more information on CBSE and the CCM.
+
+Download
+
+   Please check our [3]SourceForge files page for download information,
+   or just go to the [4]current releases to download blindly.
+
+Dependencies
+
+   The CCM Tools depend on [5]Java (>= 1.4) and [6]Python (>= 2.1) to
+   run.
+
+   Generated C++ component code relies on [7]Confix (>= 1.3) for
+   building and installation.
+
+References
+
+  1. http://ccmtools.sourceforge.net/about.php
+  2. http://ccmtools.sourceforge.net/papers/
+  3. http://sf.net/project/showfiles.php?group_id=76664
+  4. http://ccmtools.sourceforge.net/releases/current/
+  5. http://java.sun.com/
+  6. http://python.org/
+  7. http://confix.sf.net/

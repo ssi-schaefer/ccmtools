@@ -71,7 +71,7 @@ public class IDL3GeneratorImpl
             Template template = template_manager.getRawTemplate(data_type);
             return template.substituteVariables(local_map);
         }
-        return data_MComponentDef(data_type, data_value);
+        return super.data_MHomeDef(data_type, data_value);
     }
 }
 

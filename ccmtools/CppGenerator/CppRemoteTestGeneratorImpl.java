@@ -102,41 +102,10 @@ public class CppRemoteTestGeneratorImpl
         writeFinalizedFile(file_dir, file_name, generated_code);
     }
 
-
-    /**
-     * Finalize the output files. This function's implementation does nothing;
-     * it serves only to override the inherited function from CppGeneratorImpl.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files) 
-    { 
-	System.out.println("finalize()");
-
-	return; 
-    }
-
-
     /**************************************************************************/
 
-
-    /**
-     * Load an appropriate template (based on the value in the template_name
-     * argument) for the given child, and fill out its variable information.
-     *
-     * @param child MInterfaceDef node to gather information from.
-     * @param template_name the name of the template to load for variable
-     *        substitution.
-     * @return a string containing the variable-substituted template requested.
-     */
-
-    protected Map getTwoStepVariables(MInterfaceDef iface,
-                                      MOperationDef operation,
-                                      MContained container)
+    protected Map getTwoStepOperationVariables(MOperationDef operation,
+                                               MContained container)
     {
 	System.out.println("getTwoStepVariables()");
 

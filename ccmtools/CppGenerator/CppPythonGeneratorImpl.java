@@ -258,25 +258,20 @@ public class CppPythonGeneratorImpl
      * Get a variable hash table sutable for filling in the template from the
      * fillTwoStepTemplates function.
      *
-     * @param iface the interface from which we're starting the two step
-     *        operation.
      * @param operation the particular interface operation that we're filling in
      *        a template for.
      * @param container the container in which the given interface is defined.
      * @return a map containing the keys and values needed to fill in the
      *         template for this interface.
      */
-    protected Map getTwoStepVariables(MInterfaceDef iface,
-                                      MOperationDef operation,
-                                      MContained container)
+    protected Map getTwoStepOperationVariables(MOperationDef operation,
+                                               MContained container)
     {
         String lang_type = super.getLanguageType(operation);
         Map vars = new Hashtable();
 
         vars.put("Object",                   container.getIdentifier());
         vars.put("Identifier",               operation.getIdentifier());
-        vars.put("ProvidesType",             iface.getIdentifier());
-        vars.put("SupportsType",             iface.getIdentifier());
         vars.put("LanguageType",             lang_type);
         vars.put("MExceptionDef",            getOperationExcepts(operation));
         vars.put("MParameterDefAll",         getOperationCppParams(operation));

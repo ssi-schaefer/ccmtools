@@ -28,8 +28,8 @@ extra_java_src = Constants.java.in
 noinst_JAVA = $(top_builddir)/Constants.java
 
 DISTCLEANFILES = $(extra_java_src)
-EXTRA_DIST = binary-dist.in $(extra_java_src) README.binary RELEASE-0.3.2 \
-             confix.example debian autogen.py ccmtools-autogen-top-check
+EXTRA_DIST = binary-dist.in $(extra_java_src) README.binary RELEASE \
+             debian autogen.py ccmtools-autogen-top-check
 
 clean-local:
 	$(RM) -f -r $(top_builddir)/ccmtools

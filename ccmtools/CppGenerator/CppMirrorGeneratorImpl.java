@@ -105,17 +105,7 @@ public class CppMirrorGeneratorImpl
 
     /**************************************************************************/
 
-    /**
-     * Load an appropriate template (based on the value in the template_name
-     * argument) for the given child, and fill out its variable information.
-     *
-     * @param child MInterfaceDef node to gather information from.
-     * @param template_name the name of the template to load for variable
-     *        substitution.
-     * @return a string containing the variable-substituted template requested.
-     */
-    protected Map getTwoStepVariables(MInterfaceDef iface,
-                                      MOperationDef operation,
-                                      MContained container)
-    { return null; }
+    protected Map getTwoStepOperationVariables(MOperationDef operation,
+                                               MContained container)
+    { return new Hashtable(); }
 }
