@@ -365,29 +365,43 @@ public class CppRemoteGeneratorImpl
 
 	// Handle %(CORBATypeIn)s tag in %(MFieldDef*)s templates
         if (dataType.equals("CORBATypeIn")) {
-	    if(idlType instanceof MPrimitiveDef) {
-		dataValue = fieldName; 
+	    if(idlType instanceof MStringDef) {
+		dataValue = fieldName + ".in()";
 	    }
 	    else {
-		dataValue = fieldName + ".in()";
+		dataValue = fieldName; 
 	    }
         }
 	// Handle %(CORBATypeInOut)s tag in %(MFieldDef*)s templates
 	else if(dataType.equals("CORBATypeInOut")) {
-	    if(idlType instanceof MPrimitiveDef) {
-		dataValue = fieldName; 
+	    if(idlType instanceof MStringDef) {
+		dataValue = fieldName + ".inout()";
 	    }
 	    else {
-		dataValue = fieldName + ".inout()";
+		dataValue = fieldName; 
 	    }
 	}
 	// Handle %(CORBATypeOut)s tag in %(MFieldDef*)s templates
 	else if(dataType.equals("CORBATypeOut")) {
-	    if(idlType instanceof MPrimitiveDef) {
-		dataValue = fieldName; 
+	    if(idlType instanceof MStringDef) {
+		dataValue = fieldName + ".out()";
 	    }
 	    else {
-		dataValue = fieldName + ".out()";
+		dataValue = fieldName; 
+	    }
+	}
+	else if(dataType.equals("CORBAFieldConverterInclude")) {
+	    if(idlType instanceof MPrimitiveDef 
+	       || idlType instanceof MStringDef) {
+		dataValue = "";
+	    }
+	    else {
+		StringBuffer ret = new StringBuffer();
+		ret.append("#include \"");
+		// TODO: ret.append(Name_space);
+		ret.append(getBaseLanguageType(type));
+		ret.append("_remote.h\"");
+		dataValue = ret.toString();
 	    }
 	}
         return dataValue;
