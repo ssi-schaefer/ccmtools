@@ -1,3 +1,9 @@
+%(MConsumesDefInclude)s
+%(MEmitsDefInclude)s
+%(MProvidesDefInclude)s
+%(MPublishesDefInclude)s
+%(MUsesDefInclude)s
+
 interface %(Identifier)s :
   Components::CCMObject%(BaseTypes)s%(SupportTypes)s
 {
@@ -8,4 +14,5 @@ interface %(Identifier)s :
 %(MPublishesDef)s
 %(MUsesDef)s
 };
+
 

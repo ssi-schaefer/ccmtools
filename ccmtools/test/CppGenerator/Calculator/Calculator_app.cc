@@ -52,10 +52,10 @@ calc_impl::set_component ( CCM_Calculator_impl* c )
 }
 
 void
-calc_impl::print ( const std::string& s )
+calc_impl::println ( const std::string& s )
   
 {
-  DEBUGNL ( " calc_impl->print ( s )" );
+  DEBUGNL ( " calc_impl->println ( s )" );
 
   // TODO : IMPLEMENT ME HERE !
 }

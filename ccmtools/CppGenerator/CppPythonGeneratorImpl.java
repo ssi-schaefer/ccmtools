@@ -86,6 +86,27 @@ public class CppPythonGeneratorImpl
     }
 
     /**
+     * Acknowledge the start of the given node during graph traversal. If the
+     * node is a MContainer type and is not defined in anything, assume it's the
+     * global parse container, and push "CCM_Local" onto the namespace stack,
+     * indicating that this code is for local CCM components.
+     *
+     * @param node the node that the GraphTraverser object is about to
+     *        investigate.
+     * @param scope_id the full scope identifier of the node. This identifier is
+     *        a string containing the names of parent nodes, joined together
+     *        with double colons.
+     */
+    public void startNode(Object node, String scope_id)
+    {
+        super.startNode(node, scope_id);
+
+        if ((node instanceof MContainer) &&
+            (((MContainer) node).getDefinedIn() == null))
+            namespace.push("CCM_Local");
+    }
+
+    /**
      * Write generated code to an output file.
      *
      * @param template the template object to get the generated code structure
@@ -98,8 +119,8 @@ public class CppPythonGeneratorImpl
 
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
-        String[] out_files = { node_name + "convert_python.h",
-                               node_name + "convert_python.cc" };
+        String[] out_files = { node_name + "_convert_python.h",
+                               node_name + "_convert_python.cc" };
 
         for (int i = 0; i < out_strings.length; i++) {
             String generated_code = out_strings[i];
@@ -228,24 +249,19 @@ public class CppPythonGeneratorImpl
     /**************************************************************************/
 
     /**
-     * Get information about the parameters for the given operation. The type of
-     * information returned depends on the type parameter.
+     * Get C++ information about the parameters for the given operation. This is
+     * essentially a way to circumvent the getLanguageType function to get
+     * access to the parent class getLanguageType implementation.
      *
      * @param op the operation to investigate.
-     * @param type the type of information to gather. If the type is "cpp",
-     *        this will return the parameter list with C++ variable types.
-     *        Otherwise this function will simply call the superclass'
-     *        implementation.
      * @return a comma separated string of the parameter information requested
      *         for this operation.
      */
-    protected String getOperationParams(MOperationDef op, String type)
+    private String getOperationCppParams(MOperationDef op)
     {
-        if (! type.equals("python")) return super.getOperationParams(op, type);
-
         List ret = new ArrayList();
-        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
-            MParameterDef p = (MParameterDef) params.next();
+        for (Iterator ps = op.getParameters().iterator(); ps.hasNext(); ) {
+            MParameterDef p = (MParameterDef) ps.next();
             ret.add(super.getLanguageType(p) + " " + p.getIdentifier());
         }
         return join(", ", ret);
@@ -318,8 +334,8 @@ public class CppPythonGeneratorImpl
         vars.put("SupportsType",             iface.getIdentifier());
         vars.put("LanguageType",             lang_type);
         vars.put("MExceptionDef",            getOperationExcepts(operation));
-        vars.put("MParameterDefAll",         getOperationParams(operation, "python"));
-        vars.put("MParameterDefName",        getOperationParams(operation, "name"));
+        vars.put("MParameterDefAll",         getOperationCppParams(operation));
+        vars.put("MParameterDefName",        getOperationParamNames(operation));
         vars.put("MParameterDefConvertTo",   getOperationConvertTo(operation));
         vars.put("MParameterDefConvertFrom", getOperationConvertFrom(operation));
 

@@ -25,6 +25,7 @@ import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -116,6 +117,27 @@ public class CppMirrorGeneratorImpl
     }
 
     /**
+     * Acknowledge the start of the given node during graph traversal. If the
+     * node is a MContainer type and is not defined in anything, assume it's the
+     * global parse container, and push "CCM_Local" onto the namespace stack,
+     * indicating that this code is for local CCM components.
+     *
+     * @param node the node that the GraphTraverser object is about to
+     *        investigate.
+     * @param scope_id the full scope identifier of the node. This identifier is
+     *        a string containing the names of parent nodes, joined together
+     *        with double colons.
+     */
+    public void startNode(Object node, String scope_id)
+    {
+        super.startNode(node, scope_id);
+
+        if ((node instanceof MContainer) &&
+            (((MContainer) node).getDefinedIn() == null))
+            namespace.push("CCM_Local");
+    }
+
+    /**
      * Write generated code to an output file.
      *
      * @param template the template object to get the generated code structure
@@ -199,31 +221,38 @@ public class CppMirrorGeneratorImpl
     /**************************************************************************/
 
     /**
-     * Get information about the parameters for the given function. The type of
-     * information returned depends on the type parameter.
+     * Get information about the parameters for the given function. The values
+     * returned are sample test values for each parameter so the automatic check
+     * program will have some sample values to pass each function.
      *
      * @param op the operation to investigate.
-     * @param type the type of information to gather. If the type is "value"
-     *        this function builds up a string of test values for each
-     *        parameter. Otherwise the parent class' function is called.
      * @return a comma separated string of the parameter information requested
      *         for this operation.
      */
-    protected String getOperationParams(MOperationDef op, String type)
+    private String getOperationParamValues(MOperationDef op)
     {
-        Iterator params = op.getParameters().iterator();
-        if (type.equals("value")) {
-            List ret = new ArrayList();
-            while (params.hasNext())
-                ret.add(getTestVariable(params.next(), 0));
-            return join(", ", ret);
-        } else if (type.equals("complex")) {
-            StringBuffer values = new StringBuffer();
-            while (params.hasNext())
-                values.append(createTestVariable((MParameterDef) params.next()));
-            return values.toString();
-        } else
-            return super.getOperationParams(op, type);
+        List ret = new ArrayList();
+        for (Iterator ps = op.getParameters().iterator(); ps.hasNext(); )
+            ret.add(getTestVariable(ps.next(), 0));
+        return join(", ", ret);
+    }
+
+    /**
+     * Get information about the parameters for the given function. This
+     * function actually creates test variable instances for those parameters
+     * that are complex types (basically anything that inherits from
+     * MTypedefDef).
+     *
+     * @param op the operation to investigate.
+     * @return a string containing the code to create parameter instances for
+     *         this operation.
+     */
+    protected String getOperationParamInstances(MOperationDef op)
+    {
+        StringBuffer ret = new StringBuffer();
+        for (Iterator ps = op.getParameters().iterator(); ps.hasNext(); )
+            ret.append(createTestVariable((MParameterDef) ps.next()));
+        return ret.toString();
     }
 
     /**
@@ -240,7 +269,7 @@ public class CppMirrorGeneratorImpl
                                       MContained container)
     {
         String lang_type = getLanguageType(operation);
-        String values = getOperationParams(operation, "value");
+        String values = getOperationParamValues(operation);
 
         Map local_vars = new Hashtable();
 
@@ -251,7 +280,7 @@ public class CppMirrorGeneratorImpl
         local_vars.put("MParameterDefValue", values);
         local_vars.put("MParameterDefValueString", values.replaceAll("\"", "'"));
         local_vars.put("MParameterDefComplexValue",
-                       getOperationParams(operation, "complex"));
+                       getOperationParamInstances(operation));
 
         MIDLType idl_type = operation.getIdlType();
         if (! (lang_type.equals("void") ||

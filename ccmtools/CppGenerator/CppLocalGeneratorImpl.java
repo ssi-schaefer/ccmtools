@@ -104,6 +104,27 @@ public class CppLocalGeneratorImpl
     }
 
     /**
+     * Acknowledge the start of the given node during graph traversal. If the
+     * node is a MContainer type and is not defined in anything, assume it's the
+     * global parse container, and push "CCM_Local" onto the namespace stack,
+     * indicating that this code is for local CCM components.
+     *
+     * @param node the node that the GraphTraverser object is about to
+     *        investigate.
+     * @param scope_id the full scope identifier of the node. This identifier is
+     *        a string containing the names of parent nodes, joined together
+     *        with double colons.
+     */
+    public void startNode(Object node, String scope_id)
+    {
+        super.startNode(node, scope_id);
+
+        if ((node instanceof MContainer) &&
+            (((MContainer) node).getDefinedIn() == null))
+            namespace.push("CCM_Local");
+    }
+
+    /**
      * Finalize the output files. This function just writes a minimal Confix
      * configuration file with the -D flags for the compiler.
      *
@@ -186,8 +207,8 @@ public class CppLocalGeneratorImpl
         vars.put("SupportsType",      iface.getIdentifier());
         vars.put("LanguageType",      lang_type);
         vars.put("MExceptionDef",     getOperationExcepts(operation));
-        vars.put("MParameterDefAll",  getOperationParams(operation, "all"));
-        vars.put("MParameterDefName", getOperationParams(operation, "name"));
+        vars.put("MParameterDefAll",  getOperationParams(operation));
+        vars.put("MParameterDefName", getOperationParamNames(operation));
 
         if (! lang_type.equals("void")) vars.put("Return", "return ");
         else                            vars.put("Return", "");

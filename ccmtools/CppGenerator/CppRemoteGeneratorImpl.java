@@ -191,31 +191,24 @@ public class CppRemoteGeneratorImpl
     /**
      * Acknowledge the start of the given node during graph traversal. If the
      * node is a MContainer type and is not defined in anything, assume it's the
-     * global parse container, and push "CCM_Remote" onto the namespace stack,
-     * indicating that this code is for remote CCM components.
+     * global parse container, and push "CCM_Local" onto the namespace stack,
+     * indicating that this code is for local CCM components.
      *
      * @param node the node that the GraphTraverser object is about to
      *        investigate.
      * @param scope_id the full scope identifier of the node. This identifier is
      *        a string containing the names of parent nodes, joined together
      *        with double colons.
-     *
-     * TODO: The decision between CCM_Local and CCM_Remote should be made at
-     *       constructor level...
      */
     public void startNode(Object node, String scope_id)
     {
 	System.out.println("CppRemoteGeneratorImpl.startNode("+scope_id+")");
-
         super.startNode(node, scope_id);
 
         if ((node instanceof MContainer) &&
-            (((MContainer) node).getDefinedIn() == null)) {
-	    namespace.pop(); // HACK!!!!!!
+            (((MContainer) node).getDefinedIn() == null))
             namespace.push("CCM_Remote");
-	}
     }
-
 
     /**
      * Acknowledge and process a closing node during graph traversal. If the
@@ -314,7 +307,7 @@ public class CppRemoteGeneratorImpl
 			   + data_type + "," + data_value+ ")");
 
 	if(data_type.startsWith("MParameterCORBA")) {
-	    return getCORBAOperationParams((MOperationDef)current_node, "");
+	    return getCORBAOperationParams((MOperationDef)current_node);
 	}
 	return data_value;
     }
@@ -410,9 +403,9 @@ public class CppRemoteGeneratorImpl
         vars.put("LanguageType",        lang_type);
 	vars.put("CORBAType",           getCORBALanguageType(operation));
         vars.put("MExceptionDef",       getOperationExcepts(operation));
-        vars.put("MParameterDefAll",    getOperationParams(operation, "all"));
-	vars.put("MParameterDefCORBA",  getCORBAOperationParams(operation, "all"));
-        vars.put("MParameterDefName",   getOperationParams(operation, "name"));
+        vars.put("MParameterDefAll",    getOperationParams(operation));
+	vars.put("MParameterDefCORBA",  getCORBAOperationParams(operation));
+        vars.put("MParameterDefName",   getOperationParamNames(operation));
 
 	if (! lang_type.equals("void")) 
 	    vars.put("Return", "return ");
@@ -471,17 +464,14 @@ public class CppRemoteGeneratorImpl
     }
 
 
-    protected String getCORBAOperationParams(MOperationDef op, String type)
+    protected String getCORBAOperationParams(MOperationDef op)
     {
 	System.out.println("CppRemoteGeneratorImpl.getCORBAOperationParams()");
 
         List ret = new ArrayList();
         for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
             MParameterDef p = (MParameterDef) params.next();
-            if (type.equals("name"))
-                ret.add(p.getIdentifier());
-            else
-                ret.add(getCORBALanguageType(p) + " " + p.getIdentifier());
+            ret.add(getCORBALanguageType(p) + " " + p.getIdentifier());
         }
         return join(", ", ret);
     }

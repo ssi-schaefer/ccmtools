@@ -122,27 +122,6 @@ abstract public class CppGenerator
     }
 
     /**
-     * Acknowledge the start of the given node during graph traversal. If the
-     * node is a MContainer type and is not defined in anything, assume it's the
-     * global parse container, and push "CCM_Local" onto the namespace stack,
-     * indicating that this code is for local CCM components.
-     *
-     * @param node the node that the GraphTraverser object is about to
-     *        investigate.
-     * @param scope_id the full scope identifier of the node. This identifier is
-     *        a string containing the names of parent nodes, joined together
-     *        with double colons.
-     */
-    public void startNode(Object node, String scope_id)
-    {
-        super.startNode(node, scope_id);
-
-        if ((node instanceof MContainer) &&
-            (((MContainer) node).getDefinedIn() == null))
-            namespace.push("CCM_Local");
-    }
-
-    /**
      * Acknowledge and process a closing node during graph traversal. If the
      * node is an MContainer type, pop the namespace (this will remove our
      * CCM_Local that we pushed, in theory (tm)). If the node is of the correct
@@ -197,7 +176,7 @@ abstract public class CppGenerator
     protected String handleNamespace(String data_type, String local)
     {
         List names = new ArrayList(namespace);
-        names.add("CCM_Session_" + local);
+        if (! local.equals("")) names.add("CCM_Session_" + local);
 
         if (data_type.equals("Namespace")) {
             return join("::", names);
@@ -405,8 +384,13 @@ abstract public class CppGenerator
         } else if (data_type.equals("UserTypesInclude")) {
             List includes = new ArrayList();
             for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
-                String id = (String) i.next();
-                includes.add("#include \"" + id + "_user_types.h\"");
+                List scope = (List) i.next();
+                String id = (String) scope.get(scope.size() - 1);
+                if (scope.size() > 1)
+                    includes.add("#include <CCM_Local/" + join("/", scope) +
+                                 "_user_types.h>");
+                else
+                    includes.add("#include \"" + id + "_user_types.h\"");
             }
             return join("\n", includes);
         }
@@ -454,28 +438,39 @@ abstract public class CppGenerator
     /**************************************************************************/
 
     /**
-     * Get information about the parameters for the given operation. The type of
-     * information returned depends on the type parameter.
+     * Get type and name information about the parameters for the given
+     * operation. This will return a comma-separated string, i.e. <type1>
+     * <name1>, <type2> <name2>, ... , <typeN> <nameN> for this operation's
+     * parameters.
      *
      * @param op the operation to investigate.
-     * @param type the type of information to gather. Options are "name", which
-     *        returns a comma-separated list of the parameter names (used for
-     *        calling the operation in generated code), and all others return
-     *        the standard parameter list with both name and type information,
-     *        again comma-separated.
      * @return a comma separated string of the parameter information requested
      *         for this operation.
      */
-    protected String getOperationParams(MOperationDef op, String type)
+    protected String getOperationParams(MOperationDef op)
     {
         List ret = new ArrayList();
-        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
-            MParameterDef p = (MParameterDef) params.next();
-            if (type.equals("name"))
-                ret.add(p.getIdentifier());
-            else
-                ret.add(getLanguageType(p) + " " + p.getIdentifier());
+        for (Iterator ps = op.getParameters().iterator(); ps.hasNext(); ) {
+            MParameterDef p = (MParameterDef) ps.next();
+            ret.add(getLanguageType(p) + " " + p.getIdentifier());
         }
+        return join(", ", ret);
+    }
+
+    /**
+     * Get name information about the parameters for the given operation. This
+     * will return a comma-separated string, i.e. <name1>, <name2>, ... ,
+     * <nameN> for this operation's parameters.
+     *
+     * @param op the operation to investigate.
+     * @return a comma separated string of the parameter information requested
+     *         for this operation.
+     */
+    protected String getOperationParamNames(MOperationDef op)
+    {
+        List ret = new ArrayList();
+        for (Iterator ps = op.getParameters().iterator(); ps.hasNext(); )
+            ret.add(((MParameterDef) ps.next()).getIdentifier());
         return join(", ", ret);
     }
 
@@ -491,8 +486,9 @@ abstract public class CppGenerator
     protected String getOperationExcepts(MOperationDef op)
     {
         List ret = new ArrayList();
-        for (Iterator excepts = op.getExceptionDefs().iterator(); excepts.hasNext(); )
-            ret.add(((MExceptionDef)excepts.next()).getIdentifier());
+        for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext(); )
+            ret.add(((MExceptionDef) es.next()).getIdentifier());
+
         if (ret.size() > 0) return "throw ( " + join(", ", ret) + " )";
         else                return "";
     }

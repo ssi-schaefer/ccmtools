@@ -71,6 +71,7 @@ binary-dist
 Constants.java
 lib/Makefile
 doc/Makefile
+doc/guide/Makefile
 doc/manual/Makefile
 doc/tutorial/Makefile
 test/Makefile

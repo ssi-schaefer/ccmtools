@@ -25,9 +25,9 @@ import os, sys, time
 FORCE_COPY = 0
 ENABLE_DEBUG = 0
 ENABLE_PYTHON_TEST = 0
-ENABLE_REMOTE = 0
 
 IDL_FILES = ''
+INCLUDE_PATH = ''
 CODE_DEFINES = ''
 CODE_VERSION = '0.1.0'
 
@@ -49,19 +49,18 @@ Options:
     -f, --force-copy            Force copying generated application files
     -h, --help                  Print out this help
     -i DIR, --install=DIR       Use DIR as the install prefix [Confix default]
+    -IDIR                       Add DIR to the include path for IDL files
     -p NAME, --package=NAME     Set package name to NAME [%s]
-    -r, --remote                Generate remote components
     -s DIR, --source=DIR        Store generated source code in DIR
                                 [./<PACKAGE-NAME>]
     -y, --python                Enable Python testing in generated source code
     -V, --version               Print out ccmtools version information
 
 The environment variable CCMTOOLS_PACKAGE can be used to set the package name.
-Make sure you have a "ccmtools" profile in your $HOME/.confix configuration
-file.
 
 Generated application logic and user types files will be copied to the current
-directory, unless they exist already, or if the -f option is enabled.''' \
+directory, unless they exist already, or if the -f option is enabled. Make sure
+you have a "ccmtools" profile in your $HOME/.confix configuration file.''' \
     % (CODE_VERSION, CCMTOOLS_PACKAGE)
 
 ## utility functions.
@@ -116,11 +115,11 @@ while index < len(sys.argv):
     elif arg.startswith('--i') and arg.find('=') > 0:
         INSTALL_DIR = arg.split('=')[1]
 
+    elif arg.startswith('-I'): INCLUDE_PATH += ' ' + arg
     elif arg == '-p': CCMTOOLS_PACKAGE = sys.argv[index]; index += 1
     elif arg.startswith('--pa') and arg.find('=') > 0:
         CCMTOOLS_PACKAGE = arg.split('=')[1]
 
-    elif arg == '-r' or arg.startswith('--r'): ENABLE_REMOTE = 1
     elif arg == '-s': SOURCE_DIR = sys.argv[index]; index += 1
     elif arg.startswith('--s') and arg.find('=') > 0:
         SOURCE_DIR = arg.split('=')[1]
@@ -129,8 +128,7 @@ while index < len(sys.argv):
     elif arg == '-V' or arg.startswith('--v'):
         os.execlp('ccmtools-generate', 'ccmtools-generate', '--version')
 
-    elif arg.endswith('.idl') or arg[:-1].endswith('.idl'):
-        IDL_FILES += ' ' + arg
+    elif arg.find('.idl') > 0: IDL_FILES += ' ' + arg
 
 ## argument post processing and validation.
 
@@ -139,6 +137,10 @@ if not IDL_FILES:
     print
     print USAGE
     sys.exit(1)
+
+for file in IDL_FILES.split():
+    path = '-I' + (os.path.split(file)[0] or os.curdir)
+    if INCLUDE_PATH.find(path) < 0: INCLUDE_PATH += path
 
 parts = CODE_VERSION.split('.')[:2]
 ver_maj, ver_min = parts[0], '0'
@@ -169,8 +171,8 @@ os.makedirs(os.path.join(SOURCE_DIR, 'idl3'))
 ## components.
 
 idl3_dir = os.path.join(SOURCE_DIR, 'idl3')
-idl3cmd = 'ccmtools-generate -I. -o ' + idl3_dir
-cmd = 'ccmtools-generate -I. -o ' + SOURCE_DIR
+idl3cmd = 'ccmtools-generate %s -I. -o %s' % (INCLUDE_PATH, idl3_dir)
+cmd = 'ccmtools-generate %s -I. -o %s' % (INCLUDE_PATH, SOURCE_DIR)
 
 if ENABLE_DEBUG and os.system('%s idl3mirror -u %s' % (idl3cmd, IDL_FILES)):
     print 'Error while generating IDL3 mirror files.'
@@ -188,15 +190,14 @@ if ENABLE_PYTHON_TEST and os.system('%s c++python -e -u %s' % (cmd, IDL_FILES)):
 if ENABLE_DEBUG:
     cwd = os.getcwd()
     os.chdir(idl3_dir)
-    if os.system('%s c++local -a -u %s *.idl3mirror' % (cmd, CODE_DEFINES)):
+    if os.system('%s c++local -a -u %s *' % (cmd, CODE_DEFINES)):
         print 'Error while generating C++ mirror components.'
         os.chdir(cwd)
         sys.exit(1)
     os.chdir(cwd)
 
-langs = ENABLE_REMOTE and 'c++local c++remote' or 'c++local'
-if os.system('%s %s -a %s %s' % (cmd, langs, CODE_DEFINES, IDL_FILES)):
-    print 'Error generating C++ components.'
+if os.system('%s c++local -a %s %s' % (cmd, CODE_DEFINES, IDL_FILES)):
+    print 'Error generating local C++ components.'
     sys.exit(1)
 
 ## copy generated application logic files and user types files to the working

@@ -1,7 +1,7 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-SUBDIRS = manual tutorial
+SUBDIRS = manual tutorial guide
 
 dist_noinst_DATA = MOF.xml.zip CodeGenerator.xml.zip roadmap.fig
 
