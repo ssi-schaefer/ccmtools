@@ -7,7 +7,7 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <%(IncludeNamespace)s/%(HomeType)s_remote.h>
+#include <CCM_Remote/%(IncludeNamespace)s/%(HomeType)s_remote.h>
 #include <%(IdlFileNamespace)s%(Identifier)s.h>
 
 using namespace std;

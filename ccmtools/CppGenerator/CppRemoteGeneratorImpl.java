@@ -368,7 +368,7 @@ public class CppRemoteGeneratorImpl
 	}
 	else if(data_type.equals("ProvidesType")) {
 	    List scope = getScope((MContained)provides);
-	    if(scope.size() > 1) {
+	    if(scope.size() > 0) {
 		return join("::", scope) + "::" + provides.getProvides().getIdentifier();
 	    }
 	    else

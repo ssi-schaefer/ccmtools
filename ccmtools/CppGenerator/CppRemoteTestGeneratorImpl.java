@@ -58,10 +58,83 @@ public class CppRemoteTestGeneratorImpl
 		      + d + ", " + out_dir + ")");
     }
 
+
+
+    /**
+     * Overwrites the CppGenerator's method to handle namespaces in different
+     * ways. There are local (CCM_Local) namespaces, remote (CCM_Remote)
+     * namespaces and the namespaces of the generated stubs and skeletons.
+     *
+     * "FileNamespace": is used to create the directory in which the
+     *                  remote component logic will be generated
+     *
+     * "IncludeNamespace": is used to create the include path depending
+     *                     on the component's namespace.
+     *                     The CCM_Remote namespace is cut off because 
+     *                     there can be local and remote include paths.
+     *
+     * "Namespace": is used to create the scope for classes.
+     *              The CCM_Remote namespace is cut off because 
+     *              there can be local and remote include paths.
+     *              If a namespace is defined, it has to start with "::"
+     *
+     * "ShortNamespace": corresponds with the module hierarchy in the IDL file,
+     *                   there is no CCM_Local, CCM_Remote or CCM_Session_ included.
+     *
+     * "IdlFileNamespace":
+     *
+     * "IdlNamespace":
+     **/
+    protected String handleNamespace(String data_type, String local)
+    {
+        List names = new ArrayList(namespace);
+		
+	if (!local.equals("")) names.add("CCM_Session_" + local);
+
+	if(data_type.equals("FileNamespace")) {
+            return join("_", slice(names, 0));
+        } 
+	else if(data_type.equals("IncludeNamespace")) {
+	    return join("/", slice(names, 1));
+	}
+	else if (data_type.equals("Namespace")) {
+	    List NamespaceList = slice(names, 1);
+	    if(NamespaceList.size() > 0) {
+		return "::" + join("::", NamespaceList);
+	    }
+	    return "";
+        } 
+	else if (data_type.equals("ShortNamespace")) {
+	    if(names.size() > 1) {
+		List shortList = new ArrayList(names.subList(1, names.size()-1));
+		if(shortList.size() > 0)
+		    return join("::", shortList) + "::";
+	    }
+	    return "";
+        }
+	else if (data_type.equals("IdlFileNamespace")) {
+	    if(names.size() > 1) {
+		List IdlFileList = new ArrayList(names.subList(1, names.size()-1));
+		if(IdlFileList.size() > 0)
+		    return join("_", IdlFileList) + "_";
+	    }
+	    return "";
+        } 
+	else if (data_type.equals("IdlNamespace")) {
+	    if(names.size() > 2) {
+		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
+		return join("::", IdlFileList) + "::";
+	    }
+	    return "";
+        }
+        return super.handleNamespace(data_type, local);
+    }
+
+
     /**
      * Overwrites the CppGenerator's method to change between CCM_Local
      * CCM_Remote.
-     */
+     *
     protected String handleNamespace(String data_type, String local)
     {
 	Debug.println(Debug.METHODS,"CppRemoteTestGenerator.handleNamespace(" + 
@@ -93,7 +166,7 @@ public class CppRemoteTestGeneratorImpl
         } 
         return super.handleNamespace(data_type, local);
     }
-
+    */
 
     /**
      * Write generated code to an output file.
