@@ -11,7 +11,6 @@
 #include <WX/Utils/smartptr.h>
 #include <WX/Utils/value.h>
 
-#include <LocalTransaction/UserTransaction.h>
 
 namespace LocalComponents {
 
@@ -19,8 +18,25 @@ namespace LocalComponents {
   // Exceptions
   //============================================================================
 
+  /**
+   * This is the base class of all local CCM related exceptions.
+   * (compare with CORBA::Exception in the remote case).
+   **/
+  class Exception {
+    
+  };
+
+  class UserException : public Exception {
+
+  };
+
+  class SystemException : public Exception {
+
+  };
+
+
   // is not part of the CCM specification
-  class NotImplemented {
+  class NotImplemented : public UserException {
   protected:
     std::string desc;
   public:
@@ -29,7 +45,7 @@ namespace LocalComponents {
     std::string what ( void ) { return desc; }
   };
 
-  class InvalidName {
+  class InvalidName : public UserException {
   protected:
     std::string desc;
   public:
@@ -38,7 +54,7 @@ namespace LocalComponents {
     std::string what ( void ) { return desc; }
   };
 
-  class HomeNotFound {
+  class HomeNotFound : public UserException {
   protected:
     std::string desc;
   public:
@@ -47,20 +63,25 @@ namespace LocalComponents {
     std::string what ( void ) { return desc; }
   };
 
-  class AlreadyConnected {};
-  class InvalidConnection {};
-  class NoConnection {};
-  class ExceededConnectionLimit {};
-  class CookieRequired {};
+  class AlreadyConnected : public UserException {};
 
-  class IllegalState {};
-  class InvalidConfiguration {};
-  class NoKeyAvailable {};
+  class InvalidConnection : public UserException {};
 
+  class NoConnection : public UserException {};
+
+  class ExceededConnectionLimit : public UserException {};
+
+  class CookieRequired : public UserException {};
+
+  class IllegalState : public UserException {};
+
+  class InvalidConfiguration : public UserException {};
+
+  //  class NoKeyAvailable : public UserException {};
 
   typedef unsigned long FailureReason;
 
-  class CreateFailure {
+  class CreateFailure : public UserException {
   private:
     FailureReason _reason;
   public:
@@ -68,14 +89,15 @@ namespace LocalComponents {
     CreateFailure ( const FailureReason reason ) : _reason(reason) {}
   };
 
-  class FinderFailure {
-  private:
-    FailureReason _reason;
-  public:
-    FinderFailure ( const FailureReason reason ) : _reason(reason) {}
-  };
 
-  class RemoveFailure {
+  //  class FinderFailure : public UserException {
+  //  private:
+  //    FailureReason _reason;
+  //  public:
+  //    FinderFailure ( const FailureReason reason ) : _reason(reason) {}
+  //  };
+
+  class RemoveFailure : public UserException {
   private:
     FailureReason _reason;
   public:
@@ -83,9 +105,9 @@ namespace LocalComponents {
     RemoveFailure ( const FailureReason reason ) : _reason(reason) {}
   };
 
-  class DuplicateKeyValue {};
-  class InvalidKey {};
-  class UnknownKeyValue {};
+  //  class DuplicateKeyValue : public UserException {};
+  //  class InvalidKey : public UserException {};
+  //  class UnknownKeyValue : public UserException {};
 
   enum CCMExceptionReason {
     SYSTEM_ERROR,
@@ -98,7 +120,7 @@ namespace LocalComponents {
     OCL_ERROR
   };
 
-  class CCMException {
+  class CCMException : public UserException {
   private:
     CCMExceptionReason _reason;
   public:
@@ -132,29 +154,11 @@ namespace LocalComponents {
   /***
    * The IRObject comes from CORBA::ComponentIR::ComponentDef
    ***/
-  class IRObject {
-  public:
-    virtual ~IRObject (  ) {}
-  };
+  //  class IRObject {
+  //  public:
+  //    virtual ~IRObject() {}
+  //  };
 
-
-  /***
-   * The ReleaseInformation class is inherited by each component adapter to
-   * give the client the facility to get these informations from the components
-   * equivalent interface.
-   * Note: This interface is not part of the CCM specification!
-   ***
-  class ReleaseInformation
-  {
-    public:
-      virtual ~ReleaseInformation (  ) {}
-
-      virtual const std::string getComponentVersion (  ) const = 0;
-      virtual const std::string getComponentDate (  )    const = 0;
-      virtual const std::string getComponentUUID (  )    const = 0;
-      // ...
-  };
-  */
 
   /***
    * Enterprise Component is an empty callback interface that serves as common
@@ -171,11 +175,12 @@ namespace LocalComponents {
    * From IDL3:
    * typedef SecurityLevel2::Credentials Principal;
    * CCM Specification 4-22
+   * Light Weight CCM 4.4.3.1
    ***/
-  class Principal {
-  public:
-    virtual ~Principal (  ) {}
-  };
+  //  class Principal {
+  //  public:
+  //    virtual ~Principal (  ) {}
+  //  };
 
 
 
@@ -188,21 +193,20 @@ namespace LocalComponents {
    * The CCMHome interface is interited by the explicit home interface.
    *
    * CCM Specification 1-41
-   *
+   * Light Weight CCM 4.1.7.5
    * Extension to CCM-Spec: CCMException to remove_component()
    ***/
   class CCMHome
     : virtual public WX::Utils::RefCounted
   {
   public:
-    virtual ~CCMHome (  ) {}
+    virtual ~CCMHome() {}
 
-    virtual IRObject* get_component_def (  ) = 0;
+    //    virtual IRObject* get_component_def() = 0;
+    //    virtual IRObject* get_home_def() = 0;
 
-    virtual IRObject* get_home_def (  ) = 0;
-
-    virtual void remove_component ( const CCMObject& comp )
-      throw ( CCMException, RemoveFailure ) = 0;
+    virtual void remove_component(const CCMObject& comp)
+        throw(CCMException, RemoveFailure) = 0;
   };
 
 
@@ -215,10 +219,10 @@ namespace LocalComponents {
    ***/
   class KeylessCCMHome {
   public:
-    virtual ~KeylessCCMHome (  ) {}
+    virtual ~KeylessCCMHome() {}
 
-    virtual CCMObject* create_component (  )
-      throw ( CCMException, CreateFailure ) = 0;
+    virtual CCMObject* create_component()
+        throw(CCMException, CreateFailure) = 0;
   };
 
 
@@ -227,8 +231,8 @@ namespace LocalComponents {
    * CCM Specification 3-40
    ***/
   class HomeExecutorBase {
-    public:
-    virtual ~HomeExecutorBase (  ) {}
+  public:
+    virtual ~HomeExecutorBase() {}
   };
 
 
@@ -240,24 +244,25 @@ namespace LocalComponents {
    ***/
   class HomeRegistration {
   public:
-    virtual ~HomeRegistration (  ) {}
+    virtual ~HomeRegistration() {}
 
-    /* The register_home() operation is used to register a component home
+    /* The register_home operation is used to register a component home
      * with the HomeFinder so it can by located by a component client.
      */
-    virtual void register_home ( WX::Utils::SmartPtr<CCMHome> home_ref, const std::string& home_name) = 0;
+    virtual void register_home(WX::Utils::SmartPtr<CCMHome> home_ref, 
+			       const std::string& home_name) = 0;
 
-    /* The unregister_home() operation is used to remove a component home
+    /* The unregister_home operation is used to remove a component home
      * from the HomeFinder.
      */
-    virtual void unregister_home ( WX::Utils::SmartPtr<CCMHome> home_ref ) = 0;
+    virtual void unregister_home(WX::Utils::SmartPtr<CCMHome> home_ref) = 0;
 
     /*
-     * This unregister_home() operation is used to remove a component home
+     * This unregister_home operation is used to remove a component home
      * (defined by the home_name) from the HomeFinder.
      * Note: this method is NOT defined in the CCM specification!!
      */
-    virtual void unregister_home ( const std::string& home_name ) = 0;
+    virtual void unregister_home(const std::string& home_name) = 0;
   };
 
 
@@ -270,20 +275,19 @@ namespace LocalComponents {
   class HomeFinder
     : public HomeRegistration {
   public:
-    virtual ~HomeFinder (  ) {}
+    virtual ~HomeFinder() {}
 
     virtual WX::Utils::SmartPtr<LocalComponents::CCMHome>
-    find_home_by_component_type ( const std::string& comp_repid )
-      throw ( HomeNotFound ) = 0;
+    find_home_by_component_type(const std::string& comp_repid)
+        throw(HomeNotFound) = 0;
 
     virtual WX::Utils::SmartPtr<LocalComponents::CCMHome>
-    find_home_by_name ( const std::string& name )
-      throw ( HomeNotFound ) = 0;
+    find_home_by_name(const std::string& name)
+        throw(HomeNotFound) = 0;
 
     virtual WX::Utils::SmartPtr<LocalComponents::CCMHome>
-      find_home_by_type ( const std::string& home_repid )
-      throw ( HomeNotFound) = 0;
-
+      find_home_by_type(const std::string& home_repid)
+        throw(HomeNotFound) = 0;
   };
 
 
@@ -298,25 +302,26 @@ namespace LocalComponents {
   * It serves as a "bootstrap" to the various services the container provides
   * for the component.
   * CCM Spec. 4-22
+  * Light Weight CCM 4.4.3.2
   ***/
   class CCMContext {
   public:
-    virtual ~CCMContext (  ) {}
+    virtual ~CCMContext() {}
 
-    virtual Principal* get_caller_principal (  ) = 0;
+    //    virtual Principal* get_caller_principal() = 0;
 
-    virtual HomeExecutorBase* get_CCM_home (  ) = 0;
+    virtual HomeExecutorBase* get_CCM_home() = 0;
 
-    virtual bool get_rollback_only (  )
-      throw ( IllegalState ) = 0;
+    //    virtual bool get_rollback_only()
+    //      throw (IllegalState) = 0;
 
-    virtual LocalTransaction::UserTransaction* get_user_transaction (  )
-      throw ( IllegalState ) = 0;
+    //    virtual LocalTransaction::UserTransaction* get_user_transaction()
+    //      throw (IllegalState) = 0;
 
-    virtual bool is_caller_in_role ( const std::string& role ) = 0;
+    //    virtual bool is_caller_in_role(const std::string& role) = 0;
 
-    virtual void set_rollback_only (  )
-      throw ( IllegalState ) = 0;
+    //    virtual void set_rollback_only()
+    //      throw (IllegalState) = 0;
   };
 
 
@@ -330,16 +335,16 @@ namespace LocalComponents {
   class SessionContext : public CCMContext
     {
     public:
-      virtual ~SessionContext (  ) {}
+      virtual ~SessionContext() {}
 
       /***
-       * The get_CCM_object ( ) operation is used to get the reference used to
+       * The get_CCM_object operation is used to get the reference used to
        * invoke the component (component reference or facet reference. If this
        * operation is issued outside of the scope of a callback operation, the
        * IllegalState exception is returned.
        ***/
-      virtual Object* get_CCM_object (  )
-	throw ( IllegalState ) = 0;
+      virtual Object* get_CCM_object()
+	throw (IllegalState) = 0;
     };
 
 
@@ -358,36 +363,36 @@ namespace LocalComponents {
   class SessionComponent
     : public EnterpriseComponent {
     public:
-    virtual ~SessionComponent (  ) {}
+    virtual ~SessionComponent() {}
 
     /*
-     * The set_session_context (  ) operation is used to set the SessionContext
+     * The set_session_context operation is used to set the SessionContext
      * of the component. The container calls this operation after a component
      * instance has been created.
      */
-    virtual void set_session_context ( LocalComponents::SessionContext* ctx )
-      throw ( CCMException ) = 0;
+    virtual void set_session_context (LocalComponents::SessionContext* ctx)
+      throw (CCMException) = 0;
 
     /*
-     * The ccm_activate (  ) operation is called by the container to notify a
+     * The ccm_activate operation is called by the container to notify a
      * session component that is has been made active.
      */
-    virtual void ccm_activate (  )
-      throw ( CCMException ) = 0;
+    virtual void ccm_activate()
+      throw (CCMException) = 0;
 
     /*
-     * The ccm_passivate (  ) operation is called by the container to notify a
+     * The ccm_passivate operation is called by the container to notify a
      * session component that it has been made inactive.
      */
-    virtual void ccm_passivate (  )
-      throw ( CCMException ) = 0;
+    virtual void ccm_passivate()
+      throw (CCMException) = 0;
 
     /*
-     * The void ccm_remove (  ) operation is called by the container when the
+     * The void ccm_remove operation is called by the container when the
      * servant is about to be destroyed.
      */
-    virtual void ccm_remove (  )
-      throw ( CCMException ) = 0;
+    virtual void ccm_remove()
+      throw (CCMException) = 0;
   };
 
 
@@ -418,34 +423,40 @@ namespace LocalComponents {
   typedef std::string RepositoryId;
   typedef std::vector<FeatureName> NameList;
 
-  class PortDescription {
-  private:
-    FeatureName _name;
-    RepositoryId _type_id;
-  public:
-    virtual ~PortDescription (  ) {}
+  /***
+   *
+   * Light Weight CCM 4.1.4
+   ***/
+  //  class PortDescription {
+  //  private:
+  //    FeatureName _name;
+  //    RepositoryId _type_id;
+  //  public:
+  //    virtual ~PortDescription (  ) {}
 
-    virtual FeatureName name (  ) const           { return _name; }
-    virtual void name ( const FeatureName& name ) { _name = name; }
+  //    virtual FeatureName name (  ) const           { return _name; }
+  //    virtual void name ( const FeatureName& name ) { _name = name; }
 
-    virtual RepositoryId type_id (  ) const              { return _type_id; }
-    virtual void type_id ( const RepositoryId& type_id ) {_type_id = type_id; }
-  };
+  //    virtual RepositoryId type_id (  ) const              { return _type_id; }
+  //    virtual void type_id ( const RepositoryId& type_id ) {_type_id = type_id; }
+  //  };
 
-  class FacetDescription
-    : public PortDescription {
-    private:
-    Object* _facet_ref;
+  //  class FacetDescription
+  //    : public PortDescription {
+  //    private:
+  //    Object* _facet_ref;
 
-    public:
-    FacetDescription (  ) { _facet_ref = NULL; }
-    virtual ~FacetDescription (  ) {}
+  //    public:
+  //    FacetDescription (  ) { _facet_ref = NULL; }
+  //    virtual ~FacetDescription (  ) {}
 
-    virtual Object* facet_ref (  ) const         { return _facet_ref; }
-    virtual void facet_ref ( Object* facet_ref ) {_facet_ref = facet_ref; }
-  };
+  //    virtual Object* facet_ref (  ) const         { return _facet_ref; }
+  //    virtual void facet_ref ( Object* facet_ref ) {_facet_ref = facet_ref; }
+  //  };
 
-  typedef std::vector<FacetDescription> FacetDescriptions;
+  //  typedef std::vector<FacetDescription> FacetDescriptions;
+
+
 
   /***
    * The Navigation interface provides generic navigation capabilities. It is
@@ -453,42 +464,43 @@ namespace LocalComponents {
    * any interface that is explicitly designed to be a facet interface for a
    * component.
    * CCM Specification 1-10
+   * Light Weight CCM 4.1.4
    ***/
   class Navigation {
   public:
-    virtual ~Navigation (  ) {}
+    virtual ~Navigation() {}
 
     /*
-     * The provide_facet (  ) operation returns a reference to the facet
+     * The provide_facet operation returns a reference to the facet
      * denoted by the name parameter. If the value of the name parameter does
      * not correspond to one of the component's facets, the InvalidName
      * exception shall be raised.
      */
-    virtual WX::Utils::SmartPtr<Object> provide_facet ( const std::string& name )
-      throw ( InvalidName ) = 0;
+    virtual WX::Utils::SmartPtr<Object> provide_facet(const std::string& name)
+      throw(InvalidName) = 0;
 
     /*
-     * The get_all_facets (  ) operation returns a sequence of value objects,
+     * The get_all_facets operation returns a sequence of value objects,
      * each of which contains the RepositoryId of the facet interface and
      * name of the facet, along with a reference to the facet.
      */
-    virtual FacetDescriptions get_all_facets() = 0;
+    //    virtual FacetDescriptions get_all_facets() = 0;
 
     /*
-     * The get_named_facets (  ) operation returns a sequence of described
+     * The get_named_facets operation returns a sequence of described
      * reterences, containing descriptions and references for the facets
      * denoted by the names parameter. If any name in the names parameter is not
      * a valid name for a provided interface on the component, the operation
      * raises the InvalidName exception.
      */
-    virtual FacetDescriptions get_named_facets ( const NameList& names )
-      throw ( InvalidName ) = 0;
+    //    virtual FacetDescriptions get_named_facets(const NameList& names)
+    //        throw(InvalidName) = 0;
 
     /*
-     * The same_component (  ) operation allows clients to determine reliably
+     * The same_component operation allows clients to determine reliably
      * whether two references belong to the same component instance.
      */
-    virtual bool same_component ( const Object& obj ) = 0;
+    //    virtual bool same_component(const Object& obj) = 0;
   };
 
 
@@ -505,66 +517,93 @@ namespace LocalComponents {
   private:
     OctetSeq _cookieValue;
   public:
-    Cookie (  ) { _cookieValue = ""; }
-    Cookie ( const std::string& value ) { _cookieValue = value; }
-    virtual ~Cookie (  ) {}
+    Cookie() { 
+      _cookieValue = ""; 
+    }
 
-    bool operator< ( const Cookie& ck ) const { return _cookieValue < ck._cookieValue; }
+    Cookie(const std::string& value) { 
+      _cookieValue = value; 
+    }
+
+    virtual ~Cookie() {}
+
+    bool operator< (const Cookie& ck) const { 
+      return _cookieValue < ck._cookieValue; 
+    }
 
   protected:
-    virtual OctetSeq cookieValue (  ) const                    {  return _cookieValue; }
-    virtual void cookieValue ( const OctetSeq& cookieValue )   { _cookieValue = cookieValue; }
-  };
-
-
-  class ConnectionDescription {
-    private:
-    Cookie _ck;
-    Object* _objref;
-
-    public:
-    ConnectionDescription (  ) { _objref = NULL; }
-    virtual ~ConnectionDescription (  ) {}
-
-    virtual Cookie ck (  ) const              { return _ck; }
-    virtual void ck ( const Cookie& ck )      {_ck = ck; }
-
-    virtual Object* objref (  ) const         { return _objref; }
-    virtual void objref ( Object* objref )    {_objref = objref; }
-  };
-
-  typedef std::vector<ConnectionDescription> ConnectionDescriptions;
-
-  class ReceptacleDescription
-    : public PortDescription {
-    private:
-    bool _is_multiple;
-    ConnectionDescriptions _connections;
-
-    public:
-    ReceptacleDescription (  ) {
-      _is_multiple = false;
+    virtual OctetSeq cookieValue() const {  
+      return _cookieValue; 
     }
-    virtual ~ReceptacleDescription (  ) {}
 
-    virtual bool is_multiple (  ) const           { return _is_multiple; }
-    virtual void is_multiple ( bool is_multiple ) {_is_multiple = is_multiple; }
-
-    virtual ConnectionDescriptions connections (  ) const                  { return _connections; }
-    virtual void connections ( const ConnectionDescriptions& connections ) {_connections = connections; }
+    virtual void cookieValue (const OctetSeq& cookieValue) { 
+      _cookieValue = cookieValue; 
+    }
   };
 
-  typedef std::vector<ReceptacleDescription> ReceptacleDescriptions;
+
+  /***
+   *
+   * Light Weight CCM 4.1.5.3
+   ***/
+  //  class ConnectionDescription {
+  //    private:
+  //    Cookie _ck;
+  //    Object* _objref;
+
+  //    public:
+  //    ConnectionDescription (  ) { _objref = NULL; }
+  //    virtual ~ConnectionDescription (  ) {}
+
+  //    virtual Cookie ck (  ) const              { return _ck; }
+  //    virtual void ck ( const Cookie& ck )      {_ck = ck; }
+
+  //    virtual Object* objref (  ) const         { return _objref; }
+  //    virtual void objref ( Object* objref )    {_objref = objref; }
+  //  };
+
+  //  typedef std::vector<ConnectionDescription> ConnectionDescriptions;
+
+  //  class ReceptacleDescription
+  //    : public PortDescription {
+  //    private:
+  //    bool _is_multiple;
+  //    ConnectionDescriptions _connections;
+
+  //    public:
+  //    ReceptacleDescription (  ) {
+  //      _is_multiple = false;
+  //    }
+  //    virtual ~ReceptacleDescription (  ) {}
+
+  //    virtual bool is_multiple (  ) const { 
+  //        return _is_multiple; 
+  //    }
+  //    virtual void is_multiple ( bool is_multiple ) {
+  //        _is_multiple = is_multiple; 
+  //    }
+
+  //    virtual ConnectionDescriptions connections (  ) const { 
+  //        return _connections; 
+  //    }
+  //    virtual void connections ( const ConnectionDescriptions& connections ) {
+  //        _connections = connections; 
+  //    }
+  //  };
+
+  //  typedef std::vector<ReceptacleDescription> ReceptacleDescriptions;
+
 
   /***
    * The Receptacles interface provides generic operations for connecting
    * to a component's receptacles. The CCMObject interface is derived from
    * Receptacles.
    * CCM Specification 1-18
+   * Light Weight CCM 4.1.5.3
    ***/
   class Receptacles {
   public:
-    virtual ~Receptacles (  ) {}
+    virtual ~Receptacles() {}
 
     /*
      * The connect() operation connects the object reference specified by
@@ -574,8 +613,12 @@ namespace LocalComponents {
      * be used subsequently to disconnect the object reference.
      * simplex receptacle: the return value is a nil.
      */
-    virtual Cookie connect ( const FeatureName& name, WX::Utils::SmartPtr<Object> connection )
-      throw ( InvalidName, InvalidConnection, AlreadyConnected, ExceededConnectionLimit ) = 0;
+    virtual Cookie connect(const FeatureName& name, 
+			    WX::Utils::SmartPtr<Object> connection)
+      throw(InvalidName, 
+	    InvalidConnection, 
+	    AlreadyConnected, 
+	    ExceededConnectionLimit) = 0;
 
     /*
      * Simplex receptacle: the operation will disassociate any object
@@ -584,62 +627,77 @@ namespace LocalComponents {
      * multiplex receptacle: the operation disassociates the object reference
      * associated with the cookie value from the receptacle.
      */
-    virtual void disconnect ( const FeatureName& name, const Cookie& ck )
-      throw ( InvalidName, InvalidConnection, CookieRequired, NoConnection ) = 0;
+    virtual void disconnect(const FeatureName& name, 
+			    const Cookie& ck)
+      throw(InvalidName, 
+	    InvalidConnection, 
+	    CookieRequired, 
+	    NoConnection) = 0;
 
-    virtual ConnectionDescriptions get_connections ( const FeatureName& name )
-      throw ( InvalidName ) = 0;
+    //    virtual ConnectionDescriptions get_connections(const FeatureName& name)
+    //        throw(InvalidName) = 0;
 
-    virtual ReceptacleDescriptions get_all_receptacles (  ) = 0;
+    //    virtual ReceptacleDescriptions get_all_receptacles() = 0;
 
-    virtual ReceptacleDescriptions get_named_receptacles ( const NameList& names )
-      throw ( InvalidName ) = 0;
+    //    virtual ReceptacleDescriptions get_named_receptacles(const NameList& names)
+    //        throw(InvalidName) = 0;
   };
 
 
 
-  class ComponentPortDescription {
-  private:
-    FacetDescriptions _facets;
-    ReceptacleDescriptions _receptacles;
-    // ConsumerDescriptions _consumers;
-    // EmitterDescriptions _emitters;
-    // PublisherDescriptions _publishers;
+  /***
+   *
+   * Light Weight CCM 4.1.11.1
+   ***/
+  //  class ComponentPortDescription {
+  //  private:
+  //    FacetDescriptions _facets;
+  //    ReceptacleDescriptions _receptacles;
+  //    ConsumerDescriptions _consumers;
+  //    EmitterDescriptions _emitters; 
+  //    PublisherDescriptions _publishers;
+  //  public:
+  //    virtual ~ComponentPortDescription (  ) {}
+  //    virtual FacetDescriptions facets (  ) const             
+  //        { return _facets; }
+  //    virtual void facets ( const FacetDescriptions& facets ) 
+  //        {_facets = facets; }
+  //    virtual ReceptacleDescriptions receptacles (  ) const                  
+  //        { return _receptacles; }
+  //    virtual void receptacles ( const ReceptacleDescriptions& receptacles ) 
+  //        {_receptacles = receptacles; }
+  //  };
 
-  public:
-    virtual ~ComponentPortDescription (  ) {}
 
-    virtual FacetDescriptions facets (  ) const             { return _facets; }
-    virtual void facets ( const FacetDescriptions& facets ) {_facets = facets; }
+  /***
+   *
+   * Light Weight CCM 4.1.7.2
+   ***/
+  //  class PrimaryKeyBase {
+  //  public:
+  //    virtual ~PrimaryKeyBase (  ) {}
+  //  };
 
-    virtual ReceptacleDescriptions receptacles (  ) const                  { return _receptacles; }
-    virtual void receptacles ( const ReceptacleDescriptions& receptacles ) {_receptacles = receptacles; }
-  };
-
-  class PrimaryKeyBase {
-  public:
-    virtual ~PrimaryKeyBase (  ) {}
-  };
 
   /***
    * All interfaces for components types are derived from CCMObject.
    * CCM Specification 1-52
+   * Light Weight CCM 4.1.11.1
    ***/
-  class CCMObject
-    : virtual public Object,
-      public Navigation, public Receptacles {
+  class CCMObject : virtual public Object,
+    public Navigation, public Receptacles {
     public:
 
-    virtual IRObject* get_component_def (  ) = 0;
+    //    virtual IRObject* get_component_def() = 0;
 
     /*
      * The get_ccm_home() operation returns a CCMHome reference to the
      * home which manages this component.
      */
-    virtual HomeExecutorBase* get_ccm_home (  ) = 0;
+    virtual HomeExecutorBase* get_ccm_home() = 0;
 
-    virtual PrimaryKeyBase* get_primary_key (  )
-      throw ( NoKeyAvailable ) = 0;
+    //    virtual PrimaryKeyBase* get_primary_key()
+    //        throw(NoKeyAvailable) = 0;
 
     /*
      * This operation is called by a configurator to indicate that the
@@ -648,18 +706,18 @@ namespace LocalComponents {
      * to allow normal client access, it raises the InvalidConfiguration
      * exception.
      */
-    virtual void configuration_complete (  )
-      throw ( InvalidConfiguration ) = 0;
+    virtual void configuration_complete()
+        throw(InvalidConfiguration) = 0;
 
     /*
      * This operation is used to delete a component.
      * Application failures during remove may raise the RemoveFailure
      * exception.
      */
-    virtual void remove (  )
-      throw ( RemoveFailure ) = 0;
+    virtual void remove()
+        throw(RemoveFailure) = 0;
 
-    virtual ComponentPortDescription get_all_ports (  ) = 0;
+    //    virtual ComponentPortDescription get_all_ports() = 0;
   };
 
 
@@ -719,7 +777,7 @@ namespace LocalComponents {
      * interconnects them according to the assembly descriptor.
      */
     virtual void build()
-      throw (CreateFailure) = 0;
+        throw (CreateFailure) = 0;
 
     /*
      * Removes all connections between components and destroys all components,
@@ -727,7 +785,7 @@ namespace LocalComponents {
      * operation.
      */
     virtual void tear_down()
-      throw (RemoveFailure) = 0;
+        throw (RemoveFailure) = 0;
 
     /*
      * Returns whether the assembly is active or inactive.
