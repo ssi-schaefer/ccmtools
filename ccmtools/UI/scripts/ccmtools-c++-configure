@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
-## ccmtools-c++-make : C++ component build and check
-## Leif Johnson <leif@ambient.2y.net>
+## ccmtools-c++-configure : Confix bootstrap
+## Egon Teiniker <egon.teiniker@tugraz.at>
 ## copyright (c) 2002-2003 Salomon Automation
 ##
 ## $Id$
@@ -27,9 +27,9 @@ CCMTOOLS_PACKAGE = 'ccmtools-package'
 if 'CCMTOOLS_PACKAGE' in os.environ.keys():
     CCMTOOLS_PACKAGE = os.environ['CCMTOOLS_PACKAGE']
 
-USAGE = '''Usage: ccmtools-c++-make [OPTION]...
+USAGE = '''Usage: ccmtools-c++-configure [OPTION]...
 
-Build and check C++ components.
+Bootstrap and configure Confix for C++ components.
 
 Options:
     -h, --help                 Print out this help
@@ -76,8 +76,8 @@ while index < len(sys.argv):
 
 SOURCE_DIR = SOURCE_DIR or CCMTOOLS_PACKAGE
 if (sys.platform[:3] == 'win' and not SOURCE_DIR[1:3] == ':\\') or \
-       not SOURCE_DIR.startswith(os.sep):
-    SOURCE_DIR = os.path.join(os.getcwd(), SOURCE_DIR)
+     not SOURCE_DIR.startswith(os.sep):
+   SOURCE_DIR = os.path.join(os.getcwd(), SOURCE_DIR)
 
 if not os.path.isdir(SOURCE_DIR):
     print 'No component source was found in %s.' % SOURCE_DIR
@@ -89,23 +89,22 @@ if not os.path.isdir(SOURCE_DIR):
 ## the current directory to the generated code directory.
 
 for f in glob.glob('*_app.*') + glob.glob('*_user_types.h'):
-    dest_file = find(SOURCE_DIR, f)
-    if not dest_file:
-        print 'Warning: unknown destination for %s. Skipping.' % f
-        print 'This might cause deployment failure!'
-        print
-        continue
+     dest_file = find(SOURCE_DIR, f)
+     if not dest_file:
+         print 'Warning: unknown destination for %s. Skipping.' % f
+         print 'This might cause deployment failure!'
+         print
+         continue
 
-    if os.system('cp -p ' + f + ' ' +dest_file):
-        print "Error: can't copy " + f + " files!"
-        sys.exit(1)
+     if os.system('cp -p ' + f + ' ' +dest_file):
+         print "Error: can't copy " + f + " files!"
+         sys.exit(1)
         
-## run confix to build and check components
+## run confix to bootstrap and configure the component's source code
 
 confix_flags  = ' --packageroot="%s" --profile="ccmtools"' % SOURCE_DIR
 confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
-confix_flags += ' --make --targets="all check"'
-
+confix_flags += ' --bootstrap --configure'
 
 print 'confix.py ' + confix_flags
 sys.exit(os.system('confix.py ' + confix_flags) != 0)

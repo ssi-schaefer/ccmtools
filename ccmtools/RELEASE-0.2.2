@@ -3,6 +3,18 @@ Latest stable release : CCM Tools 0.2.2 ""
 This release fixes several bugs from the 0.2.1 "Benadryl" release, 
 including the following :
 
+Python Scripts:
+---------------
+* The build process uses a new python script called ccmtools-c++-configure
+  that forces Confix to bootstrap and configure the generated AND the
+  hand crafted code.
+
+* The ccmtools-c++-make script takes the *_app.* and the *_user_types.h
+  and writes them to the generated source code.
+  Now we copy the files with the option -p to leave the timestamps on their
+  current state. Thus, the compiler only compiles the changed files.
+  
+
 IDL3 Parser and IDL to C++ Mapping:
 -----------------------------------
 * The IDL parser now handles arrays accurately.

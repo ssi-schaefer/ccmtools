@@ -212,7 +212,7 @@ confix_flags  = ' --packagename="%s"' % CCMTOOLS_PACKAGE
 confix_flags += ' --packageroot="%s"' % SOURCE_DIR
 confix_flags += ' --packageversion="%s" --profile="ccmtools"' % CODE_VERSION
 confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
-confix_flags += ' --bootstrap --configure'
+#confix_flags += ' --bootstrap --configure'
 if INSTALL_DIR: confix_flags += ' --prefix="%s"' % INSTALL_DIR
 
 print 'confix.py' + confix_flags

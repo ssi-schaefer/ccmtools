@@ -19,6 +19,7 @@ ${MKDIR} -p ${build_dir} ${install_dir} ${template_dir}
 ln -s `which ccmtools-generate`      ${sandbox_dir}
 ln -s `which ccmtools-c++-generate`  ${sandbox_dir}
 ln -s `which ccmtools-c++-make`      ${sandbox_dir}
+ln -s `which ccmtools-c++-configure` ${sandbox_dir}
 ln -s `which ccmtools-c++-install`   ${sandbox_dir}
 ln -s `which ccmtools-c++-uninstall` ${sandbox_dir}
 
@@ -53,6 +54,9 @@ test -z "${ret}" && ccmtools-c++-generate -d -c "1.2.3" -p ${1} \
 
 test -d ${top_srcdir}/../test/CppGenerator/${1} && \
   ${CP} ${top_srcdir}/../test/CppGenerator/${1}/* .
+
+test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
+  ccmtools-c++-configure -p ${1} || ret=1
 
 test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
   ccmtools-c++-make -p ${1} || ret=1
