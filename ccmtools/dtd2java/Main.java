@@ -38,7 +38,6 @@ public class Main
      */
     public static void main( String[] argv )
     {
-        int returnCode = 1;
         try
         {
             if( argv.length<2 )
@@ -50,13 +49,12 @@ public class Main
                 DtdFile f = DtdParser.parseFile(argv[0]);
                 DtdGenerator g = new DtdGenerator();
                 g.run(f, argv[1]);
-                returnCode = 0;
             }
         }
         catch( Exception e )
         {
             e.printStackTrace();
-	    System.exit(returnCode);
+            System.exit(1);
         }
     }
 }
