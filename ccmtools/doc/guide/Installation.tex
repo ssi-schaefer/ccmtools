@@ -36,13 +36,13 @@ code. You will need to configure, build, and install the binary files, and then
 set environment variables appropriately:
 \begin{small}
 \begin{verbatim}
-  ~> tar xvzf ccmtools-0.3.1.tar.gz
-  ~> cd ccmtools-0.3.1
+  ~> tar xzf ccmtools-A.B.X.tar.gz
+  ~> cd ccmtools-A.B.X
   ~> ./autogen.py --prefix=<ccm_tools_path>
   ~> make
   ~> make install
   ~> export PATH=<ccm_tools_path>/bin:$PATH
-  ~> export CLASSPATH=<ccm_tools_path>/share/java/ccmtools.jar: \
+  ~> export CLASSPATH=<ccm_tools_path>/share/java/ccmtools-A.B.jar: \
                       <ccm_tools_path>/share/java/antlr.jar:    \
                       $CLASSPATH
 \end{verbatim}
@@ -53,11 +53,11 @@ set of Jar archives, templates, and documents. To install this distribution,
 download the binary distribution ({\tt *.bin.tar.gz}) file and do the following:
 \begin{small}
 \begin{verbatim}
-  ~> tar xvzf ccmtools-0.2.1.bin.tar.gz
-  ~> cd ccmtools-0.2.1
+  ~> tar xzf ccmtools-A.B.X.bin.tar.gz
+  ~> cd ccmtools-A.B.X
   ~> export CCMTOOLS_HOME=`pwd`
   ~> export PATH=`pwd`/bin:$PATH
-  ~> export CLASSPATH=`pwd`/share/java/ccmtools.jar: \
+  ~> export CLASSPATH=`pwd`/share/java/ccmtools-A.B.jar: \
                       `pwd`/share/java/antlr.jar:    \
                       $CLASSPATH
 \end{verbatim}

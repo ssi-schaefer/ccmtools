@@ -99,7 +99,7 @@ import java.util.TreeSet;
  * derived classes.
  *
  * Code templates are usually looked for in a directory like
- * /usr/share/ccmtools-0.2/<language>CodeGenerator/; see the TemplateManager and
+ * /usr/share/ccmtools-A.B/<language>CodeGenerator/; see the TemplateManager and
  * TemplateManagerImpl documentation for details. Templates form the basis of
  * the code generator customization: Variables declared within a template
  * determine which type of node information gets placed in which output file.
