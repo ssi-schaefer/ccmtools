@@ -242,7 +242,7 @@ WX::Utils::SmartPtr<LocalComponents::Object>
 {
     DEBUGNL(" %(Identifier)s->provide_facet(" << name << " )");
 %(MProvidesDefProvideFacet)s
-    throw LocalComponents::InvalidName(name);
+    throw LocalComponents::InvalidName();
 }
 
 
@@ -259,7 +259,7 @@ LocalComponents::Cookie
     DEBUGNL(" %(Identifier)s->connect ( " << name << " )");
 
 %(MUsesDefConnectFacet)s
-    throw LocalComponents::InvalidName(name);
+    throw LocalComponents::InvalidName();
 }
 
 void
@@ -275,7 +275,7 @@ void
         throw LocalComponents::InvalidConnection();
 
 %(MUsesDefDisconnectFacet)s
-    throw LocalComponents::InvalidName(name);
+    throw LocalComponents::InvalidName();
 }
 
 
