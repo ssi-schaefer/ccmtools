@@ -8,7 +8,7 @@
 
 module Components {
 
-  typePrefix Components "omg.org";
+  //  typePrefix Components "omg.org";
 
   /*
    * ----------------------------------------------------------------------
