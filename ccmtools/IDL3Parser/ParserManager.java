@@ -164,6 +164,7 @@ public class ParserManager {
         }
 
         setOriginalFile(filename);
+        setSourceFile(filename);
 
         symbolTable.pushFile();
 
