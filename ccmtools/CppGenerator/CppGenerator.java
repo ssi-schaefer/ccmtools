@@ -109,8 +109,8 @@ abstract public class CppGenerator
         "unsigned short",                           // PK_USHORT
         "LocalComponents::Object*",                 // PK_VALUEBASE
         "void",                                     // PK_VOID
-        "char",                                     // PK_WCHAR
-        "std::string"                               // PK_WSTRING
+        "wchar_t",                                  // PK_WCHAR
+        "std::wstring"                              // PK_WSTRING
     };
 
     protected final static String sequence_type = "std::vector";
@@ -377,14 +377,12 @@ abstract public class CppGenerator
 	    base_type = "WX::Utils::SmartPtr<" + base_type + ">";
 	}
 
+	// This code defines the parameter passing rules for operations:
+	//   in    : simple types are passed as const values
+	//           complex types are passed by const ref
+	//   inout : always passed by ref
+	//   out   : always passed by ref
         if (object instanceof MParameterDef) {
-	    /* This code defines the parameter passing rules:
-	     *   in    : simple types are passed as const values
-	     *           complex types are passed by const ref
-	     *   inout : always passed by ref
-	     *   out   : always passed by ref
-	     */
-
             MParameterDef param = (MParameterDef) object;
             MParameterMode direction = param.getDirection();
             String prefix = "";
@@ -398,11 +396,11 @@ abstract public class CppGenerator
 		    || (idl_type instanceof MInterfaceDef)) {
 		    suffix = "&";
 		}
-	    } else { // inout, out
+	    } 
+	    else { // inout, out
 		prefix = "";
 		suffix = "&";
 	    }
-
 	    return prefix + base_type + suffix;
         }
 
