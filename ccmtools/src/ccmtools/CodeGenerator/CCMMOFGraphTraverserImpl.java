@@ -20,19 +20,19 @@
 
 package ccmtools.CodeGenerator;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
-
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * A CCM MOF graph traverser similar in pattern to the SAX XML parser.
@@ -48,6 +48,8 @@ public class CCMMOFGraphTraverserImpl
 {
     private List handlers = null;
 
+    private Set exceptionSet = new HashSet();
+    
     public CCMMOFGraphTraverserImpl()
     {
         handlers = new ArrayList();
@@ -110,21 +112,25 @@ public class CCMMOFGraphTraverserImpl
      */
     private void traverseRecursive(Object node, String context, Set visited)
     {
-        if (node == null) return;
+        if (node == null) 
+            return;
 
         // this type check comb is silly.
 
         String id = null;
-        if (node instanceof MContained) {
+        if(node instanceof MContained) {
             id = ((MContained) node).getIdentifier();
-        } else if (node instanceof MFieldDef) {
+        }
+        else if(node instanceof MFieldDef) {
             id = ((MFieldDef) node).getIdentifier();
-        } else if (node instanceof MParameterDef) {
+        }
+        else if(node instanceof MParameterDef) {
             id = ((MParameterDef) node).getIdentifier();
-        } else if (node instanceof MUnionFieldDef) {
+        }
+        else if(node instanceof MUnionFieldDef) {
             id = ((MUnionFieldDef) node).getIdentifier();
         }
-
+        
         if (id == null)
             throw new RuntimeException("Node "+node+" in context "+context+
                                        " has no identifier");
@@ -133,12 +139,41 @@ public class CCMMOFGraphTraverserImpl
         // eventually to use the absoluteName attribute, but that's more of a
         // parser issue.
 
-        String scope_id = new String(context + "::" + id);
-        if (scope_id.startsWith("::")) scope_id = scope_id.substring(2);
+        //String scope_id = new String(context + "::" + id);
+        String scope_id = context + "::" + id;
+        
+        /*
+        //!!!!!!!!!!!!!!!
+        // Exception must be handled in a separate case... 
+        if(node instanceof MExceptionDef) {
+            List scope = new ArrayList();
+            MContainer c = ((MContained) node).getDefinedIn();
+            while (c.getDefinedIn() != null) {
+                if (c instanceof MModuleDef) 
+                    scope.add(0, c.getIdentifier());
+                c = c.getDefinedIn();
+            }
+            String exceptionId = ccmtools.utils.Text.join("::",scope) + "::" + id;
+            if(exceptionSet.contains(exceptionId)) {
+                System.out.println("==> already visited = " + exceptionId);
+                return;	
+            }
+            exceptionSet.add(exceptionId);	
+            System.out.println("==> visited = " + exceptionId);
+        }
+        // !!!!!!!!!!!!!!!!!!!!	
+*/
+        
+        if (scope_id.startsWith("::")) 
+            scope_id = scope_id.substring(2);
 
-        if (visited.contains(scope_id)) return;
+        if (visited.contains(scope_id)) {
+            //System.out.println("==> already visited = " + scope_id);	
+            return;
+        }
         visited.add(scope_id);
-
+        //System.out.println("==> visited = " + scope_id);
+        
         for (Iterator j = handlers.iterator(); j.hasNext(); )
             ((NodeHandler) j.next()).startNode(node, scope_id);
 

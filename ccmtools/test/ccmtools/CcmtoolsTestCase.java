@@ -217,7 +217,7 @@ public class CcmtoolsTestCase extends TestCase
     {
 	runCcmtoolsGenerate("c++local -a -o " + sandboxDir + 
 			    " " + testDir + "/Test.idl");
-	runCcmtoolsGenerate("idl2 -o " + sandboxDir + "/CCM_Remote_Stubs" +  
+	runCcmtoolsGenerate("idl2 -o " + sandboxDir + "/CORBA_Stubs" +  
 			    " " + testDir + "/Test.idl");
 	runCcmtoolsGenerate("c++remote -o " + sandboxDir + 
 			    " " + testDir + "/Test.idl"); 
