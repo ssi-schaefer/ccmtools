@@ -118,4 +118,19 @@ class AliasTypeXmi extends mof_xmi_parser.model.MAliasType implements Worker
             }
         }
     }
+
+
+    public void moveAssociationEnds()
+    {
+        Iterator it = content().iterator();
+        while( it.hasNext() )
+        {
+            Object obj = it.next();
+            if( obj instanceof Worker )
+            {
+                ((Worker)obj).moveAssociationEnds();
+            }
+        }
+    }
+
 }

@@ -72,7 +72,7 @@ class AssociationEndImp extends TypedElementImp implements MofAssociationEnd
             isChangeable_ = ((AssociationEndXmi)xmi_).isChangeable_;
             if( isChangeable_==null )
             {
-                isChangeable_ = "false";
+                isChangeable_ = "true";
             }
         }
         return isChangeable_.equalsIgnoreCase("true");
@@ -119,5 +119,11 @@ class AssociationEndImp extends TypedElementImp implements MofAssociationEnd
     {
         handler.beginAssociationEnd(this);
         handler.endModelElement(this);
+    }
+
+
+    void moveTo( MofClassifier theClass )
+    {
+        ((NamespaceImp)theClass).add(this);
     }
 }

@@ -87,4 +87,19 @@ class PrimitiveTypeXmi extends mof_xmi_parser.model.MPrimitiveType implements Wo
             }
         }
     }
+
+
+    public void moveAssociationEnds()
+    {
+        Iterator it = content().iterator();
+        while( it.hasNext() )
+        {
+            Object obj = it.next();
+            if( obj instanceof Worker )
+            {
+                ((Worker)obj).moveAssociationEnds();
+            }
+        }
+    }
+
 }

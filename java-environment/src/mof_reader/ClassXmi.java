@@ -110,4 +110,31 @@ class ClassXmi extends mof_xmi_parser.model.MClass implements Worker
             }
         }
     }
+
+
+    public void moveAssociationEnds()
+    {
+        Iterator it = content().iterator();
+        while( it.hasNext() )
+        {
+            Object obj = it.next();
+            if( obj instanceof Worker )
+            {
+                ((Worker)obj).moveAssociationEnds();
+            }
+            else if( obj instanceof MNamespace_contents )
+            {
+                Iterator it2 = ((MNamespace_contents)obj).content().iterator();
+                while( it2.hasNext() )
+                {
+                    Object o2 = it2.next();
+                    if( o2 instanceof Worker )
+                    {
+                        ((Worker)o2).moveAssociationEnds();
+                    }
+                }
+            }
+        }
+    }
+
 }

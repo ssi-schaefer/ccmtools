@@ -38,6 +38,13 @@ abstract class NamespaceImp extends ModelElementImp implements MofNamespace
     private ArrayList contents_;
 
 
+    void add( MofModelElement child )
+    {
+        getContainedElements();
+        contents_.add(child);
+    }
+
+
     /// implements {@link MofNamespace#getContainedElements}
     public List getContainedElements()
     {

@@ -100,4 +100,19 @@ class TagXmi extends mof_xmi_parser.model.MTag implements Worker
     }
 
     private static int id_counter_;
+
+
+    public void moveAssociationEnds()
+    {
+        Iterator it = content().iterator();
+        while( it.hasNext() )
+        {
+            Object obj = it.next();
+            if( obj instanceof Worker )
+            {
+                ((Worker)obj).moveAssociationEnds();
+            }
+        }
+    }
+
 }

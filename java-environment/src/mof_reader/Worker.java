@@ -34,4 +34,12 @@ interface Worker
      * return the associated MOF-element
      */
     public MofModelElement mof();
+
+
+    /**
+     * 'AssocioationImp': move 'MofAssocioationEnd' to 'MofNamespace'
+     * others: call 'moveAssociationEnds' for all children
+     */
+    public void moveAssociationEnds();
+
 }

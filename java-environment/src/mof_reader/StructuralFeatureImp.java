@@ -88,7 +88,7 @@ abstract class StructuralFeatureImp extends TypedElementImp implements MofStruct
             isChangeable_ = getXmiIsChangeable();
             if( isChangeable_==null )
             {
-                isChangeable_ = "false";
+                isChangeable_ = "true";
             }
         }
         return isChangeable_.equalsIgnoreCase("true");

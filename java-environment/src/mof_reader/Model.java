@@ -101,6 +101,15 @@ public class Model
     }
 
 
+    /**
+     * writes the model
+     */
+    public void writeModel( String fileName ) throws java.io.IOException
+    {
+        root_.write(new java.io.File(fileName));
+    }
+
+
     /// all known root model elements
     private Map workers_ = new Hashtable();
 
@@ -167,5 +176,22 @@ public class Model
     }
 
     private Vector mofContent_;
+
+
+    /**
+     *  moves all instances of 'AssociationEnd' from 'Association' to 'Class' and removes 'Association'
+     */
+    public void moveAssociationEnds()
+    {
+        Iterator it = xmiContent_.iterator();
+        while( it.hasNext() )
+        {
+            Object obj = it.next();
+            if( obj instanceof Worker )
+            {
+                ((Worker)obj).moveAssociationEnds();
+            }
+        }
+    }
 
 }

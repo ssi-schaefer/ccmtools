@@ -105,4 +105,59 @@ class AssociationXmi extends mof_xmi_parser.model.MAssociation implements Worker
             }
         }
     }
+
+
+    /**
+     *  moves 'AssociationEnd' to 'Class'
+     */
+    public void moveAssociationEnds()
+    {
+        AssociationEndXmi end1=null, end2=null;
+        Iterator it = content().iterator();
+        while( it.hasNext() )
+        {
+            Object obj = it.next();
+            if( obj instanceof AssociationEndXmi )
+            {
+                if( end1==null )
+                {
+                    end1=(AssociationEndXmi)obj;
+                }
+                else if( end2==null )
+                {
+                    end2=(AssociationEndXmi)obj;
+                }
+            }
+            else if( obj instanceof Worker )
+            {
+                ((Worker)obj).moveAssociationEnds();
+            }
+            else if( obj instanceof MNamespace_contents )
+            {
+                Iterator it2 = ((MNamespace_contents)obj).content().iterator();
+                while( it2.hasNext() )
+                {
+                    Object o2 = it2.next();
+                    if( o2 instanceof AssociationEndXmi )
+                    {
+                        if( end1==null )
+                        {
+                            end1=(AssociationEndXmi)o2;
+                        }
+                        else if( end2==null )
+                        {
+                            end2=(AssociationEndXmi)o2;
+                        }
+                    }
+                    else if( o2 instanceof Worker )
+                    {
+                        ((Worker)o2).moveAssociationEnds();
+                    }
+                }
+            }
+        }
+        ((AssociationEndImp)end1.mof()).moveTo( ((MofAssociationEnd)end2.mof()).getType() );
+        ((AssociationEndImp)end2.mof()).moveTo( ((MofAssociationEnd)end1.mof()).getType() );
+    }
+
 }
