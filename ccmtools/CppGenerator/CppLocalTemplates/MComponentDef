@@ -47,6 +47,7 @@ class %(Identifier)s
     %(HomeType)s* home_local_adapter;
     CCM_%(Identifier)s* local_component;
     CCM_%(Identifier)s_Context* context;
+    WX::Utils::SmartPtr<LocalComponents::Assembly> assembly;
     bool ValidConnection;
 
 %(MProvidesDefAdapterVariable)s
@@ -54,7 +55,9 @@ class %(Identifier)s
 
   public:
     %(Identifier)s();
-    %(Identifier)s(%(HomeType)s* h, CCM_%(Identifier)s* lc);
+    %(Identifier)s(%(HomeType)s* h, 
+                   CCM_%(Identifier)s* lc,  
+                   WX::Utils::SmartPtr<LocalComponents::Assembly> a);
     virtual ~%(Identifier)s();
 
 %(MAttributeDefPrototype)s
@@ -196,13 +199,16 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
     home_local_adapter = NULL;
     local_component = NULL;
     context = NULL;
+    assembly = SmartPtr<LocalComponents::Assembly>();	
     ValidConnection = false;
 %(MProvidesDefAdapterVariableInitDefault)s
 %(MUsesDefAdapterVariableInitDefault)s
 }
 
-%(Identifier)s::%(Identifier)s(%(HomeType)s* h, CCM_%(Identifier)s* lc)
-    : home_local_adapter(h), local_component(lc)
+%(Identifier)s::%(Identifier)s(%(HomeType)s* h, 
+    CCM_%(Identifier)s* lc,
+    SmartPtr<LocalComponents::Assembly> a)
+    : home_local_adapter(h), local_component(lc), assembly(a)
 {
     DEBUGNL("+%(Identifier)s->%(Identifier)s()");
     context = new CCM_%(Identifier)s_Context_impl(this);
@@ -285,6 +291,9 @@ void
     DEBUGNL(" %(Identifier)s->configuration_complete()");
     if(!ValidConnection) 
         throw LocalComponents::InvalidConnection();
+    if(assembly != WX::Utils::SmartPtr<LocalComponents::Assembly>()) { 
+        assembly->configuration_complete(); 
+    }
     local_component->set_session_context(context);
     local_component->ccm_activate();
 }
@@ -296,9 +305,16 @@ void
     DEBUGNL(" %(Identifier)s->remove()");
     if(!ValidConnection) 
         throw LocalComponents::InvalidConnection();
-    ValidConnection = false;
-%(MProvidesDefImplRemove)s
     local_component->ccm_remove();
+%(MProvidesDefImplRemove)s
+
+    if(assembly != WX::Utils::SmartPtr<LocalComponents::Assembly>()) { 
+        assembly->tear_down(); 
+        // To resolve a cyclic smart pointer reference between a component
+	// and an assembly object, the assembly smart pointer must be cleaned.
+        assembly = WX::Utils::SmartPtr<LocalComponents::Assembly>();
+    }
+    ValidConnection = false;
 }
 
 %(CloseNamespace)s
