@@ -1,3 +1,4 @@
+%(MAttributeDefInclude)s
 %(MOperationDefInclude)s
 %(BaseInclude)s
 
@@ -9,6 +10,7 @@
 abstract local interface %(Identifier)s
   %(BaseType)s
 {
+%(MAttributeDef)s
 %(MOperationDef)s
 };
 
