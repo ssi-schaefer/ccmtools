@@ -5,7 +5,6 @@ dist_template_DATA = \
     Blank                                          \
     CerrDebugWriterHeader                          \
     CerrDebugWriterImpl                            \
-    Confix                                         \
     DebugHeader                                    \
     DebugImpl                                      \
     DebugWriterHeader                              \

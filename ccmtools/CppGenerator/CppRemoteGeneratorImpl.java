@@ -247,61 +247,6 @@ public class CppRemoteGeneratorImpl
 	return data_value;
     }
 
-
-    /**
-     * Return the C++ language mapping for the given object. 
-     *
-     * @param object the node object to use for type finding.
-     */
-    protected String getLanguageType(MTyped object)
-    {
-	System.out.println("CppRemoteGeneratorImpl.getLanguageType("+object+")");
-
-        MIDLType idl_type = object.getIdlType();
-        String base_type = idl_type.toString();
-
-	// handling of operation parameter types and passing rules
-        if (object instanceof MParameterDef) {
-            MParameterDef param = (MParameterDef) object;
-            MParameterMode direction = param.getDirection();
-
-            String prefix = "";
-            String suffix = "";
-
-            if (direction == MParameterMode.PARAM_IN) {
-		prefix = "const ";
-	    }
-
-            if ((idl_type instanceof MTypedefDef) ||
-                (idl_type instanceof MStringDef) ||
-                (idl_type instanceof MFixedDef)) {
-		suffix = "&";
-	    }
-            return prefix + base_type + suffix;
-        }
-
-	if ((object instanceof MAliasDef) && (idl_type instanceof MTyped))
-            return getLanguageType((MTyped) idl_type);
-
-	// handle IDL sequence mapping
-        // FIXME : can we implement bounded sequences in C++ ?
-	if (object instanceof MSequenceDef)
-            return "std::"+sequence_type+"<"+base_type+"> ";
-
-	// handle IDL array mapping
-	if (object instanceof MArrayDef) {
-            Iterator i = ((MArrayDef) object).getBounds().iterator();
-            Long bound = (Long) i.next();
-            String result = base_type + "[" + bound;
-            while (i.hasNext()) result += "][" + (Long) i.next();
-            return result + "]";
-        }
-
-        return base_type;
-    }
-
-
-
     /**
      * Get a variable hash table sutable for filling in the template from the
      * fillTwoStepTemplates function.
@@ -425,7 +370,6 @@ public class CppRemoteGeneratorImpl
         return op_string+" ("+join(",", ret)+" );";
     }
 
-
     protected String getParameterConvertResult(MOperationDef op)
     {
 	System.out.println("CppRemoteGeneratorImpl.getParameterConvertResult()");
@@ -461,9 +405,6 @@ public class CppRemoteGeneratorImpl
 	return ret_string;
     }
 
-
-
-
     /**
      * Transforms the local C++ language type to the corresponding CORBA type.
      *
@@ -473,7 +414,7 @@ public class CppRemoteGeneratorImpl
 	System.out.println("CppRemoteGeneratorImpl.getCORBALanguageType()");
 
 	MIDLType idl_type = object.getIdlType();
-        String base_type = idl_type.toString();
+        String base_type = getBaseLanguageType(object);
 
         if (CORBA_mappings.containsKey(base_type))
             base_type = (String) CORBA_mappings.get(base_type);
@@ -516,7 +457,6 @@ public class CppRemoteGeneratorImpl
         return base_type;
     }
 
-
     protected String getCORBAOperationParams(MOperationDef op)
     {
 	System.out.println("CppRemoteGeneratorImpl.getCORBAOperationParams()");
@@ -528,12 +468,6 @@ public class CppRemoteGeneratorImpl
         }
         return join(", ", ret);
     }
-
-
-
-    //====================================================================
-    // Write out generated files
-    //====================================================================
 
     /**
      * Write generated code to an output file.
@@ -550,59 +484,32 @@ public class CppRemoteGeneratorImpl
 	System.out.println("CppRemoteGeneratorImpl.writeOutput()");
 
         String out_string = template.substituteVariables(output_variables);
+
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
-	String node_name = ((MContained) current_node).getIdentifier();
-        String[] out_files = { node_name + "_remote.h",
-                               node_name + "_remote.cc" };
 	String[] out_file_types = { ".h", ".cc" };
 
-	String file_dir = "";
+	String node_name = ((MContained) current_node).getIdentifier();
 
-	// Note that the name of the target directory is extended
-	// by "_remote" to separate the remote code from the local one.
+        String dir_name = new String(node_name);
+        if (current_node instanceof MHomeDef)
+            dir_name = ((MHomeDef) current_node).getComponent().getIdentifier();
+
+	String file_dir = handleNamespace("IncludeNamespace", dir_name);
+        file_dir = file_dir.replaceAll("[^\\w]", "_");
 
         for (int i = 0; i < out_strings.length; i++) {
-  	    if (current_node instanceof MComponentDef) {
-		// ComponentDef node
-		file_dir = handleNamespace("FileNamespace", node_name);
-		if (out_strings[i].trim().equals("")) continue;
-		writeFinalizedFile(file_dir + "_remote",  node_name + "_remote" +
-				    out_file_types[i], out_strings[i]);
-	    }
-	    else if (current_node instanceof MHomeDef)  {
-		// HomeDef node
-		MHomeDef home = (MHomeDef)current_node;
-		node_name = ((MContained)home.getComponent()).getIdentifier();
-		file_dir = handleNamespace("FileNamespace", node_name);
-		if (out_strings[i].trim().equals("")) continue;
-		writeFinalizedFile(file_dir + "_remote", node_name + "Home_remote" + 
-				    out_file_types[i], out_strings[i]);
+            if (out_strings[i].trim().equals("")) continue;
 
-		// generate an empty Makefile.py in the CCM_Session_*_remote
-		// directory - needed by Confix
-		writeFinalizedFile(file_dir + "_remote","Makefile.py","");
-	    }
+            String file_name = node_name + out_file_types[i];
+            writeFinalizedFile(file_dir, file_name, out_strings[i]);
+
+            // write an empty Confix Makefile.py if there's not one here.
+
+            File confix_file = new File(output_dir, file_dir);
+            confix_file = new File(confix_file, "Makefile.py");
+            if (! confix_file.isFile())
+                writeFinalizedFile(file_dir, "Makefile.py", "");
 	}
-    }
-
-
-
-    /**
-     * Finalize the output files. This function's implementation writes two
-     * global files, a global Remote value conversion header, and a global
-     * user_types.h file based on the individual <file>_user_types.h files.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files)
-    {
-	System.out.println("CppRemoteGeneratorImpl.finalize()");
-
-	//...
     }
 }
 
