@@ -14,7 +14,7 @@
   <property name="build" location="build" />
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
-  <property name="prefix" location="." />
+  <property name="prefix" location="install" />
 
 
   <!-- Define different paths that are used in the following tasks -->
@@ -23,7 +23,7 @@
   </path>
 
   <path id="run.classpath">
-      <fileset dir="${prefix}/lib">
+      <fileset dir="${lib}">
           <include name="*.jar" />
       </fileset>	  
       <pathelement path="${java.class.path}" />
@@ -37,8 +37,8 @@
   <target name="init"
       description="Creates the build directory and deletes the old jar files." >
       <mkdir dir="${build}" />
-      <delete file="${prefix}/lib/uml2idl.jar" /> 
-      <delete file="${prefix}/lib/dtd2java.jar" /> 
+      <delete file="${lib}/uml2idl.jar" /> 
+      <delete file="${lib}/dtd2java.jar" /> 
   </target>  
 
 
@@ -129,6 +129,23 @@
   </target>
 
 
+  <!-- Install java-environment -->
+
+  <target name="install"  depends="uml2idl.jar" 
+      description="Install java-environment to prefix/.">
+      <mkdir dir="${prefix}" />
+      <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/dtd2java.jar" todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />       
+      <copy  todir="${prefix}/doc/dtd2java"  overwrite="true">
+          <fileset dir="${doc}/dtd2java" />
+      </copy>
+      <copy  todir="${prefix}/doc/uml2idl"  overwrite="true">
+          <fileset dir="${doc}/uml2idl" />
+      </copy>
+  </target>
+
+
   <!-- Clean up -->
 
   <target name="clean"
@@ -138,15 +155,14 @@
       <delete file="${src}/dtd2java/DTDTokenTypes.java" />
       <delete file="${src}/dtd2java/DTDTokenTypes.txt" />
       <delete file="${src}/dtd2java/UML.dtd.PP.dtd" />
-
       <delete dir="${src}/uml_parser" />
 
       <delete dir="${build}" /> 
+      <delete dir="${prefix}" /> 
+      <delete dir="${doc}/javadoc" /> 
 
       <delete file="u1.idl" />
       <delete file="u1.ocl" />
-
-      <delete dir="${doc}/javadoc" /> 
   </target>
 
 </project>
