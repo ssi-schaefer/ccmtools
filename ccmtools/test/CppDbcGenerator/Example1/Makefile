@@ -18,3 +18,6 @@ build: local dbc
 clean: 
 	rm -rf xxx 
 	rm -rf ${HOME}/tmp/xxx
+	rm constraints.txt
+	rm mdr.btd
+	rm mdr.btx

@@ -4,9 +4,8 @@ $ ccmtools-generate c++local -a -o xxx Example1.idl
 # create local test client (mirror component stuff must be eliminated)
 $ ccmtools-generate c++local-test -o xxx Example1.idl
 
-# The OCL Metamodel must be put to:
-# /home/eteinik/install/ccmtools/share/ccmtools/MDR/OCL.xml
-
+# create DbC aware local adapter set
 $ ccmtools-generate c++dbc -o xxx Example1.idl
 
+# compile example and run the test
 $ confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
