@@ -2,7 +2,7 @@
 $Header$
 -->
 
-<project name="java-environment" default="uml2idl.jar">
+<project name="java-environment" default="install">
 
   <description>
   This project contains java tools used by the ccmtools project.
@@ -44,50 +44,6 @@ $Header$
   </target>
 
 
-  <!-- UML parser and uml2idl -->
-
-  <target name="uml_parser" depends="init"
-      description="Run the dtd2java tool to create the uml_parser package.">
-      <java classname="dtd2java.Main">
-          <classpath refid="run.classpath" />
-	  <arg value="${src}/uml2idl/UML.dtd" />
-	  <arg value="uml_parser" />
-	  <arg value="src" />
-      </java>
-  </target>
-
-  <target name="uml2idl" depends="uml_parser"
-      description="Compile the whole ccmtools package (uml_parser and uml2idl).">
-        <javac srcdir="${src}/uml_parser" destdir="${build}" debug="on" >
-	    <classpath refid="compile.classpath" />
-        </javac>
-        <javac srcdir="${src}/uml2idl" destdir="${build}" debug="on" >
-	    <classpath refid="compile.classpath" />
-        </javac>
-  </target>
-
-
-  <target name="uml2idl.jar" depends="uml2idl"
-      description="Package the *.class files into uml2idl.jar.">
-      <jar jarfile="${lib}/uml2idl.jar" basedir="${build}" >
-         <manifest>
-            <attribute name="Main-Class" value="uml2idl.Main" />
-         </manifest>
-      </jar>
-  </target>
-
-
-  <!-- uml2idl Test -->
-
-  <target name="test" depends="uml2idl.jar" 
-      description="Run the uml2idl tool to test the created package.">
-      <java classname="uml2idl.Main" >
-          <classpath refid="run.classpath" />
-	  <arg value="test/u1.xml.zip" />
-	  <arg value="u1" />
-      </java>
-  </target>
-
 
   <!-- Create javaDoc -->
   <target name="doc" 
@@ -100,13 +56,9 @@ $Header$
 
 
   <!-- Install java-environment -->
-  <target name="install"  depends="uml2idl.jar" 
+  <target name="install"  
       description="Install java-environment to prefix/.">
       <mkdir dir="${prefix}" />
-      <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/mdr01.jar"    todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/dtd2java.jar" todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />
       <copy file="${lib}/Components.jar"  todir="${prefix}/lib"  overwrite="true" />
   </target>
 
