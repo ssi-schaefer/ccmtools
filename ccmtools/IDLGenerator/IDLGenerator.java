@@ -1,6 +1,6 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -24,14 +24,20 @@ package ccmtools.IDLGenerator;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
+import ccmtools.Metamodel.BaseIDL.MExceptionDef;
+import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
+import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +49,12 @@ import java.util.Map;
 abstract public class IDLGenerator
     extends CodeGenerator
 {
+    private final static String[] local_output_types =
+    {
+        "MComponentDef", "MInterfaceDef", "MHomeDef",
+        "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef"
+    };
+
     private final static String[] local_reserved_words =
     {
         "abstract", "array", "attribute", "boolean", "char", "const", "double",
@@ -85,7 +97,7 @@ abstract public class IDLGenerator
     public IDLGenerator(String sublang, Driver d, File out_dir)
         throws IOException
     {
-        super(sublang, d, out_dir, null, local_reserved_words,
+        super(sublang, d, out_dir, local_output_types, local_reserved_words,
               null, null, local_language_map);
     }
 
@@ -140,10 +152,41 @@ abstract public class IDLGenerator
             if (! pieces[i].trim().equals(""))
                 code_pieces.add(pieces[i]);
 
-        writeFinalizedFile
-            ("",
-             ((MContained) current_node).getIdentifier() + ".idl" + ext,
-             join("\n", code_pieces).replaceAll("};", "};\n"));
+        String name = join("_", namespace) + "_";
+        name += ((MContained) current_node).getIdentifier() + ".idl" + ext;
+
+        String code = join("\n", code_pieces).replaceAll("};", "};\n");
+
+        writeFinalizedFile("", name, code);
+    }
+
+    /**
+     * Build a string containing appropriately formatted namespace information
+     * based on the given data type and local namespace component. This is
+     * aimed at languages with C-like syntax (perl, C, C++, Java, IDL) and
+     * should be overridden for others (Python, Prolog :-).
+     *
+     * @param data_type a string referring to a desired type of namespace
+     *        information. This is normally a variable name from a template.
+     * @param local a string giving the name of the current namespace component.
+     * @return a string containing the appropriately formatted namespace
+     *         information.
+     */
+    protected String handleNamespace(String data_type, String local)
+    {
+        if (data_type.equals("OpenNamespace")) {
+            List tmp = new ArrayList();
+            for (Iterator i = namespace.iterator(); i.hasNext(); )
+                tmp.add("module "+i.next()+" {\n");
+            return join("", tmp);
+        } else if (data_type.equals("CloseNamespace")) {
+            List tmp = new ArrayList();
+            for (Iterator i = namespace.iterator(); i.hasNext(); i.next())
+                tmp.add("};\n");
+            return join("", tmp);
+        } else {
+            return super.handleNamespace(data_type, local);
+        }
     }
 
     /**
@@ -165,12 +208,20 @@ abstract public class IDLGenerator
 
         if (current_node instanceof MComponentDef) {
             return data_MComponentDef(variable, value);
+        } else if (current_node instanceof MHomeDef) {
+            return data_MHomeDef(variable, value);
         } else if (current_node instanceof MInterfaceDef) {
             return data_MInterfaceDef(variable, value);
         } else if (current_node instanceof MOperationDef) {
             return data_MOperationDef(variable, value);
         } else if (current_node instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
+        } else if (current_node instanceof MFieldDef) {
+            return data_MFieldDef(variable, value);
+        } else if (current_node instanceof MUnionFieldDef) {
+            return data_MUnionFieldDef(variable, value);
+        } else if (current_node instanceof MAliasDef) {
+            return data_MAliasDef(variable, value);
         }
 
         return value;
@@ -207,18 +258,24 @@ abstract public class IDLGenerator
 
     /**************************************************************************/
 
-    protected String data_MComponentDef(String data_type, String data_value)
+    protected String data_MAliasDef(String data_type, String data_value)
     {
-        if (data_type.equals("BaseTypes")) {
-            String base = joinBases(", ");
-            if (base.length() > 0) return ": " + base;
-        } else if (data_type.startsWith("MSupportsDef") &&
-                   data_value.endsWith(", ")) {
-            return "supports " +
-                data_value.substring(0, data_value.length() - 2);
+        MIDLType idl_type = ((MAliasDef) current_node).getIdlType();
+        if (data_type.equals("LanguageTypeInclude")) {
+            if (idl_type instanceof MContained) {
+                MContained node = (MContained) idl_type;
+                System.out.println("idl type "+node.getIdentifier()+" is mcontained ...");
+                if (node.getSourceFile().equals("")) {
+                    System.out.println("source file is not original");
+                    return getScopedInclude(node);
+                }
+            }
         }
         return data_value;
     }
+
+    protected String data_MComponentDef(String data_type, String data_value)
+    { return data_MInterfaceDef(data_type, data_value); }
 
     protected String data_MEnumDef(String data_type, String data_value)
     {
@@ -232,11 +289,37 @@ abstract public class IDLGenerator
         return data_value;
     }
 
+    protected String data_MFieldDef(String data_type, String data_value)
+    {
+        MIDLType idl_type = ((MFieldDef) current_node).getIdlType();
+        if (data_type.equals("LanguageTypeInclude")) {
+            if (idl_type instanceof MContained) {
+                MContained node = (MContained) idl_type;
+                if (node.getSourceFile().equals(""))
+                    return getScopedInclude(node);
+            }
+        }
+        return data_value;
+    }
+
+    protected String data_MHomeDef(String data_type, String data_value)
+    {
+        if (data_type.equals("ComponentInclude")) {
+        }
+        return data_MInterfaceDef(data_type, data_value);
+    }
+
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
         if (data_type.equals("BaseTypes")) {
             String base = joinBases(", ");
             if (base.length() > 0) return ": " + base;
+        } else if (data_type.equals("ExternInclude")) {
+            return collectExternIncludes();
+        } else if (data_type.startsWith("MSupportsDef") &&
+                   data_value.endsWith(", ")) {
+            return "supports " +
+                data_value.substring(0, data_value.length() - 2);
         }
         return data_value;
     }
@@ -249,6 +332,19 @@ abstract public class IDLGenerator
         else if (data_type.startsWith("MParameterDef") &&
                  data_value.endsWith(", "))
             return data_value.substring(0, data_value.length() - 2);
+        return data_value;
+    }
+
+    protected String data_MUnionFieldDef(String data_type, String data_value)
+    {
+        MIDLType idl_type = ((MUnionFieldDef) current_node).getIdlType();
+        if (data_type.equals("LanguageTypeInclude")) {
+            if (idl_type instanceof MContained) {
+                MContained node = (MContained) idl_type;
+                if (node.getSourceFile().equals(""))
+                    return getScopedInclude(node);
+            }
+        }
         return data_value;
     }
 }

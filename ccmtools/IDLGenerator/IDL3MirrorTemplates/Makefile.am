@@ -1,7 +1,7 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-templatedir = $(TEMPLATE_ROOT)/IDL3MirrorTemplates
+templatedir = $(TEMPLATE_ROOT)/IDL3Templates
 dist_template_DATA = \
     MAliasDef                  \
     MArrayDef                  \
@@ -10,18 +10,19 @@ dist_template_DATA = \
     MComponentDef              \
     MComponentDefAbstract      \
     MComponentDefAbstractLocal \
-    MComponentDefFwdDecl       \
     MComponentDefLocal         \
     MConstantDef               \
     MConsumesDef               \
+    MConsumesDefInclude        \
     MContainer                 \
     MEmitsDef                  \
+    MEmitsDefInclude           \
     MEnumDef                   \
-    MEnumDefFwdDecl            \
     MExceptionDef              \
     MExceptionDefName          \
     MFactoryDef                \
     MFieldDef                  \
+    MFieldDefInclude           \
     MHomeDef                   \
     MHomeDefAbstract           \
     MHomeDefAbstractLocal      \
@@ -30,16 +31,19 @@ dist_template_DATA = \
     MInterfaceDefAbstract      \
     MInterfaceDefAbstractLocal \
     MInterfaceDefLocal         \
-    MModuleDef                 \
     MOperationDef              \
     MParameterDef              \
     MProvidesDef               \
+    MProvidesDefInclude        \
     MPublishesDef              \
+    MPublishesDefInclude       \
     MStructDef                 \
-    MStructDefFwdDecl          \
     MSupportsDef               \
+    MSupportsDefInclude        \
     MUnionDef                  \
-    MUnionDefFwdDecl           \
     MUnionFieldDef             \
+    MUnionFieldDefInclude      \
     MUsesDef                   \
+    MUsesDefInclude            \
+    MUsesDefIncludeMultiple    \
     MUsesDefMultiple

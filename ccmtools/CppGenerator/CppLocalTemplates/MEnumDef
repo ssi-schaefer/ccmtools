@@ -1,4 +1,16 @@
+#ifndef __ENUM_%(FileNamespace)s_%(Identifier)s__H__
+#define __ENUM_%(FileNamespace)s_%(Identifier)s__H__
+
+%(OpenNamespace)s
+
 enum %(Identifier)s
 {
 %(Members)s
 };
+
+%(CloseNamespace)s
+
+#endif // __ENUM_%(FileNamespace)s_%(Identifier)s__H__
+
+
+

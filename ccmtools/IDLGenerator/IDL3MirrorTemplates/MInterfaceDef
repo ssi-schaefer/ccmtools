@@ -1,24 +1,31 @@
+%(ExternInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
+
+%(OpenNamespace)s
+
 interface %(Identifier)s
   %(BaseTypes)s
 {
+%(MAttributeDef)s
 %(MConstantDef)s
-%(MEnumDef)s
 
-%(MStructDefFwdDecl)s
-%(MUnionDefFwdDecl)s
+%(MValueDef)s
+%(MValueMemberDef)s
 
 %(MAliasDef)s
 
-%(MAttributeDef)s
-
-%(MValueMemberDef)s
-%(MValueBoxDef)s
-%(MValueDef)s
-
+%(MEnumDef)s
 %(MStructDef)s
 %(MUnionDef)s
 
-%(MExceptionDef)s
 %(MOperationDef)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__ */
+
+
 

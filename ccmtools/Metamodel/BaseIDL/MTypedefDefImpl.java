@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -33,9 +33,17 @@ public class MTypedefDefImpl
     private String identifier_;
     private String repositoryId_;
     private String version_;
+    private String sourceFile;
 
     private TypeCode typeCode_;
     private MContainer Contains_;
+
+    public MTypedefDefImpl()
+    {
+        typeCode_ = null;
+        Contains_ = null;
+        sourceFile = "";
+    }
 
     public String toString()
     {
@@ -70,6 +78,10 @@ public class MTypedefDefImpl
     // attribute version:String
     public String getVersion()                  {return version_;}
     public void setVersion(String __arg)        {version_ = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -1,4 +1,24 @@
+// ===========================================================================
+// union definition for %(Identifier)s
+// ===========================================================================
+
+#ifndef __UNION__%(FileNamespace)s_%(Identifier)s__H__
+#define __UNION__%(FileNamespace)s_%(Identifier)s__H__
+
+%(MUnionFieldDefInclude)s
+
+using namespace std;
+
+%(OpenNamespace)s
+
 union %(Identifier)s
 {
 %(MUnionFieldDef)s
 };
+
+%(CloseNamespace)s
+
+#endif // __UNION__%(FileNamespace)s_%(Identifier)s__H__
+
+
+

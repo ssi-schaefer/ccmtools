@@ -33,7 +33,6 @@ dist_template_DATA = \
     MInterfaceDefAbstract                    \
     MInterfaceDefAbstractLocal               \
     MInterfaceDefLocal                       \
-    MModuleDef                               \
     MOperationDef                            \
     MParameterDef                            \
     MProvidesDef                             \

@@ -1,5 +1,24 @@
+// ===========================================================================
+// struct definition for %(Identifier)s
+// ===========================================================================
+
+#ifndef __STRUCT__%(FileNamespace)s_%(Identifier)s__H__
+#define __STRUCT__%(FileNamespace)s_%(Identifier)s__H__
+
+%(MFieldDefInclude)s
+
+using namespace std;
+
+%(OpenNamespace)s
+
 struct %(Identifier)s
 {
 %(MFieldDef)s
 };
+
+%(CloseNamespace)s
+
+#endif // __STRUCT__%(FileNamespace)s_%(Identifier)s__H__
+
+
 

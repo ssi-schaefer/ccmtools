@@ -1,6 +1,6 @@
 /* CCM Tools : Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -53,6 +53,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -208,6 +209,8 @@ abstract public class CodeGenerator
 
     protected Stack namespace;
 
+    protected Set extern_includes;
+
     protected int flags = 0x0;
 
     public final static int FLAG_APPLICATION_FILES    = 0x0001;
@@ -336,20 +339,15 @@ abstract public class CodeGenerator
         type_stack = new Stack();
         variables_stack = new Stack();
 
-        // output variables. the output string will be substituted based on the
-        // variables in the output_variables hash.
-
-        output_variables = new Hashtable();
-
         namespace = new Stack();
+        output_variables = new Hashtable();
+        extern_includes = new HashSet();
     }
 
     /**
      * End processing a graph. This implementation does not do anything.
      */
-    public void endGraph()
-    {
-    }
+    public void endGraph() { }
 
     /**
      * Start a new node in the graph. This function provides basic node
@@ -388,6 +386,14 @@ abstract public class CodeGenerator
         for (Iterator i = current_variables.iterator(); i.hasNext(); ) {
             output_variables.put(getScopeID((String) i.next()), "");
         }
+
+        // if this node is externally defined, add it to the list of external
+        // defines ... for use as needed by the code generators.
+
+        if ((current_node instanceof MContained) &&
+            ! ((MContained) current_node).getSourceFile().equals(""))
+            extern_includes.add(current_node);
+
     }
 
     /**
@@ -420,9 +426,7 @@ abstract public class CodeGenerator
         // update the namespace if this is a module by removing the last item
         // from the namespace list.
 
-        if (node instanceof MModuleDef) {
-            namespace.pop();
-        }
+        if (node instanceof MModuleDef) namespace.pop();
 
         driver.nodeEnd(node, scope_id);
     }
@@ -444,30 +448,20 @@ abstract public class CodeGenerator
 
         if (field_type.endsWith("boolean")) {
             Boolean hack = new Boolean(value.toString());
-            if (hack.booleanValue()) {
-                output_variables.put(key, field_id);
-            } else {
-                output_variables.put(key, "");
-            }
+            if (! hack.booleanValue()) output_variables.put(key, "");
+            else output_variables.put(key, field_id);
 
         } else if (field_id.equals("Identifier")) {
             String name = (String) value;
-
             if (field_type.endsWith("MModuleDef")
                 || field_type.endsWith("MInterfaceDef")
                 || field_type.endsWith("MHomeDef")
-                || field_type.endsWith("MComponentDef")) {
-                name = mapName(name);
-            }
-
+                || field_type.endsWith("MComponentDef")) name = mapName(name);
             output_variables.put(key, name);
 
         } else {
-            if (value == null) {
-                output_variables.put(key, "");
-            } else {
-                output_variables.put(key, value.toString());
-            }
+            if (value == null) output_variables.put(key, "");
+            else output_variables.put(key, value.toString());
         }
     }
 
@@ -573,9 +567,7 @@ abstract public class CodeGenerator
             ret = ret.reverse();
             ret = new StringBuffer(ret.substring(sep.length()));
             return ret.reverse().toString();
-        } else {
-            return new String("");
-        }
+        } else return new String("");
     }
 
     /**
@@ -615,8 +607,7 @@ abstract public class CodeGenerator
     protected void writeFinalizedFile(String directory, String file, String output)
     {
         File local_dir = new File(output_dir, directory);
-        if (! local_dir.isDirectory())
-            local_dir.mkdirs();
+        if (! local_dir.isDirectory()) local_dir.mkdirs();
 
         File out_file = new File(local_dir, file);
         try {
@@ -699,13 +690,11 @@ abstract public class CodeGenerator
         if (idl_type == null)
             throw new RuntimeException(object + " has no IDL type");
 
-        // first check for aliases and structs and such ... try to get the
-        // identifier, if that doesn't work get the underlying type.
+        // first check for aliases and structs and such ... return the
+        // identifier.
 
-        if (idl_type instanceof MTypedefDef) {
-            MTypedefDef typedef = (MTypedefDef) idl_type;
-            return typedef.getIdentifier();
-        }
+        if (idl_type instanceof MTypedefDef)
+            return ((MTypedefDef) idl_type).getIdentifier();
 
         // type is some other class derived from mtyped ... get its derivative
         // type.
@@ -717,21 +706,96 @@ abstract public class CodeGenerator
         // kind for it.
 
         String type = null;
-        if (idl_type instanceof MPrimitiveDef) {
+        if (idl_type instanceof MPrimitiveDef)
             type = ((MPrimitiveDef) idl_type).getKind().toString();
-        } else if (idl_type instanceof MStringDef) {
+        else if (idl_type instanceof MStringDef)
             type = ((MStringDef) idl_type).getKind().toString();
-        } else if (idl_type instanceof MWstringDef) {
+        else if (idl_type instanceof MWstringDef)
             type = ((MWstringDef) idl_type).getKind().toString();
-        } else if (idl_type instanceof MFixedDef) {
+        else if (idl_type instanceof MFixedDef)
             type = ((MFixedDef) idl_type).getKind().toString();
-        } else if (idl_type instanceof MTypedefDef) {
-            type = ((MTypedefDef) idl_type).getIdentifier();
-        } else {
-            throw new RuntimeException("unknown IDL type :" + idl_type);
-        }
+        else throw new RuntimeException("unknown IDL type : " + idl_type);
 
         return type;
+    }
+
+    /**
+     * Build a string containing appropriately formatted namespace information
+     * based on the given data type and local namespace component. This is
+     * aimed at languages with C-like syntax (perl, C, C++, Java, IDL) and
+     * should be overridden for others (Python, Prolog :-).
+     *
+     * @param data_type a string referring to a desired type of namespace
+     *        information. This is normally a variable name from a template.
+     * @param local a string giving the name of the current namespace component.
+     * @return a string containing the appropriately formatted namespace
+     *         information.
+     */
+    protected String handleNamespace(String data_type, String local)
+    {
+        List names = new ArrayList(namespace);
+        if (! local.equals("")) names.add("CCM_Session_" + local);
+
+        if (data_type.equals("Namespace")) {
+            return join("::", names);
+        } else if (data_type.equals("LocalFileNamespace")) {
+            return join("_", slice(names, 1));
+        } else if (data_type.equals("FileNamespace")) {
+            return join("_", names);
+        } else if (data_type.equals("IncludeNamespace")) {
+            return join("/", names);
+        } else if (data_type.equals("UsingNamespace")) {
+            List tmp = new ArrayList();
+            for (Iterator i = names.iterator(); i.hasNext(); )
+                tmp.add("using namespace "+i.next()+";\n");
+            return join("", tmp);
+        } else if (data_type.equals("OpenNamespace")) {
+            List tmp = new ArrayList();
+            for (Iterator i = names.iterator(); i.hasNext(); )
+                tmp.add("namespace "+i.next()+" {\n");
+            return join("", tmp);
+        } else if (data_type.equals("CloseNamespace")) {
+            Collections.reverse(names);
+            List tmp = new ArrayList();
+            for (Iterator i = names.iterator(); i.hasNext(); )
+                tmp.add("} // /namespace "+i.next()+"\n");
+            return join("", tmp);
+        }
+        return "";
+    }
+
+    /**
+     * Create an #include statement sufficient for including the given node's
+     * header file. This is normally only valid for C and C++ code generators
+     * and should be overridden for other languages.
+     *
+     * @param node the node to use for gathering include statement information.
+     * @return a string containing an #include statement.
+     */
+    protected String getScopedInclude(MContained node)
+    {
+        List scope = getScope(node);
+        scope.add(0, namespace.get(0));
+        scope.add(node.getIdentifier());
+        return "#include <"+join("/", scope)+".h>";
+    }
+
+    /**
+     * Gather together a string containing the include statements needed to
+     * include externally defined nodes for the current node.
+     *
+     * @return a string containing #include <....h> statements for all
+     *         externally defined nodes.
+     */
+    protected String collectExternIncludes()
+    {
+        List lines = new ArrayList();
+        for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
+            MContained c = (MContained) i.next();
+            if (output_types.contains(c.toString().split(":")[0]))
+                lines.add(getScopedInclude(c));
+        }
+        return join("\n", lines);
     }
 
     /**
@@ -848,13 +912,12 @@ abstract public class CodeGenerator
                     throw new RuntimeException("Node '"+id+"' has no home");
                 }
             }
-        } else if (variable.equals("Container")) {
-            MContained c = null;
-            if (current_node instanceof MContained)
-                c = (MContained) current_node;
-            else if (current_node instanceof MParameterDef)
-                c = ((MParameterDef) current_node).getOperation();
-            value = getContainerIdentifier(c);
+        } else if (variable.endsWith("Namespace")) {
+
+            // this is just a useful default. subclasses should override this
+            // case if they need special behavior.
+
+            return handleNamespace(variable, "");
         }
 
         return value;
@@ -871,16 +934,21 @@ abstract public class CodeGenerator
     {
         if (! output_types.contains(current_type)) return;
 
-        // write out the output strings if the node is defined as global.
+        if ((current_node instanceof MContained) &&
+            ((MContained) current_node).getSourceFile().equals("")) return;
 
         try {
             Template template =
                 template_manager.getTemplate(current_type, current_name);
-            if (template == null) throw new IOException();
+            if (template == null) throw new RuntimeException();
             writeOutput(template);
-        } catch (IOException error) {
+        } catch (RuntimeException error) {
             throw new RuntimeException(
                 "Cannot find a template for " + current_name +
+                " (node type " + current_type + ")");
+        } catch (IOException error) {
+            throw new RuntimeException(
+                "Error writing output for " + current_name +
                 " (node type " + current_type + ")");
         }
     }
@@ -890,10 +958,7 @@ abstract public class CodeGenerator
     /**
      * Get a local scope id for the given node variable name.
      */
-    private String getScopeID(String var)
-    {
-        return current_name + "::" + var;
-    }
+    private String getScopeID(String var) { return current_name + "::" + var; }
 
     /**
      * Map an identifier to a language-safe identifier.
@@ -906,11 +971,10 @@ abstract public class CodeGenerator
      */
     private String mapName(String identifier)
     {
-        if (reserved_words.contains(identifier)) {
+        if (reserved_words.contains(identifier))
             return new String("_" + identifier);
-        } else {
+        else
             return new String(identifier);
-        }
     }
 
     /**
@@ -945,13 +1009,10 @@ abstract public class CodeGenerator
                 Object result = method.invoke(current_node, null);
                 Boolean hack  = new Boolean(result.toString());
                 if (hack.booleanValue()) attrs += method.getName().substring(2);
-            } catch (NoSuchMethodException e) {
-                continue;
-            } catch (IllegalAccessException e) {
-                continue;
-            } catch (InvocationTargetException e) {
-                continue;
             }
+            catch (NoSuchMethodException e)     { continue; }
+            catch (IllegalAccessException e)    { continue; }
+            catch (InvocationTargetException e) { continue; }
         }
 
         return attrs;

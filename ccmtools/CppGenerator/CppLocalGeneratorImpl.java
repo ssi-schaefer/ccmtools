@@ -1,6 +1,6 @@
 /* CCM Tools : C++ Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -23,10 +23,14 @@ package ccmtools.CppGenerator;
 
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MEnumDef;
+import ccmtools.Metamodel.BaseIDL.MExceptionDef;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MStructDef;
+import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 
@@ -37,7 +41,6 @@ import java.util.Iterator;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class CppLocalGeneratorImpl
     extends CppGenerator
@@ -47,7 +50,8 @@ public class CppLocalGeneratorImpl
 
     private final static String[] local_output_types =
     {
-        "MComponentDef", "MInterfaceDef", "MHomeDef"
+        "MComponentDef", "MInterfaceDef", "MHomeDef",
+        "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef"
     };
 
     // output locations and templates for "environment files", the files that we
@@ -121,53 +125,6 @@ public class CppLocalGeneratorImpl
                            template.substituteVariables(defines));
     }
 
-
-    /**
-     * Overwrites the CppGenerator method, to support the inclusion of
-     * the *_user_types.h file in the component logic.
-     *
-     * @param variable contains the strint that comes from the template
-     *                 file and looks like %(variable)s
-     * @author Egon Teiniker
-     */
-    protected String getLocalValue(String variable)
-    {
-        String value = super.getLocalValue(variable);
-
-	/* If the MComponentDef node does not have any supported interface,
-	 * facet or receptacle, the %(UserTypesInclude)s statement in the
-	 * MComponentDef Template generates a #include<> line that includes the
-	 * user_types.h file (always without the _mirror_ part in the 
-	 * filename).
-	 * Note that the module names are also part of the include's filename.
-	 */
-	if (current_node instanceof MComponentDef) {
-	    MComponentDef component = (MComponentDef) current_node;
-	    List FacetSet = component.getFacets();
-	    List ReceptacleSet = component.getReceptacles();
-	    List SupportSet = component.getSupportss();
-	    if(FacetSet.isEmpty() 
-               && ReceptacleSet.isEmpty()
-	       && SupportSet.isEmpty()) {
-		if(variable.equals("UserTypesInclude")) {
-		    String fileName = component.getIdentifier();
-		    String namespacePath = handleNamespace("IncludeNamespace","");
-		    StringBuffer includeLine = new StringBuffer("#include <");
-		    includeLine.append(namespacePath);
-		    includeLine.append("/");
-		    if (fileName.endsWith("_mirror"))
-			includeLine.append(fileName.substring(0,fileName.indexOf("_mirror")));
-		    else
-			includeLine.append(fileName);
-		    includeLine.append("_user_types.h>");
-		    return includeLine.toString();
-		}
-	    }
-	}
-	return value;
-    }
-
-
     /**
      * Write generated code to an output file.
      *
@@ -228,14 +185,14 @@ public class CppLocalGeneratorImpl
         String lang_type = getLanguageType(operation);
         Map vars = new Hashtable();
 
-        vars.put("Object",            container.getIdentifier());
-        vars.put("Identifier",        operation.getIdentifier());
-        vars.put("ProvidesType",      iface.getIdentifier());
-        vars.put("SupportsType",      iface.getIdentifier());
-        vars.put("LanguageType",      lang_type);
-        vars.put("MExceptionDef",     getOperationExcepts(operation));
-        vars.put("MParameterDefAll",  getOperationParams(operation));
-        vars.put("MParameterDefName", getOperationParamNames(operation));
+        vars.put("Object",              container.getIdentifier());
+        vars.put("Identifier",          operation.getIdentifier());
+        vars.put("ProvidesType",        iface.getIdentifier());
+        vars.put("SupportsType",        iface.getIdentifier());
+        vars.put("LanguageType",        lang_type);
+        vars.put("MExceptionDefThrows", getOperationExcepts(operation));
+        vars.put("MParameterDefAll",    getOperationParams(operation));
+        vars.put("MParameterDefName",   getOperationParamNames(operation));
 
         if (! lang_type.equals("void")) vars.put("Return", "return ");
         else                            vars.put("Return", "");
@@ -288,21 +245,19 @@ public class CppLocalGeneratorImpl
                 f = new ArrayList(); f.add(base); f.add(""); files.add(f);
             }
 
-        } else if (current_node instanceof MInterfaceDef) {
-            f = new ArrayList();
-            f.add("CCM_Local"); f.add(node_name + ".h"); files.add(f);
-            f = new ArrayList();
-            f.add("CCM_Local"); f.add(node_name + "_types.h"); files.add(f);
-
-        } else if (current_node instanceof MContainer) {
-            f = new ArrayList(); f.add("CCM_Local");
-            if ((flags & FLAG_USER_TYPES_FILES) == 0) f.add("");
-            else f.add(node_name + "_user_types.h");
-            files.add(f);
+        } else if ((current_node instanceof MInterfaceDef)
+                   || (current_node instanceof MStructDef)
+                   || (current_node instanceof MUnionDef)
+                   || (current_node instanceof MAliasDef)
+                   || (current_node instanceof MEnumDef)
+                   || (current_node instanceof MExceptionDef)) {
+            f = new ArrayList(); f.add(handleNamespace("AllFileNamespace", ""));
+            f.add(node_name + ".h"); files.add(f);
 
         } else {
-            throw new RuntimeException("Invalid output node "+node_name);
+            f = new ArrayList(); f.add(""); f.add(""); files.add(f);
         }
+
         return files;
     }
 }

@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -35,12 +35,22 @@ public class MUsesDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean multiple_;
 
     private MInterfaceDef Uses_;
     private MComponentDef Component_;
     private MContainer Contains;
+
+    public MUsesDefImpl()
+    {
+        multiple_ = false;
+        Uses_ = null;
+        Component_ = null;
+        Contains = null;
+        sourceFile = "";
+    }
 
     // override toString()
     public String toString()
@@ -74,6 +84,10 @@ public class MUsesDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -38,19 +38,22 @@ public class MExceptionDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private List MemberList_;
     private MContainer Contains;
 
     public MExceptionDefImpl()
     {
-	MemberList_ = new ArrayList();
+        Contains = null;
+        MemberList_ = new ArrayList();
+        sourceFile = "";
     }
 
     // override toString()
     public String toString()
     {
-	return "MExceptionDef: "+ identifier + MemberList_.toString();
+	return "MExceptionDef: "+ identifier + " " + MemberList_.toString();
     }
 
     //----------------------------------------------------------------
@@ -79,6 +82,10 @@ public class MExceptionDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -1,6 +1,6 @@
 %(LanguageType)s
 CCM_%(Object)s_impl::%(Identifier)s ( %(MParameterDefAll)s )
-  %(MExceptionDef)s
+  %(MExceptionDefThrows)s
 {
 #ifdef CCM_TEST_PYTHON
   DEBUGNL ( " CCM_%(Object)s_impl->call_python_%(Identifier)s ( %(MParameterDefName)s )" );

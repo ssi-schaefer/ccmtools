@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -33,11 +33,13 @@ public class MOperationDefImpl
         MDefinitionKind.DK_OPERATION;
 
     private String contexts_;
-    private boolean isOneway_;
     private String absoluteName;
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
+
+    private boolean isOneway_;
 
     private Set CanRaiseSet_;
     private List ParameterList_;
@@ -46,6 +48,8 @@ public class MOperationDefImpl
 
     public MOperationDefImpl()
     {
+        Contains = null;
+        TypedBy_ = null;
 	CanRaiseSet_ = new HashSet();
 	ParameterList_ = new ArrayList();
     }
@@ -93,6 +97,10 @@ public class MOperationDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

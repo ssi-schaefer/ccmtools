@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -35,13 +35,16 @@ public class MContainerImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private MContainer Contains;
     private List ContainsList;
 
     public MContainerImpl()
     {
+        Contains = null;
 	ContainsList = new ArrayList();
+        sourceFile = "";
     }
 
     // override toString()
@@ -72,6 +75,10 @@ public class MContainerImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

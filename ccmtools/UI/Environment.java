@@ -1,6 +1,6 @@
 /* CCM Tools : User Interface Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *

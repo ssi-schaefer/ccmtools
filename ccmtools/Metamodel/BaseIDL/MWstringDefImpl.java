@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -40,7 +40,6 @@ public class MWstringDefImpl
     {
 	return "MWstringDef: ";
     }
-
 
     //----------------------------------------------------------------
     // implementation of attribute access

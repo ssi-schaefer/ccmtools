@@ -29,7 +29,7 @@ dist_template_DATA = \
     MEmitsDefInclude                               \
     MEnumDef                                       \
     MExceptionDef                                  \
-    MExceptionDefClass                             \
+    MExceptionDefThrows                            \
     MFactoryDefAdapterDefinition                   \
     MFactoryDefAdapterPrototypeV                   \
     MFactoryDefAdapterPrototypeVV                  \
@@ -39,7 +39,6 @@ dist_template_DATA = \
     MFieldDef                                      \
     MHomeDef                                       \
     MInterfaceDef                                  \
-    MModuleDef                                     \
     MOperationDefPrototypeVV                       \
     MOperationProvidesAdapterDefinition            \
     MOperationProvidesAdapterImplDefinition        \
@@ -66,7 +65,6 @@ dist_template_DATA = \
     MProvidesDefProvidePrototype                   \
     MPublishesDefInclude                           \
     MStructDef                                     \
-    MStructDefFwdDecl                              \
     MSupportsDefAdapterImplDefinition              \
     MSupportsDefAdapterPrototype                   \
     MSupportsDefBase                               \
@@ -75,7 +73,6 @@ dist_template_DATA = \
     MSupportsDefImplPrototypeVV                    \
     MSupportsDefInclude                            \
     MUnionDef                                      \
-    MUnionDefFwdDecl                               \
     MUnionFieldDef                                 \
     MUsesDefAdapterDefinition                      \
     MUsesDefAdapterDefinitionMultiple              \

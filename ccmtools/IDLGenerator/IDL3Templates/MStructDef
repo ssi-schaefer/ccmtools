@@ -1,5 +1,18 @@
+%(MFieldDefInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_STRUCT__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_STRUCT__
+
+%(OpenNamespace)s
+
 struct %(Identifier)s
 {
 %(MFieldDef)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_STRUCT__ */
+
+
 

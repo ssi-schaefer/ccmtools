@@ -1,6 +1,6 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -23,9 +23,11 @@ package ccmtools.IDLGenerator;
 
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MContained;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class IDL2GeneratorImpl
     extends IDLGenerator
@@ -35,5 +37,19 @@ public class IDL2GeneratorImpl
 
     public void writeOutput(Template template)
         throws IOException { writeOutput(template, "2"); }
+
+    /**
+     * Create an #include statement sufficient for including the given node's
+     * header file.
+     *
+     * @param node the node to use for gathering include statement information.
+     * @return a string containing an #include statement.
+     */
+    protected String getScopedInclude(MContained node)
+    {
+        List scope = getScope(node);
+        scope.add(node.getIdentifier());
+        return "#include <"+join("_", scope)+".idl2>";
+    }
 }
 

@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -39,6 +39,8 @@ public class MArrayDefImpl
 
     public MArrayDefImpl()
     {
+        TypedBy_ = null;
+        typeCode_ = null;
 	bounds_ = new ArrayList();
     }
 
@@ -46,8 +48,7 @@ public class MArrayDefImpl
     public String toString()
     {
         String result = "MArrayDef: ";
-	if (bounds_ != null)
-            result += bounds_.toString();
+	if (bounds_ != null) result += bounds_.toString();
         return result;
     }
 

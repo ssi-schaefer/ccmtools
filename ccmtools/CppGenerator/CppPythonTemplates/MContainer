@@ -2,8 +2,8 @@
 // Python conversion function prototypes
 //==============================================================================
 
-#ifndef __CCM__TEST__PYTHON__CONVERT__%(Identifier)s__H__
-#define __CCM__TEST__PYTHON__CONVERT__%(Identifier)s__H__
+#ifndef __CCM__TEST__PYTHON__CONVERT__%(FileNamespace)s_%(Identifier)s__H__
+#define __CCM__TEST__PYTHON__CONVERT__%(FileNamespace)s_%(Identifier)s__H__
 
 #include <Python.h>
 %(UserTypesInclude)s
@@ -21,7 +21,7 @@ namespace Python {
 } // /namespace Python
 } // /namespace CCM_Test
 
-#endif // __CCM__TEST__PYTHON__CONVERT__%(Identifier)s__H__
+#endif // __CCM__TEST__PYTHON__CONVERT__%(FileNamespace)s_%(Identifier)s__H__
 
 
 <<<<<<<SPLIT>>>>>>>

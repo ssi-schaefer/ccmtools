@@ -1,5 +1,16 @@
+%(OpenNamespace)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_ENUM__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_ENUM__
+
 enum %(Identifier)s
 {
 %(Members)s
 };
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_ENUM__ */
+
+
 

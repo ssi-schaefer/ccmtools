@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -41,6 +41,10 @@ public interface MContained
     // attribute version:String
     String getVersion();
     void setVersion(String __arg);
+
+    // attribute sourceFile:String
+    String getSourceFile();
+    void setSourceFile(String __arg);
 
     // association: direct role: contants[*] <-> opposite role: definedIn[0..1]
     MContainer getDefinedIn();

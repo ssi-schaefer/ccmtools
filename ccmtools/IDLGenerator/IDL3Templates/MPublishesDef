@@ -1,1 +1,2 @@
   publishes %(ConsumesType)s %(Identifier)s;
+

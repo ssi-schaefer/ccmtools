@@ -2,7 +2,7 @@ header {
 /* CCM Tools : IDL3 Parser
  * Edin Arnautovic <edin.arnautovic@salomon.at>
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * Generated using antlr <http://antlr.org/> from source grammar file :
  * $Id$
@@ -35,8 +35,6 @@ import java.util.Map;
 import ccmtools.Metamodel.BaseIDL.*;
 import ccmtools.Metamodel.ComponentIDL.*;
 
-import org.omg.CORBA.Any;
-
 }
 
 /*
@@ -59,7 +57,6 @@ import org.omg.CORBA.Any;
  */
 
 /* TODO :
- * o implement debug levels more systematically
  * o unions :
  *   - if 'default' label exists, verify there is a default available in the
  *     discriminator
@@ -68,6 +65,7 @@ import org.omg.CORBA.Any;
  *     void return type
  * o make name lookup more rigorous (see FIXMEs)
  * o add enum support to const attribute definitions (already there ?)
+ * o implement better scope handling (especially lookups in symbol table)
  */
 
 /* ROAD MAP :
@@ -90,8 +88,8 @@ import org.omg.CORBA.Any;
  * C events
  *
  * Rules are specified in comments above each rule's implementation. Rules have
- * cross-referenced rule numbers to hopefully make it easier to find C in a
- * rule. Rules in comments generally have the form :
+ * cross-referenced rule numbers to hopefully make it easier to find different
+ * parts in a rule. Rules in comments generally have the form :
  *
  * // na. <A> ::= <B,nb> | <C,nc>
  *
@@ -99,11 +97,7 @@ import org.omg.CORBA.Any;
  */
 
 class IDL3Parser extends Parser;
-options 
-{ 
-  exportVocab = IDL3; 
-  k = 2;
-}
+options { exportVocab = IDL3; k = 2; }
 {
     // debug levels for the parser are allowed to use the lower 24 bits of a
     // long int.
@@ -193,9 +187,8 @@ options
      */
     private boolean checkKeyword(String id)
     {
-        for (int i = 0; i < keywords.length; i++) {
-            if (keywords[i].equalsIgnoreCase(id)) { return false; }
-        }
+        for (int i = 0; i < keywords.length; i++)
+            if (keywords[i].equalsIgnoreCase(id)) return false;
         return true;
     }
 
@@ -211,7 +204,23 @@ options
             result = new Long(expr);
             return result;
         } catch (Exception e) {
-            throw new TokenStreamException("can't evaluate '"+expr+"' as an integer");
+            throw new TokenStreamException(
+                "can't evaluate '"+expr+"' as an integer");
+        }
+    }
+
+    /*
+     * Check to make sure the given string is a positive (1 or greater) valid
+     * long integer. Throw an exception if not.
+     */
+    private void checkPositive(String bound)
+        throws TokenStreamException
+    {
+        try {
+            Long limit = new Long(bound);
+            if (limit.longValue() < 1) { throw new RuntimeException(); }
+        } catch (RuntimeException e) {
+            throw new TokenStreamException("invalid positive value "+bound);
         }
     }
 
@@ -227,7 +236,8 @@ options
             result = new Float(expr);
             return result;
         } catch (Exception e) {
-            throw new TokenStreamException("can't evaluate '"+expr+"' as a float");
+            throw new TokenStreamException(
+                "can't evaluate '"+expr+"' as a float");
         }
     }
 
@@ -236,13 +246,15 @@ options
      * symbol table. If the identifier is found, and points to an object of the
      * same type as the given query object, then check to see if the looked up
      * object is a forward declaration (which means it has a null definition
-     * body in some sense). If the looked up object is not a forward
+     * body in some sense, usually meaning that there are no members associated
+     * with the definition). If the looked up object is not a forward
      * declaration, throw a semantic error.
      */
     private MContained verifyNameEmpty(String id, MContained query)
         throws TokenStreamException
     {
-        MContained lookup = lookupNameInCurrentScope(id, DEBUG_TYPEDEF | DEBUG_INTERFACE);
+        MContained lookup =
+            lookupNameInCurrentScope(id, DEBUG_TYPEDEF | DEBUG_INTERFACE);
 
         if (lookup == null) return query;
 
@@ -275,7 +287,8 @@ options
             return lookup;
         }
 
-        throw new TokenStreamException("identifier '"+id+"' was defined more than once");
+        throw new TokenStreamException(
+            "identifier '"+id+"' was defined more than once");
     }
 
     /*
@@ -285,17 +298,35 @@ options
     private MContained verifyNameExists(String id, MContained query)
         throws TokenStreamException
     {
-        MContained lookup = lookupNameInCurrentScope(id, DEBUG_IDL_TYPE | DEBUG_TYPEDEF);
+        MContained lookup =
+            lookupNameInCurrentScope(id, DEBUG_IDL_TYPE | DEBUG_TYPEDEF);
 
         try {
             Class qtype = query.getClass().getInterfaces()[0];
-
             if (qtype.isInstance(lookup)) return lookup;
-
             throw new RuntimeException();
         } catch (RuntimeException e) {
             throw new TokenStreamException("identifier '"+id+"' is undefined or of the wrong type");
         }
+    }
+
+    /*
+     * Get the IDL type for a given identifier.
+     */
+    private MIDLType getIDLType(String id)
+        throws TokenStreamException
+    {
+        MContained contained = new MContainedImpl();
+        contained = verifyNameExists(id, contained);
+
+        if (contained instanceof MIDLType)
+            return (MIDLType) contained;
+
+        if (contained instanceof MTyped)
+            return ((MTyped) contained).getIdlType();
+
+        throw new TokenStreamException("contained object '"+
+            contained.getIdentifier()+"' is not an IDL type");
     }
 
     /*
@@ -306,16 +337,21 @@ options
         throws TokenStreamException
     {
         if (container == null)
-            throw new TokenStreamException("can't add contents ("+contents+") to a null container");
+            throw new TokenStreamException(
+                "can't add contents ("+contents+") to a null container");
+
+        String source = "";
+        if (! manager.getSourceFile().equals(manager.getOriginalFile()))
+            source = manager.getSourceFile();
 
         Iterator it = contents.iterator();
         while (it.hasNext()) {
             MContained item = (MContained) it.next();
 
-            if (item == null) {
+            if (item == null)
                 throw new TokenStreamException("can't add a null item from '"+contents+"' to container '"+container+"'");
-            }
 
+            item.setSourceFile(source);
             item.setDefinedIn(container);
             container.addContents(item);
 
@@ -486,21 +522,6 @@ options
     }
 
     /*
-     * Check to make sure the given string is a positive (1 or greater) valid
-     * long integer. Throw an exception if not.
-     */
-    private void checkPositive(String bound)
-        throws TokenStreamException
-    {
-        try {
-            Long limit = new Long(bound);
-            if (limit.longValue() < 1) { throw new RuntimeException(); }
-        } catch (RuntimeException e) {
-            throw new TokenStreamException("invalid positive value "+bound);
-        }
-    }
-
-    /*
      * Set the base(s) of this value def according to the name given.
      */
     private void addValueBase(MValueDef val, String name)
@@ -545,14 +566,14 @@ options
         if ((debug & level) != 0) {
             if ((debug & DEBUG_SYMBOL_TABLE) != 0)
                 System.out.println(symbolTable.toString());
-            System.out.println("[L] looking up " + name);
+            System.out.println("[L] looking up '" + name + "'");
         }
 
         result = this.symbolTable.lookupNameInCurrentScope(name);
 
         if ((debug & level) != 0) {
-            if (result == null) System.out.println("[L] "+name+" not found");
-            else System.out.println("[L] "+name+" ("+result+") found");
+            if (result == null) System.out.println("[L] '"+name+"' not found");
+            else System.out.println("[L] '"+name+"' ("+result+") found");
         }
 
         return result;
@@ -954,7 +975,7 @@ const_dcl returns [MConstantDef constant = null]
 //     | <scoped_name,12>
 //     | <octet_type,66>
 const_type returns [MIDLType type = null]
-{ String name = null; MTypedefDef typedef = new MTypedefDefImpl(); }
+{ String name = null; }
     :   ( integer_type ) => type = integer_type
     |   type = char_type
     |   type = wide_char_type
@@ -963,8 +984,7 @@ const_type returns [MIDLType type = null]
     |   type = string_type
     |   type = wide_string_type
     |   ( fixed_pt_const_type ) => type = fixed_pt_const_type
-    |   name = scoped_name
-        { type = (MTypedefDef) verifyNameExists(name, typedef); }
+    |   name = scoped_name { type = getIDLType(name); }
     |   type = octet_type
     ;
 
@@ -1233,11 +1253,10 @@ type_spec returns [MIDLType type = null]
 //     | <template_type_spec,47>
 //     | <scoped_name,12>
 simple_type_spec returns [MIDLType type = null]
-{ MTypedefDef typedef = new MTypedefDefImpl(); String name = null; }
+{ String name = null; }
     :   type = base_type_spec
     |   type = template_type_spec
-    |   name = scoped_name
-        { type = (MTypedefDef) verifyNameExists(name, typedef); }
+    |   name = scoped_name { type = getIDLType(name); }
     ;
 
 // 46. <base_type_spec> ::= <floating_pt_type,53>
@@ -1470,13 +1489,13 @@ union_type returns [MIDLType union = null]
 //     | <enum_type,78>
 //     | <scoped_name,12>
 switch_type_spec returns [MIDLType type = null]
-{ MTypedefDef typedef = new MTypedefDefImpl(); String name = null; }
+{ String name = null; }
     :   type = integer_type
     |   type = char_type
     |   type = wide_char_type
     |   type = boolean_type
     |   type = enum_type
-    |   name = scoped_name { typedef = (MTypedefDef) verifyNameExists(name, typedef); }
+    |   name = scoped_name { type = getIDLType(name); }
     ;
 
 // 74. <switch_body> ::= <case_dcl,75>+
@@ -1813,12 +1832,11 @@ context_expr returns [String context = null]
 //     | <wide_string_type,82>
 //     | <scoped_name,12>
 param_type_spec returns [MIDLType type = null]
-{ MTypedefDef typedef = new MTypedefDefImpl(); String name = null; }
+{ String name = null; }
     :   type = base_type_spec
     |   type = string_type
     |   type = wide_string_type
-    |   name = scoped_name
-        { type = (MTypedefDef) verifyNameExists(name, typedef); }
+    |   name = scoped_name { type = getIDLType(name); }
     ;
 
 // 96. <fixed_pt_type> ::= "fixed" "<" <positive_int_const,41> ","
@@ -2050,16 +2068,19 @@ component_dcl returns [MComponentDef component = null]
         LCURLY { symbolTable.pushScope(component.getIdentifier()); }
         decls = component_body
         {
+            String source = "";
+            if (! manager.getSourceFile().equals(manager.getOriginalFile()))
+                source = manager.getSourceFile();
+
             for (Iterator it = decls.iterator(); it.hasNext(); ) {
                 MContained element = (MContained) it.next();
                 element.setDefinedIn(component);
+                element.setSourceFile(source);
 
-                if ((debug & DEBUG_COMPONENT) != 0) {
+                if ((debug & DEBUG_COMPONENT) != 0)
                     System.out.print(
                         "[c] adding "+element.getIdentifier()+" to component "+
                         component.getIdentifier());
-
-                }
 
                 if (element instanceof MEmitsDef) {
                     ((MEmitsDef) element).setComponent(component);
@@ -2303,9 +2324,25 @@ home_export[MHomeDef home]
 }
     :   exports = export { checkAddContents(home, exports); }
     |   factory = factory_dcl SEMI
-        { factory.setHome(home); home.addFactory(factory); }
+        {
+            String source = "";
+            if (! manager.getSourceFile().equals(manager.getOriginalFile()))
+                source = manager.getSourceFile();
+
+            factory.setHome(home);
+            factory.setSourceFile(source);
+            home.addFactory(factory);
+        }
     |   finder = finder_dcl SEMI
-        { finder.setHome(home); home.addFinder(finder); }
+        {
+            String source = "";
+            if (! manager.getSourceFile().equals(manager.getOriginalFile()))
+                source = manager.getSourceFile();
+
+            finder.setHome(home);
+            finder.setSourceFile(source);
+            home.addFinder(finder);
+        }
     ;
 
 // 132. <factory_dcl> ::= "factory" <identifier>
@@ -2492,7 +2529,7 @@ identifier returns [String identifier = null]
 /* IDL LEXICAL RULES  */
 
 class IDL3Lexer extends Lexer;
-options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377'; }
+options { exportVocab = IDL3; k = 4; charVocabulary = '\u0000'..'\u0377'; }
 {
     // debug levels for the lexer. i assume the lexer will have fewer semantic
     // issues (== those that require debugging) so the lexer only gets the top
@@ -2509,9 +2546,6 @@ options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377'; }
     private final static long DEBUG_UNUSED_H = 0x80000000;
 
     private long debug = 0;
-
-    private String currentFileName;
-    private String oldname;
 
     private ParserManager manager;
 
@@ -2560,32 +2594,18 @@ WS options { paraphrase = "white space"; }
     :   ( ' ' | '\t' | '\f' | '\n' { newline(); } | '\r' )
         { $setType(Token.SKIP); } ;
 
-protected
-INCLUDE_STRING_LITERAL
-options { paraphrase = "an include string in angle brackets"; }
-    :   '<'! IDENT ( '/' IDENT )* '.' IDENT '>'! ;
-
 PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
-    :   '#' ( WS )*
-        (
-            ( "include" ) => "include"
-            {
-                if ((debug & DEBUG_FILE) != 0) {
-                    String label = "[f] tokenizing include : ";
-                    System.out.println(label + getText());
-                }
+    :   "# " ( DIGIT )+ ' ' s:STRING_LITERAL
+        {
+            if ((debug & DEBUG_FILE) != 0) {
+                String label = "[f] source from file : ";
+                System.out.println(label + s.getText());
             }
-            ( WS )* ( s:STRING_LITERAL | i:INCLUDE_STRING_LITERAL )
-        |   ( "pragma" ) => "pragma" // ( ~ ( '\n' | '\r' ) )*
-        |   ( "line" ) => "line" // ( ~ ( '\n' | '\r' ) )*
-        |   ( "if" ) => "if" // ( ~ ( '\n' | '\r' ) )*
-        |   ( "else" ) => "else" // ( ~ ( '\n' | '\r' ) )*
-        |   ( "endif" ) => "endif" // ( ~ ( '\n' | '\r' ) )*
-        |   ( "define" ) => "define" // ( ~ ( '\n' | '\r' ) )*
-        |   ( "ifdef" ) => "ifdef" // ( ~ ( '\n' | '\r' ) )*
-        |   ( "ifndef" ) => "ifndef" // ( ~ ( '\n' | '\r' ) )*
-        )
-        ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
+            String include = s.getText();
+            if (include.length() > 0 && include.charAt(0) != '<')
+                manager.setSourceFile(s.getText());
+        }
+        ( ' ' ( DIGIT )+ )? ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
         { $setType(Token.SKIP); newline(); } ;
 
 // this is cracked up, but for some reason antlr can't handle dollars at the end

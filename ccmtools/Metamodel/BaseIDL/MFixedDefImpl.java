@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -36,10 +36,17 @@ public class MFixedDefImpl
     private short scale_;
     private TypeCode typeCode_;
 
+    public MFixedDefImpl()
+    {
+        digits_ = 0;
+        scale_ = 0;
+        typeCode_ = null;
+    }
+
     // override toString()
     public String toString()
     {
-	return "MFixedDefImpl:";
+	return "MFixedDefImpl: ";
     }
 
 

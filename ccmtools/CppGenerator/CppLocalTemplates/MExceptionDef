@@ -1,1 +1,14 @@
-%(Identifier)s, 
+#ifndef __EXCEPTION__%(FileNamespace)s_%(Identifier)s__H__
+#define __EXCEPTION__%(FileNamespace)s_%(Identifier)s__H__
+
+%(OpenNamespace)s
+
+class %(Identifier)s { };
+
+%(CloseNamespace)s
+
+#endif // __EXCEPTION__%(FileNamespace)s_%(Identifier)s__H__
+
+
+
+

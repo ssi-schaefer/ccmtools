@@ -13,13 +13,16 @@ dist_template_DATA = \
     MComponentDefLocal         \
     MConstantDef               \
     MConsumesDef               \
+    MConsumesDefInclude        \
     MContainer                 \
     MEmitsDef                  \
+    MEmitsDefInclude           \
     MEnumDef                   \
     MExceptionDef              \
     MExceptionDefName          \
     MFactoryDef                \
     MFieldDef                  \
+    MFieldDefInclude           \
     MHomeDef                   \
     MHomeDefAbstract           \
     MHomeDefAbstractLocal      \
@@ -28,14 +31,19 @@ dist_template_DATA = \
     MInterfaceDefAbstract      \
     MInterfaceDefAbstractLocal \
     MInterfaceDefLocal         \
-    MModuleDef                 \
     MOperationDef              \
     MParameterDef              \
     MProvidesDef               \
+    MProvidesDefInclude        \
     MPublishesDef              \
+    MPublishesDefInclude       \
     MStructDef                 \
     MSupportsDef               \
+    MSupportsDefInclude        \
     MUnionDef                  \
     MUnionFieldDef             \
+    MUnionFieldDefInclude      \
     MUsesDef                   \
+    MUsesDefInclude            \
+    MUsesDefIncludeMultiple    \
     MUsesDefMultiple

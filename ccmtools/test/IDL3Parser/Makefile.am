@@ -26,6 +26,8 @@ TESTS = $(XFAIL_TESTS) \
     enum.sh                      \
     home.sh                      \
     interface.sh                 \
+    operation-component.sh       \
+    operation-interface.sh       \
     operations-primitivetypes.sh \
     provides-operation.sh        \
     provides.sh                  \

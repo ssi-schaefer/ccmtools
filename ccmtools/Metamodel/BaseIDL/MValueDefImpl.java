@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -37,6 +37,7 @@ public class MValueDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean isAbstract;
     private boolean isCustom;
@@ -55,8 +56,12 @@ public class MValueDefImpl
         isAbstract = false;
         isCustom = false;
         isTruncatable = false;
+        Contains = null;
 	ContainsList = new ArrayList();
 	AbstractDerivedFromList = new ArrayList();
+        ValueDerivedFrom = null;
+        interfaceDef = null;
+        sourceFile = "";
     }
 
     // override toString()
@@ -87,6 +92,10 @@ public class MValueDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     // attribute isAbstract:boolean
     public boolean isAbstract()                 {return isAbstract;}

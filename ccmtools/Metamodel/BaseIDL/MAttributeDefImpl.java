@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -34,6 +34,7 @@ public class MAttributeDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean isReadonly_;
 
@@ -46,6 +47,10 @@ public class MAttributeDefImpl
     {
 	GetRaisesSet_ = new HashSet();
 	SetRaisesSet_ = new HashSet();
+        Contains = null;
+        TypedBy_ = null;
+        sourceFile = "";
+        isReadonly_ = false;
     }
 
     // override toString()
@@ -76,6 +81,10 @@ public class MAttributeDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     // attribute isReadonly:boolean
     public boolean isReadonly()                 {return isReadonly_;}

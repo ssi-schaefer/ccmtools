@@ -1,6 +1,6 @@
 /* CCM Tools : User Interface Library
  * Leif Johnson <leif@ambient.2y.net>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -270,7 +270,7 @@ public class ConsoleCodeGenerator
         for (Iterator f = filenames.iterator(); f.hasNext(); ) {
             File source = new File((String) f.next());
             File idlfile = new File(System.getProperty("user.dir"),
-                                     "CCM_" + source.getName());
+                                     "_CCM_" + source.getName());
 
             // step (0). run the C preprocessor on the input file.
 
@@ -278,9 +278,9 @@ public class ConsoleCodeGenerator
                 // this needs to be updated to use the result of AC_PROG_CPP.
                 // unfortunately on my box this doesn't work ...
                 //
-                // Process preproc = rt.exec(Constants.CPP_PATH + " -P -o " +
+                // Process preproc = rt.exec(Constants.CPP_PATH + " -o " +
 
-                Process preproc = rt.exec("cpp " + " -P -o " +
+                Process preproc = rt.exec("cpp -o " +
                                           idlfile + " " + include_path +
                                           " " + source);
                 preproc.waitFor();
@@ -296,10 +296,12 @@ public class ConsoleCodeGenerator
             // step (1). parse the resulting preprocessed file.
 
             manager.reset();
+            manager.setOriginalFile(source.toString());
 
             try {
                 kopf = manager.parseFile(idlfile.toString());
-                if (kopf == null) throw new RuntimeException(
+                if (kopf == null)
+                    throw new RuntimeException(
                         "Parser returned a null container");
             } catch (Exception e) {
                 System.err.println("Error parsing "+source+":\n"+e);
@@ -317,6 +319,8 @@ public class ConsoleCodeGenerator
                     "Error generating code from "+source+":\n"+e);
                 System.exit(30);
             }
+
+            // delete the preprocessed temporary file if everything worked.
 
             idlfile.deleteOnExit();
         }

@@ -1,2 +1,15 @@
+%(LanguageTypeInclude)s
+
+#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_ALIAS__
+#define __CCM_%(FileNamespace)s_%(Identifier)s_ALIAS__
+
+%(OpenNamespace)s
+
 typedef %(LanguageType)s %(Identifier)s;
+
+%(CloseNamespace)s
+
+#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_ALIAS__ */
+
+
 

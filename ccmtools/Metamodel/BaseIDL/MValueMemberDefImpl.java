@@ -1,6 +1,6 @@
 /* CCM Tools : CCM Metamodel Library
  * Egon Teiniker <egon.teiniker@tugraz.at>
- * copyright (c) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003 Salomon Automation
  *
  * $Id$
  *
@@ -31,11 +31,20 @@ public class MValueMemberDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean isPublicMember_;
 
     private MContainer Contains;
     private MIDLType TypedBy_;
+
+    public MValueMemberDefImpl()
+    {
+        Contains = null;
+        TypedBy_ = null;
+        isPublicMember_ = true;
+        sourceFile = "";
+    }
 
     // override toString()
     public String toString()
@@ -69,6 +78,10 @@ public class MValueMemberDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation
