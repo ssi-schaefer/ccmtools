@@ -66,6 +66,7 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MPublishesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.utils.Text;
 
 /**
  * This code generation base class performs a large part of code generation
@@ -220,6 +221,8 @@ abstract public class CodeGenerator implements TemplateHandler
 
     protected String file_separator = File.separator;
 
+    protected Set exceptionSet;
+    
     /** *********************************************************************** */
 
     /**
@@ -298,6 +301,11 @@ abstract public class CodeGenerator implements TemplateHandler
         output_dir = out_dir;
         if(!output_dir.isDirectory())
             output_dir.mkdirs();
+
+    
+        // create an exception set hat is used to proper handle generation of exceptions
+        // an exception should only be generated once.
+        exceptionSet = new HashSet();
     }
 
     /** *********************************************************************** */
@@ -396,8 +404,10 @@ abstract public class CodeGenerator implements TemplateHandler
 
         driver.outputVariables(output_variables);
 
+        //System.out.println("***1***\n" + output_variables + "\n***1***"); //!!!!!!!
         updateVariables();
-
+        //System.out.println("***2***\n" + output_variables + "\n***2***"); //!!!!!!!
+          
         // update the namespace if this is a module by removing the last item
         // from the namespace list.
 
@@ -450,6 +460,9 @@ abstract public class CodeGenerator implements TemplateHandler
                 output_variables.put(key, value.toString());
         }
     }
+
+    
+    
 
     /** *********************************************************************** */
 
@@ -1041,22 +1054,40 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected void writeOutputIfNeeded()
     {
+        // don't generate code for model elements that are not defined as
+        // output_types (e.g. MStructDef, MExceptionDef, etc.)
         if(!output_types.contains(current_type))
-            return;
+            return; 
 
+        // don't generate code for model elements that are included from
+        // the original IDL file.
         if((current_node instanceof MContained)
                 && !((MContained) current_node).getSourceFile().equals(""))
             return;
 
+        // don't generate code for an MExceptionDef twice
+        if((current_node instanceof MExceptionDef)) {
+            List scope = getScope((MContained)current_node);
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(Text.join("::", scope));
+            buffer.append("::"); 
+            buffer.append(((MContained)current_node).getIdentifier());
+            if(exceptionSet.contains(buffer.toString())) {
+                return;
+            }
+            else {
+                exceptionSet.add(buffer.toString());
+            }
+        }
+        
         try {
-            Template template = template_manager.getTemplate(current_type,
-                                                             current_name);
+            Template template = template_manager.getTemplate(current_type,current_name);
             if(template == null)
                 throw new RuntimeException();
             writeOutput(template);
         }
         catch(RuntimeException error) {
-            error.printStackTrace();
+            //error.printStackTrace();
             throw new RuntimeException("Cannot find a template for "
                     + current_name + " (node type " + current_type + ")");
         }

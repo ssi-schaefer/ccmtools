@@ -164,11 +164,10 @@ public class CCMMOFGraphTraverserImpl implements GraphTraverser
             scope_id = scope_id.substring(2);
 
         if(visited.contains(scope_id)) {
-            //System.out.println("==> already visited = " + scope_id);
             return;
         }
         visited.add(scope_id);
-        //System.out.println("==> visited = " + scope_id);
+        //System.out.println("=> visited = " + scope_id); //!!!!!!!
 
         for(Iterator j = handlers.iterator(); j.hasNext();) {
             NodeHandler nh = (NodeHandler) j.next();
@@ -176,7 +175,7 @@ public class CCMMOFGraphTraverserImpl implements GraphTraverser
         }
         
         List children = processNodeData(node);
-
+        
         for(Iterator i = children.iterator(); i.hasNext();) {
             traverseRecursive(i.next(), scope_id, visited);
         }

@@ -1,0 +1,82 @@
+This document describes the planned and realized workpackages for ccmtools
+related to a particular release version. We plan four releases for 2005.
+   o) means planned workpackage
+   *) means realized workpackage  
+      - means workpackage (sub)task
+       
+==============================================================================
+Release 0.4 (Q1-2005)
+==============================================================================
+
+Dokumentation:
+--------------
+o) add remote example to Tutorial
+o) add DbC example to Tutorial
+o) add nested component composition example to Tutorial
+
+
+c++local generator:
+-------------------
+o) Bugfix: exception generation 
+   Exceptions will be generated more than one times (in different
+   namespaces) see Error example.
+o) generate local_deploy*() and local_undeploy*() functions with coded 
+   namespace.
+o) add Constants.Version to all generated files.
+o) add AssemblyFactory Template to CCM.h
+o) generate debug output with parameter values.
+o) Performance Measurement
+
+
+c++remote generator:
+--------------------
+o) separate local_*_deploy() from remote_*_deploy()
+o) use receptacle Adapter as local receptacle for connection 
+   (no remote Context version).
+o) test cases for attributes 
+o) test cases for supported interfaces
+o) test cases for interfaces as parameters
+o) generate debug output with parameter values.
+o) collect test cases 
+o) Performance Measurement
+
+
+java-client-lib generator:
+--------------------------
+o) implement first version 
+
+cpp-environment:
+----------------
+*) organize package structure
+   - move WX::Utils and external to a wx directory
+   - move CCM_* to a ccm directory
+o) generate CCM.{h,cc} from ccmtools/idl/CCM.idl
+
+
+java-environment:
+-----------------
+o) move uml2java from java-environment to ccmtools package.
+o) implement utils.CORBA.setDefaultValue() for structures.
+o) add Components.jar build from CCM.idl
+
+
+ccmtools-package:
+-----------------
+*) add idl/CCM.idl directory
+
+
+
+
+==============================================================================
+Release 0.5 (Q2-2005)
+==============================================================================
+
+
+==============================================================================
+Release 0.6 (Q3-2005)
+==============================================================================
+
+
+==============================================================================
+Release 0.7 (Q4-2005)
+==============================================================================

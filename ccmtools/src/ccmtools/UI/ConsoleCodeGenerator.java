@@ -74,7 +74,7 @@ public class ConsoleCodeGenerator
 
     private static List languages;
 
-    private static long gen_mask = ConsoleDriverImpl.M_NONE; //ConsoleDriverImpl.M_MESSAGE;
+    private static long gen_mask = ConsoleDriverImpl.M_OUTPUT_FILE; //ConsoleDriverImpl.M_MESSAGE;
 
     private static long par_mask = 0x00000000;
 
@@ -239,7 +239,7 @@ public class ConsoleCodeGenerator
     private static void printVersion()
     {
         System.out.println("ccmtools version " + Constants.VERSION);
-        System.out.println("Copyright (C) 2002, 2003, 2004 Salomon Automation");
+        System.out.println("Copyright (C) 2002 - 2005 Salomon Automation");
         System.out.println("The CCM Tools library is distributed under the");
         System.out.println("terms of the GNU Lesser General Public License.");
     }
