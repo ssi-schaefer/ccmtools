@@ -52,24 +52,39 @@ see section 3 (``Environment API'').
 2. Installation
 ===============
 
-This package requires the snappy automated build tool, Confix, for building,
-installation, and uninstallation. Confix is available from its project web site:
-http://confix.sf.net/. Please use the latest available version ; Confix and the
-CCM Tools actually evolve together, so often the latest CCM Tools will require
-the latest Confix.
+The packages in the CCM Tools C++ environments require the snappy automated
+build tool, Confix, for building, installation, and uninstallation. Confix is
+available from its project web site: http://confix.sf.net/. Please use the
+latest available version ; Confix and the CCM Tools actually evolve together, so
+often the latest CCM Tools will require the latest Confix.
 
-To install this package, make sure you have properly configured your Confix by
-defining your particular needs in the ~/.confix file (read the Confix
-documentation for details). Once you have set this up, simply use the Confix
-command line interface to build and install the library. For example, you can
-build, install, and clean up the source tree by doing the following:
+To install these packages, make sure you have properly configured your Confix
+installation by defining your particular needs in the ~/.confix file (read the
+Confix documentation for details). Once you have set this up, simply use the
+Confix command line interface to build and install the libraries in this
+package.
 
+For example, you can build, install, and clean up the source tree for the
+CCM_Local environment library by doing the following:
+
+  $ pwd
+  /home/foo/ccmtools-cpp-env
+  $ cd CCM_Local
   $ confix.py --bootstrap --configure --make --targets="all install clean"
 
 To uninstall and remove unneeded Makefiles, you can simply provide the
 appropriate build targets to Confix:
 
+  $ pwd
+  /home/foo/ccmtools-cpp-env/CCM_Local
   $ confix.py --make --targets="uninstall distclean"
+
+Each of the libraries included in this package should be installed on a machine
+that you use for component development. The CCM_Local and CCM_Remote directories
+provide libraries for local and remote CORBA components, respectively ; the
+external directory provides wrapper libraries for several common ORBs ; and the
+CCM_Python directory provides a wrapper library for Python bindings for your
+generated components.
 
 This should provide enough control over building, installing, and uninstalling
 your CCM Tools C++ environment libraries. If you have suggestions or questions,
