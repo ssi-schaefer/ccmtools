@@ -48,19 +48,40 @@ abstract class TypedElementImp extends ModelElementImp implements MofTypedElemen
     static MofClassifier makeType( ModelElementImp element )
     {
         Vector ch = element.xmi_.findChildren(MTypedElement_type.xmlName__);
+        if( ch.size()<1 )
+        {
+            System.err.println("TypedElementImp.makeType : no type");
+        }
         for( int i=0; i<ch.size(); ++i )
         {
             MTypedElement_type t = (MTypedElement_type)ch.get(i);
+            if( t.size()<1 )
+            {
+                System.err.println("TypedElementImp.makeType : empty type");
+            }
             for( int j=0; j<t.size(); ++j )
             {
                 Object o = t.get(j);
                 if( o instanceof Worker )
                 {
                     MofModelElement e = ((Worker)o).mof();
-                    if( e instanceof MofClassifier )
+                    if( e==null )
+                    {
+                        System.err.println("TypedElementImp.makeType : null type");
+                    }
+                    else if( e instanceof MofClassifier )
                     {
                         return (MofClassifier)e;
                     }
+                    else
+                    {
+                        System.err.println("TypedElementImp.makeType : wrong type : "+
+                                            e.getClass().getName());
+                    }
+                }
+                else
+                {
+                    System.err.println("TypedElementImp.makeType : unknown type : "+o.getClass().getName());
                 }
             }
         }

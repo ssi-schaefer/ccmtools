@@ -52,6 +52,7 @@ class StructureTypeImp extends GeneralizableElementImp implements MofStructureTy
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginStructureType(this);
+        handler.endModelElement(this);
     }
 }

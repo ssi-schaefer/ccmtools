@@ -78,6 +78,7 @@ class OperationImp extends BehavioralFeatureImp implements MofOperation
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginOperation(this);
+        handler.endModelElement(this);
     }
 }

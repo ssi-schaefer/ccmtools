@@ -12,6 +12,7 @@
 package mof_reader;
 
 import java.util.Iterator;
+import mof_xmi_parser.model.MTypedElement_type;
 
 
 /**
@@ -43,6 +44,22 @@ class ConstantXmi extends mof_xmi_parser.model.MConstant implements Worker
             if( obj instanceof Worker )
             {
                 ((Worker)obj).register(map, this);
+            }
+            else if( obj instanceof MTypedElement_type )
+            {
+                Iterator it2 = ((MTypedElement_type)obj).content().iterator();
+                while( it2.hasNext() )
+                {
+                    Object o2 = it2.next();
+                    if( o2 instanceof Worker )
+                    {
+                        ((Worker)o2).register(map, this);
+                    }
+                }
+            }
+            else
+            {
+                System.err.println("ConstantXmi.register - main: unknown child : "+obj.getClass().getName());
             }
         }
     }

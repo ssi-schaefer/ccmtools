@@ -71,6 +71,7 @@ class ClassImp extends GeneralizableElementImp implements MofClass
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginClass(this);
+        handler.endModelElement(this);
     }
 }

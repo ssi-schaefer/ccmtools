@@ -78,6 +78,7 @@ class EnumerationTypeImp extends GeneralizableElementImp implements MofEnumerati
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginEnumerationType(this);
+        handler.endModelElement(this);
     }
 }

@@ -46,7 +46,8 @@ class ExceptionImp extends BehavioralFeatureImp implements MofException
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginException(this);
+        handler.endModelElement(this);
     }
 
 }

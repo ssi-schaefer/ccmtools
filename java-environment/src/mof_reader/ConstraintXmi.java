@@ -44,6 +44,10 @@ class ConstraintXmi extends mof_xmi_parser.model.MConstraint implements Worker
             {
                 ((Worker)obj).register(map, this);
             }
+            else
+            {
+                System.err.println("ConstraintXmi.register - main: unknown child : "+obj.getClass().getName());
+            }
         }
     }
 

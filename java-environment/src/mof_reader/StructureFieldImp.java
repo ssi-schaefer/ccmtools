@@ -37,6 +37,7 @@ class StructureFieldImp extends TypedElementImp implements MofStructureField
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginStructureField(this);
+        handler.endModelElement(this);
     }
 }

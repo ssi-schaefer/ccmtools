@@ -137,6 +137,7 @@ class AssociationEndImp extends TypedElementImp implements MofAssociationEnd
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginAssociationEnd(this);
+        handler.endModelElement(this);
     }
 }

@@ -45,6 +45,10 @@ class TagXmi extends mof_xmi_parser.model.MTag implements Worker
             {
                 ((Worker)obj).register(map, this);
             }
+            else
+            {
+                System.err.println("TagXmi.register - main: unknown child : "+obj.getClass().getName());
+            }
         }
     }
 

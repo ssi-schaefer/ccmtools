@@ -42,6 +42,27 @@ public class MofMultiplicityType
     public boolean isUnique() { return isUnique_; }
 
 
+    public String toString()
+    {
+        StringBuffer result = new StringBuffer();
+        if( lower_!=upper_ )
+        {
+            result.append(lower_);
+            result.append("..");
+        }
+        result.append(upper_<0 ? "*" : (""+upper_));
+        if( isOrdered_ )
+        {
+            result.append(" ordered");
+        }
+        if( isUnique_ )
+        {
+            result.append(" unique");
+        }
+        return result.toString();
+    }
+
+
     MofMultiplicityType( MAssociationEnd_multiplicity m ) throws NumberFormatException
     {
         convertContainer(m);

@@ -71,6 +71,7 @@ class AttributeImp extends StructuralFeatureImp implements MofAttribute
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginAttribute(this);
+        handler.endModelElement(this);
     }
 }

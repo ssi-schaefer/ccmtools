@@ -114,6 +114,7 @@ class ConstraintImp extends ModelElementImp implements MofConstraint
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginConstraint(this);
+        handler.endModelElement(this);
     }
 }

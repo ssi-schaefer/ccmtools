@@ -115,7 +115,8 @@ class ImportImp extends ModelElementImp implements MofImport
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginImport(this);
+        handler.endModelElement(this);
     }
 
 }

@@ -90,6 +90,7 @@ class TagImp extends ModelElementImp implements MofTag
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginTag(this);
+        handler.endModelElement(this);
     }
 }

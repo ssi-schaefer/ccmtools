@@ -52,7 +52,8 @@ class PrimitiveTypeImp extends GeneralizableElementImp implements MofPrimitiveTy
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginPrimitiveType(this);
+        handler.endModelElement(this);
     }
 
 }

@@ -97,6 +97,7 @@ class CollectionTypeImp extends GeneralizableElementImp implements MofCollection
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginCollectionType(this);
+        handler.endModelElement(this);
     }
 }

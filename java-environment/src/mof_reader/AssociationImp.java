@@ -71,6 +71,7 @@ class AssociationImp extends GeneralizableElementImp implements MofAssociation
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginAssociation(this);
+        handler.endModelElement(this);
     }
 }

@@ -66,6 +66,7 @@ class AliasTypeImp extends GeneralizableElementImp implements MofAliasType
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginAliasType(this);
+        handler.endModelElement(this);
     }
 }

@@ -44,6 +44,10 @@ class PrimitiveTypeXmi extends mof_xmi_parser.model.MPrimitiveType implements Wo
             {
                 ((Worker)obj).register(map, this);
             }
+            else
+            {
+                System.err.println("PrimitiveTypeXmi.register - main: unknown child : "+obj.getClass().getName());
+            }
         }
     }
 

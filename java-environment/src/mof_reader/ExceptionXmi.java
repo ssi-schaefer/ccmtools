@@ -44,6 +44,10 @@ class ExceptionXmi extends mof_xmi_parser.model.MException implements Worker
             {
                 ((Worker)obj).register(map, this);
             }
+            else
+            {
+                System.err.println("ExceptionXmi.register - main: unknown child : "+obj.getClass().getName());
+            }
         }
     }
 

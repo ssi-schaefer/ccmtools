@@ -102,6 +102,7 @@ class ParameterImp extends TypedElementImp implements MofParameter
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginParameter(this);
+        handler.endModelElement(this);
     }
 }

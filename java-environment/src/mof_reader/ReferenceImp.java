@@ -13,8 +13,10 @@ package mof_reader;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 import mof_xmi_parser.DTD_Container;
+import mof_xmi_parser.model.MReference_referencedEnd;
 
 
 /**
@@ -49,17 +51,47 @@ class ReferenceImp extends StructuralFeatureImp implements MofReference
     { return ((AttributeXmi)xmi_).multiplicity_; }
 
 
+    private MofAssociationEnd referencedEnd_;
+    //private MofAssociationEnd exposedEnd_;
+
+
     /// implements {@link MofReference#getReferencedEnd}
     public MofAssociationEnd getReferencedEnd()
     {
-        // TODO
-        throw new RuntimeException("not implemented");
+        if( referencedEnd_==null )
+        {
+            referencedEnd_ = createReferencedEnd();
+        }
+        return referencedEnd_;
     }
+
+    private MofAssociationEnd createReferencedEnd()
+    {
+        Vector ch = xmi_.findChildren(MReference_referencedEnd.xmlName__);
+        for( int i=0; i<ch.size(); ++i )
+        {
+            MReference_referencedEnd t = (MReference_referencedEnd)ch.get(i);
+            for( int j=0; j<t.size(); ++j )
+            {
+                Object o = t.get(j);
+                if( o instanceof Worker )
+                {
+                    MofModelElement e = ((Worker)o).mof();
+                    if( e instanceof MofAssociationEnd )
+                    {
+                        return (MofAssociationEnd)e;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 
     /// implements {@link MofReference#getExposedEnd}
     public MofAssociationEnd getExposedEnd()
     {
-        // TODO
+        // I don't know how to get this element
         throw new RuntimeException("not implemented");
     }
 
@@ -67,7 +99,7 @@ class ReferenceImp extends StructuralFeatureImp implements MofReference
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
-        throw new RuntimeException("not implemented");
+        handler.beginReference(this);
+        handler.endModelElement(this);
     }
 }

@@ -44,6 +44,10 @@ class EnumerationTypeXmi extends mof_xmi_parser.model.MEnumerationType implement
             {
                 ((Worker)obj).register(map, this);
             }
+            else
+            {
+                System.err.println("EnumerationTypeXmi.register - main: unknown child : "+obj.getClass().getName());
+            }
         }
     }
 

@@ -12,6 +12,8 @@
 package mof_reader;
 
 import java.util.Iterator;
+import mof_xmi_parser.model.MTypedElement_type;
+import mof_xmi_parser.model.MAssociationEnd_multiplicity;
 
 
 /**
@@ -44,8 +46,33 @@ class AssociationEndXmi extends mof_xmi_parser.model.MAssociationEnd implements 
             {
                 ((Worker)obj).register(map, this);
             }
+            else if( obj instanceof MTypedElement_type )
+            {
+                registerHelpers(((MTypedElement_type)obj).content().iterator(), map);
+            }
+            else if( obj instanceof MAssociationEnd_multiplicity )
+            {
+                registerHelpers(((MAssociationEnd_multiplicity)obj).content().iterator(), map);
+            }
+            else
+            {
+                System.err.println("AssociationEndXmi.register - main: unknown child : "+obj.getClass().getName());
+            }
         }
     }
+
+    private void registerHelpers( Iterator it2, java.util.Map map )
+    {
+        while( it2.hasNext() )
+        {
+            Object o2 = it2.next();
+            if( o2 instanceof Worker )
+            {
+                ((Worker)o2).register(map, this);
+            }
+        }
+    }
+
 
     /// implements {@link Worker#mof}
     public MofModelElement mof()

@@ -60,6 +60,7 @@ class ConstantImp extends TypedElementImp implements MofConstant
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginConstant(this);
+        handler.endModelElement(this);
     }
 }
