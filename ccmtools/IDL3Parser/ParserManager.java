@@ -158,7 +158,6 @@ public class ParserManager {
 
         try {
             spec = parser.specification();
-            spec.setIdentifier(filename);
         } catch (Exception e) {
             errors.add(e);
         }

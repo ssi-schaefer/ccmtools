@@ -416,6 +416,7 @@ options { exportVocab = IDL3; k = 2; }
                 MSupportsDef support = new MSupportsDefImpl();
                 support.setIdentifier("support_"+name);
                 support.setSupports((MInterfaceDef) lookup);
+                support.setDefinedIn(iface);
                 if (iface instanceof MComponentDef) {
                     support.setComponent((MComponentDef) iface);
                 } else if (iface instanceof MHomeDef) {
