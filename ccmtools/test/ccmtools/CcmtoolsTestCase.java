@@ -202,4 +202,26 @@ public class CcmtoolsTestCase extends TestCase
             }
         }
     }
+
+
+    protected void runDefaultConfix(String sandboxDir)
+	throws ccmtools.CcmtoolsTestCaseException
+    {
+	runConfix("--packageroot=" + sandboxDir + 
+		  " --bootstrap --configure --make --targets=check");
+	runConfix("--packageroot=" + sandboxDir + " --make --targets=clean");
+    }
+
+
+    protected void runDefaultCcmtoolsGenerate(String testDir, String sandboxDir)
+    {
+	runCcmtoolsGenerate("c++local -a -o " + sandboxDir + 
+			    " " + testDir + "/Test.idl");
+	runCcmtoolsGenerate("idl2 -o " + sandboxDir + "/CCM_Remote_Stubs" +  
+			    " " + testDir + "/Test.idl");
+	runCcmtoolsGenerate("c++remote -o " + sandboxDir + 
+			    " " + testDir + "/Test.idl"); 
+	runCcmtoolsGenerate("c++remote-test -o " + sandboxDir + 
+			    " " + testDir + "/Test.idl");  
+    }
 }

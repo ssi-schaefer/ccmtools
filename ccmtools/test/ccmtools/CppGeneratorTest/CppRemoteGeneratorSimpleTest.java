@@ -28,37 +28,16 @@ import ccmtools.CcmtoolsTestCase;
  * These tests check the code generation process, and the runtime behavior 
  * of the generated code (using Confix' _check_*.cc files).  
  ***/
-public class CppRemoteGeneratorTest extends CcmtoolsTestCase
+public class CppRemoteGeneratorSimpleTest extends CcmtoolsTestCase
 {
     private String ccmtoolsDir;
 
-    public CppRemoteGeneratorTest(String name)
+    public CppRemoteGeneratorSimpleTest(String name)
     {
 	super(name);
 	// get current working directory 
 	// (this is where build.xml is executed)
 	ccmtoolsDir = System.getProperty("user.dir"); 
-    }
-
-
-    protected void runDefaultConfix(String sandboxDir)
-	throws ccmtools.CcmtoolsTestCaseException
-    {
-	runConfix("--packageroot=" + sandboxDir + 
-		  " --bootstrap --configure --make --targets=check");
-	runConfix("--packageroot=" + sandboxDir + " --make --targets=clean");
-    }
-
-    protected void runDefaultCcmtoolsGenerate(String testDir, String sandboxDir)
-    {
-	runCcmtoolsGenerate("c++local -a -o " + sandboxDir + 
-			    " " + testDir + "/Test.idl");
-	runCcmtoolsGenerate("idl2 -o " + sandboxDir + "/CCM_Remote_Stubs" +  
-			    " " + testDir + "/Test.idl");
-	runCcmtoolsGenerate("c++remote -o " + sandboxDir + 
-			    " " + testDir + "/Test.idl"); 
-	runCcmtoolsGenerate("c++remote-test -o " + sandboxDir + 
-			    " " + testDir + "/Test.idl");  
     }
 
 
