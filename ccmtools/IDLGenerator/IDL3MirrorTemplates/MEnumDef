@@ -1,5 +1,5 @@
-#ifndef __ENUM__%(IncludeNamespace)s%(Identifier)s__
-#define __ENUM__%(IncludeNamespace)s%(Identifier)s__
+#ifndef __ENUM__%(PreprocIdentifier)s__
+#define __ENUM__%(PreprocIdentifier)s__
 
 %(OpenNamespace)s
 

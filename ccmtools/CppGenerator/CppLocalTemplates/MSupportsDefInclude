@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s/%(SupportsType)s.h>
+#include <%(SupportsInclude)s.h>
 

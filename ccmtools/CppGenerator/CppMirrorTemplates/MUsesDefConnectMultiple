@@ -1,22 +1,7 @@
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_01 = 
-      my%(ComponentType)s.ptr()->connect("%(Identifier)s", %(UsesType)s%(Identifier)sUses);
-
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_02 = 
-      my%(ComponentType)s.ptr()->connect("%(Identifier)s", %(UsesType)s%(Identifier)sUses);
-
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_03 = 
-      my%(ComponentType)s.ptr()->connect("%(Identifier)s", %(UsesType)s%(Identifier)sUses);
-
-/*
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_01 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_01 );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_02 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_02 );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_03 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_03 );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_04 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_04 );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_05 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_05 );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_06 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_06 );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_07 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_07 );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_08 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_08 );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_09 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_09 );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_10 = my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses_10 );
-*/
+    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_01 =
+      my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses );
+    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_02 =
+      my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses );
+    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_03 =
+      my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses );
 

@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s/%(ConsumesType)s.h>
+#include <%(ConsumesInclude)s.h>
 

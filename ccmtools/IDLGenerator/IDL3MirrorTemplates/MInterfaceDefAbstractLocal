@@ -1,13 +1,13 @@
 %(MOperationDefInclude)s
 %(BaseInclude)s
 
-#ifndef __INTERFACE__%(IncludeNamespace)s%(Identifier)s__
-#define __INTERFACE__%(IncludeNamespace)s%(Identifier)s__
+#ifndef __INTERFACE__%(PreprocIdentifier)s__
+#define __INTERFACE__%(PreprocIdentifier)s__
 
 %(OpenNamespace)s
 
 abstract local interface %(Identifier)s
-  %(BaseTypes)s
+  %(BaseType)s
 {
 %(MOperationDef)s
 };

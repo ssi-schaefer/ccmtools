@@ -1,5 +1,3 @@
-    SmartPtr<localComponents::Object> %(UsesType)s%(Identifier)sUses = 
-      my%(ComponentType)sMirror.ptr()->provide_facet("%(Identifier)s_mirror" );
-
-
+    SmartPtr<localComponents::Object> %(UsesType)s%(Identifier)sUses =
+      my%(ComponentType)sMirror.ptr (  )->provide_facet( "%(Identifier)s_mirror" );
 

@@ -1,5 +1,5 @@
 localComponents::Cookie
-%(ComponentType)s::connect_%(Identifier)s ( SmartPtr<CCM_%(UsesType)s> f )
+%(ComponentType)s::connect_%(Identifier)s ( SmartPtr<%(CCMUsesType)s> f )
   throw ( localComponents::ExceededConnectionLimit, localComponents::InvalidConnection )
 {
   DEBUGNL ( " %(ComponentType)s->connect_%(Identifier)s (  )" );
@@ -11,7 +11,7 @@ localComponents::Cookie
   return ck;
 }
 
-SmartPtr<CCM_%(UsesType)s>
+SmartPtr<%(CCMUsesType)s>
 %(ComponentType)s::disconnect_%(Identifier)s ( localComponents::Cookie ck )
   throw ( localComponents::InvalidConnection )
 {
@@ -19,7 +19,7 @@ SmartPtr<CCM_%(UsesType)s>
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
   if ( %(Identifier)s_receptacles.find ( ck ) != %(Identifier)s_receptacles.end (  ) )
   {
-    SmartPtr<CCM_%(UsesType)s> f ( %(Identifier)s_receptacles[ck] );
+    SmartPtr<%(CCMUsesType)s> f ( %(Identifier)s_receptacles[ck] );
     %(Identifier)s_receptacles.erase ( ck );
     return f;
   }

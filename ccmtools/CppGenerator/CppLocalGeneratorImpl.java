@@ -112,27 +112,6 @@ public class CppLocalGeneratorImpl
     }
 
     /**
-     * Acknowledge the start of the given node during graph traversal. If the
-     * node is a MContainer type and is not defined in anything, assume it's the
-     * global parse container, and push "CCM_Local" onto the namespace stack,
-     * indicating that this code is for local CCM components.
-     *
-     * @param node the node that the GraphTraverser object is about to
-     *        investigate.
-     * @param scope_id the full scope identifier of the node. This identifier is
-     *        a string containing the names of parent nodes, joined together
-     *        with double colons.
-     */
-    public void startNode(Object node, String scope_id)
-    {
-        super.startNode(node, scope_id);
-
-        if ((node instanceof MContainer) &&
-            (((MContainer) node).getDefinedIn() == null))
-            namespace.push("CCM_Local");
-    }
-
-    /**
      * Finalize the output files. This function just writes a minimal Confix
      * configuration file with the -D flags for the compiler.
      *
@@ -227,6 +206,13 @@ public class CppLocalGeneratorImpl
 
     /**************************************************************************/
 
+    private String outputDirectory(String local)
+    {
+        List names = new ArrayList(namespace);
+        if (! local.equals("")) names.add("CCM_Session_" + local);
+        return join("_", names);
+    }
+
     /**
      * Create a list of lists of pathname components for output files needed by
      * the current node type.
@@ -253,7 +239,7 @@ public class CppLocalGeneratorImpl
                 base_name =
                     ((MHomeDef) current_node).getComponent().getIdentifier();
 
-            String base = handleNamespace("FileNamespace", base_name);
+            String base = outputDirectory(base_name);
 
             f = new ArrayList();
             f.add(base); f.add(node_name + "_gen.h"); files.add(f);
@@ -284,7 +270,7 @@ public class CppLocalGeneratorImpl
                    || (current_node instanceof MEnumDef)
                    || (current_node instanceof MExceptionDef)) {
             f = new ArrayList();
-            f.add(handleNamespace("FileNamespace", "")); f.add(node_name+".h");
+            f.add(outputDirectory("")); f.add(node_name+".h");
             files.add(f);
 
         } else {
@@ -292,71 +278,5 @@ public class CppLocalGeneratorImpl
         }
 
         return files;
-    }
-
-    /**************************************************************************/
-
-    protected String getLocalValue(String variable)
-    {
-        String value = super.getLocalValue(variable);
-
-        if (current_node instanceof MInterfaceDef)
-            return data_MInterfaceDef(variable, value);
-
-        return value;
-    }
-
-    protected String data_MInterfaceDef(String data_type, String data_value)
-    {
-        MInterfaceDef iface = (MInterfaceDef) current_node;
-
-        // we have to handle base class functions in the code rather than in the
-        // templates. there are too many graph visitation issues otherwise (and
-        // MBaseDef isn't a metamodel class anyway).
-
-        if (data_type.startsWith("BasePrototype")) {
-            MDefinitionKind filter = MDefinitionKind.DK_OPERATION;
-            List protos = new ArrayList();
-
-            for (Iterator b = ((MInterfaceDef) current_node).getBases().iterator(); b.hasNext(); ) {
-                List ops = ((MInterfaceDef) b.next()).getFilteredContents(filter, false);
-
-                for (Iterator o = ops.iterator(); o.hasNext(); ) {
-                    MOperationDef op = (MOperationDef) o.next();
-                    String proto = "  ";
-
-                    if (data_type.endsWith("VV")) proto += "virtual ";
-
-                    proto += getLanguageType(op) + " " + op.getIdentifier();
-
-                    proto += " ( ";
-                    for (Iterator p = op.getParameters().iterator(); p.hasNext(); ) {
-                        MParameterDef param = (MParameterDef) p.next();
-                        proto += getLanguageType(param) + " ";
-                        proto += param.getIdentifier();
-                        if (p.hasNext()) proto += ", ";
-                    }
-                    proto += " ) ";
-
-                    Set excepts = op.getExceptionDefs();
-                    if (excepts.size() > 0) {
-                        proto += "\n    throw ( ";
-                        for (Iterator e = excepts.iterator(); e.hasNext(); ) {
-                            proto += ((MExceptionDef) e.next()).getIdentifier();
-                            if (e.hasNext()) proto += ", ";
-                        }
-                        proto += " ) ";
-                    }
-
-                    if (data_type.endsWith("VV")) proto += "= 0";
-
-                    protos.add(proto.toString() + ";");
-                }
-            }
-
-            return join("\n", protos);
-        }
-
-        return super.data_MInterfaceDef(data_type, data_value);
     }
 }

@@ -4,8 +4,8 @@
 
 #include <vector>
 
-#ifndef __ALIAS_%(FileNamespace)s_%(Identifier)s__H__
-#define __ALIAS_%(FileNamespace)s_%(Identifier)s__H__
+#ifndef __ALIAS_%(PreprocIdentifier)s__H__
+#define __ALIAS_%(PreprocIdentifier)s__H__
 
 %(LanguageTypeInclude)s
 
@@ -17,7 +17,7 @@ typedef %(LanguageType)s %(Identifier)s;
 
 %(CloseNamespace)s
 
-#endif // __ALIAS_%(FileNamespace)s_%(Identifier)s__H__
+#endif // __ALIAS_%(PreprocIdentifier)s__H__
 
 
 

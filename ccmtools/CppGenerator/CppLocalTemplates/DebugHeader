@@ -12,6 +12,7 @@
 # include <strstream.h>
 #endif
 
+#include <cassert>
 #include <string>
 
 #include "DebugWriterManager.h"

@@ -3,15 +3,15 @@
 %(MFinderDefInclude)s
 %(BaseInclude)s
 
-#ifndef __HOME__%(IncludeNamespace)s%(Identifier)s__
-#define __HOME__%(IncludeNamespace)s%(Identifier)s__
+#ifndef __HOME__%(PreprocIdentifier)s__
+#define __HOME__%(PreprocIdentifier)s__
 
 %(OpenNamespace)s
 
 interface %(ComponentType)s;
 
 local interface %(Identifier)sExplicit :
-  Components::CCMHome%(BaseTypes)s%(MSupportsDef)s
+  Components::CCMHome%(BaseType)s%(MSupportsDef)s
 {
 %(MFactoryDef)s
 %(MFinderDef)s

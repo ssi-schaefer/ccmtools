@@ -7,8 +7,8 @@
 // %(Identifier)s - home class and support classes
 //==============================================================================
 
-#ifndef __%(FileNamespace)s_%(Identifier)s_GEN__H__
-#define __%(FileNamespace)s_%(Identifier)s_GEN__H__
+#ifndef __HOME_%(PreprocIdentifier)s_GEN__H__
+#define __HOME_%(PreprocIdentifier)s_GEN__H__
 
 #ifdef CCM_TEST_PYTHON
 #include <CCM_Test/Python/call_python.h>
@@ -26,7 +26,7 @@
 %(MSupportsDefInclude)s
 %(BaseInclude)s
 
-#include "%(ComponentType)s_gen.h"
+#include "%(ComponentIdentifier)s_gen.h"
 
 %(OpenNamespace)s
 
@@ -226,8 +226,8 @@ extern "C" {
 // %(Identifier)s - shared class definitions
 //==============================================================================
 
-#ifndef __%(FileNamespace)s_%(Identifier)s_SHARE__H__
-#define __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+#ifndef __HOME_%(PreprocIdentifier)s_SHARE__H__
+#define __HOME_%(PreprocIdentifier)s_SHARE__H__
 
 #include <CCM_Utils/SmartPointer.h>
 #include <localComponents/CCM.h>
@@ -266,7 +266,7 @@ class CCM_%(Identifier)s
 
 %(CloseNamespace)s
 
-#endif // __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+#endif // __HOME_%(PreprocIdentifier)s_SHARE__H__
 
 
 <<<<<<<SPLIT>>>>>>>
@@ -274,14 +274,14 @@ class CCM_%(Identifier)s
 // %(Identifier)s - entry point
 //==============================================================================
 
-#ifndef __%(FileNamespace)s_%(Identifier)s_ENTRY__H__
-#define __%(FileNamespace)s_%(Identifier)s_ENTRY__H__
+#ifndef __HOME_%(PreprocIdentifier)s_ENTRY__H__
+#define __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
 extern "C" {
   localComponents::HomeExecutorBase* create_%(Identifier)s();
 }
 
-#endif // __%(FileNamespace)s_%(Identifier)s_ENTRY__H__
+#endif // __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
 
 <<<<<<<SPLIT>>>>>>>
@@ -289,10 +289,10 @@ extern "C" {
 // %(Identifier)s - home class business logic
 //==============================================================================
 
-#ifndef __%(FileNamespace)s_%(Identifier)s_APP__H__
-#define __%(FileNamespace)s_%(Identifier)s_APP__H__
+#ifndef __HOME_%(PreprocIdentifier)s_APP__H__
+#define __HOME_%(PreprocIdentifier)s_APP__H__
 
-#include <%(IncludeNamespace)s/%(Identifier)s_share.h>
+#include <%(ShareInclude)s_share.h>
 #include "%(Identifier)s_entry.h"
 
 %(OpenNamespace)s

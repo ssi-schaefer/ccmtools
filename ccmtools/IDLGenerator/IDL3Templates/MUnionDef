@@ -1,7 +1,7 @@
 %(MUnionFieldDefInclude)s
 
-#ifndef __UNION__%(IncludeNamespace)s%(Identifier)s__
-#define __UNION__%(IncludeNamespace)s%(Identifier)s__
+#ifndef __UNION__%(PreprocIdentifier)s__
+#define __UNION__%(PreprocIdentifier)s__
 
 %(OpenNamespace)s
 

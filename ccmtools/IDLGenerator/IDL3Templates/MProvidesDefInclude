@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s%(ProvidesType)s.idl3>
+#include <%(ProvidesInclude)s.idl3>
 

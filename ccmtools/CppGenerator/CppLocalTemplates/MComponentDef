@@ -7,8 +7,8 @@
 // %(Identifier)s - component logic
 //==============================================================================
 
-#ifndef __%(FileNamespace)s_%(Identifier)s_GEN__H__
-#define __%(FileNamespace)s_%(Identifier)s_GEN__H__
+#ifndef __COMPONENT_%(PreprocIdentifier)s_GEN__H__
+#define __COMPONENT_%(PreprocIdentifier)s_GEN__H__
 
 #ifdef CCM_TEST_PYTHON
 #include <CCM_Test/Python/call_python.h>
@@ -22,8 +22,8 @@
 #include <CCM_Utils/SmartPointer.h>
 #include <localComponents/CCM.h>
 
-#include <%(IncludeNamespace)s/%(Identifier)s_share.h>
-#include <%(IncludeNamespace)s/%(HomeType)s_share.h>
+#include <%(SelfInclude)s_share.h>
+#include <%(HomeInclude)s_share.h>
 
 %(MAttributeDefInclude)s
 %(MConstantDefInclude)s
@@ -484,8 +484,8 @@ localComponents::ComponentPortDescription
 // %(Identifier)s - shared class definitions
 //==============================================================================
 
-#ifndef __%(FileNamespace)s_%(Identifier)s_SHARE__H__
-#define __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+#ifndef __COMPONENT_%(PreprocIdentifier)s_SHARE__H__
+#define __COMPONENT_%(PreprocIdentifier)s_SHARE__H__
 
 #include <map>
 #include <CCM_Utils/SmartPointer.h>
@@ -531,7 +531,7 @@ class CCM_%(Identifier)s_Context
 
 %(CloseNamespace)s
 
-#endif // __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+#endif // __COMPONENT_%(PreprocIdentifier)s_SHARE__H__
 
 
 <<<<<<<SPLIT>>>>>>>
@@ -539,10 +539,10 @@ class CCM_%(Identifier)s_Context
 // %(Identifier)s - business logic class definition
 //==============================================================================
 
-#ifndef __%(FileNamespace)s_%(Identifier)s_APP__H__
-#define __%(FileNamespace)s_%(Identifier)s_APP__H__
+#ifndef __COMPONENT_%(PreprocIdentifier)s_APP__H__
+#define __COMPONENT_%(PreprocIdentifier)s_APP__H__
 
-#include <%(IncludeNamespace)s/%(Identifier)s_share.h>
+#include <%(SelfInclude)s_share.h>
 
 %(OpenNamespace)s
 

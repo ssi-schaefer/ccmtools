@@ -1,5 +1,5 @@
-#ifndef __ENUM_%(FileNamespace)s_%(Identifier)s__H__
-#define __ENUM_%(FileNamespace)s_%(Identifier)s__H__
+#ifndef __ENUM_%(PreprocIdentifier)s__H__
+#define __ENUM_%(PreprocIdentifier)s__H__
 
 %(OpenNamespace)s
 
@@ -10,7 +10,7 @@ enum %(Identifier)s
 
 %(CloseNamespace)s
 
-#endif // __ENUM_%(FileNamespace)s_%(Identifier)s__H__
+#endif // __ENUM_%(PreprocIdentifier)s__H__
 
 
 

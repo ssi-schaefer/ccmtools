@@ -120,8 +120,8 @@ CCM_Remote::CCM_Session_%(ComponentType)s::
   DEBUGNL(" %(Identifier)s_impl::create()");
 
   // create the local_component
-  CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl* local_component = 
-    dynamic_cast<CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl*>(local_home->create());
+  %(CCMLocalComponentType)s* local_component = 
+    dynamic_cast<%(CCMLocalComponentType)s*>(local_home->create());
 
   // create component remote adapter
   PortableServer::ServantBase_var component_adapter =

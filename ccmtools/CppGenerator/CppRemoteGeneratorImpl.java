@@ -141,6 +141,8 @@ public class CppRemoteGeneratorImpl
         super("CppRemote", d, out_dir, local_output_types,
               local_environment_files, local_environment_templates);
 
+        base_namespace = "CCM_Remote";
+
 	System.out.println("CppRemoteGeneratorImpl.CppRemoteGeneratorImpl()");
 
 	// fill the CORBA_mappings with IDL to C++ Mapping types
@@ -150,54 +152,6 @@ public class CppRemoteGeneratorImpl
 	for (int i = 0; i < labels.length; i++)
 	    CORBA_mappings.put(labels[i], remote_language_map[i]);
     }
-
-
-    //====================================================================
-    // Handle traverser events
-    //====================================================================
-
-    /**
-     * Acknowledge the start of the given node during graph traversal. If the
-     * node is a MContainer type and is not defined in anything, assume it's the
-     * global parse container, and push "CCM_Local" onto the namespace stack,
-     * indicating that this code is for local CCM components.
-     *
-     * @param node the node that the GraphTraverser object is about to
-     *        investigate.
-     * @param scope_id the full scope identifier of the node. This identifier is
-     *        a string containing the names of parent nodes, joined together
-     *        with double colons.
-     */
-    public void startNode(Object node, String scope_id)
-    {
-	System.out.println("CppRemoteGeneratorImpl.startNode("+scope_id+")");
-        super.startNode(node, scope_id);
-
-        if ((node instanceof MContainer) &&
-            (((MContainer) node).getDefinedIn() == null))
-            namespace.push("CCM_Remote");
-    }
-
-    /**
-     * Acknowledge and process a closing node during graph traversal. If the
-     * node is an MContainer type, pop the namespace (this will remove our
-     * CCM_Local that we pushed, in theory (tm)). If the node is of the correct
-     * type and defined in the original parsed file, write code for this node.
-     *
-     * @param node the node that the graph traverser object just finished
-     *        investigating.
-     * @param scope_id the full scope identifier of the node. This identifier is
-     *        a string containing the names of ancestor nodes, joined together
-     *        with double colons.
-     *
-     * Note: this method is only a logging wrapper for the super class method.
-     */
-    public void endNode(Object node, String scope_id)
-    {
-	System.out.println("CppRemoteGeneratorImpl.endNode("+scope_id+")");
-        super.endNode(node, scope_id);
-    }
-
 
     /**
      * Get a local value for the given variable name.

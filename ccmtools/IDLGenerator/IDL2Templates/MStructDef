@@ -1,7 +1,7 @@
 %(MFieldDefInclude)s
 
-#ifndef __STRUCT__%(IncludeNamespace)s%(Identifier)s__
-#define __STRUCT__%(IncludeNamespace)s%(Identifier)s__
+#ifndef __STRUCT__%(PreprocIdentifier)s__
+#define __STRUCT__%(PreprocIdentifier)s__
 
 %(OpenNamespace)s
 

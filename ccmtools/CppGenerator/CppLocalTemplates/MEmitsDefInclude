@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s/%(EmitsType)s.h>
+#include <%(EmitsInclude)s.h>
 

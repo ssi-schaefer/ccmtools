@@ -1,5 +1,3 @@
-    SmartPtr<localComponents::Object> %(ProvidesType)s%(Identifier)sProvides =  
-      my%(ComponentType)s.ptr()->provide_facet("%(Identifier)s");
-
-
+    SmartPtr<localComponents::Object> %(ProvidesType)s%(Identifier)sProvides =
+      my%(ComponentType)s.ptr (  )->provide_facet( "%(Identifier)s" );
 

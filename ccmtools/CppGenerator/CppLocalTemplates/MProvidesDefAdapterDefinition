@@ -1,9 +1,9 @@
-SmartPtr<CCM_%(ProvidesType)s>
+SmartPtr<%(CCMProvidesType)s>
 %(ComponentType)s::provide_%(Identifier)s (  )
 {
   DEBUGNL ( " %(ComponentType)s->provide_%(Identifier)s (  )" );
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
-  SmartPtr<CCM_%(ProvidesType)s> ret ( %(Identifier)s_facet );
+  SmartPtr<%(CCMProvidesType)s> ret ( %(Identifier)s_facet );
   return ret;
 }
 

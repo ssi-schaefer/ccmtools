@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s%(EmitsType)s.idl2>
+#include <%(EmitsInclude)s.idl2>
 

@@ -7,8 +7,8 @@
 // %(Identifier)s - interface class definition
 //==============================================================================
 
-#ifndef __IFACE_%(FileNamespace)s_%(Identifier)s__H__
-#define __IFACE_%(FileNamespace)s_%(Identifier)s__H__
+#ifndef __IFACE_%(PreprocIdentifier)s__H__
+#define __IFACE_%(PreprocIdentifier)s__H__
 
 #include <localComponents/CCM.h>
 
@@ -35,7 +35,7 @@ class  CCM_%(Identifier)s
 
 %(CloseNamespace)s
 
-#endif // __IFACE_%(FileNamespace)s_%(Identifier)s__H__
+#endif // __IFACE_%(PreprocIdentifier)s__H__
 
 
 

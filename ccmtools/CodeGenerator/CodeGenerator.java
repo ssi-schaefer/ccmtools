@@ -23,6 +23,7 @@ package ccmtools.CodeGenerator;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MExceptionDef;
 import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -37,6 +38,8 @@ import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MConsumesDef;
 import ccmtools.Metamodel.ComponentIDL.MEmitsDef;
+import ccmtools.Metamodel.ComponentIDL.MEventDef;
+import ccmtools.Metamodel.ComponentIDL.MEventPortDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.Metamodel.ComponentIDL.MFinderDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
@@ -220,6 +223,7 @@ abstract public class CodeGenerator
     private Stack variables_stack;
 
     protected String scope_separator = "::";
+    protected String file_separator = File.separator;
 
     /**************************************************************************/
 
@@ -651,22 +655,6 @@ abstract public class CodeGenerator
     }
 
     /**
-     * Get the identifier of the top level container of a given node.
-     *
-     * @param contained the node to use for a starting point.
-     * @return the identifier of the node's container. If the given node is
-     *         null, the function will return "".
-     */
-    protected String getContainerIdentifier(MContained node)
-    {
-        if (node == null) return "";
-        MContainer c = node.getDefinedIn();
-        if (c == null) return node.getIdentifier();
-        while (c.getDefinedIn() != null) c = c.getDefinedIn();
-        return c.getIdentifier();
-    }
-
-    /**
      * Build a string containing appropriately formatted namespace information
      * based on the given data type and local namespace component. This is
      * aimed at languages with C-like syntax (perl, C, C++, Java, IDL) and
@@ -683,31 +671,12 @@ abstract public class CodeGenerator
         List names = new ArrayList(namespace);
         if (! local.equals("")) names.add("CCM_Session_" + local);
 
-        if (data_type.equals("Namespace")) {
+        if (data_type.equals("Namespace"))
             return join(scope_separator, names);
-        } else if (data_type.equals("LocalFileNamespace")) {
-            return join("_", slice(names, 1));
-        } else if (data_type.equals("FileNamespace")) {
-            return join("_", names);
-        } else if (data_type.equals("IncludeNamespace")) {
-            return join("/", names);
-        } else if (data_type.equals("UsingNamespace")) {
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("using namespace "+i.next()+";\n");
-            return join("", tmp);
-        } else if (data_type.equals("OpenNamespace")) {
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("namespace "+i.next()+" {\n");
-            return join("", tmp);
-        } else if (data_type.equals("CloseNamespace")) {
-            Collections.reverse(names);
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("} // /namespace "+i.next()+"\n");
-            return join("", tmp);
-        }
+
+        if (data_type.equals("IncludeNamespace"))
+            return join(file_separator, names);
+
         return "";
     }
 
@@ -744,8 +713,9 @@ abstract public class CodeGenerator
             return (String) language_mappings.get(type);
 
         if (idl_type instanceof MContained) {
-            List scope = getScope((MContained) idl_type);
-            scope.add(((MContained) idl_type).getIdentifier());
+            MContained cont = (MContained) idl_type;
+            List scope = getScope(cont);
+            scope.add(cont.getIdentifier());
             return join(scope_separator, scope);
         }
 
@@ -765,124 +735,144 @@ abstract public class CodeGenerator
         List scope = getScope(node);
         scope.add(0, namespace.get(0));
         scope.add(node.getIdentifier());
-        return "#include <"+join("/", scope)+".h>";
+        return "#include <" + join(file_separator, scope) + ".h>";
+    }
+
+    /**
+     * Get the fully scoped identifier for the given node. If the current scope
+     * contains some or all of the full scope for this node, then the identifier
+     * will retain only those parts that are necessary to fully specify the
+     * identifier in the current namespace.
+     *
+     * @param node the node to use for retrieving the fully scoped identifier.
+     * @return a string containing the full scope identifier of the node.
+     */
+    protected String getFullScopeIdentifier(MContained node)
+    {
+        List scope = getScope(node);
+        scope.add(node.getIdentifier());
+        for (Iterator n = namespace.iterator(); n.hasNext(); ) {
+            if (((String) n.next()).equals((String) scope.get(0)))
+                scope.remove(0);
+            else break;
+        }
+        return join(scope_separator, scope);
+    }
+
+    /**
+     * Get a fully scoped filename for the given node.
+     *
+     * @param node the node to use for retrieving the include filename info.
+     * @return a string containing a fully scoped include file for the node.
+     */
+    protected String getFullScopeInclude(MContained node)
+    {
+        List scope = getScope(node);
+        scope.add(node.getIdentifier());
+        return join(file_separator, scope);
     }
 
     /**
      * Get a local value for the given variable name. This function performs
      * some common value parsing in the CCM MOF library. More specific value
      * parsing needs to be provided in the subclass for a given language, in the
-     * subclass' getLocalValue function. Subclasses should call this function
-     * first and then perform any subclass specific value manipulation with the
+     * overridden getLocalValue function. Subclasses should call this function
+     * first and then perform any subclass-specific value manipulation with the
      * returned value.
      *
-     * @param variable The variable name to get a value for.
+     * @param variable the variable name to get a value for.
      * @return the value of the variable available from the current
      *         output_variables hash table. Could be an empty string.
      */
     protected String getLocalValue(String variable)
     {
         String scope_id = getScopeID(variable);
-
         String value = "";
-        if (output_variables.containsKey(scope_id)) {
+
+        if (output_variables.containsKey(scope_id))
             value = (String) output_variables.get(scope_id);
-        }
+
+        // this whole variable/type comb is really horrible. yuk.
 
         if (variable.equals("LanguageType")) {
-	    if (current_node instanceof MTyped) {
+	    if (current_node instanceof MTyped)
                 value = (String) getLanguageType((MTyped) current_node);
-	    }
-        } else if (variable.equals("SupportsType")) {
+        } else if (variable.endsWith("SupportsType")) {
             MSupportsDef supports = (MSupportsDef) current_node;
-            value = supports.getSupports().getIdentifier();
-        } else if (variable.equals("ProvidesType")) {
+            value = getFullScopeIdentifier(supports.getSupports());
+        } else if (variable.endsWith("ProvidesType")) {
             MProvidesDef provides = (MProvidesDef) current_node;
-            value = provides.getProvides().getIdentifier();
-        } else if (variable.equals("UsesType")) {
+            value = getFullScopeIdentifier(provides.getProvides());
+        } else if (variable.endsWith("UsesType")) {
             MUsesDef uses = (MUsesDef) current_node;
-            value = uses.getUses().getIdentifier();
-        } else if (variable.equals("EmitsType")) {
-            MEmitsDef emits = (MEmitsDef) current_node;
-            value = emits.getType().getIdentifier();
-        } else if (variable.equals("PublishesType")) {
-            MPublishesDef publishes = (MPublishesDef) current_node;
-            value = publishes.getType().getIdentifier();
-        } else if (variable.equals("ConsumesType")) {
-            MConsumesDef consumes = (MConsumesDef) current_node;
-            value = consumes.getType().getIdentifier();
-        } else if (variable.equals("ComponentType")) {
-            if (current_node instanceof MHomeDef) {
-                MHomeDef home = (MHomeDef) current_node;
-                value = home.getComponent().getIdentifier();
-            } else if (current_node instanceof MProvidesDef) {
-                MProvidesDef provides = (MProvidesDef) current_node;
-                value = provides.getComponent().getIdentifier();
-            } else if (current_node instanceof MUsesDef) {
-                MUsesDef uses = (MUsesDef) current_node;
-                value = uses.getComponent().getIdentifier();
-            } else if (current_node instanceof MEmitsDef) {
-                MEmitsDef emits = (MEmitsDef) current_node;
-                value = emits.getComponent().getIdentifier();
-            } else if (current_node instanceof MPublishesDef) {
-                MPublishesDef publishes = (MPublishesDef) current_node;
-                value = publishes.getComponent().getIdentifier();
-            } else if (current_node instanceof MConsumesDef) {
-                MConsumesDef consumes = (MConsumesDef) current_node;
-                value = consumes.getComponent().getIdentifier();
-            } else if (current_node instanceof MSupportsDef) {
-                MSupportsDef supports = (MSupportsDef) current_node;
-                value = supports.getComponent().getIdentifier();
-            } else if (current_node instanceof MFactoryDef) {
-                MFactoryDef factory = (MFactoryDef) current_node;
-                value = factory.getHome().getComponent().getIdentifier();
-            } else if (current_node instanceof MFinderDef) {
-                MFinderDef finder = (MFinderDef) current_node;
-                value = finder.getHome().getComponent().getIdentifier();
-            } else if (current_node instanceof MAttributeDef) {
-                MAttributeDef attr = (MAttributeDef) current_node;
-                value = attr.getDefinedIn().getIdentifier();
-            }
-        } else if (variable.equals("HomeType")) {
-            if (current_node instanceof MFactoryDef) {
-                MFactoryDef factory = (MFactoryDef) current_node;
-                value = factory.getHome().getIdentifier();
-            } else if (current_node instanceof MFinderDef) {
-                MFinderDef finder = (MFinderDef) current_node;
-                value = finder.getHome().getIdentifier();
-            } else {
-                try {
-                    Iterator homes = null;
-                    if (current_node instanceof MComponentDef) {
-                        MComponentDef component = (MComponentDef) current_node;
-                        homes = component.getHomes().iterator();
-                    } else if (current_node instanceof MProvidesDef) {
-                        MProvidesDef provides = (MProvidesDef) current_node;
-                        homes = provides.getComponent().getHomes().iterator();
-                    } else if (current_node instanceof MUsesDef) {
-                        MUsesDef uses = (MUsesDef) current_node;
-                        homes = uses.getComponent().getHomes().iterator();
-                    } else if (current_node instanceof MEmitsDef) {
-                        MEmitsDef emits = (MEmitsDef) current_node;
-                        homes = emits.getComponent().getHomes().iterator();
-                    } else if (current_node instanceof MPublishesDef) {
-                        MPublishesDef publishes = (MPublishesDef) current_node;
-                        homes = publishes.getComponent().getHomes().iterator();
-                    } else if (current_node instanceof MConsumesDef) {
-                        MConsumesDef consumes = (MConsumesDef) current_node;
-                        homes = consumes.getComponent().getHomes().iterator();
-                    } else if (current_node instanceof MSupportsDef) {
-                        MSupportsDef supports = (MSupportsDef) current_node;
-                        homes = supports.getComponent().getHomes().iterator();
-                    }
+            value = getFullScopeIdentifier(uses.getUses());
+        } else if (variable.endsWith("EmitsType") ||
+                   variable.endsWith("PublishesType") ||
+                   variable.endsWith("ConsumesType")) {
+            MEventPortDef port = (MEventPortDef) current_node;
+            value = getFullScopeIdentifier(port.getType());
+        } else if (variable.endsWith("ComponentType")) {
+            MComponentDef component = null;
 
-                    if (homes != null)
-                        value = ((MHomeDef) homes.next()).getIdentifier();
+            if (current_node instanceof MHomeDef)
+                component = ((MHomeDef) current_node).getComponent();
+            else if (current_node instanceof MProvidesDef)
+                component = ((MProvidesDef) current_node).getComponent();
+            else if (current_node instanceof MUsesDef)
+                component = ((MUsesDef) current_node).getComponent();
+            else if (current_node instanceof MEmitsDef)
+                component = ((MEmitsDef) current_node).getComponent();
+            else if (current_node instanceof MPublishesDef)
+                component = ((MPublishesDef) current_node).getComponent();
+            else if (current_node instanceof MConsumesDef)
+                component = ((MConsumesDef) current_node).getComponent();
+            else if (current_node instanceof MSupportsDef)
+                component = ((MSupportsDef) current_node).getComponent();
+            else if (current_node instanceof MFactoryDef)
+                component = ((MFactoryDef) current_node).getHome().getComponent();
+            else if (current_node instanceof MFinderDef)
+                component = ((MFinderDef) current_node).getHome().getComponent();
+
+            if (current_node instanceof MAttributeDef) {
+                MContained cont = ((MAttributeDef) current_node).getDefinedIn();
+                if (cont instanceof MComponentDef)
+                    component = (MComponentDef) cont;
+            }
+
+            if (component != null) value = getFullScopeIdentifier(component);
+        } else if (variable.endsWith("HomeType")) {
+            Iterator homes = null;
+            MHomeDef home = null;
+
+            if (current_node instanceof MFactoryDef)
+                home = ((MFactoryDef) current_node).getHome();
+            else if (current_node instanceof MFinderDef)
+                home = ((MFinderDef) current_node).getHome();
+            else if (current_node instanceof MComponentDef)
+                homes = ((MComponentDef) current_node).getHomes().iterator();
+            else if (current_node instanceof MProvidesDef)
+                homes = ((MProvidesDef) current_node).getComponent().getHomes().iterator();
+            else if (current_node instanceof MUsesDef)
+                homes = ((MUsesDef) current_node).getComponent().getHomes().iterator();
+            else if (current_node instanceof MEmitsDef)
+                homes = ((MEmitsDef) current_node).getComponent().getHomes().iterator();
+            else if (current_node instanceof MPublishesDef)
+                homes = ((MPublishesDef) current_node).getComponent().getHomes().iterator();
+            else if (current_node instanceof MConsumesDef)
+                homes = ((MConsumesDef) current_node).getComponent().getHomes().iterator();
+            else if (current_node instanceof MSupportsDef)
+                homes = ((MSupportsDef) current_node).getComponent().getHomes().iterator();
+
+            if (homes != null) {
+                String id = ((MContained) current_node).getIdentifier();
+                try {
+                    home = (MHomeDef) homes.next();
                 } catch (Exception e) {
-                    String id = ((MContained) current_node).getIdentifier();
-                    throw new RuntimeException("Node '"+id+"' has no home");
+                    throw new RuntimeException("Node '" + id + "' has no home");
                 }
             }
+
+            if (home != null) value = getFullScopeIdentifier(home);
         } else if (variable.equals("LanguageTypeInclude")) {
             if (current_node instanceof MTyped) {
                 MIDLType idl_type = ((MTyped) current_node).getIdlType();
@@ -902,6 +892,37 @@ abstract public class CodeGenerator
                     bases.add(getScopedInclude((MInterfaceDef) i.next()));
                 return join("\n", bases);
             }
+        } else if (variable.equals("ExceptionInclude")) {
+            value = getFullScopeInclude((MExceptionDef) current_node);
+        } else if (variable.equals("HomeInclude")) {
+            if (current_node instanceof MComponentDef) {
+                Iterator homes = ((MComponentDef) current_node).getHomes().iterator();
+                value = getFullScopeInclude((MHomeDef) homes.next());
+            }
+        } else if (variable.equals("ProvidesInclude") ||
+                   variable.equals("SupportsInclude") ||
+                   variable.equals("UsesInclude")) {
+            MInterfaceDef iface = null;
+
+            if (current_node instanceof MProvidesDef)
+                iface = ((MProvidesDef) current_node).getProvides();
+            else if (current_node instanceof MSupportsDef)
+                iface = ((MSupportsDef) current_node).getSupports();
+            else if (current_node instanceof MUsesDef)
+                iface = ((MUsesDef) current_node).getUses();
+
+            if (iface != null) value = getFullScopeInclude(iface);
+        } else if (variable.equals("ConsumesInclude") ||
+                   variable.equals("EmitsInclude") ||
+                   variable.equals("PublishesInclude")) {
+            value = getFullScopeInclude(((MEventPortDef) current_node).getType());
+        } else if (variable.equals("SelfInclude")) {
+            if (current_node instanceof MContained)
+                value = getFullScopeInclude((MContained) current_node);
+        } else if (variable.equals("PreprocIdentifier")) {
+            if (current_node instanceof MContained)
+                value = getFullScopeInclude((MContained) current_node);
+            value = value.replaceAll("[^\\w]", "_");
         } else if (variable.endsWith("Namespace")) {
 
             // This is just a useful default ; subclasses should override this

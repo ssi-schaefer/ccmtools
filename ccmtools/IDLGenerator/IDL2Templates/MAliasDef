@@ -1,7 +1,7 @@
 %(LanguageTypeInclude)s
 
-#ifndef __ALIAS__%(IncludeNamespace)s%(Identifier)s__
-#define __ALIAS__%(IncludeNamespace)s%(Identifier)s__
+#ifndef __ALIAS__%(PreprocIdentifier)s__
+#define __ALIAS__%(PreprocIdentifier)s__
 
 %(OpenNamespace)s
 

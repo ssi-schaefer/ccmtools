@@ -75,7 +75,6 @@ if not os.path.isdir(SOURCE_DIR):
 ## run confix to bootstrap and configure the component's source code
 
 confix_flags  = ' --packageroot="%s" --profile="ccmtools"' % SOURCE_DIR
-confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
 confix_flags += ' --bootstrap --configure --quiet'
 
 sys.exit(os.system('confix.py ' + confix_flags) != 0)

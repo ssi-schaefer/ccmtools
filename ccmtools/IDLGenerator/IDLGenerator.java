@@ -104,6 +104,7 @@ abstract public class IDLGenerator
               local_reserved_words, null, null, local_language_map);
 
         file_suffix = new String(suffix.toLowerCase());
+        file_separator = "_";
     }
 
     /**
@@ -165,8 +166,8 @@ abstract public class IDLGenerator
         code = code.replaceAll("#define(.*)$", "#define\\1\n");
         code = code.replaceAll("};",           "};\n");
 
-        String name = join("_", namespace);
-        if (! name.equals("")) name += "_";
+        String name = join(file_separator, namespace);
+        if (! name.equals("")) name += file_separator;
         name += ((MContained) current_node).getIdentifier();
         name += ".idl" + file_suffix;
 
@@ -197,28 +198,11 @@ abstract public class IDLGenerator
             for (Iterator i = namespace.iterator(); i.hasNext(); i.next())
                 tmp.add("};");
             return join("\n", tmp);
-        } else if (data_type.equals("IncludeNamespace")) {
-            String tmp = join("_", getScope((MContained) current_node));
-            if (tmp.length() > 0) tmp += "_";
-            return tmp;
-        } else {
-            return super.handleNamespace(data_type, local);
         }
+
+        return super.handleNamespace(data_type, local);
     }
 
-    /**
-     * Create an #include statement sufficient for including the given node's
-     * header file.
-     *
-     * @param node the node to use for gathering include statement information.
-     * @return a string containing an #include statement.
-     */
-    protected String getScopedInclude(MContained node)
-    {
-        List scope = getScope(node);
-        scope.add(node.getIdentifier());
-        return "#include <" + join("_", scope) + ".idl" + file_suffix + ">";
-    }
     /**
      * Get a local value for the given variable name.
      *
@@ -379,9 +363,4 @@ abstract public class IDLGenerator
         return data_value;
     }
 }
-
-
-
-
-
 

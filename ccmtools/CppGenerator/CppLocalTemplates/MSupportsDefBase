@@ -1,1 +1,1 @@
-, public CCM_%(SupportsType)s
+, public %(CCMSupportsType)s

@@ -1,17 +1,4 @@
-    my%(ComponentType)s.ptr()->disconnect("%(Identifier)s", ck_%(UsesType)s%(Identifier)s_01);
-    my%(ComponentType)s.ptr()->disconnect("%(Identifier)s", ck_%(UsesType)s%(Identifier)s_02);
-    my%(ComponentType)s.ptr()->disconnect("%(Identifier)s", ck_%(UsesType)s%(Identifier)s_03);
-
-/*
     my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_01 );
     my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_02 );
     my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_03 );
-    my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_04 );
-    my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_05 );
-    my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_06 );
-    my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_07 );
-    my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_08 );
-    my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_09 );
-    my%(ComponentType)s.ptr (  )->disconnect ( "%(Identifier)s", ck_%(UsesType)s%(Identifier)s_10 );
-*/
 

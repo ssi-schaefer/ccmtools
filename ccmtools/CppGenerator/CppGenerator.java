@@ -23,11 +23,11 @@ package ccmtools.CppGenerator;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
-import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
 import ccmtools.Metamodel.BaseIDL.MFixedDef;
@@ -52,9 +52,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 abstract public class CppGenerator
     extends CodeGenerator
@@ -109,6 +111,8 @@ abstract public class CppGenerator
 
     protected final static String sequence_type = "std::vector";
 
+    protected String base_namespace = "CCM_Local";
+
     /**************************************************************************/
 
     public CppGenerator(String sublang, Driver d, File out_dir,
@@ -121,9 +125,30 @@ abstract public class CppGenerator
     }
 
     /**
+     * Acknowledge the start of the given node during graph traversal. If the
+     * node is a MContainer type and is not defined in anything, assume it's the
+     * global parse container, and push "CCM_Local" onto the namespace stack,
+     * indicating that this code is for local CCM components.
+     *
+     * @param node the node that the GraphTraverser object is about to
+     *        investigate.
+     * @param scope_id the full scope identifier of the node. This identifier is
+     *        a string containing the names of parent nodes, joined together
+     *        with double colons.
+     */
+    public void startNode(Object node, String scope_id)
+    {
+        if (node instanceof MContainer &&
+            (((MContainer) node).getDefinedIn() == null))
+            namespace.push(base_namespace);
+
+        super.startNode(node, scope_id);
+    }
+
+    /**
      * Acknowledge and process a closing node during graph traversal. If the
-     * node is an MContainer type, pop the namespace (this will remove our
-     * CCM_Local that we pushed, in theory (tm)). If the node is of the correct
+     * node is an MContainer type, pop the namespace (this will remove our base
+     * namespace that we pushed, in theory (tm)). If the node is of the correct
      * type and defined in the original parsed file, write code for this node.
      *
      * @param node the node that the graph traverser object just finished
@@ -136,12 +161,23 @@ abstract public class CppGenerator
     {
         super.endNode(node, scope_id);
 
-        if ((node instanceof MContainer) &&
-            (((MContainer) node).getDefinedIn() == null))
-            namespace.pop();
+        if (node instanceof MContainer &&
+            (((MContainer) node).getDefinedIn() == null)) namespace.pop();
 
         writeOutputIfNeeded();
     }
+
+    /**
+     * Finalize the output files. This function implementation doesn't do
+     * anything.
+     *
+     * @param defines a map of environment variables and their associated
+     *        values. This usually contains things like the package name,
+     *        version, and other generation info.
+     * @param files a list of the filenames (usually those that were provided to
+     *        the generator front end).
+     */
+    public void finalize(Map defines, List files) { return; }
 
     /**************************************************************************/
 
@@ -161,6 +197,96 @@ abstract public class CppGenerator
         for (Iterator i = node.getBases().iterator(); i.hasNext(); )
             names.add("CCM_" + ((MInterfaceDef) i.next()).getIdentifier());
         return join(sep, names);
+    }
+
+    /**
+     * Build a string containing appropriately formatted namespace information
+     * based on the given data type and local namespace component. This is
+     * aimed at languages with C-like syntax (perl, C, C++, Java, IDL) and
+     * should be overridden for others (Python, Prolog :-).
+     *
+     * @param data_type a string referring to a desired type of namespace
+     *        information. This is normally a variable name from a template.
+     * @param local a string giving the name of the current namespace component.
+     * @return a string containing the appropriately formatted namespace
+     *         information.
+     */
+    protected String handleNamespace(String data_type, String local)
+    {
+        List names = new ArrayList(namespace);
+        if (! local.equals("")) names.add("CCM_Session_" + local);
+
+        if (data_type.equals("UsingNamespace")) {
+            List tmp = new ArrayList();
+            for (Iterator i = names.iterator(); i.hasNext(); )
+                tmp.add("using namespace "+i.next()+";\n");
+            return join("", tmp);
+        } else if (data_type.equals("OpenNamespace")) {
+            List tmp = new ArrayList();
+            for (Iterator i = names.iterator(); i.hasNext(); )
+                tmp.add("namespace "+i.next()+" {\n");
+            return join("", tmp);
+        } else if (data_type.equals("CloseNamespace")) {
+            Collections.reverse(names);
+            List tmp = new ArrayList();
+            for (Iterator i = names.iterator(); i.hasNext(); )
+                tmp.add("} // /namespace "+i.next()+"\n");
+            return join("", tmp);
+        }
+
+        return super.handleNamespace(data_type, local);
+    }
+
+    /**
+     * Get the fully scoped identifier for the given node. If the current scope
+     * contains some or all of the full scope for this node, then the identifier
+     * will retain only those parts that are necessary to fully specify the
+     * identifier in the current namespace.
+     *
+     * @param node the node to use for retrieving the fully scoped identifier.
+     * @return a string containing the full scope identifier of the node.
+     */
+    protected String getFullScopeIdentifier(MContained node)
+    {
+        String local = "CCM_Session_" + node.getIdentifier();
+        List scope = getScope(node);
+
+        if (node instanceof MComponentDef || node instanceof MHomeDef)
+            scope.add(local);
+
+        scope.add(0, base_namespace);
+        scope.add(node.getIdentifier());
+
+        for (Iterator n = namespace.iterator(); n.hasNext(); ) {
+            if (((String) n.next()).equals((String) scope.get(0)))
+                scope.remove(0);
+            else break;
+        }
+
+        if (node instanceof MComponentDef || node instanceof MHomeDef)
+            if (((String) scope.get(0)).equals(local)) scope.remove(0);
+
+        return join(scope_separator, scope);
+    }
+
+    /**
+     * Get a fully scoped filename for the given node.
+     *
+     * @param node the node to use for retrieving the include filename info.
+     * @return a string containing a fully scoped include file for the node.
+     */
+    protected String getFullScopeInclude(MContained node)
+    {
+        String local = "CCM_Session_" + node.getIdentifier();
+        List scope = getScope(node);
+
+        if (node instanceof MComponentDef || node instanceof MHomeDef)
+            scope.add(local);
+
+        scope.add(0, base_namespace);
+        scope.add(node.getIdentifier());
+
+        return join(file_separator, scope);
     }
 
     /**
@@ -188,8 +314,6 @@ abstract public class CppGenerator
             return data_MFactoryDef(variable, value);
         } else if (current_node instanceof MFinderDef) {
             return data_MFinderDef(variable, value);
-	} else if (current_node instanceof MAttributeDef) {
-	    return data_MAttributeDef(variable, value);
         } else if (current_node instanceof MProvidesDef) {
             return data_MProvidesDef(variable, value);
         } else if (current_node instanceof MSupportsDef) {
@@ -250,8 +374,7 @@ abstract public class CppGenerator
 		    || (idl_type instanceof MInterfaceDef)) {
 		    suffix = "&";
 		}
-	    } 
-	    else { // inout, out
+	    } else { // inout, out
 		prefix = "";
 		suffix = "&";
 	    }
@@ -332,20 +455,23 @@ abstract public class CppGenerator
     protected String data_MFactoryDef(String data_type, String data_value)
     { return data_MOperationDef(data_type, data_value); }
 
-    protected String data_MAttributeDef(String data_type, String data_value)
-    { 
-	return data_value;
-    }
-
     protected String data_MFinderDef(String data_type, String data_value)
     { return data_MOperationDef(data_type, data_value); }
 
     protected String data_MHomeDef(String data_type, String data_value)
     {
+        MHomeDef home = (MHomeDef) current_node;
+        MComponentDef component = home.getComponent();
+
+        String home_id = home.getIdentifier();
+        String component_id = component.getIdentifier();
+
         if (data_type.endsWith("Namespace")) {
-            MHomeDef home = (MHomeDef) current_node;
-            return handleNamespace(data_type,
-                                   home.getComponent().getIdentifier());
+            return handleNamespace(data_type, component_id);
+        } else if (data_type.equals("ShareInclude")) {
+            String include = getFullScopeInclude(component);
+            include = include.substring(0, include.lastIndexOf(file_separator));
+            return include + "_share" + file_separator + home_id;
         }
         return data_MInterfaceDef(data_type, data_value);
     }
@@ -384,42 +510,42 @@ abstract public class CppGenerator
 
     protected String data_MProvidesDef(String data_type, String data_value)
     {
-        MProvidesDef provides = (MProvidesDef) current_node;
-        MInterfaceDef iface = provides.getProvides();
-
-        if (data_type.startsWith("MOperation")) {
+        if (data_type.equals("CCMProvidesType")) {
+            if (data_value.indexOf(scope_separator) < 0)
+                return "CCM_" + data_value;
+            int i = data_value.lastIndexOf(scope_separator) +
+                scope_separator.length();
+            return data_value.substring(0, i)+"CCM_"+data_value.substring(i);
+        } else if (data_type.startsWith("MOperation")) {
+            MInterfaceDef iface = ((MProvidesDef) current_node).getProvides();
             return fillTwoStepTemplates(iface, data_type);
-        } else if (data_type.equals("IncludeNamespace")) {
-            List scope = getScope(iface);
-            scope.add(0, namespace.get(0));
-            return join("/", scope);
         }
         return data_value;
     }
 
     protected String data_MSupportsDef(String data_type, String data_value)
     {
-        MSupportsDef supports = (MSupportsDef) current_node;
-        MInterfaceDef iface = supports.getSupports();
-
-        if (data_type.startsWith("MOperation")) {
+        if (data_type.equals("CCMSupportsType")) {
+            if (data_value.indexOf(scope_separator) < 0)
+                return "CCM_" + data_value;
+            int i = data_value.lastIndexOf(scope_separator) +
+                scope_separator.length();
+            return data_value.substring(0, i)+"CCM_"+data_value.substring(i);
+        } else if (data_type.startsWith("MOperation")) {
+            MInterfaceDef iface = ((MSupportsDef) current_node).getSupports();
             return fillTwoStepTemplates(iface, data_type);
-        } else if (data_type.equals("IncludeNamespace")) {
-            List scope = getScope(iface);
-            scope.add(0, namespace.get(0));
-            return join("/", scope);
         }
         return data_value;
     }
 
     protected String data_MUsesDef(String data_type, String data_value)
     {
-        MUsesDef uses = (MUsesDef) current_node;
-        MInterfaceDef iface = uses.getUses();
-        if (data_type.equals("IncludeNamespace")) {
-            List scope = getScope(iface);
-            scope.add(0, namespace.get(0));
-            return join("/", scope);
+        if (data_type.equals("CCMUsesType")) {
+            if (data_value.indexOf(scope_separator) < 0)
+                return "CCM_" + data_value;
+            int i = data_value.lastIndexOf(scope_separator) +
+                scope_separator.length();
+            return data_value.substring(0, i)+"CCM_"+data_value.substring(i);
         }
         return data_value;
     }
@@ -492,31 +618,48 @@ abstract public class CppGenerator
     protected String fillTwoStepTemplates(MInterfaceDef child,
                                           String template_name)
     {
-        StringBuffer ret = new StringBuffer("");
+        MContained cont = (MContained) current_node;
 
-        for (Iterator ops = child.getContentss().iterator(); ops.hasNext(); ) {
-            MContained object = (MContained) ops.next();
+        // if this is a supports node, we want to actually refer to the
+        // home or component that owns this supports definition.
 
-            if (! (object instanceof MOperationDef)) continue;
-
-            MOperationDef op = (MOperationDef) object;
-            MContained cont  = (MContained) current_node;
-
-            // if this is a supports node, we want to actually refer to the home
-            // or component that owns this supports definition.
-
-            if (current_node instanceof MSupportsDef) {
-                MContained tmp = ((MSupportsDef) cont).getComponent();
-                if (tmp == null) tmp = ((MSupportsDef) cont).getHome();
-                cont = tmp;
-            }
-
-            Template template = template_manager.getRawTemplate(template_name);
-            Map vars = getTwoStepVariables(child, op, cont);
-            ret.append(template.substituteVariables(vars));
+        if (current_node instanceof MSupportsDef) {
+            MContained tmp = ((MSupportsDef) cont).getComponent();
+            if (tmp == null) tmp = ((MSupportsDef) cont).getHome();
+            cont = tmp;
         }
 
-        return ret.toString();
+        // we need to recursively include all base interfaces here. we'll use a
+        // stack and pop off the most recent element, add operation information
+        // for that interface, then push on all the bases for that interface.
+        // lather, rinse, repeat.
+
+        Stack ifaces = new Stack();
+        ifaces.push(child);
+
+        StringBuffer result = new StringBuffer("");
+
+        while (! ifaces.empty()) {
+            MInterfaceDef iface = (MInterfaceDef) ifaces.pop();
+
+            List operations =
+                iface.getFilteredContents(MDefinitionKind.DK_OPERATION, false);
+
+            for (Iterator o = operations.iterator(); o.hasNext(); ) {
+                Map vars =
+                    getTwoStepVariables(child, (MOperationDef) o.next(), cont);
+
+                Template template =
+                    template_manager.getRawTemplate(template_name);
+
+                result.append(template.substituteVariables(vars));
+            }
+
+            for (Iterator i = iface.getBases().iterator(); i.hasNext(); )
+                ifaces.push(i.next());
+        }
+
+        return result.toString();
     }
 
     /**

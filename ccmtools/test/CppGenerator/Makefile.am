@@ -9,7 +9,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # currently under investigation ... uncomment in local copy to test faster.
 
-#TESTS =  supports_interface.sh facet_interface.sh receptacle_interface.sh
+#TESTS = module_mixed.sh
 
 # tests are generally in order of increasing complexity.
 
@@ -17,12 +17,13 @@ TESTS = \
   help.sh                     \
   version.sh                  \
   attribute.sh                \
+  attribute_interface.sh      \
   supports.sh                 \
   facet.sh                    \
   facet_rename.sh             \
   receptacle.sh               \
-  receptacle_not_connected.sh \
   receptacle_multiple.sh      \
+  receptacle_not_connected.sh \
   attribute_basic_types.sh    \
   supports_basic_types.sh     \
   facet_basic_types.sh        \
@@ -37,7 +38,7 @@ TESTS = \
   facet_exception.sh          \
   receptacle_exception.sh     \
   attribute_interface.sh      \
-  supports_interface.sh	      \
+  supports_interface.sh       \
   facet_interface.sh          \
   receptacle_interface.sh     \
   home_exception.sh           \

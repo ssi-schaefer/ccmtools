@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s%(PublishesType)s.idl3mirror>
+#include <%(PublishesInclude)s.idl3mirror>
 

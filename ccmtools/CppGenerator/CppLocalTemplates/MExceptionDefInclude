@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s/%(Identifier)s.h>
+#include <%(ExceptionInclude)s.h>
 

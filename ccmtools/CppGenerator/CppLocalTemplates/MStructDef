@@ -2,8 +2,8 @@
 // struct definition for %(Identifier)s
 // ===========================================================================
 
-#ifndef __STRUCT__%(FileNamespace)s_%(Identifier)s__H__
-#define __STRUCT__%(FileNamespace)s_%(Identifier)s__H__
+#ifndef __STRUCT__%(PreprocIdentifier)s__H__
+#define __STRUCT__%(PreprocIdentifier)s__H__
 
 %(MFieldDefInclude)s
 
@@ -18,7 +18,7 @@ struct %(Identifier)s
 
 %(CloseNamespace)s
 
-#endif // __STRUCT__%(FileNamespace)s_%(Identifier)s__H__
+#endif // __STRUCT__%(PreprocIdentifier)s__H__
 
 
 

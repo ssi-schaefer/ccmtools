@@ -1,2 +1,2 @@
-#include <%(IncludeNamespace)s/%(PublishesType)s.h>
+#include <%(PublishesInclude)s.h>
 

@@ -30,8 +30,8 @@ int main ( int argc, char *argv[] )
   // Get in instance of the local HomeFinder and register component homes
   localComponents::HomeFinder* homeFinder = HomeFinder::Instance();
   try {
-    homeFinder->register_home( create_%(HomeType)sAdapter(), "%(HomeType)s" );
-    homeFinder->register_home( create_%(HomeType)s_mirrorAdapter(), "%(HomeType)s_mirror" );
+    homeFinder->register_home( create_%(HomeType)sAdapter (  ), "%(HomeType)s" );
+    homeFinder->register_home( create_%(HomeType)s_mirrorAdapter (  ), "%(HomeType)s_mirror" );
   } catch ( ... )  {
     cout << "Aut'sch: there is something wrong while register homes!" << endl;
     return -1;
@@ -49,15 +49,12 @@ int main ( int argc, char *argv[] )
     // Find component and mirror component homes
     SmartPtr<%(HomeType)s> my%(HomeType)s ( dynamic_cast<%(HomeType)s*>
       ( homeFinder->find_home_by_name ( "%(HomeType)s" ).ptr (  ) ) );
-
     SmartPtr<%(HomeType)s_mirror> my%(HomeType)sMirror ( dynamic_cast<%(HomeType)s_mirror*>
       ( homeFinder->find_home_by_name ( "%(HomeType)s_mirror" ).ptr (  ) ) );
 
     // Create component and mirror component instances
-    SmartPtr<%(Identifier)s> my%(Identifier)s = 
-      my%(HomeType)s.ptr (  )->create (  );
-    SmartPtr<%(Identifier)s_mirror> my%(Identifier)sMirror = 
-      my%(HomeType)sMirror.ptr()->create();
+    SmartPtr<%(Identifier)s> my%(Identifier)s = my%(HomeType)s.ptr (  )->create (  );
+    SmartPtr<%(Identifier)s_mirror> my%(Identifier)sMirror = my%(HomeType)sMirror.ptr (  )->create (  );
 
     // Create provided and used (mirror) facets
 %(MProvidesDefFacetCreate)s
@@ -68,25 +65,24 @@ int main ( int argc, char *argv[] )
 %(MUsesDefConnect)s
 
     // End of deployment phase
-    my%(Identifier)s.ptr()->configuration_complete();
-    my%(Identifier)sMirror.ptr()->configuration_complete();
+    my%(Identifier)s.ptr (  )->configuration_complete (  );
+    my%(Identifier)sMirror.ptr (  )->configuration_complete (  );
 
     // Use %(Identifier)s component standard functionality
-    cout << "> getComponentVersion() = " 
-         << my%(Identifier)s.ptr()->getComponentVersion () << endl;
-    cout << "> getComponentDate() = " 
-         << my%(Identifier)s.ptr()->getComponentDate() << endl;
+    cout << "> getComponentVersion (  ) = "
+         << my%(Identifier)s.ptr (  )->getComponentVersion (  ) << endl;
+    cout << "> getComponentDate (  ) = "
+         << my%(Identifier)s.ptr (  )->getComponentDate (  ) << endl;
 
     /*
      * TESTING
      */
-	
-     DEBUGNL("==== Begin Test Case =============================================" );	
 
-    // TODO : IMPLEMENT ME HERE !	
-	
-     DEBUGNL("==== End Test Case ===============================================" );	
+     DEBUGNL("==== Begin Test Case =============================================" );
 
+     // TODO : IMPLEMENT ME HERE !
+
+     DEBUGNL("==== End Test Case ===============================================" );
 
     /*
      * TEAR DOWN
@@ -98,7 +94,7 @@ int main ( int argc, char *argv[] )
 
     // Destroy component instances
     my%(Identifier)s.ptr (  )->remove (  );
-    my%(Identifier)sMirror.ptr()->remove();
+    my%(Identifier)sMirror.ptr (  )->remove (  );
 
     // Unregister component homes
     homeFinder->unregister_home ( "%(HomeType)s" );

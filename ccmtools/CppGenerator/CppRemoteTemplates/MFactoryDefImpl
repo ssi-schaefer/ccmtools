@@ -7,8 +7,8 @@ CCM_Remote::CCM_Session_%(ComponentType)s::
   // TODO: convert parameter
 	
   // create the local_component
-  CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl* 
-    local_component = dynamic_cast<CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl*>
+  %(CCMLocalComponentType)s* 
+    local_component = dynamic_cast<%(CCMLocalComponentType)s*>
        (local_home->%(Identifier)s(value));
 
   // create component remote adapter

@@ -94,9 +94,8 @@ except:
 confix_flags  = ' --packagename="ccmtools-cpp-environment"'
 confix_flags += ' --packageversion="%s"' % VERSION
 confix_flags += ' --packageroot="%s"' % SOURCE_DIR
-confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
 confix_flags += ' --profile="ccmtools" --boot --configure --make'
-confix_flags += ' --targets="all install distclean"'
+confix_flags += ' --targets="all install distclean" --quiet'
 if INSTALL_DIR: confix_flags += ' --prefix="%s"' % INSTALL_DIR
 
 ret = os.system('confix.py ' + confix_flags)

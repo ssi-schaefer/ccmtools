@@ -2,8 +2,8 @@
 // union definition for %(Identifier)s
 // ===========================================================================
 
-#ifndef __UNION__%(FileNamespace)s_%(Identifier)s__H__
-#define __UNION__%(FileNamespace)s_%(Identifier)s__H__
+#ifndef __UNION__%(PreprocIdentifier)s__H__
+#define __UNION__%(PreprocIdentifier)s__H__
 
 %(MUnionFieldDefInclude)s
 
@@ -18,7 +18,7 @@ union %(Identifier)s
 
 %(CloseNamespace)s
 
-#endif // __UNION__%(FileNamespace)s_%(Identifier)s__H__
+#endif // __UNION__%(PreprocIdentifier)s__H__
 
 
 

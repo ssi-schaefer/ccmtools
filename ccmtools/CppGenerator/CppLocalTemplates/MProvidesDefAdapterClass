@@ -3,12 +3,12 @@
 //==============================================================================
 
 class %(Identifier)s%(ProvidesType)s
-  : public CCM_%(ProvidesType)s
+  : public %(CCMProvidesType)s
 {
   friend class %(ComponentType)s;
 
  private:
-  CCM_%(ProvidesType)s* facet;
+  %(CCMProvidesType)s* facet;
   %(ComponentType)s* component;
   CCM_%(ComponentType)s* local_component;
   bool ValidConnection;

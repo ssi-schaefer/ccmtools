@@ -116,27 +116,6 @@ public class CppMirrorGeneratorImpl
     }
 
     /**
-     * Acknowledge the start of the given node during graph traversal. If the
-     * node is a MContainer type and is not defined in anything, assume it's the
-     * global parse container, and push "CCM_Local" onto the namespace stack,
-     * indicating that this code is for local CCM components.
-     *
-     * @param node the node that the GraphTraverser object is about to
-     *        investigate.
-     * @param scope_id the full scope identifier of the node. This identifier is
-     *        a string containing the names of parent nodes, joined together
-     *        with double colons.
-     */
-    public void startNode(Object node, String scope_id)
-    {
-        super.startNode(node, scope_id);
-
-        if ((node instanceof MContainer) &&
-            (((MContainer) node).getDefinedIn() == null))
-            namespace.push("CCM_Local");
-    }
-
-    /**
      * Write generated code to an output file.
      *
      * @param template the template object to get the generated code structure
@@ -161,18 +140,6 @@ public class CppMirrorGeneratorImpl
         if (! check_file.isFile())
             writeFinalizedFile(file_dir, "Makefile.py", "");
     }
-
-    /**
-     * Finalize the output files. This function's implementation does nothing;
-     * it serves only to override the inherited function from CppGeneratorImpl.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files) { return; }
 
     /**************************************************************************/
 
