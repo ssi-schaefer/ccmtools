@@ -1,35 +1,8 @@
-/*
- *  Mico --- a free CORBA implementation
- *  Copyright Frank Pilhofer
- *
- *  This file is part of MicoCCM, written by Frank Pilhofer.
- *  The MICO CORBA Component Project was sponsored by Alcatel.
- */
+
 
 module Components {
 
   //  typePrefix Components "omg.org";
-
-  /*
-   * ----------------------------------------------------------------------
-   * Extensions to CCM
-   * ----------------------------------------------------------------------
-   */
-
-  /*
-   * The ReleaseInformation class is inherited by each component adapter to
-   * give the client the facility to get these informations from the components
-   * equivalent interface.
-   * Note: This interface is not part of the CCM specification!
-   */
-  interface ReleaseInformation {
-    string getComponentVersion();
-    string getComponentDate();
-    string getComponentUUID();
-  };
-
-
-
 
   /*
    * ----------------------------------------------------------------------
@@ -52,43 +25,49 @@ module Components {
   exception ExceededConnectionLimit {};
   exception CookieRequired {};
 
+  /*
   valuetype PortDescription {
     public FeatureName name;
     public string type_id;
   };
+  */
 
   valuetype Cookie {
     public sequence<octet> CookieValue;
   };
 
-  abstract valuetype EventBase {};
+  //  abstract valuetype EventBase {};
 
   /*
    * Facets
    */
 
+  /*
   valuetype FacetDescription : PortDescription {
     public Object facet_ref;
   };
 
   typedef sequence<FacetDescription> FacetDescriptions;
+  */
 
   interface Navigation {
     Object provide_facet (in FeatureName name)
       raises (InvalidName);
 
-    FacetDescriptions get_all_facets ();
+    //    FacetDescriptions get_all_facets ();
 
-    FacetDescriptions get_named_facets (in NameList names)
-      raises (InvalidName);
+    //    FacetDescriptions get_named_facets (in NameList names)
+    //      raises (InvalidName);
 
-    boolean same_component (in Object ref);
+    //    boolean same_component (in Object ref);
   };
+
 
   /*
    * Receptacles
    */
 
+  /*
   valuetype ConnectionDescription {
     public Cookie ck;
     public Object objref;
@@ -102,6 +81,7 @@ module Components {
   };
 
   typedef sequence<ReceptacleDescription> ReceptacleDescriptions;
+  */
 
   interface Receptacles {
     Cookie connect (in FeatureName name, in Object connection)
@@ -112,19 +92,21 @@ module Components {
       raises (InvalidName, InvalidConnection,
 	      CookieRequired, NoConnection);
 
-    ConnectionDescriptions get_connections (in FeatureName name)
-      raises (InvalidName);
+    //    ConnectionDescriptions get_connections (in FeatureName name)
+    //      raises (InvalidName);
 
-    ReceptacleDescriptions get_all_receptacles ();
+    //    ReceptacleDescriptions get_all_receptacles ();
 
-    ReceptacleDescriptions get_named_receptacles (in NameList names)
-      raises (InvalidName);
+    //    ReceptacleDescriptions get_named_receptacles (in NameList names)
+    //      raises (InvalidName);
   };
+
 
   /*
    * Events
    */
 
+  /*
   exception BadEventType {
     string expected_event_type;
   };
@@ -205,6 +187,8 @@ module Components {
     EmitterDescriptions get_named_emitters (in NameList names);
 
   };
+  */
+
 
   /*
    * CCMObject
@@ -212,6 +196,7 @@ module Components {
 
   interface CCMHome;
 
+  /*
   valuetype ComponentPortDescription {
     public FacetDescriptions facets;
     public ReceptacleDescriptions receptacles;
@@ -219,15 +204,17 @@ module Components {
     public EmitterDescriptions emitters;
     public PublisherDescriptions publishers;
   };
+  */
 
-  interface CCMObject : Navigation, Receptacles, Events {
-    Object get_component_def ();
+  interface CCMObject : Navigation, Receptacles /*, Events*/ {
+    //    Object get_component_def ();
     CCMHome get_ccm_home ();
-    /* PrimaryKeyBase get_primary_key (); */
+    //    PrimaryKeyBase get_primary_key (); 
     void configuration_complete ();
     void remove ();
-    ComponentPortDescription get_all_ports ();
+    //    ComponentPortDescription get_all_ports ();
   };
+
 
   /*
    * Homes
@@ -238,8 +225,8 @@ module Components {
   exception InvalidKey {};
 
   interface CCMHome {
-    Object get_component_def ();
-    Object get_home_def ();
+    //    Object get_component_def ();
+    //    Object get_home_def ();
     void remove_component (in CCMObject comp);
   };
 
@@ -259,6 +246,8 @@ module Components {
     CCMHome find_home_by_name (in string home_name);
   };
 
+
+
   /*
    * Configurator
    */
@@ -269,6 +258,7 @@ module Components {
     void configure (in CCMObject comp)
       raises (WrongComponentType);
   };
+
 
   valuetype ConfigValue {
     public FeatureName name;

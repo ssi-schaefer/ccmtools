@@ -1,4 +1,6 @@
-/* CCM Tools : C++ Code Generator 
+/* -*- mode: C++; c-basic-offset: 4 -*-
+ *
+ * CCM Tools : C++ Code Generator 
  * Egon Teiniker <egon.teiniker@tugraz.at>
  * copyright (c) 2002, 2003 Salomon Automation
  *
@@ -31,78 +33,78 @@ using namespace std;
 using namespace WX::Utils;
 
 //============================================================================
-// Convert C++ to CORBA types
+// Convert basic types from C++ to CORBA 
 //============================================================================
 
-CORBA::Boolean 
-CCM::PK_BOOLEAN_to_CORBAPK_BOOLEAN(const bool value)
+void 
+CCM::convertToCorba(const bool& in, CORBA::Boolean& out)
 {
-   DEBUGNL(" PK_BOOLEAN_to_CORBAPK_BOOLEAN()");
-   return (CORBA::Boolean)value;
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Boolean)");
+    out = (CORBA::Boolean)in;
 }
 
-CORBA::Char 
-CCM::PK_CHAR_to_CORBAPK_CHAR(const char value)
+void 
+CCM::convertToCorba(const char& in, CORBA::Char& out)
 {
-   DEBUGNL(" PK_CHAR_to_CORBAPK_CHAR()");
-   return (CORBA::Char)value;
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Char)");
+    out = (CORBA::Char)in;
 }
 
-CORBA::Double  
-CCM::PK_DOUBLE_to_CORBAPK_DOUBLE(const double value)
+void 
+CCM::convertToCorba(const double& in, CORBA::Double& out)
 {
-   DEBUGNL(" PK_DOUBLE_to_CORBAPK_DOUBLE()");
-   return (CORBA::Double)value;
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Double)");
+    out = (CORBA::Double)in;
 }
 
-
-CORBA::Float   
-CCM::PK_FLOAT_to_CORBAPK_FLOAT(const float value)
+void 
+CCM::convertToCorba(const float& in, CORBA::Float& out)
 {
-   DEBUGNL(" PK_FLOAT_to_CORBAPK_FLOAT()");
-   return (CORBA::Float)value;
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Float)");
+    out = (CORBA::Float)in;
 }
 
-CORBA::Long    
-CCM::PK_LONG_to_CORBAPK_LONG(const long value)
+void 
+CCM::convertToCorba(const long& in, CORBA::Long& out)
 {
-   DEBUGNL(" PK_LONG_to_CORBAPK_LONG()");
-   return (CORBA::Long)value;
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Long)");
+    out = (CORBA::Long)in;
 }
 
-CORBA::Octet   
-CCM::PK_OCTET_to_CORBAPK_OCTET(const unsigned char value)
+void 
+CCM::convertToCorba(const unsigned char& in, CORBA::Octet& out)
 {
-   DEBUGNL(" PK_OCTET_to_CORBAPK_OCTET()");
-   return (CORBA::Octet)value;
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Octet)");
+    out = (CORBA::Octet)in;
 }
 
-CORBA::Short   
-CCM::PK_SHORT_to_CORBAPK_SHORT(const short value)
+void 
+CCM::convertToCorba(const short& in, CORBA::Short& out)
 {
-   DEBUGNL(" PK_SHORT_to_CORBAPK_SHORT()");
-   return (CORBA::Short)value;
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Short)");
+    out = (CORBA::Short)in;
 }
 
-char*          
-CCM::PK_STRING_to_CORBAPK_STRING(const std::string value)
+void 
+CCM::convertToCorba(const std::string& in, char*& out)
 {
-   DEBUGNL(" PK_STRING_to_CORBAPK_STRING()");
-   return CORBA::string_dup(value.c_str());
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(char*)");
+    const char* s = in.c_str();
+    out = CORBA::string_dup(s);
 }
 
-CORBA::ULong   
-CCM::PK_ULONG_to_CORBAPK_ULONG(const unsigned long value)
+void 
+CCM::convertToCorba(const unsigned long& in, CORBA::ULong& out)
 {
-   DEBUGNL(" PK_ULONG_to_CORBAPK_ULONG()");
-   return (CORBA::ULong)value;
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::ULong)");
+    out = (CORBA::ULong)in;
 }
 
-CORBA::UShort  
-CCM::PK_USHORT_to_CORBAPK_USHORT(const unsigned short value)
+void 
+CCM::convertToCorba(const unsigned short& in, CORBA::UShort& out)
 {
-   DEBUGNL(" PK_USHORT_to_CORBAPK_USHORT()");
-   return (CORBA::UShort)value;
+    LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::UShort)");
+    out = (CORBA::UShort)in;
 }
 
 
@@ -111,74 +113,81 @@ CCM::PK_USHORT_to_CORBAPK_USHORT(const unsigned short value)
 // Convert CORBA to C++ types
 //============================================================================
 
-bool           
-CCM::CORBAPK_BOOLEAN_to_PK_BOOLEAN(const CORBA::Boolean value)
+void 
+CCM::convertFromCorba(const CORBA::Boolean& in, bool& out)
 {
-  DEBUGNL(" CORBAPK_BOOLEAN_to_PK_BOOLEAN()");	
-  return (bool)value;	
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Boolean)");
+    out = (bool)in;
 }
 
-char           
-CCM::CORBAPK_CHAR_to_PK_CHAR(const CORBA::Char value)
+void 
+CCM::convertFromCorba(const CORBA::Char& in, char& out)
 {
-  DEBUGNL(" CCM::CORBAPK_CHAR_to_PK_CHAR()");
-  return (char)value;
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Char)");
+    out = (char)in;
 }
 
-double         
-CCM::CORBAPK_DOUBLE_to_PK_DOUBLE(const CORBA::Double value)
+void 
+CCM::convertFromCorba(const CORBA::Double& in, double& out)
 {
-  DEBUGNL(" CCM::CORBAPK_DOUBLE_to_PK_DOUBLE()");
-  return (double)value;
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Double)");
+    out = (double)in;
 }
 
-float          
-CCM::CORBAPK_FLOAT_to_PK_FLOAT(const CORBA::Float value)
+void 
+CCM::convertFromCorba(const CORBA::Float& in, float& out)
 {
-  DEBUGNL(" CCM::CORBAPK_FLOAT_to_PK_FLOAT()");
-  return (float)value;
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Float)");
+    out = (float)in;
 }
 
-long           
-CCM::CORBAPK_LONG_to_PK_LONG(const CORBA::Long value)
+void 
+CCM::convertFromCorba(const CORBA::Long& in, long& out)
 {
-  DEBUGNL(" CCM::CORBAPK_LONG_to_PK_LONG()");
-  return (long)value;
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Long)");
+    out = (long)in;
 }
 
-unsigned char  
-CCM::CORBAPK_OCTET_to_PK_OCTET(const CORBA::Octet value)
+void 
+CCM::convertFromCorba(const CORBA::Octet& in, unsigned char& out)
 {
-  DEBUGNL(" CCM::CORBAPK_OCTET_to_PK_OCTET()");
-  return (unsigned char)value;
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Octet)");
+    out = (unsigned char)in;
 }
 
-short          
-CCM::CORBAPK_SHORT_to_PK_SHORT(const CORBA::Short value)
+void 
+CCM::convertFromCorba(const CORBA::Short& in, short& out)
 {
-  DEBUGNL(" CCM::CORBAPK_SHORT_to_PK_SHORT()");
-  return (short)value;
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Short)");
+    out = (short)in;
 }
 
-std::string    
-CCM::CORBAPK_STRING_to_PK_STRING(const char* value)
+void 
+CCM::convertFromCorba(const char*& in, std::string& out)
 {
-  DEBUGNL(" CCM::CORBAPK_STRING_to_PK_STRING()");
-  return std::string(value);
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba()");
+    out = (std::string)in;
 }
 
-unsigned long  
-CCM::CORBAPK_ULONG_to_PK_ULONG(const CORBA::ULong value)
+void 
+CCM::convertFromCorba(char*& in, std::string& out)
 {
-  DEBUGNL(" CCM::CORBAPK_ULONG_to_PK_ULONG()");
-  return (long)value;
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba()");
+    out = (std::string)in;
 }
 
-unsigned short 
-CCM::CORBAPK_USHORT_to_PK_USHORT(const CORBA::UShort value)
+void 
+CCM::convertFromCorba(const CORBA::ULong& in, unsigned long& out)
 {
-  DEBUGNL(" CCM::CORBAPK_USHORT_to_PK_USHORT()");
-  return (unsigned short)value;
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::ULong)");
+    out = (unsigned long)in;
+}  
+
+void 
+CCM::convertFromCorba(const CORBA::UShort& in, unsigned short& out)
+{
+    LDEBUGNL(CCM_REMOTE, "convertFromCorba( CORBA::UShort)");
+    out = (unsigned short)in;
 }
 
 
@@ -329,8 +338,7 @@ Components::CCMHome_ptr CCM::SessionContainer::get_reference_for_home ()
 
 
 Components::CCMObject_ptr
-CCM::SessionContainer::activate_component (LocalComponents::EnterpriseComponent* inst,
-						 PortableServer::Servant skel)
+CCM::SessionContainer::activate_component(PortableServer::Servant skel)
 {
   DEBUGNL(" CCM::SessionContainer->activate_component()");
 
@@ -465,57 +473,11 @@ CORBA::Object_ptr CCM::SessionContainer::get_CCM_object (LocalComponents::Enterp
 // Valuetype implementations
 //============================================================================
 
-CCM::PortDescription_impl::PortDescription_impl ()
-{
-  DEBUGNL(" CCM::PortDescription_impl::PortDescription_impl()");
-
-  name ((const char *) "");
-  type_id ((const char *) "");
-}
-
 CCM::Cookie_impl::Cookie_impl ()
 {
   DEBUGNL(" CCM::Cookie_impl::Cookie_impl()");
 }
 
-CCM::FacetDescription_impl::FacetDescription_impl ()
-{
-  //ref (CORBA::Object::_nil ());
-}
-
-CCM::ConnectionDescription_impl::ConnectionDescription_impl ()
-{
-  ck (0);
-  objref (CORBA::Object::_nil ());
-}
-
-CCM::ReceptacleDescription_impl::ReceptacleDescription_impl ()
-{
-}
-
-CCM::ConsumerDescription_impl::ConsumerDescription_impl ()
-{
-  consumer (Components::EventConsumerBase::_nil ());
-}
-
-CCM::EmitterDescription_impl::EmitterDescription_impl ()
-{
-  consumer (Components::EventConsumerBase::_nil ());
-}
-
-CCM::SubscriberDescription_impl::SubscriberDescription_impl ()
-{
-  ck (0);
-  consumer (Components::EventConsumerBase::_nil ());
-}
-
-CCM::PublisherDescription_impl::PublisherDescription_impl ()
-{
-}
-
-CCM::ComponentPortDescription_impl::ComponentPortDescription_impl ()
-{
-}
 
 /*
  * ----------------------------------------------------------------------
@@ -524,95 +486,17 @@ CCM::ComponentPortDescription_impl::ComponentPortDescription_impl ()
  */
 
 CORBA::ValueBase *
-CCM::PortDescription_Factory::create_for_unmarshal ()
-{
-  return new PortDescription_impl;
-}
-
-CORBA::ValueBase *
 CCM::Cookie_Factory::create_for_unmarshal ()
 {
   return new Cookie_impl;
 }
 
-CORBA::ValueBase *
-CCM::FacetDescription_Factory::create_for_unmarshal ()
-{
-  return new FacetDescription_impl;
-}
-
-CORBA::ValueBase *
-CCM::ConnectionDescription_Factory::create_for_unmarshal ()
-{
-  return new ConnectionDescription_impl;
-}
-
-CORBA::ValueBase *
-CCM::ReceptacleDescription_Factory::create_for_unmarshal ()
-{
-  return new ReceptacleDescription_impl;
-}
-
-CORBA::ValueBase *
-CCM::ConsumerDescription_Factory::create_for_unmarshal ()
-{
-  return new ConsumerDescription_impl;
-}
-
-CORBA::ValueBase *
-CCM::EmitterDescription_Factory::create_for_unmarshal ()
-{
-  return new EmitterDescription_impl;
-}
-
-CORBA::ValueBase *
-CCM::SubscriberDescription_Factory::create_for_unmarshal ()
-{
-  return new SubscriberDescription_impl;
-}
-
-CORBA::ValueBase *
-CCM::PublisherDescription_Factory::create_for_unmarshal ()
-{
-  return new PublisherDescription_impl;
-}
-
-CORBA::ValueBase *
-CCM::ComponentPortDescription_Factory::create_for_unmarshal ()
-{
-  return new ComponentPortDescription_impl;
-}
 
 void
 CCM::register_all_factories (CORBA::ORB_ptr orb)
 {
   CORBA::ValueFactoryBase_var vf;
 
-  vf = new PortDescription_Factory;
-  orb->register_value_factory ("IDL:omg.org/Components/PortDescription:1.0", vf);
-
   vf = new Cookie_Factory;
   orb->register_value_factory ("IDL:omg.org/Components/Cookie:1.0", vf);
-
-  vf = new ConnectionDescription_Factory;
-  orb->register_value_factory ("IDL:omg.org/Components/ConnectionDescription:1.0", vf);
-
-  vf = new ReceptacleDescription_Factory;
-  orb->register_value_factory ("IDL:omg.org/Components/ReceptacleDescription:1.0", vf);
-
-  vf = new ConsumerDescription_Factory;
-  orb->register_value_factory ("IDL:omg.org/Components/ConsumerDescription:1.0", vf);
-
-  vf = new EmitterDescription_Factory;
-  orb->register_value_factory ("IDL:omg.org/Components/EmitterDescription:1.0", vf);
-
-  vf = new SubscriberDescription_Factory;
-  orb->register_value_factory ("IDL:omg.org/Components/SubscriberDescription:1.0", vf);
-
-  vf = new PublisherDescription_Factory;
-  orb->register_value_factory ("IDL:omg.org/Components/PublisherDescription:1.0", vf);
-
-  vf = new ComponentPortDescription_Factory;
-  orb->register_value_factory ("IDL:omg.org/Components/ComponentPortDescription:1.0",
-			       vf);
 }
