@@ -14,8 +14,8 @@ $ ccmtools-generate c++remote -o xxx Test.idl
 
 # create remote component test
 $ ccmtools-generate c++remote-test -o xxx Test.idl
-$ cp impl/Test_my_facet_impl.cc xxx/impl
-$ cp test/_check_CCM_Remote_CCM_Session_Test_remote.cc xxx/test
+$ cp impl/Test_my_facet_impl.cc xxx/impl/
+$ cp test/_check_CCM_Remote_world_CCM_Session_Test_remote.cc xxx/test/
 $ confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
 
 # remove all generated code

@@ -5,7 +5,8 @@ interface I2
 
 component Test
 {
-  uses I2 recept;
+  provides I2 in_port;
+  uses I2 out_port;
 };
 
 home TestHome manages Test
