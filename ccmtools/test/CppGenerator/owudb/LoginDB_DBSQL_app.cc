@@ -15,6 +15,7 @@ namespace owil {
 namespace udb {
 namespace CCM_Session_LoginDB_DBSQL {
 
+
 //==============================================================================
 // business logic functionality
 //==============================================================================
@@ -63,11 +64,13 @@ mgr_impl::set_component ( CCM_LoginDB_DBSQL_impl* c )
 
 owil::udb::LoginResult
 mgr_impl::login ( const std::string& user, const std::string& password, const std::string& login )
-  throw ( NoSuchLogin, DatabaseError, NoDefaultLogin, TerminalBlocked, InvalidPassword, UserBlocked, PasswordExpired, NoSuchUser )
+  throw ( InvalidPassword, PasswordExpired, NoSuchLogin, UserBlocked, TerminalBlocked, DatabaseError, NoDefaultLogin, NoSuchUser )
 {
   DEBUGNL ( " mgr_impl->login ( user, password, login )" );
 
-  return owil::udb::LoginResult (  );
+  // TODO : IMPLEMENT ME HERE !
+  owil::udb::LoginResult r;
+  return r;
 }
 
 
@@ -100,7 +103,9 @@ browser_impl::get_logins_of_user ( const std::string& user )
 {
   DEBUGNL ( " browser_impl->get_logins_of_user ( user )" );
 
-  return owil::udb::LoginDataList (  );
+  // TODO : IMPLEMENT ME HERE !
+  owil::udb::LoginDataList l;
+  return l;
 }
 
 owil::udb::LoginDataList
@@ -109,7 +114,9 @@ browser_impl::get_all_logins (  )
 {
   DEBUGNL ( " browser_impl->get_all_logins (  )" );
 
-  return owil::udb::LoginDataList (  );
+  // TODO : IMPLEMENT ME HERE !
+  owil::udb::LoginDataList l;
+  return l;
 }
 
 

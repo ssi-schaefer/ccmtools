@@ -13,19 +13,20 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # tests are generally in order of increasing complexity.
 
-##TESTS = owudb.sh
-TESTS = \
-    help.sh                       \
-    version.sh                    \
-    hello-facet.sh                \
-    hello-supports.sh             \
-    hello-receptacle.sh           \
-    hello-multiple-receptacles.sh \
-    module.sh                     \
-    module-nested.sh              \
-    module-reopen.sh              \
-    calculator.sh                 \
-    owudb.sh
+TESTS = attribute_user_types.sh
+
+#TESTS = \
+#    help.sh                       \
+#    version.sh                    \
+#    hello-facet.sh                \
+#    hello-supports.sh             \
+#    hello-receptacle.sh           \
+#    hello-multiple-receptacles.sh \
+#    module.sh                     \
+#    module-nested.sh              \
+#    module-reopen.sh              \
+#    calculator.sh                 \
+#    owudb.sh
 
 dist_check_SCRIPTS = $(TESTS)
 

@@ -1,3 +1,8 @@
 #! /bin/sh
 
-${top_srcdir}/test/CppGenerator/test-loader.sh facet facet/Hello.idl
+idldir=${top_srcdir}/../test/idl/facet
+
+${top_srcdir}/test/CppGenerator/test-loader.sh "facet" \
+                                               " " \
+                                               "${idldir}/Hello.idl"
+

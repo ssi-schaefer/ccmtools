@@ -15,6 +15,7 @@ namespace owil {
 namespace udb {
 namespace CCM_Session_UserDB_DBSQL {
 
+
 //==============================================================================
 // business logic functionality
 //==============================================================================
@@ -63,7 +64,7 @@ auth_impl::set_component ( CCM_UserDB_DBSQL_impl* c )
 
 void
 auth_impl::auth_userpass ( const std::string& name, const std::string& password )
-  throw ( DatabaseError, TerminalBlocked, InvalidPassword, UserBlocked, PasswordExpired, NoSuchUser )
+  throw ( InvalidPassword, PasswordExpired, UserBlocked, TerminalBlocked, DatabaseError, NoSuchUser )
 {
   DEBUGNL ( " auth_impl->auth_userpass ( name, password )" );
 
@@ -100,7 +101,9 @@ browser_impl::get_user ( const std::string& name )
 {
   DEBUGNL ( " browser_impl->get_user ( name )" );
 
-  return owil::udb::PersData (  );
+  // TODO : IMPLEMENT ME HERE !
+  owil::udb::PersData d;
+  return d;
 }
 
 
