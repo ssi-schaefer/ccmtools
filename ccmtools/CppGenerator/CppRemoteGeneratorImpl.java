@@ -329,7 +329,7 @@ public class CppRemoteGeneratorImpl
         vars.put("Identifier",          operation.getIdentifier());
         vars.put("LanguageType",        lang_type);
 	vars.put("CORBAType",           getCORBALanguageType(operation));
-        vars.put("MExceptionDef",       getOperationExcepts(operation));
+	vars.put("MExceptionDefCORBA",  getCORBAExcepts(operation));
         vars.put("MParameterDefAll",    getOperationParams(operation));
 	vars.put("MParameterDefCORBA",  getCORBAOperationParams(operation));
         vars.put("MParameterDefName",   getOperationParamNames(operation));
@@ -669,45 +669,62 @@ public class CppRemoteGeneratorImpl
 		corba_type = "::" + base_type;
 	}
 
+	// Reduce MAliasDef to the original type
+	if(idl_type instanceof MAliasDef) {
+	    idl_type = ((MTyped)idl_type).getIdlType();
+	}
+
 	// Handle operation parameter types and passing rules 
         if (object instanceof MParameterDef) {
             MParameterDef param = (MParameterDef) object;
             MParameterMode direction = param.getDirection();
-            String prefix = "";
-            String suffix = "";
+            String prefix = "const ";
+	    String suffix = "&";
 
+	    // IN Parameter
 	    if (direction == MParameterMode.PARAM_IN) {
-		if(!(idl_type instanceof MPrimitiveDef)) {
-		    // Simple IDL types are passed as IN parameter witout const 
-		    prefix = "const ";
+		if(idl_type instanceof MPrimitiveDef
+		   || idl_type instanceof MEnumDef
+		   || idl_type instanceof MArrayDef) {
+		    prefix = "";
+		    suffix = "";
 		}
 	    }
+	    // OUT Parameter
 	    else if(direction == MParameterMode.PARAM_OUT) {
 		if(idl_type instanceof MStringDef) {
-		     // OUT string is a special case in the CORBA to C++ mapping!
+		     // OUT string is a special case 
 		    return "CORBA::String_out"; 
 		}
 		else {
 		    return corba_type + "_out";
 		}
 	    }
+	    // INOUT Parameter
 	    else if(direction == MParameterMode.PARAM_INOUT) {
-		suffix = "&";
-	    }
-		
-            if ((idl_type instanceof MTypedefDef) ||
-                (idl_type instanceof MFixedDef)) {
-		suffix = "&";
+		prefix = "";
+		if(idl_type instanceof MArrayDef) {
+		    suffix = "";
+		}
 	    }
 	    return prefix + corba_type + suffix;
         }
+
+	// Handle operation return types
 	else if(object instanceof MOperationDef) { 
-	    // Handle operation return types
-	    if(idl_type instanceof MStructDef ||
-	       idl_type instanceof MAliasDef) {
+	   
+	    // ToDo separate fixed and variable struct
+	    if(idl_type instanceof MPrimitiveDef
+	       || idl_type instanceof MEnumDef) {
+		return corba_type;
+	    }
+	    else if(idl_type instanceof MArrayDef) {
+		return corba_type + "_slice*";
+	    }
+	    else
 		return corba_type + "*";
-	    } 
-	}
+	} 
+
 
 	return corba_type;
     }
@@ -751,18 +768,25 @@ public class CppRemoteGeneratorImpl
      *  @param op Reference to an OperationDef element in the CCM model.
      *  @return Generated code as a string.
      */
-    protected String getOperationExcepts(MOperationDef op)
+    protected String getCORBAExcepts(MOperationDef op)
     {
 	Debug.println(Debug.METHODS,"CppRemoteGenerator.getOperationExcepts()"); 
 	
         List ret = new ArrayList();
-        for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext(); )
-            ret.add(((MExceptionDef) es.next()).getIdentifier());
+        for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext(); ) {
+	    MExceptionDef IdlException = (MExceptionDef)es.next();
+	    List scope = getScope((MContained)IdlException);
+	    if(scope.size() > 0)
+		ret.add("::" + join("::", scope) + "::" + IdlException.getIdentifier());
+	    else
+		ret.add("::" + IdlException.getIdentifier());
+	}
 	
-        if (ret.size() > 0) 
+        if (ret.size() > 0) {
 	    return "throw(CORBA::SystemException, " + join(", ", ret) + " )";
+	}
         else                
-	    return "";
+	    return "throw(CORBA::SystemException)";
     }
 
 
@@ -790,6 +814,10 @@ public class CppRemoteGeneratorImpl
 	       || idl_type instanceof MStringDef) {
 		ret.add(convertPrimitiveParameterFromCorbaToCpp(p));
 	    }
+	    else if(idl_type instanceof MEnumDef) {
+		MEnumDef idl_enum = (MEnumDef)idl_type;
+		ret.add(convertEnumParameterFromCorbaToCpp(p, idl_enum));
+	    }
 	    else if(idl_type instanceof MStructDef) { 
 		MTypedefDef idl_typedef = (MTypedefDef)idl_type;
 		MStructDef idl_struct = (MStructDef)idl_typedef;
@@ -815,8 +843,6 @@ public class CppRemoteGeneratorImpl
 	return join("\n", ret) + "\n";
     }
 
-    
-
     protected String convertPrimitiveParameterFromCorbaToCpp(MParameterDef p)
     {
 	MParameterMode direction = p.getDirection();
@@ -830,6 +856,26 @@ public class CppRemoteGeneratorImpl
 	    ret.add("  " + "parameter_" + p.getIdentifier()
 		    + " = CCM::CORBA" + base_type + "_to_" + 
 		    base_type + "(" +p.getIdentifier() + ");");  
+	}
+	return join("\n", ret) + "\n";
+    }
+
+    protected String convertEnumParameterFromCorbaToCpp(MParameterDef p, MEnumDef idl_enum)
+    {
+	MParameterMode direction = p.getDirection();
+
+        List ret = new ArrayList();
+	ret.add("  CCM_Local::" + getFullScopeIdentifier(idl_enum) + " parameter_"
+		    + p.getIdentifier() + ";");	
+	if(direction != MParameterMode.PARAM_OUT) {
+	    ret.add("  switch(" + p.getIdentifier() + ") {");
+	    for (Iterator members = idl_enum.getMembers().iterator(); members.hasNext(); ) {
+		String member = (String)members.next();
+		ret.add("    case " + member + ": parameter_" + p.getIdentifier() 
+			+ " = CCM_Local::" + getFullScopeIdentifier(idl_enum) 
+			+ "(" + member + "); break;");
+	    }
+	    ret.add("  }");
 	}
 	return join("\n", ret) + "\n";
     }
@@ -940,6 +986,10 @@ public class CppRemoteGeneratorImpl
 	    ret_string = "  " + (String)language_mappings.get((String)getBaseIdlType(op)) +
 		         " result;";
 	}
+	else if(idl_type instanceof MEnumDef) {
+	    MEnumDef idl_enum = (MEnumDef)idl_type;
+	    ret_string = "  CCM_Local::" + getFullScopeIdentifier(idl_enum) + " result;";
+	}
 	else if(idl_type instanceof MStructDef) { 
 	    MTypedefDef idl_typedef = (MTypedefDef)idl_type;
 	    MStructDef idl_struct = (MStructDef)idl_typedef;
@@ -987,6 +1037,7 @@ public class CppRemoteGeneratorImpl
 
 	if(idl_type instanceof MPrimitiveDef 
 	   || idl_type instanceof MStringDef
+	   || idl_type instanceof MEnumDef
 	   || idl_type instanceof MStructDef
 	   || idl_type instanceof MAliasDef) {
 	    ret_string = "  " + "  result = local_adapter->" 
@@ -1031,6 +1082,10 @@ public class CppRemoteGeneratorImpl
 	       || idl_type instanceof MStringDef) {
 		ret.add(convertPrimitiveParameterFromCppToCorba(p));
 	    }
+	    else if(idl_type instanceof MEnumDef) {
+		MEnumDef idl_enum = (MEnumDef)idl_type;
+		ret.add(convertEnumParameterFromCppToCorba(p, idl_enum));
+	    }
 	    else if(idl_type instanceof MStructDef) { 
 		MTypedefDef idl_typedef = (MTypedefDef)idl_type;
 		MStructDef idl_struct = (MStructDef)idl_typedef;
@@ -1071,6 +1126,23 @@ public class CppRemoteGeneratorImpl
 		    + "_to_CORBA" + parameter_base_type 
 		    + "(parameter_" + 
 		    p.getIdentifier() + ");"); 
+	}
+	return join("\n", ret);
+    }
+
+    protected String convertEnumParameterFromCppToCorba(MParameterDef p, MEnumDef idl_enum)
+    {
+	List ret = new ArrayList();
+	MParameterMode direction = p.getDirection();
+	
+	if(direction != MParameterMode.PARAM_IN) {
+	    ret.add("  switch(parameter_" + p.getIdentifier() + ") {");
+	    for (Iterator members = idl_enum.getMembers().iterator(); members.hasNext(); ) {
+		String member = (String)members.next();
+		ret.add("  case " + member + ": " + p.getIdentifier() + " = " 
+			+ "::" + getFullScopeIdentifier(idl_enum) + "(" + member + "); break;");
+	    }	    
+	    ret.add("  }");
 	}
 	return join("\n", ret);
     }
@@ -1221,6 +1293,11 @@ public class CppRemoteGeneratorImpl
 	   idl_type instanceof MStringDef) {
 	    ret.add(convertPrimitiveResultFromCppToCorba(op));
 	}
+	else if(idl_type instanceof MEnumDef) {
+	    MEnumDef idl_enum = (MEnumDef)idl_type;
+	    ret.add(convertEnumResultFromCppToCorba(idl_enum));
+	    ret.add("  return return_value;");
+	}
 	else if(idl_type instanceof MStructDef) { 
 	    MTypedefDef idl_typedef = (MTypedefDef)idl_type;
 	    MStructDef idl_struct = (MStructDef)idl_typedef;
@@ -1259,6 +1336,21 @@ public class CppRemoteGeneratorImpl
 		+ "_to_CORBA" + base_type + "(result);";
 	}
 	return ret_string;
+    }
+
+    protected String convertEnumResultFromCppToCorba(MEnumDef idl_enum)
+    {
+	List ret = new ArrayList();
+	ret.add("  ::" + getFullScopeIdentifier(idl_enum) + " return_value;"); 
+	ret.add("  switch(result) {");	
+	for (Iterator members = idl_enum.getMembers().iterator(); members.hasNext(); ) {
+	    String member = (String)members.next();
+	    
+	    ret.add("  case " + member + ": return_value = ::" 
+		    + getFullScopeIdentifier(idl_enum) + "(" + member + "); break;");
+	}
+	ret.add("  }");
+	return join("\n", ret);	
     }
 
     protected String convertStructResultFromCppToCorba(MStructDef idl_struct,
@@ -1359,12 +1451,18 @@ public class CppRemoteGeneratorImpl
 
 	List ret = new ArrayList();
         for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext(); ) {
-	    String exception_name = ((MExceptionDef) es.next()).getIdentifier(); 
-            ret.add("  catch(const CCM_Local::" 
-		    + exception_name 
-		    + "&) { \n    throw " 
-		    + exception_name 
-		    + "();\n  }");
+	    MExceptionDef IdlException = (MExceptionDef)es.next();
+	    List scope = getScope(IdlException);
+	    String IdlExceptionScope = "";
+            
+	    if(scope.size() >0) {
+		IdlExceptionScope = join("::", scope) + "::";
+	    }
+	    ret.add("  catch(const CCM_Local::" + IdlExceptionScope
+		    + IdlException.getIdentifier() + "&) { ");
+	    ret.add("    throw " + "::" + IdlExceptionScope
+		    + IdlException.getIdentifier() + "();");
+	    ret.add("  }");
 	}
 	return join("\n", ret);
     }
