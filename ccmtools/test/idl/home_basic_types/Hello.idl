@@ -1,0 +1,25 @@
+// $Id$
+/**
+ * Test case: home factory
+ *
+ */
+
+component Hello
+{
+  attribute string id;
+};
+
+home HelloHome manages Hello
+{
+  factory create_with_short(in short id);
+  factory create_with_long(in long id);
+  factory create_with_ushort(in unsigned short id);
+  factory create_with_ulong(in unsigned long id);
+  factory create_with_float(in float id);
+  factory create_with_double(in double id);
+  factory create_with_char(in char id);
+  factory create_with_string(in string id);
+  factory create_with_boolean(in boolean id);
+  factory create_with_octet(in octet id);
+};
+

@@ -1,0 +1,22 @@
+// $Id$
+/**
+ * Test case: facet exception 
+ *
+ */
+
+exception error{};
+
+interface Console {
+  long println(in string s2)
+    raises (error);
+};
+
+component Hello
+{
+  provides Console console;
+};
+
+home HelloHome manages Hello
+{
+};
+

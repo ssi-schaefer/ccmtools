@@ -1,0 +1,28 @@
+// $Id$
+/**
+ * Test case: facet basic types 
+ *
+ */
+
+interface Console {
+  short println1(in short p1, inout short p2, out short p3);
+  long println2(in long p1, inout long p2, out long p3);
+  unsigned short println3(in unsigned short p1, inout unsigned short p2, out unsigned short p3);
+  unsigned long println4(in unsigned long p1, inout unsigned long p2, out unsigned long p3);
+  float println5(in float p1, inout float p2, out float p3);
+  double println6(in double p1, inout double p2, out double p3);
+  char println7(in char p1, inout char p2, out char p3);
+  string println8(in string p1, inout string p2, out string p3);
+  boolean println9(in boolean p1, inout boolean p2, out boolean p3);
+  octet println10(in octet p1, inout octet p2, out octet p3);
+};
+
+component Hello
+{
+  provides Console console;
+};
+
+home HelloHome manages Hello
+{
+};
+
