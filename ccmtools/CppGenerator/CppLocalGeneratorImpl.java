@@ -101,7 +101,7 @@ public class CppLocalGeneratorImpl
 
 	    File user_files = new File(output_dir, file_dir);
 	    user_files = new File(user_files, file_name);
-	    if((file_dir == "src") && user_files.isFile()) {
+	    if((file_dir == "impl") && user_files.isFile()) {
 		System.out.println("WARNING: " + output_dir 
 				   + "/" + file_dir + "/" 
 				   + file_name + " already exists!");
@@ -196,17 +196,17 @@ public class CppLocalGeneratorImpl
 
 	    if (current_node instanceof MHomeDef) {
                 f = new ArrayList();
-                f.add("src"); f.add(node_name + "_entry.h"); files.add(f);
+                f.add("impl"); f.add(node_name + "_entry.h"); files.add(f);
             }
 
             if ((flags & FLAG_APPLICATION_FILES) != 0) {
                 f = new ArrayList();
-                f.add("src"); f.add(node_name + "_app.h"); files.add(f);
+                f.add("impl"); f.add(node_name + "_impl.h"); files.add(f);
                 f = new ArrayList();
-                f.add("src"); f.add(node_name + "_app.cc"); files.add(f);
+                f.add("impl"); f.add(node_name + "_impl.cc"); files.add(f);
             } else {
-                f = new ArrayList(); f.add("src"); f.add(""); files.add(f);
-                f = new ArrayList(); f.add("src"); f.add(""); files.add(f);
+                f = new ArrayList(); f.add("impl"); f.add(""); files.add(f);
+                f = new ArrayList(); f.add("impl"); f.add(""); files.add(f);
             }
         } else if ((current_node instanceof MInterfaceDef)
                    || (current_node instanceof MStructDef)

@@ -10,10 +10,6 @@
 #ifndef __HOME_%(PreprocIdentifier)s_GEN__H__
 #define __HOME_%(PreprocIdentifier)s_GEN__H__
 
-#ifdef CCM_TEST_PYTHON
-#include "%(Identifier)s_python.h"
-#endif
-
 #include <string>
 #include <map>
 #include <WX/Utils/smartptr.h>
@@ -325,8 +321,8 @@ extern "C" {
  * implementation classes. 
  ***/
 
-#ifndef __HOME_%(PreprocIdentifier)s_APP__H__
-#define __HOME_%(PreprocIdentifier)s_APP__H__
+#ifndef __HOME_%(PreprocIdentifier)s_IMPL__H__
+#define __HOME_%(PreprocIdentifier)s_IMPL__H__
 
 #include <%(HomeInclude)s_share.h>
 #include "%(Identifier)s_entry.h"
@@ -380,8 +376,8 @@ class CCM_%(Identifier)s_impl
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "%(ComponentType)s_app.h"
-#include "%(Identifier)s_app.h"
+#include "%(ComponentType)s_impl.h"
+#include "%(Identifier)s_impl.h"
 
 using namespace std;
 using namespace WX::Utils;
