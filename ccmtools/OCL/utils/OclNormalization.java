@@ -1167,9 +1167,9 @@ public class OclNormalization
             OclType item = makeOclType( (MTyped)idlType );
             return creator_.createTypeSequence(item);
         }
-        if( idlType instanceof MTypedefDef )
+        if( idlType instanceof MContained )
         {
-            String id = ((MTypedefDef)idlType).getIdentifier();
+            String id = ((MContained)idlType).getIdentifier();
             if( idlType instanceof MAliasDef )
             {
                 OclType result = makeOclType( (MTyped)idlType );
@@ -1182,7 +1182,8 @@ public class OclNormalization
             // TODO
             return creator_.createTypeUser(id);
         }
-        // TODO
+        System.err.println("OclNormalization.makeOclType: unknown IDL type '"+
+            idlType.getClass().getName()+"'");
         return null;
     }
 

@@ -663,19 +663,13 @@ public class CppLocalDbcGeneratorImpl
                     {
                         return oclName;
                     }
-                    // TODO
-                    System.out.println("***   et.idlType_.CLASS=="+
-                                       et.idlType_.getClass().getName()+"   oclName=="+oclName);
+                    if( !(et.idlType_ instanceof MInterfaceDef) )
+                    {
+                        System.err.println("TypeCreator.getAttributeName: unknown IDL type '"+
+                            et.idlType_.getClass().getName()+"'");
+                    }
                 }
-                /*else if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
-                {
-                    System.out.println("***   et.idlType_==null   oclName=="+oclName);
-                }*/
             }
-            /*else if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
-            {
-                System.out.println("***   et==null   oclName=="+oclName);
-            }*/
             return oclName+"()";
         }
 
@@ -720,8 +714,24 @@ public class CppLocalDbcGeneratorImpl
          */
         public ElementType makeType( MExpression expr, ConstraintCode conCode )
         {
-            theClass_ = conCode.theClass_;
-            idlType_ = conCode.idlType_;
+            if( conCode.idlType_!=null )
+            {
+                if( conCode.idlType_ instanceof MContainer )
+                {
+                    theClass_ = (MContainer)conCode.idlType_;
+                    idlType_ = null;
+                }
+                else
+                {
+                    idlType_ = conCode.idlType_;
+                    theClass_ = null;
+                }
+            }
+            else
+            {
+                theClass_ = conCode.theClass_;
+                idlType_ = null;
+            }
             context_ = conCode.opCtxt_;
             returnType_ = conCode.returnType_;
             ElementType result = new ElementType();
@@ -777,7 +787,15 @@ public class CppLocalDbcGeneratorImpl
                 if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
                 {
                     System.err.println("TypeCreator.getOclType: could not find '"+
-                        name+"' in class '"+theClass_.getIdentifier()+"'");
+                        name+"' in class '"+theClass_.getIdentifier()+"' of type '"+
+                        theClass_.getClass().getName()+"'");
+                    /*Iterator it1 = theClass_.getContentss().iterator();
+                    while(it1.hasNext())
+                    {
+                        MContained x = (MContained)it1.next();
+                        System.err.println("###  "+x.getClass().getName()+"  :  "+
+                            x.getIdentifier()+"  ###");
+                    }*/
                 }
             }
             if( idlType_!=null )
@@ -810,23 +828,26 @@ public class CppLocalDbcGeneratorImpl
             Iterator it1 = def.getContentss().iterator();
             while( it1.hasNext() )
             {
-                Object obj = it1.next();
-                if( obj instanceof MAttributeDef )
+                MContained obj = (MContained)it1.next();
+                if( obj.getIdentifier().equals(name) )
                 {
-                    MAttributeDef attr = (MAttributeDef)obj;
-                    if( attr.getIdentifier().equals(name) )
+                    if( obj instanceof MAttributeDef )
                     {
-                        last_attribute_idlType_ = attr.getIdlType();
-                        return makeOclType(attr);
+                        last_attribute_idlType_ = ((MAttributeDef)obj).getIdlType();
                     }
-                }
-                else if( obj instanceof MOperationDef )
-                {
-                    MOperationDef op = (MOperationDef)obj;
-                    if( op.getIdentifier().equals(name) )
+                    if( obj instanceof MTyped )
                     {
-                        return makeOclType(op);
+                        OclType result = makeOclType((MTyped)obj);
+                        if( result==null && OclCodeGenerator.OCL_DEBUG_OUTPUT )
+                        {
+                            System.err.println("TypeCreator.getPropertyType: "+
+                                "makeOclType("+obj.getClass().getName()+"["+name+"])==null");
+                        }
+                        return result;
                     }
+                    System.err.println("TypeCreator.getPropertyType: unknown type '"+
+                        obj.getClass().getName()+"'");
+                    return null;
                 }
             }
             return null;
