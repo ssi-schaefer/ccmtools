@@ -166,12 +166,12 @@ public class ConsoleCodeGenerator
                 handler = new CppLocalTestGeneratorImpl(driver, output_directory);
 	    else if (lang.equalsIgnoreCase("c++dbc"))
                 handler = new CppLocalDbcGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("c++remote"))
-		handler = new CppRemoteGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("c++remote-test"))
-		handler = new CppRemoteTestGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("c++python"))
-                handler = new CppPythonGeneratorImpl(driver, output_directory);
+	    //	    else if (lang.equalsIgnoreCase("c++remote"))
+	    //		handler = new CppRemoteGeneratorImpl(driver, output_directory);
+	    //	    else if (lang.equalsIgnoreCase("c++remote-test"))
+	    //		handler = new CppRemoteTestGeneratorImpl(driver, output_directory);
+	    //	    else if (lang.equalsIgnoreCase("c++python"))
+	    //                handler = new CppPythonGeneratorImpl(driver, output_directory);
             else if (lang.equalsIgnoreCase("idl3"))
                 handler = new IDL3GeneratorImpl(driver, output_directory);
             else if (lang.equalsIgnoreCase("idl3mirror"))
@@ -183,7 +183,7 @@ public class ConsoleCodeGenerator
         }
 
         if (handler == null)
-            printUsage("failed to create a language generator for "+lang);
+            printUsage("ERROR: failed to create a language generator for "+lang);
 
         if ((generate_flags & GENERATE_APPLICATION_FILES) != 0)
             handler.setFlag(((CodeGenerator) handler).FLAG_APPLICATION_FILES);
