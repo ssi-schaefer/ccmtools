@@ -525,8 +525,9 @@ abstract public class CppGenerator
         MInterfaceDef iface = (MInterfaceDef) current_node;
 
         if (data_type.equals("BaseType")) {
-            String base = joinBaseNames(", public ");
-            if (base.length() > 0) return ", public " + base;
+            String base = joinBaseNames(", virtual public ");
+            if (base.length() > 0) 
+		return ", virtual public " + base;
         }
 
         return data_value;
