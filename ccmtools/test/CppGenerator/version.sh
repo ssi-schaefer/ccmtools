@@ -1,5 +1,7 @@
 #! /bin/sh
 
+export PATH=${top_srcdir}/UI/scripts:$PATH
+
 ${top_srcdir}/UI/scripts/ccmtools-c++-generate --version
 ${top_srcdir}/UI/scripts/ccmtools-c++-generate -V
 ${top_srcdir}/UI/scripts/ccmtools-c++-make --version
