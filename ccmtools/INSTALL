@@ -13,7 +13,7 @@ To install the CCM Tools, the following programs must be available:
   cpp          2.96     (http://www.gnu.org) 
 
 To build the generated local C++ components, we also need: 
-  Confix       1.3pre14 (http://confix.sourceforge.net) 
+  Confix       1.3pre35 (http://confix.sourceforge.net) 
   gcc          2.95.3   (http://www.gnu.org) 
 
 To generate and build remote C++ components, we additionally need: 
@@ -52,11 +52,6 @@ The ccmtools package can be installed with the following procedure:
  $ ant install -Dprefix=<CCM_INSTALL_PATH>
  $ cd ..
  $ export CCMTOOLS_HOME=<CCM_INSTALL_PATH>
- $ export CLASSPATH=<CCM_INSTALL_PATH>/lib/ccmtools.jar:    \
-                    <CCM_INSTALL_PATH>/lib/antlr.jar        \
-                    <CCM_INSTALL_PATH>/lib/mdr01.jar        \
-                    <CCM_INSTALL_PATH>/lib/oclmetamodel.jar \
-                    <CCM_INSTALL_PATH>/lib/uml2idl.jar      
  $ export PATH=$CCMTOOLS_HOME/bin:$PATH	    
 
  # For using remote components too: 
