@@ -43,10 +43,11 @@ Association end. <br>Children:
 <li>{@link uml_parser.uml.MAssociationEnd_isNavigable}</li>
 <li>{@link uml_parser.uml.MAssociationEnd_multiplicity} == {@link UmlMultiplicity}</li>
 <li>{@link uml_parser.uml.MAssociationEnd_qualifier} == {@link UmlAttribute}</li>
+<li>{@link uml_parser.uml.MModelElement_comment}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@version $Date$
 */
 class UmlAssociationEnd extends uml_parser.uml.MAssociationEnd implements Worker
 {

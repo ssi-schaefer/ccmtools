@@ -36,7 +36,7 @@ UML-association. <br>Children:
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@version $Date$
 */
 class UmlAssociation extends uml_parser.uml.MAssociation implements Worker
 {

@@ -23,13 +23,14 @@ package uml2idl;
 
 import org.xml.sax.Attributes;
 import java.util.Vector;
+import uml_parser.uml.MModelElement_comment;
 
 
 /**
 Stores two instances of {@link UmlAssociationEnd}.
 
 @author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@version $Date$
 */
 class UmlAssociationConnection extends uml_parser.uml.MAssociation_connection implements Worker
 {
@@ -217,6 +218,11 @@ class UmlAssociationConnection extends uml_parser.uml.MAssociation_connection im
     	    UmlAttribute newAttribute = new UmlAttribute(attributeName, typeId, multiplicity, dest.getVisibility());
     	    dest.addQualifiersAndStereotypes(newAttribute, main);
             ((UmlClass)participantObj).addNewAttribute(newAttribute);
+            Vector comments = dest.findChildren(MModelElement_comment.xmlName__);
+            for( int i=0; i<comments.size(); i++ )
+            {
+                newAttribute.add(comments.get(i));
+            }
             return newAttribute;
         }
         else
