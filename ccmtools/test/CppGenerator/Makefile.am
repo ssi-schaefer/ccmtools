@@ -9,7 +9,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # currently under investigation ... uncomment in local copy to test faster.
 
-# TESTS = include_dir.sh include_nested.sh
+#TESTS = calculator.sh
 
 # tests are generally in order of decreasing complexity (we want to see whether
 # the hard tests fail ; the easy tests will likely pass later).

@@ -1,11 +1,10 @@
-
 CCM Tools : TODOs and reported bugs
 ===================================
 
 This file is a brief overview of known CCM Tools bugs and other issues. It would
 be nice to keep this reasonably up to date, but it could also be helpful to do :
 
-  $ grep -rwi '\(fixme\|todo\)' .
+  $ grep -ri '\(fixme\|todo\)' .
 
 in the root source dir, and also to look on the project bug page ; see
 http://ccmtools.sf.net/ for more information.
@@ -14,16 +13,8 @@ IDL3 parser
 -----------
 
 o) Identifiers named a-f or A-F do not work (apparent conflict with hex digits).
+   This might not be fixable.
    - test/idl/interface_short_identifier.idl
-
-o) IDL constants don't work.
-   - test/idl/constants.idl
-
-o) Home factory method exceptions don't work.
-   - test/idl/home_exception.idl
-
-o) Interfaces, components, and homes don't have IDL types. I think the MOF needs
-   to be changed so MInterfaceDef inherits from MIDLType and not from MTyped.
 
 Cpp generators
 --------------
@@ -33,12 +24,7 @@ Local
 
 o) Component adapters do not inherit supported interfaces, but components do.
 
-o) Mixed modules within a component are still a problem.
-   - test/idl/module_mixed.idl
-
 o) We should integrate Utils/value_simple.h as a mapping for IDL any.
-
-o) Interface inheritance does not work.
 
 Remote
 ~~~~~~
@@ -49,11 +35,6 @@ Python wrapper
 ~~~~~~~~~~~~~~
 
 o) Not implemented yet !
-
-IDL generators
---------------
-
-o) Interface inheritance does not work.
 
 Documentation
 -------------
