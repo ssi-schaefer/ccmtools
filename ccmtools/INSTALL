@@ -61,6 +61,7 @@ PROFILES = { 'default': ccm_tools_profile, 'ccmtools': ccm_tools_profile }
   $ export CLASSPATH=$CCMTOOLS_HOME/share/java/ccmtools.jar:\
                      $CCMTOOLS_HOME/share/java/antlr.jar:\
                      $CCMTOOLS_HOME/share/java/mdr01.jar:\
+                     $CCMTOOLS_HOME/share/java/uml2idl.jar:\
                      $CCMTOOLS_HOME/share/java/oclmetamodel.jar:\
                      $CLASSPATH
 # For remote components:
