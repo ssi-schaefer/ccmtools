@@ -1,8 +1,8 @@
 #include <cassert>
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
-#include <CCM_Utils/Debug.h>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/debug.h>
+#include <WX/Utils/smartptr.h>
 
 #ifdef CCM_TEST_PYTHON
 #include <Python.h>
@@ -14,7 +14,7 @@
 #include <CCM_Local/CCM_Session_Hello/HelloHome_gen.h>
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_Local;
 using namespace CCM_Session_Hello;
 using namespace CCM_Session_Hello_mirror;
@@ -27,7 +27,7 @@ using namespace CCM_Session_Hello_mirror;
 int main ( int argc, char *argv[] )
 {
   int result = 0;
-  Debug::set_global ( true );
+  Debug::instance().set_global ( true );
 
   DEBUGNL ( "test_client_Hello_component_main (  )" );
 

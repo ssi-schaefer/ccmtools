@@ -4,13 +4,13 @@
 //==============================================================================
 
 #include <iostream>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 
 #include "Hello_app.h"
 #include "HelloHome_app.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 
 namespace CCM_Local {
 namespace CCM_Session_Hello {

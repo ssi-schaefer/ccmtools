@@ -4,12 +4,12 @@
 //==============================================================================
 
 #include <iostream>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 
 #include "Hello_mirror_app.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 
 namespace CCM_Local {
 namespace CCM_Session_Hello_mirror {
@@ -54,7 +54,7 @@ CCM_Hello_mirror_impl::ccm_activate (  )
 {
   DEBUGNL ( " CCM_Hello_mirror_impl->ccm_activate (  )" );
   cout << "==== Begin of Test Case =========================" << endl;
-  CCM_Utils::SmartPtr<CCM_Console> console = ctx->get_connection_console_mirror();
+  WX::Utils::SmartPtr<CCM_Console> console = ctx->get_connection_console_mirror();
 
   /* Test Case for: typedef long time_t; */
   CCM_Local::time_t time_t_2 = 3, time_t_3, time_t_r;

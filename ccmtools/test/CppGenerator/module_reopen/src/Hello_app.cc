@@ -4,11 +4,11 @@
 //==============================================================================
 
 #include <iostream>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 
 #include "Hello_app.h"
 
-using namespace CCM_Utils;
+using namespace WX::Utils;
 
 namespace CCM_Local {
 namespace WORLD {

@@ -5,12 +5,12 @@
 
 #include <iostream>
 #include <cassert>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 
 #include "Hello_app.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 
 namespace CCM_Local {
 namespace CCM_Session_Hello {
@@ -57,7 +57,7 @@ CCM_Hello_impl::ccm_activate (  )
 
   cout << "==== Begin of Test Case =========================" << endl;
   try {
-    CCM_Utils::SmartPtr<CCM_Console> console = ctx->get_connection_console();
+    WX::Utils::SmartPtr<CCM_Console> console = ctx->get_connection_console();
 
     /* Test Case for: typedef long time_t; */
     CCM_Local::time_t time_t_2 = 3, time_t_3, time_t_r;
