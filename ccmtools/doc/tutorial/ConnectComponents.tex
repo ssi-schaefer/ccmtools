@@ -11,10 +11,9 @@
 \section{Overview}
 %------------------------------------------------------------------------------
 The CORBA component model also defines the concept of receptacles that are
-connection points for facet references.
-This section describes an example that extends the previous example with
-a {\tt Display} component which is connected to the {\tt Hello} component,
-as shown in Fig.~\ref{ConnectComponents}.
+connection points for facet references. This section describes an example that
+extends the previous example with a {\tt Display} component which is connected
+to the {\tt Hello} component, as shown in Fig.~\ref{ConnectComponents}.
 
 \begin{figure}[htbp]
     \begin{center}
@@ -24,22 +23,20 @@ as shown in Fig.~\ref{ConnectComponents}.
     \end{center}
 \end{figure}
 
-The test client uses the component's home to create component instances.
-The component instances are used for configuration and to provide facets.
-To connect the two component instances, the {\tt LCD} facet is connected to
-the {\tt LCD} receptacle.
-Finally, the test client calls operations on the {\tt Console} facet that
-are delegated to the {\tt Display} component.
+The test client uses the component's home to create component instances. The
+component instances are used for configuration and to provide facets. To connect
+the two component instances, the {\tt LCD} facet is connected to the {\tt LCD}
+receptacle. Finally, the test client calls operations on the {\tt Console} facet
+that are delegated to the {\tt Display} component.
 
 
 %------------------------------------------------------------------------------
 \section{Definition of two components}
 %------------------------------------------------------------------------------
 We define a new component called {\tt Display} that provides an {\tt LCD}
-interface as a facet.
-The {\tt Hello} component uses the {\tt LCD} interface as an receptacle.
-Note that a facet to receptacle connection can only be established when
-both ports handle the same interface.
+interface as a facet. The {\tt Hello} component uses the {\tt LCD} interface as
+an receptacle. Note that a facet to receptacle connection can only be
+established when both ports handle the same interface.
 
 \begin{verbatim}
     interface LCD {
@@ -69,8 +66,8 @@ both ports handle the same interface.
 \end{verbatim}
 
 \noindent
-As long as we define the components in the same file, we have the same file structure
-as before:  
+As long as we define the components in the same file, we have the same file
+structure as before:
 \begin{verbatim}
         hello/
         |-- hello.idl
@@ -90,11 +87,11 @@ We start with generating and building the empty components:
 
 \noindent
 For each of the components a mirror component has been generated as well as a
-test client that connects every component with its mirror component and calls 
+test client that connects every component with its mirror component and calls
 the component's operations - Test-Driven Development.
 
-To make it short, we implemented the following methods in the business logic
-of the {\tt Display} and the {\tt Hello} component:
+To make it short, we implemented the following methods in the business logic of
+the {\tt Display} and the {\tt Hello} component:
 \begin{verbatim}
 // Display_app.cc
 void
@@ -128,8 +125,8 @@ We build the components again and install them in the component repository:
 \section{Write a local test client for two components}
 %------------------------------------------------------------------------------
 
-To show the use of both components in an application, we write a test client in the
-following file structure:
+To show the use of both components in an application, we write a test client in
+the following file structure:
 \begin{verbatim}
     hello/
     |-- hello1.0/
@@ -139,8 +136,8 @@ following file structure:
 \end{verbatim}
 
 \noindent
-The client starts with a lot of include and using namespace statements.
-Note that the included header files reflect the used components.
+The client starts with a lot of include and using namespace statements. Note
+that the included header files reflect the used components.
 \begin{small}
 \begin{verbatim}
 #include <localComponents/CCM.h>
@@ -161,8 +158,8 @@ using namespace CCM_Session_Hello;
 \end{small}
 
 \noindent
-In the main function, after setting the debugging mode, 
-both component homes are registered at the home finder.
+In the main function, after setting the debugging mode, both component homes are
+registered at the home finder.
 \begin{small}
 \begin{verbatim}
 int main ( int argc, char *argv[] )
@@ -183,10 +180,10 @@ int main ( int argc, char *argv[] )
 \end{small}
 
 \noindent
-Now, we can use the home finder to find the homes by name.
-We create an instance of each component, get references the the component's
-facets and connect the facet of {\tt Display} with the receptacle of {\tt Hello}.
-Note that both ports are defined by the same {\tt LCD} interface.
+Now, we can use the home finder to find the homes by name. We create an instance
+of each component, get references the the component's facets and connect the
+facet of {\tt Display} with the receptacle of {\tt Hello}. Note that both ports
+are defined by the same {\tt LCD} interface.
 \begin{small}
 \begin{verbatim}
   try {
@@ -216,7 +213,7 @@ Note that both ports are defined by the same {\tt LCD} interface.
 
 \noindent
 The test client has build an component assembly of two components in memory and
-can use its functionality. 
+can use its functionality.
 \begin{small}
 \begin{verbatim}  
     // Call operations on the component assembly
@@ -230,9 +227,9 @@ can use its functionality.
 \end{small}
 
 \noindent
-To tear the component assembly town, we disconnect the ports and 
-remove the component instances from memory.
-We also unregister the component's homes from the home finder.
+To tear the component assembly town, we disconnect the ports and remove the
+component instances from memory. We also unregister the component's homes from
+the home finder.
 \begin{small}	
 \begin{verbatim}    
     // Disconnect component ports
@@ -259,7 +256,6 @@ We also unregister the component's homes from the home finder.
 \end{verbatim}
 \end{small}
 
-\noindent
 We build the test client with {\tt Confix} and run the binary:
 \begin{verbatim}
 ~/hello/test> confix.py --bootstrap --configure  \
@@ -267,19 +263,15 @@ We build the test client with {\tt Confix} and run the binary:
 ~/hello/test> test_client_client
 \end{verbatim}
 
-\noindent
-Isn't it cool?\\
-We have run a test client that uses two components which are connected via facet 
-and receptacle to build a component assembly.
-In the same way, we can create more complex assemblies that form a real
-component based application as well.
+Isn't this cool?
+
+We have run a test client that uses two components which are connected via facet
+and receptacle to build a component assembly. In the same way, we can create
+more complex assemblies that form a real component based application as well.
 
 Look at the printed debugging information to trace the execution thread of the
 test client. We can also switch off the messages by setting the debugging mode
 in the main function to {\tt false}.
-
-
-
 
 
 

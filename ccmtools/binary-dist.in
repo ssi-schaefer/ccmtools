@@ -3,7 +3,11 @@
 PACK=@PACKAGE@-@VERSION@
 
 ./autogen.py --prefix=`pwd`/$PACK --enable-docs && \
-  make && make install && \
-  cp -pr doc $PACK && cp -p README.binary $PACK && \
+  make && make install && cp -pr doc $PACK && cp -p README.binary $PACK && \
+  rm -f `find $PACK/doc -regex ".*\.\(tex\|aux\|dvi\|toc\|log\|fig\|eps\|bbl\|bib\|blg\)$"` && \
+  rm -f $PACK/doc/convert-for-website.sh && \
+  rm -f `find $PACK -name "Makefile*"` && \
+  rm -f `find $PACK -name ".cvsignore"` && \
+  rm -rf `find $PACK -name CVS` && \
   tar zcf ${PACK}.bin.tar.gz $PACK && \
   rm -rf $PACK

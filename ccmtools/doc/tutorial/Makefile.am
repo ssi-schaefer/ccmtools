@@ -14,16 +14,18 @@ TEX = $(DOC_NAME).tex    \
 BIBS = cbse.bib doc.bib pattern.bib se.bib wx.bib
 
 FIGS = \
-       Adapter1.fig              \
-       DevelopmentProcess.fig    \
-       TestDrivenDevelopment.fig \
-       Container.fig             \
-       Assembly.fig              \
-       AssemblyGraph.fig         \
-       AssemblyGraph2.fig        \
-       Component.fig             \
-       LCAC_Overview.fig         \
-       LCAC_ProcessModel.fig     \
+       Adapter1.fig                \
+       DevelopmentProcess.fig      \
+       TestDrivenDevelopment.fig   \
+       ComponentGeneratorTools.fig \
+       Container.fig               \
+       ConnectComponents.fig       \
+       Assembly.fig                \
+       AssemblyGraph.fig           \
+       AssemblyGraph2.fig          \
+       Component.fig               \
+       LCAC_Overview.fig           \
+       LCAC_ProcessModel.fig       \
        RemoteAssembly.fig
 
 PDFS = $(FIGS:.fig=.pdf)
@@ -51,5 +53,5 @@ $(DOC_NAME).dvi: $(TEX) $(EPSS) $(BIBS)
 	$(LATEX) $(DOC_NAME)
 
 clean-local:
-	$(RM) -f *.aux *.toc *.log *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
+	$(RM) -f *.eps *.aux *.toc *.log *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
 
