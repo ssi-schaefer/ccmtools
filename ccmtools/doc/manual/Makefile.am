@@ -1,7 +1,7 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-DOC_NAME = @PACKAGE@
+DOC_NAME = manual
 
 TEX = $(DOC_NAME).tex             \
       AssemblyGeneratorTools.tex  \

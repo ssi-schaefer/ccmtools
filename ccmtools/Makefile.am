@@ -26,7 +26,7 @@ dist_noinst_SCRIPTS = template-info
 extra_java_src = Constants.java.in
 noinst_JAVA = $(top_builddir)/Constants.java
 
-EXTRA_DIST = binary-dist.in $(extra_java_src)
+EXTRA_DIST = binary-dist.in $(extra_java_src) README.binary RELEASE
 
 clean-local:
 	$(RM) -f -r $(top_builddir)/ccmtools

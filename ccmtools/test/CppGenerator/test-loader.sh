@@ -50,7 +50,9 @@ test -z "${ret}" && ccmtools-c++-generate -d -c "1.2.3" -p ${1} \
 # build and check. copy the contents of the package directory, if it exists, to
 # the sandbox (this lets us distribute _app.cc files with the tests).
 
-test -z "${ret}" && test -d ${cwd}/${1} && ${CP} ${cwd}/${1}/* .
+test -d ${top_srcdir}/../test/CppGenerator/${1} && \
+  ${CP} ${top_srcdir}/../test/CppGenerator/${1}/* .
+
 test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
   ccmtools-c++-make -p ${1} || ret=1
 
