@@ -18,6 +18,7 @@
 #include <map>
 #include <CCM_Utils/SmartPointer.h>
 #include <localComponents/CCM.h>
+#include <CCM_Local/HomeFinder.h> 
 
 %(MFactoryDefInclude)s
 %(MFinderDefInclude)s
@@ -99,8 +100,10 @@ class %(Identifier)s
 //==============================================================================
 
 extern "C" {
-  CCM_Utils::SmartPtr<localComponents::CCMHome>
-    create_%(Identifier)sAdapter (  );
+  CCM_Utils::SmartPtr<localComponents::CCMHome> create_%(Identifier)sAdapter();
+
+  int local_deploy_%(Identifier)s(char* name);
+  int local_undeploy_%(Identifier)s(char* name);
 }
 
 #endif
@@ -207,6 +210,28 @@ extern "C" {
     CCM_Utils::SmartPtr<localComponents::CCMHome>
       ret ( new %(Namespace)s::%(Identifier)s (  ) );
     return ret;
+  }
+
+  int local_deploy_%(Identifier)s(char* name)
+  {
+    DEBUGNL ( " local_deploy_%(Identifier)s()" );
+    try {
+      CCM_Utils::SmartPtr<localComponents::CCMHome> ret( new %(Namespace)s::%(Identifier)s());
+      HomeFinder::Instance()->register_home(ret, name);
+    } catch ( ... )  {
+      return -1;
+    }
+    return 0; 
+  }	
+
+  int local_undeploy_%(Identifier)s(char* name)
+  {
+     try {
+       HomeFinder::Instance()->unregister_home(name);	
+     } catch (...) {
+       return -1;
+     }
+     return 0;
   }
 }
 

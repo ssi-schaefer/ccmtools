@@ -23,6 +23,7 @@ using namespace CCM_Utils;
 int main ( int argc, char *argv[] )
 {
   int result = 0;
+  int error = 0;
 
   localComponents::HomeFinder* homeFinder;
 
@@ -42,13 +43,11 @@ int main ( int argc, char *argv[] )
   // get an instance of the local HomeFinder and register component homes
 
   homeFinder = HomeFinder::Instance (  );
-
-  try {
-    homeFinder->register_home( create_%(HomeType)sAdapter (  ), "%(HomeType)s" );
-    homeFinder->register_home( create_%(HomeType)s_mirrorAdapter (  ), "%(HomeType)s_mirror" );
-  } catch ( ... )  {
-    cout << "REGISTER: there is something wrong!" << endl;
-    return -1;
+  error  = local_deploy_%(HomeType)s("%(HomeType)s");
+  error +=    local_deploy_%(HomeType)s_mirror("%(HomeType)s_mirror");	
+  if(error) {
+    cerr << "ERROR: Can't deploy component homes!" << endl;
+    assert(0);
   }
 
 #ifdef CCM_TEST_PYTHON
@@ -130,8 +129,6 @@ int main ( int argc, char *argv[] )
     my%(Identifier)s.ptr (  )->remove (  );
     my%(Identifier)sMirror.ptr (  )->remove (  );
 
-    homeFinder->unregister_home ( "%(HomeType)s" );
-    homeFinder->unregister_home ( "%(HomeType)s_mirror" );
   } catch ( localComponents::HomeNotFound ) {
     cout << "TEARDOWN: can't find a home!" << endl;
     result = -1;
@@ -141,6 +138,13 @@ int main ( int argc, char *argv[] )
   } catch ( ... )  {
     cout << "TEARDOWN: there is something wrong!" << endl;
     result = -1;
+  }
+
+  error =  local_undeploy_%(HomeType)s("%(HomeType)s");
+  error += local_undeploy_%(HomeType)s_mirror("%(HomeType)s_mirror");
+  if(error) {
+    cerr << "ERROR: Can't undeploy component homes!" << endl;
+    assert(0);
   }
 
 #ifdef CCM_TEST_PYTHON
