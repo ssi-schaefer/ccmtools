@@ -11,9 +11,7 @@
 
 package mof_reader;
 
-import mof_xmi_parser.DTD_Container;
 import mof_xmi_parser.model.MGeneralizableElement_visibility;
-import mof_xmi_parser.model.MFeature_visibility;
 
 
 /**
@@ -54,12 +52,6 @@ public final class MofVisibilityKind
 
 
     static MofVisibilityKind create( MGeneralizableElement_visibility vis )
-    {
-        // TODO
-        throw new RuntimeException("not implemented");
-    }
-
-    static MofVisibilityKind create( MFeature_visibility vis )
     {
         // TODO
         throw new RuntimeException("not implemented");

@@ -11,9 +11,6 @@
 
 package mof_reader;
 
-import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MFeature_scope;
-
 
 /**
  * ScopeKind
@@ -47,13 +44,6 @@ public final class MofScopeKind
     public static final MofScopeKind INSTANCE = new MofScopeKind("instance_level");
 
 
-    static MofScopeKind create( MFeature_scope scope )
-    {
-        // TODO
-        throw new RuntimeException("not implemented");
-    }
-
-
     /**
      * Returns {@link CLASSIFIER} or {@link INSTANCE}.
      *
@@ -61,6 +51,10 @@ public final class MofScopeKind
      */
     public static MofScopeKind create( String scope ) throws IllegalArgumentException
     {
+        if( scope==null )
+        {
+            throw new IllegalArgumentException("no scope kind");
+        }
         if( scope.equalsIgnoreCase("classifier_level") || scope.equalsIgnoreCase("classifier") )
         {
             return CLASSIFIER;

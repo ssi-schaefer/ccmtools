@@ -23,11 +23,11 @@ public interface MofFeature extends MofModelElement
     /**
      * returns the scope kind
      */
-    public MofScopeKind getScope();
+    public MofScopeKind getScope() throws IllegalArgumentException;
 
     /**
      * returns the visibility kind
      */
-    public MofVisibilityKind getVisibility();
+    public MofVisibilityKind getVisibility() throws IllegalArgumentException;
 
 }

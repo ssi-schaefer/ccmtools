@@ -11,10 +11,12 @@
 
 package mof_reader;
 
-import java.util.Collection;
+import java.util.Vector;
 import java.util.List;
 
 import mof_xmi_parser.DTD_Container;
+import mof_xmi_parser.model.MOperation_isQuery;
+import mof_xmi_parser.model.MOperation_exceptions;
 
 
 /**
@@ -36,19 +38,40 @@ class OperationImp extends BehavioralFeatureImp implements MofOperation
     String getXmiName()
     { return ((OperationXmi)xmi_).name_; }
 
+    String getXmiScope()
+    { return ((OperationXmi)xmi_).scope_; }
+
+    String getXmiVisibility()
+    { return ((OperationXmi)xmi_).visibility_; }
+
+
+    private String isQuery_;
+    private Vector exceptions_;
+
 
     /// implements {@link MofOperation#isQuery}
     public boolean isQuery()
     {
-        // TODO
-        return false;
+        if( isQuery_==null )
+        {
+            isQuery_ = ((OperationXmi)xmi_).isQuery_;
+            if( isQuery_==null )
+            {
+                isQuery_ = getBooleanFromChild(MOperation_isQuery.xmlName__);
+            }
+        }
+        return isQuery_.equalsIgnoreCase("true");
     }
+
 
     /// implements {@link MofOperation#getExceptions}
     public List getExceptions()
     {
-        // TODO
-        return null;
+        if( exceptions_==null )
+        {
+            exceptions_ = convertXmiToMof(xmi_.findChildren(ExceptionXmi.xmlName__));
+        }
+        return exceptions_;
     }
 
 

@@ -40,14 +40,31 @@ abstract class TypedElementImp extends ModelElementImp implements MofTypedElemen
     {
         if( type_==null )
         {
-            Vector ch = xmi_.findChildren(MTypedElement_type.xmlName__);
-            for( int i=0; i<ch.size(); ++i )
-            {
-                MTypedElement_type t = (MTypedElement_type)ch.get(i);
-                // TODO
-            }
+            type_ = makeType();
         }
         return type_;
+    }
+
+    private MofClassifier makeType()
+    {
+        Vector ch = xmi_.findChildren(MTypedElement_type.xmlName__);
+        for( int i=0; i<ch.size(); ++i )
+        {
+            MTypedElement_type t = (MTypedElement_type)ch.get(i);
+            for( int j=0; j<t.size(); ++j )
+            {
+                Object o = t.get(j);
+                if( o instanceof Worker )
+                {
+                    MofModelElement e = ((Worker)o).mof();
+                    if( e instanceof MofClassifier )
+                    {
+                        return (MofClassifier)e;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }

@@ -11,9 +11,6 @@
 
 package mof_reader;
 
-import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MAssociationEnd_aggregation;
-
 
 /**
  * AggregationKind
@@ -52,13 +49,6 @@ public final class MofAggregationKind
     public static final MofAggregationKind COMPOSITE = new MofAggregationKind("composite");
 
 
-    static MofAggregationKind create( MAssociationEnd_aggregation aggregation )
-    {
-        // TODO
-        throw new RuntimeException("not implemented");
-    }
-
-
     /**
      * Returns {@link NONE}, {@link SHARED} or {@link COMPOSITE}.
      *
@@ -66,6 +56,10 @@ public final class MofAggregationKind
      */
     public static MofAggregationKind create( String aggregation ) throws IllegalArgumentException
     {
+        if( aggregation==null )
+        {
+            throw new IllegalArgumentException("no aggregation kind");
+        }
         if( aggregation.equalsIgnoreCase("none") )
         {
             return NONE;

@@ -53,15 +53,7 @@ class TagImp extends ModelElementImp implements MofTag
             tagId_ = ((TagXmi)xmi_).tagId_;
             if( tagId_==null )
             {
-                Vector ch = xmi_.findChildren(MTag_tagId.xmlName__);
-                if( ch.size()>=1 )
-                {
-                    MTag_tagId id = (MTag_tagId)ch.get(0);
-                    if( id.size()>=1 )
-                    {
-                        tagId_ = id.get(0).toString();
-                    }
-                }
+                tagId_ = getTextFromChild(MTag_tagId.xmlName__);
             }
         }
         return tagId_;

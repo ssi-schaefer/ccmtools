@@ -28,7 +28,7 @@ public interface MofImport extends MofModelElement
     /**
      * returns the visibility kind
      */
-    public MofVisibilityKind getVisibility();
+    public MofVisibilityKind getVisibility() throws IllegalArgumentException;
 
     /**
      * returns the imported namespace

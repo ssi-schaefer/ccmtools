@@ -45,6 +45,20 @@ abstract class ModelElementImp implements MofModelElement
     private List qualifiedName_;
     private Vector constraints_;
     private Vector tags_;
+    private Object userData_;
+
+
+    /// implements {@link MofModelElement#setUserData}
+    public void setUserData( Object data )
+    {
+        userData_ = data;
+    }
+
+    /// implements {@link MofModelElement#getUserData}
+    public Object getUserData()
+    {
+        return userData_;
+    }
 
 
     /// implements {@link MofModelElement#getAnnotation}
@@ -95,7 +109,11 @@ abstract class ModelElementImp implements MofModelElement
             name_ = getXmiName();
             if( name_==null )
             {
-                name_ = createName(xmi_);
+                name_ = getTextFromChild(MModelElement_name.xmlName__);
+                if( name_==null )
+                {
+                    name_ = "(no name)";
+                }
             }
         }
         return name_;
@@ -104,18 +122,30 @@ abstract class ModelElementImp implements MofModelElement
     /// returns 'xmi_.name_'
     abstract String getXmiName();
 
-    static String createName( DTD_Container element )
+
+    protected String getTextFromChild( String xmlName )
     {
-        Vector children = element.findChildren(MModelElement_name.xmlName__);
-        if( children.size()>=1 )
+        Vector children = xmi_.findChildren(xmlName);
+        for( int i=0; i<children.size(); ++i )
         {
-            MModelElement_name n = (MModelElement_name)children.get(0);
-            if( n.size()>=1 )
+            DTD_Container child = (DTD_Container)children.get(i);
+            if( child.size()>=1 )
             {
-                return n.get(0).toString();
+                return child.get(0).toString();
             }
         }
-        return "";
+        return null;
+    }
+
+
+    protected String getBooleanFromChild( String xmlName )
+    {
+        String text = getTextFromChild(xmlName);
+        if( text==null )
+        {
+            return "false";
+        }
+        return text;
     }
 
 

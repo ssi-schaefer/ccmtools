@@ -23,11 +23,11 @@ public interface MofParameter extends MofTypedElement
     /**
      *
      */
-    public MofDirectionKind getDirection();
+    public MofDirectionKind getDirection() throws IllegalArgumentException;
 
     /**
      *
      */
-    public MofMultiplicityType getMultiplicity();
+    public MofMultiplicityType getMultiplicity() throws NumberFormatException;
 
 }

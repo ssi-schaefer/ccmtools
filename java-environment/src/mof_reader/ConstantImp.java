@@ -13,8 +13,10 @@ package mof_reader;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 import mof_xmi_parser.DTD_Container;
+import mof_xmi_parser.model.MConstant_value;
 
 
 /**
@@ -37,11 +39,21 @@ class ConstantImp extends TypedElementImp implements MofConstant
     { return ((ConstantXmi)xmi_).name_; }
 
 
+    private String value_;
+
+
     /// implements {@link MofConstant#getValue}
     public String getValue()
     {
-        // TODO
-        return null;
+        if( value_==null )
+        {
+            value_ = ((ConstantXmi)xmi_).value_;
+            if( value_==null )
+            {
+                value_ = getTextFromChild(MConstant_value.xmlName__);
+            }
+        }
+        return value_;
     }
 
 

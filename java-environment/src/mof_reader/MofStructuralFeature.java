@@ -28,6 +28,6 @@ public interface MofStructuralFeature extends MofFeature, MofTypedElement
     /**
      *
      */
-    public MofMultiplicityType getMultiplicity();
+    public MofMultiplicityType getMultiplicity() throws NumberFormatException;
 
 }

@@ -50,18 +50,10 @@ class ImportImp extends ModelElementImp implements MofImport
     {
         if( isClustered_==null )
         {
-            Vector children = xmi_.findChildren(MImport_isClustered.xmlName__);
-            if( children.size()>=1 )
-            {
-                MImport_isClustered x = (MImport_isClustered)children.get(0);
-                if( x.size()>=1 )
-                {
-                    isClustered_ = x.get(0).toString();
-                }
-            }
+            isClustered_ = ((ImportXmi)xmi_).isClustered_;
             if( isClustered_==null )
             {
-                isClustered_ = "false";
+                isClustered_ = getBooleanFromChild(MImport_isClustered.xmlName__);
             }
         }
         return isClustered_.equalsIgnoreCase("true");
@@ -69,30 +61,27 @@ class ImportImp extends ModelElementImp implements MofImport
 
 
     /// implements {@link MofImport#getVisibility}
-    public MofVisibilityKind getVisibility()
+    public MofVisibilityKind getVisibility() throws IllegalArgumentException
     {
         if( visibility_==null )
         {
-            try
+            String text = ((ImportXmi)xmi_).visibility_;
+            if( text!=null )
             {
-                String text = ((ImportXmi)xmi_).visibility_;
-                if( text!=null )
+                visibility_ = MofVisibilityKind.create(text);
+            }
+            else
+            {
+                Vector children = xmi_.findChildren(MImport_visibility.xmlName__);
+                if( children.size()>=1 )
                 {
-                    visibility_ = MofVisibilityKind.create(text);
+                    MImport_visibility v = (MImport_visibility)children.get(0);
+                    visibility_ = MofVisibilityKind.create(v.xmi_value_);
                 }
                 else
                 {
-                    Vector children = xmi_.findChildren(MImport_visibility.xmlName__);
-                    if( children.size()>=1 )
-                    {
-                        MImport_visibility v = (MImport_visibility)children.get(0);
-                        visibility_ = MofVisibilityKind.create(v.xmi_value_);
-                    }
+                    throw new IllegalArgumentException("no visibility");
                 }
-            }
-            catch( IllegalArgumentException e )
-            {
-                e.printStackTrace();
             }
         }
         return visibility_;

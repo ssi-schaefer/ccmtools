@@ -23,7 +23,7 @@ public interface MofConstraint extends MofModelElement
     /**
      * ?
      */
-    public MofEvaluationKind getEvaluationPolicy();
+    public MofEvaluationKind getEvaluationPolicy() throws IllegalArgumentException;
 
     /**
      * returns the expression of this constraint

@@ -23,7 +23,7 @@ public interface MofAssociationEnd extends MofTypedElement
     /**
      *
      */
-    public MofAggregationKind getAggregation();
+    public MofAggregationKind getAggregation() throws IllegalArgumentException;
 
     /**
      *
@@ -38,6 +38,6 @@ public interface MofAssociationEnd extends MofTypedElement
     /**
      *
      */
-    public MofMultiplicityType getMultiplicity();
+    public MofMultiplicityType getMultiplicity() throws NumberFormatException;
 
 }

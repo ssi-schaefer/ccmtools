@@ -33,6 +33,16 @@ public interface MofModelElement
     public void process( NodeHandler handler ) throws NodeHandlerException;
 
     /**
+     * Stores a reference to user-defined data.
+     */
+    public void setUserData( Object data );
+
+    /**
+     * Returns the date set by {@link MofModelElement#setUserData}.
+     */
+    public Object getUserData();
+
+    /**
      * returns an annotation
      */
     public String getAnnotation();

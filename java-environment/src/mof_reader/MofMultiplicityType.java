@@ -11,11 +11,15 @@
 
 package mof_reader;
 
+
+import java.util.Vector;
+
 import mof_xmi_parser.DTD_Container;
 import mof_xmi_parser.model.MAssociationEnd_multiplicity;
 import mof_xmi_parser.model.MCollectionType_multiplicity;
 import mof_xmi_parser.model.MParameter_multiplicity;
 import mof_xmi_parser.model.MStructuralFeature_multiplicity;
+import mof_xmi_parser.MXMI_field;
 
 
 /**
@@ -38,31 +42,64 @@ public class MofMultiplicityType
     public boolean isUnique() { return isUnique_; }
 
 
-    MofMultiplicityType( MAssociationEnd_multiplicity m )
+    MofMultiplicityType( MAssociationEnd_multiplicity m ) throws NumberFormatException
     {
-        // TODO
-        throw new RuntimeException("not implemented");
+        convertContainer(m);
     }
 
 
-    MofMultiplicityType( MCollectionType_multiplicity m )
+    MofMultiplicityType( MCollectionType_multiplicity m ) throws NumberFormatException
     {
-        // TODO
-        throw new RuntimeException("not implemented");
+        convertContainer(m);
     }
 
 
-    MofMultiplicityType( MParameter_multiplicity m )
+    MofMultiplicityType( MParameter_multiplicity m ) throws NumberFormatException
     {
-        // TODO
-        throw new RuntimeException("not implemented");
+        convertContainer(m);
     }
 
 
-    MofMultiplicityType( MStructuralFeature_multiplicity m )
+    MofMultiplicityType( MStructuralFeature_multiplicity m ) throws NumberFormatException
     {
-        // TODO
-        throw new RuntimeException("not implemented");
+        convertContainer(m);
+    }
+
+
+    protected void convertContainer( DTD_Container container ) throws NumberFormatException
+    {
+        Vector ch = container.findChildren(MXMI_field.xmlName__);
+        int s = ch.size();
+        if(s<1)
+        {
+            throw new NumberFormatException("no multiplicity");
+        }
+        if( s==1 )
+        {
+            MXMI_field field = (MXMI_field)ch.get(0);
+            convertBoth(makeText(field));
+        }
+        else
+        {
+            MXMI_field field1 = (MXMI_field)ch.get(0);
+            MXMI_field field2 = (MXMI_field)ch.get(1);
+            lower_ = convertOne(makeText(field1));
+            upper_ = convertOne(makeText(field2));
+        }
+        if( upper_<0 )
+        {
+            lower_ = 0;
+        }
+    }
+
+
+    private String makeText( MXMI_field field ) throws NumberFormatException
+    {
+        if( field.size()!=1 )
+        {
+            throw new NumberFormatException("unknown multiplicity field format");
+        }
+        return field.get(0).toString();
     }
 
 

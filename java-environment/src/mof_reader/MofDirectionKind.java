@@ -11,9 +11,6 @@
 
 package mof_reader;
 
-import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MParameter_direction;
-
 
 /**
  * DirectionKind
@@ -57,13 +54,6 @@ public final class MofDirectionKind
     public static final MofDirectionKind RETURN = new MofDirectionKind("return_dir");
 
 
-    static MofDirectionKind create( MParameter_direction direction )
-    {
-        // TODO
-        throw new RuntimeException("not implemented");
-    }
-
-
     /**
      * Returns {@link IN}, {@link OUT}, {@link INOUT} or {@link RETURN}.
      *
@@ -71,6 +61,10 @@ public final class MofDirectionKind
      */
     public static MofDirectionKind create( String direction ) throws IllegalArgumentException
     {
+        if( direction==null )
+        {
+            throw new IllegalArgumentException("no direction kind");
+        }
         if( direction.equalsIgnoreCase("in_dir") || direction.equalsIgnoreCase("in") )
         {
             return IN;

@@ -36,6 +36,12 @@ class ExceptionImp extends BehavioralFeatureImp implements MofException
     String getXmiName()
     { return ((ExceptionXmi)xmi_).name_; }
 
+    String getXmiScope()
+    { return ((ExceptionXmi)xmi_).scope_; }
+
+    String getXmiVisibility()
+    { return ((ExceptionXmi)xmi_).visibility_; }
+
 
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException

@@ -47,30 +47,27 @@ class ConstraintImp extends ModelElementImp implements MofConstraint
 
 
     /// implements {@link MofConstraint#getEvaluationPolicy}
-    public MofEvaluationKind getEvaluationPolicy()
+    public MofEvaluationKind getEvaluationPolicy() throws IllegalArgumentException
     {
         if( evaluation_==null )
         {
-            try
+            String ep = ((ConstraintXmi)xmi_).evaluationPolicy_;
+            if( ep!=null )
             {
-                String ep = ((ConstraintXmi)xmi_).evaluationPolicy_;
-                if( ep!=null )
+                evaluation_ = MofEvaluationKind.create(ep);
+            }
+            else
+            {
+                Vector children = xmi_.findChildren(MConstraint_evaluationPolicy.xmlName__);
+                if( children.size()>=1 )
                 {
-                    evaluation_ = MofEvaluationKind.create(ep);
+                    MConstraint_evaluationPolicy p = (MConstraint_evaluationPolicy)children.get(0);
+                    evaluation_ = MofEvaluationKind.create(p.xmi_value_);
                 }
                 else
                 {
-                    Vector children = xmi_.findChildren(MConstraint_evaluationPolicy.xmlName__);
-                    if( children.size()>=1 )
-                    {
-                        MConstraint_evaluationPolicy p = (MConstraint_evaluationPolicy)children.get(0);
-                        evaluation_ = MofEvaluationKind.create(p.xmi_value_);
-                    }
+                    throw new IllegalArgumentException("no evaluation policy");
                 }
-            }
-            catch( IllegalArgumentException e )
-            {
-                e.printStackTrace();
             }
         }
         return evaluation_;
@@ -85,15 +82,7 @@ class ConstraintImp extends ModelElementImp implements MofConstraint
             expression_ = ((ConstraintXmi)xmi_).expression_;
             if( expression_==null )
             {
-                Vector ch = xmi_.findChildren(MConstraint_expression.xmlName__);
-                if( ch.size()>=1 )
-                {
-                    MConstraint_expression expr = (MConstraint_expression)ch.get(0);
-                    if( expr.size()>=1 )
-                    {
-                        expression_ = expr.get(0).toString();
-                    }
-                }
+                expression_ = getTextFromChild(MConstraint_expression.xmlName__);
             }
         }
         return expression_;
@@ -108,15 +97,7 @@ class ConstraintImp extends ModelElementImp implements MofConstraint
             language_ = ((ConstraintXmi)xmi_).language_;
             if( language_==null )
             {
-                Vector ch = xmi_.findChildren(MConstraint_language.xmlName__);
-                if( ch.size()>=1 )
-                {
-                    MConstraint_language expr = (MConstraint_language)ch.get(0);
-                    if( expr.size()>=1 )
-                    {
-                        language_ = expr.get(0).toString();
-                    }
-                }
+                language_ = getTextFromChild(MConstraint_language.xmlName__);
             }
         }
         return language_;

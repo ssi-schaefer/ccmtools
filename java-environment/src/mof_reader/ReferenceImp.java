@@ -36,19 +36,31 @@ class ReferenceImp extends StructuralFeatureImp implements MofReference
     String getXmiName()
     { return ((ReferenceXmi)xmi_).name_; }
 
+    String getXmiScope()
+    { return ((AttributeXmi)xmi_).scope_; }
+
+    String getXmiVisibility()
+    { return ((AttributeXmi)xmi_).visibility_; }
+
+    String getXmiIsChangeable()
+    { return ((AttributeXmi)xmi_).isChangeable_; }
+
+    String getXmiMultiplicity()
+    { return ((AttributeXmi)xmi_).multiplicity_; }
+
 
     /// implements {@link MofReference#getReferencedEnd}
     public MofAssociationEnd getReferencedEnd()
     {
         // TODO
-        return null;
+        throw new RuntimeException("not implemented");
     }
 
     /// implements {@link MofReference#getExposedEnd}
     public MofAssociationEnd getExposedEnd()
     {
         // TODO
-        return null;
+        throw new RuntimeException("not implemented");
     }
 
 
@@ -56,5 +68,6 @@ class ReferenceImp extends StructuralFeatureImp implements MofReference
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
         // TODO
+        throw new RuntimeException("not implemented");
     }
 }
