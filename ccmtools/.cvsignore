@@ -21,3 +21,4 @@ build
 TEST*
 .classpath
 .project
+dist
