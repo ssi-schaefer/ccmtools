@@ -138,26 +138,12 @@
 %(MUsesDefGetLocalAdapterHeader)s
       
       /**
-       * Methods from the CCMContext interface
+       * Methods from CCMContext interface
        **/
-
-      LocalComponents::Principal* get_caller_principal();
-      
       LocalComponents::HomeExecutorBase* get_CCM_home();
       
-      bool get_rollback_only() 
-	throw (LocalComponents::IllegalState);
-      
-      LocalTransaction::UserTransaction* get_user_transaction()	
-	throw (LocalComponents::IllegalState);
-      
-      bool is_caller_in_role(const std::string& role);
-      
-      void set_rollback_only()
-	throw (LocalComponents::IllegalState);
-      
       /**
-       * Methods from the SessionContext interface
+       * Methods from SessionContext interface
        **/
 
       LocalComponents::Object* get_CCM_object()
@@ -190,18 +176,18 @@ using namespace WX::Utils;
 //============================================================================
 
 %(Identifier)s_impl::%(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s* i, CCM::SessionContainer * c)
-  : local_adapter(i), ccm_container (c)
+   : local_adapter(i), ccm_container (c)
 {
-  DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
-  local_context = new CCM_%(Identifier)s_Context_impl(this,ccm_container); 
+    DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
+    local_context = new CCM_%(Identifier)s_Context_impl(this,ccm_container); 
 %(MProvidesDefAdapterVariableInit)s
 }
 
 %(Identifier)s_impl::~%(Identifier)s_impl ()
 {
-  DEBUGNL("-%(Identifier)s_impl::~%(Identifier)s_impl()");
-  delete local_adapter; 
-  delete local_context;
+    DEBUGNL("-%(Identifier)s_impl::~%(Identifier)s_impl()");
+    delete local_adapter; 
+    delete local_context;
 }
 
 /*
@@ -243,35 +229,35 @@ using namespace WX::Utils;
 CORBA::Object_ptr
 %(Identifier)s_impl::provide_facet (const char* name)
 {
-  DEBUGNL(" %(Identifier)s_impl::provide_facet()");
+    DEBUGNL(" %(Identifier)s_impl::provide_facet()");
 
 %(MProvidesDefNavigationFacet)s
-  throw Components::InvalidName();
-  return CORBA::Object::_nil ();
+    throw Components::InvalidName();
+    return CORBA::Object::_nil ();
 }
 
 Components::FacetDescriptions *
 %(Identifier)s_impl::get_all_facets ()
 {
-  DEBUGNL(" %(Identifier)s_impl::get_all_facets()");
-  // TODO
-  return NULL;
+    DEBUGNL(" %(Identifier)s_impl::get_all_facets()");
+    // TODO
+    return NULL;
 }
 
 Components::FacetDescriptions *
 %(Identifier)s_impl::get_named_facets (const Components::NameList & _names)
 {
-  DEBUGNL(" %(Identifier)s_impl::get_named_facets()");
-  // TODO
-  return NULL;
+    DEBUGNL(" %(Identifier)s_impl::get_named_facets()");
+    // TODO
+    return NULL;
 }
 
 CORBA::Boolean
 %(Identifier)s_impl::same_component (CORBA::Object_ptr _ref)
 {
-  DEBUGNL(" %(Identifier)s_impl::same_component()");
-  // TODO
-  return false;
+    DEBUGNL(" %(Identifier)s_impl::same_component()");
+    // TODO
+    return false;
 }
 
 /*
@@ -281,42 +267,42 @@ CORBA::Boolean
 Components::Cookie *
 %(Identifier)s_impl::connect (const char* name, CORBA::Object_ptr ref)
 {
-  DEBUGNL(" %(Identifier)s_impl::connect()");
+    DEBUGNL(" %(Identifier)s_impl::connect()");
 %(MUsesDefReceptacleConnect)s
-  throw Components::InvalidName();
-  return new CCM::Cookie_impl;
+    throw Components::InvalidName();
+    return new CCM::Cookie_impl;
 }
 
 void
 %(Identifier)s_impl::disconnect (const char* name, Components::Cookie* _ck)
 {
-  DEBUGNL(" %(Identifier)s_impl::disconnect()");
+    DEBUGNL(" %(Identifier)s_impl::disconnect()");
 %(MUsesDefReceptacleDisconnect)s
-  throw Components::InvalidName();
+    throw Components::InvalidName();
 }
 
 Components::ConnectionDescriptions *
 %(Identifier)s_impl::get_connections (const char * _name)
 {
-  DEBUGNL(" %(Identifier)s_impl::get_connections()");
-  // TODO
-  return NULL;
+    DEBUGNL(" %(Identifier)s_impl::get_connections()");
+    // TODO
+    return NULL;
 }
 
 Components::ReceptacleDescriptions *
 %(Identifier)s_impl::get_all_receptacles ()
 {
-  DEBUGNL(" %(Identifier)s_impl::get_all_receptacles()");
-  // TODO
-  return NULL;
+    DEBUGNL(" %(Identifier)s_impl::get_all_receptacles()");
+    // TODO
+    return NULL;
 }
 
 Components::ReceptacleDescriptions *
 %(Identifier)s_impl::get_named_receptacles (const Components::NameList & _names)
 {
-  DEBUGNL(" %(Identifier)s_impl::get_named_receptacles()");
-  // TODO
-  return NULL;
+    DEBUGNL(" %(Identifier)s_impl::get_named_receptacles()");
+    // TODO
+    return NULL;
 }
 
 /*
@@ -326,101 +312,101 @@ Components::ReceptacleDescriptions *
 Components::EventConsumerBase_ptr
 %(Identifier)s_impl::get_consumer (const char * _name)
 {
-  DEBUGNL(" %(Identifier)s_impl::get_consumer()");
-  throw Components::InvalidName();
-  return Components::EventConsumerBase::_nil ();
+    DEBUGNL(" %(Identifier)s_impl::get_consumer()");
+    throw Components::InvalidName();
+    return Components::EventConsumerBase::_nil ();
 }
 
 Components::ConsumerDescriptions *
 %(Identifier)s_impl::get_all_consumers ()
 {
-  DEBUGNL(" %(Identifier)s_impl::get_all_consumers()");
-  Components::NameList _allnames;
-  _allnames.length (0);
-  return get_named_consumers (_allnames);
+    DEBUGNL(" %(Identifier)s_impl::get_all_consumers()");
+    Components::NameList _allnames;
+    _allnames.length (0);
+    return get_named_consumers (_allnames);
 }
 
 Components::ConsumerDescriptions *
 %(Identifier)s_impl::get_named_consumers (const Components::NameList & _names)
 {
-  DEBUGNL(" %(Identifier)s_impl::get_named_consumers()");
-  Components::ConsumerDescriptions_var _res = new Components::ConsumerDescriptions;
-  _res->length (_names.length());
-  for (CORBA::ULong _idx=0; _idx<_names.length(); _idx++) {
-    throw Components::InvalidName();
-  }
-  return _res._retn();
+    DEBUGNL(" %(Identifier)s_impl::get_named_consumers()");
+    Components::ConsumerDescriptions_var _res = new Components::ConsumerDescriptions;
+    _res->length (_names.length());
+    for (CORBA::ULong _idx=0; _idx<_names.length(); _idx++) {
+        throw Components::InvalidName();
+    }
+    return _res._retn();
 }
 
 Components::Cookie *
 %(Identifier)s_impl::subscribe (const char * _name, Components::EventConsumerBase_ptr _ref)
 {
-  DEBUGNL(" %(Identifier)s_impl::subscribe()");
-  throw Components::InvalidName();
-  return new CCM::Cookie_impl;
+    DEBUGNL(" %(Identifier)s_impl::subscribe()");
+    throw Components::InvalidName();
+    return new CCM::Cookie_impl;
 }
 
 void
 %(Identifier)s_impl::unsubscribe (const char * _name, Components::Cookie * _ck)
 {
-  DEBUGNL(" %(Identifier)s_impl::unsubscribe()");
-  throw Components::InvalidName();
+    DEBUGNL(" %(Identifier)s_impl::unsubscribe()");
+    throw Components::InvalidName();
 }
 
 Components::PublisherDescriptions *
 %(Identifier)s_impl::get_all_publishers ()
 {
-  DEBUGNL(" %(Identifier)s_impl::get_all_publishers()");
-  Components::NameList _allnames;
-  _allnames.length (0);
-  return get_named_publishers (_allnames);
+    DEBUGNL(" %(Identifier)s_impl::get_all_publishers()");
+    Components::NameList _allnames;
+    _allnames.length (0);
+    return get_named_publishers (_allnames);
 }
 
 Components::PublisherDescriptions *
 %(Identifier)s_impl::get_named_publishers (const Components::NameList & _names)
 {
-  DEBUGNL(" %(Identifier)s_impl::get_named_publishers()");
-  Components::PublisherDescriptions_var _res = new Components::PublisherDescriptions;
-  _res->length (_names.length());
-  for (CORBA::ULong _idx=0; _idx<_names.length(); _idx++) {
-    throw Components::InvalidName();
-  }
-  return _res._retn();
+    DEBUGNL(" %(Identifier)s_impl::get_named_publishers()");
+    Components::PublisherDescriptions_var _res = new Components::PublisherDescriptions;
+    _res->length (_names.length());
+    for (CORBA::ULong _idx=0; _idx<_names.length(); _idx++) {
+      throw Components::InvalidName();
+    }
+    return _res._retn();
 }
 
 void
 %(Identifier)s_impl::connect_consumer (const char * _name, Components::EventConsumerBase_ptr _ref)
 {
-  DEBUGNL(" %(Identifier)s_impl::connect_consumer()");
-  throw Components::InvalidName();
+    DEBUGNL(" %(Identifier)s_impl::connect_consumer()");
+    throw Components::InvalidName();
 }
 
 Components::EventConsumerBase_ptr
 %(Identifier)s_impl::disconnect_consumer (const char * _name)
 {
-  DEBUGNL(" %(Identifier)s_impl::disconnect_consumer()");
-  throw Components::InvalidName();
+    DEBUGNL(" %(Identifier)s_impl::disconnect_consumer()");
+    throw Components::InvalidName();
 }
 
 Components::EmitterDescriptions *
 %(Identifier)s_impl::get_all_emitters ()
 {
-  DEBUGNL(" %(Identifier)s_impl::get_all_emitters()");
-  Components::NameList _allnames;
-  _allnames.length (0);
-  return get_named_emitters (_allnames);
+    DEBUGNL(" %(Identifier)s_impl::get_all_emitters()");
+    Components::NameList _allnames;
+    _allnames.length (0);
+    return get_named_emitters (_allnames);
 }
 
 Components::EmitterDescriptions *
 %(Identifier)s_impl::get_named_emitters (const Components::NameList & _names)
 {
-  DEBUGNL(" %(Identifier)s_impl::get_named_emitters()");
-  Components::EmitterDescriptions_var _res = new Components::EmitterDescriptions;
-  _res->length (_names.length());
-  for (CORBA::ULong _idx=0; _idx<_names.length(); _idx++) {
-    throw Components::InvalidName();
-  }
-  return _res._retn();
+    DEBUGNL(" %(Identifier)s_impl::get_named_emitters()");
+    Components::EmitterDescriptions_var _res = new Components::EmitterDescriptions;
+    _res->length (_names.length());
+    for (CORBA::ULong _idx=0; _idx<_names.length(); _idx++) {
+        throw Components::InvalidName();
+    }
+    return _res._retn();
 }
 
 
@@ -431,44 +417,44 @@ Components::EmitterDescriptions *
 CORBA::Object_ptr
 %(Identifier)s_impl::get_component_def ()
 {
-  DEBUGNL(" %(Identifier)s_impl::get_component_def()");
-  // TODO
-  return CORBA::Object::_nil ();
+    DEBUGNL(" %(Identifier)s_impl::get_component_def()");
+    // TODO
+    return CORBA::Object::_nil ();
 }
 
 Components::CCMHome_ptr
 %(Identifier)s_impl::get_ccm_home ()
 {
-  DEBUGNL(" %(Identifier)s_impl::get_ccm_home()");
-  return ccm_container->get_reference_for_home ();
+    DEBUGNL(" %(Identifier)s_impl::get_ccm_home()");
+    return ccm_container->get_reference_for_home ();
 }
 
 void
 %(Identifier)s_impl::configuration_complete ()
 {
-  DEBUGNL(" %(Identifier)s_impl::configuration_complete()");
-  ccm_container->configuration_complete (this); 
-  local_adapter->set_session_context(local_context);
-  local_adapter->ccm_activate ();
+    DEBUGNL(" %(Identifier)s_impl::configuration_complete()");
+    ccm_container->configuration_complete (this); 
+    local_adapter->set_session_context(local_context);
+    local_adapter->ccm_activate ();
 }
 
 Components::ComponentPortDescription *
 %(Identifier)s_impl::get_all_ports ()
 {
-  DEBUGNL(" %(Identifier)s_impl::get_all_ports()");
-  // TODO
-  return NULL;
+    DEBUGNL(" %(Identifier)s_impl::get_all_ports()");
+    // TODO
+    return NULL;
 }
 
 void
 %(Identifier)s_impl::remove ()
 {
-  DEBUGNL(" %(Identifier)s_impl::remove()");
-  local_adapter->ccm_passivate();
-  local_adapter->ccm_remove();
-  Components::CCMHome_var myhome = get_ccm_home ();
-  Components::CCMObject_var myself = ccm_container->get_reference_for_component (this);
-  myhome->remove_component (myself);
+    DEBUGNL(" %(Identifier)s_impl::remove()");
+    local_adapter->ccm_passivate();
+    local_adapter->ccm_remove();
+    Components::CCMHome_var myhome = get_ccm_home ();
+    Components::CCMObject_var myself = ccm_container->get_reference_for_component (this);
+    myhome->remove_component (myself);
 }
 
 
@@ -479,8 +465,8 @@ void
 CORBA::Object_ptr
 %(Identifier)s_impl::_get_component ()
 {
-  DEBUGNL(" %(Identifier)s_impl::_get_component()");
-  return ccm_container->get_reference_for_component (this);
+    DEBUGNL(" %(Identifier)s_impl::_get_component()");
+    return ccm_container->get_reference_for_component (this);
 }
 
 
@@ -490,78 +476,35 @@ CORBA::Object_ptr
 
 CCM_%(Identifier)s_Context_impl::
 CCM_%(Identifier)s_Context_impl(%(Identifier)s_impl* c, CCM::SessionContainer* co)
-  : component_adapter(c), ccm_container(co)
+    : component_adapter(c), ccm_container(co)
 {
-  DEBUGNL("+CCM_%(Identifier)s_Context_impl->CCM_%(Identifier)s_Context_impl()");
+    DEBUGNL("+CCM_%(Identifier)s_Context_impl->CCM_%(Identifier)s_Context_impl()");
 
 %(MUsesDefContextInit)s	
 }
 
-
 CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
 {
-  DEBUGNL("-CCM_%(Identifier)s_Context_impl->~CCM_%(Identifier)s_Context_impl()");
+    DEBUGNL("-CCM_%(Identifier)s_Context_impl->~CCM_%(Identifier)s_Context_impl()");
 }
 
 %(MUsesDefContextGetConnection)s
 
-LocalComponents::Principal* 
-CCM_%(Identifier)s_Context_impl::get_caller_principal()
-{
-  DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_caller_principal()");
-  // TODO
-  return NULL;
-}
-
 LocalComponents::HomeExecutorBase* 
 CCM_%(Identifier)s_Context_impl::get_CCM_home()
 {
-  DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_CCM_home()");
-  // TODO
-  return NULL;
-}
-
-bool 
-CCM_%(Identifier)s_Context_impl::get_rollback_only()
-  throw (LocalComponents::IllegalState)
-{
-  DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_rollback_only()");
-  // TODO
-  return false;
-}
-
-LocalTransaction::UserTransaction*
-CCM_%(Identifier)s_Context_impl::get_user_transaction()
-  throw (LocalComponents::IllegalState)
-{
-  DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_user_transaction()");
-  // TODO
-  return NULL;
-}
-
-bool 
-CCM_%(Identifier)s_Context_impl::is_caller_in_role(const string& role)
-{
-  DEBUGNL(" CCM_%(Identifier)s_Context_impl->is_caller_in_role()");
-  // TODO
-  return false;
-}
-
-void 
-CCM_%(Identifier)s_Context_impl::set_rollback_only()
-  throw (LocalComponents::IllegalState)
-{
-  DEBUGNL(" CCM_%(Identifier)s_Context_impl->set_rollback_only()");
-  // TODO
+    DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_CCM_home()");
+    // TODO
+    return NULL;
 }
 
 LocalComponents::Object*
 CCM_%(Identifier)s_Context_impl::get_CCM_object()
-  throw(LocalComponents::IllegalState)
+    throw(LocalComponents::IllegalState)
 {
-  DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_CCM_object()");
-  // TODO
-  return NULL;
+    DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_CCM_object()");
+    // TODO
+    return NULL;
 }
 
 
