@@ -27,7 +27,7 @@ class %(Identifier)s
   : virtual public LocalComponents::Object%(BaseType)s
 {
  public:
-  virtual ~%(Identifier)s (  ) {  }
+  virtual ~%(Identifier)s() {}
 %(MAttributeDefPrototypeVV)s
 %(MOperationDefPrototypeVV)s 
 };

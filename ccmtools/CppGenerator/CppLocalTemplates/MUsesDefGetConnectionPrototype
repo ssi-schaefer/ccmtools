@@ -1,2 +1,2 @@
-  WX::Utils::SmartPtr<%(CCMUsesType)s> get_connection_%(Identifier)s (  );
+  WX::Utils::SmartPtr<%(UsesType)s> get_connection_%(Identifier)s (  );
 

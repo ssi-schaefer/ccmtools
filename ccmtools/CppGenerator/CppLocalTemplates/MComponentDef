@@ -75,50 +75,35 @@ class %(Identifier)s
   const std::string getComponentUUID (  ) const;
 
   // Navigation functions
-
   WX::Utils::SmartPtr<LocalComponents::Object> provide_facet ( const std::string& name )
     throw ( LocalComponents::InvalidName );
-
   LocalComponents::FacetDescriptions get_all_facets (  );
-
   LocalComponents::FacetDescriptions get_named_facets ( const LocalComponents::NameList& names )
     throw ( LocalComponents::InvalidName );
-
   bool same_component ( const LocalComponents::Object& obj );
 
   // Receptacle functions
-
   LocalComponents::Cookie connect ( const LocalComponents::FeatureName& name, WX::Utils::SmartPtr<LocalComponents::Object> connection )
     throw ( LocalComponents::InvalidName, LocalComponents::InvalidConnection,
             LocalComponents::AlreadyConnected, LocalComponents::ExceededConnectionLimit );
-
   void disconnect ( const LocalComponents::FeatureName& name, const LocalComponents::Cookie& ck )
     throw ( LocalComponents::InvalidName, LocalComponents::InvalidConnection,
             LocalComponents::CookieRequired, LocalComponents::NoConnection );
-
   LocalComponents::ConnectionDescriptions get_connections ( const LocalComponents::FeatureName& name )
     throw ( LocalComponents::InvalidName );
-
   LocalComponents::ReceptacleDescriptions get_all_receptacles (  );
-
   LocalComponents::ReceptacleDescriptions get_named_receptacles ( const LocalComponents::NameList& names )
     throw ( LocalComponents::InvalidName );
 
   // CCMObject functions
-
   LocalComponents::IRObject* get_component_def (  );
-
   LocalComponents::HomeExecutorBase* get_ccm_home (  );
-
   LocalComponents::PrimaryKeyBase* get_primary_key (  )
     throw ( LocalComponents::NoKeyAvailable );
-
   void configuration_complete (  )
     throw ( LocalComponents::InvalidConfiguration );
-
   void remove (  )
     throw ( LocalComponents::RemoveFailure );
-
   LocalComponents::ComponentPortDescription get_all_ports (  );
 };
 
@@ -137,24 +122,18 @@ class CCM_%(Identifier)s_Context_impl
   CCM_%(Identifier)s_Context_impl ( %(Identifier)s* c );
   virtual ~CCM_%(Identifier)s_Context_impl (  );
 
-%(MUsesDefGetConnectionPrototype)s
+%(MUsesDefGetCtxConnectionPrototype)s
 
   // CCMContext functions
-
   LocalComponents::Principal* get_caller_principal (  );
   LocalComponents::HomeExecutorBase* get_CCM_home (  );
-
   bool get_rollback_only (  )
     throw ( LocalComponents::IllegalState );
-
   LocalTransaction::UserTransaction* get_user_transaction (  )
     throw ( LocalComponents::IllegalState );
-
   bool is_caller_in_role ( const std::string& role );
-
   void set_rollback_only (  )
     throw ( LocalComponents::IllegalState );
-
   LocalComponents::Object* get_CCM_object (  )
     throw ( LocalComponents::IllegalState );
 };
@@ -271,6 +250,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object (  )
   throw LocalComponents::NotImplemented (  );
 }
 
+
 //==============================================================================
 // local component adapter implementation
 //==============================================================================
@@ -310,7 +290,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object (  )
 // Release / version functions
 
 const std::string
-%(Identifier)s::getComponentVersion (  ) const
+%(Identifier)s::getComponentVersion() const
 {
   DEBUGNL ( " %(Identifier)s->getComponentVersion (  )" );
   if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
@@ -318,7 +298,7 @@ const std::string
 }
 
 const std::string
-%(Identifier)s::getComponentDate (  ) const
+%(Identifier)s::getComponentDate() const
 {
   DEBUGNL ( " %(Identifier)s->getComponentDate (  )" );
   if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
@@ -326,7 +306,7 @@ const std::string
 }
 
 const std::string
-%(Identifier)s::getComponentUUID (  ) const
+%(Identifier)s::getComponentUUID() const
 {
   DEBUGNL ( " %(Identifier)s->getComponentUUID (  )" );
   if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
@@ -340,9 +320,7 @@ WX::Utils::SmartPtr<LocalComponents::Object>
   throw ( LocalComponents::InvalidName )
 {
   DEBUGNL ( " %(Identifier)s->provide_facet ( " << name << " )" );
-
 %(MProvidesDefProvideFacet)s
-
   throw LocalComponents::InvalidName ( name );
 }
 
