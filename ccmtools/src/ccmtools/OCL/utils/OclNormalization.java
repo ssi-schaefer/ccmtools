@@ -1213,23 +1213,31 @@ public class OclNormalization
      */
     public static String makeOclTypeName( MTyped object )
     {
-        MIDLType idlType = object.getIdlType();
-        if( idlType instanceof MPrimitiveDef )
+        return makeOclTypeNameFromIdlType(object.getIdlType());
+    }
+
+    private static String makeOclTypeNameFromIdlType( MIDLType idlType )
+    {
+        if (idlType instanceof MAliasDef)
         {
-            return makeOclTypeName( ((MPrimitiveDef)idlType).getKind() );
+            return makeOclTypeNameFromIdlType(((MAliasDef) idlType).getIdlType());
         }
-        if( (idlType instanceof MStringDef)||(idlType instanceof MWstringDef) )
+        if (idlType instanceof MPrimitiveDef)
+        {
+            return makeOclTypeName(((MPrimitiveDef) idlType).getKind());
+        }
+        if ((idlType instanceof MStringDef) || (idlType instanceof MWstringDef))
         {
             return OclConstants.TYPE_NAME_STRING;
         }
-        if( (idlType instanceof MArrayDef)||(idlType instanceof MSequenceDef) )
+        if ((idlType instanceof MArrayDef) || (idlType instanceof MSequenceDef))
         {
-            String item = makeOclTypeName( (MTyped)idlType );
-            return OclConstants.COLLECTIONKIND_SEQUENCE+"("+item+")";
+            String item = makeOclTypeName((MTyped) idlType);
+            return OclConstants.COLLECTIONKIND_SEQUENCE + "(" + item + ")";
         }
-        if( idlType instanceof MTypedefDef )
+        if (idlType instanceof MTypedefDef)
         {
-            return ((MTypedefDef)idlType).getIdentifier();
+            return ((MTypedefDef) idlType).getIdentifier();
         }
         return "unknown IDL type";
     }

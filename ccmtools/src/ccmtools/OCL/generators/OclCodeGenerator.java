@@ -256,6 +256,7 @@ public abstract class OclCodeGenerator
                 String typeName = OclNormalization.makeOclTypeName( (MParameterDef)it.next() );
                 result += ","+typeName;
             }
+//            System.err.println("---> operation parameters: "+result);
             return result;
         }
         else
