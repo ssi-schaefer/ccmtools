@@ -84,6 +84,7 @@ IDLGenerator/IDL2Templates/Makefile
 CppGenerator/Makefile
 CppGenerator/CppLocalTemplates/Makefile
 CppGenerator/CppLocalTestTemplates/Makefile
+CppGenerator/CppLocalDbcTemplates/Makefile
 CppGenerator/CppRemoteTemplates/Makefile
 CppGenerator/CppRemoteTestTemplates/Makefile
 CppGenerator/CppPythonTemplates/Makefile

@@ -29,11 +29,15 @@ import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.CodeGenerator.CCMMOFGraphTraverserImpl;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.CodeGenerator.TemplateHandler;
+
 import ccmtools.CppGenerator.CppLocalGeneratorImpl;
 import ccmtools.CppGenerator.CppLocalTestGeneratorImpl;
+import ccmtools.CppGenerator.CppLocalDbcGeneratorImpl;
+
 import ccmtools.CppGenerator.CppRemoteGeneratorImpl;
 import ccmtools.CppGenerator.CppRemoteTestGeneratorImpl;
 import ccmtools.CppGenerator.CppPythonGeneratorImpl;
+
 import ccmtools.IDLGenerator.IDL2GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3MirrorGeneratorImpl;
@@ -65,7 +69,7 @@ public class ConsoleCodeGenerator
 
     private static final String[] local_language_types =
     {
-        "c++local", "c++local-test",
+        "c++local", "c++local-test", "c++dbc",
         "c++remote", "c++remote-test",
 	"c++python",
         "idl3", "idl3mirror", "idl2"
@@ -111,7 +115,7 @@ public class ConsoleCodeGenerator
     private static void printVersion()
     {
         System.out.println("ccmtools version " + version);
-        System.out.println("Copyright (C) 2002, 2003 Salomon Automation");
+        System.out.println("Copyright (C) 2002, 2003, 2004 Salomon Automation");
         System.out.println("The CCM Tools library is distributed under the");
         System.out.println("terms of the GNU Lesser General Public License.");
         System.exit(0);
@@ -160,6 +164,8 @@ public class ConsoleCodeGenerator
                 handler = new CppLocalGeneratorImpl(driver, output_directory);
             else if (lang.equalsIgnoreCase("c++local-test"))
                 handler = new CppLocalTestGeneratorImpl(driver, output_directory);
+	    else if (lang.equalsIgnoreCase("c++dbc"))
+                handler = new CppLocalDbcGeneratorImpl(driver, output_directory);
 	    else if (lang.equalsIgnoreCase("c++remote"))
 		handler = new CppRemoteGeneratorImpl(driver, output_directory);
 	    else if (lang.equalsIgnoreCase("c++remote-test"))
