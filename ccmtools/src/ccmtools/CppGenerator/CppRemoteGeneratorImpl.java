@@ -225,10 +225,13 @@ public class CppRemoteGeneratorImpl
     {
 	List scope = getScope(contained);
 	StringBuffer buffer = new StringBuffer();
-	//buffer.append(separator);
+
 	buffer.append(Text.join(separator,LocalNamespace));
 	buffer.append(separator);
-	buffer.append(Text.join(separator,scope));
+	if(scope.size() > 0) {
+	    buffer.append(Text.join(separator,scope));
+	    buffer.append(separator);
+	}
 	buffer.append(contained.getIdentifier());
 	return buffer.toString();
     }
@@ -749,7 +752,7 @@ public class CppRemoteGeneratorImpl
 		ret.append("#include\"");
 		ret.append(baseType);
 		ret.append("_remote.h\"");
-		//		ret.append("\n");
+		ret.append("\n");
 		dataValue = ret.toString();
 	    }
         } 
@@ -767,19 +770,19 @@ public class CppRemoteGeneratorImpl
 		    ret.append("#include\"");
 		    ret.append(getBaseIdlType(parameter));
 		    ret.append("_remote.h\""); 
-		    //		    ret.append("\n");
+		    ret.append("\n");
 		    dataValue = ret.toString();
 		}
 	    }
 	}
 	else if(dataType.equals("ExceptionConvertInclude")) {
+	    StringBuffer ret = new StringBuffer();
 	    for(Iterator i =operation.getExceptionDefs().iterator(); i.hasNext();) {
 		MExceptionDef exception = (MExceptionDef)i.next();
-		StringBuffer ret = new StringBuffer();
 		ret.append("#include\"");
 		ret.append(exception.getIdentifier());
 		ret.append("_remote.h\""); 
-		//		ret.append("\n");
+		ret.append("\n");
 		dataValue = ret.toString();
 	    }
 	}
@@ -1477,7 +1480,7 @@ public class CppRemoteGeneratorImpl
 	    resultPrefix = ""; // void foo() 
 	}
 	else {
-	    resultPrefix = "    result = ";
+	    resultPrefix = Text.insertTab(2) + "result = ";
 	}
 	
 	if(idlType instanceof MPrimitiveDef 
@@ -1704,10 +1707,10 @@ public class CppRemoteGeneratorImpl
 	List code = new ArrayList();
         for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext(); ) {
 	    MExceptionDef exception = (MExceptionDef)es.next();
-	    //	    code.add(Text.insertTab(1) + "catch(const " + getLocalNamespace("::","") + IdlException.getIdentifier() + "&) { ");
-	    code.add(Text.insertTab(1) + "catch(const " + getLocalName(exception,"::") + "&) { ");
-	    //	    code.add(Text.insertTab(2) + "throw " + getCorbaStubsNamespace("::") + IdlException.getIdentifier() + "();");
-	    code.add(Text.insertTab(2) + "throw " + getCorbaStubName(exception, "::") + "();");
+	    code.add(Text.insertTab(1) + "catch(const " + getLocalName(exception,"::") + "& ce) { ");
+	    code.add(Text.insertTab(2) + getCorbaStubName(exception, "::") + " te;");
+	    code.add(Text.insertTab(2) + "CCM_Remote::convertToCorba(ce, te);");
+	    code.add(Text.insertTab(2) + "throw te;");
 	    code.add(Text.insertTab(1) + "}");
 	}
 	return Text.join("\n", code);
@@ -2077,10 +2080,7 @@ public class CppRemoteGeneratorImpl
 	List code = new ArrayList();
         for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext(); ) {
 	    MExceptionDef exception = (MExceptionDef)es.next();
-	    //	    String exceptionName = ((MExceptionDef)es.next()).getIdentifier();
-	    //            code.add(Text.insertTab(1) + "catch(const " + getCorbaStubsNamespace("::") + exceptionName + "&) {");
             code.add(Text.insertTab(1) + "catch(const " + getCorbaStubName(exception, "::") + "&) {");
-	    //	    code.add(Text.insertTab(2) + "throw " + getLocalNamespace("::","") + exceptionName + "();");
 	    code.add(Text.insertTab(2) + "throw " + getLocalName(exception, "::") + "();");
 	    code.add(Text.insertTab(1) + "}");
 	}

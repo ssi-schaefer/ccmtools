@@ -21,16 +21,20 @@ module world {
       };
       
       exception SuperError{};
-      exception FatalError{};
+
+      exception FatalError
+      {
+	string what;
+      };
       
-      interface Console {
-	long println(in string msg)
+      interface IFace {
+	long foo(in string msg)
 	  raises (Error, SuperError, FatalError);
       };
       
       component Test
       {
-	provides Console console;
+	provides IFace iface;
       };
       
       home TestHome manages Test

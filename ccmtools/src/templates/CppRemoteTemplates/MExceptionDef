@@ -6,7 +6,26 @@
 #ifndef __EXCEPTION_CONVERTER_%(PreprocIdentifier)s__H__
 #define __EXCEPTION_CONVERTER_%(PreprocIdentifier)s__H__
 
-// TODO: implement converter
+#include <iostream>
+#include <sstream>
+
+#include <%(StubsIncludeNamespace)s%(Identifier)s.h>
+#include <%(LocalIncludeNamespace)s%(Identifier)s.h>
+
+%(MFieldDefInclude)s
+
+namespace CCM_Remote {
+
+void 
+convertFromCorba(const %(StubsNamespace)s%(Identifier)s& in, %(LocalNamespace)s%(Identifier)s& out);
+
+void 
+convertToCorba(const %(LocalNamespace)s%(Identifier)s& in, %(StubsNamespace)s%(Identifier)s& out);
+
+std::ostream& 
+operator<<(std::ostream& o, const %(StubsNamespace)s%(Identifier)s& value);
+
+} // /namespace CCM_Remote
 
 #endif // __EXCEPTION_CONVERTER_%(PreprocIdentifier)s__H__
 
@@ -24,5 +43,31 @@
 using namespace std;
 
 namespace CCM_Remote {
+
+void 
+convertFromCorba(const %(StubsNamespace)s%(Identifier)s& in, %(LocalNamespace)s%(Identifier)s& out)
+{
+    LDEBUGNL(CCM_REMOTE," convertFromCorba(%(StubsNamespace)s%(Identifier)s)");
+    LDEBUGNL(CCM_REMOTE, in);
+%(MFieldDefFromCorba)s
+} 
+
+void 
+convertToCorba(const %(LocalNamespace)s%(Identifier)s& in, %(StubsNamespace)s%(Identifier)s& out)
+{
+    LDEBUGNL(CCM_REMOTE," convertToCorba(%(StubsNamespace)s%(Identifier)s)");
+%(MFieldDefToCorba)s
+    LDEBUGNL(CCM_REMOTE, out);
+} 
+
+std::ostream& 
+operator<<(std::ostream& o, const %(StubsNamespace)s%(Identifier)s& value)
+{
+    o << endl;
+    o << "exception %(StubsNamespace)s%(Identifier)s { " << endl;
+%(MFieldDefCorbaOutput)s
+    o << "}";
+    return o;
+}
 
 } // /namespace CCM_Remote
