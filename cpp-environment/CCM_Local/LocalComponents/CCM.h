@@ -333,7 +333,8 @@ namespace LocalComponents {
     DUPLICATE_KEY,
     FIND_ERROR,
     OBJECT_NOT_FOUND,
-    NO_SUCH_ENTITY
+    NO_SUCH_ENTITY,
+    OCL_ERROR
   };
 
   class CCMException {
