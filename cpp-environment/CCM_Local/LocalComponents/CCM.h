@@ -88,6 +88,24 @@ namespace LocalComponents {
   class InvalidKey {};
   class UnknownKeyValue {};
 
+  enum CCMExceptionReason {
+    SYSTEM_ERROR,
+    CREATE_ERROR,
+    REMOVE_ERROR,
+    DUPLICATE_KEY,
+    FIND_ERROR,
+    OBJECT_NOT_FOUND,
+    NO_SUCH_ENTITY,
+    OCL_ERROR
+  };
+
+  class CCMException {
+  private:
+    CCMExceptionReason _reason;
+  public:
+    CCMException ( const CCMExceptionReason reason ) : _reason(reason) {}
+  };
+
 
   //============================================================================
   // Common interfaces
@@ -170,6 +188,8 @@ namespace LocalComponents {
    * The CCMHome interface is interited by the explicit home interface.
    *
    * CCM Specification 1-41
+   *
+   * Extension to CCM-Spec: CCMException to remove_component()
    ***/
   class CCMHome
     : virtual public WX::Utils::RefCounted
@@ -182,7 +202,7 @@ namespace LocalComponents {
     virtual IRObject* get_home_def (  ) = 0;
 
     virtual void remove_component ( const CCMObject& comp )
-      throw ( RemoveFailure ) = 0;
+      throw ( CCMException, RemoveFailure ) = 0;
   };
 
 
@@ -190,13 +210,15 @@ namespace LocalComponents {
    * The KeylessCCMHome interface is inherited by the implicit home interface.
    *
    * CCM Specification  1-42
+   *
+   * Extension to CCM-Spec: CCMException to create_component()
    ***/
   class KeylessCCMHome {
   public:
     virtual ~KeylessCCMHome (  ) {}
 
     virtual CCMObject* create_component (  )
-      throw ( CreateFailure ) = 0;
+      throw ( CCMException, CreateFailure ) = 0;
   };
 
 
@@ -325,24 +347,6 @@ namespace LocalComponents {
   //============================================================================
   // Component interfaces
   //============================================================================
-
-  enum CCMExceptionReason {
-    SYSTEM_ERROR,
-    CREATE_ERROR,
-    REMOVE_ERROR,
-    DUPLICATE_KEY,
-    FIND_ERROR,
-    OBJECT_NOT_FOUND,
-    NO_SUCH_ENTITY,
-    OCL_ERROR
-  };
-
-  class CCMException {
-  private:
-    CCMExceptionReason _reason;
-  public:
-    CCMException ( const CCMExceptionReason reason ) : _reason(reason) {}
-  };
 
 
   /***
