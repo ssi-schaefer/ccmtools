@@ -125,10 +125,10 @@ public class CcmtoolsTestCase extends TestCase
 	    out.write(c);
 	    in.close();
 	    out.close();
-	    System.out.println(">>> copy " + from);
+	    System.out.println(">>> copy from " + from );
 	}
 	catch(Exception e) {
-	    fail("Can't copy file!");
+	    fail("Can't copy file from [" + from + "] to [" + to + "]");
 	}
     }
 
