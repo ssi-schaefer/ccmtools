@@ -197,7 +197,16 @@ class UmlAssociationConnection extends uml_parser.uml.MAssociation_connection im
             }
             if( attributeName==null )
             {
-                System.err.println("UmlAssociationConnection.createAttribute: no attribute name");
+		// print association participants to reduce UML bugfixing
+		System.err.print("UmlAssociationConnection.createAttribute: no attribute name"); 
+		try {
+		    System.err.print(" ["); 
+		    System.err.print(((UmlClass)main.workers_.get(src.getParticipantId())).getPathName()+ " -> ");
+		    System.err.println(((UmlClass)main.workers_.get(dest.getParticipantId())).getPathName()+ "]");
+		}
+		catch(Exception e) {
+		    System.out.println("[unknown participants]");
+		}
                 return null;
             }
         }
