@@ -22,4 +22,6 @@ dist_template_DATA = \
     MFactoryDefAdapterPrototype         \
     MFactoryDefAdapterDefinition        \
     MParameterDefAll                    \
-    MParameterDefName
+    MParameterDefName                   \
+    MAttributeDefProvidesPrototype      \
+    MAttributeDefProvidesDefinition

@@ -214,6 +214,9 @@ public class CppLocalDbcGeneratorImpl
 //    }
 
 
+    // ----------------------------------------------------------------------------------
+
+
     /**
      * Overwrites the CppGenerator's method...
      * Handles the tags that are related to the MFactoryDef* templates
@@ -323,6 +326,8 @@ public class CppLocalDbcGeneratorImpl
     	return super.data_MProvidesDef(data_type, data_value);
     }
 
+
+    // ----------------------------------------------------------------------------------
 
 
     /**

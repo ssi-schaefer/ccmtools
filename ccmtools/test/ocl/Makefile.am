@@ -4,7 +4,7 @@
 ## process this file with automake to produce Makefile.in
 
 
-mostlyclean:
+clean:
 	$(RM) -rf Hello/*.xml Hello/test_*
 	$(RM) -rf Bag/*.xml Bag/test_*
 	$(RM) -rf Collection/*.xml Collection/test_*
@@ -13,5 +13,5 @@ mostlyclean:
 	$(RM) -rf Sequence/*.xml Sequence/test_*
 	$(RM) -rf Set/*.xml Set/test_*
 	$(RM) -rf String/*.xml String/test_*
-	$(RM) -rf Example1/*.xml Example1/test_*
-	$(RM) -rf Example2/*.xml Example2/test_*
+	$(RM) -rf Example1/*.xml Example1/test_* Example1/mdr.*
+	$(RM) -rf Example2/*.xml Example2/test_* Example2/mdr.*

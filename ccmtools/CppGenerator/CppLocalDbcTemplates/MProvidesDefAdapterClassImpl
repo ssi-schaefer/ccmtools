@@ -26,6 +26,7 @@ void DbC_%(Identifier)sFacetAdapter::DbC_check_invariant(const char* DbC_FUNCTIO
 %(InvariantInvocation)s
 }
 
+%(MAttributeDefProvidesDefinition)s
 %(MOperationProvidesAdapterDefinition)s
 
 #undef __LOCAL__ADAPTER__NAME__
