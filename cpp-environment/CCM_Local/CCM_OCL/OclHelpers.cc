@@ -85,7 +85,7 @@ OCL_Boolean OCL_equals( OCL_Real a, OCL_Real b )
 {
     if( a==b )
     {
-		return true;
+        return true;
     }
     double fa = fabs(a);
     double fb = fabs(b);

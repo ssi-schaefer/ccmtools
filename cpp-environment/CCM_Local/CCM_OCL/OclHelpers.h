@@ -151,6 +151,22 @@ public:
 		}
 		return true;
     }
+
+    bool isUnique() const
+    {
+        int s = size();
+        for( int i=0; i<s; i++ )
+        {
+            for( int j=i+1; j<s; j++ )
+            {
+                if( operator[](i) == operator[](j) )
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 };
 
 
