@@ -103,15 +103,18 @@ class ClassifierXmi extends mof_xmi_parser.model.MClassifier implements Worker
         {
             return;
         }
-        if( xmi_idref_!=null )
+        if( xmi_idref_!=null && xmi_idref_.length()>0 )
         {
             Worker w = model.getWorker(xmi_idref_);
             if( w==null )
             {
                 throw new RuntimeException("cannot find xmi.idref=="+xmi_idref_);
             }
-            w.process(model);
-            implementation_ = (ModelElementImp)w.mof();
+            else
+            {
+                w.process(model);
+                implementation_ = (ModelElementImp)w.mof();
+            }
         }
         processed_ = true;
         Iterator it = content().iterator();
