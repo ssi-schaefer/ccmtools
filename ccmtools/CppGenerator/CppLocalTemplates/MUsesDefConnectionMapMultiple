@@ -1,5 +1,0 @@
-typedef std::map<LocalComponents::Cookie, WX::Utils::SmartPtr<%(CCMUsesType)s> > %(Identifier)sConnections;
-
-
-
-
