@@ -11,7 +11,10 @@
           $ ant -Dprefix=/usr/local
   -->
   <property name="src" location="src" />
-  <property name="build" location="build" />
+  <property name="build0" location="build" />
+  <property name="build1" location="build/D" />
+  <property name="build2" location="build/U" />
+  <property name="build3" location="build/M" />
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
   <property name="prefix" location="dist" />
@@ -36,8 +39,11 @@
 
   <target name="init"
       description="Creates the build directory and deletes the old jar files." >
-      <mkdir dir="${build}" />
-  </target>  
+      <mkdir dir="${build0}" />
+      <mkdir dir="${build1}" />
+      <mkdir dir="${build2}" />
+      <mkdir dir="${build3}" />
+  </target>
 
 
   <!-- dtd parser -->
@@ -52,7 +58,7 @@
 
   <target name="dtd2java" depends="dtd_parser"
      description="Compile the dtd2java package." >
-      <javac srcdir="${src}/dtd2java" destdir="${build}" debug="on" >
+      <javac srcdir="${src}/dtd2java" destdir="${build1}" debug="on" >
           <classpath refid="compile.classpath" />  
       </javac>
   </target>
@@ -60,12 +66,11 @@
 
   <target name="dtd2java.jar" depends="dtd2java"
      description="Package the dtd2java class files into dtd2java.jar." >
-      <jar jarfile="${lib}/dtd2java.jar" basedir="${build}" >
+      <jar jarfile="${lib}/dtd2java.jar" basedir="${build1}" >
          <manifest>
             <attribute name="Main-Class" value="dtd2java.Main" />
          </manifest>
       </jar>
-      <delete dir="${build}/dtd2java" />
   </target>
 
 
@@ -84,23 +89,56 @@
 
   <target name="uml2idl" depends="uml_parser"
       description="Compile the whole ccmtools package (uml_parser and uml2idl).">
-        <javac srcdir="${src}/uml_parser" destdir="${build}" debug="on" >
-	    <classpath refid="compile.classpath" />       
+        <javac srcdir="${src}/uml_parser" destdir="${build2}" debug="on" >
+	    <classpath refid="compile.classpath" />
         </javac>
-        <javac srcdir="${src}/uml2idl" destdir="${build}" debug="on" >
-	    <classpath refid="compile.classpath" />       
+        <javac srcdir="${src}/uml2idl" destdir="${build2}" debug="on" >
+	    <classpath refid="compile.classpath" />
         </javac>
   </target>
 
 
   <target name="uml2idl.jar" depends="uml2idl"
       description="Package the *.class files into uml2idl.jar.">
-      <jar jarfile="${lib}/uml2idl.jar" basedir="${build}" >
+      <jar jarfile="${lib}/uml2idl.jar" basedir="${build2}" >
          <manifest>
             <attribute name="Main-Class" value="uml2idl.Main" />
          </manifest>
       </jar>
+  </target>
 
+
+  <!-- MOF reader -->
+
+  <target name="mof_xmi_parser" depends="dtd2java.jar"
+      description="Run the dtd2java tool to create the mof_xmi_parser package.">
+      <java classname="dtd2java.Main">
+          <classpath refid="run.classpath" />
+	  <arg value="${src}/dtd2java/MOF.dtd" />
+	  <arg value="mof_xmi_parser" />
+	  <arg value="src" />
+      </java>
+  </target>
+
+
+  <target name="mof_reader" depends="mof_xmi_parser"
+      description="Compile mof_xmi_parser and mof_reader.">
+        <javac srcdir="${src}/mof_xmi_parser" destdir="${build3}" debug="on" >
+	    <classpath refid="compile.classpath" />
+        </javac>
+        <javac srcdir="${src}/mof_reader" destdir="${build3}" debug="on" >
+	    <classpath refid="compile.classpath" />
+        </javac>
+  </target>
+
+
+  <target name="mof_reader.jar" depends="mof_reader"
+      description="Package the *.class files into mof_reader.jar.">
+      <jar jarfile="${lib}/mof_reader.jar" basedir="${build3}" >
+         <manifest>
+            <attribute name="Main-Class" value="mof_reader.Main" />
+         </manifest>
+      </jar>
   </target>
 
 
@@ -137,7 +175,7 @@
       <copy file="${lib}/jdom.jar"     todir="${prefix}/lib"  overwrite="true" />       
 
       <copy file="${lib}/dtd2java.jar" todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />
   </target>
 
 
@@ -150,13 +188,16 @@
       <delete file="${src}/dtd2java/DTDTokenTypes.java" />
       <delete file="${src}/dtd2java/DTDTokenTypes.txt" />
       <delete file="${src}/dtd2java/UML.dtd.PP.dtd" />
+      <delete file="${src}/dtd2java/MOF.dtd.PP.dtd" />
       <delete dir="${src}/uml_parser" />
+      <delete dir="${src}/mof_xmi_parser" />
 
-      <delete dir="${build}" /> 
+      <delete dir="${build0}" />
 
       <delete file="${lib}/uml2idl.jar" /> 
-      <delete file="${lib}/dtd2java.jar" /> 
-      
+      <delete file="${lib}/dtd2java.jar" />
+      <delete file="${lib}/mof_reader.jar" />
+
       <delete file="u1.idl" />
       <delete file="u1.ocl" />
   </target>

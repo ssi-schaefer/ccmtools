@@ -23,14 +23,12 @@ ant dtd2java.jar
 #
 cd $SOURCE
 rm -rf mof_parser
-java -classpath $LIB/antlr.jar:$LIB/dtd2java.jar dtd2java.Main dtd2java/MOF.dtd mof_parser
+java -classpath $LIB/antlr.jar:$LIB/dtd2java.jar dtd2java.Main dtd2java/MOF.dtd mof_xmi_parser
 rm dtd2java/MOF.dtd.PP.dtd
-tar cfz $BUILD/mof_parser.tar.gz mof_parser
-rm -rf mof_parser
+javac -d $BUILD mof_xmi_parser/*.java mof_xmi_parser/model/*.java
 
 #
 #   EXIT
 #
 cd $ROOT
-ls -l build/mof_parser.tar.gz
 
