@@ -3,7 +3,7 @@
 {
     SmartPtr<Line> theLine = myGrfx->provide_line();
     clock_t clockStart = clock();
-    for( int counter=0; counter<1000000; counter++ )
+    for( int counter=0; counter<10000000; counter++ )
     {
         theLine.ptr()->move(123.456, counter);
     }

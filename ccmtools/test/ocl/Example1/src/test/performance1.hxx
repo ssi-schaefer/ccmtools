@@ -2,20 +2,16 @@
 
 {
     SmartPtr<IntegerStack> theStack = myMath->provide_stack();
-    clock_t clockStart = clock();
-    for( int counter=0; counter<1000; counter++ )
-    {
-        int index;
-        for( index=0; index<1000; index++ )
-        {
-            theStack->push(index);
-        }
-        for( index=0; index<1000; index++ )
-        {
-            long dummy = theStack->pop();
-        }
-    }
-    clock_t clockEnd = clock();
-    double cpu_time_used = double(clockEnd-clockStart) / CLOCKS_PER_SEC * 1000.0;
-    cout << "  time: " << cpu_time_used << "ms" << endl;
+    //
+    #define LOOP1 1000
+    #define LOOP2 1000
+    #include "perf1code.hxx"
+    #undef LOOP2
+    #undef LOOP1
+    //
+    #define LOOP1 10000
+    #define LOOP2 100
+    #include "perf1code.hxx"
+    #undef LOOP2
+    #undef LOOP1
 }

@@ -7,10 +7,21 @@
 #include <Python.h>
 #endif
 
+
+// uncomment this if you want to use 'design by contract'
+// #define CCM_USE_DBC
+
+
 #include <%(IncludeNamespace)s_mirror/%(Identifier)s_mirror_gen.h>
 #include <%(IncludeNamespace)s_mirror/%(HomeType)s_mirror_gen.h>
+
+#ifdef CCM_USE_DBC
+#include <%(IncludeNamespace)s/%(Identifier)s_dbc.h>
+#include <%(IncludeNamespace)s/%(HomeType)s_dbc.h>
+#else
 #include <%(IncludeNamespace)s/%(Identifier)s_gen.h>
 #include <%(IncludeNamespace)s/%(HomeType)s_gen.h>
+#endif
 
 using namespace std;
 using namespace WX::Utils;
@@ -43,7 +54,11 @@ int main ( int argc, char *argv[] )
   // get an instance of the local HomeFinder and register component homes
 
   homeFinder = HomeFinder::Instance (  );
+#ifdef CCM_USE_DBC
+  error  = DbC_deploy_%(HomeType)s("%(HomeType)s");
+#else
   error  = local_deploy_%(HomeType)s("%(HomeType)s");
+#endif
   error +=    local_deploy_%(HomeType)s_mirror("%(HomeType)s_mirror");	
   if(error) {
     cerr << "ERROR: Can't deploy component homes!" << endl;
@@ -86,7 +101,15 @@ int main ( int argc, char *argv[] )
   } catch ( LocalComponents::InvalidName& e ) {
     cout << "DEPLOY: invalid name during connection: " << e.what (  ) << endl;
     result = -1;
-  } catch ( ... )  {
+  }
+#ifdef CCM_USE_DBC
+  catch(CCM_OCL::OclException& e)
+  {
+    cout << "DEPLOY: 'design by contract' error:" << endl << e.what();
+    result = -1;
+  }
+#endif
+  catch ( ... )  {
     cout << "DEPLOY: there is something wrong!" << endl;
     result = -1;
   }
@@ -111,7 +134,15 @@ int main ( int argc, char *argv[] )
   } catch ( LocalComponents::NotImplemented& e ) {
     cout << "TEST: function not implemented: " << e.what (  ) << endl;
     result = -1;
-  } catch ( ... )  {
+  }
+#ifdef CCM_USE_DBC
+  catch(CCM_OCL::OclException& e)
+  {
+    cout << "TEST: 'design by contract' error:" << endl << e.what();
+    result = -1;
+  }
+#endif
+  catch ( ... )  {
     cout << "TEST: there is something wrong!" << endl;
     result = -1;
   }
