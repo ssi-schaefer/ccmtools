@@ -1,2 +1,2 @@
-  CCM_Utils::SmartPtr<%(CCMUsesType)s> %(Identifier)s_receptacle;
+  WX::Utils::SmartPtr<%(CCMUsesType)s> %(Identifier)s_receptacle;
 

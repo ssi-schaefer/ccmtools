@@ -17,7 +17,7 @@
 #include <string>
 #include <map>
 #include <cassert>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/smartptr.h>
 #include <LocalComponents/CCM.h>
 
 #include <%(SelfInclude)s_share.h>
@@ -76,7 +76,7 @@ class %(Identifier)s
 
   // Navigation functions
 
-  CCM_Utils::SmartPtr<LocalComponents::Object> provide_facet ( const std::string& name )
+  WX::Utils::SmartPtr<LocalComponents::Object> provide_facet ( const std::string& name )
     throw ( LocalComponents::InvalidName );
 
   LocalComponents::FacetDescriptions get_all_facets (  );
@@ -88,7 +88,7 @@ class %(Identifier)s
 
   // Receptacle functions
 
-  LocalComponents::Cookie connect ( const LocalComponents::FeatureName& name, CCM_Utils::SmartPtr<LocalComponents::Object> connection )
+  LocalComponents::Cookie connect ( const LocalComponents::FeatureName& name, WX::Utils::SmartPtr<LocalComponents::Object> connection )
     throw ( LocalComponents::InvalidName, LocalComponents::InvalidConnection,
             LocalComponents::AlreadyConnected, LocalComponents::ExceededConnectionLimit );
 
@@ -178,7 +178,7 @@ class CCM_%(Identifier)s_Context_impl
 
 #include <iostream>
 #include <sstream>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -187,7 +187,7 @@ class CCM_%(Identifier)s_Context_impl
 #include "%(Identifier)s_gen.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_Local;
 
 %(OpenNamespace)s
@@ -335,7 +335,7 @@ const std::string
 
 // Navigation functions
 
-CCM_Utils::SmartPtr<LocalComponents::Object>
+WX::Utils::SmartPtr<LocalComponents::Object>
 %(Identifier)s::provide_facet ( const std::string& name )
   throw ( LocalComponents::InvalidName )
 {
@@ -374,7 +374,7 @@ bool
 // Receptacle functions
 
 LocalComponents::Cookie
-%(Identifier)s::connect ( const LocalComponents::FeatureName& name, CCM_Utils::SmartPtr<LocalComponents::Object> connection )
+%(Identifier)s::connect ( const LocalComponents::FeatureName& name, WX::Utils::SmartPtr<LocalComponents::Object> connection )
   throw ( LocalComponents::InvalidName, LocalComponents::InvalidConnection,
 	  LocalComponents::AlreadyConnected, LocalComponents::ExceededConnectionLimit )
 {
@@ -490,7 +490,7 @@ LocalComponents::ComponentPortDescription
 #define __COMPONENT_%(PreprocIdentifier)s_SHARE__H__
 
 #include <map>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/smartptr.h>
 #include <LocalComponents/CCM.h>
 
 %(MAttributeDefInclude)s
@@ -593,12 +593,12 @@ class CCM_%(Identifier)s_impl
 //==============================================================================
 
 #include <iostream>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 
 #include "%(Identifier)s_app.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_Local;
 
 %(OpenNamespace)s
