@@ -11,12 +11,6 @@
 
 package mof_reader;
 
-import java.util.Collection;
-import java.util.List;
-
-import mof_xmi_parser.DTD_Container;
-
-
 /**
  * AliasType implementation
  *
