@@ -19,6 +19,7 @@ TESTS = \
   attribute.sh                \
   supports.sh                 \
   facet.sh                    \
+  facet_rename.sh             \
   receptacle.sh               \
   receptacle_not_connected.sh \
   receptacle_multiple.sh      \
