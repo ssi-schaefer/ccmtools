@@ -26,4 +26,13 @@ public interface MofNamespace extends MofModelElement
      * returns a list of {@link MofModelElement}
      */
     public List getContainedElements();
+
+    /**
+     * Calls {@link MofModelElement#process} for each child.
+     *
+     * @param handler  the node-handler
+     *
+     * @throws NodeHandlerException  only the node-handler throws this exception
+     */
+    public void processContainedElements( NodeHandler handler ) throws NodeHandlerException;
 }

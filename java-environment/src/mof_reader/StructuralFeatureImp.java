@@ -50,7 +50,7 @@ abstract class StructuralFeatureImp extends TypedElementImp implements MofStruct
             }
             else
             {
-                throw new IllegalArgumentException("no scope");
+                scope_ = MofScopeKind.INSTANCE;
             }
         }
         return scope_;
@@ -110,7 +110,7 @@ abstract class StructuralFeatureImp extends TypedElementImp implements MofStruct
             }
             else
             {
-                throw new NumberFormatException("no multiplicity");
+                multiplicity_ = new MofMultiplicityType("1");
             }
         }
         return multiplicity_;

@@ -47,7 +47,7 @@ abstract class BehavioralFeatureImp extends NamespaceImp implements MofBehaviora
             }
             else
             {
-                throw new IllegalArgumentException("no scope");
+                scope_ = MofScopeKind.INSTANCE;
             }
         }
         return scope_;

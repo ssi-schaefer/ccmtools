@@ -107,8 +107,7 @@ class AssociationEndImp extends TypedElementImp implements MofAssociationEnd
             }
             else
             {
-                throw new NumberFormatException("no multiplicity in AssociationEnd '"+getName()+
-                    "' xmi.id="+((AssociationEndXmi)xmi_).xmi_id_);
+                multiplicity_ = new MofMultiplicityType("1");
             }
         }
         return multiplicity_;

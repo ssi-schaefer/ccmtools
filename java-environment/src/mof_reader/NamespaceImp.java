@@ -15,6 +15,7 @@ package mof_reader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.Iterator;
 
 import mof_xmi_parser.DTD_Container;
 import mof_xmi_parser.model.MNamespace_contents;
@@ -66,6 +67,17 @@ abstract class NamespaceImp extends ModelElementImp implements MofNamespace
             }
         }
         return contents_;
+    }
+
+
+    /// implements {@link MofNamespace#processContainedElements}
+    public void processContainedElements( NodeHandler handler ) throws NodeHandlerException
+    {
+        Iterator it = getContainedElements().iterator();
+        while( it.hasNext() )
+        {
+            ((MofModelElement)it.next()).process(handler);
+        }
     }
 
 }

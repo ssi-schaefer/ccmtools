@@ -29,7 +29,7 @@ class ClassifierXmi extends mof_xmi_parser.model.MClassifier implements Worker
         super(attrs);
     }
 
-    private ClassifierImp implementation_;
+    private ModelElementImp implementation_;
     private Worker parent_;
 
     /// implements {@link Worker#register}
@@ -80,8 +80,36 @@ class ClassifierXmi extends mof_xmi_parser.model.MClassifier implements Worker
         return implementation_;
     }
 
+
+    private boolean processed_;
+
+    /// implements {@link Worker#process}
     public void process( Model model )
     {
-        // nothing to do
+        if( processed_ )
+        {
+            return;
+        }
+        if( xmi_idref_!=null )
+        {
+            Worker w = model.getWorker(xmi_idref_);
+            if( w==null )
+            {
+                throw new RuntimeException("cannot find xmi.idref=="+xmi_idref_);
+            }
+            w.process(model);
+            implementation_ = (ModelElementImp)w.mof();
+        }
+        processed_ = true;
+        Iterator it = content().iterator();
+        while( it.hasNext() )
+        {
+            Object obj = it.next();
+            if( obj instanceof Worker )
+            {
+                ((Worker)obj).process(model);
+            }
+        }
     }
+
 }
