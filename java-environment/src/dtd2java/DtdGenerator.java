@@ -187,6 +187,11 @@ public class DtdGenerator
                  "      ((DTD_Container)child).parent__ = this;\n"+
                  "    }\n"+
                  "  }\n\n"+
+                 "  /** returns all children */\n"+
+                 "  public java.util.Collection content()\n"+
+                 "  {\n"+
+                 "    return content__;\n"+
+                 "  }\n\n"+
                  "  /** returns the XML-name of this element */\n"+
                  "  abstract public String xmlName();\n\n"+
                  "  /** returns the XML-code of this element (including all attributes and children) */\n"+
