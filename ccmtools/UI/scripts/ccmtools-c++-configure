@@ -42,15 +42,15 @@ name.''' % CCMTOOLS_PACKAGE
 
 ## utility functions.
 
-def find(dir, file):
-    files = os.listdir(dir)
-    if file in files: return os.path.join(dir, file)
-    for f in files:
-        new_file = os.path.join(dir, f)
-        if os.path.isdir(new_file):
-            result = find(new_file, file)
-            if result: return result
-    return None
+#def find(dir, file):
+#    files = os.listdir(dir)
+#    if file in files: return os.path.join(dir, file)
+#    for f in files:
+#        new_file = os.path.join(dir, f)
+#        if os.path.isdir(new_file):
+#            result = find(new_file, file)
+#            if result: return result
+#    return None
 
 ## handle arguments.
 
@@ -87,18 +87,18 @@ if not os.path.isdir(SOURCE_DIR):
 ## find the matching application logic and user types files, and copy them from
 ## the current directory to the generated code directory.
 
-for f in glob.glob('*_app.*') + glob.glob('*_user_types.h') + glob.glob('_check_CCM_Session*.cc'):
-     dest_file = find(SOURCE_DIR, f)
-     print ' copy file: ' + f
-     if not dest_file:
-         print 'Warning: unknown destination for %s. Skipping.' % f
-         print 'This might cause deployment failure!'
-         print
-         continue
-
-     if os.system('cp -p ' + f + ' ' +dest_file):
-         print "Error: can't copy " + f + " files!"
-         sys.exit(1)
+#for f in glob.glob('*_app.*') + glob.glob('*_user_types.h') + glob.glob('_check_CCM_Session*.cc'):
+#     dest_file = find(SOURCE_DIR, f)
+#     print ' copy file: ' + f
+#     if not dest_file:
+#         print 'Warning: unknown destination for %s. Skipping.' % f
+#         print 'This might cause deployment failure!'
+#         print
+#         continue
+#
+#     if os.system('cp -p ' + f + ' ' +dest_file):
+#         print "Error: can't copy " + f + " files!"
+#         sys.exit(1)
         
 ## run confix to bootstrap and configure the component's source code
 
@@ -108,3 +108,7 @@ confix_flags += ' --bootstrap --configure'
 
 print 'confix.py ' + confix_flags
 sys.exit(os.system('confix.py ' + confix_flags) != 0)
+
+
+
+
