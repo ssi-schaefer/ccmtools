@@ -24,6 +24,9 @@ using namespace WX::Utils;
 using namespace CCM_Local;
 
 namespace CCM_Local {
+namespace world {
+namespace europe {
+namespace austria {
 namespace CCM_Session_Test {
 
 //==============================================================================
@@ -48,6 +51,7 @@ CCM_Test_impl::set_session_context(
     DEBUGNL(" CCM_Test_impl->set_session_context()");
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
+
 
 void
 CCM_Test_impl::ccm_activate()
@@ -120,28 +124,28 @@ CCM_Test_impl::ccm_activate()
       LongList p1, p2, p3, result;
       const unsigned int size = 11;
       for(int i=0;i<(int)size;i++) {
-	p1.push_back(i);
-	p2.push_back(i+i);
+        p1.push_back(i);
+        p2.push_back(i+i);
       }
 
       result = ctx->get_connection_outPort()->f4(p1, p2, p3);
 
       assert(result.size() == size);
       for(unsigned int i=0;i<result.size();i++) {
-	long p = result.at(i);
-	assert(p == (long)i);
+        long p = result.at(i);
+        assert(p == (long)i);
       }
 
       assert(p2.size() == size);
       for(unsigned int i=0;i<p2.size();i++) {
-	long p = p2.at(i);
-	assert(p == (long)i);
+        long p = p2.at(i);
+        assert(p == (long)i);
       }
 
       assert(p3.size() == size);
       for(unsigned int i=0;i<p3.size();i++) {
-	long p = p3.at(i);
-	assert(p == (long)(i+i));
+        long p = p3.at(i);
+        assert(p == (long)(i+i));
       }
     }
 
@@ -150,28 +154,28 @@ CCM_Test_impl::ccm_activate()
       StringList p1, p2, p3, result;
       const unsigned int size = 7;
       for(int i=0;i<(int)size;i++) {
-	p1.push_back("one");
-	p2.push_back("two");
+        p1.push_back("one");
+        p2.push_back("two");
       }
 
       result = ctx->get_connection_outPort()->f5(p1, p2, p3);
 
       assert(result.size() == size);
       for(unsigned int i=0;i<result.size();i++) {
-	string p = result.at(i);
-	assert(p == "Test");
+        string p = result.at(i);
+        assert(p == "Test");
       }
 
       assert(p2.size() == size);
       for(unsigned int i=0;i<p2.size();i++) {
-	string p = p2.at(i);
-	assert(p == "one");
+        string p = p2.at(i);
+        assert(p == "one");
       }
 
       assert(p3.size() == size);
       for(unsigned int i=0;i<p3.size();i++) {
-	string p = p3.at(i);
-	assert(p == "two");
+        string p = p3.at(i);
+        assert(p == "two");
       }
     }
 
@@ -180,43 +184,43 @@ CCM_Test_impl::ccm_activate()
       PersonList pl1, pl2, pl3, result;
       const unsigned int size = 8;
       for(int i=0;i<(int)size;i++) {
-	Person p1, p2;
-	p1.name = "Egon";
-	p1.id = i;
-	pl1.push_back(p1);
-	p2.name = "Andrea";
-	p2.id = i+i;
-	pl2.push_back(p2);
+        Person p1, p2;
+        p1.name = "Egon";
+        p1.id = i;
+        pl1.push_back(p1);
+        p2.name = "Andrea";
+        p2.id = i+i;
+        pl2.push_back(p2);
       }
 
       result = ctx->get_connection_outPort()->f6(pl1, pl2, pl3);
 
       assert(result.size() == size);
       for(unsigned int i=0;i<result.size();i++) {
-	Person p = result.at(i);
-	assert(p.id == (long)i);
-	assert(p.name == "Test");
+        Person p = result.at(i);
+        assert(p.id == (long)i);
+        assert(p.name == "Test");
       }
 
       assert(pl2.size() == size);
       for(unsigned int i=0;i<pl2.size();i++) {
-	Person p = pl2.at(i);
-	assert(p.id == (long)i);
-	assert(p.name == "Egon");
+        Person p = pl2.at(i);
+        assert(p.id == (long)i);
+        assert(p.name == "Egon");
       }
 
       assert(pl3.size() == size);
       for(unsigned int i=0;i<pl3.size();i++) {
-	Person p = pl3.at(i);
-	assert(p.id == (long)(i+i));
-	assert(p.name == "Andrea");
+        Person p = pl3.at(i);
+        assert(p.id == (long)(i+i));
+        assert(p.name == "Andrea");
       }
     }
 
 
     { // test case: typedef long time_t;
-      const CCM_Local::time_t p1 = 7;
-      CCM_Local::time_t p2 = 3, p3, result;
+      const CCM_Local::world::europe::austria::time_t p1 = 7;
+      CCM_Local::world::europe::austria::time_t p2 = 3, p3, result;
       result = ctx->get_connection_outPort()->f7(p1, p2, p3);
       assert(p2 == 7);
       assert(p3 == 3);
@@ -257,5 +261,8 @@ CCM_Test_impl::get_inPort()
 }
 
 } // /namespace CCM_Session_Test
+} // /namespace austria
+} // /namespace europe
+} // /namespace world
 } // /namespace CCM_Local
 

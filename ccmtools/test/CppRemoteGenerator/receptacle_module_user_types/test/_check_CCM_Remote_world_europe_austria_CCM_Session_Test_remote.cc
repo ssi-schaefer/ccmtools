@@ -18,8 +18,8 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_Test.h>
+#include <CCM_Remote/world/europe/austria/CCM_Session_Test/TestHome_remote.h>
+#include <CORBA_Stubs_world_europe_austria_Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -76,13 +76,14 @@ main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::TestHome_var myTestHome = ::CORBA_Stubs::TestHome::_narrow (obj);
+    ::CORBA_Stubs::world::europe::austria::TestHome_var myTestHome = 
+	::CORBA_Stubs::world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::Test_var myTest = myTestHome->create();
+    ::CORBA_Stubs::world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::CORBA_Stubs::Console_var ConsoleinPort = 
+    ::CORBA_Stubs::world::europe::austria::Console_var ConsoleinPort = 
         myTest->provide_inPort();
 
     myTest->connect_outPort(ConsoleinPort);

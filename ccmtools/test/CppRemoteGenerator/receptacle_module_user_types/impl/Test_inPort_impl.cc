@@ -20,9 +20,12 @@ using namespace std;
 using namespace WX::Utils;
 
 namespace CCM_Local {
+namespace world {
+namespace europe {
+namespace austria {
 namespace CCM_Session_Test {
 
-inPort_impl::inPort_impl(CCM_Local::CCM_Session_Test::CCM_Test_impl* component_impl)
+inPort_impl::inPort_impl(CCM_Local::world::europe::austria::CCM_Session_Test::CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     DEBUGNL("+inPort_impl->inPort_impl()");
@@ -47,8 +50,8 @@ inPort_impl::f1(const long p1, long& p2, long& p3)
     return p3+p1; 
 }
 
-Person
-inPort_impl::f2(const Person& p1, Person& p2, Person& p3)
+world::europe::austria::Person
+inPort_impl::f2(const world::europe::austria::Person& p1, world::europe::austria::Person& p2, world::europe::austria::Person& p3)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("inPort_impl->f2(p1, p2, p3)");
@@ -60,8 +63,8 @@ inPort_impl::f2(const Person& p1, Person& p2, Person& p3)
     return r; 
 }
 
-Address
-inPort_impl::f3(const Address& p1, Address& p2, Address& p3)
+world::europe::austria::Address
+inPort_impl::f3(const world::europe::austria::Address& p1, world::europe::austria::Address& p2, world::europe::austria::Address& p3)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("inPort_impl->f3(p1, p2, p3)");
@@ -75,8 +78,8 @@ inPort_impl::f3(const Address& p1, Address& p2, Address& p3)
     return r;
 }
 
-LongList
-inPort_impl::f4(const LongList& p1, LongList& p2, LongList& p3)
+world::europe::austria::LongList
+inPort_impl::f4(const world::europe::austria::LongList& p1, world::europe::austria::LongList& p2, world::europe::austria::LongList& p3)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("inPort_impl->f4(p1, p2, p3)");
@@ -89,8 +92,8 @@ inPort_impl::f4(const LongList& p1, LongList& p2, LongList& p3)
     return r;
 }
 
-StringList
-inPort_impl::f5(const StringList& p1, StringList& p2, StringList& p3)
+world::europe::austria::StringList
+inPort_impl::f5(const world::europe::austria::StringList& p1, world::europe::austria::StringList& p2, world::europe::austria::StringList& p3)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("inPort_impl->f5(p1, p2, p3)");
@@ -103,8 +106,8 @@ inPort_impl::f5(const StringList& p1, StringList& p2, StringList& p3)
     return r;
 }
 
-PersonList
-inPort_impl::f6(const PersonList& p1, PersonList& p2, PersonList& p3)
+world::europe::austria::PersonList
+inPort_impl::f6(const world::europe::austria::PersonList& p1, world::europe::austria::PersonList& p2, world::europe::austria::PersonList& p3)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("inPort_impl->f6(p1, p2, p3)");
@@ -120,8 +123,8 @@ inPort_impl::f6(const PersonList& p1, PersonList& p2, PersonList& p3)
     return r;
 }
 
-time_t
-inPort_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
+world::europe::austria::time_t
+inPort_impl::f7(const world::europe::austria::time_t& t1, world::europe::austria::time_t& t2, world::europe::austria::time_t& t3)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("inPort_impl->f7(t1, t2, t3)");
@@ -131,4 +134,7 @@ inPort_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
 }
 
 } // /namespace CCM_Session_Test
+} // /namespace austria
+} // /namespace europe
+} // /namespace world
 } // /namespace CCM_Local

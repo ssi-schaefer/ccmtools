@@ -3,7 +3,6 @@
  *
  */
 
-
 struct Person {
   long id;
   string name;
@@ -21,7 +20,7 @@ typedef sequence<string> StringList;
 
 typedef sequence<Person> PersonList;
 
-//typedef long time_t;
+typedef long time_t;
 
 /*
 enum Color {red, green, blue, black, orange};
@@ -35,7 +34,7 @@ interface Console {
   LongList   f4(in LongList p1, inout LongList p2, out LongList p3);
   StringList f5(in StringList p1, inout StringList p2, out StringList p3);
   PersonList f6(in PersonList p1, inout PersonList p2, out PersonList p3);
-  //  time_t     f7(in time_t t1, inout time_t t2, out time_t t3);
+  time_t     f7(in time_t t1, inout time_t t2, out time_t t3);
 
   //Color f1(in Color p1, inout Color p2, out Color p3);
   //DoubleArray f6(in DoubleArray a1, inout DoubleArray a2, out DoubleArray a3);
