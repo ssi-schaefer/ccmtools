@@ -19,7 +19,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <Test.h>
+#include <CORBA_Stubs_Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -76,17 +76,18 @@ main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::TestHome_var myTestHome = ::TestHome::_narrow (obj);
+    ::CORBA_Stubs::TestHome_var myTestHome = 
+	::CORBA_Stubs::TestHome::_narrow (obj);
 
     // Create component instances
-    ::Test_var myTest = myTestHome->create();
+    ::CORBA_Stubs::Test_var myTest = myTestHome->create();
 
     // Provide facets   
 
 	
     myTest->configuration_complete();
 
-    DEBUGNL("==== Begin Test Case =============================================" );    
+    DEBUGNL("==== Begin Test Case ==========================================" );
 
     CORBA::Short short_value = -7;
     myTest->short_value(short_value);
@@ -138,7 +139,7 @@ main (int argc, char *argv[])
     CORBA::Octet octet_result = myTest->octet_value();
     assert(octet_result == octet_value);
 
-    DEBUGNL("==== End Test Case ===============================================" );    
+    DEBUGNL("==== End Test Case ============================================" );
 
     // Un-Deployment
 

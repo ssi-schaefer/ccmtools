@@ -4,17 +4,13 @@ $ ccmtools-generate c++local -a -o xxx Test.idl
 
 # create mico stubs
 $ ccmtools-generate idl2 -o xxx/CCM_Remote_Stubs Test.idl
-$ cd xxx/CCM_Remote_Stubs
-$ ccmtools-idl --mico -I${CCM_INSTALL}/include *.idl
-$ touch Makefile.py
-$ cd ../..
 
 # create remote component
 $ ccmtools-generate c++remote -o xxx Test.idl
 
 # create remote component test
 $ ccmtools-generate c++remote-test -o xxx Test.idl
-$ cp impl/Test_my_facet_impl.cc xxx/impl/
+$ cp impl/Test_impl.cc xxx/impl/
 $ cp test/_check_CCM_Remote_world_CCM_Session_Test_remote.cc xxx/test/
 $ confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
 
