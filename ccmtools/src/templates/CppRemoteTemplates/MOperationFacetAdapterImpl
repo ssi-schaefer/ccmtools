@@ -1,4 +1,5 @@
-%(CORBAType)s %(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefCORBA)s) 
+%(CORBAType)s 
+%(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefCORBA)s) 
     %(MExceptionDefCORBA)s
 {
     LDEBUGNL(CCM_REMOTE, " %(Object)sFacetAdapter::%(Identifier)s()");

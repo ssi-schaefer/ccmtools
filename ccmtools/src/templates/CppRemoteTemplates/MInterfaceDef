@@ -9,3 +9,4 @@
 %(CloseNamespace)s
 
 #endif // __IFACE_%(PreprocIdentifier)s__H__
+

@@ -1,0 +1,101 @@
+/***
+ * CORBA converter for typedef %(Identifier)s (header file)
+ *
+ ***/
+
+#ifndef __ALIAS_CONVERTER_%(PreprocIdentifier)s__H__
+#define __ALIAS_CONVERTER_%(PreprocIdentifier)s__H__
+
+#include <iostream>
+#include <sstream>
+
+#include <%(IdlFileNamespace)s%(Identifier)s.h>
+#include <CCM_Local%(IncludeNamespace)s/%(Identifier)s.h>
+
+%(CORBASequenceConverterInclude)s
+
+%(OpenNamespace)s
+
+void 
+convertFromCorba(const %(ShortNamespace)s%(Identifier)s& in, CCM_Local::%(Identifier)s& out);
+
+void 
+convertToCorba(const CCM_Local::%(Identifier)s& in, %(ShortNamespace)s%(Identifier)s& out);
+
+std::ostream&
+operator<<(std::ostream& o, const CCM_Local::%(Identifier)s& value);
+
+std::ostream& 
+operator<<(std::ostream& o, const %(ShortNamespace)s%(Identifier)s& value);
+
+%(CloseNamespace)s
+
+#endif // __ALIAS_CONVERTER%(PreprocIdentifier)s__H__
+
+
+<<<<<<<SPLIT>>>>>>>
+/***
+ * CORBA converter for typedef %(Identifier)s (implementation file)
+ *
+ ***/
+
+#include <WX/Utils/debug.h> 
+	
+#include <CCM_Remote/PrimitiveConverter.h>
+#include "%(Identifier)s_remote.h"
+
+using namespace std;
+
+%(OpenNamespace)s
+
+void 
+convertFromCorba(const %(ShortNamespace)s%(Identifier)s& in, CCM_Local::%(Identifier)s& out)
+{
+    LDEBUGNL(CCM_REMOTE," convertFromCorba(%(ShortNamespace)s%(Identifier)s)");
+    LDEBUGNL(CCM_REMOTE,"   %(Identifier)s = " << in);
+    out.reserve(in.length());
+    for(unsigned long i=0; i < in.length(); i++) {
+        %(SingleValue)s singleValue;
+        convertFromCorba(in[i], singleValue);
+        out.push_back(singleValue);
+    }
+} 
+
+void 
+convertToCorba(const CCM_Local::%(Identifier)s& in, %(ShortNamespace)s%(Identifier)s& out)
+{
+    LDEBUGNL(CCM_REMOTE," convertToCorba(%(ShortNamespace)s%(Identifier)s)");
+    LDEBUGNL(CCM_REMOTE,"   %(Identifier)s = " << in);
+    out.length(in.size());
+    for(unsigned long i=0; i < in.size(); i++) {
+        %(SingleValue)s singleValue = in[i];
+        convertToCorba(singleValue, %(InOutValue)s); 
+    }		
+} 
+
+
+std::ostream& 
+operator<<(std::ostream& o, const %(ShortNamespace)s%(Identifier)s& value)
+{
+    o << "[ ";
+    for(unsigned long i=0; i < value.length(); i++) {
+        if(i) o << ",";
+        o << value[i];
+    }
+    o << " ]";
+    return o;
+}
+
+std::ostream&
+operator<<(std::ostream& o, const CCM_Local::%(Identifier)s& value)
+{
+    o << "[ ";
+    for(unsigned long i=0; i < value.size(); i++) {
+        if(i) o << ",";
+        o << value[i];
+    }
+    o << " ]";
+    return o;
+}
+
+%(CloseNamespace)s
