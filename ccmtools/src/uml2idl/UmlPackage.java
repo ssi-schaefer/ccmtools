@@ -165,7 +165,7 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
 	}
 
 
-	public String getIdlCode( Main main, String prefix )
+	public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
 	{
 	    if( !isCorbaModule(main) )
 	    {
@@ -181,7 +181,7 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
 	    int s = myElements_.size();
 	    for( int index=0; index<s; index++ )
 	    {
-	        code.append( ((Worker)myElements_.get(index)).getIdlCode(main, p2) );
+	        code.append( ((Worker)myElements_.get(index)).getIdlCode(main, p2, includeStatements) );
 	    }
 	    code.append(prefix);
 	    code.append("}; // /module ");

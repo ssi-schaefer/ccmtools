@@ -99,7 +99,7 @@ class UmlAssociation extends uml_parser.uml.MAssociation implements Worker
 	}
 
 
-    public String getIdlCode( Main main, String prefix )
+    public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
     {
     	return "";
     }

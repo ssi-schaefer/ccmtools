@@ -123,13 +123,13 @@ class UmlNamespaceElement extends uml_parser.uml.MNamespace_ownedElement impleme
     }
 
 
-	public String getIdlCode( Main main, String prefix )
+	public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
 	{
 	    StringBuffer code = new StringBuffer();
 	    int s = myWorkers_.size();
 	    for( int index=0; index<s; index++ )
 	    {
-	        code.append( ((Worker)myWorkers_.get(index)).getIdlCode(main, prefix) );
+	        code.append( ((Worker)myWorkers_.get(index)).getIdlCode(main, prefix, includeStatements) );
 	    }
 	    return code.toString();
 	}

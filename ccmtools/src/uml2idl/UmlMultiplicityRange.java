@@ -106,7 +106,7 @@ class UmlMultiplicityRange extends uml_parser.uml.MMultiplicityRange implements 
 	}
 
 
-    public String getIdlCode( Main main, String prefix )
+    public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
     {
         return "";
     }

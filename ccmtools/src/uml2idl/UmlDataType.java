@@ -97,7 +97,7 @@ class UmlDataType extends uml_parser.uml.MDataType implements Worker
 	}
 
 
-    public String getIdlCode( Main main, String prefix )
+    public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
     {
         return "";
     }

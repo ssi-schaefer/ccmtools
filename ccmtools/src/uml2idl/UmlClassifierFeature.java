@@ -113,18 +113,18 @@ class UmlClassifierFeature extends uml_parser.uml.MClassifier_feature implements
 	}
 
 
-	public String getIdlCode( Main main, String prefix )
+	public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
 	{
 	    StringBuffer code = new StringBuffer();
 	    int index, s=myAttributes_.size();
 	    for( index=0; index<s; index++ )
 	    {
-	        code.append( ((Worker)myAttributes_.get(index)).getIdlCode(main, prefix) );
+	        code.append( ((Worker)myAttributes_.get(index)).getIdlCode(main, prefix, includeStatements) );
 	    }
 	    s = myOperations_.size();
 	    for( index=0; index<s; index++ )
 	    {
-	        code.append( ((Worker)myOperations_.get(index)).getIdlCode(main, prefix) );
+	        code.append( ((Worker)myOperations_.get(index)).getIdlCode(main, prefix, includeStatements) );
 	    }
 	    return code.toString();
 	}

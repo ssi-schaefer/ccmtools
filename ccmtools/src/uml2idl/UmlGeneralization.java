@@ -92,7 +92,7 @@ class UmlGeneralization extends uml_parser.uml.MGeneralization implements Worker
 	}
 
 
-    public String getIdlCode( Main main, String prefix )
+    public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
     {
     	return "";
     }

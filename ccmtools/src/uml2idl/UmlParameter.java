@@ -107,7 +107,7 @@ class UmlParameter extends uml_parser.uml.MParameter implements Worker
 	}
 
 
-    public String getIdlCode( Main main, String prefix )
+    public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
     {
     	return "";
     }

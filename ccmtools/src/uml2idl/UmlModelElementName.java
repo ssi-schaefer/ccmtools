@@ -92,7 +92,7 @@ class UmlModelElementName extends uml_parser.uml.MModelElement_name implements W
 	}
 
 
-	public String getIdlCode( Main main, String prefix )
+	public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
 	{
 	    return "";
 	}

@@ -125,7 +125,7 @@ class UmlMultiplicity extends uml_parser.uml.MMultiplicity implements Worker
 	}
 
 
-    public String getIdlCode( Main main, String prefix )
+    public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
     {
         return "";
     }

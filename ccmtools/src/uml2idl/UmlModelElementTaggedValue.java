@@ -79,7 +79,7 @@ class UmlModelElementTaggedValue extends uml_parser.uml.MModelElement_taggedValu
 	}
 
 
-	public String getIdlCode( Main main, String prefix )
+	public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
 	{
 	    return "";
 	}

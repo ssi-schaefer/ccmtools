@@ -92,7 +92,7 @@ class UmlAssociationConnection extends uml_parser.uml.MAssociation_connection im
 	}
 
 
-    public String getIdlCode( Main main, String prefix )
+    public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
     {
     	return "";
     }

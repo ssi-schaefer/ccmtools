@@ -95,7 +95,7 @@ class UmlStereotype extends uml_parser.uml.MStereotype implements Worker
 	}
 
 
-    public String getIdlCode( Main main, String prefix )
+    public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
     {
         return "";
     }

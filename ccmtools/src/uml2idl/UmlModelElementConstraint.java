@@ -90,7 +90,7 @@ class UmlModelElementConstraint extends uml_parser.uml.MModelElement_constraint 
 	}
 
 
-	public String getIdlCode( Main main, String prefix )
+	public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
 	{
 	    return "";
 	}

@@ -69,7 +69,7 @@ interface Worker
 	/**
 	 * Returns the IDL code (terminated by a newline).
 	 */
-	public String getIdlCode( Main main, String prefix );
+	public String getIdlCode( Main main, String prefix, StringBuffer includeStatements );
 
 	/**
 	 * Returns the OCL code (terminated by a newline).

@@ -99,7 +99,7 @@ class UmlModel extends uml_parser.uml.MModel implements Worker
 	}
 
 
-	public String getIdlCode( Main main, String prefix )
+	public String getIdlCode( Main main, String prefix, StringBuffer includeStatements )
 	{
 	    StringBuffer code = new StringBuffer();
 	    code.append("\n");
@@ -110,7 +110,7 @@ class UmlModel extends uml_parser.uml.MModel implements Worker
 	    int s = myWorkers_.size();
 	    for( int index=0; index<s; index++ )
 	    {
-	        code.append( ((Worker)myWorkers_.get(index)).getIdlCode(main, prefix) );
+	        code.append( ((Worker)myWorkers_.get(index)).getIdlCode(main, prefix, includeStatements) );
 	    }
 	    code.append("\n");
 	    code.append(prefix);

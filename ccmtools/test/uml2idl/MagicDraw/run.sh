@@ -2,4 +2,5 @@
 #
 # $Header$
 #
-java -cp ../../lib/uml2idl.jar uml2idl.Main $*
+java -cp ../../../lib/ccmtools.jar uml2idl.Main $*
+
