@@ -5,33 +5,34 @@
  *
  */
 
-const float PI = 3.1415926;
-const double twoPI = PI * 2.0; 
+// const double PI = 3.1415;
 
 typedef long time_t;
 
 enum Color {red, green, blue, black, orange};
 
-typedef double doubleArray[10];
-
 struct Value {
   string s;
-  double d;
+  double dd;
 };
 
 typedef sequence<Value> map;
+
+typedef double doubleArray[10];
 
 
 component Hello
 {
   attribute time_t typedef_value;
   attribute Color enum_value;
+  attribute Value struct_value;
+  attribute map sequence_value;
   attribute doubleArray array_value;
-  attribute Value value;
-  attribute map map_value;
+
 };
 
 home HelloHome manages Hello
 {
 };
+
 

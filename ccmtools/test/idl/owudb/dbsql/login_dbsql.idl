@@ -16,7 +16,8 @@ component LoginDB_DBSQL {
    uses UserDBBrowser userbrowser;
 };
 
-home LoginDB_DBSQLHome manages LoginDB_DBSQL {}; 
+home LoginDB_DBSQLHome manages LoginDB_DBSQL { };
 
 }; // end of module udb
 }; // end of module owil
+

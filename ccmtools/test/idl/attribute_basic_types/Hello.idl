@@ -8,7 +8,7 @@
 
 component Hello
 {
-  attribute short sort_value;
+  attribute short short_value;
   attribute long long_value;
   attribute unsigned short ushort_value;
   attribute unsigned long ulong_value;

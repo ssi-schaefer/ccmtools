@@ -1,5 +1,8 @@
 #include "logindata.idl"
 
+#ifndef __OWUDB__LOGINDATALIST_IDL__
+#define __OWUDB__LOGINDATALIST_IDL__
+
 module owil {
 module udb {
 
@@ -7,3 +10,6 @@ typedef sequence<LoginData> LoginDataList;
 
 };
 };
+
+#endif
+

@@ -1,3 +1,8 @@
 #! /bin/sh
 
-${top_srcdir}/test/CppGenerator/test-loader.sh receptacle receptacle/Hello.idl
+idldir=${top_srcdir}/../test/idl/receptacle
+
+${top_srcdir}/test/CppGenerator/test-loader.sh "receptacle" \
+                                               " " \
+                                               "${idldir}/Hello.idl"
+

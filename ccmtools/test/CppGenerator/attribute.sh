@@ -1,3 +1,7 @@
 #! /bin/sh
 
-${top_srcdir}/test/CppGenerator/test-loader.sh attribute attribute/Hello.idl
+idldir=${top_srcdir}/../test/idl/attribute
+
+${top_srcdir}/test/CppGenerator/test-loader.sh "attribute" \
+                                               " " \
+                                               "${idldir}/Hello.idl"

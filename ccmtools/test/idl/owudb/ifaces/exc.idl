@@ -1,3 +1,6 @@
+#ifndef __OWUDB__EXC_IDL__
+#define __OWUDB__EXC_IDL__
+
 module owil {
 module udb {
 
@@ -12,3 +15,6 @@ exception PasswordExpired {};
 
 };
 };
+
+#endif
+

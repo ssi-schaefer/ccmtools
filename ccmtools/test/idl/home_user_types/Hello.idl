@@ -1,0 +1,38 @@
+// $Id$
+/**
+ * Test case: home user types
+ *
+ */
+
+typedef long time_t;
+
+enum Color {red, green, blue, black, orange};
+
+struct Value {
+  string s;
+  double dd;
+};
+
+typedef sequence<Value> map;
+
+typedef double doubleArray[10];
+
+
+component Hello 
+{
+  attribute time_t typedef_value;
+  attribute Color enum_value;
+  attribute Value struct_value;
+  attribute map sequence_value;
+  attribute doubleArray array_value;
+};
+
+home HelloHome manages Hello
+{
+  factory create_with_typedef(in time_t p);
+  factory create_with_enum(in Color p);
+  factory create_with_struct(in Value p);
+  factory create_with_sequence(in map p);
+  factory create_with_array(in doubleArray p);
+};
+

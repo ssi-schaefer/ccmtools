@@ -34,9 +34,7 @@ public class Main {
     public static void main(String[] args)
         throws Exception
     {
-        List includes = new ArrayList();
-        includes.add(new File(System.getProperty("user.dir")));
-        ParserManager manager = new ParserManager(-1, includes);
+        ParserManager manager = new ParserManager(-1);
         IDL3SymbolTable symbolTable = manager.getSymbolTable();
 
         try {
@@ -45,7 +43,7 @@ public class Main {
         } catch (Exception e) {
             System.err.println("Error parsing file "+args[0]);
             System.err.println(e);
-            throw e;
+            System.exit(1);
         }
     }
 }

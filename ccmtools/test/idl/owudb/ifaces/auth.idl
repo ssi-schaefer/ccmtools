@@ -1,5 +1,8 @@
 #include "ifaces/exc.idl"
 
+#ifndef __OWUDB__AUTH_IDL__
+#define __OWUDB__AUTH_IDL__
+
 module owil {
 module udb {
 
@@ -12,6 +15,9 @@ interface UserPassAuthentication {
           UserBlocked,
           PasswordExpired);
 };
-   
+
 };
 };
+
+#endif
+

@@ -1,3 +1,7 @@
 #! /bin/sh
 
-${top_srcdir}/test/CppGenerator/test-loader.sh home_exception "home_exception/*.idl"
+idldir=${top_srcdir}/../test/idl/home_exception
+
+${top_srcdir}/test/CppGenerator/test-loader.sh "home_exception" \
+                                               " " \
+                                               "${idldir}/Hello.idl"

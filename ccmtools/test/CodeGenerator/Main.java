@@ -38,9 +38,7 @@ public class Main {
     public static void main(String[] args)
         throws Exception
     {
-        List includes = new ArrayList();
-        includes.add(new File(System.getProperty("user.dir")));
-        ParserManager manager = new ParserManager(-1, includes);
+        ParserManager manager = new ParserManager(-1);
 
         MContainer container = null;
         try {
@@ -54,7 +52,7 @@ public class Main {
         container.setIdentifier("test-"+args[0]);
         NodeHandler handler = new PrettyPrinterImpl();
         GraphTraverser traverser = new GraphTraverserImpl();
-        traverser.addHandler(handler);
+        traverser.setHandler(handler);
         try {
             traverser.traverseGraph(container);
         } catch (Exception e) {
@@ -64,3 +62,4 @@ public class Main {
         }
     }
 }
+

@@ -1,3 +1,8 @@
 #! /bin/sh
 
-${top_srcdir}/test/CppGenerator/test-loader.sh include include/Hello.idl
+idldir=${top_srcdir}/../test/idl/include
+
+${top_srcdir}/test/CppGenerator/test-loader.sh "include" \
+                                               " " \
+                                               "${idldir}/Hello.idl"
+

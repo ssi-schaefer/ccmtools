@@ -1,6 +1,9 @@
 #include "logindatalist.idl"
 #include "exc.idl"
 
+#ifndef __OWUDB__LDBBROWSER_IDL__
+#define __OWUDB__LDBBROWSER_IDL__
+
 module owil {
 module udb {
 
@@ -15,3 +18,6 @@ interface LoginDBBrowser {
 
 };
 };
+
+#endif
+

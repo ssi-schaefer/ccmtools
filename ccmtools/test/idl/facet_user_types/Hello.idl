@@ -10,7 +10,7 @@ enum Color {red, green, blue, black, orange};
 
 struct Value {
   string s;
-  double d;
+  double dd;
 };
 
 typedef sequence<Value> map;
