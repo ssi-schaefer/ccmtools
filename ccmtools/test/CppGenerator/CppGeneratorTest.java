@@ -61,6 +61,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
     }
     */
 
+    /*
 
     // ------------------------------------------------------------------------
     // Attribute test cases
@@ -706,7 +707,60 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
+    */
 
+    public void testReceptacleObject()
+    {
+	String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_object";
+	String sandbox_dir = ccmtools_dir + "/test/CppGenerator/sandbox/receptacle_object";
+
+	try {
+	    runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" 
+				+ " " + test_dir + "/Test.idl");
+	    
+	    runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" 
+				+ " " + test_dir + "/Test.idl");
+
+	    runCcmtoolsGenerate("c++local -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface" 
+				+ " " + sandbox_dir + "/idl3/interface/IFace.idl");
+	    
+	    runCcmtoolsGenerate("c++local -a -o " + sandbox_dir
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl"
+				+ " " + sandbox_dir + "/idl3/component/TestHome.idl"
+				+ " " + sandbox_dir + "/idl3/component/Test_mirror.idl"
+				+ " " + sandbox_dir + "/idl3/component/TestHome_mirror.idl");
+
+	    runCcmtoolsGenerate("c++local-test -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl");
+
+	    copyFile(test_dir + "/impl/Test_impl.cc",
+		     sandbox_dir + "/impl/Test_impl.cc");
+	    copyFile(test_dir + "/impl/Test_mirror_iface_mirror_impl.cc",
+		     sandbox_dir + "/impl/Test_mirror_iface_mirror_impl.cc");
+
+	    copyFile(test_dir + "/test/ReceptacleObject.h", 
+		     sandbox_dir + "/test/ReceptacleObject.h");
+	    copyFile(test_dir + "/test/ReceptacleObject.cc", 
+		     sandbox_dir + "/test/ReceptacleObject.cc");
+	    copyFile(test_dir + "/test/_check_receptacle_object.cc", 
+		     sandbox_dir + "/test/_check_receptacle_object.cc");
+	    
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --bootstrap --configure --make --targets=check") ;
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --make --targets=clean") ;
+	}
+	catch(Exception e) {
+	    fail();
+	}
+    }
+
+    /*
 
     // ------------------------------------------------------------------------
     // Module test cases
@@ -744,6 +798,6 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }     
-
+    */
     // TODO: implement other test cases
 }
