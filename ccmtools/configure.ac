@@ -90,6 +90,9 @@ CppGenerator/CppRemoteTestTemplates/Makefile
 CppGenerator/CppPythonTemplates/Makefile
 UI/Makefile
 UI/scripts/Makefile
+OCL/Makefile
+OCL/utils/Makefile
+OCL/generators/Makefile
 )
 
 AC_OUTPUT

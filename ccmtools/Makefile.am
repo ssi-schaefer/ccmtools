@@ -12,11 +12,11 @@ else
 SUBDIRS_TESTS =
 endif
 
-SUBDIRS = Metamodel IDL3Parser utils .     \
+SUBDIRS = Metamodel OCL IDL3Parser utils .     \
           CodeGenerator IDLGenerator CppGenerator \
           UI lib $(SUBDIRS_DOCS) $(SUBDIRS_TESTS)
 
-DIST_SUBDIRS = Metamodel IDL3Parser utils .     \
+DIST_SUBDIRS = Metamodel OCL IDL3Parser utils .     \
                CodeGenerator IDLGenerator CppGenerator \
                UI lib doc test
 
