@@ -2,7 +2,3 @@ Makefile
 Makefile.in
 ccmtools.jar
 uml2idl.jar
-antlr.jar
-dtd2java.jar
-jdom.jar
-mdr01.jar
