@@ -55,9 +55,8 @@ public class ConsoleCodeGenerator
 "Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n" +
 "Options:\n" +
 "  -a, --application             Generate skeletons for business logic *\n" +
-"  -c N, --code-version=N        Set version of generated component code\n" +
 "  -h, --help                    Display this help\n" +
-"  -I DIR                        Add DIR to the preprocessor include path\n" +
+"  -Ipath                        Add path to the preprocessor include path\n" +
 "  -o DIR, --output=DIR          Base output in DIR (default .)\n" +
 "  -V, --version                 Display CCM Tools version information\n" +
 "      --generator-mask=<flags>  Mask for generator debug output\n" +
