@@ -28,7 +28,7 @@ local interface %(Identifier)s : Components::CCMObject%(BaseType)s%(MSupportsDef
 
 %(CloseNamespace)s
 
-#include <%(HomeInclude)s.idl>
+
 
 #endif
 
