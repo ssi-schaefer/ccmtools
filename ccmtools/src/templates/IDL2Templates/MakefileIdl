@@ -1,3 +1,0 @@
-
-all: 
-	ccmtools-idl --mico -I${CCM_INSTALL}/include *.idl
