@@ -475,27 +475,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                 {
                     code = getThis()+code;
                 }
-                if( pc.isPrevious() )
-                {
-                    if( type!=null )
-                    {
-                        String helper = (String)conCode.preHelpers_.get(code);
-                        if( helper==null )
-                        {
-                            String langType = getLanguageType(etPC);
-                            helper = getNextHelperName();
-                            conCode.preStatements_ += "  /*PC*/"+langType+" "+helper+" = "+code+";\n";
-                            conCode.preHelpers_.put(code, helper);
-                        }
-                        return helper;
-                    }
-                    else
-                    {
-                        return error("cannot resolve type of @pre-expression [PC]");
-                    }
-                }
             }
-            return code;
         }
         else
         {
@@ -517,8 +497,27 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                 }
             }
             code += ")";
-            return code;
         }
+        if( pc.isPrevious() )
+        {
+            if( type!=null )
+            {
+                String helper = (String)conCode.preHelpers_.get(code);
+                if( helper==null )
+                {
+                    String langType = getLanguageType(etPC);
+                    helper = getNextHelperName();
+                    conCode.preStatements_ += "  /*PC*/"+langType+" "+helper+" = "+code+";\n";
+                    conCode.preHelpers_.put(code, helper);
+                }
+                return helper;
+            }
+            else
+            {
+                return error("cannot resolve type of @pre-expression [PC]");
+            }
+        }
+        return code;
     }
 
 
