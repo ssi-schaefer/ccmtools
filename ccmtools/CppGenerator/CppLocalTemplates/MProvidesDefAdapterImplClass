@@ -1,7 +1,13 @@
-//==============================================================================
-// %(Identifier)s - facet adapter implementation class
-//==============================================================================
-
+/**
+ * CCM_%(ComponentType)s facet class 
+ *
+ * // TODO: WRITE YOUR DESCRIPTION HERE! 
+ *
+ * @author
+ * @version 
+ *
+ * This class implements a facet's methods and attributes.
+ **/
 class %(Identifier)s_impl
   : public %(CCMProvidesType)s
 {

@@ -1,3 +1,7 @@
+//==============================================================================
+// %(CCMProvidesType)s facet implementation
+//==============================================================================
+
 %(CCMProvidesType)s*
 CCM_%(ComponentType)s_impl::get_%(Identifier)s (  )
 {

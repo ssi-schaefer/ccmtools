@@ -1,7 +1,3 @@
-//==============================================================================
-// %(Identifier)s - facet implementation
-//==============================================================================
-
 %(Identifier)s_impl::%(Identifier)s_impl ( CCM_%(ComponentType)s_impl* component_impl )
   : component ( component_impl )
 {
