@@ -30,7 +30,7 @@ import java.io.FileWriter;
  * Removes comments and expands entity calls.
  *
  * @author Robert Lechner (rlechner@gmx.at)
- * @version November 2003
+ * @version $Date$
  */
 public class DtdPreprocessor
 {
@@ -49,7 +49,20 @@ public class DtdPreprocessor
         FileReader r = new FileReader(file);
         r.read(buffer);
         r.close();
-        code_ = process1(new String(buffer),0);
+        for( int index=0; index<length; ++index )
+        {
+            if( buffer[index]=='`' )
+            {
+                buffer[index] = '\'';
+            }
+            else if( buffer[index]=='­' )   // character 173
+            {
+                buffer[index] = '-';
+            }
+        }
+        code_ = new String(buffer);
+        code_ = process1(code_,0);
+        code_ = replace(code_, "''", "\"");
         code_ = process2(code_);
     }
 
@@ -87,7 +100,7 @@ public class DtdPreprocessor
             int index2 = text.indexOf(">",index1+8);
             if(index2>index1)
             {
-                String result = text.substring(0,index2+1);
+                String prefix = text.substring(0,index2+1);
                 String buffer = text.substring(index1+8,index2).trim();
                 text = text.substring(index2+1);
                 if(buffer.charAt(0)=='%')
@@ -112,7 +125,7 @@ public class DtdPreprocessor
                 buffer = buffer.substring(1,index2);
                 text = replace(text, "%"+name+";", buffer);
                 text = replace(text, "&"+name+";", buffer);
-                return result+process2(text);
+                return prefix+process2(text);
             }
         }
         return text;
