@@ -58,7 +58,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-abstract public class CppGenerator
+abstract public class GObjectGenerator
     extends CodeGenerator
 {
     // reserved words in C++. identifiers that contain these words will be
