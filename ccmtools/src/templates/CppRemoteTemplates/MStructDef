@@ -17,13 +17,13 @@
 namespace CCM_Remote {
 
 void 
-convertFromCorba(const %(StubsNamespace)s%(Identifier)s& in, %(LocalNamespace)s%(Identifier)s& out);
+convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out);
 
 void 
-convertToCorba(const %(LocalNamespace)s%(Identifier)s& in, %(StubsNamespace)s%(Identifier)s& out);
+convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out);
 
 std::ostream& 
-operator<<(std::ostream& o, const %(StubsNamespace)s%(Identifier)s& value);
+operator<<(std::ostream& o, const %(CorbaStubName)s& value);
 
 } // /namespace CCM_Remote
 
@@ -47,26 +47,26 @@ using namespace std;
 namespace CCM_Remote {
 
 void 
-convertFromCorba(const %(StubsNamespace)s%(Identifier)s& in, %(LocalNamespace)s%(Identifier)s& out)
+convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out)
 {
-    LDEBUGNL(CCM_REMOTE," convertFromCorba(%(StubsNamespace)s%(Identifier)s)");
+    LDEBUGNL(CCM_REMOTE," convertFromCorba(%(CorbaStubName)s)");
     LDEBUGNL(CCM_REMOTE, in);
 %(MFieldDefFromCorba)s
 } 
 
 void 
-convertToCorba(const %(LocalNamespace)s%(Identifier)s& in, %(StubsNamespace)s%(Identifier)s& out)
+convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out)
 {
-    LDEBUGNL(CCM_REMOTE," convertToCorba(%(StubsNamespace)s%(Identifier)s)");
+    LDEBUGNL(CCM_REMOTE," convertToCorba(%(CorbaStubName)s)");
 %(MFieldDefToCorba)s
     LDEBUGNL(CCM_REMOTE, out);
 } 
 
 std::ostream& 
-operator<<(std::ostream& o, const %(StubsNamespace)s%(Identifier)s& value)
+operator<<(std::ostream& o, const %(CorbaStubName)s& value)
 {
     o << endl;
-    o << "struct %(StubsNamespace)s%(Identifier)s { " << endl;
+    o << "struct %(CorbaStubName)s { " << endl;
 %(MFieldDefCorbaOutput)s
     o << "}";
     return o;

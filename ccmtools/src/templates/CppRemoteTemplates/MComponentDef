@@ -26,7 +26,7 @@
 // Component remote adapter 
 //============================================================================
 class %(Identifier)s_impl :
-    virtual public POA_%(StubsNamespace)s%(Identifier)s,
+    virtual public POA_%(CorbaStubName)s,
     virtual public PortableServer::RefCountServantBase
 {
     friend class CCM_%(Identifier)s_Context_impl;

@@ -9,10 +9,7 @@
 
 #include "%(ComponentType)s_remote.h"
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h> 
-
 #include <%(LocalIncludeNamespace)s%(Identifier)s_gen.h>
-
-
 
 %(OpenNamespace)s
 
@@ -21,7 +18,7 @@
 //==========================================================================
 
 class %(Identifier)s_impl :
-    virtual public POA_%(StubsNamespace)s%(Identifier)s,
+    virtual public POA_%(CorbaStubName)s,
     virtual public PortableServer::RefCountServantBase
 {
   protected:
@@ -189,7 +186,6 @@ int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
     info.component_absolute_name = "::%(ComponentType)s";
     info.component_id = "IDL:%(ComponentType)s:1.0";
     info.home_instance = NULL; // TODO
-//    info.home_glue = new CCM_Remote%(Namespace)::%(Identifier)s_impl(container); 
     info.home_glue = new %(RemoteNamespace)s%(Identifier)s_impl(container); 
     container->load(info);
     Components::CCMHome_var hp = container->get_CCM_home(); 
