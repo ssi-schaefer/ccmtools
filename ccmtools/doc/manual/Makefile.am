@@ -35,7 +35,7 @@ noinst_DATA = $(DOC_NAME).ps $(DOC_NAME).pdf
 	$(FIG2DEV) -L eps $< $@
 
 %.ps: %.dvi $(EPSS)
-	$(DVIPS) $<
+	$(DVIPS) -f $< > $(DOC_NAME).ps
 
 %.pdf: %.dvi $(PDFS)
 	$(DVIPDF) $<
@@ -47,5 +47,5 @@ $(DOC_NAME).dvi: $(TEX) $(EPSS) $(BIBS)
 	$(LATEX) $(DOC_NAME).tex
 
 clean-local:
-	$(RM) -f *.eps *.aux *.toc *.log *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
+	$(RM) -f *.eps *.aux *.toc *.lo? *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
 

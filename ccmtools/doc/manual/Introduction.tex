@@ -11,14 +11,17 @@ instructions for using the CCM Tools. This document, the {\it CCM Tools
 Developer's Manual\/}, is aimed at developers and provides details on the inner
 workings of the CCM Tools.
 
-\begin{figure}
+\section{Component tools}
+
+\begin{figure}[!htb]
 \centering \includegraphics[width=14cm]{ToolsOverview}
 \caption{Parts of the CCM Tools package.}
 \label{fig:intro-ToolsOverview}
 \end{figure}
 
 To help the component developer, the CCM Tools provide the tools shown in
-Figure~\ref{fig:intro-ToolsOverview}. These tools include the following parts:
+Figure~\ref{fig:intro-ToolsOverview}. These tools include the parts described
+below.
 
 \paragraph{CCM Metamodel Library}
 
@@ -29,7 +32,7 @@ navigation through, CCM models. Using this library we can clearly separate the
 parser and the code generators, using a CCM model as the communication between
 the two parts. The parser creates a model object for every part of the source
 code matching an IDL grammar rule, and the generator tools read the model to
-generate code. Chapter~\cite{chapter:ccm-metamodel-library} describes the CCM
+generate code. Chapter~\ref{chapter:ccm-metamodel-library} describes the CCM
 Tools' construction of the CCM metamodel library.
 
 \paragraph{IDL3 Parser}
@@ -37,7 +40,21 @@ Tools' construction of the CCM metamodel library.
 The IDL3 Parser reads an IDL3 file, checks the syntax of the IDL source code and
 creates a CCM model, using the CCM metamodel library, in memory. This CCM model
 is the starting point for all code generator tools.
-Chapter~\cite{chapter:idl3-parser} describes the IDL3 parser in detail.
+Chapter~\ref{chapter:idl3-parser} describes the IDL3 parser in detail.
+
+\paragraph{Local C++ Component Generator}
+
+The CCM Tools include a generator tool that creates the local component logic
+from a given CCM model. The generated code contains C++ implementations of a
+component that can run in the same address space (hence called a `local
+component'). This implementation includes operations for providing, using,
+connecting, and disconnecting components and their facets. These generated
+operations are referred to as {\bf component logic}. After generating the
+component logic, the component developer needs to write the {\bf business
+logic}; that is, the functional implementation of the component so that it
+becomes useful in a component based software system. See
+Chapter~\ref{chapter:component-generator-tools} for more information about the
+component generator library.
 
 \paragraph{Mirror Component Generators}
 
@@ -60,6 +77,14 @@ to IDL2 also adds some operations needed for navigation between components and
 their ports (equivalent operations). The CCM Tools support this transformation
 using an IDL2 generator tool that creates IDL2 code based on a CCM model.
 
+\paragraph{Remote C++ Component Generator}
+
+Note that the local components can only be used in a common address space and
+must be implemented in the same programming language. To overcome these
+limitations, the CCM Tools have a remote component generator that produces C++
+code to interface the local components with CORBA. The remote component logic is
+thus a superset of the local component logic.
+
 \paragraph{Component Descriptor Generator}
 
 To describe the component for the deployment and assembling processes, the OMG
@@ -68,28 +93,6 @@ containing a short description of a component and its ports. We map the CCM
 model to an XML--DOM tree that can be written as an XML file. The CCD file is
 also used by the code generators to get some additional information about the
 components being generated (version, vendor, etc.).
-
-\paragraph{Local C++ Component Generator}
-
-The CCM Tools include a generator tool that creates the local component logic
-from a given CCM model. The generated code contains C++ implementations of a
-component that can run in the same address space (hence called a `local
-component'). This implementation includes operations for providing, using,
-connecting, and disconnecting components and their facets. These generated
-operations are referred to as {\bf component logic}. After generating the
-component logic, the component developer needs to write the {\bf business
-logic}; that is, the functional implementation of the component so that it
-becomes useful in a component based software system. See
-Chapter~\cite{chapter:component-generator-tools} for more information about the
-component generator library.
-
-\paragraph{Remote C++ Component Generator}
-
-Note that the local components can only be used in a common address space and
-must be implemented in the same programming language. To overcome these
-limitations, the CCM Tools have a remote component generator that produces C++
-code to interface the local components with CORBA. The remote component logic is
-thus a superset of the local component logic.
 
 \paragraph{UML Parser}
 
@@ -125,7 +128,7 @@ and a {\it Component Assembly Descriptor} (CAD). Based on the CAD we can
 generate an assembly object that instantiates components and connects them
 together to form a component assembly.
 
-\begin{figure}
+\begin{figure}[!htb]
 \includegraphics[width=14cm]{AssemblyTools}
 \caption{CCM component assembly tools.}
 \label{fig:intro-AssemblyTools}

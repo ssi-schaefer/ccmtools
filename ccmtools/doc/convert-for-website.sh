@@ -12,9 +12,10 @@ if [ "$doc" != "manual" -a "$doc" != "tutorial" ] ; then
   exit 1
 fi
 
+make
 mkdir tmp
 latex2html -dir tmp -html_version "4.0" -split 4 -local_icons $doc && \
   scp tmp/*.html tmp/*.css tmp/*.png \
     ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/$doc
 rm -rf tmp
-
+make clean
