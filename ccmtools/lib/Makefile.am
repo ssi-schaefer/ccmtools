@@ -7,7 +7,7 @@ dist_jar_DATA = $(srcdir)/antlr.jar $(srcdir)/jdom.jar
 java_classes = $(top_builddir)/@PACKAGE@/Metamodel/BaseIDL/*.class      \
                $(top_builddir)/@PACKAGE@/Metamodel/ComponentIDL/*.class \
                $(top_builddir)/@PACKAGE@/IDL3Parser/*.class             \
-               $(top_builddir)/@PACKAGE@/CCDGenerator/*.class
+               $(top_builddir)/@PACKAGE@/utils/*.class
 
 @PACKAGE@.jar: $(java_classes)
 	$(JAR) cf @PACKAGE@.jar -C $(top_builddir) @PACKAGE@
