@@ -40,39 +40,48 @@ int main(int argc, char *argv[])
       const long SEQUENCE_SIZE_MAX = 1000;
       const long SEQUENCE_SIZE_STEP = 100;
 
+      bm_impl bm(NULL);
+
+
       //----------------------------------------------------------
-      // Simple object test cases
+      // ping test case
       //----------------------------------------------------------
-      
-      bm_impl bmObject(NULL);
 
       {
 	// ping
+	cout << endl;
 	cout << "Object Test: void f0() "; 
 
 	timer.start();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-	  bmObject.f0();
+	  bm.f0();
 	}
 	timer.stop();
 	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
 
+
+
+      //----------------------------------------------------------
+      // in parameter test cases 
+      //----------------------------------------------------------
+
       {
+	cout << endl;
 	// in long parameter
 	cout << "Object Test: void f_in1(in long l1) "; 
 
 	long value = 7;
 	timer.start();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-	  bmObject.f_in1(value);
+	  bm.f_in1(value);
 	}
 	timer.stop();
 	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
 
-
       {
+	cout << endl;
 	// in string parameter with increasing size
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Object Test: void f_in2(in string s1) "; 
@@ -83,15 +92,15 @@ int main(int argc, char *argv[])
 
 	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-	    bmObject.f_in2(value);
+	    bm.f_in2(value);
 	  }
 	  timer.stop();
 	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
 	}
       }
 
-
       {
+	cout << endl;
 	// in sequence of long parameter with increasing size
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Object Test: void f_in3(in LongList ll1) "; 
@@ -102,12 +111,215 @@ int main(int argc, char *argv[])
 
 	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-	    bmObject.f_in3(value);
+	    bm.f_in3(value);
 	  }
 	  timer.stop();
 	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
 	}
       }	
+
+
+      //----------------------------------------------------------
+      // inout parameter test cases 
+      //----------------------------------------------------------
+
+      {
+	cout << endl;
+	// long as result
+	cout << "Object Test: void f_inout1(inout long) "; 
+
+	long value = 7;
+	long result;
+	bm.long_attr(value);
+
+	timer.start();
+	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	  bm.f_inout1(value);
+	}
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 10000000;
+	cout << endl;
+	// string as result with increasing size
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Object Test: void f_inout2(inout string s1) "; 
+
+	  string value;
+	  string result;
+	  for(long i=0; i<size; i++)
+	    value += "X";
+	  bm.string_attr(value);
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    bm.f_inout2(value);
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+	cout << endl;
+	// sequence of long as result with increasing size
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Object Test: void f_inout3(inout LongList ll1) "; 
+
+	  LongList value;
+	  LongList result;
+	  for(long i=0; i<size; i++)
+	    value.push_back(i);
+	  bm.LongList_attr(value);	  
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    bm.f_inout3(value);
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }	
+
+
+
+
+      //----------------------------------------------------------
+      // out parameters test cases 
+      //----------------------------------------------------------
+
+      {
+	cout << endl;
+	// long as result
+	cout << "Object Test: void f_out1(out long) "; 
+
+	long value = 7;
+	long result;
+	bm.long_attr(value);
+
+	timer.start();
+	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	  bm.f_out1(result);
+	}
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 10000000;
+	cout << endl;
+	// string as result with increasing size
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Object Test: void f_out2(out string s1) "; 
+
+	  string value;
+	  string result;
+	  for(long i=0; i<size; i++)
+	    value += "X";
+	  bm.string_attr(value);
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    bm.f_out2(result);
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+	cout << endl;
+	// sequence of long as result with increasing size
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Object Test: void f_out3(out LongList ll1) "; 
+
+	  LongList value;
+	  LongList result;
+	  for(long i=0; i<size; i++)
+	    value.push_back(i);
+	  bm.LongList_attr(value);	  
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    bm.f_out3(result);
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }	
+
+
+      
+      //----------------------------------------------------------
+      // return value test cases 
+      //----------------------------------------------------------
+
+      {
+	cout << endl;
+	// long as result
+	cout << "Object Test: long f_ret1() "; 
+
+	long value = 7;
+	long result;
+	bm.long_attr(value);
+
+	timer.start();
+	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	  result = bm.f_ret1();
+	}
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 10000000;
+	cout << endl;
+	// string as result with increasing size
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Object Test: string f_ret2() "; 
+
+	  string value;
+	  string result;
+	  for(long i=0; i<size; i++)
+	    value += "X";
+	  bm.string_attr(value);
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    result = bm.f_ret2();
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+	cout << endl;
+	// sequence of long as result with increasing size
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Object Test: LongList f_ret3() "; 
+
+	  LongList value;
+	  LongList result;
+	  for(long i=0; i<size; i++)
+	    value.push_back(i);
+	  bm.LongList_attr(value);	  
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    result = bm.f_ret3();
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }	
+      
+
       cout << "--- Stop Test Case ------------------------------------" << endl;
     } 
     catch(...) {

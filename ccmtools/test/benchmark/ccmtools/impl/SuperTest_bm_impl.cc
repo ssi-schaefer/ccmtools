@@ -35,53 +35,57 @@ bm_impl::~bm_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
+
+
 const long
-bm_impl::attr_l() const
+bm_impl::long_attr() const
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_l()");
-    return attr_l_;
+    DEBUGNL(" bm_impl->long_attr()");
+    return long_attr_;
 }
 
 void
-bm_impl::attr_l(const long value)
+bm_impl::long_attr(const long value)
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_l(value)");
-    attr_l_ = value;
+    DEBUGNL(" bm_impl->long_attr(value)");
+    long_attr_ = value;
 }
 
 const std::string
-bm_impl::attr_s() const
+bm_impl::string_attr() const
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_s()");
-    return attr_s_;
+    DEBUGNL(" bm_impl->string_attr()");
+    return string_attr_;
 }
 
 void
-bm_impl::attr_s(const std::string value)
+bm_impl::string_attr(const std::string value)
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_s(value)");
-    attr_s_ = value;
+    DEBUGNL(" bm_impl->string_attr(value)");
+    string_attr_ = value;
 }
 
 const LongList
-bm_impl::attr_ll() const
+bm_impl::LongList_attr() const
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_ll()");
-    return attr_ll_;
+    DEBUGNL(" bm_impl->LongList_attr()");
+    return LongList_attr_;
 }
 
 void
-bm_impl::attr_ll(const LongList value)
+bm_impl::LongList_attr(const LongList value)
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_ll(value)");
-    attr_ll_ = value;
+    DEBUGNL(" bm_impl->LongList_attr(value)");
+    LongList_attr_ = value;
 }
+
+
 
 
 void

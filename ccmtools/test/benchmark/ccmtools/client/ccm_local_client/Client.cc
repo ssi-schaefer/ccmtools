@@ -119,10 +119,12 @@ int main(int argc, char *argv[])
       const long SEQUENCE_SIZE_STEP = 100;
 
       //----------------------------------------------------------
-      // Local component test cases
+      // ping test case
       //----------------------------------------------------------
+
       {
 	// ping
+	cout << endl;
 	cout << "Local CCM Test: void f0() "; 
 
 	timer.start();
@@ -134,8 +136,13 @@ int main(int argc, char *argv[])
       }
 
 
+      //----------------------------------------------------------
+      // in parameter test cases 
+      //----------------------------------------------------------
+
       {
 	// in long parameter
+	cout << endl;
 	cout << "Local CCM Test: void f_in1(in long l1) "; 
 
 	long value = 7;
@@ -148,9 +155,9 @@ int main(int argc, char *argv[])
 	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
 
-
       {
 	// in string parameter with increasing size
+	cout << endl;
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Local CCM Test: void f_in2(in string s1) "; 
 
@@ -167,9 +174,9 @@ int main(int argc, char *argv[])
 	}
       }
 
-
       {
 	// in sequence of long parameter with increasing size
+	cout << endl;
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Local CCM Test: void f_in3(in LongList ll1) "; 
 
@@ -180,6 +187,204 @@ int main(int argc, char *argv[])
 	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	    bm->f_in3(value);
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }	
+
+
+      //----------------------------------------------------------
+      // inout parameter test cases 
+      //----------------------------------------------------------
+
+      {
+	// in long parameter
+	cout << endl;
+	cout << "Local CCM Test: void f_inout1(inout long l1) "; 
+
+	long value = 7;
+	long result;
+        bm->long_attr(value);
+
+	timer.start();
+	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	  bm->f_inout1(value);
+	}
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 10000000;
+	// in string parameter with increasing size
+	cout << endl;
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Local CCM Test: void f_inout2(inout string s1) "; 
+
+	  string value;
+	  string result;
+	  for(int i=0; i<size; i++)
+	    value += "X";
+	  bm->string_attr(value);
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    bm->f_inout2(value);
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+	// in sequence of long parameter with increasing size
+	cout << endl;
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Local CCM Test: void f_inout3(inout LongList ll1) "; 
+
+	  LongList value;
+	  LongList result;
+	  for(long i=0; i<size; i++)
+	    value.push_back(i);
+	  bm->LongList_attr(value);
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    bm->f_inout3(value);
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }	
+
+
+      //----------------------------------------------------------
+      // out parameter test cases 
+      //----------------------------------------------------------
+
+      {
+	// in long parameter
+	cout << endl;
+	cout << "Local CCM Test: void f_out1(out long l1) "; 
+
+	long value = 7;
+	long result;
+        bm->long_attr(value);
+
+	timer.start();
+	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	  bm->f_out1(value);
+	}
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 10000000;
+	// in string parameter with increasing size
+	cout << endl;
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Local CCM Test: void f_out2(out string s1) "; 
+
+	  string value;
+	  string result;
+	  for(int i=0; i<size; i++)
+	    value += "X";
+	  bm->string_attr(value);
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    bm->f_out2(value);
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+	// in sequence of long parameter with increasing size
+	cout << endl;
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Local CCM Test: void f_out3(out LongList ll1) "; 
+
+	  LongList value;
+	  LongList result;
+	  for(long i=0; i<size; i++)
+	    value.push_back(i);
+	  bm->LongList_attr(value);
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    bm->f_out3(value);
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }	
+
+
+      //----------------------------------------------------------
+      // return value test cases
+      //----------------------------------------------------------
+
+      {
+	// return long 
+	cout << endl;
+	cout << "Local CCM Test: long f_ret1() "; 
+
+	long value = 7;
+	long result;
+	bm->long_attr(value);
+
+	timer.start();
+	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	  result = bm->f_ret1();
+	}
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 10000000;
+	// in string parameter with increasing size
+	cout << endl;
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Local CCM Test: string f_ret2() "; 
+
+	  string value;
+	  string result;
+	  for(int i=0; i<size; i++)
+	    value += "X";
+	  bm->string_attr(value);
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    result = bm->f_ret2();
+	  }
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+	}
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+	// in sequence of long parameter with increasing size
+	cout << endl;
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "Local CCM Test: void f_in3(in LongList ll1) "; 
+
+	  LongList value;
+	  LongList result;
+	  for(long i=0; i<size; i++)
+	    value.push_back(i);
+	  bm->LongList_attr(value); 
+
+	  timer.start();
+	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+	    result = bm->f_ret3();
 	  }
 	  timer.stop();
 	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);

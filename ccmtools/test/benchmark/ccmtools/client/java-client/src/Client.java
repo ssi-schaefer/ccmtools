@@ -51,9 +51,14 @@ public class Client
 	    final long MAX_LOOP_COUNT = 10000;
 	    final long SEQUENCE_SIZE_MAX = 1000;
 	    final long SEQUENCE_SIZE_STEP = 100;
-	    
+
+	    //----------------------------------------------------------
+	    // ping test case
+	    //----------------------------------------------------------
+
 	    {
 		// Ping
+		System.out.println();
 		System.out.print("Java Remote CCM Test: void f0() "); 
 		
 		timer.startClock();
@@ -64,8 +69,14 @@ public class Client
 		timer.reportResult(MAX_LOOP_COUNT,1);
 	    }
 
+
+	    //----------------------------------------------------------
+	    // in parameter test cases 
+	    //----------------------------------------------------------
+
 	    {
 		// in long parameter
+		System.out.println();
 		System.out.print("Java Remote CCM Test: void f_in1(in long l1) "); 
 		
 		int value = 7;
@@ -80,6 +91,7 @@ public class Client
 
 	    {
 		// in string parameter with increasing size
+		System.out.println();
 		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 		    System.out.print("Java Remote CCM Test: void f_in2(in string s1) "); 
 		    
@@ -99,6 +111,7 @@ public class Client
 
 	    {
 		// in sequence of long parameter with increasing size
+		System.out.println();
 		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 		    System.out.print("Java Remote CCM Test: void f_in3(in LongList ll1) "); 
 		    
@@ -115,6 +128,205 @@ public class Client
 		    timer.reportResult(MAX_LOOP_COUNT,size);
 		}
 	    }	
+
+
+	    //----------------------------------------------------------
+	    // inout parameter test cases 
+	    //----------------------------------------------------------
+
+	    {
+		// inout long parameter
+		System.out.println();
+		System.out.print("Java Remote CCM Test: void f_inout1(inout long l1) "); 
+		
+		int value = 7;
+		IntHolder valueInOut= new IntHolder(7);
+		bm.long_attr(value);
+
+		timer.startClock();
+		for(int counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+		    bm.f_inout1(valueInOut);
+		}
+		timer.stopClock();
+		timer.reportResult(MAX_LOOP_COUNT,1);
+	    }
+
+	    {
+		// inout string parameter with increasing size
+		System.out.println();
+		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+		    System.out.print("Java Remote CCM Test: void f_inout2(inout string s1) "); 
+		    
+		    StringBuffer buffer = new StringBuffer(size);
+		    for(int i=0; i<size; i++)
+			buffer.append("X");
+		    String value = buffer.toString();
+		    StringHolder valueInOut = new StringHolder(value);
+		    bm.string_attr(value);
+
+		    timer.startClock();
+		    for(int counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+			bm.f_inout2(valueInOut);
+		    }
+		    timer.stopClock();
+		    timer.reportResult(MAX_LOOP_COUNT,size);
+		}
+	    }
+
+	    {
+		// inout sequence of long parameter with increasing size
+		System.out.println();
+		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+		    System.out.print("Java Remote CCM Test: void f_inout3(inout LongList ll1) "); 
+		    
+		    int[] value = new int[size];
+		    for(int i=0; i<size; i++)
+			value[i] = i;
+		    LongListHolder valueInOut = new LongListHolder(value);
+		    bm.LongList_attr(value);  
+
+		    timer.startClock();
+		    for(int counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+			bm.f_inout3(valueInOut);
+		    }
+		    timer.stopClock();
+		    timer.reportResult(MAX_LOOP_COUNT,size);
+		}
+	    }	
+
+
+
+	    //----------------------------------------------------------
+	    // out parameters test cases 
+	    //----------------------------------------------------------
+
+	    {
+		// out long parameter
+		System.out.println();
+		System.out.print("Java Remote CCM Test: void f_out1(out long l1) "); 
+		
+		int value = 7;
+		IntHolder valueOut= new IntHolder(0);
+		bm.long_attr(value);
+
+		timer.startClock();
+		for(int counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+		    bm.f_out1(valueOut);
+		}
+		timer.stopClock();
+		timer.reportResult(MAX_LOOP_COUNT,1);
+	    }
+
+	    {
+		// out string parameter with increasing size
+		System.out.println();
+		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+		    System.out.print("Java Remote CCM Test: void f_out2(out string s1) "); 
+		    
+		    StringBuffer buffer = new StringBuffer(size);
+		    for(int i=0; i<size; i++)
+			buffer.append("X");
+		    String value = buffer.toString();
+		    String defaultValue = "";
+		    StringHolder valueOut = new StringHolder(defaultValue);
+		    bm.string_attr(value);
+
+		    timer.startClock();
+		    for(int counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+			bm.f_out2(valueOut);
+		    }
+		    timer.stopClock();
+		    timer.reportResult(MAX_LOOP_COUNT,size);
+		}
+	    }
+
+	    {
+		// out sequence of long parameter with increasing size
+		System.out.println();
+		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+		    System.out.print("Java Remote CCM Test: void f_out3(out LongList ll1) "); 
+		    
+		    int[] value = new int[size];
+		    for(int i=0; i<size; i++)
+			value[i] = i;
+		    int[] defaultValue = new int[0];
+		    LongListHolder valueOut = new LongListHolder(defaultValue);
+		    bm.LongList_attr(value);  
+
+		    timer.startClock();
+		    for(int counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+			bm.f_out3(valueOut);
+		    }
+		    timer.stopClock();
+		    timer.reportResult(MAX_LOOP_COUNT,size);
+		}
+	    }	
+
+
+	    //----------------------------------------------------------
+	    // return value test cases 
+	    //----------------------------------------------------------
+	    
+	    {
+		// long result
+		System.out.println();
+		System.out.print("Java Remote CCM Test: long f_ret1() "); 
+		
+		int value = 7;
+		int result;
+		bm.long_attr(value);
+
+		timer.startClock();
+		for(int counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+		    result = bm.f_ret1();
+		}
+		timer.stopClock();
+		timer.reportResult(MAX_LOOP_COUNT,1);
+	    }
+
+	    {
+		// string result with increasing size
+		System.out.println();
+		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+		    System.out.print("Java Remote CCM Test: string f_ret2() "); 
+		    
+		    StringBuffer buffer = new StringBuffer(size);
+		    for(int i=0; i<size; i++)
+			buffer.append("X");
+		    String value = buffer.toString();
+		    String result;
+		    bm.string_attr(value);
+
+		    timer.startClock();
+		    for(int counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+			result = bm.f_ret2();
+		    }
+		    timer.stopClock();
+		    timer.reportResult(MAX_LOOP_COUNT,size);
+		}
+	    }
+
+	    {
+		// out sequence of long parameter with increasing size
+		System.out.println();
+		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+		    System.out.print("Java Remote CCM Test: LongList f_ret3() "); 
+		    
+		    int[] value = new int[size];
+		    for(int i=0; i<size; i++)
+			value[i] = i;
+		    int[] result;
+		    bm.LongList_attr(value);  
+
+		    timer.startClock();
+		    for(int counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+			result = bm.f_ret3();
+		    }
+		    timer.stopClock();
+		    timer.reportResult(MAX_LOOP_COUNT,size);
+		}
+	    }	
+
 
 	    System.out.println("--- Stop Test Case -------------------------");
 

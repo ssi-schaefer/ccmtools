@@ -14,7 +14,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "DbcTest_bm_impl.h"
+#include "Test_bm_impl.h"
 
 using namespace std;
 using namespace WX::Utils;
@@ -26,13 +26,6 @@ bm_impl::bm_impl(CCM_Local::CCM_Session_Test::CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     DEBUGNL("+bm_impl->bm_impl()");
-
-    attr_l_ = 7;          // inv i1: attr_l > 0 and attr_l < 10
-    attr_s_ = "012345";   // inv i2: attr_s.size > 0 and attr_s.size < 100
-
-    // inv i3: attr_ll->size() > 0 and attr_ll->size() < 100
-    for(long i=0; i<100; i++)
-      attr_ll_.push_back(i);
 }
 
 bm_impl::~bm_impl()
@@ -42,53 +35,57 @@ bm_impl::~bm_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
+
+
 const long
-bm_impl::attr_l() const
+bm_impl::long_attr() const
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_l()");
-    return attr_l_;
+    DEBUGNL(" bm_impl->long_attr()");
+    return long_attr_;
 }
 
 void
-bm_impl::attr_l(const long value)
+bm_impl::long_attr(const long value)
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_l(value)");
-    attr_l_ = value;
+    DEBUGNL(" bm_impl->long_attr(value)");
+    long_attr_ = value;
 }
 
 const std::string
-bm_impl::attr_s() const
+bm_impl::string_attr() const
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_s()");
-    return attr_s_;
+    DEBUGNL(" bm_impl->string_attr()");
+    return string_attr_;
 }
 
 void
-bm_impl::attr_s(const std::string value)
+bm_impl::string_attr(const std::string value)
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_s(value)");
-    attr_s_ = value;
+    DEBUGNL(" bm_impl->string_attr(value)");
+    string_attr_ = value;
 }
 
 const LongList
-bm_impl::attr_ll() const
+bm_impl::LongList_attr() const
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_ll()");
-    return attr_ll_;
+    DEBUGNL(" bm_impl->LongList_attr()");
+    return LongList_attr_;
 }
 
 void
-bm_impl::attr_ll(const LongList value)
+bm_impl::LongList_attr(const LongList value)
     throw(LocalComponents::CCMException)
 {
-    DEBUGNL(" bm_impl->attr_ll(value)");
-    attr_ll_ = value;
+    DEBUGNL(" bm_impl->LongList_attr(value)");
+    LongList_attr_ = value;
 }
+
+
 
 void
 bm_impl::f0()
@@ -131,8 +128,7 @@ bm_impl::f_inout1(long& l1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_inout1(l1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    l1 = long_attr_;
 }
 
 void
@@ -140,8 +136,7 @@ bm_impl::f_inout2(std::string& s1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_inout2(s1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    s1 = string_attr_;
 }
 
 void
@@ -149,8 +144,7 @@ bm_impl::f_inout3(LongList& ll1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_inout3(ll1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    ll1 = LongList_attr_;
 }
 
 void
@@ -158,8 +152,7 @@ bm_impl::f_out1(long& l1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_out1(l1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    l1 = long_attr_;
 }
 
 void
@@ -167,8 +160,7 @@ bm_impl::f_out2(std::string& s1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_out2(s1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    s1 = string_attr_;
 }
 
 void
@@ -176,8 +168,7 @@ bm_impl::f_out3(LongList& ll1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_out3(ll1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    ll1 = LongList_attr_;
 }
 
 long
@@ -186,7 +177,7 @@ bm_impl::f_ret1()
 {
     DEBUGNL("bm_impl->f_ret1()");
 
-    // TODO : IMPLEMENT ME HERE !
+    return long_attr_;
 }
 
 std::string
@@ -195,7 +186,7 @@ bm_impl::f_ret2()
 {
     DEBUGNL("bm_impl->f_ret2()");
 
-    // TODO : IMPLEMENT ME HERE !
+    return string_attr_;
 }
 
 LongList
@@ -204,7 +195,7 @@ bm_impl::f_ret3()
 {
     DEBUGNL("bm_impl->f_ret3()");
 
-    // TODO : IMPLEMENT ME HERE !
+    return LongList_attr_;
 }
 
 } // /namespace CCM_Session_Test

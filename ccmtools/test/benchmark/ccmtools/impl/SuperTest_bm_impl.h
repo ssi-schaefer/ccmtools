@@ -23,31 +23,34 @@ class bm_impl
 {
   protected:
     CCM_Local::CCM_Session_SuperTest::CCM_SuperTest_impl* component;
-    long attr_l_;
-    std::string attr_s_;
-    LongList attr_ll_;
+    long long_attr_;
+    std::string string_attr_;
+    LongList LongList_attr_;
 
   public:
     bm_impl(CCM_Local::CCM_Session_SuperTest::CCM_SuperTest_impl* component_impl);
     virtual ~bm_impl();
 
-    virtual const long attr_l() const 
+
+    virtual const long long_attr() const 
         throw(LocalComponents::CCMException);
 
-    virtual void attr_l(const long value) 
+    virtual void long_attr(const long value) 
         throw(LocalComponents::CCMException);
 
-    virtual const std::string attr_s() const 
+    virtual const std::string string_attr() const 
         throw(LocalComponents::CCMException);
 
-    virtual void attr_s(const std::string value) 
+    virtual void string_attr(const std::string value) 
         throw(LocalComponents::CCMException);
 
-    virtual const LongList attr_ll() const 
+    virtual const LongList LongList_attr() const 
         throw(LocalComponents::CCMException);
 
-    virtual void attr_ll(const LongList value) 
+    virtual void LongList_attr(const LongList value) 
         throw(LocalComponents::CCMException);
+
+
 
     virtual void f0() 
         throw (LocalComponents::CCMException);
