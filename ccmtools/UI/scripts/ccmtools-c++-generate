@@ -116,7 +116,7 @@ if (sys.platform[:3] == 'win' and not SOURCE_DIR[1:3] == ':\\') or \
        not SOURCE_DIR.startswith(os.sep):
     SOURCE_DIR = os.path.join(os.getcwd(), SOURCE_DIR)
 
-## generate components. the generation order is (a) idl3mirror, (b) c++mirror
+## generate components. the generation order is (a) idl3mirror, (b) c++local
 ## tests (c) c++ mirror components, (d) c++ python wrappers, and (e) the real
 ## c++ components.
 
@@ -131,8 +131,8 @@ if ENABLE_DEBUG:
         print 'Error while generating IDL3 mirror files.'
         sys.exit(1)
 
-    if os.system('%s c++mirror %s %s' % (cmd, INCLUDES, FILES)):
-        print 'Error while generating C++ mirror test files.'
+    if os.system('%s c++local-test %s %s' % (cmd, INCLUDES, FILES)):
+        print 'Error while generating C++ local test files.'
         sys.exit(1)
 
     cwd = os.getcwd()
