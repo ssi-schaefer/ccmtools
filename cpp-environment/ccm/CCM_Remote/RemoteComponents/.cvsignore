@@ -1,5 +1,5 @@
 Makefile.in
 Makefile.am
-*.py
 CCM.cc
 CCM.h
+ccm_CCM_Remote_RemoteComponents.py

@@ -1,4 +1,5 @@
 Makefile
 Makefile.in
 Makefile.am
-*.py
+ccm_CCM_Local_CCM_OCL.py
+CCM_Local_CCM_OCL.py

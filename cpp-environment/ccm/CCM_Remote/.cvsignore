@@ -1,7 +1,6 @@
-Makefile
 Makefile.in
 Makefile.am
-*.py
+ccm_CCM_Remote.py
 aclocal.m4
 autom4te.cache
 config.h.in
