@@ -26,6 +26,10 @@ using namespace WX::Utils;
 
 int main (int argc, char *argv[])
 {
+    Timer globalTimer;
+    TimerEvaluation eval;
+    globalTimer.start();
+
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     int error = 0;
@@ -73,7 +77,7 @@ int main (int argc, char *argv[])
       cout << "--- Start Test Case -----------------------------------" << endl;
 
       // Test configuration
-      Measurement timer;
+      Timer timer;
 
       const long MAX_LOOP_COUNT = 10000;
 
@@ -89,12 +93,12 @@ int main (int argc, char *argv[])
 	// Ping
 	cout << "Remote CCM Test: void f0() "; 
 
-	timer.startClock();
+	timer.start();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	  bm->f0();
 	}
-	timer.stopClock();
-	timer.reportResult(MAX_LOOP_COUNT,1);
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
       
 
@@ -104,12 +108,12 @@ int main (int argc, char *argv[])
 
 	CORBA::Long value = 7;
 
-	timer.startClock();
+	timer.start();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	  bm->f_in1(value);
 	}
-	timer.stopClock();
-	timer.reportResult(MAX_LOOP_COUNT,1);
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
 
 
@@ -122,12 +126,12 @@ int main (int argc, char *argv[])
 	  for(int i=0; i<size; i++)
 	    value += "X";
 
-	  timer.startClock();
+	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	    bm->f_in2(CORBA::string_dup(value.c_str()));
 	  }
-	  timer.stopClock();
-	  timer.reportResult(MAX_LOOP_COUNT,size);
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
 	}
       }
 
@@ -143,12 +147,12 @@ int main (int argc, char *argv[])
 	  for(long i=0; i<size; i++)
 	    (*value)[i] = i;
 
-	  timer.startClock();
+	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	    bm->f_in3(value);
 	  }
-	  timer.stopClock();
-	  timer.reportResult(MAX_LOOP_COUNT,size);
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
 	}
       }	
 
@@ -168,4 +172,7 @@ int main (int argc, char *argv[])
     // Un-Deployment
 
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
+
+    globalTimer.stop();
+    cout << eval.getTimerResult(globalTimer,1,1);
 }

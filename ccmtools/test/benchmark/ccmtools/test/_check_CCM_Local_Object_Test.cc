@@ -21,19 +21,17 @@ using namespace CCM_Session_Test;
 
 int main(int argc, char *argv[])
 {
-    // Debug tools:
-    // We use debug tools defined in the WX::Utils package.
-    // Debug::instance().set_global(true);
+    Timer globalTimer;
+    globalTimer.startClock();
 
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
-
     int error = 0;
 
     try {
       cout << "--- Start Test Case -----------------------------------" << endl;
 
       // Test configuration
-      Measurement timer;
+      Timer timer;
       
       const long MAX_LOOP_COUNT = 1000000;
 
@@ -119,4 +117,7 @@ int main(int argc, char *argv[])
     }
 
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
+
+    globalTimer.stopClock();
+    globalTimer.reportResult(1,1);
 }

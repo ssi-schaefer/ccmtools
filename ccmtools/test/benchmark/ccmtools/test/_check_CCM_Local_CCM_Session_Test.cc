@@ -42,9 +42,8 @@ using namespace CCM_Session_Test;
 
 int main(int argc, char *argv[])
 {
-    // Debug tools:
-    // We use debug tools defined in the WX::Utils package.
-    // Debug::instance().set_global(true);
+    Timer globalTimer;
+    globalTimer.startClock();
 
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
@@ -127,84 +126,12 @@ int main(int argc, char *argv[])
       cout << "--- Start Test Case -----------------------------------" << endl;
 
       // Test configuration
-      Measurement timer;
+      Timer timer;
       
       const long MAX_LOOP_COUNT = 1000000;
 
       const long SEQUENCE_SIZE_MAX = 1000;
       const long SEQUENCE_SIZE_STEP = 100;
-
-      /*
-      //----------------------------------------------------------
-      // Simple object test cases
-      //----------------------------------------------------------
-      
-      bm_impl bmObject(NULL);
-
-      {
-	// ping
-	cout << "Object Test: void f0() "; 
-
-	timer.startClock();
-	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-	  bmObject.f0();
-	}
-	timer.stopClock();
-	timer.reportResult(MAX_LOOP_COUNT,1);
-      }
-
-      {
-	// in long parameter
-	cout << "Object Test: void f_in1(in long l1) "; 
-
-	long value = 7;
-	timer.startClock();
-	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-	  bmObject.f_in1(value);
-	}
-	timer.stopClock();
-	timer.reportResult(MAX_LOOP_COUNT,1);
-      }
-
-
-      {
-	// in string parameter with increasing size
-	for(long size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
-	  cout << "Object Test: void f_in2(in string s1) "; 
-
-	  string value;
-	  for(long i=0; i<size; i++)
-	    value += "X";
-
-	  timer.startClock();
-	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-	    bmObject.f_in2(value);
-	  }
-	  timer.stopClock();
-	  timer.reportResult(MAX_LOOP_COUNT,size);
-	}
-      }
-
-
-      {
-	// in sequence of long parameter with increasing size
-	for(long size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
-	  cout << "Object Test: void f_in3(in LongList ll1) "; 
-
-	  LongList value;
-	  for(long i=0; i<size; i++)
-	    value.push_back(i);
-
-	  timer.startClock();
-	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-	    bmObject.f_in3(value);
-	  }
-	  timer.stopClock();
-	  timer.reportResult(MAX_LOOP_COUNT,size);
-	}
-      }	
-      */
-
 
       //----------------------------------------------------------
       // Local component test cases
@@ -322,4 +249,7 @@ int main(int argc, char *argv[])
         return error;
     }
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
+
+    globalTimer.stopClock();
+    globalTimer.reportResult(1,1);
 }

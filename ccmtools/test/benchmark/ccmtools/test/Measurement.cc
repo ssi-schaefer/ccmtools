@@ -6,32 +6,32 @@
 
 using namespace std;
 
-Measurement::Measurement()
+Timer::Timer()
 {
 
 }
 
-Measurement::~Measurement()
+Timer::~Timer()
 {
 
 }
 
 void
-Measurement::startClock()
+Timer::startClock()
 {
   clockStart_ = clock();
 }
 
 
 void 
-Measurement::stopClock()
+Timer::stopClock()
 {
   clockStop_ = clock();
 }
 
 
 void 
-Measurement::reportResult(long loops, long size) 
+Timer::reportResult(long loops, long size) 
 {
   cout << "loops(" << loops << ") size(" << size << ") ";
   

@@ -4,11 +4,11 @@
 #include <cstdlib> 
 #include <string>
 
-class Measurement
+class Timer
 {
  public:
-  Measurement();
-  virtual ~Measurement();
+  Timer();
+  virtual ~Timer();
 
   virtual void startClock();
   virtual void stopClock();

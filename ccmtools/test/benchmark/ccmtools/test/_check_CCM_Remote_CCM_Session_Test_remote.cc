@@ -32,6 +32,9 @@ using namespace WX::Utils;
 
 int main (int argc, char *argv[])
 {
+    Timer globalTimer;
+    globalTimer.startClock();
+
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
   
     char* NameServiceLocation = getenv("CCM_NAME_SERVICE");
@@ -100,10 +103,9 @@ int main (int argc, char *argv[])
       cout << "--- Start Test Case -----------------------------------" << endl;
 
       // Test configuration
-      Measurement timer;
+      Timer timer;
 
       const long MAX_LOOP_COUNT = 100000;
-
       const long SEQUENCE_SIZE_MAX = 1000;
       const long SEQUENCE_SIZE_STEP = 100;
 
@@ -114,7 +116,7 @@ int main (int argc, char *argv[])
 
       {
 	// Ping
-	cout << "Remote CCM Test: void f0() "; 
+	cout << "Collocated CCM Test: void f0() "; 
 
 	timer.startClock();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
@@ -127,7 +129,7 @@ int main (int argc, char *argv[])
 
       {
 	// in long parameter
-	cout << "Remote CCM Test: void f_in1(in long l1) "; 
+	cout << "Collocated CCM Test: void f_in1(in long l1) "; 
 
 	CORBA::Long value = 7;
 
@@ -143,7 +145,7 @@ int main (int argc, char *argv[])
       {
 	// in string parameter with increasing size
 	for(long size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
-	  cout << "Remote CCM Test: void f_in2(in string s1) "; 
+	  cout << "Collocated CCM Test: void f_in2(in string s1) "; 
 
 	  string value;
 	  for(int i=0; i<size; i++)
@@ -163,7 +165,7 @@ int main (int argc, char *argv[])
 	const long MAX_LOOP_COUNT = 1000;
 	// in sequence of long parameter with increasing size
 	for(long size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
-	  cout << "Remote CCM Test: void f_in3(in LongList ll1) "; 
+	  cout << "Collocated CCM Test: void f_in3(in LongList ll1) "; 
 
 	  ::CORBA_Stubs::LongList_var value = new ::CORBA_Stubs::LongList;
 	  value->length(size);
@@ -195,4 +197,7 @@ int main (int argc, char *argv[])
     // Un-Deployment
 
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
+
+    globalTimer.stopClock();
+    globalTimer.reportResult(1,1);
 }

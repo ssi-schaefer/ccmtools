@@ -13,18 +13,18 @@ remote: local
 	ccmtools-generate c++remote-test -o xxx Test.idl
 
 install: 
-	cp test/Measurement.h xxx/test
-	cp test/Measurement.cc xxx/test/
-	cp impl/Test_bm_impl.cc xxx/impl
-	cp test/_check_CCM_Local_Object_Test.cc xxx/test
-	cp test/_check_CCM_Local_CCM_Session_Test.cc xxx/test
-	cp test/_check_CCM_Remote_CCM_Session_Test_remote.cc xxx/test
 	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=install
 
 uninstall:
 	confix.py --packageroot=`pwd`/xxx  --make --targets=uninstall
 
 check:
+	cp test/Measurement.h xxx/test
+	cp test/Measurement.cc xxx/test/
+	cp impl/Test_bm_impl.cc xxx/impl
+	cp test/_check_CCM_Local_Object_Test.cc xxx/test
+	cp test/_check_CCM_Local_CCM_Session_Test.cc xxx/test
+	cp test/_check_CCM_Remote_CCM_Session_Test_remote.cc xxx/test
 	confix.py --packageroot=`pwd`/xxx  --make --targets=check
 
 cppserver: 
