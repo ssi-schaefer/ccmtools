@@ -38,25 +38,14 @@ TESTS = \
   receptacle_exception.sh     \
   facet_exception.sh          \
   supports_exception.sh       \
-  home_user_types.sh          \
-  receptacle_user_types.sh    \
-  facet_user_types.sh         \
-  supports_user_types.sh      \
-  attribute_user_types.sh     \
-  home_basic_types.sh         \
-  receptacle_basic_types.sh   \
-  facet_basic_types.sh        \
-  supports_basic_types.sh     \
-  attribute_basic_types.sh    \
-  module.sh                   \
+  home_types.sh               \
+  receptacle_types.sh         \
+  facet_types.sh              \
+  supports_types.sh           \
+  attribute_types.sh          \
   home_factory.sh             \
   receptacle_not_connected.sh \
-  receptacle_multiple.sh      \
-  receptacle.sh               \
-  facet_rename.sh             \
-  facet.sh                    \
-  supports.sh                 \
-  attribute.sh
+  receptacle_multiple.sh
 
 dist_check_SCRIPTS = $(TESTS)
 
@@ -64,47 +53,36 @@ dist_check_SCRIPTS = $(TESTS)
 # code.
 
 EXTRA_DIST = \
-  attribute                \
-  attribute_basic_types    \
   attribute_interface      \
-  attribute_user_types     \
+  attribute_types          \
   Calculator               \
   constants                \
-  facet                    \
   facet_attribute          \
-  facet_basic_types        \
   facet_exception          \
   facet_inheritance        \
   facet_interface          \
-  facet_rename             \
-  facet_user_types         \
-  home_basic_types         \
+  facet_types              \
   home_exception           \
   home_factory             \
   home_factory_interface   \
-  home_user_types          \
+  home_types               \
   include                  \
   include_dir              \
   include_nested           \
-  module                   \
   module_mixed             \
   module_nested            \
   module-reopen            \
   owudb                    \
-  receptacle               \
-  receptacle_basic_types   \
   receptacle_exception     \
   receptacle_inheritance   \
   receptacle_interface     \
   receptacle_multiple      \
   receptacle_not_connected \
-  receptacle_user_types    \
-  supports                 \
-  supports_basic_types     \
+  receptacle_types         \
   supports_exception       \
   supports_inheritance     \
   supports_interface       \
-  supports_user_types
+  supports_types
 
 clean-local:
 	$(RM) -r -f sandbox

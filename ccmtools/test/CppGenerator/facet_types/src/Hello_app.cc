@@ -4,14 +4,12 @@
 //==============================================================================
 
 #include <iostream>
-#include <cassert>
 #include <CCM_Utils/Debug.h>
 
 #include "Hello_app.h"
 
 using namespace std;
 using namespace CCM_Utils;
-using namespace CCM_Local;
 
 namespace CCM_Local {
 namespace CCM_Session_Hello {
@@ -54,7 +52,7 @@ console_impl::foo1 ( const time_t& p1, time_t& p2, time_t& p3 )
 
   p3=p2;
   p2=p1;
-  return p3+p1; 
+  return p3+p1;
 }
 
 Color
@@ -65,7 +63,7 @@ console_impl::foo2 ( const Color& p1, Color& p2, Color& p3 )
 
   p3=p2;
   p2=p1;
-  return p1; 
+  return p1;
 }
 
 Value
@@ -80,10 +78,10 @@ console_impl::foo3 ( const Value& p1, Value& p2, Value& p3 )
 
   Value r;
   r.s = p1.s + p2.s;
-  r.dd = p1.dd + p2.dd; 
-  p3=p2;  
+  r.dd = p1.dd + p2.dd;
+  p3=p2;
   p2=p1;
-  return r; 
+  return r;
 }
 
 map
@@ -119,9 +117,119 @@ console_impl::foo5 ( const doubleArray& p1, doubleArray& p2, doubleArray& p3 )
   return r;
 }
 
+short
+console_impl::println1 ( const short p1, short& p2, short& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println1 ( p1, p2, p3 )" );
 
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
 
+long
+console_impl::println2 ( const long p1, long& p2, long& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println2 ( p1, p2, p3 )" );
 
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
+
+unsigned short
+console_impl::println3 ( const unsigned short p1, unsigned short& p2, unsigned short& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println3 ( p1, p2, p3 )" );
+
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
+
+unsigned long
+console_impl::println4 ( const unsigned long p1, unsigned long& p2, unsigned long& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println4 ( p1, p2, p3 )" );
+
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
+
+float
+console_impl::println5 ( const float p1, float& p2, float& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println5 ( p1, p2, p3 )" );
+
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
+
+double
+console_impl::println6 ( const double p1, double& p2, double& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println6 ( p1, p2, p3 )" );
+
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
+
+char
+console_impl::println7 ( const char p1, char& p2, char& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println7 ( p1, p2, p3 )" );
+
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
+
+std::string
+console_impl::println8 ( const std::string& p1, std::string& p2, std::string& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println8 ( p1, p2, p3 )" );
+
+  cout << p1 << endl;
+  cout << p2 << endl;
+  cout << p3 << endl;
+
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
+
+bool
+console_impl::println9 ( const bool p1, bool& p2, bool& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println9 ( p1, p2, p3 )" );
+
+  p3=p2;
+  p2=p1;
+  return p3 && p1;
+}
+
+unsigned char
+console_impl::println10 ( const unsigned char p1, unsigned char& p2, unsigned char& p3 )
+  
+{
+  DEBUGNL ( " console_impl->println10 ( p1, p2, p3 )" );
+
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
 
 //==============================================================================
 // class implementation
