@@ -205,14 +205,14 @@ options { exportVocab = IDL3; }
      * Long object, and if not throw a semantic exception.
      */
     private Long checkLong(String expr)
-        throws SemanticException
+        throws RecognitionException
     {
         Long result = null;
         try {
             result = new Long(expr);
             return result;
         } catch (Exception e) {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error: cannot evaluate '" + expr + "' as an integer");
         }
     }
@@ -222,14 +222,14 @@ options { exportVocab = IDL3; }
      * Float object, and if not throw a semantic exception.
      */
     private Float checkFloat(String expr)
-        throws SemanticException
+        throws RecognitionException
     {
         Float result = null;
         try {
             result = new Float(expr);
             return result;
         } catch (Exception e) {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error: cannot evaluate '" + expr + "' as a float");
         }
     }
@@ -256,7 +256,7 @@ options { exportVocab = IDL3; }
      * declaration, throw a semantic error.
      */
     private MContained verifyNameEmpty(String id, MContained query)
-        throws SemanticException
+        throws RecognitionException
     {
         MContained lookup = lookupNameInCurrentScope(id, DEBUG_TYPEDEF | DEBUG_INTERFACE);
 
@@ -278,7 +278,7 @@ options { exportVocab = IDL3; }
                 ((MExceptionDef) lookup).getMembers() == null))
             return lookup;
 
-        throw new SemanticException(
+        throw new RecognitionException(
             "error in name verification: the identifier " + id +
             " has already been defined");
     }
@@ -288,7 +288,7 @@ options { exportVocab = IDL3; }
      * class. Throw an exception if not.
      */
     private MContained verifyNameExists(String id, MContained query)
-        throws SemanticException
+        throws RecognitionException
     {
         MContained lookup = lookupNameInCurrentScope(id, DEBUG_IDL_TYPE | DEBUG_TYPEDEF);
 
@@ -299,7 +299,7 @@ options { exportVocab = IDL3; }
 
             throw new RuntimeException();
         } catch (Exception e) {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error in name verification: the identifier " + id +
                 " is undefined or of the wrong type");
         }
@@ -310,10 +310,10 @@ options { exportVocab = IDL3; }
      * defined in the current file being parsed.
      */
     private void checkAddContents(MContainer container, List contents)
-        throws SemanticException
+        throws RecognitionException
     {
         if (container == null) {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error adding contents (" + contents + ") to null container");
         }
 
@@ -322,7 +322,7 @@ options { exportVocab = IDL3; }
             MContained item = (MContained) it.next();
 
             if (item == null) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error while adding contents '" + contents +
                     "' to container '" + container + "'");
             }
@@ -339,7 +339,7 @@ options { exportVocab = IDL3; }
      * attributes.
      */
     private void checkSetBases(MInterfaceDef iface, List bases)
-        throws SemanticException
+        throws RecognitionException
     {
         String id = iface.getIdentifier();
 
@@ -348,7 +348,7 @@ options { exportVocab = IDL3; }
             MContained lookup = lookupNameInCurrentScope(inherit, DEBUG_INTERFACE | DEBUG_INHERITANCE);
 
             if ((lookup == null) || (! (lookup instanceof MInterfaceDef))) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in interface '" + id + "' inheritance: '" +
                     inherit + "' is not a defined interface");
             }
@@ -356,14 +356,14 @@ options { exportVocab = IDL3; }
             MInterfaceDef base = (MInterfaceDef) lookup;
 
             if (iface.isAbstract() != base.isAbstract()) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in interface '" + id + "' inheritance: cannot " +
                     "inherit from '" + inherit + "' because one interface is " +
                     "abstract");
             }
 
             if ((! iface.isLocal()) && base.isLocal()) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in interface '" + id + "' inheritance: base '" +
                     inherit + "' is local but '" + id + "' is not local");
             }
@@ -383,14 +383,14 @@ options { exportVocab = IDL3; }
      * checking to make sure the given supported interfaces actually exist.
      */
     private void checkSetSupports(MInterfaceDef iface, List supports)
-        throws SemanticException
+        throws RecognitionException
     {
         List slist = new ArrayList();
         for (Iterator it = supports.iterator(); it.hasNext(); ) {
             String name = (String) it.next();
             MContained lookup = lookupNameInCurrentScope(name, DEBUG_INTERFACE | DEBUG_INHERITANCE);
             if ((lookup == null) || (! (lookup instanceof MInterfaceDef))) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in '" + iface.getIdentifier() +
                     "' supports specification: '" + name +
                     "' is not a defined interface");
@@ -421,7 +421,7 @@ options { exportVocab = IDL3; }
      * to the member list appropriate for the type of the given box.
      */
     private void checkSetMembers(MContained box, List members)
-        throws SemanticException
+        throws RecognitionException
     {
         MExceptionDef exception = null;
         MStructDef struct = null;
@@ -446,7 +446,7 @@ options { exportVocab = IDL3; }
                 in = (MFieldDef) i.next();
                 inID = in.getIdentifier();
                 if ((outID.equals(inID)) && (! out.equals(in))) {
-                    throw new SemanticException(
+                    throw new RecognitionException(
                         "repeated identifiers in '" + box.getIdentifier() +
                         "': '" + outID + "' and '" + inID + "'");
                 }
@@ -486,12 +486,12 @@ options { exportVocab = IDL3; }
      * exceptions have been defined somewhere.
      */
     private void checkSetExceptions(MOperationDef op, List excepts)
-        throws SemanticException
+        throws RecognitionException
     {
         for (Iterator e = excepts.iterator(); e.hasNext(); ) {
             MContained def = lookupNameInCurrentScope((String) e.next(), DEBUG_EXCEPTION);
             if (def == null) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in operation '" + op.getIdentifier() +
                     "': exception '" + e + "' is not defined");
             }
@@ -504,13 +504,13 @@ options { exportVocab = IDL3; }
      * long integer. Throw an exception if not.
      */
     private void checkPositive(String bound)
-        throws SemanticException
+        throws RecognitionException
     {
         try {
             Long limit = new Long(bound);
             if (limit.longValue() < 1) { throw new RuntimeException(); }
         } catch (Exception e) {
-            throw new SemanticException("invalid positive value: "+bound);
+            throw new RecognitionException("invalid positive value: "+bound);
         }
     }
 
@@ -535,7 +535,7 @@ options { exportVocab = IDL3; }
      * Set the supports information for the given value using the given name.
      */
     private void addValueSupports(MValueDef val, String name)
-        throws SemanticException
+        throws RecognitionException
     {
         String id = val.getIdentifier();
         MContained support = lookupNameInCurrentScope(name, DEBUG_VALUE | DEBUG_INTERFACE);
@@ -546,7 +546,7 @@ options { exportVocab = IDL3; }
                 System.out.println("added support " + name + " to value " + id);
             }
         } else {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error in value '" + id + "' inheritance: identifier '" +
                 name + "' is not defined");
         }
@@ -1578,7 +1578,7 @@ case_dcl[MIDLType switchType] returns [List members = null]
                     if (label.length() == 1) {
                         labels.add(new String(label));
                     } else {
-                        throw new SemanticException(
+                        throw new RecognitionException(
                             "error in union label '" + label +
                             "': only single characters are allowed");
                     }
@@ -1587,7 +1587,7 @@ case_dcl[MIDLType switchType] returns [List members = null]
                     if (enum.getMembers().contains(label)) {
                         labels.add(label);
                     } else {
-                        throw new SemanticException(
+                        throw new RecognitionException(
                             "error in union label: '" + label +
                             "' is not a valid member of enum " +
                             enum.getIdentifier());
@@ -1627,11 +1627,11 @@ element_spec[List labels] returns [List fields = null]
                     Object field_label = field.getLabel();
                     if (case_label.equals(field_label)) {
                         if (case_label.toString().equals("")) {
-                            throw new SemanticException(
+                            throw new RecognitionException(
                                 "error in union fields: cannot have " +
                                 "multiple 'default' labels");
                         } else {
-                            throw new SemanticException(
+                            throw new RecognitionException(
                                 "error in union fields: case label '" +
                                 case_label + "' has already been used");
                         }
@@ -1669,7 +1669,7 @@ enum_type returns [MIDLType enum = null]
                 symbolTable.add(id, (MEnumDef) enum);
                 ((MEnumDef) enum).setMembers(members);
             } else {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in enumeration '" + id + "': no fields defined");
             }
 
@@ -2583,7 +2583,7 @@ options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377'; }
     private String oldname;
 
     public void handleIncludedFile(String name)
-        throws SemanticException, RecognitionException, TokenStreamException
+        throws RecognitionException, TokenStreamException
     {
         DataInputStream input = null;
 
@@ -2596,7 +2596,7 @@ options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377'; }
                 FileInputStream fi = new FileInputStream(name);
                 input = new DataInputStream(fi);
             } catch (FileNotFoundException fnf) {
-                throw new SemanticException("cannot find include file " + name);
+                throw new TokenStreamException("cannot find include file " + name);
             }
 
             // make sure errors are reported in right file

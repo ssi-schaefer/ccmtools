@@ -1,0 +1,175 @@
+$Id$
+
+How to do a CCM Tools release
+=============================
+
+Basic steps :
+
+1. Branch from CVS HEAD (for a new even numbered release series)
+2. Verify the source
+3. Do the stable release
+4. Merge back to CVS HEAD (from even numbered release series)
+5. Release a development version
+
+1. Branch from CVS HEAD
+-----------------------
+
+This is only necessary for creating a new even numbered release series, e.g. the
+0.8 series or the 1.6 series. Doing this is fairly straightforward ; we'll say
+the new series number will be "A.B" :
+
+  ccmtools $ cvs update
+  ccmtools $ cvs tag BRANCH-ROOT-A_B
+  ccmtools $ cvs tag -b BRANCH-A_B
+  ccmtools $ cd ..
+  my_dir $ cvs co -d A.B -r BRANCH-A_B co ccmtools
+  my_dir $ ls -1
+  A.B
+  ccmtools
+   :
+   :
+
+Update the configure.ac files in both directories.
+
+  my_dir $ cd A.B
+  A.B $ emacs configure.ac
+  (set the version number at the top of the file to A.B.0)
+  A.B $ cvs ci
+  A.B $ cd ../ccmtools
+  ccmtools $ emacs configure.ac
+  (set the version number at the top of the file to A.B+1.0)
+  ccmtools $ cvs ci
+
+Thereafter, do all your main branch edits in the "ccmtools" directory (or
+wherever you have it stored), and do all your A.B series edits in the "A.B"
+directory.
+
+If A.B is a new branch, you'll also need to make a directory on the web site for
+it :
+
+  A.B $ ssh ccmtools.sf.net
+  ~ $ cd /home/groups/c/cc/ccmtools/htdocs/releases
+  releases $ mkdir A.B
+
+2. Verify the source
+--------------------
+
+There are a few things to verify before doing the actual distribution.
+
+- "make distcheck".
+
+  Very important ! This will create a distro tarball, install it in a temporary
+  directory, build it in a temporary directory, and then run all tests that
+  normally run using "make check". Provided that "make check" performs enough
+  tests, this is an easy, good, and safe way to test the whole package all at
+  once.
+
+- Update the ChangeLog.
+
+  I use the "cvs2cl" script to do this, and then edit the resulting ChangeLog :
+
+  A.B $ cvs2cl --accum
+  A.B $ emacs ChangeLog
+  A.B $ cvs ci
+
+- Update the release notes on the web site.
+
+  A.B $ ssh ccmtools.sf.net
+  ~ $ cd /home/groups/c/cc/ccmtools/htdocs/releases
+  releases $ emacs index.php
+
+- Update the RELEASE file.
+
+  I use lynx to dump the web site release notes and then emacs to clean up the
+  resulting file.
+
+  A.B $ lynx --dump http://ccmtools.sf.net/releases/ > RELEASE
+  A.B $ emacs RELEASE
+  A.B $ cvs ci
+
+- Update the tutorial, manual, and guide on the web site.
+
+  There is a short script to do this. You need to have latex2html installed to
+  use it.
+
+  A.B $ cd doc/tutorial
+  tutorial $ ../convert-for-website.sh
+  tutorial $ cd ../manual
+  manual $ ../convert-for-website.sh
+  manual $ cd ../guide
+  guide $ ../convert-for-website.sh
+
+3. Do the stable release
+------------------------
+
+Making a release basically just means tagging the files, building source
+distributions. Then you'll have to put the distributions in places where people
+can download them, and send out various news items.
+
+- Tag the CVS files.
+
+  A.B $ cvs tag RELEASE-A_B_X
+
+  X should be the bugfix number, which starts at 0 for the first release of the
+  branch and proceeds up by one for each subsequent release on the same branch.
+
+- Make the distributions.
+
+  A.B $ make dist
+  A.B $ /bin/sh binary-dist
+
+- Put the distributions online.
+
+  A.B $ scp ccmtools-A.B.X*.tar.gz ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/
+  A.B $ scp RELEASE ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/RELEASE-A.B.X
+  A.B $ scp ChangeLog ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/ChangeLog-A.B.X
+  A.B $ ftp upload.sourceforge.net
+  Login: anonymous
+  Password: <email addy>
+  ftp> prompt
+  ftp> bin
+  ftp> cd /incoming
+  ftp> mput ccmtools*.tar.gz
+
+  Then go to http://sf.net/project/ccmtools/ and find the link that says "add a
+  file release" or something like that. Follow the instructions.
+
+- Submit news for the distribution.
+
+  Add a news item on the SourceForge page. This is in the lower right corner on
+  the project summary page.
+
+  Submit a new version on http://freshmeat.net/projects/ccmtools/.
+
+- Email an announcement.
+
+  Send the contents of the RELEASE file to
+  ccmtools-announce@lists.sourceforge.net, and any other interested mailing
+  lists.
+
+4. Merge back to CVS HEAD
+-------------------------
+
+It's, I think, most useful if you can merge changes on the stable branch
+immediately back into the development branch and thus make an immediate
+development release.
+
+  A.B $ cd ../ccmtools
+  ccmtools $ cvs update -j RELEASE-A_B_X
+
+5. Release a development version
+--------------------------------
+
+Edit the ChangeLog appropriately.
+
+  ccmtools $ cvs ci
+  ccmtools $ cvs tag RELEASE-A_C_X
+
+Where C = B+1.
+
+Then follow all the same steps for the development release regarding testing,
+uploading, and such.
+
+You might not want to send out so much news about development releases, but
+submitting a freshmeat version is always a good idea.
+

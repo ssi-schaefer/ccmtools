@@ -161,7 +161,7 @@ public class ConsoleCodeGenerator
 
         // (in between)
 
-        if (kopf == null) return;
+        if (kopf == null) System.exit(1);
 
         File top_file = new File(filename);
         kopf.setIdentifier(top_file.getName().split("\\.")[0]);
