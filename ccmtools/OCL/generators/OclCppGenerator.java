@@ -620,7 +620,7 @@ public class OclCppGenerator extends OclStandardGenerator
         String result = getNextHelperName();
         conCode.helpers_ += "  "+cppItem+" "+result+" = 0;\n";
         String index = getNextHelperName();
-        conCode.helpers_ += "  for(int "+index+"=0; "+index+"<"+coll+".size(); "+index+"++)\n"+
+        conCode.helpers_ += "  for(OCL_Size "+index+"=0; "+index+"<"+coll+".size(); "+index+"++)\n"+
                             "    "+result+" += "+coll+"["+index+"];\n";
         return result;
     }
@@ -636,7 +636,7 @@ public class OclCppGenerator extends OclStandardGenerator
                                             String iteratorVarName, ConstraintCode conCode )
     {
         String index = getNextHelperName();
-        conCode.helpers_ += "  for(int "+index+"=0; "+index+"<"+collVarName+".size(); "+index+"++)\n"+
+        conCode.helpers_ += "  for(OCL_Size "+index+"=0; "+index+"<"+collVarName+".size(); "+index+"++)\n"+
                             "  {\n"+
                             "    "+cppItem+" "+iteratorVarName+"="+collVarName+"["+index+"];\n";
         return "  }\n";
@@ -682,7 +682,7 @@ public class OclCppGenerator extends OclStandardGenerator
         String result = getNextHelperName();
         String index = getNextHelperName();
         conCode.helpers_ += "  "+cppCollection+"< "+cppItem+" > "+result+";\n"+
-                            "  for(int "+index+"=0; "+index+"<"+collVarName+".size(); "+index+"++)\n"+
+                            "  for(OCL_Size "+index+"=0; "+index+"<"+collVarName+".size(); "+index+"++)\n"+
                             "  {\n"+
                             "    "+cppItem+" "+iteratorVarName+"="+collVarName+"["+index+"];\n";
         return result;
@@ -728,7 +728,7 @@ public class OclCppGenerator extends OclStandardGenerator
             "    DEBUGNL(msg);\n"+
             "    throw OclException(msg,DbC_FUNCTION_NAME,__FILE__,__LINE__);\n"+
             "  }\n"+
-            "  "+cppItem+" "+result+" = "+collVarName+"[OCL_random(0,"+collVarName+".size()-1)];\n";
+            "  "+cppItem+" "+result+" = "+collVarName+"[OCL_random(0,int("+collVarName+".size())-1)];\n";
         return result;
     }
 
@@ -752,7 +752,7 @@ public class OclCppGenerator extends OclStandardGenerator
     {
         String index = getNextHelperName();
         return "  "+resultCollectionType+"< "+resultItemType+" > "+resultVarName+";\n"+
-               "  for(int "+index+"=0; "+index+"<"+inputVarName+".size(); "+index+"++)\n"+
+               "  for(OCL_Size "+index+"=0; "+index+"<"+inputVarName+".size(); "+index+"++)\n"+
                "  {\n"+
                "    "+inputItemType+" "+iteratorVarName+" = "+inputVarName+"["+index+"];\n"+
                extraHelpers+
@@ -797,7 +797,7 @@ public class OclCppGenerator extends OclStandardGenerator
     {
         String index = getNextHelperName();
         return "  "+accCppType+" "+accName+" = "+accInitCode+";\n"+
-               "  for(int "+index+"=0; "+index+"<"+inputVarName+".size(); "+index+"++)\n"+
+               "  for(OCL_Size "+index+"=0; "+index+"<"+inputVarName+".size(); "+index+"++)\n"+
                "  {\n"+
                "    "+inputItemType+" "+iteratorVarName+" = "+inputVarName+"["+index+"];\n"+
                extraHelpers+
