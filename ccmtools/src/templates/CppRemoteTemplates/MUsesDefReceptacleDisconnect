@@ -1,5 +1,5 @@
   if (strcmp(name, "%(Identifier)s") == 0) {
-    ::%(UsesType)s_var _dummy;
+    ::%(IdlUsesType)s_var _dummy;
     _dummy = disconnect_%(Identifier)s();
     return;
   }

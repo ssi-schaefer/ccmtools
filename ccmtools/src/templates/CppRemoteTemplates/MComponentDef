@@ -143,7 +143,7 @@ using namespace WX::Utils;
 {
     LDEBUGNL(CCM_REMOTE, "-%(Identifier)s_impl::~%(Identifier)s_impl()");
     // Smart pointer local_adapter goes out of scope 
-    // delete local_context; deleted by the local component
+    // local_context is deleted by the local component
 }
 
 

@@ -7,10 +7,11 @@
 #define __HOME__%(Identifier)s__REMOTE__H__
 
 #include "%(ComponentType)s_remote.h"
+#include <%(IdlFileNamespace)s%(Identifier)s.h> 
 
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h>
 
-#include <%(IdlFileNamespace)s%(Identifier)s.h> // CORBA stubs 
+
 
 %(OpenNamespace)s
 

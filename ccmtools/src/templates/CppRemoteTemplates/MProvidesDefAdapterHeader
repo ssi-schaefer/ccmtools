@@ -3,7 +3,7 @@
   //============================================================================
 
   class %(Identifier)sFacetAdapter :
-      virtual public POA_%(ProvidesType)s,
+      virtual public POA_%(IdlProvidesType)s,
       virtual public PortableServer::RefCountServantBase
   {
     protected:
