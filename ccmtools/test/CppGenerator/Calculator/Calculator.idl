@@ -1,0 +1,47 @@
+/******************************************************************************/
+/*  Project: localPrototype  (C++)                                            */
+/*  File   : Calculator.idl                                                   */
+/*  Version: 0.4                                                              */
+/*  Date   : October 2002                                                     */
+/*----------------------------------------------------------------------------*/
+/*  Company: SALOMON Automoation F&E                                          */
+/*  Autor  : Egon                                                             */
+/*----------------------------------------------------------------------------*/
+/*  Note   :                                                                  */
+/******************************************************************************/
+
+#include "ShowFacet.idl"
+#include "IntegerFacet.idl"
+#include "CalculatorFacade.idl"
+#include "EuroCalculator.idl"
+
+
+//==============================================================================
+// Calculator Component
+//==============================================================================
+
+component Calculator supports EuroCalculator
+{
+  attribute long SerNr;
+
+  provides CalculatorFacade calc;
+    
+  uses IntegerFacet iUnit;
+  uses multiple ShowFacet show;
+};
+
+home CalculatorHome manages Calculator
+{
+  factory create_with_serial_number(in long value);
+};
+
+
+
+
+
+
+
+
+
+
+

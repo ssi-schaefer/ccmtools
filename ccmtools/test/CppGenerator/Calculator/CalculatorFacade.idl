@@ -1,0 +1,36 @@
+/******************************************************************************/
+/*  Project: localPrototype  (C++)                                            */
+/*  File   : CalculatorFacade.idl                                             */
+/*  Version: 0.4                                                              */
+/*  Date   : October 2002                                                     */
+/*----------------------------------------------------------------------------*/
+/*  Company: SALOMON Automoation F&E                                          */
+/*  Autor  : Egon                                                             */
+/*----------------------------------------------------------------------------*/
+/*  Note   :                                                                  */
+/******************************************************************************/
+
+
+exception MathException {};
+exception ReadException {}; 
+exception WriteException {};
+
+struct Record { 
+  string s1; 
+  string s2; 
+  string s3; 
+}; 
+
+typedef sequence<Record> RecordSet;
+
+
+interface CalculatorFacade
+{
+  long add(in long a, in long b) raises(MathException);
+  long sub(in long a, in long b) raises(MathException);
+  
+  void println(in string s);
+
+  void write(in Record r) raises(WriteException);
+  RecordSet read(in Record r) raises(ReadException);
+};
