@@ -1,161 +1,127 @@
-// MComponentDef,%(Identifier)s.h component
-
-/******************************************************************************/
-/*  Project: remote C++ Prototype                                             */
-/*  File   : Calculator_remote.h                                              */
-/*  Version: 0.1                                                              */
-/*  Date   : Feber 2003                                                       */
-/*----------------------------------------------------------------------------*/
-/*  Company: SALOMON Automoation F&E                                          */
-/*  Autor  : Egon Teiniker                                                    */
-/*----------------------------------------------------------------------------*/
-/*  Note   :                                                                  */
-/******************************************************************************/
-
-#include <CCM_Utils/smartptr.h>
-#include <CCM_Utils/debug.h>
-
-#include <CCMContainer.h>
-
-#include <Calculator_includes.h>
-
-#include <CCM_Local/IntegerFacet.h>
-#include <CCM_Local/ShowFacet.h>
-#include <CCM_Local/CalculatorFacade.h>
-#include <CCM_Session_Calculator/Calculator_gen.h>
-#include <CCM_Session_Calculator/Calculator_app.h>
-
+/==============================================================================
+// Template: MComponentDef (header file part)
+// Identifier=%(Identifier)s 
+// HomeType=%(HomeType)s
+/==============================================================================
 
 #ifndef __%(Identifier)s__CCM__H__
 #define __%(Identifier)s__CCM__H__
 
-namespace remote {
-namespace CCM_Session_Calculator {
+#include <CCM_Utils/smartptr.h>
+#include <CCM_Utils/debug.h>
+#include <CCMContainer.h>
+
+#include <%(Identifier)s_includes.h>
+
+%(MSupportsDefInclude)s
+%(MProvidesDefInclude)s
+%(MUsesDefInclude)s
+#include <CCM_Session_%(Identifier)s/%(Identifier)s_gen.h>
+#include <CCM_Session_%(Identifier)s/%(Identifier)s_app.h>
+
+namespace CCM_Remote {
+namespace CCM_Session_%(Identifier)s {
 
   //============================================================================
   // Component remote adapter 
   //============================================================================
-  class Calculator_impl :
-      virtual public POA_Calculator,
+  class %(Identifier)s_impl :
+      virtual public POA_%(Identifier)s,
       virtual public PortableServer::RefCountServantBase
   {
-      friend class CCM_Calculator_Context_impl;
-      friend class Calculator_calc_impl;
+      friend class CCM_%(Identifier)s_Context_impl;
+%(MProvidesDefFriend)s
 
     private:
-      local::CCM_Session_Calculator::CCM_Calculator_impl* local_component;
-      local::CCM_Session_Calculator::CCM_Calculator_Context* local_context;
-
+      local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl* local_component;
+      local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_Context* local_context;
       CCM::SessionContainer* ccm_container;
-      PortableServer::ServantBase_var calc_facet_adapter;
 
-      CalculatorFacade_var reference_for_facet_calc;
-      IntegerFacet_var     reference_for_receptacle_iUnit;
-
-      Calculator::showConnections receptacles_show;
-      CORBA::ULong cookie_for_show;
+%(MProvidesDefAdapterVariable)s
+%(MUsesDefAdapterVariable)s
 
     public:
-      Calculator_impl(local::CCM_Session_Calculator::CCM_Calculator_impl*, 
+      %(Identifier)s_impl(local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl*, 
 		      CCM::SessionContainer *);
-      ~Calculator_impl ();
+      virtual ~%(Identifier)s_impl ();
 
       /*
        * Component Attributes
        */
-
-      CORBA::Long SerNr ();
-      void SerNr (CORBA::Long _value);
+%(MAttributeDefAdapterHeader)s
 
       /*
        * Supported Interfaces
        */
+%(MSupportsDefAdapterHeader)s
 
-      // ::EuroCalculator
-
-      CORBA::Double eur_to_ats( CORBA::Double eur);
-      CORBA::Double ats_to_eur( CORBA::Double ats);
-
-      // ::ReleaseInformation
-
+      // ReleaseInformation
       char* getComponentVersion();
       char* getComponentDate();
       char* getComponentUUID();
-
 
       /*
        * Equivalent IDL methods
        */
 
-      CalculatorFacade_ptr provide_calc ();
+       // Facets
+%(MProvidesDefAdapterHeader)s
 
-      // receptacles
+      // Receptacles
+%(MUsesDefAdapterHeader)s
+%(MUsesDefGetAdapterHeader)s
 
-      void connect_iUnit (IntegerFacet_ptr _value);
-      IntegerFacet_ptr disconnect_iUnit ();
-      IntegerFacet_ptr get_connection_iUnit ();
+      // Publishers not implemented
 
-      Components::Cookie * connect_show (ShowFacet_ptr _value);
-      ShowFacet_ptr disconnect_show (Components::Cookie * _value);
-      Calculator::showConnections * get_connections_show ();
+      // Emitters not implemented
 
-
-      // no publishers
-
-      // no emitters
-
-      // no consumers
+      // Consumers not implemented
 
       /*
        * Inherited Navigation interface
        */
-
-      CORBA::Object_ptr provide_facet (const char *);
-      Components::FacetDescriptions * get_all_facets ();
-      Components::FacetDescriptions * get_named_facets (const Components::NameList &);
-      CORBA::Boolean same_component (CORBA::Object_ptr ref);
+      CORBA::Object_ptr provide_facet(const char *);
+      Components::FacetDescriptions* get_all_facets();
+      Components::FacetDescriptions* get_named_facets(const Components::NameList &);
+      CORBA::Boolean same_component(CORBA::Object_ptr ref);
 
       /*
        * Inherited Receptacles interface
        */
-
-      Components::Cookie * connect (const char *, CORBA::Object_ptr);
-      void disconnect (const char * name, Components::Cookie *);
-      Components::ConnectionDescriptions * get_connections (const char *);
-      Components::ReceptacleDescriptions * get_all_receptacles ();
-      Components::ReceptacleDescriptions * get_named_receptacles (const Components::NameList &);
+      Components::Cookie* connect(const char*, CORBA::Object_ptr);
+      void disconnect(const char* name, Components::Cookie*);
+      Components::ConnectionDescriptions* get_connections(const char*);
+      Components::ReceptacleDescriptions* get_all_receptacles();
+      Components::ReceptacleDescriptions* get_named_receptacles(const Components::NameList &);
 
       /*
        * Inherited Events interface
        */
-
-      Components::EventConsumerBase_ptr get_consumer (const char *);
-      Components::Cookie * subscribe (const char *, Components::EventConsumerBase_ptr);
-      void unsubscribe (const char * name, Components::Cookie *);
-      void connect_consumer (const char *, Components::EventConsumerBase_ptr);
-      Components::EventConsumerBase_ptr disconnect_consumer (const char *);
-      Components::ConsumerDescriptions * get_all_consumers ();
-      Components::ConsumerDescriptions * get_named_consumers (const Components::NameList &);
-      Components::EmitterDescriptions * get_all_emitters ();
-      Components::EmitterDescriptions * get_named_emitters (const Components::NameList &);
-      Components::PublisherDescriptions * get_all_publishers ();
-      Components::PublisherDescriptions * get_named_publishers (const Components::NameList &);
+      Components::EventConsumerBase_ptr get_consumer(const char*);
+      Components::Cookie* subscribe(const char*, Components::EventConsumerBase_ptr);
+      void unsubscribe(const char* name, Components::Cookie*);
+      void connect_consumer(const char*, Components::EventConsumerBase_ptr);
+      Components::EventConsumerBase_ptr disconnect_consumer(const char*);
+      Components::ConsumerDescriptions* get_all_consumers();
+      Components::ConsumerDescriptions* get_named_consumers(const Components::NameList&);
+      Components::EmitterDescriptions* get_all_emitters();
+      Components::EmitterDescriptions* get_named_emitters (const Components::NameList&);
+      Components::PublisherDescriptions* get_all_publishers();
+      Components::PublisherDescriptions* get_named_publishers(const Components::NameList&);
 
       /*
        * Inherited CCMObject interface
        */
-
-      CORBA::Object_ptr get_component_def ();
-      Components::CCMHome_ptr get_ccm_home ();
-      void configuration_complete ();
-      void remove ();
-      Components::ComponentPortDescription * get_all_ports ();
+      CORBA::Object_ptr get_component_def();
+      Components::CCMHome_ptr get_ccm_home();
+      void configuration_complete();
+      void remove();
+      Components::ComponentPortDescription* get_all_ports();
 
       /*
        * Overload default implementation
        */
-
-      CORBA::Object_ptr _get_component ();
+      CORBA::Object_ptr _get_component();
   };
 
 
@@ -276,21 +242,13 @@ namespace CCM_Session_Calculator {
 } // /namespace remote
 #endif
 
+
 <<<<<<<SPLIT>>>>>>>
-
-// MComponentDef,%(Identifier)s.cc component 
-/******************************************************************************/
-/*  Project: remote C++ Prototype                                             */
-/*  File   : Calculator_remote.cc                                             */
-/*  Version: 0.1                                                              */
-/*  Date   : Feber 2003                                                       */
-/*----------------------------------------------------------------------------*/
-/*  Company: SALOMON Automoation F&E                                          */
-/*  Autor  : Egon Teiniker                                                    */
-/*----------------------------------------------------------------------------*/
-/*  Note   :                                                                  */
-/******************************************************************************/
-
+/==============================================================================
+// Template: MComponentDef (header file part)
+// Identifier=%(Identifier)s 
+// HomeType=%(HomeType)s
+/==============================================================================
 
 #include "Calculator_remote.h"
 

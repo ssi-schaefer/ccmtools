@@ -1,24 +1,15 @@
 /==============================================================================
-// MHomeDef, %(Identifier)s
+// Template: MHomeDef (header file part)
+// Identifier=%(Identifier)s 
+// ComponentType=%(ComponentType)s
 /==============================================================================
 
 #ifndef __%(Identifier)s__REMOTE__H__
 #define __%(Identifier)s__REMOTE__H__
 
-#include <string>
-#include <map>
-#include <CCM_Utils/smartptr.h>
-#include <CCM_Utils/debug.h>
-
-#include <CCMContainer.h>
-
 #include "%(ComponentType)s_remote.h"
 
-#include <CCM_Session_Calculator/%(Identifier)s_gen.h>
-#include <CCM_Session_Calculator/%(Identifier)s_app.h>
-
-
-namespace remote {
+namespace CCM_Remote {
 namespace CCM_Session_%(ComponentType)s {
 
   //==========================================================================
@@ -30,11 +21,11 @@ namespace CCM_Session_%(ComponentType)s {
     virtual public PortableServer::RefCountServantBase
     {
     private:
-      local::CCM_Session_Calculator::CCM_CalculatorHome* local_home;
+      local::CCM_Session_%(ComponentType)s::CCM_%(Identifier)s* local_home;
       CCM::SessionContainer* ccm_container;
       
     public:
-      %(Identifier)s_impl(CCM::SessionContainer *);
+      %(Identifier)s_impl(CCM::SessionContainer* c);
       virtual ~%(Identifier)s_impl();
 
       /*
@@ -47,15 +38,8 @@ namespace CCM_Session_%(ComponentType)s {
        * Explicit operations
        */
 
-      // no factories
-
-      // no finders
-
-      // no attributes
-
-      // operations
-
-      Calculator_ptr create_with_serial_numer( CORBA::Long value);
+      %(MFactoryDefHeader)s
+      %(MFinderDefHeader)s 
 
       /*
        * Inherited CCMHome interface
@@ -73,26 +57,16 @@ namespace CCM_Session_%(ComponentType)s {
   };
  
 } // /namespace CCM_Session_%(ComponentType)s
-} // /namespace remote
+} // /namespace CCM_Remote
 #endif
 
 
 <<<<<<<SPLIT>>>>>>>
-
-// MHomeDef,%(Identifier)s.cc
-
-/******************************************************************************/
-/*  Project: remote C++ Prototype                                             */
-/*  File   : Calculator_remote.cc                                             */
-/*  Version: 0.1                                                              */
-/*  Date   : Feber 2003                                                       */
-/*----------------------------------------------------------------------------*/
-/*  Company: SALOMON Automoation F&E                                          */
-/*  Autor  : Egon Teiniker                                                    */
-/*----------------------------------------------------------------------------*/
-/*  Note   :                                                                  */
-/******************************************************************************/
-
+/==============================================================================
+// Template: MHomeDef (implemntation file part)
+// Identifier=%(Identifier)s 
+// ComponentType=%(ComponentType)s
+/==============================================================================
 
 #include "%(Identifier)s_remote.h"
 
@@ -103,19 +77,19 @@ using namespace CCM_Utils;
 // Component home adapter
 //============================================================================
 
-remote::CCM_Session_Calculator::
-CalculatorHome_impl::CalculatorHome_impl (CCM::SessionContainer* c)
+CCM_Remote::CCM_Session_%(ComponentType)s::
+%(Identifier)s_impl::%(Identifier)s_impl (CCM::SessionContainer* c)
   : ccm_container (c)
 {
-  cout << "+CalculatorHome_impl::CalculatorHome_impl()" << endl;
-  local_home = dynamic_cast<local::CCM_Session_Calculator::CCM_CalculatorHome*>
-    (create_CalculatorHome());
+  DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
+  local_home = dynamic_cast<local::CCM_Session_%(ComponentType)s::CCM_%(Identifier)s*>
+    (create_%(Identifier)s());
 }
 
-remote::CCM_Session_Calculator::
-CalculatorHome_impl::~CalculatorHome_impl ()
+CCM_Remote::CCM_Session_%(ComponentType)s::
+%(Identifier)s_impl::~%(Identifier)s_impl ()
 {
-  cout << "-CalculatorHome_impl::~CalculatorHome_impl()" << endl;
+  DEBUGNL("-%(Identifier)s_impl::~%(Identifier)s_impl()");
   delete local_home;
 }
 
@@ -123,77 +97,59 @@ CalculatorHome_impl::~CalculatorHome_impl ()
  * Implicit operations
  */
 
-Calculator_ptr
-remote::CCM_Session_Calculator::
-CalculatorHome_impl::create ()
+%(ComponentType)s_ptr
+CCM_Remote::CCM_Session_%(ComponentType)s::
+%(Identifier)s_impl::create ()
 {
-  cout << " CalculatorHome_impl::CalculatorHome_impl::create()" << endl;
+  DEBUGNL(" %(Identifier)s_impl::create()");
 
   // create the local_component
-  local::CCM_Session_Calculator::CCM_Calculator_impl* local_component = 
-    dynamic_cast<local::CCM_Session_Calculator::CCM_Calculator_impl*>(local_home->create());
+  local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl* local_component = 
+    dynamic_cast<local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl*>(local_home->create());
 
   // create component remote adapter
   PortableServer::ServantBase_var component_adapter =
-    new Calculator_impl(local_component, ccm_container);
+    new %(ComponentType)s_impl(local_component, ccm_container);
 
   Components::CCMObject_var co = 
     ccm_container->activate_component(local_component,component_adapter.in()); 
-  return Calculator::_narrow(co);
+  return %(ComponentType)s::_narrow(co);
 }
 
 /*
  * Explicit operations
  */
 
-Calculator_ptr
-remote::CCM_Session_Calculator::
-CalculatorHome_impl::create_with_serial_numer (CORBA::Long value)
-{
-  cout << " CalculatorHome_impl::CalculatorHome_impl::create_with_serial_numer()" << endl;
-
-  // create the local_component
-  local::CCM_Session_Calculator::CCM_Calculator_impl* local_component = 
-    dynamic_cast<local::CCM_Session_Calculator::CCM_Calculator_impl*>
-       (local_home->create_with_serial_number(value));
-
-  // create component remote adapter
-  PortableServer::ServantBase_var component_adapter =
-    new Calculator_impl(local_component, ccm_container);
-
-  Components::CCMObject_var co = 
-    ccm_container->activate_component(local_component,component_adapter.in()); 
-  return Calculator::_narrow(co);
-}
-
+%(MFactoryDefImpl)s
+%(MFinderDefImpl)s 	
 
 /*
  * Inherited CCMHome interface
  */
 
 CORBA::Object_ptr
-remote::CCM_Session_Calculator::
-CalculatorHome_impl::get_component_def ()
+CCM_Remote::CCM_Session_%(ComponentType)s::
+%(Identifier)s_impl::get_component_def ()
 {
-  cout << " CalculatorHome_impl::CalculatorHome_impl::get_component_def()" << endl;
+  DEBUGNL(" %(Identifier)s_impl::get_component_def()");
   // TODO
   return CORBA::Object::_nil ();
 }
 
 CORBA::Object_ptr
-remote::CCM_Session_Calculator::
-CalculatorHome_impl::get_home_def ()
+CCM_Remote::CCM_Session_%(ComponentType)s::
+%(Identifier)s_impl::get_home_def ()
 {
-  cout << " CalculatorHome_impl::CalculatorHome_impl::get_home_def()" << endl;
+  DEBUGNL(" %(Identifier)s_impl::get_home_def()");
   // TODO
   return CORBA::Object::_nil ();
 }
 
 void
-remote::CCM_Session_Calculator::
-CalculatorHome_impl::remove_component (Components::CCMObject_ptr _co)
+CCM_Remote::CCM_Session_%(ComponentType)s::
+%(Identifier)s_impl::remove_component (Components::CCMObject_ptr _co)
 {
-  cout << " CalculatorHome_impl::CalculatorHome_impl::remove_component()" << endl;
+  DEBUGNL(" %(Identifier)s_impl::remove_component()");
 
   PortableServer::ServantBase_var _cs = ccm_container->get_skeleton_for_reference(_co);
   // TODO
@@ -206,16 +162,12 @@ CalculatorHome_impl::remove_component (Components::CCMObject_ptr _co)
  */
 
 Components::CCMObject_ptr
-remote::CCM_Session_Calculator::
-CalculatorHome_impl::create_component ()
+CCM_Remote::CCM_Session_%(ComponentType)s::
+%(Identifier)s_impl::create_component ()
 {
-  cout << " CalculatorHome_impl::CalculatorHome_impl::create_component()" << endl;
+  DEBUGNL(" %(Identifier)s_impl::create_component()");
   return create ();
 }
 
 
-//============================================================================
-// Main for a standalone component
-//============================================================================
 
-//...

@@ -31,7 +31,7 @@ public interface MUsesDef
     boolean isMultiple();
     void setMultiple(boolean __arg);
 
-    // assocation: direct role: [*] --> oposide role: uses[*]
+    // assocation: direct role: [*] --> oposide role: uses[1]
     MInterfaceDef getUses();
     void setUses(MInterfaceDef __arg);
 

@@ -10,7 +10,29 @@ dist_template_DATA = \
     ConvertRemoteHeader   \
     MContainer            \
     MHomeDef              \
-    MComponentDef
+    MFactoryDefHeader     \
+    MFactoryDefImpl       \
+    MFinderDefHeader      \
+    MFinderDefImpl        \
+    MParameterDefHeader   \
+    MComponentDef         \
+    MSupportsDefInclude   \
+    MProvidesDefInclude   \
+    MUsesDefInclude       \
+    MConsumesDefInclude   \
+    MEmitsDefInclude      \
+    MPublishesDefInclude  \
+    MAttributeDefAdapterHeader   \
+    MProvidesDefFriend    \
+    MProvidesDefAdapterVariable \
+    MUsesDefAdapterVariable \
+    MSupportsDefAdapterHeader\
+    MOperationSupportsHeader \
+    MExceptionDef   \
+    MProvidesDefAdapterHeader \
+    MUsesDefAdapterHeader  \
+    MUsesDefGetAdapterHeader
+
 
 
 

@@ -23,18 +23,8 @@ package ccmtools.CppGenerator;
 
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
-import ccmtools.Metamodel.BaseIDL.MAliasDef;
-import ccmtools.Metamodel.BaseIDL.MArrayDef;
-import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MContainer;
-import ccmtools.Metamodel.BaseIDL.MIDLType;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.Metamodel.BaseIDL.MOperationDef;
-import ccmtools.Metamodel.BaseIDL.MParameterDef;
-import ccmtools.Metamodel.BaseIDL.MSequenceDef;
-import ccmtools.Metamodel.BaseIDL.MTyped;
-import ccmtools.Metamodel.ComponentIDL.MComponentDef;
-import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.BaseIDL.*;
+import ccmtools.Metamodel.ComponentIDL.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,23 +46,22 @@ Calculator
 |   |-- CalculatorHome_remote.h
 |   |-- Calculator_remote.cc
 |   |-- Calculator_remote.h
-|   |-- Calculator_server.cc  // !!!!!!!!
-|   |-- Makefile.py           // from local Generator
+|   |-- Makefile.py               // from local Generator
 |
 |
-|-- CCM_Session_Calculator_Stubs // created from IDL2 generator 
+|-- CCM_Session_Calculator_Stubs  // created from IDL2 generator 
 |   |-- Calculator.idl
 |       => Calculator.cc            // from IDL generated   
 |       => Calculator.h             // from IDL generated
 |   |-- Makefile.py
 |
 |
-|-- CCM_Session_Container        // Environment files
+|-- CCM_Session_Container         // Environment files
 |   |-- CCMContainer.cc
 |   |-- CCMContainer.h
 |   |-- Makefile.py
 |
-|-- remoteComponents             // Environment files
+|-- remoteComponents              // Environment files
 |   |-- Components.idl2
 |       => Components.cc            // from IDL generated
 |       => Components.h             // from IDL generated
@@ -81,9 +70,44 @@ Calculator
 ************************************************************/
 
 
+
+//====================================================================
+
 public class CppRemoteGeneratorImpl
     extends CppGenerator
 {
+    /**
+     * Defines the IDL to C++ Mappings for primitive types
+     *
+     */
+    private final static String[] remote_language_map =
+    {
+	"",
+	"CORBA::Any",         // PK_ANY
+	"CORBA::Boolean",     // PK_BOOLEAN
+	"CORBA::Char",        // PK_CHAR
+	"CORBA::Double",      // PK_DOUBLE
+	"",                   // PK_FIXED
+	"CORBA::Float",       // PK_FLOAT
+	"CORBA::Long",        // PK_LONG
+	"CORBA::LongDouble",  // PK_LONGDOUBLE
+	"CORBA::LongLong",    // PK_LONGLONG
+	"",                   // PK_NULL
+	"",                   // PK_OBJREF
+	"CORBA::Octet",       // PK_OCTET
+	"",                   // PK_PRINCIPAL
+	"CORBA::Short",       // PK_SHORT
+	"char*",              // PK_STRING
+	"",                   // PK_TYPECODE
+	"CORBA::ULong",       // PK_ULONG
+	"CORBA::ULongLong",   // PK_ULONGLONG
+	"CORBA::UShort",      // PK_USHORT
+	"",                   // PK_VALUEBASE
+	"",                   // PK_VOID
+	"CORBA::WChar",       // PK_WCHAR
+	"CORBA::WChar*"       // PK_WSTRING
+    };
+    
     /**
      * Types for which we have a global template; that is, a template that is
      * not contained inside another template.
@@ -120,51 +144,149 @@ public class CppRemoteGeneratorImpl
 	"Blank"               // Template for Makefile.py
     };
 
-    /**************************************************************************/
+    
+    //====================================================================
+    // ? should we put the filling of language_mapping into each Generator
+    
+    //====================================================================
 
     public CppRemoteGeneratorImpl(Driver d, File out_dir)
         throws IOException
     {
         super("CppRemote", d, out_dir, local_output_types,
               local_environment_files, local_environment_templates);
+
+	// fill the language_mappings with IDL to C++ Mapping types 
+	String[] labels = MPrimitiveKind.getLabels();
+	language_mappings = new Hashtable();
+	for (int i = 0; i < labels.length; i++)
+	    language_mappings.put(labels[i], remote_language_map[i]);
     }
+
 
 
     /**
-     * Finalize the output files. This function's implementation writes two
-     * global files, a global Remote value conversion header, and a global
-     * user_types.h file based on the individual <file>_user_types.h files.
+     * Return the C++ language mapping for the given object. 
      *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
+     * @param object the node object to use for type finding.
      */
-    public void finalize(Map defines, List files)
+    protected String getLanguageType(MTyped object)
     {
-	System.out.println("CppRemoteGeneratorImpl.finalize()");
+	System.out.println("CppRemoteGeneratorImpl.getLanguageType()");
 
-        // write a global python type conversion header.
-        // e.g. CCM_Remote/convert_remote.h
+        MIDLType idl_type = object.getIdlType();
 
-        StringBuffer output = new StringBuffer("");
-        output.append("\n#ifndef ___CCM__REMOTE__CONVERT__H___\n");
-        output.append("#define ___CCM__REMOTE__CONVERT__H___\n\n");
+        String base_type = getBaseIdlType(object);
+        if (language_mappings.containsKey(base_type))
+            base_type = (String) language_mappings.get(base_type);
 
-        for (Iterator i = files.iterator(); i.hasNext(); ) {
-            File file = new File((String) i.next());
-            String name = file.getName().toString().split("\\.")[0];
-            if (file.isFile())
-                output.append("#include \"convert_"+name+".h\"\n");
+	// handling of operation parameter types and passing rules 
+        if (object instanceof MParameterDef) {
+            MParameterDef param = (MParameterDef) object;
+            MParameterMode direction = param.getDirection();
+
+            String prefix = "";
+            String suffix = "";
+
+	    // Henning/Vinoski P296
+	    // simple IDL types are passed as IN parameter witout const 
+            if (direction == MParameterMode.PARAM_IN) {
+		if(!(idl_type instanceof MPrimitiveDef)) 
+		    prefix = "const";
+	    }
+		
+            if ((idl_type instanceof MTypedefDef) ||
+                (idl_type instanceof MStringDef) ||
+                (idl_type instanceof MFixedDef)) {
+		suffix = "&";
+	    }
+
+            return prefix + base_type + suffix;
+        } 
+	
+	else if ((object instanceof MAliasDef) &&
+		 (idl_type instanceof MTyped)) {
+            return getLanguageType((MTyped) idl_type);
+        } 
+	// handle IDL sequence mapping
+	else if (object instanceof MSequenceDef) {
+            // FIXME : can we implement bounded sequences in C++ ?
+            return "std::"+sequence_type+"<"+base_type+"> ";
+        } 
+	// handle IDL array mapping
+	else if (object instanceof MArrayDef) {
+            Iterator i = ((MArrayDef) object).getBounds().iterator();
+            Long bound = (Long) i.next();
+            String result = base_type + "[" + bound;
+            while (i.hasNext()) result += "][" + (Long) i.next();
+            return result + "]";
         }
 
-        Template includes = template_manager.getRawTemplate("ConvertRemoteHeader");
-        output.append(includes.substituteVariables(defines));
-        output.append("\n#endif // ___CCM__REMOTE__CONVERT__H___\n\n");
-
-	//        writeFinalizedFile("CCM_Remote", "convert_remote.h", output.toString());
+        return base_type;
     }
+
+
+
+    /**
+     * Get a local value for the given variable name.
+     *
+     * @param variable The variable name to get a value for.
+     * @return the value of the variable available from the current
+     *         output_variables hash table. Could be an empty string.
+     */
+    protected String getLocalValue(String variable)
+    {
+	System.out.println("CppRemoteGeneratorImpl.getLocalValue("+variable+")");
+
+	// only calls the overwritten method of the base class
+        String value = super.getLocalValue(variable);
+
+	// ...
+
+	return value;
+    }
+
+
+
+    /**
+     * Get a variable hash table sutable for filling in the template from the
+     * fillTwoStepTemplates function.
+     *
+     * @param iface the interface from which we're starting the two step
+     *        operation.
+     * @param operation the particular interface operation that we're filling in
+     *        a template for.
+     * @param container the container in which the given interface is defined.
+     * @return a map containing the keys and values needed to fill in the
+     *         template for this interface.
+     */
+    protected Map getTwoStepVariables(MInterfaceDef iface,
+                                      MOperationDef operation,
+                                      MContained container)
+    {
+	System.out.println("CppRemoteGeneratorImpl.getTwoStepVariables()");
+
+	// only calls the overwritten method of the base class
+        String lang_type = super.getLanguageType(operation);
+        Map vars = new Hashtable();
+ 
+	vars.put("Object",            container.getIdentifier());
+        vars.put("Identifier",        operation.getIdentifier());
+	vars.put("ProvidesType",      iface.getIdentifier());
+        vars.put("SupportsType",      iface.getIdentifier());
+        vars.put("LanguageType",      lang_type);
+        vars.put("MExceptionDef",     getOperationExcepts(operation));
+        vars.put("MParameterDefAll",  getOperationParams(operation, "all"));
+        vars.put("MParameterDefName", getOperationParams(operation, "name"));
+
+	 if (! lang_type.equals("void")) 
+	     vars.put("Return", "return ");
+	 else 
+	     vars.put("Return", "");
+
+        return vars;
+    }
+
 
 
     /**     
@@ -178,7 +300,8 @@ public class CppRemoteGeneratorImpl
     {
 	System.out.println("CppRemoteGeneratorImpl.writeOutput()");
 	
-	// Each template consists of two sections separated by "<<<<<<<SPLIT>>>>>>>"
+	// Each global template consists of two sections separated by 
+	// "<<<<<<<SPLIT>>>>>>>"
 	// that are written in two different files node_name + "_remote.h" and
 	// node_name + "_remote.cc"
         String out_string = template.substituteVariables(output_variables);
@@ -211,50 +334,23 @@ public class CppRemoteGeneratorImpl
 
 
     /**
-     * Get a variable hash table sutable for filling in the template from the
-     * fillTwoStepTemplates function.
+     * Finalize the output files. This function's implementation writes two
+     * global files, a global Remote value conversion header, and a global
+     * user_types.h file based on the individual <file>_user_types.h files.
      *
-     * @param iface the interface from which we're starting the two step
-     *        operation.
-     * @param operation the particular interface operation that we're filling in
-     *        a template for.
-     * @param container the container in which the given interface is defined.
-     * @return a map containing the keys and values needed to fill in the
-     *         template for this interface.
+     * @param defines a map of environment variables and their associated
+     *        values. This usually contains things like the package name,
+     *        version, and other generation info.
+     * @param files a list of the filenames (usually those that were provided to
+     *        the generator front end).
      */
-    protected Map getTwoStepVariables(MInterfaceDef iface,
-                                      MOperationDef operation,
-                                      MContained container)
+    public void finalize(Map defines, List files)
     {
-	System.out.println("CppRemoteGeneratorImpl.getTwoStepVariables()");
+	System.out.println("CppRemoteGeneratorImpl.finalize()");
 
-        String lang_type = super.getLanguageType(operation);
-        Map vars = new Hashtable();
- 
 	//...
-
-        return vars;
-    }
-
-
-    /**
-     * Get a local value for the given variable name.
-     *
-     * @param variable The variable name to get a value for.
-     * @return the value of the variable available from the current
-     *         output_variables hash table. Could be an empty string.
-     */
-    protected String getLocalValue(String variable)
-    {
-	System.out.println("CppRemoteGeneratorImpl.getLocalValue("+variable+")");
-
-        String value = super.getLocalValue(variable);
-
-        if (current_node instanceof MAliasDef) {
-            return data_MAliasDef(variable, value);
-        }
-
-        return value;
     }
 }
+
+
 
