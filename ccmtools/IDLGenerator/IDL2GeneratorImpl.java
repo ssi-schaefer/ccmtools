@@ -24,54 +24,57 @@ package ccmtools.IDLGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
+
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 
 public class IDL2GeneratorImpl
     extends IDLGenerator
 {
-    public IDL2GeneratorImpl(Driver d, File out_dir) throws IOException
-    { super("2", d, out_dir); }
+    public IDL2GeneratorImpl(Driver d, File out_dir) 
+	throws IOException
+    { 
+	super("2", d, out_dir); 
+    }
 
 
     protected String getLocalValue(String variable)
     {
-        if (current_node instanceof MComponentDef ||
-            current_node instanceof MHomeDef) {
+	if (current_node instanceof MComponentDef ||
+	    current_node instanceof MHomeDef) {
             if (variable.equals("BaseType")) {
                 String base = joinBaseNames(", ");
-                if (base.length() > 0) return ", " + base;
+                if (base.length() > 0) 
+		    return ", " + base;
             }
         }
-
-        return super.getLocalValue(variable);
+	return super.getLocalValue(variable);
     }
 
 
     /***
-     * The IDL2 files are used by the ORB's IDL compiler to create stub and skeleton code
-     * (*.h and *.cc files). To run the IDL compiler, we need a Makefile.py and a Makefile.
-     * The Makefile calls the ORB's IDL compiler (via ccmtools-idl Python script).
-     * The Mapefile.py forces a call to make and to compile the *.h and *.cc files. 
+     * The IDL2 files are used by the ORB's IDL compiler to create stub 
+     * and skeleton code (*.h and *.cc files). 
+     * All files are written in a single directory where namespaces are 
+     * coded with in filenames.
+     * E.g. idl3/module/name.idl => idl2/module_name.idl
      */
     protected void writeOutput(Template template)
         throws IOException
     {
-	super.writeOutput(template);
-
-        template = template_manager.getRawTemplate("MakefilePy");
-        if (template != null)
-            writeFinalizedFile("", "Makefile.py", template.getTemplate());
-
-        template = template_manager.getRawTemplate("MakefileIdl");
-        if(template != null)
-            writeFinalizedFile("", "Makefile", template.getTemplate());
+        super.writeOutput(template);
     }
-
 }
 
