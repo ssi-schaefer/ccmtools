@@ -14,11 +14,11 @@ endif
 
 SUBDIRS = Metamodel OCL IDL3Parser utils .     \
           CodeGenerator IDLGenerator CppGenerator \
-          UI lib $(SUBDIRS_DOCS) $(SUBDIRS_TESTS)
+          UI lib $(SUBDIRS_DOCS) $(SUBDIRS_TESTS) MDR
 
 DIST_SUBDIRS = Metamodel OCL IDL3Parser utils .     \
                CodeGenerator IDLGenerator CppGenerator \
-               UI lib doc test
+               UI lib doc test MDR
 
 dist_noinst_SCRIPTS = template-info
 

@@ -94,6 +94,7 @@ OCL/Makefile
 OCL/parser/Makefile
 OCL/utils/Makefile
 OCL/generators/Makefile
+MDR/Makefile
 )
 
 AC_OUTPUT

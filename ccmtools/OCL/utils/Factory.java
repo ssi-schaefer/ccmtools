@@ -33,14 +33,14 @@ public class Factory
 {
     /**
      * Returns the MOF file of the OCL metamodel.
-     * The file has the (unix) filename '$CCMTOOLS_HOME/MDR/MOF/OCL.xml'.
+     * The file has the (unix) filename '$CCMTOOLS_HOME/share/ccmtools/MDR/OCL.xml'.
      *
      * @throws IllegalStateException  the file doesn't exist
      */
     public static File getMofFile() throws IllegalStateException
     {
         String ccmHome = System.getProperty("CCMTOOLS_HOME");
-        File modelFile = new File(ccmHome,"MDR/MOF/OCL.xml");
+        File modelFile = new File(ccmHome,"share/ccmtools/MDR/OCL.xml");
         if( !modelFile.isFile() )
         {
             throw new IllegalStateException("cannot find OCL metamodel: "+modelFile);
