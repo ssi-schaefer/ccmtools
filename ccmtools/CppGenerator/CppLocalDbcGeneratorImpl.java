@@ -492,7 +492,6 @@ public class CppLocalDbcGeneratorImpl
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getAttributeSetPreInvocation()");
-        //return getCodeForInvariant( attr.getDefinedIn() );
         return CHECK_INVARIANT_CALL_ON_ENTRY;
     }
 
@@ -503,7 +502,6 @@ public class CppLocalDbcGeneratorImpl
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getAttributeSetPostInvocation()");
-        //return getCodeForInvariant( attr.getDefinedIn() );
         return CHECK_INVARIANT_CALL_ON_EXIT;
     }
 
@@ -597,8 +595,14 @@ public class CppLocalDbcGeneratorImpl
         {
             return "/* theClass==null */";
         }
-        ConstraintCode preCode = generator_.makeCodeForPrecondition(theClass,op);
-        return CHECK_INVARIANT_CALL_ON_ENTRY+"\n" + preCode.statements_;
+        ConstraintCode preCode = generator_.makeCodeForPrecondition(theClass, op);
+        String code = CHECK_INVARIANT_CALL_ON_ENTRY+"\n" + preCode.statements_;
+        ConstraintCode postCode = generator_.makeCodeForPostcondition(theClass, op);
+        if( postCode.preStatements_.length()<1 )
+        {
+            return code;
+        }
+        return code+"  // @pre\n"+postCode.preStatements_;
     }
 
 

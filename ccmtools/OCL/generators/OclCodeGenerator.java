@@ -39,7 +39,7 @@ import java.io.FileWriter;
  * Base class for all OCL generators.
  *
  * @author Robert Lechner
- * @version $Revision$
+ * @version $Date$
  */
 public abstract class OclCodeGenerator
 {
@@ -649,7 +649,7 @@ public abstract class OclCodeGenerator
      *
      * @param expression  the OCL expression
      * @param reference  reference parameters
-     * @return the source code (only {@link ConstraintCode#helpers_} and {@link ConstraintCode#expression_})
+     * @return the source code (only helpers_, preStatements_ and expression_)
      */
     protected ConstraintCode makeCode( MConstraintExpression expression, ConstraintCode reference )
     {
@@ -663,7 +663,7 @@ public abstract class OclCodeGenerator
      * Calculates the helper statements and the source code of an OCL expression.
      *
      * @param expression  the OCL expression
-     * @return the source code (only {@link ConstraintCode#helpers_} and {@link ConstraintCode#expression_})
+     * @return the source code (only helpers_, preStatements_ and expression_)
      */
     public ConstraintCode getCodeForOclExpression( MExpression expression )
     {
@@ -674,11 +674,10 @@ public abstract class OclCodeGenerator
 
 
     /**
-     * Calculates the helper statements and the source code of an OCL expression
-     * and also the type of the expression.
+     * Calculates the helper statements, the source code and the type of an OCL expression.
      *
      * @param expr     the OCL expression
-     * @param conCode  only {@link ConstraintCode#helpers_} will be changed
+     * @param conCode  only helpers_ and preStatements_ will be changed
      * @return the source code
      */
     protected String makeCode( MExpression expr, ConstraintCode conCode )
@@ -701,7 +700,7 @@ public abstract class OclCodeGenerator
      * Calculates the helper statements and the source code of an OCL expression.
      *
      * @param expr  the OCL expression
-     * @param code  only {@link ConstraintCode#helpers_} will be changed
+     * @param code  only helpers_ and preStatements_ will be changed
      * @return the source code
      */
     abstract protected String makeSourceCode( MExpression expr, ConstraintCode code );
@@ -712,7 +711,7 @@ public abstract class OclCodeGenerator
      *
      * @param pc  the property call
      * @param index  the (zero based) index of the parameter
-     * @param conCode  only {@link ConstraintCode#helpers_} will be changed
+     * @param conCode  only helpers_ and preStatements_ will be changed
      * @return the source code
      */
     protected String getParameterCode( MPropertyCall pc, int index, ConstraintCode conCode )

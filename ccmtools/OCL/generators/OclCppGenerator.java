@@ -30,7 +30,7 @@ import ccmtools.OCL.parser.OclConstants;
  * An OCL generator for C++ code.
  *
  * @author Robert Lechner
- * @version $Revision$
+ * @version $Date$
  */
 public class OclCppGenerator extends OclStandardGenerator
 {

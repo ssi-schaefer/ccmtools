@@ -34,7 +34,7 @@ import ccmtools.OCL.parser.OclParserException;
  * We also use this class to transport parameters through the code generation process.
  *
  * @author Robert Lechner
- * @version 0.2
+ * @version $Date$
  */
 public abstract class ConstraintCode
 {
@@ -42,6 +42,11 @@ public abstract class ConstraintCode
      * helper statements
      */
     public String helpers_;
+    
+    /**
+     * extra statements for "@pre"
+     */
+    public String preStatements_;
 
     /**
      * the expression (source code)
@@ -79,14 +84,14 @@ public abstract class ConstraintCode
     /// default constructor
     protected ConstraintCode()
     {
-        helpers_ = expression_ = statements_ = "";
+        helpers_ = preStatements_ = expression_ = statements_ = "";
     }
 
 
     /// copy constructor (only {@link theClass_}, {@link opCtxt_} and {@link returnType_})
     protected ConstraintCode( ConstraintCode ref )
     {
-        helpers_ = expression_ = statements_ = "";
+        helpers_ = preStatements_ = expression_ = statements_ = "";
         theClass_ = ref.theClass_;
         opCtxt_ = ref.opCtxt_;
         returnType_ = ref.returnType_;

@@ -36,7 +36,7 @@ import java.util.Iterator;
  * Code generator for languages like C++ or Java.
  *
  * @author Robert Lechner
- * @version $Revision$
+ * @version $Date$
  */
 public abstract class OclStandardGenerator extends OclCodeGenerator
 {
@@ -163,7 +163,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
      * Calculates the helper statements and the source code of an OCL expression.
      *
      * @param expr  the OCL expression
-     * @param code  only {@link ConstraintCode#helpers_} will be changed
+     * @param code  only helpers_ and preStatements_ will be changed
      * @return the source code
      */
     protected String makeSourceCode( MExpression expr, ConstraintCode code )
