@@ -3,7 +3,7 @@
 $ ccmtools-generate c++local -a -o xxx Test.idl
 
 # create mico stubs
-$ ccmtools-generate idl2 -o xxx/CCM_Remote_Stubs Test.idl
+$ ccmtools-generate idl2 -o xxx/CORBA_Stubs Test.idl
 
 # create remote component
 $ ccmtools-generate c++remote -o xxx Test.idl
