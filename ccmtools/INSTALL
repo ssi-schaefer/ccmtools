@@ -1,295 +1,115 @@
-Copyright (C) 1994, 1995, 1996, 1999, 2000, 2001, 2002 Free Software
-Foundation, Inc.
-
-   This file is free documentation; the Free Software Foundation gives
-unlimited permission to copy, distribute and modify it.
-
-
-Quick Installation
-==================
-OK, this is not as quick as possible, but we are working on it...
-
-# Install Ant: see http://ant.apache.org
-
-# Install Confix: see  http://confix.sourceforge.net
-# create a ~/.confix file (here an example):
-ccm_tools_profile = {
-    'PREFIX': '<CCM_INSTALL_PATH>',        # set your own install path 
-    'BUILDROOT': '/tmp',
-    'ADVANCED': 'true',
-    'CONFIX': {},
-    'CONFIGURE': {
-       'ENV': {
-          'CC': '/usr/local/gcc/bin/gcc',  # set your path to gcc
-          'CXX': '/usr/local/gcc/bin/g++', # set your path to g++     
-          'CFLAGS': "-g -O0 -Wall -DCCM_DEBUG",
-          'CXXFLAGS': "-g -O0 -Wall -DCCM_DEBUG",
-          },
-       'ARGS': ['--with-external_mico=/usr/local/mico'] # set your path to mico
-       },
-    }
-
-PROFILES = { 'default': ccm_tools_profile, 'ccmtools': ccm_tools_profile }
-
-# Get the following packages from cvs:
-  $ cvs -d :ext:username@cvs.sf.net:/cvsroot/ccmtools co ccmtools
-  $ cvs -d :ext:username@cvs.sf.net:/cvsroot/ccmtools co cpp-environment
-  $ cvs -d :ext:teiniker@cvs.sf.net:/cvsroot/ccmtools co java-environment
-
-# Install java-environment package:
-  $ cd java-environment
-  $ ant install
-
-# Install cpp-environment package:
-# For local components:
-  $ cd CCM_Local       
-  $ confix.py --bootstrap --configure --make --targets="all install"
-# For remote components (note that you will need mico-2.3.10 or later):
-  $ cd external
-  $ confix.py --bootstrap --configure --make --targets="all install"
-  $ cd CCM_Remote
-  $ confix.py --bootstrap --configure --make --targets="all install"
-
-# Install ccmtools
-  $ autogen.py --prefix=<CCM_INSTALL_PATH>
-  $ make; make install
-
-# Set some environment variables
-# For local components:
-  $ export CCMTOOLS_HOME=<CCM_INSTALL_PATH>
-  $ export PATH=$CCMTOOLS_HOME/bin:$PATH
-  $ export CLASSPATH=$CCMTOOLS_HOME/share/java/ccmtools.jar:\
-                     $CCMTOOLS_HOME/share/java/antlr.jar:\
-                     $CCMTOOLS_HOME/share/java/mdr01.jar:\
-                     $CCMTOOLS_HOME/share/java/uml2idl.jar:\
-                     $CCMTOOLS_HOME/share/java/oclmetamodel.jar:\
-                     $CLASSPATH
-# For remote components:
-  $ export CCM_COMPONENT_REPOSITORY=${CCMTOOLS_HOME}
-  $ export CCM_NAME_SERVICE=corbaloc:iiop:1.2@localhost:5050/NameService
-
-
-
-Basic Installation
-==================
-
-   These are generic installation instructions.
-
-   The `configure' shell script attempts to guess correct values for
-various system-dependent variables used during compilation.  It uses
-those values to create a `Makefile' in each directory of the package.
-It may also create one or more `.h' files containing system-dependent
-definitions.  Finally, it creates a shell script `config.status' that
-you can run in the future to recreate the current configuration, and a
-file `config.log' containing compiler output (useful mainly for
-debugging `configure').
-
-   It can also use an optional file (typically called `config.cache'
-and enabled with `--cache-file=config.cache' or simply `-C') that saves
-the results of its tests to speed up reconfiguring.  (Caching is
-disabled by default to prevent problems with accidental use of stale
-cache files.)
-
-   If you need to do unusual things to compile the package, please try
-to figure out how `configure' could check whether to do them, and mail
-diffs or instructions to the address given in the `README' so they can
-be considered for the next release.  If you are using the cache, and at
-some point `config.cache' contains results you don't want to keep, you
-may remove or edit it.
-
-   The file `configure.ac' (or `configure.in') is used to create
-`configure' by a program called `autoconf'.  You only need
-`configure.ac' if you want to change it or regenerate `configure' using
-a newer version of `autoconf'.
-
-The simplest way to compile this package is:
-
-  1. `cd' to the directory containing the package's source code and type
-     `./configure' to configure the package for your system.  If you're
-     using `csh' on an old version of System V, you might need to type
-     `sh ./configure' instead to prevent `csh' from trying to execute
-     `configure' itself.
-
-     Running `configure' takes awhile.  While running, it prints some
-     messages telling which features it is checking for.
-
-  2. Type `make' to compile the package.
-
-  3. Optionally, type `make check' to run any self-tests that come with
-     the package.
-
-  4. Type `make install' to install the programs and any data files and
-     documentation.
-
-  5. You can remove the program binaries and object files from the
-     source code directory by typing `make clean'.  To also remove the
-     files that `configure' created (so you can compile the package for
-     a different kind of computer), type `make distclean'.  There is
-     also a `make maintainer-clean' target, but that is intended mainly
-     for the package's developers.  If you use it, you may have to get
-     all sorts of other programs in order to regenerate files that came
-     with the distribution.
-
-Compilers and Options
-=====================
-
-   Some systems require unusual options for compilation or linking that
-the `configure' script does not know about.  Run `./configure --help'
-for details on some of the pertinent environment variables.
-
-   You can give `configure' initial values for configuration parameters
-by setting variables in the command line or in the environment.  Here
-is an example:
-
-     ./configure CC=c89 CFLAGS=-O2 LIBS=-lposix
-
-   *Note Defining Variables::, for more details.
-
-Compiling For Multiple Architectures
-====================================
-
-   You can compile the package for more than one kind of computer at the
-same time, by placing the object files for each architecture in their
-own directory.  To do this, you must use a version of `make' that
-supports the `VPATH' variable, such as GNU `make'.  `cd' to the
-directory where you want the object files and executables to go and run
-the `configure' script.  `configure' automatically checks for the
-source code in the directory that `configure' is in and in `..'.
-
-   If you have to use a `make' that does not support the `VPATH'
-variable, you have to compile the package for one architecture at a
-time in the source code directory.  After you have installed the
-package for one architecture, use `make distclean' before reconfiguring
-for another architecture.
-
-Installation Names
-==================
-
-   By default, `make install' will install the package's files in
-`/usr/local/bin', `/usr/local/man', etc.  You can specify an
-installation prefix other than `/usr/local' by giving `configure' the
-option `--prefix=PATH'.
-
-   You can specify separate installation prefixes for
-architecture-specific files and architecture-independent files.  If you
-give `configure' the option `--exec-prefix=PATH', the package will use
-PATH as the prefix for installing programs and libraries.
-Documentation and other data files will still use the regular prefix.
-
-   In addition, if you use an unusual directory layout you can give
-options like `--bindir=PATH' to specify different values for particular
-kinds of files.  Run `configure --help' for a list of the directories
-you can set and what kinds of files go in them.
-
-   If the package supports it, you can cause programs to be installed
-with an extra prefix or suffix on their names by giving `configure' the
-option `--program-prefix=PREFIX' or `--program-suffix=SUFFIX'.
-
-Optional Features
+CCM TOOLS INSTALL
 =================
 
-   Some packages pay attention to `--enable-FEATURE' options to
-`configure', where FEATURE indicates an optional part of the package.
-They may also pay attention to `--with-PACKAGE' options, where PACKAGE
-is something like `gnu-as' or `x' (for the X Window System).  The
-`README' should mention any `--enable-' and `--with-' options that the
-package recognizes.
+This file describes how to get and install the CCM Tools on your box.
+(see also http://ccmtools.sourceforge.net/tutorial.pdf)	
 
-   For packages that use the X Window System, `configure' can usually
-find the X include and library files automatically, but if it doesn't,
-you can use the `configure' options `--x-includes=DIR' and
-`--x-libraries=DIR' to specify their locations.
+Prerequisites 
+=============
+To install the CCM Tools, the following programs must be available: 
+  Java SDK     1.4      (http://java.sun.com/j2se) 
+  Apache Ant   1.5.3    (http://ant.apache.org) 
+  Python       2.2      (http://python.org) 
+  cpp          2.96     (http://www.gnu.org) 
 
-Specifying the System Type
-==========================
+To build the generated local C++ components, we also need: 
+  Confix       1.3pre14 (http://confix.sourceforge.net) 
+  gcc          2.95.3   (http://www.gnu.org) 
 
-   There may be some features `configure' cannot figure out
-automatically, but needs to determine by the type of machine the package
-will run on.  Usually, assuming the package is built to be run on the
-_same_ architectures, `configure' can figure that out, but if it prints
-a message saying it cannot guess the machine type, give it the
-`--build=TYPE' option.  TYPE can either be a short name for the system
-type, such as `sun4', or a canonical name which has the form:
+To generate and build remote C++ components, we additionally need: 
+  mico         2.3.10   (http://www.mico.org/)
 
-     CPU-COMPANY-SYSTEM
 
-where SYSTEM can have one of these forms:
+How to get it
+=============
+The current ccmtools version can be checked out from sourceforge CVS:
 
-     OS KERNEL-OS
+ $ cvs -d :pserver:anonymous@cvs.sf.net:/cvsroot/ccmtools login
+ Password: <press enter>
+ $ cvs -d :pserver:anonymous@cvs.sf.net:/cvsroot/ccmtools co ccmtools
+ $ cvs -d :pserver:anonymous@cvs.sf.net:/cvsroot/ccmtools co cpp-environment
+ $ cvs -d :pserver:anonymous@cvs.sf.net:/cvsroot/ccmtools co java-environment
 
-   See the file `config.sub' for the possible values of each field.  If
-`config.sub' isn't included in this package, then this package doesn't
-need to know the machine type.
+Now you have the following directory structure: 
 
-   If you are _building_ compiler tools for cross-compiling, you should
-use the `--target=TYPE' option to select the type of system they will
-produce code for.
+    |-- ccmtools/ 
+    |-- cpp-environment/  
+    `-- java-environment/
 
-   If you want to _use_ a cross compiler, that generates code for a
-platform different from the build platform, you should specify the
-"host" platform (i.e., that on which the generated programs will
-eventually be run) with `--host=TYPE'.
 
-Sharing Defaults
-================
+Install java-environment package
+================================
+To build and install the java-environment we use Ant. 
+ $ cd java-environment 
+ $ ant install 
+ $ cd ..
+The java-environment is ready to be used by the ccmtools package!
 
-   If you want to set default values for `configure' scripts to share,
-you can create a site shell script called `config.site' that gives
-default values for variables like `CC', `cache_file', and `prefix'.
-`configure' looks for `PREFIX/share/config.site' if it exists, then
-`PREFIX/etc/config.site' if it exists.  Or, you can set the
-`CONFIG_SITE' environment variable to the location of the site script.
-A warning: not all `configure' scripts look for a site script.
 
-Defining Variables
-==================
+Install ccmtools package 
+========================
+The ccmtools package can be installed with the following procedure:
 
-   Variables not defined in a site shell script can be set in the
-environment passed to `configure'.  However, some packages may run
-configure again during the build, and the customized values of these
-variables may be lost.  In order to avoid this problem, you should set
-them in the `configure' command line, using `VAR=value'.  For example:
+ $ cd ccmtools
+ $ autogen.py --prefix=<CCM_INSTALL_PATH>
+ $ make; make install
+ $ cd ..
 
-     ./configure CC=/usr/local2/bin/gcc
+After that, we have to set some environment variables (these settings are usually 
+added to .bashrc):
 
-will cause the specified gcc to be used as the C compiler (unless it is
-overridden in the site shell script).
+ # For using local components: 
+ $ export CCMTOOLS_HOME=<CCM_INSTALL_PATH> 
+ $ export PATH=$CCMTOOLS_HOME/bin:$PATH 
+ $ export CLASSPATH=$CCMTOOLS_HOME/share/java/ccmtools.jar:$CCMTOOLS_HOME/share/java/antlr.jar:$CCMTOOLS_HOME/share/java/mdr01.jar:$CCMTOOLS_HOME/share/java/uml2idl.jar:$CCMTOOLS_HOME/share/java/oclmetamodel.jar:$CLASSPATH
 
-`configure' Invocation
-======================
+ # For using remote components too: 
+ $ export CCM_COMPONENT_REPOSITORY=${CCMTOOLS_HOME} 
+ $ export CCM_NAME_SERVICE=corbaloc:iiop:1.2@localhost:5050/NameService
 
-   `configure' recognizes the following options to control how it
-operates.
 
-`--help'
-`-h'
-     Print a summary of the options to `configure', and exit.
+Install cpp-environment package
+===============================
+We use Confix as C++ build tool. Thus, we have to create a CCM Tools profile in 
+the .confix file. 
 
-`--version'
-`-V'
-     Print the version of Autoconf used to generate the `configure'
-     script, and exit.
+ ccm_tools_profile = {  
+   PREFIX :  <CCM_INSTALL_PATH> , # use your own path!  
+   BUILDROOT :  /tmp , # use your own path!  
+   ADVANCED :  true ,  CONFIX : { },  
+   CONFIGURE : {  
+      ENV : {  
+         CC :  /usr/local/gcc/bin/gcc , # use your own path!  
+         CXX :  /usr/local/gcc/bin/g++ , # use your own path!  
+         CFLAGS : "-g -O0 -Wall -DWXDEBUG",  
+         CXXFLAGS : "-g -O0 -Wall -DWXDEBUG", 
+      }, 
+      # use your own mico install path!  
+      ARGS : [ --with-external_mico=/usr/local/mico ] 
+      }, 
+   } 
+   PROFILES = {  
+      'ccmtools' : ccm_tools_profile 
+      'default'  : ccm_tools_profile
+   }
+ }
 
-`--cache-file=FILE'
-     Enable the cache: use and save the results of the tests in FILE,
-     traditionally `config.cache'.  FILE defaults to `/dev/null' to
-     disable caching.
+It's important to substitute your own paths in the .confix file. You can also 
+set the ccm_tools_profile as default profile. Now we are ready to install the 
+cpp-environment needed to use local C++ components.
 
-`--config-cache'
-`-C'
-     Alias for `--cache-file=config.cache'.
+Now we are ready to install the cpp-environment needed to use local C++ 
+components:
 
-`--quiet'
-`--silent'
-`-q'
-     Do not print messages saying which checks are being made.  To
-     suppress all normal output, redirect it to `/dev/null' (any error
-     messages will still be shown).
+ $ cd cpp-environment 
+ $ confix.py --packageroot=`pwd`/WX_Utils --bootstrap --configure --make --targets="install" 
+ $ confix.py --packageroot=`pwd`/CCM_Local --bootstrap --configure --make --targets="install"
 
-`--srcdir=DIR'
-     Look for the package's source code in directory DIR.  Usually
-     `configure' can determine that directory automatically.
+Finally, we install the cpp-environment needed to use remote C++ components:
 
-`configure' also accepts some other, not widely useful, options.  Run
-`configure --help' for more details.
+ $ confix.py --packageroot=`pwd`/external --bootstrap --configure --make --targets="install"
+ $ confix.py --packageroot=`pwd`/CCM_Remote --bootstrap --configure --make --targets="install"
+ $ cd ..
 
+
+OK, that s it! Now we are ready to create and run components using the CCM Tools. 
