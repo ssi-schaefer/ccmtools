@@ -1,8 +1,9 @@
 #! /bin/sh
 
-idldir=${top_srcdir}/../test/idl/include_dir
+curdir=`pwd` ; cd ${top_srcdir} ; abssrcdir=`pwd` ; cd ${curdir}
+idldir=${abssrcdir}/test/idl/include_dir/comp
 
 ${top_srcdir}/test/CppGenerator/test-loader.sh "include_dir" \
-                                               " " \
-                                               "${idldir}/comp/Hello.idl"
+                                               "-I${idldir}" \
+                                               "${idldir}/Hello.idl"
 
