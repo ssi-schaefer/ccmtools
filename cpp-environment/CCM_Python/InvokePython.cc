@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "InvokePython.h"
 
 using namespace std;
@@ -25,16 +27,16 @@ invoke_python
       pyResult = PyObject_CallObject ( pyFunction, pyArgs );
       if ( pyResult == NULL ) {
         PyErr_Print (  );
-        DEBUGNL ( " ** Call to python function \""+function+"\" failed" );
+        cerr << " ** Call to python function \"" << function << "\" failed" << endl;
       }
     } else {
       PyErr_Print (  );
-      DEBUGNL ( " ** Cannot find \""+function+"\" in \""+module+"\" module" );
+      cerr << " ** Cannot find \"" << function << "\" in \"" << module << "\" module" << endl;
     }
     Py_DECREF ( pyModule );
   } else {
     PyErr_Print (  );
-    DEBUGNL ( " ** Failed to load python module \""+module+"\"" );
+    cerr << " ** Failed to load python module \"" << module << "\"" << endl;
   }
   Py_DECREF ( pyName );
 

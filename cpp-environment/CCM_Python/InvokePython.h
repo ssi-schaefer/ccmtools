@@ -1,6 +1,7 @@
 #ifndef __CCM__TEST__PYTHON__INVOKE_PYTHON__H__
 #define __CCM__TEST__PYTHON__INVOKE_PYTHON__H__
 
+#include <string>
 #include <cstring>
 #include <Python.h>
 

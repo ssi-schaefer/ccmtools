@@ -1,6 +1,7 @@
 #ifndef ___CCM__TEST__PYTHON__CONVERT_PRIMITIVES__H___
 #define ___CCM__TEST__PYTHON__CONVERT_PRIMITIVES__H___
 
+#include <string>
 #include <cstring>
 #include <Python.h>
 
@@ -29,7 +30,7 @@ unsigned long convert_unsignedlong_from_python ( PyObject *arg );
 float         convert_float_from_python        ( PyObject *arg );
 double        convert_double_from_python       ( PyObject *arg );
 char          convert_char_from_python         ( PyObject *arg );
-string        convert_string_from_python       ( PyObject *arg );
+std::string   convert_string_from_python       ( PyObject *arg );
 
 } // /namespace Python
 } // /namespace CCM_Test
