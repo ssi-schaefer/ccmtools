@@ -77,8 +77,6 @@ public class CppRemoteGeneratorImpl
 	new File("CCM_Session_Container", "Makefile.py"),
 
         new File("remoteComponents", "CCM.idl"),
-	//	new File("remoteComponents", "CCM.h"),
-	//	new File("remoteComponents", "CCM.cc"),
         new File("remoteComponents", "Makefile.py")
     };
 
@@ -103,8 +101,6 @@ public class CppRemoteGeneratorImpl
 	"Blank",                  // Template for Makefile.py
 
 	"ComponentsIdl",          // Template for Components.idl
-	//	"ComponentsHeader",       // (mico 2.3.10 specific) !!!
-	//	"ComponentsImpl",         // (mico 2.3.10 specific) !!!
 	"MakefilePy"              // Template for Makefile.py
     };
 
@@ -866,6 +862,7 @@ public class CppRemoteGeneratorImpl
     protected String convertEnumParameterFromCorbaToCpp(MParameterDef p, MEnumDef idl_enum)
     {
 	MParameterMode direction = p.getDirection();
+	String EnumScope = "";
 
         List ret = new ArrayList();
 	ret.add("  CCM_Local::" + getFullScopeIdentifier(idl_enum) + " parameter_"
@@ -874,9 +871,16 @@ public class CppRemoteGeneratorImpl
 	    ret.add("  switch(" + p.getIdentifier() + ") {");
 	    for (Iterator members = idl_enum.getMembers().iterator(); members.hasNext(); ) {
 		String member = (String)members.next();
-		ret.add("    case " + member + ": parameter_" + p.getIdentifier() 
-			+ " = CCM_Local::" + getFullScopeIdentifier(idl_enum) 
-			+ "(" + member + "); break;");
+
+		List scope = getScope((MContained)idl_enum);
+		if(scope.size() > 0)
+		    EnumScope = "::" + join("::", scope) + "::"; 
+		else
+		    EnumScope = "::";
+		ret.add("    case " + EnumScope + member + ":");
+		ret.add("    parameter_" + p.getIdentifier() + " = CCM_Local" + EnumScope 
+			+ member + ";");
+		ret.add("    break;");
 	    }
 	    ret.add("  }");
 	}
@@ -1151,13 +1155,22 @@ public class CppRemoteGeneratorImpl
     {
 	List ret = new ArrayList();
 	MParameterMode direction = p.getDirection();
-	
+	String EnumScope = "";
+
 	if(direction != MParameterMode.PARAM_IN) {
 	    ret.add("  switch(parameter_" + p.getIdentifier() + ") {");
 	    for (Iterator members = idl_enum.getMembers().iterator(); members.hasNext(); ) {
 		String member = (String)members.next();
-		ret.add("  case " + member + ": " + p.getIdentifier() + " = " 
-			+ "::" + getFullScopeIdentifier(idl_enum) + "(" + member + "); break;");
+
+		List scope = getScope((MContained)idl_enum);
+		if(scope.size() > 0)
+		    EnumScope = "::" + join("::", scope) + "::"; 
+		else
+		    EnumScope = "::";
+
+		ret.add("    case " + "CCM_Local" + EnumScope + member + ": ");
+		ret.add("    " + p.getIdentifier() + " = " + EnumScope + member + ";");
+		ret.add("    break;");
 	    }	    
 	    ret.add("  }");
 	}
@@ -1363,14 +1376,22 @@ public class CppRemoteGeneratorImpl
 
     protected String convertEnumResultFromCppToCorba(MEnumDef idl_enum)
     {
+	String EnumScope = "";
 	List ret = new ArrayList();
 	ret.add("  ::" + getFullScopeIdentifier(idl_enum) + " return_value;"); 
 	ret.add("  switch(result) {");	
 	for (Iterator members = idl_enum.getMembers().iterator(); members.hasNext(); ) {
 	    String member = (String)members.next();
+	    List scope = getScope((MContained)idl_enum);
 	    
-	    ret.add("  case " + member + ": return_value = ::" 
-		    + getFullScopeIdentifier(idl_enum) + "(" + member + "); break;");
+	    if(scope.size() > 0)
+		EnumScope = "::" + join("::", scope) + "::"; 
+	    else
+		EnumScope = "::";
+
+	    ret.add("    case CCM_Local" + EnumScope + member + ":");
+	    ret.add("    return_value = " + EnumScope + member + ";");
+	    ret.add("    break;");
 	}
 	ret.add("  }");
 	return join("\n", ret);	
