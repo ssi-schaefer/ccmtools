@@ -1,9 +1,29 @@
-# Variante 1
-ccmtools-generate c++local -a -o CarRental *.idl
-ccmtools-generate idl3mirror -o CarRental/idl3mirror *.idl
-ccmtools-generate c++local -a -o CarRental -ICarRental/idl3mirror CarRental/idl3mirror/*.idl
-ccmtools-generate c++local-test -o CarRental *.idl
+Tutorial example 1
+==================
 
-confix.py --packageroot=`pwd`/CarRental --bootstrap --configure --make --targets="check"
+This is the example of the tutorial's 'Fist Component' chapter.
+It is thought as an entry to the component based development using CCM Tools.
 
 
+How to build and run:
+---------------------
+
+# Generate component and mirror component logic as well as a test client
+$ ccmtools-c++-generate -d -a -p CarRental *.idl
+
+# Copy business logic and test cases into the component directory
+$ cp src/* CarRental/src/
+
+# Compile the components and run the unit test
+$ confix.py --bootstrap --configure --packageroot=`pwd`/CarRental --make --targets=check
+
+# Install the components
+$ confix.py --packageroot=`pwd`/CarRental --make --targets=install
+
+# Compile and run the client
+$ confix.py --bootstrap --configure --packageroot=`pwd`/CarRentalClient --make --targets=install
+$ CarRentalClient_src_client
+
+# Uninstall client and components
+$ confix.py --packageroot=`pwd`/CarRentalClient --make --targets=uninstall
+$ confix.py --packageroot=`pwd`/CarRental --make --targets=uninstall
