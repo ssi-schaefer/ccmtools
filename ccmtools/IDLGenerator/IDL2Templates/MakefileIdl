@@ -1,0 +1,16 @@
+APP_NAME = Hello
+
+IDL_COMPILER  = $(MICO_HOME)/bin/idl 
+IDL_INCLUDE = -I $(CCMTOOLS_HOME)/include
+
+MICO_INCLUDE = -I $(MICO_HOME)/include
+MICO_LIBS = -L $(MICO_HOME)/lib -lmicocoss2.3.10 -lmico2.3.10 -ldl
+
+all: 
+	$(IDL_COMPILER) $(IDL_INCLUDE) *.idl2
+
+.PHONY : clean
+clean:
+	-rm $(APP_NAME).h
+	-rm $(APP_NAME).cc
+

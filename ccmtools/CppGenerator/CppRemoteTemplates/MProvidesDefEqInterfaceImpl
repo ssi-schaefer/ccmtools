@@ -5,7 +5,7 @@
   DEBUGNL(" %(ComponentType)s_impl::provide_%(Identifier)s()");
 
   if (%(Identifier)s_facet_adapter == 0) {
-    %(Identifier)s_facet_adapter = new %(ComponentType)s_%(Identifier)s_impl(local_component);
+    %(Identifier)s_facet_adapter = new %(Identifier)sFacetAdapter(local_component);
     CORBA::Object_var _facet_ref = 
       ccm_container->activate_facet(this, "%(Identifier)s",NULL/* _instance_for_facet_calc*/,
 				 %(Identifier)s_facet_adapter);

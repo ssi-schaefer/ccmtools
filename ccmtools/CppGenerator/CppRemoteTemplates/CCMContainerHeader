@@ -1,14 +1,27 @@
-/******************************************************************************/
-/*  Project: remote Prototype C++                                             */
-/*  File   : CCMContainer.h                                                   */
-/*  Version: 0.1                                                              */
-/*  Date   : Feber 2003                                                       */
-/*----------------------------------------------------------------------------*/
-/*  Company: SALOMON Automoation F&E                                          */
-/*  Autor  : Egon Teiniker                                                    */
-/*----------------------------------------------------------------------------*/
-/*  Note   :                                                                  */
-/******************************************************************************/
+/* CCM Tools : C++ Code Generator 
+ * Egon Teiniker <egon.teiniker@tugraz.at>
+ * copyright (c) 2002, 2003 Salomon Automation
+ *
+ * $Id$
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
+
+/* 
+ * This code is based on the MicoCCM implementation of a CCM session container.
+ */
 
 #ifndef __CCM_CONTAINER_H__
 #define __CCM_CONTAINER_H__
@@ -16,6 +29,10 @@
 #include <CORBA.h>
 #include <map>
 #include <string>
+
+#include <CCM_Utils/SmartPointer.h>
+#include <CCM_Utils/Debug.h> 
+
 #include <Components.h>
 #include <localComponents/CCM.h>
 
@@ -25,19 +42,19 @@ namespace CCM {
   // Convert C++ to CORBA types
   //============================================================================
   
-  CORBA::Long   int_to_CORBA_Long(int i);
-  CORBA::Double double_to_CORBA_Double(double d);
+  CORBA::Long   long_to_CORBAlong(long i);
+  CORBA::Double double_to_CORBAdouble(double d);
   
-  char*         string_to_char_ptr(std::string s);
+  char*         string_to_CORBAcharptr(std::string s);
 
 
   //============================================================================
   // Convert CORBA to C++ types
   //============================================================================
   
-  int    CORBA_Long_to_int(CORBA::Long i);
-  double CORBA_Double_to_double(CORBA::Double d);
-
+  long        CORBAlong_to_long(CORBA::Long i);
+  double      CORBAdouble_to_double(CORBA::Double d);
+  std::string CORBAcharptr_to_string(const char* s);
 
 
 

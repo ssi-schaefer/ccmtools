@@ -31,7 +31,10 @@ public class IDL3MirrorGeneratorImpl
     extends IDLGenerator
 {
     public IDL3MirrorGeneratorImpl(Driver d, File out_dir)
-        throws IOException { super("IDL3Mirror", d, out_dir); }
+        throws IOException 
+    { 
+	super("IDL3Mirror", d, out_dir, null, null); 
+    }
 
     public void writeOutput(Template template)
         throws IOException { writeOutput(template, "3mirror"); }

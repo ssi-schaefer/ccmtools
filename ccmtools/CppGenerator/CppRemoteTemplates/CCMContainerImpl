@@ -1,36 +1,52 @@
-/******************************************************************************/
-/*  Project: remote Prototype C++                                             */
-/*  File   : CCMContainer.cc                                                  */
-/*  Version: 0.1                                                              */
-/*  Date   : Feber 2003                                                       */
-/*----------------------------------------------------------------------------*/
-/*  Company: SALOMON Automoation F&E                                          */
-/*  Autor  : Egon Teiniker                                                    */
-/*----------------------------------------------------------------------------*/
-/*  Note   :                                                                  */
-/******************************************************************************/
+/* CCM Tools : C++ Code Generator 
+ * Egon Teiniker <egon.teiniker@tugraz.at>
+ * copyright (c) 2002, 2003 Salomon Automation
+ *
+ * $Id$
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
 
+/* 
+ * This code is based on the MicoCCM implementation of a CCM session container.
+ */
 
 #include "CCMContainer.h"
 
 using namespace std;
+using namespace CCM_Utils;
 
 //============================================================================
 // Convert C++ to CORBA types
 //============================================================================
 
-CORBA::Long CCM::int_to_CORBA_Long(int i)
+CORBA::Long CCM::long_to_CORBAlong(long i)
 {
+  DEBUGNL(" CCM::long_to_CORBAlong()");	
   return (CORBA::Long)i;
 }
 
-CORBA::Double CCM::double_to_CORBA_Double(double d)
+CORBA::Double CCM::double_to_CORBAdouble(double d)
 {
+  DEBUGNL(" CCM::double_to_CORBAdouble()");	
   return (CORBA::Double)d;
 }
 
-char* CCM::string_to_char_ptr(std::string s)
+char* CCM::string_to_CORBAcharptr(std::string s)
 {
+  DEBUGNL(" CCM::string_to_CORBAcharptr()");	
   return CORBA::string_dup(s.c_str());
 }
 
@@ -41,17 +57,23 @@ char* CCM::string_to_char_ptr(std::string s)
 // Convert CORBA to C++ types
 //============================================================================
 
-int CCM::CORBA_Long_to_int(CORBA::Long i)
+long CCM::CORBAlong_to_long(CORBA::Long i)
 {
-  return (int)i;
+  DEBUGNL(" CCM::CORBAlong_to_long()");	
+  return (long)i;
 }
 
-double CCM::CORBA_Double_to_double(CORBA::Double d)
+double CCM::CORBAdouble_to_double(CORBA::Double d)
 {
+  DEBUGNL(" CCM::CORBAdouble_to_double()");	
   return (double)d;
 }
 
-
+std::string CCM::CORBAcharptr_to_string(const char* s)
+{
+  DEBUGNL(" CCM::CORBAcharptr_to_string()");	
+  return std::string(s);	
+}
 
 
 //============================================================================
@@ -66,13 +88,15 @@ double CCM::CORBA_Double_to_double(CORBA::Double d)
 
 CORBA::ULong CCM::ContainerBase::_container_number = 0;
 
-CCM::ContainerBase::ContainerBase ()
+CCM::ContainerBase::ContainerBase()
 {
+  DEBUGNL("+CCM::ContainerBase::ContainerBase()");		
   _my_number = ++_container_number;
 }
 
 CCM::ContainerBase::~ContainerBase ()
 {
+  DEBUGNL("-CCM::ContainerBase::~ContainerBase ()");		
 }
 
 
@@ -83,7 +107,7 @@ CCM::ContainerBase::~ContainerBase ()
 
 CCM::SessionContainer::SessionContainer (CORBA::ORB_ptr orb)
 {
-  cout << "+CCM::SessionContainer->SessionContainer()" << endl;
+  DEBUGNL("+CCM::SessionContainer->SessionContainer()");
 
   CORBA::Object_var obj;
   char name[256];
@@ -106,13 +130,13 @@ CCM::SessionContainer::SessionContainer (CORBA::ORB_ptr orb)
 
 CCM::SessionContainer::~SessionContainer ()
 {
-  cout << "-CCM::SessionContainer->SessionContainer()" << endl;
+  DEBUGNL("-CCM::SessionContainer->SessionContainer()");
 }
 
 
 void CCM::SessionContainer::load(const ComponentInfo& info)
 {
-   cout << " CCM::SessionContainer->load()" << endl;
+   DEBUGNL(" CCM::SessionContainer->load()");
 
    assert (!_have_info);
    _info = info;
@@ -127,7 +151,7 @@ void CCM::SessionContainer::load(const ComponentInfo& info)
 
 void CCM::SessionContainer::activate ()
 {
-  cout << " CCM::SessionContainer->activate()" << endl;
+  DEBUGNL(" CCM::SessionContainer->activate()");
 
   // TODO
   // Set instances to active, if their configuration is complete
@@ -142,7 +166,7 @@ void CCM::SessionContainer::activate ()
 
 void CCM::SessionContainer::passivate ()
 {
-  cout << " CCM::SessionContainer::passivate()" << endl;
+  DEBUGNL(" CCM::SessionContainer::passivate()");
 
   // TODO
   // Set instances to inactive
@@ -156,7 +180,7 @@ void CCM::SessionContainer::passivate ()
 
 void CCM::SessionContainer::remove ()
 {
-  cout << " CCM::SessionContainer::remove()" << endl;
+  DEBUGNL(" CCM::SessionContainer::remove()");
 
   passivate ();
 
@@ -171,7 +195,7 @@ void CCM::SessionContainer::remove ()
 
 CORBA::Boolean CCM::SessionContainer::compare(Components::CCMHome_ptr ohome)
 {
-  cout << " CCM::SessionContainer::compare()" << endl;
+  DEBUGNL(" CCM::SessionContainer::compare()");
 
   PortableServer::ObjectId_var myid = _my_poa->reference_to_id(_home_ref);
   PortableServer::ObjectId_var oid;
@@ -192,7 +216,7 @@ CORBA::Boolean CCM::SessionContainer::compare(Components::CCMHome_ptr ohome)
 
 Components::CCMHome_ptr CCM::SessionContainer::get_reference_for_home ()
 {
-  cout << " CCM::SessionContainer->get_reference_for_home()" << endl;
+  DEBUGNL(" CCM::SessionContainer->get_reference_for_home()");
   return Components::CCMHome::_narrow (_home_ref.in());
 }
 
@@ -201,7 +225,7 @@ Components::CCMObject_ptr
 CCM::SessionContainer::activate_component (localComponents::EnterpriseComponent* inst,
 						 PortableServer::Servant skel)
 {
-  cout << " CCM::SessionContainer->activate_component()" << endl;
+  DEBUGNL(" CCM::SessionContainer->activate_component()");
 
   PortableServer::ObjectId_var oid = _my_poa->activate_object(skel);
   CORBA::Object_var ref = _my_poa->id_to_reference (oid.in());
@@ -213,7 +237,7 @@ CCM::SessionContainer::activate_component (localComponents::EnterpriseComponent*
 Components::CCMObject_ptr
 CCM::SessionContainer::get_reference_for_component (PortableServer::Servant s)
 {
-  cout << " CCM::SessionContainer::get_reference_for_component()" << endl;
+  DEBUGNL(" CCM::SessionContainer::get_reference_for_component()");
 
   CORBA::Object_var o = _my_poa->servant_to_reference (s);
   return Components::CCMObject::_narrow (o);
@@ -223,7 +247,7 @@ CCM::SessionContainer::get_reference_for_component (PortableServer::Servant s)
 PortableServer::Servant
 CCM::SessionContainer::get_skeleton_for_reference (CORBA::Object_ptr o)
 {
-  cout << " CCM::SessionContainer::get_skeleton_for_reference()" << endl;
+  DEBUGNL(" CCM::SessionContainer::get_skeleton_for_reference()");
   
   return _my_poa->reference_to_servant (o);
 }
@@ -232,7 +256,7 @@ CCM::SessionContainer::get_skeleton_for_reference (CORBA::Object_ptr o)
 Components::CCMObject_ptr
 CCM::SessionContainer::get_reference_for_instance(localComponents::EnterpriseComponent* o)
 {
-  cout << " CCM::SessionContainer::get_reference_for_instance()" << endl;
+  DEBUGNL(" CCM::SessionContainer::get_reference_for_instance()");
 
   // TODO
   return Components::CCMObject::_nil();
@@ -242,7 +266,7 @@ CCM::SessionContainer::get_reference_for_instance(localComponents::EnterpriseCom
 localComponents::EnterpriseComponent*
 CCM::SessionContainer::get_instance_for_component (PortableServer::Servant skel)
 {
-  cout << " CCM::SessionContainer::get_instance_for_component()" << endl;
+  DEBUGNL(" CCM::SessionContainer::get_instance_for_component()");
 
   // TODO
   return NULL;
@@ -251,7 +275,7 @@ CCM::SessionContainer::get_instance_for_component (PortableServer::Servant skel)
 
 void CCM::SessionContainer::deactivate_component (CORBA::Object_ptr o)
 {
-  cout << " CCM::SessionContainer::deactivate_component()" << endl;
+  DEBUGNL(" CCM::SessionContainer::deactivate_component()");
 
   //PortableServer::ServantBase_var skel = get_skeleton_for_reference (o);
   PortableServer::Servant skel = get_skeleton_for_reference (o);
@@ -261,7 +285,7 @@ void CCM::SessionContainer::deactivate_component (CORBA::Object_ptr o)
 
 void CCM::SessionContainer::deactivate_component (PortableServer::Servant skel)
 {
-  cout << " CCM::SessionContainer::deactivate_component()" << endl;
+  DEBUGNL(" CCM::SessionContainer::deactivate_component()");
 
   PortableServer::ObjectId_var oid = _my_poa->servant_to_id (skel);
   /*
@@ -285,7 +309,7 @@ CCM::SessionContainer::activate_facet (PortableServer::Servant comp_glue,
 					     void* facet_instance,
 					     PortableServer::Servant facet_glue)
 {
-  cout << " CCM::SessionContainer->activate_facet()" << endl;
+  DEBUGNL(" CCM::SessionContainer->activate_facet()");
   
   PortableServer::ObjectId_var oid = _my_poa->servant_to_id (comp_glue);
   PortableServer::ObjectId_var fid = _my_poa->activate_object (facet_glue);
@@ -300,7 +324,7 @@ CCM::SessionContainer::activate_facet (PortableServer::Servant comp_glue,
 
 void CCM::SessionContainer::configuration_complete (PortableServer::Servant comp_glue)
 {
-  cout << " CCM::SessionContainer::configuration_complete()" << endl;
+  DEBUGNL(" CCM::SessionContainer::configuration_complete()");
 
   PortableServer::ObjectId_var oid = _my_poa->servant_to_id (comp_glue);
   //PerComponentData & data = active_components[oid.in()];
@@ -313,7 +337,7 @@ void CCM::SessionContainer::configuration_complete (PortableServer::Servant comp
 
 Components::CCMHome_ptr CCM::SessionContainer::get_CCM_home ()
 {
-  cout << " CCM::SessionContainer->get_CCM_home()" << endl;
+  DEBUGNL(" CCM::SessionContainer->get_CCM_home()");
 
   return get_reference_for_home ();
 }
@@ -321,7 +345,7 @@ Components::CCMHome_ptr CCM::SessionContainer::get_CCM_home ()
 
 CORBA::Object_ptr CCM::SessionContainer::get_CCM_object (localComponents::EnterpriseComponent* o)
 {
-  cout << " CCM::SessionContainer::get_CCM_object()" << endl;
+  DEBUGNL(" CCM::SessionContainer::get_CCM_object()");
 
   return get_reference_for_instance(o);
 }
@@ -336,7 +360,7 @@ CORBA::Object_ptr CCM::SessionContainer::get_CCM_object (localComponents::Enterp
 
 CCM::PortDescription_impl::PortDescription_impl ()
 {
-  cout << " CCM::PortDescription_impl::PortDescription_impl()" << endl;
+  DEBUGNL(" CCM::PortDescription_impl::PortDescription_impl()");
 
   name ((const char *) "");
   type_id ((const char *) "");
@@ -344,6 +368,7 @@ CCM::PortDescription_impl::PortDescription_impl ()
 
 CCM::Cookie_impl::Cookie_impl ()
 {
+  DEBUGNL(" CCM::Cookie_impl::Cookie_impl()");
 }
 
 CCM::FacetDescription_impl::FacetDescription_impl ()

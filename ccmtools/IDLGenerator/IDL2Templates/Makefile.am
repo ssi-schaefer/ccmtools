@@ -3,6 +3,8 @@
 
 templatedir = $(TEMPLATE_ROOT)/IDL2Templates
 dist_template_DATA = \
+    MakefilePy                               \
+    MakefileIdl                              \
     MAliasDef                                \
     MArrayDef                                \
     MAttributeDef                            \

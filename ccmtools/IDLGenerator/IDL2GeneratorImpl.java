@@ -32,9 +32,38 @@ public class IDL2GeneratorImpl
     extends IDLGenerator
 {
     public IDL2GeneratorImpl(Driver d, File out_dir)
-        throws IOException { super("IDL2", d, out_dir); }
+        throws IOException 
+    { 
+	super("IDL2", d, out_dir, null, null); 
+    }
+
+
+    /**
+     * This method is used to create the needed Makefiles
+     *  - the confix' Makefile.py
+     *  - a Makefile that calls the idl2 compiler (*.idl2 => *.h *.cc)
+     **/
+    public void writeMakefiles()
+    {
+	Template template;
+
+	// Confix Makefile.py
+	template = template_manager.getRawTemplate("MakefilePy");
+	if(template != null)
+	    writeFinalizedFile("","Makefile.py",template.getTemplate());
+
+	// Makefile that calls the idl compiler
+	template = template_manager.getRawTemplate("MakefileIdl");
+	if(template != null)
+	    writeFinalizedFile("","Makefile",template.getTemplate());
+    }
+
 
     public void writeOutput(Template template)
-        throws IOException { writeOutput(template, "2"); }
+        throws IOException 
+    { 
+	super.writeOutput(template, "2");
+	writeMakefiles();
+    }
 }
 

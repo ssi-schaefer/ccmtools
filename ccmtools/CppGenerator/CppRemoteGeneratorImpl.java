@@ -49,12 +49,15 @@ Calculator
 |   |-- Makefile.py             
 |
 |
-|-- CCM_Session_Calculator_stubs  // created from IDL2 generator 
+|-- idl2  // created from IDL2 generator 
 |   |-- Calculator.idl
 |       => Calculator.cc            // from IDL generated   
 |       => Calculator.h             // from IDL generated
 |   |-- Makefile.py
 |
+|-- CCM_Session_Calculator_server
+|   |-- Calculator_server.cc
+|   |-- Makefile.py  
 
 
 |-- CCM_Session_Container         // Environment files
@@ -80,6 +83,7 @@ public class CppRemoteGeneratorImpl
      */
     private final static String[] local_output_types =
     {
+	"MContainer",
         "MHomeDef", 
 	"MComponentDef"
     };
@@ -480,11 +484,17 @@ public class CppRemoteGeneratorImpl
         List ret = new ArrayList();
         for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
             MParameterDef p = (MParameterDef) params.next();
-
+	    
 	    String base_type = (String)language_mappings.get((String)getBaseIdlType(p));
-	    ret.add(base_type + " parameter_" + p.getIdentifier() 
-		    + " = CCM::CORBA" + base_type + "_to_" + 
-		    base_type + "(" +p.getIdentifier() + ");");
+	    if(base_type.equals("std::string")) {
+		ret.add(base_type + " parameter_" + p.getIdentifier() 
+			+ " = " + p.getIdentifier() + ";");
+	    }
+	    else {   
+		ret.add(base_type + " parameter_" + p.getIdentifier() 
+			+ " = CCM::CORBA" + base_type + "_to_" + 
+			base_type + "(" +p.getIdentifier() + ");");
+	    }
 	}
 	return join("\n", ret) + "\n";
     }
@@ -568,26 +578,44 @@ public class CppRemoteGeneratorImpl
 	String node_name = ((MContained) current_node).getIdentifier();
         String[] out_files = { node_name + "_remote.h",
                                node_name + "_remote.cc" };
+	String[] out_file_types = { ".h", ".cc" };
 
+	String file_dir = "";
+	// Note that the name of the target directory is extended 
+	// by "_remote" to separate the remote code from the local one. 
+	
         for (int i = 0; i < out_strings.length; i++) {
-            String generated_code = out_strings[i];
-	    String file_name = out_files[i];
-	    String file_dir;
+	    //            String generated_code = out_strings[i];
+	    //	    String file_name = out_files[i];
+
   	    if (current_node instanceof MComponentDef) {
 		// ComponentDef node
 		file_dir = handleNamespace("FileNamespace", node_name);
-		if (generated_code.trim().equals("")) continue;
-		writeFinalizedFile(file_dir, file_name, generated_code);
+		if (out_strings[i].trim().equals("")) continue;
+		writeFinalizedFile(file_dir + "_remote",  node_name + "_remote" +
+				    out_file_types[i], out_strings[i]);
 	    }
 	    else if (current_node instanceof MHomeDef)  {
 		// HomeDef node
 		MHomeDef home = (MHomeDef)current_node;
 		node_name = ((MContained)home.getComponent()).getIdentifier();
 		file_dir = handleNamespace("FileNamespace", node_name);
-		if (generated_code.trim().equals("")) continue;
-		writeFinalizedFile(file_dir, file_name, generated_code);
+		if (out_strings[i].trim().equals("")) continue;
+		writeFinalizedFile(file_dir + "_remote", node_name + "Home_remote" + 
+				    out_file_types[i], out_strings[i]);
+
+		// generate an empty Makefile.py in the CCM_Session_*_remote 
+		// directory - needed by Confix
+		writeFinalizedFile(file_dir + "_remote","Makefile.py","");
 	    }
-        }
+	    else if(current_node instanceof MContainer)  {
+		file_dir = "CCM_Server";
+		writeFinalizedFile(file_dir, node_name + "_server" +
+				   out_file_types[i], out_strings[i]);
+
+		writeFinalizedFile(file_dir, "Makefile.py"  , "");
+	    }
+	}
     }
 
 

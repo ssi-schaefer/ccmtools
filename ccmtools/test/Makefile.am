@@ -3,7 +3,7 @@
 
 SUBDIRS = CppGenerator
 
-#SUBDIRS = Metamodel IDL3Parser CodeGenerator \
+#SUBDIRS = Metamodel IDL3Parser IDLGenerator CodeGenerator \
 #           CppGenerator CCDGenerator
 
 EXTRA_DIST = idl ccd

@@ -89,11 +89,12 @@ abstract public class IDLGenerator
 
     /**************************************************************************/
 
-    public IDLGenerator(String sublang, Driver d, File out_dir)
+    public IDLGenerator(String sublang, Driver d, File out_dir
+			, File[] env_files, String[] env_templates)
         throws IOException
     {
         super(sublang, d, out_dir, null, local_reserved_words,
-              null, null, local_language_map);
+              env_files, env_templates, local_language_map);
     }
 
     /**

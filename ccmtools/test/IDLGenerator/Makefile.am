@@ -8,11 +8,11 @@ TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
 
 dist_noinst_SCRIPTS = test-loader.sh
 
+#TESTS = \
+#        interface-inheritance.sh \
+#        interface-short-names.sh
 
-TESTS = interface.sh \
-        interface-inheritance.sh \
-        interface-short-names.sh
- 
+TESTS = interface.sh 
 
 dist_check_SCRIPTS = $(TESTS)
 

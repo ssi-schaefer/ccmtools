@@ -37,7 +37,10 @@ public class IDL3GeneratorImpl
     extends IDLGenerator
 {
     public IDL3GeneratorImpl(Driver d, File out_dir)
-        throws IOException { super("IDL3", d, out_dir); }
+        throws IOException 
+    { 
+	super("IDL3", d, out_dir, null, null); 
+    }
 
     public void writeOutput(Template template)
         throws IOException { writeOutput(template, "3"); }

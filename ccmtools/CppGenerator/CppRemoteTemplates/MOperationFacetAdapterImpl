@@ -2,11 +2,10 @@
  %(MExceptionDef)s
 {
   DEBUGNL(" %(Object)sFacetAdapter::%(Identifier)s()");
-  
-  // convert parameter(s)
-%(MParameterDefConvertParameterToCpp)s
-%(MParameterDefConvertMethodToCpp)s
-%(MParameterDefConvertResultToCpp)s
+
+  %(MParameterDefConvertParameterToCpp)s
+  %(MParameterDefConvertMethodToCpp)s
+  %(MParameterDefConvertResultToCpp)s
 }
 
 
