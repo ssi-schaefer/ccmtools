@@ -30,6 +30,7 @@ o) add AssemblyFactory Template to CCM.h
 o) generate debug output with parameter values.
 o) JUnit test case for nested component composition
 o) Performance Measurement
+o) overwrite impl/ComponentHome_entry.h by each generator start.
 
 
 c++remote generator:
