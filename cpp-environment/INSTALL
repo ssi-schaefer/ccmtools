@@ -28,7 +28,7 @@ ccmtools_profile = {
 
 Note that you have to set your own paths for PREFIX, BUILDROOT and --with-mico.
 
-
+	
 For the informed, use the following :
 
    # Install the WX library (some utility stuff like smart pointer, etc.)	
