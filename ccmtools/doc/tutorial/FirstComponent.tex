@@ -1,6 +1,6 @@
 % $Id$
 %==============================================================================
-\chapter{First Component}
+\chapter{Component Development}
 %==============================================================================
 
 
@@ -648,6 +648,7 @@ items.
 To compile and run the test, we type:
 \begin{small}
 \begin{verbatim}
+~/example1> touch CarRental/component/CarRental_mirror/Makefile.py
 ~/example1> confix.py --advanced --bootstrap --configure \
                       --packageroot=`pwd`/CarRental/component \
                       --make --targets=check
@@ -667,10 +668,30 @@ That's fine because there is no business code to work with...
 \subsection{Write the business logic}
 %------------------------------------------------------------------------------
 
-Now we are ready to implement the business logic that satisfies the written test
-case. We open {\tt CarRental\_maintenance\_impl.cc} and add some lines, as 
-shown in Example~\ref{example:one-component-impl}.
+Now we are ready to implement the business logic that satisfies the written 
+test case. 
+First, we have to implement the customer database - no panic - we 
+simple put a C++ {\tt std::vector<>} into the {\tt CarRental\_impl.h} file,
+to hold {\tt Customer} entities.
+\begin{Example}
+\begin{minifbox}
+\begin{small}
+\begin{verbatim}
+class CCM_CarRental_impl : virtual public CCM_CarRental
+{
+  public:
+    std::vector<CCM_Local::BigBusiness::Customer> CustomerDB;
+    //...
+};
+\end{verbatim}
+\end{small}
+\end{minifbox}
+\caption{Business logic header file.}
+\label{example:one-component-impl}
+\end{Example}
 
+Next, we open {\tt CarRental\_maintenance\_impl.cc} and add some lines, as 
+shown in Example~\ref{example:one-component-impl}.
 \begin{Example}
 \begin{minifbox}
 \begin{small}
@@ -729,14 +750,6 @@ To keep the tutorial clean, we implement only simple tests that show the
 functionality of {\tt CarRental}'s business logic.
 In practice, these white box tests must be much more substantial.
 
-Note that the whole example is also available in the 
-{\tt test/CppGenerator/tutorial} directory of the {\tt ccmtools} package. 
-
-\newpage
-To test the {\tt retrieveAllCustomers} method, we add two other customers before
-we call the method. All retrieved records are compared with their initial values
-to validate the query results. 
-
 \begin{Example}
 \begin{minifbox}
 \begin{small}
@@ -755,7 +768,21 @@ to validate the query results.
       ctx->get_connection_maintenance_mirror()->
            createCustomer(person);
     }
+\end{verbatim}
+\end{small}
+\end{minifbox}
+\caption{{\tt retrieveAllCustomers} test case}
+\label{example:retrieveAllCustomersTest}
+\end{Example}
 
+To test the {\tt retrieveAllCustomers} method, we add two other customers before
+we call the method. All retrieved records are compared with their initial values
+to validate the query results. 
+
+\begin{Example}
+\begin{minifbox}
+\begin{small}
+\begin{verbatim}
     {
       CCM_Local::BigBusiness::CustomerList person_list;
       person_list = ctx->get_connection_maintenance_mirror()->
@@ -777,6 +804,14 @@ to validate the query results.
 \label{example:retrieveAllCustomersTest}
 \end{Example}
 
+Note that the whole example is also available in the 
+{\tt test/CppGenerator/tutorial} directory of the {\tt ccmtools} package. 
+
+
+\newpage
+The method's implementation creates a new {\tt CustomerList} which
+is returned by value.
+In the case of an empty list the {\tt NoCustomerException} is thrown.
 
 \begin{Example}
 \begin{minifbox}
@@ -801,10 +836,6 @@ CustomerList maintenance_impl::retrieveAllCustomers (  )
 \caption{{\tt retrieveAllCustomers} implementation }
 \label{example:retrieveAllCustomersImpl}
 \end{Example}
-
-The method's implementation creates a new {\tt CustomerList} which
-is returned by value.
-In the case of an empty list the {\tt NoCustomerException} is thrown.
 
 
 Next, we implement a test case for {\tt updateCustomer}.
@@ -840,6 +871,12 @@ and compare the result record with the new values.
 \end{Example}
 
 
+\newpage
+To implement {\tt updateCustomers} we simply iterate through the {\tt Customer}
+vector and compare each item with the given person.
+If person matches, we overwrite the vector item and return.
+If person does not match, {\tt NoCustomerException} is thrown.
+
 \begin{Example}
 \begin{minifbox}
 \begin{small}
@@ -864,13 +901,9 @@ void maintenance_impl::updateCustomer ( const Customer& person )
 \label{example:}
 \end{Example}
 
-To implement {\tt updateCustomers} we simply iterate through the {\tt Customer}
-vector and compare each item with the given person.
-If person matches, we overwrite the vector item and return.
-If person does not match, {\tt NoCustomerException} is thrown.
 
 
-\newpage
+
 In the following test case, we delete a {\tt Customer} and try to retrieve the 
 deleted record.
 If this works, we break the test ({\tt assert(false)}) because this would be an
@@ -884,7 +917,6 @@ Instead, the {\tt RemoveCustomerException} must be thrown.
       long id = 1;
       ctx->get_connection_maintenance_mirror()->
            deleteCustomer(id);
-
       CCM_Local::BigBusiness::Customer person;
       person = ctx->get_connection_maintenance_mirror()->
                     retrieveCustomer(id);
@@ -919,18 +951,19 @@ void maintenance_impl::deleteCustomer ( const long id )
 \end{small}
 \end{minifbox}
 \caption{{\tt updateCustomer} implementation}
-\label{example:}
+\label{example:updateCustomer}
 \end{Example}
 
-Again, we iterate through the {\tt Customer} vector and compare each item with 
-the given id.
+In example \ref{example:updateCustomer}, we iterate through 
+the {\tt Customer} vector and compare 
+each item with the given id.
 If the given record is found, we will remove it from the {\tt Customer} vector.
 If the given id can't be found in the{\tt Customer} vector, 
 {\tt RemoveCustomerException} is thrown.
+In conclusion, we have implemented the whole {\tt maintenance} facet hand in 
+hand with its test cases. 
 
-Now we have implemented the {\tt maintenance} facet hand in hand with its test 
-cases. 
-
+\vspace{3mm}
 A great benefit of test driven development is that testing is not longer a 
 separated part at the end of a software development process.
 In practice, most projects are running out of time before testing can start. 
@@ -943,8 +976,8 @@ Another benefit of automatic tests appear in context of code refactoring.
 After making some changes in a component's implementation, we can run all test 
 cases to ensure that its functionality is still available.
 
-\newpage
 
+\vspace{1cm}
 In order to implement the second facet, we start with a new test case in 
 $\overline{C}$.
 For {\tt business} facet tests, we create a new try/catch block that catches
@@ -982,6 +1015,7 @@ value from the same customer and verifies their equality.
 \end{Example}
 
 
+\newpage
 To make the test run, we have to implement two facet methods.
 {\tt addCustomerMiles} iterates through the {\tt Customer} vector
 and compares the id values.
@@ -1013,13 +1047,9 @@ void business_impl::addCustomerMiles(const long id,
 \label{example:}
 \end{Example}
 
+
 After adding miles to an existing {\tt Customer} we have to implement a method
 that get the current value of a {\tt Customer}'s mileage member.
-
-Again, we iterate through the {\tt Customer} vector and compare the id values.
-If we find a {\tt Customer} with the right id, we read its mileage value and
-return it to the caller.
-In the other case, as usual, the {\tt NoCustomerException} is thrown.
 
 \begin{Example}
 \begin{minifbox}
@@ -1044,7 +1074,14 @@ double business_impl::getCustomerMiles ( const long id )
 \label{example:}
 \end{Example}
 
+Again, we iterate through the {\tt Customer} vector and compare the id values.
+If we find a {\tt Customer} with the right id, we read its mileage value and
+return it to the caller.
+In the other case, as usual, the {\tt NoCustomerException} is thrown.
 
+
+
+\newpage
 The following test case sets the facet's {\tt dollars\_per\_mile} attribute
 and retrieves the current mileage and Dollar status of a particular 
 {\tt Customer} determined by its id.
@@ -1124,6 +1161,7 @@ as \\
 ;-)
 
 
+\newpage
 Finally, the last test case resets a {\tt Customer}'s mileage value and 
 retrieves its Dollar status. Of course, it has to be null.
 
@@ -1427,7 +1465,8 @@ int main(int argc, char *argv[])
 To build and run the client application, we use the following statements:
 \begin{small}
 \begin{verbatim}
-~/example1> confix.py --packageroot=`pwd`/CarRentalClient \
+~/example1> confix.py --advanced --bootstrap --configure \
+                      --packageroot=`pwd`/CarRentalClient \
                       --make --targets="install"
 
 ~/example1> <.confix/'PREFIX'>/bin/CarRentalClient_src_client

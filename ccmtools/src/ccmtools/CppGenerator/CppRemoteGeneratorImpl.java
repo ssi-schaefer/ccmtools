@@ -154,8 +154,18 @@ public class CppRemoteGeneratorImpl
      * Example: {"CORBA_Stubs"} -> "CORBA_Stubs::"
      */
     protected String getCorbaStubsNamespace(String separator)
-    {
-	return join(separator,CorbaStubsNamespace) + separator;
+    {        
+	List names = new ArrayList(namespace);
+	if(names.size() > 1) {
+	    List shortList = 
+		new ArrayList(names.subList(1, names.size()));
+	    if(shortList.size() > 0)
+		return  join(separator,CorbaStubsNamespace) 
+		    + separator  
+		    + join(separator, shortList) 
+		    + separator;
+	}
+	return join(separator,CorbaStubsNamespace) + separator;	
     }
 
 
@@ -167,23 +177,14 @@ public class CppRemoteGeneratorImpl
      * "FileNamespace": is used to create the directory in which the
      *                  remote component logic will be generated
      *
-     * "IncludeNamespace": is used to create the include path depending
-     *                     on the component's namespace.
-     *                     The CCM_Remote namespace is cut off because 
-     *                     there can be local and remote include paths.
-     *
      * "Namespace": is used to create the scope for classes.
      *              The CCM_Remote namespace is cut off because 
      *              there can be local and remote include paths.
      *              If a namespace is defined, it has to start with "::"
      *
-     * "ShortNamespace": corresponds with the module hierarchy in the IDL file,
-     *                   there is no CCM_Local, CCM_Remote or 
-     *                   CCM_Session_ included.
-     *
-     * "IdlFileNamespace":
-     *
-     * "IdlNamespace":
+     * "LocalNamespace":
+     * "StubsNamespace":
+     * "StubsIncludeNamespace": 
      **/
     protected String handleNamespace(String data_type, String local)
     {
@@ -194,8 +195,21 @@ public class CppRemoteGeneratorImpl
 	if(data_type.equals("FileNamespace")) {
             return join("_", slice(names, 0));
         } 
-	else if(data_type.equals("IncludeNamespace")) {
-	    return join("/", slice(names, 1));
+	else if(data_type.equals("LocalNamespace")) {
+	    if(names.size() > 1) {
+		return "CCM_Local::" + join("::", slice(names, 1)) + "::";
+	    }
+	    else {
+		return "CCM_Local::";
+	    }
+	}	    
+	else if(data_type.equals("LocalIncludeNamespace")) {
+	    if(names.size() > 1) {
+		return "CCM_Local/" + join("/", slice(names, 1)) + "/";
+	    }
+	    else {
+		return "CCM_Local/";
+	    }
 	}
 	else if (data_type.equals("Namespace")) {
 	    List NamespaceList = slice(names, 1);
@@ -204,26 +218,35 @@ public class CppRemoteGeneratorImpl
 	    }
 	    return "";
         }                          
-	else if (data_type.equals("ShortNamespace")) {
+	else if (data_type.equals("StubsNamespace")) {
+	    return getCorbaStubsNamespace("::");
+	    /*
 	    if(names.size() > 1) {
 		List shortList = 
-		    new ArrayList(names.subList(1, names.size()-1));
+		    new ArrayList(names.subList(1, names.size()));
 		if(shortList.size() > 0)
 		    return  getCorbaStubsNamespace("::") 
 			+ join("::", shortList) + "::";
 	    }
 	    return getCorbaStubsNamespace("::");
+	    */
         }
-	else if (data_type.equals("IdlFileNamespace")) {
+	else if (data_type.equals("StubsIncludeNamespace")) {
+	    return getCorbaStubsNamespace("_");
+	    /*
 	    if(names.size() > 1) {
 		List IdlFileList = 
-		    new ArrayList(names.subList(1, names.size()-1));
-		if(IdlFileList.size() > 0)
+		    new ArrayList(names.subList(1, names.size()));
+		System.out.println("===> IdlFileList = " + IdlFileList);
+		if(IdlFileList.size() > 0) {
 		    return getCorbaStubsNamespace("_")
 			+ join("_", IdlFileList) + "_";
+		}
 	    }
 	    return getCorbaStubsNamespace("_");
+	    */
         } 
+	/*
 	else if (data_type.equals("IdlNamespace")) {
 	    if(names.size() > 2) {
 		List IdlFileList = 
@@ -232,6 +255,7 @@ public class CppRemoteGeneratorImpl
 	    }
 	    return "";
         }
+	*/
         return super.handleNamespace(data_type, local);
     }
 
@@ -397,19 +421,21 @@ public class CppRemoteGeneratorImpl
 	if(dataType.equals("ConvertFromCorbaDeclaration")) {
 	    StringBuffer buffer = new StringBuffer();	    
 	    buffer.append("void convertFromCorba(const ");
-	    buffer.append(handleNamespace("ShortNamespace", "::"));
+	    buffer.append(handleNamespace("StubsNamespace",""));
 	    buffer.append(contained.getIdentifier());
-	    buffer.append("& in, CCM_Local::");
+	    buffer.append("& in, ");
+	    buffer.append(handleNamespace("LocalNamespace",""));
 	    buffer.append(contained.getIdentifier());
 	    buffer.append("& out);");
 	    dataValue = buffer.toString();
 	}
 	else if(dataType.equals("ConvertToCorbaDeclaration")) {
 	    StringBuffer buffer = new StringBuffer();	    
-	    buffer.append("void convertToCorba(const CCM_Local::");
+	    buffer.append("void convertToCorba(const ");
+	    buffer.append(handleNamespace("LocalNamespace",""));
 	    buffer.append(contained.getIdentifier());
 	    buffer.append("& in, ");
-	    buffer.append(handleNamespace("ShortNamespace", "::"));
+	    buffer.append(handleNamespace("StubsNamespace",""));
 	    buffer.append(contained.getIdentifier());
 	    buffer.append("& out);");
 	    dataValue = buffer.toString();
@@ -418,14 +444,15 @@ public class CppRemoteGeneratorImpl
 	    List code = new ArrayList();
 	    code.add("void");
 	    code.add("convertFromCorba(const " 
-		     + handleNamespace("ShortNamespace", "::")
+		     + handleNamespace("StubsNamespace","")
 		     + contained.getIdentifier()
-		     + "& in, CCM_Local::" 
+		     + "& in, "
+		     + handleNamespace("LocalNamespace","")
 		     + contained.getIdentifier()
 		     + "& out)");
 	    code.add("{");
 	    code.add("    LDEBUGNL(CCM_REMOTE,\" convertFromCorba("
-		     + handleNamespace("ShortNamespace", "::")
+		     + handleNamespace("StubsNamespace","")
 		     + contained.getIdentifier()
 		     + ")\");");
 	    code.add("    LDEBUGNL(CCM_REMOTE,\"   "
@@ -438,15 +465,16 @@ public class CppRemoteGeneratorImpl
 	else if(dataType.equals("ConvertToCorbaImplementation")) {
 	    List code = new ArrayList();
 	    code.add("void"); 
-	    code.add("convertToCorba(const CCM_Local::"
+	    code.add("convertToCorba(const "
+		     + handleNamespace("LocalNamespace","")
 		     + contained.getIdentifier()
 		     + "& in, "
-		     + handleNamespace("ShortNamespace", "::")
+		     + handleNamespace("StubsNamespace","")
 		     + contained.getIdentifier()
 		     + "& out)");
 	    code.add("{");
 	    code.add("    LDEBUGNL(CCM_REMOTE,\" convertToCorba(" 
-		     + handleNamespace("ShortNamespace", "::")
+		     + handleNamespace("StubsNamespace","")
 		     + contained.getIdentifier()
 		     + ")\");");
 	    code.add("    LDEBUGNL(CCM_REMOTE,\"   "
@@ -458,7 +486,7 @@ public class CppRemoteGeneratorImpl
 	}
 	else if(dataType.equals("OutputCorbaTypeDeclaration")) {
 	    dataValue = "std::ostream& operator<<(std::ostream& o, const "
-		+ handleNamespace("ShortNamespace", "::")
+		+ handleNamespace("StubsNamespace","")
 		+ contained.getIdentifier() 
 		+ "& value);";
 	}
@@ -466,7 +494,7 @@ public class CppRemoteGeneratorImpl
 	    List code = new ArrayList();
 	    code.add("std::ostream&"); 
 	    code.add("operator<<(std::ostream& o, const "
-		     + handleNamespace("ShortNamespace", "::")
+		     + handleNamespace("StubsNamespace","")
 		     + contained.getIdentifier() 
 		     + "& value)");
 	    code.add("{");
@@ -499,13 +527,21 @@ public class CppRemoteGeneratorImpl
 	       || singleIdlType instanceof MStringDef) {
 		dataValue = "";
 	    }
-	    else {
+	    else if(idlType instanceof MStructDef
+		    || idlType instanceof MAliasDef
+		    || idlType instanceof MSequenceDef){
+		MContained singleContained = (MContained) singleIdlType;
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("#include \"");
-		// TODO: ret.append(Name_space);
-		buffer.append(getBaseLanguageType(singleType));
+		buffer.append(singleContained.getIdentifier());
 		buffer.append("_remote.h\"");
 		dataValue = buffer.toString();
+	    }
+	    else {
+		throw new RuntimeException("data_MSequenceDef(" 
+					   + dataType + dataValue
+					   + ") Unhandled idlType: " 
+					   + idlType);
 	    }
 	}
 	else if(dataType.equals("ConvertAliasFromCORBA")) {
@@ -602,13 +638,20 @@ public class CppRemoteGeneratorImpl
 	       || idlType instanceof MStringDef) {
 		dataValue = "";
 	    }
-	    else {
+	    else if(idlType instanceof MStructDef
+		    || idlType instanceof MAliasDef) {
+		MContained contained = (MContained) idlType;
 		StringBuffer ret = new StringBuffer();
 		ret.append("#include \"");
-		// TODO: ret.append(Name_space);
-		ret.append(getBaseLanguageType(type));
+		ret.append(contained.getIdentifier());
 		ret.append("_remote.h\"");
 		dataValue = ret.toString();
+	    }
+	    else {
+		throw new RuntimeException("data_MFieldDef(" 
+					   + dataType + dataValue
+					   + ") Unhandled idlType: " 
+					   + idlType);
 	    }
 	}
         return dataValue;
@@ -805,16 +848,8 @@ public class CppRemoteGeneratorImpl
 	    dataValue = ret.toString();
 	}
         else if(dataType.equals("IdlProvidesType")) {
-	    if(scope.size() > 0) {
-		ret.append(getCorbaStubsNamespace("::"));
-		ret.append(join("::", scope));
-		ret.append("::");
-		ret.append(iface.getIdentifier());
-	    }
-	    else {
-		ret.append(getCorbaStubsNamespace("::"));
-		ret.append(iface.getIdentifier());
-	    }
+	    ret.append(getCorbaStubsNamespace("::"));
+	    ret.append(iface.getIdentifier());
 	    dataValue = ret.toString();
 	}
 	else if(dataType.equals("ProvidesType")) {

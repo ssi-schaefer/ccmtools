@@ -11,14 +11,14 @@
 #include <WX/Utils/debug.h> 
 #include <CCM/CCMContainer.h>
 
-#include <%(IdlFileNamespace)s%(Identifier)s.h>
+#include <%(StubsIncludeNamespace)s%(Identifier)s.h>
 
 %(MSupportsDefInclude)s
 %(MProvidesDefInclude)s
 %(MUsesDefInclude)s
 
-#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h> 
-#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_share.h> 
+#include <%(LocalIncludeNamespace)s%(Identifier)s_gen.h> 
+#include <%(LocalIncludeNamespace)s%(Identifier)s_share.h> 
 
 %(OpenNamespace)s
 
@@ -26,7 +26,7 @@
 // Component remote adapter 
 //============================================================================
 class %(Identifier)s_impl :
-    virtual public POA_%(ShortNamespace)s%(Identifier)s,
+    virtual public POA_%(StubsNamespace)s%(Identifier)s,
     virtual public PortableServer::RefCountServantBase
 {
     friend class CCM_%(Identifier)s_Context_impl;

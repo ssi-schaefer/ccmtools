@@ -7,9 +7,9 @@
 #define __HOME__%(Identifier)s__REMOTE__H__
 
 #include "%(ComponentType)s_remote.h"
-#include <%(IdlFileNamespace)s%(Identifier)s.h> 
+#include <%(StubsIncludeNamespace)s%(Identifier)s.h> 
 
-#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h>
+#include <%(LocalIncludeNamespace)s%(Identifier)s_gen.h>
 
 
 
@@ -20,7 +20,7 @@
 //==========================================================================
 
 class %(Identifier)s_impl :
-    virtual public POA_%(ShortNamespace)s%(Identifier)s,
+    virtual public POA_%(StubsNamespace)s%(Identifier)s,
     virtual public PortableServer::RefCountServantBase
 {
   protected:
@@ -32,7 +32,7 @@ class %(Identifier)s_impl :
     virtual ~%(Identifier)s_impl();
 
     // Implicit operations
-    ::%(ShortNamespace)s%(ComponentType)s_ptr create ();
+    ::%(StubsNamespace)s%(ComponentType)s_ptr create ();
 
     // Explicit operations
 %(MFactoryDefHeader)s
@@ -101,7 +101,7 @@ using namespace WX::Utils;
  * Implicit operations
  */
 
-::%(ShortNamespace)s%(ComponentType)s_ptr
+::%(StubsNamespace)s%(ComponentType)s_ptr
 %(Identifier)s_impl::create ()
 {
     LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::create()");
@@ -113,7 +113,7 @@ using namespace WX::Utils;
         new %(ComponentType)s_impl(local_component, ccm_container);
     Components::CCMObject_var co = 
         ccm_container->activate_component(component_adapter.in()); 
-    return ::%(ShortNamespace)s%(ComponentType)s::_narrow(co);
+    return ::%(StubsNamespace)s%(ComponentType)s::_narrow(co);
 }
 
 

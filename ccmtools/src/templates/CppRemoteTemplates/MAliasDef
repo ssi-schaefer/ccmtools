@@ -9,12 +9,13 @@
 #include <iostream>
 #include <sstream>
 
-#include <%(IdlFileNamespace)s%(Identifier)s.h>
-#include <CCM_Local%(IncludeNamespace)s/%(Identifier)s.h>
+#include <%(StubsIncludeNamespace)s%(Identifier)s.h>
+#include <%(LocalIncludeNamespace)s%(Identifier)s.h>
 
 %(CORBASequenceConverterInclude)s
 
-%(OpenNamespace)s
+//(OpenNamespace)s
+namespace CCM_Remote {
 
 %(ConvertFromCorbaDeclaration)s
 
@@ -22,7 +23,8 @@
 
 %(OutputCorbaTypeDeclaration)s
 
-%(CloseNamespace)s
+//(CloseNamespace)s
+} // /namespace CCM_Remote
 
 #endif // __ALIAS_CONVERTER%(PreprocIdentifier)s__H__
 
@@ -41,7 +43,8 @@
 
 using namespace std;
 
-%(OpenNamespace)s
+//(OpenNamespace)s
+namespace CCM_Remote {
 
 %(ConvertFromCorbaImplementation)s
 
@@ -49,4 +52,5 @@ using namespace std;
 
 %(OutputCorbaTypeImplementation)s 
 
-%(CloseNamespace)s
+//(CloseNamespace)s
+} // /namespace CCM_Remote
