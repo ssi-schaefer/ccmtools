@@ -1,6 +1,7 @@
-#ifdef CCM_TEST_PYTHON
 #ifndef __CCM__TEST__PYTHON__CALLPYTHON__H__
 #define __CCM__TEST__PYTHON__CALLPYTHON__H__
+
+#ifdef CCM_TEST_PYTHON
 
 #include <Python.h>
 #include <string>
@@ -15,8 +16,9 @@ PyObject *call_python ( string module, string function, PyObject *pyArgs );
 } // /namespace Python
 } // /namespace CCM_Test
 
-#endif // __CCM__TEST__PYTHON__CALLPYTHON__H__
 #endif // CCM_TEST_PYTHON
+
+#endif
 
 
 

@@ -1,6 +1,6 @@
 #ifdef CCM_TEST_PYTHON
 
-#include "call_python.h"
+#include "_call.h"
 
 #include <cstring>
 #include <CCM_Utils/Debug.h>
@@ -50,7 +50,7 @@ call_python
 } // /namespace Python
 } // /namespace CCM_Test
 
-#endif // CCM_TEST_PYTHON
+#endif
 
 
 

@@ -1,8 +1,0 @@
-PyObject *convert_%(Identifier)s_to_python           (       %(Identifier)s  arg );
-PyObject *convert_const_%(Identifier)s_to_python     ( const %(Identifier)s  arg );
-PyObject *convert_const_%(Identifier)s_ref_to_python ( const %(Identifier)s& arg );
-
-%(Identifier)s  convert_%(Identifier)s_from_python     ( PyObject *arg );
-%(Identifier)s *convert_%(Identifier)s_ptr_from_python ( PyObject *arg );
-
-

@@ -1,2 +1,1 @@
-  %(LanguageType)s %(Identifier)s;
-
+  self->%(Identifier)s = convert_%(LanguageType)s_to_python ( arg.%(Identifier)s );
