@@ -15,25 +15,27 @@ o) add DbC example to Tutorial
 o) add nested component composition example to Tutorial
 
 
-ccmtools common:
-----------------
-o) Performance Measurement
-
+ccmtools refactoring:
+---------------------
+o) remove base_namespace from local and remote generators 
+o) organize generation of namespaces and scoped names across generator hierarchies
+o) use ccmtools.utils.text.* in all generators (instead inheritance of join, etc)
 
 
 c++local generator:
 -------------------
-o) generate local_deploy*() and local_undeploy*() functions with coded 
-   namespace.
+*) generate deploy_CCM_Local*() and undeploy_CCM_Local*() functions with coded namespace.
 o) add Constants.Version to all generated files.
 o) add AssemblyFactory Template to CCM.h
 o) generate debug output with parameter values.
 o) JUnit test case for nested component composition
+o) Performance Measurement
 
 
 c++remote generator:
 --------------------
-o) separate local_*_deploy() from remote_*_deploy()
+*) separate deploy_CCM_Local*() from deploy_CCM_Remote*()
+*) generate deploy_CCM_Remote*() functions with coded namespace.
 o) use receptacle Adapter as local receptacle for connection 
    (no remote Context version).
 o) test cases for attributes 
@@ -42,6 +44,13 @@ o) test cases for interfaces as parameters
 o) generate debug output with parameter values.
 o) collect test cases 
 o) JUnit test case for nested component composition
+o) Performance Measurement
+o) implement undeploy_*() functions 
+
+
+c++remote-test generator:
+-------------------------
+o) add undeploy_*() functions at test client end.
 
 
 java-client-lib generator:
@@ -61,7 +70,7 @@ java-environment:
 -----------------
 o) move uml2java from java-environment to ccmtools package.
 o) implement utils.CORBA.setDefaultValue() for structures.
-o) add Components.jar build from CCM.idl
+o) add Components.jar build from ccmtools/idl/CCM.idl
 
 
 ccmtools-package:

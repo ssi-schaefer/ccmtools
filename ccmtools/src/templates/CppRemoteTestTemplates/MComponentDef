@@ -28,14 +28,13 @@ using namespace WX::Utils;
 // Implementation of remote client test
 //==============================================================================
 
-int 
-main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
-    DEBUGNL("Enter C++ remote test client");
+    cout << "Enter C++ remote test client" << endl;
 
     char* NameServiceLocation = getenv("CCM_NAME_SERVICE");
     if(NameServiceLocation == NULL) { 
-        cerr << "Error: Environment variable CCM_NAME_SERVICE is not set!" << endl;
+        cerr << "Error: Environment variable CCM_NAME_SERVICE not set!" << endl;
         return -1;
     }
 
@@ -47,16 +46,23 @@ main (int argc, char *argv[])
     DEBUGNL(">> " << argv_[0] << " "<< argv_[1] << argv_[2]);
     CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
 
+
     /**
      * Server-side code
      */ 
+
+    // Register all value type factories with the ORB  
     CCM::register_all_factories (orb);
-    int error = deploy_%(HomeType)s(orb, "%(HomeType)s:1.0");
+
+    // Deploy local and remote component homes	
+    int error = 0;
+    error += deploy_%(AbsoluteLocalHomeName)s("%(HomeType)s");
+    error += deploy_%(AbsoluteRemoteHomeName)s(orb, "%(HomeType)s:1.0");
     if(!error) {
-        cout << "%(HomeType)s stand-alone server is running..." << endl;
+        cout << "%(HomeType)s server is running..." << endl;
     }
     else {
-        cerr << "ERROR: Can't start components!" << endl;
+        cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
 
@@ -86,17 +92,16 @@ main (int argc, char *argv[])
 	
     my%(Identifier)s->configuration_complete();
 
-    DEBUGNL("==== Begin Test Case =============================================" );    
+    cout << "==== Begin Test Case ===================================" << endl;    
 
     // TODO : IMPLEMENT ME HERE !       
 
-    DEBUGNL("==== End Test Case ===============================================" );    
-
-    // Un-Deployment
+    cout << "==== End Test Case =====================================" << endl;    
 
     // Destroy component instances
     my%(Identifier)s->remove();
 
-    DEBUGNL("Exit C++ remote test client"); 	
+    // Un-Deployment
+    cout << "Exit C++ remote test client" << endl; 	
 }
 

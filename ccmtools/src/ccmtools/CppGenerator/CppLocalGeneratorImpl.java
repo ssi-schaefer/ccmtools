@@ -22,8 +22,8 @@ package ccmtools.CppGenerator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -89,9 +89,9 @@ public class CppLocalGeneratorImpl extends CppGenerator
         buffer.append("#endif \n");
         return buffer.toString();
     }
-
     // FIXME ---------------------------------
 
+   
     /**
      * Write generated code to an output file.
      * 

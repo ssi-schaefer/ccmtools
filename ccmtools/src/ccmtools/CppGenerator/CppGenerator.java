@@ -62,6 +62,7 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.utils.Text;
 
 abstract public class CppGenerator extends CodeGenerator
 {
@@ -199,6 +200,23 @@ abstract public class CppGenerator extends CodeGenerator
         return join(sep, names);
     }
 
+    
+    protected String getLocalName(MContained contained, String separator)
+    {
+        List scope = getScope(contained);
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(Text.join(separator, base_namespace));
+        buffer.append(separator);
+        if (scope.size() > 0) {
+            buffer.append(Text.join(separator, scope));
+            buffer.append(separator);
+        }
+        buffer.append(contained.getIdentifier());
+        return buffer.toString();
+    }
+    
+    
     /**
      * Build a string containing appropriately formatted namespace information
      * based on the given data type and local namespace component. This is aimed
@@ -509,7 +527,9 @@ abstract public class CppGenerator extends CodeGenerator
             include = include.substring(0, include.lastIndexOf(file_separator));
             return include + file_separator + home.getIdentifier();
         }
-
+        else if(data_type.endsWith("AbsoluteLocalHomeName")) {
+            return getLocalName(home,"_");
+        }
         return data_MInterfaceDef(data_type, data_value);
     }
 
@@ -551,7 +571,9 @@ abstract public class CppGenerator extends CodeGenerator
             include = include.substring(0, include.lastIndexOf(file_separator));
             return include + file_separator + home_id;
         }
-
+        else if(data_type.endsWith("AbsoluteLocalHomeName")) {
+            return getLocalName(home,"_");
+        }
         return data_MInterfaceDef(data_type, data_value);
     }
 

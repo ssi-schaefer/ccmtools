@@ -54,9 +54,10 @@ class DbC_%(Identifier)s
 //==============================================================================
 
 extern "C" {
-  WX::Utils::SmartPtr<LocalComponents::CCMHome> DbC_create_%(Identifier)sAdapter(bool disablePostconditionCheck);
-  int DbC_deploy_%(Identifier)s(char* name, bool disablePostconditionCheck);
-  int DbC_undeploy_%(Identifier)s(char* name);
+  WX::Utils::SmartPtr<LocalComponents::CCMHome> 
+      create_dbc_%(AbsoluteLocalHomeName)sAdapter(bool disablePostconditionCheck);
+  int deploy_dbc_%(AbsoluteLocalHomeName)s(char* name, bool disablePostconditionCheck);
+  int undeploy_dbc_%(AbsoluteLocalHomeName)s(char* name);
 }
 
 #endif
@@ -99,7 +100,7 @@ DbC_%(Identifier)s::DbC_%(Identifier)s(bool disablePostconditionCheck)
 {
   static const char* DbC_FUNCTION_NAME = "DbC_%(Identifier)s::DbC_%(Identifier)s()";
   DEBUGNL("+DbC_%(Identifier)s->DbC_%(Identifier)s()");
-  local_home = dynamic_cast<CCM_%(Identifier)s*> ( create_%(Identifier)s());
+  local_home = dynamic_cast<CCM_%(Identifier)s*> ( create_%(AbsoluteLocalHomeName)s());
   DbC_check_invariant(DbC_FUNCTION_NAME,true);
 }
 
@@ -144,9 +145,9 @@ DbC_%(Identifier)s::create()
 
 extern "C" {
   WX::Utils::SmartPtr<LocalComponents::CCMHome>
-  DbC_create_%(Identifier)sAdapter(bool disablePostconditionCheck)
+  create_dbc_%(AbsoluteLocalHomeName)sAdapter(bool disablePostconditionCheck)
   {
-    DEBUGNL ( " DbC_create_%(Identifier)sAdapter()" );
+    DEBUGNL ( " create_dbc_%(AbsoluteLocalHomeName)sAdapter()" );
     WX::Utils::SmartPtr<LocalComponents::CCMHome> ret(
       new %(Namespace)s::DbC_%(Identifier)s(disablePostconditionCheck)
     );
@@ -154,9 +155,9 @@ extern "C" {
   }
 
 
-  int DbC_deploy_%(Identifier)s(char* name, bool disablePostconditionCheck)
+  int deploy_dbc_%(AbsoluteLocalHomeName)s(char* name, bool disablePostconditionCheck)
   {
-    DEBUGNL ( " dbc_deploy_%(Identifier)s()" );
+    DEBUGNL ( " deploy_dbc_%(AbsoluteLocalHomeName)s()" );
     try {
       WX::Utils::SmartPtr<LocalComponents::CCMHome> ret(
         new %(Namespace)s::DbC_%(Identifier)s(disablePostconditionCheck)
@@ -169,7 +170,7 @@ extern "C" {
   }	
 
 
-  int DbC_undeploy_%(Identifier)s(char* name)
+  int undeploy_dbc_%(AbsoluteLocalHomeName)s(char* name)
   {
      try {
        HomeFinder::Instance()->unregister_home(name);	
@@ -179,8 +180,4 @@ extern "C" {
      return 0;
   }
 }
-
-
-
-
 

@@ -49,7 +49,7 @@ class %(Identifier)s_impl :
 // Remote entry point
 //==============================================================================
 extern "C" {
-    int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name);
+    int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name);
 }
 
 #endif
@@ -155,7 +155,7 @@ Components::CCMObject_ptr
 //==============================================================================
 extern "C" {
     
-int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
+int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name)
 {
     LDEBUGNL(CCM_REMOTE, " deploy_%(Identifier)s(" << registration_name << ")");
 
@@ -170,12 +170,6 @@ int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
       return -1; // Can't connect to NameService
     }
 
-    LocalComponents::HomeFinder* homeFinder;
-    homeFinder = CCM_Local::HomeFinder::Instance();
-    int error = local_deploy_%(Identifier)s("%(Identifier)s");
-    if(error)
-      return -2; // Can't deploy local component
-
     // Startup component home
     SmartPtr<CCM::SessionContainer> container(new CCM::SessionContainer(orb));
     CCM::SessionContainer::ComponentInfo info;
@@ -185,7 +179,7 @@ int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
     info.component_short_name = "%(ComponentType)s";
     info.component_absolute_name = "::%(ComponentType)s";
     info.component_id = "IDL:%(ComponentType)s:1.0";
-    info.home_instance = NULL; // TODO
+    info.home_instance = NULL; 
     info.home_glue = new %(RemoteNamespace)s%(Identifier)s_impl(container); 
     container->load(info);
     Components::CCMHome_var hp = container->get_CCM_home(); 

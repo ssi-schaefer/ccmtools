@@ -248,7 +248,10 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         StringBuffer buffer = new StringBuffer();
         buffer.append(Text.join(separator, base_namespace));
         buffer.append(separator);
-        buffer.append(Text.join(separator, scope));
+        if (scope.size() > 0) {
+            buffer.append(Text.join(separator, scope));
+            buffer.append(separator); 
+        }
         buffer.append(contained.getIdentifier());
         return buffer.toString();
     }
@@ -827,6 +830,9 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         if (data_type.endsWith("ComponentType")) {
             return component_id;
         }
+        else if(data_type.endsWith("AbsoluteRemoteHomeName")) {
+            return getRemoteName(home,"_","");
+        }
         else {
             return super.data_MHomeDef(data_type, data_value);
         }
@@ -954,6 +960,9 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         return super.data_MUsesDef(dataType, dataValue);
     }
 
+    
+ 
+    
     /**
      * Write generated code to an output file. Each global template consists of
      * two sections separated by " < < < < < < <SPLIT>>>>>>>" that are written

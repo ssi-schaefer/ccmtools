@@ -63,11 +63,11 @@ int main(int argc, char *argv[])
     LocalComponents::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 #ifdef CCM_USE_DBC
-    error  = DbC_deploy_%(HomeType)s("%(HomeType)s", false);
+    error  = deploy_dbc_%(AbsoluteLocalHomeName)s("%(HomeType)s", false);
 #else
-    error  = local_deploy_%(HomeType)s("%(HomeType)s");
+    error  = deploy_%(AbsoluteLocalHomeName)s("%(HomeType)s");
 #endif
-    error += local_deploy_%(HomeType)s_mirror("%(HomeType)s_mirror");	
+    error += deploy_%(AbsoluteLocalHomeName)s_mirror("%(HomeType)s_mirror");	
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -184,8 +184,8 @@ int main(int argc, char *argv[])
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    error += local_undeploy_%(HomeType)s("%(HomeType)s");
-    error += local_undeploy_%(HomeType)s_mirror("%(HomeType)s_mirror");
+    error += undeploy_%(AbsoluteLocalHomeName)s("%(HomeType)s");
+    error += undeploy_%(AbsoluteLocalHomeName)s_mirror("%(HomeType)s_mirror");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
