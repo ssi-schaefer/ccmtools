@@ -656,7 +656,8 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
                 dataValue = "";
             } 
             else if (idlType instanceof MStructDef
-                    || idlType instanceof MAliasDef) {
+                    || idlType instanceof MAliasDef
+                    || idlType instanceof MEnumDef) {
                 MContained contained = (MContained) idlType;
                 StringBuffer ret = new StringBuffer();
                 ret.append("#include \"");
