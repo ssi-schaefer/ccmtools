@@ -20,11 +20,14 @@ ccmtools refactoring:
 o) remove base_namespace from local and remote generators 
 o) organize generation of namespaces and scoped names across generator hierarchies
 o) use ccmtools.utils.text.* in all generators (instead inheritance of join, etc)
-
+o) replace bin/Python scripts with shell scripts that define their own CLASSPATH
+o) Use the CCM_INSTALL environment variable from .confix to define prefix
+ 
 
 c++local generator:
 -------------------
 *) generate deploy_CCM_Local*() and undeploy_CCM_Local*() functions with coded namespace.
+o) implement a C++ version of deploy_* and undeploy_* too.
 o) add Constants.Version to all generated files.
 o) add AssemblyFactory Template to CCM.h
 o) generate debug output with parameter values.
@@ -37,8 +40,12 @@ c++remote generator:
 --------------------
 *) separate deploy_CCM_Local*() from deploy_CCM_Remote*()
 *) generate deploy_CCM_Remote*() functions with coded namespace.
-o) use receptacle Adapter as local receptacle for connection 
-   (no remote Context version).
+o) implement a C++ version of deploy_* and undeploy_* too.
+o) remove second context object created by the c++remote generator and use receptacle 
+   Adapter as a local receptacle for connection to a local component 
+   - change connect method
+   - change disconnect method
+o) add support for multiple receptacles
 o) test cases for attributes 
 o) test cases for supported interfaces
 o) test cases for interfaces as parameters
