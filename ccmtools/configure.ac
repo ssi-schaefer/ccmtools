@@ -50,7 +50,7 @@ AM_CONDITIONAL(BUILD_DOCS, test "x$BUILD_DOCS" = "xyes")
 
 dnl Set location of code generation templates.
 
-TEMPLATE_ROOT="${datadir}/${PACKAGE}"
+TEMPLATE_ROOT="${prefix}/share/${PACKAGE}"
 AC_DEFINE_UNQUOTED(TEMPLATE_ROOT, "$TEMPLATE_ROOT", [Define the base location for templates])
 AC_SUBST(TEMPLATE_ROOT)
 

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.omg.CORBA.TypeCode;
+
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
@@ -47,13 +49,13 @@ public class MHomeDefImpl
     private boolean isAbstract;
     private boolean isLocal;
 
+    private TypeCode typeCode_;
     private List SupportsList_;
     private List FactoryList_;
     private List FinderList_;
     private MComponentDef Component_;
     private MValueDef PrimaryKey_;
     private MContainer Contains;
-    private MIDLType TypedBy_;
     private List ContainsList;
     private List InterfaceDerivedFromList;
 
@@ -61,13 +63,13 @@ public class MHomeDefImpl
     {
         isAbstract = false;
         isLocal = false;
+        typeCode_ = null;
 	SupportsList_= new ArrayList();
 	FactoryList_= new ArrayList();
 	FinderList_ = new ArrayList();
         Component_ = null;
         PrimaryKey_ = null;
         Contains = null;
-        TypedBy_ = null;
 	ContainsList = new ArrayList();
 	InterfaceDerivedFromList = new ArrayList();
         sourceFile = "";
@@ -118,13 +120,13 @@ public class MHomeDefImpl
     public boolean isLocal()                    {return isLocal;}
     public void setLocal(boolean __arg)         {isLocal = __arg;}
 
+    // attribute typeCode:TypeCode
+    public TypeCode getTypeCode()               {return typeCode_;}
+    public void setTypeCode(TypeCode __arg)     {typeCode_ = __arg;}
+
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
-
-    // association: direct role: [*] --> opposite role: idlType[1]
-    public MIDLType getIdlType()                {return TypedBy_;}
-    public void setIdlType(MIDLType __arg)      {TypedBy_ = __arg;}
 
     // association: direct role: [*] --> opposite role: supports[*]
     public List getSupportss()                     {return SupportsList_;}

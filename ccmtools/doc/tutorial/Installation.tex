@@ -43,27 +43,28 @@ environment variables appropriately:
 \begin{verbatim}
   ~> tar xvzf ccmtools-A.B.X.tar.gz
   ~> cd ccmtools-A.B.X
-  ~> ./autogen.py --prefix=<ccm_tools_path>
+  ~> export CCMTOOLS_HOME=<ccm_tools_path>
+  ~> ./autogen.py --prefix=$CCMTOOLS_HOME
   ~> make
   ~> make install
   ~> export PATH=<ccm_tools_path>/bin:$PATH
-  ~> export CLASSPATH=<ccm_tools_path>/share/java/ccmtools-A.B.jar: \
-                      <ccm_tools_path>/share/java/antlr.jar:    \
+  ~> export CLASSPATH=$CCMTOOLS_HOME/share/java/ccmtools.jar: \
+                      $CCMTOOLS_HOME/share/java/antlr.jar:    \
                       $CLASSPATH
 \end{verbatim}
 \end{small}
 
-You can also theoretically use the binary distribution, which includes a minimal
-set of Jar archives, templates, and documents. To install this distribution,
-download the binary distribution (again assume {\tt ccmtools-A.B.X.bin.tar.gz})
-file and do the following:
+You can also use the binary distribution, which includes a minimal set of Jar
+archives, templates, and documents. To install this distribution, download the
+binary distribution (again assume {\tt ccmtools-A.B.X.bin.tar.gz}) file and do
+the following:
 \begin{small}
 \begin{verbatim}
   ~> tar xvzf ccmtools-A.B.X.bin.tar.gz
   ~> cd ccmtools-A.B.X
   ~> export CCMTOOLS_HOME=`pwd`
   ~> export PATH=`pwd`/bin:$PATH
-  ~> export CLASSPATH=`pwd`/share/java/ccmtools-A.B.jar: \
+  ~> export CLASSPATH=`pwd`/share/java/ccmtools.jar: \
                       `pwd`/share/java/antlr.jar:    \
                       $CLASSPATH
 \end{verbatim}

@@ -7,12 +7,15 @@ dist_template_DATA = \
     MAliasDef                                \
     MArrayDef                                \
     MAttributeDef                            \
+    MAttributeDefInclude                     \
+    MAttributeDefIncludeReadonly             \
     MAttributeDefReadonly                    \
     MComponentDef                            \
     MComponentDefAbstract                    \
     MComponentDefAbstractLocal               \
     MComponentDefLocal                       \
     MConstantDef                             \
+    MConstantDefInclude                      \
     MConsumesDef                             \
     MConsumesDefInclude                      \
     MEmitsDef                                \
@@ -21,8 +24,11 @@ dist_template_DATA = \
     MExceptionDef                            \
     MExceptionDefName                        \
     MFactoryDef                              \
+    MFactoryDefInclude                       \
     MFieldDef                                \
+    MFieldDefInclude                         \
     MFinderDef                               \
+    MFinderDefInclude                        \
     MHomeDef                                 \
     MHomeDefAbstract                         \
     MHomeDefAbstractLocal                    \
@@ -36,16 +42,19 @@ dist_template_DATA = \
     MInterfaceDefAbstractLocal               \
     MInterfaceDefLocal                       \
     MOperationDef                            \
+    MOperationDefInclude                     \
     MParameterDef                            \
+    MParameterDefInclude                     \
     MProvidesDef                             \
     MProvidesDefInclude                      \
     MPublishesDef                            \
     MPublishesDefInclude                     \
     MStructDef                               \
     MUnionDef                                \
-    MUnionFieldDef                           \
+    MUnionFieldDefInclude                    \
     MUsesDef                                 \
     MUsesDefInclude                          \
     MUsesDefIncludeMultiple                  \
     MUsesDefMultiple                         \
-    MSupportsDefBase
+    MSupportsDef                             \
+    MSupportsDefInclude

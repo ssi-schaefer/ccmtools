@@ -23,6 +23,10 @@ package ccmtools.IDLGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,5 +37,20 @@ public class IDL3MirrorGeneratorImpl
 {
     public IDL3MirrorGeneratorImpl(Driver d, File out_dir) throws IOException
     { super("3Mirror", d, out_dir); }
+
+    /**
+     * Return the language type for the given object.
+     *
+     * @param object the node object to use for type finding.
+     * @return a string describing the IDL language type.
+     */
+    protected String getLanguageType(MTyped object)
+    {
+        MIDLType idl_type = object.getIdlType();
+        String super_type = super.getLanguageType(object);
+        if (idl_type instanceof MComponentDef || idl_type instanceof MHomeDef)
+            return super_type + "_mirror";
+        return super_type;
+    }
 }
 

@@ -67,19 +67,10 @@ abstract public class CppGenerator
 
     private final static String[] local_reserved_words =
     {
-        "abs", "and", "apply", "as", "basestring", "bool", "buffer", "break",
-        "callable", "chr", "class", "classmethod", "cmp", "coerce", "compile",
-        "complex", "copyright", "credits", "continue", "del", "delattr", "dict",
-        "dir", "divmod", "elif", "else", "enumerate", "eval", "except",
-        "execfile", "exit", "file", "filter", "finally", "float", "for", "from",
-        "getattr", "globals", "hash", "help", "hex", "id", "if", "import",
-        "input", "int", "intern", "isinstance", "issubclass", "iter", "len",
-        "license", "list", "locals", "long", "map", "max", "min", "module",
-        "not", "object", "oct", "open", "or", "ord", "pow", "property", "quit",
-        "raise", "range", "raw_input", "reduce", "reload", "repr", "return",
-        "round", "self", "setattr", "slice", "staticmethod", "str", "sum",
-        "super", "tuple", "try", "type", "unichr", "unicode", "vars", "xrange",
-        "zip"
+        "and", "as", "assert", "break", "class", "continue", "def", "del",
+        "elif", "else", "except", "exec", "finally", "for", "from", "global",
+        "if", "import", "in", "lambda", "not", "or", "pass", "print", "raise",
+        "return", "self", "staticmethod", "super", "try", "while"
     };
 
     // python language types that get mapped from corba primitive kinds.
@@ -99,14 +90,14 @@ abstract public class CppGenerator
         "None",         // PK_NULL
         "any",          // PK_OBJREF
         "integer",      // PK_OCTET
-        "principal ?",  // PK_PRINCIPAL
+        "principal",    // PK_PRINCIPAL
         "integer",      // PK_SHORT
         "string",       // PK_STRING
-        "typecode ?",   // PK_TYPECODE
+        "typecode",     // PK_TYPECODE
         "long integer", // PK_ULONG
         "long integer", // PK_ULONGLONG
         "integer",      // PK_USHORT
-        "value base ?", // PK_VALUEBASE
+        "value base",   // PK_VALUEBASE
         "None",         // PK_VOID
         "character",    // PK_WCHAR
         "string"        // PK_WSTRING

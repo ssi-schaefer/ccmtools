@@ -1,6 +1,6 @@
-%(ExternInclude)s
 %(BaseInclude)s
-
+%(MAttributeDefInclude)s
+%(MConstantDefInclude)s
 %(MSupportsDefInclude)s
 %(MProvidesDefInclude)s
 %(MConsumesDefInclude)s
@@ -20,6 +20,7 @@ local component %(Identifier)s_mirror
  %(MSupportsDef)s
 {
 %(MAttributeDef)s
+%(MConstantDef)s
 %(MProvidesDef)s
 %(MUsesDef)s
 %(MPublishesDef)s

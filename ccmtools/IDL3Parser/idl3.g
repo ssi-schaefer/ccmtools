@@ -253,7 +253,7 @@ options { exportVocab = IDL3; k = 2; }
         throws TokenStreamException
     {
         MContained lookup =
-            lookupNameInCurrentScope(id, DEBUG_TYPEDEF | DEBUG_INTERFACE);
+            lookupName(id, DEBUG_TYPEDEF | DEBUG_INTERFACE);
 
         if (lookup == null) return query;
 
@@ -298,7 +298,7 @@ options { exportVocab = IDL3; k = 2; }
         throws TokenStreamException
     {
         MContained lookup =
-            lookupNameInCurrentScope(id, DEBUG_IDL_TYPE | DEBUG_TYPEDEF);
+            lookupName(id, DEBUG_IDL_TYPE | DEBUG_TYPEDEF);
 
         try {
             Class qtype = query.getClass().getInterfaces()[0];
@@ -324,8 +324,8 @@ options { exportVocab = IDL3; k = 2; }
         if (contained instanceof MTyped)
             return ((MTyped) contained).getIdlType();
 
-        throw new TokenStreamException("contained object '"+
-            contained.getIdentifier()+"' is not an IDL type");
+        throw new TokenStreamException("cannot find IDL type for '"+
+            contained.getIdentifier()+"'");
     }
 
     /*
@@ -376,7 +376,7 @@ options { exportVocab = IDL3; k = 2; }
         ArrayList verified = new ArrayList();
         for (Iterator it = bases.iterator(); it.hasNext(); ) {
             String inherit = (String) it.next();
-            MContained lookup = lookupNameInCurrentScope(inherit, DEBUG_INTERFACE | DEBUG_INHERITANCE);
+            MContained lookup = lookupName(inherit, DEBUG_INTERFACE | DEBUG_INHERITANCE);
 
             if ((lookup == null) || (! (lookup instanceof MInterfaceDef)))
                 throw new TokenStreamException("interface '"+id+"' can't inherit from undefined interface '"+inherit+"'");
@@ -409,7 +409,7 @@ options { exportVocab = IDL3; k = 2; }
         List slist = new ArrayList();
         for (Iterator it = supports.iterator(); it.hasNext(); ) {
             String name = (String) it.next();
-            MContained lookup = lookupNameInCurrentScope(name, DEBUG_INTERFACE | DEBUG_INHERITANCE);
+            MContained lookup = lookupName(name, DEBUG_INTERFACE | DEBUG_INHERITANCE);
             if ((lookup == null) || (! (lookup instanceof MInterfaceDef))) {
                 throw new TokenStreamException("interface '"+iface.getIdentifier()+"' can't support undefined interface '"+name+"'");
             } else {
@@ -521,7 +521,7 @@ options { exportVocab = IDL3; k = 2; }
         throws TokenStreamException
     {
         for (Iterator e = excepts.iterator(); e.hasNext(); ) {
-            MContained def = lookupNameInCurrentScope((String) e.next(), DEBUG_EXCEPTION);
+            MContained def = lookupName((String) e.next(), DEBUG_EXCEPTION);
             if (def == null)
                 throw new TokenStreamException("exception '"+e+"' is not defined in operation '"+op.getIdentifier());
         }
@@ -534,7 +534,7 @@ options { exportVocab = IDL3; k = 2; }
     private void addValueBase(MValueDef val, String name)
     {
         MValueDef inherited = (MValueDef)
-            lookupNameInCurrentScope(name, DEBUG_VALUE | DEBUG_INHERITANCE);
+            lookupName(name, DEBUG_VALUE | DEBUG_INHERITANCE);
 
         if ((inherited != null) && (inherited.getContentss() != null)) {
             if (inherited.isAbstract()) val.addAbstractBase(inherited);
@@ -550,7 +550,7 @@ options { exportVocab = IDL3; k = 2; }
     {
         String id = val.getIdentifier();
         MContained support =
-            lookupNameInCurrentScope(name, DEBUG_VALUE | DEBUG_INTERFACE);
+            lookupName(name, DEBUG_VALUE | DEBUG_INTERFACE);
 
         if (support != null) {
             val.setInterfaceDef((MInterfaceDef) support);
@@ -566,7 +566,7 @@ options { exportVocab = IDL3; k = 2; }
      * same name. It essentially just calls the symbolTable function, but if
      * needed first it prints stuff.
      */
-    private MContained lookupNameInCurrentScope(String name, long level)
+    private MContained lookupName(String name, long level)
     {
         MContained result = null;
 
@@ -576,7 +576,14 @@ options { exportVocab = IDL3; k = 2; }
             System.out.println("[L] looking up '" + name + "'");
         }
 
-        result = this.symbolTable.lookupNameInCurrentScope(name);
+        if (name.indexOf("::") > 0) {
+            result = this.symbolTable.lookupScopedName(name);
+        } else {
+            String look = new String(name);
+            if (look.startsWith("::"))
+                look = look.substring(2, look.length());
+            result = this.symbolTable.lookupNameInCurrentScope(look);
+        }
 
         if ((debug & level) != 0) {
             if (result == null) System.out.println("[L] '"+name+"' not found");
@@ -2306,7 +2313,7 @@ home_inheritance_spec returns [MHomeDef base = null]
 { String name = null; }
     :   COLON name = scoped_name
         {
-            MContained lookup = lookupNameInCurrentScope(name, DEBUG_COMPONENT);
+            MContained lookup = lookupName(name, DEBUG_COMPONENT);
             if ((lookup != null) && (lookup instanceof MHomeDef))
             { base = (MHomeDef) lookup; }
         } ;

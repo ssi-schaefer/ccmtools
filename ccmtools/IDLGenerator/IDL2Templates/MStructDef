@@ -3,10 +3,14 @@
 #ifndef __STRUCT__%(IncludeNamespace)s%(Identifier)s__
 #define __STRUCT__%(IncludeNamespace)s%(Identifier)s__
 
+%(OpenNamespace)s
+
 struct %(Identifier)s
 {
 %(MFieldDef)s
 };
+
+%(CloseNamespace)s
 
 #endif
 

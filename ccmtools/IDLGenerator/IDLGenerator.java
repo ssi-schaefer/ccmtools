@@ -26,6 +26,8 @@ import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
+import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
@@ -40,8 +42,9 @@ import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
-
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
+import ccmtools.Metamodel.ComponentIDL.MFinderDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 
@@ -159,7 +162,16 @@ abstract public class IDLGenerator
             if (! pieces[i].trim().equals(""))
                 code_pieces.add(pieces[i]);
 
-        String code = join("\n", code_pieces).replaceAll("};", "};\n");
+        String code = join("\n", code_pieces);
+
+        code = code.replaceAll("component",    "\ncomponent");
+        code = code.replaceAll("home",         "\nhome");
+        code = code.replaceAll("interface",    "\ninterface");
+        code = code.replaceAll("module",       "\nmodule");
+        code = code.replaceAll("#ifndef",      "\n#ifndef");
+
+        code = code.replaceAll("#define(.*)$", "#define\\1\n");
+        code = code.replaceAll("};",           "};\n");
 
         String name = join("_", namespace);
         if (! name.equals("")) name += "_";
@@ -238,14 +250,24 @@ abstract public class IDLGenerator
             return data_MHomeDef(variable, value);
         } else if (current_node instanceof MInterfaceDef) {
             return data_MInterfaceDef(variable, value);
+        } else if (current_node instanceof MFactoryDef) {
+            return data_MFactoryDef(variable, value);
+        } else if (current_node instanceof MFinderDef) {
+            return data_MFinderDef(variable, value);
         } else if (current_node instanceof MOperationDef) {
             return data_MOperationDef(variable, value);
+        } else if (current_node instanceof MParameterDef) {
+            return data_MParameterDef(variable, value);
         } else if (current_node instanceof MEnumDef)      {
             return data_MEnumDef(variable, value);
         } else if (current_node instanceof MFieldDef) {
             return data_MFieldDef(variable, value);
         } else if (current_node instanceof MUnionFieldDef) {
             return data_MUnionFieldDef(variable, value);
+        } else if (current_node instanceof MAttributeDef) {
+            return data_MAttributeDef(variable, value);
+        } else if (current_node instanceof MConstantDef) {
+            return data_MConstantDef(variable, value);
         } else if (current_node instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
         }
@@ -261,13 +283,8 @@ abstract public class IDLGenerator
      */
     protected String getLanguageType(MTyped object)
     {
-        String base_type = getBaseIdlType(object);
 	MIDLType idl_type = object.getIdlType();
-
-        if (language_mappings.containsKey(base_type))
-            base_type = (String) language_mappings.get(base_type);
-
-	// We have to check the direction of the operation's parameter
+        String base_type = getBaseLanguageType(object);
 
 	if (object instanceof MParameterDef) {
 	    MParameterDef param = (MParameterDef) object;
@@ -285,34 +302,22 @@ abstract public class IDLGenerator
 	    return parameter_direction + base_type;
 	}
 
-	// We have to check the kind of typedef definition to create correct
-	// IDL2 code
+        if ((object instanceof MAliasDef) && (idl_type instanceof MTyped))
+            return getLanguageType((MTyped) idl_type);
 
-	if (object instanceof MAliasDef) {
-	    String typedef_identifier = ((MAliasDef)object).getIdentifier();
-	    if (idl_type instanceof MArrayDef) {
-		// creates a 'typedef type name[n][m]..' statement
-		Iterator i = ((MArrayDef) idl_type).getBounds().iterator();
-		Long bound = (Long) i.next();
-		String result = base_type + " "+ typedef_identifier + "[" + bound;
-		while (i.hasNext()) result += "][" + (Long) i.next();
-		return result + "]";
-	    } else if (idl_type instanceof MSequenceDef) {
-		// creates a 'typedef sequence<type>' name statement
-		String result = "sequence<" + base_type;
-		Long bound = ((MSequenceDef) idl_type).getBound();
-		if (bound != null) result += "," + bound;
-		return result + "> " + typedef_identifier;
-	    } else {
-		// creates a 'typedef type name' statement
-		String result = base_type + " "+ typedef_identifier;
-		return result;
-	    }
-	}
-
-        if (object instanceof MInterfaceDef) {
-            return ((MInterfaceDef) object).getIdentifier();
+        if (object instanceof MArrayDef) {
+            Iterator i = ((MArrayDef) idl_type).getBounds().iterator();
+            Long bound = (Long) i.next();
+            String result = base_type + "[" + bound;
+            while (i.hasNext()) result += "][" + (Long) i.next();
+            return result + "]";
         }
+
+        if (object instanceof MSequenceDef) {
+            Long bound = ((MSequenceDef) object).getBound();
+            if (bound == null) return "sequence<" + base_type + "> ";
+            return "sequence<" + base_type + "," + bound + "> ";
+	}
 
 	return base_type;
     }
@@ -335,8 +340,26 @@ abstract public class IDLGenerator
         return data_value;
     }
 
+    protected String data_MAttributeDef(String data_type, String data_value)
+    {
+        MIDLType idl_type = ((MAttributeDef) current_node).getIdlType();
+        if (data_type.equals("LanguageTypeInclude") &&
+            (idl_type instanceof MContained))
+            return getScopedInclude((MContained) idl_type);
+        return data_value;
+    }
+
     protected String data_MComponentDef(String data_type, String data_value)
     { return data_MInterfaceDef(data_type, data_value); }
+
+    protected String data_MConstantDef(String data_type, String data_value)
+    {
+        MIDLType idl_type = ((MConstantDef) current_node).getIdlType();
+        if (data_type.equals("LanguageTypeInclude") &&
+            (idl_type instanceof MContained))
+            return getScopedInclude((MContained) idl_type);
+        return data_value;
+    }
 
     protected String data_MEnumDef(String data_type, String data_value)
     {
@@ -349,6 +372,12 @@ abstract public class IDLGenerator
         }
         return data_value;
     }
+
+    protected String data_MFactoryDef(String data_type, String data_value)
+    { return data_MOperationDef(data_type, data_value); }
+
+    protected String data_MFinderDef(String data_type, String data_value)
+    { return data_MOperationDef(data_type, data_value); }
 
     protected String data_MFieldDef(String data_type, String data_value)
     {
@@ -378,8 +407,6 @@ abstract public class IDLGenerator
             for (Iterator i = node.getBases().iterator(); i.hasNext(); )
                 lines.add(getScopedInclude((MInterfaceDef) i.next()));
             return join("\n", lines);
-        } else if (data_type.equals("ExternInclude")) {
-            return collectExternIncludes();
         } else if (data_type.startsWith("MSupportsDef") &&
                    data_value.endsWith(", ")) {
             return "supports " +
@@ -390,12 +417,25 @@ abstract public class IDLGenerator
 
     protected String data_MOperationDef(String data_type, String data_value)
     {
+        MIDLType idl_type = ((MOperationDef) current_node).getIdlType();
         if (data_type.startsWith("MExceptionDef") && data_value.endsWith(", "))
             return "raises ( " +
                 data_value.substring(0, data_value.length() - 2) + " )";
         else if (data_type.startsWith("MParameterDef") &&
                  data_value.endsWith(", "))
             return data_value.substring(0, data_value.length() - 2);
+        else if (data_type.equals("LanguageTypeInclude") &&
+                 (idl_type instanceof MContained))
+            return getScopedInclude((MContained) idl_type);
+        return data_value;
+    }
+
+    protected String data_MParameterDef(String data_type, String data_value)
+    {
+        MIDLType idl_type = ((MParameterDef) current_node).getIdlType();
+        if (data_type.equals("LanguageTypeInclude") &&
+                 (idl_type instanceof MContained))
+            return getScopedInclude((MContained) idl_type);
         return data_value;
     }
 

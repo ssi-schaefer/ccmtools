@@ -287,10 +287,6 @@ public class CppLocalGeneratorImpl
             (current_node instanceof MHomeDef)) {
             String base_name = node_name;
 
-            // we put home files in the dir with the component files to convince
-            // confix to work with us. beware the evil voodoo that results when
-            // home and component files are in separate directories !
-
             if (current_node instanceof MHomeDef)
                 base_name =
                     ((MHomeDef) current_node).getComponent().getIdentifier();
@@ -298,17 +294,12 @@ public class CppLocalGeneratorImpl
             String base = handleNamespace("FileNamespace", base_name);
 
             f = new ArrayList();
-            f.add(base); f.add(node_name + "_gen.h"); files.add(f);
-            f = new ArrayList();
-            f.add(base); f.add(node_name + "_gen.cc"); files.add(f);
+            f.add(base); f.add(node_name + "_gen.py"); files.add(f);
 
             if ((flags & FLAG_APPLICATION_FILES) != 0) {
                 f = new ArrayList();
-                f.add(base); f.add(node_name + "_app.h"); files.add(f);
-                f = new ArrayList();
-                f.add(base); f.add(node_name + "_app.cc"); files.add(f);
+                f.add(base); f.add(node_name + "_app.py"); files.add(f);
             } else {
-                f = new ArrayList(); f.add(base); f.add(""); files.add(f);
                 f = new ArrayList(); f.add(base); f.add(""); files.add(f);
             }
 
@@ -319,7 +310,7 @@ public class CppLocalGeneratorImpl
                    || (current_node instanceof MEnumDef)
                    || (current_node instanceof MExceptionDef)) {
             f = new ArrayList(); f.add(handleNamespace("AllFileNamespace", ""));
-            f.add(node_name + ".h"); files.add(f);
+            f.add(node_name + ".py"); files.add(f);
 
         } else {
             f = new ArrayList(); f.add(""); f.add(""); files.add(f);

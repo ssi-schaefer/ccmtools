@@ -43,6 +43,6 @@ public class MIDLTypeImpl
     //----------------------------------------------------------------
 
     // attribute typeCode:TypeCode
-    public TypeCode getTypeCode()              {return typeCode_;}
-    public void setTypeCode(TypeCode __arg)    {typeCode_ = __arg;}
+    public TypeCode getTypeCode()               {return typeCode_;}
+    public void setTypeCode(TypeCode __arg)     {typeCode_ = __arg;}
 }

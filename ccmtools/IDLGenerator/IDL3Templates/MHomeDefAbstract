@@ -1,5 +1,6 @@
+%(MFactoryDefInclude)s
+%(MFinderDefInclude)s
 %(MSupportsDefInclude)s
-%(ExternInclude)s
 
 #ifndef __HOME__%(IncludeNamespace)s%(Identifier)s__
 #define __HOME__%(IncludeNamespace)s%(Identifier)s__

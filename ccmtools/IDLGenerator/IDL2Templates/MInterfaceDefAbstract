@@ -1,4 +1,4 @@
-%(ExternInclude)s
+%(MOperationDefInclude)s
 %(BaseInclude)s
 
 #ifndef __INTERFACE__%(IncludeNamespace)s%(Identifier)s__
@@ -7,6 +7,7 @@
 %(OpenNamespace)s
 
 abstract interface %(Identifier)s
+  %(BaseTypes)s
 {
 %(MOperationDef)s
 };

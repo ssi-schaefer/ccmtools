@@ -1,4 +1,4 @@
-%(ExternInclude)s
+%(MFieldDefInclude)s
 
 #ifndef __EXCEPTION__%(IncludeNamespace)s%(Identifier)s__
 #define __EXCEPTION__%(IncludeNamespace)s%(Identifier)s__

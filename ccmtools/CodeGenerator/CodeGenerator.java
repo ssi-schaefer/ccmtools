@@ -221,6 +221,8 @@ abstract public class CodeGenerator
     private Stack type_stack;
     private Stack variables_stack;
 
+    protected String scope_separator = "::";
+
     /**************************************************************************/
 
     /**
@@ -393,6 +395,15 @@ abstract public class CodeGenerator
             ! ((MContained) current_node).getSourceFile().equals(""))
             extern_includes.add(current_node);
 
+        // if the language type of this node is externally defined, add its
+        // language type to the list of external defines.
+
+        if (current_node instanceof MTyped) {
+            MIDLType idl_type = ((MTyped) current_node).getIdlType();
+            if ((idl_type instanceof MContained) &&
+                ! ((MContained) idl_type).getSourceFile().equals(""))
+                extern_includes.add(idl_type);
+        }
     }
 
     /**
@@ -678,58 +689,6 @@ abstract public class CodeGenerator
     }
 
     /**
-     * Return a string version of the IDL type corresponding to the given
-     * object's CCM IdlType.
-     *
-     * @param object the node object to use for type finding.
-     * @return a string containing the base IDL type of the given object. The
-     *         result will be null if the base type is not a recognized type
-     *         object from the IDL metamodel, but otherwise will return
-     *         something like 'PK_FOO' if object is of primitive type FOO, or
-     *         the object's identifier if object is derived from a typedef
-     *         class.
-     */
-    protected String getBaseIdlType(MTyped object)
-    {
-        MIDLType idl_type = object.getIdlType();
-
-        if (idl_type == null) return "";
-        // FIXME : figure out how to define idl types for interfaces and derived
-        // classes.
-        // throw new RuntimeException(object + " has no IDL type");
-
-        // first check for aliases and structs and such ... return the
-        // identifier.
-
-        if (idl_type instanceof MTypedefDef) {
-            MTypedefDef typedef = (MTypedefDef) idl_type;
-            return typedef.getIdentifier();
-        }
-
-        // type is some other class derived from mtyped ... get its derivative
-        // type.
-
-        if (idl_type instanceof MTyped)
-            return getBaseIdlType((MTyped) idl_type);
-
-        // type must be one of the primitive kinds ... try to get the primitive
-        // kind for it.
-
-        String type = null;
-        if (idl_type instanceof MPrimitiveDef)
-            type = ((MPrimitiveDef) idl_type).getKind().toString();
-        else if (idl_type instanceof MStringDef)
-            type = ((MStringDef) idl_type).getKind().toString();
-        else if (idl_type instanceof MWstringDef)
-            type = ((MWstringDef) idl_type).getKind().toString();
-        else if (idl_type instanceof MFixedDef)
-            type = ((MFixedDef) idl_type).getKind().toString();
-        else throw new RuntimeException("unknown IDL type : " + idl_type);
-
-        return type;
-    }
-
-    /**
      * Build a string containing appropriately formatted namespace information
      * based on the given data type and local namespace component. This is
      * aimed at languages with C-like syntax (perl, C, C++, Java, IDL) and
@@ -747,7 +706,7 @@ abstract public class CodeGenerator
         if (! local.equals("")) names.add("CCM_Session_" + local);
 
         if (data_type.equals("Namespace")) {
-            return join("::", names);
+            return join(scope_separator, names);
         } else if (data_type.equals("LocalFileNamespace")) {
             return join("_", slice(names, 1));
         } else if (data_type.equals("FileNamespace")) {
@@ -772,6 +731,47 @@ abstract public class CodeGenerator
             return join("", tmp);
         }
         return "";
+    }
+
+    /**
+     * Return a string version of the IDL type corresponding to the given
+     * object's CCM IdlType.
+     *
+     * @param object the node object to use for type finding.
+     * @return a string containing the base IDL type of the given object. An
+     *         exception is thrown if the object has no IDL type. The resulting
+     *         string will be (for primitive types and strings) the lookup from
+     *         the language_mappings hash, or (for MContained graph nodes) the
+     *         fully scoped identifier of the object.
+     */
+    protected String getBaseLanguageType(MTyped object)
+    {
+        MIDLType idl_type = object.getIdlType();
+
+        if (idl_type == null)
+            throw new RuntimeException("object '"+object+"' has no IDL type");
+
+        String type = "";
+
+        if (idl_type instanceof MPrimitiveDef)
+            type = ((MPrimitiveDef) idl_type).getKind().toString();
+        else if (idl_type instanceof MStringDef)
+            type = ((MStringDef) idl_type).getKind().toString();
+        else if (idl_type instanceof MWstringDef)
+            type = ((MWstringDef) idl_type).getKind().toString();
+        else if (idl_type instanceof MFixedDef)
+            type = ((MFixedDef) idl_type).getKind().toString();
+
+        if (! type.equals("") && language_mappings.containsKey(type))
+            return (String) language_mappings.get(type);
+
+        if (idl_type instanceof MContained) {
+            List scope = getScope((MContained) idl_type);
+            scope.add(((MContained) idl_type).getIdentifier());
+            return join(scope_separator, scope);
+        }
+
+        return type;
     }
 
     /**
@@ -924,9 +924,8 @@ abstract public class CodeGenerator
             }
         } else if (variable.endsWith("Namespace")) {
 
-            // this is just a useful default. subclasses should override this
-            // case if they need special behavior regarding the second parameter
-            // to the handleNamespace function.
+            // This is just a useful default ; subclasses should override this
+            // case if they need to pass a particular second parameter.
 
             return handleNamespace(variable, "");
         }
@@ -969,7 +968,8 @@ abstract public class CodeGenerator
     /**
      * Get a local scope id for the given node variable name.
      */
-    private String getScopeID(String var) { return current_name + "::" + var; }
+    private String getScopeID(String var)
+    { return current_name + scope_separator + var; }
 
     /**
      * Map an identifier to a language-safe identifier.
@@ -1109,7 +1109,7 @@ abstract public class CodeGenerator
             // add the template contents to the appropriate parent variable's
             // current value.
 
-            Object scope_id = name_stack.peek() + "::" + var;
+            Object scope_id = name_stack.peek() + scope_separator + var;
             String prev_value = (String) output_variables.get(scope_id);
             String result = t.substituteVariables(output_variables);
 

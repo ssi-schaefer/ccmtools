@@ -230,15 +230,7 @@ abstract public class CppGenerator
     protected String getLanguageType(MTyped object)
     {
         MIDLType idl_type = object.getIdlType();
-
-        String base_type = getBaseIdlType(object);
-        if (language_mappings.containsKey(base_type)) {
-            base_type = (String) language_mappings.get(base_type);
-        } else if (object instanceof MContained) {
-            List scope = getScope((MContained) object);
-            scope.add(base_type);
-            base_type = join("::", scope);
-        }
+        String base_type = getBaseLanguageType(object);
 
         if (object instanceof MParameterDef) {
 	    /* This code defines the parameter passing rules:
@@ -265,14 +257,16 @@ abstract public class CppGenerator
 	    }
 
             return prefix + base_type + suffix;
+        }
 
-        } else if ((object instanceof MAliasDef) &&
-                   (idl_type instanceof MTyped)) {
+        if ((object instanceof MAliasDef) && (idl_type instanceof MTyped))
             return getLanguageType((MTyped) idl_type);
-        } else if (object instanceof MSequenceDef) {
-            // FIXME : can we implement bounded sequences in C++ ?
+
+        // FIXME : can we implement bounded sequences in C++ ?
+        if (object instanceof MSequenceDef)
             return "std::" + sequence_type + "<" + base_type + "> ";
-        } else if (object instanceof MArrayDef) {
+
+        if (object instanceof MArrayDef) {
 	    /* This code defines the IDL -> C++ mapping of arrays:
 	     * IDL: typedef long x[7]
 	     * C++: typedef std::vector<long>

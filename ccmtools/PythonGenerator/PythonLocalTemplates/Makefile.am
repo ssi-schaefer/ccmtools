@@ -34,7 +34,8 @@ dist_template_DATA = \
     MFactoryDefImplDefinition                      \
     MFactoryDefPrototypeV                          \
     MFactoryDefPrototypeVV                         \
-    MFieldDef                                      \
+    MFieldDefInit                                  \
+    MFieldDefName                                  \
     MHomeDef                                       \
     MInterfaceDef                                  \
     MModuleDef                                     \

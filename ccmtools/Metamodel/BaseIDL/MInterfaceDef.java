@@ -23,7 +23,7 @@ package ccmtools.Metamodel.BaseIDL;
 import java.util.List;
 
 public interface MInterfaceDef
-    extends MContainer, MTyped
+    extends MContainer, MIDLType
 {
     // attribute isAbstract:boolean
     boolean isAbstract();

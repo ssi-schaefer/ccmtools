@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.omg.CORBA.TypeCode;
+
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
@@ -47,6 +49,7 @@ public class MComponentDefImpl
     private boolean isAbstract;
     private boolean isLocal;
 
+    private TypeCode typeCode_;
     private List HomeList_;
     private List FacetList_;
     private List ReceptacleList_;
@@ -54,7 +57,6 @@ public class MComponentDefImpl
     private List EmitsList_;
     private List PublishesList_;
     private List ConsumesList_;
-    private MIDLType TypedBy_;
     private MContainer Contains;
     private List ContainsList;
     private List InterfaceDerivedFromList;
@@ -63,6 +65,7 @@ public class MComponentDefImpl
     {
         isAbstract = false;
         isLocal = false;
+        typeCode_ = null;
 	HomeList_ = new ArrayList();
 	FacetList_ = new ArrayList();
 	ReceptacleList_ = new ArrayList();
@@ -70,7 +73,6 @@ public class MComponentDefImpl
 	EmitsList_ = new ArrayList();
 	PublishesList_ = new ArrayList();
 	ConsumesList_ = new ArrayList();
-        TypedBy_ = null;
         Contains = null;
 	ContainsList = new ArrayList();
 	InterfaceDerivedFromList = new ArrayList();
@@ -122,13 +124,13 @@ public class MComponentDefImpl
     public boolean isLocal()                    {return isLocal;}
     public void setLocal(boolean __arg)         {isLocal = __arg;}
 
+    // attribute typeCode:TypeCode
+    public TypeCode getTypeCode()               {return typeCode_;}
+    public void setTypeCode(TypeCode __arg)     {typeCode_ = __arg;}
+
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
-
-    // association: direct role: [*] --> opposite role: idlType[1]
-    public MIDLType getIdlType()                {return TypedBy_;}
-    public void setIdlType(MIDLType __arg)      {TypedBy_ = __arg;}
 
     // composition: direct role: component[1] <-> opposite role: facet[*]
     public List getFacets()                     {return FacetList_;}

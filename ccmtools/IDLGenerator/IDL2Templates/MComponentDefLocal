@@ -1,6 +1,6 @@
-%(ExternInclude)s
 %(BaseInclude)s
-
+%(MAttributeDefInclude)s
+%(MConstantDefInclude)s
 %(MSupportsDefInclude)s
 %(MProvidesDefInclude)s
 %(MConsumesDefInclude)s
@@ -8,17 +8,19 @@
 %(MPublishesDefInclude)s
 %(MUsesDefInclude)s
 
+#include "CCM.idl2"
+
 #ifndef __COMPONENT__%(IncludeNamespace)s%(Identifier)s__
 #define __COMPONENT__%(IncludeNamespace)s%(Identifier)s__
 
-#include <%(IncludeNamespace)s%(HomeType)s.idl3>
+#include <%(IncludeNamespace)s%(HomeType)s.idl2>
 
 %(OpenNamespace)s
 
-local interface %(Identifier)s :
-  Components::CCMObject%(BaseTypes)s%(MSupportsDefBase)s
+local interface %(Identifier)s : Components::CCMObject%(BaseTypes)s%(MSupportsDef)s
 {
 %(MAttributeDef)s
+%(MConstantDef)s
 %(MProvidesDef)s
 %(MUsesDef)s
 %(MPublishesDef)s

@@ -1,2 +1,2 @@
- attribute %(LanguageType)s %(Identifier)s;
+  attribute %(LanguageType)s %(Identifier)s;
 

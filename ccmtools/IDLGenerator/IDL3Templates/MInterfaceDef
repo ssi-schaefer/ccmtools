@@ -1,4 +1,4 @@
-%(ExternInclude)s
+%(MOperationDefInclude)s
 %(BaseInclude)s
 
 #ifndef __INTERFACE__%(IncludeNamespace)s%(Identifier)s__

@@ -1,5 +1,6 @@
 %(MSupportsDefInclude)s
-%(ExternInclude)s
+%(MFactoryDefInclude)s
+%(MFinderDefInclude)s
 %(BaseInclude)s
 
 #ifndef __HOME__%(IncludeNamespace)s%(Identifier)s__
@@ -10,11 +11,10 @@
 interface %(ComponentType)s;
 
 interface %(Identifier)sExplicit :
-  Components::CCMHome%(BaseTypes)s%(SupportTypes)s
+  Components::CCMHome%(BaseTypes)s%(MSupportsDef)s
 {
-%(MOperationDef)s
-%(MFinderDef)s
 %(MFactoryDef)s
+%(MFinderDef)s
 };
 
 interface %(Identifier)sImplicit : Components::CCMHome
