@@ -13,7 +13,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # tests are generally in order of increasing complexity.
 
-TESTS = attribute_user_types.sh
+TESTS = owudb.sh
 
 #TESTS = \
 #    help.sh                       \
