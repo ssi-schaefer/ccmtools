@@ -204,7 +204,7 @@ public class CppRemoteGeneratorTest extends CcmtoolsTestCase
     // ------------------------------------------------------------------------
     // Receptacle test cases
     // ------------------------------------------------------------------------
-    /*
+
     public void testReceptacleSimple()
     {
 	String testDir = ccmtoolsDir + 
@@ -251,6 +251,5 @@ public class CppRemoteGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
-    */
 
 }
