@@ -180,9 +180,9 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
 	        code.append( ((Worker)myElements_.get(index)).getIdlCode(main, p2) );
 	    }
 	    code.append(prefix);
-	    code.append("}; /* module ");
+	    code.append("}; // /module ");
 	    code.append(getName());
-	    code.append(" */\n\n");
+	    code.append("\n\n");
 	    return code.toString();
 	}
 

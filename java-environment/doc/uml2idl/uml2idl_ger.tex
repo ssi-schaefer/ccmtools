@@ -27,7 +27,7 @@
 \author{Robert Lechner}
 \title{UML nach IDL/OCL Konverter}
 
-\date{23. Februar 2004}
+\date{Juni 2004}
 
 \begin{document}
 \maketitle
@@ -54,7 +54,7 @@ Gestartet wird der Konverter mit dem Aufruf:
 \begin{verbatim}
 java uml2idl.Main UML-file IDL/OCL-prefix
 \end{verbatim}
-\texttt{UML-file} \dots Name der \textsf{XMI}-Datei (UML 1.4 XMI-Format)
+\texttt{UML-file} \dots Name der \textsf{XMI}-Datei (\textsf{UML} 1.4 -- \textsf{XMI} 1.1)
 \footnote{XML Metadata Interchange: XML-Dateien zum Speichern von UML-Modellen}\\
 \texttt{IDL/OCL-prefix} \dots Prefix f{\"u}r die Namen der \textsf{IDL}- und \textsf{OCL}-Dateien
 \subsection{UML}
@@ -868,6 +868,19 @@ package ITI
     post: return*return=x
 endpackage
 \end{verbatim}
+
+%%---------------------------------------------------------------------------
+
+\cleardoublepage
+\section{UML-Editoren}
+\subsection{MagicDraw}
+\begin{itemize}
+\item Es muss immer \textsf{XMI}-Version \textbf{1.1} verwendet werden.
+\item Ab Version 7.x gibt es vordefinierte Profile. Diese werden nicht in
+	die \textsf{XMI}-Datei kopiert. Im Editor sind sie grau hinterlegt
+	und haben ein eigenes Symbol. Wird ein solches Profil ben{\"o}tigt,
+	dann muss es importiert werden (rechte Maustaste -- Modul importieren).
+\end{itemize} 
 
 
 \end{document}
