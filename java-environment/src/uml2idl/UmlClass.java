@@ -134,8 +134,12 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 	                Object o = g.get(k);
 	                if( o instanceof UmlGeneralization )
 	                {
-	                    myGeneralizations_.add(o);
-	                    ((UmlGeneralization)o).collectWorkers(map);
+                        UmlGeneralization gen = (UmlGeneralization)o;
+                        if(gen.xmi_idref_==null)
+                        {
+	                       myGeneralizations_.add(o);
+	                       gen.collectWorkers(map);
+                        }
 	                }
 	            }
 	        }

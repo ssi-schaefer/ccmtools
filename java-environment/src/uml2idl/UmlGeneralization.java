@@ -23,6 +23,7 @@ package uml2idl;
 
 import java.util.Vector;
 import org.xml.sax.Attributes;
+import uml_parser.uml.MGeneralization_child;
 import uml_parser.uml.MGeneralization_parent;
 import uml_parser.uml.MGeneralizableElement;
 
@@ -193,19 +194,19 @@ class UmlGeneralization extends uml_parser.uml.MGeneralization implements Worker
         }
         if( child_==null )
         {
-            /*Vector v1 = findChildren(MGeneralization_parent.xmlName__);
+            Vector v1 = findChildren(MGeneralization_child.xmlName__);
             if( v1.size()<1 )
             {
                 return null;
             }
-            MGeneralization_parent p1 = (MGeneralization_parent)v1.get(0);
+            MGeneralization_child p1 = (MGeneralization_child)v1.get(0);
             Vector v2 = p1.findChildren(MGeneralizableElement.xmlName__);
             if( v2.size()<1 )
             {
                 return null;
             }
             MGeneralizableElement e1 = (MGeneralizableElement)v2.get(0);
-            child_ = e1.xmi_idref_;*/
+            child_ = e1.xmi_idref_;
             if( child_==null )
             {
                 return null;
