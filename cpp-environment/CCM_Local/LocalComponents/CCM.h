@@ -205,7 +205,7 @@ namespace LocalComponents {
     //    virtual IRObject* get_component_def() = 0;
     //    virtual IRObject* get_home_def() = 0;
 
-    virtual void remove_component(const CCMObject& comp)
+    virtual void remove_component(WX::Utils::SmartPtr<CCMObject> component)
         throw(CCMException, RemoveFailure) = 0;
   };
 
@@ -221,7 +221,7 @@ namespace LocalComponents {
   public:
     virtual ~KeylessCCMHome() {}
 
-    virtual CCMObject* create_component()
+    virtual WX::Utils::SmartPtr<CCMObject> create_component()
         throw(CCMException, CreateFailure) = 0;
   };
 
@@ -768,8 +768,9 @@ namespace LocalComponents {
    *      
    * CCM Specification 6-73
    **/
-  class Assembly { 
-  public:
+  class Assembly 
+    : virtual public WX::Utils::RefCounted {
+    public:
 
     /*
      * Creates required component servers, creates required containers, installs
@@ -791,8 +792,32 @@ namespace LocalComponents {
      * Returns whether the assembly is active or inactive.
      */
     virtual AssemblyState get_state() = 0;
+
+
+    /*
+     * Build a component assembly based on a given facade component.
+     *  
+     * Note: This is an CCM extension to support nested components.
+     */
+    virtual void build(WX::Utils::SmartPtr<CCMObject> facadeComponent)
+        throw(CreateFailure) = 0;
+
+    /*
+     * Call configuration_complete on every component instance in the assembly.
+     *
+     * Note: This is an CCM extension to support nested components.
+     */
+    virtual void configuration_complete() = 0;
   };
 
+
+  class AssemblyFactory
+    : virtual public WX::Utils::RefCounted {
+    public:
+    virtual WX::Utils::SmartPtr<Assembly> create() 
+        throw(CreateFailure) = 0;
+
+  };
 
 } // /namespace LocalComponents
 
