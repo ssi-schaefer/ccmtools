@@ -1153,7 +1153,23 @@ public class OclNormalization
      */
     public OclType makeOclType( MTyped object )
     {
+        if( object==null )
+        {
+            System.err.println("OclNormalization.makeOclType: object==null");
+            return null;
+        }
         MIDLType idlType = object.getIdlType();
+        if( idlType==null )
+        {
+            if( object instanceof MOperationDef )
+            {
+                // an operation with no return type
+                return null;
+            }
+            System.err.println("OclNormalization.makeOclType: idlType==null  object=="+
+                object.getClass().getName() );
+            return null;
+        }
         if( idlType instanceof MPrimitiveDef )
         {
             return getOclTypeByName(makeOclTypeName( ((MPrimitiveDef)idlType).getKind() ));
@@ -1179,7 +1195,7 @@ public class OclNormalization
                 }
                 return result;
             }
-            // TODO
+            // TODO?
             return creator_.createTypeUser(id);
         }
         System.err.println("OclNormalization.makeOclType: unknown IDL type '"+

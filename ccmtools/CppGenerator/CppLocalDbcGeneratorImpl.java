@@ -411,16 +411,14 @@ public class CppLocalDbcGeneratorImpl
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getFactoryPreInvocation()");
-    	// TODO Robert
-    	return "  /* FactoryPreInvocation */";
+        return getCodeForPrecondition(op,false);
     }
 
     protected String getFactoryPostInvocation(MOperationDef op)
     {
         Debug.println(Debug.METHODS,
                       "CppLocalDbCGenerator.getFactoryPostInvocation()");
-    	// TODO Robert
-    	return "  /* FactoryPostInvocation */";
+        return getCodeForPostcondition(op,false);
     }
 
 

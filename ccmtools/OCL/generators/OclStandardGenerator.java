@@ -556,15 +556,13 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         {
             etExpr.idlType_ = lastIdlType_;
         }
-        //
         ConstraintCode fake = getConstraintCode(conCode, lastIdlType_);
-        ElementType etPC = typeChecker_.makeType(pc,fake);
-        OclType typePC = etPC.oclType_;
-        lastIdlType_ = etPC.idlType_;
-        pfe.setOclType(typePC);
-        //
         if( pc.getCallParameters()==null && pc.isPrevious() )
         {
+            ElementType etPC = typeChecker_.makeType(pc,fake);
+            OclType typePC = etPC.oclType_;
+            lastIdlType_ = etPC.idlType_;
+            pfe.setOclType(typePC);
             if( typePC==null )
             {
                 return error("cannot resolve type of @pre-expression [PFE]");
@@ -614,6 +612,10 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             }
         }
         // we assume that the type is OclUser
+        ElementType etPC = typeChecker_.makeType(pc,fake);
+        OclType typePC = etPC.oclType_;
+        lastIdlType_ = etPC.idlType_;
+        pfe.setOclType(typePC);
         String sc = getAccess(exprCode, etExpr, getCode(pc,false,conCode,etExpr));
         lastIdlType_ = etPC.idlType_;
         return sc;
