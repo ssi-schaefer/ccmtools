@@ -1,10 +1,33 @@
+%
+% German documentation for 'uml2idl'.
+%
+% $Id$
+%
 \documentclass [a4paper,10pt] {scrartcl}
 \usepackage[austrian]{babel}
-\usepackage{graphicx}
+
+% ------------------- settings for pdf documents  ----------------------------
+\expandafter\ifx\csname pdfoutput\endcsname\relax
+    \usepackage[draft]{hyperref}
+    \usepackage{graphicx}
+    \DeclareGraphicsExtensions{.eps,.fig}
+\else
+    \usepackage{hyperref}
+    \hypersetup{
+        pdfauthor={Robert Lechner},
+        pdftitle={Anleitung f{\"u}r den UML nach IDL/OCL Konverter},
+        pdfsubject={Bestandteil des ccmtools Projektes},
+        pdfkeywords={UML, IDL, OCL, CORBA, Komponenten, CCM}
+    }
+    \pdfcompresslevel=9
+    \usepackage[pdftex]{graphicx}
+    \DeclareGraphicsExtensions{.pdf,.png,.gif,.jpg}
+\fi
+
 \author{Robert Lechner}
 \title{UML nach IDL/OCL Konverter}
 
-\date{23. Februar 2004 \\~\\ \tiny{$Revision$ $Date$ $Author$}}
+\date{23. Februar 2004}
 
 \begin{document}
 \maketitle
@@ -15,7 +38,10 @@
 \subsection{Anwendung}
 Das Paket \texttt{uml2idl} beinhaltet einen \textsf{UML}$\rightarrow$\textsf{IDL/OCL}
 Konverter. Der Zweck besteht darin, Komponenten und Interfaces (\textsf{IDL}
-\footnote{Interface Definition Language; Teil der CORBA-Spezifikation}) zusammen mit der
+\footnote{Interface Definition Language; Teil der CORBA-Spezifikation:\\
+\url{http://www.omg.org/technology/documents/formal/corba_iiop.htm}\\
+\url{http://www.omg.org/technology/documents/formal/components.htm}
+}) zusammen mit der
 formalen Definition der Schnittstellen (\textsf{OCL}
 \footnote{Object Constraint Language; Teil der UML-Spezifikation}) in einem \textsf{UML}-Editor
 zu modellieren. Der Konverter generiert daraus die f{\"u}r die \textsf{ccmtools} ben{\"o}tigten
@@ -63,12 +89,12 @@ Es stellt sich aber die Frage, ob solche Abh{\"a}ngigkeiten nicht auf einen Desi
 ~\\
 Keine Schwierigkeiten stellen die Abh{\"a}ngigkeiten in Abbildung \ref{fig:noProblem} dar.
 \begin{figure}[!h]
-\centerline{\includegraphics[width=0.8 \linewidth]{problem1.eps}}
+\centerline{\includegraphics[width=0.8 \linewidth]{problem1}}
 \caption{zyklische Abh{\"a}ngigkeit}
 \label{fig:problem1}
 \end{figure}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=0.8 \linewidth]{noProblem.eps}}
+\centerline{\includegraphics[width=0.8 \linewidth]{noProblem}}
 \caption{Abh{\"a}ngigkeiten ohne Probleme}
 \label{fig:noProblem}
 \end{figure}
@@ -121,7 +147,7 @@ module docModule {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=\linewidth]{docModule.eps}}
+\centerline{\includegraphics[width=\linewidth]{docModule}}
 \caption{Zwei M{\"o}glichkeiten um Module zu verschachteln.}
 \label{fig:module}
 \end{figure}
@@ -168,7 +194,7 @@ module docInterface {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=1.2 \linewidth]{docInterface.eps}}
+\centerline{\includegraphics[width=1.2 \linewidth]{docInterface}}
 \caption{UML-Klassendiagramm zu Abschnitt \ref{sec:interface}}
 \label{fig:interface}
 \end{figure}
@@ -246,7 +272,7 @@ module docValuetype {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=\linewidth]{docValuetype.eps}}
+\centerline{\includegraphics[width=\linewidth]{docValuetype}}
 \caption{value type}
 \label{fig:valuetype}
 \end{figure}
@@ -279,7 +305,7 @@ module docTypedef {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=0.9 \linewidth]{docTypedef.eps}}
+\centerline{\includegraphics[width=0.9 \linewidth]{docTypedef}}
 \caption{type definition}
 \label{fig:typedef}
 \end{figure}
@@ -310,7 +336,7 @@ module docConst {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=\linewidth]{docConst.eps}}
+\centerline{\includegraphics[width=\linewidth]{docConst}}
 \caption{Konstanten mit Abh{\"a}ngigkeit}
 \label{fig:const}
 \end{figure}
@@ -340,7 +366,7 @@ module docStruct {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=\linewidth]{docStruct.eps}}
+\centerline{\includegraphics[width=\linewidth]{docStruct}}
 \caption{zwei verschachtelte Strukturen}
 \label{fig:struct}
 \end{figure}
@@ -391,7 +417,7 @@ module docUnion {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=1.2 \linewidth]{docUnion.eps}}
+\centerline{\includegraphics[width=1.2 \linewidth]{docUnion}}
 \caption{union}
 \label{fig:union}
 \end{figure}
@@ -421,7 +447,7 @@ module docEnum {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=\linewidth]{docEnum.eps}}
+\centerline{\includegraphics[width=\linewidth]{docEnum}}
 \caption{enumeration}
 \label{fig:enum}
 \end{figure}
@@ -449,7 +475,7 @@ module docException {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=\linewidth]{docException.eps}}
+\centerline{\includegraphics[width=\linewidth]{docException}}
 \caption{exception}
 \label{fig:exception}
 \end{figure}
@@ -481,7 +507,7 @@ module docSequence {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=1.2\linewidth]{docSequence.eps}}
+\centerline{\includegraphics[width=1.2\linewidth]{docSequence}}
 \caption{sequence}
 \label{fig:sequence}
 \end{figure}
@@ -515,7 +541,7 @@ module docArray {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=1.2\linewidth]{docArray.eps}}
+\centerline{\includegraphics[width=1.2\linewidth]{docArray}}
 \caption{ein- und mehrdimensionale Felder}
 \label{fig:array}
 \end{figure}
@@ -597,7 +623,7 @@ module docAttribute {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=\linewidth]{docAttribute.eps}}
+\centerline{\includegraphics[width=\linewidth]{docAttribute}}
 \caption{Attribute}
 \label{fig:attribute}
 \end{figure}
@@ -675,7 +701,7 @@ module docComponent {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=\linewidth]{docComponent.eps}}
+\centerline{\includegraphics[width=\linewidth]{docComponent}}
 \caption{Komponenten}
 \label{fig:component}
 \end{figure}
@@ -715,7 +741,7 @@ module docEvent {
 \end{minipage}
 \hfill
 \begin{minipage}{0.4 \linewidth}
-\includegraphics[width=1.4 \linewidth]{docEvent.eps}
+\includegraphics[width=1.4 \linewidth]{docEvent}
 \end{minipage}
 
 
@@ -778,7 +804,7 @@ module docHome {
 };
 \end{verbatim}
 \begin{figure}[!h]
-\centerline{\includegraphics[width=1.2 \linewidth]{docHome.eps}}
+\centerline{\includegraphics[width=1.2 \linewidth]{docHome}}
 \caption{home}
 \label{fig:home}
 \end{figure}
@@ -813,7 +839,7 @@ Die fehlenden \texttt{package}- und \texttt{context}-Anweisungen werden
 automatisch erzeugt.
 \newpage
 \textbf{Beispiel:}\\
-\centerline{\includegraphics[width=0.6 \linewidth]{ocl1.eps}}\\
+\centerline{\includegraphics[width=0.6 \linewidth]{ocl1}}\\
 \textbf{IDL:}
 \begin{verbatim}
 module ITI {
