@@ -37,56 +37,56 @@ using namespace WX::Utils;
 //============================================================================
 
 void 
-CCM::convertToCorba(const bool& in, CORBA::Boolean& out)
+CCM_Remote::convertToCorba(const bool& in, CORBA::Boolean& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Boolean)");
     out = (CORBA::Boolean)in;
 }
 
 void 
-CCM::convertToCorba(const char& in, CORBA::Char& out)
+CCM_Remote::convertToCorba(const char& in, CORBA::Char& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Char)");
     out = (CORBA::Char)in;
 }
 
 void 
-CCM::convertToCorba(const double& in, CORBA::Double& out)
+CCM_Remote::convertToCorba(const double& in, CORBA::Double& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Double)");
     out = (CORBA::Double)in;
 }
 
 void 
-CCM::convertToCorba(const float& in, CORBA::Float& out)
+CCM_Remote::convertToCorba(const float& in, CORBA::Float& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Float)");
     out = (CORBA::Float)in;
 }
 
 void 
-CCM::convertToCorba(const long& in, CORBA::Long& out)
+CCM_Remote::convertToCorba(const long& in, CORBA::Long& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Long)");
     out = (CORBA::Long)in;
 }
 
 void 
-CCM::convertToCorba(const unsigned char& in, CORBA::Octet& out)
+CCM_Remote::convertToCorba(const unsigned char& in, CORBA::Octet& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Octet)");
     out = (CORBA::Octet)in;
 }
 
 void 
-CCM::convertToCorba(const short& in, CORBA::Short& out)
+CCM_Remote::convertToCorba(const short& in, CORBA::Short& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::Short)");
     out = (CORBA::Short)in;
 }
 
 void 
-CCM::convertToCorba(const std::string& in, char*& out)
+CCM_Remote::convertToCorba(const std::string& in, char*& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(char*)");
     const char* s = in.c_str();
@@ -94,14 +94,14 @@ CCM::convertToCorba(const std::string& in, char*& out)
 }
 
 void 
-CCM::convertToCorba(const unsigned long& in, CORBA::ULong& out)
+CCM_Remote::convertToCorba(const unsigned long& in, CORBA::ULong& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::ULong)");
     out = (CORBA::ULong)in;
 }
 
 void 
-CCM::convertToCorba(const unsigned short& in, CORBA::UShort& out)
+CCM_Remote::convertToCorba(const unsigned short& in, CORBA::UShort& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertToCorba(CORBA::UShort)");
     out = (CORBA::UShort)in;
@@ -114,77 +114,79 @@ CCM::convertToCorba(const unsigned short& in, CORBA::UShort& out)
 //============================================================================
 
 void 
-CCM::convertFromCorba(const CORBA::Boolean& in, bool& out)
+CCM_Remote::convertFromCorba(const CORBA::Boolean& in, bool& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Boolean)");
     out = (bool)in;
 }
 
 void 
-CCM::convertFromCorba(const CORBA::Char& in, char& out)
+CCM_Remote::convertFromCorba(const CORBA::Char& in, char& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Char)");
     out = (char)in;
 }
 
 void 
-CCM::convertFromCorba(const CORBA::Double& in, double& out)
+CCM_Remote::convertFromCorba(const CORBA::Double& in, double& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Double)");
     out = (double)in;
 }
 
 void 
-CCM::convertFromCorba(const CORBA::Float& in, float& out)
+CCM_Remote::convertFromCorba(const CORBA::Float& in, float& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Float)");
     out = (float)in;
 }
 
 void 
-CCM::convertFromCorba(const CORBA::Long& in, long& out)
+CCM_Remote::convertFromCorba(const CORBA::Long& in, long& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Long)");
     out = (long)in;
 }
 
 void 
-CCM::convertFromCorba(const CORBA::Octet& in, unsigned char& out)
+CCM_Remote::convertFromCorba(const CORBA::Octet& in, unsigned char& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Octet)");
     out = (unsigned char)in;
 }
 
 void 
-CCM::convertFromCorba(const CORBA::Short& in, short& out)
+CCM_Remote::convertFromCorba(const CORBA::Short& in, short& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::Short)");
     out = (short)in;
 }
 
 void 
-CCM::convertFromCorba(const char*& in, std::string& out)
+CCM_Remote::convertFromCorba(const char* in, std::string& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba()");
     out = (std::string)in;
 }
 
+// Special case: inout string parameter conversion
 void 
-CCM::convertFromCorba(char*& in, std::string& out)
+CCM_Remote::convertFromCorba(char*& in, std::string& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba()");
     out = (std::string)in;
 }
 
+
 void 
-CCM::convertFromCorba(const CORBA::ULong& in, unsigned long& out)
+CCM_Remote::convertFromCorba(const CORBA::ULong& in, unsigned long& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba(CORBA::ULong)");
     out = (unsigned long)in;
 }  
 
 void 
-CCM::convertFromCorba(const CORBA::UShort& in, unsigned short& out)
+CCM_Remote::convertFromCorba(const CORBA::UShort& in, unsigned short& out)
 {
     LDEBUGNL(CCM_REMOTE, "convertFromCorba( CORBA::UShort)");
     out = (unsigned short)in;

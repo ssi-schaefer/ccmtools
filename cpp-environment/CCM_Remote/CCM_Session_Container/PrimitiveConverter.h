@@ -27,40 +27,40 @@
 #include <CORBA.h>
 #include <string>
 
-namespace CCM {
-  
-  //============================================================================
-  // Convert basic types from C++ to CORBA 
-  //============================================================================
+namespace CCM_Remote {
+    
+    //==========================================================================
+    // Convert basic types from C++ to CORBA 
+    //==========================================================================
+    
+    void convertToCorba(const bool&          , CORBA::Boolean&);
+    void convertToCorba(const char&          , CORBA::Char&);
+    void convertToCorba(const double&        , CORBA::Double&); 
+    void convertToCorba(const float&         , CORBA::Float&);
+    void convertToCorba(const long&          , CORBA::Long&);
+    void convertToCorba(const unsigned char& , CORBA::Octet&);
+    void convertToCorba(const short&         , CORBA::Short&);
+    void convertToCorba(const std::string&   , char*& );
+    void convertToCorba(const unsigned long& , CORBA::ULong&);
+    void convertToCorba(const unsigned short&, CORBA::UShort&);
+    
+    
+    //==========================================================================
+    // Convert basic types from CORBA to C++ 
+    //==========================================================================
 
-  void convertToCorba(const bool&          , CORBA::Boolean&);
-  void convertToCorba(const char&          , CORBA::Char&);
-  void convertToCorba(const double&        , CORBA::Double&); 
-  void convertToCorba(const float&         , CORBA::Float&);
-  void convertToCorba(const long&          , CORBA::Long&);
-  void convertToCorba(const unsigned char& , CORBA::Octet&);
-  void convertToCorba(const short&         , CORBA::Short&);
-  void convertToCorba(const std::string&   , char*& );
-  void convertToCorba(const unsigned long& , CORBA::ULong&);
-  void convertToCorba(const unsigned short&, CORBA::UShort&);
-
-
-  //============================================================================
-  // Convert basic types from CORBA to C++ 
-  //============================================================================
-
-  void convertFromCorba(const CORBA::Boolean&, bool&);
-  void convertFromCorba(const CORBA::Char&   , char&);
-  void convertFromCorba(const CORBA::Double& , double&);
-  void convertFromCorba(const CORBA::Float&  , float&);
-  void convertFromCorba(const CORBA::Long&   , long&);
-  void convertFromCorba(const CORBA::Octet&  , unsigned char&);
-  void convertFromCorba(const CORBA::Short&  , short&);
-  void convertFromCorba(const char*&         , std::string&);
-  void convertFromCorba(char*&               , std::string&);
-  void convertFromCorba(const CORBA::ULong&  , unsigned long&);  
-  void convertFromCorba(const CORBA::UShort& , unsigned short&);
-
-} // /namespace CCM
+    void convertFromCorba(const CORBA::Boolean&, bool&);
+    void convertFromCorba(const CORBA::Char&   , char&);
+    void convertFromCorba(const CORBA::Double& , double&);
+    void convertFromCorba(const CORBA::Float&  , float&);
+    void convertFromCorba(const CORBA::Long&   , long&);
+    void convertFromCorba(const CORBA::Octet&  , unsigned char&);
+    void convertFromCorba(const CORBA::Short&  , short&);
+    void convertFromCorba(const char*          , std::string&);
+    void convertFromCorba(char*&               , std::string&);  // inout string
+    void convertFromCorba(const CORBA::ULong&  , unsigned long&);  
+    void convertFromCorba(const CORBA::UShort& , unsigned short&);
+    
+} // /namespace CCM_Remote
 
 #endif
