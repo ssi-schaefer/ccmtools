@@ -1,0 +1,3 @@
+Makefile.am
+Makefile.in
+wx_external_mico_basic.py
