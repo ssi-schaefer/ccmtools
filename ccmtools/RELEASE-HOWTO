@@ -74,14 +74,21 @@ There are a few things to verify before doing the actual distribution.
 
   I use the "cvs2cl" script to do this, and then edit the resulting ChangeLog :
 
-  A.B $ cvs2cl --accum
-  A.B $ emacsclient ChangeLog
+  A.B $ cvs2cl -U AUTHORS --accum -f ChangeLog-A.B.X
+  A.B $ emacsclient ChangeLog-A.B.X
+  [clean up the ChangeLog]
+  A.B $ cvs add ChangeLog-A.B.X
+  A.B $ rm ChangeLog
+  A.B $ ln -s ChangeLog-A.B.X ChangeLog
   A.B $ cvs ci
 
 - Update the release notes on the web site.
 
   A.B $ ssh ccmtools.sf.net
   ~ $ emacs /home/groups/c/cc/ccmtools/htdocs/releases/index.php
+  [change the index to point at A.B.X.php, the new release]
+  ~ $ emacs /home/groups/c/cc/ccmtools/htdocs/releases/A.B.X.php
+  [describe the A.B.X stable release]
 
 - Create a RELEASE-A.B.X file.
 
@@ -90,7 +97,10 @@ There are a few things to verify before doing the actual distribution.
 
   A.B $ lynx --dump http://ccmtools.sf.net/releases/ > RELEASE-A.B.X
   A.B $ emacsclient RELEASE-A.B.X
+  [clean up the dumped release notes]
   A.B $ cvs add RELEASE-A.B.X
+  A.B $ rm RELEASE
+  A.B $ ln -s RELEASE-A.B.X RELEASE
   A.B $ cvs ci
 
 - Update the tutorial, manual, and guide on the web site.
