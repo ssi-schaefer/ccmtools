@@ -1,6 +1,6 @@
-/* CCM Tools : OCL metamodel
+/* CCM Tools : OCL helpers
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -28,7 +28,6 @@ import java.io.File;
  * A factory for OCL helpers.
  *
  * @author Robert Lechner
- * @version 0.1
  */
 public class Factory
 {
@@ -50,14 +49,14 @@ public class Factory
     }
 
 
-    private static OclParsetreeCreator creator_;
+    private static OclElementCreator creator_;
 
     /**
-     * Returns an instance of {@link ccmtools.OCL.parser.OclCreatorImp}.
+     * Returns an instance of {@link OclCreatorImp}.
      *
      * @throws IllegalStateException  the MOF file doesn't exist or a problem with the MDR
      */
-    public static OclParsetreeCreator getParsetreeCreator() throws IllegalStateException
+    public static OclElementCreator getElementCreator() throws IllegalStateException
     {
         if( creator_==null )
         {

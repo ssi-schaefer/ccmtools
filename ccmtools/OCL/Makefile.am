@@ -2,7 +2,7 @@
 ## $Id$
 
 # build this directory before moving on to the template subdirs.
-SUBDIRS = utils . generators
+SUBDIRS = parser utils . generators
 
 CLASSPATH_ENV = CLASSPATH=$(CLASSPATH):$(top_builddir)
 

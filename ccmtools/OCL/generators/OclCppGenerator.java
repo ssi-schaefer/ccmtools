@@ -1,6 +1,6 @@
 /* CCM Tools : OCL generators
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -23,13 +23,14 @@ package ccmtools.OCL.generators;
 
 import oclmetamodel.*;
 import ccmtools.OCL.utils.*;
+import ccmtools.OCL.parser.OclConstants;
 
 
 /**
  * An OCL generator for C++ code.
  *
  * @author Robert Lechner
- * @version 0.1
+ * @version $Revision$
  */
 public class OclCppGenerator extends OclStandardGenerator
 {
@@ -40,7 +41,7 @@ public class OclCppGenerator extends OclStandardGenerator
      * @param parseTree  The normalized parse tree.
      * @param checker  Calculates the type of OCL expressions.
      */
-    public OclCppGenerator( OclParsetreeCreator creator, MFile parseTree, OclTypeChecker checker )
+    public OclCppGenerator( OclElementCreator creator, MFile parseTree, OclTypeChecker checker )
     {
         super(creator, parseTree, checker);
     }

@@ -1,6 +1,6 @@
-/* CCM Tools : OCL metamodel
+/* CCM Tools : OCL helpers
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -22,13 +22,13 @@
 package ccmtools.OCL.utils;
 
 import oclmetamodel.*;
+import ccmtools.OCL.parser.OclConstants;
 
 
 /**
  * Functions for checking the semantic of OCL expressions.
  *
  * @author Robert Lechner
- * @version 0.1
  */
 public class OclChecker
 {

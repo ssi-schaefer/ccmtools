@@ -1,6 +1,6 @@
-/* CCM Tools : OCL parser
+/* CCM Tools : OCL helpers
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -22,22 +22,22 @@
 package ccmtools.OCL.utils;
 
 import oclmetamodel.*;
+import ccmtools.OCL.parser.*;
 
 
 /**
  * Creates the parsetree of an OCL file by using the NetBeans Metadata Repository (MDR).
  *
- * @see ccmtools.OCL.util.OclModelCreator
+ * @see {@link OclModelCreator}
  *
  * @author Robert Lechner
- * @version 0.1
  */
-public class OclCreatorImp extends OclModelCreator implements OclParsetreeCreator
+public class OclCreatorImp extends OclModelCreator implements OclElementCreator
 {
     /**
      * Creates the connection to the NetBeans Metadata Repository.
      * The name of the OCL metamodel is set to
-     * {@link ccmtools.OCL.util.OclMdrAdapter#DEFAULT_METAMODEL_NAME}.
+     * {@link OclMdrAdapter#DEFAULT_METAMODEL_NAME}.
      *
      * @param mofFilename  the name of the MOF file (the OCL metamodel)
      *

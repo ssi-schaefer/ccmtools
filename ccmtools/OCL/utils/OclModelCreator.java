@@ -1,6 +1,6 @@
-/* CCM Tools : OCL metamodel
+/* CCM Tools : OCL helpers
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -27,10 +27,9 @@ import oclmetamodel.*;
 /**
  * Baseclass for creators of an OCL model (using the NetBeans Metadata Repository).
  *
- * @see OclMdrAdapter
+ * @see {@link OclMdrAdapter}
  *
  * @author Robert Lechner
- * @version 0.1
  */
 public abstract class OclModelCreator
 {

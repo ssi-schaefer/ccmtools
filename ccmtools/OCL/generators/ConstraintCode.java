@@ -24,9 +24,9 @@ package ccmtools.OCL.generators;
 import oclmetamodel.*;
 import ccmtools.Metamodel.BaseIDL.*;
 import ccmtools.Metamodel.ComponentIDL.*;
-import ccmtools.OCL.utils.OclParsetreeCreator;
-import ccmtools.OCL.utils.OclConstants;
-import ccmtools.OCL.utils.OclParserException;
+import ccmtools.OCL.parser.OclParsetreeCreator;
+import ccmtools.OCL.parser.OclConstants;
+import ccmtools.OCL.parser.OclParserException;
 
 
 /**
@@ -100,9 +100,10 @@ public abstract class ConstraintCode
      * @param oclExpr  an OCL expression
      * @param creator  only for {@link OclParsetreeCreator#createOperationExpression}
      *
-     * @throws IllegalStateException if {@link OclParsetreeCreator#createOperationExpression} fails
+     * @throws IllegalStateException if {@link ccmtools.OCL.parser.OclParsetreeCreator#createOperationExpression} fails
      */
-    void addExpression_And( String expr, MExpression oclExpr, OclParsetreeCreator creator ) throws IllegalStateException
+    void addExpression_And( String expr, MExpression oclExpr, OclParsetreeCreator creator )
+     throws IllegalStateException
     {
         if( expr.length()>0 )
         {
@@ -144,9 +145,10 @@ public abstract class ConstraintCode
      * @param oclExpr  an OCL expression
      * @param creator  only for {@link OclParsetreeCreator#createOperationExpression}
      *
-     * @throws IllegalStateException if {@link OclParsetreeCreator#createOperationExpression} fails
+     * @throws IllegalStateException if {@link ccmtools.OCL.parser.OclParsetreeCreator#createOperationExpression} fails
      */
-    void addExpression_Or( String expr, MExpression oclExpr, OclParsetreeCreator creator ) throws IllegalStateException
+    void addExpression_Or( String expr, MExpression oclExpr, OclParsetreeCreator creator )
+     throws IllegalStateException
     {
         if( expr.length()>0 )
         {

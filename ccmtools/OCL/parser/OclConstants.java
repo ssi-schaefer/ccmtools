@@ -19,16 +19,13 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.OCL.utils;
-
-import oclmetamodel.*;
+package ccmtools.OCL.parser;
 
 
 /**
  * Constants for the OCL metamodel.
  *
  * @author Robert Lechner
- * @version 0.1
  */
 public interface OclConstants
 {

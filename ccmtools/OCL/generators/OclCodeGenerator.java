@@ -1,6 +1,6 @@
 /* CCM Tools : OCL generators
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -23,6 +23,7 @@ package ccmtools.OCL.generators;
 
 import oclmetamodel.*;
 import ccmtools.OCL.utils.*;
+import ccmtools.OCL.parser.OclConstants;
 
 import ccmtools.Metamodel.BaseIDL.*;
 import ccmtools.Metamodel.ComponentIDL.*;
@@ -37,7 +38,7 @@ import java.io.FileWriter;
  * Base class for all OCL generators.
  *
  * @author Robert Lechner
- * @version 0.1
+ * @version $Revision$
  */
 public abstract class OclCodeGenerator
 {
@@ -50,9 +51,9 @@ public abstract class OclCodeGenerator
     /**
      * The parse tree creator.
      *
-     * @see {@link ccmtools.OCL.Factory#getParsetreeCreator}
+     * @see {@link ccmtools.utils.Factory#getElementCreator}
      */
-    protected OclParsetreeCreator creator_;
+    protected OclElementCreator creator_;
 
     /**
      * The normalized parse tree.
@@ -91,7 +92,7 @@ public abstract class OclCodeGenerator
      * @param parseTree  The normalized parse tree.
      * @param checker  Calculates the type of OCL expressions.
      */
-    protected OclCodeGenerator( OclParsetreeCreator creator, MFile parseTree, OclTypeChecker checker )
+    protected OclCodeGenerator( OclElementCreator creator, MFile parseTree, OclTypeChecker checker )
     {
         creator_ = creator;
         oclParseTree_ = parseTree;
@@ -229,7 +230,8 @@ public abstract class OclCodeGenerator
                 ConstraintCode c2 = makeCode(e, code);
                 code.helpers_ += c2.helpers_;
                 code.addExpression_And(c2.expression_, e.getExpression(), creator_);
-                code.statements_ += makeDbcCondition(c2.expression_, c2.helpers_, conTitle, identifier, OclConstants.STEREOTYPE_INVARIANT);
+                code.statements_ += makeDbcCondition(c2.expression_, c2.helpers_, conTitle,
+                                                     identifier, OclConstants.STEREOTYPE_INVARIANT);
             }
         }
         ClassIterator it = ClassIterator.getIterator(theClass,false);
@@ -282,7 +284,8 @@ public abstract class OclCodeGenerator
                     ConstraintCode c2 = makeCode(e, conCode);
                     conCode.helpers_ += c2.helpers_;
                     conCode.addExpression_And(c2.expression_, e.getExpression(), creator_);
-                    conCode.statements_ += makeDbcCondition(c2.expression_, c2.helpers_, conTitle, identifier, OclConstants.STEREOTYPE_POSTCONDITION);
+                    conCode.statements_ += makeDbcCondition(c2.expression_, c2.helpers_, conTitle,
+                                                            identifier, OclConstants.STEREOTYPE_POSTCONDITION);
                 }
             }
         }
@@ -359,7 +362,8 @@ public abstract class OclCodeGenerator
                         ConstraintCode c4 = makeCode(e, conCode);
                         conCode.helpers_ += c4.helpers_;
                         conCode.addExpression_And(c4.expression_, e.getExpression(), creator_);
-                        conCode.statements_ += makeDbcCondition(c4.expression_, c4.helpers_, conTitle, identifier, OclConstants.STEREOTYPE_PRECONDITION);
+                        conCode.statements_ += makeDbcCondition(c4.expression_, c4.helpers_, conTitle,
+                                                    identifier, OclConstants.STEREOTYPE_PRECONDITION);
                     }
                 }
             }
@@ -397,7 +401,8 @@ public abstract class OclCodeGenerator
         return false;
     }
 
-    private void preCodeMultiple( ConstraintCode conCode, MContainer theClass, MOperationDef op, String identifier )
+    private void preCodeMultiple( ConstraintCode conCode, MContainer theClass,
+                                  MOperationDef op, String identifier )
     {
         if( conCode.opCtxt_!=null )
         {

@@ -1,6 +1,6 @@
 /* CCM Tools : OCL generators
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -23,6 +23,7 @@ package ccmtools.OCL.generators;
 
 import oclmetamodel.*;
 import ccmtools.OCL.utils.*;
+import ccmtools.OCL.parser.OclConstants;
 
 import ccmtools.Metamodel.BaseIDL.*;
 import ccmtools.Metamodel.ComponentIDL.*;
@@ -35,7 +36,7 @@ import java.util.Iterator;
  * Code generator for languages like C++ or Java.
  *
  * @author Robert Lechner
- * @version 0.1
+ * @version $Revision$
  */
 public abstract class OclStandardGenerator extends OclCodeGenerator
 {
@@ -46,7 +47,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
      * @param parseTree  The normalized parse tree.
      * @param checker  Calculates the type of OCL expressions.
      */
-    protected OclStandardGenerator( OclParsetreeCreator creator, MFile parseTree, OclTypeChecker checker )
+    protected OclStandardGenerator( OclElementCreator creator, MFile parseTree, OclTypeChecker checker )
     {
         super(creator, parseTree, checker);
     }
@@ -298,7 +299,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     {
         String result = getNextHelperName();
         OclType type = null;
-	String buffer = "";
+        String buffer = "";
         Iterator it = literal.getItems().iterator();
         while( it.hasNext() )
         {
@@ -311,7 +312,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                 {
                     type = expr.getOclType();
                 }
-		buffer += getStatement_CollectionAdd(result, code);
+                buffer += getStatement_CollectionAdd(result, code);
             }
             else if( item instanceof MCollectionRange )
             {
@@ -319,11 +320,11 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                 {
                     type = creator_.createTypeInteger();
                 }
-		buffer += getStatements_CollectionRange((MCollectionRange)item, result, conCode);
+                buffer += getStatements_CollectionRange((MCollectionRange)item, result, conCode);
             }
             else
             {
-	    	buffer += error("unknown collection item")+"\n";
+                buffer += error("unknown collection item")+"\n";
             }
         }
         String cppCollection, kind=literal.getKind();
@@ -349,7 +350,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         }
         String cppType = getLanguageType(type,true,true);
         conCode.helpers_ += getStatement_CollectionInit(cppCollection, cppType, result);
-	conCode.helpers_ += buffer;
+        conCode.helpers_ += buffer;
         return result;
     }
 
@@ -480,7 +481,8 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     //////////////////////////////////////////////////////////////////////////
 
 
-    private String getCode_String( String exprCode, MPropertyCall pc, ConstraintCode conCode, MExpression parent )
+    private String getCode_String( String exprCode, MPropertyCall pc,
+                                   ConstraintCode conCode, MExpression parent )
     {
         String name = pc.getName();
         if( name.equals("size") )
@@ -515,7 +517,8 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     }
 
 
-    private String getCode_Integer( String exprCode, MPropertyCall pc, ConstraintCode conCode, MExpression parent )
+    private String getCode_Integer( String exprCode, MPropertyCall pc,
+                                    ConstraintCode conCode, MExpression parent )
     {
         String name = pc.getName();
         if( name.equals("abs") )
@@ -551,11 +554,13 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                 return getExpr_Integer_min(exprCode, param, conCode);
             }
         }
+        // convert Integer to Real
         return getCode_Real( getLiteral_Real(exprCode, conCode), pc, conCode, parent );
     }
 
 
-    private String getCode_Real( String exprCode, MPropertyCall pc, ConstraintCode conCode, MExpression parent )
+    private String getCode_Real( String exprCode, MPropertyCall pc,
+                                 ConstraintCode conCode, MExpression parent )
     {
         String name = pc.getName();
         if( name.equals("abs") )

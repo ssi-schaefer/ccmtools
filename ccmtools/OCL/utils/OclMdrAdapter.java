@@ -1,6 +1,6 @@
-/* CCM Tools : OCL metamodel
+/* CCM Tools : OCL helpers
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -41,7 +41,6 @@ import java.lang.reflect.*;
  * @see <a href="http://mdr.netbeans.org/index.html">NetBeans Metadata Repository</a> 
  *
  * @author Robert Lechner
- * @version 0.1
  */
 public final class OclMdrAdapter
 {

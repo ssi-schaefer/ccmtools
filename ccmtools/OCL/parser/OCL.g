@@ -57,7 +57,7 @@ header {
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.OCL.utils;
+package ccmtools.OCL.parser;
 
 import oclmetamodel.*;
 }
@@ -97,7 +97,7 @@ private static OclParser the_parser_;
 /**
  * Helper function for reporting error messages.
  */
-static void throwException( String message ) throws OclParserException
+public static void throwException( String message ) throws OclParserException
 {
 	Token t;
 	String f;

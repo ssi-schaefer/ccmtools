@@ -1,6 +1,6 @@
-/* CCM Tools : OCL metamodel
+/* CCM Tools : OCL helpers
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -22,8 +22,8 @@
 package ccmtools.OCL.utils;
 
 import oclmetamodel.*;
-//import ccmtools.OCL.parser.OclParsetreeCreator;
-//import ccmtools.OCL.parser.OclParserException;
+import ccmtools.OCL.parser.OclParserException;
+import ccmtools.OCL.parser.OclConstants;
 
 import ccmtools.Metamodel.BaseIDL.*;
 
@@ -41,15 +41,14 @@ import java.util.Iterator;
  </ul>
  *
  * @author Robert Lechner
- * @version 0.1
  */
 public class OclNormalization
 {
-    protected OclParsetreeCreator creator_;
+    protected OclElementCreator creator_;
     protected String contextSelfName_;
 
 
-    public OclNormalization( OclParsetreeCreator creator )
+    public OclNormalization( OclElementCreator creator )
     {
         if( creator==null )
         {
@@ -376,7 +375,8 @@ public class OclNormalization
     }
 
 
-    public MCollectionLiteral normalize_CollectionLiteral( MCollectionLiteral oldLiteral ) throws OclParserException
+    public MCollectionLiteral normalize_CollectionLiteral( MCollectionLiteral oldLiteral )
+     throws OclParserException
     {
 	    int count1=countElements(oldLiteral);
         String kind = oldLiteral.getKind();
@@ -421,7 +421,9 @@ public class OclNormalization
     	int count2 = countElements(newLiteral);
     	if( count2!=count1 )
     	{
-    	    throw new OclParserException("normalize_CollectionLiteral: size mismatch: count1="+count1+", count2="+count2);
+    	    System.err.println("normalize_CollectionLiteral: size mismatch: count1="+
+                                            count1+", count2="+count2);
+            return oldLiteral;
     	}
     	return newLiteral;
     }

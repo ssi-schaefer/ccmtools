@@ -1,6 +1,6 @@
 /* CCM Tools : OCL parser
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -19,7 +19,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.OCL.utils;
+package ccmtools.OCL.parser;
 
 import oclmetamodel.*;
 
@@ -28,7 +28,7 @@ import oclmetamodel.*;
  * The interface for creating the parsetree of an OCL file.
  *
  * @author Robert Lechner
- * @version 0.1
+ * @version $Revision$
  */
 public interface OclParsetreeCreator
 {
@@ -72,16 +72,4 @@ public interface OclParsetreeCreator
     public MCollectionItem createCollectionItem( MExpression value ) throws OclParserException;
     public MIntegerLiteral createIntegerLiteral( int value, String text ) throws OclParserException;
     public MRealLiteral createRealLiteral( double value, String text ) throws OclParserException;
-    //
-    public OclVoid createTypeVoid();
-    public OclUser createTypeUser( String name );
-    public OclBoolean createTypeBoolean();
-    public OclReal createTypeReal();
-    public OclInteger createTypeInteger();
-    public OclString createTypeString();
-    public OclEnumeration createTypeEnumeration();
-    public OclSet createTypeSet( OclType type );
-    public OclBag createTypeBag( OclType type );
-    public OclSequence createTypeSequence( OclType type );
-    public OclCollection createTypeCollection( OclType type );
 }

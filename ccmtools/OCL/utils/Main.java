@@ -22,14 +22,14 @@
 package ccmtools.OCL.utils;
 
 import oclmetamodel.*;
+import ccmtools.OCL.parser.*;
 import java.io.*;
 
 
 /**
- * main function
+ * Test program for the OCL parser.
  *
  * @author Robert Lechner
- * @version 0.1
  */
 public class Main
 {
@@ -37,7 +37,7 @@ public class Main
 	{
         try
         {
-    	    OclParsetreeCreator creator = Factory.getParsetreeCreator();
+    	    OclElementCreator creator = Factory.getElementCreator();
     	    OclNormalization normalization = new OclNormalization(creator);
     	    for( int index=0; index<args.length; index++ )
     	    {

@@ -1,6 +1,6 @@
-/* CCM Tools : OCL metamodel
+/* CCM Tools : OCL helpers
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -22,6 +22,7 @@
 package ccmtools.OCL.utils;
 
 import oclmetamodel.*;
+import ccmtools.OCL.parser.OclConstants;
 
 import java.util.Iterator;
 
@@ -30,7 +31,6 @@ import java.util.Iterator;
  * Converts the OCL model to XML. This is useful for debugging.
  *
  * @author Robert Lechner
- * @version 0.1
  */
 public class OclXmlWriter
 {

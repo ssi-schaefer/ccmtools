@@ -13,7 +13,7 @@ header {
  * ANTLR Object Constraint Language (OCL) grammar.  This grammar complies
  * with the UML 1.4 OCL grammar (version 0.1c)
  *
- * $Id$
+ * Id: ocl.g,v 1.1 2001/05/25 21:32:02 akonstan
  *
  * The latest version can be obtained at:
  *
