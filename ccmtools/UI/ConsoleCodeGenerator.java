@@ -30,7 +30,7 @@ import ccmtools.CodeGenerator.CCMMOFGraphTraverserImpl;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.CodeGenerator.TemplateHandler;
 import ccmtools.CppGenerator.CppLocalGeneratorImpl;
-import ccmtools.CppGenerator.CppMirrorGeneratorImpl;
+import ccmtools.CppGenerator.CppLocalTestGeneratorImpl;
 import ccmtools.CppGenerator.CppRemoteGeneratorImpl;
 import ccmtools.CppGenerator.CppRemoteTestGeneratorImpl;
 import ccmtools.CppGenerator.CppPythonGeneratorImpl;
