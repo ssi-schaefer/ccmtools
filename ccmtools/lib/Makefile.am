@@ -2,7 +2,7 @@
 
 jar_DATA = @PACKAGE@.jar
 
-dist_jar_DATA = $(srcdir)/antlr.jar $(srcdir)/jdom.jar
+dist_jar_DATA = $(srcdir)/antlr.jar $(srcdir)/mdr01.jar $(srcdir)/oclmetamodel.jar $(srcdir)/uml2idl.jar
 
 java_classes = $(top_builddir)/@PACKAGE@/Metamodel/BaseIDL/*.class      \
                $(top_builddir)/@PACKAGE@/Metamodel/ComponentIDL/*.class \
@@ -24,5 +24,8 @@ install-data-local:
 	@echo "Add the following jar files to your CLASSPATH environment :"
 	@echo "$(jardir)/@PACKAGE@.jar"
 	@echo "$(jardir)/antlr.jar"
+	@echo "$(jardir)/mdr01.jar"
+	@echo "$(jardir)/oclmetamodel.jar"
+	@echo "$(jardir)/uml2idl.jar"
 	@echo
 
