@@ -18,7 +18,10 @@
 %(MUsesDefInclude)s
 
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h> 
-#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_app.h> 
+//#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_app.h> 
+
+#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_share.h> 
+//#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)sHome_share.h> 
 
 %(OpenNamespace)s
 
@@ -32,7 +35,7 @@
       friend class CCM_%(Identifier)s_Context_impl;
 
     private:
-      CCM_Local%(Namespace)s::CCM_%(Identifier)s_impl* local_adapter;
+      CCM_Local%(Namespace)s::CCM_%(Identifier)s* local_adapter;
       CCM_Local%(Namespace)s::CCM_%(Identifier)s_Context* local_context;
       CCM::SessionContainer* ccm_container;
 
@@ -40,7 +43,7 @@
 %(MUsesDefAdapterVariable)s
 
     public:
-      %(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s_impl*, 
+      %(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s*, 
 		      CCM::SessionContainer *);
       virtual ~%(Identifier)s_impl ();
 
@@ -196,7 +199,7 @@ using namespace WX::Utils;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s_impl* i, CCM::SessionContainer * c)
+%(Identifier)s_impl::%(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s* i, CCM::SessionContainer * c)
   : local_adapter(i), ccm_container (c)
 {
   DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");

@@ -9,7 +9,7 @@
 #include "%(ComponentType)s_remote.h"
 
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h>
-#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_app.h>
+//#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_app.h>
 
 // Include CORBA stubs generated from the IDL2 files
 #include <%(IdlFileNamespace)s%(Identifier)s.h> 
@@ -84,6 +84,7 @@ extern "C" {
 #include <coss/CosNaming.h>
 
 #include "%(Identifier)s_remote.h"
+#include <TestHome_entry.h> 
 
 using namespace std;
 using namespace WX::Utils;
@@ -118,8 +119,8 @@ using namespace WX::Utils;
   DEBUGNL(" %(Identifier)s_impl::create()");
 
   // create the local_component
-  CCM_Local%(Namespace)s::CCM_%(ComponentType)s_impl* local_component = 
-    dynamic_cast<CCM_Local%(Namespace)s::CCM_%(ComponentType)s_impl*>(local_home->create());
+  CCM_Local%(Namespace)s::CCM_%(ComponentType)s* local_component = 
+    dynamic_cast<CCM_Local%(Namespace)s::CCM_%(ComponentType)s*>(local_home->create());
 
   // create component remote adapter
   PortableServer::ServantBase_var component_adapter =
