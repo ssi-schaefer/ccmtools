@@ -5,10 +5,6 @@
 #ifndef __UNION__%(PreprocIdentifier)s__H__
 #define __UNION__%(PreprocIdentifier)s__H__
 
-#ifdef CCM_TEST_PYTHON
-#include "%(Identifier)s_python.h"
-#endif
-
 %(MUnionFieldDefInclude)s
 
 using namespace std;

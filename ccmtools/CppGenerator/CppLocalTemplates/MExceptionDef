@@ -1,13 +1,15 @@
 #ifndef __EXCEPTION__%(PreprocIdentifier)s__H__
 #define __EXCEPTION__%(PreprocIdentifier)s__H__
 
-#ifdef CCM_TEST_PYTHON
-#include "%(Identifier)s_python.h"
-#endif
+%(MFieldDefInclude)s
 
 %(OpenNamespace)s
 
-class %(Identifier)s { };
+class %(Identifier)s 
+{ 
+  public:
+%(MFieldDef)s
+};
 
 %(CloseNamespace)s
 

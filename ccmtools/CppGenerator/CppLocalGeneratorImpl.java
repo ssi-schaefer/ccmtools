@@ -103,7 +103,8 @@ public class CppLocalGeneratorImpl
 	    user_files = new File(user_files, file_name);
 	    if((file_dir == "impl") && user_files.isFile()) {
 		System.out.println("WARNING: " + output_dir 
-				   + "/" + file_dir + "/" 
+				   + File.separator + file_dir 
+				   + File.separator 
 				   + file_name + " already exists!");
 		file_name += ".new";
 	    }
