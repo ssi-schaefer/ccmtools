@@ -39,13 +39,13 @@ class CCM_%(Identifier)s
 
 %(OpenNamespace)s
 
-%(MEnumDefFwdDecl)s
+%(MEnumDef)s
+
 %(MStructDefFwdDecl)s
 %(MUnionDefFwdDecl)s
 
 %(MAliasDef)s
 
-%(MEnumDef)s
 %(MStructDef)s
 %(MUnionDef)s
 

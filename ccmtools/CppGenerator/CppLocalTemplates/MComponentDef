@@ -30,13 +30,13 @@ class %(HomeType)s;
 class CCM_%(HomeType)s;
 class CCM_%(Identifier)s_Context;
 
-%(MEnumDefFwdDecl)s
+%(MEnumDef)s
+
 %(MStructDefFwdDecl)s
 %(MUnionDefFwdDecl)s
 
 %(MAliasDef)s
 
-%(MEnumDef)s
 %(MStructDef)s
 %(MUnionDef)s
 

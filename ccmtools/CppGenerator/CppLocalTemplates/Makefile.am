@@ -28,7 +28,6 @@ dist_template_DATA = \
     MContainer                                     \
     MEmitsDefInclude                               \
     MEnumDef                                       \
-    MEnumDefFwdDecl                                \
     MExceptionDef                                  \
     MExceptionDefClass                             \
     MFactoryDefAdapterDefinition                   \

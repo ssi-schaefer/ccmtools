@@ -1,24 +1,24 @@
 interface %(Identifier)s
   %(BaseTypes)s
 {
-%(MEnumDefFwdDecl)s
+%(MConstantDef)s
+%(MEnumDef)s
+
 %(MStructDefFwdDecl)s
 %(MUnionDefFwdDecl)s
-%(MComponentDefFwdDecl)s
+
 %(MAliasDef)s
+
 %(MAttributeDef)s
-%(MConstantDef)s
+
 %(MValueMemberDef)s
 %(MValueBoxDef)s
 %(MValueDef)s
-%(MEnumDef)s
+
 %(MStructDef)s
 %(MUnionDef)s
+
 %(MExceptionDef)s
 %(MOperationDef)s
-%(MInterfaceDef)s
-%(MHomeDef)s
-%(MComponentDef)s
-%(MModuleDef)s
 };
 

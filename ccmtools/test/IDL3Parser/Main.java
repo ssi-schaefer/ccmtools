@@ -43,7 +43,7 @@ public class Main {
         } catch (Exception e) {
             System.err.println("Error parsing file "+args[0]);
             System.err.println(e);
-            throw e;
+            System.exit(1);
         }
     }
 }

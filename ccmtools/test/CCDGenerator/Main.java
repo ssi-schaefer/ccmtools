@@ -49,7 +49,7 @@ public class Main
             container = manager.parseFile(args[0]);
         } catch (Exception e) {
             System.err.println("Error parsing file "+args[0]);
-            return;
+            System.exit(1);
         }
 
         Collection contents = container.getContentss();

@@ -1,18 +1,24 @@
 abstract interface %(Identifier)s
   %(BaseTypes)s
 {
-%(MAttributeDef)s
 %(MConstantDef)s
+%(MEnumDef)s
 
-%(MValueDef)s
-%(MValueMemberDef)s
+%(MStructDefFwdDecl)s
+%(MUnionDefFwdDecl)s
 
 %(MAliasDef)s
 
-%(MEnumDef)s
+%(MAttributeDef)s
+
+%(MValueMemberDef)s
+%(MValueBoxDef)s
+%(MValueDef)s
+
 %(MStructDef)s
 %(MUnionDef)s
 
+%(MExceptionDef)s
 %(MOperationDef)s
 };
 

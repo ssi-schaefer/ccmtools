@@ -29,12 +29,16 @@ import antlr.TokenStreamException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.DataInputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ParserManager {
     private long debug;
 
     private IDL3SymbolTable symbolTable;
     private String filename;
+    private List errors;
 
     /**
      * Create a new ParserManager class instance with no debug output enabled.
@@ -65,6 +69,7 @@ public class ParserManager {
     public void reset()
     {
         symbolTable = new IDL3SymbolTable();
+        errors = new ArrayList();
         filename = null;
     }
 
@@ -132,11 +137,18 @@ public class ParserManager {
             spec = parser.specification();
             spec.setIdentifier(filename);
         } catch (Exception e) {
-            throw new RuntimeException(
-                "Error parsing file '"+filename+"': "+e);
+            errors.add(e);
         }
 
         symbolTable.popFile();
+
+        if (errors.size() > 0) {
+            StringBuffer msg = new StringBuffer("Errors during parsing:");
+            for (Iterator i = errors.iterator(); i.hasNext(); )
+                msg.append("\n" + i.next().toString());
+            throw new RuntimeException(msg.toString());
+        }
+
 	return spec;
     }
 }
