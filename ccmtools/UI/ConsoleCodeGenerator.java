@@ -207,7 +207,7 @@ public class ConsoleCodeGenerator
             if (lang.equalsIgnoreCase("C++Local"))
                 handler = new CppLocalGeneratorImpl(driver, output_directory);
             else if (lang.equalsIgnoreCase("c++local-test"))
-                handler = new CppMirrorGeneratorImpl(driver, output_directory);
+                handler = new CppLocalTestGeneratorImpl(driver, output_directory);
 	    else if (lang.equalsIgnoreCase("C++Remote"))
 		handler = new CppRemoteGeneratorImpl(driver, output_directory);
 	    else if (lang.equalsIgnoreCase("C++Remote-Test"))

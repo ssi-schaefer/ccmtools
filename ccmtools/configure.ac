@@ -83,6 +83,7 @@ IDLGenerator/IDL3MirrorTemplates/Makefile
 IDLGenerator/IDL2Templates/Makefile
 CppGenerator/Makefile
 CppGenerator/ExternalEnvironment/Makefile
+CppGenerator/ExternalEnvironment/mico/Makefile
 CppGenerator/CppLocalEnvironment/Makefile
 CppGenerator/CppLocalEnvironment/CCM_Utils/Makefile
 CppGenerator/CppLocalEnvironment/HomeFinder/Makefile
