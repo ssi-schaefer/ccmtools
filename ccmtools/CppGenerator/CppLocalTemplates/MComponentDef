@@ -514,7 +514,7 @@ class CCM_%(Identifier)s_Context
  * methods must be implemented.  
  **/
 class CCM_%(Identifier)s_impl
-  : public CCM_%(Identifier)s%(BaseType)s
+  : virtual public CCM_%(Identifier)s%(BaseType)s
 {
  private:
 %(MAttributeDefVariable)s
@@ -541,7 +541,7 @@ class CCM_%(Identifier)s_impl
     throw ( LocalComponents::CCMException );
 };
 
-%(MProvidesDefAdapterImplClass)s
+//(MProvidesDefAdapterImplClass)s
 
 %(CloseNamespace)s
 
@@ -567,6 +567,7 @@ class CCM_%(Identifier)s_impl
 #include <WX/Utils/debug.h>
 
 #include "%(Identifier)s_impl.h"
+%(MProvidesDefImplInclude)s
 
 using namespace std;
 using namespace WX::Utils;
@@ -622,7 +623,7 @@ CCM_%(Identifier)s_impl::ccm_remove (  )
 
 %(MProvidesDefGetFacetDefinition)s
 
-%(MProvidesDefAdapterImplClassImpl)s
+//(MProvidesDefAdapterImplClassImpl)s
 %(CloseNamespace)s
 
 

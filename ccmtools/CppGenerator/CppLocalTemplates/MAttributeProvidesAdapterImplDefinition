@@ -1,19 +1,19 @@
 %(LanguageType)s
-%(Object)s_impl::%(Identifier)s (  )
-  throw ( LocalComponents::CCMException)
+%(Object)s_impl::%(Identifier)s()
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " %(Object)s_impl->%(Identifier)s (  )" );
+    DEBUGNL(" %(Object)s_impl->%(Identifier)s()");
 
-  // TODO : IMPLEMENT ME HERE !
+    // TODO : IMPLEMENT ME HERE !
 }
 
 void
-%(Object)s_impl::%(Identifier)s ( const %(LanguageType)s value )
-  throw ( LocalComponents::CCMException)
+%(Object)s_impl::%(Identifier)s(const %(LanguageType)s value)
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " %(Object)s_impl->%(Identifier)s ( value )" );
+    DEBUGNL(" %(Object)s_impl->%(Identifier)s(value)");
 
-  // TODO : IMPLEMENT ME HERE !
+    // TODO : IMPLEMENT ME HERE !
 }
 
 

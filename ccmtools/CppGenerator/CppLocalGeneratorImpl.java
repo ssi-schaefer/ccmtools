@@ -35,6 +35,7 @@ import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +56,8 @@ public class CppLocalGeneratorImpl
     private final static String[] local_output_types =
     {
         "MComponentDef", "MInterfaceDef", "MHomeDef",
-        "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef"
+        "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef",
+	"MProvidesDef"
     };
 
     /**************************************************************************/
@@ -182,8 +184,7 @@ public class CppLocalGeneratorImpl
             // home and component files are in separate directories !
 
             if (current_node instanceof MHomeDef)
-                base_name =
-                    ((MHomeDef) current_node).getComponent().getIdentifier();
+                base_name = ((MHomeDef) current_node).getComponent().getIdentifier();
 
             String base = getOutputDirectory(base_name);
 
@@ -205,21 +206,34 @@ public class CppLocalGeneratorImpl
                 f.add("impl"); f.add(node_name + "_impl.h"); files.add(f);
                 f = new ArrayList();
                 f.add("impl"); f.add(node_name + "_impl.cc"); files.add(f);
-            } else {
+            } 
+	    else {
                 f = new ArrayList(); f.add("impl"); f.add(""); files.add(f);
                 f = new ArrayList(); f.add("impl"); f.add(""); files.add(f);
             }
-        } else if ((current_node instanceof MInterfaceDef)
-                   || (current_node instanceof MStructDef)
-                   || (current_node instanceof MUnionDef)
-                   || (current_node instanceof MAliasDef)
-                   || (current_node instanceof MEnumDef)
-                   || (current_node instanceof MExceptionDef)) {
+        } 
+	else if ((current_node instanceof MInterfaceDef)
+		 || (current_node instanceof MStructDef)
+		 || (current_node instanceof MUnionDef)
+		 || (current_node instanceof MAliasDef)
+		 || (current_node instanceof MEnumDef)
+		 || (current_node instanceof MExceptionDef)) {
             f = new ArrayList();
             f.add(getOutputDirectory("")); f.add(node_name+".h");
             files.add(f);
-
-        } else {
+        } 
+	else if(current_node instanceof MProvidesDef) {
+	    MComponentDef component = ((MProvidesDef)current_node).getComponent();
+	    f = new ArrayList();
+	    f.add("impl");
+	    f.add(component.getIdentifier() + "_" + node_name + "_impl.h");
+	    files.add(f);
+	    f = new ArrayList();
+	    f.add("impl");
+	    f.add(component.getIdentifier() + "_" + node_name + "_impl.cc");
+	    files.add(f);
+	}
+	else {
             f = new ArrayList(); f.add(""); f.add(""); files.add(f);
         }
 

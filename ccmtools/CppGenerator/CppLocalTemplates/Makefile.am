@@ -101,5 +101,6 @@ dist_template_DATA = \
     MUsesDefInclude                                \
     MUsesDefIncludeMultiple                        \
     MUsesDefConnectionMap                          \
-    MUsesDefConnectionMapMultiple
-
+    MUsesDefConnectionMapMultiple                  \
+    MProvidesDef                                   \
+    MProvidesDefImplInclude

@@ -554,6 +554,7 @@ abstract public class CppGenerator
         return data_value;
     }
 
+
     protected String data_MProvidesDef(String data_type, String data_value)
     {
         MInterfaceDef iface = ((MProvidesDef) current_node).getProvides();
@@ -564,14 +565,28 @@ abstract public class CppGenerator
             int i = data_value.lastIndexOf(scope_separator) +
                 scope_separator.length();
             return data_value.substring(0, i)+"CCM_"+data_value.substring(i);
-        } else if (data_type.startsWith("MOperation")) {
+        } 
+	else if (data_type.startsWith("MOperation")) {
             return fillTwoStepTemplates(iface, data_type, false);
-        } else if (data_type.startsWith("MAttribute")) {
+        } 
+	else if (data_type.startsWith("MAttribute")) {
             return fillTwoStepTemplates(iface, data_type, true);
         }
-
+	else if(data_type.startsWith("FullComponentType")) {
+	    // Return full scoped component type
+	    MComponentDef component = ((MProvidesDef)current_node).getComponent();
+	    List scope = getScope((MContained)component);
+	    if(scope.size() > 0)
+		return "CCM_Local::" + join("::", scope) + "::CCM_Session_"
+		    + component.getIdentifier() + "::CCM_" + component.getIdentifier(); 
+	    else
+		return "CCM_Local::CCM_Session_" + component.getIdentifier() 
+		    + "::CCM_" + component.getIdentifier();
+	}
         return data_value;
+	    
     }
+
 
     protected String data_MSupportsDef(String data_type, String data_value)
     {
