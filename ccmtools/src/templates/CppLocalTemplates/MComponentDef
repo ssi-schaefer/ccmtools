@@ -87,8 +87,13 @@ class %(Identifier)s
 
     // CCMObject functions
     LocalComponents::HomeExecutorBase* get_ccm_home();
+
     void configuration_complete()
         throw(LocalComponents::InvalidConfiguration);
+
+    void configuration_complete(CCM_%(Identifier)s_Context* ctx)
+        throw(LocalComponents::InvalidConfiguration);
+
     void remove()
         throw(LocalComponents::RemoveFailure);
 };
@@ -211,7 +216,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
     : home_local_adapter(h), local_component(lc), assembly(a)
 {
     DEBUGNL("+%(Identifier)s->%(Identifier)s()");
-    context = new CCM_%(Identifier)s_Context_impl(this);
+    context = NULL; 
     ValidConnection = true;
 %(MProvidesDefAdapterVariableInit)s
 %(MUsesDefAdapterVariableInit)s
@@ -284,19 +289,32 @@ LocalComponents::HomeExecutorBase*
     throw LocalComponents::NotImplemented();
 }
 
+
 void
 %(Identifier)s::configuration_complete()
     throw(LocalComponents::InvalidConfiguration)
 {
     DEBUGNL(" %(Identifier)s->configuration_complete()");
+    configuration_complete(new CCM_%(Identifier)s_Context_impl(this));
+}
+
+
+void
+%(Identifier)s::configuration_complete(CCM_%(Identifier)s_Context* ctx)
+    throw(LocalComponents::InvalidConfiguration)
+{
+    DEBUGNL(" %(Identifier)s->configuration_complete()");
     if(!ValidConnection) 
         throw LocalComponents::InvalidConnection();
+    if(!context)
+      context = ctx;
     if(assembly != WX::Utils::SmartPtr<LocalComponents::Assembly>()) { 
         assembly->configuration_complete(); 
     }
     local_component->set_session_context(context);
     local_component->ccm_activate();
 }
+
 
 void
 %(Identifier)s::remove()
