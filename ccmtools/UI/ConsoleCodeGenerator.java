@@ -107,8 +107,10 @@ public class ConsoleCodeGenerator
 
         System.out.print(usage.replaceAll("LANGUAGES", langs.toString()));
 
-        if (err.length() > 0) System.exit(1);
-        else                  System.exit(0);
+        if (err.length() > 0) 
+	    System.exit(1);
+        else                  
+	    System.exit(0);
     }
 
     private static void printVersion()
@@ -165,10 +167,10 @@ public class ConsoleCodeGenerator
                 handler = new CppLocalTestGeneratorImpl(driver, output_directory);
 	    else if (lang.equalsIgnoreCase("c++dbc"))
                 handler = new CppLocalDbcGeneratorImpl(driver, output_directory);
-	    //	    else if (lang.equalsIgnoreCase("c++remote"))
-	    //		handler = new CppRemoteGeneratorImpl(driver, output_directory);
-	    //	    else if (lang.equalsIgnoreCase("c++remote-test"))
-	    //		handler = new CppRemoteTestGeneratorImpl(driver, output_directory);
+	    else if (lang.equalsIgnoreCase("c++remote"))
+		handler = new CppRemoteGeneratorImpl(driver, output_directory);
+	    else if (lang.equalsIgnoreCase("c++remote-test"))
+		handler = new CppRemoteTestGeneratorImpl(driver, output_directory);
 	    //	    else if (lang.equalsIgnoreCase("c++python"))
 	    //                handler = new CppPythonGeneratorImpl(driver, output_directory);
             else if (lang.equalsIgnoreCase("idl3"))
@@ -205,10 +207,12 @@ public class ConsoleCodeGenerator
         parseArgs(args);
 
         GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
-        if (traverser == null) printUsage("failed to create a graph traverser");
+        if (traverser == null) 
+	    printUsage("failed to create a graph traverser");
 
         ParserManager manager = new ParserManager(par_mask);
-        if (manager == null) printUsage("failed to create a parser manager");
+        if (manager == null) 
+	    printUsage("failed to create a parser manager");
 
         Driver driver = setupDriver();
         ArrayList handlers = new ArrayList();
@@ -234,7 +238,6 @@ public class ConsoleCodeGenerator
                 Process preproc = Runtime.getRuntime().exec("cpp -o " +
                                           idlfile + " " + include_path +
                                           " " + source);
-
 		BufferedReader stdInput = new BufferedReader(new
 		    InputStreamReader(preproc.getInputStream()));
 		BufferedReader stdError = new BufferedReader(new
@@ -248,7 +251,8 @@ public class ConsoleCodeGenerator
 		// Wait for the process to complete and evaluate the return
                 // value of the attempted command
                 preproc.waitFor();
-                if (preproc.exitValue() != 0) throw new RuntimeException();
+                if (preproc.exitValue() != 0) 
+		    throw new RuntimeException();
             } catch (Exception e) {
 		System.err.println("Error preprocessing " + source +
                                    ": Please verify your include paths.");
@@ -256,10 +260,8 @@ public class ConsoleCodeGenerator
             }
 
 	    // step (1). parse the resulting preprocessed file.
-
             manager.reset();
             manager.setOriginalFile(source.toString());
-
             try {
                 kopf = manager.parseFile(idlfile.toString());
                 if (kopf == null)
@@ -269,13 +271,11 @@ public class ConsoleCodeGenerator
                 System.err.println("Error parsing "+source+":\n"+e);
                 System.exit(20);
             }
-
             String kopf_name = source.getName().split("\\.")[0];
             kopf_name = kopf_name.replaceAll("[^\\w]", "_");
             kopf.setIdentifier(kopf_name);
 
             // step (2). traverse the resulting metamodel graph.
-
             try {
                 traverser.traverseGraph(kopf);
             } catch (Exception e) {
@@ -285,7 +285,6 @@ public class ConsoleCodeGenerator
             }
 
             // delete the preprocessed temporary file if everything worked.
-
             idlfile.deleteOnExit();
         }
 
@@ -407,7 +406,6 @@ public class ConsoleCodeGenerator
     private static void setOutputDirectory(String val)
     {
         if (val.trim().equals("")) printUsage("unspecified output directory");
-
         File test = new File(val);
         if (test.isAbsolute()) output_directory = test;
         else output_directory = new File(base_output_directory, val);
@@ -415,8 +413,8 @@ public class ConsoleCodeGenerator
 
     private static void setHome(String val)
     {
-        if (val.trim().equals("")) printUsage("unspecified CCM Tools home");
-
+        if (val.trim().equals("")) 
+	    printUsage("unspecified CCM Tools home");
         Properties props = System.getProperties();
         props.setProperty("CCMTOOLS_HOME", val);
         System.setProperties(props);
@@ -424,8 +422,8 @@ public class ConsoleCodeGenerator
 
     private static void setCodeVersion(String val)
     {
-        if (val.trim().equals("")) printUsage("unspecified code version");
-
+        if (val.trim().equals("")) 
+	    printUsage("unspecified code version");
         code_version = new String(val);
     }
 }
