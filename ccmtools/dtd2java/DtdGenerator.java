@@ -155,16 +155,20 @@ public class DtdGenerator
             baseDirectory_.mkdirs();
         }
         parseTree_.write(new File(baseDirectory_,"grammar.dtd"));
+        //
+        /*  DTD_Container.java
+        */
         FileWriter w1 = new FileWriter(new File(baseDirectory_,"DTD_Container.java"));
         w1.write(MAIN_HEADER);
         w1.write("package "+javaPackage_+";\n\n"+
-                 "import org.xml.sax.*;\n\n"+
+                 "import org.xml.sax.*;\n"+
+                 "import java.util.Vector;\n\n"+
                  "/** Base class for all XML-Elements. */\n"+
                  "public abstract class DTD_Container\n{\n"+
                  "  /** the parent (or null) */\n"+
                  "  public DTD_Container parent__;\n\n"+
                  "  /** contains all children */\n"+
-                 "  protected java.util.Vector content__ = new java.util.Vector();\n\n"+
+                 "  protected Vector content__ = new Vector();\n\n"+
                  "  /** returns the number of children */\n"+
                  "  public int size()\n"+
                  "  {return content__.size();}\n\n"+
@@ -205,9 +209,9 @@ public class DtdGenerator
                  "    return \"\\\"\"+text+\"\\\"\";\n"+
                  "  }\n\n"+
                  "  /** finds children */\n"+
-                 "  public java.util.Vector findChildren( String xml_name )\n"+
+                 "  public Vector findChildren( String xml_name )\n"+
                  "  {\n"+
-                 "    java.util.Vector result = new java.util.Vector();\n"+
+                 "    Vector result = new Vector();\n"+
                  "    int s = content__.size();\n"+
                  "    for(int i=0; i<s; i++) {\n"+
                  "      Object o = content__.get(i);\n"+
@@ -219,8 +223,20 @@ public class DtdGenerator
                  "    }\n"+
                  "    return result;\n"+
                  "  }\n\n"+
+                 "  /** Writes the XML code to a file. */\n"+
+                 "  public void write( java.io.File xmlFile )\n"+
+                 "  throws java.io.IOException\n"+
+                 "  {\n"+
+                 "    java.io.FileWriter w = new java.io.FileWriter(xmlFile);\n"+
+                 "    w.write(\"<?xml version='1.0' ?>\\n\");\n"+
+                 "    w.write(xmlCode());\n"+
+                 "    w.close();\n"+
+                 "  }\n"+
                  "}\n");
         w1.close();
+        //
+        /*  DTD_Root.java
+        */
         FileWriter w2 = new FileWriter(new File(baseDirectory_,"DTD_Root.java"));
         w2.write(MAIN_HEADER);
         w2.write("package "+javaPackage_+";\n\n"+
@@ -248,6 +264,9 @@ public class DtdGenerator
                  "  }\n"+
                  "}\n");
         w2.close();
+        //
+        /*  DTD_SAX_Handler.java
+        */
         FileWriter w3 = new FileWriter(new File(baseDirectory_,"DTD_SAX_Handler.java"));
         w3.write(MAIN_HEADER);
         w3.write("package "+javaPackage_+";\n\n"+
@@ -256,7 +275,8 @@ public class DtdGenerator
                  "public class DTD_SAX_Handler extends org.xml.sax.helpers.DefaultHandler\n{\n"+
                  "  private DTD_Creator creator_;\n"+
                  "  private DTD_Container currentElement_;\n"+
-                 "  private java.util.Stack previousElements_;\n\n"+
+                 "  private java.util.Stack previousElements_;\n"+
+                 "  private String currentText_;\n\n"+
                  "  /** the parse tree of the XML-file */\n"+
                  "  DTD_Container parseTree_;\n\n"+
                  "  DTD_SAX_Handler( DTD_Creator creator )\n"+
@@ -277,28 +297,46 @@ public class DtdGenerator
                  "  {\n"+
                  "    if(parseTree_==null) {\n"+
                  "      parseTree_ = currentElement_ = creator_.create(qName, attrs);\n"+
+                 "      currentText_ = null;\n"+
                  "    } else {\n"+
+                 "      updateText();\n"+
                  "      previousElements_.push(currentElement_);\n"+
                  "      currentElement_ = creator_.create(qName, attrs);\n"+
                  "    }\n"+
                  "  }\n\n"+
                  "  public void endElement( String _n, String _s, String qName ) throws SAXException\n"+
                  "  {\n"+
+                 "    updateText();\n"+
                  "    if(!previousElements_.empty()) {\n"+
                  "      DTD_Container result = currentElement_;\n"+
                  "      currentElement_ = (DTD_Container)previousElements_.pop();\n"+
                  "      currentElement_.add(result);\n"+
                  "    }\n"+
                  "  }\n\n"+
+                 "  private void updateText()\n"+
+                 "  {\n"+
+                 "    if( currentText_!=null ) {\n"+
+                 "      currentText_ = currentText_.trim();\n"+
+                 "      if( currentText_.length()>0 ) {\n"+
+                 "        currentElement_.add(currentText_);\n"+
+                 "      }\n"+
+                 "      currentText_ = null;\n"+
+                 "    }\n"+
+                 "  }\n\n"+
                  "  public void characters( char buf[], int offset, int len ) throws SAXException\n"+
                  "  {\n"+
-                 "    String str = (new String(buf, offset, len)).trim();\n"+
-                 "    if(str.length()>0) {\n"+
-                 "      currentElement_.add(str);\n"+
+                 "    String str = new String(buf, offset, len);\n"+
+                 "    if( currentText_==null ) {\n"+
+                 "      currentText_ = str;\n"+
+                 "    } else {\n"+
+                 "      currentText_ = currentText_+str;\n"+
                  "    }\n"+
                  "  }\n\n"+
                  "}\n");
         w3.close();
+        //
+        /*  DTD_Main.java
+        */
         FileWriter w4 = new FileWriter(new File(baseDirectory_,"DTD_Main.java"));
         w4.write(MAIN_HEADER);
         w4.write("package "+javaPackage_+";\n\n"+
@@ -327,6 +365,9 @@ public class DtdGenerator
                  "  }\n"+
                  "}\n");
         w4.close();
+        //
+        /*  DTD_Generic.java
+        */
         FileWriter w5 = new FileWriter(new File(baseDirectory_,"DTD_Generic.java"));
         w5.write(MAIN_HEADER);
         w5.write("package "+javaPackage_+";\n\n"+
@@ -365,6 +406,9 @@ public class DtdGenerator
                  "  }\n\n"+
                  "}\n");
         w5.close();
+        //
+        /*  package.html
+        */
         FileWriter w6 = new FileWriter(new File(baseDirectory_,"package.html"));
         w6.write("<body>\n"+
                  "This package was automatically generated by <b><tt>dtd2java</tt></b>.<br>\n"+
