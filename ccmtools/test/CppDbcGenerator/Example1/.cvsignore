@@ -1,6 +1,4 @@
-Makefile
-Makefile.in
 *.xml
 constraints.txt
-compile.sh
-test*
+mdr.*
+xxx
