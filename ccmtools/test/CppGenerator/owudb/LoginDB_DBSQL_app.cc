@@ -64,13 +64,16 @@ mgr_impl::set_component ( CCM_LoginDB_DBSQL_impl* c )
 
 owil::udb::LoginResult
 mgr_impl::login ( const std::string& user, const std::string& password, const std::string& login )
-  throw ( InvalidPassword, PasswordExpired, NoSuchLogin, UserBlocked, TerminalBlocked, DatabaseError, NoDefaultLogin, NoSuchUser )
+  throw ( DatabaseError, NoSuchUser, NoDefaultLogin, InvalidPassword, PasswordExpired, NoSuchLogin, TerminalBlocked, UserBlocked )
 {
   DEBUGNL ( " mgr_impl->login ( user, password, login )" );
 
   // TODO : IMPLEMENT ME HERE !
-  owil::udb::LoginResult r;
-  return r;
+  // call receptacle methods
+  component->ctx->get_connection_auth().ptr()->auth_userpass(user, password);
+  component->ctx->get_connection_userbrowser().ptr()->get_user(user);
+  owil::udb::LoginResult result;
+  return result;
 }
 
 
@@ -104,8 +107,9 @@ browser_impl::get_logins_of_user ( const std::string& user )
   DEBUGNL ( " browser_impl->get_logins_of_user ( user )" );
 
   // TODO : IMPLEMENT ME HERE !
-  owil::udb::LoginDataList l;
-  return l;
+
+  owil::udb::LoginDataList result;
+  return result;
 }
 
 owil::udb::LoginDataList
@@ -115,8 +119,9 @@ browser_impl::get_all_logins (  )
   DEBUGNL ( " browser_impl->get_all_logins (  )" );
 
   // TODO : IMPLEMENT ME HERE !
-  owil::udb::LoginDataList l;
-  return l;
+
+  owil::udb::LoginDataList result;
+  return result;
 }
 
 

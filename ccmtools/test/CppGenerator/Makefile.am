@@ -12,6 +12,10 @@ TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
 dist_noinst_SCRIPTS = test-loader.sh
 
 # tests are generally in order of increasing complexity.
+# attribute_user_types.sh
+# home_exception.sh
+# module_mixed.sh
+
 
 TESTS =     help.sh                     \
             version.sh                  \

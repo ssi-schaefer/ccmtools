@@ -69,9 +69,9 @@ class mgr_impl
   set_component
     ( CCM_LoginDB_DBSQL_impl* c );
 
-  owil::udb::LoginResult login ( const std::string& user, const std::string& password, const std::string& login ) throw ( InvalidPassword, PasswordExpired, NoSuchLogin, UserBlocked, TerminalBlocked, DatabaseError, NoDefaultLogin, NoSuchUser );
+  owil::udb::LoginResult login ( const std::string& user, const std::string& password, const std::string& login ) throw ( DatabaseError, NoSuchUser, NoDefaultLogin, InvalidPassword, PasswordExpired, NoSuchLogin, TerminalBlocked, UserBlocked );
 #ifdef CCM_TEST_PYTHON
-  owil::udb::LoginResult call_python_login ( const std::string& user, const std::string& password, const std::string& login ) throw ( InvalidPassword, PasswordExpired, NoSuchLogin, UserBlocked, TerminalBlocked, DatabaseError, NoDefaultLogin, NoSuchUser );
+  owil::udb::LoginResult call_python_login ( const std::string& user, const std::string& password, const std::string& login ) throw ( DatabaseError, NoSuchUser, NoDefaultLogin, InvalidPassword, PasswordExpired, NoSuchLogin, TerminalBlocked, UserBlocked );
 #endif
 
 };
