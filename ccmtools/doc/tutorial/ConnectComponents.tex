@@ -10,10 +10,16 @@
 %------------------------------------------------------------------------------
 \section{Overview}
 %------------------------------------------------------------------------------
-The CORBA component model also defines the concept of receptacles that are
-connection points for facet references. This section describes an example that
-extends the previous example with a {\tt Display} component which is connected
-to the {\tt Hello} component, as shown in Fig.~\ref{ConnectComponents}.
+
+The CORBA component model defines the concept of receptacles, which are
+connection points for facet references. In UNIX terms, a receptacle is a bit
+like a socket that listens for certain types of protocols. In CORBA language,
+protocols in this analogy would be a type of interface; both accept a certain
+finite set of well defined method invocations.
+
+This section describes an example that extends the previous example with a {\tt
+Display} component which is connected to the {\tt Hello} component, as shown in
+Fig.~\ref{ConnectComponents}.
 
 \begin{figure}[htbp]
     \begin{center}
@@ -29,69 +35,97 @@ the two component instances, the {\tt LCD} facet is connected to the {\tt LCD}
 receptacle. Finally, the test client calls operations on the {\tt Console} facet
 that are delegated to the {\tt Display} component.
 
-
 %------------------------------------------------------------------------------
 \section{Definition of two components}
 %------------------------------------------------------------------------------
-We define a new component called {\tt Display} that provides an {\tt LCD}
-interface as a facet. The {\tt Hello} component uses the {\tt LCD} interface as
-an receptacle. Note that a facet to receptacle connection can only be
-established when both ports handle the same interface.
 
-\begin{verbatim}
-    interface LCD {
-      void display_text(in string s);
-    };
+First we'll define a new component called {\tt Display} that {\it provides} an
+{\tt LCD} interface as a facet. The {\tt Hello} component {\it uses} the {\tt
+LCD} interface as a receptacle. Note that a facet--to--receptacle connection can
+only be established when both ports handle the same interface (or protocol, if
+you're thinking in UNIX--ish terms). The IDL3 declarations needed to define
+these components are shown in Example~\ref{example:two-components}.
 
-    component Display {
-      attribute string prompt;
-      provides LCD lcd;
-    };
-
-    home DisplayHome manages Display {
-    };
-
-
-    interface Console {
-      long println(in string s2);
-    };
-
-    component Hello {
-      provides Console console;
-      uses LCD lcd;
-    };
-
-    home HelloHome manages Hello {
-    };
-\end{verbatim}
-
-\noindent
 As long as we define the components in the same file, we have the same file
-structure as before:
+structure as before. This structure is shown in
+Example~\ref{example:two-components-structure}.
+
+\begin{Example}
+\begin{minifbox}
+\begin{small}
+\begin{verbatim}
+interface LCD {
+  void display_text(in string s);
+};
+
+component Display {
+  attribute string prompt;
+  provides LCD lcd;
+};
+
+home DisplayHome manages Display {
+};
+
+
+interface Console {
+  long println(in string s2);
+};
+
+component Hello {
+  provides Console console;
+  uses LCD lcd;
+};
+
+home HelloHome manages Hello {
+};
+\end{verbatim}
+\end{small}
+\end{minifbox}
+\caption{IDL3 definitions for two components with interfaces and homes.}
+\label{example:two-components}
+\end{Example}
+
+\begin{Example}
+\begin{minifbox}
+\begin{small}
 \begin{verbatim}
         hello/
         |-- hello.idl
 \end{verbatim}
-
-
+\end{small}
+\end{minifbox}
+\caption{File structure for the hello world example after defining the interface
+file.}
+\label{example:two-components-structure}
+\end{Example}
 
 %------------------------------------------------------------------------------
 \section{Implementation of two components}
 %------------------------------------------------------------------------------
 
-We start with generating and building the empty components:
+We'll start with generating and building the empty components, just as in the
+previous example. The commands to do this are as follows:
+\begin{small}
 \begin{verbatim}
 ~/hello> ccmtools-c++-generate -c 1.0 -d -p hello1.0 hello.idl
 ~/hello> ccmtools-c++-make -p hello1.0
 \end{verbatim}
+\end{small}
 
-\noindent
-For each of the components a mirror component has been generated as well as a
-test client that connects every component with its mirror component and calls
-the component's operations - Test-Driven Development.
+For each of the components, a mirror component has been generated as well as a
+test client. This test client connects every component with its mirror component
+and calls the component's operations. Because the component tester needs only to
+fill in the functionality for each of the test functions in the mirror
+component, this is the beginning of (get ready for a buzzword) ``test--driven
+development''!
 
-To make it short, we implemented the following methods in the business logic of
-the {\tt Display} and the {\tt Hello} component:
+To make this example shorter, we quickly implemented the following methods in
+the business logic of the {\tt Display} and {\tt Hello} components. This code is
+shown in Example~\ref{example:two-components-implementation}.
+
+\begin{Example}
+\begin{minifbox}
+\begin{small}
 \begin{verbatim}
 // Display_app.cc
 void
@@ -106,38 +140,70 @@ long
 console_impl::println ( const std::string& s2 )
 {
   DEBUGNL ( " console_impl->println ( s2 )" );
-  component->ctx->get_connection_lcd().ptr()->display_text(s2);
+  component->ctx->get_connection_lcd().ptr()->
+    display_text(s2);
   cout << endl;
-  return s2.length();	
+  return s2.length();
 }
 \end{verbatim}
+\end{small}
+\end{minifbox}
+\caption{Business logic (function implementations) for the two components of the
+hello world example.}
+\label{example:two-components-implementation}
+\end{Example}
 
-\noindent
-We build the components again and install them in the component repository:
+We then built the components and installed them in the component repository:
+\begin{small}
 \begin{verbatim}
 ~/hello> ccmtools-c++-make -p hello1.0
 ~/hello> ccmtools-c++-install -p hello1.0
 \end{verbatim}
-
-
+\end{small}
 
 %------------------------------------------------------------------------------
 \section{Write a local test client for two components}
 %------------------------------------------------------------------------------
 
-To show the use of both components in an application, we write a test client in
-the following file structure:
+To show the use of both components in an application, we'll write a test client
+using the following file structure:
+\begin{small}
 \begin{verbatim}
     hello/
     |-- hello1.0/
     |-- test/
     |   |-- client/
-    |   |   |-- client.cc 
+    |   |   |-- client.cc
 \end{verbatim}
+\end{small}
 
-\noindent
-The client starts with a lot of include and using namespace statements. Note
-that the included header files reflect the used components.
+Our test client needs to start with a lot of {\tt include} and {\tt using
+namespace} statements (shown in Example~\ref{example:two-components-includes})
+so the correct component libraries will be linked with the executable. Note that
+the included header files and namespaces reflect the used components. Then, in
+the main function, after setting the debugging mode, both component homes are
+registered using the home finder (shown in
+Example~\ref{example:two-components-homes}).
+
+Thanks to the component and home navigation in the generated code, we can use
+the home finder to find the homes by name. Using the appropriate homes, the
+client creates an instance of each component, gets references the the
+component's facets, and connects the facet of {\tt Display} with the receptacle
+of {\tt Hello}. Note that both ports are defined by the same {\tt LCD}
+interface; this is what allows the ports to connect. This code is shown in
+Example~\ref{example:two-components-instances}.
+
+At this point, the test client has built a component assembly of two components.
+These components reside in the same address space (they are both ``local''
+components). The client can test out the assembly by calling the component
+methods, as shown in Example~\ref{example:two-components-testing}. Once the
+client has tested the component assembly thoroughly, the assembly needs to be
+torn down to free the allocated memory. The component homes also need to be
+unregistered with the home finder. Such a shutdown process is shown in
+Example~\ref{example:two-components-teardown}.
+
+\begin{Example}
+\begin{minifbox}
 \begin{small}
 \begin{verbatim}
 #include <localComponents/CCM.h>
@@ -156,10 +222,13 @@ using namespace CCM_Session_Display;
 using namespace CCM_Session_Hello;
 \end{verbatim}
 \end{small}
+\end{minifbox}
+\caption{Test client headers for two components of the hello world example.}
+\label{example:two-components-includes}
+\end{Example}
 
-\noindent
-In the main function, after setting the debugging mode, both component homes are
-registered at the home finder.
+\begin{Example}
+\begin{minifbox}
 \begin{small}
 \begin{verbatim}
 int main ( int argc, char *argv[] )
@@ -167,73 +236,91 @@ int main ( int argc, char *argv[] )
   // Set debugging mode
   Debug::set_global(true);
 
-  // Get in instance of the local HomeFinder and register component homes
-  localComponents::HomeFinder* homeFinder = HomeFinder::Instance (  );
-  try {                       
-    homeFinder->register_home( create_DisplayHomeAdapter(), "DisplayHome" );
-    homeFinder->register_home( create_HelloHomeAdapter(), "HelloHome" );
+  // Get in instance of the local HomeFinder and
+  // register component homes
+  localComponents::HomeFinder* homeFinder =
+    HomeFinder::Instance (  );
+  try {
+    homeFinder->register_home( create_DisplayHomeAdapter(),
+                               "DisplayHome" );
+    homeFinder->register_home( create_HelloHomeAdapter(),
+                               "HelloHome" );
   } catch ( ... )  {
     cout << "Aut'sch: when register homes!" << endl;
     return -1;
   }
 \end{verbatim}
 \end{small}
+\end{minifbox}
+\caption{Creating the two component homes in the test client.}
+\label{example:two-components-homes}
+\end{Example}
 
-\noindent
-Now, we can use the home finder to find the homes by name. We create an instance
-of each component, get references the the component's facets and connect the
-facet of {\tt Display} with the receptacle of {\tt Hello}. Note that both ports
-are defined by the same {\tt LCD} interface.
+\begin{Example}
+\begin{minifbox}
 \begin{small}
 \begin{verbatim}
   try {
     // Find component home
-    SmartPtr<DisplayHome> myDisplayHome (dynamic_cast<DisplayHome*>
-      ( homeFinder->find_home_by_name ( "DisplayHome").ptr ()));
-    SmartPtr<HelloHome> myHelloHome (dynamic_cast<HelloHome*>
-      ( homeFinder->find_home_by_name ( "HelloHome").ptr ()));
+    SmartPtr<DisplayHome> myDisplayHome
+      ( dynamic_cast<DisplayHome*>
+        ( homeFinder->find_home_by_name
+          ( "DisplayHome").ptr ( ) ) );
+    SmartPtr<HelloHome> myHelloHome
+      ( dynamic_cast<HelloHome*>
+        ( homeFinder->find_home_by_name
+          ( "HelloHome").ptr ( ) ) );
 
     // Create component instance
-    SmartPtr<Hello> myHello = myHelloHome.ptr()->create();
-    SmartPtr<Display> myDisplay = myDisplayHome.ptr()->create();
- 
+    SmartPtr<Hello> myHello =
+      myHelloHome.ptr()->create();
+    SmartPtr<Display> myDisplay =
+      myDisplayHome.ptr()->create();
+
     // Get facet references and connect facets to receptacles
-    SmartPtr<CCM_Console> console = myHello.ptr()->provide_console();	
-    SmartPtr<CCM_LCD> lcd = myDisplay.ptr()->provide_lcd();
+    SmartPtr<CCM_Console> console =
+      myHello.ptr()->provide_console();
+    SmartPtr<CCM_LCD> lcd =
+      myDisplay.ptr()->provide_lcd();
     myHello.ptr()->connect_lcd(lcd);
 
     // Configure the component's attribute
     myDisplay.ptr()->prompt("-=> ");
 
-    // Component configuration finished	
+    // Component configuration finished
     myHello.ptr()->configuration_complete();
     myDisplay.ptr()->configuration_complete();
 \end{verbatim}
 \end{small}
+\end{minifbox}
+\caption{Creating and connecting the component instances in the test client.}
+\label{example:two-components-instances}
+\end{Example}
 
-\noindent
-The test client has build an component assembly of two components in memory and
-can use its functionality.
+\begin{Example}
+\begin{minifbox}
 \begin{small}
-\begin{verbatim}  
+\begin{verbatim}
     // Call operations on the component assembly
-    cout << "Display Version = " 
-         << myDisplay.ptr()->getComponentVersion()  << endl;
-    cout << "Hello Version = "  
+    cout << "Display Version = "
+         << myDisplay.ptr()->getComponentVersion() << endl ;
+    cout << "Hello Version = "
          << myHello.ptr()->getComponentVersion() << endl;
 
     console.ptr()->println("Hello from the client");
 \end{verbatim}
 \end{small}
+\end{minifbox}
+\caption{Testing the component assembly in the two component test client.}
+\label{example:two-components-testing}
+\end{Example}
 
-\noindent
-To tear the component assembly town, we disconnect the ports and remove the
-component instances from memory. We also unregister the component's homes from
-the home finder.
-\begin{small}	
-\begin{verbatim}    
+\begin{Example}
+\begin{minifbox}
+\begin{small}
+\begin{verbatim}
     // Disconnect component ports
-    myHello.ptr()->disconnect_lcd();    
+    myHello.ptr()->disconnect_lcd();
 
     // Destroy component instances
     myDisplay.ptr()->remove();
@@ -255,8 +342,13 @@ the home finder.
 }
 \end{verbatim}
 \end{small}
+\end{minifbox}
+\caption{Shutting down the components and homes in the test client.}
+\label{example:two-components-teardown}
+\end{Example}
 
-We build the test client with {\tt Confix} and run the binary:
+We will build the test client by using {\tt Confix}. Then when the component has
+been installed, we can run the binary test program:
 \begin{verbatim}
 ~/hello/test> confix.py --bootstrap --configure  \
                         --make --targets=install --profile=ccmtools
@@ -265,13 +357,13 @@ We build the test client with {\tt Confix} and run the binary:
 
 Isn't this cool?
 
-We have run a test client that uses two components which are connected via facet
-and receptacle to build a component assembly. In the same way, we can create
-more complex assemblies that form a real component based application as well.
+In this example, we built and ran a test client that uses two components. These
+two components are connected via a facet and receptacle using a common interface
+to build a component assembly. In the same way, we can create more complex
+assemblies that form a real component based application as well.
 
 Look at the printed debugging information to trace the execution thread of the
-test client. We can also switch off the messages by setting the debugging mode
-in the main function to {\tt false}.
-
-
-
+test client. You can also switch off the messages by setting the debugging mode
+in the main function to {\tt false}, or you can generate the component code
+without the debug option (that is, without using the {\tt -d} command line
+option).

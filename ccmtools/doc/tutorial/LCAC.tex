@@ -47,11 +47,11 @@ To improve the usability of CCM, we proposed a new approach
 \cite{teiniker-mkkw:2002} that provides an easy way to implement business logic
 without having to pay attention to CORBA details.
 
-\begin{figure}[htbp]
+\begin{figure}[!htb]
     \begin{center}
         \includegraphics [width=7cm,angle=0] {LCAC_Overview}
         \caption{Local component adapter}
-        \label{LcacOverview}    
+        \label{LcacOverview}
     \end{center}
 \end{figure}
 
@@ -64,9 +64,6 @@ CCM component.
 
 It is important to keep in mind that these adapters do not change the client
 view of a component, so our approach still conforms to the CCM standard.
-
-
-
 
 %==============================================================================
 \section{Local components}
@@ -83,7 +80,8 @@ mappings to many different programming languages. Instead of inventing another
 new component model, we use the CORBA Component Model in a local manner. By
 taking advantage of the adapter concept we can implement local components
 without a CORBA shell.
-\begin{figure}[htbp]
+
+\begin{figure}[!htb]
     \begin{center}
         \includegraphics [width=8cm,angle=0] {Adapter1}
         \caption{Local and remote connection}
@@ -127,7 +125,6 @@ by port at deployment time.
 With this approach we can use the same component model for a wide range of
 component implementations and programming languages.
 
-
 %==============================================================================
 \section{Assemblies of local and remote components}
 %==============================================================================
@@ -136,7 +133,8 @@ Local components in the CCM specification increase runtime performance, but they
 are not accessible from other processes. To overcome this problem, we build
 assemblies of local and remote components using the {\it Session Facade} pattern
 \cite{Marinescu02}.
-\begin{figure}[htbp]
+
+\begin{figure}[!htb]
     \begin{center}
         \includegraphics [width=10cm,angle=0] {LCAC_ProcessModel}
         \caption{Component assembly}
@@ -153,7 +151,8 @@ connections.
 
 An assembly can be described as a directed graph where the nodes are component
 instances and the edges are receptacle to facet connections.
-\begin{figure}[htbp]
+
+\begin{figure}[!htb]
     \begin{center}
         \includegraphics [width=5cm,angle=0] {AssemblyGraph}
         \includegraphics [width=5cm,angle=0] {AssemblyGraph2}
@@ -170,13 +169,9 @@ facade component home creates an assembly instance where only related components
 are connected as described in the assembly descriptor. The CORBA reference to
 the assembly instance is returned by the {\tt create()} call to the client.
 
-\noindent
 From the client's point of view, the session facade component is a fat remote
 one. In fact, this fat component is an assembly instance graph consisting of
 thin remote and local components that ensure easy reuse of business code.
-
-
-
 
 %==============================================================================
 \section{Assemblies of assemblies}
@@ -185,7 +180,8 @@ thin remote and local components that ensure easy reuse of business code.
 When we can use assembly instance graphs in the same way as remote components,
 we can then also group them into new assemblies. These remote assemblies consist
 of sets of remote session facade components and their remote connections.
-\begin{figure}[htbp]
+
+\begin{figure}[!htb]
     \begin{center}
         \includegraphics [width=10cm,angle=0] {RemoteAssembly}
         \caption{Remote assembly}
@@ -193,12 +189,9 @@ of sets of remote session facade components and their remote connections.
     \end{center}
 \end{figure}
 
-\noindent
 Fig.~\ref{remoteAssembly} shows a remote assembly consisting of three assembly
 instance graphs, each in its own process. Note that only the remote components
 of the instance graphs are visible from the outside, so the instance graphs look
 like fat remote CCM components. This approach is consistent with the CCM
 specification, but it increases performance and reusability.
-
-
 

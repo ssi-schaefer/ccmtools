@@ -3,12 +3,14 @@
 
 DOC_NAME = tutorial
 
-TEX = $(DOC_NAME).tex    \
-      CCMOverview.tex    \
-      FirstAssembly.tex  \
-      FirstComponent.tex \
-      Installation.tex   \
-      LCAC.tex           \
+TEX = $(DOC_NAME).tex       \
+      CCMOverview.tex       \
+      ConnectComponents.tex \
+      FirstAssembly.tex     \
+      FirstComponent.tex    \
+      Installation.tex      \
+      Introduction.tex      \
+      LCAC.tex              \
       Remote.tex
 
 BIBS = cbse.bib doc.bib pattern.bib se.bib wx.bib
