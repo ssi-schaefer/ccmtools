@@ -118,11 +118,12 @@ class CCM_%(Identifier)s_Context_impl
  * DO NOT EDIT!
  */
 
-#include <CCM/PrimitiveConverter.h>
+#include <CCM_Remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
 using namespace std;
 using namespace WX::Utils;
+using namespace CCM;
 
 %(OpenNamespace)s
 

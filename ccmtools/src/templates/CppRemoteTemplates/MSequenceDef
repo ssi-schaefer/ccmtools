@@ -1,0 +1,65 @@
+/***
+ * CORBA converter for sequence %(Identifier)s (header file)
+ *
+ ***/
+
+#ifndef __SEQUENCE_CONVERTER_%(PreprocIdentifier)s__H__
+#define __SEQUENCE_CONVERTER_%(PreprocIdentifier)s__H__
+
+%(MFieldDefInclude)s
+
+using namespace std;
+
+%(OpenNamespace)s
+
+void 
+convertFromCorba(const ::%(Identifier)s& in, CCM_Local::%(Identifier)s& out);
+
+void 
+convertToCorba(const CCM_Local::%(Identifier)s& in, ::%(Identifier)s& out);
+
+%(CloseNamespace)s
+
+#endif // __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
+
+
+
+<<<<<<<SPLIT>>>>>>>
+/***
+ * CORBA converter for sequence %(Identifier)s (implementation file)
+ *
+ ***/
+
+#include "%(Identifier)s_remote.h"
+
+inline 
+void 
+convertFromCorba(const ::%(Identifier)s& in, CCM_Local::%(Identifier)s& out)
+{
+    cout << " convertFromCorba(const ::%(Identifier)s&, 
+	CCM_Local::%(Identifier)s&)" << endl;
+
+    out.reserve(in.length());
+    for(unsigned long i=0; i<in.length(); ++i) {
+         %(CORBAType)s singleValue;
+         convertFromCorba(in[i], singleValue);
+         out.push_back(singleValue);	
+    }	
+} 
+
+
+inline 
+void 
+convertToCorba(const CCM_Local::%(Identifier)s& in, %(Identifier)s& out)
+{
+    cout << " convertToCorba(const CCM_Local::%(Identifier)s&, 
+	%(Identifier)s&)" << endl;
+
+    out.length(in.size());
+    for(usingned long i=0; i<in.size(); ++i) {
+        %(CORBAType)s singleValue;
+        convertToCorba(in[i], singleValue);
+        out[i] = singleValue;
+    }
+} 
+

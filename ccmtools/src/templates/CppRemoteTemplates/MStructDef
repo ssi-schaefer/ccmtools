@@ -1,48 +1,56 @@
-// ===========================================================================
-// struct adapter for %(Identifier)s (header file)
-// ===========================================================================
+/***
+ * CORBA converter for struct %(Identifier)s (header file)
+ *
+ ***/
 
-#ifndef __STRUCT_ADAPTER_%(PreprocIdentifier)s__H__
-#define __STRUCT_ADAPTER_%(PreprocIdentifier)s__H__
+#ifndef __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
+#define __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
+
+#include <%(IdlFileNamespace)s%(Identifier)s.h>
+#include <CCM_Local%(IncludeNamespace)s/%(Identifier)s.h>
 
 %(MFieldDefInclude)s
+
+%(OpenNamespace)s
+
+void 
+convertFromCorba(const %(ShortNamespace)s%(Identifier)s& in, CCM_Local::%(Identifier)s& out);
+
+void 
+convertToCorba(const CCM_Local::%(Identifier)s& in, %(ShortNamespace)s%(Identifier)s& out);
+
+%(CloseNamespace)s
+
+#endif // __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
+
+
+
+<<<<<<<SPLIT>>>>>>>
+/***
+ * CORBA converter for struct %(Identifier)s (implementation file)
+ *
+ ***/
+
+#include <CCM_Remote/PrimitiveConverter.h>
+#include "%(Identifier)s_remote.h"
 
 using namespace std;
 
 %(OpenNamespace)s
 
-/*
- * Convert a CORBA structure into a local structure.
- */
+void 
+convertFromCorba(const %(ShortNamespace)s%(Identifier)s& in, CCM_Local::%(Identifier)s& out)
+{
+    cout << " convertFromCorba(%(ShortNamespace)s%(Identifier)s)" << endl;
+%(MFieldDefFromCorba)s
+} 
 
-void CorbaConverter(const %(Identifier)s_ptr from, CCM_Local::%(Identifier)s& to);
 
-/*
- * Convert a local structure into a CORBA structure.
- */
-
-void CorbaConverter(const CCM_Local::%(Identifier)s& from, %(Identifier)s_ptr to);
+void 
+convertToCorba(const CCM_Local::%(Identifier)s& in, %(ShortNamespace)s%(Identifier)s& out)
+{
+    cout << " convertToCorba(%(ShortNamespace)s%(Identifier)s)" << endl;
+%(MFieldDefToCorba)s
+} 
 
 %(CloseNamespace)s
-
-#endif // __STRUCT_ADAPTER_%(PreprocIdentifier)s__H__
-
-
-
-<<<<<<<SPLIT>>>>>>>
-// ===========================================================================
-// struct adapter for %(Identifier)s (implementation file)
-// ===========================================================================
-
-void
-CorbaConverter(const %(Identifier)s_ptr from, CCM_Local::%(Identifier)s& to)
-{
-%(MFieldDef)s
-}
-
-void
-CorbaConverter(const CCM_Local::%(Identifier)s& from, %(Identifier)s_ptr to)
-{
-%(MFieldDef)s	
-}
-

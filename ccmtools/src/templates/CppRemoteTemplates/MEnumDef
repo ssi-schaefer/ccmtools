@@ -1,0 +1,59 @@
+/***
+ * CORBA converter for enum %(Identifier)s (header file)
+ *
+ ***/
+
+#ifndef __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
+#define __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
+
+%(OpenNamespace)s
+
+void 
+convertFromCorba(const ::%(Identifier)s& in, CCM_Local::%(Identifier)s& out);
+
+void 
+convertToCorba(const CCM_Local::%(Identifier)s& in, ::%(Identifier)s& out);
+
+%(CloseNamespace)s
+
+#endif // __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
+
+<<<<<<<SPLIT>>>>>>>
+/***
+ * CORBA converter for enum %(Identifier)s (implementation file)
+ *
+ ***/
+
+#include "%(Identifier)s_remote.h"
+
+using namespace std;
+using namespace CCM;
+
+%(OpenNamespace)s
+
+inline 
+void 
+convertFromCorba(const ::%(Identifier)s& in, CCM_Local::%(Identifier)s& out)
+{
+    cout << " convertFromCorba(const ::%(Identifier)s&, 
+	CCM_Local::%(Identifier)s&)" << endl;
+	
+    switch(in) {
+%(MembersFromCorba)s
+    }
+} 
+
+
+inline 
+void 
+convertToCorba(const CCM_Local::%(Identifier)s& in, %(Identifier)s& out)
+{
+    cout << " convertToCorba(const CCM_Local::%(Identifier)s&, 
+	%(Identifier)s&)" << endl;
+
+    switch(in) {
+%(MembersToCorba)s
+    }
+} 
+
+%(CloseNamespace)s

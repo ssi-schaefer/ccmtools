@@ -1,0 +1,11 @@
+#ifndef __IFACE_%(PreprocIdentifier)s__H__
+#define __IFACE_%(PreprocIdentifier)s__H__
+
+%(MAttributeDefInclude)s
+
+%(MOperationDefInclude)s
+
+%(OpenNamespace)s
+%(CloseNamespace)s
+
+#endif // __IFACE_%(PreprocIdentifier)s__H__

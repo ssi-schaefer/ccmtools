@@ -6,7 +6,7 @@
     %(LanguageType)s result;
     result = local_adapter->%(Identifier)s();
     %(CORBAType)s return_value;
-    CCM::convertToCorba(result, return_value);		
+    CCM_Remote::convertToCorba(result, return_value);		
     return return_value;	
 }
 
@@ -14,6 +14,6 @@ void %(ComponentType)s_impl::%(Identifier)s(const %(CORBAType)s value)
 {
     LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::%(Identifier)s(value)");
     %(LanguageType)s parameter_value;
-    CCM::convertFromCorba(value, parameter_value);	
+    CCM_Remote::convertFromCorba(value, parameter_value);	
     local_adapter->%(Identifier)s(parameter_value);
 }

@@ -1,2 +1,2 @@
-   result.%(Identifier)s = /* converter Method */ value.%(Identifier)s;
+    convertToCorba(in.%(CORBATypeIn)s, out.%(CORBATypeInOut)s);
 
