@@ -1,4 +1,4 @@
-u1out.idl
-u1out.ocl
-u1.xml
-u1.mdr
+*.idl
+*.ocl
+*.xml
+*.mdr
