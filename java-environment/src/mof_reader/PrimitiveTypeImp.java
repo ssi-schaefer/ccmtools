@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class PrimitiveTypeImp extends GeneralizableElementImp implements MofPrimitiveType
 {
-    PrimitiveTypeImp( DTD_Container xmi, MofModelElement parent )
+    PrimitiveTypeImp( PrimitiveTypeXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((PrimitiveTypeXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((PrimitiveTypeXmi)xmi_).name_; }
 
 
     /// implements {@link MofModelElement#process}

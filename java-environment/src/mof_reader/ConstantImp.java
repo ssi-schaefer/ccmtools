@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class ConstantImp extends TypedElementImp implements MofConstant
 {
-    ConstantImp( DTD_Container xmi, MofModelElement parent )
+    ConstantImp( ConstantXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((ConstantXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((ConstantXmi)xmi_).name_; }
 
 
     /// implements {@link MofConstant#getValue}

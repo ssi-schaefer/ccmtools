@@ -11,7 +11,11 @@
 
 package mof_reader;
 
+
+import java.util.Vector;
+
 import mof_xmi_parser.DTD_Container;
+import mof_xmi_parser.model.MTypedElement_type;
 
 
 /**
@@ -28,11 +32,22 @@ abstract class TypedElementImp extends ModelElementImp implements MofTypedElemen
     }
 
 
+    private MofClassifier type_;
+
+
     /// implements {@link MofTypedElement#getType}
     public MofClassifier getType()
     {
-        // TODO
-        return null;
+        if( type_==null )
+        {
+            Vector ch = xmi_.findChildren(MTypedElement_type.xmlName__);
+            for( int i=0; i<ch.size(); ++i )
+            {
+                MTypedElement_type t = (MTypedElement_type)ch.get(i);
+                // TODO
+            }
+        }
+        return type_;
     }
 
 }

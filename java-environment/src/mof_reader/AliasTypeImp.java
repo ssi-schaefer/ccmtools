@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class AliasTypeImp extends GeneralizableElementImp implements MofAliasType
 {
-    AliasTypeImp( DTD_Container xmi, MofModelElement parent )
+    AliasTypeImp( AliasTypeXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((AliasTypeXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((AliasTypeXmi)xmi_).name_; }
 
 
     /// implements {@link MofTypedElement#getType}

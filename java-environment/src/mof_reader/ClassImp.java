@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class ClassImp extends GeneralizableElementImp implements MofClass
 {
-    ClassImp( DTD_Container xmi, MofModelElement parent )
+    ClassImp( ClassXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((ClassXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((ClassXmi)xmi_).name_; }
 
 
     /// implements {@link MofClass#isSingleton}

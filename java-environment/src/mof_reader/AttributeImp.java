@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class AttributeImp extends StructuralFeatureImp implements MofAttribute
 {
-    AttributeImp( DTD_Container xmi, MofModelElement parent )
+    AttributeImp( AttributeXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((AttributeXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((AttributeXmi)xmi_).name_; }
 
 
     /// implements {@link MofAttribute#isDerived}

@@ -43,6 +43,8 @@ abstract class ModelElementImp implements MofModelElement
     private String annotation_;
     private String name_;
     private List qualifiedName_;
+    private Vector constraints_;
+    private Vector tags_;
 
 
     /// implements {@link MofModelElement#getAnnotation}
@@ -50,10 +52,17 @@ abstract class ModelElementImp implements MofModelElement
     {
         if( annotation_==null )
         {
-            annotation_ = createAnnotation(xmi_);
+            annotation_ = getXmiAnnotation();
+            if( annotation_==null )
+            {
+                annotation_ = createAnnotation(xmi_);
+            }
         }
         return annotation_;
     }
+
+    /// returns 'xmi_.annotation_'
+    abstract String getXmiAnnotation();
 
     static String createAnnotation( DTD_Container element )
     {
@@ -83,10 +92,17 @@ abstract class ModelElementImp implements MofModelElement
     {
         if( name_==null )
         {
-            name_ = createName(xmi_);
+            name_ = getXmiName();
+            if( name_==null )
+            {
+                name_ = createName(xmi_);
+            }
         }
         return name_;
     }
+
+    /// returns 'xmi_.name_'
+    abstract String getXmiName();
 
     static String createName( DTD_Container element )
     {
@@ -131,8 +147,8 @@ abstract class ModelElementImp implements MofModelElement
     /// implements {@link MofModelElement#getProviders}
     public Collection getProviders()
     {
-        // TODO
-        return null;
+        // the DTD doesn't support the "Depends On" association
+        return new ArrayList();
     }
 
 
@@ -150,13 +166,21 @@ abstract class ModelElementImp implements MofModelElement
     /// implements {@link MofModelElement#getConstraints}
     public Collection getConstraints()
     {
-        return convertXmiToMof(xmi_.findChildren(ConstraintXmi.xmlName__));
+        if( constraints_==null )
+        {
+            constraints_ = convertXmiToMof(xmi_.findChildren(ConstraintXmi.xmlName__));
+        }
+        return constraints_;
     }
 
     /// implements {@link MofModelElement#getTags}
     public List getTags()
     {
-        return convertXmiToMof(xmi_.findChildren(TagXmi.xmlName__));
+        if( tags_==null )
+        {
+            tags_ = convertXmiToMof(xmi_.findChildren(TagXmi.xmlName__));
+        }
+        return tags_;
     }
 
     static Vector convertXmiToMof( Vector xmi )

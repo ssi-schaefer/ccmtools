@@ -105,12 +105,12 @@ public class Model
     private Map workers_ = new Hashtable();
 
     /// all root model elements
-    private Collection content_;
+    private Collection xmiContent_;
 
 
     private void process( MXMI_content xmiContent )
     {
-        content_ = xmiContent.content();
+        xmiContent_ = xmiContent.content();
         int s = xmiContent.size();
         for( int index=0; index<s; ++index )
         {
@@ -128,10 +128,35 @@ public class Model
 
 
     /**
-     * returns an iterator for all root model elements ({@link Worker})
+     * returns an iterator for all root XMI elements (should be {@link Worker})
      */
-    public Iterator iterator()
+    public Iterator getXmiContentIterator()
     {
-        return content_.iterator();
+        return xmiContent_.iterator();
     }
+
+
+    /**
+     * returns an iterator for all root MOF elements ({@link MofModelElement})
+     */
+    public Iterator getMofContentIterator()
+    {
+        if( mofContent_==null )
+        {
+            mofContent_ = new Vector();
+            Iterator it = xmiContent_.iterator();
+            while( it.hasNext() )
+            {
+                Object obj = it.next();
+                if( obj instanceof Worker )
+                {
+                    mofContent_.add( ((Worker)obj).mof() );
+                }
+            }
+        }
+        return mofContent_.iterator();
+    }
+
+    private Vector mofContent_;
+
 }

@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class OperationImp extends BehavioralFeatureImp implements MofOperation
 {
-    OperationImp( DTD_Container xmi, MofModelElement parent )
+    OperationImp( OperationXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((OperationXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((OperationXmi)xmi_).name_; }
 
 
     /// implements {@link MofOperation#isQuery}

@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class CollectionTypeImp extends GeneralizableElementImp implements MofCollectionType
 {
-    CollectionTypeImp( DTD_Container xmi, MofModelElement parent )
+    CollectionTypeImp( CollectionTypeXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((CollectionTypeXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((CollectionTypeXmi)xmi_).name_; }
 
 
     /// implements {@link MofTypedElement#getType}

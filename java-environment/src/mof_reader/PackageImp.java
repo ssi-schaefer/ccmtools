@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class PackageImp extends GeneralizableElementImp implements MofPackage
 {
-    PackageImp( DTD_Container xmi, MofModelElement parent )
+    PackageImp( PackageXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((PackageXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((PackageXmi)xmi_).name_; }
 
 
     /// implements {@link MofModelElement#process}

@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class ReferenceImp extends StructuralFeatureImp implements MofReference
 {
-    ReferenceImp( DTD_Container xmi, MofModelElement parent )
+    ReferenceImp( ReferenceXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((ReferenceXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((ReferenceXmi)xmi_).name_; }
 
 
     /// implements {@link MofReference#getReferencedEnd}

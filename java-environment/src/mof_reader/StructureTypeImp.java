@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class StructureTypeImp extends GeneralizableElementImp implements MofStructureType
 {
-    StructureTypeImp( DTD_Container xmi, MofModelElement parent )
+    StructureTypeImp( StructureTypeXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((StructureTypeXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((StructureTypeXmi)xmi_).name_; }
 
 
     /// implements {@link MofModelElement#process}

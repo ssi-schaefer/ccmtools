@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class AssociationImp extends GeneralizableElementImp implements MofAssociation
 {
-    AssociationImp( DTD_Container xmi, MofModelElement parent )
+    AssociationImp( AssociationXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((AssociationXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((AssociationXmi)xmi_).name_; }
 
 
     /// implements {@link MofAssociation#isDerived}

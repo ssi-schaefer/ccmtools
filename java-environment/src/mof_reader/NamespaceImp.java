@@ -13,7 +13,11 @@ package mof_reader;
 
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Vector;
+
 import mof_xmi_parser.DTD_Container;
+import mof_xmi_parser.model.MNamespace_contents;
 
 
 /**
@@ -30,11 +34,30 @@ abstract class NamespaceImp extends ModelElementImp implements MofNamespace
     }
 
 
+    private ArrayList contents_;
+
+
     /// implements {@link MofNamespace#getContainedElements}
     public List getContainedElements()
     {
-        // TODO
-        return null;
+        if( contents_==null )
+        {
+            contents_ = new ArrayList();
+            Vector children = xmi_.findChildren(MNamespace_contents.xmlName__);
+            for( int i=0; i<children.size(); ++i )
+            {
+                MNamespace_contents ns = (MNamespace_contents)children.get(i);
+                for( int j=0; j<ns.size(); ++j )
+                {
+                    Object obj = ns.get(j);
+                    if( obj instanceof Worker )
+                    {
+                        contents_.add( ((Worker)obj).mof() );
+                    }
+                }
+            }
+        }
+        return contents_;
     }
 
 }

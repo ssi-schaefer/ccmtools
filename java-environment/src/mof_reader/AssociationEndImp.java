@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class AssociationEndImp extends TypedElementImp implements MofAssociationEnd
 {
-    AssociationEndImp( DTD_Container xmi, MofModelElement parent )
+    AssociationEndImp( AssociationEndXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((AssociationEndXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((AssociationEndXmi)xmi_).name_; }
 
 
     /// implements {@link MofAssociationEnd#getAggregation}

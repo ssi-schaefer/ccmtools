@@ -12,7 +12,6 @@
 package mof_reader;
 
 import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MImport_visibility;
 import mof_xmi_parser.model.MGeneralizableElement_visibility;
 import mof_xmi_parser.model.MFeature_visibility;
 
@@ -54,12 +53,6 @@ public final class MofVisibilityKind
     public static final MofVisibilityKind PROTECTED = new MofVisibilityKind("protected_vis");
 
 
-    static MofVisibilityKind create( MImport_visibility vis )
-    {
-        // TODO
-        throw new RuntimeException("not implemented");
-    }
-
     static MofVisibilityKind create( MGeneralizableElement_visibility vis )
     {
         // TODO
@@ -80,6 +73,10 @@ public final class MofVisibilityKind
      */
     public static MofVisibilityKind create( String visibility ) throws IllegalArgumentException
     {
+        if( visibility==null )
+        {
+            throw new IllegalArgumentException("no visibility kind");
+        }
         if( visibility.equalsIgnoreCase("public_vis") || visibility.equalsIgnoreCase("public") )
         {
             return PUBLIC;

@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class ParameterImp extends TypedElementImp implements MofParameter
 {
-    ParameterImp( DTD_Container xmi, MofModelElement parent )
+    ParameterImp( ParameterXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((ParameterXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((ParameterXmi)xmi_).name_; }
 
 
     /// implements {@link MofParameter#getDirection}

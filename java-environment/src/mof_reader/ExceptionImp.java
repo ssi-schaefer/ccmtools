@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class ExceptionImp extends BehavioralFeatureImp implements MofException
 {
-    ExceptionImp( DTD_Container xmi, MofModelElement parent )
+    ExceptionImp( ExceptionXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((ExceptionXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((ExceptionXmi)xmi_).name_; }
 
 
     /// implements {@link MofModelElement#process}

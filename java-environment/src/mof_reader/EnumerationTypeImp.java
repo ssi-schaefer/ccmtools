@@ -25,10 +25,16 @@ import mof_xmi_parser.DTD_Container;
  */
 class EnumerationTypeImp extends GeneralizableElementImp implements MofEnumerationType
 {
-    EnumerationTypeImp( DTD_Container xmi, MofModelElement parent )
+    EnumerationTypeImp( EnumerationTypeXmi xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
+
+    String getXmiAnnotation()
+    { return ((EnumerationTypeXmi)xmi_).annotation_; }
+
+    String getXmiName()
+    { return ((EnumerationTypeXmi)xmi_).name_; }
 
 
     /// implements {@link MofEnumerationType#getLabels}

@@ -12,7 +12,6 @@
 package mof_reader;
 
 import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MConstraint_evaluationPolicy;
 
 
 /**
@@ -47,13 +46,6 @@ public final class MofEvaluationKind
     public static final MofEvaluationKind DEFERRED = new MofEvaluationKind("deferred");
 
 
-    static MofEvaluationKind create( MConstraint_evaluationPolicy policy )
-    {
-        // TODO
-        throw new RuntimeException("not implemented");
-    }
-
-
     /**
      * Returns {@link IMMEDIATE} or {@link DEFERRED}.
      *
@@ -61,6 +53,10 @@ public final class MofEvaluationKind
      */
     public static MofEvaluationKind create( String evaluation ) throws IllegalArgumentException
     {
+        if( evaluation==null )
+        {
+            throw new IllegalArgumentException("no evaluation kind");
+        }
         if( evaluation.equalsIgnoreCase("immediate") )
         {
             return IMMEDIATE;
