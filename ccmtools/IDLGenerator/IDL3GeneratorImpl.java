@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class IDL3GeneratorImpl
     extends IDLGenerator
@@ -72,6 +73,36 @@ public class IDL3GeneratorImpl
             return template.substituteVariables(local_map);
         }
         return super.data_MHomeDef(data_type, data_value);
+    }
+
+
+    /**
+     * Write generated code to an output file.
+     *
+     * @param template the template object to get the generated code structure
+     *        from ; variable values should come from the node handler object.
+     */
+    protected void writeOutput(Template template)
+        throws IOException
+    {
+        String[] pieces =
+            template.substituteVariables(output_variables).split("\n");
+
+        List code_pieces = new ArrayList();
+        for (int i = 0; i < pieces.length; i++)
+            if (! pieces[i].trim().equals(""))
+                code_pieces.add(pieces[i]);
+
+        String code = join("\n", code_pieces);
+
+        code = code.replaceAll("#ifndef",      "\n#ifndef");
+        code = code.replaceAll("#define(.*)$", "#define\\1\n");
+
+        String name = join(file_separator, namespace);
+        if (! name.equals("")) name += file_separator;
+        name += ((MContained) current_node).getIdentifier() + ".idl";
+
+        writeFinalizedFile("", name, code + "\n\n");
     }
 }
 
