@@ -90,18 +90,16 @@ $Header$
 
 
   <!-- Create javaDoc -->
-
   <target name="doc" 
       description="Generates javadoc for the uml_parser and uml2idl package.">
       <javadoc packagenames="uml_parser, uml2idl"
-               sourcepath="${src}"
+           sourcepath="${src}"
 	       destDir="${build}/javadoc">
       </javadoc>
   </target>
 
 
   <!-- Install java-environment -->
-
   <target name="install"  depends="uml2idl.jar" 
       description="Install java-environment to prefix/.">
       <mkdir dir="${prefix}" />
