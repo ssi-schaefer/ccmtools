@@ -2,7 +2,7 @@
 // %(Identifier)s remote facet adapter
 //============================================================================
 
-%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(SmartPtr<CCM_Local%(Namespace)s::CCM_Session_%(ComponentType)s::%(ComponentType)s> la)
+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(SmartPtr<%(LocalNamespace)sCCM_Session_%(ComponentType)s::%(ComponentType)s> la)
     : local_component_adapter(la)
 {
     LDEBUGNL(CCM_REMOTE, "+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");

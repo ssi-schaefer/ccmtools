@@ -32,15 +32,15 @@ class %(Identifier)s_impl :
     friend class CCM_%(Identifier)s_Context_impl;
 
   protected:
-    WX::Utils::SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s> local_adapter;
-    CCM_Local%(Namespace)s::CCM_%(Identifier)s_Context* local_context;
+    WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s> local_adapter;
+    %(LocalNamespace)sCCM_%(Identifier)s_Context* local_context;
     WX::Utils::SmartPtr<CCM::SessionContainer> ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
   public:
-    %(Identifier)s_impl(WX::Utils::SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s>, 
+    %(Identifier)s_impl(WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s>, 
                         WX::Utils::SmartPtr<CCM::SessionContainer> );
     virtual ~%(Identifier)s_impl ();
 
@@ -78,7 +78,7 @@ class %(Identifier)s_impl :
 // Context adapter class
 //==========================================================================
 class CCM_%(Identifier)s_Context_impl
-    : public CCM_Local%(Namespace)s::CCM_%(Identifier)s_Context
+    : public %(LocalNamespace)sCCM_%(Identifier)s_Context
 {
   protected:
     %(Identifier)s_impl* component_adapter;
@@ -131,7 +131,7 @@ using namespace CCM;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s> la, 
+%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr<%(LocalNamespace)s%(Identifier)s> la, 
     SmartPtr<CCM::SessionContainer> c)
     : local_adapter(la), ccm_container (c)
 {

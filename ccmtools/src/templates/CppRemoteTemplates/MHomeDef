@@ -24,7 +24,7 @@ class %(Identifier)s_impl :
     virtual public PortableServer::RefCountServantBase
 {
   protected:
-    WX::Utils::SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s> local_home;
+    WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s> local_home;
     WX::Utils::SmartPtr<CCM::SessionContainer> ccm_container;
       
   public:
@@ -85,8 +85,8 @@ using namespace WX::Utils;
 {
     LDEBUGNL(CCM_REMOTE, "+%(Identifier)s_impl::%(Identifier)s_impl()");
     LocalComponents::HomeFinder* homeFinder = CCM_Local::HomeFinder::Instance();
-    local_home = SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s>(
-        dynamic_cast<CCM_Local%(Namespace)s::%(Identifier)s*>
+    local_home = SmartPtr<%(LocalNamespace)s%(Identifier)s>(
+        dynamic_cast<%(LocalNamespace)s%(Identifier)s*>
 	(homeFinder->find_home_by_name("%(Identifier)s").ptr()));
 }
 
@@ -106,7 +106,7 @@ using namespace WX::Utils;
 {
     LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::create()");
     // create the local_component
-    SmartPtr<CCM_Local%(Namespace)s::%(ComponentType)s> local_component = 
+    SmartPtr<%(LocalNamespace)s%(ComponentType)s> local_component = 
         local_home->create();
     // create component remote adapter
     PortableServer::ServantBase_var component_adapter =
@@ -188,7 +188,8 @@ int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
     info.component_absolute_name = "::%(ComponentType)s";
     info.component_id = "IDL:%(ComponentType)s:1.0";
     info.home_instance = NULL; // TODO
-    info.home_glue = new CCM_Remote%(Namespace)s::%(Identifier)s_impl(container); 
+//    info.home_glue = new CCM_Remote%(Namespace)::%(Identifier)s_impl(container); 
+    info.home_glue = new %(RemoteNamespace)s%(Identifier)s_impl(container); 
     container->load(info);
     Components::CCMHome_var hp = container->get_CCM_home(); 
     CosNaming::Name_var n  = ns->to_name (registration_name);
