@@ -22,6 +22,7 @@ class %(Identifier)s_impl
 {
   private:
     %(FullComponentType)s_impl* component;
+%(MAttributeDefVariable)s
 
   public:
     %(Identifier)s_impl(%(FullComponentType)s_impl* component_impl);

@@ -3,8 +3,7 @@ CCM_%(Object)s_impl::%(Identifier)s() const
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" CCM_%(Object)s_impl->%(Identifier)s()");
-
-    // TODO : IMPLEMENT ME HERE !
+    return %(Identifier)s_;
 }
 
 void
@@ -12,8 +11,7 @@ CCM_%(Object)s_impl::%(Identifier)s(const %(LanguageType)s value)
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" CCM_%(Object)s_impl->%(Identifier)s(value)");
-
-    // TODO : IMPLEMENT ME HERE !
+    %(Identifier)s_ = value;
 }
 
 

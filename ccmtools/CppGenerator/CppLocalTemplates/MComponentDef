@@ -415,6 +415,7 @@ class CCM_%(Identifier)s_impl
 {
   private:
 %(MAttributeDefVariable)s
+%(MSupportsDefVariable)s
 
   public:
     CCM_%(Identifier)s_Context* ctx;
