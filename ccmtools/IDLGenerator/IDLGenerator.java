@@ -250,7 +250,7 @@ abstract public class IDLGenerator
         if (data_type.equals("BaseTypes")) {
             String base = joinBases(", ");
             if (base.length() > 0) return ": " + base;
-        } else if (data_type.startsWith("SupportTypes") &&
+        } else if (data_type.startsWith("MSupportsDef") &&
                    data_value.endsWith(", ")) {
             return "supports " +
                 data_value.substring(0, data_value.length() - 2);

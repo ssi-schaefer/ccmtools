@@ -1,0 +1,39 @@
+Latest stable release  : CCM Tools 0.2.2 "Euceta"
+Latest unstable release: CCM Tools 0.3.1 "Frischling"
+
+This release has benn merged with 0.2.2 and fixes several bugs from the 
+0.3.1 release, including the following :
+
+
+ccmtools.UI.ConsoleCodeGenerator: (Entry point for all generator tools)
+---------------------------------
+* The cpp's output messages are now displayed to the user and the generator
+  is stoped properly after a cpp error.
+ 
+
+IDL2 Generator, IDL3 Generator:
+-------------------------------
+* The attribute keyword is now generated in the IDL2 and IDL3 file
+
+* The different typedef statements
+    - typedef type name;
+    - typedef type name[][]...;
+    - typedef sequence<type> name;
+  are now generated in the right way.
+ 
+* The operation's parameter list now generates the right direction 
+  keywords (in, inout, out).
+
+* The generated factory methods now have a proper return type in IDL2. 
+
+* Supported interfaces are now inherited by the component's interface, 
+  as described by the CCM specification.
+ 
+
+
+
+This release also contains a first version of the remote component generator:
+
+CppRemoteGenerator:
+-------------------
+

@@ -25,6 +25,9 @@ import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -43,9 +46,9 @@ public class IDL3GeneratorImpl
     {
         String value = super.getLocalValue(variable);
 
-        if (current_node instanceof MHomeDef)
+        if (current_node instanceof MHomeDef) {
             return data_MHomeDef(variable, value);
-
+	} 
         return value;
     }
 
