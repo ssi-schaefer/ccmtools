@@ -486,6 +486,7 @@ localComponents::ComponentPortDescription
 #ifndef __%(FileNamespace)s_%(Identifier)s_SHARE__H__
 #define __%(FileNamespace)s_%(Identifier)s_SHARE__H__
 
+#include <map>
 #include <CCM_Utils/SmartPointer.h>
 #include <localComponents/CCM.h>
 
