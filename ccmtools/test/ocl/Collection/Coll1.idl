@@ -1,0 +1,12 @@
+// $Id$
+
+typedef sequence<long> LongSeq;
+
+component Coll1
+{
+  attribute LongSeq seq1;
+};
+
+home Coll1Home manages Coll1
+{
+};

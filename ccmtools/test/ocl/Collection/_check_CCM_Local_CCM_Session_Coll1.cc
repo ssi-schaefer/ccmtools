@@ -1,33 +1,23 @@
-/*
-$Id$
-*/
-
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 #include <CCM_Utils/Debug.h>
 #include <CCM_Utils/SmartPointer.h>
-
-// DbC
 #include <CCM_OCL/OclException.h>
 
 #ifdef CCM_TEST_PYTHON
 #include <Python.h>
 #endif
 
-#include <CCM_Local/CCM_Session_Hello_mirror/Hello_mirror_gen.h>
-#include <CCM_Local/CCM_Session_Hello_mirror/HelloHome_mirror_gen.h>
-#include <CCM_Local/CCM_Session_Hello/Hello_gen.h>
-#include <CCM_Local/CCM_Session_Hello/HelloHome_gen.h>
-
-// DbC
-#include <CCM_Local/CCM_Session_Hello/Hello_dbc.h>
-#include <CCM_Local/CCM_Session_Hello/HelloHome_dbc.h>
+#include <CCM_Local/CCM_Session_Coll1_mirror/Coll1_mirror_gen.h>
+#include <CCM_Local/CCM_Session_Coll1_mirror/Coll1Home_mirror_gen.h>
+#include <CCM_Local/CCM_Session_Coll1/Coll1_dbc.h>
+#include <CCM_Local/CCM_Session_Coll1/Coll1Home_dbc.h>
 
 using namespace std;
 using namespace CCM_Utils;
 using namespace CCM_Local;
-using namespace CCM_Session_Hello;
-using namespace CCM_Session_Hello_mirror;
+using namespace CCM_Session_Coll1;
+using namespace CCM_Session_Coll1_mirror;
 
 
 //==============================================================================
@@ -41,27 +31,24 @@ int main ( int argc, char *argv[] )
 
   LocalComponents::HomeFinder* homeFinder;
 
-  SmartPtr<Hello> myHello;
-  SmartPtr<Hello_mirror> myHelloMirror;
+  SmartPtr<Coll1> myColl1;
+  SmartPtr<Coll1_mirror> myColl1Mirror;
 
-  SmartPtr<LocalComponents::Object> Hello_provides_console;
-  LocalComponents::Cookie Hello_ck_console;
+
+
 
 
 
 
   Debug::set_global ( true );
 
-  DEBUGNL ( "test_client_Hello_component_main (  )" );
+  DEBUGNL ( "test_client_Coll1_component_main (  )" );
 
   // get an instance of the local HomeFinder and register component homes
 
   homeFinder = HomeFinder::Instance (  );
-
-  // DbC
-  error  = DbC_deploy_HelloHome("HelloHome");
-
-  error +=    local_deploy_HelloHome_mirror("HelloHome_mirror");
+  error  = DbC_deploy_Coll1Home("Coll1Home");
+  error +=    local_deploy_Coll1Home_mirror("Coll1Home_mirror");	
   if(error) {
     cerr << "ERROR: Can't deploy component homes!" << endl;
     assert(0);
@@ -76,26 +63,24 @@ int main ( int argc, char *argv[] )
   try {
     // find component/mirror homes, instantiate components
 
-    SmartPtr<HelloHome> myHelloHome ( dynamic_cast<HelloHome*>
-      ( homeFinder->find_home_by_name ( "HelloHome" ).ptr (  ) ) );
-    SmartPtr<HelloHome_mirror> myHelloHomeMirror ( dynamic_cast<HelloHome_mirror*>
-      ( homeFinder->find_home_by_name ( "HelloHome_mirror" ).ptr (  ) ) );
+    SmartPtr<Coll1Home> myColl1Home ( dynamic_cast<Coll1Home*>
+      ( homeFinder->find_home_by_name ( "Coll1Home" ).ptr (  ) ) );
+    SmartPtr<Coll1Home_mirror> myColl1HomeMirror ( dynamic_cast<Coll1Home_mirror*>
+      ( homeFinder->find_home_by_name ( "Coll1Home_mirror" ).ptr (  ) ) );
 
-    myHello = myHelloHome.ptr (  )->create (  );
-    myHelloMirror = myHelloHomeMirror.ptr (  )->create (  );
+    myColl1 = myColl1Home.ptr (  )->create (  );
+    myColl1Mirror = myColl1HomeMirror.ptr (  )->create (  );
 
     // create facets, connect components
 
-    Hello_provides_console =
-      myHello.ptr (  )->provide_facet ( "console" );
 
 
-    Hello_ck_console = myHelloMirror.ptr (  )->connect
-      ( "console_mirror", Hello_provides_console );
 
 
-    myHello.ptr (  )->configuration_complete (  );
-    myHelloMirror.ptr (  )->configuration_complete (  );
+
+
+    myColl1.ptr (  )->configuration_complete (  );
+    myColl1Mirror.ptr (  )->configuration_complete (  );
   } catch ( LocalComponents::HomeNotFound ) {
     cout << "DEPLOY: can't find a home!" << endl;
     result = -1;
@@ -118,28 +103,13 @@ int main ( int argc, char *argv[] )
     // check basic functionality
 
     cout << "> getComponentVersion (  ) = "
-         << myHello.ptr (  )->getComponentVersion (  ) << endl;
+         << myColl1.ptr (  )->getComponentVersion (  ) << endl;
     cout << "> getComponentDate (  ) = "
-         << myHello.ptr (  )->getComponentDate (  ) << endl;
+         << myColl1.ptr (  )->getComponentDate (  ) << endl;
 
     DEBUGNL("==== Begin Test Case =============================================" );
 
-    cout << endl << "You should now get an OCL exception:" << endl
-                 << "------------------------------------" << endl;
-
-     try{
-
-     double x = myHello.ptr()->sqrt(123.456);
-     cout << "# myHello.ptr()->sqrt(123.456) = " << x << endl;
-
-     }
-     catch(CCM_OCL::OclException& e)
-     {
-        cout << e.what();
-        result = -1;
-     }
-
-     cout << endl;
+    cout << "###   DbC   ###" << endl;
 
     DEBUGNL("==== End Test Case ===============================================" );
   } catch ( LocalComponents::NotImplemented& e ) {
@@ -157,12 +127,11 @@ int main ( int argc, char *argv[] )
   try {
     // disconnect components, destroy instances, unregister homes
 
-    myHelloMirror.ptr (  )->disconnect ( "console_mirror", Hello_ck_console );
 
 
 
-    myHello.ptr (  )->remove (  );
-    myHelloMirror.ptr (  )->remove (  );
+    myColl1.ptr (  )->remove (  );
+    myColl1Mirror.ptr (  )->remove (  );
 
   } catch ( LocalComponents::HomeNotFound ) {
     cout << "TEARDOWN: can't find a home!" << endl;
@@ -175,8 +144,8 @@ int main ( int argc, char *argv[] )
     result = -1;
   }
 
-  error =  local_undeploy_HelloHome("HelloHome");
-  error += local_undeploy_HelloHome_mirror("HelloHome_mirror");
+  error =  local_undeploy_Coll1Home("Coll1Home");
+  error += local_undeploy_Coll1Home_mirror("Coll1Home_mirror");
   if(error) {
     cerr << "ERROR: Can't undeploy component homes!" << endl;
     assert(0);
@@ -186,7 +155,7 @@ int main ( int argc, char *argv[] )
   Py_Finalize();
 #endif
 
-  DEBUGNL ( "exit test_client_Hello_component_main (  )" );
+  DEBUGNL ( "exit test_client_Coll1_component_main (  )" );
 
   return result;
 }

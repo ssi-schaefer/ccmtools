@@ -23,11 +23,11 @@ context Set1
 	inv lit_18a: Set{1,2}->count(2)=1
 	inv lit_18b: Set{1,2}->count(3)=0
 	
-	inv sequence_01: mySequence->size()>=0
-	inv sequence_02: mySequence->isEmpty() = not mySequence->notEmpty()
+	inv sequence_01: mySequence->size>=0
+	inv sequence_02: mySequence->isEmpty = not mySequence->notEmpty
 
-	inv array_01: myArray->size()=0
-	inv array_02: myArray->isEmpty()=true
-	inv array_03: myArray->notEmpty()=false
+	inv array_01: myArray->size=0
+	inv array_02: myArray->isEmpty=true
+	inv array_03: myArray->notEmpty=false
 
 endpackage
