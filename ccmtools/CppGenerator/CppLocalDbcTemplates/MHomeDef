@@ -36,12 +36,13 @@ class DbC_%(Identifier)s
   virtual ~DbC_%(Identifier)s();
 
   virtual WX::Utils::SmartPtr<%(ComponentType)s> create()
-    throw (LocalComponents::CreateFailure);
+    throw (LocalComponents::CCMException, LocalComponents::CreateFailure);
 
 %(MFactoryDefAdapterPrototype)s
 
  private:
- 	void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool) throw(CCM_OCL::OclException);
+   void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool) 
+    throw(LocalComponents::CCMException, CCM_OCL::OclException);
 };
 
 %(CloseNamespace)s
@@ -104,14 +105,15 @@ DbC_%(Identifier)s::~DbC_%(Identifier)s (  )
   DEBUGNL("-DbC_%(Identifier)s->~DbC_%(Identifier)s()");
 }
 
-void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) throw(CCM_OCL::OclException)
+void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) 
+  throw(LocalComponents::CCMException, CCM_OCL::OclException)
 {
 %(InvariantInvocation)s
 }
 
 WX::Utils::SmartPtr<%(ComponentType)s>
 DbC_%(Identifier)s::create()
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL(" DbC_%(Identifier)s->create()");
   WX::Utils::SmartPtr<%(ComponentType)s> ret(

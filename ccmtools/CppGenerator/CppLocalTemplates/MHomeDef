@@ -56,7 +56,7 @@ class %(Identifier)sImplicit
 {
  public:
   virtual WX::Utils::SmartPtr<%(ComponentType)s> create (  )
-    throw ( LocalComponents::CreateFailure ) = 0;
+    throw(LocalComponents::CCMException, LocalComponents::CreateFailure) = 0;
 };
 
 
@@ -81,16 +81,16 @@ class %(Identifier)s
   // CCMHome functions
 
   virtual WX::Utils::SmartPtr<%(ComponentType)s> create (  )
-    throw ( LocalComponents::CreateFailure );
+    throw ( LocalComponents::CCMException, LocalComponents::CreateFailure );
   virtual LocalComponents::IRObject* get_component_def (  );
   virtual LocalComponents::IRObject* get_home_def (  );
   virtual void remove_component ( const LocalComponents::CCMObject& comp )
-    throw ( LocalComponents::RemoveFailure );
+    throw ( LocalComponents::CCMException, LocalComponents::RemoveFailure);
 
   // KeylessCCMHome functions
 
   virtual LocalComponents::CCMObject* create_component (  )
-    throw ( LocalComponents::CreateFailure );
+    throw ( LocalComponents::CCMException, LocalComponents::CreateFailure );
 };
 
 %(CloseNamespace)s
@@ -153,7 +153,7 @@ using namespace CCM_Local;
 
 SmartPtr<%(ComponentType)s>
 %(Identifier)s::create (  )
-  throw ( LocalComponents::CreateFailure )
+  throw(LocalComponents::CCMException, LocalComponents::CreateFailure)
 {
   DEBUGNL ( " %(Identifier)s->create()" );
   SmartPtr<%(ComponentType)s> ret(
@@ -186,7 +186,7 @@ LocalComponents::IRObject*
 
 void
 %(Identifier)s::remove_component ( const LocalComponents::CCMObject& comp )
-  throw ( LocalComponents::RemoveFailure )
+  throw ( LocalComponents::CCMException, LocalComponents::RemoveFailure )
 {
   DEBUGNL ( " %(Identifier)s->remove_component (  )" );
   // TODO
@@ -195,7 +195,7 @@ void
 
 LocalComponents::CCMObject*
 %(Identifier)s::create_component (  )
-  throw ( LocalComponents::CreateFailure )
+  throw ( LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " %(Identifier)s->create_component (  )" );
   // TODO

@@ -32,7 +32,8 @@ class DbC_%(Identifier)s
 %(MSupportsDefAdapterPrototype)s
 
  private:
-  void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool) throw(CCM_OCL::OclException);
+  void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool) 
+    throw(LocalComponents::CCMException, CCM_OCL::OclException);
 };
 
 
@@ -95,7 +96,8 @@ DbC_%(Identifier)s::~DbC_%(Identifier)s()
   DEBUGNL("-DbC_%(Identifier)s->~DbC_%(Identifier)s()" );
 }
 
-void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) throw(CCM_OCL::OclException)
+void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) 
+  throw(LocalComponents::CCMException, CCM_OCL::OclException)
 {
 %(InvariantInvocation)s
 }

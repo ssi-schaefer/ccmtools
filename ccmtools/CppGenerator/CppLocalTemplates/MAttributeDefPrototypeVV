@@ -1,3 +1,3 @@
-  virtual %(LanguageType)s %(Identifier)s (  ) = 0;
-  virtual void %(Identifier)s (const %(LanguageType)s value ) = 0;
+  virtual %(LanguageType)s %(Identifier)s (  ) throw ( LocalComponents::CCMException) = 0;
+  virtual void %(Identifier)s (const %(LanguageType)s value ) throw ( LocalComponents::CCMException) = 0;
 

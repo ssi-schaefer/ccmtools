@@ -21,7 +21,7 @@ DbC_%(Identifier)sFacetAdapter::~DbC_%(Identifier)sFacetAdapter()
   DEBUGNL ( "-DbC_%(Identifier)sFacetAdapter->~DbC_%(Identifier)sFacetAdapter()" );
 }
 
-void DbC_%(Identifier)sFacetAdapter::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) throw(CCM_OCL::OclException)
+void DbC_%(Identifier)sFacetAdapter::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) throw(LocalComponents::CCMException, CCM_OCL::OclException)
 {
 %(InvariantInvocation)s
 }

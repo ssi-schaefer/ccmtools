@@ -1,5 +1,6 @@
 %(LanguageType)s
-%(Object)sFacetAdapter::%(Identifier)s (  )
+%(Object)sFacetAdapter::%(Identifier)s (  ) 
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL(" %(Object)sFacetAdapter->%(Identifier)s (  )");
   if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
@@ -7,7 +8,8 @@
 }
 
 void
-%(Object)sFacetAdapter::%(Identifier)s ( const %(LanguageType)s value )
+%(Object)sFacetAdapter::%(Identifier)s ( const %(LanguageType)s value )  
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL(" %(Object)sFacetAdapter->%(Identifier)s ( value )");
   if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );

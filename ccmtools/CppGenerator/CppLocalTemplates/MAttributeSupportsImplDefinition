@@ -1,5 +1,6 @@
 %(LanguageType)s
 CCM_%(Object)s_impl::%(Identifier)s (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Object)s_impl->%(Identifier)s (  )" );
 
@@ -8,6 +9,7 @@ CCM_%(Object)s_impl::%(Identifier)s (  )
 
 void
 CCM_%(Object)s_impl::%(Identifier)s ( const %(LanguageType)s value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Object)s_impl->%(Identifier)s ( value )" );
 

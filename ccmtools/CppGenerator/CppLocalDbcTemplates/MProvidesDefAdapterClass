@@ -11,7 +11,8 @@ class DbC_%(Identifier)sFacetAdapter
 %(MAttributeDefProvidesPrototype)s
 %(MOperationProvidesPrototype)s
  private:
-  void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool) throw(CCM_OCL::OclException);
+  void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool) 
+    throw(LocalComponents::CCMException, CCM_OCL::OclException);
 };
 
 

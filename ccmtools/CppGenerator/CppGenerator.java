@@ -528,7 +528,7 @@ abstract public class CppGenerator
     {
         if (data_type.equals("MExceptionDefThrows") &&
             data_value.endsWith(", ")) {
-            return "throw ( " +
+            return "throw ( LocalComponents::CCMException, " +
                 data_value.substring(0, data_value.length() - 2) + " )";
         } else if (data_type.startsWith("MParameterDef") &&
                    data_value.endsWith(", ")) {
@@ -655,7 +655,12 @@ abstract public class CppGenerator
         List ret = new ArrayList();
         for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext(); )
             ret.add(((MExceptionDef) es.next()).getIdentifier());
-        return (ret.size() > 0) ? "throw ( " + join(", ", ret) + " )" : "";
+	if(ret.size() > 0) {
+	    return "throw (LocalComponents::CCMException, " + join(", ", ret) + " )";
+	}
+	else {
+	    return  "throw (LocalComponents::CCMException)";
+	}
     }
 
     /**

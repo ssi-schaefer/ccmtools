@@ -1,6 +1,6 @@
 SmartPtr<%(ComponentType)s>
 %(HomeType)s::%(Identifier)s ( %(MParameterDefAll)s )
-  throw ( LocalComponents::CreateFailure )
+  throw(LocalComponents::CCMException, LocalComponents::CreateFailure)
 {
   DEBUGNL ( " %(HomeType)s->%(Identifier)s ( %(MParameterDefName)s )");
   SmartPtr<%(ComponentType)s> ret (

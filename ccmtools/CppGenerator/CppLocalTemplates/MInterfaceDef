@@ -29,7 +29,7 @@ class %(Identifier)s
  public:
   virtual ~%(Identifier)s (  ) {  }
 %(MAttributeDefPrototypeVV)s
-%(MOperationDefPrototypeVV)s
+%(MOperationDefPrototypeVV)s 
 };
 
 // Internal view of an interface
