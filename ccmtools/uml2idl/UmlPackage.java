@@ -43,6 +43,9 @@ class UmlPackage extends ccmtools.uml_parser.uml.MPackage implements IdlContaine
     private String id_;
     private Worker idlParent_;
 
+    // true, if the package is not part of a class
+    private boolean all_parents_are_packages_;
+
     // stores instances of UmlNamespaceElement
     private Vector myElements_ = new Vector();
 
@@ -131,20 +134,28 @@ class UmlPackage extends ccmtools.uml_parser.uml.MPackage implements IdlContaine
 	    {
 	        ((Worker)myElements_.get(index)).makeConnections(main, this);
 	    }
+	    if( parent==null )
+	    {
+	        all_parents_are_packages_ = true;
+	    }
+	    else if( parent instanceof UmlPackage )
+	    {
+	        all_parents_are_packages_ = ((UmlPackage)parent).all_parents_are_packages_;
+	    }
+	    else
+	    {
+	        all_parents_are_packages_ = false;
+	    }
 	}
 
 
 	public String getPathName()
 	{
-	    if( idlParent_==null )
-	    {
-	        return getName();
-	    }
-	    if( idlParent_ instanceof IdlContainer )
+	    if( idlParent_!=null && (idlParent_ instanceof IdlContainer) )
 	    {
 	        return ((IdlContainer)idlParent_).getPathName() + Main.PATH_SEPERATOR + getName();
 	    }
-	    return "/*?::*/ "+getName();
+	    return getName();
 	}
 
 
@@ -172,6 +183,22 @@ class UmlPackage extends ccmtools.uml_parser.uml.MPackage implements IdlContaine
 	    code.append(" */\n\n");
 	    return code.toString();
 	}
+
+
+    public String getOclCode( Main main )
+    {
+	    if( !isCorbaModule(main) )
+	    {
+	        return "";
+	    }
+	    StringBuffer code = new StringBuffer();
+	    int s = myElements_.size();
+	    for( int index=0; index<s; index++ )
+	    {
+	        code.append( ((Worker)myElements_.get(index)).getOclCode(main) );
+	    }
+	    return code.toString();
+    }
 
 
     private int dependencyNumber_=-1;
@@ -214,4 +241,41 @@ class UmlPackage extends ccmtools.uml_parser.uml.MPackage implements IdlContaine
 	    }
 	    return createDependencyOrder(number, main);
 	}
+
+
+    String getOclPackageForClass( Main main )
+    {
+        if( all_parents_are_packages_ || idlParent_==null )
+        {
+            return getPathName();
+        }
+        if( idlParent_ instanceof UmlClass )
+        {
+            return ((UmlClass)idlParent_).getOclPackage(main);
+        }
+        if( idlParent_ instanceof UmlPackage )
+        {
+            return ((UmlPackage)idlParent_).getOclPackageForClass(main);
+        }
+        return idlParent_.getName();
+    }
+
+
+    String getOclSignatureForClass( Main main, String className )
+    {
+        if( all_parents_are_packages_ || idlParent_==null )
+        {
+            return className;
+        }
+        className = getName()+"::"+className;
+        if( idlParent_ instanceof UmlClass )
+        {
+            return ((UmlClass)idlParent_).getOclSignature(main)+"::"+className;
+        }
+        if( idlParent_ instanceof UmlPackage )
+        {
+            return ((UmlPackage)idlParent_).getOclSignatureForClass(main, className);
+        }
+        return className;
+    }
 }

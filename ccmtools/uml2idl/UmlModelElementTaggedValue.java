@@ -85,6 +85,12 @@ class UmlModelElementTaggedValue extends ccmtools.uml_parser.uml.MModelElement_t
 	}
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
 	void addValues( java.util.HashMap map )
 	{
 	    int s = size();

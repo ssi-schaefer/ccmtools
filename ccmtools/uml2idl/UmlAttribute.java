@@ -38,6 +38,7 @@ Class attribute. <br>Children:
 <ul>
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlModelElementStereotype}</li>
+<li>{@link UmlModelElementConstraint}</li>
 <li>{@link ccmtools.uml_parser.uml.MStructuralFeature_type}</li>
 <li>{@link ccmtools.uml_parser.uml.MModelElement_visibility}</li>
 <li>{@link ccmtools.uml_parser.uml.MStructuralFeature_multiplicity} == {@link UmlMultiplicity}</li>
@@ -124,7 +125,11 @@ class UmlAttribute extends ccmtools.uml_parser.uml.MAttribute implements Worker
 	    for( int index=0; index<s; index++ )
 	    {
 	        Object obj = get(index);
-	        if( obj instanceof Worker )
+	        if( obj instanceof UmlModelElementConstraint )
+	        {
+	            ((UmlModelElementConstraint)obj).makeConnections(main, parent);
+	        }
+	        else if( obj instanceof Worker )
 	        {
 	            ((Worker)obj).makeConnections(main, this);
 	        }
@@ -548,5 +553,21 @@ class UmlAttribute extends ccmtools.uml_parser.uml.MAttribute implements Worker
             return stereotype_.equals(type);
         }
         return main.isModelElementStereotype(this, type);
+    }
+
+
+    public String getOclCode( Main main )
+    {
+        StringBuffer code = new StringBuffer();
+        int s = size();
+        for( int index=0; index<s; index++ )
+        {
+            Object o = get(index);
+            if( o instanceof Worker )
+            {
+                code.append( ((Worker)o).getOclCode(main) );
+            }
+        }
+        return code.toString();
     }
 }

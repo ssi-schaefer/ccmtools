@@ -22,14 +22,18 @@
 package ccmtools.uml2idl;
 
 import org.xml.sax.Attributes;
+import java.util.Vector;
+import ccmtools.uml_parser.uml.MConstraint_body;
+import ccmtools.uml_parser.uml.MBooleanExpression;
+import ccmtools.uml_parser.uml.MExpression_body;
 
 
 /**
 Constraints. <br>Children:
 <ul>
 <li>{@link UmlModelElementName}</li>
-<li>{@link ccmtools.uml_parser.uml.MModelElement_comment}</li>
 <li>{@link ccmtools.uml_parser.uml.MConstraint_body}</li>
+<li>{@link ccmtools.uml_parser.uml.MModelElement_comment}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
@@ -114,4 +118,77 @@ class UmlConstraint extends ccmtools.uml_parser.uml.MConstraint implements Worke
 	{
 	    return 0;
 	}
+
+
+    public String getOclCode( Main main )
+    {
+        return getOclCode(main, idlParent_);
+    }
+    
+    boolean code_written_;
+    
+    private String getOclCode( Main main, Worker parent )
+    {
+        if( xmi_idref_!=null )
+        {
+            UmlConstraint c = (UmlConstraint)main.workers_.get(xmi_idref_);
+    	    if( c==null )
+    	    {
+    	        System.err.println("ERROR: UmlConstraint.getOclCode: xmi_idref_="+xmi_idref_);
+    	        return "";
+    	    }
+    	    return c.getOclCode(main, parent);
+        }
+        Vector v1 = findChildren(MConstraint_body.xmlName__);
+        if( v1.size()<1 )
+        {
+            return "";
+        }
+        MConstraint_body body = (MConstraint_body)v1.get(0);
+        v1 = body.findChildren(MBooleanExpression.xmlName__);
+        if( v1.size()<1 )
+        {
+            return "";
+        }
+        MBooleanExpression expr = (MBooleanExpression)v1.get(0);
+        if( expr.body_==null )
+        {
+            v1 = expr.findChildren(MExpression_body.xmlName__);
+            if( v1.size()<1 )
+            {
+                return "";
+            }
+            MExpression_body eb = (MExpression_body)v1.get(0);
+            StringBuffer code = new StringBuffer();
+            int s = eb.size();
+            for( int i=0; i<s; i++ )
+            {
+                code.append( eb.get(i).toString() );
+            }
+            expr.body_ = code.toString();
+        }
+        expr.body_ = expr.body_.trim();
+        if( expr.body_.startsWith("package") )
+        {
+            if( code_written_ )
+            {
+                return "";
+            }
+            code_written_ = true;
+            return expr.body_+"\n\n";
+        }
+        if( parent==null )
+        {
+            return "";
+        }
+        if( parent instanceof UmlClass )
+        {
+            return ((UmlClass)parent).getOclCode(main, expr.body_);
+        }
+        if( parent instanceof UmlOperation )
+        {
+            return ((UmlOperation)parent).getOclCode(main, expr.body_);
+        }
+        return "-- ERROR: WRONG_PARENT: "+expr.body_.replace('\n', ' ').replace('\r', ' ')+"\n\n";
+    }
 }

@@ -95,6 +95,12 @@ class UmlTaggedValue extends ccmtools.uml_parser.uml.MTaggedValue implements Wor
 	}
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
 	void addValue( java.util.HashMap map )
 	{
         java.util.Vector values = findChildren(MTaggedValue_dataValue.xmlName__);

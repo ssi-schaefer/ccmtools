@@ -103,6 +103,12 @@ class UmlDataType extends ccmtools.uml_parser.uml.MDataType implements Worker
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
 	public int createDependencyOrder( int number, Main main )
 	{
 	    return number;

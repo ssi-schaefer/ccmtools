@@ -130,6 +130,22 @@ class UmlClassifierFeature extends ccmtools.uml_parser.uml.MClassifier_feature i
 	}
 
 
+    public String getOclCode( Main main )
+    {
+        StringBuffer code = new StringBuffer();
+        int s = size();
+        for( int index=0; index<s; index++ )
+        {
+            Object o = get(index);
+            if( o instanceof Worker )
+            {
+                code.append( ((Worker)o).getOclCode(main) );
+            }
+        }
+        return code.toString();
+    }
+
+
 	/**
 	 * Adds a new attribute.
 	 */

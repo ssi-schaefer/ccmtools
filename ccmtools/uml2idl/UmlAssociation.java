@@ -103,6 +103,12 @@ class UmlAssociation extends ccmtools.uml_parser.uml.MAssociation implements Wor
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
     /**
      * Creates attributes on both association ends.
      */

@@ -59,6 +59,7 @@ class Factory extends ccmtools.uml_parser.DTD_Creator
         if(qName.equals(MGeneralization.xmlName__)) return new UmlGeneralization(attrs);
         if(qName.equals(MExpression.xmlName__)) return new UmlExpression(attrs);
         if(qName.equals(MDependency.xmlName__)) return new UmlDependency(attrs);
+        if(qName.equals(MModelElement_constraint.xmlName__)) return new UmlModelElementConstraint(attrs);
         return super.create(qName, attrs);
     }
 }

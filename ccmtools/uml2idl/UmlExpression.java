@@ -91,6 +91,12 @@ class UmlExpression extends ccmtools.uml_parser.uml.MExpression implements Worke
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
 	public int createDependencyOrder( int number, Main main )
 	{
 	    return number;

@@ -96,6 +96,12 @@ class UmlAssociationConnection extends ccmtools.uml_parser.uml.MAssociation_conn
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
     void createHomeManages( String primarykey, Main main )
     {
         if( secondEnd_.isNavigable() )

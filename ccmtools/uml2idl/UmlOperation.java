@@ -35,6 +35,7 @@ Class operation. <br>Children:
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlModelElementStereotype}</li>
 <li>{@link UmlModelElementTaggedValue}</li>
+<li>{@link UmlModelElementConstraint}</li>
 <li>{@link ccmtools.uml_parser.uml.MModelElement_visibility}</li>
 <li>{@link ccmtools.uml_parser.uml.MBehavioralFeature_parameter} == {@link UmlParameter}</li>
 </ul>
@@ -45,7 +46,7 @@ Class operation. <br>Children:
 class UmlOperation extends ccmtools.uml_parser.uml.MOperation implements Worker
 {
     private String id_;
-    private Worker idlParent_;
+    private UmlClass idlParent_;
     private HashMap tagged_values_;
 
     // stores instances of UmlParameter
@@ -106,7 +107,7 @@ class UmlOperation extends ccmtools.uml_parser.uml.MOperation implements Worker
 
 	public void makeConnections( Main main, Worker parent )
 	{
-	    idlParent_ = parent;
+	    idlParent_ = (UmlClass)parent;
 	    int index, s=size();
 	    for( index=0; index<s; index++ )
 	    {
@@ -299,5 +300,114 @@ class UmlOperation extends ccmtools.uml_parser.uml.MOperation implements Worker
             return stereotype_.equals(type);
         }
         return main.isModelElementStereotype(this, type);
+    }
+
+
+    public String getOclCode( Main main )
+    {
+        StringBuffer code = new StringBuffer();
+        int s, index;
+        s = size();
+        for( index=0; index<s; index++ )
+        {
+            Object o = get(index);
+            if( o instanceof Worker )
+            {
+                code.append( ((Worker)o).getOclCode(main) );
+            }
+        }
+        s = parameter_.size();
+        for( index=0; index<s; index++ )
+        {
+            code.append( ((UmlParameter)parameter_.get(index)).getOclCode(main) );
+        }
+        return code.toString();
+    }
+
+
+    /**
+     * Calculates the OCL statement for pre- and postconditions.
+     *
+     * @param main  main class
+     * @param body  the body of the OCL statement
+     */
+    String getOclCode( Main main, String body )
+    {
+        StringBuffer params = new StringBuffer();
+        boolean addComma = false;
+        int s = parameter_.size();
+        for( int index=0; index<s; index++ )
+        {
+            UmlParameter p = (UmlParameter)parameter_.get(index);
+            String kind = p.getKind();
+            if( !kind.equals("return") )
+            {
+                if( addComma )
+                {
+                    params.append(", ");
+                }
+                else
+                {
+                    addComma = true;
+                }
+                params.append(p.getName());
+                params.append(":");
+                params.append( convertIdlType(p.getTypeName(main, idlParent_)) );
+            }
+        }
+        String sig = getName()+"("+params.toString()+")";
+        if( idlParent_==null )
+        {
+            return "-- ERROR: NO PARENT\n"+
+                   "package GLOBAL\n"+
+                   "  context GLOBAL::"+sig+"\n"+
+                   "    "+body+"\n"+
+                   "endpackage\n\n";
+        }
+        return idlParent_.getOclCode(main, sig, body);
+    }
+    
+    // from 'ccmtools.OCL.utils.OclConstants' and 'ccmtools.OCL.utils.OclNormalization':
+    private static final String OCL_TYPE_NAME_VOID        = "OclVoid";
+    private static final String OCL_TYPE_NAME_ANY         = "OclAny";
+    private static final String OCL_TYPE_NAME_BOOLEAN     = "Boolean";
+    private static final String OCL_TYPE_NAME_REAL        = "Real";
+    private static final String OCL_TYPE_NAME_INTEGER     = "Integer";
+    private static final String OCL_TYPE_NAME_STRING      = "String";
+    private static final String OCL_TYPE_NAME_ENUMERATION = "Enumeration";
+
+    /**
+     * Converts an IDL type name to OCL.
+     */
+    static String convertIdlType( String idlType )
+    {
+        if( idlType.equals("void") )
+        {
+            return OCL_TYPE_NAME_VOID;
+        }
+        if( idlType.equals("any") )
+        {
+            return OCL_TYPE_NAME_ANY;
+        }
+        if( idlType.equals("boolean") )
+        {
+            return OCL_TYPE_NAME_BOOLEAN;
+        }
+        if( idlType.equals("float") || idlType.equals("double") || idlType.equals("long double") )
+        {
+            return OCL_TYPE_NAME_REAL;
+        }
+        if( idlType.equals("byte") || idlType.equals("char") ||
+            idlType.equals("int") || idlType.equals("long") ||
+            idlType.equals("short") || idlType.equals("long long") ||
+            idlType.equals("octet") || idlType.equals("wchar") )
+        {
+            return OCL_TYPE_NAME_INTEGER;
+        }
+        if( idlType.equals("string") || idlType.equals("wstring") )
+        {
+            return OCL_TYPE_NAME_STRING;
+        }
+        return idlType;
     }
 }

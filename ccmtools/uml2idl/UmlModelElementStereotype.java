@@ -88,6 +88,12 @@ class UmlModelElementStereotype extends ccmtools.uml_parser.uml.MModelElement_st
 	}
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
 	boolean isStereotype( String name, Main main )
 	{
 	    for( int index=0; index<size(); index++ )

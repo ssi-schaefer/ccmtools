@@ -112,6 +112,12 @@ class UmlMultiplicityRange extends ccmtools.uml_parser.uml.MMultiplicityRange im
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
     public String getLower() throws IllegalStateException
     {
         if( lower_==null )

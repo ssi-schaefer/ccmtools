@@ -31,6 +31,7 @@ import ccmtools.uml_parser.uml.MClassifier;
 Operation parameter. <br>Children:
 <ul>
 <li>{@link UmlModelElementName}</li>
+<li>{@link UmlModelElementConstraint}</li>
 <li>{@link ccmtools.uml_parser.uml.MParameter_kind}</li>
 <li>{@link ccmtools.uml_parser.uml.MParameter_type}</li>
 </ul>
@@ -94,7 +95,11 @@ class UmlParameter extends ccmtools.uml_parser.uml.MParameter implements Worker
 	    for( int index=0; index<s; index++ )
 	    {
 	        Object obj = get(index);
-	        if( obj instanceof Worker )
+	        if( obj instanceof UmlModelElementConstraint )
+	        {
+	            ((UmlModelElementConstraint)obj).makeConnections(main, parent);
+	        }
+	        else if( obj instanceof Worker )
 	        {
 	            ((Worker)obj).makeConnections(main, this);
 	        }
@@ -208,5 +213,21 @@ class UmlParameter extends ccmtools.uml_parser.uml.MParameter implements Worker
     public int getDependencyNumber()
     {
 	    return dependencyNumber_;
+    }
+
+
+    public String getOclCode( Main main )
+    {
+        StringBuffer code = new StringBuffer();
+        int s = size();
+        for( int index=0; index<s; index++ )
+        {
+            Object o = get(index);
+            if( o instanceof Worker )
+            {
+                code.append( ((Worker)o).getOclCode(main) );
+            }
+        }
+        return code.toString();
     }
 }

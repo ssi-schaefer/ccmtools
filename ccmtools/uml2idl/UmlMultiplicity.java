@@ -131,6 +131,12 @@ class UmlMultiplicity extends ccmtools.uml_parser.uml.MMultiplicity implements W
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
     public String getLower()
     {
         if( range_==null )

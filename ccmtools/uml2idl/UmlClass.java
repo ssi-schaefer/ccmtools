@@ -35,6 +35,7 @@ UML-class. <br>Children:
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlModelElementStereotype}</li>
 <li>{@link UmlModelElementTaggedValue}</li>
+<li>{@link UmlModelElementConstraint}</li>
 <li>{@link UmlClassifierFeature}</li>
 <li>{@link UmlNamespaceElement}</li>
 <li>{@link ccmtools.uml_parser.uml.MGeneralizableElement_isAbstract}</li>
@@ -62,6 +63,9 @@ class UmlClass extends ccmtools.uml_parser.uml.MClass implements IdlContainer
 
     // stores instances of UmlDependency
     private Vector myClientDependency_ = new Vector();
+
+    // stores instances of UmlModelElementConstraint
+    private Vector myConstraints_ = new Vector();
 
 
     UmlClass( Attributes attrs )
@@ -117,6 +121,10 @@ class UmlClass extends ccmtools.uml_parser.uml.MClass implements IdlContainer
 	        {
 	            myElements_.add(obj);
 	        }
+	        else if( obj instanceof UmlModelElementConstraint )
+	        {
+	            myConstraints_.add(obj);
+	        }
 	        else if( obj instanceof MGeneralizableElement_generalization )
 	        {
 	            MGeneralizableElement_generalization g = (MGeneralizableElement_generalization)obj;
@@ -166,20 +174,21 @@ class UmlClass extends ccmtools.uml_parser.uml.MClass implements IdlContainer
 	    {
 	        ((Worker)myGeneralizations_.get(index)).makeConnections(main, this);
 	    }
+	    s = myConstraints_.size();
+	    for( index=0; index<s; index++ )
+	    {
+	        ((Worker)myConstraints_.get(index)).makeConnections(main, this);
+	    }
 	}
 
 
 	public String getPathName()
 	{
-	    if( idlParent_==null )
-	    {
-	        return getName();
-	    }
-	    if( idlParent_ instanceof IdlContainer )
+	    if( idlParent_!=null && (idlParent_ instanceof IdlContainer) )
 	    {
 	        return ((IdlContainer)idlParent_).getPathName() + Main.PATH_SEPERATOR + getName();
 	    }
-	    return "/*?::*/ "+getName();
+	    return getName();
 	}
 
 
@@ -1011,4 +1020,90 @@ class UmlClass extends ccmtools.uml_parser.uml.MClass implements IdlContainer
 	    componentId_ = componentId;
 	    primarykey_ = primarykey;
 	}
+
+
+    public String getOclCode( Main main )
+    {
+        StringBuffer code = new StringBuffer();
+        int s = size();
+        for( int index=0; index<s; index++ )
+        {
+            Object o = get(index);
+            if( o instanceof Worker )
+            {
+                code.append( ((Worker)o).getOclCode(main) );
+            }
+        }
+        return code.toString();
+    }
+
+
+    /**
+     * Calculates the OCL statement for an invariant.
+     *
+     * @param main  main class
+     * @param body  the body of the OCL statement
+     */
+    String getOclCode( Main main, String body )
+    {
+        String pkg = getOclPackage(main);
+        String sig = getOclSignature(main);
+        return "package "+pkg+"\n"+
+               "  context "+sig+"\n"+
+               "    "+body+"\n"+
+               "endpackage\n\n";
+    }
+
+
+    /**
+     * Calculates the OCL statement for pre- and postconditions.
+     *
+     * @param main  main class
+     * @param operation  the signature of the operation
+     * @param body  the body of the OCL statement
+     */
+    String getOclCode( Main main, String operation, String body )
+    {
+        String pkg = getOclPackage(main);
+        String sig = getOclSignature(main);
+        return "package "+pkg+"\n"+
+               "  context "+sig+"::"+operation+"\n"+
+               "    "+body+"\n"+
+               "endpackage\n\n";
+    }
+
+
+    String getOclPackage( Main main )
+    {
+        if( idlParent_==null )
+        {
+            return "GLOBAL";
+        }
+        if( idlParent_ instanceof UmlClass )
+        {
+            return ((UmlClass)idlParent_).getOclPackage(main);
+        }
+        if( idlParent_ instanceof UmlPackage )
+        {
+            return ((UmlPackage)idlParent_).getOclPackageForClass(main);
+        }
+        return idlParent_.getName();
+    }
+
+
+    String getOclSignature( Main main )
+    {
+        if( idlParent_!=null )
+        {
+            if( idlParent_ instanceof UmlClass )
+            {
+                return ((UmlClass)idlParent_).getOclSignature(main)+"::"+getName();
+            }
+            if( idlParent_ instanceof UmlPackage )
+            {
+                return ((UmlPackage)idlParent_).getOclSignatureForClass(main, getName());
+            }
+        }
+        return getName();
+    }
 }

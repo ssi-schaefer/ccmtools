@@ -119,6 +119,24 @@ class UmlModel extends ccmtools.uml_parser.uml.MModel implements Worker
 	}
 
 
+    public String getOclCode( Main main )
+    {
+	    StringBuffer code = new StringBuffer();
+	    code.append("--  begin model '");
+	    code.append(getName());
+	    code.append("'\n\n");
+	    int s = myWorkers_.size();
+	    for( int index=0; index<s; index++ )
+	    {
+	        code.append( ((Worker)myWorkers_.get(index)).getOclCode(main) );
+	    }
+	    code.append("--  end model '");
+	    code.append(getName());
+	    code.append("'\n\n");
+	    return code.toString();
+    }
+
+
     private int dependencyNumber_=-1;
 
 	public int createDependencyOrder( int number, Main main )

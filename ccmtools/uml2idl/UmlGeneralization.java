@@ -97,6 +97,12 @@ class UmlGeneralization extends ccmtools.uml_parser.uml.MGeneralization implemen
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
 	public int createDependencyOrder( int number, Main main )
 	{
 	    Object parent = getParent(main);

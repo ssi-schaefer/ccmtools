@@ -97,6 +97,12 @@ class UmlDependency extends ccmtools.uml_parser.uml.MDependency implements Worke
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
 	public int createDependencyOrder( int number, Main main )
 	{
 	    Object parent = getSupplier(main);

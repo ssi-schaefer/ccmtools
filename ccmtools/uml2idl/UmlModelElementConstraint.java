@@ -25,46 +25,24 @@ import org.xml.sax.Attributes;
 
 
 /**
-UML stereotype. <br>Children:
+The constraints of a model element. <br>Children:
 <ul>
-<li>{@link UmlModelElementName}</li>
+<li>{@link UmlConstraint}</li>
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
 @version January 2004
 */
-class UmlStereotype extends ccmtools.uml_parser.uml.MStereotype implements Worker
+class UmlModelElementConstraint extends ccmtools.uml_parser.uml.MModelElement_constraint implements Worker
 {
     private String id_;
 
 
-    UmlStereotype( Attributes attrs )
+    UmlModelElementConstraint( Attributes attrs )
     {
         super(attrs);
-        id_ = xmi_id_;
-        if( id_==null )
-        {
-            id_ = Main.makeId();
-        }
-    }
-
-
-    UmlStereotype( String name )
-    {
-        super(null);
-        name_ = name;
         id_ = Main.makeId();
     }
-
-
-	public String getName()
-	{
-        if( name_==null )
-        {
-            name_ = Main.makeModelElementName(this);
-        }
-	    return name_;
-	}
 
 
     public String getId()
@@ -73,9 +51,18 @@ class UmlStereotype extends ccmtools.uml_parser.uml.MStereotype implements Worke
     }
 
 
+	public String getName()
+	{
+	    return null;
+	}
+
+
+    /**
+     * Puts all children of type 'Worker' into the map.
+     * The key value is the unique identifier.
+     */
 	public void collectWorkers( java.util.HashMap map )
 	{
-	    map.put(id_, this);
 	    int s = size();
 	    for( int index=0; index<s; index++ )
 	    {
@@ -84,43 +71,45 @@ class UmlStereotype extends ccmtools.uml_parser.uml.MStereotype implements Worke
 	        {
 	            ((Worker)obj).collectWorkers(map);
 	        }
-	        Main.logChild("UmlStereotype",obj);
+	        Main.logChild("UmlModelElementConstraint",obj);
 	    }
 	}
 
 
 	public void makeConnections( Main main, Worker parent )
 	{
-	    // nothing to do
+	    int s = size();
+	    for( int index=0; index<s; index++ )
+	    {
+	        Object obj = get(index);
+	        if( obj instanceof Worker )
+	        {
+	            ((Worker)obj).makeConnections(main, parent);
+	        }
+	    }
 	}
 
 
-    public String getIdlCode( Main main, String prefix )
-    {
-        return "";
-    }
+	public String getIdlCode( Main main, String prefix )
+	{
+	    return "";
+	}
 
 
     public String getOclCode( Main main )
     {
-        return "";
+        StringBuffer code = new StringBuffer();
+	    int s = size();
+	    for( int index=0; index<s; index++ )
+	    {
+	        Object obj = get(index);
+	        if( obj instanceof UmlConstraint )
+	        {
+	            code.append( ((UmlConstraint)obj).getOclCode(main) );
+	        }
+	    }
+	    return code.toString();
     }
-
-
-	boolean isStereotype( String name, Main main )
-	{
-	    if( xmi_idref_==null )
-	    {
-	        return getName().equals(name);
-	    }
-	    UmlStereotype type = (UmlStereotype)main.workers_.get(xmi_idref_);
-	    if( type==null )
-	    {
-	        System.err.println("ERROR: UmlStereotype.isStereotype: xmi_idref_="+xmi_idref_);
-	        return false;
-	    }
-	    return type.isStereotype(name, main);
-	}
 
 
 	public int createDependencyOrder( int number, Main main )

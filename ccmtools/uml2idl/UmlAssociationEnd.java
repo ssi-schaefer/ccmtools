@@ -37,6 +37,7 @@ Association end. <br>Children:
 <ul>
 <li>{@link UmlModelElementName}</li>
 <li>{@link UmlModelElementStereotype}</li>
+<li>{@link UmlModelElementConstraint}</li>
 <li>{@link ccmtools.uml_parser.uml.MModelElement_visibility}</li>
 <li>{@link ccmtools.uml_parser.uml.MAssociationEnd_participant}</li>
 <li>{@link ccmtools.uml_parser.uml.MAssociationEnd_isNavigable}</li>
@@ -134,6 +135,12 @@ class UmlAssociationEnd extends ccmtools.uml_parser.uml.MAssociationEnd implemen
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
     public boolean isNavigable()
     {
         if( isNavigable_==null )
@@ -208,7 +215,7 @@ class UmlAssociationEnd extends ccmtools.uml_parser.uml.MAssociationEnd implemen
 	        mes.add(ust);
 	        attr.add(mes);
 	    }
-	    else if( isStereotype("switchEnd", main) )
+	    if( isStereotype("switchEnd", main) )
 	    {
 	        UmlStereotype ust = new UmlStereotype(UmlAttribute.SWITCH);
 	        UmlModelElementStereotype mes = new UmlModelElementStereotype(null);
@@ -216,6 +223,11 @@ class UmlAssociationEnd extends ccmtools.uml_parser.uml.MAssociationEnd implemen
 	        attr.add(mes);
 	    }
 	    Vector v3 = findChildren(UmlModelElementTaggedValue.xmlName__);
+	    for( int k=0; k<v3.size(); k++ )
+	    {
+	        attr.add(v3.get(k));
+	    }
+	    v3 = findChildren(UmlModelElementConstraint.xmlName__);
 	    for( int k=0; k<v3.size(); k++ )
 	    {
 	        attr.add(v3.get(k));

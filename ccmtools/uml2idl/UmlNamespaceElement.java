@@ -108,6 +108,18 @@ class UmlNamespaceElement extends ccmtools.uml_parser.uml.MNamespace_ownedElemen
 	}
 
 
+    public String getOclCode( Main main )
+    {
+	    StringBuffer code = new StringBuffer();
+	    int s = myWorkers_.size();
+	    for( int index=0; index<s; index++ )
+	    {
+	        code.append( ((Worker)myWorkers_.get(index)).getOclCode(main) );
+	    }
+	    return code.toString();
+    }
+
+
     private int dependencyNumber_=-1;
 
 	public int createDependencyOrder( int number, Main main )

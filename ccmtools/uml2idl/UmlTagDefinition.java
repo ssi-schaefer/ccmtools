@@ -93,6 +93,12 @@ class UmlTagDefinition extends ccmtools.uml_parser.uml.MTagDefinition implements
     }
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
 	public int createDependencyOrder( int number, Main main )
 	{
 	    return number;

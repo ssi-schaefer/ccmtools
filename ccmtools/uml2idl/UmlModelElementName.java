@@ -96,6 +96,12 @@ class UmlModelElementName extends ccmtools.uml_parser.uml.MModelElement_name imp
 	}
 
 
+    public String getOclCode( Main main )
+    {
+        return "";
+    }
+
+
 	public int createDependencyOrder( int number, Main main )
 	{
 	    return number;

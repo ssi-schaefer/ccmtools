@@ -4,8 +4,7 @@
 \author{Robert Lechner}
 \title{
 UML nach IDL/OCL Konverter\\
-~\\
-{\LARGE Anleitung f{\"u}r das Paket \texttt{uml2idl}}\\
+{\LARGE ~\\ Anleitung f{\"u}r das Paket \texttt{uml2idl}}\\
 ~
 }
 \begin{document}
@@ -764,6 +763,65 @@ module docHome {
 \label{fig:home}
 \end{figure}
 
+\cleardoublepage
+\section{OCL}
+Die \emph{constraints} haben normalerweise folgende Form:
+\begin{verbatim}
+package Parent::Child
+  context MyClass
+    inv: company='Salomon'
+    inv Name: value>0
+
+  context MyClass::myOperation(x:Real)
+    pre: x>=0
+    post: result<0
+endpackage
+\end{verbatim}
+Solche Ausdr{\"u}cke k{\"o}nnen an beliebiger Stelle definiert werden;
+der Konverter schreibt sie ohne {\"A}nderung in die OCL-Datei.
+Um die Eingabe zu vereinfachen, sind folgende Abk{\"u}rzungen m{\"o}glich:
+\begin{itemize}
+\item Pre- und Postconditions k{\"o}nnen bei der Operation oder bei einem Parameter
+    ohne \texttt{package} und \texttt{context} angegeben werden:\\
+    \texttt{pre: x>=0}\\
+    \texttt{post check\_result: result>0}\\
+\item Invarianten k{\"o}nnen bei der Klasse oder bei einem Attribut ebenfalls
+    ohne \texttt{package} und \texttt{context} angegeben werden:\\
+    \texttt{inv: value>=0}\\
+\end{itemize}
+Die fehlenden \texttt{package}- und \texttt{context}-Anweisungen werden
+automatisch erzeugt.
+\newpage
+\textbf{Beispiel:}\\
+\centerline{\includegraphics[width=0.6 \linewidth]{ocl1.eps}}\\
+\textbf{IDL:}
+\begin{verbatim}
+module ITI {
+    interface Math {
+        attribute long value1;
+        attribute double value2;
+        double sqrt(in double x);
+        void dummy(in long x, in long y);
+    };
+};
+\end{verbatim}
+\textbf{OCL:}
+\begin{verbatim}
+package ITI
+  context Math::dummy(x:Integer, y:Integer)
+    pre: x>0
+    pre: y>0
+
+  context Math
+    inv: value1>0
+    inv: value2>0
+
+  context Math::sqrt(x:Real)
+    pre: x>=0
+    post: return>=0
+    post: return*return=x
+endpackage
+\end{verbatim}
 
 
 \end{document}
