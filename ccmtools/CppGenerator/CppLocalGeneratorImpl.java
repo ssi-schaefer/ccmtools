@@ -258,14 +258,22 @@ public class CppLocalGeneratorImpl
             f = new ArrayList();
             f.add(base); f.add(node_name + "_gen.cc"); files.add(f);
 
+            f = new ArrayList();
+            f.add(base + "_share"); f.add(node_name + "_share.h"); files.add(f);
+
+            if (! current_node instanceof MHomeDef) {
+                f = new ArrayList();
+                f.add("src"); f.add(node_name + "_entry.h"); files.add(f);
+            }
+
             if ((flags & FLAG_APPLICATION_FILES) != 0) {
                 f = new ArrayList();
-                f.add(base); f.add(node_name + "_app.h"); files.add(f);
+                f.add("src"); f.add(node_name + "_app.h"); files.add(f);
                 f = new ArrayList();
-                f.add(base); f.add(node_name + "_app.cc"); files.add(f);
+                f.add("src"); f.add(node_name + "_app.cc"); files.add(f);
             } else {
-                f = new ArrayList(); f.add(base); f.add(""); files.add(f);
-                f = new ArrayList(); f.add(base); f.add(""); files.add(f);
+                f = new ArrayList(); f.add("src"); f.add(""); files.add(f);
+                f = new ArrayList(); f.add("src"); f.add(""); files.add(f);
             }
 
         } else if ((current_node instanceof MInterfaceDef)

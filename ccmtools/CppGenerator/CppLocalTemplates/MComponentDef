@@ -501,6 +501,23 @@ localComponents::ComponentPortDescription
 
 <<<<<<<SPLIT>>>>>>>
 //==============================================================================
+// %(Identifier)s - shared class definitions
+//==============================================================================
+
+#ifndef __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+#define __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+
+%(OpenNamespace)s
+
+// put code here ! :)
+
+%(CloseNamespace)s
+
+#endif // __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+
+
+<<<<<<<SPLIT>>>>>>>
+//==============================================================================
 // %(Identifier)s - business logic class definition
 //==============================================================================
 

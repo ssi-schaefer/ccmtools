@@ -112,14 +112,6 @@ class %(Identifier)s
 
 %(CloseNamespace)s
 
-//==============================================================================
-// entry point
-//==============================================================================
-
-extern "C" {
-  CCM_Utils::SmartPtr<localComponents::CCMHome> create_%(Identifier)sAdapter();
-}
-
 #endif
 
 
@@ -233,6 +225,42 @@ extern "C" {
 
 <<<<<<<SPLIT>>>>>>>
 //==============================================================================
+// %(Identifier)s - shared class definitions
+//==============================================================================
+
+#ifndef __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+#define __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+
+%(OpenNamespace)s
+
+// put code here ! :)
+
+%(CloseNamespace)s
+
+#endif // __%(FileNamespace)s_%(Identifier)s_SHARE__H__
+
+
+<<<<<<<SPLIT>>>>>>>
+//==============================================================================
+// %(Identifier)s - entry point
+//==============================================================================
+
+#ifndef __%(FileNamespace)s_%(Identifier)s_ENTRY__H__
+#define __%(FileNamespace)s_%(Identifier)s_ENTRY__H__
+
+%(OpenNamespace)s
+
+extern "C" {
+  CCM_Utils::SmartPtr<localComponents::CCMHome> create_%(Identifier)sAdapter();
+}
+
+%(CloseNamespace)s
+
+#endif // __%(FileNamespace)s_%(Identifier)s_ENTRY__H__
+
+
+<<<<<<<SPLIT>>>>>>>
+//==============================================================================
 // %(Identifier)s - home class business logic
 //==============================================================================
 
@@ -281,7 +309,7 @@ extern "C" {
 
 #include "%(Identifier)s_app.h"
 
-using namespace std; 
+using namespace std;
 using namespace CCM_Utils;
 
 %(OpenNamespace)s
