@@ -161,15 +161,15 @@
             todir="${prefix}/bin"  overwrite="true" />  
       <copy file="${bin}/uml2idl" 
             todir="${prefix}/bin"  overwrite="true" />  
-      <exec executable="chmod" os="Linux">
+      <exec executable="chmod">
           <arg value="+x" />
           <arg value="${prefix}/bin/ccmtools-generate" />
       </exec>
-      <exec executable="chmod" os="Linux">
+      <exec executable="chmod">
           <arg value="+x" />
           <arg value="${prefix}/bin/ccmtools-idl" />
       </exec>
-      <exec executable="chmod" os="Linux">
+      <exec executable="chmod">
           <arg value="+x" />
           <arg value="${prefix}/bin/uml2idl" />
       </exec>
