@@ -35,24 +35,25 @@ import java.util.TreeSet;
 public class ConsoleDriverImpl
     implements Driver
 {
-    private final static long M_NODE_TRACE        = 0x0001;
-    private final static long M_NODE_DATA         = 0x0002;
-    private final static long M_VARIABLES         = 0x0004;
-    private final static long M_TEMPLATE          = 0x0008;
-    private final static long M_OUTPUT_VARIABLES  = 0x0010;
-    private final static long M_CURRENT_VARIABLES = 0x0020;
-    private final static long M_OUTPUT_FILE       = 0x0040;
-    private final static long M_MESSAGE           = 0x0080;
-    private final static long M_PREFIX            = 0x0100;
-    private final static long M_PREFIX_INDENT     = 0x0200;
+    public final static long M_NONE              = 0;
+    public final static long M_NODE_TRACE        = 0x0001;
+    public final static long M_NODE_DATA         = 0x0002;
+    public final static long M_VARIABLES         = 0x0004;
+    public final static long M_TEMPLATE          = 0x0008;
+    public final static long M_OUTPUT_VARIABLES  = 0x0010;
+    public final static long M_CURRENT_VARIABLES = 0x0020;
+    public final static long M_OUTPUT_FILE       = 0x0040;
+    public final static long M_MESSAGE           = 0x0080;
+    public final static long M_PREFIX            = 0x0100;
+    public final static long M_PREFIX_INDENT     = 0x0200;
 
     // additional debug flags available.
-    private final static long M_UNUSED4           = 0x0400;
-    private final static long M_UNUSED5           = 0x0800;
-    private final static long M_UNUSED6           = 0x1000;
-    private final static long M_UNUSED7           = 0x2000;
-    private final static long M_UNUSED8           = 0x4000;
-    private final static long M_UNUSED9           = 0x8000;
+    public final static long M_UNUSED4           = 0x0400;
+    public final static long M_UNUSED5           = 0x0800;
+    public final static long M_UNUSED6           = 0x1000;
+    public final static long M_UNUSED7           = 0x2000;
+    public final static long M_UNUSED8           = 0x4000;
+    public final static long M_UNUSED9           = 0x8000;
 
     private long mask;
     private String indent;
@@ -162,24 +163,30 @@ public class ConsoleDriverImpl
 
     private void logSimpleLine(Object data, long m)
     {
-        if ((mask & m) != 0) output.println(formatPrefix(' ') + data);
+        if ((mask & m) != 0) 
+            output.println(formatPrefix(' ') + data);
     }
 
     private void logSimpleLine(Object data, long m, char pre)
     {
-        if ((mask & m) != 0) output.println(formatPrefix(pre) + data);
+        if ((mask & m) != 0) 
+            output.println(formatPrefix(pre) + data);
     }
 
     private String formatPrefix(char pre)
     {
-        if ((mask & M_PREFIX) != 0) return formatIndent(pre);
-        else return "";
+        if ((mask & M_PREFIX) != 0) 
+            return formatIndent(pre);
+        else 
+            return "";
     }
 
     private String formatIndent(char pre)
     {
-        if ((mask & M_PREFIX_INDENT) != 0) return indent + pre + " ";
-        else return pre + " ";
+        if ((mask & M_PREFIX_INDENT) != 0) 
+            return indent + pre + " ";
+        else 
+            return pre + " ";
     }
 
     private String formatData(Object data)

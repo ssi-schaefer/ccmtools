@@ -22,7 +22,6 @@ package ccmtools.UI;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -75,7 +74,7 @@ public class ConsoleCodeGenerator
 
     private static List languages;
 
-    private static long gen_mask = 0x00000040;
+    private static long gen_mask = ConsoleDriverImpl.M_NONE; //ConsoleDriverImpl.M_MESSAGE;
 
     private static long par_mask = 0x00000000;
 
@@ -85,8 +84,8 @@ public class ConsoleCodeGenerator
 
     private static List filenames;
 
-    private static File output_directory = new File(System
-            .getProperty("user.dir"));
+    private static File output_directory = 
+        new File(System.getProperty("user.dir"));
 
     private static File base_output_directory = new File(output_directory, "");
 
@@ -104,109 +103,114 @@ public class ConsoleCodeGenerator
         if(!parseArgs(args)) {
             return; // No further processing needed
         }
-        else {
-            printVersion();
+
+        try {
+            printVersion();  // Print out the current version of ccmtools
+
+            //Driver driver = createDriver();
+            Driver driver = new ConsoleDriverImpl(gen_mask);
+            
+            driver.message(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            
+            GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
+            if(traverser == null) {
+                printUsage("failed to create a graph traverser");
+                return;
+            }
+
+            ParserManager manager = new ParserManager(par_mask);
+            if(manager == null) {
+                printUsage("failed to create a parser manager");
+                return;
+            }
+
+            ArrayList handlers = new ArrayList();
+            for(Iterator l = languages.iterator(); l.hasNext();) {
+                TemplateHandler handler = 
+                    createTemplateHandler(driver,(String) l.next());
+                handlers.add(handler);
+                traverser.addHandler(handler);
+            }
+
+            Runtime rt = Runtime.getRuntime();
+
+            MContainer kopf = null;
+
+            for(Iterator f = filenames.iterator(); f.hasNext();) {
+                File source = new File((String) f.next());
+                File idlfile = new File(System.getProperty("user.dir"), "_CCM_"
+                        + source.getName());
+
+                // step (0). run the C preprocessor on the input file.
+                try {
+                    // Run the GNU preprocessor cpp in a separate process.
+                    System.out.println("> cpp -o " + idlfile + " "
+                            + include_path + " " + source);
+                    Process preproc = 
+                        Runtime.getRuntime().exec("cpp -o " + idlfile + " " + include_path
+                            + " " + source);
+                    BufferedReader stdInput = 
+                        new BufferedReader(new InputStreamReader(preproc.getInputStream()));
+                    BufferedReader stdError = 
+                        new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
+
+                    // Read the output and any errors from the command
+                    String s;
+                    while((s = stdInput.readLine()) != null)
+                        System.out.println(s);
+                    while((s = stdError.readLine()) != null)
+                        System.out.println(s);
+
+                    // Wait for the process to complete and evaluate the return
+                    // value of the attempted command
+                    preproc.waitFor();
+                    if(preproc.exitValue() != 0)
+                        throw new RuntimeException();
+                }
+                catch(Exception e) {
+                    System.err.println("Error preprocessing " + source
+                            + ": Please verify your include paths.");
+                    return;
+                }
+
+                // step (1). parse the resulting preprocessed file.
+                System.out.println("> parse " + idlfile.toString());
+                manager.reset();
+                manager.setOriginalFile(source.toString());
+                try {
+                    kopf = manager.parseFile(idlfile.toString());
+                    if(kopf == null)
+                        throw new RuntimeException("Parser returned a null container");
+                }
+                catch(Exception e) {
+                    System.err.println("Error parsing " + source + ":\n" + e);
+                    return;
+                }
+                String kopf_name = source.getName().split("\\.")[0];
+                kopf_name = kopf_name.replaceAll("[^\\w]", "_");
+                kopf.setIdentifier(kopf_name);
+
+                // step (2). traverse the resulting metamodel graph.
+                try {
+                    System.out.println("> traverse CCM model");
+                    traverser.traverseGraph(kopf);
+                }
+                catch(Exception e) {
+                    System.err.println("Error generating code from " 
+                                       + source + ":\n" + e);
+                    return;
+                }
+
+                // delete the preprocessed temporary file if everything worked.
+                idlfile.deleteOnExit();
+
+                System.out.println("> done.");
+            }
         }
-
-        GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
-        if(traverser == null) {
-            printUsage("failed to create a graph traverser");
-        }
-
-        ParserManager manager = new ParserManager(par_mask);
-        if(manager == null) {
-            printUsage("failed to create a parser manager");
-        }
-
-        Driver driver = createDriver();
-        ArrayList handlers = new ArrayList();
-
-        for(Iterator l = languages.iterator(); l.hasNext();) {
-            TemplateHandler handler = createTemplateHandler(driver, (String) l
-                    .next());
-            handlers.add(handler);
-            traverser.addHandler(handler);
-        }
-
-        Runtime rt = Runtime.getRuntime();
-
-        MContainer kopf = null;
-
-        for(Iterator f = filenames.iterator(); f.hasNext();) {
-            File source = new File((String) f.next());
-            File idlfile = new File(System.getProperty("user.dir"), "_CCM_"
-                    + source.getName());
-
-            // step (0). run the C preprocessor on the input file.
-            try {
-                // Run the GNU preprocessor cpp in a separate process.
-                System.out.println("> cpp -o " + idlfile + " " + include_path
-                        + " " + source);
-                Process preproc = Runtime.getRuntime()
-                        .exec(
-                              "cpp -o " + idlfile + " " + include_path + " "
-                                      + source);
-                BufferedReader stdInput = new BufferedReader(
-                                                             new InputStreamReader(
-                                                                                   preproc
-                                                                                           .getInputStream()));
-                BufferedReader stdError = new BufferedReader(
-                                                             new InputStreamReader(
-                                                                                   preproc
-                                                                                           .getErrorStream()));
-
-                // Read the output and any errors from the command
-                String s;
-                while((s = stdInput.readLine()) != null)
-                    System.out.println(s);
-                while((s = stdError.readLine()) != null)
-                    System.out.println(s);
-
-                // Wait for the process to complete and evaluate the return
-                // value of the attempted command
-                preproc.waitFor();
-                if(preproc.exitValue() != 0)
-                    throw new RuntimeException();
-            }
-            catch(Exception e) {
-                System.err.println("Error preprocessing " + source
-                        + ": Please verify your include paths.");
-                System.exit(10);
-            }
-
-            // step (1). parse the resulting preprocessed file.
-            System.out.println("> parse " + idlfile.toString());
-            manager.reset();
-            manager.setOriginalFile(source.toString());
-            try {
-                kopf = manager.parseFile(idlfile.toString());
-                if(kopf == null)
-                    throw new RuntimeException(
-                                               "Parser returned a null container");
-            }
-            catch(Exception e) {
-                System.err.println("Error parsing " + source + ":\n" + e);
-                System.exit(20);
-            }
-            String kopf_name = source.getName().split("\\.")[0];
-            kopf_name = kopf_name.replaceAll("[^\\w]", "_");
-            kopf.setIdentifier(kopf_name);
-
-            // step (2). traverse the resulting metamodel graph.
-            try {
-                System.out.println("> traverse CCM model");
-                traverser.traverseGraph(kopf);
-            }
-            catch(Exception e) {
-                System.err.println("Error generating code from " + source
-                        + ":\n" + e);
-                System.exit(30);
-            }
-
-            // delete the preprocessed temporary file if everything worked.
-            idlfile.deleteOnExit();
-
-            System.out.println("> done.");
+        catch(Exception e) {
+            System.err.println("Error: CCM Tools have been finished with an error:");
+            System.err.println(e.getMessage());
+            System.err.println("Please post a bug report to <ccmtools-devel@lists.sourceforge.net>");
         }
     }
 
@@ -248,7 +252,7 @@ public class ConsoleCodeGenerator
      * messages and could possibly react to input from the user as well.
      * 
      * @return a newly created driver, or exit if there was an error.
-     */
+     *
     private static Driver createDriver()
     {
         Driver driver = null;
@@ -267,6 +271,7 @@ public class ConsoleCodeGenerator
         }
         return driver;
     }
+    */
 
     /**
      * Set up the node handler (i.e. code generator) object based on the output
@@ -279,8 +284,7 @@ public class ConsoleCodeGenerator
      * @return the newly created node handler (i.e. code generator), or exit if
      *         there was an error.
      */
-    private static TemplateHandler createTemplateHandler(Driver driver,
-                                                         String lang)
+    private static TemplateHandler createTemplateHandler(Driver driver, String lang)
     {
         TemplateHandler handler = null;
 
@@ -317,8 +321,7 @@ public class ConsoleCodeGenerator
         }
 
         if(handler == null) {
-            printUsage("ERROR: failed to create a language generator for "
-                    + lang);
+            printUsage("ERROR: failed to create a language generator for " + lang);
         }
 
         if((generate_flags & GENERATE_APPLICATION_FILES) != 0) {
