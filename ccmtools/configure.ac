@@ -91,6 +91,7 @@ IDLGenerator/IDL3MirrorTemplates/Makefile
 IDLGenerator/IDL2Templates/Makefile
 CppGenerator/Makefile
 CppGenerator/CppLocalTemplates/Makefile
+CppGenerator/CppRemoteTemplates/Makefile
 CppGenerator/CppMirrorTemplates/Makefile
 CppGenerator/CppPythonTemplates/Makefile
 UI/Makefile
