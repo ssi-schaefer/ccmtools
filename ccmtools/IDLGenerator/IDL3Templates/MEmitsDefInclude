@@ -1,2 +1,2 @@
-#include <%(EmitsInclude)s.idl3>
+#include <%(EmitsInclude)s.idl>
 

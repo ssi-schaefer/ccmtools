@@ -17,13 +17,15 @@ TESTS = \
   help.sh                     \
   version.sh                  \
   attribute.sh                \
-  attribute_interface.sh      \
   supports.sh                 \
   facet.sh                    \
   facet_rename.sh             \
   receptacle.sh               \
   receptacle_multiple.sh      \
   receptacle_not_connected.sh \
+  home_factory.sh             \
+  include.sh                  \
+  module.sh                   \
   attribute_basic_types.sh    \
   supports_basic_types.sh     \
   facet_basic_types.sh        \
@@ -37,20 +39,17 @@ TESTS = \
   supports_exception.sh       \
   facet_exception.sh          \
   receptacle_exception.sh     \
+  home_exception.sh           \
   attribute_interface.sh      \
   supports_interface.sh       \
   facet_interface.sh          \
   receptacle_interface.sh     \
-  home_exception.sh           \
+  home-factory-interface.sh   \
   supports-inheritance.sh     \
   facet-inheritance.sh        \
   receptacle-inheritance.sh   \
-  home_factory.sh             \
-  home-factory-interface.sh   \
-  include.sh                  \
   include_dir.sh              \
   include_nested.sh           \
-  module.sh                   \
   module-nested.sh            \
   module-reopen.sh            \
   module_mixed.sh             \

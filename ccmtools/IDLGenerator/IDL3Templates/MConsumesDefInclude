@@ -1,2 +1,2 @@
-#include <%(ConsumesInclude)s.idl3>
+#include <%(ConsumesInclude)s.idl>
 

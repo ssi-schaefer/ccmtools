@@ -8,12 +8,12 @@
 %(MPublishesDefInclude)s
 %(MUsesDefInclude)s
 
-#include "CCM.idl2"
+#include "CCM.idl"
 
 #ifndef __COMPONENT__%(PreprocIdentifier)s__
 #define __COMPONENT__%(PreprocIdentifier)s__
 
-#include <%(HomeInclude)s.idl2>
+#include <%(HomeInclude)s.idl>
 
 %(OpenNamespace)s
 

@@ -28,7 +28,7 @@ abstract local component %(Identifier)s_mirror
 
 %(CloseNamespace)s
 
-#include <%(HomeInclude)s.idl3mirror>
+#include <%(HomeInclude)s.idl>
 
 #endif
 

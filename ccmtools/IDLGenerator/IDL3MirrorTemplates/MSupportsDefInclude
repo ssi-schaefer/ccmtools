@@ -1,2 +1,2 @@
-#include <%(SupportsInclude)s.idl3mirror>
+#include <%(SupportsInclude)s.idl>
 

@@ -1,2 +1,2 @@
-#include <%(SupportsInclude)s.idl2>
+#include <%(SupportsInclude)s.idl>
 

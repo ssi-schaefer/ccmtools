@@ -28,7 +28,7 @@ abstract local component %(Identifier)s
 
 %(CloseNamespace)s
 
-#include <%(HomeInclude)s.idl3>
+#include <%(HomeInclude)s.idl>
 
 #endif
 

@@ -1,2 +1,2 @@
-#include <%(PublishesInclude)s.idl2>
+#include <%(PublishesInclude)s.idl>
 

@@ -50,8 +50,6 @@ import java.util.Map;
 abstract public class IDLGenerator
     extends CodeGenerator
 {
-    private String file_suffix = "";
-
     private final static String[] local_output_types =
     {
         "MComponentDef", "MInterfaceDef", "MHomeDef",
@@ -103,7 +101,6 @@ abstract public class IDLGenerator
         super("IDL" + suffix, d, out_dir, local_output_types,
               local_reserved_words, null, null, local_language_map);
 
-        file_suffix = new String(suffix.toLowerCase());
         file_separator = "_";
     }
 
@@ -168,8 +165,7 @@ abstract public class IDLGenerator
 
         String name = join(file_separator, namespace);
         if (! name.equals("")) name += file_separator;
-        name += ((MContained) current_node).getIdentifier();
-        name += ".idl" + file_suffix;
+        name += ((MContained) current_node).getIdentifier() + ".idl";
 
         writeFinalizedFile("", name, code + "\n\n");
     }
@@ -215,7 +211,7 @@ abstract public class IDLGenerator
     {
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        return "#include <"+join(file_separator, scope)+".idl"+file_suffix+">";
+        return "#include <"+join(file_separator, scope)+".idl>";
     }
 
     /**

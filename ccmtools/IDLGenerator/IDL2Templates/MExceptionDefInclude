@@ -1,2 +1,2 @@
-#include <%(ExceptionInclude)s.idl2>
+#include <%(ExceptionInclude)s.idl>
 

@@ -41,7 +41,7 @@ public class IDL2GeneratorImpl
     /**
      * Finalize the output files. This method is used to create the needed
      * Makefiles : the confix Makefile.py and a Makefile that calls the idl2
-     * compiler (*.idl2 => *.h *.cc).
+     * compiler (*.idl> *.h *.cc).
      *
      * @param defines a map of environment variables and their associated
      *        values. This usually contains things like the package name,
