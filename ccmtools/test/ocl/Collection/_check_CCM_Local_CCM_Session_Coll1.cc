@@ -41,7 +41,7 @@ int main ( int argc, char *argv[] )
   // get an instance of the local HomeFinder and register component homes
 
   homeFinder = HomeFinder::Instance (  );
-  error  = DbC_deploy_Coll1Home("Coll1Home");
+  error  = DbC_deploy_Coll1Home("Coll1Home",false);
   error +=    local_deploy_Coll1Home_mirror("Coll1Home_mirror");	
   if(error) {
     cerr << "ERROR: Can't deploy component homes!" << endl;
