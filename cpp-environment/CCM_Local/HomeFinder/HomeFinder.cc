@@ -4,12 +4,12 @@
 
 #include <iostream>
 #include <string>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 
 #include "HomeFinder.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 
 namespace CCM_Local {
 

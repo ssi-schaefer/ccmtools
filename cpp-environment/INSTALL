@@ -7,6 +7,8 @@ previous instruction.
 For the informed, use the following :
 
 o) Install the local component's environment:
+   $ cd WX_Utils
+   $ confix.py --bootstrap --configure --make --targets="all install"	
    $ cd CCM_Local	
    $ confix.py --bootstrap --configure --make --targets="all install"
 

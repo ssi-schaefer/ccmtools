@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/smartptr.h>
 #include <LocalTransaction/UserTransaction.h>
 
 namespace LocalComponents {
@@ -99,14 +99,14 @@ namespace LocalComponents {
    * Note: This interface is not part of the CCM specification!
    ***/
   class Object
-    : virtual public CCM_Utils::RefCounted {
+    : virtual public WX::Utils::RefCounted {
   public:
     virtual ~Object (  ) {}
 
     // Simulates the CORBA::Object::get_component() operation defines
     // since CORBA 3.0 (CCM Spec. 1-9)	
-    virtual CCM_Utils::SmartPtr<Object> get_component() {
-	return CCM_Utils::SmartPtr<Object>();
+    virtual WX::Utils::SmartPtr<Object> get_component() {
+	return WX::Utils::SmartPtr<Object>();
     };	
   };
 
@@ -172,7 +172,7 @@ namespace LocalComponents {
    * CCM Specification 1-41
    ***/
   class CCMHome
-    : virtual public CCM_Utils::RefCounted
+    : virtual public WX::Utils::RefCounted
   {
   public:
     virtual ~CCMHome (  ) {}
@@ -223,12 +223,12 @@ namespace LocalComponents {
     /* The register_home() operation is used to register a component home
      * with the HomeFinder so it can by located by a component client.
      */
-    virtual void register_home ( CCM_Utils::SmartPtr<CCMHome> home_ref, const std::string& home_name) = 0;
+    virtual void register_home ( WX::Utils::SmartPtr<CCMHome> home_ref, const std::string& home_name) = 0;
 
     /* The unregister_home() operation is used to remove a component home
      * from the HomeFinder.
      */
-    virtual void unregister_home ( CCM_Utils::SmartPtr<CCMHome> home_ref ) = 0;
+    virtual void unregister_home ( WX::Utils::SmartPtr<CCMHome> home_ref ) = 0;
 
     /*
      * This unregister_home() operation is used to remove a component home
@@ -250,15 +250,15 @@ namespace LocalComponents {
   public:
     virtual ~HomeFinder (  ) {}
 
-    virtual CCM_Utils::SmartPtr<LocalComponents::CCMHome>
+    virtual WX::Utils::SmartPtr<LocalComponents::CCMHome>
     find_home_by_component_type ( const std::string& comp_repid )
       throw ( HomeNotFound ) = 0;
 
-    virtual CCM_Utils::SmartPtr<LocalComponents::CCMHome>
+    virtual WX::Utils::SmartPtr<LocalComponents::CCMHome>
     find_home_by_name ( const std::string& name )
       throw ( HomeNotFound ) = 0;
 
-    virtual CCM_Utils::SmartPtr<LocalComponents::CCMHome>
+    virtual WX::Utils::SmartPtr<LocalComponents::CCMHome>
       find_home_by_type ( const std::string& home_repid )
       throw ( HomeNotFound) = 0;
 
@@ -459,7 +459,7 @@ namespace LocalComponents {
      * not correspond to one of the component's facets, the InvalidName
      * exception shall be raised.
      */
-    virtual CCM_Utils::SmartPtr<Object> provide_facet ( const std::string& name )
+    virtual WX::Utils::SmartPtr<Object> provide_facet ( const std::string& name )
       throw ( InvalidName ) = 0;
 
     /*
@@ -569,7 +569,7 @@ namespace LocalComponents {
      * be used subsequently to disconnect the object reference.
      * simplex receptacle: the return value is a nil.
      */
-    virtual Cookie connect ( const FeatureName& name, CCM_Utils::SmartPtr<Object> connection )
+    virtual Cookie connect ( const FeatureName& name, WX::Utils::SmartPtr<Object> connection )
       throw ( InvalidName, InvalidConnection, AlreadyConnected, ExceededConnectionLimit ) = 0;
 
     /*
