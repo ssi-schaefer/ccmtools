@@ -1,0 +1,3 @@
+    def get_connection_%(Identifier)s(self):
+        raise 'get_connection_%(Identifier)s is not implemented.'
+

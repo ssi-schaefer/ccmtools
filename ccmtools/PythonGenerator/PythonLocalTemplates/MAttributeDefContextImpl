@@ -1,0 +1,9 @@
+    def %(Identifier)s(self):
+        CCM_Utils.Debug.DEBUGNL(' CCM_%(ComponentType)s_impl->%(Identifier)s - get semantic')
+        return self.__%(Identifier)s
+
+    def %(Identifier)s(self, value):
+        CCM_Utils.Debug.DEBUGNL(' CCM_%(ComponentType)s_impl->%(Identifier)s - set semantic')
+        self.__%(Identifier)s = value
+
+

@@ -1,0 +1,49 @@
+    def connect_%(Identifier)s(self, iface):
+        '''
+        @type iface: CCM_%(UsesType)s
+        @rtype: None
+        @raise: localComponents.AlreadyConnected,
+          localComponents.InvalidConnection
+        '''
+
+        CCM_Utils.Debug.DEBUGNL(' %(ComponentType)s->connect_%(Identifier)s')
+        if not self.__ValidConnection: raise localComponents.InvalidConnection()
+
+        if self.__%(Identifier)s_receptacle:
+            raise localComponents.AlreadyConnected()
+
+        self.__%(Identifier)s_receptacle = iface
+
+    def disconnect_%(Identifier)s(self):
+        '''
+        @rtype: CCM_%(UsesType)s
+        @raise: localComponents.NoConnection,
+          localComponents.InvalidConnection
+        '''
+
+        CCM_Utils.Debug.DEBUGNL(' %(ComponentType)s->disconnect_%(Identifier)s')
+        if not self.__ValidConnection: raise localComponents.InvalidConnection()
+
+        if not self.__%(Identifier)s_receptacle:
+            raise localComponents.NoConnection()
+
+        iface = self.__%(Identifier)s_receptacle
+        self.__%(Identifier)s_receptacle = None
+        return iface
+
+    def get_connection_%(Identifier)s(self):
+        '''
+        @rtype: CCM_%(UsesType)s
+        @raise: localComponents.InvalidConnection,
+          localComponents.NoConnection
+        '''
+
+        CCM_Utils.Debug.DEBUGNL(' %(ComponentType)s->get_connection_%(Identifier)s()')
+        if not self.__ValidConnection: raise localComponents.InvalidConnection()
+
+        if not self.__%(Identifier)s_receptacle:
+            raise localComponents.NoConnection()
+
+        return self.__%(Identifier)s_receptacle
+
+

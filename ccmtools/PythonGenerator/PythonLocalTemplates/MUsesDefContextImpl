@@ -1,0 +1,4 @@
+    def get_connection_%(Identifier)s(self):
+        CCM_Utils.Debug.DEBUGNL(' '+__self_repr+'->get_connection_%(Identifier)s')
+        return self.__component_local_adapter->get_connection_%(Identifier)s()
+

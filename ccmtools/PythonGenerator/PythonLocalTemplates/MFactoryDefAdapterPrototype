@@ -1,0 +1,10 @@
+    def %(Identifier)s(self, %(MParameterDef)s):
+        '''
+%(MParameterDefComment)s
+        @rtype: %(ComponentType)s
+        @raise: localComponents.CreateFailure
+        '''
+
+        raise '%(Identifier)s is not implemented yet.'
+
+

@@ -1,0 +1,7 @@
+    def get_%(Identifier)s(self):
+        '''
+        @rtype: CCM_%(ProvidesType)s
+        '''
+
+        raise 'get_%(Identifier)s not implemented.'
+

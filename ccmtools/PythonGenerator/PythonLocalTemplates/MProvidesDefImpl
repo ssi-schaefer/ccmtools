@@ -1,0 +1,10 @@
+    def provide_%(Identifier)s(self):
+        '''
+        @rtype: CCM_%(ProvidesType)s
+        '''
+
+        CCM_Utils.Debug.DEBUGNL(' %(ComponentType)s->provide_%(Identifier)s')
+        if not self.__ValidConnection: raise localComponents.InvalidConnection()
+        return %(Identifier)s_facet
+
+

@@ -1,0 +1,158 @@
+'''%(Identifier)s - home class and support classes'''
+
+from CCM_Utils import debug, localComponents
+
+%(ExternInclude)s
+
+import %(ComponentType)s_gen, %(ComponentType)s_app
+
+################################################################################
+
+class CCM_%(Identifier)sExplicit(localComponents.HomeExecutorBase):
+    def __init__(self, *args):
+        raise 'CCM_%(Identifier)sExplicit is an abstract base class.'
+
+%(MFactoryDefPrototype)s
+
+class %(Identifier)sExplicit(localComponents.CCMHome):
+    def __init__(self, *args):
+        raise '%(Identifier)sExplicit is an abstract base class.'
+
+%(MFactoryDefAdapterPrototype)s
+
+class CCM_%(Identifier)sImplicit:
+    def __init__(self, *args):
+        raise 'CCM_%(Identifier)sImplicit is an abstract base class.'
+
+    def create(self):
+        '''
+        @rtype: localComponents.EnterpriseComponent
+        @raise: localComponents.CCMException
+        '''
+
+        raise 'CCM_%(Identifier)sImplicit is an abstract base class.'
+
+class %(Identifier)sImplicit(localComponents.KeylessCCMHome):
+    def __init__(self, *args):
+        raise '%(Identifier)sImplicit is an abstract base class.'
+
+    def create(self):
+        '''
+        @rtype: %(ComponentType)s
+        @raise: localComponents.CreateFailure
+        '''
+
+        raise '%(Identifier)sImplicit is an abstract base class.'
+
+################################################################################
+
+class CCM_%(Identifier)s(
+    CCM_%(Identifier)sExplicit,
+    CCM_%(Identifier)sImplicit%(BaseTypes)s%(MSupportsDefBase)s
+    ):
+
+    '''CCM_%(Identifier)s class'''
+
+    def __init__(self, *args):
+        raise 'CCM_%(Identifier)s is an abstract base class.'
+
+
+class %(Identifier)s(
+    %(Identifier)sExplicit,
+    public %(Identifier)sImplicit%(BaseTypes)s
+    ):
+
+    '''%(Identifier)s adapter class'''
+
+    def __init__(self):
+        debug.DEBUGNL('+%(Identifier)s->__init__')
+        self.__local_home = create_%(Identifier)s()
+
+    def __del__(self):
+        debug.DEBUGNL('-%(Identifier)s->__del__')
+        del self.__local_home
+
+%(MFactoryDefAdapterImpl)s
+
+    ## CCMHome functions
+
+    def create(self):
+        '''
+        @rtype: %(ComponentType)s
+        @raise: localComponents.CreateFailure
+        '''
+
+        debug.DEBUGNL(' %(Identifier)s->create()')
+        return %(ComponentType)s_gen.%(ComponentType)s(self, self.__local_home.create())
+
+    def get_component_def(self):
+        '''
+        @rtype: localComponents.IRObject
+        '''
+
+        debug.DEBUGNL(' %(Identifier)s->get_component_def()')
+        ## TODO
+        raise localComponents.NotImplemented()
+
+    def get_home_def(self):
+        '''
+        @rtype: localComponents.IRObject
+        '''
+
+        debug.DEBUGNL(' %(Identifier)s->get_home_def()')
+        ## TODO
+        raise localComponents.NotImplemented()
+
+    def remove_component(self, component):
+        '''
+        @type component: localComponents.CCMObject
+        @rtype: None
+        @raise: localComponents.RemoveFailure
+        '''
+
+        debug.DEBUGNL(' %(Identifier)s->remove_component()')
+        ## TODO
+        raise localComponents.NotImplemented()
+
+    ## KeylessCCMHome functions
+
+    def create_component(self):
+        '''
+        @rtype: localComponents.CCMObject
+        @raise: localComponents.CreateFailure
+        '''
+
+        debug.DEBUGNL(' %(Identifier)s->create_component()')
+        ## TODO
+        raise localComponents.NotImplemented()
+
+################################################################################
+
+<<<<<<<SPLIT>>>>>>>
+'''%(Identifier)s - home class business logic'''
+
+import debug, %(Identifier)s_gen
+
+class CCM_%(Identifier)s_impl(
+    CCM_%(Identifier)s%(BaseTypes)s
+    ):
+
+    def __init__(self):
+        debug.DEBUGNL('+CCM_%(Identifier)s_impl->__init__')
+
+    def __del__(self):
+        debug.DEBUGNL('-CCM_%(Identifier)s_impl->__del__')
+
+    def create(self):
+        '''
+        @rtype: localComponents.EnterpriseComponent
+        @raise: localComponents.CCMException
+        '''
+
+        debug.DEBUGNL(' CCM_%(Identifier)s_impl->create()')
+        return %(ComponentType)s_app.CCM_%(ComponentType)s_impl()
+
+%(MFactoryDefImpl)s
+
+
+

@@ -1,0 +1,13 @@
+'''%(Identifier)s - interface class definition'''
+
+import localComponents
+
+class CCM_%(Identifier)s(
+    localComponents.Object%(BaseTypes)s
+    ):
+
+%(MAttributeDefPrototype)s
+%(MOperationDef)s
+
+
+

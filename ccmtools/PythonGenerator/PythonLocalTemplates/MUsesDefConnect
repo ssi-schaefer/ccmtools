@@ -1,0 +1,4 @@
+        if name == "%(Identifier)s":
+            self.connect_%(Identifier)s(connection)
+            return localComponents.Cookie()
+

@@ -1,0 +1,15 @@
+    def %(Identifier)s(self):
+        '''
+        @rtype: %(LanguageType)s
+        '''
+
+        raise '%(Identifier)s (get semantic) is not implemented.'
+
+    def %(Identifier)s(self, value):
+        '''
+        @type value: %(LanguageType)s
+        @rtype: None
+        '''
+
+        raise '%(Identifier)s (set semantic) is not implemented.'
+

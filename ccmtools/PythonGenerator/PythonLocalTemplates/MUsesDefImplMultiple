@@ -1,0 +1,45 @@
+    def connect_%(Identifier)s(self, iface):
+        '''
+        @type iface: CCM_%(UsesType)s
+        @rtype: localComponents.Cookie
+        @raise: localComponents.ExceededConnectionLimit,
+          localComponents.InvalidConnection
+        '''
+
+        CCM_Utils.Debug.DEBUGNL(' %(ComponentType)s->connect_%(Identifier)s' )
+        if not self.__ValidConnection: raise localComponents.InvalidConnection()
+
+        ck = localComponents.Cookie(
+            'CCM_%(Identifier)s:' + len(self.__%(Identifier)s_receptacles))
+        self.__%(Identifier)s_receptacles[ck] = f
+
+        return ck
+
+    def disconnect_%(Identifier)s(self, ck):
+        '''
+        @type ck: localComponents.Cookie
+        @rtype: CCM_%(UsesType)s
+        @raise: localComponents.InvalidConnection
+        '''
+
+        CCM_Utils.Debug.DEBUGNL(' %(ComponentType)s->disconnect_%(Identifier)s')
+        if not self.__ValidConnection: raise localComponents.InvalidConnection()
+
+        if ck in self.__%(Identifier)s_receptacles:
+             f = CCM_%(UsesType)s(self.__%(Identifier)s_receptacles[ck])
+             del self.__%(Identifier)s_receptacles[ck]
+             return f
+
+        raise localComponents.InvalidConnection()
+
+    def get_connections_%(Identifier)s(self):
+        '''
+        @rtype: dictionary of localComponents.Cookie -> CCM_%(UsesType)s
+        @raise: localComponents.InvalidConnection
+        '''
+
+        CCM_Utils.Debug.DEBUGNL(' %(ComponentType)s->get_connections_%(Identifier)s')
+        if not self.__ValidConnection: raise localComponents.InvalidConnection()
+        return self.__%(Identifier)s_receptacles
+
+

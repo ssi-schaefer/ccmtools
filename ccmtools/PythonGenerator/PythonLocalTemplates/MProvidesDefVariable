@@ -1,0 +1,3 @@
+    self.__%(Identifier)s_facet = \
+        %(Identifier)s%(ProvidesType)s(self, self.__local_component)
+

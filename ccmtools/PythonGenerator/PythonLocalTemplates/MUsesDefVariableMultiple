@@ -1,0 +1,2 @@
+    self.__%(Identifier)s_receptacles = {}
+
