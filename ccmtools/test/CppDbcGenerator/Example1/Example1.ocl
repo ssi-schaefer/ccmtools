@@ -2,9 +2,9 @@
 
 package GLOBAL
 
--- context IntegerStack
---   inv max_size: maxSize>=1
---   inv field_size: field->size()>=0 and field->size()<=maxSize
+context IntegerStack
+   inv max_size: maxSize>=1
+   inv field_size: field->size()>=0 and field->size()<=maxSize
 
 context IntegerStack::isEmpty()
     post p1: result=field->isEmpty()
