@@ -9,19 +9,19 @@ INSTALLATION
 
 1. Unpack the tarball where you want it installed.
 
-   ~ $ tar zxvf ccmtools-0.2.0.bin.tar.gz
-   ccmtools-0.2.0/
-   ccmtools-0.2.0/share/
-   ccmtools-0.2.0/share/ccmtools-0.2/
-   ccmtools-0.2.0/share/ccmtools-0.2/IDL3Generator/
-   ccmtools-0.2.0/share/ccmtools-0.2/IDL3Generator/MAliasDef
+   ~ $ tar zxvf ccmtools-0.2.1.bin.tar.gz
+   ccmtools-0.2.1/
+   ccmtools-0.2.1/share/
+   ccmtools-0.2.1/share/ccmtools-0.2/
+   ccmtools-0.2.1/share/ccmtools-0.2/IDL3Generator/
+   ccmtools-0.2.1/share/ccmtools-0.2/IDL3Generator/MAliasDef
    :
    :
-   ccmtools-0.2.0/doc/api/serialized-form.html
-   ccmtools-0.2.0/doc/api/package-list
-   ccmtools-0.2.0/doc/api/help-doc.html
-   ccmtools-0.2.0/doc/api/stylesheet.css
-   ccmtools-0.2.0/README.binary
+   ccmtools-0.2.1/doc/api/serialized-form.html
+   ccmtools-0.2.1/doc/api/package-list
+   ccmtools-0.2.1/doc/api/help-doc.html
+   ccmtools-0.2.1/doc/api/stylesheet.css
+   ccmtools-0.2.1/README.binary
 
    It is *extremely* important not to play with the relative paths that are
    unpacked! Don't go and move the "bin" subdirectory to someplace other than
@@ -33,11 +33,11 @@ INSTALLATION
    include the CCM Tools Jar files and scripts. Using bash this might look
    something like the following :
 
-   ~ $ cd ccmtools-0.2.0
-   ccmtools-0.2.0 $ export CCMTOOLS_HOME=`pwd`
-   ccmtools-0.2.0 $ export CLASSPATH=${CLASSPATH}:`pwd`/share/antlr.jar
-   ccmtools-0.2.0 $ export CLASSPATH=${CLASSPATH}:`pwd`/share/ccmtools-0.3.0.jar
-   ccmtools-0.2.0 $ export PATH=${PATH}:`pwd`/bin
+   ~ $ cd ccmtools-0.2.1
+   ccmtools-0.2.1 $ export CCMTOOLS_HOME=`pwd`
+   ccmtools-0.2.1 $ export CLASSPATH=${CLASSPATH}:`pwd`/share/antlr.jar
+   ccmtools-0.2.1 $ export CLASSPATH=${CLASSPATH}:`pwd`/share/ccmtools.jar
+   ccmtools-0.2.1 $ export PATH=${PATH}:`pwd`/bin
 
    CCMTOOLS_HOME needs to point to the base directory that gets unzipped when
    you unpack the tarball. The CLASSPATH needs to include the CCM Tools and

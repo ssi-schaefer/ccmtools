@@ -23,6 +23,7 @@ package ccmtools.CodeGenerator;
 
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -825,6 +826,11 @@ abstract public class CodeGenerator
                     throw new RuntimeException("Node '"+id+"' has no home");
                 }
             }
+        } else if (variable.equals("Container") &&
+                   current_node instanceof MContained) {
+            MContainer cont = ((MContained) current_node).getDefinedIn();
+            while (cont.getDefinedIn() != null) cont = cont.getDefinedIn();
+            value = cont.getIdentifier();
         }
 
         return value;

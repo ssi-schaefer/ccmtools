@@ -42,8 +42,6 @@ public class Main {
         try {
             MContainer container = manager.parseFile(args[0]);
             System.out.println("Symbol table:\n" + symbolTable.toString());
-            System.out.println("Container:\n"+ container.toString());
-            System.out.println("Included Files:\n"+ manager.getIncludedFiles());
         } catch (Exception e) {
             System.err.println("Error parsing file "+args[0]);
             System.err.println(e);
