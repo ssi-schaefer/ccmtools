@@ -261,7 +261,8 @@ public class CppLocalGeneratorImpl
             f = new ArrayList();
             f.add(base + "_share"); f.add(node_name + "_share.h"); files.add(f);
 
-            if (! current_node instanceof MHomeDef) {
+	    //            if (!(current_node instanceof MHomeDef)) {
+	    if (current_node instanceof MHomeDef) {
                 f = new ArrayList();
                 f.add("src"); f.add(node_name + "_entry.h"); files.add(f);
             }
@@ -275,6 +276,8 @@ public class CppLocalGeneratorImpl
                 f = new ArrayList(); f.add("src"); f.add(""); files.add(f);
                 f = new ArrayList(); f.add("src"); f.add(""); files.add(f);
             }
+	    
+	    System.out.println(f); //!!!!!!!!!
 
         } else if ((current_node instanceof MInterfaceDef)
                    || (current_node instanceof MStructDef)
