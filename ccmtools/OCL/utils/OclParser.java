@@ -26,12 +26,12 @@
  *   - http://www.omg.org/uml/
  *   - http://www.klasse.nl/ocl/
  */
- 
+
  ////////////////////////////////////////////////////////////////////////////
- 
+
 /* CCM Tools : OCL parser
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -130,7 +130,7 @@ public void setParsetreeCreator( OclParsetreeCreator creator )
 {
 	creator_ = creator;
 }
-    
+
 private String removeDelimitation( String value )
 {
     int len = value.length();
@@ -2756,9 +2756,9 @@ public OclParser(ParserSharedInputState state) {
 		"\"or\"",
 		"\"xor\"",
 		"\"and\"",
+		"a comment",
 		"white space",
-		"POUND",
-		"SL_COMMENT"
+		"POUND"
 	};
 	
 	private static final long[] mk_tokenSet_0() {

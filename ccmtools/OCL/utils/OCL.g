@@ -30,7 +30,7 @@ header {
 
 /* CCM Tools : OCL parser
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -583,6 +583,16 @@ options {
   k = 2;
 }
 
+
+// this is cracked up, but for some reason antlr can't handle dollars
+// in a single-line comment.
+
+SL_COMMENT options { paraphrase = "a comment"; }
+    :   "--" ( options { warnWhenFollowAmbig = false; } : '$' )?
+        ( ~ ( '\n' | '\r' ) )* ( '\n' | '\r' ( '\n' )? )
+        { $setType(Token.SKIP); newline(); } ;
+
+
 WS
 options {
   paraphrase = "white space";
@@ -659,5 +669,3 @@ STRING : '\'' ( ( ~ ('\'' | '\\' | '\n' | '\r') )
 		  )? ) ) )* '\''
     ;
 
-SL_COMMENT: "--" (~'\n')* '\n' {$setType(Token.SKIP); newline();}
-        ;

@@ -26,12 +26,12 @@
  *   - http://www.omg.org/uml/
  *   - http://www.klasse.nl/ocl/
  */
- 
+
  ////////////////////////////////////////////////////////////////////////////
- 
+
 /* CCM Tools : OCL parser
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -268,7 +268,11 @@ tryAgain:
 					break;
 				}
 				default:
-					if ((LA(1)==':') && (LA(2)==':')) {
+					if ((LA(1)=='-') && (LA(2)=='-')) {
+						mSL_COMMENT(true);
+						theRetToken=_returnToken;
+					}
+					else if ((LA(1)==':') && (LA(2)==':')) {
 						mDCOLON(true);
 						theRetToken=_returnToken;
 					}
@@ -290,10 +294,6 @@ tryAgain:
 					}
 					else if ((LA(1)=='.') && (LA(2)=='.')) {
 						mDOTDOT(true);
-						theRetToken=_returnToken;
-					}
-					else if ((LA(1)=='-') && (LA(2)=='-')) {
-						mSL_COMMENT(true);
 						theRetToken=_returnToken;
 					}
 					else if ((LA(1)==':') && (true)) {
@@ -341,6 +341,71 @@ tryAgain:
 	}
 }
 
+	public final void mSL_COMMENT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
+		int _ttype; Token _token=null; int _begin=text.length();
+		_ttype = SL_COMMENT;
+		int _saveIndex;
+		
+		match("--");
+		{
+		if ((LA(1)=='$') && (_tokenSet_0.member(LA(2)))) {
+			match('$');
+		}
+		else if ((_tokenSet_0.member(LA(1))) && (true)) {
+		}
+		else {
+			throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
+		}
+		
+		}
+		{
+		_loop112:
+		do {
+			if ((_tokenSet_1.member(LA(1)))) {
+				{
+				match(_tokenSet_1);
+				}
+			}
+			else {
+				break _loop112;
+			}
+			
+		} while (true);
+		}
+		{
+		switch ( LA(1)) {
+		case '\n':
+		{
+			match('\n');
+			break;
+		}
+		case '\r':
+		{
+			match('\r');
+			{
+			if ((LA(1)=='\n')) {
+				match('\n');
+			}
+			else {
+			}
+			
+			}
+			break;
+		}
+		default:
+		{
+			throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());
+		}
+		}
+		}
+		_ttype = Token.SKIP; newline();
+		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
+			_token = makeToken(_ttype);
+			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
+		}
+		_returnToken = _token;
+	}
+	
 	public final void mWS(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = WS;
@@ -768,7 +833,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop146:
+		_loop153:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -815,7 +880,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop146;
+				break _loop153;
 			}
 			}
 		} while (true);
@@ -834,34 +899,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt149=0;
-		_loop149:
+		int _cnt156=0;
+		_loop156:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt149>=1 ) { break _loop149; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt156>=1 ) { break _loop156; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt149++;
+			_cnt156++;
 		} while (true);
 		}
 		{
 		if (((LA(1)=='.'))&&( LA(2) != '.' )) {
 			match('.');
 			{
-			int _cnt152=0;
-			_loop152:
+			int _cnt159=0;
+			_loop159:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt152>=1 ) { break _loop152; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt159>=1 ) { break _loop159; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt152++;
+				_cnt159++;
 			} while (true);
 			}
 		}
@@ -914,17 +979,17 @@ tryAgain:
 			}
 			}
 			{
-			int _cnt157=0;
-			_loop157:
+			int _cnt164=0;
+			_loop164:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt157>=1 ) { break _loop157; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt164>=1 ) { break _loop164; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt157++;
+				_cnt164++;
 			} while (true);
 			}
 		}
@@ -946,35 +1011,35 @@ tryAgain:
 		
 		match('\'');
 		{
-		_loop172:
+		_loop179:
 		do {
 			switch ( LA(1)) {
 			case '\t':  case ' ':  case '"':  case '#':
-			case '(':  case ')':  case '*':  case '+':
-			case ',':  case '-':  case '.':  case '/':
-			case '0':  case '1':  case '2':  case '3':
-			case '4':  case '5':  case '6':  case '7':
-			case '8':  case '9':  case ':':  case ';':
-			case '<':  case '=':  case '>':  case '@':
-			case 'A':  case 'B':  case 'C':  case 'D':
-			case 'E':  case 'F':  case 'G':  case 'H':
-			case 'I':  case 'J':  case 'K':  case 'L':
-			case 'M':  case 'N':  case 'O':  case 'P':
-			case 'Q':  case 'R':  case 'S':  case 'T':
-			case 'U':  case 'V':  case 'W':  case 'X':
-			case 'Y':  case 'Z':  case '[':  case ']':
-			case '_':  case 'a':  case 'b':  case 'c':
-			case 'd':  case 'e':  case 'f':  case 'g':
-			case 'h':  case 'i':  case 'j':  case 'k':
-			case 'l':  case 'm':  case 'n':  case 'o':
-			case 'p':  case 'q':  case 'r':  case 's':
-			case 't':  case 'u':  case 'v':  case 'w':
-			case 'x':  case 'y':  case 'z':  case '{':
-			case '|':  case '}':
+			case '$':  case '(':  case ')':  case '*':
+			case '+':  case ',':  case '-':  case '.':
+			case '/':  case '0':  case '1':  case '2':
+			case '3':  case '4':  case '5':  case '6':
+			case '7':  case '8':  case '9':  case ':':
+			case ';':  case '<':  case '=':  case '>':
+			case '@':  case 'A':  case 'B':  case 'C':
+			case 'D':  case 'E':  case 'F':  case 'G':
+			case 'H':  case 'I':  case 'J':  case 'K':
+			case 'L':  case 'M':  case 'N':  case 'O':
+			case 'P':  case 'Q':  case 'R':  case 'S':
+			case 'T':  case 'U':  case 'V':  case 'W':
+			case 'X':  case 'Y':  case 'Z':  case '[':
+			case ']':  case '_':  case 'a':  case 'b':
+			case 'c':  case 'd':  case 'e':  case 'f':
+			case 'g':  case 'h':  case 'i':  case 'j':
+			case 'k':  case 'l':  case 'm':  case 'n':
+			case 'o':  case 'p':  case 'q':  case 'r':
+			case 's':  case 't':  case 'u':  case 'v':
+			case 'w':  case 'x':  case 'y':  case 'z':
+			case '{':  case '|':  case '}':
 			{
 				{
 				{
-				match(_tokenSet_0);
+				match(_tokenSet_2);
 				}
 				}
 				break;
@@ -1100,7 +1165,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop172;
+				break _loop179;
 			}
 			}
 		} while (true);
@@ -1113,46 +1178,19 @@ tryAgain:
 		_returnToken = _token;
 	}
 	
-	public final void mSL_COMMENT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
-		int _ttype; Token _token=null; int _begin=text.length();
-		_ttype = SL_COMMENT;
-		int _saveIndex;
-		
-		match("--");
-		{
-		_loop175:
-		do {
-			if ((_tokenSet_2.member(LA(1)))) {
-				matchNot('\n');
-			}
-			else {
-				break _loop175;
-			}
-			
-		} while (true);
-		}
-		match('\n');
-		_ttype = Token.SKIP; newline();
-		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
-			_token = makeToken(_ttype);
-			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
-		}
-		_returnToken = _token;
-	}
-	
 	
 	private static final long[] mk_tokenSet_0() {
-		long[] data = { 9223370993177723392L, 4611686012790243327L, 0L, 0L};
+		long[] data = { 9223371611653023232L, 4611686013058678783L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_0 = new BitSet(mk_tokenSet_0());
 	private static final long[] mk_tokenSet_1() {
-		long[] data = { 9223371542933537280L, 4611686013058678783L, 0L, 0L};
+		long[] data = { 9223371611653014016L, 4611686013058678783L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_1 = new BitSet(mk_tokenSet_1());
 	private static final long[] mk_tokenSet_2() {
-		long[] data = { 9223371542933545472L, 4611686013058678783L, 0L, 0L};
+		long[] data = { 9223371061897200128L, 4611686012790243327L, 0L, 0L};
 		return data;
 	}
 	public static final BitSet _tokenSet_2 = new BitSet(mk_tokenSet_2());

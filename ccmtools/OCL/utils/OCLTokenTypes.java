@@ -26,12 +26,12 @@
  *   - http://www.omg.org/uml/
  *   - http://www.klasse.nl/ocl/
  */
- 
+
  ////////////////////////////////////////////////////////////////////////////
- 
+
 /* CCM Tools : OCL parser
  * Robert Lechner <rlechner@sbox.tugraz.at>
- * copyright (c) 2003 Salomon Automation
+ * copyright (c) 2003, 2004 Salomon Automation
  *
  * $Id$
  *
@@ -117,7 +117,7 @@ public interface OCLTokenTypes {
 	int LITERAL_or = 53;
 	int LITERAL_xor = 54;
 	int LITERAL_and = 55;
-	int WS = 56;
-	int POUND = 57;
-	int SL_COMMENT = 58;
+	int SL_COMMENT = 56;
+	int WS = 57;
+	int POUND = 58;
 }
