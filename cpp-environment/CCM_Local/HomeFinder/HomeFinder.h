@@ -7,11 +7,11 @@
 
 #include <map>
 #include <CCM_Utils/SmartPointer.h>
-#include <localComponents/CCM.h>
+#include <LocalComponents/CCM.h>
 
 namespace CCM_Local {
 
-typedef std::map<std::string, CCM_Utils::SmartPtr<localComponents::CCMHome> > HomePoolMap;
+typedef std::map<std::string, CCM_Utils::SmartPtr<LocalComponents::CCMHome> > HomePoolMap;
 
 /***
  * This is a local version of a HomeFinder which returns local (C++) references
@@ -21,10 +21,10 @@ typedef std::map<std::string, CCM_Utils::SmartPtr<localComponents::CCMHome> > Ho
  * Note: this is a simple hard coded version - there will be a dynamic map...
  ***/
 class HomeFinder
-  : public localComponents::HomeFinder
+  : public LocalComponents::HomeFinder
 {
  private:
-  static localComponents::HomeFinder* instance;
+  static LocalComponents::HomeFinder* instance;
   HomePoolMap HomePool;
 
  protected:
@@ -32,24 +32,24 @@ class HomeFinder
   virtual ~HomeFinder (  );
 
  public:
-  static localComponents::HomeFinder* Instance (  );
+  static LocalComponents::HomeFinder* Instance (  );
 
   // methods from HomeFinder
-  CCM_Utils::SmartPtr<localComponents::CCMHome>
+  CCM_Utils::SmartPtr<LocalComponents::CCMHome>
   find_home_by_name ( const std::string& name )
-    throw ( localComponents::HomeNotFound );
+    throw ( LocalComponents::HomeNotFound );
 
-  CCM_Utils::SmartPtr<localComponents::CCMHome>
+  CCM_Utils::SmartPtr<LocalComponents::CCMHome>
     find_home_by_type ( const std::string& home_repid )
-    throw ( localComponents::HomeNotFound );
+    throw ( LocalComponents::HomeNotFound );
 
-  CCM_Utils::SmartPtr<localComponents::CCMHome>
+  CCM_Utils::SmartPtr<LocalComponents::CCMHome>
     find_home_by_component_type ( const std::string& comp_repid )
-    throw ( localComponents::HomeNotFound );
+    throw ( LocalComponents::HomeNotFound );
 
   // methods from HomeRegistration
-  void register_home ( CCM_Utils::SmartPtr<localComponents::CCMHome> home_ref, const std::string& home_name );
-  void unregister_home ( CCM_Utils::SmartPtr<localComponents::CCMHome> home_ref );
+  void register_home ( CCM_Utils::SmartPtr<LocalComponents::CCMHome> home_ref, const std::string& home_name );
+  void unregister_home ( CCM_Utils::SmartPtr<LocalComponents::CCMHome> home_ref );
   void unregister_home ( const std::string& home_name );
 };
 

@@ -13,7 +13,7 @@ using namespace CCM_Utils;
 
 namespace CCM_Local {
 
-localComponents::HomeFinder* HomeFinder::instance = NULL;
+LocalComponents::HomeFinder* HomeFinder::instance = NULL;
 
 HomeFinder::HomeFinder (  )
 {
@@ -25,7 +25,7 @@ HomeFinder::~HomeFinder (  )
   DEBUGNL ( "-HomeFinder->~Homefinder (  )" );
 }
 
-localComponents::HomeFinder*
+LocalComponents::HomeFinder*
 HomeFinder::Instance (  )
 {
   DEBUGNL ( " HomeFinder::Instance (  )" );
@@ -34,50 +34,50 @@ HomeFinder::Instance (  )
   return instance;
 }
 
-SmartPtr<localComponents::CCMHome>
+SmartPtr<LocalComponents::CCMHome>
 HomeFinder::find_home_by_name ( const std::string& name )
-  throw ( localComponents::HomeNotFound )
+  throw ( LocalComponents::HomeNotFound )
 {
   DEBUGNL ( " HomeFinder->find_home_by_name ( '" << name << "' )" );
 
   HomePoolMap::iterator it;
   it = HomePool.find ( name );
   if ( it == HomePool.end (  ) )
-    throw localComponents::HomeNotFound (  );
+    throw LocalComponents::HomeNotFound (  );
   else
     return HomePool[name];
 }
 
-SmartPtr<localComponents::CCMHome>
+SmartPtr<LocalComponents::CCMHome>
 HomeFinder::find_home_by_type ( const std::string& home_repid )
-  throw ( localComponents::HomeNotFound )
+  throw ( LocalComponents::HomeNotFound )
 {
   DEBUGNL ( " HomeFinder->find_home_by_type (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-SmartPtr<localComponents::CCMHome>
+SmartPtr<LocalComponents::CCMHome>
 HomeFinder::find_home_by_component_type ( const std::string& comp_repid )
-  throw ( localComponents::HomeNotFound )
+  throw ( LocalComponents::HomeNotFound )
 {
   DEBUGNL ( " HomeFinder->find_home_by_component_type (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 void
-HomeFinder::register_home ( SmartPtr<localComponents::CCMHome> home_ref, const std::string& home_name )
+HomeFinder::register_home ( SmartPtr<LocalComponents::CCMHome> home_ref, const std::string& home_name )
 {
   DEBUGNL ( " HomeFinder->register_home (  )" );
-  if ( home_ref == SmartPtr<localComponents::CCMHome> (  ) )
-    throw localComponents::HomeNotFound (  );
+  if ( home_ref == SmartPtr<LocalComponents::CCMHome> (  ) )
+    throw LocalComponents::HomeNotFound (  );
 
   HomePool.insert ( make_pair ( home_name, home_ref ) );
 }
 
 void
-HomeFinder::unregister_home ( SmartPtr<localComponents::CCMHome> home_ref )
+HomeFinder::unregister_home ( SmartPtr<LocalComponents::CCMHome> home_ref )
 {
   DEBUGNL ( " HomeFinder->unregister_home ( home_ref )" );
   // the correct way to remove elements ;-) (Josuttis p205)
@@ -99,7 +99,7 @@ HomeFinder::unregister_home ( const std::string& home_name )
   HomePoolMap::iterator pos;
   pos = HomePool.find(home_name);
   if ( pos == HomePool.end (  ) )
-    throw localComponents::HomeNotFound (  );
+    throw LocalComponents::HomeNotFound (  );
   else
     return HomePool.erase ( pos );
 }
