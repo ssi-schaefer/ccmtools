@@ -25,21 +25,13 @@
   <!-- Define different paths that are used in the following tasks -->
   <path id="compile.classpath">
       <pathelement path="${java.class.path}" />
-      <pathelement path="${lib}/antlr.jar" />
-      <pathelement path="${lib}/mdr01.jar" />
       <pathelement path="${lib}/oclmetamodel.jar" />
-      <pathelement path="${lib}/dtd2java.jar" />
-      <pathelement path="${lib}/uml2idl.jar" />
       <pathelement path="${build}" />
   </path>
 
   <path id="test.classpath">
       <pathelement path="${java.class.path}" />
-      <pathelement path="${lib}/antlr.jar" />
-      <pathelement path="${lib}/mdr01.jar" />
       <pathelement path="${lib}/oclmetamodel.jar" />
-      <pathelement path="${lib}/dtd2java.jar" />
-      <pathelement path="${lib}/uml2idl.jar" />
       <pathelement path="${build}" />
   </path>
 
@@ -130,12 +122,9 @@
   <target name="install"  depends="ccmtools.jar" 
       description="Install ccmtools to prefix/.">
       <mkdir dir="${prefix}" />
-
-      <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/ccmtools.jar" todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/mdr01.jar"    todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/oclmetamodel.jar"     todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/oclmetamodel.jar" todir="${prefix}/lib"  overwrite="true" />       
+
       <copy file="${src}/ccmtools/MDR/MOF/OCL.xml"  
             todir="${TEMPLATE_ROOT}/MDR"  overwrite="true" />	
 

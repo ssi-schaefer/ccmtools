@@ -41,31 +41,34 @@ Install java-environment package
 ================================
 To build and install the java-environment we use Ant. 
  $ cd java-environment 
- $ ant install 
+ $ ant install -Dprefix=<CCM_INSTALL_PATH>
  $ cd ..
-The java-environment is ready to be used by the ccmtools package!
+ $ export CLASSPATH=<install-path>/lib/antlr.java:      \
+                    <install-path>/lib/dtd2java.jar:    \
+                    <install-path>/lib/jdom.jar:        \     
+                    <install-path>/lib/mdr01.jar:       \
+                    <install-path>/lib/uml2idl.jar:     \
+                    $CLASSPATH
+
 
 
 Install ccmtools package 
 ========================
 The ccmtools package can be installed with the following procedure:
 
- $ cd ccmtools
- $ autogen.py --prefix=<CCM_INSTALL_PATH>
- $ make; make install
- $ cd ..
-
-After that, we have to set some environment variables (these settings are usually 
-added to .bashrc):
-
  # For using local components: 
- $ export CCMTOOLS_HOME=<CCM_INSTALL_PATH> 
- $ export PATH=$CCMTOOLS_HOME/bin:$PATH 
- $ export CLASSPATH=$CCMTOOLS_HOME/share/java/ccmtools.jar:$CCMTOOLS_HOME/share/java/antlr.jar:$CCMTOOLS_HOME/share/java/mdr01.jar:$CCMTOOLS_HOME/share/java/uml2idl.jar:$CCMTOOLS_HOME/share/java/oclmetamodel.jar:$CLASSPATH
+ $ cd ccmtools
+ $ ant install -Dprefix=<CCM_INSTALL_PATH>
+ $ cd ..
+ $ export CCMTOOLS_HOME=<CCM_INSTALL_PATH>
+ $ export CLASSPATH=<CCM_INSTALL_PATH>/lib/ccmtools.jar:    \
+                    <CCM_INSTALL_PATH>/lib/oclmetamodel.jar
+ $ export PATH=$CCMTOOLS_HOME/bin:$PATH	    
 
  # For using remote components too: 
  $ export CCM_COMPONENT_REPOSITORY=${CCMTOOLS_HOME} 
  $ export CCM_NAME_SERVICE=corbaloc:iiop:1.2@localhost:5050/NameService
+
 
 
 Install cpp-environment package
@@ -111,5 +114,13 @@ Finally, we install the cpp-environment needed to use remote C++ components:
  $ confix.py --packageroot=`pwd`/CCM_Remote --bootstrap --configure --make --targets="install"
  $ cd ..
 
+
+If you like Ant (as a frontend to Confix ;-), you can say:
+
+ # Install the local component's environment:
+ $ ant local
+
+ # If you only want to install CCM_Local without WX_Utils:
+ $ ant CCM_Local  
 
 OK, that s it! Now we are ready to create and run components using the CCM Tools. 
