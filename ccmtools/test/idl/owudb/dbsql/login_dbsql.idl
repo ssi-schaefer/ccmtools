@@ -1,0 +1,20 @@
+#include "ifaces/loginmgr.idl"
+#include "ifaces/ldbbrowser.idl"
+#include "ifaces/auth.idl"
+#include "ifaces/udbbrowser.idl"
+
+module owil {
+module udb {
+
+component LoginDB_DBSQL {
+  attribute string systemname;
+
+   provides LoginManager mgr;
+   provides LoginDBBrowser browser;
+
+   uses UserPassAuthentication auth;
+   uses UserDBBrowser userbrowser;
+};
+
+}; // end of module udb
+}; // end of module owil

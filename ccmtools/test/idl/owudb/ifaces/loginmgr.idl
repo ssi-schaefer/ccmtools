@@ -1,0 +1,32 @@
+#include "exc.idl"
+#include "persdata.idl"
+#include "logindata.idl"
+
+module owil {
+module udb {
+
+struct LoginResult {
+   PersData pers;
+   LoginData login;
+};
+
+interface LoginManager {
+   LoginResult
+   login(
+      in string user,
+      in string password,
+      in string login)
+   raises(NoSuchUser,
+          NoSuchLogin,
+          NoDefaultLogin,
+          InvalidPassword,
+          DatabaseError,
+          TerminalBlocked,
+          UserBlocked,
+          PasswordExpired);
+};
+
+}; // end of namespace udb
+}; // end of namespace owil
+
+#endif

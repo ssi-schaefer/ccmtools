@@ -1,0 +1,17 @@
+#include "ifaces/exc.idl"
+
+module owil {
+module udb {
+
+interface UserPassAuthentication {
+   void auth_userpass(in string name, in string password)
+   raises(NoSuchUser,
+          InvalidPassword,
+          DatabaseError,
+          TerminalBlocked,
+          UserBlocked,
+          PasswordExpired);
+};
+   
+};
+};

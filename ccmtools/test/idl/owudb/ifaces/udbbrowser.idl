@@ -1,0 +1,14 @@
+#include "persdata.idl"
+#include "exc.idl"
+
+module owil {
+module udb {
+
+interface UserDBBrowser {
+   PersData get_user(in string name)
+   raises(NoSuchUser,
+          DatabaseError);
+};
+
+};
+};
