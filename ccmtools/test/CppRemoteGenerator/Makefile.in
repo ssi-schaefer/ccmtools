@@ -145,7 +145,9 @@ TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
 dist_noinst_SCRIPTS = test-loader.sh
 
 TESTS = \
-  facet_simple.sh facet_module_simple.sh
+  attribute_simple.sh attribute_module_simple.sh \
+  supports_simple.sh \
+  facet_simple.sh facet_module_simple.sh 
 
 
 dist_check_SCRIPTS = $(TESTS)
@@ -153,9 +155,10 @@ dist_check_SCRIPTS = $(TESTS)
 
 # these directories hold application logic and python modules for generated
 # code.
-EXTRA_DIST = attribute attribute_basic_types \
+EXTRA_DIST = \
+             attribute_simple attribute_module_simple \
              supports supports_basic_types supports_exception \
-             facet facet_basic_types facet_exception 
+             facet_basic_types facet_exception 
 
 subdir = test/CppRemoteGenerator
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4

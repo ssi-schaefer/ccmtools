@@ -14,16 +14,20 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 TESTS = \
   attribute_simple.sh attribute_module_simple.sh \
-  facet_simple.sh facet_module_simple.sh
+  supports_simple.sh \
+  facet_simple.sh facet_module_simple.sh \
+  receptacle_simple.sh
+
 
 dist_check_SCRIPTS = $(TESTS)
 
 # these directories hold application logic and python modules for generated
 # code.
 
-EXTRA_DIST = attribute attribute_basic_types \
+EXTRA_DIST =  \
+             attribute_simple attribute_module_simple \
              supports supports_basic_types supports_exception \
-             facet facet_basic_types facet_exception 
+             facet_basic_types facet_exception 
 
 clean-local:
 	$(RM) -r -f sandbox

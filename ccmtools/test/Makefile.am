@@ -4,12 +4,13 @@
 #SUBDIRS = IDL3Parser
 #SUBDIRS = CodeGenerator
 #SUBDIRS = IDLGenerator
-SUBDIRS = CppGenerator
+#SUBDIRS = CppGenerator
+#SUBDIRS = CppRemoteGenerator
 #SUBDIRS = CppDbcGenerator
 
-#SUBDIRS = Metamodel IDL3Parser CodeGenerator IDLGenerator CppGenerator
+SUBDIRS = CppGenerator CppDbcGenerator CppRemoteGenerator
 
-EXTRA_DIST = idl ccd
+EXTRA_DIST = idl 
 
 dist-hook:
 	$(RM) -f -r `find $(distdir) -name CVS`
