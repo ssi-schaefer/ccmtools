@@ -37,7 +37,7 @@ public interface OclTypeChecker
      *
      * @param expr  the expression
      * @param conCode  no change
-     * @return the type of the expression (or null)
+     * @return the type of the expression
      */
     public ElementType makeType( MExpression expr, ConstraintCode conCode );
 
@@ -53,7 +53,10 @@ public interface OclTypeChecker
 
     /**
      * Returns the variable or function name for an attribute.
+     *
+     * @param oclName  the OCL name of the attribute
+     * @param et       the type of the parent (or null, if the type is unknown)
      */
-    public String getAttributeName( String oclName );
+    public String getAttributeName( String oclName, ElementType et );
 
 }

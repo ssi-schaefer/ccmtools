@@ -643,10 +643,34 @@ public class CppLocalDbcGeneratorImpl
         }
 
         /**
-         * Returns the variable or function name for an attribute.
-         */
-        public String getAttributeName( String oclName )
+        * Returns the variable or function name for an attribute.
+        *
+        * @param oclName  the OCL name of the attribute
+        * @param et       the type of the parent (or null, if the type is unknown)
+        */
+        public String getAttributeName( String oclName, ElementType et )
         {
+            if( et!=null )
+            {
+                if( et.idlType_!=null )
+                {
+                    if( et.idlType_ instanceof MStructDef )
+                    {
+                        return oclName;
+                    }
+                    // TODO
+                    System.out.println("***   et.idlType_.CLASS=="+
+                                       et.idlType_.getClass().getName()+"   oclName=="+oclName);
+                }
+                /*else if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
+                {
+                    System.out.println("***   et.idlType_==null   oclName=="+oclName);
+                }*/
+            }
+            /*else if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
+            {
+                System.out.println("***   et==null   oclName=="+oclName);
+            }*/
             return oclName+"()";
         }
 
@@ -687,7 +711,7 @@ public class CppLocalDbcGeneratorImpl
          *
          * @param expr  the expression
          * @param conCode  no change
-         * @return the type of the expression (or null)
+         * @return the type of the expression
          */
         public ElementType makeType( MExpression expr, ConstraintCode conCode )
         {
@@ -766,6 +790,7 @@ public class CppLocalDbcGeneratorImpl
                         }
                     }
                 }
+                // TODO
                 if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
                 {
                     System.err.println("TypeCreator.getOclType: could not find '"+

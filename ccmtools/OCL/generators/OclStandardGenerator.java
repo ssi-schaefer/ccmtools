@@ -227,7 +227,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         }
         if( expr instanceof MPropertyCall )
         {
-            return getCode( (MPropertyCall)expr, true, code );
+            return getCode( (MPropertyCall)expr, true, code, null );
         }
         if( expr instanceof MPostfixExpression )
         {
@@ -387,7 +387,8 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     /**
      *  property call
      */
-    private String getCode( MPropertyCall pc, boolean setBaseModule, ConstraintCode conCode )
+    private String getCode( MPropertyCall pc, boolean setBaseModule, ConstraintCode conCode,
+                            ElementType etParent )
     {
         String code = pc.getName();
         if( setBaseModule )
@@ -404,12 +405,15 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                 return var;
             }
         }
+        ElementType etPC = typeChecker_.makeType(pc,conCode);
         OclType type = pc.getOclType();
-        if( type==null || lastIdlType_==null )
+        if( type==null )
         {
-            ElementType et = typeChecker_.makeType(pc,conCode);
-            type = et.oclType_;
-            lastIdlType_ = et.idlType_;
+            type = etPC.oclType_;
+        }
+        if( lastIdlType_==null )
+        {
+            lastIdlType_ = etPC.idlType_;
         }
         if( type==null && OCL_DEBUG_OUTPUT )
         {
@@ -439,7 +443,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             //
             /*  an attribute
             */
-            code = typeChecker_.getAttributeName(code);
+            code = typeChecker_.getAttributeName(code, etParent);
             if( setBaseModule )
             {
                 String name = typeChecker_.getLocalAdapterName(baseModuleType_);
@@ -512,23 +516,31 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         {
             return getCollectionOperationCode(expr,pc,conCode,pfe);
         }
+        ElementType etExpr = typeChecker_.makeType(expr,conCode);
         lastIdlType_ = null;
         String exprCode = "("+makeCode(expr,conCode)+")";
         OclType typeExpr = expr.getOclType();
         if( typeExpr==null )
         {
-            ElementType et = typeChecker_.makeType(expr,conCode);
-            typeExpr = et.oclType_;
-            if( lastIdlType_==null )
-            {
-                lastIdlType_ = et.idlType_;
-            }
+            typeExpr = etExpr.oclType_;
+        }
+        else
+        {
+            etExpr.oclType_ = typeExpr;
+        }
+        if( lastIdlType_==null )
+        {
+            lastIdlType_ = etExpr.idlType_;
+        }
+        else
+        {
+            etExpr.idlType_ = lastIdlType_;
         }
         //
         ConstraintCode fake = getConstraintCode(conCode, lastIdlType_);
-        ElementType et = typeChecker_.makeType(pc,fake);
-        OclType typePC = et.oclType_;
-        lastIdlType_ = et.idlType_;
+        ElementType etPC = typeChecker_.makeType(pc,fake);
+        OclType typePC = etPC.oclType_;
+        lastIdlType_ = etPC.idlType_;
         //
         if( pc.getCallParameters()==null && pc.isPrevious() )
         {
@@ -538,9 +550,9 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             }
             String h = getNextHelperName();
             String t = getLanguageType(typePC, true, true);
-            String c = "  "+t+" "+h+" = "+exprCode+"."+getCode(pc,false,conCode)+";\n";
+            String c = "  "+t+" "+h+" = "+exprCode+"."+getCode(pc,false,conCode,etExpr)+";\n";
             conCode.preStatements_ += c;
-            lastIdlType_ = et.idlType_;
+            lastIdlType_ = etPC.idlType_;
             return h;
         }
         if( typeExpr!=null )
@@ -580,8 +592,8 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             }
         }
         // we assume that the type is OclUser
-        String sc = exprCode+"."+getCode(pc,false,conCode);
-        lastIdlType_ = et.idlType_;
+        String sc = exprCode+"."+getCode(pc,false,conCode,etExpr);
+        lastIdlType_ = etPC.idlType_;
         return sc;
     }
 
