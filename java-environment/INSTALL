@@ -26,10 +26,6 @@ Additionally, you can use the following ant variants:
   # Generate javaDoc:
   $ ant doc		
 
-  # If you want to use the java-environment without the ccmtools, you can define
-  # another install path:
-  $ ant install -Dprefix=<install-path>
-
 
 Update your CLASSPATH:
 ----------------------
