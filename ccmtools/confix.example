@@ -1,0 +1,51 @@
+# -*- python -*-
+
+ccmtools = {
+    # Prefix specifies the install prefix for packages.
+    'prefix' : '/tmp/ccmtools',
+
+    # Buildroot is the root directory under which Confix builds its packages.
+    'buildroot' : '/tmp/ccmtools-build',
+
+    # Enable or disable advanced behavior here. If you set this to 0, you will
+    # need to manually create package build directories under the 'buildroot'
+    # given above.
+    'advanced' : 1,
+
+    # Use libtool to build packages. This doesn't work extremely well
+    # everywhere, so it is off by default.
+    'use_libtool' : 0,
+
+    'configure' : {
+        # The 'configure' section allows you to specify environment variables
+        # and arguments for running configure.
+        'env' : {
+             # These contain the full path of your preferred compilers.
+#            'cc : '/usr/local/bin/gcc-3.2',
+#            'cxx : '/usr/local/bin/g++-3.2',
+
+             # Put any site-specific compiler flags here.
+#            'cflags' : '',
+#            'cxxflags' : '',
+            },
+        'args' : [
+             # Add any needed configure arguments here.
+#            '--with-ext-MICO=/usr/local/mico-ccm-020124.gcc-3.2',
+            ],
+        },
+
+    'make' : {
+        # The 'make' section allows you to specify environment variables and
+        # arguments for running make. Its sections are just like those for
+        # 'configure'.
+        'env' : { },
+        'args' : [ '-j', ],
+        }
+    'confix' : {
+        }
+    }
+
+PROFILES = {
+    'ccmtools' : ccmtools,
+    }
+
