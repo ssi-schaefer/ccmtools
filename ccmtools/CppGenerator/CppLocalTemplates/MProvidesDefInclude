@@ -1,2 +1,2 @@
-#include <CCM_Local/%(ProvidesType)s.h>
+#include <%(IncludeNamespace)s/%(ProvidesType)s.h>
 

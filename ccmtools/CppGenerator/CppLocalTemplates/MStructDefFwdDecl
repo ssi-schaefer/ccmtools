@@ -1,2 +1,2 @@
-  struct %(Identifier)s;
+struct %(Identifier)s;
 

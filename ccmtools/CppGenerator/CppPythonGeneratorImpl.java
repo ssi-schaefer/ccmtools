@@ -152,24 +152,6 @@ public class CppPythonGeneratorImpl
     /**************************************************************************/
 
     /**
-     * Get a local value for the given variable name.
-     *
-     * @param variable The variable name to get a value for.
-     * @return the value of the variable available from the current
-     *         output_variables hash table. Could be an empty string.
-     */
-    protected String getLocalValue(String variable)
-    {
-        String value = super.getLocalValue(variable);
-
-        if (current_node instanceof MAliasDef) {
-            return data_MAliasDef(variable, value);
-        }
-
-        return value;
-    }
-
-    /**
      * Return the language type for the given object. This returns the value
      * given by getLanguageType if the node is neither an MParameterDef or
      * MOperationDef instance, otherwise it basically adds the C++ specific

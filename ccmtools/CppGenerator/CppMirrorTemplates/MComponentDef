@@ -28,10 +28,10 @@ int main ( int argc, char *argv[] )
   DEBUGNL ( "test_client_%(Identifier)s_component_main (  )" );
 
   // Get in instance of the local HomeFinder and register component homes
-  localComponents::HomeFinder* homeFinder = HomeFinder::Instance (  );
+  localComponents::HomeFinder* homeFinder = HomeFinder::Instance();
   try {
-    homeFinder->register_home( create_%(HomeType)sAdapter (  ), "%(HomeType)s" );
-    homeFinder->register_home( create_%(HomeType)s_mirrorAdapter (  ), "%(HomeType)s_mirror" );
+    homeFinder->register_home( create_%(HomeType)sAdapter(), "%(HomeType)s" );
+    homeFinder->register_home( create_%(HomeType)s_mirrorAdapter(), "%(HomeType)s_mirror" );
   } catch ( ... )  {
     cout << "Aut'sch: there is something wrong while register homes!" << endl;
     return -1;
@@ -54,10 +54,10 @@ int main ( int argc, char *argv[] )
       ( homeFinder->find_home_by_name ( "%(HomeType)s_mirror" ).ptr (  ) ) );
 
     // Create component and mirror component instances
-    SmartPtr<%(Identifier)s> my%(Identifier)s = my%(HomeType)s.ptr (  )->create (  );
-
-%(MProvidesDefComponentCreate)s
-%(MUsesDefComponentCreate)s
+    SmartPtr<%(Identifier)s> my%(Identifier)s = 
+      my%(HomeType)s.ptr (  )->create (  );
+    SmartPtr<%(Identifier)s_mirror> my%(Identifier)sMirror = 
+      my%(HomeType)sMirror.ptr()->create();
 
     // Create provided and used (mirror) facets
 %(MProvidesDefFacetCreate)s
@@ -68,29 +68,25 @@ int main ( int argc, char *argv[] )
 %(MUsesDefConnect)s
 
     // End of deployment phase
-    my%(Identifier)s.ptr (  )->configuration_complete (  );
+    my%(Identifier)s.ptr()->configuration_complete();
+    my%(Identifier)sMirror.ptr()->configuration_complete();
 
-%(MProvidesDefConfComplete)s
-%(MUsesDefConfComplete)s
+    // Use %(Identifier)s component standard functionality
+    cout << "> getComponentVersion() = " 
+         << my%(Identifier)s.ptr()->getComponentVersion () << endl;
+    cout << "> getComponentDate() = " 
+         << my%(Identifier)s.ptr()->getComponentDate() << endl;
 
     /*
      * TESTING
      */
+	
+     DEBUGNL("==== Begin Test Case =============================================" );	
 
-    // Use %(Identifier)s component standard functionality
-    cout << "> getComponentVersion (  ) = " << my%(Identifier)s.ptr (  )->getComponentVersion (  ) << endl;
-    cout << "> getComponentDate (  ) = " << my%(Identifier)s.ptr (  )->getComponentDate (  ) << endl;
-    cout << "> getComponentUUID (  ) = " << my%(Identifier)s.ptr (  )->getComponentUUID (  ) << endl;
+    // TODO : IMPLEMENT ME HERE !	
+	
+     DEBUGNL("==== End Test Case ===============================================" );	
 
-    // Test attributes
-%(MAttributeDef)s
-
-    // Test supported interfaces
-%(MSupportsDef)s
-
-    // Test provided and used interfaces
-%(MProvidesDefTest)s
-%(MUsesDefTest)s
 
     /*
      * TEAR DOWN
@@ -102,9 +98,7 @@ int main ( int argc, char *argv[] )
 
     // Destroy component instances
     my%(Identifier)s.ptr (  )->remove (  );
-
-%(MProvidesDefComponentDestroy)s
-%(MUsesDefComponentDestroy)s
+    my%(Identifier)sMirror.ptr()->remove();
 
     // Unregister component homes
     homeFinder->unregister_home ( "%(HomeType)s" );

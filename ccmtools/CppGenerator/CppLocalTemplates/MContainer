@@ -11,13 +11,13 @@
 namespace CCM_Local {
 %(MModuleDef)s
 
-%(MEnumDefFwdDecl)s
+%(MEnumDef)s
+
 %(MStructDefFwdDecl)s
 %(MUnionDefFwdDecl)s
 
 %(MAliasDef)s
 
-%(MEnumDef)s
 %(MStructDef)s
 %(MUnionDef)s
 

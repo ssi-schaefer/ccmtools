@@ -1,3 +1,7 @@
+    SmartPtr<localComponents::Object> %(UsesType)s%(Identifier)sUses = 
+      my%(ComponentType)sMirror.ptr()->provide_facet("%(Identifier)s_mirror");
+
+/*
     SmartPtr<localComponents::Object> %(UsesType)s%(Identifier)sUses_01 = my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_01.ptr (  )->provide_facet ( "%(Identifier)s_mirror" );
     SmartPtr<CCM_%(UsesType)s> %(UsesType)s%(Identifier)sObject_01 ( dynamic_cast<CCM_%(UsesType)s*> ( %(UsesType)s%(Identifier)sUses_01.ptr (  ) ) );
     SmartPtr<localComponents::Object> %(UsesType)s%(Identifier)sUses_02 = my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_02.ptr (  )->provide_facet ( "%(Identifier)s_mirror" );
@@ -19,4 +23,4 @@
     SmartPtr<localComponents::Object> %(UsesType)s%(Identifier)sUses_10 = my%(ComponentType)sMirror%(UsesType)s%(Identifier)s_10.ptr (  )->provide_facet ( "%(Identifier)s_mirror" );
     SmartPtr<CCM_%(UsesType)s> %(UsesType)s%(Identifier)sObject_10 ( dynamic_cast<CCM_%(UsesType)s*> ( %(UsesType)s%(Identifier)sUses_10.ptr (  ) ) );
 
-
+*/
