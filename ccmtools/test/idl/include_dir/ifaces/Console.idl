@@ -1,0 +1,10 @@
+// $Id$
+/**
+ * 
+ *
+ *
+ */
+
+interface Console {
+  string read_string(in  string prompt);
+};
