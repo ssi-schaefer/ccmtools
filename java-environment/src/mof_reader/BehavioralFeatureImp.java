@@ -11,37 +11,36 @@
 
 package mof_reader;
 
-import java.util.Collection;
-import java.util.List;
-
 import mof_xmi_parser.DTD_Container;
 
 
 /**
- * AliasType implementation
+ * BehavioralFeature implementation
  *
  * @author Robert Lechner (robert.lechner@salomon.at)
  * @version $Date$
  */
-class AliasTypeImp extends GeneralizableElementImp implements MofAliasType
+abstract class BehavioralFeatureImp extends NamespaceImp implements MofBehavioralFeature
 {
-    AliasTypeImp( DTD_Container xmi, MofModelElement parent )
+    BehavioralFeatureImp( DTD_Container xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
 
 
-    /// implements {@link MofTypedElement#getType}
-    public MofClassifier getType()
+    /// implements {@link MofFeature#getScope}
+    public MofScopeKind getScope()
     {
         // TODO
         return null;
     }
 
 
-    /// implements {@link MofModelElement#process}
-    public void process( NodeHandler handler ) throws NodeHandlerException
+    /// implements {@link MofFeature#getVisibility}
+    public MofVisibilityKind getVisibility()
     {
         // TODO
+        return null;
     }
+
 }

@@ -14,6 +14,8 @@ package mof_reader;
 import java.util.Collection;
 import java.util.List;
 
+import mof_xmi_parser.DTD_Container;
+
 
 /**
  * Exception implementation
@@ -21,11 +23,11 @@ import java.util.List;
  * @author Robert Lechner (robert.lechner@salomon.at)
  * @version $Date$
  */
-class ExceptionImp extends mof_xmi_parser.model.MException implements MofException, Worker
+class ExceptionImp extends BehavioralFeatureImp implements MofException
 {
-    ExceptionImp( org.xml.sax.Attributes attrs )
+    ExceptionImp( DTD_Container xmi, MofModelElement parent )
     {
-        super(attrs);
+        super(xmi, parent);
     }
 
 
@@ -35,88 +37,4 @@ class ExceptionImp extends mof_xmi_parser.model.MException implements MofExcepti
         // TODO
     }
 
-    /// implements {@link MofModelElement#getAnnotation}
-    public String getAnnotation()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getName}
-    public String getName()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getQualifiedName}
-    public List getQualifiedName()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getProviders}
-    public Collection getProviders()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getContainer}
-    public MofNamespace getContainer()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getConstraints}
-    public Collection getConstraints()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getTags}
-    public List getTags()
-    {
-        // TODO
-        return null;
-    }
-
-
-    /// implements {@link MofNamespace#getContainedElements}
-    public List getContainedElements()
-    {
-        // TODO
-        return null;
-    }
-
-
-    /// implements {@link MofFeature#getScope}
-    public MofScopeKind getScope()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofFeature#getVisibility}
-    public MofVisibilityKind getVisibility()
-    {
-        // TODO
-        return null;
-    }
-
-
-    /// implements {@link Worker#register}
-    public void register( java.util.Map map )
-    {
-        // TODO
-    }
-
-    /// implements {@link Worker#process}
-    public void process( Model model )
-    {
-        // TODO
-    }
 }

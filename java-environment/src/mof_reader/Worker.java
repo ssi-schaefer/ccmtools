@@ -21,12 +21,17 @@ package mof_reader;
 interface Worker
 {
     /**
-     * register all core elements
+     * register all core elements and set the parent
      */
-    public void register( java.util.Map map );
+    public void register( java.util.Map map, Worker parent );
 
     /**
      * create the model graph
      */
     public void process( Model model );
+
+    /**
+     * return the associated MOF-element
+     */
+    public MofModelElement mof();
 }

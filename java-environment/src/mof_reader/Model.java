@@ -117,7 +117,7 @@ public class Model
             Object obj = xmiContent.get(index);
             if( obj instanceof Worker )
             {
-                ((Worker)obj).register(workers_);
+                ((Worker)obj).register(workers_, null);
             }
             else
             {
@@ -128,7 +128,7 @@ public class Model
 
 
     /**
-     * returns an iterator for all root model elements
+     * returns an iterator for all root model elements ({@link Worker})
      */
     public Iterator iterator()
     {

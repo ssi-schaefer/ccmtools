@@ -11,26 +11,30 @@
 
 package mof_reader;
 
+
+import java.util.List;
 import mof_xmi_parser.DTD_Container;
 
 
 /**
- * StructureField implementation
+ * Namespace implementation
  *
  * @author Robert Lechner (robert.lechner@salomon.at)
  * @version $Date$
  */
-class StructureFieldImp extends TypedElementImp implements MofStructureField
+abstract class NamespaceImp extends ModelElementImp implements MofNamespace
 {
-    StructureFieldImp( DTD_Container xmi, MofModelElement parent )
+    NamespaceImp( DTD_Container xmi, MofModelElement parent )
     {
         super(xmi, parent);
     }
 
 
-    /// implements {@link MofModelElement#process}
-    public void process( NodeHandler handler ) throws NodeHandlerException
+    /// implements {@link MofNamespace#getContainedElements}
+    public List getContainedElements()
     {
         // TODO
+        return null;
     }
+
 }

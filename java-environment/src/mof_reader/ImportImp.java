@@ -13,6 +13,10 @@ package mof_reader;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
+
+import mof_xmi_parser.DTD_Container;
+import mof_xmi_parser.model.MImport_isClustered;
 
 
 /**
@@ -21,76 +25,39 @@ import java.util.List;
  * @author Robert Lechner (robert.lechner@salomon.at)
  * @version $Date$
  */
-class ImportImp extends mof_xmi_parser.model.MImport implements MofImport, Worker
+class ImportImp extends ModelElementImp implements MofImport
 {
-    ImportImp( org.xml.sax.Attributes attrs )
+    ImportImp( DTD_Container xmi, MofModelElement parent )
     {
-        super(attrs);
+        super(xmi, parent);
     }
 
 
-    /// implements {@link MofModelElement#process}
-    public void process( NodeHandler handler ) throws NodeHandlerException
-    {
-        // TODO
-    }
-
-    /// implements {@link MofModelElement#getAnnotation}
-    public String getAnnotation()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getName}
-    public String getName()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getQualifiedName}
-    public List getQualifiedName()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getProviders}
-    public Collection getProviders()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getContainer}
-    public MofNamespace getContainer()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getConstraints}
-    public Collection getConstraints()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getTags}
-    public List getTags()
-    {
-        // TODO
-        return null;
-    }
+    private String isClustered_;
 
 
     /// implements {@link MofImport#isClustered}
     public boolean isClustered()
     {
-        // TODO
-        return false;
+        if( isClustered_==null )
+        {
+            Vector children = xmi_.findChildren(MImport_isClustered.xmlName__);
+            if( children.size()>=1 )
+            {
+                MImport_isClustered x = (MImport_isClustered)children.get(0);
+                if( x.size()>=1 )
+                {
+                    isClustered_ = x.get(0).toString();
+                }
+            }
+            if( isClustered_==null )
+            {
+                isClustered_ = "false";
+            }
+        }
+        return isClustered_.equalsIgnoreCase("true");
     }
+
 
     /// implements {@link MofImport#getVisibility}
     public MofVisibilityKind getVisibility()
@@ -98,6 +65,7 @@ class ImportImp extends mof_xmi_parser.model.MImport implements MofImport, Worke
         // TODO
         return null;
     }
+
 
     /// implements {@link MofImport#getImported}
     public MofNamespace getImported()
@@ -107,15 +75,10 @@ class ImportImp extends mof_xmi_parser.model.MImport implements MofImport, Worke
     }
 
 
-    /// implements {@link Worker#register}
-    public void register( java.util.Map map )
+    /// implements {@link MofModelElement#process}
+    public void process( NodeHandler handler ) throws NodeHandlerException
     {
         // TODO
     }
 
-    /// implements {@link Worker#process}
-    public void process( Model model )
-    {
-        // TODO
-    }
 }

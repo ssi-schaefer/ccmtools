@@ -14,6 +14,8 @@ package mof_reader;
 import java.util.Collection;
 import java.util.List;
 
+import mof_xmi_parser.DTD_Container;
+
 
 /**
  * Operation implementation
@@ -21,90 +23,11 @@ import java.util.List;
  * @author Robert Lechner (robert.lechner@salomon.at)
  * @version $Date$
  */
-class OperationImp extends mof_xmi_parser.model.MOperation implements MofOperation, Worker
+class OperationImp extends BehavioralFeatureImp implements MofOperation
 {
-    OperationImp( org.xml.sax.Attributes attrs )
+    OperationImp( DTD_Container xmi, MofModelElement parent )
     {
-        super(attrs);
-    }
-
-
-    /// implements {@link MofModelElement#process}
-    public void process( NodeHandler handler ) throws NodeHandlerException
-    {
-        // TODO
-    }
-
-    /// implements {@link MofModelElement#getAnnotation}
-    public String getAnnotation()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getName}
-    public String getName()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getQualifiedName}
-    public List getQualifiedName()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getProviders}
-    public Collection getProviders()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getContainer}
-    public MofNamespace getContainer()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getConstraints}
-    public Collection getConstraints()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofModelElement#getTags}
-    public List getTags()
-    {
-        // TODO
-        return null;
-    }
-
-
-    /// implements {@link MofNamespace#getContainedElements}
-    public List getContainedElements()
-    {
-        // TODO
-        return null;
-    }
-
-
-    /// implements {@link MofFeature#getScope}
-    public MofScopeKind getScope()
-    {
-        // TODO
-        return null;
-    }
-
-    /// implements {@link MofFeature#getVisibility}
-    public MofVisibilityKind getVisibility()
-    {
-        // TODO
-        return null;
+        super(xmi, parent);
     }
 
 
@@ -123,14 +46,8 @@ class OperationImp extends mof_xmi_parser.model.MOperation implements MofOperati
     }
 
 
-    /// implements {@link Worker#register}
-    public void register( java.util.Map map )
-    {
-        // TODO
-    }
-
-    /// implements {@link Worker#process}
-    public void process( Model model )
+    /// implements {@link MofModelElement#process}
+    public void process( NodeHandler handler ) throws NodeHandlerException
     {
         // TODO
     }
