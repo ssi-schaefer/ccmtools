@@ -1,0 +1,34 @@
+-- $Id$
+
+package GLOBAL
+
+context IntegerStack
+    inv max_size: maxSize>=1
+    inv field_size: field->size()>=0 and field->size()<=maxSize
+
+context IntegerStack::isEmpty()
+    post p1: result=field->isEmpty()
+    post p2: field=field@pre
+
+context IntegerStack::isFull()
+    post p1: result=(field->size()=maxSize)
+    post p2: field=field@pre
+
+context IntegerStack::push(value:Integer)
+    pre: field->size()<maxSize
+    -- some postconditions are redundant
+    post size: field->size()=field@pre->size()+1
+    post field: field=field@pre->append(value)
+    post value: top()=value
+
+context IntegerStack::top()
+    pre: field->notEmpty()
+    post value: result=field->at(field->size())
+    post field: field=field@pre
+
+context IntegerStack::pop()
+    pre: field->notEmpty()
+    post value: result=field@pre->at(field@pre->size())
+    post field: field@pre=field->append(result)
+
+endpackage
