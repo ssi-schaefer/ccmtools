@@ -1,4 +1,5 @@
-    SmartPtr<localComponents::Object> %(ProvidesType)s%(Identifier)sProvides =  my%(ComponentType)s.ptr (  )->provide_facet ( "%(Identifier)s" );
-    SmartPtr<CCM_%(ProvidesType)s> %(ProvidesType)s%(Identifier)sObject ( dynamic_cast<CCM_%(ProvidesType)s*> ( %(ProvidesType)s%(Identifier)sProvides.ptr (  ) ) );
+    SmartPtr<localComponents::Object> %(ProvidesType)s%(Identifier)sProvides =  
+      my%(ComponentType)s.ptr()->provide_facet("%(Identifier)s");
+
 
 

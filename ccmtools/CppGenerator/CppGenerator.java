@@ -327,7 +327,7 @@ abstract public class CppGenerator
 	    else {
 		result = "std::vector<";
 		for(int i=1;i<dimension;i++)
-		    result += "vector<";
+		    result += "std::vector<";
 		result += base_type + ">";
 		for(int i=1;i<dimension;i++)
 		    result += " >";
