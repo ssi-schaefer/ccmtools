@@ -85,11 +85,11 @@ public class ConsoleCodeGenerator
 
     private static List filenames; 
 
-    private static File output_directory;
-    private static File base_output_directory ;
+    //    private static File output_directory;
+    //   private static File base_output_directory ;
 
-    //   private static File output_directory = new File(System.getProperty("user.dir"));
-    //    private static File base_output_directory = new File(output_directory, "");
+    private static File output_directory = new File(System.getProperty("user.dir"));
+    private static File base_output_directory = new File(output_directory, "");
 
     private static int generate_flags = 0;
 
@@ -216,8 +216,8 @@ public class ConsoleCodeGenerator
      */
     public static void main(String args[])
     {
-	output_directory = new File(System.getProperty("user.dir"));
-	base_output_directory = new File(output_directory, "");
+	//	output_directory = new File(System.getProperty("user.dir"));
+	//	base_output_directory = new File(output_directory, "");
 
         if(!parseArgs(args))
 	    return; // No further processing needed
