@@ -1,7 +1,7 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
  * Egon Teiniker <egon.teiniker@salomon.at>
- * Copyright (C) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002, 2003, 2004 Salomon Automation
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -70,13 +70,15 @@ public class IDL3GeneratorImpl
 	}
 	else if (variable.equals("HomeInclude")) {
             if (current_node instanceof MComponentDef) {
-                Iterator homes = ((MComponentDef) current_node).getHomes().iterator();
+                Iterator homes = 
+		    ((MComponentDef) current_node).getHomes().iterator();
                 value = getScopedInclude((MHomeDef) homes.next());
             }
 	}
 	else if (variable.equals("ComponentInclude")) {
             if (current_node instanceof MHomeDef) {
-                value = getScopedInclude(((MHomeDef) current_node).getComponent());
+                value = 
+		    getScopedInclude(((MHomeDef) current_node).getComponent());
             }
 	}
 	else {
@@ -140,15 +142,14 @@ public class IDL3GeneratorImpl
     protected void writeOutput(Template template)
         throws IOException
     {
-        String[] pieces = template.substituteVariables(output_variables).split("\n");
+        String[] pieces = 
+	    template.substituteVariables(output_variables).split("\n");
 	
         List code_pieces = new ArrayList();
-        for (int i = 0; i < pieces.length; i++) {
-            if (! pieces[i].trim().equals("")) {
-                code_pieces.add(pieces[i]);
-	    }
+        for (int i=0; i < pieces.length; i++) {
+	    code_pieces.add(pieces[i]);
 	}
-        String code = join("\n", code_pieces);
+        String code = join("\n", code_pieces) + "\n";
 
 	// Separate IDL3 code into files hosted in different directories
 	String dir;
@@ -157,16 +158,10 @@ public class IDL3GeneratorImpl
 	   current_node instanceof MHomeDef) {
 	    dir = "component";
 	    if(namespace.size() > 0) {
-		dir += File.separator + join(File.separator, namespace) + File.separator;
+		dir += File.separator 
+		    + join(File.separator, namespace) 
+		    + File.separator;
 	    }
-	    /*
-	    if(current_node instanceof MHomeDef) {
-		dir += (((MHomeDef)current_node).getComponent()).getIdentifier();
-	    }
-	    else {
-		dir += ((MComponentDef)current_node).getIdentifier();
-	    }
-	    */
 	    name = ((MContained) current_node).getIdentifier() + ".idl";
 	}
 	else {
@@ -176,7 +171,15 @@ public class IDL3GeneratorImpl
 	    }
 	    name = ((MContained) current_node).getIdentifier() + ".idl";
 	}
-	writeFinalizedFile(dir, name, code + "\n\n");
+	
+	String prettyCode = prettifyCode(code);
+	File outFile = new File(output_dir + File.separator + dir, name);
+	if(isCodeEqualWithFile(prettyCode, outFile)) {
+	    System.out.println("skipping " + outFile);
+	}
+	else {
+	    writeFinalizedFile(dir, name, prettyCode);
+	}
     }
 }
 

@@ -14,8 +14,7 @@
 %(OpenNamespace)s
 
 component %(Identifier)s_mirror
- %(BaseType)s
- %(MSupportsDef)s
+ %(BaseType)s %(MSupportsDef)s
 {
 %(MAttributeDef)s
 %(MConstantDef)s

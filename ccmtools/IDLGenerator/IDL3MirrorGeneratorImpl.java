@@ -1,6 +1,7 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * Copyright (C) 2002, 2003 Salomon Automation
+ * Egon Teiniker <egon.teiniker@salomon.at>
+ * Copyright (C) 2002, 2003, 2004 Salomon Automation
  *
  *
  * This library is free software; you can redistribute it and/or modify it under
@@ -41,9 +42,13 @@ import java.util.Iterator;
 public class IDL3MirrorGeneratorImpl
     extends IDLGenerator
 {
-    public IDL3MirrorGeneratorImpl(Driver d, File out_dir) throws IOException
-    { super("3Mirror", d, out_dir); }
+    public IDL3MirrorGeneratorImpl(Driver d, File out_dir) 
+	throws IOException
+    { 
+	super("3Mirror", d, out_dir); 
+    }
 
+   
     /**
      * Return the language type for the given object.
      *
@@ -88,7 +93,8 @@ public class IDL3MirrorGeneratorImpl
 	}
 	else if (variable.equals("HomeInclude")) {
             if (current_node instanceof MComponentDef) {
-                Iterator homes = ((MComponentDef) current_node).getHomes().iterator();
+                Iterator homes = 
+		    ((MComponentDef) current_node).getHomes().iterator();
                 value = "#include <" 
 		    + getScopedInclude((MHomeDef) homes.next())
 		    + "_mirror.idl>";
@@ -131,15 +137,14 @@ public class IDL3MirrorGeneratorImpl
     protected void writeOutput(Template template)
         throws IOException
     {
-        String[] pieces = template.substituteVariables(output_variables).split("\n");
+        String[] pieces = 
+	    template.substituteVariables(output_variables).split("\n");
 	
         List code_pieces = new ArrayList();
-        for (int i = 0; i < pieces.length; i++) {
-            if (! pieces[i].trim().equals("")) {
+        for (int i=0; i < pieces.length; i++) {
                 code_pieces.add(pieces[i]);
-	    }
 	}
-        String code = join("\n", code_pieces);
+        String code = join("\n", code_pieces) + "\n";
 
 	String dir;
 	String name;
@@ -147,10 +152,20 @@ public class IDL3MirrorGeneratorImpl
 	   current_node instanceof MHomeDef) {
 	    dir = "component";
 	    if(namespace.size() > 0) {
-		dir += File.separator + join(File.separator, namespace) + File.separator;
+		dir += File.separator 
+		    + join(File.separator, namespace) 
+		    + File.separator;
 	    }
-	    name = ((MContained) current_node).getIdentifier() + "_mirror.idl";
-	    writeFinalizedFile(dir, name, code + "\n\n");
+	    name = ((MContained)current_node).getIdentifier() + "_mirror.idl";
+
+	    String prettyCode = prettifyCode(code);
+	    File outFile = new File(output_dir + File.separator + dir, name);
+	    if(isCodeEqualWithFile(prettyCode, outFile)) {
+		System.out.println("skipping " + outFile);
+	    }
+	    else {
+		writeFinalizedFile(dir, name, prettyCode);
+	    }
 	}
 	else {
 	    // Don't generate code for other nodes than MComponentDef and

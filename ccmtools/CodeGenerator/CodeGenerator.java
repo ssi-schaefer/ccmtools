@@ -1,5 +1,6 @@
 /* CCM Tools : Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
+ * Egon Teiniker <egon.teiniker@salomon.at>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
  *
@@ -51,6 +52,10 @@ import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -1120,6 +1125,88 @@ abstract public class CodeGenerator
 
             driver.message("variable " + scope_id +" => "+ prev_value + result);
         }
+    }
+
+
+    /**
+     * This method reads a file, specified by a File object, and compares
+     * the file's content with a given code string.
+     *
+     * @param code A string containing source code.
+     * @param file A File object that points to a file which should be compare.
+     * @return true if the file's content is equal with the given code string
+     *         false in all other cases
+     **/
+    protected boolean isCodeEqualWithFile(String code, File file)
+    {
+	try {
+	    if (file.isFile()) {
+		StringBuffer buffer = new StringBuffer();
+		FileInputStream stream = new FileInputStream(file);
+		InputStreamReader input = new InputStreamReader(stream);
+		BufferedReader reader = new BufferedReader(input);
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+		    buffer.append(line + "\n");
+		}
+		//System.out.println(">>>>" + code + "<<<<");
+		//System.out.println(">>>>" + buffer + "<<<<");
+		return code.equals(buffer.toString());
+	    }
+	}
+	catch(IOException e) {
+	    System.err.println("ERROR: Can't read " + file);
+	}
+	return false;
+    } 
+
+    /**
+     * This method removes empty lines (if more than one) and similar #include
+     * statements from the generated code.
+     *
+     * @param code A string containing generated code that should be prettified.
+     * @return A string containing a prittified version of a given source code.
+     **/
+    protected String prettifyCode(String code)
+    {
+	StringBuffer pretty_code = new StringBuffer();
+	Set include_set = new HashSet();
+	int from_index = 0;
+	int newline_index = 0;
+	boolean isEmptyLineSuccessor = false;
+	do {
+	    newline_index = code.indexOf('\n',from_index);
+	    String code_line = code.substring(from_index, newline_index);
+	    from_index = newline_index + 1;
+	    if(code_line.length() != 0) {
+		isEmptyLineSuccessor = false;
+
+		if(code_line.startsWith("#include")) {
+		    if(include_set.contains(code_line)) {
+			// Ignore similar #include statements 
+		    }
+		    else {
+			include_set.add(code_line);
+			pretty_code.append(code_line);
+			pretty_code.append('\n');
+		    }
+		}
+		else {
+		    pretty_code.append(code_line);
+		    pretty_code.append('\n');
+		}
+	    }
+	    else {
+		if(isEmptyLineSuccessor) {
+		    // Ignore second empty line
+		}
+		else {
+		    isEmptyLineSuccessor = true;
+		    pretty_code.append('\n');
+		}
+	    }
+	}while(from_index < code.length());
+	return pretty_code.toString();
     }
 }
 

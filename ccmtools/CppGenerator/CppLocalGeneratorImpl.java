@@ -88,38 +88,39 @@ public class CppLocalGeneratorImpl
 
         Iterator path_iterator = out_paths.iterator();
         for (int i = 0; i < out_strings.length; i++) {
+
             String generated_code = prettifyCode(out_strings[i]);
 
-            List out_path = (List) path_iterator.next(); // out_path = [directory, filename]
+	    // out_path = [directory, filename]
+            List out_path = (List) path_iterator.next(); 
 	    
             // from the getOutputFiles function we know each entry in the output
             // file list has exactly two parts ... the dirname and the filename.
-
             String file_dir = (String) out_path.get(0);
             String file_name = (String) out_path.get(1);
 
             // don't add blank output files. this lets us discard parts of the
             // templates that we don't want to output (see the component section
             // of the getOutputFiles function)
-
             if (file_name.equals("")) 
 		continue;
 
-	    File user_files = new File(output_dir, file_dir);
-	    user_files = new File(user_files, file_name);
-	   
-	    if((file_dir == "impl") && user_files.isFile()) {
-		if(!isCodeEqualWithFile(generated_code, user_files)) {
-		    System.out.println("WARNING: " + output_dir 
-				       + File.separator + file_dir 
-				       + File.separator 
-				       + file_name + " already exists!");
+	    File outFile = new File(output_dir 
+				    + File.separator 
+				    + file_dir, file_name); 
+	    if((file_dir == "impl") && outFile.isFile()) {
+		if(!isCodeEqualWithFile(generated_code, outFile)) {
+		    System.out.println("WARNING: " 
+				       + outFile 
+				       + " already exists!");
 		    file_name += ".new";
+		    outFile = new File(output_dir 
+				       + File.separator 
+				       + file_dir, file_name);
 		}
 	    }
-	    // TODO: define new File object with new file_name 
-	    if(isCodeEqualWithFile(generated_code, user_files)) {
-		System.out.println("No changes in " + user_files);
+	    if(isCodeEqualWithFile(generated_code, outFile)) {
+		System.out.println("skipping " + outFile);
 	    }
 	    else {
 		writeFinalizedFile(file_dir, file_name, generated_code);
@@ -195,9 +196,10 @@ public class CppLocalGeneratorImpl
             // confix to work with us. beware the evil voodoo that results when
             // home and component files are in separate directories !
 
-            if (current_node instanceof MHomeDef)
-                base_name = ((MHomeDef) current_node).getComponent().getIdentifier();
-
+            if (current_node instanceof MHomeDef) {
+                base_name = 
+		    ((MHomeDef)current_node).getComponent().getIdentifier();
+	    }
             String base = getOutputDirectory(base_name);
 
             f = new ArrayList();
@@ -236,7 +238,8 @@ public class CppLocalGeneratorImpl
         } 
 	else if((current_node instanceof MProvidesDef)) {
 	    if ((flags & FLAG_APPLICATION_FILES) != 0) {
-		MComponentDef component = ((MProvidesDef)current_node).getComponent();
+		MComponentDef component = 
+		    ((MProvidesDef)current_node).getComponent();
 		f = new ArrayList();
 		f.add("impl");
 		f.add(component.getIdentifier() + "_" + node_name + "_impl.h");
@@ -260,27 +263,4 @@ public class CppLocalGeneratorImpl
 
         return files;
     }
-
-
-    boolean isCodeEqualWithFile(String code, File file)
-    {
-	try {
-	    if (file.isFile()) {
-		StringBuffer buffer = new StringBuffer();
-		FileInputStream stream = new FileInputStream(file);
-		InputStreamReader input = new InputStreamReader(stream);
-		BufferedReader reader = new BufferedReader(input);
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-		    buffer.append(line + "\n");
-		}
-		return code.equals(buffer.toString());
-	    }
-	}
-	catch(IOException e) {
-	    System.err.println("ERROR: Can't read " + file);
-	}
-	return false;
-    } 
-
 }
