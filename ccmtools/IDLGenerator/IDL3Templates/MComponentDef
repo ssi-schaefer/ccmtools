@@ -28,7 +28,7 @@ component %(Identifier)s
 
 %(CloseNamespace)s
 
-#include <%(HomeInclude)s.idl>
+%(HomeInclude)s
 
 #endif
 

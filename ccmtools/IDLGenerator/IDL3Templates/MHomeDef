@@ -6,7 +6,7 @@
 #ifndef __HOME__%(PreprocIdentifier)s__
 #define __HOME__%(PreprocIdentifier)s__
 
-#include <%(ComponentInclude)s.idl>
+%(ComponentInclude)s
 
 %(OpenNamespace)s
 

@@ -196,7 +196,7 @@ abstract public class IDLGenerator
     {
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        return "#include <"+join(file_separator, scope)+".idl>";
+        return "#include <" + join(file_separator, scope) + ".idl>";
     }
 
     /**

@@ -28,6 +28,9 @@ import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +38,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class IDL3GeneratorImpl
     extends IDLGenerator
@@ -47,12 +51,43 @@ public class IDL3GeneratorImpl
 
     protected String getLocalValue(String variable)
     {
-        String value = super.getLocalValue(variable);
-        if (current_node instanceof MHomeDef) {
-            return data_MHomeDef(variable, value);
+        String value = "";
+	MInterfaceDef iface = null;
+	
+	if (variable.equals("ProvidesInclude") ||
+	    variable.equals("SupportsInclude") ||
+	    variable.equals("UsesInclude")) {
+
+            if (current_node instanceof MProvidesDef)
+                iface = ((MProvidesDef) current_node).getProvides();
+            else if (current_node instanceof MSupportsDef)
+                iface = ((MSupportsDef) current_node).getSupports();
+            else if (current_node instanceof MUsesDef)
+                iface = ((MUsesDef) current_node).getUses();
+	    
+            if (iface != null) 
+		value = getScopedInclude(iface);
+	}
+	else if (variable.equals("HomeInclude")) {
+            if (current_node instanceof MComponentDef) {
+                Iterator homes = ((MComponentDef) current_node).getHomes().iterator();
+                value = getScopedInclude((MHomeDef) homes.next());
+            }
+	}
+	else if (variable.equals("ComponentInclude")) {
+            if (current_node instanceof MHomeDef) {
+                value = getScopedInclude(((MHomeDef) current_node).getComponent());
+            }
+	}
+	else {
+	    value = super.getLocalValue(variable);
+	    if (current_node instanceof MHomeDef) {
+		return data_MHomeDef(variable, value);
+	    }
 	}
         return value;
     }
+
 
     protected String data_MHomeDef(String data_type, String data_value)
     {
@@ -79,6 +114,13 @@ public class IDL3GeneratorImpl
         return super.data_MHomeDef(data_type, data_value);
     }
 
+
+    protected String getScopedInclude(MContained node)
+    {
+        List scope = getScope(node);
+        scope.add(node.getIdentifier());
+        return "#include <" + join(File.separator, scope) + ".idl>";
+    }
 
     /**
      * Write generated IDL3 code to output files in the following structure:
@@ -112,12 +154,14 @@ public class IDL3GeneratorImpl
 	    if(namespace.size() > 0) {
 		dir += File.separator + join(File.separator, namespace) + File.separator;
 	    }
+	    /*
 	    if(current_node instanceof MHomeDef) {
 		dir += (((MHomeDef)current_node).getComponent()).getIdentifier();
 	    }
 	    else {
 		dir += ((MComponentDef)current_node).getIdentifier();
 	    }
+	    */
 	    name = ((MContained) current_node).getIdentifier() + ".idl";
 	}
 	else {
