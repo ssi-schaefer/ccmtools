@@ -1,3 +1,7 @@
+/*
+$Id$
+*/
+
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 #include <CCM_Utils/Debug.h>
@@ -120,16 +124,21 @@ int main ( int argc, char *argv[] )
 
     DEBUGNL("==== Begin Test Case =============================================" );
 
+    cout << endl << "You should now get an OCL exception:" << endl
+                 << "------------------------------------" << endl;
+
      try{
 
-     double x = myHello.ptr()->sqrt(0);
-     cout << "# myHello.ptr()->sqrt(0) = " << x << endl;
+     double x = myHello.ptr()->sqrt(123.456);
+     cout << "# myHello.ptr()->sqrt(123.456) = " << x << endl;
 
      }
      catch(CCM_OCL::OclException& e)
      {
         cout << e.what();
      }
+
+     cout << endl;
 
     DEBUGNL("==== End Test Case ===============================================" );
   } catch ( LocalComponents::NotImplemented& e ) {

@@ -1,3 +1,5 @@
+-- $Id$
+
 package GLOBAL
 
 context Console::println(s2:String):Integer
