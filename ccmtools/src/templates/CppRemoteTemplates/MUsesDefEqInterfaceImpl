@@ -18,9 +18,12 @@ void
 
 ::%(IdlUsesType)s_ptr 
 %(ComponentType)s_impl::get_connection_%(Identifier)s()
+	throw(Components::NoConnection)
 {
     LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::get_connection_%(Identifier)s()");
-    return ::%(IdlUsesType)s::_duplicate (reference_for_receptacle_%(Identifier)s);
+	if(reference_for_receptacle_%(Identifier)s == NULL)
+		throw Components::NoConnection();
+    return ::%(IdlUsesType)s::_duplicate(reference_for_receptacle_%(Identifier)s);
 }
 
 

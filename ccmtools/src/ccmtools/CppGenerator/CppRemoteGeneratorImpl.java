@@ -1089,10 +1089,12 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             code.add(getLocalName(idlException, "::"));
         }
         if (code.size() > 0) {
-            return "throw(LocalComponents::CCMException, " + Text.join(", ", code) + ")";
+            //return "throw(LocalComponents::CCMException, " + Text.join(", ", code) + ")";
+            return Text.join(", ", code) + ")";
         }
         else {
-            return "throw(LocalComponents::CCMException)";
+            //return "throw(LocalComponents::CCMException)";
+            return ")";
         }
     }
 
