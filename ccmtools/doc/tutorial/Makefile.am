@@ -6,17 +6,18 @@ TEX = $(DOC_NAME).tex       \
       CCMOverview.tex       \
       ConnectComponents.tex \
       ProgrammingModel.tex  \
-      FirstAssembly.tex     \
       FirstComponent.tex    \
+      UMLComponentDesign.tex \
+      FirstAssembly.tex     \
       Installation.tex      \
       Introduction.tex      \
       LCAC.tex              \
       RemoteComponent.tex   \
-      MicoInstallation.tex  \
-      ConfixInstallation.tex \
       Remote.tex             \
-      ManPage.tex            \
-      CarRentalExample.tex
+      ConfixInstallation.tex \
+      MicoInstallation.tex  \
+      ManPage.tex            
+
 
 BIBS = cbse.bib doc.bib pattern.bib se.bib wx.bib
 

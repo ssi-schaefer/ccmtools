@@ -317,3 +317,60 @@ to create the desired output.
   {\tt Confix manual}
   
 \end{description}
+
+
+%------------------------------------------------------------------------------
+\section{ccmtools-idl}
+%------------------------------------------------------------------------------
+
+\begin{description}
+
+\item [NAME:] 
+  {\tt ccmtools-idl} - Run an IDL compiler to generate CORBA stub and skeletons.
+
+\item [SYNOPSIS:] 
+  {\tt ccmtools-idl OPTION FILES}
+
+\item [DESCRIPTION:]
+  The {\tt ccmtools-idl} script is a IDL compiler wrapper for Mico ORB and Java ORB,
+  and hides the different call notations. This script also allows to process more than
+  one IDL file at the same time. 
+  Note that this script assumes that both IDL compilers are installed correctly.
+
+\item [OPTION:]
+  The {\tt ccmtools-idl} script supports of the following options:
+  \begin{itemize}
+  \item {\tt -h, --help} \\
+    Prints out a short description of the available command line parameters.
+
+  \item {\tt -Ipath} \\
+    Specifies a path that will be handled from a preprocessor to find 
+    included IDL files.
+   
+  \item {\tt --mico} \\
+    Forces the use of Mico's IDL compiler.
+    Thus, the generated stub and skeletons are implemented in C++.
+
+  \item {\tt --java} \\
+    Forces the use of Java's build in IDL compiler.
+    Thus, the generated stub and skeletons are implemented in Java.
+    Note that Java's IDL compiler only supports CORBA 2.x but no CORBA 3.0 extensions
+    like {\tt component}, {\tt home}, etc.
+
+  \item {\tt -V, --version} \\
+    Prints out the current version of installed CCM Tools.
+  \end{itemize}
+  
+\item [FILES:]
+  This {\tt ccmtools-idl} script can handle single IDL files or a list of IDL
+  files. The following examples show the usage of IDL files: 
+  \begin{verbatim}
+    ccmtools-idl --mico CarRental.idl
+    ccmtools-idl --java CarRental.idl Customer.idl
+    ccmtools-idl --mico *.idl
+  \end{verbatim}
+
+\item [SEE ALSO:]
+  {\tt Mico manual, Java IDL documentation}
+  
+\end{description}
