@@ -1,2 +1,0 @@
-  %(Identifier)s_facet = new %(Identifier)sFacetAdapter ( this, local_component );
-

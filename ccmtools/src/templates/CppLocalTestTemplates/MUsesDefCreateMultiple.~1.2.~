@@ -1,2 +1,0 @@
-    %(ComponentType)s_uses_%(Identifier)s =
-      my%(ComponentType)sMirror->provide_facet("%(Identifier)s_mirror");
