@@ -19,3 +19,5 @@ check.log
 depcomp
 build
 TEST*
+.classpath
+.project
