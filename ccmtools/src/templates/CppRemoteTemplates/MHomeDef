@@ -10,8 +10,7 @@
 
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h>
 
-// Include CORBA stubs generated from IDL2 files
-#include <%(IdlFileNamespace)s%(Identifier)s.h> 
+#include <%(IdlFileNamespace)s%(Identifier)s.h> // CORBA stubs 
 
 %(OpenNamespace)s
 
@@ -23,12 +22,12 @@ class %(Identifier)s_impl :
     virtual public POA_%(ShortNamespace)s%(Identifier)s,
     virtual public PortableServer::RefCountServantBase
 {
-  private:
-    CCM_Local%(Namespace)s::CCM_%(Identifier)s* local_home;
-    CCM::SessionContainer* ccm_container;
+  protected:
+    WX::Utils::SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s> local_home;
+    WX::Utils::SmartPtr<CCM::SessionContainer> ccm_container;
       
   public:
-    %(Identifier)s_impl(CCM::SessionContainer* c);
+    %(Identifier)s_impl(WX::Utils::SmartPtr<CCM::SessionContainer> c);
     virtual ~%(Identifier)s_impl();
 
     // Implicit operations
@@ -42,16 +41,16 @@ class %(Identifier)s_impl :
 
     // Inherited KeylessCCMHome interface
     Components::CCMObject_ptr create_component ();
-  };
+};
  
 %(CloseNamespace)s
+
 
 //==============================================================================
 // Remote entry point
 //==============================================================================
 extern "C" {
-  int
-  deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name);
+    int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name);
 }
 
 #endif
@@ -80,18 +79,20 @@ using namespace WX::Utils;
 // Component home adapter
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl (CCM::SessionContainer* c)
-  : ccm_container (c)
+%(Identifier)s_impl::%(Identifier)s_impl (SmartPtr<CCM::SessionContainer> c)
+    : ccm_container (c)
 {
-    DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
-    local_home = 
-	dynamic_cast<CCM_Local%(Namespace)s::CCM_%(Identifier)s*>(create_%(Identifier)s());
+    LDEBUGNL(CCM_REMOTE, "+%(Identifier)s_impl::%(Identifier)s_impl()");
+    LocalComponents::HomeFinder* homeFinder = CCM_Local::HomeFinder::Instance();
+    local_home = SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s>(
+        dynamic_cast<CCM_Local%(Namespace)s::%(Identifier)s*>
+	(homeFinder->find_home_by_name("%(Identifier)s").ptr()));
 }
 
 %(Identifier)s_impl::~%(Identifier)s_impl ()
 {
-    DEBUGNL("-%(Identifier)s_impl::~%(Identifier)s_impl()");
-    delete local_home;
+    LDEBUGNL(CCM_REMOTE, "-%(Identifier)s_impl::~%(Identifier)s_impl()");
+    // Smart pointer local_home goes out of scope
 }
 
 
@@ -102,18 +103,15 @@ using namespace WX::Utils;
 ::%(ShortNamespace)s%(ComponentType)s_ptr
 %(Identifier)s_impl::create ()
 {
-    DEBUGNL(" %(Identifier)s_impl::create()");
-
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::create()");
     // create the local_component
-    CCM_Local%(Namespace)s::CCM_%(ComponentType)s* local_component = 
-        dynamic_cast<CCM_Local%(Namespace)s::CCM_%(ComponentType)s*>(local_home->create());
-
+    SmartPtr<CCM_Local%(Namespace)s::%(ComponentType)s> local_component = 
+        local_home->create();
     // create component remote adapter
     PortableServer::ServantBase_var component_adapter =
         new %(ComponentType)s_impl(local_component, ccm_container);
-
     Components::CCMObject_var co = 
-        ccm_container->activate_component(local_component,component_adapter.in()); 
+        ccm_container->activate_component(component_adapter.in()); 
     return ::%(ShortNamespace)s%(ComponentType)s::_narrow(co);
 }
 
@@ -132,8 +130,7 @@ using namespace WX::Utils;
 void
 %(Identifier)s_impl::remove_component(Components::CCMObject_ptr _co)
 {
-    DEBUGNL(" %(Identifier)s_impl::remove_component()");
-
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::remove_component()");
     PortableServer::ServantBase_var _cs = ccm_container->get_skeleton_for_reference(_co);
     // TODO
     ccm_container->deactivate_component(_cs);
@@ -147,7 +144,7 @@ void
 Components::CCMObject_ptr
 %(Identifier)s_impl::create_component ()
 {
-    DEBUGNL(" %(Identifier)s_impl::create_component()");
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::create_component()");
     return create ();
 }
 
@@ -161,7 +158,7 @@ extern "C" {
     
 int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
 {
-    DEBUGNL(" deploy_%(Identifier)s(" << registration_name << ")");
+    LDEBUGNL(CCM_REMOTE, " deploy_%(Identifier)s(" << registration_name << ")");
 
     CosNaming::NamingContextExt_var ns;
     CORBA::Object_var nsobj;
@@ -174,8 +171,14 @@ int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
       return -1; // Can't connect to NameService
     }
 
+    LocalComponents::HomeFinder* homeFinder;
+    homeFinder = CCM_Local::HomeFinder::Instance();
+    int error = local_deploy_TestHome("%(Identifier)s");
+    if(error)
+      return -2; // Can't deploy local component
+
     // Startup component home
-    CCM::SessionContainer* container = new CCM::SessionContainer(orb);
+    SmartPtr<CCM::SessionContainer> container(new CCM::SessionContainer(orb));
     CCM::SessionContainer::ComponentInfo info;
     info.home_short_name = "%(Identifier)s";
     info.home_absolute_name = "::%(Identifier)s";

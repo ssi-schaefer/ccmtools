@@ -2,7 +2,7 @@
 CCM_Remote::CCM_Session_%(ComponentType)s::
 %(HomeType)s_impl::%(Identifier)s(%(MParameterCORBA)s)
 {
-  DEBUGNL(" %(HomeType)s_impl::%(Identifier)s()");
+  LDEBUGNL(CCM_REMOTE, " %(HomeType)s_impl::%(Identifier)s()");
 
   // TODO: convert parameter
 	

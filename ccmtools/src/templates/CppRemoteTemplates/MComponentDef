@@ -31,17 +31,17 @@ class %(Identifier)s_impl :
 {
     friend class CCM_%(Identifier)s_Context_impl;
 
-  private:
-    CCM_Local%(Namespace)s::CCM_%(Identifier)s* local_adapter;
+  protected:
+    WX::Utils::SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s> local_adapter;
     CCM_Local%(Namespace)s::CCM_%(Identifier)s_Context* local_context;
-    CCM::SessionContainer* ccm_container;
+    WX::Utils::SmartPtr<CCM::SessionContainer> ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
   public:
-    %(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s*, 
-        CCM::SessionContainer *);
+    %(Identifier)s_impl(WX::Utils::SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s>, 
+                        WX::Utils::SmartPtr<CCM::SessionContainer> );
     virtual ~%(Identifier)s_impl ();
 
     // Component Attributes
@@ -80,14 +80,15 @@ class %(Identifier)s_impl :
 class CCM_%(Identifier)s_Context_impl
     : public CCM_Local%(Namespace)s::CCM_%(Identifier)s_Context
 {
-  private:
+  protected:
     %(Identifier)s_impl* component_adapter;
-    CCM::SessionContainer* ccm_container;
+     WX::Utils::SmartPtr<CCM::SessionContainer> ccm_container;
 
 %(MUsesDefLocalAdapterHeader)s	
       
   public:
-    CCM_%(Identifier)s_Context_impl(%(Identifier)s_impl* g, CCM::SessionContainer* co);
+    CCM_%(Identifier)s_Context_impl(%(Identifier)s_impl* g, 
+         WX::Utils::SmartPtr<CCM::SessionContainer> c);
     virtual ~CCM_%(Identifier)s_Context_impl();
       
 %(MUsesDefGetLocalAdapterHeader)s
@@ -128,19 +129,19 @@ using namespace WX::Utils;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s* i, 
-    CCM::SessionContainer * c)
-    : local_adapter(i), ccm_container (c)
+%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr<CCM_Local%(Namespace)s::%(Identifier)s> la, 
+    SmartPtr<CCM::SessionContainer> c)
+    : local_adapter(la), ccm_container (c)
 {
-    DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
+    LDEBUGNL(CCM_REMOTE, "+%(Identifier)s_impl::%(Identifier)s_impl()");
     local_context = new CCM_%(Identifier)s_Context_impl(this,ccm_container); 
 %(MProvidesDefAdapterVariableInit)s
 }
 
 %(Identifier)s_impl::~%(Identifier)s_impl ()
 {
-    DEBUGNL("-%(Identifier)s_impl::~%(Identifier)s_impl()");
-    delete local_adapter; 
+    LDEBUGNL(CCM_REMOTE, "-%(Identifier)s_impl::~%(Identifier)s_impl()");
+    // Smart pointer local_adapter goes out of scope 
     delete local_context;
 }
 
@@ -180,7 +181,7 @@ using namespace WX::Utils;
 CORBA::Object_ptr
 %(Identifier)s_impl::provide_facet(const char* name)
 {
-    DEBUGNL(" %(Identifier)s_impl::provide_facet()");
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::provide_facet()");
 
 %(MProvidesDefNavigationFacet)s
     throw Components::InvalidName();
@@ -195,7 +196,7 @@ CORBA::Object_ptr
 Components::Cookie *
 %(Identifier)s_impl::connect(const char* name, CORBA::Object_ptr ref)
 {
-    DEBUGNL(" %(Identifier)s_impl::connect()");
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::connect()");
 %(MUsesDefReceptacleConnect)s
     throw Components::InvalidName();
     return new CCM::Cookie_impl;
@@ -204,7 +205,7 @@ Components::Cookie *
 void
 %(Identifier)s_impl::disconnect(const char* name, Components::Cookie* _ck)
 {
-    DEBUGNL(" %(Identifier)s_impl::disconnect()");
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::disconnect()");
 %(MUsesDefReceptacleDisconnect)s
     throw Components::InvalidName();
 }
@@ -217,25 +218,23 @@ void
 Components::CCMHome_ptr
 %(Identifier)s_impl::get_ccm_home()
 {
-    DEBUGNL(" %(Identifier)s_impl::get_ccm_home()");
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::get_ccm_home()");
     return ccm_container->get_reference_for_home();
 }
 
 void
 %(Identifier)s_impl::configuration_complete()
 {
-    DEBUGNL(" %(Identifier)s_impl::configuration_complete()");
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::configuration_complete()");
     ccm_container->configuration_complete (this); 
-    local_adapter->set_session_context(local_context);
-    local_adapter->ccm_activate ();
+    local_adapter->configuration_complete();
 }
 
 void
 %(Identifier)s_impl::remove()
 {
-    DEBUGNL(" %(Identifier)s_impl::remove()");
-    local_adapter->ccm_passivate();
-    local_adapter->ccm_remove();
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::remove()");
+    local_adapter->remove();
     Components::CCMHome_var myhome = get_ccm_home ();
     Components::CCMObject_var myself = ccm_container->get_reference_for_component (this);
     myhome->remove_component (myself);
@@ -249,7 +248,7 @@ void
 CORBA::Object_ptr
 %(Identifier)s_impl::_get_component()
 {
-    DEBUGNL(" %(Identifier)s_impl::_get_component()");
+    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::_get_component()");
     return ccm_container->get_reference_for_component (this);
 }
 
@@ -259,17 +258,16 @@ CORBA::Object_ptr
 //============================================================================
 
 CCM_%(Identifier)s_Context_impl::
-CCM_%(Identifier)s_Context_impl(%(Identifier)s_impl* c, CCM::SessionContainer* co)
+CCM_%(Identifier)s_Context_impl(%(Identifier)s_impl* c, SmartPtr<CCM::SessionContainer> co)
     : component_adapter(c), ccm_container(co)
 {
-    DEBUGNL("+CCM_%(Identifier)s_Context_impl->CCM_%(Identifier)s_Context_impl()");
-
+    LDEBUGNL(CCM_REMOTE, "+CCM_%(Identifier)s_Context_impl->CCM_%(Identifier)s_Context_impl()");
 %(MUsesDefContextInit)s	
 }
 
 CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
 {
-    DEBUGNL("-CCM_%(Identifier)s_Context_impl->~CCM_%(Identifier)s_Context_impl()");
+    LDEBUGNL(CCM_REMOTE, "-CCM_%(Identifier)s_Context_impl->~CCM_%(Identifier)s_Context_impl()");
 }
 
 %(MUsesDefContextGetConnection)s
@@ -277,7 +275,7 @@ CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
 LocalComponents::HomeExecutorBase* 
 CCM_%(Identifier)s_Context_impl::get_CCM_home()
 {
-    DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_CCM_home()");
+    LDEBUGNL(CCM_REMOTE, " CCM_%(Identifier)s_Context_impl->get_CCM_home()");
     // TODO
     return NULL;
 }
@@ -286,7 +284,7 @@ LocalComponents::Object*
 CCM_%(Identifier)s_Context_impl::get_CCM_object()
     throw(LocalComponents::IllegalState)
 {
-    DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_CCM_object()");
+    LDEBUGNL(CCM_REMOTE, " CCM_%(Identifier)s_Context_impl->get_CCM_object()");
     // TODO
     return NULL;
 }

@@ -1,17 +1,16 @@
 %(CORBAType)s %(Object)s_impl::%(Identifier)s (%(MParameterDefCORBA)s)
  %(MExceptionDef)s
 {
-  DEBUGNL(" %(Object)s_impl::%(Identifier)s()");
-
+    LDEBUGNL(CCM_REMOTE, " %(Object)s_impl::%(Identifier)s()");
 %(MParameterDefConvertParameter)s
 %(MParameterDefDeclareResult)s
-  try {
+    try {
 %(MParameterDefConvertMethod)s
-  }
+    }
 %(MParameterDefConvertExceptions)s
-  catch(...) {
-    throw CORBA::SystemException();	
-  } 
+    catch(...) {
+        throw CORBA::SystemException();	
+    } 
 %(MParameterDefConvertResult)s
 }
 

@@ -1,17 +1,16 @@
 %(LanguageType)s %(Object)sReceptacleAdapter::%(Identifier)s( %(MParameterDefAll)s )
-  %(MExceptionDef)s
+    %(MExceptionDef)s
 {
-  DEBUGNL(" %(Object)sReceptacleAdapter->%(Identifier)s()"); 
-
+    LDEBUGNL(CCM_REMOTE, " %(Object)sReceptacleAdapter->%(Identifier)s()"); 
 %(MParameterDefConvertReceptacleParameterToCorba)s
 %(MParameterDefDeclareReceptacleCorbaResult)s
-  try {
+    try {
 %(MParameterDefConvertReceptacleMethodToCorba)s
-  }
+    }
 %(MParameterDefConvertReceptacleExceptionsToCpp)s  
-  catch(...) {
-    throw LocalComponents::CCMException();
-  }
+    catch(...) {
+        throw LocalComponents::CCMException();
+    }
 %(MParameterDefConvertReceptacleResultToCpp)s
 }
 

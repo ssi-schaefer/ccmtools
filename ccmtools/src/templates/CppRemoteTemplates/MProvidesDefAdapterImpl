@@ -2,18 +2,17 @@
 // %(Identifier)s remote facet adapter
 //============================================================================
 
-%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(CCM_Local%(Namespace)s::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s* lc)
-  : local_component(lc)
+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(SmartPtr<CCM_Local%(Namespace)s::CCM_Session_%(ComponentType)s::%(ComponentType)s> la)
+    : local_component_adapter(la)
 {
-  DEBUGNL("+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");
-  
-  local_adapter = local_component->get_%(Identifier)s();
+    LDEBUGNL(CCM_REMOTE, "+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");
+    local_adapter = local_component_adapter->provide_%(Identifier)s();
 }
 
 %(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()
 {
-  DEBUGNL("-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()");
-  delete local_adapter;
+    LDEBUGNL(CCM_REMOTE, "-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()");
+    // Smart pointer local_facet_adapter goes out of scope
 }
 
 %(MAttributeDefFacetAdapterImpl)s

@@ -6,11 +6,11 @@
       virtual public POA_%(ProvidesType)s,
       virtual public PortableServer::RefCountServantBase
   {
-    private:
-      CCM_Local%(Namespace)s::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s* local_component;
-      CCM_Local::%(ProvidesType)s* local_adapter; 
+    protected:
+      WX::Utils::SmartPtr<CCM_Local%(Namespace)s::CCM_Session_%(ComponentType)s::%(ComponentType)s> local_component_adapter;
+      WX::Utils::SmartPtr<CCM_Local::%(ProvidesType)s> local_adapter; 
     public:
-      %(Identifier)sFacetAdapter(CCM_Local%(Namespace)s::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s*);
+      %(Identifier)sFacetAdapter(WX::Utils::SmartPtr<CCM_Local%(Namespace)s::CCM_Session_%(ComponentType)s::%(ComponentType)s>);
       virtual ~%(Identifier)sFacetAdapter();
 
 %(MAttributeDefAdapterHeader)s

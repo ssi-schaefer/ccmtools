@@ -1,17 +1,17 @@
 %(CORBAType)s %(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefCORBA)s) 
-  %(MExceptionDefCORBA)s
+    %(MExceptionDefCORBA)s
 {
-  DEBUGNL(" %(Object)sFacetAdapter::%(Identifier)s()");
+    LDEBUGNL(CCM_REMOTE, " %(Object)sFacetAdapter::%(Identifier)s()");
 
 %(MParameterDefConvertParameter)s
 %(MParameterDefDeclareResult)s
-  try {
+    try {
 %(MParameterDefConvertMethod)s
-  }
+    }
 %(MParameterDefConvertExceptions)s  
-  catch(...) {
-    throw CORBA::SystemException();	
-  }
+    catch(...) {
+        throw CORBA::SystemException();	
+    }
 %(MParameterDefConvertParameterFromCppToCorba)s
 %(MParameterDefConvertResult)s
 }
