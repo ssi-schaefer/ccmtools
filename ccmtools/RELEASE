@@ -54,6 +54,7 @@ o) remove CORBA::Stubs namespace from idl3 to idl2 generator
 *) generate adapter classes (*ToCorba, *FromCorba) for each IDL interface and use these
    adapter classes within the remote component logic as facet and receptacle adapters.
 o) generate the namespace into the converter file-name 
+*) add #ifdef HAVE_MICO to each generated source file (c++generator and cpp-environment/CCM_Remote)
 
 
 c++remote-test generator:

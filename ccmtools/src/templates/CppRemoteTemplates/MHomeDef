@@ -7,6 +7,12 @@
 #ifndef __HOME__%(Identifier)s__REMOTE__H__
 #define __HOME__%(Identifier)s__REMOTE__H__
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
+
 #include "%(ComponentType)s_remote.h"
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h> 
 #include <%(LocalIncludeNamespace)s%(Identifier)s_gen.h>
@@ -53,6 +59,7 @@ extern "C" {
     int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior);
 }
 
+#endif // HAVE_MICO
 #endif
 
 
@@ -62,6 +69,12 @@ extern "C" {
  * <http://ccmtools.sourceforge.net>
  * DO NOT EDIT!
  */
+
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
 
 // Mico includes
 #include <CORBA.h>
@@ -210,7 +223,8 @@ extern "C" {
         ior = orb->object_to_string(home); 
         container->activate();
         return 0; // OK
-  }
+    }
   
 }
 
+#endif // HAVE_MICO

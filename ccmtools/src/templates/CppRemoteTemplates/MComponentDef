@@ -7,6 +7,12 @@
 #ifndef __%(Identifier)s__CCM__H__
 #define __%(Identifier)s__CCM__H__
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
+
 #include <WX/Utils/smartptr.h>
 #include <WX/Utils/debug.h> 
 #include <CCM/CCMContainer.h>
@@ -74,6 +80,7 @@ class %(Identifier)s_impl :
 
 %(CloseNamespace)s
 
+#endif // HAVE_MICO
 #endif
 
 
@@ -83,6 +90,12 @@ class %(Identifier)s_impl :
  * <http://ccmtools.sourceforge.net>
  * DO NOT EDIT!
  */
+
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO  
 
 #include <CCM_Remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
@@ -222,5 +235,6 @@ CORBA::Object_ptr
 
 %(CloseNamespace)s
 
+#endif // HAVE_MICO
 
 

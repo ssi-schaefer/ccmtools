@@ -9,6 +9,10 @@
  * To enable debug output use -DWXDEBUG compiler flag
  ***/
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
 #include <cstdlib> 
 #include <iostream>
 #include <string>
@@ -105,3 +109,4 @@ int main (int argc, char *argv[])
     cout << "Exit C++ remote test client" << endl; 	
 }
 
+#endif // HAVE_MICO

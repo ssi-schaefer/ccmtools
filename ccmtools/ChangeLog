@@ -14,3 +14,6 @@ RELEASE-0.5.1-pre4
 *) added interface adapter classes that delegates to and from CORBA stubs.
    These interface adapter classes are used by the remote component logic and 
    replaces existing facet and receptacle adapters.
+   
+*) added #ifdef HAVE_MICO conditions into all generated remote source files
+   (cpp-environment/CCM_Remote and files generated from c++remote)   
