@@ -212,6 +212,7 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
     static final String CCM_COMPONENT = "CCMComponent";
     static final String CCM_HOME = "CCMHome";
     static final String CCM_PRIMARY_KEY = "CCMPrimaryKey";
+    static final String CORBA_PRIMITIVE = "CORBAPrimitive";
 
 
     boolean isCorbaStereotype( String type, Main main )
@@ -361,7 +362,8 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 	    {
 	        makeHome(code, main, prefix);
 	    }
-	    else if( isCorbaStereotype(CCM_PRIMARY_KEY, main) )
+	    else if( isCorbaStereotype(CCM_PRIMARY_KEY, main) ||
+	             isCorbaStereotype(CORBA_PRIMITIVE, main) )
 	    {
 	        // nothing to do
 	        return "";
