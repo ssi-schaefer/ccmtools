@@ -41,17 +41,19 @@ c++remote generator:
 --------------------
 *) separate deploy_CCM_Local*() from deploy_CCM_Remote*()
 *) generate deploy_CCM_Remote*() functions with coded namespace.
+*) add a deploy_with_ior_CCM_Remote*() function to run without NameService
 o) implement a C++ version of deploy_* and undeploy_* too.
 *) remove second context object created by the c++remote generator and use receptacle 
    Adapter as a local receptacle for connection to a local component 
    - change connect method
    - change disconnect method
 o) add support for multiple receptacles
-o) test cases for attributes 
+*) add test cases for component attributes
+*) add test case for facet attributes
 o) test cases for supported interfaces
 o) test cases for interfaces as parameters
-o) generate debug output with parameter values.
 o) collect test cases 
+o) generate debug output with parameter values.
 o) JUnit test case for nested component composition
 o) Performance Measurement
 o) implement undeploy_*() functions 
@@ -64,7 +66,6 @@ o) add undeploy_*() functions at test client end.
 
 java-client-lib generator:
 --------------------------
-o) implement first version 
 
 
 cpp-environment:

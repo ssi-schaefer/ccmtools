@@ -6,12 +6,17 @@
 #ifndef __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
 #define __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
+
 #include <iostream>
 #include <sstream>
 
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
 #include <%(LocalIncludeNamespace)s%(Identifier)s.h>
-
 
 namespace CCM_Remote {
 
@@ -26,6 +31,7 @@ operator<<(std::ostream& o, const %(CorbaStubName)s& value);
 
 } // /namespace CCM_Remote
 
+#endif // HAVE_MICO
 #endif // __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
 
 <<<<<<<SPLIT>>>>>>>
@@ -34,6 +40,12 @@ operator<<(std::ostream& o, const %(CorbaStubName)s& value);
  *
  ***/
  
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
+
 #include <WX/Utils/debug.h>
 
 #include <CCM_Remote/PrimitiveConverter.h>
@@ -80,5 +92,7 @@ operator<<(std::ostream& o, const %(CorbaStubName)s& value)
 }
 
 } // /namespace CCM_Remote
+
+#endif // HAVE_MICO
 
 

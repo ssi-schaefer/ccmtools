@@ -1,6 +1,12 @@
 #ifndef __IFACE_%(PreprocIdentifier)s__H__
 #define __IFACE_%(PreprocIdentifier)s__H__
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
+
 %(MAttributeDefInclude)s
 
 %(MOperationDefInclude)s
@@ -9,5 +15,6 @@ namespace CCM_Remote {
 
 } // /namespace CCM_Remote
 
+#endif // HAVE_MICO
 #endif // __IFACE_%(PreprocIdentifier)s__H__
 

@@ -6,6 +6,12 @@
 #ifndef __ALIAS_CONVERTER_%(PreprocIdentifier)s__H__
 #define __ALIAS_CONVERTER_%(PreprocIdentifier)s__H__
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
+
 #include <iostream>
 #include <sstream>
 
@@ -24,6 +30,7 @@ namespace CCM_Remote {
 
 } // /namespace CCM_Remote
 
+#endif // HAVE_MICO
 #endif // __ALIAS_CONVERTER%(PreprocIdentifier)s__H__
 
 
@@ -33,6 +40,12 @@ namespace CCM_Remote {
  * CORBA converter for typedef %(Identifier)s (implementation file)
  *
  ***/
+
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
 
 #include <WX/Utils/debug.h> 
 	
@@ -51,3 +64,4 @@ namespace CCM_Remote {
 
 } // /namespace CCM_Remote
 
+#endif // HAVE_MICO

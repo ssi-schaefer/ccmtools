@@ -6,6 +6,12 @@
 #ifndef __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
 #define __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
+
 #include <iostream>
 #include <sstream>
 
@@ -27,6 +33,7 @@ operator<<(std::ostream& o, const %(CorbaStubName)s& value);
 
 } // /namespace CCM_Remote
 
+#endif // HAVE_MICO
 #endif // __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
 
 
@@ -36,6 +43,12 @@ operator<<(std::ostream& o, const %(CorbaStubName)s& value);
  * CORBA converter for struct %(Identifier)s (implementation file)
  *
  ***/
+
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
 
 #include <WX/Utils/debug.h> 
 
@@ -74,3 +87,4 @@ operator<<(std::ostream& o, const %(CorbaStubName)s& value)
 
 } // /namespace CCM_Remote
 
+#endif // HAVE_MICO
