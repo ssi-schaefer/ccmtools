@@ -1,4 +1,0 @@
-  // Equivalent operations for %(Identifier)s attribute
-  virtual %(LanguageType)s %(Identifier)s (  );
-  virtual void %(Identifier)s ( %(LanguageType)s value );
-

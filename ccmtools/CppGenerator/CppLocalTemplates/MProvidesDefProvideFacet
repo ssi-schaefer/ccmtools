@@ -1,5 +1,0 @@
-  if ( name == "%(Identifier)s" )
-    return CCM_Utils::SmartPtr<LocalComponents::Object>
-      ( dynamic_cast<LocalComponents::Object*> ( provide_%(Identifier)s (  ).ptr (  ) ) );
-
-

@@ -1,4 +1,0 @@
-        if name == "%(Identifier)s":
-            self.disconnect_%(Identifier)s()
-            return
-

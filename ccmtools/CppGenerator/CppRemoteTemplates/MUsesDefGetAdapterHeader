@@ -1,2 +1,0 @@
-      %(UsesType)s_ptr get_connection_%(Identifier)s();
-

@@ -1,2 +1,0 @@
-    %(ComponentType)s_ck_%(Identifier)s = my%(ComponentType)sMirror.ptr (  )->connect
-      ( "%(Identifier)s_mirror", %(ComponentType)s_provides_%(Identifier)s );

@@ -1,2 +1,0 @@
-  CCM_Utils::SmartPtr<%(CCMUsesType)s> %(Identifier)s_receptacle;
-

@@ -1,3 +1,0 @@
-  %(LanguageType)s %(Identifier)s (  );
-  void %(Identifier)s ( const %(LanguageType)s value );
-

@@ -1,8 +1,0 @@
-    def get_%(Identifier)s(self):
-        CCM_Utils.Debug.DEBUGNL(' CCM_%(ComponentType)s_impl->get_%(Identifier)s')
-
-        self.__facet = %(Identifier)s_impl(self)
-        self.__facet->set_component(self)
-        self.__facet
-
-

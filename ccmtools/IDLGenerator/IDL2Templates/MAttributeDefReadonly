@@ -1,2 +1,0 @@
-  readonly attribute %(LanguageType)s %(Identifier)s;
-

@@ -1,8 +1,0 @@
-SmartPtr<%(CCMUsesType)s>
-CCM_%(ComponentType)s_Context_impl::get_connection_%(Identifier)s (  )
-{
-  DEBUGNL(" CCM_%(ComponentType)s_Context_impl->get_connection_%(Identifier)s (  )");
-  return ( component_local_adapter->get_connection_%(Identifier)s (  ) );
-}
-
-

@@ -1,3 +1,0 @@
-interface __INTERFACE__ { };
-component __COMPONENT__ supports __INTERFACE__ { };
-home __HOME__ manages __COMPONENT__ { };

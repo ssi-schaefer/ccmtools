@@ -1,2 +1,0 @@
-  PyObject * Py_%(Identifier)s = NULL;
-

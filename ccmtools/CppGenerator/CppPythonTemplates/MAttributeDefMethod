@@ -1,2 +1,0 @@
-  { "%(Identifier)s", (PyCFunction) Py%(Object)s_%(Identifier)s,
-    %(MethodArguments)s, "%(Identifier)s function wrapper" },

@@ -1,2 +1,0 @@
-      virtual %(LanguageType)s %(Identifier)s ( %(MParameterDefAll)s ) %(MExceptionDef)s;
-

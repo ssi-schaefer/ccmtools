@@ -1,3 +1,0 @@
-  virtual %(LanguageType)s %(Identifier)s (  );
-  virtual void %(Identifier)s ( const %(LanguageType)s value );
-

@@ -1,9 +1,0 @@
-# this is only to satisfy confix: it won't parse the module/namespace
-# of the generated IDL files.
-
-FILE_PROPERTIES(
-    filename='*.idl',
-    properties={
-    'INSTALL_PATH': ''
-    })
-

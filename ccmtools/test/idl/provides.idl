@@ -1,5 +1,0 @@
-interface __INTERFACE__ { };
-component __COMPONENT__ {
-  provides __INTERFACE__ __PROVIDES__;
-};
-home __HOME__ manages __COMPONENT__ { };
