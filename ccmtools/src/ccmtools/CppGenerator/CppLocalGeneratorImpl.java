@@ -64,7 +64,7 @@ public class CppLocalGeneratorImpl
     }
 
 
-    // Begin Hack ---------------------------------
+    // FIXME ---------------------------------
     // This hack is only temporarily to compile generated structures via PMM
     protected String getScopedInclude(MContained node)
     {
@@ -90,7 +90,7 @@ public class CppLocalGeneratorImpl
 	buffer.append("#endif \n");
 	return buffer.toString();
     }
-    // End Hack -----------------------------------
+    // FIXME ---------------------------------
 
 
 
@@ -144,7 +144,18 @@ public class CppLocalGeneratorImpl
                 }
 
                 writeMakefile(output_dir, file_dir, "py", "");
-                writeMakefile(output_dir, file_dir, "pl", "1;");
+
+                // FIXME ---------------------------------
+                // This hack is only temporarily to compile generated structures via PMM 
+                if(current_node instanceof MComponentDef
+                        || current_node instanceof MHomeDef
+                        || current_node instanceof MProvidesDef) {
+                    // Makefile.pl is not needed by components, homes and facets
+                }
+                else {
+                    writeMakefile(output_dir, file_dir, "pl", "1;");
+                }                   
+                // FIXME  --------------------------------
             }
         }
         catch(Exception e) {
