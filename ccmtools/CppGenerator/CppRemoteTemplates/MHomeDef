@@ -1,0 +1,221 @@
+/==============================================================================
+// MHomeDef, %(Identifier)s
+/==============================================================================
+
+#ifndef __%(Identifier)s__REMOTE__H__
+#define __%(Identifier)s__REMOTE__H__
+
+#include <string>
+#include <map>
+#include <CCM_Utils/smartptr.h>
+#include <CCM_Utils/debug.h>
+
+#include <CCMContainer.h>
+
+#include "%(ComponentType)s_remote.h"
+
+#include <CCM_Session_Calculator/%(Identifier)s_gen.h>
+#include <CCM_Session_Calculator/%(Identifier)s_app.h>
+
+
+namespace remote {
+namespace CCM_Session_%(ComponentType)s {
+
+  //==========================================================================
+  // %(Identifier)s adapter
+  //==========================================================================
+
+  class %(Identifier)s_impl :
+    virtual public POA_%(Identifier)s,
+    virtual public PortableServer::RefCountServantBase
+    {
+    private:
+      local::CCM_Session_Calculator::CCM_CalculatorHome* local_home;
+      CCM::SessionContainer* ccm_container;
+      
+    public:
+      %(Identifier)s_impl(CCM::SessionContainer *);
+      virtual ~%(Identifier)s_impl();
+
+      /*
+       * Implicit operations
+       */
+
+      %(ComponentType)s_ptr create ();
+
+      /*
+       * Explicit operations
+       */
+
+      // no factories
+
+      // no finders
+
+      // no attributes
+
+      // operations
+
+      Calculator_ptr create_with_serial_numer( CORBA::Long value);
+
+      /*
+       * Inherited CCMHome interface
+       */
+
+      CORBA::Object_ptr get_component_def ();
+      CORBA::Object_ptr get_home_def ();
+      void remove_component (Components::CCMObject_ptr comp);
+
+      /*
+       * Inherited KeylessCCMHome interface
+       */
+
+      Components::CCMObject_ptr create_component ();
+  };
+ 
+} // /namespace CCM_Session_%(ComponentType)s
+} // /namespace remote
+#endif
+
+
+<<<<<<<SPLIT>>>>>>>
+
+// MHomeDef,%(Identifier)s.cc
+
+/******************************************************************************/
+/*  Project: remote C++ Prototype                                             */
+/*  File   : Calculator_remote.cc                                             */
+/*  Version: 0.1                                                              */
+/*  Date   : Feber 2003                                                       */
+/*----------------------------------------------------------------------------*/
+/*  Company: SALOMON Automoation F&E                                          */
+/*  Autor  : Egon Teiniker                                                    */
+/*----------------------------------------------------------------------------*/
+/*  Note   :                                                                  */
+/******************************************************************************/
+
+
+#include "%(Identifier)s_remote.h"
+
+using namespace std;
+using namespace CCM_Utils;
+
+//============================================================================
+// Component home adapter
+//============================================================================
+
+remote::CCM_Session_Calculator::
+CalculatorHome_impl::CalculatorHome_impl (CCM::SessionContainer* c)
+  : ccm_container (c)
+{
+  cout << "+CalculatorHome_impl::CalculatorHome_impl()" << endl;
+  local_home = dynamic_cast<local::CCM_Session_Calculator::CCM_CalculatorHome*>
+    (create_CalculatorHome());
+}
+
+remote::CCM_Session_Calculator::
+CalculatorHome_impl::~CalculatorHome_impl ()
+{
+  cout << "-CalculatorHome_impl::~CalculatorHome_impl()" << endl;
+  delete local_home;
+}
+
+/*
+ * Implicit operations
+ */
+
+Calculator_ptr
+remote::CCM_Session_Calculator::
+CalculatorHome_impl::create ()
+{
+  cout << " CalculatorHome_impl::CalculatorHome_impl::create()" << endl;
+
+  // create the local_component
+  local::CCM_Session_Calculator::CCM_Calculator_impl* local_component = 
+    dynamic_cast<local::CCM_Session_Calculator::CCM_Calculator_impl*>(local_home->create());
+
+  // create component remote adapter
+  PortableServer::ServantBase_var component_adapter =
+    new Calculator_impl(local_component, ccm_container);
+
+  Components::CCMObject_var co = 
+    ccm_container->activate_component(local_component,component_adapter.in()); 
+  return Calculator::_narrow(co);
+}
+
+/*
+ * Explicit operations
+ */
+
+Calculator_ptr
+remote::CCM_Session_Calculator::
+CalculatorHome_impl::create_with_serial_numer (CORBA::Long value)
+{
+  cout << " CalculatorHome_impl::CalculatorHome_impl::create_with_serial_numer()" << endl;
+
+  // create the local_component
+  local::CCM_Session_Calculator::CCM_Calculator_impl* local_component = 
+    dynamic_cast<local::CCM_Session_Calculator::CCM_Calculator_impl*>
+       (local_home->create_with_serial_number(value));
+
+  // create component remote adapter
+  PortableServer::ServantBase_var component_adapter =
+    new Calculator_impl(local_component, ccm_container);
+
+  Components::CCMObject_var co = 
+    ccm_container->activate_component(local_component,component_adapter.in()); 
+  return Calculator::_narrow(co);
+}
+
+
+/*
+ * Inherited CCMHome interface
+ */
+
+CORBA::Object_ptr
+remote::CCM_Session_Calculator::
+CalculatorHome_impl::get_component_def ()
+{
+  cout << " CalculatorHome_impl::CalculatorHome_impl::get_component_def()" << endl;
+  // TODO
+  return CORBA::Object::_nil ();
+}
+
+CORBA::Object_ptr
+remote::CCM_Session_Calculator::
+CalculatorHome_impl::get_home_def ()
+{
+  cout << " CalculatorHome_impl::CalculatorHome_impl::get_home_def()" << endl;
+  // TODO
+  return CORBA::Object::_nil ();
+}
+
+void
+remote::CCM_Session_Calculator::
+CalculatorHome_impl::remove_component (Components::CCMObject_ptr _co)
+{
+  cout << " CalculatorHome_impl::CalculatorHome_impl::remove_component()" << endl;
+
+  PortableServer::ServantBase_var _cs = ccm_container->get_skeleton_for_reference(_co);
+  // TODO
+ 
+  ccm_container->deactivate_component(_cs);
+}
+
+/*
+ * Inherited KeylessCCMHome interface
+ */
+
+Components::CCMObject_ptr
+remote::CCM_Session_Calculator::
+CalculatorHome_impl::create_component ()
+{
+  cout << " CalculatorHome_impl::CalculatorHome_impl::create_component()" << endl;
+  return create ();
+}
+
+
+//============================================================================
+// Main for a standalone component
+//============================================================================
+
+//...

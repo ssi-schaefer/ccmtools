@@ -1,0 +1,484 @@
+/******************************************************************************/
+/*  Project: remote Prototype C++                                             */
+/*  File   : CCMContainer.cc                                                  */
+/*  Version: 0.1                                                              */
+/*  Date   : Feber 2003                                                       */
+/*----------------------------------------------------------------------------*/
+/*  Company: SALOMON Automoation F&E                                          */
+/*  Autor  : Egon Teiniker                                                    */
+/*----------------------------------------------------------------------------*/
+/*  Note   :                                                                  */
+/******************************************************************************/
+
+
+#include "CCMContainer.h"
+
+//============================================================================
+// Convert C++ to CORBA types
+//============================================================================
+
+CORBA::Long CCM::int_to_CORBA_Long(int i)
+{
+  return (CORBA::Long)i;
+}
+
+CORBA::Double CCM::double_to_CORBA_Double(double d)
+{
+  return (CORBA::Double)d;
+}
+
+char* CCM::string_to_char_ptr(std::string s)
+{
+  return CORBA::string_dup(s.c_str());
+}
+
+
+
+
+//============================================================================
+// Convert CORBA to C++ types
+//============================================================================
+
+int CCM::CORBA_Long_to_int(CORBA::Long i)
+{
+  return (int)i;
+}
+
+double CCM::CORBA_Double_to_double(CORBA::Double d)
+{
+  return (double)d;
+}
+
+
+
+
+//============================================================================
+// CCM Containers
+//============================================================================
+
+/*
+ * There is one container per home. Multiple containers may be active in
+ * a single process. Each container creates a new POA, where it activates
+ * the home, all components and all facets.
+ */
+
+CORBA::ULong CCM::ContainerBase::_container_number = 0;
+
+CCM::ContainerBase::ContainerBase ()
+{
+  _my_number = ++_container_number;
+}
+
+CCM::ContainerBase::~ContainerBase ()
+{
+}
+
+
+
+//============================================================================
+// Implementation for the Session Container
+//============================================================================
+
+CCM::SessionContainer::SessionContainer (CORBA::ORB_ptr orb)
+{
+  cout << "+CCM::SessionContainer->SessionContainer()" << endl;
+
+  CORBA::Object_var obj;
+  char name[256];
+
+  _have_info = 0;
+  _orb = CORBA::ORB::_duplicate (orb);
+
+  /*
+   * Create a private POA
+   */
+
+  sprintf (name, "SessionContainer-%lu", _my_number);
+  obj = _orb->resolve_initial_references ("RootPOA");
+  PortableServer::POA_var poa = PortableServer::POA::_narrow (obj);
+
+  CORBA::PolicyList pl;
+  _my_poa = poa->create_POA(name, poa->the_POAManager(), pl);
+}
+
+
+CCM::SessionContainer::~SessionContainer ()
+{
+  cout << "-CCM::SessionContainer->SessionContainer()" << endl;
+}
+
+
+void CCM::SessionContainer::load(const ComponentInfo& info)
+{
+   cout << " CCM::SessionContainer->load()" << endl;
+
+   assert (!_have_info);
+   _info = info;
+   _have_info = 1;
+
+  //Activate home singleton
+  PortableServer::ObjectId_var oid =
+    _my_poa->activate_object(_info.home_glue.in());
+  _home_ref = _my_poa->id_to_reference(oid.in());
+}
+
+
+void CCM::SessionContainer::activate ()
+{
+  cout << " CCM::SessionContainer->activate()" << endl;
+
+  // TODO
+  // Set instances to active, if their configuration is complete
+  // iterate through an InstanceMap and call ccm_activate()
+
+  // Activate our POA
+  PortableServer::POAManager_var mgr;
+  mgr = _my_poa->the_POAManager ();
+  mgr->activate ();
+}
+
+
+void CCM::SessionContainer::passivate ()
+{
+  cout << " CCM::SessionContainer::passivate()" << endl;
+
+  // TODO
+  // Set instances to inactive
+  // iterate through an InstanceMap and call instance->ccm_passivate()
+
+  // Deactivate our POA
+  PortableServer::POAManager_var mgr = _my_poa->the_POAManager ();
+  mgr->hold_requests (1);
+}
+
+
+void CCM::SessionContainer::remove ()
+{
+  cout << " CCM::SessionContainer::remove()" << endl;
+
+  passivate ();
+
+  // TODO
+  // Prepare instances for destruction
+  // iterate through an InstanceMap and call instance->ccm_remove()
+
+  // Destroy our POA
+  _my_poa->destroy(1, 1);
+}
+
+
+CORBA::Boolean CCM::SessionContainer::compare(Components::CCMHome_ptr ohome)
+{
+  cout << " CCM::SessionContainer::compare()" << endl;
+
+  PortableServer::ObjectId_var myid = _my_poa->reference_to_id(_home_ref);
+  PortableServer::ObjectId_var oid;
+
+  try {
+    oid = _my_poa->reference_to_id (ohome);
+  }
+  catch (PortableServer::POA::WrongAdapter &) {
+    return 0;
+  }
+
+// HACK !!!!!!!!!!!!
+//    return ((myid->length() == oid->length()) &&
+//  	  memcmp (myid->get_buffer(), oid->get_buffer(), myid->length()) == 0);
+  return false;
+}
+
+
+Components::CCMHome_ptr CCM::SessionContainer::get_reference_for_home ()
+{
+  cout << " CCM::SessionContainer->get_reference_for_home()" << endl;
+  return Components::CCMHome::_narrow (_home_ref.in());
+}
+
+
+Components::CCMObject_ptr
+CCM::SessionContainer::activate_component (localComponents::EnterpriseComponent* inst,
+						 PortableServer::Servant skel)
+{
+  cout << " CCM::SessionContainer->activate_component()" << endl;
+
+  PortableServer::ObjectId_var oid = _my_poa->activate_object(skel);
+  CORBA::Object_var ref = _my_poa->id_to_reference (oid.in());
+
+  return Components::CCMObject::_narrow (ref);
+}
+
+
+Components::CCMObject_ptr
+CCM::SessionContainer::get_reference_for_component (PortableServer::Servant s)
+{
+  cout << " CCM::SessionContainer::get_reference_for_component()" << endl;
+
+  CORBA::Object_var o = _my_poa->servant_to_reference (s);
+  return Components::CCMObject::_narrow (o);
+}
+
+
+PortableServer::Servant
+CCM::SessionContainer::get_skeleton_for_reference (CORBA::Object_ptr o)
+{
+  cout << " CCM::SessionContainer::get_skeleton_for_reference()" << endl;
+  
+  return _my_poa->reference_to_servant (o);
+}
+
+
+Components::CCMObject_ptr
+CCM::SessionContainer::get_reference_for_instance(localComponents::EnterpriseComponent* o)
+{
+  cout << " CCM::SessionContainer::get_reference_for_instance()" << endl;
+
+  // TODO
+  return Components::CCMObject::_nil();
+}
+
+
+localComponents::EnterpriseComponent*
+CCM::SessionContainer::get_instance_for_component (PortableServer::Servant skel)
+{
+  cout << " CCM::SessionContainer::get_instance_for_component()" << endl;
+
+  // TODO
+  return NULL;
+}
+
+
+void CCM::SessionContainer::deactivate_component (CORBA::Object_ptr o)
+{
+  cout << " CCM::SessionContainer::deactivate_component()" << endl;
+
+  //PortableServer::ServantBase_var skel = get_skeleton_for_reference (o);
+  PortableServer::Servant skel = get_skeleton_for_reference (o);
+  deactivate_component (skel);
+}
+
+
+void CCM::SessionContainer::deactivate_component (PortableServer::Servant skel)
+{
+  cout << " CCM::SessionContainer::deactivate_component()" << endl;
+
+  PortableServer::ObjectId_var oid = _my_poa->servant_to_id (skel);
+  /*
+    PerComponentData & data = active_components[oid.in()];
+    map<string, PortableServer::ServantBase_var, less<string> >::iterator it;
+    
+    for (it=data.facet_glue.begin(); it!=data.facet_glue.end(); it++) {
+    PortableServer::ObjectId_var fid =
+    _my_poa->servant_to_id ((*it).second);
+    _my_poa->deactivate_object (fid.in());
+    }
+  */
+  _my_poa->deactivate_object (oid);
+  //active_components.erase (oid.in());
+}
+
+
+CORBA::Object_ptr
+CCM::SessionContainer::activate_facet (PortableServer::Servant comp_glue,
+					     const char * name,
+					     void* facet_instance,
+					     PortableServer::Servant facet_glue)
+{
+  cout << " CCM::SessionContainer->activate_facet()" << endl;
+  
+  PortableServer::ObjectId_var oid = _my_poa->servant_to_id (comp_glue);
+  PortableServer::ObjectId_var fid = _my_poa->activate_object (facet_glue);
+  CORBA::Object_var fref = _my_poa->id_to_reference (fid.in());
+
+  return fref._retn ();
+}
+
+/*
+ * Facet management
+ */
+
+void CCM::SessionContainer::configuration_complete (PortableServer::Servant comp_glue)
+{
+  cout << " CCM::SessionContainer::configuration_complete()" << endl;
+
+  PortableServer::ObjectId_var oid = _my_poa->servant_to_id (comp_glue);
+  //PerComponentData & data = active_components[oid.in()];
+  //data.configuration_complete = 1;
+}
+
+/*
+ * for Service Context
+ */
+
+Components::CCMHome_ptr CCM::SessionContainer::get_CCM_home ()
+{
+  cout << " CCM::SessionContainer->get_CCM_home()" << endl;
+
+  return get_reference_for_home ();
+}
+
+
+CORBA::Object_ptr CCM::SessionContainer::get_CCM_object (localComponents::EnterpriseComponent* o)
+{
+  cout << " CCM::SessionContainer::get_CCM_object()" << endl;
+
+  return get_reference_for_instance(o);
+}
+
+
+
+
+
+//============================================================================
+// Valuetype implementations
+//============================================================================
+
+CCM::PortDescription_impl::PortDescription_impl ()
+{
+  cout << " CCM::PortDescription_impl::PortDescription_impl()" << endl;
+
+  name ((const char *) "");
+  type_id ((const char *) "");
+}
+
+CCM::Cookie_impl::Cookie_impl ()
+{
+}
+
+CCM::FacetDescription_impl::FacetDescription_impl ()
+{
+  //ref (CORBA::Object::_nil ());
+}
+
+CCM::ConnectionDescription_impl::ConnectionDescription_impl ()
+{
+  ck (0);
+  objref (CORBA::Object::_nil ());
+}
+
+CCM::ReceptacleDescription_impl::ReceptacleDescription_impl ()
+{
+}
+
+CCM::ConsumerDescription_impl::ConsumerDescription_impl ()
+{
+  consumer (Components::EventConsumerBase::_nil ());
+}
+
+CCM::EmitterDescription_impl::EmitterDescription_impl ()
+{
+  consumer (Components::EventConsumerBase::_nil ());
+}
+
+CCM::SubscriberDescription_impl::SubscriberDescription_impl ()
+{
+  ck (0);
+  consumer (Components::EventConsumerBase::_nil ());
+}
+
+CCM::PublisherDescription_impl::PublisherDescription_impl ()
+{
+}
+
+CCM::ComponentPortDescription_impl::ComponentPortDescription_impl ()
+{
+}
+
+/*
+ * ----------------------------------------------------------------------
+ * Valuetype factories
+ * ----------------------------------------------------------------------
+ */
+
+CORBA::ValueBase *
+CCM::PortDescription_Factory::create_for_unmarshal ()
+{
+  return new PortDescription_impl;
+}
+
+CORBA::ValueBase *
+CCM::Cookie_Factory::create_for_unmarshal ()
+{
+  return new Cookie_impl;
+}
+
+CORBA::ValueBase *
+CCM::FacetDescription_Factory::create_for_unmarshal ()
+{
+  return new FacetDescription_impl;
+}
+
+CORBA::ValueBase *
+CCM::ConnectionDescription_Factory::create_for_unmarshal ()
+{
+  return new ConnectionDescription_impl;
+}
+
+CORBA::ValueBase *
+CCM::ReceptacleDescription_Factory::create_for_unmarshal ()
+{
+  return new ReceptacleDescription_impl;
+}
+
+CORBA::ValueBase *
+CCM::ConsumerDescription_Factory::create_for_unmarshal ()
+{
+  return new ConsumerDescription_impl;
+}
+
+CORBA::ValueBase *
+CCM::EmitterDescription_Factory::create_for_unmarshal ()
+{
+  return new EmitterDescription_impl;
+}
+
+CORBA::ValueBase *
+CCM::SubscriberDescription_Factory::create_for_unmarshal ()
+{
+  return new SubscriberDescription_impl;
+}
+
+CORBA::ValueBase *
+CCM::PublisherDescription_Factory::create_for_unmarshal ()
+{
+  return new PublisherDescription_impl;
+}
+
+CORBA::ValueBase *
+CCM::ComponentPortDescription_Factory::create_for_unmarshal ()
+{
+  return new ComponentPortDescription_impl;
+}
+
+void
+CCM::register_all_factories (CORBA::ORB_ptr orb)
+{
+  CORBA::ValueFactoryBase_var vf;
+
+  vf = new PortDescription_Factory;
+  orb->register_value_factory ("IDL:omg.org/Components/PortDescription:1.0", vf);
+
+  vf = new Cookie_Factory;
+  orb->register_value_factory ("IDL:omg.org/Components/Cookie:1.0", vf);
+
+  vf = new ConnectionDescription_Factory;
+  orb->register_value_factory ("IDL:omg.org/Components/ConnectionDescription:1.0", vf);
+
+  vf = new ReceptacleDescription_Factory;
+  orb->register_value_factory ("IDL:omg.org/Components/ReceptacleDescription:1.0", vf);
+
+  vf = new ConsumerDescription_Factory;
+  orb->register_value_factory ("IDL:omg.org/Components/ConsumerDescription:1.0", vf);
+
+  vf = new EmitterDescription_Factory;
+  orb->register_value_factory ("IDL:omg.org/Components/EmitterDescription:1.0", vf);
+
+  vf = new SubscriberDescription_Factory;
+  orb->register_value_factory ("IDL:omg.org/Components/SubscriberDescription:1.0", vf);
+
+  vf = new PublisherDescription_Factory;
+  orb->register_value_factory ("IDL:omg.org/Components/PublisherDescription:1.0", vf);
+
+  vf = new ComponentPortDescription_Factory;
+  orb->register_value_factory ("IDL:omg.org/Components/ComponentPortDescription:1.0",
+			       vf);
+}

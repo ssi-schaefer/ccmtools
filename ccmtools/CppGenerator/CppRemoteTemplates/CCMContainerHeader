@@ -1,0 +1,361 @@
+/******************************************************************************/
+/*  Project: remote Prototype C++                                             */
+/*  File   : CCMContainer.h                                                   */
+/*  Version: 0.1                                                              */
+/*  Date   : Feber 2003                                                       */
+/*----------------------------------------------------------------------------*/
+/*  Company: SALOMON Automoation F&E                                          */
+/*  Autor  : Egon Teiniker                                                    */
+/*----------------------------------------------------------------------------*/
+/*  Note   :                                                                  */
+/******************************************************************************/
+
+#ifndef __CCM_CONTAINER_H__
+#define __CCM_CONTAINER_H__
+
+#include <CORBA.h>
+#include <map>
+#include <Components.h>
+#include <localComponents/Components.h>
+
+namespace CCM {
+  
+  //============================================================================
+  // Convert C++ to CORBA types
+  //============================================================================
+  
+  CORBA::Long   int_to_CORBA_Long(int i);
+  CORBA::Double double_to_CORBA_Double(double d);
+  
+  char*         string_to_char_ptr(std::string s);
+
+
+  //============================================================================
+  // Convert CORBA to C++ types
+  //============================================================================
+  
+  int    CORBA_Long_to_int(CORBA::Long i);
+  double CORBA_Double_to_double(CORBA::Double d);
+
+
+
+
+
+  //============================================================================
+  // Base for all Containers
+  //============================================================================
+  
+    class ContainerBase {
+    protected:
+      static CORBA::ULong _container_number;
+      CORBA::ULong _my_number;
+
+    public:
+      ContainerBase ();
+      virtual ~ContainerBase ();
+      virtual void activate () = 0;
+      virtual void passivate () = 0;
+      virtual void remove () = 0;
+
+      virtual CORBA::Boolean
+      compare (Components::CCMHome_ptr) = 0;
+
+      /*
+       * for SessionContext
+       */
+
+      virtual Components::CCMHome_ptr
+      get_CCM_home () = 0;
+
+      virtual CORBA::Object_ptr
+      get_CCM_object (localComponents::EnterpriseComponent*) = 0;
+    };
+
+
+
+    //============================================================================
+    // Session Container
+    //============================================================================
+
+    class SessionContainer : virtual public ContainerBase {
+    private:
+      CORBA::ORB_var _orb;
+      PortableServer::POA_var _my_poa;
+
+    public:
+      struct ComponentInfo {
+	std::string home_short_name;
+	std::string home_absolute_name;
+	std::string home_id;
+	std::string component_short_name;
+	std::string component_absolute_name;
+	std::string component_id;
+	localComponents::HomeExecutorBase* home_instance;
+	PortableServer::ServantBase_var home_glue;
+      };
+
+    private:
+      ComponentInfo _info;
+      bool _have_info;
+
+      struct PerComponentData {
+	CORBA::Boolean configuration_complete;
+	PortableServer::ServantBase_var glue;
+	localComponents::EnterpriseComponent* instance;
+	CORBA::Object_var reference;
+	std::map<string, PortableServer::ServantBase_var> facet_glue;
+	std::map<string, void*> facet_instance;
+	std::map<string, CORBA::Object_var> facet_reference;
+      };
+
+      CORBA::Object_var _home_ref;
+      typedef std::map<string, PortableServer::ObjectId> InstanceMap;
+      InstanceMap active_components;
+
+    public:
+      SessionContainer (CORBA::ORB_ptr orb);
+      ~SessionContainer ();
+
+      void load (const ComponentInfo & info);
+      void activate ();
+      void passivate ();
+      void remove ();
+
+      virtual CORBA::Boolean
+      compare (Components::CCMHome_ptr);
+
+      /*
+       * Session Container API
+       */
+
+      Components::CCMHome_ptr
+      get_reference_for_home ();
+
+      Components::CCMObject_ptr
+      activate_component (localComponents::EnterpriseComponent* instance,
+			  PortableServer::Servant skel);
+
+      Components::CCMObject_ptr
+      get_reference_for_component(PortableServer::Servant skel);
+
+      PortableServer::Servant
+      get_skeleton_for_reference(CORBA::Object_ptr ref);
+
+      Components::CCMObject_ptr
+      get_reference_for_instance(localComponents::EnterpriseComponent*);
+
+      localComponents::EnterpriseComponent*
+      get_instance_for_component (PortableServer::Servant skel);
+
+      void
+      deactivate_component (CORBA::Object_ptr ref);
+
+      void
+      deactivate_component (PortableServer::Servant skel);
+
+      /*
+       * for SessionContext
+       */
+
+      Components::CCMHome_ptr
+      get_CCM_home ();
+
+      CORBA::Object_ptr
+      get_CCM_object (localComponents::EnterpriseComponent*);
+
+      /*
+       * Facet management
+       */
+
+      CORBA::Object_ptr
+      activate_facet (PortableServer::Servant comp_glue,
+		      const char * name,
+		      void* facet_instance,
+		      PortableServer::Servant facet_glue);
+
+      /*
+       * notify container of configuration_complete
+       */
+
+      void configuration_complete (PortableServer::Servant comp_glue);
+    };
+
+
+
+
+    //============================================================================
+    // Valuetype implementations
+    //============================================================================
+
+    class PortDescription_impl :
+      virtual public OBV_Components::PortDescription,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      PortDescription_impl ();
+    };
+
+
+    class Cookie_impl :
+      virtual public OBV_Components::Cookie,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      Cookie_impl ();
+    };
+
+
+    class FacetDescription_impl :
+      virtual public OBV_Components::FacetDescription,
+      virtual public PortDescription_impl,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      FacetDescription_impl ();
+    };
+
+
+    class ConnectionDescription_impl :
+      virtual public OBV_Components::ConnectionDescription,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      ConnectionDescription_impl ();
+    };
+
+
+    class ReceptacleDescription_impl :
+      virtual public OBV_Components::ReceptacleDescription,
+      virtual public PortDescription_impl,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      ReceptacleDescription_impl ();
+    };
+
+
+    class ConsumerDescription_impl :
+      virtual public OBV_Components::ConsumerDescription,
+      virtual public PortDescription_impl,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      ConsumerDescription_impl ();
+    };
+
+
+    class EmitterDescription_impl :
+      virtual public OBV_Components::EmitterDescription,
+      virtual public PortDescription_impl,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      EmitterDescription_impl ();
+    };
+
+
+    class SubscriberDescription_impl :
+      virtual public OBV_Components::SubscriberDescription,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      SubscriberDescription_impl ();
+    };
+
+
+    class PublisherDescription_impl :
+      virtual public OBV_Components::PublisherDescription,
+      virtual public PortDescription_impl,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      PublisherDescription_impl ();
+    };
+
+
+    class ComponentPortDescription_impl :
+      virtual public OBV_Components::ComponentPortDescription,
+      virtual public CORBA::DefaultValueRefCountBase
+    {
+    public:
+      ComponentPortDescription_impl ();
+    };
+
+
+
+    /*
+     * Valuetype factories
+     */
+
+    class PortDescription_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    class Cookie_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    class FacetDescription_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    class ConnectionDescription_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    class ReceptacleDescription_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    class ConsumerDescription_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    class EmitterDescription_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    class SubscriberDescription_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    class PublisherDescription_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    class ComponentPortDescription_Factory :
+      virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase * create_for_unmarshal ();
+    };
+
+    void register_all_factories (CORBA::ORB_ptr);
+}

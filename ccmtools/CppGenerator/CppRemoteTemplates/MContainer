@@ -1,0 +1,39 @@
+//==============================================================================
+// MContainer 
+//==============================================================================
+
+#ifndef __CCM__REMOTE__CONVERT__%(Identifier)s__H__
+#define __CCM__REMOTE__CONVERT__%(Identifier)s__H__
+
+#include <CCM_Remote/user_types.h>
+
+using namespace CCM_Remote;
+
+namespace CCM_Test {
+namespace Corba {
+
+
+} // /namespace Corba
+} // /namespace CCM_Test
+
+#endif // __CCM__REMOTE__CONVERT__%(Identifier)s__H__
+
+
+<<<<<<<SPLIT>>>>>>>
+//==============================================================================
+// MContainer
+//==============================================================================
+
+#include "convert_%(Identifier)s.h"
+
+using namespace CCM_Remote;
+
+namespace CCM_Test {
+namespace Corba {
+
+
+} // /namespace Corba
+} // /namespace CCM_Test
+
+
+
