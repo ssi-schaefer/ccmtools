@@ -514,31 +514,31 @@ class CCM_%(Identifier)s_Context
  * methods must be implemented.  
  **/
 class CCM_%(Identifier)s_impl
-  : virtual public CCM_%(Identifier)s%(BaseType)s
+    : virtual public CCM_%(Identifier)s%(BaseType)s
 {
- private:
+  private:
 %(MAttributeDefVariable)s
 
- public:
-  CCM_%(Identifier)s_Context* ctx;
+  public:
+    CCM_%(Identifier)s_Context* ctx;
 
-  CCM_%(Identifier)s_impl (  );
-  virtual ~CCM_%(Identifier)s_impl (  );
+    CCM_%(Identifier)s_impl();
+    virtual ~CCM_%(Identifier)s_impl();
 
 %(MAttributeDefPrototype)s
 %(MProvidesDefGetFacetPrototype)s
 %(MSupportsDefImplPrototype)s
 
-  // Callback methods
+    // Callback methods
 
-  virtual void set_session_context ( LocalComponents::SessionContext* ctx )
-    throw ( LocalComponents::CCMException );
-  virtual void ccm_activate (  )
-    throw ( LocalComponents::CCMException );
-  virtual void ccm_passivate (  )
-    throw ( LocalComponents::CCMException );
-  virtual void ccm_remove (  )
-    throw ( LocalComponents::CCMException );
+    virtual void set_session_context(LocalComponents::SessionContext* ctx)
+      throw(LocalComponents::CCMException);
+    virtual void ccm_activate()
+      throw(LocalComponents::CCMException);
+    virtual void ccm_passivate()
+      throw(LocalComponents::CCMException);
+    virtual void ccm_remove()
+      throw(LocalComponents::CCMException);
 };
 
 //(MProvidesDefAdapterImplClass)s
@@ -579,46 +579,46 @@ using namespace CCM_Local;
 // CCM_%(Identifier)s - component implementation
 //==============================================================================
 
-CCM_%(Identifier)s_impl::CCM_%(Identifier)s_impl (  )
+CCM_%(Identifier)s_impl::CCM_%(Identifier)s_impl()
 {
-  DEBUGNL ( "+CCM_%(Identifier)s_impl->CCM_%(Identifier)s_impl (  )" );
+    DEBUGNL("+CCM_%(Identifier)s_impl->CCM_%(Identifier)s_impl()");
 }
 
-CCM_%(Identifier)s_impl::~CCM_%(Identifier)s_impl (  )
+CCM_%(Identifier)s_impl::~CCM_%(Identifier)s_impl()
 {
-  DEBUGNL ( "-CCM_%(Identifier)s_impl->~CCM_%(Identifier)s_impl (  )" );
+    DEBUGNL("-CCM_%(Identifier)s_impl->~CCM_%(Identifier)s_impl()");
 }
 
 %(MAttributeDefImplDefinition)s
 %(MSupportsDefImplDefinition)s
 
 void
-CCM_%(Identifier)s_impl::set_session_context ( LocalComponents::SessionContext* context )
-  throw ( LocalComponents::CCMException )
+CCM_%(Identifier)s_impl::set_session_context(LocalComponents::SessionContext* context)
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_%(Identifier)s_impl->set_session_context (  )" );
-  ctx = dynamic_cast<CCM_%(Identifier)s_Context*> ( context );
+    DEBUGNL(" CCM_%(Identifier)s_impl->set_session_context()");
+    ctx = dynamic_cast<CCM_%(Identifier)s_Context*>(context);
 }
 
 void
-CCM_%(Identifier)s_impl::ccm_activate (  )
-  throw ( LocalComponents::CCMException )
+CCM_%(Identifier)s_impl::ccm_activate()
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_%(Identifier)s_impl->ccm_activate (  )" );
+    DEBUGNL(" CCM_%(Identifier)s_impl->ccm_activate()");
 }
 
 void
-CCM_%(Identifier)s_impl::ccm_passivate (  )
-  throw ( LocalComponents::CCMException )
+CCM_%(Identifier)s_impl::ccm_passivate()
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_%(Identifier)s_impl->ccm_passivate (  )" );
+    DEBUGNL(" CCM_%(Identifier)s_impl->ccm_passivate()");
 }
 
 void
-CCM_%(Identifier)s_impl::ccm_remove (  )
-  throw ( LocalComponents::CCMException )
+CCM_%(Identifier)s_impl::ccm_remove()
+    throw(LocalComponents::CCMException)
 {
-  DEBUGNL ( " CCM_%(Identifier)s_impl->ccm_remove (  )" );
+    DEBUGNL(" CCM_%(Identifier)s_impl->ccm_remove()");
 }
 
 %(MProvidesDefGetFacetDefinition)s
