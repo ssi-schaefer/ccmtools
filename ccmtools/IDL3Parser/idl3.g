@@ -101,7 +101,7 @@ import org.omg.CORBA.Any;
 class IDL3Parser extends Parser;
 options { exportVocab = IDL3; }
 {
-    // debug levels for the parser are allowed to use the lower 16 bits of a
+    // debug levels for the parser are allowed to use the lower 24 bits of a
     // long int.
     private final static long DEBUG_FORWARD_DECL = 0x000001;
     private final static long DEBUG_INTERFACE    = 0x000002;
@@ -269,6 +269,10 @@ options { exportVocab = IDL3; }
                 (((MStructDef) lookup).getMembers().size() == 0)) ||
             ((lookup instanceof MUnionDef) &&
                 (((MUnionDef) lookup).getUnionMembers().size() == 0)) ||
+            ((lookup instanceof MEnumDef) &&
+                (((MEnumDef) lookup).getMembers().size() == 0)) ||
+            ((lookup instanceof MExceptionDef) &&
+                (((MExceptionDef) lookup).getMembers().size() == 0)) ||
             ((lookup instanceof MComponentDef) &&
                 ((((MComponentDef) lookup).getContentss().size() == 0) &&
                  (((MComponentDef) lookup).getEmitss().size() == 0) &&
@@ -282,18 +286,14 @@ options { exportVocab = IDL3; }
                  (((MHomeDef) lookup).getFinders().size() == 0))) ||
             ((lookup instanceof MInterfaceDef) &&
                 (((MInterfaceDef) lookup).getContentss().size() == 0)) ||
-            ((lookup instanceof MEnumDef) &&
-                (((MEnumDef) lookup).getMembers().size() == 0)) ||
-            ((lookup instanceof MExceptionDef) &&
-                (((MExceptionDef) lookup).getMembers().size() == 0)) ||
             (lookup instanceof MModuleDef)) {
             checkSourceFile(lookup);
             return lookup;
         }
 
         throw new RecognitionException(
-            "error in name verification: the identifier " + id +
-            " has already been defined");
+            "error in name verification: the identifier '" + id +
+            "' has already been defined");
     }
 
     /*
@@ -313,8 +313,8 @@ options { exportVocab = IDL3; }
             throw new RuntimeException();
         } catch (Exception e) {
             throw new RecognitionException(
-                "error in name verification: the identifier " + id +
-                " is undefined or of the wrong type");
+                "error in name verification: the identifier '" + id +
+                "' is undefined or of the wrong type");
         }
     }
 
@@ -444,47 +444,75 @@ options { exportVocab = IDL3; }
         MExceptionDef exception = null;
         MStructDef struct = null;
         MUnionDef union = null;
+        MEnumDef enum = null;
 
         if (box instanceof MExceptionDef) exception = (MExceptionDef) box;
         else if (box instanceof MStructDef) struct = (MStructDef) box;
         else if (box instanceof MUnionDef) union = (MUnionDef) box;
+        else if (box instanceof MEnumDef) enum = (MEnumDef) box;
 
-        if ((struct == null) && (exception == null) && (union == null)) {
+        if ((struct == null) && (exception == null)
+            && (union == null) && (enum == null))
             throw new RuntimeException(
-                box + " must be an exception, union, or struct instance");
-        }
+                box + " must be an exception, union, struct, or enum");
 
         // check if there are fields with same identifier.
-        String outID, inID;
-        MFieldDef out, in;
-        for (Iterator o = members.iterator(); o.hasNext(); ) {
-            out = (MFieldDef) o.next();
-            outID = out.getIdentifier();
-            for (Iterator i = members.iterator(); i.hasNext(); ) {
-                in = (MFieldDef) i.next();
-                inID = in.getIdentifier();
-                if ((outID.equals(inID)) && (! out.equals(in))) {
-                    throw new RecognitionException(
-                        "repeated identifiers in '" + box.getIdentifier() +
-                        "': '" + outID + "' and '" + inID + "'");
+        String outID = "";
+        String inID = "";
+        Iterator o = members.iterator();
+        Iterator i = members.iterator();
+        try {
+            if (enum != null) {
+                while (o.hasNext()) {
+                    outID = (String) o.next();
+                    while (i.hasNext()) {
+                        inID = (String) i.next();
+                        if (outID.equals(inID)) throw new RuntimeException();
+                    }
+                }
+            } else if (union != null) {
+                MUnionFieldDef out, in;
+                while (o.hasNext()) {
+                    out = (MUnionFieldDef) o.next(); outID = out.getIdentifier();
+                    while (i.hasNext()) {
+                        in = (MUnionFieldDef) i.next(); inID = in.getIdentifier();
+                        if (outID.equals(inID) && ! out.equals(in))
+                            throw new RuntimeException();
+                    }
+                }
+            } else {
+                MFieldDef out, in;
+                while (o.hasNext()) {
+                    out = (MFieldDef) o.next(); outID = out.getIdentifier();
+                    while (i.hasNext()) {
+                        in = (MFieldDef) i.next(); inID = in.getIdentifier();
+                        if (outID.equals(inID) && ! out.equals(in))
+                            throw new RuntimeException();
+                    }
                 }
             }
+        } catch (RuntimeException e) {
+            throw new RecognitionException(
+                "repeated identifier '"+outID+"' in '"+box.getIdentifier()+"'");
         }
 
         // add the members to the given box.
-        Iterator it = members.iterator();
-        if (union != null) {
-            while (it.hasNext())
-            { ((MUnionFieldDef) it.next()).setUnion(union); }
-            union.setUnionMembers(members);
+        if (enum != null) {
+            enum.setMembers(members);
         } else {
-            while (it.hasNext()) {
-                MFieldDef f = (MFieldDef) it.next();
-                if (struct != null) { f.setStructure(struct); }
-                else { f.setException(exception); }
+            Iterator it = members.iterator();
+            if (union != null) {
+                while (it.hasNext()) ((MUnionFieldDef) it.next()).setUnion(union);
+                union.setUnionMembers(members);
+            } else {
+                while (it.hasNext()) {
+                    MFieldDef f = (MFieldDef) it.next();
+                    if (struct != null) f.setStructure(struct);
+                    else f.setException(exception);
+                }
+                if (struct != null) struct.setMembers(members);
+                else exception.setMembers(members);
             }
-            if (struct != null) { struct.setMembers(members); }
-            else { exception.setMembers(members); }
         }
     }
 
@@ -608,12 +636,12 @@ specification returns [MContainer container = null]
 {
     container = new MContainerImpl();
     String imported = null;
-    List defs = null;
+    List decls = null;
     List definitions = new ArrayList();
     specification = container;
 }
     :   ( import_dcl )*
-        ( defs = definition { if (defs != null) { definitions.addAll(defs); } } )+
+        ( decls = definition { definitions.addAll(decls); } )+
         {
             checkAddContents(container, definitions);
 
@@ -656,18 +684,18 @@ module returns [MModuleDef mod = null]
 {
     mod = new MModuleDefImpl();
     String id;
-    List exps = null;
-    List defs = new ArrayList();
-    MContained submod = null;
+    List decls = null;
+    List definitions = new ArrayList();
 }
     :   "module" id = identifier
         {
             mod = (MModuleDef) verifyNameEmpty(id, mod);
             mod.setIdentifier(id);
+            symbolTable.add(id, mod);
         }
-        LCURLY { symbolTable.add(id, mod); symbolTable.pushScope(id); }
-        ( exps = definition { if (exps != null) { defs.addAll(exps); } } )*
-        { checkAddContents(mod, defs); }
+        LCURLY { symbolTable.pushScope(id); }
+        ( decls = definition { definitions.addAll(decls); } )*
+        { checkAddContents(mod, definitions); }
         RCURLY { symbolTable.popScope(); } ;
 
 // (lmj) this was renamed to iface to prevent collisions with Java keywords
@@ -686,26 +714,20 @@ iface returns [MInterfaceDef iface = null]
 interface_dcl[MInterfaceDef iface]
 { List exports = new ArrayList(); }
     :   interface_header[iface]
-        LCURLY
-        {
-            symbolTable.add(iface.getIdentifier(), iface);
-            symbolTable.pushScope(iface.getIdentifier());
-            iface.setForwardDeclaration(false);
-        }
+        LCURLY { symbolTable.pushScope(iface.getIdentifier()); }
         exports = interface_body { checkAddContents(iface, exports); }
         RCURLY { symbolTable.popScope(); } ;
 
 // 6. <forward_dcl> ::= [ "abstract" | "local" ] "interface" <identifier>
 forward_dcl returns [MInterfaceDef iface = null]
 { iface = new MInterfaceDefImpl(); String id = null; }
-    :   ( "abstract" { iface.setAbstract(true); }
-        | "local"    { iface.setLocal(true);    } )?
+    :   ( "abstract" { iface.setAbstract(true); } | "local" { iface.setLocal(true); } )?
         "interface" id = identifier
         {
             iface = (MInterfaceDef) verifyNameEmpty(id, iface);
             iface.setIdentifier(id);
-            iface.setForwardDeclaration(true);
             iface.setRepositoryId(createRepositoryId(id));
+            symbolTable.add(id, iface);
         } ;
 
 // 7. <interface_header> ::= [ "abstract" | "local" ] "interface" <identifier>
@@ -785,7 +807,6 @@ value_forward_dcl returns [MValueDef val = null]
         {
             val = (MValueDef) verifyNameEmpty(id, val);
             val.setIdentifier(id);
-            val.setContentss(null);
             symbolTable.add(id, val);
         } ;
 
@@ -827,7 +848,7 @@ value_abs_dcl returns [MValueDef val = null]
         value_inheritance_spec[val]
         LCURLY { symbolTable.pushScope(id); }
         ( decls = export { exports.addAll(decls); } )*
-        { checkAddContents(val, exports); val.setContentss(exports); }
+        { checkAddContents(val, exports); }
         RCURLY { symbolTable.popScope(); } ;
 
 // 17. <value_dcl> ::= <value_header,18> "{"  < value_element,21>* "}"
@@ -836,7 +857,7 @@ value_dcl returns [MValueDef val = null]
     :   val = value_header
         LCURLY { symbolTable.pushScope(val.getIdentifier()); }
         ( decls = value_element { elements.addAll(decls); } )*
-        { checkAddContents(val, elements); val.setContentss(elements); }
+        { checkAddContents(val, elements); }
         RCURLY { symbolTable.popScope(); } ;
 
 // 18. <value_header> ::= ["custom" ] "valuetype" <identifier>
@@ -889,7 +910,6 @@ state_member returns [List members = null]
     List decls = null;
     MIDLType type = null;
     boolean isPublic = false;
-    boolean repeatedID = false;
 }
     :   ( "public" { isPublic = true; } | "private" )
         type = type_spec decls = declarators
@@ -897,9 +917,6 @@ state_member returns [List members = null]
             for (Iterator it = decls.iterator(); it.hasNext(); ) {
                 DeclaratorHelper declarator = (DeclaratorHelper) it.next();
                 String id = declarator.getDeclarator();
-
-                MContained dupl = lookupNameInCurrentScope(id, DEBUG_VALUE | DEBUG_IDL_TYPE);
-                if (dupl != null) { repeatedID = true; }
 
                 if(declarator.isArray()) {
                     MArrayDef array = declarator.getArray();
@@ -913,9 +930,7 @@ state_member returns [List members = null]
                 member.setPublicMember(isPublic);
                 members.add(member);
             }
-        }
-        { ! repeatedID }?
-        SEMI ;
+        } SEMI ;
 
 // 23. <init_dcl> ::= "factory" <identifier>
 //       "("  [ <init_param_decls,24> ]  ")" [ <raises_expr,93> ] ";"
@@ -928,10 +943,8 @@ init_dcl returns [MFactoryDef factory = null]
 }
     :   "factory" id = identifier
         { factory.setIdentifier(id); symbolTable.add(id, factory); }
-        LPAREN
-        ( params = init_param_decls { checkSetParameters(factory, params); } )?
-        RPAREN
-        ( excepts = raises_expr { checkSetExceptions(factory, excepts); } )?
+        LPAREN ( params = init_param_decls { checkSetParameters(factory, params); } )?
+        RPAREN ( excepts = raises_expr { checkSetExceptions(factory, excepts); } )?
         SEMI ;
 
 // 24. <init_param_decls> ::= <init_param_decl,25> { "," <init_param_decl,24> }*
@@ -1463,9 +1476,9 @@ struct_type returns [MIDLType struct = null]
             ((MStructDef) struct).setIdentifier(id);
             symbolTable.add(id, (MStructDef) struct);
         }
-	    LCURLY { symbolTable.pushScope(id); }
+	    LCURLY
         decls = member_list { checkSetMembers((MStructDef) struct, decls); }
-        RCURLY { symbolTable.popScope(); } ;
+        RCURLY ;
 
 // 70. <member_list> ::= <member,71>+
 member_list returns [List members = null]
@@ -1478,18 +1491,12 @@ member returns [List members = null]
     members = new ArrayList();
     List decls = null;
     MIDLType type = null;
-    boolean idExists = false;
 }
 	:   type = type_spec decls = declarators
         {
             for (Iterator it = decls.iterator(); it.hasNext(); ) {
                 DeclaratorHelper declarator = (DeclaratorHelper) it.next();
                 String id = declarator.getDeclarator();
-
-                for (Iterator i = members.iterator(); i.hasNext(); ) {
-                    String fid = ((MFieldDef) i.next()).getIdentifier();
-                    if (id.equals(fid)) { idExists = true; }
-                }
 
                 if (declarator.isArray()) {
                     MArrayDef array = declarator.getArray();
@@ -1503,9 +1510,7 @@ member returns [List members = null]
                 members.add(field);
             }
         }
-        { ! idExists }?
-        SEMI
-	;
+        SEMI ;
 
 // 72. <union_type> ::= "union" <identifier> "switch"
 //       "(" <switch_type_spec,73> ")" "{" <switch_body,74> "}"
@@ -1524,10 +1529,9 @@ union_type returns [MIDLType union = null]
         }
         "switch" LPAREN type = switch_type_spec RPAREN
         { ((MUnionDef) union).setDiscriminatorType(type); }
-        LCURLY { symbolTable.pushScope(id); }
-        members = switch_body[type]
-        { checkSetMembers((MUnionDef) union, members); }
-        RCURLY { symbolTable.popScope(); } ;
+        LCURLY
+        members = switch_body[type] { checkSetMembers((MUnionDef) union, members); }
+        RCURLY ;
 
 // 73. <switch_type_spec> ::= <integer_type,54>
 //     | <char_type,63>
@@ -1542,8 +1546,7 @@ switch_type_spec returns [MIDLType type = null]
 	|   type = wide_char_type
 	|   type = boolean_type
 	|   type = enum_type
-	|   name = scoped_name
-        { typedef = (MTypedefDef) verifyNameExists(name, typedef); }
+	|   name = scoped_name { typedef = (MTypedefDef) verifyNameExists(name, typedef); }
 	;
 
 // 74. <switch_body> ::= <case_dcl,75>+
@@ -1673,22 +1676,17 @@ enum_type returns [MIDLType enum = null]
         {
             enum = (MEnumDef) verifyNameEmpty(id, (MEnumDef) enum);
             ((MEnumDef) enum).setIdentifier(id);
+            symbolTable.add(id, (MEnumDef) enum);
         }
-        LCURLY { symbolTable.pushScope(id); }
-        name = enumerator { members.add(name); }
-        ( COMMA name = enumerator { members.add(name); } )*
-        RCURLY
+        LCURLY
+        name = enumerator { if (name != null) members.add(name); }
+        ( COMMA name = enumerator { if (name != null) members.add(name); } )*
         {
-            if (members.size() > 0) {
-                symbolTable.add(id, (MEnumDef) enum);
-                ((MEnumDef) enum).setMembers(members);
-            } else {
-                throw new RecognitionException(
-                    "error in enumeration '" + id + "': no fields defined");
-            }
-
-            symbolTable.popScope();
-        } ;
+            if (members.size() == 0)
+                throw new RuntimeException("enum '"+id+"' has no members");
+            checkSetMembers((MEnumDef) enum, members);
+        }
+        RCURLY ;
 
 // 79. <enumerator> ::= <identifier>
 enumerator returns [String name = null] : name = identifier ;
@@ -1919,11 +1917,21 @@ value_base_type returns [MIDLType type = null]
 
 // 99. <constr_forward_decl> ::= "struct" <identifier> | "union" <identifier>
 constr_forward_decl returns [MIDLType type = null]
-{ MTypedefDef typedef = new MTypedefDefImpl(); String id = null; }
+{ String id = null; }
     :   "struct" id = identifier
-        { type = (MTypedefDef) verifyNameExists(id, typedef); }
+        {
+            MStructDef struct = new MStructDefImpl();
+            struct = (MStructDef) verifyNameEmpty(id, struct);
+            symbolTable.add(id, struct);
+            type = (MIDLType) struct;
+        }
     |   "union" id = identifier
-        { type = (MTypedefDef) verifyNameExists(id, typedef); }
+        {
+            MUnionDef union = new MUnionDefImpl();
+            union = (MUnionDef) verifyNameEmpty(id, union);
+            symbolTable.add(id, union);
+            type = (MIDLType) union;
+        }
     ;
 
 // (lmj) this was renamed to import_dcl to prevent conflicts with Java keywords
@@ -2101,7 +2109,6 @@ component_forward_dcl returns [MComponentDef component = null]
             component = (MComponentDef) verifyNameEmpty(id, component);
             component.setRepositoryId(createRepositoryId(id));
             component.setIdentifier(id);
-            component.setForwardDeclaration(true);
             symbolTable.add(id, component);
         } ;
 
@@ -2161,7 +2168,6 @@ component_dcl returns [MComponentDef component = null]
                 }
             }
 
-            component.setForwardDeclaration(false);
             checkSourceFile(component);
         }
         RCURLY { symbolTable.popScope(); } ;
@@ -2562,9 +2568,14 @@ fixed_pt_literal returns [String literal = null]
     ;
 
 identifier returns [String identifier = null]
-	:   id:IDENT
-        { checkKeyword(id.getText()) }?
-        { identifier = new String(id.getText()); } ;
+{ String t = null; }
+    :   id:IDENT { t = id.getText(); }
+        { checkKeyword(t) }?
+        {
+            if (t == null) throw new RuntimeException(
+                "nothing found where an identifier was expected");
+            identifier = t;
+        } ;
 
 /******************************************************************************/
 /* IDL LEXICAL RULES  */
@@ -2578,7 +2589,7 @@ options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377'; }
     private final static long DEBUG_FILE     = 0x01000000;
     private final static long DEBUG_INCLUDE  = 0x02000000;
 
-    // unused debug flags, use as needed.
+    // unused debug flags, implement as needed.
     private final static long DEBUG_UNUSED_C = 0x04000000;
     private final static long DEBUG_UNUSED_D = 0x08000000;
     private final static long DEBUG_UNUSED_E = 0x10000000;
@@ -2621,13 +2632,19 @@ options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377'; }
             File test = new File((File) p.next(), name);
 
             if ((debug & DEBUG_INCLUDE) != 0)
-                System.out.println("[i] trying to include " + test);
+                System.out.print("[i] trying to include " + test + " ... ");
 
             if (test.isFile()) {
+                if ((debug & DEBUG_INCLUDE) != 0) System.out.println("found.");
                 to_load = test.toString();
                 break;
+            } else if ((debug & DEBUG_INCLUDE) != 0) {
+                System.out.println("not found.");
             }
         }
+
+        if (to_load == null)
+            throw new RuntimeException("Include file '"+name+"' not found.");
 
         manager.parseFile(to_load);
     }

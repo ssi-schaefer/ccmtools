@@ -156,14 +156,14 @@ public class ConsoleCodeGenerator
 
         try {
             kopf = manager.parseFile(filename);
+            if (kopf == null)
+                throw new RuntimeException("Parser returned a null container");
         } catch (Exception e) {
             System.err.println("Error parsing "+filename+":\n"+e);
             System.exit(1);
         }
 
         // (in between)
-
-        if (kopf == null) System.exit(1);
 
         File top_file = new File(filename);
         kopf.setIdentifier(top_file.getName().split("\\.")[0]);
@@ -417,16 +417,14 @@ public class ConsoleCodeGenerator
                     }
                     arg = arg.substring(1);
                 } while (arg.length() > 0);
-            else if ((lang == null) && language_types.contains(arg.toLowerCase()))
+            else if ((lang == null) &&
+                     language_types.contains(arg.toLowerCase()))
                 lang = new String(arg);
             else
-                filenames.add(arg.toString());
+                addFile(arg);
         }
 
-        if (lang == null)
-            printUsage("no valid output language specified");
-
-        include_path.add(new File(System.getProperty("user.dir")));
+        if (lang == null) printUsage("no valid output language specified");
     }
 
     private static void setGeneratorMask(String val)
@@ -487,6 +485,18 @@ public class ConsoleCodeGenerator
         } else {
             defines.put(key, value);
         }
+    }
+
+    private static void addFile(String arg)
+    {
+        File file = new File(arg);
+        filenames.add(file.toString());
+
+        String parent = file.getParent();
+        if (parent == null) parent = System.getProperty("user.dir");
+        File path = new File(parent);
+        if (path.isDirectory() && ! include_path.contains(path))
+            include_path.add(path);
     }
 }
 

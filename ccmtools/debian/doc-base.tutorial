@@ -1,0 +1,10 @@
+Document: ccmtools-tutorial
+Title: CCM Tools Getting Started Tutorial
+Author: Egon Teiniker <egon.teiniker@tugraz.at>
+Abstract: This brief tutorial explains how to use the CCM Tools using a few
+  simple example components.
+Section: devel
+
+Format: postscript
+Files: /usr/share/doc/ccmtools/tutorial.ps.gz
+

@@ -1,2 +1,2 @@
-  enum %(Identifier)s;
+enum %(Identifier)s;
 

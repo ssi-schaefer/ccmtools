@@ -39,7 +39,6 @@ public class MInterfaceDefImpl
 
     private boolean isAbstract;
     private boolean isLocal;
-    private boolean isForwardDeclaration;
 
     private MContainer Contains;
     private MIDLType TypedBy_;
@@ -48,7 +47,8 @@ public class MInterfaceDefImpl
 
     public MInterfaceDefImpl()
     {
-        isForwardDeclaration = false;
+        isAbstract = false;
+        isLocal = false;
 	ContainsList = new ArrayList();
 	InterfaceDerivedFromList = new ArrayList();
         sourceFile = new String("");
@@ -58,9 +58,9 @@ public class MInterfaceDefImpl
     public String toString()
     {
 	String tmp = "MInterfaceDef: " + identifier;
-	if ((ContainsList != null) && (ContainsList.size() > 0))
+	if (ContainsList.size() > 0)
             tmp  += " " + ContainsList.toString();
-        if ((InterfaceDerivedFromList != null) && (InterfaceDerivedFromList.size() > 0))
+        if (InterfaceDerivedFromList.size() > 0)
             tmp += " (bases: " + InterfaceDerivedFromList.toString() + ")";
         if (! sourceFile.equals(""))
             tmp += " (defined in '"+ sourceFile + "')";
@@ -102,10 +102,6 @@ public class MInterfaceDefImpl
     public String getSourceFile()               {return sourceFile;}
     public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
-    // attribute isForwardDeclaration:boolean
-    public boolean isForwardDeclaration()            {return isForwardDeclaration;}
-    public void setForwardDeclaration(boolean __arg) {isForwardDeclaration = __arg;}
-
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
@@ -120,7 +116,7 @@ public class MInterfaceDefImpl
 
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
     public List getContentss()                   {return ContainsList;}
-    public void setContentss(List __arg)         {ContainsList = (__arg != null) ? new ArrayList(__arg) : null;}
+    public void setContentss(List __arg)         {ContainsList = new ArrayList(__arg);}
     public void addContents(MContained __arg)    {ContainsList.add(__arg);}
     public void removeContents(MContained __arg) {ContainsList.remove(__arg);}
 

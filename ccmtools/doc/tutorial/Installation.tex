@@ -32,12 +32,13 @@ for discussion about using the CCM Tools.
 %------------------------------------------------------------------------------
 
 Installing of the CCM Tools requires the following steps once you get the source
-code. You will need to configure, build, and install the binary files, and then
-set environment variables appropriately:
+code. (Pretend that the source tarball you got was {\tt ccmtools-A.B.X.tar.gz}.)
+You will need to configure, build, and install the binary files, and then set
+environment variables appropriately:
 \begin{small}
 \begin{verbatim}
-  ~> tar xvzf ccmtools-0.2.1.tar.gz
-  ~> cd ccmtools-0.2.1
+  ~> tar xvzf ccmtools-A.B.X.tar.gz
+  ~> cd ccmtools-A.B.X
   ~> ./autogen.py --prefix=<ccm_tools_path>
   ~> make
   ~> make install
@@ -50,11 +51,12 @@ set environment variables appropriately:
 
 You can also theoretically use the binary distribution, which includes a minimal
 set of Jar archives, templates, and documents. To install this distribution,
-download the binary distribution ({\tt *.bin.tar.gz}) file and do the following:
+download the binary distribution (again assume {\tt ccmtools-A.B.X.bin.tar.gz})
+file and do the following:
 \begin{small}
 \begin{verbatim}
-  ~> tar xvzf ccmtools-0.2.1.bin.tar.gz
-  ~> cd ccmtools-0.2.1
+  ~> tar xvzf ccmtools-A.B.X.bin.tar.gz
+  ~> cd ccmtools-A.B.X
   ~> export CCMTOOLS_HOME=`pwd`
   ~> export PATH=`pwd`/bin:$PATH
   ~> export CLASSPATH=`pwd`/share/java/ccmtools.jar: \

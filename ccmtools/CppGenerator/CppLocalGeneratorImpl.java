@@ -186,8 +186,8 @@ public class CppLocalGeneratorImpl
         vars.put("SupportsType",      iface.getIdentifier());
         vars.put("LanguageType",      lang_type);
         vars.put("MExceptionDef",     getOperationExcepts(operation));
-        vars.put("MParameterDefAll",  getOperationParams(operation, "all"));
-        vars.put("MParameterDefName", getOperationParams(operation, "name"));
+        vars.put("MParameterDefAll",  getOperationParams(operation));
+        vars.put("MParameterDefName", getOperationParamNames(operation));
 
         if (! lang_type.equals("void")) vars.put("Return", "return ");
         else                            vars.put("Return", "");

@@ -197,7 +197,7 @@ abstract public class CppGenerator
     protected String handleNamespace(String data_type, String local)
     {
         List names = new ArrayList(namespace);
-        names.add("CCM_Session_" + local);
+        if (! local.equals("")) names.add("CCM_Session_" + local);
 
         if (data_type.equals("Namespace")) {
             return join("::", names);
@@ -254,6 +254,8 @@ abstract public class CppGenerator
             return data_MProvidesDef(variable, value);
         } else if (current_node instanceof MSupportsDef) {
             return data_MSupportsDef(variable, value);
+        } else if (current_node instanceof MUsesDef) {
+            return data_MUsesDef(variable, value);
 
         } else if (current_node instanceof MInterfaceDef) {
             return data_MInterfaceDef(variable, value);
@@ -282,8 +284,13 @@ abstract public class CppGenerator
         MIDLType idl_type = object.getIdlType();
 
         String base_type = getBaseIdlType(object);
-        if (language_mappings.containsKey(base_type))
+        if (language_mappings.containsKey(base_type)) {
             base_type = (String) language_mappings.get(base_type);
+        } else if (object instanceof MContained) {
+            List scope = getScope((MContained) object);
+            scope.add(base_type);
+            base_type = join("::", scope);
+        }
 
         if (object instanceof MParameterDef) {
             MParameterDef param = (MParameterDef) object;
@@ -340,21 +347,21 @@ abstract public class CppGenerator
             return handleNamespace(data_type, component.getIdentifier());
         } else if (data_type.equals("BaseTypes")) {
             String base = joinBases(", public ");
-            if (base.length() > 0)
-                return ", public " + base;
+            if (base.length() > 0) return ", public " + base;
         } else if (data_type.equals("UserTypesInclude")) {
             List includes = new ArrayList();
             for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
-                String id = (String) i.next();
-                includes.add("#include <CCM_Local/" + id + "_user_types.h>");
+                List scope = (List) i.next();
+                includes.add("#include <CCM_Local/" + join("/", scope) +
+                             "_user_types.h>");
             }
             return join("\n", includes);
         } else if (data_type.equals("ConvertPythonInclude")) {
             List includes = new ArrayList();
             for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
-                String id = (String) i.next();
-                includes.add("#include <CCM_Test_Python/" +
-                             id + "convert_python.h>");
+                List scope = (List) i.next();
+                includes.add("#include <CCM_Test/Python/" +
+                             join("/", scope) + "_convert_python.h>");
             }
             return join("\n", includes);
         }
@@ -400,13 +407,19 @@ abstract public class CppGenerator
     {
         if (data_type.equals("BaseTypes")) {
             String base = joinBases(", public");
-            if (base.length() > 0)
-                return ": public " + base;
+            if (base.length() > 0) return ": public " + base;
+        } else if (data_type.endsWith("Namespace")) {
+            return handleNamespace(data_type, "");
         } else if (data_type.equals("UserTypesInclude")) {
             List includes = new ArrayList();
             for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
-                String id = (String) i.next();
-                includes.add("#include \"" + id + "_user_types.h\"");
+                List scope = (List) i.next();
+                String id = (String) scope.get(scope.size() - 1);
+                if (scope.size() > 1)
+                    includes.add("#include <CCM_Local/" + join("/", scope) +
+                                 "_user_types.h>");
+                else
+                    includes.add("#include \"" + id + "_user_types.h\"");
             }
             return join("\n", includes);
         }
@@ -435,18 +448,40 @@ abstract public class CppGenerator
 
     protected String data_MProvidesDef(String data_type, String data_value)
     {
+        MProvidesDef provides = (MProvidesDef) current_node;
+        MInterfaceDef iface = provides.getProvides();
         if (data_type.startsWith("MOperation")) {
-            MProvidesDef provides = (MProvidesDef) current_node;
-            return fillTwoStepTemplates(provides.getProvides(), data_type);
+            return fillTwoStepTemplates(iface, data_type);
+        } else if (data_type.equals("IncludeNamespace")) {
+            List scope = getScope(iface);
+            scope.add(0, namespace.get(0));
+            return join("/", scope);
         }
         return data_value;
     }
 
     protected String data_MSupportsDef(String data_type, String data_value)
     {
+        MSupportsDef supports = (MSupportsDef) current_node;
+        MInterfaceDef iface = supports.getSupports();
         if (data_type.startsWith("MOperation")) {
-            MSupportsDef supports = (MSupportsDef) current_node;
-            return fillTwoStepTemplates(supports.getSupports(), data_type);
+            return fillTwoStepTemplates(iface, data_type);
+        } else if (data_type.equals("IncludeNamespace")) {
+            List scope = getScope(iface);
+            scope.add(0, namespace.get(0));
+            return join("/", scope);
+        }
+        return data_value;
+    }
+
+    protected String data_MUsesDef(String data_type, String data_value)
+    {
+        MUsesDef uses = (MUsesDef) current_node;
+        MInterfaceDef iface = uses.getUses();
+        if (data_type.equals("IncludeNamespace")) {
+            List scope = getScope(iface);
+            scope.add(0, namespace.get(0));
+            return join("/", scope);
         }
         return data_value;
     }
@@ -454,28 +489,39 @@ abstract public class CppGenerator
     /**************************************************************************/
 
     /**
-     * Get information about the parameters for the given operation. The type of
-     * information returned depends on the type parameter.
+     * Get type and name information about the parameters for the given
+     * operation. This will return a comma-separated string, i.e. <type1>
+     * <name1>, <type2> <name2>, ... , <typeN> <nameN> for this operation's
+     * parameters.
      *
      * @param op the operation to investigate.
-     * @param type the type of information to gather. Options are "name", which
-     *        returns a comma-separated list of the parameter names (used for
-     *        calling the operation in generated code), and all others return
-     *        the standard parameter list with both name and type information,
-     *        again comma-separated.
      * @return a comma separated string of the parameter information requested
      *         for this operation.
      */
-    protected String getOperationParams(MOperationDef op, String type)
+    protected String getOperationParams(MOperationDef op)
     {
         List ret = new ArrayList();
-        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
-            MParameterDef p = (MParameterDef) params.next();
-            if (type.equals("name"))
-                ret.add(p.getIdentifier());
-            else
-                ret.add(getLanguageType(p) + " " + p.getIdentifier());
+        for (Iterator ps = op.getParameters().iterator(); ps.hasNext(); ) {
+            MParameterDef p = (MParameterDef) ps.next();
+            ret.add(getLanguageType(p) + " " + p.getIdentifier());
         }
+        return join(", ", ret);
+    }
+
+    /**
+     * Get name information about the parameters for the given operation. This
+     * will return a comma-separated string, i.e. <name1>, <name2>, ... ,
+     * <nameN> for this operation's parameters.
+     *
+     * @param op the operation to investigate.
+     * @return a comma separated string of the parameter information requested
+     *         for this operation.
+     */
+    protected String getOperationParamNames(MOperationDef op)
+    {
+        List ret = new ArrayList();
+        for (Iterator ps = op.getParameters().iterator(); ps.hasNext(); )
+            ret.add(((MParameterDef) ps.next()).getIdentifier());
         return join(", ", ret);
     }
 
@@ -491,8 +537,9 @@ abstract public class CppGenerator
     protected String getOperationExcepts(MOperationDef op)
     {
         List ret = new ArrayList();
-        for (Iterator excepts = op.getExceptionDefs().iterator(); excepts.hasNext(); )
-            ret.add(((MExceptionDef)excepts.next()).getIdentifier());
+        for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext(); )
+            ret.add(((MExceptionDef) es.next()).getIdentifier());
+
         if (ret.size() > 0) return "throw ( " + join(", ", ret) + " )";
         else                return "";
     }

@@ -1,0 +1,15 @@
+Source: ccmtools
+Section: devel
+Priority: optional
+Maintainer: Leif Johnson <leif@ambient.2y.net>
+Build-Depends: debhelper (>> 4.0.0)
+Standards-Version: 3.5.8
+
+Package: ccmtools
+Architecture: any
+Depends: ${shlibs:Depends} ${misc:Depends}
+Description: CORBA component generator tools
+ The CCM Tools are CASE tools used for generating CORBA components, test
+ components, and test programs based on source IDL files. Various target
+ languages can be generated. Scripting language wrappers can also be generated
+ to enable rapid prototyping. See http://ccmtools.sf.net/ for more details.

@@ -1,0 +1,10 @@
+Document: ccmtools-devmanual
+Title: CCM Tools Developer's Manual
+Author: Egon Teiniker <egon.teiniker@tugraz.at>
+Abstract: This manual describes the CCM Tools APIs and how to extend the CCM
+  Tools by writing new code generators.
+Section: devel
+
+Format: postscript
+Files: /usr/share/doc/ccmtools/manual.ps.gz
+

@@ -1,2 +1,2 @@
-#include <CCM_Local/%(EmitsType)s.h>
+#include <%(IncludeNamespace)s/%(EmitsType)s.h>
 

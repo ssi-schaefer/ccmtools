@@ -33,13 +33,13 @@ specifically altered the location of the share directories using the --datadir=
 option to ./configure, the following command will correctly add the needed files
 (using Bash):
 
-export CLASSPATH=<prefix>/share/java/ccmtools-0.3.0.jar:<prefix>/share/java/antlr.jar:$CLASSPATH
+export CLASSPATH=<prefix>/share/java/ccmtools.jar:<prefix>/share/java/antlr.jar:$CLASSPATH
 
 If you did not alter the prefix at configure time, your prefix will be
 /usr/local, and the following command will set the correct environment variable
 (using Bash):
 
-export CLASSPATH=/usr/local/share/java/ccmtools-0.3.0.jar:/usr/local/share/java/antlr.jar:$CLASSPATH
+export CLASSPATH=/usr/local/share/java/ccmtools.jar:/usr/local/share/java/antlr.jar:$CLASSPATH
 
 If you installed the ccmtools package to a nonstandard location, you will also
 need to add <prefix>/bin to your PATH environment variable.
@@ -126,14 +126,15 @@ development $ export CCMTOOLS_PACKAGE=my_project
 development $ ccmtools-c++-generate *.idl
 [this will generate component code in ./my_project]
 [application logic files will be copied here after they are generated]
+[Confix will bootstrap and configure the package]
 [edit the *_app.cc and *_user_types.h files]
 
 development $ ccmtools-c++-make
 [this will copy application logic files to the correct locations in my_project]
-[Confix will bootstrap, configure, build and check the components]
+[Confix will build and check the components]
 
 development $ ccmtools-c++-install
-[Confix will uninstall the components]
+[Confix will install the components]
 
 development $ ccmtools-c++-uninstall
 [Confix will uninstall the components]

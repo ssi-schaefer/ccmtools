@@ -1,2 +1,2 @@
-#include "%(SupportsType)s.idl3mirror"
+#include "%(SupportsSourceFile)s.idl3mirror"
 

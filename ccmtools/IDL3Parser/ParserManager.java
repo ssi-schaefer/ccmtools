@@ -141,35 +141,48 @@ public class ParserManager {
 	MContainer spec = null;
         IDL3Parser parser = null;
         IDL3Lexer lexer = null;
+        DataInputStream stream = null;
 
-	try
-        {
-            if (isIncluded(filename)) return spec;
+        if (isIncluded(filename)) return spec;
 
-            lexer = new IDL3Lexer
-                (new DataInputStream(new FileInputStream(filename)));
+        try {
+            stream = new DataInputStream(new FileInputStream(filename));
+        } catch (Exception e) {
+            throw new RuntimeException(
+                "Error opening input file '"+filename+"': "+e);
+        }
+
+	try {
+            lexer = new IDL3Lexer(stream);
             lexer.setDebug(debug);
             lexer.setFilename(filename);
             lexer.setManager(this);
+        } catch (Exception e) {
+            throw new RuntimeException("Error creating lexer: " + e);
+        }
 
+        try {
             parser = new IDL3Parser(lexer);
             parser.setDebug(debug);
             parser.setFilename(filename);
             parser.setManager(this);
         } catch (Exception e) {
-            System.err.println("Parser manager exception: " + e);
-            return spec;
+            throw new RuntimeException("Error creating parser: " + e);
         }
 
         if (originalFilename == null) originalFilename = filename;
-
-        symbolTable.pushFile();
-        spec = parser.specification();
-        spec.setIdentifier(filename);
-        symbolTable.popFile();
-
         includedFiles.add(filename);
+        symbolTable.pushFile();
 
+        try {
+            spec = parser.specification();
+            spec.setIdentifier(filename);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                "Error parsing file '"+filename+"': "+e);
+        }
+
+        symbolTable.popFile();
 	return spec;
     }
 }

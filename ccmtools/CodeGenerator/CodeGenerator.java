@@ -28,6 +28,7 @@ import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MModuleDef;
+import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
@@ -99,7 +100,7 @@ import java.util.TreeSet;
  * derived classes.
  *
  * Code templates are usually looked for in a directory like
- * /usr/share/ccmtools-0.2/<language>CodeGenerator/; see the TemplateManager and
+ * /usr/share/ccmtools-A.B/<language>CodeGenerator/; see the TemplateManager and
  * TemplateManagerImpl documentation for details. Templates form the basis of
  * the code generator customization: Variables declared within a template
  * determine which type of node information gets placed in which output file.
@@ -656,6 +657,41 @@ abstract public class CodeGenerator
     }
 
     /**
+     * Find a list of the modules in which the given node is contained. This is
+     * intended as a way to get the full scope of a typedef-type variable ; I
+     * haven't found other uses for it just yet.
+     *
+     * @param node a graph node to investigate.
+     * @return a list of the namespaces that fully scope this node.
+     */
+    protected List getScope(MContained node)
+    {
+        List scope = new ArrayList();
+        MContainer c = node.getDefinedIn();
+        while (c.getDefinedIn() != null) {
+            if (c instanceof MModuleDef) scope.add(0, c.getIdentifier());
+            c = c.getDefinedIn();
+        }
+        return scope;
+    }
+
+    /**
+     * Get the identifier of the top level container of a given node.
+     *
+     * @param contained the node to use for a starting point.
+     * @return the identifier of the node's container. If contained is null, the
+     *         function will return "".
+     */
+    protected String getContainerIdentifier(MContained node)
+    {
+        if (node == null) return "";
+        MContainer c = node.getDefinedIn();
+        if (c == null) return node.getIdentifier();
+        while (c.getDefinedIn() != null) c = c.getDefinedIn();
+        return c.getIdentifier();
+    }
+
+    /**
      * Return a string version of the IDL type corresponding to the given
      * object's CCM IdlType.
      *
@@ -669,7 +705,7 @@ abstract public class CodeGenerator
      */
     protected String getBaseIdlType(MTyped object)
     {
-        MIDLType idl_type = ((MTyped) object).getIdlType();
+        MIDLType idl_type = object.getIdlType();
 
         if (idl_type == null)
             throw new RuntimeException(object + " has no IDL type");
@@ -680,8 +716,11 @@ abstract public class CodeGenerator
         if (idl_type instanceof MTypedefDef) {
             MTypedefDef typedef = (MTypedefDef) idl_type;
             File source = new File(typedef.getSourceFile());
-            if (! source.toString().equals(""))
-                extern_includes.add(source.getName().split("\\.")[0]);
+            if (! source.toString().equals("")) {
+                List scope = getScope(typedef);
+                scope.add(source.getName().split("\\.")[0]);
+                extern_includes.add(scope);
+            }
             return typedef.getIdentifier();
         }
 
@@ -826,11 +865,25 @@ abstract public class CodeGenerator
                     throw new RuntimeException("Node '"+id+"' has no home");
                 }
             }
-        } else if (variable.equals("Container") &&
-                   current_node instanceof MContained) {
-            MContainer cont = ((MContained) current_node).getDefinedIn();
-            while (cont.getDefinedIn() != null) cont = cont.getDefinedIn();
-            value = cont.getIdentifier();
+        } else if (variable.equals("Container")) {
+            MContained c = null;
+            if (current_node instanceof MContained)
+                c = (MContained) current_node;
+            else if (current_node instanceof MParameterDef)
+                c = ((MParameterDef) current_node).getOperation();
+            value = getContainerIdentifier(c);
+        } else if (variable.equals("ProvidesSourceFile")) {
+            MProvidesDef provides = (MProvidesDef) current_node;
+            File source = new File(provides.getProvides().getSourceFile());
+            value = source.getName().split("\\.")[0];
+        } else if (variable.equals("SupportsSourceFile")) {
+            MSupportsDef supports = (MSupportsDef) current_node;
+            File source = new File(supports.getSupports().getSourceFile());
+            value = source.getName().split("\\.")[0];
+        } else if (variable.equals("UsesSourceFile")) {
+            MUsesDef uses = (MUsesDef) current_node;
+            File source = new File(uses.getUses().getSourceFile());
+            value = source.getName().split("\\.")[0];
         }
 
         return value;

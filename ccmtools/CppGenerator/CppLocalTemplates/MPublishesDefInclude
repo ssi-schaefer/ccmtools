@@ -1,2 +1,2 @@
-#include <CCM_Local/%(PublishesType)s.h>
+#include <%(IncludeNamespace)s/%(PublishesType)s.h>
 

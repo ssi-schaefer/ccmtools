@@ -26,6 +26,7 @@ import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -173,6 +174,8 @@ abstract public class IDLGenerator
             return data_MOperationDef(variable, value);
         } else if (current_node instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
+        } else if (current_node instanceof MContainer) {
+            return data_MContainer(variable, value);
         }
 
         return value;
@@ -209,12 +212,25 @@ abstract public class IDLGenerator
 
     /**************************************************************************/
 
+    protected String data_MContainer(String data_type, String data_value)
+    {
+        if (data_type.equals("Include")) {
+            List result = new ArrayList();
+            for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
+                List path = (List) i.next();
+                result.add("#include \"" +
+                           path.get(path.size()-1) + ".idl3mirror\"");
+            }
+            return join("\n", result);
+        }
+        return data_value;
+    }
+
     protected String data_MComponentDef(String data_type, String data_value)
     {
         if (data_type.equals("BaseTypes")) {
             String base = joinBases(", ");
-            if (base.length() > 0)
-                return ": " + base;
+            if (base.length() > 0) return ": " + base;
         } else if (data_type.startsWith("MSupportsDef") &&
                    data_value.endsWith(", ")) {
             return "supports " +
@@ -239,16 +255,14 @@ abstract public class IDLGenerator
     {
         if (data_type.equals("BaseTypes")) {
             String base = joinBases(", ");
-            if (base.length() > 0)
-                return ": " + base;
+            if (base.length() > 0) return ": " + base;
         }
         return data_value;
     }
 
     protected String data_MOperationDef(String data_type, String data_value)
     {
-        if (data_type.equals("MExceptionDefName") &&
-            data_value.endsWith(", "))
+        if (data_type.startsWith("MExceptionDef") && data_value.endsWith(", "))
             return "raises ( " +
                 data_value.substring(0, data_value.length() - 2) + " )";
         else if (data_type.startsWith("MParameterDef") &&

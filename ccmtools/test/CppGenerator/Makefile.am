@@ -13,7 +13,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # tests are generally in order of increasing complexity.
 
-##TESTS = module-reopen.sh
+##TESTS = owudb.sh
 TESTS = \
     help.sh                       \
     version.sh                    \
@@ -24,7 +24,8 @@ TESTS = \
     module.sh                     \
     module-nested.sh              \
     module-reopen.sh              \
-    calculator.sh
+    calculator.sh                 \
+    owudb.sh
 
 dist_check_SCRIPTS = $(TESTS)
 

@@ -93,14 +93,10 @@ public class MStructDefImpl
     //----------------------------------------------------------------
 
     // aggregation: direct role: [1] --> opposite role: member[*]
-    public List getMembers()                       {return MemberList_;}
-    public void setMembers(List __arg)
-    {
-	if(__arg != null) MemberList_ = new ArrayList(__arg);
-	else              MemberList_ = __arg;
-    }
-    public void addMember(MFieldDef __arg)         {MemberList_.add(__arg);}
-    public void removeMember(MFieldDef __arg)      {MemberList_.remove(__arg);}
+    public List getMembers()                    {return MemberList_;}
+    public void setMembers(List __arg)          {MemberList_ = new ArrayList(__arg);}
+    public void addMember(MFieldDef __arg)      {MemberList_.add(__arg);}
+    public void removeMember(MFieldDef __arg)   {MemberList_.remove(__arg);}
 
     public void addMember(int __pos, MFieldDef __arg) {MemberList_.add(__pos, __arg);}
     public void removeMember(int __pos)               {MemberList_.remove(__pos);}

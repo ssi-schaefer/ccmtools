@@ -11,7 +11,7 @@
 #include "%(Container)s_user_types.h"
 #include "%(Identifier)s_types.h"
 
-namespace CCM_Local {
+%(OpenNamespace)s
 
 class CCM_%(Identifier)s
   : public localComponents::Object%(BaseTypes)s
@@ -22,7 +22,7 @@ class CCM_%(Identifier)s
 %(MOperationDefPrototypeVV)s
 };
 
-} // /namespace CCM_Local
+%(CloseNamespace)s
 
 #endif
 
@@ -37,7 +37,7 @@ class CCM_%(Identifier)s
 #ifndef __%(Identifier)s__TYPES__H__
 #define __%(Identifier)s__TYPES__H__
 
-namespace CCM_Local {
+%(OpenNamespace)s
 
 %(MEnumDefFwdDecl)s
 %(MStructDefFwdDecl)s
@@ -51,7 +51,7 @@ namespace CCM_Local {
 
 %(MExceptionDefClass)s
 
-} // /namespace CCM_Local
+%(CloseNamespace)s
 
 #endif
 

@@ -1,2 +1,2 @@
-#include "%(ProvidesType)s.idl3mirror"
+#include "%(ProvidesSourceFile)s.idl3mirror"
 

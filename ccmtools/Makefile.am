@@ -29,7 +29,7 @@ extra_java_src = Constants.java.in
 noinst_JAVA = $(top_builddir)/Constants.java
 
 EXTRA_DIST = binary-dist.in $(extra_java_src) README.binary RELEASE \
-             confix.example
+             confix.example debian
 
 clean-local:
 	$(RM) -f -r $(top_builddir)/ccmtools

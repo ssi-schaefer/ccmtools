@@ -47,7 +47,6 @@ public class MComponentDefImpl
 
     private boolean isAbstract;
     private boolean isLocal;
-    private boolean isForwardDeclaration;
 
     private List HomeList_;
     private List FacetList_;
@@ -63,7 +62,8 @@ public class MComponentDefImpl
 
     public MComponentDefImpl()
     {
-        isForwardDeclaration = false;
+        isAbstract = false;
+        isLocal = false;
 	HomeList_ = new ArrayList();
 	FacetList_ = new ArrayList();
 	ReceptacleList_ = new ArrayList();
@@ -124,10 +124,6 @@ public class MComponentDefImpl
     public String getSourceFile()               {return sourceFile;}
     public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
-    // attribute isForwardDeclaration:boolean
-    public boolean isForwardDeclaration()            {return isForwardDeclaration;}
-    public void setForwardDeclaration(boolean __arg) {isForwardDeclaration = __arg;}
-
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
@@ -178,7 +174,7 @@ public class MComponentDefImpl
 
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
     public List getContentss()                   {return ContainsList;}
-    public void setContentss(List __arg)         {ContainsList = (__arg != null) ? new ArrayList(__arg) : null;}
+    public void setContentss(List __arg)         {ContainsList = new ArrayList(__arg);}
     public void addContents(MContained __arg)    {ContainsList.add(__arg);}
     public void removeContents(MContained __arg) {ContainsList.remove(__arg);}
 

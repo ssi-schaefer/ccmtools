@@ -42,7 +42,6 @@ public class MValueDefImpl
     private boolean isAbstract;
     private boolean isCustom;
     private boolean isTruncatable;
-    private boolean isForwardDeclaration;
 
     private TypeCode TypeCode;
 
@@ -54,7 +53,9 @@ public class MValueDefImpl
 
     public MValueDefImpl()
     {
-        isForwardDeclaration = false;
+        isAbstract = false;
+        isCustom = false;
+        isTruncatable = false;
 	ContainsList = new ArrayList();
 	AbstractDerivedFromList = new ArrayList();
         sourceFile = new String("");
@@ -109,10 +110,6 @@ public class MValueDefImpl
     public String getSourceFile()               {return sourceFile;}
     public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
-    // attribute isForwardDeclaration:boolean
-    public boolean isForwardDeclaration()            {return isForwardDeclaration;}
-    public void setForwardDeclaration(boolean __arg) {isForwardDeclaration = __arg;}
-
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
@@ -123,7 +120,7 @@ public class MValueDefImpl
 
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
     public List getContentss()                   {return ContainsList;}
-    public void setContentss(List __arg)         {ContainsList = (__arg != null) ? new ArrayList(__arg) : null;}
+    public void setContentss(List __arg)         {ContainsList = new ArrayList(__arg);}
     public void addContents(MContained __arg)    {ContainsList.add(__arg);}
     public void removeContents(MContained __arg) {ContainsList.remove(__arg);}
 

@@ -1,3 +1,4 @@
+%(Include)s
 %(MEnumDefFwdDecl)s
 %(MStructDefFwdDecl)s
 %(MUnionDefFwdDecl)s

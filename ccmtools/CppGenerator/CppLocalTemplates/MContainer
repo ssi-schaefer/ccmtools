@@ -9,6 +9,7 @@
 #include <vector>
 
 namespace CCM_Local {
+%(MModuleDef)s
 
 %(MEnumDefFwdDecl)s
 %(MStructDefFwdDecl)s
