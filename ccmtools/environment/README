@@ -72,7 +72,7 @@ b) Confix konfigurieren
     }
 
   # Confix für mico konfigurieren	
-  > cd wamas_x/utilities/external
+  > cd ccmtools-0.3.3/environment/external
   > confix.py --bootstrap --configure --profile="ccmtools" --make --targets=install	
  
 c) Remote Komponent Environment
