@@ -45,7 +45,7 @@ fi
 
 test -z "${ret}" && ret=1 && \
   ccmtools-c++-generate -y -d -c "1.2.3" -p ${1} -i ${install_dir} *.idl && \
-  ccmtools-c++-make -p ${1} && \
+  PYTHONPATH=${cwd}:${PYTHONPATH} ccmtools-c++-make -p ${1} && \
   ccmtools-c++-install -p ${1} && \
   ccmtools-c++-uninstall -p ${1} && ret=0
 

@@ -181,7 +181,7 @@ public class CppMirrorGeneratorImpl
             // values.
             return getTestVariable(current_node, 0);
         }
-        return data_value;
+        return super.data_MAttributeDef(data_type, data_value);
     }
 
     protected String data_MComponentDef(String data_type, String data_value)
@@ -191,7 +191,7 @@ public class CppMirrorGeneratorImpl
             String temp = handleNamespace(data_type, id);
             return temp+"using namespace CCM_Session_"+id+"_mirror;\n";
         }
-        return data_value;
+        return super.data_MComponentDef(data_type, data_value);
     }
 
     /**************************************************************************/

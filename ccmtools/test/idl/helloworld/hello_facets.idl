@@ -1,6 +1,6 @@
 
 interface Console {
-  void print(in string s);
+  void echo(in string s);
   void println(in string s2);
 };
 

@@ -213,5 +213,5 @@ confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
 confix_flags += ' --bootstrap --configure'
 if INSTALL_DIR: confix_flags += ' --prefix="%s"' % INSTALL_DIR
 
-sys.exit(os.system('confix.py' + confix_flags))
+sys.exit(os.system('confix.py' + confix_flags) != 0)
 
