@@ -1,5 +1,5 @@
 
-all: client server
+all: server
 
 server: 
 	ccmtools-idl --mico -I${CCM_INSTALL}/include *.idl

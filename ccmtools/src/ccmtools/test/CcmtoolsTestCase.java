@@ -136,7 +136,7 @@ public class CcmtoolsTestCase extends TestCase
     {
         try {
             // Run the GNU preprocessor cpp in a separate process.
-            String cmd = "confix.py --profile=ccmtools_test ";
+            String cmd = "confix.py ";
             System.out.println(">>>" + cmd + args);
             Process proc = Runtime.getRuntime().exec(cmd + args);
 
