@@ -44,6 +44,79 @@ console_mirror_impl::~console_mirror_impl (  )
   DEBUGNL ( "-console_mirror_impl->~console_mirror_impl (  )" );
 }
 
+time_t
+console_mirror_impl::foo1 ( const time_t& p1, time_t& p2, time_t& p3 )
+  
+{
+  DEBUGNL ( " console_impl->foo1 ( p1, p2, p3 )" );
+
+  p3=p2;
+  p2=p1;
+  return p3+p1;
+}
+
+Color
+console_mirror_impl::foo2 ( const Color& p1, Color& p2, Color& p3 )
+  
+{
+  DEBUGNL ( " console_impl->foo2 ( p1, p2, p3 )" );
+
+  p3=p2;
+  p2=p1;
+  return p1;
+}
+
+Value
+console_mirror_impl::foo3 ( const Value& p1, Value& p2, Value& p3 )
+  
+{
+  DEBUGNL ( " console_impl->foo3 ( p1, p2, p3 )" );
+
+  cout << p1.s << endl;
+  cout << p2.s << endl;
+  cout << p3.s << endl;
+
+  Value r;
+  r.s = p1.s + p2.s;
+  r.dd = p1.dd + p2.dd;
+  p3=p2;
+  p2=p1;
+  return r;
+}
+
+map
+console_mirror_impl::foo4 ( const map& p1, map& p2, map& p3 )
+  
+{
+  DEBUGNL ( " console_impl->foo4 ( p1, p2, p3 )" );
+
+  map r;
+  for(int i=0;i<p1.size();i++) {
+    Value v;
+    v.s = "test";
+    v.dd = (double)i;
+    r.push_back(v);
+    p3.push_back(p2.at(i));
+    p2.at(i) = p1.at(i);
+  }
+  return r;
+}
+
+doubleArray
+console_mirror_impl::foo5 ( const doubleArray& p1, doubleArray& p2, doubleArray& p3 )
+  
+{
+  DEBUGNL ( " console_impl->foo5 ( p1, p2, p3 )" );
+
+  doubleArray r(10);
+  for(int i=0; i<p1.size(); i++) {
+    r.at(i) = p1.at(i);
+    p3.at(i) = p2.at(i);
+    p2.at(i) = p1.at(i);
+  }
+  return r;
+}
+
 short
 console_mirror_impl::println1 ( const short p1, short& p2, short& p3 )
   
@@ -65,7 +138,7 @@ console_mirror_impl::println2 ( const long p1, long& p2, long& p3 )
   // TODO : IMPLEMENT ME HERE !
   p3=p2;
   p2=p1;
-  return p3+p1; 
+  return p3+p1;
 }
 
 unsigned short
@@ -77,7 +150,7 @@ console_mirror_impl::println3 ( const unsigned short p1, unsigned short& p2, uns
   // TODO : IMPLEMENT ME HERE !
   p3=p2;
   p2=p1;
-  return p3+p1; 
+  return p3+p1;
 }
 
 unsigned long
@@ -89,7 +162,7 @@ console_mirror_impl::println4 ( const unsigned long p1, unsigned long& p2, unsig
   // TODO : IMPLEMENT ME HERE !
   p3=p2;
   p2=p1;
-  return p3+p1; 
+  return p3+p1;
 }
 
 float
@@ -101,7 +174,7 @@ console_mirror_impl::println5 ( const float p1, float& p2, float& p3 )
   // TODO : IMPLEMENT ME HERE !
   p3=p2;
   p2=p1;
-  return p3+p1; 
+  return p3+p1;
 }
 
 double
@@ -113,7 +186,7 @@ console_mirror_impl::println6 ( const double p1, double& p2, double& p3 )
   // TODO : IMPLEMENT ME HERE !
   p3=p2;
   p2=p1;
-  return p3+p1; 
+  return p3+p1;
 }
 
 char
@@ -125,7 +198,7 @@ console_mirror_impl::println7 ( const char p1, char& p2, char& p3 )
   // TODO : IMPLEMENT ME HERE !
   p3=p2;
   p2=p1;
-  return p3+p1; 
+  return p3+p1;
 }
 
 std::string
@@ -165,12 +238,8 @@ console_mirror_impl::println10 ( const unsigned char p1, unsigned char& p2, unsi
   // TODO : IMPLEMENT ME HERE !
   p3=p2;
   p2=p1;
-  return p3+p1; 
+  return p3+p1;
 }
-
-
-
-
 
 //==============================================================================
 // class implementation
