@@ -106,6 +106,8 @@
 
       <delete dir="${src}/ccmtools/ccmtools/uml_parser" />
 
+      <delete file="${prefix}/lib/dtd2java.jar" />
+
       <delete dir="${build}" /> 
   </target>
 </project>

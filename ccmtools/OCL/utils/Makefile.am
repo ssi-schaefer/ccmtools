@@ -2,7 +2,8 @@
 ## $Id$
 
 
-CLASSPATH_ENV = CLASSPATH=$(CLASSPATH):$(top_builddir)
+#CLASSPATH_ENV = CLASSPATH=$(CLASSPATH):$(top_builddir)
+CLASSPATH_ENV = CLASSPATH=$(top_builddir):$(top_srcdir)/lib/antlr.jar:$(top_srcdir)/lib/oclmetamodel.jar:$(top_srcdir)/lib/mdr01.jar
 
 AM_JAVACFLAGS = -g
 
