@@ -16,6 +16,7 @@
 %(MSupportsDefInclude)s
 %(MProvidesDefInclude)s
 %(MUsesDefInclude)s
+
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h> 
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_app.h> 
 

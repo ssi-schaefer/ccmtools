@@ -77,8 +77,8 @@ public class CppRemoteGeneratorImpl
 	new File("CCM_Session_Container", "Makefile.py"),
 
         new File("remoteComponents", "CCM.idl"),
-	new File("remoteComponents", "CCM.h"),
-	new File("remoteComponents", "CCM.cc"),
+	//	new File("remoteComponents", "CCM.h"),
+	//	new File("remoteComponents", "CCM.cc"),
         new File("remoteComponents", "Makefile.py")
     };
 
@@ -103,8 +103,8 @@ public class CppRemoteGeneratorImpl
 	"Blank",                  // Template for Makefile.py
 
 	"ComponentsIdl",          // Template for Components.idl
-	"ComponentsHeader",       // (mico 2.3.10 specific) !!!
-	"ComponentsImpl",         // (mico 2.3.10 specific) !!!
+	//	"ComponentsHeader",       // (mico 2.3.10 specific) !!!
+	//	"ComponentsImpl",         // (mico 2.3.10 specific) !!!
 	"MakefilePy"              // Template for Makefile.py
     };
 
@@ -689,6 +689,10 @@ public class CppRemoteGeneratorImpl
 		    prefix = "";
 		    suffix = "";
 		}
+		else if(idl_type instanceof MStringDef) {
+		    suffix = "";
+		}
+		    
 	    }
 	    // OUT Parameter
 	    else if(direction == MParameterMode.PARAM_OUT) {
@@ -712,10 +716,11 @@ public class CppRemoteGeneratorImpl
 
 	// Handle operation return types
 	else if(object instanceof MOperationDef) { 
-	   
 	    // ToDo separate fixed and variable struct
 	    if(idl_type instanceof MPrimitiveDef
-	       || idl_type instanceof MEnumDef) {
+	       || idl_type instanceof MEnumDef
+	       || idl_type instanceof MStringDef) {
+
 		return corba_type;
 	    }
 	    else if(idl_type instanceof MArrayDef) {
@@ -724,8 +729,6 @@ public class CppRemoteGeneratorImpl
 	    else
 		return corba_type + "*";
 	} 
-
-
 	return corba_type;
     }
 
@@ -981,6 +984,11 @@ public class CppRemoteGeneratorImpl
 	String ret_string = "";
 	MIDLType idl_type = op.getIdlType(); 
 
+	if(idl_type instanceof MPrimitiveDef
+	   && ((MPrimitiveDef)idl_type).getKind() == MPrimitiveKind.PK_VOID) {
+	    return ""; // void foo() does not need a result declaration
+	}
+
 	if(idl_type instanceof MPrimitiveDef || 
 	   idl_type instanceof MStringDef) {
 	    ret_string = "  " + (String)language_mappings.get((String)getBaseIdlType(op)) +
@@ -1033,14 +1041,23 @@ public class CppRemoteGeneratorImpl
 		      "CppRemoteGeneratorImpl.getParameterConvertMethod()");
 
 	String ret_string = "";
+	String ResultString;
 	MIDLType idl_type = op.getIdlType(); 
-
+	
+	if(idl_type instanceof MPrimitiveDef 
+	   && ((MPrimitiveDef)idl_type).getKind() == MPrimitiveKind.PK_VOID) {
+	    ResultString = "  "; // void foo() does not have a result value
+	}
+	else {
+	    ResultString = "  result = ";
+	}
+	
 	if(idl_type instanceof MPrimitiveDef 
 	   || idl_type instanceof MStringDef
 	   || idl_type instanceof MEnumDef
 	   || idl_type instanceof MStructDef
 	   || idl_type instanceof MAliasDef) {
-	    ret_string = "  " + "  result = local_adapter->" 
+	    ret_string = "  " + ResultString + "local_adapter->" 
 		+ op.getIdentifier() + "(";
 	    
 	    List ret = new ArrayList(); 
@@ -1288,6 +1305,12 @@ public class CppRemoteGeneratorImpl
 
 	List ret = new ArrayList();
 	MIDLType idl_type = op.getIdlType();
+
+
+	if(idl_type instanceof MPrimitiveDef
+	   && ((MPrimitiveDef)idl_type).getKind() == MPrimitiveKind.PK_VOID) {
+	    return ""; // void foo() does not need a result convertion
+	}
 
 	if(idl_type instanceof MPrimitiveDef || 
 	   idl_type instanceof MStringDef) {
