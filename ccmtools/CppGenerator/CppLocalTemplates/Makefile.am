@@ -88,6 +88,7 @@ dist_template_DATA = \
     MUsesDefConnectFacetMultiple                   \
     MUsesDefConnectPrototype                       \
     MUsesDefGetCtxConnectionPrototype              \
+    MUsesDefGetCtxConnectionPrototypeMultiple      \
     MUsesDefConnectPrototypeMultiple               \
     MUsesDefDisconnectFacet                        \
     MUsesDefDisconnectFacetMultiple                \
