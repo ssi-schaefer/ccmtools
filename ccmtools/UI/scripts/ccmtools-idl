@@ -33,7 +33,7 @@ Options:
     -h, --help                  Print out this help
     --mico                      Use the mico IDL compiler 
     --java                      Use the Java IDL compiler 
-    -IDIR                       Add DIR to the include path for IDL files
+    -Ipath                      Add path to the include path for IDL files
     -V, --version               Print out ccmtools version information
 ''' 
 
