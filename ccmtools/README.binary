@@ -36,7 +36,7 @@ INSTALLATION
    ~ $ cd ccmtools-0.2.0
    ccmtools-0.2.0 $ export CCMTOOLS_HOME=`pwd`
    ccmtools-0.2.0 $ export CLASSPATH=${CLASSPATH}:`pwd`/share/antlr.jar
-   ccmtools-0.2.0 $ export CLASSPATH=${CLASSPATH}:`pwd`/share/ccmtools.jar
+   ccmtools-0.2.0 $ export CLASSPATH=${CLASSPATH}:`pwd`/share/ccmtools-0.3.0.jar
    ccmtools-0.2.0 $ export PATH=${PATH}:`pwd`/bin
 
    CCMTOOLS_HOME needs to point to the base directory that gets unzipped when
@@ -48,9 +48,9 @@ RUNNING
 =======
 
 The CCM Tools currently concentrate on C++ component development. Use the
-"ccmtools-c++-{generate|deploy|undeploy}" scripts to drive the Java classes. All
-scripts require Python (http://python.org/) to run. Deploying components
-requires Confix (http://confix.sourceforge.net/).
+"ccmtools-c++-{generate|make|install|uninstall}" scripts to drive the Java
+classes. All scripts require Python (http://python.org/) to run. Deploying
+components requires Confix (http://confix.sourceforge.net/).
 
 The basic development process is thought of as follows :
 
@@ -69,7 +69,12 @@ The basic development process is thought of as follows :
 
 5. Edit the *_app.cc and *_user_types.h files.
 
-6. Run "ccmtools-c++-deploy" to compile, test, and install the components.
+6. Run "ccmtools-c++-make" to compile and test the components.
+
+7. Run "ccmtools-c++-install" to install the components.
+
+8. If you need to later, run "ccmtools-c++-uninstall" to uninstall the
+   components.
 
 If you want to use the CCM Tools for another code generation purpose, use the
 more generic "ccmtools-generate" script.
@@ -93,7 +98,7 @@ following :
 
 o Source IDL files must all reside within one directory.
 
-o Unions and events are not implemented whatsoever.
+o Unions and events are not implemented in any code generators yet.
 
 o Altering the IDL files requires component regeneration. This is a very tricky
   process, especially if an interface change happens after there are multiple
@@ -103,7 +108,7 @@ o Altering the IDL files requires component regeneration. This is a very tricky
 
   For this reason, be warned that altering your source IDL files is highly
   discouraged! IDL interfaces need to be defined once and altered only when
-  absolutely necessary.
+  absolutely necessary. This must simply be part of the development process.
 
 o Most IDL categories (components, homes, interfaces, etc.) do not allow
   repeated identifiers. That is, there can only be one component named
