@@ -9,11 +9,12 @@
           $ ant -Dprefix=/usr/local
   -->
   <property name="src" location="src" />
-  <property name="test" location="test" />
+  <property name="bin" location="bin" />
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
-  <property name="prefix" location="dist" />
   <property name="build" location="build" />
+  <property name="prefix" location="dist" />
+  <property name="test" location="test" />
   <property name="sandbox" location="test/CppGenerator/sandbox" />
 
   <!-- Define project related constants in Java -->
@@ -134,11 +135,11 @@
       </copy>
 
       <mkdir dir="${prefix}/bin" />
-      <copy file="${src}/ccmtools/UI/scripts/ccmtools-generate" 
+      <copy file="${bin}/ccmtools-generate" 
             todir="${prefix}/bin"  overwrite="true" />  
-      <copy file="${src}/ccmtools/UI/scripts/ccmtools-idl" 
+      <copy file="${bin}/ccmtools-idl" 
             todir="${prefix}/bin"  overwrite="true" />  
-      <copy file="${src}/ccmtools/UI/scripts/uml2idl" 
+      <copy file="${bin}/uml2idl" 
             todir="${prefix}/bin"  overwrite="true" />  
       <exec executable="chmod" os="Linux">
           <arg value="+x" />
@@ -152,8 +153,6 @@
           <arg value="+x" />
           <arg value="${prefix}/bin/uml2idl" />
       </exec>
-
-
   </target>
 
 
