@@ -85,7 +85,7 @@ main (int argc, char *argv[])
     ::CORBA_Stubs::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-
+    ::CORBA_Stubs::IFace_var iface = myTest->provide_iface();
 	
     myTest->configuration_complete();
 
@@ -141,6 +141,23 @@ main (int argc, char *argv[])
     CORBA::Octet octet_result = myTest->octet_value();
     assert(octet_result == octet_value);
 
+    {
+      ::CORBA_Stubs::LongList_var list_1 = new ::CORBA_Stubs::LongList;
+      list_1->length(5);
+      for(int i=0;i<5;i++) {
+        (*list_1)[i] = i;
+      }
+      iface->longList_value(list_1);
+    }
+    {
+      ::CORBA_Stubs::LongList_var list_r;
+      list_r = iface->longList_value();
+      for(unsigned long i=0; i < list_r->length(); i++) {
+        assert((*list_r)[i] == (CORBA::Long)i);
+      }
+    }
+    
+    
     DEBUGNL("==== End Test Case ============================================" );
 
     // Un-Deployment
