@@ -302,6 +302,7 @@ public class CppRemoteGeneratorImpl
 	return value;
     }
 
+
     protected String data_MAttributeDef(String data_type, String data_value)
     {
 	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.data_MAttributeDef()"); 
@@ -328,6 +329,7 @@ public class CppRemoteGeneratorImpl
         return data_value;
     }
 
+
     /**
      * Overwrites the superclass method to support standard IDL2C++ mapping
      * of parameters.
@@ -347,6 +349,7 @@ public class CppRemoteGeneratorImpl
     }
 
 
+
     protected String data_MHomeDef(String data_type, String data_value)
     {
         MHomeDef home = (MHomeDef) current_node;
@@ -363,6 +366,7 @@ public class CppRemoteGeneratorImpl
 	}
     }
 
+
     protected String data_MSupportsDef(String data_type, String data_value)
     {
 	MSupportsDef supports = (MSupportsDef)current_node;
@@ -371,14 +375,18 @@ public class CppRemoteGeneratorImpl
 	    // Generates the include path of supported interfaces.
 	    // Note that there is no CCM_Remote prefix in the namespace.
 	    List scope = getScope((MContained)supports);
-	    if(scope.size() > 0)
-		return "CCM_Local/" + join("/", scope) + "/" + supports.getSupports().getIdentifier(); 
-	    else
+	    if(scope.size() > 0) {
+		return "CCM_Local/" + join("/", scope) + "/" 
+		    + supports.getSupports().getIdentifier(); 
+	    }
+	    else {
 		return "CCM_Local/" + supports.getSupports().getIdentifier();
+	    }
 	}
 
 	return super.data_MSupportsDef(data_type,data_value);
     }
+
 
     protected String data_MProvidesDef(String data_type, String data_value)
     {
@@ -389,24 +397,30 @@ public class CppRemoteGeneratorImpl
 	    // Generates the include path of provides interfaces.
 	    // Note that there is no CCM_Remote prefix in the namespace.
 	    List scope = getScope((MContained)provides);
-	    if(scope.size() > 0)
-		return "CCM_Local/" + join("/", scope) + "/" +provides.getProvides().getIdentifier(); 
-	    else
+	    if(scope.size() > 0) {
+		return "CCM_Local/" + join("/", scope) + "/" 
+		    + provides.getProvides().getIdentifier(); 
+	    }
+	    else {
 		return "CCM_Local/" + provides.getProvides().getIdentifier();
+	    }
 	}
 	else if(data_type.equals("ProvidesType")) {
 	    List scope = getScope((MContained)provides);
 	    if(scope.size() > 0) {
-		return join("::", scope) + "::" + provides.getProvides().getIdentifier();
+		return join("::", scope) + "::" 
+		    + provides.getProvides().getIdentifier();
 	    }
-	    else
+	    else {
 		return provides.getProvides().getIdentifier();
+	    }
 	}
         else if(data_type.equals("ComponentType")) {
 	    return component.getIdentifier();
         }
 	return super.data_MProvidesDef(data_type,data_value);
     }
+
 
     protected String data_MUsesDef(String data_type, String data_value)
     {
@@ -416,10 +430,33 @@ public class CppRemoteGeneratorImpl
 	    // Generates the include path of used interfaces.
 	    // Note that there is no CCM_Remote prefix in the namespace.
 	    List scope = getScope((MContained)usesDef);
-	    if(scope.size() > 0)
-		return "CCM_Local/" + join("/", scope) + "/" + usesDef.getUses().getIdentifier(); 
-	    else
+	    if(scope.size() > 0) {
+		return "CCM_Local/" + join("/", scope) + "/" 
+		    + usesDef.getUses().getIdentifier(); 
+	    }
+	    else {
 		return "CCM_Local/" + usesDef.getUses().getIdentifier();
+	    }
+	}
+	else if(data_type.equals("CCM_UsesType")) {
+	    List scope = getScope((MContained)usesDef);
+	    if(scope.size() > 0) {
+		return join("::", scope) + "::CCM_" 
+		    + usesDef.getUses().getIdentifier();
+	    }
+	    else {
+		return "CCM_" + usesDef.getUses().getIdentifier();
+	    }
+	}
+	else if(data_type.equals("UsesType")) {
+	    List scope = getScope((MContained)usesDef);
+	    if(scope.size() > 0) {
+		return join("::", scope) + "::" 
+		    + usesDef.getUses().getIdentifier();
+	    }
+	    else {
+		return usesDef.getUses().getIdentifier();
+	    }
 	}
         return super.data_MUsesDef(data_type,data_value);
     }
@@ -488,6 +525,8 @@ public class CppRemoteGeneratorImpl
 
 	}
     }
+
+
 
     //====================================================================
     // Handle the C++ data types
