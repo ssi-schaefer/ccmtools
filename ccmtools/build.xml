@@ -130,7 +130,7 @@
             todir="${TEMPLATE_ROOT}/MDR"  overwrite="true" />	
 
       <copy todir="${prefix}/templates" overwrite="true">
-          <fileset dir="${src}/ccmtools/src/templates"/>
+          <fileset dir="${src}/templates"/>
       </copy>
 
       <mkdir dir="${prefix}/bin" />
