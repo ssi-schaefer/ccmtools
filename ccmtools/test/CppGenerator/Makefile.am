@@ -11,6 +11,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 TESTS = \
   help.sh version.sh \
+  attribute_types.sh \
   supports_types.sh supports_exception.sh supports_inheritance.sh \
   facet_types.sh facet_exception.sh facet_inheritance.sh facet_rename.sh \
   receptacle_types.sh receptacle_exception.sh receptacle_inheritance.sh receptacle_multiple.sh receptacle_not_connected.sh \
