@@ -21,15 +21,13 @@
 
 import os, sys, time
 
-FORCE_COPY = 0
 ENABLE_DEBUG = 0
 ENABLE_PYTHON_TEST = 0
 ENABLE_APPLICATION = 0
 
-IDL_FILES = ''
-INCLUDE_PATH = ''
-CODE_DEFINES = ''
-CODE_VERSION = '0.1.0'
+FILES = ''
+INCLUDES = ''
+DEFINES = ''
 
 INSTALL_DIR = ''
 SOURCE_DIR = ''
@@ -44,11 +42,8 @@ Generate C++ components and test components based on the given IDL files.
 
 Options:
     -a, --application           Generate skeletons for business logic
-    -c VERSION,
-      --code-version=VERSION    Set VERSION of generated package [%s]
     -d, --debug                 Enable debugging in generated source code
     -DFOO[=BAR]                 Define FOO (as BAR) for generated source code
-    -f, --force-copy            Force copying generated application files
     -h, --help                  Print out this help
     -i DIR, --install=DIR       Use DIR as the install prefix [Confix default]
     -IDIR                       Add DIR to the include path for IDL files
@@ -63,7 +58,7 @@ The environment variable CCMTOOLS_PACKAGE can be used to set the package name.
 Generated application logic and user types files will be copied to the current
 directory, unless they exist already, or if the -f option is enabled. Make sure
 you have a "ccmtools" profile in your $HOME/.confix configuration file.''' \
-    % (CODE_VERSION, CCMTOOLS_PACKAGE)
+    % CCMTOOLS_PACKAGE
 
 ## handle arguments.
 
@@ -78,14 +73,13 @@ while index < len(sys.argv):
 
     elif arg == '-a' or arg.startswith('--a'): ENABLE_APPLICATION = 1
     elif arg == '-d' or arg.startswith('--d'): ENABLE_DEBUG = 1
-    elif arg.startswith('-D'): CODE_DEFINES += ' ' + arg
-    elif arg == '-f' or arg.startswith('--f'): FORCE_COPY = 1
+    elif arg.startswith('-D'): DEFINES += ' ' + arg
     elif arg == '-h' or arg.startswith('--h'): print USAGE; sys.exit(0)
     elif arg == '-i': INSTALL_DIR = sys.argv[index]; index += 1
     elif arg.startswith('--i') and arg.find('=') > 0:
         INSTALL_DIR = arg.split('=')[1]
 
-    elif arg.startswith('-I'): INCLUDE_PATH += ' ' + arg
+    elif arg.startswith('-I'): INCLUDES += ' ' + arg
     elif arg == '-p': CCMTOOLS_PACKAGE = sys.argv[index]; index += 1
     elif arg.startswith('--pa') and arg.find('=') > 0:
         CCMTOOLS_PACKAGE = arg.split('=')[1]
@@ -98,35 +92,23 @@ while index < len(sys.argv):
     elif arg == '-V' or arg.startswith('--v'):
         os.execlp('ccmtools-generate', 'ccmtools-generate', '--version')
 
-    elif arg.find('.idl') > 0: IDL_FILES += ' ' + arg
+    elif arg.find('.idl') > 0: FILES += ' ' + arg
 
 ## check argument values.
 
-if not IDL_FILES:
+if not FILES:
     print 'No input IDL files specified!'
     print
     print USAGE
     sys.exit(1)
 
-if not INCLUDE_PATH.strip():
-    for file in IDL_FILES.split():
+if not INCLUDES.strip():
+    for file in FILES.split():
         path = '-I' + (os.path.split(file)[0] or os.curdir)
-        if INCLUDE_PATH.find(path) < 0: INCLUDE_PATH += path
+        if INCLUDES.find(path) < 0: INCLUDES += path
 
-parts = CODE_VERSION.split('.')[:2]
-ver_maj, ver_min = parts[0], '0'
-if len(parts) > 1: ver_min = parts[1]
-
-esc_l = r'\\\\\\\"\\\\\\\\\\\\\\\"' ## sheesh.
-esc_r = r'\\\\\\\\\\\\\\\"\\\\\\\"'
-date = '%04d-%02d-%02d_%02d:%02d_UTC' % time.gmtime()[:5]
-CODE_DEFINES += r' -DCCMTOOLS_PACKAGE_VERSION_MAJOR=' + ver_maj
-CODE_DEFINES += r' -DCCMTOOLS_PACKAGE_VERSION_MINOR=' + ver_min
-CODE_DEFINES += r' -DCCMTOOLS_PACKAGE_VERSION=%s%s%s' % (esc_l, CODE_VERSION, esc_r)
-CODE_DEFINES += r' -DCCMTOOLS_PACKAGE_DATE=%s%s%s' % (esc_l, date, esc_r)
-CODE_DEFINES += r' -DCCMTOOLS_PACKAGE_NAME=%s%s%s' % (esc_l, CCMTOOLS_PACKAGE, esc_r)
-if ENABLE_DEBUG:       CODE_DEFINES += r' -DCCM_DEBUG'
-if ENABLE_PYTHON_TEST: CODE_DEFINES += r' -DCCM_TEST_PYTHON'
+if ENABLE_DEBUG:       DEFINES += r' -DCCM_DEBUG'
+if ENABLE_PYTHON_TEST: DEFINES += r' -DCCM_TEST_PYTHON'
 
 SOURCE_DIR = SOURCE_DIR or CCMTOOLS_PACKAGE
 
@@ -138,33 +120,35 @@ if (sys.platform[:3] == 'win' and not SOURCE_DIR[1:3] == ':\\') or \
 ## tests (c) c++ mirror components, (d) c++ python wrappers, and (e) the real
 ## c++ components.
 
-idl3_dir = os.path.join(SOURCE_DIR, 'idl3')
-idl3cmd = 'ccmtools-generate %s -o %s' % (INCLUDE_PATH, idl3_dir)
-cmd = 'ccmtools-generate %s -o %s' % (INCLUDE_PATH, SOURCE_DIR)
+cmd = 'ccmtools-generate -o %s %s' % (SOURCE_DIR, DEFINES)
 app = ENABLE_APPLICATION and '-a' or ''
 
 if ENABLE_DEBUG:
-    if os.system('%s idl3mirror -u %s' % (idl3cmd, IDL_FILES)):
+    idl3_dir = os.path.join(SOURCE_DIR, 'idl3')
+
+    if os.system('ccmtools-generate -o %s %s idl3mirror %s %s' %
+                 (idl3_dir, DEFINES, INCLUDES, FILES)):
         print 'Error while generating IDL3 mirror files.'
         sys.exit(1)
 
-    if os.system('%s c++mirror -u %s %s' % (cmd, CODE_DEFINES, IDL_FILES)):
+    if os.system('%s c++mirror %s %s' % (cmd, INCLUDES, FILES)):
         print 'Error while generating C++ mirror test files.'
         sys.exit(1)
 
     cwd = os.getcwd()
     os.chdir(idl3_dir)
-    if os.system('%s c++local %s -u %s -I. *' % (cmd, app, CODE_DEFINES)):
+    if os.system('%s -I. c++local %s %s *' % (cmd, app, INCLUDES)):
         print 'Error while generating C++ mirror components.'
         os.chdir(cwd)
         sys.exit(1)
     os.chdir(cwd)
 
-if ENABLE_PYTHON_TEST and os.system('%s c++python -e -u %s' % (cmd, IDL_FILES)):
-    print 'Error while generating Python bindings.'
-    sys.exit(1)
+if ENABLE_PYTHON_TEST:
+    if os.system('%s c++python -e %s %s' % (cmd, INCLUDES, FILES)):
+        print 'Error while generating Python bindings.'
+        sys.exit(1)
 
-if os.system('%s c++local %s %s %s' % (cmd, app, CODE_DEFINES, IDL_FILES)):
+if os.system('%s c++local %s %s %s' % (cmd, app, INCLUDES, FILES)):
     print 'Error generating local C++ components.'
     sys.exit(1)
 

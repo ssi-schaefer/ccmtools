@@ -4,6 +4,7 @@
 # 1 - package name
 # 2 - include path specification
 # 3 - idl files to generate code from
+# 4 - if zero length, will uninstall package
 
 sandbox_dir=`pwd`/sandbox
 build_dir=${sandbox_dir}/build
@@ -27,6 +28,7 @@ for f in ${abssrcdir}/UI/scripts/ccmtools-* ; do ln -s $f ${sandbox_dir} ; done
 for f in ${abssrcdir}/*Generator/*Templates ; do ln -s $f ${template_dir} ; done
 
 PCLASSPATH=${CLASSPATH}
+PPATH=${PATH}
 export CLASSPATH=${abssrcdir}/lib/antlr.jar:${absbuilddir}
 export CCMTOOLS_HOME=${sandbox_dir}
 export PATH=${sandbox_dir}:${PATH}
@@ -48,7 +50,7 @@ test -z "${ret}" && ccmtools-c++-generate -d -a -c "1.2.3" -p ${1} \
 # the sandbox (this lets us distribute _app.cc files with the tests).
 
 test -d ${abssrcdir}/test/CppGenerator/${1}/src && \
-  ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/src ${1} 
+  ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/src ${1}
 
 test -d ${abssrcdir}/test/CppGenerator/${1}/CCM_Test && \
   ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/CCM_Test ${1}
@@ -62,12 +64,17 @@ test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
 # install and uninstall.
 
 test -z "${ret}" && ccmtools-c++-install -p ${1} || ret=1
-test -z "${ret}" && ccmtools-c++-uninstall -p ${1} || ret=1
+
+if test -z "${4}"
+then
+  test -z "${ret}" && ccmtools-c++-uninstall -p ${1} || ret=1
+  ${RM} -f -r share ccmtools-* *.cc *.h *.py
+fi
 
 test -z "${ret}" && ret=0
 
-${RM} -f -r share ccmtools-* *.cc *.h *.py
 export CLASSPATH=${PCLASSPATH}
+export PATH=${PPATH}
 cd ${cwd}
 exit ${ret}
 

@@ -213,9 +213,8 @@ abstract public class CodeGenerator
 
     protected int flags = 0x0;
 
-    public final static int FLAG_APPLICATION_FILES    = 0x0001;
-    public final static int FLAG_USER_TYPES_FILES     = 0x0002;
-    public final static int FLAG_ENVIRONMENT_FILES    = 0x0004;
+    public final static int FLAG_APPLICATION_FILES = 0x0001;
+    public final static int FLAG_ENVIRONMENT_FILES = 0x0002;
 
     private Stack node_stack;
     private Stack name_stack;

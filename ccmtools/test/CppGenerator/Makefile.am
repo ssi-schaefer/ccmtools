@@ -9,52 +9,53 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # currently under investigation ... uncomment in local copy to test faster.
 
-# TESTS = facet_rename.sh
+# TESTS = include_dir.sh include_nested.sh
 
-# tests are generally in order of increasing complexity.
+# tests are generally in order of decreasing complexity (we want to see whether
+# the hard tests fail ; the easy tests will likely pass later).
 
 TESTS = \
   help.sh                     \
   version.sh                  \
-  attribute.sh                \
-  supports.sh                 \
-  facet.sh                    \
-  facet_rename.sh             \
-  receptacle.sh               \
-  receptacle_multiple.sh      \
-  receptacle_not_connected.sh \
-  home_factory.sh             \
-  include.sh                  \
-  module.sh                   \
-  attribute_basic_types.sh    \
-  supports_basic_types.sh     \
-  facet_basic_types.sh        \
-  receptacle_basic_types.sh   \
-  home_basic_types.sh         \
-  attribute_user_types.sh     \
-  supports_user_types.sh      \
-  facet_user_types.sh         \
-  receptacle_user_types.sh    \
-  home_user_types.sh          \
-  supports_exception.sh       \
-  facet_exception.sh          \
-  receptacle_exception.sh     \
-  home_exception.sh           \
-  attribute_interface.sh      \
-  supports_interface.sh       \
-  facet_interface.sh          \
-  receptacle_interface.sh     \
-  home-factory-interface.sh   \
-  supports-inheritance.sh     \
-  facet-inheritance.sh        \
-  receptacle-inheritance.sh   \
-  include_dir.sh              \
-  include_nested.sh           \
-  module-nested.sh            \
-  module-reopen.sh            \
-  module_mixed.sh             \
+  owudb.sh                    \
   calculator.sh               \
-  owudb.sh
+  module_mixed.sh             \
+  module-reopen.sh            \
+  module-nested.sh            \
+  include_nested.sh           \
+  include_dir.sh              \
+  include.sh                  \
+  receptacle-inheritance.sh   \
+  facet-inheritance.sh        \
+  supports-inheritance.sh     \
+  home-factory-interface.sh   \
+  receptacle_interface.sh     \
+  facet_interface.sh          \
+  supports_interface.sh       \
+  attribute_interface.sh      \
+  home_exception.sh           \
+  receptacle_exception.sh     \
+  facet_exception.sh          \
+  supports_exception.sh       \
+  home_user_types.sh          \
+  receptacle_user_types.sh    \
+  facet_user_types.sh         \
+  supports_user_types.sh      \
+  attribute_user_types.sh     \
+  home_basic_types.sh         \
+  receptacle_basic_types.sh   \
+  facet_basic_types.sh        \
+  supports_basic_types.sh     \
+  attribute_basic_types.sh    \
+  module.sh                   \
+  home_factory.sh             \
+  receptacle_not_connected.sh \
+  receptacle_multiple.sh      \
+  receptacle.sh               \
+  facet_rename.sh             \
+  facet.sh                    \
+  supports.sh                 \
+  attribute.sh
 
 dist_check_SCRIPTS = $(TESTS)
 

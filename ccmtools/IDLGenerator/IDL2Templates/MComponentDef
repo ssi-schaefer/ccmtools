@@ -1,3 +1,6 @@
+#ifndef __COMPONENT__%(PreprocIdentifier)s__
+#define __COMPONENT__%(PreprocIdentifier)s__
+
 %(BaseInclude)s
 %(MAttributeDefInclude)s
 %(MConstantDefInclude)s
@@ -9,11 +12,6 @@
 %(MUsesDefInclude)s
 
 #include "CCM.idl"
-
-#ifndef __COMPONENT__%(PreprocIdentifier)s__
-#define __COMPONENT__%(PreprocIdentifier)s__
-
-#include <%(HomeInclude)s.idl>
 
 %(OpenNamespace)s
 
@@ -29,6 +27,8 @@ interface %(Identifier)s : Components::CCMObject%(BaseType)s%(MSupportsDef)s
 };
 
 %(CloseNamespace)s
+
+#include <%(HomeInclude)s.idl>
 
 #endif
 

@@ -54,7 +54,6 @@ public class ConsoleCodeGenerator
 {
     private static final int GENERATE_ENVIRONMENT_FILES = 0x0001;
     private static final int GENERATE_APPLICATION_FILES = 0x0002;
-    private static final int GENERATE_USER_TYPES_FILES  = 0x0004;
 
     private static final String version = Constants.VERSION;
 
@@ -68,7 +67,6 @@ public class ConsoleCodeGenerator
 "  -I DIR                        Add DIR to the preprocessor include path\n" +
 "  -o DIR, --output=DIR          Base output in DIR (default to .)\n" +
 "  -V, --version                 Display current ccmtools version\n" +
-"  -u, --no-user-types           Disable generating user types files\n" +
 "      --generator-mask=<flags>  Mask for generator debug output\n" +
 "      --parser-mask=<flags>     Mask for parser debug output\n" +
 "Languages available:\n" +
@@ -99,7 +97,7 @@ public class ConsoleCodeGenerator
     private static File output_directory = new File(System.getProperty("user.dir"));
     private static File base_output_directory = new File(output_directory, "");
 
-    private static int generate_flags = GENERATE_USER_TYPES_FILES;
+    private static int generate_flags = 0;
 
 
     /**************************************************************************/
@@ -243,9 +241,6 @@ public class ConsoleCodeGenerator
 
         if ((generate_flags & GENERATE_ENVIRONMENT_FILES) != 0)
             handler.setFlag(((CodeGenerator) handler).FLAG_ENVIRONMENT_FILES);
-
-        if ((generate_flags & GENERATE_USER_TYPES_FILES) != 0)
-            handler.setFlag(((CodeGenerator) handler).FLAG_USER_TYPES_FILES);
 
         return handler;
     }
@@ -399,16 +394,12 @@ public class ConsoleCodeGenerator
                 generate_flags |= GENERATE_ENVIRONMENT_FILES;
             else if (arg.startsWith("--app"))
                 generate_flags |= GENERATE_APPLICATION_FILES;
-            else if (arg.startsWith("--no-u"))
-                generate_flags &= (0xffff ^ GENERATE_USER_TYPES_FILES);
             else if (arg.charAt(0) == '-')
                 do {
                     if (arg.charAt(0) == 'e')
                         generate_flags |= GENERATE_ENVIRONMENT_FILES;
                     else if (arg.charAt(0) == 'a')
                         generate_flags |= GENERATE_APPLICATION_FILES;
-                    else if (arg.charAt(0) == 'u')
-                        generate_flags &= (0xffff ^ GENERATE_USER_TYPES_FILES);
                     else if (arg.charAt(0) == 'D') {
                         addDefine(arg.substring(1));
                         break;
