@@ -1,4 +1,3 @@
-
 //==============================================================================
 // CarRental_mirror - business logic implementation
 //==============================================================================
@@ -18,16 +17,9 @@ namespace BigBusiness {
 namespace CCM_Session_CarRental_mirror {
 
 
-//==============================================================================
-// business logic functionality
-//==============================================================================
-
-
-
-
 
 //==============================================================================
-// class implementation
+// componen implementation
 //==============================================================================
 
 CCM_CarRental_mirror_impl::CCM_CarRental_mirror_impl (  )
@@ -39,8 +31,6 @@ CCM_CarRental_mirror_impl::~CCM_CarRental_mirror_impl (  )
 {
   DEBUGNL ( "-CCM_CarRental_mirror_impl->~CCM_CarRental_mirror_impl (  )" );
 }
-
-
 
 
 void

@@ -1,4 +1,3 @@
-
 //==============================================================================
 // CarRental - business logic implementation
 //==============================================================================
@@ -15,7 +14,6 @@ using namespace CCM_Local;
 namespace CCM_Local {
 namespace BigBusiness {
 namespace CCM_Session_CarRental {
-
 
 
 //==============================================================================
@@ -220,7 +218,7 @@ business_impl::getCustomerDollars ( const long id )
 
 
 //==============================================================================
-// class implementation
+// component implementation
 //==============================================================================
 
 CCM_CarRental_impl::CCM_CarRental_impl (  )
