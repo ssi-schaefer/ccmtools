@@ -83,29 +83,29 @@ abstract public class CppGenerator
     private final static String[] local_language_map =
     {
         "",
-        "localComponents::Any",
-        "bool",
-        "char",
-        "double",
-        "(fixed data type not implemented",
-        "float",
-        "long",
-        "double",
-        "long",
-        "NULL",
-        "localComponents::Object*",
-        "int",
-        "(principal data type not implemented",
-        "short",
-        "std::string",
-        "localComponents::TypeCode",
-        "unsigned long",
-        "unsigned long",
-        "unsigned short",
-        "localComponents::Object*",
-        "void",
-        "char",
-        "std::string"
+        "localComponents::Any",                     // PK_ANY
+        "bool",                                     // PK_BOOLEAN
+        "char",                                     // PK_CHAR
+        "double",                                   // PK_DOUBLE
+        "(fixed data type not implemented",         // PK_FIXED
+        "float",                                    // PK_FLOAT
+        "long",                                     // PK_LONG
+        "double",                                   // PK_LONGDOUBLE
+        "long",                                     // PK_LONGLONG
+        "NULL",                                     // PK_NULL
+        "localComponents::Object*",                 // PK_OBJREF
+        "unsigned char",                            // PK_OCTET
+        "(principal data type not implemented",     // PK_PRINCIPAL
+        "short",                                    // PK_SHORT
+        "std::string",                              // PK_STRING
+        "localComponents::TypeCode",                // PK_TYPECODE
+        "unsigned long",                            // PK_ULONG
+        "unsigned long",                            // PK_ULONGLONG
+        "unsigned short",                           // PK_USHORT
+        "localComponents::Object*",                 // PK_VALUEBASE
+        "void",                                     // PK_VOID
+        "char",                                     // PK_WCHAR
+        "std::string"                               // PK_WSTRING
     };
 
     protected final static String sequence_type = "vector";
@@ -286,40 +286,55 @@ abstract public class CppGenerator
         String base_type = getBaseIdlType(object);
         if (language_mappings.containsKey(base_type)) {
             base_type = (String) language_mappings.get(base_type);
-        } else if (object instanceof MContained) {
+        } 
+	else if (object instanceof MContained) {
             List scope = getScope((MContained) object);
             scope.add(base_type);
             base_type = join("::", scope);
         }
 
         if (object instanceof MParameterDef) {
+	    /* This code defines the parameter passing rules:
+	     * in    : simple types are passed as const values
+	     *         complex types are passed by const ref
+	     * inout : always passed by ref 
+	     * out   : always passed by ref  
+	     */
             MParameterDef param = (MParameterDef) object;
             MParameterMode direction = param.getDirection();
-
             String prefix = "";
             String suffix = "";
 
-            if (direction == MParameterMode.PARAM_IN) prefix = "const ";
-
-            if ((idl_type instanceof MTypedefDef)
-                || (idl_type instanceof MStringDef)
-                || (idl_type instanceof MFixedDef)) {
+            if (direction == MParameterMode.PARAM_IN) {
+		// in
+		prefix = "const ";
+		if ((idl_type instanceof MTypedefDef)
+		    || (idl_type instanceof MStringDef)
+		    || (idl_type instanceof MFixedDef)) {
+		    suffix = "&";
+		}
+	    }
+	    else { 
+		// inout, out
+		prefix = "";
 		suffix = "&";
 	    }
             return prefix + base_type + suffix;
-        } else if ((object instanceof MAliasDef) &&
-                   (idl_type instanceof MTyped)) {
+        } 
+	else if((object instanceof MAliasDef) 
+                && (idl_type instanceof MTyped)) {
             return getLanguageType((MTyped) idl_type);
-        } else if (object instanceof MSequenceDef) {
+        } 
+	else if (object instanceof MSequenceDef) {
             // FIXME : can we implement bounded sequences in C++ ?
             return "std::"+sequence_type+"<"+base_type+"> ";
         } 
-	else if (object instanceof MArrayDef) { // typedef in *_user_types.h
-//  	    Iterator i = ((MArrayDef) object).getBounds().iterator();
-//  	    Long bound = (Long) i.next();
-//  	    String result = base_type + "[" + bound;
-//  	    while (i.hasNext()) result += "][" + (Long) i.next();
-//  	    return result + "]";
+	else if (object instanceof MArrayDef) { 
+	    /* This code defines the IDLtoC++ mapping of arrays: 
+	     * IDL: typedef long x[7] 
+	     * C++: typedef std::vector<long>
+	     * Note that this code is placed into *_user_types.h
+	     */
 	    String result;
 	    int dimension = ((MArrayDef) object).getBounds().size();
 	    if(dimension == 1)
@@ -332,10 +347,9 @@ abstract public class CppGenerator
 		for(int i=1;i<dimension;i++)
 		    result += " >";
             }
-	    // FIXME: how should we map the array bounds to std::vector? 
 	    return result;
+	    // FIXME: how should we map the array bounds to std::vector? 
         }
-
         return base_type;
     }
 

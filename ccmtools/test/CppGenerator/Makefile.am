@@ -21,6 +21,7 @@ TESTS =     help.sh                     \
             version.sh                  \
             attribute.sh                \
             attribute_basic_types.sh    \
+            attribute_user_types.sh     \
             supports.sh                 \
             supports_basic_types.sh     \
             supports_exception.sh       \

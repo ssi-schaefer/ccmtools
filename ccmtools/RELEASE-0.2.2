@@ -3,13 +3,43 @@ Latest stable release : CCM Tools 0.2.2 ""
 This release fixes several bugs from the 0.2.1 "Benadryl" release, 
 including the following :
 
-    * The IDL parser now handles arrays accurately.
-    * IDL arrays are mapped to C++ std::vector.
-    * The generated test-client does not call methods on supported,
-      provided or used interfaces on its own.
-      It only instantiates the component and its mirror component 
-      and connects the ports. All test cases must be implemented in
-      the mirror component's business logic.
-      This solves the test-value problem with user defined data types.
-    * There are some new test-cases (see test/idl/README) that check the 
-      implementations of IDL parser and code generators.
+IDL3 Parser and IDL to C++ Mapping:
+-----------------------------------
+* The IDL parser now handles arrays accurately.
+
+
+CppLocalGenerator:
+------------------
+* IDL arrays are now mapped to C++ std::vector<>.
+
+* There was a wrong parameter passing (inout, out) when using basic types.
+  Now the parameters are passed in the right way 
+  e.g. short println(const short p1, short& p2, short& p3);
+
+* If you try to get a reference from an unconnected receptacle,
+  the get_connection_*() method throws a localComponents::NoConnection
+  exception.
+
+* If a component defines some user types but uses no interfaces 
+  (e.g. test/idl/attribute_user_types), the *_user_types.h file must be
+  included from *_gen.h files.
+  
+* The generator now creates using namespace std; in the _app.cc and 
+  _mirror_app.cc files.
+
+
+CppMirrorGenerator:
+------------------
+* The generated test-client does not call methods on supported,
+  provided or used interfaces on its own.
+  It only instantiates the component and its mirror component 
+  and connects the ports. All test cases must be implemented in
+  the mirror component's business logic.
+  This solves the test-value problem with user defined data types.
+
+ 
+Test-Cases:
+-----------     
+* There are some new test-cases (see test/idl/README) that check the 
+  implementations of IDL parser and code generators.
+  (We used the gcc 3.2 to compile all examples)

@@ -560,6 +560,7 @@ class CCM_%(Identifier)s_impl
 
 #include "%(Identifier)s_app.h"
 
+using namespace std;
 using namespace CCM_Utils;
 
 %(OpenNamespace)s
