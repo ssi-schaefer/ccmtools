@@ -37,15 +37,6 @@ console_impl::~console_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-long
-console_impl::f0(const long p1, long& p2, long& p3)
-    throw (LocalComponents::CCMException)
-{
-    DEBUGNL("console_impl->f0(p1, p2, p3)");
-    // TODO : IMPLEMENT ME HERE !
-    assert(false);  
-}
-
 Person
 console_impl::f2(const Person& p1, Person& p2, Person& p3)
     throw (LocalComponents::CCMException)
@@ -64,6 +55,7 @@ console_impl::f3(const Address& p1, Address& p2, Address& p3)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("console_impl->f3(p1, p2, p3)");
+
     Address r;
     r.street = p1.street + p2.street;
     r.number = p1.number + p2.number;
@@ -118,6 +110,16 @@ console_impl::f6(const PersonList& p1, PersonList& p2, PersonList& p3)
       p2.at(i) = p1.at(i);
     }
     return r;
+}
+
+time_t
+console_impl::f7(const time_t& p1, time_t& p2, time_t& p3)
+    throw (LocalComponents::CCMException)
+{
+    DEBUGNL("console_impl->f7(p1, p2, p3)");
+    p3=p2;
+    p2=p1;
+    return p3+p1; 
 }
 
 } // /namespace CCM_Session_Test
