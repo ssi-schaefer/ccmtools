@@ -41,7 +41,7 @@ int main ( int argc, char *argv[] )
   // get an instance of the local HomeFinder and register component homes
 
   homeFinder = HomeFinder::Instance (  );
-  error  = DbC_deploy_MySequenceHome("MySequenceHome");
+  error  = DbC_deploy_MySequenceHome("MySequenceHome",false);
   error +=    local_deploy_MySequenceHome_mirror("MySequenceHome_mirror");	
   if(error) {
     cerr << "ERROR: Can't deploy component homes!" << endl;

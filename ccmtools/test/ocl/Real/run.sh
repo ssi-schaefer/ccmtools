@@ -11,6 +11,7 @@ VERSION=0.1
 ccmtools-c++-generate -a -d -c $VERSION -p $PKG -s $OUT $IDL
 if ! ccmtools-generate c++dbc -o $OUT $IDL; then exit 1; fi
 rm -f mdr.*
+cp _check_CCM_Local_CCM_Session_MyReal.cc $OUT/test
 ccmtools-c++-configure -p $PKG -s $OUT
 ccmtools-c++-make -p $PKG -s $OUT
 echo "ccmtools-c++-make -p $PKG -s $OUT" > compile.sh

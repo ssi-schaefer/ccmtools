@@ -41,7 +41,7 @@ int main ( int argc, char *argv[] )
   // get an instance of the local HomeFinder and register component homes
 
   homeFinder = HomeFinder::Instance (  );
-  error  = DbC_deploy_MyBagHome("MyBagHome");
+  error  = DbC_deploy_MyBagHome("MyBagHome",false);
   error +=    local_deploy_MyBagHome_mirror("MyBagHome_mirror");	
   if(error) {
     cerr << "ERROR: Can't deploy component homes!" << endl;

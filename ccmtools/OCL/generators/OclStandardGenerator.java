@@ -505,7 +505,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             }
             code += ")";
         }
-        if( pc.isPrevious() )
+        if( setBaseModule && pc.isPrevious() )
         {
             if( type!=null )
             {
@@ -560,6 +560,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         }
         if( pfe.isCollection() )
         {
+            lastIdlType_ = null;
             return getCollectionOperationCode(expr,pc,conCode,pfe,exprCode,etExpr);
         }
         exprCode = "(" + exprCode + ")";
@@ -587,7 +588,22 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             lastIdlType_ = null;
             if( typeExpr instanceof OclCollection )
             {
-                //return collect_shorthand(exprCode,pc,conCode,pfe);
+                try
+                {
+                    String dummyIteratorName = "DUMMY_ITERATOR_NAME_" + dummyIteratorCounter_;
+                    dummyIteratorCounter_++;
+                    MDeclarator decl2 = creator_.createDeclarator(dummyIteratorName);
+                    MPropertyCall pcL = creator_.createPropertyCall(dummyIteratorName,false);
+                    MPostfixExpression pfe2 = creator_.createPostfixExpression(pcL,pc,false);
+                    MActualParameters ap2 = creator_.createActualParameters(pfe2);
+                    MPropertyCallParameters pcp2 = creator_.createPropertyCallParameters(decl2, ap2);
+                    MPropertyCall pc2 = creator_.createPropertyCall("collect", false);
+                    pc2.setCallParameters(pcp2);
+                    return getCollectionOperationCode(expr,pc2,conCode,pfe,exprCode,etExpr);
+                }
+                catch(Exception e)
+                {
+                }
                 return error("shorthand for 'collect' is not implemented");
             }
             if( typeExpr instanceof OclString )
@@ -1265,7 +1281,9 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         iteratorVarName = newLocalVariable(iteratorVarName, etItem);
         String oldHelperCode = conCode.helpers_;
         conCode.helpers_ = "";
+        lastIdlType_ = null;
         String expression = getParameterCode(pc,0,conCode);
+        MIDLType idlExprType = lastIdlType_;
         OclType exprType = getParameterType(pc,0,conCode);
         String extraHelpers = conCode.helpers_;
         conCode.helpers_ = oldHelperCode;
@@ -1281,6 +1299,14 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             parent.setOclType(creator_.createTypeBag(exprType));
             resultCollectionType = getName_ClassBag();
         }
+        if( idlExprType!=null )
+        {
+            MSequenceDef idlSeq = new MSequenceDefImpl();
+            idlSeq.setIdlType(idlExprType);
+            lastIdlType_ = idlSeq;
+            //System.out.println("OK: idlExprType="+idlExprType.getClass().getName());
+        }
+        //else System.out.println("-----> idlExprType==null");
         conCode.helpers_ += getStatements_collect( resultCollectionType, resultItemType,
             resultVarName, inputVarName, inputItemType, iteratorVarName, expression, extraHelpers );
         popLocalVariables();

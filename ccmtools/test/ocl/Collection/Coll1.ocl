@@ -17,6 +17,7 @@ context Coll1
     inv collect_2: Sequence{1,2,1,5}->collect(y|y+1) = Sequence{2,3,2,6}
     inv collect_3a: seq2->collect(p|p.x)->size() >= 0
     inv collect_3b: seq2->collect(x)->size() >= 0
+    inv collect_3c: seq2.x->size() >= 0
 
     inv isUnique_1: Set{1,2,3}->isUnique(q|q+1)
     inv isUnique_2: Set{1,2,3}->isUnique(q|q/2)
