@@ -1,0 +1,10 @@
+  if(strcmp(name, "%(Identifier)s") == 0) { 
+    ::%(UsesType)s_var _tref = ::%(UsesType)s::_narrow (ref);
+    if (CORBA::is_nil (_tref) && !CORBA::is_nil(ref)) {
+      throw Components::InvalidConnection();
+    }
+    connect_%(Identifier)s(_tref);
+    return 0;
+  }
+
+

@@ -1,0 +1,19 @@
+%(CORBAType)s %(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefCORBA)s) 
+  %(MExceptionDefCORBA)s
+{
+  DEBUGNL(" %(Object)sFacetAdapter::%(Identifier)s()");
+
+%(MParameterDefConvertParameter)s
+%(MParameterDefDeclareResult)s
+  try {
+%(MParameterDefConvertMethod)s
+  }
+%(MParameterDefConvertExceptions)s  
+  catch(...) {
+    throw CORBA::SystemException();	
+  }
+%(MParameterDefConvertParameterFromCppToCorba)s
+%(MParameterDefConvertResult)s
+}
+
+

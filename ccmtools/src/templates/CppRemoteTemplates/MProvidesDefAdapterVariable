@@ -1,0 +1,2 @@
+      PortableServer::ServantBase_var %(Identifier)s_facet_adapter;
+      ::%(ProvidesType)s_var reference_for_facet_%(Identifier)s; 
