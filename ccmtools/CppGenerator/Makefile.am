@@ -2,6 +2,7 @@
 
 # build this directory before moving on to the template subdirs.
 SUBDIRS = . \
+  ExternalEnvironment    \
   CppLocalEnvironment    \
   CppLocalTemplates      \
   CppLocalTestTemplates  \
