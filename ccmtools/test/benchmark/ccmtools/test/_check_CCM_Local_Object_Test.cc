@@ -9,9 +9,10 @@
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <CCM_Local/CCM_Session_Test/Test_bm_impl.h>
+#include <WX/Utils/Timer.h>
+#include <WX/Utils/TimerEvaluation.h>
 
-#include "Measurement.h"
+#include <CCM_Local/CCM_Session_Test/Test_bm_impl.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -21,8 +22,9 @@ using namespace CCM_Session_Test;
 
 int main(int argc, char *argv[])
 {
-    Timer globalTimer;
-    globalTimer.startClock();
+    WX::Utils::Timer globalTimer;
+    WX::Utils::TimerEvaluation eval;
+    globalTimer.start();
 
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
     int error = 0;
@@ -31,9 +33,9 @@ int main(int argc, char *argv[])
       cout << "--- Start Test Case -----------------------------------" << endl;
 
       // Test configuration
-      Timer timer;
+      WX::Utils::Timer timer;
       
-      const long MAX_LOOP_COUNT = 1000000;
+      const long MAX_LOOP_COUNT = 100000000;
 
       const long SEQUENCE_SIZE_MAX = 1000;
       const long SEQUENCE_SIZE_STEP = 100;
@@ -48,12 +50,12 @@ int main(int argc, char *argv[])
 	// ping
 	cout << "Object Test: void f0() "; 
 
-	timer.startClock();
+	timer.start();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	  bmObject.f0();
 	}
-	timer.stopClock();
-	timer.reportResult(MAX_LOOP_COUNT,1);
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
 
       {
@@ -61,49 +63,49 @@ int main(int argc, char *argv[])
 	cout << "Object Test: void f_in1(in long l1) "; 
 
 	long value = 7;
-	timer.startClock();
+	timer.start();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	  bmObject.f_in1(value);
 	}
-	timer.stopClock();
-	timer.reportResult(MAX_LOOP_COUNT,1);
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
 
 
       {
 	// in string parameter with increasing size
-	for(long size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Object Test: void f_in2(in string s1) "; 
 
 	  string value;
 	  for(long i=0; i<size; i++)
 	    value += "X";
 
-	  timer.startClock();
+	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	    bmObject.f_in2(value);
 	  }
-	  timer.stopClock();
-	  timer.reportResult(MAX_LOOP_COUNT,size);
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
 	}
       }
 
 
       {
 	// in sequence of long parameter with increasing size
-	for(long size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Object Test: void f_in3(in LongList ll1) "; 
 
 	  LongList value;
 	  for(long i=0; i<size; i++)
 	    value.push_back(i);
 
-	  timer.startClock();
+	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	    bmObject.f_in3(value);
 	  }
-	  timer.stopClock();
-	  timer.reportResult(MAX_LOOP_COUNT,size);
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
 	}
       }	
       cout << "--- Stop Test Case ------------------------------------" << endl;
@@ -118,6 +120,6 @@ int main(int argc, char *argv[])
 
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 
-    globalTimer.stopClock();
-    globalTimer.reportResult(1,1);
+    globalTimer.stop();
+    cout << eval.getTimerResult(globalTimer,1,1);
 }

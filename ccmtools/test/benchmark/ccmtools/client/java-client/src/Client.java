@@ -80,7 +80,7 @@ public class Client
 
 	    {
 		// in string parameter with increasing size
-		for(int size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 		    System.out.print("Java Remote CCM Test: void f_in2(in string s1) "); 
 		    
 		    StringBuffer buffer = new StringBuffer(size);
@@ -99,7 +99,7 @@ public class Client
 
 	    {
 		// in sequence of long parameter with increasing size
-		for(int size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+		for(int size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 		    System.out.print("Java Remote CCM Test: void f_in3(in LongList ll1) "); 
 		    
 		    int[] value = new int[size];

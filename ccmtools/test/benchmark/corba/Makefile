@@ -15,7 +15,7 @@ remote: local
 	ccmtools-generate c++remote-test -o xxx Test.idl
 
 install: 
-	confix.py --profile=benchmark --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=install
+	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=install
 
 check:
 	cp test/Measurement.h xxx/test
@@ -24,15 +24,15 @@ check:
 	cp test/_check_CCM_Local_Object_Test.cc xxx/test
 	cp test/_check_CCM_Local_CCM_Session_Test.cc xxx/test
 	cp test/_check_CCM_Remote_CCM_Session_Test_remote.cc xxx/test
-	confix.py --profile=benchmark --bootstrap --configure --packageroot=`pwd`/xxx  --make --targets=check
+	confix.py --packageroot=`pwd`/xxx  --make --targets=check
 
 cppserver: 
-	confix.py --profile=benchmark --packageroot=`pwd`/server --bootstrap --configure --make
+	confix.py --packageroot=`pwd`/server --bootstrap --configure --make
 
 cppclient:
-	confix.py --profile=benchmark --packageroot=`pwd`/client --bootstrap --configure --make
+	confix.py --packageroot=`pwd`/client --bootstrap --configure --make
 
 clean:
 	rm -rf xxx
 	rm -rf ${HOME}/tmp/ccmtools_tmp/xxx
-	confix.py --profile=benchmark --packageroot=`pwd`/xxx  --make --targets=uninstall
+	confix.py --packageroot=`pwd`/xxx  --make --targets=uninstall

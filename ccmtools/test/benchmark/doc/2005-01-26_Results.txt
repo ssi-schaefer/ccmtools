@@ -1,0 +1,337 @@
+
+typedef sequence<long> LongList;
+
+interface Benchmark {
+
+  void f0();
+
+  void f_in1(in long l1);
+  void f_in2(in string s1);
+  void f_in3(in LongList ll1);
+};
+
+component Test
+{
+  provides Benchmark bm;
+};
+
+home TestHome manages Test
+{
+};
+
+
+ccmtools_benchmark_profile = {
+    'PREFIX': '/home/eteinik/install/ccmtools_benchmark_install',
+    'BUILDROOT': '/home/eteinik/tmp/ccmtools_benchmark_build',
+    'ADVANCED': 'true',
+    'CONFIX': {
+       },
+    'CONFIGURE': {
+       'ENV': {
+          'CC': 'gcc',
+          'CXX': 'g++',      
+          'CFLAGS': "-O2 -Wall ",
+          'CXXFLAGS': "-O2 -Wall ",
+          },
+       'ARGS': [
+        '--with-mico=/opt/gcc-3.3.4/mico-2.3.11/lib/mico-setup.sh'
+	]
+       },
+    }
+
+
+C++ Object Client Test:
+-----------------------
+
+time ~/tmp/ccmtools_benchmark_build/xxx/test/xxx_test__check_CCM_Local_Object_Test
+>>>> Start Test Client: _check_CCM_Local_Object_Test.cc
+--- Start Test Case -----------------------------------
+Object Test: void f0() loops(100000000) size(1) real(0.55)s user(0.54)s sys(0)s 
+
+Object Test: void f_in1(in long l1) loops(100000000) size(1) real(0.55)s user(0.55)s sys(0)s 
+
+Object Test: void f_in2(in string s1) loops(100000000) size(0)   real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(100) real(0.55)s user(0.54)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(200) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(300) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(400) real(0.55)s user(0.54)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(500) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(600) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(700) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(800) real(0.55)s user(0.54)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(900) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in2(in string s1) loops(100000000) size(1000) real(0.55)s user(0.55)s sys(0)s 
+
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(0)   real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(100) real(0.55)s user(0.54)s sys(0)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(200) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(300) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(400) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(500) real(0.55)s user(0.54)s sys(0)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(600) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(700) real(0.55)s user(0.55)s sys(0)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(800) real(0.55)s user(0.54)s sys(0)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(900) real(0.55)s user(0.55)s sys(0.01)s 
+Object Test: void f_in3(in LongList ll1) loops(100000000) size(1000) real(0.55)s user(0.54)s sys(0)s 
+--- Stop Test Case ------------------------------------
+>>>> Stop Test Client: _check_CCM_Local_Object_Test.cc
+loops(1) size(1) real(13.2)s user(13.12)s sys(0.01)s 
+
+real	0m13.225s
+user	0m13.149s
+sys	0m0.012s
+
+
+
+CCM Local C++ Component and Client Test:
+----------------------------------------
+
+time ~/tmp/ccmtools_benchmark_build/xxx/test/xxx_test__check_CCM_Local_CCM_Session_Test
+>>>> Start Test Client: _check_CCM_Local_CCM_Session_Test.cc
+--- Start Test Case -----------------------------------
+Local CCM Test: void f0() loops(100000000) size(1) real(1.96)s user(1.95)s sys(0)s 
+
+Local CCM Test: void f_in1(in long l1) loops(100000000) size(1) real(1.91)s user(1.91)s sys(0)s 
+
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(0)   real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(100) real(1.92)s user(1.91)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(200) real(1.93)s user(1.91)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(300) real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(400) real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(500) real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(600) real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(700) real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(800) real(1.93)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(900) real(1.92)s user(1.91)s sys(0)s 
+Local CCM Test: void f_in2(in string s1) loops(100000000) size(1000) real(1.93)s user(1.92)s sys(0)s 
+
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(0)   real(1.92)s user(1.91)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(100) real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(200) real(1.91)s user(1.91)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(300) real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(400) real(1.92)s user(1.91)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(500) real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(600) real(1.91)s user(1.91)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(700) real(1.92)s user(1.91)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(800) real(1.92)s user(1.92)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(900) real(1.92)s user(1.91)s sys(0)s 
+Local CCM Test: void f_in3(in LongList ll1) loops(100000000) size(1000) real(1.91)s user(1.92)s sys(0)s 
+--- Stop Test Case ------------------------------------
+>>>> Stop Test Client: _check_CCM_Local_CCM_Session_Test.cc
+loops(1) size(1) real(46.12)s user(46.02)s sys(0.01)s 
+
+real	0m46.142s
+user	0m46.041s
+sys	0m0.020s
+
+
+
+CCM Collocated C++ Component and Client Test:
+---------------------------------------------
+time ~/tmp/ccmtools_benchmark_build/xxx/test/xxx_test__check_CCM_Remote_CCM_Session_Test_remote
+>>>> Start Test Client: _check_CCM_Remote_CCM_Session_Test_remote.cc
+TestHome server is running...
+--- Start Test Case -----------------------------------
+Collocated CCM Test: void f0() loops(1000000) size(1) real(0.78)s user(0.78)s sys(0)s 
+
+Collocated CCM Test: void f_in1(in long l1) loops(1000000) size(1) real(0.8)s user(0.8)s sys(0)s 
+
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(0)   real(0.94)s user(0.94)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(100) real(1.2)s user(1.2)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(200) real(1.45)s user(1.44)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(300) real(1.58)s user(1.57)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(400) real(1.68)s user(1.68)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(500) real(1.81)s user(1.81)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(600) real(1.93)s user(1.93)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(700) real(2.05)s user(2.04)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(800) real(2.18)s user(2.18)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(900) real(2.3)s user(2.3)s sys(0)s 
+Collocated CCM Test: void f_in2(in string s1) loops(1000000) size(1000) real(2.44)s user(2.42)s sys(0)s 
+
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(0)   real(0.94)s user(0.94)s sys(0)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(100) real(1.82)s user(1.82)s sys(0)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(200) real(2.33)s user(2.31)s sys(0)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(300) real(2.87)s user(2.86)s sys(0)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(400) real(3.41)s user(3.4)s sys(0.01)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(500) real(3.95)s user(3.94)s sys(0)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(600) real(4.49)s user(4.49)s sys(0)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(700) real(5.04)s user(5.04)s sys(0)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(800) real(5.58)s user(5.57)s sys(0)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(900) real(6.13)s user(6.13)s sys(0)s 
+Collocated CCM Test: void f_in3(in LongList ll1) loops(1000000) size(1000) real(6.68)s user(6.67)s sys(0)s 
+--- Stop Test Case ------------------------------------
+>>>> Stop Test Client: _check_CCM_Remote_CCM_Session_Test_remote.cc
+loops(1) size(1) real(64.41)s user(64.26)s sys(0.01)s 
+
+real	1m4.442s
+user	1m4.288s
+sys	0m0.020s
+
+
+
+CCM Remote C++ Component and Client Test:
+-----------------------------------------
+
+time ~/tmp/ccmtools_benchmark_build/client/cpp_client/client_cpp_client_CCM_Remote_Client 
+>>>> Start Test Client: CCM_Remote_Client.cc
+--- Start Test Case -----------------------------------
+Remote CCM Test: void f0() loops(10000) size(1) real(0.93)s user(0.23)s sys(0.16)s 
+
+Remote CCM Test: void f_in1(in long l1) loops(10000) size(1) real(0.96)s user(0.21)s sys(0.19)s 
+
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(0)   real(0.97)s user(0.22)s sys(0.18)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(100) real(1.01)s user(0.25)s sys(0.16)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(200) real(1.02)s user(0.28)s sys(0.18)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(300) real(1.03)s user(0.28)s sys(0.16)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(400) real(1.04)s user(0.25)s sys(0.16)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(500) real(1.05)s user(0.26)s sys(0.17)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(600) real(1.04)s user(0.26)s sys(0.17)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(700) real(1.07)s user(0.28)s sys(0.15)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(800) real(1.07)s user(0.28)s sys(0.17)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(900) real(1.07)s user(0.24)s sys(0.2)s 
+Remote CCM Test: void f_in2(in string s1) loops(10000) size(1000) real(1.08)s user(0.26)s sys(0.17)s 
+
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(0)   real(0.97)s user(0.26)s sys(0.15)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(100) real(1.02)s user(0.18)s sys(0.15)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(200) real(1.06)s user(0.26)s sys(0.17)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(300) real(1.08)s user(0.24)s sys(0.17)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(400) real(1.09)s user(0.25)s sys(0.19)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(500) real(1.1)s user(0.25)s sys(0.21)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(600) real(1.11)s user(0.26)s sys(0.19)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(700) real(1.12)s user(0.22)s sys(0.22)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(800) real(1.14)s user(0.26)s sys(0.16)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(900) real(1.15)s user(0.26)s sys(0.18)s 
+Remote CCM Test: void f_in3(in LongList ll1) loops(10000) size(1000) real(1.17)s user(0.26)s sys(0.2)s 
+--- Stop Test Case ------------------------------------
+>>>> Stop Test Client: CCM_Remote_Client.cc
+loops(1) size(1) real(25.35)s user(6.02)s sys(4.21)s 
+[1]+  Done                    emacs CCM_Remote_Client.cc
+
+real	0m25.382s
+user	0m6.045s
+sys	0m4.211s
+
+
+
+CCM Remote C++ Component and Java Client Test:
+----------------------------------------------
+
+bin/runClient
+>>>> Start Test Client: Client.java
+--- Start Test Case ------------------------
+Java Remote CCM Test: void f0()  loops(10000) size(1) real(1.646)s
+
+Java Remote CCM Test: void f_in1(in long l1)  loops(10000) size(1) real(1.324)s
+
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(0)   real(1.322)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(100) real(1.376)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(200) real(1.416)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(300) real(1.461)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(400) real(1.502)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(500) real(1.562)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(600) real(1.614)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(700) real(1.66)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(800) real(1.738)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(900) real(1.768)s
+Java Remote CCM Test: void f_in2(in string s1)  loops(10000) size(1000) real(1.868)s
+
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(0)   real(1.313)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(100) real(1.423)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(200) real(1.522)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(300) real(1.647)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(400) real(1.728)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(500) real(1.909)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(600) real(1.985)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(700) real(2.055)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(800) real(2.137)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(900) real(2.228)s
+Java Remote CCM Test: void f_in3(in LongList ll1)  loops(10000) size(1000) real(2.289)s
+--- Stop Test Case -------------------------
+>>>> Stop Test Client: Client.java
+ loops(1) size(1) real(40.677)s
+
+
+
+CORBA Collocated C++ Server and Client Test:
+--------------------------------------------
+
+time ~/tmp/ccmtools_benchmark_build/corba_server/test/corba_server_test__check_CORBA_collocated 
+Server is running...
+Run client...
+--- Start Test Case --------------------------------
+Collocated CORBA Test: void f0() loops(1000000) size(1) real(0.45)s user(0.45)s sys(0)s 
+
+Collocated CORBA Test: void f_in1(in long l1) loops(1000000) size(1) real(0.47)s user(0.46)s sys(0)s 
+
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(0)   real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(100) real(0.45)s user(0.45)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(200) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(300) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(400) real(0.46)s user(0.45)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(500) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(600) real(0.46)s user(0.45)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(700) real(0.45)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(800) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(900) real(0.46)s user(0.45)s sys(0)s 
+Collocated CORBA Test: void f_in2(in string s1) loops(1000000) size(1000) real(0.46)s user(0.46)s sys(0)s 
+
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(0)   real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(100) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(200) real(0.46)s user(0.45)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(300) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(400) real(0.47)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(500) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(600) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(700) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(800) real(0.47)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(900) real(0.46)s user(0.46)s sys(0)s 
+Collocated CORBA Test: void f_in3(in LongList ll1) loops(1000000) size(1000) real(0.46)s user(0.46)s sys(0)s 
+--- Stop Test Case ---------------------------------
+loops(1) size(1) real(11.05)s user(10.98)s sys(0)s 
+
+real	0m11.085s
+user	0m11.001s
+sys	0m0.009s
+
+
+
+CORBA Remote C++ Server and Client Test:
+----------------------------------------
+
+time ~/tmp/ccmtools_benchmark_build/corba_client/cpp_client/corba_client_cpp_client_CorbaClient 
+>>>> Start Test Client: /home/eteinik/sandbox/ccmtools/test/benchmark/corba/corba_client/cpp_client/CorbaClient.cc
+--- Start Test Case -----------------------------------
+Remote CORBA Test: void f0() loops(10000) size(1) real(0.91)s user(0.22)s sys(0.16)s 
+
+Remote CORBA Test: void f_in1(in long l1) loops(10000) size(1) real(0.95)s user(0.24)s sys(0.15)s 
+
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(0)   real(0.96)s   user(0.23)s sys(0.17)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(100) real(0.99)s user(0.24)s sys(0.18)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(200) real(0.99)s user(0.26)s sys(0.17)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(300) real(0.99)s user(0.25)s sys(0.17)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(400) real(0.99)s user(0.24)s sys(0.19)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(500) real(1.01)s user(0.27)s sys(0.17)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(600) real(1.02)s user(0.27)s sys(0.2)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(700) real(1.02)s user(0.23)s sys(0.16)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(800) real(1.01)s user(0.26)s sys(0.17)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(900) real(1.02)s user(0.29)s sys(0.15)s 
+Remote CORBA Test: void f_in2(in string s1) loops(10000) size(1000) real(1.03)s user(0.25)s sys(0.18)s 
+
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(0)   real(0.95)s   user(0.24)s sys(0.15)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(100) real(0.99)s user(0.23)s sys(0.21)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(200) real(1.02)s user(0.26)s sys(0.16)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(300) real(1.03)s user(0.25)s sys(0.16)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(400) real(1.04)s user(0.25)s sys(0.16)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(500) real(1.05)s user(0.26)s sys(0.19)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(600) real(1.06)s user(0.26)s sys(0.17)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(700) real(1.06)s user(0.27)s sys(0.18)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(800) real(1.08)s user(0.26)s sys(0.19)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(900) real(1.08)s user(0.29)s sys(0.17)s 
+Remote CORBA Test: void f_in3(in LongList ll1) loops(10000) size(1000) real(1.11)s user(0.27)s sys(0.21)s 
+--- Stop Test Case ------------------------------------
+>>>> Stop Test Client: /home/eteinik/sandbox/ccmtools/test/benchmark/corba/corba_client/cpp_client/CorbaClient.cc
+loops(1) size(1) real(24.38)s user(6.09)s sys(4.17)s 
+
+real	0m24.414s
+user	0m6.110s
+sys	0m4.179s

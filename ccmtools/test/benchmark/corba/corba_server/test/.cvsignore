@@ -1,0 +1,4 @@
+Makefile.am
+Makefile.in
+corba_server_test.py
+server_test.py

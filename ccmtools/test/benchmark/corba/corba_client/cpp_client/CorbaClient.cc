@@ -14,10 +14,7 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <CCM/CCMContainer.h>
-
-#include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_Test.h>
+#include <Benchmark.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -62,18 +59,9 @@ int main (int argc, char *argv[])
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
-    obj = nc->resolve_str("TestHome:1.0");
+    obj = nc->resolve_str("BenchmarkCorbaServer");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::TestHome_var myTestHome = 
-      ::CORBA_Stubs::TestHome::_narrow (obj);
-
-    // Create component instances
-    ::CORBA_Stubs::Test_var myTest = myTestHome->create();
-
-    // Provide facets   
-    ::CORBA_Stubs::Benchmark_var bm = myTest->provide_bm();
-
-    myTest->configuration_complete();
+    Benchmark_var bm = Benchmark::_narrow(obj);
 
     try {
       cout << "--- Start Test Case -----------------------------------" << endl;
@@ -86,14 +74,9 @@ int main (int argc, char *argv[])
       const long SEQUENCE_SIZE_MAX = 1000;
       const long SEQUENCE_SIZE_STEP = 100;
 
-
-      //----------------------------------------------------------
-      // Local component test cases
-      //----------------------------------------------------------
-
       {
 	// Ping
-	cout << "Remote CCM Test: void f0() "; 
+	cout << "Remote CORBA Test: void f0() "; 
 
 	timer.start();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
@@ -106,7 +89,7 @@ int main (int argc, char *argv[])
 
       {
 	// in long parameter
-	cout << "Remote CCM Test: void f_in1(in long l1) "; 
+	cout << "Remote CORBA Test: void f_in1(in long l1) "; 
 
 	CORBA::Long value = 7;
 
@@ -122,12 +105,12 @@ int main (int argc, char *argv[])
       {
 	// in string parameter with increasing size
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
-	  cout << "Remote CCM Test: void f_in2(in string s1) "; 
+	  cout << "Remote CORBA Test: void f_in2(in string s1) "; 
 
 	  string value;
 	  for(int i=0; i<size; i++)
 	    value += "X";
-	  char* c_value = CORBA::string_dup(value.c_str());
+	  char* c_value = CORBA::string_dup(value.c_str()); 
 
 	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
@@ -142,9 +125,9 @@ int main (int argc, char *argv[])
       {
 	// in sequence of long parameter with increasing size
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
-	  cout << "Remote CCM Test: void f_in3(in LongList ll1) "; 
+	  cout << "Remote CORBA Test: void f_in3(in LongList ll1) "; 
 
-	  ::CORBA_Stubs::LongList_var value = new ::CORBA_Stubs::LongList;
+	  ::LongList_var value = new ::LongList;
 	  value->length(size);
 
 	  for(long i=0; i<size; i++)
@@ -163,19 +146,13 @@ int main (int argc, char *argv[])
     }
     catch(...) {
       cout << "TEST: there is something wrong!" << endl;
-      error = -1;
-    }
-    if(error < 0) {
-	return error;
+      return 1;
     }
 
-    // Destroy component instances
-    myTest->remove();
-
-    // Un-Deployment
 
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 
     globalTimer.stop();
     cout << eval.getTimerResult(globalTimer,1,1);
+    return 0;
 }

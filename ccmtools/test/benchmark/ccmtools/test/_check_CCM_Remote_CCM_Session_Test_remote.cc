@@ -12,16 +12,19 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
+
 #include <WX/Utils/debug.h>
-#include <CCM/CCMContainer.h>
+#include <WX/Utils/Timer.h>
+#include <WX/Utils/TimerEvaluation.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
+#include <CCM/CCMContainer.h>
+
 #include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
 #include <CORBA_Stubs_Test.h>
 
-#include "Measurement.h"
 
 using namespace std;
 using namespace WX::Utils;
@@ -32,8 +35,9 @@ using namespace WX::Utils;
 
 int main (int argc, char *argv[])
 {
-    Timer globalTimer;
-    globalTimer.startClock();
+    WX::Utils::Timer globalTimer;
+    WX::Utils::TimerEvaluation eval;
+    globalTimer.start();
 
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
   
@@ -103,27 +107,23 @@ int main (int argc, char *argv[])
       cout << "--- Start Test Case -----------------------------------" << endl;
 
       // Test configuration
-      Timer timer;
+      WX::Utils::Timer timer;
 
-      const long MAX_LOOP_COUNT = 100000;
+      const long MAX_LOOP_COUNT = 1000000;
       const long SEQUENCE_SIZE_MAX = 1000;
       const long SEQUENCE_SIZE_STEP = 100;
 
-
-      //----------------------------------------------------------
-      // Local component test cases
-      //----------------------------------------------------------
 
       {
 	// Ping
 	cout << "Collocated CCM Test: void f0() "; 
 
-	timer.startClock();
+	timer.start();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	  bm->f0();
 	}
-	timer.stopClock();
-	timer.reportResult(MAX_LOOP_COUNT,1);
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
       
 
@@ -133,38 +133,38 @@ int main (int argc, char *argv[])
 
 	CORBA::Long value = 7;
 
-	timer.startClock();
+	timer.start();
 	for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	  bm->f_in1(value);
 	}
-	timer.stopClock();
-	timer.reportResult(MAX_LOOP_COUNT,1);
+	timer.stop();
+	cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
 
 
       {
 	// in string parameter with increasing size
-	for(long size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Collocated CCM Test: void f_in2(in string s1) "; 
 
 	  string value;
 	  for(int i=0; i<size; i++)
 	    value += "X";
+	  char* c_value = CORBA::string_dup(value.c_str());
 
-	  timer.startClock();
+	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-	    bm->f_in2(CORBA::string_dup(value.c_str()));
+	    bm->f_in2(c_value);
 	  }
-	  timer.stopClock();
-	  timer.reportResult(MAX_LOOP_COUNT,size);
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
 	}
       }
 
 
       {
-	const long MAX_LOOP_COUNT = 1000;
 	// in sequence of long parameter with increasing size
-	for(long size=0; size < SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Collocated CCM Test: void f_in3(in LongList ll1) "; 
 
 	  ::CORBA_Stubs::LongList_var value = new ::CORBA_Stubs::LongList;
@@ -172,12 +172,12 @@ int main (int argc, char *argv[])
 	  for(long i=0; i<size; i++)
 	    (*value)[i] = i;
 
-	  timer.startClock();
+	  timer.start();
 	  for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
 	    bm->f_in3(value);
 	  }
-	  timer.stopClock();
-	  timer.reportResult(MAX_LOOP_COUNT,size);
+	  timer.stop();
+	  cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
 	}
       }	
 
@@ -198,6 +198,6 @@ int main (int argc, char *argv[])
 
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 
-    globalTimer.stopClock();
-    globalTimer.reportResult(1,1);
+    globalTimer.stop();
+    cout << eval.getTimerResult(globalTimer,1,1);
 }

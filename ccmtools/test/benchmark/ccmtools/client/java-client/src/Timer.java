@@ -19,8 +19,8 @@ public class Timer
     void reportResult(long loops, long size)
     {
 	System.out.print(" loops(" + loops + ") size(" + size + ") ");;
-  	long cpu_time_used = clockStop_ - clockStart_;
- 	System.out.println("time(" + cpu_time_used + ")ms");
+  	double realTime = (clockStop_ - clockStart_)/1000.0;
+ 	System.out.println("real(" + realTime + ")s");
     }
 
     private long clockStart_;

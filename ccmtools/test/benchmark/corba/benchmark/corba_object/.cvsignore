@@ -1,0 +1,3 @@
+Makefile.am
+Makefile.in
+benchmark_corba_object.py
