@@ -9,16 +9,14 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # currently under investigation ... uncomment in local copy to test faster.
 
-TESTS = receptacle_types.sh
-
-#TESTS = \
-#  help.sh version.sh \
-#  supports_types.sh supports_exception.sh supports_inheritance.sh \
-#  facet_types.sh facet_exception.sh facet_inheritance.sh facet_rename.sh \
-#  receptacle_types.sh receptacle_exception.sh receptacle_inheritance.sh receptacle_multiple.sh receptacle_not_connected.sh \
-#  home_types.sh home_exception.sh \
-#  include_nested.sh \
-#  module_mixed.sh module_nested.sh  module_reopen.sh
+TESTS = \
+  help.sh version.sh \
+  supports_types.sh supports_exception.sh supports_inheritance.sh \
+  facet_types.sh facet_exception.sh facet_inheritance.sh facet_rename.sh \
+  receptacle_types.sh receptacle_exception.sh receptacle_inheritance.sh receptacle_multiple.sh receptacle_not_connected.sh \
+  home_types.sh home_exception.sh \
+  include_nested.sh \
+  module_mixed.sh module_nested.sh  module_reopen.sh
 
 
 # tests are generally in order of decreasing complexity (we want to see whether
