@@ -10,14 +10,13 @@
 
 %(OpenNamespace)s
 
-interface %(Identifier)sExplicit :
-  Components::CCMHome%(BaseType)s%(MSupportsDef)s
+interface %(Identifier)sExplicit : Components::CCMHome%(BaseType)s%(MSupportsDef)s
 {
 %(MFactoryDef)s
 %(MFinderDef)s
 };
 
-interface %(Identifier)sImplicit : Components::CCMHome
+interface %(Identifier)sImplicit : Components::KeylessCCMHome
 {
   %(ComponentType)s create(%(MHomeDefPrimaryKeyParameters)s)
     raises (Components::CreateFailure%(MHomeDefPrimaryKeyExceptions)s);

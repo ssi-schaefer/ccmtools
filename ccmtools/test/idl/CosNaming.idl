@@ -29,10 +29,6 @@ module CosNaming
     BindingType binding_type; 
   }; 
 
-  // Note: In struct Binding, binding_name is incorrectly defined 
-  // as a Name instead of a NameComponent. This definition is 
-  // unchanged for compatibility reasons. 
-
   typedef sequence <Binding> BindingList; 
 
   interface BindingIterator; 
