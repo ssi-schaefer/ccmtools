@@ -1,3 +1,4 @@
+#include <cstdlib> 
 #include <iostream>
 #include <string>
 #include <CCM_Utils/Debug.h>
@@ -15,16 +16,16 @@ using namespace CCM_Utils;
 // Implementation of remote client test
 //==============================================================================
 
-// Default commandline parameter
-char* argv_[] = {"", "-ORBInitRef", 
-                     "NameService=corbaloc:iiop:1.2@127.0.0.1:5050/NameService" };
-int argc_ = 3;
-
-
 int main (int argc, char *argv[])
 {
   Debug::set_global(true); 
   DEBUGNL("C++_remote_test_client()");
+
+  int argc_=3;
+  char ns[200];
+  sprintf(ns,"NameService=%s",getenv("CCM_NAME_SERVICE"));
+  char* argv_[] = {"", "-ORBInitRef", ns };
+  DEBUGNL(ns);
 
   // Initialize ORB 
   CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);

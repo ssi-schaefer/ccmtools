@@ -52,8 +52,7 @@ dist_template_DATA = \
     MProvidesDefAdapterImpl \
     MOperationFacetAdapterImpl \
     MUsesDefAdapterImpl \
-    MOperationReceptacleAdapterImpl
-
+    MOperationReceptacleAdapterImpl 
 
 
 
