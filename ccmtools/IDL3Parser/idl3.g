@@ -5,7 +5,6 @@ header {
  * Copyright (C) 2002, 2003 Salomon Automation
  *
  * Generated using antlr <http://antlr.org/> from source grammar file :
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -2537,11 +2536,7 @@ fixed_pt_literal returns [String literal = null]
     ;
 
 identifier returns [String identifier = null]
-    :   ( HEXLETTER ) => hid:HEXLETTER { identifier = hid.getText(); }
-    |   ( ONE_CHAR_IDENT ) => oid:ONE_CHAR_IDENT { identifier = oid.getText(); }
-    |   ( MULTI_CHAR_IDENT ) => mid:MULTI_CHAR_IDENT
-        { identifier = mid.getText(); } { checkKeyword(identifier) }?
-    ;
+    :   i:IDENT { identifier = i.getText(); } { checkKeyword(identifier) }? ;
 
 /******************************************************************************/
 /* IDL LEXICAL RULES  */
@@ -2615,13 +2610,14 @@ WS options { paraphrase = "white space"; }
 PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
     :   "# " ( DIGIT )+ ' ' s:STRING_LITERAL
         {
-            if ((debug & DEBUG_FILE) != 0) {
-                String label = "[f] source from file : ";
-                System.out.println(label + s.getText());
-            }
             String include = s.getText();
-            if (include.length() > 0 && include.charAt(0) != '<')
+            if (include.length() > 0 && include.charAt(0) != '<') {
                 manager.setSourceFile(s.getText());
+                if ((debug & DEBUG_FILE) != 0) {
+                    String label = "[f] source from file : ";
+                    System.out.println(label + s.getText());
+                }
+            }
         }
         ( ' ' ( DIGIT )+ )? ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
         { $setType(Token.SKIP); newline(); } ;
@@ -2648,11 +2644,14 @@ ML_COMMENT options { paraphrase = "a comment"; }
 protected DIGIT options { paraphrase = "a digit"; } : '0'..'9' ;
 protected OCTDIGIT options { paraphrase = "an octal digit"; } : '0'..'7' ;
 
-protected HEXLETTER options { paraphrase = "a hexadecimal letter"; }
+protected HEX_LETTER options { paraphrase = "a hexadecimal letter"; }
     :    ( 'a'..'f' | 'A'..'F' ) ;
 
 protected EXPONENT options { paraphrase = "an exponent"; }
     :   ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ ;
+
+protected IDENT_LETTER options { paraphrase = "an identifier character"; }
+    :   ( 'g'..'z' | 'G'..'Z' | '_' ) ;
 
 protected
 ESC options { paraphrase = "an escape sequence"; }
@@ -2662,9 +2661,9 @@ ESC options { paraphrase = "an escape sequence"; }
             ( options { warnWhenFollowAmbig = false; }
             : OCTDIGIT ( options { warnWhenFollowAmbig = false; } : OCTDIGIT )?
             )?
-        |   'x' ( DIGIT | HEXLETTER )
+        |   'x' ( DIGIT | HEX_LETTER )
             ( options { warnWhenFollowAmbig = false; } :
-                ( DIGIT | HEXLETTER ) )?
+                ( DIGIT | HEX_LETTER ) )?
         ) ;
 
 CHAR_LITERAL        options { paraphrase = "a character literal"; }
@@ -2684,20 +2683,12 @@ INT options { paraphrase = "an integer value"; }
         ( EXPONENT { $setType(FLOAT); } )? ;
 
 HEX options { paraphrase = "a hexadecimal value"; }
-    :   ( "0x" | "0X" ) ( DIGIT | HEXLETTER )+ ;
+    :   ( "0x" | "0X" ) ( DIGIT | HEX_LETTER )+ ;
 
 FLOAT options { paraphrase = "a floating point value"; }
     :   '.' ( DIGIT )+ ( EXPONENT )? ;
 
-/* this doesn't inlucde letters a-f because those are also hex letters. see the
-   identifier rule (last rule of the parser section). */
-
-ONE_CHAR_IDENT
-options { testLiterals = true; paraphrase = "a single character identifer"; }
-    :   ( 'g'..'z' | 'G'..'Z' | '_' ) ;
-
-MULTI_CHAR_IDENT
-options { testLiterals = true; paraphrase = "a multiple character identifier"; }
-    :   ( 'a'..'z' | 'A'..'Z' | '_' )
-        ( 'a'..'z' | 'A'..'Z' | '_' | '0'..'9' )+ ;
+IDENT options { paraphrase = "an identifier"; }
+    :   ( HEX_LETTER | IDENT_LETTER )
+        ( 'a'..'z' | 'A'..'Z' | '_' | '0'..'9' )* ;
 

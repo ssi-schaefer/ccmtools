@@ -1,5 +1,4 @@
 ## process this file with automake to produce Makefile.in
-## $Id$
 
 dist_noinst_DATA = \
   ccmtools-generate              \

@@ -1,27 +1,40 @@
 #! /bin/sh
 
-OUTPUT=test-`echo ${IDL} | sed 's,/,-,g'`.output
-
 cwd=`pwd`
+
 cd ${top_srcdir} ; abssrcdir=`pwd` ; cd ${cwd}
+cd ${top_builddir} ; absbuilddir=`pwd` ; cd ${cwd}
 
-${MKDIR} -p ${cwd}/share/${PACKAGE}-${MAJORMINOR}
+PATH=${abssrcdir}/UI/scripts:$PATH
+CLASSPATH=${absbuilddir}:${abssrcdir}/lib/antlr.jar:$CLASSPATH
 
-for f in ${abssrcdir}/*Generator/*Templates ; do
-ln -s $f ${cwd}/share/${PACKAGE}-${MAJORMINOR} ; done
+sandbox_dir=${cwd}/sandbox
+template_dir=${sandbox_dir}/share/${PACKAGE}-${MAJORMINOR}
 
-export CCMTOOLS_HOME=${cwd}
+${MKDIR} -p ${template_dir}
+for f in ${abssrcdir}/*Generator/*Templates ; do ln -s ${f} ${template_dir} ; done
+
+export CCMTOOLS_HOME=${sandbox_dir}
+
+cd ${sandbox_dir}
 
 ret=""
 
-test -z "${ret}" && ccmtools-generate idl3       -o idl3  ${top_srcdir}/test/idl/${IDL}.idl || ret=1
-test -z "${ret}" && ccmtools-generate idl3mirror -o idl3  ${top_srcdir}/test/idl/${IDL}.idl || ret=1
+test -z "${ret}" && ccmtools-generate idl3 -o idl3.${IDL} \
+  ${abssrcdir}/test/idl/${IDL}.idl || ret=1
 
-test -z "${ret}" && ccmtools-generate idl2       -o idl2  idl3/*.idl3 || ret=1
-test -z "${ret}" && ccmtools-generate idl2       -o idl2m idl3/*.idl3mirror || ret=1
+test -z "${ret}" && ccmtools-generate idl3mirror -o idl3.${IDL} \
+  ${abssrcdir}/test/idl/${IDL}.idl || ret=1
+
+test -z "${ret}" && ccmtools-generate idl2 -o idl2.${IDL} \
+  idl3.${IDL}/*.idl3 || ret=1
+
+test -z "${ret}" && ccmtools-generate idl2 -o idl2m.${IDL} \
+  idl3.${IDL}/*.idl3mirror || ret=1
 
 test -z "${ret}" && ret=0
 
-${RM} -f -r share idl3 idl2m idl2
+${RM} -f -r share
+cd ${cwd}
 exit ${ret}
 

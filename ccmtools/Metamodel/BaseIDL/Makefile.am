@@ -1,5 +1,4 @@
 ## process this file with automake to produce Makefile.in
-## $Id$
 
 CLASSPATH_ENV = CLASSPATH=
 AM_JAVACFLAGS = -g

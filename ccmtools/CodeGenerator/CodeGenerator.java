@@ -2,7 +2,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -102,8 +101,8 @@ import java.util.TreeSet;
  *
  * Code templates are usually looked for in a directory like
  * /usr/share/ccmtools-A.B/<language>CodeGenerator/; see the TemplateManager and
- * TemplateManagerImpl documentation for details. Templates form the basis of
- * the code generator customization: Variables declared within a template
+ * PythonTemplateManagerImpl documentation for details. Templates form the basis
+ * of the code generator customization: Variables declared within a template
  * determine which type of node information gets placed in which output file.
  *
  * Traversal events
@@ -255,13 +254,13 @@ abstract public class CodeGenerator
                          String[] _language_map)
         throws IOException
     {
-        template_manager = new TemplateManagerImpl(language);
+        template_manager = new PythonTemplateManagerImpl(language);
         driver = d;
 
         // set up output types, node types for which we should output some sort
         // of code.
 
-        String[] my_output_types = { "MContainer" };
+        String[] my_output_types = {  };
 
         output_types = new HashSet();
         for (int i = 0; i < my_output_types.length; i++)
@@ -938,7 +937,7 @@ abstract public class CodeGenerator
         if (! output_types.contains(current_type)) return;
 
         if ((current_node instanceof MContained) &&
-            ((MContained) current_node).getSourceFile().equals("")) return;
+            ! ((MContained) current_node).getSourceFile().equals("")) return;
 
         try {
             Template template =

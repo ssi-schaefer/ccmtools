@@ -3,7 +3,6 @@
  * Egon Teiniker <egon.teiniker@tugraz.at>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -56,6 +55,8 @@ import java.util.Map;
 abstract public class IDLGenerator
     extends CodeGenerator
 {
+    private String fileSuffix = "";
+
     private final static String[] local_output_types =
     {
         "MComponentDef", "MInterfaceDef", "MHomeDef",
@@ -99,15 +100,15 @@ abstract public class IDLGenerator
         "wstring"
     };
 
-    protected String fileSuffix = "";
-
     /**************************************************************************/
 
-    public IDLGenerator(String sublang, Driver d, File out_dir)
+    public IDLGenerator(String suffix, Driver d, File out_dir)
         throws IOException
     {
-        super(sublang, d, out_dir, local_output_types, local_reserved_words,
-              null, null, local_language_map);
+        super("IDL" + suffix, d, out_dir, local_output_types,
+              local_reserved_words, null, null, local_language_map);
+
+        fileSuffix = new String(suffix.toLowerCase());
     }
 
     /**
@@ -158,13 +159,14 @@ abstract public class IDLGenerator
             if (! pieces[i].trim().equals(""))
                 code_pieces.add(pieces[i]);
 
-        String name = join("_", namespace) + "_";
+        String name = join("_", namespace);
+        if (! name.equals("")) name += "_";
         name += ((MContained) current_node).getIdentifier();
-        name += ".idl" + fileSuffix;
+        name += ".idl" + this.fileSuffix;
 
         String code = join("\n", code_pieces).replaceAll("};", "};\n");
 
-        writeFinalizedFile("", name, code);
+        writeFinalizedFile("", name, code + "\n\n");
     }
 
     /**

@@ -1,5 +1,4 @@
 dnl Process this file with autoconf to produce a configure script.
-dnl $Id$
 
 AC_INIT(ccmtools, 0.3.2)
 AC_CONFIG_SRCDIR(Metamodel/BaseIDL/BaseIdl.java)

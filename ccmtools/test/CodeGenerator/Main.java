@@ -3,7 +3,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -21,7 +20,7 @@
  */
 
 import ccmtools.CodeGenerator.GraphTraverser;
-import ccmtools.CodeGenerator.GraphTraverserImpl;
+import ccmtools.CodeGenerator.CCMMOFGraphTraverserImpl;
 import ccmtools.CodeGenerator.NodeHandler;
 import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.IDL3Parser.IDL3SymbolTable;
@@ -51,8 +50,8 @@ public class Main {
 
         container.setIdentifier("test-"+args[0]);
         NodeHandler handler = new PrettyPrinterImpl();
-        GraphTraverser traverser = new GraphTraverserImpl();
-        traverser.setHandler(handler);
+        GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
+        traverser.addHandler(handler);
         try {
             traverser.traverseGraph(container);
         } catch (Exception e) {

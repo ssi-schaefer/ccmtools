@@ -2,7 +2,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -30,7 +29,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class TemplateManagerImpl
+public class PythonTemplateManagerImpl
     implements TemplateManager
 {
     private File source;
@@ -42,7 +41,7 @@ public class TemplateManagerImpl
      * @param language the language to use for templates. This is used to
      *                 locate a likely template source.
      */
-    public TemplateManagerImpl(String language)
+    public PythonTemplateManagerImpl(String language)
         throws IOException
     {
         String lang_dir = language + "Templates";
@@ -129,7 +128,7 @@ public class TemplateManagerImpl
         Set templates = loadTemplates(node_type);
 
         for (Iterator i = templates.iterator(); i.hasNext(); ) {
-            Template template = (TemplateImpl) i.next();
+            Template template = (PythonTemplateImpl) i.next();
             if (template.getName().equals(node_type)) {
                 return template;
             }
@@ -158,7 +157,7 @@ public class TemplateManagerImpl
             File file = new File(source, candidates[i]);
             if (file.getName().startsWith(node_type)) {
                 try {
-                    ret.add(new TemplateImpl(file));
+                    ret.add(new PythonTemplateImpl(file));
                 } catch (IOException e) {
                 }
             }

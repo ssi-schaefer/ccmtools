@@ -2,7 +2,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -38,10 +37,8 @@ import java.util.Map;
 public class IDL3GeneratorImpl
     extends IDLGenerator
 {
-    protected String fileSuffix = "3";
-
     public IDL3GeneratorImpl(Driver d, File out_dir) throws IOException
-    { super("IDL3", d, out_dir); }
+    { super("3", d, out_dir); }
 
     protected String getLocalValue(String variable)
     {

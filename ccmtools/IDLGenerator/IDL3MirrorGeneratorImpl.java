@@ -2,7 +2,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -32,9 +31,7 @@ import java.util.List;
 public class IDL3MirrorGeneratorImpl
     extends IDLGenerator
 {
-    protected String fileSuffix = "3mirror";
-
     public IDL3MirrorGeneratorImpl(Driver d, File out_dir) throws IOException
-    { super("IDL3Mirror", d, out_dir); }
+    { super("3Mirror", d, out_dir); }
 }
 

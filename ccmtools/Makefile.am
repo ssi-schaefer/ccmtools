@@ -1,5 +1,4 @@
 ## process this file with automake to produce Makefile.in
-## $Id$
 
 if BUILD_DOCS
 SUBDIRS_DOCS = doc

@@ -2,7 +2,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -53,7 +52,7 @@ import java.util.regex.Pattern;
  * identifier system of keys in the variable map, we are guaranteed to get
  * unique matches for each template.
  */
-public class TemplateImpl
+public class PythonTemplateImpl
     implements Template
 {
     private final static Pattern key_regex =
@@ -72,7 +71,7 @@ public class TemplateImpl
      *
      * @param file a file to read from.
      */
-    public TemplateImpl(File file)
+    public PythonTemplateImpl(File file)
         throws IOException
     {
         name = new String(file.getName());

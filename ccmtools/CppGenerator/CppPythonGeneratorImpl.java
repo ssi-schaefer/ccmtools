@@ -2,7 +2,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -52,7 +51,8 @@ public class CppPythonGeneratorImpl
 
     private final static String[] local_output_types =
     {
-        "MComponentDef"
+        "MComponentDef", "MHomeDef",
+        "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef"
     };
 
     // output locations and templates for "environment files", the files that we
@@ -66,14 +66,13 @@ public class CppPythonGeneratorImpl
         new File("CCM_Test_Python", "call_python.cc"),
         new File("CCM_Test_Python", "convert_python.cc"),
         new File("CCM_Test_Python", "Makefile.py"),
-        new File("External_Python", "Makefile.py"),
-        new File("External_Boost_Python", "Makefile.py"),
+        new File("CCM_Text_Python_External", "Makefile.py"),
     };
 
     private final static String[] local_environment_templates =
     {
         "CallPythonHeader", "CallPythonImpl", "ConvertPythonImpl",
-        "Blank", "PythonMakefile", "BoostPythonMakefile",
+        "Blank", "PythonMakefile",
     };
 
     /**************************************************************************/

@@ -1,5 +1,4 @@
 ## process this file with automake to produce Makefile.in
-## $Id$
 
 # build this directory before moving on to the template subdirs.
 SUBDIRS = . IDL3Templates       \

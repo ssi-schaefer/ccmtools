@@ -1,5 +1,4 @@
 ## process this file with automake to produce Makefile.in
-## $Id$
 
 templatedir = $(TEMPLATE_ROOT)/IDL3Templates
 dist_template_DATA = \
@@ -15,7 +14,6 @@ dist_template_DATA = \
     MConstantDef               \
     MConsumesDef               \
     MConsumesDefInclude        \
-    MContainer                 \
     MEmitsDef                  \
     MEmitsDefInclude           \
     MEnumDef                   \

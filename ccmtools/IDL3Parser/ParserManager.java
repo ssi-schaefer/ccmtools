@@ -2,7 +2,6 @@
  * Edin Arnautovic <edin.arnautovic@salomon.at>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -97,7 +96,8 @@ public class ParserManager {
      *
      * @param f the name of the original file to be parsed.
      */
-    public void setOriginalFile(String f) { originalFile = new String(f); }
+    public void setOriginalFile(String f)
+    { if (originalFile == null) originalFile = new String(f); }
 
     /**
      * Find out which file the parser is currently handling.
@@ -151,8 +151,8 @@ public class ParserManager {
             throw new RuntimeException("Error creating parser: " + e);
         }
 
-        if (this.originalFile == null) this.originalFile = new String(filename);
-        if (this.sourceFile == null) this.sourceFile = new String(filename);
+        setOriginalFile(filename);
+        setSourceFile(filename);
 
         symbolTable.pushFile();
 

@@ -3,7 +3,6 @@
  * Egon Teiniker <egon.teiniker@tugraz.at>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -34,10 +33,8 @@ import java.util.Map;
 public class IDL2GeneratorImpl
     extends IDLGenerator
 {
-    protected String fileSuffix = "2";
-
     public IDL2GeneratorImpl(Driver d, File out_dir) throws IOException
-    { super("IDL2", d, out_dir); }
+    { super("2", d, out_dir); }
 
     /**
      * Finalize the output files. This method is used to create the needed

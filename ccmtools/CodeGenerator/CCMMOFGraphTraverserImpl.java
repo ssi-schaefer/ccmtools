@@ -2,7 +2,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -44,33 +43,37 @@ import java.lang.reflect.Method;
  * sends node traversal events to an object derived from the NodeHandler class
  * to perform task-specific actions with each node.
  */
-public class GraphTraverserImpl
+public class CCMMOFGraphTraverserImpl
     implements GraphTraverser
 {
-    private NodeHandler handler = null;
+    private List handlers = null;
 
-    public GraphTraverserImpl() { }
+    public CCMMOFGraphTraverserImpl()
+    {
+        handlers = new ArrayList();
+    }
 
     /**
-     * Create a new traverser with a given node handler.
+     * Get the node handler objects for this traverser.
      *
-     * @param h An object to handle node events.
+     * @return The NodeHandler objects currently used by this traverser.
      */
-    public GraphTraverserImpl(NodeHandler h) { setHandler(h); }
+    public List getHandlers() { return handlers; }
 
     /**
-     * Get the node handler object for this traverser.
-     *
-     * @return The NodeHandler object currently used by this traverser.
-     */
-    public NodeHandler getHandler() { return handler; }
-
-    /**
-     * Set the node handler object for this traverser.
+     * Add a node handler object to this traverser.
      *
      * @param h A NodeHandler object to assign to this traverser.
      */
-    public void setHandler(NodeHandler h) { handler = h; }
+    public void addHandler(NodeHandler h) { handlers.add(h); }
+
+    /**
+     * Remove the given node handler object from this traverser.
+     *
+     * @param h A NodeHandler object to remove from this traverser.
+     */
+    public void removeHandler(NodeHandler h)
+    { if (handlers.contains(h)) { handlers.remove(h); } }
 
     /**
      * Traverse the subgraph starting at the given node.
@@ -79,13 +82,17 @@ public class GraphTraverserImpl
      */
     public void traverseGraph(MContained node)
     {
-        if (handler != null) {
-            handler.startGraph();
+        if (handlers.size() > 0) {
+            for (Iterator i = handlers.iterator(); i.hasNext(); )
+                ((NodeHandler) i.next()).startGraph();
+
             traverseRecursive(node, "", new HashSet());
-            handler.endGraph();
+
+            for (Iterator j = handlers.iterator(); j.hasNext(); )
+                ((NodeHandler) j.next()).endGraph();
         } else {
             throw new RuntimeException(
-                "No node handler object available for traversal");
+                "No node handler objects are available for traversing a graph");
         }
     }
 
@@ -132,14 +139,16 @@ public class GraphTraverserImpl
         if (visited.contains(scope_id)) return;
         visited.add(scope_id);
 
-        handler.startNode(node, scope_id);
+        for (Iterator j = handlers.iterator(); j.hasNext(); )
+            ((NodeHandler) j.next()).startNode(node, scope_id);
 
         List children = processNodeData(node);
 
         for (Iterator i = children.iterator(); i.hasNext(); )
             traverseRecursive(i.next(), scope_id, visited);
 
-        handler.endNode(node, scope_id);
+        for (Iterator k = handlers.iterator(); k.hasNext(); )
+            ((NodeHandler) k.next()).endNode(node, scope_id);
     }
 
     /**
@@ -184,11 +193,12 @@ public class GraphTraverserImpl
 
                 ((node instanceof MEnumDef) && name.equals("getMembers")) ||
 
-                // we don't want to visit the homes during a visit to the
-                // component. the homes will get their own chance as
-                // self-standing members of the corba community, er, graph.
+                // we don't want to visit the homes (or bases) during a visit to
+                // components (or interfaces). the homes will get their own
+                // chance as self-standing members of the corba community, er,
+                // graph.
 
-                name.equals("getHomes"))
+                name.equals("getHomes") || name.equals("getBases"))
 
                 continue;
 
@@ -211,7 +221,8 @@ public class GraphTraverserImpl
 
             if (type.endsWith("List")) children.addAll((List) value);
             else if (type.endsWith("Set")) children.addAll((Set) value);
-            else handler.handleNodeData(type, field, value);
+            else for (Iterator x = handlers.iterator(); x.hasNext(); )
+                ((NodeHandler) x.next()).handleNodeData(type, field, value);
         }
 
         return children;

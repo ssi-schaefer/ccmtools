@@ -1,5 +1,4 @@
 ## process this file with automake to produce Makefile.in
-## $Id$
 
 templatedir = $(TEMPLATE_ROOT)/CppLocalTemplates
 dist_template_DATA = \
@@ -25,7 +24,6 @@ dist_template_DATA = \
     MAttributeDefVariable                          \
     MComponentDef                                  \
     MConsumesDefInclude                            \
-    MContainer                                     \
     MEmitsDefInclude                               \
     MEnumDef                                       \
     MExceptionDef                                  \

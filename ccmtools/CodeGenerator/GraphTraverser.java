@@ -2,7 +2,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -23,11 +22,14 @@ package ccmtools.CodeGenerator;
 
 import ccmtools.Metamodel.BaseIDL.MContained;
 
+import java.util.List;
+
 public interface GraphTraverser
 {
     void traverseGraph(MContained node);
 
-    public NodeHandler getHandler();
-    public void setHandler(NodeHandler h);
+    public List getHandlers();
+    public void addHandler(NodeHandler h);
+    public void removeHandler(NodeHandler h);
 }
 

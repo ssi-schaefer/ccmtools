@@ -6,7 +6,7 @@ interface _i {
   attribute double _d;
 };
 
-interface i { 
+interface i {
   attribute long l;
   attribute double g;
 };

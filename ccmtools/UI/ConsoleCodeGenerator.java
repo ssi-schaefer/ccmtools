@@ -2,7 +2,6 @@
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
- * $Id$
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -27,7 +26,7 @@ import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.GraphTraverser;
-import ccmtools.CodeGenerator.GraphTraverserImpl;
+import ccmtools.CodeGenerator.CCMMOFGraphTraverserImpl;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.CodeGenerator.TemplateHandler;
 import ccmtools.CppGenerator.CppLocalGeneratorImpl;
@@ -72,22 +71,22 @@ public class ConsoleCodeGenerator
 "  -u, --no-user-types           Disable generating user types files\n" +
 "      --generator-mask=<flags>  Mask for generator debug output\n" +
 "      --parser-mask=<flags>     Mask for parser debug output\n" +
-"Languages available (specify one):\n" +
+"Languages available:\n" +
 "    LANGUAGES\n" +
 "Generates code in the given output language after parsing FILES.\n" +
 "Options marked with a star (*) are generally used once per project.\n";
 
     private static final String[] local_language_types =
     {
-        "c++local", "c++mirror",  
-	"c++remote", "c++remote-test",
-	"c++python", 
-	"idl3", "idl3mirror", "idl2"
+        "c++local", "c++mirror",
+        "c++remote", "c++remote-test",
+	"c++python",
+        "idl3", "idl3mirror", "idl2"
     };
 
     private static List language_types = null;
 
-    private static String lang = null;
+    private static List languages = new ArrayList();
 
     private static long gen_mask = 0x00000040;
     private static long par_mask = 0x00000000;
@@ -111,11 +110,11 @@ public class ConsoleCodeGenerator
         if (err.length() > 0)
             System.err.println("Error: " + err);
 
-        StringBuffer languages = new StringBuffer();
+        StringBuffer langs = new StringBuffer();
         for (int i = 0; i < language_types.size(); i++)
-            languages.append((String) language_types.get(i) + " ");
+            langs.append((String) language_types.get(i) + " ");
 
-        System.out.print(usage.replaceAll("LANGUAGES", languages.toString()));
+        System.out.print(usage.replaceAll("LANGUAGES", langs.toString()));
 
         if (err.length() > 0) System.exit(1);
         else                  System.exit(0);
@@ -125,8 +124,8 @@ public class ConsoleCodeGenerator
     {
         System.out.println("ccmtools version " + version);
         System.out.println("Copyright (C) 2002, 2003 Salomon Automation");
-        System.out.println("This program is distributed under the terms of the");
-        System.out.println("GNU Lesser General Public License.");
+        System.out.println("The CCM Tools library is distributed under the");
+        System.out.println("terms of the GNU Lesser General Public License.");
         System.exit(0);
     }
 
@@ -207,10 +206,11 @@ public class ConsoleCodeGenerator
      * language provided. Use the given driver to control the handler.
      *
      * @param driver the user interface driver object to assign to this handler.
+     * @param lang the language to generate.
      * @return the newly created node handler (i.e. code generator), or exit if
      *         there was an error.
      */
-    private static TemplateHandler setupHandler(Driver driver)
+    private static TemplateHandler setupHandler(Driver driver, String lang)
     {
         TemplateHandler handler = null;
 
@@ -264,16 +264,22 @@ public class ConsoleCodeGenerator
     {
         parseArgs(args);
 
-        Runtime rt = Runtime.getRuntime();
-
-        TemplateHandler handler = setupHandler(setupDriver());
-        GraphTraverser traverser = new GraphTraverserImpl();
-        ParserManager manager = new ParserManager(par_mask);
-
+        GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
         if (traverser == null) printUsage("failed to create a graph traverser");
+
+        ParserManager manager = new ParserManager(par_mask);
         if (manager == null) printUsage("failed to create a parser manager");
 
-        traverser.setHandler(handler);
+        Driver driver = setupDriver();
+        ArrayList handlers = new ArrayList();
+
+        for (Iterator l = languages.iterator(); l.hasNext(); ) {
+            TemplateHandler handler = setupHandler(driver, (String) l.next());
+            handlers.add(handler);
+            traverser.addHandler(handler);
+        }
+
+        Runtime rt = Runtime.getRuntime();
 
         MContainer kopf = null;
 
@@ -296,7 +302,7 @@ public class ConsoleCodeGenerator
                 preproc.waitFor();
                 if (preproc.exitValue() != 0)
                     throw new RuntimeException(
-                        "Preprocessor did not exit cleanly."+
+                        "Preprocessor did not exit cleanly. "+
                         "Please verify your include path.");
             } catch (Exception e) {
                 System.err.println("Error preprocessing "+source+":\n"+e);
@@ -337,8 +343,11 @@ public class ConsoleCodeGenerator
 
         Environment env = new ConsoleEnvironmentImpl(defines);
 
-        generateEnvironment(handler, env);
-        handler.finalize(env.getParameters(), filenames);
+        for (Iterator h = handlers.iterator(); h.hasNext(); ) {
+            TemplateHandler handler = (TemplateHandler) h.next();
+            generateEnvironment(handler, env);
+            handler.finalize(env.getParameters(), filenames);
+        }
 
         System.exit(0);
     }
@@ -367,11 +376,11 @@ public class ConsoleCodeGenerator
             language_types.add(local_language_types[i]);
 
         List argv = new ArrayList();
-        for (int i = 0; i < args.length; i++)
-            argv.add(args[i]);
+        for (int i = 0; i < args.length; i++) argv.add(args[i]);
 
         if (argv.contains("-h") || argv.contains("--help"))
             printUsage("");
+
         else if (argv.contains("-V") || argv.contains("--version"))
             printVersion();
 
@@ -414,14 +423,16 @@ public class ConsoleCodeGenerator
                     }
                     arg = arg.substring(1);
                 } while (arg.length() > 0);
-            else if ((lang == null) &&
-                     language_types.contains(arg.toLowerCase()))
-                lang = new String(arg);
+            else if (language_types.contains(arg.toLowerCase()) &&
+                     ! languages.contains(arg))
+                languages.add(arg);
             else
                 filenames.add(arg);
         }
 
-        if (lang == null) printUsage("no valid output language specified");
+        if (languages.size() == 0)
+            printUsage("no valid output language specified");
+
         if (include_path.trim().equals(""))
             include_path = " -I"+System.getProperty("user.dir");
     }
