@@ -9,10 +9,12 @@ TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
                     CP=$(CP) RM=$(RM) MKDIR=$(MKDIR) \
                     PACKAGE=@PACKAGE@ MAJORMINOR=@CCMTOOLS_MAJORMINOR@
 
-#dist_noinst_SCRIPTS = test-loader.sh
+dist_noinst_SCRIPTS = test-loader.sh
 
 
-TESTS = 
+TESTS = \
+  attribute_simple.sh attribute_module_simple.sh \
+  facet_simple.sh facet_module_simple.sh
 
 dist_check_SCRIPTS = $(TESTS)
 
