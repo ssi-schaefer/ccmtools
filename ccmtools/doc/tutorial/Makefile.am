@@ -35,7 +35,11 @@ FIGS = \
        LCAC_Overview.fig           \
        LCAC_ProcessModel.fig       \
        RemoteAssembly.fig          \
-       CcmToolsArchitecture.fig
+       CcmToolsArchitecture.fig    \
+       ComponentLogicBusinessLogic.fig \
+       DesignerTask.fig                \
+       DeveloperTask.fig               \
+       UMLComponentDesign.fig
 
 PDFS = $(FIGS:.fig=.pdf)
 EPSS = $(FIGS:.fig=.eps)
