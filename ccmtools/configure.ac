@@ -8,6 +8,7 @@ AM_INIT_AUTOMAKE
 dnl Checks for programs.
 
 AC_PROG_CC
+AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PATH_PROG([CP],    [[cp copy]])
@@ -20,6 +21,9 @@ AC_PATH_PROG(DVIPDF,  [[dvipdf]])
 AC_PATH_PROG(FIG2DEV, [[fig2dev]])
 AC_PATH_PROG(JAVADOC, [[javadoc]])
 AM_PATH_JAVA_SDK(1.4)
+
+CPP_PATH=${CPP}
+AC_SUBST(CPP_PATH)
 
 dnl Checks for libraries.
 

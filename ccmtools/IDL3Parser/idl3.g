@@ -396,18 +396,15 @@ options { exportVocab = IDL3; }
         MExceptionDef exception = null;
         MStructDef struct = null;
         MUnionDef union = null;
-        MEnumDef enum = null;
 
         if (box instanceof MExceptionDef) exception = (MExceptionDef) box;
         else if (box instanceof MStructDef) struct = (MStructDef) box;
         else if (box instanceof MUnionDef) union = (MUnionDef) box;
-        else if (box instanceof MEnumDef) enum = (MEnumDef) box;
 
-        if ((struct == null) && (exception == null)
-            && (union == null) && (enum == null))
-            throw new RuntimeException(box+" must be an exception, union, struct, or enum");
+        if ((struct == null) && (exception == null) && (union == null))
+            throw new RuntimeException(box+" must be an exception, union, or struct");
 
-        if (members.size() == 0)
+        if ((members.size() == 0) && (exception == null))
             throw new TokenStreamException("container '"+box.getIdentifier()+"' has no members");
 
         // check if there are fields with same identifier.
@@ -417,15 +414,7 @@ options { exportVocab = IDL3; }
         Iterator o = members.iterator();
         Iterator i = members.iterator();
         try {
-            if (enum != null) {
-                while (o.hasNext()) {
-                    outID = (String) o.next();
-                    while (i.hasNext()) {
-                        inID = (String) i.next();
-                        if (outID.equals(inID)) throw new RuntimeException();
-                    }
-                }
-            } else if (union != null) {
+            if (union != null) {
                 MUnionFieldDef out, in;
                 while (o.hasNext()) {
                     out = (MUnionFieldDef) o.next(); outID = out.getIdentifier();
@@ -451,22 +440,18 @@ options { exportVocab = IDL3; }
         }
 
         // add the members to the given box.
-        if (enum != null) {
-            enum.setMembers(members);
+        Iterator it = members.iterator();
+        if (union != null) {
+            while (it.hasNext()) ((MUnionFieldDef) it.next()).setUnion(union);
+            union.setUnionMembers(members);
         } else {
-            Iterator it = members.iterator();
-            if (union != null) {
-                while (it.hasNext()) ((MUnionFieldDef) it.next()).setUnion(union);
-                union.setUnionMembers(members);
-            } else {
-                while (it.hasNext()) {
-                    MFieldDef f = (MFieldDef) it.next();
-                    if (struct != null) f.setStructure(struct);
-                    else f.setException(exception);
-                }
-                if (struct != null) struct.setMembers(members);
-                else exception.setMembers(members);
+            while (it.hasNext()) {
+                MFieldDef f = (MFieldDef) it.next();
+                if (struct != null) f.setStructure(struct);
+                else f.setException(exception);
             }
+            if (struct != null) struct.setMembers(members);
+            else exception.setMembers(members);
         }
     }
 
@@ -1604,19 +1589,31 @@ enum_type returns [MIDLType enum = null]
 }
     :   "enum" id = identifier
         {
-            System.out.println("found enum '"+id+"'");
             enum = (MEnumDef) verifyNameEmpty(id, (MEnumDef) enum);
             ((MEnumDef) enum).setIdentifier(id);
             symbolTable.add(id, (MEnumDef) enum);
         }
-        LCURLY { System.out.println("start"); }
-        name = enumerator
-        { if (name != null) members.add(name); name = null; System.out.println("found member "+name); }
+        LCURLY name = enumerator
+        { if (name != null) members.add(name); name = null; }
         (
             COMMA name = enumerator
-            { if (name != null) members.add(name); name = null; System.out.println("found next member "+name); }
+            { if (name != null) members.add(name); name = null; }
         )*
-        RCURLY { System.out.println("end"); checkSetMembers((MEnumDef) enum, members); } ;
+        RCURLY
+        {
+            if (members.size() == 0)
+                throw new TokenStreamException("enum '"+id+"' is empty");
+
+            Object[] membs = members.toArray();
+            for (int i = 0; i < membs.length; i++) {
+                String m = membs[i].toString();
+                for (int j = i+1; j < membs.length; j++)
+                    if (m.equals(membs[j].toString()))
+                        throw new TokenStreamException("repeated member '"+m+"' in enum '"+id+"'");
+            }
+
+            ((MEnumDef) enum).setMembers(members);
+        } ;
 
 // 79. <enumerator> ::= <identifier>
 enumerator returns [String name = null] : name = identifier ;
@@ -2366,7 +2363,7 @@ event_forward_dcl returns [MEventDef event = null]
             event.setContentss(null);
 
             if ((debug & (DEBUG_EVENT | DEBUG_FORWARD_DECL)) != 0) {
-                System.out.println("In event_forward_decl: " + id);
+                System.out.println("[d] event forward declaration for " + id);
             }
         }
     ;

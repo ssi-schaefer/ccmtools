@@ -275,8 +275,9 @@ public class ConsoleCodeGenerator
             // step (0). run the C preprocessor on the input file.
 
             try {
-                Process preproc = rt.exec("cpp -P -o " + idlfile +
-                                          " " + include_path + " " + source);
+                Process preproc = rt.exec(Constants.CPP_PATH + " -P -o " +
+                                          idlfile + " " + include_path +
+                                          " " + source);
                 preproc.waitFor();
                 if (preproc.exitValue() != 0)
                     throw new RuntimeException(
