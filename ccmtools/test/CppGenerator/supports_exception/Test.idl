@@ -1,0 +1,30 @@
+/**
+ * Test case: supports exception
+ *
+ */
+
+exception Error{
+};
+
+exception SuperError{
+};
+
+exception FatalError{
+};
+
+interface Console {
+    long print(in string msg)
+        raises (Error, SuperError, FatalError);
+};
+
+component Test 
+    supports Console
+{
+};
+
+home TestHome manages Test
+{
+};
+
+
+

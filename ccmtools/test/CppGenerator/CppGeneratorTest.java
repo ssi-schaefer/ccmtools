@@ -48,7 +48,6 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	ccmtools_dir = System.getProperty("user.dir"); 
     }
 
-
     public void testVersionOption()
     {
 	runCcmtoolsGenerate("--version");
@@ -93,6 +92,89 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
 		     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
 	    
+	    
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --bootstrap --configure --make --targets=check") ;
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --make --targets=clean") ;
+	}
+	catch(Exception e) {
+	    fail();
+	}
+    }
+
+
+    public void testSupportsException()
+    {
+	String test_dir = ccmtools_dir + "/test/CppGenerator/supports_exception";
+	String sandbox_dir = ccmtools_dir + "/test/CppGenerator/sandbox/supports_exception";
+
+	try {
+	    runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" 
+				+ " " + test_dir + "/Test.idl");
+
+	     runCcmtoolsGenerate("c++local -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface" 
+				+ " " + sandbox_dir + "/idl3/interface/Console.idl"
+				+ " " + sandbox_dir + "/idl3/interface/Error.idl"
+				+ " " + sandbox_dir + "/idl3/interface/FatalError.idl"
+				 + " " + sandbox_dir + "/idl3/interface/SuperError.idl");
+	    
+	    runCcmtoolsGenerate("c++local -a -o " + sandbox_dir
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl"
+				+ " " + sandbox_dir + "/idl3/component/TestHome.idl");
+	    
+	    runCcmtoolsGenerate("c++local-test -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl");
+
+	    copyFile(test_dir + "/impl/Test_impl.cc",sandbox_dir + "/impl/Test_impl.cc");
+	    copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
+		     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
+	    
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --bootstrap --configure --make --targets=check") ;
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --make --targets=clean") ;
+	}
+	catch(Exception e) {
+	    fail();
+	}
+    }
+
+
+    public void testSupportsInheritance()
+    {
+	String test_dir = ccmtools_dir + "/test/CppGenerator/supports_inheritance";
+	String sandbox_dir = ccmtools_dir + "/test/CppGenerator/sandbox/supports_inheritance";
+
+	try {
+	    runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" 
+				+ " " + test_dir + "/Test.idl");
+
+	     runCcmtoolsGenerate("c++local -o " + sandbox_dir 
+				 + " -I" + sandbox_dir + "/idl3/interface" 
+				 + " " + sandbox_dir + "/idl3/interface/Base1.idl"
+				 + " " + sandbox_dir + "/idl3/interface/Base2.idl"
+				 + " " + sandbox_dir + "/idl3/interface/InterfaceType.idl");
+	    
+	    runCcmtoolsGenerate("c++local -a -o " + sandbox_dir
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl"
+				+ " " + sandbox_dir + "/idl3/component/TestHome.idl");
+	    
+	    runCcmtoolsGenerate("c++local-test -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl");
+
+	    copyFile(test_dir + "/impl/Test_impl.cc",sandbox_dir + "/impl/Test_impl.cc");
+	    copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
+		     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
 	    
 	    runConfix("--packageroot=" + sandbox_dir 
 		      + " --bootstrap --configure --make --targets=check") ;
@@ -187,9 +269,6 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 				+ " -I" + sandbox_dir + "/idl3/interface"
 				+ " -I" + sandbox_dir + "/idl3/component"
 				+ " " + sandbox_dir + "/idl3/component/Test.idl");
-	    
-	    //	    copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
-	    //		     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
 	    
 	    copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir + "/impl/MyObject.cc");
 	    copyFile(test_dir + "/impl/MyObject.h", sandbox_dir + "/impl/MyObject.h");
@@ -337,7 +416,6 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }     
-
 
     // TODO: implement other test cases
 }

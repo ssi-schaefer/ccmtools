@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
-    // component- and mirror component home.
+    // component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
     LocalComponents::HomeFinder* homeFinder;
@@ -77,9 +77,8 @@ int main(int argc, char *argv[])
             (homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
-
         myTest->configuration_complete();
-     } 
+    } 
     catch ( LocalComponents::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
@@ -116,17 +115,36 @@ int main(int argc, char *argv[])
     // mirror component. But for supported interfaces and component attributes, 
     // we can realize test cases in the following section.
     try {
-        string str1 = "Hallo to first op()";
-	long size1 = myTest->op1(str1);
-	assert(size1 == str1.length());
-    
-	string str2 = "Hallo to second op()";
-	long size2 = myTest->op2(str2);
-	assert(size2 == str2.length());
-    
-	string str3 = "Hallo to third op()";
-	long size3 = myTest->op3(str3);
-	assert(size3 == str3.length());
+        string s = "Salomon.Automation";
+        long len =  myTest.ptr()->print(s);
+        assert(len == s.length());
+      
+        try {
+	    string s = "Error";
+	    myTest.ptr()->print(s);
+	    assert(0);
+        }
+        catch(CCM_Local::Error& e) {
+	    cout << "OK: Error exception catched!" << endl;
+        }
+      
+        try {
+	    string s = "SuperError";
+	    myTest.ptr()->print(s);
+	    assert(0);
+        }
+        catch(CCM_Local::SuperError& e) {
+	    cout << "OK: SuperError exception catched!" << endl;
+        }
+      
+        try {
+	    string s = "FatalError";
+	    myTest.ptr()->print(s);
+	    assert(0);
+        }
+        catch(CCM_Local::FatalError& e) {
+	    cout << "OK: FatalError exception catched!" << endl;
+        }
     } 
     catch ( LocalComponents::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
@@ -169,7 +187,7 @@ int main(int argc, char *argv[])
         error = -1;
     }
     error += local_undeploy_TestHome("TestHome");
-     if(error) {
+    if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
     }

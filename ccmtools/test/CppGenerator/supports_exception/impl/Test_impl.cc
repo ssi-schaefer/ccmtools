@@ -40,30 +40,19 @@ CCM_Test_impl::~CCM_Test_impl()
 }
 
 long
-CCM_Test_impl::op3(const std::string& str)
-    throw (LocalComponents::CCMException)
+CCM_Test_impl::print(const std::string& msg)
+    throw (LocalComponents::CCMException, Error, SuperError, FatalError )
 {
-    DEBUGNL(" CCM_Test_impl->op3(str)");
-    cout << str << endl;
-    return str.length();
-}
+    DEBUGNL(" CCM_Test_impl->print(msg)");
 
-long
-CCM_Test_impl::op2(const std::string& str)
-    throw (LocalComponents::CCMException)
-{
-    DEBUGNL(" CCM_Test_impl->op2(str)");
-    cout << str << endl;
-    return str.length();
-}
-
-long
-CCM_Test_impl::op1(const std::string& str)
-    throw (LocalComponents::CCMException)
-{
-    DEBUGNL(" CCM_Test_impl->op1(str)");
-    cout << str << endl;
-    return str.length();
+    cout << ">> " << msg << endl;
+    if(msg == "Error")
+        throw Error();
+    if(msg == "SuperError")
+        throw SuperError();
+    if(msg == "FatalError")
+        throw FatalError();
+    return msg.length();
 }
 
 void
