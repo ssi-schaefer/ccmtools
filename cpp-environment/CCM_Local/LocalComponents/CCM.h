@@ -9,14 +9,11 @@
 #include <vector>
 
 #include <WX/Utils/smartptr.h>
+#include <WX/Utils/value.h>
+
 #include <LocalTransaction/UserTransaction.h>
 
 namespace LocalComponents {
-
-  class Any
-  {
-    // TODO
-  };
 
   //============================================================================
   // Exceptions
@@ -143,7 +140,7 @@ namespace LocalComponents {
    * give the client the facility to get these informations from the components
    * equivalent interface.
    * Note: This interface is not part of the CCM specification!
-   ***/
+   ***
   class ReleaseInformation
   {
     public:
@@ -154,7 +151,7 @@ namespace LocalComponents {
       virtual const std::string getComponentUUID (  )    const = 0;
       // ...
   };
-
+  */
 
   /***
    * Enterprise Component is an empty callback interface that serves as common
