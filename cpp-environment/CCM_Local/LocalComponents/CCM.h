@@ -45,7 +45,7 @@ namespace LocalComponents {
 
     Exception(const std::string& message)
       throw()
-      : message_("LocalComponents::Exception: " + message)
+      : message_(message)
       {
       }
 
@@ -80,7 +80,7 @@ namespace LocalComponents {
 
     NotImplemented(const std::string& message) 
       throw()
-      : Exception("LocalComponents::NotImplemented: " + message) 
+      : Exception(message) 
       {
       }
   };
