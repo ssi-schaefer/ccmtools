@@ -1,2 +1,5 @@
-      virtual %(LanguageType)s %(Identifier)s ();
-      virtual void %(Identifier)s ( %(LanguageType)s value);
+      virtual %(CORBAType)s %(Identifier)s()
+	 throw(CORBA::SystemException);
+      virtual void %(Identifier)s(%(CORBAType)s value)
+	 throw(CORBA::SystemException);
+

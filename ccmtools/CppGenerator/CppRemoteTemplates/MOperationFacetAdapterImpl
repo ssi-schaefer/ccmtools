@@ -1,4 +1,5 @@
-%(CORBAType)s %(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefCORBA)s) %(MExceptionDefCORBA)s
+%(CORBAType)s %(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefCORBA)s) 
+  %(MExceptionDefCORBA)s
 {
   DEBUGNL(" %(Object)sFacetAdapter::%(Identifier)s()");
 

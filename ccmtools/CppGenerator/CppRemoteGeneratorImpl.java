@@ -193,6 +193,31 @@ public class CppRemoteGeneratorImpl
     }
 
 
+    /***
+     * Overrides method from CppGenerator to handle the following tags within an
+     * interface attribute template: 
+     *   %(CORBAType)s 
+     *   %(MAttributeDefConvertResultType)s
+     *   %(MAttributeDefConvertParameter)s
+     **/
+    protected Map getTwoStepAttributeVariables(MAttributeDef attr,
+                                               MContained container)
+    {
+        String lang_type = getLanguageType(attr);
+        Map vars = super. getTwoStepAttributeVariables(attr,container);
+
+	MTyped object = (MTyped)attr;
+	String base_type = getBaseIdlType(object);
+
+	vars.put("CORBAType", getCORBALanguageType((MTyped)attr)); 
+	vars.put("MAttributeDefConvertResultType", base_type + "_to_" + "CORBA" + base_type);
+	vars.put("MAttributeDefConvertParameter", "CORBA" + base_type + "_to_" + base_type);
+
+        return vars;
+    }
+
+
+
     /** 
      * Get a variable hash table sutable for filling in the template from the
      * fillTwoStepTemplates function. This version of the function fills in
@@ -717,21 +742,23 @@ public class CppRemoteGeneratorImpl
     {
 	MParameterMode direction = p.getDirection();
 	String EnumScope = "";
+	List scope = getScope((MContained)idl_enum);
+	String local_scope;
+
+	if(scope.size() > 0) 
+	    local_scope =  join("::", scope) + "::";
+	else
+	    local_scope = "";
 
         List ret = new ArrayList();
-	ret.add("  CCM_Local::" + getFullScopeIdentifier(idl_enum) + " parameter_"
-		    + p.getIdentifier() + ";");	
+	ret.add("  CCM_Local::" + local_scope + idl_enum.getIdentifier() + " parameter_"
+		+ p.getIdentifier() + ";");
+	
 	if(direction != MParameterMode.PARAM_OUT) {
 	    ret.add("  switch(" + p.getIdentifier() + ") {");
 	    for (Iterator members = idl_enum.getMembers().iterator(); members.hasNext(); ) {
 		String member = (String)members.next();
-
-		List scope = getScope((MContained)idl_enum);
-		if(scope.size() > 0)
-		    EnumScope = "::" + join("::", scope) + "::"; 
-		else
-		    EnumScope = "::";
-		ret.add("    case " + EnumScope + member + ":");
+		ret.add("    case ::" + local_scope + member + ":");
 		ret.add("    parameter_" + p.getIdentifier() + " = CCM_Local" + EnumScope 
 			+ member + ";");
 		ret.add("    break;");
@@ -747,9 +774,16 @@ public class CppRemoteGeneratorImpl
 							  String CppPrefix) 
     {
 	MParameterMode direction = p.getDirection();
-	
+	List scope = getScope((MContained)idl_struct);
+	String local_scope;
+
+	if(scope.size() > 0) 
+	    local_scope =  join("::", scope) + "::";
+	else
+	    local_scope = "";
+
 	List ret = new ArrayList();
-	ret.add("  CCM_Local::" + getFullScopeIdentifier(idl_struct) + " " + CppPrefix 
+	ret.add("  CCM_Local::" + local_scope + idl_struct.getIdentifier() + " " + CppPrefix 
 		+ p.getIdentifier() + ";"); 
 	
 	if(direction != MParameterMode.PARAM_OUT) {
@@ -784,10 +818,17 @@ public class CppRemoteGeneratorImpl
 	MIDLType sequence_type = ((MTyped)idl_sequence).getIdlType();
 	String base_type = getBaseIdlType((MTyped)idl_sequence);
 	List ret = new ArrayList();
+	List scope = getScope((MContained)alias);
+	String local_scope;
+
+	if(scope.size() > 0) 
+	    local_scope =  join("::", scope) + "::";
+	else
+	    local_scope = "";
 
 	if(sequence_type instanceof MPrimitiveDef
 	   || sequence_type instanceof MStringDef) {
-	    ret.add("  CCM_Local::" + getFullScopeIdentifier(alias) + " parameter_"
+	    ret.add("  CCM_Local::" + local_scope + alias.getIdentifier() + " parameter_"
 		    + p.getIdentifier() + ";");
 
 	    if(p.getDirection() != MParameterMode.PARAM_OUT) {	
@@ -802,12 +843,12 @@ public class CppRemoteGeneratorImpl
 	    MStructDef idl_struct = (MStructDef)sequence_type;
 	    String CorbaPrefix = "CORBA_item_";
 	    String CppPrefix = "Cpp_item_";
-	    ret.add("  CCM_Local::" + getFullScopeIdentifier(alias) + " parameter_"
+	    ret.add("  CCM_Local::" + local_scope + alias.getIdentifier() + " parameter_"
 		    + p.getIdentifier() + ";");
 
 	    if(p.getDirection() != MParameterMode.PARAM_OUT) {	
 		ret.add("  for(unsigned long i=0; i< " + p.getIdentifier() + ".length(); i++) {");
-		ret.add("  ::" + getFullScopeIdentifier(idl_struct) + " " + CorbaPrefix +  p.getIdentifier()
+		ret.add("  ::" + idl_struct.getIdentifier() + " " + CorbaPrefix +  p.getIdentifier()
 			+ " = " + p.getIdentifier() + "[i];");
 		ret.add(convertStructParameterFromCorbaToCpp(p,idl_struct, 
 							     CorbaPrefix, CppPrefix)); 
@@ -841,6 +882,13 @@ public class CppRemoteGeneratorImpl
 
 	String ret_string = "";
 	MIDLType idl_type = op.getIdlType(); 
+	List scope = getScope((MContained)op);
+	String local_scope;
+
+	if(scope.size() > 0) 
+	    local_scope =  join("::", scope) + "::";
+	else
+	    local_scope = "";
 
 	if(idl_type instanceof MPrimitiveDef
 	   && ((MPrimitiveDef)idl_type).getKind() == MPrimitiveKind.PK_VOID) {
@@ -854,17 +902,17 @@ public class CppRemoteGeneratorImpl
 	}
 	else if(idl_type instanceof MEnumDef) {
 	    MEnumDef idl_enum = (MEnumDef)idl_type;
-	    ret_string = "  CCM_Local::" + getFullScopeIdentifier(idl_enum) + " result;";
+	    ret_string = "  CCM_Local::" + local_scope + idl_enum.getIdentifier() + " result;";
 	}
 	else if(idl_type instanceof MStructDef) { 
 	    MTypedefDef idl_typedef = (MTypedefDef)idl_type;
 	    MStructDef idl_struct = (MStructDef)idl_typedef;
-	    ret_string = "  CCM_Local::" + getFullScopeIdentifier(idl_struct) + " result;"; 
+		ret_string = "  CCM_Local::" + local_scope + idl_struct.getIdentifier() + " result;"; 
 	}
 	else if(idl_type instanceof MAliasDef) {
 	    MAliasDef alias = (MAliasDef)idl_type;
 	    if(alias.getIdlType() instanceof MSequenceDef) {
-		ret_string = "  CCM_Local::" + getFullScopeIdentifier(alias) + " result;";
+		ret_string = "  CCM_Local::" + local_scope + alias.getIdentifier() + " result;";
 	    }
 	    else {
 		// all other idl alias types
@@ -1256,9 +1304,17 @@ public class CppRemoteGeneratorImpl
 						       String CppPrefix) 
     {
 	List ret = new ArrayList();
+	List scope = getScope((MContained)idl_struct);
+	String remote_scope;
+    
+	if(scope.size() > 0)
+	    remote_scope = join("::", scope) + "::"; 
+	else
+	    remote_scope = "::";
+	
 	ret.add("  ::" 
-		+ getFullScopeIdentifier(idl_struct) + "_var " + CorbaPrefix + " = new ::" 
-		+ getFullScopeIdentifier(idl_struct) + ";"); 
+		+ remote_scope + idl_struct.getIdentifier() + "_var " + CorbaPrefix + " = new ::" 
+		+ remote_scope + idl_struct.getIdentifier() + ";"); 
 	
 	for (Iterator members = idl_struct.getMembers().iterator(); members.hasNext(); ) {
 	    MFieldDef member = (MFieldDef)members.next();
@@ -1287,11 +1343,18 @@ public class CppRemoteGeneratorImpl
 	MIDLType sequence_type = ((MTyped)idl_sequence).getIdlType();
 	String base_type = getBaseIdlType((MTyped)idl_sequence);
 	List ret = new ArrayList();
-
+	List scope = getScope((MContained)alias);
+	String remote_scope;
+    
+	if(scope.size() > 0)
+	    remote_scope = join("::", scope) + "::"; 
+	else
+	    remote_scope = "::";
+	
 	if(sequence_type instanceof MPrimitiveDef
 	   || sequence_type instanceof MStringDef) {
-    	    ret.add("  ::" + getFullScopeIdentifier(alias) + "_var return_value = new ::" 
-		    + getFullScopeIdentifier(alias) + ";"); 
+    	    ret.add("  ::" + remote_scope+ alias.getIdentifier() + "_var return_value = new ::" 
+		    + remote_scope + alias.getIdentifier() + ";"); 
 	    ret.add("  return_value->length(result.size());");
 	    ret.add("  for(unsigned long i=0; i< result.size(); i++) {");
 	    ret.add("    (*return_value)[i] = CCM::" + base_type 
@@ -1302,11 +1365,19 @@ public class CppRemoteGeneratorImpl
 	    MStructDef idl_struct = (MStructDef)sequence_type;
 	    String CorbaPrefix = "CORBA_item_result";
 	    String CppPrefix = "Cpp_item_result";
-	    ret.add("  ::" + getFullScopeIdentifier(alias) + "_var return_value = new ::" 
-		    + getFullScopeIdentifier(alias) + ";"); 
+	    List lscope = getScope((MContained)idl_struct);
+	    String local_scope;
+	
+	    if(lscope.size() > 0) 
+		local_scope =  join("::", lscope) + "::";
+	    else
+		local_scope = "";
+	    
+	    ret.add("  ::" + remote_scope + alias.getIdentifier() + "_var return_value = new ::" 
+		    + remote_scope + alias.getIdentifier() + ";"); 
 	    ret.add("  return_value->length(result.size());");
 	    ret.add("  for(unsigned long i=0; i< result.size(); i++) {");
-	    ret.add("  CCM_Local::" + getFullScopeIdentifier(idl_struct) + " " 
+	    ret.add("  CCM_Local::" + local_scope + idl_struct.getIdentifier() + " " 
 		    + CppPrefix + " = result[i];");
 	    ret.add(convertStructResultFromCppToCorba(idl_struct,CorbaPrefix, CppPrefix)); 
 	    ret.add("  (*return_value)[i] = " + CorbaPrefix + ";");

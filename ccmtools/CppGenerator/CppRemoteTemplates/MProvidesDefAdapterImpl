@@ -16,6 +16,7 @@
   delete local_adapter;
 }
 
+%(MAttributeDefFacetAdapterImpl)s
 %(MOperationFacetAdapterImpl)s
 
 

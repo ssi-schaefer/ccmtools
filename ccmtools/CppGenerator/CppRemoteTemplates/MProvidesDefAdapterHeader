@@ -13,5 +13,8 @@
       %(Identifier)sFacetAdapter(CCM_Local%(Namespace)s::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s*);
       virtual ~%(Identifier)sFacetAdapter();
 
+%(MAttributeDefAdapterHeader)s
 %(MOperationProvidesPrototype)s
   };
+
+

@@ -44,16 +44,17 @@ dist_template_DATA = \
     MProvidesDefEqInterfaceImpl \
     MUsesDefEqInterfaceImpl \
     MProvidesDefAdapterVariableInit \
-    MProvidesDefNavigationFacet \
-    MUsesDefReceptacleConnect \
-    MUsesDefReceptacleDisconnect \
-    MUsesDefContextInit \
-    MUsesDefContextGetConnection \
-    MProvidesDefAdapterImpl \
-    MOperationFacetAdapterImpl \
-    MUsesDefAdapterImpl \
-    MOperationReceptacleAdapterImpl 
-
+    MProvidesDefNavigationFacet     \
+    MUsesDefReceptacleConnect       \
+    MUsesDefReceptacleDisconnect    \
+    MUsesDefContextInit             \
+    MUsesDefContextGetConnection    \
+    MProvidesDefAdapterImpl         \
+    MOperationFacetAdapterImpl      \
+    MUsesDefAdapterImpl             \
+    MOperationReceptacleAdapterImpl \
+    MAttributeDefAdapterHeader      \
+    MAttributeDefFacetAdapterImpl
 
 
 
