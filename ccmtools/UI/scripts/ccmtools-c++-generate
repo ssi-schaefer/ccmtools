@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-#
+
 ## ccmtools-c++-generate : C++ component generator wrapper
 ## Leif Johnson <leif@ambient.2y.net>
 ## copyright (c) 2003 Salomon Automation
@@ -23,15 +23,13 @@
 import os, sys, time
 
 FORCE_COPY = 0
-USE_LIBTOOL = 0
 ENABLE_DEBUG = 0
 ENABLE_PYTHON_TEST = 0
 
 IDL_FILES = ''
 CODE_DEFINES = ''
-CODE_VERSION = '0.1'
+CODE_VERSION = '0.1.0'
 
-BUILD_DIR = ''
 INSTALL_DIR = ''
 SOURCE_DIR = ''
 CCMTOOLS_PACKAGE = 'ccmtools-package'
@@ -43,8 +41,6 @@ USAGE = '''Usage: ccmtools-c++-generate [OPTION]... IDL-FILE...
 Generate C++ components and test components based on the given IDL files.
 
 Options:
-    -b DIR, --build=DIR         Use DIR as the location for built components
-                                [Confix default]
     -c VERSION,
       --code-version=VERSION    Set VERSION of generated package [%s]
     -d, --debug                 Enable debugging in generated source code
@@ -52,7 +48,6 @@ Options:
     -f, --force-copy            Force copying generated application files
     -h, --help                  Print out this help
     -i DIR, --install=DIR       Use DIR as the install prefix [Confix default]
-    -l, --libtool               Enable libtool for building components
     -p NAME, --package=NAME     Set package name to NAME [%s]
     -s DIR, --source=DIR        Store generated source code in DIR
                                 [./<PACKAGE-NAME>]
@@ -99,27 +94,12 @@ def copyhere(file):
         return 1
     return 0
 
-def call_confix(package, source_dir, dest_dir = '', targets = [], args = []):
-    confix_flags  = ' --packagename="%s"' % package
-    confix_flags += ' --configfile="confix.conf"'
-    confix_flags += ' --packageroot="%s"' % source_dir
-    confix_flags += ' --profile="ccmtools"'
-    confix_flags += ' ' + ' '.join(args)
-    if dest_dir: confix_flags += ' --prefix="%s"' % dest_dir
-    if targets:  confix_flags += ' --targets="%s"' % ' '.join(targets)
-
-    return os.system('confix.py ' + confix_flags)
-
 ## handle arguments.
 
 index = 1
 while index < len(sys.argv):
     arg = sys.argv[index]
     index += 1
-
-    if arg == '-b': BUILD_DIR = sys.argv[index]; index += 1
-    elif arg.startswith('--b') and arg.find('=') > 0:
-        BUILD_DIR = arg.split('=')[1]
 
     if arg == '-c': CODE_VERSION = sys.argv[index]; index += 1
     elif arg.startswith('--c') and arg.find('=') > 0:
@@ -133,7 +113,6 @@ while index < len(sys.argv):
     elif arg.startswith('--i') and arg.find('=') > 0:
         INSTALL_DIR = arg.split('=')[1]
 
-    elif arg == '-l' or arg.startswith('--l'): USE_LIBTOOL = 1
     elif arg == '-p': CCMTOOLS_PACKAGE = sys.argv[index]; index += 1
     elif arg.startswith('--pa') and arg.find('=') > 0:
         CCMTOOLS_PACKAGE = arg.split('=')[1]
@@ -220,22 +199,19 @@ if os.system('%s c++local -a %s %s' % (cmd, CODE_DEFINES, IDL_FILES)):
 ## force command line option was given.
 
 for f in findtail(SOURCE_DIR, '_app.cc') + \
+         findtail(SOURCE_DIR, '_app.h') + \
          findtail(SOURCE_DIR, '_user_types.h'):
     if FORCE_COPY or not os.path.isfile(os.path.basename(f)):
         if copyhere(f):
             print 'Error copying %s to current directory.'
             sys.exit(1)
 
-a = ['--bootstrap', '--configure']
-if USE_LIBTOOL: a.append('--use-libtool')
-if BUILD_DIR:
-    a.append('--buildroot="%s"' % BUILD_DIR)
-    pkg_build = os.path.join(BUILD_DIR, CCMTOOLS_PACKAGE)
-    if not os.path.isdir(pkg_build):
-        if os.path.exists(pkg_build):
-            print 'Build directory "%s" already exists as a file.' % pkg_build
-            sys.exit(1)
-        os.makedirs(pkg_build)
+confix_flags  = ' --packagename="%s"' % CCMTOOLS_PACKAGE
+confix_flags += ' --packageroot="%s"' % SOURCE_DIR
+confix_flags += ' --packageversion="%s" --profile="ccmtools"' % CODE_VERSION
+confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
+confix_flags += ' --bootstrap --configure'
+if INSTALL_DIR: confix_flags += ' --prefix="%s"' % INSTALL_DIR
 
-sys.exit(call_confix(CCMTOOLS_PACKAGE, SOURCE_DIR, INSTALL_DIR, args = a))
+sys.exit(os.system('confix.py' + confix_flags) != 0)
 

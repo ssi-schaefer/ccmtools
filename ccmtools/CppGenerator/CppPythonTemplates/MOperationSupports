@@ -2,10 +2,10 @@
 %(Object)s%(SupportsType)s::call_python_%(Identifier)s ( %(MParameterDefAll)s )
   %(MExceptionDef)s
 {
-  DEBUGNL(" %(Object)s%(SupportsType)s->call_python_%(Identifier)s ( %(MParameterDefName)s )");
+  DEBUGNL ( " %(Object)s%(SupportsType)s->call_python_%(Identifier)s ( %(MParameterDefName)s )" );
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
 
-  %(LanguageType)s result;
+%(ReturnVar)s
 
   PyObject *python_result = NULL;
   PyObject *args = PyTuple_New ( %(NumParams)s );
@@ -13,6 +13,7 @@
 %(MParameterDefConvertTo)s
   python_result = call_python ( "%(Object)s%(SupportsType)s", "%(Identifier)s", args );
 
+  Py_DECREF ( args );
 %(MParameterDefConvertFrom)s
 %(Return)s
 }

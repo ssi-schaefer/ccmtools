@@ -5,10 +5,12 @@
 #include <Python.h>
 #include <string>
 
+using namespace std;
+
 namespace CCM_Test {
 namespace Python {
 
-PyObject *call_python ( std::string module, std::string function, PyObject *pyArgs );
+PyObject *call_python ( string module, string function, PyObject *pyArgs );
 
 } // /namespace Python
 } // /namespace CCM_Test

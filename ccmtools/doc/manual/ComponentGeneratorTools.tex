@@ -7,10 +7,12 @@
 %==============================================================================
 
 This chapter describes the code generators in the CCM MOF Library. A library
-like the CCM MOF Library greatly facilitates tasks like code generation, but is
-generally too low--level to be of concern for users. Hence this chapter focuses
-on development topics. If you are interested only in using the component
-generator tools, see the user manual.
+like the CCM MOF greatly facilitates tasks like code generation. However, such
+libraries usually provide an API that is too low--level to be of concern for
+direct users. Hence this chapter focuses on development topics related to
+expanding the component generator tools. If you are interested in {\it using\/}
+the component generator tools (as opposed to {\it programming\/} the tools to
+add new code generator functionality), see the user manual.
 
 \begin{figure}
 \centering
@@ -19,18 +21,19 @@ generator tools, see the user manual.
 \label{fig:component-generator-tools}
 \end{figure}
 
-The chapter is laid out in three major parts. First comes a design overview. The
-design overview describes the class and interface design, and outlines template
-interactions. The second two major parts are both tutorials. The first tutorial
-describes how to create a new code generator; this is accomplished by deriving a
-Java class from the code generator base class, and then by creating a set of
-code templates. The second tutorial presents an example of how to maintain an
-existing set of templates, while also maintaining an existing code generator.
+The chapter is laid out in three major parts. First comes a design overview,
+which describes the class and interface design, and outlines template
+interactions in the component generator tools. The second part is a tutorial
+that describes how to create a new code generator, and the third part is a
+tutorial that presents an example of how to maintain an existing set of
+templates along with a corresponding code generator. Generally, the three parts
+in this chapter proceed from a more theoretical, developer--oriented point of
+view to a more practical, maintainer--oriented point of view.
 
 Before you begin, note that the rest of this chapter uses the term ``graph'' to
 refer to a CCM MOF metamodel graph instance in memory. Usually such graphs are
-created by the IDL3 Parser by parsing an input IDL3 file. See the chapter on the
-IDL3 parser for more details on that process.
+created by the IDL3 Parser by parsing an input IDL3 file---see the chapter on
+the IDL3 parser for more details on that process.
 
 %==============================================================================
 \section{Design overview}
@@ -47,9 +50,9 @@ These objects' functions are as follows:
       nodes in a depth-first manner; that is, all child nodes of a given graph
       node are visited before proceeding to a sibling node. While visiting the
       graph, the traverser sends out events about the objects it sees.
-\item [Node handler] The node handler interface receives events from the
-      traverser object and performs some useful action with them. The node
-      handler also sends user interface events to the driver as needed.
+\item [Node handler] The node handler interface receives graph traversal events
+      from the traverser object and performs some useful action with them. The
+      node handler also sends user interface events to the driver as needed.
 \item [Driver] The driver interface receives events from a node handler
       implementation and translates these events to some sort of user interface
       information.
@@ -63,43 +66,47 @@ These objects' functions are as follows:
 \end{figure}
 
 A fourth very important object is an abstract implementation of the node handler
-interface: the code generator base class. The code generator base class performs
-most bookkeeping tasks involved in code generation, such as maintaining a record
-of visited nodes, and interfacing with a template set.
+interface: the code generator base class. This abstract base class performs most
+bookkeeping tasks involved in code generation, such as maintaining a record of
+visited nodes, providing some standard information about the current node in the
+graph, interfacing with a template set, and determining when to write generated
+code to disk.
 
-In addition, the entire code generator class hierarchy uses a system of
-templates for generating code from a given CCM MOF graph. By deriving code
-generators from this code generator base class, and by creating or modifying
-template sets, it is relatively easy to create or modify a code generator.
+Finally, the entire code generator class family uses a system of templates for
+generating code from a given CCM MOF graph. By deriving code generators from the
+abstract code generator base class, and by creating or modifying a set of
+templates, it is relatively easy to create or modify a code generator.
 
 %------------------------------------------------------------------------------
 \subsection{Two--layer visitor design pattern}
 %------------------------------------------------------------------------------
 
 The code generator library follows a general design pattern known as the {\em
-visitor pattern\/}. In this pattern, a ``visitor'' object visits or travels
-through an abstract space and communicates its observations to some other
-object. The other object then does something useful with the received
-observations.
+visitor pattern\/}. In this pattern, a ``visitor'' object visits (or ``travels
+through'') an abstract space. As the visitor object travels, it communicates its
+observations to some other object. The other object then does something useful
+with the received observations.
 
-For the code generation task, the ``space'' is a CCM MOF graph, normally the
-result of parsing an input IDL3 source file. The traverser object visits each
-node in the graph and sends events to a node handler object. In turn, the node
-handler object transforms these events into some sort of generated code.
+For the code generation task, the ``space'' is a CCM MOF graph, which is
+normally the result of parsing an input IDL3 source file. The visitor object
+travels to each node in the graph and sends events about these nodes to a node
+handler object. In turn, the node handler object transforms these events into
+some sort of generated code.
 
-Just for comparison, it might be useful to note that the visitor pattern shows
-up in other software packages. For example, this visitor pattern is also used in
-Python's SAX XML parser classes: An XML tree traverser object crawls through the
-XML elements in an input file, sending traversal events to a node handler for
-useful output. In fact, the similarity between the two tasks is what inspired
-the current code generator design.
+Just for comparison, note that the visitor pattern shows up in other software
+packages. For example, this visitor pattern is also used in Python's SAX XML
+parser classes: An XML tree traverser object crawls through the XML elements in
+an input file, sending traversal events to a node handler for useful output. In
+fact, the similarity between the two tasks is what inspired the current code
+generator design.
 
 The code generator extends the visitor pattern by adding a second visitor layer.
 This second layer comes from the interaction between the node handler and driver
 objects. The node handler acts as a visitor in code generation space and sends
-visitation events to the driver object. The driver object should, in turn,
-handle these events by translating them into some sort of user interface
-activity.
+events to the driver object. The driver object, in turn, handles these events by
+translating them into some sort of user interface activity. This permits the
+node handler objects to be agnostic about displaying status information to the
+user.
 
 This separation of traversal, node handling, and user interface information
 allows for a smaller code base and more abstract graph handling. In addition,
@@ -107,102 +114,50 @@ separating graph traversal from node handling allows for reuse of the traverser
 object. For example, to generate code for different component types with a given
 input file, a driver program needs only to instantiate multiple node handler
 objects. Each node handler object can independently receive and interpret the
-traversal events from the graph traverser (although the current implementation
-does not allow for multiple, simultaneous node handlers).
+traversal events from the graph traverser. However, the current traverser
+implementation does not allow for multiple, simultaneous node handlers.
 
 Similarly, separating the user interface from the node handling allows for reuse
-of the node handler object: Any node handler object can use any front end, and
-which results in easier adaptation to different user interface environments.
+of the node handler object: Any node handler object can use any front end, which
+results in easier adaptation to different user interface environments.
 
 %------------------------------------------------------------------------------
 \subsection{Code generator templates}
 %------------------------------------------------------------------------------
 
-None of the objects involved could generate any code without code templates.
-Without a template set, the graph traverser would send graph traversal
-information to a code generator object, but the code generator would not have
-any way of converting that information into output code.\footnote{Well, that is
-not entirely correct. The code generators could indeed generate code, but the
-generated code would have to be hard-coded in the generator, and that's just
-bad, especially for maintenance.} To allow for more flexible template
-maintenance and increased code reuse, the code generators in the CCM Tools
-package use template sets.
+None of the code generator objects could generate any code without templates. In
+the absence of a template set, the graph traverser would send graph traversal
+information to a code generator, but the generator would not have any way of
+converting that information into output code.\footnote{Well, that is not
+entirely correct; the code generators could indeed function, but the generated
+code would have to be hard-coded in the generator's Java class. That's Just Bad,
+especially for maintenance.} So to allow for more flexible template maintenance
+and increased code reuse, the code generators in the CCM Tools package use
+template sets.
 
 A template set is essentially a collection of plain text files. These files are
-written in the target code generation language, with one subtle alteration: if a
-template needs information from the graph traversal process, a template will,
-instead of a target language string, have a {\em key\/} as a placeholder for the
-dynamically--generated information.
+mostly written in the target language, for example, in C++, Java, or Python. If
+a template needs information from the graph traversal process, it will contain a
+{\em key\/} as a placeholder for the dynamically--generated information.
+Template keys form a large part of the template system's functionality, so a
+large part of the following tutorials are devoted to explaining how they work.
 
-For example, the local C++ component generator uses a template set that is
-written in C++, but the templates have keys as placeholders for things like
-component and operation identifiers, operation parameter information, exception
-names, C++ data types for parameters and operations, and so forth. To customize
-the templates with the specific component information from the graph traverser,
-a code generator performs a series of text substitutions, replacing each key in
-a template with information from the graph traversal.
+For now, consider a short example. The local C++ component generator uses a
+template set that is written in C++. The templates can have keys as placeholders
+for things like component and operation identifiers (\verb+%(Identifier)s+);
+operation parameter information (\verb+%(MParameterDef)s+); exception names
+(\verb+%(MExceptionDefName)s+); C++ data types for parameters, operations, and
+{\tt struct}s (\verb+%(LanguageType)s+); and so forth. In fact, these four types
+of keys each have different meanings to the code generator. To convert the
+templates into generated code, a code generator performs a series of text
+substitutions, replacing each key in a template with information from the graph
+traversal.
 
-%---------------------------------------
-\subsubsection{Recursive template loading and substitution}
-%---------------------------------------
-
-The template substitution process goes even further than basic translation
-directly from graph nodes. Consider, for example, a code template for an IDL3
-operation. This template will need keys for things like the operation's
-identifier and the data type that the operation returns. The values for these
-keys come directly from each operation node in a given graph traversal.
-
-But an operation also has parameters and can throw exceptions. The number of
-parameters and exceptions is not fixed for all operations. That is, a given
-operation might take three parameters and throw four types of exceptions, while
-another operation might only take one parameter and throw no exceptions. The
-template for an operation cannot hold the code for all possibilities in this
-respect.
-
-In fact, the specific code to implement these types of variables needs to be
-created after all appropriate nodes in the graph are visited. More specifically,
-for an operation, the operation template needs to know information contained in
-the child parameter and exception nodes in the graph. Luckily, though, all the
-the relevant nodes (parameters and exceptions) are all immediate children of the
-operation node, so the operation needs just the information from its child
-nodes.
-
-To support this type of template interaction, the code generator implementation
-supports recursive template substitution. Keys in a template just need to follow
-a specific naming convention, and the code generator will automatically
-substitute template information from other nodes in the graph. The specifics of
-this substitution process are described below during the tutorial on template
-creation.
-
-%---------------------------------------
-\subsubsection{Code generator classes}
-%---------------------------------------
-
-This recursive substitution process is generally robust enough to handle most
-code generation tasks. But if all code generation information goes in a template
-set, what code is needed for the generator class itself? Indeed, sometimes a
-code generator (in particular the IDL generators) might need very minimal code
-when combined with a good template set.
-
-Each code generator must understand how to physically write its generated code
-to an output source tree. This output processing must be custom written for each
-code generator, since each component generation task is unique to a given
-language and component type. So at a minimum, a code generator will require some
-sort of specific output functionality.
-
-In addition, there are times when the filled--in templates need some additional
-processing before they are fully correct. Quite often, these times are matters
-of syntax correction. For example, in many programming languages, an operation's
-parameters are separated by commas, but the last parameter in the list must not
-be followed by a comma. It is impossible for a template set alone to know which
-parameter is the last in a list; only the code generator can calculate this,
-because the code generator receives graph information from the graph traverser.
-
-To fix this problem of too many commas, the code generator class itself must
-supervise the template substitution process, removing the last comma from a
-paremeter list before it gets passed to an operation's template. Such template
-supervision makes up a large part of the code that goes in a code generator
-implementation.
+The different meanings of the four key types, and the template substitution
+processes, are all explained in greater detail in the next two tutorials. The
+first tutorial concentrates on writing a new code generator and associated
+template set. The second tutorial gives some guidelines for maintaining an
+existing generator and template set.
 
 %==============================================================================
 \section{Writing a new code generator}
@@ -215,17 +170,34 @@ implementation.
 \label{fig:component-generator-parts}
 \end{figure}
 
-Creating a set of language templates generally proceeds from the top down,
+Creating a new code generator tool necessarily depends on the specific nature of
+the code generation task you want to accomplish. Nevertheless, the creation
+process should generally include several tasks. In general, the tasks involved
+are as follows:
+
+\begin{enumerate}
+\item Create the basic skeleton Java needed for a new code generator class. This
+      is usually done by just copying an existing generator class and stripping
+      out language-specific functionality.
+\item Determine the nodes for which generated code should be written to disk.
+      These will be referred to as ``top level node types''. Several tasks can
+      be accomplished once these types are identified.
+      and write an appropriate {\tt writeOutput} function.
+\item Create a
+\end{enumerate}
+set of language templates generally proceeds from the top down,
 starting with a template for top level elements such as MContainer or
 MModuleDef, and proceeding through the CCM MOF Library in order of node
 specificity.
 
-Using specific code examples can help with syntax when writing templates, so
-generally template writing and maintenance involves a combination of thinking
-about what types of objects may be contained in a given object, and looking at
-code examples to see how these contained objects are expressed in the target
-language. Usually, to complete a template set, you must write some custom code
-in the code generator class for the target language.
+Using specific code examples can help with syntax when writing templates. Try to
+find some example code go help guide the writing process.
+
+Generally, template writing involves a combination of thinking about what types
+of objects may be contained in a given object, and looking at code examples to
+see how these contained objects are expressed in the target language. Usually,
+to complete a template set, you must write some custom code in the code
+generator class for the target language.
 
 This section presents three types of information. First, it presents a
 description of the process for writing a new template set, using a small IDL3
@@ -233,7 +205,7 @@ file as a guiding example. Next, it shows how to use the new example template
 set to guide development of an example code generator class. This code generator
 class generally includes custom code needed for the target language. Finally,
 this section presents a small reference for template writers, including a
-reference of common tags available for use in templates.
+reference of common keys available for use in templates.
 
 %------------------------------------------------------------------------------
 \subsection{Process overview}
@@ -339,12 +311,12 @@ java-templates/MInterfaceDef}.
 
 A code generator template is basically a piece of code written in the target
 language (for this example, Java). Instead of specific identifiers and
-constants, however, the template contains tags that the code generator will fill
+constants, however, the template contains keys that the code generator will fill
 in when the code is generated.
 
 A tag is just a text string of the form {\tt \%(name)s}, because this is the
 form that Python uses to retrieve values from a hash table when printing a
-string. The \ref{subsection-template-tags} section below lists some common tags
+string. The \ref{subsection-template-keys} section below lists some common keys
 available for templates. At the moment, it is only important to know that, in
 general, a {\sf Name} tag is available for any CCM MOF Library element that has
 a {\it getName\/} or {\it isName\/} function (note that capitalization is
@@ -368,6 +340,81 @@ current node before replacing the appropriate tag in the template. This process
 is explained in greater detail in the next section.
 
 
+%---------------------------------------
+\subsubsection{Recursive template loading and substitution}
+%---------------------------------------
+
+The template substitution process goes even further than basic translation
+directly from graph nodes. Consider, for example, a code template for an IDL3
+operation. This template will need keys for things like the operation's
+identifier and the data type that the operation returns. The values for these
+keys come directly from each operation node in a given graph traversal.
+
+But an operation also has parameters and can throw exceptions. The number of
+parameters and exceptions is not fixed for all operations. That is, a given
+operation might take three parameters and throw four types of exceptions, while
+another operation might only take one parameter and throw no exceptions. The
+template for an operation cannot hold the code for all possibilities in this
+respect.
+
+In fact, the specific code to implement these types of variables needs to be
+created after all appropriate nodes in the graph are visited. More specifically,
+for an operation, the operation template needs to know information contained in
+the child parameter and exception nodes in the graph. Luckily, though, all the
+the relevant nodes (parameters and exceptions) are all immediate children of the
+operation node, so the operation needs just the information from its child
+nodes.
+
+To support this type of template interaction, the code generator implementation
+supports recursive template substitution. Keys in a template just need to follow
+a specific naming convention, and the code generator will automatically
+substitute template information from other nodes in the graph. The specifics of
+this substitution process are described below during the tutorial on template
+creation.
+
+%---------------------------------------
+\subsubsection{Code generator classes}
+%---------------------------------------
+
+This recursive substitution process is generally robust enough to handle most
+code generation tasks. But if all code generation information goes in a template
+set, what code is needed for the generator class itself? Indeed, sometimes a
+code generator (in particular the IDL generators) might need very minimal code
+when combined with a good template set.
+
+Each code generator must understand how to physically write its generated code
+to an output source tree. This output processing must be custom written for each
+code generator, since each component generation task is unique to a given
+language and component type. So at a minimum, a code generator will require some
+sort of specific output functionality.
+
+In addition, there are times when the filled--in templates need some additional
+processing before they are fully correct. Quite often, these times are matters
+of syntax correction. For example, in many programming languages, an operation's
+parameters are separated by commas, but the last parameter in the list must not
+be followed by a comma. It is impossible for a template set alone to know which
+parameter is the last in a list; only the code generator can calculate this,
+because the code generator receives graph information from the graph traverser.
+
+To fix this problem of too many commas, the code generator class itself must
+supervise the template substitution process, removing the last comma from a
+paremeter list before it gets passed to an operation's template. Such template
+supervision makes up a large part of the code that goes in a code generator
+implementation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Because an {\bf MInterfaceDef} object has a variable called {\it identifier\/}
@@ -378,10 +425,10 @@ identifier for the {\sf Identifier} tag in a template.
 The difficulty with a top down template like the one shown in the previous
 section is that it is not clear how to generically generate code for a more
 complex tag like {\sf MOperationDef}: {\bf MInterfaceDef} class instances do not
-have variables and access functions for things like this. To support such tags,
+have variables and access functions for things like this. To support such keys,
 the code generator uses a recursive template loading and substitution process.
 This scheme simplifies template development in many cases and allows for more
-general template tags. However, it also requires some extra coding in some
+general template keys. However, it also requires some extra coding in some
 cases.
 
 Consider the parse tree for the example code generation task. When the graph
@@ -433,7 +480,7 @@ the {\bf MyOperation} node, at which point it will load the template from {\tt
 java-templates/MOperationDef} (because {\bf MyOperation} is an instance of {\bf
 MOperationDef}) and substitute the variables for this node. The template for
 {\bf MOperationDef} nodes should look like the target Java code, with specific
-identifiers replaced by tags:
+identifiers replaced by keys:
 \begin{verbatim}
   %(LanguageType)s
   %(Identifier)s
@@ -505,19 +552,16 @@ templates that can handle a variety of input trees.
 %------------------------------------------------------------------------------
 
 %------------------------------------------------------------------------------
-\subsection{Template tags}
-\label{subsection-template-tags}
+\subsection{Template keys}
+\label{subsection-template-keys}
 %------------------------------------------------------------------------------
 
 %---------------------------------------
-\subsubsection{Generic tags}
+\subsubsection{Generic keys}
 %---------------------------------------
 
-The code generator supports many generic tags for nodes. A hash containing all
-available variables for each node type is defined in {\tt constants.py}. The
-variables listed in the {\tt OBJECT\_ATTRIBUTES} hash can be used in templates
-unless their return type is a list type (as defined in the {\tt LIST\_TYPES}
-list). Some of the more important tags supported are as follows:
+The code generator library supports many generic keys for templates. The keys
+supported are as follows:
 
 \begin{description}
 
@@ -531,12 +575,12 @@ list). Some of the more important tags supported are as follows:
       with it. If, for example, the associated IdlType object is an
       MPrimitiveKind object of type {\tt PK\_LONG}, and the target language is
       Java, the resulting LanguageType will be `int'. Language mappings can be
-      found in the {\tt TYPE\_MAPPINGS} hash in the {\tt constants.py} file of
-      each generator.
+      found in the local language type list in each language's abstract base
+      class.
 
 \item [ComponentType] The identifier of the corresponding component. This is
-      generally valid for MUsesDef, MProvidesDef, MEmitsDef, MPublishesDef,
-      MConsumesDef, and MHomeDef objects.
+      generally valid for MFactoryDef, MFinderDef, MUsesDef, MProvidesDef,
+      MEmitsDef, MPublishesDef, MConsumesDef, and MHomeDef objects.
 
 \item [UsesType] For an MUsesDef object, gives the identifier of the interface
       used. In this sense, a uses definition in IDL3 is of the form:
@@ -553,8 +597,8 @@ uses [multiple] %(UsesType)s %(Identifier)s;
 provides %(ProvidesType)s %(Identifier)s;
 \end{verbatim}
 
-\item [HomeType] For a component, gives the identifier of the component's
-      home.
+\item [HomeType] For a component, gives the identifier of the component's home.
+      Generally valid for the same node types as the ComponentType template key.
 
 \item [BaseTypes] For a component, home, or interface, gives a comma separated
       list of identifiers of parent classes (other components or interfaces).

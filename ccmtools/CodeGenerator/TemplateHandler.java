@@ -25,6 +25,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Template handler objects are capable of handling graph traversal events and
+ * interfacing with a template set for providing code generation. They extend
+ * the more general node handler interface by providing a set of functions for
+ * dealing with a template set via a template manager.
+ */
 public interface TemplateHandler
     extends NodeHandler
 {

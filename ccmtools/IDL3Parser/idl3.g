@@ -2549,7 +2549,7 @@ identifier returns [String identifier = null]
 /* IDL LEXICAL RULES  */
 
 class IDL3Lexer extends Lexer;
-options { exportVocab = IDL3; k = 4; }
+options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377'; }
 {
     // debug levels for the lexer. i assume the lexer will have fewer semantic
     // issues (== those that require debugging) so the lexer only gets the top
@@ -2647,10 +2647,12 @@ RSHIFT   options { paraphrase = ">>"; } : ">>" ;
 SCOPEOP  options { paraphrase = "::"; } : "::" ;
 
 WS options { paraphrase = "white space"; }
-    :   ( ' ' | '\t' | '\n' { newline(); } | '\r' ) { $setType(Token.SKIP); } ;
+    :   ( ' ' | '\t' | '\f' | '\n' { newline(); } | '\r' )
+        { $setType(Token.SKIP); } ;
 
 protected
-INCLUDE_STRING_LITERAL options { paraphrase = "an include string in angle brackets"; }
+INCLUDE_STRING_LITERAL
+options { paraphrase = "an include string in angle brackets"; }
 	:   '<'! IDENT ( '/' IDENT )* '.' IDENT '>'! ;
 
 PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
@@ -2663,41 +2665,51 @@ PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
                     System.out.println(label + getText());
                 }
             }
-            (WS)*
-            (   s:STRING_LITERAL         { handleIncludedFile(s.getText()); }
-            |   i:INCLUDE_STRING_LITERAL { handleIncludedFile(i.getText()); }
+            ( WS )*
+            ( s:STRING_LITERAL         { handleIncludedFile(s.getText()); }
+            | i:INCLUDE_STRING_LITERAL { handleIncludedFile(i.getText()); }
             )
         )?
-        ( ' ' | '\t' | '\r' )* '\n' { newline(); } { $setType(Token.SKIP);} ;
+        ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
+        { $setType(Token.SKIP); newline(); } ;
+
+// this is cracked up, but for some reason antlr can't handle dollars at the end
+// of a single-line comment.
 
 SL_COMMENT options { paraphrase = "a comment"; }
-	:   "//" ( ~'\n' )* { $setType(Token.SKIP); newline(); } ;
+    :   "//" ( options { warnWhenFollowAmbig = false; } : '$' )?
+        ( ~ ( '\n' | '\r' ) )* ( '\n' | '\r' ( '\n' )? )
+        { $setType(Token.SKIP); newline(); } ;
 
 ML_COMMENT options { paraphrase = "a comment"; }
-	:	"/*"
-        ( STRING_LITERAL | CHAR_LITERAL | '\n' { newline(); } | '*' ~'/' | ~'*' )*
+    :   "/*"
+        ( options { generateAmbigWarnings = false; }
+        :   { LA(2) != '/' }? '*'
+        |   '\r' '\n' { newline(); }
+        |   '\r'      { newline(); }
+        |   '\n'      { newline(); }
+        |   ~ ( '*' | '\n' | '\r' )
+        )*
         "*/" { $setType(Token.SKIP); } ;
 
 protected
 ESC options { paraphrase = "an escape sequence"; }
-	:	'\\'
-		(   'n' | 't' | 'v' | 'b' | 'r' | 'f' | 'a' | '\\' | '?' | '\'' | '"'
-		|	( '0' | '1' | '2' | '3' )
-                /* Since a digit can occur in a string literal, which can follow
-				 * an ESC reference, ANTLR does not know if you want to match
-				 * the digit here (greedy) or in string literal. */
-			(   options { warnWhenFollowAmbig = false; }
-			:	OCTDIGIT ( options { warnWhenFollowAmbig = false; } : OCTDIGIT )?
-			)?
-		|   'x' HEXDIGIT ( options { warnWhenFollowAmbig = false; } : HEXDIGIT )?
-		) ;
+    :   '\\'
+        (   'n' | 't' | 'v' | 'b' | 'r' | 'f' | 'a' | '\\' | '?' | '\'' | '"'
+        |	( '0'..'3' )
+            ( options { warnWhenFollowAmbig = false; }
+            : OCTDIGIT ( options { warnWhenFollowAmbig = false; } : OCTDIGIT )?
+            )?
+        |   'x' HEXDIGIT
+            ( options { warnWhenFollowAmbig = false; } : HEXDIGIT )?
+        ) ;
 
 CHAR_LITERAL        options { paraphrase = "a character literal"; }
     :   '\'' ( ESC | ~ '\'' ) '\'' ;
 WIDE_CHAR_LITERAL   options { paraphrase = "a character literal"; }
     :   'L' '\'' ( ESC | ~ '\'' ) '\'' ;
 STRING_LITERAL      options { paraphrase = "a string literal"; }
-    :   '"'! ( ESC | ~ '"' )* '"'! ;
+    :   '"'! ( ESC | ~ ( '"' | '\\' ) )* '"'! ;
 WIDE_STRING_LITERAL options { paraphrase = "a string literal"; }
     :   'L'! '"'! ( ESC | ~ '"' )* '"'! ;
 
@@ -2725,5 +2737,6 @@ FLOAT options { paraphrase = "a floating point value"; }
     :   '.' ( DIGIT )+ ( EXPONENT )? ;
 
 IDENT options { testLiterals = true; paraphrase = "an identifer"; }
-    :   ( 'a'..'z' | 'A'..'Z' | '_' ) ( 'a'..'z' | 'A'..'Z' | '_' | '0'..'9' )* ;
+    :   ( 'a'..'z' | 'A'..'Z' | '_' )
+        ( 'a'..'z' | 'A'..'Z' | '_' | '0'..'9' )* ;
 

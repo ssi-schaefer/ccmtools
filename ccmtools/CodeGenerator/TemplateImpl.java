@@ -37,19 +37,21 @@ import java.util.regex.Pattern;
 /**
  * A template implementation based strongly on Python's printing operators.
  *
- * This class is used by CodeGeneratorImpl classes (and derived classes) as an
- * abstraction layer so the generators don't have to worry about exactly how to
- * read template files from disk, locate variables in templates, or substitute
- * values for template variables.
+ * This class is used by code generator class family as an abstraction layer so
+ * the template manager for each code generator does not have to worry about
+ * exactly how to read template files from disk, locate variables in templates,
+ * or substitute values for template variables.
  *
  * When templates are used (either written to disk or added to parent node
- * variables), a variation of Python's "%(key)s" % {'key' : value} printing
- * operator is used to substitute the variable hash values into the template
- * variable spots.
+ * variables), a variation of Python's "%(key)s" % { 'key' : value } map-based
+ * printing operator is used to substitute variable values from a map into the
+ * template variable spots.
  *
- * Because all template variables are replaced with full scope identifiers, and
- * because all values in the provided variable hash are indexed by the full
- * scope identifier, we are guaranteed to get unique matches for each template.
+ * Usually all template variables are replaced with full scope identifiers (but
+ * see the two step functions in the CppGenerator family for a counterexample).
+ * When these fully scoped template variables are combined with the full scope
+ * identifier system of keys in the variable map, we are guaranteed to get
+ * unique matches for each template.
  */
 public class TemplateImpl
     implements Template

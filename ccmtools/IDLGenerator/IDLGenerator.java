@@ -32,8 +32,6 @@ import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
-import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
-import ccmtools.Metamodel.ComponentIDL.MFinderDef;
 
 import java.io.File;
 import java.io.IOException;
@@ -159,11 +157,6 @@ abstract public class IDLGenerator
 
         if (current_node instanceof MComponentDef) {
             return data_MComponentDef(variable, value);
-        } else if (current_node instanceof MFactoryDef) {
-            return data_MFactoryDef(variable, value);
-        } else if (current_node instanceof MFinderDef) {
-            return data_MFinderDef(variable, value);
-
         } else if (current_node instanceof MInterfaceDef) {
             return data_MInterfaceDef(variable, value);
         } else if (current_node instanceof MOperationDef) {
@@ -212,10 +205,10 @@ abstract public class IDLGenerator
             String base = joinBases(", ");
             if (base.length() > 0)
                 return ": " + base;
-        } else if (data_type.startsWith("MSupportsDef")) {
-            if (data_value.endsWith(", "))
-                return "supports " +
-                    data_value.substring(0, data_value.length() - 2);
+        } else if (data_type.startsWith("MSupportsDef") &&
+                   data_value.endsWith(", ")) {
+            return "supports " +
+                data_value.substring(0, data_value.length() - 2);
         }
         return data_value;
     }
@@ -232,20 +225,6 @@ abstract public class IDLGenerator
         return data_value;
     }
 
-    protected String data_MFactoryDef(String data_type, String data_value)
-    {
-        return data_MOperationDef(data_type, data_value);
-    }
-
-    protected String data_MFinderDef(String data_type, String data_value)
-    {
-        if (data_type.equals("ComponentIdentifier")) {
-            MFinderDef finder = (MFinderDef) current_node;
-            return finder.getHome().getComponent().getIdentifier();
-        }
-        return data_MFactoryDef(data_type, data_value);
-    }
-
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
         if (data_type.equals("BaseTypes")) {
@@ -258,14 +237,13 @@ abstract public class IDLGenerator
 
     protected String data_MOperationDef(String data_type, String data_value)
     {
-        if (data_type.equals("MExceptionDefName")) {
-            if (data_value.endsWith(", "))
-                return "raises ( " +
-                    data_value.substring(0, data_value.length() - 2) + " )";
-        } else if (data_type.startsWith("MParameterDef")) {
-            if (data_value.endsWith(", "))
-                return data_value.substring(0, data_value.length() - 2);
-        }
+        if (data_type.equals("MExceptionDefName") &&
+            data_value.endsWith(", "))
+            return "raises ( " +
+                data_value.substring(0, data_value.length() - 2) + " )";
+        else if (data_type.startsWith("MParameterDef") &&
+                 data_value.endsWith(", "))
+            return data_value.substring(0, data_value.length() - 2);
         return data_value;
     }
 }

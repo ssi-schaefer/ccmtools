@@ -3,7 +3,7 @@
 
 SUBDIRS = manual tutorial
 
-dist_noinst_DATA = MOF.xml.zip
+dist_noinst_DATA = MOF.xml.zip CodeGenerator.xml.zip roadmap.fig
 
 noinst_DATA = apidocs
 

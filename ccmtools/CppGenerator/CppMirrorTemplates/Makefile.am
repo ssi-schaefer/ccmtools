@@ -1,8 +1,7 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-templatedir = $(TEMPLATE_ROOT)/CppMirrorGenerator
-
+templatedir = $(TEMPLATE_ROOT)/CppMirrorTemplates
 dist_template_DATA = \
     MAttributeDef                    \
     MComponentDef                    \

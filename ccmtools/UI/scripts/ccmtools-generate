@@ -3,4 +3,9 @@
 import os, sys
 
 java = 'JAVA' in os.environ.keys() and os.environ['JAVA'] or 'java'
-os.execvp(java, [java, 'ccmtools.UI.ConsoleCodeGenerator'] + sys.argv[1:])
+src = 'ccmtools.UI.ConsoleCodeGenerator'
+home = ''
+if 'CCMTOOLS_HOME' in os.environ.keys():
+    home = '-DCCMTOOLS_HOME="%s"' % os.environ['CCMTOOLS_HOME']
+
+os.execvp(java, [java, src, home] + sys.argv[1:])

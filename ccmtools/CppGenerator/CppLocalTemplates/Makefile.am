@@ -1,7 +1,7 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-templatedir = $(TEMPLATE_ROOT)/CppLocalGenerator
+templatedir = $(TEMPLATE_ROOT)/CppLocalTemplates
 dist_template_DATA = \
     Blank                                          \
     CerrDebugWriterHeader                          \
@@ -97,7 +97,6 @@ dist_template_DATA = \
     MUsesDefGetConnectionPrototypeVVMultiple       \
     MUsesDefInclude                                \
     MUsesDefIncludeMultiple                        \
-    PackageMakefile                                \
     SmartPointerHeader                             \
     SmartPointerImpl
 

@@ -1,7 +1,7 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-templatedir = $(TEMPLATE_ROOT)/CppPythonGenerator
+templatedir = $(TEMPLATE_ROOT)/CppPythonTemplates
 dist_template_DATA = \
     Blank                 \
     BoostPythonMakefile   \

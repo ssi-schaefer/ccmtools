@@ -1,7 +1,7 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-templatedir = $(TEMPLATE_ROOT)/IDL2Generator
+templatedir = $(TEMPLATE_ROOT)/IDL2Templates
 dist_template_DATA = \
     MAliasDef                                \
     MArrayDef                                \

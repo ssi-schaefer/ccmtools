@@ -346,14 +346,17 @@ public class CppPythonGeneratorImpl
 
         vars.put("NumParams", new Integer(operation.getParameters().size()));
 
-        if (! lang_type.equals("void"))
+        if (! lang_type.equals("void")) {
             vars.put("Return",
                      "  result = convert_" + getLanguageType(operation) +
                      "_from_python ( python_result );\n" +
                      "  Py_DECREF ( python_result );\n" +
                      "  return result;\n");
-        else
+            vars.put("ReturnVar", "  " + lang_type + " result;");
+        } else {
             vars.put("Return", "  Py_DECREF ( python_result );\n");
+            vars.put("ReturnVar", "");
+        }
 
         return vars;
     }

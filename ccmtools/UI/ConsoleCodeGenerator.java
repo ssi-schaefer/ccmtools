@@ -46,6 +46,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 public class ConsoleCodeGenerator
@@ -380,7 +381,8 @@ public class ConsoleCodeGenerator
 
         for (Iterator a = argv.iterator(); a.hasNext(); ) {
             String arg = (String) a.next();
-            if (arg.startsWith("--generator-mask="))
+            if (arg.equals("")) continue;
+            else if (arg.startsWith("--generator-mask="))
                 setGeneratorMask(arg.split("=")[1]);
             else if (arg.startsWith("--parser-mask="))
                 setParserMask(arg.split("=")[1]);
@@ -475,7 +477,15 @@ public class ConsoleCodeGenerator
             value = parts[1];
         }
 
-        defines.put(key, value);
+        // trap the CCMTOOLS_HOME environment variable here.
+
+        if (key.equals("CCMTOOLS_HOME")) {
+            Properties props = System.getProperties();
+            props.setProperty(key, value.substring(1, value.length() - 1));
+            System.setProperties(props);
+        } else {
+            defines.put(key, value);
+        }
     }
 }
 

@@ -27,10 +27,8 @@ import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
-import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
-import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,10 +115,9 @@ public class CppLocalGeneratorImpl
      */
     public void finalize(Map defines, List files)
     {
-        // output a confix config file, and a package makefile.
+        // output a confix config file.
 
-        String[][] global_files = { { "confix.conf", "Confix" },
-                                    { "Makefile.py", "PackageMakefile" } };
+        String[][] global_files = { { "confix.conf", "Confix" } };
 
         for (int g = 0; g < global_files.length; g++) {
             Template tmpl = template_manager.getRawTemplate(global_files[g][1]);
