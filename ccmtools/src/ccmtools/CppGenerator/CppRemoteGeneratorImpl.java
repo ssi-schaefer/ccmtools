@@ -304,11 +304,11 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         MTyped object = (MTyped) attr;
         String base_type = getBaseIdlType(object);
 
-        vars.put("CORBAType", getCORBALanguageType((MTyped) attr));
-        vars.put("CORBAAttributeParameter", getCorbaAttributeParameter((MTyped) attr));
-        vars.put("CORBAAttributeResult", getCorbaAttributeResult((MTyped) attr));        
-        vars.put("ConvertAttributeFromCorba", convertAttributeFromCorba(attr)); 
-        vars.put("ConvertAttributeToCorba", convertAttributeToCorba(attr));
+//        vars.put("CORBAType", getCORBALanguageType((MTyped) attr));
+//        vars.put("CORBAAttributeParameter", getCorbaAttributeParameter((MTyped) attr));
+//        vars.put("CORBAAttributeResult", getCorbaAttributeResult((MTyped) attr));        
+//        vars.put("ConvertAttributeFromCorba", convertAttributeFromCorba(attr)); 
+//        vars.put("ConvertAttributeToCorba", convertAttributeToCorba(attr));
         return vars;
     }
 
@@ -342,7 +342,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         vars.put("MParameterDefCORBA", getCORBAOperationParams(operation));
         vars.put("MParameterDefName", getOperationParamNames(operation));
 
-        // Used for supports and facet adapter generation
+        // Used for supports adapter generation
         vars.put("ConvertFacetParameterToCpp", convertParameterToCpp(operation));
         vars.put("DeclareFacetCppResult", declareCppResult(operation));
         vars.put("ConvertFacetMethodToCpp", convertMethodToCpp(operation));
@@ -351,13 +351,13 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         vars.put("ConvertFacetResultToCorba", convertResultToCorba(operation));
 
         // Used for receptacle adapter generation
-        vars.put("ConvertReceptacleParameterToCorba", convertReceptacleParameterToCorba(operation));
-        vars.put("DeclareReceptacleCorbaResult", declareReceptacleCorbaResult(operation));
-        vars.put("ConvertReceptacleMethodToCorba", convertReceptacleMethodToCorba(operation,
-                container.getIdentifier()));
-        vars.put("ConvertReceptacleExceptionsToCpp", convertReceptacleExceptionsToCpp(operation));
-        vars.put("ConvertReceptacleParameterToCpp", convertReceptacleParameterToCpp(operation));
-        vars.put("ConvertReceptacleResultToCpp", convertReceptacleResultToCpp(operation));
+ //       vars.put("ConvertReceptacleParameterToCorba", convertReceptacleParameterToCorba(operation));
+ //       vars.put("DeclareReceptacleCorbaResult", declareReceptacleCorbaResult(operation));
+ //       vars.put("ConvertReceptacleMethodToCorba", convertReceptacleMethodToCorba(operation,
+ //               container.getIdentifier()));
+ //       vars.put("ConvertReceptacleExceptionsToCpp", convertReceptacleExceptionsToCpp(operation));
+ //       vars.put("ConvertReceptacleParameterToCpp", convertReceptacleParameterToCpp(operation));
+ //       vars.put("ConvertReceptacleResultToCpp", convertReceptacleResultToCpp(operation));
 
         vars.put("Return", (lang_type.equals("void")) ? "" : "return ");
 
@@ -681,10 +681,15 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         MTyped type = (MTyped) current_node;
         MIDLType idlType = type.getIdlType();
         String baseType = getBaseIdlType(type);
+        MAttributeDef attribute = (MAttributeDef)current_node;
         
         // Handle %(CORBAType)s tag in %(MAttributeDef*)s templates
-
-        if(dataType.equals("CORBAType")) {
+       
+        if(dataType.equals("InterfaceType")) {
+            dataValue = attribute.getDefinedIn().getIdentifier();
+        }
+        
+        else if(dataType.equals("CORBAType")) {
             dataValue = getCORBALanguageType((MTyped) current_node);
         }
         else if(dataType.equals("CORBAAttributeParameter")) {
@@ -693,11 +698,17 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         else if(dataType.equals("CORBAAttributeResult")) {
             dataValue = getCorbaAttributeResult((MTyped) current_node);
         }
-        else if(dataType.equals("ConvertAttributeFromCorba")) {
-            dataValue = convertAttributeFromCorba((MAttributeDef)current_node); 
+        else if(dataType.equals("ConvertComponentGetAttributeFromCorba")) {
+            dataValue = convertGetAttributeFromCorba((MAttributeDef)current_node,"local_adapter"); 
         }
-        else if(dataType.equals("ConvertAttributeToCorba")) {
-            dataValue = convertAttributeToCorba((MAttributeDef)current_node);
+        else if(dataType.equals("ConvertComponentSetAttributeFromCorba")) {
+            dataValue = convertSetAttributeFromCorba((MAttributeDef)current_node,"local_adapter");
+        }
+        else if(dataType.equals("ConvertInterfaceGetAttributeFromCorba")) {
+            dataValue = convertGetAttributeFromCorba((MAttributeDef)current_node,"localInterface"); 
+        }
+        else if(dataType.equals("ConvertInterfaceSetAttributeFromCorba")) {
+            dataValue = convertSetAttributeFromCorba((MAttributeDef)current_node,"localInterface");
         }
         else if(dataType.equals("AttributeConvertInclude")) {
             Set code = new HashSet();
@@ -727,7 +738,31 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         String baseType = getBaseIdlType(type);
         MOperationDef operation = (MOperationDef) type;
 
-        if (dataType.equals("OperationConvertInclude")) {
+        if(dataType.equals("InterfaceType")) {
+            dataValue = operation.getDefinedIn().getIdentifier();
+        }
+        
+        else if(dataType.equals("CORBAType")) {
+            dataValue = getCORBALanguageType((MTyped) current_node);
+        }
+        //TODO: Replace this by a MParameterDefCORBA Tag in the MOperationDef* template
+        else if(dataType.equals("CORBAParameters")) {
+            dataValue = getCORBAOperationParams(operation);
+        }
+        // TODO: Replace this by a MExceptionDefCORBA Tag in the MOperationDef* template
+        else if(dataType.equals("CORBAExceptions")) { 
+            dataValue = getCORBAExcepts(operation);
+        }
+        //TODO: Replace this by a MParameterDefLocal Tag in the MOperationDef* template
+        if(dataType.equals("LocalParameters")) {
+            dataValue = getLocalOperationParams(operation);
+        }
+        // TODO: Replace this by a MExceptionDefLocal Tag in the MOperationDef* template
+        else if(dataType.equals("LocalExceptions")) { 
+            dataValue = getOperationExcepts(operation);
+        }
+        
+        else if (dataType.equals("OperationConvertInclude")) {
             if (idlType instanceof MPrimitiveDef || idlType instanceof MStringDef) {
                 dataValue = "";
             }
@@ -770,6 +805,47 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
                 dataValue = ret.toString();
             }
         }
+
+        // Tags for Adapters from CORBA
+        else if (dataType.equals("ConvertFacetParameterToCpp")) {
+            dataValue = convertParameterToCpp(operation);
+        }
+        else if (dataType.equals("DeclareFacetCppResult")) {
+            dataValue = declareCppResult(operation);
+        }
+        else if (dataType.equals("ConvertInterfaceMethodToCpp")) {
+            dataValue = convertInterfaceMethodToCpp(operation);
+        }
+        else if (dataType.equals("ConvertFacetExceptionsToCorba")) {
+            dataValue = convertExceptionsToCorba(operation);
+        }
+        else if (dataType.equals("ConvertFacetParameterToCorba")) {
+            dataValue = convertParameterToCorba(operation);
+        }
+        else if (dataType.equals("ConvertFacetResultToCorba")) {
+            dataValue = convertResultToCorba(operation);
+        }
+        
+        // Tags for Adapters to CORBA
+        else if (dataType.equals("ConvertReceptacleParameterToCorba")) {
+            dataValue = convertReceptacleParameterToCorba(operation);
+        }
+        else if (dataType.equals("DeclareReceptacleCorbaResult")) {
+            dataValue = declareReceptacleCorbaResult(operation);
+        }
+        else if (dataType.equals("ConvertReceptacleMethodToCorba")) {
+            dataValue = convertInterfaceMethodToCorba(operation);
+        }
+        else if (dataType.equals("ConvertReceptacleExceptionsToCpp")) {
+            dataValue = convertReceptacleExceptionsToCpp(operation);
+        }
+        else if (dataType.equals("ConvertReceptacleParameterToCpp")) {
+            dataValue = convertReceptacleParameterToCpp(operation);
+        }
+        else if (dataType.equals("ConvertReceptacleResultToCpp")) {
+            dataValue = convertReceptacleResultToCpp(operation);
+        }
+
         else {
             dataValue = super.data_MOperationDef(dataType, dataValue);
         }
@@ -862,6 +938,30 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         }
     }
 
+    
+    protected String data_MInterfaceDef(String dataType, String dataValue)
+    {
+        MInterfaceDef iface = (MInterfaceDef) current_node;
+        StringBuffer buffer = new StringBuffer();
+        
+        if(dataType.equals("StubIdentifier")) {
+            buffer.append(getCorbaStubsNamespace(iface,"::"));
+            buffer.append(iface.getIdentifier());
+            return buffer.toString();
+        }
+        else if(dataType.equals("CCM_LocalType")) {
+            buffer.append(getLocalNamespace(iface,"::",""));
+            buffer.append("CCM_");
+            buffer.append(iface.getIdentifier());
+            return buffer.toString();
+        }
+
+        else {
+            return super.data_MInterfaceDef(dataType,dataValue);
+        }
+    }
+    
+    
     protected String data_MSupportsDef(String data_type, String data_value)
     {
         MSupportsDef supports = (MSupportsDef) current_node;
@@ -924,6 +1024,9 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             ret.append(provides.getProvides().getIdentifier());
             dataValue = ret.toString();
         }
+        else if (dataType.equals("InterfaceType")) {
+            dataValue = provides.getProvides().getIdentifier();
+        }
         else if (dataType.equals("ComponentType")) {
             dataValue = component.getIdentifier();
         }
@@ -980,6 +1083,9 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             }
             buffer.append(usesDef.getUses().getIdentifier());
             dataValue = buffer.toString();
+        }
+        else if(dataType.equals("InterfaceType")) {
+            dataValue = usesDef.getUses().getIdentifier();
         }
         return super.data_MUsesDef(dataType, dataValue);
     }
@@ -1411,7 +1517,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
      * @param attr An AttributeDef item of a CCM model.
      * @return A string containing the generated code.
      */
-    protected String convertAttributeFromCorba(MAttributeDef attr)
+    protected String convertSetAttributeFromCorba(MAttributeDef attr, String delegate)
     {
         MIDLType idlType = ((MTyped) attr).getIdlType();
         StringBuffer buffer = new StringBuffer();
@@ -1428,7 +1534,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         buffer.append(Text.insertTab(1))
 			.append("CCM_Remote::convertFromCorba(value, local_value);\n");
         buffer.append(Text.insertTab(1))
-			.append("local_adapter->").append(attr.getIdentifier()).append("(local_value);\n");
+            .append(delegate).append("->").append(attr.getIdentifier()).append("(local_value);\n");
         return buffer.toString();    
     }
     
@@ -1438,33 +1544,33 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
      * @param attr An AttributeDef item of a CCM model.
      * @return A string containing the generated code.
      */
-    protected String convertAttributeToCorba(MAttributeDef attr)
+    protected String convertGetAttributeFromCorba(MAttributeDef attr, String delegate)
     {
         MIDLType idlType = ((MTyped) attr).getIdlType();
         String code = "";
         
         if(idlType instanceof MPrimitiveDef || idlType instanceof MStringDef 
                 || idlType instanceof MWstringDef || idlType instanceof MEnumDef) {	
-            code = convertPrimitiveAttributeToCorba(attr);
+            code = convertPrimitiveGetAttributeFromCorba(attr, delegate);
         }
         else if(idlType instanceof MStructDef) {  
-            code = convertUserAttributeToCorba(attr);
+            code = convertUserGetAttributeFromCorba(attr, delegate);
         }
         else if(idlType instanceof MAliasDef){     
             MTyped containedType = (MTyped) idlType;
             MIDLType containedIdlType = containedType.getIdlType();
             if(containedIdlType instanceof MPrimitiveDef) {
-                code = convertPrimitiveAttributeToCorba(attr);
+                code = convertPrimitiveGetAttributeFromCorba(attr, delegate);
             }
             else if(containedIdlType instanceof MSequenceDef) {
-                code = convertUserAttributeToCorba(attr);
+                code = convertUserGetAttributeFromCorba(attr,delegate);
             }
             // TODO: MArrayDef   
         }
         return code;
     }
     
-    protected String convertPrimitiveAttributeToCorba(MAttributeDef attr)
+    protected String convertPrimitiveGetAttributeFromCorba(MAttributeDef attr, String delegate)
     {
         MIDLType idlType = ((MTyped) attr).getIdlType();	
         StringBuffer buffer = new StringBuffer();
@@ -1478,7 +1584,8 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             	.append(getBaseLanguageType((MTyped) attr))
             	.append(" result;\n");
         }
-        buffer.append(Text.insertTab(1)).append("result = local_adapter->")
+        buffer.append(Text.insertTab(1)).append("result = ").append(delegate)
+        		.append("->")
                 .append(attr.getIdentifier()).append("();\n");
         buffer.append(Text.insertTab(1))
                 .append(getCORBALanguageType((MTyped) attr))
@@ -1489,13 +1596,14 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         return buffer.toString();
     }
         
-    protected String convertUserAttributeToCorba(MAttributeDef attr)
+    protected String convertUserGetAttributeFromCorba(MAttributeDef attr, String delegate)
     {
         StringBuffer buffer = new StringBuffer();
         buffer.append(Text.insertTab(1)).append("CCM_Local::")
                 .append(getBaseLanguageType((MTyped) attr))
                 .append(" result;\n");
-        buffer.append(Text.insertTab(1)).append("result = local_adapter->")
+        buffer.append(Text.insertTab(1)).append("result = ").append(delegate)
+                .append("->")
                 .append(attr.getIdentifier()).append("();\n");
         buffer.append(Text.insertTab(1))
                 .append(getCORBALanguageType((MTyped) attr))
@@ -1658,6 +1766,37 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         }
     }
 
+    
+    protected String convertInterfaceMethodToCpp(MOperationDef op)
+    {
+        List ret = new ArrayList();
+        String resultPrefix = Text.insertTab(2);
+        MIDLType idlType = op.getIdlType();
+
+        if(idlType instanceof MPrimitiveDef
+                && ((MPrimitiveDef) idlType).getKind() == MPrimitiveKind.PK_VOID) {
+            // void foo()
+        }
+        else {
+            resultPrefix += "result = ";
+        }
+
+        if(isPrimitiveType(idlType) || isComplexType(idlType)) {
+            resultPrefix += "localInterface->" + op.getIdentifier() + "(";
+            for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
+                MParameterDef p = (MParameterDef) params.next();
+                String base_type = (String) language_mappings.get((String) getBaseIdlType(p));
+                ret.add(" parameter_" + p.getIdentifier());
+            }
+            return resultPrefix + Text.join(", ", ret) + ");";
+        }
+        else {
+            throw new RuntimeException("CppRemoteGeneratorImpl.convertMethodToCpp():"
+                    + "unhandled idl type " + idlType);
+        }
+    }
+    
+    
     /**
      * Create the code for the remote facet and supports adapter.
      * 
@@ -2047,6 +2186,34 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         return buffer.toString();
     }
 
+    
+    protected String convertInterfaceMethodToCorba(MOperationDef op)
+    {
+        StringBuffer buffer = new StringBuffer(Text.insertTab(2));
+        List list = new ArrayList();
+        MIDLType idlType = op.getIdlType();
+
+        buffer.append(Text.insertTab(1));
+        // void method, no result declaration
+        if(idlType instanceof MPrimitiveDef
+                && ((MPrimitiveDef) idlType).getKind() == MPrimitiveKind.PK_VOID) {
+        }
+        else {
+            buffer.append("result = ");
+        }
+        buffer.append("remoteInterface->");
+        buffer.append(op.getIdentifier());
+        buffer.append("(");
+
+        for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
+            MParameterDef p = (MParameterDef) params.next();
+            list.add("parameter_" + p.getIdentifier());
+        }
+        buffer.append(Text.join(", ", list));
+        buffer.append(");");
+        return buffer.toString();
+    }
+    
     
     protected String convertReceptacleParameterToCpp(MOperationDef op)
     {

@@ -72,13 +72,6 @@ class %(Identifier)s_impl :
     CORBA::Object_ptr _get_component();
 };
 
-
-%(MProvidesDefAdapterHeader)s
-
-
-%(MUsesDefAdapterHeader)s
-
-
 %(CloseNamespace)s
 
 #endif
@@ -226,13 +219,6 @@ CORBA::Object_ptr
     LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::_get_component()");
     return ccm_container->get_reference_for_component (this);
 }
-
-
-%(MProvidesDefAdapterImpl)s
-
-
-%(MUsesDefAdapterImpl)s
-
 
 %(CloseNamespace)s
 

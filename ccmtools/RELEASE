@@ -51,8 +51,8 @@ o) add test case for nested component composition
 o) implement undeploy_*() functions 
 o) implement a C++ version of deploy_* and undeploy_* too.
 o) remove CORBA::Stubs namespace from idl3 to idl2 generator
-o) generate adapter classes (*ToCorba, *FromCorba) for each IDL interface and use these
-   adapter classes within the remote component logic.
+*) generate adapter classes (*ToCorba, *FromCorba) for each IDL interface and use these
+   adapter classes within the remote component logic as facet and receptacle adapters.
 o) generate the namespace into the converter file-name 
 
 
@@ -61,8 +61,8 @@ c++remote-test generator:
 o) add undeploy_*() functions at test client end.
 
 
-java-client-lib generator:
---------------------------
+java-client generator:
+----------------------
 
 
 cpp-environment:
@@ -82,8 +82,8 @@ o) add Components.jar build from ccmtools/idl/CCM.idl
 
 uml2idl:
 --------
-o) generate include statements from <<extern>> declarations
-o) check model errors 
+*) generate include statements from <<extern>> declarations
+o) check modeling errors 
 
 
 bugfixes:

@@ -3,5 +3,3 @@
 
       virtual void %(Identifier)s(const %(CORBAAttributeParameter)s value)
           throw(CORBA::SystemException);
-
-
