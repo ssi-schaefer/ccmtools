@@ -3,7 +3,7 @@
 // Hello - business logic implementation
 //==============================================================================
 
-#include <acssert>
+#include <cassert>
 #include <iostream>
 #include <WX/Utils/debug.h>
 

@@ -1,5 +1,5 @@
 #include <cassert>
-#include <iosteam>
+#include <iostream>
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
