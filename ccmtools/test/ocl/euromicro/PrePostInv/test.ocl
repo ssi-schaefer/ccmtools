@@ -1,9 +1,9 @@
 package GLOBAL
 
--- context BasicTypes	
---	inv a1_range: a1 > 0 and a1 < 100	
---	inv a2_range: a2 > 0.0 and a2 < 100.0
---	inv a3_range: a3.size() > 0 and a3.size() < 100
+context BasicTypes
+    inv a1_range: a1 > 0 and a1 < 100
+    inv a2_range: a2 > 0.0 and a2 < 100.0
+    inv a3_range: a3.size() > 0 and a3.size() < 100
 
 context BasicTypes::f1_2(p1:Integer, p2:Integer):Integer
 	pre p1_range: p1 > 0 and p1 < 100

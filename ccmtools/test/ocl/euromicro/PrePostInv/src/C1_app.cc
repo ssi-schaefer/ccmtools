@@ -35,7 +35,7 @@ CCM_C1_impl::get_i1 (  )
 //==============================================================================
 
 i1_impl::i1_impl ( CCM_C1_impl* component_impl )
-  : component ( component_impl )
+  : component ( component_impl ), _a1(1), _a2(2.3), _a3("Hello World!")
 {
   DEBUGNL ( "+i1_impl->i1_impl (  )" );
 }

@@ -2,6 +2,7 @@
 #include <CCM_Local/HomeFinder.h>
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
+#include <CCM_OCL/OclException.h>
 
 #ifdef CCM_TEST_PYTHON
 #include <Python.h>
@@ -27,6 +28,7 @@ using namespace CCM_Session_C1;
 
 int main ( int argc, char *argv[] )
 {
+  cout << endl << "##  " __FILE__ "  ##" << endl << endl;
   int result = 0;
   int error = 0;
 
@@ -89,10 +91,9 @@ int main ( int argc, char *argv[] )
 
   try {
     // check basic functionality
-    DEBUGNL("==== Begin Test Case =============================================" );
+    DEBUGNL("==== Begin DbC Test Case =============================================" );
     // test facet attribute
 
-    /*
     {
       long a = 10;
       long r;
@@ -100,9 +101,8 @@ int main ( int argc, char *argv[] )
       r = C1_provides_i1->a1();
       assert(r == a);
     }
-    */
 
-    
+
     // Common variables for time measurement
     clock_t start, stop;
     double cpu_time_used;

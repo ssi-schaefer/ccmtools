@@ -27,6 +27,7 @@ using namespace CCM_Session_C1;
 
 int main ( int argc, char *argv[] )
 {
+  cout << endl << "##  " __FILE__ "  ##" << endl << endl;
   int result = 0;
   int error = 0;
 
