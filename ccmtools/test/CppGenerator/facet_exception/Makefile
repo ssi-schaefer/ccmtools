@@ -1,7 +1,7 @@
 
 APP_NAME = Test
 APP_DIR = xxx
-IDL_DIR = ${APP_DIR}/idl3
+IDL3_DIR = ${APP_DIR}/idl3
 IDL_INTERFACE = ${IDL3_DIR}/interface
 IDL_COMPONENT = ${IDL3_DIR}/component
 IDL_INCLUDE = -I${IDL_INTERFACE} -I${IDL_COMPONENT}
@@ -9,13 +9,13 @@ IDL_INCLUDE = -I${IDL_INTERFACE} -I${IDL_COMPONENT}
 all: local
 
 idl: Test.idl
-	ccmtools-generate idl3 -o ${IDL_DIR} Test.idl
-	ccmtools-generate idl3mirror -o ${IDL_DIR} Test.idl
+	ccmtools-generate idl3 -o ${IDL3_DIR} ${APP_NAME}.idl
+	ccmtools-generate idl3mirror -o ${IDL3_DIR} ${APP_NAME}.idl
 
 local: idl
 	ccmtools-generate c++local -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_INTERFACE}/*.idl
 	ccmtools-generate c++local -a -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/*.idl
-	ccmtools-generate c++local-test -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/Test.idl
+	ccmtools-generate c++local-test -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/${APP_NAME}.idl
 
 build: 
 	cp impl/Test_console_impl.cc xxx/impl
