@@ -21,46 +21,16 @@
 
 package ccmtools.CodeGenerator;
 
-import ccmtools.Metamodel.BaseIDL.MAttributeDef;
-import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MContainer;
-import ccmtools.Metamodel.BaseIDL.MExceptionDef;
-import ccmtools.Metamodel.BaseIDL.MFixedDef;
-import ccmtools.Metamodel.BaseIDL.MIDLType;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.Metamodel.BaseIDL.MModuleDef;
-import ccmtools.Metamodel.BaseIDL.MParameterDef;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
-import ccmtools.Metamodel.BaseIDL.MStringDef;
-import ccmtools.Metamodel.BaseIDL.MTyped;
-import ccmtools.Metamodel.BaseIDL.MTypedefDef;
-import ccmtools.Metamodel.BaseIDL.MWstringDef;
-import ccmtools.Metamodel.ComponentIDL.MComponentDef;
-import ccmtools.Metamodel.ComponentIDL.MConsumesDef;
-import ccmtools.Metamodel.ComponentIDL.MEmitsDef;
-import ccmtools.Metamodel.ComponentIDL.MEventDef;
-import ccmtools.Metamodel.ComponentIDL.MEventPortDef;
-import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
-import ccmtools.Metamodel.ComponentIDL.MFinderDef;
-import ccmtools.Metamodel.ComponentIDL.MHomeDef;
-import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
-import ccmtools.Metamodel.ComponentIDL.MPublishesDef;
-import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
-import ccmtools.Metamodel.ComponentIDL.MUsesDef;
-
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -70,6 +40,32 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
+
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
+import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MExceptionDef;
+import ccmtools.Metamodel.BaseIDL.MFixedDef;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.Metamodel.BaseIDL.MModuleDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.Metamodel.BaseIDL.MStringDef;
+import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MTypedefDef;
+import ccmtools.Metamodel.BaseIDL.MWstringDef;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MConsumesDef;
+import ccmtools.Metamodel.ComponentIDL.MEmitsDef;
+import ccmtools.Metamodel.ComponentIDL.MEventPortDef;
+import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
+import ccmtools.Metamodel.ComponentIDL.MFinderDef;
+import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.Metamodel.ComponentIDL.MPublishesDef;
+import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 
 
 /**

@@ -20,31 +20,16 @@
 
 package ccmtools.CppGenerator;
 
-import ccmtools.CodeGenerator.Driver;
-import ccmtools.CodeGenerator.Template;
-import ccmtools.Metamodel.BaseIDL.MAttributeDef;
-import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MContainer;
-import ccmtools.Metamodel.BaseIDL.MFixedDef;
-import ccmtools.Metamodel.BaseIDL.MIDLType;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.Metamodel.BaseIDL.MOperationDef;
-import ccmtools.Metamodel.BaseIDL.MParameterDef;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
-import ccmtools.Metamodel.BaseIDL.MStringDef;
-import ccmtools.Metamodel.BaseIDL.MTyped;
-import ccmtools.Metamodel.BaseIDL.MTypedefDef;
-import ccmtools.Metamodel.BaseIDL.MWstringDef;
-import ccmtools.Metamodel.ComponentIDL.MComponentDef;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+
+import ccmtools.CodeGenerator.Driver;
+import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 
 public class CppLocalTestGeneratorImpl
     extends CppGenerator

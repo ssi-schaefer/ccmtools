@@ -20,9 +20,6 @@
 
 package ccmtools.CodeGenerator;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Template handler objects are capable of handling graph traversal events and

@@ -21,6 +21,16 @@
 
 package ccmtools.CppGenerator;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
@@ -38,13 +48,13 @@ import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
-import ccmtools.Metamodel.BaseIDL.MSequenceDef;
-import ccmtools.Metamodel.BaseIDL.MStringDef;
-import ccmtools.Metamodel.BaseIDL.MWstringDef;
-import ccmtools.Metamodel.BaseIDL.MTyped;
-import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.Metamodel.BaseIDL.MSequenceDef;
+import ccmtools.Metamodel.BaseIDL.MStringDef;
+import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MTypedefDef;
+import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.Metamodel.ComponentIDL.MFinderDef;
@@ -52,23 +62,6 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.Set;
-import java.util.HashSet;
 
 abstract public class CppGenerator
     extends CodeGenerator

@@ -21,10 +21,9 @@
 
 package ccmtools.OCL.generators;
 
-import ccmtools.Metamodel.BaseIDL.*;
-import ccmtools.Metamodel.ComponentIDL.*;
-
 import java.util.Iterator;
+
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 
 
 class InterfaceIterator extends ClassIterator

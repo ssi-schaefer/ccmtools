@@ -20,30 +20,32 @@
 
 package ccmtools.UI;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+
 import ccmtools.Constants;
-import ccmtools.Metamodel.BaseIDL.MContainer;
-import ccmtools.IDL3Parser.ParserManager;
+import ccmtools.CodeGenerator.CCMMOFGraphTraverserImpl;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.GraphTraverser;
-import ccmtools.CodeGenerator.CCMMOFGraphTraverserImpl;
-import ccmtools.CodeGenerator.Template;
 import ccmtools.CodeGenerator.TemplateHandler;
-
+import ccmtools.CppGenerator.CppLocalDbcGeneratorImpl;
 import ccmtools.CppGenerator.CppLocalGeneratorImpl;
 import ccmtools.CppGenerator.CppLocalTestGeneratorImpl;
-import ccmtools.CppGenerator.CppLocalDbcGeneratorImpl;
-
 import ccmtools.CppGenerator.CppRemoteGeneratorImpl;
 import ccmtools.CppGenerator.CppRemoteTestGeneratorImpl;
-import ccmtools.CppGenerator.CppPythonGeneratorImpl;
-
+import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.IDLGenerator.IDL2GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3MirrorGeneratorImpl;
-
-import java.io.*;
-import java.util.*;
+import ccmtools.Metamodel.BaseIDL.MContainer;
 
 public class ConsoleCodeGenerator
 {

@@ -20,22 +20,40 @@
 
 package ccmtools.CppGenerator;
 
-import ccmtools.utils.Debug;
-import ccmtools.CodeGenerator.Driver;
-import ccmtools.CodeGenerator.Template;
-import ccmtools.Metamodel.BaseIDL.*;
-import ccmtools.Metamodel.ComponentIDL.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.Collection;
-import java.util.Collections;
+
+import ccmtools.CodeGenerator.Driver;
+import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MAliasDef;
+import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
+import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MEnumDef;
+import ccmtools.Metamodel.BaseIDL.MExceptionDef;
+import ccmtools.Metamodel.BaseIDL.MFieldDef;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MParameterDef;
+import ccmtools.Metamodel.BaseIDL.MParameterMode;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.Metamodel.BaseIDL.MSequenceDef;
+import ccmtools.Metamodel.BaseIDL.MStringDef;
+import ccmtools.Metamodel.BaseIDL.MStructDef;
+import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MTypedefDef;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.utils.Debug;
 
 /**
  * Remote C++ component generator

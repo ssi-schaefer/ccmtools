@@ -20,16 +20,13 @@
 
 package ccmtools.CodeGenerator;
 
-import ccmtools.Constants;
-
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.net.URL;
-import java.lang.ClassLoader;
+
+import ccmtools.Constants;
 
 public class PythonTemplateManagerImpl
     implements TemplateManager

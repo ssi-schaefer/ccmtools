@@ -21,15 +21,46 @@
 
 package ccmtools.OCL.generators;
 
-import oclmetamodel.*;
-import ccmtools.OCL.utils.*;
-import ccmtools.OCL.parser.OclConstants;
-
-import ccmtools.Metamodel.BaseIDL.*;
-import ccmtools.Metamodel.ComponentIDL.*;
-
-import java.util.Vector;
 import java.util.Iterator;
+
+import oclmetamodel.MActualParameters;
+import oclmetamodel.MBooleanLiteral;
+import oclmetamodel.MCollectionItem;
+import oclmetamodel.MCollectionLiteral;
+import oclmetamodel.MCollectionRange;
+import oclmetamodel.MDeclarator;
+import oclmetamodel.MEnumLiteral;
+import oclmetamodel.MExpression;
+import oclmetamodel.MFile;
+import oclmetamodel.MFormalParameter;
+import oclmetamodel.MIfExpression;
+import oclmetamodel.MIntegerLiteral;
+import oclmetamodel.MLiteralExpression;
+import oclmetamodel.MName;
+import oclmetamodel.MOperationExpression;
+import oclmetamodel.MPostfixExpression;
+import oclmetamodel.MPropertyCall;
+import oclmetamodel.MPropertyCallParameters;
+import oclmetamodel.MRealLiteral;
+import oclmetamodel.MStringLiteral;
+import oclmetamodel.OclBag;
+import oclmetamodel.OclBoolean;
+import oclmetamodel.OclCollection;
+import oclmetamodel.OclEnumeration;
+import oclmetamodel.OclInteger;
+import oclmetamodel.OclReal;
+import oclmetamodel.OclSequence;
+import oclmetamodel.OclSet;
+import oclmetamodel.OclString;
+import oclmetamodel.OclType;
+import oclmetamodel.OclUser;
+import oclmetamodel.OclVoid;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MSequenceDef;
+import ccmtools.Metamodel.BaseIDL.MSequenceDefImpl;
+import ccmtools.OCL.parser.OclConstants;
+import ccmtools.OCL.utils.OclElementCreator;
+import ccmtools.OCL.utils.OclNormalization;
 
 
 /**

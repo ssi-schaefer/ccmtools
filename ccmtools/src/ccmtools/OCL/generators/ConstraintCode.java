@@ -22,12 +22,15 @@
 package ccmtools.OCL.generators;
 
 import java.util.HashMap;
-import oclmetamodel.*;
-import ccmtools.Metamodel.BaseIDL.*;
-import ccmtools.Metamodel.ComponentIDL.*;
-import ccmtools.OCL.parser.OclParsetreeCreator;
+
+import oclmetamodel.MExpression;
+import oclmetamodel.MOperationContext;
+import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.OCL.parser.OclConstants;
 import ccmtools.OCL.parser.OclParserException;
+import ccmtools.OCL.parser.OclParsetreeCreator;
 
 
 /**

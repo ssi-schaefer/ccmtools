@@ -21,18 +21,21 @@
 
 package ccmtools.OCL.utils;
 
-import oclmetamodel.*;
-
-import org.netbeans.api.mdr.MDRepository;
-import org.netbeans.api.mdr.MDRManager;
-import org.openide.util.Lookup;
-import javax.jmi.model.MofPackage;
-import javax.jmi.model.ModelPackage;
-import javax.jmi.xmi.XmiReader;
-import javax.jmi.reflect.RefPackage;
+import java.io.IOException;
 import java.util.Iterator;
-import java.net.URL;
-import java.lang.reflect.*;
+
+import javax.jmi.model.ModelPackage;
+import javax.jmi.model.MofPackage;
+import javax.jmi.reflect.RefPackage;
+import javax.jmi.xmi.MalformedXMIException;
+import javax.jmi.xmi.XmiReader;
+
+import oclmetamodel.OclMetamodelPackage;
+
+import org.netbeans.api.mdr.CreationFailedException;
+import org.netbeans.api.mdr.MDRManager;
+import org.netbeans.api.mdr.MDRepository;
+import org.openide.util.Lookup;
 
 
 /**

@@ -29,7 +29,6 @@ import org.omg.CORBA.TypeCode;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
-import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MModuleDef;
 import ccmtools.Metamodel.BaseIDL.MValueDef;

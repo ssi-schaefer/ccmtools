@@ -23,28 +23,46 @@
 package ccmtools.CppGenerator;
 
 
-import ccmtools.utils.Debug;
-
-import ccmtools.CodeGenerator.Driver;
-import ccmtools.CodeGenerator.Template;
-import ccmtools.Metamodel.BaseIDL.*;
-import ccmtools.Metamodel.ComponentIDL.*;
-
-import oclmetamodel.*;
-import ccmtools.OCL.parser.*;
-import ccmtools.OCL.utils.*;
-import ccmtools.OCL.generators.*;
-
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+
+import oclmetamodel.MExpression;
+import oclmetamodel.MFile;
+import oclmetamodel.MFormalParameter;
+import oclmetamodel.MOperationContext;
+import oclmetamodel.MPackage;
+import oclmetamodel.MPropertyCall;
+import oclmetamodel.OclType;
+import ccmtools.CodeGenerator.Driver;
+import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
+import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MFieldDef;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MStructDef;
+import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.OCL.generators.ClassIterator;
+import ccmtools.OCL.generators.ConstraintCode;
+import ccmtools.OCL.generators.ElementType;
+import ccmtools.OCL.generators.OclCodeGenerator;
+import ccmtools.OCL.generators.OclCppGenerator;
+import ccmtools.OCL.generators.OclTypeChecker;
+import ccmtools.OCL.parser.OclConstants;
+import ccmtools.OCL.parser.OclParser;
+import ccmtools.OCL.utils.OclElementCreator;
+import ccmtools.OCL.utils.OclNormalization;
+import ccmtools.utils.Debug;
 
 
 /**

@@ -21,10 +21,10 @@
 
 package ccmtools.OCL.generators;
 
-import ccmtools.Metamodel.BaseIDL.*;
-import ccmtools.Metamodel.ComponentIDL.*;
-
 import java.util.Iterator;
+
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.Metamodel.BaseIDL.MValueDef;
 
 
 class ValueIterator extends ClassIterator

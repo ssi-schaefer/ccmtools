@@ -21,18 +21,33 @@
 
 package ccmtools.OCL.generators;
 
-import oclmetamodel.*;
-import ccmtools.OCL.utils.*;
-import ccmtools.OCL.parser.OclConstants;
-
-import ccmtools.Metamodel.BaseIDL.*;
-import ccmtools.Metamodel.ComponentIDL.*;
-
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
 import java.util.Stack;
-import java.io.FileWriter;
+import java.util.Vector;
+
+import oclmetamodel.MActualParameters;
+import oclmetamodel.MClassifierContext;
+import oclmetamodel.MConstraint;
+import oclmetamodel.MConstraintExpression;
+import oclmetamodel.MExpression;
+import oclmetamodel.MFile;
+import oclmetamodel.MOperationContext;
+import oclmetamodel.MPackage;
+import oclmetamodel.MPropertyCall;
+import oclmetamodel.MPropertyCallParameters;
+import oclmetamodel.OclType;
+import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MParameterDef;
+import ccmtools.OCL.parser.OclConstants;
+import ccmtools.OCL.utils.OclElementCreator;
+import ccmtools.OCL.utils.OclNormalization;
+import ccmtools.OCL.utils.OclTextWriter;
 
 
 /**

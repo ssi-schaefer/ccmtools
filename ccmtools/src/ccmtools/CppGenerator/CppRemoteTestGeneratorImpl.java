@@ -21,22 +21,22 @@
 
 package ccmtools.CppGenerator;
 
-import ccmtools.utils.Debug;
-
-import ccmtools.CodeGenerator.Driver;
-import ccmtools.CodeGenerator.Template;
-
-import ccmtools.Metamodel.BaseIDL.*;
-import ccmtools.Metamodel.ComponentIDL.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
+
+import ccmtools.CodeGenerator.Driver;
+import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.utils.Debug;
 
 public class CppRemoteTestGeneratorImpl
     extends CppGenerator
