@@ -1,50 +1,319 @@
+%$Id$
+
 %==============================================================================
-\chapter{CCM Tools commands}
+\chapter{CCM Tools Commands}
 %==============================================================================
 
 %------------------------------------------------------------------------------
 \section{ccmtools-generate}
 %------------------------------------------------------------------------------
 
+\begin{description}
 
-\begin{verbatim}
-   [~/ccmtools]$ ccmtools-generate TYPE [OPTIONS] FILES
-\end{verbatim}
+\item [NAME:] 
+  {\tt ccmtools-generate} - Frontend to start available CCM Tools generators.
+
+\item [SYNOPSIS:] 
+  {\tt ccmtools-generate TYPE [OPTIONS] FILES}
+
+\item [DESCRIPTION:]
+The {\tt ccmtools-generate} script is used to run a particular component generator 
+backend based on a set of IDL files. 
+Depending on {\tt TYPE} and {\tt OPTIONS} a particular code generator is selected 
+to create the desired output.
+
+\item [TYPE:]
+  Currently, the following generator types are supported:
+  \begin{itemize}
+  \item {\tt c++local}\\
+    Generates local C++ component logic.
+    
+  \item {\tt c++local-test} \\
+    Generates a test client for a pair of local C++ component and
+    mirror component.
+    
+  \item {\tt c++dbc} \\
+    Generates a set of Design by Contract adapters for a local
+    C++ component.
+    
+  \item {\tt idl3 }\\
+    Generates IDL3 source files.
+
+  \item {\tt idl3mirror }\\
+    Generates IDL3 source files for a mirror component.
+    
+  \item {\tt idl2} \\
+    Generates equivalent IDL2 source files.
+
+  \item {\tt c++remote} \\ 
+    Generates a set of remote C++ adapters that establish a standard
+    compliant CORBA component where a local C++ component can be embedded.
+
+  \item {\tt c++remote-test}\\
+    Generates a test client for a pair of remote component and mirror component.
+  \end{itemize}
+  
+\item [OPTIONS:]
+  In addition to the generator types, the {\tt ccmtools-generate} script handles
+  the following options:
+  \begin{itemize}
+  \item {\tt -a, --application} \\
+    Forces the local C++ generator to create business logic
+    implementation skeletons ({\tt *\_app.*} files).
+
+  \item {\tt -h, --help} \\
+    Prints out a short description of the available command line parameters.
+
+  \item {\tt -Ipath} \\
+    Specifies a path that will be handled from a preprocessor to find 
+    included IDL files.
+
+  \item {\tt -o DIR, --output=DIR} \\
+    Specifies the directory where the generated code will be written. 
+
+  \item {\tt -V, --version} \\
+    Prints out the current version of installed CCM Tools.
+  \end{itemize}
+  
+\item [FILES:]
+  This {\tt ccmtools-generate} script can handle single IDL files or a list of IDL
+  files. The following examples show the usage of IDL files: 
+  \begin{verbatim}
+    ccmtools-generate idl3mirror -o test/idl3mirror Test.idl
+    ccmtools-generate c++local -a -o test Test.idl Helper.idl 
+    ccmtools-generate c++local-test -o test *.idl
+  \end{verbatim}
+
+\item [SEE ALSO:]
+  {\tt ccmtools-c++-generate}
+  
+\end{description}
 
 
-The {\tt ccmtools-generate} script is usd to start a paricular component generator 
-backend. 
-Currently, the following generator types are supported:
-\begin{itemize}
-\item {\tt c++local} \\
+%------------------------------------------------------------------------------
+\section{ccmtools-c++-generate}
+%------------------------------------------------------------------------------
+\begin{description}
 
-\item {\tt c++local-test} \\
+\item [NAME:] 
+  {\tt ccmtools-c++-generate} - Run a sequence of generator calls.
 
-\item {\tt c++dbc} \\
+\item [SYNOPSIS:] 
+  {\tt ccmtools-C++-generate [OPTIONS] FILES}
 
-\item {\tt c++remote} \\
+\item [DESCRIPTION:]
+  The {\tt ccmtools-c++-generate} script collects a sequence of 
+  generator calls. 
+  Thus, this script makes component development more convenient,
+  but less flexible.   
 
-\item {\tt c++remote-test} \\
 
-\item {\tt idl3 } \\
+\item [OPTIONS:]
+  The {\tt ccmtools-c++-generate} script handles the following options:
+  \begin{itemize}
+  \item {\tt -a, --application} \\
+    Forces the local C++ generator to create business logic
+    implementation skeletons ({\tt *\_app.*} files).
 
-\item {\tt idl3mirror } \\
+  \item {\tt -d, --development} \\
+    Using this option, for a given IDL a component, its mirror component
+    and a test client will be generated.
 
-\item {\tt idl2}
-\end{itemize}
+  \item {\tt -h, --help} \\
+    Prints out a short description of the available command line parameters.
 
-In addition to the generator types, the {\tt ccmtools-generate} script handles
-the following options:
+  \item {\tt -Ipath} \\
+    Specifies a path that will be handled from a preprocessor to find 
+    included IDL files.
 
-\begin{itemize}
-\item {\tt -I DIR} \\
+  \item {\tt -p NAME, --package=NAME} \\
+    Specifies the directory where the generated code will be written. 
+    This directory is also a package in terms of Confix.  
 
-\item {\tt -o DIR, --output=DIR} \\
+  \item {\tt -V, --version} \\
+    Prints out the current version of installed CCM Tools.
+  \end{itemize}
+  
+\item [FILES:]
+  This {\tt ccmtools-c++-generate} script can handle single IDL files or a list of IDL
+  files. The following examples show the usage of IDL files: 
+  \begin{verbatim}
+    ccmtools-c++-generate idl3mirror -o test/idl3mirror Test.idl
+    ccmtools-generate c++local -a -o test Test.idl Helper.idl 
+    ccmtools-generate c++local-test -o test *.idl
+  \end{verbatim}
 
-\item {\tt -a, --application} \\
+\item [SEE ALSO:]
+  {\tt ccmtools-generate}
+  
+\end{description}
 
-\item {\tt -h, --help} \\
-Print out a short description of the available command line parameters.
 
-\item {\tt -V, --version} \\
-\end{itemize}
+%------------------------------------------------------------------------------
+\section{ccmtools-c++-configure}
+%------------------------------------------------------------------------------
+\begin{description}
+
+\item [NAME:] 
+  {\tt ccmtools-c++-configure} - Run Confix to configure the generated code.
+
+\item [SYNOPSIS:] 
+  {\tt ccmtools-C++-configure OPTION}
+
+\item [DESCRIPTION:]
+  The {\tt ccmtools-c++-configure} script is a Confix wrapper, and
+  represents the following Confix call:
+  \begin{small}
+  \begin{verbatim}
+  confix.py  --packageroot=NAME --profile="ccmtools" \
+             --bootstrap --configure --quiet
+  \end{verbatim}
+  \end{small}
+  This script makes component development more convenient,
+  but less flexible. 
+
+\item [OPTION:]
+  The {\tt ccmtools-c++-configure} script needs one of the following options:
+  \begin{itemize}
+  \item {\tt -h, --help} \\
+    Prints out a short description of the available command line parameters.
+
+  \item {\tt -p NAME, --package=NAME} \\
+    Specifies the Confix package we want to configure. 
+
+  \item {\tt -V, --version} \\
+    Prints out the current version of installed CCM Tools.
+  \end{itemize}
+  
+\item [SEE ALSO:]
+  {\tt Confix manual}
+  
+\end{description}
+
+
+%------------------------------------------------------------------------------
+\section{ccmtools-c++-make}
+%------------------------------------------------------------------------------
+\begin{description}
+
+\item [NAME:] 
+  {\tt ccmtools-c++-make} - Run Confix to build the generated code.
+
+\item [SYNOPSIS:] 
+  {\tt ccmtools-C++-make OPTION}
+
+\item [DESCRIPTION:]
+  The {\tt ccmtools-c++-make} script is a Confix wrapper and
+  represents the following Confix call:
+  \begin{small}
+  \begin{verbatim}
+  confix.py  --packageroot=NAME --profile="ccmtools" \
+             --make --targets="all check" --quiet    
+  \end{verbatim}
+  \end{small}
+  This script makes component development more convenient,
+  but less flexible. 
+
+\item [OPTION:]
+  The {\tt ccmtools-c++-make} script needs one of the following options:
+  \begin{itemize}
+  \item {\tt -h, --help} \\
+    Prints out a short description of the available command line parameters.
+
+  \item {\tt -p NAME, --package=NAME} \\
+    Specifies the Confix package we want to build. 
+
+  \item {\tt -V, --version} \\
+    Prints out the current version of installed CCM Tools.
+  \end{itemize}
+  
+\item [SEE ALSO:]
+  {\tt Confix manual}
+  
+\end{description}
+
+
+%------------------------------------------------------------------------------
+\section{ccmtools-c++-install}
+%------------------------------------------------------------------------------
+\begin{description}
+
+\item [NAME:] 
+  {\tt ccmtools-c++-install} - Run Confix to install the generated code.
+
+\item [SYNOPSIS:] 
+  {\tt ccmtools-C++-install OPTION}
+
+\item [DESCRIPTION:]
+  The {\tt ccmtools-c++-install} script is a Confix wrapper and
+  represents the following Confix call:
+  \begin{small}
+  \begin{verbatim}
+   confix.py  --packageroot=NAME --profile="ccmtools" \
+              --make --targets="install" --quiet
+  \end{verbatim}
+  \end{small}
+  This script makes component development more convenient,
+  but less flexible. 
+
+\item [OPTION:]
+  The {\tt ccmtools-c++-install} script needs one of the following options:
+  \begin{itemize}
+  \item {\tt -h, --help} \\
+    Prints out a short description of the available command line parameters.
+
+  \item {\tt -p NAME, --package=NAME} \\
+    Specifies the Confix package we want to install. 
+
+  \item {\tt -V, --version} \\
+    Prints out the current version of installed CCM Tools.
+  \end{itemize}
+  
+\item [SEE ALSO:]
+  {\tt Confix manual}
+  
+\end{description}
+
+
+
+%------------------------------------------------------------------------------
+\section{ccmtools-c++-uninstall}
+%------------------------------------------------------------------------------
+
+\begin{description}
+
+\item [NAME:] 
+  {\tt ccmtools-c++-uninstall} - Run Confix to uninstall the generated code.
+
+\item [SYNOPSIS:] 
+  {\tt ccmtools-C++-uninstall OPTION}
+
+\item [DESCRIPTION:]
+  The {\tt ccmtools-c++-uninstall} script is a Confix wrapper and
+  represents the following Confix call:
+  \begin{small}
+  \begin{verbatim}
+   confix.py  --packageroot=NAME --profile="ccmtools" \
+              --make  --targets="uninstall distclean" --quiet
+  \end{verbatim}
+  \end{small}
+  This script makes component development more convenient,
+  but less flexible. 
+
+\item [OPTION:]
+  The {\tt ccmtools-c++-uninstall} script needs one of the following options:
+  \begin{itemize}
+  \item {\tt -h, --help} \\
+    Prints out a short description of the available command line parameters.
+
+  \item {\tt -p NAME, --package=NAME} \\
+    Specifies the Confix package we want to uninstall. 
+
+  \item {\tt -V, --version} \\
+    Prints out the current version of installed CCM Tools.
+  \end{itemize}
+  
+\item [SEE ALSO:]
+  {\tt Confix manual}
+  
+\end{description}
