@@ -11,7 +11,7 @@ DbC_%(ComponentType)s::%(Identifier)s()
 void
 DbC_%(ComponentType)s::%(Identifier)s ( %(LanguageType)s value )
 {
-  static const char* DbC_FUNCTION_NAME = "%(ComponentType)s::%(Identifier)s (%(LanguageType)s value)";
+  static const char* DbC_FUNCTION_NAME = "DbC_%(ComponentType)s::%(Identifier)s(%(LanguageType)s)";
   DEBUGNL ( " DbC_%(ComponentType)s->%(Identifier)s (  ) - set semantic");
 %(AttributeSetPreInvocation)s	
   %(ComponentType)s::%(Identifier)s(value);

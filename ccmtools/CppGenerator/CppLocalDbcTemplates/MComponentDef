@@ -76,7 +76,8 @@ using namespace CCM_OCL;
 
 DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s* h, CCM_%(Identifier)s* lc ) /*throw(CCM_OCL::OclException)*/
 {
-  static const char* DbC_FUNCTION_NAME = "DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s*, CCM_%(Identifier)s* )";
+  static const char* DbC_FUNCTION_NAME =
+    "DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s*, CCM_%(Identifier)s* )";
   DEBUGNL("+DbC_%(Identifier)s->DbC_%(Identifier)s()");
   home_local_adapter = h;
   local_component = lc;

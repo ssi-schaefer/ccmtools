@@ -394,9 +394,9 @@ public class CppLocalDbcGeneratorImpl
      *         template for this interface.
      */
     protected Map getTwoStepOperationVariables(MOperationDef operation,
-					       MContained container)
+                                               MContained container)
     {
-	Debug.println(Debug.METHODS,"getTwoStepVariables()");
+        Debug.println(Debug.METHODS,"getTwoStepVariables()");
         String lang_type = getLanguageType(operation);
         Map vars = new Hashtable();
         vars.put("Object",            container.getIdentifier());
@@ -406,15 +406,15 @@ public class CppLocalDbcGeneratorImpl
         vars.put("MParameterDefAll",  getOperationParams(operation));
         vars.put("MParameterDefName", getOperationParamNames(operation));
 
-	vars.put("SupportsPreInvocation"  , getSupportsPreInvocation(operation));
-	vars.put("SupportsPostInvocation" , getSupportsPostInvocation(operation));
-	vars.put("ProvidesPreInvocation"  , getProvidesPreInvocation(operation));
-	vars.put("ProvidesPostInvocation" , getProvidesPostInvocation(operation));
+        vars.put("SupportsPreInvocation"  , getSupportsPreInvocation(operation));
+        vars.put("SupportsPostInvocation" , getSupportsPostInvocation(operation));
+        vars.put("ProvidesPreInvocation"  , getProvidesPreInvocation(operation));
+        vars.put("ProvidesPostInvocation" , getProvidesPostInvocation(operation));
 
         if (! lang_type.equals("void"))
-	    vars.put("Return", "return ");
+        vars.put("Return", "return ");
         else
-	    vars.put("Return", "");
+        vars.put("Return", "");
         return vars;
     }
 

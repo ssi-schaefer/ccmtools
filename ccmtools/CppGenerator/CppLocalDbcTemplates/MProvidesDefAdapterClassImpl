@@ -4,7 +4,8 @@
 
 DbC_%(Identifier)sFacetAdapter::DbC_%(Identifier)sFacetAdapter(%(ComponentType)s* c, CCM_%(ComponentType)s* lc)
 {
-  static const char* DbC_FUNCTION_NAME = "DbC_%(Identifier)s%(ProvidesType)s::DbC_%(Identifier)s%(ProvidesType)s(%(ComponentType)s*, CCM_%(ComponentType)s*)";
+  static const char* DbC_FUNCTION_NAME =
+    "DbC_%(Identifier)sFacetAdapter::DbC_%(Identifier)sFacetAdapter(%(ComponentType)s*, CCM_%(ComponentType)s*)";
   DEBUGNL("+DbC_%(Identifier)sFacetAdapter->DbC_%(Identifier)sFacetAdapter()");
   component = c;
   local_component = lc;
@@ -18,7 +19,7 @@ DbC_%(Identifier)sFacetAdapter::~DbC_%(Identifier)sFacetAdapter()
   DEBUGNL ( "-DbC_%(Identifier)sFacetAdapter->~DbC_%(Identifier)sFacetAdapter()" );
 }
 
-void DbC_%(Identifier)s%(ProvidesType)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) throw(CCM_OCL::OclException)
+void DbC_%(Identifier)sFacetAdapter::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) throw(CCM_OCL::OclException)
 {
 %(InvariantInvocation)s
 }
