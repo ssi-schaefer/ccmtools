@@ -44,9 +44,9 @@ class CCM_%(Identifier)s_Context;
 //==============================================================================
 
 class %(Identifier)s
-  : public LocalComponents::ReleaseInformation%(BaseType)s,
-    virtual public LocalComponents::CCMObject
-    %(MSupportsDefBase)s
+  : virtual public LocalComponents::CCMObject 
+   %(MSupportsDefBase)s
+   %(BaseType)s 	
 {
  protected:
   %(HomeType)s* home_local_adapter;
@@ -67,12 +67,6 @@ class %(Identifier)s
 %(MUsesDefConnectPrototype)s
 %(MUsesDefGetConnectionPrototype)s
 %(MSupportsDefAdapterPrototype)s
-
-  // Version / release information functions
-
-  const std::string getComponentVersion (  ) const;
-  const std::string getComponentDate (  ) const;
-  const std::string getComponentUUID (  ) const;
 
   // Navigation functions
   WX::Utils::SmartPtr<LocalComponents::Object> provide_facet ( const std::string& name )
@@ -286,32 +280,6 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object (  )
 %(MProvidesDefAdapterDefinition)s
 %(MUsesDefAdapterDefinition)s
 %(MSupportsDefAdapterImplDefinition)s
-
-// Release / version functions
-
-const std::string
-%(Identifier)s::getComponentVersion() const
-{
-  DEBUGNL ( " %(Identifier)s->getComponentVersion (  )" );
-  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
-  return "%(VersionNumber)s";
-}
-
-const std::string
-%(Identifier)s::getComponentDate() const
-{
-  DEBUGNL ( " %(Identifier)s->getComponentDate (  )" );
-  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
-  return "%(CurrentDate)s";
-}
-
-const std::string
-%(Identifier)s::getComponentUUID() const
-{
-  DEBUGNL ( " %(Identifier)s->getComponentUUID (  )" );
-  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
-  return "%(UUIdentifier)s";
-}
 
 // Navigation functions
 
