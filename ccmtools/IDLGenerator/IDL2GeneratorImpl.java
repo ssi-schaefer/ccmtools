@@ -38,6 +38,7 @@ public class IDL2GeneratorImpl
     public IDL2GeneratorImpl(Driver d, File out_dir) throws IOException
     { super("2", d, out_dir); }
 
+
     protected String getLocalValue(String variable)
     {
         if (current_node instanceof MComponentDef ||
@@ -50,5 +51,27 @@ public class IDL2GeneratorImpl
 
         return super.getLocalValue(variable);
     }
+
+
+    /***
+     * The IDL2 files are used by the ORB's IDL compiler to create stub and skeleton code
+     * (*.h and *.cc files). To run the IDL compiler, we need a Makefile.py and a Makefile.
+     * The Makefile calls the ORB's IDL compiler (via ccmtools-idl Python script).
+     * The Mapefile.py forces a call to make and to compile the *.h and *.cc files. 
+     */
+    protected void writeOutput(Template template)
+        throws IOException
+    {
+	super.writeOutput(template);
+
+        template = template_manager.getRawTemplate("MakefilePy");
+        if (template != null)
+            writeFinalizedFile("", "Makefile.py", template.getTemplate());
+
+        template = template_manager.getRawTemplate("MakefileIdl");
+        if(template != null)
+            writeFinalizedFile("", "Makefile", template.getTemplate());
+    }
+
 }
 
