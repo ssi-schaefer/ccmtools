@@ -13,11 +13,11 @@ attribute_basic_types: OK
 A component with attributes of different basic types
 (short, long, float, double, etc.).
 
-attribute_user_types: !!!!! 
+attribute_user_types: OK
 ---------------------
 A component with attributes of different user types 
 (typedef, enum, struct, sequence, etc.).
-=> some problems with parser!
+
 
 
 supports: OK
