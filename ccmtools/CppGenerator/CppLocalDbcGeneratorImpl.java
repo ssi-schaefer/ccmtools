@@ -784,19 +784,12 @@ public class CppLocalDbcGeneratorImpl
                         return type;
                     }
                 }
-                if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
+                /*if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
                 {
-                    System.err.println("TypeCreator.getOclType: could not find '"+
+                    System.out.println("TypeCreator.getOclType: could not find '"+
                         name+"' in class '"+theClass_.getIdentifier()+"' of type '"+
                         theClass_.getClass().getName()+"'");
-                    /*Iterator it1 = theClass_.getContentss().iterator();
-                    while(it1.hasNext())
-                    {
-                        MContained x = (MContained)it1.next();
-                        System.err.println("###  "+x.getClass().getName()+"  :  "+
-                            x.getIdentifier()+"  ###");
-                    }*/
-                }
+                }*/
             }
             if( idlType_!=null )
             {
@@ -816,7 +809,7 @@ public class CppLocalDbcGeneratorImpl
                 // TODO
                 if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
                 {
-                    System.err.println("TypeCreator.getOclType: could not find '"+
+                    System.out.println("TypeCreator.getOclType: could not find '"+
                         name+"' in IDL-type '"+idlType_.getClass().getName()+"'");
                 }
             }
