@@ -88,7 +88,7 @@ if not os.path.isdir(SOURCE_DIR):
 ## find the matching application logic and user types files, and copy them from
 ## the current directory to the generated code directory.
 
-for f in glob.glob('*_app.*') + glob.glob('*_user_types.h') + glob.glob('_check_CCM_Session*.cc'):
+for f in glob.glob('*_app.*') + glob.glob('*_user_types.h') + glob.glob('_check_*.cc'):
      dest_file = find(SOURCE_DIR, f)
      print ' copy file: ' + f
      if not dest_file:

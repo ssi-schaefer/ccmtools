@@ -215,7 +215,7 @@ print 'SorceDir = ' + SOURCE_DIR
 for f in findtail(SOURCE_DIR, '_app.cc') + \
          findtail(SOURCE_DIR, '_app.h') + \
          findtail(SOURCE_DIR, '_user_types.h') + \
-         findhead(SOURCE_DIR, '_check_CCM_Session'):
+         findhead(SOURCE_DIR, '_check_'):
     print ' copy file: ' + f 
     if FORCE_COPY or not os.path.isfile(os.path.basename(f)):
         if copyhere(f):
