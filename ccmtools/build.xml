@@ -110,6 +110,15 @@
 	  <test name="ccmtools.CppGeneratorTest.CppGeneratorTest" />
      </junit>
   </target>
+
+  <target name="check-remote" depends="test"
+     description="Run JUnit remote test cases." >
+     <junit printsummary="yes" haltonfailure="yes" showoutput="yes">
+          <classpath refid="test.classpath" />
+	  <formatter type="brief" />
+	  <test name="ccmtools.CppGeneratorTest.CppRemoteGeneratorTest" />
+     </junit>
+  </target>
   
 
   <!-- Create JavaDoc -->
