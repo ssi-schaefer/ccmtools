@@ -23,6 +23,8 @@ DIST_SUBDIRS = Metamodel IDL3Parser CCDGenerator .     \
 
 dist_noinst_SCRIPTS = template-info
 
+CLASSPATH_ENV = CLASSPATH=${top_builddir}
+
 extra_java_src = Constants.java.in
 noinst_JAVA = $(top_builddir)/Constants.java
 

@@ -13,7 +13,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # tests are generally in order of increasing complexity.
 
-#TESTS = hello-facet.sh
+##TESTS = hello-facet.sh
 TESTS = \
     help.sh                       \
     version.sh                    \

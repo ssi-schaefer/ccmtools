@@ -644,7 +644,10 @@ module returns [MModuleDef mod = null]
     MContained submod = null;
 }
     :   "module" id = identifier
-        { mod = (MModuleDef) verifyNameEmpty(id, mod); }
+        {
+            mod = (MModuleDef) verifyNameEmpty(id, mod);
+            mod.setIdentifier(id);
+        }
         LCURLY { symbolTable.add(id, mod); symbolTable.pushScope(id); }
         ( defs = definition { if (defs != null) { definitions.addAll(defs); } } )*
         { checkAddContents(mod, definitions); }
