@@ -8,3 +8,6 @@ config.h.in
 configure
 configure.in
 acinclude.m4
+install-sh
+missing
+mkinstalldirs

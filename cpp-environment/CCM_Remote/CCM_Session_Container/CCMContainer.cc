@@ -23,10 +23,12 @@
  * This code is based on the MicoCCM implementation of a CCM session container.
  */
 
+#include <WX/Utils/debug.h>
+
 #include "CCMContainer.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 
 //============================================================================
 // Convert C++ to CORBA types

@@ -8,3 +8,8 @@ config.h.in
 configure
 configure.in
 config.log
+depcomp
+install-sh
+missing
+mkinstalldirs
+

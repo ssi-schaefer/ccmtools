@@ -30,24 +30,16 @@
 #include <map>
 #include <string>
 
-#include <CCM_Utils/SmartPointer.h>
-#include <CCM_Utils/Debug.h> 
+#include <WX/Utils/smartptr.h>
+#include <LocalComponents/CCM.h>
 
 #include <Components/CCM.h>
-#include <LocalComponents/CCM.h>
 
 namespace CCM {
   
   //============================================================================
-  // Convert C++ to CORBA types
+  // Convert basic types from C++ to CORBA 
   //============================================================================
-/*  
-  CORBA::Long   long_to_CORBAlong(long i);
-  CORBA::Double double_to_CORBAdouble(double d);
-  
-  char*         string_to_CORBAcharptr(std::string s);
-*/
-
   CORBA::Boolean PK_BOOLEAN_to_CORBAPK_BOOLEAN(const bool);
   CORBA::Char    PK_CHAR_to_CORBAPK_CHAR(const char);
   CORBA::Double  PK_DOUBLE_to_CORBAPK_DOUBLE(const double);
@@ -61,14 +53,8 @@ namespace CCM {
 
 
   //============================================================================
-  // Convert CORBA to C++ types
+  // Convert basic types from CORBA to C++ 
   //============================================================================
-/*  
-  long        CORBAlong_to_long(const CORBA::Long i);
-  double      CORBAdouble_to_double(const CORBA::Double d);
-  std::string CORBAcharptr_to_string(const char* s);
-*/
-
   bool           CORBAPK_BOOLEAN_to_PK_BOOLEAN(const CORBA::Boolean);
   char           CORBAPK_CHAR_to_PK_CHAR(const CORBA::Char);
   double         CORBAPK_DOUBLE_to_PK_DOUBLE(const CORBA::Double);
