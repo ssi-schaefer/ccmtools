@@ -254,7 +254,7 @@ public abstract class OclCodeGenerator
 
 
     /**
-     * Tests if the expression is a helper variable.
+     * Tests if the expression is a helper variable name.
      */
     boolean isHelper( String expr )
     {
@@ -366,6 +366,7 @@ public abstract class OclCodeGenerator
                     MConstraintExpression e = con.getExpression();
                     ConstraintCode c2 = makeCode(e, conCode);
                     conCode.helpers_ += c2.helpers_;
+                    conCode.preStatements_ += c2.preStatements_;
                     conCode.addExpression_And(c2.expression_, e.getExpression(), creator_);
                     conCode.statements_ += makeDbcCondition(c2.expression_, c2.helpers_, conTitle,
                                                             identifier, OclConstants.STEREOTYPE_POSTCONDITION);
@@ -377,6 +378,7 @@ public abstract class OclCodeGenerator
         {
             ConstraintCode c2 = makeCodeForPostcondition( it.next(), op );
             conCode.helpers_ += c2.helpers_;
+            conCode.preStatements_ += c2.preStatements_;
             conCode.addExpression_And(c2.expression_, c2.constraint_, creator_);
             conCode.statements_ += c2.statements_;
         }

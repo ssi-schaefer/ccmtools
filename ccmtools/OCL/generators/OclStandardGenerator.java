@@ -130,6 +130,8 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     abstract protected String getName_ClassBag();
     abstract protected String getName_ClassRange();
 
+    abstract protected String getThis();
+
 
     /**
      * Returns the constants 'true' and 'false'.
@@ -377,6 +379,12 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     }
 
 
+    // ------------------------------------------------------------------------
+
+
+    /**
+     *  property call
+     */
     private String getCode( MPropertyCall pc, boolean setBaseModule, ConstraintCode conCode )
     {
         String code = pc.getName();
@@ -429,9 +437,31 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                 String name = typeChecker_.getLocalAdapterName(baseModuleType_);
                 if( name!=null )
                 {
-                    return getLanguagePathName(name,code);
+                    code = getLanguagePathName(name,code);
                 }
-                return getThis()+code;
+                else
+                {
+                    code = getThis()+code;
+                }
+                if( pc.isPrevious() )
+                {
+                    if( type!=null )
+                    {
+                        String helper = (String)conCode.preHelpers_.get(code);
+                        if( helper==null )
+                        {
+                            String langType = getLanguageType(type, true, true);
+                            helper = getNextHelperName();
+                            conCode.preStatements_ += "  "+langType+" "+helper+" = "+code+";\n";
+                            conCode.preHelpers_.put(code, helper);
+                        }
+                        return helper;
+                    }
+                    else
+                    {
+                        return error("cannot resolve type of @pre-expression");
+                    }
+                }
             }
             return code;
         }
@@ -460,9 +490,12 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     }
 
 
-    abstract protected String getThis();
+    // ------------------------------------------------------------------------
 
 
+    /**
+     *  postfix expression
+     */
     private String getCode( MPostfixExpression pfe, ConstraintCode conCode )
     {
         MExpression expr = pfe.getExpression();

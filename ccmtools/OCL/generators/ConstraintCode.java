@@ -21,6 +21,7 @@
 
 package ccmtools.OCL.generators;
 
+import java.util.HashMap;
 import oclmetamodel.*;
 import ccmtools.Metamodel.BaseIDL.*;
 import ccmtools.Metamodel.ComponentIDL.*;
@@ -47,6 +48,11 @@ public abstract class ConstraintCode
      * extra statements for "@pre"
      */
     public String preStatements_;
+
+    /**
+     * maps the initial value of a helper variable (only for "@pre"!) to the variable name
+     */
+    HashMap preHelpers_ = new HashMap();
 
     /**
      * the expression (source code)
