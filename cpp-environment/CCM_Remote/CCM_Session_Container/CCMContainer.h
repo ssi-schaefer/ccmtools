@@ -1,4 +1,6 @@
-/* CCM Tools : C++ Code Generator 
+/* -*- mode: C++; c-basic-offset: 4 -*-
+ *
+ * CCM Tools : C++ Code Generator 
  * Egon Teiniker <egon.teiniker@tugraz.at>
  * copyright (c) 2002, 2003 Salomon Automation
  *
@@ -38,207 +40,143 @@
 namespace CCM {
   
   //============================================================================
-  // Convert basic types from C++ to CORBA 
-  //============================================================================
-
-  void convertToCorba(const bool&          , CORBA::Boolean&);
-  void convertToCorba(const char&          , CORBA::Char&);
-  void convertToCorba(const double&        , CORBA::Double&); 
-  void convertToCorba(const float&         , CORBA::Float&);
-  void convertToCorba(const long&          , CORBA::Long&);
-  void convertToCorba(const unsigned char& , CORBA::Octet&);
-  void convertToCorba(const short&         , CORBA::Short&);
-  void convertToCorba(const std::string&   , char*& );
-  void convertToCorba(const unsigned long& , CORBA::ULong&);
-  void convertToCorba(const unsigned short&, CORBA::UShort&);
-
-
-  //============================================================================
-  // Convert basic types from CORBA to C++ 
-  //============================================================================
-
-  void convertFromCorba(const CORBA::Boolean&, bool&);
-  void convertFromCorba(const CORBA::Char&   , char&);
-  void convertFromCorba(const CORBA::Double& , double&);
-  void convertFromCorba(const CORBA::Float&  , float&);
-  void convertFromCorba(const CORBA::Long&   , long&);
-  void convertFromCorba(const CORBA::Octet&  , unsigned char&);
-  void convertFromCorba(const CORBA::Short&  , short&);
-  void convertFromCorba(const char*&         , std::string&);
-  void convertFromCorba(char*&               , std::string&);
-  void convertFromCorba(const CORBA::ULong&  , unsigned long&);  
-  void convertFromCorba(const CORBA::UShort& , unsigned short&);
-
-
-  //============================================================================
   // Base for all Containers
   //============================================================================
   
-  class ContainerBase
-    : virtual public WX::Utils::RefCounted
+    class ContainerBase
+	: virtual public WX::Utils::RefCounted
     {
     protected:
-      static CORBA::ULong _container_number;
-      CORBA::ULong _my_number;
-
-    public:
-      ContainerBase ();
-      virtual ~ContainerBase ();
-      virtual void activate () = 0;
-      virtual void passivate () = 0;
-      virtual void remove () = 0;
-
-      virtual CORBA::Boolean
-      compare (Components::CCMHome_ptr) = 0;
-
-      /*
-       * for SessionContext
-       */
-
-      virtual Components::CCMHome_ptr
-      get_CCM_home () = 0;
-
-      virtual CORBA::Object_ptr
-      get_CCM_object (LocalComponents::EnterpriseComponent*) = 0;
-    };
-
-
-
-    //============================================================================
-    // Session Container
-    //============================================================================
-
-    class SessionContainer 
-      : virtual public ContainerBase 
-      {
-      private:
-	CORBA::ORB_var _orb;
-	PortableServer::POA_var _my_poa;
+	static CORBA::ULong globalContainerNumber_;
+	CORBA::ULong containerNumber_;
 	
-      public:
+    public:
+	ContainerBase ();
+	virtual ~ContainerBase();
+	virtual void activate() = 0;
+	virtual void passivate() = 0;
+	virtual void remove() = 0;
+	
+	virtual CORBA::Boolean compare(Components::CCMHome_ptr) = 0;
+	
+	virtual Components::CCMHome_ptr get_CCM_home () = 0;
+	virtual CORBA::Object_ptr
+	get_CCM_object(LocalComponents::EnterpriseComponent*) = 0;
+    };
+    
+
+
+    //==========================================================================
+    // Session Container
+    //==========================================================================
+    
+    class SessionContainer 
+	: virtual public ContainerBase 
+    {
+    private:
+	CORBA::ORB_var orb_;
+	PortableServer::POA_var poa_;
+	
+    public:
 	struct ComponentInfo {
-	  std::string home_short_name;
-	  std::string home_absolute_name;
-	  std::string home_id;
-	  std::string component_short_name;
-	  std::string component_absolute_name;
-	  std::string component_id;
-	  LocalComponents::HomeExecutorBase* home_instance;
-	  PortableServer::ServantBase_var home_glue;
+	    std::string home_short_name;
+	    std::string home_absolute_name;
+	    std::string home_id;
+	    std::string component_short_name;
+	    std::string component_absolute_name;
+	    std::string component_id;
+	    LocalComponents::HomeExecutorBase* home_instance;
+	    PortableServer::ServantBase_var home_glue;
 	};
 	
-      private:
+    private:
 	ComponentInfo _info;
 	bool _have_info;
 	
 	struct PerComponentData {
-	  CORBA::Boolean configuration_complete;
-	  PortableServer::ServantBase_var glue;
-	  LocalComponents::EnterpriseComponent* instance;
-	  CORBA::Object_var reference;
-	  std::map<std::string, PortableServer::ServantBase_var> facet_glue;
-	  std::map<std::string, void*> facet_instance;
-	  std::map<std::string, CORBA::Object_var> facet_reference;
+	    CORBA::Boolean configuration_complete;
+	    PortableServer::ServantBase_var glue;
+	    LocalComponents::EnterpriseComponent* instance;
+	    CORBA::Object_var reference;
+	    std::map<std::string, PortableServer::ServantBase_var> facet_glue;
+	    std::map<std::string, void*> facet_instance;
+	    std::map<std::string, CORBA::Object_var> facet_reference;
 	};
-	
+      
 	CORBA::Object_var _home_ref;
 	typedef std::map<std::string, PortableServer::ObjectId> InstanceMap;
 	InstanceMap active_components;
 	
-      public:
-	SessionContainer (CORBA::ORB_ptr orb);
-	~SessionContainer ();
+    public:
+	SessionContainer(CORBA::ORB_ptr orb);
+	~SessionContainer();
 	
-	void load (const ComponentInfo & info);
-	void activate ();
-	void passivate ();
-	void remove ();
+	void load(const ComponentInfo & info); 
+	void activate();  
+	void passivate(); 
+	void remove();    
 	
-	virtual CORBA::Boolean
-	  compare (Components::CCMHome_ptr);
+	virtual CORBA::Boolean compare (Components::CCMHome_ptr); 
 	
-	/*
-	 * Session Container API
-	 */
 	
-	Components::CCMHome_ptr get_reference_for_home ();
+	// Session Container API
+	Components::CCMHome_ptr get_reference_for_home (); 
 	
 	Components::CCMObject_ptr
-	  activate_component(PortableServer::Servant skel);
+	activate_component(PortableServer::Servant skel);
 	
 	Components::CCMObject_ptr
-	  get_reference_for_component(PortableServer::Servant skel);
+	get_reference_for_component(PortableServer::Servant skel); 
 	
 	PortableServer::Servant
-	  get_skeleton_for_reference(CORBA::Object_ptr ref);
+	get_skeleton_for_reference(CORBA::Object_ptr ref); 
 	
-	Components::CCMObject_ptr
-	  get_reference_for_instance(LocalComponents::EnterpriseComponent*);
+	void deactivate_component(CORBA::Object_ptr ref); 
+	void deactivate_component(PortableServer::Servant skel);
 	
-	LocalComponents::EnterpriseComponent*
-	  get_instance_for_component (PortableServer::Servant skel);
+	// for SessionContext
+	Components::CCMHome_ptr get_CCM_home (); 
 	
-	void
-	  deactivate_component (CORBA::Object_ptr ref);
+	CORBA::Object_ptr 
+	get_CCM_object(LocalComponents::EnterpriseComponent*); 
 	
-	void
-	  deactivate_component (PortableServer::Servant skel);
-	
-	/*
-	 * for SessionContext
-	 */
-	
-	Components::CCMHome_ptr
-	  get_CCM_home ();
-	
+	// Facet management
 	CORBA::Object_ptr
-	  get_CCM_object (LocalComponents::EnterpriseComponent*);
+	activate_facet(PortableServer::Servant comp_glue,  
+		       const char * name,
+		       void* facet_instance,
+		       PortableServer::Servant facet_glue);
 	
-	/*
-	 * Facet management
-	 */
-	
-	CORBA::Object_ptr
-	  activate_facet (PortableServer::Servant comp_glue,
-			  const char * name,
-			  void* facet_instance,
-			  PortableServer::Servant facet_glue);
-	
-	/*
-	 * notify container of configuration_complete
-	 */
-	
-	void configuration_complete (PortableServer::Servant comp_glue);
-      };
-    
-    
+	// notify container of configuration_complete
+	void configuration_complete (PortableServer::Servant comp_glue); 
+    };
+  
+  
 
-
-    //============================================================================
-    // Valuetype implementations
-    //============================================================================
-
-    class Cookie_impl :
-      virtual public OBV_Components::Cookie,
+  //==========================================================================
+  // Valuetype implementations
+  //==========================================================================
+  
+  class Cookie_impl 
+    : virtual public OBV_Components::Cookie,
       virtual public CORBA::DefaultValueRefCountBase
     {
+    private:
+      static long globalId_;
+      long id_;
     public:
-      Cookie_impl ();
+      Cookie_impl();
+  };
+  
+  // Valuetype factories
+  class Cookie_Factory 
+    : virtual public CORBA::ValueFactoryBase
+    {
+    public:
+      CORBA::ValueBase* create_for_unmarshal ();
     };
-
-    /*
-     * Valuetype factories
-     */
-
-
-    class Cookie_Factory :
-      virtual public CORBA::ValueFactoryBase
-      {
-      public:
-	CORBA::ValueBase * create_for_unmarshal ();
-      };
-    
-    void register_all_factories (CORBA::ORB_ptr);
+  
+  void register_all_factories (CORBA::ORB_ptr);
 } // /namespace CCM
 
 #endif
