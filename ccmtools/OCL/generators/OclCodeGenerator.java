@@ -31,6 +31,7 @@ import ccmtools.Metamodel.ComponentIDL.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.Stack;
 import java.io.FileWriter;
 
 
@@ -100,14 +101,75 @@ public abstract class OclCodeGenerator
     }
 
 
+    private int error_counter_;
+
+    public void resetErrorCounter()
+    {
+        error_counter_ = 0;
+    }
+
+    public int getErrorCounter()
+    {
+        return error_counter_;
+    }
+
     /**
      * Prints an error message.
      * @returns a C++/Java comment including the message
      */
     protected String error( String message )
     {
+        error_counter_++;
         System.err.println("--->  "+message);
         return "/* "+message+" */";
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////
+
+
+    private HashMap localVariableNames_ = new HashMap();
+    private HashMap localVariableTypes_ = new HashMap();
+    private Stack variableNameStack_ = new Stack();
+    private Stack variableTypeStack_ = new Stack();
+
+
+    protected void pushLocalVariables()
+    {
+        HashMap oldNames = localVariableNames_;
+        HashMap oldTypes = localVariableTypes_;
+        variableNameStack_.push(oldNames);
+        variableTypeStack_.push(oldTypes);
+        localVariableNames_ = new HashMap(oldNames);
+        localVariableTypes_ = new HashMap(oldTypes);
+    }
+
+
+    protected void popLocalVariables()
+    {
+        localVariableNames_ = (HashMap)variableNameStack_.pop();
+        localVariableTypes_ = (HashMap)variableTypeStack_.pop();
+    }
+
+
+    protected String newLocalVariable( String key, OclType t )
+    {
+        String value = getNextHelperName();
+        localVariableNames_.put(key, value);
+        localVariableTypes_.put(key, t);
+        return value;
+    }
+
+
+    protected String getLocalVariableName( String key )
+    {
+        return (String)localVariableNames_.get(key);
+    }
+
+
+    protected OclType getLocalVariableType( String key )
+    {
+        return (OclType)localVariableTypes_.get(key);
     }
 
 
@@ -188,6 +250,27 @@ public abstract class OclCodeGenerator
     {
         helpersCounter_++;
         return HELPER_NAME_PREFIX + helpersCounter_;
+    }
+
+
+    /**
+     * Tests if the expression is a helper variable.
+     */
+    boolean isHelper( String expr )
+    {
+        if( !expr.startsWith(HELPER_NAME_PREFIX) )
+        {
+            return false;
+        }
+        for( int index=HELPER_NAME_PREFIX.length(); index<expr.length(); index++ )
+        {
+            char c = expr.charAt(index);
+            if( c<'0' || c>'9' )
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -455,9 +538,12 @@ public abstract class OclCodeGenerator
      * @param helpers  the statements of helper variables
      * @param title  the name of the statement
      * @param identifier  the unique name of the OCL context
-     * @param type  the type of the constraint ({@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_INVARIANT}, {@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_PRECONDITION} or {@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_POSTCONDITION})
+     * @param type  the type of the constraint ({@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_INVARIANT},
+                    {@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_PRECONDITION} or
+                    {@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_POSTCONDITION})
      */
-    abstract protected String makeDbcCondition( String expression, String helpers, String title, String identifier, String type );
+    abstract protected String makeDbcCondition( String expression, String helpers, String title,
+                                                String identifier, String type );
 
 
     /**
@@ -563,7 +649,7 @@ public abstract class OclCodeGenerator
      *
      * @param expression  the OCL expression
      * @param reference  reference parameters
-     * @return the C++ code (only {@link ConstraintCode#helpers_} and {@link ConstraintCode#expression_})
+     * @return the source code (only {@link ConstraintCode#helpers_} and {@link ConstraintCode#expression_})
      */
     protected ConstraintCode makeCode( MConstraintExpression expression, ConstraintCode reference )
     {
@@ -577,7 +663,7 @@ public abstract class OclCodeGenerator
      * Calculates the helper statements and the source code of an OCL expression.
      *
      * @param expression  the OCL expression
-     * @return the C++ code (only {@link ConstraintCode#helpers_} and {@link ConstraintCode#expression_})
+     * @return the source code (only {@link ConstraintCode#helpers_} and {@link ConstraintCode#expression_})
      */
     public ConstraintCode getCodeForOclExpression( MExpression expression )
     {
@@ -588,13 +674,37 @@ public abstract class OclCodeGenerator
 
 
     /**
+     * Calculates the helper statements and the source code of an OCL expression
+     * and also the type of the expression.
+     *
+     * @param expr     the OCL expression
+     * @param conCode  only {@link ConstraintCode#helpers_} will be changed
+     * @return the source code
+     */
+    protected String makeCode( MExpression expr, ConstraintCode conCode )
+    {
+        String source = makeSourceCode(expr, conCode);
+        OclType type = expr.getOclType();
+        if( type==null )
+        {
+            type = typeChecker_.makeType(expr, conCode);
+            if( type==null )
+            {
+                System.err.println("warning: OclCodeGenerator.makeCode : cannot calculate type of expression");
+            }
+        }
+        return source;
+    }
+
+
+    /**
      * Calculates the helper statements and the source code of an OCL expression.
      *
      * @param expr  the OCL expression
      * @param code  only {@link ConstraintCode#helpers_} will be changed
      * @return the source code
      */
-    abstract protected String makeCode( MExpression expr, ConstraintCode code );
+    abstract protected String makeSourceCode( MExpression expr, ConstraintCode code );
 
 
     /**
@@ -636,6 +746,7 @@ public abstract class OclCodeGenerator
      * @param pc  the property call
      * @param index  the (zero based) index of the parameter
      * @param conCode  no change
+     * @return the type (or null)
      */
     protected OclType getParameterType( MPropertyCall pc, int index, ConstraintCode conCode )
     {
@@ -673,7 +784,8 @@ public abstract class OclCodeGenerator
     
     
     /**
-     * Writes the content of {@link invariantCodeMap_}, {@link preconditionCodeMap_} and {@link postconditionCodeMap_}.
+     * Writes the content of {@link invariantCodeMap_}, {@link preconditionCodeMap_}
+     * and {@link postconditionCodeMap_}.
      *
      * @param filename  the name of the text file
      */

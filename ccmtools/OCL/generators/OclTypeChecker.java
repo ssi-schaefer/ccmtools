@@ -30,7 +30,6 @@ import ccmtools.Metamodel.ComponentIDL.*;
  * Calculates the type of OCL expressions.
  *
  * @author Robert Lechner
- * @version 0.1
  */
 public interface OclTypeChecker
 {
@@ -51,4 +50,10 @@ public interface OclTypeChecker
      * @return class name or null
      */
     public String getLocalAdapterName( MContainer theClass );
+
+
+    /**
+     * Returns the variable or function name for an attribute.
+     */
+    public String getAttributeName( String oclName );
 }

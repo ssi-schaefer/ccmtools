@@ -143,15 +143,15 @@ public class CppLocalDbcGeneratorImpl
                 {
                     System.out.println("parse OCL file: " + oclFileName);
                     MFile oclTree = OclParser.parseFile(oclFileName,creator_);
-                    OclXmlWriter writer0 = new OclXmlWriter(new FileWriter(oclFileName+".org.xml"));
+                    /*OclXmlWriter writer0 = new OclXmlWriter(new FileWriter(oclFileName+".org.xml"));
     	            writer0.write(oclTree);
-    	            writer0.close();
+    	            writer0.close();*/
                     //
                     OclNormalization normalization = new OclNormalization(creator_);
                     oclParseTree_ = normalization.normalize(oclTree);
-                    OclXmlWriter writer2 = new OclXmlWriter(new FileWriter(oclFileName+".norm.xml"));
+                    /*OclXmlWriter writer2 = new OclXmlWriter(new FileWriter(oclFileName+".norm.xml"));
     	            writer2.write(oclParseTree_);
-    	            writer2.close();
+    	            writer2.close();*/
         		}
         		else
         		{
@@ -370,14 +370,25 @@ public class CppLocalDbcGeneratorImpl
     {
         super.endGraph();
 	    Debug.println(Debug.METHODS,"CppLocalDbcGeneratorImpl.endGraph()");
-	    try
-	    {
-	        generator_.writeConstraintInformation("constraints.txt", typeChecker_);
-	    }
-	    catch( Exception e )
-	    {
-	        e.printStackTrace();
-	    }
+        if( generator_!=null )
+        {
+            try
+            {
+                generator_.writeConstraintInformation("constraints.txt", typeChecker_);
+            }
+            catch( Exception e )
+            {
+                e.printStackTrace();
+            }
+            int e = generator_.getErrorCounter();
+            if( e>0 )
+            {
+                if( e==1 )  System.err.println("-->  1 error");
+                else  System.err.println("-->  "+e+" errors");
+                System.err.println("code generation failed");
+                System.exit(1);
+            }
+        }
     }
 
 
@@ -433,8 +444,11 @@ public class CppLocalDbcGeneratorImpl
     // Code generator DbC extensions
     //====================================================================
 
-    private static final String CHECK_INVARIANT_CALL_ON_ENTRY = "  DbC_check_invariant(DbC_FUNCTION_NAME,false);";
-    private static final String CHECK_INVARIANT_CALL_ON_EXIT = "  DbC_check_invariant(DbC_FUNCTION_NAME,true);";
+    private static final String CHECK_INVARIANT_CALL_ON_ENTRY =
+        "  DbC_check_invariant(DbC_FUNCTION_NAME,false);";
+
+    private static final String CHECK_INVARIANT_CALL_ON_EXIT =
+        "  DbC_check_invariant(DbC_FUNCTION_NAME,true);";
 
 
     /**
@@ -622,6 +636,15 @@ public class CppLocalDbcGeneratorImpl
         {
             super(creator);
         }
+
+        /**
+         * Returns the variable or function name for an attribute.
+         */
+        public String getAttributeName( String oclName )
+        {
+            return oclName+"()";
+        }
+
 
         /**
          * Returns the class name of the local adpter.

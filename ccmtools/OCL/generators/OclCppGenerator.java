@@ -54,9 +54,12 @@ public class OclCppGenerator extends OclStandardGenerator
      * @param helpers  the statements of helper variables
      * @param title  the name of the statement
      * @param identifier  the unique name of the OCL context
-     * @param type  the type of the constraint ({@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_INVARIANT}, {@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_PRECONDITION} or {@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_POSTCONDITION})
+     * @param type  the type of the constraint ({@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_INVARIANT},
+                    {@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_PRECONDITION} or
+                    {@link ccmtools.OCL.utils.OclConstants#STEREOTYPE_POSTCONDITION})
      */
-    protected String makeDbcCondition( String expression, String helpers, String title, String identifier, String type )
+    protected String makeDbcCondition( String expression, String helpers, String title,
+                                       String identifier, String type )
     {
         String e, onExit="";
         if( type.equals(OclConstants.STEREOTYPE_INVARIANT) )
@@ -152,17 +155,21 @@ public class OclCppGenerator extends OclStandardGenerator
             }
             if( type instanceof OclSequence )
             {
-                return getName_ClassSequence()+"< "+getLanguageType( ((OclSequence)type).getType(), itemAlias, itemAlias )+" >";
+                return getName_ClassSequence()+"< "+
+                       getLanguageType( ((OclSequence)type).getType(), itemAlias, itemAlias )+" >";
             }
             if( type instanceof OclSet )
             {
-                return getName_ClassSet()+"< "+getLanguageType( ((OclSet)type).getType(), itemAlias, itemAlias )+" >";
+                return getName_ClassSet()+"< "+
+                       getLanguageType( ((OclSet)type).getType(), itemAlias, itemAlias )+" >";
             }
             if( type instanceof OclBag )
             {
-                return getName_ClassBag()+"< "+getLanguageType( ((OclBag)type).getType(), itemAlias, itemAlias )+" >";
+                return getName_ClassBag()+"< "+
+                       getLanguageType( ((OclBag)type).getType(), itemAlias, itemAlias )+" >";
             }
-            return getName_ClassCollection()+"< "+getLanguageType( coll.getType(), itemAlias, itemAlias )+" >";
+            return getName_ClassCollection()+"< "+
+                   getLanguageType( coll.getType(), itemAlias, itemAlias )+" >";
         }
         return error("OclCppGenerator.getLanguageType:  unsupported OCL type: "+type.getName());
     }
@@ -266,26 +273,18 @@ public class OclCppGenerator extends OclStandardGenerator
     }
 
 
-    protected String getStatements_CollectionRange( MCollectionRange range, String result, ConstraintCode conCode )
+    protected String getStatements_CollectionRange( MCollectionRange range, String result,
+                                                    ConstraintCode conCode )
     {
-        String code1 = makeCode(range.getLowerRange(),conCode);
-        String code2 = makeCode(range.getUpperRange(),conCode);
+        String code1 = makeCode(range.getLowerRange(), conCode);
+        String code2 = makeCode(range.getUpperRange(), conCode);
         String lower = getNextHelperName();
         String upper = getNextHelperName();
         String index = getNextHelperName();
-	return "  const "+OCL_INTEGER+" "+lower+" = "+code1+";\n"+
-	       "  const "+OCL_INTEGER+" "+upper+" = "+code2+";\n"+
-	       "  for("+OCL_INTEGER+" "+index+"="+lower+"; "+index+"<="+upper+"; "+index+"++)\n"+
-	       "    "+result+".add("+index+");\n";
-    }
-
-
-    /**
-     * Returns the constants 'true' and 'false'.
-     */
-    protected String getLiteral_Boolean( boolean value, ConstraintCode code )
-    {
-        return value ? "true" : "false";
+        return "  const "+OCL_INTEGER+" "+lower+" = "+code1+";\n"+
+               "  const "+OCL_INTEGER+" "+upper+" = "+code2+";\n"+
+               "  for("+OCL_INTEGER+" "+index+"="+lower+"; "+index+"<="+upper+"; "+index+"++)\n"+
+               "    "+result+".add("+index+");\n";
     }
 
 
@@ -361,7 +360,8 @@ public class OclCppGenerator extends OclStandardGenerator
         String result = getNextHelperName();
         conCode.helpers_ += "  const int "+lower+" = "+p1+";\n"+      // not OCL_INTEGER !
                             "  const int "+upper+" = "+p2+";\n"+      // not OCL_INTEGER !
-                            "  const "+OCL_STRING+" "+result+" = "+exprCode+".substr("+lower+"-1,"+upper+"-"+lower+"+1);\n";
+                            "  const "+OCL_STRING+" "+result+" = "+exprCode+".substr("+lower+"-1,"+
+                                                                   upper+"-"+lower+"+1);\n";
         return result;
     }
 
@@ -568,13 +568,23 @@ public class OclCppGenerator extends OclStandardGenerator
     }
 
 
-    protected String getExpr_symmetricDifference( String collItem, String exprCode, String param, ConstraintCode conCode )
+    protected String getExpr_symmetricDifference( String collItem, String exprCode, String param,
+                                                  ConstraintCode conCode )
     {
         String h1 = getNextHelperName();
         String h2 = getNextHelperName();
         conCode.helpers_ += "  "+getName_ClassSet()+"< "+collItem+" > "+h1+"("+exprCode+");\n"+
                             "  "+getName_ClassSet()+"< "+collItem+" > "+h2+"("+param+");\n";
         return "OCL_symmetricDifference("+h1+","+h2+")";
+    }
+
+
+    protected String copyCollection( String collClass, String collItem,
+                                     String exprCode, ConstraintCode conCode )
+    {
+        String h = getNextHelperName();
+        conCode.helpers_ += "  "+collClass+"< "+collItem+" > "+h+"("+exprCode+");\n";
+        return h;
     }
 
 
@@ -619,5 +629,137 @@ public class OclCppGenerator extends OclStandardGenerator
     protected String getExpr_Real_equals( String real1, String real2, ConstraintCode conCode )
     {
         return "OCL_equals("+real1+","+real2+")";
+    }
+
+
+    protected String setCollectionIterator( String collVarName, String cppItem,
+                                            String iteratorVarName, ConstraintCode conCode )
+    {
+        String index = getNextHelperName();
+        conCode.helpers_ += "  for(int "+index+"=0; "+index+"<"+collVarName+".size(); "+index+"++)\n"+
+                            "  {\n"+
+                            "    "+cppItem+" "+iteratorVarName+"="+collVarName+"["+index+"];\n";
+        return "  }\n";
+    }
+
+
+    protected String setBooleanHelper( String initValue, ConstraintCode conCode )
+    {
+        String h = getNextHelperName();
+        conCode.helpers_ += "  "+OCL_BOOLEAN+" "+h+" = "+initValue+";\n";
+        return h;
+    }
+
+
+    protected void setOrStatement( String result, String param1, String param2,
+                                   ConstraintCode conCode )
+    {
+        conCode.helpers_ += "    "+result+" = ("+param1+")||("+param2+");\n";
+    }
+
+
+    protected void setAndStatement( String result, String param1, String param2,
+                                    ConstraintCode conCode )
+    {
+        conCode.helpers_ += "    "+result+" = ("+param1+")&&("+param2+");\n";
+    }
+
+
+    /**
+     * Starts the collection operations 'select' and 'reject'.
+     *
+     * @param cppCollection     type of the collection
+     * @param cppItem           type of one element of the collection
+     * @param collVarName       variable name of the collection
+     * @param iteratorVarName   variable name of the iterator
+     * @param conCode           only 'conCode.helpers_' will be changed
+     *
+     * @return variable name of the result of the operation
+     */
+    protected String start_select( String cppCollection, String cppItem, String collVarName,
+                                   String iteratorVarName, ConstraintCode conCode)
+    {
+        String result = getNextHelperName();
+        String index = getNextHelperName();
+        conCode.helpers_ += "  "+cppCollection+"< "+cppItem+" > "+result+";\n"+
+                            "  for(int "+index+"=0; "+index+"<"+collVarName+".size(); "+index+"++)\n"+
+                            "  {\n"+
+                            "    "+cppItem+" "+iteratorVarName+"="+collVarName+"["+index+"];\n";
+        return result;
+    }
+
+
+    /**
+     * Finishes the collection operations 'select' and 'reject'.
+     *
+     * @param condition         the source code of the condition
+     * @param iteratorVarName   variable name of the iterator
+     * @param resultVarName     the return value of {@link start_select}
+     * @param conCode           only 'conCode.helpers_' will be changed
+     * @param reject            true if the operation is 'reject' (and not 'select')
+     */
+    protected void finish_select( String condition, String iteratorVarName,
+                                  String resultVarName, ConstraintCode conCode,
+                                  boolean reject)
+    {
+        if( reject )
+        {
+            conCode.helpers_ += "    if(!("+condition+"))\n";
+        }
+        else
+        {
+            conCode.helpers_ += "    if("+condition+")\n";
+        }
+        conCode.helpers_ += "    {\n"+
+                            "      "+resultVarName+".add("+iteratorVarName+");\n"+
+                            "    }\n"+
+                            "  }\n";
+    }
+
+
+    protected String getExpr_Collection_any( String collVarName, String cppItem,
+                                             ConstraintCode conCode )
+    {
+        String result = getNextHelperName();
+        conCode.helpers_ += "  if("+collVarName+".size()<1)\n"+
+                            "  {\n"+
+                            "    const char* msg=\"collection operation 'any': no element found\";\n"+
+                            "    DEBUGNL(msg);\n"+
+                            "    throw OclException(msg,DbC_FUNCTION_NAME,__FILE__,__LINE__);\n"+
+                            "  }\n"+
+                            "  "+cppItem+" "+result+" = "+collVarName+"[0];\n";
+        return result;
+    }
+
+
+    /**
+     * Returns the statements of the collection operation 'collect'.
+     *
+     * @param resultCollectionType    collection type of the result
+     * @param resultItemType          item type of the result
+     * @param resultVarName           variable name of the result
+     * @param inputVarName            variable name of the input collection
+     * @param inputItemType           item type of the input collection
+     * @param iteratorVarName         variable name of the iterator
+     * @param expression              source code of the expression
+     */
+    protected String getStatements_collect( String resultCollectionType,
+        String resultItemType, String resultVarName, String inputVarName,
+        String inputItemType, String iteratorVarName, String expression )
+    {
+        String index = getNextHelperName();
+        return "  "+resultCollectionType+"< "+resultItemType+" > "+resultVarName+";\n"+
+               "  for(int "+index+"=0; "+index+"<"+inputVarName+".size(); "+index+"++)\n"+
+               "  {\n"+
+               "    "+inputItemType+" "+iteratorVarName+" = "+inputVarName+"["+index+"];\n"+
+               "    "+resultVarName+".add("+expression+");\n"+
+               "  }\n";
+    }
+
+
+    protected String getExpr_Collection_isUnique( String collVarName,
+                                                  ConstraintCode conCode )
+    {
+        return collVarName+".isUnique()";
     }
 }

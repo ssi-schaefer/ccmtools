@@ -58,7 +58,8 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
 
     abstract protected String getStatement_CollectionInit( String cppClass, String cppType, String result );
     abstract protected String getStatement_CollectionAdd( String collection, String code );
-    abstract protected String getStatements_CollectionRange( MCollectionRange range, String result, ConstraintCode conCode );
+    abstract protected String getStatements_CollectionRange( MCollectionRange range, String result,
+                                                             ConstraintCode conCode );
 
     abstract protected String getExpr_If( String exprCond, String exprTrue, String exprFalse );
     abstract protected String getExpr_Divide( String z, String n, ConstraintCode code );
@@ -69,7 +70,8 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     abstract protected String getExpr_String_concat( String exprCode, String parameter, ConstraintCode conCode );
     abstract protected String getExpr_String_toUpper( String exprCode, ConstraintCode conCode );
     abstract protected String getExpr_String_toLower( String exprCode, ConstraintCode conCode );
-    abstract protected String getExpr_String_substring( String exprCode, String p1, String p2, ConstraintCode conCode );
+    abstract protected String getExpr_String_substring( String exprCode, String p1, String p2,
+                                                        ConstraintCode conCode );
     abstract protected String getExpr_Integer_abs( String exprCode, ConstraintCode conCode );
     abstract protected String getExpr_Integer_div( String exprCode, String param, ConstraintCode conCode );
     abstract protected String getExpr_Integer_mod( String exprCode, String param, ConstraintCode conCode );
@@ -83,27 +85,44 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     abstract protected String getExpr_Set_union( String exprCode, String param, ConstraintCode conCode );
     abstract protected String getExpr_Collection_union( String exprCode, String param, ConstraintCode conCode );
     abstract protected String getExpr_Collection_size( String exprCode, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_includes( String exprCode, String param, ConstraintCode conCode );
+    abstract protected String getExpr_Collection_includes( String exprCode, String param,
+                                                           ConstraintCode conCode );
     abstract protected String getExpr_Collection_count( String exprCode, String param, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_includesAll( String exprCode, String param, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_excludesAll( String exprCode, String param, ConstraintCode conCode );
+    abstract protected String getExpr_Collection_includesAll( String exprCode, String param,
+                                                              ConstraintCode conCode );
+    abstract protected String getExpr_Collection_excludesAll( String exprCode, String param,
+                                                              ConstraintCode conCode );
     abstract protected String getExpr_Collection_isEmpty( String exprCode, ConstraintCode conCode );
     abstract protected String getExpr_Bag_intersection( String exprCode, String param, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_intersection( String exprCode, String param, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_including( String collClass, String collItem, String exprCode, String param, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_excluding( String collClass, String collItem, String exprCode, String param, ConstraintCode conCode );
-    abstract protected String getExpr_symmetricDifference( String collItem, String exprCode, String param, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_asSet( String collItem, String exprCode, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_asBag( String collItem, String exprCode, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_asSequence( String collItem, String exprCode, ConstraintCode conCode );
+    abstract protected String getExpr_Collection_intersection( String exprCode, String param,
+                                                               ConstraintCode conCode );
+    abstract protected String getExpr_Collection_including( String collClass, String collItem,
+                                                            String exprCode, String param,
+                                                            ConstraintCode conCode );
+    abstract protected String getExpr_Collection_excluding( String collClass, String collItem,
+                                                            String exprCode, String param,
+                                                            ConstraintCode conCode );
+    abstract protected String getExpr_symmetricDifference( String collItem, String exprCode,
+                                                           String param, ConstraintCode conCode );
+    abstract protected String getExpr_Collection_asSet( String collItem, String exprCode,
+                                                        ConstraintCode conCode );
+    abstract protected String getExpr_Collection_asBag( String collItem, String exprCode,
+                                                        ConstraintCode conCode );
+    abstract protected String getExpr_Collection_asSequence( String collItem, String exprCode,
+                                                             ConstraintCode conCode );
     abstract protected String getExpr_Sequence_append( String exprCode, String param, ConstraintCode conCode );
     abstract protected String getExpr_Sequence_prepend( String exprCode, String param, ConstraintCode conCode );
-    abstract protected String getExpr_subSequence( String exprCode, String lower, String upper, ConstraintCode conCode );
+    abstract protected String getExpr_subSequence( String exprCode, String lower, String upper,
+                                                   ConstraintCode conCode );
     abstract protected String getExpr_Sequence_at( String exprCode, String param, ConstraintCode conCode );
     abstract protected String getExpr_Sequence_first( String exprCode, ConstraintCode conCode );
     abstract protected String getExpr_Sequence_last( String exprCode, ConstraintCode conCode );
-    abstract protected String getExpr_Collection_sum( String exprCode, String cppCollection, String cppItem, ConstraintCode conCode );
+    abstract protected String getExpr_Collection_sum( String exprCode, String cppCollection,
+                                                      String cppItem, ConstraintCode conCode );
     abstract protected String getExpr_Real_equals( String real1, String real2, ConstraintCode conCode );
+
+    abstract protected String copyCollection( String collClass, String collItem,
+                                              String exprCode, ConstraintCode conCode );
 
     abstract protected String getName_ClassCollection();
     abstract protected String getName_ClassSequence();
@@ -115,7 +134,10 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     /**
      * Returns the constants 'true' and 'false'.
      */
-    abstract protected String getLiteral_Boolean( boolean value, ConstraintCode code );
+    protected String getLiteral_Boolean( boolean value, ConstraintCode code )
+    {
+        return value ? "true" : "false";
+    }
 
     /**
      * Creates a new string variable with an constant text.
@@ -126,7 +148,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
 
     /**
      * Creates a new real variable.
-     * @param value  the source code of the initial value
+     * @param value  the source code (!) of the initial value
      * @return the name of the variable
      */
     abstract protected String getLiteral_Real( String value, ConstraintCode code );
@@ -144,7 +166,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
      * @param code  only {@link ConstraintCode#helpers_} will be changed
      * @return the source code
      */
-    protected String makeCode( MExpression expr, ConstraintCode code )
+    protected String makeSourceCode( MExpression expr, ConstraintCode code )
     {
         if( expr instanceof MIfExpression )
         {
@@ -357,12 +379,26 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
 
     private String getCode( MPropertyCall pc, boolean setBaseModule, ConstraintCode conCode )
     {
+        String code = pc.getName();
+        if( setBaseModule )
+        {
+            String var = getLocalVariableName(code);
+            if( var!=null )
+            {
+                // local variable
+                OclType t = getLocalVariableType(code);
+                if( t!=null )
+                {
+                    pc.setOclType(t);
+                }
+                return var;
+            }
+        }
         OclType type = pc.getOclType();
         if( type==null )
         {
             type = typeChecker_.makeType(pc,conCode);
         }
-        String code = pc.getName();
         MPropertyCallParameters pcp = pc.getCallParameters();
         if( pcp==null )
         {
@@ -384,7 +420,10 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                     }
                 }
             }
-            code += "()";
+            //
+            /*  an attribute
+            */
+            code = typeChecker_.getAttributeName(code);
             if( setBaseModule )
             {
                 String name = typeChecker_.getLocalAdapterName(baseModuleType_);
@@ -392,7 +431,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                 {
                     return getLanguagePathName(name,code);
                 }
-                code = getThis()+code;
+                return getThis()+code;
             }
             return code;
         }
@@ -602,7 +641,11 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     {
         String cppCollection, cppItem;
         String name = pc.getName();
-        String exprCode = "("+makeCode(expr,conCode)+")";
+        String exprCode = makeCode(expr,conCode);
+        if( !isHelper(exprCode) )
+        {
+            exprCode = "("+exprCode+")";
+        }
         OclType collType = expr.getOclType();
         if( collType==null )
         {
@@ -812,16 +855,272 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         }
         if( name.equals("asBag") )
         {
-            parent.setOclType(creator_.createTypeSet(itemType));
+            parent.setOclType(creator_.createTypeBag(itemType));
             return getExpr_Collection_asBag(cppItem, exprCode, conCode);
         }
         if( name.equals("asSequence") )
         {
-            parent.setOclType(creator_.createTypeSet(itemType));
+            parent.setOclType(creator_.createTypeSequence(itemType));
             return getExpr_Collection_asSequence(cppItem, exprCode, conCode);
         }
+        //
+        if( !isHelper(exprCode) )
+        {
+            exprCode = copyCollection(cppCollection, cppItem, exprCode, conCode);
+        }
+        if( name.equals("exists") )
+        {
+            parent.setOclType(creator_.createTypeBoolean());
+            return make_Collection_exists(pc, cppItem, exprCode, conCode, itemType);
+        }
+        if( name.equals("forAll") )
+        {
+            parent.setOclType(creator_.createTypeBoolean());
+            return make_Collection_forAll(pc, cppItem, exprCode, conCode, itemType);
+        }
+        if( name.equals("select") )
+        {
+            parent.setOclType(collectionType);
+            return make_Collection_select(pc, cppCollection, cppItem, exprCode, conCode, false, itemType);
+        }
+        if( name.equals("reject") )
+        {
+            parent.setOclType(collectionType);
+            return make_Collection_select(pc, cppCollection, cppItem, exprCode, conCode, true, itemType);
+        }
+        if( name.equals("one") )
+        {
+            parent.setOclType(creator_.createTypeBoolean());
+            String c = make_Collection_select(pc, cppCollection, cppItem, exprCode, conCode, false, itemType);
+            String s = getExpr_Collection_size(c, conCode);
+            String op = getLanguageOperator(OclConstants.OPERATOR_EQUAL);
+            String v = getLiteral_Integer(1, conCode);
+            return s+op+v;
+        }
+        if( name.equals("any") )
+        {
+            parent.setOclType(itemType);
+            String c = make_Collection_select(pc, cppCollection, cppItem, exprCode, conCode, false, itemType);
+            return getExpr_Collection_any(c, cppItem, conCode);
+        }
+        if( name.equals("collect") )
+        {
+            return make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem);
+        }
+        if( name.equals("isUnique") )
+        {
+            String c = make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem);
+            parent.setOclType(creator_.createTypeBoolean());
+            return getExpr_Collection_isUnique(c, conCode);
+        }
+        // TODO
         return error("unknown collection operation: "+name);
     }
+
+
+    abstract protected String getExpr_Collection_isUnique( String collVarName,
+                                                           ConstraintCode conCode );
+
+    abstract protected String getExpr_Collection_any( String collVarName, String cppItem,
+                                                      ConstraintCode conCode );
+
+    abstract protected String setCollectionIterator( String collVarName, String cppItem,
+                                                     String iteratorVarName, ConstraintCode conCode );
+
+    abstract protected String setBooleanHelper( String initValue, ConstraintCode conCode );
+
+    abstract protected void setOrStatement( String result, String param1, String param2,
+                                            ConstraintCode conCode );
+
+    abstract protected void setAndStatement( String result, String param1, String param2,
+                                             ConstraintCode conCode );
+
+
+    private String make_Collection_exists( MPropertyCall pc, String cppItem, String collVarName,
+                                           ConstraintCode conCode, OclType itemType )
+    {
+        MPropertyCallParameters pcp = pc.getCallParameters();
+        if( pcp==null )
+        {
+            return error("[exists]: no parameters");
+        }
+        MDeclarator decl = pcp.getDeclarator();
+        if( decl==null )
+        {
+            return error("[exists]: no declarator");
+        }
+        pushLocalVariables();
+        String endCode = "";
+        String helper = setBooleanHelper(getLiteral_Boolean(false, conCode), conCode);
+        Iterator it1 = decl.getNames().iterator();
+        while( it1.hasNext() )
+        {
+            String var = newLocalVariable( ((MName)it1.next()).getValue(), itemType );
+            endCode = setCollectionIterator(collVarName, cppItem, var, conCode) + endCode;
+        }
+        String param = getParameterCode(pc,0,conCode);
+        setOrStatement(helper, helper, param, conCode);
+        conCode.helpers_ += endCode;
+        popLocalVariables();
+        return helper;
+    }
+
+
+    private String make_Collection_forAll( MPropertyCall pc, String cppItem, String collVarName,
+                                           ConstraintCode conCode, OclType itemType )
+    {
+        MPropertyCallParameters pcp = pc.getCallParameters();
+        if( pcp==null )
+        {
+            return error("[forAll]: no parameters");
+        }
+        MDeclarator decl = pcp.getDeclarator();
+        if( decl==null )
+        {
+            return error("[forAll]: no declarator");
+        }
+        pushLocalVariables();
+        String endCode = "";
+        String helper = setBooleanHelper(getLiteral_Boolean(true, conCode), conCode);
+        Iterator it1 = decl.getNames().iterator();
+        while( it1.hasNext() )
+        {
+            String var = newLocalVariable( ((MName)it1.next()).getValue(), itemType );
+            endCode = setCollectionIterator(collVarName, cppItem, var, conCode) + endCode;
+        }
+        String param = getParameterCode(pc,0,conCode);
+        setAndStatement(helper, helper, param, conCode);
+        conCode.helpers_ += endCode;
+        popLocalVariables();
+        return helper;
+    }
+
+
+    /**
+     * Starts the collection operations 'select' and 'reject'.
+     *
+     * @param cppCollection     type of the collection
+     * @param cppItem           type of one element of the collection
+     * @param collVarName       variable name of the collection
+     * @param iteratorVarName   variable name of the iterator
+     * @param conCode           only 'conCode.helpers_' will be changed
+     *
+     * @return variable name of the result of the operation
+     */
+    abstract protected String start_select( String cppCollection, String cppItem, String collVarName,
+                                            String iteratorVarName, ConstraintCode conCode);
+
+    /**
+     * Finishes the collection operations 'select' and 'reject'.
+     *
+     * @param condition         the source code of the condition
+     * @param iteratorVarName   variable name of the iterator
+     * @param resultVarName     the return value of {@link start_select}
+     * @param conCode           only 'conCode.helpers_' will be changed
+     * @param reject            true if the operation is 'reject' (and not 'select')
+     */
+    abstract protected void finish_select( String condition, String iteratorVarName,
+                                           String resultVarName, ConstraintCode conCode,
+                                           boolean reject);
+
+
+    private String make_Collection_select( MPropertyCall pc, String cppCollection, String cppItem,
+                                           String collVarName, ConstraintCode conCode,
+                                           boolean reject, OclType itemType )
+    {
+        String operation = reject ? "[reject]" : "[select]";
+        MPropertyCallParameters pcp = pc.getCallParameters();
+        if( pcp==null )
+        {
+            return error(operation+": no parameters");
+        }
+        MDeclarator decl = pcp.getDeclarator();
+        if( decl==null )
+        {
+            return error(operation+": no declarator");
+        }
+        Iterator it1 = decl.getNames().iterator();
+        if( !it1.hasNext() )
+        {
+            return error(operation+": no iterator");
+        }
+        String var = ((MName)it1.next()).getValue();
+        if( it1.hasNext() )
+        {
+            conCode.helpers_ += error(operation+": too much iterators")+"\n";
+        }
+        pushLocalVariables();
+        var = newLocalVariable(var, itemType);
+        String helper = start_select(cppCollection, cppItem, collVarName, var, conCode);
+        String param = getParameterCode(pc,0,conCode);
+        finish_select(param, var, helper, conCode, reject);
+        popLocalVariables();
+        return helper;
+    }
+
+
+    private String make_collect( MPropertyCall pc, ConstraintCode conCode, OclType itemType,
+                                 OclType collType, MExpression parent, String inputVarName,
+                                 String inputItemType )
+    {
+        MPropertyCallParameters pcp = pc.getCallParameters();
+        if( pcp==null )
+        {
+            return error("[collect]: no parameters");
+        }
+        MDeclarator decl = pcp.getDeclarator();
+        if( decl==null )
+        {
+            return error("[collect]: no declarator");
+        }
+        Iterator it1 = decl.getNames().iterator();
+        if( !it1.hasNext() )
+        {
+            return error("[collect]: no iterator");
+        }
+        String iteratorVarName = ((MName)it1.next()).getValue();
+        if( it1.hasNext() )
+        {
+            conCode.helpers_ += error("[collect]: too much iterators")+"\n";
+        }
+        String resultVarName = getNextHelperName();
+        pushLocalVariables();
+        iteratorVarName = newLocalVariable(iteratorVarName, itemType);
+        String expression = getParameterCode(pc,0,conCode);
+        OclType exprType = getParameterType(pc,0,conCode);
+        String resultItemType = getLanguageType(exprType, true, true);
+        String resultCollectionType;
+        if( collType instanceof OclSequence )
+        {
+            parent.setOclType(creator_.createTypeSequence(exprType));
+            resultCollectionType = getName_ClassSequence();
+        }
+        else
+        {
+            parent.setOclType(creator_.createTypeBag(exprType));
+            resultCollectionType = getName_ClassBag();
+        }
+        conCode.helpers_ += getStatements_collect( resultCollectionType, resultItemType,
+            resultVarName, inputVarName, inputItemType, iteratorVarName, expression );
+        popLocalVariables();
+        return resultVarName;
+    }
+
+
+    /**
+     * Returns the statements of the collection operation 'collect'.
+     *
+     * @param resultCollectionType    collection type of the result
+     * @param resultItemType          item type of the result
+     * @param resultVarName           variable name of the result
+     * @param inputVarName            variable name of the input collection
+     * @param inputItemType           item type of the input collection
+     * @param iteratorVarName         variable name of the iterator
+     * @param expression              source code of the expression
+     */
+    abstract protected String getStatements_collect( String resultCollectionType,
+        String resultItemType, String resultVarName, String inputVarName,
+        String inputItemType, String iteratorVarName, String expression );
 
 
     //////////////////////////////////////////////////////////////////////////
