@@ -75,6 +75,14 @@ public class IDL2GeneratorImpl
         throws IOException
     {
         super.writeOutput(template);
+
+	template = template_manager.getRawTemplate("MakefilePy");
+        if (template != null)
+            writeFinalizedFile("", "Makefile.py", template.getTemplate());
+ 
+        template = template_manager.getRawTemplate("MakefileIdl");
+        if(template != null)
+            writeFinalizedFile("", "Makefile", template.getTemplate());
     }
 }
 
