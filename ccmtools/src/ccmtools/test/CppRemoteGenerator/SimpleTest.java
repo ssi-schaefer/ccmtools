@@ -53,6 +53,7 @@ public class SimpleTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(
                      testDir
                              + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
@@ -74,6 +75,7 @@ public class SimpleTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(
                      testDir
                              + "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc",
@@ -99,6 +101,7 @@ public class SimpleTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
                     + "/impl/Test_impl.cc");
             copyFile(
@@ -122,6 +125,7 @@ public class SimpleTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
                     + "/impl/Test_impl.cc");
             copyFile(
@@ -148,6 +152,7 @@ public class SimpleTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + "/impl/Test_my_facet_impl.cc", sandboxDir
                     + "/impl/Test_my_facet_impl.cc");
             copyFile(
@@ -171,6 +176,7 @@ public class SimpleTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + "/impl/Test_my_facet_impl.cc", sandboxDir
                     + "/impl/Test_my_facet_impl.cc");
             copyFile(
@@ -198,6 +204,7 @@ public class SimpleTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + "/impl/Test_in_port_impl.cc", sandboxDir
                     + "/impl/Test_in_port_impl.cc");
             copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
@@ -223,6 +230,7 @@ public class SimpleTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
                     + "/impl/Test_impl.cc");
             copyFile(testDir + "/impl/Test_in_port_impl.cc", sandboxDir

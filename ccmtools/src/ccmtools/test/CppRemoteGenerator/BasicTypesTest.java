@@ -53,11 +53,9 @@ public class BasicTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
+            copyFile(testDir + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
+                     sandboxDir + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {
@@ -78,13 +76,11 @@ public class BasicTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
                     + "/impl/Test_impl.cc");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
+            copyFile(testDir + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
+                     sandboxDir + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {
@@ -105,13 +101,11 @@ public class BasicTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + "/impl/Test_iface_impl.cc", sandboxDir
                     + "/impl/Test_iface_impl.cc");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
+            copyFile(testDir + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
+                     sandboxDir + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {
@@ -132,15 +126,13 @@ public class BasicTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
                     + "/impl/Test_impl.cc");
             copyFile(testDir + "/impl/Test_inPort_impl.cc", sandboxDir
                     + "/impl/Test_inPort_impl.cc");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
+            copyFile(testDir + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
+                     sandboxDir + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {

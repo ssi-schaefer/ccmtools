@@ -83,6 +83,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
                      sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
 
@@ -126,6 +127,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
                      sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
 
@@ -170,6 +172,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
                     + "/impl/Test_impl.cc");
             copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
@@ -213,6 +216,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
                     + "/impl/Test_impl.cc");
             copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
@@ -259,9 +263,9 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
                      sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
-
             copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir
                     + "/impl/MyObject.cc");
             copyFile(test_dir + "/impl/MyObject.h", sandbox_dir
@@ -313,6 +317,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_console_impl.cc", sandbox_dir
                     + "/impl/Test_console_impl.cc");
             copyFile(test_dir + "/impl/Test_mirror_impl.cc", sandbox_dir
@@ -363,6 +368,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_console_impl.cc", sandbox_dir
                     + "/impl/Test_console_impl.cc");
             copyFile(test_dir + "/impl/Test_mirror_impl.cc", sandbox_dir
@@ -410,6 +416,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_a_facet_impl.cc", sandbox_dir
                     + "/impl/Test_a_facet_impl.cc");
             copyFile(test_dir + "/impl/Test_mirror_impl.cc", sandbox_dir
@@ -461,6 +468,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir
                     + "/impl/MyObject.cc");
             copyFile(test_dir + "/impl/MyObject.h", sandbox_dir
@@ -512,6 +520,8 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Console.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
+            
             runConfix("--packageroot=" + sandbox_dir
                     + " --bootstrap --configure --make --targets=check");
             runConfix("--packageroot=" + sandbox_dir
@@ -557,6 +567,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
                     + "/impl/Test_impl.cc");
 
@@ -606,6 +617,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
                     + "/impl/Test_impl.cc");
             copyFile(test_dir + "/impl/Test_mirror_console_mirror_impl.cc",
@@ -657,6 +669,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir
                     + "/impl/MyObject.cc");
             copyFile(test_dir + "/impl/MyObject.h", sandbox_dir
@@ -707,6 +720,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
                     + "/impl/Test_impl.cc");
             copyFile(test_dir + "/impl/Test_mirror_console_mirror_impl.cc",
@@ -752,6 +766,7 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
                     + "/impl/Test_impl.cc");
             copyFile(test_dir + "/impl/Test_mirror_iface_mirror_impl.cc",
@@ -813,6 +828,8 @@ public class TypesTest extends CcmtoolsTestCase
                     + sandbox_dir + "/idl3/component" + " " + sandbox_dir
                     + "/idl3/component/world/europe/austria/Test.idl");
 
+            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
+            
             runConfix("--packageroot=" + sandbox_dir
                     + " --bootstrap --configure --make --targets=check");
             runConfix("--packageroot=" + sandbox_dir

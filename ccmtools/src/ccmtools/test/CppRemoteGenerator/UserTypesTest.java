@@ -56,6 +56,7 @@ public class UserTypesTest extends CcmtoolsTestCase
 
             String testFile = "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc";
             String implFile = "/impl/Test_console_impl.cc";
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + testFile, sandboxDir + testFile);
             copyFile(testDir + implFile, sandboxDir + implFile);
 
@@ -76,9 +77,10 @@ public class UserTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
+            
             String implFile = "/impl/Test_console_impl.cc";
             String testFile = "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc";
-
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + testFile, sandboxDir + testFile);
             copyFile(testDir + implFile, sandboxDir + implFile);
 
@@ -102,6 +104,7 @@ public class UserTypesTest extends CcmtoolsTestCase
 
             String testFile = "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc";
             String implFile = "/impl/Test_iface_impl.cc";
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + testFile, sandboxDir + testFile);
             copyFile(testDir + implFile, sandboxDir + implFile);
 
@@ -125,6 +128,7 @@ public class UserTypesTest extends CcmtoolsTestCase
 
             String testFile = "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc";
             String implFile = "/impl/Test_iface_impl.cc";
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + testFile, sandboxDir + testFile);
             copyFile(testDir + implFile, sandboxDir + implFile);
 
@@ -154,6 +158,7 @@ public class UserTypesTest extends CcmtoolsTestCase
 
             String implFile1 = "/impl/Test_impl.cc";
             String implFile2 = "/impl/Test_inPort_impl.cc";
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + implFile1, sandboxDir + implFile1);
             copyFile(testDir + implFile2, sandboxDir + implFile2);
 
@@ -178,7 +183,7 @@ public class UserTypesTest extends CcmtoolsTestCase
             String testFile = "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc";
             String implFile1 = "/impl/Test_impl.cc";
             String implFile2 = "/impl/Test_inPort_impl.cc";
-
+            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
             copyFile(testDir + testFile, sandboxDir + testFile);
             copyFile(testDir + implFile1, sandboxDir + implFile1);
             copyFile(testDir + implFile2, sandboxDir + implFile2);

@@ -10,31 +10,22 @@ Release 0.5.1
 
 Dokumentation:
 --------------
+o) add HelloComponent example to the Tutorial
 o) add remote example to the Tutorial
 o) add DbC example to the Tutorial
 o) add nested component composition example to the Tutorial
 
 
-ccmtools refactoring:
----------------------
-o) remove base_namespace from local and remote generators 
-o) organize generation of namespaces and scoped names across generator hierarchies
-o) use ccmtools.utils.text.* in all generators (instead inheritance of join, etc)
-o) replace bin/Python scripts with shell scripts that define their own CLASSPATH
-o) Use the CCM_INSTALL environment variable from .confix to define prefix
-o) replace ccmtools/bin/* Python scripts with shell scripts
-
-
 c++local generator:
 -------------------
 *) generate deploy_CCM_Local*() and undeploy_CCM_Local*() functions with coded namespace.
-o) implement a C++ version of deploy_* and undeploy_* too.
-o) add Constants.Version to all generated files.
+*) add Constants.Version to all generated files.
 o) add AssemblyFactory Template to CCM.h
 o) generate debug output with parameter values.
 o) JUnit test case for nested component composition
-o) Performance Measurement
+*) Performance Measurement
 o) overwrite impl/ComponentHome_entry.h by each generator start.
+o) implement a C++ version of deploy_* and undeploy_* too.
 
 
 c++remote generator:
@@ -42,21 +33,27 @@ c++remote generator:
 *) separate deploy_CCM_Local*() from deploy_CCM_Remote*()
 *) generate deploy_CCM_Remote*() functions with coded namespace.
 *) add a deploy_with_ior_CCM_Remote*() function to run without NameService
-o) implement a C++ version of deploy_* and undeploy_* too.
 *) remove second context object created by the c++remote generator and use receptacle 
    Adapter as a local receptacle for connection to a local component 
    - change connect method
    - change disconnect method
+*) add ccmtools/idl/CCM.idl directory
+*) add Constants.Version to all generated files.
 o) add support for multiple receptacles
 *) add test cases for component attributes
 *) add test case for facet attributes
-o) test cases for supported interfaces
-o) test cases for interfaces as parameters
+o) add test cases for supported interfaces
+o) add test cases for interfaces as parameters
 o) collect test cases 
 o) generate debug output with parameter values.
-o) JUnit test case for nested component composition
-o) Performance Measurement
+o) add test case for nested component composition
+*) Performance Measurement
 o) implement undeploy_*() functions 
+o) implement a C++ version of deploy_* and undeploy_* too.
+o) remove CORBA::Stubs namespace from idl3 to idl2 generator
+o) generate adapter classes (*ToCorba, *FromCorba) for each IDL interface and use these
+   adapter classes within the remote component logic.
+o) generate the namespace into the converter file-name 
 
 
 c++remote-test generator:
@@ -83,9 +80,10 @@ o) implement utils.CORBA.setDefaultValue() for structures.
 o) add Components.jar build from ccmtools/idl/CCM.idl
 
 
-ccmtools-package:
------------------
-*) add idl/CCM.idl directory
+uml2idl:
+--------
+o) generate include statements from <<extern>> declarations
+o) check model errors 
 
 
 bugfixes:
@@ -93,6 +91,16 @@ bugfixes:
 *) 1100738 The same exception will be generated many times
 *) 1101544 Namespace conflict using exceptions
 *) 1101651 Namespace conflict using interfaces in remote component
+
+
+ccmtools refactoring:
+---------------------
+o) remove base_namespace from local and remote generators 
+o) organize generation of namespaces and scoped names across generator hierarchies
+o) use ccmtools.utils.text.* in all generators (instead inheritance of join, etc)
+o) replace bin/Python scripts with shell scripts that define their own CLASSPATH
+o) Use the CCM_INSTALL environment variable from .confix to define prefix
+*) replace ccmtools/bin/* Python scripts with shell scripts
 
 
 
