@@ -730,13 +730,7 @@ abstract public class CodeGenerator
      * @param node the node to use for gathering include statement information.
      * @return a string containing an #include statement.
      */
-    protected String getScopedInclude(MContained node)
-    {
-        List scope = getScope(node);
-        scope.add(0, namespace.get(0));
-        scope.add(node.getIdentifier());
-        return "#include <" + join(file_separator, scope) + ".h>";
-    }
+    abstract protected String getScopedInclude(MContained node);
 
     /**
      * Get the fully scoped identifier for the given node. If the current scope
@@ -879,11 +873,11 @@ abstract public class CodeGenerator
             if (current_node instanceof MTyped) {
                 MIDLType idl_type = ((MTyped) current_node).getIdlType();
                 if (idl_type instanceof MContained) {
-                    return getScopedInclude((MContained) idl_type);
+                    value = getScopedInclude((MContained) idl_type);
                 } else if (idl_type instanceof MTyped) {
                     MIDLType sub_type = ((MTyped) idl_type).getIdlType();
                     if (sub_type instanceof MContained)
-                        return getScopedInclude((MContained) sub_type);
+                        value = getScopedInclude((MContained) sub_type);
                 }
             }
         } else if (variable.equals("BaseInclude")) {
@@ -892,7 +886,7 @@ abstract public class CodeGenerator
                 List bases = new ArrayList();
                 for (Iterator i = iface.getBases().iterator(); i.hasNext(); )
                     bases.add(getScopedInclude((MInterfaceDef) i.next()));
-                return join("\n", bases);
+                value = join("\n", bases);
             }
         } else if (variable.equals("ExceptionInclude")) {
             value = getFullScopeInclude((MExceptionDef) current_node);
@@ -930,7 +924,7 @@ abstract public class CodeGenerator
             // This is just a useful default ; subclasses should override this
             // case if they need to pass a particular second parameter.
 
-            return handleNamespace(variable, "");
+            value = handleNamespace(variable, "");
         }
 
         return value;

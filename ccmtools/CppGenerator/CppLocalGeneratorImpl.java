@@ -112,24 +112,6 @@ public class CppLocalGeneratorImpl
     }
 
     /**
-     * Finalize the output files. This function just writes a minimal Confix
-     * configuration file with the -D flags for the compiler.
-     *
-     * @param defines a map of environment variables and their associated
-     *        values. This usually contains things like the package name,
-     *        version, and other generation info.
-     * @param files a list of the filenames (usually those that were provided to
-     *        the generator front end).
-     */
-    public void finalize(Map defines, List files)
-    {
-        Template template = template_manager.getRawTemplate("Confix");
-        if (template != null)
-            writeFinalizedFile("", "confix.conf",
-                               template.substituteVariables(defines));
-    }
-
-    /**
      * Write generated code to an output file.
      *
      * @param template the template object to get the generated code structure
@@ -206,7 +188,7 @@ public class CppLocalGeneratorImpl
 
     /**************************************************************************/
 
-    private String outputDirectory(String local)
+    private String getOutputDirectory(String local)
     {
         List names = new ArrayList(namespace);
         if (! local.equals("")) names.add("CCM_Session_" + local);
@@ -239,7 +221,7 @@ public class CppLocalGeneratorImpl
                 base_name =
                     ((MHomeDef) current_node).getComponent().getIdentifier();
 
-            String base = outputDirectory(base_name);
+            String base = getOutputDirectory(base_name);
 
             f = new ArrayList();
             f.add(base); f.add(node_name + "_gen.h"); files.add(f);
@@ -270,7 +252,7 @@ public class CppLocalGeneratorImpl
                    || (current_node instanceof MEnumDef)
                    || (current_node instanceof MExceptionDef)) {
             f = new ArrayList();
-            f.add(outputDirectory("")); f.add(node_name+".h");
+            f.add(getOutputDirectory("")); f.add(node_name+".h");
             files.add(f);
 
         } else {

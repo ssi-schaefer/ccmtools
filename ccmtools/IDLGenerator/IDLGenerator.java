@@ -204,6 +204,21 @@ abstract public class IDLGenerator
     }
 
     /**
+     * Create an #include statement sufficient for including the given node's
+     * header file. This is normally only valid for C and C++ code generators
+     * and should be overridden for other languages.
+     *
+     * @param node the node to use for gathering include statement information.
+     * @return a string containing an #include statement.
+     */
+    protected String getScopedInclude(MContained node)
+    {
+        List scope = getScope(node);
+        scope.add(node.getIdentifier());
+        return "#include <"+join(file_separator, scope)+".idl"+file_suffix+">";
+    }
+
+    /**
      * Get a local value for the given variable name.
      *
      * This function performs some common value parsing in the CCM MOF library.
