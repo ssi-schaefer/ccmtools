@@ -25,7 +25,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Templates form the information base of code generation.
+ * Templates form the information base of code generation. This interface
+ * provides a thin layer of abstraction over the filesystem to allow a template
+ * manager object to quickly load a given template for a given language.
+ * Templates also provide functionality for finding and substituting template
+ * variables.
  */
 public interface Template
 {

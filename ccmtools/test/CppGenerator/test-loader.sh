@@ -37,29 +37,19 @@ export CLASSPATH=./antlr.jar:../../antlr.jar:.:../..:${CLASSPATH}
 
 # generate, make, check, and uninstall the components.
 
-ret=0
-if [ "${ret}" = "0" ]
-then
-  ccmtools-c++-generate -y -d -i ${install_dir} -c "1.2.3" -p ${1} *.idl || ret=1
-  if [ "${ret}" = "0" ]
-  then
-    ccmtools-c++-make -p ${1} || ret=1
-    if [ "${ret}" = "0" ]
-    then
-      ccmtools-c++-install -p ${1} || ret=1
-      if [ "${ret}" = "0" ]
-      then
-        ccmtools-c++-uninstall -p ${1} || ret=1
-      fi
-    fi
-  fi
+ret=""
+
+if [ ! -e ${install_dir}/lib/libccmtools-cpp-environment_CCM_Utils.a ]
+then ccmtools-c++-environment -i ${install_dir} && ret=1
 fi
 
-${RM} -f *Templates
-${RM} -f antlr.jar
-${RM} -f ccmtools*
-${RM} -f *.idl
-cd ${cwd}
+test -z "${ret}" && ret=1 && \
+  ccmtools-c++-generate -y -d -c "1.2.3" -p ${1} -i ${install_dir} *.idl && \
+  ccmtools-c++-make -p ${1} && \
+  ccmtools-c++-install -p ${1} && \
+  ccmtools-c++-uninstall -p ${1} && ret=0
 
+${RM} -f *Templates antlr.jar ccmtools* *.idl *.cc *.h
+cd ${cwd}
 exit ${ret}
 

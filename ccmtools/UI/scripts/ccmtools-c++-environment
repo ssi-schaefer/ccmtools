@@ -1,0 +1,104 @@
+#! /usr/bin/env python
+
+## ccmtools-c++-environment : C++ environment installation script
+## Leif Johnson <leif@ambient.2y.net>
+## copyright (c) 2002-2003 Salomon Automation
+##
+## $Id$
+##
+## This program is free software; you can redistribute it and/or modify it unde
+## the terms of the GNU General Public License as published by the Free Softwar
+## Foundation; either version 2 of the License, or (at your option) any later
+## version.
+##
+## This program is distributed in the hope that it will be useful, but WITHOUT
+## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+## FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+## details.
+##
+## You should have received a copy of the GNU General Public License along with
+## this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+## Place - Suite 330, Boston, MA 02111-1307, USA.
+
+import os, sys
+
+VERSION = '0.2.0'
+INSTALL_DIR = ''
+
+USAGE = '''Usage: ccmtools-c++-environment [OPTION]...
+
+Install C++ component environment.
+
+Options:
+    -h, --help                 Print out this help
+    -i DIR, --install=DIR      Use DIR as the install prefix [Confix default]
+    -V, --version              Print out ccmtools version information'''
+
+## utility functions.
+
+def remove(dir):
+    try:
+        files = os.listdir(dir)
+        for f in files:
+            new_file = os.path.join(dir, f)
+            if os.path.isdir(new_file): remove(new_file)
+            else:                       os.remove(new_file)
+        os.rmdir(dir)
+    except:
+        return 1
+    return 0
+
+## handle arguments.
+
+index = 1
+while index < len(sys.argv):
+    arg = sys.argv[index]
+    index += 1
+
+    if arg == '-h' or arg.startswith('--h'): print USAGE; sys.exit(0)
+    elif arg == '-i': INSTALL_DIR = sys.argv[index]; index += 1
+    elif arg.startswith('--i') and arg.find('=') > 0:
+        INSTALL_DIR = arg.split('=')[1]
+
+    elif arg == '-V' or arg.startswith('--v'):
+        os.execlp('ccmtools-generate', 'ccmtools-generate', '--version')
+
+## run confix to build and install the environment.
+
+tmp = '/tmp'
+if   'TMP'  in os.environ.keys(): tmp = os.environ['TMP']
+elif 'TEMP' in os.environ.keys(): tmp = os.environ['TEMP']
+elif sys.platform.startswith('win'): tmp = 'c:\\'
+elif sys.platform.startswith('mac'): tmp = os.pathsep
+
+SOURCE_DIR = os.path.join(tmp, 'ccmtools-cpp-environment')
+
+try:
+    if os.system('ccmtools-generate c++local -e -o ' + SOURCE_DIR):
+        raise
+    try:
+        handle = open(os.path.join(SOURCE_DIR, 'Makefile.py'), 'w')
+        handle.write('VERSION("%s")\n' % VERSION)
+    finally:
+        handle.close()
+except:
+    print 'Error creating the ccmtools environment in %s.' % SOURCE_DIR
+    print 'Please report this as a bug at http://ccmtools.sf.net/.'
+    sys.exit(1)
+
+confix_flags  = ' --packagename="ccmtools-cpp-environment"'
+confix_flags += ' --packageversion="%s"' % VERSION
+confix_flags += ' --packageroot="%s"' % SOURCE_DIR
+confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
+confix_flags += ' --profile="ccmtools" --boot --configure --make'
+confix_flags += ' --targets="all install distclean"'
+if INSTALL_DIR: confix_flags += ' --prefix="%s"' % INSTALL_DIR
+
+ret = os.system('confix.py ' + confix_flags)
+ret = ret or remove(SOURCE_DIR)
+
+if ret:
+    print 'The ccmtools environment cannot be installed from %s.' % SOURCE_DIR
+    print 'Please check that your Confix environment is set up correctly.'
+
+sys.exit(ret)

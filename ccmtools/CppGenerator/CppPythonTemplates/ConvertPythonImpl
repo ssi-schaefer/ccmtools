@@ -46,11 +46,33 @@ convert_const_double_to_python ( const double arg )
 { return PyFloat_FromDouble ( arg ); }
 
 PyObject *
-convert_string_to_python ( string arg )
+convert_char_to_python ( char arg )
+{
+  char str[2];
+  str[0] = arg;
+  str[1] = '\0';
+  return PyString_FromString ( str );
+}
+
+PyObject *
+convert_const_char_to_python ( const char arg )
+{
+  char str[2];
+  str[0] = arg;
+  str[1] = '\0';
+  return PyString_FromString ( str );
+}
+
+PyObject *
+convert_string_ref_to_python ( string& arg )
 { return PyString_FromString ( arg.c_str (  ) ); }
 
 PyObject *
 convert_const_string_to_python ( const string arg )
+{ return PyString_FromString ( arg.c_str (  ) ); }
+
+PyObject *
+convert_const_string_ref_to_python ( const string& arg )
 { return PyString_FromString ( arg.c_str (  ) ); }
 
 int
@@ -72,6 +94,13 @@ convert_float_from_python ( PyObject *arg )
 double
 convert_double_from_python ( PyObject *arg )
 { return PyFloat_AsDouble ( arg ); }
+
+char
+convert_char_from_python ( PyObject *arg )
+{
+  char *result = PyString_AsString ( arg );
+  return result[0];
+}
 
 string
 convert_string_from_python ( PyObject *arg )

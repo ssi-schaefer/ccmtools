@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-#
+
 ## ccmtools-c++-make : C++ component build and check
 ## Leif Johnson <leif@ambient.2y.net>
 ## copyright (c) 2002-2003 Salomon Automation
@@ -52,17 +52,6 @@ def find(dir, file):
             result = find(new_file, file)
             if result: return result
     return None
-
-def call_confix(package, source_dir, dest_dir = '', targets = [], args = []):
-    confix_flags  = ' --packagename="%s"' % package
-    confix_flags += ' --configfile="confix.conf"'
-    confix_flags += ' --packageroot="%s"' % source_dir
-    confix_flags += ' --profile="ccmtools"'
-    confix_flags += ' ' + ' '.join(args)
-    if dest_dir: confix_flags += ' --prefix="%s"' % dest_dir
-    if targets:  confix_flags += ' --targets="%s"' % ' '.join(targets)
-
-    return os.system('confix.py ' + confix_flags)
 
 ## handle arguments.
 
@@ -117,5 +106,8 @@ for f in glob.glob('*_app.*') + glob.glob('*_user_types.h'):
 
 ## run confix to build and check components
 
-sys.exit(call_confix(CCMTOOLS_PACKAGE, SOURCE_DIR, args = ['--make'],
-                     targets = ['all', 'check']))
+confix_flags  = ' --packageroot="%s" --profile="ccmtools"' % SOURCE_DIR
+confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
+confix_flags += ' --make --targets="all check"'
+
+sys.exit(os.system('confix.py ' + confix_flags))

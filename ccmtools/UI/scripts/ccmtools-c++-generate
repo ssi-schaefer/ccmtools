@@ -23,7 +23,6 @@
 import os, sys, time
 
 FORCE_COPY = 0
-ENABLE_LIBTOOL = 0
 ENABLE_DEBUG = 0
 ENABLE_PYTHON_TEST = 0
 
@@ -49,7 +48,6 @@ Options:
     -f, --force-copy            Force copying generated application files
     -h, --help                  Print out this help
     -i DIR, --install=DIR       Use DIR as the install prefix [Confix default]
-    -l, --libtool               Enable libtool for building components
     -p NAME, --package=NAME     Set package name to NAME [%s]
     -s DIR, --source=DIR        Store generated source code in DIR
                                 [./<PACKAGE-NAME>]
@@ -96,17 +94,6 @@ def copyhere(file):
         return 1
     return 0
 
-def call_confix(package, version, source_dir, dest_dir = '', args = []):
-    confix_flags  = ' --packagename="%s"' % package
-    confix_flags += ' --packageversion="%s"' % version
-    confix_flags += ' --packageroot="%s"' % source_dir
-    confix_flags += ' --configfile="confix.conf"'
-    confix_flags += ' --profile="ccmtools"'
-    confix_flags += ' ' + ' '.join(args)
-    if dest_dir: confix_flags += ' --prefix="%s"' % dest_dir
-
-    return os.system('confix.py ' + confix_flags)
-
 ## handle arguments.
 
 index = 1
@@ -126,7 +113,6 @@ while index < len(sys.argv):
     elif arg.startswith('--i') and arg.find('=') > 0:
         INSTALL_DIR = arg.split('=')[1]
 
-    elif arg == '-l' or arg.startswith('--l'): ENABLE_LIBTOOL = 1
     elif arg == '-p': CCMTOOLS_PACKAGE = sys.argv[index]; index += 1
     elif arg.startswith('--pa') and arg.find('=') > 0:
         CCMTOOLS_PACKAGE = arg.split('=')[1]
@@ -220,8 +206,12 @@ for f in findtail(SOURCE_DIR, '_app.cc') + \
             print 'Error copying %s to current directory.'
             sys.exit(1)
 
-a = ['--bootstrap', '--configure']
-if ENABLE_LIBTOOL: a.append('--use-libtool')
-sys.exit(call_confix(CCMTOOLS_PACKAGE, CODE_VERSION,
-                     SOURCE_DIR, INSTALL_DIR, args = a))
+confix_flags  = ' --packagename="%s"' % CCMTOOLS_PACKAGE
+confix_flags += ' --packageroot="%s"' % SOURCE_DIR
+confix_flags += ' --packageversion="%s" --profile="ccmtools"' % CODE_VERSION
+confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
+confix_flags += ' --bootstrap --configure'
+if INSTALL_DIR: confix_flags += ' --prefix="%s"' % INSTALL_DIR
+
+sys.exit(os.system('confix.py' + confix_flags))
 
