@@ -10,7 +10,8 @@ dist_noinst_DATA = \
   ccmtools-c++-make              \
   ccmtools-c++-install           \
   ccmtools-c++-uninstall         \
-  ccmtools-idl
+  ccmtools-idl                   \
+  uml2idl
 
 bin_SCRIPTS = $(dist_noinst_DATA)
 
