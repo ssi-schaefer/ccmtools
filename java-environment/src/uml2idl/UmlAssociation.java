@@ -124,12 +124,13 @@ class UmlAssociation extends uml_parser.uml.MAssociation implements Worker
         else
         {
             UmlModelElementStereotype newStereotypes = new UmlModelElementStereotype(null);
-    	    copyStereotype(UmlAttribute.CCM_PROVIDES, newStereotypes, main);
-    	    copyStereotype(UmlAttribute.CCM_USES, newStereotypes, main);
-    	    copyStereotype(UmlAttribute.CCM_EMITS, newStereotypes, main);
-    	    copyStereotype(UmlAttribute.CCM_PUBLISHES, newStereotypes, main);
-    	    copyStereotype(UmlAttribute.CCM_CONSUMES, newStereotypes, main);
-    	    Vector comments = findChildren(MModelElement_comment.xmlName__);
+            copyStereotype(UmlAttribute.CCM_PROVIDES, newStereotypes, main);
+            copyStereotype(UmlAttribute.CCM_USES1, newStereotypes, main);
+            copyStereotype(UmlAttribute.CCM_USES2, newStereotypes, main);
+            copyStereotype(UmlAttribute.CCM_EMITS, newStereotypes, main);
+            copyStereotype(UmlAttribute.CCM_PUBLISHES, newStereotypes, main);
+            copyStereotype(UmlAttribute.CCM_CONSUMES, newStereotypes, main);
+            Vector comments = findChildren(MModelElement_comment.xmlName__);
             connection_.createAttributes(newStereotypes, main, comments);
         }
     }

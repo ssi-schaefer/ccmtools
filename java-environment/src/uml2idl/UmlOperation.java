@@ -270,7 +270,12 @@ class UmlOperation extends uml_parser.uml.MOperation implements Worker
         {
             tagged_values_ = main.makeModelElementTaggedValues(this);
         }
-        return (String)tagged_values_.get("raises");
+        String result = (String)tagged_values_.get("raises");
+        if( result==null )
+        {
+            result = (String)tagged_values_.get("Raises");
+        }
+        return result;
     }
 
 

@@ -887,17 +887,12 @@ endpackage
 \item Bei einem \emph{typedef} auf einen Basistyp wird als Alias f{\"u}r den
     Basistyp eine UML-Klasse mit dem Stereotype \texttt{CORBAPrimitive}
     verwendet. Der Name der Klasse ist der Name des Basistyps.
-\item Der \emph{tagged value} \texttt{Case} wird bei den UML-Elementen
-    \emph{Attribute} und \emph{AssociationEnd} ben{\"o}tigt.
-    Falls es nicht m{\"o}glich ist beide gleichzeitig zu definieren,
-    so kann f{\"u}r einen auch der Name \texttt{case} verwendet werden.
-\item Der \emph{tagged value} \texttt{raises} wird bei den UML-Elementen
-    \emph{Operation} und \emph{Attribute} ben{\"o}tigt.
-    Falls es nicht m{\"o}glich ist beide gleichzeitig zu definieren,
-    so kann f{\"u}r einen auch der Name \texttt{Raises} verwendet werden.
 \item Bei der Eingabe eines Typs (z.B. f{\"u}r Attribute) ist darauf
     zu achten, dass beim Eintippen des Namens ein neuer Typ angelegt wird.
     Typen sollten daher immer ausgew{\"a}hlt werden.
+\item Die zusätzlichen \emph{stereotypes} und \emph{tagged values}
+    für CORBA und CCM müssen die UML-Basisklasse \texttt{ModelElement} haben,
+    wenn sie in mehr als einem UML-Element benötigt werden.
 \end{itemize}
 
 

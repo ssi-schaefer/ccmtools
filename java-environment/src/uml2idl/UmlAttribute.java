@@ -404,10 +404,6 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
                     tagged_values_ = main.makeModelElementTaggedValues(this);
                 }
                 String raisesText = (String)tagged_values_.get("raises");
-                if( raisesText==null )
-                {
-                    raisesText = (String)tagged_values_.get("Raises");
-                }
                 if( raisesText!=null )
                 {
                     code.append(" raises");
