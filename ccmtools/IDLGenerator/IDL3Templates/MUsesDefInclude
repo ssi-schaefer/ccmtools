@@ -1,0 +1,2 @@
+#include <%(FileNamespace)s_%(UsesType)s.idl3>
+
