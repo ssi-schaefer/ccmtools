@@ -1,0 +1,16 @@
+<body>
+<b><tt>dtd2java</tt></b> is a DTD (Document Type Definition)
+to Java generator. It creates a model to store the data
+and a XML parser, which reads the XML file and returns the parse tree.
+<p>
+Usage: <tt>java ccmtools.dtd2java.Main DTD_file Java_package</tt>
+<br><br>
+The parameter <tt>Java_package</tt> is the Java name of the package
+for the model and the parser. Elements of UML namespaces will be
+stored in own sub-packages.
+<p>
+<b><tt>dtd2java</tt></b> uses the parser generator <a href="http://www.antlr.org">ANTLR</a>.<br>
+Please put the ANTLR Jar-file into your classpath.
+<p>
+The generated XML parser only needs Java 1.4 !
+</body>
