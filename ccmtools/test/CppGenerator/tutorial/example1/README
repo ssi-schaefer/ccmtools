@@ -1,28 +1,39 @@
 Tutorial example 1
 ==================
 
-This is the example of the tutorial's 'Fist Component' chapter.
+This is the example of the tutorial's "Fist Component" chapter.
 It is thought as an entry to the component based development using CCM Tools.
 
 
 How to build and run:
 ---------------------
 
+a) CarRental component, mirror component and test client
+
+# Generate idl3 and idl3 mirror files in the right structure
+$ ccmtools-generate idl3 -o CarRental/idl3 *.idl
+$ ccmtools-generate idl3mirror -o CarRental/idl3 *.idl
+
 # Generate component and mirror component logic as well as a test client
-$ ccmtools-c++-generate -d -a -p CarRental *.idl
+$ ccmtools-generate c++local -o CarRental -ICarRental/idl3/interface CarRental/idl3/interface/BigBusiness/*.idl
+$ ccmtools-generate c++local -a -o CarRental -ICarRental/idl3/component -ICarRental/idl3/interface CarRental/idl3/component/BigBusiness/*.idl
+$ ccmtools-generate c++local-test -o CarRental -ICarRental/idl3/component -ICarRental/idl3/interface CarRental/idl3/component/BigBusiness/CarRental.idl
 
 # Copy business logic and test cases into the component directory
-$ cp src/* CarRental/src/
+$ cp impl/* CarRental/impl/
 
 # Compile the components and run the unit test
 $ confix.py --bootstrap --configure --packageroot=`pwd`/CarRental --make --targets=check
+
+
+b) A client application
 
 # Install the components
 $ confix.py --packageroot=`pwd`/CarRental --make --targets=install
 
 # Compile and run the client
 $ confix.py --bootstrap --configure --packageroot=`pwd`/CarRentalClient --make --targets=install
-$ CarRentalClient_src_client
+$ CCM_INSTALL/bin/CarRentalClient_src_client
 
 # Uninstall client and components
 $ confix.py --packageroot=`pwd`/CarRentalClient --make --targets=uninstall
