@@ -40,7 +40,7 @@ public class Factory
     public static File getMofFile() throws IllegalStateException
     {
         String ccmHome = System.getProperty("CCMTOOLS_HOME");
-        File modelFile = new File(ccmHome,"share/ccmtools/MDR/OCL.xml");
+        File modelFile = new File(ccmHome,"templates/MDR/OCL.xml");
         if( !modelFile.isFile() )
         {
             throw new IllegalStateException("cannot find OCL metamodel: "+modelFile);
@@ -62,7 +62,7 @@ public class Factory
         {
             File modelFile = getMofFile();
             String oclMetamodel = modelFile.toURI().toString();
-            System.out.println("OCL metamodel: "+oclMetamodel);
+            System.out.println("> load OCL metamodel from " + oclMetamodel);
             try
             {
                 creator_ = new OclCreatorImp(oclMetamodel);

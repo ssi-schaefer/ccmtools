@@ -81,25 +81,25 @@ using namespace CCM_OCL;
 
 #define __LOCAL__ADAPTER__NAME__ %(Identifier)s
 
-DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s* h, CCM_%(Identifier)s* lc,
-                                        bool disablePostconditionCheck )
-  throw(LocalComponents::CCMException) : disablePostconditionCheck__(disablePostconditionCheck)
+DbC_%(Identifier)s::DbC_%(Identifier)s(%(HomeType)s* h, CCM_%(Identifier)s* lc, bool disablePostconditionCheck )
+    throw(LocalComponents::CCMException) 
+    : disablePostconditionCheck__(disablePostconditionCheck)
 {
-  static const char* DbC_FUNCTION_NAME =
-    "DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s*, CCM_%(Identifier)s* )";
-  DEBUGNL("+DbC_%(Identifier)s->DbC_%(Identifier)s()");
-  home_local_adapter = h;
-  local_component = lc;
-  context = new CCM_%(Identifier)s_Context_impl (this );
-  ValidConnection = true;
+    static const char* DbC_FUNCTION_NAME =
+        "DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s*, CCM_%(Identifier)s* )";
+    DEBUGNL("+DbC_%(Identifier)s->DbC_%(Identifier)s()");
+    home_local_adapter = h;
+    local_component = lc;
+    context = new CCM_%(Identifier)s_Context_impl (this );
+    ValidConnection = true;
 %(MProvidesDefAdapterVariableInit)s
 %(MUsesDefAdapterVariableInit)s
-  DbC_check_invariant(DbC_FUNCTION_NAME,true);
+    DbC_check_invariant(DbC_FUNCTION_NAME,true);
 }
 
 DbC_%(Identifier)s::~DbC_%(Identifier)s()
 {
-  DEBUGNL("-DbC_%(Identifier)s->~DbC_%(Identifier)s()" );
+    DEBUGNL("-DbC_%(Identifier)s->~DbC_%(Identifier)s()" );
 }
 
 void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) 
