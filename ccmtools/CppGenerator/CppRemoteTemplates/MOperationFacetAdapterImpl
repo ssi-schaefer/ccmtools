@@ -3,9 +3,9 @@
 {
   DEBUGNL(" %(Object)sFacetAdapter::%(Identifier)s()");
 
-  %(MParameterDefConvertParameterToCpp)s
-  %(MParameterDefConvertMethodToCpp)s
-  %(MParameterDefConvertResultToCpp)s
+%(MParameterDefConvertParameter)s
+%(MParameterDefConvertMethod)s
+%(MParameterDefConvertResult)s
 }
 
 

@@ -2,6 +2,7 @@
 ## $Id$
 
 CLASSPATH_ENV = CLASSPATH=$(top_builddir):$(top_srcdir)/lib/antlr.jar
+AM_JAVACFLAGS = -g
 
 grammar_file = $(srcdir)/idl3.g
 generated_files = IDL3Lexer.java IDL3Parser.java IDL3TokenTypes.java

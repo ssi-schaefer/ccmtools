@@ -213,11 +213,6 @@ using namespace CCM_Utils;
   delete local_context;
 }
 
-/*
- * Component Attributes
- */
-%(MAttributeDefEqInterfaceImpl)s
-
 
 /*
  * ReleaseInformation (extensions to CCM)
@@ -252,6 +247,10 @@ char* %(Identifier)s_impl::getComponentUUID()
   return CORBA::string_dup("no UUID"); 
 }
 
+/*
+ * Component Attributes
+ */
+%(MAttributeDefEqInterfaceImpl)s
 
 /*
  * Supported Interfaces

@@ -32,6 +32,7 @@ using namespace CCM_Utils;
 // Convert C++ to CORBA types
 //============================================================================
 
+/*
 CORBA::Long CCM::long_to_CORBAlong(long i)
 {
   DEBUGNL(" CCM::long_to_CORBAlong()");	
@@ -49,14 +50,86 @@ char* CCM::string_to_CORBAcharptr(std::string s)
   DEBUGNL(" CCM::string_to_CORBAcharptr()");	
   return CORBA::string_dup(s.c_str());
 }
+*/
+  
 
+CORBA::Boolean 
+CCM::PK_BOOLEAN_to_CORBAPK_BOOLEAN(const bool value)
+{
+   DEBUGNL(" PK_BOOLEAN_to_CORBAPK_BOOLEAN()");
+   return (CORBA::Boolean)value;
+}
+
+CORBA::Char 
+CCM::PK_CHAR_to_CORBAPK_CHAR(const char value)
+{
+   DEBUGNL(" PK_CHAR_to_CORBAPK_CHAR()");
+   return (CORBA::Char)value;
+}
+
+CORBA::Double  
+CCM::PK_DOUBLE_to_CORBAPK_DOUBLE(const double value)
+{
+   DEBUGNL(" PK_DOUBLE_to_CORBAPK_DOUBLE()");
+   return (CORBA::Double)value;
+}
+
+
+CORBA::Float   
+CCM::PK_FLOAT_to_CORBAPK_FLOAT(const float value)
+{
+   DEBUGNL(" PK_FLOAT_to_CORBAPK_FLOAT()");
+   return (CORBA::Float)value;
+}
+
+CORBA::Long    
+CCM::PK_LONG_to_CORBAPK_LONG(const long value)
+{
+   DEBUGNL(" PK_LONG_to_CORBAPK_LONG()");
+   return (CORBA::Long)value;
+}
+
+CORBA::Octet   
+CCM::PK_OCTET_to_CORBAPK_OCTET(const unsigned char value)
+{
+   DEBUGNL(" PK_OCTET_to_CORBAPK_OCTET()");
+   return (CORBA::Octet)value;
+}
+
+CORBA::Short   
+CCM::PK_SHORT_to_CORBAPK_SHORT(const short value)
+{
+   DEBUGNL(" PK_SHORT_to_CORBAPK_SHORT()");
+   return (CORBA::Short)value;
+}
+
+char*          
+CCM::PK_STRING_to_CORBAPK_STRING(const std::string value)
+{
+   DEBUGNL(" PK_STRING_to_CORBAPK_STRING()");
+   return CORBA::string_dup(value.c_str());
+}
+
+CORBA::ULong   
+CCM::PK_ULONG_to_CORBAPK_ULONG(const unsigned long value)
+{
+   DEBUGNL(" PK_ULONG_to_CORBAPK_ULONG()");
+   return (CORBA::ULong)value;
+}
+
+CORBA::UShort  
+CCM::PK_USHORT_to_CORBAPK_USHORT(const unsigned short value)
+{
+   DEBUGNL(" PK_USHORT_to_CORBAPK_USHORT()");
+   return (CORBA::UShort)value;
+}
 
 
 
 //============================================================================
 // Convert CORBA to C++ types
 //============================================================================
-
+/*
 long CCM::CORBAlong_to_long(CORBA::Long i)
 {
   DEBUGNL(" CCM::CORBAlong_to_long()");	
@@ -74,6 +147,78 @@ std::string CCM::CORBAcharptr_to_string(const char* s)
   DEBUGNL(" CCM::CORBAcharptr_to_string()");	
   return std::string(s);	
 }
+*/
+
+bool           
+CCM::CORBAPK_BOOLEAN_to_PK_BOOLEAN(const CORBA::Boolean value)
+{
+  DEBUGNL(" CORBAPK_BOOLEAN_to_PK_BOOLEAN()");	
+  return (bool)value;	
+}
+
+char           
+CCM::CORBAPK_CHAR_to_PK_CHAR(const CORBA::Char value)
+{
+  DEBUGNL(" CCM::CORBAPK_CHAR_to_PK_CHAR()");
+  return (char)value;
+}
+
+double         
+CCM::CORBAPK_DOUBLE_to_PK_DOUBLE(const CORBA::Double value)
+{
+  DEBUGNL(" CCM::CORBAPK_DOUBLE_to_PK_DOUBLE()");
+  return (double)value;
+}
+
+float          
+CCM::CORBAPK_FLOAT_to_PK_FLOAT(const CORBA::Float value)
+{
+  DEBUGNL(" CCM::CORBAPK_FLOAT_to_PK_FLOAT()");
+  return (float)value;
+}
+
+long           
+CCM::CORBAPK_LONG_to_PK_LONG(const CORBA::Long value)
+{
+  DEBUGNL(" CCM::CORBAPK_LONG_to_PK_LONG()");
+  return (long)value;
+}
+
+unsigned char  
+CCM::CORBAPK_OCTET_to_PK_OCTET(const CORBA::Octet value)
+{
+  DEBUGNL(" CCM::CORBAPK_OCTET_to_PK_OCTET()");
+  return (unsigned char)value;
+}
+
+short          
+CCM::CORBAPK_SHORT_to_PK_SHORT(const CORBA::Short value)
+{
+  DEBUGNL(" CCM::CORBAPK_SHORT_to_PK_SHORT()");
+  return (short)value;
+}
+
+std::string    
+CCM::CORBAPK_STRING_to_PK_STRING(const char* value)
+{
+  DEBUGNL(" CCM::CORBAPK_STRING_to_PK_STRING()");
+  return std::string(value);
+}
+
+unsigned long  
+CCM::CORBAPK_ULONG_to_PK_ULONG(const CORBA::ULong value)
+{
+  DEBUGNL(" CCM::CORBAPK_ULONG_to_PK_ULONG()");
+  return (long)value;
+}
+
+unsigned short 
+CCM::CORBAPK_USHORT_to_PK_USHORT(const CORBA::UShort value)
+{
+  DEBUGNL(" CCM::CORBAPK_USHORT_to_PK_USHORT()");
+  return (unsigned short)value;
+}
+
 
 
 //============================================================================

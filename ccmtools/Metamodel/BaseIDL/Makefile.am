@@ -2,6 +2,7 @@
 ## $Id$
 
 CLASSPATH_ENV = CLASSPATH=
+AM_JAVACFLAGS = -g
 
 dist_noinst_JAVA = \
     BaseIdl.java             \

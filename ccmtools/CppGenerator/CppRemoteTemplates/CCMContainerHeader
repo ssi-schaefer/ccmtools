@@ -41,22 +41,44 @@ namespace CCM {
   //============================================================================
   // Convert C++ to CORBA types
   //============================================================================
-  
+/*  
   CORBA::Long   long_to_CORBAlong(long i);
   CORBA::Double double_to_CORBAdouble(double d);
   
   char*         string_to_CORBAcharptr(std::string s);
+*/
+
+  CORBA::Boolean PK_BOOLEAN_to_CORBAPK_BOOLEAN(const bool);
+  CORBA::Char    PK_CHAR_to_CORBAPK_CHAR(const char);
+  CORBA::Double  PK_DOUBLE_to_CORBAPK_DOUBLE(const double);
+  CORBA::Float   PK_FLOAT_to_CORBAPK_FLOAT(const float);
+  CORBA::Long    PK_LONG_to_CORBAPK_LONG(const long);
+  CORBA::Octet   PK_OCTET_to_CORBAPK_OCTET(const unsigned char);
+  CORBA::Short   PK_SHORT_to_CORBAPK_SHORT(const short);
+  char*          PK_STRING_to_CORBAPK_STRING(const std::string);
+  CORBA::ULong   PK_ULONG_to_CORBAPK_ULONG(const unsigned long);
+  CORBA::UShort  PK_USHORT_to_CORBAPK_USHORT(const unsigned short);
 
 
   //============================================================================
   // Convert CORBA to C++ types
   //============================================================================
-  
-  long        CORBAlong_to_long(CORBA::Long i);
-  double      CORBAdouble_to_double(CORBA::Double d);
+/*  
+  long        CORBAlong_to_long(const CORBA::Long i);
+  double      CORBAdouble_to_double(const CORBA::Double d);
   std::string CORBAcharptr_to_string(const char* s);
+*/
 
-
+  bool           CORBAPK_BOOLEAN_to_PK_BOOLEAN(const CORBA::Boolean);
+  char           CORBAPK_CHAR_to_PK_CHAR(const CORBA::Char);
+  double         CORBAPK_DOUBLE_to_PK_DOUBLE(const CORBA::Double);
+  float          CORBAPK_FLOAT_to_PK_FLOAT(const CORBA::Float);
+  long           CORBAPK_LONG_to_PK_LONG(const CORBA::Long);
+  unsigned char  CORBAPK_OCTET_to_PK_OCTET(const CORBA::Octet);
+  short          CORBAPK_SHORT_to_PK_SHORT(const CORBA::Short);
+  std::string    CORBAPK_STRING_to_PK_STRING(const char*);
+  unsigned long  CORBAPK_ULONG_to_PK_ULONG(const CORBA::ULong);
+  unsigned short CORBAPK_USHORT_to_PK_USHORT(const CORBA::UShort);
 
 
   //============================================================================
