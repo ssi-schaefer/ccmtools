@@ -22,3 +22,6 @@ If you like Ant (as a frontend to Confix ;-), you can say:
 
    # If you only want to install CCM_Local without WX_Utils:
    $ ant CCM_Local	
+
+   # To install both, the local and remote component's environment:
+   $ ant		
