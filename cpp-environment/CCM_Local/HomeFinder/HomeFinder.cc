@@ -54,7 +54,8 @@ HomeFinder::find_home_by_type ( const std::string& home_repid )
 {
   DEBUGNL ( " HomeFinder->find_home_by_type (  )" );
   // TODO
-  throw LocalComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented(
+			    "HomeFinder::find_home_by_type()");
 }
 
 SmartPtr<LocalComponents::CCMHome>
@@ -63,7 +64,8 @@ HomeFinder::find_home_by_component_type ( const std::string& comp_repid )
 {
   DEBUGNL ( " HomeFinder->find_home_by_component_type (  )" );
   // TODO
-  throw LocalComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented(
+                         "HomeFinder::find_home_by_component_type()");
 }
 
 void
