@@ -2,6 +2,7 @@
 // CarRental_mirror - business logic implementation
 //==============================================================================
 
+#include <cassert>
 #include <iostream>
 #include <cmath>
 #include <WX/Utils/debug.h>
@@ -53,6 +54,7 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
       person.id = 1;
       person.first_name = "Franz";
       person.last_name = "Kafka";
+      person.mileage = 0.0;
       ctx->get_connection_maintenance_mirror()->createCustomer(person);
     }
     {
@@ -60,6 +62,7 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
       person.id = 2;
       person.first_name = "Thomas";
       person.last_name = "Bernhard";
+      person.mileage = 0.0;
       ctx->get_connection_maintenance_mirror()->createCustomer(person);
     }
     {
@@ -67,6 +70,7 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
       person.id = 3;
       person.first_name = "Karl";
       person.last_name = "Kraus";
+      person.mileage = 0.0;
       ctx->get_connection_maintenance_mirror()->createCustomer(person);
     }
     {
@@ -99,7 +103,7 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
       person.id = 1;
       person.first_name = "Werner";
       person.last_name = "Schwab";
-      double mileage = 0.0;
+      person.mileage = 0.0;
       ctx->get_connection_maintenance_mirror()->updateCustomer(person);      
 
       CCM_Local::BigBusiness::Customer another_person;
@@ -135,6 +139,8 @@ CCM_CarRental_mirror_impl::ccm_activate (  )
 
       double other_miles;
       other_miles = ctx->get_connection_business_mirror()->getCustomerMiles(id); 
+      cout << other_miles << endl;
+      cout << miles << endl;
       assert( abs(other_miles - miles) < 0.001);
     }
 
