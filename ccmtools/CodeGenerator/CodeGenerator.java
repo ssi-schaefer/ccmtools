@@ -208,8 +208,6 @@ abstract public class CodeGenerator
 
     protected Stack namespace;
 
-    protected Set extern_includes;
-
     protected int flags = 0x0;
 
     public final static int FLAG_APPLICATION_FILES    = 0x0001;
@@ -342,7 +340,6 @@ abstract public class CodeGenerator
 
         namespace = new Stack();
         output_variables = new Hashtable();
-        extern_includes = new HashSet();
     }
 
     /**
@@ -378,32 +375,13 @@ abstract public class CodeGenerator
 
         // update the namespace if this is a module.
 
-        if (node instanceof MModuleDef) {
+        if (node instanceof MModuleDef)
             namespace.push(((MModuleDef) node).getIdentifier());
-        }
 
         // initialize variables in output variables hash.
 
-        for (Iterator i = current_variables.iterator(); i.hasNext(); ) {
+        for (Iterator i = current_variables.iterator(); i.hasNext(); )
             output_variables.put(getScopeID((String) i.next()), "");
-        }
-
-        // if this node is externally defined, add it to the list of external
-        // defines ... for use as needed by the code generators.
-
-        if ((current_node instanceof MContained) &&
-            ! ((MContained) current_node).getSourceFile().equals(""))
-            extern_includes.add(current_node);
-
-        // if the language type of this node is externally defined, add its
-        // language type to the list of external defines.
-
-        if (current_node instanceof MTyped) {
-            MIDLType idl_type = ((MTyped) current_node).getIdlType();
-            if ((idl_type instanceof MContained) &&
-                ! ((MContained) idl_type).getSourceFile().equals(""))
-                extern_includes.add(idl_type);
-        }
     }
 
     /**
@@ -791,24 +769,6 @@ abstract public class CodeGenerator
     }
 
     /**
-     * Gather together a string containing the include statements needed to
-     * include externally defined nodes for the current node.
-     *
-     * @return a string containing #include <....h> statements for all
-     *         externally defined nodes.
-     */
-    protected String collectExternIncludes()
-    {
-        List lines = new ArrayList();
-        for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
-            MContained c = (MContained) i.next();
-            if (output_types.contains(c.toString().split(":")[0]))
-                lines.add(getScopedInclude(c));
-        }
-        return join("\n", lines);
-    }
-
-    /**
      * Get a local value for the given variable name. This function performs
      * some common value parsing in the CCM MOF library. More specific value
      * parsing needs to be provided in the subclass for a given language, in the
@@ -921,6 +881,12 @@ abstract public class CodeGenerator
                     String id = ((MContained) current_node).getIdentifier();
                     throw new RuntimeException("Node '"+id+"' has no home");
                 }
+            }
+        } else if (variable.equals("LanguageTypeInclude")) {
+            if (current_node instanceof MTyped) {
+                MIDLType idl_type = ((MTyped) current_node).getIdlType();
+                if (idl_type instanceof MContained)
+                    return getScopedInclude((MContained) idl_type);
             }
         } else if (variable.endsWith("Namespace")) {
 

@@ -21,14 +21,16 @@
 #include <cassert>
 #include <CCM_Utils/SmartPointer.h>
 #include <localComponents/CCM.h>
-%(ExternInclude)s
 
+%(MAttributeDefInclude)s
+%(MConstantDefInclude)s
 %(MSupportsDefInclude)s
 %(MProvidesDefInclude)s
 %(MConsumesDefInclude)s
 %(MEmitsDefInclude)s
 %(MPublishesDefInclude)s
 %(MUsesDefInclude)s
+%(BaseInclude)s
 
 %(OpenNamespace)s
 

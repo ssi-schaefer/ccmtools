@@ -19,11 +19,13 @@ dist_template_DATA = \
     MAliasDef                                      \
     MAttributeDefAdapterDefinition                 \
     MAttributeDefImplDefinition                    \
+    MAttributeDefInclude                           \
     MAttributeDefPrototype                         \
     MAttributeDefPrototypeVV                       \
     MAttributeDefVariable                          \
     MComponentDef                                  \
     MConsumesDefInclude                            \
+    MConstantDefInclude                            \
     MEmitsDefInclude                               \
     MEnumDef                                       \
     MExceptionDef                                  \
@@ -32,12 +34,16 @@ dist_template_DATA = \
     MFactoryDefAdapterPrototypeV                   \
     MFactoryDefAdapterPrototypeVV                  \
     MFactoryDefImplDefinition                      \
+    MFactoryDefInclude                             \
     MFactoryDefPrototypeV                          \
     MFactoryDefPrototypeVV                         \
     MFieldDef                                      \
+    MFieldDefInclude                               \
+    MFinderDefInclude                              \
     MHomeDef                                       \
     MInterfaceDef                                  \
     MOperationDefPrototypeVV                       \
+    MOperationDefInclude                           \
     MOperationProvidesAdapterDefinition            \
     MOperationProvidesAdapterImplDefinition        \
     MOperationProvidesPrototype                    \
@@ -46,6 +52,7 @@ dist_template_DATA = \
     MOperationSupportsPrototype                    \
     MOperationSupportsPrototypeVV                  \
     MParameterDefAll                               \
+    MParameterDefInclude                           \
     MParameterDefName                              \
     MProvidesDefAdapterClass                       \
     MProvidesDefAdapterClassImpl                   \
@@ -72,6 +79,7 @@ dist_template_DATA = \
     MSupportsDefInclude                            \
     MUnionDef                                      \
     MUnionFieldDef                                 \
+    MUnionFieldDefInclude                          \
     MUsesDefAdapterDefinition                      \
     MUsesDefAdapterDefinitionMultiple              \
     MUsesDefAdapterVariable                        \

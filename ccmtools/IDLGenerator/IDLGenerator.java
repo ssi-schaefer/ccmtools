@@ -26,27 +26,19 @@ import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
-import ccmtools.Metamodel.BaseIDL.MAttributeDef;
-import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
-import ccmtools.Metamodel.BaseIDL.MExceptionDef;
-import ccmtools.Metamodel.BaseIDL.MFieldDef;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
-import ccmtools.Metamodel.BaseIDL.MIDLType;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
-import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
-import ccmtools.Metamodel.BaseIDL.MAliasDef;
-import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.Metamodel.ComponentIDL.MFinderDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
-import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 
 import java.io.File;
 import java.io.IOException;
@@ -256,20 +248,8 @@ abstract public class IDLGenerator
             return data_MFinderDef(variable, value);
         } else if (current_node instanceof MOperationDef) {
             return data_MOperationDef(variable, value);
-        } else if (current_node instanceof MParameterDef) {
-            return data_MParameterDef(variable, value);
         } else if (current_node instanceof MEnumDef)      {
             return data_MEnumDef(variable, value);
-        } else if (current_node instanceof MFieldDef) {
-            return data_MFieldDef(variable, value);
-        } else if (current_node instanceof MUnionFieldDef) {
-            return data_MUnionFieldDef(variable, value);
-        } else if (current_node instanceof MAttributeDef) {
-            return data_MAttributeDef(variable, value);
-        } else if (current_node instanceof MConstantDef) {
-            return data_MConstantDef(variable, value);
-        } else if (current_node instanceof MAliasDef) {
-            return data_MAliasDef(variable, value);
         }
 
         return value;
@@ -324,42 +304,8 @@ abstract public class IDLGenerator
 
     /**************************************************************************/
 
-    protected String data_MAliasDef(String data_type, String data_value)
-    {
-        MIDLType idl_type = ((MAliasDef) current_node).getIdlType();
-        if (data_type.equals("LanguageTypeInclude")) {
-            if (idl_type instanceof MContained) {
-                MContained node = (MContained) idl_type;
-                System.out.println("idl type "+node.getIdentifier()+" is mcontained ...");
-                if (node.getSourceFile().equals("")) {
-                    System.out.println("source file is not original");
-                    return getScopedInclude(node);
-                }
-            }
-        }
-        return data_value;
-    }
-
-    protected String data_MAttributeDef(String data_type, String data_value)
-    {
-        MIDLType idl_type = ((MAttributeDef) current_node).getIdlType();
-        if (data_type.equals("LanguageTypeInclude") &&
-            (idl_type instanceof MContained))
-            return getScopedInclude((MContained) idl_type);
-        return data_value;
-    }
-
     protected String data_MComponentDef(String data_type, String data_value)
     { return data_MInterfaceDef(data_type, data_value); }
-
-    protected String data_MConstantDef(String data_type, String data_value)
-    {
-        MIDLType idl_type = ((MConstantDef) current_node).getIdlType();
-        if (data_type.equals("LanguageTypeInclude") &&
-            (idl_type instanceof MContained))
-            return getScopedInclude((MContained) idl_type);
-        return data_value;
-    }
 
     protected String data_MEnumDef(String data_type, String data_value)
     {
@@ -378,19 +324,6 @@ abstract public class IDLGenerator
 
     protected String data_MFinderDef(String data_type, String data_value)
     { return data_MOperationDef(data_type, data_value); }
-
-    protected String data_MFieldDef(String data_type, String data_value)
-    {
-        MIDLType idl_type = ((MFieldDef) current_node).getIdlType();
-        if (data_type.equals("LanguageTypeInclude")) {
-            if (idl_type instanceof MContained) {
-                MContained node = (MContained) idl_type;
-                if (node.getSourceFile().equals(""))
-                    return getScopedInclude(node);
-            }
-        }
-        return data_value;
-    }
 
     protected String data_MHomeDef(String data_type, String data_value)
     { return data_MInterfaceDef(data_type, data_value); }
@@ -424,31 +357,6 @@ abstract public class IDLGenerator
         else if (data_type.startsWith("MParameterDef") &&
                  data_value.endsWith(", "))
             return data_value.substring(0, data_value.length() - 2);
-        else if (data_type.equals("LanguageTypeInclude") &&
-                 (idl_type instanceof MContained))
-            return getScopedInclude((MContained) idl_type);
-        return data_value;
-    }
-
-    protected String data_MParameterDef(String data_type, String data_value)
-    {
-        MIDLType idl_type = ((MParameterDef) current_node).getIdlType();
-        if (data_type.equals("LanguageTypeInclude") &&
-                 (idl_type instanceof MContained))
-            return getScopedInclude((MContained) idl_type);
-        return data_value;
-    }
-
-    protected String data_MUnionFieldDef(String data_type, String data_value)
-    {
-        MIDLType idl_type = ((MUnionFieldDef) current_node).getIdlType();
-        if (data_type.equals("LanguageTypeInclude")) {
-            if (idl_type instanceof MContained) {
-                MContained node = (MContained) idl_type;
-                if (node.getSourceFile().equals(""))
-                    return getScopedInclude(node);
-            }
-        }
         return data_value;
     }
 }

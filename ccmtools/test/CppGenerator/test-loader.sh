@@ -18,7 +18,7 @@ ${MKDIR} -p ${build_dir} ${install_dir} ${template_dir}
 
 cwd=`pwd`
 
-# heh heh, get a sneaky absolute path for the top source and build dirs.
+# get absolute paths for the top source and build dirs.
 
 cd ${top_srcdir} ; abssrcdir=`pwd` ; cd ${cwd}
 cd ${top_builddir} ; absbuilddir=`pwd` ; cd ${cwd}
@@ -42,7 +42,6 @@ test -e ${install_dir}/lib/libccmtools-cpp-environment_CCM_Utils.a || \
 
 # generate component code.
 
-echo "ccmtools-c++-generate -d -c \"0.1.2\" -p $1 -i ${install_dir} $2 $3"
 test -z "${ret}" && ccmtools-c++-generate -d -c "1.2.3" -p ${1} \
   -i ${install_dir} ${2} ${3} || ret=1
 

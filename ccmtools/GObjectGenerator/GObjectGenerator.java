@@ -38,10 +38,8 @@ import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
-import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
-import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
@@ -222,10 +220,6 @@ abstract public class CppGenerator
             return data_MEnumDef(variable, value);
         } else if (current_node instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
-        } else if (current_node instanceof MStructDef) {
-            return data_MStructDef(variable, value);
-        } else if (current_node instanceof MUnionDef) {
-            return data_MUnionDef(variable, value);
         }
 
         return value;
@@ -305,16 +299,6 @@ abstract public class CppGenerator
             for (Iterator i = array.getBounds().iterator(); i.hasNext(); )
                 result += "[" + (Long) i.next() + "]";
             return result;
-        } else if (data_type.equals("ExternInclude")) {
-            if (idl_type instanceof MContained) {
-                MContained cont = (MContained) idl_type;
-                if (cont.getSourceFile().equals("")) {
-                    List scope = getScope(cont);
-                    scope.add(0, namespace.get(0));
-                    scope.add(cont.getIdentifier());
-                    return "#include <"+join("/", scope)+".h>";
-                }
-            }
         }
 
         return data_value;
@@ -412,30 +396,6 @@ abstract public class CppGenerator
         return data_value;
     }
 
-    protected String data_MStructDef(String data_type, String data_value)
-    {
-        MStructDef struct = (MStructDef) current_node;
-
-        if (data_type.equals("ExternInclude")) {
-            StringBuffer result = new StringBuffer();
-            for (Iterator i = struct.getMembers().iterator(); i.hasNext(); ) {
-                MIDLType idl_type = ((MFieldDef) i.next()).getIdlType();
-                if (idl_type instanceof MContained) {
-                    MContained cont = (MContained) idl_type;
-                    if (cont.getSourceFile().equals("")) {
-                        List scope = getScope(cont);
-                        scope.add(0, namespace.get(0));
-                        scope.add(cont.getIdentifier());
-                        result.append("#include <"+join("/", scope)+".h>\n");
-                    }
-                }
-            }
-            return result.toString();
-        }
-
-        return data_value;
-    }
-
     protected String data_MSupportsDef(String data_type, String data_value)
     {
         MSupportsDef supports = (MSupportsDef) current_node;
@@ -447,30 +407,6 @@ abstract public class CppGenerator
             scope.add(0, namespace.get(0));
             return join("/", scope);
         }
-        return data_value;
-    }
-
-    protected String data_MUnionDef(String data_type, String data_value)
-    {
-        MUnionDef union = (MUnionDef) current_node;
-
-        if (data_type.equals("ExternInclude")) {
-            StringBuffer result = new StringBuffer();
-            for (Iterator i = union.getUnionMembers().iterator(); i.hasNext(); ) {
-                MIDLType idl_type = ((MUnionFieldDef) i.next()).getIdlType();
-                if (idl_type instanceof MContained) {
-                    MContained cont = (MContained) idl_type;
-                    if (cont.getSourceFile().equals("")) {
-                        List scope = getScope(cont);
-                        scope.add(0, namespace.get(0));
-                        scope.add(cont.getIdentifier());
-                        result.append("#include <"+join("/", scope)+".h>\n");
-                    }
-                }
-            }
-            return result.toString();
-        }
-
         return data_value;
     }
 

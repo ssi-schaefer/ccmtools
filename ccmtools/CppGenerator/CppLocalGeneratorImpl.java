@@ -148,50 +148,6 @@ public class CppLocalGeneratorImpl
                                template.substituteVariables(defines));
     }
 
-
-    /**
-     * Overwrites the CppGenerator method, to support the inclusion of
-     * the *_user_types.h file in the component logic.
-     *
-     * @param variable contains the strint that comes from the template
-     *                 file and looks like %(variable)s
-     * @author Egon Teiniker
-     */
-    protected String getLocalValue(String variable)
-    {
-        String value = super.getLocalValue(variable);
-
-	/* If the MComponentDef node does not have any supported interface,
-	 * facet or receptacle, the %(UserTypesInclude)s statement in the
-	 * MComponentDef Template generates a #include<> line that includes the
-	 * user_types.h file (always without the _mirror_ part in the filename).
-         *
-	 * Note that the module names are also part of the include's filename.
-	 */
-	if (current_node instanceof MComponentDef) {
-	    MComponentDef component = (MComponentDef) current_node;
-	    List FacetSet = component.getFacets();
-	    List ReceptacleSet = component.getReceptacles();
-	    List SupportSet = component.getSupportss();
-
-	    if (variable.equals("UserTypesInclude") &&
-                FacetSet.isEmpty() &&
-                ReceptacleSet.isEmpty() &&
-                SupportSet.isEmpty()) {
-
-                String file = component.getIdentifier();
-                String namespace = handleNamespace("IncludeNamespace", "");
-
-                if (file.endsWith("_mirror"))
-                    file = file.substring(0, file.indexOf("_mirror"));
-
-                return "#include <"+namespace+"/"+file+"_user_types.h>";
-	    }
-	}
-
-	return value;
-    }
-
     /**
      * Write generated code to an output file.
      *
@@ -318,8 +274,9 @@ public class CppLocalGeneratorImpl
                    || (current_node instanceof MAliasDef)
                    || (current_node instanceof MEnumDef)
                    || (current_node instanceof MExceptionDef)) {
-            f = new ArrayList(); f.add(handleNamespace("AllFileNamespace", ""));
-            f.add(node_name + ".h"); files.add(f);
+            f = new ArrayList();
+            f.add(handleNamespace("FileNamespace", "")); f.add(node_name+".h");
+            files.add(f);
 
         } else {
             f = new ArrayList(); f.add(""); f.add(""); files.add(f);

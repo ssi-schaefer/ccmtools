@@ -12,7 +12,8 @@
 
 #include <localComponents/CCM.h>
 
-%(ExternInclude)s
+%(MAttributeDefInclude)s
+%(MOperationDefInclude)s
 
 %(OpenNamespace)s
 

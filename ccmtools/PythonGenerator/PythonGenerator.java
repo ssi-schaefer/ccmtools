@@ -38,10 +38,8 @@ import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
-import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
-import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
@@ -200,10 +198,6 @@ abstract public class CppGenerator
             return data_MExceptionDef(variable, value);
         } else if (current_node instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
-        } else if (current_node instanceof MStructDef) {
-            return data_MStructDef(variable, value);
-        } else if (current_node instanceof MUnionDef) {
-            return data_MUnionDef(variable, value);
         }
 
         return value;
@@ -231,12 +225,6 @@ abstract public class CppGenerator
             for (Iterator i = array.getBounds().iterator(); i.hasNext(); )
                 result += "[" + (Long) i.next() + "]";
             return result;
-        } else if (data_type.equals("ExternInclude")) {
-            if (idl_type instanceof MContained) {
-                MContained node = (MContained) idl_type;
-                if (node.getSourceFile().equals(""))
-                    return getScopedInclude(node);
-            }
         } else if (data_type.endsWith("Namespace")) {
             return handleNamespace(data_type, "");
         }
@@ -252,8 +240,6 @@ abstract public class CppGenerator
         } else if (data_type.equals("BaseTypes")) {
             String base = joinBaseNames(", public ");
             if (base.length() > 0) return ", public " + base;
-        } else if (data_type.equals("ExternInclude")) {
-            return collectExternIncludes();
         }
         return data_value;
     }
@@ -306,8 +292,6 @@ abstract public class CppGenerator
         if (data_type.equals("BaseTypes")) {
             String base = joinBaseNames(", public ");
             if (base.length() > 0) return ": public " + base;
-        } else if (data_type.equals("ExternInclude")) {
-            return collectExternIncludes();
         }
         return data_value;
     }
@@ -348,26 +332,6 @@ abstract public class CppGenerator
         return data_value;
     }
 
-    protected String data_MStructDef(String data_type, String data_value)
-    {
-        MStructDef struct = (MStructDef) current_node;
-
-        if (data_type.equals("ExternInclude")) {
-            List lines = new ArrayList();
-            for (Iterator i = struct.getMembers().iterator(); i.hasNext(); ) {
-                MIDLType idl_type = ((MFieldDef) i.next()).getIdlType();
-                if (idl_type instanceof MContained) {
-                    MContained node = (MContained) idl_type;
-                    if (node.getSourceFile().equals(""))
-                        lines.add(getScopedInclude(node));
-                }
-            }
-            return join("\n", lines);
-        }
-
-        return data_value;
-    }
-
     protected String data_MSupportsDef(String data_type, String data_value)
     {
         MSupportsDef supports = (MSupportsDef) current_node;
@@ -380,26 +344,6 @@ abstract public class CppGenerator
             scope.add(0, namespace.get(0));
             return join("/", scope);
         }
-        return data_value;
-    }
-
-    protected String data_MUnionDef(String data_type, String data_value)
-    {
-        MUnionDef union = (MUnionDef) current_node;
-
-        if (data_type.equals("ExternInclude")) {
-            List lines = new ArrayList();
-            for (Iterator i = union.getUnionMembers().iterator(); i.hasNext(); ) {
-                MIDLType idl_type = ((MUnionFieldDef) i.next()).getIdlType();
-                if (idl_type instanceof MContained) {
-                    MContained node = (MContained) idl_type;
-                    if (node.getSourceFile().equals(""))
-                        lines.add(getScopedInclude(node));
-                }
-            }
-            return join("\n", lines);
-        }
-
         return data_value;
     }
 

@@ -16,17 +16,14 @@
 %(ConvertPythonInclude)s
 #endif
 
-#ifdef CCM_TEST_PYTHON
-#include <CCM_Test/Python/call_python.h>
-#include <CCM_Test/Python/convert_python.h>
-%(ConvertPythonInclude)s
-#endif
-
 #include <string>
 #include <map>
 #include <CCM_Utils/SmartPointer.h>
 #include <localComponents/CCM.h>
-%(ExternInclude)s
+
+%(MFactoryDefInclude)s
+%(MFinderDefInclude)s
+%(BaseInclude)s
 
 #include "%(ComponentType)s_gen.h"
 #include "%(ComponentType)s_app.h"
