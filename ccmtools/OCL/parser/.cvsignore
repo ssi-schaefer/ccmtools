@@ -1,0 +1,7 @@
+Makefile
+Makefile.in
+classdist_noinst.stamp
+OCLTokenTypes.txt
+OCLTokenTypes.java
+OclLexer.java
+OclParser.java
