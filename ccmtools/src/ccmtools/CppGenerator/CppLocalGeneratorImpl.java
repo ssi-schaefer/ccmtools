@@ -130,7 +130,12 @@ public class CppLocalGeneratorImpl extends CppGenerator
                 File outFile = new File(output_dir + File.separator + file_dir,
                                         file_name);
                 if((file_dir == "impl") && outFile.isFile()) {
-                    if(!isCodeEqualWithFile(generated_code, outFile)) {
+                    if(outFile.getName().endsWith("_entry.h")) {
+                        // *_entry.h files must be overwritten by every generator
+                        // call because they are part of the component logic
+                        writeFinalizedFile(file_dir, file_name, generated_code);
+                    }
+                    else if(!isCodeEqualWithFile(generated_code, outFile)) {
                         System.out.println("WARNING: " + outFile
                                 + " already exists!");
                         file_name += ".new";

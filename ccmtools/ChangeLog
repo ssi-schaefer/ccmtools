@@ -23,4 +23,8 @@ RELEASE-0.5.1-pre4
 
 RELEASE-0.5.1-pre5
 ----------------------------------------------------------------------------
+*) removed CORBA_Stubs namespace from generated IDL2 and remote C++ files
+
+*) bugfix: *_entry.h files in impl/ must be overwritten by every generator 
+   call because they are part of the component logic.
 
