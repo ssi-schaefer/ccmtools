@@ -1,7 +1,7 @@
 /* CCM Tools : C++ Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
+ * Egon Teiniker <egon.teiniker@salomon.at>
  * Copyright (C) 2002, 2003 Salomon Automation
- *
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -73,9 +73,10 @@ public class CppLocalTestGeneratorImpl
     public void writeOutput(Template template)
         throws IOException
     {
-        String generated_code = template.substituteVariables(output_variables);
+        String generated_code = prettifyCode(template.substituteVariables(output_variables));
 
-        if (generated_code.trim().equals("")) return;
+        if(generated_code.trim().equals("")) 
+	    return;
 
         String node_name = ((MContained) current_node).getIdentifier();
         String file_dir = "test";
@@ -83,7 +84,6 @@ public class CppLocalTestGeneratorImpl
         String file_name = handleNamespace("IncludeNamespace", node_name);
         file_name = file_name.replaceAll("[^\\w]", "_");
         file_name = "_check_" + file_name + ".cc";
-
 	
 	File user_files = new File(output_dir, file_dir);
 	user_files = new File(user_files, file_name);
@@ -94,7 +94,6 @@ public class CppLocalTestGeneratorImpl
 	    file_name += ".new";
 	}
 	writeFinalizedFile(file_dir, file_name, generated_code);
-
 
         File makefile = new File(file_dir, "Makefile.py");
         File check_file = new File(output_dir, makefile.toString());
