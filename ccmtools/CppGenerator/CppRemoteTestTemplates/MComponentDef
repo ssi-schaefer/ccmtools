@@ -1,7 +1,7 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
@@ -11,7 +11,7 @@
 #include <%(IdlFileNamespace)s%(Identifier)s.h>
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 
 //==============================================================================
 // Implementation of remote client test
@@ -19,7 +19,7 @@ using namespace CCM_Utils;
 
 int main (int argc, char *argv[])
 {
-  Debug::set_global(true); 
+  Debug::instance().set_global(true); 
   DEBUGNL("Enter C++ remote test client");
 
   int argc_=3;
