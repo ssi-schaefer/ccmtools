@@ -91,6 +91,7 @@ CppGenerator/CppPythonTemplates/Makefile
 UI/Makefile
 UI/scripts/Makefile
 OCL/Makefile
+OCL/parser/Makefile
 OCL/utils/Makefile
 OCL/generators/Makefile
 )

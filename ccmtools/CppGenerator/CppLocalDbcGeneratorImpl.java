@@ -31,6 +31,7 @@ import ccmtools.Metamodel.BaseIDL.*;
 import ccmtools.Metamodel.ComponentIDL.*;
 
 import oclmetamodel.*;
+import ccmtools.OCL.parser.*;
 import ccmtools.OCL.utils.*;
 import ccmtools.OCL.generators.*;
 
@@ -91,9 +92,9 @@ public class CppLocalDbcGeneratorImpl
     /**
      * The parse tree creator.
      *
-     * @see {@link ccmtools.OCL.utils.Factory#getParsetreeCreator()}
+     * @see {@link ccmtools.OCL.utils.Factory#getElementCreator()}
      */
-    protected OclParsetreeCreator creator_;
+    protected OclElementCreator creator_;
 
     /**
      * The normalized parse tree.
@@ -135,7 +136,7 @@ public class CppLocalDbcGeneratorImpl
             // Parse the OCL file and build the OCL model.
             try
             {
-                creator_ = ccmtools.OCL.utils.Factory.getParsetreeCreator();
+                creator_ = ccmtools.OCL.utils.Factory.getElementCreator();
                 typeChecker_ = new TypeCreator(creator_);
                 String oclFileName = ((MContainer) node).getIdentifier() + ".ocl";
                 if( (new File(oclFileName)).isFile() )
@@ -617,7 +618,7 @@ public class CppLocalDbcGeneratorImpl
         private MOperationContext context_;
         private MTyped returnType_;
 
-        TypeCreator( OclParsetreeCreator creator )
+        TypeCreator( OclElementCreator creator )
         {
             super(creator);
         }
