@@ -107,7 +107,7 @@ public class MofMultiplicityType
             lower_ = convertOne(makeText(field1));
             upper_ = convertOne(makeText(field2));
         }
-        if( upper_<0 )
+        if( lower_<0 && upper_<0 )
         {
             lower_ = 0;
         }
@@ -149,7 +149,7 @@ public class MofMultiplicityType
             lower_ = convertOne(multiplicity.substring(0,index));
             upper_ = convertOne(multiplicity.substring(index+2));
         }
-        if( upper_<0 )
+        if( lower_<0 && upper_<0 )
         {
             lower_ = 0;
         }
