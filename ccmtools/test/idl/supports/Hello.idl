@@ -8,11 +8,7 @@ interface Console {
   long println(in string s2);
 };
 
-interface Console2 {
-  long println2(in string s2);
-};
-
-component Hello supports Console, Console2
+component Hello supports Console
 {
 };
 
