@@ -22,6 +22,7 @@ $Header$
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
   <property name="prefix" location="dist" />
+  <property name="DEBUG" location="on" />
 
 
   <!-- Define different paths that are used in the following tasks -->
@@ -128,10 +129,10 @@ $Header$
 
   <target name="mof_reader" depends="mof_xmi_parser"
       description="Compile mof_xmi_parser and mof_reader.">
-        <javac srcdir="${src}/mof_xmi_parser" destdir="${build3}" debug="on" >
+        <javac srcdir="${src}/mof_xmi_parser" destdir="${build3}" debug="${DEBUG}" >
 	    <classpath refid="compile.classpath" />
         </javac>
-        <javac srcdir="${src}/mof_reader" destdir="${build3}" debug="on" >
+        <javac srcdir="${src}/mof_reader" destdir="${build3}" debug="${DEBUG}" >
 	    <classpath refid="compile.classpath" />
         </javac>
   </target>
