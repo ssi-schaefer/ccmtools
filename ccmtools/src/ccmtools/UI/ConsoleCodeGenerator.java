@@ -147,11 +147,13 @@ public class ConsoleCodeGenerator
                 // step (0). run the C preprocessor on the input file.
                 try {
                     // Run the GNU preprocessor cpp in a separate process.
-                    System.out.println("> cpp -o " + idlfile + " "
-                            + include_path + " " + source);
+                    System.out.println("> " + Constants.CPP_PATH + " -o " 
+                                       		+ idlfile + " " + include_path 
+                                       		+ " " + source);
                     Process preproc = 
-                        Runtime.getRuntime().exec("cpp -o " + idlfile + " " + include_path
-                            + " " + source);
+                        Runtime.getRuntime().exec(Constants.CPP_PATH + " -o"  
+                                                  + idlfile + " " + include_path
+                                                  + " " + source);
                     BufferedReader stdInput = 
                         new BufferedReader(new InputStreamReader(preproc.getInputStream()));
                     BufferedReader stdError = 

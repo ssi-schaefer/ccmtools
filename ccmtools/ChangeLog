@@ -35,3 +35,4 @@ RELEASE-0.5.1-pre6
 *) implemented C++ remote undeploy_*() function
 
 *) added JacORB benchmark client	
+*) added test/prototypes/mico/persistent_object
