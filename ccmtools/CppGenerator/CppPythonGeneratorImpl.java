@@ -51,7 +51,7 @@ public class CppPythonGeneratorImpl
 
     private final static String[] local_output_types =
     {
-        "MComponentDef", "MHomeDef",
+        "MComponentDef", "MInterfaceDef", "MHomeDef",
         "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef"
     };
 
@@ -64,15 +64,16 @@ public class CppPythonGeneratorImpl
     {
         new File("CCM_Test_Python", "call_python.h"),
         new File("CCM_Test_Python", "call_python.cc"),
-        new File("CCM_Test_Python", "convert_python.cc"),
+        new File("CCM_Test_Python", "convert_primitives.h"),
+        new File("CCM_Test_Python", "convert_primitives.cc"),
         new File("CCM_Test_Python", "Makefile.py"),
         new File("CCM_Text_Python_External", "Makefile.py"),
     };
 
     private final static String[] local_environment_templates =
     {
-        "CallPythonHeader", "CallPythonImpl", "ConvertPythonImpl",
-        "Blank", "PythonMakefile",
+        "CallPythonHeader", "CallPythonImpl", "ConvertPrimitivesHeader",
+        "ConvertPrimitivesImpl", "Blank", "PythonMakefile",
     };
 
     /**************************************************************************/
@@ -152,24 +153,20 @@ public class CppPythonGeneratorImpl
 
     /**
      * Return the language type for the given object. This returns the value
-     * given by getLanguageType if the node is neither an MParameterDef or
-     * MOperationDef instance, otherwise it basically adds the C++ specific
-     * parameters needed to correctly interpret the parameter or operation
-     * direction (in, out, inout).
+     * given by getLanguageType, but it replaces non-word characters with
+     * underscores and such.
      *
      * @param object the node object to use for type finding.
      */
     protected String getLanguageType(MTyped object)
     {
         String lang_type = super.getLanguageType(object);
-
         lang_type = lang_type.replaceAll("[*]", "_ptr");
         lang_type = lang_type.replaceAll("&", "_ref");
         lang_type = lang_type.replaceAll("const ", "const_");
-
         lang_type = lang_type.replaceAll("std::", "");
         lang_type = lang_type.replaceAll(sequence_type, "");
-        return lang_type.replaceAll("[ ><]", "");
+        return      lang_type.replaceAll("[ ><]", "");
     }
 
     /**************************************************************************/

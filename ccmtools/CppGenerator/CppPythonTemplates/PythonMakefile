@@ -1,4 +1,4 @@
-EXTERNAL_LIBRARY(name='python', defroot='/usr', lib_bases=['python2.2'], provide=['Python.h'], incdir='include/python2.2')
-EXTERNAL_LIBRARY(name='boostpython', defroot='/usr', lib_bases=['boost_python'], provide=['boost/python.hpp'])
+EXTERNAL_LIBRARY(name='python', defroot='/usr', lib_bases=['python2.3'], provide=['Python.h'], incdir='include/python2.3')
+#EXTERNAL_LIBRARY(name='boostpython', defroot='/usr', lib_bases=['boost_python'], provide=['boost/python.hpp'])
 
 

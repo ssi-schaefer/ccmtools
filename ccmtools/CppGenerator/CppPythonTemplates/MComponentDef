@@ -6,29 +6,193 @@
 
 #include "%(Identifier)s_gen.h"
 
-#include <CCM_Test/Python/call_python.h>
-#include <CCM_Test/Python/convert_python.h>
-#include <CCM_Utils/Debug.h>
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
 
-using namespace std;
-using namespace CCM_Utils;
-using namespace CCM_Local;
-using namespace CCM_Test::Python;
+extern "C" {
 
-%(OpenNamespace)s
+//==============================================================================
+// %(Identifier)s : component adapter class wrapper
+//==============================================================================
 
-%(MProvidesDef)s
-%(MSupportsDef)s
+typedef struct {
+  PyObject_HEAD
+  %(Namespace)s::%(Identifier)s *object;
+} Py%(Identifier)s_Object;
+
+static PyObject *
+Py%(Identifier)s_new ( PyTypeObject *type, PyObject *args, PyObject *kwds )
+{ return ( %(Identifier)s * ) type->tp_alloc ( type, 0 ); }
+
+static int
+Py%(Identifier)s_init ( PyObject *self, PyObject *args, PyObject *kwds )
+{
+  Py%(HomeType)s_Object *h = NULL;
+  PyCCM_%(Identifier)s)_Object *lc = NULL;
+
+  static char *kwlist[] = { "home_local_adapter", "local_component", NULL };
+
+  if (! PyArg_ParseTupleAndKeywords(args, kwds, "|OO", kwlist, &h, &lc))
+    return -1;
+
+  if (h) {
+        Py_XDECREF(self->);
+        Py_INCREF(first);
+        self->first = first;
+    }
+
+  return 0;
+}
+
+static void
+Py%(Identifier)s_dealloc ( %(Identifier)s_Object *self )
+{
+  delete self->object;
+  self->ob_type->tp_free ( ( PyObject * ) self );
+}
+
+static PyMethodDef Py%(Identifier)s_Methods[] {
+  {NULL, NULL, 0} /* end marker */
+};
+
+static PyMemberDef Py%(Identifier)s_Members[] {
+  {NULL, NULL, 0} /* end marker */
+};
+
+static PyTypeObject Py%(Identifier)s_Type = {
+  PyObject_HEAD_INIT ( NULL )
+
+  0, /* ob_size */
+  "%(PythonNamespace)s.%(Identifier)s", /* tp_name */
+  sizeof ( Py%(Identifier)s_Object ), /* tp_basicsize */
+  0, /* tp_itemsize */
+
+  /* methods */
+  (destructor) Py%(Identifier)s_dealloc, /* tp_dealloc */
+  0, /* tp_print */
+  0, /* tp_getattr */
+  0, /* tp_setattr */
+  0, /* tp_compare */
+  0, /* tp_repr */
+  0, /* tp_as_number */
+  0, /* tp_as_sequence */
+  0, /* tp_as_mapping */
+  0, /* tp_hash */
+  0, /* tp_call */
+  0, /* tp_str */
+  0, /* tp_getattro */
+  0, /* tp_setattro */
+  0, /* tp_as_buffer */
+
+  Py_TPFLAGS_DEFAULT, /* tp_flags */
+
+  NULL, /* tp doc */
+
+  0, /* tp_traverse */
+  0, /* tp_clear */
+  0, /* tp_richcompare */
+  0, /* tp_weaklistoffset */
+  0, /* tp_iter */
+  0, /* tp_iternext */
+
+  Py%(Identifier)s_Methods, /* tp_methods */
+  Py%(Identifier)s_Members, /* tp_members */
+
+  0, /* tp_getset */
+  0, /* tp_base */
+  0, /* tp_dict */
+  0, /* tp_descr_get */
+  0, /* tp_descr_set */
+  0, /* tp_dictoffset */
+  0, /* tp_init */
+  0, /* tp_alloc */
+
+  Py%(Identifier)s_new, /* tp_new */
+};
+
+typedef struct {
+  PyObject_HEAD
+  %(Identifier)s *object;
+} Py%(Identifier)s_Object;
+
+static PyObject *
+Py%(Identifier)s_new ( PyTypeObject *type, PyObject *args, PyObject *kwds )
+{
+  Py%(Identifier)s_Object *self = ( %(Identifier)s * ) type->tp_alloc ( type, 0 );
+  if ( self != NULL ) self->object = %(Identifier)s (  );
+  return self;
+}
+
+static void
+Py%(Identifier)s_dealloc ( %(Identifier)s_Object *self )
+{
+  delete self->object;
+  self->ob_type->tp_free ( ( PyObject * ) self );
+}
+
+static PyMethodDef Py%(Identifier)s_Methods[] {
+  {NULL, NULL, 0} /* end marker */
+};
+
+static PyMemberDef Py%(Identifier)s_Members[] {
+  {NULL, NULL, 0} /* end marker */
+};
+
+static PyTypeObject Py%(Identifier)s_Type = {
+  PyObject_HEAD_INIT ( NULL )
+
+  0, /* ob_size */
+  "%(PythonNamespace)s.%(Identifier)s", /* tp_name */
+  sizeof ( Py%(Identifier)s_Object ), /* tp_basicsize */
+  0, /* tp_itemsize */
+
+  /* methods */
+  (destructor) Py%(Identifier)s_dealloc, /* tp_dealloc */
+  0, /* tp_print */
+  0, /* tp_getattr */
+  0, /* tp_setattr */
+  0, /* tp_compare */
+  0, /* tp_repr */
+  0, /* tp_as_number */
+  0, /* tp_as_sequence */
+  0, /* tp_as_mapping */
+  0, /* tp_hash */
+  0, /* tp_call */
+  0, /* tp_str */
+  0, /* tp_getattro */
+  0, /* tp_setattro */
+  0, /* tp_as_buffer */
+
+  Py_TPFLAGS_DEFAULT, /* tp_flags */
+
+  NULL, /* tp doc */
+
+  0, /* tp_traverse */
+  0, /* tp_clear */
+  0, /* tp_richcompare */
+  0, /* tp_weaklistoffset */
+  0, /* tp_iter */
+  0, /* tp_iternext */
+
+  Py%(Identifier)s_Methods, /* tp_methods */
+  Py%(Identifier)s_Members, /* tp_members */
+
+  0, /* tp_getset */
+  0, /* tp_base */
+  0, /* tp_dict */
+  0, /* tp_descr_get */
+  0, /* tp_descr_set */
+  0, /* tp_dictoffset */
+  0, /* tp_init */
+  0, /* tp_alloc */
+
+  Py%(Identifier)s_new, /* tp_new */
+};
 
 %(CloseNamespace)s
 
 #endif
 
 
-
-<<<<<<<SPLIT>>>>>>>
 

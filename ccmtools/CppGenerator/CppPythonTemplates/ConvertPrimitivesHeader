@@ -1,11 +1,8 @@
-#ifndef ___CCM__TEST__PYTHON__CONVERT__PYTHON__H___
-#define ___CCM__TEST__PYTHON__CONVERT__PYTHON__H___
+#ifndef ___CCM__TEST__PYTHON__CONVERT__PRIMITIVE__H___
+#define ___CCM__TEST__PYTHON__CONVERT__PRIMITIVE__H___
 
 #include <string>
 #include <vector>
-#include <deque>
-#include <list>
-#include <set>
 
 #include <Python.h>
 
@@ -41,7 +38,7 @@ string        convert_string_from_python       ( PyObject *arg );
 } // /namespace Python
 } // /namespace CCM_Test
 
-#endif // ___CCM__TEST__PYTHON__CONVERT__PYTHON__H___
+#endif // ___CCM__TEST__PYTHON__CONVERT__PRIMITIVE__H___
 
 
 
