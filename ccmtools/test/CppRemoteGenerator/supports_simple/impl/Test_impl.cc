@@ -16,7 +16,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_app.h"
+#include "Test_impl.h"
 
 using namespace std;
 using namespace WX::Utils;

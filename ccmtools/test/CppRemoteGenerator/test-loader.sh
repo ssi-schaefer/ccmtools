@@ -57,8 +57,8 @@ test -z "${ret}" && ccmtools-generate c++remote-test -o ${1} -i ${2} ${3} || ret
 # build and check. copy the contents of the package directory, if it exists, to
 # the sandbox (this lets us distribute _app.cc files with the tests).
 
-test -d ${abssrcdir}/test/CppRemoteGenerator/${1}/src && \
-  ${CP} -rf ${abssrcdir}/test/CppRemoteGenerator/${1}/src ${1}
+test -d ${abssrcdir}/test/CppRemoteGenerator/${1}/impl && \
+  ${CP} -rf ${abssrcdir}/test/CppRemoteGenerator/${1}/impl ${1}
 
 test -d ${abssrcdir}/test/CppRemoteGenerator/${1}/test && \
   ${CP} -rf ${abssrcdir}/test/CppRemoteGenerator/${1}/test ${1}

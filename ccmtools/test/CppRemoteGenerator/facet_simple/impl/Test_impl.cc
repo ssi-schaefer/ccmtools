@@ -16,14 +16,13 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_app.h"
+#include "Test_impl.h"
 
 using namespace std;
 using namespace WX::Utils;
 using namespace CCM_Local;
 
 namespace CCM_Local {
-namespace world {
 namespace CCM_Session_Test {
 
 //==============================================================================
@@ -97,11 +96,11 @@ my_facet_impl::op1 ( const std::string& str )
   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " my_facet_impl->op1 ( str )" );
+
   cout << ">>> " << str << endl;
   return str.length();
 }
 
 } // /namespace CCM_Session_Test
-} // /namespace world
 } // /namespace CCM_Local
 
