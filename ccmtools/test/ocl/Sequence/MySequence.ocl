@@ -43,4 +43,11 @@ context MySequence
 	inv sequence2_3: seq2->notEmpty()=false
 	inv sequence2_4: seq2->asSet()->isEmpty()
 
+context MySequence::func1(param:Sequence(Integer))
+     pre pre1: param->size() > 0
+     pre pre2: param->size() < 1000
+
+context MySequence::func2(x:Integer)
+     pre pre1: x > 0
+
 endpackage
