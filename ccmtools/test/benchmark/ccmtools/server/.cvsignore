@@ -8,3 +8,4 @@ configure.in
 depcomp
 install-sh
 missing
+server.repo
