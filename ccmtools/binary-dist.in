@@ -2,7 +2,7 @@
 
 PACK=@PACKAGE@-@VERSION@
 
-./autogen.py --prefix=`pwd`/$PACK --enable-docs && \
+./autogen.py --prefix=`pwd`/$PACK --enable-docs --disable-tests && \
   make && make install && cp -pr doc $PACK && cp -p README.binary $PACK && \
   rm -f `find $PACK/doc -regex ".*\.\(tex\|aux\|dvi\|toc\|log\|fig\|eps\|bbl\|bib\|blg\)$"` && \
   rm -f $PACK/doc/convert-for-website.sh && \

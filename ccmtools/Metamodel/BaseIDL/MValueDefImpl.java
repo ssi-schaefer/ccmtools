@@ -37,12 +37,12 @@ public class MValueDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean isAbstract;
     private boolean isCustom;
     private boolean isTruncatable;
     private boolean isForwardDeclaration = false;
-    private boolean isDefinedInOriginalFile;
 
     private TypeCode TypeCode;
 
@@ -56,6 +56,7 @@ public class MValueDefImpl
     {
 	ContainsSet = new HashSet();
 	AbstractDerivedFromSet = new HashSet();
+        sourceFile = new String("");
     }
 
     // override toString()
@@ -103,9 +104,9 @@ public class MValueDefImpl
     public TypeCode getTypeCode()               {return TypeCode;}
     public void setTypeCode(TypeCode __arg)     {TypeCode = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     // attribute isForwardDeclaration:boolean
     public boolean isForwardDeclaration()            {return isForwardDeclaration;}

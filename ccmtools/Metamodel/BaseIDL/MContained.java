@@ -42,12 +42,12 @@ public interface MContained
     String getVersion();
     void setVersion(String __arg);
 
+    // attribute sourceFile:String
+    public String getSourceFile();
+    public void setSourceFile(String __arg);
+
     // association: direct role: contants[*] <-> opposite role: definedIn[0..1]
     MContainer getDefinedIn();
     void setDefinedIn(MContainer __arg);
-
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile();
-    public void setDefinedInOriginalFile(boolean __arg);
 }
 

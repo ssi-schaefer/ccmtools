@@ -36,8 +36,7 @@ public class MStructDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-
-    private boolean isDefinedInOriginalFile;
+    private String sourceFile;
 
     private TypeCode typeCode_;
     private List MemberList_ = null;
@@ -46,6 +45,7 @@ public class MStructDefImpl
     public MStructDefImpl()
     {
 	MemberList_ = new ArrayList();
+        sourceFile = new String("");
     }
 
     // override toString()
@@ -82,9 +82,9 @@ public class MStructDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

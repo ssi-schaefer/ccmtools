@@ -164,10 +164,7 @@ public class ConsoleCodeGenerator
         if (kopf == null) return;
 
         File top_file = new File(filename);
-        String top_name = top_file.getName().toString();
-        // (cut off the ".blah" from the end of the filename)
-        kopf.setIdentifier(top_name.split("\\.")[0]);
-        kopf.setDefinedInOriginalFile(true);
+        kopf.setIdentifier(top_file.getName().split("\\.")[0]);
 
         // step (2).
 

@@ -27,5 +27,5 @@ public interface MValueMemberDef
 {
     // attribute isPublicMember:boolean
     boolean isPublicMember();
-    void setPublicMember(boolean __arg);        
+    void setPublicMember(boolean __arg);
 }

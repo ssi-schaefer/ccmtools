@@ -235,16 +235,16 @@ options { exportVocab = IDL3; }
     }
 
     /*
-     *  Find out if the given Metamodel object is defined in the original parse
-     *  file, and set the appropriate data element of the Metamodel object. (If
-     *  the object is not defined in the original file, it is defined in an
-     *  included file.)
+     * Check to see which source file the given metamodel is defined in, and set
+     * the appropriate data element. (If the object is not defined in the
+     * original file, it is defined in an included file.)
      */
-    private void checkDefinedInOriginalFile(MContained mContained)
+    private void checkSourceFile(MContained contained)
     {
-        String currentFile = getFilename();
-        String originalFile = parserManager.getOriginalFilename();
-        mContained.setDefinedInOriginalFile(currentFile.equals(originalFile));
+        String current = getFilename();
+        String original = parserManager.getOriginalFilename();
+        if (! current.equals(original))
+            contained.setSourceFile(current);
     }
 
     /*
@@ -328,7 +328,7 @@ options { exportVocab = IDL3; }
             }
 
             item.setDefinedIn(container);
-            checkDefinedInOriginalFile(item);
+            checkSourceFile(item);
             container.addContents(item);
         }
     }
@@ -2125,7 +2125,7 @@ component_dcl returns [MComponentDef component = null]
             }
 
             component.setForwardDeclaration(false);
-            checkDefinedInOriginalFile(component);
+            checkSourceFile(component);
         }
         RCURLY { symbolTable.popScope(); } ;
 
@@ -2353,13 +2353,13 @@ home_export[MHomeDef home]
         {
             factory.setHome(home);
             home.addFactory(factory);
-            checkDefinedInOriginalFile(factory);
+            checkSourceFile(factory);
         }
     |   finder = finder_dcl SEMI
         {
             finder.setHome(home);
             home.addFinder(finder);
-            checkDefinedInOriginalFile(finder);
+            checkSourceFile(finder);
         }
     ;
 

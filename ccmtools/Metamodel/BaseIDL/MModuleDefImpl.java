@@ -35,8 +35,7 @@ public class MModuleDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-
-    private boolean isDefinedInOriginalFile;
+    private String sourceFile;
 
     private MContainer Contains;
     private Set ContainsSet;
@@ -44,6 +43,7 @@ public class MModuleDefImpl
     public MModuleDefImpl()
     {
 	ContainsSet = new HashSet();
+        sourceFile = new String("");
     }
 
     // override toString()
@@ -76,9 +76,9 @@ public class MModuleDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

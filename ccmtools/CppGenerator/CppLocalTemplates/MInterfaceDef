@@ -6,8 +6,8 @@
 #define __%(Identifier)s__H__
 
 #include <localComponents/CCM.h>
+%(UserTypesInclude)s
 
-#include "user_types.h"
 #include "%(Identifier)s_types.h"
 
 namespace CCM_Local {

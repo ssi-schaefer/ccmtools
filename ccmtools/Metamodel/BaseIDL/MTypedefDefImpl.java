@@ -36,11 +36,15 @@ public class MTypedefDefImpl
     private String identifier_;
     private String repositoryId_;
     private String version_;
-
-    private boolean isDefinedInOriginalFile;
+    private String sourceFile;
 
     private TypeCode typeCode_;
     private MContainer Contains_;
+
+    public MTypedefDefImpl()
+    {
+        sourceFile = new String("");
+    }
 
     public String toString()
     {
@@ -76,9 +80,9 @@ public class MTypedefDefImpl
     public String getVersion()                  {return version_;}
     public void setVersion(String __arg)        {version_ = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -43,11 +43,11 @@ public class MHomeDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean isAbstract;
     private boolean isLocal;
     private boolean isForwardDeclaration = false;
-    private boolean isDefinedInOriginalFile;
 
     private Set SupportsSet_;
     private Set FactorySet_;
@@ -66,6 +66,7 @@ public class MHomeDefImpl
 	 FinderSet_ = new HashSet();
 	 ContainsSet = new HashSet();
 	 InterfaceDerivedFromSet = new HashSet();
+         sourceFile = new String("");
     }
 
     // override toString()
@@ -105,9 +106,9 @@ public class MHomeDefImpl
     public boolean isLocal()                    {return isLocal;}
     public void setLocal(boolean __arg)         {isLocal = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     // attribute isForwardDeclaration:boolean
     public boolean isForwardDeclaration()            {return isForwardDeclaration;}

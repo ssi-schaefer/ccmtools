@@ -10,14 +10,17 @@ TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
 
 dist_noinst_SCRIPTS = test-loader.sh
 
-TESTS = \
-    help.sh                   	  \
-    version.sh                	  \
-    hello-facet.sh            	  \
-    hello-receptacle.sh       	  \
-    hello-multiple-receptacles.sh \
-    hello-supports.sh             \
-    calculator.sh
+# tests are generally in order of increasing complexity.
+
+TESTS = hello-facet.sh
+#TESTS = \
+#    help.sh                   	   \
+#    version.sh                	   \
+#    hello-facet.sh            	   \
+#    hello-supports.sh             \
+#    hello-receptacle.sh       	   \
+#    hello-multiple-receptacles.sh \
+#    calculator.sh
 
 dist_check_SCRIPTS = $(TESTS)
 

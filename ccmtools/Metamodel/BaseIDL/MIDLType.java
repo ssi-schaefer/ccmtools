@@ -23,9 +23,9 @@ package ccmtools.Metamodel.BaseIDL;
 
 import org.omg.CORBA.TypeCode;
 
-public interface MIDLType 
+public interface MIDLType
 {
     // attribute typeCode:TypeCode
     TypeCode getTypeCode();
-    void setTypeCode(TypeCode __arg);    
+    void setTypeCode(TypeCode __arg);
 }

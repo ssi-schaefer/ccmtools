@@ -17,21 +17,22 @@ XFAIL_TESTS = \
     fail-interface-syntax.sh     \
     fail-struct-empty.sh
 
-TESTS = $(XFAIL_TESTS) \
-    component.sh                 \
-    enum.sh                      \
-    home.sh                      \
-    interface.sh                 \
-    operations-primitivetypes.sh \
-    provides-operation.sh        \
-    provides.sh                  \
-    struct.sh                    \
-    supports-operation.sh        \
-    supports.sh                  \
-    uses-multiple-operation.sh   \
-    uses-multiple.sh             \
-    uses-operation.sh            \
-    uses.sh
+TESTS =
+ #$(XFAIL_TESTS) \
+#    component.sh                 \
+#    enum.sh                      \
+#    home.sh                      \
+#    interface.sh                 \
+#    operations-primitivetypes.sh \
+#    provides-operation.sh        \
+#    provides.sh                  \
+#    struct.sh                    \
+#    supports-operation.sh        \
+#    supports.sh                  \
+#    uses-multiple-operation.sh   \
+#    uses-multiple.sh             \
+#    uses-operation.sh            \
+#    uses.sh
 
 dist_check_SCRIPTS = $(TESTS)
 

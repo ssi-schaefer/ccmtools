@@ -293,9 +293,9 @@ abstract public class CppGenerator
             String suffix = "";
 
             if (direction == MParameterMode.PARAM_IN) prefix = "const ";
-            if ((idl_type instanceof MTypedefDef) ||
-                (idl_type instanceof MStringDef) ||
-                (idl_type instanceof MFixedDef)) suffix = "&";
+            if ((idl_type instanceof MTypedefDef)
+                || (idl_type instanceof MStringDef)
+                || (idl_type instanceof MFixedDef)) suffix = "&";
 
             return prefix + base_type + suffix;
         } else if ((object instanceof MAliasDef) &&
@@ -342,6 +342,21 @@ abstract public class CppGenerator
             String base = joinBases(", public ");
             if (base.length() > 0)
                 return ", public " + base;
+        } else if (data_type.equals("UserTypesInclude")) {
+            List includes = new ArrayList();
+            for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
+                String id = (String) i.next();
+                includes.add("#include <CCM_Local/" + id + "_user_types.h>");
+            }
+            return join("\n", includes);
+        } else if (data_type.equals("ConvertPythonInclude")) {
+            List includes = new ArrayList();
+            for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
+                String id = (String) i.next();
+                includes.add("#include <CCM_Test_Python/" +
+                             id + "convert_python.h>");
+            }
+            return join("\n", includes);
         }
         return data_value;
     }

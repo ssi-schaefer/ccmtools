@@ -6,7 +6,7 @@
 #define __CCM__TEST__PYTHON__CONVERT__%(Identifier)s__H__
 
 #include <Python.h>
-#include <CCM_Local/user_types.h>
+%(UserTypesInclude)s
 
 using namespace CCM_Local;
 
@@ -29,7 +29,7 @@ namespace Python {
 // Python conversion function implementations
 //==============================================================================
 
-#include "convert_%(Identifier)s.h"
+#include "%(Identifier)s_convert_python.h"
 
 using namespace CCM_Local;
 

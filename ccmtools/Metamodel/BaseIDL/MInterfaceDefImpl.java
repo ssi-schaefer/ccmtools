@@ -35,11 +35,11 @@ public class MInterfaceDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean isAbstract;
     private boolean isLocal;
     private boolean isForwardDeclaration = false;
-    private boolean isDefinedInOriginalFile;
 
     private MContainer Contains;
     private MIDLType TypedBy_;
@@ -50,22 +50,19 @@ public class MInterfaceDefImpl
     {
 	ContainsSet = new HashSet();
 	InterfaceDerivedFromSet = new HashSet();
+        sourceFile = new String("");
     }
 
     // override toString()
     public String toString()
     {
 	String tmp = "MInterfaceDef: "+ identifier;
-
 	if ((ContainsSet != null) && (ContainsSet.size() > 0))
             tmp  += ContainsSet.toString();
-
         if ((InterfaceDerivedFromSet != null) && (InterfaceDerivedFromSet.size() > 0))
-            tmp += " bases: " + InterfaceDerivedFromSet.toString();
-
-        if (isDefinedInOriginalFile)
-            tmp += " (original file)";
-
+            tmp += " (bases: " + InterfaceDerivedFromSet.toString() + ")";
+        if (! sourceFile.equals(""))
+            tmp += " (defined in '"+ sourceFile + "')";
 	return tmp;
     }
 
@@ -100,9 +97,9 @@ public class MInterfaceDefImpl
     public boolean isLocal()                    {return isLocal;}
     public void setLocal(boolean __arg)         {isLocal = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     // attribute isForwardDeclaration:boolean
     public boolean isForwardDeclaration()            {return isForwardDeclaration;}

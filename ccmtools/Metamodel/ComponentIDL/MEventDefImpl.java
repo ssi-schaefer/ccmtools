@@ -44,13 +44,13 @@ public class MEventDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private TypeCode TypeCode;
 
     private boolean isAbstract;
     private boolean isCustom;
     private boolean isTruncatable;
-    private boolean isDefinedInOriginalFile;
 
     private MContainer Contains;
     private Set ContainsSet;
@@ -62,6 +62,7 @@ public class MEventDefImpl
     {
 	ContainsSet = new HashSet();
 	AbstractDerivedFromSet = new HashSet();
+        sourceFile = new String("");
     }
 
     // override toString()
@@ -109,9 +110,9 @@ public class MEventDefImpl
     public TypeCode getTypeCode()               {return TypeCode;}
     public void setTypeCode(TypeCode __arg)     {TypeCode = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

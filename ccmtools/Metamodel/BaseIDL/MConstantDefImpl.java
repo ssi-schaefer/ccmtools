@@ -31,12 +31,16 @@ public class  MConstantDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-
-    private boolean isDefinedInOriginalFile;
+    private String sourceFile;
 
     private MIDLType TypedBy_;
     private MContainer Contains;
     private Object constValue_;
+
+    public MConstantDefImpl()
+    {
+        sourceFile = new String("");
+    }
 
     // override toString()
     public String toString()
@@ -73,9 +77,9 @@ public class  MConstantDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

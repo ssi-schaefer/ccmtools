@@ -35,13 +35,17 @@ public class MSupportsDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-
-    private boolean isDefinedInOriginalFile;
+    private String sourceFile;
 
     private MInterfaceDef Supports_;
     private MComponentDef Component_ = null;
     private MHomeDef Home_ = null;
     private MContainer Contains;
+
+    public MSupportsDefImpl()
+    {
+        sourceFile = new String("");
+    }
 
     // override toString()
     public String toString()
@@ -72,9 +76,9 @@ public class MSupportsDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

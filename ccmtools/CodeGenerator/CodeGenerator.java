@@ -196,6 +196,10 @@ abstract public class CodeGenerator
     // kinds) to target language constructs.
     protected Map language_mappings;
 
+    // names of top level files that need to be included somehow to incorporate
+    // external type information from other packages.
+    protected Set extern_includes;
+
     protected File output_dir;
     protected Map output_variables;
 
@@ -223,35 +227,31 @@ abstract public class CodeGenerator
      * Initialize the class instance.
      *
      * @param language a string containing the language type to output. This is
-     *        used to help find a template set, so case is important !
+     *        used to help find a template set, and it is case sensitive !
      * @param d a driver object to handle messages and (if any) user input for
      *        this node handler object.
      * @param out_dir the directory that will be the root of the output source
      *        tree.
-     * @param local_output_types an array of type names (for example, MContainer
-     *        or MInterfaceDef) for which a code file should be generated.
-     * @param local_reserved_words an array of reserved words specific to the
+     * @param _output_types an array of type names (for example, MContainer or
+     *        MInterfaceDef) for which a code file should be generated.
+     * @param _reserved_words an array of reserved words specific to the
      *        language being generated.
-     * @param local_environment_files an array of files giving the output
-     *        locations (relative to the output directory) for environment
-     *        files. This must be the same length as the
-     *        local_environment_templates array.
-     * @param local_environment_templates an array of template names to use for
-     *        generating environment files. This must be the same length as the
+     * @param _env_files an array of files giving the output locations (relative
+     *        to the output directory) for environment files. This must be the
+     *        same length as the local_environment_templates array.
+     * @param _env_templates an array of template names to use for generating
+     *        environment files. This must be the same length as the
      *        local_environment_files array.
-     * @param local_language_map an array of language types to generate for each
-     *        of the CORBA primitive types given in the
-     *        ccmtools.Metamodel.BaseIDL.MPrimitiveKind enum. This must be the
-     *        same size as said enum, and its elements will be assigned in the
-     *        same order as the elements of the enum.
+     * @param _language_map an array of language types to generate for each of
+     *        the CORBA primitive types given in the MPrimitiveKind enumeration.
+     *        This must be the same size as said enum, and its elements will be
+     *        assigned in the same order as the elements of the enum.
      * @see ccmtools.CodeGenerator.GraphTraverser
      */
     public CodeGenerator(String language, Driver d, File out_dir,
-                         String[] local_output_types,
-                         String[] local_reserved_words,
-                         File[]   local_environment_files,
-                         String[] local_environment_templates,
-                         String[] local_language_map)
+                         String[] _output_types, String[] _reserved_words,
+                         File[]   _env_files, String[] _env_templates,
+                         String[] _language_map)
         throws IOException
     {
         flags = 0x0;
@@ -267,9 +267,9 @@ abstract public class CodeGenerator
         output_types = new HashSet();
         for (int i = 0; i < my_output_types.length; i++)
             output_types.add(my_output_types[i]);
-        if (local_output_types != null)
-            for (int i = 0; i < local_output_types.length; i++)
-                output_types.add(local_output_types[i]);
+        if (_output_types != null)
+            for (int i = 0; i < _output_types.length; i++)
+                output_types.add(_output_types[i]);
 
         // set up reserved word list.
 
@@ -281,42 +281,38 @@ abstract public class CodeGenerator
         reserved_words = new HashSet();
         for (int i = 0; i < my_reserved_words.length; i++)
             reserved_words.add(my_reserved_words[i]);
-        if (local_reserved_words != null)
-            for (int i = 0; i < local_reserved_words.length; i++)
-                reserved_words.add(local_reserved_words[i]);
+        if (_reserved_words != null)
+            for (int i = 0; i < _reserved_words.length; i++)
+                reserved_words.add(_reserved_words[i]);
 
         // set up a hash of environment files, those files we generally need to
         // output only once per project (and not once per graph traversal in
         // case an idl file in the project gets updated).
 
-        if ((local_environment_templates != null) &&
-            (local_environment_files != null)) {
-
-            if (local_environment_templates.length !=
-                local_environment_files.length)
+        if ((_env_templates != null) && (_env_files != null)) {
+            if (_env_templates.length != _env_files.length)
                 throw new RuntimeException(
                 "Environment file and template lists are not the same length.\n"+
                 "This is a bug in the underlying code generator.");
 
             environment_files = new Hashtable();
-            for (int i = 0; i < local_environment_templates.length; i++)
-                environment_files.put(local_environment_files[i],
-                                      local_environment_templates[i]);
+            for (int i = 0; i < _env_templates.length; i++)
+                environment_files.put(_env_files[i], _env_templates[i]);
         }
 
         // set up a language map from primitive types to whatever the target
         // language types are.
 
         String[] labels = MPrimitiveKind.getLabels();
-        if (local_language_map != null) {
-            if (local_language_map.length != labels.length)
+        if (_language_map != null) {
+            if (_language_map.length != labels.length)
                 throw new RuntimeException(
                     "Language map is not the same length as the primitive "+
                     "types list.");
 
             language_mappings = new Hashtable();
             for (int i = 0; i < labels.length; i++)
-                language_mappings.put(labels[i], local_language_map[i]);
+                language_mappings.put(labels[i], _language_map[i]);
         }
 
         // set up an output directory ; create it if it doesn't exist.
@@ -350,10 +346,12 @@ abstract public class CodeGenerator
         output_variables = new Hashtable();
 
         namespace = new Stack();
+
+        extern_includes = new HashSet();
     }
 
     /**
-     * End processing a graph. This function does not do anything.
+     * End processing a graph. This implementation does not do anything.
      */
     public void endGraph()
     {
@@ -689,8 +687,13 @@ abstract public class CodeGenerator
         // first check for aliases and structs and such ... try to get the
         // identifier, if that doesn't work get the underlying type.
 
-        if (idl_type instanceof MTypedefDef)
-            return ((MTypedefDef) idl_type).getIdentifier();
+        if (idl_type instanceof MTypedefDef) {
+            MTypedefDef typedef = (MTypedefDef) idl_type;
+            File source = new File(typedef.getSourceFile());
+            if (! source.toString().equals(""))
+                extern_includes.add(source.getName().split("\\.")[0]);
+            return typedef.getIdentifier();
+        }
 
         // type is some other class derived from mtyped ... get its derivative
         // type.
@@ -851,17 +854,21 @@ abstract public class CodeGenerator
         boolean correct_type = output_types.contains(current_type);
 
         if (current_node instanceof MContained)
-            original = ((MContained) current_node).isDefinedInOriginalFile();
+            original = ((MContained) current_node).getSourceFile().equals("");
 
         if (! (correct_type && original)) return;
 
         // write out the output strings if the node is defined as global.
 
         try {
-            writeOutput(template_manager.getTemplate(current_type, current_name));
+            Template template =
+                template_manager.getTemplate(current_type, current_name);
+            if (template == null) throw new IOException();
+            writeOutput(template);
         } catch (IOException error) {
-            throw new RuntimeException("Cannot find a template for " +
-                                       current_name + " (" + current_type + ")");
+            throw new RuntimeException(
+                "Cannot find a template for " + current_name +
+                " (node type " + current_type + ")");
         }
     }
 
@@ -915,22 +922,16 @@ abstract public class CodeGenerator
         Method[] node_methods = current_node.getClass().getMethods();
         for (int i = 0; i < node_methods.length; i++) {
             String field_name = node_methods[i].getName();
-            if (field_name.startsWith("is") &&
-                (! field_name.equals("isDefinedInOriginalFile"))) {
-                    bool_attrs.add(field_name);
-            }
+            if (field_name.startsWith("is")) bool_attrs.add(field_name);
         }
 
         for (Iterator i = bool_attrs.iterator(); i.hasNext(); ) {
             try {
                 Class  klass  = current_node.getClass();
                 Method method = klass.getMethod((String) i.next(), null);
-
                 Object result = method.invoke(current_node, null);
                 Boolean hack  = new Boolean(result.toString());
-                if (hack.booleanValue()) {
-                    attrs += method.getName().substring(2);
-                }
+                if (hack.booleanValue()) attrs += method.getName().substring(2);
             } catch (NoSuchMethodException e) {
                 continue;
             } catch (IllegalAccessException e) {
