@@ -46,6 +46,8 @@ public class PythonTemplateManagerImpl
     {
         String lang_dir = language + "Templates";
 
+	/*
+	// alternative sources for templates
         source = new File(System.getProperty("user.dir"), lang_dir);
         if (source.exists() && source.isDirectory())
             return;
@@ -59,10 +61,12 @@ public class PythonTemplateManagerImpl
             if (source.exists() && source.isDirectory())
                 return;
         }
+	*/
 
         source = new File(Constants.TEMPLATE_ROOT, lang_dir);
-        if (source.exists() && source.isDirectory())
+        if (source.exists() && source.isDirectory()) {
             return;
+	}
 
         throw new IOException("No template source found for " + language);
     }

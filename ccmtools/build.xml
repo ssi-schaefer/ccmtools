@@ -26,7 +26,14 @@
           <include name="*.jar" />
       </fileset>	  
       <pathelement path="${java.class.path}" />
-      <pathelement location="${lib}/antlr.jar" />
+  </path>
+
+  <path id="test.classpath">
+      <pathelement path="${java.class.path}" />
+      <pathelement path="${build}" />
+      <fileset dir="${lib}">
+          <include name="*.jar" />
+      </fileset>
   </path>
 
 
@@ -67,10 +74,17 @@
 
 
   <!-- Run test cases -->
-  <target name="test" depends="ccmtools.jar"
-     description="" >
+  <target name="test" 
+     description="Compile JUnit test cases." >
+      <javac srcdir="${src}/ccmtools/test" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+  <target name="check" depends="test"
+     description="Run JUnit test cases." >
      <junit printsummary="yes" haltonfailure="yes" showoutput="yes">
-          <classpath refid="run.classpath" />
+          <classpath refid="test.classpath" />
 	  <formatter type="brief" />
 	  <test name="ccmtools.test.CppGenerator.CppGeneratorTest" />
      </junit>
@@ -87,9 +101,9 @@
   </target>
 
 
-  <!-- Install java-environment -->
+  <!-- Install ccmtools -->
   <target name="install"  depends="ccmtools.jar" 
-      description="Install java-environment to prefix/.">
+      description="Install ccmtools to prefix/.">
       <mkdir dir="${prefix}" />
       <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/mdr01.jar"    todir="${prefix}/lib"  overwrite="true" />       

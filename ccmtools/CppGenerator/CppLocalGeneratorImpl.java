@@ -39,6 +39,10 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Hashtable;
@@ -103,15 +107,23 @@ public class CppLocalGeneratorImpl
 
 	    File user_files = new File(output_dir, file_dir);
 	    user_files = new File(user_files, file_name);
+	   
 	    if((file_dir == "impl") && user_files.isFile()) {
-		System.out.println("WARNING: " + output_dir 
-				   + File.separator + file_dir 
-				   + File.separator 
-				   + file_name + " already exists!");
-		file_name += ".new";
+		if(!isCodeEqualWithFile(generated_code, user_files)) {
+		    System.out.println("WARNING: " + output_dir 
+				       + File.separator + file_dir 
+				       + File.separator 
+				       + file_name + " already exists!");
+		    file_name += ".new";
+		}
 	    }
-	    writeFinalizedFile(file_dir, file_name, generated_code);
-
+	    // TODO: define new File object with new file_name 
+	    if(isCodeEqualWithFile(generated_code, user_files)) {
+		System.out.println("No changes in " + user_files);
+	    }
+	    else {
+		writeFinalizedFile(file_dir, file_name, generated_code);
+	    }
 
             // output a confix Makefile.py file if it's not in this directory.
 	    File confix_file = new File(output_dir, file_dir);
@@ -248,4 +260,27 @@ public class CppLocalGeneratorImpl
 
         return files;
     }
+
+
+    boolean isCodeEqualWithFile(String code, File file)
+    {
+	try {
+	    if (file.isFile()) {
+		StringBuffer buffer = new StringBuffer();
+		FileInputStream stream = new FileInputStream(file);
+		InputStreamReader input = new InputStreamReader(stream);
+		BufferedReader reader = new BufferedReader(input);
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+		    buffer.append(line + "\n");
+		}
+		return code.equals(buffer.toString());
+	    }
+	}
+	catch(IOException e) {
+	    System.err.println("ERROR: Can't read " + file);
+	}
+	return false;
+    } 
+
 }
