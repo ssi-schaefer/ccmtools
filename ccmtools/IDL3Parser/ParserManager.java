@@ -25,9 +25,10 @@ import ccmtools.Metamodel.BaseIDL.MContainer;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -97,7 +98,13 @@ public class ParserManager {
      * @param f the name of the original file to be parsed.
      */
     public void setOriginalFile(String f)
-    { if (originalFile == null) originalFile = new String(f); }
+    {
+        if (originalFile == null) {
+            File file = new File(f);
+            try { originalFile = file.getCanonicalPath(); }
+            catch (IOException e) { originalFile = f; }
+        }
+    }
 
     /**
      * Find out which file the parser is currently handling.
@@ -111,7 +118,12 @@ public class ParserManager {
      *
      * @param f the name of the file that provided the current code section.
      */
-    public void setSourceFile(String f) { sourceFile = new String(f); }
+    public void setSourceFile(String f)
+    {
+        File file = new File(f);
+        try { sourceFile = file.getCanonicalPath(); }
+        catch (IOException e) { sourceFile = f; }
+    }
 
     /**
      * Parse an IDL3 file.
@@ -152,7 +164,6 @@ public class ParserManager {
         }
 
         setOriginalFile(filename);
-        setSourceFile(filename);
 
         symbolTable.pushFile();
 

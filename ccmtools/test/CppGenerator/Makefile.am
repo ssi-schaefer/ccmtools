@@ -9,7 +9,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # currently under investigation ... uncomment in local copy to test faster.
 
-#TESTS = calculator.sh
+#TESTS = supports_types.sh
 
 # tests are generally in order of decreasing complexity (we want to see whether
 # the hard tests fail ; the easy tests will likely pass later).
@@ -62,7 +62,6 @@ EXTRA_DIST = \
   facet_interface          \
   facet_types              \
   home_exception           \
-  home_factory             \
   home_factory_interface   \
   home_types               \
   include                  \

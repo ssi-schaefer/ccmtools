@@ -248,6 +248,8 @@ options { exportVocab = IDL3; k = 2; }
     {
         String source = manager.getSourceFile();
         if (source.equals(manager.getOriginalFile())) source = "";
+        if ((debug & DEBUG_FILE) != 0)
+            System.out.println("[f] setting source file to '"+source+"'");
         return source;
     }
 
@@ -611,7 +613,8 @@ specification returns [MContainer container = null]
             checkAddContents(container, definitions);
 
             if ((debug & DEBUG_FILE) != 0)
-                System.out.println("[f] input file "+getFilename()+" parsed");
+                System.out.println("[f] input file "+
+                    manager.getOriginalFile()+" parsed");
 
             if ((debug & DEBUG_SYMBOL_TABLE) != 0)
                 System.out.println(symbolTable.toString());
@@ -1260,6 +1263,7 @@ type_declarator returns [List declarations = null]
                 MAliasDef alias = new MAliasDefImpl();
                 alias.setIdlType(type);
                 alias.setIdentifier(id);
+                alias.setSourceFile(getSourceFile());
                 declarations.add(alias);
 
                 symbolTable.add(id, alias);
@@ -2100,14 +2104,10 @@ component_dcl returns [MComponentDef component = null]
         LCURLY { symbolTable.pushScope(component.getIdentifier()); }
         decls = component_body
         {
-            String source = "";
-            if (! manager.getSourceFile().equals(manager.getOriginalFile()))
-                source = manager.getSourceFile();
-
             for (Iterator it = decls.iterator(); it.hasNext(); ) {
                 MContained element = (MContained) it.next();
                 element.setDefinedIn(component);
-                element.setSourceFile(source);
+                element.setSourceFile(getSourceFile());
 
                 if ((debug & DEBUG_COMPONENT) != 0)
                     System.out.print(
@@ -2366,22 +2366,12 @@ home_export[MHomeDef home]
     :   exports = export { checkAddContents(home, exports); }
     |   factory = factory_dcl SEMI
         {
-            String source = "";
-            if (! manager.getSourceFile().equals(manager.getOriginalFile()))
-                source = manager.getSourceFile();
-
             factory.setHome(home);
-            factory.setSourceFile(source);
             home.addFactory(factory);
         }
     |   finder = finder_dcl SEMI
         {
-            String source = "";
-            if (! manager.getSourceFile().equals(manager.getOriginalFile()))
-                source = manager.getSourceFile();
-
             finder.setHome(home);
-            finder.setSourceFile(source);
             home.addFinder(finder);
         }
     ;
