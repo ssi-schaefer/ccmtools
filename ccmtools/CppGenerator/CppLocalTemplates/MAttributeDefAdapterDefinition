@@ -7,7 +7,7 @@
 }
 
 void
-%(ComponentType)s::%(Identifier)s ( %(LanguageType)s value )
+%(ComponentType)s::%(Identifier)s (const %(LanguageType)s value )
 {
   DEBUGNL ( " %(ComponentType)s->%(Identifier)s (  ) - set semantic");
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );

@@ -23,6 +23,7 @@ package ccmtools.CppGenerator;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -187,7 +188,8 @@ abstract public class CppGenerator
             return data_MFactoryDef(variable, value);
         } else if (current_node instanceof MFinderDef) {
             return data_MFinderDef(variable, value);
-
+	} else if (current_node instanceof MAttributeDef) {
+	    return data_MAttributeDef(variable, value);
         } else if (current_node instanceof MProvidesDef) {
             return data_MProvidesDef(variable, value);
         } else if (current_node instanceof MSupportsDef) {
@@ -221,6 +223,12 @@ abstract public class CppGenerator
     {
         MIDLType idl_type = object.getIdlType();
         String base_type = getBaseLanguageType(object);
+
+	// Handle interfaces using smart pointers
+	if (object instanceof MAttributeDef) {
+	    if(idl_type instanceof MInterfaceDef)
+		return "CCM_Utils::SmartPtr<" + base_type + ">";
+	}
 
         if (object instanceof MParameterDef) {
 	    /* This code defines the parameter passing rules:
@@ -277,6 +285,7 @@ abstract public class CppGenerator
 	    return result + " ";
         }
 
+
         return base_type;
     }
 
@@ -323,6 +332,11 @@ abstract public class CppGenerator
     protected String data_MFactoryDef(String data_type, String data_value)
     { return data_MOperationDef(data_type, data_value); }
 
+    protected String data_MAttributeDef(String data_type, String data_value)
+    { 
+	return data_value;
+    }
+
     protected String data_MFinderDef(String data_type, String data_value)
     { return data_MOperationDef(data_type, data_value); }
 
@@ -339,7 +353,6 @@ abstract public class CppGenerator
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
         MInterfaceDef iface = (MInterfaceDef) current_node;
-
         if (data_type.equals("BaseType")) {
             String base = joinBaseNames(", public ");
             if (base.length() > 0) return ", public " + base;
