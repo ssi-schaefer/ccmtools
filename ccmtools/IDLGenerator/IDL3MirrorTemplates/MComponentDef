@@ -28,7 +28,7 @@ component %(Identifier)s_mirror
 
 %(CloseNamespace)s
 
-#include <%(HomeInclude)s.idl>
+#include <%(HomeInclude)s_mirror.idl>
 
 #endif
 
