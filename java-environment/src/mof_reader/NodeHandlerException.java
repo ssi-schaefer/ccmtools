@@ -32,7 +32,7 @@ public class NodeHandlerException extends java.lang.Exception
 
     public NodeHandlerException( Throwable cause )
     {
-        super("node handler exception", cause);
+        super(cause);
     }
 
     public NodeHandlerException( String message, Throwable cause )
