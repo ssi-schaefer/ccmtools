@@ -14,7 +14,7 @@
   <property name="build" location="build" />
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
-  <property name="prefix" location="install" />
+  <property name="prefix" location="../ccmtools" />
 
 
   <!-- Define different paths that are used in the following tasks -->
@@ -133,6 +133,9 @@
       description="Install java-environment to prefix/.">
       <mkdir dir="${prefix}" />
       <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/mdr01.jar"    todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/jdom.jar"     todir="${prefix}/lib"  overwrite="true" />       
+
       <copy file="${lib}/dtd2java.jar" todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />       
 
