@@ -61,7 +61,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
     }
     */
 
-    /*
+
     // ------------------------------------------------------------------------
     // Attribute test cases
     // ------------------------------------------------------------------------
@@ -466,6 +466,8 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 		     sandbox_dir + "/impl/Test_mirror_impl.cc");
 	    copyFile(test_dir + "/impl/Test_type_test_impl.cc", 
 		     sandbox_dir + "/impl/Test_type_test_impl.cc");
+	    copyFile(test_dir + "/test/_check_witout_mirror.cc", 
+		     sandbox_dir + "/test/_check_witout_mirror.cc");
 	    
 	    runConfix("--packageroot=" + sandbox_dir 
 		      + " --bootstrap --configure --make --targets=check") ;
@@ -476,6 +478,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
+
 
     public void testFacetRename()
     {
@@ -561,7 +564,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
-    */
+
     public void testReceptacleException()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_exception";
@@ -609,7 +612,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
-    /*
+
     public void testReceptacleTypes()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_types";
@@ -741,6 +744,6 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }     
-    */
+
     // TODO: implement other test cases
 }

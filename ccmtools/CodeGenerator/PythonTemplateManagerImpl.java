@@ -42,58 +42,46 @@ public class PythonTemplateManagerImpl
      *
      * @param language the language to use for templates. This is used to
      *                 locate a likely template source.
+     *                 ("CppLocalTemplates", "CppRemoteTemplates", etc).
      */
     public PythonTemplateManagerImpl(String language)
         throws IOException
     {
-        String lang_dir = language + "Templates";
+	// All templates are organized in directories that reflect
+	// the name of generated languages:
+	//   IDL3Templates/
+	//   CppLocalTemplates/
+	//   CppRemoteTemplates/
+	//   ...
+        String templatesDir = language + "Templates";
 
-	//	System.out.println(">> user.dir: " + System.getProperty("user.dir"));
-	//	System.out.println(">> CCMTOOLS_HOME: " + System.getProperty("CCMTOOLS_HOME"));
-	//	System.out.println(">> TEMPLATE_ROOT: " + Constants.TEMPLATE_ROOT);
-
-	// alternative sources for templates
-	/*
-        source = new File(System.getProperty("user.dir"), lang_dir);
+	// Load templates from src/templates directory of the source tree.
+	// This directory is used as default path for easy development. 
+        source = new File(System.getProperty("user.dir") +
+			  File.separator + 
+			  "src" + 
+			  File.separator +
+			  "templates", templatesDir);
         if (source.exists() && source.isDirectory()) {
 	    System.out.println(">> Load templates from: " + source);
 	    return;
 	}
-	*/
-	/*
-        String ccmtools_home = System.getProperty("CCMTOOLS_HOME");
-        if (ccmtools_home != null) {
-            File package_dir = new File(Constants.TEMPLATE_ROOT);
-            source = new File(ccmtools_home, "share");
-            source = new File(source, package_dir.getName());
-            source = new File(source, lang_dir);
-            if (source.exists() && source.isDirectory()) {
-		System.out.println(">> Load templates from: " + source);
-                return;
-	    }
-        }
-	*/
-	
-	/*
-        String ccmtools_home = System.getProperty("CCMTOOLS_HOME");
-        if (ccmtools_home != null) {
-	    source = new File(ccmtools_home + File.separator + "templates", lang_dir);
-	    System.out.println(">> Load templates from: " + source);
-            if (source.exists() && source.isDirectory()) {
-                return;
-	    }
-        }
-	*/
 
-
-        source = new File(Constants.TEMPLATE_ROOT, lang_dir);
+	// Load templates from TEMPLATE_ROOT directory specified in 
+	// the Constants.java file.
+	// In the build process, the Constants.java file is generated
+	// from a Constants.java.in template by replacing @name@ tags
+	// with current informations.
+        source = new File(Constants.TEMPLATE_ROOT, templatesDir);
         if (source.exists() && source.isDirectory()) {
 	    System.out.println(">> Load templates from: " + source);
             return;
 	}
 
-        throw new IOException("No template source found for " + language);
+	// Stop code generation because there are no valid templates found.
+        throw new IOException("Error: No template source found for " + language);
     }
+
 
     /**
      * Load all templates for the given node type and locate the variables in
