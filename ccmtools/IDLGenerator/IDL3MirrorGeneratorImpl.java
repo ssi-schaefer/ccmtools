@@ -25,13 +25,18 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class IDL3MirrorGeneratorImpl
     extends IDLGenerator
@@ -54,6 +59,62 @@ public class IDL3MirrorGeneratorImpl
         return super_type;
     }
 
+
+    /**
+     *  Override IDLGenerator method 
+     *
+     **/
+    protected String getLocalValue(String variable)
+    {
+        String value = "";
+	MInterfaceDef iface = null;
+	
+	if (variable.equals("ProvidesInclude") ||
+	    variable.equals("SupportsInclude") ||
+	    variable.equals("UsesInclude")) {
+
+            if (current_node instanceof MProvidesDef)
+                iface = ((MProvidesDef) current_node).getProvides();
+            else if (current_node instanceof MSupportsDef)
+                iface = ((MSupportsDef) current_node).getSupports();
+            else if (current_node instanceof MUsesDef)
+                iface = ((MUsesDef) current_node).getUses();
+	    
+            if (iface != null) 
+		value = getScopedInclude(iface);
+	}
+	else if (variable.equals("HomeInclude")) {
+            if (current_node instanceof MComponentDef) {
+                Iterator homes = ((MComponentDef) current_node).getHomes().iterator();
+                value = getScopedInclude((MHomeDef) homes.next());
+            }
+	}
+	else if (variable.equals("ComponentInclude")) {
+            if (current_node instanceof MHomeDef) {
+                value = getScopedInclude(((MHomeDef) current_node).getComponent());
+            }
+	}
+	else {
+	    value = super.getLocalValue(variable);
+	    if (current_node instanceof MHomeDef) {
+		return data_MHomeDef(variable, value);
+	    }
+	}
+        return value;
+    }
+
+
+    /**
+     * Override IDLGenerator method to generate idl3mirror component #include<>
+     * statements in the right way.
+     *
+     **/
+    protected String getScopedInclude(MContained node)
+    {
+        List scope = getScope(node);
+        scope.add(node.getIdentifier());
+        return "#include <" + join(File.separator, scope) + "_mirror.idl>";
+    }
 
     /**
      * Override IDLGenerator method to generate the mirror component files

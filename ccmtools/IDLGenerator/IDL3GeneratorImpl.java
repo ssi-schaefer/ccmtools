@@ -115,6 +115,11 @@ public class IDL3GeneratorImpl
     }
 
 
+    /**
+     * Override IDLGenerator method to generate idl3 #include<> statements 
+     * in the right way.
+     *
+     **/
     protected String getScopedInclude(MContained node)
     {
         List scope = getScope(node);
