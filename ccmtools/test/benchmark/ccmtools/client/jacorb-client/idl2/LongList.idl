@@ -1,0 +1,6 @@
+
+#ifndef __ALIAS__LongList__
+#define __ALIAS__LongList__
+typedef sequence<long>  LongList;
+#endif
+

@@ -1,0 +1,21 @@
+
+#ifndef __HOME__TestHome__
+#define __HOME__TestHome__
+
+#include <Test.idl>
+
+interface TestHomeExplicit 
+    : Components::CCMHome
+{
+};
+interface TestHomeImplicit : Components::KeylessCCMHome
+{
+  Test create()
+    raises (Components::CreateFailure);
+};
+interface TestHome : TestHomeExplicit, TestHomeImplicit
+{
+};
+
+#endif
+
