@@ -43,7 +43,7 @@ noinst_DATA = $(DOC_NAME).ps $(DOC_NAME).pdf
 	$(FIG2DEV) -L eps $< $@
 
 %.ps: %.dvi $(EPSS)
-	$(DVIPS) $<
+	$(DVIPS) -f $< > $(DOC_NAME).ps
 
 %.pdf: %.dvi $(PDFS)
 	$(DVIPDF) $<
