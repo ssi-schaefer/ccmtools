@@ -59,7 +59,7 @@ public class Model
             }
             else
             {
-                System.out.println("root: unknown element class: "+element.getClass().getName());
+                System.out.println(this.getClass().getName()+": unknown element class: "+element.getClass().getName());
             }
         }
         Iterator it = workers_.values().iterator();
@@ -130,7 +130,7 @@ public class Model
             }
             else
             {
-                System.out.println("content: unknown class: "+obj.getClass().getName());
+                System.out.println(this.getClass().getName()+".process: unknown class: "+obj.getClass().getName());
             }
         }
     }
@@ -162,7 +162,7 @@ public class Model
                     MofModelElement e = ((Worker)obj).mof();
                     if( e==null )
                     {
-                        System.err.println("Model.getMofContentIterator : NULL CHILD in class "+
+                        System.err.println(this.getClass().getName()+".getMofContentIterator : NULL CHILD in class "+
                                             obj.getClass().getName());
                     }
                     else
