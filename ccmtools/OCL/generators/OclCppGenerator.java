@@ -762,4 +762,14 @@ public class OclCppGenerator extends OclStandardGenerator
     {
         return collVarName+".isUnique()";
     }
+
+
+    protected String getExpr_Collection_sortedBy( String collVarName, String refVarName,
+                                                  String itemType, ConstraintCode conCode )
+    {
+        String result = getNextHelperName();
+        conCode.helpers_ += "  OCL_Sortable_Sequence< "+itemType+" > "+result+"("+collVarName+");\n"+
+                            "  "+result+".sortBy("+refVarName+");\n";
+        return result;
+    }
 }

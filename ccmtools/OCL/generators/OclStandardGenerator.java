@@ -913,10 +913,19 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             parent.setOclType(creator_.createTypeBoolean());
             return getExpr_Collection_isUnique(c, conCode);
         }
+        if( name.equals("sortedBy") )
+        {
+            String c = make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem);
+            parent.setOclType(creator_.createTypeSequence(itemType));
+            return getExpr_Collection_sortedBy(exprCode, c, cppItem, conCode);
+        }
         // TODO
         return error("unknown collection operation: "+name);
     }
 
+
+    abstract protected String getExpr_Collection_sortedBy( String collVarName, String refVarName,
+                                                           String itemType, ConstraintCode conCode );
 
     abstract protected String getExpr_Collection_isUnique( String collVarName,
                                                            ConstraintCode conCode );
