@@ -8,3 +8,5 @@ configure.in
 depcomp
 install-sh
 missing
+client.repo
+component-clients.repo
