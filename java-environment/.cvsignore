@@ -1,6 +1,1 @@
 build
-src/uml_parser
-src/dtd2java/DTDTokenTypes.java
-src/dtd2java/DTDTokenTypes.txt
-src/dtd2java/DtdLexer.java
-src/dtd2java/DtdParser.java

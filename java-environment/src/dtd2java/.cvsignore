@@ -1,1 +1,5 @@
 *.PP.dtd
+DTDTokenTypes.java
+DTDTokenTypes.txt
+DtdLexer.java
+DtdParser.java
