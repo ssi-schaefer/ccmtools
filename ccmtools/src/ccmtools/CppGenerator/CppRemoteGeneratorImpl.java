@@ -336,14 +336,14 @@ public class CppRemoteGeneratorImpl
         }
 	// Handle %(MAttributeDefConvertResultType)s tag in %(MAttributeDef*)s 
 	// templates
-	else if(data_type.equals("MAttributeDefConvertResultType")) {
-	    data_value = base_type + "_to_" + "CORBA" + base_type;
-	}
+	//	else if(data_type.equals("MAttributeDefConvertResultType")) {
+	//	    data_value = base_type + "_to_" + "CORBA" + base_type;
+	//	}
 	// Handle %(MAttributeDefConvertParameter)s tag in %(MAttributeDef*)s
 	// templates
-	else if(data_type.equals("MAttributeDefConvertParameter")) {
-	    data_value = "CORBA" + base_type + "_to_" + base_type;
-	}
+	//	else if(data_type.equals("MAttributeDefConvertParameter")) {
+	//	    data_value = "CORBA" + base_type + "_to_" + base_type;
+	//	}
         return data_value;
     }
 
@@ -791,19 +791,17 @@ public class CppRemoteGeneratorImpl
 	return join("\n", ret) + "\n";
     }
 
+    // !!!!
     protected String convertPrimitiveParameterFromCorbaToCpp(MParameterDef p)
     {
 	MParameterMode direction = p.getDirection();
 	String base_type = getBaseIdlType(p);
 	String cpp_type = (String)language_mappings.get(base_type);
-
         List ret = new ArrayList();
-	ret.add("  " + cpp_type + " parameter_" + p.getIdentifier() + ";"); 
-	
+	ret.add("    " + cpp_type + " parameter_" + p.getIdentifier() + ";"); 
 	if(direction != MParameterMode.PARAM_OUT) {
-	    ret.add("  " + "parameter_" + p.getIdentifier()
-		    + " = CCM::CORBA" + base_type + "_to_" + 
-		    base_type + "(" +p.getIdentifier() + ");");  
+	    ret.add("    CCM::convertFromCorba(" + p.getIdentifier() +
+		    ", parameter_" + p.getIdentifier() + ");");
 	}
 	return join("\n", ret) + "\n";
     }
@@ -1106,19 +1104,14 @@ public class CppRemoteGeneratorImpl
 	return join("\n", ret) + "\n";
     }
 
+    //!!!!!!!
     protected String convertPrimitiveParameterFromCppToCorba(MParameterDef p)
     {
 	List ret = new ArrayList();
 	MParameterMode direction = p.getDirection();
 	if(direction != MParameterMode.PARAM_IN) {
-	    String parameter_base_type = getBaseIdlType(p);
-	    String parameter_cpp_type = (String)language_mappings.get(parameter_base_type);
-	    ret.add("  " 
-		    + p.getIdentifier() 
-		    + " = CCM::" + parameter_base_type 
-		    + "_to_CORBA" + parameter_base_type 
-		    + "(parameter_" + 
-		    p.getIdentifier() + ");"); 
+	    ret.add("    CCM::convertToCorba(parameter_" +  p.getIdentifier() + 
+		    ", " + p.getIdentifier() + ");" );
 	}
 	return join("\n", ret);
     }
@@ -1333,17 +1326,18 @@ public class CppRemoteGeneratorImpl
 	return join("\n", ret);
     }
 
+    // !!!!
     protected String convertPrimitiveResultFromCppToCorba(MOperationDef op) 
     {
 	String base_type = getBaseIdlType(op);
-	String ret_string = "";
-
+	List ret = new ArrayList();
 	// Convert the result iff the result type is not void
 	if(!base_type.equals("void")) {
-	    ret_string = "  return CCM::" + base_type 
-		+ "_to_CORBA" + base_type + "(result);";
+	    ret.add("    " + getCORBALanguageType(op) + " return_value;");
+	    ret.add("    CCM::convertToCorba(result, return_value);"); 
+	    ret.add("    return return_value;");
 	}
-	return ret_string;
+	return join("\n", ret);
     }
 
     protected String convertEnumResultFromCppToCorba(MEnumDef idl_enum)
@@ -1524,29 +1518,22 @@ public class CppRemoteGeneratorImpl
      */
     protected String convertReceptacleParameterToCorba(MOperationDef op)
     {
-	Debug.println(Debug.METHODS,
-		      "CppRemoteGeneratorImpl.convertParameterToCorba()");
-
         List ret = new ArrayList();
         for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
             MParameterDef p = (MParameterDef) params.next();
 	    MParameterMode direction = p.getDirection();
-	    MIDLType idl_type = ((MTyped)p).getIdlType();
+	    //	    MIDLType idl_type = ((MTyped)p).getIdlType();
 	    String base_type = getBaseIdlType(p);
 	    String corba_type = (String)CORBA_mappings.get(base_type);
 
 	    // Note that the out parameters must not be converted to C++
 	    if(direction == MParameterMode.PARAM_OUT) {
-		ret.add("  " 
-			+ corba_type + " parameter_" 
-			+ p.getIdentifier() + ";"); 
+		ret.add("    " + corba_type + " parameter_" + p.getIdentifier() + ";"); 
 	    }
 	    else { 
-		ret.add("  " 
-			+ corba_type + " parameter_" 
-			+ p.getIdentifier() 
-			+ " = CCM::" + base_type + "_to_CORBA"
-			+ base_type + "(" +p.getIdentifier() + ");");  
+		ret.add("    " + corba_type + " parameter_" + p.getIdentifier() +";");
+		ret.add("    CCM::convertToCorba(" + p.getIdentifier() + 
+			", parameter_" + p.getIdentifier() + ");");
 	    }
 	}
 	return join("\n", ret) + "\n";
@@ -1565,16 +1552,14 @@ public class CppRemoteGeneratorImpl
      */
     protected String declareReceptacleCorbaResult(MOperationDef op)
     {
-	Debug.println(Debug.METHODS,
-		      "CppRemoteGeneratorImpl.declareCorbaResult()");
-
 	String ret_string = "";
 	MIDLType idl_type = op.getIdlType(); 
 
 	if(idl_type instanceof MPrimitiveDef || 
 	   idl_type instanceof MStringDef) {
-	    ret_string = "  " + (String)CORBA_mappings.get((String)getBaseIdlType(op)) +
-		         " result;";
+	    ret_string = "    " 
+		+ (String)CORBA_mappings.get((String)getBaseIdlType(op)) 
+		+ " result;";
 	}
 	return ret_string;
     }
@@ -1600,7 +1585,7 @@ public class CppRemoteGeneratorImpl
 
 	if(idl_type instanceof MPrimitiveDef || 
 	   idl_type instanceof MStringDef) {
-	    ret_string = "  " 
+	    ret_string = "    " 
 		+ "result = component_adapter->get_connection_" 
 		+ receptacleName + "()->" 
 		+ op.getIdentifier() + "(";
@@ -1616,6 +1601,7 @@ public class CppRemoteGeneratorImpl
     }
 
 
+    //!!!!!!
     /**
      * Create the code that converts the result value as well as the inout
      * and out parameters from CORBA to local C++ types.
@@ -1631,19 +1617,21 @@ public class CppRemoteGeneratorImpl
 	Debug.println(Debug.METHODS,
 		      "CppRemoteGeneratorImpl.convertResultToCpp()");
 	
-	String ret_string = "";
+	List ret = new ArrayList();
+	//	String ret_string = "";
 	MIDLType idl_type = op.getIdlType();
 
 	if(idl_type instanceof MPrimitiveDef || 
 	   idl_type instanceof MStringDef) {
 	    String base_type = getBaseIdlType(op);
-	    List ret = new ArrayList();
+	    //	    List ret = new ArrayList();
 	    // Convert the inout and out parameters 
 	    for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
 		MParameterDef p = (MParameterDef) params.next();
 		MParameterMode direction = p.getDirection();
 		if(direction != MParameterMode.PARAM_IN) {
 		    String parameter_base_type = getBaseIdlType(p);
+		    // TODO: change converter line
 		    ret.add("  " 
 			    + p.getIdentifier() 
 			    + "= CCM::CORBA" + parameter_base_type 
@@ -1651,15 +1639,15 @@ public class CppRemoteGeneratorImpl
 			    + "(parameter_" + p.getIdentifier() + ");"); 
 		}
 	    }
-	    ret_string = join("\n", ret) + "\n";
-	    
+	    //	    ret_string = join("\n", ret) + "\n";
 	    // Convert the result iff the result type is not void
 	    if(!base_type.equals("void")) {
-		ret_string += "  return CCM::CORBA" + base_type 
-		    + "_to_" + base_type + "(result);";
+		ret.add("    " + getLanguageType(op) + " return_value;");
+		ret.add("    CCM::convertFromCorba(result, return_value);");
+		ret.add("    return return_value;");
 	    }
 	}
-	return ret_string;
+	return join("\n", ret);
     }
 
 

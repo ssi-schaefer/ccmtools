@@ -173,7 +173,7 @@ int deploy_%(Identifier)s(CORBA::ORB_ptr orb, char* registration_name)
 
     LocalComponents::HomeFinder* homeFinder;
     homeFinder = CCM_Local::HomeFinder::Instance();
-    int error = local_deploy_TestHome("%(Identifier)s");
+    int error = local_deploy_%(Identifier)s("%(Identifier)s");
     if(error)
       return -2; // Can't deploy local component
 

@@ -2,16 +2,18 @@
 
 %(CORBAType)s %(ComponentType)s_impl::%(Identifier)s()
 {
-    LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::%(Identifier)s() <get>");
+    LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::%(Identifier)s()");
     %(LanguageType)s result;
     result = local_adapter->%(Identifier)s();
-    return CCM::%(MAttributeDefConvertResultType)s(result);
+    %(CORBAType)s return_value;
+    CCM::convertToCorba(result, return_value);		
+    return return_value;	
 }
 
 void %(ComponentType)s_impl::%(Identifier)s(const %(CORBAType)s value)
 {
-    LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::%(Identifier)s() <set>");
-    %(LanguageType)s local_value;
-    local_value = CCM::%(MAttributeDefConvertParameter)s(value);
-    local_adapter->%(Identifier)s(local_value);
+    LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::%(Identifier)s(value)");
+    %(LanguageType)s parameter_value;
+    CCM::convertFromCorba(value, parameter_value);	
+    local_adapter->%(Identifier)s(parameter_value);
 }
