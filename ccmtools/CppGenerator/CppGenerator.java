@@ -372,7 +372,7 @@ abstract public class CppGenerator
 
 	if (idl_type instanceof MInterfaceDef) {
 	    // Handle interfaces using smart pointers
-	    base_type = "CCM_Utils::SmartPtr<" + base_type + ">";
+	    base_type = "WX::Utils::SmartPtr<" + base_type + ">";
 	}
 
         if (object instanceof MParameterDef) {
