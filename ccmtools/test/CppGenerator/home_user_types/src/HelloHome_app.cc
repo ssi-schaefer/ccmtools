@@ -7,8 +7,11 @@
 #include <CCM_Utils/Debug.h>
 
 #include "HelloHome_app.h"
+#include "Hello_app.h"
 
+using namespace std;
 using namespace CCM_Utils;
+using namespace CCM_Local;
 
 namespace CCM_Local {
 namespace CCM_Session_Hello {

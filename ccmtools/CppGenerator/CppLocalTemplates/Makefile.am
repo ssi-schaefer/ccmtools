@@ -29,6 +29,7 @@ dist_template_DATA = \
     MEmitsDefInclude                               \
     MEnumDef                                       \
     MExceptionDef                                  \
+    MExceptionDefInclude                           \
     MExceptionDefThrows                            \
     MFactoryDefAdapterDefinition                   \
     MFactoryDefAdapterPrototypeV                   \

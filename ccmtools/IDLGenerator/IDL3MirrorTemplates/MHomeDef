@@ -1,6 +1,7 @@
 %(MFactoryDefInclude)s
 %(MFinderDefInclude)s
 %(MSupportsDefInclude)s
+%(BaseInclude)s
 
 #ifndef __HOME__%(IncludeNamespace)s%(Identifier)s__
 #define __HOME__%(IncludeNamespace)s%(Identifier)s__
@@ -10,6 +11,7 @@
 component %(ComponentType)s_mirror;
 
 home %(Identifier)s_mirror manages %(ComponentType)s_mirror
+ %(BaseType)s
  %(MSupportsDef)s
 {
 %(MFactoryDef)s

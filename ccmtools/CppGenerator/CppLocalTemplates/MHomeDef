@@ -23,6 +23,7 @@
 
 %(MFactoryDefInclude)s
 %(MFinderDefInclude)s
+%(MSupportsDefInclude)s
 %(BaseInclude)s
 
 #include "%(ComponentType)s_gen.h"
@@ -67,7 +68,7 @@ class %(Identifier)sImplicit
 //==============================================================================
 
 class %(Identifier)s
-  : public %(Identifier)sExplicit, public %(Identifier)sImplicit%(BaseTypes)s
+  : public %(Identifier)sExplicit, public %(Identifier)sImplicit%(BaseType)s
 {
  private:
   CCM_%(Identifier)s* local_home;
@@ -231,6 +232,11 @@ extern "C" {
 #include <CCM_Utils/SmartPointer.h>
 #include <localComponents/CCM.h>
 
+%(MFactoryDefInclude)s
+%(MFinderDefInclude)s
+%(MSupportsDefInclude)s
+%(BaseInclude)s
+
 %(OpenNamespace)s
 
 //==============================================================================
@@ -254,7 +260,7 @@ class CCM_%(Identifier)sImplicit
 
 
 class CCM_%(Identifier)s
-  : public CCM_%(Identifier)sExplicit, public CCM_%(Identifier)sImplicit%(BaseTypes)s%(MSupportsDefBase)s
+  : public CCM_%(Identifier)sExplicit, public CCM_%(Identifier)sImplicit%(BaseType)s%(MSupportsDefBase)s
 {
 };
 
@@ -294,7 +300,7 @@ extern "C" {
 class CCM_%(Identifier)s;
 
 class CCM_%(Identifier)s_impl
-  : public CCM_%(Identifier)s%(BaseTypes)s
+  : public CCM_%(Identifier)s%(BaseType)s
 {
  public:
   CCM_%(Identifier)s_impl (  );

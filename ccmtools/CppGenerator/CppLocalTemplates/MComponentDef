@@ -46,7 +46,7 @@ class CCM_%(Identifier)s_Context;
 //==============================================================================
 
 class %(Identifier)s
-  : public localComponents::ReleaseInformation%(BaseTypes)s,
+  : public localComponents::ReleaseInformation%(BaseType)s,
     virtual public localComponents::CCMObject
     %(MSupportsDefBase)s
 {
@@ -508,10 +508,9 @@ localComponents::ComponentPortDescription
 //==============================================================================
 
 class CCM_%(Identifier)s
-: public localComponents::SessionComponent%(BaseTypes)s%(MSupportsDefBase)s
+: public localComponents::SessionComponent%(BaseType)s%(MSupportsDefBase)s
 {
  public:
-
 %(MAttributeDefPrototypeVV)s
 %(MProvidesDefGetFacetPrototypeVV)s
 %(MSupportsDefImplPrototypeVV)s
@@ -552,7 +551,7 @@ class CCM_%(Identifier)s_Context
 //==============================================================================
 
 class CCM_%(Identifier)s_impl
-  : public CCM_%(Identifier)s%(BaseTypes)s
+  : public CCM_%(Identifier)s%(BaseType)s
 {
  private:
 %(MAttributeDefVariable)s

@@ -893,6 +893,14 @@ abstract public class CodeGenerator
                         return getScopedInclude((MContained) sub_type);
                 }
             }
+        } else if (variable.equals("BaseInclude")) {
+            if (current_node instanceof MInterfaceDef) {
+                MInterfaceDef iface = (MInterfaceDef) current_node;
+                List bases = new ArrayList();
+                for (Iterator i = iface.getBases().iterator(); i.hasNext(); )
+                    bases.add(getScopedInclude((MInterfaceDef) i.next()));
+                return join("\n", bases);
+            }
         } else if (variable.endsWith("Namespace")) {
 
             // This is just a useful default ; subclasses should override this

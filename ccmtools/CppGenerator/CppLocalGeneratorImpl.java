@@ -25,10 +25,12 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
@@ -275,7 +277,6 @@ public class CppLocalGeneratorImpl
                 f = new ArrayList(); f.add("src"); f.add(""); files.add(f);
                 f = new ArrayList(); f.add("src"); f.add(""); files.add(f);
             }
-	    
         } else if ((current_node instanceof MInterfaceDef)
                    || (current_node instanceof MStructDef)
                    || (current_node instanceof MUnionDef)
@@ -291,5 +292,71 @@ public class CppLocalGeneratorImpl
         }
 
         return files;
+    }
+
+    /**************************************************************************/
+
+    protected String getLocalValue(String variable)
+    {
+        String value = super.getLocalValue(variable);
+
+        if (current_node instanceof MInterfaceDef)
+            return data_MInterfaceDef(variable, value);
+
+        return value;
+    }
+
+    protected String data_MInterfaceDef(String data_type, String data_value)
+    {
+        MInterfaceDef iface = (MInterfaceDef) current_node;
+
+        // we have to handle base class functions in the code rather than in the
+        // templates. there are too many graph visitation issues otherwise (and
+        // MBaseDef isn't a metamodel class anyway).
+
+        if (data_type.startsWith("BasePrototype")) {
+            MDefinitionKind filter = MDefinitionKind.DK_OPERATION;
+            List protos = new ArrayList();
+
+            for (Iterator b = ((MInterfaceDef) current_node).getBases().iterator(); b.hasNext(); ) {
+                List ops = ((MInterfaceDef) b.next()).getFilteredContents(filter, false);
+
+                for (Iterator o = ops.iterator(); o.hasNext(); ) {
+                    MOperationDef op = (MOperationDef) o.next();
+                    String proto = "  ";
+
+                    if (data_type.endsWith("VV")) proto += "virtual ";
+
+                    proto += getLanguageType(op) + " " + op.getIdentifier();
+
+                    proto += " ( ";
+                    for (Iterator p = op.getParameters().iterator(); p.hasNext(); ) {
+                        MParameterDef param = (MParameterDef) p.next();
+                        proto += getLanguageType(param) + " ";
+                        proto += param.getIdentifier();
+                        if (p.hasNext()) proto += ", ";
+                    }
+                    proto += " ) ";
+
+                    Set excepts = op.getExceptionDefs();
+                    if (excepts.size() > 0) {
+                        proto += "\n    throw ( ";
+                        for (Iterator e = excepts.iterator(); e.hasNext(); ) {
+                            proto += ((MExceptionDef) e.next()).getIdentifier();
+                            if (e.hasNext()) proto += ", ";
+                        }
+                        proto += " ) ";
+                    }
+
+                    if (data_type.endsWith("VV")) proto += "= 0";
+
+                    protos.add(proto.toString() + ";");
+                }
+            }
+
+            return join("\n", protos);
+        }
+
+        return super.data_MInterfaceDef(data_type, data_value);
     }
 }

@@ -9,7 +9,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # currently under investigation ... uncomment in local copy to test faster.
 
-#TESTS = attribute_user_types.sh
+#TESTS = owudb.sh
 
 # tests are generally in order of increasing complexity.
 

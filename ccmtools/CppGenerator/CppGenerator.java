@@ -201,8 +201,6 @@ abstract public class CppGenerator
             return data_MOperationDef(variable, value);
         } else if (current_node instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
-        } else if (current_node instanceof MExceptionDef) {
-            return data_MExceptionDef(variable, value);
         } else if (current_node instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
         }
@@ -304,13 +302,10 @@ abstract public class CppGenerator
     protected String data_MComponentDef(String data_type, String data_value)
     {
         if (data_type.endsWith("Namespace")) {
-            MComponentDef component = (MComponentDef) current_node;
-            return handleNamespace(data_type, component.getIdentifier());
-        } else if (data_type.equals("BaseTypes")) {
-            String base = joinBaseNames(", public ");
-            if (base.length() > 0) return ", public " + base;
+            return handleNamespace(data_type,
+                     ((MComponentDef) current_node).getIdentifier());
         }
-        return data_value;
+        return data_MInterfaceDef(data_type, data_value);
     }
 
     protected String data_MEnumDef(String data_type, String data_value)
@@ -325,14 +320,6 @@ abstract public class CppGenerator
         return data_value;
     }
 
-    protected String data_MExceptionDef(String data_type, String data_value)
-    {
-        if (data_type.endsWith("Namespace")) {
-            return handleNamespace(data_type, "");
-        }
-        return data_value;
-    }
-
     protected String data_MFactoryDef(String data_type, String data_value)
     { return data_MOperationDef(data_type, data_value); }
 
@@ -342,18 +329,22 @@ abstract public class CppGenerator
     protected String data_MHomeDef(String data_type, String data_value)
     {
         if (data_type.endsWith("Namespace")) {
-            MComponentDef comp = ((MHomeDef) current_node).getComponent();
-            return handleNamespace(data_type, comp.getIdentifier());
+            MHomeDef home = (MHomeDef) current_node;
+            return handleNamespace(data_type,
+                                   home.getComponent().getIdentifier());
         }
-        return data_MComponentDef(data_type, data_value);
+        return data_MInterfaceDef(data_type, data_value);
     }
 
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
-        if (data_type.equals("BaseTypes")) {
+        MInterfaceDef iface = (MInterfaceDef) current_node;
+
+        if (data_type.equals("BaseType")) {
             String base = joinBaseNames(", public ");
-            if (base.length() > 0) return ": public " + base;
+            if (base.length() > 0) return ", public " + base;
         }
+
         return data_value;
     }
 

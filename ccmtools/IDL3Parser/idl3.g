@@ -507,9 +507,8 @@ options { exportVocab = IDL3; k = 2; }
      */
     private void checkSetParameters(MOperationDef op, List params)
     {
-        for (Iterator p = params.iterator(); p.hasNext(); ) {
+        for (Iterator p = params.iterator(); p.hasNext(); )
             ((MParameterDef) p.next()).setOperation(op);
-        }
         op.setParameters(params);
     }
 
@@ -520,11 +519,6 @@ options { exportVocab = IDL3; k = 2; }
     private void checkSetExceptions(MOperationDef op, List excepts)
         throws TokenStreamException
     {
-        for (Iterator e = excepts.iterator(); e.hasNext(); ) {
-            MContained def = lookupName((String) e.next(), DEBUG_EXCEPTION);
-            if (def == null)
-                throw new TokenStreamException("exception '"+e+"' is not defined in operation '"+op.getIdentifier());
-        }
         op.setExceptionDefs(new HashSet(excepts));
     }
 
@@ -910,8 +904,8 @@ init_dcl returns [MFactoryDef factory = null]
 }
     :   "factory" id = identifier
         { factory.setIdentifier(id); symbolTable.add(id, factory); }
-        LPAREN ( params = init_param_decls { checkSetParameters(factory, params); } )?
-        RPAREN ( excepts = raises_expr { checkSetExceptions(factory, excepts); } )?
+        LPAREN ( params = init_param_decls { checkSetParameters((MOperationDef) factory, params); } )?
+        RPAREN ( excepts = raises_expr { checkSetExceptions((MOperationDef) factory, excepts); } )?
         SEMI ;
 
 // 24. <init_param_decls> ::= <init_param_decl,25> { "," <init_param_decl,24> }*
@@ -2375,10 +2369,10 @@ factory_dcl returns [MFactoryDef factory = null]
             factory.setIdentifier(id);
             symbolTable.add(id, factory);
         }
-        LPAREN
-        ( params = init_param_decls { checkSetParameters(factory, params); } )?
-        RPAREN
-        ( excepts = raises_expr { checkSetExceptions(factory, excepts); } )? ;
+        LPAREN ( params = init_param_decls
+            { checkSetParameters((MOperationDef) factory, params); } )?
+        RPAREN ( excepts = raises_expr
+            { checkSetExceptions((MOperationDef) factory, excepts); } )? ;
 
 // 133. <finder_dcl> ::= "finder" <identifier>
 //        "(" [ <init_param_decls,24> ] ")" [ <raises_expr,93> ]
@@ -2395,10 +2389,10 @@ finder_dcl returns [MFinderDef finder = null]
             finder.setIdentifier(id);
             symbolTable.add(id, finder);
         }
-        LPAREN
-        ( params = init_param_decls { checkSetParameters(finder, params); } )?
-        RPAREN
-        ( excepts = raises_expr { checkSetExceptions(finder, excepts); } )? ;
+        LPAREN ( params = init_param_decls
+            { checkSetParameters((MOperationDef) finder, params); } )?
+        RPAREN ( excepts = raises_expr
+            { checkSetExceptions((MOperationDef) finder, excepts); } )? ;
 
 // 134. <event> ::= <event_dcl,137> | <event_abs_dcl,136>
 //      | <event_forward_dcl,135>

@@ -41,7 +41,6 @@ test -e ${install_dir}/lib/libccmtools-cpp-environment_CCM_Utils.a || \
   ccmtools-c++-environment -i ${install_dir} || ret=1
 
 # generate component code.
-#test -z "${ret}" && ccmtools-c++-generate -d -c "1.2.3" -p ${1} \
 test -z "${ret}" && ccmtools-c++-generate -d -a -c "1.2.3" -p ${1} \
   -i ${install_dir} ${2} ${3} || ret=1
 

@@ -16,7 +16,7 @@
 %(OpenNamespace)s
 
 component %(Identifier)s
- %(BaseTypes)s
+ %(BaseType)s
  %(MSupportsDef)s
 {
 %(MAttributeDef)s

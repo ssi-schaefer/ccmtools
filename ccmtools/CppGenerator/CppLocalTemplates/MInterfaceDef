@@ -14,12 +14,13 @@
 
 %(MAttributeDefInclude)s
 %(MOperationDefInclude)s
+%(BaseInclude)s
 
 %(OpenNamespace)s
 
 // External view of an interface
 class %(Identifier)s
-  : virtual public localComponents::Object%(BaseTypes)s
+  : virtual public localComponents::Object%(BaseType)s
 {
  public:
   virtual ~%(Identifier)s (  ) {  }
@@ -31,7 +32,6 @@ class %(Identifier)s
 class  CCM_%(Identifier)s
   : virtual public %(Identifier)s
 {};
-
 
 %(CloseNamespace)s
 

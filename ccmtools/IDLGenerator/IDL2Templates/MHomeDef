@@ -11,7 +11,7 @@
 interface %(ComponentType)s;
 
 interface %(Identifier)sExplicit :
-  Components::CCMHome%(BaseTypes)s%(MSupportsDef)s
+  Components::CCMHome%(BaseType)s%(MSupportsDef)s
 {
 %(MFactoryDef)s
 %(MFinderDef)s

@@ -356,16 +356,9 @@ abstract public class IDLGenerator
 
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
-        MInterfaceDef node = (MInterfaceDef) current_node;
-
-        if (data_type.equals("BaseTypes")) {
+        if (data_type.equals("BaseType")) {
             String base = joinBaseNames(", ");
             if (base.length() > 0) return ": " + base;
-        } else if (data_type.equals("BaseInclude")) {
-            ArrayList lines = new ArrayList();
-            for (Iterator i = node.getBases().iterator(); i.hasNext(); )
-                lines.add(getScopedInclude((MInterfaceDef) i.next()));
-            return join("\n", lines);
         } else if (data_type.startsWith("MSupportsDef") &&
                    data_value.endsWith(", ")) {
             return "supports " +

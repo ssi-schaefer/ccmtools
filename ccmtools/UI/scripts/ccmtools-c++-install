@@ -2,7 +2,7 @@
 
 ## ccmtools-c++-install : C++ component installation script
 ## Leif Johnson <leif@ambient.2y.net>
-## copyright (c) 2002-2003 Salomon Automation
+## Copyright (C) 2002-2003 Salomon Automation
 ##
 ##
 ## This program is free software; you can redistribute it and/or modify it unde
@@ -76,7 +76,6 @@ if not os.path.isdir(SOURCE_DIR):
 
 confix_flags  = ' --packageroot="%s" --profile="ccmtools"' % SOURCE_DIR
 confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
-confix_flags += ' --make --targets="install"'
+confix_flags += ' --make --targets="install" --quiet'
 
-print 'confix.py ' + confix_flags
 sys.exit(os.system('confix.py ' + confix_flags) != 0)

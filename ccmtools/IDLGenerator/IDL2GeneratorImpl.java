@@ -24,6 +24,8 @@ package ccmtools.IDLGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +60,21 @@ public class IDL2GeneratorImpl
 	template = template_manager.getRawTemplate("MakefileIdl");
 	if(template != null)
 	    writeFinalizedFile("", "Makefile", template.getTemplate());
+    }
+
+    protected String getLocalValue(String variable)
+    {
+        String value = super.getLocalValue(variable);
+
+        if (current_node instanceof MComponentDef ||
+            current_node instanceof MHomeDef) {
+            if (variable.equals("BaseType")) {
+                String base = joinBaseNames(", ");
+                if (base.length() > 0) return ", " + base;
+            }
+        }
+
+        return value;
     }
 }
 

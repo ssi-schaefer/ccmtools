@@ -296,9 +296,8 @@ public class ConsoleCodeGenerator
                 //
                 // Process preproc = rt.exec(Constants.CPP_PATH + " -o " +
 
-                Process preproc = rt.exec("cpp -o " +
-                                          idlfile + " " + include_path +
-                                          " " + source);
+                Process preproc = rt.exec("cpp -o "+idlfile+" "+
+                                          include_path+" "+source);
                 preproc.waitFor();
                 if (preproc.exitValue() != 0)
                     throw new RuntimeException(

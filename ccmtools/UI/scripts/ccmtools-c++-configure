@@ -2,7 +2,7 @@
 
 ## ccmtools-c++-configure : Confix bootstrap
 ## Egon Teiniker <egon.teiniker@tugraz.at>
-## copyright (c) 2002-2003 Salomon Automation
+## Copyright (C) 2002-2003 Salomon Automation
 ##
 ##
 ## This program is free software; you can redistribute it and/or modify it unde
@@ -40,18 +40,6 @@ Options:
 The environment variable CCMTOOLS_PACKAGE can also be used to set the package
 name.''' % CCMTOOLS_PACKAGE
 
-## utility functions.
-
-#def find(dir, file):
-#    files = os.listdir(dir)
-#    if file in files: return os.path.join(dir, file)
-#    for f in files:
-#        new_file = os.path.join(dir, f)
-#        if os.path.isdir(new_file):
-#            result = find(new_file, file)
-#            if result: return result
-#    return None
-
 ## handle arguments.
 
 index = 1
@@ -71,7 +59,7 @@ while index < len(sys.argv):
     elif arg == '-V' or arg.startswith('--v'):
         os.execlp('ccmtools-generate', 'ccmtools-generate', '--version')
 
-## post process argument value checking.
+## check argument values.
 
 SOURCE_DIR = SOURCE_DIR or CCMTOOLS_PACKAGE
 if (sys.platform[:3] == 'win' and not SOURCE_DIR[1:3] == ':\\') or \
@@ -84,29 +72,12 @@ if not os.path.isdir(SOURCE_DIR):
     print '"ccmtools-c++-generate".'
     sys.exit(1)
 
-## find the matching application logic and user types files, and copy them from
-## the current directory to the generated code directory.
-
-#for f in glob.glob('*_app.*') + glob.glob('*_user_types.h') + glob.glob('_check_CCM_Session*.cc'):
-#     dest_file = find(SOURCE_DIR, f)
-#     print ' copy file: ' + f
-#     if not dest_file:
-#         print 'Warning: unknown destination for %s. Skipping.' % f
-#         print 'This might cause deployment failure!'
-#         print
-#         continue
-#
-#     if os.system('cp -p ' + f + ' ' +dest_file):
-#         print "Error: can't copy " + f + " files!"
-#         sys.exit(1)
-        
 ## run confix to bootstrap and configure the component's source code
 
 confix_flags  = ' --packageroot="%s" --profile="ccmtools"' % SOURCE_DIR
 confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
-confix_flags += ' --bootstrap --configure'
+confix_flags += ' --bootstrap --configure --quiet'
 
-print 'confix.py ' + confix_flags
 sys.exit(os.system('confix.py ' + confix_flags) != 0)
 
 

@@ -23,6 +23,7 @@ dist_template_DATA = \
     MEnumDef                                 \
     MExceptionDef                            \
     MExceptionDefName                        \
+    MExceptionDefInclude                     \
     MFactoryDef                              \
     MFactoryDefInclude                       \
     MFieldDef                                \

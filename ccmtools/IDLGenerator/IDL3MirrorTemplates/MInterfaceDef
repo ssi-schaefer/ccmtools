@@ -7,7 +7,7 @@
 %(OpenNamespace)s
 
 interface %(Identifier)s
-  %(BaseTypes)s
+  %(BaseType)s
 {
 %(MOperationDef)s
 };
