@@ -1,49 +1,51 @@
 % $Id$
 
 %==============================================================================
-\chapter{Installation of CCM Tools}
+\chapter{Installation}
 %==============================================================================
 
 %------------------------------------------------------------------------------
-\section{Introduction}
-%------------------------------------------------------------------------------
-
-The {\it CCM Tools} are a set of Java programs and Python scripts that supports
-the development of local C++ components - based on the CORBA Component Model (CCM).
-
-
-%------------------------------------------------------------------------------
-\section{Requirements}
+\section{Prerequisites}
 %------------------------------------------------------------------------------
 
 To install the {\it CCM Tools}, the following programs must be available:
 \begin{itemize}
-\item Java SDK 1.4.x
-\item Python 2.2
-\item Confix 1.0.x
-\item gcc version 2.95.3
+\item Java SDK $\ge$ 1.4 \\
+{\tt http://java.sun.com/j2se/}
+\item Python $\ge$ 2.2 \\
+{\tt http://python.org/}
+\item Confix $\ge$ 1.1 \\
+{\tt http://confix.sf.net/}
+\item gcc $\ge$ 2.95.3 \\
+{\tt http://www.gnu.org/}
 \end{itemize}
 
 %------------------------------------------------------------------------------
-\section{Source code installation}
+\section{How to get it}
+%------------------------------------------------------------------------------
+
+The project's homepage is hosted at Sourceforge 
+({\tt http://ccmtools.sf.net}), see there for releases and announcements.
+
+
+
+%------------------------------------------------------------------------------
+\section{Source distribution}
 %------------------------------------------------------------------------------
 
 The installation of the {\it CCM Tools} requires the following steps that get
 the source code, build the binary files and set the environment variables:
 \begin{verbatim}
-~> mkdir tmp
-~/tmp> cvs -d :ext:<user>@saloon.salomon.at:/var/cvsintern co ccm/tools
-
-~/tmp> cd ccm/tools
-~/tmp/ccm/tools> autogen.py --prefix=<ccm_tools_path>
-~/tmp/ccm/tools> make
-~/tmp/ccm/tools> make install
-
-~> export PATH=<ccm_tools_path>/bin:$PATH
-~> export CLASSPATH=<ccm_tools_path>/share/java/ccmtools.jar: \
-                    <ccm_tools_path>/share/java/antlr.jar:    \
-                    <ccm_tools_path>/share/java/jdom.jar:     \
-                    $CLASSPATH
+  # tar xvzf ccmtools-0.2.tar.gz
+  # cd ccmtools-0.2
+  # autogen.py --prefix=<ccm_tools_path>
+  # make
+  # make install
+  # PATH=<ccm_tools_path>/bin:$PATH
+  # export CLASSPATH=<ccm_tools_path>/share/java/ccmtools.jar: \
+                     <ccm_tools_path>/share/java/antlr.jar:    \
+                     <ccm_tools_path>/share/java/jdom.jar:     \
+                     $CLASSPATH
 \end{verbatim}
 
 
