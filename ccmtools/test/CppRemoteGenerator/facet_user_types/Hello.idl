@@ -3,6 +3,11 @@
  *
  */
 
+//typedef long time_t;
+
+enum Color {red, green, blue, black, orange};
+
+//typedef double DoubleArray[10];
 
 struct Person {
   long id;
@@ -18,6 +23,9 @@ interface Console {
   StringList foo2(in StringList s1, inout StringList s2, out StringList s3);
   Person  foo3(in Person p1, inout Person p2, out Person p3);
   PersonMap foo4(in PersonMap p1, inout PersonMap p2, out PersonMap p3);
+  Color foo5(in Color c1, inout Color c2, out Color c3);
+  //  DoubleArray foo6(in DoubleArray a1, inout DoubleArray a2, out DoubleArray a3);
+  //  time_t foo7(in time_t t1, inout time_t t2, out time_t t3);
 };
 
 component Hello

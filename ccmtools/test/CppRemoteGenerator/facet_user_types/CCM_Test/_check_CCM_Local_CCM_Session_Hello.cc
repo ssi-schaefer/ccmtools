@@ -144,7 +144,16 @@ int main ( int argc, char *argv[] )
       assert(v.id == i+i);
     }
     
-
+    /*
+     * Test Case for: enum Color {red, green, blue, black, orange};
+     */
+    Color Color_2,Color_3, Color_r;
+    Color_2 = Color(blue);
+    Color_r = console.ptr()->foo5(Color(red),Color_2, Color_3);
+    assert(Color_2 == Color(red));
+    assert(Color_3 == Color(blue));
+    assert(Color_r == Color(red));
+    
 
     DEBUGNL("==== End Test Case ===============================================" );
   } catch ( localComponents::NotImplemented& e ) {

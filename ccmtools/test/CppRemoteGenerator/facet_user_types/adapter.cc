@@ -209,3 +209,75 @@ PersonMap* consoleFacetAdapter::foo4(const PersonMap& p1, PersonMap& p2, PersonM
 
 
 
+::Color consoleFacetAdapter::foo5(::Color c1, ::Color& c2, ::Color_out c3) 
+  throw(CORBA::SystemException)
+{
+  DEBUGNL(" consoleFacetAdapter::foo5()");
+
+  // convertParameterToCpp()
+  // IN
+  CCM_Local::Color parameter_c1;
+  switch(c1) {
+  case red: parameter_c1 = CCM_Local::Color(red); break;
+  case green: parameter_c1 = CCM_Local::Color(green); break;
+  case blue: parameter_c1 = CCM_Local::Color(blue); break;
+  case black: parameter_c1 = CCM_Local::Color(black); break;
+  case orange: parameter_c1 = CCM_Local::Color(orange); break;
+  }
+
+  // INOUT
+  CCM_Local::Color parameter_c2;
+  switch(c2) {
+  case red: parameter_c2 = CCM_Local::Color(red); break;
+  case green: parameter_c2 = CCM_Local::Color(green); break;
+  case blue: parameter_c2 = CCM_Local::Color(blue); break;
+  case black: parameter_c2 = CCM_Local::Color(black); break;
+  case orange: parameter_c2 = CCM_Local::Color(orange); break;
+  }
+
+  // OUT
+  CCM_Local::Color parameter_c3;
+
+
+  //declareCppResult()
+  CCM_Local::Color result;
+  try {
+    // convertMethodToCpp()
+    result = local_adapter->foo5( parameter_c1, parameter_c2, parameter_c3);
+  }
+  catch(...) {
+    throw CORBA::SystemException();	
+  }
+  
+  // convertParameterToCorba()
+  // INOUT
+  switch(parameter_c2) {
+  case red: c2 = ::Color(red); break;
+  case green: c2 = ::Color(green); break;
+  case blue: c2 = ::Color(blue); break;
+  case black: c2 = ::Color(black); break;
+  case orange: c2 = ::Color(orange); break;
+  }
+
+  // OUT
+  switch(parameter_c3) {
+  case red: c3 = ::Color(red); break;
+  case green: c3 = ::Color(green); break;
+  case blue: c3 = ::Color(blue); break;
+  case black: c3 = ::Color(black); break;
+  case orange: c3 = ::Color(orange); break;
+  }
+
+
+  // convertResultToCorba()
+  ::Color return_value;
+  switch(result) {
+  case red: return_value = red; break;
+  case green: return_value = green; break;
+  case blue: return_value = blue; break;
+  case black: return_value = black; break;
+  case orange: return_value = orange; break;
+  }
+  return return_value; 
+}
+

@@ -13,6 +13,9 @@ using namespace CCM_Utils;
 using namespace CCM_Local;
 
 namespace CCM_Local {
+namespace world {
+namespace europe {
+namespace austria {
 namespace CCM_Session_Hello {
 
 
@@ -46,8 +49,8 @@ console_impl::~console_impl (  )
 }
 
 
-LongList
-console_impl::foo1 ( const LongList& l1, LongList& l2, LongList& l3 )
+world::europe::austria::LongList
+console_impl::foo1 ( const world::europe::austria::LongList& l1, world::europe::austria::LongList& l2, world::europe::austria::LongList& l3 )
   
 {
   DEBUGNL ( " console_impl->foo1 ( l1, l2, l3 )" );
@@ -61,8 +64,8 @@ console_impl::foo1 ( const LongList& l1, LongList& l2, LongList& l3 )
   return r;
 }
 
-StringList
-console_impl::foo2 ( const StringList& s1, StringList& s2, StringList& s3 )
+world::europe::austria::StringList
+console_impl::foo2 ( const world::europe::austria::StringList& s1, world::europe::austria::StringList& s2, world::europe::austria::StringList& s3 )
   
 {
   DEBUGNL ( " console_impl->foo2 ( s1, s2, s3 )" );
@@ -76,11 +79,12 @@ console_impl::foo2 ( const StringList& s1, StringList& s2, StringList& s3 )
   return r;
 }
 
-Person
-console_impl::foo3 ( const Person& p1, Person& p2, Person& p3 )
+world::europe::austria::Person
+console_impl::foo3 ( const world::europe::austria::Person& p1, world::europe::austria::Person& p2, world::europe::austria::Person& p3 )
   
 {
   DEBUGNL ( " console_impl->foo3 ( p1, p2, p3 )" );
+
   cout << p1.name << endl;
   cout << p2.name << endl;
   cout << p3.name << endl;
@@ -93,8 +97,8 @@ console_impl::foo3 ( const Person& p1, Person& p2, Person& p3 )
   return r; 
 }
 
-PersonMap
-console_impl::foo4 ( const PersonMap& p1, PersonMap& p2, PersonMap& p3 )
+world::europe::austria::PersonMap
+console_impl::foo4 ( const world::europe::austria::PersonMap& p1, world::europe::austria::PersonMap& p2, world::europe::austria::PersonMap& p3 )
   
 {
   DEBUGNL ( " console_impl->foo4 ( p1, p2, p3 )" );
@@ -109,17 +113,6 @@ console_impl::foo4 ( const PersonMap& p1, PersonMap& p2, PersonMap& p3 )
     p2.at(i) = p1.at(i);
   }
   return r;
-}
-
-
-Color 
-console_impl::foo5 ( const Color& c1, Color& c2, Color& c3 )
-{
-  DEBUGNL ( " console_impl->foo5 ( c1, c2, c3 )" );
-
-  c3=c2;
-  c2=c1;
-  return c1; 
 }
 
 
@@ -173,6 +166,9 @@ CCM_Hello_impl::ccm_remove (  )
 }
 
 } // /namespace CCM_Session_Hello
+} // /namespace austria
+} // /namespace europe
+} // /namespace world
 } // /namespace CCM_Local
 
 

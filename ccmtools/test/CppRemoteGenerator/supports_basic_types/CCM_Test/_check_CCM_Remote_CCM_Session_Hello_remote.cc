@@ -74,6 +74,7 @@ int main (int argc, char *argv[])
 
      CORBA::Short short_2=3, short_3, short_r;
      short_r = myHello->println1(7,short_2, short_3);
+     cout << "*********" << short_2 << endl;
      assert(short_2 == 7);
      assert(short_3 == 3);
      assert(short_r == 3+7);
