@@ -1,0 +1,3 @@
+Makefile.am
+Makefile.in
+_check_hello_world.cc

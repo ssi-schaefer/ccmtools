@@ -1,0 +1,13 @@
+/***
+ *  HelloWorld.idl
+ *
+ *  The simplest CORBA program using the Naming Service
+ ***/
+
+interface HelloWorld
+{
+    void hello(in string msg);
+}; 
+
+
+
