@@ -1,3 +1,7 @@
+<!--
+$Header$
+-->
+
 <project name="java-environment" default="uml2idl.jar">
 
   <description>
@@ -114,9 +118,10 @@
       description="Run the dtd2java tool to create the mof_xmi_parser package.">
       <java classname="dtd2java.Main">
           <classpath refid="run.classpath" />
-	  <arg value="${src}/dtd2java/MOF14XMI11.dtd" />
-	  <arg value="mof_xmi_parser" />
-	  <arg value="src" />
+      <arg value="${src}/dtd2java/MOF14XMI11.dtd" />
+      <arg value="mof_xmi_parser" />
+      <arg value="src" />
+      <arg value="Id" />
       </java>
   </target>
 

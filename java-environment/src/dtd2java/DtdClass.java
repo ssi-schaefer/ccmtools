@@ -233,7 +233,7 @@ public class DtdClass
      *
      * @param basePackage  the Java-name of the base package
      */
-	public String createCode( String basePackage ) throws IOException
+	public String createCode( String basePackage, DtdGenerator generator ) throws IOException
 	{
 	    isEmpty_ = isAny_ = false;
         if( children_.size()==1 )
@@ -250,6 +250,7 @@ public class DtdClass
         }
 	    FileWriter writer = new FileWriter(source_);
 	    writer.write(DtdGenerator.MAIN_HEADER);
+        generator.writeCvsToken(writer);
 	    writer.write(
 	        "package "+package_+";\n\n"+
             "import org.xml.sax.Attributes;\n\n"+

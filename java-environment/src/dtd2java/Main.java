@@ -41,23 +41,18 @@ public class Main
     {
         try
         {
-            if( argv.length<2 || argv.length>3 )
+            if( argv.length<2 )
             {
-                System.out.println("java dtd2java.Main DTD_filename Java_package [root_dir]");
+                System.out.println("java dtd2java.Main DTD_filename Java_package [root_dir [CVS-Token]]");
                 System.exit(1);
             }
             else
             {
                 DtdFile f = DtdParser.parseFile(argv[0]);
+                String dir = argv.length>=3 ? argv[2] : ".";
+                String token = argv.length>=4 ? "$"+argv[3]+"$" : null;
                 DtdGenerator g = new DtdGenerator();
-                if( argv.length>=3 )
-                {
-                    g.run(f, argv[1], argv[2]);
-                }
-                else
-                {
-                    g.run(f, argv[1], ".");
-                }
+                g.run(f, argv[1], dir, token);
             }
         }
         catch( Exception e )
