@@ -32,7 +32,7 @@ Update your CLASSPATH:
 To use the java-environment tools, you have to add the *.jar files installed
 in the <install-path>/lib directory to your CLASSPATH:
 
-  $ export CLASSPATH=<install-path>/lib/antlr.java:       \
+  $ export CLASSPATH=<install-path>/lib/antlr.jar:        \
                      <install-path>/lib/dtd2java.jar:     \
 		     <install-path>/lib/jdom.jar:         \	
                      <install-path>/lib/mdr01.jar:        \
