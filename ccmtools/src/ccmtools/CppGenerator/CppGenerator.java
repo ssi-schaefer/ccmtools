@@ -333,26 +333,35 @@ abstract public class CppGenerator
 
         if (current_node instanceof MHomeDef) {
             return data_MHomeDef(variable, value);
-        } else if (current_node instanceof MComponentDef) {
+        } 
+	else if (current_node instanceof MComponentDef) {
             return data_MComponentDef(variable, value);
-        } else if (current_node instanceof MFactoryDef) {
+        } 
+	else if (current_node instanceof MFactoryDef) {
             return data_MFactoryDef(variable, value);
-        } else if (current_node instanceof MFinderDef) {
+        } 
+	else if (current_node instanceof MFinderDef) {
             return data_MFinderDef(variable, value);
-        } else if (current_node instanceof MProvidesDef) {
+        } 
+	else if (current_node instanceof MProvidesDef) {
             return data_MProvidesDef(variable, value);
-        } else if (current_node instanceof MSupportsDef) {
+        } 
+	else if (current_node instanceof MSupportsDef) {
             return data_MSupportsDef(variable, value);
-        } else if (current_node instanceof MUsesDef) {
+        } 
+	else if (current_node instanceof MUsesDef) {
             return data_MUsesDef(variable, value);
-
-        } else if (current_node instanceof MInterfaceDef) {
+        } 
+	else if (current_node instanceof MInterfaceDef) {
             return data_MInterfaceDef(variable, value);
-        } else if (current_node instanceof MOperationDef) {
-            return data_MOperationDef(variable, value);
-        } else if (current_node instanceof MEnumDef) {
+        } 
+	else if (current_node instanceof MOperationDef) {
+	    return data_MOperationDef(variable, value);
+        } 
+	else if (current_node instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
-        } else if (current_node instanceof MAliasDef) {
+        } 
+	else if (current_node instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
         }
 
@@ -537,14 +546,17 @@ abstract public class CppGenerator
             data_value.endsWith(", ")) {
             return "throw ( LocalComponents::CCMException, " +
                 data_value.substring(0, data_value.length() - 2) + " )";
-        } else if (data_type.startsWith("MParameterDef") &&
+        } 
+	else if (data_type.startsWith("MParameterDef") &&
                    data_value.endsWith(", ")) {
             return data_value.substring(0, data_value.length() - 2);
-        } else if (data_type.equals("UsesIdentifier")) {
+        } 
+	else if (data_type.equals("UsesIdentifier")) {
             MOperationDef op = (MOperationDef) current_node;
             if (op.getDefinedIn() instanceof MUsesDef)
                 return op.getDefinedIn().getIdentifier();
-        } else if (data_type.equals("ProvidesIdentifier")) {
+        } 
+	else if (data_type.equals("ProvidesIdentifier")) {
             MOperationDef op = (MOperationDef) current_node;
             if (op.getDefinedIn() instanceof MProvidesDef)
                 return op.getDefinedIn().getIdentifier();
