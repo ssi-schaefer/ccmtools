@@ -5,11 +5,15 @@ DOC_NAME = tutorial
 TEX = $(DOC_NAME).tex       \
       CCMOverview.tex       \
       ConnectComponents.tex \
+      ProgrammingModel.tex  \
       FirstAssembly.tex     \
       FirstComponent.tex    \
       Installation.tex      \
       Introduction.tex      \
       LCAC.tex              \
+      RemoteComponent.tex   \
+      MicoInstallation.tex  \
+      ConfixInstallation.tex \
       Remote.tex
 
 BIBS = cbse.bib doc.bib pattern.bib se.bib wx.bib
@@ -27,7 +31,7 @@ FIGS = \
        Component.fig               \
        LCAC_Overview.fig           \
        LCAC_ProcessModel.fig       \
-       RemoteAssembly.fig
+       RemoteAssembly.fig         
 
 PDFS = $(FIGS:.fig=.pdf)
 EPSS = $(FIGS:.fig=.eps)
@@ -54,5 +58,5 @@ $(DOC_NAME).dvi: $(TEX) $(EPSS) $(BIBS)
 	$(LATEX) $(DOC_NAME)
 
 clean-local:
-	$(RM) -f *.eps *.aux *.toc *.lo? *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
+	$(RM) -f *.aux *.toc *.lo? *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
 

@@ -1,4 +1,4 @@
-
+% $Id$
 %==============================================================================
 \chapter{Installation}
 %==============================================================================
@@ -11,12 +11,18 @@ To install the CCM Tools, the following programs must be available:
 \begin{description}
 \item [Java SDK $\ge$ 1.4] ({\tt http://java.sun.com/j2se/})
 \item [Python $\ge$ 2.2] ({\tt http://python.org/})
+\item [cpp $\ge$ 2.96] ({\tt http://www.gnu.org/})
 \end{description}
 
 To build the generated local C++ components, we need:
 \begin{description}
-\item [Confix $\ge$ 1.2] ({\tt http://confix.sourceforge.net/})
+\item [Confix $\ge$ 1.3pre14] ({\tt http://confix.sourceforge.net/})
 \item [gcc $\ge$ 2.95.3] ({\tt http://www.gnu.org/})
+\end{description}
+
+To generate and build a remote C++ component, we need:
+\begin{description}
+\item [mico $\ge$ 2.3.10] ({\tt http://www.mico.org/})
 \end{description}
 
 
@@ -35,6 +41,8 @@ for discussion about using the CCM Tools.
 \section{Source distribution}
 %------------------------------------------------------------------------------
 
+%------------------------------------------------------------------------------
+\subsection{Install the CCM-Tools}
 Installing of the CCM Tools requires the following steps once you get the source
 code. (Pretend that the source tarball you got was {\tt ccmtools-A.B.X.tar.gz}.)
 You will need to configure, build, and install the binary files, and then set
@@ -43,16 +51,28 @@ environment variables appropriately:
 \begin{verbatim}
   ~> tar xvzf ccmtools-A.B.X.tar.gz
   ~> cd ccmtools-A.B.X
+
+  ~> # CCMTOOLS_HOME defines the directory the ccmtools are installed to.
   ~> export CCMTOOLS_HOME=<ccm_tools_path>
+  ~> # CCM_COMPONENT_REPOSITORY defines the directory where the generated
+  ~> # components will be installed.
+  ~> export CCM_COMPONENT_REPOSITORY=$CCMTOOLS_HOME
+
   ~> ./autogen.py --prefix=$CCMTOOLS_HOME
   ~> make
   ~> make install
+
   ~> export PATH=<ccm_tools_path>/bin:$PATH
   ~> export CLASSPATH=$CCMTOOLS_HOME/share/java/ccmtools.jar: \
                       $CCMTOOLS_HOME/share/java/antlr.jar:    \
                       $CLASSPATH
+
+  ~> # To test the installed ccmtools and the set paths, type:
+  ~> ccmtools-generate --version
 \end{verbatim}
 \end{small}
+
+
 
 You can also use the binary distribution, which includes a minimal set of Jar
 archives, templates, and documents. To install this distribution, download the
@@ -62,7 +82,10 @@ the following:
 \begin{verbatim}
   ~> tar xvzf ccmtools-A.B.X.bin.tar.gz
   ~> cd ccmtools-A.B.X
+
   ~> export CCMTOOLS_HOME=`pwd`
+  ~> export CCM_COMPONENT_REPOSITORY=$CCMTOOLS_HOME
+
   ~> export PATH=`pwd`/bin:$PATH
   ~> export CLASSPATH=`pwd`/share/java/ccmtools.jar: \
                       `pwd`/share/java/antlr.jar:    \
@@ -70,3 +93,86 @@ the following:
 \end{verbatim}
 \end{small}
 
+%------------------------------------------------------------------------------
+
+\subsection{Install the local and remote component environment}
+
+To build and run local and remote components a set of libraries and header files
+are needed. These files must be installed only once and are commonly used from all
+generated components.
+
+\subsubsection{Install the local component environment}
+When using local components only, we install the local component environment with
+a single Confix call, and skip the rest of the chapter. 
+\begin{small}
+\begin{verbatim}
+  ~> cd ccmottls-A.B.C/environment
+  ~> confix.py --bootstrap --configure --profile="ccmtools" \
+               --packageroot="local" --make --targets=install
+\end{verbatim}
+\end{small}
+
+
+\subsubsection{Create a new Confix profile}
+The CCM-Tools use Confix to build and package generated C++ components. As described
+in the Confix manual, there must be a ~/.confix file that contains one or more
+Confix profiles. In the context of CCM-Tools, we define a new Confix profile:
+\begin{small}
+\begin{verbatim}
+    # Create a new Confix profile within ~/.confix
+
+    ccm_tools_profile = {
+     # Use the same path as defined in CCM_COMPONENT_REPOSITORY for PREFIX 
+    'PREFIX': <component_install_path>, 
+    'BUILDROOT': '/tmp',
+    'ADVANCED': 'true',
+    'CONFIX': {},
+    'CONFIGURE': {
+       'ENV': {
+          # Use your own path to gcc and g++
+          'CC': '/usr/local/gcc/bin/gcc',
+          'CXX': '/usr/local/gcc/bin/g++',
+          'CFLAGS': "-g -O0 -Wall -DCCM_DEBUG",
+          'CXXFLAGS': "-g -O0 -Wall -DCCM_DEBUG",
+          },
+       # Use your own mico install path
+       'ARGS': ['--with-external_mico=</usr/local/mico>']
+       },
+    }
+    PROFILES = {
+    #...
+    'ccmtools': ccm_tools_profile
+    }
+\end{verbatim}
+\end{small}
+
+
+\subsubsection{Install the remote component environment}
+To build real CORBA components we need some additional libraries including the 
+mico ORB.  
+\begin{small}
+\begin{verbatim}
+  # First we have to tell Confix where to find the mico libraries
+  > cd ccmtools-0.3.3/environment/external
+  > confix.py --bootstrap --configure --profile="ccmtools" \
+              --packageroot="external" --make --targets=install    
+
+  # After that, we can install the remote component environment 
+  > confix.py --bootstrap --configure --profile="ccmtools" \
+              --packageroot="remote" --make --targets=install
+
+  # Now we can run the mico NameService
+  > nsd -ORBIIOPAddr inet:localhost:5050 -ORBIIOPVersion 1.2
+
+  # The remote test client needs the CCM_NAME_SERVICE environment variable to 
+  # find the NameService at runtime.
+  > export CCM_NAME_SERVICE=corbaloc:iiop:1.2@localhost:5050/NameService
+
+  # Finally, we can check the mico NameService with the nsadmin tool
+  > nsadmin -ORBInitRef NameService=corbaloc:iiop:1.2@localhost:5050/NameService
+    nsadmin> help
+\end{verbatim}
+\end{small}
+
+OK, that's it! \\
+Now we are ready to create and run components using the CCM-Tools framework.

@@ -1,4 +1,4 @@
-
+% $Id$
 %==============================================================================
 \chapter{Introduction}
 %==============================================================================
@@ -14,11 +14,6 @@ that supports the development of components, based on the {\it CORBA Component
 Model} (CCM) \cite{CCMSpecification}. As shown in Fig.~\ref{ccmtools}, the CCM
 Tools form a component development framework that is flexible and extensible.
 
-Using a well defined CCM model, we can separate the component description from
-the code generator tools. Therefore, we can add new description methods (e.g.
-UML) or code generator tools (e.g. Java Component Generator) without changing
-the other tools.
-
 \begin{figure}[htbp]
     \begin{center}
         \includegraphics [width=12cm,angle=0] {ComponentGeneratorTools}
@@ -33,9 +28,9 @@ UML) or code generator tools (e.g. a Java Component Generator) without changing
 the other tools.
 
 Note that the dashed tools are still under construction and therefore not part
-of the current release series (CCM Tools release series 0.3.x).
+of the current release series (CCM Tools release series 0.3.3).
 
-\newpage
+
 \noindent
 The {\it CCM Tools} framework contains the following tools:
 
@@ -70,10 +65,10 @@ logic from a given CCM model. After generating the component logic, the
 component developer only has to write the business logic within the generated
 component skeleton.
 
-\item [Local C++ Mirror Generator]
+\item [Local C++ Test Generator]
 After building a local C++ component we have to run a functional test on it. To
 provide a suitable test environment we create a mirror component as well as a
-test client that manages the component unit test.
+test client that manages the component unit test. 
 
 \item [Local Python Component Wrapper Generator (under construction)]
 For rapid prototyping and the development of glue components we use
@@ -89,13 +84,18 @@ between components and their ports (equivalent operations). We support this
 transformation by a IDL2 Generator tool that creates IDL2 from an existing CCM
 model.
 
-\item [Remote C++ Component Generator (under construction)]
+\item [Remote C++ Component Generator]
 The local components can only be used in a common address space and must be
 implemented in the same programming language. To overcome these limitations we
 generate remote component logic that interfaces the local components with CORBA.
 The remote component logic is thus a superset of the local component logic. Note
 that the external view of such a remote component quite conforms to the CCM
 specification.
+
+\item [Remote C++ Test Generator]
+After generation of remote components there is also a need for a remote test
+client. This generated test client uses CORBA to connect to the remote components
+and to call their operations.
 
 \item [Component Descriptor Generator (under construction)]
 To describe the component for the deployment and the assembling process the OMG
