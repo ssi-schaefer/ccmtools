@@ -9,7 +9,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Math_app.h"
+#include "Math_impl.h"
 
 using namespace std;
 using namespace WX::Utils;

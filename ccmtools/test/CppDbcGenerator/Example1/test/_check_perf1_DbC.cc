@@ -1,15 +1,16 @@
 /*
     $Id$
 */
+
+#include <cassert>
+#include <iostream>
+
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 #include <CCM_OCL/OclException.h>
 
-#ifdef CCM_TEST_PYTHON
-#include <Python.h>
-#endif
 
 #include <CCM_Local/CCM_Session_Math_mirror/Math_mirror_gen.h>
 #include <CCM_Local/CCM_Session_Math_mirror/MathHome_mirror_gen.h>
@@ -40,9 +41,6 @@ int main ( int argc, char *argv[] )
   SmartPtr<LocalComponents::Object> Math_provides_stack;
   LocalComponents::Cookie Math_ck_stack;
 
-
-
-
   Debug::instance().set_global(true);
 
   DEBUGNL ( "test_client_Math_component_main (  )" );
@@ -51,15 +49,11 @@ int main ( int argc, char *argv[] )
 
   homeFinder = HomeFinder::Instance (  );
   error  = DbC_deploy_MathHome("MathHome",false);
-  error +=    local_deploy_MathHome_mirror("MathHome_mirror");	
+  error += local_deploy_MathHome_mirror("MathHome_mirror");	
   if(error) {
     cerr << "ERROR: Can't deploy component homes!" << endl;
     assert(0);
   }
-
-#ifdef CCM_TEST_PYTHON
-  Py_Initialize();
-#endif
 
   /* SET UP / DEPLOYMENT */
 
@@ -79,10 +73,8 @@ int main ( int argc, char *argv[] )
     Math_provides_stack =
       myMath.ptr (  )->provide_facet ( "stack" );
 
-
     Math_ck_stack = myMathMirror.ptr (  )->connect
       ( "stack_mirror", Math_provides_stack );
-
 
     myMath.ptr (  )->configuration_complete (  );
     myMathMirror.ptr (  )->configuration_complete (  );
@@ -105,13 +97,6 @@ int main ( int argc, char *argv[] )
   /* TESTING */
 
   try {
-    // check basic functionality
-
-    cout << "> getComponentVersion (  ) = "
-         << myMath.ptr (  )->getComponentVersion (  ) << endl;
-    cout << "> getComponentDate (  ) = "
-         << myMath.ptr (  )->getComponentDate (  ) << endl;
-
     DEBUGNL("==== Begin Test Case =============================================" );
 
     cout << endl << "performance test with DbC" << endl << endl;

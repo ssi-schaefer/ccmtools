@@ -6,7 +6,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Grfx_app.h"
+#include "Grfx_impl.h"
 
 using namespace std;
 using namespace WX::Utils;
