@@ -281,10 +281,10 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
 
     public String getIdlCode( Main main, String prefix )
     {
-	    StringBuffer code = new StringBuffer();
-	    code.append(Main.makeModelElementComments(this, prefix));
-	    //code.append("/* "+dependencyNumber_+" */ ");
-	    code.append(prefix);
+        StringBuffer code = new StringBuffer();
+        code.append(Main.makeModelElementComments(this, prefix));
+        //code.append("/* "+dependencyNumber_+" */ ");
+        code.append(prefix);
         String typeId = getTypeId();
         if( typeId==null )
         {
@@ -473,6 +473,9 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
     }
 
 
+    /**
+     * Returns the XMI-ID of the type of this attribute (or null).
+     */
     String getTypeId()
     {
         if( type_==null )
@@ -483,7 +486,8 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
                 Vector v2 = ((MStructuralFeature_type)v1.get(0)).findChildren(MClassifier.xmlName__);
                 if( v2.size()>0 )
                 {
-                    type_ = ((MClassifier)v2.get(0)).xmi_idref_;
+                    MClassifier c = (MClassifier)v2.get(0);
+                    type_ = c.xmi_idref_;
                 }
             }
         }
