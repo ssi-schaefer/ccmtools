@@ -1,3 +1,5 @@
+/*$Id$*/
+
 /******************************************\
 *                                          *
 *   helper functions for OCL expressions   *
@@ -5,7 +7,7 @@
 \******************************************/
 
 
-#include "OCL_Helpers.h"
+#include "OclHelpers.h"
 #include <cctype>
 
 using namespace std;

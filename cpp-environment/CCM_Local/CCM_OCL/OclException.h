@@ -1,6 +1,8 @@
 #ifndef __CCM_OCL__OCL_EXCEPTION__H__
 #define __CCM_OCL__OCL_EXCEPTION__H__
 
+/*$Id$*/
+
 
 /********************\
 *                    *

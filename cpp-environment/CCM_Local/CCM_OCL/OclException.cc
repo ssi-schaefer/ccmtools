@@ -1,3 +1,5 @@
+/*$Id$*/
+
 /********************\
 *                    *
 *   OCL exceptions   *
@@ -5,7 +7,7 @@
 \********************/
 
 
-#include "OCL_Exception.h"
+#include "OclException.h"
 #include <sstream>
 
 using namespace std;
