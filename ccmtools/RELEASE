@@ -5,7 +5,7 @@ related to a particular release version. We plan four releases for 2005.
       - means workpackage (sub)task
        
 ==============================================================================
-Release 0.4 (Q1-2005)
+Release 0.5.1
 ==============================================================================
 
 Dokumentation:
@@ -15,17 +15,20 @@ o) add DbC example to Tutorial
 o) add nested component composition example to Tutorial
 
 
+ccmtools common:
+----------------
+o) Performance Measurement
+
+
+
 c++local generator:
 -------------------
-o) Bugfix: exception generation 
-   Exceptions will be generated more than one times (in different
-   namespaces) see Error example.
 o) generate local_deploy*() and local_undeploy*() functions with coded 
    namespace.
 o) add Constants.Version to all generated files.
 o) add AssemblyFactory Template to CCM.h
 o) generate debug output with parameter values.
-o) Performance Measurement
+o) JUnit test case for nested component composition
 
 
 c++remote generator:
@@ -38,12 +41,13 @@ o) test cases for supported interfaces
 o) test cases for interfaces as parameters
 o) generate debug output with parameter values.
 o) collect test cases 
-o) Performance Measurement
+o) JUnit test case for nested component composition
 
 
 java-client-lib generator:
 --------------------------
 o) implement first version 
+
 
 cpp-environment:
 ----------------
@@ -65,18 +69,25 @@ ccmtools-package:
 *) add idl/CCM.idl directory
 
 
+bugfixes:
+---------
+*) 1100738 The same exception will be generated many times
+*) 1101544 Namespace conflict using exceptions
+*) 1101651 Namespace conflict using interfaces in remote component
+
+
 
 
 ==============================================================================
-Release 0.5 (Q2-2005)
+Release 0.5.2 
 ==============================================================================
 
 
 ==============================================================================
-Release 0.6 (Q3-2005)
+Release 0.5.3 
 ==============================================================================
 
 
 ==============================================================================
-Release 0.7 (Q4-2005)
+Release 0.5.4 
 ==============================================================================

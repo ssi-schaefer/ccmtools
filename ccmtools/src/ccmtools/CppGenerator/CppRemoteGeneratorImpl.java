@@ -180,7 +180,6 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
     {
         List scope = getScope(contained);
         StringBuffer buffer = new StringBuffer();
-        //	buffer.append(separator);
         buffer.append(Text.join(separator, CorbaStubsNamespace));
         buffer.append(separator);
         buffer.append(Text.join(separator, scope));
@@ -865,19 +864,13 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
 
         if (dataType.equals("ProvidesInclude")) {
             // TODO: Refactoring namespace method
+            ret.append("#include <CCM_Local/");
             if (scope.size() > 0) {
-                ret.append("#include <CCM_Local/");
                 ret.append(Text.join("/", scope));
                 ret.append("/");
-                ret.append(provides.getProvides().getIdentifier());
-                ret.append(".h>");
             }
-            else {
-                ret.append("#include <CCM_Local/");
-                ret.append(provides.getProvides().getIdentifier());
-                ret.append(".h>");
-            }
-            //	    ret.append("\n");
+            ret.append(provides.getProvides().getIdentifier());
+            ret.append(".h>");
             dataValue = ret.toString();
         }
         else if (dataType.equals("ProvidesConvertInclude")) {
@@ -888,7 +881,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             dataValue = ret.toString();
         }
         else if (dataType.equals("IdlProvidesType")) {
-            ret.append(getCorbaStubsNamespace((MContained)current_node,"::"));
+            ret.append(getCorbaStubsNamespace(iface,"::"));
             ret.append(iface.getIdentifier());
             dataValue = ret.toString();
         }
@@ -897,11 +890,8 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             if (scope.size() > 0) {
                 ret.append(Text.join("::", scope));
                 ret.append("::");
-                ret.append(provides.getProvides().getIdentifier());
             }
-            else {
-                ret.append(provides.getProvides().getIdentifier());
-            }
+            ret.append(provides.getProvides().getIdentifier());
             dataValue = ret.toString();
         }
         else if (dataType.equals("ComponentType")) {
@@ -913,54 +903,52 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         return dataValue;
     }
 
+    
     protected String data_MUsesDef(String dataType, String dataValue)
     {
         MUsesDef usesDef = (MUsesDef) current_node;
-        List scope = getScope((MContained) usesDef);
+        MInterfaceDef iface = ((MUsesDef) current_node).getUses();
+        List scope = getScope((MContained) iface);
         StringBuffer buffer = new StringBuffer();
-
+        
         if (dataType.equals("UsesInclude")) {
             buffer.append("#include <");
-            buffer.append(getLocalNamespace((MContained)current_node, "/", ""));
+            buffer.append(getLocalNamespace(iface, "/", ""));
             buffer.append(usesDef.getUses().getIdentifier());
             buffer.append(".h>");
             dataValue = buffer.toString();
         }
-        else if (dataType.equals("UsesConvertInclude")) {
+        else if(dataType.equals("UsesConvertInclude")) {
             buffer.append("#include <CCM_Remote/");
             buffer.append(usesDef.getUses().getIdentifier());
             buffer.append("_remote.h>");
             buffer.append("\n");
             dataValue = buffer.toString();
         }
-        else if (dataType.equals("CCM_UsesType")) {
+        else if(dataType.equals("CCM_UsesType")) {
             // TODO: Refactoring namespace method
             if (scope.size() > 0) {
                 buffer.append(Text.join("::", scope));
                 buffer.append("::CCM_");
-                buffer.append(usesDef.getUses().getIdentifier());
             }
             else {
                 buffer.append("CCM_");
-                buffer.append(usesDef.getUses().getIdentifier());
             }
-            dataValue = buffer.toString();
-        }
-        else if (dataType.equals("IdlUsesType")) {
-            buffer.append(getCorbaStubsNamespace((MContained)current_node,"::"));
             buffer.append(usesDef.getUses().getIdentifier());
             dataValue = buffer.toString();
         }
-        else if (dataType.equals("UsesType")) {
+        else if(dataType.equals("IdlUsesType")) {
+            buffer.append(getCorbaStubsNamespace(iface,"::"));
+            buffer.append(usesDef.getUses().getIdentifier());
+            dataValue = buffer.toString();
+        }
+        else if(dataType.equals("UsesType")) {
             // TODO: Refactoring namespace method
             if (scope.size() > 0) {
                 buffer.append(Text.join("::", scope));
                 buffer.append("::");
-                buffer.append(usesDef.getUses().getIdentifier());
             }
-            else {
-                buffer.append(usesDef.getUses().getIdentifier());
-            }
+            buffer.append(usesDef.getUses().getIdentifier());
             dataValue = buffer.toString();
         }
         return super.data_MUsesDef(dataType, dataValue);
@@ -1108,16 +1096,12 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         List code = new ArrayList();
         for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext();) {
             MExceptionDef idlException = (MExceptionDef) es.next();
-            //	    code.add(getLocalNamespace("::","") +
-            // idlException.getIdentifier());
             code.add(getLocalName(idlException, "::"));
         }
         if (code.size() > 0) {
-            //return "throw(LocalComponents::CCMException, " + Text.join(", ", code) + ")";
             return ", " + Text.join(", ", code) + ")";
         }
         else {
-            //return "throw(LocalComponents::CCMException)";
             return ")";
         }
     }
@@ -1297,8 +1281,6 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         List code = new ArrayList();
         for (Iterator es = op.getExceptionDefs().iterator(); es.hasNext();) {
             MExceptionDef IdlException = (MExceptionDef) es.next();
-            //	    code.add("::" + getCorbaStubsNamespace("::") +
-            // IdlException.getIdentifier());
             code.add(getCorbaStubName(IdlException, "::"));
         }
 

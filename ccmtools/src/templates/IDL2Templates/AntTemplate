@@ -16,7 +16,7 @@
   <property name="build" location="build" />
   <property name="lib" location="lib" />
   <property name="prefix" location="dist" />
-  <property name="jarname" location="${lib}/stubs" />
+  <property name="jarname" location="${lib}/ClientStubs" />
 
   <path id="compile.classpath">
       <pathelement path="${java.class.path}" />

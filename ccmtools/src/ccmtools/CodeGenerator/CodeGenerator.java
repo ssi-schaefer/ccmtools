@@ -1,7 +1,7 @@
 /* CCM Tools : Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
  * Egon Teiniker <egon.teiniker@salomon.at>
- * Copyright (C) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002 - 2005 Salomon Automation
  *
  *
  * This library is free software; you can redistribute it and/or modify it under
@@ -66,7 +66,6 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MPublishesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
-import ccmtools.utils.Text;
 
 /**
  * This code generation base class performs a large part of code generation
@@ -221,7 +220,6 @@ abstract public class CodeGenerator implements TemplateHandler
 
     protected String file_separator = File.separator;
 
-    protected Set exceptionSet;
     
     /** *********************************************************************** */
 
@@ -301,13 +299,9 @@ abstract public class CodeGenerator implements TemplateHandler
         output_dir = out_dir;
         if(!output_dir.isDirectory())
             output_dir.mkdirs();
-
-    
-        // create an exception set hat is used to proper handle generation of exceptions
-        // an exception should only be generated once.
-        exceptionSet = new HashSet();
     }
 
+    
     /** *********************************************************************** */
 
     /**
@@ -403,14 +397,10 @@ abstract public class CodeGenerator implements TemplateHandler
         current_variables = (Set) variables_stack.pop();
 
         driver.outputVariables(output_variables);
-
-        //System.out.println("***1***\n" + output_variables + "\n***1***"); //!!!!!!!
         updateVariables();
-        //System.out.println("***2***\n" + output_variables + "\n***2***"); //!!!!!!!
           
         // update the namespace if this is a module by removing the last item
         // from the namespace list.
-
         if(node instanceof MModuleDef)
             namespace.pop();
 
@@ -1065,18 +1055,12 @@ abstract public class CodeGenerator implements TemplateHandler
                 && !((MContained) current_node).getSourceFile().equals(""))
             return;
 
-        // don't generate code for an MExceptionDef twice
+        // don't generate code for an MExceptionDef that has an MOperationDef 
+        // as parent in the type tree.
         if((current_node instanceof MExceptionDef)) {
-            List scope = getScope((MContained)current_node);
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(Text.join("::", scope));
-            buffer.append("::"); 
-            buffer.append(((MContained)current_node).getIdentifier());
-            if(exceptionSet.contains(buffer.toString())) {
+            String parent = (String)type_stack.peek();
+            if(parent.equals("MOperationDef")) {
                 return;
-            }
-            else {
-                exceptionSet.add(buffer.toString());
             }
         }
         
@@ -1087,7 +1071,6 @@ abstract public class CodeGenerator implements TemplateHandler
             writeOutput(template);
         }
         catch(RuntimeException error) {
-            //error.printStackTrace();
             throw new RuntimeException("Cannot find a template for "
                     + current_name + " (node type " + current_type + ")");
         }
@@ -1289,8 +1272,6 @@ abstract public class CodeGenerator implements TemplateHandler
                 while((line = reader.readLine()) != null) {
                     buffer.append(line + "\n");
                 }
-                //System.out.println(">>>>" + code + "<<<<");
-                //System.out.println(">>>>" + buffer + "<<<<");
                 return code.equals(buffer.toString());
             }
         }
