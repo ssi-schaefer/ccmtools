@@ -4,13 +4,13 @@
 //==============================================================================
 
 #include <iostream>
-#include <cassert>
 #include <CCM_Utils/Debug.h>
 
 #include "Hello_app.h"
 
 using namespace std;
 using namespace CCM_Utils;
+using namespace CCM_Local;
 
 namespace CCM_Local {
 namespace CCM_Session_Hello {
@@ -46,7 +46,7 @@ CCM_Hello_impl::set_session_context ( localComponents::SessionContext* context )
   throw ( localComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_impl->set_session_context (  )" );
-  ctx = (CCM_Hello_Context*) context;
+  ctx = dynamic_cast<CCM_Hello_Context*>(context);
 }
 
 void
@@ -63,6 +63,7 @@ CCM_Hello_impl::ccm_activate (  )
   catch(localComponents::NoConnection& e) {
     cerr << "ERROR: Receptacle console is not connected!" << endl;
   }
+
 }
 
 void
