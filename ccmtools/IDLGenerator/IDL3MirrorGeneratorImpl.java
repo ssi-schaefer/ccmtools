@@ -82,17 +82,23 @@ public class IDL3MirrorGeneratorImpl
                 iface = ((MUsesDef) current_node).getUses();
 	    
             if (iface != null) 
-		value = getScopedInclude(iface);
+		value = "#include <" 
+		    + getScopedInclude(iface)
+		    + ".idl>";
 	}
 	else if (variable.equals("HomeInclude")) {
             if (current_node instanceof MComponentDef) {
                 Iterator homes = ((MComponentDef) current_node).getHomes().iterator();
-                value = getScopedInclude((MHomeDef) homes.next());
+                value = "#include <" 
+		    + getScopedInclude((MHomeDef) homes.next())
+		    + "_mirror.idl>";
             }
 	}
 	else if (variable.equals("ComponentInclude")) {
             if (current_node instanceof MHomeDef) {
-                value = getScopedInclude(((MHomeDef) current_node).getComponent());
+                value = "#include <" 
+		    + getScopedInclude(((MHomeDef) current_node).getComponent())
+		    + "_mirror.idl>";
             }
 	}
 	else {
@@ -114,7 +120,7 @@ public class IDL3MirrorGeneratorImpl
     {
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        return "#include <" + join(File.separator, scope) + "_mirror.idl>";
+        return join(File.separator, scope);
     }
 
     /**
