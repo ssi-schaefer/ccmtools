@@ -1,18 +1,31 @@
 #include <Components.idl>
 
 %(MModuleDef)s
+
 %(MAttributeDef)s
+
 %(MConstantDef)s
+
 %(MValueDef)s
+
 %(MValueMemberDef)s
+
 %(MEnumDef)s
+
 %(MStructDef)s
+
 %(MUnionDef)s
+
 %(MAliasDef)s
+
 %(MExceptionDef)s
+
 %(MOperationDef)s
+
 %(MInterfaceDef)s
+
 %(MComponentDef)s
+
 %(MHomeDef)s
 
 

@@ -42,4 +42,6 @@ dist_template_DATA = \
     MUnionDef                                \
     MUnionFieldDef                           \
     MUsesDef                                 \
-    MUsesDefMultiple
+    MUsesDefMultiple                         \
+    MSupportsDefBase
+

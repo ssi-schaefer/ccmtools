@@ -4,8 +4,6 @@
  *
  */
 
-
-
 interface Console {
   long println(in string s2);
 };

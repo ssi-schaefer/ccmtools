@@ -1,5 +1,6 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
+ * Egon Teiniker <egon.teiniker@tugraz.at>
  * copyright (c) 2002, 2003 Salomon Automation
  *
  * $Id$
@@ -27,6 +28,8 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
+import ccmtools.Metamodel.BaseIDL.MParameterDef;
+import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
@@ -35,6 +38,7 @@ import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 
 import java.io.File;
 import java.io.IOException;
@@ -165,6 +169,7 @@ abstract public class IDLGenerator
     protected String getLocalValue(String variable)
     {
         String value = super.getLocalValue(variable);
+	//	System.out.println("getLocalValue(" + variable + ")"); //!!!!!!
 
         if (current_node instanceof MComponentDef) {
             return data_MComponentDef(variable, value);
@@ -172,10 +177,9 @@ abstract public class IDLGenerator
             return data_MInterfaceDef(variable, value);
         } else if (current_node instanceof MOperationDef) {
             return data_MOperationDef(variable, value);
-        } else if (current_node instanceof MEnumDef) {
+        } else if (current_node instanceof MEnumDef)      {
             return data_MEnumDef(variable, value);
-        }
-
+	}
         return value;
     }
 
@@ -187,55 +191,56 @@ abstract public class IDLGenerator
      */
     protected String getLanguageType(MTyped object)
     {
-	System.out.println(" getLanguageType("+object+")");  //!!!!!!!
-
         String base_type = getBaseIdlType(object);
 	MIDLType idl_type = object.getIdlType();
-	//        String base_type = super.getBaseIdlType(object);
 
         if (language_mappings.containsKey(base_type))
             base_type = (String) language_mappings.get(base_type);
 
+	// We have to check the direction of the operation's parameter
+	if (object instanceof MParameterDef) {
+	    MParameterDef param = (MParameterDef) object;
+	    MParameterMode direction = param.getDirection();
+	    String parameter_direction = "";
+	    
+	    if (direction == MParameterMode.PARAM_IN) {
+		parameter_direction = "in ";
+	    }
+	    else if  (direction == MParameterMode.PARAM_INOUT) {
+		parameter_direction = "inout ";
+	    }
+	    else if  (direction == MParameterMode.PARAM_OUT) {
+		parameter_direction = "out ";
+	    }
+	    return parameter_direction + base_type;
+	}
+
+	// We have to check the kind of typedef definition 
+	// to create correct IDL2 code
 	if (object instanceof MAliasDef) {
+	    String typedef_identifier = ((MAliasDef)object).getIdentifier();
 	    if (idl_type instanceof MArrayDef) {
-		System.out.println(">MAliasDef:MArrayDef "+ base_type); //!!!!!!!!!
-		String identifier = ((MAliasDef)object).getIdentifier();
+		// creates a 'typedef type name[n][m]..' statement
 		Iterator i = ((MArrayDef) idl_type).getBounds().iterator();
 		Long bound = (Long) i.next();
-		String result = base_type + " "+ identifier + "[" + bound;
+		String result = base_type + " "+ typedef_identifier + "[" + bound;
 		while (i.hasNext()) result += "][" + (Long) i.next();
-		return result + "]; //";
+		return result + "]";
 	    }
 	    else if (idl_type instanceof MSequenceDef) {
-		System.out.println(">MAliasDef:MSequenceDef "+ base_type); //!!!!!!!!!
+		// creates a 'typedef sequence<type>' name statement
 		String result = "sequence<" + base_type;
 		Long bound = ((MSequenceDef) idl_type).getBound();
 		if (bound != null) result += "," + bound;
-		return result + "> ";
+		return result + "> " + typedef_identifier;
 	    }
-		
+	    else {
+		// creates a 'typedef type name' statement
+		String result = base_type + " "+ typedef_identifier;
+		return result;
+	    }
 	}
-	/*
-        if (object instanceof MSequenceDef) {
-
-	    System.out.println("sequence<"+ base_type+">"); //!!!!!!!!!
-
-            String result = "sequence<" + base_type;
-            Long bound = ((MSequenceDef) object).getBound();
-            if (bound != null) result += "," + bound;
-            return result + "> ";
-        } else if (object instanceof MArrayDef) {
-
-	    System.out.println(base_type+"[]"); //!!!!!!!!!
-
-            Iterator i = ((MArrayDef) object).getBounds().iterator();
-            Long bound = (Long) i.next();
-            String result = base_type + "[" + bound;
-            while (i.hasNext()) result += "][" + (Long) i.next();
-            return result + "]";
-        }
-	*/
-        return base_type;
+	return base_type;
     }
 
     /**************************************************************************/
@@ -245,7 +250,7 @@ abstract public class IDLGenerator
         if (data_type.equals("BaseTypes")) {
             String base = joinBases(", ");
             if (base.length() > 0) return ": " + base;
-        } else if (data_type.startsWith("MSupportsDef") &&
+        } else if (data_type.startsWith("SupportTypes") &&
                    data_value.endsWith(", ")) {
             return "supports " +
                 data_value.substring(0, data_value.length() - 2);
@@ -285,4 +290,9 @@ abstract public class IDLGenerator
         return data_value;
     }
 }
+
+
+
+
+
 

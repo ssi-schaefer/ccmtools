@@ -1,5 +1,5 @@
 interface %(Identifier)s :
-  Components::CCMObject%(BaseTypes)s%(SupportTypes)s
+  Components::CCMObject%(BaseTypes)s%(MSupportsDefBase)s
 {
 %(MAttributeDef)s
 %(MConsumesDef)s
