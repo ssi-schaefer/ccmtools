@@ -1,3 +1,0 @@
-        if name == "%(Identifier)s":
-            return self.connect_%(Identifier)s(connection)
-
