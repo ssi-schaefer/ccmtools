@@ -14,14 +14,14 @@ using namespace std;
 /*
  * Convert a CORBA structure into a local structure.
  */
-CCM_Local::%(Identifier)s
-%(Identifier)s_toCORBA%(Identifier)s(%(Identifier)s_ptr value);
+
+void CorbaConverter(const %(Identifier)s_ptr from, CCM_Local::%(Identifier)s& to);
 
 /*
  * Convert a local structure into a CORBA structure.
  */
-%(Identifier)s_ptr
-CORBA%(Identifier)s_to_%(Identifier)s(CCM_Local::%(Identifier)s value);
+
+void CorbaConverter(const CCM_Local::%(Identifier)s& from, %(Identifier)s_ptr to);
 
 %(CloseNamespace)s
 
@@ -34,19 +34,15 @@ CORBA%(Identifier)s_to_%(Identifier)s(CCM_Local::%(Identifier)s value);
 // struct adapter for %(Identifier)s (implementation file)
 // ===========================================================================
 
-CCM_Local::%(Identifier)s
-%(Identifier)s_to_CORBA%(Identifier)s(%(Identifier)s_ptr value)
+void
+CorbaConverter(const %(Identifier)s_ptr from, CCM_Local::%(Identifier)s& to)
 {
-   CCM_Local::%(Identifier)s result;
 %(MFieldDef)s
-   return result;	
 }
 
-%(Identifier)s_ptr
-CORBA%(Identifier)s_to_%(Identifier)s(CCM_Local::%(Identifier)s value)
+void
+CorbaConverter(const CCM_Local::%(Identifier)s& from, %(Identifier)s_ptr to)
 {
-   %(Identifier)s_var result;
 %(MFieldDef)s	
-   return result.retn();	
 }
 

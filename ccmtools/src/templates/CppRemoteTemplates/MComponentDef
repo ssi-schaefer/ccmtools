@@ -175,8 +175,9 @@ using namespace WX::Utils;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s* i, CCM::SessionContainer * c)
-   : local_adapter(i), ccm_container (c)
+%(Identifier)s_impl::%(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s* i, 
+    CCM::SessionContainer * c)
+    : local_adapter(i), ccm_container (c)
 {
     DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
     local_context = new CCM_%(Identifier)s_Context_impl(this,ccm_container); 

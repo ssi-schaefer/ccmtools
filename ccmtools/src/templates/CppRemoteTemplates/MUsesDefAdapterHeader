@@ -3,7 +3,7 @@
   //============================================================================
   
   class %(Identifier)sReceptacleAdapter 
-    : virtual public CCM_Local::CCM_%(UsesType)s
+    : virtual public CCM_Local::%(CCM_UsesType)s
   {
     private:
       %(ComponentType)s_impl* component_adapter;
