@@ -8,7 +8,8 @@ dist_noinst_DATA = \
   ccmtools-c++-configure         \
   ccmtools-c++-make              \
   ccmtools-c++-install           \
-  ccmtools-c++-uninstall
+  ccmtools-c++-uninstall         \
+  ccmtools-idl
 
 bin_SCRIPTS = $(dist_noinst_DATA)
 
