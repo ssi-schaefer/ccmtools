@@ -136,7 +136,10 @@ public class ConsoleCodeGenerator
             // step (0). run the C preprocessor on the input file.
             try {
                 // Run the GNU preprocessor cpp in a separate process.
-                Process preproc = Runtime.getRuntime()
+		System.out.println("> run cpp -o " + idlfile + " " 
+				   + include_path + " "
+				   + source);
+		Process preproc = Runtime.getRuntime()
                         .exec(
                                 "cpp -o " + idlfile + " " + include_path + " "
                                         + source);
@@ -155,7 +158,8 @@ public class ConsoleCodeGenerator
                 // Wait for the process to complete and evaluate the return
                 // value of the attempted command
                 preproc.waitFor();
-                if (preproc.exitValue() != 0) throw new RuntimeException();
+                if (preproc.exitValue() != 0) 
+		    throw new RuntimeException();
             } 
             catch (Exception e) {
                 System.err.println("Error preprocessing " + 
@@ -165,6 +169,7 @@ public class ConsoleCodeGenerator
             }
 
             // step (1). parse the resulting preprocessed file.
+	    System.out.println("> parse " + idlfile.toString());
             manager.reset();
             manager.setOriginalFile(source.toString());
             try {
@@ -182,6 +187,7 @@ public class ConsoleCodeGenerator
 
             // step (2). traverse the resulting metamodel graph.
             try {
+		System.out.println("> traverse CCM model");
                 traverser.traverseGraph(kopf);
             } catch (Exception e) {
                 System.err.println("Error generating code from " + source
@@ -191,6 +197,8 @@ public class ConsoleCodeGenerator
 
             // delete the preprocessed temporary file if everything worked.
             idlfile.deleteOnExit();
+
+	    System.out.println("> done.");
         }
     }
 
