@@ -36,7 +36,19 @@ class PackageImp extends GeneralizableElementImp implements MofPackage
     String getXmiName()
     { return ((PackageXmi)xmi_).name_; }
 
+    String getXmiAbstract()
+    { return ((PackageXmi)xmi_).isAbstract_; }
 
+    String getXmiLeaf()
+    { return ((PackageXmi)xmi_).isLeaf_; }
+
+    String getXmiRoot()
+    { return ((PackageXmi)xmi_).isRoot_; }
+
+    String getXmiVisibility()
+    { return ((PackageXmi)xmi_).visibility_; }
+
+    
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {

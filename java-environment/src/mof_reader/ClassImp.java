@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 import mof_xmi_parser.DTD_Container;
+import mof_xmi_parser.model.MClass_isSingleton;
 
 
 /**
@@ -36,12 +37,34 @@ class ClassImp extends GeneralizableElementImp implements MofClass
     String getXmiName()
     { return ((ClassXmi)xmi_).name_; }
 
+    String getXmiAbstract()
+    { return ((ClassXmi)xmi_).isAbstract_; }
+
+    String getXmiLeaf()
+    { return ((ClassXmi)xmi_).isLeaf_; }
+
+    String getXmiRoot()
+    { return ((ClassXmi)xmi_).isRoot_; }
+
+    String getXmiVisibility()
+    { return ((ClassXmi)xmi_).visibility_; }
+
+
+    private String isSingleton_;
+
 
     /// implements {@link MofClass#isSingleton}
     public boolean isSingleton()
     {
-        // TODO
-        return false;
+        if( isSingleton_==null )
+        {
+            isSingleton_ = ((ClassXmi)xmi_).isSingleton_;
+            if( isSingleton_==null )
+            {
+                isSingleton_ = getBooleanFromChild(MClass_isSingleton.xmlName__);
+            }
+        }
+        return isSingleton_.equalsIgnoreCase("true");
     }
 
 

@@ -36,12 +36,30 @@ class AliasTypeImp extends GeneralizableElementImp implements MofAliasType
     String getXmiName()
     { return ((AliasTypeXmi)xmi_).name_; }
 
+    String getXmiAbstract()
+    { return ((AliasTypeXmi)xmi_).isAbstract_; }
+
+    String getXmiLeaf()
+    { return ((AliasTypeXmi)xmi_).isLeaf_; }
+
+    String getXmiRoot()
+    { return ((AliasTypeXmi)xmi_).isRoot_; }
+
+    String getXmiVisibility()
+    { return ((AliasTypeXmi)xmi_).visibility_; }
+
+
+    private MofClassifier type_;
+
 
     /// implements {@link MofTypedElement#getType}
     public MofClassifier getType()
     {
-        // TODO
-        return null;
+        if( type_==null )
+        {
+            type_ = TypedElementImp.makeType(this);
+        }
+        return type_;
     }
 
 

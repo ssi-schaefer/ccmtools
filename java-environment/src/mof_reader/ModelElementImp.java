@@ -21,6 +21,7 @@ import mof_xmi_parser.DTD_Container;
 import mof_xmi_parser.MXMI_reference;
 import mof_xmi_parser.model.MModelElement_annotation;
 import mof_xmi_parser.model.MModelElement_name;
+import mof_xmi_parser.model.MModelElement_constraints;
 
 
 /**
@@ -198,9 +199,19 @@ abstract class ModelElementImp implements MofModelElement
     {
         if( constraints_==null )
         {
-            constraints_ = convertXmiToMof(xmi_.findChildren(ConstraintXmi.xmlName__));
+            constraints_ = convertXmiContainerToMof(MModelElement_constraints.xmlName__, ConstraintXmi.xmlName__);
         }
         return constraints_;
+    }
+
+    Vector convertXmiContainerToMof( String xmiContainer, String xmiElements )
+    {
+        Vector container = xmi_.findChildren(xmiContainer);
+        if( container.size()<1 )
+        {
+            return convertXmiToMof(xmi_.findChildren(xmiElements));
+        }
+        return convertXmiToMof(((DTD_Container)container.get(0)).findChildren(xmiElements));
     }
 
     /// implements {@link MofModelElement#getTags}

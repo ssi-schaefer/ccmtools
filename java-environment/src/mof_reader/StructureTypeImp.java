@@ -36,6 +36,18 @@ class StructureTypeImp extends GeneralizableElementImp implements MofStructureTy
     String getXmiName()
     { return ((StructureTypeXmi)xmi_).name_; }
 
+    String getXmiAbstract()
+    { return ((StructureTypeXmi)xmi_).isAbstract_; }
+
+    String getXmiLeaf()
+    { return ((StructureTypeXmi)xmi_).isLeaf_; }
+
+    String getXmiRoot()
+    { return ((StructureTypeXmi)xmi_).isRoot_; }
+
+    String getXmiVisibility()
+    { return ((StructureTypeXmi)xmi_).visibility_; }
+
 
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException

@@ -13,7 +13,15 @@ package mof_reader;
 
 
 import java.util.List;
+import java.util.Vector;
+import java.util.ArrayList;
+
 import mof_xmi_parser.DTD_Container;
+import mof_xmi_parser.model.MGeneralizableElement_isAbstract;
+import mof_xmi_parser.model.MGeneralizableElement_isLeaf;
+import mof_xmi_parser.model.MGeneralizableElement_isRoot;
+import mof_xmi_parser.model.MGeneralizableElement_visibility;
+import mof_xmi_parser.model.MGeneralizableElement_supertypes;
 
 
 /**
@@ -30,43 +38,123 @@ abstract class GeneralizableElementImp extends NamespaceImp implements MofGenera
     }
 
 
+    private String isAbstract_;
+    private String isLeaf_;
+    private String isRoot_;
+    private MofVisibilityKind visibility_;
+    private ArrayList supertypes_;
+
+
     /// implements {@link MofGeneralizableElement#isAbstract}
     public boolean isAbstract()
     {
-        // TODO
-        return false;
+        if( isAbstract_==null )
+        {
+            isAbstract_ = getXmiAbstract();
+            if( isAbstract_==null )
+            {
+                isAbstract_ = getBooleanFromChild(MGeneralizableElement_isAbstract.xmlName__);
+            }
+        }
+        return isAbstract_.equalsIgnoreCase("true");
     }
+
+    /// returns 'xmi_.isAbstract_'
+    abstract String getXmiAbstract();
 
 
     /// implements {@link MofGeneralizableElement#isLeaf}
     public boolean isLeaf()
     {
-        // TODO
-        return false;
+        if( isLeaf_==null )
+        {
+            isLeaf_ = getXmiLeaf();
+            if( isLeaf_==null )
+            {
+                isLeaf_ = getBooleanFromChild(MGeneralizableElement_isLeaf.xmlName__);
+            }
+        }
+        return isLeaf_.equalsIgnoreCase("true");
     }
+
+    /// returns 'xmi_.isLeaf_'
+    abstract String getXmiLeaf();
 
 
     /// implements {@link MofGeneralizableElement#isRoot}
     public boolean isRoot()
     {
-        // TODO
-        return false;
+        if( isRoot_==null )
+        {
+            isRoot_ = getXmiRoot();
+            if( isRoot_==null )
+            {
+                isRoot_ = getBooleanFromChild(MGeneralizableElement_isRoot.xmlName__);
+            }
+        }
+        return isRoot_.equalsIgnoreCase("true");
     }
+
+    /// returns 'xmi_.isRoot_'
+    abstract String getXmiRoot();
 
 
     /// implements {@link MofGeneralizableElement#getVisibility}
-    public MofVisibilityKind getVisibility()
+    public MofVisibilityKind getVisibility() throws IllegalArgumentException
     {
-        // TODO
-        return null;
+        if( visibility_==null )
+        {
+            String text = getXmiVisibility();
+            if( text!=null )
+            {
+                visibility_ = MofVisibilityKind.create(text);
+            }
+            else
+            {
+                Vector children = xmi_.findChildren(MGeneralizableElement_visibility.xmlName__);
+                if( children.size()>=1 )
+                {
+                    MGeneralizableElement_visibility v = (MGeneralizableElement_visibility)children.get(0);
+                    visibility_ = MofVisibilityKind.create(v.xmi_value_);
+                }
+                else
+                {
+                    throw new IllegalArgumentException("no visibility");
+                }
+            }
+        }
+        return visibility_;
     }
+
+    /// returns 'xmi_.visibility_'
+    abstract String getXmiVisibility();
 
 
     /// implements {@link MofGeneralizableElement#getSupertypes}
     public List getSupertypes()
     {
-        // TODO
-        return null;
+        if( supertypes_==null )
+        {
+            supertypes_ = new ArrayList();
+            Vector children = xmi_.findChildren(MGeneralizableElement_supertypes.xmlName__);
+            for( int i=0; i<children.size(); ++i )
+            {
+                MGeneralizableElement_supertypes st = (MGeneralizableElement_supertypes)children.get(i);
+                for( int j=0; j<st.size(); ++j )
+                {
+                    Object obj = st.get(j);
+                    if( obj instanceof Worker )
+                    {
+                        MofModelElement e = ((Worker)obj).mof();
+                        if( e instanceof MofGeneralizableElement )
+                        {
+                            supertypes_.add(e);
+                        }
+                    }
+                }
+            }
+        }
+        return supertypes_;
     }
 
 }

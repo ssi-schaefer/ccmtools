@@ -69,7 +69,7 @@ class OperationImp extends BehavioralFeatureImp implements MofOperation
     {
         if( exceptions_==null )
         {
-            exceptions_ = convertXmiToMof(xmi_.findChildren(ExceptionXmi.xmlName__));
+            exceptions_ = convertXmiContainerToMof(MOperation_exceptions.xmlName__, ExceptionXmi.xmlName__);
         }
         return exceptions_;
     }

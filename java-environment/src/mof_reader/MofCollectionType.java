@@ -23,5 +23,5 @@ public interface MofCollectionType extends MofDataType, MofTypedElement
     /**
      *
      */
-    public MofMultiplicityType getMultiplicity();
+    public MofMultiplicityType getMultiplicity() throws NumberFormatException;
 }

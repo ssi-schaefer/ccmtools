@@ -36,6 +36,18 @@ class PrimitiveTypeImp extends GeneralizableElementImp implements MofPrimitiveTy
     String getXmiName()
     { return ((PrimitiveTypeXmi)xmi_).name_; }
 
+    String getXmiAbstract()
+    { return ((PrimitiveTypeXmi)xmi_).isAbstract_; }
+
+    String getXmiLeaf()
+    { return ((PrimitiveTypeXmi)xmi_).isLeaf_; }
+
+    String getXmiRoot()
+    { return ((PrimitiveTypeXmi)xmi_).isRoot_; }
+
+    String getXmiVisibility()
+    { return ((PrimitiveTypeXmi)xmi_).visibility_; }
+
 
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException

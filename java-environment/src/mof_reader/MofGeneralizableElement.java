@@ -40,7 +40,7 @@ public interface MofGeneralizableElement extends MofNamespace
     /**
      * returns the visibility kind
      */
-    public MofVisibilityKind getVisibility();
+    public MofVisibilityKind getVisibility() throws IllegalArgumentException;
 
     /**
      * returns the supertypes of this element (a list of {@link MofGeneralizableElement})

@@ -13,8 +13,10 @@ package mof_reader;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Vector;
 
 import mof_xmi_parser.DTD_Container;
+import mof_xmi_parser.model.MCollectionType_multiplicity;
 
 
 /**
@@ -36,20 +38,59 @@ class CollectionTypeImp extends GeneralizableElementImp implements MofCollection
     String getXmiName()
     { return ((CollectionTypeXmi)xmi_).name_; }
 
+    String getXmiAbstract()
+    { return ((CollectionTypeXmi)xmi_).isAbstract_; }
+
+    String getXmiLeaf()
+    { return ((CollectionTypeXmi)xmi_).isLeaf_; }
+
+    String getXmiRoot()
+    { return ((CollectionTypeXmi)xmi_).isRoot_; }
+
+    String getXmiVisibility()
+    { return ((CollectionTypeXmi)xmi_).visibility_; }
+
+
+    private MofClassifier type_;
+    private MofMultiplicityType multiplicity_;
+
 
     /// implements {@link MofTypedElement#getType}
     public MofClassifier getType()
     {
-        // TODO
-        return null;
+        if( type_==null )
+        {
+            type_ = TypedElementImp.makeType(this);
+        }
+        return type_;
     }
 
 
     /// implements {@link MofCollectionType#getMultiplicity}
-    public MofMultiplicityType getMultiplicity()
+    public MofMultiplicityType getMultiplicity() throws NumberFormatException
     {
-        // TODO
-        return null;
+        if( multiplicity_==null )
+        {
+            String m = ((CollectionTypeXmi)xmi_).multiplicity_;
+            if( m!=null )
+            {
+                multiplicity_ = new MofMultiplicityType(m);
+            }
+            else
+            {
+                Vector children = xmi_.findChildren(MCollectionType_multiplicity.xmlName__);
+                if( children.size()>=1 )
+                {
+                    MCollectionType_multiplicity p = (MCollectionType_multiplicity)children.get(0);
+                    multiplicity_ = new MofMultiplicityType(p);
+                }
+                else
+                {
+                    throw new NumberFormatException("no multiplicity");
+                }
+            }
+        }
+        return multiplicity_;
     }
 
 
