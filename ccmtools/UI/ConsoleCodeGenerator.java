@@ -275,7 +275,12 @@ public class ConsoleCodeGenerator
             // step (0). run the C preprocessor on the input file.
 
             try {
-                Process preproc = rt.exec(Constants.CPP_PATH + " -P -o " +
+                // this needs to be updated to use the result of AC_PROG_CPP.
+                // unfortunately on my box this doesn't work ...
+                //
+                // Process preproc = rt.exec(Constants.CPP_PATH + " -P -o " +
+
+                Process preproc = rt.exec("cpp " + " -P -o " +
                                           idlfile + " " + include_path +
                                           " " + source);
                 preproc.waitFor();
