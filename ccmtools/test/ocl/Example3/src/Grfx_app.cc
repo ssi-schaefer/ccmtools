@@ -22,6 +22,7 @@ namespace CCM_Session_Grfx {
 
 CCM_Point*
 CCM_Grfx_impl::get_point (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Grfx_impl->get_point (  )" );
   point_impl* facet = new point_impl(this);
@@ -30,6 +31,7 @@ CCM_Grfx_impl::get_point (  )
 
 CCM_Line*
 CCM_Grfx_impl::get_line (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Grfx_impl->get_line (  )" );
   line_impl* facet = new line_impl(this);
@@ -55,6 +57,7 @@ point_impl::~point_impl (  )
 
 double
 point_impl::x (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " point_impl->x (  )" );
 
@@ -63,6 +66,7 @@ point_impl::x (  )
 
 void
 point_impl::x ( const double value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " point_impl->x ( value )" );
 
@@ -71,6 +75,7 @@ point_impl::x ( const double value )
 
 double
 point_impl::y (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " point_impl->y (  )" );
 
@@ -79,6 +84,7 @@ point_impl::y (  )
 
 void
 point_impl::y ( const double value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " point_impl->y ( value )" );
 
@@ -88,7 +94,7 @@ point_impl::y ( const double value )
 
 void
 point_impl::move ( const double dx, const double dy )
-  
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " point_impl->move ( dx, dy )" );
 
@@ -117,6 +123,7 @@ line_impl::~line_impl (  )
 
 WX::Utils::SmartPtr<Point>
 line_impl::startPt (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " line_impl->startPt (  )" );
 
@@ -125,6 +132,7 @@ line_impl::startPt (  )
 
 void
 line_impl::startPt ( const WX::Utils::SmartPtr<Point> value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " line_impl->startPt ( value )" );
 
@@ -133,6 +141,7 @@ line_impl::startPt ( const WX::Utils::SmartPtr<Point> value )
 
 WX::Utils::SmartPtr<Point>
 line_impl::endPt (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " line_impl->endPt (  )" );
 
@@ -141,6 +150,7 @@ line_impl::endPt (  )
 
 void
 line_impl::endPt ( const WX::Utils::SmartPtr<Point> value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " line_impl->endPt ( value )" );
 
@@ -150,7 +160,7 @@ line_impl::endPt ( const WX::Utils::SmartPtr<Point> value )
 
 void
 line_impl::move ( const double dx, const double dy )
-  
+  throw ( LocalComponents::CCMException )  
 {
   DEBUGNL ( " line_impl->move ( dx, dy )" );
 

@@ -127,7 +127,7 @@ int main ( int argc, char *argv[] )
     }
 
     {
-      string a = "0123456789";
+      string a = "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
       string r;
       start = clock();
       for(int i=0;i<NUMBER_OF_ITERATIONS;++i) {
@@ -211,8 +211,8 @@ int main ( int argc, char *argv[] )
 
 
     {
-      string p1 = "01234567890";
-      string p2 = "abcdefghijk";
+      string p1 = "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
+      string p2 = "123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789";
       
            start = clock();
       for(int i=0;i<NUMBER_OF_ITERATIONS;++i) {
@@ -222,6 +222,7 @@ int main ( int argc, char *argv[] )
       cpu_time_used = ((double)(stop-start)) / CLOCKS_PER_SEC * 1000.0;
       cout << "  f3_2()  times: " << cpu_time_used << "ms" << endl;
     }
+
 
     {
       string p1 = "01234567890";

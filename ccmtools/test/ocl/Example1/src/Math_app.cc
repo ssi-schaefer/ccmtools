@@ -50,6 +50,7 @@ stack_impl::~stack_impl (  )
 
 IntegerVector
 stack_impl::field (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " stack_impl->field (  )" );
 
@@ -58,6 +59,7 @@ stack_impl::field (  )
 
 void
 stack_impl::field ( const IntegerVector value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " stack_impl->field ( value )" );
 
@@ -66,6 +68,7 @@ stack_impl::field ( const IntegerVector value )
 
 long
 stack_impl::maxSize (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " stack_impl->maxSize (  )" );
 
@@ -74,6 +77,7 @@ stack_impl::maxSize (  )
 
 void
 stack_impl::maxSize ( const long value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " stack_impl->maxSize ( value )" );
 
@@ -83,7 +87,7 @@ stack_impl::maxSize ( const long value )
 
 bool
 stack_impl::isEmpty (  )
-  
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " stack_impl->isEmpty (  )" );
 
@@ -92,7 +96,7 @@ stack_impl::isEmpty (  )
 
 bool
 stack_impl::isFull (  )
-
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " stack_impl->isFull (  )" );
 
@@ -101,7 +105,7 @@ stack_impl::isFull (  )
 
 void
 stack_impl::push ( const long value )
-  
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " stack_impl->push ( value )" );
 
@@ -110,7 +114,7 @@ stack_impl::push ( const long value )
 
 long
 stack_impl::pop (  )
-  
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " stack_impl->pop (  )" );
 
@@ -121,7 +125,7 @@ stack_impl::pop (  )
 
 long
 stack_impl::top (  )
-  
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " stack_impl->top (  )" );
 

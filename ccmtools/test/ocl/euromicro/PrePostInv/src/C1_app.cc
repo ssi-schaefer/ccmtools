@@ -47,6 +47,7 @@ i1_impl::~i1_impl (  )
 
 long
 i1_impl::a1 (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->a1 (  )" );
   return _a1;
@@ -54,6 +55,7 @@ i1_impl::a1 (  )
 
 void
 i1_impl::a1 ( const long value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->a1 ( value )" );
   _a1 = value;
@@ -61,6 +63,7 @@ i1_impl::a1 ( const long value )
 
 double
 i1_impl::a2 (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->a2 (  )" );
   return _a2;
@@ -68,6 +71,7 @@ i1_impl::a2 (  )
 
 void
 i1_impl::a2 ( const double value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->a2 ( value )" );
   _a2 = value;
@@ -75,6 +79,7 @@ i1_impl::a2 ( const double value )
 
 std::string
 i1_impl::a3 (  )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->a3 (  )" );
   return _a3;
@@ -82,6 +87,7 @@ i1_impl::a3 (  )
 
 void
 i1_impl::a3 ( const std::string value )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->a3 ( value )" );
   _a3 = value;
@@ -90,6 +96,7 @@ i1_impl::a3 ( const std::string value )
 
 long
 i1_impl::f1_2 ( const long p1, const long p2 )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->f1_2 ( p1, p2 )" );
   return p1+p2;
@@ -97,6 +104,7 @@ i1_impl::f1_2 ( const long p1, const long p2 )
 
 long
 i1_impl::f1_10 ( const long p1, const long p2, const long p3, const long p4, const long p5, const long p6, const long p7, const long p8, const long p9, const long p10 )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->f1_10 ( p1, p2, p3, p4, p5, p6, p7, p8, p9, p10 )" );
   return p1+p2+p3+p4+p5+p6+p7+p8+p9+p10;
@@ -104,6 +112,7 @@ i1_impl::f1_10 ( const long p1, const long p2, const long p3, const long p4, con
 
 double
 i1_impl::f2_2 ( const double p1, const double p2 )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->f2_2 ( p1, p2 )" );
   return p1+p2;
@@ -111,6 +120,7 @@ i1_impl::f2_2 ( const double p1, const double p2 )
 
 double
 i1_impl::f2_10 ( const double p1, const double p2, const double p3, const double p4, const double p5, const double p6, const double p7, const double p8, const double p9, const double p10 )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->f2_10 ( p1, p2, p3, p4, p5, p6, p7, p8, p9, p10 )" );
   return p1+p2+p3+p4+p5+p6+p7+p8+p9+p10;
@@ -118,6 +128,7 @@ i1_impl::f2_10 ( const double p1, const double p2, const double p3, const double
 
 std::string
 i1_impl::f3_2 ( const std::string& p1, const std::string& p2 )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->f3_2 ( p1, p2 )" );
   return p1+p2;
@@ -125,6 +136,7 @@ i1_impl::f3_2 ( const std::string& p1, const std::string& p2 )
 
 std::string
 i1_impl::f3_10 ( const std::string& p1, const std::string& p2, const std::string& p3, const std::string& p4, const std::string& p5, const std::string& p6, const std::string& p7, const std::string& p8, const std::string& p9, const std::string& p10 )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " i1_impl->f3_10 ( p1, p2, p3, p4, p5, p6, p7, p8, p9, p10 )" );
   return p1+p2+p3+p4+p5+p6+p7+p8+p9+p10;

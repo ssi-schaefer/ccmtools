@@ -64,30 +64,30 @@ class stack_impl
   stack_impl ( CCM_Math_impl* component_impl );
   virtual ~stack_impl (  );
 
-  virtual IntegerVector field (  );
-  virtual void field ( const IntegerVector value );
-  virtual long maxSize (  );
-  virtual void maxSize ( const long value );
+  virtual IntegerVector field (  ) throw ( LocalComponents::CCMException );
+  virtual void field ( const IntegerVector value ) throw ( LocalComponents::CCMException );
+  virtual long maxSize (  ) throw ( LocalComponents::CCMException );
+  virtual void maxSize ( const long value ) throw ( LocalComponents::CCMException );
 
-  virtual bool isEmpty (  ) ;
+  virtual bool isEmpty (  )  throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  bool call_python_isEmpty (  ) ;
+  bool call_python_isEmpty (  )  throw ( LocalComponents::CCMException );
 #endif
-  virtual bool isFull (  ) ;
+  virtual bool isFull (  )  throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  bool call_python_isFull (  ) ;
+  bool call_python_isFull (  )  throw ( LocalComponents::CCMException );
 #endif
-  virtual void push ( const long value ) ;
+  virtual void push ( const long value )  throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  void call_python_push ( const long value ) ;
+  void call_python_push ( const long value )  throw ( LocalComponents::CCMException );
 #endif
-  virtual long pop (  ) ;
+  virtual long pop (  )  throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  long call_python_pop (  ) ;
+  long call_python_pop (  )  throw ( LocalComponents::CCMException );
 #endif
-  virtual long top (  ) ;
+  virtual long top (  )  throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  long call_python_top (  ) ;
+  long call_python_top (  )  throw ( LocalComponents::CCMException );
 #endif
 
 };

@@ -62,36 +62,54 @@ class i1_impl
   i1_impl ( CCM_C1_impl* component_impl );
   virtual ~i1_impl (  );
 
-  virtual long a1 (  );
-  virtual void a1 ( const long value );
-  virtual double a2 (  );
-  virtual void a2 ( const double value );
-  virtual std::string a3 (  );
-  virtual void a3 ( const std::string value );
+  virtual long a1 (  )
+    throw ( LocalComponents::CCMException );
+  virtual void a1 ( const long value )
+    throw ( LocalComponents::CCMException );
+  virtual double a2 (  )
+    throw ( LocalComponents::CCMException );
+  virtual void a2 ( const double value )
+    throw ( LocalComponents::CCMException );
+  virtual std::string a3 (  )
+    throw ( LocalComponents::CCMException );
+  virtual void a3 ( const std::string value )
+    throw ( LocalComponents::CCMException );
 
-  virtual long f1_2 ( const long p1, const long p2 ) ;
+  virtual long f1_2 ( const long p1, const long p2 ) 
+    throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  long call_python_f1_2 ( const long p1, const long p2 ) ;
+  long call_python_f1_2 ( const long p1, const long p2 ) 
+    throw ( LocalComponents::CCMException );
 #endif
-  virtual long f1_10 ( const long p1, const long p2, const long p3, const long p4, const long p5, const long p6, const long p7, const long p8, const long p9, const long p10 ) ;
+  virtual long f1_10 ( const long p1, const long p2, const long p3, const long p4, const long p5, const long p6, const long p7, const long p8, const long p9, const long p10 ) 
+    throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  long call_python_f1_10 ( const long p1, const long p2, const long p3, const long p4, const long p5, const long p6, const long p7, const long p8, const long p9, const long p10 ) ;
+  long call_python_f1_10 ( const long p1, const long p2, const long p3, const long p4, const long p5, const long p6, const long p7, const long p8, const long p9, const long p10 ) 
+    throw ( LocalComponents::CCMException );
 #endif
-  virtual double f2_2 ( const double p1, const double p2 ) ;
+  virtual double f2_2 ( const double p1, const double p2 ) 
+    throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  double call_python_f2_2 ( const double p1, const double p2 ) ;
+  double call_python_f2_2 ( const double p1, const double p2 ) 
+    throw ( LocalComponents::CCMException );
 #endif
-  virtual double f2_10 ( const double p1, const double p2, const double p3, const double p4, const double p5, const double p6, const double p7, const double p8, const double p9, const double p10 ) ;
+  virtual double f2_10 ( const double p1, const double p2, const double p3, const double p4, const double p5, const double p6, const double p7, const double p8, const double p9, const double p10 ) 
+    throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  double call_python_f2_10 ( const double p1, const double p2, const double p3, const double p4, const double p5, const double p6, const double p7, const double p8, const double p9, const double p10 ) ;
+  double call_python_f2_10 ( const double p1, const double p2, const double p3, const double p4, const double p5, const double p6, const double p7, const double p8, const double p9, const double p10 ) 
+    throw ( LocalComponents::CCMException );
 #endif
-  virtual std::string f3_2 ( const std::string& p1, const std::string& p2 ) ;
+  virtual std::string f3_2 ( const std::string& p1, const std::string& p2 ) 
+    throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  std::string call_python_f3_2 ( const std::string& p1, const std::string& p2 ) ;
+  std::string call_python_f3_2 ( const std::string& p1, const std::string& p2 ) 
+    throw ( LocalComponents::CCMException );
 #endif
-  virtual std::string f3_10 ( const std::string& p1, const std::string& p2, const std::string& p3, const std::string& p4, const std::string& p5, const std::string& p6, const std::string& p7, const std::string& p8, const std::string& p9, const std::string& p10 ) ;
+  virtual std::string f3_10 ( const std::string& p1, const std::string& p2, const std::string& p3, const std::string& p4, const std::string& p5, const std::string& p6, const std::string& p7, const std::string& p8, const std::string& p9, const std::string& p10 ) 
+    throw ( LocalComponents::CCMException );
 #ifdef CCM_TEST_PYTHON
-  std::string call_python_f3_10 ( const std::string& p1, const std::string& p2, const std::string& p3, const std::string& p4, const std::string& p5, const std::string& p6, const std::string& p7, const std::string& p8, const std::string& p9, const std::string& p10 ) ;
+  std::string call_python_f3_10 ( const std::string& p1, const std::string& p2, const std::string& p3, const std::string& p4, const std::string& p5, const std::string& p6, const std::string& p7, const std::string& p8, const std::string& p9, const std::string& p10 ) 
+    throw ( LocalComponents::CCMException );
 #endif
 
 };
