@@ -877,10 +877,20 @@ endpackage
 \begin{itemize}
 \item Es muss immer \textsf{XMI}-Version \textbf{1.1} verwendet werden.
 \item Ab Version 7.x gibt es vordefinierte Profile. Diese werden nicht in
-	die \textsf{XMI}-Datei kopiert. Im Editor sind sie grau hinterlegt
-	und haben ein eigenes Symbol. Wird ein solches Profil ben{\"o}tigt,
-	dann muss es importiert werden (rechte Maustaste -- Modul importieren).
-\end{itemize} 
+    die \textsf{XMI}-Datei kopiert. Im Editor sind sie grau hinterlegt
+    und haben ein eigenes Symbol. Wird ein solches Profil ben{\"o}tigt,
+    dann muss es importiert werden (rechte Maustaste -- Modul importieren).
+\item Bei einem \emph{typedef} auf einen Basistyp wird als Alias f{\"u}r den
+    Basistyp eine UML-Klasse mit dem Stereotype \texttt{CORBAPrimitive}
+    verwendet. Der Name der Klasse ist der Name des Basistyps.
+\item Der \emph{tagged value} \texttt{Case} wird bei den UML-Elementen
+    \emph{Attribute} und \emph{AssociationEnd} ben{\"o}tigt.
+    Falls es nicht m{\"o}glich ist beide gleichzeitig zu definieren,
+    so kann f{\"u}r einen auch der Name \texttt{case} verwendet werden.
+\item Bei der Eingabe eines Typs (z.B. f{\"u}r Attribute) ist darauf
+    zu achten, dass beim Eintippen des Namens ein neuer Typ angelegt wird.
+    Typen sollten daher immer ausgew{\"a}hlt werden.
+\end{itemize}
 
 
 \end{document}

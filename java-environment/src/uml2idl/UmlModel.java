@@ -58,8 +58,8 @@ class UmlModel extends uml_parser.uml.MModel implements Worker
     }
 
 
-	public String getName()
-	{
+    public String getName()
+    {
         if( name_==null )
         {
             name_ = Main.makeModelElementName(this);
@@ -68,8 +68,8 @@ class UmlModel extends uml_parser.uml.MModel implements Worker
                 name_ = "";
             }
         }
-	    return name_;
-	}
+        return name_;
+    }
 
 
 	public void collectWorkers( java.util.HashMap map )

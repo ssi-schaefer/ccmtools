@@ -36,9 +36,10 @@ Container for children of {@link UmlModel} and {@link UmlPackage}. <br>Children:
 <li>{@link UmlStereotype}</li>
 <li>{@link UmlAssociation}</li>
 <li>{@link UmlDependency}</li>
+<li>{@link UmlGeneralization}</li>
 </ul>
 
-@author Robert Lechner (rlechner@gmx.at)
+@author Robert Lechner (robert.lechner@salomon.at)
 @version $Date$
 */
 class UmlNamespaceElement extends uml_parser.uml.MNamespace_ownedElement implements Worker
@@ -86,14 +87,40 @@ class UmlNamespaceElement extends uml_parser.uml.MNamespace_ownedElement impleme
 	}
 
 
-	public void makeConnections( Main main, Worker parent )
-	{
-	    int s = myWorkers_.size();
-	    for( int index=0; index<s; index++ )
-	    {
-	        ((Worker)myWorkers_.get(index)).makeConnections(main, parent);
-	    }
-	}
+    public void makeConnections( Main main, Worker parent )
+    {
+        int s = myWorkers_.size();
+        for( int index=0; index<s; index++ )
+        {
+            Object obj = myWorkers_.get(index);
+            if( obj instanceof UmlGeneralization )
+            {
+                UmlGeneralization gen = (UmlGeneralization)obj;
+                Object child = gen.getChild(main);
+                if( child!=null )
+                {
+                    if( child instanceof UmlClass )
+                    {
+                        ((UmlClass)child).addGeneralization(gen);
+                    }
+                    else
+                    {
+                        System.err.println(
+                            "ERROR in UmlNamespaceElement.makeConnections : child is of type "+
+                            child.getClass().getName() );
+                    }
+                }
+                else
+                {
+                    System.err.println("ERROR in UmlNamespaceElement.makeConnections : child==null");
+                }
+            }
+            else
+            {
+                ((Worker)obj).makeConnections(main, parent);
+            }
+        }
+    }
 
 
 	public String getIdlCode( Main main, String prefix )

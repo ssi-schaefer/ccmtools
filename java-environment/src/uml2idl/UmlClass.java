@@ -157,6 +157,12 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 	}
 
 
+    void addGeneralization( UmlGeneralization gen )
+    {
+        myGeneralizations_.add(gen);
+    }
+
+
 	public void makeConnections( Main main, Worker parent )
 	{
 	    idlParent_ = parent;
@@ -170,11 +176,11 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 	    {
 	        ((Worker)myElements_.get(index)).makeConnections(main, this);
 	    }
-	    s = myGeneralizations_.size();
+	    /*s = myGeneralizations_.size();
 	    for( index=0; index<s; index++ )
 	    {
 	        ((Worker)myGeneralizations_.get(index)).makeConnections(main, this);
-	    }
+	    }*/
 	    s = myConstraints_.size();
 	    for( index=0; index<s; index++ )
 	    {
@@ -276,12 +282,16 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
         {
             return false;
         }
-        return value.equalsIgnoreCase("TRUE");
+        return value.equalsIgnoreCase("true");
     }
 
 
     boolean isAbstract()
     {
+        if( isAbstract_!=null )
+        {
+            return isAbstract_.equalsIgnoreCase("true");
+        }
         Vector v = findChildren(MGeneralizableElement_isAbstract.xmlName__);
         if( v.size()<1 )
         {

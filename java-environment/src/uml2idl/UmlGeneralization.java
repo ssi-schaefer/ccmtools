@@ -139,24 +139,27 @@ class UmlGeneralization extends uml_parser.uml.MGeneralization implements Worker
     }
 
 
-	public Object getParent( Main main )
-	{
-	    if( xmi_idref_!=null )
-	    {
+    /**
+     *  Returns the base class (or null);
+     */
+    public Object getParent( Main main )
+    {
+        if( xmi_idref_!=null )
+        {
             Object obj = main.workers_.get(xmi_idref_);
             if( obj==null )
             {
                 return null;
             }
             return ((UmlGeneralization)obj).getParent(main);
-	    }
-	    if( parent_==null )
-	    {
-	        Vector v1 = findChildren(MGeneralization_parent.xmlName__);
-	        if( v1.size()<1 )
-	        {
-	            return null;
-	        }
+        }
+        if( parent_==null )
+        {
+            Vector v1 = findChildren(MGeneralization_parent.xmlName__);
+            if( v1.size()<1 )
+            {
+                return null;
+            }
             MGeneralization_parent p1 = (MGeneralization_parent)v1.get(0);
             Vector v2 = p1.findChildren(MGeneralizableElement.xmlName__);
             if( v2.size()<1 )
@@ -169,25 +172,66 @@ class UmlGeneralization extends uml_parser.uml.MGeneralization implements Worker
             {
                 return null;
             }
-	    }
-	    return main.workers_.get(parent_);
-	}
+        }
+        return main.workers_.get(parent_);
+    }
 
 
-	public String getParentName( Main main )
-	{
-	    Object parent = getParent(main);
-	    if( parent!=null )
-	    {
-    	    if( parent instanceof UmlClass )
-    	    {
-    	        return ((UmlClass)parent).getPathName();
-    	    }
-    	    if( parent instanceof Worker )
-    	    {
-    	        return ((Worker)parent).getName();
-    	    }
-	    }
-	    return null;
-	}
+    /**
+     *  Returns the sub class (or null);
+     */
+    public Object getChild( Main main )
+    {
+        if( xmi_idref_!=null )
+        {
+            Object obj = main.workers_.get(xmi_idref_);
+            if( obj==null )
+            {
+                return null;
+            }
+            return ((UmlGeneralization)obj).getChild(main);
+        }
+        if( child_==null )
+        {
+            /*Vector v1 = findChildren(MGeneralization_parent.xmlName__);
+            if( v1.size()<1 )
+            {
+                return null;
+            }
+            MGeneralization_parent p1 = (MGeneralization_parent)v1.get(0);
+            Vector v2 = p1.findChildren(MGeneralizableElement.xmlName__);
+            if( v2.size()<1 )
+            {
+                return null;
+            }
+            MGeneralizableElement e1 = (MGeneralizableElement)v2.get(0);
+            child_ = e1.xmi_idref_;*/
+            if( child_==null )
+            {
+                return null;
+            }
+        }
+        return main.workers_.get(child_);
+    }
+
+
+    /**
+     *  Returns the name of the base class (or null);
+     */
+    public String getParentName( Main main )
+    {
+        Object parent = getParent(main);
+        if( parent!=null )
+        {
+            if( parent instanceof UmlClass )
+            {
+                return ((UmlClass)parent).getPathName();
+            }
+            if( parent instanceof Worker )
+            {
+                return ((Worker)parent).getName();
+            }
+        }
+        return null;
+    }
 }

@@ -85,14 +85,18 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
     }
 
 
-	public String getName()
-	{
+    public String getName()
+    {
         if( name_==null )
         {
             name_ = Main.makeModelElementName(this);
+            if( name_==null )
+            {
+                name_ = "/* package has no name */";
+            }
         }
-	    return name_;
-	}
+        return name_;
+    }
 
 
 	public void collectWorkers( java.util.HashMap map )
@@ -131,8 +135,8 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
 	public void makeConnections( Main main, Worker parent )
 	{
 	    idlParent_ = parent;
-	    int s = myElements_.size();
-	    for( int index=0; index<s; index++ )
+	    int index, s=myElements_.size();
+	    for( index=0; index<s; index++ )
 	    {
 	        ((Worker)myElements_.get(index)).makeConnections(main, this);
 	    }

@@ -154,6 +154,7 @@ class UmlAssociationEnd extends uml_parser.uml.MAssociationEnd implements Worker
             else
             {
                 isNavigable_ = "false";
+                return false;
             }
         }
         return isNavigable_.equalsIgnoreCase("true");
@@ -250,7 +251,7 @@ class UmlAssociationEnd extends uml_parser.uml.MAssociationEnd implements Worker
             }
             if( visibility_==null )
             {
-                visibility_ = "public";
+                return "private";   // MagicDraw doesn't write it
             }
         }
         return visibility_;

@@ -29,7 +29,7 @@ import uml_parser.uml.MModelElement_comment;
 /**
 Stores two instances of {@link UmlAssociationEnd}.
 
-@author Robert Lechner (rlechner@gmx.at)
+@author Robert Lechner (robert.lechner@salomon.at)
 @version $Date$
 */
 class UmlAssociationConnection extends uml_parser.uml.MAssociation_connection implements Worker
@@ -197,16 +197,16 @@ class UmlAssociationConnection extends uml_parser.uml.MAssociation_connection im
             }
             if( attributeName==null )
             {
-		// print association participants to reduce UML bugfixing
-		System.err.print("UmlAssociationConnection.createAttribute: no attribute name"); 
-		try {
-		    System.err.print(" ["); 
-		    System.err.print(((UmlClass)main.workers_.get(src.getParticipantId())).getPathName()+ " -> ");
-		    System.err.println(((UmlClass)main.workers_.get(dest.getParticipantId())).getPathName()+ "]");
-		}
-		catch(Exception e) {
-		    System.out.println("[unknown participants]");
-		}
+                // print association participants to reduce UML bugfixing
+                System.err.print("UmlAssociationConnection.createAttribute: no attribute name");
+                try {
+                System.err.print(" [");
+                System.err.print(((UmlClass)main.workers_.get(src.getParticipantId())).getPathName()+ " -> ");
+                System.err.println(((UmlClass)main.workers_.get(dest.getParticipantId())).getPathName()+ "]");
+                }
+                catch(Exception e) {
+                    System.out.println("[unknown participants]");
+                }
                 return null;
             }
         }
@@ -224,8 +224,8 @@ class UmlAssociationConnection extends uml_parser.uml.MAssociation_connection im
         }
         if( participantObj instanceof UmlClass )
         {
-    	    UmlAttribute newAttribute = new UmlAttribute(attributeName, typeId, multiplicity, dest.getVisibility());
-    	    dest.addQualifiersAndStereotypes(newAttribute, main);
+            UmlAttribute newAttribute = new UmlAttribute(attributeName, typeId, multiplicity, dest.getVisibility());
+            dest.addQualifiersAndStereotypes(newAttribute, main);
             ((UmlClass)participantObj).addNewAttribute(newAttribute);
             Vector comments = dest.findChildren(MModelElement_comment.xmlName__);
             for( int i=0; i<comments.size(); i++ )

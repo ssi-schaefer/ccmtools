@@ -87,14 +87,18 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
     }
 
 
-	public String getName()
-	{
+    public String getName()
+    {
         if( name_==null )
         {
             name_ = Main.makeModelElementName(this);
+            if( name_==null )
+            {
+                return "/* no attribute name */";
+            }
         }
-	    return name_;
-	}
+        return name_;
+    }
 
 
 	public void collectWorkers( java.util.HashMap map )
@@ -165,6 +169,9 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
     }
 
 
+    /**
+     * Returns the IDL-type of this attribute (or null).
+     */
     String getTypeName( Main main )
     {
         String typeId = getTypeId();
@@ -183,7 +190,12 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
         }
         if( typeObj instanceof UmlClass )
         {
-            return ((UmlClass)typeObj).getPathName();
+            String result = ((UmlClass)typeObj).getPathName();
+            if( idlParent_!=null && (idlParent_ instanceof IdlContainer) )
+            {
+                return Main.reducePathname(result, ((IdlContainer)idlParent_).getPathName());
+            }
+            return result;
         }
         return null;
     }
@@ -198,23 +210,28 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
         String caseLabel = (String)tagged_values_.get("Case");
         if( caseLabel==null )
         {
-            return "/* no case label */\n";
+            caseLabel = (String)tagged_values_.get("case");
+            if( caseLabel==null )
+            {
+                return "/* no case label */\n";
+            }
         }
         String typeName = getTypeName(main);
         if( typeName==null )
         {
             return "/* no type name */\n";
         }
+        String myName = getName();
         caseLabel = caseLabel.trim();
         if( caseLabel.equals("default") )
         {
-            return "default: "+typeName+" "+getName()+";\n";
+            return "default: "+typeName+" "+myName+";\n";
         }
         Vector caseList = new Vector();
         addToCaseList( caseLabel, caseList );
         if( caseList.size()<1 )
         {
-            return "case "+caseLabel+": "+typeName+" "+getName()+";\n";
+            return "case "+caseLabel+": "+typeName+" "+myName+";\n";
         }
         StringBuffer code = new StringBuffer();
         for( int index=0; index<caseList.size(); index++ )
@@ -225,7 +242,7 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
         }
         code.append(typeName);
         code.append(" ");
-        code.append(getName());
+        code.append(myName);
         code.append(";\n");
         return code.toString();
     }
@@ -387,6 +404,10 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
                     tagged_values_ = main.makeModelElementTaggedValues(this);
                 }
                 String raisesText = (String)tagged_values_.get("raises");
+                if( raisesText==null )
+                {
+                    raisesText = (String)tagged_values_.get("Raises");
+                }
                 if( raisesText!=null )
                 {
                     code.append(" raises");
@@ -428,7 +449,7 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
             }
             if( visibility_==null )
             {
-                visibility_ = "public";
+                return "private";   // MagicDraw doesn't write it
             }
         }
         return visibility_;
