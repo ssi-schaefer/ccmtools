@@ -305,11 +305,7 @@ const std::string
 {
   DEBUGNL ( " %(Identifier)s->getComponentVersion (  )" );
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
-#ifdef HAVE_CONFIG_H
-  return CCMTOOLS_PACKAGE_VERSION;
-#else
   return "0.0";
-#endif
 }
 
 const std::string
@@ -317,11 +313,7 @@ const std::string
 {
   DEBUGNL ( " %(Identifier)s->getComponentDate (  )" );
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
-#ifdef HAVE_CONFIG_H
-  return CCMTOOLS_PACKAGE_DATE;
-#else
   return "2003-01-01";
-#endif
 }
 
 const std::string

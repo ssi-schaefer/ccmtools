@@ -433,9 +433,24 @@ abstract public class CppGenerator
 
     protected String data_MComponentDef(String data_type, String data_value)
     {
+        MComponentDef component = (MComponentDef) current_node;
+        MHomeDef home = null;
+
+        try {
+            home = (MHomeDef) component.getHomes().iterator().next();
+            if (home == null) throw new RuntimeException();
+        } catch (Exception e) {
+            throw new RuntimeException("Component '"+component.getIdentifier()+
+                                       "' does not have exactly one home.");
+        }
+
         if (data_type.endsWith("Namespace")) {
             return handleNamespace(data_type,
                      ((MComponentDef) current_node).getIdentifier());
+        } else if (data_type.equals("HomeInclude")) {
+            String include = getFullScopeInclude(component);
+            include = include.substring(0, include.lastIndexOf(file_separator));
+            return include + file_separator + home.getIdentifier();
         }
         return data_MInterfaceDef(data_type, data_value);
     }
@@ -468,10 +483,10 @@ abstract public class CppGenerator
 
         if (data_type.endsWith("Namespace")) {
             return handleNamespace(data_type, component_id);
-        } else if (data_type.equals("ShareInclude")) {
+        } else if (data_type.equals("HomeInclude")) {
             String include = getFullScopeInclude(component);
             include = include.substring(0, include.lastIndexOf(file_separator));
-            return include + "_share" + file_separator + home_id;
+            return include + file_separator + home_id;
         }
         return data_MInterfaceDef(data_type, data_value);
     }

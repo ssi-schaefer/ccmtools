@@ -752,9 +752,11 @@ abstract public class CodeGenerator
         List scope = getScope(node);
         scope.add(node.getIdentifier());
         for (Iterator n = namespace.iterator(); n.hasNext(); ) {
-            if (((String) n.next()).equals((String) scope.get(0)))
-                scope.remove(0);
-            else break;
+            String name = (String) n.next();
+            try {
+                String mine = (String) scope.get(0);
+                if (mine.equals(name)) scope.remove(0);
+            } catch (Exception e) { break; }
         }
         return join(scope_separator, scope);
     }

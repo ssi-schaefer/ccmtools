@@ -26,7 +26,7 @@
 %(MSupportsDefInclude)s
 %(BaseInclude)s
 
-#include "%(ComponentIdentifier)s_gen.h"
+#include "%(ComponentType)s_gen.h"
 
 %(OpenNamespace)s
 
@@ -292,7 +292,7 @@ extern "C" {
 #ifndef __HOME_%(PreprocIdentifier)s_APP__H__
 #define __HOME_%(PreprocIdentifier)s_APP__H__
 
-#include <%(ShareInclude)s_share.h>
+#include <%(HomeInclude)s_share.h>
 #include "%(Identifier)s_entry.h"
 
 %(OpenNamespace)s
@@ -369,7 +369,8 @@ extern "C" {
   create_%(Identifier)s (  )
   {
     DEBUGNL ( " create_%(Identifier)s (  )" );
-    return new %(Namespace)s::CCM_%(Identifier)s_impl (  );
+    return dynamic_cast<localComponents::HomeExecutorBase*>
+      ( new %(Namespace)s::CCM_%(Identifier)s_impl (  ) );
   }
 }
 
