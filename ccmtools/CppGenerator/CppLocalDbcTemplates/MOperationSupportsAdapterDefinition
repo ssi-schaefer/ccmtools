@@ -1,0 +1,12 @@
+%(LanguageType)s
+DbC_%(Object)s::%(Identifier)s(%(MParameterDefAll)s)
+  %(MExceptionDef)s
+{
+  DEBUGNL ( " DbC_%(Object)s->%(Identifier)s(%(MParameterDefName)s)");
+  %(SupportsPreInvocation)s	
+  %(LanguageType)s result = %(Object)s::%(Identifier)s(%(MParameterDefName)s);
+  %(SupportsPostInvocation)s
+  %(Return)s result; 
+}
+
+

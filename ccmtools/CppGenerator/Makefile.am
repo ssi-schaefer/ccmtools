@@ -4,6 +4,7 @@
 SUBDIRS = . \
   CppLocalTemplates      \
   CppLocalTestTemplates  \
+  CppLocalDbcTemplates   \
   CppRemoteTemplates     \
   CppRemoteTestTemplates \
   CppPythonTemplates
@@ -16,6 +17,7 @@ dist_noinst_JAVA = \
   CppGenerator.java               \
   CppLocalGeneratorImpl.java      \
   CppLocalTestGeneratorImpl.java  \
+  CppLocalDbcGeneratorImpl.java   \
   CppRemoteGeneratorImpl.java     \
   CppRemoteTestGeneratorImpl.java \
   CppPythonGeneratorImpl.java

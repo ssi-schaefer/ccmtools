@@ -93,5 +93,7 @@ dist_template_DATA = \
     MUsesDefGetConnectionPrototypeVV               \
     MUsesDefGetConnectionPrototypeVVMultiple       \
     MUsesDefInclude                                \
-    MUsesDefIncludeMultiple
+    MUsesDefIncludeMultiple                        \
+    MProvidesDefAdapterVariableInitDefault         \
+    MUsesDefAdapterVariableInitDefault
 

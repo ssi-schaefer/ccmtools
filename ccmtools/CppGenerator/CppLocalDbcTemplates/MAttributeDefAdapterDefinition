@@ -1,0 +1,18 @@
+%(LanguageType)s
+DbC_%(ComponentType)s::%(Identifier)s()
+{
+  DEBUGNL ( " DbC_%(ComponentType)s->%(Identifier)s (  ) - get semantic");
+%(AttributeGetPreInvocation)s
+  %(LanguageType)s result = %(ComponentType)s::%(Identifier)s();
+%(AttributeGetPostInvocation)s
+  return result; 
+}
+
+void
+DbC_%(ComponentType)s::%(Identifier)s ( %(LanguageType)s value )
+{
+  DEBUGNL ( " DbC_%(ComponentType)s->%(Identifier)s (  ) - set semantic");
+%(AttributeSetPreInvocation)s	
+  %(ComponentType)s::%(Identifier)s(value);
+%(AttributeSetPostInvocation)s	
+}

@@ -48,7 +48,7 @@ class %(Identifier)s
     virtual public localComponents::CCMObject
     %(MSupportsDefBase)s
 {
- private:
+ protected:
   %(HomeType)s* home_local_adapter;
   CCM_%(Identifier)s* local_component;
   CCM_%(Identifier)s_Context* context;
@@ -58,6 +58,7 @@ class %(Identifier)s
 %(MUsesDefAdapterVariable)s
 
  public:
+  %(Identifier)s();
   %(Identifier)s ( %(HomeType)s* h, CCM_%(Identifier)s* lc );
   virtual ~%(Identifier)s (  );
 
@@ -273,6 +274,16 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object (  )
 //==============================================================================
 // local component adapter implementation
 //==============================================================================
+
+%(Identifier)s::%(Identifier)s()
+{
+  home_local_adapter = NULL;
+  local_component = NULL;
+  context = NULL;
+  ValidConnection = false;
+%(MProvidesDefAdapterVariableInitDefault)s
+%(MUsesDefAdapterVariableInitDefault)s
+}
 
 %(Identifier)s::%(Identifier)s ( %(HomeType)s* h, CCM_%(Identifier)s* lc )
   : home_local_adapter ( h ), local_component ( lc )

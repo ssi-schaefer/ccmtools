@@ -69,7 +69,7 @@ class %(Identifier)sImplicit
 class %(Identifier)s
   : public %(Identifier)sExplicit, public %(Identifier)sImplicit%(BaseType)s
 {
- private:
+ protected:
   CCM_%(Identifier)s* local_home;
 
  public:
