@@ -721,6 +721,62 @@ abstract public class CodeGenerator
         return type;
     }
 
+
+    /**
+     * Return a string version of the IDL type corresponding to the given
+     * object's CCM IdlType.
+     *
+     * @param object the node object to use for type finding.
+     * @return a string containing the base IDL type of the given object. The
+     *         result will be null if the base type is not a recognized type
+     *         object from the IDL metamodel, but otherwise will return
+     *         something like 'PK_FOO' if object is of primitive type FOO, or
+     *         the object's identifier if object is derived from a typedef
+     *         class.
+     */
+    protected String getBaseIdlType(MTyped object)
+    {
+        MIDLType idl_type = object.getIdlType();
+
+        if (idl_type == null)
+            throw new RuntimeException(object + " has no IDL type");
+
+        // first check for aliases and structs and such ... try to get the
+        // identifier, if that doesn't work get the underlying type.
+
+        if (idl_type instanceof MTypedefDef) {
+            MTypedefDef typedef = (MTypedefDef) idl_type;
+            return typedef.getIdentifier();
+        }
+
+        // type is some other class derived from mtyped ... get its derivative
+        // type.
+
+        if (idl_type instanceof MTyped)
+            return getBaseIdlType((MTyped) idl_type);
+
+        // type must be one of the primitive kinds ... try to get the primitive
+        // kind for it.
+        String type = null;
+        if (idl_type instanceof MPrimitiveDef) {
+            type = ((MPrimitiveDef) idl_type).getKind().toString();
+        } else if (idl_type instanceof MStringDef) {
+            type = ((MStringDef) idl_type).getKind().toString();
+        } else if (idl_type instanceof MWstringDef) {
+            type = ((MWstringDef) idl_type).getKind().toString();
+        } else if (idl_type instanceof MFixedDef) {
+            type = ((MFixedDef) idl_type).getKind().toString();
+        } else if (idl_type instanceof MTypedefDef) {
+            type = ((MTypedefDef) idl_type).getIdentifier();
+        } else {
+            throw new RuntimeException("unknown IDL type :" + idl_type);
+        }
+
+        return type;
+    }
+
+
+
     /**
      * Create an #include statement sufficient for including the given node's
      * header file. This is normally only valid for C and C++ code generators
