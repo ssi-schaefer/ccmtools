@@ -5,11 +5,10 @@ templatedir = $(TEMPLATE_ROOT)/CppRemoteTemplates
 dist_template_DATA = \
     Blank                 \
     MakefilePy            \
+    MakefileRemote        \
     CCMContainerHeader    \
     CCMContainerImpl      \
     ComponentsIdl         \
-    ComponentsHeader      \
-    ComponentsImpl        \
     ConvertRemoteHeader   \
     MContainer            \
     MHomeDef              \

@@ -77,7 +77,8 @@ public class CppRemoteGeneratorImpl
 	new File("CCM_Session_Container", "Makefile.py"),
 
         new File("remoteComponents", "CCM.idl"),
-        new File("remoteComponents", "Makefile.py")
+        new File("remoteComponents", "Makefile.py"),
+	new File("remoteComponents", "Makefile")
     };
 
     /**
@@ -101,7 +102,8 @@ public class CppRemoteGeneratorImpl
 	"Blank",                  // Template for Makefile.py
 
 	"ComponentsIdl",          // Template for Components.idl
-	"MakefilePy"              // Template for Makefile.py
+	"MakefilePy",             // Template for Makefile.py
+	"MakefileRemote"          // Template for Makefile
     };
 
     /**
