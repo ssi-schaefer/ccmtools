@@ -736,7 +736,6 @@ public class CppRemoteGeneratorImpl
 	    else if(idl_type instanceof MAliasDef) {
 		MAliasDef alias = (MAliasDef)idl_type;
 		if(alias.getIdlType() instanceof MSequenceDef) {
-
 		    ret.add(convertSequenceParameterFromCorbaToCpp(p, alias));
 		}
 		else {
@@ -825,16 +824,30 @@ public class CppRemoteGeneratorImpl
     {
 	MSequenceDef idl_sequence = (MSequenceDef)alias.getIdlType();
 	MIDLType sequence_type = ((MTyped)idl_sequence).getIdlType();
+	String base_type = getBaseIdlType((MTyped)idl_sequence);
 	List ret = new ArrayList();
 
-	if(sequence_type instanceof MStructDef) {
+	if(sequence_type instanceof MPrimitiveDef
+	   || sequence_type instanceof MStringDef) {
+	    ret.add("  CCM_Local::" + alias.getIdentifier() + " parameter_"
+		    + p.getIdentifier() + ";");
+
+	    if(p.getDirection() != MParameterMode.PARAM_OUT) {	
+		ret.add("  for(unsigned long i=0; i< " + p.getIdentifier() + ".length(); i++) {");
+		ret.add("    parameter_" + p.getIdentifier() 
+			+ ".push_back(CCM::CORBA" + base_type + "_to_" + base_type 
+			+ "(" + p.getIdentifier() + "[i]));");
+		ret.add("  }");
+	    }
+	}
+	else if(sequence_type instanceof MStructDef) {
 	    MStructDef idl_struct = (MStructDef)sequence_type;
 
-	    ret.add("  CCM_Local::" + alias.getIdentifier() + " parameter_" 
-		    + p.getIdentifier() + ";"); 
-	    
-	    if(p.getDirection() != MParameterMode.PARAM_OUT) {
-		ret.add("  for(unsigned long i=0; i<" + p.getIdentifier() + ".length(); i++) {");
+	    ret.add("  CCM_Local::" + alias.getIdentifier() + " parameter_"
+		    + p.getIdentifier() + ";");
+
+	    if(p.getDirection() != MParameterMode.PARAM_OUT) {	
+		ret.add("  for(unsigned long i=0; i< " + p.getIdentifier() + ".length(); i++) {");
 		ret.add(convertStructParameterFromCorbaToCpp(p,idl_struct, true)); 
 		ret.add("    parameter_" + p.getIdentifier() 
 			+ ".push_back(parameter_" + p.getIdentifier() + "_item);");
@@ -846,9 +859,7 @@ public class CppRemoteGeneratorImpl
 	    // TODO
 	    return "// unhandled idl type in convertSequenceParameterFromCorbaToCpp()";
 	}
-
-
-	return join("\n", ret) + "\n";
+	return join("\n", ret);
     }
     
     /**
@@ -878,6 +889,17 @@ public class CppRemoteGeneratorImpl
 	    MTypedefDef idl_typedef = (MTypedefDef)idl_type;
 	    MStructDef idl_struct = (MStructDef)idl_typedef;
 	    ret_string = "  CCM_Local::" + idl_struct.getIdentifier() + " result;"; 
+	}
+	else if(idl_type instanceof MAliasDef) {
+	    MAliasDef alias = (MAliasDef)idl_type;
+	    if(alias.getIdlType() instanceof MSequenceDef) {
+		ret_string = "  CCM_Local::" + alias.getIdentifier() + " result;";
+	    }
+	    else {
+		// all other idl alias types
+		// TODO
+	    return "// unhandled idl alias type in declareCppResult()";
+	    }
 	}
 	else {  
 	    // all other idl_types
@@ -910,8 +932,8 @@ public class CppRemoteGeneratorImpl
 
 	if(idl_type instanceof MPrimitiveDef 
 	   || idl_type instanceof MStringDef
-	   || idl_type instanceof MStructDef) {
-
+	   || idl_type instanceof MStructDef
+	   || idl_type instanceof MAliasDef) {
 	    ret_string = "  " + "  result = local_adapter->" 
 		+ op.getIdentifier() + "(";
 	    
@@ -932,6 +954,17 @@ public class CppRemoteGeneratorImpl
 
 
 
+
+    /**
+     * Create the code for the remote facet and supports adapter.
+     *
+     * The %(MParameterDefConvertParameterFromCppToCorba)s in the template
+     * %(MOperstaionFacetAdapterImpl)s tag forces a call to this method
+     * via getTwoStepVariables().
+     *
+     *  @param op Reference to an OperationDef element in the CCM model.
+     *  @return Generated code as a string.
+     **/
     protected String convertParameterToCorba(MOperationDef op)
     {
 	List ret = new ArrayList();
@@ -948,7 +981,19 @@ public class CppRemoteGeneratorImpl
 		MStructDef idl_struct = (MStructDef)idl_typedef;
 		ret.add(convertStructParameterFromCppToCorba(p, idl_struct));
 	    }
+	    else if(idl_type instanceof MAliasDef) {
+		MAliasDef alias = (MAliasDef)idl_type;
+		if(alias.getIdlType() instanceof MSequenceDef) {
+		    ret.add(convertSequenceParameterFromCppToCorba(p, alias));
+		}
+		else {
+		    // all other alias types
+		    // TODO
+		    return "// unhandled idl alias type in convertParameterToCorba()";
+		}
+	    }
 	    else { 
+		
 		// all other idl types
 		// TODO
 		return "// unhandled idl type in convertParameterToCorba()";
@@ -956,7 +1001,6 @@ public class CppRemoteGeneratorImpl
 	}
 	return join("\n", ret) + "\n";
     }
-
 
     protected String convertPrimitiveParameterFromCppToCorba(MParameterDef p)
     {
@@ -975,12 +1019,12 @@ public class CppRemoteGeneratorImpl
 	return join("\n", ret);
     }
 
-
-    protected String convertStructParameterFromCppToCorba(MParameterDef p, MStructDef idl_struct) 
+    protected String convertStructParameterFromCppToCorba(MParameterDef p, 
+							  MStructDef idl_struct)
     {
 	MParameterMode direction = p.getDirection();
 	String ItemAccess="";
-
+	
 	List ret = new ArrayList();
 	if(direction == MParameterMode.PARAM_IN) {
 	    return "";
@@ -1008,11 +1052,113 @@ public class CppRemoteGeneratorImpl
 	    else { 
 		// all other idl_types
 		// TODO
-		ret.add("// unhandled idl type in convertStructFromCppToCorba()");
+		ret.add("// unhandled idl type in convertStructParameterFromCppToCorba()");
 	    } 
 	}    
 	return join("\n", ret);
     }
+
+    protected String convertStructParameterFromCppToCorba2(MParameterDef p,
+							   MStructDef idl_struct)
+    {
+	MParameterMode direction = p.getDirection();
+	List ret = new ArrayList();
+
+	for (Iterator members = idl_struct.getMembers().iterator(); members.hasNext(); ) {
+	    MFieldDef member = (MFieldDef)members.next();
+	    MIDLType member_idl = ((MTyped)member).getIdlType();
+	    String base_type = getBaseIdlType((MTyped)member);
+	
+	    String corba_parameter ="";
+	    String cpp_parameter = "";
+
+	    if(direction == MParameterMode.PARAM_IN) {
+		return "";
+	    }
+	    else if(direction == MParameterMode.PARAM_OUT) {
+		corba_parameter = "(*" +  p.getIdentifier() + ")[i]";
+		cpp_parameter = "parameter_" + p.getIdentifier() + "[i]";
+	    }
+	    else {
+		corba_parameter = p.getIdentifier() + "[i]";
+		cpp_parameter = "parameter_" + p.getIdentifier() + "[i]";
+	    }	   
+
+	    if(member_idl instanceof MPrimitiveDef 
+		       || member_idl instanceof MStringDef) {
+		ret.add("  " 
+			+ corba_parameter + "." +  member.getIdentifier() 
+			+ " = CCM::" + base_type + "_to_CORBA" + base_type 
+			+ "(" + cpp_parameter + "." + member.getIdentifier() + ");");
+	    }
+	    else { 
+		// all other idl_types
+		// TODO
+		ret.add("// unhandled idl type in convertStructParameterFromCppToCorba2()");
+	    } 
+	}    
+	return join("\n", ret);
+    }
+
+    protected String convertSequenceParameterFromCppToCorba(MParameterDef p, 
+							    MAliasDef alias) 
+    {
+	MSequenceDef idl_sequence = (MSequenceDef)alias.getIdlType();
+	MIDLType sequence_type = ((MTyped)idl_sequence).getIdlType();
+	String base_type = getBaseIdlType((MTyped)idl_sequence);
+	List ret = new ArrayList();
+	
+	if(p.getDirection() == MParameterMode.PARAM_IN) {
+	    return ""; 
+	}
+	
+	if(sequence_type instanceof MPrimitiveDef
+	   || sequence_type instanceof MStringDef) {
+	    if(p.getDirection() == MParameterMode.PARAM_OUT) {	
+		ret.add("  " + p.getIdentifier() + " = new " + alias.getIdentifier() + ";"); 
+		ret.add("  " + p.getIdentifier() + "->length(parameter_" 
+			+ p.getIdentifier() + ".size());");
+	        ret.add("  for(unsigned long i=0; i< parameter_" + p.getIdentifier() 
+			+ ".size(); i++) {");
+		ret.add("    (*" +  p.getIdentifier() + ")[i] = CCM::" 
+			+ base_type + "_to_CORBA" + base_type + "(parameter_" + p.getIdentifier()
+			+ "[i]);"); 
+		ret.add("  }");
+	    }
+	    else {
+		ret.add("  " + p.getIdentifier() + ".length(parameter_" 
+			+ p.getIdentifier() + ".size());");
+		ret.add("  for(unsigned long i=0; i< parameter_" + p.getIdentifier() 
+			+ ".size(); i++) {");
+		ret.add("    " +  p.getIdentifier() + "[i] = CCM::" 
+			+ base_type + "_to_CORBA" + base_type + "(parameter_" + p.getIdentifier()
+			+ "[i]);"); 
+		ret.add("  }");
+	    }
+	}
+	else if(sequence_type instanceof MStructDef) {
+	    MStructDef idl_struct = (MStructDef)sequence_type;
+	    String item_access = "."; 
+	    if(p.getDirection() == MParameterMode.PARAM_OUT) {	
+		ret.add("  " + p.getIdentifier() + " = new " + alias.getIdentifier() + ";"); 
+		item_access = "->";
+	    }
+	    ret.add("  " + p.getIdentifier() + item_access + "length(parameter_" 
+		    + p.getIdentifier() + ".size());");
+	    
+	    ret.add("  for(unsigned long i=0; i< parameter_" + p.getIdentifier() + ".size(); i++) {");
+	    ret.add(convertStructParameterFromCppToCorba2(p,idl_struct)); 
+	    ret.add("  }");
+	}
+	else {
+	    // all other idl types
+	    // TODO
+	    return "// unhandled idl type in convertSequenceParameterFromCppToCorba()";
+	}
+	return join("\n", ret) + "\n";
+    }
+    
+
 
 
     /**
@@ -1041,6 +1187,17 @@ public class CppRemoteGeneratorImpl
 	    MTypedefDef idl_typedef = (MTypedefDef)idl_type;
 	    MStructDef idl_struct = (MStructDef)idl_typedef;
 	    ret_string = convertStructResultFromCppToCorba(idl_struct);
+	}
+	else if(idl_type instanceof MAliasDef) {
+	    MAliasDef alias = (MAliasDef)idl_type;
+	    if(alias.getIdlType() instanceof MSequenceDef) {
+		ret_string = convertSequenceResultFromCppToCorba(alias);
+	    }
+	    else {
+		// all other alias types
+		// TODO
+		return "// unhandled idl alias type in convertResultToCorba()";
+	    }
 	}
 	else { 
 	    // all other idl_types
@@ -1092,6 +1249,73 @@ public class CppRemoteGeneratorImpl
 	ret.add("  return return_value._retn();");
 	return join("\n", ret);	
     }
+
+    protected String convertStructResultFromCppToCorba2(MStructDef idl_struct) 
+    {
+	String ret_string = "";
+	List ret = new ArrayList();
+	for (Iterator members = idl_struct.getMembers().iterator(); members.hasNext(); ) {
+	    MFieldDef member = (MFieldDef)members.next();
+	    MIDLType member_idl = ((MTyped)member).getIdlType();
+	    String base_type = getBaseIdlType((MTyped)member);
+	    
+	    if(member_idl instanceof MPrimitiveDef 
+	       || member_idl instanceof MStringDef) {
+		ret.add("    " 
+			+ "(*return_value)[i]." + member.getIdentifier() 
+			+ " = CCM::" + base_type + "_to_CORBA" + base_type 
+			+ "(result[i]." + member.getIdentifier() + ");");
+	    }
+	    else { 
+		// all other idl_types
+		// TODO
+		ret.add("// unhandled idl type in convertStructResultFromCppToCorba2()");
+	    } 
+	}    
+	return join("\n", ret);	
+    }
+
+    protected String convertSequenceResultFromCppToCorba(MAliasDef alias) 
+    {
+	MSequenceDef idl_sequence = (MSequenceDef)alias.getIdlType();
+	MIDLType sequence_type = ((MTyped)idl_sequence).getIdlType();
+	String base_type = getBaseIdlType((MTyped)idl_sequence);
+	List ret = new ArrayList();
+
+	if(sequence_type instanceof MPrimitiveDef
+	   || sequence_type instanceof MStringDef) {
+    	    ret.add("  " + alias.getIdentifier() + "_var return_value = new " 
+		    + alias.getIdentifier() + ";"); 
+	    ret.add("  return_value->length(result.size());");
+	    
+	    ret.add("  for(unsigned long i=0; i< result.size(); i++) {");
+
+	    ret.add("    (*return_value)[i] = CCM::" + base_type 
+		    + "_to_CORBA" + base_type + "(result[i]);"); 
+	    ret.add("  }");
+	    ret.add("  return return_value._retn();");	    
+	}
+	else if(sequence_type instanceof MStructDef) {
+	    MStructDef idl_struct = (MStructDef)sequence_type;
+	    
+	    ret.add("  " + alias.getIdentifier() + "_var return_value = new " 
+		    + alias.getIdentifier() + ";"); 
+	    ret.add("  return_value->length(result.size());");
+	    
+	    ret.add("  for(unsigned long i=0; i< result.size(); i++) {");
+	    ret.add(convertStructResultFromCppToCorba2(idl_struct)); 
+	    ret.add("  }");
+	    ret.add("  return return_value._retn();");
+	}
+	else {
+	    // all other idl types
+	    // TODO
+	    return "// unhandled idl type in convertSequenceResultFromCppToCorba()";
+	}
+	return join("\n", ret);
+    }
+
+
 
 
     /**
