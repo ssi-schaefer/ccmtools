@@ -24,14 +24,17 @@ Additionally, you can use the following ant variants:
 
   # Generate javaDoc
   $ ant doc		
+ 
+  # Install *.jar and *.pdf files in the given directory
+  $ ant install -Dprefix=<install-path>
 
 
 Update your CLASSPATH:
 ----------------------
-To use the java-environment tools, you have to add the *.jar files created or
-hosted in the java-environment/lib directory to your CLASSPATH:
+To use the java-environment tools, you have to add the *.jar files installed
+in the <install-path>/lib directory to your CLASSPATH:
 
-  $ export CLASSPATH=<java-environment-path>/lib/antlr.java:     \
-	             <java-environment-path>/lib/dtd2java.java:  \
-                     <java-environment-path>/lib/uml2idl.jar:    \
+  $ export CLASSPATH=<install-path>/lib/antlr.java:     \
+	             <install-path>/lib/dtd2java.java:  \
+                     <install-path>/lib/uml2idl.jar:    \
 	             $CLASSPATH

@@ -37,8 +37,6 @@
   <target name="init"
       description="Creates the build directory and deletes the old jar files." >
       <mkdir dir="${build}" />
-      <delete file="${lib}/uml2idl.jar" /> 
-      <delete file="${lib}/dtd2java.jar" /> 
   </target>  
 
 
@@ -137,12 +135,11 @@
       <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/dtd2java.jar" todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />       
-      <copy  todir="${prefix}/doc/dtd2java"  overwrite="true">
-          <fileset dir="${doc}/dtd2java" />
-      </copy>
-      <copy  todir="${prefix}/doc/uml2idl"  overwrite="true">
-          <fileset dir="${doc}/uml2idl" />
-      </copy>
+
+      <copy file="${doc}/dtd2java/dtd2java_ger.pdf" 
+            todir="${prefix}/doc"  overwrite="true" />
+      <copy file="${doc}/uml2idl/uml2idl_ger.pdf"   
+            todir="${prefix}/doc"  overwrite="true" />
   </target>
 
 
@@ -158,9 +155,11 @@
       <delete dir="${src}/uml_parser" />
 
       <delete dir="${build}" /> 
-      <delete dir="${prefix}" /> 
       <delete dir="${doc}/javadoc" /> 
 
+      <delete file="${lib}/uml2idl.jar" /> 
+      <delete file="${lib}/dtd2java.jar" /> 
+      
       <delete file="u1.idl" />
       <delete file="u1.ocl" />
   </target>

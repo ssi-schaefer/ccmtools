@@ -21,7 +21,7 @@ $(DOCUMENT_NAME).ps: $(DOCUMENT_NAME).dvi
 
 CLEANFILES=\
 *.aux *.toc *.log \
-$(DOCUMENT_NAME).dvi $(DOCUMENT_NAME).ps $(DOCUMENT_NAME).pdf \
+$(DOCUMENT_NAME).dvi $(DOCUMENT_NAME).ps  \
 $(DOCUMENT_NAME).bbl $(DOCUMENT_NAME).blg \
 $(DOCUMENT_NAME).lof $(DOCUMENT_NAME).lot
 
