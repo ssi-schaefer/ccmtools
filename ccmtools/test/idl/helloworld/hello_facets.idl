@@ -6,7 +6,7 @@ interface Console {
 
 component Hello
 {
-  provides Console tty;
+  provides Console console;
 };
 
 home HelloHome manages Hello

@@ -35,21 +35,33 @@ export CCMTOOLS_HOME=`pwd`
 export PATH=.:../..:${PATH}
 export CLASSPATH=./antlr.jar:../../antlr.jar:.:../..:${CLASSPATH}
 
-# generate, make, check, and uninstall the components.
-
 ret=""
 
-if [ ! -e ${install_dir}/lib/libccmtools-cpp-environment_CCM_Utils.a ]
-then ccmtools-c++-environment -i ${install_dir} || ret=1
-fi
+# deploy environment if it doesn't exist.
 
-test -z "${ret}" && ret=1 && \
-  ccmtools-c++-generate -d -c "1.2.3" -p ${1} -i ${install_dir} *.idl && \
-  PYTHONPATH=${cwd}:${PYTHONPATH} ccmtools-c++-make -p ${1} && \
-  ccmtools-c++-install -p ${1} && \
-  ccmtools-c++-uninstall -p ${1} && ret=0
+test -e ${install_dir}/lib/libccmtools-cpp-environment_CCM_Utils.a || \
+  ccmtools-c++-environment -i ${install_dir} || ret=1
 
-${RM} -f *Templates antlr.jar ccmtools* *.idl *.cc *.h
+# generate component code.
+
+test -z "${ret}" && ccmtools-c++-generate -d -c "1.2.3" -p ${1} \
+  -i ${install_dir} *.idl || ret=1
+
+# build and check. copy the contents of the package directory, if it exists, to
+# the sandbox (this lets us distribute _app.cc files with the tests).
+
+test -z "${ret}" && test -d ${cwd}/${1} && ${CP} ${cwd}/${1}/* .
+test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
+  ccmtools-c++-make -p ${1} || ret=1
+
+# install and uninstall.
+
+test -z "${ret}" && ccmtools-c++-install -p ${1} || ret=1
+test -z "${ret}" && ccmtools-c++-uninstall -p ${1} || ret=1
+
+test -z "${ret}" && ret=0
+
+${RM} -f *Templates antlr.jar ccmtools* *.idl *.cc *.h *.py
 cd ${cwd}
 exit ${ret}
 

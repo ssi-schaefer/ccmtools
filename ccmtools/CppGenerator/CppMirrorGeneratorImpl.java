@@ -75,19 +75,19 @@ public class CppMirrorGeneratorImpl
         { "-1e308",                "1e-308",                "0.0",   "1.0", },
         { "(fixed data type not implemented", "", "", "", },
         { "-1e38",                 "1e-38",                 "0",     "1",   },
-        { "-2147483648L",          "2147483647L",           "0L",    "1L",  },
+        { "-2147483647L",          "2147483646L",           "0L",    "1L",  },
         { "-1e308",                "1e-308",                "0.0",   "1.0", },
-        { "-9223372036854775808L", "9223372036854775807L",  "0L",    "1L",  },
+        { "-9223372036854775807L", "9223372036854775806L",  "0L",    "1L",  },
         { "NULL",                  "",                      "",      "",    },
         { "NULL",                  "",                      "",      "",    },
         { "7",                     "255",                   "0",     "1",   },
         { "(principal data type not implemented", "", "", "", },
-        { "-32768",                "32767",                 "0",     "1",   },
+        { "-32767",                "32766",                 "0",     "1",   },
         { "\"test string\"",       "\"s\"",                 "\"\"",  "",    },
         { "NULL",                  "",                      "",      "",    },
-        { "7",                     "4294967295L",           "0L",    "1L",  },
-        { "7",                     "18446744073709551615L", "0L",    "1L",  },
-        { "7",                     "65535",                 "0",     "1",   },
+        { "7L",                    "4294967294L",           "0L",    "1L",  },
+        { "7L",                    "18446744073709551614L", "0L",    "1L",  },
+        { "7",                     "65534",                 "0",     "1",   },
         { "NULL",                  "",                      "",      "",    },
         { "'A'",                   "'Z'",                   "'\0'",  "'1'", },
         { "\"TEST WSTRING\"",      "\"W\"",                 "\"\"",  "",    },
@@ -252,7 +252,10 @@ public class CppMirrorGeneratorImpl
         local_vars.put("MParameterDefComplexValue",
                        getOperationParams(operation, "complex"));
 
-        if (! lang_type.equals("void")) {
+        MIDLType idl_type = operation.getIdlType();
+        if (! (lang_type.equals("void") ||
+               idl_type instanceof MTypedefDef ||
+               idl_type instanceof MStringDef)) {
             local_vars.put("PrintReturnStart", "cout << \">> returned \" << ");
             local_vars.put("PrintReturnEnd", " << endl");
         } else {
