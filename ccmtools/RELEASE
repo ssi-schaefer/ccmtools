@@ -47,7 +47,7 @@ o) derive CppLocalTestGenerator from CppLocalGenerator to reuse code
 
 idl2 generator:
 ---------------
-o) remove CORBA_Stubs namespace from generated idl2 files
+*) remove CORBA_Stubs namespace from generated idl2 files
 o) remove multiple generation of the same #include statements in ILD2 files 
 
 
@@ -75,7 +75,8 @@ o) collect test cases
    - attribute_simple, attribute_basic_types => attribute_types
 o) generate debug output with parameter values.
 *) Performance Measurement
-o) implement undeploy_*() functions (delete servant too)
+*) implement undeploy_*() functions 
+o) resolve the container <-> component home SmartPtr<> cycle
 o) implement a C++ version of deploy_* and undeploy_* too.
 o) add the namespace into the converter file-name 
 *) generate adapter classes (*ToCorba, *FromCorba) for each IDL interface and use these
@@ -130,7 +131,7 @@ o) use ccmtools.utils.text.* in all generators (instead inheritance of join, etc
 o) replace bin/Python scripts with shell scripts that define their own CLASSPATH
 o) Use the CCM_INSTALL environment variable from .confix to define prefix
 *) replace ccmtools/bin/* Python scripts with shell scripts
-
+*) rename the temporary idl File from _CCM_*.idl to _CCM_* 
 
 
 

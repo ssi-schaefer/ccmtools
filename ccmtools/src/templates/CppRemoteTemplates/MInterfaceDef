@@ -117,9 +117,9 @@ namespace CCM_Remote {
 
 %(Identifier)sAdapterToCorba::%(Identifier)sAdapterToCorba(
     %(StubsNamespace)s%(Identifier)s_ptr rif)
-    : remoteInterface(rif)
 {
     LDEBUGNL(CCM_REMOTE, "+%(Identifier)sAdapterToCorba::%(Identifier)sAdapterToCorba()");
+    remoteInterface = ::%(StubsNamespace)s%(Identifier)s::_duplicate(rif);
 }
 
 %(Identifier)sAdapterToCorba::~%(Identifier)sAdapterToCorba()

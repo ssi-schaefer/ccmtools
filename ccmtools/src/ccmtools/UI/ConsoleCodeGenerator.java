@@ -138,9 +138,12 @@ public class ConsoleCodeGenerator
 
             for(Iterator f = filenames.iterator(); f.hasNext();) {
                 File source = new File((String) f.next());
-                File idlfile = new File(System.getProperty("user.dir"), "_CCM_"
-                        + source.getName());
 
+                // create the name of the temporary idl file generated from the preprocessor cpp
+                String tmpFile = "_CCM_" + source.getName();
+                File idlfile = new File(System.getProperty("user.dir"), 
+                                        tmpFile.substring(0, tmpFile.lastIndexOf(".idl")));
+                
                 // step (0). run the C preprocessor on the input file.
                 try {
                     // Run the GNU preprocessor cpp in a separate process.

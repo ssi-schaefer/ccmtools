@@ -57,6 +57,8 @@ class %(Identifier)s_impl :
 extern "C" {
     int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name);
     int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior);
+
+    int undeploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name);
 }
 
 #endif // HAVE_MICO
@@ -223,6 +225,27 @@ extern "C" {
         ior = orb->object_to_string(home); 
         container->activate();
         return 0; // OK
+    }
+ 
+ 
+    int undeploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name)
+    {
+        LDEBUGNL(CCM_REMOTE, " undeploy_%(AbsoluteRemoteHomeName)s(" 
+            << registration_name << ")");
+
+        CosNaming::NamingContextExt_var ns;
+        CORBA::Object_var nsobj;
+        try {
+            nsobj = orb->resolve_initial_references ("NameService");
+            ns = CosNaming::NamingContextExt::_narrow (nsobj);
+            CosNaming::Name_var n = ns->to_name(registration_name);
+            ns->unbind(n);
+            return 0;
+        }
+        catch (...) {
+            ns = CosNaming::NamingContextExt::_nil ();
+            return -1; // Can't connect to NameService
+        }
     }
   
 }

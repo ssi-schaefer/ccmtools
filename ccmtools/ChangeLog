@@ -28,3 +28,10 @@ RELEASE-0.5.1-pre5
 *) bugfix: *_entry.h files in impl/ must be overwritten by every generator 
    call because they are part of the component logic.
 
+
+RELEASE-0.5.1-pre6
+----------------------------------------------------------------------------
+*) renamed the temporary idl File from _CCM_*.idl to _CCM_* 
+*) implemented C++ remote undeploy_*() function
+
+*) added JacORB benchmark client	
