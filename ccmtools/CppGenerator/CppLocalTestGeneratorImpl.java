@@ -84,7 +84,17 @@ public class CppLocalTestGeneratorImpl
         file_name = file_name.replaceAll("[^\\w]", "_");
         file_name = "_check_" + file_name + ".cc";
 
-        writeFinalizedFile(file_dir, file_name, generated_code);
+	
+	File user_files = new File(output_dir, file_dir);
+	user_files = new File(user_files, file_name);
+	if(user_files.isFile()) {
+	    System.out.println("WARNING: " + output_dir 
+			       + "/" + file_dir + "/" 
+			       + file_name + " already exists!");
+	    file_name += ".new";
+	}
+	writeFinalizedFile(file_dir, file_name, generated_code);
+
 
         File makefile = new File(file_dir, "Makefile.py");
         File check_file = new File(output_dir, makefile.toString());

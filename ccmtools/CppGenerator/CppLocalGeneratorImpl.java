@@ -82,8 +82,9 @@ public class CppLocalGeneratorImpl
         Iterator path_iterator = out_paths.iterator();
         for (int i = 0; i < out_strings.length; i++) {
             String generated_code = out_strings[i];
-            List out_path = (List) path_iterator.next();
 
+            List out_path = (List) path_iterator.next(); // out_path = [directory, filename]
+	    
             // from the getOutputFiles function we know each entry in the output
             // file list has exactly two parts ... the dirname and the filename.
 
@@ -94,13 +95,22 @@ public class CppLocalGeneratorImpl
             // templates that we don't want to output (see the component section
             // of the getOutputFiles function)
 
-            if (file_name.equals("")) continue;
+            if (file_name.equals("")) 
+		continue;
 
-            writeFinalizedFile(file_dir, file_name, generated_code);
+	    File user_files = new File(output_dir, file_dir);
+	    user_files = new File(user_files, file_name);
+	    if((file_dir == "src") && user_files.isFile()) {
+		System.out.println("WARNING: " + output_dir 
+				   + "/" + file_dir + "/" 
+				   + file_name + " already exists!");
+		file_name += ".new";
+	    }
+	    writeFinalizedFile(file_dir, file_name, generated_code);
+
 
             // output a confix Makefile.py file if it's not in this directory.
-
-            File confix_file = new File(output_dir, file_dir);
+	    File confix_file = new File(output_dir, file_dir);
             confix_file = new File(confix_file, "Makefile.py");
             if (! confix_file.isFile())
                 writeFinalizedFile(file_dir, "Makefile.py", "");
