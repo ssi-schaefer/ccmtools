@@ -646,17 +646,22 @@ abstract public class CodeGenerator
 
         String type = "";
 
-        if (idl_type instanceof MPrimitiveDef)
+        if (idl_type instanceof MPrimitiveDef) {
             type = ((MPrimitiveDef) idl_type).getKind().toString();
-        else if (idl_type instanceof MStringDef)
+	}
+        else if (idl_type instanceof MStringDef) {
             type = ((MStringDef) idl_type).getKind().toString();
-        else if (idl_type instanceof MWstringDef)
+	}
+        else if (idl_type instanceof MWstringDef) {
             type = ((MWstringDef) idl_type).getKind().toString();
-        else if (idl_type instanceof MFixedDef)
+	}
+        else if (idl_type instanceof MFixedDef) {
             type = ((MFixedDef) idl_type).getKind().toString();
+	}
 
-        if (! type.equals("") && language_mappings.containsKey(type))
+        if (! type.equals("") && language_mappings.containsKey(type)) {
             return (String) language_mappings.get(type);
+	}
 
         if (idl_type instanceof MContained) {
             MContained cont = (MContained) idl_type;
@@ -664,7 +669,6 @@ abstract public class CodeGenerator
             scope.add(cont.getIdentifier());
             return join(scope_separator, scope);
         }
-
         return type;
     }
 

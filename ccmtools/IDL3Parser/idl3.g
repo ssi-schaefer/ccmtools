@@ -1707,7 +1707,7 @@ string_type returns [MIDLType str = null]
 //
 // 82. <wide_string_type> ::= "wstring" [ "<" <positive_int_const,41> ">" ]
 wide_string_type returns [MIDLType wstr = null]
-{ wstr = new MStringDefImpl(); String bound = null; }
+{ wstr = new MWstringDefImpl(); String bound = null; }
     :   "wstring"
         (   LT bound = positive_int_const GT
             { ((MWstringDef) wstr).setBound(new Long(bound)); } )? ;
