@@ -1,0 +1,6 @@
+*.idl
+*.ocl
+*.xml
+*.mdr
+*.dump
+*.bak
