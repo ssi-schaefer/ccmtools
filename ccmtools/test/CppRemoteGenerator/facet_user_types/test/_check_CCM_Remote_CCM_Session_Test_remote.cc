@@ -48,18 +48,26 @@ main (int argc, char *argv[])
     DEBUGNL(">> " << argv_[0] << " "<< argv_[1] << argv_[2]);
     CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
 
+
     /**
      * Server-side code
-     */ 
+     */
+
+    // Register all value type factories with the ORB
     CCM::register_all_factories (orb);
-    int error = deploy_TestHome(orb, "TestHome:1.0");
+
+    // Deploy local and remote component homes
+    int error = 0;
+    error += deploy_CCM_Local_TestHome("TestHome");
+    error += deploy_CCM_Remote_TestHome(orb, "TestHome:1.0");
     if(!error) {
-        cout << "TestHome stand-alone server is running..." << endl;
+        cout << "TestHome server is running..." << endl;
     }
     else {
-        cerr << "ERROR: Can't start components!" << endl;
+        cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
+
 
     // For testing we use CORBA collocation	
     // orb->run();
@@ -87,11 +95,9 @@ main (int argc, char *argv[])
     ::CORBA_Stubs::Console_var Consoleconsole = 
         myTest->provide_console();
 
-
-	
     myTest->configuration_complete();
 
-    DEBUGNL("==== Begin Test Case ==========================================" );
+    cout << "==== Begin Test Case ===================================" << endl;
     /*
      * Test Case for: struct Person { long id; string name; };
      */
@@ -258,13 +264,13 @@ main (int argc, char *argv[])
       assert(time_3 == 3);
       assert(time_r == 3+7);
     }
-    
-    DEBUGNL("==== End Test Case ============================================" );
 
-    // Un-Deployment
-
+    cout << "==== End Test Case =====================================" << endl;
+ 
     // Destroy component instances
     myTest->remove();
+
+    // Un-Deployment
 
     DEBUGNL("Exit C++ remote test client"); 	
 }
