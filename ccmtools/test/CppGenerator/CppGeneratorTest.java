@@ -48,7 +48,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	ccmtools_dir = System.getProperty("user.dir"); 
     }
 
-    /*
+
     public void testVersionOption()
     {
 	runCcmtoolsGenerate("--version");
@@ -59,9 +59,8 @@ public class CppGeneratorTest extends CcmtoolsTestCase
     {
 	runCcmtoolsGenerate("--help");
     }
-    */
 
-    /*
+
 
     // ------------------------------------------------------------------------
     // Attribute test cases
@@ -707,7 +706,6 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
-    */
 
     public void testReceptacleObject()
     {
@@ -760,7 +758,6 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	}
     }
 
-    /*
 
     // ------------------------------------------------------------------------
     // Module test cases
@@ -798,6 +795,6 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }     
-    */
+
     // TODO: implement other test cases
 }
