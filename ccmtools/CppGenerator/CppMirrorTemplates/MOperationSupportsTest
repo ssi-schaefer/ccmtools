@@ -1,6 +1,0 @@
-%(MParameterDefComplexValue)s
-
-    cout << "> testing %(Identifier)s ( %(MParameterDefValueString)s ) " << endl;
-    %(PrintReturnStart)smy%(Object)s.ptr (  )->%(Identifier)s ( %(MParameterDefValue)s )%(PrintReturnEnd)s;
-
-
