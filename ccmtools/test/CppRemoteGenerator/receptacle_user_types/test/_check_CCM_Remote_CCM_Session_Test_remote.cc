@@ -35,7 +35,8 @@ main (int argc, char *argv[])
 
     char* NameServiceLocation = getenv("CCM_NAME_SERVICE");
     if(NameServiceLocation == NULL) { 
-        cerr << "Error: Environment variable CCM_NAME_SERVICE is not set!" << endl;
+        cerr << "Error: Environment variable CCM_NAME_SERVICE is not set!" 
+	     << endl;
         return -1;
     }
 
@@ -102,6 +103,14 @@ main (int argc, char *argv[])
 
     // Destroy component instances
     myTest->remove();
+
+    error = 0;
+    error += undeploy_CCM_Local_TestHome("TestHome");
+    error += undeploy_CCM_Remote_TestHome(orb, "TestHome:1.0");
+    if(error) {
+        cout << "ERROR: Can't undeploy component!" << endl;
+	return -1;
+    }
 
     DEBUGNL("Exit C++ remote test client"); 	
 }
