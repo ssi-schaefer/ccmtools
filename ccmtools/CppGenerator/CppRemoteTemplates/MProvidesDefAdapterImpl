@@ -7,13 +7,13 @@
 {
   DEBUGNL("+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");
   
-  local_facet = local_component->get_%(Identifier)s();
+  local_adapter = local_component->get_%(Identifier)s();
 }
 
 %(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()
 {
   DEBUGNL("-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()");
-  delete local_facet;
+  delete local_adapter;
 }
 
 %(MOperationFacetAdapterImpl)s

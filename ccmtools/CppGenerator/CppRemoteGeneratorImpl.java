@@ -35,39 +35,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-/*====================================================================
-             File structure of remote C++ prototype:
-
-Calculator
-|-- Calculator.idl
-|
-|-- CCM_Session_Calculator_remote
-|   |-- CalculatorHome_remote.cc
-|   |-- CalculatorHome_remote.h
-|   |-- Calculator_remote.cc
-|   |-- Calculator_remote.h
-|   |-- Makefile.py             
-|
-|
-|-- idl2  // created from IDL2 generator 
-|   |-- Calculator.idl
-|       => Calculator.cc            // from IDL generated   
-|       => Calculator.h             // from IDL generated
-|   |-- Makefile.py
-|
-|-- CCM_Session_Calculator_server
-|   |-- Calculator_server.cc
-|   |-- Makefile.py  
-
-
-|-- CCM_Session_Container         // Environment files
-|   |-- CCMContainer.cc
-|   |-- CCMContainer.h
-|   |-- Makefile.py
-====================================================================*/
-
-
-
 
 public class CppRemoteGeneratorImpl
     extends CppGenerator
@@ -83,7 +50,7 @@ public class CppRemoteGeneratorImpl
      */
     private final static String[] local_output_types =
     {
-	"MContainer",
+	//"MContainer",
         "MHomeDef", 
 	"MComponentDef"
     };
@@ -342,13 +309,12 @@ public class CppRemoteGeneratorImpl
             if (direction == MParameterMode.PARAM_IN) {
 		prefix = "const ";
 	    }
-		
+
             if ((idl_type instanceof MTypedefDef) ||
                 (idl_type instanceof MStringDef) ||
                 (idl_type instanceof MFixedDef)) {
 		suffix = "&";
 	    }
-
             return prefix + base_type + suffix;
         } 
 	
@@ -457,7 +423,7 @@ public class CppRemoteGeneratorImpl
 
 	if(op.getIdlType() instanceof MPrimitiveDef) {
 	    ret_string = (String)language_mappings.get((String)getBaseIdlType(op)) +
-		" result = local_facet->" + op.getIdentifier() + "(";
+		" result = local_adapter->" + op.getIdentifier() + "(";
 	}
  
 	List ret = new ArrayList();
@@ -523,11 +489,18 @@ public class CppRemoteGeneratorImpl
             String prefix = "";
             String suffix = "";
 
-	    // Henning/Vinoski P296
-	    // simple IDL types are passed as IN parameter witout const 
-            if (direction == MParameterMode.PARAM_IN) {
-		if(!(idl_type instanceof MPrimitiveDef)) 
+	    if (direction == MParameterMode.PARAM_IN) {
+		if(!(idl_type instanceof MPrimitiveDef)) {
 		    prefix = "const ";
+		    // Henning/Vinoski P296
+		    // simple IDL types are passed as IN parameter witout const 
+		}
+	    }
+	    else if(direction == MParameterMode.PARAM_OUT) {
+		suffix = "_out";
+	    }
+	    else if(direction == MParameterMode.PARAM_INOUT) {
+		suffix = "&";
 	    }
 		
             if ((idl_type instanceof MTypedefDef) ||
@@ -608,6 +581,7 @@ public class CppRemoteGeneratorImpl
 		// directory - needed by Confix
 		writeFinalizedFile(file_dir + "_remote","Makefile.py","");
 	    }
+	    /*
 	    else if(current_node instanceof MContainer)  {
 		file_dir = "CCM_Server";
 		writeFinalizedFile(file_dir, node_name + "_server" +
@@ -615,6 +589,7 @@ public class CppRemoteGeneratorImpl
 
 		writeFinalizedFile(file_dir, "Makefile.py"  , "");
 	    }
+	    */
 	}
     }
 

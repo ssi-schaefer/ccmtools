@@ -34,7 +34,7 @@
 %(MProvidesDefFriend)s
 
     private:
-      CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl* local_component;
+      CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl* local_adapter;
       CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_Context* local_context;
       CCM::SessionContainer* ccm_container;
 
@@ -199,7 +199,7 @@ using namespace CCM_Utils;
 //============================================================================
 
 %(Identifier)s_impl::%(Identifier)s_impl(CCM_Local::CCM_Session_%(Identifier)s::CCM_%(Identifier)s_impl* i, CCM::SessionContainer * c)
-  : local_component(i), ccm_container (c)
+  : local_adapter(i), ccm_container (c)
 {
   DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
   local_context = new CCM_%(Identifier)s_Context_impl(this,ccm_container); 
@@ -209,7 +209,7 @@ using namespace CCM_Utils;
 %(Identifier)s_impl::~%(Identifier)s_impl ()
 {
   DEBUGNL("-%(Identifier)s_impl::~%(Identifier)s_impl()");
-  delete local_component; 
+  delete local_adapter; 
   delete local_context;
 }
 
@@ -492,8 +492,8 @@ void
 {
   DEBUGNL(" %(Identifier)s_impl::configuration_complete()");
   ccm_container->configuration_complete (this); 
-  local_component->set_session_context(local_context);
-  local_component->ccm_activate ();
+  local_adapter->set_session_context(local_context);
+  local_adapter->ccm_activate ();
 }
 
 Components::ComponentPortDescription *
@@ -508,8 +508,8 @@ void
 %(Identifier)s_impl::remove ()
 {
   DEBUGNL(" %(Identifier)s_impl::remove()");
-  local_component->ccm_passivate();
-  local_component->ccm_remove();
+  local_adapter->ccm_passivate();
+  local_adapter->ccm_remove();
   Components::CCMHome_var myhome = get_ccm_home ();
   Components::CCMObject_var myself = ccm_container->get_reference_for_component (this);
   myhome->remove_component (myself);

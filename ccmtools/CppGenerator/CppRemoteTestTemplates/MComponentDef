@@ -1,0 +1,84 @@
+#include <iostream>
+#include <string>
+#include <CCM_Utils/Debug.h>
+
+#include <CORBA.h>
+#include <coss/CosNaming.h>
+
+#include <%(IncludeNamespace)s/%(HomeType)s_remote.h>
+#include <%(Identifier)s.h>
+
+using namespace std;
+using namespace CCM_Utils;
+
+//==============================================================================
+// Implementation of remote client test
+//==============================================================================
+
+// Default commandline parameter
+char* argv_[] = {"", "-ORBInitRef", 
+                     "NameService=corbaloc:iiop:1.2@127.0.0.1:5050/NameService" };
+int argc_ = 3;
+
+
+int main (int argc, char *argv[])
+{
+  Debug::set_global(true); 
+  DEBUGNL("C++_remote_test_client()");
+
+  // Initialize ORB 
+  CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
+
+
+  /**
+   * Server-side code
+   */ 
+  CCM::register_all_factories (orb);
+
+  int error = deploy_%(HomeType)s(orb, "%(HomeType)s:1.0");
+  if(!error) {
+    cout << "%(HomeType)s stand-alone server is running..." << endl;
+  }
+  else {
+    cerr << "ERROR: Can't start components!" << endl;
+    assert(0);
+  }
+
+
+  /**
+   * Client-side code
+   */
+  CORBA::Object_var obj = orb->resolve_initial_references ("NameService");
+  CosNaming::NamingContextExt_var nc =
+    CosNaming::NamingContextExt::_narrow (obj);
+  assert (!CORBA::is_nil (nc));
+
+  // Deployment 
+
+  // Find ComponentHomes in the Naming-Service
+  obj = nc->resolve_str ("%(HomeType)s:1.0");
+  assert (!CORBA::is_nil (obj));
+  %(HomeType)s_var my%(HomeType)s = %(HomeType)s::_narrow (obj);
+
+  // Create component instances
+  %(Identifier)s_var my%(Identifier)s =  my%(HomeType)s->create();
+
+  // Provide facets   
+%(MProvidesDefFacetCreate)s
+	
+  my%(Identifier)s->configuration_complete();
+
+
+  DEBUGNL("==== Begin Test Case =============================================" );    
+
+  // TODO : IMPLEMENT ME HERE !       
+
+  DEBUGNL("==== End Test Case ===============================================" );    
+
+
+  // Un-Deployment
+
+  // Destroy component instances
+  my%(Identifier)s->remove();
+}
+

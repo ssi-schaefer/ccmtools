@@ -1,0 +1,4 @@
+  //Console_var console = myHello->provide_console();
+  %(ProvidesType)s_var %(ProvidesType)s%(Identifier)s = my%(ComponentType)s->provide_%(Identifier)s();
+
+

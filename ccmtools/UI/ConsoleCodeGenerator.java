@@ -33,6 +33,7 @@ import ccmtools.CodeGenerator.TemplateHandler;
 import ccmtools.CppGenerator.CppLocalGeneratorImpl;
 import ccmtools.CppGenerator.CppMirrorGeneratorImpl;
 import ccmtools.CppGenerator.CppRemoteGeneratorImpl;
+import ccmtools.CppGenerator.CppRemoteTestGeneratorImpl;
 import ccmtools.CppGenerator.CppPythonGeneratorImpl;
 import ccmtools.IDLGenerator.IDL2GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3GeneratorImpl;
@@ -69,7 +70,10 @@ public class ConsoleCodeGenerator
 
     private static final String[] local_language_types =
     {
-        "c++local", "c++mirror",  "c++remote", "c++python", "idl3", "idl3mirror", "idl2"
+        "c++local", "c++mirror",  
+	"c++remote", "c++remote-test",
+	"c++python", 
+	"idl3", "idl3mirror", "idl2"
     };
 
     private static List language_types = null;
@@ -315,7 +319,9 @@ public class ConsoleCodeGenerator
                 handler = new CppMirrorGeneratorImpl(driver, output_directory);
 	    else if (lang.equalsIgnoreCase("C++Remote"))
 		handler = new CppRemoteGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("C++Python"))
+	    else if (lang.equalsIgnoreCase("C++Remote-Test"))
+		handler = new CppRemoteTestGeneratorImpl(driver, output_directory);
+	    else if (lang.equalsIgnoreCase("C++Python"))
                 handler = new CppPythonGeneratorImpl(driver, output_directory);
             else if (lang.equalsIgnoreCase("IDL3"))
                 handler = new IDL3GeneratorImpl(driver, output_directory);

@@ -8,7 +8,7 @@
   {
     private:
       CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl* local_component;
-      CCM_Local::CCM_%(ProvidesType)s* local_facet; 
+      CCM_Local::CCM_%(ProvidesType)s* local_adapter; 
     public:
       %(Identifier)sFacetAdapter(CCM_Local::CCM_Session_%(ComponentType)s::CCM_%(ComponentType)s_impl*);
       virtual ~%(Identifier)sFacetAdapter();

@@ -1,17 +1,11 @@
-%(CORBAType)s (ComponentType)s_impl::%(Identifier)s (%(MParameterDefCORBA)s) %(MExceptionDef)s;
+%(CORBAType)s %(Object)s_impl::%(Identifier)s (%(MParameterDefCORBA)s)
+ %(MExceptionDef)s
 {
-  DEBUGNL(" (ComponentType)s_impl::%(Identifier)s()");
+  DEBUGNL(" %(Object)s_impl::%(Identifier)s()");
 
-  // convert parameter(s)
-  double parameter_eur;  //!!!!!!!!
-  parameter_eur = CCM::CORBA_Double_to_double(eur); //!!!!!!!!!
-
-  // call local method
-  %(LanguageType)s result;
-  result = local_component->%(Identifier)s(parameter_eur); //!!!!!!
-
-  // convert result
-  return CCM::%(LanguageType)s_to_CORBA%(LanguageType)s(result);
+  %(MParameterDefConvertParameterToCpp)s
+  %(MParameterDefConvertMethodToCpp)s
+  %(MParameterDefConvertResultToCpp)s
 }
 
 
