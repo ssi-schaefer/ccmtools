@@ -14,3 +14,6 @@ ccmtools
 binary-dist
 classnoinst.stamp
 Constants.java
+check-log.txt
+check.log
+depcomp
