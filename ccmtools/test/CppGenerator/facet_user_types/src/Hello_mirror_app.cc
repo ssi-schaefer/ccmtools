@@ -4,13 +4,13 @@
 //==============================================================================
 
 #include <iostream>
-#include <cassert>
 #include <CCM_Utils/Debug.h>
 
 #include "Hello_mirror_app.h"
 
 using namespace std;
 using namespace CCM_Utils;
+using namespace CCM_Local;
 
 namespace CCM_Local {
 namespace CCM_Session_Hello_mirror {
@@ -46,7 +46,7 @@ CCM_Hello_mirror_impl::set_session_context ( localComponents::SessionContext* co
   throw ( localComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_mirror_impl->set_session_context (  )" );
-  ctx = (CCM_Hello_mirror_Context*) context;
+  ctx = dynamic_cast<CCM_Hello_mirror_Context*>(context);
 }
 
 void
@@ -131,6 +131,7 @@ CCM_Hello_mirror_impl::ccm_activate (  )
   }
 
  cout << "==== End of Test Case ===========================" << endl;
+
 }
 
 void
