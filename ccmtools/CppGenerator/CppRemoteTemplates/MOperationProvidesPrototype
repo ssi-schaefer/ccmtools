@@ -1,4 +1,0 @@
-      virtual %(CORBAType)s %(Identifier)s(%(MParameterDefCORBA)s) 
-	%(MExceptionDefCORBA)s;
-
-

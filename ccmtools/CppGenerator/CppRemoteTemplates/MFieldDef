@@ -1,2 +1,0 @@
-   result.%(Identifier)s = /* converter Method */ value.%(Identifier)s;
-
