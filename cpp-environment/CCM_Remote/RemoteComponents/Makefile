@@ -1,2 +1,0 @@
-all: 
-	idl CCM.idl
