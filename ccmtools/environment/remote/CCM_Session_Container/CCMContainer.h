@@ -33,7 +33,7 @@
 #include <CCM_Utils/SmartPointer.h>
 #include <CCM_Utils/Debug.h> 
 
-#include <CCM.h>
+#include <Components/CCM.h>
 #include <localComponents/CCM.h>
 
 namespace CCM {
