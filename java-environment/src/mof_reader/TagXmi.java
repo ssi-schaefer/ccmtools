@@ -36,7 +36,7 @@ class TagXmi extends mof_xmi_parser.model.MTag implements Worker
     {
         parent_ = parent;
         implementation_ = new TagImp(this, parent==null ? null : parent.mof());
-        map.put(TagXmi.createId(xmi_id_), implementation_);
+        map.put(TagXmi.createId(xmi_id_), this);
         Iterator it = content().iterator();
         while( it.hasNext() )
         {
@@ -54,10 +54,35 @@ class TagXmi extends mof_xmi_parser.model.MTag implements Worker
         return implementation_;
     }
 
+    private boolean processed_;
+
     /// implements {@link Worker#process}
     public void process( Model model )
     {
-        // TODO
+        if( processed_ )
+        {
+            return;
+        }
+        if( xmi_idref_!=null )
+        {
+            Worker w = model.getWorker(xmi_idref_);
+            if( w==null )
+            {
+                throw new RuntimeException("cannot find xmi.idref=="+xmi_idref_);
+            }
+            w.process(model);
+            implementation_ = (TagImp)w.mof();
+        }
+        processed_ = true;
+        Iterator it = content().iterator();
+        while( it.hasNext() )
+        {
+            Object obj = it.next();
+            if( obj instanceof Worker )
+            {
+                ((Worker)obj).process(model);
+            }
+        }
     }
 
     static String createId( String xmi_id )
