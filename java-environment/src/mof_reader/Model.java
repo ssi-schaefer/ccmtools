@@ -150,7 +150,16 @@ public class Model
                 Object obj = it.next();
                 if( obj instanceof Worker )
                 {
-                    mofContent_.add( ((Worker)obj).mof() );
+                    MofModelElement e = ((Worker)obj).mof();
+                    if( e==null )
+                    {
+                        System.err.println("Model.getMofContentIterator : NULL CHILD in class "+
+                                            obj.getClass().getName());
+                    }
+                    else
+                    {
+                        mofContent_.add(e);
+                    }
                 }
             }
         }

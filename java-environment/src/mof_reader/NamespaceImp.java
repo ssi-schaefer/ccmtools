@@ -52,7 +52,15 @@ abstract class NamespaceImp extends ModelElementImp implements MofNamespace
                     Object obj = ns.get(j);
                     if( obj instanceof Worker )
                     {
-                        contents_.add( ((Worker)obj).mof() );
+                        MofModelElement child = ((Worker)obj).mof();
+                        if( child==null )
+                        {
+                            System.err.println("NULL CHILD in class "+obj.getClass().getName());
+                        }
+                        else
+                        {
+                            contents_.add(child);
+                        }
                     }
                 }
             }

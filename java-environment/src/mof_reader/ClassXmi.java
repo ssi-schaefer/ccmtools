@@ -12,6 +12,8 @@
 package mof_reader;
 
 import java.util.Iterator;
+import mof_xmi_parser.model.MNamespace_contents;
+import mof_xmi_parser.model.MGeneralizableElement_supertypes;
 
 
 /**
@@ -43,6 +45,31 @@ class ClassXmi extends mof_xmi_parser.model.MClass implements Worker
             if( obj instanceof Worker )
             {
                 ((Worker)obj).register(map, this);
+            }
+            else if( obj instanceof MNamespace_contents )
+            {
+                Iterator it2 = ((MNamespace_contents)obj).content().iterator();
+                while( it2.hasNext() )
+                {
+                    Object o2 = it2.next();
+                    if( o2 instanceof Worker )
+                    {
+                        ((Worker)o2).register(map, this);
+                    }
+                    else
+                    {
+                        System.err.println("ClassXmi.register - it2: unknown child : "+
+                                            o2.getClass().getName());
+                    }
+                }
+            }
+            else if( obj instanceof MGeneralizableElement_supertypes )
+            {
+                // nothing to do
+            }
+            else
+            {
+                System.err.println("ClassXmi.register - main: unknown child : "+obj.getClass().getName());
             }
         }
     }

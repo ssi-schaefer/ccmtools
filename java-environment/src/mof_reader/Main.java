@@ -14,6 +14,7 @@ package mof_reader;
 import mof_xmi_parser.DTD_Root;
 import mof_xmi_parser.DTD_Container;
 import java.io.File;
+import java.util.Iterator;
 
 
 /**
@@ -31,7 +32,7 @@ public class Main
      */
     public static void main( String[] args )
     {
-        if( args.length!=1 || args[0]=="--help" )
+        if( args.length<1 || args[0]=="--help" )
         {
             System.out.println("mof_reader.Main  XMI-filename");
             return;
@@ -45,7 +46,14 @@ public class Main
             }
             else
             {
-                System.out.println("model ok");
+                System.out.println("model:");
+                System.out.println("------");
+                PrettyPrinter pp = new PrettyPrinter();
+                Iterator it = model.getMofContentIterator();
+                while( it.hasNext() )
+                {
+                    ((MofModelElement)it.next()).process(pp);
+                }
             }
         }
         catch( Exception e )

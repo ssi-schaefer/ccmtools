@@ -24,7 +24,7 @@ import java.util.List;
 public interface MofModelElement
 {
     /**
-     * Calls the node-handler.
+     * Calls the node-handler, but doesn't iterate over the children.
      *
      * @param handler  the node-handler
      *

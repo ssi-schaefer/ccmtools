@@ -12,6 +12,7 @@
 package mof_reader;
 
 import java.util.Iterator;
+import mof_xmi_parser.model.MNamespace_contents;
 
 
 /**
@@ -43,6 +44,27 @@ class AssociationXmi extends mof_xmi_parser.model.MAssociation implements Worker
             if( obj instanceof Worker )
             {
                 ((Worker)obj).register(map, this);
+            }
+            else if( obj instanceof MNamespace_contents )
+            {
+                Iterator it2 = ((MNamespace_contents)obj).content().iterator();
+                while( it2.hasNext() )
+                {
+                    Object o2 = it2.next();
+                    if( o2 instanceof Worker )
+                    {
+                        ((Worker)o2).register(map, this);
+                    }
+                    else
+                    {
+                        System.err.println("AssociationXmi.register - it2: unknown child : "+
+                                            o2.getClass().getName());
+                    }
+                }
+            }
+            else
+            {
+                System.err.println("AssociationXmi.register - main: unknown child : "+obj.getClass().getName());
             }
         }
     }

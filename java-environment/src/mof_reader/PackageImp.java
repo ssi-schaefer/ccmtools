@@ -52,7 +52,8 @@ class PackageImp extends GeneralizableElementImp implements MofPackage
     /// implements {@link MofModelElement#process}
     public void process( NodeHandler handler ) throws NodeHandlerException
     {
-        // TODO
+        handler.beginPackage(this);
+        handler.endModelElement(this);
     }
 
 }
