@@ -3,16 +3,16 @@
 {
   DEBUGNL(" %(Object)sReceptacleAdapter->%(Identifier)s()"); 
 
-%(MParameterDefConvertParameterToCorba)s
-%(MParameterDefDeclareCorbaResult)s
+%(MParameterDefConvertReceptacleParameterToCorba)s
+%(MParameterDefDeclareReceptacleCorbaResult)s
   try {
-%(MParameterDefConvertMethodToCorba)s
+%(MParameterDefConvertReceptacleMethodToCorba)s
   }
-%(MParameterDefConvertExceptionsToCpp)s  
+%(MParameterDefConvertReceptacleExceptionsToCpp)s  
   catch(...) {
     throw; 
   }
-%(MParameterDefConvertResultToCpp)s
+%(MParameterDefConvertReceptacleResultToCpp)s
 }
 
 
