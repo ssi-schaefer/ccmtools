@@ -13,7 +13,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_Test.h>
+#include <Test.h>
 
 
 using namespace std;
