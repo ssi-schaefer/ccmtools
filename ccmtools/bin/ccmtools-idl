@@ -58,8 +58,8 @@ while index < len(sys.argv):
         elif IDL_COMPILER.startswith('idl'):    
             INCLUDES += ' -I' + arg[2:]
         start += 1
-    elif arg == '-V' or arg.startswith('--v'):
-        os.execlp('ccmtools-generate', 'ccmtools-generate', '--version')
+#    elif arg == '-V' or arg.startswith('--v'):
+#        os.execlp('ccmtools-generate', 'ccmtools-generate', '--version')
 
 
 FILES = sys.argv[start:] 
