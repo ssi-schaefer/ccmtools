@@ -17,9 +17,6 @@ import java.util.Vector;
 
 import mof_xmi_parser.DTD_Container;
 import mof_xmi_parser.model.MAssociationEnd_multiplicity;
-import mof_xmi_parser.model.MAssociationEnd_aggregation;
-import mof_xmi_parser.model.MAssociationEnd_isChangeable;
-import mof_xmi_parser.model.MAssociationEnd_isNavigable;
 
 
 /**
@@ -60,16 +57,7 @@ class AssociationEndImp extends TypedElementImp implements MofAssociationEnd
             }
             else
             {
-                Vector children = xmi_.findChildren(MAssociationEnd_aggregation.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MAssociationEnd_aggregation v = (MAssociationEnd_aggregation)children.get(0);
-                    aggregation_ = MofAggregationKind.create(v.xmi_value_);
-                }
-                else
-                {
-                    throw new IllegalArgumentException("no aggregation");
-                }
+                throw new IllegalArgumentException("no aggregation");
             }
         }
         return aggregation_;
@@ -84,7 +72,7 @@ class AssociationEndImp extends TypedElementImp implements MofAssociationEnd
             isChangeable_ = ((AssociationEndXmi)xmi_).isChangeable_;
             if( isChangeable_==null )
             {
-                isChangeable_ = getBooleanFromChild(MAssociationEnd_isChangeable.xmlName__);
+                isChangeable_ = "false";
             }
         }
         return isChangeable_.equalsIgnoreCase("true");
@@ -99,7 +87,7 @@ class AssociationEndImp extends TypedElementImp implements MofAssociationEnd
             isNavigable_ = ((AssociationEndXmi)xmi_).isNavigable_;
             if( isNavigable_==null )
             {
-                isNavigable_ = getBooleanFromChild(MAssociationEnd_isNavigable.xmlName__);
+                isNavigable_ = "false";
             }
         }
         return isNavigable_.equalsIgnoreCase("true");
@@ -111,23 +99,15 @@ class AssociationEndImp extends TypedElementImp implements MofAssociationEnd
     {
         if( multiplicity_==null )
         {
-            String m = ((AssociationEndXmi)xmi_).multiplicity_;
-            if( m!=null )
+            Vector children = xmi_.findChildren(MAssociationEnd_multiplicity.xmlName__);
+            if( children.size()>=1 )
             {
-                multiplicity_ = new MofMultiplicityType(m);
+                MAssociationEnd_multiplicity p = (MAssociationEnd_multiplicity)children.get(0);
+                multiplicity_ = new MofMultiplicityType(p);
             }
             else
             {
-                Vector children = xmi_.findChildren(MAssociationEnd_multiplicity.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MAssociationEnd_multiplicity p = (MAssociationEnd_multiplicity)children.get(0);
-                    multiplicity_ = new MofMultiplicityType(p);
-                }
-                else
-                {
-                    throw new NumberFormatException("no multiplicity");
-                }
+                throw new NumberFormatException("no multiplicity");
             }
         }
         return multiplicity_;

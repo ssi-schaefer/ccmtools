@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.List;
 
 import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MAssociation_isDerived;
 
 
 /**
@@ -61,7 +60,7 @@ class AssociationImp extends GeneralizableElementImp implements MofAssociation
             isDerived_ = ((AssociationXmi)xmi_).isDerived_;
             if( isDerived_==null )
             {
-                isDerived_ = getBooleanFromChild(MAssociation_isDerived.xmlName__);
+                isDerived_ = "false";
             }
         }
         return isDerived_.equalsIgnoreCase("true");

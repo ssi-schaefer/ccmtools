@@ -15,10 +15,7 @@ package mof_reader;
 import java.util.Vector;
 
 import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MFeature_visibility;
-import mof_xmi_parser.model.MFeature_scope;
 import mof_xmi_parser.model.MStructuralFeature_multiplicity;
-import mof_xmi_parser.model.MStructuralFeature_isChangeable;
 
 
 /**
@@ -53,16 +50,7 @@ abstract class StructuralFeatureImp extends TypedElementImp implements MofStruct
             }
             else
             {
-                Vector children = xmi_.findChildren(MFeature_scope.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MFeature_scope v = (MFeature_scope)children.get(0);
-                    scope_ = MofScopeKind.create(v.xmi_value_);
-                }
-                else
-                {
-                    throw new IllegalArgumentException("no scope");
-                }
+                throw new IllegalArgumentException("no scope");
             }
         }
         return scope_;
@@ -83,16 +71,7 @@ abstract class StructuralFeatureImp extends TypedElementImp implements MofStruct
             }
             else
             {
-                Vector children = xmi_.findChildren(MFeature_visibility.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MFeature_visibility v = (MFeature_visibility)children.get(0);
-                    visibility_ = MofVisibilityKind.create(v.xmi_value_);
-                }
-                else
-                {
-                    throw new IllegalArgumentException("no visibility");
-                }
+                throw new IllegalArgumentException("no visibility");
             }
         }
         return visibility_;
@@ -109,7 +88,7 @@ abstract class StructuralFeatureImp extends TypedElementImp implements MofStruct
             isChangeable_ = getXmiIsChangeable();
             if( isChangeable_==null )
             {
-                isChangeable_ = getBooleanFromChild(MStructuralFeature_isChangeable.xmlName__);
+                isChangeable_ = "false";
             }
         }
         return isChangeable_.equalsIgnoreCase("true");
@@ -123,28 +102,18 @@ abstract class StructuralFeatureImp extends TypedElementImp implements MofStruct
     {
         if( multiplicity_==null )
         {
-            String m = getXmiMultiplicity();
-            if( m!=null )
+            Vector children = xmi_.findChildren(MStructuralFeature_multiplicity.xmlName__);
+            if( children.size()>=1 )
             {
-                multiplicity_ = new MofMultiplicityType(m);
+                MStructuralFeature_multiplicity p = (MStructuralFeature_multiplicity)children.get(0);
+                multiplicity_ = new MofMultiplicityType(p);
             }
             else
             {
-                Vector children = xmi_.findChildren(MStructuralFeature_multiplicity.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MStructuralFeature_multiplicity p = (MStructuralFeature_multiplicity)children.get(0);
-                    multiplicity_ = new MofMultiplicityType(p);
-                }
-                else
-                {
-                    throw new NumberFormatException("no multiplicity");
-                }
+                throw new NumberFormatException("no multiplicity");
             }
         }
         return multiplicity_;
     }
-
-    abstract String getXmiMultiplicity();
 
 }

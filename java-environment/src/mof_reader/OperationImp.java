@@ -15,7 +15,6 @@ import java.util.Vector;
 import java.util.List;
 
 import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MOperation_isQuery;
 import mof_xmi_parser.model.MOperation_exceptions;
 
 
@@ -57,7 +56,7 @@ class OperationImp extends BehavioralFeatureImp implements MofOperation
             isQuery_ = ((OperationXmi)xmi_).isQuery_;
             if( isQuery_==null )
             {
-                isQuery_ = getBooleanFromChild(MOperation_isQuery.xmlName__);
+                isQuery_ = "false";
             }
         }
         return isQuery_.equalsIgnoreCase("true");

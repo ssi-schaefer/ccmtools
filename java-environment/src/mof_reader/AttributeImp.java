@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.List;
 
 import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MAttribute_isDerived;
 
 
 /**
@@ -46,9 +45,6 @@ class AttributeImp extends StructuralFeatureImp implements MofAttribute
     String getXmiIsChangeable()
     { return ((AttributeXmi)xmi_).isChangeable_; }
 
-    String getXmiMultiplicity()
-    { return ((AttributeXmi)xmi_).multiplicity_; }
-
 
     private String isDerived_;
 
@@ -61,7 +57,7 @@ class AttributeImp extends StructuralFeatureImp implements MofAttribute
             isDerived_ = ((AttributeXmi)xmi_).isDerived_;
             if( isDerived_==null )
             {
-                isDerived_ = getBooleanFromChild(MAttribute_isDerived.xmlName__);
+                isDerived_ = "false";
             }
         }
         return isDerived_.equalsIgnoreCase("true");

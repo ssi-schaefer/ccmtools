@@ -47,9 +47,6 @@ class ReferenceImp extends StructuralFeatureImp implements MofReference
     String getXmiIsChangeable()
     { return ((ReferenceXmi)xmi_).isChangeable_; }
 
-    String getXmiMultiplicity()
-    { return ((ReferenceXmi)xmi_).multiplicity_; }
-
 
     private MofAssociationEnd referencedEnd_;
     //private MofAssociationEnd exposedEnd_;

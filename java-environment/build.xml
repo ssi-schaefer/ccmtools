@@ -114,7 +114,7 @@
       description="Run the dtd2java tool to create the mof_xmi_parser package.">
       <java classname="dtd2java.Main">
           <classpath refid="run.classpath" />
-	  <arg value="${src}/dtd2java/MOF.dtd" />
+	  <arg value="${src}/dtd2java/MOF14XMI11.dtd" />
 	  <arg value="mof_xmi_parser" />
 	  <arg value="src" />
       </java>
@@ -188,7 +188,7 @@
       <delete file="${src}/dtd2java/DTDTokenTypes.java" />
       <delete file="${src}/dtd2java/DTDTokenTypes.txt" />
       <delete file="${src}/dtd2java/UML.dtd.PP.dtd" />
-      <delete file="${src}/dtd2java/MOF.dtd.PP.dtd" />
+      <delete file="${src}/dtd2java/MOF14XMI11.dtd.PP.dtd" />
       <delete dir="${src}/uml_parser" />
       <delete dir="${src}/mof_xmi_parser" />
 

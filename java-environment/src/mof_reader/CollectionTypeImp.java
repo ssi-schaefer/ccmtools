@@ -71,23 +71,15 @@ class CollectionTypeImp extends GeneralizableElementImp implements MofCollection
     {
         if( multiplicity_==null )
         {
-            String m = ((CollectionTypeXmi)xmi_).multiplicity_;
-            if( m!=null )
+            Vector children = xmi_.findChildren(MCollectionType_multiplicity.xmlName__);
+            if( children.size()>=1 )
             {
-                multiplicity_ = new MofMultiplicityType(m);
+                MCollectionType_multiplicity p = (MCollectionType_multiplicity)children.get(0);
+                multiplicity_ = new MofMultiplicityType(p);
             }
             else
             {
-                Vector children = xmi_.findChildren(MCollectionType_multiplicity.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MCollectionType_multiplicity p = (MCollectionType_multiplicity)children.get(0);
-                    multiplicity_ = new MofMultiplicityType(p);
-                }
-                else
-                {
-                    throw new NumberFormatException("no multiplicity");
-                }
+                throw new NumberFormatException("no multiplicity");
             }
         }
         return multiplicity_;

@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# $Header$
+#
+
+B=../../build/M
+javac -classpath $B -d $B $*

@@ -17,10 +17,6 @@ import java.util.Vector;
 import java.util.ArrayList;
 
 import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MGeneralizableElement_isAbstract;
-import mof_xmi_parser.model.MGeneralizableElement_isLeaf;
-import mof_xmi_parser.model.MGeneralizableElement_isRoot;
-import mof_xmi_parser.model.MGeneralizableElement_visibility;
 import mof_xmi_parser.model.MGeneralizableElement_supertypes;
 
 
@@ -53,7 +49,7 @@ abstract class GeneralizableElementImp extends NamespaceImp implements MofGenera
             isAbstract_ = getXmiAbstract();
             if( isAbstract_==null )
             {
-                isAbstract_ = getBooleanFromChild(MGeneralizableElement_isAbstract.xmlName__);
+                isAbstract_ = "false";
             }
         }
         return isAbstract_.equalsIgnoreCase("true");
@@ -71,7 +67,7 @@ abstract class GeneralizableElementImp extends NamespaceImp implements MofGenera
             isLeaf_ = getXmiLeaf();
             if( isLeaf_==null )
             {
-                isLeaf_ = getBooleanFromChild(MGeneralizableElement_isLeaf.xmlName__);
+                isLeaf_ = "false";
             }
         }
         return isLeaf_.equalsIgnoreCase("true");
@@ -89,7 +85,7 @@ abstract class GeneralizableElementImp extends NamespaceImp implements MofGenera
             isRoot_ = getXmiRoot();
             if( isRoot_==null )
             {
-                isRoot_ = getBooleanFromChild(MGeneralizableElement_isRoot.xmlName__);
+                isRoot_ = "false";
             }
         }
         return isRoot_.equalsIgnoreCase("true");
@@ -111,16 +107,7 @@ abstract class GeneralizableElementImp extends NamespaceImp implements MofGenera
             }
             else
             {
-                Vector children = xmi_.findChildren(MGeneralizableElement_visibility.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MGeneralizableElement_visibility v = (MGeneralizableElement_visibility)children.get(0);
-                    visibility_ = MofVisibilityKind.create(v.xmi_value_);
-                }
-                else
-                {
-                    throw new IllegalArgumentException("no visibility");
-                }
+                throw new IllegalArgumentException("no visibility");
             }
         }
         return visibility_;

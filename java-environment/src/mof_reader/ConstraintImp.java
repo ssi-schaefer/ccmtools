@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Vector;
 
 import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MConstraint_evaluationPolicy;
 import mof_xmi_parser.model.MConstraint_expression;
 import mof_xmi_parser.model.MConstraint_language;
 
@@ -58,16 +57,7 @@ class ConstraintImp extends ModelElementImp implements MofConstraint
             }
             else
             {
-                Vector children = xmi_.findChildren(MConstraint_evaluationPolicy.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MConstraint_evaluationPolicy p = (MConstraint_evaluationPolicy)children.get(0);
-                    evaluation_ = MofEvaluationKind.create(p.xmi_value_);
-                }
-                else
-                {
-                    throw new IllegalArgumentException("no evaluation policy");
-                }
+                throw new IllegalArgumentException("no evaluation policy");
             }
         }
         return evaluation_;

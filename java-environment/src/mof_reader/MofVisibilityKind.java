@@ -11,8 +11,6 @@
 
 package mof_reader;
 
-import mof_xmi_parser.model.MGeneralizableElement_visibility;
-
 
 /**
  * VisibilityKind
@@ -49,13 +47,6 @@ public final class MofVisibilityKind
      *  protected_vis
      */
     public static final MofVisibilityKind PROTECTED = new MofVisibilityKind("protected_vis");
-
-
-    static MofVisibilityKind create( MGeneralizableElement_visibility vis )
-    {
-        // TODO
-        throw new RuntimeException("not implemented");
-    }
 
 
     /**

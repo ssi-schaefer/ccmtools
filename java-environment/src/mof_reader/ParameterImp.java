@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Vector;
 
 import mof_xmi_parser.DTD_Container;
-import mof_xmi_parser.model.MParameter_direction;
 import mof_xmi_parser.model.MParameter_multiplicity;
 
 
@@ -56,16 +55,7 @@ class ParameterImp extends TypedElementImp implements MofParameter
             }
             else
             {
-                Vector children = xmi_.findChildren(MParameter_direction.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MParameter_direction p = (MParameter_direction)children.get(0);
-                    direction_ = MofDirectionKind.create(p.xmi_value_);
-                }
-                else
-                {
-                    throw new IllegalArgumentException("no direction");
-                }
+                throw new IllegalArgumentException("no direction");
             }
         }
         return direction_;
@@ -76,23 +66,15 @@ class ParameterImp extends TypedElementImp implements MofParameter
     {
         if( multiplicity_==null )
         {
-            String m = ((ParameterXmi)xmi_).multiplicity_;
-            if( m!=null )
+            Vector children = xmi_.findChildren(MParameter_multiplicity.xmlName__);
+            if( children.size()>=1 )
             {
-                multiplicity_ = new MofMultiplicityType(m);
+                MParameter_multiplicity p = (MParameter_multiplicity)children.get(0);
+                multiplicity_ = new MofMultiplicityType(p);
             }
             else
             {
-                Vector children = xmi_.findChildren(MParameter_multiplicity.xmlName__);
-                if( children.size()>=1 )
-                {
-                    MParameter_multiplicity p = (MParameter_multiplicity)children.get(0);
-                    multiplicity_ = new MofMultiplicityType(p);
-                }
-                else
-                {
-                    throw new NumberFormatException("no multiplicity");
-                }
+                throw new NumberFormatException("no multiplicity");
             }
         }
         return multiplicity_;
