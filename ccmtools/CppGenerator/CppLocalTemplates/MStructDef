@@ -5,6 +5,7 @@
 #ifndef __STRUCT__%(PreprocIdentifier)s__H__
 #define __STRUCT__%(PreprocIdentifier)s__H__
 
+#include<string>
 %(MFieldDefInclude)s
 
 using namespace std;
