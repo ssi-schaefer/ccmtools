@@ -13,7 +13,7 @@
 
 #include <string>
 #include <map>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/smartptr.h>
 #include <LocalComponents/CCM.h>
 #include <CCM_OCL/OclException.h>
 
@@ -35,7 +35,7 @@ class DbC_%(Identifier)s
   DbC_%(Identifier)s();
   virtual ~DbC_%(Identifier)s();
 
-  virtual CCM_Utils::SmartPtr<%(ComponentType)s> create()
+  virtual WX::Utils::SmartPtr<%(ComponentType)s> create()
     throw (LocalComponents::CreateFailure);
 
 %(MFactoryDefAdapterPrototype)s
@@ -51,7 +51,7 @@ class DbC_%(Identifier)s
 //==============================================================================
 
 extern "C" {
-  CCM_Utils::SmartPtr<LocalComponents::CCMHome> DbC_create_%(Identifier)sAdapter();
+  WX::Utils::SmartPtr<LocalComponents::CCMHome> DbC_create_%(Identifier)sAdapter();
   int DbC_deploy_%(Identifier)s(char* name);
   int DbC_undeploy_%(Identifier)s(char* name);	
 }
@@ -71,7 +71,7 @@ extern "C" {
 //==============================================================================
 
 #include <iostream>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 #include <CCM_Local/HomeFinder.h>
 #include <CCM_OCL/OclHelpers.h>
 
@@ -79,7 +79,7 @@ extern "C" {
 #include <%(Identifier)s_entry.h>
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_Local;
 using namespace CCM_OCL;
 
@@ -131,11 +131,11 @@ DbC_%(Identifier)s::create()
 //==============================================================================
 
 extern "C" {
-  CCM_Utils::SmartPtr<LocalComponents::CCMHome>
+  WX::Utils::SmartPtr<LocalComponents::CCMHome>
   DbC_create_%(Identifier)sAdapter()
   {
     DEBUGNL ( " DbC_create_%(Identifier)sAdapter()" );
-    CCM_Utils::SmartPtr<LocalComponents::CCMHome> ret (new %(Namespace)s::DbC_%(Identifier)s());
+    WX::Utils::SmartPtr<LocalComponents::CCMHome> ret (new %(Namespace)s::DbC_%(Identifier)s());
     return ret;
   }
 
@@ -144,7 +144,7 @@ extern "C" {
   {
     DEBUGNL ( " dbc_deploy_%(Identifier)s()" );
     try {
-      CCM_Utils::SmartPtr<LocalComponents::CCMHome> ret( new %(Namespace)s::DbC_%(Identifier)s());
+      WX::Utils::SmartPtr<LocalComponents::CCMHome> ret( new %(Namespace)s::DbC_%(Identifier)s());
       HomeFinder::Instance()->register_home(ret, name);
     } catch ( ... )  {
       return -1;

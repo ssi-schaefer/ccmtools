@@ -9,7 +9,7 @@
 
 #include <string>
 #include <map>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/smartptr.h>
 #include <LocalComponents/CCM.h>
 #include <CCM_OCL/OclException.h>
 
@@ -56,13 +56,13 @@ class DbC_%(Identifier)s
 
 #include <iostream>
 #include <sstream>
-#include <CCM_Utils/Debug.h>
+#include <WX/Utils/debug.h>
 #include <CCM_OCL/OclHelpers.h>
 
 #include "%(Identifier)s_dbc.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_OCL;
 
 
