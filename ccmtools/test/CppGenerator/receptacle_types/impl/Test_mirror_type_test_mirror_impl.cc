@@ -21,6 +21,7 @@ using namespace std;
 using namespace WX::Utils;
 
 namespace CCM_Local {
+namespace CCM_Session_Test_mirror {
 
 type_test_mirror_impl::type_test_mirror_impl(CCM_Local::CCM_Session_Test_mirror::CCM_Test_mirror_impl* component_impl)
   : component(component_impl)
@@ -217,4 +218,5 @@ type_test_mirror_impl::op_i1(const WX::Utils::SmartPtr<Console>& p1, WX::Utils::
     return result;
 }
 
+} // /namespace CCM_Session_Test
 } // /namespace CCM_Local

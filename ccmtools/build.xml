@@ -15,48 +15,73 @@
   <property name="prefix" location="dist" />
   <property name="sandbox" location="test/CppGenerator/sandbox" />
 
+  <!-- Define project related constants in Java -->
+  <property name="PACKAGE" value="ccmtools" />
+  <property name="VERSION" value="0.4-pre1" />
+  <property name="TEMPLATE_ROOT" location="${prefix}/templates" />
+  <property name="CPP_PATH" value="gcc -E" />
+
 
   <!-- Define different paths that are used in the following tasks -->
   <path id="compile.classpath">
-      <pathelement location="${lib}/antlr.jar" />
-  </path>
-
-  <path id="run.classpath">
-      <fileset dir="${lib}">
-          <include name="*.jar" />
-      </fileset>	  
       <pathelement path="${java.class.path}" />
+      <pathelement path="${lib}/antlr.jar" />
+      <pathelement path="${lib}/mdr01.jar" />
+      <pathelement path="${lib}/oclmetamodel.jar" />
+      <pathelement path="${lib}/dtd2java.jar" />
+      <pathelement path="${lib}/uml2idl.jar" />
+      <pathelement path="${build}" />
   </path>
 
   <path id="test.classpath">
       <pathelement path="${java.class.path}" />
+      <pathelement path="${lib}/antlr.jar" />
+      <pathelement path="${lib}/mdr01.jar" />
+      <pathelement path="${lib}/oclmetamodel.jar" />
+      <pathelement path="${lib}/dtd2java.jar" />
+      <pathelement path="${lib}/uml2idl.jar" />
       <pathelement path="${build}" />
-      <fileset dir="${lib}">
-          <include name="*.jar" />
-      </fileset>
   </path>
 
 
-
-  <!-- Set up directories for the build process -->
+  <!-- Set up directories for the build process and create a Constants.java
+       file that is used to set version number and template paths.
+   -->
   <target name="init"
       description="Creates the build directory and deletes the old jar files." >
       <mkdir dir="${build}" />
       <mkdir dir="${sandbox}" /> 
+      <filter token="PACKAGE" value="${PACKAGE}"/>
+      <filter token="VERSION" value="${VERSION}"/>
+      <filter token="TEMPLATE_ROOT" value="${TEMPLATE_ROOT}"/>
+      <filter token="CPP_PATH" value="${CPP_PATH}" />
+      <copy file="${src}/${PACKAGE}/Constants.java.in"
+            tofile="${src}/${PACKAGE}/Constants.java"
+            overwrite="true"
+            filtering="true" />
   </target>  
 
 
-  <!-- Generate parser source code using ANTLR -->
+  <!-- Generate IDL3 parser source code using ANTLR -->
   <target name="IDL3ParserGenerator" depends="init"
      description="Generate the idl3_parser using antlr." >
+      <mkdir dir="${src}/IDL3Parser" />
       <antlr target="${src}/ccmtools/IDL3Parser/idl3.g" dir="${src}/IDL3Parser" >
+           <classpath refid="compile.classpath" />
+      </antlr>
+  </target>
+
+  <!-- Generate OCL parser source code using ANTLR -->
+  <target name="OCLParserGenerator" depends="init"
+     description="Generate the OclParser using antlr." >
+      <antlr target="${src}/ccmtools/OCL/parser/OCL.g" dir="${src}/ccmtools/OCL/parser" >
            <classpath refid="compile.classpath" />
       </antlr>
   </target>
 
   
   <!-- Compile whole ccmtools source code -->
-  <target name="ccmtools" depends="IDL3ParserGenerator"
+  <target name="ccmtools" depends="OCLParserGenerator, IDL3ParserGenerator"
      description="Compile whole ccmtools code." >
       <javac srcdir="${src}/ccmtools" destdir="${build}" debug="on" >
           <classpath refid="compile.classpath" />  
@@ -96,7 +121,7 @@
       description="Generates javadoc for the ccmtools package.">
       <javadoc packagenames="ccmtools.*"
                sourcepath="${src}"
-	       destDir="${doc}/javadoc">
+	       destDir="${build}/javadoc">
       </javadoc>
   </target>
 
@@ -105,27 +130,90 @@
   <target name="install"  depends="ccmtools.jar" 
       description="Install ccmtools to prefix/.">
       <mkdir dir="${prefix}" />
-      <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/mdr01.jar"    todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/jdom.jar"     todir="${prefix}/lib"  overwrite="true" />       
 
-      <copy file="${lib}/dtd2java.jar" todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/ccmtools.jar" todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/mdr01.jar"    todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/oclmetamodel.jar"     todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${src}/ccmtools/MDR/MOF/OCL.xml"  
+            todir="${TEMPLATE_ROOT}/MDR"  overwrite="true" />	
+
+      <copy todir="${prefix}/templates/IDL3Templates" overwrite="true">
+          <fileset dir="${src}/ccmtools/IDLGenerator/IDL3Templates"/>
+      </copy>
+
+      <copy todir="${prefix}/templates/IDL3MirrorTemplates" overwrite="true">
+          <fileset dir="${src}/ccmtools/IDLGenerator/IDL3MirrorTemplates"/>
+      </copy>
+
+      <copy todir="${prefix}/templates/IDL2Templates" overwrite="true">
+          <fileset dir="${src}/ccmtools/IDLGenerator/IDL2Templates"/>
+      </copy>
+
+      <copy todir="${prefix}/templates/CppLocalTemplates" overwrite="true">
+          <fileset dir="${src}/ccmtools/CppGenerator/CppLocalTemplates"/>
+      </copy>
+
+      <copy todir="${prefix}/templates/CppLocalTestTemplates" overwrite="true">
+          <fileset dir="${src}/ccmtools/CppGenerator/CppLocalTestTemplates"/>
+      </copy>
+
+      <copy todir="${prefix}/templates/CppLocalDbcTemplates" overwrite="true">
+          <fileset dir="${src}/ccmtools/CppGenerator/CppLocalDbcTemplates"/>
+      </copy>
+
+      <copy todir="${prefix}/templates/CppRemoteTemplates" overwrite="true">
+          <fileset dir="${src}/ccmtools/CppGenerator/CppRemoteTemplates"/>
+      </copy>
+
+      <copy todir="${prefix}/templates/CppRemoteTestTemplates" overwrite="true">
+          <fileset dir="${src}/ccmtools/CppGenerator/CppRemoteTestTemplates"/>
+      </copy>
+
+      <mkdir dir="${prefix}/bin" />
+      <copy file="${src}/ccmtools/UI/scripts/ccmtools-generate" 
+            todir="${prefix}/bin"  overwrite="true" />  
+      <copy file="${src}/ccmtools/UI/scripts/ccmtools-idl" 
+            todir="${prefix}/bin"  overwrite="true" />  
+      <copy file="${src}/ccmtools/UI/scripts/uml2idl" 
+            todir="${prefix}/bin"  overwrite="true" />  
+      <exec executable="chmod" os="Linux">
+          <arg value="+x" />
+          <arg value="${prefix}/bin/ccmtools-generate" />
+      </exec>
+      <exec executable="chmod" os="Linux">
+          <arg value="+x" />
+          <arg value="${prefix}/bin/ccmtools-idl" />
+      </exec>
+      <exec executable="chmod" os="Linux">
+          <arg value="+x" />
+          <arg value="${prefix}/bin/uml2idl" />
+      </exec>
+
+
   </target>
 
 
   <!-- Clean up -->
   <target name="clean"
       description="Clean up the build and lib directory." >
-      <delete file="${src}/IDL3Parser/IDL3Lexer.java" />
-      <delete file="${src}/IDL3Parser/IDL3Parser.java" />
-      <delete file="${src}/IDL3Parser/IDL3TokenTypes.java" />
-      <delete file="${src}/IDL3Parser/IDL3TokenTypes.txt" />
+
+      <delete file="${src}/${PACKAGE}/Constants.java" />
+
+      <delete file="${src}/ccmtools/IDL3Parser/IDL3Lexer.java" />
+      <delete file="${src}/ccmtools/IDL3Parser/IDL3Parser.java" />
+      <delete file="${src}/ccmtools/IDL3Parser/IDL3TokenTypes.java" />
+      <delete file="${src}/ccmtools/IDL3Parser/IDL3TokenTypes.txt" />
+
+      <delete file="${src}/ccmtools/OCL/parser/OclLexer.java" />
+      <delete file="${src}/ccmtools/OCL/parser/OclParser.java" />
+      <delete file="${src}/ccmtools/OCL/parser/OCLTokenTypes.java" />
+      <delete file="${src}/ccmtools/OCL/parser/OCLTokenTypes.txt" />
 
       <delete dir="${build}" /> 
       <delete dir="${sandbox}" /> 
-      <delete dir="${doc}/javadoc" /> 
-
+      <delete dir="${build}/javadoc" /> 
       <delete file="${lib}/ccmtools.jar" /> 
   </target>
 

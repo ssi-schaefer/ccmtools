@@ -20,6 +20,7 @@ using namespace std;
 using namespace WX::Utils;
 
 namespace CCM_Local {
+namespace CCM_Session_Test {
 
 console_impl::console_impl(CCM_Local::CCM_Session_Test::CCM_Test_impl* component_impl)
   : component(component_impl)
@@ -65,4 +66,5 @@ console_impl::print(const std::string& msg)
       return max_size();
 }
 
+} // /namespace CCM_Session_Test
 } // /namespace CCM_Local

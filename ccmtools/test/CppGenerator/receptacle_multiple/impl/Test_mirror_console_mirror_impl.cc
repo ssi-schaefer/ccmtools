@@ -20,6 +20,7 @@ using namespace std;
 using namespace WX::Utils;
 
 namespace CCM_Local {
+namespace CCM_Session_Test_mirror {
 
 console_mirror_impl::console_mirror_impl(CCM_Local::CCM_Session_Test_mirror::CCM_Test_mirror_impl* component_impl)
   : component(component_impl)
@@ -45,4 +46,5 @@ console_mirror_impl::println(const std::string& s2)
     return s2.length();
 }
 
+} // /namespace CCM_Session_Test
 } // /namespace CCM_Local

@@ -69,7 +69,7 @@ CPP = gcc -E
 CPPFLAGS = 
 CPP_PATH = gcc -E
 CYGPATH_W = echo
-DEFS = -DPACKAGE_NAME=\"ccmtools\" -DPACKAGE_TARNAME=\"ccmtools\" -DPACKAGE_VERSION=\"0.3.3\" -DPACKAGE_STRING=\"ccmtools\ 0.3.3\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"ccmtools\" -DVERSION=\"0.3.3\" -DTEMPLATE_ROOT=\"/home/eteinik/install/ccmtools/share/ccmtools\" 
+DEFS = -DPACKAGE_NAME=\"ccmtools\" -DPACKAGE_TARNAME=\"ccmtools\" -DPACKAGE_VERSION=\"0.3.3\" -DPACKAGE_STRING=\"ccmtools\ 0.3.3\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"ccmtools\" -DVERSION=\"0.3.3\" -DTEMPLATE_ROOT=\"/home/eteinik/install/ccmtools-old/share/ccmtools\" 
 DEPDIR = .deps
 DVIPDF = /usr/bin/dvipdf
 DVIPS = /usr/bin/dvips
@@ -111,7 +111,7 @@ RM = /bin/rm
 SET_MAKE = 
 SHELL = /bin/sh
 STRIP = 
-TEMPLATE_ROOT = /home/eteinik/install/ccmtools/share/ccmtools
+TEMPLATE_ROOT = /home/eteinik/install/ccmtools-old/share/ccmtools
 VERSION = 0.3.3
 ac_ct_CC = gcc
 ac_ct_STRIP = 
@@ -140,7 +140,7 @@ mandir = ${prefix}/man
 mkdir_p = mkdir -p -- .
 oldincludedir = /usr/include
 pkgjardir = ${jardir}/ccmtools
-prefix = /home/eteinik/install/ccmtools
+prefix = /home/eteinik/install/ccmtools-old
 program_transform_name = s,x,x,
 sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com

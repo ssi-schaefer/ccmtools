@@ -565,16 +565,16 @@ abstract public class CppGenerator
         MInterfaceDef iface = ((MProvidesDef) current_node).getProvides();
 
         if (data_type.equals("CCMProvidesType")) {
-            if (data_value.indexOf(scope_separator) < 0)
+            if(data_value.indexOf(scope_separator) < 0)
                 return "CCM_" + data_value;
             int i = data_value.lastIndexOf(scope_separator) +
                 scope_separator.length();
             return data_value.substring(0, i)+"CCM_"+data_value.substring(i);
         } 
-	else if (data_type.startsWith("MOperation")) {
+	else if(data_type.startsWith("MOperation")) {
             return fillTwoStepTemplates(iface, data_type, false);
         } 
-	else if (data_type.startsWith("MAttribute")) {
+	else if(data_type.startsWith("MAttribute")) {
             return fillTwoStepTemplates(iface, data_type, true);
         }
 	else if(data_type.startsWith("FullComponentType")) {
@@ -588,8 +588,13 @@ abstract public class CppGenerator
 		return "CCM_Local::CCM_Session_" + component.getIdentifier() 
 		    + "::CCM_" + component.getIdentifier();
 	}
+	else if(data_type.startsWith("OpenNamespace")
+		|| (data_type.startsWith("CloseNamespace"))) {
+	    // Add component Namespace to facet impl class files
+	    MComponentDef component = ((MProvidesDef)current_node).getComponent();
+	    return handleNamespace(data_type, component.getIdentifier());
+	}
         return data_value;
-	    
     }
 
 

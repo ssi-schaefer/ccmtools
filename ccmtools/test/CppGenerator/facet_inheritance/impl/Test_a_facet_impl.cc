@@ -20,6 +20,7 @@ using namespace std;
 using namespace WX::Utils;
 
 namespace CCM_Local {
+namespace CCM_Session_Test {
 
 a_facet_impl::a_facet_impl(CCM_Local::CCM_Session_Test::CCM_Test_impl* component_impl)
   : component(component_impl)
@@ -63,4 +64,5 @@ a_facet_impl::op1(const std::string& str)
     return str.length();
 }
 
+} // /namespace CCM_Session_Test
 } // /namespace CCM_Local

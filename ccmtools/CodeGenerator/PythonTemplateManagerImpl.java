@@ -28,6 +28,8 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.net.URL;
+import java.lang.ClassLoader;
 
 public class PythonTemplateManagerImpl
     implements TemplateManager
@@ -46,25 +48,47 @@ public class PythonTemplateManagerImpl
     {
         String lang_dir = language + "Templates";
 
-	/*
-	// alternative sources for templates
-        source = new File(System.getProperty("user.dir"), lang_dir);
-        if (source.exists() && source.isDirectory())
-            return;
+	//	System.out.println(">> user.dir: " + System.getProperty("user.dir"));
+	//	System.out.println(">> CCMTOOLS_HOME: " + System.getProperty("CCMTOOLS_HOME"));
+	//	System.out.println(">> TEMPLATE_ROOT: " + Constants.TEMPLATE_ROOT);
 
+	// alternative sources for templates
+	/*
+        source = new File(System.getProperty("user.dir"), lang_dir);
+        if (source.exists() && source.isDirectory()) {
+	    System.out.println(">> Load templates from: " + source);
+	    return;
+	}
+	*/
+	/*
         String ccmtools_home = System.getProperty("CCMTOOLS_HOME");
         if (ccmtools_home != null) {
             File package_dir = new File(Constants.TEMPLATE_ROOT);
             source = new File(ccmtools_home, "share");
             source = new File(source, package_dir.getName());
             source = new File(source, lang_dir);
-            if (source.exists() && source.isDirectory())
+            if (source.exists() && source.isDirectory()) {
+		System.out.println(">> Load templates from: " + source);
                 return;
+	    }
+        }
+	*/
+	
+	/*
+        String ccmtools_home = System.getProperty("CCMTOOLS_HOME");
+        if (ccmtools_home != null) {
+	    source = new File(ccmtools_home + File.separator + "templates", lang_dir);
+	    System.out.println(">> Load templates from: " + source);
+            if (source.exists() && source.isDirectory()) {
+                return;
+	    }
         }
 	*/
 
+
         source = new File(Constants.TEMPLATE_ROOT, lang_dir);
         if (source.exists() && source.isDirectory()) {
+	    System.out.println(">> Load templates from: " + source);
             return;
 	}
 
