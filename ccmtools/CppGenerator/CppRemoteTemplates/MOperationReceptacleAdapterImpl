@@ -10,7 +10,7 @@
   }
 %(MParameterDefConvertReceptacleExceptionsToCpp)s  
   catch(...) {
-    throw; 
+    throw LocalComponents::CCMException();
   }
 %(MParameterDefConvertReceptacleResultToCpp)s
 }

@@ -216,6 +216,7 @@ public class CppRemoteGeneratorImpl
         vars.put("Identifier",          operation.getIdentifier());
         vars.put("LanguageType",        lang_type);
 	vars.put("CORBAType",           getCORBALanguageType(operation));
+	vars.put("MExceptionDef",       getOperationExcepts(operation));
 	vars.put("MExceptionDefCORBA",  getCORBAExcepts(operation));
         vars.put("MParameterDefAll",    getOperationParams(operation));
 	vars.put("MParameterDefCORBA",  getCORBAOperationParams(operation));
@@ -393,11 +394,7 @@ public class CppRemoteGeneratorImpl
 	    else
 		return "CCM_Local/" + usesDef.getUses().getIdentifier();
 	}
-        if (data_type.startsWith("MOperation")) {
-            MUsesDef uses = (MUsesDef) current_node;
-            return "";//fillTwoStepTemplates(uses.getUses(), data_type);!!!!!!!!!!!!!!
-        }
-        return data_value;
+        return super.data_MUsesDef(data_type,data_value);
     }
 
 

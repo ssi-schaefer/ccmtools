@@ -18,10 +18,7 @@
 %(MUsesDefInclude)s
 
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h> 
-//#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_app.h> 
-
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_share.h> 
-//#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)sHome_share.h> 
 
 %(OpenNamespace)s
 
@@ -56,11 +53,6 @@
        * Supported Interfaces
        */
 %(MSupportsDefEqInterfaceHeader)s
-
-      // ReleaseInformation
-      char* getComponentVersion();
-      char* getComponentDate();
-      char* getComponentUUID();
 
       /*
        * Equivalent IDL methods
@@ -174,8 +166,6 @@
 
 
 %(MProvidesDefAdapterHeader)s
-
-
 %(MUsesDefAdapterHeader)s
 %(CloseNamespace)s
 #endif
@@ -212,35 +202,6 @@ using namespace WX::Utils;
   DEBUGNL("-%(Identifier)s_impl::~%(Identifier)s_impl()");
   delete local_adapter; 
   delete local_context;
-}
-
-
-/*
- * ReleaseInformation (extensions to CCM)
- *
- * These methods provides strings that carries information about version
- * and creation date of a component. 
- */
-
-char* %(Identifier)s_impl::getComponentVersion()
-{
-  DEBUGNL(" %(Identifier)s_impl::getComponentVersion()");
-  // TODO
-  return CORBA::string_dup("0.0"); 
-}
-
-char* %(Identifier)s_impl::getComponentDate()
-{
-  DEBUGNL(" %(Identifier)s_impl::getComponentDate()");
-  // TODO	
-  return CORBA::string_dup("0000-00-00"); 
-}
-
-char* %(Identifier)s_impl::getComponentUUID()
-{
-  DEBUGNL(" %(Identifier)s_impl::getComponentUUID()");
-  // TODO
-  return CORBA::string_dup("no UUID"); 
 }
 
 /*
