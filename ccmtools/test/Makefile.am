@@ -1,10 +1,10 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-SUBDIRS = CppGenerator
+#SUBDIRS = CppGenerator
 
-#SUBDIRS = Metamodel IDL3Parser CodeGenerator \
-#           CppGenerator CCDGenerator
+SUBDIRS = Metamodel IDL3Parser CodeGenerator \
+           CppGenerator CCDGenerator
 
 EXTRA_DIST = idl ccd
 

@@ -9,7 +9,9 @@ interface %(Identifier)sExplicit :
 interface %(Identifier)sImplicit :
   Components::CCMHome
 {
-  %(ComponentType)s create ( %(MHomeDefPrimaryKeyParameters)s )
+  %(ComponentType)s
+  create
+    ( %(MHomeDefPrimaryKeyParameters)s )
     raises ( Components::CreateFailure%(MHomeDefPrimaryKeyExceptions)s );
 
 %(MHomeDefPrimaryKeyFunctions)s
@@ -20,5 +22,4 @@ interface %(Identifier)s :
   %(Identifier)sImplicit
 {
 };
-
 

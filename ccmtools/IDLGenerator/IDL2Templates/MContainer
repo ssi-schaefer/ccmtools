@@ -1,16 +1,11 @@
 #include "CCM.idl"
 
-
-module CCM_Remote {
 %(MModuleDef)s
-%(MEnumDefFwdDecl)s
-%(MStructDefFwdDecl)s
-%(MUnionDefFwdDecl)s
+%(MAttributeDef)s
+%(MConstantDef)s
 %(MValueDef)s
 %(MValueMemberDef)s
 %(MAliasDef)s
-%(MAttributeDef)s
-%(MConstantDef)s
 %(MEnumDef)s
 %(MStructDef)s
 %(MUnionDef)s
@@ -19,5 +14,5 @@ module CCM_Remote {
 %(MInterfaceDef)s
 %(MComponentDef)s
 %(MHomeDef)s
-}
+
 

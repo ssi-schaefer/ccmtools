@@ -1,13 +1,10 @@
 module %(Identifier)s {
 %(MModuleDef)s
-%(MEnumDefFwdDecl)s
-%(MStructDefFwdDecl)s
-%(MUnionDefFwdDecl)s
+%(MAttributeDef)s
+%(MConstantDef)s
 %(MValueDef)s
 %(MValueMemberDef)s
 %(MAliasDef)s
-%(MAttributeDef)s
-%(MConstantDef)s
 %(MEnumDef)s
 %(MStructDef)s
 %(MUnionDef)s

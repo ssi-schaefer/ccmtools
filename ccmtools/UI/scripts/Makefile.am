@@ -3,6 +3,7 @@
 
 dist_noinst_DATA = ccmtools-generate        \
                    ccmtools-c++-environment \
+                   ccmtools-c++remote-environment \
                    ccmtools-c++-generate    \
                    ccmtools-c++-configure   \
                    ccmtools-c++-make        \

@@ -41,32 +41,26 @@ import java.util.Map;
 Calculator
 |-- Calculator.idl
 |
-|-- CCM_Session_Calculator
+|-- CCM_Session_Calculator_remote
 |   |-- CalculatorHome_remote.cc
 |   |-- CalculatorHome_remote.h
 |   |-- Calculator_remote.cc
 |   |-- Calculator_remote.h
-|   |-- Makefile.py               // from local Generator
+|   |-- Makefile.py             
 |
 |
-|-- CCM_Session_Calculator_Stubs  // created from IDL2 generator 
+|-- CCM_Session_Calculator_stubs  // created from IDL2 generator 
 |   |-- Calculator.idl
 |       => Calculator.cc            // from IDL generated   
 |       => Calculator.h             // from IDL generated
 |   |-- Makefile.py
 |
-|
+
+
 |-- CCM_Session_Container         // Environment files
 |   |-- CCMContainer.cc
 |   |-- CCMContainer.h
 |   |-- Makefile.py
-|
-|-- remoteComponents              // Environment files
-|   |-- Components.idl2
-|       => Components.cc            // from IDL generated
-|       => Components.h             // from IDL generated
-|   |-- Makefile.py
-
 ====================================================================*/
 
 
@@ -104,6 +98,8 @@ public class CppRemoteGeneratorImpl
 	new File("CCM_Session_Container", "Makefile.py"),
 
         new File("remoteComponents", "Components.idl"),
+	new File("remoteComponents", "Components.h"),
+	new File("remoteComponents", "Components.cc"),
         new File("remoteComponents", "Makefile.py"),
     };
 
