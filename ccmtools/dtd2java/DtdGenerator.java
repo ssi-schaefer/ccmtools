@@ -1,6 +1,6 @@
 /* DTD code generator
  *
- * 2003 by Robert Lechner (rlechner@gmx.at)
+ * 2003, 2004 by Robert Lechner (rlechner@gmx.at)
  *
  * $Id$
  *
@@ -33,7 +33,7 @@ import java.io.IOException;
  * It also creates dot-files (see http://www.graphviz.org).
  *
  * @author Robert Lechner (rlechner@gmx.at)
- * @version 21.Jänner 2004
+ * @version January 22, 2004
  */
 public class DtdGenerator
 {
@@ -107,7 +107,7 @@ public class DtdGenerator
 	    FileWriter w = new FileWriter(new File(baseDirectory_,"DTD_Creator.java"));
 	    w.write(MAIN_HEADER);
         w.write("package "+javaPackage_+";\n\n"+
-                "import org.xml.sax.*;\n\n"+
+                "import org.xml.sax.Attributes;\n\n"+
                 "/** A factory for all XML-elements. */\n"+
                 "public class DTD_Creator\n{\n"+
                 "  /** only used in {@link DTD_SAX_Handler#startElement} */\n"+
@@ -161,7 +161,7 @@ public class DtdGenerator
         FileWriter w1 = new FileWriter(new File(baseDirectory_,"DTD_Container.java"));
         w1.write(MAIN_HEADER);
         w1.write("package "+javaPackage_+";\n\n"+
-                 "import org.xml.sax.*;\n"+
+//                 "import org.xml.sax.*;\n"+
                  "import java.util.Vector;\n\n"+
                  "/** Base class for all XML-Elements. */\n"+
                  "public abstract class DTD_Container\n{\n"+
@@ -261,7 +261,7 @@ public class DtdGenerator
                  "    DTD_SAX_Handler handler = new DTD_SAX_Handler(creator);\n"+
                  "    SAXParserFactory factory = SAXParserFactory.newInstance();\n"+
                  "    SAXParser saxParser = factory.newSAXParser();\n"+
-                 "    String xmlName = xmlFile.getPath();\n"+
+                 "    String xmlName = xmlFile.getName();\n"+
                  "    if( xmlName.endsWith(\".zip\") || xmlName.endsWith(\".ZIP\") ) {\n"+
                  "      xmlName = xmlName.substring(0, xmlName.length()-4);\n"+
                  "      ZipFile zf = new ZipFile(xmlFile);\n"+
@@ -287,12 +287,14 @@ public class DtdGenerator
         FileWriter w3 = new FileWriter(new File(baseDirectory_,"DTD_SAX_Handler.java"));
         w3.write(MAIN_HEADER);
         w3.write("package "+javaPackage_+";\n\n"+
-                 "import org.xml.sax.*;\n\n"+
+                 "import org.xml.sax.Attributes;\n"+
+                 "import org.xml.sax.SAXException;\n"+
+                 "import java.util.Stack;\n\n"+
                  "/** Creates the parse tree of the XML-file. */\n"+
                  "public class DTD_SAX_Handler extends org.xml.sax.helpers.DefaultHandler\n{\n"+
                  "  private DTD_Creator creator_;\n"+
                  "  private DTD_Container currentElement_;\n"+
-                 "  private java.util.Stack previousElements_;\n"+
+                 "  private Stack previousElements_;\n"+
                  "  private String currentText_;\n\n"+
                  "  /** the parse tree of the XML-file */\n"+
                  "  DTD_Container parseTree_;\n\n"+
@@ -303,7 +305,7 @@ public class DtdGenerator
                  "  }\n\n"+
                  "  public void startDocument() throws SAXException\n"+
                  "  {\n"+
-                 "    previousElements_ = new java.util.Stack();\n"+
+                 "    previousElements_ = new Stack();\n"+
                  "    parseTree_ = currentElement_ = null;\n"+
                  "  }\n\n"+
                  "  public void endDocument() throws SAXException\n"+
@@ -388,16 +390,17 @@ public class DtdGenerator
         FileWriter w5 = new FileWriter(new File(baseDirectory_,"DTD_Generic.java"));
         w5.write(MAIN_HEADER);
         w5.write("package "+javaPackage_+";\n\n"+
-                 "import org.xml.sax.*;\n\n"+
+                 "import java.util.Vector;\n"+
+                 "import org.xml.sax.Attributes;\n\n"+
                  "/** Stores the attributes and children of any unknown XML-element. */\n"+
                  "public class DTD_Generic extends DTD_Container\n"+
                  "{\n"+
                  "  /** the XML-name of this element */\n"+
                  "  protected String dtdName_;\n\n"+
                  "  /** the XML-name of the attributes */\n"+
-                 "  protected java.util.Vector attributeNames_ = new java.util.Vector();\n\n"+
+                 "  protected Vector attributeNames_ = new Vector();\n\n"+
                  "  /** the attribute values */\n"+
-                 "  protected java.util.Vector attributeValues_ = new java.util.Vector();\n\n"+
+                 "  protected Vector attributeValues_ = new Vector();\n\n"+
                  "  public DTD_Generic( String qName, Attributes attrs )\n"+
                  "  {\n"+
                  "    dtdName_ = qName;\n"+

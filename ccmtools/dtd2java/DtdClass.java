@@ -1,6 +1,6 @@
 /* DTD code generator
  *
- * 2003 by Robert Lechner (rlechner@gmx.at)
+ * 2003, 2004 by Robert Lechner (rlechner@gmx.at)
  *
  * $Id$
  *
@@ -32,7 +32,7 @@ import java.util.HashSet;
  * The Java-Class of a DTD-element.
  *
  * @author Robert Lechner (rlechner@gmx.at)
- * @version December 2003
+ * @version January 22, 2004
  */
 public class DtdClass
 {
@@ -251,7 +251,7 @@ public class DtdClass
 	    writer.write(DtdGenerator.MAIN_HEADER);
 	    writer.write(
 	        "package "+package_+";\n\n"+
-            "import org.xml.sax.*;\n\n"+
+            "import org.xml.sax.Attributes;\n\n"+
 	        "/**\nDTD-element <b> "+dtdName_+
 	        " </b>. <br>Element declaration:\n<pre>\n"+
 	        dtdCode_.replace('<',' ').replace('>',' ')+"\n");
