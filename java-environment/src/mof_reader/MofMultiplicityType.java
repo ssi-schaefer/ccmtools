@@ -111,6 +111,13 @@ public class MofMultiplicityType
         {
             lower_ = 0;
         }
+        if( s>=4 )
+        {
+            MXMI_field field3 = (MXMI_field)ch.get(2);
+            MXMI_field field4 = (MXMI_field)ch.get(3);
+            isOrdered_ = makeText(field3).equalsIgnoreCase("true");
+            isUnique_ = makeText(field4).equalsIgnoreCase("true");
+        }
     }
 
 
