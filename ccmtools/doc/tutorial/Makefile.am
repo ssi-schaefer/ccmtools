@@ -14,7 +14,9 @@ TEX = $(DOC_NAME).tex       \
       RemoteComponent.tex   \
       MicoInstallation.tex  \
       ConfixInstallation.tex \
-      Remote.tex
+      Remote.tex             \
+      ManPage.tex            \
+      CarRentalExample.tex
 
 BIBS = cbse.bib doc.bib pattern.bib se.bib wx.bib
 

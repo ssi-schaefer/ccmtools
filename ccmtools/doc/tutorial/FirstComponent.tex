@@ -5,13 +5,14 @@
 
 
 %------------------------------------------------------------------------------
-\section{Overview}
+\section{Component development process overview}
 %------------------------------------------------------------------------------
 
-This section shows how to implement a simple hello world component using the CCM
-Tools. Of course, this is not a real world application; creating a component
-just for a hello world example is really structural overkill. But the example is
-well suited to demonstrate the use of the CCM Tools.
+This section shows how to implement a simple component using the CCM
+Tools. 
+
+Before you start with component development, make sure that the CCM Tools are
+installed in a proper way, as described in Appendix A.
 
 \begin{figure}[htbp]
     \begin{center}
@@ -22,7 +23,7 @@ well suited to demonstrate the use of the CCM Tools.
 \end{figure}
 
 As shown in Fig.~\ref{fig:development-process}, the development process defines
-different roles that reflect different abstraction levels of components.
+different roles that reflect different abstraction levels of components:
 \begin{description}
 \item [Component Designer]
 specifies the structure of the component by defining an {\it Interface
@@ -67,230 +68,313 @@ from the generated (component logic) and hand-crafted (business logic) source
 code. The component libraries are stored in a component repository on the server
 side and are used to assemble modular, component based applications.
 
+\newpage
+
+
 %------------------------------------------------------------------------------
 \section{The designer's job}
 %------------------------------------------------------------------------------
 
-Let's start to implement the first component using the CCM Tools. We'll define
-an IDL file named {\tt Hello.idl} (Example~\ref{example:one-component-idl}) that
-describes the component's structure. In this example, our IDL source file is
-stored in a {\tt hello} directory on our development machine.
+Let's start to design the first component. 
+In the rolle of a component designer,
+we have to create a bunch of IDL files that describes a component's structure
+(Fig~\ref{fig:component-design}). 
+
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics [width=4cm,angle=0] {DesignerTask}
+        \caption{Component design}
+        \label{fig:component-design}
+    \end{center}
+\end{figure}
+
+As a simple example, we model a car rental component that can handle customers
+and miles. For each customer we can evaluate driven miles and costs incurred. 
+Of course, this is not a real world application, but this example is
+well suited to demonstrate CCM Tools in action.
+
+
+We will store all created IDL files in a {\tt example1} directory:
+\begin{small}
+\begin{verbatim}
+        example1/
+        |-- Exceptions.idl
+        |-- Customer.idl
+        |-- CustomerMaintenance.idl
+        |-- CustomerBusiness.idl
+        `-- CarRental.idl
+\end{verbatim}
+\end{small}
+
+Keep in mind that IDL files contain no specification of what exact action will be
+performed.
+The component developer bears the responsibility of filling in the functionality after
+the component logic has been generated.
+
 
 \begin{Example}
 \begin{minifbox}
 \begin{small}
 \begin{verbatim}
-interface Console {
-  long println(in string s);
-};
+#ifndef __EXCEPTIONS_IDL__
+#define __EXCEPTIONS_IDL__
 
-component Hello {
-  attribute string prompt;
-  provides Console console;
-};
+module BigBusiness {
+  exception CreateCustomerException{};
+  exception RemoveCustomerException{};
+  exception NoCustomerException{};
+}; // End of module BigBusiness
 
-home HelloHome manages Hello {
-};
+#endif
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{Interface, component, and home definition for the hello world example.}
-\label{example:one-component-idl}
+\caption{Exceptions.idl}
+\label{example:Exceptions}
 \end{Example}
+The first code snippet (example \ref{example:Exceptions}) shows the definition of three 
+IDL exceptions.
+In order to get a namespace, we envelop these definitions using a module called 
+BigBusiness. 
+To prevent IDL files from multiple includings, we define include guards within 
+each source file.
 
-The IDL file defines a {\tt Console} interface that contains a {\tt println}
-method. The {\tt Hello} component provides the {\tt console} interface as a
-facet. This means the {\tt Hello} component will appear to external component
-users as if it possess a method called {\tt println} that is only available at
-certain times. In this case, the {\tt println} method will be available to
-external components when some sort of receptacle speaking the {\tt Console}
-interface is connected to the {\tt console} facet.
 
-Keep in mind that the IDL file contains no specification of what exact action
-this {\tt println} method will perform! The component developer bears the
-responsibility of filling in the method functionality after the component code
-has been generated. So although this method could theoretically perform any
-task, most component developers would expect it to print out its string argument
-and return something like the number of printed characters.
-
-This component also has an attribute called {\tt prompt}. Just like the method,
-the component's attribute could store any string; the IDL file contains no
-information about the attribute other than its data type! Most likely, though,
-it will store the command prompt for some user input. Finally, the {\tt
-HelloHome} is defined to manage the {\tt Hello} component.
-
-Thus, we have created the following file structure:
+\newpage
+ 
+\begin{Example}
+\begin{minifbox}
 \begin{small}
 \begin{verbatim}
-        hello/
-        |-- Hello.idl
+#ifndef __CUSTOMER_IDL__
+#define __CUSTOMER_IDL__
+
+module BigBusiness {
+  struct Customer {
+    long id;
+    string first_name;
+    string last_name;
+    double mileage;
+  };
+  typedef sequence<Customer> CustomerList;
+}; // End of module BigBusiness
+
+#endif
 \end{verbatim}
 \end{small}
+\end{minifbox}
+\caption{Customer.idl}
+\label{example:Customer}
+\end{Example}
 
-Well done! We have designed an example component and created the corresponding
-IDL definitions. Note that the component designer normally defines the external
-view of a component as a part of the whole application structure, so in a real
-application there would be more components that would be capable of performing
-other distinct actions in the application.
+In {\tt Customer.idl}, we define a structure of basic 
+data types and a sequence of this structure type.
+Again, there is a BigBusiness module and an include guard.
+
+\begin{Example}
+\begin{minifbox}
+\begin{small}
+\begin{verbatim}
+#ifndef __CUSTOMER_MAINTENANCE_IDL__
+#define __CUSTOMER_MAINTENANCE_IDL__
+
+#include"Exceptions.idl"
+#include"Customer.idl"
+
+module BigBusiness {
+  interface CustomerMaintenance
+  {
+    void createCustomer(in Customer person) 
+      raises (CreateCustomerException);
+    Customer retrieveCustomer(in long id)  
+      raises (NoCustomerException);
+    CustomerList retrieveAllCustomers()  
+      raises (NoCustomerException);
+    void updateCustomer(in Customer person)  
+      raises (NoCustomerException);
+    void deleteCustomer(in long id)  
+      raises (RemoveCustomerException);
+  };
+}; // End of module BigBusiness
+#endif
+\end{verbatim}
+\end{small}
+\end{minifbox}
+\caption{CustomerMaintenance.idl}
+\label{example:}
+\end{Example}
+Customers must be handled in a database like way. Thus, {\tt CustomerMaintenance.idl} 
+contains a Create, Retrieve, Update and Delete (CRUD) interface. 
+To pick a particular Customer, we use a Customer id that is realized as an IDL long type.
+Methods can throw exceptions in the case of illegal Customer ids, create or remove problems. 
+
+\newpage
+
+\begin{Example}
+\begin{minifbox}
+\begin{small}
+\begin{verbatim}
+#ifndef __CUSTOMER_BUSINESS_IDL__
+#define __CUSTOMER_BUSINESS_IDL__
+
+#include "Exceptions.idl"
+
+module BigBusiness {
+  interface CustomerBusiness
+  {
+    attribute double dollars_per_mile;
+    void addCustomerMiles(in long id, in double miles) 
+      raises(NoCustomerException);
+    void resetCustomerMiles(in long id) 
+      raises(NoCustomerException);
+    double getCustomerMiles(in long id) 
+      raises(NoCustomerException);
+    double getCustomerDollars(in long id) 
+      raises(NoCustomerException);
+  };
+}; // End of module BigBusiness
+#endif
+\end{verbatim}
+\end{small}
+\end{minifbox}
+\caption{CustomerBusiness.idl}
+\label{example:}
+\end{Example}
+
+Beside the pure data manipulation, we also need an interface that defines a
+business functionality.
+{\tt CustomerBusiness.idl} defines an attribute and some methods that operate
+on the given Customer data. 
+If a parameter represents a wrong Customer id, the {\tt NoCustomerException}
+will be thrown.
+
+\begin{Example}
+\begin{minifbox}
+\begin{small}
+\begin{verbatim}
+#ifndef __CAR_RENTAL_IDL__
+#define __CAR_RENTAL_IDL__
+
+#include "CustomerMaintenance.idl"
+#include "CustomerBusiness.idl"
+
+module BigBusiness {
+
+  component CarRental 
+  { 
+    provides CustomerMaintenance maintenance;
+    provides CustomerBusiness business;
+  };
+  
+  home CarRentalHome manages CarRental 
+  { };
+
+}; // End of module BigBusiness
+#endif
+\end{verbatim}
+\end{small}
+\end{minifbox}
+\caption{CarRental.idl}
+\label{example:}
+\end{Example}
+
+Finally, we collect the included interfaces to a {\tt CarRental} component and 
+define a {\tt CarRentalHome} that will be used to create component instances at
+runtime.
+
+Well done! We have defined our first component in terms of IDL.
+
+
+\newpage
 
 %------------------------------------------------------------------------------
 \section{The developer's job}
 %------------------------------------------------------------------------------
 
 Remember, the component developer implements the behavior of the component with
-respect to the defined interfaces. This section shows how the CCM Tools make
-this job easier.
+respect to the defined IDL interfaces (Fig.~\ref{fig:component-development}). 
+\begin{figure}[htbp]
+    \begin{center}
+        \includegraphics [width=8cm,angle=0] {DeveloperTask}
+        \caption{Component development}
+        \label{fig:component-development}
+    \end{center}
+\end{figure}
+
+This section shows how the CCM Tools make this job easier.
 
 %------------------------------------------------------------------------------
-\subsection{Set up component environment}
+\subsection{Create component logic from IDL}
 %------------------------------------------------------------------------------
 
-Before we can develop components, we have to create the component's environment.
-First, we create or extend the Confix configuration file {\tt \~/.confix} (see
-the Confix manual for more details). An example Confix configuration file is
-included in the CCM Tools source distribution, and
-Example~\ref{example:confix-configuration} shows a basic template.
-\begin{Example}
-\begin{minifbox}
+
+To generate source code from IDL files, we type:
 \begin{small}
 \begin{verbatim}
-ccmtools_profile = {
-    'PREFIX': '<install-path>/ccmTools',
-    'BUILDROOT': '/tmp',
-    'ADVANCED': 'true',
-    'CONFIX': {},
-    'CONFIGURE': {
-       'ENV': {},
-       'ARGS': []
-    },
-}
-
-PROFILES = {
-    'ccmtools': ccmtools_profile,
-    #...
-}
-\end{verbatim}
-\end{small}
-\end{minifbox}
-\caption{A skeletal Confix configuration file.}
-\label{example:confix-configuration}
-\end{Example}
-
-Next, we install the local C++ component runtime libraries:
-\begin{small}
-\begin{verbatim}
-~/hello> ccmtools-c++-environment
-\end{verbatim}
-\end{small}
-The libraries will be installed into the {\tt PREFIX} directory specified in
-your Confix configuration. Note that the CCM Tools always use the ``ccmtools''
-Confix profile.
-
-That's it, now we are ready to implement components. Note that the component's
-environment is installed only once for all the components we implement.
-
-%------------------------------------------------------------------------------
-\subsection{Create an empty component}
-%------------------------------------------------------------------------------
-
-To get the component logic and the skeletons of the business logic from the IDL
-file, we start the local C++ code generator:
-\begin{small}
-\begin{verbatim}
-~/hello> ccmtools-c++-generate -c 1.0 -d -p hello1.0 Hello.idl
+~/example1> ccmtools-generate c++local -a -o CarRental *.idl
 \end{verbatim}
 \end{small}
 
-The {\tt ccmtools-c++-generate} call accepts a bunch of command line parameters.
-In the example we only use a few to demonstrate the possibilities. An in depth
-description of the CCM Tools is out of the scope this tutorial (see the {\it CCM
-Tools User's Guide} instead), but here is a short description of the options we
-used:
-\begin{itemize}
-\item {\tt -c VERSION, -\-code-version=VERSION }\\
-Set the VERSION of generated code. The default component version is ``0.1.0''.
-Note that the component's version number can be queried at runtime.
-
-\item {\tt -d, -\-debug }\\
-Enable debugging in generated code. The generated code produces a lot of debug
-messages that can be used to trace the program execution. This also causes a
-mirror test component and an example test client to be generated.
-
-\item {\tt -p NAME, -\-package=NAME}\\
-Set package name to NAME. The default package name is ``ccmtools-package''. Note
-that the package name is used for the name of the generated subdirectory, unless
-you override this behavior with the {\tt -o} option.
-
-\item {\tt -h, -\-help}\\
-Print out a short description of the available command line parameters.
-\end{itemize}
-
-After calling {\tt ccmtools-c++-generate}, we have a new subdirectory ({\tt
-hello1.0}) that contains the generated component logic. Also, the skeletons for
-the business logic have been copied into the current directory:
-
+Now, we have a new subdirectory ({\tt CarRental}) that contains the generated code. 
+(To get a description of all {\tt ccmtools-generate} options consult the CCM Tools
+commands section in the tutorial's appendix).
 \begin{small}
 \begin{verbatim}
-  hello/
-  |-- HelloHome_app.cc
-  |-- HelloHome_app.h
-  |-- HelloHome_mirror_app.cc
-  |-- HelloHome_mirror_app.h
-  |-- Hello_app.cc
-  |-- Hello_app.h
-  |-- Hello_mirror_app.cc
-  |-- Hello_mirror_app.h
-  |-- Hello.idl
-  |-- Hello_user_types.h
-  |-- _check_CCM_Session_Hello.cc
-  |-- hello1.0/
+CarRental
+|-- CCM_Local_BigBusiness
+|-- CCM_Local_BigBusiness_CCM_Session_CarRental
+|-- CCM_Local_BigBusiness_CCM_Session_CarRental_share
+`-- src
+    |-- CarRentalHome_app.cc
+    |-- CarRentalHome_app.h
+    |-- CarRentalHome_entry.h
+    |-- CarRental_app.cc
+    |-- CarRental_app.h
+    `-- Makefile.py
 \end{verbatim}
 \end{small}
 
-The component developer really ought not to care about the generated component
-logic in the subdirectory (if you don't believe us, though, feel free to read
-through it; just don't edit anything). The interesting files are in the current
-directory. These files are as follows:
+The component developer really ought not to care about the generated {\tt CCM\_Local\_*}
+subdirectories (if you don't believe us, though, feel free to read
+through it; just don't edit anything). 
+The interesting files are listed in the {\tt src} directory. These files contain skeleton
+code of the component's business logic.
 
 \begin{itemize}
-\item {\tt HelloHome\_app.[h,cc]} \\
-Contain the factory methods for component creation. Note that the default {\tt
-create()} method is already implemented.
-\item {\tt Hello\_app.[h,cc]} \\
-Contain the component's business logic skeletons.
-\item {\tt hello\_user\_types.h} \\
-Contains the default IDL to C++ mappings. Note that these mappings can be
-changed by the user, hence the ``user\_types'' name.
+\item {\tt CarRentalHome\_entry.h} \\
+This file is the business logic's entry point and declares an extern ``C'' function 
+that returns a component home instance.
+The generated implementation of this function is hosted in the 
+{\tt CarRentalHome\_app.cc} file.
+
+\item {\tt CarRentalHome\_app.[h,cc]} \\
+These files contain the factory methods for component instantiation. 
+While user defined factory methods must be implemented manually, the default 
+{\tt create()} method is already generated.
+
+\item {\tt CarRental\_app.[h,cc]} \\
+These files contain the component's business logic skeletons and are intended
+for developer extensions (grep for {\tt // TODO : IMPLEMENT ME HERE !}).
+
+\item {\tt Makefile.py} \\
+This file is a confix marker that denotes a directory as 'to compile'.
 \end{itemize}
 
+Files in the {\tt src} directory are protected from overwriting.
+Running the {\tt ccmtools-generator} again results in a bunch of warnings. 
+Instaed of overwriting, the generator stores the new files with an extension ({\tt *.new}). 
+
+\vspace{3mm}
 The generated business logic skeletons contains enough code to be compilable.
-Each method includes a debug statement that prints out the file name and the method name of
-the executed function. Thus, we have an empty but compilable component. Let's
-compile it!
+To build the generated source code, we use an open source build tool called Confix:
 \begin{small}
 \begin{verbatim}
-~/hello> ccmtools-c++-configure -p hello1.0
-~/hello> ccmtools-c++-make -p hello1.0
+~/example1> confix.py --packageroot=`pwd`/CarRental \
+                      --bootstrap --configure --make
 \end{verbatim}
 \end{small}
 
-The {\tt ccmtools-c++-configure} and {\tt ccmtools-c++-make} scripts also accept 
-command line parameters as described below:
 
-\begin{itemize}
-\item {\tt -p NAME, -\-package=NAME}\\
-Use the package named NAME. The default package name is ``ccmtools-package''.
-
-\item {\tt -h, -\-help}\\
-Print out a short description of the available command line parameters.
-\end{itemize}
-
-After compiling the source code, the test client calls some operations of the
-generated component logic. The running test prints out a lot of debugging
-messages; these messages document the execution flow of the program. The first
-component is running!
-
-\newpage
 %------------------------------------------------------------------------------
 \subsection{Test driven development}
 %------------------------------------------------------------------------------
@@ -308,519 +392,272 @@ implementing the test~-- before implementing the application!
 \end{figure}
 
 As shown in Fig.~\ref{fig:test-driven-development}, the CCM Tools make use of
-the TDD idea in the context of components. For every component $C$, the CCM
-Tools generate a mirror component $\overline{C}$. Each input port (receptacle)
+the TDD idea in the context of components. For every component $C$, we
+generate a mirror component $\overline{C}$. Each input port (receptacle)
 of $C$ corresponds to an output port (facet) of $\overline{C}$, and vice versa.
-A test client coordinates creating and connecting the components, as well as the
-test calls to the facets of $C$.
 
-The current component directory contains the skeletons of the mirror
-component business logic and the test client:
-\begin{itemize}
-\item {\tt HelloHome\_mirror\_app.[h,cc]} \\
-Contain the factory methods for mirror component creation. Note that the default
-{\tt create()} method is already implemented.
-\item {\tt Hello\_mirror\_app.[h,cc]} \\
-Contain the skeletons of the mirror component's test code.
-\item {\tt \_check\_CCM\_Session\_Hello.cc} \\
-Contains the component's test client skeleton that creates the component as well as
-the mirror component and connects all facets to receptacles.
-\end{itemize}
-
-Note that the mirror component $\overline{C}$ and the test client are always
-generated at the same time as the component itself, without additional
-development effort. Both of these pieces of generated code can be suppressed by
-leaving out the debug ({\tt -d} or {\tt --debug}) parameter when generating the
-component code with {\tt ccmtools-c++-generate}.
-
-As explained above, the component's unit test client creates $C$ and
-$\overline{C}$ instances and connects these components together as shown in
-Fig.~\ref{fig:test-driven-development}. This process begins automatically after
-compiling. Later on, if you want to rerun the test to impress colleagues and
-pets, you can type:
+To convert the given IDL3 files into files for a mirror component $\overline{C}$, type:
 \begin{small}
 \begin{verbatim}
-~/hello> /tmp/hello1.0/CCM_Test/hello1.0_CCM_Test__check_CCM_Session_Hello
+~/example1> ccmtools-generate idl3mirror \
+                              -o CarRental/idl3mirror *.idl
 \end{verbatim}
 \end{small}
 
+Now we can use the known {\tt c++local} generator to create C++ component logic 
+from the IDL3 mirror files.
+To convert the given IDL3 files into files for a mirror component $\overline{C}$, type:
+\begin{small}
+\begin{verbatim}
+~/example1> ccmtools-generate c++local -a -o CarRental   \
+                              -ICarRental/idl3mirror     \
+                              CarRental/idl3mirror/*.idl
+\end{verbatim}
+\end{small}
+
+Finally, a test client coordinates creating and connecting of component $C$ and 
+mirror component $\overline{C}$.
+To generate a test client we type:
+\begin{small}
+\begin{verbatim}
+~/example1> ccmtools-generate c++local-test -o CarRental *.idl
+\end{verbatim}
+\end{small}
+
+After all these steps, the current {\tt CarRental} directory contains the following
+enities:
+\begin{small}
+\begin{verbatim}
+CarRental
+|-- CCM_Local_BigBusiness
+|-- CCM_Local_BigBusiness_CCM_Session_CarRental
+|-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror
+|-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror_share
+|-- CCM_Local_BigBusiness_CCM_Session_CarRental_share
+|-- idl3mirror
+|-- src
+|   |-- CarRentalHome_app.cc
+|   |-- CarRentalHome_app.h
+|   |-- CarRentalHome_entry.h
+|   |-- CarRentalHome_mirror_app.cc
+|   |-- CarRentalHome_mirror_app.h
+|   |-- CarRentalHome_mirror_entry.h
+|   |-- CarRental_app.cc
+|   |-- CarRental_app.h
+|   |-- CarRental_mirror_app.cc
+|   |-- CarRental_mirror_app.h
+|   `-- Makefile.py
+`-- test
+    |-- Makefile.py
+    `-- _check_CCM_Local_BigBusiness_CCM_Session_CarRental.cc
+\end{verbatim}
+\end{small}
+
+In the {\tt src} and {\tt test} directories, there are the generated files of the mirror
+component's business logic and the test client:
+\begin{itemize}
+\item {\tt CarRentalHome\_mirror\_entry.h} \\
+This file declares an extern ``C'' function 
+that returns a mirror component home instance.
+
+\item {\tt CarRentalHome\_mirror\_app.[h,cc]} \\
+These files contain the factory methods for mirror component instantiation. 
+
+\item {\tt CarRental\_mirror\_app.[h,cc]} \\
+These files contain the mirror component's business logic skeletons and are intended
+for developer extensions.
+
+\item {\tt \_check\_CCM\_Local\_BigBusiness\_CCM\_Session\_CarRental.cc} \\
+This file contains the test client that connects $C$ and $\overline{C}$.  
+Files in {\tt test} are also protected from overwriting.
+\end{itemize}  
+
+
+
+
+\newpage
 %------------------------------------------------------------------------------
 \subsection{Write the test first}
 %------------------------------------------------------------------------------
 
 Now is a good time to start the development of business code. First, we have to
-define the behavior of the business code in an executable semantic. Thus we
-write a test case in the mirror component ({\tt Hello\_mirror\_app.cc}), as
+define the behavior of the business code in an executable semantic. In other words, 
+we write a test case in the mirror component ({\tt CarRental\_mirror\_app.cc}), as
 shown in Example~\ref{example:one-component-mirror-impl}.
 
 \begin{Example}
 \begin{minifbox}
 \begin{small}
 \begin{verbatim}
-void
-CCM_Hello_mirror_impl::ccm_activate (  )
-  throw ( localComponents::CCMException )
+void CCM_CarRental_mirror_impl::ccm_activate()
+  throw ( LocalComponents::CCMException )
 {
-  DEBUGNL ( " CCM_Hello_mirror_impl->ccm_activate (  )" );
-
-  const string s = "Hello World";
-  cout << "Start of Hello unit test:" << endl;
-  int number_of_char =
-    ctx->get_connection_console_mirror().ptr()->println(s);
-  assert(number_of_char == s.length());
+  try {
+    {
+      CCM_Local::BigBusiness::Customer person;
+      person.id = 1;
+      person.first_name = "Franz";
+      person.last_name = "Kafka";
+      ctx->get_connection_maintenance_mirror()->
+           createCustomer(person);
+    }
+    {
+      CCM_Local::BigBusiness::Customer person;
+      long id = 1;
+      person = ctx->get_connection_maintenance_mirror()->
+               retrieveCustomer(id);
+      assert(person.id == 1);
+      assert(person.first_name == "Franz");
+      assert(person.last_name == "Kafka");
+    }
+  }
+  catch(CCM_Local::BigBusiness::CreateCustomerException) {
+    cerr << "MAINTENANCE ERROR: Can't create customer!" << endl;
+  }
+  catch(CCM_Local::BigBusiness::NoCustomerException) {
+    cerr << "MAINTENANCE ERROR: no customer found!" << endl;
+  }
 }
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{Business logic implementation in a mirror component function.}
+\caption{Test case implementation in the mirror component.}
 \label{example:one-component-mirror-impl}
 \end{Example}
 
 The test case is implemented in the {\tt ccm\_activate()} callback method of the
 mirror component because this method is called after creating and connecting $C$
-and $\overline{C}$. We use the context object ({\tt ctx}) to get a smart pointer
-to the facet of $C$ before we call the {\tt println()} operation. To compile and
-run the unit test again, we just use the CCM Tools C++ component make tool:
+and $\overline{C}$ from the component logic. 
+
+First, we creating a valid {\tt Customer} record and  
+use the context object ({\tt ctx}) to get a smart pointer
+to $\overline{C}$'s receptacle (which is connected with $C$'s facet) 
+before we call the {\tt createCustomer()} operation. 
+After that, we retrieve the record from the receptacle and compare the stored items.
+
+To compile and run the test, we type:
 \begin{small}
 \begin{verbatim}
-~/hello> ccmtools-c++-make -p hello1.0
+~/example1> confix.py --packageroot=`pwd`/CarRental \
+                      --make --targets="check"
 \end{verbatim}
 \end{small}
 
-From the output of the test client, we can see that the {\tt println()} method
-of $C$ is called from the mirror component $\overline{C}$, but {\tt println()}
-in the test fails. Remember, there is no business code implemented in {\tt
-println()}; it is an empty function skeleton! Note that functions with a {\tt
-void} return type will not fail the test, because the test client has no way of
-receiving notification that such function calls succeeded.
+The test failed!
+Remember, there is no business code implemented in {\tt createCustomer()} and 
+{\tt retrieveCustomer()}; they are empty function skeletons. 
+
+
 
 %------------------------------------------------------------------------------
 \subsection{Write the business logic}
 %------------------------------------------------------------------------------
 
-Finally, we can implement the business logic that satisfies the written test
-case. We open the {\tt Hello\_app.cc} file and add a single line, as shown in
+Now we are ready to implement the business logic that satisfies the written test
+case. We open {\tt CarRental\_app.cc} and add some lines, as shown in
 Example~\ref{example:one-component-impl}.
 
 \begin{Example}
 \begin{minifbox}
 \begin{small}
 \begin{verbatim}
-long
-console_impl::println ( const std::string& s )
+void
+maintenance_impl::createCustomer ( const Customer& person )
+  throw (LocalComponents::CCMException, CreateCustomerException)
 {
-  DEBUGNL ( " console_impl->println ( s )" );
-  cout << s << endl;
-  return s.length();
+  component->CustomerDB.push_back(person);
+}
+
+Customer
+maintenance_impl::retrieveCustomer ( const long id )
+  throw (LocalComponents::CCMException, NoCustomerException)
+{
+  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
+  for(pos = component->CustomerDB.begin(); 
+      pos != component->CustomerDB.end(); ++pos) {
+    if(pos->id == id) {
+      return *pos;
+    }
+  }
+  throw NoCustomerException();
 }
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{Business logic implementation in a component function.}
+\caption{Business logic implementation.}
 \label{example:one-component-impl}
 \end{Example}
 
-As discussed above, the {\tt println()} method simply prints out the given
-string and returns the number of characters of the string~-- that's it! We'll
-run the test again to see if it's working:
+Instead of a database, we simply use a {\tt std::vector<>} template to implement
+the {\tt createCustomer()} and {\tt retrieveCustomer()} methods~-- that's it! 
+
+We'll run the test again to see if it's working:
 \begin{small}
 \begin{verbatim}
-~/hello> ccmtools-c++-make -p hello1.0
+~/example1> confix.py --packageroot=`pwd`/CarRental \
+                      --make --targets="check"
 \end{verbatim}
 \end{small}
 
-Yay, the unit test passed!
+Yay, the test passed!
 
-Note that all the hand crafted code is in the current directory. There is no
-need to touch the generated code in {\tt hello1.0}. To protect the business code
-from overwriting, the {\tt ccmtools-c++-generate} tool creates the {\tt
-*\_app.[h,cc]} files only if they do not exist. If you really want to overwrite
-these business logic files, however, you can use the force ({\tt -f} or {\tt
--\-force}) option to the {\tt ccmtools-c++-generate} tool.
+In the next step, we write a new test case in $\overline{C}$ and implement 
+business logic in $C$ that satisfies the test, and so on.
+To keep the tutorial clear, we have put the source code of the whole example
+into the tutorial's Appendix.
+The example is also available in the {\tt test/CppGenerator/tutorial}
+directory of the CCM Tools project. 
 
+\newpage
 %------------------------------------------------------------------------------
 \subsection{Deploy the component}
 %------------------------------------------------------------------------------
 
-Deploying a component means that the component's source code will be compiled
-into a component library file. This library file will then be stored in the
-component repository, which is simply a directory on the computer that will
-serve as a component server. The CCM Tools provide this functionality in a
-single call:
+Deploying a component means that the component's libraries and header files will 
+be stored in a component repository, which is simply a directory on your computer
+(specified by 'PREFIX' in {\tt ~/.confix}).
 
+Component deployment is performed by Confix:
 \begin{small}
 \begin{verbatim}
-~/hello> ccmtools-c++-install -p hello1.0
+~/example1> confix.py --packageroot=`pwd`/CarRental \
+                      --make --targets="install"
 \end{verbatim}
 \end{small}
 
-The {\tt ccmtools-c++-install} script accepts the following command line
-parameters:
-\begin{itemize}
-\item {\tt -p NAME, --package=NAME}\\
-Use package named NAME, the default package name is ``ccmtools-package''.
-
-\item {\tt -h, --help}\\
-Prints out a short description of the available command line parameter.
-\end{itemize}
-
-After being installed, the component is part of the component repository and can
-be used in a component assembly or a local client.
-
-%------------------------------------------------------------------------------
-\subsection{Write a local test client}
-%------------------------------------------------------------------------------
-
-A component based application builds up component assemblies using deployed
-components. In this section we'll show this task using a simple test client that
-instantiates the {\tt Hello} component and calls the component's operations.
-
-First, we'll add a {\tt test} directory to our project and implement the client
-code in the subdirectory {\tt client}:
+After installing a component, the component repository contains the following
+file structures:
 \begin{small}
 \begin{verbatim}
-    hello/
-    |-- hello1.0/
-    |-- test/
-    |   |-- client/
-    |   |   |-- client.cc
+include/
+|-- CCM_Local
+|   |-- BigBusiness
+|   |   |-- CCM_Session_CarRental/
+|   |   |-- CCM_Session_CarRental_mirror/
+|   |   |-- CreateCustomerException.h
+|   |   |-- Customer.h
+|   |   |-- CustomerBusiness.h
+|   |   |-- CustomerList.h
+|   |   |-- CustomerMaintenance.h
+|   |   |-- NoCustomerException.h
+|   |   `-- RemoveCustomerException.h
 \end{verbatim}
 \end{small}
 
-The test client needs a bunch of included header files that are generated by the
-CCM Tools. There are different namespaces defined in the header files that we
-are using in the client code. The header lines from the test client are shown in
-Example~\ref{example:one-component-test-head}.
-
-The main function contains all the necessary code to use a local component. At
-the local home finder, the client needs to register the {\tt HelloHome}
-instance, as shown in Example~\ref{example:one-component-test-register}. After
-home registration, we can find the home by its name and create a component
-instance. From the component instance we get a reference to the {\tt Console}
-facet. Finally, to indicate the component the end of create and configuration,
-we call {\tt configuration\_complete} method. See
-Example~\ref{example:one-component-test-create} for the code needed here.
-
-Now that we have a component, we are ready to use the operations provided by the
-component and its facet. Example~\ref{example:one-component-test-call} shows how
-to call component methods. After calling component methods to test the
-component, the client needs to tear down the components to free up allocated
-memory. To tear the application town, we remove the component instance from
-memory and unregister the component's home, as shown in
-Example~\ref{example:one-component-test-teardown}.
-
-\begin{Example}
-\begin{minifbox}
 \begin{small}
 \begin{verbatim}
-#include <localComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
-#include <CCM_Utils/Debug.h>
-
-#include <CCM_Local/CCM_Session_Hello/HelloHome_gen.h>
-#include <CCM_Local/CCM_Session_Hello/Hello_gen.h>
-
-using namespace std;
-using namespace CCM_Utils;
-using namespace CCM_Local;
-using namespace CCM_Session_Hello;
-\end{verbatim}
-\end{small}
-\end{minifbox}
-\caption{Test client header lines for the single component example.}
-\label{example:one-component-test-head}
-\end{Example}
-
-\begin{Example}
-\begin{minifbox}
-\begin{small}
-\begin{verbatim}
-int main ( int argc, char *argv[] )
-{
-  // Set debugging mode
-  Debug::set_global(true);
-
-  // Get in instance of the local HomeFinder and
-  // register component homes
-  localComponents::HomeFinder* homeFinder =
-    HomeFinder::Instance (  );
-  try {
-    homeFinder->register_home(create_HelloHomeAdapter(),
-                              "HelloHome" );
-  } catch ( ... )  {
-    cout << "Aut'sch: when registering homes!" << endl;
-    return -1;
-  }
-\end{verbatim}
-\end{small}
-\end{minifbox}
-\caption{Registering the component home with the local home finder.}
-\label{example:one-component-test-register}
-\end{Example}
-
-\begin{Example}
-\begin{minifbox}
-\begin{small}
-\begin{verbatim}
-  try {
-    // Find component home
-    SmartPtr<HelloHome> myHelloHome
-      ( dynamic_cast<HelloHome*>
-        ( homeFinder->find_home_by_name
-          ( "HelloHome").ptr ()));
-
-    // Create a component instance
-    SmartPtr<Hello> myHello =
-      myHelloHome.ptr()->create();
-
-    // Get a facet reference
-    SmartPtr<CCM_Console> console =
-      myHello.ptr()->provide_console();
-
-    // Configure the component's attribute
-    myHello.ptr()->prompt("=->");
-
-    // Component configuration finished
-    myHello.ptr()->configuration_complete();
-\end{verbatim}
-\end{small}
-\end{minifbox}
-\caption{Creating the component and facet in the hello world example.}
-\label{example:one-component-test-create}
-\end{Example}
-
-\begin{Example}
-\begin{minifbox}
-\begin{small}
-\begin{verbatim}
-    // Call operations on the component and its facet
-    cout << "Version = " <<
-      myHello.ptr()->getComponentVersion() << endl;
-    cout << "Date = " <<
-      myHello.ptr()->getComponentDate() << endl;
-
-    console.ptr()->println("Hello from test client");
-\end{verbatim}
-\end{small}
-\end{minifbox}
-\caption{Calling component methods in the hello world example.}
-\label{example:one-component-test-call}
-\end{Example}
-
-\begin{Example}
-\begin{minifbox}
-\begin{small}
-\begin{verbatim}
-    // Destroy component instance
-    myHello.ptr()->remove();
-
-    // Unregister component home
-    homeFinder->unregister_home("HelloHome");
-  }
-  catch ( localComponents::HomeNotFound ) {
-    cout << "Aut'sch: can't find a home!" << endl;
-    return -1;
-  }
-  catch ( ... )  {
-    cout << "Aut'sch: there is something wrong!" << endl;
-    return -1;
-  }
-  return 0;
-}
-\end{verbatim}
-\end{small}
-\end{minifbox}
-\caption{Tearing down the client in the single component hello world example.}
-\label{example:one-component-test-teardown}
-\end{Example}
-
-To compile and install the local test client we use the {\tt Confix} tool, which
-is also used by the component build process. Note that we use the same confix
-profile the CCM Tools, to ensure that the client can access the component
-libraries.
-
-\begin{small}
-\begin{verbatim}
-~/hello/test> confix.py --bootstrap --configure  \
-                        --make --targets=install --profile=ccmtools
+lib/
+|-- libCarRental_CCM_Local_BigBusiness.a
+|-- libCarRental_CCM_Local_BigBusiness_CCM_Session_CarRental.a
+|-- libCarRental_CCM_Local_BigBusiness_CCM_Session_CarRental_mirror.a
+|-- libCarRental_CCM_Local_BigBusiness_CCM_Session_CarRental_mirror_share.a
+|-- libCarRental_CCM_Local_BigBusiness_CCM_Session_CarRental_share.a
+`-- libCarRental_src.a
 \end{verbatim}
 \end{small}
 
-Finally, we can run the test client:
 
-\begin{small}
-\begin{verbatim}
-~/hello/test> confix.py --bootstrap --configure  \
-                        --make --targets=install --profile=ccmtools
-~/hello> test_client_client
-\end{verbatim}
-\end{small}
 
-The advantage here is that the development of the local component is separated
-from the development of the test client. Thus, a deployed component can be used
-in different applications at the same time.
-
-%------------------------------------------------------------------------------
-\subsection{Integrate existing business logic}
-%------------------------------------------------------------------------------
-
-The component's business code, in the example above, is very simple and
-therefore directly implemented in the {\tt Hello\_app.[h,cc]} files. Usually,
-however, business code has been already developed in a separated {\tt business}
-directory. Even more likely is that the business logic is contained in some sort
-of legacy code library:
-\begin{small}
-\begin{verbatim}
-    hello/
-    |-- hello1.0/
-    |-- test/
-    |   |-- client/
-    |   |-- business/
-    |   |   |-- legacy.h
-    |   |   |-- legacy.cc
-\end{verbatim}
-\end{small}
-
-For this example, we'll use some implemented business logic from legacy code.
-This legacy code provides a {\tt print\_string} method, so all the component
-developer needs to do is call up the legacy function, as shown in
-Example~\ref{example:one-component-legacy-wrapper}.
-
-\begin{Example}
-\begin{minifbox}
-\begin{small}
-\begin{verbatim}
-// legacy.h
-#include<stdio.h>
-extern void print_string(const char* s);
-
-// legacy.cc
-#include "legacy.h"
-void print_string(const char* s)
-{
-  printf(s);
-}
-\end{verbatim}
-\end{small}
-\end{minifbox}
-\caption{A short legacy code library wrapper.}
-\label{example:one-component-legacy-wrapper}
-\end{Example}
-
-We suggest building the business logic in the same way as the test client, using
-the {\it Confix} tool. Always remember to use the Confix ``ccmtools'' profile
-when using the CCM Tools.
-\begin{small}
-\begin{verbatim}
-test> confix.py --bootstrap --configure \
-                --make --targets=install --profile=ccmtools
-\end{verbatim}
-\end{small}
-
-After installing the component test, the {\tt Hello\_app.cc} file can be
-modified as shown in Example~\ref{example:one-component-legacy-impl} to
-integrate the separately compiled business code.
-
-%------------------------------------------------------------------------------
-\subsection{Integrate existing business logic}
-%------------------------------------------------------------------------------
-
-The component's business code, in the example above, is very simple and
-therefore directly implemented in the {\tt Hello\_app.[h,cc]} files. Usually,
-however, business code has been already developed in a separated {\tt business}
-directory. Even more likely is that the business logic is contained in some sort
-of legacy code library:
-
-\begin{small}
-\begin{verbatim}
-    hello/
-    |-- hello1.0/
-    |-- test/
-    |   |-- client/
-    |   |-- business/
-    |   |   |-- legacy.h
-    |   |   |-- legacy.cc
-\end{verbatim}
-\end{small}
-
-For this example, we'll use some implemented business logic from legacy code.
-This legacy code provides a {\tt print\_string} method, so all the component
-developer needs to do is call up the legacy function, as shown in
-Example~\ref{example:one-component-legacy-wrapper}.
-
-\begin{Example}
-\begin{minifbox}
-\begin{small}
-\begin{verbatim}
-// legacy.h
-#include<stdio.h>
-extern void print_string(const char* s);
-
-// legacy.cc
-#include "legacy.h"
-void print_string(const char* s)
-{
-  printf(s);
-}
-\end{verbatim}
-\end{small}
-\end{minifbox}
-\caption{A short legacy code library wrapper.}
-\label{example:one-component-legacy-wrapper}
-\end{Example}
-
-We suggest building the business logic in the same way as the test client, using
-the {\it Confix} tool. Always remember to use the Confix ``ccmtools'' profile
-when using the CCM Tools.
-
-\begin{small}
-\begin{verbatim}
-test> confix.py --bootstrap --configure \
-                --make --targets=install --profile=ccmtools
-\end{verbatim}
-\end{small}
-
-After installing the component test, the {\tt Hello\_app.cc} file can be
-modified as shown in Example~\ref{example:one-component-legacy-impl} to
-integrate the separately compiled business code.
-
-\begin{Example}
-\begin{minifbox}
-\begin{small}
-\begin{verbatim}
-#include<legacy.h>
-//...
-void
-console_impl::println ( const std::string s2 )
-{
-  DEBUGNL ( " console_impl->println ( s2 )" );
-  print_string(s2.c_str());  // call the legacy code
-  return s2.length();
-}
-\end{verbatim}
-\end{small}
-\end{minifbox}
-\caption{Including legacy code in a component's business logic implementation.}
-\label{example:one-component-legacy-impl}
-\end{Example}
-
-In conclusion, to build the final component and the test client, we type:
-
-\begin{small}
-\begin{verbatim}
-~/hello> ccmtools-c++-make -p hello1.0
-~/hello/test> confix.py --bootstrap --configure \
-                        --make --targets=install --profile=ccmtools
-~/hello/test> test_client_client
-\end{verbatim}
-\end{small}
-
-In summary, we have included legacy code in the component's business logic and
-used the existing client to integrate the component in an application. This is
-the beginning of the process of componentizing an existing legacy library. By
-fully compartmentalizing legacy code (if that is possible), the respective
-components can be individually tested to provide for more stable component based
-software systems in the future.
 
 %------------------------------------------------------------------------------
 \subsection{Undeploy the component}
@@ -830,12 +667,34 @@ To remove the component from the component repository, type:
 
 \begin{small}
 \begin{verbatim}
-~/hello> ccmtools-c++-uninstall -p hello1.0
+~/example1>  confix.py --packageroot=`pwd`/CarRental \
+                       --make --targets="uninstall distclean" 
 \end{verbatim}
 \end{small}
 
-The command line parameters are the same as those for the {\tt
-ccmtools-c++-install} tool. Note that the source code is not affected by the
-undeployment process; the uninstallation simply removes the component library
-and cleans up the build directory tree.
+The optional parameter {\tt distclean} causes Confix to remove the
+component's resources in the build directory too.
+
+Note that installing is not necessary during component development. 
+For implementing test cases and business logic we only need the source and
+build directotry (specified by 'BUILDROOT' in {\tt ~/.confix}).
+ 
+
+
+\newpage
+%------------------------------------------------------------------------------
+\subsection{Component packaging}
+%------------------------------------------------------------------------------
+\dots
+
+%------------------------------------------------------------------------------
+\subsection{Write a component client}
+%------------------------------------------------------------------------------
+\dots
+
+
+
+
+
+ 
 

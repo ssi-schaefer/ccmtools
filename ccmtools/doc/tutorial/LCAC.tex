@@ -1,13 +1,7 @@
 %==============================================================================
 \chapter{Local Component Adapter Concept}
 %==============================================================================
-\begin{flushright}
-{\it }
-\end{flushright}
 
-%==============================================================================
-\section{Introduction}
-%==============================================================================
 From practical experiences we learned that there is a need for improvements in
 the CCM to be usable. The following sections describe the new concepts we
 introduced in respect to the CCM specification.
@@ -171,26 +165,4 @@ the assembly instance is returned by the {\tt create()} call to the client.
 From the client's point of view, the session facade component is a fat remote
 one. In fact, this fat component is an assembly instance graph consisting of
 thin remote and local components that ensure easy reuse of business code.
-
-%==============================================================================
-\section{Assemblies of assemblies}
-%==============================================================================
-
-When we can use assembly instance graphs in the same way as remote components,
-we can then also group them into new assemblies. These remote assemblies consist
-of sets of remote session facade components and their remote connections.
-
-\begin{figure}[!htb]
-    \begin{center}
-        \includegraphics [width=10cm,angle=0] {RemoteAssembly}
-        \caption{Remote assembly}
-        \label{remoteAssembly}
-    \end{center}
-\end{figure}
-
-Fig.~\ref{remoteAssembly} shows a remote assembly consisting of three assembly
-instance graphs, each in its own process. Note that only the remote components
-of the instance graphs are visible from the outside, so the instance graphs look
-like fat remote CCM components. This approach is consistent with the CCM
-specification, but it increases performance and reusability.
 

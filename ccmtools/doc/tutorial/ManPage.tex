@@ -1,0 +1,50 @@
+%==============================================================================
+\chapter{CCM Tools commands}
+%==============================================================================
+
+%------------------------------------------------------------------------------
+\section{ccmtools-generate}
+%------------------------------------------------------------------------------
+
+
+\begin{verbatim}
+   [~/ccmtools]$ ccmtools-generate TYPE [OPTIONS] FILES
+\end{verbatim}
+
+
+The {\tt ccmtools-generate} script is usd to start a paricular component generator 
+backend. 
+Currently, the following generator types are supported:
+\begin{itemize}
+\item {\tt c++local} \\
+
+\item {\tt c++local-test} \\
+
+\item {\tt c++dbc} \\
+
+\item {\tt c++remote} \\
+
+\item {\tt c++remote-test} \\
+
+\item {\tt idl3 } \\
+
+\item {\tt idl3mirror } \\
+
+\item {\tt idl2}
+\end{itemize}
+
+In addition to the generator types, the {\tt ccmtools-generate} script handles
+the following options:
+
+\begin{itemize}
+\item {\tt -I DIR} \\
+
+\item {\tt -o DIR, --output=DIR} \\
+
+\item {\tt -a, --application} \\
+
+\item {\tt -h, --help} \\
+Print out a short description of the available command line parameters.
+
+\item {\tt -V, --version} \\
+\end{itemize}
