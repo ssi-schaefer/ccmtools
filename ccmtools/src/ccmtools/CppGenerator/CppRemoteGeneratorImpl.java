@@ -45,6 +45,7 @@ import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
+import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
@@ -336,7 +337,7 @@ public class CppRemoteGeneratorImpl
      */
     protected String getLocalValue(String variable)
     {
-        String value = super.getLocalValue(variable);
+	String value = super.getLocalValue(variable);
 
 	if(current_node instanceof MAttributeDef) {
             return data_MAttributeDef(variable, value);
@@ -344,52 +345,213 @@ public class CppRemoteGeneratorImpl
 	else if(current_node instanceof MFieldDef) {
 	    return data_MFieldDef(variable, value);
 	}
+	else if(current_node instanceof MAliasDef) {
+	    // determine the contained type of MaliasDef
+	    MTyped type = (MTyped)current_node;
+	    MIDLType idlType = type.getIdlType(); 
+	    if(idlType instanceof MPrimitiveDef
+	       || idlType instanceof MStringDef
+	       || idlType instanceof MWstringDef) {
+		return value; 
+	    }
+	    else if(idlType instanceof MSequenceDef) {
+		return data_MSequenceDef(variable, value);
+	    }
+	    else if(idlType instanceof MArrayDef) {
+		return data_MArrayDef(variable, value);
+	    }
+	    else {
+		// Signal an implementation bug
+		throw new RuntimeException("Unhandled alias type:"
+					   + "CppRemoteGenerator."
+					   + "getLocalValue(" + variable + ")");
+	    }
+	}
 	return value;
     }
 
 
-    protected String data_MAliasDef(String dataType, String dataValue)
+    protected String data_MArrayDef(String dataType, String dataValue)
+    {
+	// TODO
+	throw new RuntimeException("CppRemoteGenerator.data_MArrayDef(" 
+				   + dataType + ", " + dataValue 
+				   + " - Not implemented!");
+    }
+
+
+    /**
+     * This method handles an alias to a MSequenceDef.
+     * All convert* methods are defined in Java because an alias type
+     * can also be a primitive type that already has a converter method.
+     * In that case, the converter file must be empty.
+     **/
+    protected String data_MSequenceDef(String dataType,String dataValue)
     {
 	MTyped type = (MTyped)current_node;
 	MIDLType idlType = type.getIdlType(); 
+	MContained contained = (MContained)type;
+	MTyped singleType = (MTyped)idlType;
+	MIDLType singleIdlType = singleType.getIdlType(); 
 
-	if(idlType instanceof MSequenceDef) {
-	    MTyped singleType = (MTyped)idlType;
-	    MIDLType singleIdlType = singleType.getIdlType(); 
-	    if(dataType.equals("SingleValue")) {
-		if(singleIdlType instanceof MPrimitiveDef 
-		   || singleIdlType instanceof MStringDef) {
-		    dataValue = getBaseLanguageType(singleType);
-		}
-		else {
-		    dataValue = "CCM_Local::" // TODO: Handle local Namespace 
-			+ getBaseLanguageType(singleType);
-		}
+	if(dataType.equals("ConvertFromCorbaDeclaration")) {
+	    StringBuffer buffer = new StringBuffer();	    
+	    buffer.append("void convertFromCorba(const ");
+	    buffer.append(handleNamespace("ShortNamespace", "::"));
+	    buffer.append(contained.getIdentifier());
+	    buffer.append("& in, CCM_Local::");
+	    buffer.append(contained.getIdentifier());
+	    buffer.append("& out);");
+	    dataValue = buffer.toString();
+	}
+	else if(dataType.equals("ConvertToCorbaDeclaration")) {
+	    StringBuffer buffer = new StringBuffer();	    
+	    buffer.append("void convertToCorba(const CCM_Local::");
+	    buffer.append(contained.getIdentifier());
+	    buffer.append("& in, ");
+	    buffer.append(handleNamespace("ShortNamespace", "::"));
+	    buffer.append(contained.getIdentifier());
+	    buffer.append("& out);");
+	    dataValue = buffer.toString();
+	}
+	else if(dataType.equals("ConvertFromCorbaImplementation")) {
+	    List code = new ArrayList();
+	    code.add("void");
+	    code.add("convertFromCorba(const " 
+		     + handleNamespace("ShortNamespace", "::")
+		     + contained.getIdentifier()
+		     + "& in, CCM_Local::" 
+		     + contained.getIdentifier()
+		     + "& out)");
+	    code.add("{");
+	    code.add("    LDEBUGNL(CCM_REMOTE,\" convertFromCorba("
+		     + handleNamespace("ShortNamespace", "::")
+		     + contained.getIdentifier()
+		     + ")\");");
+	    code.add("    LDEBUGNL(CCM_REMOTE,\"   "
+		     + contained.getIdentifier() 
+		     + "= \" << in);");
+	    code.add(data_MSequenceDef("ConvertAliasFromCORBA",""));
+	    code.add("}"); 
+	    dataValue = join("\n", code);
+	}
+	else if(dataType.equals("ConvertToCorbaImplementation")) {
+	    List code = new ArrayList();
+	    code.add("void"); 
+	    code.add("convertToCorba(const CCM_Local::"
+		     + contained.getIdentifier()
+		     + "& in, "
+		     + handleNamespace("ShortNamespace", "::")
+		     + contained.getIdentifier()
+		     + "& out)");
+	    code.add("{");
+	    code.add("    LDEBUGNL(CCM_REMOTE,\" convertToCorba(" 
+		     + handleNamespace("ShortNamespace", "::")
+		     + contained.getIdentifier()
+		     + ")\");");
+	    code.add("    LDEBUGNL(CCM_REMOTE,\"   "
+		     + contained.getIdentifier()
+		     + "= \" << out);");
+	    code.add(data_MSequenceDef("ConvertAliasToCORBA",""));
+	    code.add("}"); 
+	    dataValue = join("\n", code);
+	}
+	else if(dataType.equals("OutputCorbaTypeDeclaration")) {
+	    dataValue = "std::ostream& operator<<(std::ostream& o, const "
+		+ handleNamespace("ShortNamespace", "::")
+		+ contained.getIdentifier() 
+		+ "& value);";
+	}
+	else if(dataType.equals("OutputCorbaTypeImplementation")) {
+	    List code = new ArrayList();
+	    code.add("std::ostream&"); 
+	    code.add("operator<<(std::ostream& o, const "
+		     + handleNamespace("ShortNamespace", "::")
+		     + contained.getIdentifier() 
+		     + "& value)");
+	    code.add("{");
+	    code.add(data_MSequenceDef("OutputCORBAType",""));
+	    code.add("return o;");
+	    code.add("}");
+	    dataValue = join("\n", code);
+	}
+	else if(dataType.equals("SingleValue")) {
+	    if(singleIdlType instanceof MPrimitiveDef 
+	       || singleIdlType instanceof MStringDef) {
+		dataValue = getBaseLanguageType(singleType);
 	    }
-	    else if(dataType.equals("InOutValue")) {
-		if(singleIdlType instanceof MStringDef) {
-		    dataValue = "out[i].inout()";
-		}
-		else {
-		    dataValue = "out[i]";
-		}
-	    }
-	    else if(dataType.equals("CORBASequenceConverterInclude")) {
-		if(singleIdlType instanceof MPrimitiveDef 
-		   || singleIdlType instanceof MStringDef) {
-		    dataValue = "";
-		}
-		else {
-		    StringBuffer ret = new StringBuffer();
-		    ret.append("#include \"");
-		    // TODO: ret.append(Name_space);
-		    ret.append(getBaseLanguageType(singleType));
-		    ret.append("_remote.h\"");
-		    dataValue = ret.toString();
-		}
+	    else {
+		dataValue = "CCM_Local::" 
+		    // TODO: Handle local Namespace 
+		    + getBaseLanguageType(singleType);
 	    }
 	}
-        return dataValue;
+	else if(dataType.equals("InOutValue")) {
+	    if(singleIdlType instanceof MStringDef) {
+		dataValue = "out[i].inout()";
+	    }
+	    else {
+		dataValue = "out[i]";
+	    }
+	}
+	else if(dataType.equals("CORBASequenceConverterInclude")) {
+	    if(singleIdlType instanceof MPrimitiveDef 
+	       || singleIdlType instanceof MStringDef) {
+		dataValue = "";
+	    }
+	    else {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("#include \"");
+		// TODO: ret.append(Name_space);
+		buffer.append(getBaseLanguageType(singleType));
+		buffer.append("_remote.h\"");
+		dataValue = buffer.toString();
+	    }
+	}
+	else if(dataType.equals("ConvertAliasFromCORBA")) {
+	    String singleValue = data_MSequenceDef("SingleValue", "");
+	    List code = new ArrayList();
+	    code.add("    out.reserve(in.length());");
+	    code.add("    for(unsigned long i=0; i < in.length();i++) {");
+	    code.add("        " + singleValue + " singleValue;");
+	    code.add("        convertFromCorba(in[i], singleValue);");
+	    code.add("        out.push_back(singleValue);");
+	    code.add("    }");
+	    dataValue = join("\n", code);
+	}
+	else if(dataType.equals("ConvertAliasToCORBA")) {
+	    String singleValue = data_MSequenceDef("SingleValue", "");
+	    String inOutValue = data_MSequenceDef("InOutValue", "");
+	    List code = new ArrayList();
+	    code.add("    out.length(in.size());");
+	    code.add("    for(unsigned long i=0; i < in.size(); i++) {");
+	    code.add("        " + singleValue + " singleValue = in[i];");
+	    code.add("        convertToCorba(singleValue, " 
+		     + inOutValue + ");");
+	    code.add("    }");	
+	    dataValue = join("\n", code);
+	}
+	else if(dataType.equals("OutputCORBAType")) {
+	    List code = new ArrayList();
+	    code.add("    o << \"[ \";");
+	    code.add("    for(unsigned long i=0; i < value.length();i++) {");
+	    code.add("        if(i) o << \",\";");	
+	    code.add("        o << value[i];");
+	    code.add("    }");
+	    code.add("    o << \" ]\";");
+	    dataValue = join("\n", code);
+	}
+	else if(dataType.equals("OutputCppType")) {
+	    List code = new ArrayList();
+	    code.add("    o << \"[ \";");
+	    code.add("    for(unsigned long i=0; i < value.size(); i++) {");
+	    code.add("        if(i) o << \",\";");
+	    code.add("        o << value[i];");
+	    code.add("    }");
+	    code.add("    o << \" ]\";");
+	    dataValue = join("\n", code);
+	}
+	return dataValue;
     }
 
 
@@ -1168,9 +1330,20 @@ public class CppRemoteGeneratorImpl
 	       || idl_type instanceof MStringDef) {
 		ret.add(convertPrimitiveParameterFromCppToCorba(p));
 	    }
-	    else if(idl_type instanceof MStructDef
-		    || idl_type instanceof MAliasDef) {
+	    else if(idl_type instanceof MStructDef) {
 		ret.add(convertUserParameterFromCppToCorba(p));
+	    }
+	    else if(idl_type instanceof MAliasDef) {
+		MTyped containedType = (MTyped)idl_type;
+		MIDLType containedIdlType = containedType.getIdlType(); 
+		if(containedIdlType instanceof MPrimitiveDef
+		   || containedIdlType instanceof MStringDef
+		   || containedIdlType instanceof MWstringDef) {
+		    ret.add(convertPrimitiveParameterFromCppToCorba(p));
+		}
+		else {
+		    ret.add(convertUserParameterFromCppToCorba(p));
+		}
 	    }
 	}
 	return join("\n", ret) + "\n";
@@ -1247,12 +1420,34 @@ public class CppRemoteGeneratorImpl
 	}
 
 	if(idl_type instanceof MPrimitiveDef 
-	   || idl_type instanceof MStringDef) {
+	   || idl_type instanceof MStringDef
+	   || idl_type instanceof MWstringDef) {
 	    ret.add(convertPrimitiveResultFromCppToCorba(op));
 	}
 	else if(idl_type instanceof MStructDef
-		|| idl_type instanceof MAliasDef) {
+		|| idl_type instanceof MSequenceDef) {
 	    ret.add(convertUserResultFromCppToCorba(op));
+	}
+	else if(idl_type instanceof MAliasDef) {
+	    MTyped containedType = (MTyped)idl_type;
+	    MIDLType containedIdlType = containedType.getIdlType(); 
+	    if(containedIdlType instanceof MPrimitiveDef
+	       || containedIdlType instanceof MStringDef
+	       || containedIdlType instanceof MWstringDef) {
+		ret.add(convertPrimitiveResultFromCppToCorba(op));
+	    }
+	    else if(containedIdlType instanceof MStructDef
+		    || containedIdlType instanceof MSequenceDef) {
+	        ret.add(convertUserResultFromCppToCorba(op));
+	    }
+	    else {
+		throw new RuntimeException("Not supported alias type"
+					   + containedIdlType);
+	    }
+	}
+	else {
+	    throw new RuntimeException("Not supported type"
+				       + idl_type);
 	}
 	return join("\n", ret);
     }
@@ -1287,10 +1482,8 @@ public class CppRemoteGeneratorImpl
 	    remoteScope += join("::", scope) + "::"; 
 
 	ret.add("    " + remoteScope 
-		//		+ idl_struct.getIdentifier() + "_var " 
 		+ contained.getIdentifier() + "_var " 
 		+ "return_value = new " + remoteScope 
-		//		+ idl_struct.getIdentifier() + ";"); 
 		+ contained.getIdentifier() + ";"); 
 	ret.add("    CCM_Remote::convertToCorba(result, return_value);");
 	ret.add("    return return_value._retn();");

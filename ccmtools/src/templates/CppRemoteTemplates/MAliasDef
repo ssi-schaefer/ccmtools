@@ -16,17 +16,11 @@
 
 %(OpenNamespace)s
 
-void 
-convertFromCorba(const %(ShortNamespace)s%(Identifier)s& in, CCM_Local::%(Identifier)s& out);
+%(ConvertFromCorbaDeclaration)s
 
-void 
-convertToCorba(const CCM_Local::%(Identifier)s& in, %(ShortNamespace)s%(Identifier)s& out);
+%(ConvertToCorbaDeclaration)s
 
-std::ostream&
-operator<<(std::ostream& o, const CCM_Local::%(Identifier)s& value);
-
-std::ostream& 
-operator<<(std::ostream& o, const %(ShortNamespace)s%(Identifier)s& value);
+%(OutputCorbaTypeDeclaration)s
 
 %(CloseNamespace)s
 
@@ -34,6 +28,7 @@ operator<<(std::ostream& o, const %(ShortNamespace)s%(Identifier)s& value);
 
 
 <<<<<<<SPLIT>>>>>>>
+
 /***
  * CORBA converter for typedef %(Identifier)s (implementation file)
  *
@@ -48,54 +43,10 @@ using namespace std;
 
 %(OpenNamespace)s
 
-void 
-convertFromCorba(const %(ShortNamespace)s%(Identifier)s& in, CCM_Local::%(Identifier)s& out)
-{
-    LDEBUGNL(CCM_REMOTE," convertFromCorba(%(ShortNamespace)s%(Identifier)s)");
-    LDEBUGNL(CCM_REMOTE,"   %(Identifier)s = " << in);
-    out.reserve(in.length());
-    for(unsigned long i=0; i < in.length(); i++) {
-        %(SingleValue)s singleValue;
-        convertFromCorba(in[i], singleValue);
-        out.push_back(singleValue);
-    }
-} 
+%(ConvertFromCorbaImplementation)s
 
-void 
-convertToCorba(const CCM_Local::%(Identifier)s& in, %(ShortNamespace)s%(Identifier)s& out)
-{
-    LDEBUGNL(CCM_REMOTE," convertToCorba(%(ShortNamespace)s%(Identifier)s)");
-    LDEBUGNL(CCM_REMOTE,"   %(Identifier)s = " << in);
-    out.length(in.size());
-    for(unsigned long i=0; i < in.size(); i++) {
-        %(SingleValue)s singleValue = in[i];
-        convertToCorba(singleValue, %(InOutValue)s); 
-    }		
-} 
+%(ConvertToCorbaImplementation)s
 
-
-std::ostream& 
-operator<<(std::ostream& o, const %(ShortNamespace)s%(Identifier)s& value)
-{
-    o << "[ ";
-    for(unsigned long i=0; i < value.length(); i++) {
-        if(i) o << ",";
-        o << value[i];
-    }
-    o << " ]";
-    return o;
-}
-
-std::ostream&
-operator<<(std::ostream& o, const CCM_Local::%(Identifier)s& value)
-{
-    o << "[ ";
-    for(unsigned long i=0; i < value.size(); i++) {
-        if(i) o << ",";
-        o << value[i];
-    }
-    o << " ]";
-    return o;
-}
+%(OutputCorbaTypeImplementation)s 
 
 %(CloseNamespace)s
