@@ -7,20 +7,11 @@ previous instruction.
 For the informed, use the following :
 
 o) Install the local component's environment:
-   $ cd WX_Utils
-   $ confix.py --bootstrap --configure --make --targets="all install"	
-   $ cd CCM_Local	
-   $ confix.py --bootstrap --configure --make --targets="all install"
+   $ confix.py --packageroot=`pwd`/WX_Utils --bootstrap --configure --make --targets="all install"	
+   $ confix.py --packageroot=`pwd`/CCM_Local --bootstrap --configure --make --targets="all install"
 
 o) Install the remote component's environment:
-   $ cd external
-   $ confix.py --bootstrap --configure --make --targets="all install"
-   $ cd CCM_Remote
-   $ confix.py --bootstrap --configure --make --targets="all install"
-
-o) Install the python component's environment:
-   $ confix.py --packageroot=CCM_Python --bootstrap --configure --make --targets="all install"	
-   But, it does not work because CCM_Python is the package root directory of the Python 
-   generator environment!!	
+   $ confix.py --packageroot=`pwd`/external --bootstrap --configure --make --targets="all install"
+   $ confix.py --packageroot=`pwd`/CCM_Remote --bootstrap --configure --make --targets="all install"
 
 For further questions, please consult the README file.
