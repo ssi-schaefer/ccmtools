@@ -3,7 +3,7 @@
   %(MExceptionDefThrows)s
 {
   DEBUGNL(" %(Object)sFacetAdapter->%(Identifier)s ( %(MParameterDefName)s )");
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
 #ifdef CCM_TEST_PYTHON
   %(Return)scall_python_%(Identifier)s ( %(MParameterDefName)s );
 #else

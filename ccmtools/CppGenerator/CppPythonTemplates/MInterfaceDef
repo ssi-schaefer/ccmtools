@@ -5,7 +5,10 @@
 #ifndef __CCM_TEST__PYTHON__IFACE__%(PreprocIdentifier)s__H__
 #define __CCM_TEST__PYTHON__IFACE__%(PreprocIdentifier)s__H__
 
-#include <%(SelfInclude)s.h>
+#include <CCM_Utils/SmartPtr.h>
+
+#include "%(Identifier)s.h"
+
 #include <Python.h>
 #include "structmember.h"
 
@@ -15,12 +18,12 @@
 
 %(OpenNamespace)s
 
-PyObject *convert_%(Identifier)s_to_python           (       %(Identifier)s  arg );
-PyObject *convert_const_%(Identifier)s_to_python     ( const %(Identifier)s  arg );
-PyObject *convert_const_%(Identifier)s_ref_to_python ( const %(Identifier)s& arg );
+PyObject *convert_%(Identifier)s_to_python           (       CCM_Utils::SmartPtr<%(Identifier)s>  arg );
+PyObject *convert_const_%(Identifier)s_to_python     ( const CCM_Utils::SmartPtr<%(Identifier)s>  arg );
+PyObject *convert_const_%(Identifier)s_ref_to_python ( const CCM_Utils::SmartPtr<%(Identifier)s>& arg );
 
-%(Identifier)s  convert_%(Identifier)s_from_python     ( PyObject *arg );
-%(Identifier)s *convert_%(Identifier)s_ptr_from_python ( PyObject *arg );
+CCM_Utils::SmartPtr<%(Identifier)s>  convert_%(Identifier)s_from_python     ( PyObject *arg );
+CCM_Utils::SmartPtr<%(Identifier)s> *convert_%(Identifier)s_ptr_from_python ( PyObject *arg );
 
 %(CloseNamespace)s
 
@@ -31,15 +34,17 @@ PyObject *convert_const_%(Identifier)s_ref_to_python ( const %(Identifier)s& arg
 // %(Identifier)s - interface Python wrapper definitions
 //==============================================================================
 
-#include "%(Identifier)s.h"
+#include "%(Identifier)s_python.h"
 
 %(OpenNamespace)s
 
 // internal Python wrappers, data structures and memory management
 
+using namespace CCM_Utils;
+
 typedef struct {
   PyObject_HEAD
-  %(Identifier)s iface;
+  SmartPtr<%(Identifier)s> iface;
 } Py%(Identifier)s_object;
 
 %(MAttributeDefWrapper)s
@@ -51,7 +56,7 @@ static PyMethodDef Py%(Identifier)s_methods[] = {
   {NULL, 0, 0, NULL}  /* Sentinel */
 };
 
-static PyTypeObject Py%(Identifier)s_Type = {
+static PyTypeObject Py%(Identifier)s_type = {
   PyObject_HEAD_INIT ( NULL )
 
   0, /* ob_size */
@@ -104,51 +109,51 @@ static PyTypeObject Py%(Identifier)s_Type = {
 // public conversion methods
 
 PyObject *
-convert_%(Identifier)s_to_python ( %(Identifier)s arg )
+convert_%(Identifier)s_to_python ( SmartPtr<%(Identifier)s> arg )
 {
   Py%(Identifier)s_object *self = Py%(Identifier)s_new (  );
   if ( self == NULL ) return NULL;
-%(MFieldDefTo)s
   Py_INCREF ( self );
+  self->iface = arg.ptr (  );
   return ( PyObject * ) self;
 }
 
 PyObject *
-convert_const_%(Identifier)s_to_python ( const %(Identifier)s arg )
+convert_const_%(Identifier)s_to_python ( const SmartPtr<%(Identifier)s> arg )
 {
   Py%(Identifier)s_object *self = Py%(Identifier)s_new (  );
   if ( self == NULL ) return NULL;
-%(MFieldDefTo)s
   Py_INCREF ( self );
+  self->iface = arg.ptr (  );
   return ( PyObject * ) self;
 }
 
 PyObject *
-convert_const_%(Identifier)s_ref_to_python ( const %(Identifier)s& arg )
+convert_const_%(Identifier)s_ref_to_python ( const SmartPtr<%(Identifier)s>& arg )
 {
   Py%(Identifier)s_object *self = Py%(Identifier)s_new (  );
   if ( self == NULL ) return NULL;
-%(MFieldDefTo)s
   Py_INCREF ( self );
+  self->iface = arg.ptr (  );
   return ( PyObject * ) self;
 }
 
-%(Identifier)s
+SmartPtr<%(Identifier)s>
 convert_%(Identifier)s_from_python ( PyObject *arg )
 {
-  %(Identifier)s result;
-  if ( arg == NULL ) return result;
-%(MFieldDefFrom)s
+  SmartPtr<%(Identifier)s> result;
+  if ( arg == NULL ) return NULL;
+  result = arg->iface;
   Py_DECREF ( arg );
   return result;
 }
 
-%(Identifier)s *
+SmartPtr<%(Identifier)s> *
 convert_%(Identifier)s_ptr_from_python ( PyObject *arg )
 {
-  %(Identifier)s *result = new %(Identifier)s;
+  SmartPtr<%(Identifier)s> *result;
   if ( arg == NULL ) return NULL;
-%(MFieldDefFromPointer)s
+  result.ptr (  ) = new SmartPtr<%(Identifier)s> ( arg->iface );
   Py_DECREF ( arg );
   return result;
 }

@@ -10,7 +10,11 @@
 #ifndef __IFACE_%(PreprocIdentifier)s__H__
 #define __IFACE_%(PreprocIdentifier)s__H__
 
-#include <localComponents/CCM.h>
+#ifdef CCM_TEST_PYTHON
+#include "%(Identifier)s_python.h"
+#endif
+
+#include <LocalComponents/CCM.h>
 
 %(MAttributeDefInclude)s
 %(MOperationDefInclude)s
@@ -20,7 +24,7 @@
 
 // External view of an interface
 class %(Identifier)s
-  : virtual public localComponents::Object%(BaseType)s
+  : virtual public LocalComponents::Object%(BaseType)s
 {
  public:
   virtual ~%(Identifier)s (  ) {  }

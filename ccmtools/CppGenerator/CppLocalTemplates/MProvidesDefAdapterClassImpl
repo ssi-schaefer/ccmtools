@@ -27,12 +27,12 @@
 %(MAttributeProvidesAdapterDefinition)s
 %(MOperationProvidesAdapterDefinition)s
 
-CCM_Utils::SmartPtr<localComponents::Object>
+CCM_Utils::SmartPtr<LocalComponents::Object>
 %(Identifier)sFacetAdapter::get_component (  )
 {
   DEBUGNL(" %(Identifier)sFacetAdapter->get_component (  )");
-  return CCM_Utils::SmartPtr<localComponents::Object>
-    ( dynamic_cast<localComponents::Object*> ( component ) );
+  return CCM_Utils::SmartPtr<LocalComponents::Object>
+    ( dynamic_cast<LocalComponents::Object*> ( component ) );
 };
 
 

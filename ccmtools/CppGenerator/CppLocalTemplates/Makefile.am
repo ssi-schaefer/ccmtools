@@ -1,6 +1,6 @@
 ## process this file with automake to produce Makefile.in
 
-templatedir = $(TEMPLATE_ROOT)/CppLocalTemplates
+templatedir = $(DATA_ROOT)/CppLocalTemplates
 dist_template_DATA = \
     MAliasDef                                      \
     MAttributeDefAdapterDefinition                 \
@@ -55,6 +55,7 @@ dist_template_DATA = \
     MProvidesDefAdapterImplClassImpl               \
     MProvidesDefAdapterVariable                    \
     MProvidesDefAdapterVariableInit                \
+    MProvidesDefAdapterVariableInitDefault         \
     MProvidesDefGetFacetDefinition                 \
     MProvidesDefGetFacetPrototype                  \
     MProvidesDefGetFacetPrototypeVV                \
@@ -78,6 +79,8 @@ dist_template_DATA = \
     MUsesDefAdapterDefinitionMultiple              \
     MUsesDefAdapterVariable                        \
     MUsesDefAdapterVariableInit                    \
+    MUsesDefAdapterVariableInitDefault             \
+    MUsesDefAdapterVariableInitDefaultMultiple     \
     MUsesDefAdapterVariableInitMultiple            \
     MUsesDefAdapterVariableMultiple                \
     MUsesDefConnectFacet                           \
@@ -93,7 +96,5 @@ dist_template_DATA = \
     MUsesDefGetConnectionPrototypeVV               \
     MUsesDefGetConnectionPrototypeVVMultiple       \
     MUsesDefInclude                                \
-    MUsesDefIncludeMultiple                        \
-    MProvidesDefAdapterVariableInitDefault         \
-    MUsesDefAdapterVariableInitDefault
+    MUsesDefIncludeMultiple
 

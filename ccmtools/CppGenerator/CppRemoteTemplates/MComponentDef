@@ -146,27 +146,27 @@
        * Methods from the CCMContext interface
        **/
 
-      localComponents::Principal* get_caller_principal();
+      LocalComponents::Principal* get_caller_principal();
       
-      localComponents::HomeExecutorBase* get_CCM_home();
+      LocalComponents::HomeExecutorBase* get_CCM_home();
       
       bool get_rollback_only() 
-	throw (localComponents::IllegalState);
+	throw (LocalComponents::IllegalState);
       
-      localTransaction::UserTransaction* get_user_transaction()	
-	throw (localComponents::IllegalState);
+      LocalTransaction::UserTransaction* get_user_transaction()	
+	throw (LocalComponents::IllegalState);
       
       bool is_caller_in_role(const std::string& role);
       
       void set_rollback_only()
-	throw (localComponents::IllegalState);
+	throw (LocalComponents::IllegalState);
       
       /**
        * Methods from the SessionContext interface
        **/
 
-      localComponents::Object* get_CCM_object()
-	throw (localComponents::IllegalState);
+      LocalComponents::Object* get_CCM_object()
+	throw (LocalComponents::IllegalState);
     };
 
 
@@ -541,7 +541,7 @@ CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
 
 %(MUsesDefContextGetConnection)s
 
-localComponents::Principal* 
+LocalComponents::Principal* 
 CCM_%(Identifier)s_Context_impl::get_caller_principal()
 {
   DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_caller_principal()");
@@ -549,7 +549,7 @@ CCM_%(Identifier)s_Context_impl::get_caller_principal()
   return NULL;
 }
 
-localComponents::HomeExecutorBase* 
+LocalComponents::HomeExecutorBase* 
 CCM_%(Identifier)s_Context_impl::get_CCM_home()
 {
   DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_CCM_home()");
@@ -559,16 +559,16 @@ CCM_%(Identifier)s_Context_impl::get_CCM_home()
 
 bool 
 CCM_%(Identifier)s_Context_impl::get_rollback_only()
-  throw (localComponents::IllegalState)
+  throw (LocalComponents::IllegalState)
 {
   DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_rollback_only()");
   // TODO
   return false;
 }
 
-localTransaction::UserTransaction*
+LocalTransaction::UserTransaction*
 CCM_%(Identifier)s_Context_impl::get_user_transaction()
-  throw (localComponents::IllegalState)
+  throw (LocalComponents::IllegalState)
 {
   DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_user_transaction()");
   // TODO
@@ -585,15 +585,15 @@ CCM_%(Identifier)s_Context_impl::is_caller_in_role(const string& role)
 
 void 
 CCM_%(Identifier)s_Context_impl::set_rollback_only()
-  throw (localComponents::IllegalState)
+  throw (LocalComponents::IllegalState)
 {
   DEBUGNL(" CCM_%(Identifier)s_Context_impl->set_rollback_only()");
   // TODO
 }
 
-localComponents::Object*
+LocalComponents::Object*
 CCM_%(Identifier)s_Context_impl::get_CCM_object()
-  throw(localComponents::IllegalState)
+  throw(LocalComponents::IllegalState)
 {
   DEBUGNL(" CCM_%(Identifier)s_Context_impl->get_CCM_object()");
   // TODO

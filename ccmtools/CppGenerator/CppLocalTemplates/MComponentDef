@@ -11,14 +11,14 @@
 #define __COMPONENT_%(PreprocIdentifier)s_GEN__H__
 
 #ifdef CCM_TEST_PYTHON
-#include <CCM_Test/Python/%(SelfInclude)s.h>
+#include "%(Identifier)s_python.h"
 #endif
 
 #include <string>
 #include <map>
 #include <cassert>
 #include <CCM_Utils/SmartPointer.h>
-#include <localComponents/CCM.h>
+#include <LocalComponents/CCM.h>
 
 #include <%(SelfInclude)s_share.h>
 #include <%(HomeInclude)s_share.h>
@@ -44,8 +44,8 @@ class CCM_%(Identifier)s_Context;
 //==============================================================================
 
 class %(Identifier)s
-  : public localComponents::ReleaseInformation%(BaseType)s,
-    virtual public localComponents::CCMObject
+  : public LocalComponents::ReleaseInformation%(BaseType)s,
+    virtual public LocalComponents::CCMObject
     %(MSupportsDefBase)s
 {
  protected:
@@ -76,50 +76,50 @@ class %(Identifier)s
 
   // Navigation functions
 
-  CCM_Utils::SmartPtr<localComponents::Object> provide_facet ( const std::string& name )
-    throw ( localComponents::InvalidName );
+  CCM_Utils::SmartPtr<LocalComponents::Object> provide_facet ( const std::string& name )
+    throw ( LocalComponents::InvalidName );
 
-  localComponents::FacetDescriptions get_all_facets (  );
+  LocalComponents::FacetDescriptions get_all_facets (  );
 
-  localComponents::FacetDescriptions get_named_facets ( const localComponents::NameList& names )
-    throw ( localComponents::InvalidName );
+  LocalComponents::FacetDescriptions get_named_facets ( const LocalComponents::NameList& names )
+    throw ( LocalComponents::InvalidName );
 
-  bool same_component ( const localComponents::Object& obj );
+  bool same_component ( const LocalComponents::Object& obj );
 
   // Receptacle functions
 
-  localComponents::Cookie connect ( const localComponents::FeatureName& name, CCM_Utils::SmartPtr<localComponents::Object> connection )
-    throw ( localComponents::InvalidName, localComponents::InvalidConnection,
-            localComponents::AlreadyConnected, localComponents::ExceededConnectionLimit );
+  LocalComponents::Cookie connect ( const LocalComponents::FeatureName& name, CCM_Utils::SmartPtr<LocalComponents::Object> connection )
+    throw ( LocalComponents::InvalidName, LocalComponents::InvalidConnection,
+            LocalComponents::AlreadyConnected, LocalComponents::ExceededConnectionLimit );
 
-  void disconnect ( const localComponents::FeatureName& name, const localComponents::Cookie& ck )
-    throw ( localComponents::InvalidName, localComponents::InvalidConnection,
-            localComponents::CookieRequired, localComponents::NoConnection );
+  void disconnect ( const LocalComponents::FeatureName& name, const LocalComponents::Cookie& ck )
+    throw ( LocalComponents::InvalidName, LocalComponents::InvalidConnection,
+            LocalComponents::CookieRequired, LocalComponents::NoConnection );
 
-  localComponents::ConnectionDescriptions get_connections ( const localComponents::FeatureName& name )
-    throw ( localComponents::InvalidName );
+  LocalComponents::ConnectionDescriptions get_connections ( const LocalComponents::FeatureName& name )
+    throw ( LocalComponents::InvalidName );
 
-  localComponents::ReceptacleDescriptions get_all_receptacles (  );
+  LocalComponents::ReceptacleDescriptions get_all_receptacles (  );
 
-  localComponents::ReceptacleDescriptions get_named_receptacles ( const localComponents::NameList& names )
-    throw ( localComponents::InvalidName );
+  LocalComponents::ReceptacleDescriptions get_named_receptacles ( const LocalComponents::NameList& names )
+    throw ( LocalComponents::InvalidName );
 
   // CCMObject functions
 
-  localComponents::IRObject* get_component_def (  );
+  LocalComponents::IRObject* get_component_def (  );
 
-  localComponents::HomeExecutorBase* get_ccm_home (  );
+  LocalComponents::HomeExecutorBase* get_ccm_home (  );
 
-  localComponents::PrimaryKeyBase* get_primary_key (  )
-    throw ( localComponents::NoKeyAvailable );
+  LocalComponents::PrimaryKeyBase* get_primary_key (  )
+    throw ( LocalComponents::NoKeyAvailable );
 
   void configuration_complete (  )
-    throw ( localComponents::InvalidConfiguration );
+    throw ( LocalComponents::InvalidConfiguration );
 
   void remove (  )
-    throw ( localComponents::RemoveFailure );
+    throw ( LocalComponents::RemoveFailure );
 
-  localComponents::ComponentPortDescription get_all_ports (  );
+  LocalComponents::ComponentPortDescription get_all_ports (  );
 };
 
 
@@ -141,22 +141,22 @@ class CCM_%(Identifier)s_Context_impl
 
   // CCMContext functions
 
-  localComponents::Principal* get_caller_principal (  );
-  localComponents::HomeExecutorBase* get_CCM_home (  );
+  LocalComponents::Principal* get_caller_principal (  );
+  LocalComponents::HomeExecutorBase* get_CCM_home (  );
 
   bool get_rollback_only (  )
-    throw ( localComponents::IllegalState );
+    throw ( LocalComponents::IllegalState );
 
-  localTransaction::UserTransaction* get_user_transaction (  )
-    throw ( localComponents::IllegalState );
+  LocalTransaction::UserTransaction* get_user_transaction (  )
+    throw ( LocalComponents::IllegalState );
 
   bool is_caller_in_role ( const std::string& role );
 
   void set_rollback_only (  )
-    throw ( localComponents::IllegalState );
+    throw ( LocalComponents::IllegalState );
 
-  localComponents::Object* get_CCM_object (  )
-    throw ( localComponents::IllegalState );
+  LocalComponents::Object* get_CCM_object (  )
+    throw ( LocalComponents::IllegalState );
 };
 
 %(MProvidesDefAdapterClass)s
@@ -211,38 +211,38 @@ CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl (  )
 }
 
 %(MUsesDefGetConnectionCtxImplDefinition)s
-localComponents::Principal*
+LocalComponents::Principal*
 CCM_%(Identifier)s_Context_impl::get_caller_principal (  )
 {
   DEBUGNL ( " CCM_%(Identifier)s_Context_impl->get_caller_principal (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localComponents::HomeExecutorBase*
+LocalComponents::HomeExecutorBase*
 CCM_%(Identifier)s_Context_impl::get_CCM_home (  )
 {
   DEBUGNL ( " CCM_%(Identifier)s_Context_impl->get_CCM_home (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 bool
 CCM_%(Identifier)s_Context_impl::get_rollback_only (  )
-  throw ( localComponents::IllegalState )
+  throw ( LocalComponents::IllegalState )
 {
   DEBUGNL ( " CCM_%(Identifier)s_Context_impl->get_rollback_only (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localTransaction::UserTransaction*
+LocalTransaction::UserTransaction*
 CCM_%(Identifier)s_Context_impl::get_user_transaction (  )
-  throw ( localComponents::IllegalState )
+  throw ( LocalComponents::IllegalState )
 {
   DEBUGNL ( " CCM_%(Identifier)s_Context_impl->get_user_transaction (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 bool
@@ -250,25 +250,25 @@ CCM_%(Identifier)s_Context_impl::is_caller_in_role ( const std::string& role )
 {
   DEBUGNL ( " CCM_%(Identifier)s_Context_impl->is_caller_in_role (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 void
 CCM_%(Identifier)s_Context_impl::set_rollback_only (  )
-  throw ( localComponents::IllegalState )
+  throw ( LocalComponents::IllegalState )
 {
   DEBUGNL ( " CCM_%(Identifier)s_Context_impl->set_rollback_only (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localComponents::Object*
+LocalComponents::Object*
 CCM_%(Identifier)s_Context_impl::get_CCM_object (  )
-  throw ( localComponents::IllegalState )
+  throw ( LocalComponents::IllegalState )
 {
   DEBUGNL ( " CCM_%(Identifier)s_Context_impl->get_CCM_object (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 //==============================================================================
@@ -313,7 +313,7 @@ const std::string
 %(Identifier)s::getComponentVersion (  ) const
 {
   DEBUGNL ( " %(Identifier)s->getComponentVersion (  )" );
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
   return "%(VersionNumber)s";
 }
 
@@ -321,7 +321,7 @@ const std::string
 %(Identifier)s::getComponentDate (  ) const
 {
   DEBUGNL ( " %(Identifier)s->getComponentDate (  )" );
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
   return "%(CurrentDate)s";
 }
 
@@ -329,153 +329,153 @@ const std::string
 %(Identifier)s::getComponentUUID (  ) const
 {
   DEBUGNL ( " %(Identifier)s->getComponentUUID (  )" );
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
   return "%(UUIdentifier)s";
 }
 
 // Navigation functions
 
-CCM_Utils::SmartPtr<localComponents::Object>
+CCM_Utils::SmartPtr<LocalComponents::Object>
 %(Identifier)s::provide_facet ( const std::string& name )
-  throw ( localComponents::InvalidName )
+  throw ( LocalComponents::InvalidName )
 {
   DEBUGNL ( " %(Identifier)s->provide_facet ( " << name << " )" );
 
 %(MProvidesDefProvideFacet)s
 
-  throw localComponents::InvalidName ( name );
+  throw LocalComponents::InvalidName ( name );
 }
 
-localComponents::FacetDescriptions
+LocalComponents::FacetDescriptions
 %(Identifier)s::get_all_facets (  )
 {
   DEBUGNL ( " %(Identifier)s->get_all_facets (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localComponents::FacetDescriptions
-%(Identifier)s::get_named_facets ( const localComponents::NameList& names )
-  throw ( localComponents::InvalidName )
+LocalComponents::FacetDescriptions
+%(Identifier)s::get_named_facets ( const LocalComponents::NameList& names )
+  throw ( LocalComponents::InvalidName )
 {
   DEBUGNL ( " %(Identifier)s->get_named_facets (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 bool
-%(Identifier)s::same_component ( const localComponents::Object& obj )
+%(Identifier)s::same_component ( const LocalComponents::Object& obj )
 {
   DEBUGNL ( " %(Identifier)s->same_component (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 // Receptacle functions
 
-localComponents::Cookie
-%(Identifier)s::connect ( const localComponents::FeatureName& name, CCM_Utils::SmartPtr<localComponents::Object> connection )
-  throw ( localComponents::InvalidName, localComponents::InvalidConnection,
-	  localComponents::AlreadyConnected, localComponents::ExceededConnectionLimit )
+LocalComponents::Cookie
+%(Identifier)s::connect ( const LocalComponents::FeatureName& name, CCM_Utils::SmartPtr<LocalComponents::Object> connection )
+  throw ( LocalComponents::InvalidName, LocalComponents::InvalidConnection,
+	  LocalComponents::AlreadyConnected, LocalComponents::ExceededConnectionLimit )
 {
   DEBUGNL ( " %(Identifier)s->connect ( " << name << " )" );
 
 %(MUsesDefConnectFacet)s
-  throw localComponents::InvalidName ( name );
+  throw LocalComponents::InvalidName ( name );
 }
 
 void
-%(Identifier)s::disconnect ( const localComponents::FeatureName& name, const localComponents::Cookie& ck )
-  throw ( localComponents::InvalidName, localComponents::InvalidConnection,
-          localComponents::CookieRequired, localComponents::NoConnection )
+%(Identifier)s::disconnect ( const LocalComponents::FeatureName& name, const LocalComponents::Cookie& ck )
+  throw ( LocalComponents::InvalidName, LocalComponents::InvalidConnection,
+          LocalComponents::CookieRequired, LocalComponents::NoConnection )
 {
   DEBUGNL ( " %(Identifier)s->disconnect ( " << name << " )" );
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
 
 %(MUsesDefDisconnectFacet)s
-  throw localComponents::InvalidName ( name );
+  throw LocalComponents::InvalidName ( name );
 }
 
-localComponents::ConnectionDescriptions
-%(Identifier)s::get_connections ( const localComponents::FeatureName& name )
-  throw ( localComponents::InvalidName )
+LocalComponents::ConnectionDescriptions
+%(Identifier)s::get_connections ( const LocalComponents::FeatureName& name )
+  throw ( LocalComponents::InvalidName )
 {
   DEBUGNL ( " %(Identifier)s->get_connections ( " << name << " )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localComponents::ReceptacleDescriptions
+LocalComponents::ReceptacleDescriptions
 %(Identifier)s::get_all_receptacles (  )
 {
   DEBUGNL ( " %(Identifier)s->get_all_receptacles (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localComponents::ReceptacleDescriptions
-%(Identifier)s::get_named_receptacles ( const localComponents::NameList& names )
-  throw ( localComponents::InvalidName )
+LocalComponents::ReceptacleDescriptions
+%(Identifier)s::get_named_receptacles ( const LocalComponents::NameList& names )
+  throw ( LocalComponents::InvalidName )
 {
   DEBUGNL ( " %(Identifier)s->get_named_receptacles (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 // CCMObject functions
 
-localComponents::IRObject*
+LocalComponents::IRObject*
 %(Identifier)s::get_component_def (  )
 {
   DEBUGNL ( " %(Identifier)s->get_component_def (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localComponents::HomeExecutorBase*
+LocalComponents::HomeExecutorBase*
 %(Identifier)s::get_ccm_home (  )
 {
   DEBUGNL ( " %(Identifier)s->get_ccm_home (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localComponents::PrimaryKeyBase*
+LocalComponents::PrimaryKeyBase*
 %(Identifier)s::get_primary_key (  )
-  throw ( localComponents::NoKeyAvailable )
+  throw ( LocalComponents::NoKeyAvailable )
 {
   DEBUGNL ( " %(Identifier)s->get_primary_key (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 void
 %(Identifier)s::configuration_complete (  )
-  throw ( localComponents::InvalidConfiguration )
+  throw ( LocalComponents::InvalidConfiguration )
 {
   DEBUGNL ( " %(Identifier)s->configuration_complete (  )" );
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
   local_component->set_session_context ( context );
   local_component->ccm_activate (  );
 }
 
 void
 %(Identifier)s::remove (  )
-  throw ( localComponents::RemoveFailure )
+  throw ( LocalComponents::RemoveFailure )
 {
   DEBUGNL ( " %(Identifier)s->remove (  )" );
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
   ValidConnection = false;
 %(MProvidesDefImplRemove)s
   local_component->ccm_remove (  );
 }
 
-localComponents::ComponentPortDescription
+LocalComponents::ComponentPortDescription
 %(Identifier)s::get_all_ports (  )
 {
   DEBUGNL ( " %(Identifier)s->get_all_ports (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 %(CloseNamespace)s
@@ -491,7 +491,7 @@ localComponents::ComponentPortDescription
 
 #include <map>
 #include <CCM_Utils/SmartPointer.h>
-#include <localComponents/CCM.h>
+#include <LocalComponents/CCM.h>
 
 %(MAttributeDefInclude)s
 %(MConstantDefInclude)s
@@ -510,7 +510,7 @@ localComponents::ComponentPortDescription
 //==============================================================================
 
 class CCM_%(Identifier)s
-: public localComponents::SessionComponent%(BaseType)s%(MSupportsDefBase)s
+: public LocalComponents::SessionComponent%(BaseType)s%(MSupportsDefBase)s
 {
  public:
 %(MAttributeDefPrototypeVV)s
@@ -524,7 +524,7 @@ class CCM_%(Identifier)s
 //==============================================================================
 
 class CCM_%(Identifier)s_Context
-  : public localComponents::SessionContext
+  : public LocalComponents::SessionContext
 {
  public:
 %(MUsesDefGetConnectionPrototypeVV)s
@@ -570,14 +570,14 @@ class CCM_%(Identifier)s_impl
 
   // Callback methods
 
-  virtual void set_session_context ( localComponents::SessionContext* ctx )
-    throw ( localComponents::CCMException );
+  virtual void set_session_context ( LocalComponents::SessionContext* ctx )
+    throw ( LocalComponents::CCMException );
   virtual void ccm_activate (  )
-    throw ( localComponents::CCMException );
+    throw ( LocalComponents::CCMException );
   virtual void ccm_passivate (  )
-    throw ( localComponents::CCMException );
+    throw ( LocalComponents::CCMException );
   virtual void ccm_remove (  )
-    throw ( localComponents::CCMException );
+    throw ( LocalComponents::CCMException );
 };
 
 %(MProvidesDefAdapterImplClass)s
@@ -629,8 +629,8 @@ CCM_%(Identifier)s_impl::~CCM_%(Identifier)s_impl (  )
 %(MSupportsDefImplDefinition)s
 
 void
-CCM_%(Identifier)s_impl::set_session_context ( localComponents::SessionContext* context )
-  throw ( localComponents::CCMException )
+CCM_%(Identifier)s_impl::set_session_context ( LocalComponents::SessionContext* context )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Identifier)s_impl->set_session_context (  )" );
   ctx = dynamic_cast<CCM_%(Identifier)s_Context*> ( context );
@@ -638,21 +638,21 @@ CCM_%(Identifier)s_impl::set_session_context ( localComponents::SessionContext* 
 
 void
 CCM_%(Identifier)s_impl::ccm_activate (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Identifier)s_impl->ccm_activate (  )" );
 }
 
 void
 CCM_%(Identifier)s_impl::ccm_passivate (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Identifier)s_impl->ccm_passivate (  )" );
 }
 
 void
 CCM_%(Identifier)s_impl::ccm_remove (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Identifier)s_impl->ccm_remove (  )" );
 }

@@ -1,20 +1,20 @@
 void
 %(ComponentType)s::connect_%(Identifier)s ( SmartPtr<%(CCMUsesType)s> f )
-  throw ( localComponents::AlreadyConnected, localComponents::InvalidConnection )
+  throw ( LocalComponents::AlreadyConnected, LocalComponents::InvalidConnection )
 {
   DEBUGNL ( " %(ComponentType)s->connect_%(Identifier)s (  )" );
-  if( ! ValidConnection ) throw localComponents::InvalidConnection (  );
-  if ( %(Identifier)s_receptacle ) throw localComponents::AlreadyConnected (  );
+  if( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
+  if ( %(Identifier)s_receptacle ) throw LocalComponents::AlreadyConnected (  );
   %(Identifier)s_receptacle = f;
 }
 
 SmartPtr<%(CCMUsesType)s>
 %(ComponentType)s::disconnect_%(Identifier)s (  )
-  throw ( localComponents::NoConnection )
+  throw ( LocalComponents::NoConnection )
 {
   DEBUGNL ( " %(ComponentType)s->disconnect_%(Identifier)s (  )" );
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
-  if ( ! %(Identifier)s_receptacle ) throw localComponents::NoConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
+  if ( ! %(Identifier)s_receptacle ) throw LocalComponents::NoConnection (  );
 
   SmartPtr<%(CCMUsesType)s> f = %(Identifier)s_receptacle;
   %(Identifier)s_receptacle = SmartPtr<%(CCMUsesType)s> (  );
@@ -25,9 +25,9 @@ SmartPtr<%(CCMUsesType)s>
 %(ComponentType)s::get_connection_%(Identifier)s (  )
 {
   DEBUGNL ( " %(ComponentType)s->get_connection_%(Identifier)s (  )" );
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
   if ( %(Identifier)s_receptacle == SmartPtr<%(CCMUsesType)s> (  ) )
-    throw localComponents::NoConnection (  );
+    throw LocalComponents::NoConnection (  );
   return %(Identifier)s_receptacle;
 }
 

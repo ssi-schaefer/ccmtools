@@ -1,4 +1,4 @@
-#include <localComponents/CCM.h>
+#include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 #include <CCM_Utils/Debug.h>
 #include <CCM_Utils/SmartPointer.h>
@@ -25,7 +25,7 @@ int main ( int argc, char *argv[] )
   int result = 0;
   int error = 0;
 
-  localComponents::HomeFinder* homeFinder;
+  LocalComponents::HomeFinder* homeFinder;
 
   SmartPtr<%(Identifier)s> my%(Identifier)s;
   SmartPtr<%(Identifier)s_mirror> my%(Identifier)sMirror;
@@ -77,13 +77,13 @@ int main ( int argc, char *argv[] )
 
     my%(Identifier)s.ptr (  )->configuration_complete (  );
     my%(Identifier)sMirror.ptr (  )->configuration_complete (  );
-  } catch ( localComponents::HomeNotFound ) {
+  } catch ( LocalComponents::HomeNotFound ) {
     cout << "DEPLOY: can't find a home!" << endl;
     result = -1;
-  } catch ( localComponents::NotImplemented& e ) {
+  } catch ( LocalComponents::NotImplemented& e ) {
     cout << "DEPLOY: function not implemented: " << e.what (  ) << endl;
     result = -1;
-  } catch ( localComponents::InvalidName& e ) {
+  } catch ( LocalComponents::InvalidName& e ) {
     cout << "DEPLOY: invalid name during connection: " << e.what (  ) << endl;
     result = -1;
   } catch ( ... )  {
@@ -108,7 +108,7 @@ int main ( int argc, char *argv[] )
     // TODO : IMPLEMENT ME HERE !
 
     DEBUGNL("==== End Test Case ===============================================" );
-  } catch ( localComponents::NotImplemented& e ) {
+  } catch ( LocalComponents::NotImplemented& e ) {
     cout << "TEST: function not implemented: " << e.what (  ) << endl;
     result = -1;
   } catch ( ... )  {
@@ -129,10 +129,10 @@ int main ( int argc, char *argv[] )
     my%(Identifier)s.ptr (  )->remove (  );
     my%(Identifier)sMirror.ptr (  )->remove (  );
 
-  } catch ( localComponents::HomeNotFound ) {
+  } catch ( LocalComponents::HomeNotFound ) {
     cout << "TEARDOWN: can't find a home!" << endl;
     result = -1;
-  } catch ( localComponents::NotImplemented& e ) {
+  } catch ( LocalComponents::NotImplemented& e ) {
     cout << "TEARDOWN: function not implemented: " << e.what (  ) << endl;
     result = -1;
   } catch ( ... )  {

@@ -5,7 +5,8 @@
 #ifndef __CCM_TEST__PYTHON__%(PreprocIdentifier)s__H__
 #define __CCM_TEST__PYTHON__%(PreprocIdentifier)s__H__
 
-#include <%(SelfInclude)s.h>
+#include "%(Identifier)s.h"
+
 #include <Python.h>
 #include "structmember.h"
 
@@ -29,7 +30,7 @@ PyObject *convert_const_%(Identifier)s_ref_to_python ( const %(Identifier)s& arg
 // %(Identifier)s - python conversion implementation
 //==============================================================================
 
-#include "%(Identifier)s.h"
+#include "%(Identifier)s_python.h"
 
 %(OpenNamespace)s
 

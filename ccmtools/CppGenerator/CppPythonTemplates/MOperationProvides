@@ -3,7 +3,7 @@
   %(MExceptionDef)s
 {
   DEBUGNL(" %(Object)sFacetAdapter->call_python_%(Identifier)s ( %(MParameterDefName)s )");
-  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  if ( ! ValidConnection ) throw LocalComponents::InvalidConnection (  );
 
 %(ReturnVar)s
 

@@ -1,6 +1,6 @@
 ## process this file with automake to produce Makefile.in
 
-templatedir = $(TEMPLATE_ROOT)/IDL2Templates
+templatedir = $(DATA_ROOT)/IDL2Templates
 dist_template_DATA = \
     MakefilePy                               \
     MakefileIdl                              \

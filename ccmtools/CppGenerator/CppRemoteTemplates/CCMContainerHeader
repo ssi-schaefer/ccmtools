@@ -34,7 +34,7 @@
 #include <CCM_Utils/Debug.h> 
 
 #include <Components/CCM.h>
-#include <localComponents/CCM.h>
+#include <LocalComponents/CCM.h>
 
 namespace CCM {
   
@@ -108,7 +108,7 @@ namespace CCM {
       get_CCM_home () = 0;
 
       virtual CORBA::Object_ptr
-      get_CCM_object (localComponents::EnterpriseComponent*) = 0;
+      get_CCM_object (LocalComponents::EnterpriseComponent*) = 0;
     };
 
 
@@ -130,7 +130,7 @@ namespace CCM {
 	std::string component_short_name;
 	std::string component_absolute_name;
 	std::string component_id;
-	localComponents::HomeExecutorBase* home_instance;
+	LocalComponents::HomeExecutorBase* home_instance;
 	PortableServer::ServantBase_var home_glue;
       };
 
@@ -141,7 +141,7 @@ namespace CCM {
       struct PerComponentData {
 	CORBA::Boolean configuration_complete;
 	PortableServer::ServantBase_var glue;
-	localComponents::EnterpriseComponent* instance;
+	LocalComponents::EnterpriseComponent* instance;
 	CORBA::Object_var reference;
 	std::map<std::string, PortableServer::ServantBase_var> facet_glue;
 	std::map<std::string, void*> facet_instance;
@@ -172,7 +172,7 @@ namespace CCM {
       get_reference_for_home ();
 
       Components::CCMObject_ptr
-      activate_component (localComponents::EnterpriseComponent* instance,
+      activate_component (LocalComponents::EnterpriseComponent* instance,
 			  PortableServer::Servant skel);
 
       Components::CCMObject_ptr
@@ -182,9 +182,9 @@ namespace CCM {
       get_skeleton_for_reference(CORBA::Object_ptr ref);
 
       Components::CCMObject_ptr
-      get_reference_for_instance(localComponents::EnterpriseComponent*);
+      get_reference_for_instance(LocalComponents::EnterpriseComponent*);
 
-      localComponents::EnterpriseComponent*
+      LocalComponents::EnterpriseComponent*
       get_instance_for_component (PortableServer::Servant skel);
 
       void
@@ -201,7 +201,7 @@ namespace CCM {
       get_CCM_home ();
 
       CORBA::Object_ptr
-      get_CCM_object (localComponents::EnterpriseComponent*);
+      get_CCM_object (LocalComponents::EnterpriseComponent*);
 
       /*
        * Facet management

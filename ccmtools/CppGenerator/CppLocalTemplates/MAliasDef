@@ -3,9 +3,14 @@
 // ===========================================================================
 
 #include <vector>
+#include <string>
 
 #ifndef __ALIAS_%(PreprocIdentifier)s__H__
 #define __ALIAS_%(PreprocIdentifier)s__H__
+
+#ifdef CCM_TEST_PYTHON
+#include "%(Identifier)s_python.h"
+#endif
 
 %(LanguageTypeInclude)s
 

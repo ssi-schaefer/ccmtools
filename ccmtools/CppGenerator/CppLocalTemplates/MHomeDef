@@ -11,14 +11,14 @@
 #define __HOME_%(PreprocIdentifier)s_GEN__H__
 
 #ifdef CCM_TEST_PYTHON
-#include <CCM_Test/Python/%(SelfInclude)s.h>
+#include "%(Identifier)s_python.h"
 #endif
 
 #include <string>
 #include <map>
 #include <CCM_Utils/SmartPointer.h>
-#include <localComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h> 
+#include <LocalComponents/CCM.h>
+#include <CCM_Local/HomeFinder.h>
 
 %(MFactoryDefInclude)s
 %(MFinderDefInclude)s
@@ -41,7 +41,7 @@ class %(Identifier)s;
 //==============================================================================
 
 class %(Identifier)sExplicit
-  : public localComponents::CCMHome
+  : public LocalComponents::CCMHome
 {
  public:
 %(MFactoryDefAdapterPrototypeVV)s
@@ -52,11 +52,11 @@ class %(Identifier)sExplicit
 //==============================================================================
 
 class %(Identifier)sImplicit
-  : public localComponents::KeylessCCMHome
+  : public LocalComponents::KeylessCCMHome
 {
  public:
   virtual CCM_Utils::SmartPtr<%(ComponentType)s> create (  )
-    throw ( localComponents::CreateFailure ) = 0;
+    throw ( LocalComponents::CreateFailure ) = 0;
 };
 
 
@@ -81,16 +81,16 @@ class %(Identifier)s
   // CCMHome functions
 
   virtual CCM_Utils::SmartPtr<%(ComponentType)s> create (  )
-    throw ( localComponents::CreateFailure );
-  virtual localComponents::IRObject* get_component_def (  );
-  virtual localComponents::IRObject* get_home_def (  );
-  virtual void remove_component ( const localComponents::CCMObject& comp )
-    throw ( localComponents::RemoveFailure );
+    throw ( LocalComponents::CreateFailure );
+  virtual LocalComponents::IRObject* get_component_def (  );
+  virtual LocalComponents::IRObject* get_home_def (  );
+  virtual void remove_component ( const LocalComponents::CCMObject& comp )
+    throw ( LocalComponents::RemoveFailure );
 
   // KeylessCCMHome functions
 
-  virtual localComponents::CCMObject* create_component (  )
-    throw ( localComponents::CreateFailure );
+  virtual LocalComponents::CCMObject* create_component (  )
+    throw ( LocalComponents::CreateFailure );
 };
 
 %(CloseNamespace)s
@@ -100,7 +100,7 @@ class %(Identifier)s
 //==============================================================================
 
 extern "C" {
-  CCM_Utils::SmartPtr<localComponents::CCMHome> create_%(Identifier)sAdapter();
+  CCM_Utils::SmartPtr<LocalComponents::CCMHome> create_%(Identifier)sAdapter();
 
   int local_deploy_%(Identifier)s(char* name);
   int local_undeploy_%(Identifier)s(char* name);
@@ -153,7 +153,7 @@ using namespace CCM_Local;
 
 SmartPtr<%(ComponentType)s>
 %(Identifier)s::create (  )
-  throw ( localComponents::CreateFailure )
+  throw ( LocalComponents::CreateFailure )
 {
   DEBUGNL ( " %(Identifier)s->create (  )" );
   SmartPtr<%(ComponentType)s> ret ( dynamic_cast<%(ComponentType)s*>
@@ -162,38 +162,38 @@ SmartPtr<%(ComponentType)s>
   return ret;
 }
 
-localComponents::IRObject*
+LocalComponents::IRObject*
 %(Identifier)s::get_component_def (  )
 {
   DEBUGNL ( " %(Identifier)s->get_component_def (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localComponents::IRObject*
+LocalComponents::IRObject*
 %(Identifier)s::get_home_def (  )
 {
   DEBUGNL ( " %(Identifier)s->get_home_def (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 void
-%(Identifier)s::remove_component ( const localComponents::CCMObject& comp )
-  throw ( localComponents::RemoveFailure )
+%(Identifier)s::remove_component ( const LocalComponents::CCMObject& comp )
+  throw ( LocalComponents::RemoveFailure )
 {
   DEBUGNL ( " %(Identifier)s->remove_component (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
-localComponents::CCMObject*
+LocalComponents::CCMObject*
 %(Identifier)s::create_component (  )
-  throw ( localComponents::CreateFailure )
+  throw ( LocalComponents::CreateFailure )
 {
   DEBUGNL ( " %(Identifier)s->create_component (  )" );
   // TODO
-  throw localComponents::NotImplemented (  );
+  throw LocalComponents::NotImplemented (  );
 }
 
 %(CloseNamespace)s
@@ -203,11 +203,11 @@ localComponents::CCMObject*
 //==============================================================================
 
 extern "C" {
-  CCM_Utils::SmartPtr<localComponents::CCMHome>
+  CCM_Utils::SmartPtr<LocalComponents::CCMHome>
   create_%(Identifier)sAdapter (  )
   {
     DEBUGNL ( " create_%(Identifier)sAdapter (  )" );
-    CCM_Utils::SmartPtr<localComponents::CCMHome>
+    CCM_Utils::SmartPtr<LocalComponents::CCMHome>
       ret ( new %(Namespace)s::%(Identifier)s (  ) );
     return ret;
   }
@@ -216,7 +216,7 @@ extern "C" {
   {
     DEBUGNL ( " local_deploy_%(Identifier)s()" );
     try {
-      CCM_Utils::SmartPtr<localComponents::CCMHome> ret( new %(Namespace)s::%(Identifier)s());
+      CCM_Utils::SmartPtr<LocalComponents::CCMHome> ret( new %(Namespace)s::%(Identifier)s());
       HomeFinder::Instance()->register_home(ret, name);
     } catch ( ... )  {
       return -1;
@@ -250,7 +250,7 @@ extern "C" {
 #define __HOME_%(PreprocIdentifier)s_SHARE__H__
 
 #include <CCM_Utils/SmartPointer.h>
-#include <localComponents/CCM.h>
+#include <LocalComponents/CCM.h>
 
 %(MFactoryDefInclude)s
 %(MFinderDefInclude)s
@@ -264,7 +264,7 @@ extern "C" {
 //==============================================================================
 
 class CCM_%(Identifier)sExplicit
-  : public localComponents::HomeExecutorBase
+  : public LocalComponents::HomeExecutorBase
 {
  public:
 %(MFactoryDefPrototypeVV)s
@@ -274,8 +274,8 @@ class CCM_%(Identifier)sExplicit
 class CCM_%(Identifier)sImplicit
 {
  public:
-  virtual localComponents::EnterpriseComponent* create (  )
-    throw ( localComponents::CCMException ) = 0;
+  virtual LocalComponents::EnterpriseComponent* create (  )
+    throw ( LocalComponents::CCMException ) = 0;
 };
 
 
@@ -298,7 +298,7 @@ class CCM_%(Identifier)s
 #define __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
 extern "C" {
-  localComponents::HomeExecutorBase* create_%(Identifier)s (  );
+  LocalComponents::HomeExecutorBase* create_%(Identifier)s (  );
 }
 
 #endif // __HOME_%(PreprocIdentifier)s_ENTRY__H__
@@ -326,8 +326,8 @@ class CCM_%(Identifier)s_impl
   CCM_%(Identifier)s_impl (  );
   virtual ~CCM_%(Identifier)s_impl (  );
 
-  virtual localComponents::EnterpriseComponent* create (  )
-    throw ( localComponents::CCMException );
+  virtual LocalComponents::EnterpriseComponent* create (  )
+    throw ( LocalComponents::CCMException );
 
 %(MFactoryDefPrototypeV)s
 };
@@ -368,12 +368,12 @@ CCM_%(Identifier)s_impl::~CCM_%(Identifier)s_impl (  )
   DEBUGNL ( "-CCM_%(Identifier)s_impl->~CCM_%(Identifier)s_impl (  )" );
 }
 
-localComponents::EnterpriseComponent*
+LocalComponents::EnterpriseComponent*
 CCM_%(Identifier)s_impl::create (  )
-  throw ( localComponents::CCMException )
+  throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Identifier)s_impl->create (  )" );
-  return dynamic_cast<localComponents::EnterpriseComponent*>
+  return dynamic_cast<LocalComponents::EnterpriseComponent*>
     ( new CCM_%(ComponentType)s_impl (  ) );
 }
 
@@ -386,11 +386,11 @@ CCM_%(Identifier)s_impl::create (  )
 //==============================================================================
 
 extern "C" {
-  localComponents::HomeExecutorBase*
+  LocalComponents::HomeExecutorBase*
   create_%(Identifier)s (  )
   {
     DEBUGNL ( " create_%(Identifier)s (  )" );
-    return dynamic_cast<localComponents::HomeExecutorBase*>
+    return dynamic_cast<LocalComponents::HomeExecutorBase*>
       ( new %(Namespace)s::CCM_%(Identifier)s_impl (  ) );
   }
 }

@@ -6,7 +6,7 @@
 #define __UNION__%(PreprocIdentifier)s__H__
 
 #ifdef CCM_TEST_PYTHON
-#include <CCM_Test/Python/%(SelfInclude)s.h>
+#include "%(Identifier)s_python.h"
 #endif
 
 %(MUnionFieldDefInclude)s

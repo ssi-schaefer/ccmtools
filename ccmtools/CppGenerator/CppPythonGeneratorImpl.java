@@ -26,12 +26,16 @@ import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MEnumDef;
+import ccmtools.Metamodel.BaseIDL.MExceptionDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
+import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 
 import java.io.File;
@@ -78,14 +82,16 @@ public class CppPythonGeneratorImpl
     {
         String node_name = ((MContained) current_node).getIdentifier();
 
+        String file_dir = join("_", slice(namespace, 2));
+
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
-        String[] out_files = { node_name + ".h", node_name + ".cc" };
+        String[] out_files = { node_name + "_python.h",
+                               node_name + "_python.cc" };
 
         for (int i = 0; i < out_strings.length; i++) {
             String generated_code = out_strings[i];
             String file_name = out_files[i];
-            String file_dir = handleNamespace("FileNamespace", node_name);
 
             if (generated_code.trim().equals("")) continue;
 
@@ -130,39 +136,9 @@ public class CppPythonGeneratorImpl
             data_value = t.substituteVariables(output_variables);
 
         } else if (data_type.equals("LoopConvertTo")) {
-            MArrayDef array = (MArrayDef) idl_type;
-            StringBuffer loop = new StringBuffer("");
-            String lang_type = getLanguageType((MTyped) current_node);
-
-            int dim = 0;
-            List bounds = array.getBounds();
-            ListIterator li = bounds.listIterator();
-            while (li.hasNext()) {
-                Long b = (Long) li.next();
-                String var = "i" + dim++; // increment here !
-                loop.append("  for ( int "+var+" = 0; "+var+" < "+b+"; ");
-                loop.append(var+"++ )\n");
-                if (li.hasNext()) {
-                    Long nextb = (Long) bounds.get(li.nextIndex());
-                    loop.append("  PyObject *result"+dim+" = PyList_New ( ");
-                    loop.append(nextb+" );\n");
-                }
-            }
-
-            loop.append("  PyList_SetItem ( result"+dim+", i"+dim);
-            loop.append(", convert_"+lang_type+"_to_python ( arg");
-            for (int a = 0; a < dim; a++) loop.append("[i"+a+"]");
-            loop.append(" ) );\n");
-
-            for (dim = dim-1; dim > 0; dim--) {
-                loop.append("  }\n");
-                loop.append("  PyList_SetItem ( result"+dim+", i"+dim);
-                loop.append(", result"+(dim+1)+" );\n");
-            }
-
-            return loop.toString();
         } else if (data_type.equals("LoopConvertFrom")) {
         }
+
         return data_value;
     }
 

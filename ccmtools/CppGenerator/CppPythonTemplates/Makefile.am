@@ -1,17 +1,14 @@
 ## process this file with automake to produce Makefile.in
 
-templatedir = $(TEMPLATE_ROOT)/CppPythonTemplates
+templatedir = $(DATA_ROOT)/CppPythonTemplates
 dist_template_DATA = \
-  Blank                         \
-  CallPythonHeader              \
-  CallPythonImpl                \
-  ConvertPrimitivesHeader       \
-  ConvertPrimitivesImpl         \
   MAliasDef                     \
   MAliasDefArray                \
   MAliasDefNormal               \
   MAliasDefSequence             \
   MAttributeDefInclude          \
+  MAttributeDefMethod           \
+  MAttributeDefWrapper          \
   MComponentDef                 \
   MConstantDefInclude           \
   MConsumesDefInclude           \
@@ -32,11 +29,15 @@ dist_template_DATA = \
   MFieldDefTo                   \
   MFieldDefVariable             \
   MFinderDefInclude             \
+  MHomeDef                      \
+  MInterfaceDef                 \
   MOperationDefInclude          \
   MOperationDefMethod           \
   MOperationDefWrapper          \
   MOperationProvides            \
   MOperationSupports            \
+  MParameterDefAll              \
+  MParameterDefName             \
   MParameterDefInclude          \
   MProvidesDef                  \
   MProvidesDefInclude           \
@@ -57,6 +58,4 @@ dist_template_DATA = \
   MUnionFieldDefTo              \
   MUnionFieldDefVariable        \
   MUsesDefInclude               \
-  MUsesDefIncludeMultiple       \
-  PythonMakefile
-
+  MUsesDefIncludeMultiple

@@ -21,7 +21,7 @@ class %(Identifier)sFacetAdapter
 %(MAttributeProvidesPrototype)s
 %(MOperationProvidesPrototype)s
 
-  CCM_Utils::SmartPtr<localComponents::Object> get_component (  );
+  CCM_Utils::SmartPtr<LocalComponents::Object> get_component (  );
 };
 
 

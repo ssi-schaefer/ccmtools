@@ -78,7 +78,7 @@ public class CppLocalTestGeneratorImpl
         if (generated_code.trim().equals("")) return;
 
         String node_name = ((MContained) current_node).getIdentifier();
-        String file_dir = "CCM_Test";
+        String file_dir = "test";
 
         String file_name = handleNamespace("IncludeNamespace", node_name);
         file_name = file_name.replaceAll("[^\\w]", "_");

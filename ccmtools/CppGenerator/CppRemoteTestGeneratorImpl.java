@@ -111,12 +111,12 @@ public class CppRemoteTestGeneratorImpl
         if (generated_code.trim().equals("")) return;
 
         String node_name = ((MContained) current_node).getIdentifier();
-        String file_dir = "CCM_Test";
+        String file_dir = "test";
         String file_name = "_check_" +
             handleNamespace("FileNamespace", node_name) + "_remote.cc";
 
         writeFinalizedFile(file_dir, file_name, generated_code);
-	
+
 	// generate an empty Makefile.py in the CCM_Test
 	// directory - needed by Confix
 	writeFinalizedFile(file_dir, "Makefile.py", "");

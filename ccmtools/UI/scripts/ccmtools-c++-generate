@@ -27,7 +27,6 @@ ENABLE_APPLICATION = 0
 
 FILES = ''
 INCLUDES = ''
-DEFINES = ''
 
 INSTALL_DIR = ''
 SOURCE_DIR = ''
@@ -42,11 +41,11 @@ Generate C++ components and test components based on the given IDL files.
 
 Options:
     -a, --application           Generate skeletons for business logic
+    -c N, --code-version=N      Set version of generated component code
     -d, --debug                 Enable debugging in generated source code
-    -DFOO[=BAR]                 Define FOO (as BAR) for generated source code
     -h, --help                  Print out this help
     -i DIR, --install=DIR       Use DIR as the install prefix [Confix default]
-    -IDIR                       Add DIR to the include path for IDL files
+    -I DIR                      Add DIR to the include path for IDL files
     -p NAME, --package=NAME     Set package name to NAME [%s]
     -s DIR, --source=DIR        Store generated source code in DIR
                                 [./<PACKAGE-NAME>]
@@ -73,7 +72,6 @@ while index < len(sys.argv):
 
     elif arg == '-a' or arg.startswith('--a'): ENABLE_APPLICATION = 1
     elif arg == '-d' or arg.startswith('--d'): ENABLE_DEBUG = 1
-    elif arg.startswith('-D'): DEFINES += ' ' + arg
     elif arg == '-h' or arg.startswith('--h'): print USAGE; sys.exit(0)
     elif arg == '-i': INSTALL_DIR = sys.argv[index]; index += 1
     elif arg.startswith('--i') and arg.find('=') > 0:
@@ -107,9 +105,6 @@ if not INCLUDES.strip():
         path = '-I' + (os.path.split(file)[0] or os.curdir)
         if INCLUDES.find(path) < 0: INCLUDES += path
 
-if ENABLE_DEBUG:       DEFINES += r' -DCCM_DEBUG'
-if ENABLE_PYTHON_TEST: DEFINES += r' -DCCM_TEST_PYTHON'
-
 SOURCE_DIR = SOURCE_DIR or CCMTOOLS_PACKAGE
 
 if (sys.platform[:3] == 'win' and not SOURCE_DIR[1:3] == ':\\') or \
@@ -120,20 +115,20 @@ if (sys.platform[:3] == 'win' and not SOURCE_DIR[1:3] == ':\\') or \
 ## tests (c) c++ mirror components, (d) c++ python wrappers, and (e) the real
 ## c++ components.
 
-cmd = 'ccmtools-generate -o %s %s' % (SOURCE_DIR, DEFINES)
+cmd = 'ccmtools-generate -c %s -o %s' % (CODE_VERSION, SOURCE_DIR)
 app = ENABLE_APPLICATION and '-a' or ''
 langs = 'c++local ' + (ENABLE_PYTHON_TEST and 'c++python ' or '')
 
 if ENABLE_DEBUG:
     idl3_dir = os.path.join(SOURCE_DIR, 'idl3')
 
-    if os.system('ccmtools-generate -o %s %s idl3mirror %s %s' %
-                 (idl3_dir, DEFINES, INCLUDES, FILES)):
+    if os.system('ccmtools-generate -o %s idl3mirror %s %s' %
+                 (idl3_dir, INCLUDES, FILES)):
         print 'Error while generating IDL3 mirror files.'
         sys.exit(1)
 
     if os.system('%s c++local-test %s %s' % (cmd, INCLUDES, FILES)):
-        print 'Error while generating C++ local test files.'
+        print 'Error while generating local C++ test files.'
         sys.exit(1)
 
     cwd = os.getcwd()

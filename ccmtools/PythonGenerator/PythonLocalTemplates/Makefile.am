@@ -1,6 +1,6 @@
 ## process this file with automake to produce Makefile.in
 
-templatedir = $(TEMPLATE_ROOT)/CppLocalTemplates
+templatedir = $(DATA_ROOT)/CppLocalTemplates
 dist_template_DATA = \
     Blank                                          \
     CerrDebugWriterHeader                          \

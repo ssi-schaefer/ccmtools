@@ -1,0 +1,8 @@
+static PyObject *
+Py%(Object)s_%(Identifier)s( Py%(Object)s_object *self%(MParameterDefAll)s )
+{
+  PyObject *result = NULL;
+  %(Result)sself->iface->%(Identifier)s ( %(MParameterDefName)s );
+  return result;
+}
+

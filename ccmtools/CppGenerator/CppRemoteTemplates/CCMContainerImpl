@@ -327,7 +327,7 @@ Components::CCMHome_ptr CCM::SessionContainer::get_reference_for_home ()
 
 
 Components::CCMObject_ptr
-CCM::SessionContainer::activate_component (localComponents::EnterpriseComponent* inst,
+CCM::SessionContainer::activate_component (LocalComponents::EnterpriseComponent* inst,
 						 PortableServer::Servant skel)
 {
   DEBUGNL(" CCM::SessionContainer->activate_component()");
@@ -359,7 +359,7 @@ CCM::SessionContainer::get_skeleton_for_reference (CORBA::Object_ptr o)
 
 
 Components::CCMObject_ptr
-CCM::SessionContainer::get_reference_for_instance(localComponents::EnterpriseComponent* o)
+CCM::SessionContainer::get_reference_for_instance(LocalComponents::EnterpriseComponent* o)
 {
   DEBUGNL(" CCM::SessionContainer::get_reference_for_instance()");
 
@@ -368,7 +368,7 @@ CCM::SessionContainer::get_reference_for_instance(localComponents::EnterpriseCom
 }
 
 
-localComponents::EnterpriseComponent*
+LocalComponents::EnterpriseComponent*
 CCM::SessionContainer::get_instance_for_component (PortableServer::Servant skel)
 {
   DEBUGNL(" CCM::SessionContainer::get_instance_for_component()");
@@ -448,7 +448,7 @@ Components::CCMHome_ptr CCM::SessionContainer::get_CCM_home ()
 }
 
 
-CORBA::Object_ptr CCM::SessionContainer::get_CCM_object (localComponents::EnterpriseComponent* o)
+CORBA::Object_ptr CCM::SessionContainer::get_CCM_object (LocalComponents::EnterpriseComponent* o)
 {
   DEBUGNL(" CCM::SessionContainer::get_CCM_object()");
 
