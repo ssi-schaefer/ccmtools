@@ -11,7 +11,7 @@ $ ccmtools-generate idl2 -o xxx/CORBA_Stubs Test.idl
 $ ccmtools-generate c++remote -o xxx Test.idl
 
 # create remote component test
-$ ccmtools-generate c++remote-test -o xxx Test.idl
+$ ccmtools-generate c++remote-test -o xxx Test.idl	
 $ cp impl/Test_impl.cc xxx/impl/
 $ cp impl/Test_inPort_impl.cc xxx/impl/
 $ cp test/_check_CCM_Remote_CCM_Session_Test_remote.cc xxx/test/

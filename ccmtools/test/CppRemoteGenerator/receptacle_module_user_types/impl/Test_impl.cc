@@ -52,7 +52,6 @@ CCM_Test_impl::set_session_context(
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
-
 void
 CCM_Test_impl::ccm_activate()
     throw(LocalComponents::CCMException)
@@ -83,7 +82,6 @@ CCM_Test_impl::ccm_activate()
       assert(result.name  == "EgonAndrea");
       assert(result.id == 26);
     }
-
 
     { // test case: struct Address{ long id; string name; Person resident };
       Address p1, p2, p3, result;
@@ -149,7 +147,6 @@ CCM_Test_impl::ccm_activate()
       }
     }
 
-
     { // Test case: typedef sequence<string> StringList;
       StringList p1, p2, p3, result;
       const unsigned int size = 7;
@@ -178,7 +175,6 @@ CCM_Test_impl::ccm_activate()
         assert(p == "two");
       }
     }
-
 
     { // Test case: typedef sequence<Person> PersonList;
       PersonList pl1, pl2, pl3, result;
@@ -217,7 +213,6 @@ CCM_Test_impl::ccm_activate()
       }
     }
 
-
     { // test case: typedef long time_t;
       const CCM_Local::world::europe::austria::time_t p1 = 7;
       CCM_Local::world::europe::austria::time_t p2 = 3, p3, result;
@@ -226,9 +221,20 @@ CCM_Test_impl::ccm_activate()
       assert(p3 == 3);
       assert(result == 3+7);
     }
+
+    { // test case: enum Color {red, green, blue, black, orange};
+      const CCM_Local::world::europe::austria::Color p1 = 
+	CCM_Local::world::europe::austria::red;
+      CCM_Local::world::europe::austria::Color p2 = 
+	CCM_Local::world::europe::austria::green;
+      CCM_Local::world::europe::austria::Color p3;
+      CCM_Local::world::europe::austria::Color result;
+      result = ctx->get_connection_outPort()->f8(p1, p2, p3);
+      assert(p2 == CCM_Local::world::europe::austria::red);
+      assert(p3 == CCM_Local::world::europe::austria::green);
+      assert(result == CCM_Local::world::europe::austria::orange);
+    }
 }
-
-
 
 void
 CCM_Test_impl::ccm_passivate()

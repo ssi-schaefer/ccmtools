@@ -130,5 +130,15 @@ inPort_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
     return t3+t1; 
 }
 
+Color
+inPort_impl::f8(const Color& p1, Color& p2, Color& p3)
+    throw (LocalComponents::CCMException)
+{
+    DEBUGNL("inPort_impl->f8(p1, p2, p3)");
+    p3=p2;
+    p2=p1;
+    return CCM_Local::orange; 
+}
+
 } // /namespace CCM_Session_Test
 } // /namespace CCM_Local

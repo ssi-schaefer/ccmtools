@@ -133,6 +133,16 @@ inPort_impl::f7(const world::europe::austria::time_t& t1, world::europe::austria
     return t3+t1; 
 }
 
+world::europe::austria::Color
+inPort_impl::f8(const world::europe::austria::Color& p1, world::europe::austria::Color& p2, world::europe::austria::Color& p3)
+    throw (LocalComponents::CCMException)
+{
+    DEBUGNL("inPort_impl->f8(p1, p2, p3)");
+    p3=p2;
+    p2=p1;
+    return world::europe::austria::orange;
+}
+
 } // /namespace CCM_Session_Test
 } // /namespace austria
 } // /namespace europe

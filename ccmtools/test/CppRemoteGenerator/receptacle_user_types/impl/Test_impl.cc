@@ -80,7 +80,6 @@ CCM_Test_impl::ccm_activate()
       assert(result.id == 26);
     }
 
-
     { // test case: struct Address{ long id; string name; Person resident };
       Address p1, p2, p3, result;
       Person person;
@@ -115,101 +114,98 @@ CCM_Test_impl::ccm_activate()
       assert(result.resident.id == 26);
     }
 
-
     { // Test case: typedef sequence<list> LongList;
       LongList p1, p2, p3, result;
       const unsigned int size = 11;
       for(int i=0;i<(int)size;i++) {
-	p1.push_back(i);
-	p2.push_back(i+i);
+        p1.push_back(i);
+        p2.push_back(i+i);
       }
 
       result = ctx->get_connection_outPort()->f4(p1, p2, p3);
 
       assert(result.size() == size);
       for(unsigned int i=0;i<result.size();i++) {
-	long p = result.at(i);
-	assert(p == (long)i);
+        long p = result.at(i);
+        assert(p == (long)i);
       }
 
       assert(p2.size() == size);
       for(unsigned int i=0;i<p2.size();i++) {
-	long p = p2.at(i);
-	assert(p == (long)i);
+        long p = p2.at(i);
+        assert(p == (long)i);
       }
 
       assert(p3.size() == size);
       for(unsigned int i=0;i<p3.size();i++) {
-	long p = p3.at(i);
-	assert(p == (long)(i+i));
+        long p = p3.at(i);
+        assert(p == (long)(i+i));
       }
     }
-
 
     { // Test case: typedef sequence<string> StringList;
       StringList p1, p2, p3, result;
       const unsigned int size = 7;
       for(int i=0;i<(int)size;i++) {
-	p1.push_back("one");
-	p2.push_back("two");
+        p1.push_back("one");
+        p2.push_back("two");
       }
 
       result = ctx->get_connection_outPort()->f5(p1, p2, p3);
 
       assert(result.size() == size);
       for(unsigned int i=0;i<result.size();i++) {
-	string p = result.at(i);
-	assert(p == "Test");
+        string p = result.at(i);
+        assert(p == "Test");
       }
 
       assert(p2.size() == size);
       for(unsigned int i=0;i<p2.size();i++) {
-	string p = p2.at(i);
-	assert(p == "one");
+        string p = p2.at(i);
+        assert(p == "one");
       }
 
       assert(p3.size() == size);
       for(unsigned int i=0;i<p3.size();i++) {
-	string p = p3.at(i);
-	assert(p == "two");
+        string p = p3.at(i);
+        assert(p == "two");
       }
     }
-
 
     { // Test case: typedef sequence<Person> PersonList;
       PersonList pl1, pl2, pl3, result;
       const unsigned int size = 8;
       for(int i=0;i<(int)size;i++) {
-	Person p1, p2;
-	p1.name = "Egon";
-	p1.id = i;
-	pl1.push_back(p1);
-	p2.name = "Andrea";
-	p2.id = i+i;
-	pl2.push_back(p2);
+        Person p1, p2;
+        p1.name = "Egon";
+        p1.id = i;
+        pl1.push_back(p1);
+        p2.name = "Andrea";
+        p2.id = i+i;
+        pl2.push_back(p2);
       }
 
       result = ctx->get_connection_outPort()->f6(pl1, pl2, pl3);
 
       assert(result.size() == size);
       for(unsigned int i=0;i<result.size();i++) {
-	Person p = result.at(i);
-	assert(p.id == (long)i);
-	assert(p.name == "Test");
+        Person p = result.at(i);
+        assert(p.id == (long)i);
+        assert(p.name == "Test");
       }
 
       assert(pl2.size() == size);
       for(unsigned int i=0;i<pl2.size();i++) {
-	Person p = pl2.at(i);
-	assert(p.id == (long)i);
-	assert(p.name == "Egon");
+        Person p = pl2.at(i);
+        assert(p.id == (long)i);
+        assert(p.name == "Egon");
       }
 
       assert(pl3.size() == size);
       for(unsigned int i=0;i<pl3.size();i++) {
-	Person p = pl3.at(i);
-	assert(p.id == (long)(i+i));
-	assert(p.name == "Andrea");
+        Person p = pl3.at(i);
+        assert(p.id == (long)(i+i));
+        assert(p.name == "Andrea");
       }
     }
 
@@ -222,9 +218,19 @@ CCM_Test_impl::ccm_activate()
       assert(p3 == 3);
       assert(result == 3+7);
     }
+
+
+    { // test case: enum Color {red, green, blue, black, orange};
+      const CCM_Local::Color p1 = CCM_Local::red;
+      CCM_Local::Color p2 = CCM_Local::green;
+      CCM_Local::Color p3;
+      CCM_Local::Color result;
+      result = ctx->get_connection_outPort()->f8(p1, p2, p3);
+      assert(p2 == CCM_Local::red);
+      assert(p3 == CCM_Local::green);
+      assert(result == CCM_Local::orange);
+    }
 }
-
-
 
 void
 CCM_Test_impl::ccm_passivate()
