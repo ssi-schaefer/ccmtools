@@ -77,6 +77,11 @@ public abstract class ConstraintCode
     public MContainer theClass_;
 
     /**
+     * the IDL type if {@link theClass_} is null
+     */
+    public MIDLType idlType_;
+
+    /**
      * operation context or null
      */
     public MOperationContext opCtxt_;

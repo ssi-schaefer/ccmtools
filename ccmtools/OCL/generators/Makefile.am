@@ -17,5 +17,6 @@ dist_noinst_JAVA = ClassIterator.java         \
                    OclCppGenerator.java       \
                    OclStandardGenerator.java  \
                    OclTypeChecker.java        \
-                   ValueIterator.java
+                   ValueIterator.java         \
+                   ElementType.java
 

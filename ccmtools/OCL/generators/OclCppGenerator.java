@@ -171,6 +171,14 @@ public class OclCppGenerator extends OclStandardGenerator
             return getName_ClassCollection()+"< "+
                    getLanguageType( coll.getType(), itemAlias, itemAlias )+" >";
         }
+        if( type instanceof OclVoid )
+        {
+            return "void";
+        }
+        if( type instanceof OclUser )
+        {
+            return type.getName();
+        }
         return error("OclCppGenerator.getLanguageType:  unsupported OCL type: "+type.getName());
     }
 

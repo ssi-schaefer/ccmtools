@@ -50,6 +50,12 @@ public abstract class OclCodeGenerator
 
 
     /**
+     * true for extra debug output
+     */
+    public static boolean OCL_DEBUG_OUTPUT;
+
+
+    /**
      * The parse tree creator.
      *
      * @see {@link ccmtools.utils.Factory#getElementCreator}
@@ -534,6 +540,21 @@ public abstract class OclCodeGenerator
 
 
     /**
+     * Returns a implementation of {@link ConstraintCode}, with idlType_ set to 'idlType'.
+     */
+    protected ConstraintCode getConstraintCode( ConstraintCode reference, MIDLType idlType )
+    {
+        ConstraintCode result = getConstraintCode(reference);
+        if( idlType!=null )
+        {
+            result.idlType_ = idlType;
+            result.theClass_ = null;
+        }
+        return result;
+    }
+
+
+    /**
      * Creates a complete DbC statement.
      *
      * @param expression  the code of the boolean expression
@@ -655,8 +676,11 @@ public abstract class OclCodeGenerator
      */
     protected ConstraintCode makeCode( MConstraintExpression expression, ConstraintCode reference )
     {
+        boolean old_flag = OCL_DEBUG_OUTPUT;
+        OCL_DEBUG_OUTPUT = true;
         ConstraintCode code = getConstraintCode(reference);
         code.expression_ = makeCode( expression.getExpression(), code );
+        OCL_DEBUG_OUTPUT = old_flag;
         return code;
     }
 
@@ -688,7 +712,7 @@ public abstract class OclCodeGenerator
         OclType type = expr.getOclType();
         if( type==null )
         {
-            type = typeChecker_.makeType(expr, conCode);
+            type = typeChecker_.makeType(expr, conCode).oclType_;
             if( type==null )
             {
                 System.err.println("warning: OclCodeGenerator.makeCode : cannot calculate type of expression");

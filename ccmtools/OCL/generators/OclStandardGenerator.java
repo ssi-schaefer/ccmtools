@@ -243,12 +243,12 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         OclType type1 = expr1.getOclType();
         if( type1==null )
         {
-            type1 = typeChecker_.makeType(expr1,conCode);
+            type1 = typeChecker_.makeType(expr1,conCode).oclType_;
         }
         OclType type2 = expr2.getOclType();
         if( type2==null )
         {
-            type2 = typeChecker_.makeType(expr2,conCode);
+            type2 = typeChecker_.makeType(expr2,conCode).oclType_;
         }
         if( type1==null || type2==null )
         {
@@ -382,6 +382,8 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     // ------------------------------------------------------------------------
 
 
+    private MIDLType lastIdlType_;
+
     /**
      *  property call
      */
@@ -403,9 +405,15 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             }
         }
         OclType type = pc.getOclType();
-        if( type==null )
+        if( type==null || lastIdlType_==null )
         {
-            type = typeChecker_.makeType(pc,conCode);
+            ElementType et = typeChecker_.makeType(pc,conCode);
+            type = et.oclType_;
+            lastIdlType_ = et.idlType_;
+        }
+        if( type==null && OCL_DEBUG_OUTPUT )
+        {
+            System.err.println("warning: cannot get type for '"+code+"' [PC]");
         }
         MPropertyCallParameters pcp = pc.getCallParameters();
         if( pcp==null )
@@ -459,7 +467,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                     }
                     else
                     {
-                        return error("cannot resolve type of @pre-expression");
+                        return error("cannot resolve type of @pre-expression [PC]");
                     }
                 }
             }
@@ -504,49 +512,77 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         {
             return getCollectionOperationCode(expr,pc,conCode,pfe);
         }
+        lastIdlType_ = null;
         String exprCode = "("+makeCode(expr,conCode)+")";
-        OclType type = expr.getOclType();
-        if( type==null )
+        OclType typeExpr = expr.getOclType();
+        if( typeExpr==null )
         {
-            type = typeChecker_.makeType(expr,conCode);
+            ElementType et = typeChecker_.makeType(expr,conCode);
+            typeExpr = et.oclType_;
+            if( lastIdlType_==null )
+            {
+                lastIdlType_ = et.idlType_;
+            }
         }
-        if( type!=null )
+        //
+        ConstraintCode fake = getConstraintCode(conCode, lastIdlType_);
+        ElementType et = typeChecker_.makeType(pc,fake);
+        OclType typePC = et.oclType_;
+        lastIdlType_ = et.idlType_;
+        //
+        if( pc.getCallParameters()==null && pc.isPrevious() )
         {
-            if( type instanceof OclCollection )
+            if( typePC==null )
+            {
+                return error("cannot resolve type of @pre-expression [PFE]");
+            }
+            String h = getNextHelperName();
+            String t = getLanguageType(typePC, true, true);
+            String c = "  "+t+" "+h+" = "+exprCode+"."+getCode(pc,false,conCode)+";\n";
+            conCode.preStatements_ += c;
+            lastIdlType_ = et.idlType_;
+            return h;
+        }
+        if( typeExpr!=null )
+        {
+            lastIdlType_ = null;
+            if( typeExpr instanceof OclCollection )
             {
                 return error("shorthand for 'collect' is not implemented");
             }
-            if( type instanceof OclString )
+            if( typeExpr instanceof OclString )
             {
                 return getCode_String(exprCode,pc,conCode,pfe);
             }
-            if( type instanceof OclInteger )
+            if( typeExpr instanceof OclInteger )
             {
                 return getCode_Integer(exprCode,pc,conCode,pfe);
             }
-            if( type instanceof OclReal )
+            if( typeExpr instanceof OclReal )
             {
                 return getCode_Real(exprCode,pc,conCode,pfe);
             }
-            if( type instanceof OclBoolean )
+            if( typeExpr instanceof OclBoolean )
             {
                 return error("unknown Boolean operation '" + pc.getName() + "'");
             }
-            if( type instanceof OclEnumeration )
+            if( typeExpr instanceof OclEnumeration )
             {
                 return error("unknown Enumeration operation '" + pc.getName() + "'");
             }
-            if( type instanceof OclVoid )
+            if( typeExpr instanceof OclVoid )
             {
                 return error("wrong use of type OclVoid");
             }
-            if( !(type instanceof OclUser) )
+            if( !(typeExpr instanceof OclUser) )
             {
-                return error( "unknown OCL type: "+type.getName() );
+                return error( "unknown OCL type: "+typeExpr.getName() );
             }
         }
         // we assume that the type is OclUser
-        return exprCode+"."+getCode(pc,false,conCode);
+        String sc = exprCode+"."+getCode(pc,false,conCode);
+        lastIdlType_ = et.idlType_;
+        return sc;
     }
 
 
@@ -682,7 +718,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         OclType collType = expr.getOclType();
         if( collType==null )
         {
-            collType = typeChecker_.makeType(expr,conCode);
+            collType = typeChecker_.makeType(expr,conCode).oclType_;
         }
         OclType itemType;
         if( collType==null || !(collType instanceof OclCollection) )

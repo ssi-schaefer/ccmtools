@@ -21,39 +21,17 @@
 
 package ccmtools.OCL.generators;
 
-import oclmetamodel.MExpression;
-import ccmtools.Metamodel.BaseIDL.MContainer;
+import oclmetamodel.OclType;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
 
 
 /**
- * Calculates the type of OCL expressions.
+ * The OCL- and (maybe) the IDL-type of an element.
  *
  * @author Robert Lechner
  */
-public interface OclTypeChecker
+public class ElementType
 {
-    /**
-     * Calculates and sets the type of an expression.
-     *
-     * @param expr  the expression
-     * @param conCode  no change
-     * @return the type of the expression (or null)
-     */
-    public ElementType makeType( MExpression expr, ConstraintCode conCode );
-
-
-    /**
-     * Returns the class name of the local adpter.
-     *
-     * @param theClass  home, component or interface
-     * @return class name or null
-     */
-    public String getLocalAdapterName( MContainer theClass );
-
-
-    /**
-     * Returns the variable or function name for an attribute.
-     */
-    public String getAttributeName( String oclName );
-
+    public OclType oclType_;
+    public MIDLType idlType_;
 }

@@ -633,6 +633,7 @@ public class CppLocalDbcGeneratorImpl
     class TypeCreator extends OclNormalization implements OclTypeChecker
     {
         private MContainer theClass_;
+        private MIDLType idlType_;
         private MOperationContext context_;
         private MTyped returnType_;
 
@@ -688,13 +689,23 @@ public class CppLocalDbcGeneratorImpl
          * @param conCode  no change
          * @return the type of the expression (or null)
          */
-        public OclType makeType( MExpression expr, ConstraintCode conCode )
+        public ElementType makeType( MExpression expr, ConstraintCode conCode )
         {
             theClass_ = conCode.theClass_;
+            idlType_ = conCode.idlType_;
             context_ = conCode.opCtxt_;
             returnType_ = conCode.returnType_;
-            return setAndGetOclType(expr);
+            ElementType result = new ElementType();
+            last_attribute_idlType_ = null;
+            result.oclType_ = setAndGetOclType(expr);
+            if( expr instanceof MPropertyCall )
+            {
+                result.idlType_ = last_attribute_idlType_;
+            }
+            return result;
         }
+
+        private MIDLType last_attribute_idlType_;
 
         /**
          * Returns the type of a property call or null.
@@ -734,6 +745,32 @@ public class CppLocalDbcGeneratorImpl
                         return type;
                     }
                 }
+                if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
+                {
+                    System.err.println("TypeCreator.getOclType: could not find '"+
+                        name+"' in class '"+theClass_.getIdentifier()+"'");
+                }
+            }
+            if( idlType_!=null )
+            {
+                if( idlType_ instanceof MStructDef )
+                {
+                    MStructDef sd = (MStructDef)idlType_;
+                    Iterator it = sd.getMembers().iterator();
+                    while( it.hasNext() )
+                    {
+                        MFieldDef fd = (MFieldDef)it.next();
+                        if( fd.getIdentifier().equals(name) )
+                        {
+                            return makeOclType(fd);
+                        }
+                    }
+                }
+                if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
+                {
+                    System.err.println("TypeCreator.getOclType: could not find '"+
+                        name+"' in IDL-type '"+idlType_.getClass().getName()+"'");
+                }
             }
             return null;
         }
@@ -749,6 +786,7 @@ public class CppLocalDbcGeneratorImpl
                     MAttributeDef attr = (MAttributeDef)obj;
                     if( attr.getIdentifier().equals(name) )
                     {
+                        last_attribute_idlType_ = attr.getIdlType();
                         return makeOclType(attr);
                     }
                 }
@@ -764,7 +802,6 @@ public class CppLocalDbcGeneratorImpl
             return null;
         }
     }
-
 
 }
 
