@@ -400,8 +400,11 @@ public class CppRemoteGeneratorImpl
     protected String getLocalValue(String variable)
     {
 	String value = super.getLocalValue(variable);
-
-	if(current_node instanceof MAttributeDef) {
+	
+	if(variable.equals("CcmToolsVersion")) {
+	    return "CCM Tools version " +  ccmtools.Constants.VERSION;
+	}
+	else if(current_node instanceof MAttributeDef) {
             return data_MAttributeDef(variable, value);
 	}
 	else if(current_node instanceof MFieldDef) {
@@ -493,9 +496,7 @@ public class CppRemoteGeneratorImpl
 		     + handleNamespace("StubsNamespace","")
 		     + contained.getIdentifier()
 		     + ")\");");
-	    code.add("    LDEBUGNL(CCM_REMOTE,\"   "
-		     + contained.getIdentifier() 
-		     + "= \" << in);");
+	    code.add("    LDEBUGNL(CCM_REMOTE, in);");
 	    code.add(data_MSequenceDef("ConvertAliasFromCORBA",""));
 	    code.add("}"); 
 	    dataValue = Text.join("\n", code);
@@ -515,10 +516,8 @@ public class CppRemoteGeneratorImpl
 		     + handleNamespace("StubsNamespace","")
 		     + contained.getIdentifier()
 		     + ")\");");
-	    code.add("    LDEBUGNL(CCM_REMOTE,\"   "
-		     + contained.getIdentifier()
-		     + "= \" << out);");
 	    code.add(data_MSequenceDef("ConvertAliasToCORBA",""));
+	    code.add("    LDEBUGNL(CCM_REMOTE, out);");
 	    code.add("}"); 
 	    dataValue = Text.join("\n", code);
 	}
@@ -537,7 +536,7 @@ public class CppRemoteGeneratorImpl
 		     + "& value)");
 	    code.add("{");
 	    code.add(data_MSequenceDef("OutputCORBAType",""));
-	    code.add("return o;");
+	    code.add("    return o;");
 	    code.add("}");
 	    dataValue = Text.join("\n", code);
 	}
@@ -608,12 +607,15 @@ public class CppRemoteGeneratorImpl
 	}
 	else if(dataType.equals("OutputCORBAType")) {
 	    List code = new ArrayList();
-	    code.add("    o << \"[ \";");
+	    code.add("    o << endl;");
+	    code.add("    o << \"sequence " 
+		     + handleNamespace("StubsNamespace","")
+		     + contained.getIdentifier() 
+		     + " [ \" << endl;");
 	    code.add("    for(unsigned long i=0; i < value.length();i++) {");
-	    code.add("        if(i) o << \",\";");	
-	    code.add("        o << value[i];");
+	    code.add("        o << value[i] << endl;");
 	    code.add("    }");
-	    code.add("    o << \" ]\";");
+	    code.add("    o << \"]\";");
 	    dataValue = Text.join("\n", code);
 	}
 	else if(dataType.equals("OutputCppType")) {
@@ -646,7 +648,11 @@ public class CppRemoteGeneratorImpl
 	String fieldName = ((MFieldDef)current_node).getIdentifier();
 
 	// Handle %(CORBATypeIn)s tag in %(MFieldDef*)s templates
-        if (dataType.equals("CORBATypeIn")) {
+        if (dataType.equals("CORBAType")) {
+		dataValue = fieldName; 
+        }
+	// Handle %(CORBATypeIn)s tag in %(MFieldDef*)s templates
+        else if (dataType.equals("CORBATypeIn")) {
 	    if(idlType instanceof MStringDef) {
 		dataValue = fieldName + ".in()";
 	    }
@@ -939,21 +945,6 @@ public class CppRemoteGeneratorImpl
 	StringBuffer buffer = new StringBuffer();
 
 	if(dataType.equals("UsesInclude")) {
-	    // TODO: Refactoring namespace method
-	    /*
-	    if(scope.size() > 0) {
-		buffer.append("#include <CCM_Local/");
-		buffer.append(Text.join("/", scope));
-		buffer.append( "/");
-		buffer.append(usesDef.getUses().getIdentifier());
-		buffer.append(".h>");
-	    }
-	    else {
-		buffer.append("#include <CCM_Local/");
-		buffer.append(usesDef.getUses().getIdentifier());
-		buffer.append(".h>");
-	    }
-	    */
 	    buffer.append("#include <");
 	    buffer.append(getLocalNamespace("/",""));
 	    buffer.append(usesDef.getUses().getIdentifier());
