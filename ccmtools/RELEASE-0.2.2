@@ -42,16 +42,28 @@ CppLocalGenerator:
 
 CppMirrorGenerator:
 ------------------
-* The generated test-client does not call methods on supported,
-  provided or used interfaces on its own.
-  It only instantiates the component and its mirror component 
-  and connects the ports. All test cases must be implemented in
-  the mirror component's business logic.
-  This solves the test-value problem with user defined data types.
+* The generated test-client (CCM_Test/_check_CCM_Session*.cc) does not 
+  longer call methods on attributes and  supported interfaces on its own.
+  It only instantiates a component and its mirror component and connects 
+  the facet and receptacle ports. All test cases fore these ports must be 
+  implemented in the mirror component's business logic.
+  That solves the compiler problem when using user defined data types
+  (the code generator can't guess the type and test values of user defined 
+  types).
 
+* The generated test client (_check_CCM_Session*.cc) now is handled
+  in the same way as the *_app.* files.
+  They are located beneath the generated directory to be edited
+  manually. At compiletime, the files are cpoied to the generated
+  directory structure.
+  
  
 Test-Cases:
 -----------     
 * There are some new test-cases (see test/idl/README) that check the 
   implementations of IDL parser and code generators.
   (We used the gcc 3.2 to compile all examples)
+
+* We implemented more test cases within mirror component's business logic
+  and test clients (see test/CppGenerator subdirectories). 
+

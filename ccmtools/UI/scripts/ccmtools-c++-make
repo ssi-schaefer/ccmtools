@@ -88,8 +88,9 @@ if not os.path.isdir(SOURCE_DIR):
 ## find the matching application logic and user types files, and copy them from
 ## the current directory to the generated code directory.
 
-for f in glob.glob('*_app.*') + glob.glob('*_user_types.h'):
+for f in glob.glob('*_app.*') + glob.glob('*_user_types.h') + glob.glob('_check_CCM_Session*.cc'):
     dest_file = find(SOURCE_DIR, f)
+    print ' copy file: ' + f
     if not dest_file:
         print 'Warning: unknown destination for %s. Skipping.' % f
         print 'This might cause deployment failure!'

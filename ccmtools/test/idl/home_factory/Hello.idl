@@ -11,6 +11,6 @@ component Hello
 
 home HelloHome manages Hello
 {
-  factory create_with_id(in string id);
+  factory createWithString(in string id);
 };
 

@@ -15,8 +15,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 # attribute_user_types.sh
 # home_exception.sh
 # module_mixed.sh
-
-
+#TESTS =     home_user_types.sh    
 TESTS =     help.sh                     \
             version.sh                  \
             attribute.sh                \
@@ -31,12 +30,14 @@ TESTS =     help.sh                     \
             facet_exception.sh          \
             facet_user_types.sh         \
             receptacle.sh               \
+            receptacle_not_connected.sh \
             receptacle_basic_types.sh   \
             receptacle_exception.sh     \
             receptacle_multiple.sh      \
             receptacle_user_types.sh    \
             home_factory.sh             \
             home_basic_types.sh         \
+            home_user_types.sh          \
             include.sh                  \
             include_dir.sh              \
             include_nested.sh           \

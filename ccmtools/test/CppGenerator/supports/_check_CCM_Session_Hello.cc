@@ -7,14 +7,17 @@
 #include <Python.h>
 #endif
 
-#include <%(IncludeNamespace)s_mirror/%(Identifier)s_mirror_gen.h>
-#include <%(IncludeNamespace)s_mirror/%(HomeType)s_mirror_gen.h>
-#include <%(IncludeNamespace)s/%(Identifier)s_gen.h>
-#include <%(IncludeNamespace)s/%(HomeType)s_gen.h>
+#include <CCM_Local/CCM_Session_Hello_mirror/Hello_mirror_gen.h>
+#include <CCM_Local/CCM_Session_Hello_mirror/HelloHome_mirror_gen.h>
+#include <CCM_Local/CCM_Session_Hello/Hello_gen.h>
+#include <CCM_Local/CCM_Session_Hello/HelloHome_gen.h>
 
 using namespace std;
 using namespace CCM_Utils;
-%(UsingNamespace)s
+using namespace CCM_Local;
+using namespace CCM_Session_Hello;
+using namespace CCM_Session_Hello_mirror;
+
 
 //==============================================================================
 // implementation of local client test
@@ -25,13 +28,13 @@ int main ( int argc, char *argv[] )
   int result = 0;
   Debug::set_global ( true );
 
-  DEBUGNL ( "test_client_%(Identifier)s_component_main (  )" );
+  DEBUGNL ( "test_client_Hello_component_main (  )" );
 
   // Get in instance of the local HomeFinder and register component homes
   localComponents::HomeFinder* homeFinder = HomeFinder::Instance();
   try {
-    homeFinder->register_home( create_%(HomeType)sAdapter(), "%(HomeType)s" );
-    homeFinder->register_home( create_%(HomeType)s_mirrorAdapter(), "%(HomeType)s_mirror" );
+    homeFinder->register_home( create_HelloHomeAdapter(), "HelloHome" );
+    homeFinder->register_home( create_HelloHome_mirrorAdapter(), "HelloHome_mirror" );
   } catch ( ... )  {
     cout << "Aut'sch: there is something wrong while register homes!" << endl;
     return -1;
@@ -47,35 +50,35 @@ int main ( int argc, char *argv[] )
      */
 
     // Find component and mirror component homes
-    SmartPtr<%(HomeType)s> my%(HomeType)s ( dynamic_cast<%(HomeType)s*>
-      ( homeFinder->find_home_by_name ( "%(HomeType)s" ).ptr (  ) ) );
+    SmartPtr<HelloHome> myHelloHome ( dynamic_cast<HelloHome*>
+      ( homeFinder->find_home_by_name ( "HelloHome" ).ptr (  ) ) );
 
-    SmartPtr<%(HomeType)s_mirror> my%(HomeType)sMirror ( dynamic_cast<%(HomeType)s_mirror*>
-      ( homeFinder->find_home_by_name ( "%(HomeType)s_mirror" ).ptr (  ) ) );
+    SmartPtr<HelloHome_mirror> myHelloHomeMirror ( dynamic_cast<HelloHome_mirror*>
+      ( homeFinder->find_home_by_name ( "HelloHome_mirror" ).ptr (  ) ) );
 
     // Create component and mirror component instances
-    SmartPtr<%(Identifier)s> my%(Identifier)s = 
-      my%(HomeType)s.ptr (  )->create (  );
-    SmartPtr<%(Identifier)s_mirror> my%(Identifier)sMirror = 
-      my%(HomeType)sMirror.ptr()->create();
+    SmartPtr<Hello> myHello = 
+      myHelloHome.ptr (  )->create (  );
+    SmartPtr<Hello_mirror> myHelloMirror = 
+      myHelloHomeMirror.ptr()->create();
 
     // Create provided and used (mirror) facets
-%(MProvidesDefFacetCreate)s
-%(MUsesDefFacetCreate)s
+
+
 
     // Connect components
-%(MProvidesDefConnect)s
-%(MUsesDefConnect)s
+
+
 
     // End of deployment phase
-    my%(Identifier)s.ptr()->configuration_complete();
-    my%(Identifier)sMirror.ptr()->configuration_complete();
+    myHello.ptr()->configuration_complete();
+    myHelloMirror.ptr()->configuration_complete();
 
-    // Use %(Identifier)s component standard functionality
+    // Use Hello component standard functionality
     cout << "> getComponentVersion() = " 
-         << my%(Identifier)s.ptr()->getComponentVersion () << endl;
+         << myHello.ptr()->getComponentVersion () << endl;
     cout << "> getComponentDate() = " 
-         << my%(Identifier)s.ptr()->getComponentDate() << endl;
+         << myHello.ptr()->getComponentDate() << endl;
 
     /*
      * TESTING
@@ -83,8 +86,11 @@ int main ( int argc, char *argv[] )
 	
      DEBUGNL("==== Begin Test Case =============================================" );	
 
-    // TODO : IMPLEMENT ME HERE !	
-	
+     // TODO : IMPLEMENT ME HERE !	
+     string s = "0123456789";
+     long result = myHello.ptr()->println(s);
+     assert(result == (long)s.length());
+
      DEBUGNL("==== End Test Case ===============================================" );	
 
 
@@ -93,18 +99,18 @@ int main ( int argc, char *argv[] )
      */
 
     // Disconnect components
-%(MProvidesDefDisconnect)s
-%(MUsesDefDisconnect)s
+
+
 
     // Destroy component instances
-    my%(Identifier)s.ptr (  )->remove (  );
-    my%(Identifier)sMirror.ptr()->remove();
+    myHello.ptr (  )->remove (  );
+    myHelloMirror.ptr()->remove();
 
     // Unregister component homes
-    homeFinder->unregister_home ( "%(HomeType)s" );
-    homeFinder->unregister_home ( "%(HomeType)s_mirror" );
+    homeFinder->unregister_home ( "HelloHome" );
+    homeFinder->unregister_home ( "HelloHome_mirror" );
 
-    DEBUGNL ( "exit test_client_%(Identifier)s_component_main (  )" );
+    DEBUGNL ( "exit test_client_Hello_component_main (  )" );
   } catch ( localComponents::HomeNotFound ) {
     cout << "Aut'sch: can't find a home!" << endl;
     result = -1;
@@ -122,4 +128,3 @@ int main ( int argc, char *argv[] )
 
   return result;
 }
-
