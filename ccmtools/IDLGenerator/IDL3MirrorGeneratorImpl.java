@@ -61,8 +61,9 @@ public class IDL3MirrorGeneratorImpl
 
 
     /**
-     *  Override IDLGenerator method 
+     *  Override IDLGenerator method...
      *
+     *  FIXME: the same method is used in IDL3GeneratorImpl.java
      **/
     protected String getLocalValue(String variable)
     {
