@@ -42,15 +42,10 @@ Generate C++ components and test components based on the given IDL files.
 
 Options:
     -a, --application           Generate skeletons for business logic
-    -c N, --code-version=N      Set version of generated component code
-    -d, --debug                 Enable debugging in generated source code
+    -d, --development           Generate mirror component and test client
     -h, --help                  Print out this help
-    -i DIR, --install=DIR       Use DIR as the install prefix [Confix default]
-    -I DIR                      Add DIR to the include path for IDL files
+    -Ipath                      Add path to the include path for IDL files
     -p NAME, --package=NAME     Set package name to NAME [%s]
-    -s DIR, --source=DIR        Store generated source code in DIR
-                                [./<PACKAGE-NAME>]
-    -y, --python                Enable Python testing in generated source code
     -V, --version               Print out ccmtools version information
 
 The environment variable CCMTOOLS_PACKAGE can be used to set the package name.

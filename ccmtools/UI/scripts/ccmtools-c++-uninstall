@@ -33,8 +33,6 @@ Uninstall C++ components and test components, and clean the build directory.
 Options:
     -h, --help                 Print out this help
     -p NAME, --package=NAME    Uninstall the package named NAME [%s]
-    -s DIR, --source=DIR       Use DIR as the source for component code
-                               [./<PACKAGE-NAME>]
     -V, --version              Print out ccmtools version information
 
 The environment variable CCMTOOLS_PACKAGE can also be used to set the package
@@ -74,5 +72,5 @@ if not os.path.isdir(SOURCE_DIR):
 
 confix_flags  = ' --packageroot="%s" --profile="ccmtools"' % SOURCE_DIR
 confix_flags += ' --make --targets="uninstall distclean" --quiet'
-
+print '>> confix.py ' + confix_flags
 sys.exit(os.system('confix.py ' + confix_flags) != 0)

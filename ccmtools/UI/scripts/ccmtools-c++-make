@@ -33,8 +33,6 @@ Build and check C++ components.
 Options:
     -h, --help                 Print out this help
     -p NAME, --package=NAME    Use package name of NAME [%s]
-    -s DIR, --source=DIR       Use DIR as the source for component code
-                               [./<PACKAGE-NAME>]
     -V, --version              Print out ccmtools version information
 
 The environment variable CCMTOOLS_PACKAGE can also be used to set the package
