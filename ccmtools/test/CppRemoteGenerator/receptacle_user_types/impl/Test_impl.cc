@@ -54,8 +54,7 @@ CCM_Test_impl::ccm_activate()
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" CCM_Test_impl->ccm_activate()");
-
-    { // test case: long
+    try { // test case: long
       const long p1 = 7;
       long p2=3, p3, result;
       result = ctx->get_connection_outPort()->f1(p1, p2, p3);
@@ -63,9 +62,12 @@ CCM_Test_impl::ccm_activate()
       assert(p3 == 3);
       assert(result == 3+7);
     }
+    catch(LocalComponents::Exception e) {
+      cerr << "CCM_Test_impl::ccm_activate(): " << e.what() << endl;
+    }
 
 
-    { // test case: struct Person { long id; string name; };
+    try { // test case: struct Person { long id; string name; };
       Person p1, p2, p3, result;
       p1.name = "Egon"; 
       p1.id = 3;
@@ -79,8 +81,12 @@ CCM_Test_impl::ccm_activate()
       assert(result.name  == "EgonAndrea");
       assert(result.id == 26);
     }
+    catch(LocalComponents::Exception e) {
+      cerr << "CCM_Test_impl::ccm_activate(): " << e.what() << endl;
+    }
 
-    { // test case: struct Address{ long id; string name; Person resident };
+
+    try { // test case: struct Address{ long id; string name; Person resident };
       Address p1, p2, p3, result;
       Person person;
 
@@ -113,8 +119,12 @@ CCM_Test_impl::ccm_activate()
       assert(result.resident.name == "EgonAndrea");
       assert(result.resident.id == 26);
     }
+    catch(LocalComponents::Exception e) {
+      cerr << "CCM_Test_impl::ccm_activate(): " << e.what() << endl;
+    }
 
-    { // Test case: typedef sequence<list> LongList;
+
+    try { // Test case: typedef sequence<list> LongList;
       LongList p1, p2, p3, result;
       const unsigned int size = 11;
       for(int i=0;i<(int)size;i++) {
@@ -142,8 +152,12 @@ CCM_Test_impl::ccm_activate()
         assert(p == (long)(i+i));
       }
     }
+    catch(LocalComponents::Exception e) {
+      cerr << "CCM_Test_impl::ccm_activate(): " << e.what() << endl;
+    }
 
-    { // Test case: typedef sequence<string> StringList;
+
+    try { // Test case: typedef sequence<string> StringList;
       StringList p1, p2, p3, result;
       const unsigned int size = 7;
       for(int i=0;i<(int)size;i++) {
@@ -171,8 +185,12 @@ CCM_Test_impl::ccm_activate()
         assert(p == "two");
       }
     }
+    catch(LocalComponents::Exception e) {
+      cerr << "CCM_Test_impl::ccm_activate(): " << e.what() << endl;
+    }
 
-    { // Test case: typedef sequence<Person> PersonList;
+
+    try { // Test case: typedef sequence<Person> PersonList;
       PersonList pl1, pl2, pl3, result;
       const unsigned int size = 8;
       for(int i=0;i<(int)size;i++) {
@@ -184,23 +202,19 @@ CCM_Test_impl::ccm_activate()
         p2.id = i+i;
         pl2.push_back(p2);
       }
-
       result = ctx->get_connection_outPort()->f6(pl1, pl2, pl3);
-
       assert(result.size() == size);
       for(unsigned int i=0;i<result.size();i++) {
         Person p = result.at(i);
         assert(p.id == (long)i);
         assert(p.name == "Test");
       }
-
       assert(pl2.size() == size);
       for(unsigned int i=0;i<pl2.size();i++) {
         Person p = pl2.at(i);
         assert(p.id == (long)i);
         assert(p.name == "Egon");
       }
-
       assert(pl3.size() == size);
       for(unsigned int i=0;i<pl3.size();i++) {
         Person p = pl3.at(i);
@@ -208,9 +222,12 @@ CCM_Test_impl::ccm_activate()
         assert(p.name == "Andrea");
       }
     }
+    catch(LocalComponents::Exception e) {
+      cerr << "CCM_Test_impl::ccm_activate(): " << e.what() << endl;
+    }
 
 
-    { // test case: typedef long time_t;
+    try { // test case: typedef long time_t;
       const CCM_Local::time_t p1 = 7;
       CCM_Local::time_t p2 = 3, p3, result;
       result = ctx->get_connection_outPort()->f7(p1, p2, p3);
@@ -218,9 +235,12 @@ CCM_Test_impl::ccm_activate()
       assert(p3 == 3);
       assert(result == 3+7);
     }
+    catch(LocalComponents::Exception e) {
+      cerr << "CCM_Test_impl::ccm_activate(): " << e.what() << endl;
+    }
 
 
-    { // test case: enum Color {red, green, blue, black, orange};
+    try { // test case: enum Color {red, green, blue, black, orange};
       const CCM_Local::Color p1 = CCM_Local::red;
       CCM_Local::Color p2 = CCM_Local::green;
       CCM_Local::Color p3;
@@ -229,6 +249,9 @@ CCM_Test_impl::ccm_activate()
       assert(p2 == CCM_Local::red);
       assert(p3 == CCM_Local::green);
       assert(result == CCM_Local::orange);
+    }
+    catch(LocalComponents::Exception e) {
+      cerr << "CCM_Test_impl::ccm_activate(): " << e.what() << endl;
     }
 }
 
