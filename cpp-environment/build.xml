@@ -7,10 +7,10 @@
   <property name="package.root" location="." />
 
   <!-- Build local component environment -->
-  <target name="WX_Utils" 
-     description="Build WX::Utils package using confix." >
+  <target name="wx" 
+     description="Build wx package using confix." >
      <exec executable="confix.py" >
-         <arg value="--packageroot=${package.root}/WX_Utils" />
+         <arg value="--packageroot=${package.root}/wx" />
          <arg value="--bootstrap" />
          <arg value="--configure" />
          <arg value="--make" />
@@ -18,10 +18,10 @@
      </exec>
   </target>
 
-  <target name="CCM_Local" 
-     description="Build CCM_Local package using confix." >
+  <target name="ccm" 
+     description="Build ccm package using confix." >
      <exec executable="confix.py" >
-         <arg value="--packageroot=${package.root}/CCM_Local" />
+         <arg value="--packageroot=${package.root}/ccm" />
          <arg value="--bootstrap" />
          <arg value="--configure" />
          <arg value="--make" />
@@ -29,65 +29,34 @@
      </exec>
   </target>
 
-  <target name="local" depends="WX_Utils, CCM_Local"
-     description="Build local runtime environment for local components." >
+  <target name="all" depends="wx, ccm"
+     description="Build runtime environment for local and remote components." >
   </target>
 
 
-  <!-- Build remote component environment -->
-  <target name="external" 
-     description="Build confix' external package." >
+  <!-- Build local component environment -->
+  <target name="local" 
+     description="Build runtime environment for local components only." >
      <exec executable="confix.py" >
-         <arg value="--packageroot=${package.root}/external" />
+         <arg value="--packageroot=${package.root}/ccm/CCM_Local" />
          <arg value="--bootstrap" />
          <arg value="--configure" />
          <arg value="--make" />
          <arg value="--targets=install" />
      </exec>
-  </target>
-
-  <target name="CCM_Remote" depends="external"
-     description="Build CCM_Remote package using confix." >
-     <exec executable="confix.py" >
-         <arg value="--packageroot=${package.root}/CCM_Remote" />
-         <arg value="--bootstrap" />
-         <arg value="--configure" />
-         <arg value="--make" />
-         <arg value="--targets=install" />
-     </exec>
-  </target>
-
-  <target name="remote" depends="external, CCM_Remote"
-     description="Build local runtime environment for remote components." >
-  </target>
-
-
-  <!-- Build local and remote component environment -->
-  <target name="all" depends="local, remote"
-     description="Build local runtime environment for local and remote components." >
   </target>
 
 
   <!-- Clean up -->
   <target name="clean"
-      description="Uninstall WX::Utils and CCM_Local package using confix." >
+      description="Uninstall wx and ccm package using confix." >
       <exec executable="confix.py" >
-         <arg value="--packageroot=${package.root}/WX_Utils" />
+         <arg value="--packageroot=${package.root}/wx" />
          <arg value="--make" />
          <arg value="--targets=uninstall" />
       </exec>
       <exec executable="confix.py" >
-         <arg value="--packageroot=${package.root}/CCM_Local" />
-         <arg value="--make" />
-         <arg value="--targets=uninstall" />
-      </exec>
-      <exec executable="confix.py" >
-         <arg value="--packageroot=${package.root}/external" />
-         <arg value="--make" />
-         <arg value="--targets=uninstall" />
-      </exec>
-      <exec executable="confix.py" >
-         <arg value="--packageroot=${package.root}/CCM_Remote" />
+         <arg value="--packageroot=${package.root}/ccm" />
          <arg value="--make" />
          <arg value="--targets=uninstall" />
       </exec>

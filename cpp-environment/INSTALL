@@ -6,22 +6,22 @@ previous instruction.
 
 For the informed, use the following :
 
-   # Install the local component's environment:
-   $ confix.py --packageroot=`pwd`/WX_Utils --bootstrap --configure --make --targets="install"
-   $ confix.py --packageroot=`pwd`/CCM_Local --bootstrap --configure --make --targets="install"
+   # Install the WX library (some utility stuff like smart pointer, etc.)	
+   $ confix.py --packageroot=`pwd`/wx --bootstrap --configure --make --targets="install"
 
-   # Install the remote component's environment:
-   $ confix.py --packageroot=`pwd`/external --bootstrap --configure --make --targets="install"
-   $ confix.py --packageroot=`pwd`/CCM_Remote --bootstrap --configure --make --targets="install"
+   # Install the local and remote component runtime environment:
+   # (be sure that you have already installed Mico - http://mico.org)
+   $ confix.py --packageroot=`pwd`/ccm --bootstrap --configure --make --targets="install"
+
+   # If you only use local components, type:	
+   $ confix.py --packageroot=`pwd`/ccm/CCM_Local --bootstrap --configure --make --targets="install"
 
 
 If you like Ant (as a frontend to Confix ;-), you can say:
 
-   # Install the local component's environment:
-   $ ant local
+   # Install the whole component runtime environment 
+   # (wx + ccm local and remote):
+   $ ant 
 
-   # If you only want to install CCM_Local without WX_Utils:
-   $ ant CCM_Local	
 
-   # To install both, the local and remote component's environment:
-   $ ant		
+  
