@@ -49,6 +49,7 @@ class XmiFactory extends DTD_Creator
         if(qName.equals(ExceptionXmi.xmlName__))  return new ExceptionXmi(attrs);
         if(qName.equals(OperationXmi.xmlName__))  return new OperationXmi(attrs);
         if(qName.equals(ClassifierXmi.xmlName__))  return new ClassifierXmi(attrs);
+        if(qName.equals(GeneralizableElementXmi.xmlName__))  return new GeneralizableElementXmi(attrs);
         return super.create(qName, attrs);
     }
 }

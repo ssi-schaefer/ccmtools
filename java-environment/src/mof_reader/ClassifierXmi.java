@@ -65,7 +65,20 @@ class ClassifierXmi extends mof_xmi_parser.model.MClassifier implements Worker
             }
             else if( obj instanceof MGeneralizableElement_supertypes )
             {
-                // nothing to do
+                Iterator it3 = ((MGeneralizableElement_supertypes)obj).content().iterator();
+                while( it3.hasNext() )
+                {
+                    Object o3 = it3.next();
+                    if( o3 instanceof Worker )
+                    {
+                        ((Worker)o3).register(map, this);
+                    }
+                    else
+                    {
+                        System.err.println("ClassifierXmi.register - it3: unknown child : "+
+                                            o3.getClass().getName());
+                    }
+                }
             }
             else
             {

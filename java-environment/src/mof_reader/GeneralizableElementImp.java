@@ -133,10 +133,24 @@ abstract class GeneralizableElementImp extends NamespaceImp implements MofGenera
                     if( obj instanceof Worker )
                     {
                         MofModelElement e = ((Worker)obj).mof();
-                        if( e instanceof MofGeneralizableElement )
+                        if( e==null )
+                        {
+                            System.err.println(
+                                "GeneralizableElementImp.getSupertypes(): "+
+                                obj.getClass().getName()+".mof() returns null" );
+                        }
+                        else if( e instanceof MofGeneralizableElement )
                         {
                             supertypes_.add(e);
                         }
+                        else
+                        {
+                            System.err.println("GeneralizableElement: wrong supertype: "+e.getClass().getName());
+                        }
+                    }
+                    else
+                    {
+                        System.err.println("GeneralizableElement: unknown supertype: "+obj.getClass().getName());
                     }
                 }
             }

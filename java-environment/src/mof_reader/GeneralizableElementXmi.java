@@ -17,26 +17,26 @@ import mof_xmi_parser.model.MGeneralizableElement_supertypes;
 
 
 /**
- * Class XMI-object
+ * GeneralizableElement XMI-object
  *
  * @author Robert Lechner (robert.lechner@salomon.at)
  * @version $Date$
  */
-class ClassXmi extends mof_xmi_parser.model.MClass implements Worker
+class GeneralizableElementXmi extends mof_xmi_parser.model.MGeneralizableElement implements Worker
 {
-    ClassXmi( org.xml.sax.Attributes attrs )
+    GeneralizableElementXmi( org.xml.sax.Attributes attrs )
     {
         super(attrs);
     }
 
-    private ClassImp implementation_;
+    private ModelElementImp implementation_;
     private Worker parent_;
 
     /// implements {@link Worker#register}
     public void register( java.util.Map map, Worker parent )
     {
         parent_ = parent;
-        implementation_ = new ClassImp(this, parent==null ? null : parent.mof());
+        implementation_ = new GenElementRefImp(this, parent==null ? null : parent.mof());
         map.put(TagXmi.createId(xmi_id_), this);
         Iterator it = content().iterator();
         while( it.hasNext() )
@@ -58,7 +58,7 @@ class ClassXmi extends mof_xmi_parser.model.MClass implements Worker
                     }
                     else
                     {
-                        System.err.println("ClassXmi.register - it2: unknown child : "+
+                        System.err.println("GeneralizableElementXmi.register - it2: unknown child : "+
                                             o2.getClass().getName());
                     }
                 }
@@ -75,14 +75,15 @@ class ClassXmi extends mof_xmi_parser.model.MClass implements Worker
                     }
                     else
                     {
-                        System.err.println("ClassXmi.register - it3: unknown child : "+
+                        System.err.println("GeneralizableElementXmi.register - it3: unknown child : "+
                                             o3.getClass().getName());
                     }
                 }
             }
             else
             {
-                System.err.println("ClassXmi.register - main: unknown child : "+obj.getClass().getName());
+                System.err.println("GeneralizableElementXmi.register - main: unknown child : "+
+                                    obj.getClass().getName());
             }
         }
     }
@@ -92,6 +93,7 @@ class ClassXmi extends mof_xmi_parser.model.MClass implements Worker
     {
         return implementation_;
     }
+
 
     private boolean processed_;
 
@@ -110,7 +112,16 @@ class ClassXmi extends mof_xmi_parser.model.MClass implements Worker
                 throw new RuntimeException("cannot find xmi.idref=="+xmi_idref_);
             }
             w.process(model);
-            implementation_ = (ClassImp)w.mof();
+            MofModelElement target = w.mof();
+            if( target==null )
+            {
+                throw new RuntimeException("ERROR: "+w.getClass().getName()+".mof() returns null");
+            }
+            if( !(target instanceof ModelElementImp) )
+            {
+                throw new RuntimeException("target is of wrong type: "+target.getClass().getName());
+            }
+            implementation_ = (ModelElementImp)target;
         }
         processed_ = true;
         Iterator it = content().iterator();
@@ -134,18 +145,6 @@ class ClassXmi extends mof_xmi_parser.model.MClass implements Worker
             if( obj instanceof Worker )
             {
                 ((Worker)obj).moveAssociationEnds();
-            }
-            else if( obj instanceof MNamespace_contents )
-            {
-                Iterator it2 = ((MNamespace_contents)obj).content().iterator();
-                while( it2.hasNext() )
-                {
-                    Object o2 = it2.next();
-                    if( o2 instanceof Worker )
-                    {
-                        ((Worker)o2).moveAssociationEnds();
-                    }
-                }
             }
         }
     }
