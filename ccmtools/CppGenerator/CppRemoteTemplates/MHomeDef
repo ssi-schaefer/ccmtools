@@ -9,7 +9,6 @@
 #include "%(ComponentType)s_remote.h"
 
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h>
-//#include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_app.h>
 
 // Include CORBA stubs generated from the IDL2 files
 #include <%(IdlFileNamespace)s%(Identifier)s.h> 
@@ -84,7 +83,7 @@ extern "C" {
 #include <coss/CosNaming.h>
 
 #include "%(Identifier)s_remote.h"
-#include <TestHome_entry.h> 
+#include <%(Identifier)s_entry.h> 
 
 using namespace std;
 using namespace WX::Utils;
