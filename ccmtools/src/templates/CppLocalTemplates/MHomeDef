@@ -96,7 +96,7 @@ class %(Identifier)s
 //==============================================================================
 
 extern "C" {
-    WX::Utils::SmartPtr<LocalComponents::CCMHome> create_%(Identifier)sAdapter();
+    WX::Utils::SmartPtr<LocalComponents::CCMHome> create_%(AbsoluteLocalHomeName)sAdapter();
 
     int deploy_%(AbsoluteLocalHomeName)s(char* name);
     int deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,	
@@ -438,7 +438,7 @@ extern "C" {
 LocalComponents::HomeExecutorBase*
 create_%(AbsoluteLocalHomeName)s()
 {
-    DEBUGNL(" create_%(Identifier)s()");
+    DEBUGNL(" create_%(AbsoluteLocalHomeName)s()");
     return dynamic_cast<LocalComponents::HomeExecutorBase*>
         (new %(Namespace)s::CCM_%(Identifier)s_impl());
 }
