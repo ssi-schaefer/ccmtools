@@ -5,6 +5,10 @@
 #ifndef __STRUCT__%(PreprocIdentifier)s__H__
 #define __STRUCT__%(PreprocIdentifier)s__H__
 
+#ifdef CCM_TEST_PYTHON
+#include <CCM_Test/Python/%(SelfInclude)s.h>
+#endif
+
 %(MFieldDefInclude)s
 
 using namespace std;

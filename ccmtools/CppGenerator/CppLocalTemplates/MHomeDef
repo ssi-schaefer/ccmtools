@@ -11,9 +11,7 @@
 #define __HOME_%(PreprocIdentifier)s_GEN__H__
 
 #ifdef CCM_TEST_PYTHON
-#include <CCM_Test/Python/call_python.h>
-#include <CCM_Test/Python/convert_python.h>
-%(ConvertPythonInclude)s
+#include <CCM_Test/Python/%(SelfInclude)s.h>
 #endif
 
 #include <string>

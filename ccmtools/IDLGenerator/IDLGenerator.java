@@ -68,7 +68,7 @@ abstract public class IDLGenerator
     private final static String[] local_language_map =
     {
         "",
-        "Any",
+        "any",
         "boolean",
         "char",
         "double",
