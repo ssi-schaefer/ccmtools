@@ -106,7 +106,7 @@ public class CppRemoteGeneratorImpl
     {
         super("CppRemote", d, out_dir, local_output_types);
 
-        base_namespace.add("CCM_Remote");
+	base_namespace.add("CCM_Remote");
 
 	Debug.setDebugLevel(Debug.NONE);
 	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.CppRemoteGeneratorImpl()");
@@ -123,51 +123,71 @@ public class CppRemoteGeneratorImpl
     //====================================================================
 
     /**
-     * Overwrites the CppGenerator's method to change between CCM_Local
-     * CCM_Remote.
-     */
+     * Overwrites the CppGenerator's method to handle namespaces in different
+     * ways. There are local (CCM_Local) namespaces, remote (CCM_Remote)
+     * namespaces and the namespaces of the generated stubs and skeletons.
+     *
+     * "FileNamespace": is used to create the directory in which the
+     *                  remote component logic will be generated
+     *
+     * "IncludeNamespace": is used to create the include path depending
+     *                     on the component's namespace.
+     *                     The CCM_Remote namespace is cut off because 
+     *                     there can be local and remote include paths.
+     *
+     * "Namespace": is used to create the scope for classes.
+     *              The CCM_Remote namespace is cut off because 
+     *              there can be local and remote include paths.
+     *              If a namespace is defined, it has to start with "::"
+     *
+     * "ShortNamespace": corresponds with the module hierarchy in the IDL file,
+     *                   there is no CCM_Local, CCM_Remote or CCM_Session_ included.
+     *
+     * "IdlFileNamespace":
+     *
+     * "IdlNamespace":
+     **/
     protected String handleNamespace(String data_type, String local)
     {
-	Debug.println(Debug.METHODS,"CppRemoteGenerator.handleNamespace()");
-
         List names = new ArrayList(namespace);
-
-	// ShortNamespace corresponds with the module hierarchy in the IDL file,
-	// there is no CCM_Local, CCM_Remote or CCM_Session_ included.
-	if (data_type.equals("ShortNamespace")) {
-	    if(names.size() > 2)
-		return join("::", slice(names, 2)) + "::";
-	    else
-		return "";
-        }
-
+		
 	if (!local.equals("")) names.add("CCM_Session_" + local);
 
-	if (data_type.equals("Namespace")) {
-	    List NamespaceList = slice(names, 2);
-	    if(NamespaceList.size() > 0)
+	if(data_type.equals("FileNamespace")) {
+            return join("_", slice(names, 0));
+        } 
+	else if(data_type.equals("IncludeNamespace")) {
+	    return join("/", slice(names, 1));
+	}
+	else if (data_type.equals("Namespace")) {
+	    List NamespaceList = slice(names, 1);
+	    if(NamespaceList.size() > 0) {
 		return "::" + join("::", NamespaceList);
-	    else
-		return "";
-        } else if (data_type.equals("FileNamespace")) {
-            return join("_", slice(names, 1));
-        } else if (data_type.equals("IdlFileNamespace")) {
-	    if(names.size() > 2) {
-		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
+	    }
+	    return "";
+        } 
+	else if (data_type.equals("ShortNamespace")) {
+	    if(names.size() > 1) {
+		List shortList = new ArrayList(names.subList(1, names.size()-1));
+		if(shortList.size() > 0)
+		    return join("::", shortList) + "::";
+	    }
+	    return "";
+        }
+	else if (data_type.equals("IdlFileNamespace")) {
+	    if(names.size() > 1) {
+		List IdlFileList = new ArrayList(names.subList(1, names.size()-1));
 		if(IdlFileList.size() > 0)
 		    return join("_", IdlFileList) + "_";
-		else
-		    return "";
 	    }
-	    else
-		return "";
-        } else if (data_type.equals("IdlNamespace")) {
+	    return "";
+        } 
+	else if (data_type.equals("IdlNamespace")) {
 	    if(names.size() > 2) {
 		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
 		return join("::", IdlFileList) + "::";
 	    }
-	    else
-		return "";
+	    return "";
         }
         return super.handleNamespace(data_type, local);
     }
@@ -254,17 +274,6 @@ public class CppRemoteGeneratorImpl
 	return value;
     }
 
-    protected String data_MUsesDef(String data_type, String data_value)
-    {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.data_MUsesDef()");
-
-        if (data_type.startsWith("MOperation")) {
-            MUsesDef uses = (MUsesDef) current_node;
-            return "";//fillTwoStepTemplates(uses.getUses(), data_type);!!!!!!!!!!!!!!
-        }
-        return data_value;
-    }
-
     protected String data_MAttributeDef(String data_type, String data_value)
     {
 	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.data_MAttributeDef()"); 
@@ -309,6 +318,7 @@ public class CppRemoteGeneratorImpl
 	return data_value; // super.data_MFactoryDef() wegen , am Ende
     }
 
+
     protected String data_MHomeDef(String data_type, String data_value)
     {
         MHomeDef home = (MHomeDef) current_node;
@@ -325,16 +335,74 @@ public class CppRemoteGeneratorImpl
 	}
     }
 
+    protected String data_MSupportsDef(String data_type, String data_value)
+    {
+	MSupportsDef supports = (MSupportsDef)current_node;
+
+	if(data_type.equals("SupportsInclude")) {
+	    // Generates the include path of supported interfaces.
+	    // Note that there is no CCM_Remote prefix in the namespace.
+	    List scope = getScope((MContained)supports);
+	    if(scope.size() > 0)
+		return "CCM_Local/" + join("/", scope) + "/" + supports.getSupports().getIdentifier(); 
+	    else
+		return "CCM_Local/" + supports.getSupports().getIdentifier();
+	}
+
+	return super.data_MSupportsDef(data_type,data_value);
+    }
 
     protected String data_MProvidesDef(String data_type, String data_value)
     {
-        MComponentDef component = ((MProvidesDef) current_node).getComponent();
+	MProvidesDef provides = (MProvidesDef)current_node;
+        MComponentDef component = provides.getComponent();
 
-        if (data_type.equals("ComponentType")) {
+	if(data_type.equals("ProvidesInclude")) {
+	    // Generates the include path of provides interfaces.
+	    // Note that there is no CCM_Remote prefix in the namespace.
+	    List scope = getScope((MContained)provides);
+	    if(scope.size() > 0)
+		return "CCM_Local/" + join("/", scope) + "/" +provides.getProvides().getIdentifier(); 
+	    else
+		return "CCM_Local/" + provides.getProvides().getIdentifier();
+	}
+	else if(data_type.equals("ProvidesType")) {
+	    List scope = getScope((MContained)provides);
+	    if(scope.size() > 1) {
+		return join("::", scope) + "::" + provides.getProvides().getIdentifier();
+	    }
+	    else
+		return provides.getProvides().getIdentifier();
+	}
+        else if(data_type.equals("ComponentType")) {
 	    return component.getIdentifier();
         }
 	return super.data_MProvidesDef(data_type,data_value);
     }
+
+    protected String data_MUsesDef(String data_type, String data_value)
+    {
+	MUsesDef usesDef = (MUsesDef)current_node;
+
+	if(data_type.equals("UsesInclude")) {
+	    // Generates the include path of used interfaces.
+	    // Note that there is no CCM_Remote prefix in the namespace.
+	    List scope = getScope((MContained)usesDef);
+	    if(scope.size() > 0)
+		return "CCM_Local/" + join("/", scope) + "/" + usesDef.getUses().getIdentifier(); 
+	    else
+		return "CCM_Local/" + usesDef.getUses().getIdentifier();
+	}
+        if (data_type.startsWith("MOperation")) {
+            MUsesDef uses = (MUsesDef) current_node;
+            return "";//fillTwoStepTemplates(uses.getUses(), data_type);!!!!!!!!!!!!!!
+        }
+        return data_value;
+    }
+
+
+
+
 
     /**     
      * Write generated code to an output file.

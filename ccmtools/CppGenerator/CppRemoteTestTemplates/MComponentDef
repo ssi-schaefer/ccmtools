@@ -23,8 +23,10 @@ int main (int argc, char *argv[])
   DEBUGNL("Enter C++ remote test client");
 
   int argc_=3;
+  char* NameServiceLocation = getenv("CCM_NAME_SERVICE");
+  assert(NameServiceLocation);	
   string ns("NameService=");
-  ns += getenv("CCM_NAME_SERVICE");
+  ns += NameServiceLocation;
   char* argv_[] = { "", "-ORBInitRef", (char*)ns.c_str()}; 
   DEBUGNL(">> " << argv_[0] << " "<< argv_[1] << argv_[2]);
 
