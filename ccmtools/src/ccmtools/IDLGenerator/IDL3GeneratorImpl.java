@@ -140,46 +140,47 @@ public class IDL3GeneratorImpl
      *        from ; variable values should come from the node handler object.
      */
     protected void writeOutput(Template template)
-        throws IOException
     {
-        String[] pieces = 
-	    template.substituteVariables(output_variables).split("\n");
-	
+        String[] pieces = template.substituteVariables(output_variables).split("\n");
+
         List code_pieces = new ArrayList();
-        for (int i=0; i < pieces.length; i++) {
-	    code_pieces.add(pieces[i]);
-	}
+        for(int i = 0; i < pieces.length; i++) {
+            code_pieces.add(pieces[i]);
+        }
         String code = join("\n", code_pieces) + "\n";
 
-	// Separate IDL3 code into files hosted in different directories
-	String dir;
-	String name;
-	if(current_node instanceof MComponentDef ||
-	   current_node instanceof MHomeDef) {
-	    dir = "component";
-	    if(namespace.size() > 0) {
-		dir += File.separator 
-		    + join(File.separator, namespace) 
-		    + File.separator;
-	    }
-	    name = ((MContained) current_node).getIdentifier() + ".idl";
-	}
-	else {
-	    dir = "interface";
-	    if(namespace.size() > 0) {
-		dir += File.separator + join(File.separator, namespace);
-	    }
-	    name = ((MContained) current_node).getIdentifier() + ".idl";
-	}
-	
-	String prettyCode = prettifyCode(code);
-	File outFile = new File(output_dir + File.separator + dir, name);
-	if(isCodeEqualWithFile(prettyCode, outFile)) {
-	    System.out.println("skipping " + outFile);
-	}
-	else {
-	    writeFinalizedFile(dir, name, prettyCode);
-	}
+        // Separate IDL3 code into files hosted in different directories
+        String dir;
+        String name;
+        if(current_node instanceof MComponentDef || current_node instanceof MHomeDef) {
+            dir = "component";
+            if(namespace.size() > 0) {
+                dir += File.separator + join(File.separator, namespace) + File.separator;
+            }
+            name = ((MContained) current_node).getIdentifier() + ".idl";
+        }
+        else {
+            dir = "interface";
+            if(namespace.size() > 0) {
+                dir += File.separator + join(File.separator, namespace);
+            }
+            name = ((MContained) current_node).getIdentifier() + ".idl";
+        }
+
+        String prettyCode = prettifyCode(code);
+
+        try {
+            File outFile = new File(output_dir + File.separator + dir, name);
+            if(isCodeEqualWithFile(prettyCode, outFile)) {
+                System.out.println("skipping " + outFile);
+            }
+            else {
+                writeFinalizedFile(dir, name, prettyCode);
+            }
+        }
+        catch(Exception e) {
+            System.out.println("!!!Error " + e.getMessage());
+        }
     }
 }
 

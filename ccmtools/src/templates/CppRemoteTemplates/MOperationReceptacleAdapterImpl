@@ -1,5 +1,6 @@
-%(LanguageType)s %(Object)sReceptacleAdapter::%(Identifier)s( %(ParameterDefLocal)s )
-    throw(LocalComponents::CCMException, LocalComponents::NoConnection %(LocalExceptions)s
+%(LanguageType)s 
+%(Object)sReceptacleAdapter::%(Identifier)s( %(ParameterDefLocal)s )
+    throw(LocalComponents::CCMException %(LocalExceptions)s
 {
     LDEBUGNL(CCM_REMOTE, " %(Object)sReceptacleAdapter->%(Identifier)s()"); 
 %(ConvertReceptacleParameterToCorba)s

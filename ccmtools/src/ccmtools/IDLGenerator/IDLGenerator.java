@@ -168,56 +168,63 @@ abstract public class IDLGenerator
      * @param template the template object to get the generated code structure
      *        from ; variable values should come from the node handler object.
      */
-    protected void writeOutput(Template template)
-        throws IOException
+    protected void writeOutput(Template template) 
     {
-        String[] pieces =
-            template.substituteVariables(output_variables).split("\n");
+        String[] pieces = template.substituteVariables(output_variables).split("\n");
 
         List code_pieces = new ArrayList();
-        for (int i = 0; i < pieces.length; i++)
-            if (! pieces[i].trim().equals(""))
+        for(int i = 0; i < pieces.length; i++)
+            if(!pieces[i].trim().equals(""))
                 code_pieces.add(pieces[i]);
 
         String code = join("\n", code_pieces);
 
-        code = code.replaceAll("#ifndef",      "\n#ifndef");
+        code = code.replaceAll("#ifndef", "\n#ifndef");
         code = code.replaceAll("#define(.*)$", "#define\\1\n");
 
         String name = join(file_separator, namespace);
-        if (! name.equals("")) name += file_separator;
+        if(!name.equals(""))
+            name += file_separator;
         name += ((MContained) current_node).getIdentifier() + ".idl";
 
-        writeFinalizedFile("", name, code + "\n\n");
+        try {
+            writeFinalizedFile("", name, code + "\n\n");
+        }
+        catch(Exception e) {
+            System.out.println("!!!Error " + e.getMessage());
+        }
     }
 
     /**
      * Build a string containing appropriately formatted namespace information
-     * based on the given data type and local namespace component. This is
-     * aimed at languages with C-like syntax (perl, C, C++, Java, IDL) and
-     * should be overridden for others (Python, Prolog :-).
-     *
-     * @param data_type a string referring to a desired type of namespace
-     *        information. This is normally a variable name from a template.
-     * @param local a string giving the name of the current namespace component.
+     * based on the given data type and local namespace component. This is aimed
+     * at languages with C-like syntax (perl, C, C++, Java, IDL) and should be
+     * overridden for others (Python, Prolog :-).
+     * 
+     * @param data_type
+     *            a string referring to a desired type of namespace information.
+     *            This is normally a variable name from a template.
+     * @param local
+     *            a string giving the name of the current namespace component.
      * @return a string containing the appropriately formatted namespace
      *         information.
      */
     protected String handleNamespace(String data_type, String local)
     {
-        if (data_type.equals("OpenNamespace")) {
+        if(data_type.equals("OpenNamespace")) {
             List tmp = new ArrayList();
-            for (Iterator i = namespace.iterator(); i.hasNext(); )
-                tmp.add("module "+i.next()+" {");
+            for(Iterator i = namespace.iterator(); i.hasNext();)
+                tmp.add("module " + i.next() + " {");
             return join("\n", tmp);
-        } else if (data_type.equals("CloseNamespace")) {
-	    StringBuffer buffer = new StringBuffer();
-            for (Iterator i = namespace.iterator(); i.hasNext(); ) {
+        }
+        else if(data_type.equals("CloseNamespace")) {
+            StringBuffer buffer = new StringBuffer();
+            for(Iterator i = namespace.iterator(); i.hasNext();) {
                 buffer.append("}; // /module ");
-		buffer.append(i.next());
-		buffer.append("\n");
-	    }
-	    return buffer.toString();
+                buffer.append(i.next());
+                buffer.append("\n");
+            }
+            return buffer.toString();
         }
 
 	return super.handleNamespace(data_type, local);

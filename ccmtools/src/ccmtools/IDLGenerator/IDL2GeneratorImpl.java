@@ -139,39 +139,43 @@ public class IDL2GeneratorImpl
      * templeates to generate C++ stubs from these IDL2 files.
      */
     protected void writeOutput(Template template)
-        throws IOException
     {
         super.writeOutput(template);
 
-	// Write a Makefile.py that forces Confix to compile generated 
-	// C++ stubs.
-	template = template_manager.getRawTemplate("MakefilePy");
-        if (template != null) {
-	    File confix_file = new File(output_dir, "");
-	    confix_file = new File(confix_file, "Makefile.py");
-	    if (! confix_file.isFile())
-                writeFinalizedFile("", "Makefile.py", template.getTemplate());
-	}
-	
-	// Write a Makefile that is used by Confix to generate C++ stubs 
-	// from IDL2.
-        template = template_manager.getRawTemplate("MakefileTemplate");
-        if(template != null) {
-	    File confix_file = new File(output_dir, "");
-	    confix_file = new File(confix_file, "Makefile");
-	    if (! confix_file.isFile())
-                writeFinalizedFile("", "Makefile", template.getTemplate());
-	}
+        try {
+            // Write a Makefile.py that forces Confix to compile generated
+            // C++ stubs.
+            template = template_manager.getRawTemplate("MakefilePy");
+            if(template != null) {
+                File confix_file = new File(output_dir, "");
+                confix_file = new File(confix_file, "Makefile.py");
+                if(!confix_file.isFile())
+                    writeFinalizedFile("", "Makefile.py", template.getTemplate());
+            }
 
-	// Write a build.xml file that is used by Ant to build generated
-	// Java files.
-        template = template_manager.getRawTemplate("AntTemplate");
-        if(template != null) {
-	    File confix_file = new File(output_dir, "");
-	    confix_file = new File(confix_file, "build.xml");
-	    if (! confix_file.isFile())
-                writeFinalizedFile("", "build.xml", template.getTemplate());
-	}
+            // Write a Makefile that is used by Confix to generate C++ stubs
+            // from IDL2.
+            template = template_manager.getRawTemplate("MakefileTemplate");
+            if(template != null) {
+                File confix_file = new File(output_dir, "");
+                confix_file = new File(confix_file, "Makefile");
+                if(!confix_file.isFile())
+                    writeFinalizedFile("", "Makefile", template.getTemplate());
+            }
+
+            // Write a build.xml file that is used by Ant to build generated
+            // Java files.
+            template = template_manager.getRawTemplate("AntTemplate");
+            if(template != null) {
+                File confix_file = new File(output_dir, "");
+                confix_file = new File(confix_file, "build.xml");
+                if(!confix_file.isFile())
+                    writeFinalizedFile("", "build.xml", template.getTemplate());
+            }
+        }
+        catch(Exception e) {
+            System.out.println("!!!Error " + e.getMessage());
+        }
     }
 }
 

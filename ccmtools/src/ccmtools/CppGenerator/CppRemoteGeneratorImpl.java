@@ -167,36 +167,13 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
     {
         List scope = getScope(contained);
         StringBuffer buffer = new StringBuffer();
-        //	buffer.append(separator);
         buffer.append(Text.join(separator, CorbaStubsNamespace));
         buffer.append(separator);
         buffer.append(Text.join(separator, scope));
         if (scope.size() > 0) {
             buffer.append(separator);
         }
-        //buffer.append(contained.getIdentifier());
         return buffer.toString();
-        
-        /*
-        List names = new ArrayList(namespace);
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.join(separator, CorbaStubsNamespace));
-        buffer.append(separator);
-        if (names.size() > 1) {
-            List shortList = new ArrayList(names.subList(1, names.size()));
-            if (shortList.size() > 0) {
-                buffer.append(Text.join(separator, shortList));
-                buffer.append(separator);
-            }
-            else {
-                // no additional namespaces
-            }
-        }
-        else {
-            // no additional namespaces
-        }
-        return buffer.toString();
-        */
     }
 
     protected String getCorbaStubName(MContained contained, String separator)
@@ -228,27 +205,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             buffer.append(Text.join(separator, scope));
             buffer.append(separator);
         }
-        //buffer.append(contained.getIdentifier());
         return buffer.toString();
-        
-        /*
-        List names = new ArrayList(namespace);
-        if (local.length() > 0) {
-            names.add("CCM_Session_" + local);
-        }
-
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.join(separator, LocalNamespace));
-        buffer.append(separator);
-        if (names.size() > 1) {
-            buffer.append(Text.join(separator, slice(names, 1)));
-            buffer.append(separator);
-        }
-        else {
-            // no additional namespaces
-        }
-        return buffer.toString();
-        */
     }
 
     protected String getLocalName(MContained contained, String separator)
@@ -313,41 +270,19 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         if (dataType.equals("FileNamespace")) {
             return Text.join("_", slice(names, 0));
         }
-        /*
-        else if (dataType.equals("LocalNamespaceName")) {
-            return getLocalName((MContained)current_node, "::");	
-        }
-        */
         else if (dataType.equals("LocalNamespace")) {
             return getLocalNamespace((MContained)current_node, "::", local);
         }
-        /*
-        else if (dataType.equals("RemoteName")) {
-            return getRemoteName((MContained)current_node,"::",local);
-        }
-        */
         else if (dataType.equals("RemoteNamespace")) {
             return getRemoteNamespace("::", local);
         }
         else if (dataType.equals("LocalIncludeNamespace")) {
             return getLocalNamespace((MContained)current_node, "/", local);
-            //return getLocalNamespace("/", local);
         }
-        /*
-        else if (dataType.equals("StubsName")) {
-            return getCorbaStubName((MContained)current_node, "::");
-        }
-        */
         else if (dataType.equals("StubsNamespace")) {
             return getCorbaStubsNamespace((MContained)current_node, "::");
         }
-        /*
-        else if (dataType.equals("CorbaStubName")) {
-            return getCorbaStubName((MContained)current_node, "::");
-        }
-        */
         else if (dataType.equals("StubsIncludeNamespace")) {
-            //return getCorbaStubName((MContained)current_node, "_");
             return getCorbaStubsNamespace((MContained)current_node, "_");
         }
         return super.handleNamespace(dataType, local);
@@ -516,12 +451,8 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             StringBuffer buffer = new StringBuffer();
             buffer.append("void convertFromCorba(const ");
             buffer.append(getCorbaStubName((MContained)current_node, "::"));
-            //buffer.append(handleNamespace("StubsNamespace", "")); 
-            //buffer.append(contained.getIdentifier());
             buffer.append("& in, ");
             buffer.append(getLocalName((MContained)current_node, "::"));
-            //buffer.append(handleNamespace("LocalNamespace", ""));
-            //buffer.append(contained.getIdentifier());
             buffer.append("& out);");
             dataValue = buffer.toString();
         }
@@ -529,12 +460,8 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             StringBuffer buffer = new StringBuffer();
             buffer.append("void convertToCorba(const ");
             buffer.append(getLocalName((MContained)current_node, "::"));
-            //buffer.append(handleNamespace("LocalNamespace", ""));
-            //buffer.append(contained.getIdentifier());
             buffer.append("& in, ");
             buffer.append(getCorbaStubName((MContained)current_node, "::"));
-            //buffer.append(handleNamespace("StubsNamespace", ""));
-            //buffer.append(contained.getIdentifier());
             buffer.append("& out);");
             dataValue = buffer.toString();
         }
@@ -544,18 +471,12 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             
             code.add("convertFromCorba(const " 
                     + getCorbaStubName((MContained)current_node, "::")
-                    // + handleNamespace("StubsNamespace", "")
-                    //+ contained.getIdentifier() 
                     + "& in, " 
                     + getLocalName((MContained)current_node, "::")
-                    //+ handleNamespace("LocalNamespace", "")
-                    //+ contained.getIdentifier() 
                     + "& out)");
             code.add("{");
             code.add("    LDEBUGNL(CCM_REMOTE,\" convertFromCorba("
                     + getCorbaStubName((MContained)current_node, "::")
-                    //+ handleNamespace("StubsNamespace", "") 
-                    //+ contained.getIdentifier() 
                     + ")\");");
             code.add("    LDEBUGNL(CCM_REMOTE, in);");
             code.add(data_MSequenceDef("ConvertAliasFromCORBA", ""));
@@ -567,18 +488,12 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             code.add("void");
             code.add("convertToCorba(const " 
                     + getLocalName((MContained)current_node, "::") 
-                    // + handleNamespace("LocalNamespace", "")
-                    //+ contained.getIdentifier() 
                     + "& in, " 
                     + getCorbaStubName((MContained)current_node, "::")
-                    //+ handleNamespace("StubsNamespace", "")
-                    //+ contained.getIdentifier() 
                     + "& out)");
             code.add("{");
             code.add("    LDEBUGNL(CCM_REMOTE,\" convertToCorba("
                     + getCorbaStubName((MContained)current_node, "::")
-                    //+ handleNamespace("StubsNamespace", "") 
-                    //+ contained.getIdentifier() 
                     + ")\");");
             code.add(data_MSequenceDef("ConvertAliasToCORBA", ""));
             code.add("    LDEBUGNL(CCM_REMOTE, out);");
@@ -588,8 +503,6 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         else if (dataType.equals("OutputCorbaTypeDeclaration")) {
             dataValue = "std::ostream& operator<<(std::ostream& o, const "
                 	+ getCorbaStubName((MContained)current_node, "::")
-                	//+ handleNamespace("StubsNamespace", "") 
-                    //+ contained.getIdentifier()
                     + "& value);";
         }
         else if (dataType.equals("OutputCorbaTypeImplementation")) {
@@ -597,8 +510,6 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
             code.add("std::ostream&");
             code.add("operator<<(std::ostream& o, const " 
                      + getCorbaStubName((MContained)current_node, "::")	
-                     //+ handleNamespace("StubsNamespace", "")
-                     //+ contained.getIdentifier() 
                      + "& value)");
             code.add("{");
             code.add(data_MSequenceDef("OutputCORBAType", ""));
@@ -1073,47 +984,53 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
                 "_remote.h", "_remote.cc"
         };
 
-        for (int i = 0; i < sourceFiles.length; i++) {
-            if (sourceFiles[i].trim().equals("")) {
+        for(int i = 0; i < sourceFiles.length; i++) {
+            if(sourceFiles[i].trim().equals("")) {
                 // skip the file creation
                 continue;
             }
 
-            if (current_node instanceof MComponentDef) {
-                // write the component files
-                String componentName = ((MContained) current_node).getIdentifier();
-                String fileDir = handleNamespace("FileNamespace", componentName) + "_CCM_Session_"
-                        + componentName;
+            try {
+                if(current_node instanceof MComponentDef) {
+                    // write the component files
+                    String componentName = ((MContained) current_node).getIdentifier();
+                    String fileDir = handleNamespace("FileNamespace", componentName)
+                            + "_CCM_Session_" + componentName;
 
-                Code.writeFile(driver, output_dir, fileDir, componentName + remoteSuffix[i],
-                        sourceFiles[i]);
-            }
-            else if (current_node instanceof MHomeDef) {
-                // write the home files
-                MHomeDef home = (MHomeDef) current_node;
-                String componentName = ((MContained) home.getComponent()).getIdentifier();
-                String homeName = home.getIdentifier();
-                String fileDir = handleNamespace("FileNamespace", componentName) + "_CCM_Session_"
-                        + componentName;
+                    Code.writeFile(driver, output_dir, fileDir, componentName + remoteSuffix[i],
+                                   sourceFiles[i]);
+                }
+                else if(current_node instanceof MHomeDef) {
+                    // write the home files
+                    MHomeDef home = (MHomeDef) current_node;
+                    String componentName = ((MContained) home.getComponent()).getIdentifier();
+                    String homeName = home.getIdentifier();
+                    String fileDir = handleNamespace("FileNamespace", componentName)
+                            + "_CCM_Session_" + componentName;
 
-                Code.writeFile(driver, output_dir, fileDir, homeName + remoteSuffix[i],
-                        sourceFiles[i]);
-                Code.writeMakefile(driver, output_dir, fileDir, "py", "");
-            }
-            else if (current_node instanceof MInterfaceDef || current_node instanceof MAliasDef
-                    || current_node instanceof MStructDef || current_node instanceof MExceptionDef
-                    || current_node instanceof MEnumDef) {
-                // write converter files
-                String nodeName = ((MContained) current_node).getIdentifier();
-                String fileDir = "CORBA_Converter";
+                    Code.writeFile(driver, output_dir, fileDir, homeName + remoteSuffix[i],
+                                   sourceFiles[i]);
+                    Code.writeMakefile(driver, output_dir, fileDir, "py", "");
+                }
+                else if(current_node instanceof MInterfaceDef || current_node instanceof MAliasDef
+                        || current_node instanceof MStructDef
+                        || current_node instanceof MExceptionDef
+                        || current_node instanceof MEnumDef) {
+                    // write converter files
+                    String nodeName = ((MContained) current_node).getIdentifier();
+                    String fileDir = "CORBA_Converter";
 
-                Code.writeFile(driver, output_dir, fileDir, nodeName + remoteSuffix[i],
-                        sourceFiles[i]);
-                Code.writeMakefile(driver, output_dir, fileDir, "py", "");
+                    Code.writeFile(driver, output_dir, fileDir, nodeName + remoteSuffix[i],
+                                   sourceFiles[i]);
+                    Code.writeMakefile(driver, output_dir, fileDir, "py", "");
+                }
+                else {
+                    throw new RuntimeException("CppRemoteGeneratorImpl.writeOutput()"
+                            + ": unhandled node!");
+                }
             }
-            else {
-                throw new RuntimeException("CppRemoteGeneratorImpl.writeOutput()"
-                        + ": unhandled node!");
+            catch(Exception e) {
+                System.out.println("!!!Error " + e.getMessage());
             }
         }
     }
@@ -1197,7 +1114,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         }
         if (code.size() > 0) {
             //return "throw(LocalComponents::CCMException, " + Text.join(", ", code) + ")";
-            return Text.join(", ", code) + ")";
+            return ", " + Text.join(", ", code) + ")";
         }
         else {
             //return "throw(LocalComponents::CCMException)";

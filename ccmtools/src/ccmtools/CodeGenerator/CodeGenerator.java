@@ -550,18 +550,15 @@ abstract public class CodeGenerator
      * @param output a string holding the destination file's contents.
      */
     protected void writeFinalizedFile(String directory, String file, String output)
+    	throws IOException
     {
         File local_dir = new File(output_dir, directory);
         if (! local_dir.isDirectory()) local_dir.mkdirs();
 
         File out_file = new File(local_dir, file);
-        try {
             FileWriter writer = new FileWriter(out_file);
             writer.write(output, 0, output.length());
             writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Error writing file "+out_file);
-        }
 
         driver.outputFile(out_file.toString());
     }
@@ -949,24 +946,27 @@ abstract public class CodeGenerator
      */
     protected void writeOutputIfNeeded()
     {
-        if (! output_types.contains(current_type)) return;
+        if(!output_types.contains(current_type))
+            return;
 
-        if ((current_node instanceof MContained) &&
-            ! ((MContained) current_node).getSourceFile().equals("")) return;
+        if((current_node instanceof MContained)
+                && !((MContained) current_node).getSourceFile().equals(""))
+            return;
 
         try {
-            Template template =
-                template_manager.getTemplate(current_type, current_name);
-            if (template == null) throw new RuntimeException();
+            Template template = template_manager.getTemplate(current_type, current_name);
+            if(template == null)
+                throw new RuntimeException();
             writeOutput(template);
-        } catch (RuntimeException error) {
-            throw new RuntimeException(
-                "Cannot find a template for " + current_name +
-                " (node type " + current_type + ")");
-        } catch (IOException error) {
-            throw new RuntimeException(
-                "Error writing output for " + current_name +
-                " (node type " + current_type + ")");
+        }
+        catch(RuntimeException error) {
+            error.printStackTrace();
+            throw new RuntimeException("Cannot find a template for " + current_name
+                    + " (node type " + current_type + ")");
+        }
+        catch(IOException error) {
+            throw new RuntimeException("Error writing output for " + current_name + " (node type "
+                    + current_type + ")");
         }
     }
 

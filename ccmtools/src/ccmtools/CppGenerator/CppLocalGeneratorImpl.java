@@ -49,11 +49,9 @@ public class CppLocalGeneratorImpl
     // types for which we have a global template ; that is, a template that is
     // not contained inside another template.
 
-    private final static String[] local_output_types =
-    {
-        "MComponentDef", "MInterfaceDef", "MHomeDef",
-        "MStructDef", "MUnionDef", "MAliasDef", "MEnumDef", "MExceptionDef",
-	"MProvidesDef"
+    private final static String[] local_output_types = {
+            "MComponentDef", "MInterfaceDef", "MHomeDef", "MStructDef", "MUnionDef", "MAliasDef",
+            "MEnumDef", "MExceptionDef", "MProvidesDef"
     };
 
     /**************************************************************************/
@@ -98,76 +96,81 @@ public class CppLocalGeneratorImpl
 
     /**
      * Write generated code to an output file.
-     *
-     * @param template the template object to get the generated code structure
-     *        from ; variable values should come from the node handler object.
+     * 
+     * @param template
+     *            the template object to get the generated code structure from ;
+     *            variable values should come from the node handler object.
      */
-    protected void writeOutput(Template template)
-        throws IOException
+    protected void writeOutput(Template template) 
     {
         List out_paths = getOutputFiles();
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
 
-        Iterator path_iterator = out_paths.iterator();
-        for (int i = 0; i < out_strings.length; i++) {
+        try {
+            Iterator path_iterator = out_paths.iterator();
+            for(int i = 0; i < out_strings.length; i++) {
 
-            String generated_code = prettifyCode(out_strings[i]);
+                String generated_code = prettifyCode(out_strings[i]);
 
-	    // out_path = [directory, filename]
-            List out_path = (List) path_iterator.next(); 
-	    
-            // from the getOutputFiles function we know each entry in the output
-            // file list has exactly two parts ... the dirname and the filename.
-            String file_dir = (String) out_path.get(0);
-            String file_name = (String) out_path.get(1);
+                // out_path = [directory, filename]
+                List out_path = (List) path_iterator.next();
 
-            // don't add blank output files. this lets us discard parts of the
-            // templates that we don't want to output (see the component section
-            // of the getOutputFiles function)
-            if (file_name.equals("")) 
-		continue;
+                // from the getOutputFiles function we know each entry in the
+                // output
+                // file list has exactly two parts ... the dirname and the
+                // filename.
+                String file_dir = (String) out_path.get(0);
+                String file_name = (String) out_path.get(1);
 
-	    File outFile = new File(output_dir 
-				    + File.separator 
-				    + file_dir, file_name); 
-	    if((file_dir == "impl") && outFile.isFile()) {
-		if(!isCodeEqualWithFile(generated_code, outFile)) {
-		    System.out.println("WARNING: " 
-				       + outFile 
-				       + " already exists!");
-		    file_name += ".new";
-		    outFile = new File(output_dir 
-				       + File.separator 
-				       + file_dir, file_name);
-		}
-	    }
-	    if(isCodeEqualWithFile(generated_code, outFile)) {
-		System.out.println("skipping " + outFile);
-	    }
-	    else {
-		writeFinalizedFile(file_dir, file_name, generated_code);
-	    }
+                // don't add blank output files. this lets us discard parts of
+                // the
+                // templates that we don't want to output (see the component
+                // section
+                // of the getOutputFiles function)
+                if(file_name.equals(""))
+                    continue;
 
-	    writeMakefile(output_dir, file_dir,"py","");
-	    writeMakefile(output_dir, file_dir,"pl", "1;");
+                File outFile = new File(output_dir + File.separator + file_dir, file_name);
+                if((file_dir == "impl") && outFile.isFile()) {
+                    if(!isCodeEqualWithFile(generated_code, outFile)) {
+                        System.out.println("WARNING: " + outFile + " already exists!");
+                        file_name += ".new";
+                        outFile = new File(output_dir + File.separator + file_dir, file_name);
+                    }
+                }
+                if(isCodeEqualWithFile(generated_code, outFile)) {
+                    System.out.println("Skipping " + outFile);
+                }
+                else {
+                    writeFinalizedFile(file_dir, file_name, generated_code);
+                }
+
+                writeMakefile(output_dir, file_dir, "py", "");
+                writeMakefile(output_dir, file_dir, "pl", "1;");
+            }
+        }
+        catch(Exception e) {
+            System.out.println("!!!Error " + e.getMessage());
         }
     }
 
 
     protected boolean writeMakefile(File outDir, String fileDir, String extension, String content)
+            throws IOException
     {
-	boolean result;
-	File makeFile = new File(outDir, fileDir);
-	makeFile = new File(makeFile, "Makefile." + extension);
-	if (!makeFile.isFile()) {
-	    writeFinalizedFile(fileDir, "Makefile." + extension, content);
-	    result = true;
-	}
-	else {
-	    result = false; // no Makefile.py written
-	}
-	return result;
+        boolean result;
+        File makeFile = new File(outDir, fileDir);
+        makeFile = new File(makeFile, "Makefile." + extension);
+
+        if(!makeFile.isFile()) {
+            writeFinalizedFile(fileDir, "Makefile." + extension, content);
+            result = true;
+        }
+        else {
+            result = false; // no Makefile.py written
+        }
+        return result;
     }
 
 
@@ -175,10 +178,12 @@ public class CppLocalGeneratorImpl
      * Get a variable hash table sutable for filling in the template from the
      * fillTwoStepTemplates function. This version of the function fills in
      * operation information from the given interface.
-     *
-     * @param operation the particular interface operation that we're filling in
-     *        a template for.
-     * @param container the container in which the given interface is defined.
+     * 
+     * @param operation
+     *            the particular interface operation that we're filling in a
+     *            template for.
+     * @param container
+     *            the container in which the given interface is defined.
      * @return a map containing the keys and values needed to fill in the
      *         template for this interface.
      */

@@ -135,43 +135,43 @@ public class IDL3MirrorGeneratorImpl
      *
      **/
     protected void writeOutput(Template template)
-        throws IOException
     {
-        String[] pieces = 
-	    template.substituteVariables(output_variables).split("\n");
-	
+        String[] pieces = template.substituteVariables(output_variables).split("\n");
+
         List code_pieces = new ArrayList();
-        for (int i=0; i < pieces.length; i++) {
-                code_pieces.add(pieces[i]);
-	}
+        for(int i = 0; i < pieces.length; i++) {
+            code_pieces.add(pieces[i]);
+        }
         String code = join("\n", code_pieces) + "\n";
 
-	String dir;
-	String name;
-	if(current_node instanceof MComponentDef ||
-	   current_node instanceof MHomeDef) {
-	    dir = "component";
-	    if(namespace.size() > 0) {
-		dir += File.separator 
-		    + join(File.separator, namespace) 
-		    + File.separator;
-	    }
-	    name = ((MContained)current_node).getIdentifier() + "_mirror.idl";
+        try {
+            String dir;
+            String name;
+            if(current_node instanceof MComponentDef || current_node instanceof MHomeDef) {
+                dir = "component";
+                if(namespace.size() > 0) {
+                    dir += File.separator + join(File.separator, namespace) + File.separator;
+                }
+                name = ((MContained) current_node).getIdentifier() + "_mirror.idl";
 
-	    String prettyCode = prettifyCode(code);
-	    File outFile = new File(output_dir + File.separator + dir, name);
-	    if(isCodeEqualWithFile(prettyCode, outFile)) {
-		System.out.println("skipping " + outFile);
-	    }
-	    else {
-		writeFinalizedFile(dir, name, prettyCode);
-	    }
-	}
-	else {
-	    // Don't generate code for other nodes than MComponentDef and
-	    // MHomeDef.
-	    // TODO: cancel all other templates from IDL3MirrorTemplates
-	}
+                String prettyCode = prettifyCode(code);
+                File outFile = new File(output_dir + File.separator + dir, name);
+                if(isCodeEqualWithFile(prettyCode, outFile)) {
+                    System.out.println("skipping " + outFile);
+                }
+                else {
+                    writeFinalizedFile(dir, name, prettyCode);
+                }
+            }
+            else {
+                // Don't generate code for other nodes than MComponentDef and
+                // MHomeDef.
+                // TODO: cancel all other templates from IDL3MirrorTemplates
+            }
+        }
+        catch(Exception e) {
+            System.out.println("!!!Error " + e.getMessage());
+        }
     }
 }
 
