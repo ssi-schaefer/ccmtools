@@ -20,7 +20,7 @@ local: idl
 build: 
 	cp impl/Test_console_impl.cc xxx/impl
 	cp impl/Test_mirror_impl.cc xxx/impl
-	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
+	confix.py --profile=ccmtools_test --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
 
 clean: 
 	rm -rf xxx 

@@ -51,7 +51,9 @@ main (int argc, char *argv[])
      * Server-side code
      */ 
     CCM::register_all_factories (orb);
-    int error = deploy_TestHome(orb, "TestHome:1.0");
+    int error = 0;
+    error += deploy_CCM_Local_world_TestHome("TestHome");
+    error += deploy_CCM_Remote_world_TestHome(orb, "TestHome:1.0");
     if(!error) {
         cout << "TestHome stand-alone server is running..." << endl;
     }

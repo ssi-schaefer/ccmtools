@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   LocalComponents::HomeFinder* homeFinder;
   homeFinder = HomeFinder::Instance (  );
 
-  error  = local_deploy_TestHome("TestHome");
+  error = deploy_CCM_Local_TestHome("TestHome");
   if(error) {
     cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
     return(error);
@@ -252,7 +252,7 @@ int main(int argc, char *argv[])
     cout << "TEARDOWN ERROR: there is something wrong!" << endl;
     error = -1;
   }
-  error += local_undeploy_TestHome("TestHome");
+  error += undeploy_CCM_Local_TestHome("TestHome");
   if(error) {
     cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
     return error;
