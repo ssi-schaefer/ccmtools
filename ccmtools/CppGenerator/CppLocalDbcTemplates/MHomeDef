@@ -14,7 +14,7 @@
 #include <string>
 #include <map>
 #include <CCM_Utils/SmartPointer.h>
-#include <localComponents/CCM.h>
+#include <LocalComponents/CCM.h>
 #include <CCM_OCL/OclException.h>
 
 #include "%(Identifier)s_gen.h"
@@ -36,7 +36,7 @@ class DbC_%(Identifier)s
   virtual ~DbC_%(Identifier)s();
 
   virtual CCM_Utils::SmartPtr<%(ComponentType)s> create()
-    throw (localComponents::CreateFailure);
+    throw (LocalComponents::CreateFailure);
 
 %(MFactoryDefAdapterPrototype)s
 
@@ -51,7 +51,7 @@ class DbC_%(Identifier)s
 //==============================================================================
 
 extern "C" {
-  CCM_Utils::SmartPtr<localComponents::CCMHome> DbC_create_%(Identifier)sAdapter();
+  CCM_Utils::SmartPtr<LocalComponents::CCMHome> DbC_create_%(Identifier)sAdapter();
   int DbC_deploy_%(Identifier)s(char* name);
   int DbC_undeploy_%(Identifier)s(char* name);	
 }
@@ -89,6 +89,8 @@ using namespace CCM_OCL;
 // home adapter implementation
 //==============================================================================
 
+#define __LOCAL__ADAPTER__NAME__ %(Identifier)s
+
 DbC_%(Identifier)s::DbC_%(Identifier)s() /*throw(CCM_OCL::OclException)*/
 {
   static const char* DbC_FUNCTION_NAME = "DbC_%(Identifier)s::DbC_%(Identifier)s()";
@@ -109,7 +111,7 @@ void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool
 
 SmartPtr<%(ComponentType)s>
 DbC_%(Identifier)s::create()
-  throw ( localComponents::CreateFailure )
+  throw ( LocalComponents::CreateFailure )
 {
   DEBUGNL(" DbC_%(Identifier)s->create()");
   SmartPtr<%(ComponentType)s> ret(dynamic_cast<%(ComponentType)s*>(
@@ -122,16 +124,18 @@ DbC_%(Identifier)s::create()
 
 %(CloseNamespace)s
 
+#undef __LOCAL__ADAPTER__NAME__
+
 //==============================================================================
 // entry point
 //==============================================================================
 
 extern "C" {
-  CCM_Utils::SmartPtr<localComponents::CCMHome>
+  CCM_Utils::SmartPtr<LocalComponents::CCMHome>
   DbC_create_%(Identifier)sAdapter()
   {
     DEBUGNL ( " DbC_create_%(Identifier)sAdapter()" );
-    CCM_Utils::SmartPtr<localComponents::CCMHome> ret (new %(Namespace)s::DbC_%(Identifier)s());
+    CCM_Utils::SmartPtr<LocalComponents::CCMHome> ret (new %(Namespace)s::DbC_%(Identifier)s());
     return ret;
   }
 
@@ -140,7 +144,7 @@ extern "C" {
   {
     DEBUGNL ( " dbc_deploy_%(Identifier)s()" );
     try {
-      CCM_Utils::SmartPtr<localComponents::CCMHome> ret( new %(Namespace)s::DbC_%(Identifier)s());
+      CCM_Utils::SmartPtr<LocalComponents::CCMHome> ret( new %(Namespace)s::DbC_%(Identifier)s());
       HomeFinder::Instance()->register_home(ret, name);
     } catch ( ... )  {
       return -1;

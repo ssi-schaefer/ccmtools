@@ -2,6 +2,8 @@
 // Local facet DbC adapter implementation
 //==============================================================================
 
+#define __LOCAL__ADAPTER__NAME__ %(Identifier)sFacetAdapter
+
 DbC_%(Identifier)sFacetAdapter::DbC_%(Identifier)sFacetAdapter(%(ComponentType)s* c, CCM_%(ComponentType)s* lc)
 {
   static const char* DbC_FUNCTION_NAME =
@@ -26,5 +28,5 @@ void DbC_%(Identifier)sFacetAdapter::DbC_check_invariant(const char* DbC_FUNCTIO
 
 %(MOperationProvidesAdapterDefinition)s
 
-
+#undef __LOCAL__ADAPTER__NAME__
 

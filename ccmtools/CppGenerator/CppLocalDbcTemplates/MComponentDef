@@ -10,7 +10,7 @@
 #include <string>
 #include <map>
 #include <CCM_Utils/SmartPointer.h>
-#include <localComponents/CCM.h>
+#include <LocalComponents/CCM.h>
 #include <CCM_OCL/OclException.h>
 
 #include "%(Identifier)s_gen.h"
@@ -74,6 +74,8 @@ using namespace CCM_OCL;
 // Local component DbC adapter implementation
 //==============================================================================
 
+#define __LOCAL__ADAPTER__NAME__ %(Identifier)s
+
 DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s* h, CCM_%(Identifier)s* lc ) /*throw(CCM_OCL::OclException)*/
 {
   static const char* DbC_FUNCTION_NAME =
@@ -104,7 +106,7 @@ void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool
 
 %(CloseNamespace)s
 
-
+#undef __LOCAL__ADAPTER__NAME__
 
 
 

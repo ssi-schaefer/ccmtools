@@ -202,15 +202,15 @@ public class CppLocalDbcGeneratorImpl
     }
 
 
-    private String getLocalValue( String variable, MInterfaceDef theClass )
-    {
-        String value = getLocalValue(variable);
-        if( value.length()>0 )
-        {
-            return value;
-        }
-        return "/*"+variable+"*/"+theClass.getIdentifier();  // HACK !!!
-    }
+//    private String getLocalValue( String variable, MInterfaceDef theClass )
+//    {
+//        String value = getLocalValue(variable);
+//        if( value.length()>0 )
+//        {
+//            return value;
+//        }
+//        return "/*"+variable+"*/"+theClass.getIdentifier();  // HACK !!!
+//    }
 
 
     /**
@@ -622,26 +622,27 @@ public class CppLocalDbcGeneratorImpl
          */
         public String getLocalAdapterName( MContainer theClass )
         {
-            if( theClass!=null )
-            {
-                if( theClass instanceof MComponentDef )
-                {
-                    return getLocalValue("ComponentType",(MInterfaceDef)theClass);
-                }
-                if( theClass instanceof MHomeDef )
-                {
-                    return getLocalValue("HomeType",(MInterfaceDef)theClass);
-                }
+            return "__LOCAL__ADAPTER__NAME__";
+//            if( theClass!=null )
+//            {
+//                if( theClass instanceof MComponentDef )
+//                {
+//                    return getLocalValue("ComponentType",(MInterfaceDef)theClass);
+//                }
+//                if( theClass instanceof MHomeDef )
+//                {
+//                    return getLocalValue("HomeType",(MInterfaceDef)theClass);
+//                }
                 // HACK:
-                int index = current_name.lastIndexOf(":");
-                if( index>0 )
-                {
-                    String part1 = current_name.substring(index+1);
-                    String part2 = theClass.getIdentifier();
-                    return "/*facet adapter*/"+part1+part2;
-                }
-            }
-            return null;
+//                int index = current_name.lastIndexOf(":");
+//                if( index>0 )
+//                {
+//                    String part1 = current_name.substring(index+1);
+//                    String part2 = theClass.getIdentifier();
+//                    return "/*facet adapter*/"+part1+part2;
+//                }
+//            }
+//            return null;
         }
 
         /**
