@@ -5,8 +5,8 @@ This is the example of the tutorial's "Fist Component" chapter.
 It is thought as an entry to the component based development using CCM Tools.
 
 
-How to build and run:
----------------------
+How to build and run the local component:
+-----------------------------------------
 
 a) Bring IDL3 files in the right structure:
 
@@ -159,3 +159,6 @@ $ $CCM_INSTALL/bin/CarRentalClient_src_client
 $ confix.py --packageroot=`pwd`/CarRentalClient --make --targets=uninstall
 $ confix.py --packageroot=`pwd`/CarRental/component --make --targets=uninstall
 $ confix.py --packageroot=`pwd`/CarRental/interface --make --targets=uninstall
+
+
+
