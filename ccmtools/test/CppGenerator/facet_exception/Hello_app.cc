@@ -23,8 +23,7 @@ CCM_Console*
 CCM_Hello_impl::get_console (  )
 {
   DEBUGNL ( " CCM_Hello_impl->get_console (  )" );
-  console_impl* facet = new console_impl (  );
-  facet->set_component ( this );
+  console_impl* facet = new console_impl ( this  );
   return dynamic_cast<CCM_Console*> ( facet );
 }
 
@@ -34,8 +33,8 @@ CCM_Hello_impl::get_console (  )
 // console - facet implementation
 //==============================================================================
 
-console_impl::console_impl
- (  )
+console_impl::console_impl( CCM_Hello_impl* c  )
+  : component(c)
 {
   DEBUGNL ( "+console_impl->console_impl (  )" );
 }
@@ -43,13 +42,6 @@ console_impl::console_impl
 console_impl::~console_impl (  )
 {
   DEBUGNL ( "-console_impl->~console_impl (  )" );
-}
-
-void
-console_impl::set_component ( CCM_Hello_impl* c )
-{
-  DEBUGNL ( " console_impl->set_component (  )" );
-  component = c;
 }
 
 long

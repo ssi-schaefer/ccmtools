@@ -20,7 +20,7 @@
 %(OpenNamespace)s
 
 class CCM_%(Identifier)s
-  : public localComponents::Object%(BaseTypes)s
+  : virtual public localComponents::Object%(BaseTypes)s
 {
  public:
   virtual ~CCM_%(Identifier)s (  ) {  }

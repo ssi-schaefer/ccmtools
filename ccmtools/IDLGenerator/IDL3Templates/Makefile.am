@@ -8,6 +8,7 @@ dist_template_DATA = \
     MAttributeDef              \
     MAttributeDefReadonly      \
     MComponentDef              \
+    MComponentDefFwdDecl       \
     MComponentDefAbstract      \
     MComponentDefAbstractLocal \
     MComponentDefLocal         \
@@ -34,8 +35,10 @@ dist_template_DATA = \
     MProvidesDef               \
     MPublishesDef              \
     MStructDef                 \
+    MStructDefFwdDecl          \
     MSupportsDef               \
     MUnionDef                  \
+    MUnionDefFwdDecl           \
     MUnionFieldDef             \
     MUsesDef                   \
     MUsesDefMultiple

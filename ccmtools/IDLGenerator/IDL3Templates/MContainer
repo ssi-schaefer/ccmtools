@@ -1,6 +1,11 @@
 %(MModuleDef)s
 %(MAttributeDef)s
 %(MConstantDef)s
+
+%(MStructDefFwdDecl)s
+%(MUnionDefFwdDecl)s
+%(MComponentDefFwdDecl)s
+
 %(MValueDef)s
 %(MValueMemberDef)s
 %(MEnumDef)s

@@ -82,7 +82,12 @@ namespace localComponents {
     : virtual public CCM_Utils::RefCounted {
   public:
     virtual ~Object (  ) {}
-    //    virtual Object* get_component (  ) = 0;
+
+    // Simulates the CORBA::Object::get_component() operation defines
+    // since CORBA 3.0 (CCM Spec. 1-9)	
+    virtual CCM_Utils::SmartPtr<Object> get_component() {
+	return CCM_Utils::SmartPtr<Object>();
+    };	
   };
 
 
@@ -596,8 +601,8 @@ namespace localComponents {
    * CCM Specification 1-52
    ***/
   class CCMObject
-    : public Object,
-    public Navigation, public Receptacles {
+    : virtual public Object,
+      public Navigation, public Receptacles {
     public:
 
     virtual IRObject* get_component_def (  ) = 0;

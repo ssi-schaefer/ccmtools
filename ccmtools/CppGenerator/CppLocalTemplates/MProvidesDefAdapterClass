@@ -9,14 +9,18 @@ class %(Identifier)s%(ProvidesType)s
 
  private:
   CCM_%(ProvidesType)s* facet;
+  %(ComponentType)s* component;
   CCM_%(ComponentType)s* local_component;
   bool ValidConnection;
 
  public:
-  %(Identifier)s%(ProvidesType)s ( CCM_%(ComponentType)s* lc );
+  %(Identifier)s%(ProvidesType)s(%(ComponentType)s* c, CCM_%(ComponentType)s* lc);
   virtual ~%(Identifier)s%(ProvidesType)s (  );
 
 %(MOperationProvidesPrototype)s
+
+  // Implements the localComponent::Oject::get_component() method.
+  CCM_Utils::SmartPtr<localComponents::Object> get_component();
 };
 
 

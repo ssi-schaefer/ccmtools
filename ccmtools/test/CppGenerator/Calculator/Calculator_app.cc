@@ -21,8 +21,7 @@ CCM_CalculatorFacade*
 CCM_Calculator_impl::get_calc (  )
 {
   DEBUGNL ( " CCM_Calculator_impl->get_calc (  )" );
-  calc_impl* facet = new calc_impl (  );
-  facet->set_component ( this );
+  calc_impl* facet = new calc_impl ( this );
   return dynamic_cast<CCM_CalculatorFacade*> ( facet );
 }
 
@@ -32,8 +31,8 @@ CCM_Calculator_impl::get_calc (  )
 // calc - facet implementation
 //==============================================================================
 
-calc_impl::calc_impl
- (  )
+calc_impl::calc_impl ( CCM_Calculator_impl* c  )
+  : component(c)
 {
   DEBUGNL ( "+calc_impl->calc_impl (  )" );
 }
@@ -41,13 +40,6 @@ calc_impl::calc_impl
 calc_impl::~calc_impl (  )
 {
   DEBUGNL ( "-calc_impl->~calc_impl (  )" );
-}
-
-void
-calc_impl::set_component ( CCM_Calculator_impl* c )
-{
-  DEBUGNL ( " calc_impl->set_component (  )" );
-  component = c;
 }
 
 void

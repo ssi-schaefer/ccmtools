@@ -69,7 +69,7 @@ class CCM_%(Identifier)s
 
 class %(Identifier)s
   : public localComponents::ReleaseInformation%(BaseTypes)s,
-    public localComponents::CCMObject	
+    virtual public localComponents::CCMObject	
     %(MSupportsDefBase)s 
     
 {
@@ -306,13 +306,12 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object (  )
 }
 
 //==============================================================================
-// local adapter implementation
+// local component adapter implementation
 //==============================================================================
 
 %(Identifier)s::%(Identifier)s ( %(HomeType)s* h, CCM_%(Identifier)s* lc )
   : home_local_adapter ( h ), local_component ( lc )
 {
-  assert ( h && lc );  // precondition: h != NULL AND c != NULL
   DEBUGNL ( "+%(Identifier)s->%(Identifier)s (  )" );
   context = new CCM_%(Identifier)s_Context_impl ( this );
   ValidConnection = true;

@@ -23,8 +23,7 @@ CCM_Console*
 CCM_Hello_mirror_impl::get_console_mirror (  )
 {
   DEBUGNL ( " CCM_Hello_mirror_impl->get_console_mirror (  )" );
-  console_mirror_impl* facet = new console_mirror_impl (  );
-  facet->set_component ( this );
+  console_mirror_impl* facet = new console_mirror_impl ( this );
   return dynamic_cast<CCM_Console*> ( facet );
 }
 
@@ -34,8 +33,8 @@ CCM_Hello_mirror_impl::get_console_mirror (  )
 // console_mirror - facet implementation
 //==============================================================================
 
-console_mirror_impl::console_mirror_impl
- (  )
+console_mirror_impl::console_mirror_impl ( CCM_Hello_mirror_impl* c )
+  : component(c)
 {
   DEBUGNL ( "+console_mirror_impl->console_mirror_impl (  )" );
 }
@@ -45,12 +44,6 @@ console_mirror_impl::~console_mirror_impl (  )
   DEBUGNL ( "-console_mirror_impl->~console_mirror_impl (  )" );
 }
 
-void
-console_mirror_impl::set_component ( CCM_Hello_mirror_impl* c )
-{
-  DEBUGNL ( " console_mirror_impl->set_component (  )" );
-  component = c;
-}
 
 long
 console_mirror_impl::println ( const std::string& s2 )

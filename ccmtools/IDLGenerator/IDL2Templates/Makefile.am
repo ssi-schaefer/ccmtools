@@ -39,9 +39,14 @@ dist_template_DATA = \
     MProvidesDef                             \
     MPublishesDef                            \
     MStructDef                               \
+    MStructDefFwdDecl                        \
     MUnionDef                                \
+    MUnionDefFwdDecl                         \
     MUnionFieldDef                           \
     MUsesDef                                 \
     MUsesDefMultiple                         \
     MSupportsDefBase
+
+
+
 
