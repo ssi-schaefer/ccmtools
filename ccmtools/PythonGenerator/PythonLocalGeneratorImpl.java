@@ -18,7 +18,7 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.CppGenerator;
+package ccmtools.PythonGenerator;
 
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
