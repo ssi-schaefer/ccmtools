@@ -3,3 +3,5 @@ Makefile.in
 api
 dtd2java_ger.pdf
 uml2idl_ger.pdf
+tutorial/tutorial-html
+tutorial/tutorial-html.stamp
