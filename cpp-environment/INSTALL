@@ -1,11 +1,21 @@
 This package uses Confix for all tasks related to building and installation.
 
-For the informed, use the following :
-
-  $ confix.py --bootstrap --configure --make --targets="all install"
-
 For the uninformed, please read the Confix documentation at
 http://confix.sf.net/. Then you will be informed ; kindly proceed to the
 previous instruction.
+
+For the informed, use the following :
+
+o) Install the local component's environment:
+   $ confix.py --packageroot=CCM_Local --bootstrap --configure --make --targets="all install"
+
+o) Install the remote component's environment:
+   $ confix.py --packageroot=external --bootstrap --configure --make --targets="all install"
+   $ confix.py --packageroot=CCM_Remote --bootstrap --configure --make --targets="all install"
+
+o) Install the python component's environment:
+   $ confix.py --packageroot=CCM_Python --bootstrap --configure --make --targets="all install"	
+   But, it does not work because CCM_Python is the package root directory of the Python 
+   generator environment!!	
 
 For further questions, please consult the README file.

@@ -2,3 +2,8 @@ Makefile
 Makefile.in
 Makefile.am
 *.py
+aclocal.m4
+autom4te.cache
+config.h.in
+configure
+configure.in
