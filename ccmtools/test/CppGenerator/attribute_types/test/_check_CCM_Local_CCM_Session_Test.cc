@@ -15,7 +15,6 @@
  ***/
 
 #include <cassert>
-#include <string>
 #include <iostream>
 
 #include <WX/Utils/debug.h>
@@ -24,15 +23,9 @@
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 
-#include <CCM_Local/CCM_Session_Test_mirror/Test_mirror_gen.h>
-
-#ifdef CCM_USE_DBC
-#include <CCM_Local/CCM_Session_Test/Test_dbc.h>
-#include <CCM_Local/CCM_Session_Test/TestHome_dbc.h>
-#else
 #include <CCM_Local/CCM_Session_Test/Test_gen.h>
 #include <CCM_Local/CCM_Session_Test/TestHome_gen.h>
-#endif
+
 
 using namespace std;
 using namespace WX::Utils;
@@ -56,11 +49,8 @@ int main(int argc, char *argv[])
   int error = 0;
   LocalComponents::HomeFinder* homeFinder;
   homeFinder = HomeFinder::Instance (  );
-#ifdef CCM_USE_DBC
-  error  = DbC_deploy_TestHome("TestHome", false);
-#else
+
   error  = local_deploy_TestHome("TestHome");
-#endif
   if(error) {
     cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
     return(error);
@@ -95,13 +85,6 @@ int main(int argc, char *argv[])
     cout << "DEPLOYMENT ERROR: invalid name during connection: " << e.what (  ) << endl;
     error = -1;
   }
-#ifdef CCM_USE_DBC
-  catch(CCM_OCL::OclException& e)
-  {
-    cout << "DEPLOYMENT ERROR: 'design by contract' error:" << endl << e.what();
-    error = -1;
-  }
-#endif
   catch ( ... )  {
     cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
     error = -1;
@@ -180,6 +163,7 @@ int main(int argc, char *argv[])
       assert(wstring_result == wstring_value);
     }
 
+
     {
       //Test Case for: typedef long time_t;
       CCM_Local::time_t time_value = 3;
@@ -208,30 +192,31 @@ int main(int argc, char *argv[])
       // Test Case for: typedef sequence<Value> map;
       Map map_value;
       for(int i=0;i<5;i++) {
-	Pair p1;
-	p1.key = "1";
-	p1.value = (double)i;
-	map_value.push_back(p1);
+        Pair p1;
+        p1.key = "1";
+        p1.value = (double)i;
+        map_value.push_back(p1);
       }
       myTest->sequence_value(map_value);
       Map map_result = myTest->sequence_value();
       for(int i=0;i<(int)map_result.size();i++) {
-	Pair p = map_result.at(i);
-	assert((int)p.value == i);
+        Pair p = map_result.at(i);
+        assert((int)p.value == i);
       }
 
       // Test Case for: typedef double doubleArray[10];
       CCM_Local::doubleArray array_value(10);
       for(int i=0;i<10;i++) {
-	array_value.at(i) = i;
+        array_value.at(i) = i;
       } 
       myTest->array_value(array_value);
       CCM_Local::doubleArray array_result = myTest->array_value();
       for(int i=0;i<10;i++) {
-	assert(array_result.at(i) == i);
+        assert(array_result.at(i) == i);
       }
 
     }
+
 
     cout << "== End Test Case ===============================================" << endl;
   } 
@@ -239,13 +224,6 @@ int main(int argc, char *argv[])
     cout << "TEST: function not implemented: " << e.what (  ) << endl;
     error = -1;
   }
-#ifdef CCM_USE_DBC
-  catch(CCM_OCL::OclException& e)
-  {
-    cout << "TEST: 'design by contract' error:" << endl << e.what();
-    error = -1;
-  }
-#endif
   catch ( ... )  {
     cout << "TEST: there is something wrong!" << endl;
     error = -1;

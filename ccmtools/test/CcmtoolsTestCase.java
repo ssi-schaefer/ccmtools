@@ -30,6 +30,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 
+import ccmtools.test.CcmtoolsTestCaseException;
+
 /***
  * This test case is derived from JUnit's TestCase class and implements
  * tests for ccmtools code generators.
@@ -130,24 +132,10 @@ public class CcmtoolsTestCase extends TestCase
 	}
     }
 
-    /*
-     <exec executable="confix.py" >
-         <arg value="--packageroot=${sandbox}" />
-	 <arg value="--bootstrap" />
-	 <arg value="--configure" />
-	 <arg value="--make" />
-	 <arg value="--targets=check" />
-     </exec>
 
-     <exec executable="confix.py" >
-         <arg value="--packageroot=${sandbox}" />
-	 <arg value="--make" />
-	 <arg value="--targets=clean" />
-     </exec>
-    */
-    protected int runConfix(String args)
+    protected void runConfix(String args)
+	throws ccmtools.test.CcmtoolsTestCaseException
     {
-	int err = -1;
 	try {
 	    // Run the GNU preprocessor cpp in a separate process.
 	    System.out.println(">>> confix.py " + args);
@@ -169,11 +157,11 @@ public class CcmtoolsTestCase extends TestCase
             errorPumper.join();
             proc.destroy();
 
-	    err = proc.exitValue();
+	    if(proc.exitValue() != 0)
+		throw new CcmtoolsTestCaseException("Confix error: result != 0");	 
 	} catch (Exception e) {
-	    System.out.println("can't confix the code!");
+	    throw new CcmtoolsTestCaseException("Confix error");
 	}	
-	return err;
     }
 
 
