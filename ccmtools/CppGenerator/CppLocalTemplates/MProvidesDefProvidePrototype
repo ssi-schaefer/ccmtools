@@ -1,5 +1,5 @@
   // Equivalent operations for facet %(Identifier)s
 
-  CCM_Utils::SmartPtr<%(CCMProvidesType)s> provide_%(Identifier)s (  );
+  CCM_Utils::SmartPtr<%(ProvidesType)s> provide_%(Identifier)s (  );
 
 
