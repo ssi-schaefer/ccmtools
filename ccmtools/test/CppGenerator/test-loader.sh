@@ -8,7 +8,7 @@
 sandbox_dir=`pwd`/sandbox
 build_dir=${sandbox_dir}/build
 install_dir=${sandbox_dir}/install
-template_dir=${sandbox_dir}/share/${PACKAGE}-${MAJORMINOR}
+template_dir=${sandbox_dir}/share/${PACKAGE}
 
 ${MKDIR} -p ${build_dir} ${install_dir} ${template_dir}
 
@@ -26,9 +26,10 @@ cd ${top_builddir} ; absbuilddir=`pwd` ; cd ${cwd}
 for f in ${abssrcdir}/UI/scripts/ccmtools-* ; do ln -s $f ${sandbox_dir} ; done
 for f in ${abssrcdir}/*Generator/*Templates ; do ln -s $f ${template_dir} ; done
 
+PCLASSPATH=${CLASSPATH}
+export CLASSPATH=${abssrcdir}/lib/antlr.jar:${absbuilddir}
 export CCMTOOLS_HOME=${sandbox_dir}
 export PATH=${sandbox_dir}:${PATH}
-export CLASSPATH=${abssrcdir}/antlr.jar:${absbuilddir}:${CLASSPATH}
 
 ret=""
 
@@ -65,6 +66,7 @@ test -z "${ret}" && ccmtools-c++-uninstall -p ${1} || ret=1
 test -z "${ret}" && ret=0
 
 ${RM} -f -r share ccmtools-* *.cc *.h *.py
+export CLASSPATH=${PCLASSPATH}
 cd ${cwd}
 exit ${ret}
 

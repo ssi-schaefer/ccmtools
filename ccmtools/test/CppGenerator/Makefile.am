@@ -1,8 +1,9 @@
 ## process this file with automake to produce Makefile.in
 
+CLASSPATH_ENV = $(top_builddir):$(top_srcdir)/lib/antlr.jar
 TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
                     JAVA=$(JAVA) CP=$(CP) RM=$(RM) MKDIR=$(MKDIR) \
-                    PACKAGE=@PACKAGE@ MAJORMINOR=@CCMTOOLS_MAJORMINOR@
+                    PACKAGE=@PACKAGE@ CLASSPATH=$(CLASSPATH_ENV)
 
 dist_noinst_SCRIPTS = test-loader.sh
 

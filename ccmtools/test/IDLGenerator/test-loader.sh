@@ -9,7 +9,7 @@ PATH=${abssrcdir}/UI/scripts:$PATH
 CLASSPATH=${absbuilddir}:${abssrcdir}/lib/antlr.jar:$CLASSPATH
 
 sandbox_dir=${cwd}/sandbox
-template_dir=${sandbox_dir}/share/${PACKAGE}-${MAJORMINOR}
+template_dir=${sandbox_dir}/share/${PACKAGE}
 
 ${MKDIR} -p ${template_dir}
 for f in ${abssrcdir}/*Generator/*Templates ; do ln -s ${f} ${template_dir} ; done

@@ -1,8 +1,7 @@
 ## process this file with automake to produce Makefile.in
 
 TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
-                    JAVA=$(JAVA) RM=$(RM) MKDIR=$(MKDIR) \
-                    PACKAGE=@PACKAGE@ MAJORMINOR=@CCMTOOLS_MAJORMINOR@
+                    JAVA=$(JAVA) RM=$(RM) MKDIR=$(MKDIR) PACKAGE=@PACKAGE@
 
 dist_noinst_SCRIPTS = test-loader.sh
 

@@ -1,10 +1,10 @@
 #! /bin/sh
 
-ccmtools-c++-generate --help
-ccmtools-c++-generate -h
-ccmtools-c++-make --help
-ccmtools-c++-make -h
-ccmtools-c++-install --help
-ccmtools-c++-install -h
-ccmtools-c++-uninstall --help
-ccmtools-c++-uninstall -h
+${top_srcdir}/UI/scripts/ccmtools-c++-generate --help
+${top_srcdir}/UI/scripts/ccmtools-c++-generate -h
+${top_srcdir}/UI/scripts/ccmtools-c++-make --help
+${top_srcdir}/UI/scripts/ccmtools-c++-make -h
+${top_srcdir}/UI/scripts/ccmtools-c++-install --help
+${top_srcdir}/UI/scripts/ccmtools-c++-install -h
+${top_srcdir}/UI/scripts/ccmtools-c++-uninstall --help
+${top_srcdir}/UI/scripts/ccmtools-c++-uninstall -h
