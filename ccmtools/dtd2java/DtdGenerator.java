@@ -33,7 +33,7 @@ import java.io.IOException;
  * It also creates dot-files (see http://www.graphviz.org).
  *
  * @author Robert Lechner (rlechner@gmx.at)
- * @version 26.November 2003
+ * @version 21.Jänner 2004
  */
 public class DtdGenerator
 {
@@ -240,6 +240,8 @@ public class DtdGenerator
         FileWriter w2 = new FileWriter(new File(baseDirectory_,"DTD_Root.java"));
         w2.write(MAIN_HEADER);
         w2.write("package "+javaPackage_+";\n\n"+
+                 "import java.util.zip.ZipFile;\n"+
+                 "import java.util.zip.ZipEntry;\n"+
                  "import javax.xml.parsers.SAXParserFactory;\n"+
                  "import javax.xml.parsers.SAXParser;\n\n"+
                  "/** Base class for all root elements. */\n"+
@@ -259,7 +261,22 @@ public class DtdGenerator
                  "    DTD_SAX_Handler handler = new DTD_SAX_Handler(creator);\n"+
                  "    SAXParserFactory factory = SAXParserFactory.newInstance();\n"+
                  "    SAXParser saxParser = factory.newSAXParser();\n"+
-                 "    saxParser.parse(xmlFile, handler);\n"+
+                 "    String xmlName = xmlFile.getPath();\n"+
+                 "    if( xmlName.endsWith(\".zip\") || xmlName.endsWith(\".ZIP\") ) {\n"+
+                 "      xmlName = xmlName.substring(0, xmlName.length()-4);\n"+
+                 "      ZipFile zf = new ZipFile(xmlFile);\n"+
+                 "      ZipEntry entry = zf.getEntry(xmlName);\n"+
+                 "      if( entry==null ) {\n"+
+                 "        entry = zf.getEntry(xmlName+\".xml\");\n"+
+                 "        if( entry==null ) {\n"+
+                 "          throw new java.io.IOException(\n"+
+                 "            \"cannot find Zip-entry '\"+xmlName+\"' or '\"+xmlName+\".xml'\" );\n"+
+                 "        }\n"+
+                 "      }\n"+
+                 "      saxParser.parse(zf.getInputStream(entry), handler);\n"+
+                 "    } else {\n"+
+                 "      saxParser.parse(xmlFile, handler);\n"+
+                 "    }\n"+
                  "    return handler.parseTree_;\n"+
                  "  }\n"+
                  "}\n");
