@@ -28,8 +28,8 @@ CLASSPATH_ENV = CLASSPATH=${top_builddir}
 extra_java_src = Constants.java.in
 noinst_JAVA = $(top_builddir)/Constants.java
 
-EXTRA_DIST = binary-dist.in $(extra_java_src) README.binary RELEASE \
-             confix.example debian
+EXTRA_DIST = binary-dist.in $(extra_java_src) README.binary RELEASE-0.2.3 \
+             confix.example debian autogen.py ccmtools-autogen-top-check
 
 clean-local:
 	$(RM) -f -r $(top_builddir)/ccmtools

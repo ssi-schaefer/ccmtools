@@ -52,7 +52,11 @@ dist_check_SCRIPTS = $(TESTS)
 # these directories hold application logic and python modules for generated
 # code.
 
-EXTRA_DIST = Calculator
+EXTRA_DIST = attribute attribute_basic_types attribute_user_types Calculator \
+ facet facet_basic_types facet_exception facet_user_types  home_basic_types \
+ home_factory home_user_types module-reopen owudb receptacle receptacle_basic_types \
+ receptacle_multiple receptacle_not_connected supports supports_basic_types \
+ supports_user_types
 
 clean-local:
 	$(RM) -r -f sandbox
