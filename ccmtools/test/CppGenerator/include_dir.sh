@@ -22,8 +22,8 @@ test -z "${ret}" && ${top_srcdir}/test/CppGenerator/test-loader.sh \
   "keep-install" || ret=1
 
 test -z "${ret}" && ${top_srcdir}/test/CppGenerator/test-loader.sh \
-  "include_dir" "-I${idldir}/comp" "${idldir}/comp/Hello.idl" \
-  "keep-install" || ret=1
+  "include_dir" "-I${idldir}/comp -I${idldir}/ifaces" \
+  "${idldir}/comp/Hello.idl" "keep-install" || ret=1
 
 test -z "${ret}" && ret=0
 

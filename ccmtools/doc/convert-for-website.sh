@@ -7,7 +7,7 @@ You'll need to have your SSH set up properly to connect to ccmtools.sf.net."
 cwd=`pwd`
 doc=`basename $cwd`
 
-if [ "$doc" != "manual" -a "$doc" != "tutorial" ] ; then
+if [ "$doc" != "manual" -a "$doc" != "tutorial" -a "$doc" != "guide" ] ; then
   echo "$USAGE"
   exit 1
 fi
