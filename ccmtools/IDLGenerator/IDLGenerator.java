@@ -31,6 +31,9 @@ import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MAliasDef;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
+
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 
 import java.io.File;
@@ -184,24 +187,54 @@ abstract public class IDLGenerator
      */
     protected String getLanguageType(MTyped object)
     {
-        String base_type = super.getBaseIdlType(object);
+	System.out.println(" getLanguageType("+object+")");  //!!!!!!!
+
+        String base_type = getBaseIdlType(object);
+	MIDLType idl_type = object.getIdlType();
+	//        String base_type = super.getBaseIdlType(object);
 
         if (language_mappings.containsKey(base_type))
             base_type = (String) language_mappings.get(base_type);
 
+	if (object instanceof MAliasDef) {
+	    if (idl_type instanceof MArrayDef) {
+		System.out.println(">MAliasDef:MArrayDef "+ base_type); //!!!!!!!!!
+		String identifier = ((MAliasDef)object).getIdentifier();
+		Iterator i = ((MArrayDef) idl_type).getBounds().iterator();
+		Long bound = (Long) i.next();
+		String result = base_type + " "+ identifier + "[" + bound;
+		while (i.hasNext()) result += "][" + (Long) i.next();
+		return result + "]; //";
+	    }
+	    else if (idl_type instanceof MSequenceDef) {
+		System.out.println(">MAliasDef:MSequenceDef "+ base_type); //!!!!!!!!!
+		String result = "sequence<" + base_type;
+		Long bound = ((MSequenceDef) idl_type).getBound();
+		if (bound != null) result += "," + bound;
+		return result + "> ";
+	    }
+		
+	}
+	/*
         if (object instanceof MSequenceDef) {
+
+	    System.out.println("sequence<"+ base_type+">"); //!!!!!!!!!
+
             String result = "sequence<" + base_type;
             Long bound = ((MSequenceDef) object).getBound();
             if (bound != null) result += "," + bound;
             return result + "> ";
         } else if (object instanceof MArrayDef) {
+
+	    System.out.println(base_type+"[]"); //!!!!!!!!!
+
             Iterator i = ((MArrayDef) object).getBounds().iterator();
             Long bound = (Long) i.next();
             String result = base_type + "[" + bound;
             while (i.hasNext()) result += "][" + (Long) i.next();
             return result + "]";
         }
-
+	*/
         return base_type;
     }
 

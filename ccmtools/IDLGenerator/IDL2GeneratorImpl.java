@@ -1,5 +1,6 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
+ * Egon Teiniker <egon.teiniker@tugraz.at>
  * copyright (c) 2002, 2003 Salomon Automation
  *
  * $Id$

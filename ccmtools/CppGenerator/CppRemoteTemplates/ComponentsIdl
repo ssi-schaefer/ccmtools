@@ -1,17 +1,10 @@
-
-
-/***
- *  This is the IDL definition file for the CORBA Component Model.
- *  We use the CCM.idl file from MicoCCM except the definitions
- *  of local interfaces that we realize in the native programming
- *  language (C++, ...)
- *
+/*
  *  Mico --- a free CORBA implementation
  *  Copyright Frank Pilhofer
  *
  *  This file is part of MicoCCM, written by Frank Pilhofer.
  *  The MICO CORBA Component Project was sponsored by Alcatel.
- ***/
+ */
 
 module Components {
 

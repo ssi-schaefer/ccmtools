@@ -100,7 +100,7 @@ public class CppRemoteGeneratorImpl
         new File("remoteComponents", "Components.idl"),
 	new File("remoteComponents", "Components.h"),
 	new File("remoteComponents", "Components.cc"),
-        new File("remoteComponents", "Makefile.py"),
+        new File("remoteComponents", "Makefile.py")
     };
 
     /**
@@ -110,12 +110,14 @@ public class CppRemoteGeneratorImpl
      */
     private final static String[] local_environment_templates =
     {
-        "CCMContainerHeader", // Template for CCMContainer.h
-	"CCMContainerImpl",   // Template for CCMContainer.cc
-	"Blank",              // Template for Makefile.py
+        "CCMContainerHeader",     // Template for CCMContainer.h
+	"CCMContainerImpl",       // Template for CCMContainer.cc
+	"Blank",                  // Template for Makefile.py
 
-	"ComponentsIdl",      // Template for Components.idl
-	"Blank"               // Template for Makefile.py
+	"ComponentsIdl",          // Template for Components.idl
+	"ComponentsHeader",       // (mico 2.3.10 specific)
+	"ComponentsImpl",         // (mico 2.3.10 specific)
+	"MakefilePy"              // Template for Makefile.py
     };
 
     /**

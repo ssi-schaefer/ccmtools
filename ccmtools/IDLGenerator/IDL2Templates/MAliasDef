@@ -1,1 +1,2 @@
-  typedef %(LanguageType)s %(Identifier)s;
+typedef %(LanguageType)s %(Identifier)s;
+

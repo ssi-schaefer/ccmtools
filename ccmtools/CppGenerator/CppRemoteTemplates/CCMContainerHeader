@@ -15,8 +15,9 @@
 
 #include <CORBA.h>
 #include <map>
+#include <string>
 #include <Components.h>
-#include <localComponents/Components.h>
+#include <localComponents/CCM.h>
 
 namespace CCM {
   
@@ -24,18 +25,18 @@ namespace CCM {
   // Convert C++ to CORBA types
   //============================================================================
   
-  CORBA::Long   long_to_CORBAlong(long value);
-  CORBA::Double double_to_CORBAdouble(double value);
+  CORBA::Long   int_to_CORBA_Long(int i);
+  CORBA::Double double_to_CORBA_Double(double d);
   
-  char*         string_to_CORBAstring(std::string s);
+  char*         string_to_char_ptr(std::string s);
 
 
   //============================================================================
   // Convert CORBA to C++ types
   //============================================================================
   
-  long   CORBAlong_to_long(CORBA::Long value);
-  double CORBAdouble_to_double(CORBA::Double value);
+  int    CORBA_Long_to_int(CORBA::Long i);
+  double CORBA_Double_to_double(CORBA::Double d);
 
 
 
@@ -103,13 +104,13 @@ namespace CCM {
 	PortableServer::ServantBase_var glue;
 	localComponents::EnterpriseComponent* instance;
 	CORBA::Object_var reference;
-	std::map<string, PortableServer::ServantBase_var> facet_glue;
-	std::map<string, void*> facet_instance;
-	std::map<string, CORBA::Object_var> facet_reference;
+	std::map<std::string, PortableServer::ServantBase_var> facet_glue;
+	std::map<std::string, void*> facet_instance;
+	std::map<std::string, CORBA::Object_var> facet_reference;
       };
 
       CORBA::Object_var _home_ref;
-      typedef std::map<string, PortableServer::ObjectId> InstanceMap;
+      typedef std::map<std::string, PortableServer::ObjectId> InstanceMap;
       InstanceMap active_components;
 
     public:
@@ -358,4 +359,11 @@ namespace CCM {
     };
 
     void register_all_factories (CORBA::ORB_ptr);
-}
+} // /namespace CCM
+
+#endif
+
+
+
+
+

@@ -4,10 +4,10 @@ module %(Identifier)s {
 %(MConstantDef)s
 %(MValueDef)s
 %(MValueMemberDef)s
-%(MAliasDef)s
 %(MEnumDef)s
 %(MStructDef)s
 %(MUnionDef)s
+%(MAliasDef)s
 %(MExceptionDef)s
 %(MOperationDef)s
 %(MInterfaceDef)s

@@ -13,23 +13,25 @@
 
 #include "CCMContainer.h"
 
+using namespace std;
+
 //============================================================================
 // Convert C++ to CORBA types
 //============================================================================
 
-CORBA::Long CCM::long_to_CORBAlong(long value)
+CORBA::Long CCM::int_to_CORBA_Long(int i)
 {
-  return (CORBA::Long)value;
+  return (CORBA::Long)i;
 }
 
-CORBA::Double CCM::double_to_CORBAdouble(double value)
+CORBA::Double CCM::double_to_CORBA_Double(double d)
 {
-  return (CORBA::Double)value;
+  return (CORBA::Double)d;
 }
 
-char* CCM::string_to_CORBAstring(std::string value)
+char* CCM::string_to_char_ptr(std::string s)
 {
-  return CORBA::string_dup(value.c_str());
+  return CORBA::string_dup(s.c_str());
 }
 
 
@@ -39,14 +41,14 @@ char* CCM::string_to_CORBAstring(std::string value)
 // Convert CORBA to C++ types
 //============================================================================
 
-int CCM::CORBAlong_to_long(CORBA::Long value)
+int CCM::CORBA_Long_to_int(CORBA::Long i)
 {
-  return (int)value;
+  return (int)i;
 }
 
-double CCM::CORBAdouble_to_double(CORBA::Double value)
+double CCM::CORBA_Double_to_double(CORBA::Double d)
 {
-  return (double)value;
+  return (double)d;
 }
 
 
