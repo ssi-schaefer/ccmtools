@@ -7,7 +7,7 @@
 interface ACommon
 {
   void set_attrib_a(in long a);
-  long get_attrib_b();
+  long get_attrib_a();
 };
 
 component Hello

@@ -790,8 +790,9 @@ abstract public class CodeGenerator
         }
 
         if (variable.equals("LanguageType")) {
-            if (current_node instanceof MTyped)
+	    if (current_node instanceof MTyped) {
                 value = (String) getLanguageType((MTyped) current_node);
+	    }
         } else if (variable.equals("SupportsType")) {
             MSupportsDef supports = (MSupportsDef) current_node;
             value = supports.getSupports().getIdentifier();
