@@ -78,6 +78,9 @@ public class CppLocalGeneratorImpl
 	}
         Collections.reverse(base_namespace);
         scope.add(node.getIdentifier());
+	buffer.append("#ifdef HAVE_CONFIG_H\n");
+	buffer.append("#  include <config.h>\n");
+	buffer.append("#endif\n\n");
 	buffer.append("#ifdef USING_CONFIX \n");
 	buffer.append("#include <");
 	buffer.append(join(file_separator, scope));
