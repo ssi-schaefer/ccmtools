@@ -111,15 +111,24 @@
      </junit>
   </target>
 
-  <target name="check-remote" depends="test"
+  <target name="check-remote-simple" depends="test"
      description="Run JUnit remote test cases." >
      <junit printsummary="yes" haltonfailure="yes" showoutput="yes">
           <classpath refid="test.classpath" />
 	  <formatter type="brief" />
-	  <test name="ccmtools.CppGeneratorTest.CppRemoteGeneratorTest" />
+	  <test name="ccmtools.CppGeneratorTest.CppRemoteGeneratorSimpleTest" />
      </junit>
   </target>
   
+  <target name="check-remote-basic" depends="test"
+     description="Run JUnit remote test cases." >
+     <junit printsummary="yes" haltonfailure="yes" showoutput="yes">
+          <classpath refid="test.classpath" />
+	  <formatter type="brief" />
+	  <test name="ccmtools.CppGeneratorTest.CppRemoteGeneratorBasicTest" />
+     </junit>
+  </target>
+
 
   <!-- Create JavaDoc -->
   <target name="doc" 
