@@ -46,22 +46,23 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class CppMirrorGeneratorImpl
+public class CppLocalTestGeneratorImpl
     extends CppGenerator
 {
     // types for which we have a global template ; that is, a template that is
     // not contained inside another template.
 
     private final static String[] local_output_types =
-    {
-        "MComponentDef"
-    };
+    { "MComponentDef" };
 
     /**************************************************************************/
 
-    public CppMirrorGeneratorImpl(Driver d, File out_dir)
+    public CppLocalTestGeneratorImpl(Driver d, File out_dir)
         throws IOException
-    { super("CppMirror", d, out_dir, local_output_types, null, null); }
+    {
+        super("CppLocalTest", d, out_dir, local_output_types, null, null);
+        base_namespace.add("CCM_Local");
+    }
 
     /**
      * Write generated code to an output file.

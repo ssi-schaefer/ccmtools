@@ -1,0 +1,145 @@
+Anwenden der CCM-Tools
+======================
+
+0. CCM-Tools Installation
+-------------------------
+Folgende Programme werden von den CCM-Tools benutzt:
+ 
+  - J2SE     >= 1.4
+
+  - gcc      >= 3.2
+  - cpp      >= 2.96
+  - automake >= 1.7.3
+  - autoconf >= 2.56
+  - Confix   >= 1.3pre14
+
+  - mico     >= 2.3.10
+
+Die CCM-Tools kommen im SourceCode und müssen zuerst gebaut werden:
+  > autogen.py --prefix=<CCM_Tools_Home>
+  > make install
+
+Anschließend müssen noch Environment Variablen gesetzt werden (.bashrc):
+  # CCMTOOLS_HOME ist das Verzeichnis in dem die CCM-Tools installiert wurden
+  # siehe --prefix=<CCM_Tools_Home>
+  > export CCMTOOLS_HOME=/home/eteinik/ccmTools
+
+  # CCM_COMPONENT_REPOSITORY ist das Verzeichnis in dem die generierten Komponenten
+  # installiert werden.
+  # siehe .confix { 'PREFIX':...}
+  > export CCM_COMPONENT_REPOSITORY=$CCMTOOLS_HOME
+
+  # Natürlich muß PATH und CLASSPATH auch entsprechend erweitert werden
+  > export PATH=$CCMTOOLS_HOME/bin:$PATH
+  > export CLASSPATH=$CCMTOOLS_HOME/share/java/ccmtools.jar: \
+           $CCMTOOLS_HOME/share/java/antlr.jar:$CLASSPATH
+
+Als Test kann man jetzt die Version der ccmtools abfragen:
+  > ccmtools-generate --version
+
+
+1. Component Environment bauen
+------------------------------
+Die lokalen und remote Komponents brauchen diverse Libraries und IDL 
+Files um gebaut werden zu können - das Component-Environment.
+Die folgenden Schritte brauchen nur einmal ausgeführt werden, alle
+generierten Komponenten verwenden dann dieses Environment.
+
+a) Lokales Komponenten Environment
+  # Installiert lokales Component-Environment (CCM.h, CCM_Utils, HomeFinder, etc.)
+  > ccmtools-c++-environment
+
+b) Confix konfigurieren
+  # Confix Profile anlegen (~/.confix)
+    ccm_tools_profile = {
+    'PREFIX': '/home/eteinik/ccmTools', # siehe CCM_COMPONENT_REPOSITORY
+    'BUILDROOT': '/tmp',
+    'ADVANCED': 'true',
+    'CONFIX': {},
+    'CONFIGURE': {
+       'ENV': {
+          'CC': '/usr/local/gcc-3.2,--enable-threads=posix,--disable-shared/bin/gcc',
+          'CXX': '/usr/local/gcc-3.2,--enable-threads=posix,--disable-shared/bin/g++',
+          'CFLAGS': "-g -O0 -Wall -DCCM_DEBUG",
+          'CXXFLAGS': "-g -O0 -Wall -DCCM_DEBUG",
+          },
+       'ARGS': ['--with-external_mico=/home/eteinik/mico']
+       },
+    }
+    PROFILES = {
+    'default': my_profile,
+    'ccmtools': ccm_tools_profile
+    }
+
+  # Confix für mico konfigurieren	
+  > cd ccmtools-0.3.3/environment/external
+  > confix.py --bootstrap --configure --profile="ccmtools" --make --targets=install	
+ 
+c) Remote Komponent Environment
+  # Installiert remote Component-Environment 
+  > cd ccmtools-0.3.3/environment/remote
+  > confix.py --bootstrap --configure --profile="ccmtools" --make --targets=install
+
+  # Mico NameService starten
+  > nsd -ORBIIOPAddr inet:localhost:5050 -ORBIIOPVersion 1.2
+
+  # CCM_NAME_SERVICE definiert die CORBA Reference auf ein laufendes NameService	
+  > export CCM_NAME_SERVICE=corbaloc:iiop:1.2@localhost:5050/NameService
+
+  # Mico NameService Browser starten
+  > nsadmin -ORBInitRef NameService=corbaloc:iiop:1.2@localhost:5050/NameService
+    nsadmin> help
+
+
+2. Beispiel bauen
+-----------------
+Um das vorliegende Beispiel mit Hilfe der CCM-Tools zu bauen, muß man
+einige ccmtools-* Scripts in der richtigen Reihenfolge aufrufen. 
+
+a) IDL Files schreiben (auschecken)
+.
+|-- LoginDB
+|   `-- login_ec.idl
+|-- User
+|   `-- user_ec.idl
+`-- ifaces
+    |-- auth.idl
+    |-- connectmgr.idl
+    |-- exc.idl
+    |-- groupdata.idl
+    |-- groupmgr.idl
+    |-- logindata.idl
+    |-- loginmgr.idl
+    |-- persdata.idl
+    |-- profildata.idl
+    |-- sysmgr.idl
+    |-- udbbrowser.idl
+    `-- udbeditor.idl
+
+b) Lokale Interfaces und Komponente generieren (ohne Mirror Komponente)
+  > ccmtools-generate c++local -o xxx ifaces/*.idl
+  > ccmtools-generate c++local -Iifaces -a -o xxx LoginDB/login_ec.idl	
+
+c) IDL2 Files generieren und zu *.h/*.cc Files kompilieren
+  > ccmtools-generate idl2 -o xxx/idl2 ifaces/*.idl
+  > ccmtools-generate idl2 -Iifaces -o xxx/idl2 LoginDB/*.idl
+  > cd xxx/idl2 ; make; cd ../..
+
+d) Remote Komponente, Adapter und Test-Client generieren 
+  > ccmtools-generate c++remote -Iifaces -o xxx LoginDB/login_ec.idl
+  > ccmtools-generate c++remote-test -Iifaces -o xxx LoginDB/login_ec.idl
+
+e) Komponente compilieren
+  > ccmtools-c++-configure -p xxx
+  > ccmtools-c++-make -p xxx
+
+
+3. Stubs und Skeletons für Java bauen
+-------------------------------------
+Ein Java Client braucht CORBA Stubs und Skeletons um auf den Server 
+zugreifen zu können. Aus den IDL3 Files wird IDL2 generiert und
+anschließend wird für jedes IDL2 File der Java IDL Compiler aufgerufen.
+
+  > ccmtools-generate idl2 -Iifaces -o xxx/idl2java LoginDB/*.idl
+  > cd xxx/idl2java	
+  > ccmtools-idl --java -I/home/eteinik/ccmTools/include *.idl

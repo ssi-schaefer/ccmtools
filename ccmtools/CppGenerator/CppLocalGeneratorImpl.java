@@ -109,6 +109,8 @@ public class CppLocalGeneratorImpl
     {
         super("CppLocal", d, out_dir, local_output_types,
               local_environment_files, local_environment_templates);
+
+        base_namespace.add("CCM_Local");
     }
 
     /**

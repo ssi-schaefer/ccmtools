@@ -2,14 +2,14 @@
 // %(Identifier)s - python conversion prototypes
 //==============================================================================
 
-#ifndef __CCM_TEST__PYTHON__UNION__%(PreprocIdentifier)s__H__
-#define __CCM_TEST__PYTHON__UNION__%(PreprocIdentifier)s__H__
+#ifndef __CCM_TEST__PYTHON__%(PreprocIdentifier)s__H__
+#define __CCM_TEST__PYTHON__%(PreprocIdentifier)s__H__
 
 #include <%(SelfInclude)s.h>
 #include <Python.h>
 #include "structmember.h"
 
-%(MUnionFieldDefInclude)s
+%(MFieldDefInclude)s
 
 %(OpenNamespace)s
 
@@ -37,7 +37,7 @@ PyObject *convert_const_%(Identifier)s_ref_to_python ( const %(Identifier)s& arg
 
 typedef struct {
   PyObject_HEAD
-%(MUnionFieldDefVariable)s
+%(MFieldDefVariable)s
 } Py%(Identifier)s_Object;
 
 static PyObject *
@@ -52,15 +52,15 @@ Py%(Identifier)s_new ( PyTypeObject *type, PyObject *args, PyObject *kwds )
 static int
 Py%(Identifier)s_init ( PyObject *self, PyObject *args, PyObject *kwds )
 {
-%(MUnionFieldDefInitVariable)s;
+%(MFieldDefInitVariable)s;
 
-  static char *kwlist[] = { %(MUnionFieldDefKeyword)sNULL };
+  static char *kwlist[] = { %(MFieldDefKeyword)sNULL };
 
   if ( ! PyArg_ParseTupleAndKeywords
-       ( args, kwds, "%(FieldConvertString)s", kwlist, %(MUnionFieldDefKeywordVariable)s ) )
+       ( args, kwds, "%(FieldConvertString)s", kwlist, %(MFieldDefKeywordVariable)s ) )
     return -1;
 
-%(MUnionFieldDefInit)s
+%(MFieldDefInit)s
 
   return 0;
 }
@@ -68,12 +68,12 @@ Py%(Identifier)s_init ( PyObject *self, PyObject *args, PyObject *kwds )
 static void
 Py%(Identifier)s_dealloc ( %(Identifier)s_Object *self )
 {
-%(MUnionFieldDefFree)s
+%(MFieldDefFree)s
   self->ob_type->tp_free ( ( PyObject * ) self );
 }
 
 static PyGetSetDef Py%(Identifier)s_members[] = {
-%(MUnionFieldDefMember)s
+%(MFieldDefMember)s
   {NULL, 0, 0, 0, NULL}  /* Sentinel */
 };
 
@@ -137,7 +137,7 @@ convert_%(Identifier)s_to_python ( %(Identifier)s arg )
 {
   Py%(Identifier)s_Object *self = Py%(Identifier)s_new (  );
   if ( self == NULL ) return NULL;
-%(MUnionFieldDefTo)s
+%(MFieldDefTo)s
   Py_INCREF ( self );
   return ( PyObject * ) self;
 }
@@ -147,7 +147,7 @@ convert_const_%(Identifier)s_to_python ( const %(Identifier)s arg )
 {
   Py%(Identifier)s_Object *self = Py%(Identifier)s_new (  );
   if ( self == NULL ) return NULL;
-%(MUnionFieldDefTo)s
+%(MFieldDefTo)s
   Py_INCREF ( self );
   return ( PyObject * ) self;
 }
@@ -157,7 +157,7 @@ convert_const_%(Identifier)s_ref_to_python ( const %(Identifier)s& arg )
 {
   Py%(Identifier)s_Object *self = Py%(Identifier)s_new (  );
   if ( self == NULL ) return NULL;
-%(MUnionFieldDefTo)s
+%(MFieldDefTo)s
   Py_INCREF ( self );
   return ( PyObject * ) self;
 }
@@ -167,7 +167,7 @@ convert_%(Identifier)s_from_python ( PyObject *arg )
 {
   %(Identifier)s result;
   if ( arg == NULL ) return result;
-%(MUnionFieldDefFrom)s
+%(MFieldDefFrom)s
   Py_DECREF ( arg );
   return result;
 }
@@ -177,10 +177,11 @@ convert_%(Identifier)s_ptr_from_python ( PyObject *arg )
 {
   %(Identifier)s *result = new %(Identifier)s;
   if ( arg == NULL ) return NULL;
-%(MUnionFieldDefFromPointer)s
+%(MFieldDefFromPointer)s
   Py_DECREF ( arg );
   return result;
 }
 
 %(CloseNamespace)s
+
 

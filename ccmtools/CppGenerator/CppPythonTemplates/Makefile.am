@@ -17,6 +17,7 @@ dist_template_DATA = \
   MConsumesDefInclude           \
   MEmitsDefInclude              \
   MEnumDef                      \
+  MExceptionDef                 \
   MExceptionDefInclude          \
   MFactoryDefInclude            \
   MFieldDefFree                 \
@@ -32,6 +33,8 @@ dist_template_DATA = \
   MFieldDefVariable             \
   MFinderDefInclude             \
   MOperationDefInclude          \
+  MOperationDefMethod           \
+  MOperationDefWrapper          \
   MOperationProvides            \
   MOperationSupports            \
   MParameterDefInclude          \

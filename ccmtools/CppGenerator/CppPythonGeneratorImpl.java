@@ -62,12 +62,12 @@ public class CppPythonGeneratorImpl
 
     private final static File[] local_environment_files =
     {
-        new File("CCM_Test_Python", "call_python.h"),
-        new File("CCM_Test_Python", "call_python.cc"),
-        new File("CCM_Test_Python", "convert_primitives.h"),
-        new File("CCM_Test_Python", "convert_primitives.cc"),
+        new File("CCM_Test_Python", "_call.h"),
+        new File("CCM_Test_Python", "call.cc"),
+        new File("CCM_Test_Python", "_primitives.h"),
+        new File("CCM_Test_Python", "primitives.cc"),
         new File("CCM_Test_Python", "Makefile.py"),
-        new File("CCM_Text_Python_External", "Makefile.py"),
+        new File("CCM_Test_Python_External", "Makefile.py"),
     };
 
     private final static String[] local_environment_templates =
@@ -83,6 +83,10 @@ public class CppPythonGeneratorImpl
     {
         super("CppPython", d, out_dir, local_output_types,
               local_environment_files, local_environment_templates);
+
+        base_namespace.add("CCM_Test");
+        base_namespace.add("Python");
+        base_namespace.add("CCM_Local");
     }
 
     /**
@@ -98,17 +102,12 @@ public class CppPythonGeneratorImpl
 
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
-        String[] out_files = { node_name + "_convert_python.h",
-                               node_name + "_convert_python.cc" };
+        String[] out_files = { node_name + ".h", node_name + ".cc" };
 
         for (int i = 0; i < out_strings.length; i++) {
             String generated_code = out_strings[i];
+            String file_name = out_files[i];
             String file_dir = handleNamespace("FileNamespace", node_name);
-            String file_name = node_name + "_call_python.cc";
-            if (! (current_node instanceof MComponentDef)) {
-                file_dir = "CCM_Test_Python";
-                file_name = out_files[i];
-            }
 
             if (generated_code.trim().equals("")) continue;
 
@@ -144,16 +143,14 @@ public class CppPythonGeneratorImpl
 
         if (data_type.equals("CppLanguageType")) {
             return super.getLanguageType((MTyped) idl_type);
+
         } else if (data_type.equals("AliasType")) {
-            String type = "MAliasDefNormalImpl";
-
-            if (idl_type instanceof MSequenceDef)
-                type = "MAliasDefSequenceImpl";
-            else if (idl_type instanceof MArrayDef)
-                type = "MAliasDefArrayImpl";
-
+            String type = "MAliasDefNormal";
+            if (idl_type instanceof MSequenceDef) type = "MAliasDefSequence";
+            else if (idl_type instanceof MArrayDef) type = "MAliasDefArray";
             Template t = template_manager.getTemplate(type, current_name);
             data_value = t.substituteVariables(output_variables);
+
         } else if (data_type.equals("LoopConvertTo")) {
             MArrayDef array = (MArrayDef) idl_type;
             StringBuffer loop = new StringBuffer("");
@@ -164,7 +161,7 @@ public class CppPythonGeneratorImpl
             ListIterator li = bounds.listIterator();
             while (li.hasNext()) {
                 Long b = (Long) li.next();
-                String var = "i" + dim++; // NOTE : using ++ here !
+                String var = "i" + dim++; // increment here !
                 loop.append("  for ( int "+var+" = 0; "+var+" < "+b+"; ");
                 loop.append(var+"++ )\n");
                 if (li.hasNext()) {

@@ -40,14 +40,12 @@ import java.util.Collections;
 
 /**
  * Remote C++ component generator
- * 
- *
  */
 public class CppRemoteGeneratorImpl
     extends CppGenerator
 {
     //====================================================================
-    // Definition of arrays that determine the generator's behavior 
+    // Definition of arrays that determine the generator's behavior
     //====================================================================
 
     private Map CORBA_mappings;
@@ -58,10 +56,7 @@ public class CppRemoteGeneratorImpl
      * not contained inside another template.
      */
     private final static String[] local_output_types =
-    {
-        "MHomeDef", 
-	"MComponentDef"
-    };
+    { "MHomeDef", "MComponentDef" };
 
     /**
      * Environment files:
@@ -87,7 +82,7 @@ public class CppRemoteGeneratorImpl
      *
      * Note: order and length of both array must be the same.
      *
-     * TODOs: 
+     * TODOs:
      * - The ComponentsHeader and the ComponentsImpl files are
      *   generated from ComponentsIdl using the mico (2.3.10) idl compiler.
      *   The idl compiler call should be done from the ccmtools while
@@ -140,9 +135,6 @@ public class CppRemoteGeneratorImpl
 	"CORBA::WChar",       // PK_WCHAR
 	"CORBA::WChar*"       // PK_WSTRING
     };
-    
-
-    
 
     /**
      * The generator constructor calls the constructor of the base class
@@ -159,83 +151,32 @@ public class CppRemoteGeneratorImpl
         super("CppRemote", d, out_dir, local_output_types,
               local_environment_files, local_environment_templates);
 
+        base_namespace.add("CCM_Remote");
+
 	Debug.setDebugLevel(Debug.NONE);
 	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.CppRemoteGeneratorImpl()");
 
-	// fill the CORBA_mappings with IDL to C++ Mapping types 
+	// fill the CORBA_mappings with IDL to C++ Mapping types
 	String[] labels = MPrimitiveKind.getLabels();
 	CORBA_mappings = new Hashtable();
 	for (int i = 0; i < labels.length; i++)
 	    CORBA_mappings.put(labels[i], remote_language_map[i]);
     }
 
-
-    //====================================================================
-    // Handle traverser events
-    //====================================================================
-
-    /**
-     * Acknowledge the start of the given node during graph traversal. If the
-     * node is a MContainer type and is not defined in anything, assume it's the
-     * global parse container, and push "CCM_Local" onto the namespace stack,
-     * indicating that this code is for local CCM components.
-     *
-     * @param node the node that the GraphTraverser object is about to
-     *        investigate.
-     * @param scope_id the full scope identifier of the node. This identifier is
-     *        a string containing the names of parent nodes, joined together
-     *        with double colons.
-     */
-    public void startNode(Object node, String scope_id)
-    {
-        super.startNode(node, scope_id);
-
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.startNode()");
-
-        if ((node instanceof MContainer) 
-	    && (((MContainer) node).getDefinedIn() == null)) {
-            namespace.push("CCM_Remote");
-	}
-    }
-
-    /**
-     * Acknowledge and process a closing node during graph traversal. If the
-     * node is an MContainer type, pop the namespace (this will remove our
-     * CCM_Local that we pushed, in theory (tm)). If the node is of the correct
-     * type and defined in the original parsed file, write code for this node.
-     *
-     * @param node the node that the graph traverser object just finished
-     *        investigating.
-     * @param scope_id the full scope identifier of the node. This identifier is
-     *        a string containing the names of ancestor nodes, joined together
-     *        with double colons.
-     *
-     * Note: this method is only a logging wrapper for the super class method.  
-     */
-    public void endNode(Object node, String scope_id)
-    {
-        super.endNode(node, scope_id);
-
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.endNode()");
-    }
-    
-
-
     //====================================================================
     // Code generator core functions
     //====================================================================
 
-
     /**
      * Overwrites the CppGenerator's method to change between CCM_Local
      * CCM_Remote.
-     */ 
+     */
     protected String handleNamespace(String data_type, String local)
     {
 	Debug.println(Debug.METHODS,"CppRemoteGenerator.handleNamespace()");
 
         List names = new ArrayList(namespace);
-	
+
 	// ShortNamespace corresponds with the module hierarchy in the IDL file,
 	// there is no CCM_Local, CCM_Remote or CCM_Session_ included.
 	if (data_type.equals("ShortNamespace")) {
@@ -243,11 +184,9 @@ public class CppRemoteGeneratorImpl
 		return join("::", slice(names, 2)) + "::";
 	    else
 		return "";
-        } 
+        }
 
-	if (!local.equals("")) { 
-	    names.add("CCM_Session_" + local); 
-	}
+	if (!local.equals("")) names.add("CCM_Session_" + local);
 
 	if (data_type.equals("Namespace")) {
 	    List NamespaceList = slice(names, 2);
@@ -255,11 +194,9 @@ public class CppRemoteGeneratorImpl
 		return "::" + join("::", NamespaceList);
 	    else
 		return "";
-        } 
-	else if (data_type.equals("FileNamespace")) {
+        } else if (data_type.equals("FileNamespace")) {
             return join("_", slice(names, 1));
-        } 
-	else if (data_type.equals("IdlFileNamespace")) {
+        } else if (data_type.equals("IdlFileNamespace")) {
 	    if(names.size() > 2) {
 		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
 		if(IdlFileList.size() > 0)
@@ -269,38 +206,15 @@ public class CppRemoteGeneratorImpl
 	    }
 	    else
 		return "";
-        } 
-	else if (data_type.equals("IdlNamespace")) {
+        } else if (data_type.equals("IdlNamespace")) {
 	    if(names.size() > 2) {
 		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
 		return join("::", IdlFileList) + "::";
 	    }
 	    else
 		return "";
-        } 
-	else if (data_type.equals("IncludeNamespace")) {
-            return join("/", slice(names, 2));
-        } 
-	else if (data_type.equals("UsingNamespace")) {
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("using namespace "+i.next()+";\n");
-            return join("", tmp);
-        } 
-	else if (data_type.equals("OpenNamespace")) {
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("namespace "+i.next()+" {\n");
-            return join("", slice(tmp,1));
-        } 
-	else if (data_type.equals("CloseNamespace")) {
-            Collections.reverse(names);
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("} // /namespace "+i.next()+"\n");
-	    return join("", slice(tmp,-1));
         }
-        return "";
+        return super.handleNamespace(data_type, local);
     }
 
 
@@ -322,7 +236,7 @@ public class CppRemoteGeneratorImpl
 
 	String lang_type = getLanguageType(operation);
         Map vars = new Hashtable();
- 
+
 	vars.put("Object",              container.getIdentifier());
         vars.put("Identifier",          operation.getIdentifier());
         vars.put("LanguageType",        lang_type);
@@ -331,8 +245,8 @@ public class CppRemoteGeneratorImpl
         vars.put("MParameterDefAll",    getOperationParams(operation));
 	vars.put("MParameterDefCORBA",  getCORBAOperationParams(operation));
         vars.put("MParameterDefName",   getOperationParamNames(operation));
-        
-	// Used for supports and facet adapter generation 
+
+	// Used for supports and facet adapter generation
         vars.put("MParameterDefConvertParameter" , convertParameterToCpp(operation)); 
 	vars.put("MParameterDefDeclareResult"    , declareCppResult(operation));
         vars.put("MParameterDefConvertMethod"    , convertMethodToCpp(operation));
@@ -340,9 +254,9 @@ public class CppRemoteGeneratorImpl
 	vars.put("MParameterDefConvertExceptions", convertExceptionsToCorba(operation));
 	vars.put("MParameterDefConvertParameterFromCppToCorba", convertParameterToCorba(operation));
 
-	// Used for receptacle adapter generation 
+	// Used for receptacle adapter generation
 	vars.put("MParameterDefConvertReceptacleParameterToCorba",
-		 convertReceptacleParameterToCorba(operation)); 
+		 convertReceptacleParameterToCorba(operation));
 	vars.put("MParameterDefDeclareReceptacleCorbaResult",
 		 declareReceptacleCorbaResult(operation));
 	vars.put("MParameterDefConvertReceptacleMethodToCorba"   ,
@@ -352,14 +266,10 @@ public class CppRemoteGeneratorImpl
 	vars.put("MParameterDefConvertReceptacleExceptionsToCpp",
 		 convertReceptacleExceptionsToCpp(operation));
 
-	if (! lang_type.equals("void")) 
-	    vars.put("Return", "return ");
-	else 
-	    vars.put("Return", "");
-	
+        vars.put("Return", (lang_type.equals("void")) ? "" : "return ");
+
         return vars;
     }
-
 
     /**
      * Handles the different template names found for a particular model node
@@ -369,7 +279,7 @@ public class CppRemoteGeneratorImpl
      *
      * Note that the method calls the super class method.
      *
-     * @param variable The variable name (tag name) to get a value 
+     * @param variable The variable name (tag name) to get a value
      *                 (generated code) for.
      *
      * @return The value of the variable available from the current
@@ -377,18 +287,17 @@ public class CppRemoteGeneratorImpl
      */
     protected String getLocalValue(String variable)
     {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.getLocalValue()"); 
+	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.getLocalValue()");
 
         String value = super.getLocalValue(variable);
 
-	if (current_node instanceof MAttributeDef) { 
+	if (current_node instanceof MAttributeDef) {
             return data_MAttributeDef(variable, value);
 	}
 
 	Debug.println(Debug.VALUES,value);
 	return value;
     }
-    
 
     protected String data_MUsesDef(String data_type, String data_value)
     {
@@ -400,7 +309,6 @@ public class CppRemoteGeneratorImpl
         }
         return data_value;
     }
-
 
     protected String data_MAttributeDef(String data_type, String data_value)
     {
@@ -428,7 +336,6 @@ public class CppRemoteGeneratorImpl
         return data_value;
     }
 
-
     /**
      * Overwrites the superclass method to support standard IDL2C++ mapping
      * of parameters.
@@ -446,7 +353,6 @@ public class CppRemoteGeneratorImpl
 	}
 	return data_value; // super.data_MFactoryDef() wegen , am Ende
     }
-
 
     protected String data_MHomeDef(String data_type, String data_value)
     {

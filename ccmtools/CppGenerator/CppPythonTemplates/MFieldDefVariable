@@ -1,1 +1,1 @@
-  %(LanguageType)s %(Identifier)s;
+  PyObject *%(Identifier)s;

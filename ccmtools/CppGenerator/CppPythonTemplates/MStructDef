@@ -2,8 +2,8 @@
 // %(Identifier)s - python conversion prototypes
 //==============================================================================
 
-#ifndef __CCM_TEST__PYTHON__%(PreprocIdentifier)s__H__
-#define __CCM_TEST__PYTHON__%(PreprocIdentifier)s__H__
+#ifndef __CCM_TEST__PYTHON__STRUCT__%(PreprocIdentifier)s__H__
+#define __CCM_TEST__PYTHON__STRUCT__%(PreprocIdentifier)s__H__
 
 #include <%(SelfInclude)s.h>
 #include <Python.h>
@@ -46,7 +46,6 @@ Py%(Identifier)s_new ( PyTypeObject *type, PyObject *args, PyObject *kwds )
   Py%(Identifier)s_Object *self = NULL;
   self = ( Py%(Identifier)s_Object * ) type->tp_alloc ( type, 0 );
   if ( self == NULL ) return NULL;
-%(MFieldDefNew)s
   return ( PyObject * ) self;
 }
 

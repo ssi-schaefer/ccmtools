@@ -522,7 +522,7 @@ class CCM_%(Identifier)s_Context
 
 %(CloseNamespace)s
 
-#endif // __COMPONENT_%(PreprocIdentifier)s_SHARE__H__
+#endif
 
 
 <<<<<<<SPLIT>>>>>>>

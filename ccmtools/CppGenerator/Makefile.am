@@ -1,20 +1,24 @@
 ## process this file with automake to produce Makefile.in
 
 # build this directory before moving on to the template subdirs.
-SUBDIRS = . CppLocalTemplates      \
-            CppRemoteTemplates     \
-            CppRemoteTestTemplates \
-            CppMirrorTemplates     \
-            CppPythonTemplates
+SUBDIRS = . \
+  CppLocalEnvironment    \
+  CppLocalTemplates      \
+  CppLocalTestTemplates  \
+  CppRemoteEnvironment   \
+  CppRemoteTemplates     \
+  CppRemoteTestTemplates \
+  CppPythonTemplates
 
 CLASSPATH_ENV = CLASSPATH=$(top_builddir)
 
 AM_JAVACFLAGS = -g
 
-dist_noinst_JAVA = CppGenerator.java               \
-                   CppLocalGeneratorImpl.java      \
-                   CppRemoteGeneratorImpl.java     \
-                   CppRemoteTestGeneratorImpl.java \
-                   CppMirrorGeneratorImpl.java     \
-                   CppPythonGeneratorImpl.java
+dist_noinst_JAVA = \
+  CppGenerator.java               \
+  CppLocalGeneratorImpl.java      \
+  CppLocalTestGeneratorImpl.java  \
+  CppRemoteGeneratorImpl.java     \
+  CppRemoteTestGeneratorImpl.java \
+  CppPythonGeneratorImpl.java
 

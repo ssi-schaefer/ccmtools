@@ -45,50 +45,23 @@ public class CppRemoteTestGeneratorImpl
     // not contained inside another template.
 
     private final static String[] local_output_types =
-    {
-        "MComponentDef"
-    };
-
+    { "MComponentDef" };
 
     public CppRemoteTestGeneratorImpl(Driver d, File out_dir)
         throws IOException
     {
         super("CppRemoteTest", d, out_dir, local_output_types, null, null);
 
-	Debug.println(Debug.METHODS,"CppRemoteTestGeneratorImpl(" 
+        base_namespace.add("CCM_Remote");
+
+	Debug.println(Debug.METHODS,"CppRemoteTestGeneratorImpl("
 		      + d + ", " + out_dir + ")");
-
     }
-
-
-    /**
-     * Acknowledge the start of the given node during graph traversal. If the
-     * node is a MContainer type and is not defined in anything, assume it's the
-     * global parse container, and push "CCM_Local" onto the namespace stack,
-     * indicating that this code is for local CCM components.
-     *
-     * @param node the node that the GraphTraverser object is about to
-     *        investigate.
-     * @param scope_id the full scope identifier of the node. This identifier is
-     *        a string containing the names of parent nodes, joined together
-     *        with double colons.
-     */
-    public void startNode(Object node, String scope_id)
-    {
-        super.startNode(node, scope_id);
-
-	Debug.println(Debug.METHODS,"startNode(" + node + ", " + scope_id + ")");
-
-        if ((node instanceof MContainer) &&
-            (((MContainer) node).getDefinedIn() == null))
-            namespace.push("CCM_Remote");
-    }
-
 
     /**
      * Overwrites the CppGenerator's method to change between CCM_Local
      * CCM_Remote.
-     */ 
+     */
     protected String handleNamespace(String data_type, String local)
     {
 	Debug.println(Debug.METHODS,"CppRemoteTestGenerator.handleNamespace(" + 
@@ -98,21 +71,16 @@ public class CppRemoteTestGeneratorImpl
 
 	// ShortNamespace corresponds with the module hierarchy in the IDL file,
 	// there is no CCM_Local, CCM_Remote or CCM_Session_ included.
-	if (data_type.equals("ShortNamespace")) {
+	if (data_type.equals("ShortNamespace"))
             return join("::", slice(names, 1));
-        } 
 
-	if (!local.equals("")) { 
-	    names.add("CCM_Session_" + local); 
-	}
+	if (!local.equals("")) names.add("CCM_Session_" + local);
 
         if (data_type.equals("Namespace")) {
             return join("::", slice(names, 1));
-        } 
-	else if (data_type.equals("FileNamespace")) {
+        } else if (data_type.equals("FileNamespace")) {
             return join("_", slice(names, 1));
-        } 
-	else if (data_type.equals("IdlFileNamespace")) {
+        } else if (data_type.equals("IdlFileNamespace")) {
 	    if(names.size() > 2) {
 		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
 		if(IdlFileList.size() > 0)
@@ -123,29 +91,7 @@ public class CppRemoteTestGeneratorImpl
 	    else
 		return "";
         } 
-	else if (data_type.equals("IncludeNamespace")) {
-            return join("/", slice(names, 1));
-        } 
-	else if (data_type.equals("UsingNamespace")) {
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("using namespace "+i.next()+";\n");
-            return join("", tmp);
-        } 
-	else if (data_type.equals("OpenNamespace")) {
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("namespace "+i.next()+" {\n");
-            return join("", tmp);
-        } 
-	else if (data_type.equals("CloseNamespace")) {
-            Collections.reverse(names);
-            List tmp = new ArrayList();
-            for (Iterator i = names.iterator(); i.hasNext(); )
-                tmp.add("} // /namespace "+i.next()+"\n");
-	    return join("", tmp);
-        }
-        return "";
+        return super.handleNamespace(data_type, local);
     }
 
 

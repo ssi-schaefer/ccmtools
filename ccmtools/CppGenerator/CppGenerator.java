@@ -113,7 +113,7 @@ abstract public class CppGenerator
 
     protected final static String sequence_type = "std::vector";
 
-    protected String base_namespace = "CCM_Local";
+    protected List base_namespace = null;
 
     /**************************************************************************/
 
@@ -124,6 +124,8 @@ abstract public class CppGenerator
     {
         super(sublang, d, out_dir, output_types, local_reserved_words,
               env_files, env_templates, local_language_map);
+
+        base_namespace = new ArrayList();
     }
 
     /**
@@ -142,7 +144,8 @@ abstract public class CppGenerator
     {
         if (node instanceof MContainer &&
             (((MContainer) node).getDefinedIn() == null))
-            namespace.push(base_namespace);
+            for (Iterator i = base_namespace.iterator(); i.hasNext(); )
+                namespace.push(i.next());
 
         super.startNode(node, scope_id);
     }
@@ -164,7 +167,12 @@ abstract public class CppGenerator
         super.endNode(node, scope_id);
 
         if (node instanceof MContainer &&
-            (((MContainer) node).getDefinedIn() == null)) namespace.pop();
+            (((MContainer) node).getDefinedIn() == null)) {
+            for (Iterator i = base_namespace.iterator(); i.hasNext(); ) {
+                i.next();
+                namespace.pop();
+            }
+        }
 
         writeOutputIfNeeded();
     }
@@ -256,7 +264,11 @@ abstract public class CppGenerator
         if (node instanceof MComponentDef || node instanceof MHomeDef)
             scope.add(local);
 
-        scope.add(0, base_namespace);
+        Collections.reverse(base_namespace);
+        for (Iterator i = base_namespace.iterator(); i.hasNext(); )
+            scope.add(0, i.next());
+        Collections.reverse(base_namespace);
+
         scope.add(node.getIdentifier());
 
         for (Iterator n = namespace.iterator(); n.hasNext(); ) {
@@ -285,7 +297,11 @@ abstract public class CppGenerator
         if (node instanceof MComponentDef || node instanceof MHomeDef)
             scope.add(local);
 
-        scope.add(0, base_namespace);
+        Collections.reverse(base_namespace);
+        for (Iterator i = base_namespace.iterator(); i.hasNext(); )
+            scope.add(0, i.next());
+        Collections.reverse(base_namespace);
+
         scope.add(node.getIdentifier());
 
         return join(file_separator, scope);
@@ -302,7 +318,10 @@ abstract public class CppGenerator
     protected String getScopedInclude(MContained node)
     {
         List scope = getScope(node);
-        scope.add(0, base_namespace);
+        Collections.reverse(base_namespace);
+        for (Iterator i = base_namespace.iterator(); i.hasNext(); )
+            scope.add(0, i.next());
+        Collections.reverse(base_namespace);
         scope.add(node.getIdentifier());
         return "#include <" + join(file_separator, scope) + ".h>";
     }
