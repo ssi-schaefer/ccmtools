@@ -36,20 +36,21 @@ OclException::OclException( const char* message, const char* function, const cha
 
 
 OclException::OclException( const OclException& rhs ) throw()
-: exception(rhs), message_(rhs.message_), function_(rhs.function_), file_(rhs.file_), line_(rhs.line_), what_(rhs.what_)
+: exception(rhs), message_(rhs.message_), function_(rhs.function_), file_(rhs.file_),
+  what_(rhs.what_), line_(rhs.line_)
 {
 }
 
 
 const OclException& OclException::operator=( const OclException& rhs ) throw()
 {
-	exception::operator=(rhs);
-	message_ = rhs.message_;
-	function_ = rhs.function_;
-	file_ = rhs.file_;
-	line_ = rhs.line_;
-	what_ = rhs.what_;
-	return *this;
+    exception::operator=(rhs);
+    message_ = rhs.message_;
+    function_ = rhs.function_;
+    file_ = rhs.file_;
+    what_ = rhs.what_;
+    line_ = rhs.line_;
+    return *this;
 }
 
 
@@ -69,9 +70,8 @@ const char* OclException::what() const throw()
 
 InvariantException::InvariantException( const char* message, const char* function,
                                         const char* file, int line, bool onExit ) throw()
-: OclException(message, function, file, line)
+: OclException(message, function, file, line), onExit_(onExit)
 {
-	onExit_ = onExit;
 	try
 	{
 		ostringstream stream;
@@ -88,9 +88,8 @@ InvariantException::InvariantException( const char* message, const char* functio
 }
 
 InvariantException::InvariantException( const InvariantException& rhs ) throw()
-: OclException(rhs)
+: OclException(rhs), onExit_(rhs.onExit_)
 {
-	onExit_ = rhs.onExit_;
 }
 
 const InvariantException& InvariantException::operator=( const InvariantException& rhs ) throw()
@@ -105,7 +104,8 @@ InvariantException::~InvariantException() throw()
 }
 
 
-PreconditionException::PreconditionException( const char* message, const char* function, const char* file, int line ) throw()
+PreconditionException::PreconditionException( const char* message, const char* function,
+                                              const char* file, int line ) throw()
 : OclException(message, function, file, line)
 {
 }
@@ -120,7 +120,8 @@ PreconditionException::~PreconditionException() throw()
 }
 
 
-PostconditionException::PostconditionException( const char* message, const char* function, const char* file, int line ) throw()
+PostconditionException::PostconditionException( const char* message, const char* function,
+                                                const char* file, int line ) throw()
 : OclException(message, function, file, line)
 {
 }

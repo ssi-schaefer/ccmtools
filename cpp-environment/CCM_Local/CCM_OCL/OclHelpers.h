@@ -26,6 +26,7 @@ typedef long    OCL_Integer;
 typedef double  OCL_Real;
 typedef string  OCL_String;
 typedef bool    OCL_Boolean;
+typedef size_t  OCL_Size;
 
 
 OCL_String OCL_toUpper( const string& x );
@@ -45,7 +46,7 @@ int OCL_random( int lowerRange, int upperRange );
 template <class T>
 bool OCL_includes( const vector<T>& obj, const T& value )
 {
-    int size = obj.size();
+    const int size = obj.size();
     for( int index=0; index<size; index++ )
     {
         if( obj[index]==value )
@@ -60,7 +61,7 @@ template <class T>
 OCL_Integer OCL_count( const vector<T>& obj, const T& value )
 {
     OCL_Integer result = 0;
-    int size = obj.size();
+    const int size = obj.size();
     for( int index=0; index<size; index++ )
     {
         if( obj[index]==value )
@@ -74,7 +75,7 @@ OCL_Integer OCL_count( const vector<T>& obj, const T& value )
 template <class T>
 bool OCL_includesAll( const vector<T>& obj, const vector<T>& x )
 {
-    int size = x.size();
+    const int size = x.size();
 	for( int index=0; index<size; index++ )
 	{
 		if( !OCL_includes(obj, x[index]) )
@@ -88,7 +89,7 @@ bool OCL_includesAll( const vector<T>& obj, const vector<T>& x )
 template <class T>
 bool OCL_excludesAll( const vector<T>& obj, const vector<T>& x )
 {
-    int size = x.size();
+    const int size = x.size();
 	for( int index=0; index<size; index++ )
 	{
 		if( OCL_includes(obj, x[index]) )
@@ -122,7 +123,8 @@ public:
     OCL_Collection<T> excluding( const T& object ) const
     {
     	OCL_Collection<T> result;
-    	for( int index=0; index<size(); index++ )
+        const int s = size();
+    	for( int index=0; index<s; index++ )
     	{
     		const T& element = operator[](index);
     		if( element!=object )
@@ -144,7 +146,8 @@ public:
 		{
 			return false;
 		}
-		for( int index=0; index<size(); index++ )
+        const int s = size();
+		for( int index=0; index<s; index++ )
 		{
 			if( !(operator[](index)==ref[index]) )
 			{
@@ -156,7 +159,7 @@ public:
 
     bool isUnique() const
     {
-        int s = size();
+        const int s = size();
         for( int i=0; i<s; i++ )
         {
             for( int j=i+1; j<s; j++ )
@@ -194,7 +197,8 @@ public:
     OCL_Sequence<T> excluding( const T& object ) const
     {
     	OCL_Sequence<T> result;
-    	for( int index=0; index<size(); index++ )
+        const int s = size();
+    	for( int index=0; index<s; index++ )
     	{
     		const T& element = operator[](index);
     		if( element!=object )
@@ -212,7 +216,8 @@ public:
 
     void add( const vector<T>& src )
     {
-        for( int index=0; index<src.size(); index++ )
+        const int s = src.size();
+        for( int index=0; index<s; index++ )
         {
             push_back(src[index]);
         }
@@ -252,7 +257,8 @@ public:
     OCL_Bag<T> excluding( const T& object ) const
     {
     	OCL_Bag<T> result;
-    	for( int index=0; index<size(); index++ )
+        const int s = size();
+    	for( int index=0; index<s; index++ )
     	{
     		const T& element = operator[](index);
     		if( element!=object )
@@ -270,7 +276,8 @@ public:
 
     void add( const vector<T>& src )
     {
-        for( int index=0; index<src.size(); index++ )
+        const int s = src.size();
+        for( int index=0; index<s; index++ )
         {
             push_back(src[index]);
         }
@@ -289,12 +296,13 @@ public:
         }
         bool result = true;
         bool* markers = new bool[size()];
-        memset(markers,false,size()*sizeof(bool));
-        for( int index1=0; index1<size(); index1++ )
+        const int s = size();
+        memset(markers, false, s*sizeof(bool));
+        for( int index1=0; index1<s; index1++ )
         {
             const T& element = operator[](index1);
             bool found = false;
-            for( int index2=0; index2<size(); index2++ )
+            for( int index2=0; index2<s; index2++ )
             {
                 if( !markers[index2] )
                 {
@@ -345,7 +353,8 @@ public:
     OCL_Set<T> excluding( const T& object ) const
     {
     	OCL_Set<T> result;
-    	for( int index=0; index<size(); index++ )
+        const int s = size();
+    	for( int index=0; index<s; index++ )
     	{
     		const T& element = operator[](index);
     		if( element!=object )
@@ -366,7 +375,8 @@ public:
 
     void add( const vector<T>& src )
     {
-        for( int index=0; index<src.size(); index++ )
+        const int s = src.size();
+        for( int index=0; index<s; index++ )
         {
             add( src[index] );
         }
@@ -379,11 +389,11 @@ public:
 
     bool operator==( const OCL_Set<T>& ref ) const
     {
-        int s = ref.size();
-        if( s!=size() )
+        if( ref.size()!=size() )
         {
             return false;
         }
+        const int s = size();
         for( int index=0; index<s; index++ )
         {
         	if( !OCL_includes(*this,ref[index]) )
@@ -397,7 +407,8 @@ public:
     OCL_Set<T> operator-( const OCL_Set<T>& ref ) const
     {
     	OCL_Set<T> result;
-    	for( int index=0; index<size(); index++ )
+        const int s = size();
+    	for( int index=0; index<s; index++ )
     	{
     		const T& element = operator[](index);
         	if( !OCL_includes(ref,element) )
@@ -454,23 +465,28 @@ public:
         return OCL_Sequence<T>::operator==(ref);
     }
 
+    /* Sorts "*this" and "ref" by the values of "ref".
+       We only use operator "<" of type "R".
+    */
     template<class R>
     void sortBy( vector<R>& ref )
     {
-        if( size()<2 )
+        const int s = size();
+        if( s<2 )
         {
             return;
         }
         vector<R> buffer1(ref);
         vector<T> buffer2(*this);
-        sort(ref, 0, size()-1, buffer1, buffer2);
+        sort(ref, 0, s-1, buffer1, buffer2);
     }
 
 private:
+    // Merge sort. We only use operator "<" of type "R".
     template<class R>
-    void sort( vector<R>& ref, int start1, int end2, vector<R>& buffer1, vector<T>& buffer2 )
+    void sort( vector<R>& ref, int start1, const int end2, vector<R>& buffer1, vector<T>& buffer2 )
     {
-        int s = end2-start1+1;
+        const int s = end2-start1+1;
         if( s<2 )
         {
             return;
@@ -488,8 +504,8 @@ private:
             }
             return;
         }
-        int start2 = start1 + s/2;
-        int end1 = start2 - 1;
+        const int start2 = start1 + s/2;
+        const int end1 = start2 - 1;
         sort(ref, start1, end1, buffer1, buffer2);
         sort(ref, start2, end2, buffer1, buffer2);
         int index1=start1, index2=start2, index3=0;
