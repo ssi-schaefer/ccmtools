@@ -1,0 +1,111 @@
+<project name="ccmtools.uml2idl" default="uml2idl.jar">
+
+  <description>
+  Build the uml2idl.jar file.
+  </description>
+
+  <!-- Define properties that are used in the following tasks.
+       Note that a property can be set from command-line:
+          $ ant -Dprefix=/usr/local
+  -->
+  <property name="src" location="../" />
+  <property name="build" location="tmp" />
+  <property name="lib" location="lib" />
+  <property name="doc" location="doc" />
+  <property name="prefix" location="." />
+
+
+  <!-- Define different paths that are used in the following tasks -->
+  <path id="compile.classpath">
+      <pathelement location="${lib}/antlr.jar" />
+  </path>
+
+  <path id="run.classpath">
+      <fileset dir="${prefix}/lib">
+          <include name="*.jar" />
+      </fileset>	  
+      <pathelement path="${java.class.path}" />
+      <pathelement location="${lib}/antlr.jar" />
+  </path>
+
+
+
+  <!-- Define the tasks needed to build and test ccmtools.uml2idl -->
+
+  <target name="init"
+      description="Creates the build directory and deletes the old jar files." >
+      <mkdir dir="${build}" />
+      <delete file="${prefix}/lib/uml2idl.jar" />
+      <delete file="${prefix}/lib/dtd2java.jar" />
+  </target>  
+
+  <target name="dtd_parser" depends="init"
+     description="Generate the dtd_parser using antlr." >
+      <antlr target="${src}/ccmtools/dtd2java/dtd.g" dir="${src}/ccmtools/dtd2java" >
+           <classpath refid="compile.classpath" />
+      </antlr>
+  </target>
+
+
+  <target name="dtd2java" depends="dtd_parser"
+     description="Compile the dtd2java package." >
+      <javac srcdir="${src}/ccmtools/dtd2java" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <target name="dtd2java.jar" depends="dtd2java"
+     description="Package the dtd2java class files into dtd2java.jar." >
+      <jar jarfile="${prefix}/lib/dtd2java.jar" basedir="${build}" >
+         <manifest>
+            <attribute name="Main-Class" value="ccmtools.dtd2java.Main" />
+         </manifest>
+      </jar>
+  </target>
+
+
+  <target name="umlparser" depends="dtd2java.jar"
+      description="Run the dtd2java tool to create the uml_parser package.">
+      <java classname="ccmtools.dtd2java.Main">
+          <classpath refid="run.classpath" />
+	  <arg value="${src}/ccmtools/dtd2java/UML.dtd" />
+	  <arg value="ccmtools.uml_parser" />
+      </java>
+  </target>
+
+
+  <target name="uml2idl" depends="umlparser"
+      description="Compile the whole ccmtools package (uml_parser and uml2idl).">
+        <javac srcdir="${src}/ccmtools/ccmtools/uml_parser" destdir="${build}" debug="on" >
+	    <classpath refid="compile.classpath" />       
+        </javac>
+        <javac srcdir="${src}/ccmtools/uml2idl" destdir="${build}" debug="on" >
+	    <classpath refid="compile.classpath" />       
+        </javac>
+  </target>
+
+
+  <target name="uml2idl.jar" depends="uml2idl"
+      description="Package the *.class files into uml2idl.jar.">
+      <jar jarfile="${prefix}/lib/uml2idl.jar" basedir="${build}" >
+         <manifest>
+            <attribute name="Main-Class" value="ccmtools.uml2idl.Main" />
+         </manifest>
+      </jar>
+
+  </target>
+
+  <target name="clean"
+      description="Clean up the build and lib directory." >
+      <delete file="${src}/ccmtools/dtd2java/DtdLexer.java" />
+      <delete file="${src}/ccmtools/dtd2java/DtdParser.java" />
+      <delete file="${src}/ccmtools/dtd2java/DTDTokenTypes.java" />
+      <delete file="${src}/ccmtools/dtd2java/DTDTokenTypes.txt" />
+      <delete file="${src}/ccmtools/dtd2java/UML.dtd.PP.dtd" />
+
+      <delete dir="${src}/ccmtools/ccmtools/uml_parser" />
+
+      <delete dir="${build}" /> 
+  </target>
+</project>
