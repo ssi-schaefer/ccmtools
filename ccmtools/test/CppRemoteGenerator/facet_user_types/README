@@ -1,3 +1,5 @@
+# Enable debug messages
+$ export WX_DEBUG_LEVELS="CCM_REMOTE"
 
 # create local component
 $ ccmtools-generate c++local -a -o xxx Test.idl

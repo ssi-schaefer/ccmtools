@@ -35,8 +35,7 @@ main (int argc, char *argv[])
 
     char* NameServiceLocation = getenv("CCM_NAME_SERVICE");
     if(NameServiceLocation == NULL) { 
-        cerr << "Error: Environment variable CCM_NAME_SERVICE is not set!" 
-	     << endl;
+        cerr << "Error: Environment variable CCM_NAME_SERVICE is not set!" << endl;
         return -1;
     }
 
@@ -92,6 +91,7 @@ main (int argc, char *argv[])
     myTest->configuration_complete();
 
     DEBUGNL("==== Begin Test Case ==========================================" );
+
     /*
      * Test Case for: struct Person { long id; string name; };
      */
@@ -114,8 +114,7 @@ main (int argc, char *argv[])
       assert(strcmp(result->name, "EgonAndrea") == 0);
     }
 
-
-    /*
+   /*
      * Test Case for: struct Address { long id; string name; Person resident };
      */
     {
@@ -155,6 +154,97 @@ main (int argc, char *argv[])
       assert(result->resident.id == 26);
     }
 
+   /* 
+     * Test Case for: typedef sequence<long>
+     */
+    {
+      ::CORBA_Stubs::LongList_var list_1 = new ::CORBA_Stubs::LongList;
+      ::CORBA_Stubs::LongList_var list_2 = new ::CORBA_Stubs::LongList;
+      list_1->length(5);
+      list_2->length(5);
+      for(int i=0;i<5;i++) {
+        (*list_1)[i] = i;
+        (*list_2)[i] = i+i;
+      }
+      
+      ::CORBA_Stubs::LongList_var list_3;
+      ::CORBA_Stubs::LongList_var list_r;
+      
+      list_r = Consoleconsole->f4(list_1,list_2,list_3);
+      
+      for(unsigned long i=0; i < list_r->length(); i++) {
+        assert((*list_r)[i]== (CORBA::Long)i);
+      }
+      for(unsigned long i=0; i < list_2->length(); i++) {
+        assert((*list_2)[i]== (CORBA::Long)i);
+      }
+      for(unsigned long i=0; i < list_3->length(); i++) {
+        assert((*list_3)[i]== (CORBA::Long)(i+i));
+      }
+    }
+
+    /* 
+     * Test Case for: typedef sequence<string>
+     */
+    {
+      ::CORBA_Stubs::StringList_var list_1 = new ::CORBA_Stubs::StringList;
+      ::CORBA_Stubs::StringList_var list_2 = new ::CORBA_Stubs::StringList;
+      list_1->length(5);
+      list_2->length(5);
+      for(int i=0;i<5;i++) {
+        (*list_1)[i] = "Egon";
+        (*list_2)[i] = "Andrea";
+      }
+      
+      ::CORBA_Stubs::StringList_var list_3;
+      ::CORBA_Stubs::StringList_var list_r;
+      
+      list_r = Consoleconsole->f5(list_1,list_2,list_3);
+      
+      for(unsigned long i=0;i<list_r->length();i++) {
+        assert(strcmp((*list_r)[i],"Test") == 0);
+      }
+      for(unsigned long i=0;i<list_2->length();i++) {
+        assert(strcmp((*list_2)[i],"Egon") == 0);
+      }
+      for(unsigned long i=0;i<list_3->length();i++) {
+        assert(strcmp((*list_3)[i],"Andrea") == 0);
+      }
+    }
+
+    /* 
+     * Test Case for: typedef sequence<struct>
+     */
+    {
+      ::CORBA_Stubs::PersonList_var list_1 = new ::CORBA_Stubs::PersonList;
+      ::CORBA_Stubs::PersonList_var list_2 = new ::CORBA_Stubs::PersonList;
+      list_1->length(5);
+      list_2->length(5);
+      for(int i=0;i<5;i++) {
+	(*list_1)[i].name = "Andrea";
+	(*list_1)[i].id   = i;
+	(*list_2)[i].name = "Egon";
+	(*list_2)[i].id   = i+i;
+      }
+      
+      ::CORBA_Stubs::PersonList_var list_3;
+      ::CORBA_Stubs::PersonList_var list_r;
+      
+      list_r = Consoleconsole->f6(list_1,list_2,list_3);
+      
+      for(unsigned long i=0; i < list_r->length(); i++) {
+	assert(strcmp((*list_r)[i].name,"Test") == 0);
+	assert((*list_r)[i].id == (CORBA::Long)i);
+      }
+      for(unsigned long i=0; i < list_2->length(); i++) {
+	assert(strcmp((*list_2)[i].name,"Andrea") == 0);
+	assert((*list_2)[i].id == (CORBA::Long)i);
+      }
+      for(unsigned long i=0; i < list_3->length(); i++) {
+	assert(strcmp((*list_3)[i].name,"Egon") == 0);
+	assert((*list_3)[i].id == (CORBA::Long)(i+i));
+      }
+    }
 
 
     DEBUGNL("==== End Test Case ============================================" );
