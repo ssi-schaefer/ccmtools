@@ -32,7 +32,7 @@ import java.util.HashSet;
  * The Java-Class of a DTD-element.
  *
  * @author Robert Lechner (rlechner@gmx.at)
- * @version January 22, 2004
+ * @version 2004/02/03
  */
 public class DtdClass
 {
@@ -75,7 +75,7 @@ public class DtdClass
     private File source_;
 
     /**
-     * children; instances of {@link dtd2java.DtdClass}
+     * children; instances of {@link DtdClass}
      */
     private Vector children_  = new Vector();
 
@@ -287,7 +287,8 @@ public class DtdClass
     	    }
 	    }
 	    writer.write("*/\n"+
-	                 "public class "+name_+" extends "+basePackage+"."+(isRoot_?"DTD_Root":"DTD_Container")+"\n{\n");
+	                 "public class "+name_+" extends "+basePackage+"."+
+                     (isRoot_?"DTD_Root":"DTD_Container")+"\n{\n");
 	    if( attributes_!=null )
 	    {
     	    size = attributes_.size();
@@ -342,14 +343,17 @@ public class DtdClass
                      "  }\n\n"+
                      "}\n");
 	    writer.close();
-	    return "    if(qName.equals(\""+dtdName_+"\"))  return new "+package_+"."+name_+"(attrs);\n";
+	    //return "    if(qName.equals(\""+dtdName_+"\"))  return new "+package_+"."+name_+"(attrs);\n";
+	    return "    if(qName.equals("+package_+"."+name_+".xmlName__))  return new "+
+               package_+"."+name_+"(attrs);\n";
 	}
 
 
 	private void createAttribute( DtdAttribute attr, FileWriter writer ) throws IOException
 	{
 	    String name = attr.getName();
-	    writer.write("  /** Attribute <b> "+name+" </b>. <br>DTD-code:\n  <pre>\n  "+attr.text()+"\n  </pre>\n  */\n");
+	    writer.write("  /** Attribute <b> "+name+" </b>. <br>DTD-code:\n  <pre>\n  "+
+                     attr.text()+"\n  </pre>\n  */\n");
         attr.javaName_ = makeName(name,true)+"_";
 	    writer.write("  public String "+attr.javaName_);
 	    String init = attr.getDefaultValue();
