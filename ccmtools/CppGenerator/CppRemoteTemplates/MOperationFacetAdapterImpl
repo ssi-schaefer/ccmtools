@@ -4,17 +4,9 @@
   DEBUGNL(" %(Object)sFacetAdapter::%(Identifier)s()");
   
   // convert parameter(s)
-  int parameter_a; //!!!!!!!
-  int parameter_b; //!!!!!!!	
-  parameter_a = CCM::CORBA_Long_to_int(a); //!!!!!!!
-  parameter_b = CCM::CORBA_Long_to_int(b); //!!!!!!!
-  
-  // call local method
-  %(LanguageType)s result; 
-  result = local_facet->%(Identifier)s(parameter_a,parameter_b); //!!!!!!!!
-  
-  // convert result
-  return CCM::%(LanguageType)s_to_CORBA%(LanguageType)s(result);
+%(MParameterDefConvertParameterToCpp)s
+%(MParameterDefConvertMethodToCpp)s
+%(MParameterDefConvertResultToCpp)s
 }
 
 

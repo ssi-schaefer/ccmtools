@@ -407,6 +407,14 @@ public class CppRemoteGeneratorImpl
         vars.put("MParameterDefAll",    getOperationParams(operation));
 	vars.put("MParameterDefCORBA",  getCORBAOperationParams(operation));
         vars.put("MParameterDefName",   getOperationParamNames(operation));
+        
+	// for adapter generation
+        vars.put("MParameterDefConvertParameterToCpp",  
+		 getParameterConvertParameterToCpp(operation)); 
+        vars.put("MParameterDefConvertMethodToCpp", 
+		 getParameterConvertMethodToCpp(operation));
+	vars.put("MParameterDefConvertResultToCpp", 
+		 getParameterConvertResultToCpp(operation));
 
 	if (! lang_type.equals("void")) 
 	    vars.put("Return", "return ");
@@ -418,11 +426,71 @@ public class CppRemoteGeneratorImpl
 
 
 
-
-
     //====================================================================
     // Handle the CORBA Types 
     //====================================================================
+    
+    protected String getParameterConvertResultToCpp(MOperationDef op)
+    {
+	System.out.println("CppRemoteGeneratorImpl.getCORBAOperationParams()");
+
+	String ret_string = "";
+
+	if(op.getIdlType() instanceof MPrimitiveDef) {
+	    String base_type = (String)language_mappings.get((String)getBaseIdlType(op));
+	    if(!base_type.equals("void")) {
+		ret_string = "return CCM::" + base_type + "_to_CORBA" + base_type + "(result);";
+	    }
+	}
+ 
+	return ret_string;
+    }
+
+
+    protected String getParameterConvertMethodToCpp(MOperationDef op)
+    {
+	System.out.println("CppRemoteGeneratorImpl.getCORBAOperationParams()");
+
+	String ret_string = null;
+
+	if(op.getIdlType() instanceof MPrimitiveDef) {
+	    ret_string = (String)language_mappings.get((String)getBaseIdlType(op)) +
+		" result = local_facet->" + op.getIdentifier() + "(";
+	}
+ 
+	List ret = new ArrayList();
+        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
+            MParameterDef p = (MParameterDef) params.next();
+	    String base_type = (String)language_mappings.get((String)getBaseIdlType(p));
+            ret.add(" parameter_" + p.getIdentifier()); 
+        }
+
+        return ret_string + join(", ", ret) + ");";
+    }
+
+
+    /**
+     * Converts the parameter list of an operation into C++ parameters.  
+     *
+     * TODO
+     *
+     */ 
+    protected String getParameterConvertParameterToCpp(MOperationDef op)
+    {
+	System.out.println("CppRemoteGeneratorImpl.getCORBAOperationParams()");
+
+        List ret = new ArrayList();
+        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
+            MParameterDef p = (MParameterDef) params.next();
+
+	    String base_type = (String)language_mappings.get((String)getBaseIdlType(p));
+	    ret.add(base_type + " parameter_" + p.getIdentifier() 
+		    + " = CCM::CORBA" + base_type + "_to_" + 
+		    base_type + "(" +p.getIdentifier() + ");");
+	}
+	return join("\n", ret) + "\n";
+    }
+    
 
 
     /**
