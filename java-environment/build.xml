@@ -14,7 +14,7 @@
   <property name="build" location="build" />
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
-  <property name="prefix" location="../ccmtools" />
+  <property name="prefix" location="dist" />
 
 
   <!-- Define different paths that are used in the following tasks -->
@@ -122,7 +122,7 @@
       description="Generates javadoc for the uml_parser and uml2idl package.">
       <javadoc packagenames="uml_parser, uml2idl"
                sourcepath="${src}"
-	       destDir="${doc}/javadoc">
+	       destDir="${build}/javadoc">
       </javadoc>
   </target>
 
@@ -153,7 +153,6 @@
       <delete dir="${src}/uml_parser" />
 
       <delete dir="${build}" /> 
-      <delete dir="${doc}/javadoc" /> 
 
       <delete file="${lib}/uml2idl.jar" /> 
       <delete file="${lib}/dtd2java.jar" /> 

@@ -11,8 +11,8 @@ Using Ant to build java-environment:
 ------------------------------------
 After installing Ant, you can build and install the java-environment with a single call:
 
-  # Build and install lib/*.jar and doc/*.pdf to the ../ccmtools directory (by default):
-  $ ant install	
+  # Build and install java-environment:
+  $ ant install -Dprefix=<install-path>	
 
 
 Additionally, you can use the following ant variants:
@@ -37,6 +37,8 @@ To use the java-environment tools, you have to add the *.jar files installed
 in the <install-path>/lib directory to your CLASSPATH:
 
   $ export CLASSPATH=<install-path>/lib/antlr.java:       \
-                     <install-path>/lib/uml2idl.jar:      \
+                     <install-path>/lib/dtd2java.jar:     \
+		     <install-path>/lib/jdom.jar:         \	
                      <install-path>/lib/mdr01.jar:        \
+                     <install-path>/lib/uml2idl.jar:      \
 	             $CLASSPATH
