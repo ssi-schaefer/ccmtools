@@ -3,6 +3,7 @@
 // Hello_mirror - business logic implementation
 //==============================================================================
 
+#include <cassert>
 #include <iostream>
 #include <WX/Utils/debug.h>
 

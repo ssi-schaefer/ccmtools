@@ -1,7 +1,10 @@
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
+#include <cassert>
+#include <iosteam>
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
+
+#include <LocalComponents/CCM.h>
+#include <CCM_Local/HomeFinder.h>
 
 #ifdef CCM_TEST_PYTHON
 #include <Python.h>

@@ -1,4 +1,5 @@
 #include <cassert>
+#include <iostream>
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 #include <WX/Utils/debug.h>
