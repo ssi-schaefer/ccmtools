@@ -1,5 +1,5 @@
 %==============================================================================
-\chapter{A CCM Overview}
+\chapter{CCM Overview}
 %==============================================================================
 
 The {\it Object Management Group} (OMG) has been standardizing an open
@@ -12,11 +12,11 @@ Model} (CCM) \cite{CCMSpecification}.
 \section{Component model}
 %==============================================================================
 
-The CCM defines a component architecture and a container framework in which the
+CCM defines a component architecture and a container framework in which the
 component life cycle takes place. Components and their supporting objects
 (homes, interfaces, etc.) are all defined using a formal language called the
-Interface Definition Language (IDL). The CCM is part of the OMG's CORBA version
-3.0 standard, so CCM descriptions use IDL3 as a specification language.
+Interface Definition Language (IDL). The CCM is part of the OMG's CORBA 
+3.0 standard, so CCM use IDL3 as a specification language.
 
 \begin{figure}[!htb]
     \begin{center}
@@ -32,8 +32,8 @@ features that support ways to connect components together to form assemblies:
 \begin{description}
 \item [Home]
 The component {\it home} is an interface that defines factory and finder methods
-to create or find component instances that the home manages. Each home supports
-at least one {\tt create} method.
+to create or find component instances that a home manages. Each home supports
+at least one {\tt create()} method.
 
 \item [Equivalent interface]
 Every IDL3 interface (containing the keywords {\tt component}, {\tt home}, etc.)
@@ -44,17 +44,17 @@ operations to the interfaces specified by the user in the IDL3 source file. As
 described by the CCM specification, every IDL3 construct defines its own IDL3 to
 IDL mapping.
 
-\item [Supported interface]
-A home or component definition can {\it support} zero or more interfaces. Each
-supported interface results in an inheritance of supported interfaces in the
-corresponding equivalent interfaces. Supported interfaces basically give
-component designers a way to assign context--free methods to a component.
-
 \item [Attribute]
 A component or a component home can have {\it attributes\/}. Attributes are
 named values exposed through accessor and mutator operations (otherwise known as
 get and set operations). Attributes are primarily intended to be used for
 component configuration.
+
+\item [Supported interface]
+A home or component definition can {\it support} zero or more interfaces. Each
+supported interface results in an inheritance of supported interfaces in the
+corresponding equivalent interfaces. Supported interfaces basically give
+component designers a way to assign context--free methods to a component.
 
 \item [Facet]
 A component {\it facet} is a named interface that provides access to specific
@@ -90,8 +90,9 @@ of a specified type.
 
 The component model is also defined in a MOF compliant metamodel, the {\it
 Interface Repository Metamodel}. The Interface Repository Metamodel expresses
-the extensions to classic IDL defined by the CCM.
+both, the classic IDL and the extensions defined by CCM.
 
+\newpage
 %==============================================================================
 \section{Component container}
 %==============================================================================
@@ -153,18 +154,20 @@ the client), and an identity (which is visible to the clients through a primary
 key declaration).
 \end{description}
 
+\newpage
+
 %==============================================================================
 \section{Component assembly}
 %==============================================================================
 
-Often in practice components are not large enough to safely encapsulate the
-operations and data necessary for complex processes. The CCM specification
-provides a way to form component {\it Assemblies} (Fig.~\ref{assemblygraph}) by
-connecting components through their facets and receptacles.
+In component based development, applications are collections of connected component
+instances.  
+The CCM specification provides a way to form component {\it Assemblies} 
+(Fig.~\ref{assemblygraph}) by connecting components through their facets and receptacles.
 
 \begin{figure}[!htb]
     \begin{center}
-        \includegraphics [width=6cm,angle=0] {Assembly}
+        \includegraphics [width=10cm,angle=0] {Assembly}
         \caption{Component assembly}
         \label{assemblygraph}
     \end{center}
@@ -177,33 +180,8 @@ components and establishing connections between them as specified in a file
 called the {\it assembly descriptor\/}. Tearing the assembly down means removing
 all connections and destroying the components.
 
-%==============================================================================
-\section{Descriptor files}
-%==============================================================================
 
-The CCM specification defines the formats of several XML descriptor files that
-are used to describe software packages, components, properties, and assemblies.
 
-\begin{description}
-\item [Software package descriptor (*.csd)]
-The software package descriptor consists of general information about the
-software followed by one or more sections describing implementations of
-software.
-
-\item [CORBA component descriptor (*.ccd)]
-The component descriptor specifies component characteristics that a design tool
-might use to display information about a component (e.g. supported interfaces,
-inherited components, used and provided ports, etc.).
-
-\item [Component assembly descriptor (*.cad)]
-The assembly descriptor consists of elements describing the components used in
-an assembly, connection information, and partitioning information.
-
-\item [Property file descriptor (*.cpf)]
-The property file is used at deployment time to configure a home or a component
-instance. A configurator uses the property file to determine how to set
-component and home property attributes.
-\end{description}
 
 %==============================================================================
 \section{Client programming model}
@@ -231,8 +209,64 @@ factories.
 \end{description}
 
 
+\newpage
 %==============================================================================
 \section{Light Weight CORBA Component Model}
 %==============================================================================
 
-\dots
+Many of today's embedded CORBA applications are unable to use the available 
+enterprise CCM due to design constraints.
+These constraints include small code size in embedded environments and 
+limited processing overhead for performance conservative applications.
+
+To overcome this problem, a {\bf Light Weight CORBA Component Model} (LWCCM)
+was submitted to the OMG \cite{LwCCM-Specification}.
+The purpose of this profile is to specify a lightweight version of the CCM.
+This profile tries to be as compliant as possible to the OMG 
+{\bf Minimum CORBA} specification \cite{Minimum_CORBA}.
+
+
+The principal aim of LWCCM is to have a component model sufficient to compose
+applications with CORBA components without all optional features that are
+not part of the ``core'' capabilities CCM.
+This profile exposes what mandatory features should be contained in a 
+minimum implementation of the CCM. 
+The choices made in the profile follow rules established to suit embedded
+environments:
+\begin{itemize}
+\item {\bf No Redundancy}:
+If several ways of requesting a service exist, only one is retained.
+
+\item {\bf Interoperability and Compatibility with full CCM}:
+During deployment, a lightweight component should be deployable by a full
+CCM deployment application. Connections between a lightweight component
+and a full CCM component must be possible.
+Implementations of lightweight components should be source compatible
+with the full CCM.
+
+\item {\bf No Persistence}:
+The LWCCM does not need to manage any kind of persistence as described in the
+CCM specification. 
+
+\item {\bf No Transactions}:
+Transactions are not a feature commonly used in embedded systems thus they
+are not included in the LWCCM profile.
+
+\item {\bf No Security}:
+Security will not be treated in the LWCCM profile.
+
+\item {\bf Less Introspection}:
+Not all introspection operations are retained in this profile because they
+are not essential to perform the deployment of components.
+\end{itemize}
+
+\noindent
+The {\it CCM Implementation Framework} (CIF) will use the IDL descriptions and
+possibly an XML description file of the component to generate programming skeletons.
+The whole chapter concerning CIDL is excluded from the LWCCM profile.
+The CIDL is redundant with IDL definitions because all functional descriptions
+of the component (facets, receptacles, events and attributes) is done with the IDL files.
+The way to assign a component category (service or session) to a component
+can be done via an XML description file that will be used with the IDL files to
+generate container code and skeletons.
+
