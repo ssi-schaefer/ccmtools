@@ -27,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
 /***
  * This class collects some methods that can help to handle Strings and
  * Lists of Strings.

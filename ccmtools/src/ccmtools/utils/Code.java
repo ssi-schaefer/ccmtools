@@ -20,6 +20,7 @@
  */
 
 package ccmtools.utils;
+import ccmtools.CodeGenerator.Driver; // TODO: -> Logging
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +41,65 @@ import java.util.HashSet;
  ***/
 public class Code
 {
+   /**
+     * Helper function for writing finalized files.
+     * (see also CodeGenerator.java)
+     *
+     * @param driver
+     * @param directory the directory, relative to the package root, where the
+     *        file should be written.
+     * @param file the name of the file to write.
+     * @param output a string holding the destination file's contents.
+     */
+    public static void writeFile(Driver driver, File outDir, String directory, 
+				 String file, String output)
+    {
+        File local_dir = new File(outDir, directory);
+        if (! local_dir.isDirectory()) 
+	    local_dir.mkdirs();
+
+        File out_file = new File(local_dir, file);
+        try {
+            FileWriter writer = new FileWriter(out_file);
+            writer.write(output, 0, output.length());
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error writing file " + out_file);
+        }
+	if(driver != null)
+	    driver.outputFile(out_file.toString());
+    }
+
+
+
+    /**
+     * This method writes a Makefile with a given extension (e.g. .py or .pl)
+     * and a given content to the file system.
+     * If a Makefile already exists, it will not be overwritten.
+     * 
+     * @param outDir
+     * @param fileDir
+     * @param extension A strint that will be used as an extension to Makefile.
+     * @param content A string that will be pasted into the Makefile.
+     * @return true if the Makefile has been written, false in all other cases.
+     */
+    public static boolean writeMakefile(Driver driver, File outDir, String fileDir, 
+					String extension, String content)
+    {
+	boolean result;
+	File makeFile = new File(outDir, fileDir);
+	makeFile = new File(makeFile, "Makefile." + extension);
+	if (!makeFile.isFile()) {
+	    writeFile(driver, outDir, fileDir, "Makefile." + extension, content);
+	    result = true;
+	}
+	else {
+	    result = false;
+	}
+	return result;
+    }
+
+
     /**
      * This method removes empty lines (if more than one) and similar #include
      * statements from the generated code.
