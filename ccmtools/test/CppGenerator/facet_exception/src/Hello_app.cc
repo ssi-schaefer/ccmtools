@@ -46,7 +46,7 @@ console_impl::~console_impl (  )
 
 long
 console_impl::println ( const std::string& s2 )
-  throw ( error, super_error, fatal_error )
+  throw (LocalComponents::CCMException, error, super_error, fatal_error )
 {
   DEBUGNL ( " console_impl->println ( s2 )" );
 

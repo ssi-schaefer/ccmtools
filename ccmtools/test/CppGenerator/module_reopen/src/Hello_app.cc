@@ -46,7 +46,7 @@ console_impl::~console_impl (  )
 
 std::string
 console_impl::read_string ( const std::string& prompt )
-  
+  throw (LocalComponents::CCMException) 
 {
   DEBUGNL ( " console_impl->read_string ( prompt )" );
 
@@ -73,6 +73,7 @@ CCM_Hello_impl::~CCM_Hello_impl (  )
 
 std::string
 CCM_Hello_impl::prompt (  )
+  throw ( LocalComponents::CCMException)
 {
   DEBUGNL ( " CCM_Hello_impl->prompt (  )" );
   return prompt_;
@@ -80,6 +81,7 @@ CCM_Hello_impl::prompt (  )
 
 void
 CCM_Hello_impl::prompt ( const std::string value )
+  throw ( LocalComponents::CCMException)
 {
   DEBUGNL ( " CCM_Hello_impl->prompt (  )" );
   prompt_ = value;

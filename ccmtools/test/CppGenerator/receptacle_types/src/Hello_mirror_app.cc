@@ -46,7 +46,7 @@ console_mirror_impl::~console_mirror_impl (  )
 
 time_t
 console_mirror_impl::foo1 ( const time_t& p1, time_t& p2, time_t& p3 )
-  
+ throw (LocalComponents::CCMException)  
 {
   DEBUGNL ( " console_impl->foo1 ( p1, p2, p3 )" );
 
@@ -57,7 +57,7 @@ console_mirror_impl::foo1 ( const time_t& p1, time_t& p2, time_t& p3 )
 
 Color
 console_mirror_impl::foo2 ( const Color& p1, Color& p2, Color& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_impl->foo2 ( p1, p2, p3 )" );
 
@@ -68,7 +68,7 @@ console_mirror_impl::foo2 ( const Color& p1, Color& p2, Color& p3 )
 
 Value
 console_mirror_impl::foo3 ( const Value& p1, Value& p2, Value& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_impl->foo3 ( p1, p2, p3 )" );
 
@@ -86,7 +86,7 @@ console_mirror_impl::foo3 ( const Value& p1, Value& p2, Value& p3 )
 
 map
 console_mirror_impl::foo4 ( const map& p1, map& p2, map& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_impl->foo4 ( p1, p2, p3 )" );
 
@@ -104,7 +104,7 @@ console_mirror_impl::foo4 ( const map& p1, map& p2, map& p3 )
 
 doubleArray
 console_mirror_impl::foo5 ( const doubleArray& p1, doubleArray& p2, doubleArray& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_impl->foo5 ( p1, p2, p3 )" );
 
@@ -119,7 +119,7 @@ console_mirror_impl::foo5 ( const doubleArray& p1, doubleArray& p2, doubleArray&
 
 longMatrix
 console_mirror_impl::foo6 ( const longMatrix& p1, longMatrix& p2, longMatrix& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_impl->foo6 ( p1, p2, p3 )" );
 
@@ -136,7 +136,7 @@ console_mirror_impl::foo6 ( const longMatrix& p1, longMatrix& p2, longMatrix& p3
 
 short
 console_mirror_impl::println1 ( const short p1, short& p2, short& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println1 ( p1, p2, p3 )" );
 
@@ -148,7 +148,7 @@ console_mirror_impl::println1 ( const short p1, short& p2, short& p3 )
 
 long
 console_mirror_impl::println2 ( const long p1, long& p2, long& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println2 ( p1, p2, p3 )" );
 
@@ -160,7 +160,7 @@ console_mirror_impl::println2 ( const long p1, long& p2, long& p3 )
 
 unsigned short
 console_mirror_impl::println3 ( const unsigned short p1, unsigned short& p2, unsigned short& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println3 ( p1, p2, p3 )" );
 
@@ -172,7 +172,7 @@ console_mirror_impl::println3 ( const unsigned short p1, unsigned short& p2, uns
 
 unsigned long
 console_mirror_impl::println4 ( const unsigned long p1, unsigned long& p2, unsigned long& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println4 ( p1, p2, p3 )" );
 
@@ -184,7 +184,7 @@ console_mirror_impl::println4 ( const unsigned long p1, unsigned long& p2, unsig
 
 float
 console_mirror_impl::println5 ( const float p1, float& p2, float& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println5 ( p1, p2, p3 )" );
 
@@ -196,7 +196,7 @@ console_mirror_impl::println5 ( const float p1, float& p2, float& p3 )
 
 double
 console_mirror_impl::println6 ( const double p1, double& p2, double& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println6 ( p1, p2, p3 )" );
 
@@ -208,7 +208,7 @@ console_mirror_impl::println6 ( const double p1, double& p2, double& p3 )
 
 char
 console_mirror_impl::println7 ( const char p1, char& p2, char& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println7 ( p1, p2, p3 )" );
 
@@ -220,7 +220,7 @@ console_mirror_impl::println7 ( const char p1, char& p2, char& p3 )
 
 std::string
 console_mirror_impl::println8 ( const std::string& p1, std::string& p2, std::string& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println8 ( p1, p2, p3 )" );
 
@@ -236,7 +236,7 @@ console_mirror_impl::println8 ( const std::string& p1, std::string& p2, std::str
 
 bool
 console_mirror_impl::println9 ( const bool p1, bool& p2, bool& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println9 ( p1, p2, p3 )" );
 
@@ -248,7 +248,7 @@ console_mirror_impl::println9 ( const bool p1, bool& p2, bool& p3 )
 
 unsigned char
 console_mirror_impl::println10 ( const unsigned char p1, unsigned char& p2, unsigned char& p3 )
-  
+   throw (LocalComponents::CCMException)
 {
   DEBUGNL ( " console_mirror_impl->println10 ( p1, p2, p3 )" );
 

@@ -42,7 +42,7 @@ CCM_HelloHome_impl::create (  )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_short ( const short id )
-  throw ( LocalComponents::CreateFailure )
+  throw ( LocalComponents::CCMException,LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_short (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -52,7 +52,7 @@ CCM_HelloHome_impl::create_with_short ( const short id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_long ( const long id )
-  throw ( LocalComponents::CreateFailure )
+  throw ( LocalComponents::CCMException,LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_long (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -62,7 +62,7 @@ CCM_HelloHome_impl::create_with_long ( const long id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_ushort ( const unsigned short id )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_ushort (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -72,7 +72,7 @@ CCM_HelloHome_impl::create_with_ushort ( const unsigned short id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_ulong ( const unsigned long id )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_ulong (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -82,7 +82,7 @@ CCM_HelloHome_impl::create_with_ulong ( const unsigned long id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_float ( const float id )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_float (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -92,7 +92,7 @@ CCM_HelloHome_impl::create_with_float ( const float id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_double ( const double id )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_double (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -102,7 +102,7 @@ CCM_HelloHome_impl::create_with_double ( const double id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_char ( const char id )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_char (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -112,7 +112,7 @@ CCM_HelloHome_impl::create_with_char ( const char id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_string ( const std::string& id )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_string (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -122,7 +122,7 @@ CCM_HelloHome_impl::create_with_string ( const std::string& id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_boolean ( const bool id )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_boolean (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -132,7 +132,7 @@ CCM_HelloHome_impl::create_with_boolean ( const bool id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_octet ( const unsigned char id )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_octet (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -144,7 +144,7 @@ CCM_HelloHome_impl::create_with_octet ( const unsigned char id )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_typedef ( const time_t& p )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_typedef (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -156,7 +156,7 @@ CCM_HelloHome_impl::create_with_typedef ( const time_t& p )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_enum ( const Color& p )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_enum (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -168,7 +168,7 @@ CCM_HelloHome_impl::create_with_enum ( const Color& p )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_struct ( const Value& p )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_struct (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -180,7 +180,7 @@ CCM_HelloHome_impl::create_with_struct ( const Value& p )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_sequence ( const map& p )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_sequence (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
@@ -192,7 +192,7 @@ CCM_HelloHome_impl::create_with_sequence ( const map& p )
 
 LocalComponents::EnterpriseComponent*
 CCM_HelloHome_impl::create_with_array ( const doubleArray& p )
-  throw ( LocalComponents::CreateFailure )
+  throw (LocalComponents::CCMException, LocalComponents::CreateFailure )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_array (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();

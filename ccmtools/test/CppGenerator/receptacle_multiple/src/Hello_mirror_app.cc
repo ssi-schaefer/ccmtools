@@ -46,7 +46,7 @@ console_mirror_impl::~console_mirror_impl (  )
 
 long
 console_mirror_impl::println ( const std::string& s2 )
-  
+  throw (LocalComponents::CCMException)  
 {
   DEBUGNL ( " console_mirror_impl->println ( s2 )" );
 

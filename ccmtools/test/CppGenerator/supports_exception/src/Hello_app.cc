@@ -42,7 +42,7 @@ CCM_Hello_impl::~CCM_Hello_impl (  )
 
 long
 CCM_Hello_impl::println ( const std::string& s2 )
-  throw ( fatal_error, error, super_error )
+  throw (LocalComponents::CCMException, fatal_error, error, super_error )
 {
   DEBUGNL ( " CCM_Hello_impl->println ( s2 )" );
 
