@@ -10,11 +10,16 @@
 
 To install the CCM Tools, the following programs must be available:
 \begin{description}
-\item [Java SDK $\ge$ 1.4] {\tt http://java.sun.com/j2se/}
-\item [Python $\ge$ 2.2] {\tt http://python.org/}
-\item [Confix $\ge$ 1.1] {\tt http://confix.sf.net/}
-\item [gcc $\ge$ 2.95.3] {\tt http://www.gnu.org/}
+\item [Java SDK $\ge$ 1.4] ({\tt http://java.sun.com/j2se/})
+\item [Python $\ge$ 2.2] ({\tt http://python.org/})
 \end{description}
+
+To build the generated local C++ components, we need:
+\begin{description}
+\item [Confix $\ge$ 1.2] ({\tt http://confix.sourceforge.net/})
+\item [gcc $\ge$ 2.95.3] ({\tt http://www.gnu.org/})
+\end{description}
+
 
 %------------------------------------------------------------------------------
 \section{How to get it}
@@ -31,12 +36,13 @@ for discussion about using the CCM Tools.
 \section{Source distribution}
 %------------------------------------------------------------------------------
 
-Installing the CCM Tools requires the following steps once you get the source
-code. You will need to configure, build, and install the binary files, and then
-set environment variables appropriately:
+Installing of the CCM Tools requires the following steps once you get the source
+code. (Pretend that the source tarball you got was {\tt ccmtools-A.B.X.tar.gz}.)
+You will need to configure, build, and install the binary files, and then set
+environment variables appropriately:
 \begin{small}
 \begin{verbatim}
-  ~> tar xzf ccmtools-A.B.X.tar.gz
+  ~> tar xvzf ccmtools-A.B.X.tar.gz
   ~> cd ccmtools-A.B.X
   ~> ./autogen.py --prefix=<ccm_tools_path>
   ~> make
@@ -50,8 +56,8 @@ set environment variables appropriately:
 
 You can also theoretically use the binary distribution, which includes a minimal
 set of Jar archives, templates, and documents. To install this distribution,
-download the binary distribution ({\tt ccmtools-A.B.X.bin.tar.gz}) file and do
-the following:
+download the binary distribution (again assume {\tt ccmtools-A.B.X.bin.tar.gz})
+file and do the following:
 \begin{small}
 \begin{verbatim}
   ~> tar xvzf ccmtools-A.B.X.bin.tar.gz

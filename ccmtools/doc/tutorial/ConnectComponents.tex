@@ -73,7 +73,7 @@ As long as we define the components in the same file, we have the same file stru
 as before:  
 \begin{verbatim}
         hello/
-        |-- hello.idl
+        |-- Hello.idl
 \end{verbatim}
 
 
@@ -84,7 +84,8 @@ as before:
 
 We start with generating and building the empty components:
 \begin{verbatim}
-~/hello> ccmtools-c++-generate -c 1.0 -d -p hello1.0 hello.idl
+~/hello> ccmtools-c++-generate -c 1.0 -d -p hello1.0 Hello.idl
+~/hello> ccmtools-c++-configure -p hello1.0
 ~/hello> ccmtools-c++-make -p hello1.0
 \end{verbatim}
 
