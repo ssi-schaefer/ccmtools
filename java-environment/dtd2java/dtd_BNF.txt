@@ -1,0 +1,35 @@
+dtd			:= ( element | attlist | entity | notation )*
+
+element		:= "<!ELEMENT" eName eContent ">"
+
+eName		:= name ( ":" name )*
+
+eContent	:= "ANY" | "EMPTY" | eRule | entityRef
+
+eRule		:= "(" eCommaExpr ")" (eOpt)?
+
+eCommaExpr	:= eBarExpr ( "," eCommaExpr )*
+
+eBarExpr	:= eSimpleExpr ( "|" eBarExpr )*
+
+eSimpleExpr	:= "#PCDATA" | eName (eOpt)? | eRule | entityRef
+
+entityRef	:= ("&" | "%") eName ";"
+
+eOpt		:= "?" | "*" | "+"
+
+entity		:= "<!ENTITY" ("%")? eName ("SYSTEM")? string ("NDATA" eName)? ">"
+
+notation	:= "<!NOTATION" eName "SYSTEM" string ">"
+
+attlist		:= "<!ATTLIST" eName (attribute)+ ">"
+
+attribute	:= (eName type default) | entityRef
+
+type		:= "CDATA" | "ENTITY" | "ENTITIES" | "ID" | "IDREF" | "IDREFS"
+               | "NMTOKEN" | "NMTOKENS" | (("NOTATION")? enum)
+
+default		:= "#REQUIRED" | "#IMPLIED" | (("#FIXED")? string)
+
+enum		:= "(" name ("|" name)* ")"
+
