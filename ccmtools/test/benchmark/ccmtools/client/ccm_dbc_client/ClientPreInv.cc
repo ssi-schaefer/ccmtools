@@ -51,7 +51,6 @@ int main(int argc, char *argv[])
     SmartPtr<DbcBenchmarkPre>  bmPre;
     SmartPtr<DbcBenchmarkPost> bmPost;
 
-
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
     // component- and mirror component home.
@@ -60,8 +59,8 @@ int main(int argc, char *argv[])
     LocalComponents::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 
-    // Test component without DbC Adapters
-    error += deploy_CCM_Local_DbcTestHome("DbcTestHome");
+    // Test component with pre-invoke checks (Precondition + Invariant)
+    error += deploy_dbc_CCM_Local_DbcTestHome("DbcTestHome", true);
 
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -75,7 +74,7 @@ int main(int argc, char *argv[])
     // Component and mirror component are connected via provide_facet() and 
     // connect() methods.
     // The last step of deployment is to call configuration_complete() that 
-    // forces components to run the ccm_set_session_context() and ccm_activate() 
+    // forces components to run the ccm_set_session_context() and ccm_activate()
     // callback methods.
     try {
         SmartPtr<DbcTestHome> myTestHome(dynamic_cast<DbcTestHome*>
@@ -128,7 +127,7 @@ int main(int argc, char *argv[])
       // Test configuration
       WX::Utils::Timer timer;
       
-      const long MAX_LOOP_COUNT = 100000000;
+      const long MAX_LOOP_COUNT = 10000000;
       const long SEQUENCE_SIZE_MAX = 1100;
       const long SEQUENCE_SIZE_STEP = 100;
 
@@ -171,6 +170,7 @@ int main(int argc, char *argv[])
       }
 
       {
+	const long MAX_LOOP_COUNT = 1000000;
         // in sequence of long parameter with increasing size
 	cout << endl;
         for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
@@ -218,6 +218,7 @@ int main(int argc, char *argv[])
       //--------------------------------------------------------------
 
       {
+	const long MAX_LOOP_COUNT = 10000000;
 	// ping with invariants check
 	cout << endl;
         for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
@@ -244,6 +245,7 @@ int main(int argc, char *argv[])
       //--------------------------------------------------------------
 
       {
+	const long MAX_LOOP_COUNT = 1000000;
 	// ping with invariants check
 	cout << endl;
         for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
@@ -285,7 +287,6 @@ int main(int argc, char *argv[])
       }
 
       {
-	const long MAX_LOOP_COUNT = 10000000;
         // in string result with increasing size
 	cout << endl;
         for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {

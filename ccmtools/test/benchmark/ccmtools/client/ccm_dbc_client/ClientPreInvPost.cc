@@ -51,7 +51,6 @@ int main(int argc, char *argv[])
     SmartPtr<DbcBenchmarkPre>  bmPre;
     SmartPtr<DbcBenchmarkPost> bmPost;
 
-
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
     // component- and mirror component home.
@@ -60,8 +59,9 @@ int main(int argc, char *argv[])
     LocalComponents::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 
-    // Test component without DbC Adapters
-    error += deploy_CCM_Local_DbcTestHome("DbcTestHome");
+    // Test component with pre- and post-invoke checks 
+    // (Precondition + Invariant, Postcondition + Invariant)
+    error += deploy_dbc_CCM_Local_DbcTestHome("DbcTestHome", false);
 
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -123,12 +123,13 @@ int main(int argc, char *argv[])
     // mirror component. But for supported interfaces and component attributes, 
     // we can realize test cases in the following section.
     try {
+
       cout << "--- Start Test Case -----------------------------------" << endl;
 
       // Test configuration
       WX::Utils::Timer timer;
       
-      const long MAX_LOOP_COUNT = 100000000;
+      const long MAX_LOOP_COUNT = 1000000;
       const long SEQUENCE_SIZE_MAX = 1100;
       const long SEQUENCE_SIZE_STEP = 100;
 
@@ -137,6 +138,7 @@ int main(int argc, char *argv[])
       //--------------------------------------------------------------
 
       {
+	const long MAX_LOOP_COUNT = 10000000;
         // in long parameter with precondition check
 	cout << endl;
         cout << "CCM DbC Test: void bmPre->f_in1(in long l1) "; 
@@ -152,6 +154,7 @@ int main(int argc, char *argv[])
       }
 
       {
+	const long MAX_LOOP_COUNT = 10000000;
         // in string parameter with increasing size
 	cout << endl;
         for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
@@ -269,6 +272,7 @@ int main(int argc, char *argv[])
       //--------------------------------------------------------------
 
       {
+	const long MAX_LOOP_COUNT = 10000000;
         // in long result with precondition check
 	cout << endl;
         cout << "CCM DbC Test: long bmPost->f_ret1() "; 
@@ -306,7 +310,6 @@ int main(int argc, char *argv[])
       }
 
       {
-	const long MAX_LOOP_COUNT = 1000000;
         // in sequence of long result with increasing size
 	// post q3: ll1->size() > 200 and ll1->size() < 1000
 	cout << endl;
