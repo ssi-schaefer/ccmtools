@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <exception>
 
 #include <WX/Utils/smartptr.h>
 #include <WX/Utils/value.h>
@@ -22,6 +23,9 @@ namespace LocalComponents {
    * This is the base class of all local CCM related exceptions.
    * (compare with CORBA::Exception in the remote case).
    **/
+
+  // TODO: use C++ std::exception class
+
   class Exception {
     
   };
