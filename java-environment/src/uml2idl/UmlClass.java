@@ -44,7 +44,7 @@ UML-class. <br>Children:
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@version $Date$
 */
 class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 {
@@ -113,6 +113,7 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 	        {
 	            ((Worker)obj).collectWorkers(map);
 	        }
+	        //
 	        if( obj instanceof UmlClassifierFeature )
 	        {
 	            myFeatures_.add(obj);
@@ -220,6 +221,12 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
             return stereotype_.equals(type);
         }
         return main.isModelElementStereotype(this, type);
+    }
+    
+    
+    boolean isException( Main main )
+    {
+        return isCorbaStereotype(CORBA_EXCEPTION, main);
     }
 
 

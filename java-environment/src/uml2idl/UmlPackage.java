@@ -212,9 +212,23 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
 	    }
 	    dependencyNumber_ = 0;
 	    int index, s=myElements_.size();
+	    Vector non_exceptions = new Vector();
 	    for( index=0; index<s; index++ )
 	    {
-	        number = ((Worker)myElements_.get(index)).createDependencyOrder(number, main);
+	        UmlNamespaceElement element = (UmlNamespaceElement)myElements_.get(index);
+	        if( element.hasException(main) )
+	        {
+	            number = element.createDependencyOrder(number, main);
+	        }
+	        else
+	        {
+	            non_exceptions.add(element);
+	        }
+	    }
+	    s = non_exceptions.size();
+	    for( index=0; index<s; index++ )
+	    {
+	        number = ((Worker)non_exceptions.get(index)).createDependencyOrder(number, main);
 	    }
 	    Main.sort(myElements_);
 	    s = myClientDependency_.size();
@@ -278,5 +292,19 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
             return ((UmlPackage)idlParent_).getOclSignatureForClass(main, className);
         }
         return className;
+    }
+    
+    
+    boolean hasException( Main main )
+    {
+	    int s = myElements_.size();
+	    for( int index=0; index<s; index++ )
+	    {
+	        if( ((UmlNamespaceElement)myElements_.get(index)).hasException(main) )
+	        {
+	            return true;
+	        }
+	    }
+	    return false;
     }
 }

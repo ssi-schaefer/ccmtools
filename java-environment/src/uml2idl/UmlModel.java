@@ -147,10 +147,24 @@ class UmlModel extends uml_parser.uml.MModel implements Worker
 	    {
 	        return number;
 	    }
-	    int s = myWorkers_.size();
-	    for( int index=0; index<s; index++ )
+	    int index, s=myWorkers_.size();
+	    Vector children = new Vector();
+	    for( index=0; index<s; index++ )
 	    {
-	        number = ((Worker)myWorkers_.get(index)).createDependencyOrder(number, main);
+	        Object o = myWorkers_.get(index);
+	        if( (o instanceof UmlNamespaceElement) && ((UmlNamespaceElement)o).hasException(main) )
+	        {
+	            number = ((UmlNamespaceElement)o).createDependencyOrder(number, main);
+	        }
+	        else
+	        {
+	            children.add(o);
+	        }
+	    }
+	    s = children.size();
+	    for( index=0; index<s; index++ )
+	    {
+	        number = ((Worker)children.get(index)).createDependencyOrder(number, main);
 	    }
 	    Main.sort(myWorkers_);
 	    dependencyNumber_ = number;

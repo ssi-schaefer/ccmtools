@@ -39,7 +39,7 @@ Container for children of {@link UmlModel} and {@link UmlPackage}. <br>Children:
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@version $Date$
 */
 class UmlNamespaceElement extends uml_parser.uml.MNamespace_ownedElement implements Worker
 {
@@ -128,10 +128,28 @@ class UmlNamespaceElement extends uml_parser.uml.MNamespace_ownedElement impleme
 	    {
 	        return number;
 	    }
-	    int s = myWorkers_.size();
-	    for( int index=0; index<s; index++ )
+	    int index, s=myWorkers_.size();
+	    Vector children = new Vector();
+	    for( index=0; index<s; index++ )
 	    {
-	        number = ((Worker)myWorkers_.get(index)).createDependencyOrder(number, main);
+	        Object o = myWorkers_.get(index);
+	        if( (o instanceof UmlClass) && ((UmlClass)o).isException(main) )
+	        {
+	            number = ((UmlClass)o).createDependencyOrder(number, main);
+	        }
+	        else if( (o instanceof UmlPackage) && ((UmlPackage)o).hasException(main) )
+	        {
+	            number = ((UmlPackage)o).createDependencyOrder(number, main);
+	        }
+	        else
+	        {
+	            children.add(o);
+	        }
+	    }
+	    s = children.size();
+	    for( index=0; index<s; index++ )
+	    {
+	        number = ((Worker)children.get(index)).createDependencyOrder(number, main);
 	    }
 	    Main.sort(myWorkers_);
 	    dependencyNumber_ = number;
@@ -141,5 +159,24 @@ class UmlNamespaceElement extends uml_parser.uml.MNamespace_ownedElement impleme
 	public int getDependencyNumber()
 	{
 	    return dependencyNumber_;
+	}
+	
+	
+	boolean hasException( Main main )
+	{
+	    int s = myWorkers_.size();
+	    for( int index=0; index<s; index++ )
+	    {
+	        Object o = myWorkers_.get(index);
+	        if( (o instanceof UmlClass) && ((UmlClass)o).isException(main) )
+	        {
+	            return true;
+	        }
+	        if( (o instanceof UmlPackage) && ((UmlPackage)o).hasException(main) )
+	        {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 }

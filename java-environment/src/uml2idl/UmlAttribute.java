@@ -46,7 +46,7 @@ Class attribute. <br>Children:
 </ul>
 
 @author Robert Lechner (rlechner@gmx.at)
-@version January 2004
+@version $Date$
 */
 class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
 {
@@ -503,10 +503,22 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
         if( typeId!=null )
         {
             Object typeObj = main.workers_.get(typeId);
-            if( typeObj!=null && (typeObj instanceof IdlContainer) )
+            if( typeObj!=null )
             {
-                number = ((IdlContainer)typeObj).updateDependencyOrder(number, main);
+                if( typeObj instanceof IdlContainer )
+                {
+                    //System.out.println(idlParent_.getName()+" --> "+((IdlContainer)typeObj).getName());
+                    number = ((IdlContainer)typeObj).updateDependencyOrder(number, main);
+                }
+                /*else
+                {
+                    System.out.println(idlParent_.getName()+" : typeObj="+typeObj.getClass().getName());
+                }*/
             }
+            /*else
+            {
+                System.out.println(idlParent_.getName()+" : typeObj==null");
+            }*/
         }
 	    dependencyNumber_ = number;
 	    return number+1;
