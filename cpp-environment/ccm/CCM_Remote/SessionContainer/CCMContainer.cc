@@ -25,6 +25,12 @@
  * This code is based on the MicoCCM implementation of a CCM session container.
  */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO  
+
 #include <WX/Utils/debug.h>
 
 #include "CCMContainer.h"
@@ -318,3 +324,5 @@ CCM::register_all_factories(CORBA::ORB_ptr orb)
     vf = new Cookie_Factory;
     orb->register_value_factory ("IDL:omg.org/Components/Cookie:1.0", vf);
 }
+
+#endif // HAVE_MICO

@@ -35,13 +35,8 @@ For the informed, use the following :
    $ confix.py --packageroot=`pwd`/wx --bootstrap --configure --make --targets=install
 
 
-   # If you use local components only, type:	
-   $ confix.py --packageroot=`pwd`/ccm/CCM_Local --bootstrap --configure --make --targets=install
-
-
-   # If you also use remote components, type:	
+   # Install the CCM Tolls runtime libraries
    # (be sure that you have already installed Mico - http://mico.org)
-   $ confix.py --packageroot=`pwd`/ccm/CCM_Remote --bootstrap --configure --make --targets=install
+   $ confix.py --packageroot=`pwd`/ccm --bootstrap --configure --make --targets=install
 
 
-  

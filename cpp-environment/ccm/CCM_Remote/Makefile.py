@@ -1,2 +1,0 @@
-PACKAGE_NAME('ccm-remote')
-PACKAGE_VERSION('0.5.1-pre3')

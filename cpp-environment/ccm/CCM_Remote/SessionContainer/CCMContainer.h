@@ -28,6 +28,12 @@
 #ifndef __CCM_CONTAINER_H__
 #define __CCM_CONTAINER_H__
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO 
+
 #include <CORBA.h>
 #include <map>
 #include <string>
@@ -179,7 +185,8 @@ namespace CCM {
   void register_all_factories (CORBA::ORB_ptr);
 } // /namespace CCM
 
-#endif
+#endif // HAVE_MICO
+#endif // __CCM_CONTAINER_H__
 
 
 

@@ -24,6 +24,12 @@
 #ifndef __PRIMITIVE_CONVERTER_H__
 #define __PRIMITIVE_CONVERTER_H__
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif 
+
+#ifdef HAVE_MICO  
+
 #include <CORBA.h>
 #include <string>
 
@@ -191,4 +197,5 @@ namespace CCM_Remote {
     
 } // /namespace CCM_Remote
 
-#endif
+#endif // HAVE_MICO
+#endif // __PRIMITIVE_CONVERTER_H__
