@@ -14,7 +14,7 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_bm_impl.h"
+#include "DbcTest_bm_impl.h"
 
 using namespace std;
 using namespace WX::Utils;

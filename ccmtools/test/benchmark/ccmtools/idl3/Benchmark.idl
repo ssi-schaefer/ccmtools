@@ -5,10 +5,6 @@
 typedef sequence<long> LongList;
 
 interface Benchmark {
-  attribute long attr_l;
-  attribute string attr_s;
-  attribute LongList attr_ll;
-
   void f0();
 
   void f_in1(in long l1);

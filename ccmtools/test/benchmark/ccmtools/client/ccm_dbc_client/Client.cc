@@ -25,13 +25,16 @@
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 
-#include <CCM_Local/CCM_Session_Test/Test_dbc.h>
-#include <CCM_Local/CCM_Session_Test/TestHome_dbc.h>
+#include <CCM_Local/CCM_Session_DbcTest/DbcTest_gen.h>
+#include <CCM_Local/CCM_Session_DbcTest/DbcTestHome_gen.h>
+
+#include <CCM_Local/CCM_Session_DbcTest/DbcTest_dbc.h>
+#include <CCM_Local/CCM_Session_DbcTest/DbcTestHome_dbc.h>
 
 using namespace std;
 using namespace WX::Utils;
 using namespace CCM_Local;
-using namespace CCM_Session_Test;
+using namespace CCM_Session_DbcTest;
 
 int main(int argc, char *argv[])
 {
@@ -41,8 +44,12 @@ int main(int argc, char *argv[])
 
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<Test> myTest;
-    SmartPtr<Benchmark> bm;
+    SmartPtr<DbcTest> myTest;
+    SmartPtr<DbcBenchmarkInv1> bmInv1;
+    SmartPtr<DbcBenchmarkInv2> bmInv2;
+    SmartPtr<DbcBenchmarkInv3> bmInv3;
+    SmartPtr<DbcBenchmarkPre>  bmPre;
+    SmartPtr<DbcBenchmarkPost> bmPost;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
@@ -52,8 +59,12 @@ int main(int argc, char *argv[])
     LocalComponents::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 
-    bool disablePostconditionCheck = false;
-    error= deploy_dbc_CCM_Local_TestHome("TestHome", disablePostconditionCheck);
+    bool disablePostconditionCheck = true;
+    //bool disablePostconditionCheck = false;
+
+    // error= deploy_CCM_Local_DbcTestHome("DbcTestHome");
+    error= deploy_dbc_CCM_Local_DbcTestHome("DbcTestHome", 
+					    disablePostconditionCheck);
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -69,12 +80,17 @@ int main(int argc, char *argv[])
     // forces components to run the ccm_set_session_context() and ccm_activate() 
     // callback methods.
     try {
-        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
-            (homeFinder->find_home_by_name("TestHome").ptr()));
+        SmartPtr<DbcTestHome> myTestHome(dynamic_cast<DbcTestHome*>
+            (homeFinder->find_home_by_name("DbcTestHome").ptr()));
 
         myTest = myTestHome->create();
 
-        bm = myTest->provide_bm();
+        bmInv1 = myTest->provide_bmInv1();
+        bmInv2 = myTest->provide_bmInv2();
+        bmInv3 = myTest->provide_bmInv3();
+
+        bmPre = myTest->provide_bmPre();
+        bmPost = myTest->provide_bmPost();
 
         myTest->configuration_complete();
     } 
@@ -118,69 +134,37 @@ int main(int argc, char *argv[])
       // Test configuration
       WX::Utils::Timer timer;
       
-      const long MAX_LOOP_COUNT = 1000000;
-
+      const long MAX_LOOP_COUNT = 10000000;
       const long SEQUENCE_SIZE_MAX = 1000;
       const long SEQUENCE_SIZE_STEP = 100;
 
-      {
-        // long setter
-        cout << "CCM DbC Test: void attr_l(long) "; 
 
-        timer.start();
-        for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-          bm->attr_l(counter);
-        }
-        timer.stop();
-        cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
-      }
+      //--------------------------------------------------------------
+      // DbcBenchmakePre
+      //--------------------------------------------------------------
 
       {
-        // long getter
-        cout << "CCM DbC Test: long attr_l() "; 
-
-	long value;
-        timer.start();
-        for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-          value = bm->attr_l();
-        }
-        timer.stop();
-        cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
-      }
-
-      /*
-      {
-        // ping
-        cout << "Local CCM Test: void f0() "; 
-
-        timer.start();
-        for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-          bm->f0();
-        }
-        timer.stop();
-        cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
-      }
-
-
-      {
-        // in long parameter
-        cout << "Local CCM Test: void f_in1(in long l1) "; 
+        // in long parameter with precondition check
+	// pre p1: l1 > 1 and l1 < 10
+	cout << endl;
+        cout << "CCM DbC Test: void bmPre->f_in1(in long l1) "; 
 
         long value = 7;
 
         timer.start();
         for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-          bm->f_in1(value);
+          bmPre->f_in1(value);
         }
         timer.stop();
         cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
       }
 
-
       {
         // in string parameter with increasing size
+	// pre p2: s1.size() >= 0 and s1.size() < 2000
+	cout << endl;
         for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
-          cout << "Local CCM Test: void f_in2(in string s1) "; 
+          cout << "CCM DbC Test: void bmPre->f_in2(in string s1) "; 
 
           string value;
           for(int i=0; i<size; i++)
@@ -188,18 +172,20 @@ int main(int argc, char *argv[])
 
           timer.start();
           for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-            bm->f_in2(value);
+            bmPre->f_in2(value);
           }
           timer.stop();
           cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
         }
       }
 
-
       {
+	const long MAX_LOOP_COUNT = 1000000;
         // in sequence of long parameter with increasing size
+	// pre p3: ll1->size() > 200 and ll1->size() < 1000
+	cout << endl;
         for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
-          cout << "Local CCM Test: void f_in3(in LongList ll1) "; 
+          cout << "CCM DbC Test: void bmPre->f_in3(in LongList ll1) "; 
 
           LongList value;
           for(long i=0; i<size; i++)
@@ -207,13 +193,160 @@ int main(int argc, char *argv[])
 
           timer.start();
           for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
-            bm->f_in3(value);
+            bmPre->f_in3(value);
           }
           timer.stop();
           cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
         }
       } 
-      */
+
+
+
+      //--------------------------------------------------------------
+      // DbcBenchmakeInv1
+      //--------------------------------------------------------------
+
+      {
+        // ping with invariants check
+	// inv i1: self.longAttr >= 0 and longAttr < 1000000
+	// longAttr is a long attribute
+       	cout << endl;
+	cout << "CCM DbC Test: void bmInv1->f0() "; 
+
+	long value = 7;
+	bmInv1->longAttr(value);
+
+        timer.start();
+        for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+          bmInv1->f0();
+        }
+        timer.stop();
+        cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
+      }
+
+
+
+      //--------------------------------------------------------------
+      // DbcBenchmakeInv2
+      //--------------------------------------------------------------
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+	// ping with invariants check
+	// inv i2: self.stringAttr.size >= 0 and stringAttr.size < 1000000
+        // stringAttr is a string attribute with increasing size
+	cout << endl;
+        for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "CCM DbC Test: void bmInv2->f0() "; 
+
+          string value;
+          for(int i=0; i<size; i++)
+            value += "X";
+	  bmInv2->stringAttr(value);
+
+          timer.start();
+          for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+            bmInv2->f0();
+          }
+          timer.stop();
+          cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+        }
+      }
+
+
+
+      //--------------------------------------------------------------
+      // DbcBenchmakeInv3
+      //--------------------------------------------------------------
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+	// ping with invariants check
+	// inv i3: self.seqAttr->forAll(i| i >= 0 and i < 1000000)
+	// seqAttr is a sequence of long attribute with increasing size
+	cout << endl;
+        for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+	  cout << "CCM DbC Test: void bmInv3->f0() "; 
+
+          LongList value;
+          for(long i=0; i<size; i++)
+            value.push_back(i);
+	  bmInv3->seqAttr(value);
+
+          timer.start();
+          for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+            bmInv3->f0();
+          }
+          timer.stop();
+          cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+        }
+      } 
+
+
+      //--------------------------------------------------------------
+      // DbcBenchmakePost
+      //--------------------------------------------------------------
+
+      {
+        // in long result with precondition check
+	// post q1: l1 > 1 and l1 < 10
+	cout << endl;
+        cout << "CCM DbC Test: long bmPost->f_ret1() "; 
+
+        long value = 7;
+	bmPost->f1_result(value);
+
+        timer.start();
+        for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+          value = bmPost->f_ret1();
+        }
+        timer.stop();
+        cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,1);
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+        // in string result with increasing size
+	// post q2: s1.size() >= 0 and s1.size() < 2000
+	cout << endl;
+        for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+          cout << "CCM DbC Test: string bmPost->f_in2() "; 
+
+	  string value;
+	  for(int i=0; i<size; i++)
+	    value += "X";
+	  bmPost->f2_result(value);
+
+          timer.start();
+          for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+            value = bmPost->f_ret2();
+          }
+          timer.stop();
+          cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+        }
+      }
+
+      {
+	const long MAX_LOOP_COUNT = 1000000;
+        // in sequence of long result with increasing size
+	// post q3: ll1->size() > 200 and ll1->size() < 1000
+	cout << endl;
+        for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
+          cout << "CCM DbC Test: LongList bmPost->f_in3() "; 
+
+	  LongList value;
+	  for(long i=0; i<size; i++)
+	    value.push_back(i);
+	  bmPost->f3_result(value);
+	  
+          timer.start();
+          for(long counter=0; counter<MAX_LOOP_COUNT; counter++ ) {
+            value = bmPost->f_ret3();
+          }
+          timer.stop();
+          cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
+        }
+      } 
 
       cout << "--- Stop Test Case ------------------------------------" << endl;
     } 
@@ -254,7 +387,7 @@ int main(int argc, char *argv[])
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    error += undeploy_CCM_Local_TestHome("TestHome");
+    error += undeploy_CCM_Local_DbcTestHome("DbcTestHome");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
