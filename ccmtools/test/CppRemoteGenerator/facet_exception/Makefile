@@ -15,3 +15,7 @@ build: remote
 	cp impl/Test_iface_impl.cc xxx/impl
 	cp test/_check_CCM_Remote_CCM_Session_Test_remote.cc xxx/test 
 	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
+
+clean:
+	rm -rf xxx
+	rm -rf ${HOME}/tmp/xxx

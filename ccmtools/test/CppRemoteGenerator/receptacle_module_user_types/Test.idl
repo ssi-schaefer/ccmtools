@@ -40,8 +40,8 @@ typedef double DoubleArray[10];
 	PersonList f6(in PersonList p1, inout PersonList p2, out PersonList p3);
 	time_t     f7(in time_t t1, inout time_t t2, out time_t t3);
 
-	void f10(in long p1);
-	void f11(in Person p1);
+	//	void f10(in long p1);
+	//	void f11(in Person p1);
 
   //Color f1(in Color p1, inout Color p2, out Color p3);
   //DoubleArray f6(in DoubleArray a1, inout DoubleArray a2, out DoubleArray a3);
