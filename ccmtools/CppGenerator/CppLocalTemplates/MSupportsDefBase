@@ -1,1 +1,1 @@
-, public CCM_%(SupportsType)s
+, virtual public CCM_%(SupportsType)s

@@ -68,8 +68,10 @@ class CCM_%(Identifier)s
 //==============================================================================
 
 class %(Identifier)s
-  : public localComponents::CCMObject,
-    public localComponents::ReleaseInformation%(BaseTypes)s
+  : public localComponents::ReleaseInformation%(BaseTypes)s,
+    public localComponents::CCMObject	
+    %(MSupportsDefBase)s 
+    
 {
  private:
   %(HomeType)s* home_local_adapter;

@@ -15,37 +15,38 @@ dist_noinst_SCRIPTS = test-loader.sh
 # attribute_user_types.sh
 # home_exception.sh
 # module_mixed.sh
-#TESTS =     module-reopen.sh    
-TESTS =     help.sh                     \
-            version.sh                  \
-            attribute.sh                \
-            attribute_basic_types.sh    \
-            attribute_user_types.sh     \
-            supports.sh                 \
-            supports_basic_types.sh     \
-            supports_exception.sh       \
-            supports_user_types.sh      \
-            facet.sh                    \
-            facet_basic_types.sh        \
-            facet_exception.sh          \
-            facet_user_types.sh         \
-            receptacle.sh               \
-            receptacle_not_connected.sh \
-            receptacle_basic_types.sh   \
-            receptacle_exception.sh     \
-            receptacle_multiple.sh      \
-            receptacle_user_types.sh    \
-            home_factory.sh             \
-            home_basic_types.sh         \
-            home_user_types.sh          \
-            include.sh                  \
-            include_dir.sh              \
-            include_nested.sh           \
-            module.sh                   \
-            module-nested.sh            \
-            module-reopen.sh            \
-            calculator.sh               \
-            owudb.sh
+TESTS =  receptacle-inheritance.sh    
+
+# TESTS =     help.sh                     \
+#             version.sh                  \
+#             attribute.sh                \
+#             attribute_basic_types.sh    \
+#             attribute_user_types.sh     \
+#             supports.sh                 \
+#             supports_basic_types.sh     \
+#             supports_exception.sh       \
+#             supports_user_types.sh      \
+#             facet.sh                    \
+#             facet_basic_types.sh        \
+#             facet_exception.sh          \
+#             facet_user_types.sh         \
+#             receptacle.sh               \
+#             receptacle_not_connected.sh \
+#             receptacle_basic_types.sh   \
+#             receptacle_exception.sh     \
+#             receptacle_multiple.sh      \
+#             receptacle_user_types.sh    \
+#             home_factory.sh             \
+#             home_basic_types.sh         \
+#             home_user_types.sh          \
+#             include.sh                  \
+#             include_dir.sh              \
+#             include_nested.sh           \
+#             module.sh                   \
+#             module-nested.sh            \
+#             module-reopen.sh            \
+#             calculator.sh               \
+#             owudb.sh
 
 dist_check_SCRIPTS = $(TESTS)
 

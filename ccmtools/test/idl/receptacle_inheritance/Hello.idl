@@ -1,0 +1,28 @@
+// $Id$
+/**
+ * Test case: receptacle
+ *
+ */
+
+
+interface Base1 {
+   long println1(in string s2);
+};
+
+interface Base2 {
+   long println2(in string s2);
+};
+
+interface Console : Base1, Base2 {
+  long println(in string s2);
+};
+
+component Hello
+{
+  uses Console console;
+};
+
+home HelloHome manages Hello
+{
+};
+

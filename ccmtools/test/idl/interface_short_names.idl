@@ -1,0 +1,4 @@
+interface i { 
+  attribute long l;
+  attribute double d;
+};

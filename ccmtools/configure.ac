@@ -82,6 +82,7 @@ doc/tutorial/Makefile
 test/Makefile
 test/Metamodel/Makefile
 test/IDL3Parser/Makefile
+test/IDLGenerator/Makefile
 test/CodeGenerator/Makefile
 test/CppGenerator/Makefile
 test/CCDGenerator/Makefile

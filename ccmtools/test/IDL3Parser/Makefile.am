@@ -21,7 +21,8 @@ XFAIL_TESTS = \
 ## i'm taking out the empty enum fail-test because i just can't figure out why
 ## it doesn't work. put it back when the parser behaves more civilly.
 
-TESTS = $(XFAIL_TESTS) \
+TESTS = interface-inheritance.sh \
+    interface-short-names.sh     \
     component.sh                 \
     enum.sh                      \
     home.sh                      \
@@ -35,7 +36,8 @@ TESTS = $(XFAIL_TESTS) \
     uses-multiple-operation.sh   \
     uses-multiple.sh             \
     uses-operation.sh            \
-    uses.sh
+    uses.sh                      \
+    $(XFAIL_TESTS) 
 
 dist_check_SCRIPTS = $(TESTS)
 

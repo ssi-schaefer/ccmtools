@@ -1,21 +1,49 @@
-CCM-Tools TODOs
-===============
+CCM-Tools TODOs and reported Bugs
+=================================
 
-ccmtools-0.2.x
---------------
 
-*) IDL Constants don't work (parser problem).
+IDL3 Parser
+===========
+o) Identifier with one character does not work
+
+o) IDL Constants don't work.
    - test/idl/constants 
 
-*) Home factory method exceptions don't work (parser problem).
+o) Home factory method exceptions don't work.
    - test/idl/home_exception 
 
-*) Mixed modules within a component are still a problem.
+
+
+CppLocalGenerator
+=================
+o) A Component adapter does not inherit the supported interfaces as the
+   component does. 
+
+o) Mixed modules within a component are still a problem.
    - test/idl/module_mixed
 
-*) Integration of Utils/value_simple.h as a mapping for IDL any (CppLocalGenerator).
+o) Integration of Utils/value_simple.h as a mapping for IDL any.
+
+o) IDL to C++ mapping of exceptions should use a base exception class 
+
+o) Interface inheritance does not work
+
+
+
+
+IDL Generators (IDL3, IDL2, IDL3Mirror)
+=======================================
+
+o) Interface inheritance does not work
+
+
+
+
+Documentation
+=============
 
 *) Update Tutorial
-*) Update Developer's Manual
+
+o) Update Developer's Manual
 
 

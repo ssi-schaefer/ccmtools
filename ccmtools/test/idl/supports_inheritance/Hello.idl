@@ -1,0 +1,27 @@
+// $Id$
+/**
+ * Test case: supports-inheritance 
+ *
+ */
+
+
+interface Base1 {
+  long println1(in string s2);
+};
+
+interface Base2 {
+  long println2(in string s2);
+};
+
+interface Console : Base1, Base2 {
+  long println(in string s2);
+};
+
+component Hello supports Console
+{
+};
+
+home HelloHome manages Hello
+{
+};
+

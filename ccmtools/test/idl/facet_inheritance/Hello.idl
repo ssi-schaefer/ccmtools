@@ -4,9 +4,15 @@
  *
  */
 
-interface Console 
+
+interface Base
 {
-  long println(in string s2);
+  long println1(in string s2);
+};
+
+interface Console : Base 
+{
+  long println2(in string s2);
 };
 
 component Hello

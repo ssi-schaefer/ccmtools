@@ -1,0 +1,23 @@
+// $Id$
+/**
+ * Test case: home factory interface
+ *
+ */
+
+
+interface ACommon 
+{
+  void set_attrib_a(in long a);
+  long get_attrib_a(); 
+};
+
+component Hello
+{
+  attribute long a;
+};
+
+home HelloHome manages Hello
+{
+  factory copy_from(in ACommon the_a);
+};
+
