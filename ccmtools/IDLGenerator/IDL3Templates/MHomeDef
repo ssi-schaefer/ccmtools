@@ -1,12 +1,12 @@
-%(ExternInclude)s
-
-#include "%(ComponentInclude)s.idl3"
 %(MSupportsDefInclude)s
+%(ExternInclude)s
 
 #ifndef __CCM_%(FileNamespace)s_%(Identifier)s_HOME__
 #define __CCM_%(FileNamespace)s_%(Identifier)s_HOME__
 
 %(OpenNamespace)s
+
+component %(ComponentType)s;
 
 home %(Identifier)s manages %(ComponentType)s
  %(MSupportsDef)s

@@ -27,10 +27,10 @@ test -z "${ret}" && ccmtools-generate idl3mirror -o idl3.${IDL} \
   ${abssrcdir}/test/idl/${IDL}.idl || ret=1
 
 test -z "${ret}" && ccmtools-generate idl2 -o idl2.${IDL} \
-  idl3.${IDL}/*.idl3 || ret=1
+  -Iidl3.${IDL} idl3.${IDL}/*.idl3 || ret=1
 
-test -z "${ret}" && ccmtools-generate idl2 -o idl2m.${IDL} \
-  idl3.${IDL}/*.idl3mirror || ret=1
+test -z "${ret}" && ccmtools-generate idl2 -o idl2mirror.${IDL} \
+  -Iidl3.${IDL} idl3.${IDL}/*.idl3mirror || ret=1
 
 test -z "${ret}" && ret=0
 

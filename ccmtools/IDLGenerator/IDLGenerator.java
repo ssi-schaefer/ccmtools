@@ -55,7 +55,7 @@ import java.util.Map;
 abstract public class IDLGenerator
     extends CodeGenerator
 {
-    private String fileSuffix = "";
+    private String file_suffix = "";
 
     private final static String[] local_output_types =
     {
@@ -108,7 +108,7 @@ abstract public class IDLGenerator
         super("IDL" + suffix, d, out_dir, local_output_types,
               local_reserved_words, null, null, local_language_map);
 
-        fileSuffix = new String(suffix.toLowerCase());
+        file_suffix = new String(suffix.toLowerCase());
     }
 
     /**
@@ -162,7 +162,7 @@ abstract public class IDLGenerator
         String name = join("_", namespace);
         if (! name.equals("")) name += "_";
         name += ((MContained) current_node).getIdentifier();
-        name += ".idl" + this.fileSuffix;
+        name += ".idl" + file_suffix;
 
         String code = join("\n", code_pieces).replaceAll("};", "};\n");
 
@@ -186,13 +186,17 @@ abstract public class IDLGenerator
         if (data_type.equals("OpenNamespace")) {
             List tmp = new ArrayList();
             for (Iterator i = namespace.iterator(); i.hasNext(); )
-                tmp.add("module "+i.next()+" {\n");
-            return join("", tmp);
+                tmp.add("module "+i.next()+" {");
+            return join("\n", tmp);
         } else if (data_type.equals("CloseNamespace")) {
             List tmp = new ArrayList();
             for (Iterator i = namespace.iterator(); i.hasNext(); i.next())
-                tmp.add("};\n");
-            return join("", tmp);
+                tmp.add("};");
+            return join("\n", tmp);
+        } else if (data_type.equals("IncludeNamespace")) {
+            String tmp = join("_", getScope((MContained) current_node));
+            if (tmp.length() > 0) tmp += "_";
+            return tmp;
         } else {
             return super.handleNamespace(data_type, local);
         }
@@ -209,7 +213,7 @@ abstract public class IDLGenerator
     {
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        return "#include <" + join("_", scope) + ".idl" + fileSuffix + ">";
+        return "#include <" + join("_", scope) + ".idl" + file_suffix + ">";
     }
     /**
      * Get a local value for the given variable name.
@@ -356,17 +360,20 @@ abstract public class IDLGenerator
     }
 
     protected String data_MHomeDef(String data_type, String data_value)
-    {
-        if (data_type.equals("ComponentInclude")) {
-        }
-        return data_MInterfaceDef(data_type, data_value);
-    }
+    { return data_MInterfaceDef(data_type, data_value); }
 
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
+        MInterfaceDef node = (MInterfaceDef) current_node;
+
         if (data_type.equals("BaseTypes")) {
-            String base = joinBases(", ");
+            String base = joinBaseNames(", ");
             if (base.length() > 0) return ": " + base;
+        } else if (data_type.equals("BaseInclude")) {
+            ArrayList lines = new ArrayList();
+            for (Iterator i = node.getBases().iterator(); i.hasNext(); )
+                lines.add(getScopedInclude((MInterfaceDef) i.next()));
+            return join("\n", lines);
         } else if (data_type.equals("ExternInclude")) {
             return collectExternIncludes();
         } else if (data_type.startsWith("MSupportsDef") &&

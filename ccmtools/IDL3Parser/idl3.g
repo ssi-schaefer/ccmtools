@@ -373,6 +373,7 @@ options { exportVocab = IDL3; k = 2; }
     {
         String id = iface.getIdentifier();
 
+        ArrayList verified = new ArrayList();
         for (Iterator it = bases.iterator(); it.hasNext(); ) {
             String inherit = (String) it.next();
             MContained lookup = lookupNameInCurrentScope(inherit, DEBUG_INTERFACE | DEBUG_INHERITANCE);
@@ -390,9 +391,11 @@ options { exportVocab = IDL3; k = 2; }
 
             if ((debug & DEBUG_INTERFACE) != 0)
                 System.out.println("[f] adding base '"+inherit+"' to interface '"+id+"'");
+
+            verified.add(base);
         }
 
-        iface.setBases(bases);
+        iface.setBases(verified);
     }
 
     /*

@@ -302,8 +302,9 @@ public class ConsoleCodeGenerator
                 preproc.waitFor();
                 if (preproc.exitValue() != 0)
                     throw new RuntimeException(
-                        "Preprocessor did not exit cleanly. "+
-                        "Please verify your include path.");
+                        "Preprocessor failed. "+
+                        "Please verify your include path and ensure "+
+                        "that included files exist.");
             } catch (Exception e) {
                 System.err.println("Error preprocessing "+source+":\n"+e);
                 System.exit(10);

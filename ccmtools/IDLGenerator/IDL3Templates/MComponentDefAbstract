@@ -1,4 +1,5 @@
 %(ExternInclude)s
+%(BaseInclude)s
 
 %(MSupportsDefInclude)s
 %(MProvidesDefInclude)s
@@ -9,6 +10,8 @@
 
 #ifndef __CCM_%(FileNamespace)s_%(Identifier)s_COMPONENT__
 #define __CCM_%(FileNamespace)s_%(Identifier)s_COMPONENT__
+
+#include <%(IncludeNamespace)s%(HomeType)s.idl3>
 
 %(OpenNamespace)s
 

@@ -1,2 +1,2 @@
-#include <%(FileNamespace)s_%(PublishesType)s.idl3>
+#include <%(IncludeNamespace)s%(PublishesType)s.idl3>
 

@@ -156,13 +156,14 @@ abstract public class CppGenerator
      * @return a string containing the names of base interfaces, separated by
      *         sep.
      */
-    protected String joinBases(String sep)
+    protected String joinBaseNames(String sep)
     {
-        List b = new ArrayList();
+        if (! (current_node instanceof MInterfaceDef)) return "";
         MInterfaceDef node = (MInterfaceDef) current_node;
+        ArrayList names = new ArrayList();
         for (Iterator i = node.getBases().iterator(); i.hasNext(); )
-            b.add("CCM_"+((MInterfaceDef) i.next()).getIdentifier());
-        return join(sep, b);
+            names.add("CCM_" + ((MInterfaceDef) i.next()).getIdentifier());
+        return join(sep, names);
     }
 
     /**
@@ -328,7 +329,7 @@ abstract public class CppGenerator
             MComponentDef component = (MComponentDef) current_node;
             return handleNamespace(data_type, component.getIdentifier());
         } else if (data_type.equals("BaseTypes")) {
-            String base = joinBases(", public ");
+            String base = joinBaseNames(", public ");
             if (base.length() > 0) return ", public " + base;
         } else if (data_type.equals("ExternInclude")) {
             return collectExternIncludes();
@@ -382,7 +383,7 @@ abstract public class CppGenerator
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
         if (data_type.equals("BaseTypes")) {
-            String base = joinBases(", public");
+            String base = joinBaseNames(", public ");
             if (base.length() > 0) return ": public " + base;
         } else if (data_type.equals("ExternInclude")) {
             return collectExternIncludes();

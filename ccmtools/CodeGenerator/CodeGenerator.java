@@ -557,16 +557,22 @@ abstract public class CodeGenerator
      */
     protected String join(String sep, Collection parts)
     {
-        if ((parts != null) && (parts.size() > 0)) {
-            StringBuffer ret = new StringBuffer("");
-            for (Iterator i = parts.iterator(); i.hasNext(); ) {
-                String part = (String) i.next();
-                ret.append(part + sep);
+        if (parts != null) {
+            if (parts.size() > 1) {
+                StringBuffer ret = new StringBuffer("");
+                for (Iterator i = parts.iterator(); i.hasNext(); ) {
+                    String part = (String) i.next();
+                    ret.append(part + sep);
+                }
+                ret = ret.reverse();
+                ret = new StringBuffer(ret.substring(sep.length()));
+                return ret.reverse().toString();
             }
-            ret = ret.reverse();
-            ret = new StringBuffer(ret.substring(sep.length()));
-            return ret.reverse().toString();
-        } else return new String("");
+
+            if (parts.size() == 1) return "" + parts.iterator().next();
+        }
+
+        return new String("");
     }
 
     /**
@@ -621,24 +627,25 @@ abstract public class CodeGenerator
     }
 
     /**
-     * Join the bases of the current node using the given string as a separator.
-     * The current node should be an instance of MInterfaceDef.
+     * Join the base names of the current node using the given string as a
+     * separator. The current node should be an instance of MInterfaceDef.
      *
-     * @param sep the separator to use between bases.
+     * @param sep the separator to use between base names.
      * @return a string containing the names of base interfaces, separated by
      *         sep.
      */
-    protected String joinBases(String sep)
+    protected String joinBaseNames(String sep)
     {
         if (! (current_node instanceof MInterfaceDef)) return "";
         MInterfaceDef node = (MInterfaceDef) current_node;
-        return join(sep, node.getBases());
+        ArrayList names = new ArrayList();
+        for (Iterator i = node.getBases().iterator(); i.hasNext(); )
+            names.add(((MInterfaceDef) i.next()).getIdentifier());
+        return join(sep, names);
     }
 
     /**
-     * Find a list of the modules in which the given node is contained. This is
-     * intended as a way to get the full scope of a typedef-type variable ; I
-     * haven't found other uses for it just yet.
+     * Find a list of the modules in which the given node is contained.
      *
      * @param node a graph node to investigate.
      * @return a list of the namespaces that fully scope this node.

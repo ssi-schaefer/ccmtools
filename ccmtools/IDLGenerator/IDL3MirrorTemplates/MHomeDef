@@ -1,35 +1,16 @@
-%(ExternInclude)s
-
-#include "%(ComponentInclude)s.idl3mirror"
 %(MSupportsDefInclude)s
+%(ExternInclude)s
 
 #ifndef __CCM_%(FileNamespace)s_%(Identifier)s_mirror_HOME__
 #define __CCM_%(FileNamespace)s_%(Identifier)s_mirror_HOME__
 
 %(OpenNamespace)s
 
+component %(ComponentType)s_mirror;
+
 home %(Identifier)s_mirror manages %(ComponentType)s_mirror
  %(MSupportsDef)s
 {
-%(MConstantDef)s
-%(MEnumDef)s
-
-%(MStructDefFwdDecl)s
-%(MUnionDefFwdDecl)s
-
-%(MAliasDef)s
-
-%(MAttributeDef)s
-
-%(MValueMemberDef)s
-%(MValueBoxDef)s
-%(MValueDef)s
-
-%(MStructDef)s
-%(MUnionDef)s
-
-%(MExceptionDef)s
-
 %(MFactoryDef)s
 %(MFinderDef)s
 };

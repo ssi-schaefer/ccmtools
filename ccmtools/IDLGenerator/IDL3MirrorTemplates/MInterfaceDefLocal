@@ -1,4 +1,5 @@
 %(ExternInclude)s
+%(BaseInclude)s
 
 #ifndef __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
 #define __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
@@ -8,24 +9,6 @@
 local interface %(Identifier)s
   %(BaseTypes)s
 {
-%(MConstantDef)s
-%(MEnumDef)s
-
-%(MStructDefFwdDecl)s
-%(MUnionDefFwdDecl)s
-
-%(MAliasDef)s
-
-%(MAttributeDef)s
-
-%(MValueMemberDef)s
-%(MValueBoxDef)s
-%(MValueDef)s
-
-%(MStructDef)s
-%(MUnionDef)s
-
-%(MExceptionDef)s
 %(MOperationDef)s
 };
 

@@ -1,4 +1,5 @@
 %(ExternInclude)s
+%(BaseInclude)s
 
 #ifndef __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
 #define __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
@@ -8,18 +9,6 @@
 abstract local interface %(Identifier)s
   %(BaseTypes)s
 {
-%(MAttributeDef)s
-%(MConstantDef)s
-
-%(MValueDef)s
-%(MValueMemberDef)s
-
-%(MAliasDef)s
-
-%(MEnumDef)s
-%(MStructDef)s
-%(MUnionDef)s
-
 %(MOperationDef)s
 };
 
