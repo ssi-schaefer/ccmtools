@@ -33,16 +33,10 @@ public class MValueBoxDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private TypeCode typeCode_;
     private MIDLType TypedBy_;
     private MContainer Contains;
-
-    public MValueBoxDefImpl()
-    {
-        sourceFile = new String("");
-    }
 
     // override toString()
     public String toString()
@@ -76,10 +70,6 @@ public class MValueBoxDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -43,7 +43,6 @@ public class MFactoryDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private boolean isOneway_;
 
@@ -58,7 +57,6 @@ public class MFactoryDefImpl
     {
 	CanRaiseSet_ = new HashSet();
 	ParameterList_ = new ArrayList();
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -97,10 +95,6 @@ public class MFactoryDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

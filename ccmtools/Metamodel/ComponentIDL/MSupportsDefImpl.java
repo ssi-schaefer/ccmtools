@@ -35,7 +35,6 @@ public class MSupportsDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private MInterfaceDef Supports_;
     private MComponentDef Component_;
@@ -46,7 +45,6 @@ public class MSupportsDefImpl
     {
         Component_ = null;
         Home_ = null;
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -77,10 +75,6 @@ public class MSupportsDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -43,7 +43,7 @@ public class Main
     {
         Document ccdDomDocument = null;
         MContainer container = null;
-        ParserManager manager = new ParserManager();
+        ParserManager manager = new ParserManager(-1);
 
         try {
             container = manager.parseFile(args[0]);

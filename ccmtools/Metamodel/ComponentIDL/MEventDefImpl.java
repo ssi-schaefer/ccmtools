@@ -44,7 +44,6 @@ public class MEventDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private TypeCode TypeCode;
 
@@ -65,7 +64,6 @@ public class MEventDefImpl
         isTruncatable = false;
 	ContainsList = new ArrayList();
 	AbstractDerivedFromList = new ArrayList();
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -112,10 +110,6 @@ public class MEventDefImpl
     // attribute typeCode:TypeCode
     public TypeCode getTypeCode()               {return TypeCode;}
     public void setTypeCode(TypeCode __arg)     {TypeCode = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

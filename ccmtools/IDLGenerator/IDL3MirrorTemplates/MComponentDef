@@ -1,7 +1,3 @@
-%(MProvidesDefInclude)s
-%(MUsesDefInclude)s
-%(MSupportsDefInclude)s
-
 component %(Identifier)s_mirror
  %(BaseTypes)s
  %(MSupportsDef)s

@@ -34,15 +34,9 @@ public class MEventPortDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private MEventDef Type_;
     private MContainer Contains;
-
-    public MEventPortDefImpl()
-    {
-        sourceFile = new String("");
-    }
 
     // override toString()
     public String toString()
@@ -72,10 +66,6 @@ public class MEventPortDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

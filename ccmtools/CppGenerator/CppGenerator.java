@@ -348,22 +348,6 @@ abstract public class CppGenerator
         } else if (data_type.equals("BaseTypes")) {
             String base = joinBases(", public ");
             if (base.length() > 0) return ", public " + base;
-        } else if (data_type.equals("UserTypesInclude")) {
-            List includes = new ArrayList();
-            for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
-                List scope = (List) i.next();
-                includes.add("#include <CCM_Local/" + join("/", scope) +
-                             "_user_types.h>");
-            }
-            return join("\n", includes);
-        } else if (data_type.equals("ConvertPythonInclude")) {
-            List includes = new ArrayList();
-            for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
-                List scope = (List) i.next();
-                includes.add("#include <CCM_Test/Python/" +
-                             join("/", scope) + "_convert_python.h>");
-            }
-            return join("\n", includes);
         }
         return data_value;
     }
@@ -410,18 +394,6 @@ abstract public class CppGenerator
             if (base.length() > 0) return ": public " + base;
         } else if (data_type.endsWith("Namespace")) {
             return handleNamespace(data_type, "");
-        } else if (data_type.equals("UserTypesInclude")) {
-            List includes = new ArrayList();
-            for (Iterator i = extern_includes.iterator(); i.hasNext(); ) {
-                List scope = (List) i.next();
-                String id = (String) scope.get(scope.size() - 1);
-                if (scope.size() > 1)
-                    includes.add("#include <CCM_Local/" + join("/", scope) +
-                                 "_user_types.h>");
-                else
-                    includes.add("#include \"" + id + "_user_types.h\"");
-            }
-            return join("\n", includes);
         }
         return data_value;
     }

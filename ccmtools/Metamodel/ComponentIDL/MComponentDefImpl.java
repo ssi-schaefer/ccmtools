@@ -43,7 +43,6 @@ public class MComponentDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private boolean isAbstract;
     private boolean isLocal;
@@ -73,7 +72,6 @@ public class MComponentDefImpl
 	ConsumesList_ = new ArrayList();
 	ContainsList = new ArrayList();
 	InterfaceDerivedFromList = new ArrayList();
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -84,8 +82,6 @@ public class MComponentDefImpl
             tmp  += " " + ContainsList;
         if (InterfaceDerivedFromList.size() > 0)
             tmp += " (bases: " + InterfaceDerivedFromList + ")";
-        if (! sourceFile.equals(""))
-            tmp += " (defined in '"+ sourceFile + "')";
 	return tmp;
     }
 
@@ -119,10 +115,6 @@ public class MComponentDefImpl
     // attribute isLocal:boolean
     public boolean isLocal()                    {return isLocal;}
     public void setLocal(boolean __arg)         {isLocal = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

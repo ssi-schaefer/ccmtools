@@ -51,20 +51,20 @@ import java.util.Set;
 
 public class ConsoleCodeGenerator
 {
-    private final static int GENERATE_ENVIRONMENT_FILES = 0x0001;
-    private final static int GENERATE_APPLICATION_FILES = 0x0002;
-    private final static int GENERATE_USER_TYPES_FILES  = 0x0004;
+    private static final int GENERATE_ENVIRONMENT_FILES = 0x0001;
+    private static final int GENERATE_APPLICATION_FILES = 0x0002;
+    private static final int GENERATE_USER_TYPES_FILES  = 0x0004;
 
-    private final static String version = Constants.VERSION;
+    private static final String version = Constants.VERSION;
 
-    private final static String usage =
+    private static final String usage =
 "Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n" +
 "Options:\n" +
 "  -a, --application             Generate skeletons for business logic *\n" +
 "  -DFOO[=BAR]                   Define FOO (as BAR) for environment files\n" +
 "  -e, --environment             Generate environment files *\n" +
 "  -h, --help                    Display this help\n" +
-"  -I DIR                        Add DIR to the include IDL search path\n" +
+"  -I DIR                        Add DIR to the preprocessor include path\n" +
 "  -o DIR, --output=DIR          Base output in DIR (default to .)\n" +
 "  -V, --version                 Display current ccmtools version\n" +
 "  -u, --no-user-types           Disable generating user types files\n" +
@@ -75,7 +75,7 @@ public class ConsoleCodeGenerator
 "Generates code in the given output language after parsing FILES.\n" +
 "Options marked with a star (*) are generally used once per project.\n";
 
-    private final static String[] local_language_types =
+    private static final String[] local_language_types =
     {
         "c++local", "c++mirror", "c++python", "idl3", "idl3mirror", "idl2"
     };
@@ -87,8 +87,9 @@ public class ConsoleCodeGenerator
     private static long gen_mask = 0x00000040;
     private static long par_mask = 0x00000000;
 
+    private static String include_path = "";
+
     private static Map  defines = new Hashtable();
-    private static List include_path = new ArrayList();
     private static List filenames = new ArrayList();
 
     private static File output_directory = new File(System.getProperty("user.dir"));
@@ -97,18 +98,8 @@ public class ConsoleCodeGenerator
     private static int generate_flags = GENERATE_USER_TYPES_FILES;
 
     /**************************************************************************/
+    /* USAGE / VERSION INFO */
 
-    /**
-     * Print out usage information for the console code generator front end, and
-     * exit. This should normally be accessed by using the '--help' switch from
-     * the command line, in which case the function exits with a success (0)
-     * exit code. If an error string is provided, print out the type of error
-     * and provide the usage information for help, but exit with a failure (1)
-     * error code.
-     *
-     * @param err a string to print out indicating the type of error
-     *        encountered.
-     */
     private static void printUsage(String err)
     {
         if (err.length() > 0)
@@ -124,10 +115,6 @@ public class ConsoleCodeGenerator
         else                  System.exit(0);
     }
 
-    /**
-     * Print out the version information for the console code generator front
-     * end, and exit.
-     */
     private static void printVersion()
     {
         System.out.println("ccmtools version " + version);
@@ -138,45 +125,7 @@ public class ConsoleCodeGenerator
     }
 
     /**************************************************************************/
-
-    /**
-     * Parse and generate code for the given input IDL3 file. For each input
-     * file, we need to (1) parse the file, then (2) generate output code. Exits
-     * if errors are encountered during parsing or generation.
-     *
-     * @param filename the string filename of the file we want to read.
-     */
-    private static void parseAndGenerate(ParserManager manager,
-                                         GraphTraverser traverser,
-                                         String filename)
-    {
-        MContainer kopf = null;
-
-        // step (1).
-
-        try {
-            kopf = manager.parseFile(filename);
-            if (kopf == null)
-                throw new RuntimeException("Parser returned a null container");
-        } catch (Exception e) {
-            System.err.println("Error parsing "+filename+":\n"+e);
-            System.exit(1);
-        }
-
-        // (in between)
-
-        File top_file = new File(filename);
-        kopf.setIdentifier(top_file.getName().split("\\.")[0]);
-
-        // step (2).
-
-        try {
-            traverser.traverseGraph(kopf);
-        } catch (Exception e) {
-            System.err.println("Error generating code from "+filename+":\n"+e);
-            System.exit(1);
-        }
-    }
+    /* GENERATION */
 
     /**
      * Generate "environment files" for the target language. Environment files
@@ -223,6 +172,7 @@ public class ConsoleCodeGenerator
     }
 
     /**************************************************************************/
+    /* SETUP FUNCTIONS */
 
     /**
      * Try to create a driver for the code generator. This will handle output
@@ -290,54 +240,80 @@ public class ConsoleCodeGenerator
         return handler;
     }
 
-    /**
-     * Build a traverser object that will traverse the parse trees. Set the
-     * node handler (code generator) to receive and handle traverser node
-     * events.
-     *
-     * @param handler the node handler object to receive and deal with graph
-     *        traversal events.
-     * @return the newly created traverser, or exit if there was an error.
-     */
-    private static GraphTraverser setupTraverser(TemplateHandler handler)
-    {
-        GraphTraverser traverser = new GraphTraverserImpl();
-
-        if (traverser == null)
-            printUsage("failed to create a graph traverser");
-
-        traverser.setHandler(handler);
-
-        return traverser;
-    }
-
-    /**
-     * Create a parser manager to handle the input files.
-     *
-     * @return the newly created parser manager, or exit if there was an error.
-     */
-    private static ParserManager setupParserManager()
-    {
-        ParserManager manager = new ParserManager(par_mask, include_path);
-
-        if (manager == null)
-            printUsage("failed to create a parser manager");
-
-        return manager;
-    }
-
     /**************************************************************************/
+    /* MAIN FUNCTION */
 
+    /**
+     * Parse and generate code for each input IDL3 file. For each input file, we
+     * need to (0) run the C preprocessor on the file to assemble includes and
+     * do ifdef parsing and such, then (1) parse the file, then (2) generate
+     * output code. Exits with nonzero status if errors are encountered during
+     * parsing or generation.
+     */
     public static void main(String args[])
     {
         parseArgs(args);
 
-        TemplateHandler handler = setupHandler(setupDriver());
+        Runtime rt = Runtime.getRuntime();
 
-        for (Iterator f = filenames.iterator(); f.hasNext(); )
-            parseAndGenerate(setupParserManager(),
-                             setupTraverser(handler),
-                             (String) f.next());
+        TemplateHandler handler = setupHandler(setupDriver());
+        GraphTraverser traverser = new GraphTraverserImpl();
+        ParserManager manager = new ParserManager(par_mask);
+
+        if (traverser == null) printUsage("failed to create a graph traverser");
+        if (manager == null) printUsage("failed to create a parser manager");
+
+        traverser.setHandler(handler);
+
+        MContainer kopf = null;
+
+        for (Iterator f = filenames.iterator(); f.hasNext(); ) {
+            File source = new File((String) f.next());
+            File idlfile = new File(System.getProperty("user.dir"),
+                                     "CCM_" + source.getName());
+
+            // step (0). run the C preprocessor on the input file.
+
+            try {
+                Process preproc = rt.exec("cpp -P -o " + idlfile +
+                                          " " + include_path + " " + source);
+                preproc.waitFor();
+                if (preproc.exitValue() != 0)
+                    throw new RuntimeException(
+                        "Preprocessor did not exit cleanly."+
+                        "Please verify your include path.");
+            } catch (Exception e) {
+                System.err.println("Error preprocessing "+source+":\n"+e);
+                System.exit(10);
+            }
+
+            // step (1). parse the resulting preprocessed file.
+
+            manager.reset();
+
+            try {
+                kopf = manager.parseFile(idlfile.toString());
+                if (kopf == null) throw new RuntimeException(
+                        "Parser returned a null container");
+            } catch (Exception e) {
+                System.err.println("Error parsing "+source+":\n"+e);
+                System.exit(20);
+            }
+
+            kopf.setIdentifier(source.getName().split("\\.")[0]);
+
+            // step (2). traverse the resulting metamodel graph.
+
+            try {
+                traverser.traverseGraph(kopf);
+            } catch (Exception e) {
+                System.err.println(
+                    "Error generating code from "+source+":\n"+e);
+                System.exit(30);
+            }
+
+            idlfile.deleteOnExit();
+        }
 
         Environment env = new ConsoleEnvironmentImpl(defines);
 
@@ -348,6 +324,7 @@ public class ConsoleCodeGenerator
     }
 
     /**************************************************************************/
+    /* ARGUMENT PARSING */
 
     /**
      * Parse the command line arguments to the console code generator front end.
@@ -412,7 +389,7 @@ public class ConsoleCodeGenerator
                         break;
                     } else if (arg.charAt(0) == 'I') {
                         File path = new File(arg.substring(1));
-                        if (path.isDirectory()) include_path.add(path);
+                        if (path.isDirectory()) include_path += " -I"+path;
                         break;
                     }
                     arg = arg.substring(1);
@@ -421,10 +398,12 @@ public class ConsoleCodeGenerator
                      language_types.contains(arg.toLowerCase()))
                 lang = new String(arg);
             else
-                addFile(arg);
+                filenames.add(arg);
         }
 
         if (lang == null) printUsage("no valid output language specified");
+        if (include_path.trim().equals(""))
+            include_path = " -I"+System.getProperty("user.dir");
     }
 
     private static void setGeneratorMask(String val)
@@ -485,18 +464,6 @@ public class ConsoleCodeGenerator
         } else {
             defines.put(key, value);
         }
-    }
-
-    private static void addFile(String arg)
-    {
-        File file = new File(arg);
-        filenames.add(file.toString());
-
-        String parent = file.getParent();
-        if (parent == null) parent = System.getProperty("user.dir");
-        File path = new File(parent);
-        if (path.isDirectory() && ! include_path.contains(path))
-            include_path.add(path);
     }
 }
 

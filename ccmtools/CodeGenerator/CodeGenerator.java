@@ -198,10 +198,6 @@ abstract public class CodeGenerator
     // kinds) to target language constructs.
     protected Map language_mappings;
 
-    // names of top level files that need to be included somehow to incorporate
-    // external type information from other packages.
-    protected Set extern_includes;
-
     protected File output_dir;
     protected Map output_variables;
 
@@ -217,7 +213,6 @@ abstract public class CodeGenerator
     public final static int FLAG_APPLICATION_FILES    = 0x0001;
     public final static int FLAG_USER_TYPES_FILES     = 0x0002;
     public final static int FLAG_ENVIRONMENT_FILES    = 0x0004;
-    public final static int FLAG_INCLUDE_EXTERN_NODES = 0x0008;
 
     private Stack node_stack;
     private Stack name_stack;
@@ -257,10 +252,6 @@ abstract public class CodeGenerator
                          String[] _language_map)
         throws IOException
     {
-        // include externally defined node information by default.
-
-        flags = FLAG_INCLUDE_EXTERN_NODES;
-
         template_manager = new TemplateManagerImpl(language);
         driver = d;
 
@@ -351,8 +342,6 @@ abstract public class CodeGenerator
         output_variables = new Hashtable();
 
         namespace = new Stack();
-
-        extern_includes = new HashSet();
     }
 
     /**
@@ -715,12 +704,6 @@ abstract public class CodeGenerator
 
         if (idl_type instanceof MTypedefDef) {
             MTypedefDef typedef = (MTypedefDef) idl_type;
-            File source = new File(typedef.getSourceFile());
-            if (! source.toString().equals("")) {
-                List scope = getScope(typedef);
-                scope.add(source.getName().split("\\.")[0]);
-                extern_includes.add(scope);
-            }
             return typedef.getIdentifier();
         }
 
@@ -872,18 +855,6 @@ abstract public class CodeGenerator
             else if (current_node instanceof MParameterDef)
                 c = ((MParameterDef) current_node).getOperation();
             value = getContainerIdentifier(c);
-        } else if (variable.equals("ProvidesSourceFile")) {
-            MProvidesDef provides = (MProvidesDef) current_node;
-            File source = new File(provides.getProvides().getSourceFile());
-            value = source.getName().split("\\.")[0];
-        } else if (variable.equals("SupportsSourceFile")) {
-            MSupportsDef supports = (MSupportsDef) current_node;
-            File source = new File(supports.getSupports().getSourceFile());
-            value = source.getName().split("\\.")[0];
-        } else if (variable.equals("UsesSourceFile")) {
-            MUsesDef uses = (MUsesDef) current_node;
-            File source = new File(uses.getUses().getSourceFile());
-            value = source.getName().split("\\.")[0];
         }
 
         return value;
@@ -898,13 +869,7 @@ abstract public class CodeGenerator
      */
     protected void writeOutputIfNeeded()
     {
-        boolean original = false;
-        boolean correct_type = output_types.contains(current_type);
-
-        if (current_node instanceof MContained)
-            original = ((MContained) current_node).getSourceFile().equals("");
-
-        if (! (correct_type && original)) return;
+        if (! output_types.contains(current_type)) return;
 
         // write out the output strings if the node is defined as global.
 
@@ -1050,18 +1015,6 @@ abstract public class CodeGenerator
             // parent node.
 
             if (! var.startsWith(current_type)) continue;
-
-            // also, we ignore non-module MContained nodes that weren't defined
-            // in the current input file, as long as we've been told to do so.
-            // not that code will never be written to disk for nodes that are
-            // externally defined ; this simply prevents code from being
-            // included in other templates along the way.
-
-            if (((flags & FLAG_INCLUDE_EXTERN_NODES) == 0) &&
-                ((current_node instanceof MContained) &&
-                 (! (current_node instanceof MModuleDef)) &&
-                 (! ((MContained) current_node).getSourceFile().equals(""))))
-                continue;
 
             updateSubvariables(template_manager.getVariables(var));
 

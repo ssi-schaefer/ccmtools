@@ -37,7 +37,6 @@ public class MValueDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private boolean isAbstract;
     private boolean isCustom;
@@ -58,7 +57,6 @@ public class MValueDefImpl
         isTruncatable = false;
 	ContainsList = new ArrayList();
 	AbstractDerivedFromList = new ArrayList();
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -105,10 +103,6 @@ public class MValueDefImpl
     // attribute typeCode:TypeCode
     public TypeCode getTypeCode()               {return TypeCode;}
     public void setTypeCode(TypeCode __arg)     {TypeCode = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -1,9 +1,5 @@
 #include "CCM.idl"
 
-%(MInterfaceDefInclude)s
-%(MComponentDefInclude)s
-%(MHomeDefInclude)s
-
 %(MModuleDef)s
 %(MAttributeDef)s
 %(MConstantDef)s
@@ -18,4 +14,5 @@
 %(MInterfaceDef)s
 %(MComponentDef)s
 %(MHomeDef)s
+
 

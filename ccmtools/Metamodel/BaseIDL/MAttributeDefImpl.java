@@ -34,7 +34,6 @@ public class MAttributeDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private boolean isReadonly_;
 
@@ -47,7 +46,6 @@ public class MAttributeDefImpl
     {
 	GetRaisesSet_ = new HashSet();
 	SetRaisesSet_ = new HashSet();
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -82,10 +80,6 @@ public class MAttributeDefImpl
     // attribute isReadonly:boolean
     public boolean isReadonly()                 {return isReadonly_;}
     public void setReadonly(boolean __arg)      {isReadonly_ = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -38,9 +38,7 @@ public class Main {
     public static void main(String[] args)
         throws Exception
     {
-        List includes = new ArrayList();
-        includes.add(new File(System.getProperty("user.dir")));
-        ParserManager manager = new ParserManager(-1, includes);
+        ParserManager manager = new ParserManager(-1);
 
         MContainer container = null;
         try {

@@ -38,7 +38,6 @@ public class MOperationDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-    private String sourceFile;
 
     private Set CanRaiseSet_;
     private List ParameterList_;
@@ -49,7 +48,6 @@ public class MOperationDefImpl
     {
 	CanRaiseSet_ = new HashSet();
 	ParameterList_ = new ArrayList();
-        sourceFile = new String("");
     }
 
     // override toString()
@@ -95,10 +93,6 @@ public class MOperationDefImpl
     // attribute version:String
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
-
-    // attribute sourceFile:String
-    public String getSourceFile()               {return sourceFile;}
-    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -1,4 +1,8 @@
 #! /bin/sh
 
-${top_srcdir}/test/CppGenerator/test-loader.sh module-nested module_nested/Hello.idl
+idldir=${top_srcdir}/../test/idl/module_nested
+
+${top_srcdir}/test/CppGenerator/test-loader.sh "module-nested" \
+  " " \
+  "${idldir}/Hello.idl"
 

@@ -230,23 +230,6 @@ options { exportVocab = IDL3; }
     }
 
     /*
-     * Check to see which source file the given metamodel is defined in, and set
-     * the appropriate data element. (If the object is not defined in the
-     * original file, it is defined in an included file.)
-     */
-    private void checkSourceFile(MContained contained)
-    {
-        String current = getFilename();
-        String original = manager.getOriginalFilename();
-        if (! current.equals(original))
-            contained.setSourceFile(current);
-        if ((debug & DEBUG_FILE) != 0)
-            System.out.println(
-                "[f] setting "+contained.getIdentifier()+" source file to "+
-                current+((current.equals(original) ? " (original)" : "")));
-    }
-
-    /*
      * See if the given identifier points to an object that's already in the
      * symbol table. If the identifier is found, and points to an object of the
      * same type as the given query object, then check to see if the looked up
@@ -287,7 +270,6 @@ options { exportVocab = IDL3; }
             ((lookup instanceof MInterfaceDef) &&
                 (((MInterfaceDef) lookup).getContentss().size() == 0)) ||
             (lookup instanceof MModuleDef)) {
-            checkSourceFile(lookup);
             return lookup;
         }
 
@@ -341,7 +323,6 @@ options { exportVocab = IDL3; }
             }
 
             item.setDefinedIn(container);
-            checkSourceFile(item);
             container.addContents(item);
 
             if ((debug & DEBUG_CONTAINER) != 0)
@@ -2122,7 +2103,6 @@ component_dcl returns [MComponentDef component = null]
             for (Iterator it = decls.iterator(); it.hasNext(); ) {
                 MContained element = (MContained) it.next();
                 element.setDefinedIn(component);
-                checkSourceFile(element);
 
                 if ((debug & DEBUG_COMPONENT) != 0) {
                     System.out.print(
@@ -2167,8 +2147,6 @@ component_dcl returns [MComponentDef component = null]
                         "' to component '"+component.getIdentifier());
                 }
             }
-
-            checkSourceFile(component);
         }
         RCURLY { symbolTable.popScope(); } ;
 
@@ -2377,17 +2355,9 @@ home_export[MHomeDef home]
 }
     :   exports = export { checkAddContents(home, exports); }
     |   factory = factory_dcl SEMI
-        {
-            factory.setHome(home);
-            home.addFactory(factory);
-            checkSourceFile(factory);
-        }
+        { factory.setHome(home); home.addFactory(factory); }
     |   finder = finder_dcl SEMI
-        {
-            finder.setHome(home);
-            home.addFinder(finder);
-            checkSourceFile(finder);
-        }
+        { finder.setHome(home); home.addFinder(finder); }
     ;
 
 // 132. <factory_dcl> ::= "factory" <identifier>
@@ -2615,39 +2585,6 @@ options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377'; }
      * Set the debug level for this parser class instance.
      */
     public void setDebug(long d) { debug = d; }
-
-    /*
-     * Load an include file, and parse it.
-     */
-    public void handleIncludedFile(String name)
-        throws RecognitionException, TokenStreamException
-    {
-        if ((debug & DEBUG_FILE) != 0)
-            System.out.println("[f] including " + name);
-
-        String to_load = null;
-
-        List path = manager.getIncludePath();
-        for (Iterator p = path.iterator(); p.hasNext(); ) {
-            File test = new File((File) p.next(), name);
-
-            if ((debug & DEBUG_INCLUDE) != 0)
-                System.out.print("[i] trying to include " + test + " ... ");
-
-            if (test.isFile()) {
-                if ((debug & DEBUG_INCLUDE) != 0) System.out.println("found.");
-                to_load = test.toString();
-                break;
-            } else if ((debug & DEBUG_INCLUDE) != 0) {
-                System.out.println("not found.");
-            }
-        }
-
-        if (to_load == null)
-            throw new RuntimeException("Include file '"+name+"' not found.");
-
-        manager.parseFile(to_load);
-    }
 }
 
 SEMI     options { paraphrase = ";" ; } : ';'  ;
@@ -2688,7 +2625,7 @@ options { paraphrase = "an include string in angle brackets"; }
 	:   '<'! IDENT ( '/' IDENT )* '.' IDENT '>'! ;
 
 PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
-    :   '#'
+    :   '#' ( WS )*
         (
             ( "include" ) => "include"
             {
@@ -2697,11 +2634,16 @@ PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
                     System.out.println(label + getText());
                 }
             }
-            ( WS )*
-            ( s:STRING_LITERAL         { handleIncludedFile(s.getText()); }
-            | i:INCLUDE_STRING_LITERAL { handleIncludedFile(i.getText()); }
-            )
-        )?
+            ( WS )* ( s:STRING_LITERAL | i:INCLUDE_STRING_LITERAL )
+        |   ( "pragma" ) => "pragma" ( ~ ( '\n' | '\r' ) )*
+        |   ( "line" ) => "line" ( ~ ( '\n' | '\r' ) )*
+        |   ( "if" ) => "if" ( ~ ( '\n' | '\r' ) )*
+        |   ( "else" ) => "else" ( ~ ( '\n' | '\r' ) )*
+        |   ( "endif" ) => "endif" ( ~ ( '\n' | '\r' ) )*
+        |   ( "define" ) => "define" ( ~ ( '\n' | '\r' ) )*
+        |   ( "ifdef" ) => "ifdef" ( ~ ( '\n' | '\r' ) )*
+        |   ( "ifndef" ) => "ifndef" ( ~ ( '\n' | '\r' ) )*
+        )
         ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
         { $setType(Token.SKIP); newline(); } ;
 
