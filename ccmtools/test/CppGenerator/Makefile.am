@@ -9,7 +9,7 @@ dist_noinst_SCRIPTS = test-loader.sh
 
 # currently under investigation ... uncomment in local copy to test faster.
 
-TESTS = attribute_types.sh
+TESTS = receptacle_types.sh
 
 #TESTS = \
 #  help.sh version.sh \
