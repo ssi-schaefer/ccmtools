@@ -46,17 +46,21 @@ console_impl::~console_impl (  )
 
 long
 console_impl::println ( const std::string& s2 )
-  throw ( error )
+  throw ( error, super_error, fatal_error )
 {
   DEBUGNL ( " console_impl->println ( s2 )" );
 
-  // TODO : IMPLEMENT ME HERE !
   cout << ">> " << s2 << endl;
-  throw error();
+
+  if(s2 == "error")
+    throw error();
+  if(s2 == "super_error")
+    throw super_error();
+  if(s2 == "fatal_error")
+    throw fatal_error();
+
+  return s2.length();
 }
-
-
-
 
 
 //==============================================================================

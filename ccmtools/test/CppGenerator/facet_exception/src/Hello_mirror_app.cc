@@ -53,17 +53,42 @@ CCM_Hello_mirror_impl::ccm_activate (  )
   throw ( localComponents::CCMException )
 {
   DEBUGNL ( " CCM_Hello_mirror_impl->ccm_activate (  )" );
+
   cout << "==== Begin of Test Case =========================" << endl;
   CCM_Utils::SmartPtr<CCM_Console> console = ctx->get_connection_console_mirror();
   
+  string s = "Salomon.Automation";
+  long len = console.ptr()->println(s);
+  assert(len == s.length());
+  
   try {
-    console.ptr()->println("test");
+    string s = "error";
+    console.ptr()->println(s);
+    assert(0);
   }
   catch(CCM_Local::error& e) {
-    cerr << "Aut'sch: Can't call receptacle method println()!" << endl;
+    cout << "OK: error exception catched!" << endl;
   }
+  
+  try {
+    string s = "super_error";
+    console.ptr()->println(s);
+    assert(0);
+  }
+  catch(CCM_Local::super_error& e) {
+    cout << "OK: super_error exception catched!" << endl;
+  }
+  
+  try {
+    string s = "fatal_error";
+    console.ptr()->println(s);
+    assert(0);
+  }
+  catch(CCM_Local::fatal_error& e) {
+    cout << "OK: fatal_error exception catched!" << endl;
+  }
+  
   cout << "==== End of Test Case ===========================" << endl;
-
 }
 
 void
