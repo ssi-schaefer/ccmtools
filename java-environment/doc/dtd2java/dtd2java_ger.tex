@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \author{Robert Lechner}
 \title{Java-Codegenerator f{\"u}r DTDs}
-\date{23. Februar 2004}
+\date{2. April 2004}
 
 \newcommand{\DTD}{{\sffamily\small DTD}}
 \newcommand{\XML}{{\sffamily\small XML}}
@@ -22,20 +22,21 @@ f{\"u}r ein von Hand optimiertes Metamodell. Da das Erstellen eines solchen Mode
 sehr aufwendig ist, stellt \texttt{dtd2java} eine M{\"o}glichkeit dar ohne gro{\ss}en
 Zeitaufwand einen \XML-Parser (mit Datenstruktur) zu erhalten.
 
-\section{das Programm}
+\section{{\"U}bersicht}
 Das Paket \texttt{dtd2java} besteht aus zwei Teilen:
 einem Parser f{\"u}r das \DTD\ und einem Codegenerator,
 der aus dem \DTD\ einen \XML-Parser mit einem einfachen Modell erzeugt.
-In Abbildung \ref{fig:classes} sind die verwendeten Klassen dargestellt.
-\begin{figure}[h]
-\centerline{\includegraphics[width=1.2 \linewidth]{classes.eps}}
+In Abbildung \ref{fig:dtd2java-classes} sind die verwendeten Klassen dargestellt.
+\begin{figure}[ht!]
+\centerline{\includegraphics[width=1.1 \linewidth]{classes.eps}}
 \caption{{\"U}bersicht {\"u}ber das Paket \texttt{dtd2java}}
-\label{fig:classes}
+\label{fig:dtd2java-classes}
 \end{figure}
 
 \subsection{DTD-Parser}
-F{\"u}r den \DTD-Parser wird der Parsergenerator \textsf{ANTLR} ben{\"o}tigt.
-\footnote{ANTLR Translator Generator (http://www.antlr.org)}\\
+F{\"u}r den \DTD-Parser wird der Parsergenerator \textsf{ANTLR}
+\footnote{ANTLR Translator Generator (http://www.antlr.org)}
+ben{\"o}tigt.\\
 Zum Lesen eines \DTD\ ruft man die statische Methode \texttt{DtdParser.parseFile} auf.
 Man erh{\"a}lt eine Instanz von \texttt{DtdFile}, welche alle Elemente des \DTD\ enth{\"a}lt.
 Entities werden automatisch expandiert; Attributlisten werden zusammengefasst.
@@ -65,8 +66,9 @@ Der generierte Code hat die folgenden Eigenschaften:
     $\Rightarrow$ man ben{\"o}tigt zum Ausf{\"u}hren des erzeugten Codes keine
     weiteren Packages (ausgenommen der Java 1.4 Library).
 \end{itemize}
-Zus{\"a}tzlich werden Dateien f{\"u}r das Tool \textsf{dot} erzeugt.
+Zus{\"a}tzlich werden Dateien f{\"u}r das Tool \textsf{dot}
 \footnote{Graphviz (http://www.graphviz.org)}
+erzeugt.
 
 \subsubsection{erzeugter Code}
 Alle Klassen sind von \texttt{DTD\_Container} abgeleitet. {\"U}ber die Methoden \texttt{size}
@@ -82,8 +84,13 @@ Alle Elemente, welche nicht im \DTD\ deklariert wurden, werden als Instanz von
 auch bei unbekannten Elementen m{\"o}glich.\\
 ~\\
 Um die Erweiterbarkeit des erzeugten Modells zu gew{\"a}hrleisten, werden alle Instanzen
-{\"u}ber eine Factory (\texttt{DTD\_Creator}) erzeugt. Zur Demonstration dient das folgende Beispiel:
-~\\[4ex]
+{\"u}ber eine Factory (\texttt{DTD\_Creator}) erzeugt. Zur Demonstration dient das folgende Beispiel:\\
+\begin{figure}[ht!]
+\centerline{\includegraphics[height=10cm]{dtd1.eps}}
+\caption{Erweiterung des generierten Modells}
+\label{fig:dtd2java-dtd1}
+\end{figure}
+~\\
 \begin{minipage}{\linewidth}
 \textbf{XML-Element:}
 \begin{verbatim}
@@ -123,9 +130,9 @@ package test_application;
 import test_model.*;
 import org.xml.sax.*;
 
-public class MyE5 extends E5
+public class MyE9 extends E9
 {
-    public MyE5( Attributes attrs )
+    public MyE9( Attributes attrs )
     {
         super(attrs);
     }
@@ -146,9 +153,9 @@ public class MyFactory extends DTD_Creator
 {
     public DTD_Container create( String qName, Attributes attrs )
     {
-        if( qName.equals(E5.xmlName__) )
+        if( qName.equals(E9.xmlName__) )
         {
-            return new MyE5(attrs);
+            return new MyE9(attrs);
         }
         return super.create(qName, attrs);
     }
@@ -163,5 +170,16 @@ w{\"u}rde der Aufruf wie folgt lauten:
 java.io.File xmlFile = new java.io.File( ... );
 DTD_Container root = DTD_Root.parse( xmlFile, new MyFactory() );
 \end{verbatim}
+
+\newpage
+\section{Klassen}
+Es folgt eine {\"U}bersicht {\"u}ber alle automatisch erzeugten Klassen
+(ohne die Klassen der \DTD-Elemente). Die Klassen der \DTD-Elemente
+sind von \texttt{DTD\_Container} abgeleitet.
+\begin{figure}[ht!]
+\centerline{\includegraphics[width=1.1 \linewidth]{dtd2.eps}}
+\caption{alle automatisch erzeugten Klassen}
+\label{fig:dtd2java-dtd2}
+\end{figure}
 
 \end{document}
