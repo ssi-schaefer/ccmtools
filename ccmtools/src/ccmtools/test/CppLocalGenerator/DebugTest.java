@@ -4,9 +4,9 @@
  * TODO To change the template for this generated file go to
  * Window - Preferences - Java - Code Style - Code Templates
  */
-package ccmtools.CppGeneratorTest;
+package ccmtools.test.CppLocalGenerator;
 
-import ccmtools.CcmtoolsTestCase;
+import ccmtools.test.CcmtoolsTestCase;
 
 /**
  * @author eteinik
@@ -14,12 +14,12 @@ import ccmtools.CcmtoolsTestCase;
  * TODO To change the template for this generated type comment go to Window -
  * Preferences - Java - Code Style - Code Templates
  */
-public class CppGeneratorDebugTest extends CcmtoolsTestCase
+public class DebugTest extends CcmtoolsTestCase
 {
 
     private String ccmtools_dir;
 
-    public CppGeneratorDebugTest(String name)
+    public DebugTest(String name)
     {
         super(name);
         // get current working directory (this is where build.xml is executed)
@@ -35,7 +35,7 @@ public class CppGeneratorDebugTest extends CcmtoolsTestCase
         try {
             runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
                     + test_dir + "/Test.idl");
-            
+
             runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
                     + test_dir + "/Test.idl");
 
@@ -71,7 +71,7 @@ public class CppGeneratorDebugTest extends CcmtoolsTestCase
             runConfix("--packageroot=" + sandbox_dir
                     + " --make --targets=clean");
 
-              }
+        }
         catch(Exception e) {
             fail();
         }

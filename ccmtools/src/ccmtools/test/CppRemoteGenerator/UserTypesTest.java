@@ -17,23 +17,23 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.CppGeneratorTest;
+package ccmtools.test.CppRemoteGenerator;
 
-import ccmtools.CcmtoolsTestCase;
+import ccmtools.test.CcmtoolsTestCase;
 
-/**
+/*******************************************************************************
  * @author eteinik
- *
- * This test case implements test cases for the remote c++ generator.
- * These tests check the code generation process, and the runtime behavior 
- * of the generated code (using Confix' _check_*.cc files).  
- ***/
-public class CppRemoteUserTypesTest extends CcmtoolsTestCase
+ * 
+ * This test case implements test cases for the remote c++ generator. These
+ * tests check the code generation process, and the runtime behavior of the
+ * generated code (using Confix' _check_*.cc files).
+ ******************************************************************************/
+public class UserTypesTest extends CcmtoolsTestCase
 {
 
     private String ccmtoolsDir;
 
-    public CppRemoteUserTypesTest(String name)
+    public UserTypesTest(String name)
     {
         super(name);
         // get current working directory (this is where build.xml is executed)
@@ -53,12 +53,12 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            
+
             String testFile = "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc";
             String implFile = "/impl/Test_console_impl.cc";
-    		copyFile(testDir + testFile, sandboxDir + testFile);
-        	copyFile(testDir + implFile, sandboxDir + implFile);
-        	
+            copyFile(testDir + testFile, sandboxDir + testFile);
+            copyFile(testDir + implFile, sandboxDir + implFile);
+
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {
@@ -67,8 +67,7 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
         }
     }
 
-
-	public void testFacetModuleUserTypes()
+    public void testFacetModuleUserTypes()
     {
         String testDir = ccmtoolsDir
                 + "/test/CppRemoteGenerator/facet_module_user_types";
@@ -78,12 +77,11 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
             String implFile = "/impl/Test_console_impl.cc";
-            String testFile = 
-                "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc";            
-            
+            String testFile = "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc";
+
             copyFile(testDir + testFile, sandboxDir + testFile);
-        	copyFile(testDir + implFile, sandboxDir + implFile);
-        	
+            copyFile(testDir + implFile, sandboxDir + implFile);
+
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {
@@ -92,8 +90,7 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
         }
     }
 
-    
-    public void testFacetException()	
+    public void testFacetException()
     {
         String testDir = ccmtoolsDir
                 + "/test/CppRemoteGenerator/facet_exception";
@@ -102,12 +99,12 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            
+
             String testFile = "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc";
             String implFile = "/impl/Test_iface_impl.cc";
-    		copyFile(testDir + testFile, sandboxDir + testFile);
-        	copyFile(testDir + implFile, sandboxDir + implFile);
-        	
+            copyFile(testDir + testFile, sandboxDir + testFile);
+            copyFile(testDir + implFile, sandboxDir + implFile);
+
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {
@@ -116,8 +113,7 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
         }
     }
 
-        
-    public void testFacetModuleException()	
+    public void testFacetModuleException()
     {
         String testDir = ccmtoolsDir
                 + "/test/CppRemoteGenerator/facet_module_exception";
@@ -126,22 +122,20 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            
+
             String testFile = "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc";
             String implFile = "/impl/Test_iface_impl.cc";
-    		copyFile(testDir + testFile, sandboxDir + testFile);
-        	copyFile(testDir + implFile, sandboxDir + implFile);
-        	
+            copyFile(testDir + testFile, sandboxDir + testFile);
+            copyFile(testDir + implFile, sandboxDir + implFile);
+
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
             fail();
         }
-    }    
+    }
 
-
-        
     // ------------------------------------------------------------------------
     // Receptacle test cases
     // ------------------------------------------------------------------------
@@ -154,15 +148,15 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            
+
             String testFile = "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc";
             copyFile(testDir + testFile, sandboxDir + testFile);
 
             String implFile1 = "/impl/Test_impl.cc";
             String implFile2 = "/impl/Test_inPort_impl.cc";
-        	copyFile(testDir + implFile1, sandboxDir + implFile1);
-        	copyFile(testDir + implFile2, sandboxDir + implFile2);
-        	
+            copyFile(testDir + implFile1, sandboxDir + implFile1);
+            copyFile(testDir + implFile2, sandboxDir + implFile2);
+
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {
@@ -180,15 +174,15 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
 
         try {
             runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            
+
             String testFile = "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc";
             String implFile1 = "/impl/Test_impl.cc";
             String implFile2 = "/impl/Test_inPort_impl.cc";
 
             copyFile(testDir + testFile, sandboxDir + testFile);
             copyFile(testDir + implFile1, sandboxDir + implFile1);
-        	copyFile(testDir + implFile2, sandboxDir + implFile2);
-        	
+            copyFile(testDir + implFile2, sandboxDir + implFile2);
+
             runDefaultConfix(sandboxDir);
         }
         catch(Exception e) {
@@ -196,5 +190,5 @@ public class CppRemoteUserTypesTest extends CcmtoolsTestCase
             fail();
         }
     }
-    
+
 }
