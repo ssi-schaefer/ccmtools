@@ -154,14 +154,8 @@ abstract public class IDLGenerator
 
         String code = join("\n", code_pieces);
 
-        code = code.replaceAll("component",    "\ncomponent");
-        code = code.replaceAll("home",         "\nhome");
-        code = code.replaceAll("interface",    "\ninterface");
-        code = code.replaceAll("module",       "\nmodule");
         code = code.replaceAll("#ifndef",      "\n#ifndef");
-
         code = code.replaceAll("#define(.*)$", "#define\\1\n");
-        code = code.replaceAll("};",           "};\n");
 
         String name = join(file_separator, namespace);
         if (! name.equals("")) name += file_separator;
@@ -190,13 +184,16 @@ abstract public class IDLGenerator
                 tmp.add("module "+i.next()+" {");
             return join("\n", tmp);
         } else if (data_type.equals("CloseNamespace")) {
-            List tmp = new ArrayList();
-            for (Iterator i = namespace.iterator(); i.hasNext(); i.next())
-                tmp.add("};");
-            return join("\n", tmp);
+	    StringBuffer buffer = new StringBuffer();
+            for (Iterator i = namespace.iterator(); i.hasNext(); ) {
+                buffer.append("}; // /module ");
+		buffer.append(i.next());
+		buffer.append("\n");
+	    }
+	    return buffer.toString();
         }
 
-        return super.handleNamespace(data_type, local);
+	return super.handleNamespace(data_type, local);
     }
 
     /**
