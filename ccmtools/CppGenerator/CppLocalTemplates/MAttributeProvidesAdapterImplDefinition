@@ -1,5 +1,5 @@
-%(LanguageType)s
-%(Object)s_impl::%(Identifier)s()
+const %(LanguageType)s
+%(Object)s_impl::%(Identifier)s() const
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" %(Object)s_impl->%(Identifier)s()");

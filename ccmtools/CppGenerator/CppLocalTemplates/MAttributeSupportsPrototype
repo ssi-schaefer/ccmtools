@@ -1,3 +1,5 @@
-  %(LanguageType)s %(Identifier)s (  ) throw ( LocalComponents::CCMException);
-  void %(Identifier)s ( const %(LanguageType)s value ) throw ( LocalComponents::CCMException);
+    const %(LanguageType)s %(Identifier)s() const 
+	throw(LocalComponents::CCMException);
+    void %(Identifier)s(const %(LanguageType)s value) 
+        throw ( LocalComponents::CCMException);
 

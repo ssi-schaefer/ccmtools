@@ -532,16 +532,14 @@ class CCM_%(Identifier)s_impl
     // Callback methods
 
     virtual void set_session_context(LocalComponents::SessionContext* ctx)
-      throw(LocalComponents::CCMException);
+        throw(LocalComponents::CCMException);
     virtual void ccm_activate()
-      throw(LocalComponents::CCMException);
+        throw(LocalComponents::CCMException);
     virtual void ccm_passivate()
-      throw(LocalComponents::CCMException);
+        throw(LocalComponents::CCMException);
     virtual void ccm_remove()
-      throw(LocalComponents::CCMException);
+        throw(LocalComponents::CCMException);
 };
-
-//(MProvidesDefAdapterImplClass)s
 
 %(CloseNamespace)s
 
@@ -593,7 +591,8 @@ CCM_%(Identifier)s_impl::~CCM_%(Identifier)s_impl()
 %(MSupportsDefImplDefinition)s
 
 void
-CCM_%(Identifier)s_impl::set_session_context(LocalComponents::SessionContext* context)
+CCM_%(Identifier)s_impl::set_session_context(
+    LocalComponents::SessionContext* context)
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" CCM_%(Identifier)s_impl->set_session_context()");
@@ -605,6 +604,8 @@ CCM_%(Identifier)s_impl::ccm_activate()
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" CCM_%(Identifier)s_impl->ccm_activate()");
+
+    // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
@@ -612,6 +613,8 @@ CCM_%(Identifier)s_impl::ccm_passivate()
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" CCM_%(Identifier)s_impl->ccm_passivate()");
+
+    // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
@@ -619,11 +622,12 @@ CCM_%(Identifier)s_impl::ccm_remove()
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" CCM_%(Identifier)s_impl->ccm_remove()");
+
+    // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 %(MProvidesDefGetFacetDefinition)s
 
-//(MProvidesDefAdapterImplClassImpl)s
 %(CloseNamespace)s
 
 

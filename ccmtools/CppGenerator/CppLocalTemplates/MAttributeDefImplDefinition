@@ -14,3 +14,4 @@ CCM_%(ComponentType)s_impl::%(Identifier)s(const %(LanguageType)s value)
     %(Identifier)s_ = value;
 }
 
+
