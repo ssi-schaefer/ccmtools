@@ -413,10 +413,17 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             if( var!=null )
             {
                 // local variable
-                OclType t = getLocalVariableType(code);
+                ElementType t = getLocalVariableType(code);
                 if( t!=null )
                 {
-                    pc.setOclType(t);
+                    if( t.oclType_!=null )
+                    {
+                        pc.setOclType(t.oclType_);
+                    }
+                    if( lastIdlType_==null )
+                    {
+                        lastIdlType_ = t.idlType_;
+                    }
                 }
                 return var;
             }
@@ -531,13 +538,9 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     {
         MExpression expr = pfe.getExpression();
         MPropertyCall pc = pfe.getPropertyCall();
-        if( pfe.isCollection() )
-        {
-            return getCollectionOperationCode(expr,pc,conCode,pfe);
-        }
         ElementType etExpr = typeChecker_.makeType(expr,conCode);
         lastIdlType_ = null;
-        String exprCode = "("+makeCode(expr,conCode)+")";
+        String exprCode = makeCode(expr,conCode);
         OclType typeExpr = expr.getOclType();
         if( typeExpr==null )
         {
@@ -555,6 +558,11 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         {
             etExpr.idlType_ = lastIdlType_;
         }
+        if( pfe.isCollection() )
+        {
+            return getCollectionOperationCode(expr,pc,conCode,pfe,exprCode,etExpr);
+        }
+        exprCode = "(" + exprCode + ")";
         ConstraintCode fake = getConstraintCode(conCode, lastIdlType_);
         if( pc.getCallParameters()==null && pc.isPrevious() )
         {
@@ -579,6 +587,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             lastIdlType_ = null;
             if( typeExpr instanceof OclCollection )
             {
+                //return collect_shorthand(exprCode,pc,conCode,pfe);
                 return error("shorthand for 'collect' is not implemented");
             }
             if( typeExpr instanceof OclString )
@@ -741,16 +750,16 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
 
 
     private String getCollectionOperationCode( MExpression expr, MPropertyCall pc,
-                                               ConstraintCode conCode, MExpression parent )
+                                               ConstraintCode conCode, MExpression parent,
+                                               String exprCode, ElementType etExpr )
     {
         String cppCollection, cppItem;
         String name = pc.getName();
-        String exprCode = makeCode(expr,conCode);
         if( !isHelper(exprCode) )
         {
             exprCode = "("+exprCode+")";
         }
-        OclType collType = expr.getOclType();
+        OclType collType = etExpr.oclType_;
         if( collType==null )
         {
             collType = typeChecker_.makeType(expr,conCode).oclType_;
@@ -985,17 +994,20 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         if( name.equals("select") )
         {
             parent.setOclType(collectionType);
-            return make_Collection_select(pc, cppCollection, cppItem, exprCode, conCode, false, itemType);
+            return make_Collection_select(pc, cppCollection, cppItem, exprCode,
+                                          conCode, false, itemType);
         }
         if( name.equals("reject") )
         {
             parent.setOclType(collectionType);
-            return make_Collection_select(pc, cppCollection, cppItem, exprCode, conCode, true, itemType);
+            return make_Collection_select(pc, cppCollection, cppItem, exprCode,
+                                          conCode, true, itemType);
         }
         if( name.equals("one") )
         {
             parent.setOclType(creator_.createTypeBoolean());
-            String c = make_Collection_select(pc, cppCollection, cppItem, exprCode, conCode, false, itemType);
+            String c = make_Collection_select(pc, cppCollection, cppItem, exprCode,
+                                              conCode, false, itemType);
             String s = getExpr_Collection_size(c, conCode);
             String op = getLanguageOperator(OclConstants.OPERATOR_EQUAL);
             String v = getLiteral_Integer(1, conCode);
@@ -1004,22 +1016,26 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         if( name.equals("any") )
         {
             parent.setOclType(itemType);
-            String c = make_Collection_select(pc, cppCollection, cppItem, exprCode, conCode, false, itemType);
+            String c = make_Collection_select(pc, cppCollection, cppItem, exprCode,
+                                              conCode, false, itemType);
             return getExpr_Collection_any(c, cppItem, conCode);
         }
         if( name.equals("collect") )
         {
-            return make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem, "collect");
+            return make_collect(pc, conCode, itemType, collType, parent,
+                                exprCode, cppItem, "collect", etExpr);
         }
         if( name.equals("isUnique") )
         {
-            String c = make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem, "isUnique");
+            String c = make_collect(pc, conCode, itemType, collType, parent,
+                                    exprCode, cppItem, "isUnique", etExpr);
             parent.setOclType(creator_.createTypeBoolean());
             return getExpr_Collection_isUnique(c, conCode);
         }
         if( name.equals("sortedBy") )
         {
-            String c = make_collect(pc, conCode, itemType, collType, parent, exprCode, cppItem, "sortedBy");
+            String c = make_collect(pc, conCode, itemType, collType, parent,
+                                    exprCode, cppItem, "sortedBy", etExpr);
             parent.setOclType(creator_.createTypeSequence(itemType));
             return getExpr_Collection_sortedBy(exprCode, c, cppItem, conCode);
         }
@@ -1175,19 +1191,57 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     }
 
 
+    private static int dummyIteratorCounter_;
+
+
     private String make_collect( MPropertyCall pc, ConstraintCode conCode, OclType itemType,
                                  OclType collType, MExpression parent, String inputVarName,
-                                 String inputItemType, String operationName )
+                                 String inputItemType, String operationName,
+                                 ElementType etCollection )
     {
         MPropertyCallParameters pcp = pc.getCallParameters();
         if( pcp==null )
         {
-            return error("["+operationName+"]: no parameters");
+            return error("["+operationName+"]: no parameters  [pcp]");
+        }
+        MActualParameters ap = pcp.getParameters();
+        if( ap==null )
+        {
+            return error("["+operationName+"]: no parameters  [ap]");
         }
         MDeclarator decl = pcp.getDeclarator();
         if( decl==null )
         {
-            return error("["+operationName+"]: no declarator");
+            boolean everything_is_ok = false;
+            Iterator param1it = ap.getExpressions().iterator();
+            if( param1it.hasNext() )
+            {
+                Object param1obj = param1it.next();
+                if( param1obj instanceof MPropertyCall )
+                {
+                    try
+                    {
+                        String dummyIteratorName = "DUMMY_ITERATOR_NAME_" + dummyIteratorCounter_;
+                        dummyIteratorCounter_++;
+                        decl = creator_.createDeclarator(dummyIteratorName);
+                        MPropertyCall pcL = creator_.createPropertyCall(dummyIteratorName,false);
+                        MPostfixExpression dummyPfe = creator_.createPostfixExpression(pcL,
+                                                        (MPropertyCall)param1obj, false);
+                        ap = creator_.createActualParameters(dummyPfe);
+                        pcp = creator_.createPropertyCallParameters(decl, ap);
+                        pc.setCallParameters(pcp);
+                        everything_is_ok = true;
+                    }
+                    catch(Exception e)
+                    {
+                        return error("["+operationName+"]: exception: "+e);
+                    }
+                }
+            }
+            if( !everything_is_ok )
+            {
+                return error("["+operationName+"]: no declarator");
+            }
         }
         Iterator it1 = decl.getNames().iterator();
         if( !it1.hasNext() )
@@ -1201,7 +1255,14 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         }
         String resultVarName = getNextHelperName();
         pushLocalVariables();
-        iteratorVarName = newLocalVariable(iteratorVarName, itemType);
+        if( itemType==null && OCL_DEBUG_OUTPUT )
+        {
+            System.err.println("warning: OclStandardGenerator.make_collect : itemType==null");
+        }
+        ElementType etItem = new ElementType();
+        etItem.oclType_ = itemType;
+        etItem.idlType_ = OclNormalization.makeItemTypeOfCollection(etCollection.idlType_);
+        iteratorVarName = newLocalVariable(iteratorVarName, etItem);
         String oldHelperCode = conCode.helpers_;
         conCode.helpers_ = "";
         String expression = getParameterCode(pc,0,conCode);

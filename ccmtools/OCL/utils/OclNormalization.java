@@ -1281,4 +1281,28 @@ public class OclNormalization
         }
         return obj.toString();  // an user type
     }
+
+
+    /**
+     * Returns the type of the items of a collection.
+     */
+    public static MIDLType makeItemTypeOfCollection( MIDLType collectionType )
+    {
+        if( collectionType==null )
+        {
+            return null;
+        }
+        if( collectionType instanceof MAliasDef )
+        {
+            return makeItemTypeOfCollection( ((MTyped)collectionType).getIdlType() );
+        }
+        if( (collectionType instanceof MArrayDef)||(collectionType instanceof MSequenceDef) )
+        {
+            return ((MTyped)collectionType).getIdlType();
+        }
+        System.err.println("error: OclNormalization.makeItemTypeOfCollection : collectionType="+
+            collectionType.getClass().getName());
+        return null;
+    }
+
 }

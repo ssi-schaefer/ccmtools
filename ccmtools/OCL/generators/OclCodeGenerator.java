@@ -158,11 +158,22 @@ public abstract class OclCodeGenerator
     }
 
 
-    protected String newLocalVariable( String key, OclType t )
+    protected String newLocalVariable( String key, OclType ot )
     {
         String value = getNextHelperName();
         localVariableNames_.put(key, value);
-        localVariableTypes_.put(key, t);
+        ElementType et = new ElementType();
+        et.oclType_ = ot;
+        localVariableTypes_.put(key, et);
+        return value;
+    }
+
+
+    protected String newLocalVariable( String key, ElementType et )
+    {
+        String value = getNextHelperName();
+        localVariableNames_.put(key, value);
+        localVariableTypes_.put(key, et);
         return value;
     }
 
@@ -173,9 +184,9 @@ public abstract class OclCodeGenerator
     }
 
 
-    protected OclType getLocalVariableType( String key )
+    protected ElementType getLocalVariableType( String key )
     {
-        return (OclType)localVariableTypes_.get(key);
+        return (ElementType)localVariableTypes_.get(key);
     }
 
 
