@@ -1,5 +1,5 @@
 %(LanguageType)s %(Object)sReceptacleAdapter::%(Identifier)s( %(ParameterDefLocal)s )
-    %(MExceptionDef)s
+    %(LocalExceptions)s
 {
     LDEBUGNL(CCM_REMOTE, " %(Object)sReceptacleAdapter->%(Identifier)s()"); 
 %(ConvertReceptacleParameterToCorba)s

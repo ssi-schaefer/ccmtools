@@ -1,1 +1,28 @@
-%(Identifier)s,
+/***
+ * CORBA converter for exception %(Identifier)s (header file)
+ *
+ ***/
+
+#ifndef __EXCEPTION_CONVERTER_%(PreprocIdentifier)s__H__
+#define __EXCEPTION_CONVERTER_%(PreprocIdentifier)s__H__
+
+// TODO: implement converter
+
+#endif // __EXCEPTION_CONVERTER_%(PreprocIdentifier)s__H__
+
+<<<<<<<SPLIT>>>>>>>
+/***
+ * CORBA converter for exception %(Identifier)s (implementation file)
+ *
+ ***/
+
+#include <WX/Utils/debug.h> 
+
+#include <CCM_Remote/PrimitiveConverter.h>
+#include "%(Identifier)s_remote.h"
+
+using namespace std;
+
+namespace CCM_Remote {
+
+} // /namespace CCM_Remote

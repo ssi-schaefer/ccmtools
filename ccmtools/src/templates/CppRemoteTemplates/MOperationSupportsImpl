@@ -1,6 +1,6 @@
 %(CORBAType)s 
 %(Object)s_impl::%(Identifier)s (%(MParameterDefCORBA)s)
-    %(MExceptionDef)s
+    %(MExceptionDefCORBA)s
 {
     LDEBUGNL(CCM_REMOTE, " %(Object)s_impl::%(Identifier)s()");
 %(ConvertFacetParameterToCpp)s
