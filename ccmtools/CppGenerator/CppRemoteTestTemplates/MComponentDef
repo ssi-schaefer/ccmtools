@@ -2,12 +2,13 @@
 #include <iostream>
 #include <string>
 #include <CCM_Utils/Debug.h>
+#include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
 #include <%(IncludeNamespace)s/%(HomeType)s_remote.h>
-#include <%(Identifier)s.h>
+#include <%(IdlFileNamespace)s%(Identifier)s.h>
 
 using namespace std;
 using namespace CCM_Utils;
@@ -54,17 +55,16 @@ int main (int argc, char *argv[])
   CORBA::Object_var obj = orb->resolve_initial_references ("NameService");
   CosNaming::NamingContextExt_var nc =
     CosNaming::NamingContextExt::_narrow (obj);
-  assert (!CORBA::is_nil (nc));
 
   // Deployment 
 
   // Find ComponentHomes in the Naming-Service
   obj = nc->resolve_str ("%(HomeType)s:1.0");
   assert (!CORBA::is_nil (obj));
-  %(HomeType)s_var my%(HomeType)s = %(HomeType)s::_narrow (obj);
+  %(IdlHomeType)s_var my%(HomeType)s = %(IdlHomeType)s::_narrow (obj);
 
   // Create component instances
-  %(Identifier)s_var my%(Identifier)s =  my%(HomeType)s->create();
+  %(IdlIdentifier)s_var my%(Identifier)s = my%(HomeType)s->create();
 
   // Provide facets   
 %(MProvidesDefFacetCreate)s

@@ -242,7 +242,7 @@ public class CppRemoteGeneratorImpl
 	// there is no CCM_Local, CCM_Remote or CCM_Session_ included.
 	if (data_type.equals("ShortNamespace")) {
 	    if(names.size() > 2)
-		return join("::", slice(names, 2));
+		return join("::", slice(names, 2)) + "::";
 	    else
 		return "";
         } 
@@ -252,10 +252,33 @@ public class CppRemoteGeneratorImpl
 	}
 
 	if (data_type.equals("Namespace")) {
-            return join("::", slice(names, 2));
+	    List NamespaceList = slice(names, 2);
+	    if(NamespaceList.size() > 0)
+		return "::" + join("::", NamespaceList);
+	    else
+		return "";
         } 
 	else if (data_type.equals("FileNamespace")) {
             return join("_", slice(names, 1));
+        } 
+	else if (data_type.equals("IdlFileNamespace")) {
+	    if(names.size() > 2) {
+		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
+		if(IdlFileList.size() > 0)
+		    return join("_", IdlFileList) + "_";
+		else
+		    return "";
+	    }
+	    else
+		return "";
+        } 
+	else if (data_type.equals("IdlNamespace")) {
+	    if(names.size() > 2) {
+		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
+		return join("::", IdlFileList) + "::";
+	    }
+	    else
+		return "";
         } 
 	else if (data_type.equals("IncludeNamespace")) {
             return join("/", slice(names, 2));
@@ -427,6 +450,33 @@ public class CppRemoteGeneratorImpl
     }
 
 
+    protected String data_MHomeDef(String data_type, String data_value)
+    {
+        MHomeDef home = (MHomeDef) current_node;
+        MComponentDef component = home.getComponent();
+
+        String home_id = home.getIdentifier();
+        String component_id = component.getIdentifier();
+
+        if(data_type.endsWith("ComponentType")) {
+            return component_id;
+        } 
+	else {
+	    return super.data_MHomeDef(data_type,data_value);
+	}
+    }
+
+
+    protected String data_MProvidesDef(String data_type, String data_value)
+    {
+        MComponentDef component = ((MProvidesDef) current_node).getComponent();
+
+        if (data_type.equals("ComponentType")) {
+	    return component.getIdentifier();
+        }
+	return super.data_MProvidesDef(data_type,data_value);
+    }
+
     /**     
      * Write generated code to an output file.
      * Each global template consists of two sections separated by 
@@ -597,14 +647,26 @@ public class CppRemoteGeneratorImpl
 
 	MIDLType idl_type = object.getIdlType();
 	String base_type = getBaseIdlType(object);
-	String corba_type;
+	String corba_type = "";
 
         if (CORBA_mappings.containsKey(base_type)) {
 	    // Primitive data types are mapped via map.
 	    corba_type = (String) CORBA_mappings.get(base_type);
 	}
-	else {
-	    corba_type = base_type; 
+	else if(object instanceof MContained) {
+	    // Contained types are mapped with CORBA namespace
+	    List scope = getScope((MContained)object);
+	    if(scope.size() > 0)
+		corba_type = "::" + join("::", scope) + "::" + base_type; 
+	    else
+		corba_type = "::" + base_type;
+	}
+	else if (idl_type instanceof MTypedefDef) {
+	    List scope = getScope((MContained)idl_type);
+	    if(scope.size() > 0)
+		corba_type = "::" + join("::", scope) + "::" + base_type;  
+	    else
+		corba_type = "::" + base_type;
 	}
 
 	// Handle operation parameter types and passing rules 
@@ -780,7 +842,7 @@ public class CppRemoteGeneratorImpl
 	MParameterMode direction = p.getDirection();
 	
 	List ret = new ArrayList();
-	ret.add("  CCM_Local::" + idl_struct.getIdentifier() + " " + CppPrefix 
+	ret.add("  CCM_Local::" + getFullScopeIdentifier(idl_struct) + " " + CppPrefix 
 		+ p.getIdentifier() + ";"); 
 	
 	if(direction != MParameterMode.PARAM_OUT) {
@@ -818,7 +880,7 @@ public class CppRemoteGeneratorImpl
 
 	if(sequence_type instanceof MPrimitiveDef
 	   || sequence_type instanceof MStringDef) {
-	    ret.add("  CCM_Local::" + alias.getIdentifier() + " parameter_"
+	    ret.add("  CCM_Local::" + getFullScopeIdentifier(alias) + " parameter_"
 		    + p.getIdentifier() + ";");
 
 	    if(p.getDirection() != MParameterMode.PARAM_OUT) {	
@@ -833,12 +895,12 @@ public class CppRemoteGeneratorImpl
 	    MStructDef idl_struct = (MStructDef)sequence_type;
 	    String CorbaPrefix = "CORBA_item_";
 	    String CppPrefix = "Cpp_item_";
-	    ret.add("  CCM_Local::" + alias.getIdentifier() + " parameter_"
+	    ret.add("  CCM_Local::" + getFullScopeIdentifier(alias) + " parameter_"
 		    + p.getIdentifier() + ";");
 
 	    if(p.getDirection() != MParameterMode.PARAM_OUT) {	
 		ret.add("  for(unsigned long i=0; i< " + p.getIdentifier() + ".length(); i++) {");
-		ret.add("  " + idl_struct.getIdentifier() + " " + CorbaPrefix +  p.getIdentifier()
+		ret.add("  ::" + getFullScopeIdentifier(idl_struct) + " " + CorbaPrefix +  p.getIdentifier()
 			+ " = " + p.getIdentifier() + "[i];");
 		ret.add(convertStructParameterFromCorbaToCpp(p,idl_struct, 
 							     CorbaPrefix, CppPrefix)); 
@@ -881,12 +943,12 @@ public class CppRemoteGeneratorImpl
 	else if(idl_type instanceof MStructDef) { 
 	    MTypedefDef idl_typedef = (MTypedefDef)idl_type;
 	    MStructDef idl_struct = (MStructDef)idl_typedef;
-	    ret_string = "  CCM_Local::" + idl_struct.getIdentifier() + " result;"; 
+	    ret_string = "  CCM_Local::" + getFullScopeIdentifier(idl_struct) + " result;"; 
 	}
 	else if(idl_type instanceof MAliasDef) {
 	    MAliasDef alias = (MAliasDef)idl_type;
 	    if(alias.getIdlType() instanceof MSequenceDef) {
-		ret_string = "  CCM_Local::" + alias.getIdentifier() + " result;";
+		ret_string = "  CCM_Local::" + getFullScopeIdentifier(alias) + " result;";
 	    }
 	    else {
 		// all other idl alias types
@@ -1026,8 +1088,8 @@ public class CppRemoteGeneratorImpl
 	    return "";
 	}
 	else if(direction == MParameterMode.PARAM_OUT) {
-	    ret.add("  " + CorbaPrefix + p.getIdentifier() + " = new " 
-		    + idl_struct.getIdentifier() + ";");
+	    ret.add("  " + CorbaPrefix + p.getIdentifier() + " = new ::" 
+		    + getFullScopeIdentifier(idl_struct) + ";");
 	    ItemAccess = "->";
 	}
 	else if(direction == MParameterMode.PARAM_INOUT) {
@@ -1070,7 +1132,7 @@ public class CppRemoteGeneratorImpl
 	if(sequence_type instanceof MPrimitiveDef
 	   || sequence_type instanceof MStringDef) {
 	    if(p.getDirection() == MParameterMode.PARAM_OUT) {	
-		ret.add("  " + p.getIdentifier() + " = new " + alias.getIdentifier() + ";"); 
+		ret.add("  " + p.getIdentifier() + " = new ::" + getFullScopeIdentifier(alias) + ";"); 
 		ret.add("  " + p.getIdentifier() + "->length(parameter_" 
 			+ p.getIdentifier() + ".size());");
 	        ret.add("  for(unsigned long i=0; i< parameter_" + p.getIdentifier() 
@@ -1097,14 +1159,14 @@ public class CppRemoteGeneratorImpl
 	    String CppPrefix  = "Cpp_item_";
 
 	    if(p.getDirection() == MParameterMode.PARAM_OUT) {	
-		ret.add("  " + p.getIdentifier() + " = new " + alias.getIdentifier() + ";"); 
+		ret.add("  " + p.getIdentifier() + " = new ::" + getFullScopeIdentifier(alias) + ";"); 
 		ret.add("  " + p.getIdentifier() + "->length(parameter_" 
 			+ p.getIdentifier() + ".size());");
 		ret.add("  for(unsigned long i=0; i< parameter_" + p.getIdentifier() 
 			+ ".size(); i++) {");
-		ret.add("  CCM_Local::" + idl_struct.getIdentifier() + " " + CppPrefix 
+		ret.add("  CCM_Local::" + getFullScopeIdentifier(idl_struct) + " " + CppPrefix 
 			+ p.getIdentifier() + "= parameter_" + p.getIdentifier() + "[i];");
-		ret.add("  " +  idl_struct.getIdentifier() + "_var " + CorbaPrefix 
+		ret.add("  ::" +  getFullScopeIdentifier(idl_struct) + "_var " + CorbaPrefix 
 			+ p.getIdentifier() + ";");
 		ret.add(convertStructParameterFromCppToCorba(p,idl_struct,CorbaPrefix, CppPrefix)); 
 		ret.add("  (*" + p.getIdentifier() + ")[i] = " + CorbaPrefix 
@@ -1116,9 +1178,9 @@ public class CppRemoteGeneratorImpl
 			+ p.getIdentifier() + ".size());");
 		ret.add("  for(unsigned long i=0; i< parameter_" + p.getIdentifier() 
 			+ ".size(); i++) {");
-		ret.add("  CCM_Local::" + idl_struct.getIdentifier() + " " + CppPrefix 
+		ret.add("  CCM_Local::" + getFullScopeIdentifier(idl_struct) + " " + CppPrefix 
 			+ p.getIdentifier() + "= parameter_" + p.getIdentifier() + "[i];");
-		ret.add("  " +  idl_struct.getIdentifier() + " " + CorbaPrefix 
+		ret.add("  ::" +  getFullScopeIdentifier(idl_struct) + " " + CorbaPrefix 
 			+ p.getIdentifier() + ";");
 		ret.add(convertStructParameterFromCppToCorba(p,idl_struct,CorbaPrefix, CppPrefix)); 
 		ret.add("  " + p.getIdentifier() + "[i] = " + CorbaPrefix 
@@ -1204,9 +1266,9 @@ public class CppRemoteGeneratorImpl
 						       String CppPrefix) 
     {
 	List ret = new ArrayList();
-	ret.add("  " 
-		+ idl_struct.getIdentifier() + "_var " + CorbaPrefix + " = new " 
-		+ idl_struct.getIdentifier() + ";"); 
+	ret.add("  ::" 
+		+ getFullScopeIdentifier(idl_struct) + "_var " + CorbaPrefix + " = new ::" 
+		+ getFullScopeIdentifier(idl_struct) + ";"); 
 	
 	for (Iterator members = idl_struct.getMembers().iterator(); members.hasNext(); ) {
 	    MFieldDef member = (MFieldDef)members.next();
@@ -1238,8 +1300,8 @@ public class CppRemoteGeneratorImpl
 
 	if(sequence_type instanceof MPrimitiveDef
 	   || sequence_type instanceof MStringDef) {
-    	    ret.add("  " + alias.getIdentifier() + "_var return_value = new " 
-		    + alias.getIdentifier() + ";"); 
+    	    ret.add("  ::" + getFullScopeIdentifier(alias) + "_var return_value = new ::" 
+		    + getFullScopeIdentifier(alias) + ";"); 
 	    ret.add("  return_value->length(result.size());");
 	    ret.add("  for(unsigned long i=0; i< result.size(); i++) {");
 	    ret.add("    (*return_value)[i] = CCM::" + base_type 
@@ -1250,11 +1312,11 @@ public class CppRemoteGeneratorImpl
 	    MStructDef idl_struct = (MStructDef)sequence_type;
 	    String CorbaPrefix = "CORBA_item_result";
 	    String CppPrefix = "Cpp_item_result";
-	    ret.add("  " + alias.getIdentifier() + "_var return_value = new " 
-		    + alias.getIdentifier() + ";"); 
+	    ret.add("  ::" + getFullScopeIdentifier(alias) + "_var return_value = new ::" 
+		    + getFullScopeIdentifier(alias) + ";"); 
 	    ret.add("  return_value->length(result.size());");
 	    ret.add("  for(unsigned long i=0; i< result.size(); i++) {");
-	    ret.add("  CCM_Local::" + idl_struct.getIdentifier() + " " 
+	    ret.add("  CCM_Local::" + getFullScopeIdentifier(idl_struct) + " " 
 		    + CppPrefix + " = result[i];");
 	    ret.add(convertStructResultFromCppToCorba(idl_struct,CorbaPrefix, CppPrefix)); 
 	    ret.add("  (*return_value)[i] = " + CorbaPrefix + ";");

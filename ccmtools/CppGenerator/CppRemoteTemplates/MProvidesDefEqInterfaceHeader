@@ -1,2 +1,2 @@
-      %(ProvidesType)s_ptr provide_%(Identifier)s();
+      ::%(ProvidesType)s_ptr provide_%(Identifier)s();
 

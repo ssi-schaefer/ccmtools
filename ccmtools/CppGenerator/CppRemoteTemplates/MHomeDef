@@ -7,11 +7,12 @@
 #define __HOME__%(Identifier)s__REMOTE__H__
 
 #include "%(ComponentType)s_remote.h"
+
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_gen.h>
 #include <CCM_Local/%(IncludeNamespace)s/%(Identifier)s_app.h>
 
 // Include CORBA stubs generated from the IDL2 files
-#include <%(Identifier)s.h> 
+#include <%(IdlFileNamespace)s%(Identifier)s.h> 
 
 %(OpenNamespace)s
 
@@ -20,11 +21,11 @@
   //==========================================================================
 
   class %(Identifier)s_impl :
-    virtual public %(ShortNamespace)sPOA_%(Identifier)s,
+    virtual public POA_%(ShortNamespace)s%(Identifier)s,
     virtual public PortableServer::RefCountServantBase
     {
     private:
-      CCM_Local::%(Namespace)s::CCM_%(Identifier)s* local_home;
+      CCM_Local%(Namespace)s::CCM_%(Identifier)s* local_home;
       CCM::SessionContainer* ccm_container;
       
     public:
@@ -97,7 +98,7 @@ using namespace CCM_Utils;
   : ccm_container (c)
 {
   DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
-  local_home = dynamic_cast<CCM_Local::%(Namespace)s::CCM_%(Identifier)s*>
+  local_home = dynamic_cast<CCM_Local%(Namespace)s::CCM_%(Identifier)s*>
     (create_%(Identifier)s());
 }
 
@@ -117,8 +118,8 @@ using namespace CCM_Utils;
   DEBUGNL(" %(Identifier)s_impl::create()");
 
   // create the local_component
-  CCM_Local::%(Namespace)s::CCM_%(ComponentType)s_impl* local_component = 
-    dynamic_cast<CCM_Local::%(Namespace)s::CCM_%(ComponentType)s_impl*>(local_home->create());
+  CCM_Local%(Namespace)s::CCM_%(ComponentType)s_impl* local_component = 
+    dynamic_cast<CCM_Local%(Namespace)s::CCM_%(ComponentType)s_impl*>(local_home->create());
 
   // create component remote adapter
   PortableServer::ServantBase_var component_adapter =
@@ -208,7 +209,7 @@ extern "C" {
     info.component_absolute_name = "::%(ComponentType)s";
     info.component_id = "IDL:%(ComponentType)s:1.0";
     info.home_instance = NULL; // TODO
-    info.home_glue = new CCM_Remote::%(Namespace)s::%(Identifier)s_impl(container); 
+    info.home_glue = new CCM_Remote%(Namespace)s::%(Identifier)s_impl(container); 
     container->load(info);
     Components::CCMHome_var hp = container->get_CCM_home(); 
     CosNaming::Name_var n  = ns->to_name (registration_name);

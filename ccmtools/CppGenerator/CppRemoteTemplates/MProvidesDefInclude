@@ -1,1 +1,1 @@
-#include <CCM_Local/%(ProvidesType)s.h>
+#include <%(ProvidesInclude)s.h>

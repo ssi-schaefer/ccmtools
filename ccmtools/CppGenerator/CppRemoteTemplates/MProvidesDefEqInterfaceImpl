@@ -1,6 +1,6 @@
 // %(Identifier)s
 
-%(ProvidesType)s_ptr %(ComponentType)s_impl::provide_%(Identifier)s()
+::%(ProvidesType)s_ptr %(ComponentType)s_impl::provide_%(Identifier)s()
 {
   DEBUGNL(" %(ComponentType)s_impl::provide_%(Identifier)s()");
 
@@ -9,7 +9,7 @@
     CORBA::Object_var _facet_ref = 
       ccm_container->activate_facet(this, "%(Identifier)s",NULL/* _instance_for_facet_calc*/,
 				 %(Identifier)s_facet_adapter);
-    reference_for_facet_%(Identifier)s = %(ProvidesType)s::_narrow(_facet_ref);
+    reference_for_facet_%(Identifier)s = ::%(ProvidesType)s::_narrow(_facet_ref);
   }
-  return %(ProvidesType)s::_duplicate (reference_for_facet_%(Identifier)s);
+  return ::%(ProvidesType)s::_duplicate (reference_for_facet_%(Identifier)s);
 }

@@ -1,2 +1,2 @@
-#include <CCM_Local/%(UsesType)s.h> 
+#include <%(UsesInclude)s.h>
 

@@ -112,6 +112,17 @@ public class CppRemoteTestGeneratorImpl
 	else if (data_type.equals("FileNamespace")) {
             return join("_", slice(names, 1));
         } 
+	else if (data_type.equals("IdlFileNamespace")) {
+	    if(names.size() > 2) {
+		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
+		if(IdlFileList.size() > 0)
+		    return join("_", IdlFileList) + "_";
+		else
+		    return "";
+	    }
+	    else
+		return "";
+        } 
 	else if (data_type.equals("IncludeNamespace")) {
             return join("/", slice(names, 1));
         } 
@@ -182,26 +193,6 @@ public class CppRemoteTestGeneratorImpl
 
     /**************************************************************************/
 
-
-    /**
-     * Load an appropriate template (based on the value in the template_name
-     * argument) for the given child, and fill out its variable information.
-     *
-     * @param child MInterfaceDef node to gather information from.
-     * @param template_name the name of the template to load for variable
-     *        substitution.
-     * @return a string containing the variable-substituted template requested.
-    protected Map getTwoStepVariables(MInterfaceDef iface,
-                                      MOperationDef operation,
-                                      MContained container)
-    {
-	Debug.println(Debug.METHODS,"getTwoStepVariables(" + iface + ", " 
-		      + operation + ", " + container + ")");
-        Map local_vars = new Hashtable();
-        return local_vars;
-    }
-    */
-   
     protected Map getTwoStepOperationVariables(MOperationDef operation,
                                                MContained container)
     {
@@ -221,6 +212,65 @@ public class CppRemoteTestGeneratorImpl
         return vars;
     }
 
+    protected String data_MComponentDef(String data_type, String data_value)
+    {
+        MComponentDef component = (MComponentDef) current_node;
+        MHomeDef home = null;
+
+        try {
+            home = (MHomeDef) component.getHomes().iterator().next();
+            if (home == null) throw new RuntimeException();
+        } catch (Exception e) {
+            throw new RuntimeException("Component '"+component.getIdentifier()+
+                                       "' does not have exactly one home.");
+        }
+	List HomeScope = getScope((MContained)home);
+	List ComponentScope = getScope((MContained)component);
+
+        if (data_type.equals("HomeType")) {
+	    return home.getIdentifier();	   
+        }
+	else if (data_type.equals("IdlHomeType")) {
+	    if(HomeScope.size() > 0)
+		return "::" + join("::", HomeScope) + "::" + home.getIdentifier();
+	    else
+		return "::" + home.getIdentifier();
+        }
+	else if(data_type.equals("Identifier")) {
+	    return component.getIdentifier();
+	}
+	else if(data_type.equals("IdlIdentifier")) {
+	    if(ComponentScope.size() > 0)
+		return "::" + join("::", ComponentScope) + "::" + component.getIdentifier();
+	    else
+		return "::" + component.getIdentifier();
+	}
+        return super.data_MComponentDef(data_type, data_value);
+    }
+
+    protected String data_MProvidesDef(String data_type, String data_value)
+    {
+	MInterfaceDef iface = ((MProvidesDef) current_node).getProvides();
+	MComponentDef component = ((MProvidesDef) current_node).getComponent();
+	List scope = getScope((MContained)iface);
+
+        if(data_type.equals("IdlProvidesType")) {
+	    if(scope.size() > 0)
+		return "::" + join("::", scope) + "::" + iface.getIdentifier();
+	    else
+		return "::" + iface.getIdentifier();
+	}
+	else if(data_type.equals("ProvidesType")) {
+	    return iface.getIdentifier();
+	}
+	else if(data_type.equals("ComponentType")) {
+	    return component.getIdentifier();
+	}
+	return super.data_MProvidesDef(data_type, data_value);
+    }
 }
+
+
+
 
 

@@ -1,1 +1,1 @@
-#include <CCM_Local/%(SupportsType)s.h>
+#include <%(SupportsInclude)s.h>

@@ -11,7 +11,7 @@
 #include <CCM_Utils/Debug.h> 
 #include <CCM/CCMContainer.h>
 
-#include <%(Identifier)s.h>
+#include <%(IdlFileNamespace)s%(Identifier)s.h>
 
 %(MSupportsDefInclude)s
 %(MProvidesDefInclude)s
@@ -25,22 +25,21 @@
   // Component remote adapter 
   //============================================================================
   class %(Identifier)s_impl :
-      virtual public %(ShortNamespace)sPOA_%(Identifier)s,
+      virtual public POA_%(ShortNamespace)s%(Identifier)s,
       virtual public PortableServer::RefCountServantBase
   {
       friend class CCM_%(Identifier)s_Context_impl;
-%(MProvidesDefFriend)s
 
     private:
-      CCM_Local::%(Namespace)s::CCM_%(Identifier)s_impl* local_adapter;
-      CCM_Local::%(Namespace)s::CCM_%(Identifier)s_Context* local_context;
+      CCM_Local%(Namespace)s::CCM_%(Identifier)s_impl* local_adapter;
+      CCM_Local%(Namespace)s::CCM_%(Identifier)s_Context* local_context;
       CCM::SessionContainer* ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
     public:
-      %(Identifier)s_impl(CCM_Local::%(Namespace)s::CCM_%(Identifier)s_impl*, 
+      %(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s_impl*, 
 		      CCM::SessionContainer *);
       virtual ~%(Identifier)s_impl ();
 
@@ -128,7 +127,7 @@
   // Context adapter class
   //==========================================================================
   class CCM_%(Identifier)s_Context_impl
-    : public CCM_Local::%(Namespace)s::CCM_%(Identifier)s_Context
+    : public CCM_Local%(Namespace)s::CCM_%(Identifier)s_Context
     {
     private:
       %(Identifier)s_impl* component_adapter;
@@ -196,7 +195,7 @@ using namespace CCM_Utils;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(CCM_Local::%(Namespace)s::CCM_%(Identifier)s_impl* i, CCM::SessionContainer * c)
+%(Identifier)s_impl::%(Identifier)s_impl(CCM_Local%(Namespace)s::CCM_%(Identifier)s_impl* i, CCM::SessionContainer * c)
   : local_adapter(i), ccm_container (c)
 {
   DEBUGNL("+%(Identifier)s_impl::%(Identifier)s_impl()");
