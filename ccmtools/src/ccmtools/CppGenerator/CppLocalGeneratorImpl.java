@@ -117,17 +117,14 @@ public class CppLocalGeneratorImpl
                 List out_path = (List) path_iterator.next();
 
                 // from the getOutputFiles function we know each entry in the
-                // output
-                // file list has exactly two parts ... the dirname and the
+                // output file list has exactly two parts ... the dirname and the
                 // filename.
                 String file_dir = (String) out_path.get(0);
                 String file_name = (String) out_path.get(1);
 
                 // don't add blank output files. this lets us discard parts of
-                // the
-                // templates that we don't want to output (see the component
-                // section
-                // of the getOutputFiles function)
+                // the templates that we don't want to output (see the component
+                // section of the getOutputFiles function)
                 if(file_name.equals(""))
                     continue;
 

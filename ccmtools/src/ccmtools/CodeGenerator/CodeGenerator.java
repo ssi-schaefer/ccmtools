@@ -894,7 +894,6 @@ abstract public class CodeGenerator
             }
         } 
 	else if (variable.equals("ExceptionInclude")) {
-	    //            value = getFullScopeInclude((MExceptionDef) current_node);
             value = getScopedInclude((MExceptionDef) current_node);
         } 
 	else if (variable.equals("HomeInclude")) {
@@ -1105,7 +1104,6 @@ abstract public class CodeGenerator
             String full_var = var + bool_attrs;
             driver.message("loading template for " + full_var);
             Template t = template_manager.getTemplate(full_var, current_name);
-
             if (t == null)
                 throw new RuntimeException(
                     "Cannot find a template for " + current_name +
