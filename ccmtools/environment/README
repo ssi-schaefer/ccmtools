@@ -1,0 +1,7 @@
+To build the different packages, use the following confix call:
+
+> cd external
+> confix.py --bootstrap --configure --profile="ccmtools" --make --targets=install
+
+> cd remote
+> confix.py --bootstrap --configure --profile="ccmtools" --make --targets=install
