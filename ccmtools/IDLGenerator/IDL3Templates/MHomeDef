@@ -1,8 +1,8 @@
 %(MSupportsDefInclude)s
 %(ExternInclude)s
 
-#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_HOME__
-#define __CCM_%(FileNamespace)s_%(Identifier)s_HOME__
+#ifndef __HOME__%(IncludeNamespace)s%(Identifier)s__
+#define __HOME__%(IncludeNamespace)s%(Identifier)s__
 
 %(OpenNamespace)s
 
@@ -17,7 +17,7 @@ home %(Identifier)s manages %(ComponentType)s
 
 %(CloseNamespace)s
 
-#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_HOME__ */
+#endif
 
 
 

@@ -1,14 +1,14 @@
 %(MFieldDefInclude)s
 
-#ifndef __CCM_%(IncludeNamespace)s%(Identifier)s_STRUCT__
-#define __CCM_%(IncludeNamespace)s%(Identifier)s_STRUCT__
+#ifndef __STRUCT__%(IncludeNamespace)s%(Identifier)s__
+#define __STRUCT__%(IncludeNamespace)s%(Identifier)s__
 
 struct %(Identifier)s
 {
 %(MFieldDef)s
 };
 
-#endif /* __CCM_%(IncludeNamespace)s%(Identifier)s_STRUCT__ */
+#endif
 
 
 

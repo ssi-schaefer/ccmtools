@@ -159,12 +159,12 @@ abstract public class IDLGenerator
             if (! pieces[i].trim().equals(""))
                 code_pieces.add(pieces[i]);
 
+        String code = join("\n", code_pieces).replaceAll("};", "};\n");
+
         String name = join("_", namespace);
         if (! name.equals("")) name += "_";
         name += ((MContained) current_node).getIdentifier();
         name += ".idl" + file_suffix;
-
-        String code = join("\n", code_pieces).replaceAll("};", "};\n");
 
         writeFinalizedFile("", name, code + "\n\n");
     }

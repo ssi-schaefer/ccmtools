@@ -1,2 +1,15 @@
-typedef %(LanguageType)s;
+%(LanguageTypeInclude)s
+
+#ifndef __ALIAS__%(IncludeNamespace)s%(Identifier)s__
+#define __ALIAS__%(IncludeNamespace)s%(Identifier)s__
+
+%(OpenNamespace)s
+
+typedef %(LanguageType)s %(Identifier)s;
+
+%(CloseNamespace)s
+
+#endif
+
+
 

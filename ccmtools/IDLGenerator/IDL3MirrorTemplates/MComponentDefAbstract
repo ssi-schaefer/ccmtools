@@ -8,8 +8,8 @@
 %(MPublishesDefInclude)s
 %(MUsesDefInclude)s
 
-#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_mirror_COMPONENT__
-#define __CCM_%(FileNamespace)s_%(Identifier)s_mirror_COMPONENT__
+#ifndef __COMPONENT__%(IncludeNamespace)s%(Identifier)s__
+#define __COMPONENT__%(IncludeNamespace)s%(Identifier)s__
 
 #include <%(IncludeNamespace)s%(HomeType)s.idl3mirror>
 
@@ -29,7 +29,7 @@ abstract component %(Identifier)s_mirror
 
 %(CloseNamespace)s
 
-#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_mirror_COMPONENT__ */
+#endif
 
 
 

@@ -1,11 +1,34 @@
+%(ExternInclude)s
+%(BaseInclude)s
+
+%(MSupportsDefInclude)s
+%(MProvidesDefInclude)s
+%(MConsumesDefInclude)s
+%(MEmitsDefInclude)s
+%(MPublishesDefInclude)s
+%(MUsesDefInclude)s
+
+#ifndef __COMPONENT__%(IncludeNamespace)s%(Identifier)s__
+#define __COMPONENT__%(IncludeNamespace)s%(Identifier)s__
+
+#include <%(IncludeNamespace)s%(HomeType)s.idl3>
+
+%(OpenNamespace)s
+
 abstract local interface %(Identifier)s :
-  Components::CCMObject%(BaseTypes)s%(SupportTypes)s
+  Components::CCMObject%(BaseTypes)s%(MSupportsDefBase)s
 {
 %(MAttributeDef)s
+%(MProvidesDef)s
+%(MUsesDef)s
+%(MPublishesDef)s
 %(MConsumesDef)s
 %(MEmitsDef)s
-%(MProvidesDef)s
-%(MPublishesDef)s
-%(MUsesDef)s
 };
+
+%(CloseNamespace)s
+
+#endif
+
+
 

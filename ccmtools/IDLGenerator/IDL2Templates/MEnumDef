@@ -1,5 +1,16 @@
+#ifndef __ENUM__%(IncludeNamespace)s%(Identifier)s__
+#define __ENUM__%(IncludeNamespace)s%(Identifier)s__
+
+%(OpenNamespace)s
+
 enum %(Identifier)s
 {
 %(Members)s
 };
+
+%(CloseNamespace)s
+
+#endif
+
+
 

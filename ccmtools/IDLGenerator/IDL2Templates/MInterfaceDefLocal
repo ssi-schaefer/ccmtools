@@ -1,14 +1,19 @@
+%(ExternInclude)s
+%(BaseInclude)s
+
+#ifndef __INTERFACE__%(IncludeNamespace)s%(Identifier)s__
+#define __INTERFACE__%(IncludeNamespace)s%(Identifier)s__
+
+%(OpenNamespace)s
+
 local interface %(Identifier)s
 {
-%(MAttributeDef)s
-%(MConstantDef)s
-%(MEnumDef)s
-%(MExceptionDef)s
 %(MOperationDef)s
-%(MStructDef)s
-%(MTypedefDef)s
-%(MUnionDef)s
-%(MValueDef)s
-%(MValueMemberDef)s
 };
+
+%(CloseNamespace)s
+
+#endif
+
+
 

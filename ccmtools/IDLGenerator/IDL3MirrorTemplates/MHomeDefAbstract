@@ -1,8 +1,8 @@
 %(MSupportsDefInclude)s
 %(ExternInclude)s
 
-#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_mirror_HOME__
-#define __CCM_%(FileNamespace)s_%(Identifier)s_mirror_HOME__
+#ifndef __HOME__%(IncludeNamespace)s%(Identifier)s__
+#define __HOME__%(IncludeNamespace)s%(Identifier)s__
 
 %(OpenNamespace)s
 
@@ -17,7 +17,7 @@ abstract home %(Identifier)s_mirror manages %(ComponentType)s_mirror
 
 %(CloseNamespace)s
 
-#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_mirror_HOME__ */
+#endif
 
 
 

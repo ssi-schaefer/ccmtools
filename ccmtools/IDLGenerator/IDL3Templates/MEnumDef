@@ -1,7 +1,7 @@
-%(OpenNamespace)s
+#ifndef __ENUM__%(IncludeNamespace)s%(Identifier)s__
+#define __ENUM__%(IncludeNamespace)s%(Identifier)s__
 
-#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_ENUM__
-#define __CCM_%(FileNamespace)s_%(Identifier)s_ENUM__
+%(OpenNamespace)s
 
 enum %(Identifier)s
 {
@@ -10,7 +10,7 @@ enum %(Identifier)s
 
 %(CloseNamespace)s
 
-#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_ENUM__ */
+#endif
 
 
 

@@ -1,7 +1,7 @@
 %(MFieldDefInclude)s
 
-#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_STRUCT__
-#define __CCM_%(FileNamespace)s_%(Identifier)s_STRUCT__
+#ifndef __STRUCT__%(IncludeNamespace)s%(Identifier)s__
+#define __STRUCT__%(IncludeNamespace)s%(Identifier)s__
 
 %(OpenNamespace)s
 
@@ -12,7 +12,7 @@ struct %(Identifier)s
 
 %(CloseNamespace)s
 
-#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_STRUCT__ */
+#endif
 
 
 

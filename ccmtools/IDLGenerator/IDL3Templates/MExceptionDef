@@ -1,7 +1,7 @@
 %(ExternInclude)s
 
-#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_EXCEPTION__
-#define __CCM_%(FileNamespace)s_%(Identifier)s_EXCEPTION__
+#ifndef __EXCEPTION__%(IncludeNamespace)s%(Identifier)s__
+#define __EXCEPTION__%(IncludeNamespace)s%(Identifier)s__
 
 %(OpenNamespace)s
 
@@ -12,7 +12,7 @@ exception %(Identifier)s
 
 %(CloseNamespace)s
 
-#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_EXCEPTION__ */
+#endif
 
 
 

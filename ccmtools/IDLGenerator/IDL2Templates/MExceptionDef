@@ -1,5 +1,18 @@
+%(ExternInclude)s
+
+#ifndef __EXCEPTION__%(IncludeNamespace)s%(Identifier)s__
+#define __EXCEPTION__%(IncludeNamespace)s%(Identifier)s__
+
+%(OpenNamespace)s
+
 exception %(Identifier)s
 {
 %(MFieldDef)s
 };
+
+%(CloseNamespace)s
+
+#endif
+
+
 

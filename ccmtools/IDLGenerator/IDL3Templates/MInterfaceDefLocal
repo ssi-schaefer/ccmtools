@@ -1,8 +1,8 @@
 %(ExternInclude)s
 %(BaseInclude)s
 
-#ifndef __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
-#define __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__
+#ifndef __INTERFACE__%(IncludeNamespace)s%(Identifier)s__
+#define __INTERFACE__%(IncludeNamespace)s%(Identifier)s__
 
 %(OpenNamespace)s
 
@@ -14,7 +14,7 @@ local interface %(Identifier)s
 
 %(CloseNamespace)s
 
-#endif /* __CCM_%(FileNamespace)s_%(Identifier)s_INTERFACE__ */
+#endif
 
 
 
