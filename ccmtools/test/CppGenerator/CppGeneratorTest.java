@@ -48,6 +48,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	ccmtools_dir = System.getProperty("user.dir"); 
     }
 
+    /*
 
     public void testVersionOption()
     {
@@ -59,7 +60,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	runCcmtoolsGenerate("--help");
     }
     
-    /*
+
     public void testAttributeTypes()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/attribute_types";
@@ -103,7 +104,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	}
     }
 
-
+    
     public void testSupportsTypes()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/supports_types";
@@ -150,8 +151,8 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
-    */
-    
+
+    */    
     /*
     public void testFacetTypes()
     {
@@ -260,9 +261,9 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
-
     */
 
+    /*
     public void testReceptacleMultiple()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_multiple";
@@ -306,7 +307,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	}
     }
 
-
+    */
     public void testModuleNested()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/module_nested";

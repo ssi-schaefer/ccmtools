@@ -67,7 +67,7 @@
 
 
   <!-- Run test cases -->
-  <target name="test" 
+  <target name="test" depends="ccmtools.jar"
      description="" >
      <junit printsummary="yes" haltonfailure="yes" showoutput="yes">
           <classpath refid="run.classpath" />

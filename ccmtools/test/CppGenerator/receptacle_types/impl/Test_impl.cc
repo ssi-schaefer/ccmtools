@@ -221,7 +221,6 @@ CCM_Test_impl::ccm_remove (  )
   DEBUGNL ( " CCM_Test_impl->ccm_remove (  )" );
 }
 
-//(MProvidesDefAdapterImplClassImpl)s
 } // /namespace CCM_Session_Test
 } // /namespace CCM_Local
 

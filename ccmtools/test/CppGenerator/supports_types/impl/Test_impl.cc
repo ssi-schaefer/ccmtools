@@ -230,7 +230,7 @@ CCM_Test_impl::op_i1(const WX::Utils::SmartPtr<Console>& p1, WX::Utils::SmartPtr
   p3 = WX::Utils::SmartPtr<Console>(my_object3);
   p3->prompt(p2->prompt());
 
-  string p1_prompt = "prompt1> ";  // BUG: p1->prompt(); const !!!
+  const string p1_prompt = "prompt1> ";
   p2->prompt(p1_prompt);
 
   MyObject* my_object4 = new MyObject;

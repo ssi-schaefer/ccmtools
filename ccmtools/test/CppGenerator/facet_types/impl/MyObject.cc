@@ -10,8 +10,8 @@ MyObject::MyObject()
     prompt_="-=> ";
 }
 
-std::string 
-MyObject::prompt() 
+const std::string 
+MyObject::prompt() const
   throw(LocalComponents::CCMException) 
 {
   return prompt_;

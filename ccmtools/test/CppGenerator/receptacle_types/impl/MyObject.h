@@ -11,7 +11,7 @@ class MyObject
 public:
   MyObject();
 
-  std::string prompt() 
+  const std::string prompt() const
     throw(LocalComponents::CCMException);
 
   void prompt(const std::string value) 
