@@ -1,0 +1,97 @@
+'''debugging classes and functions'''
+
+import os, sys
+
+################################################################################
+
+class DebugWriterManager:
+    _instance = None
+
+    def __init__(self):
+        self.__defaultWriter = CerrDebugWriter().instance()
+        self.__debugWriter = self.__defaultWriter
+        self.__explicitWriter = None
+
+    def instance(self):
+        if not DebugWriterManager._instance:
+            DebugWriterManager._instance = CerrDebugWriter()
+        return DebugWriterManager._instance
+
+    def getDebugWriter(self): return self.__debugWriter
+
+    def setDebugWriter(self, writer):
+        self.__explicitWriter = self.__debugWriter = writer
+
+    def activate(self):
+        if self.__explicitWriter: self.__debugWriter = self.__explicitWriter
+
+    def deactivate(self):
+        self.__debugWriter = self.__defaultWriter
+
+################################################################################
+
+class CerrDebugWriter:
+    _instance = None
+
+    def write(self, file, line, facility, msg):
+        name = os.path.basename(file)
+        sys.stderr.write('[%s:%d] %s\n' % (name, line, msg))
+
+    def check(self, facility):
+        g = get_global()
+        if len(facility) == 0: return g
+        else: return g or have_level(facility)
+
+    def instance(self):
+        if not CerrDebugWriter._instance:
+            CerrDebugWriter._instance = CerrDebugWriter()
+        return CerrDebugWriter._instance
+
+################################################################################
+
+i_do_debug_here = 1
+debug_levels = ['']
+
+def set_global(b):
+    global i_do_debug_here
+    i_do_debug_here = b
+
+def get_global():
+    global i_do_debug_here
+    return i_do_debug_here
+
+def add_level(level):
+    global debug_levels
+    if level not in debug_levels: debug_levels.append(level)
+
+def have_level(level):
+    global debug_levels
+    return level in debug_levels
+
+################################################################################
+
+def WRITE_MSG_TO_DEBUGWRITER(msg, level):
+    file = sys._getframe(-2).f_code.co_filename
+    line = sys._getframe(-2).f_lineno
+    DebugWriterManager.instance().getDebugWriter().write(file, line, level, msg)
+
+def DEBUG(msg):
+    if DebugWriterManager.instance().getDebugWriter().check(''):
+        WRITE_MSG_TO_DEBUGWRITER(msg, '')
+
+def DEBUGNL(msg):
+    if DebugWriterManager.instance().getDebugWriter().check(''):
+        WRITE_MSG_TO_DEBUGWRITER(msg + '\n', '')
+
+def LDEBUG(level, msg):
+    if DebugWriterManager.instance().getDebugWriter().check(level):
+         WRITE_MSG_TO_DEBUGWRITER(msg, level)
+
+def LDEBUGNL(level, msg):
+    if DebugWriterManager.instance().getDebugWriter().check(level):
+        WRITE_MSG_TO_DEBUGWRITER(msg + '\n', level)
+
+################################################################################
+
+
+

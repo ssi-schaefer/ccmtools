@@ -37,6 +37,7 @@ dist_template_DATA = \
     MFieldDef                                      \
     MHomeDef                                       \
     MInterfaceDef                                  \
+    MModuleDef                                     \
     MOperationDefPrototypeVV                       \
     MOperationProvidesAdapterDefinition            \
     MOperationProvidesAdapterImplDefinition        \
