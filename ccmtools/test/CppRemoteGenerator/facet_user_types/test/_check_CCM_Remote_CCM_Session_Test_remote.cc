@@ -19,7 +19,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_Test.h>
+#include <Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -85,14 +85,14 @@ main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::TestHome_var myTestHome = 
-	::CORBA_Stubs::TestHome::_narrow (obj);
+    ::TestHome_var myTestHome = 
+	::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::Test_var myTest = myTestHome->create();
+    ::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::CORBA_Stubs::Console_var Consoleconsole = 
+    ::Console_var Consoleconsole = 
         myTest->provide_console();
 
     myTest->configuration_complete();
@@ -102,10 +102,10 @@ main (int argc, char *argv[])
      * Test Case for: struct Person { long id; string name; };
      */
     {
-      ::CORBA_Stubs::Person p1;
-      ::CORBA_Stubs::Person_var p2 = new  ::CORBA_Stubs::Person;
-      ::CORBA_Stubs::Person_var p3;
-      ::CORBA_Stubs::Person_var result;
+      ::Person p1;
+      ::Person_var p2 = new  ::Person;
+      ::Person_var p3;
+      ::Person_var result;
       
       p1.name = CORBA::string_dup("Egon");   
       p1.id = 3;
@@ -124,11 +124,11 @@ main (int argc, char *argv[])
      * Test Case for: struct Address { long id; string name; Person resident };
      */
     {
-      ::CORBA_Stubs::Address p1;
-      ::CORBA_Stubs::Address_var p2 = new  ::CORBA_Stubs::Address;
-      ::CORBA_Stubs::Address_var p3;
-      ::CORBA_Stubs::Address_var result;
-      ::CORBA_Stubs::Person person;
+      ::Address p1;
+      ::Address_var p2 = new  ::Address;
+      ::Address_var p3;
+      ::Address_var result;
+      ::Person person;
 
       p1.street = CORBA::string_dup("Waltendorf");   
       p1.number = 7;
@@ -165,8 +165,8 @@ main (int argc, char *argv[])
      * Test Case for: typedef sequence<long>
      */
     {
-      ::CORBA_Stubs::LongList_var list_1 = new ::CORBA_Stubs::LongList;
-      ::CORBA_Stubs::LongList_var list_2 = new ::CORBA_Stubs::LongList;
+      ::LongList_var list_1 = new ::LongList;
+      ::LongList_var list_2 = new ::LongList;
       list_1->length(5);
       list_2->length(5);
       for(int i=0;i<5;i++) {
@@ -174,8 +174,8 @@ main (int argc, char *argv[])
         (*list_2)[i] = i+i;
       }
       
-      ::CORBA_Stubs::LongList_var list_3;
-      ::CORBA_Stubs::LongList_var list_r;
+      ::LongList_var list_3;
+      ::LongList_var list_r;
       
       list_r = Consoleconsole->f4(list_1,list_2,list_3);
       
@@ -195,8 +195,8 @@ main (int argc, char *argv[])
      * Test Case for: typedef sequence<string>
      */
     {
-      ::CORBA_Stubs::StringList_var list_1 = new ::CORBA_Stubs::StringList;
-      ::CORBA_Stubs::StringList_var list_2 = new ::CORBA_Stubs::StringList;
+      ::StringList_var list_1 = new ::StringList;
+      ::StringList_var list_2 = new ::StringList;
       list_1->length(5);
       list_2->length(5);
       for(int i=0;i<5;i++) {
@@ -204,8 +204,8 @@ main (int argc, char *argv[])
         (*list_2)[i] = "Andrea";
       }
       
-      ::CORBA_Stubs::StringList_var list_3;
-      ::CORBA_Stubs::StringList_var list_r;
+      ::StringList_var list_3;
+      ::StringList_var list_r;
       
       list_r = Consoleconsole->f5(list_1,list_2,list_3);
       
@@ -224,8 +224,8 @@ main (int argc, char *argv[])
      * Test Case for: typedef sequence<struct>
      */
     {
-      ::CORBA_Stubs::PersonList_var list_1 = new ::CORBA_Stubs::PersonList;
-      ::CORBA_Stubs::PersonList_var list_2 = new ::CORBA_Stubs::PersonList;
+      ::PersonList_var list_1 = new ::PersonList;
+      ::PersonList_var list_2 = new ::PersonList;
       list_1->length(5);
       list_2->length(5);
       for(int i=0;i<5;i++) {
@@ -235,8 +235,8 @@ main (int argc, char *argv[])
         (*list_2)[i].id   = i+i;
       }
       
-      ::CORBA_Stubs::PersonList_var list_3;
-      ::CORBA_Stubs::PersonList_var list_r;
+      ::PersonList_var list_3;
+      ::PersonList_var list_r;
       
       list_r = Consoleconsole->f6(list_1,list_2,list_3);
       
@@ -258,7 +258,7 @@ main (int argc, char *argv[])
      * Test Case for: typedef sequence<struct>
      */
     {
-      ::CORBA_Stubs::time_t time_2=3, time_3, time_r;
+      ::time_t time_2=3, time_3, time_r;
       time_r = Consoleconsole->f7(7,time_2, time_3);
       assert(time_2 == 7);
       assert(time_3 == 3);

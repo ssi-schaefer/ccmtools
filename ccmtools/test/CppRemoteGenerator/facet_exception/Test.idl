@@ -11,7 +11,7 @@ struct ErrorInfo
 
 typedef sequence<ErrorInfo> ErrorInfoList;
 
-exception Error
+exception ErrorException
 {
   ErrorInfoList info;
 };
@@ -26,7 +26,7 @@ exception FatalError
 
 interface IFace {
   long foo(in string msg)
-    raises (Error, SuperError, FatalError);
+    raises (ErrorException, SuperError, FatalError);
 };
 
 component Test

@@ -19,7 +19,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_Test.h>
+#include <Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -82,17 +82,17 @@ int main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::TestHome_var myTestHome = 
-	::CORBA_Stubs::TestHome::_narrow (obj);
+    ::TestHome_var myTestHome = 
+	::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::Test_var myTest = myTestHome->create();
+    ::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::CORBA_Stubs::BasicTypeInterface_var inBasicType = 
+    ::BasicTypeInterface_var inBasicType = 
         myTest->provide_inBasicType();
 
-    ::CORBA_Stubs::UserTypeInterface_var inUserType = 
+    ::UserTypeInterface_var inUserType = 
         myTest->provide_inUserType();
 
     myTest->connect_outBasicType(inBasicType);
@@ -169,8 +169,8 @@ int main (int argc, char *argv[])
 
       {
 	// enum Color {red, green, blue, black, orange}
-        ::CORBA_Stubs::Color value = ::CORBA_Stubs::blue;
-	::CORBA_Stubs::Color result;
+        ::Color value = ::blue;
+	::Color result;
 	myTest->color_value(value);	
         result = myTest->color_value();
 
@@ -179,8 +179,8 @@ int main (int argc, char *argv[])
 
       {
 	// struct Person { long id; string name; }
-        ::CORBA_Stubs::Person value;
-        ::CORBA_Stubs::Person_var result;
+        ::Person value;
+        ::Person_var result;
         value.name = CORBA::string_dup("Egon");   
         value.id = 3;
         myTest->person_value(value);
@@ -192,9 +192,9 @@ int main (int argc, char *argv[])
 
       {
 	// struct Address { string street; long number; Person resident; }
-        ::CORBA_Stubs::Address value;
-        ::CORBA_Stubs::Address_var result;
-        ::CORBA_Stubs::Person person;
+        ::Address value;
+        ::Address_var result;
+        ::Person person;
         value.street = CORBA::string_dup("Waltendorf");   
         value.number = 7;
         person.name = CORBA::string_dup("Egon");   
@@ -212,8 +212,8 @@ int main (int argc, char *argv[])
       {
       	// typedef sequence<long> LongList
 	const int MAX_SIZE = 100; 
-	::CORBA_Stubs::LongList_var value = new ::CORBA_Stubs::LongList;
-	::CORBA_Stubs::LongList_var result;
+	::LongList_var value = new ::LongList;
+	::LongList_var result;
 	value->length(MAX_SIZE);
 	for(int i=0;i<MAX_SIZE;i++) {
 	  (*value)[i] = i;
@@ -229,8 +229,8 @@ int main (int argc, char *argv[])
       {
 	// typedef sequence<string> StringList
  	const int MAX_SIZE = 100; 
-	::CORBA_Stubs::StringList_var value = new ::CORBA_Stubs::StringList;
-        ::CORBA_Stubs::StringList_var result;
+	::StringList_var value = new ::StringList;
+        ::StringList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i] = "Egon";
@@ -246,8 +246,8 @@ int main (int argc, char *argv[])
       {
 	// typedef sequence<Person> PersonList
 	const int MAX_SIZE = 100; 
-        ::CORBA_Stubs::PersonList_var value = new ::CORBA_Stubs::PersonList;
-        ::CORBA_Stubs::PersonList_var result;
+        ::PersonList_var value = new ::PersonList;
+        ::PersonList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i].name = "Andrea";
@@ -264,8 +264,8 @@ int main (int argc, char *argv[])
 
       {
 	// typedef long time_t;
-	CORBA_Stubs::time_t value = -7777;
-	CORBA_Stubs::time_t result;
+	::time_t value = -7777;
+	::time_t result;
 	myTest->long_value(value);
 	result = myTest->long_value();
 	assert(result == value);
@@ -341,8 +341,8 @@ int main (int argc, char *argv[])
 
       {
 	// enum Color {red, green, blue, black, orange}
-        ::CORBA_Stubs::Color value = ::CORBA_Stubs::blue;
-	::CORBA_Stubs::Color result;
+        ::Color value = ::blue;
+	::Color result;
 	inUserType->color_value(value);	
         result = inUserType->color_value();
 
@@ -351,8 +351,8 @@ int main (int argc, char *argv[])
 
       {
 	// struct Person { long id; string name; }
-        ::CORBA_Stubs::Person value;
-        ::CORBA_Stubs::Person_var result;
+        ::Person value;
+        ::Person_var result;
         value.name = CORBA::string_dup("Egon");   
         value.id = 3;
         inUserType->person_value(value);
@@ -364,9 +364,9 @@ int main (int argc, char *argv[])
 
       {
 	// struct Address { string street; long number; Person resident; }
-        ::CORBA_Stubs::Address value;
-        ::CORBA_Stubs::Address_var result;
-        ::CORBA_Stubs::Person person;
+        ::Address value;
+        ::Address_var result;
+        ::Person person;
         value.street = CORBA::string_dup("Waltendorf");   
         value.number = 7;
         person.name = CORBA::string_dup("Egon");   
@@ -384,8 +384,8 @@ int main (int argc, char *argv[])
       {
       	// typedef sequence<long> LongList
 	const int MAX_SIZE = 100; 
-	::CORBA_Stubs::LongList_var value = new ::CORBA_Stubs::LongList;
-	::CORBA_Stubs::LongList_var result;
+	::LongList_var value = new ::LongList;
+	::LongList_var result;
 	value->length(MAX_SIZE);
 	for(int i=0;i<MAX_SIZE;i++) {
 	  (*value)[i] = i;
@@ -401,8 +401,8 @@ int main (int argc, char *argv[])
       {
 	// typedef sequence<string> StringList
  	const int MAX_SIZE = 100; 
-	::CORBA_Stubs::StringList_var value = new ::CORBA_Stubs::StringList;
-        ::CORBA_Stubs::StringList_var result;
+	::StringList_var value = new ::StringList;
+        ::StringList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i] = "Egon";
@@ -418,8 +418,8 @@ int main (int argc, char *argv[])
       {
 	// typedef sequence<Person> PersonList
 	const int MAX_SIZE = 100; 
-        ::CORBA_Stubs::PersonList_var value = new ::CORBA_Stubs::PersonList;
-        ::CORBA_Stubs::PersonList_var result;
+        ::PersonList_var value = new ::PersonList;
+        ::PersonList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i].name = "Andrea";
@@ -436,8 +436,8 @@ int main (int argc, char *argv[])
 
       {
 	// typedef long time_t;
-	CORBA_Stubs::time_t value = -7777;
-	CORBA_Stubs::time_t result;
+	::time_t value = -7777;
+	::time_t result;
 	inUserType->time_t_value(value);
 	result = inUserType->time_t_value();
 	assert(result == value);

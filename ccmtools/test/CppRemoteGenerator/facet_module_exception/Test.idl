@@ -15,7 +15,7 @@ module world {
       
       typedef sequence<ErrorInfo> ErrorInfoList;
       
-      exception Error
+      exception ErrorException
       {
 	ErrorInfoList info;
       };
@@ -29,7 +29,7 @@ module world {
       
       interface IFace {
 	long foo(in string msg)
-	  raises (Error, SuperError, FatalError);
+	  raises (ErrorException, SuperError, FatalError);
       };
       
       component Test

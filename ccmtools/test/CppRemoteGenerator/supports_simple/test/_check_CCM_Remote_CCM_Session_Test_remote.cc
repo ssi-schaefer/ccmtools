@@ -19,7 +19,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_Test.h>
+#include <Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -78,22 +78,22 @@ main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::TestHome_var myTestHome = ::CORBA_Stubs::TestHome::_narrow (obj);
+    ::TestHome_var myTestHome = ::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::Test_var myTest = myTestHome->create();
+    ::Test_var myTest = myTestHome->create();
 
     // Provide facets   
 
 	
     myTest->configuration_complete();
 
-    DEBUGNL("==== Begin Test Case ==========================================" );    
+    DEBUGNL("==== Begin Test Case ========================================" ); 
     char* s = CORBA::string_dup("1234567890");
     CORBA::Long size = myTest->op1(s);
     assert(strlen(s) == size);
     
-    DEBUGNL("==== End Test Case ============================================" );    
+    DEBUGNL("==== End Test Case ==========================================" ); 
 
     // Un-Deployment
 

@@ -19,7 +19,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/world/europe/austria/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_world_europe_austria_Test.h>
+#include <world_europe_austria_Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -79,15 +79,15 @@ main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::world::europe::austria::TestHome_var myTestHome = 
-	::CORBA_Stubs::world::europe::austria::TestHome::_narrow (obj);
+    ::world::europe::austria::TestHome_var myTestHome = 
+	::world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::world::europe::austria::Test_var myTest = 
+    ::world::europe::austria::Test_var myTest = 
 	myTestHome->create();
 
     // Provide facets   
-    ::CORBA_Stubs::world::europe::austria::Console_var Consoleconsole = 
+    ::world::europe::austria::Console_var Consoleconsole = 
         myTest->provide_console();
 
 
@@ -99,11 +99,11 @@ main (int argc, char *argv[])
      * Test Case for: struct Person { long id; string name; };
      */
     {
-      ::CORBA_Stubs::world::europe::austria::Person p1;
-      ::CORBA_Stubs::world::europe::austria::Person_var p2 = 
-	  new  ::CORBA_Stubs::world::europe::austria::Person;
-      ::CORBA_Stubs::world::europe::austria::Person_var p3;
-      ::CORBA_Stubs::world::europe::austria::Person_var result;
+      ::world::europe::austria::Person p1;
+      ::world::europe::austria::Person_var p2 = 
+	  new  ::world::europe::austria::Person;
+      ::world::europe::austria::Person_var p3;
+      ::world::europe::austria::Person_var result;
       
       p1.name = CORBA::string_dup("Egon");   
       p1.id = 3;
@@ -122,12 +122,12 @@ main (int argc, char *argv[])
      * Test Case for: struct Address { long id; string name; Person resident };
      */
     {
-      ::CORBA_Stubs::world::europe::austria::Address p1;
-      ::CORBA_Stubs::world::europe::austria::Address_var p2 = 
-	  new  ::CORBA_Stubs::world::europe::austria::Address;
-      ::CORBA_Stubs::world::europe::austria::Address_var p3;
-      ::CORBA_Stubs::world::europe::austria::Address_var result;
-      ::CORBA_Stubs::world::europe::austria::Person person;
+      ::world::europe::austria::Address p1;
+      ::world::europe::austria::Address_var p2 = 
+	  new  ::world::europe::austria::Address;
+      ::world::europe::austria::Address_var p3;
+      ::world::europe::austria::Address_var result;
+      ::world::europe::austria::Person person;
 
       p1.street = CORBA::string_dup("Waltendorf");   
       p1.number = 7;
@@ -164,10 +164,10 @@ main (int argc, char *argv[])
      * Test Case for: typedef sequence<long>
      */
     {
-      ::CORBA_Stubs::world::europe::austria::LongList_var list_1 = 
-	  new ::CORBA_Stubs::world::europe::austria::LongList;
-      ::CORBA_Stubs::world::europe::austria::LongList_var list_2 = 
-	  new ::CORBA_Stubs::world::europe::austria::LongList;
+      ::world::europe::austria::LongList_var list_1 = 
+	  new ::world::europe::austria::LongList;
+      ::world::europe::austria::LongList_var list_2 = 
+	  new ::world::europe::austria::LongList;
       list_1->length(5);
       list_2->length(5);
       for(int i=0;i<5;i++) {
@@ -175,8 +175,8 @@ main (int argc, char *argv[])
         (*list_2)[i] = i+i;
       }
       
-      ::CORBA_Stubs::world::europe::austria::LongList_var list_3;
-      ::CORBA_Stubs::world::europe::austria::LongList_var list_r;
+      ::world::europe::austria::LongList_var list_3;
+      ::world::europe::austria::LongList_var list_r;
       
       list_r = Consoleconsole->f4(list_1,list_2,list_3);
       
@@ -196,10 +196,10 @@ main (int argc, char *argv[])
      * Test Case for: typedef sequence<string>
      */
     {
-      ::CORBA_Stubs::world::europe::austria::StringList_var list_1 = 
-	  new ::CORBA_Stubs::world::europe::austria::StringList;
-      ::CORBA_Stubs::world::europe::austria::StringList_var list_2 = 
-	  new ::CORBA_Stubs::world::europe::austria::StringList;
+      ::world::europe::austria::StringList_var list_1 = 
+	  new ::world::europe::austria::StringList;
+      ::world::europe::austria::StringList_var list_2 = 
+	  new ::world::europe::austria::StringList;
       list_1->length(5);
       list_2->length(5);
       for(int i=0;i<5;i++) {
@@ -207,8 +207,8 @@ main (int argc, char *argv[])
         (*list_2)[i] = "Andrea";
       }
       
-      ::CORBA_Stubs::world::europe::austria::StringList_var list_3;
-      ::CORBA_Stubs::world::europe::austria::StringList_var list_r;
+      ::world::europe::austria::StringList_var list_3;
+      ::world::europe::austria::StringList_var list_r;
       
       list_r = Consoleconsole->f5(list_1,list_2,list_3);
       
@@ -227,10 +227,10 @@ main (int argc, char *argv[])
      * Test Case for: typedef sequence<struct>
      */
     {
-      ::CORBA_Stubs::world::europe::austria::PersonList_var list_1 = 
-	  new ::CORBA_Stubs::world::europe::austria::PersonList;
-      ::CORBA_Stubs::world::europe::austria::PersonList_var list_2 = 
-	  new ::CORBA_Stubs::world::europe::austria::PersonList;
+      ::world::europe::austria::PersonList_var list_1 = 
+	  new ::world::europe::austria::PersonList;
+      ::world::europe::austria::PersonList_var list_2 = 
+	  new ::world::europe::austria::PersonList;
       list_1->length(5);
       list_2->length(5);
       for(int i=0;i<5;i++) {
@@ -240,8 +240,8 @@ main (int argc, char *argv[])
         (*list_2)[i].id   = i+i;
       }
       
-      ::CORBA_Stubs::world::europe::austria::PersonList_var list_3;
-      ::CORBA_Stubs::world::europe::austria::PersonList_var list_r;
+      ::world::europe::austria::PersonList_var list_3;
+      ::world::europe::austria::PersonList_var list_r;
       
       list_r = Consoleconsole->f6(list_1,list_2,list_3);
       
@@ -263,7 +263,7 @@ main (int argc, char *argv[])
      * Test Case for: typedef long time_t
      */
     {
-      ::CORBA_Stubs::world::europe::austria::time_t time_2=3, time_3, time_r;
+      ::world::europe::austria::time_t time_2=3, time_3, time_r;
       time_r = Consoleconsole->f7(7,time_2, time_3);
       assert(time_2 == 7);
       assert(time_3 == 3);

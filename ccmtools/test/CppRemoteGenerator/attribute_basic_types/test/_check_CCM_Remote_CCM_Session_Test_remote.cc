@@ -19,7 +19,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_Test.h>
+#include <Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -78,14 +78,14 @@ main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::TestHome_var myTestHome = 
-	::CORBA_Stubs::TestHome::_narrow (obj);
+    ::TestHome_var myTestHome = 
+	::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::Test_var myTest = myTestHome->create();
+    ::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::CORBA_Stubs::IFace_var iface = myTest->provide_iface();
+    ::IFace_var iface = myTest->provide_iface();
 	
     myTest->configuration_complete();
 
@@ -142,7 +142,7 @@ main (int argc, char *argv[])
     assert(octet_result == octet_value);
 
     {
-      ::CORBA_Stubs::LongList_var list_1 = new ::CORBA_Stubs::LongList;
+      ::LongList_var list_1 = new ::LongList;
       list_1->length(5);
       for(int i=0;i<5;i++) {
         (*list_1)[i] = i;
@@ -150,7 +150,7 @@ main (int argc, char *argv[])
       iface->longList_value(list_1);
     }
     {
-      ::CORBA_Stubs::LongList_var list_r;
+      ::LongList_var list_r;
       list_r = iface->longList_value();
       for(unsigned long i=0; i < list_r->length(); i++) {
         assert((*list_r)[i] == (CORBA::Long)i);

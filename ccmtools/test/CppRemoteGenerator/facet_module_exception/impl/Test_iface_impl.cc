@@ -42,12 +42,12 @@ iface_impl::~iface_impl()
 
 long
 iface_impl::foo(const std::string& msg)
-    throw (LocalComponents::CCMException, Error, FatalError, SuperError )
+    throw (LocalComponents::CCMException, ErrorException, FatalError, SuperError )
 {
     DEBUGNL("iface_impl->foo(msg)");
 
     if(msg == "Error") {
-        Error error;
+        ErrorException error;
         ErrorInfoList errorInfoList;
         ErrorInfo errorInfo1;
         errorInfo1.code = 7;

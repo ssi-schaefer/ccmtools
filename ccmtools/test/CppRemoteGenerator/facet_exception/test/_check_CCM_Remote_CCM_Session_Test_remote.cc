@@ -19,7 +19,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_Test.h>
+#include <Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -78,13 +78,13 @@ main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::TestHome_var myTestHome = ::CORBA_Stubs::TestHome::_narrow (obj);
+    ::TestHome_var myTestHome = ::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::Test_var myTest = myTestHome->create();
+    ::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::CORBA_Stubs::IFace_var IFaceiface = myTest->provide_iface();
+    ::IFace_var IFaceiface = myTest->provide_iface();
 
 
 	
@@ -97,7 +97,7 @@ main (int argc, char *argv[])
       result = IFaceiface->foo("0123456789");
       assert(result == 10);
     }
-    catch(const ::CORBA_Stubs::Error& e) {
+    catch(const ::ErrorException& e) {
       assert(false);
     }
 
@@ -105,8 +105,8 @@ main (int argc, char *argv[])
       IFaceiface->foo("Error");
       assert(false);
     }
-    catch(const ::CORBA_Stubs::Error& e) {
-      CORBA_Stubs::ErrorInfoList infolist = e.info;
+    catch(const ::ErrorException& e) {
+      ::ErrorInfoList infolist = e.info;
       for(unsigned long i = 0; i < infolist.length(); i++) {
       cout << e.info[i].code << ": " 
            << e.info[i].message << endl;
@@ -117,7 +117,7 @@ main (int argc, char *argv[])
       IFaceiface->foo("SuperError");
       assert(false);
     }
-    catch(const ::CORBA_Stubs::SuperError& e) {
+    catch(const ::SuperError& e) {
       cout << "SuperError" << endl;
     }
 
@@ -125,7 +125,7 @@ main (int argc, char *argv[])
       IFaceiface->foo("FatalError");
       assert(false);
     }
-    catch(const ::CORBA_Stubs::FatalError& e) {
+    catch(const ::FatalError& e) {
        cout << e.what << endl;
     }
 

@@ -19,7 +19,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/world/europe/austria/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_world_europe_austria_Test.h>
+#include <world_europe_austria_Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -78,14 +78,14 @@ main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::world::europe::austria::TestHome_var myTestHome = 
-	::CORBA_Stubs::world::europe::austria::TestHome::_narrow (obj);
+    ::world::europe::austria::TestHome_var myTestHome = 
+	::world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::world::europe::austria::Test_var myTest = myTestHome->create();
+    ::world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::CORBA_Stubs::world::europe::austria::IFace_var IFaceiface = 
+    ::world::europe::austria::IFace_var IFaceiface = 
         myTest->provide_iface();
 
     myTest->configuration_complete();
@@ -97,7 +97,7 @@ main (int argc, char *argv[])
       result = IFaceiface->foo("0123456789");
       assert(result == 10);
     }
-    catch(const ::CORBA_Stubs::world::europe::austria::Error& e) {
+    catch(const ::world::europe::austria::ErrorException& e) {
       assert(false);
     }
 
@@ -105,8 +105,8 @@ main (int argc, char *argv[])
       IFaceiface->foo("Error");
       assert(false);
     }
-    catch(const ::CORBA_Stubs::world::europe::austria::Error& e) {
-      CORBA_Stubs::world::europe::austria::ErrorInfoList infolist = e.info;
+    catch(const ::world::europe::austria::ErrorException& e) {
+      world::europe::austria::ErrorInfoList infolist = e.info;
       for(unsigned long i = 0; i < infolist.length(); i++) {
       cout << e.info[i].code << ": " 
            << e.info[i].message << endl;
@@ -117,7 +117,7 @@ main (int argc, char *argv[])
       IFaceiface->foo("SuperError");
       assert(false);
     }
-    catch(const ::CORBA_Stubs::world::europe::austria::SuperError& e) {
+    catch(const ::world::europe::austria::SuperError& e) {
       cout << "SuperError" << endl;
     }
 
@@ -125,7 +125,7 @@ main (int argc, char *argv[])
       IFaceiface->foo("FatalError");
       assert(false);
     }
-    catch(const ::CORBA_Stubs::world::europe::austria::FatalError& e) {
+    catch(const ::world::europe::austria::FatalError& e) {
        cout << e.what << endl;
     }
 

@@ -19,7 +19,7 @@
 #include <coss/CosNaming.h>
 
 #include <CCM_Remote/world/europe/austria/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_world_europe_austria_Test.h>
+#include <world_europe_austria_Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -78,23 +78,24 @@ main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::world::europe::austria::TestHome_var myTestHome = ::CORBA_Stubs::world::europe::austria::TestHome::_narrow (obj);
+    ::world::europe::austria::TestHome_var myTestHome = 
+	::world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::world::europe::austria::Test_var myTest = myTestHome->create();
+    ::world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::CORBA_Stubs::world::europe::austria::I2_var I2in_port = 
+    ::world::europe::austria::I2_var I2in_port = 
         myTest->provide_in_port();
 
     myTest->connect_out_port(I2in_port);
 	
     myTest->configuration_complete();
 
-    DEBUGNL("==== Begin Test Case ==========================================" );    
+    DEBUGNL("==== Begin Test Case =========================================" );
     // TODO : IMPLEMENT ME HERE !       
 
-    DEBUGNL("==== End Test Case ============================================" );    
+    DEBUGNL("==== End Test Case ===========================================" );
 
     // Un-Deployment
     myTest->disconnect_out_port();

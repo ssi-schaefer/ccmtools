@@ -11,7 +11,7 @@ remote: local
 	${CCMTOOLS_CMD} c++remote -o xxx ${APP_NAME}.idl
 	${CCMTOOLS_CMD} c++remote-test -o xxx ${APP_NAME}.idl
 
-build: 
+check: 
 	cp impl/Makefile.py xxx/
 	cp impl/Test_impl.cc xxx/impl
 	cp impl/Test_in_port_impl.cc xxx/impl
