@@ -205,7 +205,7 @@ class UmlPackage extends uml_parser.uml.MPackage implements IdlContainer
 
 	public int createDependencyOrder( int number, Main main )
 	{
-	    if( dependencyNumber_>0 )
+	    if( dependencyNumber_>=0 )
 	    {
 	        return number;
 	    }

@@ -234,7 +234,6 @@ public class Main
      */
     public static void main( String[] argv )
     {
-        int returnCode = 1;
         try
         {
             if( argv.length<2 )
@@ -263,7 +262,6 @@ public class Main
                     String oclFileName = argv[1]+".ocl";
                     System.out.println("writing "+idlFileName+" and "+oclFileName);
                     (new Main()).run( (MXMI)root, idlFileName, oclFileName );
-                    returnCode = 0;
                     if( argv.length>=3 && argv[2].equals("DUMP") )
                     {
                         printChildren();
@@ -274,8 +272,8 @@ public class Main
         catch( Exception e )
         {
             e.printStackTrace();
+            System.exit(1);
         }
-        System.exit(returnCode);
     }
 
 

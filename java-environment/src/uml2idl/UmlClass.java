@@ -913,7 +913,8 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 	            String componentName = ((IdlContainer)componentObj).getPathName();
                 if( idlParent_!=null && (idlParent_ instanceof IdlContainer) )
                 {
-                    componentName = Main.reducePathname(componentName, ((IdlContainer)idlParent_).getPathName());
+                    componentName = Main.reducePathname(componentName,
+                                     ((IdlContainer)idlParent_).getPathName());
                 }
 	            code.append(" manages ");
 	            code.append(componentName);
@@ -954,7 +955,7 @@ class UmlClass extends uml_parser.uml.MClass implements IdlContainer
 
 	public int createDependencyOrder( int number, Main main )
 	{
-	    if( dependencyNumber_>0 )
+	    if( dependencyNumber_>=0 )
 	    {
 	        return number;
 	    }
