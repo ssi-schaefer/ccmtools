@@ -1,2 +1,2 @@
-    my%(ComponentType)sMirror.ptr (  )->disconnect ( "%(Identifier)s_mirror", ck_%(ProvidesType)s%(Identifier)s );
+    my%(ComponentType)sMirror.ptr (  )->disconnect ( "%(Identifier)s_mirror", %(ComponentType)s_ck_%(Identifier)s );
 

@@ -173,9 +173,7 @@ public class CppRemoteGeneratorImpl
 
         String value = super.getLocalValue(variable);
 
-	if (current_node instanceof MUsesDef) {
-            return data_MUsesDef(variable, value);
-        } else if (current_node instanceof MAttributeDef) {
+        if (current_node instanceof MAttributeDef) {
             return data_MAttributeDef(variable, value);
         } else if (current_node instanceof MFactoryDef) {
             return data_MFactoryDef(variable, value);
@@ -183,25 +181,6 @@ public class CppRemoteGeneratorImpl
 
 	return value;
     }
-
-   /**
-    * Navigates in the metamodel from MUsesDef to MInterfaceDef to make
-    * the template substitution for the MOperationDef possible.
-    * @param data_type
-    * @param data_value
-    * @return
-    */
-    protected String data_MUsesDef(String data_type, String data_value)
-    {
-	System.out.println("CppRemoteGeneratorImpl.data_MUsesDef("+data_type+", "+ data_value +")");
-
-        if (data_type.startsWith("MOperation")) {
-            MUsesDef uses = (MUsesDef) current_node;
-            return fillTwoStepTemplates(uses.getUses(), data_type);
-        }
-        return data_value;
-    }
-
 
     protected String data_MAttributeDef(String data_type, String data_value)
     {
@@ -259,9 +238,9 @@ public class CppRemoteGeneratorImpl
      * @return a map containing the keys and values needed to fill in the
      *         template for this interface.
      */
-    protected Map getTwoStepVariables(MInterfaceDef iface,
-                                      MOperationDef operation,
-                                      MContained container)
+    protected Map getTwoStepOperationVariables(MInterfaceDef iface,
+                                               MOperationDef operation,
+                                               MContained container)
     {
 	System.out.println("CppRemoteGeneratorImpl.getTwoStepVariables()");
 

@@ -23,17 +23,31 @@ using namespace CCM_Utils;
 int main ( int argc, char *argv[] )
 {
   int result = 0;
+
+  localComponents::HomeFinder* homeFinder;
+
+  SmartPtr<%(Identifier)s> my%(Identifier)s;
+  SmartPtr<%(Identifier)s_mirror> my%(Identifier)sMirror;
+
+%(MProvidesDefVariable)s
+%(MProvidesDefCookie)s
+
+%(MUsesDefVariable)s
+%(MUsesDefCookie)s
+
   Debug::set_global ( true );
 
   DEBUGNL ( "test_client_%(Identifier)s_component_main (  )" );
 
-  // Get in instance of the local HomeFinder and register component homes
-  localComponents::HomeFinder* homeFinder = HomeFinder::Instance();
+  // get an instance of the local HomeFinder and register component homes
+
+  homeFinder = HomeFinder::Instance (  );
+
   try {
     homeFinder->register_home( create_%(HomeType)sAdapter (  ), "%(HomeType)s" );
     homeFinder->register_home( create_%(HomeType)s_mirrorAdapter (  ), "%(HomeType)s_mirror" );
   } catch ( ... )  {
-    cout << "Aut'sch: there is something wrong while register homes!" << endl;
+    cout << "REGISTER: there is something wrong!" << endl;
     return -1;
   }
 
@@ -41,80 +55,99 @@ int main ( int argc, char *argv[] )
   Py_Initialize();
 #endif
 
-  try {
-    /*
-     * SET UP / DEPLOYMENT
-     */
+  /* SET UP / DEPLOYMENT */
 
-    // Find component and mirror component homes
+  try {
+    // find component/mirror homes, instantiate components
+
     SmartPtr<%(HomeType)s> my%(HomeType)s ( dynamic_cast<%(HomeType)s*>
       ( homeFinder->find_home_by_name ( "%(HomeType)s" ).ptr (  ) ) );
     SmartPtr<%(HomeType)s_mirror> my%(HomeType)sMirror ( dynamic_cast<%(HomeType)s_mirror*>
       ( homeFinder->find_home_by_name ( "%(HomeType)s_mirror" ).ptr (  ) ) );
 
-    // Create component and mirror component instances
-    SmartPtr<%(Identifier)s> my%(Identifier)s = my%(HomeType)s.ptr (  )->create (  );
-    SmartPtr<%(Identifier)s_mirror> my%(Identifier)sMirror = my%(HomeType)sMirror.ptr (  )->create (  );
+    my%(Identifier)s = my%(HomeType)s.ptr (  )->create (  );
+    my%(Identifier)sMirror = my%(HomeType)sMirror.ptr (  )->create (  );
 
-    // Create provided and used (mirror) facets
-%(MProvidesDefFacetCreate)s
-%(MUsesDefFacetCreate)s
+    // create facets, connect components
 
-    // Connect components
+%(MProvidesDefCreate)s
+%(MUsesDefCreate)s
+
 %(MProvidesDefConnect)s
 %(MUsesDefConnect)s
 
-    // End of deployment phase
     my%(Identifier)s.ptr (  )->configuration_complete (  );
     my%(Identifier)sMirror.ptr (  )->configuration_complete (  );
+  } catch ( localComponents::HomeNotFound ) {
+    cout << "DEPLOY: can't find a home!" << endl;
+    result = -1;
+  } catch ( localComponents::NotImplemented& e ) {
+    cout << "DEPLOY: function not implemented: " << e.what (  ) << endl;
+    result = -1;
+  } catch ( localComponents::InvalidName& e ) {
+    cout << "DEPLOY: invalid name during connection: " << e.what (  ) << endl;
+    result = -1;
+  } catch ( ... )  {
+    cout << "DEPLOY: there is something wrong!" << endl;
+    result = -1;
+  }
 
-    // Use %(Identifier)s component standard functionality
+  if (result < 0) return result;
+
+  /* TESTING */
+
+  try {
+    // check basic functionality
+
     cout << "> getComponentVersion (  ) = "
          << my%(Identifier)s.ptr (  )->getComponentVersion (  ) << endl;
     cout << "> getComponentDate (  ) = "
          << my%(Identifier)s.ptr (  )->getComponentDate (  ) << endl;
 
-    /*
-     * TESTING
-     */
+    DEBUGNL("==== Begin Test Case =============================================" );
 
-     DEBUGNL("==== Begin Test Case =============================================" );
+    // TODO : IMPLEMENT ME HERE !
 
-     // TODO : IMPLEMENT ME HERE !
+    DEBUGNL("==== End Test Case ===============================================" );
+  } catch ( localComponents::NotImplemented& e ) {
+    cout << "TEST: function not implemented: " << e.what (  ) << endl;
+    result = -1;
+  } catch ( ... )  {
+    cout << "TEST: there is something wrong!" << endl;
+    result = -1;
+  }
 
-     DEBUGNL("==== End Test Case ===============================================" );
+  if (result < 0) return result;
 
-    /*
-     * TEAR DOWN
-     */
+  /* TEAR DOWN */
 
-    // Disconnect components
+  try {
+    // disconnect components, destroy instances, unregister homes
+
 %(MProvidesDefDisconnect)s
 %(MUsesDefDisconnect)s
 
-    // Destroy component instances
     my%(Identifier)s.ptr (  )->remove (  );
     my%(Identifier)sMirror.ptr (  )->remove (  );
 
-    // Unregister component homes
     homeFinder->unregister_home ( "%(HomeType)s" );
     homeFinder->unregister_home ( "%(HomeType)s_mirror" );
-
-    DEBUGNL ( "exit test_client_%(Identifier)s_component_main (  )" );
   } catch ( localComponents::HomeNotFound ) {
-    cout << "Aut'sch: can't find a home!" << endl;
+    cout << "TEARDOWN: can't find a home!" << endl;
     result = -1;
   } catch ( localComponents::NotImplemented& e ) {
-    cout << "Aut'sch: " << e.what (  ) << endl;
+    cout << "TEARDOWN: function not implemented: " << e.what (  ) << endl;
     result = -1;
   } catch ( ... )  {
-    cout << "Aut'sch: there is something wrong!" << endl;
+    cout << "TEARDOWN: there is something wrong!" << endl;
     result = -1;
   }
 
 #ifdef CCM_TEST_PYTHON
   Py_Finalize();
 #endif
+
+  DEBUGNL ( "exit test_client_%(Identifier)s_component_main (  )" );
 
   return result;
 }

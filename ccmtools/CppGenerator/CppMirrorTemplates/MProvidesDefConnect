@@ -1,3 +1,2 @@
-    localComponents::Cookie ck_%(ProvidesType)s%(Identifier)s =
-        my%(ComponentType)sMirror.ptr (  )->connect ( "%(Identifier)s_mirror", %(ProvidesType)s%(Identifier)sProvides );
-
+    %(ComponentType)s_ck_%(Identifier)s = my%(ComponentType)sMirror.ptr (  )->connect
+      ( "%(Identifier)s_mirror", %(ComponentType)s_provides_%(Identifier)s );

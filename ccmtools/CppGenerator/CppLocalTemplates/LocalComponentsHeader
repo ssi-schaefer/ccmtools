@@ -23,12 +23,31 @@ namespace localComponents {
 
   // is not part of the CCM specification
   class NotImplemented {
+  protected:
+    std::string desc;
   public:
-    std::string what ( void ) { return "Not Implemented Exception"; }
+    NotImplemented ( void ) : desc ( "Not implemented" ) {}
+    NotImplemented ( const std::string& s ) : desc ( s ) {}
+    std::string what ( void ) { return desc; }
   };
 
-  class HomeNotFound {};
-  class InvalidName {};
+  class InvalidName {
+  protected:
+    std::string desc;
+  public:
+    InvalidName ( void ) : desc ( "Invalid name" ) {}
+    InvalidName ( const std::string& s ) : desc ( s ) {}
+    std::string what ( void ) { return desc; }
+  };
+
+  class HomeNotFound {
+  protected:
+    std::string desc;
+  public:
+    HomeNotFound ( void ) : desc ( "Home not found" ) {}
+    HomeNotFound ( const std::string& s ) : desc ( s ) {}
+    std::string what ( void ) { return desc; }
+  };
 
   class AlreadyConnected {};
   class InvalidConnection {};

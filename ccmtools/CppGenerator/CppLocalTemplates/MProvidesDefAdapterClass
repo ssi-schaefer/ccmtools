@@ -1,8 +1,8 @@
 //==============================================================================
-// %(Identifier)s%(ProvidesType)s - facet adapter
+// %(Identifier)sFacetAdapter class
 //==============================================================================
 
-class %(Identifier)s%(ProvidesType)s
+class %(Identifier)sFacetAdapter
   : public %(CCMProvidesType)s
 {
   friend class %(ComponentType)s;
@@ -14,13 +14,13 @@ class %(Identifier)s%(ProvidesType)s
   bool ValidConnection;
 
  public:
-  %(Identifier)s%(ProvidesType)s(%(ComponentType)s* c, CCM_%(ComponentType)s* lc);
-  virtual ~%(Identifier)s%(ProvidesType)s (  );
+  %(Identifier)sFacetAdapter ( %(ComponentType)s* c, CCM_%(ComponentType)s* lc );
+  virtual ~%(Identifier)sFacetAdapter (  );
 
+%(MAttributeProvidesPrototype)s
 %(MOperationProvidesPrototype)s
 
-  // Implements the localComponent::Oject::get_component() method.
-  CCM_Utils::SmartPtr<localComponents::Object> get_component();
+  CCM_Utils::SmartPtr<localComponents::Object> get_component (  );
 };
 
 

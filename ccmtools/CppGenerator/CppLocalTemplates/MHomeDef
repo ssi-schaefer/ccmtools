@@ -101,7 +101,8 @@ class %(Identifier)s
 //==============================================================================
 
 extern "C" {
-  CCM_Utils::SmartPtr<localComponents::CCMHome> create_%(Identifier)sAdapter();
+  CCM_Utils::SmartPtr<localComponents::CCMHome>
+    create_%(Identifier)sAdapter (  );
 }
 
 #endif
@@ -153,14 +154,10 @@ SmartPtr<%(ComponentType)s>
 %(Identifier)s::create (  )
   throw ( localComponents::CreateFailure )
 {
-  DEBUGNL(" %(Identifier)s->create (  )");
-  SmartPtr<%(ComponentType)s> ret (
-    dynamic_cast<%(ComponentType)s*> (
-      new %(ComponentType)s (
-        this, dynamic_cast<CCM_%(ComponentType)s*> ( local_home->create (  ) )
-        )
-      )
-    );
+  DEBUGNL ( " %(Identifier)s->create (  )" );
+  SmartPtr<%(ComponentType)s> ret ( dynamic_cast<%(ComponentType)s*>
+      ( new %(ComponentType)s ( this,
+        dynamic_cast<CCM_%(ComponentType)s*> ( local_home->create (  ) ) ) ) );
   return ret;
 }
 
@@ -184,7 +181,7 @@ void
 %(Identifier)s::remove_component ( const localComponents::CCMObject& comp )
   throw ( localComponents::RemoveFailure )
 {
-  DEBUGNL ( " %(Identifier)s->remove_component()" );
+  DEBUGNL ( " %(Identifier)s->remove_component (  )" );
   // TODO
   throw localComponents::NotImplemented (  );
 }
@@ -193,7 +190,7 @@ localComponents::CCMObject*
 %(Identifier)s::create_component (  )
   throw ( localComponents::CreateFailure )
 {
-  DEBUGNL ( " %(Identifier)s->create_component()" );
+  DEBUGNL ( " %(Identifier)s->create_component (  )" );
   // TODO
   throw localComponents::NotImplemented (  );
 }
@@ -278,7 +275,7 @@ class CCM_%(Identifier)s
 #define __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
 extern "C" {
-  localComponents::HomeExecutorBase* create_%(Identifier)s();
+  localComponents::HomeExecutorBase* create_%(Identifier)s (  );
 }
 
 #endif // __HOME_%(PreprocIdentifier)s_ENTRY__H__
@@ -353,7 +350,8 @@ CCM_%(Identifier)s_impl::create (  )
   throw ( localComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Identifier)s_impl->create (  )" );
-  return dynamic_cast<localComponents::EnterpriseComponent*>(new CCM_%(ComponentType)s_impl (  ));
+  return dynamic_cast<localComponents::EnterpriseComponent*>
+    ( new CCM_%(ComponentType)s_impl (  ) );
 }
 
 %(MFactoryDefImplDefinition)s

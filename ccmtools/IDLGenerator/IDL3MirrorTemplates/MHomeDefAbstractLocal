@@ -5,9 +5,9 @@
 #ifndef __HOME__%(PreprocIdentifier)s__
 #define __HOME__%(PreprocIdentifier)s__
 
-%(OpenNamespace)s
+#include <%(ComponentInclude)s.idl3mirror>
 
-component %(ComponentType)s_mirror;
+%(OpenNamespace)s
 
 abstract local home %(Identifier)s_mirror manages %(ComponentType)s_mirror
  %(MSupportsDef)s

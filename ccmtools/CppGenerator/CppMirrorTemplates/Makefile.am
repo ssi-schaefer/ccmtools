@@ -4,11 +4,17 @@ templatedir = $(TEMPLATE_ROOT)/CppMirrorTemplates
 dist_template_DATA = \
     MComponentDef                    \
     MProvidesDefConnect              \
+    MProvidesDefCookie               \
+    MProvidesDefCreate               \
     MProvidesDefDisconnect           \
-    MProvidesDefFacetCreate          \
+    MProvidesDefVariable             \
     MUsesDefConnect                  \
     MUsesDefConnectMultiple          \
+    MUsesDefCookie                   \
+    MUsesDefCookieMultiple           \
+    MUsesDefCreate                   \
+    MUsesDefCreateMultiple           \
     MUsesDefDisconnect               \
     MUsesDefDisconnectMultiple       \
-    MUsesDefFacetCreate              \
-    MUsesDefFacetCreateMultiple
+    MUsesDefVariable                 \
+    MUsesDefVariableMultiple

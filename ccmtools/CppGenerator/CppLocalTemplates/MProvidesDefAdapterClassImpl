@@ -1,29 +1,30 @@
 //==============================================================================
-// %(Identifier)s%(ProvidesType)s - facet adapter implementation
+// %(Identifier)sFacetAdapter implementation
 //==============================================================================
 
-%(Identifier)s%(ProvidesType)s::%(Identifier)s%(ProvidesType)s(%(ComponentType)s* c, CCM_%(ComponentType)s* lc)
-  : component(c), local_component(lc)
+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter ( %(ComponentType)s* c, CCM_%(ComponentType)s* lc )
+  : component ( c ), local_component ( lc )
 {
-  DEBUGNL ( "+%(Identifier)s%(ProvidesType)s->%(Identifier)s%(ProvidesType)s()" );
+  DEBUGNL ( "+%(Identifier)sFacetAdapter->%(Identifier)sFacetAdapter (  )" );
   ValidConnection = true;
-  facet = local_component->get_%(Identifier)s();
+  facet = local_component->get_%(Identifier)s (  );
 }
 
-%(Identifier)s%(ProvidesType)s::~%(Identifier)s%(ProvidesType)s (  )
+%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter (  )
 {
-  DEBUGNL ( "-%(Identifier)s%(ProvidesType)s->~%(Identifier)s%(ProvidesType)s (  )" );
+  DEBUGNL ( "-%(Identifier)sFacetAdapter->~%(Identifier)sFacetAdapter (  )" );
   delete facet;
 }
 
+%(MAttributeProvidesAdapterDefinition)s
 %(MOperationProvidesAdapterDefinition)s
 
-CCM_Utils::SmartPtr<localComponents::Object> 
-%(Identifier)s%(ProvidesType)s::get_component()
+CCM_Utils::SmartPtr<localComponents::Object>
+%(Identifier)sFacetAdapter::get_component (  )
 {
-  DEBUGNL(" %(Identifier)s%(ProvidesType)s->get_component()");
+  DEBUGNL(" %(Identifier)sFacetAdapter->get_component (  )");
   return CCM_Utils::SmartPtr<localComponents::Object>
-    (dynamic_cast<localComponents::Object*>(component));
+    ( dynamic_cast<localComponents::Object*> ( component ) );
 };
 
 

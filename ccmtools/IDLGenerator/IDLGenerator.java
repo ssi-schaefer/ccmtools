@@ -351,7 +351,12 @@ abstract public class IDLGenerator
     { return data_MOperationDef(data_type, data_value); }
 
     protected String data_MHomeDef(String data_type, String data_value)
-    { return data_MInterfaceDef(data_type, data_value); }
+    {
+        if (data_type.equals("ComponentInclude")) {
+            return getFullScopeInclude(((MHomeDef) current_node).getComponent());
+        }
+        return data_MInterfaceDef(data_type, data_value);
+    }
 
     protected String data_MInterfaceDef(String data_type, String data_value)
     {

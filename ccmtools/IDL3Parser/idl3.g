@@ -241,6 +241,17 @@ options { exportVocab = IDL3; k = 2; }
     }
 
     /*
+     * Get the currently active source file. Returns an empty string if the
+     * current source file is the same as the original source file.
+     */
+    private String getSourceFile()
+    {
+        String source = manager.getSourceFile();
+        if (source.equals(manager.getOriginalFile())) source = "";
+        return source;
+    }
+
+    /*
      * See if the given identifier points to an object that's already in the
      * symbol table. If the identifier is found, and points to an object of the
      * same type as the given query object, then check to see if the looked up
@@ -287,7 +298,7 @@ options { exportVocab = IDL3; k = 2; }
         }
 
         throw new TokenStreamException(
-            "identifier '"+id+"' was defined more than once");
+            "identifier '"+id+"' was used more than once");
     }
 
     /*
@@ -339,10 +350,6 @@ options { exportVocab = IDL3; k = 2; }
             throw new TokenStreamException(
                 "can't add contents ("+contents+") to a null container");
 
-        String source = "";
-        if (! manager.getSourceFile().equals(manager.getOriginalFile()))
-            source = manager.getSourceFile();
-
         Iterator it = contents.iterator();
         while (it.hasNext()) {
             MContained item = (MContained) it.next();
@@ -352,7 +359,6 @@ options { exportVocab = IDL3; k = 2; }
                     "can't add a null item from '"+contents+
                     "' to container '"+container+"'");
 
-            item.setSourceFile(source);
             item.setDefinedIn(container);
             container.addContents(item);
 
@@ -649,6 +655,7 @@ module returns [MModuleDef mod = null]
     :   "module" id = identifier
         {
             mod = (MModuleDef) verifyNameEmpty(id, mod);
+            mod.setSourceFile(getSourceFile());
             mod.setIdentifier(id);
             symbolTable.add(id, mod);
         }
@@ -685,6 +692,7 @@ forward_dcl returns [MInterfaceDef iface = null]
         "interface" id = identifier
         {
             iface = (MInterfaceDef) verifyNameEmpty(id, iface);
+            iface.setSourceFile(getSourceFile());
             iface.setIdentifier(id);
             iface.setRepositoryId(createRepositoryId(id));
             symbolTable.add(id, iface);
@@ -766,6 +774,7 @@ value_forward_dcl returns [MValueDef val = null]
     :   ( "abstract" { val.setAbstract(true); } )? "valuetype" id = identifier
         {
             val = (MValueDef) verifyNameEmpty(id, val);
+            val.setSourceFile(getSourceFile());
             val.setIdentifier(id);
             symbolTable.add(id, val);
         } ;
@@ -780,6 +789,7 @@ value_box_dcl returns [MValueBoxDef valbox = null]
     :   "valuetype" id = identifier type = type_spec
         {
             valbox = (MValueBoxDef) verifyNameEmpty(id, valbox);
+            valbox.setSourceFile(getSourceFile());
             valbox.setIdentifier(id);
             valbox.setIdlType(type);
         } ;
@@ -802,6 +812,7 @@ value_abs_dcl returns [MValueDef val = null]
     :   "abstract" { val.setAbstract(true); } "valuetype" id = identifier
         {
             val = (MValueDef) verifyNameEmpty(id, val);
+            val.setSourceFile(getSourceFile());
             val.setIdentifier(id);
             symbolTable.add(id, val);
         }
@@ -833,6 +844,7 @@ value_header returns [MValueDef val = null]
     :   ( "custom" { val.setCustom(true); } )? "valuetype" id = identifier
         {
             val = (MValueDef) verifyNameEmpty(id, val);
+            val.setSourceFile(getSourceFile());
             val.setIdentifier(id);
             symbolTable.add(id, val);
         }
@@ -940,6 +952,7 @@ const_dcl returns [MConstantDef constant = null]
     :   "const" type = const_type { constant.setIdlType(type); } id = identifier
         {
             constant = (MConstantDef) verifyNameEmpty(id, constant);
+            constant.setSourceFile(getSourceFile());
             constant.setIdentifier(id);
             symbolTable.add(id, constant);
         }
@@ -1432,6 +1445,7 @@ struct_type returns [MIDLType struct = null]
     :   "struct" id = identifier
         {
             struct = (MStructDef) verifyNameEmpty(id, (MStructDef) struct);
+            ((MStructDef) struct).setSourceFile(getSourceFile());
             ((MStructDef) struct).setIdentifier(id);
             symbolTable.add(id, (MStructDef) struct);
         }
@@ -1482,6 +1496,7 @@ union_type returns [MIDLType union = null]
     :   "union" id = identifier
         {
             union = (MUnionDef) verifyNameEmpty(id, (MUnionDef) union);
+            ((MUnionDef) union).setSourceFile(getSourceFile());
             ((MUnionDef) union).setIdentifier(id);
             symbolTable.add(id, (MUnionDef) union);
         }
@@ -1621,6 +1636,7 @@ enum_type returns [MIDLType enum = null]
     :   "enum" id = identifier
         {
             enum = (MEnumDef) verifyNameEmpty(id, (MEnumDef) enum);
+            ((MEnumDef) enum).setSourceFile(getSourceFile());
             ((MEnumDef) enum).setIdentifier(id);
             symbolTable.add(id, (MEnumDef) enum);
         }
@@ -1726,6 +1742,7 @@ except_dcl returns [MExceptionDef except = null]
     :   "exception" id = identifier
         {
             except = (MExceptionDef) verifyNameEmpty(id, except);
+            except.setSourceFile(getSourceFile());
             except.setIdentifier(id);
             symbolTable.add(id, except);
         }
@@ -1749,6 +1766,7 @@ op_dcl returns [MOperationDef operation = null]
     :   ( oneway = op_attribute )? type = op_type_spec id = identifier
         {
             operation = (MOperationDef) verifyNameEmpty(id, operation);
+            operation.setSourceFile(getSourceFile());
             operation.setIdentifier(id);
             operation.setIdlType(type);
             operation.setOneway(oneway);
@@ -1878,6 +1896,7 @@ constr_forward_decl returns [MIDLType type = null]
         {
             MStructDef struct = new MStructDefImpl();
             struct = (MStructDef) verifyNameEmpty(id, struct);
+            struct.setSourceFile(getSourceFile());
             symbolTable.add(id, struct);
             type = (MIDLType) struct;
         }
@@ -1885,6 +1904,7 @@ constr_forward_decl returns [MIDLType type = null]
         {
             MUnionDef union = new MUnionDefImpl();
             union = (MUnionDef) verifyNameEmpty(id, union);
+            union.setSourceFile(getSourceFile());
             symbolTable.add(id, union);
             type = (MIDLType) union;
         }
@@ -1952,6 +1972,7 @@ readonly_attr_declarator returns [List attributes = null]
     :   id = simple_declarator
         {
             attr = (MAttributeDef) verifyNameEmpty(id, attr);
+            attr.setSourceFile(getSourceFile());
             attr.setIdentifier(id);
             attr.setReadonly(true);
             attributes.add(attr);
@@ -1961,6 +1982,7 @@ readonly_attr_declarator returns [List attributes = null]
         |   (   COMMA id = simple_declarator
                 {
                     attr = (MAttributeDef) verifyNameEmpty(id, attr);
+                    attr.setSourceFile(getSourceFile());
                     attr.setIdentifier(id);
                     attr.setReadonly(true);
                     attributes.add(attr);
@@ -2001,6 +2023,7 @@ attr_declarator returns [List attributes = null]
     :   id = simple_declarator
         {
             attr = (MAttributeDef) verifyNameEmpty(id, attr);
+            attr.setSourceFile(getSourceFile());
             attr.setIdentifier(id);
             attr.setReadonly(false);
             attributes.add(attr);
@@ -2009,6 +2032,7 @@ attr_declarator returns [List attributes = null]
         |   (   COMMA id = simple_declarator
                 {
                     attr = (MAttributeDef) verifyNameEmpty(id, attr);
+                    attr.setSourceFile(getSourceFile());
                     attr.setIdentifier(id);
                     attr.setReadonly(false);
                     attributes.add(attr);
@@ -2063,6 +2087,7 @@ component_forward_dcl returns [MComponentDef component = null]
     :   "component" id = identifier
         {
             component = (MComponentDef) verifyNameEmpty(id, component);
+            component.setSourceFile(getSourceFile());
             component.setRepositoryId(createRepositoryId(id));
             component.setIdentifier(id);
             symbolTable.add(id, component);
@@ -2136,6 +2161,7 @@ component_header returns [MComponentDef component = null]
     :   "component" id = identifier
         {
             component = (MComponentDef) verifyNameEmpty(id, component);
+            component.setSourceFile(getSourceFile());
             component.setRepositoryId(createRepositoryId(id));
             component.setIdentifier(id);
             symbolTable.add(id, component);
@@ -2186,6 +2212,7 @@ provides_dcl returns [MProvidesDef provides = null]
     :   "provides" iface = interface_type id = identifier
         {
             provides = (MProvidesDef) verifyNameEmpty(id, provides);
+            provides.setSourceFile(getSourceFile());
             provides.setIdentifier(id);
             provides.setProvides(iface);
             symbolTable.add(id, provides);
@@ -2210,6 +2237,7 @@ uses_dcl returns [MUsesDef uses = null]
         iface = interface_type id = identifier
         {
             uses = (MUsesDef) verifyNameEmpty(id, uses);
+            uses.setSourceFile(getSourceFile());
             uses.setIdentifier(id);
             uses.setUses(iface);
             symbolTable.add(id, uses);
@@ -2228,6 +2256,7 @@ emits_dcl returns [MEmitsDef emits = null]
             emits = (MEmitsDef) verifyNameEmpty(id, emits);
             event = (MEventDef) verifyNameExists(name, event);
             emits.setType(event);
+            emits.setSourceFile(getSourceFile());
             emits.setIdentifier(id);
             symbolTable.add(id, emits);
         }
@@ -2246,6 +2275,7 @@ publishes_dcl returns [MPublishesDef publishes = null]
             publishes = (MPublishesDef) verifyNameEmpty(id, publishes);
             event = (MEventDef) verifyNameExists(name, event);
             publishes.setType(event);
+            publishes.setSourceFile(getSourceFile());
             publishes.setIdentifier(id);
             symbolTable.add(id, publishes);
         } ;
@@ -2263,6 +2293,7 @@ consumes_dcl returns [MConsumesDef consumes = null]
             consumes = (MConsumesDef) verifyNameEmpty(id, consumes);
             event = (MEventDef) verifyNameExists(name, event);
             consumes.setType(event);
+            consumes.setSourceFile(getSourceFile());
             consumes.setIdentifier(id);
             symbolTable.add(id, consumes);
         } ;
@@ -2288,6 +2319,7 @@ home_header returns [MHomeDef home = null]
         {
             home = (MHomeDef) verifyNameEmpty(id, home);
             home.setRepositoryId(createRepositoryId(id));
+            home.setSourceFile(getSourceFile());
             home.setIdentifier(id);
             symbolTable.add(id, home);
         }
@@ -2366,6 +2398,7 @@ factory_dcl returns [MFactoryDef factory = null]
     :   "factory" id = identifier
         {
             factory = (MFactoryDef) verifyNameEmpty(id, factory);
+            factory.setSourceFile(getSourceFile());
             factory.setIdentifier(id);
             symbolTable.add(id, factory);
         }
@@ -2386,6 +2419,7 @@ finder_dcl returns [MFinderDef finder = null]
     :   "finder" id = identifier
         {
             finder = (MFinderDef) verifyNameEmpty(id, finder);
+            finder.setSourceFile(getSourceFile());
             finder.setIdentifier(id);
             symbolTable.add(id, finder);
         }
@@ -2408,6 +2442,7 @@ event_forward_dcl returns [MEventDef event = null]
     :   ( "abstract" { event.setAbstract(true); } )? "eventtype" id = identifier
         {
             event = (MEventDef) verifyNameEmpty(id, event);
+            event.setSourceFile(getSourceFile());
             event.setIdentifier(id);
             symbolTable.add(id, event);
             event.setContentss(null);
@@ -2436,6 +2471,7 @@ event_abs_dcl returns [MEventDef event = null]
     :   "abstract" { event.setAbstract(true); } "eventtype" id = identifier
         {
             event = (MEventDef) verifyNameEmpty(id, event);
+            event.setSourceFile(getSourceFile());
             event.setIdentifier(id);
             symbolTable.add(id, event);
         }
@@ -2487,6 +2523,7 @@ event_header returns [MEventDef event = null]
     :   ( "custom" { event.setCustom(true); } )? "eventtype" id = identifier
         {
             event = (MEventDef) verifyNameEmpty(id, event);
+            event.setSourceFile(getSourceFile());
             event.setIdentifier(id);
             symbolTable.add(id, event);
         }

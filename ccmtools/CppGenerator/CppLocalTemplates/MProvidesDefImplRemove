@@ -1,2 +1,2 @@
-  ( dynamic_cast<%(Identifier)s%(ProvidesType)s*> (%(Identifier)s_facet) )->ValidConnection = false;
+  ( dynamic_cast<%(Identifier)sFacetAdapter*> ( %(Identifier)s_facet ) )->ValidConnection = false;
 

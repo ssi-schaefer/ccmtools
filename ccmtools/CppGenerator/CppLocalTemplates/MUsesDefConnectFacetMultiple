@@ -2,4 +2,3 @@
     return connect_%(Identifier)s ( SmartPtr<%(CCMUsesType)s>
       ( dynamic_cast<%(CCMUsesType)s*> ( connection.ptr ( ) ) ) );
 
-

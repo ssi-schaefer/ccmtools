@@ -162,61 +162,49 @@ public class ConsoleDriverImpl
 
     private void logSimpleLine(Object data, long m)
     {
-        if ((mask & m) != 0) {
-            output.println(formatPrefix(' ') + data);
-        }
+        if ((mask & m) != 0) output.println(formatPrefix(' ') + data);
     }
 
     private void logSimpleLine(Object data, long m, char pre)
     {
-        if ((mask & m) != 0) {
-            output.println(formatPrefix(pre) + data);
-        }
+        if ((mask & m) != 0) output.println(formatPrefix(pre) + data);
     }
 
     private String formatPrefix(char pre)
     {
-        if ((mask & M_PREFIX) != 0) {
-            return formatIndent(pre);
-        } else {
-            return "";
-        }
+        if ((mask & M_PREFIX) != 0) return formatIndent(pre);
+        else return "";
     }
 
     private String formatIndent(char pre)
     {
-        if ((mask & M_PREFIX_INDENT) != 0) {
-            return indent + pre + " ";
-        } else {
-            return pre + " ";
-        }
+        if ((mask & M_PREFIX_INDENT) != 0) return indent + pre + " ";
+        else return pre + " ";
     }
 
     private String formatData(Object data)
     {
-        if (data == null) {
-            return "(null)";
-        }
+        if (data == null) return "(null)";
 
         String pre = formatPrefix(' ');
         StringBuffer ret = new StringBuffer();
 
         if (data instanceof Map) { // hash table format
+            Map map = (Map) data;
+
             ret.append("\n");
 
-            SortedSet items = new TreeSet(((Map) data).keySet());
+            SortedSet items = new TreeSet(map.keySet());
             for (Iterator i = items.iterator(); i.hasNext(); ) {
                 Object key = i.next();
-                Object val = ((Map) data).get(key);
-                String value = abbreviateString(val);
-                ret.append(pre+"{ "+key+" : "+value+" }\n");
+                Object val = map.get(key);
+                ret.append(pre+"{ "+key+" : "+abbreviateString(val)+" }\n");
             }
         } else if (data instanceof Collection) { // list format
             ret.append("\n");
 
-            for (Iterator i = ((Collection) data).iterator(); i.hasNext(); ) {
+            for (Iterator i = ((Collection) data).iterator(); i.hasNext(); )
                 ret.append(pre+"[ "+i.next()+" ]\n");
-            }
         } else { // other formats
             ret.append(abbreviateString(data));
         }

@@ -1,0 +1,17 @@
+%(LanguageType)s
+%(Object)sFacetAdapter::%(Identifier)s (  )
+{
+  DEBUGNL(" %(Object)sFacetAdapter->%(Identifier)s (  )");
+  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  return facet->%(Identifier)s (  );
+}
+
+void
+%(Object)sFacetAdapter::%(Identifier)s ( const %(LanguageType)s value )
+{
+  DEBUGNL(" %(Object)sFacetAdapter->%(Identifier)s ( value )");
+  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
+  facet->%(Identifier)s ( value );
+}
+
+

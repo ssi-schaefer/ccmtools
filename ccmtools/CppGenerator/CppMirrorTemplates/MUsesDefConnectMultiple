@@ -1,7 +1,6 @@
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_01 =
-      my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_02 =
-      my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses );
-    localComponents::Cookie ck_%(UsesType)s%(Identifier)s_03 =
-      my%(ComponentType)s.ptr (  )->connect ( "%(Identifier)s", %(UsesType)s%(Identifier)sUses );
-
+    %(ComponentType)s_ck_%(Identifier)s_01 = my%(ComponentType)s.ptr (  )->connect
+      ( "%(Identifier)s", %(ComponentType)s_uses_%(Identifier)s );
+    %(ComponentType)s_ck_%(Identifier)s_02 = my%(ComponentType)s.ptr (  )->connect
+      ( "%(Identifier)s", %(ComponentType)s_uses_%(Identifier)s );
+    %(ComponentType)s_ck_%(Identifier)s_03 = my%(ComponentType)s.ptr (  )->connect
+      ( "%(Identifier)s", %(ComponentType)s_uses_%(Identifier)s );

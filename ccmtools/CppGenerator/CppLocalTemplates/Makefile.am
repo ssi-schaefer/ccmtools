@@ -22,6 +22,13 @@ dist_template_DATA = \
     MAttributeDefPrototype                         \
     MAttributeDefPrototypeVV                       \
     MAttributeDefVariable                          \
+    MAttributeProvidesAdapterDefinition            \
+    MAttributeProvidesAdapterImplDefinition        \
+    MAttributeProvidesPrototype                    \
+    MAttributeSupportsAdapterDefinition            \
+    MAttributeSupportsImplDefinition               \
+    MAttributeSupportsPrototype                    \
+    MAttributeSupportsPrototypeVV                  \
     MComponentDef                                  \
     MConsumesDefInclude                            \
     MConstantDefInclude                            \

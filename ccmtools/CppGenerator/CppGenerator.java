@@ -25,6 +25,7 @@ import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
@@ -53,6 +54,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -541,6 +543,8 @@ abstract public class CppGenerator
 
     protected String data_MProvidesDef(String data_type, String data_value)
     {
+        MInterfaceDef iface = ((MProvidesDef) current_node).getProvides();
+
         if (data_type.equals("CCMProvidesType")) {
             if (data_value.indexOf(scope_separator) < 0)
                 return "CCM_" + data_value;
@@ -548,14 +552,18 @@ abstract public class CppGenerator
                 scope_separator.length();
             return data_value.substring(0, i)+"CCM_"+data_value.substring(i);
         } else if (data_type.startsWith("MOperation")) {
-            MInterfaceDef iface = ((MProvidesDef) current_node).getProvides();
-            return fillTwoStepTemplates(iface, data_type);
+            return fillTwoStepTemplates(iface, data_type, false);
+        } else if (data_type.startsWith("MAttribute")) {
+            return fillTwoStepTemplates(iface, data_type, true);
         }
+
         return data_value;
     }
 
     protected String data_MSupportsDef(String data_type, String data_value)
     {
+        MInterfaceDef iface = ((MSupportsDef) current_node).getSupports();
+
         if (data_type.equals("CCMSupportsType")) {
             if (data_value.indexOf(scope_separator) < 0)
                 return "CCM_" + data_value;
@@ -563,21 +571,30 @@ abstract public class CppGenerator
                 scope_separator.length();
             return data_value.substring(0, i)+"CCM_"+data_value.substring(i);
         } else if (data_type.startsWith("MOperation")) {
-            MInterfaceDef iface = ((MSupportsDef) current_node).getSupports();
-            return fillTwoStepTemplates(iface, data_type);
+            return fillTwoStepTemplates(iface, data_type, false);
+        } else if (data_type.startsWith("MAttribute")) {
+            return fillTwoStepTemplates(iface, data_type, true);
         }
+
         return data_value;
     }
 
     protected String data_MUsesDef(String data_type, String data_value)
     {
+        MInterfaceDef iface = ((MUsesDef) current_node).getUses();
+
         if (data_type.equals("CCMUsesType")) {
             if (data_value.indexOf(scope_separator) < 0)
                 return "CCM_" + data_value;
             int i = data_value.lastIndexOf(scope_separator) +
                 scope_separator.length();
             return data_value.substring(0, i)+"CCM_"+data_value.substring(i);
+        } else if (data_type.startsWith("MOperation")) {
+            return fillTwoStepTemplates(iface, data_type, false);
+        } else if (data_type.startsWith("MAttribute")) {
+            return fillTwoStepTemplates(iface, data_type, true);
         }
+
         return data_value;
     }
 
@@ -644,10 +661,13 @@ abstract public class CppGenerator
      * @param child MInterfaceDef node to gather information from.
      * @param template_name the name of the template to load for variable
      *        substitution.
+     * @param attribute true if we should fill in attribute information. If
+     *        false, then we will fill in operation information.
      * @return a string containing the variable-substituted template requested.
      */
     protected String fillTwoStepTemplates(MInterfaceDef child,
-                                          String template_name)
+                                          String template_name,
+                                          boolean attribute)
     {
         MContained cont = (MContained) current_node;
 
@@ -673,12 +693,17 @@ abstract public class CppGenerator
         while (! ifaces.empty()) {
             MInterfaceDef iface = (MInterfaceDef) ifaces.pop();
 
-            List operations =
-                iface.getFilteredContents(MDefinitionKind.DK_OPERATION, false);
+            List contents = iface.getFilteredContents((attribute) ?
+                                MDefinitionKind.DK_ATTRIBUTE :
+                                MDefinitionKind.DK_OPERATION, false);
 
-            for (Iterator o = operations.iterator(); o.hasNext(); ) {
-                Map vars =
-                    getTwoStepVariables(child, (MOperationDef) o.next(), cont);
+            for (Iterator c = contents.iterator(); c.hasNext(); ) {
+                Map vars = null;
+
+                if (attribute)
+                    vars = getTwoStepAttributeVariables((MAttributeDef) c.next(), cont);
+                else
+                    vars = getTwoStepOperationVariables((MOperationDef) c.next(), cont);
 
                 Template template =
                     template_manager.getRawTemplate(template_name);
@@ -695,18 +720,42 @@ abstract public class CppGenerator
 
     /**
      * Get a variable hash table sutable for filling in the template from the
-     * fillTwoStepTemplates function.
+     * fillTwoStepTemplates function. This version of the function handles
+     * operations from the given interface.
      *
-     * @param iface the interface from which we're starting the two step
-     *        operation.
      * @param operation the particular interface operation that we're filling in
      *        a template for.
      * @param container the container in which the given interface is defined.
      * @return a map containing the keys and values needed to fill in the
      *         template for this interface.
      */
-    abstract protected Map getTwoStepVariables(MInterfaceDef iface,
-                                               MOperationDef operation,
-                                               MContained container);
+    abstract protected Map getTwoStepOperationVariables(MOperationDef operation,
+                                                        MContained container);
+
+    /**
+     * Get a variable hash table sutable for filling in the template from the
+     * fillTwoStepTemplates function. This function handles attributes.
+     *
+     * @param iface the interface from which we're starting the two step
+     *        operation.
+     * @param attr the particular interface attribute that we're filling in
+     *        a template for.
+     * @param container the container in which the given interface is defined.
+     * @return a map containing the keys and values needed to fill in the
+     *         template for this interface.
+     */
+    protected Map getTwoStepAttributeVariables(MAttributeDef attr,
+                                               MContained container)
+    {
+        String lang_type = getLanguageType(attr);
+        Map vars = new Hashtable();
+
+        vars.put("Object",              container.getIdentifier());
+        vars.put("Identifier",          attr.getIdentifier());
+        vars.put("LanguageType",        lang_type);
+
+        return vars;
+    }
+
 }
 

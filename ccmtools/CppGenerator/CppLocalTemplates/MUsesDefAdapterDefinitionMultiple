@@ -17,14 +17,11 @@ SmartPtr<%(CCMUsesType)s>
 {
   DEBUGNL ( " %(ComponentType)s->disconnect_%(Identifier)s (  )" );
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
-  if ( %(Identifier)s_receptacles.find ( ck ) != %(Identifier)s_receptacles.end (  ) )
-  {
+  if ( %(Identifier)s_receptacles.find ( ck ) != %(Identifier)s_receptacles.end (  ) ) {
     SmartPtr<%(CCMUsesType)s> f ( %(Identifier)s_receptacles[ck] );
     %(Identifier)s_receptacles.erase ( ck );
     return f;
-  }
-  else
-    throw localComponents::InvalidConnection (  );
+  } else throw localComponents::InvalidConnection (  );
 }
 
 %(Identifier)sConnections&

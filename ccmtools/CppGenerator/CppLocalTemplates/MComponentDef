@@ -305,7 +305,7 @@ const std::string
 {
   DEBUGNL ( " %(Identifier)s->getComponentVersion (  )" );
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
-  return "0.0";
+  return "%(VersionNumber)s";
 }
 
 const std::string
@@ -313,7 +313,7 @@ const std::string
 {
   DEBUGNL ( " %(Identifier)s->getComponentDate (  )" );
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
-  return "2003-01-01";
+  return "%(CurrentDate)s";
 }
 
 const std::string
@@ -321,7 +321,7 @@ const std::string
 {
   DEBUGNL ( " %(Identifier)s->getComponentUUID (  )" );
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
-  return "no UUID";
+  return "%(UUIdentifier)s";
 }
 
 // Navigation functions
@@ -333,7 +333,8 @@ CCM_Utils::SmartPtr<localComponents::Object>
   DEBUGNL ( " %(Identifier)s->provide_facet ( " << name << " )" );
 
 %(MProvidesDefProvideFacet)s
-  throw localComponents::InvalidName();
+
+  throw localComponents::InvalidName ( name );
 }
 
 localComponents::FacetDescriptions
@@ -371,7 +372,7 @@ localComponents::Cookie
   DEBUGNL ( " %(Identifier)s->connect ( " << name << " )" );
 
 %(MUsesDefConnectFacet)s
-  throw localComponents::InvalidName (  );
+  throw localComponents::InvalidName ( name );
 }
 
 void
@@ -383,7 +384,7 @@ void
   if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
 
 %(MUsesDefDisconnectFacet)s
-  throw localComponents::InvalidName();
+  throw localComponents::InvalidName ( name );
 }
 
 localComponents::ConnectionDescriptions
@@ -623,7 +624,7 @@ CCM_%(Identifier)s_impl::set_session_context ( localComponents::SessionContext* 
   throw ( localComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Identifier)s_impl->set_session_context (  )" );
-  ctx = dynamic_cast<CCM_%(Identifier)s_Context*>(context);
+  ctx = dynamic_cast<CCM_%(Identifier)s_Context*> ( context );
 }
 
 void

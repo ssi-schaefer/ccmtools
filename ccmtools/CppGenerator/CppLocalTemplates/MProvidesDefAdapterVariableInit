@@ -1,2 +1,2 @@
-  %(Identifier)s_facet = new %(Identifier)s%(ProvidesType)s(this, local_component);
+  %(Identifier)s_facet = new %(Identifier)sFacetAdapter ( this, local_component );
 
