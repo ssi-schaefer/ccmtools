@@ -132,6 +132,7 @@ can download them, and send out various news items.
           ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/RELEASE-A.B.X
   A.B $ scp ChangeLog \
           ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/ChangeLog-A.B.X
+
   A.B $ ftp upload.sourceforge.net
   Login: anonymous
   Password: <email addy>
