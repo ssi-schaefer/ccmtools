@@ -64,6 +64,7 @@ namespace LocalComponents {
   private:
     FailureReason _reason;
   public:
+    CreateFailure () : _reason(0) {}
     CreateFailure ( const FailureReason reason ) : _reason(reason) {}
   };
 
@@ -78,6 +79,7 @@ namespace LocalComponents {
   private:
     FailureReason _reason;
   public:
+    RemoveFailure () : _reason(0) {}
     RemoveFailure ( const FailureReason reason ) : _reason(reason) {}
   };
 
@@ -100,6 +102,7 @@ namespace LocalComponents {
   private:
     CCMExceptionReason _reason;
   public:
+    CCMException () : _reason(SYSTEM_ERROR) {}
     CCMException ( const CCMExceptionReason reason ) throw() : _reason(reason) {}
   };
 
@@ -660,6 +663,7 @@ namespace LocalComponents {
   };
 
 
+
   //============================================================================
   // Component configuration
   //============================================================================
@@ -687,6 +691,49 @@ namespace LocalComponents {
       throw ( WrongComponentType ) = 0;
   };
 
+
+
+  //============================================================================
+  // Component assembling
+  //============================================================================
+
+  enum AssemblyState { INACTIVE,
+		       INSERVICE};
+
+  class InvalidLocation {};
+  class InvalidAssembly {};
+
+
+  /**
+   * The Assembly interface represents an assembly instantion. It is used to
+   * build up and tear down component assemblies.
+   *      
+   * CCM Specification 6-73
+   **/
+  class Assembly { 
+  public:
+
+    /*
+     * Creates required component servers, creates required containers, installs
+     * required component homes, instantiates components, configures and 
+     * interconnects them according to the assembly descriptor.
+     */
+    virtual void build()
+      throw (CreateFailure) = 0;
+
+    /*
+     * Removes all connections between components and destroys all components,
+     * homes, containers, and component servers that were created by the build 
+     * operation.
+     */
+    virtual void tear_down()
+      throw (RemoveFailure) = 0;
+
+    /*
+     * Returns whether the assembly is active or inactive.
+     */
+    virtual AssemblyState get_state() = 0;
+  };
 
 
 } // /namespace LocalComponents
