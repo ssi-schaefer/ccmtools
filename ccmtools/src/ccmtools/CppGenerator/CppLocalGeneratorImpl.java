@@ -65,7 +65,7 @@ public class CppLocalGeneratorImpl
         base_namespace.add("CCM_Local");
     }
 
-    /*
+
     // Begin Hack ---------------------------------
     // This hack is only temporarily to compile generated structures via PMM
     protected String getScopedInclude(MContained node)
@@ -78,7 +78,7 @@ public class CppLocalGeneratorImpl
 	}
         Collections.reverse(base_namespace);
         scope.add(node.getIdentifier());
-	buffer.append("#ifdef CONFIX_BLA_BLA \n");
+	buffer.append("#ifdef USING_CONFIX \n");
 	buffer.append("#include <");
 	buffer.append(join(file_separator, scope));
 	buffer.append(".h> \n");
@@ -90,7 +90,7 @@ public class CppLocalGeneratorImpl
 	return buffer.toString();
     }
     // End Hack -----------------------------------
-    */
+
 
 
     /**
@@ -147,7 +147,7 @@ public class CppLocalGeneratorImpl
 	    }
 
 	    writeMakefile(output_dir, file_dir,"py","");
-	    //	    writeMakefile(output_dir, file_dir,"pl", "1;");
+	    writeMakefile(output_dir, file_dir,"pl", "1;");
         }
     }
 
