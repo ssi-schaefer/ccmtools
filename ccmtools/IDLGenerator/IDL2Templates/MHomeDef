@@ -6,9 +6,9 @@
 #ifndef __HOME__%(PreprocIdentifier)s__
 #define __HOME__%(PreprocIdentifier)s__
 
-%(OpenNamespace)s
+#include "%(ComponentInclude)s.idl"
 
-interface %(ComponentType)s;
+%(OpenNamespace)s
 
 interface %(Identifier)sExplicit :
   Components::CCMHome%(BaseType)s%(MSupportsDef)s
