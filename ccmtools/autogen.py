@@ -16,15 +16,15 @@ def version_check(command, url, major, minor, micro = 0):
     vpipe = os.popen(command + ' --version')
     vline = vpipe.readline()
     vpipe.close()
-    vmatch = re.search(r'\s(?P<number>[\d.]+)\s', vline)
+    vmatch = re.search(r'\s(?P<number>\d+\.\w+(?:\.\w+)?)\s', vline)
     if not vmatch or not vmatch.groups():
         print 'not found.'
+        return
 
     version = vmatch.group('number').split('.')
     pmajor = int(version[0])
-    pminor = int(version[1])
+    pminor = version[1]
     pmicro = len(version) > 2 and version[2] or '0'
-    pmicro = int(pmicro)
 
     version_ok = 1
     if pmajor < major or \
@@ -32,10 +32,10 @@ def version_check(command, url, major, minor, micro = 0):
        pmicro < micro: version_ok = 0
 
     if version_ok:
-        print 'found %d.%d.%d, ok.' % (pmajor, pminor, pmicro)
+        print 'found %d.%s.%s, ok.' % (pmajor, pminor, pmicro)
         return 0
     else:
-        print 'found %d.%d.%d, not ok !' % (pmajor, pminor, pmicro)
+        print 'found %d.%s.%s, not ok !' % (pmajor, pminor, pmicro)
         print 'Please download the appropriate package for your distribution,'
         print 'or get the source tarball at <%s>.' % url
         return 1
