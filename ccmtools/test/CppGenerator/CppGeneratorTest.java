@@ -48,18 +48,18 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	ccmtools_dir = System.getProperty("user.dir"); 
     }
 
-    /*
 
     public void testVersionOption()
     {
 	runCcmtoolsGenerate("--version");
     }
 
+
     public void testHelpOption()
     {
 	runCcmtoolsGenerate("--help");
     }
-    
+
 
     public void testAttributeTypes()
     {
@@ -104,7 +104,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	}
     }
 
-    
+
     public void testSupportsTypes()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/supports_types";
@@ -152,8 +152,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	}
     }
 
-    */    
-    /*
+
     public void testFacetTypes()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/facet_types";
@@ -208,9 +207,8 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
-    */
 
-    /*
+
     public void testReceptacleTypes()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_types";
@@ -261,9 +259,8 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
-    */
 
-    /*
+
     public void testReceptacleMultiple()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_multiple";
@@ -307,7 +304,7 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	}
     }
 
-    */
+
     public void testModuleNested()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/module_nested";
@@ -321,15 +318,15 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 				+ " " + test_dir + "/Test.idl");
 	    
 	    runCcmtoolsGenerate("c++local -a -o " + sandbox_dir
-				+ " -I" + sandbox_dir + "/idl3/component"
-				+ " " + sandbox_dir + "/idl3/component/world/europe/austria/Test.idl"
-				+ " " + sandbox_dir + "/idl3/component/world/europe/austria/TestHome.idl"
-				+ " " + sandbox_dir + "/idl3/component/world/europe/austria/Test_mirror.idl"
-				+ " " + sandbox_dir + "/idl3/component/world/europe/austria/TestHome_mirror.idl");
+		+ " -I" + sandbox_dir + "/idl3/component"
+		+ " " + sandbox_dir + "/idl3/component/world/europe/austria/Test.idl"
+		+ " " + sandbox_dir + "/idl3/component/world/europe/austria/TestHome.idl"
+		+ " " + sandbox_dir + "/idl3/component/world/europe/austria/Test_mirror.idl"
+		+ " " + sandbox_dir + "/idl3/component/world/europe/austria/TestHome_mirror.idl");
 	    
 	    runCcmtoolsGenerate("c++local-test -o " + sandbox_dir 
-				+ " -I" + sandbox_dir + "/idl3/component"
-				+ " " + sandbox_dir + "/idl3/component/world/europe/austria/Test.idl");
+		+ " -I" + sandbox_dir + "/idl3/component"
+	        + " " + sandbox_dir + "/idl3/component/world/europe/austria/Test.idl");
 	    
 	    runConfix("--packageroot=" + sandbox_dir 
 		      + " --bootstrap --configure --make --targets=check") ;
