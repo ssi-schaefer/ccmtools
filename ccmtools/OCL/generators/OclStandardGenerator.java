@@ -288,6 +288,22 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
     abstract protected String getLanguageType( OclType type, boolean collAlias, boolean itemAlias );
 
 
+    /**
+     * Converts an OCL type to a type of the destination language.
+     */
+    abstract protected String getLanguageType( ElementType et );
+
+
+    /**
+     * Creates the source code, which reads the attribute of a class.
+     *
+     * @param parentCode  the access code of the class
+     * @param parentType  the type of the class
+     * @param childCode   the name of the attribute
+     */
+    abstract protected String getAccess( String parentCode, ElementType parentType, String childCode );
+
+
     private String getCode( MLiteralExpression expr, ConstraintCode code )
     {
         if( expr instanceof MBooleanLiteral )
@@ -411,14 +427,18 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
         {
             type = etPC.oclType_;
         }
+        else
+        {
+            etPC.oclType_ = type;
+        }
         if( lastIdlType_==null )
         {
             lastIdlType_ = etPC.idlType_;
         }
-        if( type==null && OCL_DEBUG_OUTPUT )
+        /*if( type==null && OCL_DEBUG_OUTPUT )
         {
             System.err.println("warning: cannot get type for '"+code+"' [PC]");
-        }
+        }*/
         MPropertyCallParameters pcp = pc.getCallParameters();
         if( pcp==null )
         {
@@ -462,9 +482,9 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                         String helper = (String)conCode.preHelpers_.get(code);
                         if( helper==null )
                         {
-                            String langType = getLanguageType(type, true, true);
+                            String langType = getLanguageType(etPC);
                             helper = getNextHelperName();
-                            conCode.preStatements_ += "  "+langType+" "+helper+" = "+code+";\n";
+                            conCode.preStatements_ += "  /*PC*/"+langType+" "+helper+" = "+code+";\n";
                             conCode.preHelpers_.put(code, helper);
                         }
                         return helper;
@@ -549,8 +569,9 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
                 return error("cannot resolve type of @pre-expression [PFE]");
             }
             String h = getNextHelperName();
-            String t = getLanguageType(typePC, true, true);
-            String c = "  "+t+" "+h+" = "+exprCode+"."+getCode(pc,false,conCode,etExpr)+";\n";
+            String t = getLanguageType(etPC);
+            String v = getCode(pc,false,conCode,etExpr);
+            String c = "  /*PFE*/ "+t+" "+h+" = "+getAccess(exprCode,etExpr,v)+";\n";
             conCode.preStatements_ += c;
             lastIdlType_ = etPC.idlType_;
             return h;
@@ -592,7 +613,7 @@ public abstract class OclStandardGenerator extends OclCodeGenerator
             }
         }
         // we assume that the type is OclUser
-        String sc = exprCode+"."+getCode(pc,false,conCode,etExpr);
+        String sc = getAccess(exprCode, etExpr, getCode(pc,false,conCode,etExpr));
         lastIdlType_ = etPC.idlType_;
         return sc;
     }

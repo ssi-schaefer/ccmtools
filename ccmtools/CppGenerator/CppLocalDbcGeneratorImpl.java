@@ -736,6 +736,7 @@ public class CppLocalDbcGeneratorImpl
             returnType_ = conCode.returnType_;
             ElementType result = new ElementType();
             last_attribute_idlType_ = null;
+            expr.setOclType(null);
             result.oclType_ = setAndGetOclType(expr);
             if( expr instanceof MPropertyCall )
             {
@@ -807,11 +808,11 @@ public class CppLocalDbcGeneratorImpl
                     }
                 }
                 // TODO
-                if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
+                /*if( OclCodeGenerator.OCL_DEBUG_OUTPUT )
                 {
                     System.out.println("TypeCreator.getOclType: could not find '"+
                         name+"' in IDL-type '"+idlType_.getClass().getName()+"'");
-                }
+                }*/
             }
             return null;
         }

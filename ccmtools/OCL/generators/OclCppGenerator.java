@@ -24,6 +24,7 @@ package ccmtools.OCL.generators;
 import oclmetamodel.*;
 import ccmtools.OCL.utils.*;
 import ccmtools.OCL.parser.OclConstants;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 
 
 /**
@@ -114,6 +115,52 @@ public class OclCppGenerator extends OclStandardGenerator
     private final static String OCL_REAL = "OCL_Real";
     private final static String OCL_STRING = "OCL_String";
     private final static String OCL_BOOLEAN = "OCL_Boolean";
+
+
+    protected String getLanguageType( ElementType et )
+    {
+        if( et==null )
+        {
+            return error("OclCppGenerator.getLanguageType:  ElementType==null");
+        }
+        String result = getLanguageType(et.oclType_, true, true);
+        if( et.oclType_!=null && (et.oclType_ instanceof OclCollection) )
+        {
+            return result;
+        }
+        if( isSmartPtr(et) )
+        {
+            return "WX::Utils::SmartPtr<"+result+">";
+        }
+        return result;
+    }
+
+
+    private boolean isSmartPtr( ElementType et )
+    {
+        if( et.idlType_==null )
+        {
+            return false;
+        }
+        return et.idlType_ instanceof MInterfaceDef;
+    }
+
+
+    /**
+     * Creates the source code, which reads the attribute of a class.
+     *
+     * @param parentCode  the access code of the class
+     * @param parentType  the type of the class
+     * @param childCode   the name of the attribute
+     */
+    protected String getAccess( String parentCode, ElementType parentType, String childCode )
+    {
+        if( isSmartPtr(parentType) )
+        {
+            return parentCode+"->"+childCode;
+        }
+        return parentCode+"."+childCode;
+    }
 
 
     /**
