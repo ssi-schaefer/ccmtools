@@ -1,13 +1,19 @@
-#! /usr/bin/env python
+#!/bin/bash
 
-import os, sys
-import string
+if [ -z "$CCMTOOLS_HOME" ]; then
+echo "ERROR!"
+echo "Environment variable CCMTOOLS_HOME not found!" 
+exit
+fi
 
-java = 'JAVA' in os.environ.keys() and os.environ['JAVA'] or 'java'
-src = 'ccmtools.UI.ConsoleCodeGenerator'
-home = ''
-if 'CCMTOOLS_HOME' in os.environ.keys():
-    home = '--home=%s' % os.environ['CCMTOOLS_HOME']
+JAVA_LAUNCHER="$JAVA_HOME"/bin/java
+if [ -x $JAVA_LAUNCHER ]; then 
 
-#print ' '.join(['>', java, src, home] + sys.argv[1:])
-os.execvp(java, [java, src, home] + sys.argv[1:])
+CLASSPATH=$CCMTOOLS_HOME/lib/antlr.jar:$CCMTOOLS_HOME/lib/mdr01.jar:$CCMTOOLS_HOME/lib/oclmetamodel.jar:$CCMTOOLS_HOME/lib/ccmtools.jar:$CLASSPATH
+$JAVA_HOME/bin/java -cp $CLASSPATH ccmtools.UI.ConsoleCodeGenerator --home=$CCMTOOLS_HOME $@
+echo "Note that you can also use ccmtools instead of ccmtools-generate!"
+  
+else
+echo "ERROR!"
+echo "Java executable not found in" $JAVA_HOME/bin/java
+fi
