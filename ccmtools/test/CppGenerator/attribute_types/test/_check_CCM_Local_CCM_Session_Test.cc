@@ -15,6 +15,7 @@
  ***/
 
 #include <cassert>
+#include <string>
 #include <iostream>
 
 #include <WX/Utils/debug.h>
@@ -167,6 +168,16 @@ int main(int argc, char *argv[])
       myTest->octet_value(octet_value);
       unsigned char octet_result = myTest->octet_value();
       assert(octet_result == octet_value);
+
+      wchar_t wchar_value = 'x';
+      myTest->wchar_value(wchar_value);
+      wchar_t wchar_result = myTest->char_value();
+      assert(wchar_result == wchar_value);
+      
+      wstring wstring_value = L"0123456789";
+      myTest->wstring_value(wstring_value);
+      wstring wstring_result = myTest->wstring_value();
+      assert(wstring_result == wstring_value);
     }
 
     {

@@ -98,7 +98,7 @@ int main ( int argc, char *argv[] )
 
     CCM_Local::map sequence_value;
     for(int i=0;i<5;i++) {
-      Value v1, v2;
+      CCM_Local::Value v1, v2;
       v1.s = "1";
       v1.dd = (double)i;
       sequence_value.push_back(v1);
@@ -188,7 +188,7 @@ int main ( int argc, char *argv[] )
 
     CCM_Local::map sequence_result =  myHelloC4.ptr()->sequence_value();
     for(int i=0;i<(int)sequence_result.size();i++) {
-      Value v = sequence_result.at(i);
+      CCM_Local::Value v = sequence_result.at(i);
       assert(v.dd == i);
     }
 

@@ -120,6 +120,20 @@ CCM_Test_mirror_impl::ccm_activate (  )
     assert(uchar_2 == 7);
     assert(uchar_3 == 3);
     assert(uchar_r == 3+7);
+  }
+  
+  {
+    wchar_t char_2=3, char_3, char_r;
+    char_r = type_test->op_b11(7,char_2, char_3);
+    assert(char_2 == 7);
+    assert(char_3 == 3);
+    assert(char_r == 3+7);
+
+    wstring string_2= L"drei", string_3, string_r;
+    string_r = type_test->op_b12(L"sieben",string_2, string_3);
+    assert(string_2 == L"sieben");
+    assert(string_3 == L"drei");
+    assert(string_r == L"dreisieben");
   }    
 
   {

@@ -38,6 +38,8 @@ component Test
   attribute string   string_value;
   attribute boolean  boolean_value;
   attribute octet    octet_value;
+  attribute wchar    wchar_value;
+  attribute wstring  wstring_value;
 
   // user defined types
   attribute time_t      typedef_value;

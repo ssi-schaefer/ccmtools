@@ -38,6 +38,10 @@ interface TypeTest
   boolean        op_b9 (in boolean p1, inout boolean p2, out boolean p3);
   octet          op_b10(in octet p1, inout octet p2, out octet p3);
 
+  wchar          op_b11 (in wchar p1, inout wchar p2, out wchar p3);
+  wstring        op_b12 (in wstring p1, inout wstring p2, out wstring p3);
+  //  any            op_b13 (in any p1, inout any p2, out any p3);
+
   // user defined types 
   time_t      op_u1(in time_t p1, inout time_t p2, out time_t p3);
   Color       op_u2(in Color p1, inout Color p2, out Color p3);
