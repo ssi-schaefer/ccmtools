@@ -75,8 +75,7 @@ public class ConsoleCodeGenerator
     };
 
     private static List language_types = null;
-
-    private static List languages = new ArrayList();
+    private static List languages;
 
     private static long gen_mask = 0x00000040;
     private static long par_mask = 0x00000000;
@@ -84,7 +83,8 @@ public class ConsoleCodeGenerator
     private static String include_path = "";
     private static String code_version = "0.0.0";
 
-    private static List filenames = new ArrayList();
+    //    private static List filenames = new ArrayList();
+    private static List filenames; 
 
     private static File output_directory = new File(System.getProperty("user.dir"));
     private static File base_output_directory = new File(output_directory, "");
@@ -107,10 +107,9 @@ public class ConsoleCodeGenerator
 
         System.out.print(usage.replaceAll("LANGUAGES", langs.toString()));
 
-        if (err.length() > 0) 
+        if(err.length() > 0) {
 	    System.exit(1);
-        else                  
-	    System.exit(0);
+	}
     }
 
     private static void printVersion()
@@ -119,7 +118,6 @@ public class ConsoleCodeGenerator
         System.out.println("Copyright (C) 2002, 2003, 2004 Salomon Automation");
         System.out.println("The CCM Tools library is distributed under the");
         System.out.println("terms of the GNU Lesser General Public License.");
-        System.exit(0);
     }
 
     /**************************************************************************/
@@ -137,13 +135,16 @@ public class ConsoleCodeGenerator
 
         try {
             driver = new ConsoleDriverImpl(gen_mask);
-        } catch (FileNotFoundException e) {
+        } 
+	catch (FileNotFoundException e) {
             printUsage("constructing the driver object\n"+e);
+	    // and exit
         }
 
-        if (driver == null)
+        if (driver == null) {
             printUsage("failed to create a driver object");
-
+	    // and exit
+	}
         return driver;
     }
 
@@ -161,36 +162,45 @@ public class ConsoleCodeGenerator
         TemplateHandler handler = null;
 
         try {
-            if (lang.equalsIgnoreCase("c++local"))
+            if(lang.equalsIgnoreCase("c++local")) {
                 handler = new CppLocalGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("c++local-test"))
+	    }
+            else if(lang.equalsIgnoreCase("c++local-test")) {
                 handler = new CppLocalTestGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("c++dbc"))
+	    }
+	    else if(lang.equalsIgnoreCase("c++dbc")) {
                 handler = new CppLocalDbcGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("c++remote"))
+	    }
+	    else if(lang.equalsIgnoreCase("c++remote")) {
 		handler = new CppRemoteGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("c++remote-test"))
+	    }
+	    else if(lang.equalsIgnoreCase("c++remote-test")) {
 		handler = new CppRemoteTestGeneratorImpl(driver, output_directory);
-	    //	    else if (lang.equalsIgnoreCase("c++python"))
-	    //                handler = new CppPythonGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("idl3"))
+	    }
+            else if(lang.equalsIgnoreCase("idl3")) {
                 handler = new IDL3GeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("idl3mirror"))
+	    }
+            else if(lang.equalsIgnoreCase("idl3mirror")) {
                 handler = new IDL3MirrorGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("idl2"))
+	    }
+            else if(lang.equalsIgnoreCase("idl2")) {
                 handler = new IDL2GeneratorImpl(driver, output_directory);
-        } catch (IOException e) {
+	    }
+        } 
+	catch (IOException e) {
             printUsage("while constructing a generator for "+lang+"\n"+e);
         }
 
-        if (handler == null)
+        if(handler == null) {
             printUsage("ERROR: failed to create a language generator for "+lang);
+	}
 
-        if ((generate_flags & GENERATE_APPLICATION_FILES) != 0)
+        if((generate_flags & GENERATE_APPLICATION_FILES) != 0) {
             handler.setFlag(((CodeGenerator) handler).FLAG_APPLICATION_FILES);
-
+	}
         return handler;
     }
+
 
     /**************************************************************************/
     /* MAIN FUNCTION */
@@ -204,9 +214,10 @@ public class ConsoleCodeGenerator
      */
     public static void main(String args[])
     {
-        parseArgs(args);
+        if(!parseArgs(args))
+	    return; // No further processing needed
 
-        GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
+	GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
         if (traverser == null) 
 	    printUsage("failed to create a graph traverser");
 
@@ -216,6 +227,8 @@ public class ConsoleCodeGenerator
 
         Driver driver = setupDriver();
         ArrayList handlers = new ArrayList();
+
+	System.out.println("languages = " + languages);
 
         for (Iterator l = languages.iterator(); l.hasNext(); ) {
             TemplateHandler handler = setupHandler(driver, (String) l.next());
@@ -288,7 +301,7 @@ public class ConsoleCodeGenerator
             idlfile.deleteOnExit();
         }
 
-        System.exit(0);
+	//        System.exit(0);
     }
 
     /**************************************************************************/
@@ -308,22 +321,30 @@ public class ConsoleCodeGenerator
      *
      * @param args the arguments passed on the command line.
      */
-    private static void parseArgs(String args[])
+    private static boolean parseArgs(String args[])
     {
+	languages = new ArrayList();; 
         language_types = new ArrayList();
-        for (int i = 0; i < local_language_types.length; i++)
+	filenames= new ArrayList();
+
+        for (int i = 0; i < local_language_types.length; i++) {
             language_types.add(local_language_types[i]);
+	}
 
         setHome(System.getProperty("user.dir"));
 
         List argv = new ArrayList();
-        for (int i = 0; i < args.length; i++) argv.add(args[i]);
+        for (int i = 0; i < args.length; i++) 
+	    argv.add(args[i]);
 
-        if (argv.contains("-h") || argv.contains("--help"))
+        if (argv.contains("-h") || argv.contains("--help")) {
             printUsage("");
-
-        else if (argv.contains("-V") || argv.contains("--version"))
+	    return false; // No further processing needed
+	}
+        else if (argv.contains("-V") || argv.contains("--version")) {
             printVersion();
+	    return false; // No further processing needed
+	}
 
         for (Iterator a = argv.iterator(); a.hasNext(); ) {
             String arg = (String) a.next();
@@ -359,11 +380,12 @@ public class ConsoleCodeGenerator
                     }
                     arg = arg.substring(1);
                 } while (arg.length() > 0);
-            else if (language_types.contains(arg.toLowerCase()) &&
-                     ! languages.contains(arg))
+            else if (language_types.contains(arg.toLowerCase()) && !languages.contains(arg)) {
                 languages.add(arg);
-            else
+	    }
+            else {
                 filenames.add(arg);
+	    }
         }
 
         if (languages.size() == 0)
@@ -371,6 +393,8 @@ public class ConsoleCodeGenerator
 
         if (include_path.trim().equals(""))
             include_path = " -I"+System.getProperty("user.dir");
+
+	return true;
     }
 
     private static void setGeneratorMask(String val)

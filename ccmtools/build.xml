@@ -12,7 +12,8 @@
   <property name="build" location="build" />
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
-  <property name="prefix" location="install" />
+  <property name="prefix" location="dist" />
+  <property name="sandbox" location="test/CppGenerator/sandbox" />
 
 
   <!-- Define different paths that are used in the following tasks -->
@@ -34,6 +35,7 @@
   <target name="init"
       description="Creates the build directory and deletes the old jar files." >
       <mkdir dir="${build}" />
+      <mkdir dir="${sandbox}" /> 
   </target>  
 
 
@@ -64,6 +66,25 @@
       </jar>
   </target>
 
+
+  <!-- Run test cases -->
+  <target name="test" 
+     description="" >
+     <junit printsummary="yes" haltonfailure="yes" showoutput="yes">
+          <classpath refid="run.classpath" />
+	  <formatter type="brief" />
+	  <test name="ccmtools.test.CppGenerator.CppGeneratorTest" />
+     </junit>
+
+     <exec executable="confix.py" >
+         <arg value="--packageroot=${sandbox}" />
+	 <arg value="--bootstrap" />
+	 <arg value="--configure" />
+	 <arg value="--make" />
+	 <arg value="--targets=check" />
+     </exec>
+  </target>
+  
 
   <!-- Create JavaDoc -->
   <target name="doc" 
@@ -98,6 +119,7 @@
       <delete file="${src}/IDL3Parser/IDL3TokenTypes.txt" />
 
       <delete dir="${build}" /> 
+      <delete dir="${sandbox}" /> 
       <delete dir="${doc}/javadoc" /> 
 
       <delete file="${lib}/ccmtools.jar" /> 
