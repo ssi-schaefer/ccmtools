@@ -1,0 +1,15 @@
+Latest stable release : CCM Tools 0.2.2 ""
+
+This release fixes several bugs from the 0.2.1 "Benadryl" release, 
+including the following :
+
+    * The IDL parser now handles arrays accurately.
+    * IDL arrays are mapped to C++ std::vector.
+    * The generated test-client does not call methods on supported,
+      provided or used interfaces on its own.
+      It only instantiates the component and its mirror component 
+      and connects the ports. All test cases must be implemented in
+      the mirror component's business logic.
+      This solves the test-value problem with user defined data types.
+    * There are some new test-cases (see test/idl/README) that check the 
+      implementations of IDL parser and code generators.
