@@ -1,0 +1,24 @@
+// $Id$
+/**
+ * include test
+ *
+ * We define the interfaces for facet, receptacles and component 
+ * in separated files.  
+ * The include statement is used to bring the files together.
+ */
+
+#include"Console.idl"
+#include"Lcd.idl"
+
+component Hello
+{
+  attribute string prompt;
+
+  provides Console console;
+  uses Lcd lcd;
+};
+
+home HelloHome manages Hello
+{
+};
+

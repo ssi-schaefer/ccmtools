@@ -47,5 +47,5 @@ $(DOC_NAME).dvi: $(TEX) $(EPSS) $(BIBS)
 	$(LATEX) $(DOC_NAME).tex
 
 clean-local:
-	$(RM) -f *.aux *.toc *.log *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
+	$(RM) -f *.eps *.aux *.toc *.lo? *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
 

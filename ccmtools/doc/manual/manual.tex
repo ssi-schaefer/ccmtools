@@ -1,4 +1,3 @@
-% $Id$
 %============================================================================
 %  CCM Tools Manual
 %=============================================================================
@@ -10,6 +9,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{a4}
 \usepackage{graphicx}
+\usepackage{alltt}
 
 % new float environment for example code, using framed verbatim minipages.
 \usepackage{float}
@@ -26,52 +26,48 @@
 
 % length definitions for paragraph spacing and indent.
 \setlength{\parindent}{0cm}
-\setlength{\parskip}{0.3cm}
 
 % custom controls over float placement and page flow.
-\renewcommand{\textfraction}{0.1}
-\renewcommand{\topfraction}{0.9}
-\renewcommand{\bottomfraction}{0.9}
-\renewcommand{\floatpagefraction}{0.35}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.95}
+\renewcommand{\floatpagefraction}{0.1}
 \setcounter{totalnumber}{5}
 
-\begin{document}
-
 %=Content======================================================================
-\title{
-\vspace{1cm} {\Huge CCM Tools 0.2} \\
-\vspace{1cm} {\Huge \it Developer's Guide} \\
-\vspace{1cm}{\it Leif M. Johnson, Egon Teiniker}\\
-\vspace{0.5cm} {\small }}
+\author{
+  Egon Teiniker <egon.teiniker@tugraz.at>\\
+  Leif Johnson <leif@ambient.2y.net>
+%  \vspace{1em}
+%  {\small $Id$}
+}
 
-%\title{{\Huge CCM Tools} \vspace{1cm} \\Developer's Guide\\ 
-%{\it Leif M. Johnson, Egon Teiniker} }
+\title{{\Huge CCM Tools}\\Developer's Manual}
 
+\begin{document}
 \maketitle
+\pagenumbering{roman}
 \tableofcontents
+\listoffigures
 
-%--------------------------------------------------------------------
-\include{Introduction}
-\include{CCMMetamodelLib}
-\include{IDLParser}
-\include{ComponentGeneratorTools}
-\include{AssemblyGeneratorTools}
-\include{TestingTools}
+\newpage
+\pagenumbering{arabic}
+\setlength{\parskip}{1em}
+
+\input{Introduction}
+\input{CCMMetamodelLib}
+\input{IDLParser}
+\input{ComponentGeneratorTools}
+\input{AssemblyGeneratorTools}
+\input{TestingTools}
 
 \begin{appendix}
-\include{Installing}
+\input{Installing}
 \end{appendix}
-
 
 %=References===================================================================
 \bibliographystyle{plain}
 \bibliography{cbse,doc,pattern}
-%==============================================================================
-
 
 \end{document}
-
-
-
-
 

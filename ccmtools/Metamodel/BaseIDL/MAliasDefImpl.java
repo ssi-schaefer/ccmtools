@@ -35,11 +35,15 @@ public class MAliasDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-
-    private boolean isDefinedInOriginalFile;
+    private String sourceFile;
 
     private MContainer Contains;
     private MIDLType TypedBy_;
+
+    public MAliasDefImpl()
+    {
+        sourceFile = new String("");
+    }
 
     // override toString()
     public String toString()
@@ -77,9 +81,9 @@ public class MAliasDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

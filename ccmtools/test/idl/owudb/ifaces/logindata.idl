@@ -1,0 +1,15 @@
+module owil {
+module udb {
+
+struct LoginData {
+   string system;
+   string login;
+   long attr;
+   string beschreib;
+   string grp;
+   string prok;
+   string persnr;
+};
+
+};
+};

@@ -1,0 +1,17 @@
+#include "ifaces/auth.idl"
+#include "ifaces/udbbrowser.idl"
+
+module owil {
+module udb {
+      
+component UserDB_DBSQL {
+   provides UserPassAuthentication auth;
+   provides UserDBBrowser browser;
+
+   boolean attribute update_stat;
+};
+
+home UserDB_DBSQL_Home manages UserDB_DBSQL {};
+
+}; // end of module udb
+}; // end of module owil

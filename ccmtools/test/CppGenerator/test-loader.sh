@@ -3,8 +3,9 @@
 sandbox_dir=`pwd`/sandbox
 build_dir=${sandbox_dir}/build
 install_dir=${sandbox_dir}/install
+template_dir=${sandbox_dir}/share/${PACKAGE}-${MAJORMINOR}
 
-${MKDIR} -p ${build_dir} ${install_dir}
+${MKDIR} -p ${build_dir} ${install_dir} ${template_dir}
 
 # copy source idl files.
 
@@ -26,12 +27,14 @@ ln -s `which ccmtools-c++-uninstall` ${sandbox_dir}
 cwd=`pwd`
 cd ${sandbox_dir}
 
-ln -s ${top_srcdir}/../CppGenerator/*Templates .
-ln -s ${top_srcdir}/../IDLGenerator/*Templates .
+for t in ${top_srcdir}/../CppGenerator/*Templates \
+         ${top_srcdir}/../IDLGenerator/*Templates
+do ln -s `echo $t | sed 's,..,../../..,'` ${template_dir}
+done
 ln -s ${top_srcdir}/../lib/antlr.jar .
 ln -s ${top_builddir}/../ccmtools .
 
-export CCMTOOLS_HOME=`pwd`
+export CCMTOOLS_HOME=${sandbox_dir}
 export PATH=.:../..:${PATH}
 export CLASSPATH=./antlr.jar:../../antlr.jar:.:../..:${CLASSPATH}
 
@@ -63,7 +66,7 @@ test -z "${ret}" && ccmtools-c++-uninstall -p ${1} || ret=1
 
 test -z "${ret}" && ret=0
 
-${RM} -f *Templates antlr.jar ccmtools* *.idl *.cc *.h *.py
+${RM} -f -r share antlr.jar ccmtools* *.idl *.cc *.h *.py
 cd ${cwd}
 exit ${ret}
 

@@ -172,27 +172,27 @@ idl3_dir = os.path.join(SOURCE_DIR, 'idl3')
 idl3cmd = 'ccmtools-generate -I. -o ' + idl3_dir
 cmd = 'ccmtools-generate -I. -o ' + SOURCE_DIR
 
-if os.system('%s idl3mirror -u %s' % (idl3cmd, IDL_FILES)):
+if ENABLE_DEBUG and os.system('%s idl3mirror -u %s' % (idl3cmd, IDL_FILES)):
     print 'Error while generating IDL3 mirror files.'
     sys.exit(1)
 
-if os.system('%s c++mirror -u %s %s' % (cmd, CODE_DEFINES, IDL_FILES)):
-    print 'Error while generating C++ test client files.'
+if ENABLE_DEBUG and os.system('%s c++mirror -u %s %s' %
+                              (cmd, CODE_DEFINES, IDL_FILES)):
+    print 'Error while generating C++ mirror test files.'
     sys.exit(1)
 
 if ENABLE_PYTHON_TEST and os.system('%s c++python -e -u %s' % (cmd, IDL_FILES)):
     print 'Error while generating Python bindings.'
     sys.exit(1)
 
-cwd = os.getcwd()
-os.chdir(idl3_dir)
-
-if os.system('%s c++local -a -u %s *.idl3mirror' % (cmd, CODE_DEFINES)):
-    print 'Error while generating C++ mirror components.'
+if ENABLE_DEBUG:
+    cwd = os.getcwd()
+    os.chdir(idl3_dir)
+    if os.system('%s c++local -a -u %s *.idl3mirror' % (cmd, CODE_DEFINES)):
+        print 'Error while generating C++ mirror components.'
+        os.chdir(cwd)
+        sys.exit(1)
     os.chdir(cwd)
-    sys.exit(1)
-
-os.chdir(cwd)
 
 langs = ENABLE_REMOTE and 'c++local c++remote' or 'c++local'
 if os.system('%s %s -a %s %s' % (cmd, langs, CODE_DEFINES, IDL_FILES)):

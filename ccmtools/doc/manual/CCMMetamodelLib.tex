@@ -1,5 +1,6 @@
 %******************************************************************************
 \chapter{CCM Metamodel Library}
+\label{chapter:ccm-metamodel-library}
 %******************************************************************************
 
 %==============================================================================
@@ -10,73 +11,84 @@ The CORBA Component Model (CCM) specification defines a CCM metamodel
 (\cite{CCMSpecification}, chapter 8 ``Interface Repository Metamodel'') that can
 be used to represent the syntax of an IDL3 file.
 
-We developed a CCM metamodel library that can be used to establish a CCM model
-in memory. The CCM metamodel library is very similar to the UML metamodel
-library from NovoSoft~\cite{FIXME}. The library supports navigation between the
-different objects of the model as well as access methods to their attributes.
+The CCM Tools implement a CCM metamodel library that can be used to establish a
+CCM model in memory. The CCM metamodel library is very similar to the UML
+metamodel library from NovoSoft~\cite{FIXME}. The library supports navigation
+between the different objects of the model as well as access methods to their
+attributes.
 
-\begin{figure}[htbp]
+\begin{figure}[!htb]
 \centering
 \includegraphics [width=13cm,angle=0] {CCMMetamodelLib}
 \caption{CCM metamodel library.}
 \label{fig:metamodel-CCMMetamodelLib}
 \end{figure}
 
-As shown in Figure~\ref{fig:metamodel-CCMMetamodelLib} the CCM metamodel library
-can be used by a IDL3 parser to represent the syntax in memory. On the other
-side a code generator tool can use the model to create code fragments.
+As shown in Figure~\ref{fig:metamodel-CCMMetamodelLib}, the CCM metamodel
+library can be used by a IDL3 parser to represent the syntax of IDL with a CCM
+model in memory. On the other side a code generator tool can use a CCM model to
+create code fragments.
 
 Figure~\ref{fig:metamodel-CCMMetamodelLib} actually describes the particular
-case where the IDL3 parser reads the IDL source code and generates a CCM model
-in memory, while the code generator uses the CCM model to generate IDL source
-code. This is the proof that the CCM metamodel describes the IDL3 syntax
-exhaustively.
+case where the IDL3 parser (see Chapter~\ref{chapter:idl3-parser} reads IDL3
+source code and generates a CCM model in memory, while the code generator uses
+the CCM model to generate IDL3 source code. If this parsing--generation task
+succeeds for all possible input IDL3 source code, then the CCM metamodel
+describes the IDL3 syntax exhaustively.
 
 %==============================================================================
 \section{CCM Metamodel Library API}
 %==============================================================================
 
 This chapter describes how to use the CCM metamodel library (written in Java) to
-create a CCM model in memory and navigate in this model to get some information
-about its entries. The library is strongly based on chapter 8 of the CCM
-specification, so it would be useful to have a copy of the specification next to
-you.
+create a CCM model in memory. The chapter also illustrates how to navigate in a
+CCM model to get some information about its entries. The library is strongly
+based on chapter 8 of the CCM specification, so it would be useful to have a
+copy of the specification next to you.
 
-There is also {\tt javadoc} documentation in the {\tt
-ccm/tools/Metamodel/doc/api} directory that can be used as an API reference.
+Provided you have a CCM Tools source tree handy, there is also {\tt javadoc}
+documentation in the {\tt doc/api} directory that can be used as an API
+reference.
 
 %==============================================================================
 \subsection{Implementation details}
 %==============================================================================
 
-The CCM metamodel library is separated into two parts (representing the classic
-and the component based parts of the IDL):
-
-\begin{description}
-\item [{\tt ccm.mof.BaseIDL}] Contains all classes to model the classic CORBA
-      IDL syntax.
-\item [{\tt ccm.mof.ComponentIDL}] Contains the ccm extensions from the CORBA
-      Component Model to model components, homes etc.
-\end{description}
+The CCM metamodel library is separated into two parts. These two parts represent
+the classic and the component based parts of the IDL. The {\bf Base IDL}
+contains all classes to model the classic CORBA IDL syntax. The {\bf
+ComponentIDL} contains the CCM extensions from the CORBA component model to
+model components, homes, factories, and so on.
 
 These two parts are available in the {\tt ccmtools.jar} file, or as individual
 source code files. To use the library, the {\tt ccmtools.jar} file needs to be
 added to the Java {\tt CLASSPATH} environment variable. Programs using the
-library need to include the following import statements:
-
-\begin{verbatim}
-import ccm.mof.BaseIDL.*;
-import ccm.mof.ComponentIDL.*;
-\end{verbatim}
-
-Based on the CCM MOF metamodel specification, this implementation defines an
-interface for every class in the metamodel. The name of the interface is the
-same as the name of the class, with an `{\tt M}' prepended. For example, the
-interface for the {\tt HomeDef} class in the metamodel is defined show in
-Example~\ref{example:metamodel-mhomedef-interface}.
+library need to include the import statements shown in
+Example~\ref{example:metamodel-imports}.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
+\begin{verbatim}
+import ccmtools.Metamodel.BaseIDL.*;
+import ccmtools.Metamodel.ComponentIDL.*;
+\end{verbatim}
+\end{small}
+\end{minifbox}
+\caption{Java import statements needed to access the CCM Tools metamodel
+library.}
+\label{example:metamodel-imports}
+\end{Example}
+
+Based on the CCM metamodel specification, this implementation defines an
+interface for every class in the metamodel. The name of the interface is the
+same as the name of the class, with an `{\tt M}' prepended. For example, the
+interface for the {\tt HomeDef} class in the metamodel is defined show in
+Example~\ref{example:metamodel-mhomedef}.
+
+\begin{Example}
+\begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public interface MHomeDef
     extends MInterfaceDef
@@ -84,9 +96,10 @@ public interface MHomeDef
     //...
 }
 \end{verbatim}
+\end{small}
+\end{minifbox}
 \caption{Definition of MHomeDef interface.}
 \label{example:metamodel-mhomedef}
-\end{minifbox}
 \end{Example}
 
 To use the metamodel library, there must be an implementation of the defined
@@ -97,6 +110,7 @@ HomeDef} is defined as shown in Example~\ref{example:metamodel-mhomedefimpl}.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public class MHomeDefImpl
     implements MHomeDef
@@ -104,28 +118,26 @@ public class MHomeDefImpl
     /...
 }
 \end{verbatim}
+\end{small}
+\end{minifbox}
 \caption{Definition of MHomeDefImpl implementation class.}
 \label{example:metamodel-mhomedefimpl}
-\end{minifbox}
 \end{Example}
 
 It is good Java programming style to use an interface---not the implementation
 class---to define the type of an object. This allows for multiple realizations
-of a given interface. So, for example, a CCM MOF Library client application
-should create an instance of {\tt HomeDef} as follows:
-
-\begin{verbatim}
-MHomeDef myHome = new MHomeDefImpl();
-\end{verbatim}
+of a given interface. (The CCM Tools only define one implementing class for each
+metamodel interface, but that is what we like to refer to as a
+``technicality.'') So, for example, a CCM metamodel library client application
+should create an instance of {\tt HomeDef} like so:
+\verb+MHomeDef myHome = new MHomeDefImpl();+.
 
 For debugging, you can use the {\tt toString()} method of every implementation
-class to get information about the specific object. All \verb+toString()+
-methods in the CCM MOF Library start with interface type, followed by a colon
-(:). To use these methods, just use a metamodel object in a printing context:
+class to get information about the specific object. All {\tt toString()} methods
+in the CCM metamodel library start with interface type, followed by a colon (:).
+To use these methods, just use a metamodel object in a printing context:
+\verb+System.out.println(myHome);+.
 
-\begin{verbatim}
-System.out.println(myHome);
-\end{verbatim}
 
 %==============================================================================
 \subsection{Access to attributes}
@@ -139,17 +151,19 @@ methods in the library.
 \subsubsection{Access to boolean attributes}
 %------------------------------------------------------------------------------
 
-If a metamodel class contains a boolean attribute, the attribute name will
-always start with `{\tt is}'. The get--method has the same name as the
-attribute. The set--method replaces `{\tt is}' with the prefix `{\tt set}'. For
-example, the {\tt isAbstract} attribute in the {\tt InterfaceDef} class of the
-metamodel is mapped to the code shown in
+If a metamodel class contains a boolean attribute, the attribute name always
+starts with `{\tt is}'. Boolean attributes are always accompanied by a pair of
+get/set accessor functions. The get--method has the same name as the attribute.
+The set--method replaces `{\tt is}' with the prefix `{\tt set}'. For example,
+the {\tt isAbstract} attribute in the {\tt InterfaceDef} class of the metamodel
+is mapped to the code shown in
 Example~\ref{example:metamodel-boolean-attribute}. The implementation class of
 {\tt InterfaceDef} is shown in
 Example~\ref{example:metamodel-boolean-attribute-impl}.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public interface MInterfaceDef
     extends MContainer
@@ -158,9 +172,10 @@ public interface MInterfaceDef
     boolean isAbstract();
     void setAbstract(boolean __arg);
 
-    //...
+    // ...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Boolean--attribute access functions in the InterfaceDef interface.}
 \label{example:metamodel-boolean-attribute}
@@ -168,11 +183,14 @@ public interface MInterfaceDef
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public class MInterfaceDefImpl
     implements MInterfaceDef
 {
     private boolean isAbstract_;
+
+    // ...
 
     // attribute isAbstract:boolean
     public boolean isAbstract()
@@ -180,9 +198,10 @@ public class MInterfaceDefImpl
     public void setIsAbstract(boolean __arg)
     { isAbstract_ = __arg; }
 
-    //...
+    // ...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Boolean--attribute access functions in the InterfaceDef class
 implementation.}
@@ -193,17 +212,18 @@ implementation.}
 \subsubsection{Access to non--boolean attributes}
 %------------------------------------------------------------------------------
 
-If a metamodel class contains a non--boolean attribute, the get--method has the
-prefix `{\tt get}' followed by the capitalized name of the attribute. The
-set--method has the prefix `{\tt set}' followed by the capitalized name of the
-attribute. For example, the {\tt identifier} attribute in the {\tt OperationDef}
-class of the metamodel is mapped to the code shown in
-Example~\ref{example:metamodel-non-boolean-attribute}. The implementation class
-of {\tt OperationDef} is shown in
+If a metamodel class contains a non--boolean attribute (for example, a {\tt
+String} or {\tt Long}), the get--method has the prefix `{\tt get}' followed by
+the capitalized name of the attribute. The set--method has the prefix `{\tt
+set}' followed by the capitalized name of the attribute. For example, the {\tt
+identifier} attribute in the {\tt OperationDef} class of the metamodel is mapped
+to the code shown in Example~\ref{example:metamodel-non-boolean-attribute}. The
+implementation class of {\tt OperationDef} is shown in
 Example~\ref{example:metamodel-non-boolean-attribute-impl}.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public interface MOperationDef
     extends MContained, MTyped
@@ -215,6 +235,7 @@ public interface MOperationDef
     // ...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Non--boolean--attribute access functions for the OperationDef
 interface.}
@@ -223,11 +244,14 @@ interface.}
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public class MOperationDefImpl
     implements MOperationDef
 {
     private String identifier_;
+
+    // ...
 
     // attribute identifier:string
     public String getIdentifier()
@@ -235,9 +259,10 @@ public class MOperationDefImpl
     public void setIdentifier(String __arg)
     { identifier_ = __arg; }
 
-    //...
+    // ...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Non--boolean--attribute access implementation for OperationDef.}
 \label{example:metamodel-non-boolean-attribute-impl}
@@ -247,17 +272,19 @@ public class MOperationDefImpl
 \subsubsection{Access to array attributes}
 %------------------------------------------------------------------------------
 
-If a metamodel class contains array attributes, then the class will also include
-get-- and set--methods for single attributes. The class stores array attributes
-internally in either a Set or a List, depending on the nature of the attribute.
-The class also includes accessor methods for direct access to an attribute at a
-specific position within the array. For example, the {\tt members} attribute in
-the {\tt EnumDef} class of the metamodel is mapped to the code shown in
-Example~\ref{example:metamodel-array-attribute}. The implementation of {\tt
-EnumDef} is shown in Example~\ref{example:metamodel-array-attribute-impl}.
+If a metamodel implementation class contains array attributes, then the class
+includes the standard get-- and set--methods for the array attribute. The class
+stores array attributes internally in either a Set or a List, depending on the
+nature of the attribute. The class also includes accessor methods for direct
+access to an attribute at a specific position within the array. For example, the
+{\tt members} attribute in the {\tt EnumDef} class of the metamodel is mapped to
+the code shown in Example~\ref{example:metamodel-array-attribute}. The
+implementation of {\tt EnumDef} is shown in
+Example~\ref{example:metamodel-array-attribute-impl}.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public interface MEnumDef
     extends MTypedefDef
@@ -267,12 +294,14 @@ public interface MEnumDef
     void setMembers(List __arg);
     void addMember(String __arg);
     void removeMember(String __arg);
+
     void addMember(int __pos, String __arg);
     void removeMember(int __pos);
     void setMember(int __pos, String __arg);
     String getMember(int __pos);
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Array--attribute access functions in the EnumDef interface.}
 \label{example:metamodel-array-attribute}
@@ -280,6 +309,7 @@ public interface MEnumDef
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public class MEnumDefImpl
     implements MEnumDef
@@ -307,6 +337,7 @@ public class MEnumDefImpl
     //...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Array--attribute access implementation in the EnumDef class.}
 \label{example:metamodel-array-attribute-impl}
@@ -316,38 +347,41 @@ public class MEnumDefImpl
 \subsection{Access to associations}
 %==============================================================================
 
-Each association in the metamodel has two roles, where each role has a name and
-a multiplicity. The role attached to an element is the {\em direct role}, and
-the role on the other side of the association is called the {\em opposite role}.
-There are three different types of roles in the CCM metamodel: reference, bag,
-and list. Each type of association has its own set of navigation methods.
+An association is a link between two classes. Each association in the metamodel
+has two roles, where each role has a name and a multiplicity. The role attached
+to an element is the {\em direct role}, and the role on the other side of the
+association is called the {\em opposite role}. There are three different types
+of roles in the CCM metamodel: reference, bag, and list. The three different
+role types are classified based on the multiplicity and sort order of the
+opposite role. Each type of association has its own set of navigation methods,
+which are described below.
 
 %------------------------------------------------------------------------------
 \subsubsection{Reference role}
 %------------------------------------------------------------------------------
 
 A reference role has a multiplicity of {\tt 1} or {\tt 0..1}. These roles have
-the same access methods as seen by non--boolean attributes. For example, the
-association between the {\tt Typed} and {\tt IDLType} class of the metamodel is
-mapped to the code shown in Example~\ref{example:metamodel-reference-attribute}. The
+the same access methods as non--boolean attributes. For example, the association
+between the {\tt Typed} and {\tt IDLType} class of the metamodel is mapped to
+the code shown in Example~\ref{example:metamodel-reference-attribute}. The
 implementation of {\tt EnumDef} is shown in
 Example~\ref{example:metamodel-reference-attribute-impl}.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public interface MTyped
 {
-    // ...
-
     // association: direct role: [*] -->
-    //              opposide role: idlType[1]
+    //              opposite role: idlType[1]
     MIDLType getIdlType();
     void setIdlType(MIDLType __arg);
 
     // ...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Reference attribute access functions in the MTyped interface.}
 \label{example:metamodel-reference-attribute}
@@ -355,12 +389,11 @@ public interface MTyped
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public class MTypedImpl
     implements MTyped
 {
-    // ...
-
     private MIDLType TypedBy_;
 
     // ...
@@ -375,6 +408,7 @@ public class MTypedImpl
     // ...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Reference attribute access functions in the MTypedImpl class.}
 \label{example:metamodel-reference-attribute-impl}
@@ -385,20 +419,19 @@ public class MTypedImpl
 %------------------------------------------------------------------------------
 
 A bag role has an unordered multiplicity different from {\tt 1} or {\tt 0..1}.
-Bag roles refer to attributes stored internally as Sets, where order is
-unimportant. For example, the association between the {\tt Container} and {\tt
-Contained} classes of the metamodel is mapped to the code shown in in
+Bag roles refer to attributes stored internally as {\tt Set}s, where sort order
+is not important. For example, the association between the {\tt Container} and
+{\tt Contained} classes of the metamodel is mapped to the code shown in in
 Example~\ref{example:metamodel-bag-attribute}. The implementation of {\tt
 EnumDef} is shown in Example~\ref{example:metamodel-bag-attribute-impl}.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public interface MContainer
     extends MContained
 {
-    // ...
-
     // assocation: direct role: definedIn[0..1] <->
     //             opposite role: contents[*]
     Set getContentss();
@@ -409,6 +442,7 @@ public interface MContainer
     //...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Bag role access functions in the MContainer interface.}
 \label{example:metamodel-bag-attribute}
@@ -416,12 +450,11 @@ public interface MContainer
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public class MContainerImpl
     implements MContainer
 {
-    // ...
-
     private Set ContainsSet_;
 
     // ...
@@ -440,6 +473,7 @@ public class MContainerImpl
     //...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Bag role attribute access functions in the MContainerImpl
 implementation class.}
@@ -451,15 +485,16 @@ implementation class.}
 %------------------------------------------------------------------------------
 
 A list role has an ordered multiplicity other than {\tt 1} or {\tt 0..1}. List
-roles refer to attributes stored internally as Lists, where order is important.
-Thus, these roles have the same set of access functions as ordered array
-attributes. For example, the association between the {\tt OperationDef} and {\tt
-ParameterDef} classes is mapped to the code shown in
+roles refer to attributes stored internally as {\tt List}s, where sort order is
+important. Thus, these roles have the same set of access functions as ordered
+array attributes. For example, the association between the {\tt OperationDef}
+and {\tt ParameterDef} classes is mapped to the code shown in
 Example~\ref{example:metamodel-list-attribute}. The implementation of {\tt
 EnumDef} is shown in Example~\ref{example:metamodel-list-attribute-impl}.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public interface MOperationDef
     extends MContained, MTyped
@@ -481,15 +516,15 @@ public interface MOperationDef
     // ...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{List role attribute access functions in the MOperationDef interface.}
 \label{example:metamodel-list-attribute}
 \end{Example}
 
-The implementation class of {\tt Container} is shown below:
-
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public class MOperationDefImpl
     implements MOperationDef
@@ -525,6 +560,7 @@ public class MOperationDefImpl
     //...
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{List role attribute access functions in the MOperationDefImpl class.}
 \label{example:metamodel-list-attribute-impl}
@@ -538,23 +574,24 @@ public class MOperationDefImpl
 \subsection{Using the CCM to model IDL statements}
 %------------------------------------------------------------------------------
 
-This section shows the practical usage of the CCM metamodel library ({\tt
-ccm.mof.BaseIDL} and {\tt ccm.mof.ComponentIDL}). In its current state, the
-library can be used to create CCM models in memory and to navigate within these
-models to get information about the model entities.
+This section shows the practical usage of the CCM metamodel library (both the
+Base IDL and the Component IDL). In its current state, the library can be used
+to create CCM models in memory and to navigate within these models to get
+information about the model entities.
 
-Each IDL statement can be modelled using the CCM metamodel library. For example,
+Each IDL statement can be modeled using the CCM metamodel library. For example,
 a parser can read IDL source code and generate the corresponding CCM model.
-Normally, this CCM model gets passed to a code generator tool to create C++,
-Java, or Python.
+Normally, this CCM model gets passed to a code generator tool to create some
+sort of component implementation code written in a language like C++, Java, or
+Python.
 
 %------------------------------------------------------------------------------
 \subsection{Base IDL examples}
 %------------------------------------------------------------------------------
 
-All examples in this section can be implemented using just the {\tt
-ccm.mof.BaseIDL} library. Only classic CORBA statements may be put into CCM
-models that only use the Base IDL.
+All examples in this section can be implemented using just the Base IDL library.
+Only classic CORBA statements may be put into CCM models that only use the Base
+IDL.
 
 %---------------------------------------
 \subsubsection{IDL Enum}
@@ -566,6 +603,7 @@ the model of the enum.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
   /*
    *  enum Color { red, green, blue, black );
@@ -580,6 +618,7 @@ the model of the enum.
 
    System.out.println(enum);
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Example enumeration instantiation using the Base IDL.}
 \label{example:metamodel-baseidl-enum}
@@ -596,6 +635,7 @@ iterates through the model and prints the contained items.
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public static MContainer createModel()
 {
@@ -642,6 +682,7 @@ public static MContainer createModel()
    return idl;
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Example struct instantiation using the Base IDL.}
 \label{example:metamodel-baseidl-struct}
@@ -649,6 +690,7 @@ public static MContainer createModel()
 
 \begin{Example}
 \begin{minifbox}
+\begin{small}
 \begin{verbatim}
 public static void printModel(MContainer c)
 {
@@ -673,6 +715,7 @@ public static void printModel(MContainer c)
    }
 }
 \end{verbatim}
+\end{small}
 \end{minifbox}
 \caption{Example method to print out the fields of a struct model.}
 \label{example:metamodel-baseidl-struct-print}
@@ -682,8 +725,8 @@ public static void printModel(MContainer c)
 \subsection{Component IDL examples}
 %------------------------------------------------------------------------------
 
-All examples in this section require both the {\tt ccm.mof.BaseIDL} and {\tt
-ccm.mof.ComponentIDL} libraries.
+All examples in this section require both the Base IDL and Component IDL
+libraries.
 
 %==============================================================================
 \section{Extensions to the CCM specification}
@@ -695,87 +738,90 @@ difficulties and describes our attempts to solve them for our project.
 
 Our work with the library so far has only taken place in the context of
 implementing a series of code generators, so we have been approaching the
-library and CCM metamodel specification from only a few angles (mostly IDL
-parsing and C++ code generation). These problems reflect our singular points of
-view only and are mentioned here in the spirit of making the CCM metamodel
-specification a solid, practical, complete standard. Also, this is not intended
-to be a complete bug list for the CCM metamodel specification, but rather a
-simple list of some points that have come up during our work.
+library and CCM metamodel specification from only a few angles (IDL3 parsing and
+C++ code generation). These problems reflect our singular points of view only
+and are mentioned here in the spirit of making the CCM metamodel specification a
+solid, practical, complete standard. This is not intended to be a complete bug
+list for the CCM metamodel specification, but rather a simple list of some
+points that have come up during our work.
 
 %------------------------------------------------------------------------------
 \subsection{Fields and union fields}
+\label{subsection:metamodel-problems-fields}
 %------------------------------------------------------------------------------
 
-We changed the MField and MUnionField classes to MFieldDef and MUnionFieldDef,
-respectively. Along with this change, we added DK\_FIELD and DK\_UNIONFIELD to
-the MDefinitionKind enumeration. The reasoning in these two cases basically
-involves the following two points :
+The CCM metamodel specification provides classes for representing fields in
+structures and unions; these Field and UnionField classes are insufficient for
+model navigation. The CCM Tools implemented these classes as MFieldDef and
+MUnionFieldDef, respectively. Along with this change, we needed to add DK\_FIELD
+and DK\_UNIONFIELD to the {\tt DefinitionKind} enumeration. The reasoning in
+these two cases basically involves the following two points:
 
 \begin{enumerate}
-\item MField and MUnionField objects have an identifier member parameter and
-      associated getIdentifier() and setIdentifier() methods. Thus, they should
-      be locatable objects just like MParameterDef, MOperationDef, or
-      MInterfaceDef (all of which also have an identifier member parameter and
-      associated access member functions). However, without an associated
-      DefinitionKind, it will be impossible to use the lookupName() functions to
-      find MField and MUnionField objects when type limiting is enabled.
-\item MField and MUnionField objects behave quite similarly to MParameterDef
-      objects. MParameterDef objects have an associated DefinitionKind and
-      should be treated in the same manner as the MField and MUnionField
-      objects.
+\item MField and MUnionField objects have an {\tt identifier} member parameter
+      and associated {\tt getIdentifier} and {\tt setIdentifier} methods. Thus,
+      they should be locatable objects just like MParameterDef, MOperationDef,
+      or MInterfaceDef (all of which have an {\tt identifier} parameter and
+      associated access functions). Without an associated {\tt DefinitionKind},
+      it would be impossible to use the {\tt limitToType} parameter of the {\tt
+      lookupName} functions to find field and union field objects.
+\item Fields and union fields occupy roles similar to that of parameters.
+      Parameter objects have an associated entry in the {\tt DefinitionKind}
+      enumeration, so all three objects should be treated in the same manner.
 \end{enumerate}
 
 %------------------------------------------------------------------------------
 \subsection{Homes and components}
 %------------------------------------------------------------------------------
 
-As we have implemented them, a 1--to--many correspondence exists between
+As implemented in the CCM Tools, a 1--to--many correspondence exists between
 components and homes. That is, each component might have 1 or more homes, and a
-home must have exactly one component. However, current navigation in the
-metamodel specification is only possible from MHomeDef classes to their
-corresponding MComponentDef classes (via the ``getComponent'' and
-``setComponent'' functions).
+home must have exactly one component. However, navigation in the CCM MOF
+specification is only possible from homes to their corresponding components (via
+the {\tt getComponent} and {\tt setComponent} functions).
 
-For this 1--to--many correspondence to make more practical sense, we added a
-series of functions to MComponentDef to allow direct navigation to associated
-home(s). These functions are similar to the set of ``getSupportss'' functions
-already in a component (but see \ref{} for notes about component supports).
+For this 1--to--many correspondence to make more practical sense, the CCM Tools
+add a series of functions to MComponentDef to allow direct navigation to
+associated home(s). These functions are similar to the set of component supports
+functions already in a component (but see
+section~\ref{subsection:metamodel-problems-supports} for notes about component
+supports).
 
 %------------------------------------------------------------------------------
 \subsection{Definition kinds}
 %------------------------------------------------------------------------------
 
-The MDefinitionKind implementation as specified makes little sense in the
-context of the rest of the CCM metamodel specification. There are two major
-points of interest here:
+The {\tt DefinitionKind} enumeration makes little sense in the context of the
+rest of the CCM metamodel specification. There are two major points of interest
+here:
 
 \begin{itemize}
-\item There is no way to associate an MDefinitionKind value with each class type
-      in the CCM metamodel specification (i.e. there is no static, constant
-      ``definitionKind'' variable in the metamodel classes). This makes the
-      ``lookupName'' and ``getFilteredContents'' functions impossible to
-      implement (at least as we interpreted the purposes of these functions).
-\item The enumeration for MDefinitionKind is incomplete.
+\item There is no way to associate a {\tt DefinitionKind} value with each class
+      type in the CCM metamodel specification (i.e. there is no static, constant
+      {\tt definitionKind} variable in each of the metamodel classes). This
+      makes the {\tt lookupName} and {\tt getFilteredContents} functions
+      impossible to implement properly.
+\item The enumeration for {\tt DefinitionKind} is incomplete.
 \end{itemize}
+
+These two issues are addressed below.
 
 %----------------------------------------
 \subsubsection{Lack of association between classes and definition kinds}
 %----------------------------------------
 
-To solve the first item, we introduced a ``definitionKind'' class variable into
-the following classes:
+To solve the first item, the CCM Tools introduced a {\tt definitionKind} class
+variable into the following classes:
 
 \begin{itemize}
-\item those whose names end with ``DefImpl'' (i.e. MModuleDefImpl,
+\item those whose names end with `{\tt DefImpl}' (i.e. MModuleDefImpl,
       MParameterDefImpl, MPrimitiveDefImpl, MWstringDefImpl, etc.)
 \item MContainer and MContained
 \end{itemize}
 
-The definitionKind variable is declared {\tt private final static} because it is
-not variable for a given class. Each class has an associated
-``getDefinitionKind'' function that returns the definitionKind constant. As
-mentioned before, this addition was necessary to implement the ``lookupName''
-and ``getFilteredContents'' functions.
+The {\tt definitionKind} variable is declared {\tt private final static} because
+it is not variable for a given class. Each class has an associated {\tt
+getDefinitionKind} function that returns the {\tt definitionKind} constant.
 
 %----------------------------------------
 \subsubsection{Incomplete definition kind enumeration}
@@ -783,58 +829,62 @@ and ``getFilteredContents'' functions.
 
 The second point was easy enough to fix, but any solution will cause a small
 disturbance in the force, given the separation between the Base IDL and
-Component IDL metamodels. The MDefinitionKind enum as specified has many
-inconsistencies:
+Component IDL metamodels. The {\tt DefinitionKind} enumeration as specified has
+many inconsistencies:
 
 \begin{itemize}
-\item The enum has values for MStringDef, MParameterDef, and MPrimitiveDef, for
-      example, but no values for MFieldDef or MUnionFieldDef.
+\item The enumeration has values for StringDef, ParameterDef, and PrimitiveDef,
+      for example, but no values for FieldDef or UnionFieldDef (see
+      section~\ref{subsection:metamodel-problems-fields}).
 
       All of these classes inherit only from the Typed or IDLType classes (which
-      have no ``identifier'' member variables). So, for example, MParameterDef
-      has an ``identifier'' variable and an associated DefinitionKind value.
-      MFieldDef and MUnionFieldDef also have ``identifier'' member variables
-      (indicating that a library user might be able to use the ``lookupName''
-      functions to look for instances of these classes), but there are no
-      corresponding MDefinitionKind values.
-\item The enum has values for MInterfaceDef, MExceptionDef, MTypedefDef, and
-      MOperationDef, for example, but no values for MValueDef, MValueBoxDef, or
-      MValueMemberDef.
+      have no {\tt identifier} member variables). So, for example, MParameterDef
+      has an {\tt identifier} variable and an associated {\tt DefinitionKind}
+      value. FieldDef and UnionFieldDef also have {\tt identifier} member
+      variables (indicating that a library user might be able to use the {\tt
+      lookupName} functions to look for instances of these classes), but there
+      are no corresponding {\tt DefinitionKind} values.
+\item The enumeration has values for InterfaceDef, ExceptionDef, TypedefDef, and
+      OperationDef, for example, but no values for ValueDef, ValueBoxDef, or
+      ValueMemberDef.
 
-      This seems to be a simple oversight, as all of these types should be
-      treated equally in this regard.
-\item The enum lacks values for classes in the ComponentIDL library, even though
-      they inherit from, for example, MInterfaceDef. This has caused us some
-      discomfort, as it should clearly be possible to call, for example,
+      This seems to have been a simple oversight, as all of these types should
+      be treated equally in this regard.
+\item The enumeration lacks values for classes in the Component IDL library,
+      even though many Component IDL classes inherit from, for example,
+      InterfaceDef. This has caused us some discomfort, as it should clearly be
+      possible to call, for example,
 \begin{verbatim}
 someContainer.lookup("someHome")
 \end{verbatim}
-      But it is not clear where to put the MDefinitionKind values in this case.
+      But it is not clear where to put the {\tt DefinitionKind} values in this
+      case.
 \end{itemize}
 
 Our solution to the first two problems was to add the missing values to the
-MDefinitionKind enum (see the tables below). Our solution to the third problem
-was also to add the missing values to the MDefinitionKind enum in the BaseIDL
-library. However, this removes the strict subset/superset relationship between
-the BaseIDL and the ComponentIDL: BaseIDL is no longer a logical proper subset
-of ComponentIDL.
+MDefinitionKind enumeration implementation (see the tables below). Our solution
+to the third problem was also to add the missing values to the MDefinitionKind
+enumeration class in the Base IDL library. However, this removes the strict
+subset/superset relationship between the two parts of the library: the Base IDL
+is no longer a logical proper subset of the Component IDL.
 
-Nonetheless, we felt this was the best solution: the alternative is to create an
-empty MDefinitionKind interface in BaseIDL, and then implement that interface
-with an MDefinitionKindImpl class in the BaseIDL and a second
-MDefinitionKindImpl class in the ComponentIDL. The alternative requires
+Nonetheless, we felt this was the best solution: the best alternative is to
+create an empty MDefinitionKind interface in the Base IDL, and then implement
+that interface with an MDefinitionKindImpl class in the Base IDL and a second
+MDefinitionKindImpl class in the Component IDL. The alternative requires
 excessive typecasting (for a Java, C, or C++ implementation) and would be
 difficult to maintain. The maintenance difficulty is especially true in the
-sense of coordinating integer values between the two sets of ``Impl''. As
-further justification for our solution, this maintenance requirement for the
-two--enum solution also removes the proper subset relationship between the two
-metamodels.
+sense of coordinating integer values between the two implementations. As further
+justification for our solution, this maintenance requirement for the
+two--implementation solution also removes the proper subset relationship between
+the two metamodels, so the solution we chose follows the path of least
+disturbance.
 
 \begin{table}
+\begin{minifbox}
 \centering
-\begin{tabular}{|l|c|c|}
-\hline
-Element           & Specification & Implementation \\ \hline \hline
+\begin{tabular}{lcc}
+Element           & Specification & Implementation \\ \hline
 DK\_ALIAS         & $\star$ & $\star$    \\
 DK\_ALL           & $\star$ &            \\
 DK\_ARRAY         & $\star$ & $\star$    \\
@@ -871,26 +921,55 @@ DK\_VALUEBOX      &         & $\star$    \\
 DK\_VALUEMEMBER   &         & $\star$    \\
 DK\_WSTRING       & $\star$ & $\star$    \\ \hline
 \end{tabular}
-\begin{tabular}{l}
+\begin{tabular}{rl}
 \\
-$^\oplus\;\mbox{corresponds to a class in the ComponentIDL library}$ \\
-$^\dagger\;\mbox{used for MContained}$ \\
-$^\ddagger\;\mbox{used for MContainer}$
+$^\oplus$ & corresponds to a class in the ComponentIDL library \\
+$^\dagger$ & used for MContained \\
+$^\ddagger$ & used for MContainer
 \end{tabular}
+\end{minifbox}
 \label{table:component-definition-kinds}
 \caption{Definition kind enumeration elements, as defined in the CCM metamodel
-specification and as used by our project.}
+specification and as used by the CCM Tools.}
 \end{table}
+
+%------------------------------------------------------------------------------
+\subsection{Component supports}
+\label{subsection:metamodel-problems-supports}
+%------------------------------------------------------------------------------
+
+The CCM metamodel specification includes an insufficient method for modeling
+supported interfaces of components. MComponentDef class instances contain a set
+of functions for getting, setting, adding, and removing supported interfaces.
+However, the CCM specification provides no way of representing the fact that
+these interfaces are supported by the component. This is particularly
+problematic during code generation, since a component's supported interfaces
+look to a code generator just like normal interfaces; that is, they have no
+special semantics in a metamodel.
+
+To remedy this, the CCM Tools introduced an MSupportsDef interface and
+associated MSupportsDefImpl class implementation. This class functions almost
+exactly like the MUsesDef and MProvidesDef classes; it simply provides a thin
+wrapper around the supported interface. This wrapper signals the fact that the
+associated interface is supported by a component. This is hopefully analogous to
+the MUsesDef and MProvidesDef classes, which indicate that the associated
+interface is a receptacle or facet.
+
+One further difficulty exists, though: both homes and components can have
+supported interfaces. The CCM Tools contain a simple workaround for this problem
+by including both {\tt getHome}/{\tt setHome} and {\tt getComponent}/{\tt
+setComponent} access functions. If the supports node is the child of a home
+class, the {\tt getComponent} function will return {\tt null}, and vice versa.
 
 %------------------------------------------------------------------------------
 \subsection{Primitive kinds}
 %------------------------------------------------------------------------------
 
-The MWstringDefImpl and MStringDefImpl classes need to have a ``kind'' data
-member, just like the MPrimitiveDefImpl class. The MPrimitiveKind enum contains
-values for wstring and string (PK\_WSTRING and PK\_STRING, respectively), so it
-seems like these types should behave similarly to the other primitive kind data
-types.
+The MWstringDefImpl and MStringDefImpl classes need to have a {\tt kind} data
+member, just like the MPrimitiveDefImpl class. The MPrimitiveKind enumeration
+class contains values for wide and normal strings (PK\_WSTRING and PK\_STRING,
+respectively), so it seems like these types should behave similarly to the other
+primitive kind data types.
 
 %------------------------------------------------------------------------------
 \subsection{Language mappings}
@@ -905,7 +984,7 @@ language mappings.
 
 \paragraph{Publishes}
 
-The language mapping template for event publishers is difficult to read. In
-addition, the template appears to contain the same text two times, with
-different indentation.
+The language mapping template for event publishers in the OMG document is
+difficult to read. In addition, the template appears to contain the same text
+two times, with different indentation.
 

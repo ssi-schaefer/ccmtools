@@ -38,8 +38,7 @@ public class MOperationDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-
-    private boolean isDefinedInOriginalFile;
+    private String sourceFile;
 
     private Set CanRaiseSet_;
     private List ParameterList_;
@@ -50,28 +49,20 @@ public class MOperationDefImpl
     {
 	CanRaiseSet_ = new HashSet();
 	ParameterList_ = new ArrayList();
+        sourceFile = new String("");
     }
 
     // override toString()
     public String toString()
     {
 	String tmp = "MOperationDef: " + identifier;
-
-        if(isOneway_)
-            tmp += " (oneway) ";
-
-	if(TypedBy_ != null)
-            tmp += " typed: " + TypedBy_.toString();
-
-	if(ParameterList_ != null)
-            tmp += " parameters: " + ParameterList_.toString();
-
+        if(isOneway_) tmp += " (oneway) ";
+        if(TypedBy_ != null) tmp += " (typed: " + TypedBy_.toString() + ")";
+        if(ParameterList_ != null)
+            tmp += " (parameters: " + ParameterList_.toString() + ")";
 	if(! (CanRaiseSet_.isEmpty()))
-            tmp += " raises: " + CanRaiseSet_.toString();
-
-	if(contexts_ != null)
-            tmp += " context: " + contexts_;
-
+            tmp += " (raises: " + CanRaiseSet_.toString() + ")";
+	if(contexts_ != null) tmp += " (context: " + contexts_ + ")";
         return  tmp;
     }
 
@@ -106,9 +97,9 @@ public class MOperationDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

@@ -27,18 +27,24 @@ import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.IDL3Parser.IDL3SymbolTable;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 
+import java.io.File;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static IDL3SymbolTable symbolTable = new IDL3SymbolTable();
 
     public static void main(String[] args)
         throws Exception
     {
-        ParserManager manager = new ParserManager();
-        manager.createParser(args[0]);
+        List includes = new ArrayList();
+        includes.add(new File(System.getProperty("user.dir")));
+        ParserManager manager = new ParserManager(-1, includes);
 
         MContainer container = null;
         try {
-            container = manager.parseFile();
+            container = manager.parseFile(args[0]);
         } catch (Exception e) {
             System.err.println("Error parsing file "+args[0]);
             System.err.println(e);

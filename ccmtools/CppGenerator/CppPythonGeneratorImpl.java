@@ -98,8 +98,8 @@ public class CppPythonGeneratorImpl
 
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
-        String[] out_files = { "convert_" + node_name + ".h",
-                               "convert_" + node_name + ".cc" };
+        String[] out_files = { node_name + "convert_python.h",
+                               node_name + "convert_python.cc" };
 
         for (int i = 0; i < out_strings.length; i++) {
             String generated_code = out_strings[i];
@@ -117,9 +117,8 @@ public class CppPythonGeneratorImpl
     }
 
     /**
-     * Finalize the output files. This function's implementation writes two
-     * global files, a global Python value conversion header, and a global
-     * user_types.h file based on the individual <file>_user_types.h files.
+     * Finalize the output files. This function implementation doesn't do
+     * anything.
      *
      * @param defines a map of environment variables and their associated
      *        values. This usually contains things like the package name,
@@ -127,27 +126,7 @@ public class CppPythonGeneratorImpl
      * @param files a list of the filenames (usually those that were provided to
      *        the generator front end).
      */
-    public void finalize(Map defines, List files)
-    {
-        // write a global python type conversion header.
-
-        StringBuffer output = new StringBuffer("");
-        output.append("\n#ifndef ___CCM__TEST__PYTHON__CONVERT__H___\n");
-        output.append("#define ___CCM__TEST__PYTHON__CONVERT__H___\n\n");
-
-        for (Iterator i = files.iterator(); i.hasNext(); ) {
-            File file = new File((String) i.next());
-            String name = file.getName().toString().split("\\.")[0];
-            if (file.isFile())
-                output.append("#include \"convert_"+name+".h\"\n");
-        }
-
-        Template includes = template_manager.getRawTemplate("ConvertPythonHeader");
-        output.append(includes.substituteVariables(defines));
-        output.append("\n#endif // ___CCM__TEST__PYTHON__CONVERT__H___\n\n");
-
-        writeFinalizedFile("CCM_Test_Python", "convert_python.h", output.toString());
-    }
+    public void finalize(Map defines, List files) { return; }
 
     /**************************************************************************/
 

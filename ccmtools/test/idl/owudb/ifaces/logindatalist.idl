@@ -1,0 +1,9 @@
+#include "logindata.idl"
+
+module owil {
+module udb {
+
+typedef sequence<LoginData> LoginDataList;
+
+};
+};

@@ -133,6 +133,9 @@ public class ConsoleCodeGenerator
     private static void printVersion()
     {
         System.out.println("ccmtools version " + version);
+        System.out.println("Copyright (C) 2002, 2003 Salomon Automation");
+        System.out.println("This program is distributed under the terms of the");
+        System.out.println("GNU Lesser General Public License.");
         System.exit(0);
     }
 
@@ -153,9 +156,8 @@ public class ConsoleCodeGenerator
 
         // step (1).
 
-        manager.createParser(filename);
         try {
-            kopf = manager.parseFile();
+            kopf = manager.parseFile(filename);
         } catch (Exception e) {
             System.err.println("Error parsing "+filename+":\n"+e);
             System.exit(1);
@@ -163,13 +165,10 @@ public class ConsoleCodeGenerator
 
         // (in between)
 
-        if (kopf == null) return;
+        if (kopf == null) System.exit(1);
 
         File top_file = new File(filename);
-        String top_name = top_file.getName().toString();
-        // (cut off the ".blah" from the end of the filename)
-        kopf.setIdentifier(top_name.split("\\.")[0]);
-        kopf.setDefinedInOriginalFile(true);
+        kopf.setIdentifier(top_file.getName().split("\\.")[0]);
 
         // step (2).
 
@@ -445,6 +444,8 @@ public class ConsoleCodeGenerator
 
         if (langs.size() < 1)
             printUsage("no valid output languages specified");
+
+        include_path.add(new File(System.getProperty("user.dir")));
     }
 
     private static void setGeneratorMask(String val)

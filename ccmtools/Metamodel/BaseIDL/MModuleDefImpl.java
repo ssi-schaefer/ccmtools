@@ -21,9 +21,9 @@
 
 package ccmtools.Metamodel.BaseIDL;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class MModuleDefImpl
     implements MModuleDef
@@ -35,15 +35,15 @@ public class MModuleDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
-
-    private boolean isDefinedInOriginalFile;
+    private String sourceFile;
 
     private MContainer Contains;
-    private Set ContainsSet;
+    private List ContainsList;
 
     public MModuleDefImpl()
     {
-	ContainsSet = new HashSet();
+	ContainsList = new ArrayList();
+        sourceFile = new String("");
     }
 
     // override toString()
@@ -76,9 +76,9 @@ public class MModuleDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation
@@ -89,10 +89,10 @@ public class MModuleDefImpl
     public void setDefinedIn(MContainer __arg)  {Contains = __arg;}
 
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
-    public Set getContentss()                    {return ContainsSet;}
-    public void setContentss(Set __arg)          {ContainsSet = new HashSet(__arg);}
-    public void addContents(MContained __arg)    {ContainsSet.add(__arg);}
-    public void removeContents(MContained __arg) {ContainsSet.remove(__arg);}
+    public List getContentss()                   {return ContainsList;}
+    public void setContentss(List __arg)         {ContainsList = new ArrayList(__arg);}
+    public void addContents(MContained __arg)    {ContainsList.add(__arg);}
+    public void removeContents(MContained __arg) {ContainsList.remove(__arg);}
 
 
     //----------------------------------------------------------------
@@ -154,7 +154,7 @@ public class MModuleDefImpl
         if (levelsToSearch < 0) { return null; }
 
         MContained elem;
-        Iterator it = ContainsSet.iterator();
+        Iterator it = ContainsList.iterator();
 
         while (it.hasNext()) {
             elem = (MContained) it.next();

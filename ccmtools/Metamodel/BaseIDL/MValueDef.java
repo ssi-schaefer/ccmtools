@@ -21,7 +21,7 @@
 
 package ccmtools.Metamodel.BaseIDL;
 
-import java.util.Set;
+import java.util.List;
 
 public interface MValueDef
     extends MContainer, MIDLType
@@ -39,8 +39,8 @@ public interface MValueDef
     void setTruncatable(boolean __arg);
 
     // association: direct role: [*] --> opposite role: abstractBase[*]
-    Set getAbstractBases();
-    void setAbstractBases(Set __arg);
+    List getAbstractBases();
+    void setAbstractBases(List __arg);
     void addAbstractBase(MValueDef __arg);
     void removeAbstractBase(MValueDef __arg);
 

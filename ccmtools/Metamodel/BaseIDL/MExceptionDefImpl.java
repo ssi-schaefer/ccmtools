@@ -21,8 +21,8 @@
 
 package ccmtools.Metamodel.BaseIDL;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.omg.CORBA.TypeCode;
 
@@ -38,22 +38,21 @@ public class MExceptionDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
-    private boolean isDefinedInOriginalFile;
-
-
-    private Set MemberSet_;
+    private List MemberList_;
     private MContainer Contains;
 
     public MExceptionDefImpl()
     {
-	MemberSet_ = new HashSet();
+	MemberList_ = new ArrayList();
+        sourceFile = new String("");
     }
 
     // override toString()
     public String toString()
     {
-	return "MExceptionDef: "+ identifier + MemberSet_.toString();
+	return "MExceptionDef: "+ identifier + MemberList_.toString();
     }
 
     //----------------------------------------------------------------
@@ -83,19 +82,19 @@ public class MExceptionDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation
     //----------------------------------------------------------------
 
     // aggregation: direct role: exception[0..1] <>- opposite role: member[*]
-    public Set getMembers()                     {return MemberSet_;}
-    public void setMembers(Set __arg)           {MemberSet_ = new HashSet(__arg);}
-    public void addMember(MFieldDef __arg)      {MemberSet_.add(__arg);}
-    public void removeMember(MFieldDef __arg)   {MemberSet_.remove(__arg);}
+    public List getMembers()                    {return MemberList_;}
+    public void setMembers(List __arg)          {MemberList_ = new ArrayList(__arg);}
+    public void addMember(MFieldDef __arg)      {MemberList_.add(__arg);}
+    public void removeMember(MFieldDef __arg)   {MemberList_.remove(__arg);}
 
     // association: direct role: contants[*] <-> opposite role: definedIn[0..1]
     public MContainer getDefinedIn()            {return Contains;}

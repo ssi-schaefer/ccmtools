@@ -70,7 +70,7 @@ public class CppMirrorGeneratorImpl
         // min (or generic)         max (or min positive)    0        1
         { "",                      "",                      "",      "",    },
         { "NULL",                  "\"test any value\"",    "1.5",   "'a'", },
-        { "TRUE",                  "FALSE",                 "",      "",    },
+        { "true",                  "false",                 "",      "",    },
         { "'a'",                   "'z'",                   "'\0'",  "'1'", },
         { "-1e308",                "1e-308",                "0.0",   "1.0", },
         { "(fixed data type not implemented", "", "", "", },
@@ -136,7 +136,8 @@ public class CppMirrorGeneratorImpl
         writeFinalizedFile(file_dir, file_name, generated_code);
 
         File makefile = new File(file_dir, "Makefile.py");
-        if (! makefile.isFile())
+        File check_file = new File(output_dir, makefile.toString());
+        if (! check_file.isFile())
             writeFinalizedFile(file_dir, "Makefile.py", "");
     }
 

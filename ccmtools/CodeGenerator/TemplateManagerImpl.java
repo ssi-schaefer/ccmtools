@@ -53,7 +53,10 @@ public class TemplateManagerImpl
 
         String ccmtools_home = System.getProperty("CCMTOOLS_HOME");
         if (ccmtools_home != null) {
-            source = new File(ccmtools_home, lang_dir);
+            File package_dir = new File(Constants.TEMPLATE_ROOT);
+            source = new File(ccmtools_home, "share");
+            source = new File(source, package_dir.getName());
+            source = new File(source, lang_dir);
             if (source.exists() && source.isDirectory())
                 return;
         }

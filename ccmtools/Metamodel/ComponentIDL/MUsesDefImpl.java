@@ -21,9 +21,6 @@
 
 package ccmtools.Metamodel.ComponentIDL;
 
-import java.util.Set;
-import java.util.HashSet;
-
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -38,13 +35,18 @@ public class MUsesDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private boolean multiple_;
-    private boolean isDefinedInOriginalFile;
 
     private MInterfaceDef Uses_;
     private MComponentDef Component_;
     private MContainer Contains;
+
+    public MUsesDefImpl()
+    {
+        sourceFile = new String("");
+    }
 
     // override toString()
     public String toString()
@@ -79,9 +81,9 @@ public class MUsesDefImpl
     public String getVersion()                  {return version;}
     public void setVersion(String __arg)        {version = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation

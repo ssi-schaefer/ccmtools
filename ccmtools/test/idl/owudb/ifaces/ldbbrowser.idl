@@ -1,0 +1,17 @@
+#include "logindatalist.idl"
+#include "exc.idl"
+
+module owil {
+module udb {
+
+interface LoginDBBrowser {
+   LoginDataList get_logins_of_user(in string user)
+   raises(NoSuchUser,
+          DatabaseError);
+
+   LoginDataList get_all_logins()
+   raises(DatabaseError);
+};
+
+};
+};

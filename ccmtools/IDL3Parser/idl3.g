@@ -24,9 +24,7 @@ header {
 
 package ccmtools.IDL3Parser;
 
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -122,9 +120,9 @@ options { exportVocab = IDL3; }
     private final static long DEBUG_CONSTANT     = 0x004000;
     private final static long DEBUG_INHERITANCE  = 0x008000;
     private final static long DEBUG_PRIMARY_KEY  = 0x010000;
+    private final static long DEBUG_CONTAINER    = 0x020000;
 
     // padding for future debug level manipulation ...
-    private final static long DEBUG_UNUSED_E     = 0x020000;
     private final static long DEBUG_UNUSED_F     = 0x040000;
     private final static long DEBUG_UNUSED_G     = 0x080000;
     private final static long DEBUG_UNUSED_H     = 0x100000;
@@ -151,27 +149,24 @@ options { exportVocab = IDL3; }
     private IDL3SymbolTable symbolTable;
     private Map scopeTable;
     private MContainer specification = null;
-    private ParserManager parserManager;
+    private ParserManager manager;
 
     /*
      *  Set up the current class instance for a parse, by specifying the parser
      *  manager object that this parser belongs to. This loads the parser
      *  manager's symbol table into this parser instance.
      */
-    public void setManager(ParserManager parserManager)
+    public void setManager(ParserManager m)
     {
-        this.parserManager = parserManager;
-        this.symbolTable = parserManager.getSymbolTable();
+        manager = m;
+        symbolTable = manager.getSymbolTable();
         scopeTable = new Hashtable();
     }
 
     /*
      * Set the debug level for this parser class instance.
      */
-    public void setDebug(long d)
-    {
-        debug = d;
-    }
+    public void setDebug(long d) { debug = d; }
 
     /*
      * Translate the given object scope id into a CORBA compatible repository
@@ -205,14 +200,14 @@ options { exportVocab = IDL3; }
      * Long object, and if not throw a semantic exception.
      */
     private Long checkLong(String expr)
-        throws SemanticException
+        throws RecognitionException
     {
         Long result = null;
         try {
             result = new Long(expr);
             return result;
         } catch (Exception e) {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error: cannot evaluate '" + expr + "' as an integer");
         }
     }
@@ -222,29 +217,33 @@ options { exportVocab = IDL3; }
      * Float object, and if not throw a semantic exception.
      */
     private Float checkFloat(String expr)
-        throws SemanticException
+        throws RecognitionException
     {
         Float result = null;
         try {
             result = new Float(expr);
             return result;
         } catch (Exception e) {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error: cannot evaluate '" + expr + "' as a float");
         }
     }
 
     /*
-     *  Find out if the given Metamodel object is defined in the original parse
-     *  file, and set the appropriate data element of the Metamodel object. (If
-     *  the object is not defined in the original file, it is defined in an
-     *  included file.)
+     * Check to see which source file the given metamodel is defined in, and set
+     * the appropriate data element. (If the object is not defined in the
+     * original file, it is defined in an included file.)
      */
-    private void checkDefinedInOriginalFile(MContained mContained)
+    private void checkSourceFile(MContained contained)
     {
-        String currentFile = getFilename();
-        String originalFile = parserManager.getOriginalFilename();
-        mContained.setDefinedInOriginalFile(currentFile.equals(originalFile));
+        String current = getFilename();
+        String original = manager.getOriginalFilename();
+        if (! current.equals(original))
+            contained.setSourceFile(current);
+        if ((debug & DEBUG_FILE) != 0)
+            System.out.println(
+                "[f] setting "+contained.getIdentifier()+" source file to "+
+                current+((current.equals(original) ? " (original)" : "")));
     }
 
     /*
@@ -256,7 +255,7 @@ options { exportVocab = IDL3; }
      * declaration, throw a semantic error.
      */
     private MContained verifyNameEmpty(String id, MContained query)
-        throws SemanticException
+        throws RecognitionException
     {
         MContained lookup = lookupNameInCurrentScope(id, DEBUG_TYPEDEF | DEBUG_INTERFACE);
 
@@ -267,18 +266,32 @@ options { exportVocab = IDL3; }
         if (! qtype.isInstance(lookup)) return query;
 
         if (((lookup instanceof MStructDef) &&
-                ((MStructDef) lookup).getMembers() == null) ||
+                (((MStructDef) lookup).getMembers().size() == 0)) ||
             ((lookup instanceof MUnionDef) &&
-                ((MUnionDef) lookup).getUnionMembers() == null) ||
+                (((MUnionDef) lookup).getUnionMembers().size() == 0)) ||
+            ((lookup instanceof MComponentDef) &&
+                ((((MComponentDef) lookup).getContentss().size() == 0) &&
+                 (((MComponentDef) lookup).getEmitss().size() == 0) &&
+                 (((MComponentDef) lookup).getPublishess().size() == 0) &&
+                 (((MComponentDef) lookup).getConsumess().size() == 0) &&
+                 (((MComponentDef) lookup).getFacets().size() == 0) &&
+                 (((MComponentDef) lookup).getReceptacles().size() == 0))) ||
+            ((lookup instanceof MHomeDef) &&
+                ((((MHomeDef) lookup).getContentss().size() == 0) &&
+                 (((MHomeDef) lookup).getFactories().size() == 0) &&
+                 (((MHomeDef) lookup).getFinders().size() == 0))) ||
             ((lookup instanceof MInterfaceDef) &&
-                ((MInterfaceDef) lookup).getContentss() == null) ||
+                (((MInterfaceDef) lookup).getContentss().size() == 0)) ||
             ((lookup instanceof MEnumDef) &&
-                ((MEnumDef) lookup).getMembers() == null) ||
+                (((MEnumDef) lookup).getMembers().size() == 0)) ||
             ((lookup instanceof MExceptionDef) &&
-                ((MExceptionDef) lookup).getMembers() == null))
+                (((MExceptionDef) lookup).getMembers().size() == 0)) ||
+            (lookup instanceof MModuleDef)) {
+            checkSourceFile(lookup);
             return lookup;
+        }
 
-        throw new SemanticException(
+        throw new RecognitionException(
             "error in name verification: the identifier " + id +
             " has already been defined");
     }
@@ -288,7 +301,7 @@ options { exportVocab = IDL3; }
      * class. Throw an exception if not.
      */
     private MContained verifyNameExists(String id, MContained query)
-        throws SemanticException
+        throws RecognitionException
     {
         MContained lookup = lookupNameInCurrentScope(id, DEBUG_IDL_TYPE | DEBUG_TYPEDEF);
 
@@ -299,7 +312,7 @@ options { exportVocab = IDL3; }
 
             throw new RuntimeException();
         } catch (Exception e) {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error in name verification: the identifier " + id +
                 " is undefined or of the wrong type");
         }
@@ -310,10 +323,10 @@ options { exportVocab = IDL3; }
      * defined in the current file being parsed.
      */
     private void checkAddContents(MContainer container, List contents)
-        throws SemanticException
+        throws RecognitionException
     {
         if (container == null) {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error adding contents (" + contents + ") to null container");
         }
 
@@ -322,14 +335,19 @@ options { exportVocab = IDL3; }
             MContained item = (MContained) it.next();
 
             if (item == null) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error while adding contents '" + contents +
                     "' to container '" + container + "'");
             }
 
             item.setDefinedIn(container);
-            checkDefinedInOriginalFile(item);
+            checkSourceFile(item);
             container.addContents(item);
+
+            if ((debug & DEBUG_CONTAINER) != 0)
+                System.out.println(
+                    "[C] adding "+item.getIdentifier()+" to container "+
+                    container.getIdentifier());
         }
     }
 
@@ -339,7 +357,7 @@ options { exportVocab = IDL3; }
      * attributes.
      */
     private void checkSetBases(MInterfaceDef iface, List bases)
-        throws SemanticException
+        throws RecognitionException
     {
         String id = iface.getIdentifier();
 
@@ -348,7 +366,7 @@ options { exportVocab = IDL3; }
             MContained lookup = lookupNameInCurrentScope(inherit, DEBUG_INTERFACE | DEBUG_INHERITANCE);
 
             if ((lookup == null) || (! (lookup instanceof MInterfaceDef))) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in interface '" + id + "' inheritance: '" +
                     inherit + "' is not a defined interface");
             }
@@ -356,14 +374,14 @@ options { exportVocab = IDL3; }
             MInterfaceDef base = (MInterfaceDef) lookup;
 
             if (iface.isAbstract() != base.isAbstract()) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in interface '" + id + "' inheritance: cannot " +
                     "inherit from '" + inherit + "' because one interface is " +
                     "abstract");
             }
 
             if ((! iface.isLocal()) && base.isLocal()) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in interface '" + id + "' inheritance: base '" +
                     inherit + "' is local but '" + id + "' is not local");
             }
@@ -374,7 +392,7 @@ options { exportVocab = IDL3; }
             }
         }
 
-        iface.setBases(new HashSet(bases));
+        iface.setBases(bases);
     }
 
     /*
@@ -383,14 +401,14 @@ options { exportVocab = IDL3; }
      * checking to make sure the given supported interfaces actually exist.
      */
     private void checkSetSupports(MInterfaceDef iface, List supports)
-        throws SemanticException
+        throws RecognitionException
     {
         List slist = new ArrayList();
         for (Iterator it = supports.iterator(); it.hasNext(); ) {
             String name = (String) it.next();
             MContained lookup = lookupNameInCurrentScope(name, DEBUG_INTERFACE | DEBUG_INHERITANCE);
             if ((lookup == null) || (! (lookup instanceof MInterfaceDef))) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in '" + iface.getIdentifier() +
                     "' supports specification: '" + name +
                     "' is not a defined interface");
@@ -407,9 +425,9 @@ options { exportVocab = IDL3; }
             }
         }
         if (iface instanceof MComponentDef) {
-            ((MComponentDef) iface).setSupportss(new HashSet(slist));
+            ((MComponentDef) iface).setSupportss(slist);
         } else if (iface instanceof MHomeDef) {
-            ((MHomeDef) iface).setSupportss(new HashSet(slist));
+            ((MHomeDef) iface).setSupportss(slist);
         } else {
             throw new RuntimeException(
                 iface.getIdentifier() + " must be a component or home instance");
@@ -421,7 +439,7 @@ options { exportVocab = IDL3; }
      * to the member list appropriate for the type of the given box.
      */
     private void checkSetMembers(MContained box, List members)
-        throws SemanticException
+        throws RecognitionException
     {
         MExceptionDef exception = null;
         MStructDef struct = null;
@@ -446,7 +464,7 @@ options { exportVocab = IDL3; }
                 in = (MFieldDef) i.next();
                 inID = in.getIdentifier();
                 if ((outID.equals(inID)) && (! out.equals(in))) {
-                    throw new SemanticException(
+                    throw new RecognitionException(
                         "repeated identifiers in '" + box.getIdentifier() +
                         "': '" + outID + "' and '" + inID + "'");
                 }
@@ -466,7 +484,7 @@ options { exportVocab = IDL3; }
                 else { f.setException(exception); }
             }
             if (struct != null) { struct.setMembers(members); }
-            else { exception.setMembers(new HashSet(members)); }
+            else { exception.setMembers(members); }
         }
     }
 
@@ -486,12 +504,12 @@ options { exportVocab = IDL3; }
      * exceptions have been defined somewhere.
      */
     private void checkSetExceptions(MOperationDef op, List excepts)
-        throws SemanticException
+        throws RecognitionException
     {
         for (Iterator e = excepts.iterator(); e.hasNext(); ) {
             MContained def = lookupNameInCurrentScope((String) e.next(), DEBUG_EXCEPTION);
             if (def == null) {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in operation '" + op.getIdentifier() +
                     "': exception '" + e + "' is not defined");
             }
@@ -504,13 +522,13 @@ options { exportVocab = IDL3; }
      * long integer. Throw an exception if not.
      */
     private void checkPositive(String bound)
-        throws SemanticException
+        throws RecognitionException
     {
         try {
             Long limit = new Long(bound);
             if (limit.longValue() < 1) { throw new RuntimeException(); }
         } catch (Exception e) {
-            throw new SemanticException("invalid positive value: "+bound);
+            throw new RecognitionException("invalid positive value: "+bound);
         }
     }
 
@@ -535,7 +553,7 @@ options { exportVocab = IDL3; }
      * Set the supports information for the given value using the given name.
      */
     private void addValueSupports(MValueDef val, String name)
-        throws SemanticException
+        throws RecognitionException
     {
         String id = val.getIdentifier();
         MContained support = lookupNameInCurrentScope(name, DEBUG_VALUE | DEBUG_INTERFACE);
@@ -546,7 +564,7 @@ options { exportVocab = IDL3; }
                 System.out.println("added support " + name + " to value " + id);
             }
         } else {
-            throw new SemanticException(
+            throw new RecognitionException(
                 "error in value '" + id + "' inheritance: identifier '" +
                 name + "' is not defined");
         }
@@ -562,19 +580,20 @@ options { exportVocab = IDL3; }
         MContained result = null;
 
         if ((debug & level) != 0) {
-            System.out.println("+ looking up " + name);
             if ((debug & DEBUG_SYMBOL_TABLE) != 0) {
                 System.out.println(symbolTable.toString());
             }
+            System.out.println("[L] looking up " + name);
         }
 
         result = this.symbolTable.lookupNameInCurrentScope(name);
 
         if ((debug & level) != 0) {
             if(result != null) {
-                System.out.println("+ " + name + " (" + result + ") found");
+                System.out.println(
+                    "[L] "+name+" ("+result+") found");
             } else {
-                System.out.println("+ " + name + " not found");
+                System.out.println("[L] "+name+" not found");
             }
         }
 
@@ -593,18 +612,16 @@ specification returns [MContainer container = null]
     List definitions = new ArrayList();
     specification = container;
 }
-	:   ( import_dcl )*
+    :   ( import_dcl )*
         ( defs = definition { if (defs != null) { definitions.addAll(defs); } } )+
         {
             checkAddContents(container, definitions);
-            container.setContentss(new HashSet(definitions));
 
-            if ((debug & DEBUG_FILE) != 0) {
-                System.out.println("Input file "+getFilename()+" parsed.");
-            }
-            if ((debug & DEBUG_SYMBOL_TABLE) != 0) {
+            if ((debug & DEBUG_FILE) != 0)
+                System.out.println("[f] input file "+getFilename()+" parsed");
+
+            if ((debug & DEBUG_SYMBOL_TABLE) != 0)
                 System.out.println(symbolTable.toString());
-            }
         } ;
 
 // 2. <definition> ::= <type_dcl,42> ";" <-- this rule returns a list
@@ -621,17 +638,17 @@ specification returns [MContainer container = null]
 //
 definition returns [List definitions = null]
 { definitions = new ArrayList(); MContained holder = null; }
-    :   definitions = type_dcl    SEMI!
-    |   holder = const_dcl        SEMI! { definitions.add(holder); }
- 	|   holder = except_dcl       SEMI! { definitions.add(holder); }
-	|   (iface) => holder = iface SEMI! { definitions.add(holder); }
-	|   holder = module           SEMI! { definitions.add(holder); }
-    |   (value) => holder = value SEMI! { definitions.add(holder); }
-    |   type_id_dcl               SEMI!
-    |   type_prefix_dcl           SEMI!
-    |   holder = event            SEMI! { definitions.add(holder); }
-    |   holder = component        SEMI! { definitions.add(holder); }
-    |   holder = home_dcl         SEMI! { definitions.add(holder); }
+    :   definitions = type_dcl    SEMI
+    |   holder = const_dcl        SEMI { definitions.add(holder); }
+ 	|   holder = except_dcl       SEMI { definitions.add(holder); }
+	|   (iface) => holder = iface SEMI { definitions.add(holder); }
+	|   holder = module           SEMI { definitions.add(holder); }
+    |   (value) => holder = value SEMI { definitions.add(holder); }
+    |   type_id_dcl               SEMI
+    |   type_prefix_dcl           SEMI
+    |   holder = event            SEMI { definitions.add(holder); }
+    |   holder = component        SEMI { definitions.add(holder); }
+    |   holder = home_dcl         SEMI { definitions.add(holder); }
 	;
 
 // 3. <module> ::= "module" <identifier> "{" <definition,2>+ "}"
@@ -639,15 +656,18 @@ module returns [MModuleDef mod = null]
 {
     mod = new MModuleDefImpl();
     String id;
-    List defs = null;
-    List definitions = new ArrayList();
+    List exps = null;
+    List defs = new ArrayList();
     MContained submod = null;
 }
     :   "module" id = identifier
-        { mod = (MModuleDef) verifyNameEmpty(id, mod); }
+        {
+            mod = (MModuleDef) verifyNameEmpty(id, mod);
+            mod.setIdentifier(id);
+        }
         LCURLY { symbolTable.add(id, mod); symbolTable.pushScope(id); }
-        ( defs = definition { if (defs != null) { definitions.addAll(defs); } } )*
-        { checkAddContents(mod, definitions); }
+        ( exps = definition { if (exps != null) { defs.addAll(exps); } } )*
+        { checkAddContents(mod, defs); }
         RCURLY { symbolTable.popScope(); } ;
 
 // (lmj) this was renamed to iface to prevent collisions with Java keywords
@@ -807,10 +827,7 @@ value_abs_dcl returns [MValueDef val = null]
         value_inheritance_spec[val]
         LCURLY { symbolTable.pushScope(id); }
         ( decls = export { exports.addAll(decls); } )*
-        {
-            checkAddContents(val, exports);
-            val.setContentss(new HashSet(exports));
-        }
+        { checkAddContents(val, exports); val.setContentss(exports); }
         RCURLY { symbolTable.popScope(); } ;
 
 // 17. <value_dcl> ::= <value_header,18> "{"  < value_element,21>* "}"
@@ -819,10 +836,7 @@ value_dcl returns [MValueDef val = null]
     :   val = value_header
         LCURLY { symbolTable.pushScope(val.getIdentifier()); }
         ( decls = value_element { elements.addAll(decls); } )*
-        {
-            checkAddContents(val, elements);
-            val.setContentss(new HashSet(elements));
-        }
+        { checkAddContents(val, elements); val.setContentss(elements); }
         RCURLY { symbolTable.popScope(); } ;
 
 // 18. <value_header> ::= ["custom" ] "valuetype" <identifier>
@@ -1578,7 +1592,7 @@ case_dcl[MIDLType switchType] returns [List members = null]
                     if (label.length() == 1) {
                         labels.add(new String(label));
                     } else {
-                        throw new SemanticException(
+                        throw new RecognitionException(
                             "error in union label '" + label +
                             "': only single characters are allowed");
                     }
@@ -1587,7 +1601,7 @@ case_dcl[MIDLType switchType] returns [List members = null]
                     if (enum.getMembers().contains(label)) {
                         labels.add(label);
                     } else {
-                        throw new SemanticException(
+                        throw new RecognitionException(
                             "error in union label: '" + label +
                             "' is not a valid member of enum " +
                             enum.getIdentifier());
@@ -1627,11 +1641,11 @@ element_spec[List labels] returns [List fields = null]
                     Object field_label = field.getLabel();
                     if (case_label.equals(field_label)) {
                         if (case_label.toString().equals("")) {
-                            throw new SemanticException(
+                            throw new RecognitionException(
                                 "error in union fields: cannot have " +
                                 "multiple 'default' labels");
                         } else {
-                            throw new SemanticException(
+                            throw new RecognitionException(
                                 "error in union fields: case label '" +
                                 case_label + "' has already been used");
                         }
@@ -1669,7 +1683,7 @@ enum_type returns [MIDLType enum = null]
                 symbolTable.add(id, (MEnumDef) enum);
                 ((MEnumDef) enum).setMembers(members);
             } else {
-                throw new SemanticException(
+                throw new RecognitionException(
                     "error in enumeration '" + id + "': no fields defined");
             }
 
@@ -2081,8 +2095,7 @@ component returns [MComponentDef component = null]
 
 // 113. <component_forward_dcl> ::= "component" <identifier>
 component_forward_dcl returns [MComponentDef component = null]
-{ component = new MComponentDefImpl(); String id = null;
-}
+{ component = new MComponentDefImpl(); String id = null; }
     :   "component" id = identifier
         {
             component = (MComponentDef) verifyNameEmpty(id, component);
@@ -2102,30 +2115,54 @@ component_dcl returns [MComponentDef component = null]
             for (Iterator it = decls.iterator(); it.hasNext(); ) {
                 MContained element = (MContained) it.next();
                 element.setDefinedIn(component);
+                checkSourceFile(element);
+
+                if ((debug & DEBUG_COMPONENT) != 0) {
+                    System.out.print(
+                        "[c] adding "+element.getIdentifier()+" to component "+
+                        component.getIdentifier());
+
+                }
 
                 if (element instanceof MEmitsDef) {
                     ((MEmitsDef) element).setComponent(component);
                     component.addEmits((MEmitsDef) element);
+                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
+                        System.out.println(" as emits");
                 } else if (element instanceof MPublishesDef) {
                     ((MPublishesDef) element).setComponent(component);
                     component.addPublishes((MPublishesDef) element);
+                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
+                        System.out.println(" as publishes");
                 } else if (element instanceof MConsumesDef) {
                     ((MConsumesDef) element).setComponent(component);
                     component.addConsumes((MConsumesDef) element);
+                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
+                        System.out.println(" as consumes");
                 } else if (element instanceof MProvidesDef) {
                     ((MProvidesDef) element).setComponent(component);
                     component.addFacet((MProvidesDef) element);
+                    if ((debug & (DEBUG_COMPONENT + DEBUG_INTERFACE)) != 0)
+                        System.out.println(" as facet");
                 } else if (element instanceof MUsesDef) {
                     ((MUsesDef) element).setComponent(component);
                     component.addReceptacle((MUsesDef) element);
+                    if ((debug & (DEBUG_COMPONENT + DEBUG_INTERFACE)) != 0)
+                        System.out.println(" as receptacle");
                 } else if (element instanceof MAttributeDef) {
                     ((MAttributeDef) element).setDefinedIn(component);
                     component.addContents((MAttributeDef) element);
+                    if ((debug & DEBUG_COMPONENT) != 0)
+                        System.out.println(" as attribute");
+                } else {
+                    throw new RecognitionException(
+                        "error adding element '"+element.getIdentifier()+
+                        "' to component '"+component.getIdentifier());
                 }
             }
 
             component.setForwardDeclaration(false);
-            checkDefinedInOriginalFile(component);
+            checkSourceFile(component);
         }
         RCURLY { symbolTable.popScope(); } ;
 
@@ -2133,26 +2170,16 @@ component_dcl returns [MComponentDef component = null]
 //        [ <component_inheritance_spec,116> ]
 //        [ <supported_interface_spec,117> ]
 component_header returns [MComponentDef component = null]
-{
-    component = new MComponentDefImpl();
-    String id;
-    List bases = null;
-    List supports = null;
-}
+{ component = new MComponentDefImpl(); String id; List base; List sups; }
     :   "component" id = identifier
         {
+            component = (MComponentDef) verifyNameEmpty(id, component);
             component.setRepositoryId(createRepositoryId(id));
             component.setIdentifier(id);
             symbolTable.add(id, component);
         }
-        (
-            bases = component_inheritance_spec
-            { checkSetBases(component, bases); }
-        )?
-        (
-            supports = supported_interface_spec
-            { checkSetSupports((MInterfaceDef) component, supports); }
-        )? ;
+        ( base = component_inheritance_spec { checkSetBases(component, base); } )?
+        ( sups = supported_interface_spec { checkSetSupports(component, sups); } )? ;
 
 // 116. <supported_interface_spec> ::= "supports" <scoped_name,12>
 //        { "," <scoped_name,12> }*
@@ -2291,8 +2318,8 @@ home_header returns [MHomeDef home = null]
     String id = null;
     String name;
     MComponentDef component = new MComponentDefImpl();
-    MHomeDef base = null;
-    List supports = null;
+    MHomeDef b = null;
+    List sups = null;
     MValueDef key = null;
 }
     :   "home" id = identifier
@@ -2302,14 +2329,8 @@ home_header returns [MHomeDef home = null]
             home.setIdentifier(id);
             symbolTable.add(id, home);
         }
-        (
-            base = home_inheritance_spec
-            { if (base != null) { home.addBase(base); } }
-        )?
-        (
-            supports = supported_interface_spec
-            { checkSetSupports((MInterfaceDef) home, supports); }
-        )?
+        ( b = home_inheritance_spec { if (b != null) { home.addBase(b); } } )?
+        ( sups = supported_interface_spec { checkSetSupports(home, sups); } )?
         "manages" name = scoped_name
         {
             component = (MComponentDef) verifyNameExists(name, component);
@@ -2353,13 +2374,13 @@ home_export[MHomeDef home]
         {
             factory.setHome(home);
             home.addFactory(factory);
-            checkDefinedInOriginalFile(factory);
+            checkSourceFile(factory);
         }
     |   finder = finder_dcl SEMI
         {
             finder.setHome(home);
             home.addFinder(finder);
-            checkDefinedInOriginalFile(finder);
+            checkSourceFile(finder);
         }
     ;
 
@@ -2479,7 +2500,7 @@ event_dcl returns [MEventDef event = null]
         )*
         RCURLY
         {
-            event.setContentss(new HashSet(elements));
+            event.setContentss(elements);
             symbolTable.popScope();
         } ;
 
@@ -2567,54 +2588,48 @@ options { exportVocab = IDL3; k = 4; charVocabulary='\u0000'..'\u0377'; }
 
     private long debug = 0;
 
-    private ParserManager parserManager;
-
-    public void setManager(ParserManager parserManager)
-    {
-        this.parserManager = parserManager;
-    }
-
-    public void setDebug(long d)
-    {
-        debug = d;
-    }
-
     private String currentFileName;
     private String oldname;
 
+    private ParserManager manager;
+
+    /*
+     *  Set up the current class instance for a parse, by specifying the parser
+     *  manager object that this parser belongs to. This loads the parser
+     *  manager's symbol table into this parser instance.
+     */
+    public void setManager(ParserManager m) { manager = m; }
+
+    /*
+     * Set the debug level for this parser class instance.
+     */
+    public void setDebug(long d) { debug = d; }
+
+    /*
+     * Load an include file, and parse it.
+     */
     public void handleIncludedFile(String name)
-        throws SemanticException, RecognitionException, TokenStreamException
+        throws RecognitionException, TokenStreamException
     {
-        DataInputStream input = null;
+        if ((debug & DEBUG_FILE) != 0)
+            System.out.println("[f] including " + name);
 
-        if ((debug & DEBUG_FILE) != 0) {
-            System.out.println("include file: " + name);
-        }
+        String to_load = null;
 
-        if (! parserManager.isIncluded(name)) {
-            try {
-                FileInputStream fi = new FileInputStream(name);
-                input = new DataInputStream(fi);
-            } catch (FileNotFoundException fnf) {
-                throw new SemanticException("cannot find include file " + name);
+        List path = manager.getIncludePath();
+        for (Iterator p = path.iterator(); p.hasNext(); ) {
+            File test = new File((File) p.next(), name);
+
+            if ((debug & DEBUG_INCLUDE) != 0)
+                System.out.println("[i] trying to include " + test);
+
+            if (test.isFile()) {
+                to_load = test.toString();
+                break;
             }
-
-            // make sure errors are reported in right file
-
-            IDL3Lexer subLexer = new IDL3Lexer(input);
-
-            subLexer.setFilename(name);
-            subLexer.setManager(this.parserManager);
-
-            IDL3Parser subParser = new IDL3Parser(subLexer);
-
-            subParser.setFilename(name);
-            subParser.setManager(this.parserManager);
-
-            this.parserManager.addIncludedFile(name);
-
-            subParser.specification();
         }
+
+        manager.parseFile(to_load);
     }
 }
 
@@ -2661,7 +2676,7 @@ PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
             ( "include" ) => "include"
             {
                 if ((debug & DEBUG_FILE) != 0) {
-                    String label = "tokenizing include declaration : ";
+                    String label = "[f] tokenizing include : ";
                     System.out.println(label + getText());
                 }
             }

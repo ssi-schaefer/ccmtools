@@ -21,7 +21,7 @@
 
 package ccmtools.Metamodel.ComponentIDL;
 
-import java.util.Set;
+import java.util.List;
 
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 
@@ -29,38 +29,38 @@ public interface MComponentDef
     extends MInterfaceDef
 {
     // composition: direct role: component[1] <-> opposite role: facet[*]
-    Set getFacets();
-    void setFacets(Set __arg);
+    List getFacets();
+    void setFacets(List __arg);
     void addFacet(MProvidesDef __arg);
     void removeFacet(MProvidesDef __arg);
 
     // composition: direct role: component[1] <-> opposite role: receptacle[*]
-    Set getReceptacles();
-    void setReceptacles(Set __arg);
+    List getReceptacles();
+    void setReceptacles(List __arg);
     void addReceptacle(MUsesDef __arg);
     void removeReceptacle(MUsesDef __arg);
 
     // composition: direct role: component[*] --> opposite role: supports[*]
-    Set getSupportss();
-    void setSupportss(Set __arg);
+    List getSupportss();
+    void setSupportss(List __arg);
     void addSupports(MSupportsDef __arg);
     void removeSupports(MSupportsDef __arg);
 
     // composition: direct role: component[1] --> opposite role: emits[*]
-    Set getEmitss();
-    void setEmitss(Set __arg);
+    List getEmitss();
+    void setEmitss(List __arg);
     void addEmits(MEmitsDef __arg);
     void removeEmits(MEmitsDef __arg);
 
     // composition: direct role: component[1] --> opposite role: publishes[*]
-    Set getPublishess();
-    void setPublishess(Set __arg);
+    List getPublishess();
+    void setPublishess(List __arg);
     void addPublishes(MPublishesDef __arg);
     void removePublishes(MPublishesDef __arg);
 
      // composition: direct role: component[1] --> opposite role: consumes[*]
-    Set getConsumess();
-    void setConsumess(Set __arg);
+    List getConsumess();
+    void setConsumess(List __arg);
     void addConsumes(MConsumesDef __arg);
     void removeConsumes(MConsumesDef __arg);
 
@@ -69,8 +69,8 @@ public interface MComponentDef
     // relations between homes and components.
     //
     // association: direct role: component[1] <--> oposite role: is managed by [*]
-    Set getHomes();
-    void setHomes(Set __arg);
+    List getHomes();
+    void setHomes(List __arg);
     void addHome(MHomeDef __arg);
     void removeHome(MHomeDef __arg);
 }

@@ -7,7 +7,8 @@
 
 #include <localComponents/CCM.h>
 
-#include "user_types.h"
+%(UserTypesInclude)s
+#include "%(Container)s_user_types.h"
 #include "%(Identifier)s_types.h"
 
 namespace CCM_Local {

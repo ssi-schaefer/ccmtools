@@ -1,9 +1,9 @@
 //==============================================================================
-// global interface type definitions
+// interface type definitions
 //==============================================================================
 
-#ifndef __CCM__LOCAL__%(Identifier)s__GLOBAL__TYPES__H__
-#define __CCM__LOCAL__%(Identifier)s__GLOBAL__TYPES__H__
+#ifndef __CCM__LOCAL__%(Identifier)s__USER__TYPES__H__
+#define __CCM__LOCAL__%(Identifier)s__USER__TYPES__H__
 
 #include <string>
 #include <vector>
@@ -24,7 +24,7 @@ namespace CCM_Local {
 
 } // /namespace CCM_Local
 
-#endif // __CCM__LOCAL__%(Identifier)s__GLOBAL__TYPES__H__
+#endif // __CCM__LOCAL__%(Identifier)s__USER__TYPES__H__
 
 
 

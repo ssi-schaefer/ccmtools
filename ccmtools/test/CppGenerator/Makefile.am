@@ -6,19 +6,24 @@ CLASSPATH_ENV = CLASSPATH=.:$(top_builddir):$(top_srcdir)/lib/antlr.jar
 TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
                     JAVA=$(JAVA) $(CLASSPATH_ENV) \
                     PATH=$(top_srcdir)/UI/scripts::${PATH} \
-                    CP=$(CP) RM=$(RM) MKDIR=$(MKDIR)
+                    CP=$(CP) RM=$(RM) MKDIR=$(MKDIR) \
+                    PACKAGE=@PACKAGE@ MAJORMINOR=@CCMTOOLS_MAJORMINOR@
 
 dist_noinst_SCRIPTS = test-loader.sh
 
 # tests are generally in order of increasing complexity.
 
+##TESTS = module-reopen.sh
 TESTS = \
-    help.sh                   	  \
-    version.sh                	  \
-    hello-facet.sh            	  \
+    help.sh                       \
+    version.sh                    \
+    hello-facet.sh                \
     hello-supports.sh             \
-    hello-receptacle.sh       	  \
+    hello-receptacle.sh           \
     hello-multiple-receptacles.sh \
+    module.sh                     \
+    module-nested.sh              \
+    module-reopen.sh              \
     calculator.sh
 
 dist_check_SCRIPTS = $(TESTS)

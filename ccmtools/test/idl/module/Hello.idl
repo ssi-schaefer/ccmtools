@@ -1,0 +1,18 @@
+// $Id$
+/**
+ * module test
+ */
+
+
+module WORLD {
+
+component Hello
+{
+  attribute string prompt;
+};
+
+home HelloHome manages Hello
+{
+};
+
+}; // end of module WORLD

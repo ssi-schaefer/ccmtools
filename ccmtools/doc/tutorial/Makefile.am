@@ -3,29 +3,32 @@
 
 DOC_NAME = tutorial
 
-TEX = $(DOC_NAME).tex    \
-      CCMOverview.tex    \
-      FirstAssembly.tex  \
-      FirstComponent.tex \
-      Installation.tex   \
-      LCAC.tex           \
+TEX = $(DOC_NAME).tex       \
+      CCMOverview.tex       \
+      ConnectComponents.tex \
+      FirstAssembly.tex     \
+      FirstComponent.tex    \
+      Installation.tex      \
+      Introduction.tex      \
+      LCAC.tex              \
       Remote.tex
 
 BIBS = cbse.bib doc.bib pattern.bib se.bib wx.bib
 
 FIGS = \
        Adapter1.fig                \
+       DevelopmentProcess.fig      \
+       TestDrivenDevelopment.fig   \
+       ComponentGeneratorTools.fig \
+       Container.fig               \
+       ConnectComponents.fig       \
        Assembly.fig                \
        AssemblyGraph.fig           \
        AssemblyGraph2.fig          \
        Component.fig               \
-       ComponentGeneratorTools.fig \
-       Container.fig               \
-       DevelopmentProcess.fig      \
        LCAC_Overview.fig           \
        LCAC_ProcessModel.fig       \
-       RemoteAssembly.fig          \
-       TestDrivenDevelopment.fig
+       RemoteAssembly.fig
 
 PDFS = $(FIGS:.fig=.pdf)
 EPSS = $(FIGS:.fig=.eps)
@@ -52,5 +55,5 @@ $(DOC_NAME).dvi: $(TEX) $(EPSS) $(BIBS)
 	$(LATEX) $(DOC_NAME)
 
 clean-local:
-	$(RM) -f *.aux *.toc *.log *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
+	$(RM) -f *.eps *.aux *.toc *.lo? *.bbl *.blg *.dvi $(DOC_NAME).ps $(DOC_NAME).pdf
 

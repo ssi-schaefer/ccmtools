@@ -30,6 +30,7 @@ public interface MEnumDef
     void setMembers(List __arg);
     void addMember(String __arg);
     void removeMember(String __arg);
+
     void addMember(int __pos, String __arg);
     void removeMember(int __pos);
     void setMember(int __pos, String __arg);

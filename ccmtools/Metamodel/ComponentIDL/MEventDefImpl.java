@@ -28,9 +28,9 @@ import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MModuleDef;
 import ccmtools.Metamodel.BaseIDL.MValueDef;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.omg.CORBA.TypeCode;
 
@@ -44,24 +44,25 @@ public class MEventDefImpl
     private String identifier;
     private String repositoryId;
     private String version;
+    private String sourceFile;
 
     private TypeCode TypeCode;
 
     private boolean isAbstract;
     private boolean isCustom;
     private boolean isTruncatable;
-    private boolean isDefinedInOriginalFile;
 
     private MContainer Contains;
-    private Set ContainsSet;
-    private Set AbstractDerivedFromSet;
+    private List ContainsList;
+    private List AbstractDerivedFromList;
     private MValueDef ValueDerivedFrom;
     private MInterfaceDef interfaceDef;
 
     public MEventDefImpl()
     {
-	ContainsSet = new HashSet();
-	AbstractDerivedFromSet = new HashSet();
+	ContainsList = new ArrayList();
+	AbstractDerivedFromList = new ArrayList();
+        sourceFile = new String("");
     }
 
     // override toString()
@@ -109,9 +110,9 @@ public class MEventDefImpl
     public TypeCode getTypeCode()               {return TypeCode;}
     public void setTypeCode(TypeCode __arg)     {TypeCode = __arg;}
 
-    // attribute isDefinedInOriginalFile:boolean
-    public boolean isDefinedInOriginalFile()            {return isDefinedInOriginalFile;}
-    public void setDefinedInOriginalFile(boolean __arg) {isDefinedInOriginalFile = __arg;}
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
 
     //----------------------------------------------------------------
     // implementation of navigation
@@ -122,16 +123,16 @@ public class MEventDefImpl
     public void setDefinedIn(MContainer __arg)  {Contains = __arg;}
 
     // assocation: direct role: definedIn[0..1] <-> oposide role: contents[*]
-    public Set getContentss()                    {return ContainsSet;}
-    public void setContentss(Set __arg)          {ContainsSet = (__arg != null) ? new HashSet(__arg) : null;}
-    public void addContents(MContained __arg)    {ContainsSet.add(__arg);}
-    public void removeContents(MContained __arg) {ContainsSet.remove(__arg);}
+    public List getContentss()                   {return ContainsList;}
+    public void setContentss(List __arg)         {ContainsList = (__arg != null) ? new ArrayList(__arg) : null;}
+    public void addContents(MContained __arg)    {ContainsList.add(__arg);}
+    public void removeContents(MContained __arg) {ContainsList.remove(__arg);}
 
     // association: direct role: [*] --> opposite role: abstractBase[*]
-    public Set getAbstractBases()                   {return AbstractDerivedFromSet;}
-    public void setAbstractBases(Set __arg)         {AbstractDerivedFromSet = new HashSet(__arg);}
-    public void addAbstractBase(MValueDef __arg)    {AbstractDerivedFromSet.add(__arg);}
-    public void removeAbstractBase(MValueDef __arg) {AbstractDerivedFromSet.remove(__arg);}
+    public List getAbstractBases()                  {return AbstractDerivedFromList;}
+    public void setAbstractBases(List __arg)        {AbstractDerivedFromList = new ArrayList(__arg);}
+    public void addAbstractBase(MValueDef __arg)    {AbstractDerivedFromList.add(__arg);}
+    public void removeAbstractBase(MValueDef __arg) {AbstractDerivedFromList.remove(__arg);}
 
     // association: direct role: [*] --> opposite role: base[0..1]
     public MValueDef getBase()                  {return ValueDerivedFrom;}
@@ -200,7 +201,7 @@ public class MEventDefImpl
         if (levelsToSearch < 0) { return null; }
 
         MContained elem;
-        Iterator it = ContainsSet.iterator();
+        Iterator it = ContainsList.iterator();
 
         while (it.hasNext()) {
             elem = (MContained) it.next();
