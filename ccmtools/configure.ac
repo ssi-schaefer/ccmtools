@@ -71,12 +71,11 @@ test/IDL3Parser/Makefile
 test/IDLGenerator/Makefile
 test/CodeGenerator/Makefile
 test/CppGenerator/Makefile
-test/CCDGenerator/Makefile
 Metamodel/Makefile
 Metamodel/BaseIDL/Makefile
 Metamodel/ComponentIDL/Makefile
 IDL3Parser/Makefile
-CCDGenerator/Makefile
+utils/Makefile
 CodeGenerator/Makefile
 IDLGenerator/Makefile
 IDLGenerator/IDL3Templates/Makefile
