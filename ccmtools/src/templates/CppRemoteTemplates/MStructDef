@@ -6,6 +6,9 @@
 #ifndef __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
 #define __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
 
+#include <iostream>
+#include <sstream>
+
 #include <%(IdlFileNamespace)s%(Identifier)s.h>
 #include <CCM_Local%(IncludeNamespace)s/%(Identifier)s.h>
 
@@ -19,6 +22,13 @@ convertFromCorba(const %(ShortNamespace)s%(Identifier)s& in, CCM_Local::%(Identi
 void 
 convertToCorba(const CCM_Local::%(Identifier)s& in, %(ShortNamespace)s%(Identifier)s& out);
 
+std::ostream&
+operator<<(std::ostream& o, const CCM_Local::%(Identifier)s& value);
+
+std::ostream& 
+operator<<(std::ostream& o, const %(ShortNamespace)s%(Identifier)s& value);
+
+
 %(CloseNamespace)s
 
 #endif // __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
@@ -31,6 +41,8 @@ convertToCorba(const CCM_Local::%(Identifier)s& in, %(ShortNamespace)s%(Identifi
  *
  ***/
 
+#include <WX/Utils/debug.h> 
+
 #include <CCM_Remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
@@ -41,7 +53,8 @@ using namespace std;
 void 
 convertFromCorba(const %(ShortNamespace)s%(Identifier)s& in, CCM_Local::%(Identifier)s& out)
 {
-    cout << " convertFromCorba(%(ShortNamespace)s%(Identifier)s)" << endl;
+    LDEBUGNL(CCM_REMOTE," convertFromCorba(%(ShortNamespace)s%(Identifier)s)");
+    LDEBUGNL(CCM_REMOTE,"   %(Identifier)s = " << in);
 %(MFieldDefFromCorba)s
 } 
 
@@ -49,8 +62,27 @@ convertFromCorba(const %(ShortNamespace)s%(Identifier)s& in, CCM_Local::%(Identi
 void 
 convertToCorba(const CCM_Local::%(Identifier)s& in, %(ShortNamespace)s%(Identifier)s& out)
 {
-    cout << " convertToCorba(%(ShortNamespace)s%(Identifier)s)" << endl;
+    LDEBUGNL(CCM_REMOTE," convertToCorba(%(ShortNamespace)s%(Identifier)s)");
+    LDEBUGNL(CCM_REMOTE,"   %(Identifier)s = " << in);
 %(MFieldDefToCorba)s
 } 
+
+std::ostream& 
+operator<<(std::ostream& o, const %(ShortNamespace)s%(Identifier)s& value)
+{
+    o << "{ ";
+%(MFieldDefCorbaOutput)s
+    o << " }";
+    return o;
+}
+
+std::ostream&
+operator<<(std::ostream& o, const CCM_Local::%(Identifier)s& value)
+{
+    o << "{ ";
+%(MFieldDefLocalOutput)s
+    o << " }";
+    return o;
+}
 
 %(CloseNamespace)s
