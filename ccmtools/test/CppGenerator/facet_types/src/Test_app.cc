@@ -212,6 +212,16 @@ type_test_impl::op_b12(const std::wstring& p1, std::wstring& p2, std::wstring& p
   return p3+p1;
 }
 
+WX::Utils::SmartPtr<WX::Utils::Value> 
+type_test_impl::op_b13(const WX::Utils::SmartPtr<WX::Utils::Value>& p1, 
+		       WX::Utils::SmartPtr<WX::Utils::Value>& p2, 
+		       WX::Utils::SmartPtr<WX::Utils::Value>& p3) 
+  throw (LocalComponents::CCMException)
+{
+  DEBUGNL ( " type_test_impl->op_b13 ( p1, p2, p3 )" );
+
+}
+
 
 time_t
 type_test_impl::op_u1 ( const time_t& p1, time_t& p2, time_t& p3 )

@@ -40,7 +40,7 @@ interface TypeTest
 
   wchar          op_b11 (in wchar p1, inout wchar p2, out wchar p3);
   wstring        op_b12 (in wstring p1, inout wstring p2, out wstring p3);
-  //  any            op_b13 (in any p1, inout any p2, out any p3);
+  any            op_b13 (in any p1, inout any p2, out any p3);
 
   // user defined types 
   time_t      op_u1(in time_t p1, inout time_t p2, out time_t p3);
