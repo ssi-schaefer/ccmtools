@@ -94,20 +94,52 @@ int main ( int argc, char *argv[] )
     DEBUGNL("==== Begin DbC Test Case =============================================" );
     // test facet attribute
 
-    {
-      long a = 10;
-      long r;
-      C1_provides_i1->a1(a);
-      r = C1_provides_i1->a1();
-      assert(r == a);
-    }
-
-
     // Common variables for time measurement
     clock_t start, stop;
     double cpu_time_used;
     const long NUMBER_OF_ITERATIONS = 1000000;
 
+    // Invariants
+    {
+      long a = 10;
+      long r;
+      start = clock();
+      for(int i=0;i<NUMBER_OF_ITERATIONS;++i) {
+	C1_provides_i1->a1(a);
+	r = C1_provides_i1->a1();
+      }
+      stop = clock();
+      cpu_time_used = ((double)(stop-start)) / CLOCKS_PER_SEC * 1000.0;
+      cout << "  a1()  times: " << cpu_time_used << "ms" << endl;
+    }
+
+    {
+      double a = 10.0;
+      double r;
+      start = clock();
+      for(int i=0;i<NUMBER_OF_ITERATIONS;++i) {
+	C1_provides_i1->a2(a);
+	r = C1_provides_i1->a2();    
+      }
+      stop = clock();
+      cpu_time_used = ((double)(stop-start)) / CLOCKS_PER_SEC * 1000.0;
+      cout << "  a2()  times: " << cpu_time_used << "ms" << endl;
+    }
+
+    {
+      string a = "0123456789";
+      string r;
+      start = clock();
+      for(int i=0;i<NUMBER_OF_ITERATIONS;++i) {
+	C1_provides_i1->a3(a);
+	r = C1_provides_i1->a3();    
+      }
+      stop = clock();
+      cpu_time_used = ((double)(stop-start)) / CLOCKS_PER_SEC * 1000.0;
+      cout << "  a3()  times: " << cpu_time_used << "ms" << endl;
+    }
+
+    // Pre and Post Conditions
     {
       long p1 = 7;
       long p2 = 13;
