@@ -56,10 +56,12 @@ class UmlModelElementName extends ccmtools.uml_parser.uml.MModelElement_name imp
 	{
 	    if( name_==null )
 	    {
-	        if( size()>0 )
+	        StringBuffer text = new StringBuffer();
+	        for( int i=0; i<size(); i++ )
 	        {
-	            name_ = get(0).toString();
+	            text.append(get(i).toString());
 	        }
+	        name_ = text.toString().trim();
 	    }
 	    return name_;
 	}

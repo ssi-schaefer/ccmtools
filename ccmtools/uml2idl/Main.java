@@ -255,6 +255,10 @@ public class Main
                 }
                 else
                 {
+                    /*FileWriter debugWriter = new FileWriter(argv[0]+".DEBUG");
+                    debugWriter.write(root.xmlCode());
+                    debugWriter.close();*/
+                    //
                     String idlFileName = argv[1]+".idl";
                     String oclFileName = argv[1]+".ocl";
                     System.out.println("writing "+idlFileName+" and "+oclFileName);

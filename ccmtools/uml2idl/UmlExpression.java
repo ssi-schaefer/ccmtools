@@ -115,7 +115,14 @@ class UmlExpression extends ccmtools.uml_parser.uml.MExpression implements Worke
 	        Vector v = findChildren(MExpression_body.xmlName__);
 	        if( v.size()>0 )
 	        {
-	            body_ = ((MExpression_body)v.get(0)).get(0).toString();
+	            MExpression_body b = (MExpression_body)v.get(0);
+                StringBuffer text = new StringBuffer();
+                int s = b.size();
+                for( int i=0; i<s; i++ )
+                {
+                    text.append(b.get(i).toString());
+                }
+	            body_ = text.toString();
 	        }
 	    }
 	    return body_;

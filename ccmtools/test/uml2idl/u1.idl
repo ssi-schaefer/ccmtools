@@ -109,7 +109,7 @@ module docConst {
 }; /* module docConst */
 
 module docEnum {
-    enum Type {
+    enum Types {
         TYPE_INTEGER,
         TYPE_FLOAT,
         TYPE_COMPLEX
@@ -117,7 +117,7 @@ module docEnum {
 
     struct Value {
         string name;
-        Type type;
+        Types type;
     };
 
 }; /* module docEnum */

@@ -125,7 +125,14 @@ class UmlMultiplicityRange extends ccmtools.uml_parser.uml.MMultiplicityRange im
             java.util.Vector v = findChildren(MMultiplicityRange_lower.xmlName__);
             if( v.size()>0 )
             {
-                lower_ = ((MMultiplicityRange_lower)v.get(0)).get(0).toString().trim();
+                MMultiplicityRange_lower r = (MMultiplicityRange_lower)v.get(0);
+                StringBuffer text = new StringBuffer();
+                int s = r.size();
+                for( int i=0; i<s; i++ )
+                {
+                    text.append(r.get(i).toString());
+                }
+                lower_ = text.toString().trim();
                 if( lower_.equals("*") )
                 {
                     lower_ = "-1";
@@ -147,7 +154,14 @@ class UmlMultiplicityRange extends ccmtools.uml_parser.uml.MMultiplicityRange im
             java.util.Vector v = findChildren(MMultiplicityRange_upper.xmlName__);
             if( v.size()>0 )
             {
-                upper_ = ((MMultiplicityRange_upper)v.get(0)).get(0).toString().trim();
+                MMultiplicityRange_upper r = (MMultiplicityRange_upper)v.get(0);
+                StringBuffer text = new StringBuffer();
+                int s = r.size();
+                for( int i=0; i<s; i++ )
+                {
+                    text.append(r.get(i).toString());
+                }
+                upper_ = text.toString().trim();
                 if( upper_.equals("*") )
                 {
                     upper_ = "-1";

@@ -13,4 +13,8 @@ stored in own sub-packages.
 Please put the ANTLR Jar-file into your classpath.
 <p>
 The generated XML parser only needs Java 1.4 !
+<p>
+<b>Warning!</b><br>
+It is possible, that one '#PCDATA' element is split into multiple 'java.lang.String' elements,
+because the SAX-parser calls the method 'DTD_SAX_Handler.characters' too often!
 </body>

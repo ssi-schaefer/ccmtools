@@ -107,10 +107,13 @@ class UmlTaggedValue extends ccmtools.uml_parser.uml.MTaggedValue implements Wor
         if( values.size()>0 )
         {
             MTaggedValue_dataValue v3 = (MTaggedValue_dataValue)values.get(0);
-            if( v3.size()>0 )
+            StringBuffer text = new StringBuffer();
+            int s = v3.size();
+            for( int i=0; i<s; i++ )
             {
-                map.put( getName(), v3.get(0).toString() );
+                text.append(v3.get(i).toString());
             }
+            map.put( getName(), text.toString() );
         }
 	}
 
