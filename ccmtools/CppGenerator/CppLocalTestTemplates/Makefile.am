@@ -1,6 +1,7 @@
 ## process this file with automake to produce Makefile.in
 
-templatedir = $(DATA_ROOT)/CppLocalTestTemplates
+#templatedir = $(DATA_ROOT)/CppLocalTestTemplates
+templatedir = $(TEMPLATE_ROOT)/CppLocalTestTemplates
 dist_template_DATA = \
     MComponentDef                    \
     MProvidesDefConnect              \

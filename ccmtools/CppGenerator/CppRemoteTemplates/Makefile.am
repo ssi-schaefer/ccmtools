@@ -1,7 +1,8 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-templatedir = $(DATA_ROOT)/CppRemoteTemplates
+#templatedir = $(DATA_ROOT)/CppRemoteTemplates
+templatedir = $(TEMPLATE_ROOT)/CppRemoteTemplates
 dist_template_DATA = \
     Blank                 \
     MakefilePy            \

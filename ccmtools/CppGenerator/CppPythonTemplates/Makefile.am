@@ -1,6 +1,7 @@
 ## process this file with automake to produce Makefile.in
 
-templatedir = $(DATA_ROOT)/CppPythonTemplates
+#templatedir = $(DATA_ROOT)/CppPythonTemplates
+templatedir = $(TEMPLATE_ROOT)/CppPythonTemplates
 dist_template_DATA = \
   MAliasDef                     \
   MAliasDefArray                \

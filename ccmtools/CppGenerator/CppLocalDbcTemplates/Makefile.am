@@ -1,6 +1,7 @@
 ## process this file with automake to produce Makefile.in
 
-templatedir = $(DATA_ROOT)/CppLocalDbcTemplates
+#templatedir = $(DATA_ROOT)/CppLocalDbcTemplates
+templatedir = $(TEMPLATE_ROOT)/CppLocalDbcTemplates
 dist_template_DATA = \
     MContainer                          \
     MComponentDef                       \

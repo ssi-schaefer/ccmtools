@@ -1,6 +1,7 @@
 ## process this file with automake to produce Makefile.in
 
-templatedir = $(DATA_ROOT)/CppLocalTemplates
+#templatedir = $(DATA_ROOT)/CppLocalTemplates
+templatedir = $(TEMPLATE_ROOT)/CppLocalTemplates
 dist_template_DATA = \
     MAliasDef                                      \
     MAttributeDefAdapterDefinition                 \
