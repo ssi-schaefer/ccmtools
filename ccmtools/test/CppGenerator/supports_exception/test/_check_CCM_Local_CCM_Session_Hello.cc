@@ -67,14 +67,9 @@ int main ( int argc, char *argv[] )
 
     // create facets, connect components
 
-
-
-
-
-
-
     myHello.ptr (  )->configuration_complete (  );
     myHelloMirror.ptr (  )->configuration_complete (  );
+
   } catch ( LocalComponents::HomeNotFound ) {
     cout << "DEPLOY: can't find a home!" << endl;
     result = -1;
@@ -94,13 +89,6 @@ int main ( int argc, char *argv[] )
   /* TESTING */
 
   try {
-    // check basic functionality
-
-    cout << "> getComponentVersion (  ) = "
-         << myHello.ptr (  )->getComponentVersion (  ) << endl;
-    cout << "> getComponentDate (  ) = "
-         << myHello.ptr (  )->getComponentDate (  ) << endl;
-
     DEBUGNL("==== Begin Test Case =============================================" );
 
      string s = "Salomon.Automation";

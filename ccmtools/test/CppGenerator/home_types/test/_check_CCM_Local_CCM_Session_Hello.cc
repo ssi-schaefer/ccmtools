@@ -135,10 +135,6 @@ int main ( int argc, char *argv[] )
 
     myHelloMirror.ptr()->configuration_complete();
 
-    // Use Hello component standard functionality
-    cout << "> getComponentVersion() = " << myHello1.ptr()->getComponentVersion () << endl;
-    cout << "> getComponentDate() = " << myHello1.ptr()->getComponentDate() << endl;
-
     /*
      * TESTING
      */

@@ -102,13 +102,6 @@ int main ( int argc, char *argv[] )
   /* TESTING */
 
   try {
-    // check basic functionality
-
-    cout << "> getComponentVersion (  ) = "
-         << myHello.ptr (  )->getComponentVersion (  ) << endl;
-    cout << "> getComponentDate (  ) = "
-         << myHello.ptr (  )->getComponentDate (  ) << endl;
-
     DEBUGNL("==== Begin Test Case =============================================" );
 
     // TODO : IMPLEMENT ME HERE !
