@@ -1,8 +1,15 @@
 package GLOBAL
 
 context Benchmark::f_in1(l1:Integer)
-    pre p1: l1 > 0
-    pre p2: l1 < 100
+    pre p1: l1 > 1
+    pre p2: l1 < 10
 
+context Benchmark::f_in2(s1:String)
+    pre p3: s1.size() >= 0	
+    pre p4: s1.size() < 2000
+    		
+context Benchmark::f_in3(ll1:Sequence)
+    pre p5: ll1->size() > 0
+    pre p6: ll1->size() < 1000	
 endpackage
 
