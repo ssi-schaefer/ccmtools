@@ -80,3 +80,5 @@ operator<<(std::ostream& o, const %(CorbaStubName)s& value)
 }
 
 } // /namespace CCM_Remote
+
+

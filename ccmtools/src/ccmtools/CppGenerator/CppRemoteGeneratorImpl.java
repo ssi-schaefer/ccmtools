@@ -20,16 +20,15 @@
 
 package ccmtools.CppGenerator;
 
-import ccmtools.utils.Text;
-import ccmtools.utils.Code;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
@@ -41,6 +40,7 @@ import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
 import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
@@ -48,17 +48,17 @@ import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
-import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-
+import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.utils.Code;
+import ccmtools.utils.Text;
 
 /*******************************************************************************
  * Remote C++ component generator
@@ -305,10 +305,10 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         String base_type = getBaseIdlType(object);
 
         vars.put("CORBAType", getCORBALanguageType((MTyped) attr));
-        vars.put("MAttributeDefConvertResultType", base_type + "_to_" + "CORBA"
-                + base_type);
-        vars.put("MAttributeDefConvertParameter", "CORBA" + base_type + "_to_"
-                + base_type);
+        vars.put("CORBAAttributeParameter", getCorbaAttributeParameter((MTyped) attr));
+        vars.put("CORBAAttributeResult", getCorbaAttributeResult((MTyped) attr));        
+        vars.put("ConvertAttributeFromCorba", convertAttributeFromCorba(attr)); 
+        vars.put("ConvertAttributeToCorba", convertAttributeToCorba(attr));
         return vars;
     }
 
@@ -334,6 +334,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         vars.put("Identifier", operation.getIdentifier());
         vars.put("LanguageType", lang_type);
         vars.put("CORBAType", getCORBALanguageType(operation));
+        
         vars.put("LocalExceptions", getOperationExcepts(operation));
         vars.put("MExceptionDefCORBA", getCORBAExcepts(operation));
 
@@ -672,6 +673,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
     /**
      * Implements the following tags found in the MAttribute* templates:
      * 'CORBAType' 'AttributeConvertInclude'
+     * Note that this method relates to component attributes only!
      */
     protected String data_MAttributeDef(String dataType, String dataValue)
     {
@@ -679,13 +681,35 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         MTyped type = (MTyped) current_node;
         MIDLType idlType = type.getIdlType();
         String baseType = getBaseIdlType(type);
-
+        
         // Handle %(CORBAType)s tag in %(MAttributeDef*)s templates
-        if (dataType.equals("CORBAType")) {
+
+        if(dataType.equals("CORBAType")) {
             dataValue = getCORBALanguageType((MTyped) current_node);
         }
-        else if (dataType.equals("AttributeConvertInclude")) {
-            dataValue = ""; // TODO
+        else if(dataType.equals("CORBAAttributeParameter")) {
+            dataValue = getCorbaAttributeParameter((MTyped) current_node);
+        }
+        else if(dataType.equals("CORBAAttributeResult")) {
+            dataValue = getCorbaAttributeResult((MTyped) current_node);
+        }
+        else if(dataType.equals("ConvertAttributeFromCorba")) {
+            dataValue = convertAttributeFromCorba((MAttributeDef)current_node); 
+        }
+        else if(dataType.equals("ConvertAttributeToCorba")) {
+            dataValue = convertAttributeToCorba((MAttributeDef)current_node);
+        }
+        else if(dataType.equals("AttributeConvertInclude")) {
+            Set code = new HashSet();
+            StringBuffer buffer = new StringBuffer();
+            if(idlType instanceof MPrimitiveDef || idlType instanceof MStringDef 
+                    || idlType instanceof MWstringDef) {
+                // no include statement needed for these primitive types
+            }
+             else {   
+                buffer.append("#include \"").append(baseType).append("_remote.h\"\n");
+            }
+            dataValue = buffer.toString(); 
         }
         return dataValue;
     }
@@ -1247,7 +1271,61 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         }
         return corba_type;
     }
-
+    
+    
+    protected String getCorbaAttributeParameter(MTyped object)
+    {
+        MIDLType idlType = object.getIdlType();
+        String dataValue = getCORBALanguageType(object);
+       
+        if(idlType instanceof MPrimitiveDef || idlType instanceof MStringDef 
+                || idlType instanceof MWstringDef || idlType instanceof MEnumDef) {
+            dataValue += ""; 
+        }
+        else if(idlType instanceof MStructDef) {
+            dataValue += "&"; 
+        }
+        else if(idlType instanceof MAliasDef){
+            MTyped containedType = (MTyped) idlType;
+            MIDLType containedIdlType = containedType.getIdlType();
+            if(containedIdlType instanceof MPrimitiveDef) {
+                dataValue += "";
+            }
+            else if(containedIdlType instanceof MSequenceDef) {
+                dataValue += "&";
+            }
+            // TODO: MArrayDef
+        }
+        return dataValue;			
+    }
+    
+    protected String getCorbaAttributeResult(MTyped object)
+    {
+        MIDLType idlType = object.getIdlType();
+        String dataValue = getCORBALanguageType(object);
+        if(idlType instanceof MPrimitiveDef || idlType instanceof MStringDef 
+                || idlType instanceof MWstringDef || idlType instanceof MEnumDef) {
+            dataValue += ""; 
+        }
+        else if(idlType instanceof MStructDef) {
+            dataValue += "*";
+        }
+        else if(idlType instanceof MAliasDef){
+            MTyped containedType = (MTyped) idlType;
+            MIDLType containedIdlType = containedType.getIdlType();
+            
+            if(containedIdlType instanceof MPrimitiveDef) {
+                dataValue += "";
+            }
+            else if(containedIdlType instanceof MSequenceDef) {
+                dataValue += "*";
+            }
+            // TODO: MArrayDef
+        }
+        return dataValue;
+    }
+    
+    
     //====================================================================
     // Handle the CORBA to C++ adption on operation level
     //====================================================================
@@ -1327,6 +1405,110 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         }
     }
 
+    
+    /**
+     * Creates the code that converts CORBA attribute setter methods to local C++ calls.
+     * @param attr An AttributeDef item of a CCM model.
+     * @return A string containing the generated code.
+     */
+    protected String convertAttributeFromCorba(MAttributeDef attr)
+    {
+        MIDLType idlType = ((MTyped) attr).getIdlType();
+        StringBuffer buffer = new StringBuffer();
+       
+        if(idlType instanceof MPrimitiveDef || idlType instanceof MStringDef 
+                || idlType instanceof MWstringDef) {
+            buffer.append(Text.insertTab(1))
+        		.append(getBaseLanguageType((MTyped) attr)).append(" local_value;\n");   
+        }
+        else {
+            buffer.append(Text.insertTab(1)).append("CCM_Local::")
+    		.append(getBaseLanguageType((MTyped) attr)).append(" local_value;\n");  
+        }
+        buffer.append(Text.insertTab(1))
+			.append("CCM_Remote::convertFromCorba(value, local_value);\n");
+        buffer.append(Text.insertTab(1))
+			.append("local_adapter->").append(attr.getIdentifier()).append("(local_value);\n");
+        return buffer.toString();    
+    }
+    
+
+    /**
+     * Creates the code that converts CORBA attribute getter methods to local C++ calls.
+     * @param attr An AttributeDef item of a CCM model.
+     * @return A string containing the generated code.
+     */
+    protected String convertAttributeToCorba(MAttributeDef attr)
+    {
+        MIDLType idlType = ((MTyped) attr).getIdlType();
+        String code = "";
+        
+        if(idlType instanceof MPrimitiveDef || idlType instanceof MStringDef 
+                || idlType instanceof MWstringDef || idlType instanceof MEnumDef) {	
+            code = convertPrimitiveAttributeToCorba(attr);
+        }
+        else if(idlType instanceof MStructDef) {  
+            code = convertUserAttributeToCorba(attr);
+        }
+        else if(idlType instanceof MAliasDef){     
+            MTyped containedType = (MTyped) idlType;
+            MIDLType containedIdlType = containedType.getIdlType();
+            if(containedIdlType instanceof MPrimitiveDef) {
+                code = convertPrimitiveAttributeToCorba(attr);
+            }
+            else if(containedIdlType instanceof MSequenceDef) {
+                code = convertUserAttributeToCorba(attr);
+            }
+            // TODO: MArrayDef   
+        }
+        return code;
+    }
+    
+    protected String convertPrimitiveAttributeToCorba(MAttributeDef attr)
+    {
+        MIDLType idlType = ((MTyped) attr).getIdlType();	
+        StringBuffer buffer = new StringBuffer();
+        if(idlType instanceof MEnumDef) {
+            buffer.append(Text.insertTab(1)).append("CCM_Local::")
+                .append(getBaseLanguageType((MTyped) attr))
+                .append(" result;\n");
+        }
+        else {
+            buffer.append(Text.insertTab(1))
+            	.append(getBaseLanguageType((MTyped) attr))
+            	.append(" result;\n");
+        }
+        buffer.append(Text.insertTab(1)).append("result = local_adapter->")
+                .append(attr.getIdentifier()).append("();\n");
+        buffer.append(Text.insertTab(1))
+                .append(getCORBALanguageType((MTyped) attr))
+                .append(" return_value;\n");
+        buffer.append(Text.insertTab(1))
+                .append("CCM_Remote::convertToCorba(result, return_value);\n");
+        buffer.append(Text.insertTab(1)).append("return return_value;\n");
+        return buffer.toString();
+    }
+        
+    protected String convertUserAttributeToCorba(MAttributeDef attr)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(Text.insertTab(1)).append("CCM_Local::")
+                .append(getBaseLanguageType((MTyped) attr))
+                .append(" result;\n");
+        buffer.append(Text.insertTab(1)).append("result = local_adapter->")
+                .append(attr.getIdentifier()).append("();\n");
+        buffer.append(Text.insertTab(1))
+                .append(getCORBALanguageType((MTyped) attr))
+                .append("_var return_value = new ")
+                .append(getCORBALanguageType((MTyped) attr)).append(";\n");
+        buffer.append(Text.insertTab(1))
+                .append("CCM_Remote::convertToCorba(result, return_value);\n");
+        buffer.append(Text.insertTab(1))
+                .append("return return_value._retn();\n");
+        return buffer.toString();
+    }
+        
+    
     /**
      * Creates the code that converts the CORBA parameters to local C++ types.
      * Note that only the in and inout parameters are converted.

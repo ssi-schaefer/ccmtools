@@ -1,24 +1,20 @@
 
-%(CORBAType)s
+%(CORBAAttributeResult)s
 %(Object)sFacetAdapter::%(Identifier)s() 
     throw(CORBA::SystemException)
 {
     LDEBUGNL(CCM_REMOTE, " %(Object)sFacetAdapter->%(Identifier)s()");
-    %(LanguageType)s result;	
-    result = local_adapter->%(Identifier)s();		
-    %(CORBAType)s return_value;
-    CCM_Remote::convertToCorba(result, return_value);		
-    return return_value;	
+    
+%(ConvertAttributeToCorba)s    
 }
 
 void
-%(Object)sFacetAdapter::%(Identifier)s(const %(CORBAType)s value)  
+%(Object)sFacetAdapter::%(Identifier)s(const %(CORBAAttributeParameter)s value)  
     throw(CORBA::SystemException)
 {
     LDEBUGNL(CCM_REMOTE, " %(Object)sFacetAdapter->%(Identifier)s(value)");
-    %(LanguageType)s local_value;
-    CCM_Remote::convertFromCorba(value, local_value);
-    local_adapter->%(Identifier)s(local_value);
+
+%(ConvertAttributeFromCorba)s  
 }
 
 
