@@ -11,11 +11,12 @@
 This section shows how to implement a simple component using the CCM
 Tools framework. 
 Before you start with component development, make sure that the CCM Tools are
-installed in a proper way, as described in the tutorial's Appendix.
+installed in a proper way.
 
 \vspace{3mm}
-As shown in Fig.~\ref{fig:development-process}, the component development process 
-defines different roles that reflect different abstraction levels of components:
+As shown in Fig.~\ref{fig:development-process}, the component development 
+process defines different roles that reflect different abstraction levels of 
+components:
 
 \begin{figure}[htbp]
     \begin{center}
@@ -34,17 +35,18 @@ required to implement. In this way, an IDL file is a sort of protocol
 definition for a component.
 
 \item [Component Developer]
-implements the behavior of the component with respect to the defined interfaces.
+implements the component's behavior with respect to the defined interfaces.
 \end{description}
 
-Using IDL to specify the outside view of components ensures that we can combine
-these black boxes (maybe implemented in different programming languages) in a 
-proper way.
+Using IDL to specify the outside view of components ensures that we can connect
+these black boxes that may be implemented in different programming languages.
 
 \newpage
-The CCM Tools framework support this development process by providing an IDL parser and
-different code generators. Each component has two logical parts (Fig.~\ref{fig:componentlogic-businesslogic}), 
-and generated code is used in both parts:
+The CCM Tools framework support this development process by providing an IDL 
+parser and different code generators. 
+Each component has two logical parts 
+(Fig.~\ref{fig:componentlogic-businesslogic}), and generated code is used in 
+both parts:
 
 \begin{figure}[htbp]
     \begin{center}
@@ -57,14 +59,14 @@ and generated code is used in both parts:
 \begin{description}
 \item [Component Logic]
 is the implementation of the component's structure. It contains mechanisms to
-create and destroy component instances, as well as access and navigation methods
+create and destroy component instances as well as access and navigation methods
 for finding and manipulating ports and attributes. This code can be completely
-generated from the IDL description.
+generated from IDL descriptions.
 
 \item [Business Logic]
-is the implementation of the component's behavior with respect to the
-application domain. Generator tools can create skeleton code, but the component
-developer must implement the business code.
+is the implementation of the component's behavior.
+Generator tools can create skeleton code, but the component
+developer has to implement the business code manually.
 
 Happily, the component developer need not be a CORBA guru to implement these
 functions: Generated remote (out--of--process) component logic can handle the
@@ -77,9 +79,10 @@ defined logical processes without caring about the overall structure of the
 application environment.
 \end{description}
 
-Finally, the CCM Tools make use of the Confix build tool to create a library
-from the generated (component logic) and hand-crafted (business logic) source
-code. The component libraries are installed in a component repository on the server
+Finally, the CCM Tools make use of the {\it Confix} build tool to create  
+libraries from generated (component logic) and hand-crafted (business logic) 
+source code. 
+The component libraries are installed in a component repository on the server
 side and can be used to assemble modular, component based applications.
 
 \newpage
@@ -107,8 +110,9 @@ and miles. For each customer we can evaluate driven miles and costs incurred.
 Of course, this is not a real world application, but this example is
 well suited to demonstrate CCM Tools in action.
 
-
-We will store all created IDL files in a {\tt example1} directory:
+We will store all created IDL files in a {\tt example1} directory
+\footnote{You can find this example source code in the 
+{\tt ccmtools/test/CppGenerator/tutorial/} directory.}:
 \begin{small}
 \begin{verbatim}
         example1/
@@ -120,11 +124,10 @@ We will store all created IDL files in a {\tt example1} directory:
 \end{verbatim}
 \end{small}
 
-Keep in mind that IDL files contain no specification of what exact action will be
-performed.
-The component developer bears the responsibility of filling in the functionality after
-the component logic has been generated.
-
+Keep in mind that IDL files contain no specification of what exact action will 
+be performed.
+The component developer bears the responsibility of filling in the functionality
+after the component logic has been generated.
 
 \begin{Example}
 \begin{minifbox}
@@ -146,12 +149,12 @@ module BigBusiness {
 \caption{Exceptions.idl}
 \label{example:Exceptions}
 \end{Example}
-The first code snippet (example \ref{example:Exceptions}) shows the definition of three 
-IDL exceptions.
+The first code snippet (example \ref{example:Exceptions}) shows the definition 
+of three IDL exceptions.
 In order to get a namespace, we envelop these definitions using a module called 
-BigBusiness. 
-To prevent IDL files from multiple including, we define include guards within 
-each source file.
+{\tt BigBusiness}. 
+To prevent IDL files from multiple including, we define {\it include guards} 
+within each source file.
 
 
 \newpage
@@ -181,9 +184,9 @@ module BigBusiness {
 \label{example:Customer}
 \end{Example}
 
-In {\tt Customer.idl}, we define a structure of basic 
-data types and a sequence of this structure type.
-Again, there is a BigBusiness module and an include guard.
+In {\tt Customer.idl}, we define a structure of basic data types and a sequence 
+of this structure type.
+Again, there is a {\tt BigBusiness} module and an include guard.
 
 \begin{Example}
 \begin{minifbox}
@@ -217,10 +220,13 @@ module BigBusiness {
 \caption{CustomerMaintenance.idl}
 \label{example:}
 \end{Example}
-Customers must be handled in a database like way. Thus, {\tt CustomerMaintenance.idl} 
-contains a Create, Retrieve, Update and Delete (CRUD) interface. 
-To pick a particular Customer, we use a Customer id that is realized as an IDL long type.
-Methods can throw exceptions in the case of illegal Customer ids, create or remove problems. 
+Customers must be handled in a database like way. 
+Thus, {\tt CustomerMaintenance.idl} contains a 
+{\it Create, Retrieve, Update and Delete} (CRUD) interface. 
+To pick a particular {\tt Customer}, we use a customer id that is realized by 
+an IDL long type.
+Methods can throw exceptions in the case of illegal customer ids, create or 
+remove problems. 
 
 \newpage
 
@@ -258,8 +264,8 @@ module BigBusiness {
 Beside the pure data manipulation, we also need an interface that defines a
 business functionality.
 {\tt CustomerBusiness.idl} defines an attribute and some methods that operate
-on the given Customer data. 
-If a parameter represents a wrong Customer id, the {\tt NoCustomerException}
+on the given customer data. 
+If a parameter represents a wrong customer id, the {\tt NoCustomerException}
 will be thrown.
 
 \begin{Example}
@@ -321,70 +327,135 @@ This section shows how the CCM Tools make this job easier.
 \subsection{Create component logic from IDL}
 %------------------------------------------------------------------------------
 
-
-To generate source code from IDL files, we type:
+In the first step, we bring the IDL3 files in a proper structure that implies 
+the separation between interface and component definitions. 
 \begin{small}
 \begin{verbatim}
-~/example1> ccmtools-generate c++local -a -o CarRental *.idl
+~/example1> ccmtools-generate idl3 -o CarRental/idl3 *.idl
 \end{verbatim}
 \end{small}
-
-Now, we have a new subdirectory ({\tt CarRental}) that contains the generated code. 
-(To get a description of all {\tt ccmtools-generate} options consult the CCM Tools
-commands section in the tutorial's appendix).
+As result of this CCM Tools call is the following file structure.
+The separation between interface and component related files reflects the
+fact that interfaces are used to defined components but are not owned by
+these components.
 \begin{small}
 \begin{verbatim}
 CarRental
-|-- CCM_Local_BigBusiness
-|-- CCM_Local_BigBusiness_CCM_Session_CarRental
-|-- CCM_Local_BigBusiness_CCM_Session_CarRental_share
-`-- src
-    |-- CarRentalHome_app.cc
-    |-- CarRentalHome_app.h
-    |-- CarRentalHome_entry.h
-    |-- CarRental_app.cc
-    |-- CarRental_app.h
-    `-- Makefile.py
+`-- idl3
+    |-- component
+    |   `-- BigBusiness
+    |       |-- CarRental.idl
+    |       `-- CarRentalHome.idl
+    `-- interface
+        `-- BigBusiness
+            |-- CreateCustomerException.idl
+            |-- Customer.idl
+            |-- CustomerBusiness.idl
+            |-- CustomerList.idl
+            |-- CustomerMaintenance.idl
+            |-- NoCustomerException.idl
+            `-- RemoveCustomerException.idl
 \end{verbatim}
 \end{small}
 
-The component developer really ought not to care about the generated {\tt CCM\_Local\_*}
-subdirectories (if you don't believe us, though, feel free to read
-through it; just don't edit anything). 
-The interesting files are listed in the {\tt src} directory. These files contain skeleton
-code of the component's business logic.
+\newpage
+To generate C++ source code from IDL3 we have to call the CCM Tools generator
+twice, once for the interfaces and once for the component:
+\begin{small}
+\begin{verbatim}
+~/example1> ccmtools-generate c++local \
+                -o CarRental/interface \
+                -ICarRental/idl3/interface \
+                CarRental/idl3/interface/BigBusiness/*.idl
+~/example1> ccmtools-generate c++local -a \
+                -o CarRental/component/CarRental \
+                -ICarRental/idl3/component -ICarRental/idl3/interface \
+                CarRental/idl3/component/BigBusiness/CarRental.idl \
+                CarRental/idl3/component/BigBusiness/CarRentalHome.idl
+\end{verbatim}
+\end{small}
+
+Now, the {\tt CarRental} subdirectory contains the component's source code. 
+(To get a description of all {\tt ccmtools-generate} options consult the 
+CCM Tools commands section in the tutorial's appendix).
+\begin{small}
+\begin{verbatim}
+CarRental
+|-- idl3
+|-- component
+|   `-- CarRental
+|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental
+|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_share
+|       `-- impl
+|           |-- CarRentalHome_entry.h
+|           |-- CarRentalHome_impl.cc
+|           |-- CarRentalHome_impl.h
+|           |-- CarRental_business_impl.cc
+|           |-- CarRental_business_impl.h
+|           |-- CarRental_impl.cc
+|           |-- CarRental_impl.h
+|           |-- CarRental_maintenance_impl.cc
+|           |-- CarRental_maintenance_impl.h
+|           `-- Makefile.py
+`-- interface
+    `-- CCM_Local_BigBusiness
+\end{verbatim}
+\end{small}
+
+The component developer really ought not to care about the generated 
+{\tt CCM\_Local\_*} subdirectories (if you don't believe us, though, feel free 
+to read through it; just don't edit anything). 
+The interesting files are listed in the {\tt impl} directory. 
+These files contain skeleton code (that are empty methods) of the component's 
+business logic.
 
 \begin{itemize}
 \item {\tt CarRentalHome\_entry.h} \\
-This file is the business logic's entry point and declares an extern ``C'' function 
-that returns a component home instance.
+This file is the business logic's entry point and declares an extern ``C'' 
+function that returns a component home instance.
 The generated implementation of this function is hosted in the 
-{\tt CarRentalHome\_app.cc} file.
+{\tt CarRentalHome\_impl.cc} file.
 
-\item {\tt CarRentalHome\_app.[h,cc]} \\
+\item {\tt CarRentalHome\_impl.[h,cc]} \\
 These files contain the factory methods for component instantiation. 
 While user defined factory methods must be implemented manually, the default 
-{\tt create()} method is already generated.
+{\tt create} method is already generated.
 
-\item {\tt CarRental\_app.[h,cc]} \\
-These files contain the component's business logic skeletons and are intended
-for developer extensions (grep for {\tt // TODO : IMPLEMENT ME HERE !}).
+\item {\tt CarRental\_impl.[h,cc]} \\
+These files contain the implementation of supported interfaces as well as the
+implementation of component attributes.
+
+\item {\tt CarRental\_business\_impl.[h,cc]} \\
+{\tt CarRental\_maintenance\_impl.[h,cc]} \\
+These files contain the implementation of defined facets and builds
+the component's business logic
+(grep for {\tt // TODO : IMPLEMENT ME HERE !}).
 
 \item {\tt Makefile.py} \\
 This file is a Confix marker that denotes a directory as 'to compile'.
 \end{itemize}
 
-Files in the {\tt src} directory are protected from overwriting.
-Running the {\tt ccmtools-generator} again results in a bunch of warnings. 
-Instead of overwriting, the generator stores the new files with an extension ({\tt *.new}). 
+Files in the {\tt impl} directory are protected from overwriting.
+Running the generator again results in a bunch of warnings. 
+Instead of overwriting, the generator stores the new files with an extension 
+({\tt *.new}) into the same directory.
+You can make a {\tt diff} to figure out changes. 
 
 \vspace{3mm}
 The generated business logic skeletons contains enough code to be compilable.
-To build the generated source code, we use an open source build tool called Confix:
+To build the generated source code, type:
 \begin{small}
 \begin{verbatim}
-~/example1> confix.py --packageroot=`pwd`/CarRental \
-                      --bootstrap --configure --make
+# Compile and install component interfaces
+$ confix.py --advanced --bootstrap --configure \
+            --packageroot=`pwd`/CarRental/interface \
+            --make --targets=install
+
+# Compile the components and run the unit test
+$ touch CarRental/component/CarRental/Makefile.py
+$ confix.py --advanced --bootstrap --configure \
+            --packageroot=`pwd`/CarRental/component \
+            --make 
 \end{verbatim}
 \end{small}
 
@@ -393,13 +464,14 @@ To build the generated source code, we use an open source build tool called Conf
 \subsection{Test driven development}
 %------------------------------------------------------------------------------
 
-Software development is an iterative process. Kent Beck~\cite{Beck2003TDD}
-proposed a {\it Test Driven Development} (TDD) methodology that starts by
-implementing the test~-- before implementing the application!
+Software development is an iterative process. Kent Beck
+has proposed a {\it Test Driven Development} (TDD) methodology 
+\cite{Beck2003TDD} that starts by
+implementing the test~-- before implementing the business logic!
 
 \begin{figure}[!htb]
     \begin{center}
-        \includegraphics [width=6cm,angle=0] {TestDrivenDevelopment}
+        \includegraphics [width=7cm,angle=0] {TestDrivenDevelopment}
         \caption{Test driven development process}
         \label{fig:test-driven-development}
     \end{center}
@@ -410,82 +482,105 @@ the TDD idea in the context of components. For every component $C$, we
 generate a mirror component $\overline{C}$. Each input port (receptacle)
 of $C$ corresponds to an output port (facet) of $\overline{C}$, and vice versa.
 
-To convert the given IDL3 files into files for a mirror component $\overline{C}$, type:
+\newpage
+To create a mirror component $\overline{C}$ definition from manually written 
+IDL3 files, type:
 \begin{small}
 \begin{verbatim}
-~/example1> ccmtools-generate idl3mirror \
-                              -o CarRental/idl3mirror *.idl
+~/example1> ccmtools-generate idl3mirror -o CarRental/idl3 *.idl
 \end{verbatim}
 \end{small}
 
-Now we can use the known {\tt c++local} generator to create C++ component logic 
-from the IDL3 mirror files.
-To convert the given IDL3 files into files for a mirror component $\overline{C}$, type:
-\begin{small}
-\begin{verbatim}
-~/example1> ccmtools-generate c++local -a -o CarRental   \
-                              -ICarRental/idl3mirror     \
-                              CarRental/idl3mirror/*.idl
-\end{verbatim}
-\end{small}
-
-Finally, a test client coordinates creating and connecting of component $C$ and 
-mirror component $\overline{C}$.
-To generate a test client we type:
-\begin{small}
-\begin{verbatim}
-~/example1> ccmtools-generate c++local-test -o CarRental *.idl
-\end{verbatim}
-\end{small}
-
-After all these steps, the current {\tt CarRental} directory contains the following
-entities:
+From the generated IDL3 files you can see that both $\overline{C}$ and $C$ 
+uses the same interfaces.
 \begin{small}
 \begin{verbatim}
 CarRental
-|-- CCM_Local_BigBusiness
-|-- CCM_Local_BigBusiness_CCM_Session_CarRental
-|-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror
-|-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror_share
-|-- CCM_Local_BigBusiness_CCM_Session_CarRental_share
-|-- idl3mirror
-|-- src
-|   |-- CarRentalHome_app.cc
-|   |-- CarRentalHome_app.h
-|   |-- CarRentalHome_entry.h
-|   |-- CarRentalHome_mirror_app.cc
-|   |-- CarRentalHome_mirror_app.h
-|   |-- CarRentalHome_mirror_entry.h
-|   |-- CarRental_app.cc
-|   |-- CarRental_app.h
-|   |-- CarRental_mirror_app.cc
-|   |-- CarRental_mirror_app.h
-|   `-- Makefile.py
-`-- test
-    |-- Makefile.py
-    `-- _check_CCM_Local_BigBusiness_CCM_Session_CarRental.cc
+`-- idl3
+    |-- component
+    |   `-- BigBusiness
+    |       |-- CarRental.idl
+    |       |-- CarRentalHome.idl
+    |       |-- CarRentalHome_mirror.idl    // new
+    |       `-- CarRental_mirror.idl        // new
+    `-- interface
+        `-- BigBusiness
+            |-- CreateCustomerException.idl
+            |-- Customer.idl
+            |-- CustomerBusiness.idl
+            |-- CustomerList.idl
+            |-- CustomerMaintenance.idl
+            |-- NoCustomerException.idl
+            `-- RemoveCustomerException.idl
 \end{verbatim}
 \end{small}
 
-In the {\tt src} and {\tt test} directories, there are the generated files of the mirror
-component's business logic and the test client:
-\begin{itemize}
-\item {\tt CarRentalHome\_mirror\_entry.h} \\
-This file declares an extern ``C'' function 
-that returns a mirror component home instance.
+Now we can use the {\tt c++local} generator again to create C++ component logic 
+from the IDL3 mirror files.
+\begin{small}
+\begin{verbatim}
+~/example1> ccmtools-generate c++local -a \
+                -o CarRental/component/CarRental_mirror \
+                -ICarRental/idl3/component -ICarRental/idl3/interface \
+                CarRental/idl3/component/BigBusiness/CarRental_mirror.idl \
+                CarRental/idl3/component/BigBusiness/CarRentalHome_mirror.idl
+\end{verbatim}
+\end{small}
+This results in the following file structure:
+\begin{small}
+\begin{verbatim}
+CarRental 
+|-- component
+|   |-- CarRental
+|   `-- CarRental_mirror
+|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror
+|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror_share
+|       `-- impl
+|           |-- CarRentalHome_mirror_entry.h
+|           |-- CarRentalHome_mirror_impl.cc
+|           |-- CarRentalHome_mirror_impl.h
+|           |-- CarRental_mirror_impl.cc
+|           |-- CarRental_mirror_impl.h
+|           `-- Makefile.py
+\end{verbatim}
+\end{small}
 
-\item {\tt CarRentalHome\_mirror\_app.[h,cc]} \\
-These files contain the factory methods for mirror component instantiation. 
+The {\tt impl} directory contains generated files of the mirror
+component's business logic that can host component test cases.
+In the next sections of this tutorial, we will implement test cases as well
+as business logic. 
 
-\item {\tt CarRental\_mirror\_app.[h,cc]} \\
-These files contain the mirror component's business logic skeletons and are intended
-for developer extensions.
+\newpage
+Finally, a test client coordinates creating and connecting of component $C$ and 
+mirror component $\overline{C}$.
+To generate a test client, we type:
+\begin{small}
+\begin{verbatim}
+~/example1> ccmtools-generate c++local-test \
+                -o CarRental/component/CarRental_mirror \
+                -ICarRental/idl3/component -ICarRental/idl3/interface \
+                CarRental/idl3/component/BigBusiness/CarRental.idl
+\end{verbatim}
+\end{small}
 
-\item {\tt \_check\_CCM\_Local\_BigBusiness\_CCM\_Session\_CarRental.cc} \\
-This file contains the test client that connects $C$ and $\overline{C}$.  
-Files in {\tt test} are also protected from overwriting.
-\end{itemize}  
+The generated files are stored in the following way:
+\begin{small}
+\begin{verbatim}
+CarRental
+|-- component
+|   |-- CarRental
+|   `-- CarRental_mirror
+|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror
+|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror_share
+|       |-- impl
+|       `-- test
+|           |-- Makefile.py
+|           `-- _check_CCM_Local_BigBusiness_CCM_Session_CarRental.cc
+\end{verbatim}
+\end{small}
 
+The {\tt test} directory contains a generated {\tt \_check\_*} file that 
+implements the test client and is also protected from overwriting.
 
 
 
@@ -495,8 +590,9 @@ Files in {\tt test} are also protected from overwriting.
 %------------------------------------------------------------------------------
 
 Now is a good time to start the development of business code. First, we have to
-define the behavior of the business code in an executable semantic. In other words, 
-we write a test case in the mirror component ({\tt CarRental\_mirror\_app.cc}), as
+define the behavior of the business code in an executable semantic. 
+In other words, we write a test case in the mirror component 
+({\tt CarRental\_mirror\_impl.cc}), as
 shown in Example~\ref{example:one-component-mirror-impl}.
 
 \begin{Example}
@@ -538,28 +634,29 @@ void CCM_CarRental_mirror_impl::ccm_activate()
 \caption{Test case implementation in the mirror component.}
 \label{example:one-component-mirror-impl}
 \end{Example}
-
-The test case is implemented in the {\tt ccm\_activate()} callback method of the
+The test case is implemented in the {\tt ccm\_activate} callback method of the
 mirror component because this method is called after creating and connecting $C$
 and $\overline{C}$ from the component logic. 
 
 First, we creating a valid {\tt Customer} record and  
 use the context object ({\tt ctx}) to get a smart pointer
 to $\overline{C}$'s receptacle (which is connected with $C$'s facet) 
-before we call the {\tt createCustomer()} operation. 
-After that, we retrieve the record from the receptacle and compare the stored items.
+before we call the {\tt createCustomer} operation. 
+After that, we retrieve the record from the receptacle and compare the stored 
+items.
 
 To compile and run the test, we type:
 \begin{small}
 \begin{verbatim}
-~/example1> confix.py --packageroot=`pwd`/CarRental \
-                      --make --targets="check"
+~/example1> confix.py --advanced --bootstrap --configure \
+                      --packageroot=`pwd`/CarRental/component \
+                      --make --targets=check
 \end{verbatim}
 \end{small}
-
-The test failed!
-Remember, there is no business code implemented in {\tt createCustomer()} and 
-{\tt retrieveCustomer()}; they are empty function skeletons. 
+The test failed! 
+That's fine because there is no business code to work with...
+%Remember, there is no business code implemented in {\tt createCustomer} and 
+%{\tt retrieveCustomer}; they are empty function skeletons. 
 
 
 
@@ -571,8 +668,8 @@ Remember, there is no business code implemented in {\tt createCustomer()} and
 %------------------------------------------------------------------------------
 
 Now we are ready to implement the business logic that satisfies the written test
-case. We open {\tt CarRental\_app.cc} and add some lines, as shown in
-Example~\ref{example:one-component-impl}.
+case. We open {\tt CarRental\_maintenance\_impl.cc} and add some lines, as 
+shown in Example~\ref{example:one-component-impl}.
 
 \begin{Example}
 \begin{minifbox}
@@ -605,14 +702,15 @@ maintenance_impl::retrieveCustomer ( const long id )
 \label{example:one-component-impl}
 \end{Example}
 
-Instead of a database, we simply use a {\tt std::vector<>} template to implement
-the {\tt createCustomer()} and {\tt retrieveCustomer()} methods~-- that's it! 
+Instead of a database, we simply use a {\tt std::vector<>} to implement
+the {\tt createCustomer} and {\tt retrieveCustomer} methods~-- that's it! 
 
 We'll run the test again to see if it's working:
 \begin{small}
 \begin{verbatim}
-~/example1> confix.py --packageroot=`pwd`/CarRental \
-                      --make --targets="check"
+~/example1> confix.py --advanced \
+                      --packageroot=`pwd`/CarRental/component \
+                      --make --targets=check
 \end{verbatim}
 \end{small}
 
@@ -631,11 +729,11 @@ To keep the tutorial clean, we implement only simple tests that show the
 functionality of {\tt CarRental}'s business logic.
 In practice, these white box tests must be much more substantial.
 
-Note that the whole example is also available in the {\tt test/CppGenerator/tutorial}
-directory of the CCM Tools project. 
+Note that the whole example is also available in the 
+{\tt test/CppGenerator/tutorial} directory of the {\tt ccmtools} package. 
 
 \newpage
-To test the {\tt retrieveAllCustomers()} method, we add two other customers before
+To test the {\tt retrieveAllCustomers} method, we add two other customers before
 we call the method. All retrieved records are compared with their initial values
 to validate the query results. 
 
@@ -675,7 +773,7 @@ to validate the query results.
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt retrieveAllCustomers()} test case}
+\caption{{\tt retrieveAllCustomers} test case}
 \label{example:retrieveAllCustomersTest}
 \end{Example}
 
@@ -700,7 +798,7 @@ CustomerList maintenance_impl::retrieveAllCustomers (  )
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt retrieveAllCustomers()} implementation }
+\caption{{\tt retrieveAllCustomers} implementation }
 \label{example:retrieveAllCustomersImpl}
 \end{Example}
 
@@ -709,9 +807,9 @@ is returned by value.
 In the case of an empty list the {\tt NoCustomerException} is thrown.
 
 
-Next, we implement a test case for {\tt updateCustomer()}.
+Next, we implement a test case for {\tt updateCustomer}.
 A new {\tt Customer} record is created and used as parameter.
-To check the update procedure, we use {\tt retrieveCustomer()} 
+To check the update procedure, we use {\tt retrieveCustomer} 
 and compare the result record with the new values.
 \begin{Example}
 \begin{minifbox}
@@ -737,7 +835,7 @@ and compare the result record with the new values.
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt updateCustomer()} test case}
+\caption{{\tt updateCustomer} test case}
 \label{example:}
 \end{Example}
 
@@ -762,11 +860,11 @@ void maintenance_impl::updateCustomer ( const Customer& person )
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt updateCustomer()} implementation}
+\caption{{\tt updateCustomer} implementation}
 \label{example:}
 \end{Example}
 
-To implement {\tt updateCustomers()} we simply iterate through the {\tt Customer}
+To implement {\tt updateCustomers} we simply iterate through the {\tt Customer}
 vector and compare each item with the given person.
 If person matches, we overwrite the vector item and return.
 If person does not match, {\tt NoCustomerException} is thrown.
@@ -795,7 +893,7 @@ Instead, the {\tt RemoveCustomerException} must be thrown.
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt updateCustomer()} test case}
+\caption{{\tt updateCustomer} test case}
 \label{example:}
 \end{Example}
 
@@ -820,27 +918,30 @@ void maintenance_impl::deleteCustomer ( const long id )
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt updateCustomer()} implementation}
+\caption{{\tt updateCustomer} implementation}
 \label{example:}
 \end{Example}
 
-Again, we iterate through the {\tt Customer} vector and compare each item with the given id.
+Again, we iterate through the {\tt Customer} vector and compare each item with 
+the given id.
 If the given record is found, we will remove it from the {\tt Customer} vector.
-If the given id can't be found in the{\tt Customer} vector, {\tt RemoveCustomerException}
-is thrown.
+If the given id can't be found in the{\tt Customer} vector, 
+{\tt RemoveCustomerException} is thrown.
 
-Now we have implemented the {\tt maintenance} facet hand in hand with its test cases. 
+Now we have implemented the {\tt maintenance} facet hand in hand with its test 
+cases. 
 
-A great benefit of test driven development is that testing is not longer a separated
-part at the end of a software development process.
+A great benefit of test driven development is that testing is not longer a 
+separated part at the end of a software development process.
 In practice, most projects are running out of time before testing can start. 
-Thus, lots of functionality is implemented but test cases are skipped frequently.
-With a test driven approach, one can scale the functionality of a project when time is
-running out, but ensure software quality by having automatic tests.
+Thus, lots of functionality is implemented but test cases are skipped 
+frequently.
+With a test driven approach, one can scale the functionality of a project when 
+time is running out, but ensure software quality by having automatic tests.
 
 Another benefit of automatic tests appear in context of code refactoring. 
-After making some changes in a component's implementation, we can run all test cases 
-to ensure that its functionality is still available.
+After making some changes in a component's implementation, we can run all test 
+cases to ensure that its functionality is still available.
 
 \newpage
 
@@ -849,8 +950,8 @@ $\overline{C}$.
 For {\tt business} facet tests, we create a new try/catch block that catches
 only {\tt NoCustomerException}s.
  
-The test adds some miles to an existing customer, retrieves the current miles value 
-from the same customer and verifies their equality. 
+The test adds some miles to an existing customer, retrieves the current miles 
+value from the same customer and verifies their equality. 
 \begin{Example}
 \begin{minifbox}
 \begin{small}
@@ -876,13 +977,13 @@ from the same customer and verifies their equality.
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt addCustomerMiles()} and {\tt getCustomerMiles()} test case}
+\caption{{\tt addCustomerMiles} and {\tt getCustomerMiles} test case}
 \label{example:}
 \end{Example}
 
 
 To make the test run, we have to implement two facet methods.
-{\tt addCustomerMiles()} iterates through the {\tt Customer} vector
+{\tt addCustomerMiles} iterates through the {\tt Customer} vector
 and compares the id values.
 If the given {\tt Customer} id is found, the miles value is added to
 its current status.
@@ -908,7 +1009,7 @@ void business_impl::addCustomerMiles(const long id,
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt addCustomerMiles()} implementation}
+\caption{{\tt addCustomerMiles} implementation}
 \label{example:}
 \end{Example}
 
@@ -939,7 +1040,7 @@ double business_impl::getCustomerMiles ( const long id )
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt getCustomerMiles()} implementation}
+\caption{{\tt getCustomerMiles} implementation}
 \label{example:}
 \end{Example}
 
@@ -968,7 +1069,7 @@ Thus, the component's calculation can be verified.
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt dollars\_per\_mile()} and {\tt getCustomerDollars()} test case}
+\caption{{\tt dollars\_per\_mile} and {\tt getCustomerDollars} test case}
 \label{example:}
 \end{Example}
 
@@ -995,9 +1096,11 @@ void business_impl::dollars_per_mile(const double value )
 \label{example:get-set}
 \end{Example}
 
-Example \ref{example:get-set} shows the implementation of IDL attributes within a facet.
-Note that in the corresponding header file the {\tt business\_impl} class declaration must 
-be extended to provide a private member called {\tt \_dollars\_per\_mile}. 
+Example \ref{example:get-set} shows the implementation of IDL attributes within 
+a facet.
+Note that in the corresponding header file the {\tt business\_impl} class 
+declaration must be extended to provide a private member called 
+{\tt \_dollars\_per\_mile}. 
 
 \begin{Example}
 \begin{minifbox}
@@ -1015,12 +1118,14 @@ double business_impl::getCustomerDollars ( const long id )
 \label{example:getCustomerDollars}
 \end{Example}
 
-Life would be pretty ease if all business logic would be as simple to implement as  
-{\tt getCustomerDollars()} shown in example \ref{example:getCustomerDollars} ;-)
+Life would be pretty ease if all business logic would be as simple to implement 
+as \\ 
+{\tt getCustomerDollars} shown in example \ref{example:getCustomerDollars} 
+;-)
 
 
-Finally, the last test case resets a {\tt Customer}'s mileage value and retrieves
-its Dollar status. Of course, it has to be null.
+Finally, the last test case resets a {\tt Customer}'s mileage value and 
+retrieves its Dollar status. Of course, it has to be null.
 
 \begin{Example}
 \begin{minifbox}
@@ -1039,7 +1144,7 @@ its Dollar status. Of course, it has to be null.
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt resetCustomerMiles()} test case}
+\caption{{\tt resetCustomerMiles} test case}
 \label{example:}
 \end{Example}
 
@@ -1065,11 +1170,11 @@ void business_impl::resetCustomerMiles ( const long id )
 \end{verbatim}
 \end{small}
 \end{minifbox}
-\caption{{\tt resetCustomerMiles()} implementation}
+\caption{{\tt resetCustomerMiles} implementation}
 \label{example:resetCustomer}
 \end{Example}
-As shown in example \ref{example:resetCustomer}, {\tt resetCustomerMiles()} searches 
-in the {\tt Customer}
+As shown in example \ref{example:resetCustomer}, {\tt resetCustomerMiles} 
+searches in the {\tt Customer}
 vector for the given id and set the mileage value to null.
 If no {\tt Customer} id matches, the {\tt NoCustomerException} is thrown.
 
@@ -1081,15 +1186,15 @@ Well done! You have implemented the first component using the CCM Tools.
 \subsection{Deploy the component}
 %------------------------------------------------------------------------------
 
-Deploying a component means that the component's libraries and header files will 
-be stored in a component repository, which is simply a directory on your computer
-(specified by 'PREFIX' in {\tt ~/.confix}).
+Deploying a component means that the component's libraries and header files 
+will be stored in a component repository, which is simply a directory on your 
+computer (specified by {\tt PREFIX} in {\tt ~/.confix}).
 
 Component deployment is performed by Confix:
 \begin{small}
 \begin{verbatim}
-~/example1> confix.py --packageroot=`pwd`/CarRental \
-                      --make --targets="install"
+~/example1> confix.py --packageroot=`pwd`/CarRental/component \
+                      --make --targets=install
 \end{verbatim}
 \end{small}
 
@@ -1135,19 +1240,17 @@ To remove the component from the component repository, type:
 
 \begin{small}
 \begin{verbatim}
-~/example1>  confix.py --packageroot=`pwd`/CarRental \
-                       --make --targets="uninstall distclean" 
+~/example1>  confix.py --packageroot=`pwd`/CarRental/component \
+                       --make --targets="uninstall" 
 \end{verbatim}
 \end{small}
 
-The optional parameter {\tt distclean} causes Confix to remove the
-component's resources in the build directory too.
-
-Note that installing is not necessary during component development. 
+Installing is not necessary during component development. 
 For implementing test cases and business logic we only need the source and
-build directory (specified by 'BUILDROOT' in {\tt ~/.confix}).
+build directory (specified by {\tt BUILDROOT} in {\tt ~/.confix}).
  
-
+Note that we have to deploy our component again to use it from a client,
+as described in the following section. 
 
 %\newpage
 %------------------------------------------------------------------------------
