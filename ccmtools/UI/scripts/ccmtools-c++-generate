@@ -30,6 +30,7 @@ INCLUDES = ''
 
 INSTALL_DIR = ''
 SOURCE_DIR = ''
+CODE_VERSION = ''
 CCMTOOLS_PACKAGE = '.'
 
 if 'CCMTOOLS_PACKAGE' in os.environ.keys():
@@ -115,7 +116,7 @@ if (sys.platform[:3] == 'win' and not SOURCE_DIR[1:3] == ':\\') or \
 ## tests (c) c++ mirror components, (d) c++ python wrappers, and (e) the real
 ## c++ components.
 
-cmd = 'ccmtools-generate -c %s -o %s' % (CODE_VERSION, SOURCE_DIR)
+cmd = 'ccmtools-generate -o %s' % (SOURCE_DIR)
 app = ENABLE_APPLICATION and '-a' or ''
 langs = 'c++local ' + (ENABLE_PYTHON_TEST and 'c++python ' or '')
 
