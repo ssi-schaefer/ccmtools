@@ -5,7 +5,7 @@ interface I2
 
 component Test
 {
-  uses I2 my_facet;
+  uses I2 recept;
 };
 
 home TestHome manages Test

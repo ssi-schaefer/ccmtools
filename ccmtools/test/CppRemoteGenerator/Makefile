@@ -147,7 +147,8 @@ dist_noinst_SCRIPTS = test-loader.sh
 TESTS = \
   attribute_simple.sh attribute_module_simple.sh \
   supports_simple.sh \
-  facet_simple.sh facet_module_simple.sh 
+  facet_simple.sh facet_module_simple.sh \
+  receptacle_simple.sh
 
 
 dist_check_SCRIPTS = $(TESTS)
