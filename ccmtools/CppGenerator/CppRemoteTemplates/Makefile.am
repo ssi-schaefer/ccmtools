@@ -10,7 +10,7 @@ dist_template_DATA = \
     ConvertRemoteHeader   \
     MContainer            \
     MHomeDef              \
-    MComponentDef         
+    MComponentDef
 
 
 

@@ -23,11 +23,37 @@ package ccmtools.CodeGenerator;
 
 import ccmtools.Metamodel.BaseIDL.MContained;
 
+import java.util.Set;
+
 public interface GraphTraverser
 {
+    /**
+     * Traverse the subgraph starting at the given node.
+     *
+     * @param node a node to use for starting traversal.
+     */
     void traverseGraph(MContained node);
 
-    public NodeHandler getHandler();
-    public void setHandler(NodeHandler h);
+    /**
+     * Get the node handler objects for this traverser.
+     *
+     * @return a set of NodeHandler objects currently used by this traverser.
+     */
+    public Set getHandlers();
+
+    /**
+     * Add a node handler object for this traverser.
+     *
+     * @param h a NodeHandler object to assign to this traverser.
+     */
+    public void addHandler(NodeHandler h);
+
+    /**
+     * Remove a node handler object from this traverser.
+     *
+     * @param h a NodeHandler object to remove from this traverser. This
+     *        function does nothing if h is not currently a handler.
+     */
+    public void removeHandler(NodeHandler h);
 }
 

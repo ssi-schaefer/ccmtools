@@ -1,2 +1,3 @@
 #!/bin/sh
-java -classpath ../../Metamodel/BaseIDL/class:../../Metamodel/ComponentIDL/class/:../../IDL3Parser/src/class/:jdom.jar:../src/class:$CLASSPATH Main $1 $2
+
+${JAVA} Main $1 $2

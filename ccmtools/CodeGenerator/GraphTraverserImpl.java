@@ -27,18 +27,18 @@ import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class GraphTraverserImpl
     implements GraphTraverser
 {
-    private NodeHandler handler = null;
+    private Set handlers = null;
 
     /**
      * A CCM MOF graph traverser similar in pattern to the SAX XML parser.
@@ -50,8 +50,7 @@ public class GraphTraverserImpl
      * NodeHandler class to perform task-specific actions with each node.
      */
     public GraphTraverserImpl()
-    {
-    }
+    { handlers = new HashSet(); }
 
     /**
      * A CCM MOF graph traverser similar in pattern to the SAX XML parser.
@@ -62,46 +61,52 @@ public class GraphTraverserImpl
      * the graph. It sends node traversal events to an object derived from the
      * NodeHandler class to perform task-specific actions with each node.
      *
-     * @param h An object to handle node events.
+     * @param h an object to handle node events.
      */
     public GraphTraverserImpl(NodeHandler h)
-    {
-        setHandler(h);
-    }
+    { handlers = new HashSet(); addHandler(h); }
 
     /**
-     * Get the node handler object for this traverser.
+     * Get the node handler objects for this traverser.
      *
-     * @return The NodeHandler object currently used by this traverser.
+     * @return a set of NodeHandler objects currently used by this traverser.
      */
-    public NodeHandler getHandler()
-    {
-        return handler;
-    }
+    public Set getHandlers()
+    { return handlers; }
 
     /**
-     * Set the node handler object for this traverser.
+     * Add a node handler object for this traverser.
      *
-     * @param h A NodeHandler object to assign to this traverser.
+     * @param h a NodeHandler object to assign to this traverser.
      */
-    public void setHandler(NodeHandler h)
-    {
-        handler = h;
-    }
+    public void addHandler(NodeHandler h)
+    { handlers.add(h); }
+
+    /**
+     * Remove a node handler object from this traverser.
+     *
+     * @param h a NodeHandler object to remove from this traverser. This
+     *        function does nothing if h is not currently a handler.
+     */
+    public void removeHandler(NodeHandler h)
+    { if (handlers.contains(h)) handlers.remove(h); }
 
     /**
      * Traverse the subgraph starting at the given node.
      *
-     * @param node A node to use for starting traversal.
+     * @param node a node to use for starting traversal.
      */
     public void traverseGraph(MContained node)
     {
-        if (handler != null) {
-            handler.startGraph();
+        if (handlers.size() > 0) {
+            for (Iterator h = handlers.iterator(); h.hasNext(); )
+                ((NodeHandler) h.next()).startGraph();
             traverseRecursive(node, "", new HashSet());
-            handler.endGraph();
+            for (Iterator h = handlers.iterator(); h.hasNext(); )
+                ((NodeHandler) h.next()).endGraph();
         } else {
-            throw new RuntimeException("No node handler object available for traversal");
+            throw new RuntimeException(
+                "No node handler objects are available for traversal");
         }
     }
 
@@ -157,7 +162,8 @@ public class GraphTraverserImpl
             visited.add(scope_id);
         }
 
-        handler.startNode(node, scope_id);
+        for (Iterator h = handlers.iterator(); h.hasNext(); )
+            ((NodeHandler) h.next()).startNode(node, scope_id);
 
         List node_children = processNodeData(node);
 
@@ -165,7 +171,8 @@ public class GraphTraverserImpl
             traverseRecursive(i.next(), scope_id, visited);
         }
 
-        handler.endNode(node, scope_id);
+        for (Iterator h = handlers.iterator(); h.hasNext(); )
+            ((NodeHandler) h.next()).endNode(node, scope_id);
     }
 
     /**
@@ -245,7 +252,9 @@ public class GraphTraverserImpl
             } else if (method_type.endsWith("Set")) {
                 children.addAll((Set) value);
             } else {
-                handler.handleNodeData(method_type, field_id, value);
+                for (Iterator h = handlers.iterator(); h.hasNext(); )
+                    ((NodeHandler) h.next()).handleNodeData(method_type,
+                                                            field_id, value);
             }
         }
 

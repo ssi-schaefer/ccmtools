@@ -14,17 +14,18 @@ TEX = $(DOC_NAME).tex    \
 BIBS = cbse.bib doc.bib pattern.bib se.bib wx.bib
 
 FIGS = \
-       Adapter1.fig              \
-       DevelopmentProcess.fig    \
-       TestDrivenDevelopment.fig \
-       Container.fig             \
-       Assembly.fig              \
-       AssemblyGraph.fig         \
-       AssemblyGraph2.fig        \
-       Component.fig             \
-       LCAC_Overview.fig         \
-       LCAC_ProcessModel.fig     \
-       RemoteAssembly.fig
+       Adapter1.fig                \
+       Assembly.fig                \
+       AssemblyGraph.fig           \
+       AssemblyGraph2.fig          \
+       Component.fig               \
+       ComponentGeneratorTools.fig \
+       Container.fig               \
+       DevelopmentProcess.fig      \
+       LCAC_Overview.fig           \
+       LCAC_ProcessModel.fig       \
+       RemoteAssembly.fig          \
+       TestDrivenDevelopment.fig
 
 PDFS = $(FIGS:.fig=.pdf)
 EPSS = $(FIGS:.fig=.eps)

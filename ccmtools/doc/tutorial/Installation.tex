@@ -24,38 +24,27 @@ To install the {\it CCM Tools}, the following programs must be available:
 \section{How to get it}
 %------------------------------------------------------------------------------
 
-The project's homepage is hosted at Sourceforge 
-({\tt http://ccmtools.sf.net}), see there for releases and announcements.
-
+The project is hosted at Sourceforge ({\tt http://ccmtools.sf.net}), see there
+for releases and announcements.
 
 
 %------------------------------------------------------------------------------
 \section{Source distribution}
 %------------------------------------------------------------------------------
 
-The installation of the {\it CCM Tools} requires the following steps that get
-the source code, build the binary files and set the environment variables:
+Installing the {\it CCM Tools} generally requires the following steps. You just
+need to unpack the source code, build the binary files, and then set environment
+variables:
 \begin{verbatim}
   ~> tar xvzf ccmtools-0.2.0.tar.gz
   ~> cd ccmtools-0.2.0
   ~> ./autogen.py --prefix=<ccm_tools_path>
   ~> make
   ~> make install
-  ~> PATH=<ccm_tools_path>/bin:$PATH
+  ~> export PATH=<ccm_tools_path>/bin:$PATH
   ~> export CLASSPATH=<ccm_tools_path>/share/java/ccmtools.jar: \
                       <ccm_tools_path>/share/java/antlr.jar:    \
                       <ccm_tools_path>/share/java/jdom.jar:     \
                       $CLASSPATH
 \end{verbatim}
-
-
-
-
-
-
-
-
-
-
-
 

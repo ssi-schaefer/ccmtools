@@ -2,7 +2,7 @@
 ## $Id$
 
 JAVAROOT = .
-CLASSPATH_ENV = CLASSPATH=$(top_builddir):$(top_srcdir)/lib/jdom.jar:$(top_srcdir)/lib/antlr.jar
+CLASSPATH_ENV = CLASSPATH=.:$(top_builddir):$(top_srcdir)/lib/jdom.jar:$(top_srcdir)/lib/antlr.jar
 TESTS_ENVIRONMENT = top_builddir=$(top_builddir) top_srcdir=$(top_srcdir) \
                     JAVA=$(JAVA) $(CLASSPATH_ENV)
 

@@ -48,7 +48,7 @@ public class Main {
         container.setIdentifier("test-"+args[0]);
         NodeHandler handler = new PrettyPrinterImpl();
         GraphTraverser traverser = new GraphTraverserImpl();
-        traverser.setHandler(handler);
+        traverser.addHandler(handler);
         try {
             traverser.traverseGraph(container);
         } catch (Exception e) {

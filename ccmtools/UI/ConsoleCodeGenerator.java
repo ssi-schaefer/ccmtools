@@ -44,6 +44,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,7 @@ public class ConsoleCodeGenerator
     private final static String version = Constants.VERSION;
 
     private final static String usage =
-"Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n" +
+"Usage: ccmtools-generate LANGUAGE... [OPTIONS]... FILES...\n" +
 "Options:\n" +
 "  -a, --application             Generate skeletons for business logic *\n" +
 "  -DFOO[=BAR]                   Define FOO (as BAR) for environment files\n" +
@@ -71,7 +72,7 @@ public class ConsoleCodeGenerator
 "  -u, --no-user-types           Disable generating user types files\n" +
 "      --generator-mask=<flags>  Mask for generator debug output\n" +
 "      --parser-mask=<flags>     Mask for parser debug output\n" +
-"Languages available (specify one):\n" +
+"Languages available:\n" +
 "    LANGUAGES\n" +
 "Generates code in the given output language after parsing FILES.\n" +
 "Options marked with a star (*) are generally used once per project.\n";
@@ -81,9 +82,9 @@ public class ConsoleCodeGenerator
         "c++local", "c++mirror", "c++remote", "c++python", "idl3", "idl3mirror", "idl2"
     };
 
-    private static List language_types = null;
+    private static List language_types = new ArrayList();
 
-    private static String lang = null;
+    private static Set langs = new HashSet();
 
     private static long gen_mask = 0x00000040;
     private static long par_mask = 0x00000000;
@@ -249,49 +250,61 @@ public class ConsoleCodeGenerator
     }
 
     /**
-     * Set up the node handler (i.e. code generator) object based on the output
-     * language provided. Use the given driver to control the handler.
+     * Set up the node handler (i.e. code generator) objects based on the output
+     * languages provided. Use the given driver to control the handlers.
      *
-     * @param driver the user interface driver object to assign to this handler.
-     * @return the newly created node handler (i.e. code generator), or exit if
-     *         there was an error.
+     * @param driver the user interface driver object to assign to the handlers.
+     * @return a set of the newly created node handlers, or exit if there was an
+     *         error.
      */
-    private static TemplateHandler setupHandler(Driver driver)
+    private static Set setupHandlers(Driver driver)
     {
-        TemplateHandler handler = null;
+        Set handlers = new HashSet();
+        for (Iterator i = langs.iterator(); i.hasNext(); ) {
+            String lang = (String) i.next();
+            TemplateHandler handler = null;
 
-        try {
-            if (lang.equalsIgnoreCase("C++Local"))
-                handler = new CppLocalGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("C++Mirror"))
-                handler = new CppMirrorGeneratorImpl(driver, output_directory);
-	    else if (lang.equalsIgnoreCase("C++Remote"))
-                handler = new CppRemoteGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("C++Python"))
-                handler = new CppPythonGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("IDL3"))
-                handler = new IDL3GeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("IDL3Mirror"))
-                handler = new IDL3MirrorGeneratorImpl(driver, output_directory);
-            else if (lang.equalsIgnoreCase("IDL2"))
-                handler = new IDL2GeneratorImpl(driver, output_directory);
-        } catch (IOException e) {
-            printUsage("while constructing a generator for "+lang+"\n"+e);
+            try {
+                if (lang.equalsIgnoreCase("C++Local"))
+                    handler =
+                        new CppLocalGeneratorImpl(driver, output_directory);
+                else if (lang.equalsIgnoreCase("C++Remote"))
+                    handler =
+                        new CppRemoteGeneratorImpl(driver, output_directory);
+                else if (lang.equalsIgnoreCase("C++Mirror"))
+                    handler =
+                        new CppMirrorGeneratorImpl(driver, output_directory);
+                else if (lang.equalsIgnoreCase("C++Python"))
+                    handler =
+                        new CppPythonGeneratorImpl(driver, output_directory);
+                else if (lang.equalsIgnoreCase("IDL3"))
+                    handler =
+                        new IDL3GeneratorImpl(driver, output_directory);
+                else if (lang.equalsIgnoreCase("IDL3Mirror"))
+                    handler =
+                        new IDL3MirrorGeneratorImpl(driver, output_directory);
+                else if (lang.equalsIgnoreCase("IDL2"))
+                    handler =
+                        new IDL2GeneratorImpl(driver, output_directory);
+            } catch (IOException e) {
+                handler = null;
+            }
+
+            if (handler != null) {
+                CodeGenerator gen = (CodeGenerator) handler;
+                if ((generate_flags & GENERATE_APPLICATION_FILES) != 0)
+                    handler.setFlag(gen.FLAG_APPLICATION_FILES);
+                if ((generate_flags & GENERATE_ENVIRONMENT_FILES) != 0)
+                    handler.setFlag(gen.FLAG_ENVIRONMENT_FILES);
+                if ((generate_flags & GENERATE_USER_TYPES_FILES) != 0)
+                    handler.setFlag(gen.FLAG_USER_TYPES_FILES);
+                handlers.add(handler);
+            } else {
+                System.err.println(
+                    "failed to create a language generator for "+lang);
+            }
         }
-
-        if (handler == null)
-            printUsage("failed to create a language generator for "+lang);
-
-        if ((generate_flags & GENERATE_APPLICATION_FILES) != 0)
-            handler.setFlag(((CodeGenerator) handler).FLAG_APPLICATION_FILES);
-
-        if ((generate_flags & GENERATE_ENVIRONMENT_FILES) != 0)
-            handler.setFlag(((CodeGenerator) handler).FLAG_ENVIRONMENT_FILES);
-
-        if ((generate_flags & GENERATE_USER_TYPES_FILES) != 0)
-            handler.setFlag(((CodeGenerator) handler).FLAG_USER_TYPES_FILES);
-
-        return handler;
+        return handlers;
     }
 
     /**
@@ -299,18 +312,19 @@ public class ConsoleCodeGenerator
      * node handler (code generator) to receive and handle traverser node
      * events.
      *
-     * @param handler the node handler object to receive and deal with graph
+     * @param handlers the node handler objects to receive and deal with graph
      *        traversal events.
      * @return the newly created traverser, or exit if there was an error.
      */
-    private static GraphTraverser setupTraverser(TemplateHandler handler)
+    private static GraphTraverser setupTraverser(Set handlers)
     {
         GraphTraverser traverser = new GraphTraverserImpl();
 
         if (traverser == null)
             printUsage("failed to create a graph traverser");
 
-        traverser.setHandler(handler);
+        for (Iterator i = handlers.iterator(); i.hasNext(); )
+            traverser.addHandler((TemplateHandler) i.next());
 
         return traverser;
     }
@@ -336,17 +350,20 @@ public class ConsoleCodeGenerator
     {
         parseArgs(args);
 
-        TemplateHandler handler = setupHandler(setupDriver());
+        Set handlers = setupHandlers(setupDriver());
 
         for (Iterator f = filenames.iterator(); f.hasNext(); )
             parseAndGenerate(setupParserManager(),
-                             setupTraverser(handler),
+                             setupTraverser(handlers),
                              (String) f.next());
 
         Environment env = new ConsoleEnvironmentImpl(defines);
 
-        generateEnvironment(handler, env);
-        handler.finalize(env.getParameters(), filenames);
+        for (Iterator i = handlers.iterator(); i.hasNext(); ) {
+            TemplateHandler handler = (TemplateHandler) i.next();
+            generateEnvironment(handler, env);
+            handler.finalize(env.getParameters(), filenames);
+        }
 
         System.exit(0);
     }
@@ -369,7 +386,6 @@ public class ConsoleCodeGenerator
      */
     private static void parseArgs(String args[])
     {
-        language_types = new ArrayList();
         for (int i = 0; i < local_language_types.length; i++)
             language_types.add(local_language_types[i]);
 
@@ -421,14 +437,14 @@ public class ConsoleCodeGenerator
                     }
                     arg = arg.substring(1);
                 } while (arg.length() > 0);
-            else if ((lang == null) && language_types.contains(arg.toLowerCase()))
-                lang = new String(arg);
+            else if (language_types.contains(arg.toLowerCase()))
+                langs.add(new String(arg));
             else
                 filenames.add(arg.toString());
         }
 
-        if (lang == null)
-            printUsage("no valid output language specified");
+        if (langs.size() < 1)
+            printUsage("no valid output languages specified");
     }
 
     private static void setGeneratorMask(String val)

@@ -1,7 +1,7 @@
 ## process this file with automake to produce Makefile.in
 ## $Id$
 
-jar_DATA = @PACKAGE@.jar
+jar_DATA = @PACKAGE@-@VERSION@.jar
 
 dist_jar_DATA = $(srcdir)/antlr.jar $(srcdir)/jdom.jar
 
@@ -10,8 +10,8 @@ java_classes = $(top_builddir)/@PACKAGE@/Metamodel/BaseIDL/*.class      \
                $(top_builddir)/@PACKAGE@/IDL3Parser/*.class             \
                $(top_builddir)/@PACKAGE@/CCDGenerator/*.class
 
-@PACKAGE@.jar: $(java_classes)
-	$(JAR) cf @PACKAGE@.jar -C $(top_builddir) @PACKAGE@
+@PACKAGE@-@VERSION@.jar: $(java_classes)
+	$(JAR) cf @PACKAGE@-@VERSION@.jar -C $(top_builddir) @PACKAGE@
 
 clean-local:
 	$(RM) -f -r $(jar_DATA)
@@ -19,11 +19,11 @@ clean-local:
 install-data-local:
 	@echo
 	@echo "*** IMPORTANT! UPDATE YOUR CLASSPATH! ***"
-	@echo "Jar files for @PACKAGE@ are now installed in :"
+	@echo "Jar files for @PACKAGE@ (version @VERSION@) are installed in :"
 	@echo "$(jardir)"
 	@echo
 	@echo "Add the following Jar files to your CLASSPATH environment :"
-	@echo "$(jardir)/@PACKAGE@.jar"
+	@echo "$(jardir)/@PACKAGE@-@VERSION@.jar"
 	@echo "$(jardir)/antlr.jar"
 	@echo
 

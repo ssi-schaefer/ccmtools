@@ -8,9 +8,9 @@
 %==============================================================================
 \section{Introduction}
 %==============================================================================
-From practical experiences we learned that there is a need for improvements
-in the CCM to be usable. The following sections describe the
-new concepts we introduced in respect to the CCM specification.
+From practical experiences we learned that there is a need for improvements in
+the CCM to be usable. The following sections describe the new concepts we
+introduced in respect to the CCM specification.
 
 
 %==============================================================================
@@ -18,56 +18,53 @@ new concepts we introduced in respect to the CCM specification.
 %==============================================================================
 
 The CCM specification describes only remote components where all ports are
-accessible from CORBA clients.
-Some open source implementations like MicoCCM \cite{MicoCCM} and OpenCCM 
-\cite{MarvieMerle2001} implement this type of component.
+accessible from CORBA clients. Some open source implementations like MicoCCM
+\cite{MicoCCM} and OpenCCM \cite{MarvieMerle2001} implement this type of
+component.
 
-In such implementations, each remote component is accessible from any point 
-in the network, but 
-communication between components in the same address space is very
-expensive because method calls still have to go through the CORBA Object
+In such implementations, each remote component is accessible from any point in
+the network, but communication between components in the same address space is
+very expensive because method calls still have to go through the CORBA Object
 Request Broker (ORB).
 
 There are some techniques for transparently optimizing communication overhead
-(e.g. CORBA collocation \cite{ObjectInterconnections18, wang00optimizing}), but 
-problems occur when using CORBA services,
-because the Portable Object Adapter (POA) is not involved at all.
+(e.g. CORBA collocation \cite{ObjectInterconnections18, wang00optimizing}), but
+problems occur when using CORBA services, because the Portable Object Adapter
+(POA) is not involved at all.
 
 
 %==============================================================================
 \section{Component adapters}
 %==============================================================================
-The CCM specification hides most of the CORBA programming details from the 
-application developer, but it still forces
-the developer to deal with CORBA references, data types and memory management.
-While the OMG Java mapping \cite{OMGIDL2Java} is acceptable in this regard,
-the C++ mapping \cite{OMGIDL2Cpp} 
-does not use the advantages of standard C++ like strings, vectors and lists.
+The CCM specification hides most of the CORBA programming details from the
+application developer, but it still forces the developer to deal with CORBA
+references, data types and memory management. While the OMG Java mapping
+\cite{OMGIDL2Java} is acceptable in this regard, the C++ mapping
+\cite{OMGIDL2Cpp} does not use the advantages of standard C++ like strings,
+vectors and lists.
 
-To improve the usability of CCM, we proposed a new approach \cite{teiniker-mkkw:2002} 
-that provides 
-an easy way to implement business logic without having to pay attention to CORBA details.
+To improve the usability of CCM, we proposed a new approach
+\cite{teiniker-mkkw:2002} that provides an easy way to implement business logic
+without having to pay attention to CORBA details, particularly those complicated
+CORBA data types and memory management.
 
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics [width=7cm,angle=0] {LCAC_Overview.eps}
+        \includegraphics [width=7cm,angle=0] {LCAC_Overview}
         \caption{Local component adapter}
-        \label{LcacOverview}    
+        \label{LcacOverview}
     \end{center}
 \end{figure}
 
-In our approach, we separate the application code from the implementation of the CORBA 
-component logic  (Fig.~\ref{LcacOverview}).
-For every IDL definition of a CORBA interface or component, we generate a corresponding
-interface in the native implementation language.
-An adapter class \cite{Gamma95} provides the CORBA mappings, and
-links the different implementation of business logic to the
+In our approach, we separate the application code from the implementation of the
+CORBA component logic (Fig.~\ref{LcacOverview}). For every IDL definition of a
+CORBA interface or component, we generate a corresponding interface in the
+native implementation language. An adapter class \cite{Gamma95} provides the
+CORBA mappings, and links the different implementation of business logic to the
 CCM component.
 
-It is important to keep in mind that these adapters do not change the client view
-of a component, so our approach still conforms to the CCM standard.
-
-
+It is important to keep in mind that these adapters do not change the client
+view of a component, so our approach still conforms to the CCM standard.
 
 
 %==============================================================================
@@ -75,19 +72,19 @@ of a component, so our approach still conforms to the CCM standard.
 %==============================================================================
 
 To implement thin components in the same address space we need a specific
-component model that defines local components and their interconnections.
-In Java there already exists such a thin component model (JavaBeans \cite{Englander1997}),
-but in other languages like C++ and Python there are no such specifications.  
+component model that defines local components and their interconnections. In
+Java there already exists such a thin component model (JavaBeans
+\cite{Englander1997}), but in other languages like C++ and Python there are no
+such specifications.
 
 So there is a need for a language independent local component model with
-mappings to many different programming languages.
-Instead of inventing another new component model, we use the CORBA Component
-Model in a local manner.
-By taking advantage of the adapter concept we can implement local components without a
-CORBA shell.
+mappings to many different programming languages. Instead of inventing another
+new component model, we use the CORBA Component Model in a local manner. By
+taking advantage of the adapter concept we can implement local components
+without a CORBA shell.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics [width=8cm,angle=0] {Adapter1.eps}
+        \includegraphics [width=8cm,angle=0] {Adapter1}
         \caption{Local and remote connection}
         \label{LcacLayerModel}
     \end{center}
@@ -95,40 +92,38 @@ CORBA shell.
 
 \noindent
 As shown in Fig.~\ref{LcacLayerModel}, there is a remote path and a local path
-between two component implementations.
-When running components in the same address space, there is no need for CORBA
-communication. Using the local path for connecting components significantly reduces
-the communication overhead.
+between two component implementations. When running components in the same
+address space, there is no need for CORBA communication. Using the local path
+for connecting components significantly reduces the communication overhead.
 
 
 %==============================================================================
 \section{Components with local and remote ports}
 %==============================================================================
 
-One of the important issues in {\it Component--Based Software Engineering} (CBSE) 
-\cite{CBSE2001} is the granularity of components. 
-Fat components increase runtime performance, but their reuse is limited.
-On the other hand, thin components lead to significant communication overhead
-but are easy to reuse.
+One of the important issues in {\it Component--Based Software Engineering}
+(CBSE) \cite{CBSE2001} is the granularity of components. Fat components increase
+runtime performance, but their reuse is limited. On the other hand, thin
+components lead to significant communication overhead but are easy to reuse.
 
-In Java, for example, there are two different component models: JavaBeans \cite{Englander1997} 
-for thin components and Enterprise JavaBeans (EJB) \cite{EJBSpecificationV2_0} 
-for remote components.
-Since version 2.0 of EJB there is a local component concept: The whole 
-bean is declared as local or remote by extending the {\tt EJBHome, EJBObject} 
-interfaces or the {\tt EJBLocalHome, EJBLocalObject} interfaces respectively. 
+In Java, for example, there are two different component models: JavaBeans
+\cite{Englander1997} for thin components and Enterprise JavaBeans (EJB)
+\cite{EJBSpecificationV2_0} for remote components. Since version 2.0 of EJB
+there is a local component concept: The whole bean is declared as local or
+remote by extending the {\tt EJBHome, EJBObject} interfaces or the {\tt
+EJBLocalHome, EJBLocalObject} interfaces respectively.
 
-As with local EJBs, we use local CORBA components for thin components located in 
-the same address space to improve performance and reusability.
-In contrast to local EJBs, however, we do not have to decide between a local or remote
-component because we always implement a local one.
-After writing the business logic we can leave some ports local while some other ports
-are made remotely accessible by adding a remote adapter. 
-Note that the decision between using the local or remote adapters does not
-affect the implementation of the business logic; in other words we can scale
-the remote accessibility of a component port by port at deployment time.
+As with local EJBs, we use local CORBA components for thin components located in
+the same address space to improve performance and reusability. In contrast to
+local EJBs, however, we do not have to decide between a local or remote
+component because we always implement a local one. After writing the business
+logic we can leave some ports local while some other ports are made remotely
+accessible by adding a remote adapter. Note that the decision between using the
+local or remote adapters does not affect the implementation of the business
+logic; in other words we can scale the remote accessibility of a component port
+by port at deployment time.
 
-With this approach we can use the same component model for a wide range of 
+With this approach we can use the same component model for a wide range of
 component implementations and programming languages.
 
 
@@ -137,12 +132,12 @@ component implementations and programming languages.
 %==============================================================================
 
 Local components in the CCM specification increase runtime performance, but they
-are not accessible from other processes.
-To overcome this problem, we build assemblies of local and remote components
-using the {\it Session Facade} pattern \cite{Marinescu02}.
+are not accessible from other processes. To overcome this problem, we build
+assemblies of local and remote components using the {\it Session Facade} pattern
+\cite{Marinescu02}.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics [width=10cm,angle=0] {LCAC_ProcessModel.eps}
+        \includegraphics [width=10cm,angle=0] {LCAC_ProcessModel}
         \caption{Component assembly}
         \label{assembly}
     \end{center}
@@ -150,39 +145,34 @@ using the {\it Session Facade} pattern \cite{Marinescu02}.
 
 \noindent
 Fig.~\ref{assembly} shows an example of two assemblies running in different
-processes.
-The information about how to connect an assembly comes from an XML file called the 
-{\it assembly descriptor}.
-At runtime there is an assembly object within the assembly that creates
-instances of components and component connections.
+processes. The information about how to connect an assembly comes from an XML
+file called the {\it assembly descriptor}. At runtime there is an assembly
+object within the assembly that creates instances of components and component
+connections.
 
 An assembly can be described as a directed graph where the nodes are component
 instances and the edges are receptacle to facet connections.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics [width=5cm,angle=0] {AssemblyGraph.eps}
-        \includegraphics [width=5cm,angle=0] {AssemblyGraph2.eps}       
+        \includegraphics [width=5cm,angle=0] {AssemblyGraph}
+        \includegraphics [width=5cm,angle=0] {AssemblyGraph2}
         \caption{Assembly instance graphs}
         \label{instanceGraph}
     \end{center}
 \end{figure}
 
 If an instance of a session facade component is created, all connected local and
-remote components also have to be instantiated and connected.
-The assembly object creates an instance of the assembly subgraph as shown in 
-Fig.~\ref{instanceGraph}.
-In other words, a {\tt create()} call on a session facade component home creates an
-assembly instance where only related components are connected  as described in 
-the assembly descriptor.
-The CORBA reference to the assembly instance is returned by the {\tt create()} call
-to the client.
+remote components also have to be instantiated and connected. The assembly
+object creates an instance of the assembly subgraph as shown in
+Fig.~\ref{instanceGraph}. In other words, a {\tt create()} call on a session
+facade component home creates an assembly instance where only related components
+are connected as described in the assembly descriptor. The CORBA reference to
+the assembly instance is returned by the {\tt create()} call to the client.
 
 \noindent
-From the client's point of view, the session facade component is a fat remote one.
-In fact, this fat component is an assembly instance graph consisting of thin remote
-and local components that ensure easy reuse of business code.
-
-
+From the client's point of view, the session facade component is a fat remote
+one. In fact, this fat component is an assembly instance graph consisting of
+thin remote and local components that ensure easy reuse of business code.
 
 
 %==============================================================================
@@ -190,32 +180,21 @@ and local components that ensure easy reuse of business code.
 %==============================================================================
 
 When we can use assembly instance graphs in the same way as remote components,
-we can then also group them into new assemblies.
-These remote assemblies consist of sets of remote session facade components
-and their remote connections.
+we can then also group them into new assemblies. These remote assemblies consist
+of sets of remote session facade components and their remote connections.
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics [width=10cm,angle=0] {RemoteAssembly.eps}
+        \includegraphics [width=10cm,angle=0] {RemoteAssembly}
         \caption{Remote assembly}
         \label{remoteAssembly}
     \end{center}
 \end{figure}
 
 \noindent
-Fig.~\ref{remoteAssembly} shows a remote assembly consisting of three assembly 
-instance graphs, each in its own process. 
-Note that only the remote components of the instance graphs are visible from
-the outside, so the instance graphs look like fat remote CCM components.
-This approach is consistent with the CCM specification, but it increases
-performance and reusability.
-
-
-
-
-
-
-
-
-
+Fig.~\ref{remoteAssembly} shows a remote assembly consisting of three assembly
+instance graphs, each in its own process. Note that only the remote components
+of the instance graphs are visible from the outside, so the instance graphs look
+like fat remote CCM components. This approach is consistent with the CCM
+specification, but it increases performance and reusability.
 
 
