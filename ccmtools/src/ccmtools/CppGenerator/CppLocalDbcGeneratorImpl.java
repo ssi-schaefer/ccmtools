@@ -97,9 +97,7 @@ public class CppLocalDbcGeneratorImpl
         throws IOException
     {
         super("CppLocalDbc", d, out_dir, local_output_types );
-
-        Debug.setDebugLevel(Debug.NONE);
-        Debug.println(Debug.METHODS,"CppLocalDbcGeneratorImpl.CppLocalDbcGeneratorImpl()");
+        base_namespace.add("CCM_Local"); 
     }
 
 
@@ -149,8 +147,6 @@ public class CppLocalDbcGeneratorImpl
         if ((node instanceof MContainer) &&
             (((MContainer) node).getDefinedIn() == null))
         {
-            namespace.push("CCM_Local");
-
             // Parse the OCL file and build the OCL model.
             try
             {
@@ -191,7 +187,6 @@ public class CppLocalDbcGeneratorImpl
             currentMainModule_ = (MInterfaceDef)node;
        }
     }
-
 
 
     protected String handleNamespace(String data_type, String local)
@@ -304,7 +299,7 @@ public class CppLocalDbcGeneratorImpl
 
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
-	String[] out_file_types = { "_dbc.h", "_dbc.cc" };
+        String[] out_file_types = { "_dbc.h", "_dbc.cc" };
 
         for (int i = 0; i < out_strings.length; i++) {
 	    // If the out_string is empty, skip the file creation
