@@ -325,7 +325,9 @@ public class ConsoleCodeGenerator
                 System.exit(20);
             }
 
-            kopf.setIdentifier(source.getName().split("\\.")[0]);
+            String kopf_name = source.getName().split("\\.")[0];
+            kopf_name = kopf_name.replaceAll("[^\\w]", "_");
+            kopf.setIdentifier(kopf_name);
 
             // step (2). traverse the resulting metamodel graph.
 

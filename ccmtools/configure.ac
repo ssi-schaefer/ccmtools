@@ -24,17 +24,6 @@ AM_PATH_JAVA_SDK(1.4)
 CPP_PATH=${CPP}
 AC_SUBST(CPP_PATH)
 
-dnl Checks for libraries.
-
-dnl Checks for header files.
-
-dnl Checks for library functions.
-
-dnl Export versions.
-
-CCMTOOLS_MAJORMINOR=`echo ${VERSION} | sed -e 's/\.[[0-9]]\+$//'`
-AC_SUBST(CCMTOOLS_MAJORMINOR)
-
 dnl Check for building tests.
 
 AC_ARG_ENABLE(tests,
@@ -61,8 +50,7 @@ AM_CONDITIONAL(BUILD_DOCS, test "x$BUILD_DOCS" = "xyes")
 
 dnl Set location of code generation templates.
 
-FILTERED_PREFIX=`echo ${prefix} | sed 's,/$,,'`
-TEMPLATE_ROOT=${FILTERED_PREFIX}/share/${PACKAGE}-${CCMTOOLS_MAJORMINOR}
+TEMPLATE_ROOT="${datadir}/${PACKAGE}"
 AC_DEFINE_UNQUOTED(TEMPLATE_ROOT, "$TEMPLATE_ROOT", [Define the base location for templates])
 AC_SUBST(TEMPLATE_ROOT)
 

@@ -620,7 +620,7 @@ abstract public class CodeGenerator
             writer.write(output, 0, output.length());
             writer.close();
         } catch (IOException e) {
-            System.err.println("Error writing file " + out_file + ":\n" + e);
+            throw new RuntimeException("Error writing file "+out_file);
         }
 
         driver.outputFile(out_file.toString());
@@ -665,8 +665,8 @@ abstract public class CodeGenerator
      * Get the identifier of the top level container of a given node.
      *
      * @param contained the node to use for a starting point.
-     * @return the identifier of the node's container. If contained is null, the
-     *         function will return "".
+     * @return the identifier of the node's container. If the given node is
+     *         null, the function will return "".
      */
     protected String getContainerIdentifier(MContained node)
     {
@@ -1045,7 +1045,7 @@ abstract public class CodeGenerator
 
             output_variables.put(key, value);
 
-            driver.message("subvariable " + key + " => \"" + value + "\"");
+            driver.message("subvariable " + key + " => " + value);
         }
     }
 
@@ -1096,12 +1096,13 @@ abstract public class CodeGenerator
             // or 'AbstractLocal' (for an MComponetDef object).
 
             String full_var = var + bool_attrs;
-            driver.message("loading template for "+full_var);
+            driver.message("loading template for " + full_var);
             Template t = template_manager.getTemplate(full_var, current_name);
 
             if (t == null)
-                throw new RuntimeException("Cannot find a template for "+
-                                           current_name+" ("+full_var+")");
+                throw new RuntimeException(
+                    "Cannot find a template for " + current_name +
+                    " (" + full_var + ")");
 
             driver.templateContents(t.substituteVariables(output_variables));
 
@@ -1114,8 +1115,7 @@ abstract public class CodeGenerator
 
             output_variables.put(scope_id, prev_value + result);
 
-            driver.message("variable " + scope_id +
-                           " => \"" + prev_value + result + "\"");
+            driver.message("variable " + scope_id +" => "+ prev_value + result);
         }
     }
 }

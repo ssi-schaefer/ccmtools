@@ -87,29 +87,29 @@ abstract public class CppGenerator
     private final static String[] local_language_map =
     {
         "",
-        "", // PK_ANY
-        "", // PK_BOOLEAN
-        "", // PK_CHAR
-        "", // PK_DOUBLE
-        "", // PK_FIXED
-        "", // PK_FLOAT
-        "", // PK_LONG
-        "", // PK_LONGDOUBLE
-        "", // PK_LONGLONG
-        "", // PK_NULL
-        "", // PK_OBJREF
-        "", // PK_OCTET
-        "", // PK_PRINCIPAL
-        "", // PK_SHORT
-        "", // PK_STRING
-        "", // PK_TYPECODE
-        "", // PK_ULONG
-        "", // PK_ULONGLONG
-        "", // PK_USHORT
-        "", // PK_VALUEBASE
-        "", // PK_VOID
-        "", // PK_WCHAR
-        ""  // PK_WSTRING
+        "any",          // PK_ANY
+        "boolean",      // PK_BOOLEAN
+        "character",    // PK_CHAR
+        "float",        // PK_DOUBLE
+        "string",       // PK_FIXED
+        "float",        // PK_FLOAT
+        "long integer", // PK_LONG
+        "float",        // PK_LONGDOUBLE
+        "long integer", // PK_LONGLONG
+        "None",         // PK_NULL
+        "any",          // PK_OBJREF
+        "integer",      // PK_OCTET
+        "principal ?",  // PK_PRINCIPAL
+        "integer",      // PK_SHORT
+        "string",       // PK_STRING
+        "typecode ?",   // PK_TYPECODE
+        "long integer", // PK_ULONG
+        "long integer", // PK_ULONGLONG
+        "integer",      // PK_USHORT
+        "value base ?", // PK_VALUEBASE
+        "None",         // PK_VOID
+        "character",    // PK_WCHAR
+        "string"        // PK_WSTRING
     };
 
     /**************************************************************************/
