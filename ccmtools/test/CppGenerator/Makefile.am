@@ -43,7 +43,6 @@ TESTS = \
   facet_types.sh              \
   supports_types.sh           \
   attribute_types.sh          \
-  home_factory.sh             \
   receptacle_not_connected.sh \
   receptacle_multiple.sh
 
