@@ -72,7 +72,7 @@ side and are used to assemble modular, component based applications.
 %------------------------------------------------------------------------------
 
 Let's start to implement the first component using the CCM Tools. We'll define
-an IDL file named {\tt hello.idl} (Example~\ref{example:one-component-idl}) that
+an IDL file named {\tt Hello.idl} (Example~\ref{example:one-component-idl}) that
 describes the component's structure. In this example, our IDL source file is
 stored in a {\tt hello} directory on our development machine.
 
@@ -81,7 +81,7 @@ stored in a {\tt hello} directory on our development machine.
 \begin{small}
 \begin{verbatim}
 interface Console {
-  long println(in string s2);
+  long println(in string s);
 };
 
 component Hello {
@@ -123,7 +123,7 @@ Thus, we have created the following file structure:
 \begin{small}
 \begin{verbatim}
         hello/
-        |-- hello.idl
+        |-- Hello.idl
 \end{verbatim}
 \end{small}
 
@@ -197,7 +197,7 @@ To get the component logic and the skeletons of the business logic from the IDL
 file, we start the local C++ code generator:
 \begin{small}
 \begin{verbatim}
-~/hello> ccmtools-c++-generate -c 1.0 -d -p hello1.0 hello.idl
+~/hello> ccmtools-c++-generate -c 1.0 -d -p hello1.0 Hello.idl
 \end{verbatim}
 \end{small}
 
@@ -239,8 +239,9 @@ the business logic have been copied into the current directory:
   |-- Hello_app.h
   |-- Hello_mirror_app.cc
   |-- Hello_mirror_app.h
-  |-- hello.idl
-  |-- hello_user_types.h
+  |-- Hello.idl
+  |-- Hello_user_types.h
+  |-- _check_CCM_Session_Hello.cc
   |-- hello1.0/
 \end{verbatim}
 \end{small}
@@ -260,19 +261,19 @@ Contains the default IDL to C++ mappings. Note that these mappings can be
 changed by the user, hence the ``user\_types'' name.
 \end{itemize}
 
-The generated business logic skeletons contains enough code to be compilable,
-but they are not necessarily executable afterwards (see below). Each method
-includes a debug statement that prints out the file name and the method name of
+The generated business logic skeletons contains enough code to be compilable.
+Each method includes a debug statement that prints out the file name and the method name of
 the executed function. Thus, we have an empty but compilable component. Let's
 compile it!
 \begin{small}
 \begin{verbatim}
+~/hello> ccmtools-c++-configure -p hello1.0
 ~/hello> ccmtools-c++-make -p hello1.0
 \end{verbatim}
 \end{small}
 
-The {\tt ccmtools-c++-make} script also accepts command line parameters as
-described below:
+The {\tt ccmtools-c++-configure} and {\tt ccmtools-c++-make} scripts also accept 
+command line parameters as described below:
 \begin{itemize}
 \item {\tt -p NAME, -\-package=NAME}\\
 Use the package named NAME. The default package name is ``ccmtools-package''.
@@ -281,11 +282,12 @@ Use the package named NAME. The default package name is ``ccmtools-package''.
 Print out a short description of the available command line parameters.
 \end{itemize}
 
-After compiling the source code, a test client calls all operations of the
+After compiling the source code, the test client calls some operations of the
 generated component logic. The running test prints out a lot of debugging
 messages; these messages document the execution flow of the program. The first
 component is running!
 
+\newpage
 %------------------------------------------------------------------------------
 \subsection{Test driven development}
 %------------------------------------------------------------------------------
@@ -309,15 +311,17 @@ of $C$ corresponds to an output port (facet) of $\overline{C}$, and vice versa.
 A test client coordinates creating and connecting the components, as well as the
 test calls to the facets of $C$.
 
-While the test client is part of the generated code in the {\tt hello1.0}
-directory, the current component directory contains the skeletons of the mirror
-component business logic:
+The current component directory contains the skeletons of the mirror
+component business logic and the test client:
 \begin{itemize}
 \item {\tt HelloHome\_mirror\_app.[h,cc]} \\
 Contain the factory methods for mirror component creation. Note that the default
 {\tt create()} method is already implemented.
 \item {\tt Hello\_mirror\_app.[h,cc]} \\
 Contain the skeletons of the mirror component's test code.
+\item {\tt \_check\_CCM\_Session\_Hello.cc} \\
+Contains the component's test client skeleton that creates the component as well as
+the mirror component and connects all facets to receptacles.
 \end{itemize}
 
 Note that the mirror component $\overline{C}$ and the test client are always
@@ -400,11 +404,11 @@ Example~\ref{example:one-component-impl}.
 \begin{small}
 \begin{verbatim}
 long
-console_impl::println ( const std::string& s2 )
+console_impl::println ( const std::string& s )
 {
-  DEBUGNL ( " console_impl->println ( s2 )" );
-  cout << s2 << endl;
-  return s2.length();
+  DEBUGNL ( " console_impl->println ( s )" );
+  cout << s << endl;
+  return s.length();
 }
 \end{verbatim}
 \end{small}

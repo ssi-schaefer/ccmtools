@@ -90,7 +90,7 @@ home HelloHome manages Hello {
 \begin{small}
 \begin{verbatim}
         hello/
-        |-- hello.idl
+        |-- Hello.idl
 \end{verbatim}
 \end{small}
 \end{minifbox}
@@ -107,7 +107,8 @@ We'll start with generating and building the empty components, just as in the
 previous example. The commands to do this are as follows:
 \begin{small}
 \begin{verbatim}
-~/hello> ccmtools-c++-generate -c 1.0 -d -p hello1.0 hello.idl
+~/hello> ccmtools-c++-generate -c 1.0 -d -p hello1.0 Hello.idl
+~/hello> ccmtools-c++-configure -p hello1.0
 ~/hello> ccmtools-c++-make -p hello1.0
 \end{verbatim}
 \end{small}

@@ -222,13 +222,4 @@ for f in findtail(SOURCE_DIR, '_app.cc') + \
             print 'Error copying %s to current directory.'
             sys.exit(1)
 
-confix_flags  = ' --packagename="%s"' % CCMTOOLS_PACKAGE
-confix_flags += ' --packageroot="%s"' % SOURCE_DIR
-confix_flags += ' --packageversion="%s" --profile="ccmtools"' % CODE_VERSION
-confix_flags += ' --configfile="%s"' % os.path.join(SOURCE_DIR, 'confix.conf')
-if INSTALL_DIR: confix_flags += ' --prefix="%s"' % INSTALL_DIR
-
-print 'confix.py' + confix_flags
-sys.exit(os.system('confix.py' + confix_flags) != 0)
-
 
