@@ -36,7 +36,8 @@ BenchmarkImpl::string_attr( const char* value)
 ::LongList* 
 BenchmarkImpl::LongList_attr()
 {
-    return LongList_attr_._retn();
+    LongList_var result = new LongList(LongList_attr_);
+    return result._retn();
 }
 
 void 
@@ -86,7 +87,6 @@ BenchmarkImpl::f_inout2( char*& s1 )
 void 
 BenchmarkImpl::f_inout3( ::LongList& ll1 )
 {
-    LongList_var ll = new LongList(ll1);
     ll1 = LongList_attr_.inout();
 }
 
@@ -100,13 +100,13 @@ BenchmarkImpl::f_out1(CORBA::Long_out l1 )
 void 
 BenchmarkImpl::f_out2( CORBA::String_out s1 )
 {
-    s1 = string_attr_.out();
+    s1 = CORBA::string_dup(string_attr_);
 }
 
 void 
 BenchmarkImpl::f_out3( ::LongList_out ll1 )
 {
-    ll1 = LongList_attr_.out();
+    ll1 = new LongList(LongList_attr_);
 }
 
 
@@ -119,12 +119,13 @@ BenchmarkImpl::f_ret1()
 char*
 BenchmarkImpl::f_ret2()
 {
-    return string_attr_._retn();
+    return CORBA::string_dup(string_attr_);
 }
 
 ::LongList*
 BenchmarkImpl::f_ret3()
 {
-    return LongList_attr_._retn();
+    LongList_var result = new LongList(LongList_attr_);
+    return result._retn();
 }
 

@@ -20,7 +20,7 @@ public class Timer
     {
 	System.out.print(" loops(" + loops + ") size(" + size + ") ");;
   	double realTime = ((clockStop_ - clockStart_)*1000.0)/loops;
- 	System.out.println("real(" + realTime + ")s");
+ 	System.out.println("real(" + realTime + ")us/call");
     }
 
     private long clockStart_;

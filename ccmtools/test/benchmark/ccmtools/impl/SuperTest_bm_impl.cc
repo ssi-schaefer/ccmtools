@@ -36,13 +36,12 @@ bm_impl::~bm_impl()
 }
 
 
-
 const long
 bm_impl::long_attr() const
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" bm_impl->long_attr()");
-    return long_attr_;
+    return component->ctx->get_connection_delegate()->long_attr();
 }
 
 void
@@ -50,7 +49,7 @@ bm_impl::long_attr(const long value)
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" bm_impl->long_attr(value)");
-    long_attr_ = value;
+    component->ctx->get_connection_delegate()->long_attr(value);
 }
 
 const std::string
@@ -58,7 +57,7 @@ bm_impl::string_attr() const
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" bm_impl->string_attr()");
-    return string_attr_;
+    return component->ctx->get_connection_delegate()->string_attr();
 }
 
 void
@@ -66,7 +65,7 @@ bm_impl::string_attr(const std::string value)
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" bm_impl->string_attr(value)");
-    string_attr_ = value;
+    component->ctx->get_connection_delegate()->string_attr(value);
 }
 
 const LongList
@@ -74,7 +73,7 @@ bm_impl::LongList_attr() const
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" bm_impl->LongList_attr()");
-    return LongList_attr_;
+    return component->ctx->get_connection_delegate()->LongList_attr();
 }
 
 void
@@ -82,9 +81,8 @@ bm_impl::LongList_attr(const LongList value)
     throw(LocalComponents::CCMException)
 {
     DEBUGNL(" bm_impl->LongList_attr(value)");
-    LongList_attr_ = value;
+    component->ctx->get_connection_delegate()->LongList_attr(value);
 }
-
 
 
 
@@ -120,13 +118,13 @@ bm_impl::f_in3(const LongList& ll1)
     component->ctx->get_connection_delegate()->f_in3(ll1);
 }
 
+
 void
 bm_impl::f_inout1(long& l1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_inout1(l1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    component->ctx->get_connection_delegate()->f_inout1(l1);
 }
 
 void
@@ -134,8 +132,7 @@ bm_impl::f_inout2(std::string& s1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_inout2(s1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    component->ctx->get_connection_delegate()->f_inout2(s1);
 }
 
 void
@@ -143,17 +140,16 @@ bm_impl::f_inout3(LongList& ll1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_inout3(ll1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    component->ctx->get_connection_delegate()->f_inout3(ll1);
 }
+
 
 void
 bm_impl::f_out1(long& l1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_out1(l1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    component->ctx->get_connection_delegate()->f_out1(l1);
 }
 
 void
@@ -161,8 +157,7 @@ bm_impl::f_out2(std::string& s1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_out2(s1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    component->ctx->get_connection_delegate()->f_out2(s1);
 }
 
 void
@@ -170,17 +165,16 @@ bm_impl::f_out3(LongList& ll1)
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_out3(ll1)");
-
-    // TODO : IMPLEMENT ME HERE !
+    component->ctx->get_connection_delegate()->f_out3(ll1);
 }
+
 
 long
 bm_impl::f_ret1()
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_ret1()");
-
-    // TODO : IMPLEMENT ME HERE !
+    return component->ctx->get_connection_delegate()->f_ret1();
 }
 
 std::string
@@ -188,8 +182,7 @@ bm_impl::f_ret2()
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_ret2()");
-
-    // TODO : IMPLEMENT ME HERE !
+    return component->ctx->get_connection_delegate()->f_ret2();
 }
 
 LongList
@@ -197,8 +190,7 @@ bm_impl::f_ret3()
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("bm_impl->f_ret3()");
-
-    // TODO : IMPLEMENT ME HERE !
+    return component->ctx->get_connection_delegate()->f_ret3();
 }
 
 } // /namespace CCM_Session_SuperTest
