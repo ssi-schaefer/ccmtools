@@ -19,7 +19,7 @@
 
 #include "%(Identifier)s_gen.h"
 #include "%(ComponentType)s_gen.h" 
-#include "%(ComponentType)s_dbc.h" 
+#include "%(ComponentType)s_dbc.h"
 
 %(OpenNamespace)s
 
@@ -32,7 +32,7 @@ class DbC_%(Identifier)s
   : public %(Identifier)s
 {
  public:
-  DbC_%(Identifier)s();
+  DbC_%(Identifier)s(bool disablePostconditionCheck) throw(LocalComponents::CCMException);
   virtual ~DbC_%(Identifier)s();
 
   virtual WX::Utils::SmartPtr<%(ComponentType)s> create()
@@ -41,8 +41,10 @@ class DbC_%(Identifier)s
 %(MFactoryDefAdapterPrototype)s
 
  private:
-   void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool) 
-    throw(LocalComponents::CCMException, CCM_OCL::OclException);
+   void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool)
+    throw(CCM_OCL::OclException);
+
+   bool disablePostconditionCheck__;
 };
 
 %(CloseNamespace)s
@@ -52,9 +54,9 @@ class DbC_%(Identifier)s
 //==============================================================================
 
 extern "C" {
-  WX::Utils::SmartPtr<LocalComponents::CCMHome> DbC_create_%(Identifier)sAdapter();
-  int DbC_deploy_%(Identifier)s(char* name);
-  int DbC_undeploy_%(Identifier)s(char* name);	
+  WX::Utils::SmartPtr<LocalComponents::CCMHome> DbC_create_%(Identifier)sAdapter(bool disablePostconditionCheck);
+  int DbC_deploy_%(Identifier)s(char* name, bool disablePostconditionCheck);
+  int DbC_undeploy_%(Identifier)s(char* name);
 }
 
 #endif
@@ -92,7 +94,8 @@ using namespace CCM_OCL;
 
 #define __LOCAL__ADAPTER__NAME__ %(Identifier)s
 
-DbC_%(Identifier)s::DbC_%(Identifier)s() /*throw(CCM_OCL::OclException)*/
+DbC_%(Identifier)s::DbC_%(Identifier)s(bool disablePostconditionCheck)
+  throw(LocalComponents::CCMException) : disablePostconditionCheck__(disablePostconditionCheck)
 {
   static const char* DbC_FUNCTION_NAME = "DbC_%(Identifier)s::DbC_%(Identifier)s()";
   DEBUGNL("+DbC_%(Identifier)s->DbC_%(Identifier)s()");
@@ -106,7 +109,7 @@ DbC_%(Identifier)s::~DbC_%(Identifier)s (  )
 }
 
 void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) 
-  throw(LocalComponents::CCMException, CCM_OCL::OclException)
+  throw(CCM_OCL::OclException)
 {
 %(InvariantInvocation)s
 }
@@ -121,7 +124,8 @@ DbC_%(Identifier)s::create()
       new DbC_%(ComponentType)s(this,
         dynamic_cast<CCM_%(ComponentType)s*>(
           ((CCM_%(Identifier)sImplicit*)local_home)->create()
-        )
+        ),
+        disablePostconditionCheck__
       )
     )
   );
@@ -140,19 +144,23 @@ DbC_%(Identifier)s::create()
 
 extern "C" {
   WX::Utils::SmartPtr<LocalComponents::CCMHome>
-  DbC_create_%(Identifier)sAdapter()
+  DbC_create_%(Identifier)sAdapter(bool disablePostconditionCheck)
   {
     DEBUGNL ( " DbC_create_%(Identifier)sAdapter()" );
-    WX::Utils::SmartPtr<LocalComponents::CCMHome> ret (new %(Namespace)s::DbC_%(Identifier)s());
+    WX::Utils::SmartPtr<LocalComponents::CCMHome> ret(
+      new %(Namespace)s::DbC_%(Identifier)s(disablePostconditionCheck)
+    );
     return ret;
   }
 
 
-  int DbC_deploy_%(Identifier)s(char* name)
+  int DbC_deploy_%(Identifier)s(char* name, bool disablePostconditionCheck)
   {
     DEBUGNL ( " dbc_deploy_%(Identifier)s()" );
     try {
-      WX::Utils::SmartPtr<LocalComponents::CCMHome> ret( new %(Namespace)s::DbC_%(Identifier)s());
+      WX::Utils::SmartPtr<LocalComponents::CCMHome> ret(
+        new %(Namespace)s::DbC_%(Identifier)s(disablePostconditionCheck)
+      );
       HomeFinder::Instance()->register_home(ret, name);
     } catch ( ... )  {
       return -1;

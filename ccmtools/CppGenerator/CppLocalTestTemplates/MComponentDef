@@ -55,7 +55,7 @@ int main ( int argc, char *argv[] )
 
   homeFinder = HomeFinder::Instance (  );
 #ifdef CCM_USE_DBC
-  error  = DbC_deploy_%(HomeType)s("%(HomeType)s");
+  error  = DbC_deploy_%(HomeType)s("%(HomeType)s", false);
 #else
   error  = local_deploy_%(HomeType)s("%(HomeType)s");
 #endif

@@ -56,7 +56,7 @@ int main ( int argc, char *argv[] )
   homeFinder = HomeFinder::Instance (  );
 
   // DbC
-  error  = DbC_deploy_HelloHome("HelloHome");
+  error  = DbC_deploy_HelloHome("HelloHome",false);
 
   error +=    local_deploy_HelloHome_mirror("HelloHome_mirror");
   if(error) {

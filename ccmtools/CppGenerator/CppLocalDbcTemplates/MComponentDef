@@ -25,7 +25,9 @@ class DbC_%(Identifier)s
   : public %(Identifier)s
 {
  public:
-  DbC_%(Identifier)s(%(HomeType)s* h, CCM_%(Identifier)s* lc);
+  DbC_%(Identifier)s(%(HomeType)s* h, CCM_%(Identifier)s* lc, bool disablePostconditionCheck)
+    throw(LocalComponents::CCMException);
+
   virtual ~DbC_%(Identifier)s();
 
 %(MAttributeDefPrototype)s
@@ -33,7 +35,9 @@ class DbC_%(Identifier)s
 
  private:
   void DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool) 
-    throw(LocalComponents::CCMException, CCM_OCL::OclException);
+    throw(CCM_OCL::OclException);
+
+  bool disablePostconditionCheck__;
 };
 
 
@@ -77,7 +81,9 @@ using namespace CCM_OCL;
 
 #define __LOCAL__ADAPTER__NAME__ %(Identifier)s
 
-DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s* h, CCM_%(Identifier)s* lc ) /*throw(CCM_OCL::OclException)*/
+DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s* h, CCM_%(Identifier)s* lc,
+                                        bool disablePostconditionCheck )
+  throw(LocalComponents::CCMException) : disablePostconditionCheck__(disablePostconditionCheck)
 {
   static const char* DbC_FUNCTION_NAME =
     "DbC_%(Identifier)s::DbC_%(Identifier)s( %(HomeType)s*, CCM_%(Identifier)s* )";
@@ -97,7 +103,7 @@ DbC_%(Identifier)s::~DbC_%(Identifier)s()
 }
 
 void DbC_%(Identifier)s::DbC_check_invariant(const char* DbC_FUNCTION_NAME, bool DbC_onExit) 
-  throw(LocalComponents::CCMException, CCM_OCL::OclException)
+  throw(CCM_OCL::OclException)
 {
 %(InvariantInvocation)s
 }

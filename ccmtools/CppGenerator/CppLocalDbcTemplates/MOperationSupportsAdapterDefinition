@@ -4,9 +4,11 @@ DbC_%(Object)s::%(Identifier)s(%(MParameterDefAll)s)
 {
   static const char* DbC_FUNCTION_NAME = "DbC_%(Object)s::%(Identifier)s(%(MParameterDefAll)s)";
   DEBUGNL ( " DbC_%(Object)s->%(Identifier)s(%(MParameterDefName)s)");
-  %(SupportsPreInvocation)s	
+%(SupportsPreInvocation)s	
   %(OperationCall)s %(Object)s::%(Identifier)s(%(MParameterDefName)s);
-  %(SupportsPostInvocation)s
+  if(!disablePostconditionCheck__) {
+%(SupportsPostInvocation)s
+  }
   %(OperationReturn)s
 }
 

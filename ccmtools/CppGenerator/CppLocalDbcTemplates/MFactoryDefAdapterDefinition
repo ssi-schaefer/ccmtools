@@ -10,11 +10,14 @@ DbC_%(HomeType)s::%(Identifier)s (%(MParameterDefAll)s)
       new DbC_%(ComponentType)s(this,
         dynamic_cast<CCM_%(ComponentType)s*>(
           ((CCM_%(HomeType)sExplicit*)local_home)->%(Identifier)s(%(MParameterDefName)s)
-        )
+        ),
+        disablePostconditionCheck__
       )
     )
   );
+  if(!disablePostconditionCheck__) {
 %(FactoryPostInvocation)s
+  }
   return ret;
 }
 
