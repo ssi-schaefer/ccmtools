@@ -280,7 +280,6 @@ CCM::SessionContainer::activate_facet(PortableServer::Servant comp_glue,
 	PortableServer::string_to_ObjectId(name);
     poa_->activate_object_with_id (*fid, facet_glue);	
 #else
-    PortableServer::ObjectId_var oid = poa_->servant_to_id (comp_glue); //??
     PortableServer::ObjectId_var fid = poa_->activate_object (facet_glue);
 #endif
     CORBA::Object_var fref = poa_->id_to_reference(fid.in());
