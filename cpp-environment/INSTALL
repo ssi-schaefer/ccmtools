@@ -7,11 +7,14 @@ previous instruction.
 For the informed, use the following :
 
 o) Install the local component's environment:
-   $ confix.py --packageroot=CCM_Local --bootstrap --configure --make --targets="all install"
+   $ cd CCM_Local	
+   $ confix.py --bootstrap --configure --make --targets="all install"
 
 o) Install the remote component's environment:
-   $ confix.py --packageroot=external --bootstrap --configure --make --targets="all install"
-   $ confix.py --packageroot=CCM_Remote --bootstrap --configure --make --targets="all install"
+   $ cd external
+   $ confix.py --bootstrap --configure --make --targets="all install"
+   $ cd CCM_Remote
+   $ confix.py --bootstrap --configure --make --targets="all install"
 
 o) Install the python component's environment:
    $ confix.py --packageroot=CCM_Python --bootstrap --configure --make --targets="all install"	
