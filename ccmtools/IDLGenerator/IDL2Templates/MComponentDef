@@ -11,7 +11,7 @@
 %(MPublishesDefInclude)s
 %(MUsesDefInclude)s
 
-#include <CCM.idl>
+#include <Components/CCM.idl>
 
 %(OpenNamespace)s
 
