@@ -4,11 +4,11 @@
 #SUBDIRS = IDL3Parser
 #SUBDIRS = CodeGenerator
 #SUBDIRS = IDLGenerator
-#SUBDIRS = CppGenerator
+SUBDIRS = CppGenerator
 #SUBDIRS = CppRemoteGenerator
 #SUBDIRS = CppDbcGenerator
 
-SUBDIRS = CppGenerator CppDbcGenerator CppRemoteGenerator
+#SUBDIRS = CppGenerator CppDbcGenerator CppRemoteGenerator
 
 EXTRA_DIST = idl 
 

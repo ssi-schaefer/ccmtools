@@ -104,12 +104,11 @@ abstract public class PythonGenerator
     /**************************************************************************/
 
     public PythonGenerator(String sublang, Driver d, File out_dir,
-                           String[] output_types,
-                           File[] env_files, String[] env_templates)
+                           String[] output_types)
         throws IOException
     {
         super(sublang, d, out_dir, output_types, local_reserved_words,
-              env_files, env_templates, local_language_map);
+              local_language_map);
     }
 
     /**

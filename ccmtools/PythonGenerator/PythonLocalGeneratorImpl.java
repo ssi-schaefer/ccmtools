@@ -43,8 +43,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class CppLocalGeneratorImpl
-    extends CppGenerator
+public class PythonLocalGeneratorImpl
+    extends PythonGenerator
 {
     // types for which we have a global template ; that is, a template that is
     // not contained inside another template.
@@ -57,9 +57,11 @@ public class CppLocalGeneratorImpl
 
     /**************************************************************************/
 
-    public CppLocalGeneratorImpl(Driver d, File out_dir)
+    public PythonLocalGeneratorImpl(Driver d, File out_dir)
         throws IOException
-    { super("CppLocal", d, out_dir, local_output_types); }
+    { 
+	super("PythonLocal", d, out_dir, local_output_types); 
+    }
 
     /**
      * Acknowledge the start of the given node during graph traversal. If the
@@ -207,5 +209,12 @@ public class CppLocalGeneratorImpl
         }
 
         return files;
+    }
+
+
+    protected String getScopedInclude(MContained node)
+    {
+	// FIXME: Implement this method
+        return "#include <...h>";
     }
 }

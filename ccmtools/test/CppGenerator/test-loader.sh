@@ -46,8 +46,11 @@ test -e ${install_dir}/lib/libCCM_Local_LocalComponents.a && exit 1
 
 rm -rf ${sandbox_dir}/${1}
 
-test -z "${ret}" && ccmtools-c++-generate -d -a -p ${1} \
-  -i ${install_dir} ${2} ${3} || ret=1
+test -z "${ret}" && ccmtools-generate idl3 -o ${1}/idl3 -i ${2} ${3} || ret=1
+test -z "${ret}" && ccmtools-generate idl3mirror -o ${1}/idl3 -i ${2} ${3} || ret=1
+test -z "${ret}" && ccmtools-generate c++local -o ${1} -I${1}/idl3/interface ${1}/idl3/interface/*.idl  || ret=1
+test -z "${ret}" && ccmtools-generate c++local -a -o ${1} -I${1}/idl3/interface -I${1}/idl3/component ${1}/idl3/component/*.idl || ret=1
+test -z "${ret}" && ccmtools-generate c++local-test -o ${1} -I${1}/idl3/interface -I${1}/idl3/component ${1}/idl3/component/Test.idl || ret=1
 
 # build and check. copy the contents of the package directory, if it exists, to
 # the sandbox (this lets us distribute _app.cc files with the tests).
@@ -58,13 +61,7 @@ test -d ${abssrcdir}/test/CppGenerator/${1}/impl && \
 test -d ${abssrcdir}/test/CppGenerator/${1}/test && \
   ${CP} -rf ${abssrcdir}/test/CppGenerator/${1}/test ${1}
 
-test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
-  ccmtools-c++-configure -p ${1} || ret=1
-
-test -z "${ret}" && PYTHONPATH=${install_dir}:${PYTHONPATH} \
-  ccmtools-c++-make -p ${1} || ret=1
-
-
+test -z "${ret}" && confix.py --packageroot=${sandbox_dir}/${1} --profile=ccmtools --advanced --bootstrap --configure --make --targets="check clean" || ret=1
 
 test -z "${ret}" && ret=0
 

@@ -52,19 +52,19 @@ public class ConsoleCodeGenerator
     private static final String version = Constants.VERSION;
 
     private static final String usage =
-"Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n" +
-"Options:\n" +
-"  -a, --application             Generate skeletons for business logic *\n" +
-"  -h, --help                    Display this help\n" +
-"  -Ipath                        Add path to the preprocessor include path\n" +
-"  -o DIR, --output=DIR          Base output in DIR (default .)\n" +
-"  -V, --version                 Display CCM Tools version information\n" +
-"      --generator-mask=<flags>  Mask for generator debug output\n" +
-"      --parser-mask=<flags>     Mask for parser debug output\n" +
-"Languages available:\n" +
-"LANGUAGES\n" +
-"Generates code in the given output language after parsing FILES.\n" +
-"Options marked with a star (*) are generally used once per project.\n";
+	"Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n" +
+	"Options:\n" +
+	"  -a, --application             Generate skeletons for business logic *\n" +
+	"  -h, --help                    Display this help\n" +
+	"  -Ipath                        Add path to the preprocessor include path\n" +
+	"  -o DIR, --output=DIR          Base output in DIR (default .)\n" +
+	"  -V, --version                 Display CCM Tools version information\n" +
+	"      --generator-mask=<flags>  Mask for generator debug output\n" +
+	"      --parser-mask=<flags>     Mask for parser debug output\n" +
+	"Languages available:\n" +
+	"LANGUAGES\n" +
+	"Generates code in the given output language after parsing FILES.\n" +
+	"Options marked with a star (*) are generally used once per project.\n";
 
     private static final String[] local_language_types =
     {

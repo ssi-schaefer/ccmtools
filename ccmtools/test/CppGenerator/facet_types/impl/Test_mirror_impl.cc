@@ -17,7 +17,6 @@
 #include <WX/Utils/debug.h>
 
 #include "Test_mirror_impl.h"
-
 #include "MyObject.h"
 
 using namespace std;
@@ -26,7 +25,6 @@ using namespace CCM_Local;
 
 namespace CCM_Local {
 namespace CCM_Session_Test_mirror {
-
 
 //==============================================================================
 // CCM_Test_mirror - component implementation
@@ -55,6 +53,7 @@ CCM_Test_mirror_impl::ccm_activate (  )
   throw ( LocalComponents::CCMException )
 {
   DEBUGNL ( " CCM_Test_mirror_impl->ccm_activate (  )" );
+
 
   WX::Utils::SmartPtr<CCM_TypeTest> type_test = 
     ctx->get_connection_type_test_mirror();
@@ -235,6 +234,7 @@ CCM_Test_mirror_impl::ccm_remove (  )
   DEBUGNL ( " CCM_Test_mirror_impl->ccm_remove (  )" );
 }
 
+//(MProvidesDefAdapterImplClassImpl)s
 } // /namespace CCM_Session_Test_mirror
 } // /namespace CCM_Local
 

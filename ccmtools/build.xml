@@ -1,0 +1,171 @@
+<project name="ccmtools" default="ccmtools">
+
+  <description>
+
+  </description>
+
+  <!-- Define properties that are used in the following tasks.
+       Note that a property can be set from command-line:
+          $ ant -Dprefix=/usr/local
+  -->
+  <property name="src" location="../" />
+  <property name="build" location="build" />
+  <property name="lib" location="lib" />
+  <property name="doc" location="doc" />
+  <property name="prefix" location="install" />
+
+
+  <!-- Define different paths that are used in the following tasks -->
+  <path id="compile.classpath">
+      <pathelement location="${lib}/antlr.jar" />
+  </path>
+
+  <path id="run.classpath">
+      <fileset dir="${lib}">
+          <include name="*.jar" />
+      </fileset>	  
+      <pathelement path="${java.class.path}" />
+      <pathelement location="${lib}/antlr.jar" />
+  </path>
+
+
+
+  <!-- Set up directories for the build process -->
+  <target name="init"
+      description="Creates the build directory and deletes the old jar files." >
+      <mkdir dir="${build}" />
+  </target>  
+
+
+  <!--  -->
+
+  <target name="IDL3ParserGenerator" depends="init"
+     description="Generate the idl3_parser using antlr." >
+      <antlr target="${src}/ccmtools/IDL3Parser/idl3.g" dir="${src}/IDL3Parser" >
+           <classpath refid="compile.classpath" />
+      </antlr>
+  </target>
+
+  
+  <target name="ccmtools" depends="IDL3ParserGenerator"
+     description="Compile the ccmtools." >
+      <javac srcdir="${src}/ccmtools" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <target name="Metamodel" depends="init"
+     description="Compile the CCM metamodel library" >
+      <javac srcdir="${src}/Metamodel" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <target name="IDL3Parser" depends="IDL3ParserGenerator"
+     description="Compile the IDL3Parser package." >
+      <javac srcdir="${src}/IDL3Parser" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <target name="CodeGenerator" depends="Metamodel"
+     description="Compile the CodeGenerator package." >
+      <javac srcdir="${src}/CodeGenerator" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <target name="IDLGenerator" depends="CodeGenerator"
+     description="Compile the IDLGenerator package." >
+      <javac srcdir="${src}/IDLGenerator" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <target name="CppGenerator" depends="CodeGenerator"
+     description="Compile the CppGenerator package." >
+      <javac srcdir="${src}/CppGenerator" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <target name="OCL" depends="CodeGenerator"
+     description="Compile the OCL package." >
+      <javac srcdir="${src}/OCL" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <target name="utils" depends="init"
+     description="Compile the utils package." >
+      <javac srcdir="${src}/utils" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <target name="UI" depends="IDL3Parser, IDLGenerator, CppGenerator, OCL, utils"
+     description="Compile the UI package." >
+      <javac srcdir="${src}/UI" destdir="${build}" debug="on" >
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+  <target name="ccmtools.jar" depends="UI"
+     description="Package the ccmtools class files into ccmtools.jar." >
+      <jar jarfile="${lib}/ccmtools.jar" basedir="${build}" >
+         <manifest>
+            <attribute name="Main-Class" value="ccmtools.UI.ConsoleCodeGenerator" />
+         </manifest>
+      </jar>
+  </target>
+
+
+  <!-- Create javaDoc -->
+
+  <target name="doc" 
+      description="Generates javadoc for the ccmtools package.">
+      <javadoc packagenames="ccmtools.Metamodel.BaseIDL"
+               sourcepath="${src}"
+	       destDir="${doc}/javadoc">
+      </javadoc>
+  </target>
+
+
+  <!-- Install java-environment -->
+
+  <target name="install"  depends="ccmtools.jar" 
+      description="Install java-environment to prefix/.">
+      <mkdir dir="${prefix}" />
+      <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/mdr01.jar"    todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/jdom.jar"     todir="${prefix}/lib"  overwrite="true" />       
+
+      <copy file="${lib}/dtd2java.jar" todir="${prefix}/lib"  overwrite="true" />       
+      <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />       
+  </target>
+
+
+  <!-- Clean up -->
+
+  <target name="clean"
+      description="Clean up the build and lib directory." >
+      <delete file="${src}/IDL3Parser/IDL3Lexer.java" />
+      <delete file="${src}/IDL3Parser/IDL3Parser.java" />
+      <delete file="${src}/IDL3Parser/IDL3TokenTypes.java" />
+      <delete file="${src}/IDL3Parser/IDL3TokenTypes.txt" />
+
+      <delete dir="${build}" /> 
+      <delete dir="${doc}/javadoc" /> 
+
+      <delete file="${lib}/ccmtools.jar" /> 
+  </target>
+
+</project>
