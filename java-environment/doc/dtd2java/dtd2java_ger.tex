@@ -1,14 +1,31 @@
-\documentclass [a4paper,11pt] {scrartcl}
+\documentclass [a4paper,12pt] {scrartcl}
 \usepackage[austrian]{babel}
 \usepackage{graphicx}
 \author{Robert Lechner}
 \title{Java-Codegenerator f{\"u}r DTDs}
+\date{23. Februar 2004}
+
+\newcommand{\DTD}{{\sffamily\small DTD}}
+\newcommand{\XML}{{\sffamily\small XML}}
+
 \begin{document}
 \maketitle
 \section{Einleitung}
+Um die Struktur einer \XML-Datei zu beschreiben wird ein \DTD\ (Document Type Definition)
+verwendet. Zur weiteren Bearbeitung der Daten aus der \XML-Datei ist es sinnvoll,
+dass der \XML-Parser eine Datenstruktur liefert, die der Beschreibung im \DTD\ entspricht.
+Das Programm \texttt{dtd2java} liest nun ein \DTD\ und erzeugt daraus eine einfache
+Datenstruktur, sowie den entsprechenden \XML-Parser.\\
+~\\
+Das erzeugte Modell orientiert sich ausschlie{\ss}lich am \DTD; es ist also kein Ersatz
+f{\"u}r ein von Hand optimiertes Metamodell. Da das Erstellen eines solchen Modells aber
+sehr aufwendig ist, stellt \texttt{dtd2java} eine M{\"o}glichkeit dar ohne gro{\ss}en
+Zeitaufwand einen \XML-Parser (mit Datenstruktur) zu erhalten.
+
+\section{das Programm}
 Das Paket \texttt{dtd2java} besteht aus zwei Teilen:
-einem Parser f{\"u}r DTDs (Document Type Definition) und einem Codegenerator,
-der aus dem DTD einen XML-Parser mit einem einfachen Modell erzeugt.
+einem Parser f{\"u}r das \DTD\ und einem Codegenerator,
+der aus dem \DTD\ einen \XML-Parser mit einem einfachen Modell erzeugt.
 In Abbildung \ref{fig:classes} sind die verwendeten Klassen dargestellt.
 \begin{figure}[h]
 \centerline{\includegraphics[width=1.2 \linewidth]{classes.eps}}
@@ -16,31 +33,33 @@ In Abbildung \ref{fig:classes} sind die verwendeten Klassen dargestellt.
 \label{fig:classes}
 \end{figure}
 
-\newpage
-\section{DTD-Parser}
-F{\"u}r den DTD-Parser wird der Parsergenerator \textsf{ANTLR} ben{\"o}tigt.
+\subsection{DTD-Parser}
+F{\"u}r den \DTD-Parser wird der Parsergenerator \textsf{ANTLR} ben{\"o}tigt.
 \footnote{ANTLR Translator Generator (http://www.antlr.org)}\\
-Zum Lesen eines DTDs ruft man die statische Methode \texttt{DtdParser.parseFile} auf.
-Man erh{\"a}lt eine Instanz von \texttt{DtdFile}, welche alle Elemente des DTDs enth{\"a}lt.
+Zum Lesen eines \DTD\ ruft man die statische Methode \texttt{DtdParser.parseFile} auf.
+Man erh{\"a}lt eine Instanz von \texttt{DtdFile}, welche alle Elemente des \DTD\ enth{\"a}lt.
 Entities werden automatisch expandiert; Attributlisten werden zusammengefasst.
 
-\section{Codegenerator}
-\subsection{Aufruf}
+\subsection{Codegenerator}
+\subsubsection{Aufruf}
 Es gibt zwei M{\"o}glichkeiten den Generator zu starten:
 \begin{itemize}
 \item Erzeugen einer Instanz von \texttt{DtdGenerator} und Aufruf der Methode \texttt{run}.
     Man ben{\"o}tigt dazu aber eine Instanz von \texttt{DtdFile} (siehe oben).
 \item Man startet den Generator als Programm:\\
-    \texttt{java dtd2java.Main DTD-file Java-package}
+    \texttt{java dtd2java.Main \DTD-file Java-package [root-directory]}
 \end{itemize}
-Der Parameter "`Java-package"', den man in beiden F{\"a}llen ben{\"o}tigt, ist der Name
+Der Parameter \texttt{Java-package}, den man in beiden F{\"a}llen ben{\"o}tigt, ist der Name
 jenes package, in welchem der erzeugte Code liegen soll. Das Paket wird im aktuellen
-Verzeichnis angelegt. Der generierte Code hat die folgenden Eigenschaften:
+oder im angegebenen (\texttt{root-directory})
+Verzeichnis angelegt.
+\subsubsection{Eigenschaften}
+Der generierte Code hat die folgenden Eigenschaften:
 \begin{itemize}
-\item F{\"u}r jedes Element im DTD (\texttt{<!ELEMENT name content >})
+\item F{\"u}r jedes Element im \DTD\ (\texttt{<!ELEMENT name content >})
     wird eine eigene Klasse generiert. Alle Attribute sind als {\"o}ffentliche Variablen
     direkt zug{\"a}nglich. Der Inhalt des Elements wird in einem allgemeinen Container gespeichert.
-\item DTD-Namespaces werden als Java-Packages dargestellt.
+\item \DTD-Namespaces werden als Java-Packages dargestellt.
 \item Der gesamte generierte Code ist \texttt{javadoc}-kompatibel dokumentiert.
 \item Es werden alle ben{\"o}tigten Klassen im angegebenen Paket generiert
     $\Rightarrow$ man ben{\"o}tigt zum Ausf{\"u}hren des erzeugten Codes keine
@@ -48,18 +67,18 @@ Verzeichnis angelegt. Der generierte Code hat die folgenden Eigenschaften:
 \end{itemize}
 Zus{\"a}tzlich werden Dateien f{\"u}r das Tool \textsf{dot} erzeugt.
 \footnote{Graphviz (http://www.graphviz.org)}
-\newpage
-\subsection{erzeugter Code}
+
+\subsubsection{erzeugter Code}
 Alle Klassen sind von \texttt{DTD\_Container} abgeleitet. {\"U}ber die Methoden \texttt{size}
 und \texttt{get} ist der direkte Zugriff auf den Inhalt m{\"o}glich. Mit der {\"o}ffentlichen
 Variable \texttt{parent\_\_} kann auf den Vorg{\"a}nger im Baum zugegriffen werden.\\
 ~\\
-In den Unterklassen wird f{\"u}r jedes Attribut des XML-Elements eine {\"o}ffentliche Variable
-erzeugt. In der statischen Variable \texttt{xmlName\_\_} steht der vollst{\"a}ndige XML-Name
-des Elements. Mit der Methode \texttt{xmlCode} kann der XML-Code erzeugt werden.\\
+In den Unterklassen wird f{\"u}r jedes Attribut des \XML-Elements eine {\"o}ffentliche Variable
+erzeugt. In der statischen Variable \texttt{xmlName\_\_} steht der vollst{\"a}ndige \XML-Name
+des Elements. Mit der Methode \texttt{xmlCode} kann der \XML-Code erzeugt werden.\\
 ~\\
-Alle Elemente, welche nicht im DTD deklariert wurden, werden als Instanz von
-\texttt{DTD\_Generic} gespeichert. Dadurch ist eine Rekonstruktion des XML-Codes
+Alle Elemente, welche nicht im \DTD\ deklariert wurden, werden als Instanz von
+\texttt{DTD\_Generic} gespeichert. Dadurch ist eine Rekonstruktion des \XML-Codes
 auch bei unbekannten Elementen m{\"o}glich.\\
 ~\\
 Um die Erweiterbarkeit des erzeugten Modells zu gew{\"a}hrleisten, werden alle Instanzen

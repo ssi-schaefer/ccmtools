@@ -2,11 +2,10 @@
 \usepackage[austrian]{babel}
 \usepackage{graphicx}
 \author{Robert Lechner}
-\title{
-UML nach IDL/OCL Konverter\\
-{\LARGE ~\\ Anleitung f{\"u}r das Paket \texttt{uml2idl}}\\
-~
-}
+\title{UML nach IDL/OCL Konverter}
+
+\date{23. Februar 2004 \\~\\ \tiny{$Id$}}
+
 \begin{document}
 \maketitle
 \tableofcontents
@@ -14,7 +13,7 @@ UML nach IDL/OCL Konverter\\
 
 \section{Einleitung}
 \subsection{Anwendung}
-Das Paket \texttt{ccmtools.uml2idl} beinhaltet einen \textsf{UML}$\rightarrow$\textsf{IDL/OCL}
+Das Paket \texttt{uml2idl} beinhaltet einen \textsf{UML}$\rightarrow$\textsf{IDL/OCL}
 Konverter. Der Zweck besteht darin, Komponenten und Interfaces (\textsf{IDL}
 \footnote{Interface Definition Language; Teil der CORBA-Spezifikation}) zusammen mit der
 formalen Definition der Schnittstellen (\textsf{OCL}
@@ -22,12 +21,12 @@ formalen Definition der Schnittstellen (\textsf{OCL}
 zu modellieren. Der Konverter generiert daraus die f{\"u}r die \textsf{ccmtools} ben{\"o}tigten
 \textsf{IDL}- und \textsf{OCL}-Dateien.
 Als \textsf{UML}-Parser wird das vom Tool \texttt{dtd2java}
-\footnote{Paket \texttt{ccmtools.dtd2java}: erzeugt Java-Modelle aus DTD-Dateien}
-erzeugte Package \texttt{ccmtools.uml\_parser} verwendet. \\
+\footnote{Paket \texttt{dtd2java}: erzeugt Java-Modelle aus DTD-Dateien}
+erzeugte Package \texttt{uml\_parser} verwendet. \\
 ~\\
 Gestartet wird der Konverter mit dem Aufruf:
 \begin{verbatim}
-java ccmtools.uml2idl.Main UML-file IDL/OCL-prefix
+java uml2idl.Main UML-file IDL/OCL-prefix
 \end{verbatim}
 \texttt{UML-file} \dots Name der \textsf{XMI}-Datei
 \footnote{XML Metadata Interchange: XML-Dateien zum Speichern von UML-Modellen}\\
@@ -47,11 +46,32 @@ In Abschnitt \ref{sec:BNF} wird die Anwendung genauer erkl{\"a}rt.
     automatisch berechnet wird. Es kann aber n{\"o}tig sein, implizite Abh{\"a}ngigkeiten
     {\"u}ber eine \emph{dependency} explizit zu deklarieren.
 \item Zyklische Abh{\"a}ngigkeiten k{\"o}nnen nicht aufgel{\"o}st werden!\\
-    Sie sind aber normalerweise ein Zeichen f{\"u}r Designfehler und k{\"o}nnten
-    mit dem \emph{tagged value} \texttt{IDLOrder} ebenfalls nicht aufgel{\"o}st werden.
+    Das ist aber mit dem \emph{tagged value} \texttt{IDLOrder} ebenfalls nicht m{\"o}glich.\\
+    Siehe Abschnitt \ref{sec:Cycles}.
 \item \emph{fixed types} werden derzeit nicht unterst{\"u}tzt.
 \end{itemize}
 
+\newpage
+\subsection{zyklische Abh{\"a}ngigkeiten}
+\label{sec:Cycles}
+In Abbildung \ref{fig:problem1} ist eine Abh{\"a}ngigkeit zu sehen, die nicht
+aufgel{\"o}st werden kann.\\
+Um diese Struktur in \textsf{IDL} zu erhalten, muss entweder \texttt{C3} oder
+\texttt{C2} als "`forward declaration"' definiert werden.
+Die Berechnung solcher spezieller Deklarationen ist in \texttt{uml2idl} nicht implementiert.
+Es stellt sich aber die Frage, ob solche Abh{\"a}ngigkeiten nicht auf einen Designfehler hinweisen.\\
+~\\
+Keine Schwierigkeiten stellen die Abh{\"a}ngigkeiten in Abbildung \ref{fig:noProblem} dar.
+\begin{figure}[!h]
+\centerline{\includegraphics[width=0.8 \linewidth]{problem1.eps}}
+\caption{zyklische Abh{\"a}ngigkeit}
+\label{fig:problem1}
+\end{figure}
+\begin{figure}[!h]
+\centerline{\includegraphics[width=0.8 \linewidth]{noProblem.eps}}
+\caption{Abh{\"a}ngigkeiten ohne Probleme}
+\label{fig:noProblem}
+\end{figure}
 
 \cleardoublepage
 \section{IDL-Grammatik und UML-Darstellung}

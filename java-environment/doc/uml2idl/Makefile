@@ -5,6 +5,8 @@ all: dvi
 dvi: $(DOCUMENT_NAME).dvi
 $(DOCUMENT_NAME).dvi: $(DOCUMENT_NAME).tex
 	latex $(DOCUMENT_NAME).tex
+	latex $(DOCUMENT_NAME).tex
+	latex $(DOCUMENT_NAME).tex
 
 bi: $(DOCUMENT_NAME).tex
 	bibtex $(DOCUMENT_NAME)
