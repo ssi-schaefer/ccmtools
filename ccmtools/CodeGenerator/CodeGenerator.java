@@ -885,8 +885,13 @@ abstract public class CodeGenerator
         } else if (variable.equals("LanguageTypeInclude")) {
             if (current_node instanceof MTyped) {
                 MIDLType idl_type = ((MTyped) current_node).getIdlType();
-                if (idl_type instanceof MContained)
+                if (idl_type instanceof MContained) {
                     return getScopedInclude((MContained) idl_type);
+                } else if (idl_type instanceof MTyped) {
+                    MIDLType sub_type = ((MTyped) idl_type).getIdlType();
+                    if (sub_type instanceof MContained)
+                        return getScopedInclude((MContained) sub_type);
+                }
             }
         } else if (variable.endsWith("Namespace")) {
 

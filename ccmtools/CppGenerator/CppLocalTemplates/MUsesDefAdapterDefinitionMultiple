@@ -31,11 +31,10 @@ SmartPtr<CCM_%(UsesType)s>
 %(ComponentType)s::get_connections_%(Identifier)s (  )
 {
   DEBUGNL ( " %(ComponentType)s->get_connections_%(Identifier)s (  )" );
-  if (!ValidConnection) 
-    throw localComponents::InvalidConnection();
+  if ( ! ValidConnection ) throw localComponents::InvalidConnection (  );
 
-//  if (%(Identifier)s_receptacle_counter == 0)         
-//    throw localComponents::NoConnection();
+//  if ( %(Identifier)s_receptacle_counter == 0 )
+//    throw localComponents::NoConnection (  );
 
   return %(Identifier)s_receptacles;
 }

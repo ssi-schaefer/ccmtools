@@ -1,3 +1,4 @@
+#include <cassert>
 #include <localComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 #include <CCM_Utils/Debug.h>

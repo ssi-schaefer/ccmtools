@@ -5,7 +5,7 @@
 
 %(OpenNamespace)s
 
-typedef %(LanguageType)s %(Identifier)s;
+typedef %(LanguageType)s %(AliasIdentifier)s;
 
 %(CloseNamespace)s
 

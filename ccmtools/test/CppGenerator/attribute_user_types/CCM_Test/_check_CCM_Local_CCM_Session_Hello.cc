@@ -1,3 +1,4 @@
+#include <cassert>
 #include <localComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 #include <CCM_Utils/Debug.h>
@@ -86,70 +87,66 @@ int main ( int argc, char *argv[] )
 	
      DEBUGNL("==== Begin Test Case =============================================" );	
 
-    // TODO : IMPLEMENT ME HERE !	
-     short short_2=3, short_3, short_r;
-     short_r = myHello.ptr()->println1(7,short_2, short_3);
-     assert(short_2 == 7);
-     assert(short_3 == 3);
-     assert(short_r == 3+7);
-
-     long long_2=3, long_3, long_r;
-     long_r = myHello.ptr()->println2(7,long_2, long_3);
-     assert(long_2 == 7);
-     assert(long_3 == 3);
-     assert(long_r == 3+7);
-
-     unsigned short ushort_2=3, ushort_3, ushort_r;
-     ushort_r = myHello.ptr()->println3(7,ushort_2, ushort_3);
-     assert(ushort_2 == 7);
-     assert(ushort_3 == 3);
-     assert(ushort_r == 3+7);
-
-     unsigned long ulong_2=3, ulong_3, ulong_r;
-     ulong_r = myHello.ptr()->println4(7,ulong_2, ulong_3);
-     assert(ulong_2 == 7);
-     assert(ulong_3 == 3);
-     assert(ulong_r == 3+7);
-
-     float float_2=3.0, float_3, float_r;
-     float_r = myHello.ptr()->println5(7.0,float_2, float_3);
-     assert(float_2 == 7.0);
-     assert(float_3 == 3.0);
-     assert(float_r == 3.0+7.0);
+     // TODO : IMPLEMENT ME HERE !	
+     /* 
+      * Test Case for: typedef long time_t;
+      */
+     CCM_Local::time_t time_value = 3;
+     myHello.ptr()->typedef_value(time_value);
+     CCM_Local::time_t time_result = myHello.ptr()->typedef_value();
+     assert(time_result == time_value);
      
-     double double_2=3.0, double_3, double_r;
-     double_r = myHello.ptr()->println6(7.0,double_2, double_3);
-     assert(double_2 == 7.0);
-     assert(double_3 == 3.0);
-     assert(double_r == 3.0+7.0);
+     /*
+      * Test Case for: enum Color {red, green, blue, black, orange};
+      */
+     Color Color_value;
+     Color_value = Color(blue);
+     myHello.ptr()->enum_value(Color_value);
+     Color Color_result = myHello.ptr()->enum_value();
+     assert(Color_result == Color_value);
+    
+     /*
+      * Test Case for: struct Value { string s; double dd; };
+      */
+     CCM_Local::Value struct_value;
+     struct_value.s = "a"; 
+     struct_value.dd = 1.0;
+     myHello.ptr()->struct_value(struct_value);
+     CCM_Local::Value struct_result = myHello.ptr()->struct_value();
+     assert(struct_result.s == struct_value.s);
+     assert(struct_result.dd == struct_value.dd);
 
-     char char_2=3, char_3, char_r;
-     char_r = myHello.ptr()->println7(7,char_2, char_3);
-     assert(char_2 == 7);
-     assert(char_3 == 3);
-     assert(char_r == 3+7);
 
-     string string_2="drei", string_3, string_r;
-     string_r = myHello.ptr()->println8("sieben",string_2, string_3);
-     cout << string_2 << endl;
-     cout << string_3 << endl;
-     cout << string_r << endl;
-     assert(string_2 == "sieben");
-     assert(string_3 == "drei");
-     assert(string_r == "dreisieben");
+     /* 
+      * Test Case for: typedef sequence<Value> map;
+      */
+     CCM_Local::map map_value;
+     for(int i=0;i<5;i++) {
+       Value v1, v2;
+       v1.s = "1";
+       v1.dd = (double)i;
+       map_value.push_back(v1);
+     }
+     myHello.ptr()->sequence_value(map_value);
+     CCM_Local::map map_result = myHello.ptr()->sequence_value();
+     for(int i=0;i<(int)map_result.size();i++) {
+       Value v = map_result.at(i);
+       assert((int)v.dd == i);
+     }
 
-     bool bool_2=false, bool_3, bool_r;
-     bool_r = myHello.ptr()->println9(true, bool_2, bool_3);
-     assert(bool_2 == true);
-     assert(bool_3 == false);
-     assert(bool_r == false && true);
+     /*
+      *  Test Case for: typedef double doubleArray[10];
+      */
+     CCM_Local::doubleArray array_value(10);
+     for(int i=0;i<10;i++) {
+       array_value.at(i) = i;
+     } 
+     myHello.ptr()->array_value(array_value);
+     CCM_Local::doubleArray array_result = myHello.ptr()->array_value();
+     for(int i=0;i<10;i++) {
+       assert(array_result.at(i) == i);
+     }
 
-     unsigned char uchar_2=3, uchar_3, uchar_r;
-     uchar_r = myHello.ptr()->println10(7,uchar_2, uchar_3);
-     assert(uchar_2 == 7);
-     assert(uchar_3 == 3);
-     assert(uchar_r == 3+7);
-	
      DEBUGNL("==== End Test Case ===============================================" );	
 
 

@@ -4,6 +4,7 @@
 //==============================================================================
 
 #include <iostream>
+#include <cassert>
 #include <CCM_Utils/Debug.h>
 
 #include "Hello_app.h"

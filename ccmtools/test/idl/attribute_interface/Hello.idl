@@ -4,7 +4,7 @@
  */
 
 
-interface ACommon 
+interface ACommon
 {
   void set_attrib_a(in long a);
   long get_attrib_b();

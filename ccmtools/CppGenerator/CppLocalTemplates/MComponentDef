@@ -189,6 +189,7 @@ class CCM_%(Identifier)s_Context_impl
 
 using namespace std;
 using namespace CCM_Utils;
+using namespace CCM_Local;
 
 %(OpenNamespace)s
 
@@ -597,6 +598,7 @@ class CCM_%(Identifier)s_impl
 
 using namespace std;
 using namespace CCM_Utils;
+using namespace CCM_Local;
 
 %(OpenNamespace)s
 

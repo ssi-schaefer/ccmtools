@@ -2,6 +2,8 @@
 // typedef definition for %(Identifier)s
 // ===========================================================================
 
+#include <vector>
+
 #ifndef __ALIAS_%(FileNamespace)s_%(Identifier)s__H__
 #define __ALIAS_%(FileNamespace)s_%(Identifier)s__H__
 

@@ -256,7 +256,7 @@ abstract public class CppGenerator
 
         // FIXME : can we implement bounded sequences in C++ ?
         if (object instanceof MSequenceDef)
-            return "std::" + sequence_type + "<" + base_type + "> ";
+            return sequence_type + "<" + base_type + "> ";
 
         if (object instanceof MArrayDef) {
 	    /* This code defines the IDL -> C++ mapping of arrays:

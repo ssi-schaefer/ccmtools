@@ -1238,8 +1238,7 @@ type_declarator returns [List declarations = null]
     MIDLType type = null;
     List decls = null;
 }
-    :   type = type_spec
-        decls = declarators
+    :   type = type_spec decls = declarators
         {
             for (Iterator it = decls.iterator(); it.hasNext(); ) {
                 DeclaratorHelper declarator = (DeclaratorHelper) it.next();
@@ -1466,7 +1465,7 @@ member returns [List members = null]
                 if (declarator.isArray()) {
                     MArrayDef array = declarator.getArray();
                     array.setIdlType(type);
-                    type = array;
+                    type = (MIDLType) array;
                 }
 
                 MFieldDef field = new MFieldDefImpl();

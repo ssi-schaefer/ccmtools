@@ -248,8 +248,10 @@ abstract public class IDLGenerator
             return data_MFinderDef(variable, value);
         } else if (current_node instanceof MOperationDef) {
             return data_MOperationDef(variable, value);
-        } else if (current_node instanceof MEnumDef)      {
+        } else if (current_node instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
+        } else if (current_node instanceof MAliasDef) {
+            return data_MAliasDef(variable, value);
         }
 
         return value;
@@ -286,7 +288,7 @@ abstract public class IDLGenerator
             return getLanguageType((MTyped) idl_type);
 
         if (object instanceof MArrayDef) {
-            Iterator i = ((MArrayDef) idl_type).getBounds().iterator();
+            Iterator i = ((MArrayDef) object).getBounds().iterator();
             Long bound = (Long) i.next();
             String result = base_type + "[" + bound;
             while (i.hasNext()) result += "][" + (Long) i.next();
@@ -303,6 +305,30 @@ abstract public class IDLGenerator
     }
 
     /**************************************************************************/
+
+    protected String data_MAliasDef(String data_type, String data_value)
+    {
+        MAliasDef alias = (MAliasDef) current_node;
+        MIDLType idl_type = alias.getIdlType();
+
+        // the IDL syntax for array typedefs is quite odd ...
+
+        if (data_type.equals("AliasIdentifier")) {
+            if (idl_type instanceof MArrayDef) {
+                Iterator i = ((MArrayDef) idl_type).getBounds().iterator();
+                Long bound = (Long) i.next();
+                String result = alias.getIdentifier() + "[" + bound;
+                while (i.hasNext()) result += "][" + (Long) i.next();
+                return result + "]";
+            } else return alias.getIdentifier();
+        } else if (data_type.equals("LanguageType")) {
+            if (idl_type instanceof MArrayDef)
+                return getBaseLanguageType((MTyped) idl_type);
+            else return getLanguageType(alias);
+        }
+
+        return data_value;
+    }
 
     protected String data_MComponentDef(String data_type, String data_value)
     { return data_MInterfaceDef(data_type, data_value); }

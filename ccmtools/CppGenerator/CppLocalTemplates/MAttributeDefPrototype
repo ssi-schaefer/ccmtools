@@ -1,4 +1,3 @@
-  // Equivalent operations for %(Identifier)s attribute
   %(LanguageType)s %(Identifier)s (  );
   void %(Identifier)s ( %(LanguageType)s value );
 
