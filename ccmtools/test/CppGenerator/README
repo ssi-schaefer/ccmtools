@@ -1,0 +1,20 @@
+Using Remote Components
+======================= 
+
+To use the remote components a CORBA NameService must be started: 
+
+> nsd -ORBIIOPAddr inet:localhost:5050 -ORBIIOPVersion 1.2 
+
+Note that the host (localhost) and the port (5050) can change between 
+different platforms.
+Mico provides a tool to browse the running NameService:
+
+> nsadmin -ORBInitRef NameService=corbaloc:iiop:1.2@localhost:5050/NameService
+
+The remote test generator creates a _check_*_remote.cc file that
+can be used as a unit test for remote components. To run these tests,
+the following environment variable must be set:
+
+> export CCM_NAME_SERVICE=corbaloc:iiop:1.2@localhost:5050/NameService
+
+
