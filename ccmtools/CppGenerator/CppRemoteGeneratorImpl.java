@@ -106,8 +106,6 @@ public class CppRemoteGeneratorImpl
 	new File("CCM_Session_Container", "Makefile.py"),
 
         new File("remoteComponents", "Components.idl"),
-	//	new File("remoteComponents", "Components.h"), // will be generated from IDL
-	//	new File("remoteComponents", "Components.cc"), // will be generated from IDL
         new File("remoteComponents", "Makefile.py"),
     };
 
@@ -118,8 +116,6 @@ public class CppRemoteGeneratorImpl
 	"Blank",              // Template for Makefile.py
 
 	"ComponentsIdl",      // Template for Components.idl
-	//        "ComponentsHeader",   // Template for Components.h
-	//	"ComponentsImpl",     // Template for Components.cc
 	"Blank"               // Template for Makefile.py
     };
 
@@ -206,10 +202,6 @@ public class CppRemoteGeneratorImpl
 
 
 
-
-
-
-
     /**
      * Get a variable hash table sutable for filling in the template from the
      * fillTwoStepTemplates function.
@@ -230,34 +222,12 @@ public class CppRemoteGeneratorImpl
 
         String lang_type = super.getLanguageType(operation);
         Map vars = new Hashtable();
+ 
+	//...
 
-        vars.put("Object",                   container.getIdentifier());
-        vars.put("Identifier",               operation.getIdentifier());
-        vars.put("ProvidesType",             iface.getIdentifier());
-        vars.put("SupportsType",             iface.getIdentifier());
-        vars.put("LanguageType",             lang_type);
-        vars.put("MExceptionDef",            getOperationExcepts(operation));
-        vars.put("MParameterDefAll",         getOperationParams(operation, "python"));
-        vars.put("MParameterDefName",        getOperationParams(operation, "name"));
-        vars.put("MParameterDefConvertTo",   getOperationConvertTo(operation));
-        vars.put("MParameterDefConvertFrom", getOperationConvertFrom(operation));
-
-        vars.put("NumParams", new Integer(operation.getParameters().size()));
-
-        if (! lang_type.equals("void"))
-            vars.put("Return",
-                     "  result = convert_" + getLanguageType(operation) +
-                     "_from_python ( python_result );\n" +
-                     "  Py_DECREF ( python_result );\n" +
-                     "  return result;\n");
-        else
-            vars.put("Return", "  Py_DECREF ( python_result );\n");
-	
         return vars;
     }
 
-
-    /**************************************************************************/
 
     /**
      * Get a local value for the given variable name.
@@ -278,161 +248,5 @@ public class CppRemoteGeneratorImpl
 
         return value;
     }
-
-    /**
-     * Return the language type for the given object. This returns the value
-     * given by getLanguageType if the node is neither an MParameterDef or
-     * MOperationDef instance, otherwise it basically adds the C++ specific
-     * parameters needed to correctly interpret the parameter or operation
-     * direction (in, out, inout).
-     *
-     * @param object the node object to use for type finding.
-     */
-    protected String getLanguageType(MTyped object)
-    {
-	System.out.println("CppRemoteGeneratorImpl.getLanguageType()");
-
-        String lang_type = super.getLanguageType(object);
-
-        lang_type = lang_type.replaceAll("[*]", "_ptr");
-        lang_type = lang_type.replaceAll("&", "_ref");
-        lang_type = lang_type.replaceAll("const ", "const_");
-
-        lang_type = lang_type.replaceAll("std::", "");
-        lang_type = lang_type.replaceAll(sequence_type, "");
-        return lang_type.replaceAll("[ ><]", "");
-    }
-
-    /**************************************************************************/
-
-    protected String data_MAliasDef(String data_type, String data_value)
-    {
-	System.out.println("CppRemoteGeneratorImpl.data_MAliasDef()");
-
-        MIDLType idl_type = ((MAliasDef) current_node).getIdlType();
-
-        if (data_type.equals("CppLanguageType")) {
-            return super.getLanguageType((MTyped) idl_type);
-        } else if (data_type.equals("AliasType")) {
-            String type = "MAliasDefNormalImpl";
-
-            if (idl_type instanceof MSequenceDef)
-                type = "MAliasDefSequenceImpl";
-            else if (idl_type instanceof MArrayDef)
-                type = "MAliasDefArrayImpl";
-
-            Template t = template_manager.getTemplate(type, current_name);
-            data_value = t.substituteVariables(output_variables);
-        } else if (data_type.equals("LoopConvertTo")) {
-            MArrayDef array = (MArrayDef) idl_type;
-            StringBuffer loop = new StringBuffer("");
-            String lang_type = getLanguageType((MTyped) current_node);
-
-            int dim = 0;
-            List bounds = array.getBounds();
-            ListIterator li = bounds.listIterator();
-            while (li.hasNext()) {
-                Long b = (Long) li.next();
-                String var = "i" + dim++; // NOTE : using ++ here !
-                loop.append("  for ( int "+var+" = 0; "+var+" < "+b+"; ");
-                loop.append(var+"++ )\n");
-                if (li.hasNext()) {
-                    Long nextb = (Long) bounds.get(li.nextIndex());
-                    loop.append("  PyObject *result"+dim+" = PyList_New ( ");
-                    loop.append(nextb+" );\n");
-                }
-            }
-
-            loop.append("  PyList_SetItem ( result"+dim+", i"+dim);
-            loop.append(", convert_"+lang_type+"_to_python ( arg");
-            for (int a = 0; a < dim; a++) loop.append("[i"+a+"]");
-            loop.append(" ) );\n");
-
-            for (dim = dim-1; dim > 0; dim--) {
-                loop.append("  }\n");
-                loop.append("  PyList_SetItem ( result"+dim+", i"+dim);
-                loop.append(", result"+(dim+1)+" );\n");
-            }
-
-            return loop.toString();
-        } else if (data_type.equals("LoopConvertFrom")) {
-        }
-        return data_value;
-    }
-
-    /**************************************************************************/
-
-    /**
-     * Get information about the parameters for the given operation. The type of
-     * information returned depends on the type parameter.
-     *
-     * @param op the operation to investigate.
-     * @param type the type of information to gather. If the type is "cpp",
-     *        this will return the parameter list with C++ variable types.
-     *        Otherwise this function will simply call the superclass'
-     *        implementation.
-     * @return a comma separated string of the parameter information requested
-     *         for this operation.
-     */
-    protected String getOperationParams(MOperationDef op, String type)
-    {
-	System.out.println("CppRemoteGeneratorImpl.getOperationParams()");
-
-        if (! type.equals("python")) return super.getOperationParams(op, type);
-
-        List ret = new ArrayList();
-        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
-            MParameterDef p = (MParameterDef) params.next();
-            ret.add(super.getLanguageType(p) + " " + p.getIdentifier());
-        }
-        return join(", ", ret);
-    }
-
-    /**
-     * Get Python parameter conversion code for the given operation.
-     *
-     * @param op the operation to investigate.
-     * @return a string containing code for converting the given operation's parameters
-     *         to Python values and adding them to the pyArgs tuple.
-     */
-    private String getOperationConvertTo(MOperationDef op)
-    {
-	System.out.println("CppRemoteGeneratorImpl.getOperationConvertTo()");
-
-        StringBuffer ret = new StringBuffer("");
-        int pos = 0;
-        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
-            MParameterDef p = (MParameterDef) params.next();
-            String lang_type = getLanguageType(p);
-            String id = p.getIdentifier();
-
-            ret.append("  PyObject *python_" + id + " = convert_" + lang_type);
-            ret.append("_to_python ( " + id + " );\n");
-
-            ret.append("  if ( PyTuple_SetItem ( args, " + pos++ + ", python_");
-            ret.append(id + " ) ) return;\n");
-        }
-        return ret.toString();
-    }
-
-    /**
-     * Get Python parameter conversion code for the given operation.
-     *
-     * @param op the operation to investigate.
-     * @return a string containing code for converting the given operation's parameters
-     *         to Python values and adding them to the pyArgs tuple.
-     */
-    private String getOperationConvertFrom(MOperationDef op)
-    {
-	System.out.println("CppRemoteGeneratorImpl.getOperationConvertFrom()");
-
-        StringBuffer ret = new StringBuffer("");
-        for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
-            MParameterDef p = (MParameterDef) params.next();
-            ret.append("  Py_DECREF ( python_" + p.getIdentifier() + " );\n");
-        }
-        return ret.toString();
-    }
-
 }
 
