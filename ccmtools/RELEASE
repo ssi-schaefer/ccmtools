@@ -39,21 +39,25 @@ c++remote generator:
    - change disconnect method
 *) add ccmtools/idl/CCM.idl directory
 *) add Constants.Version to all generated files.
-o) add support for multiple receptacles
 *) add test cases for component attributes
 *) add test case for facet attributes
+*) add test case for receptacle attributes
+o) add test case for nested component composition
+o) add support for multiple receptacles
+o) add test case for multiple receptacle
 o) add test cases for supported interfaces
 o) add test cases for interfaces as parameters
 o) collect test cases 
+   - facet_simple, facet_basic_types, facet_user_types => facet_types
+   - attribute_simple, attribute_basic_types => attribute_types
 o) generate debug output with parameter values.
-o) add test case for nested component composition
 *) Performance Measurement
 o) implement undeploy_*() functions 
 o) implement a C++ version of deploy_* and undeploy_* too.
 o) remove CORBA::Stubs namespace from idl3 to idl2 generator
+o) generate the namespace into the converter file-name 
 *) generate adapter classes (*ToCorba, *FromCorba) for each IDL interface and use these
    adapter classes within the remote component logic as facet and receptacle adapters.
-o) generate the namespace into the converter file-name 
 *) add #ifdef HAVE_MICO to each generated source file (c++generator and cpp-environment/CCM_Remote)
 
 

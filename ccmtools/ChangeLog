@@ -17,3 +17,5 @@ RELEASE-0.5.1-pre4
    
 *) added #ifdef HAVE_MICO conditions into all generated remote source files
    (cpp-environment/CCM_Remote and files generated from c++remote)   
+   
+*) added support of receptacle attributes

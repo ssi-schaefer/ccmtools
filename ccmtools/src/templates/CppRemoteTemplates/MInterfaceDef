@@ -33,7 +33,8 @@ namespace CCM_Remote {
     protected:
       WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s> localInterface; 
     public:
-      %(Identifier)sAdapterFromCorba(WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s> lif);
+      %(Identifier)sAdapterFromCorba(
+          WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s> lif);
       virtual ~%(Identifier)sAdapterFromCorba();
 
 %(MAttributeDefInterfaceAdapterFromCorbaHeader)s
@@ -133,3 +134,4 @@ namespace CCM_Remote {
 
 
 } // /namespace CCM_Remote
+
