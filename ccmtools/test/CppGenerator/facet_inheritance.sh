@@ -1,5 +1,5 @@
 #! /bin/sh
 
 ${top_srcdir}/test/CppGenerator/test-loader.sh \
-  "facet_inheritance" " " "${srcdir}/../facet_inheritance/Hello.idl"
+  "facet_inheritance" " " "${srcdir}/../facet_inheritance/Test.idl"
 
