@@ -109,6 +109,7 @@ $Header$
       <copy file="${lib}/mdr01.jar"    todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/dtd2java.jar" todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />
+      <copy file="${lib}/Components.jar"  todir="${prefix}/lib"  overwrite="true" />
   </target>
 
 
