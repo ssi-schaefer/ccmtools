@@ -198,10 +198,35 @@ public class MComponentDefImpl
     // implementation of operations
     //----------------------------------------------------------------
 
-    public MContained getFilteredContents(MDefinitionKind limitToType,
-                                          boolean includeInherited)
+    public List getFilteredContents(MDefinitionKind limitToType,
+                                    boolean includeInherited)
     {
-	return null;
+	List result = new ArrayList();
+        for (Iterator i = ContainsList.iterator(); i.hasNext(); ) {
+            MContained element = (MContained) i.next();
+            MDefinitionKind dk = element.getDefinitionKind();
+            if ((dk == limitToType) || (includeInherited &&
+                (((limitToType == MDefinitionKind.DK_TYPEDEF) &&
+                  ((dk == MDefinitionKind.DK_ALIAS) ||
+                   (dk == MDefinitionKind.DK_ENUM) ||
+                   (dk == MDefinitionKind.DK_STRUCT) ||
+                   (dk == MDefinitionKind.DK_UNION) ||
+                   (dk == MDefinitionKind.DK_VALUEBOX))) ||
+                 ((limitToType == MDefinitionKind.DK_INTERFACE) &&
+                  ((dk == MDefinitionKind.DK_COMPONENT) ||
+                   (dk == MDefinitionKind.DK_HOME))) ||
+                 ((limitToType == MDefinitionKind.DK_OPERATION) &&
+                  ((dk == MDefinitionKind.DK_FACTORY) ||
+                   (dk == MDefinitionKind.DK_FINDER))) ||
+                 ((limitToType == MDefinitionKind.DK_EVENTPORT) &&
+                  ((dk == MDefinitionKind.DK_CONSUMES) ||
+                   (dk == MDefinitionKind.DK_EMITS) ||
+                   (dk == MDefinitionKind.DK_PUBLISHES))) ||
+                 ((limitToType == MDefinitionKind.DK_VALUE) &&
+                  (dk == MDefinitionKind.DK_EVENT)))))
+                result.add(element);
+        }
+        return result;
     }
 
     // a helper function for the lookupName function below.

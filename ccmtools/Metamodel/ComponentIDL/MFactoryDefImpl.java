@@ -115,7 +115,7 @@ public class MFactoryDefImpl
     public void setHome(MHomeDef __arg)         {Home_ = __arg;}
 
     // association: direct role: [*] --> opposite role: exceptionDef[*]
-    public Set getExceptionDefs()                       { return (Set)CanRaiseSet_;}
+    public Set getExceptionDefs()                       { return CanRaiseSet_;}
     public void setExceptionDefs(Set __arg)             { CanRaiseSet_ = new HashSet(__arg);}
     public void addExceptionDef(MExceptionDef __arg)    { CanRaiseSet_.add(__arg);}
     public void removeExceptionDef(MExceptionDef __arg) { CanRaiseSet_.remove(__arg);}

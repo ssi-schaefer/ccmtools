@@ -32,8 +32,12 @@ public interface MContainer
     void removeContents(MContained __arg);
 
     // operations
-    MContained getFilteredContents(MDefinitionKind limitToType, boolean includeInherited);
+    List getFilteredContents(MDefinitionKind limitToType,
+                             boolean includeInherited);
     MContained lookup(String searchName);
-    MContained lookupName(String SearchName, long levelsToSearch, MDefinitionKind limitToType, boolean excludeInherited);
+    MContained lookupName(String SearchName,
+                          long levelsToSearch,
+                          MDefinitionKind limitToType,
+                          boolean excludeInherited);
 }
 
