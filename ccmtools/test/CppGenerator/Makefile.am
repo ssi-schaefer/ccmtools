@@ -19,6 +19,7 @@ TESTS = \
   version.sh                  \
   owudb.sh                    \
   calculator.sh               \
+  vp10.sh                     \
   module_mixed.sh             \
   module-reopen.sh            \
   module-nested.sh            \

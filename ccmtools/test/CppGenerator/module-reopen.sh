@@ -1,9 +1,8 @@
 #! /bin/sh
 
 curdir=`pwd` ; cd ${top_srcdir} ; abssrcdir=`pwd` ; cd ${curdir}
-idldir=${abssrcdir}/test/idl/module_reopen
+idldir=${abssrcdir}/test/CppGenerator/module-reopen
 
-${top_srcdir}/test/CppGenerator/test-loader.sh "module-reopen" \
-  "-I${idldir}" \
-  "${idldir}/*.idl"
+${top_srcdir}/test/CppGenerator/test-loader.sh \
+  "module_reopen" "-I${idldir}" "${idldir}/*.idl"
 

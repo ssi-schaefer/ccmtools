@@ -1,8 +1,5 @@
 #! /bin/sh
 
-idldir=${top_srcdir}/../test/idl/facet_rename
-
-${top_srcdir}/test/CppGenerator/test-loader.sh "facet_rename" \
-                                               " " \
-                                               "${idldir}/Hello.idl"
+${top_srcdir}/test/CppGenerator/test-loader.sh \
+  "facet_rename" " " "${srcdir}/facet_rename/Hello.idl"
 

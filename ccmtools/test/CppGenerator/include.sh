@@ -6,7 +6,7 @@ sandbox_dir=`pwd`/sandbox
 cd ${top_srcdir} ; abssrcdir=`pwd` ; cd ${cwd}
 cd ${top_builddir} ; absbuilddir=`pwd` ; cd ${cwd}
 
-idldir=${abssrcdir}/test/idl/include
+idldir=${abssrcdir}/test/CppGenerator/include
 
 PCLASSPATH=${CLASSPATH}
 PPATH=${PATH}

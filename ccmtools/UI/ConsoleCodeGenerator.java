@@ -277,36 +277,30 @@ public class ConsoleCodeGenerator
             // step (0). run the C preprocessor on the input file.
             try {
 		// Run the GNU preprocessor cpp in a separate process.
-		String s = null;
-		System.out.println("cpp -o " + idlfile + " " + include_path + " " + source);
                 Process preproc = Runtime.getRuntime().exec("cpp -o " +
                                           idlfile + " " + include_path +
                                           " " + source);
+
 		BufferedReader stdInput = new BufferedReader(new
 		    InputStreamReader(preproc.getInputStream()));
 		BufferedReader stdError = new BufferedReader(new
 		    InputStreamReader(preproc.getErrorStream()));
+
 		// Read the output and any errors from the command
-		while ((s = stdInput.readLine()) != null) {
-		    System.out.println(s);
-		}
-		while ((s = stdError.readLine()) != null) {
-		    System.out.println(s);
-		}
+                String s;
+		while ((s = stdInput.readLine()) != null) System.out.println(s);
+		while ((s = stdError.readLine()) != null) System.out.println(s);
+
 		// Wait for the process to complete and evaluate the return
-                // value of the attempted command 
+                // value of the attempted command
                 preproc.waitFor();
-                if (preproc.exitValue() != 0){
-		   throw new RuntimeException();
-		}
+                if (preproc.exitValue() != 0) throw new RuntimeException();
             } catch (Exception e) {
-		System.err.println("Error preprocessing " + source 
-				   + ": Please verify your include paths.");
+		System.err.println("Error preprocessing " + source +
+                                   ": Please verify your include paths.");
                 System.exit(10);
             }
-	    
 
-            
 	    // step (1). parse the resulting preprocessed file.
 
             manager.reset();
