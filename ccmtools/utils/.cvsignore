@@ -1,3 +1,4 @@
 Makefile
 Makefile.in
 classdist_noinst.stamp
+classnoinst.stamp
