@@ -375,8 +375,11 @@ abstract public class CppGenerator
         MIDLType idl_type = object.getIdlType();
         String base_type = getBaseLanguageType(object);
 
-	if (idl_type instanceof MInterfaceDef) {
-	    // Handle interfaces using smart pointers
+	// Handle interfaces using smart pointers
+	// (Any ia handled as interface
+	if (idl_type instanceof MInterfaceDef
+	    || (idl_type instanceof MPrimitiveDef && 
+		((MPrimitiveDef)idl_type).getKind() == MPrimitiveKind.PK_ANY)) {
 	    base_type = "WX::Utils::SmartPtr<" + base_type + ">";
 	}
 
