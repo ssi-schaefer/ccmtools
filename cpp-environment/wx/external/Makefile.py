@@ -1,2 +1,2 @@
-#NAME('wx-external')
-#VERSION('1.0')
+#PACKAGE_NAME('wx-external')
+#PACKAGE_VERSION('1.0')

@@ -8,3 +8,7 @@ configure.in
 depcomp
 install-sh
 missing
+config.guess
+config.sub
+ltmain.sh
+wx.repo

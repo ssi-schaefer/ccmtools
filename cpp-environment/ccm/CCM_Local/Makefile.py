@@ -1,0 +1,2 @@
+PACKAGE_NAME('ccm-local')
+PACKAGE_VERSION('0.5.1-pre3')
