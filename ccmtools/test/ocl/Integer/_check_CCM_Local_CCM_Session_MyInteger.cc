@@ -4,8 +4,8 @@ $Id$
 
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
-#include <CCM_Utils/Debug.h>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/debug.h>
+#include <WX/Utils/smartptr.h>
 
 // DbC
 #include <CCM_OCL/OclException.h>
@@ -20,7 +20,7 @@ $Id$
 #include <CCM_Local/CCM_Session_MyInteger/MyIntegerHome_dbc.h>
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_Local;
 using namespace CCM_Session_MyInteger;
 using namespace CCM_Session_MyInteger_mirror;
@@ -40,13 +40,7 @@ int main ( int argc, char *argv[] )
   SmartPtr<MyInteger> myMyInteger;
   SmartPtr<MyInteger_mirror> myMyIntegerMirror;
 
-
-
-
-
-
-
-  Debug::set_global ( true );
+  Debug::instance().set_global ( true );
 
   DEBUGNL ( "test_client_MyInteger_component_main (  )" );
 
@@ -78,12 +72,6 @@ int main ( int argc, char *argv[] )
     myMyIntegerMirror = myMyIntegerHomeMirror.ptr (  )->create (  );
 
     // create facets, connect components
-
-
-
-
-
-
 
     myMyInteger.ptr (  )->configuration_complete (  );
     myMyIntegerMirror.ptr (  )->configuration_complete (  );
@@ -142,9 +130,6 @@ int main ( int argc, char *argv[] )
 
   try {
     // disconnect components, destroy instances, unregister homes
-
-
-
 
     myMyInteger.ptr (  )->remove (  );
     myMyIntegerMirror.ptr (  )->remove (  );

@@ -1,7 +1,7 @@
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
-#include <CCM_Utils/Debug.h>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/debug.h>
+#include <WX/Utils/smartptr.h>
 
 // DbC
 #include <CCM_OCL/OclException.h>
@@ -16,7 +16,7 @@
 #include <CCM_Local/CCM_Session_MyString/MyStringHome_dbc.h>
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_Local;
 using namespace CCM_Session_MyString;
 using namespace CCM_Session_MyString_mirror;
@@ -36,13 +36,7 @@ int main ( int argc, char *argv[] )
   SmartPtr<MyString> myMyString;
   SmartPtr<MyString_mirror> myMyStringMirror;
 
-
-
-
-
-
-
-  Debug::set_global ( true );
+  Debug::instance().set_global(true);
 
   DEBUGNL ( "test_client_MyString_component_main (  )" );
 
@@ -74,13 +68,6 @@ int main ( int argc, char *argv[] )
     myMyStringMirror = myMyStringHomeMirror.ptr (  )->create (  );
 
     // create facets, connect components
-
-
-
-
-
-
-
     myMyString.ptr (  )->configuration_complete (  );
     myMyStringMirror.ptr (  )->configuration_complete (  );
   } catch ( LocalComponents::HomeNotFound ) {
@@ -140,10 +127,6 @@ int main ( int argc, char *argv[] )
 
   try {
     // disconnect components, destroy instances, unregister homes
-
-
-
-
     myMyString.ptr (  )->remove (  );
     myMyStringMirror.ptr (  )->remove (  );
 

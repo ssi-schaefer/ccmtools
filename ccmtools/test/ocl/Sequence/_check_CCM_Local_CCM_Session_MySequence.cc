@@ -1,7 +1,7 @@
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
-#include <CCM_Utils/Debug.h>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/debug.h>
+#include <WX/Utils/smartptr.h>
 #include <CCM_OCL/OclException.h>
 
 #ifdef CCM_TEST_PYTHON
@@ -14,7 +14,7 @@
 #include <CCM_Local/CCM_Session_MySequence/MySequenceHome_dbc.h>
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_Local;
 using namespace CCM_Session_MySequence;
 using namespace CCM_Session_MySequence_mirror;
@@ -34,13 +34,7 @@ int main ( int argc, char *argv[] )
   SmartPtr<MySequence> myMySequence;
   SmartPtr<MySequence_mirror> myMySequenceMirror;
 
-
-
-
-
-
-
-  Debug::set_global ( true );
+  Debug::instance().set_global ( true );
 
   DEBUGNL ( "test_client_MySequence_component_main (  )" );
 
@@ -72,13 +66,6 @@ int main ( int argc, char *argv[] )
     myMySequenceMirror = myMySequenceHomeMirror.ptr (  )->create (  );
 
     // create facets, connect components
-
-
-
-
-
-
-
     myMySequence.ptr (  )->configuration_complete (  );
     myMySequenceMirror.ptr (  )->configuration_complete (  );
   } catch ( LocalComponents::HomeNotFound ) {
@@ -141,10 +128,6 @@ int main ( int argc, char *argv[] )
 
   try {
     // disconnect components, destroy instances, unregister homes
-
-
-
-
     myMySequence.ptr (  )->remove (  );
     myMySequenceMirror.ptr (  )->remove (  );
 

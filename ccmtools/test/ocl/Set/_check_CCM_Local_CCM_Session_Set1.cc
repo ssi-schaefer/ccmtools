@@ -1,7 +1,7 @@
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
-#include <CCM_Utils/Debug.h>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/debug.h>
+#include <WX/Utils/smartptr.h>
 #include <CCM_OCL/OclException.h>
 
 #ifdef CCM_TEST_PYTHON
@@ -14,7 +14,7 @@
 #include <CCM_Local/CCM_Session_Set1/Set1Home_dbc.h>
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_Local;
 using namespace CCM_Session_Set1;
 using namespace CCM_Session_Set1_mirror;
@@ -34,13 +34,7 @@ int main ( int argc, char *argv[] )
   SmartPtr<Set1> mySet1;
   SmartPtr<Set1_mirror> mySet1Mirror;
 
-
-
-
-
-
-
-  Debug::set_global ( true );
+  Debug::instance().set_global ( true );
 
   DEBUGNL ( "test_client_Set1_component_main (  )" );
 
@@ -72,13 +66,6 @@ int main ( int argc, char *argv[] )
     mySet1Mirror = mySet1HomeMirror.ptr (  )->create (  );
 
     // create facets, connect components
-
-
-
-
-
-
-
     mySet1.ptr (  )->configuration_complete (  );
     mySet1Mirror.ptr (  )->configuration_complete (  );
   } catch ( LocalComponents::HomeNotFound ) {
@@ -141,10 +128,6 @@ int main ( int argc, char *argv[] )
 
   try {
     // disconnect components, destroy instances, unregister homes
-
-
-
-
     mySet1.ptr (  )->remove (  );
     mySet1Mirror.ptr (  )->remove (  );
 

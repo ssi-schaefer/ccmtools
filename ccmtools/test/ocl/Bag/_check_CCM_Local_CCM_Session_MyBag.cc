@@ -1,7 +1,7 @@
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
-#include <CCM_Utils/Debug.h>
-#include <CCM_Utils/SmartPointer.h>
+#include <WX/Utils/debug.h>
+#include <WX/Utils/smartptr.h>
 #include <CCM_OCL/OclException.h>
 
 #ifdef CCM_TEST_PYTHON
@@ -14,7 +14,7 @@
 #include <CCM_Local/CCM_Session_MyBag/MyBagHome_dbc.h>
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 using namespace CCM_Local;
 using namespace CCM_Session_MyBag;
 using namespace CCM_Session_MyBag_mirror;
@@ -34,13 +34,7 @@ int main ( int argc, char *argv[] )
   SmartPtr<MyBag> myMyBag;
   SmartPtr<MyBag_mirror> myMyBagMirror;
 
-
-
-
-
-
-
-  Debug::set_global ( true );
+  Debug::instance().set_global ( true );
 
   DEBUGNL ( "test_client_MyBag_component_main (  )" );
 
