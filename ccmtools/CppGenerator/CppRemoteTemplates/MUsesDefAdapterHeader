@@ -1,0 +1,5 @@
+     void connect_%(Identifier)s(%(UsesType)s_ptr value)
+         throw(Components::AlreadyConnected, Components::InvalidConnection );
+     %(UsesType)s_ptr disconnect_%(Identifier)s()
+         throw(Components::NoConnection);
+
