@@ -55,7 +55,13 @@ def copy(src, dest):
             new_src = os.path.join(src, f)
             new_dest = os.path.join(dest, f)
             if os.path.isdir(new_src): copy(new_src, new_dest)
-            else: os.symlink(new_src, new_dest)
+            else:
+                src_h = open(new_src)
+                dst_h = open(new_dest, 'w')
+                try: dst_h.write(src_h.read())
+                finally:
+                    src_h.close()
+                    dst_h.close()
     except: return 1
     return 0
 
