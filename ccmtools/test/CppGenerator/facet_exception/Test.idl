@@ -16,6 +16,7 @@ exception Error
   ErrorInfoList info;
 };
 
+
 exception SuperError{};
 exception FatalError{};
 

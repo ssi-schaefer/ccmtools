@@ -18,6 +18,7 @@ context IntegerStack::isFull()
 
 context IntegerStack::push(value:Integer)
     pre: field->size()<maxSize
+    pre: value < 7
     -- some postconditions are redundant
     post size: field->size()=field@pre->size()+1
     post field: field=field@pre->append(value)

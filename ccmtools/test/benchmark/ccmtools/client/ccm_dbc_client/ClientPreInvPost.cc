@@ -129,9 +129,9 @@ int main(int argc, char *argv[])
       // Test configuration
       WX::Utils::Timer timer;
       
-      const long MAX_LOOP_COUNT = 1000000;
-      const long SEQUENCE_SIZE_MAX = 1100;
-      const long SEQUENCE_SIZE_STEP = 100;
+      const long MAX_LOOP_COUNT    = 1000000;
+      const long SEQUENCE_SIZE_MAX = 10000;
+      const long SEQUENCE_SIZE_STEP= 1000;
 
       //--------------------------------------------------------------
       // DbcBenchmakePre

@@ -14,6 +14,8 @@
  * To enable DbC adapter use -DCCM_USE_DBC compiler flag
  ***/
 
+#define CCM_USE_DBC  // can also be set in .confix
+
 #include <cassert>
 #include <iostream>
 
@@ -133,7 +135,7 @@ int main(int argc, char *argv[])
 	result = -1;
       }
       int index;
-      for( index=0; index<100; index++ ) {
+      for( index=0; index<10; index++ ) {
 	theStack->push(index);
       }
       if( theStack->isEmpty() ) {
@@ -141,7 +143,7 @@ int main(int argc, char *argv[])
 	result = -1; 
       }
       long dummy;
-      for( index=0; index<100; index++ ) {
+      for( index=0; index<10; index++ ) {
 	dummy = theStack->pop();
       }
 
