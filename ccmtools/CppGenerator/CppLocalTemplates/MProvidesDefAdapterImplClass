@@ -12,8 +12,6 @@ class %(Identifier)s_impl
   %(Identifier)s_impl(CCM_%(ComponentType)s_impl* component_impl);
   virtual ~%(Identifier)s_impl (  );
 
-  //void set_component(CCM_%(ComponentType)s_impl* c);
-
 %(MOperationProvidesPrototype)s
 };
 

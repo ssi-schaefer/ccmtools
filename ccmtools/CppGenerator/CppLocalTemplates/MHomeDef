@@ -172,7 +172,7 @@ SmartPtr<%(ComponentType)s>
   SmartPtr<%(ComponentType)s> ret (
     dynamic_cast<%(ComponentType)s*> (
       new %(ComponentType)s (
-        this, dynamic_cast<CCM_%(ComponentType)s_impl*> ( local_home->create (  ) )
+        this, dynamic_cast<CCM_%(ComponentType)s*> ( local_home->create (  ) )
         )
       )
     );
@@ -305,7 +305,7 @@ CCM_%(Identifier)s_impl::create (  )
   throw ( localComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Identifier)s_impl->create (  )" );
-  return ( localComponents::EnterpriseComponent* ) new CCM_%(ComponentType)s_impl (  );
+  return dynamic_cast<localComponents::EnterpriseComponent*>(new CCM_%(ComponentType)s_impl (  ));
 }
 
 %(MFactoryDefImplDefinition)s

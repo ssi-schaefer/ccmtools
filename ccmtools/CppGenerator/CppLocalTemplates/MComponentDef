@@ -533,13 +533,13 @@ class CCM_%(Identifier)s_impl
 
   // Callback methods
 
-  void set_session_context ( localComponents::SessionContext* ctx )
+  virtual void set_session_context ( localComponents::SessionContext* ctx )
     throw ( localComponents::CCMException );
-  void ccm_activate (  )
+  virtual void ccm_activate (  )
     throw ( localComponents::CCMException );
-  void ccm_passivate (  )
+  virtual void ccm_passivate (  )
     throw ( localComponents::CCMException );
-  void ccm_remove (  )
+  virtual void ccm_remove (  )
     throw ( localComponents::CCMException );
 };
 
@@ -595,7 +595,7 @@ CCM_%(Identifier)s_impl::set_session_context ( localComponents::SessionContext* 
   throw ( localComponents::CCMException )
 {
   DEBUGNL ( " CCM_%(Identifier)s_impl->set_session_context (  )" );
-  ctx = (CCM_%(Identifier)s_Context*) context;
+  ctx = dynamic_cast<CCM_%(Identifier)s_Context*>(context);
 }
 
 void

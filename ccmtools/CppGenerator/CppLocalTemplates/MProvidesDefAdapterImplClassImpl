@@ -13,15 +13,6 @@
   DEBUGNL ( "-%(Identifier)s_impl->~%(Identifier)s_impl (  )" );
 }
 
-/*
-void
-%(Identifier)s_impl::set_component ( CCM_%(ComponentType)s_impl* c )
-{
-  DEBUGNL ( " %(Identifier)s_impl->set_component (  )" );
-  component = c;
-}
-*/
-
 %(MOperationProvidesAdapterImplDefinition)s
 
 

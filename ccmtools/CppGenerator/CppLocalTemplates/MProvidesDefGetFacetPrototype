@@ -1,2 +1,2 @@
-  CCM_%(ProvidesType)s* get_%(Identifier)s (  );
+  virtual CCM_%(ProvidesType)s* get_%(Identifier)s (  );
 

@@ -17,14 +17,21 @@
 
 %(OpenNamespace)s
 
-class CCM_%(Identifier)s
+// External view of an interface
+class %(Identifier)s
   : virtual public localComponents::Object%(BaseTypes)s
 {
  public:
-  virtual ~CCM_%(Identifier)s (  ) {  }
+  virtual ~%(Identifier)s (  ) {  }
 %(MAttributeDefPrototypeVV)s
 %(MOperationDefPrototypeVV)s
 };
+
+// Internal view of an interface
+class  CCM_%(Identifier)s
+  : virtual public %(Identifier)s
+{};
+
 
 %(CloseNamespace)s
 
