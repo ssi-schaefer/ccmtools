@@ -4,17 +4,17 @@
 {
     LDEBUGNL(CCM_REMOTE, " %(Object)sFacetAdapter::%(Identifier)s()");
 
-%(MParameterDefConvertParameter)s
-%(MParameterDefDeclareResult)s
+%(ConvertFacetParameterToCpp)s
+%(DeclareFacetCppResult)s
     try {
-%(MParameterDefConvertMethod)s
+%(ConvertFacetMethodToCpp)s
     }
-%(MParameterDefConvertExceptions)s  
+%(ConvertFacetExceptionsToCorba)s  
     catch(...) {
         throw CORBA::SystemException();	
     }
-%(MParameterDefConvertParameterFromCppToCorba)s
-%(MParameterDefConvertResult)s
+%(ConvertFacetParameterToCorba)s
+%(ConvertFacetResultToCorba)s
 }
 
 

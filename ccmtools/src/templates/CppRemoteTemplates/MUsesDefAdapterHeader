@@ -5,7 +5,7 @@
   class %(Identifier)sReceptacleAdapter 
     : virtual public CCM_Local::%(CCM_UsesType)s
   {
-    private:
+    protected:
       %(ComponentType)s_impl* component_adapter;
 
     public:

@@ -149,6 +149,19 @@ public class CppRemoteGeneratorImpl
     //====================================================================
 
     /**
+     * Create n tabs in a string.
+     * // TODO: move method to a utility class
+     */
+    protected String insertTab(int n)
+    {
+	StringBuffer buffer = new StringBuffer();
+	for(int i=0; i<n; i++) {
+	    buffer.append("    ");
+	}
+	return buffer.toString();
+    }
+
+    /**
      * Collect all defined CORBA Stub prefixes into a single string.
      * All CORBA Stub prefixes are stored in a class attribute list
      * called CorbaStubsNamespace which is filled in the constructor.
@@ -304,36 +317,32 @@ public class CppRemoteGeneratorImpl
 	vars.put("CORBAType",           getCORBALanguageType(operation));
 	vars.put("MExceptionDef",       getOperationExcepts(operation));
 	vars.put("MExceptionDefCORBA",  getCORBAExcepts(operation));
-        vars.put("MParameterDefAll",    getOperationParams(operation));
+
+	vars.put("ParameterDefLocal",   getLocalOperationParams(operation));
 	vars.put("MParameterDefCORBA",  getCORBAOperationParams(operation));
         vars.put("MParameterDefName",   getOperationParamNames(operation));
 
 	// Used for supports and facet adapter generation
-        vars.put("MParameterDefConvertParameter" , 
-		 convertParameterToCpp(operation)); 
-	vars.put("MParameterDefDeclareResult", 
-		 declareCppResult(operation));
-        vars.put("MParameterDefConvertMethod", 
-		 convertMethodToCpp(operation));
-	vars.put("MParameterDefConvertResult", 
-		 convertResultToCorba(operation));
-	vars.put("MParameterDefConvertExceptions", 
-		 convertExceptionsToCorba(operation));
-	vars.put("MParameterDefConvertParameterFromCppToCorba", 
-		 convertParameterToCorba(operation));
+        vars.put("ConvertFacetParameterToCpp",convertParameterToCpp(operation)); 
+	vars.put("DeclareFacetCppResult",declareCppResult(operation));
+        vars.put("ConvertFacetMethodToCpp",convertMethodToCpp(operation));
+	vars.put("ConvertFacetExceptionsToCorba",convertExceptionsToCorba(operation));
+	vars.put("ConvertFacetParameterToCorba",convertParameterToCorba(operation));
+	vars.put("ConvertFacetResultToCorba",convertResultToCorba(operation));
 
 	// Used for receptacle adapter generation
-	vars.put("MParameterDefConvertReceptacleParameterToCorba",
+	vars.put("ConvertReceptacleParameterToCorba",
 		 convertReceptacleParameterToCorba(operation));
-	vars.put("MParameterDefDeclareReceptacleCorbaResult",
+	vars.put("DeclareReceptacleCorbaResult",
 		 declareReceptacleCorbaResult(operation));
-	vars.put("MParameterDefConvertReceptacleMethodToCorba",
-		 convertReceptacleMethodToCorba(operation, 
-						container.getIdentifier()));
-	vars.put("MParameterDefConvertReceptacleResultToCpp",
-		 convertReceptacleResultToCpp(operation));
-	vars.put("MParameterDefConvertReceptacleExceptionsToCpp",
+	vars.put("ConvertReceptacleMethodToCorba",
+		 convertReceptacleMethodToCorba(operation,container.getIdentifier()));
+	vars.put("ConvertReceptacleExceptionsToCpp",
 		 convertReceptacleExceptionsToCpp(operation));
+	vars.put("ConvertReceptacleParameterToCpp",
+		 convertReceptacleParameterToCpp(operation)); 
+	vars.put("ConvertReceptacleResultToCpp",
+		 convertReceptacleResultToCpp(operation));
 
         vars.put("Return", (lang_type.equals("void")) ? "" : "return ");
 
@@ -989,6 +998,35 @@ public class CppRemoteGeneratorImpl
     //====================================================================
 
     /**
+     * Override a super class method to add a local namespace to operation
+     * parameters (if they are not primitive types).
+     * Refactoring: move it to the super class...
+     */
+    protected String getBaseLanguageType(MTyped object)
+    {
+	StringBuffer buffer = new StringBuffer();
+	if(object instanceof MParameterDef
+	   || object instanceof MOperationDef) { 
+	    MIDLType idlType = object.getIdlType();
+	    if(idlType instanceof MPrimitiveDef
+	       || idlType instanceof MStringDef
+	       || idlType instanceof MWstringDef) {
+		buffer.append(super.getBaseLanguageType(object));
+	    }
+	    else {
+		buffer.append(getLocalNamespace("::",""));
+		buffer.append(super.getBaseLanguageType(object));
+	    }
+	}
+	else {
+	    // Only add namespace to operation parameters
+	    buffer.append(super.getBaseLanguageType(object));
+	}
+	return buffer.toString();
+    }
+
+
+    /**
      * Converts the CCM model type information (MTyped) to the corresponding
      * local C++ types.
      *
@@ -1009,6 +1047,18 @@ public class CppRemoteGeneratorImpl
         }
         return super.getLanguageType(object);
     }
+
+
+    protected String getLocalOperationParams(MOperationDef op)
+    {
+        List list = new ArrayList();
+        for(Iterator params = op.getParameters().iterator();params.hasNext();) {
+            MParameterDef p = (MParameterDef) params.next();
+            list.add(getLanguageType(p) + " " + p.getIdentifier());
+        }
+        return join(", ", list);
+    }
+
 
 
     //====================================================================
@@ -1228,6 +1278,7 @@ public class CppRemoteGeneratorImpl
 	List scope = getScope(contained);
 	String localScope;
 
+	// TODO: use LocalNamespace!!!
 	if(scope.size() > 0) 
 	    localScope =  join("::", scope) + "::";
 	else
@@ -1407,15 +1458,12 @@ public class CppRemoteGeneratorImpl
 	    MIDLType idlType = ((MTyped)p).getIdlType();
 	    MTypedefDef typedef = (MTypedefDef)idlType;
 	    MContained contained = (MContained)typedef;
-	    //	    MStructDef idl_struct = (MStructDef)idl_typedef;	
-	    //	    List scope = getScope((MContained)idl_struct);
 	    List scope = getScope(contained);
 	    String remoteScope = "::CORBA_Stubs::";
 	    if(scope.size() > 0)
 		remoteScope += join("::", scope) + "::";
  
 	    ret.add("    " + p.getIdentifier() + " = new " 
-		    //    + remoteScope + idl_struct.getIdentifier() + ";");
 		    + remoteScope + contained.getIdentifier() + ";");
 	    ret.add("    CCM_Remote::convertToCorba(parameter_" 
 		    + p.getIdentifier() 
@@ -1439,7 +1487,6 @@ public class CppRemoteGeneratorImpl
     {
 	List ret = new ArrayList();
 	MIDLType idl_type = op.getIdlType();
-
 
 	if(idl_type instanceof MPrimitiveDef
 	   && ((MPrimitiveDef)idl_type).getKind() == MPrimitiveKind.PK_VOID) {
@@ -1500,8 +1547,6 @@ public class CppRemoteGeneratorImpl
 	MIDLType idlType = op.getIdlType();
 	MTypedefDef typedef = (MTypedefDef)idlType;
 	MContained contained = (MContained)typedef; 
-	//	MStructDef idl_struct = (MStructDef)typedef;
-	//	List scope = getScope((MContained)idl_struct);
 	List scope = getScope(contained);
 	String remoteScope = "::CORBA_Stubs::";
     
@@ -1573,27 +1618,85 @@ public class CppRemoteGeneratorImpl
      */
     protected String convertReceptacleParameterToCorba(MOperationDef op)
     {
-        List ret = new ArrayList();
+        List list = new ArrayList();
         for (Iterator params = op.getParameters().iterator(); params.hasNext(); ) {
             MParameterDef p = (MParameterDef) params.next();
-	    MParameterMode direction = p.getDirection();
-	    String base_type = getBaseIdlType(p);
-	    String corba_type = (String)CORBA_mappings.get(base_type);
+	    MIDLType idlType = ((MTyped)p).getIdlType();
 
-	    // Note that the out parameters must not be converted to C++
-	    if(direction == MParameterMode.PARAM_OUT) {
-		ret.add("    " + corba_type + " parameter_" 
-			+ p.getIdentifier() + ";"); 
+	    if(idlType instanceof MPrimitiveDef
+	       || idlType instanceof MStringDef
+	       || idlType instanceof MWstringDef) {
+		list.add(convertPrimitiveParameterToCorba(p));
 	    }
-	    else { 
-		ret.add("    " + corba_type + " parameter_" 
-			+ p.getIdentifier() +";");
-		ret.add("    CCM_Remote::convertToCorba(" 
-			+ p.getIdentifier() 
-			+ ", parameter_" + p.getIdentifier() + ");");
+	    else if(idlType instanceof MStructDef) { 
+		list.add(convertUserParameterToCorba(p));
+	    }
+	    else if(idlType instanceof MAliasDef) {
+		MTyped containedType = (MTyped)idlType;
+		MIDLType containedIdlType = containedType.getIdlType(); 
+		if(containedIdlType instanceof MPrimitiveDef
+		   || containedIdlType instanceof MStringDef
+		   || containedIdlType instanceof MWstringDef) {
+
+		    System.out.println("==>" + getCORBALanguageType(op));
+		    System.out.println("==>" + getCORBALanguageType(p));
+
+		    list.add(convertPrimitiveParameterToCorba(p));
+		}
+		else if(containedIdlType instanceof MStructDef
+			|| containedIdlType instanceof MSequenceDef) {
+		    list.add(convertUserParameterToCorba(p));
+		}
+		else {
+		    throw new RuntimeException("CppRemoteGenerator.convertReceptacleParameterToCorba("
+					       + op + "): Not supported alias type"
+					       + containedIdlType);
+		}
 	    }
 	}
-	return join("\n", ret) + "\n";
+	return join("\n", list) + "\n";
+    }
+
+    protected String convertPrimitiveParameterToCorba(MParameterDef p)
+    {
+	MParameterMode direction = p.getDirection();
+	MIDLType idlType = ((MTyped)p).getIdlType();
+	String baseType = getBaseIdlType(p);
+	String corbaType = (String)CORBA_mappings.get(baseType);
+	List list = new ArrayList();
+
+	list.add(insertTab(1) + corbaType + " parameter_" + p.getIdentifier() + ";"); 
+	if(direction != MParameterMode.PARAM_OUT) {
+	    list.add(insertTab(1) + "CCM_Remote::convertToCorba(" + p.getIdentifier() 
+		     + ", parameter_" + p.getIdentifier() + ");");
+	}
+	return join("\n", list);
+    }
+
+    protected String convertUserParameterToCorba(MParameterDef p)
+    {
+	MParameterMode direction = p.getDirection();
+	MIDLType idlType = ((MTyped)p).getIdlType();
+	MTypedefDef typedef = (MTypedefDef)idlType;
+	MContained contained = (MContained)typedef;
+	List scope = getScope(contained);
+	String remoteScope;
+	List list = new ArrayList();
+
+	if(direction == MParameterMode.PARAM_IN
+	   || direction == MParameterMode.PARAM_INOUT) {
+	    list.add(insertTab(1) + getCorbaStubsNamespace("::") + contained.getIdentifier() 
+		     + "_var parameter_" + p.getIdentifier() 
+		     + "= new " + getCorbaStubsNamespace("::") 
+		     + contained.getIdentifier() + ";"); 
+	    list.add(insertTab(1) + "CCM_Remote::convertToCorba(" + p.getIdentifier() 
+		     + ", parameter_" + p.getIdentifier() + ");");
+	}
+	else { // MParameterMode.PARAM_OUT
+	    list.add(insertTab(1) + getCorbaStubsNamespace("::") + contained.getIdentifier() 
+		     + "_var parameter_" + p.getIdentifier() + ";");
+	}
+	return join("\n", list);
     }
 
 
@@ -1609,16 +1712,29 @@ public class CppRemoteGeneratorImpl
      */
     protected String declareReceptacleCorbaResult(MOperationDef op)
     {
-	String ret_string = "";
-	MIDLType idl_type = op.getIdlType(); 
+	StringBuffer buffer = new StringBuffer();
+	MIDLType idlType = op.getIdlType(); 
 
-	if(idl_type instanceof MPrimitiveDef || 
-	   idl_type instanceof MStringDef) {
-	    ret_string = "    " 
-		+ (String)CORBA_mappings.get((String)getBaseIdlType(op)) 
-		+ " result;";
+	if(idlType instanceof MPrimitiveDef || 
+	   idlType instanceof MStringDef) {
+	    buffer.append(insertTab(1)); 
+	    buffer.append((String)CORBA_mappings.get((String)getBaseIdlType(op))); 
+	    buffer.append(" result;");
 	}
-	return ret_string;
+	else if(idlType instanceof MStructDef
+		|| idlType instanceof MAliasDef) {
+	    MTypedefDef typedef = (MTypedefDef)idlType;
+	    MContained contained = (MContained)typedef;
+	    buffer.append(insertTab(1));
+	    buffer.append(getCorbaStubsNamespace("::"));  
+	    buffer.append(contained.getIdentifier());
+	    buffer.append("_var result;"); 
+	}
+	else {
+	    throw new RuntimeException("CppRemoteGenerator.declareReceptacleCorbaResult(" + op 
+				       + ") : unhandled idlType");
+	}
+	return buffer.toString();
     }
 
 
@@ -1634,22 +1750,80 @@ public class CppRemoteGeneratorImpl
      */
     protected String convertReceptacleMethodToCorba(MOperationDef op, String receptacleName)
     {
-	String ret_string = "";
-	List ret = new ArrayList();
-	MIDLType idl_type = op.getIdlType(); 
+	StringBuffer buffer = new StringBuffer();
+	List list = new ArrayList();
+	MIDLType idlType = op.getIdlType(); 
 
-	if(idl_type instanceof MPrimitiveDef || 
-	   idl_type instanceof MStringDef) {
-	    ret_string = "    result = component_adapter->get_connection_" 
-		+ receptacleName + "()->" + op.getIdentifier() + "(";
+	if(idlType instanceof MPrimitiveDef 
+	   && ((MPrimitiveDef)idlType).getKind() == MPrimitiveKind.PK_VOID) {
+	    // void method, no result declaration
 	}
+	else {
+	    buffer.append(insertTab(2));
+	    buffer.append("result = ");
+	}
+	buffer.append("component_adapter->get_connection_");
+	buffer.append(receptacleName);
+	buffer.append("()->");
+	buffer.append(op.getIdentifier());
+	buffer.append("(");
+
         for(Iterator params = op.getParameters().iterator();params.hasNext();) {
             MParameterDef p = (MParameterDef) params.next();
-	    String base_type = 
-		(String)CORBA_mappings.get((String)getBaseIdlType(p));
-	    ret.add(" parameter_" + p.getIdentifier()); 
+	    list.add("parameter_" + p.getIdentifier()); 
         }
-        return ret_string + join(", ", ret) + ");";
+	buffer.append(join(", ", list));
+	buffer.append(");");
+        return buffer.toString();
+    }
+
+
+    protected String convertReceptacleParameterToCpp(MOperationDef op)
+    {
+	List ret = new ArrayList();
+        for(Iterator params = op.getParameters().iterator();params.hasNext();) {
+            MParameterDef p = (MParameterDef) params.next();
+	    MIDLType idl_type = ((MTyped)p).getIdlType();
+	    
+	    if(idl_type instanceof MPrimitiveDef 
+	       || idl_type instanceof MStringDef) {
+		ret.add(convertReceptaclePrimitiveParameterToCpp(p));
+	    }
+	    else if(idl_type instanceof MStructDef) {
+		ret.add(convertReceptacleUserParameterToCpp(p));
+	    }
+	    else if(idl_type instanceof MAliasDef) {
+		MTyped containedType = (MTyped)idl_type;
+		MIDLType containedIdlType = containedType.getIdlType(); 
+		if(containedIdlType instanceof MPrimitiveDef
+		   || containedIdlType instanceof MStringDef
+		   || containedIdlType instanceof MWstringDef) {
+		    ret.add(convertReceptaclePrimitiveParameterToCpp(p));
+		}
+		else {
+		    ret.add(convertReceptacleUserParameterToCpp(p));
+		}
+	    }
+	}
+	return join("\n", ret) + "\n";
+    }
+
+    protected String convertReceptaclePrimitiveParameterToCpp(MParameterDef p)
+    {
+	List list = new ArrayList();
+	MParameterMode direction = p.getDirection();
+	if(direction != MParameterMode.PARAM_IN) {
+	    list.add("    CCM_Remote::convertFromCorba(parameter_" 
+		    +  p.getIdentifier() 
+		    +  ", " + p.getIdentifier() + ");" );
+	}
+	return join("\n", list);
+    }
+
+    // TODO: If there are no additional features, remove this method
+    protected String convertReceptacleUserParameterToCpp(MParameterDef p)
+    {
+	return convertReceptaclePrimitiveParameterToCpp(p);
     }
 
 
@@ -1665,31 +1839,71 @@ public class CppRemoteGeneratorImpl
      */
     protected String convertReceptacleResultToCpp(MOperationDef op)
     {
-	List ret = new ArrayList();
-	MIDLType idl_type = op.getIdlType();
+	List list = new ArrayList();
+	MIDLType idlType = op.getIdlType();
 
-	if(idl_type instanceof MPrimitiveDef || 
-	   idl_type instanceof MStringDef) {
-	    String base_type = getBaseIdlType(op);
-	    // Convert the inout and out parameters 
-	    for(Iterator params = op.getParameters().iterator(); 
-		params.hasNext(); ) {
-		MParameterDef p = (MParameterDef) params.next();
-		MParameterMode direction = p.getDirection();
-		if(direction != MParameterMode.PARAM_IN) {
-		    ret.add("    CCM_Remote::convertFromCorba(parameter_" 
-			    + p.getIdentifier() 
-			    + ", " + p.getIdentifier() + ");");
-		}
+	if(idlType instanceof MPrimitiveDef
+	   && ((MPrimitiveDef)idlType).getKind() == MPrimitiveKind.PK_VOID) {
+	    return ""; // void foo() does not need a result convertion
+	}
+
+	if(idlType instanceof MPrimitiveDef 
+	   || idlType instanceof MStringDef
+	   || idlType instanceof MWstringDef) {
+	    list.add(convertReceptaclePrimitiveResultToCpp(op));
+	}
+	else if(idlType instanceof MStructDef
+		|| idlType instanceof MSequenceDef) {
+	    list.add(convertReceptacleUserResultToCpp(op));
+	}
+	else if(idlType instanceof MAliasDef) {
+	    MTyped containedType = (MTyped)idlType;
+	    MIDLType containedIdlType = containedType.getIdlType(); 
+	    if(containedIdlType instanceof MPrimitiveDef
+	       || containedIdlType instanceof MStringDef
+	       || containedIdlType instanceof MWstringDef) {
+		list.add(convertReceptaclePrimitiveResultToCpp(op));
 	    }
-	    // Convert the result iff the result type is not void
-	    if(!base_type.equals("void")) {
-		ret.add("    " + getLanguageType(op) + " return_value;");
-		ret.add("    CCM_Remote::convertFromCorba(result, return_value);");
-		ret.add("    return return_value;");
+	    else if(containedIdlType instanceof MStructDef
+		    || containedIdlType instanceof MSequenceDef) {
+		list.add(convertReceptacleUserResultToCpp(op));
+	    }
+	    else {
+		throw new RuntimeException("CppRemoteGenerator.convertReceptacleResultToCpp(" + op 
+					   + "): Not supported alias type "
+					   + containedIdlType);
 	    }
 	}
-	return join("\n", ret);
+	else {
+	    throw new RuntimeException("CppRemoteGenerator.convertReceptacleResultToCpp(" + op 
+				       + ") : unhandled idlType");
+	}
+	return join("\n", list);
+    }
+
+
+    protected String convertReceptaclePrimitiveResultToCpp(MOperationDef op) 
+    {
+	String baseType = getBaseIdlType(op);
+	List list = new ArrayList();
+
+	list.add(insertTab(1) + getLanguageType(op) + " return_value;");
+	list.add(insertTab(1) + "CCM_Remote::convertFromCorba(result, return_value);"); 
+	list.add(insertTab(1) + "return return_value;");
+	return join("\n", list);
+    }
+    
+    protected String convertReceptacleUserResultToCpp(MOperationDef op) 
+    {
+	List list = new ArrayList();
+	MIDLType idlType = op.getIdlType();
+	MTypedefDef typedef = (MTypedefDef)idlType;
+	MContained contained = (MContained)typedef; 
+
+	list.add(insertTab(1) + getLocalNamespace("::","") + contained.getIdentifier() + " return_value;");
+	list.add(insertTab(1) + "CCM_Remote::convertFromCorba(result, return_value);");
+	list.add(insertTab(1) + "return return_value;");
+	return join("\n", list);	
     }
 
 

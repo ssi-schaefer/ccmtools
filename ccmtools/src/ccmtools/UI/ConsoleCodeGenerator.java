@@ -113,7 +113,8 @@ public class ConsoleCodeGenerator
                 printUsage("failed to create a graph traverser");
 
         ParserManager manager = new ParserManager(par_mask);
-        if (manager == null) printUsage("failed to create a parser manager");
+        if (manager == null) 
+	    printUsage("failed to create a parser manager");
 
         Driver driver = createDriver();
         ArrayList handlers = new ArrayList();
