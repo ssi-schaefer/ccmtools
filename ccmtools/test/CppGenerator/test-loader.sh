@@ -40,11 +40,11 @@ export CLASSPATH=./antlr.jar:../../antlr.jar:.:../..:${CLASSPATH}
 ret=""
 
 if [ ! -e ${install_dir}/lib/libccmtools-cpp-environment_CCM_Utils.a ]
-then ccmtools-c++-environment -i ${install_dir} && ret=1
+then ccmtools-c++-environment -i ${install_dir} || ret=1
 fi
 
 test -z "${ret}" && ret=1 && \
-  ccmtools-c++-generate -y -d -c "1.2.3" -p ${1} -i ${install_dir} *.idl && \
+  ccmtools-c++-generate -d -c "1.2.3" -p ${1} -i ${install_dir} *.idl && \
   PYTHONPATH=${cwd}:${PYTHONPATH} ccmtools-c++-make -p ${1} && \
   ccmtools-c++-install -p ${1} && \
   ccmtools-c++-uninstall -p ${1} && ret=0

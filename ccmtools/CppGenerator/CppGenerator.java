@@ -26,7 +26,6 @@ import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
-import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
@@ -262,8 +261,6 @@ abstract public class CppGenerator
             return data_MOperationDef(variable, value);
         } else if (current_node instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
-        } else if (current_node instanceof MAttributeDef) {
-            return data_MAttributeDef(variable, value);
         } else if (current_node instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
         }
@@ -336,14 +333,6 @@ abstract public class CppGenerator
         return data_value;
     }
 
-    protected String data_MAttributeDef(String data_type, String data_value)
-    {
-        if (data_type.equals("ComponentIdentifier")) {
-            return ((MAttributeDef) current_node).getDefinedIn().getIdentifier();
-        }
-        return data_value;
-    }
-
     protected String data_MComponentDef(String data_type, String data_value)
     {
         if (data_type.endsWith("Namespace")) {
@@ -371,31 +360,15 @@ abstract public class CppGenerator
 
     protected String data_MFactoryDef(String data_type, String data_value)
     {
-        if (data_type.startsWith("MParameterDef")) {
-            if (data_value.endsWith(", "))
-                return data_value.substring(0, data_value.length() - 2);
-        } else if (data_type.equals("ComponentIdentifier")) {
-            MFactoryDef factory = (MFactoryDef) current_node;
-            return factory.getHome().getComponent().getIdentifier();
-        } else if (data_type.equals("HomeIdentifier")) {
-            MFactoryDef factory = (MFactoryDef) current_node;
-            return factory.getHome().getIdentifier();
-        }
+        if (data_type.startsWith("MParameterDef") && data_value.endsWith(", "))
+            return data_value.substring(0, data_value.length() - 2);
         return data_value;
     }
 
     protected String data_MFinderDef(String data_type, String data_value)
     {
-        if (data_type.startsWith("MParameterDef")) {
-            if (data_value.endsWith(", "))
-                return data_value.substring(0, data_value.length() - 2);
-        } else if (data_type.equals("ComponentIdentifier")) {
-            MFinderDef finder = (MFinderDef) current_node;
-            return finder.getHome().getComponent().getIdentifier();
-        } else if (data_type.equals("HomeIdentifier")) {
-            MFinderDef finder = (MFinderDef) current_node;
-            return finder.getHome().getIdentifier();
-        }
+        if (data_type.startsWith("MParameterDef") && data_value.endsWith(", "))
+            return data_value.substring(0, data_value.length() - 2);
         return data_value;
     }
 
@@ -420,13 +393,12 @@ abstract public class CppGenerator
 
     protected String data_MOperationDef(String data_type, String data_value)
     {
-        if (data_type.equals("MExceptionDef")) {
-            if (data_value.endsWith(", "))
-                return "throw ( " +
-                    data_value.substring(0, data_value.length() - 2) + " )";
-        } else if (data_type.startsWith("MParameterDef")) {
-            if (data_value.endsWith(", "))
-                return data_value.substring(0, data_value.length() - 2);
+        if (data_type.equals("MExceptionDef") && data_value.endsWith(", ")) {
+            return "throw ( " +
+                data_value.substring(0, data_value.length() - 2) + " )";
+        } else if (data_type.startsWith("MParameterDef") &&
+                   data_value.endsWith(", ")) {
+            return data_value.substring(0, data_value.length() - 2);
         } else if (data_type.equals("UsesIdentifier")) {
             MOperationDef op = (MOperationDef) current_node;
             if (op.getDefinedIn() instanceof MUsesDef)
@@ -441,14 +413,7 @@ abstract public class CppGenerator
 
     protected String data_MProvidesDef(String data_type, String data_value)
     {
-        if (data_type.equals("HomeIdentifier")) {
-            MProvidesDef provides = (MProvidesDef) current_node;
-            Iterator i = provides.getComponent().getHomes().iterator();
-            if (i.hasNext())
-                return ((MHomeDef) i.next()).getIdentifier();
-            else
-                throw new RuntimeException("Can't find home for "+provides.getIdentifier());
-        } else if (data_type.startsWith("MOperation")) {
+        if (data_type.startsWith("MOperation")) {
             MProvidesDef provides = (MProvidesDef) current_node;
             return fillTwoStepTemplates(provides.getProvides(), data_type);
         }
@@ -457,29 +422,9 @@ abstract public class CppGenerator
 
     protected String data_MSupportsDef(String data_type, String data_value)
     {
-        if (data_type.equals("HomeIdentifier")) {
-            MSupportsDef supports = (MSupportsDef) current_node;
-            Iterator i = supports.getComponent().getHomes().iterator();
-            if (i.hasNext())
-                return ((MHomeDef) i.next()).getIdentifier();
-            else
-                throw new RuntimeException("Can't find home for "+supports.getIdentifier());
-        } else if (data_type.startsWith("MOperation")) {
+        if (data_type.startsWith("MOperation")) {
             MSupportsDef supports = (MSupportsDef) current_node;
             return fillTwoStepTemplates(supports.getSupports(), data_type);
-        }
-        return data_value;
-    }
-
-    protected String data_MUsesDef(String data_type, String data_value)
-    {
-        if (data_type.equals("HomeIdentifier")) {
-            MUsesDef uses = (MUsesDef) current_node;
-            Iterator i = uses.getComponent().getHomes().iterator();
-            if (i.hasNext())
-                return ((MHomeDef) i.next()).getIdentifier();
-            else
-                throw new RuntimeException("Can't find home for "+uses.getIdentifier());
         }
         return data_value;
     }

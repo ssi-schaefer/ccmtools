@@ -21,6 +21,7 @@
 
 package ccmtools.CodeGenerator;
 
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
@@ -35,6 +36,8 @@ import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MConsumesDef;
 import ccmtools.Metamodel.ComponentIDL.MEmitsDef;
+import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
+import ccmtools.Metamodel.ComponentIDL.MFinderDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MPublishesDef;
@@ -759,8 +762,6 @@ abstract public class CodeGenerator
             MConsumesDef consumes = (MConsumesDef) current_node;
             value = consumes.getType().getIdentifier();
         } else if (variable.equals("ComponentType")) {
-            // yet another silly type check comb. thank you, java !
-
             if (current_node instanceof MHomeDef) {
                 MHomeDef home = (MHomeDef) current_node;
                 value = home.getComponent().getIdentifier();
@@ -782,16 +783,55 @@ abstract public class CodeGenerator
             } else if (current_node instanceof MSupportsDef) {
                 MSupportsDef supports = (MSupportsDef) current_node;
                 value = supports.getComponent().getIdentifier();
+            } else if (current_node instanceof MFactoryDef) {
+                MFactoryDef factory = (MFactoryDef) current_node;
+                value = factory.getHome().getComponent().getIdentifier();
+            } else if (current_node instanceof MFinderDef) {
+                MFinderDef finder = (MFinderDef) current_node;
+                value = finder.getHome().getComponent().getIdentifier();
+            } else if (current_node instanceof MAttributeDef) {
+                MAttributeDef attr = (MAttributeDef) current_node;
+                value = attr.getDefinedIn().getIdentifier();
             }
         } else if (variable.equals("HomeType")) {
-            MComponentDef component = (MComponentDef) current_node;
-            Iterator homes = component.getHomes().iterator();
-            if (homes.hasNext()) {
-                value = ((MHomeDef) homes.next()).getIdentifier();
+            if (current_node instanceof MFactoryDef) {
+                MFactoryDef factory = (MFactoryDef) current_node;
+                value = factory.getHome().getIdentifier();
+            } else if (current_node instanceof MFinderDef) {
+                MFinderDef finder = (MFinderDef) current_node;
+                value = finder.getHome().getIdentifier();
             } else {
-                throw new RuntimeException("Component "+
-                                           component.getIdentifier()+
-                                           " has no home");
+                try {
+                    Iterator homes = null;
+                    if (current_node instanceof MComponentDef) {
+                        MComponentDef component = (MComponentDef) current_node;
+                        homes = component.getHomes().iterator();
+                    } else if (current_node instanceof MProvidesDef) {
+                        MProvidesDef provides = (MProvidesDef) current_node;
+                        homes = provides.getComponent().getHomes().iterator();
+                    } else if (current_node instanceof MUsesDef) {
+                        MUsesDef uses = (MUsesDef) current_node;
+                        homes = uses.getComponent().getHomes().iterator();
+                    } else if (current_node instanceof MEmitsDef) {
+                        MEmitsDef emits = (MEmitsDef) current_node;
+                        homes = emits.getComponent().getHomes().iterator();
+                    } else if (current_node instanceof MPublishesDef) {
+                        MPublishesDef publishes = (MPublishesDef) current_node;
+                        homes = publishes.getComponent().getHomes().iterator();
+                    } else if (current_node instanceof MConsumesDef) {
+                        MConsumesDef consumes = (MConsumesDef) current_node;
+                        homes = consumes.getComponent().getHomes().iterator();
+                    } else if (current_node instanceof MSupportsDef) {
+                        MSupportsDef supports = (MSupportsDef) current_node;
+                        homes = supports.getComponent().getHomes().iterator();
+                    }
+
+                    if (homes != null)
+                        value = ((MHomeDef) homes.next()).getIdentifier();
+                } catch (Exception e) {
+                    String id = ((MContained) current_node).getIdentifier();
+                    throw new RuntimeException("Node '"+id+"' has no home");
+                }
             }
         }
 

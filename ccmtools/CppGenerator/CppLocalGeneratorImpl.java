@@ -27,10 +27,8 @@ import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
-import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
-import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 
 import java.io.File;
 import java.io.IOException;

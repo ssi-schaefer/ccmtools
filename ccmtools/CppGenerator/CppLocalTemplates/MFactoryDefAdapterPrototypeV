@@ -1,2 +1,2 @@
-  virtual CCM_Utils::SmartPtr<%(ComponentIdentifier)s> %(Identifier)s ( %(MParameterDefAll)s )
+  virtual CCM_Utils::SmartPtr<%(ComponentType)s> %(Identifier)s ( %(MParameterDefAll)s )
     throw ( localComponents::CreateFailure );

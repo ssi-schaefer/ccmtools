@@ -1,9 +1,9 @@
 localComponents::EnterpriseComponent*
-CCM_%(HomeIdentifier)s_impl::%(Identifier)s ( %(MParameterDefAll)s )
+CCM_%(HomeType)s_impl::%(Identifier)s ( %(MParameterDefAll)s )
   throw ( localComponents::CreateFailure )
 {
-  DEBUGNL ( " CCM_%(HomeIdentifier)s_impl->%(Identifier)s (  )" );
-  CCM_%(ComponentIdentifier)s_impl* lc = new CCM_%(ComponentIdentifier)s_impl();
+  DEBUGNL ( " CCM_%(HomeType)s_impl->%(Identifier)s (  )" );
+  CCM_%(ComponentType)s_impl* lc = new CCM_%(ComponentType)s_impl();
 
   // TODO : IMPLEMENT FACTORY DETAILS HERE !
 

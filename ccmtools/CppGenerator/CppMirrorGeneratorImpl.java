@@ -181,7 +181,8 @@ public class CppMirrorGeneratorImpl
             // values.
             return getTestVariable(current_node, 0);
         }
-        return super.data_MAttributeDef(data_type, data_value);
+        // there isn't a data_MAttribute function in the superclass ...
+        return data_value;
     }
 
     protected String data_MComponentDef(String data_type, String data_value)
