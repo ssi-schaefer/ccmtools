@@ -17,10 +17,11 @@ local: idl
 	ccmtools-generate c++local -a -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/*.idl
 	ccmtools-generate c++local-test -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/${APP_NAME}.idl
 
-build: 
+check: 
+	cp impl/Makefile.py xxx
 	cp impl/Test_console_impl.cc xxx/impl
 	cp impl/Test_mirror_impl.cc xxx/impl
-	confix.py --profile=ccmtools_test --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
+	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
 
 clean: 
 	rm -rf xxx 

@@ -16,15 +16,15 @@ Model} (CCM) \cite{CCMSpecification} and our local component extensions.
     \end{center}
 \end{figure}
 
-As shown in Fig.~\ref{ccmtools}, the CCM Tools form a component development framework 
-that is flexible and extensible.
+As shown in Fig.~\ref{ccmtools}, the CCM Tools form a component development 
+framework that is flexible and extensible.
 
 
 \newpage
-Using a well defined {\bf CCM model}, we can separate component descriptions from
-code generator tools. Therefore, we can add new description methods (e.g.
-UML profiles) or code generator tools (e.g. a Java Component Generator) without changing
-other tools.
+Using a well defined {\bf CCM model}, we can separate component descriptions 
+from code generator tools. Therefore, we can add new description methods (e.g.
+UML profiles) or code generator tools (e.g. a Java Component Generator) without 
+changing other tools.
 
 The current CCM Tools framework contains the following tools:
 \begin{description}
@@ -36,10 +36,11 @@ While the IDL3 file is used to generate component logic, the OCL file is input
 for a Design by Contract (DbC) generator (as described later).
 
 \item [CCM Metamodel Library]
-The CCM specification defines an {\it Interface Repository Metamodel} corresponding
-to the IDL3 syntax. We implemented a CCM Metamodel Library that allows creation and
-manipulation of CCM models. Using this library we can clearly separate the parser
-tools and code generators. The parser creates a model object for every part of the
+The CCM specification defines an {\it Interface Repository Metamodel} 
+corresponding to the IDL3 syntax. We implemented a CCM Metamodel Library that 
+allows creation and manipulation of CCM models. Using this library we can 
+clearly separate the parser tools and code generators. 
+The parser creates a model object for every part of the
 source code matching an IDL grammar rule.
 
 \item [idl3 Parser]
@@ -48,8 +49,9 @@ and creates a CCM model using the CCM Metamodel Library in the memory. This CCM
 model is the starting point for all code generator tools in the framework.
 
 \item [idl3 Generator]
-To test the functionality of the CCM Metamodel Library and the IDL3 Parser we implemented
-an IDL3 Generator that writes out a CCM model into corresponding IDL3 Files.
+To test the functionality of the CCM Metamodel Library and the IDL3 Parser we 
+implemented an IDL3 Generator that writes out a CCM model into corresponding 
+IDL3 Files.
 
 \item [idl3mirror Generator]
 We use a {\it Test-Driven Development} (TDD) strategy to develop and to specify
@@ -123,31 +125,29 @@ and is organized in the following structure (Fig.~\ref{ccmtools-structure}):
 
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics [width=10cm,angle=0] {CcmToolsArchitecture}
+        \includegraphics [width=12cm,angle=0] {CcmToolsArchitecture}
         \caption{CCM Tools structure}
         \label{ccmtools-structure}
     \end{center}
 \end{figure}
 
 \begin{description}
-\item [java-environment:]
-This module contains Java code and libraries that are used by the CCM Tools
-but can also be used independently (e.g. a UML parser that is part of the 
-uml2idl generator, a dtd2java generator that can generate XML parsers with a 
-model library to handle XML files in memory, etc.).
-  
+\item [ccmtools:]
+This module contains all the tools and libraries that build the CCM Tools 
+framework in form of Java source code.
+
 \item [cpp-environment:]
 This module contains C++ source code that builds a runtime environment for
-C++ components (e.g. C++ smart pointer library, CCM header files, HomeFinder
-implementations etc.).
+generated components (e.g. C++ smart pointer library, CCM header files, 
+HomeFinder implementations etc.).
+The C++ components depend only on cpp-environment libraries. 
+Remote components are also based on {\bf Mico} \cite{MicoORB} an open source 
+Object Request Broker (ORB) implementation.
 
-\item [ccmtools:]
-This module contains all the CCM Tools in form of Java source code and Python
-scripts.
-Some CCM Tools need jar files from java-environment to run, while the generated C++ 
-components depend only on cpp-environment libraries. 
-Remote components are also based on {\bf Mico} \cite{MicoORB} an open source Object 
-Request Broker (ORB) implementation.
+
+\item [java-environment:]
+This module contains Java code that is used by Java clients
+as a runtime library to access remote CCM components.
 
 \end{description}
 
