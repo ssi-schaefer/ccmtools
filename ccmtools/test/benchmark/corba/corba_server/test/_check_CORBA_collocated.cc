@@ -87,14 +87,133 @@ int main (int argc, char** argv)
         // Execute methods on the remote object via proxy object
         
 	cout << "--- Start Test Case --------------------------------" << endl;
+	
+	//----------------------------------------------------------
+	// check CORBA object's functionality
+	//----------------------------------------------------------
 
+	{
+	    // long setter and getter
+	    CORBA::Long value = 7;
+	    bm->long_attr(value);
+
+	    CORBA::Long result;
+	    result = bm->long_attr();
+	    
+	    assert(result == value);
+	}
+
+	{
+	    // string setter and getter
+	    int size = 100;
+	    string s;
+	    for(int i=0; i<size; i++)
+		s += "X";
+	    CORBA::String_var value = CORBA::string_dup(s.c_str());
+	    bm->string_attr(value.in());
+
+	    CORBA::String_var result =  bm->string_attr();
+	    
+	    assert(strcmp(result, value) == 0);
+	}
+
+	{
+	    // LongList setter and getter
+	    int size = 100;
+	    LongList_var value = new LongList;
+	    value->length(size);
+	    for(int i=0; i<size; i++)
+		(*value)[i] = i;
+	    bm->LongList_attr(value.in());  
+
+	    LongList_var result =  bm->LongList_attr();
+	    
+	    for(int i=0; i<size; i++) {
+		assert((*result)[i] == (*value)[i]);
+	    }
+	}
+
+
+	{
+	    // inout long parameter
+	    CORBA::Long value = 7;
+	    bm->long_attr(value);
+
+	    value = 0;
+	    bm->f_inout1(value);
+
+	    assert(value == 7);
+	}
+	
+	{
+	    // inout string parameter
+	    
+	    CORBA::String_var value = CORBA::string_dup("0123456789");
+	    bm->string_attr(value.in());
+	    
+	    value = CORBA::string_dup("ABCDEFGHIJK");
+	    bm->f_inout2(value.inout());
+	    
+	    assert(strcmp(value, "0123456789") == 0);
+	}
+	
+	{
+	    // inout sequence of long parameter 
+	    int size = 100;
+	    LongList_var attr = new LongList;
+	    attr->length(size);
+	    for(int i=0; i<size; i++) {
+		(*attr)[i] = i;
+	    }
+	    bm->LongList_attr(attr.in());  
+	    
+	    LongList_var param = new LongList;
+	    param->length(size);
+	    for(int i=0; i<size; i++) {
+		(*param)[i] = i*i;
+	    }
+	    
+	    bm->f_inout3(param.inout());
+
+	    for(int i=0; i<size; i++) {
+		assert((*param)[i] == (*attr)[i]);
+	    }
+	}
+
+
+	{
+	    // out long parameter
+	    CORBA::Long attr = 7;
+	    bm->long_attr(attr);
+
+	    CORBA::Long param;
+	    bm->f_out1(param);
+
+	    assert(param == attr);
+	}
+	/*
+	{
+	    // out string parameter
+	    CORBA::String_var attr = CORBA::string_dup("0123456789");
+	    bm->string_attr(attr.in());
+	    
+	    CORBA::String_var param;
+	    bm->f_out2(param.inout());
+	    
+	    assert(strcmp(param, attr) == 0);
+	}
+	*/
+
+
+
+	/*	
 	// Test configuration
 	WX::Utils::Timer timer;
 	
 	const long MAX_LOOP_COUNT = 1000000;
 	const long SEQUENCE_SIZE_MAX = 1000;
 	const long SEQUENCE_SIZE_STEP = 100;
-	
+
 	{
 	    // Ping
 	    cout << "Collocated CORBA Test: void f0() "; 
@@ -159,6 +278,9 @@ int main (int argc, char** argv)
 		cout << eval.getTimerResult(timer,MAX_LOOP_COUNT,size);
 	    }
 	} 
+
+	*/
+
 	
 	cout << "--- Stop Test Case ---------------------------------" << endl;
     }

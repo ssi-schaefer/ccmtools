@@ -1,0 +1,14 @@
+Makefile.am
+Makefile.in
+benchmark_corba_object.py
+Benchmark.cc
+Benchmark.h
+aclocal.m4
+autom4te.cache
+config.h.in
+configure
+configure.in
+corba_object.repo
+depcomp
+install-sh
+missing
