@@ -194,6 +194,7 @@
 
       <delete dir="${build}" /> 
       <delete dir="${sandbox}" /> 
+      <delete dir="${test}/CppRemoteGenerator/sandbox" /> 
       <delete file="${lib}/ccmtools.jar" /> 
   </target>
 
