@@ -1,5 +1,5 @@
 //==============================================================================
-// %(Identifier)s - component logic
+// %(Identifier)s - component logic 
 //==============================================================================
 
 #ifndef __%(Identifier)s__GEN__H__
@@ -15,6 +15,7 @@
 #include <map>
 #include <CCM_Utils/SmartPointer.h>
 #include <localComponents/CCM.h>
+
 %(UserTypesInclude)s
 
 %(MSupportsDefInclude)s
