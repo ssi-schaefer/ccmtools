@@ -12,20 +12,24 @@ Dokumentation:
 --------------
 o) add HelloComponent example to the Tutorial
 o) add remote example to the Tutorial
-o) add DbC example to the Tutorial
 o) add nested component composition example to the Tutorial
+o) add DbC example to the Tutorial
 
 
 c++local generator:
 -------------------
 *) generate deploy_CCM_Local*() and undeploy_CCM_Local*() functions with coded namespace.
 *) add Constants.Version to all generated files.
-o) add AssemblyFactory Template to CCM.h
 o) generate debug output with parameter values.
-o) JUnit test case for nested component composition
-*) Performance Measurement
 o) overwrite impl/ComponentHome_entry.h by each generator start.
 o) implement a C++ version of deploy_* and undeploy_* too.
+*) Performance Measurement
+o) optimize get_connection_* calls for nested component composition and run
+   the benchmark again
+   - pass SmartPtr<> per reference
+   - inlining
+o) add test case for nested component composition
+o) add AssemblyFactory Template to CCM.h   	
 
 
 c++remote generator:
