@@ -411,10 +411,18 @@ public class CppLocalDbcGeneratorImpl
         vars.put("ProvidesPreInvocation"  , getProvidesPreInvocation(operation));
         vars.put("ProvidesPostInvocation" , getProvidesPostInvocation(operation));
 
-        if (! lang_type.equals("void"))
-        vars.put("Return", "return ");
+        if(! lang_type.equals("void"))
+        {
+            vars.put("Return", "return ");
+            vars.put("OperationCall", lang_type+" result = ");
+            vars.put("OperationReturn", "return result;");
+        }
         else
-        vars.put("Return", "");
+        {
+            vars.put("Return", "");
+            vars.put("OperationCall", "");
+            vars.put("OperationReturn", "");
+        }
         return vars;
     }
 

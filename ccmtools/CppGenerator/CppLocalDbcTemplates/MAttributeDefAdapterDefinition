@@ -17,3 +17,5 @@ DbC_%(ComponentType)s::%(Identifier)s ( %(LanguageType)s value )
   %(ComponentType)s::%(Identifier)s(value);
 %(AttributeSetPostInvocation)s	
 }
+
+

@@ -5,9 +5,9 @@ DbC_%(Object)s::%(Identifier)s(%(MParameterDefAll)s)
   static const char* DbC_FUNCTION_NAME = "DbC_%(Object)s::%(Identifier)s(%(MParameterDefAll)s)";
   DEBUGNL ( " DbC_%(Object)s->%(Identifier)s(%(MParameterDefName)s)");
   %(SupportsPreInvocation)s	
-  %(LanguageType)s result = %(Object)s::%(Identifier)s(%(MParameterDefName)s);
+  %(OperationCall)s %(Object)s::%(Identifier)s(%(MParameterDefName)s);
   %(SupportsPostInvocation)s
-  %(Return)s result; 
+  %(OperationReturn)s
 }
 
 
