@@ -15,7 +15,8 @@
 
 %(OpenNamespace)s
 
-interface %(Identifier)s : Components::CCMObject%(BaseType)s%(MSupportsDef)s
+interface %(Identifier)s 
+    : Components::CCMObject%(BaseType)s%(MSupportsDef)s
 {
 %(MAttributeDef)s
 %(MConstantDef)s

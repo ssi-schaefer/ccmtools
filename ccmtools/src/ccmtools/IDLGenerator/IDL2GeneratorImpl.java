@@ -1,6 +1,6 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * Egon Teiniker <egon.teiniker@tugraz.at>
+ * Egon Teiniker <egon.teiniker@salomon.at>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
  *
@@ -66,18 +66,16 @@ public class IDL2GeneratorImpl
 	MInterfaceDef iface = null;
 
 	// TODO: move this code in a super class (also used in IDL3Generator)
-	if (variable.equals("ProvidesInclude") ||
-	    variable.equals("SupportsInclude") ||
-	    variable.equals("UsesInclude")) {
-
-            if (current_node instanceof MProvidesDef)
+	if(variable.equals("ProvidesInclude") ||
+	   variable.equals("SupportsInclude") ||
+	   variable.equals("UsesInclude")) {
+            if(current_node instanceof MProvidesDef)
                 iface = ((MProvidesDef) current_node).getProvides();
-            else if (current_node instanceof MSupportsDef)
+            else if(current_node instanceof MSupportsDef)
                 iface = ((MSupportsDef) current_node).getSupports();
-            else if (current_node instanceof MUsesDef)
+            else if(current_node instanceof MUsesDef)
                 iface = ((MUsesDef) current_node).getUses();
-	    
-            if (iface != null) 
+            if(iface != null) 
 		value = getScopedInclude(iface);
 	}
 	else if (variable.equals("HomeInclude")) {
@@ -112,7 +110,7 @@ public class IDL2GeneratorImpl
     /***
      * Overwrites the IDLGenerator's method.  
      *
-     * Calculates the include name of a given node, together with all namespaces 
+     * Calculates the include name of a given node, together with all namespaces
      * defined in base_namespace.
      */
     protected String getScopedInclude(MContained node)
@@ -125,7 +123,7 @@ public class IDL2GeneratorImpl
         Collections.reverse(base_namespace);
 	
         scope.add(node.getIdentifier());
-        return join(file_separator, scope);
+        return "#include<" + join(file_separator, scope) + ".idl>";
     }
 
 
@@ -145,7 +143,8 @@ public class IDL2GeneratorImpl
     {
         super.writeOutput(template);
 
-	// Write a Makefile.py that forces Confix to compile generated C++ stubs.
+	// Write a Makefile.py that forces Confix to compile generated 
+	// C++ stubs.
 	template = template_manager.getRawTemplate("MakefilePy");
         if (template != null) {
 	    File confix_file = new File(output_dir, "");
@@ -154,13 +153,24 @@ public class IDL2GeneratorImpl
                 writeFinalizedFile("", "Makefile.py", template.getTemplate());
 	}
 	
-	// Write a Makefile that is used by Confix to generate C++ stubs from IDL2.
-        template = template_manager.getRawTemplate("MakefileIdl");
+	// Write a Makefile that is used by Confix to generate C++ stubs 
+	// from IDL2.
+        template = template_manager.getRawTemplate("MakefileTemplate");
         if(template != null) {
 	    File confix_file = new File(output_dir, "");
 	    confix_file = new File(confix_file, "Makefile");
 	    if (! confix_file.isFile())
                 writeFinalizedFile("", "Makefile", template.getTemplate());
+	}
+
+	// Write a build.xml file that is used by Ant to build generated
+	// Java files.
+        template = template_manager.getRawTemplate("AntTemplate");
+        if(template != null) {
+	    File confix_file = new File(output_dir, "");
+	    confix_file = new File(confix_file, "build.xml");
+	    if (! confix_file.isFile())
+                writeFinalizedFile("", "build.xml", template.getTemplate());
 	}
     }
 }
