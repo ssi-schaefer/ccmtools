@@ -74,12 +74,9 @@ There are a few things to verify before doing the actual distribution.
 
   I use the "cvs2cl" script to do this, and then edit the resulting ChangeLog :
 
-  A.B $ cvs2cl -U AUTHORS --accum -f ChangeLog-A.B.X
-  A.B $ emacsclient ChangeLog-A.B.X
+  A.B $ cvs2cl -U AUTHORS --accum -f ChangeLog
+  A.B $ emacsclient ChangeLog
   [clean up the ChangeLog]
-  A.B $ cvs add ChangeLog-A.B.X
-  A.B $ rm ChangeLog
-  A.B $ ln -s ChangeLog-A.B.X ChangeLog
   A.B $ cvs ci
 
 - Update the release notes on the web site.
@@ -95,12 +92,9 @@ There are a few things to verify before doing the actual distribution.
   I use lynx to dump the web site release notes and then emacs to clean up the
   resulting file.
 
-  A.B $ lynx --dump http://ccmtools.sf.net/releases/ > RELEASE-A.B.X
-  A.B $ emacsclient RELEASE-A.B.X
+  A.B $ lynx --dump http://ccmtools.sf.net/releases/ > RELEASE
+  A.B $ emacsclient RELEASE
   [clean up the dumped release notes]
-  A.B $ cvs add RELEASE-A.B.X
-  A.B $ rm RELEASE
-  A.B $ ln -s RELEASE-A.B.X RELEASE
   A.B $ cvs ci
 
 - Update the tutorial, manual, and guide on the web site.
@@ -133,8 +127,12 @@ can download them, and send out various news items.
 
 - Put the distributions online.
 
-  A.B $ scp ccmtools-A.B.X*.tar.gz RELEASE-A.B.X ChangeLog-A.B.X \
+  A.B $ scp ccmtools-A.B.X*.tar.gz \
           ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/
+  A.B $ scp RELEASE \
+          ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/RELEASE-A.B.X
+  A.B $ scp ChangeLog \
+          ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/ChangeLog-A.B.X
   A.B $ ftp upload.sourceforge.net
   Login: anonymous
   Password: <email addy>
@@ -165,7 +163,7 @@ can download them, and send out various news items.
 
 - Email an announcement.
 
-  Send the contents of the RELEASE-A.B.X file to
+  Send the contents of the RELEASE file to
   ccmtools-announce@lists.sourceforge.net, and any other interested mailing
   lists.
 
