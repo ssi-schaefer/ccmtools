@@ -1,7 +1,7 @@
 /* CCM Tools : IDL Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
+ * Egon Teiniker <egon.teiniker@salomon.at>
  * Copyright (C) 2002, 2003 Salomon Automation
- *
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -24,6 +24,7 @@ import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
@@ -38,17 +39,18 @@ import java.util.ArrayList;
 public class IDL3GeneratorImpl
     extends IDLGenerator
 {
-    public IDL3GeneratorImpl(Driver d, File out_dir) throws IOException
-    { super("3", d, out_dir); }
+    public IDL3GeneratorImpl(Driver driver, File out_dir) 
+	throws IOException
+    { 
+	super("3", driver, out_dir); 
+    }
 
     protected String getLocalValue(String variable)
     {
         String value = super.getLocalValue(variable);
-
         if (current_node instanceof MHomeDef) {
             return data_MHomeDef(variable, value);
 	}
-
         return value;
     }
 
@@ -56,9 +58,11 @@ public class IDL3GeneratorImpl
     {
         if (data_type.equals("MHomeDefPublicKeyExceptions")) {
             return ", Components::DuplicateKeyValue, Components::InvalidKey";
-        } else if (data_type.equals("MHomeDefPublicKeyParameters")) {
+        } 
+	else if (data_type.equals("MHomeDefPublicKeyParameters")) {
             return "in "+((MHomeDef) current_node).getPrimary_Key()+" key";
-        } else if (data_type.equals("MHomeDefPublicKeyFunctions")) {
+        } 
+	else if (data_type.equals("MHomeDefPublicKeyFunctions")) {
             MHomeDef home = (MHomeDef) current_node;
 
             String[] keys = { "KeyType", "ComponentType" };
@@ -77,7 +81,11 @@ public class IDL3GeneratorImpl
 
 
     /**
-     * Write generated code to an output file.
+     * Write generated IDL3 code to output files in the following structure:
+     *
+     * component/<namespace>/<component_name>/<component_name>.idl
+     *                                       /<component_home_name>.idl
+     * interface/<namespace>/<name>.idl
      *
      * @param template the template object to get the generated code structure
      *        from ; variable values should come from the node handler object.
@@ -85,24 +93,41 @@ public class IDL3GeneratorImpl
     protected void writeOutput(Template template)
         throws IOException
     {
-        String[] pieces =
-            template.substituteVariables(output_variables).split("\n");
-
+        String[] pieces = template.substituteVariables(output_variables).split("\n");
+	
         List code_pieces = new ArrayList();
-        for (int i = 0; i < pieces.length; i++)
-            if (! pieces[i].trim().equals(""))
+        for (int i = 0; i < pieces.length; i++) {
+            if (! pieces[i].trim().equals("")) {
                 code_pieces.add(pieces[i]);
-
+	    }
+	}
         String code = join("\n", code_pieces);
 
-        code = code.replaceAll("#ifndef",      "\n#ifndef");
-        code = code.replaceAll("#define(.*)$", "#define\\1\n");
-
-        String name = join(file_separator, namespace);
-        if (! name.equals("")) name += file_separator;
-        name += ((MContained) current_node).getIdentifier() + ".idl";
-
-        writeFinalizedFile("", name, code + "\n\n");
+	// Separate IDL3 code into files hosted in different directories
+	String dir;
+	String name;
+	if(current_node instanceof MComponentDef ||
+	   current_node instanceof MHomeDef) {
+	    dir = "component";
+	    if(namespace.size() > 0) {
+		dir += File.separator + join(File.separator, namespace) + File.separator;
+	    }
+	    if(current_node instanceof MHomeDef) {
+		dir += (((MHomeDef)current_node).getComponent()).getIdentifier();
+	    }
+	    else {
+		dir += ((MComponentDef)current_node).getIdentifier();
+	    }
+	    name = ((MContained) current_node).getIdentifier() + ".idl";
+	}
+	else {
+	    dir = "interface";
+	    if(namespace.size() > 0) {
+		dir += File.separator + join(File.separator, namespace);
+	    }
+	    name = ((MContained) current_node).getIdentifier() + ".idl";
+	}
+	writeFinalizedFile(dir, name, code + "\n\n");
     }
 }
 
