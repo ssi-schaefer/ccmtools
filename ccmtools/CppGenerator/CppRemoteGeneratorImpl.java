@@ -55,7 +55,9 @@ public class CppRemoteGeneratorImpl
      * not contained inside another template.
      */
     private final static String[] local_output_types =
-    { "MHomeDef", "MComponentDef" };
+    { 
+	"MHomeDef", "MComponentDef", "MStructDef" 
+    };
 
     /**
      * Language type mapping:
@@ -473,6 +475,17 @@ public class CppRemoteGeneratorImpl
 		// directory - needed by Confix
 		writeFinalizedFile(file_dir + "_remote","Makefile.py","");
 	    }
+	    else {
+		String node_name = ((MContained) current_node).getIdentifier();
+		List names = new ArrayList(namespace);
+		String file_dir = join("_",names);
+		writeFinalizedFile(file_dir,
+				   node_name + out_file_types[i],
+				   out_strings[i]);
+
+		// TODO: Write Makefile.py only once...
+	    }
+
 	}
     }
 

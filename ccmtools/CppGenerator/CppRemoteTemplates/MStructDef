@@ -1,0 +1,52 @@
+// ===========================================================================
+// struct adapter for %(Identifier)s (header file)
+// ===========================================================================
+
+#ifndef __STRUCT_ADAPTER_%(PreprocIdentifier)s__H__
+#define __STRUCT_ADAPTER_%(PreprocIdentifier)s__H__
+
+%(MFieldDefInclude)s
+
+using namespace std;
+
+%(OpenNamespace)s
+
+/*
+ * Convert a CORBA structure into a local structure.
+ */
+CCM_Local::%(Identifier)s
+%(Identifier)s_toCORBA%(Identifier)s(%(Identifier)s_ptr value);
+
+/*
+ * Convert a local structure into a CORBA structure.
+ */
+%(Identifier)s_ptr
+CORBA%(Identifier)s_to_%(Identifier)s(CCM_Local::%(Identifier)s value);
+
+%(CloseNamespace)s
+
+#endif // __STRUCT_ADAPTER_%(PreprocIdentifier)s__H__
+
+
+
+<<<<<<<SPLIT>>>>>>>
+// ===========================================================================
+// struct adapter for %(Identifier)s (implementation file)
+// ===========================================================================
+
+CCM_Local::%(Identifier)s
+%(Identifier)s_to_CORBA%(Identifier)s(%(Identifier)s_ptr value)
+{
+   CCM_Local::%(Identifier)s result;
+%(MFieldDef)s
+   return result;	
+}
+
+%(Identifier)s_ptr
+CORBA%(Identifier)s_to_%(Identifier)s(CCM_Local::%(Identifier)s value)
+{
+   %(Identifier)s_var result;
+%(MFieldDef)s	
+   return result.retn();	
+}
+

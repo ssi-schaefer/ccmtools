@@ -54,7 +54,10 @@ dist_template_DATA = \
     MUsesDefAdapterImpl             \
     MOperationReceptacleAdapterImpl \
     MAttributeDefAdapterHeader      \
-    MAttributeDefFacetAdapterImpl
+    MAttributeDefFacetAdapterImpl   \
+    MStructDef                      \
+    MFieldDef                       \
+    MFieldDefInclude
 
 
 
