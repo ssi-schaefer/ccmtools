@@ -8,12 +8,12 @@ interface Console {
   long println(in string s2);
 };
 
-component Hello
+component Test
 {
   uses multiple Console console;
 };
 
-home HelloHome manages Hello
+home TestHome manages Test
 {
 };
 

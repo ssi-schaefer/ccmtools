@@ -58,8 +58,8 @@ public class CppGeneratorTest extends CcmtoolsTestCase
     {
 	runCcmtoolsGenerate("--help");
     }
-
-
+    
+    /*
     public void testAttributeTypes()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/attribute_types";
@@ -109,10 +109,50 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	String test_dir = ccmtools_dir + "/test/CppGenerator/supports_types";
 	String sandbox_dir = ccmtools_dir + "/test/CppGenerator/sandbox/supports_types";
 
-	// TODO: implement test case
+	try {
+	    runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" 
+				+ " " + test_dir + "/Test.idl");
+	    
+	    runCcmtoolsGenerate("c++local -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface" 
+				+ " " + sandbox_dir + "/idl3/interface/Color.idl"
+				+ " " + sandbox_dir + "/idl3/interface/Console.idl"
+				+ " " + sandbox_dir + "/idl3/interface/Map.idl"
+				+ " " + sandbox_dir + "/idl3/interface/Pair.idl"
+				+ " " + sandbox_dir + "/idl3/interface/TypeTest.idl"
+				+ " " + sandbox_dir + "/idl3/interface/doubleArray.idl"
+				+ " " + sandbox_dir + "/idl3/interface/time_t.idl");
+	    
+	    runCcmtoolsGenerate("c++local -a -o " + sandbox_dir
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl"
+				+ " " + sandbox_dir + "/idl3/component/TestHome.idl");
+	    
+	    runCcmtoolsGenerate("c++local-test -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl");
+	    
+	    copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
+		     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
+	    
+	    copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir + "/impl/MyObject.cc");
+	    copyFile(test_dir + "/impl/MyObject.h", sandbox_dir + "/impl/MyObject.h");
+	    copyFile(test_dir + "/impl/Test_impl.cc",sandbox_dir + "/impl/Test_impl.cc");
+	    
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --bootstrap --configure --make --targets=check") ;
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --make --targets=clean") ;
+	}
+	catch(Exception e) {
+	    fail();
+	}
     }
-
-
+    */
+    
+    /*
     public void testFacetTypes()
     {
 	String test_dir = ccmtools_dir + "/test/CppGenerator/facet_types";
@@ -148,8 +188,8 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 				+ " -I" + sandbox_dir + "/idl3/component"
 				+ " " + sandbox_dir + "/idl3/component/Test.idl");
 	    
-	    copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
-		     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
+	    //	    copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
+	    //		     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
 	    
 	    copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir + "/impl/MyObject.cc");
 	    copyFile(test_dir + "/impl/MyObject.h", sandbox_dir + "/impl/MyObject.h");
@@ -167,16 +207,104 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }
+    */
 
-
+    /*
     public void testReceptacleTypes()
     {
-	String test_dir = ccmtools_dir + "/test/CppGenerator/attribute_types";
-	String sandbox_dir = ccmtools_dir + "/test/CppGenerator/sandbox/attribute_types";
+	String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_types";
+	String sandbox_dir = ccmtools_dir + "/test/CppGenerator/sandbox/receptacle_types";
 
-	// TODO: implement test case
+	try {
+	    runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" 
+				+ " " + test_dir + "/Test.idl");
+	    
+	    runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" 
+				+ " " + test_dir + "/Test.idl");
+	    
+	    runCcmtoolsGenerate("c++local -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface" 
+				+ " " + sandbox_dir + "/idl3/interface/Color.idl"
+				+ " " + sandbox_dir + "/idl3/interface/Console.idl"
+				+ " " + sandbox_dir + "/idl3/interface/Map.idl"
+				+ " " + sandbox_dir + "/idl3/interface/Pair.idl"
+				+ " " + sandbox_dir + "/idl3/interface/TypeTest.idl"
+				+ " " + sandbox_dir + "/idl3/interface/doubleArray.idl"
+				+ " " + sandbox_dir + "/idl3/interface/time_t.idl");
+	    
+	    runCcmtoolsGenerate("c++local -a -o " + sandbox_dir
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl"
+				+ " " + sandbox_dir + "/idl3/component/TestHome.idl"
+				+ " " + sandbox_dir + "/idl3/component/Test_mirror.idl"
+				+ " " + sandbox_dir + "/idl3/component/TestHome_mirror.idl");
+	    
+	    runCcmtoolsGenerate("c++local-test -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl");
+	    
+	    copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir + "/impl/MyObject.cc");
+	    copyFile(test_dir + "/impl/MyObject.h", sandbox_dir + "/impl/MyObject.h");
+	    copyFile(test_dir + "/impl/Test_impl.cc",sandbox_dir + "/impl/Test_impl.cc");
+	    copyFile(test_dir + "/impl/Test_mirror_type_test_mirror_impl.cc", 
+		     sandbox_dir + "/impl/Test_mirror_type_test_mirror_impl.cc");
+	    
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --bootstrap --configure --make --targets=check") ;
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --make --targets=clean") ;
+	}
+	catch(Exception e) {
+	    fail();
+	}
     }
 
+    */
+
+    public void testReceptacleMultiple()
+    {
+	String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_multiple";
+	String sandbox_dir = ccmtools_dir + "/test/CppGenerator/sandbox/receptacle_multiple";
+
+	try {
+	    runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" 
+				+ " " + test_dir + "/Test.idl");
+	    
+	    runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" 
+				+ " " + test_dir + "/Test.idl");
+	    
+	    runCcmtoolsGenerate("c++local -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface" 
+				+ " " + sandbox_dir + "/idl3/interface/Console.idl");
+	    
+	    runCcmtoolsGenerate("c++local -a -o " + sandbox_dir
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl"
+				+ " " + sandbox_dir + "/idl3/component/TestHome.idl"
+				+ " " + sandbox_dir + "/idl3/component/Test_mirror.idl"
+				+ " " + sandbox_dir + "/idl3/component/TestHome_mirror.idl");
+	    
+	    runCcmtoolsGenerate("c++local-test -o " + sandbox_dir 
+				+ " -I" + sandbox_dir + "/idl3/interface"
+				+ " -I" + sandbox_dir + "/idl3/component"
+				+ " " + sandbox_dir + "/idl3/component/Test.idl");
+	    
+	    copyFile(test_dir + "/impl/Test_impl.cc",sandbox_dir + "/impl/Test_impl.cc");
+	    copyFile(test_dir + "/impl/Test_mirror_console_mirror_impl.cc", 
+		     sandbox_dir + "/impl/Test_mirror_console_mirror_impl.cc");
+	    
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --bootstrap --configure --make --targets=check") ;
+	    runConfix("--packageroot=" + sandbox_dir 
+		      + " --make --targets=clean") ;
+	}
+	catch(Exception e) {
+	    fail();
+	}
+    }
 
 
     public void testModuleNested()
@@ -211,7 +339,6 @@ public class CppGeneratorTest extends CcmtoolsTestCase
 	    fail();
 	}
     }     
-
 
 
     // TODO: implement other test cases

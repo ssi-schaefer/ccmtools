@@ -23,21 +23,15 @@
 #include <LocalComponents/CCM.h>
 #include <CCM_Local/HomeFinder.h>
 
-#include "MyObject.h"
-
-#ifdef CCM_USE_DBC
-#include <CCM_Local/CCM_Session_Test/Test_dbc.h>
-#include <CCM_Local/CCM_Session_Test/TestHome_dbc.h>
-#else
 #include <CCM_Local/CCM_Session_Test/Test_gen.h>
 #include <CCM_Local/CCM_Session_Test/TestHome_gen.h>
-#endif
+
+#include "MyObject.h"
 
 using namespace std;
 using namespace WX::Utils;
 using namespace CCM_Local;
 using namespace CCM_Session_Test;
-
 
 int main(int argc, char *argv[])
 {
@@ -49,7 +43,6 @@ int main(int argc, char *argv[])
   // We use debug tools defined in the WX::Utils package.
   Debug::instance().set_global(true);
 
-
   // Component bootstrap:
   // We get an instance of the local HomeFinder and register the deployed
   // component- and mirror component home.
@@ -57,16 +50,11 @@ int main(int argc, char *argv[])
   int error = 0;
   LocalComponents::HomeFinder* homeFinder;
   homeFinder = HomeFinder::Instance (  );
-#ifdef CCM_USE_DBC
-  error  = DbC_deploy_TestHome("TestHome", false);
-#else
   error  = local_deploy_TestHome("TestHome");
-#endif
   if(error) {
     cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
     return(error);
   }
-
 
   // Component deployment:
   // We use the HomeFinder method find_home_by_name() to get a smart pointer 
@@ -97,13 +85,6 @@ int main(int argc, char *argv[])
     cout << "DEPLOYMENT ERROR: invalid name during connection: " << e.what (  ) << endl;
     error = -1;
   }
-#ifdef CCM_USE_DBC
-  catch(CCM_OCL::OclException& e)
-  {
-    cout << "DEPLOYMENT ERROR: 'design by contract' error:" << endl << e.what();
-    error = -1;
-  }
-#endif
   catch ( ... )  {
     cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
     error = -1;
@@ -174,7 +155,7 @@ int main(int argc, char *argv[])
       assert(bool_2 == true);
       assert(bool_3 == false);
       assert(bool_r == false && true);
-      
+
       unsigned char uchar_2=3, uchar_3, uchar_r;
       uchar_r = myTest->op_b10(7,uchar_2, uchar_3);
       assert(uchar_2 == 7);
@@ -210,42 +191,42 @@ int main(int argc, char *argv[])
       // Test case: typedef sequence<Value> map;
       Map map_1, map_2, map_3, map_r;
       for(int i=0;i<5;i++) {
-	Pair p1, p2;
-	p1.key = "1";
-	p1.value = (double)i;
-	map_1.push_back(p1);
-	p2.key = "2";
-	p2.value = (double)(i+i);
-	map_2.push_back(p2);
+        Pair p1, p2;
+        p1.key = "1";
+        p1.value = (double)i;
+        map_1.push_back(p1);
+        p2.key = "2";
+        p2.value = (double)(i+i);
+        map_2.push_back(p2);
       }
       map_r = myTest->op_u4(map_1,map_2,map_3);
       for(unsigned int i=0;i<map_r.size();i++) {
-	Pair p = map_r.at(i);
-	assert(p.value == (long)i);
+        Pair p = map_r.at(i);
+        assert(p.value == (long)i);
       }
       for(unsigned int i=0;i<map_2.size();i++) {
-	Pair p = map_2.at(i);
-	assert(p.value == (long)i);
+        Pair p = map_2.at(i);
+        assert(p.value == (long)i);
       }
       for(unsigned int i=0;i<map_3.size();i++) {
-	Pair p = map_3.at(i);
-	assert(p.value == (long)(i+i));
+        Pair p = map_3.at(i);
+        assert(p.value == (long)(i+i));
       }
 
       // Test case: typedef double doubleArray[10];
       doubleArray Array_1(10), Array_2(10), Array_3(10), Array_r(10);
       for(int i=0;i<10;i++) {
-	Array_1.at(i) = i;
-	Array_2.at(i) = i+i;
+        Array_1.at(i) = i;
+        Array_2.at(i) = i+i;
       }
       Array_r = myTest->op_u5(Array_1,Array_2,Array_3);
       for(int i=0;i<10;i++) {
-	assert(Array_r.at(i) == i);
-	assert(Array_2.at(i) == i);
-	assert(Array_3.at(i) == i+i);
+        assert(Array_r.at(i) == i);
+        assert(Array_2.at(i) == i);
+        assert(Array_3.at(i) == i+i);
       }
     }
-
+  
     // Test interface types
     {
       MyObject* my_object1 = new MyObject;
@@ -261,19 +242,15 @@ int main(int argc, char *argv[])
       assert(console3->prompt()=="prompt2> ");
       assert(console4->prompt()=="prompt2> prompt1> ");
     }
+
+
+
     cout << "== End Test Case ===============================================" << endl;
   } 
   catch ( LocalComponents::NotImplemented& e ) {
     cout << "TEST: function not implemented: " << e.what (  ) << endl;
     error = -1;
   }
-#ifdef CCM_USE_DBC
-  catch(CCM_OCL::OclException& e)
-  {
-    cout << "TEST: 'design by contract' error:" << endl << e.what();
-    error = -1;
-  }
-#endif
   catch ( ... )  {
     cout << "TEST: there is something wrong!" << endl;
     error = -1;

@@ -16,8 +16,8 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_impl.h"
 #include "MyObject.h"
+#include "Test_impl.h"
 
 using namespace std;
 using namespace WX::Utils;
@@ -49,14 +49,14 @@ CCM_Test_impl::set_session_context ( LocalComponents::SessionContext* context )
 }
 
 void
-CCM_Test_impl::ccm_activate()
-  throw (LocalComponents::CCMException)
+CCM_Test_impl::ccm_activate (  )
+  throw ( LocalComponents::CCMException )
 {
-  DEBUGNL(" CCM_Test_impl->ccm_activate()");
+  DEBUGNL ( " CCM_Test_impl->ccm_activate (  )" );
 
   WX::Utils::SmartPtr<CCM_TypeTest> type_test = 
     ctx->get_connection_type_test();
-
+  
   {
     // basic types test cases
     short short_2=3, short_3, short_r;
@@ -106,8 +106,9 @@ CCM_Test_impl::ccm_activate()
     assert(string_2 == "sieben");
     assert(string_3 == "drei");
     assert(string_r == "dreisieben");
-    
-    bool bool_2=false, bool_3, bool_r;
+
+
+   bool bool_2=false, bool_3, bool_r;
     bool_r = type_test->op_b9(true, bool_2, bool_3);
     assert(bool_2 == true);
     assert(bool_3 == false);
@@ -146,7 +147,7 @@ CCM_Test_impl::ccm_activate()
     assert(Pair_2.key == "a");
     assert(Pair_r.key == "ab");
 
-    // Test case: typedef sequence<Value> map;
+       // Test case: typedef sequence<Value> map;
     Map map_1, map_2, map_3, map_r;
     for(int i=0;i<5;i++) {
       Pair p1, p2;
@@ -206,7 +207,6 @@ CCM_Test_impl::ccm_activate()
   }
 }
 
-
 void
 CCM_Test_impl::ccm_passivate (  )
   throw ( LocalComponents::CCMException )
@@ -221,6 +221,7 @@ CCM_Test_impl::ccm_remove (  )
   DEBUGNL ( " CCM_Test_impl->ccm_remove (  )" );
 }
 
+//(MProvidesDefAdapterImplClassImpl)s
 } // /namespace CCM_Session_Test
 } // /namespace CCM_Local
 
