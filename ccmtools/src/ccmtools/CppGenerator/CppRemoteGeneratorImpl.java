@@ -78,7 +78,7 @@ public class CppRemoteGeneratorImpl
     private final static String[] local_output_types =
     { 
 	"MHomeDef", "MComponentDef", "MInterfaceDef", 
-	"MStructDef" //, "MSequenceDef", "MEnumDef" 
+	"MStructDef", "MAliasDef" //, "MEnumDef" 
     };
 
     /**
@@ -345,6 +345,51 @@ public class CppRemoteGeneratorImpl
 	    return data_MFieldDef(variable, value);
 	}
 	return value;
+    }
+
+
+    protected String data_MAliasDef(String dataType, String dataValue)
+    {
+	MTyped type = (MTyped)current_node;
+	MIDLType idlType = type.getIdlType(); 
+
+	if(idlType instanceof MSequenceDef) {
+	    MTyped singleType = (MTyped)idlType;
+	    MIDLType singleIdlType = singleType.getIdlType(); 
+	    if(dataType.equals("SingleValue")) {
+		if(singleIdlType instanceof MPrimitiveDef 
+		   || singleIdlType instanceof MStringDef) {
+		    dataValue = getBaseLanguageType(singleType);
+		}
+		else {
+		    dataValue = "CCM_Local::" // TODO: Handle local Namespace 
+			+ getBaseLanguageType(singleType);
+		}
+	    }
+	    else if(dataType.equals("InOutValue")) {
+		if(singleIdlType instanceof MStringDef) {
+		    dataValue = "out[i].inout()";
+		}
+		else {
+		    dataValue = "out[i]";
+		}
+	    }
+	    else if(dataType.equals("CORBASequenceConverterInclude")) {
+		if(singleIdlType instanceof MPrimitiveDef 
+		   || singleIdlType instanceof MStringDef) {
+		    dataValue = "";
+		}
+		else {
+		    StringBuffer ret = new StringBuffer();
+		    ret.append("#include \"");
+		    // TODO: ret.append(Name_space);
+		    ret.append(getBaseLanguageType(singleType));
+		    ret.append("_remote.h\"");
+		    dataValue = ret.toString();
+		}
+	    }
+	}
+        return dataValue;
     }
 
 
@@ -956,7 +1001,8 @@ public class CppRemoteGeneratorImpl
 	       || idl_type instanceof MStringDef) {
 		ret.add(convertPrimitiveParameterFromCorbaToCpp(p));
 	    }
-	    else if(idl_type instanceof MStructDef ) {
+	    else if(idl_type instanceof MStructDef 
+		    || idl_type instanceof MAliasDef) {
 		ret.add(convertUserParameterFromCorbaToCpp(p));	
 	    }
 	}
@@ -982,18 +1028,21 @@ public class CppRemoteGeneratorImpl
     {
 	List ret = new ArrayList();
 	MParameterMode direction = p.getDirection();
-	MIDLType idl_type = ((MTyped)p).getIdlType();
-	MTypedefDef idl_typedef = (MTypedefDef)idl_type;
-	MStructDef idl_struct = (MStructDef)idl_typedef;
-	List scope = getScope((MContained)idl_struct);
-	String local_scope;
+	MIDLType idlType = ((MTyped)p).getIdlType();
+	MTypedefDef typedef = (MTypedefDef)idlType;
+	MContained contained = (MContained)typedef;
+	//	MStructDef idl_struct = (MStructDef)idlTypedef; //!!!!!!!
+	//	List scope = getScope((MContained)idl_struct);
+	List scope = getScope(contained);
+	String localScope;
 
 	if(scope.size() > 0) 
-	    local_scope =  join("::", scope) + "::";
+	    localScope =  join("::", scope) + "::";
 	else
-	    local_scope = "";
+	    localScope = "";
 	
-	ret.add("    CCM_Local::" + local_scope + idl_struct.getIdentifier() 
+	//ret.add("    CCM_Local::" + local_scope + idl_struct.getIdentifier() 
+	ret.add("    CCM_Local::" + localScope + contained.getIdentifier() 
 		+ " parameter_" + p.getIdentifier() + ";"); 
 	if(direction != MParameterMode.PARAM_OUT) {
 	    ret.add("    CCM_Remote::convertFromCorba(" + p.getIdentifier() +
@@ -1015,34 +1064,37 @@ public class CppRemoteGeneratorImpl
      */
     protected String declareCppResult(MOperationDef op)
     {
-	String ret_string = "";
-	MIDLType idl_type = op.getIdlType(); 
+	String ret = "";
+	MIDLType idlType = op.getIdlType(); 
 	List scope = getScope((MContained)op);
-	String local_scope;
+	String localScope;
 
 	if(scope.size() > 0) 
-	    local_scope =  join("::", scope) + "::";
+	    localScope =  join("::", scope) + "::";
 	else
-	    local_scope = "";
+	    localScope = "";
 
-	if(idl_type instanceof MPrimitiveDef
-	   && ((MPrimitiveDef)idl_type).getKind() == MPrimitiveKind.PK_VOID) {
+	if(idlType instanceof MPrimitiveDef
+	   && ((MPrimitiveDef)idlType).getKind() == MPrimitiveKind.PK_VOID) {
 	    return ""; // void foo() does not need a result declaration
 	}
 
-	if(idl_type instanceof MPrimitiveDef 
-	   || idl_type instanceof MStringDef) {
-	    ret_string = "    " 
+	if(idlType instanceof MPrimitiveDef 
+	   || idlType instanceof MStringDef) {
+	    ret = "    " 
 		+ (String)language_mappings.get((String)getBaseIdlType(op)) 
 		+ " result;";
 	}
-	else if(idl_type instanceof MStructDef) {
-	    MTypedefDef idl_typedef = (MTypedefDef)idl_type;
-	    MStructDef idl_struct = (MStructDef)idl_typedef;
-	    ret_string = "    CCM_Local::" + local_scope 
-		+ idl_struct.getIdentifier() + " result;"; 
+	else if(idlType instanceof MStructDef
+		|| idlType instanceof MAliasDef) {
+	    MTypedefDef typedef = (MTypedefDef)idlType;
+	    MContained contained = (MContained)typedef;
+	    //  MStructDef idl_struct = (MStructDef)idl_typedef;
+	    ret = "    CCM_Local::" + localScope 
+		//		+ idl_struct.getIdentifier() + " result;"; 
+		+ contained.getIdentifier() + " result;"; 
 	}
-	return ret_string;
+	return ret;
     }
 
 
@@ -1060,27 +1112,24 @@ public class CppRemoteGeneratorImpl
      */
     protected String convertMethodToCpp(MOperationDef op)
     {
-	String ret_string = "";
-	String ResultString;
-	MIDLType idl_type = op.getIdlType(); 
+	List ret = new ArrayList(); 
+	String resultPrefix;
+	MIDLType idlType = op.getIdlType(); 
 	
-	if(idl_type instanceof MPrimitiveDef 
-	   && ((MPrimitiveDef)idl_type).getKind() == MPrimitiveKind.PK_VOID) {
-	    ResultString = ""; // void foo() does not have a result value
+	if(idlType instanceof MPrimitiveDef 
+	   && ((MPrimitiveDef)idlType).getKind() == MPrimitiveKind.PK_VOID) {
+	    resultPrefix = ""; // void foo() 
 	}
 	else {
-	    ResultString = "    result = ";
+	    resultPrefix = "    result = ";
 	}
 	
-	if(idl_type instanceof MPrimitiveDef 
-	   || idl_type instanceof MStringDef
-	   || idl_type instanceof MEnumDef
-	   || idl_type instanceof MStructDef
-	   || idl_type instanceof MAliasDef) {
-	    ret_string = "  " + ResultString + "local_adapter->" 
-		+ op.getIdentifier() + "(";
-	    
-	    List ret = new ArrayList(); 
+	if(idlType instanceof MPrimitiveDef 
+	   || idlType instanceof MStringDef
+	   || idlType instanceof MEnumDef
+	   || idlType instanceof MStructDef
+	   || idlType instanceof MAliasDef) {
+	    resultPrefix += "local_adapter->" + op.getIdentifier() + "(";
 	    for(Iterator params = op.getParameters().iterator(); 
 		params.hasNext(); ) {
 		MParameterDef p = (MParameterDef) params.next();
@@ -1088,7 +1137,7 @@ public class CppRemoteGeneratorImpl
 		    (String)language_mappings.get((String)getBaseIdlType(p));
 		ret.add(" parameter_" + p.getIdentifier()); 
 	    }
-	    return ret_string + join(", ", ret) + ");";
+	    return resultPrefix + join(", ", ret) + ");";
 	}
 	else {  
 	    // all other idl_types
@@ -1119,7 +1168,8 @@ public class CppRemoteGeneratorImpl
 	       || idl_type instanceof MStringDef) {
 		ret.add(convertPrimitiveParameterFromCppToCorba(p));
 	    }
-	    else if(idl_type instanceof MStructDef) {
+	    else if(idl_type instanceof MStructDef
+		    || idl_type instanceof MAliasDef) {
 		ret.add(convertUserParameterFromCppToCorba(p));
 	    }
 	}
@@ -1154,15 +1204,19 @@ public class CppRemoteGeneratorImpl
 		    + ", " + p.getIdentifier() + ");"); 
 	}
 	else {
-	    MIDLType idl_type = ((MTyped)p).getIdlType();
-	    MTypedefDef idl_typedef = (MTypedefDef)idl_type;
-	    MStructDef idl_struct = (MStructDef)idl_typedef;	
-	    List scope = getScope((MContained)idl_struct);
-	    String remote_scope = "::CORBA_Stubs::";
+	    MIDLType idlType = ((MTyped)p).getIdlType();
+	    MTypedefDef typedef = (MTypedefDef)idlType;
+	    MContained contained = (MContained)typedef;
+	    //	    MStructDef idl_struct = (MStructDef)idl_typedef;	
+	    //	    List scope = getScope((MContained)idl_struct);
+	    List scope = getScope(contained);
+	    String remoteScope = "::CORBA_Stubs::";
 	    if(scope.size() > 0)
-		remote_scope += join("::", scope) + "::"; 
+		remoteScope += join("::", scope) + "::";
+ 
 	    ret.add("    " + p.getIdentifier() + " = new " 
-		    + remote_scope + idl_struct.getIdentifier() + ";");
+		    //    + remoteScope + idl_struct.getIdentifier() + ";");
+		    + remoteScope + contained.getIdentifier() + ";");
 	    ret.add("    CCM_Remote::convertToCorba(parameter_" 
 		    + p.getIdentifier() 
 		    + ", " + p.getIdentifier() + ");"); 
@@ -1196,7 +1250,8 @@ public class CppRemoteGeneratorImpl
 	   || idl_type instanceof MStringDef) {
 	    ret.add(convertPrimitiveResultFromCppToCorba(op));
 	}
-	else if(idl_type instanceof MStructDef) {
+	else if(idl_type instanceof MStructDef
+		|| idl_type instanceof MAliasDef) {
 	    ret.add(convertUserResultFromCppToCorba(op));
 	}
 	return join("\n", ret);
@@ -1220,19 +1275,23 @@ public class CppRemoteGeneratorImpl
     protected String convertUserResultFromCppToCorba(MOperationDef op) 
     {
 	List ret = new ArrayList();
-	MIDLType idl_type = op.getIdlType();
-	MTypedefDef idl_typedef = (MTypedefDef)idl_type;
-	MStructDef idl_struct = (MStructDef)idl_typedef;
-	List scope = getScope((MContained)idl_struct);
-	String remote_scope = "::CORBA_Stubs::";
+	MIDLType idlType = op.getIdlType();
+	MTypedefDef typedef = (MTypedefDef)idlType;
+	MContained contained = (MContained)typedef; 
+	//	MStructDef idl_struct = (MStructDef)typedef;
+	//	List scope = getScope((MContained)idl_struct);
+	List scope = getScope(contained);
+	String remoteScope = "::CORBA_Stubs::";
     
 	if(scope.size() > 0)
-	    remote_scope += join("::", scope) + "::"; 
+	    remoteScope += join("::", scope) + "::"; 
 
-	ret.add("    " + remote_scope 
-		+ idl_struct.getIdentifier() + "_var " 
-		+ "return_value = new " + remote_scope 
-		+ idl_struct.getIdentifier() + ";"); 
+	ret.add("    " + remoteScope 
+		//		+ idl_struct.getIdentifier() + "_var " 
+		+ contained.getIdentifier() + "_var " 
+		+ "return_value = new " + remoteScope 
+		//		+ idl_struct.getIdentifier() + ";"); 
+		+ contained.getIdentifier() + ";"); 
 	ret.add("    CCM_Remote::convertToCorba(result, return_value);");
 	ret.add("    return return_value._retn();");
 	return join("\n", ret);	
