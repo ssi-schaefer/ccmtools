@@ -224,9 +224,8 @@ class UmlOperation extends uml_parser.uml.MOperation implements Worker
         String raisesValue = getRaises(main);
         if( raisesValue!=null )
         {
-	    code.append(" raises (");
+	    code.append(" raises ");
             code.append(raisesValue);
-	    code.append(")"); 
         }
         String contextValue = getContext(main);
         if( contextValue!=null )
