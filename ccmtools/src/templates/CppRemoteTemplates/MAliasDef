@@ -14,7 +14,6 @@
 
 %(CORBASequenceConverterInclude)s
 
-//(OpenNamespace)s
 namespace CCM_Remote {
 
 %(ConvertFromCorbaDeclaration)s
@@ -23,7 +22,6 @@ namespace CCM_Remote {
 
 %(OutputCorbaTypeDeclaration)s
 
-//(CloseNamespace)s
 } // /namespace CCM_Remote
 
 #endif // __ALIAS_CONVERTER%(PreprocIdentifier)s__H__

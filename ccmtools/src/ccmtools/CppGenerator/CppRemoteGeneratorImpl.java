@@ -79,8 +79,8 @@ public class CppRemoteGeneratorImpl
      */
     private final static String[] local_output_types =
     { 
-	"MHomeDef", "MComponentDef", "MInterfaceDef", 
-	"MStructDef", "MAliasDef" //, "MEnumDef" 
+	"MHomeDef", "MComponentDef", 
+	"MInterfaceDef", "MStructDef", "MAliasDef" //, "MEnumDef" 
     };
 
     /**
@@ -697,6 +697,7 @@ public class CppRemoteGeneratorImpl
 	MTyped type = (MTyped)current_node;
 	MIDLType idlType = type.getIdlType();
 	String baseType = getBaseIdlType(type);
+	MOperationDef operation = (MOperationDef)type;
 
         if(dataType.equals("OperationConvertInclude")) {
 	    if(idlType instanceof MPrimitiveDef
@@ -706,17 +707,32 @@ public class CppRemoteGeneratorImpl
 	    else {
 		StringBuffer ret = new StringBuffer();
 		ret.append("#include<CCM_Remote/");
-		// TODO: Add namespace
 		ret.append(baseType);
 		ret.append("_remote.h>");
+		ret.append("\n");
 		dataValue = ret.toString();
 	    }
         } 
 	else if(dataType.equals("ParameterConvertInclude")) {
-	    dataValue = ""; // TODO
+	    for(Iterator i =operation.getParameters().iterator(); i.hasNext();) {
+		MParameterDef parameter = (MParameterDef)i.next();
+		if(idlType instanceof MPrimitiveDef
+		   || idlType instanceof MStringDef) {
+		    dataValue = "";
+		}
+		else {
+		    StringBuffer ret = new StringBuffer();
+		    ret.append("#include<CCM_Remote/");
+		    ret.append(getBaseIdlType(parameter));
+		    ret.append("_remote.h>"); //!!!
+		    ret.append("\n");
+		    dataValue += ret.toString();
+		}
+	    }
+	    //dataValue = "// TODO: ParameterConvertInclude\n"; 
 	}
 	else if(dataType.equals("ExceptionConvertInclude")) {
-	    dataValue = ""; // TODO
+	    dataValue = "// TODO: ExceptionConvertInclude\n"; 
 	}
 	else {
 	    dataValue = super.data_MOperationDef(dataType, dataValue);
@@ -823,6 +839,7 @@ public class CppRemoteGeneratorImpl
 	StringBuffer ret = new StringBuffer();
 
 	if(dataType.equals("ProvidesInclude")) {
+	    // TODO: Refactoring namespace method
 	    if(scope.size() > 0) {
 		ret.append("#include <CCM_Local/");
 		ret.append(join("/", scope));
@@ -835,21 +852,14 @@ public class CppRemoteGeneratorImpl
 		ret.append(provides.getProvides().getIdentifier());
 		ret.append(".h>");
 	    }
+	    //	    ret.append("\n");
 	    dataValue = ret.toString();
 	}
 	else if(dataType.equals("ProvidesConvertInclude")) {
-	    if(scope.size() > 0) {
-		ret.append("#include <CCM_Remote/");
-		ret.append(join("/", scope));
-		ret.append("/");
-		ret.append(provides.getProvides().getIdentifier());
-		ret.append("_remote.h>");
-	    }
-	    else {	
-		ret.append("#include <CCM_Remote/");
-		ret.append(provides.getProvides().getIdentifier());
-		ret.append("_remote.h>");
-	    }
+	    ret.append("#include <CCM_Remote/");
+	    ret.append(provides.getProvides().getIdentifier());
+	    ret.append("_remote.h>");
+	    //	    ret.append("\n");
 	    dataValue = ret.toString();
 	}
         else if(dataType.equals("IdlProvidesType")) {
@@ -858,6 +868,7 @@ public class CppRemoteGeneratorImpl
 	    dataValue = ret.toString();
 	}
 	else if(dataType.equals("ProvidesType")) {
+	    // TODO: Refactoring namespace method
 	    if(scope.size() > 0) {
 		ret.append(join("::", scope));
 		ret.append("::");
@@ -878,49 +889,67 @@ public class CppRemoteGeneratorImpl
     }
 
 
-    protected String data_MUsesDef(String data_type, String data_value)
+    protected String data_MUsesDef(String dataType, String dataValue)
     {
 	MUsesDef usesDef = (MUsesDef)current_node;
 	List scope = getScope((MContained)usesDef);
+	StringBuffer buffer = new StringBuffer();
 
-	if(data_type.equals("UsesInclude")) {
+	if(dataType.equals("UsesInclude")) {
+	    // TODO: Refactoring namespace method
 	    if(scope.size() > 0) {
-		return "CCM_Local/" + join("/", scope) + "/" 
-		    + usesDef.getUses().getIdentifier(); 
+		buffer.append("#include <CCM_Local/");
+		buffer.append(join("/", scope));
+		buffer.append( "/");
+		buffer.append(usesDef.getUses().getIdentifier());
+		buffer.append(".h>");
 	    }
 	    else {
-		return "CCM_Local/" + usesDef.getUses().getIdentifier();
+		buffer.append("#include <CCM_Local/");
+		buffer.append(usesDef.getUses().getIdentifier());
+		buffer.append(".h>");
 	    }
+	    //	    buffer.append("\n");
+	    dataValue = buffer.toString();
 	}
-	else if(data_type.equals("CCM_UsesType")) {
+	else if(dataType.equals("UsesConvertInclude")) {
+
+	    dataValue = "// TODO: UsesConvertInclude";
+
+
+	}
+	else if(dataType.equals("CCM_UsesType")) {
+	    // TODO: Refactoring namespace method
 	    if(scope.size() > 0) {
-		return join("::", scope) + "::CCM_" 
-		    + usesDef.getUses().getIdentifier();
+		buffer.append(join("::", scope));
+		buffer.append("::CCM_");
+		buffer.append(usesDef.getUses().getIdentifier());
 	    }
 	    else {
-		return "CCM_" + usesDef.getUses().getIdentifier();
+		buffer.append("CCM_");
+		buffer.append( usesDef.getUses().getIdentifier());
 	    }
+	    //	    buffer.append("\n");
+	    dataValue = buffer.toString();
 	}
-        else if(data_type.equals("IdlUsesType")) {
-	    if(scope.size() > 0)
-		return getCorbaStubsNamespace("::")
-		    + usesDef.getUses().getIdentifier();
-		//		return getCorbaStubsNamespace("::") + join("::", scope) 
-		//		     + "::" + usesDef.getUses().getIdentifier();
-	    else
-		return getCorbaStubsNamespace("::") 
-		    + usesDef.getUses().getIdentifier();
+        else if(dataType.equals("IdlUsesType")) {
+	    buffer.append(getCorbaStubsNamespace("::"));
+	    buffer.append(usesDef.getUses().getIdentifier());
+	    dataValue = buffer.toString();
 	}
-	else if(data_type.equals("UsesType")) {
+	else if(dataType.equals("UsesType")) {
+	    // TODO: Refactoring namespace method
 	    if(scope.size() > 0) {
-		return join("::", scope) + "::" 
-		    + usesDef.getUses().getIdentifier();
+		buffer.append(join("::", scope));
+		buffer.append("::");
+		buffer.append(usesDef.getUses().getIdentifier());
 	    }
 	    else {
-		return usesDef.getUses().getIdentifier();
+		buffer.append(usesDef.getUses().getIdentifier());
 	    }
+	    dataValue = buffer.toString();
 	}
-        return super.data_MUsesDef(data_type,data_value);
+        return super.data_MUsesDef(dataType,dataValue);
     }
 
 
@@ -937,61 +966,77 @@ public class CppRemoteGeneratorImpl
     public void writeOutput(Template template)
         throws IOException
     {
-        String out_string = template.substituteVariables(output_variables);
-        String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
-	String[] out_file_types = { "_remote.h", "_remote.cc" };
+        String sourceCode = template.substituteVariables(output_variables);
+        String[] sourceFiles = sourceCode.split("<<<<<<<SPLIT>>>>>>>");
+	String[] remoteSuffix = { "_remote.h", "_remote.cc" };
 
-        for (int i = 0; i < out_strings.length; i++) {
-	    // If the out_string is empty, skip the file creation
-	    if (out_strings[i].trim().equals("")) continue;
-
-	    // If the current node is a ComponentDef, create a component's files
-  	    if (current_node instanceof MComponentDef) {
-		String component_name = 
-		    ((MContained) current_node).getIdentifier();
-		String file_dir = 
-		    handleNamespace("FileNamespace", component_name);
-
-		writeFinalizedFile(file_dir + "_remote",
-				   component_name + out_file_types[i],
-				   out_strings[i]);
+        for(int i = 0; i < sourceFiles.length; i++) {
+	    if (sourceFiles[i].trim().equals("")) {
+		// skip the file creation
+		continue;
 	    }
-	    // If the current node is a HomeDef, create the home's files
-	    else if (current_node instanceof MHomeDef)  {
 
+  	    if(current_node instanceof MComponentDef) {
+		// write the component files
+		String componentName = 
+		    ((MContained) current_node).getIdentifier();
+		String fileDir = handleNamespace("FileNamespace",componentName)
+		    + "_CCM_Session_" + componentName;
+		writeFinalizedFile(fileDir ,
+				   componentName + remoteSuffix[i],
+				   sourceFiles[i]);
+	    }
+	    else if(current_node instanceof MHomeDef)  {
+		// write the home files
 		MHomeDef home = (MHomeDef)current_node;
-		String component_name = 
+		String componentName = 
 		    ((MContained)home.getComponent()).getIdentifier();  
-		String home_name = home.getIdentifier();
-		String file_dir = 
-		    handleNamespace("FileNamespace", component_name);
+		String homeName = home.getIdentifier();
+		String fileDir = handleNamespace("FileNamespace",componentName)
+		    + "_CCM_Session_" + componentName;
 
-		writeFinalizedFile(file_dir + "_remote",
-				   home_name + out_file_types[i],
-				   out_strings[i]);
+		writeFinalizedFile(fileDir,
+				   homeName + remoteSuffix[i],
+				   sourceFiles[i]);
 
-		// generate an empty Makefile.py in the CCM_Session_*_remote
-		// directory - needed by Confix
-		writeFinalizedFile(file_dir + "_remote","Makefile.py","");
+		writeFinalizedFile(fileDir,"Makefile.py","");
+	    }
+	    else if(current_node instanceof MInterfaceDef
+		    || current_node instanceof MAliasDef
+		    || current_node instanceof MStructDef) {
+		// write converter files
+		String nodeName = ((MContained) current_node).getIdentifier();
+		String fileDir = "CORBA_Converter";
+		writeFinalizedFile(fileDir,nodeName + remoteSuffix[i],
+				   sourceFiles[i]);
+		writeMakefilePy(output_dir,fileDir,"");
 	    }
 	    else {
-		String node_name = ((MContained) current_node).getIdentifier();
-		List names = new ArrayList(namespace);
-		String file_dir = join("_",names);
-		writeFinalizedFile(file_dir,
-				   node_name + out_file_types[i],
-				   out_strings[i]);
-
-		// Write Makefile.py for CCM_Remote/ only once...
-		File confixFile = new File(output_dir, file_dir);
-		confixFile = new File(confixFile, "Makefile.py");
-		if (! confixFile.isFile()) {
-		    writeFinalizedFile(file_dir, "Makefile.py", "");
-		}
+		throw new RuntimeException("CppRemoteGeneratorImpl.writeOutput()" + 
+					   ": unhandled node!");
 	    }
 	}
     }
 
+
+    /**
+     * Write a Makefile.py only once.
+     * 
+     */
+    protected boolean writeMakefilePy(File outDir, String fileDir, String content)
+    {
+	boolean result;
+	File makeFile = new File(outDir, fileDir);
+	makeFile = new File(makeFile, "Makefile.py");
+	if (!makeFile.isFile()) {
+	    writeFinalizedFile(fileDir, "Makefile.py", content);
+	    result = true;
+	}
+	else {
+	    result = false; // no Makefile.py written
+	}
+	return result;
+    }
 
 
     //====================================================================
@@ -1349,9 +1394,10 @@ public class CppRemoteGeneratorImpl
 	else
 	    localScope = "";
 
+	// void foo() does not need a result declaration
 	if(idlType instanceof MPrimitiveDef
 	   && ((MPrimitiveDef)idlType).getKind() == MPrimitiveKind.PK_VOID) {
-	    return ""; // void foo() does not need a result declaration
+	    return ""; 
 	}
 
 	if(idlType instanceof MPrimitiveDef 
@@ -1744,6 +1790,12 @@ public class CppRemoteGeneratorImpl
 	MIDLType idlType = op.getIdlType(); 
 	String result = "";
 
+	// void foo() does not need a result declaration
+	if(idlType instanceof MPrimitiveDef
+	   && ((MPrimitiveDef)idlType).getKind() == MPrimitiveKind.PK_VOID) {
+	    return ""; 
+	}
+
 	if(idlType instanceof MPrimitiveDef 
 	   || idlType instanceof MStringDef
 	   || idlType instanceof MWstringDef) {
@@ -1781,7 +1833,6 @@ public class CppRemoteGeneratorImpl
     {
 	StringBuffer buffer = new StringBuffer();
 	buffer.append(insertTab(1)); 
-	//	buffer.append((String)CORBA_mappings.get((String)getBaseIdlType(op))); 
 	buffer.append(getCorbaType(op));
 	buffer.append(" result;");
 	return buffer.toString();
@@ -1814,16 +1865,15 @@ public class CppRemoteGeneratorImpl
      */
     protected String convertReceptacleMethodToCorba(MOperationDef op, String receptacleName)
     {
-	StringBuffer buffer = new StringBuffer();
+	StringBuffer buffer = new StringBuffer(insertTab(2));
 	List list = new ArrayList();
 	MIDLType idlType = op.getIdlType(); 
 
+	// void method, no result declaration
 	if(idlType instanceof MPrimitiveDef 
 	   && ((MPrimitiveDef)idlType).getKind() == MPrimitiveKind.PK_VOID) {
-	    // void method, no result declaration
 	}
 	else {
-	    buffer.append(insertTab(2));
 	    buffer.append("result = ");
 	}
 	buffer.append("component_adapter->get_connection_");
@@ -2002,8 +2052,6 @@ public class CppRemoteGeneratorImpl
 	return join("\n", ret);
     }
 }
-
-
 
 
 

@@ -5,8 +5,9 @@
 
 %(MOperationDefInclude)s
 
-%(OpenNamespace)s
-%(CloseNamespace)s
+namespace CCM_Remote {
+
+} // /namespace CCM_Remote
 
 #endif // __IFACE_%(PreprocIdentifier)s__H__
 

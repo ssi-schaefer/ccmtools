@@ -14,8 +14,6 @@
 
 %(MFieldDefInclude)s
 
-
-//(OpenNamespace)s
 namespace CCM_Remote {
 
 void 
@@ -27,8 +25,6 @@ convertToCorba(const %(LocalNamespace)s%(Identifier)s& in, %(StubsNamespace)s%(I
 std::ostream& 
 operator<<(std::ostream& o, const %(StubsNamespace)s%(Identifier)s& value);
 
-
-//(CloseNamespace)s
 } // /namespace CCM_Remote
 
 #endif // __STRUCT_CONVERTER_%(PreprocIdentifier)s__H__
@@ -48,7 +44,6 @@ operator<<(std::ostream& o, const %(StubsNamespace)s%(Identifier)s& value);
 
 using namespace std;
 
-//(OpenNamespace)s
 namespace CCM_Remote {
 
 void 
@@ -76,6 +71,5 @@ operator<<(std::ostream& o, const %(StubsNamespace)s%(Identifier)s& value)
     return o;
 }
 
-//(CloseNamespace)s
 } // /namespace CCM_Remote
 
