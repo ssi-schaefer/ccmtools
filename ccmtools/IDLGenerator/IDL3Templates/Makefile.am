@@ -1,6 +1,7 @@
 ## process this file with automake to produce Makefile.in
 
-templatedir = $(DATA_ROOT)/IDL3Templates
+#templatedir = $(DATA_ROOT)/IDL3Templates
+templatedir = $(TEMPLATE_ROOT)/IDL3Templates
 dist_template_DATA = \
     MAliasDef                    \
     MArrayDef                    \
