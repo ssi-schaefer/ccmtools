@@ -1,11 +1,9 @@
 /**
- * Test case: basic_idl
- *
- *
+ * Test case: attribute basic types 
  */
 
 
-component Hello
+component Test
 {
   attribute short short_value;
   attribute long long_value;
@@ -19,7 +17,7 @@ component Hello
   attribute octet octet_value;
 };
 
-home HelloHome manages Hello
+home TestHome manages Test
 {
 };
 
