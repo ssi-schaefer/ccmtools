@@ -41,11 +41,15 @@ import ccmtools.utils.Debug;
 public class CppRemoteTestGeneratorImpl
     extends CppGenerator
 {
+    protected List CorbaStubsNamespace = null;
+
     // types for which we have a global template ; that is, a template that is
     // not contained inside another template.
-
     private final static String[] local_output_types =
-    { "MComponentDef" };
+    { 
+	"MComponentDef" 
+    };
+
 
     public CppRemoteTestGeneratorImpl(Driver d, File out_dir)
         throws IOException
@@ -53,11 +57,23 @@ public class CppRemoteTestGeneratorImpl
         super("CppRemoteTest", d, out_dir, local_output_types);
 
         base_namespace.add("CCM_Remote");
-
-	Debug.println(Debug.METHODS,"CppRemoteTestGeneratorImpl("
-		      + d + ", " + out_dir + ")");
+	CorbaStubsNamespace = new ArrayList();
+	CorbaStubsNamespace.add("CORBA_Stubs");
     }
 
+
+    /**
+     * Collect all defined CORBA Stub prefixes into a single string.
+     * All CORBA Stub prefixes are stored in a class attribute list
+     * called CorbaStubsNamespace which is filled in the constructor.
+     * @param separator A separator string that is used between two
+     *                  list entries (example "::").
+     * Example: {"CORBA_Stubs"} -> "CORBA_Stubs::"
+     */
+    protected String getCorbaStubsNamespace(String separator)
+    {
+	return join(separator,CorbaStubsNamespace) + separator;
+    }
 
 
     /**
@@ -79,7 +95,7 @@ public class CppRemoteTestGeneratorImpl
      *              If a namespace is defined, it has to start with "::"
      *
      * "ShortNamespace": corresponds with the module hierarchy in the IDL file,
-     *                   there is no CCM_Local, CCM_Remote or CCM_Session_ included.
+     *                   with a IDL-prefix.
      *
      * "IdlFileNamespace":
      *
@@ -106,23 +122,28 @@ public class CppRemoteTestGeneratorImpl
         } 
 	else if (data_type.equals("ShortNamespace")) {
 	    if(names.size() > 1) {
-		List shortList = new ArrayList(names.subList(1, names.size()-1));
+		List shortList = 
+		    new ArrayList(names.subList(1, names.size()-1));
 		if(shortList.size() > 0)
-		    return join("::", shortList) + "::";
+		    return getCorbaStubsNamespace("::") 
+			+ join("::", shortList) + "::";
 	    }
-	    return "";
+	    return getCorbaStubsNamespace("::");
         }
 	else if (data_type.equals("IdlFileNamespace")) {
 	    if(names.size() > 1) {
-		List IdlFileList = new ArrayList(names.subList(1, names.size()-1));
+		List IdlFileList = 
+		    new ArrayList(names.subList(1, names.size()-1));
 		if(IdlFileList.size() > 0)
-		    return join("_", IdlFileList) + "_";
+		    return getCorbaStubsNamespace("_") 
+			+ join("_", IdlFileList) + "_";
 	    }
-	    return "";
+	    return getCorbaStubsNamespace("_");
         } 
 	else if (data_type.equals("IdlNamespace")) {
 	    if(names.size() > 2) {
-		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
+		List IdlFileList = 
+		    new ArrayList(names.subList(2, names.size()-1));
 		return join("::", IdlFileList) + "::";
 	    }
 	    return "";
@@ -130,43 +151,6 @@ public class CppRemoteTestGeneratorImpl
         return super.handleNamespace(data_type, local);
     }
 
-
-    /**
-     * Overwrites the CppGenerator's method to change between CCM_Local
-     * CCM_Remote.
-     *
-    protected String handleNamespace(String data_type, String local)
-    {
-	Debug.println(Debug.METHODS,"CppRemoteTestGenerator.handleNamespace(" + 
-		      data_type + ", " + local + ")");
-
-        List names = new ArrayList(namespace);
-
-	// ShortNamespace corresponds with the module hierarchy in the IDL file,
-	// there is no CCM_Local, CCM_Remote or CCM_Session_ included.
-	if (data_type.equals("ShortNamespace"))
-            return join("::", slice(names, 1));
-
-	if (!local.equals("")) names.add("CCM_Session_" + local);
-
-        if (data_type.equals("Namespace")) {
-            return join("::", slice(names, 1));
-        } else if (data_type.equals("FileNamespace")) {
-            return join("_", slice(names, 1));
-        } else if (data_type.equals("IdlFileNamespace")) {
-	    if(names.size() > 2) {
-		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
-		if(IdlFileList.size() > 0)
-		    return join("_", IdlFileList) + "_";
-		else
-		    return "";
-	    }
-	    else
-		return "";
-        } 
-        return super.handleNamespace(data_type, local);
-    }
-    */
 
     /**
      * Write generated code to an output file.
@@ -236,21 +220,26 @@ public class CppRemoteTestGeneratorImpl
         }
 	else if (data_type.equals("IdlHomeType")) {
 	    if(HomeScope.size() > 0)
-		return "::" + join("::", HomeScope) + "::" + home.getIdentifier();
+		return getCorbaStubsNamespace("::") + join("::", HomeScope) 
+		    + "::" + home.getIdentifier();
 	    else
-		return "::" + home.getIdentifier();
+		return getCorbaStubsNamespace("::") + home.getIdentifier();
         }
 	else if(data_type.equals("Identifier")) {
 	    return component.getIdentifier();
 	}
 	else if(data_type.equals("IdlIdentifier")) {
 	    if(ComponentScope.size() > 0)
-		return "::" + join("::", ComponentScope) + "::" + component.getIdentifier();
+		return getCorbaStubsNamespace("::") 
+		    + join("::", ComponentScope) 
+		    + "::" + component.getIdentifier();
 	    else
-		return "::" + component.getIdentifier();
+		return getCorbaStubsNamespace("::") 
+		    + component.getIdentifier();
 	}
         return super.data_MComponentDef(data_type, data_value);
     }
+
 
     protected String data_MProvidesDef(String data_type, String data_value)
     {
@@ -260,9 +249,10 @@ public class CppRemoteTestGeneratorImpl
 
         if(data_type.equals("IdlProvidesType")) {
 	    if(scope.size() > 0)
-		return "::" + join("::", scope) + "::" + iface.getIdentifier();
+		return getCorbaStubsNamespace("::") + join("::", scope) 
+		    + "::" + iface.getIdentifier();
 	    else
-		return "::" + iface.getIdentifier();
+		return getCorbaStubsNamespace("::") + iface.getIdentifier();
 	}
 	else if(data_type.equals("ProvidesType")) {
 	    return iface.getIdentifier();
@@ -273,8 +263,3 @@ public class CppRemoteTestGeneratorImpl
 	return super.data_MProvidesDef(data_type, data_value);
     }
 }
-
-
-
-
-

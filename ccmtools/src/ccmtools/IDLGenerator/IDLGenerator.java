@@ -30,6 +30,8 @@ import java.util.List;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
+
+import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -49,6 +51,8 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 abstract public class IDLGenerator
     extends CodeGenerator
 {
+    protected List base_namespace = null;
+
     private final static String[] local_output_types =
     {
         "MComponentDef", "MInterfaceDef", "MHomeDef",
@@ -101,7 +105,33 @@ abstract public class IDLGenerator
               local_reserved_words, local_language_map);
 
         file_separator = "_";
+	base_namespace = new ArrayList();
     }
+
+
+    /**
+     * Acknowledge the start of the given node during graph traversal. If the
+     * node is a MContainer type and is not defined in anything, assume it's the
+     * global parse container, and push a name onto the namespace stack,
+     * indicating that this code is embedded in a particulat namespace.
+     *
+     * @param node the node that the GraphTraverser object is about to
+     *        investigate.
+     * @param scope_id the full scope identifier of the node. This identifier is
+     *        a string containing the names of parent nodes, joined together
+     *        with double colons.
+     */
+    public void startNode(Object node, String scope_id)
+    {
+	// TODO: move this functionality to the super class
+        if (node instanceof MContainer &&
+            (((MContainer) node).getDefinedIn() == null))
+            for (Iterator i = base_namespace.iterator(); i.hasNext(); )
+                namespace.push(i.next());
+	// ---
+        super.startNode(node, scope_id);
+    }
+
 
     /**
      * Acknowledge and process a closing node during graph traversal. If the
@@ -117,8 +147,18 @@ abstract public class IDLGenerator
     public void endNode(Object node, String scope_id)
     {
         super.endNode(node, scope_id);
+	// TODO: move this functionality to the super class
+        if (node instanceof MContainer &&
+            (((MContainer) node).getDefinedIn() == null)) {
+            for (Iterator i = base_namespace.iterator(); i.hasNext(); ) {
+                i.next();
+                namespace.pop();
+            }
+        }
+	// ----
         writeOutputIfNeeded();
     }
+
 
     /**************************************************************************/
 

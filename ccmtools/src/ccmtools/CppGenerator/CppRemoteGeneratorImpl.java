@@ -48,6 +48,8 @@ import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
+
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
@@ -66,6 +68,8 @@ public class CppRemoteGeneratorImpl
     //====================================================================
 
     private Map CORBA_mappings;
+
+    protected List CorbaStubsNamespace = null;
 
     /**
      * Top level node types:
@@ -125,11 +129,9 @@ public class CppRemoteGeneratorImpl
         throws IOException
     {
         super("CppRemote", d, out_dir, local_output_types);
-
 	base_namespace.add("CCM_Remote");
-
-	Debug.setDebugLevel(Debug.NONE);
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.CppRemoteGeneratorImpl()");
+	CorbaStubsNamespace = new ArrayList();
+	CorbaStubsNamespace.add("CORBA_Stubs");
 
 	// fill the CORBA_mappings with IDL to C++ Mapping types
 	String[] labels = MPrimitiveKind.getLabels();
@@ -141,6 +143,20 @@ public class CppRemoteGeneratorImpl
     //====================================================================
     // Code generator core functions
     //====================================================================
+
+    /**
+     * Collect all defined CORBA Stub prefixes into a single string.
+     * All CORBA Stub prefixes are stored in a class attribute list
+     * called CorbaStubsNamespace which is filled in the constructor.
+     * @param separator A separator string that is used between two
+     *                  list entries (example "::").
+     * Example: {"CORBA_Stubs"} -> "CORBA_Stubs::"
+     */
+    protected String getCorbaStubsNamespace(String separator)
+    {
+	return join(separator,CorbaStubsNamespace) + separator;
+    }
+
 
     /**
      * Overwrites the CppGenerator's method to handle namespaces in different
@@ -161,7 +177,8 @@ public class CppRemoteGeneratorImpl
      *              If a namespace is defined, it has to start with "::"
      *
      * "ShortNamespace": corresponds with the module hierarchy in the IDL file,
-     *                   there is no CCM_Local, CCM_Remote or CCM_Session_ included.
+     *                   there is no CCM_Local, CCM_Remote or 
+     *                   CCM_Session_ included.
      *
      * "IdlFileNamespace":
      *
@@ -185,26 +202,31 @@ public class CppRemoteGeneratorImpl
 		return "::" + join("::", NamespaceList);
 	    }
 	    return "";
-        } 
+        }                          
 	else if (data_type.equals("ShortNamespace")) {
 	    if(names.size() > 1) {
-		List shortList = new ArrayList(names.subList(1, names.size()-1));
+		List shortList = 
+		    new ArrayList(names.subList(1, names.size()-1));
 		if(shortList.size() > 0)
-		    return join("::", shortList) + "::";
+		    return  getCorbaStubsNamespace("::") 
+			+ join("::", shortList) + "::";
 	    }
-	    return "";
+	    return getCorbaStubsNamespace("::");
         }
 	else if (data_type.equals("IdlFileNamespace")) {
 	    if(names.size() > 1) {
-		List IdlFileList = new ArrayList(names.subList(1, names.size()-1));
+		List IdlFileList = 
+		    new ArrayList(names.subList(1, names.size()-1));
 		if(IdlFileList.size() > 0)
-		    return join("_", IdlFileList) + "_";
+		    return getCorbaStubsNamespace("_")
+			+ join("_", IdlFileList) + "_";
 	    }
-	    return "";
+	    return getCorbaStubsNamespace("_");
         } 
 	else if (data_type.equals("IdlNamespace")) {
 	    if(names.size() > 2) {
-		List IdlFileList = new ArrayList(names.subList(2, names.size()-1));
+		List IdlFileList = 
+		    new ArrayList(names.subList(2, names.size()-1));
 		return join("::", IdlFileList) + "::";
 	    }
 	    return "";
@@ -230,9 +252,10 @@ public class CppRemoteGeneratorImpl
 	String base_type = getBaseIdlType(object);
 
 	vars.put("CORBAType", getCORBALanguageType((MTyped)attr)); 
-	vars.put("MAttributeDefConvertResultType", base_type + "_to_" + "CORBA" + base_type);
-	vars.put("MAttributeDefConvertParameter", "CORBA" + base_type + "_to_" + base_type);
-
+	vars.put("MAttributeDefConvertResultType", base_type 
+		 + "_to_" + "CORBA" + base_type);
+	vars.put("MAttributeDefConvertParameter", "CORBA" 
+		 + base_type + "_to_" + base_type);
         return vars;
     }
 
@@ -252,8 +275,6 @@ public class CppRemoteGeneratorImpl
     protected Map getTwoStepOperationVariables(MOperationDef operation,
                                                MContained container)
     {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.getTwoStepVariables()");
-
 	String lang_type = getLanguageType(operation);
         Map vars = new Hashtable();
 
@@ -268,20 +289,27 @@ public class CppRemoteGeneratorImpl
         vars.put("MParameterDefName",   getOperationParamNames(operation));
 
 	// Used for supports and facet adapter generation
-        vars.put("MParameterDefConvertParameter" , convertParameterToCpp(operation)); 
-	vars.put("MParameterDefDeclareResult"    , declareCppResult(operation));
-        vars.put("MParameterDefConvertMethod"    , convertMethodToCpp(operation));
-	vars.put("MParameterDefConvertResult"    , convertResultToCorba(operation));
-	vars.put("MParameterDefConvertExceptions", convertExceptionsToCorba(operation));
-	vars.put("MParameterDefConvertParameterFromCppToCorba", convertParameterToCorba(operation));
+        vars.put("MParameterDefConvertParameter" , 
+		 convertParameterToCpp(operation)); 
+	vars.put("MParameterDefDeclareResult", 
+		 declareCppResult(operation));
+        vars.put("MParameterDefConvertMethod", 
+		 convertMethodToCpp(operation));
+	vars.put("MParameterDefConvertResult", 
+		 convertResultToCorba(operation));
+	vars.put("MParameterDefConvertExceptions", 
+		 convertExceptionsToCorba(operation));
+	vars.put("MParameterDefConvertParameterFromCppToCorba", 
+		 convertParameterToCorba(operation));
 
 	// Used for receptacle adapter generation
 	vars.put("MParameterDefConvertReceptacleParameterToCorba",
 		 convertReceptacleParameterToCorba(operation));
 	vars.put("MParameterDefDeclareReceptacleCorbaResult",
 		 declareReceptacleCorbaResult(operation));
-	vars.put("MParameterDefConvertReceptacleMethodToCorba"   ,
-		 convertReceptacleMethodToCorba(operation, container.getIdentifier()));
+	vars.put("MParameterDefConvertReceptacleMethodToCorba",
+		 convertReceptacleMethodToCorba(operation, 
+						container.getIdentifier()));
 	vars.put("MParameterDefConvertReceptacleResultToCpp",
 		 convertReceptacleResultToCpp(operation));
 	vars.put("MParameterDefConvertReceptacleExceptionsToCpp",
@@ -308,23 +336,17 @@ public class CppRemoteGeneratorImpl
      */
     protected String getLocalValue(String variable)
     {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.getLocalValue()");
-
         String value = super.getLocalValue(variable);
 
 	if (current_node instanceof MAttributeDef) {
             return data_MAttributeDef(variable, value);
 	}
-
-	Debug.println(Debug.VALUES,value);
 	return value;
     }
 
 
     protected String data_MAttributeDef(String data_type, String data_value)
     {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.data_MAttributeDef()"); 
-
 	// current_node is MAttributeDef
 	MTyped object = (MTyped)current_node;
 	MIDLType idl_type = object.getIdlType(); 
@@ -351,15 +373,13 @@ public class CppRemoteGeneratorImpl
     /**
      * Overwrites the superclass method to support standard IDL2C++ mapping
      * of parameters.
-     * MFactoryDef is a MOperationDef so we can use the getCORBAOperationParams()
-     * method to convert the parameter list.
+     * MFactoryDef is a MOperationDef so we can use the 
+     * getCORBAOperationParams() method to convert the parameter list.
      * Note that the MFactoryDef templates contains the %(MParameterCORBA)s 
      * placeholder to indicate the CORBA parameter list.
      */
     protected String data_MFactoryDef(String data_type, String data_value)
     {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.data_MFactoryDef()");
-
 	if(data_type.startsWith("MParameterCORBA")) {
 	    return getCORBAOperationParams((MOperationDef)current_node);
 	}
@@ -390,8 +410,6 @@ public class CppRemoteGeneratorImpl
 	MSupportsDef supports = (MSupportsDef)current_node;
 
 	if(data_type.equals("SupportsInclude")) {
-	    // Generates the include path of supported interfaces.
-	    // Note that there is no CCM_Remote prefix in the namespace.
 	    List scope = getScope((MContained)supports);
 	    if(scope.size() > 0) {
 		return "CCM_Local/" + join("/", scope) + "/" 
@@ -409,12 +427,11 @@ public class CppRemoteGeneratorImpl
     protected String data_MProvidesDef(String data_type, String data_value)
     {
 	MProvidesDef provides = (MProvidesDef)current_node;
+	MInterfaceDef iface = ((MProvidesDef) current_node).getProvides();
         MComponentDef component = provides.getComponent();
+	List scope = getScope((MContained)iface);
 
 	if(data_type.equals("ProvidesInclude")) {
-	    // Generates the include path of provides interfaces.
-	    // Note that there is no CCM_Remote prefix in the namespace.
-	    List scope = getScope((MContained)provides);
 	    if(scope.size() > 0) {
 		return "CCM_Local/" + join("/", scope) + "/" 
 		    + provides.getProvides().getIdentifier(); 
@@ -423,8 +440,14 @@ public class CppRemoteGeneratorImpl
 		return "CCM_Local/" + provides.getProvides().getIdentifier();
 	    }
 	}
+        if(data_type.equals("IdlProvidesType")) {
+	    if(scope.size() > 0)
+		return getCorbaStubsNamespace("::") + join("::", scope) 
+		    + "::" + iface.getIdentifier();
+	    else
+		return getCorbaStubsNamespace("::") + iface.getIdentifier();
+	}
 	else if(data_type.equals("ProvidesType")) {
-	    List scope = getScope((MContained)provides);
 	    if(scope.size() > 0) {
 		return join("::", scope) + "::" 
 		    + provides.getProvides().getIdentifier();
@@ -443,11 +466,9 @@ public class CppRemoteGeneratorImpl
     protected String data_MUsesDef(String data_type, String data_value)
     {
 	MUsesDef usesDef = (MUsesDef)current_node;
+	List scope = getScope((MContained)usesDef);
 
 	if(data_type.equals("UsesInclude")) {
-	    // Generates the include path of used interfaces.
-	    // Note that there is no CCM_Remote prefix in the namespace.
-	    List scope = getScope((MContained)usesDef);
 	    if(scope.size() > 0) {
 		return "CCM_Local/" + join("/", scope) + "/" 
 		    + usesDef.getUses().getIdentifier(); 
@@ -457,7 +478,6 @@ public class CppRemoteGeneratorImpl
 	    }
 	}
 	else if(data_type.equals("CCM_UsesType")) {
-	    List scope = getScope((MContained)usesDef);
 	    if(scope.size() > 0) {
 		return join("::", scope) + "::CCM_" 
 		    + usesDef.getUses().getIdentifier();
@@ -466,8 +486,15 @@ public class CppRemoteGeneratorImpl
 		return "CCM_" + usesDef.getUses().getIdentifier();
 	    }
 	}
+        else if(data_type.equals("IdlUsesType")) {
+	    if(scope.size() > 0)
+		return getCorbaStubsNamespace("::") + join("::", scope) 
+		     + "::" + usesDef.getUses().getIdentifier();
+	    else
+		return getCorbaStubsNamespace("::") 
+		    + usesDef.getUses().getIdentifier();
+	}
 	else if(data_type.equals("UsesType")) {
-	    List scope = getScope((MContained)usesDef);
 	    if(scope.size() > 0) {
 		return join("::", scope) + "::" 
 		    + usesDef.getUses().getIdentifier();
@@ -503,10 +530,12 @@ public class CppRemoteGeneratorImpl
 	    // If the out_string is empty, skip the file creation
 	    if (out_strings[i].trim().equals("")) continue;
 
-	    // If the current node is a ComponentDef, create the component's files
+	    // If the current node is a ComponentDef, create a component's files
   	    if (current_node instanceof MComponentDef) {
-		String component_name = ((MContained) current_node).getIdentifier();
-		String file_dir = handleNamespace("FileNamespace", component_name);
+		String component_name = 
+		    ((MContained) current_node).getIdentifier();
+		String file_dir = 
+		    handleNamespace("FileNamespace", component_name);
 
 		writeFinalizedFile(file_dir + "_remote",
 				   component_name + out_file_types[i],
@@ -516,9 +545,11 @@ public class CppRemoteGeneratorImpl
 	    else if (current_node instanceof MHomeDef)  {
 
 		MHomeDef home = (MHomeDef)current_node;
-		String component_name = ((MContained)home.getComponent()).getIdentifier();  
+		String component_name = 
+		    ((MContained)home.getComponent()).getIdentifier();  
 		String home_name = home.getIdentifier();
-		String file_dir = handleNamespace("FileNamespace", component_name);
+		String file_dir = 
+		    handleNamespace("FileNamespace", component_name);
 
 		writeFinalizedFile(file_dir + "_remote",
 				   home_name + out_file_types[i],
@@ -538,7 +569,6 @@ public class CppRemoteGeneratorImpl
 
 		// TODO: Write Makefile.py only once...
 	    }
-
 	}
     }
 
