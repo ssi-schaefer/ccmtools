@@ -6,6 +6,7 @@
 #include <iostream>
 #include <CCM_Utils/Debug.h>
 
+#include "Hello_app.h"
 #include "HelloHome_app.h"
 
 using namespace std;
@@ -34,7 +35,7 @@ CCM_HelloHome_impl::create (  )
   throw ( localComponents::CCMException )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create (  )" );
-  return ( localComponents::EnterpriseComponent* ) new CCM_Hello_impl (  );
+  return dynamic_cast<localComponents::EnterpriseComponent*>(new CCM_Hello_impl (  ));
 }
 
 localComponents::EnterpriseComponent*
@@ -43,8 +44,6 @@ CCM_HelloHome_impl::createWithString ( const std::string& id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->createWithString (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->id(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <CCM_Utils/Debug.h>
 
+#include "Hello_app.h"
 #include "HelloHome_app.h"
 
 using namespace std;
@@ -34,7 +35,7 @@ CCM_HelloHome_impl::create (  )
   throw ( localComponents::CCMException )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create (  )" );
-  return ( localComponents::EnterpriseComponent* ) new CCM_Hello_impl (  );
+  return dynamic_cast<localComponents::EnterpriseComponent*>(new CCM_Hello_impl (  ));
 }
 
 localComponents::EnterpriseComponent*
@@ -43,8 +44,6 @@ CCM_HelloHome_impl::create_with_short ( const short id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_short (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->short_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
@@ -54,8 +53,6 @@ CCM_HelloHome_impl::create_with_long ( const long id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_long (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->long_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
@@ -65,8 +62,6 @@ CCM_HelloHome_impl::create_with_ushort ( const unsigned short id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_ushort (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->ushort_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
@@ -76,8 +71,6 @@ CCM_HelloHome_impl::create_with_ulong ( const unsigned long id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_ulong (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->ulong_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
@@ -87,8 +80,6 @@ CCM_HelloHome_impl::create_with_float ( const float id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_float (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->float_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
@@ -98,8 +89,6 @@ CCM_HelloHome_impl::create_with_double ( const double id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_double (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->double_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
@@ -109,8 +98,6 @@ CCM_HelloHome_impl::create_with_char ( const char id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_char (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->char_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
@@ -120,8 +107,6 @@ CCM_HelloHome_impl::create_with_string ( const std::string& id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_string (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->string_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
@@ -131,8 +116,6 @@ CCM_HelloHome_impl::create_with_boolean ( const bool id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_boolean (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->boolean_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
@@ -142,8 +125,6 @@ CCM_HelloHome_impl::create_with_octet ( const unsigned char id )
 {
   DEBUGNL ( " CCM_HelloHome_impl->create_with_octet (  )" );
   CCM_Hello_impl* lc = new CCM_Hello_impl();
-
-  // TODO : IMPLEMENT FACTORY DETAILS HERE !
   lc->octet_value(id);
   return dynamic_cast<localComponents::EnterpriseComponent*> ( lc );
 }
