@@ -1449,7 +1449,7 @@ struct_type returns [MIDLType struct = null]
 {
     struct = new MStructDefImpl();
     String id = null;
-    List decls = null;
+    List members = null;
 }
 	:   "struct" id = identifier
         {
@@ -1458,8 +1458,13 @@ struct_type returns [MIDLType struct = null]
             symbolTable.add(id, (MStructDef) struct);
         }
 	    LCURLY
-        decls = member_list { checkSetMembers((MStructDef) struct, decls); }
-        RCURLY ;
+        members = member_list
+        RCURLY
+        {
+            if (members.size() == 0)
+                throw new RuntimeException("struct '"+id+"' has no members");
+            checkSetMembers((MStructDef) struct, members);
+        } ;
 
 // 70. <member_list> ::= <member,71>+
 member_list returns [List members = null]
