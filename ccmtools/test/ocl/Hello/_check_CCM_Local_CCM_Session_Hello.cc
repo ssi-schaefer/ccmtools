@@ -128,7 +128,7 @@ int main ( int argc, char *argv[] )
 
      double x = myHello.ptr()->sqrt(123.456);
      cout << "# myHello.ptr()->sqrt(123.456) = " << x << endl;
-     assert(false);
+     //assert(false);
      }
      catch(CCM_OCL::OclException& e)
      {

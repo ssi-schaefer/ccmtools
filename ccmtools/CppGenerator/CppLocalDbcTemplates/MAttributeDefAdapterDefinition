@@ -2,10 +2,7 @@
 DbC_%(ComponentType)s::%(Identifier)s()
 {
   DEBUGNL ( " DbC_%(ComponentType)s->%(Identifier)s (  ) - get semantic");
-%(AttributeGetPreInvocation)s
-  %(LanguageType)s result = %(ComponentType)s::%(Identifier)s();
-%(AttributeGetPostInvocation)s
-  return result; 
+  return %(ComponentType)s::%(Identifier)s();
 }
 
 void
@@ -13,9 +10,9 @@ DbC_%(ComponentType)s::%(Identifier)s ( %(LanguageType)s value )
 {
   static const char* DbC_FUNCTION_NAME = "DbC_%(ComponentType)s::%(Identifier)s(%(LanguageType)s)";
   DEBUGNL ( " DbC_%(ComponentType)s->%(Identifier)s (  ) - set semantic");
-%(AttributeSetPreInvocation)s	
+  DbC_check_invariant(DbC_FUNCTION_NAME,false);
   %(ComponentType)s::%(Identifier)s(value);
-%(AttributeSetPostInvocation)s	
+  DbC_check_invariant(DbC_FUNCTION_NAME,true);
 }
 
 

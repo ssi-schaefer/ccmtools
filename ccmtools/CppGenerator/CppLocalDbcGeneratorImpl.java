@@ -188,32 +188,6 @@ public class CppLocalDbcGeneratorImpl
     }
 
 
-    /**
-     * Overwrites the CppGenerator's method...
-     */
-    protected String getLocalValue(String variable)
-    {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.getLocalValue()");
-
-	String value = super.getLocalValue(variable);
-	if (current_node instanceof MAttributeDef) {
-            return data_MAttributeDef(variable, value);
-	}
-	return value;
-    }
-
-
-//    private String getLocalValue( String variable, MInterfaceDef theClass )
-//    {
-//        String value = getLocalValue(variable);
-//        if( value.length()>0 )
-//        {
-//            return value;
-//        }
-//        return "/*"+variable+"*/"+theClass.getIdentifier();  // HACK !!!
-//    }
-
-
     // ----------------------------------------------------------------------------------
 
 
@@ -236,34 +210,6 @@ public class CppLocalDbcGeneratorImpl
 	}
 	// For any other cases call CppGenerator's method
 	return super.data_MFactoryDef(data_type, data_value);
-    }
-
-
-    /**
-     * Handles the tags that are related to the MAttributeDef* templates
-     * and calls the Pre- and PostInvocation methods.
-     */
-    protected String data_MAttributeDef(String data_type, String data_value)
-    {
-	Debug.println(Debug.METHODS,"CppRemoteGeneratorImpl.data_MAttributeDef()");
-
-	// Handle %(AttributeGetPreInvocation)s tag
-        if (data_type.equals("AttributeGetPreInvocation")) {
-	    return getAttributeGetPreInvocation((MAttributeDef)current_node);
-        }
-	// Handle %(AttributeGetPostInvocation)s tag
-	else if(data_type.equals("AttributeGetPostInvocation")) {
-	    return getAttributeGetPostInvocation((MAttributeDef)current_node);
-	}
-	// Handle %(AttributeSetPreInvocation)s tag
-	else if(data_type.equals("AttributeSetPreInvocation")) {
-	    return getAttributeSetPreInvocation((MAttributeDef)current_node);
-	}
-	// Handle %(AttributeSetPostInvocation)s tag
-	else if(data_type.equals("AttributeSetPostInvocation")) {
-	    return getAttributeSetPostInvocation((MAttributeDef)current_node);
-	}
-        return data_value;
     }
 
 
@@ -475,39 +421,6 @@ public class CppLocalDbcGeneratorImpl
                       "CppLocalDbCGenerator.getFactoryPostInvocation()");
     	// TODO Robert
     	return "  /* FactoryPostInvocation */";
-    }
-
-
-    protected String getAttributeGetPreInvocation(MAttributeDef attr)
-    {
-        Debug.println(Debug.METHODS,
-                      "CppLocalDbCGenerator.getAttributeGetPreInvocation()");
-        return ""; // nothing to do
-    }
-
-    protected String getAttributeGetPostInvocation(MAttributeDef attr)
-    {
-        Debug.println(Debug.METHODS,
-                      "CppLocalDbCGenerator.getAttributeGetPostInvocation()");
-        return ""; // nothing to do
-    }
-
-
-    protected String getAttributeSetPreInvocation(MAttributeDef attr)
-    {
-        Debug.println(Debug.METHODS,
-                      "CppLocalDbCGenerator.getAttributeSetPreInvocation()");
-        return CHECK_INVARIANT_CALL_ON_ENTRY;
-    }
-
-    /**
-     * Checks the invariant after the change of an attribute.
-     */
-    protected String getAttributeSetPostInvocation(MAttributeDef attr)
-    {
-        Debug.println(Debug.METHODS,
-                      "CppLocalDbCGenerator.getAttributeSetPostInvocation()");
-        return CHECK_INVARIANT_CALL_ON_EXIT;
     }
 
 
