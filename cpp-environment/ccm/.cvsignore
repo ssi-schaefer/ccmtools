@@ -12,3 +12,4 @@ ccm.repo
 config.guess
 config.sub
 ltmain.sh
+acinclude.m4

@@ -1,3 +1,6 @@
+Install the CCM Tools runtime environment for generated C++ components
+======================================================================
+
 This package uses Confix for all tasks related to building and installation.
 
 For the uninformed, please read the Confix documentation at
@@ -28,6 +31,9 @@ ccmtools_profile = {
 
 Note that you have to set your own paths for PREFIX, BUILDROOT and --with-mico.
 
+
+Install from source code:
+-------------------------
 	
 For the informed, use the following :
 
@@ -40,3 +46,30 @@ For the informed, use the following :
    $ confix.py --packageroot=`pwd`/ccm --bootstrap --configure --make --targets=install
 
 
+
+Install CCM Tools runtime environment from dist files:
+------------------------------------------------------
+
+To establish a proper C++ runtime environment from dist files, you have to
+install three packages:
+
+a) wx-toolsbox-0.2.1.tar.bz2 
+     $ tar xvjf wx-toolsbox-0.2.1.tar.bz2
+     $ cd wx-toolsbox-0.2.1
+     $ ./configure --prefix=/home/eteinik/install/test_install
+     $ make install
+
+b) wx-utils-1.2.0.tar.bz2 
+     $ tar xvjf wx-utils-1.2.0.tar.bz2
+     $ cd wx-utils-1.2.0
+     $ ./configure --prefix=/home/eteinik/install/test_install
+     $ make install     
+  
+c) ccm-0.5.1-pre5.tar.gz 
+     $ tar xvzf ccm-0.5.1-pre5.tar.gz
+     $ cd ccm-0.5.1-pre5
+     $ ./configure --with-mico=/opt/gcc-3.3.4/mico-2.3.11-debug/lib/mico-setup.sh --prefix=/home/eteinik/install/test_install
+     $ make install          
+
+Note that the used --prefix and the --with-mico options have the same 
+values as defined in the ~/.confix file.
