@@ -7,8 +7,8 @@
 #ifndef __%(Identifier)s__CCM__H__
 #define __%(Identifier)s__CCM__H__
 
-#include <CCM_Utils/SmartPointer.h>
-#include <CCM_Utils/Debug.h> 
+#include <WX/Utils/smartptr.h>
+#include <WX/Utils/debug.h> 
 #include <CCM/CCMContainer.h>
 
 #include <%(IdlFileNamespace)s%(Identifier)s.h>
@@ -188,7 +188,7 @@
 #include "%(Identifier)s_remote.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 
 %(OpenNamespace)s
 

@@ -86,7 +86,7 @@ extern "C" {
 #include "%(Identifier)s_remote.h"
 
 using namespace std;
-using namespace CCM_Utils;
+using namespace WX::Utils;
 
 %(OpenNamespace)s
 
