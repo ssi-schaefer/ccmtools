@@ -15,17 +15,17 @@ $Header$
           $ ant -Dprefix=/usr/local
   -->
   <property name="src" location="src" />
-  <property name="build0" location="build" />
-  <property name="build2" location="build/U" />
+  <property name="build" location="build" />
   <property name="lib" location="lib" />
   <property name="doc" location="doc" />
   <property name="prefix" location="dist" />
-  <property name="DEBUG" location="on" />
 
 
   <!-- Define different paths that are used in the following tasks -->
   <path id="compile.classpath">
-      <pathelement location="${lib}/antlr.jar" />
+      <fileset dir="${lib}">
+          <include name="*.jar" />
+      </fileset>
   </path>
 
   <path id="run.classpath">
@@ -36,13 +36,11 @@ $Header$
   </path>
 
 
-
   <!-- Define the tasks needed to build and test ccmtools.uml2idl -->
 
   <target name="init"
       description="Creates the build directory and deletes the old jar files." >
-      <mkdir dir="${build0}" />
-      <mkdir dir="${build2}" />
+      <mkdir dir="${build}" />
   </target>
 
 
@@ -58,13 +56,12 @@ $Header$
       </java>
   </target>
 
-
   <target name="uml2idl" depends="uml_parser"
       description="Compile the whole ccmtools package (uml_parser and uml2idl).">
-        <javac srcdir="${src}/uml_parser" destdir="${build2}" debug="on" >
+        <javac srcdir="${src}/uml_parser" destdir="${build}" debug="on" >
 	    <classpath refid="compile.classpath" />
         </javac>
-        <javac srcdir="${src}/uml2idl" destdir="${build2}" debug="on" >
+        <javac srcdir="${src}/uml2idl" destdir="${build}" debug="on" >
 	    <classpath refid="compile.classpath" />
         </javac>
   </target>
@@ -72,7 +69,7 @@ $Header$
 
   <target name="uml2idl.jar" depends="uml2idl"
       description="Package the *.class files into uml2idl.jar.">
-      <jar jarfile="${lib}/uml2idl.jar" basedir="${build2}" >
+      <jar jarfile="${lib}/uml2idl.jar" basedir="${build}" >
          <manifest>
             <attribute name="Main-Class" value="uml2idl.Main" />
          </manifest>
@@ -110,8 +107,6 @@ $Header$
       <mkdir dir="${prefix}" />
       <copy file="${lib}/antlr.jar"    todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/mdr01.jar"    todir="${prefix}/lib"  overwrite="true" />       
-      <copy file="${lib}/jdom.jar"     todir="${prefix}/lib"  overwrite="true" />       
-
       <copy file="${lib}/dtd2java.jar" todir="${prefix}/lib"  overwrite="true" />       
       <copy file="${lib}/uml2idl.jar"  todir="${prefix}/lib"  overwrite="true" />
   </target>
@@ -122,9 +117,8 @@ $Header$
   <target name="clean"
       description="Clean up the build and lib directory." >
       <delete dir="${src}/uml_parser" />
-      <delete dir="${build0}" />
+      <delete dir="${build}" />
       <delete file="${lib}/uml2idl.jar" />
-      
       <delete file="u1.idl" />
       <delete file="u1.ocl" />
   </target>
