@@ -15,6 +15,7 @@
   	<property name="src" location="src" />
   	<property name="bin" location="bin" />
   	<property name="lib" location="lib" />
+ 	<property name="etc" location="etc" />
   	<property name="doc" location="doc" />
   	<property name="build" location="build" />
   	<property name="prefix" location="dist" />
@@ -23,7 +24,7 @@
 
   	<!-- Define project related constants in Java -->
   	<property name="PACKAGE" value="ccmtools" />
-  	<property name="VERSION" value="0.5.1" />
+  	<property name="VERSION" value="0.5.2-pre1" />
   	<property name="TEMPLATE_ROOT" location="${prefix}/templates" />
   	<property name="CPP_PATH" value="cpp" />
 
@@ -148,9 +149,11 @@
           	<fileset dir="${src}/templates"/>
       	</copy>
 
+      	<copy todir="${prefix}/etc" overwrite="true">
+          	<fileset dir="${etc}"/>
+      	</copy>
+      		
       	<mkdir dir="${prefix}/bin" />
-      	<copy file="${bin}/ccmtools-generate" 
-        	todir="${prefix}/bin"  overwrite="true" />  
   		<copy file="${bin}/ccmtools" 
   		        	todir="${prefix}/bin"  overwrite="true" />  
       	<copy file="${bin}/ccmtools-idl" 

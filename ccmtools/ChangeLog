@@ -1,3 +1,20 @@
+RELEASE-0.5.2
+============================================================================
+
+RELEASE-0.5.2-pre1
+----------------------------------------------------------------------------
+*) removed cpp-environment/wx
+*) moved cpp-environment/wx/measurement to cpp-environment/ccm/utils/measurement
+*) removed bin/ccmtools-generate 
+*) added etc/logging.properties file to support Java's logging API
+
+
+
+
+
+RELEASE-0.5.1
+============================================================================
+
 RELEASE-0.5.1-pre4
 ----------------------------------------------------------------------------
 *) changed ccmtools/bin from Python scripts to Shell scripts
@@ -36,3 +53,5 @@ RELEASE-0.5.1-pre6
 
 *) added JacORB benchmark client	
 *) added test/prototypes/mico/persistent_object
+
+

@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.CCMMOFGraphTraverserImpl;
@@ -48,7 +50,8 @@ import ccmtools.Metamodel.BaseIDL.MContainer;
 
 public class ConsoleCodeGenerator
 {
-
+    private static Logger logger = Logger.getLogger("ccm.main");
+    
     private static final int GENERATE_APPLICATION_FILES = 0x0001;
 
     private static final String usage = "Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n"
@@ -100,7 +103,10 @@ public class ConsoleCodeGenerator
      */
     public static void main(String args[])
     {
+        logger.fine("start ccmtools");
+        
         if(!parseArgs(args)) {
+            logger.fine("stop ccmtools");
             return; // No further processing needed
         }
 
@@ -109,8 +115,6 @@ public class ConsoleCodeGenerator
 
             //Driver driver = createDriver();
             Driver driver = new ConsoleDriverImpl(gen_mask);
-            
-            driver.message(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             
             GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
             if(traverser == null) {
@@ -210,6 +214,8 @@ public class ConsoleCodeGenerator
                 idlfile.deleteOnExit();
 
                 System.out.println("> done.");
+                
+                logger.info("stop ccmtools");
             }
         }
         catch(Exception e) {
