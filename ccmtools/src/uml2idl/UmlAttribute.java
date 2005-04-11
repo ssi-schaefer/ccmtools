@@ -310,7 +310,7 @@ class UmlAttribute extends uml_parser.uml.MAttribute implements Worker
         Object typeObj = main.workers_.get(typeId);
         if( typeObj==null )
         {
-            return prefix+"/* '"+getName()+"': no type object */\n";
+            return prefix+"/* '"+getName()+"': no type object with id=\""+typeId+"\" */\n";
         }
         String typeName;
         if( typeObj instanceof UmlDataType )
