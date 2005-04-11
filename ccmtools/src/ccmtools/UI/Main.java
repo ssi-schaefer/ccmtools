@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ccmtools.Constants;
@@ -48,7 +47,7 @@ import ccmtools.IDLGenerator.IDL3GeneratorImpl;
 import ccmtools.IDLGenerator.IDL3MirrorGeneratorImpl;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 
-public class ConsoleCodeGenerator
+public class Main
 {
     private static Logger logger = Logger.getLogger("ccm.main");
     

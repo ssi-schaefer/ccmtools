@@ -59,11 +59,11 @@ public class CcmtoolsTestCase extends TestCase
         for(int i = 0; i < args.size(); i++) {
             parameters[i] = (String) args.get(i);
         }
-        System.out.print(">>> ccmtools-generate");
+        System.out.print(">>> ccmtools ");
         for(int i = 0; i < parameters.length; i++)
             System.out.print(" " + parameters[i]);
         System.out.println();
-        ccmtools.UI.ConsoleCodeGenerator.main(parameters);
+        ccmtools.UI.Main.main(parameters);
     }
 
     /**
@@ -77,11 +77,11 @@ public class CcmtoolsTestCase extends TestCase
     protected void runCcmtoolsGenerate(String args)
     {
         String[] parameters = args.split(" ");
-        System.out.print(">>> ccmtools-generate");
+        System.out.print(">>> ccmtools ");
         for(int i = 0; i < parameters.length; i++)
             System.out.print(" " + parameters[i]);
         System.out.println();
-        ccmtools.UI.ConsoleCodeGenerator.main(parameters);
+        ccmtools.UI.Main.main(parameters);
     }
 
     /**

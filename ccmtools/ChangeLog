@@ -7,6 +7,7 @@ RELEASE-0.5.2-pre1
 *) moved cpp-environment/wx/measurement to cpp-environment/ccm/utils/measurement
 *) removed bin/ccmtools-generate 
 *) added etc/logging.properties file to support Java's logging API
+*) moved ccmtools.UI.ConsoleCodeGenerator to ccmtools.UI.Main
 
 
 
