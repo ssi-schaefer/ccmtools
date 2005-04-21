@@ -2565,8 +2565,10 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
         for(Iterator es = op.getExceptionDefs().iterator(); es.hasNext();) {
             MExceptionDef exception = (MExceptionDef) es.next();
             code.add(Text.insertTab(1) + "catch(const " + getCorbaStubName(exception, "::")
-                    + "&) {");
-            code.add(Text.insertTab(2) + "throw " + getLocalName(exception, "::") + "();");
+                    + "& ce) {");
+            code.add(Text.insertTab(2) + getLocalName(exception, "::") + " te;");
+            code.add(Text.insertTab(2) + "CCM_Remote::convertFromCorba(ce, te);");
+            code.add(Text.insertTab(2) + "throw te;");
             code.add(Text.insertTab(1) + "}");
         }
         return Text.join("\n", code);

@@ -1,4 +1,4 @@
-/*
+/***
  * CCM Tools : User Interface Library Leif Johnson <leif@ambient.2y.net> Egon
  * Teiniker <egon.teiniker@salomon.at> Copyright (C) 2002, 2003 Salomon
  * Automation
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
+ ***/
 
 package ccmtools.UI;
 
@@ -27,7 +27,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import ccmtools.Constants;
@@ -53,36 +52,15 @@ public class Main
     
     private static final int GENERATE_APPLICATION_FILES = 0x0001;
 
-    private static final String usage = "Usage: ccmtools-generate LANGUAGE [OPTIONS]... FILES...\n"
-            + "Options:\n"
-            + "  -a, --application             Generate skeletons for business logic *\n"
-            + "  -h, --help                    Display this help\n"
-            + "  -Ipath                        Add path to the preprocessor include path\n"
-            + "  -o DIR, --output=DIR          Base output in DIR (default .)\n"
-            + "  -V, --version                 Display CCM Tools version information\n"
-            + "      --generator-mask=<flags>  Mask for generator debug output\n"
-            + "      --parser-mask=<flags>     Mask for parser debug output\n"
-            + "Languages available:\n"
-            + "LANGUAGES\n"
-            + "Generates code in the given output language after parsing FILES.\n"
-            + "Options marked with a star (*) are generally used once per project.\n";
-
-    private static final String[] local_language_types = {
-            "c++local", "c++local-test", "c++dbc", "c++remote",
-            "c++remote-test", "idl3", "idl3mirror", "idl2"
-    };
-
     private static List language_types = null;
 
-    private static List languages;
+    private static List languages = null;
 
     private static long gen_mask = ConsoleDriverImpl.M_OUTPUT_FILE; //ConsoleDriverImpl.M_MESSAGE;
 
     private static long par_mask = 0x00000000;
 
     private static String include_path;
-
-    private static String code_version = "0.0.0";
 
     private static List filenames;
 
@@ -93,6 +71,7 @@ public class Main
 
     private static int generate_flags = 0;
 
+    
     /**
      * Parse and generate code for each input IDL3 file. For each input file, we
      * need to (0) run the C preprocessor on the file to assemble includes and
@@ -104,33 +83,61 @@ public class Main
     {
         logger.fine("start ccmtools");
         
-        if(!parseArgs(args)) {
-            logger.fine("stop ccmtools");
-            return; // No further processing needed
+        // Print out the current version of ccmtools
+        printVersion();  
+        
+        try {
+            if(parseArgs(args) == false) {
+                return; // No further processing needed        
+            }
+        }
+        catch(IllegalArgumentException e) {
+            printError(e.getMessage());
+            printUsage();
+            logger.fine("stop ccmtools after parseArgs(): " + e.getMessage());
+            return; // No further processing needed      
         }
 
+        // Set default values for ccmtools.home and ccmtools.template properties 
+        // to the current ccmtools directory (if not set from the command line).
+        // This setting is used by ccmtools JUnit tests
+        if(System.getProperty("ccmtools.home") == null) {
+            System.setProperty("ccmtools.home",System.getProperty("user.dir"));
+        }
+        if(System.getProperty("ccmtools.templates") == null) {
+            System.setProperty("ccmtools.templates", 
+                           System.getProperty("ccmtools.home") + 
+                           File.separator + "src" +
+                           File.separator + "templates");
+        }
+        logger.config("ccmtools.home=" + System.getProperty("ccmtools.home"));
+        logger.config("ccmtools.templates=" + System.getProperty("ccmtools.templates"));
+        
         try {
-            printVersion();  // Print out the current version of ccmtools
-
             //Driver driver = createDriver();
             Driver driver = new ConsoleDriverImpl(gen_mask);
             
             GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
             if(traverser == null) {
-                printUsage("failed to create a graph traverser");
-                return;
+                printError("Failed to create a graph traverser");
+                printUsage();
+                return; // No further processing needed
             }
 
             ParserManager manager = new ParserManager(par_mask);
             if(manager == null) {
-                printUsage("failed to create a parser manager");
-                return;
+                printError("Failed to create a parser manager");
+                printUsage();
+                return; // No further processing needed
             }
 
             ArrayList handlers = new ArrayList();
             for(Iterator l = languages.iterator(); l.hasNext();) {
-                TemplateHandler handler = 
-                    createTemplateHandler(driver,(String) l.next());
+                TemplateHandler handler = createTemplateHandler(driver,(String) l.next());
+                if(handler == null) {
+                    printUsage();
+                    return; // No further processing needed
+                }
                 handlers.add(handler);
                 traverser.addHandler(handler);
             }
@@ -150,7 +157,7 @@ public class Main
                 // step (0). run the C preprocessor on the input file.
                 try {
                     // Run the GNU preprocessor cpp in a separate process.
-                    System.out.println("> " + Constants.CPP_PATH + " -o " 
+                    printMessage(Constants.CPP_PATH + " -o " 
                                        		+ idlfile + " " + include_path 
                                        		+ " " + source);
                     Process preproc = 
@@ -165,9 +172,9 @@ public class Main
                     // Read the output and any errors from the command
                     String s;
                     while((s = stdInput.readLine()) != null)
-                        System.out.println(s);
+                        printMessage(s);
                     while((s = stdError.readLine()) != null)
-                        System.out.println(s);
+                        printMessage(s);
 
                     // Wait for the process to complete and evaluate the return
                     // value of the attempted command
@@ -176,13 +183,13 @@ public class Main
                         throw new RuntimeException();
                 }
                 catch(Exception e) {
-                    System.err.println("Error preprocessing " + source
+                    printError("Error preprocessing " + source
                             + ": Please verify your include paths.");
-                    return;
+                    return; // No further processing needed
                 }
 
                 // step (1). parse the resulting preprocessed file.
-                System.out.println("> parse " + idlfile.toString());
+                printMessage("parse " + idlfile.toString());
                 manager.reset();
                 manager.setOriginalFile(source.toString());
                 try {
@@ -191,8 +198,8 @@ public class Main
                         throw new RuntimeException("Parser returned a null container");
                 }
                 catch(Exception e) {
-                    System.err.println("Error parsing " + source + ":\n" + e);
-                    return;
+                    printError("Error parsing " + source + ":\n" + e);
+                    return; // No further processing needed
                 }
                 String kopf_name = source.getName().split("\\.")[0];
                 kopf_name = kopf_name.replaceAll("[^\\w]", "_");
@@ -200,88 +207,29 @@ public class Main
 
                 // step (2). traverse the resulting metamodel graph.
                 try {
-                    System.out.println("> traverse CCM model");
+                    printMessage("traverse CCM model");
                     traverser.traverseGraph(kopf);
                 }
                 catch(Exception e) {
-                    System.err.println("Error generating code from " 
+                    printError("Error generating code from " 
                                        + source + ":\n" + e);
-                    return;
+                    return; // No further processing needed
                 }
 
                 // delete the preprocessed temporary file if everything worked.
                 idlfile.deleteOnExit();
 
-                System.out.println("> done.");
-                
-                logger.info("stop ccmtools");
+                printMessage("done.");
             }
         }
         catch(Exception e) {
-            System.err.println("Error: CCM Tools have been finished with an error:");
-            System.err.println(e.getMessage());
-            System.err.println("Please post a bug report to <ccmtools-devel@lists.sourceforge.net>");
+            printError("Error: CCM Tools have been finished with an error:");
+            printError(e.getMessage());
+            printError("Please post a bug report to <ccmtools-devel@lists.sourceforge.net>");
         }
     }
 
-    /** *********************************************************************** */
-    /* USAGE / VERSION INFO */
 
-    private static void printUsage(String err)
-    {
-        if(err.length() > 0)
-            System.err.println("Error: " + err);
-
-        StringBuffer langs = new StringBuffer("  ");
-        for(int i = 0; i < language_types.size(); i++) {
-            langs.append((String) language_types.get(i) + " ");
-            if((langs.length() % 80) > 60)
-                langs.append("\n  ");
-        }
-
-        System.out.print(usage.replaceAll("LANGUAGES", langs.toString()));
-
-        if(err.length() > 0) {
-            System.exit(1);
-        }
-    }
-
-    private static void printVersion()
-    {
-        System.out.println("CCM Tools version " + Constants.VERSION);
-        System.out.println("Copyright (C) 2002 - 2005 Salomon Automation");
-        System.out.println("The CCM Tools library is distributed under the");
-        System.out.println("terms of the GNU Lesser General Public License.");
-    }
-
-    /** *********************************************************************** */
-    /* SETUP FUNCTIONS */
-
-    /**
-     * Try to create a driver for the code generator. This will handle output
-     * messages and could possibly react to input from the user as well.
-     * 
-     * @return a newly created driver, or exit if there was an error.
-     *
-    private static Driver createDriver()
-    {
-        Driver driver = null;
-
-        try {
-            driver = new ConsoleDriverImpl(gen_mask);
-        }
-        catch(FileNotFoundException e) {
-            printUsage("constructing the driver object\n" + e);
-            // and exit
-        }
-
-        if(driver == null) {
-            printUsage("failed to create a driver object");
-            // and exit
-        }
-        return driver;
-    }
-    */
 
     /**
      * Set up the node handler (i.e. code generator) object based on the output
@@ -325,26 +273,22 @@ public class Main
             else if(lang.equalsIgnoreCase("idl2")) {
                 handler = new IDL2GeneratorImpl(driver, output_directory);
             }
+            
+            if((generate_flags & GENERATE_APPLICATION_FILES) != 0) {
+                handler.setFlag(CodeGenerator.FLAG_APPLICATION_FILES);
+            }
         }
         catch(IOException e) {
-            printUsage("while constructing a generator for " + lang + "\n" + e);
-        }
-
-        if(handler == null) {
-            printUsage("ERROR: failed to create a language generator for " + lang);
-        }
-
-        if((generate_flags & GENERATE_APPLICATION_FILES) != 0) {
-            // handler.setFlag(((CodeGenerator)
-            // handler).FLAG_APPLICATION_FILES);
-            handler.setFlag(CodeGenerator.FLAG_APPLICATION_FILES);
+            printError("Failed to create a language generator for " + lang 
+                       + "\n" + e.getMessage());
+            handler = null;
         }
         return handler;
     }
 
-    /** *********************************************************************** */
-    /* ARGUMENT PARSING */
-
+    
+    // Command line parameter parser ----------------------------------------
+    
     /**
      * Parse the command line arguments to the console code generator front end.
      * We might want to replace this in the future with a more flexible
@@ -367,22 +311,19 @@ public class Main
         filenames = new ArrayList();
         include_path = "";
 
-        for(int i = 0; i < local_language_types.length; i++) {
-            language_types.add(local_language_types[i]);
+        for(int i = 0; i < Constants.GENERATOR_TYPES.length; i++) {
+            language_types.add(Constants.GENERATOR_TYPES[i]);
         }
-
-        setHome(System.getProperty("user.dir"));
-
+        
         List argv = new ArrayList();
         for(int i = 0; i < args.length; i++)
             argv.add(args[i]);
 
         if(argv.contains("-h") || argv.contains("--help")) {
-            printUsage("");
+            printUsage();
             return false; // No further processing needed
         }
         else if(argv.contains("-V") || argv.contains("--version")) {
-            printVersion();
             return false; // No further processing needed
         }
 
@@ -394,31 +335,23 @@ public class Main
                 setGeneratorMask(arg.split("=")[1]);
             else if(arg.startsWith("--parser-mask="))
                 setParserMask(arg.split("=")[1]);
-            else if(arg.startsWith("--output="))
-                setOutputDirectory(arg.split("=")[1]);
-            else if(arg.startsWith("--code-version="))
-                setCodeVersion(arg.split("=")[1]);
+            else if(arg.startsWith("--output=")) {
+                	setOutputDirectory(arg.split("=")[1]); 
+            }
             else if(arg.startsWith("--app"))
                 generate_flags |= GENERATE_APPLICATION_FILES;
-            else if(arg.startsWith("--home="))
-                setHome(arg.split("=")[1]);
             else if(arg.charAt(0) == '-')
                 do {
                     if(arg.charAt(0) == 'a') {
                         generate_flags |= GENERATE_APPLICATION_FILES;
                     }
-                    else if(arg.charAt(0) == 'c') {
-                        if(a.hasNext())
-                            setCodeVersion((String) a.next());
-                        else
-                            printUsage("unspecified code version");
-                        break;
-                    }
                     else if(arg.charAt(0) == 'o') {
-                        if(a.hasNext())
+                        if(a.hasNext()) {
                             setOutputDirectory((String) a.next());
-                        else
-                            printUsage("unspecified output directory");
+                        }
+                        else {
+                            throw new IllegalArgumentException("Unspecified output directory"); 
+                        }
                         break;
                     }
                     else if(arg.charAt(0) == 'I') {
@@ -438,15 +371,33 @@ public class Main
             }
         }
 
-        if(languages.size() == 0)
-            printUsage("no valid output language specified");
-
+        if(languages.size() == 0) {
+            throw new IllegalArgumentException("No valid output language specified");
+        }
+        
         if(include_path.trim().equals(""))
             include_path = " -I" + System.getProperty("user.dir");
 
         return true;
     }
 
+    private static void setOutputDirectory(String val)
+    {
+        if(val.trim().equals("")) {
+            throw new IllegalArgumentException("Unspecified output directory");
+        }
+        File test = new File(val);
+        if(test.isAbsolute()) {
+            output_directory = test;
+        }
+        else {
+            output_directory = new File(base_output_directory, val);
+        }
+    }
+
+    
+    // Some helper methods --------------------------------------------------
+    
     private static void setGeneratorMask(String val)
     {
         try {
@@ -458,7 +409,7 @@ public class Main
                 gen_mask = Long.parseLong(val, 10);
         }
         catch(NumberFormatException e) {
-            System.err.println("Could not convert " + val
+            printError("Could not convert " + val
                     + " to a generator mask. Ignoring.");
         }
     }
@@ -474,38 +425,32 @@ public class Main
                 par_mask = Long.parseLong(val, 10);
         }
         catch(NumberFormatException e) {
-            System.err.println("Could not convert " + val
-                    + " to a parser mask. Ignoring.");
+            printError("Could not convert " + val + " to a parser mask. Ignoring.");
         }
     }
 
-    private static void setOutputDirectory(String val)
+    
+    private static void printVersion()
     {
-        if(val.trim().equals(""))
-            printUsage("unspecified output directory");
-        File test = new File(val);
-        if(test.isAbsolute()) {
-            output_directory = test;
-        }
-        else {
-            output_directory = new File(base_output_directory, val);
-        }
+        // TODO: use a display driver
+        System.out.println(Constants.VERSION_TEXT);
+    }
+    
+    private static void printUsage()
+    {
+        // TODO: use a display driver
+        System.out.println(Constants.USAGE_TEXT);
     }
 
-    private static void setHome(String val)
+    private static void printError(String error)
     {
-        if(val.trim().equals(""))
-            printUsage("unspecified CCM Tools home");
-        Properties props = System.getProperties();
-        props.setProperty("CCMTOOLS_HOME", val);
-        System.setProperties(props);
+        // TODO: use a display driver
+        System.err.println("Error: " + error);
     }
 
-    private static void setCodeVersion(String val)
+    private static void printMessage(String msg)
     {
-        if(val.trim().equals(""))
-            printUsage("unspecified code version");
-        code_version = new String(val);
+        // TODO: use a display driver
+        System.out.println("> " + msg);
     }
 }
-

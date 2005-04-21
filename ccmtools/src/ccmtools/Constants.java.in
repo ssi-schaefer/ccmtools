@@ -1,4 +1,5 @@
-/* CCM Tools : Constants
+/*** 
+ * CCM Tools : Constants
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2003 Salomon Automation
  *
@@ -15,14 +16,43 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
+ ***/
 
 package ccmtools;
 
 public class Constants {
-    public static final String PACKAGE = "@PACKAGE@";
-    public static final String VERSION = "@VERSION@";
-    public static final String TEMPLATE_ROOT = "@TEMPLATE_ROOT@";
+    public static final String PACKAGE  = "@PACKAGE@";
+    public static final String VERSION  = "@VERSION@";
     public static final String CPP_PATH = "@CPP_PATH@";
+
+	public static final String  VERSION_TEXT = 
+	    "CCM Tools version " + Constants.VERSION + "\n"     +
+        "Copyright (C) 2002 - 2005 Salomon Automation \n"   +
+        "The CCM Tools library is distributed under the \n" +
+        "terms of the GNU Lesser General Public License.";
+    
+    public static final String USAGE_TEXT = 
+    	"Usage: ccmtools GENAERATOR [Options] FILES\n\n"
+	   + "Options:\n"
+       + "  -a, --application             Generate skeletons for business logic \n"
+       + "  -h, --help                    Display this help\n"
+       + "  -Ipath                        Add path to the preprocessor include path\n"
+       + "  -o DIR, --output=DIR          Base output in DIR (default .)\n"
+       + "  -V, --version                 Display CCM Tools version information\n"
+       + "      --generator-mask=<flags>  Mask for generator debug output\n"
+       + "      --parser-mask=<flags>     Mask for parser debug output\n\n"
+       + "GENARATOR types available:\n"
+       + "  c++local        Generate local C++ components \n"
+       + "  c++local-test   Generate local C++ test client\n"
+	   + "  c++dbc          Generate local C++ components with DbC (experimental)\n"
+	   + "  c++remote       Generate remote C++ components (for Mico ORB)\n\n"
+	   + "  idl3            Generate IDL3 files\n"
+	   + "  idl3mirror      Generate IDL3 mirror files\n"
+	   + "  idl2            Generate equivalent IDL2 files";
+
+    public static final String[] GENERATOR_TYPES = {
+            "c++local", "c++local-test", "c++dbc", "c++remote",
+            "c++remote-test", "idl3", "idl3mirror", "idl2"
+    };
 }
 

@@ -26,8 +26,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import ccmtools.Constants;
-
 public class PythonTemplateManagerImpl
     implements TemplateManager
 {
@@ -52,44 +50,44 @@ public class PythonTemplateManagerImpl
 	//   etc.
         String templatesDir = language + "Templates";
 
-	// Option 1:
+	// Option 1: (used by the ccmtools JUnit tests)
 	// Load templates from src/templates directory of the source tree.
 	// This directory is used as default path for easy development. 
-        source = new File(System.getProperty("user.dir") + File.separator + 
-			  "src" + File.separator +
-			  "templates", templatesDir);
-        if (source.exists() && source.isDirectory()) {
-	    System.out.println("> load templates from (src): " + source);
-	    return;
-	}
+//        source = new File(System.getProperty("user.dir") + File.separator + 
+//			  "src" + File.separator +
+//			  "templates", templatesDir);
+//        if (source.exists() && source.isDirectory()) {
+//	    System.out.println("> load templates from (src): " + source);
+//	    return;
+//	}
 
-	// Option 2:
+	// Option 2: (used by the ccmtools shell script)
 	// Load templates from CCMTOOLS_HOME system property.
 	// This property is set, when calling the ccmtools-generate script,
 	// with a operationg system environment variable value.
-        source = new File(System.getProperty("CCMTOOLS_HOME") +
-			  File.separator + "templates", templatesDir);
+//        source = new File(System.getProperty("CCMTOOLS_HOME") +
+//			  File.separator + "templates", templatesDir);
+        source = new File(System.getProperty("ccmtools.templates"), templatesDir);
+        System.out.println("> load templates from: " + source);
         if (source.exists() && source.isDirectory()) {
-	    System.out.println("> load templates from (CCMTOOLS_HOME): " 
-			       + source);
-	    return;
-	}
-
+            return;
+        }
+        else {
+            // Stop code generation because there are no valid templates found.
+            throw new IOException("Error: No template source found for " + language);
+        }
 	// Option 3:
 	// Load templates from TEMPLATE_ROOT directory specified in 
 	// the Constants.java file.
 	// In the build process, the Constants.java file is generated
 	// from a Constants.java.in template by replacing @name@ tags
 	// with current informations.
-        source = new File(Constants.TEMPLATE_ROOT, templatesDir);
-        if (source.exists() && source.isDirectory()) {
-	    System.out.println("> load templates from (TEMPLATE_ROOT): " 
-			       + source);
-            return;
-	}
-
-	// Stop code generation because there are no valid templates found.
-        throw new IOException("Error: No template source found for " + language);
+//        source = new File(Constants.TEMPLATE_ROOT, templatesDir);
+//        if (source.exists() && source.isDirectory()) {
+//	    	System.out.println("> load templates from (TEMPLATE_ROOT): " 
+//			       + source);
+//            return;
+//		}
     }
 
 
