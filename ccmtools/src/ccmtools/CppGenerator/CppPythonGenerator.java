@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
@@ -38,8 +37,9 @@ import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.UI.Driver;
 
-public class CppPythonGeneratorImpl
+public class CppPythonGenerator
     extends CppGenerator
 {
     // types for which we have a global template ; that is, a template that is
@@ -53,7 +53,7 @@ public class CppPythonGeneratorImpl
 
     /**************************************************************************/
 
-    public CppPythonGeneratorImpl(Driver d, File out_dir)
+    public CppPythonGenerator(Driver d, File out_dir)
         throws IOException
     {
         super("CppPython", d, out_dir, local_output_types);

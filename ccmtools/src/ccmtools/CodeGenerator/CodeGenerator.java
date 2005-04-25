@@ -40,6 +40,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
+import java.util.logging.Logger;
 
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -66,6 +67,7 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MPublishesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.UI.Driver;
 
 /**
  * This code generation base class performs a large part of code generation
@@ -173,9 +175,9 @@ import ccmtools.Metamodel.ComponentIDL.MUsesDef;
  */
 abstract public class CodeGenerator implements TemplateHandler
 {
-
-    protected Driver driver = null;
-
+    protected Logger logger;
+    protected Driver uiDriver;
+    
     protected TemplateManager template_manager;
 
     // types for which we have a global template ; that is, a template that is
@@ -251,8 +253,11 @@ abstract public class CodeGenerator implements TemplateHandler
             String[] _output_types, String[] _reserved_words,
             String[] _language_map) throws IOException
     {
-        template_manager = new PythonTemplateManagerImpl(language);
-        driver = d;
+        logger = Logger.getLogger("ccm.generator");
+        logger.fine("enter CodeGenerator()");
+        uiDriver = d;
+
+        template_manager = new PythonTemplateManager(language);
 
         // set up output types, node types for which we should output some sort
         // of code.
@@ -284,11 +289,12 @@ abstract public class CodeGenerator implements TemplateHandler
 
         String[] labels = MPrimitiveKind.getLabels();
         if(_language_map != null) {
-            if(_language_map.length != labels.length)
-                throw new RuntimeException(
-                                           "Language map is not the same length as the primitive "
-                                                   + "types list.");
-
+            if(_language_map.length != labels.length) {
+                String error = "Language map is not the same " +
+        					   "length as the primitive types list.";
+                logger.info(error);
+                throw new RuntimeException(error);
+            }
             language_mappings = new Hashtable();
             for(int i = 0; i < labels.length; i++)
                 language_mappings.put(labels[i], _language_map[i]);
@@ -299,6 +305,8 @@ abstract public class CodeGenerator implements TemplateHandler
         output_dir = out_dir;
         if(!output_dir.isDirectory())
             output_dir.mkdirs();
+        
+        logger.fine("leave CodeGenerator()");
     }
 
     
@@ -310,6 +318,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     public void startGraph()
     {
+        logger.fine("enter startGraph()");
+        
         current_node = null;
         current_name = null;
         current_type = null;
@@ -322,6 +332,8 @@ abstract public class CodeGenerator implements TemplateHandler
 
         namespace = new Stack();
         output_variables = new Hashtable();
+        
+        logger.fine("leave startGraph()");
     }
 
     /**
@@ -346,14 +358,16 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     public void startNode(Object node, String scope_id)
     {
+        logger.fine("enter startNode()");
+        
         current_node = node;
         //current_name = new String(scope_id);
         current_name = scope_id;
         current_type = node.toString().split(":")[0];
         current_variables = template_manager.getVariables(current_type);
 
-        driver.nodeStart(node, scope_id);
-        driver.currentVariables(current_variables);
+        uiDriver.nodeStart(node, scope_id);
+        uiDriver.currentVariables(current_variables);
 
         node_stack.push(current_node);
         name_stack.push(current_name);
@@ -369,6 +383,8 @@ abstract public class CodeGenerator implements TemplateHandler
 
         for(Iterator i = current_variables.iterator(); i.hasNext();)
             output_variables.put(getScopeID((String) i.next()), "");
+        
+        logger.fine("leave startNode()");
     }
 
     /**
@@ -391,12 +407,14 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     public void endNode(Object node, String scope_id)
     {
+        logger.fine("enter endNode()");
+        
         current_node = node_stack.pop();
         current_name = (String) name_stack.pop();
         current_type = (String) type_stack.pop();
         current_variables = (Set) variables_stack.pop();
 
-        driver.outputVariables(output_variables);
+        uiDriver.outputVariables(output_variables);
         updateVariables();
           
         // update the namespace if this is a module by removing the last item
@@ -404,7 +422,9 @@ abstract public class CodeGenerator implements TemplateHandler
         if(node instanceof MModuleDef)
             namespace.pop();
 
-        driver.nodeEnd(node, scope_id);
+        uiDriver.nodeEnd(node, scope_id);
+        
+        logger.fine("leave endNode()");
     }
 
     /**
@@ -421,9 +441,11 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     public void handleNodeData(String field_type, String field_id, Object value)
     {
+        logger.fine("enter handleNodeData()");
+        
         String key = getScopeID(field_id);
 
-        driver.nodeData(current_node, field_id, value);
+        uiDriver.nodeData(current_node, field_id, value);
 
         if(field_type.endsWith("boolean")) {
             Boolean hack = new Boolean(value.toString());
@@ -449,6 +471,8 @@ abstract public class CodeGenerator implements TemplateHandler
             else
                 output_variables.put(key, value.toString());
         }
+        
+        logger.fine("leave handleNodeData()");
     }
 
     
@@ -523,6 +547,7 @@ abstract public class CodeGenerator implements TemplateHandler
     /** *********************************************************************** */
 
     // some helper functions ... trying to emulate python here :)
+
     /**
      * Join a collection of strings (a, b, c, ..., z) by combining each element
      * with the given separator A. The resulting string will be of the form
@@ -585,8 +610,10 @@ abstract public class CodeGenerator implements TemplateHandler
         return parts.subList(start, size);
     }
 
+    
     /** *********************************************************************** */
 
+    
     // miscellaneous helper functions.
     /**
      * Helper function for writing finalized files.
@@ -602,6 +629,8 @@ abstract public class CodeGenerator implements TemplateHandler
     protected void writeFinalizedFile(String directory, String file,
                                       String output) throws IOException
     {
+        logger.fine("enter writeFinalizedFile()");
+        
         File local_dir = new File(output_dir, directory);
         if(!local_dir.isDirectory())
             local_dir.mkdirs();
@@ -611,7 +640,8 @@ abstract public class CodeGenerator implements TemplateHandler
         writer.write(output, 0, output.length());
         writer.close();
 
-        driver.outputFile(out_file.toString());
+        uiDriver.println("writing " + out_file.toString());
+        logger.fine("leave writeFinalizedFile()");
     }
 
     /**
@@ -625,12 +655,16 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected String joinBaseNames(String sep)
     {
+        logger.fine("enter joinBaseNames()");
+        
         if(!(current_node instanceof MInterfaceDef))
             return "";
         MInterfaceDef node = (MInterfaceDef) current_node;
         ArrayList names = new ArrayList();
         for(Iterator i = node.getBases().iterator(); i.hasNext();)
             names.add(((MInterfaceDef) i.next()).getIdentifier());
+        
+        logger.fine("leave joinBaseNames()");
         return join(sep, names);
     }
 
@@ -643,6 +677,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected List getScope(MContained node)
     {
+        logger.fine("enter getScope()");
+        
         List scope = new ArrayList();
         MContainer c = node.getDefinedIn();
         while(c.getDefinedIn() != null) {
@@ -650,6 +686,8 @@ abstract public class CodeGenerator implements TemplateHandler
                 scope.add(0, c.getIdentifier());
             c = c.getDefinedIn();
         }
+        
+        logger.fine("leave getScope()");
         return scope;
     }
 
@@ -669,6 +707,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected String handleNamespace(String data_type, String local)
     {
+        logger.fine("enter handleNamespace()");
+        
         List names = new ArrayList(namespace);
         if(!local.equals(""))
             names.add("CCM_Session_" + local);
@@ -679,6 +719,7 @@ abstract public class CodeGenerator implements TemplateHandler
         if(data_type.equals("IncludeNamespace"))
             return join(file_separator, names);
 
+        logger.fine("leave handleNamespace()");
         return "";
     }
 
@@ -696,6 +737,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected String getBaseLanguageType(MTyped object)
     {
+        logger.fine("enter getBaseLanguageType()");
+        
         MIDLType idl_type = object.getIdlType();
 
         if(idl_type == null)
@@ -727,6 +770,8 @@ abstract public class CodeGenerator implements TemplateHandler
             scope.add(cont.getIdentifier());
             return join(scope_separator, scope);
         }
+        
+        logger.fine("leave getBaseLanguageType()");
         return type;
     }
 
@@ -745,6 +790,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected String getBaseIdlType(MTyped object)
     {
+        logger.fine("enter getBaseIdlType()");
+        
         MIDLType idl_type = object.getIdlType();
 
         if(idl_type == null)
@@ -786,6 +833,7 @@ abstract public class CodeGenerator implements TemplateHandler
             throw new RuntimeException("unknown IDL type :" + idl_type);
         }
 
+        logger.fine("leave getBaseIdlType()");
         return type;
     }
 
@@ -812,6 +860,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected String getFullScopeIdentifier(MContained node)
     {
+        logger.fine("enter getFullScopeIdentifier()");
+        
         List scope = getScope(node);
         scope.add(node.getIdentifier());
         for(Iterator n = namespace.iterator(); n.hasNext();) {
@@ -825,6 +875,8 @@ abstract public class CodeGenerator implements TemplateHandler
                 break;
             }
         }
+        
+        logger.fine("leave getFullScopeIdentifier()");
         return join(scope_separator, scope);
     }
 
@@ -837,8 +889,12 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected String getFullScopeInclude(MContained node)
     {
+        logger.fine("enter getFullScopeInclude()");
+        
         List scope = getScope(node);
         scope.add(node.getIdentifier());
+        
+        logger.fine("leave getFullScopeInclude()");
         return join(file_separator, scope);
     }
 
@@ -857,6 +913,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected String getLocalValue(String variable)
     {
+        logger.fine("enter getLocalValue()");
+        
         String scope_id = getScopeID(variable);
         String value = "";
 
@@ -1032,6 +1090,7 @@ abstract public class CodeGenerator implements TemplateHandler
             value = handleNamespace(variable, "");
         }
 
+        logger.fine("leave getLocalValue()");
         return value;
     }
 
@@ -1044,6 +1103,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected void writeOutputIfNeeded()
     {
+        logger.fine("enter writeOutputIfNeeded()");
+        
         // don't generate code for model elements that are not defined as
         // output_types (e.g. MStructDef, MExceptionDef, etc.)
         if(!output_types.contains(current_type))
@@ -1078,8 +1139,11 @@ abstract public class CodeGenerator implements TemplateHandler
             throw new RuntimeException("Error writing output for "
                     + current_name + " (node type " + current_type + ")");
         }
+        
+        logger.fine("leave writeOutputIfNeeded()");
     }
 
+    
     /** *********************************************************************** */
 
     /**
@@ -1124,6 +1188,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     private String getBooleans()
     {
+        logger.fine("enter getBooleans()");
+        
         String attrs = "";
         SortedSet bool_attrs = new TreeSet();
 
@@ -1154,6 +1220,7 @@ abstract public class CodeGenerator implements TemplateHandler
             }
         }
 
+        logger.fine("leave getBooleans()");
         return attrs;
     }
 
@@ -1167,6 +1234,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     private void updateSubvariables(Set variables)
     {
+        logger.fine("enter updateSubvariables()");
+        
         for(Iterator i = variables.iterator(); i.hasNext();) {
             String var = (String) i.next();
             Object key = getScopeID(var);
@@ -1174,8 +1243,11 @@ abstract public class CodeGenerator implements TemplateHandler
 
             output_variables.put(key, value);
 
-            driver.message("subvariable " + key + " => " + value);
+            // TODO: use Java's Logging API	
+            //driver.message("subvariable " + key + " => " + value);
         }
+        
+        logger.fine("leave updateSubvariables()");
     }
 
     /**
@@ -1203,6 +1275,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     private void updateVariables()
     {
+        logger.fine("enter updateVariables()");
+        
         updateSubvariables(current_variables);
 
         if(variables_stack.size() <= 0)
@@ -1227,13 +1301,16 @@ abstract public class CodeGenerator implements TemplateHandler
             // or 'AbstractLocal' (for an MComponetDef object).
 
             String full_var = var + bool_attrs;
-            driver.message("loading template for " + full_var);
+            
+            // TODO: use Java's Logging API
+            // driver.message("loading template for " + full_var);
+            
             Template t = template_manager.getTemplate(full_var, current_name);
             if(t == null)
                 throw new RuntimeException("Cannot find a template for "
                         + current_name + " (" + full_var + ")");
 
-            driver.templateContents(t.substituteVariables(output_variables));
+            uiDriver.templateContents(t.substituteVariables(output_variables));
 
             // add the template contents to the appropriate parent variable's
             // current value.
@@ -1244,9 +1321,11 @@ abstract public class CodeGenerator implements TemplateHandler
 
             output_variables.put(scope_id, prev_value + result);
 
-            driver.message("variable " + scope_id + " => " + prev_value
-                    + result);
+            // TODO: use Java's Logging API
+            // driver.message("variable " + scope_id + " => " + prev_value
+            //        + result);
         }
+        logger.fine("leave updateVariables()");
     }
 
     /**
@@ -1262,6 +1341,7 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected boolean isCodeEqualWithFile(String code, File file)
     {
+        logger.fine("enter isCodeEqualWithFile()");
         try {
             if(file.isFile()) {
                 StringBuffer buffer = new StringBuffer();
@@ -1276,8 +1356,11 @@ abstract public class CodeGenerator implements TemplateHandler
             }
         }
         catch(IOException e) {
-            System.err.println("ERROR: Can't read " + file);
+            String error = "Can't read " + file + "\n" + e.getMessage(); 
+            logger.info(error);
+            uiDriver.printError(error);
         }
+        logger.fine("leave isCodeEqualWithFile()");
         return false;
     }
 
@@ -1291,6 +1374,7 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected String prettifyCode(String code)
     {
+        logger.fine("enter prettifyCode()");
         StringBuffer pretty_code = new StringBuffer();
         Set include_set = new HashSet();
         int from_index = 0;
@@ -1328,6 +1412,7 @@ abstract public class CodeGenerator implements TemplateHandler
                 }
             }
         } while(from_index < code.length());
+        logger.fine("leave prettifyCode()");
         return pretty_code.toString();
     }
 }

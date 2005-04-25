@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.Collections;
 import java.util.List;
 
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -37,11 +36,12 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.UI.Driver;
 
-public class IDL2GeneratorImpl extends IDLGenerator
+public class IDL2Generator extends IDLGenerator
 {
 
-    public IDL2GeneratorImpl(Driver d, File out_dir) throws IOException
+    public IDL2Generator(Driver d, File out_dir) throws IOException
     {
         super("2", d, out_dir);
 

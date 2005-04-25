@@ -20,7 +20,6 @@
 
 package ccmtools.UI;
 
-import ccmtools.CodeGenerator.Driver;
 
 import java.io.PrintStream;
 import java.io.FileOutputStream;
@@ -32,32 +31,19 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class ConsoleDriverImpl
+
+// This class (and the Driver interface) handle both user messages and logging.
+// TODO: Separate UI output from logging. In the end, this class should only handle
+//       user outputs.
+//       All logging should be done via Java's Logging API
+
+public class ConsoleDriver
     implements Driver
 {
-    public final static long M_NONE              = 0;
-    public final static long M_NODE_TRACE        = 0x0001;
-    public final static long M_NODE_DATA         = 0x0002;
-    public final static long M_VARIABLES         = 0x0004;
-    public final static long M_TEMPLATE          = 0x0008;
-    public final static long M_OUTPUT_VARIABLES  = 0x0010;
-    public final static long M_CURRENT_VARIABLES = 0x0020;
-    public final static long M_OUTPUT_FILE       = 0x0040;
-    public final static long M_MESSAGE           = 0x0080;
-    public final static long M_PREFIX            = 0x0100;
-    public final static long M_PREFIX_INDENT     = 0x0200;
-
-    // additional debug flags available.
-    public final static long M_UNUSED4           = 0x0400;
-    public final static long M_UNUSED5           = 0x0800;
-    public final static long M_UNUSED6           = 0x1000;
-    public final static long M_UNUSED7           = 0x2000;
-    public final static long M_UNUSED8           = 0x4000;
-    public final static long M_UNUSED9           = 0x8000;
-
     private long mask;
     private String indent;
-    private PrintStream output;
+    private PrintStream out;
+    private PrintStream err;
 
     /**
      * A Driver interface implementation that writes node handler events to the
@@ -65,12 +51,13 @@ public class ConsoleDriverImpl
      *
      * @param m An output mask that filters the type of output messages logged
      *          to standard out.
-    */
-    public ConsoleDriverImpl(long m)
+     */
+    public ConsoleDriver(long m)
         throws FileNotFoundException
     {
         mask = m;
-        output = System.out;
+        out = System.out;
+        err = System.err;
         indent = "";
     }
 
@@ -81,12 +68,13 @@ public class ConsoleDriverImpl
      * @param m An output mask that filters the type of output messages logged
      *          to the output file.
      * @param o An output file handle to write normal output on.
-    */
-    public ConsoleDriverImpl(long m, String o)
+     */
+    public ConsoleDriver(long m, String o)
         throws FileNotFoundException
     {
         mask = m;
-        output = new PrintStream(new FileOutputStream(o));
+        out = new PrintStream(new FileOutputStream(o));
+        err = System.err;
         indent = "";
     }
 
@@ -96,23 +84,17 @@ public class ConsoleDriverImpl
      * to writing file output messages only.
      *
      * @param o An output file handle to write normal output on.
-    */
-    public ConsoleDriverImpl(String o)
+     */
+    public ConsoleDriver(String o)
         throws FileNotFoundException
     {
         mask = M_OUTPUT_FILE;
-        output = new PrintStream(new FileOutputStream(o));
+        out = new PrintStream(new FileOutputStream(o));
+        err = System.err;
         indent = "";
     }
 
-    public void graphStart()
-    {
-    }
-
-    public void graphEnd()
-    {
-    }
-
+    
     public void nodeStart(Object node, String scope_id)
     {
         indent += "  ";
@@ -149,28 +131,45 @@ public class ConsoleDriverImpl
                       M_CURRENT_VARIABLES);
     }
 
-    public void message(Object value)
+    
+    // Methods for user output
+    
+    public void println(String str)
     {
-        logSimpleLine(value, M_MESSAGE);
+        out.println(str);
+    }
+    
+    /**
+     * Print out a string message to the console.
+     * Note that this method is used for regular user output and not
+     * for logging.
+     * 
+     * @param msg String that shoul be printed out.
+     */
+    public void printMessage(String msg)
+    {
+        out.println("> " + msg);
     }
 
-    public void outputFile(String name)
+    public void printError(String msg)
     {
-        logSimpleLine("writing " + name, M_OUTPUT_FILE, '>');
+        err.println("Error: " + msg);
     }
+    
+    
+    // Logging helper methods --------------------------------------------------
 
-    /**************************************************************************/
-
+    
     private void logSimpleLine(Object data, long m)
     {
         if ((mask & m) != 0) 
-            output.println(formatPrefix(' ') + data);
+            out.println(formatPrefix(' ') + data);
     }
 
     private void logSimpleLine(Object data, long m, char pre)
     {
         if ((mask & m) != 0) 
-            output.println(formatPrefix(pre) + data);
+            out.println(formatPrefix(pre) + data);
     }
 
     private String formatPrefix(char pre)

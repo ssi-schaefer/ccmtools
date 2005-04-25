@@ -28,7 +28,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -36,10 +35,11 @@ import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.UI.Driver;
 import ccmtools.utils.Debug;
 import ccmtools.utils.Text;
 
-public class CppRemoteTestGeneratorImpl extends CppGenerator
+public class CppRemoteTestGenerator extends CppGenerator
 {
 
     protected List CorbaStubsNamespace = null;
@@ -51,7 +51,7 @@ public class CppRemoteTestGeneratorImpl extends CppGenerator
         "MComponentDef"
     };
 
-    public CppRemoteTestGeneratorImpl(Driver d, File out_dir)
+    public CppRemoteTestGenerator(Driver d, File out_dir)
         throws IOException
     {
         super("CppRemoteTest", d, out_dir, local_output_types);

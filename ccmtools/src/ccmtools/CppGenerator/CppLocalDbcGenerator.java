@@ -38,7 +38,6 @@ import oclmetamodel.MOperationContext;
 import oclmetamodel.MPackage;
 import oclmetamodel.MPropertyCall;
 import oclmetamodel.OclType;
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -62,6 +61,7 @@ import ccmtools.OCL.parser.OclConstants;
 import ccmtools.OCL.parser.OclParser;
 import ccmtools.OCL.utils.OclElementCreator;
 import ccmtools.OCL.utils.OclNormalization;
+import ccmtools.UI.Driver;
 import ccmtools.utils.Debug;
 
 
@@ -71,7 +71,7 @@ import ccmtools.utils.Debug;
  * @author Egon Teiniker (templates and base implementation)
  * @author Robert Lechner (DbC code generation)
  */
-public class CppLocalDbcGeneratorImpl
+public class CppLocalDbcGenerator
     extends CppGenerator
 {
     //====================================================================
@@ -93,7 +93,7 @@ public class CppLocalDbcGeneratorImpl
     //====================================================================
 
 
-    public CppLocalDbcGeneratorImpl(Driver d, File out_dir)
+    public CppLocalDbcGenerator(Driver d, File out_dir)
         throws IOException
     {
         super("CppLocalDbc", d, out_dir, local_output_types );

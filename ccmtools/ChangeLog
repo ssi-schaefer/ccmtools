@@ -8,6 +8,10 @@ RELEASE-0.5.2-pre1
 *) removed bin/ccmtools-generate 
 *) added etc/logging.properties file to support Java's logging API
 *) moved ccmtools.UI.ConsoleCodeGenerator to ccmtools.UI.Main
+*) refactored UI.Main (removed all System.exit() and added some String Constants)
+*) bugfix: CppRemoteGeneratorImpl.java converter for remote exception
+
+
 
 
 

@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
@@ -57,6 +56,7 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.UI.Driver;
 import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
@@ -67,7 +67,7 @@ import ccmtools.utils.Text;
  * component as well as a set of adapters that convert CORBA types into C++
  * native types and vice versa.
  ******************************************************************************/
-public class CppRemoteGeneratorImpl extends CppGenerator {
+public class CppRemoteGenerator extends CppGenerator {
 
     //====================================================================
     // Definition of arrays that determine the generator's behavior
@@ -132,7 +132,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
      * 
      * @exception IOException
      */
-    public CppRemoteGeneratorImpl(Driver d, File out_dir) throws IOException
+    public CppRemoteGenerator(Driver d, File out_dir) throws IOException
     {
         super("CppRemote", d, out_dir, local_output_types);
         base_namespace.add("CCM_Remote");
@@ -1131,7 +1131,7 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
                     String fileDir = handleNamespace("FileNamespace", componentName)
                             + "_CCM_Session_" + componentName;
 
-                    Code.writeFile(driver, output_dir, fileDir, componentName + remoteSuffix[i],
+                    Code.writeFile(uiDriver, output_dir, fileDir, componentName + remoteSuffix[i],
                                    sourceFiles[i]);
                 }
                 else if(current_node instanceof MHomeDef) {
@@ -1142,9 +1142,9 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
                     String fileDir = handleNamespace("FileNamespace", componentName)
                             + "_CCM_Session_" + componentName;
 
-                    Code.writeFile(driver, output_dir, fileDir, homeName + remoteSuffix[i],
+                    Code.writeFile(uiDriver, output_dir, fileDir, homeName + remoteSuffix[i],
                                    sourceFiles[i]);
-                    Code.writeMakefile(driver, output_dir, fileDir, "py", "");
+                    Code.writeMakefile(uiDriver, output_dir, fileDir, "py", "");
                 }
                 else if(current_node instanceof MInterfaceDef || current_node instanceof MAliasDef
                         || current_node instanceof MStructDef
@@ -1154,9 +1154,9 @@ public class CppRemoteGeneratorImpl extends CppGenerator {
                     String nodeName = ((MContained) current_node).getIdentifier();
                     String fileDir = "CORBA_Converter";
 
-                    Code.writeFile(driver, output_dir, fileDir, nodeName + remoteSuffix[i],
+                    Code.writeFile(uiDriver, output_dir, fileDir, nodeName + remoteSuffix[i],
                                    sourceFiles[i]);
-                    Code.writeMakefile(driver, output_dir, fileDir, "py", "");
+                    Code.writeMakefile(uiDriver, output_dir, fileDir, "py", "");
                 }
                 else {
                     throw new RuntimeException("CppRemoteGeneratorImpl.writeOutput()"

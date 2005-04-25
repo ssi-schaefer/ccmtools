@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Stack;
 
 import ccmtools.CodeGenerator.CodeGenerator;
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
@@ -62,6 +61,7 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.UI.Driver;
 import ccmtools.utils.Text;
 
 abstract public class CppGenerator extends CodeGenerator

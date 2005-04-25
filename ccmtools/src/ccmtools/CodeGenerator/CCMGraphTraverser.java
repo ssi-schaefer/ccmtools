@@ -43,12 +43,12 @@ import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
  * sends node traversal events to an object derived from the NodeHandler class
  * to perform task-specific actions with each node.
  */
-public class CCMMOFGraphTraverserImpl implements GraphTraverser
+public class CCMGraphTraverser implements GraphTraverser
 {
 
     private List handlers = null;
 
-    public CCMMOFGraphTraverserImpl()
+    public CCMGraphTraverser()
     {
         handlers = new ArrayList();
     }

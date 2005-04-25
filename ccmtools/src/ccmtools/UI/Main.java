@@ -22,6 +22,7 @@ package ccmtools.UI;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -30,44 +31,42 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import ccmtools.Constants;
-import ccmtools.CodeGenerator.CCMMOFGraphTraverserImpl;
+import ccmtools.CodeGenerator.CCMGraphTraverser;
 import ccmtools.CodeGenerator.CodeGenerator;
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.CodeGenerator.TemplateHandler;
-import ccmtools.CppGenerator.CppLocalDbcGeneratorImpl;
-import ccmtools.CppGenerator.CppLocalGeneratorImpl;
-import ccmtools.CppGenerator.CppLocalTestGeneratorImpl;
-import ccmtools.CppGenerator.CppRemoteGeneratorImpl;
-import ccmtools.CppGenerator.CppRemoteTestGeneratorImpl;
+import ccmtools.CppGenerator.CppLocalDbcGenerator;
+import ccmtools.CppGenerator.CppLocalGenerator;
+import ccmtools.CppGenerator.CppLocalTestGenerator;
+import ccmtools.CppGenerator.CppRemoteGenerator;
+import ccmtools.CppGenerator.CppRemoteTestGenerator;
 import ccmtools.IDL3Parser.ParserManager;
-import ccmtools.IDLGenerator.IDL2GeneratorImpl;
-import ccmtools.IDLGenerator.IDL3GeneratorImpl;
-import ccmtools.IDLGenerator.IDL3MirrorGeneratorImpl;
+import ccmtools.IDLGenerator.IDL2Generator;
+import ccmtools.IDLGenerator.IDL3Generator;
+import ccmtools.IDLGenerator.IDL3MirrorGenerator;
 import ccmtools.Metamodel.BaseIDL.MContainer;
+
 
 public class Main
 {
-    private static Logger logger = Logger.getLogger("ccm.main");
+    private static Logger logger;
     
+    private static Driver uiDriver;
+    // TODO: replace driver.* methods with Java's Logging API
+    //    private static long gen_mask = Driver.M_OUTPUT_FILE; 
+    //    private static long par_mask = 0x00000000;
+
     private static final int GENERATE_APPLICATION_FILES = 0x0001;
 
     private static List language_types = null;
-
     private static List languages = null;
 
-    private static long gen_mask = ConsoleDriverImpl.M_OUTPUT_FILE; //ConsoleDriverImpl.M_MESSAGE;
-
-    private static long par_mask = 0x00000000;
-
     private static String include_path;
-
     private static List filenames;
-
     private static File output_directory = 
         new File(System.getProperty("user.dir"));
-
-    private static File base_output_directory = new File(output_directory, "");
+    private static File base_output_directory = 
+        new File(output_directory, "");
 
     private static int generate_flags = 0;
 
@@ -79,24 +78,33 @@ public class Main
      * output code. Exits with nonzero status if errors are encountered during
      * parsing or generation.
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
-        logger.fine("start ccmtools");
-        
-        // Print out the current version of ccmtools
-        printVersion();  
-        
+        logger = Logger.getLogger("ccm.main");
+        logger.fine("enter main()");
+
         try {
+            // Create a UI driver that handles user output 
+            uiDriver = new ConsoleDriver(Driver.M_NONE);
+            
+            // Print out the current version of ccmtools
+            printVersion();  
+            
             if(parseArgs(args) == false) {
                 return; // No further processing needed        
             }
         }
         catch(IllegalArgumentException e) {
-            printError(e.getMessage());
+            logger.info(e.getMessage());
+            uiDriver.printError(e.getMessage());
             printUsage();
-            logger.fine("stop ccmtools after parseArgs(): " + e.getMessage());
             return; // No further processing needed      
         }
+        catch(FileNotFoundException e) {
+            logger.info(e.getMessage());
+            return; // No further processing needed 
+        }
+        
 
         // Set default values for ccmtools.home and ccmtools.template properties 
         // to the current ccmtools directory (if not set from the command line).
@@ -114,27 +122,30 @@ public class Main
         logger.config("ccmtools.templates=" + System.getProperty("ccmtools.templates"));
         
         try {
-            //Driver driver = createDriver();
-            Driver driver = new ConsoleDriverImpl(gen_mask);
-            
-            GraphTraverser traverser = new CCMMOFGraphTraverserImpl();
+            GraphTraverser traverser = new CCMGraphTraverser();
             if(traverser == null) {
-                printError("Failed to create a graph traverser");
+                String error = "failed to create a graph traverser";
+                logger.info(error);
+                uiDriver.printError(error);
                 printUsage();
                 return; // No further processing needed
             }
 
-            ParserManager manager = new ParserManager(par_mask);
+            ParserManager manager = new ParserManager(Driver.M_NONE);
             if(manager == null) {
-                printError("Failed to create a parser manager");
+                String error = "failed to create a parser manager";
+                logger.info(error);
+                uiDriver.printError(error);
                 printUsage();
                 return; // No further processing needed
             }
 
             ArrayList handlers = new ArrayList();
             for(Iterator l = languages.iterator(); l.hasNext();) {
-                TemplateHandler handler = createTemplateHandler(driver,(String) l.next());
+                String generatorType = (String) l.next();
+                TemplateHandler handler = createTemplateHandler(uiDriver, generatorType);
                 if(handler == null) {
+                    logger.info("failed to create " + generatorType + " template handler");
                     printUsage();
                     return; // No further processing needed
                 }
@@ -157,13 +168,11 @@ public class Main
                 // step (0). run the C preprocessor on the input file.
                 try {
                     // Run the GNU preprocessor cpp in a separate process.
-                    printMessage(Constants.CPP_PATH + " -o " 
-                                       		+ idlfile + " " + include_path 
-                                       		+ " " + source);
-                    Process preproc = 
-                        Runtime.getRuntime().exec(Constants.CPP_PATH + " -o"  
-                                                  + idlfile + " " + include_path
-                                                  + " " + source);
+                    String cmd = Constants.CPP_PATH + " -o "+ idlfile + " " + include_path 
+               						+ " " + source;
+                    logger.fine(cmd);
+                    uiDriver.printMessage(cmd);
+                    Process preproc = Runtime.getRuntime().exec(cmd);
                     BufferedReader stdInput = 
                         new BufferedReader(new InputStreamReader(preproc.getInputStream()));
                     BufferedReader stdError = 
@@ -172,9 +181,9 @@ public class Main
                     // Read the output and any errors from the command
                     String s;
                     while((s = stdInput.readLine()) != null)
-                        printMessage(s);
+                        uiDriver.printMessage(s);
                     while((s = stdError.readLine()) != null)
-                        printMessage(s);
+                        uiDriver.printMessage(s);
 
                     // Wait for the process to complete and evaluate the return
                     // value of the attempted command
@@ -183,13 +192,15 @@ public class Main
                         throw new RuntimeException();
                 }
                 catch(Exception e) {
-                    printError("Error preprocessing " + source
-                            + ": Please verify your include paths.");
+                    String error = "Error preprocessing " + source
+                    	+ ": Please verify your include paths.";
+                    logger.info(error);
+                    uiDriver.printError(error);
                     return; // No further processing needed
                 }
 
                 // step (1). parse the resulting preprocessed file.
-                printMessage("parse " + idlfile.toString());
+                uiDriver.printMessage("parse " + idlfile.toString());
                 manager.reset();
                 manager.setOriginalFile(source.toString());
                 try {
@@ -198,7 +209,9 @@ public class Main
                         throw new RuntimeException("Parser returned a null container");
                 }
                 catch(Exception e) {
-                    printError("Error parsing " + source + ":\n" + e);
+                    String error = "Error parsing " + source + ":\n" + e.getMessage();
+                    logger.info(error);
+                    uiDriver.printError(error);
                     return; // No further processing needed
                 }
                 String kopf_name = source.getName().split("\\.")[0];
@@ -207,26 +220,29 @@ public class Main
 
                 // step (2). traverse the resulting metamodel graph.
                 try {
-                    printMessage("traverse CCM model");
+                    uiDriver.printMessage("traverse CCM model");
                     traverser.traverseGraph(kopf);
                 }
                 catch(Exception e) {
-                    printError("Error generating code from " 
-                                       + source + ":\n" + e);
+                    String error = "Error generating code from " 
+                        + source + ":\n" + e.getMessage();
+                    logger.info(error);
+                    uiDriver.printError(error);
                     return; // No further processing needed
                 }
 
                 // delete the preprocessed temporary file if everything worked.
                 idlfile.deleteOnExit();
 
-                printMessage("done.");
+                uiDriver.printMessage("done.");
             }
         }
         catch(Exception e) {
-            printError("Error: CCM Tools have been finished with an error:");
-            printError(e.getMessage());
-            printError("Please post a bug report to <ccmtools-devel@lists.sourceforge.net>");
+            uiDriver.printError("Error: CCM Tools have been finished with an error:\n" +
+                              e.getMessage() + "\n" +
+                              "Please post a bug report to <ccmtools-devel@lists.sourceforge.net>");
         }
+        logger.fine("leave main()");
     }
 
 
@@ -237,41 +253,41 @@ public class Main
      * 
      * @param driver
      *            the user interface driver object to assign to this handler.
-     * @param lang
+     * @param generatorType
      *            the language to generate.
      * @return the newly created node handler (i.e. code generator), or exit if
      *         there was an error.
      */
-    private static TemplateHandler createTemplateHandler(Driver driver, String lang)
+    private static TemplateHandler createTemplateHandler(Driver driver, String generatorType)
     {
+        logger.fine("enter createTemplateHandler()");
         TemplateHandler handler = null;
-
         try {
-            if(lang.equalsIgnoreCase("c++local")) {
-                handler = new CppLocalGeneratorImpl(driver, output_directory);
+            if(generatorType.equalsIgnoreCase("c++local")) {
+                handler = new CppLocalGenerator(driver, output_directory);
             }
-            else if(lang.equalsIgnoreCase("c++local-test")) {
-                handler = new CppLocalTestGeneratorImpl(driver,
+            else if(generatorType.equalsIgnoreCase("c++local-test")) {
+                handler = new CppLocalTestGenerator(driver,
                                                         output_directory);
             }
-            else if(lang.equalsIgnoreCase("c++dbc")) {
-                handler = new CppLocalDbcGeneratorImpl(driver, output_directory);
+            else if(generatorType.equalsIgnoreCase("c++dbc")) {
+                handler = new CppLocalDbcGenerator(driver, output_directory);
             }
-            else if(lang.equalsIgnoreCase("c++remote")) {
-                handler = new CppRemoteGeneratorImpl(driver, output_directory);
+            else if(generatorType.equalsIgnoreCase("c++remote")) {
+                handler = new CppRemoteGenerator(driver, output_directory);
             }
-            else if(lang.equalsIgnoreCase("c++remote-test")) {
-                handler = new CppRemoteTestGeneratorImpl(driver,
+            else if(generatorType.equalsIgnoreCase("c++remote-test")) {
+                handler = new CppRemoteTestGenerator(driver,
                                                          output_directory);
             }
-            else if(lang.equalsIgnoreCase("idl3")) {
-                handler = new IDL3GeneratorImpl(driver, output_directory);
+            else if(generatorType.equalsIgnoreCase("idl3")) {
+                handler = new IDL3Generator(driver, output_directory);
             }
-            else if(lang.equalsIgnoreCase("idl3mirror")) {
-                handler = new IDL3MirrorGeneratorImpl(driver, output_directory);
+            else if(generatorType.equalsIgnoreCase("idl3mirror")) {
+                handler = new IDL3MirrorGenerator(driver, output_directory);
             }
-            else if(lang.equalsIgnoreCase("idl2")) {
-                handler = new IDL2GeneratorImpl(driver, output_directory);
+            else if(generatorType.equalsIgnoreCase("idl2")) {
+                handler = new IDL2Generator(driver, output_directory);
             }
             
             if((generate_flags & GENERATE_APPLICATION_FILES) != 0) {
@@ -279,10 +295,13 @@ public class Main
             }
         }
         catch(IOException e) {
-            printError("Failed to create a language generator for " + lang 
-                       + "\n" + e.getMessage());
+            String error = "Failed to create a language generator for " + generatorType 
+            + "\n" + e.getMessage();
+            logger.info(error);
+            driver.printError(error);
             handler = null;
         }
+        logger.fine("leave createTemplateHandler()");
         return handler;
     }
 
@@ -306,6 +325,7 @@ public class Main
      */
     private static boolean parseArgs(String args[])
     {
+        logger.fine("enter parseArgs()");
         languages = new ArrayList();
         language_types = new ArrayList();
         filenames = new ArrayList();
@@ -316,9 +336,11 @@ public class Main
         }
         
         List argv = new ArrayList();
-        for(int i = 0; i < args.length; i++)
+        for(int i = 0; i < args.length; i++) {
             argv.add(args[i]);
-
+        }
+        logger.fine(argv.toString());
+        
         if(argv.contains("-h") || argv.contains("--help")) {
             printUsage();
             return false; // No further processing needed
@@ -331,10 +353,10 @@ public class Main
             String arg = (String) a.next();
             if(arg.equals(""))
                 continue;
-            else if(arg.startsWith("--generator-mask="))
-                setGeneratorMask(arg.split("=")[1]);
-            else if(arg.startsWith("--parser-mask="))
-                setParserMask(arg.split("=")[1]);
+//            else if(arg.startsWith("--generator-mask="))
+//                setGeneratorMask(arg.split("=")[1]);
+//            else if(arg.startsWith("--parser-mask="))
+//                setParserMask(arg.split("=")[1]);
             else if(arg.startsWith("--output=")) {
                 	setOutputDirectory(arg.split("=")[1]); 
             }
@@ -378,11 +400,14 @@ public class Main
         if(include_path.trim().equals(""))
             include_path = " -I" + System.getProperty("user.dir");
 
+        logger.fine("leave parseArgs()");
         return true;
     }
 
+
     private static void setOutputDirectory(String val)
     {
+        logger.fine("enter setOutputDirectory()");
         if(val.trim().equals("")) {
             throw new IllegalArgumentException("Unspecified output directory");
         }
@@ -393,64 +418,59 @@ public class Main
         else {
             output_directory = new File(base_output_directory, val);
         }
+        logger.fine("leave setOutputDirectory()");
     }
 
     
     // Some helper methods --------------------------------------------------
     
-    private static void setGeneratorMask(String val)
-    {
-        try {
-            if(val.startsWith("0x"))
-                gen_mask = Long.parseLong(val.substring(2), 16);
-            else if(val.startsWith("0"))
-                gen_mask = Long.parseLong(val.substring(1), 8);
-            else
-                gen_mask = Long.parseLong(val, 10);
-        }
-        catch(NumberFormatException e) {
-            printError("Could not convert " + val
-                    + " to a generator mask. Ignoring.");
-        }
-    }
+//    private static void setGeneratorMask(String val)
+//    {
+//        logger.fine("enter setGeneratorMask()");
+//        try {
+//            if(val.startsWith("0x"))
+//                gen_mask = Long.parseLong(val.substring(2), 16);
+//            else if(val.startsWith("0"))
+//                gen_mask = Long.parseLong(val.substring(1), 8);
+//            else
+//                gen_mask = Long.parseLong(val, 10);
+//        }
+//        catch(NumberFormatException e) {
+//            String error = "Could not convert " + val
+//            	+ " to a generator mask. Ignoring.";
+//            logger.info(error);
+//            driver.printError(error);
+//        }
+//        logger.fine("leave setGeneratorMask()");
+//    }
 
-    private static void setParserMask(String val)
-    {
-        try {
-            if(val.startsWith("0x"))
-                par_mask = Long.parseLong(val.substring(2), 16);
-            else if(val.startsWith("0"))
-                par_mask = Long.parseLong(val.substring(1), 8);
-            else
-                par_mask = Long.parseLong(val, 10);
-        }
-        catch(NumberFormatException e) {
-            printError("Could not convert " + val + " to a parser mask. Ignoring.");
-        }
-    }
+//    private static void setParserMask(String val)
+//    {
+//        logger.fine("enter setParserMask()");
+//        try {
+//            if(val.startsWith("0x"))
+//                par_mask = Long.parseLong(val.substring(2), 16);
+//            else if(val.startsWith("0"))
+//                par_mask = Long.parseLong(val.substring(1), 8);
+//            else
+//                par_mask = Long.parseLong(val, 10);
+//        }
+//        catch(NumberFormatException e) {
+//            String error = "Could not convert " + val + " to a parser mask. Ignoring.";
+//            logger.info(error);
+//            driver.printError(error);
+//        }
+//        logger.fine("leave setParserMask()");
+//    }
 
     
     private static void printVersion()
     {
-        // TODO: use a display driver
-        System.out.println(Constants.VERSION_TEXT);
+        uiDriver.println(Constants.VERSION_TEXT);
     }
     
     private static void printUsage()
     {
-        // TODO: use a display driver
-        System.out.println(Constants.USAGE_TEXT);
-    }
-
-    private static void printError(String error)
-    {
-        // TODO: use a display driver
-        System.err.println("Error: " + error);
-    }
-
-    private static void printMessage(String msg)
-    {
-        // TODO: use a display driver
-        System.out.println("> " + msg);
+        uiDriver.println(Constants.USAGE_TEXT);
     }
 }

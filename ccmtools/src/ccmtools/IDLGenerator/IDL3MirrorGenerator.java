@@ -21,7 +21,6 @@
 
 package ccmtools.IDLGenerator;
 
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
@@ -32,6 +31,7 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.UI.Driver;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,10 +39,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class IDL3MirrorGeneratorImpl extends IDLGenerator
+public class IDL3MirrorGenerator extends IDLGenerator
 {
 
-    public IDL3MirrorGeneratorImpl(Driver d, File out_dir) throws IOException
+    public IDL3MirrorGenerator(Driver d, File out_dir) throws IOException
     {
         super("3Mirror", d, out_dir);
     }

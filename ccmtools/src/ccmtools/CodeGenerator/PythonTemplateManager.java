@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class PythonTemplateManagerImpl
+public class PythonTemplateManager
     implements TemplateManager
 {
     private File source;
@@ -34,39 +34,22 @@ public class PythonTemplateManagerImpl
     /**
      * Initialize the class instance by locating a likely directory for
      * templates.
-     *
+     * All templates are organized in directories that reflect
+     * the name of generated languages:
+     *   IDL3Templates/
+     *   CppLocalTemplates/
+     *   CppRemoteTemplates/
+     *   etc.
+     * 
      * @param language the language to use for templates. This is used to
      *                 locate a likely template source.
      *                 ("CppLocalTemplates", "CppRemoteTemplates", etc).
      */
-    public PythonTemplateManagerImpl(String language)
+    public PythonTemplateManager(String language)
         throws IOException
     {
-	// All templates are organized in directories that reflect
-	// the name of generated languages:
-	//   IDL3Templates/
-	//   CppLocalTemplates/
-	//   CppRemoteTemplates/
-	//   etc.
         String templatesDir = language + "Templates";
 
-	// Option 1: (used by the ccmtools JUnit tests)
-	// Load templates from src/templates directory of the source tree.
-	// This directory is used as default path for easy development. 
-//        source = new File(System.getProperty("user.dir") + File.separator + 
-//			  "src" + File.separator +
-//			  "templates", templatesDir);
-//        if (source.exists() && source.isDirectory()) {
-//	    System.out.println("> load templates from (src): " + source);
-//	    return;
-//	}
-
-	// Option 2: (used by the ccmtools shell script)
-	// Load templates from CCMTOOLS_HOME system property.
-	// This property is set, when calling the ccmtools-generate script,
-	// with a operationg system environment variable value.
-//        source = new File(System.getProperty("CCMTOOLS_HOME") +
-//			  File.separator + "templates", templatesDir);
         source = new File(System.getProperty("ccmtools.templates"), templatesDir);
         System.out.println("> load templates from: " + source);
         if (source.exists() && source.isDirectory()) {
@@ -76,18 +59,6 @@ public class PythonTemplateManagerImpl
             // Stop code generation because there are no valid templates found.
             throw new IOException("Error: No template source found for " + language);
         }
-	// Option 3:
-	// Load templates from TEMPLATE_ROOT directory specified in 
-	// the Constants.java file.
-	// In the build process, the Constants.java file is generated
-	// from a Constants.java.in template by replacing @name@ tags
-	// with current informations.
-//        source = new File(Constants.TEMPLATE_ROOT, templatesDir);
-//        if (source.exists() && source.isDirectory()) {
-//	    	System.out.println("> load templates from (TEMPLATE_ROOT): " 
-//			       + source);
-//            return;
-//		}
     }
 
 
@@ -152,7 +123,7 @@ public class PythonTemplateManagerImpl
         Set templates = loadTemplates(node_type);
 
         for (Iterator i = templates.iterator(); i.hasNext(); ) {
-            Template template = (PythonTemplateImpl) i.next();
+            Template template = (PythonTemplate) i.next();
             if (template.getName().equals(node_type)) {
                 return template;
             }
@@ -181,12 +152,13 @@ public class PythonTemplateManagerImpl
             File file = new File(source, candidates[i]);
             if (file.getName().startsWith(node_type)) {
                 try {
-                    ret.add(new PythonTemplateImpl(file));
-                } catch (IOException e) {
+                    ret.add(new PythonTemplate(file));
+                } 
+                catch (IOException e) {
+                    // TODO: logging
                 }
             }
         }
-
         return ret;
     }
 }

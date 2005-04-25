@@ -22,9 +22,8 @@ package ccmtools.CodeGenerator;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -51,12 +50,12 @@ import java.util.regex.Pattern;
  * identifier system of keys in the variable map, we are guaranteed to get
  * unique matches for each template.
  */
-public class PythonTemplateImpl
+public class PythonTemplate
     implements Template
 {
-    private final static Pattern key_regex =
-        Pattern.compile("%\\((\\w+)\\)s");
-    private final static Pattern scoped_key_regex =
+    // define regex pattern , e.g. %(tag)s
+    private final static Pattern key_regex = Pattern.compile("%\\((\\w+)\\)s");  
+    private final static Pattern scoped_key_regex = 
         Pattern.compile("%\\((\\w[\\w:]+)\\)s");
 
     private Set variables;
@@ -70,15 +69,13 @@ public class PythonTemplateImpl
      *
      * @param file a file to read from.
      */
-    public PythonTemplateImpl(File file)
+    public PythonTemplate(File file)
         throws IOException
     {
         name = new String(file.getName());
 
         StringBuffer template_buffer = new StringBuffer();
-        FileInputStream stream = new FileInputStream(file);
-        InputStreamReader input = new InputStreamReader(stream);
-        BufferedReader reader = new BufferedReader(input);
+        BufferedReader reader = new BufferedReader(new FileReader(file));
         String line = null;
         while ((line = reader.readLine()) != null) {
             template_buffer.append(line + "\n");
@@ -88,7 +85,6 @@ public class PythonTemplateImpl
         // chop off the last newline. don't want to artificially make this
         // template longer, e.g. if it was only one line (without terminating
         // newline) to begin with.
-
         if (template.length() > 0)
             template = template.substring(0, template.length() - 1);
 
@@ -125,7 +121,8 @@ public class PythonTemplateImpl
     {
         if (variables != null) {
             return variables;
-        } else {
+        } 
+        else {
             Set ret = new HashSet();
             Matcher m = key_regex.matcher(template);
             while (m.find()) {
@@ -163,23 +160,23 @@ public class PythonTemplateImpl
      */
     public String substituteVariables(Map var_map)
     {
-        String ret = new String(template);
-
-        if (var_map == null) return ret;
-
+        String ret = template;
+        if (var_map == null) {
+            return ret; 
+        }
+        
         Matcher m = scoped_key_regex.matcher(ret);
-
         while (m.find()) {
             String key = m.group(1);
             if (var_map.containsKey(key)) {
                 Object value = var_map.get(key);
                 ret = ret.replaceAll("%\\(" + key + "\\)s", value.toString());
-            } else {
-                throw new RuntimeException(
-                    "Key " + key + " in template " + name + " has no value");
+            } 
+            else {
+                throw new RuntimeException("Key " + key + " in template " + 
+                                           name + " has no value");
             }
         }
-
         return ret;
     }
 }

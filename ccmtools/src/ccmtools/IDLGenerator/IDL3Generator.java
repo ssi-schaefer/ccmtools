@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -37,11 +36,12 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.UI.Driver;
 
-public class IDL3GeneratorImpl extends IDLGenerator
+public class IDL3Generator extends IDLGenerator
 {
 
-    public IDL3GeneratorImpl(Driver driver, File out_dir) throws IOException
+    public IDL3Generator(Driver driver, File out_dir) throws IOException
     {
         super("3", driver, out_dir);
     }

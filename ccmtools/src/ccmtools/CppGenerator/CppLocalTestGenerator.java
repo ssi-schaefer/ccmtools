@@ -25,13 +25,13 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.UI.Driver;
 
-public class CppLocalTestGeneratorImpl
+public class CppLocalTestGenerator
     extends CppGenerator
 {
     // types for which we have a global template ; that is, a template that is
@@ -42,7 +42,7 @@ public class CppLocalTestGeneratorImpl
 
     /**************************************************************************/
 
-    public CppLocalTestGeneratorImpl(Driver d, File out_dir)
+    public CppLocalTestGenerator(Driver d, File out_dir)
         throws IOException
     {
         super("CppLocalTest", d, out_dir, local_output_types);

@@ -29,7 +29,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -42,8 +41,9 @@ import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.UI.Driver;
 
-public class CppLocalGeneratorImpl extends CppGenerator
+public class CppLocalGenerator extends CppGenerator
 {
 
     // types for which we have a global template ; that is, a template that is
@@ -57,7 +57,7 @@ public class CppLocalGeneratorImpl extends CppGenerator
 
     /** *********************************************************************** */
 
-    public CppLocalGeneratorImpl(Driver d, File out_dir) throws IOException
+    public CppLocalGenerator(Driver d, File out_dir) throws IOException
     {
         super("CppLocal", d, out_dir, local_output_types);
         base_namespace.add("CCM_Local");

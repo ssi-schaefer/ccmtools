@@ -21,7 +21,7 @@
 
 package ccmtools.utils;
 
-import ccmtools.CodeGenerator.Driver; // TODO: -> Logging
+import ccmtools.UI.Driver;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,7 +67,7 @@ public class Code
         writer.write(output, 0, output.length());
         writer.close();
         if(driver != null)
-            driver.outputFile(out_file.toString());
+            driver.println("writing " + out_file.toString());
     }
 
     /**

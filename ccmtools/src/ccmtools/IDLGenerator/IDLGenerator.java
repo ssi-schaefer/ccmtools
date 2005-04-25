@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.CodeGenerator.CodeGenerator;
-import ccmtools.CodeGenerator.Driver;
 import ccmtools.CodeGenerator.Template;
 
 import ccmtools.Metamodel.BaseIDL.MContainer;
@@ -47,6 +46,7 @@ import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.Metamodel.ComponentIDL.MFinderDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.UI.Driver;
 
 abstract public class IDLGenerator extends CodeGenerator
 {
