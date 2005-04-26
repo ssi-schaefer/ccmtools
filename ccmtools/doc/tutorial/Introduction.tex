@@ -4,7 +4,7 @@
 \chapter{CCM Tools Overview}
 %==============================================================================
 
-The CCM Tools are a set of Java programs and libraries as well as Python scripts
+The CCM Tools are a set of Java programs and libraries
 that supports component development, based on the {\it CORBA Component
 Model} (CCM) \cite{CCMSpecification} and our local component extensions. 
 
@@ -17,7 +17,7 @@ Model} (CCM) \cite{CCMSpecification} and our local component extensions.
 \end{figure}
 
 As shown in Fig.~\ref{ccmtools}, the CCM Tools form a component development 
-framework that is flexible and extensible.
+platform that is flexible and extensible.
 
 
 \newpage
@@ -125,28 +125,27 @@ and is organized in the following structure (Fig.~\ref{ccmtools-structure}):
 
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics [width=12cm,angle=0] {CcmToolsArchitecture}
+        \includegraphics [width=10cm,angle=0] {CcmToolsArchitecture}
         \caption{CCM Tools structure}
         \label{ccmtools-structure}
     \end{center}
 \end{figure}
 
 \begin{description}
-\item [ccmtools:]
+\item [CCM Tools:]
 This module contains all the tools and libraries that build the CCM Tools 
 framework in form of Java source code.
 
-\item [cpp-environment:]
-This module contains C++ source code that builds a runtime environment for
+\item [C++ Runtime Environment:]
+This module contains C++ source code that builds the runtime environment for
 generated components (e.g. C++ smart pointer library, CCM header files, 
 HomeFinder implementations etc.).
-The C++ components depend only on cpp-environment libraries. 
 Remote components are also based on {\bf Mico} \cite{MicoORB} an open source 
 Object Request Broker (ORB) implementation.
 
 
-\item [java-environment:]
-This module contains Java code that is used by Java clients
+\item [Java Runtime Environment:]
+This module contains code that is used by Java clients
 as a runtime library to access remote CCM components.
 
 \end{description}

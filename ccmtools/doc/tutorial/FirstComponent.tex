@@ -3,7 +3,6 @@
 \chapter{Component Development}
 %==============================================================================
 
-
 %------------------------------------------------------------------------------
 \section{Component development process overview}
 %------------------------------------------------------------------------------
@@ -331,7 +330,7 @@ In the first step, we bring the IDL3 files in a proper structure that implies
 the separation between interface and component definitions. 
 \begin{small}
 \begin{verbatim}
-~/example1> ccmtools-generate idl3 -o CarRental/idl3 *.idl
+~/example1> ccmtools idl3 -o CarRental/idl3 *.idl
 \end{verbatim}
 \end{small}
 As result of this CCM Tools call is the following file structure.
@@ -363,11 +362,11 @@ To generate C++ source code from IDL3 we have to call the CCM Tools generator
 twice, once for the interfaces and once for the component:
 \begin{small}
 \begin{verbatim}
-~/example1> ccmtools-generate c++local \
+~/example1> ccmtools c++local \
                 -o CarRental/interface \
                 -ICarRental/idl3/interface \
                 CarRental/idl3/interface/BigBusiness/*.idl
-~/example1> ccmtools-generate c++local -a \
+~/example1> ccmtools c++local -a \
                 -o CarRental/component/CarRental \
                 -ICarRental/idl3/component -ICarRental/idl3/interface \
                 CarRental/idl3/component/BigBusiness/CarRental.idl \
@@ -376,7 +375,7 @@ twice, once for the interfaces and once for the component:
 \end{small}
 
 Now, the {\tt CarRental} subdirectory contains the component's source code. 
-(To get a description of all {\tt ccmtools-generate} options consult the 
+(To get a description of all {\tt ccmtools} options consult the 
 CCM Tools commands section in the tutorial's appendix).
 \begin{small}
 \begin{verbatim}
@@ -487,7 +486,7 @@ To create a mirror component $\overline{C}$ definition from manually written
 IDL3 files, type:
 \begin{small}
 \begin{verbatim}
-~/example1> ccmtools-generate idl3mirror -o CarRental/idl3 *.idl
+~/example1> ccmtools idl3mirror -o CarRental/idl3 *.idl
 \end{verbatim}
 \end{small}
 
@@ -519,7 +518,7 @@ Now we can use the {\tt c++local} generator again to create C++ component logic
 from the IDL3 mirror files.
 \begin{small}
 \begin{verbatim}
-~/example1> ccmtools-generate c++local -a \
+~/example1> ccmtools c++local -a \
                 -o CarRental/component/CarRental_mirror \
                 -ICarRental/idl3/component -ICarRental/idl3/interface \
                 CarRental/idl3/component/BigBusiness/CarRental_mirror.idl \
@@ -556,7 +555,7 @@ mirror component $\overline{C}$.
 To generate a test client, we type:
 \begin{small}
 \begin{verbatim}
-~/example1> ccmtools-generate c++local-test \
+~/example1> ccmtools c++local-test \
                 -o CarRental/component/CarRental_mirror \
                 -ICarRental/idl3/component -ICarRental/idl3/interface \
                 CarRental/idl3/component/BigBusiness/CarRental.idl
