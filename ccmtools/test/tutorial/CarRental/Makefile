@@ -7,22 +7,27 @@ IDL3_INCLUDE_PATH=-I${IDL3_INTERFACE_DIR} -I${IDL3_COMPONENT_DIR}
 
 all: uml interface local mirror
 
+
 uml: md/CarRental.xml.zip
 	uml2idl md/CarRental.xml.zip md/CarRental
 	ccmtools idl3 -o ${TARGET_DIR}/idl3 md/CarRental.idl
 
+
 idl3:
 	ccmtools idl3 -o ${TARGET_DIR}/idl3 idl/*.idl
  
+
 interface: 
 	ccmtools c++local -o ${INTERFACE_DIR} ${IDL3_INCLUDE_PATH} ${IDL3_INTERFACE_DIR}/BigBusiness/*.idl 
 	touch ${INTERFACE_DIR}/../Makefile.py
 	touch ${INTERFACE_DIR}/Makefile.py
 
+
 local:
 	ccmtools c++local -a -o ${COMPONENT_DIR}/CarRental ${IDL3_INCLUDE_PATH} ${IDL3_COMPONENT_DIR}/BigBusiness/CarRental*.idl
 	touch ${COMPONENT_DIR}/Makefile.py
 	touch ${COMPONENT_DIR}/CarRental/Makefile.py
+
 
 mirror:
 	ccmtools idl3mirror -o ${TARGET_DIR}/idl3 ${IDL3_INCLUDE_PATH} ${IDL3_COMPONENT_DIR}/BigBusiness/CarRental*.idl
@@ -39,10 +44,20 @@ check:
 	cp impl/CarRental_mirror_impl.cc ${COMPONENT_DIR}/CarRental_mirror/impl/
 	confix.py --packageroot=`pwd`/CarRental --bootstrap --configure --make --targets=check
 
-
 client:
 	cp -r impl/client ${TARGET_DIR}/
+
+
+remote:
+	ccmtools idl2 -o ${COMPONENT_DIR}/CarRental/CORBA_Stubs ${IDL3_INCLUDE_PATH} ${IDL3_INTERFACE_DIR}/BigBusiness/*.idl ${IDL3_COMPONENT_DIR}/BigBusiness/CarRental*.idl
+	ccmtools c++remote -o  ${COMPONENT_DIR}/CarRental ${IDL3_INCLUDE_PATH} ${IDL3_INTERFACE_DIR}/BigBusiness/*.idl ${IDL3_COMPONENT_DIR}/BigBusiness/*.idl
+	ccmtools c++remote-test -o ${COMPONENT_DIR}/CarRental ${IDL3_INCLUDE_PATH} ${IDL3_COMPONENT_DIR}/BigBusiness/CarRental.idl
+	cp impl/_check_CCM_Remote_BigBusiness_CCM_Session_CarRental_remote.cc ${COMPONENT_DIR}/CarRental/test/
+
+
+build:
 	confix.py --packageroot=`pwd`/CarRental --bootstrap --configure --make 
+
 
 clean: 
 	rm -rf ${TARGET_DIR}
