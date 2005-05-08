@@ -40,5 +40,9 @@ check:
 	confix.py --packageroot=`pwd`/CarRental --bootstrap --configure --make --targets=check
 
 
+client:
+	cp -r impl/client ${TARGET_DIR}/
+	confix.py --packageroot=`pwd`/CarRental --bootstrap --configure --make 
+
 clean: 
 	rm -rf ${TARGET_DIR}
