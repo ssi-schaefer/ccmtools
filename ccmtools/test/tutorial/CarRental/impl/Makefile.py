@@ -1,0 +1,2 @@
+PACKAGE_NAME('car_rental')
+PACKAGE_VERSION('0.0.0')
