@@ -1,13 +1,18 @@
 DOCUMENT_NAME=tutorial
 PARTS=\
+  Introduction.tex \
   CCMOverview.tex\
+  CCMToolsOverview.tex \
+  ComponentDevelopment.tex \
+  SystemDevelopment.tex \
+  ComponentStructure.tex \
+  TestDrivenDevelopment.tex \
   CarRentalExample.tex \
   ConfixInstallation.tex \
   ConnectComponents.tex \
-  FirstAssembly.tex \
-  FirstComponent.tex \
+  NestedComponentComposition.tex \
+  HelloComponent.tex \
   Installation.tex \
-  Introduction.tex \
   LCAC.tex \
   ManPage.tex \
   MicoInstallation.tex \
@@ -17,24 +22,39 @@ PARTS=\
   UMLComponentDesign.tex 
 
 FIGURES= \
-  Adapter1.fig \
-  Assembly.fig \
-  AssemblyGraph.fig \
-  AssemblyGraph2.fig \
-  CcmToolsArchitecture.fig \
-  Component.fig \
-  ComponentGeneratorTools.fig \
-  ComponentLogicBusinessLogic.fig \
-  ConnectComponents.fig \
-  Container.fig \
-  DesignerTask.fig \
-  DeveloperTask.fig \
-  DevelopmentProcess.fig \
-  LCAC_Overview.fig \
-  LCAC_ProcessModel.fig \
-  RemoteAssembly.fig \
-  TestDrivenDevelopment.fig \
-  UMLComponentDesign.fig 
+  figures/CCMSymbol.fig \
+  figures/CCMArchitecture.fig \
+  figures/CcmToolsOverview.fig \
+  figures/ContainerComponentlogicBusinesslogic.fig \
+  figures/Adapter1.fig \
+  figures/Assembly.fig \
+  figures/AssemblyGraph.fig \
+  figures/AssemblyGraph2.fig \
+  figures/CcmToolsArchitecture.fig \
+  figures/Component.fig \
+  figures/ComponentGeneratorTools.fig \
+  figures/ComponentLogicBusinessLogic.fig \
+  figures/ConnectComponents.fig \
+  figures/Container.fig \
+  figures/DesignerTask.fig \
+  figures/DeveloperTask.fig \
+  figures/DevelopmentProcess.fig \
+  figures/LCAC_Overview.fig \
+  figures/LCAC_ProcessModel.fig \
+  figures/RemoteAssembly.fig \
+  figures/TestDrivenDevelopment.fig \
+  figures/TestArchitecture.fig \
+  figures/TestClientSequenceDiagram.fig \
+  figures/UMLComponentDesign.fig \
+  figures/LocalAdapterConcept.fig \
+  figures/RemoteComponentCall.fig \
+  figures/NestedAssembly.fig \
+  figures/NestedToFlatAssembly.fig \
+  figures/SuperComponentCreate.fig \
+  figures/SuperComponentConfigurationComplete.fig \
+  figures/SuperComponentRemove.fig
+
+
 
 ALL_SOURCES=$(DOCUMENT_NAME).tex $(PARTS) $(FIGURES)
 

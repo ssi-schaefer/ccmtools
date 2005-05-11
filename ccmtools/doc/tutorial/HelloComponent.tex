@@ -1,0 +1,225 @@
+% $Id$
+%==============================================================================
+\section{Hello World Component}
+\label{HelloWorldComponent}
+%==============================================================================
+
+As a quick tour through CCM Tools, we implement a simple Hello World 
+component example. Each development step and developer role will be described 
+in more detail in one of the next sections, here we give a general overview.
+
+\vspace{3mm}
+\noindent
+{\bf Step 1:} We define a component using the 
+{\it Interface Definition Language} (IDL). 
+This simple component only provides a single interface containing a single
+method. Don't forget to define a home for this component type.
+The following IDL definitions are stored in
+a file called {\tt Hello.idl}:
+\begin{small}
+\begin{verbatim}
+module world
+{ 
+    interface Hello 
+    { 
+        string sayHello(); 
+    }; 
+
+    component Server 
+    { 
+        provides Hello hello;
+    }; 
+
+    home ServerHome manages Server
+    {
+    };
+};
+\end{verbatim}
+\end{small}
+
+\noindent
+{\bf Step 2:} Generate an empty component from this IDL file:
+\begin{small}
+\begin{verbatim}
+ $ ccmtools c++local -a -o components Hello.idl
+\end{verbatim}
+\end{small}
+
+\noindent
+CCM Tools generate the following file structure which represents a
+component's implementation.
+Code contained in the {\tt CCM\_*} directories establishes the component's
+structure (= {\it component logic}), while code stored in the {\tt impl}
+directory represents the functional part of a component (= {\it business
+logic}).
+
+\begin{small}
+\begin{verbatim}
+   components/
+   |-- CCM_Local_world
+   |-- CCM_Local_world_CCM_Session_Server
+   |-- CCM_Local_world_CCM_Session_Server_share
+   `-- impl
+       |-- Makefile.py
+       |-- ServerHome_entry.h
+       |-- ServerHome_impl.cc
+       |-- ServerHome_impl.h
+       |-- Server_hello_impl.cc
+       |-- Server_hello_impl.h
+       |-- Server_impl.cc
+       `-- Server_impl.h
+\end{verbatim}
+\end{small}
+
+\noindent
+{\bf Step 3:} Implement a component's business logic.
+The component's business logic must be embedded in the generated
+component logic. 
+To implement the {\tt sayHello()} method of the {\tt Hello} interface,
+we extend the generated {\tt Server\_hello\_impl.cc} file:
+\begin{small}
+\begin{verbatim}
+std::string
+hello_impl::sayHello()
+    throw (LocalComponents::CCMException)
+{
+    DEBUGNL("hello_impl->sayHello()");
+    return "Hello from Server component!";
+}
+\end{verbatim}
+\end{small}
+
+\noindent
+Additionally, we write a {\tt components/Makefile.py} file that tells
+{\tt confix} which packagename and version should be used.
+\begin{small}
+\begin{verbatim}
+PACKAGE_NAME('hello-world')
+PACKAGE_VERSION('0.0.0')
+\end{verbatim}
+\end{small}
+
+\noindent
+To compile and install this component, simply type: 
+\begin{small}
+\begin{verbatim}
+$ confix.py --packageroot=`pwd`/components --bootstrap --configure \
+            --make --targets=install
+\end{verbatim}
+\end{small}
+
+
+\noindent
+{\bf Step 4:} Now we can implement a client that uses the Hello World
+component. For this simple case, we implement the client as a {\tt \_check*}
+file that will be automatically executed from a {\tt make check} command.
+
+\begin{small}
+\begin{verbatim}
+   client/
+   |-- Makefile.py
+   `-- _check_client.cc
+\end{verbatim}
+\end{small}
+
+\noindent
+The following client code snippets are stored in the 
+{\tt client/\_check\_client.cc} file:
+\begin{small}
+\begin{verbatim}
+#include <WX/Utils/debug.h>
+#include <WX/Utils/smartptr.h>
+#include <LocalComponents/CCM.h>
+#include <CCM_Local/HomeFinder.h>
+
+#include <CCM_Local/world/CCM_Session_Server/Server_gen.h>
+#include <CCM_Local/world/CCM_Session_Server/ServerHome_gen.h>
+
+using namespace std;
+using namespace WX::Utils;
+using namespace CCM_Local;
+using namespace world;
+using namespace CCM_Session_Server;
+
+int main(int argc, char *argv[])
+{
+    SmartPtr<Server> server;
+    SmartPtr<Hello> hello;
+    LocalComponents::HomeFinder* homeFinder;
+    int error;
+
+    try {
+      homeFinder = HomeFinder::Instance();
+      error  = deploy_CCM_Local_world_ServerHome("ServerHome");
+      if(error) {
+        cerr << "ERROR: Can't deploy component homes!" << endl;
+        return(error);
+      }
+      SmartPtr<ServerHome> 
+        home(dynamic_cast<ServerHome*>
+         (homeFinder->find_home_by_name("ServerHome").ptr()));
+      server = home->create();   
+      hello = server->provide_hello();
+      server->configuration_complete();
+
+      string s = hello->sayHello();
+      cout << "sayHello(): " << s << endl;
+
+      server->remove();
+      error = undeploy_CCM_Local_world_ServerHome("ServerHome");
+      if(error) {
+        cerr << "ERROR: Can't undeploy component!" << endl;
+        return(error);
+      }
+    } 
+    catch (LocalComponents::Exception& e ) {
+      cout << "ERROR: " << e.what() << endl;
+      error = -1;
+    } 
+}
+\end{verbatim}
+\end{small}
+
+
+\noindent
+Again, we write a {\tt client/Makefile.py} that tells {\tt confix} the
+name and version of the client package.
+\begin{small}
+\begin{verbatim}
+PACKAGE_NAME('hello-client')
+PACKAGE_VERSION('0.0.0')
+\end{verbatim}
+\end{small}
+
+\noindent
+To compile and run the component's client, type the following {\tt confix}
+line: 
+\begin{small}
+\begin{verbatim}
+$ confix.py --packageroot=`pwd`/client --bootstrap --configure \
+            --make --targets=check
+\end{verbatim}
+\end{small}
+
+\noindent
+After all, we are happy to see the following output at the end of the client's
+build process:
+
+\begin{small}
+\begin{verbatim}
+sayHello(): Hello from Server component!
+PASS: hello-client__check_client
+==================
+All 1 tests passed
+==================
+\end{verbatim}
+\end{small}
+
+
+\noindent
+Of course, to implement a component for a simple 'Hello from Server component!'
+message is somewhat academical, but this example shows how simple a component
+development cycle can be. 
+
+
+

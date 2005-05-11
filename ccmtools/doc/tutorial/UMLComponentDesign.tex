@@ -1,6 +1,7 @@
 % $Id$
 %==============================================================================
-\chapter{UML Component Design}
+\section{UML Component Design}
+\label{UMLComponentDesign}
 %==============================================================================
 
 Remember, component based development starts with component design.
@@ -22,7 +23,7 @@ However, the MDA ideas are very interesting, thus CCM Tools make a first step
 in this direction by designing components in UML 1.4.
 
 %------------------------------------------------------------------------------
-\section{Model driven development}
+\subsection{Model driven development}
 %------------------------------------------------------------------------------
 
 To design components in UML we use the {\it UML Profile for CCM} 
@@ -31,9 +32,9 @@ This profile is basically a class diagram using a bunch of stereotypes.
 For each IDL construct there is a corresponding representation in UML class 
 diagram.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
     \begin{center}
-        \includegraphics [width=9cm,angle=0] {UMLComponentDesign}
+        \includegraphics [width=9cm,angle=0] {figures/UMLComponentDesign}
         \caption{UML component design}
         \label{fig:uml-component-design}
     \end{center}
@@ -53,7 +54,7 @@ especially when processing more components at the same time.
 
 
 %------------------------------------------------------------------------------
-\section{The designer's job}
+\subsection{The designer's job}
 %------------------------------------------------------------------------------
 To figure out the new tasks of a component designer, we present a concrete 
 example.
@@ -63,7 +64,7 @@ The mapping from UML profile to IDL is straight forward. A UML
 package is mapped to an IDL module, UML classes are mapped to IDL constructs
 corresponding to their given stereotypes (see Example \ref{example:Exceptions} 
 to \ref{example:component}).
-\begin{figure}[htbp]
+\begin{figure}[htb]
     \begin{center}
         \includegraphics [width=13cm,angle=0] {uml/Example1}
         \caption{CarRental component in UML}
@@ -142,7 +143,7 @@ any semantics.
 
 
 %------------------------------------------------------------------------------
-\section{The developers's job}
+\subsection{The developers's job}
 %------------------------------------------------------------------------------
 
 It's important to know, that a developer's job does not change whether a 

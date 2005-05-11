@@ -4,7 +4,7 @@
 %=============================================================================
 
 % PAKETE =====================================================================
-\documentclass{report}
+\documentclass[11pt]{book}
 
 \usepackage{times}
 \usepackage[T1]{fontenc}
@@ -34,6 +34,12 @@
 \renewcommand{\floatpagefraction}{0.1}
 \setcounter{totalnumber}{5}
 
+\newcommand{\pheight}{21 true cm}
+\setlength{\textwidth}{15 true cm}
+\setlength{\textheight}{22true cm}
+\oddsidemargin  .6 cm
+\evensidemargin .6 cm
+
 %=Content======================================================================
 \title{{\Huge CCM Tools Tutorial}}
 
@@ -42,27 +48,23 @@ Leif Johnson <leif@ambient.2y.net>}
 
 \begin{document}
 \maketitle
+\cleardoublepage
+
 \pagenumbering{roman}
 \tableofcontents
-\listoffigures
+%\listoffigures
 
-\newpage
+\cleardoublepage
 \pagenumbering{arabic}
 \setlength{\parskip}{1em}
 
-\input{CCMOverview}
-\input{LCAC}
 \input{Introduction}
-\input{FirstComponent}
-\input{UMLComponentDesign}
-
-%\input{ProgrammingModel}
-%\input{ConnectComponents}
-%\input{RemoteComponent}
-
+\input{ComponentDevelopment}
+\input{SystemDevelopment}
 
 \begin{appendix}
 \input{ManPage}
+\input{Installation}
 \input{ConfixInstallation}
 \input{MicoInstallation}
 \end{appendix}
