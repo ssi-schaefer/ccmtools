@@ -41,7 +41,7 @@ module world
 {\bf Step 2:} Generate an empty component from this IDL file:
 \begin{small}
 \begin{verbatim}
- $ ccmtools c++local -a -o components Hello.idl
+ > ccmtools c++local -a -o server Hello.idl
 \end{verbatim}
 \end{small}
 
@@ -55,7 +55,7 @@ logic}).
 
 \begin{small}
 \begin{verbatim}
-   components/
+   server/
    |-- CCM_Local_world
    |-- CCM_Local_world_CCM_Session_Server
    |-- CCM_Local_world_CCM_Session_Server_share
@@ -84,18 +84,19 @@ hello_impl::sayHello()
     throw (LocalComponents::CCMException)
 {
     DEBUGNL("hello_impl->sayHello()");
+    // TODO : IMPLEMENT ME HERE !
     return "Hello from Server component!";
 }
 \end{verbatim}
 \end{small}
 
 \noindent
-Additionally, we write a {\tt components/Makefile.py} file that tells
+Additionally, we write a {\tt server/Makefile.py} file that tells
 {\tt confix} which packagename and version should be used.
 \begin{small}
 \begin{verbatim}
-PACKAGE_NAME('hello-world')
-PACKAGE_VERSION('0.0.0')
+PACKAGE_NAME('HelloWorld')
+PACKAGE_VERSION('1.0.0')
 \end{verbatim}
 \end{small}
 
@@ -103,7 +104,7 @@ PACKAGE_VERSION('0.0.0')
 To compile and install this component, simply type: 
 \begin{small}
 \begin{verbatim}
-$ confix.py --packageroot=`pwd`/components --bootstrap --configure \
+> confix.py --packageroot=`pwd`/server --bootstrap --configure \
             --make --targets=install
 \end{verbatim}
 \end{small}
@@ -149,12 +150,16 @@ int main(int argc, char *argv[])
     int error;
 
     try {
+
+      // Deploy component type 
       homeFinder = HomeFinder::Instance();
       error  = deploy_CCM_Local_world_ServerHome("ServerHome");
       if(error) {
         cerr << "ERROR: Can't deploy component homes!" << endl;
         return(error);
       }
+
+      // Instantiate component 
       SmartPtr<ServerHome> 
         home(dynamic_cast<ServerHome*>
          (homeFinder->find_home_by_name("ServerHome").ptr()));
@@ -162,10 +167,14 @@ int main(int argc, char *argv[])
       hello = server->provide_hello();
       server->configuration_complete();
 
+      // Use component instance 
       string s = hello->sayHello();
       cout << "sayHello(): " << s << endl;
 
+      // Destroy component instance 
       server->remove();
+
+      // Undeploy component type 
       error = undeploy_CCM_Local_world_ServerHome("ServerHome");
       if(error) {
         cerr << "ERROR: Can't undeploy component!" << endl;
@@ -186,8 +195,8 @@ Again, we write a {\tt client/Makefile.py} that tells {\tt confix} the
 name and version of the client package.
 \begin{small}
 \begin{verbatim}
-PACKAGE_NAME('hello-client')
-PACKAGE_VERSION('0.0.0')
+PACKAGE_NAME('HelloClient')
+PACKAGE_VERSION('1.0.0')
 \end{verbatim}
 \end{small}
 
@@ -196,7 +205,7 @@ To compile and run the component's client, type the following {\tt confix}
 line: 
 \begin{small}
 \begin{verbatim}
-$ confix.py --packageroot=`pwd`/client --bootstrap --configure \
+> confix.py --packageroot=`pwd`/client --bootstrap --configure \
             --make --targets=check
 \end{verbatim}
 \end{small}
@@ -220,6 +229,16 @@ All 1 tests passed
 Of course, to implement a component for a simple 'Hello from Server component!'
 message is somewhat academical, but this example shows how simple a component
 development cycle can be. 
+The intent of this section was to define the main activities in component 
+development, which are:
+\begin{itemize}
+\item Define a component's structure (using IDL).
+\item Generate an empty component.
+\item Implement a component's business logic. 
+\item Implement a component's client.
+\end{itemize}
 
-
+\noindent
+In the following sections, we will explore each of these steps in more
+detail. However, keep this big picture in mind. 
 

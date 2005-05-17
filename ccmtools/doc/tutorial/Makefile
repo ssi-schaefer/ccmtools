@@ -1,25 +1,21 @@
 DOCUMENT_NAME=tutorial
 PARTS=\
-  Introduction.tex \
-  CCMOverview.tex\
-  CCMToolsOverview.tex \
-  ComponentDevelopment.tex \
-  SystemDevelopment.tex \
-  ComponentStructure.tex \
-  TestDrivenDevelopment.tex \
-  CarRentalExample.tex \
-  ConfixInstallation.tex \
-  ConnectComponents.tex \
-  NestedComponentComposition.tex \
-  HelloComponent.tex \
-  Installation.tex \
-  LCAC.tex \
-  ManPage.tex \
-  MicoInstallation.tex \
-  ProgrammingModel.tex \
-  Remote.tex \
-  RemoteComponent.tex \
-  UMLComponentDesign.tex 
+  Introduction/Introduction.tex \
+  Introduction/CCMOverview.tex\
+  Introduction/CCMToolsOverview.tex \
+  Introduction/LCAC.tex \
+  ComponentDevelopment/ComponentDevelopment.tex \
+  ComponentDevelopment/HelloComponent.tex \
+  ComponentDevelopment/ComponentStructure.tex \
+  ComponentDevelopment/TestDrivenDevelopment.tex \
+  ComponentDevelopment/RemoteComponent.tex \
+  ComponentDevelopment/UMLComponentDesign.tex \
+  SystemDevelopment/SystemDevelopment.tex \
+  SystemDevelopment/NestedComponentComposition.tex \
+  Appendix/ManPage.tex \
+  Appendix/CcmtoolsInstallation.tex \
+  Appendix/ConfixInstallation.tex \
+  Appendix/MicoInstallation.tex 
 
 FIGURES= \
   figures/CCMSymbol.fig \
@@ -52,8 +48,8 @@ FIGURES= \
   figures/NestedToFlatAssembly.fig \
   figures/SuperComponentCreate.fig \
   figures/SuperComponentConfigurationComplete.fig \
-  figures/SuperComponentRemove.fig
-
+  figures/SuperComponentRemove.fig \
+  figures/ProcessComponentDevelopment.fig
 
 
 ALL_SOURCES=$(DOCUMENT_NAME).tex $(PARTS) $(FIGURES)
