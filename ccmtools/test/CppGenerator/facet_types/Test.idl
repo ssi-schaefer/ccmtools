@@ -24,6 +24,7 @@ interface Console
   long println(in string msg); 
 };
 
+
 interface TypeTest 
 {
   // basic types 

@@ -39,7 +39,7 @@ public class Factory
      */
     public static File getMofFile() throws IllegalStateException
     {
-        String ccmHome = System.getProperty("CCMTOOLS_HOME");
+        String ccmHome = System.getProperty("ccmtools.home");
         File modelFile = new File(ccmHome,"templates/MDR/OCL.xml");
         if( !modelFile.isFile() )
         {
