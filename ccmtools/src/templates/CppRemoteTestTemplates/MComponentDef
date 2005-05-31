@@ -6,7 +6,9 @@
  *
  * This test client is part of the remote component test concept. 
  *
- * To enable debug output use -DWXDEBUG compiler flag
+ * To enable debug output use -DWXDEBUG compiler flag and set the
+ * WX_DEBUG_LEVELS environment variable to "CCM_REMOTE".
+ * (e.g. export WX_DEBUG_LEVELS="CCM_REMOTE")
  ***/
 
 #ifdef HAVE_CONFIG_H
