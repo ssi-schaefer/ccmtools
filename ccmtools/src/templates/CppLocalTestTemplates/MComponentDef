@@ -10,8 +10,11 @@
  * Additionally, developers can add some testing code to validate supported
  * interfaces as well as component attribute access.
  *
- * To enable debug output use -DWXDEBUG compiler flag
- * To enable DbC adapter use -DCCM_USE_DBC compiler flag
+ * To enable debug output use -DWXDEBUG compiler flag and set the
+ * WX_DEBUG_LEVELS environment variable to "CCM_REMOTE"
+ * (e.g. export WX_DEBUG_LEVELS="CCM_REMOTE").
+ *
+ * To enable DbC adapter use -DCCM_USE_DBC compiler flag.
  ***/
 
 #include <cassert>
@@ -41,10 +44,6 @@ using namespace WX::Utils;
 
 int main(int argc, char *argv[])
 {
-    // Debug tools:
-    // We use debug tools defined in the WX::Utils package.
-    Debug::instance().set_global(true);
-
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     SmartPtr<%(Identifier)s> my%(Identifier)s;
