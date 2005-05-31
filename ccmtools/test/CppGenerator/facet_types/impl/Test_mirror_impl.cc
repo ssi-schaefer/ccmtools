@@ -15,6 +15,7 @@
 #include <cassert>
 #include <iostream>
 #include <WX/Utils/debug.h>
+#include <CCM_Local/toString.h>
 
 #include "Test_mirror_impl.h"
 #include "MyObject.h"
@@ -62,60 +63,70 @@ CCM_Test_mirror_impl::ccm_activate (  )
     // basic types test cases
     short short_2=3, short_3, short_r;
     short_r = type_test->op_b1(7,short_2, short_3);
+    cout << CCM_Local::toString(short_r) << endl;
     assert(short_2 == 7);
     assert(short_3 == 3);
     assert(short_r == 3+7);
     
     long long_2=3, long_3, long_r;
     long_r = type_test->op_b2(7,long_2, long_3);
+    cout << CCM_Local::toString(long_r) << endl;
     assert(long_2 == 7);
     assert(long_3 == 3);
     assert(long_r == 3+7);
     
     unsigned short ushort_2=3, ushort_3, ushort_r;
     ushort_r = type_test->op_b3(7,ushort_2, ushort_3);
+    cout << CCM_Local::toString(ushort_r) << endl;
     assert(ushort_2 == 7);
     assert(ushort_3 == 3);
     assert(ushort_r == 3+7);
     
     unsigned long ulong_2=3, ulong_3, ulong_r;
     ulong_r = type_test->op_b4(7,ulong_2, ulong_3);
+    cout << CCM_Local::toString(ulong_r) << endl;
     assert(ulong_2 == 7);
     assert(ulong_3 == 3);
     assert(ulong_r == 3+7);
     
     float float_2=3.0, float_3, float_r;
     float_r = type_test->op_b5(7.0,float_2, float_3);
+    cout << CCM_Local::toString(float_r) << endl;
     assert(float_2 == 7.0);
     assert(float_3 == 3.0);
     assert(float_r == 3.0+7.0);
     
     double double_2=3.0, double_3, double_r;
     double_r = type_test->op_b6(7.0,double_2, double_3);
+    cout << CCM_Local::toString(double_r) << endl;
     assert(double_2 == 7.0);
     assert(double_3 == 3.0);
     assert(double_r == 3.0+7.0);
     
     char char_2=3, char_3, char_r;
     char_r = type_test->op_b7(7,char_2, char_3);
+    cout << CCM_Local::toString(char_r) << endl;
     assert(char_2 == 7);
     assert(char_3 == 3);
     assert(char_r == 3+7);
 
     string string_2="drei", string_3, string_r;
     string_r = type_test->op_b8("sieben",string_2, string_3);
+    cout << CCM_Local::toString(string_r) << endl;
     assert(string_2 == "sieben");
     assert(string_3 == "drei");
     assert(string_r == "dreisieben");
     
     bool bool_2=false, bool_3, bool_r;
     bool_r = type_test->op_b9(true, bool_2, bool_3);
+    cout << CCM_Local::toString(bool_r) << endl;
     assert(bool_2 == true);
     assert(bool_3 == false);
     assert(bool_r == false && true);
     
     unsigned char uchar_2=3, uchar_3, uchar_r;
     uchar_r = type_test->op_b10(7,uchar_2, uchar_3);
+    cout << CCM_Local::toString(uchar_r) << endl;
     assert(uchar_2 == 7);
     assert(uchar_3 == 3);
     assert(uchar_r == 3+7);
@@ -124,16 +135,19 @@ CCM_Test_mirror_impl::ccm_activate (  )
   {
     wchar_t char_2=3, char_3, char_r;
     char_r = type_test->op_b11(7,char_2, char_3);
+    cout << CCM_Local::toString(char_r) << endl;
     assert(char_2 == 7);
     assert(char_3 == 3);
     assert(char_r == 3+7);
 
     wstring string_2= L"drei", string_3, string_r;
     string_r = type_test->op_b12(L"sieben",string_2, string_3);
+    cout << CCM_Local::toString(string_r) << endl;
     assert(string_2 == L"sieben");
     assert(string_3 == L"drei");
     assert(string_r == L"dreisieben");
   }    
+
 
   {
     // test case: typedef long time_t;
@@ -156,6 +170,7 @@ CCM_Test_mirror_impl::ccm_activate (  )
     Pair_1.key = "a"; Pair_1.value = 1.0;
     Pair_2.key = "b"; Pair_2.value = 2.0;
     Pair_r = type_test->op_u3(Pair_1,Pair_2,Pair_3);
+    cout << CCM_Local::toString(Pair_r) << endl;
     assert(Pair_3.key == "b");
     assert(Pair_2.key == "a");
     assert(Pair_r.key == "ab");
