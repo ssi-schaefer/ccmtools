@@ -14,12 +14,29 @@
 #include<string>
 %(MFieldDefInclude)s
 
+#ifdef WXDEBUG
+#include <CCM_Local/toString.h>
+#endif
+
 %(OpenNamespace)s
 
 struct %(Identifier)s
 {
 %(MFieldDef)s
 };
+
+#ifdef WXDEBUG
+inline
+std::string 
+toString(const %(Identifier)s& in)
+{
+    std::ostringstream os;
+    os << "struct %(Identifier)s { ";
+%(MFieldDefToString)s
+    os << "}";
+    return os.str();
+}
+#endif
 
 %(CloseNamespace)s
 

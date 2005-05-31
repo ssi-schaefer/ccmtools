@@ -23,14 +23,14 @@
 class %(Identifier)s
   : virtual public LocalComponents::Object%(BaseType)s
 {
- public:
-  virtual ~%(Identifier)s() {}
+  public:
+    virtual ~%(Identifier)s() {}
 %(MAttributeDefPrototypeVV)s
 %(MOperationDefPrototypeVV)s 
 };
 
 // Internal view of interface %(Identifier)s
-class  CCM_%(Identifier)s
+class CCM_%(Identifier)s
   : virtual public %(Identifier)s
 {};
 
