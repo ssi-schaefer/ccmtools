@@ -9,13 +9,13 @@ IDL_INCLUDE = -I${IDL_INTERFACE} -I${IDL_COMPONENT}
 all: local
 
 idl: Test.idl
-	ccmtools-generate idl3 -o ${IDL3_DIR} ${APP_NAME}.idl
-	ccmtools-generate idl3mirror -o ${IDL3_DIR} ${APP_NAME}.idl
+	ccmtools idl3 -o ${IDL3_DIR} ${APP_NAME}.idl
+	ccmtools idl3mirror -o ${IDL3_DIR} ${APP_NAME}.idl
 
 local: idl
-	ccmtools-generate c++local -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_INTERFACE}/*.idl
-	ccmtools-generate c++local -a -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/*.idl
-	ccmtools-generate c++local-test -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/${APP_NAME}.idl
+	ccmtools c++local -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_INTERFACE}/*.idl
+	ccmtools c++local -a -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/*.idl
+	ccmtools c++local-test -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/${APP_NAME}.idl
 
 check: 
 	cp impl/Makefile.py xxx
