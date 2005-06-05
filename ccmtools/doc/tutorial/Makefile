@@ -1,6 +1,9 @@
 DOCUMENT_NAME=tutorial
 PARTS=\
+  titlepage.tex \
   Introduction/Introduction.tex \
+  Introduction/CBSE.tex \
+  Introduction/ComponentDefinition.tex \
   Introduction/CCMOverview.tex\
   Introduction/CCMToolsOverview.tex \
   Introduction/LCAC.tex \
@@ -8,16 +11,18 @@ PARTS=\
   ComponentDevelopment/HelloComponent.tex \
   ComponentDevelopment/ComponentStructure.tex \
   ComponentDevelopment/TestDrivenDevelopment.tex \
-  ComponentDevelopment/RemoteComponent.tex \
   ComponentDevelopment/UMLComponentDesign.tex \
   SystemDevelopment/SystemDevelopment.tex \
   SystemDevelopment/NestedComponentComposition.tex \
+  SystemDeployment/SystemDeployment.tex \
+  SystemDeployment/RemoteComponent.tex \
   Appendix/ManPage.tex \
   Appendix/CcmtoolsInstallation.tex \
   Appendix/ConfixInstallation.tex \
   Appendix/MicoInstallation.tex 
 
 FIGURES= \
+  figures/Environment.fig \
   figures/CCMSymbol.fig \
   figures/CCMArchitecture.fig \
   figures/CcmToolsOverview.fig \

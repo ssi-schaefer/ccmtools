@@ -4,33 +4,18 @@
 \section{CCM Tools}
 %==============================================================================
 
-
-%==============================================================================
-\subsection{Extensions to the CORBA Component Model}
-%==============================================================================
-
-\dots
-
-
-%==============================================================================
-\subsection{Restrictions to the CORBA Component Model}
-%==============================================================================
-
-\dots
-
-
-\newpage
-%==============================================================================
-\subsection{The ccmtools.sf.net Project}
-%==============================================================================
-
-The CCM Tools are an open source project that consists of 
+The CCM Tools are an open source project 
+\footnote 
+{
+  {\tt http://ccmtools.sf.net}
+}
+that consists of 
 a set of Java programs and libraries to support component 
 development.
 
 \begin{figure}[htbp]
     \begin{center}
-        \includegraphics [width=14cm,angle=0] {figures/CcmToolsOverview}
+        \includegraphics [width=14.5cm,angle=0] {figures/CcmToolsOverview}
         \caption{CCM Tools framework}
         \label{ccmtools}
     \end{center}
@@ -140,8 +125,8 @@ mirror component and manages this remote unit test.
 \subsection{CCM Tools runtime architecture}
 %==============================================================================
 
-The CCM Tools source code is available from {\tt ccmtools.sourceforge.net}
-and is organized in the following structure (Fig.~\ref{ccmtools-structure}):
+The CCM Tools source code 
+is organized in the following structure (Fig.~\ref{ccmtools-structure}):
 
 \begin{figure}[htbp]
     \begin{center}
@@ -173,3 +158,84 @@ as a runtime library to access remote CCM components.
 Remote components are based on distributed computing middleware. We 
 use {\bf MICO} an open source {\it Object Request Broker} (ORB) implementation 
 \cite{mico} as part of the component's runtime environment.
+
+
+%==============================================================================
+\subsection{Restrictions to the Light Weight CORBA Component Model}
+%==============================================================================
+
+Currently, we have not implemented the event ports, packaging and deployment
+strategies as well as sophisticated container mechanisms (like passivation 
+and instance pooling).
+
+
+\newpage
+%==============================================================================
+\subsection{Extensions to the Light Weight CORBA Component Model}
+%==============================================================================
+
+Due to the fact that the CCM Tools have been developed as a research project,
+we have extended the OMG's CORBA Component Model in many ways.
+The most important add-ons are:
+\begin{itemize}
+\item  {\bf Separation of component model and middleware technologies.} 
+  In contrast to the existing CCM, our component concept neither
+  depends on a programming language nor a particular middleware
+  technology.
+  Local components are realized in an arbitrary programming language
+  (currently in C++) while remote communication is added transparently 
+  by local component adapters.
+
+\item {\bf Nested component composition.}      
+  Every component can transparently contain an assembly of other component 
+  instances. Using this mechanism, components and component assemblies 
+  can be reduced to a single concept.
+  
+\item {\bf Contract aware component interfaces.}
+  In addition to syntax definition of component interfaces,
+  declarative semantics in form of Object Constraint Language (OCL) 
+  preconditions, postconditions and invariants can be defined.
+  Contract verification is done at runtime by generated component logic,
+  transparently to business logic implementation.
+\end{itemize}
+
+Together with these LwCCM enhancements, a hybrid development process has been 
+defined that uses loosely coupled lightweight processes to acquire benefits 
+from both agile methods and model--driven development.
+In principle, the following sequence of subprocesses can be applied to build a
+distributed component--based software system: 
+
+\begin{itemize}
+\item {\bf Model--driven system development.} 
+The component--based software system is modeled in terms of contract aware
+interfaces and nested component composition using the {\it UML Profile for CCM}.
+Such a lightweight model contains only structural information and declarative 
+semantics.
+
+\item {\bf Test--driven component development.} 
+After system modeling, all components can be implemented in parallel.
+Component development constitutes a component's behavior by implementing its 
+business logic.
+%In a software system, components are always connected via
+%input and output ports. 
+To develop a single component, the 
+{\it Mirror Component Concept} has been introduced.
+For a given component $C$ a mirror component $\overline{C}$ can be generated.
+Every input port in $C$ has a corresponding output port in $\overline{C}$ and 
+vice versa.
+
+\item {\bf Quality of Service driven system deployment.} 
+An implemented component--based software system that meets all its functional
+requirements can be partitioned and distributed to different computation nodes
+in a heterogenous network environment.
+This process is driven by non--functional system requirements.
+To extend local components with an adequate middleware layer, the 
+{\it Local Component Adapter Concept} (LCAC)
+has been introduced: a generated set of
+adapters bridge the gap between local component implementations and
+the particular middleware API.
+\end{itemize}
+
+The CCM Tools development is a continuous process to establish a 
+platform for component--based software development in heterogenous environments.
+
