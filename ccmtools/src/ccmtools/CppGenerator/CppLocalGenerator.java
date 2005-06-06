@@ -1,5 +1,6 @@
 /*
- * CCM Tools : C++ Code Generator Library Leif Johnson <leif@ambient.2y.net>
+ * CCM Tools : C++ Code Generator Library 
+ * Leif Johnson <leif@ambient.2y.net>
  * Egon Teiniker <egon.teiniker@salomon.at> Copyright (C) 2002, 2003 Salomon
  * Automation
  * 
@@ -30,18 +31,28 @@ import java.util.List;
 import java.util.Map;
 
 import ccmtools.CodeGenerator.Template;
+import ccmtools.CppGenerator.utils.Scope;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
+import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
+import ccmtools.Metamodel.BaseIDL.MFieldDef;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.Metamodel.BaseIDL.MSequenceDef;
+import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
+import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MUnionDef;
+import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Text;
 
 public class CppLocalGenerator extends CppGenerator
 {
@@ -60,20 +71,24 @@ public class CppLocalGenerator extends CppGenerator
     public CppLocalGenerator(Driver d, File out_dir) throws IOException
     {
         super("CppLocal", d, out_dir, local_output_types);
-        base_namespace.add("CCM_Local");
+        baseNamespace.add("CCM_Local");
     }
 
+    // ------------------------------------------------------------------------
+    // Code generator core functionality extensions (compared to CppGenerator)
+    // ------------------------------------------------------------------------
+    
     // FIXME ---------------------------------
     // This hack is only temporarily to compile generated structures via PMM
     protected String getScopedInclude(MContained node)
     {
         List scope = getScope(node);
         StringBuffer buffer = new StringBuffer();
-        Collections.reverse(base_namespace);
-        for(Iterator i = base_namespace.iterator(); i.hasNext();) {
+        Collections.reverse(baseNamespace);
+        for(Iterator i = baseNamespace.iterator(); i.hasNext();) {
             scope.add(0, i.next());
         }
-        Collections.reverse(base_namespace);
+        Collections.reverse(baseNamespace);
         scope.add(node.getIdentifier());
         buffer.append("#ifdef HAVE_CONFIG_H\n");
         buffer.append("#  include <config.h>\n");
@@ -91,6 +106,201 @@ public class CppLocalGenerator extends CppGenerator
     }
     // FIXME ---------------------------------
 
+    
+    /**
+     * Get a variable hash table sutable for filling in the template from the
+     * fillTwoStepTemplates function. This version of the function fills in
+     * operation information from the given interface.
+     * 
+     * @param operation
+     *            the particular interface operation that we're filling in a
+     *            template for.
+     * @param container
+     *            the container in which the given interface is defined.
+     * @return a map containing the keys and values needed to fill in the
+     *         template for this interface.
+     */
+    protected Map getTwoStepOperationVariables(MOperationDef operation,
+                                               MContained container)
+    {
+        String lang_type = getLanguageType(operation);
+        Map vars = new Hashtable();
+
+        vars.put("Object", container.getIdentifier());
+        vars.put("Identifier", operation.getIdentifier());
+        vars.put("LanguageType", lang_type);
+        vars.put("MExceptionDefThrows", getOperationExcepts(operation));
+        vars.put("MParameterDefAll", getOperationParams(operation));
+        vars.put("MParameterDefName", getOperationParamNames(operation));
+
+        if(!lang_type.equals("void"))
+            vars.put("Return", "return ");
+        else
+            vars.put("Return", "");
+
+        return vars;
+    }
+
+    /**
+     * Overrides the CppGenerator method to handle MAliasDef subtypes
+     * TODO: Refactor - move this code up to the superclass
+     */
+    protected String getLocalValue(String variable)
+    {
+        // Get local value of CppGenerator 
+        String value = super.getLocalValue(variable);
+
+        // Handle common utility tags from CppLocalTemplates
+        if (variable.equals("CcmToolsVersion")) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("CCM Tools version ").append(ccmtools.Constants.VERSION);
+            return buffer.toString();
+        }
+        else if(variable.equals("DebugInclude")) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("#ifdef WXDEBUG").append(Text.NL);
+            buffer.append("#include <CCM_Local/Debug.h>").append(Text.NL);
+            buffer.append("#endif // WXDEBUG").append(Text.NL);
+            return buffer.toString();
+        }
+        
+        // Handle simple tags from templates which are related to
+        // the c++local generator
+        if (currentNode instanceof MAliasDef) {
+            // determine the contained type of MaliasDef
+            MTyped type = (MTyped) currentNode;
+            MIDLType idlType = type.getIdlType();
+            if (idlType instanceof MPrimitiveDef || idlType instanceof MStringDef
+                    || idlType instanceof MWstringDef) {
+                return data_MPrimitiveDef(variable,value);
+            }
+            if (idlType instanceof MSequenceDef) {
+                return data_MSequenceDef(variable,value);
+            }
+            else if (idlType instanceof MArrayDef) {
+                return data_MArrayDef(variable, value);
+            }
+        }    
+        else if (currentNode instanceof MFieldDef) {
+            return data_MFieldDef(variable, value);
+        }
+        return value;
+    }
+        
+    protected String data_MPrimitiveDef(String dataType, String dataValue)
+    {
+        MTyped type = (MTyped) currentNode;
+        MIDLType idlType = type.getIdlType();
+        StringBuffer buffer = new StringBuffer();
+        if(dataType.equals("MAliasDefDebug")) {
+            buffer.append("// MAliasDefDebug - MPrimitiveDef");
+            return buffer.toString();
+        }
+        // if no CppLocalTemplates specific tag is processed
+        return dataValue;
+    }
+    
+    protected String data_MFieldDef(String dataType, String dataValue) 
+    {
+        if(dataType.equals("DebugNamespace")) {
+            MTyped type = (MTyped) currentNode;
+            MIDLType idlType = type.getIdlType();
+            return Scope.getDebugNamespace(baseNamespace,idlType);
+        }
+        return dataValue;
+    }
+    
+    protected String data_MSequenceDef(String dataType, String dataValue)
+    {
+        MTyped type = (MTyped) currentNode;
+        MIDLType idlType = type.getIdlType();
+        MContained contained = (MContained) type;
+        MTyped singleType = (MTyped) idlType;
+        MIDLType singleIdlType = singleType.getIdlType();
+        StringBuffer buffer = new StringBuffer(); 
+        if(dataType.equals("MAliasDefDebug")) {
+            String sequenceName = getLocalName(contained,"::");
+            buffer.append("#ifdef WXDEBUG").append(Text.NL);
+            buffer.append("inline").append(Text.NL);
+            buffer.append("std::string").append(Text.NL); 
+            buffer.append("ccmDebug(const ").append(sequenceName).append("& in, int indent = 0)").append(Text.NL);
+            buffer.append("{").append(Text.NL);
+            buffer.append(Text.TAB).append("std::ostringstream os;").append(Text.NL);
+            buffer.append(Text.TAB).append("os << doIndent(indent) << \"sequence ")
+            	.append(sequenceName).append("\" << endl;").append(Text.NL);
+            buffer.append(Text.TAB).append("os << doIndent(indent) << \"[\" << std::endl;").append(Text.NL);
+            buffer.append(Text.TAB).append("for(unsigned int i=0; i<in.size(); i++) {")
+            	.append(Text.NL);
+            buffer.append(Text.tab(2)).append("os << ");
+            buffer.append(Scope.getDebugNamespace(baseNamespace,singleIdlType));
+            buffer.append("ccmDebug(in[i], indent+1) << std::endl;").append(Text.NL);
+            buffer.append(Text.TAB).append("}").append(Text.NL);
+            buffer.append(Text.TAB).append("os << doIndent(indent) << \"]\";").append(Text.NL);
+            buffer.append(Text.TAB).append("return os.str();").append(Text.NL);
+            buffer.append("}").append(Text.NL);
+            buffer.append("#endif").append(Text.NL);
+            return buffer.toString();
+        }
+        // if no CppLocalTemplates specific tag is processed
+        return dataValue;
+    }
+    
+    protected String data_MArrayDef(String dataType, String dataValue)
+    {
+        MTyped type = (MTyped) currentNode;
+        MIDLType idlType = type.getIdlType();
+        MContained contained = (MContained) type;
+        StringBuffer buffer = new StringBuffer();
+        if(dataType.equals("MAliasDefDebug")) {
+            String sequenceName = getLocalName(contained,"::");
+            buffer.append("#ifdef WXDEBUG").append(Text.NL);
+            buffer.append("inline").append(Text.NL);
+            buffer.append("std::string").append(Text.NL); 
+            buffer.append("ccmDebug(const ").append(sequenceName).append("& in, int indent = 0)").append(Text.NL);
+            buffer.append("{").append(Text.NL);
+            buffer.append(Text.TAB).append("std::ostringstream os;").append(Text.NL);
+            buffer.append(Text.TAB).append("os << doIndent(indent) << \"array ")
+            	.append(sequenceName).append("\" << endl;").append(Text.NL);
+            buffer.append(Text.TAB).append("os << doIndent(indent) <<  \"[\" << std::endl;").append(Text.NL);
+            buffer.append(Text.TAB).append("for(unsigned int i=0; i<in.size(); i++) {")
+            	.append(Text.NL);
+            buffer.append(Text.tab(2)).append("os << ccmDebug(in[i], indent+1) << std::endl;").append(Text.NL);
+            buffer.append(Text.TAB).append("}").append(Text.NL);
+            buffer.append(Text.TAB).append("os << doIndent(indent) << \"]\";").append(Text.NL);
+            buffer.append(Text.TAB).append("return os.str();").append(Text.NL);
+            buffer.append("}").append(Text.NL);
+            buffer.append("#endif").append(Text.NL);
+            return buffer.toString();
+        }
+        // if no CppLocalTemplates specific tag is processed
+        return dataValue;
+    }
+    
+    protected String data_MEnumDef(String dataType, String dataValue)
+    {
+        if(dataType.equals("MembersDebug")) {
+            StringBuffer buffer = new StringBuffer();
+            MEnumDef enum = (MEnumDef) currentNode;
+            for(Iterator i = enum.getMembers().iterator(); i.hasNext();) {
+                String member = (String)i.next(); 
+                buffer.append(Text.TAB).append("case ").append(member).append(": ")
+                	.append(Text.NL);
+                buffer.append(Text.tab(2)).append("os << \"").append(member)
+                	.append("\";").append(Text.NL);
+                buffer.append(Text.tab(2)).append("break;").append(Text.NL);
+            }
+            return buffer.toString();
+        }
+        else {
+            return super.data_MEnumDef(dataType, dataValue);
+        }
+    }
+    
+    
+    
+    // ------------------------------------------------------------------------
+    // How to write generated code to files
+    // ------------------------------------------------------------------------
    
     /**
      * Write generated code to an output file.
@@ -155,9 +365,9 @@ public class CppLocalGenerator extends CppGenerator
                 // FIXME ---------------------------------
                 // This hack is only temporarily to compile generated structures
                 // via PMM
-                if(current_node instanceof MComponentDef
-                        || current_node instanceof MHomeDef
-                        || current_node instanceof MProvidesDef) {
+                if(currentNode instanceof MComponentDef
+                        || currentNode instanceof MHomeDef
+                        || currentNode instanceof MProvidesDef) {
                     // Makefile.pl is not needed by components, homes and facets
                 }
                 else {
@@ -189,45 +399,10 @@ public class CppLocalGenerator extends CppGenerator
         return result;
     }
 
-    /**
-     * Get a variable hash table sutable for filling in the template from the
-     * fillTwoStepTemplates function. This version of the function fills in
-     * operation information from the given interface.
-     * 
-     * @param operation
-     *            the particular interface operation that we're filling in a
-     *            template for.
-     * @param container
-     *            the container in which the given interface is defined.
-     * @return a map containing the keys and values needed to fill in the
-     *         template for this interface.
-     */
-    protected Map getTwoStepOperationVariables(MOperationDef operation,
-                                               MContained container)
-    {
-        String lang_type = getLanguageType(operation);
-        Map vars = new Hashtable();
-
-        vars.put("Object", container.getIdentifier());
-        vars.put("Identifier", operation.getIdentifier());
-        vars.put("LanguageType", lang_type);
-        vars.put("MExceptionDefThrows", getOperationExcepts(operation));
-        vars.put("MParameterDefAll", getOperationParams(operation));
-        vars.put("MParameterDefName", getOperationParamNames(operation));
-
-        if(!lang_type.equals("void"))
-            vars.put("Return", "return ");
-        else
-            vars.put("Return", "");
-
-        return vars;
-    }
-
-    /** *********************************************************************** */
-
+    
     private String getOutputDirectory(String local)
     {
-        List names = new ArrayList(namespace);
+        List names = new ArrayList(namespaceStack);
         if(!local.equals("")) {
             names.add("CCM_Session_" + local);
         }
@@ -243,21 +418,21 @@ public class CppLocalGenerator extends CppGenerator
      */
     private List getOutputFiles()
     {
-        String node_name = ((MContained) current_node).getIdentifier();
+        String node_name = ((MContained) currentNode).getIdentifier();
 
         List files = new ArrayList();
         List f = null;
 
-        if((current_node instanceof MComponentDef)
-                || (current_node instanceof MHomeDef)) {
+        if((currentNode instanceof MComponentDef)
+                || (currentNode instanceof MHomeDef)) {
             String base_name = node_name;
 
             // we put home files in the dir with the component files to convince
             // confix to work with us. beware the evil voodoo that results when
             // home and component files are in separate directories !
 
-            if(current_node instanceof MHomeDef) {
-                base_name = ((MHomeDef) current_node).getComponent()
+            if(currentNode instanceof MHomeDef) {
+                base_name = ((MHomeDef) currentNode).getComponent()
                         .getIdentifier();
             }
             String base = getOutputDirectory(base_name);
@@ -276,7 +451,7 @@ public class CppLocalGenerator extends CppGenerator
             f.add(node_name + "_share.h");
             files.add(f);
 
-            if(current_node instanceof MHomeDef) {
+            if(currentNode instanceof MHomeDef) {
                 f = new ArrayList();
                 f.add("impl");
                 f.add(node_name + "_entry.h");
@@ -304,20 +479,20 @@ public class CppLocalGenerator extends CppGenerator
                 files.add(f);
             }
         }
-        else if((current_node instanceof MInterfaceDef)
-                || (current_node instanceof MStructDef)
-                || (current_node instanceof MUnionDef)
-                || (current_node instanceof MAliasDef)
-                || (current_node instanceof MEnumDef)
-                || (current_node instanceof MExceptionDef)) {
+        else if((currentNode instanceof MInterfaceDef)
+                || (currentNode instanceof MStructDef)
+                || (currentNode instanceof MUnionDef)
+                || (currentNode instanceof MAliasDef)
+                || (currentNode instanceof MEnumDef)
+                || (currentNode instanceof MExceptionDef)) {
             f = new ArrayList();
             f.add(getOutputDirectory(""));
             f.add(node_name + ".h");
             files.add(f);
         }
-        else if((current_node instanceof MProvidesDef)) {
+        else if((currentNode instanceof MProvidesDef)) {
             if((flags & FLAG_APPLICATION_FILES) != 0) {
-                MComponentDef component = ((MProvidesDef) current_node)
+                MComponentDef component = ((MProvidesDef) currentNode)
                         .getComponent();
                 f = new ArrayList();
                 f.add("impl");
@@ -345,7 +520,6 @@ public class CppLocalGenerator extends CppGenerator
             f.add("");
             files.add(f);
         }
-
         return files;
     }
 }

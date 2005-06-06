@@ -56,7 +56,7 @@ public class CppRemoteTestGenerator extends CppGenerator
     {
         super("CppRemoteTest", d, out_dir, local_output_types);
 
-        base_namespace.add("CCM_Remote");
+        baseNamespace.add("CCM_Remote");
         CorbaStubsNamespace = new ArrayList();
         // CorbaStubsNamespace.add("CORBA_Stubs");
         LocalNamespace = new ArrayList();
@@ -104,7 +104,7 @@ public class CppRemoteTestGenerator extends CppGenerator
     {
         List scope = getScope(contained);
         StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.join(separator, base_namespace));
+        buffer.append(Text.join(separator, baseNamespace));
         buffer.append(separator);
         if (scope.size() > 0) {
             buffer.append(Text.join(separator, scope));
@@ -140,7 +140,7 @@ public class CppRemoteTestGenerator extends CppGenerator
      */
     protected String handleNamespace(String data_type, String local)
     {
-        List names = new ArrayList(namespace);
+        List names = new ArrayList(namespaceStack);
 
         if(!local.equals(""))
             names.add("CCM_Session_" + local);
@@ -205,7 +205,7 @@ public class CppRemoteTestGenerator extends CppGenerator
         if(generated_code.trim().equals(""))
             return;
 
-        String node_name = ((MContained) current_node).getIdentifier();
+        String node_name = ((MContained) currentNode).getIdentifier();
         String file_dir = "test";
         String file_name = "_check_"
                 + handleNamespace("FileNamespace", node_name) + "_remote.cc";
@@ -242,7 +242,7 @@ public class CppRemoteTestGenerator extends CppGenerator
 
     protected String data_MComponentDef(String data_type, String data_value)
     {
-        MComponentDef component = (MComponentDef) current_node;
+        MComponentDef component = (MComponentDef) currentNode;
         MHomeDef home = null;
 
         try {
@@ -290,8 +290,8 @@ public class CppRemoteTestGenerator extends CppGenerator
 
     protected String data_MProvidesDef(String data_type, String data_value)
     {
-        MInterfaceDef iface = ((MProvidesDef) current_node).getProvides();
-        MComponentDef component = ((MProvidesDef) current_node).getComponent();
+        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
+        MComponentDef component = ((MProvidesDef) currentNode).getComponent();
         List scope = getScope((MContained) iface);
 
         if(data_type.equals("IdlProvidesType")) {

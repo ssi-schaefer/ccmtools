@@ -1,12 +1,12 @@
 %(Identifier)s_impl::%(Identifier)s_impl(CCM_%(ComponentType)s_impl* component_impl)
   : component(component_impl)
 {
-    LDEBUGNL(CCM_LOCAL,"+%(Identifier)s_impl::%(Identifier)s_impl()");
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s_impl::%(Identifier)s_impl()");
 }
 
 %(Identifier)s_impl::~%(Identifier)s_impl()
 {
-    LDEBUGNL(CCM_LOCAL,"-%(Identifier)s_impl::~%(Identifier)s_impl (  )" );
+    LDEBUGNL(CCM_CONTAINER,"-%(Identifier)s_impl::~%(Identifier)s_impl (  )" );
 }
 
 %(MAttributeProvidesAdapterImplDefinition)s

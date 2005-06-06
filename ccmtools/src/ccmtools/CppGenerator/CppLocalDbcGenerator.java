@@ -97,7 +97,7 @@ public class CppLocalDbcGenerator
         throws IOException
     {
         super("CppLocalDbc", d, out_dir, local_output_types );
-        base_namespace.add("CCM_Local"); 
+        baseNamespace.add("CCM_Local"); 
     }
 
 
@@ -191,7 +191,7 @@ public class CppLocalDbcGenerator
 
     protected String handleNamespace(String data_type, String local)
     {
-        List names = new ArrayList(namespace);
+        List names = new ArrayList(namespaceStack);
         if (! local.equals("")) names.add("CCM_Session_" + local);
 
 	if (data_type.equals("FileNamespace")) {
@@ -215,11 +215,11 @@ public class CppLocalDbcGenerator
 
 	// Handle %(FactoryPreInvocation)s tag
 	if(data_type.equals("FactoryPreInvocation")) {
-	    return getFactoryPreInvocation((MOperationDef)current_node);
+	    return getFactoryPreInvocation((MOperationDef)currentNode);
 	}
 	// Handle %(FactoryPostInvocation)s tag
 	else if(data_type.equals("FactoryPostInvocation")) {
-	    return getFactoryPostInvocation((MOperationDef)current_node);
+	    return getFactoryPostInvocation((MOperationDef)currentNode);
 	}
 	// For any other cases call CppGenerator's method
 	return super.data_MFactoryDef(data_type, data_value);
@@ -238,7 +238,7 @@ public class CppLocalDbcGenerator
     	// Handle %(InvariantInvocation)s tag
         if( data_type.equals("InvariantInvocation") )
         {
-	        return getInvariantInvocation((MComponentDef)current_node);
+	        return getInvariantInvocation((MComponentDef)currentNode);
         }
 
     	// For any other cases call CppGenerator's method
@@ -258,7 +258,7 @@ public class CppLocalDbcGenerator
     	// Handle %(InvariantInvocation)s tag
         if( data_type.equals("InvariantInvocation") )
         {
-	        return getInvariantInvocation((MHomeDef)current_node);
+	        return getInvariantInvocation((MHomeDef)currentNode);
         }
 
     	// For any other cases call CppGenerator's method
@@ -278,7 +278,7 @@ public class CppLocalDbcGenerator
     	// Handle %(InvariantInvocation)s tag
         if( data_type.equals("InvariantInvocation") )
         {
-	        return getInvariantInvocation( ((MProvidesDef)current_node).getProvides() );
+	        return getInvariantInvocation( ((MProvidesDef)currentNode).getProvides() );
         }
 
     	// For any other cases call CppGenerator's method
@@ -307,8 +307,8 @@ public class CppLocalDbcGenerator
 		continue;
 
 	    // If the current node is a ComponentDef, create the component's files
-  	    if (current_node instanceof MComponentDef) {
-		String component_name = ((MContained) current_node).getIdentifier();
+  	    if (currentNode instanceof MComponentDef) {
+		String component_name = ((MContained) currentNode).getIdentifier();
 		String file_dir = handleNamespace("FileNamespace", component_name);
 
 		writeFinalizedFile(file_dir,
@@ -316,8 +316,8 @@ public class CppLocalDbcGenerator
 				   out_strings[i]);
 	    }
 	    // If the current node is a HomeDef, create the home's files
-	    else if (current_node instanceof MHomeDef)  {
-		MHomeDef home = (MHomeDef)current_node;
+	    else if (currentNode instanceof MHomeDef)  {
+		MHomeDef home = (MHomeDef)currentNode;
 		String component_name = ((MContained)home.getComponent()).getIdentifier();
 		String home_name = home.getIdentifier();
 		String file_dir = handleNamespace("FileNamespace", component_name);

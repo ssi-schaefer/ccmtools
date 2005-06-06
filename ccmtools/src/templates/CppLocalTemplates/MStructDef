@@ -11,12 +11,10 @@
 #ifndef __STRUCT__%(PreprocIdentifier)s__H__
 #define __STRUCT__%(PreprocIdentifier)s__H__
 
+%(DebugInclude)s
+
 #include<string>
 %(MFieldDefInclude)s
-
-#ifdef WXDEBUG
-#include <CCM_Local/toString.h>
-#endif
 
 %(OpenNamespace)s
 
@@ -28,12 +26,13 @@ struct %(Identifier)s
 #ifdef WXDEBUG
 inline
 std::string 
-toString(const %(Identifier)s& in)
+ccmDebug(const %(Identifier)s& in, int indent = 0)
 {
     std::ostringstream os;
-    os << "struct %(Identifier)s { ";
-%(MFieldDefToString)s
-    os << "}";
+    os << doIndent(indent) << "struct %(Identifier)s" << std::endl;
+    os << doIndent(indent) << "{" << std::endl;
+%(MFieldDefDebug)s
+    os << doIndent(indent) << "}";
     return os.str();
 }
 #endif

@@ -4,7 +4,7 @@
 
 %(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()
 {
-    LDEBUGNL(CCM_LOCAL,"+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");
     component = NULL;
     local_component = NULL;
     ValidConnection = false;
@@ -14,14 +14,14 @@
 %(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(%(ComponentType)s* c, CCM_%(ComponentType)s* lc)
     : component(c), local_component(lc)
 {
-    LDEBUGNL(CCM_LOCAL,"+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()" );
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()" );
     ValidConnection = true;
     facet = local_component->get_%(Identifier)s();
 }
 
 %(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()
 {
-    LDEBUGNL(CCM_LOCAL,"-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()" );
+    LDEBUGNL(CCM_CONTAINER,"-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()" );
     delete facet;
 }
 
@@ -31,7 +31,7 @@
 WX::Utils::SmartPtr<LocalComponents::Object>
 %(Identifier)sFacetAdapter::get_component()
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)sFacetAdapter::get_component()");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)sFacetAdapter::get_component()");
     return WX::Utils::SmartPtr<LocalComponents::Object>
     (dynamic_cast<LocalComponents::Object*> (component));
 };

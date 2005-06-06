@@ -196,7 +196,7 @@ abstract public class CodeGenerator implements TemplateHandler
 
     protected Map output_variables;
 
-    protected Object current_node;
+    protected Object currentNode;
 
     protected String current_name;
 
@@ -204,7 +204,7 @@ abstract public class CodeGenerator implements TemplateHandler
 
     protected Set current_variables;
 
-    protected Stack namespace;
+    protected Stack namespaceStack;
 
     protected int flags = 0x0;
 
@@ -320,7 +320,7 @@ abstract public class CodeGenerator implements TemplateHandler
     {
         logger.fine("enter startGraph()");
         
-        current_node = null;
+        currentNode = null;
         current_name = null;
         current_type = null;
         current_variables = new HashSet();
@@ -330,7 +330,7 @@ abstract public class CodeGenerator implements TemplateHandler
         type_stack = new Stack();
         variables_stack = new Stack();
 
-        namespace = new Stack();
+        namespaceStack = new Stack();
         output_variables = new Hashtable();
         
         logger.fine("leave startGraph()");
@@ -360,7 +360,7 @@ abstract public class CodeGenerator implements TemplateHandler
     {
         logger.fine("enter startNode()");
         
-        current_node = node;
+        currentNode = node;
         //current_name = new String(scope_id);
         current_name = scope_id;
         current_type = node.toString().split(":")[0];
@@ -369,7 +369,7 @@ abstract public class CodeGenerator implements TemplateHandler
         uiDriver.nodeStart(node, scope_id);
         uiDriver.currentVariables(current_variables);
 
-        node_stack.push(current_node);
+        node_stack.push(currentNode);
         name_stack.push(current_name);
         type_stack.push(current_type);
         variables_stack.push(current_variables);
@@ -377,7 +377,7 @@ abstract public class CodeGenerator implements TemplateHandler
         // update the namespace if this is a module.
 
         if(node instanceof MModuleDef)
-            namespace.push(((MModuleDef) node).getIdentifier());
+            namespaceStack.push(((MModuleDef) node).getIdentifier());
 
         // initialize variables in output variables hash.
 
@@ -409,7 +409,7 @@ abstract public class CodeGenerator implements TemplateHandler
     {
         logger.fine("enter endNode()");
         
-        current_node = node_stack.pop();
+        currentNode = node_stack.pop();
         current_name = (String) name_stack.pop();
         current_type = (String) type_stack.pop();
         current_variables = (Set) variables_stack.pop();
@@ -420,7 +420,7 @@ abstract public class CodeGenerator implements TemplateHandler
         // update the namespace if this is a module by removing the last item
         // from the namespace list.
         if(node instanceof MModuleDef)
-            namespace.pop();
+            namespaceStack.pop();
 
         uiDriver.nodeEnd(node, scope_id);
         
@@ -445,7 +445,7 @@ abstract public class CodeGenerator implements TemplateHandler
         
         String key = getScopeID(field_id);
 
-        uiDriver.nodeData(current_node, field_id, value);
+        uiDriver.nodeData(currentNode, field_id, value);
 
         if(field_type.endsWith("boolean")) {
             Boolean hack = new Boolean(value.toString());
@@ -657,9 +657,9 @@ abstract public class CodeGenerator implements TemplateHandler
     {
         logger.fine("enter joinBaseNames()");
         
-        if(!(current_node instanceof MInterfaceDef))
+        if(!(currentNode instanceof MInterfaceDef))
             return "";
-        MInterfaceDef node = (MInterfaceDef) current_node;
+        MInterfaceDef node = (MInterfaceDef) currentNode;
         ArrayList names = new ArrayList();
         for(Iterator i = node.getBases().iterator(); i.hasNext();)
             names.add(((MInterfaceDef) i.next()).getIdentifier());
@@ -709,7 +709,7 @@ abstract public class CodeGenerator implements TemplateHandler
     {
         logger.fine("enter handleNamespace()");
         
-        List names = new ArrayList(namespace);
+        List names = new ArrayList(namespaceStack);
         if(!local.equals(""))
             names.add("CCM_Session_" + local);
 
@@ -864,7 +864,7 @@ abstract public class CodeGenerator implements TemplateHandler
         
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        for(Iterator n = namespace.iterator(); n.hasNext();) {
+        for(Iterator n = namespaceStack.iterator(); n.hasNext();) {
             String name = (String) n.next();
             try {
                 String mine = (String) scope.get(0);
@@ -924,53 +924,53 @@ abstract public class CodeGenerator implements TemplateHandler
         // this whole variable/type comb is really horrible. yuk.
 
         if(variable.equals("LanguageType")) {
-            if(current_node instanceof MTyped)
-                value = (String) getLanguageType((MTyped) current_node);
+            if(currentNode instanceof MTyped)
+                value = (String) getLanguageType((MTyped) currentNode);
         }
         else if(variable.endsWith("SupportsType")) {
-            MSupportsDef supports = (MSupportsDef) current_node;
+            MSupportsDef supports = (MSupportsDef) currentNode;
             value = getFullScopeIdentifier(supports.getSupports());
         }
         else if(variable.endsWith("ProvidesType")) {
-            MProvidesDef provides = (MProvidesDef) current_node;
+            MProvidesDef provides = (MProvidesDef) currentNode;
             value = getFullScopeIdentifier(provides.getProvides());
         }
         else if(variable.endsWith("UsesType")) {
-            MUsesDef uses = (MUsesDef) current_node;
+            MUsesDef uses = (MUsesDef) currentNode;
             value = getFullScopeIdentifier(uses.getUses());
         }
         else if(variable.endsWith("EmitsType")
                 || variable.endsWith("PublishesType")
                 || variable.endsWith("ConsumesType")) {
-            MEventPortDef port = (MEventPortDef) current_node;
+            MEventPortDef port = (MEventPortDef) currentNode;
             value = getFullScopeIdentifier(port.getType());
         }
         else if(variable.endsWith("ComponentType")) {
             MComponentDef component = null;
 
-            if(current_node instanceof MHomeDef)
-                component = ((MHomeDef) current_node).getComponent();
-            else if(current_node instanceof MProvidesDef)
-                component = ((MProvidesDef) current_node).getComponent();
-            else if(current_node instanceof MUsesDef)
-                component = ((MUsesDef) current_node).getComponent();
-            else if(current_node instanceof MEmitsDef)
-                component = ((MEmitsDef) current_node).getComponent();
-            else if(current_node instanceof MPublishesDef)
-                component = ((MPublishesDef) current_node).getComponent();
-            else if(current_node instanceof MConsumesDef)
-                component = ((MConsumesDef) current_node).getComponent();
-            else if(current_node instanceof MSupportsDef)
-                component = ((MSupportsDef) current_node).getComponent();
-            else if(current_node instanceof MFactoryDef)
-                component = ((MFactoryDef) current_node).getHome()
+            if(currentNode instanceof MHomeDef)
+                component = ((MHomeDef) currentNode).getComponent();
+            else if(currentNode instanceof MProvidesDef)
+                component = ((MProvidesDef) currentNode).getComponent();
+            else if(currentNode instanceof MUsesDef)
+                component = ((MUsesDef) currentNode).getComponent();
+            else if(currentNode instanceof MEmitsDef)
+                component = ((MEmitsDef) currentNode).getComponent();
+            else if(currentNode instanceof MPublishesDef)
+                component = ((MPublishesDef) currentNode).getComponent();
+            else if(currentNode instanceof MConsumesDef)
+                component = ((MConsumesDef) currentNode).getComponent();
+            else if(currentNode instanceof MSupportsDef)
+                component = ((MSupportsDef) currentNode).getComponent();
+            else if(currentNode instanceof MFactoryDef)
+                component = ((MFactoryDef) currentNode).getHome()
                         .getComponent();
-            else if(current_node instanceof MFinderDef)
-                component = ((MFinderDef) current_node).getHome()
+            else if(currentNode instanceof MFinderDef)
+                component = ((MFinderDef) currentNode).getHome()
                         .getComponent();
 
-            if(current_node instanceof MAttributeDef) {
-                MContained cont = ((MAttributeDef) current_node).getDefinedIn();
+            if(currentNode instanceof MAttributeDef) {
+                MContained cont = ((MAttributeDef) currentNode).getDefinedIn();
                 if(cont instanceof MComponentDef)
                     component = (MComponentDef) cont;
             }
@@ -982,33 +982,33 @@ abstract public class CodeGenerator implements TemplateHandler
             Iterator homes = null;
             MHomeDef home = null;
 
-            if(current_node instanceof MFactoryDef)
-                home = ((MFactoryDef) current_node).getHome();
-            else if(current_node instanceof MFinderDef)
-                home = ((MFinderDef) current_node).getHome();
-            else if(current_node instanceof MComponentDef)
-                homes = ((MComponentDef) current_node).getHomes().iterator();
-            else if(current_node instanceof MProvidesDef)
-                homes = ((MProvidesDef) current_node).getComponent().getHomes()
+            if(currentNode instanceof MFactoryDef)
+                home = ((MFactoryDef) currentNode).getHome();
+            else if(currentNode instanceof MFinderDef)
+                home = ((MFinderDef) currentNode).getHome();
+            else if(currentNode instanceof MComponentDef)
+                homes = ((MComponentDef) currentNode).getHomes().iterator();
+            else if(currentNode instanceof MProvidesDef)
+                homes = ((MProvidesDef) currentNode).getComponent().getHomes()
                         .iterator();
-            else if(current_node instanceof MUsesDef)
-                homes = ((MUsesDef) current_node).getComponent().getHomes()
+            else if(currentNode instanceof MUsesDef)
+                homes = ((MUsesDef) currentNode).getComponent().getHomes()
                         .iterator();
-            else if(current_node instanceof MEmitsDef)
-                homes = ((MEmitsDef) current_node).getComponent().getHomes()
+            else if(currentNode instanceof MEmitsDef)
+                homes = ((MEmitsDef) currentNode).getComponent().getHomes()
                         .iterator();
-            else if(current_node instanceof MPublishesDef)
-                homes = ((MPublishesDef) current_node).getComponent()
+            else if(currentNode instanceof MPublishesDef)
+                homes = ((MPublishesDef) currentNode).getComponent()
                         .getHomes().iterator();
-            else if(current_node instanceof MConsumesDef)
-                homes = ((MConsumesDef) current_node).getComponent().getHomes()
+            else if(currentNode instanceof MConsumesDef)
+                homes = ((MConsumesDef) currentNode).getComponent().getHomes()
                         .iterator();
-            else if(current_node instanceof MSupportsDef)
-                homes = ((MSupportsDef) current_node).getComponent().getHomes()
+            else if(currentNode instanceof MSupportsDef)
+                homes = ((MSupportsDef) currentNode).getComponent().getHomes()
                         .iterator();
 
             if(homes != null) {
-                String id = ((MContained) current_node).getIdentifier();
+                String id = ((MContained) currentNode).getIdentifier();
                 try {
                     home = (MHomeDef) homes.next();
                 }
@@ -1021,8 +1021,8 @@ abstract public class CodeGenerator implements TemplateHandler
                 value = getFullScopeIdentifier(home);
         }
         else if(variable.equals("LanguageTypeInclude")) {
-            if(current_node instanceof MTyped) {
-                MIDLType idl_type = ((MTyped) current_node).getIdlType();
+            if(currentNode instanceof MTyped) {
+                MIDLType idl_type = ((MTyped) currentNode).getIdlType();
                 if(idl_type instanceof MContained) {
                     value = getScopedInclude((MContained) idl_type);
                 }
@@ -1034,8 +1034,8 @@ abstract public class CodeGenerator implements TemplateHandler
             }
         }
         else if(variable.equals("BaseInclude")) {
-            if(current_node instanceof MInterfaceDef) {
-                MInterfaceDef iface = (MInterfaceDef) current_node;
+            if(currentNode instanceof MInterfaceDef) {
+                MInterfaceDef iface = (MInterfaceDef) currentNode;
                 List bases = new ArrayList();
                 for(Iterator i = iface.getBases().iterator(); i.hasNext();)
                     bases.add(getScopedInclude((MInterfaceDef) i.next()));
@@ -1043,11 +1043,11 @@ abstract public class CodeGenerator implements TemplateHandler
             }
         }
         else if(variable.equals("ExceptionInclude")) {
-            value = getScopedInclude((MExceptionDef) current_node);
+            value = getScopedInclude((MExceptionDef) currentNode);
         }
         else if(variable.equals("HomeInclude")) {
-            if(current_node instanceof MComponentDef) {
-                Iterator homes = ((MComponentDef) current_node).getHomes()
+            if(currentNode instanceof MComponentDef) {
+                Iterator homes = ((MComponentDef) currentNode).getHomes()
                         .iterator();
                 value = getFullScopeInclude((MHomeDef) homes.next());
             }
@@ -1057,12 +1057,12 @@ abstract public class CodeGenerator implements TemplateHandler
                 || variable.equals("UsesInclude")) {
             MInterfaceDef iface = null;
 
-            if(current_node instanceof MProvidesDef)
-                iface = ((MProvidesDef) current_node).getProvides();
-            else if(current_node instanceof MSupportsDef)
-                iface = ((MSupportsDef) current_node).getSupports();
-            else if(current_node instanceof MUsesDef)
-                iface = ((MUsesDef) current_node).getUses();
+            if(currentNode instanceof MProvidesDef)
+                iface = ((MProvidesDef) currentNode).getProvides();
+            else if(currentNode instanceof MSupportsDef)
+                iface = ((MSupportsDef) currentNode).getSupports();
+            else if(currentNode instanceof MUsesDef)
+                iface = ((MUsesDef) currentNode).getUses();
 
             if(iface != null)
                 value = getFullScopeInclude(iface);
@@ -1070,16 +1070,16 @@ abstract public class CodeGenerator implements TemplateHandler
         else if(variable.equals("ConsumesInclude")
                 || variable.equals("EmitsInclude")
                 || variable.equals("PublishesInclude")) {
-            value = getFullScopeInclude(((MEventPortDef) current_node)
+            value = getFullScopeInclude(((MEventPortDef) currentNode)
                     .getType());
         }
         else if(variable.equals("SelfInclude")) {
-            if(current_node instanceof MContained)
-                value = getFullScopeInclude((MContained) current_node);
+            if(currentNode instanceof MContained)
+                value = getFullScopeInclude((MContained) currentNode);
         }
         else if(variable.equals("PreprocIdentifier")) {
-            if(current_node instanceof MContained)
-                value = getFullScopeInclude((MContained) current_node);
+            if(currentNode instanceof MContained)
+                value = getFullScopeInclude((MContained) currentNode);
             value = value.replaceAll("[^\\w]", "_");
         }
         else if(variable.endsWith("Namespace")) {
@@ -1112,13 +1112,13 @@ abstract public class CodeGenerator implements TemplateHandler
 
         // don't generate code for model elements that are included from
         // the original IDL file.
-        if((current_node instanceof MContained)
-                && !((MContained) current_node).getSourceFile().equals(""))
+        if((currentNode instanceof MContained)
+                && !((MContained) currentNode).getSourceFile().equals(""))
             return;
 
         // don't generate code for an MExceptionDef that has an MOperationDef 
         // as parent in the type tree.
-        if((current_node instanceof MExceptionDef)) {
+        if((currentNode instanceof MExceptionDef)) {
             String parent = (String)type_stack.peek();
             if(parent.equals("MOperationDef")) {
                 return;
@@ -1193,7 +1193,7 @@ abstract public class CodeGenerator implements TemplateHandler
         String attrs = "";
         SortedSet bool_attrs = new TreeSet();
 
-        Method[] node_methods = current_node.getClass().getMethods();
+        Method[] node_methods = currentNode.getClass().getMethods();
         for(int i = 0; i < node_methods.length; i++) {
             String field_name = node_methods[i].getName();
             if(field_name.startsWith("is"))
@@ -1202,9 +1202,9 @@ abstract public class CodeGenerator implements TemplateHandler
 
         for(Iterator i = bool_attrs.iterator(); i.hasNext();) {
             try {
-                Class klass = current_node.getClass();
+                Class klass = currentNode.getClass();
                 Method method = klass.getMethod((String) i.next(), null);
-                Object result = method.invoke(current_node, null);
+                Object result = method.invoke(currentNode, null);
                 Boolean hack = new Boolean(result.toString());
                 if(hack.booleanValue())
                     attrs += method.getName().substring(2);

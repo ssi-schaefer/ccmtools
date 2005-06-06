@@ -1,0 +1,4 @@
+    os << doIndent(indent+1) << "%(Identifier)s(" 
+       << ::%(DebugNamespace)sccmDebug(in.%(Identifier)s) 
+       << ")" << std::endl; 
+

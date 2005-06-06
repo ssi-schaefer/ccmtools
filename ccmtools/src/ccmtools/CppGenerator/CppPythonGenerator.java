@@ -58,9 +58,9 @@ public class CppPythonGenerator
     {
         super("CppPython", d, out_dir, local_output_types);
 
-        base_namespace.add("CCM_Test");
-        base_namespace.add("Python");
-        base_namespace.add("CCM_Local");
+        baseNamespace.add("CCM_Test");
+        baseNamespace.add("Python");
+        baseNamespace.add("CCM_Local");
     }
 
     /**
@@ -72,9 +72,9 @@ public class CppPythonGenerator
     public void writeOutput(Template template)
         throws IOException
     {
-        String node_name = ((MContained) current_node).getIdentifier();
+        String node_name = ((MContained) currentNode).getIdentifier();
 
-        String file_dir = join("_", slice(namespace, 2));
+        String file_dir = join("_", slice(namespaceStack, 2));
 
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
@@ -115,7 +115,7 @@ public class CppPythonGenerator
 
     protected String data_MAliasDef(String data_type, String data_value)
     {
-        MIDLType idl_type = ((MAliasDef) current_node).getIdlType();
+        MIDLType idl_type = ((MAliasDef) currentNode).getIdlType();
 
         if (data_type.equals("CppLanguageType")) {
             return super.getLanguageType((MTyped) idl_type);

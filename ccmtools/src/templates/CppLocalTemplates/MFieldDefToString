@@ -1,2 +1,0 @@
-    os << "%(Identifier)s(" << toString(in.%(Identifier)s) << ") "; 
-

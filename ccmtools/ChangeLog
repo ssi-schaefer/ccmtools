@@ -11,7 +11,10 @@ RELEASE-0.5.2-pre1
 *) refactored UI.Main (removed all System.exit() and added some String Constants)
 *) bugfix: CppRemoteGeneratorImpl.java converter for remote exception
 
-
+*) changed local component logic logging (from DEBUGNL("...") to LDEBUGNL(CCM_LOCAL,"..."))
+*) implemented cpp-environment/ccm/CCM_Local/Utils/toString.h that contains
+   toString() functions for C++ primitive types.
+o) generate toString() functions for generated local types
 
 
 

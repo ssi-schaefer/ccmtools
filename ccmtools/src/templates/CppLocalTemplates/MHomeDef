@@ -140,7 +140,7 @@ using namespace CCM_Local;
 
 %(Identifier)s::%(Identifier)s()
 {
-    LDEBUGNL(CCM_LOCAL,"+%(Identifier)s::%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s()");
     local_home = dynamic_cast<CCM_%(Identifier)s*>(create_%(AbsoluteLocalHomeName)s());
     assembly_factory = WX::Utils::SmartPtr<LocalComponents::AssemblyFactory>();
 }
@@ -148,13 +148,13 @@ using namespace CCM_Local;
 %(Identifier)s::%(Identifier)s(WX::Utils::SmartPtr<LocalComponents::AssemblyFactory> f)
     : assembly_factory(f)
 {
-    LDEBUGNL(CCM_LOCAL,"+%(Identifier)s::%(Identifier)s(AssemblyFactory)");
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s(AssemblyFactory)");
     local_home = dynamic_cast<CCM_%(Identifier)s*>(create_%(AbsoluteLocalHomeName)s());
 }
 
 %(Identifier)s::~%(Identifier)s()
 {
-    LDEBUGNL(CCM_LOCAL,"-%(Identifier)s::~%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER,"-%(Identifier)s::~%(Identifier)s()");
     delete local_home;
 }
 
@@ -166,7 +166,7 @@ SmartPtr<%(ComponentType)s>
 %(Identifier)s::create()
     throw(LocalComponents::CCMException, LocalComponents::CreateFailure)
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::create()");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::create()");
     WX::Utils::SmartPtr<LocalComponents::Assembly> assembly;
     if(assembly_factory != WX::Utils::SmartPtr<LocalComponents::AssemblyFactory>()) {
         assembly = assembly_factory->create(); 
@@ -190,7 +190,7 @@ void
     WX::Utils::SmartPtr<LocalComponents::CCMObject> component)
     throw(LocalComponents::CCMException, LocalComponents::RemoveFailure)
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::remove_component()");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::remove_component()");
     component->remove();
 }
 
@@ -198,7 +198,7 @@ WX::Utils::SmartPtr<LocalComponents::CCMObject>
 %(Identifier)s::create_component()
     throw(LocalComponents::CCMException, LocalComponents::CreateFailure)
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::create_component()");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::create_component()");
     return create();
 }
 
@@ -213,7 +213,7 @@ extern "C" {
 WX::Utils::SmartPtr<LocalComponents::CCMHome>
 create_%(AbsoluteLocalHomeName)sAdapter()
 {
-    LDEBUGNL(CCM_LOCAL," create_%(AbsoluteLocalHomeName)sAdapter()");
+    LDEBUGNL(CCM_CONTAINER," create_%(AbsoluteLocalHomeName)sAdapter()");
     WX::Utils::SmartPtr<LocalComponents::CCMHome>
         ret(new %(Namespace)s::%(Identifier)s());
     return ret;
@@ -222,7 +222,7 @@ create_%(AbsoluteLocalHomeName)sAdapter()
 int 
 deploy_%(AbsoluteLocalHomeName)s(char* name)
 {
-    LDEBUGNL(CCM_LOCAL," deploy_%(AbsoluteLocalHomeName)s()");
+    LDEBUGNL(CCM_CONTAINER," deploy_%(AbsoluteLocalHomeName)s()");
     return deploy_with_assembly_%(AbsoluteLocalHomeName)s(
         name, WX::Utils::SmartPtr<LocalComponents::AssemblyFactory>());	
 }	
@@ -231,7 +231,7 @@ int
 deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,
     WX::Utils::SmartPtr<LocalComponents::AssemblyFactory> assembly_factory)
 {
-    LDEBUGNL(CCM_LOCAL," deploy_with_assembly_%(AbsoluteLocalHomeName)s()");
+    LDEBUGNL(CCM_CONTAINER," deploy_with_assembly_%(AbsoluteLocalHomeName)s()");
     try {
         WX::Utils::SmartPtr<LocalComponents::CCMHome> 
             ret(new %(Namespace)s::%(Identifier)s(assembly_factory));
@@ -246,7 +246,7 @@ deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,
 int 
 undeploy_%(AbsoluteLocalHomeName)s(char* name)
 {
-    LDEBUGNL(CCM_LOCAL," undeploy_%(AbsoluteLocalHomeName)s()");
+    LDEBUGNL(CCM_CONTAINER," undeploy_%(AbsoluteLocalHomeName)s()");
     try {
         HomeFinder::Instance()->unregister_home(name);	
     } 

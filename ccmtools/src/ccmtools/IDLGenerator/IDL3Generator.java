@@ -55,32 +55,32 @@ public class IDL3Generator extends IDLGenerator
                 || variable.equals("SupportsInclude")
                 || variable.equals("UsesInclude")) {
 
-            if(current_node instanceof MProvidesDef)
-                iface = ((MProvidesDef) current_node).getProvides();
-            else if(current_node instanceof MSupportsDef)
-                iface = ((MSupportsDef) current_node).getSupports();
-            else if(current_node instanceof MUsesDef)
-                iface = ((MUsesDef) current_node).getUses();
+            if(currentNode instanceof MProvidesDef)
+                iface = ((MProvidesDef) currentNode).getProvides();
+            else if(currentNode instanceof MSupportsDef)
+                iface = ((MSupportsDef) currentNode).getSupports();
+            else if(currentNode instanceof MUsesDef)
+                iface = ((MUsesDef) currentNode).getUses();
 
             if(iface != null)
                 value = getScopedInclude(iface);
         }
         else if(variable.equals("HomeInclude")) {
-            if(current_node instanceof MComponentDef) {
-                Iterator homes = ((MComponentDef) current_node).getHomes()
+            if(currentNode instanceof MComponentDef) {
+                Iterator homes = ((MComponentDef) currentNode).getHomes()
                         .iterator();
                 value = getScopedInclude((MHomeDef) homes.next());
             }
         }
         else if(variable.equals("ComponentInclude")) {
-            if(current_node instanceof MHomeDef) {
-                value = getScopedInclude(((MHomeDef) current_node)
+            if(currentNode instanceof MHomeDef) {
+                value = getScopedInclude(((MHomeDef) currentNode)
                         .getComponent());
             }
         }
         else {
             value = super.getLocalValue(variable);
-            if(current_node instanceof MHomeDef) {
+            if(currentNode instanceof MHomeDef) {
                 return data_MHomeDef(variable, value);
             }
         }
@@ -93,10 +93,10 @@ public class IDL3Generator extends IDLGenerator
             return ", Components::DuplicateKeyValue, Components::InvalidKey";
         }
         else if(data_type.equals("MHomeDefPublicKeyParameters")) {
-            return "in " + ((MHomeDef) current_node).getPrimary_Key() + " key";
+            return "in " + ((MHomeDef) currentNode).getPrimary_Key() + " key";
         }
         else if(data_type.equals("MHomeDefPublicKeyFunctions")) {
-            MHomeDef home = (MHomeDef) current_node;
+            MHomeDef home = (MHomeDef) currentNode;
 
             String[] keys = {
                     "KeyType", "ComponentType"
@@ -152,21 +152,21 @@ public class IDL3Generator extends IDLGenerator
         // Separate IDL3 code into files hosted in different directories
         String dir;
         String name;
-        if(current_node instanceof MComponentDef
-                || current_node instanceof MHomeDef) {
+        if(currentNode instanceof MComponentDef
+                || currentNode instanceof MHomeDef) {
             dir = "component";
-            if(namespace.size() > 0) {
-                dir += File.separator + join(File.separator, namespace)
+            if(namespaceStack.size() > 0) {
+                dir += File.separator + join(File.separator, namespaceStack)
                         + File.separator;
             }
-            name = ((MContained) current_node).getIdentifier() + ".idl";
+            name = ((MContained) currentNode).getIdentifier() + ".idl";
         }
         else {
             dir = "interface";
-            if(namespace.size() > 0) {
-                dir += File.separator + join(File.separator, namespace);
+            if(namespaceStack.size() > 0) {
+                dir += File.separator + join(File.separator, namespaceStack);
             }
-            name = ((MContained) current_node).getIdentifier() + ".idl";
+            name = ((MContained) currentNode).getIdentifier() + ".idl";
         }
 
         String prettyCode = prettifyCode(code);

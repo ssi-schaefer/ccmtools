@@ -77,19 +77,19 @@ public class IDL3MirrorGenerator extends IDLGenerator
                 || variable.equals("SupportsInclude")
                 || variable.equals("UsesInclude")) {
 
-            if(current_node instanceof MProvidesDef)
-                iface = ((MProvidesDef) current_node).getProvides();
-            else if(current_node instanceof MSupportsDef)
-                iface = ((MSupportsDef) current_node).getSupports();
-            else if(current_node instanceof MUsesDef)
-                iface = ((MUsesDef) current_node).getUses();
+            if(currentNode instanceof MProvidesDef)
+                iface = ((MProvidesDef) currentNode).getProvides();
+            else if(currentNode instanceof MSupportsDef)
+                iface = ((MSupportsDef) currentNode).getSupports();
+            else if(currentNode instanceof MUsesDef)
+                iface = ((MUsesDef) currentNode).getUses();
 
             if(iface != null)
                 value = "#include <" + getScopedInclude(iface) + ".idl>";
         }
         else if(variable.equals("HomeInclude")) {
-            if(current_node instanceof MComponentDef) {
-                Iterator homes = ((MComponentDef) current_node).getHomes()
+            if(currentNode instanceof MComponentDef) {
+                Iterator homes = ((MComponentDef) currentNode).getHomes()
                         .iterator();
                 value = "#include <"
                         + getScopedInclude((MHomeDef) homes.next())
@@ -97,15 +97,15 @@ public class IDL3MirrorGenerator extends IDLGenerator
             }
         }
         else if(variable.equals("ComponentInclude")) {
-            if(current_node instanceof MHomeDef) {
+            if(currentNode instanceof MHomeDef) {
                 value = "#include <"
-                        + getScopedInclude(((MHomeDef) current_node)
+                        + getScopedInclude(((MHomeDef) currentNode)
                                 .getComponent()) + "_mirror.idl>";
             }
         }
         else {
             value = super.getLocalValue(variable);
-            if(current_node instanceof MHomeDef) {
+            if(currentNode instanceof MHomeDef) {
                 return data_MHomeDef(variable, value);
             }
         }
@@ -143,14 +143,14 @@ public class IDL3MirrorGenerator extends IDLGenerator
         try {
             String dir;
             String name;
-            if(current_node instanceof MComponentDef
-                    || current_node instanceof MHomeDef) {
+            if(currentNode instanceof MComponentDef
+                    || currentNode instanceof MHomeDef) {
                 dir = "component";
-                if(namespace.size() > 0) {
-                    dir += File.separator + join(File.separator, namespace)
+                if(namespaceStack.size() > 0) {
+                    dir += File.separator + join(File.separator, namespaceStack)
                             + File.separator;
                 }
-                name = ((MContained) current_node).getIdentifier()
+                name = ((MContained) currentNode).getIdentifier()
                         + "_mirror.idl";
 
                 String prettyCode = prettifyCode(code);

@@ -67,32 +67,32 @@ public class IDL2Generator extends IDLGenerator
         if(variable.equals("ProvidesInclude")
                 || variable.equals("SupportsInclude")
                 || variable.equals("UsesInclude")) {
-            if(current_node instanceof MProvidesDef)
-                iface = ((MProvidesDef) current_node).getProvides();
-            else if(current_node instanceof MSupportsDef)
-                iface = ((MSupportsDef) current_node).getSupports();
-            else if(current_node instanceof MUsesDef)
-                iface = ((MUsesDef) current_node).getUses();
+            if(currentNode instanceof MProvidesDef)
+                iface = ((MProvidesDef) currentNode).getProvides();
+            else if(currentNode instanceof MSupportsDef)
+                iface = ((MSupportsDef) currentNode).getSupports();
+            else if(currentNode instanceof MUsesDef)
+                iface = ((MUsesDef) currentNode).getUses();
             if(iface != null)
                 value = getScopedInclude(iface);
         }
         else if(variable.equals("HomeInclude")) {
-            if(current_node instanceof MComponentDef) {
-                Iterator homes = ((MComponentDef) current_node).getHomes()
+            if(currentNode instanceof MComponentDef) {
+                Iterator homes = ((MComponentDef) currentNode).getHomes()
                         .iterator();
                 value = getScopedInclude((MHomeDef) homes.next());
             }
         }
         else if(variable.equals("ComponentInclude")) {
-            if(current_node instanceof MHomeDef) {
-                value = getScopedInclude(((MHomeDef) current_node)
+            if(currentNode instanceof MHomeDef) {
+                value = getScopedInclude(((MHomeDef) currentNode)
                         .getComponent());
             }
         }
         // ----
         else if(variable.equals("BaseType")) {
-            if(current_node instanceof MComponentDef
-                    || current_node instanceof MHomeDef) {
+            if(currentNode instanceof MComponentDef
+                    || currentNode instanceof MHomeDef) {
                 String base = joinBaseNames(", ");
                 if(base.length() > 0)
                     return ", " + base;

@@ -14,6 +14,8 @@
 #ifndef __ALIAS_%(PreprocIdentifier)s__H__
 #define __ALIAS_%(PreprocIdentifier)s__H__
 
+%(DebugInclude)s
+
 %(LanguageTypeInclude)s
 
 using namespace std;
@@ -21,6 +23,8 @@ using namespace std;
 %(OpenNamespace)s
 
 typedef %(LanguageType)s %(Identifier)s;
+
+%(MAliasDefDebug)s
 
 %(CloseNamespace)s
 

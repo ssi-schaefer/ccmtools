@@ -107,7 +107,7 @@ abstract public class IDLGenerator extends CodeGenerator
         if(node instanceof MContainer
                 && (((MContainer) node).getDefinedIn() == null))
             for(Iterator i = base_namespace.iterator(); i.hasNext();)
-                namespace.push(i.next());
+                namespaceStack.push(i.next());
         // ---
         super.startNode(node, scope_id);
     }
@@ -133,7 +133,7 @@ abstract public class IDLGenerator extends CodeGenerator
                 && (((MContainer) node).getDefinedIn() == null)) {
             for(Iterator i = base_namespace.iterator(); i.hasNext();) {
                 i.next();
-                namespace.pop();
+                namespaceStack.pop();
             }
         }
         // ----
@@ -164,10 +164,10 @@ abstract public class IDLGenerator extends CodeGenerator
         code = code.replaceAll("#ifndef", "\n#ifndef");
         code = code.replaceAll("#define(.*)$", "#define\\1\n");
 
-        String name = join(file_separator, namespace);
+        String name = join(file_separator, namespaceStack);
         if(!name.equals(""))
             name += file_separator;
-        name += ((MContained) current_node).getIdentifier() + ".idl";
+        name += ((MContained) currentNode).getIdentifier() + ".idl";
 
         try {
             writeFinalizedFile("", name, code + "\n\n");
@@ -195,13 +195,13 @@ abstract public class IDLGenerator extends CodeGenerator
     {
         if(data_type.equals("OpenNamespace")) {
             List tmp = new ArrayList();
-            for(Iterator i = namespace.iterator(); i.hasNext();)
+            for(Iterator i = namespaceStack.iterator(); i.hasNext();)
                 tmp.add("module " + i.next() + " {");
             return join("\n", tmp);
         }
         else if(data_type.equals("CloseNamespace")) {
             StringBuffer buffer = new StringBuffer();
-            for(Iterator i = namespace.iterator(); i.hasNext();) {
+            for(Iterator i = namespaceStack.iterator(); i.hasNext();) {
                 buffer.append("}; // /module ");
                 buffer.append(i.next());
                 buffer.append("\n");
@@ -246,28 +246,28 @@ abstract public class IDLGenerator extends CodeGenerator
     {
         String value = super.getLocalValue(variable);
 
-        if(current_node instanceof MComponentDef) {
+        if(currentNode instanceof MComponentDef) {
             return data_MComponentDef(variable, value);
         }
-        else if(current_node instanceof MHomeDef) {
+        else if(currentNode instanceof MHomeDef) {
             return data_MHomeDef(variable, value);
         }
-        else if(current_node instanceof MInterfaceDef) {
+        else if(currentNode instanceof MInterfaceDef) {
             return data_MInterfaceDef(variable, value);
         }
-        else if(current_node instanceof MFactoryDef) {
+        else if(currentNode instanceof MFactoryDef) {
             return data_MFactoryDef(variable, value);
         }
-        else if(current_node instanceof MFinderDef) {
+        else if(currentNode instanceof MFinderDef) {
             return data_MFinderDef(variable, value);
         }
-        else if(current_node instanceof MOperationDef) {
+        else if(currentNode instanceof MOperationDef) {
             return data_MOperationDef(variable, value);
         }
-        else if(current_node instanceof MEnumDef) {
+        else if(currentNode instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
         }
-        else if(current_node instanceof MAliasDef) {
+        else if(currentNode instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
         }
 
@@ -330,7 +330,7 @@ abstract public class IDLGenerator extends CodeGenerator
 
     protected String data_MAliasDef(String data_type, String data_value)
     {
-        MAliasDef alias = (MAliasDef) current_node;
+        MAliasDef alias = (MAliasDef) currentNode;
         MIDLType idl_type = alias.getIdlType();
 
         // the IDL syntax for array typedefs is quite odd ...
@@ -366,7 +366,7 @@ abstract public class IDLGenerator extends CodeGenerator
     {
         if(data_type.equals("Members")) {
             List b = new ArrayList();
-            MEnumDef enum = (MEnumDef) current_node;
+            MEnumDef enum = (MEnumDef) currentNode;
             for(Iterator i = enum.getMembers().iterator(); i.hasNext();)
                 b.add((String) i.next());
             return join(", ", b);
@@ -387,7 +387,7 @@ abstract public class IDLGenerator extends CodeGenerator
     protected String data_MHomeDef(String data_type, String data_value)
     {
         if(data_type.equals("ComponentInclude")) {
-            return getFullScopeInclude(((MHomeDef) current_node).getComponent());
+            return getFullScopeInclude(((MHomeDef) currentNode).getComponent());
         }
         return data_MInterfaceDef(data_type, data_value);
     }
@@ -409,7 +409,7 @@ abstract public class IDLGenerator extends CodeGenerator
 
     protected String data_MOperationDef(String data_type, String data_value)
     {
-        MIDLType idl_type = ((MOperationDef) current_node).getIdlType();
+        MIDLType idl_type = ((MOperationDef) currentNode).getIdlType();
         if(data_type.startsWith("MExceptionDef") && data_value.endsWith(", "))
             return "raises ( "
                     + data_value.substring(0, data_value.length() - 2) + " )";

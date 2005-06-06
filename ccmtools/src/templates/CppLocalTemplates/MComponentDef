@@ -75,14 +75,14 @@ class %(Identifier)s
     LocalComponents::Cookie connect(const LocalComponents::FeatureName& name, 
                       WX::Utils::SmartPtr<LocalComponents::Object> connection)
         throw(LocalComponents::InvalidName, 
-	      LocalComponents::InvalidConnection,
+              LocalComponents::InvalidConnection,
               LocalComponents::AlreadyConnected, 
               LocalComponents::ExceededConnectionLimit);
 
     void disconnect(const LocalComponents::FeatureName& name, 
                     const LocalComponents::Cookie& ck)
         throw(LocalComponents::InvalidName, 
-	      LocalComponents::InvalidConnection,
+              LocalComponents::InvalidConnection,
               LocalComponents::CookieRequired, 
               LocalComponents::NoConnection );
 
@@ -151,6 +151,10 @@ class CCM_%(Identifier)s_Context_impl
 #include <config.h>
 #endif
 
+#ifdef WXDEBUG
+#include <CCM_Local/Debug.h>
+#endif // WXDEBUG
+
 #include "%(Identifier)s_gen.h"
 
 using namespace std;
@@ -168,12 +172,12 @@ using namespace CCM_Local;
 CCM_%(Identifier)s_Context_impl::CCM_%(Identifier)s_Context_impl(%(Identifier)s* c)
     : component_local_adapter(c)
 {
-    LDEBUGNL(CCM_LOCAL,"+CCM_%(Identifier)s_Context_impl::CCM_%(Identifier)s_Context_impl()");
+    LDEBUGNL(CCM_CONTAINER,"+CCM_%(Identifier)s_Context_impl::CCM_%(Identifier)s_Context_impl()");
 }
 
 CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
 {
-    LDEBUGNL(CCM_LOCAL,"-CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()");
+    LDEBUGNL(CCM_CONTAINER,"-CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()");
 }
 
 %(MUsesDefGetConnectionCtxImplDefinition)s
@@ -181,7 +185,7 @@ CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
 LocalComponents::HomeExecutorBase*
 CCM_%(Identifier)s_Context_impl::get_CCM_home()
 {
-    LDEBUGNL(CCM_LOCAL," CCM_%(Identifier)s_Context_impl::get_CCM_home()");
+    LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_home()");
     throw LocalComponents::NotImplemented();
 }
 
@@ -189,7 +193,7 @@ LocalComponents::Object*
 CCM_%(Identifier)s_Context_impl::get_CCM_object()
     throw(LocalComponents::IllegalState)
 {
-    LDEBUGNL(CCM_LOCAL," CCM_%(Identifier)s_Context_impl::get_CCM_object()");
+    LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_object()");
     throw LocalComponents::NotImplemented();
 }
 
@@ -200,7 +204,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 
 %(Identifier)s::%(Identifier)s()
 {
-    LDEBUGNL(CCM_LOCAL,"+%(Identifier)s::%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s()");
     home_local_adapter = NULL;
     local_component = NULL;
     context = NULL;
@@ -215,7 +219,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
     SmartPtr<LocalComponents::Assembly> a)
     : home_local_adapter(h), local_component(lc), assembly(a)
 {
-    LDEBUGNL(CCM_LOCAL,"+%(Identifier)s::%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s()");
     context = NULL; 
     ValidConnection = true;
 %(MProvidesDefAdapterVariableInit)s
@@ -224,7 +228,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 
 %(Identifier)s::~%(Identifier)s()
 {
-    LDEBUGNL(CCM_LOCAL,"-%(Identifier)s::~%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER,"-%(Identifier)s::~%(Identifier)s()");
     delete context;
     delete local_component;
 }
@@ -240,7 +244,7 @@ WX::Utils::SmartPtr<LocalComponents::Object>
 %(Identifier)s::provide_facet(const std::string& name)
     throw(LocalComponents::InvalidName)
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::provide_facet(" << name << " )");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::provide_facet(" << name << " )");
 %(MProvidesDefProvideFacet)s
     throw LocalComponents::InvalidName();
 }
@@ -252,12 +256,11 @@ LocalComponents::Cookie
 %(Identifier)s::connect(const LocalComponents::FeatureName& name, 
                         WX::Utils::SmartPtr<LocalComponents::Object> connection)
     throw(LocalComponents::InvalidName, 
-	  LocalComponents::InvalidConnection,
-	  LocalComponents::AlreadyConnected, 
-	  LocalComponents::ExceededConnectionLimit)
+          LocalComponents::InvalidConnection,
+          LocalComponents::AlreadyConnected, 
+          LocalComponents::ExceededConnectionLimit)
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::connect ( " << name << " )");
-
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::connect ( " << name << " )");
 %(MUsesDefConnectFacet)s
     throw LocalComponents::InvalidName();
 }
@@ -270,7 +273,7 @@ void
           LocalComponents::CookieRequired, 
           LocalComponents::NoConnection )
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::disconnect ( " << name << " )");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::disconnect ( " << name << " )");
     if(!ValidConnection) 
         throw LocalComponents::InvalidConnection();
 
@@ -284,7 +287,7 @@ void
 LocalComponents::HomeExecutorBase*
 %(Identifier)s::get_ccm_home (  )
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::get_ccm_home()");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::get_ccm_home()");
     throw LocalComponents::NotImplemented();
 }
 
@@ -293,7 +296,7 @@ void
 %(Identifier)s::configuration_complete()
     throw(LocalComponents::InvalidConfiguration)
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::configuration_complete()");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::configuration_complete()");
     configuration_complete(new CCM_%(Identifier)s_Context_impl(this));
 }
 
@@ -302,7 +305,7 @@ void
 %(Identifier)s::configuration_complete(CCM_%(Identifier)s_Context* ctx)
     throw(LocalComponents::InvalidConfiguration)
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::configuration_complete()");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::configuration_complete()");
     if(!ValidConnection) 
         throw LocalComponents::InvalidConnection();
     if(!context)
@@ -319,7 +322,7 @@ void
 %(Identifier)s::remove()
     throw(LocalComponents::RemoveFailure)
 {
-    LDEBUGNL(CCM_LOCAL," %(Identifier)s::remove()");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::remove()");
     if(!ValidConnection) 
         throw LocalComponents::InvalidConnection();
     local_component->ccm_remove();
@@ -394,10 +397,9 @@ class CCM_%(Identifier)s_Context
 %(MUsesDefGetConnectionPrototypeVV)s
 };
 
-
 %(CloseNamespace)s
 
-#endif
+#endif // __COMPONENT_%(PreprocIdentifier)s_SHARE__H__
 
 
 <<<<<<<SPLIT>>>>>>>
@@ -449,8 +451,7 @@ class CCM_%(Identifier)s_impl
 %(MProvidesDefGetFacetPrototype)s
 %(MSupportsDefImplPrototype)s
 
-    // Callback methods
-
+    // CCM callback methods
     virtual void set_session_context(LocalComponents::SessionContext* ctx)
         throw(LocalComponents::CCMException);
     virtual void ccm_activate()

@@ -46,7 +46,7 @@ public class CppLocalTestGenerator
         throws IOException
     {
         super("CppLocalTest", d, out_dir, local_output_types);
-        base_namespace.add("CCM_Local");
+        baseNamespace.add("CCM_Local");
     }
 
     /**
@@ -64,7 +64,7 @@ public class CppLocalTestGenerator
         if(generated_code.trim().equals("")) 
 	    return;
 
-        String node_name = ((MContained) current_node).getIdentifier();
+        String node_name = ((MContained) currentNode).getIdentifier();
         String file_dir = "test";
 
         String file_name = handleNamespace("IncludeNamespace", node_name);
@@ -104,7 +104,7 @@ public class CppLocalTestGenerator
     protected String data_MComponentDef(String data_type, String data_value)
     {
         if (data_type.equals("UsingNamespace")) {
-            String id = ((MComponentDef) current_node).getIdentifier();
+            String id = ((MComponentDef) currentNode).getIdentifier();
             String temp = handleNamespace(data_type, id);
             return temp+"using namespace CCM_Session_"+id+"_mirror;\n";
         }

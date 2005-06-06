@@ -34,25 +34,41 @@ import java.util.List;
  ***/
 public class Text
 {
+    /** Defines the number of spaces used by a tab. */
+    public static final String TAB = "    ";
+    
+    /** Defines a new line string that can be used in generated code. */
+    public static final String NL = "\n";
+    
+    
     /**
-     * Defines the number of spaces used by a tab.
+     * Create n newlines and write them into a string.
+     * 
+     * @param n the number of newlines the resulting string should contain.
+     * @return A string containing n*NEWLINE
      */
-    protected static final String TAB = "    ";
-
-
+    public static String newLine(int n)
+    {
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0; i< n; i++) {
+            buffer.append(NL);
+        }
+        return buffer.toString();
+    }
+    
     /**
      * Create n tabs (in form of spaces) and write them into a string.
      * 
      * @param n the number of tabs, the resulting string should contain.
      * @return A string containing n*TAB. 
      */
-    public static String insertTab(int n)
+    public static String tab(int n)
     {
-	StringBuffer buffer = new StringBuffer();
-	for(int i=0; i<n; i++) {
-	    buffer.append(TAB);
-	}
-	return buffer.toString();
+        StringBuffer buffer = new StringBuffer();
+        for(int i = 0; i < n; i++) {
+            buffer.append(TAB);
+        }
+        return buffer.toString();
     }
 
 

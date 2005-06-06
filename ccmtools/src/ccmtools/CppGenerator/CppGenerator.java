@@ -114,7 +114,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected final static String sequence_type = "std::vector";
 
-    protected List base_namespace = null;
+    protected List baseNamespace = null;
 
     /** *********************************************************************** */
 
@@ -122,7 +122,7 @@ abstract public class CppGenerator extends CodeGenerator
             String[] output_types) throws IOException
     {
         super(sublang, d, out_dir, output_types, _reserved, _language);
-        base_namespace = new ArrayList();
+        baseNamespace = new ArrayList();
     }
 
     /**
@@ -143,8 +143,8 @@ abstract public class CppGenerator extends CodeGenerator
     {
         if(node instanceof MContainer
                 && (((MContainer) node).getDefinedIn() == null))
-            for(Iterator i = base_namespace.iterator(); i.hasNext();)
-                namespace.push(i.next());
+            for(Iterator i = baseNamespace.iterator(); i.hasNext();)
+                namespaceStack.push(i.next());
 
         super.startNode(node, scope_id);
     }
@@ -169,9 +169,9 @@ abstract public class CppGenerator extends CodeGenerator
 
         if(node instanceof MContainer
                 && (((MContainer) node).getDefinedIn() == null)) {
-            for(Iterator i = base_namespace.iterator(); i.hasNext();) {
+            for(Iterator i = baseNamespace.iterator(); i.hasNext();) {
                 i.next();
-                namespace.pop();
+                namespaceStack.pop();
             }
         }
 
@@ -191,9 +191,9 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String joinBaseNames(String sep)
     {
-        if(!(current_node instanceof MInterfaceDef))
+        if(!(currentNode instanceof MInterfaceDef))
             return "";
-        MInterfaceDef node = (MInterfaceDef) current_node;
+        MInterfaceDef node = (MInterfaceDef) currentNode;
         ArrayList names = new ArrayList();
         for(Iterator i = node.getBases().iterator(); i.hasNext();)
             names.add("CCM_" + ((MInterfaceDef) i.next()).getIdentifier());
@@ -206,7 +206,7 @@ abstract public class CppGenerator extends CodeGenerator
         List scope = getScope(contained);
         StringBuffer buffer = new StringBuffer();
 
-        buffer.append(Text.join(separator, base_namespace));
+        buffer.append(Text.join(separator, baseNamespace));
         buffer.append(separator);
         if (scope.size() > 0) {
             buffer.append(Text.join(separator, scope));
@@ -233,7 +233,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String handleNamespace(String data_type, String local)
     {
-        List names = new ArrayList(namespace);
+        List names = new ArrayList(namespaceStack);
         if(!local.equals(""))
             names.add("CCM_Session_" + local);
 
@@ -278,14 +278,14 @@ abstract public class CppGenerator extends CodeGenerator
         if(node instanceof MComponentDef || node instanceof MHomeDef)
             scope.add(local);
 
-        Collections.reverse(base_namespace);
-        for(Iterator i = base_namespace.iterator(); i.hasNext();)
+        Collections.reverse(baseNamespace);
+        for(Iterator i = baseNamespace.iterator(); i.hasNext();)
             scope.add(0, i.next());
-        Collections.reverse(base_namespace);
+        Collections.reverse(baseNamespace);
 
         scope.add(node.getIdentifier());
 
-        for(Iterator n = namespace.iterator(); n.hasNext();) {
+        for(Iterator n = namespaceStack.iterator(); n.hasNext();) {
             if(((String) n.next()).equals((String) scope.get(0)))
                 scope.remove(0);
             else
@@ -314,10 +314,10 @@ abstract public class CppGenerator extends CodeGenerator
         if(node instanceof MComponentDef || node instanceof MHomeDef)
             scope.add(local);
 
-        Collections.reverse(base_namespace);
-        for(Iterator i = base_namespace.iterator(); i.hasNext();)
+        Collections.reverse(baseNamespace);
+        for(Iterator i = baseNamespace.iterator(); i.hasNext();)
             scope.add(0, i.next());
-        Collections.reverse(base_namespace);
+        Collections.reverse(baseNamespace);
 
         scope.add(node.getIdentifier());
 
@@ -336,10 +336,10 @@ abstract public class CppGenerator extends CodeGenerator
     protected String getScopedInclude(MContained node)
     {
         List scope = getScope(node);
-        Collections.reverse(base_namespace);
-        for(Iterator i = base_namespace.iterator(); i.hasNext();)
+        Collections.reverse(baseNamespace);
+        for(Iterator i = baseNamespace.iterator(); i.hasNext();)
             scope.add(0, i.next());
-        Collections.reverse(base_namespace);
+        Collections.reverse(baseNamespace);
         scope.add(node.getIdentifier());
         return "#include <" + join(file_separator, scope) + ".h>";
     }
@@ -362,37 +362,37 @@ abstract public class CppGenerator extends CodeGenerator
     {
         String value = super.getLocalValue(variable);
 
-        if(current_node instanceof MHomeDef) {
+        if(currentNode instanceof MHomeDef) {
             return data_MHomeDef(variable, value);
         }
-        else if(current_node instanceof MComponentDef) {
+        else if(currentNode instanceof MComponentDef) {
             return data_MComponentDef(variable, value);
         }
-        else if(current_node instanceof MFactoryDef) {
+        else if(currentNode instanceof MFactoryDef) {
             return data_MFactoryDef(variable, value);
         }
-        else if(current_node instanceof MFinderDef) {
+        else if(currentNode instanceof MFinderDef) {
             return data_MFinderDef(variable, value);
         }
-        else if(current_node instanceof MProvidesDef) {
+        else if(currentNode instanceof MProvidesDef) {
             return data_MProvidesDef(variable, value);
         }
-        else if(current_node instanceof MSupportsDef) {
+        else if(currentNode instanceof MSupportsDef) {
             return data_MSupportsDef(variable, value);
         }
-        else if(current_node instanceof MUsesDef) {
+        else if(currentNode instanceof MUsesDef) {
             return data_MUsesDef(variable, value);
         }
-        else if(current_node instanceof MInterfaceDef) {
+        else if(currentNode instanceof MInterfaceDef) {
             return data_MInterfaceDef(variable, value);
         }
-        else if(current_node instanceof MOperationDef) {
+        else if(currentNode instanceof MOperationDef) {
             return data_MOperationDef(variable, value);
         }
-        else if(current_node instanceof MEnumDef) {
+        else if(currentNode instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
         }
-        else if(current_node instanceof MAliasDef) {
+        else if(currentNode instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
         }
 
@@ -486,7 +486,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MAliasDef(String data_type, String data_value)
     {
-        MIDLType idl_type = ((MAliasDef) current_node).getIdlType();
+        MIDLType idl_type = ((MAliasDef) currentNode).getIdlType();
 
         if(data_type.equals("FirstBound")) {
             return "" + ((MArrayDef) idl_type).getBounds().get(0);
@@ -504,7 +504,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MComponentDef(String data_type, String data_value)
     {
-        MComponentDef component = (MComponentDef) current_node;
+        MComponentDef component = (MComponentDef) currentNode;
         MHomeDef home = null;
 
         try {
@@ -519,7 +519,7 @@ abstract public class CppGenerator extends CodeGenerator
         }
 
         if(data_type.endsWith("Namespace")) {
-            return handleNamespace(data_type, ((MComponentDef) current_node)
+            return handleNamespace(data_type, ((MComponentDef) currentNode)
                     .getIdentifier());
         }
         else if(data_type.equals("HomeInclude")) {
@@ -537,7 +537,7 @@ abstract public class CppGenerator extends CodeGenerator
     {
         if(data_type.equals("Members")) {
             List b = new ArrayList();
-            MEnumDef enum = (MEnumDef) current_node;
+            MEnumDef enum = (MEnumDef) currentNode;
             for(Iterator i = enum.getMembers().iterator(); i.hasNext();)
                 b.add((String) i.next());
             return join(", ", b);
@@ -557,7 +557,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MHomeDef(String data_type, String data_value)
     {
-        MHomeDef home = (MHomeDef) current_node;
+        MHomeDef home = (MHomeDef) currentNode;
         MComponentDef component = home.getComponent();
 
         String home_id = home.getIdentifier();
@@ -579,7 +579,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
-        MInterfaceDef iface = (MInterfaceDef) current_node;
+        MInterfaceDef iface = (MInterfaceDef) currentNode;
 
         if(data_type.equals("BaseType")) {
             String base = joinBaseNames(", virtual public ");
@@ -601,12 +601,12 @@ abstract public class CppGenerator extends CodeGenerator
             return data_value.substring(0, data_value.length() - 2);
         }
         else if(data_type.equals("UsesIdentifier")) {
-            MOperationDef op = (MOperationDef) current_node;
+            MOperationDef op = (MOperationDef) currentNode;
             if(op.getDefinedIn() instanceof MUsesDef)
                 return op.getDefinedIn().getIdentifier();
         }
         else if(data_type.equals("ProvidesIdentifier")) {
-            MOperationDef op = (MOperationDef) current_node;
+            MOperationDef op = (MOperationDef) currentNode;
             if(op.getDefinedIn() instanceof MProvidesDef)
                 return op.getDefinedIn().getIdentifier();
         }
@@ -615,7 +615,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MProvidesDef(String data_type, String data_value)
     {
-        MInterfaceDef iface = ((MProvidesDef) current_node).getProvides();
+        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
 
         if(data_type.equals("CCMProvidesType")) {
             if(data_value.indexOf(scope_separator) < 0)
@@ -633,7 +633,7 @@ abstract public class CppGenerator extends CodeGenerator
         }
         else if(data_type.startsWith("FullComponentType")) {
             // Return full scoped component type
-            MComponentDef component = ((MProvidesDef) current_node)
+            MComponentDef component = ((MProvidesDef) currentNode)
                     .getComponent();
             List scope = getScope((MContained) component);
             if(scope.size() > 0)
@@ -647,7 +647,7 @@ abstract public class CppGenerator extends CodeGenerator
         else if(data_type.startsWith("OpenNamespace")
                 || (data_type.startsWith("CloseNamespace"))) {
             // Add component Namespace to facet impl class files
-            MComponentDef component = ((MProvidesDef) current_node)
+            MComponentDef component = ((MProvidesDef) currentNode)
                     .getComponent();
             return handleNamespace(data_type, component.getIdentifier());
         }
@@ -656,7 +656,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MSupportsDef(String data_type, String data_value)
     {
-        MInterfaceDef iface = ((MSupportsDef) current_node).getSupports();
+        MInterfaceDef iface = ((MSupportsDef) currentNode).getSupports();
 
         if(data_type.equals("CCMSupportsType")) {
             if(data_value.indexOf(scope_separator) < 0)
@@ -678,7 +678,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MUsesDef(String data_type, String data_value)
     {
-        MInterfaceDef iface = ((MUsesDef) current_node).getUses();
+        MInterfaceDef iface = ((MUsesDef) currentNode).getUses();
 
         if(data_type.equals("CCMUsesType")) {
             if(data_value.indexOf(scope_separator) < 0)
@@ -780,12 +780,12 @@ abstract public class CppGenerator extends CodeGenerator
                                           String template_name,
                                           boolean attribute)
     {
-        MContained cont = (MContained) current_node;
+        MContained cont = (MContained) currentNode;
 
         // if this is a supports node, we want to actually refer to the
         // home or component that owns this supports definition.
 
-        if(current_node instanceof MSupportsDef) {
+        if(currentNode instanceof MSupportsDef) {
             MContained tmp = ((MSupportsDef) cont).getComponent();
             if(tmp == null)
                 tmp = ((MSupportsDef) cont).getHome();
