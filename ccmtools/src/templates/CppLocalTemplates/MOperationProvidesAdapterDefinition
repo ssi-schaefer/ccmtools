@@ -3,9 +3,15 @@
     %(MExceptionDefThrows)s
 {
     LDEBUGNL(CCM_LOCAL," %(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefName)s)");
+%(DebugOperationInParameter)s
     if(!ValidConnection) 
         throw LocalComponents::InvalidConnection();
-    %(Return)sfacet->%(Identifier)s(%(MParameterDefName)s);
+
+%(OperationToFacetDelegation)s      
+
+%(DebugOperationOutParameter)s
+%(DebugOperationResult)s
+%(OperationResult)s
 }
 
 

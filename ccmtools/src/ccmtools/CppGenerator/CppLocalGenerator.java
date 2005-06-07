@@ -41,6 +41,8 @@ import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MParameterDef;
+import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
@@ -133,6 +135,13 @@ public class CppLocalGenerator extends CppGenerator
         vars.put("MParameterDefAll", getOperationParams(operation));
         vars.put("MParameterDefName", getOperationParamNames(operation));
 
+        vars.put("OperationToFacetDelegation" , getOperationToFacetDelegation(operation));
+        vars.put("OperationResult"            , getOperationResult(operation));         
+        
+        vars.put("DebugOperationInParameter" , getDebugOperationInParameter(operation));
+        vars.put("DebugOperationOutParameter", getDebugOperationOutParameter(operation));
+        vars.put("DebugOperationResult"      , getDebugOperationResult(operation));
+        
         if(!lang_type.equals("void"))
             vars.put("Return", "return ");
         else
@@ -296,6 +305,98 @@ public class CppLocalGenerator extends CppGenerator
         }
     }
     
+    
+    // Debug helper methods ---------------------------------------------------
+    // TODO - Refactor: move these methods in a separate class
+    // ------------------------------------------------------------------------
+
+    protected String getDebugOperationInParameter(MOperationDef op)
+    {
+        StringBuffer buffer = new StringBuffer();
+        for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
+            MParameterDef p = (MParameterDef) params.next();
+            MIDLType idlType = ((MTyped) p).getIdlType();
+            MParameterMode direction = p.getDirection();
+            if(direction == MParameterMode.PARAM_IN) {
+                buffer.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"IN ");
+                buffer.append(p.getIdentifier()).append(" = \" << ");
+                buffer.append(Scope.getDebugNamespace(baseNamespace,idlType));
+                System.out.println(">>>>>>>>>>>>" + idlType);
+                buffer.append("ccmDebug(").append(p.getIdentifier()).append(")");
+                buffer.append(");");
+                buffer.append(Text.NL);
+            }
+            else if(direction == MParameterMode.PARAM_INOUT) {
+                buffer.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"INOUT ");
+                buffer.append(p.getIdentifier()).append(" = \" << ");
+                buffer.append(Scope.getDebugNamespace(baseNamespace,idlType));
+                buffer.append("ccmDebug(").append(p.getIdentifier()).append(")");
+                buffer.append(");");
+                buffer.append(Text.NL);
+            }
+        }
+        return buffer.toString();
+    }
+
+    protected String getDebugOperationOutParameter(MOperationDef op)
+    {
+        StringBuffer buffer = new StringBuffer();
+        for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
+            MParameterDef p = (MParameterDef) params.next();
+            MIDLType idlType = ((MTyped) p).getIdlType();
+            MParameterMode direction = p.getDirection();
+            if(direction == MParameterMode.PARAM_OUT) {
+                buffer.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"OUT ");
+                buffer.append(p.getIdentifier()).append(" = \" << ");
+                buffer.append(Scope.getDebugNamespace(baseNamespace,idlType));
+                buffer.append("ccmDebug(").append(p.getIdentifier()).append("));");
+            }
+        }
+        return buffer.toString();
+    }
+    
+    protected String getDebugOperationResult(MOperationDef op)
+    {
+        MIDLType idlType = op.getIdlType();
+        String langType = getLanguageType(op);
+        StringBuffer buffer = new StringBuffer();
+        if(!langType.equals("void")) {
+            buffer.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"result = \" << ");
+            buffer.append(Scope.getDebugNamespace(baseNamespace, idlType));
+            buffer.append("ccmDebug(").append("result").append(")").append(");");
+        }
+        return buffer.toString();
+    }
+    
+    protected String getOperationToFacetDelegation(MOperationDef op)
+    {
+        StringBuffer buffer = new StringBuffer();
+        String langType = getLanguageType(op);
+        buffer.append(Text.TAB);
+        if(!langType.equals("void")) {
+            buffer.append(langType);
+            buffer.append(" result = ");
+        }
+        buffer.append("facet->");
+        buffer.append(op.getIdentifier()).append("(");
+        List parameterList = new ArrayList();
+        for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
+            MParameterDef p = (MParameterDef) params.next();
+            parameterList.add(p.getIdentifier());
+        }
+        buffer.append(Text.join(",", parameterList)).append(");");
+        return buffer.toString();
+    }
+    
+    protected String getOperationResult(MOperationDef op)
+    {
+        StringBuffer buffer = new StringBuffer();
+        String langType = getLanguageType(op);
+        if(!langType.equals("void")) {
+            buffer.append(Text.TAB).append("return result;");
+        }
+        return buffer.toString();
+    }
     
     
     // ------------------------------------------------------------------------

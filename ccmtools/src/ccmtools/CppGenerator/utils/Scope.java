@@ -27,11 +27,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
+import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MModuleDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.Metamodel.BaseIDL.MStringDef;
+import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.utils.Text;
 
 /**
@@ -125,7 +130,20 @@ public class Scope
     public static String getDebugNamespace(List baseNamespace, 
                                            MIDLType idlType)
     {
-        if(idlType instanceof MContained) {
+        if(idlType instanceof MAliasDef) {
+            MTyped type = (MTyped) idlType;
+            MIDLType innerIdlType = type.getIdlType();
+            if(innerIdlType instanceof MPrimitiveDef 
+                    || innerIdlType instanceof MStringDef
+                    || innerIdlType instanceof MWstringDef) {
+                return Text.join("::", baseNamespace) + "::";
+            }
+            else {
+                return getScopedNamespace(baseNamespace, 
+                                          (MContained)idlType, "::","");
+            }
+        }
+        else if(idlType instanceof MContained) {
             return getScopedNamespace(baseNamespace, 
                                       (MContained)idlType, "::","");
     	}
