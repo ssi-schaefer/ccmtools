@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ccmtools.CodeGenerator.Template;
+import ccmtools.CppGenerator.SourceConstants;
 
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -46,7 +47,7 @@ public class IDL2Generator extends IDLGenerator
         super("2", d, out_dir);
 
         // Define the separator used to create file names.
-        file_separator = "_";
+//        file_separator = "_";
 
         // Add a namespace to all IDL2 fragments.
         // base_namespace.add("CORBA_Stubs");
@@ -120,7 +121,7 @@ public class IDL2Generator extends IDLGenerator
         Collections.reverse(base_namespace);
 
         scope.add(node.getIdentifier());
-        return "#include<" + join(file_separator, scope) + ".idl>";
+        return "#include<" + join(SourceConstants.manglingSeparator, scope) + ".idl>";
     }
 
     /***************************************************************************

@@ -1,6 +1,11 @@
 RELEASE-0.5.2
 ============================================================================
 
+RELEASE-0.5.2-pre2
+----------------------------------------------------------------------------
+o) refactoring 
+
+
 RELEASE-0.5.2-pre1
 ----------------------------------------------------------------------------
 *) removed cpp-environment/wx
@@ -10,7 +15,6 @@ RELEASE-0.5.2-pre1
 *) moved ccmtools.UI.ConsoleCodeGenerator to ccmtools.UI.Main
 *) refactored UI.Main (removed all System.exit() and added some String Constants)
 *) bugfix: CppRemoteGeneratorImpl.java converter for remote exception
-
 *) changed local component logic logging (from DEBUGNL("...") to LDEBUGNL(CCM_LOCAL,"..."))
 *) implemented cpp-environment/ccm/CCM_Local/utils/Debug.h that contains
    ccmDebug() functions for C++ primitive types.
@@ -20,10 +24,25 @@ RELEASE-0.5.2-pre1
 
 
 
-
-
 RELEASE-0.5.1
 ============================================================================
+
+RELEASE-0.5.1-pre6
+----------------------------------------------------------------------------
+*) renamed the temporary idl File from _CCM_*.idl to _CCM_* 
+*) implemented C++ remote undeploy_*() function
+
+*) added JacORB benchmark client	
+*) added test/prototypes/mico/persistent_object
+
+
+RELEASE-0.5.1-pre5
+----------------------------------------------------------------------------
+*) removed CORBA_Stubs namespace from generated IDL2 and remote C++ files
+
+*) bugfix: *_entry.h files in impl/ must be overwritten by every generator 
+   call because they are part of the component logic.
+
 
 RELEASE-0.5.1-pre4
 ----------------------------------------------------------------------------
@@ -46,22 +65,3 @@ RELEASE-0.5.1-pre4
    (cpp-environment/CCM_Remote and files generated from c++remote)   
    
 *) added support of receptacle attributes
-
-
-RELEASE-0.5.1-pre5
-----------------------------------------------------------------------------
-*) removed CORBA_Stubs namespace from generated IDL2 and remote C++ files
-
-*) bugfix: *_entry.h files in impl/ must be overwritten by every generator 
-   call because they are part of the component logic.
-
-
-RELEASE-0.5.1-pre6
-----------------------------------------------------------------------------
-*) renamed the temporary idl File from _CCM_*.idl to _CCM_* 
-*) implemented C++ remote undeploy_*() function
-
-*) added JacORB benchmark client	
-*) added test/prototypes/mico/persistent_object
-
-

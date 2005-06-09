@@ -45,7 +45,7 @@ import ccmtools.utils.Text;
  * 
  * 
  */
-public class Scope
+public class ScopeHelper
 {   
     protected static final String SCOPE_SEPARATOR = "::";
     protected static final String FILE_SEPARATOR = File.separator;
@@ -154,6 +154,10 @@ public class Scope
     
     
     // ------------------------------------------------------------------------
+    // CppLocalGenerator
+    // ------------------------------------------------------------------------
+    
+    
     
     // TODO: Handle scope in terms of getScopedNamespace() 
     public static String handleNamespace(Stack namespaceStack, String dataType, String local)

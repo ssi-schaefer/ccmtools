@@ -18,10 +18,17 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.CppGenerator.utils;
+package ccmtools.CppGenerator;
+
+import java.io.File;
 
 
-public class Debug
+public class SourceConstants
 {
-
+    public static final String fileSeparator = File.separator;
+    
+    public static final String scopeSeparator = "::";    
+    
+    public static final String manglingSeparator = "_";
+    
 }

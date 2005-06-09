@@ -29,6 +29,7 @@ import java.util.List;
 
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Template;
+import ccmtools.CppGenerator.SourceConstants;
 
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
@@ -83,7 +84,7 @@ abstract public class IDLGenerator extends CodeGenerator
         super("IDL" + suffix, d, out_dir, local_output_types,
               local_reserved_words, local_language_map);
 
-        file_separator = "_";
+//        file_separator = "_";
         base_namespace = new ArrayList();
     }
 
@@ -164,9 +165,9 @@ abstract public class IDLGenerator extends CodeGenerator
         code = code.replaceAll("#ifndef", "\n#ifndef");
         code = code.replaceAll("#define(.*)$", "#define\\1\n");
 
-        String name = join(file_separator, namespaceStack);
+        String name = join(SourceConstants.manglingSeparator, namespaceStack);
         if(!name.equals(""))
-            name += file_separator;
+            name += SourceConstants.manglingSeparator;
         name += ((MContained) currentNode).getIdentifier() + ".idl";
 
         try {
@@ -225,7 +226,7 @@ abstract public class IDLGenerator extends CodeGenerator
     {
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        return "#include <" + join(file_separator, scope) + ".idl>";
+        return "#include <" + join(SourceConstants.manglingSeparator, scope) + ".idl>";
     }
 
     /**
