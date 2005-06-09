@@ -23,9 +23,9 @@ nested:
 	ccmtools-generate c++local ${IDL_INCLUDE} -a -o ${COMPONENT_DIR} ${IDL3_DIR}/SuperTest.idl
 
 dbc: 
-	ccmtools-generate c++local ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/DbcBenchmark.idl
-	ccmtools-generate c++local ${IDL_INCLUDE} -a -o ${COMPONENT_DIR} ${IDL3_DIR}/DbcTest.idl
-	ccmtools-generate c++dbc ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/DbcTest.idl
+	ccmtools c++local ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/DbcBenchmark.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${COMPONENT_DIR} ${IDL3_DIR}/DbcTest.idl
+	ccmtools c++dbc ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/DbcTest.idl
 
 install: 
 	cp impl/Makefile.py ${COMPONENT_DIR} 
