@@ -1,0 +1,21 @@
+/***
+ * Tutorial: HelloWorld Example
+ * 
+ **/
+
+module world
+{ 
+  interface Hello 
+  { 
+      string sayHello(); 
+  }; 
+
+  component Server 
+  { 
+      provides Hello hello;
+  }; 
+
+  home ServerHome manages Server
+  {
+  };
+};
