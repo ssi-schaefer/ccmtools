@@ -39,10 +39,6 @@ int main(int argc, char *argv[])
 
   SmartPtr<Test> myTest;
 
-  // Debug tools:
-  // We use debug tools defined in the WX::Utils package.
-  Debug::instance().set_global(true);
-
   // Component bootstrap:
   // We get an instance of the local HomeFinder and register the deployed
   // component- and mirror component home.

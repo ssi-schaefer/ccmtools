@@ -38,6 +38,13 @@ type_test_impl::~type_test_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
+void
+type_test_impl::op()
+    throw (LocalComponents::CCMException)
+{
+    DEBUGNL("type_test_impl->op()");
+}
+
 short
 type_test_impl::op_b1(const short p1, short& p2, short& p3)
     throw (LocalComponents::CCMException)

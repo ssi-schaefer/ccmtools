@@ -38,10 +38,6 @@ using namespace CCM_Session_Test;
 
 int main(int argc, char *argv[])
 {
-    // Debug tools:
-    // We use debug tools defined in the WX::Utils package.
-    Debug::instance().set_global(true);
-
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     SmartPtr<Test> myTest;

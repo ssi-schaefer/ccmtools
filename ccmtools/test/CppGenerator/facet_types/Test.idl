@@ -27,6 +27,9 @@ interface Console
 
 interface TypeTest 
 {
+  // no types
+  void           op();
+
   // basic types 
   short          op_b1 (in short p1, inout short p2, out short p3);
   long           op_b2 (in long p1, inout long p2, out long p3);
