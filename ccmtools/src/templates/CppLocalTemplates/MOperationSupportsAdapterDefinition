@@ -3,7 +3,13 @@
     %(MExceptionDefThrows)s
 {
     LDEBUGNL(CCM_LOCAL," %(Object)s::%(Identifier)s(%(MParameterDefName)s)");
-    %(Return)slocal_component->%(Identifier)s(%(MParameterDefName)s);
+%(DebugOperationInParameter)s
+    
+%(OperationToLocalComponentDelegation)s 
+
+%(DebugOperationOutParameter)s
+%(DebugOperationResult)s
+%(OperationResult)s
 }
 
 

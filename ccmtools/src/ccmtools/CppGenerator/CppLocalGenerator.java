@@ -135,12 +135,19 @@ public class CppLocalGenerator extends CppGenerator
         vars.put("MParameterDefAll", getOperationParams(operation));
         vars.put("MParameterDefName", getOperationParamNames(operation));
 
-        vars.put("OperationToFacetDelegation" , getOperationToFacetDelegation(operation));
-        vars.put("OperationResult"            , getOperationResult(operation));         
+        vars.put("OperationToFacetDelegation" , 
+                 getOperationDelegation(operation, "facet"));
+        vars.put("OperationToLocalComponentDelegation",
+                 getOperationDelegation(operation, "local_component"));
+        vars.put("OperationResult"            , 
+                 getOperationResult(operation));         
         
-        vars.put("DebugOperationInParameter" , getDebugOperationInParameter(operation));
-        vars.put("DebugOperationOutParameter", getDebugOperationOutParameter(operation));
-        vars.put("DebugOperationResult"      , getDebugOperationResult(operation));
+        vars.put("DebugOperationInParameter" , 
+                 getDebugOperationInParameter(operation));
+        vars.put("DebugOperationOutParameter", 
+                 getDebugOperationOutParameter(operation));
+        vars.put("DebugOperationResult"      , 
+                 getDebugOperationResult(operation));
         
         if(!lang_type.equals("void"))
             vars.put("Return", "return ");
@@ -321,7 +328,6 @@ public class CppLocalGenerator extends CppGenerator
                 buffer.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"IN ");
                 buffer.append(p.getIdentifier()).append(" = \" << ");
                 buffer.append(Scope.getDebugNamespace(baseNamespace,idlType));
-                System.out.println(">>>>>>>>>>>>" + idlType);
                 buffer.append("ccmDebug(").append(p.getIdentifier()).append(")");
                 buffer.append(");");
                 buffer.append(Text.NL);
@@ -368,7 +374,7 @@ public class CppLocalGenerator extends CppGenerator
         return buffer.toString();
     }
     
-    protected String getOperationToFacetDelegation(MOperationDef op)
+    protected String getOperationDelegation(MOperationDef op, String target)
     {
         StringBuffer buffer = new StringBuffer();
         String langType = getLanguageType(op);
@@ -377,7 +383,7 @@ public class CppLocalGenerator extends CppGenerator
             buffer.append(langType);
             buffer.append(" result = ");
         }
-        buffer.append("facet->");
+        buffer.append(target).append("->");
         buffer.append(op.getIdentifier()).append("(");
         List parameterList = new ArrayList();
         for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
