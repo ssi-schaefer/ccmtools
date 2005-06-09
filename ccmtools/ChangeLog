@@ -12,9 +12,11 @@ RELEASE-0.5.2-pre1
 *) bugfix: CppRemoteGeneratorImpl.java converter for remote exception
 
 *) changed local component logic logging (from DEBUGNL("...") to LDEBUGNL(CCM_LOCAL,"..."))
-*) implemented cpp-environment/ccm/CCM_Local/Utils/toString.h that contains
-   toString() functions for C++ primitive types.
-o) generate toString() functions for generated local types
+*) implemented cpp-environment/ccm/CCM_Local/utils/Debug.h that contains
+   ccmDebug() functions for C++ primitive types.
+*) generate ccmDebug() functions for generated local types
+*) generate LDEBUGNL(CCM_LOCAL,"...")) messages for parameter (IN, INOUT, OUT, 
+   result) logging in facet and supported interface adapters.
 
 
 
