@@ -142,7 +142,6 @@ CCM_CarRental_mirror_impl::ccm_activate()
       cerr << "MAINTENANCE ERROR: no customer found!" << endl;
       cout << "deleteCustomer() passed" << endl;
     }
-    
 
     try {
       {

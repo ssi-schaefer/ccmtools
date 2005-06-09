@@ -1,0 +1,20 @@
+HOW TO BUILD A JAVA-CLIENT
+==========================
+
+
+Make sure that you have installed the java-environment and added the
+ccmtools/lib/Components.jar to your CLASSPATH.
+
+> export CLASSPATH=/home/eteinik/install/ccmtools/lib/Components.jar:$CLASSPATH
+
+
+> cd server/CORBA_Stubs/
+> make client
+> cd ..
+
+> tree JavaClientLib
+JavaClientLib
+`-- lib
+    `-- ClientStubs.jar
+
+> export WX_DEBUG_LEVELS="CCM_REMOTE"
