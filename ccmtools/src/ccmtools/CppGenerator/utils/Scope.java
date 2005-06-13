@@ -45,7 +45,7 @@ import ccmtools.utils.Text;
  * 
  * 
  */
-public class ScopeHelper
+public class Scope
 {   
     protected static final String SCOPE_SEPARATOR = "::";
     protected static final String FILE_SEPARATOR = File.separator;
@@ -88,7 +88,9 @@ public class ScopeHelper
         return scope;
     }
     
-    public static String getScopedNamespace(List baseNamespace, MContained contained, String separator, String local)
+    public static String getScopedNamespace(List baseNamespace, 
+                                            MContained contained, 
+                                            String separator, String local)
     {
         StringBuffer buffer = new StringBuffer();
         List scope = getScope(contained);
@@ -160,7 +162,8 @@ public class ScopeHelper
     
     
     // TODO: Handle scope in terms of getScopedNamespace() 
-    public static String handleNamespace(Stack namespaceStack, String dataType, String local)
+    public static String handleNamespace(Stack namespaceStack, 
+                                         String dataType, String local)
     {
         List tmp = new ArrayList();
         List names = new ArrayList(namespaceStack);
@@ -190,8 +193,143 @@ public class ScopeHelper
                 tmp.add("} // /namespace " + i.next() + "\n");
             return Text.join("", tmp);
         }
+        
         else {
             return "";
         }
     }    
+    
+    
+    
+    
+    
+    
+    // ------------------------------------------------------------------------
+    // CppRemoteGenerator
+    // ------------------------------------------------------------------------
+       
+    
+    /**
+     * Collect all defined CORBA Stub prefixes into a single string. All CORBA
+     * Stub prefixes are stored in a class attribute list called
+     * CorbaStubsNamespace which is filled in the constructor.
+     * 
+     * @param separator
+     *            A separator string that is used between two list entries
+     *            (example "::"). Example: {"CORBA_Stubs"} -> "CORBA_Stubs::"
+     */
+    public static String getCorbaStubsNamespace(List corbaStubsNamespace,
+                                            MContained contained, 
+                                            String separator)
+    {
+        List scope = getScope(contained);
+        StringBuffer buffer = new StringBuffer();
+        if(corbaStubsNamespace.size() > 0) {
+            buffer.append(Text.join(separator, corbaStubsNamespace));
+            buffer.append(separator);
+        }
+        if (scope.size() > 0) {
+            buffer.append(Text.join(separator, scope));
+            buffer.append(separator);
+        }
+        return buffer.toString();
+    }
+
+    
+    public static String getCorbaStubName(List corbaStubsNamespace,
+                                      MContained contained, 
+                                      String separator)
+    {
+        List scope = getScope(contained);
+        StringBuffer buffer = new StringBuffer();
+        if(corbaStubsNamespace.size() > 0) {
+            buffer.append(Text.join(separator, corbaStubsNamespace));
+            buffer.append(separator);
+        }
+        if (scope.size() > 0) {
+            buffer.append(Text.join(separator, scope));
+            buffer.append(separator);
+        }
+        buffer.append(contained.getIdentifier());
+        return buffer.toString();
+    }
+    
+    
+    public static String getLocalNamespace(List localNamespace,
+                                              MContained contained, 
+                                              String separator, 
+                                              String local)
+    {
+        List scope = getScope(contained);
+        if (local.length() > 0) {
+            scope.add("CCM_Session_" + local);
+        }
+        
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(Text.join(separator, localNamespace));
+        buffer.append(separator);
+        if (scope.size() > 0) {
+            buffer.append(Text.join(separator, scope));
+            buffer.append(separator);
+        }
+        return buffer.toString();
+    }
+    
+    
+    public static String getLocalName(List localNamespace,
+                                      MContained contained, 
+                                      String separator)
+    {
+        List scope = getScope(contained);
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(Text.join(separator, localNamespace));
+        buffer.append(separator);
+        if (scope.size() > 0) {
+            buffer.append(Text.join(separator, scope));
+            buffer.append(separator);
+        }
+        buffer.append(contained.getIdentifier());
+        return buffer.toString();
+    }
+
+    
+    public static String getRemoteNamespace(Stack namespaceStack,
+                                            String separator, 
+                                            String local)
+    {
+        List names = new ArrayList(namespaceStack);
+        if (local.length() > 0) {
+            names.add("CCM_Session_" + local);
+        }
+
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(separator);
+        if (names.size() > 1) {
+            buffer.append(Text.join(separator, Text.slice(names, 0)));
+            buffer.append(separator);
+        }
+        else {
+            // no additional namespace
+        }
+        return buffer.toString();
+    }
+
+    
+    public static String getRemoteName(List baseNamespace,
+                                   MContained contained, 
+                                   String separator,
+                                   String local)
+    {
+        List scope = getScope(contained);
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(Text.join(separator, baseNamespace));
+        buffer.append(separator);
+        if(scope.size() > 0) {
+            buffer.append(Text.join(separator, scope));
+            buffer.append(separator);
+        }
+        buffer.append(contained.getIdentifier());
+        return buffer.toString();
+    }
 }

@@ -21,6 +21,7 @@
 package ccmtools.CppGenerator.utils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,6 +48,30 @@ public class LocalHelper
         buffer.append(node.getIdentifier());
         buffer.append(".h> \n");
         buffer.append("#endif \n");
+        return buffer.toString();
+    }
+    
+    
+    public String getCcmToolsVersion()
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("CCM Tools version ");
+        buffer.append(ccmtools.Constants.VERSION);
+        return buffer.toString();
+    }
+    
+    public String getCcmGeneratorTimeStamp() 
+    {
+        StringBuffer buffer = new StringBuffer();
+        Calendar now = Calendar.getInstance();
+        buffer.append(now.getTime());
+        return buffer.toString();
+    }
+    
+    public String getCcmGeneratorUser() 
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(System.getProperty("user.name"));
         return buffer.toString();
     }
     

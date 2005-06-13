@@ -59,7 +59,7 @@ public class DebugHelper
         buffer.append(Text.TAB).append("for(unsigned int i=0; i<in.size(); i++) {")
         	.append(Text.NL);
         buffer.append(Text.tab(2)).append("os << ");
-        buffer.append(ScopeHelper.getDebugNamespace(baseNamespace,singleIdlType));
+        buffer.append(Scope.getDebugNamespace(baseNamespace,singleIdlType));
         buffer.append("ccmDebug(in[i], indent+1) << std::endl;").append(Text.NL);
         buffer.append(Text.TAB).append("}").append(Text.NL);
         buffer.append(Text.TAB).append("os << doIndent(indent) << \"]\";").append(Text.NL);
@@ -85,7 +85,7 @@ public class DebugHelper
         buffer.append(Text.TAB).append("for(unsigned int i=0; i<in.size(); i++) {")
         	.append(Text.NL);
         buffer.append(Text.tab(2)).append("os << ");
-        buffer.append(ScopeHelper.getDebugNamespace(baseNamespace,singleIdlType));            
+        buffer.append(Scope.getDebugNamespace(baseNamespace,singleIdlType));            
         buffer.append("ccmDebug(in[i], indent+1) << std::endl;").append(Text.NL);
         buffer.append(Text.TAB).append("}").append(Text.NL);
         buffer.append(Text.TAB).append("os << doIndent(indent) << \"]\";").append(Text.NL);
@@ -119,7 +119,7 @@ public class DebugHelper
             if(direction == MParameterMode.PARAM_IN) {
                 buffer.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"IN ");
                 buffer.append(p.getIdentifier()).append(" = \" << ");
-                buffer.append(ScopeHelper.getDebugNamespace(baseNamespace,idlType));
+                buffer.append(Scope.getDebugNamespace(baseNamespace,idlType));
                 buffer.append("ccmDebug(").append(p.getIdentifier()).append(")");
                 buffer.append(");");
                 buffer.append(Text.NL);
@@ -127,7 +127,7 @@ public class DebugHelper
             else if(direction == MParameterMode.PARAM_INOUT) {
                 buffer.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"INOUT ");
                 buffer.append(p.getIdentifier()).append(" = \" << ");
-                buffer.append(ScopeHelper.getDebugNamespace(baseNamespace,idlType));
+                buffer.append(Scope.getDebugNamespace(baseNamespace,idlType));
                 buffer.append("ccmDebug(").append(p.getIdentifier()).append(")");
                 buffer.append(");");
                 buffer.append(Text.NL);
@@ -146,7 +146,7 @@ public class DebugHelper
             if(direction == MParameterMode.PARAM_OUT) {
                 buffer.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"OUT ");
                 buffer.append(p.getIdentifier()).append(" = \" << ");
-                buffer.append(ScopeHelper.getDebugNamespace(baseNamespace,idlType));
+                buffer.append(Scope.getDebugNamespace(baseNamespace,idlType));
                 buffer.append("ccmDebug(").append(p.getIdentifier()).append("));");
             }
         }
@@ -160,7 +160,7 @@ public class DebugHelper
         StringBuffer buffer = new StringBuffer();
         if(!langType.equals("void")) {
             buffer.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"result = \" << ");
-            buffer.append(ScopeHelper.getDebugNamespace(baseNamespace, idlType));
+            buffer.append(Scope.getDebugNamespace(baseNamespace, idlType));
             buffer.append("ccmDebug(").append("result").append(")").append(");");
         }
         return buffer.toString();
