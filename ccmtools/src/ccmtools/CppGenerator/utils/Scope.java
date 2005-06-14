@@ -20,7 +20,6 @@
 
 package ccmtools.CppGenerator.utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -47,9 +46,7 @@ import ccmtools.utils.Text;
  */
 public class Scope
 {   
-    protected static final String SCOPE_SEPARATOR = "::";
-    protected static final String FILE_SEPARATOR = File.separator;
-
+   
     /**
      * Join the base names of the current node using the given string as a
      * separator. The current node should be an instance of MInterfaceDef.
@@ -172,10 +169,10 @@ public class Scope
             names.add("CCM_Session_" + local);
 
         if(dataType.equals("Namespace")) {
-            return Text.join(SCOPE_SEPARATOR, names);
+            return Text.join(Text.SCOPE_SEPARATOR, names);
         }
         else if(dataType.equals("IncludeNamespace")) {
-            return Text.join(FILE_SEPARATOR, names);
+            return Text.join(Text.FILE_SEPARATOR, names);
         }
         else if(dataType.equals("UsingNamespace")) {
             for(Iterator i = names.iterator(); i.hasNext();)

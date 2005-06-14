@@ -21,6 +21,7 @@
 
 package ccmtools.utils;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Collection;
 import java.util.ArrayList;
@@ -39,7 +40,12 @@ public class Text
     
     /** Defines a new line string that can be used in generated code. */
     public static final String NL = "\n";
+        
+    public static final String SCOPE_SEPARATOR = "::";
     
+    public static final String FILE_SEPARATOR = File.separator;
+    
+    public static final String MANGLING_SEPARATOR = "_";
     
     /**
      * Create n newlines and write them into a string.
