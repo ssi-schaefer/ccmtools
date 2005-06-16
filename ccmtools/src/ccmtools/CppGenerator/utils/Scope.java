@@ -20,23 +20,6 @@
 
 package ccmtools.CppGenerator.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Stack;
-
-import ccmtools.Metamodel.BaseIDL.MAliasDef;
-import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MContainer;
-import ccmtools.Metamodel.BaseIDL.MIDLType;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.Metamodel.BaseIDL.MModuleDef;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.Metamodel.BaseIDL.MStringDef;
-import ccmtools.Metamodel.BaseIDL.MTyped;
-import ccmtools.Metamodel.BaseIDL.MWstringDef;
-import ccmtools.utils.Text;
 
 /**
  * This utility class contains methods to handle the scope of IDL3 model elements
@@ -56,100 +39,100 @@ public class Scope
      * @return a string containing the names of base interfaces, separated by
      *         sep.
      */
-    protected static String joinBaseNames(MContained currentNode, String sep)
-    {
-        if(currentNode instanceof MInterfaceDef) {
-            MInterfaceDef node = (MInterfaceDef)currentNode;
-            ArrayList names = new ArrayList();
-            for(Iterator i = node.getBases().iterator(); i.hasNext();)
-                names.add(((MInterfaceDef) i.next()).getIdentifier());
-            return Text.join(sep, names);
-        }
-        else {
-            // Only InterfaceDef and derived types (ComponentDef, HomeDef)
-            // can have base names.
-            return "";  
-        }
-    }   
+//    protected static String joinBaseNames(MContained currentNode, String sep)
+//    {
+//        if(currentNode instanceof MInterfaceDef) {
+//            MInterfaceDef node = (MInterfaceDef)currentNode;
+//            ArrayList names = new ArrayList();
+//            for(Iterator i = node.getBases().iterator(); i.hasNext();)
+//                names.add(((MInterfaceDef) i.next()).getIdentifier());
+//            return Text.join(sep, names);
+//        }
+//        else {
+//            // Only InterfaceDef and derived types (ComponentDef, HomeDef)
+//            // can have base names.
+//            return "";  
+//        }
+//    }   
     
-    public static List getScope(MContained node)
-    {
-        List scope = new ArrayList();
-        MContainer c = node.getDefinedIn();
-        while(c.getDefinedIn() != null) {
-            if(c instanceof MModuleDef) {
-                scope.add(0, c.getIdentifier());
-            }
-            c = c.getDefinedIn();
-        }
-        return scope;
-    }
-    
-    public static String getScopedNamespace(List baseNamespace, 
-                                            MContained contained, 
-                                            String separator, String local)
-    {
-        StringBuffer buffer = new StringBuffer();
-        List scope = getScope(contained);
+//    public static List getScope(MContained node)
+//    {
+//        List scope = new ArrayList();
+//        MContainer c = node.getDefinedIn();
+//        while(c.getDefinedIn() != null) {
+//            if(c instanceof MModuleDef) {
+//                scope.add(0, c.getIdentifier());
+//            }
+//            c = c.getDefinedIn();
+//        }
+//        return scope;
+//    }
+//    
+//    public static String getScopedNamespace(List baseNamespace, 
+//                                            MContained contained, 
+//                                            String separator, String local)
+//    {
+//        StringBuffer buffer = new StringBuffer();
+//        List scope = getScope(contained);
+//
+//        if (local.length() > 0) {
+//            scope.add("CCM_Session_" + local);
+//        }
+//        buffer.append(Text.join(separator, baseNamespace));
+//        buffer.append(separator);
+//        if (scope.size() > 0) {
+//            buffer.append(Text.join(separator, scope));
+//            buffer.append(separator);
+//        }
+//        return buffer.toString();
+//    }
 
-        if (local.length() > 0) {
-            scope.add("CCM_Session_" + local);
-        }
-        buffer.append(Text.join(separator, baseNamespace));
-        buffer.append(separator);
-        if (scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator);
-        }
-        return buffer.toString();
-    }
-
-    public static String getScopedName(List baseNamespace, 
-                                       MContained contained, 
-                                       String separator, 
-                                       String local)
-    {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(getScopedNamespace(baseNamespace, contained, separator, local));
-        buffer.append(contained.getIdentifier());
-        return buffer.toString();
-    }    
+//    public static String getScopedName(List baseNamespace, 
+//                                       MContained contained, 
+//                                       String separator, 
+//                                       String local)
+//    {
+//        StringBuffer buffer = new StringBuffer();
+//        buffer.append(getScopedNamespace(baseNamespace, contained, separator, local));
+//        buffer.append(contained.getIdentifier());
+//        return buffer.toString();
+//    }    
     
-    /**
-     * Generate the namespace for ccmDebug() methods.
-     * For model elements not derived from MContained the predefined
-     * CCM_Local::ccmDebug() methods will be used (defined in the 
-     * cpp_environment).
-     * 
-     * @param baseNamespace List of predefined namespaces (e.g. CCM_Local)
-     * @param idlType IDL type of the current model element.
-     * @return A string containing the ccmDebug() method's namespace of 
-     * the current model element.
-     */
-    public static String getDebugNamespace(List baseNamespace, 
-                                           MIDLType idlType)
-    {
-        if(idlType instanceof MAliasDef) {
-            MTyped type = (MTyped) idlType;
-            MIDLType innerIdlType = type.getIdlType();
-            if(innerIdlType instanceof MPrimitiveDef 
-                    || innerIdlType instanceof MStringDef
-                    || innerIdlType instanceof MWstringDef) {
-                return Text.join("::", baseNamespace) + "::";
-            }
-            else {
-                return getScopedNamespace(baseNamespace, 
-                                          (MContained)idlType, "::","");
-            }
-        }
-        else if(idlType instanceof MContained) {
-            return getScopedNamespace(baseNamespace, 
-                                      (MContained)idlType, "::","");
-    	}
-        else {
-            return Text.join("::", baseNamespace) + "::";
-        }
-    }
+//    /**
+//     * Generate the namespace for ccmDebug() methods.
+//     * For model elements not derived from MContained the predefined
+//     * CCM_Local::ccmDebug() methods will be used (defined in the 
+//     * cpp_environment).
+//     * 
+//     * @param baseNamespace List of predefined namespaces (e.g. CCM_Local)
+//     * @param idlType IDL type of the current model element.
+//     * @return A string containing the ccmDebug() method's namespace of 
+//     * the current model element.
+//     */
+//    public static String getDebugNamespace(List baseNamespace, 
+//                                           MIDLType idlType)
+//    {
+//        if(idlType instanceof MAliasDef) {
+//            MTyped type = (MTyped) idlType;
+//            MIDLType innerIdlType = type.getIdlType();
+//            if(innerIdlType instanceof MPrimitiveDef 
+//                    || innerIdlType instanceof MStringDef
+//                    || innerIdlType instanceof MWstringDef) {
+//                return Text.join("::", baseNamespace) + "::";
+//            }
+//            else {
+//                return getScopedNamespace(baseNamespace, 
+//                                          (MContained)idlType, "::","");
+//            }
+//        }
+//        else if(idlType instanceof MContained) {
+//            return getScopedNamespace(baseNamespace, 
+//                                      (MContained)idlType, "::","");
+//    	}
+//        else {
+//            return Text.join("::", baseNamespace) + "::";
+//        }
+//    }
     
     
     // ------------------------------------------------------------------------
@@ -158,44 +141,44 @@ public class Scope
     
     
     
-    // TODO: Handle scope in terms of getScopedNamespace() 
-    public static String handleNamespace(Stack namespaceStack, 
-                                         String dataType, String local)
-    {
-        List tmp = new ArrayList();
-        List names = new ArrayList(namespaceStack);
-
-        if(!local.equals(""))
-            names.add("CCM_Session_" + local);
-
-        if(dataType.equals("Namespace")) {
-            return Text.join(Text.SCOPE_SEPARATOR, names);
-        }
-        else if(dataType.equals("IncludeNamespace")) {
-            return Text.join(Text.FILE_SEPARATOR, names);
-        }
-        else if(dataType.equals("UsingNamespace")) {
-            for(Iterator i = names.iterator(); i.hasNext();)
-                tmp.add("using namespace " + i.next() + ";\n");
-            return Text.join("", tmp);
-        }
-        else if(dataType.equals("OpenNamespace")) {
-            for(Iterator i = names.iterator(); i.hasNext();)
-                tmp.add("namespace " + i.next() + " {\n");
-            return Text.join("", tmp);
-        }
-        else if(dataType.equals("CloseNamespace")) {
-            Collections.reverse(names);
-            for(Iterator i = names.iterator(); i.hasNext();)
-                tmp.add("} // /namespace " + i.next() + "\n");
-            return Text.join("", tmp);
-        }
-        
-        else {
-            return "";
-        }
-    }    
-    
+//    // TODO: Handle scope in terms of getScopedNamespace() 
+//    public static String handleNamespace(Stack namespaceStack, 
+//                                         String dataType, String local)
+//    {
+//        List tmp = new ArrayList();
+//        List names = new ArrayList(namespaceStack);
+//
+//        if(!local.equals(""))
+//            names.add("CCM_Session_" + local);
+//
+//        if(dataType.equals("Namespace")) {
+//            return Text.join(Text.SCOPE_SEPARATOR, names);
+//        }
+//        else if(dataType.equals("IncludeNamespace")) {
+//            return Text.join(Text.FILE_SEPARATOR, names);
+//        }
+//        else if(dataType.equals("UsingNamespace")) {
+//            for(Iterator i = names.iterator(); i.hasNext();)
+//                tmp.add("using namespace " + i.next() + ";\n");
+//            return Text.join("", tmp);
+//        }
+//        else if(dataType.equals("OpenNamespace")) {
+//            for(Iterator i = names.iterator(); i.hasNext();)
+//                tmp.add("namespace " + i.next() + " {\n");
+//            return Text.join("", tmp);
+//        }
+//        else if(dataType.equals("CloseNamespace")) {
+//            Collections.reverse(names);
+//            for(Iterator i = names.iterator(); i.hasNext();)
+//                tmp.add("} // /namespace " + i.next() + "\n");
+//            return Text.join("", tmp);
+//        }
+//        
+//        else {
+//            return "";
+//        }
+//    }    
+//    
     
     
     
@@ -206,127 +189,127 @@ public class Scope
     // ------------------------------------------------------------------------
        
     
-    /**
-     * Collect all defined CORBA Stub prefixes into a single string. All CORBA
-     * Stub prefixes are stored in a class attribute list called
-     * CorbaStubsNamespace which is filled in the constructor.
-     * 
-     * @param separator
-     *            A separator string that is used between two list entries
-     *            (example "::"). Example: {"CORBA_Stubs"} -> "CORBA_Stubs::"
-     */
-    public static String getCorbaStubsNamespace(List corbaStubsNamespace,
-                                            MContained contained, 
-                                            String separator)
-    {
-        List scope = getScope(contained);
-        StringBuffer buffer = new StringBuffer();
-        if(corbaStubsNamespace.size() > 0) {
-            buffer.append(Text.join(separator, corbaStubsNamespace));
-            buffer.append(separator);
-        }
-        if (scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator);
-        }
-        return buffer.toString();
-    }
-
-    
-    public static String getCorbaStubName(List corbaStubsNamespace,
-                                      MContained contained, 
-                                      String separator)
-    {
-        List scope = getScope(contained);
-        StringBuffer buffer = new StringBuffer();
-        if(corbaStubsNamespace.size() > 0) {
-            buffer.append(Text.join(separator, corbaStubsNamespace));
-            buffer.append(separator);
-        }
-        if (scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator);
-        }
-        buffer.append(contained.getIdentifier());
-        return buffer.toString();
-    }
-    
-    
-    public static String getLocalNamespace(List localNamespace,
-                                              MContained contained, 
-                                              String separator, 
-                                              String local)
-    {
-        List scope = getScope(contained);
-        if (local.length() > 0) {
-            scope.add("CCM_Session_" + local);
-        }
-        
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.join(separator, localNamespace));
-        buffer.append(separator);
-        if (scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator);
-        }
-        return buffer.toString();
-    }
-    
-    
-    public static String getLocalName(List localNamespace,
-                                      MContained contained, 
-                                      String separator)
-    {
-        List scope = getScope(contained);
-        StringBuffer buffer = new StringBuffer();
-
-        buffer.append(Text.join(separator, localNamespace));
-        buffer.append(separator);
-        if (scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator);
-        }
-        buffer.append(contained.getIdentifier());
-        return buffer.toString();
-    }
-
-    
-    public static String getRemoteNamespace(Stack namespaceStack,
-                                            String separator, 
-                                            String local)
-    {
-        List names = new ArrayList(namespaceStack);
-        if (local.length() > 0) {
-            names.add("CCM_Session_" + local);
-        }
-
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(separator);
-        if (names.size() > 1) {
-            buffer.append(Text.join(separator, Text.slice(names, 0)));
-            buffer.append(separator);
-        }
-        else {
-            // no additional namespace
-        }
-        return buffer.toString();
-    }
-
-    
-    public static String getRemoteName(List baseNamespace,
-                                   MContained contained, 
-                                   String separator,
-                                   String local)
-    {
-        List scope = getScope(contained);
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.join(separator, baseNamespace));
-        buffer.append(separator);
-        if(scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator);
-        }
-        buffer.append(contained.getIdentifier());
-        return buffer.toString();
-    }
+//    /**
+//     * Collect all defined CORBA Stub prefixes into a single string. All CORBA
+//     * Stub prefixes are stored in a class attribute list called
+//     * CorbaStubsNamespace which is filled in the constructor.
+//     * 
+//     * @param separator
+//     *            A separator string that is used between two list entries
+//     *            (example "::"). Example: {"CORBA_Stubs"} -> "CORBA_Stubs::"
+//     */
+//    public static String getCorbaStubsNamespace(List corbaStubsNamespace,
+//                                            MContained contained, 
+//                                            String separator)
+//    {
+//        List scope = getScope(contained);
+//        StringBuffer buffer = new StringBuffer();
+//        if(corbaStubsNamespace.size() > 0) {
+//            buffer.append(Text.join(separator, corbaStubsNamespace));
+//            buffer.append(separator);
+//        }
+//        if (scope.size() > 0) {
+//            buffer.append(Text.join(separator, scope));
+//            buffer.append(separator);
+//        }
+//        return buffer.toString();
+//    }
+//
+//    
+//    public static String getCorbaStubName(List corbaStubsNamespace,
+//                                      MContained contained, 
+//                                      String separator)
+//    {
+//        List scope = getScope(contained);
+//        StringBuffer buffer = new StringBuffer();
+//        if(corbaStubsNamespace.size() > 0) {
+//            buffer.append(Text.join(separator, corbaStubsNamespace));
+//            buffer.append(separator);
+//        }
+//        if (scope.size() > 0) {
+//            buffer.append(Text.join(separator, scope));
+//            buffer.append(separator);
+//        }
+//        buffer.append(contained.getIdentifier());
+//        return buffer.toString();
+//    }
+//    
+//    
+//    public static String getLocalNamespace(List localNamespace,
+//                                              MContained contained, 
+//                                              String separator, 
+//                                              String local)
+//    {
+//        List scope = getScope(contained);
+//        if (local.length() > 0) {
+//            scope.add("CCM_Session_" + local);
+//        }
+//        
+//        StringBuffer buffer = new StringBuffer();
+//        buffer.append(Text.join(separator, localNamespace));
+//        buffer.append(separator);
+//        if (scope.size() > 0) {
+//            buffer.append(Text.join(separator, scope));
+//            buffer.append(separator);
+//        }
+//        return buffer.toString();
+//    }
+//    
+//    
+//    public static String getLocalName(List localNamespace,
+//                                      MContained contained, 
+//                                      String separator)
+//    {
+//        List scope = getScope(contained);
+//        StringBuffer buffer = new StringBuffer();
+//
+//        buffer.append(Text.join(separator, localNamespace));
+//        buffer.append(separator);
+//        if (scope.size() > 0) {
+//            buffer.append(Text.join(separator, scope));
+//            buffer.append(separator);
+//        }
+//        buffer.append(contained.getIdentifier());
+//        return buffer.toString();
+//    }
+//
+//    
+//    public static String getRemoteNamespace(Stack namespaceStack,
+//                                            String separator, 
+//                                            String local)
+//    {
+//        List names = new ArrayList(namespaceStack);
+//        if (local.length() > 0) {
+//            names.add("CCM_Session_" + local);
+//        }
+//
+//        StringBuffer buffer = new StringBuffer();
+//        buffer.append(separator);
+//        if (names.size() > 1) {
+//            buffer.append(Text.join(separator, Text.slice(names, 0)));
+//            buffer.append(separator);
+//        }
+//        else {
+//            // no additional namespace
+//        }
+//        return buffer.toString();
+//    }
+//
+//    
+//    public static String getRemoteName(List baseNamespace,
+//                                   MContained contained, 
+//                                   String separator,
+//                                   String local)
+//    {
+//        List scope = getScope(contained);
+//        StringBuffer buffer = new StringBuffer();
+//        buffer.append(Text.join(separator, baseNamespace));
+//        buffer.append(separator);
+//        if(scope.size() > 0) {
+//            buffer.append(Text.join(separator, scope));
+//            buffer.append(separator);
+//        }
+//        buffer.append(contained.getIdentifier());
+//        return buffer.toString();
+//    }
 }

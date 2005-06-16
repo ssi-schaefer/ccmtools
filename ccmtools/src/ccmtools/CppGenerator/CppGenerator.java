@@ -24,6 +24,7 @@ package ccmtools.CppGenerator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -124,7 +125,12 @@ abstract public class CppGenerator extends CodeGenerator
         super(sublang, d, out_dir, output_types, _reserved, _language);
         baseNamespace = new ArrayList();
     }
-
+    
+    
+    //====================================================================
+    // Code generator core methods
+    //====================================================================
+    
     /**
      * Acknowledge the start of the given node during graph traversal. If the
      * node is a MContainer type and is not defined in anything, assume it's the
@@ -174,11 +180,9 @@ abstract public class CppGenerator extends CodeGenerator
                 namespaceStack.pop();
             }
         }
-
         writeOutputIfNeeded();
     }
 
-    /** *********************************************************************** */
 
     /**
      * Join the bases of the current node using the given string as a separator.
@@ -362,6 +366,18 @@ abstract public class CppGenerator extends CodeGenerator
     {
         String value = super.getLocalValue(variable);
 
+        // Handle simple template %(tag)s 
+        if (variable.equals("CcmToolsVersion")) {
+            return getCcmToolsVersion();
+        }
+        else if(variable.equals("CcmGeneratorTimeStamp")) {
+            return getCcmGeneratorTimeStamp();
+        }
+        else if(variable.equals("CcmGeneratorUser")) {
+            return getCcmGeneratorUser();
+        }
+        
+        // Handle template %(tag)s depending on the current model node
         if(currentNode instanceof MHomeDef) {
             return data_MHomeDef(variable, value);
         }
@@ -395,7 +411,6 @@ abstract public class CppGenerator extends CodeGenerator
         else if(currentNode instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
         }
-
         return value;
     }
 
@@ -702,6 +717,36 @@ abstract public class CppGenerator extends CodeGenerator
 
     /** *********************************************************************** */
 
+    //====================================================================
+    // Simple %(tag)s helper methods
+    //====================================================================
+    
+    public String getCcmToolsVersion()
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("CCM Tools version ");
+        buffer.append(ccmtools.Constants.VERSION);
+        return buffer.toString();
+    }
+    
+    public String getCcmGeneratorTimeStamp() 
+    {
+        StringBuffer buffer = new StringBuffer();
+        Calendar now = Calendar.getInstance();
+        buffer.append(now.getTime());
+        return buffer.toString();
+    }
+    
+    public String getCcmGeneratorUser() 
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(System.getProperty("user.name"));
+        return buffer.toString();
+    }
+    
+    
+    
+    
     /**
      * Get type and name information about the parameters for the given
      * operation. This will return a comma-separated string, i.e. <type1>
