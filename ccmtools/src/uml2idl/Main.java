@@ -328,6 +328,13 @@ public class Main
      */
     public void run( MXMI root, String idlFileName, String oclFileName ) throws IOException
     {
+        if( !root.xmi_version_.equals("1.1") )
+        {
+            System.err.println("Invalid XMI version: "+root.xmi_version_);
+            System.err.println("Only version 1.1 is supported!");
+            System.exit(1);
+        }
+        //
         idlWriter_ = new FileWriter(idlFileName);
         idlWriter_.write(IDL_HEADER);
         if (root.timestamp_ != null)
