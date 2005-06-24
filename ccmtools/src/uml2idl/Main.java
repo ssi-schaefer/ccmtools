@@ -83,6 +83,18 @@ public class Main
      */
     static String reducePathname( String name, String container )
     {
+        // TODO: The ccmtools IDL parser can only read local names
+        // without PATH_SEPERATOR or global names.
+        String x = calcReducedPathname(name, container);
+        if (x.indexOf(PATH_SEPERATOR) < 0)
+        {
+            return x;
+        }
+        return name;
+    }
+
+    static private String calcReducedPathname( String name, String container )
+    {
         int index = name.indexOf(PATH_SEPERATOR);
         if (index < 0)
         {
@@ -105,7 +117,7 @@ public class Main
         if (name.substring(0, index).equals(container.substring(0, index)))
         {
             index += PATH_SEPERATOR.length();
-            return reducePathname(name.substring(index), container.substring(index));
+            return calcReducedPathname(name.substring(index), container.substring(index));
         }
         return name;
     }
@@ -260,9 +272,9 @@ public class Main
      * Reads an UML-file and creates an IDL-file.
      * 
      * @param argv :<br>
-     *            argv[0] = name of the UML-file <br>
-     *            argv[1] = prefix of the IDL- and OCL-files <br>
-     *            argv[2]=='DUMP' .. optional; show containment
+     *           argv[0] = name of the UML-file <br>
+     *           argv[1] = prefix of the IDL- and OCL-files <br>
+     *           argv[2]=='DUMP' .. optional; show containment
      */
     public static void main( String[] argv )
     {
@@ -328,9 +340,9 @@ public class Main
      */
     public void run( MXMI root, String idlFileName, String oclFileName ) throws IOException
     {
-        if( !root.xmi_version_.equals("1.1") )
+        if (!root.xmi_version_.equals("1.1"))
         {
-            System.err.println("Invalid XMI version: "+root.xmi_version_);
+            System.err.println("Invalid XMI version: " + root.xmi_version_);
             System.err.println("Only version 1.1 is supported!");
             System.exit(1);
         }
