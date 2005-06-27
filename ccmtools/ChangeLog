@@ -3,7 +3,10 @@ RELEASE-0.5.2
 
 RELEASE-0.5.2-pre2
 ----------------------------------------------------------------------------
-o) refactoring 
+*) CppLocalGenerator refactoring 
+*) CppRemoteGenerator refactoring
+*) uml2idl only accepts XMI1.1 files or prints an errer message
+
 
 
 RELEASE-0.5.2-pre1

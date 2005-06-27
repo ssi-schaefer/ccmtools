@@ -97,7 +97,7 @@ using namespace WX::Utils;
 %(Identifier)s_impl::%(Identifier)s_impl (SmartPtr<CCM::SessionContainer> c)
     : ccm_container (c)
 {
-    LDEBUGNL(CCM_REMOTE, "+%(Identifier)s_impl::%(Identifier)s_impl()");
+    LDEBUGNL(CCM_CONTAINER, "+%(Identifier)s_impl::%(Identifier)s_impl()");
     LocalComponents::HomeFinder* homeFinder = CCM_Local::HomeFinder::Instance();
     local_home = SmartPtr<%(LocalNamespace)s%(Identifier)s>(
         dynamic_cast<%(LocalNamespace)s%(Identifier)s*>
@@ -106,7 +106,7 @@ using namespace WX::Utils;
 
 %(Identifier)s_impl::~%(Identifier)s_impl ()
 {
-    LDEBUGNL(CCM_REMOTE, "-%(Identifier)s_impl::~%(Identifier)s_impl()");
+    LDEBUGNL(CCM_CONTAINER, "-%(Identifier)s_impl::~%(Identifier)s_impl()");
     // Smart pointer local_home goes out of scope
 }
 
@@ -118,7 +118,7 @@ using namespace WX::Utils;
 ::%(StubsNamespace)s%(ComponentType)s_ptr
 %(Identifier)s_impl::create ()
 {
-    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::create()");
+    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::create()");
     // create the local_component
     SmartPtr<%(LocalNamespace)s%(ComponentType)s> local_component = 
         local_home->create();
@@ -145,7 +145,7 @@ using namespace WX::Utils;
 void
 %(Identifier)s_impl::remove_component(Components::CCMObject_ptr _co)
 {
-    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::remove_component()");
+    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::remove_component()");
     PortableServer::ServantBase_var _cs = ccm_container->get_skeleton_for_reference(_co);
     // TODO
     ccm_container->deactivate_component(_cs);
@@ -159,7 +159,7 @@ void
 Components::CCMObject_ptr
 %(Identifier)s_impl::create_component ()
 {
-    LDEBUGNL(CCM_REMOTE, " %(Identifier)s_impl::create_component()");
+    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::create_component()");
     return create ();
 }
 
@@ -174,7 +174,7 @@ extern "C" {
     
     int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name)
     {
-        LDEBUGNL(CCM_REMOTE, " deploy_%(AbsoluteRemoteHomeName)s(" 
+        LDEBUGNL(CCM_CONTAINER, " deploy_%(AbsoluteRemoteHomeName)s(" 
             << registration_name << ")");
 
         CosNaming::NamingContextExt_var ns;
@@ -206,7 +206,7 @@ extern "C" {
   
     int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior)
     {
-        LDEBUGNL(CCM_REMOTE, " deploy_with_ior_%(Identifier)s()");
+        LDEBUGNL(CCM_CONTAINER, " deploy_with_ior_%(Identifier)s()");
  
         // Startup component home
         SmartPtr<CCM::SessionContainer> 
@@ -230,7 +230,7 @@ extern "C" {
  
     int undeploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name)
     {
-        LDEBUGNL(CCM_REMOTE, " undeploy_%(AbsoluteRemoteHomeName)s(" 
+        LDEBUGNL(CCM_CONTAINER, " undeploy_%(AbsoluteRemoteHomeName)s(" 
             << registration_name << ")");
 
         CosNaming::NamingContextExt_var ns;

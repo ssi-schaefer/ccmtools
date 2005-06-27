@@ -2,7 +2,7 @@ void
 %(ComponentType)s_impl::connect_%(Identifier)s(::%(IdlUsesType)s_ptr value)
     throw(Components::AlreadyConnected, Components::InvalidConnection )	
 {
-    LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::connect_%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER, " %(ComponentType)s_impl::connect_%(Identifier)s()");
 
     reference_for_receptacle_%(Identifier)s = 
         ::%(IdlUsesType)s::_duplicate (value);
@@ -28,7 +28,7 @@ void
 %(ComponentType)s_impl::disconnect_%(Identifier)s()
     throw(Components::NoConnection)
 {
-    LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::disconnect_%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER, " %(ComponentType)s_impl::disconnect_%(Identifier)s()");
 
     try {
         local_adapter->disconnect_%(Identifier)s();
@@ -49,7 +49,7 @@ void
 %(ComponentType)s_impl::get_connection_%(Identifier)s()
     throw(Components::NoConnection)
 {
-    LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::get_connection_%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER, " %(ComponentType)s_impl::get_connection_%(Identifier)s()");
 
     if(reference_for_receptacle_%(Identifier)s == NULL)
         throw Components::NoConnection();

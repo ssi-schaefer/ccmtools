@@ -64,8 +64,8 @@ namespace CCM_Remote {
 void 
 convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out)
 {
-    LDEBUGNL(CCM_REMOTE," convertFromCorba(%(CorbaStubName)s)");
-    LDEBUGNL(CCM_REMOTE, in);
+    LDEBUGNL(CCM_CONTAINER," convertFromCorba(%(CorbaStubName)s)");
+    LDEBUGNL(CCM_CONTAINER, in);
 
     switch(in) {
 %(MembersFromCorba)s
@@ -76,13 +76,13 @@ convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out)
 void 
 convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out)
 {
-    LDEBUGNL(CCM_REMOTE," convertToCorba(%(CorbaStubName)s)");
+    LDEBUGNL(CCM_CONTAINER," convertToCorba(%(CorbaStubName)s)");
 
     switch(in) {
 %(MembersToCorba)s
     }
     
-    LDEBUGNL(CCM_REMOTE, out);
+    LDEBUGNL(CCM_CONTAINER, out);
 } 
 
 

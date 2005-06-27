@@ -1,7 +1,7 @@
 ::%(IdlProvidesType)s_ptr 
 %(ComponentType)s_impl::provide_%(Identifier)s()
 {
-    LDEBUGNL(CCM_REMOTE, " %(ComponentType)s_impl::provide_%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER, " %(ComponentType)s_impl::provide_%(Identifier)s()");
     if (%(Identifier)s_facet_adapter == 0) {
     	WX::Utils::SmartPtr<CCM_Local::%(ProvidesType)s> 
     	    localFacetAdapter = local_adapter->provide_%(Identifier)s();

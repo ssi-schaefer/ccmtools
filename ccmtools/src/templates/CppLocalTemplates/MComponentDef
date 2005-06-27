@@ -153,7 +153,7 @@ class CCM_%(Identifier)s_Context_impl
 
 #ifdef WXDEBUG
 #include <CCM_Local/Debug.h>
-#endif // WXDEBUG
+#endif /* WXDEBUG */
 
 #include "%(Identifier)s_gen.h"
 

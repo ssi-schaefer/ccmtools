@@ -95,12 +95,12 @@ namespace CCM_Remote {
     WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s> lif)
     : localInterface(lif)
 {
-    LDEBUGNL(CCM_REMOTE, "+%(Identifier)sAdapterFromCorba::%(Identifier)sAdapterFromCorba()");
+    LDEBUGNL(CCM_CONTAINER, "+%(Identifier)sAdapterFromCorba::%(Identifier)sAdapterFromCorba()");
 }
 
 %(Identifier)sAdapterFromCorba::~%(Identifier)sAdapterFromCorba()
 {
-    LDEBUGNL(CCM_REMOTE, "-%(Identifier)sAdapterFromCorba::~%(Identifier)sAdapterFromCorba()");
+    LDEBUGNL(CCM_CONTAINER, "-%(Identifier)sAdapterFromCorba::~%(Identifier)sAdapterFromCorba()");
     // Smart pointer local_facet_adapter goes out of scope
 }
 
@@ -118,13 +118,13 @@ namespace CCM_Remote {
 %(Identifier)sAdapterToCorba::%(Identifier)sAdapterToCorba(
     %(StubsNamespace)s%(Identifier)s_ptr rif)
 {
-    LDEBUGNL(CCM_REMOTE, "+%(Identifier)sAdapterToCorba::%(Identifier)sAdapterToCorba()");
+    LDEBUGNL(CCM_CONTAINER, "+%(Identifier)sAdapterToCorba::%(Identifier)sAdapterToCorba()");
     remoteInterface = ::%(StubsNamespace)s%(Identifier)s::_duplicate(rif);
 }
 
 %(Identifier)sAdapterToCorba::~%(Identifier)sAdapterToCorba()
 {
-    LDEBUGNL(CCM_REMOTE, "-%(Identifier)sAdapterToCorba::~%(Identifier)sAdapterToCorba()");
+    LDEBUGNL(CCM_CONTAINER, "-%(Identifier)sAdapterToCorba::~%(Identifier)sAdapterToCorba()");
 }
 
 
