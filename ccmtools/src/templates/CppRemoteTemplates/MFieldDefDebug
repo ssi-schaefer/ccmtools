@@ -1,0 +1,4 @@
+    os << CCM_Local::doIndent(indent+1) << "%(CORBAType)s(";
+    os << %(CorbaDebugNamespace)sccmDebug(in.%(CORBATypeIn)s, indent); 
+    os << ")" << std::endl; 
+

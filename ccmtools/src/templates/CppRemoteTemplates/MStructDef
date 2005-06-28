@@ -15,6 +15,8 @@
 
 #ifdef HAVE_MICO 
 
+%(CorbaDebugInclude)s
+
 #include <iostream>
 #include <sstream>
 
@@ -31,10 +33,19 @@ convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out);
 void 
 convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out);
 
-/*
-std::ostream& 
-operator<<(std::ostream& o, const %(CorbaStubName)s& value);
-*/
+#ifdef WXDEBUG
+inline
+std::string
+ccmDebug(const %(CorbaStubName)s& in, int indent = 0)
+{
+    std::ostringstream os;
+    os << CCM_Local::doIndent(indent) << "struct %(Identifier)s" << std::endl;
+    os << CCM_Local::doIndent(indent) << "{" << std::endl;
+    %(MFieldDefDebug)s
+    os << CCM_Local::doIndent(indent) << "}";
+    return os.str();
+}
+#endif // WXDEBUG 
 
 } // /namespace CCM_Remote
 
@@ -71,7 +82,6 @@ void
 convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out)
 {
     LDEBUGNL(CCM_CONTAINER," convertFromCorba(%(CorbaStubName)s)");
-    // LDEBUGNL(CCM_CONTAINER, in);
 %(MFieldDefFromCorba)s
 } 
 
@@ -80,35 +90,8 @@ convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out)
 {
     LDEBUGNL(CCM_CONTAINER," convertToCorba(%(CorbaStubName)s)");
 %(MFieldDefToCorba)s
-    // LDEBUGNL(CCM_CONTAINER, out);
 } 
 
-/*
-std::ostream& 
-operator<<(std::ostream& o, const %(CorbaStubName)s& value)
-{
-    o << endl;
-    o << "struct %(CorbaStubName)s { " << endl;
-%(MFieldDefCorbaOutput)s
-    o << "}";
-    return o;
-}
-*/
-/*
-#ifdef WXDEBUG
-inline
-std::string 
-ccmDebug(const %(CorbaStubName)s& in, int indent = 0)
-{
-    std::ostringstream os;
-    os << CCM_Local::doIndent(indent) << "struct %(CorbaStubName)s" << std::endl;
-    os << CCM_Local::doIndent(indent) << "{" << std::endl;
-%(MFieldDefCorbaOutput)s
-    os << CCM_Local::doIndent(indent) << "}";
-    return os.str();
-}
-#endif // WXDEBUG
-*/
 } // /namespace CCM_Remote
 #endif // HAVE_MICO
 

@@ -273,28 +273,37 @@ public class CppRemoteGenerator
      */
     protected String handleNamespace(String dataType, String local)
     {
-        logger.fine("enter handleNamespace()");
+        logger.fine("enter handleNamespace("
+                    + dataType +", " 
+                    + local + ")");
         String code;
         List names = new ArrayList(namespaceStack);
-        MContained contained = (MContained)currentNode;
+//        MContained contained = (MContained)currentNode;
 
         if (dataType.equals("FileNamespace")) {
             code = Text.join(Text.MANGLING_SEPARATOR, Text.slice(names, 0));
         }
-        else if (dataType.equals("LocalNamespace")) {
+        else if(dataType.equals("LocalNamespace")) {
+            MContained contained = (MContained)currentNode;
             code = getLocalNamespace(contained, Text.SCOPE_SEPARATOR,local);
         }
-        else if (dataType.equals("RemoteNamespace")) {
+        else if(dataType.equals("RemoteNamespace")) {
             code = getRemoteNamespace(Text.SCOPE_SEPARATOR,local);
         }
-        else if (dataType.equals("LocalIncludeNamespace")) {
+        else if(dataType.equals("LocalIncludeNamespace")) {
+            MContained contained = (MContained)currentNode;
             code = getLocalNamespace(contained, Text.FILE_SEPARATOR, local);
         }
-        else if (dataType.equals("StubsNamespace")) {
+        else if(dataType.equals("StubsNamespace")) {
+            MContained contained = (MContained)currentNode;
             code = getCorbaStubsNamespace(contained, Text.SCOPE_SEPARATOR);
         }
-        else if (dataType.equals("StubsIncludeNamespace")) {
+        else if(dataType.equals("StubsIncludeNamespace")) {
+            MContained contained = (MContained)currentNode;
             code = getCorbaStubsNamespace(contained, Text.MANGLING_SEPARATOR);
+        }
+        else if(dataType.equals("CorbaDebugNamespace")) {
+            code = "CCM_Remote::";
         }
         else {
             code = super.handleNamespace(dataType, local);
@@ -383,6 +392,9 @@ public class CppRemoteGenerator
             else if(variable.equals("CorbaRemoteName")) {
                 return getRemoteName(contained,Text.SCOPE_SEPARATOR,"");
             }
+            else if(variable.equals("CorbaDebugInclude")) {
+                return getCorbaDebugInclude();
+            }
         }
         
         if (currentNode instanceof MAttributeDef) {
@@ -439,14 +451,13 @@ public class CppRemoteGenerator
         else if (dataType.equals("ConvertToCorbaImplementation")) {
             dataValue = getConvertToCorbaImplementation(node, singleType);
         }
-        else if (dataType.equals("OutputCorbaTypeDeclaration")) {
-            dataValue = ""; 
-                // getOutputCorbaTypeDeclaration(node); 
+        else if (dataType.equals("AliasDefDebug")) {
+            dataValue = getSequenceDebug(node, contained); 
         }
-        else if (dataType.equals("OutputCorbaTypeImplementation")) {
-            dataValue = ""; 
-                // getOutputCorbaTypeImplementation(node, contained);
-        }
+//        else if (dataType.equals("OutputCorbaTypeImplementation")) {
+//            dataValue = ""; 
+//                // getOutputCorbaTypeImplementation(node, contained);
+//        }
         else if (dataType.equals("SingleValue")) {
             dataValue = getSingleValue(singleType);
         }
@@ -486,7 +497,9 @@ public class CppRemoteGenerator
     
     protected String data_MFieldDef(String dataType, String dataValue)
     {
-        logger.fine("enter data_MFieldDef()");       
+        logger.fine("enter data_MFieldDef()"); 
+        logger.finer("    parameter dataType  = " + dataType);
+        logger.finer("    parameter dataValue = " + dataValue);
         MTyped type = (MTyped) currentNode;
         MIDLType idlType = type.getIdlType();
         String fieldName = ((MFieldDef) currentNode).getIdentifier();
@@ -654,8 +667,8 @@ public class CppRemoteGenerator
         else if (dataType.equals("MembersToCorba")) {
             dataValue = getMembersToCorba(enum);
         }
-        else if (dataType.equals("EnumCorbaOutput")) {
-            dataValue = getEnumCorbaOutput(enum);
+        else if (dataType.equals("EnumMembersDebug")) {
+            dataValue = getEnumMembersDebug(enum);
         }
         else {
             dataValue = super.data_MEnumDef(dataType, dataValue);
@@ -876,7 +889,26 @@ public class CppRemoteGenerator
 
     
     
+    
+    //====================================================================
+    // Debug %(tag)s helper methods
+    //====================================================================
 
+    public String getCorbaDebugInclude()
+    {
+        logger.finer("enter getCorbaDebugInclude()");
+        StringBuffer code = new StringBuffer();
+        code.append("#ifdef WXDEBUG\n");
+        code.append("#  include <CCM_Remote").append(Text.FILE_SEPARATOR);
+        code.append("Debug.h>\n");
+        code.append("#endif // WXDEBUG\n");
+        logger.finer("leave getCorbaDebugInclude()");
+        return code.toString();
+    }
+    
+    
+    
+    
     //====================================================================
     // Handle the C++ data types
     //====================================================================
@@ -1121,10 +1153,10 @@ public class CppRemoteGenerator
         code.append(localName);
         code.append("& out)\n");
         code.append("{\n");
-        code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE,\" convertFromCorba(");
+        code.append(Text.TAB);
+        code.append("LDEBUGNL(CCM_CONTAINER,\" convertFromCorba(");
         code.append(stubName);
         code.append(")\");\n");
-        //code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE, in);\n");
         code.append(getConvertAliasFromCORBA(singleType));
         code.append("}\n");
         return code.toString();
@@ -1143,40 +1175,35 @@ public class CppRemoteGenerator
         code.append(stubName);
         code.append("& out)\n");
         code.append("{\n");
-        code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE,\" convertToCorba(");
+        code.append(Text.TAB);
+        code.append("LDEBUGNL(CCM_CONTAINER,\" convertToCorba(");
         code.append(stubName);
         code.append(")\");\n");
         code.append(getConvertAliasToCORBA(singleType));
-        //code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE, out);\n");
         code.append("}\n");
         return code.toString();
     }
 
-    protected String getOutputCorbaTypeDeclaration(MContained contained) 
+    protected String getSequenceDebug(MContained node,
+                                      MContained contained) 
     {
         String stubName = getCorbaStubName(contained,Text.SCOPE_SEPARATOR);
         StringBuffer code = new StringBuffer();
-        code.append("std::ostream& operator<<(std::ostream& o, const ");
-        code.append(stubName);
-        code.append("& value);");
+        code.append("#ifdef WXDEBUG\n");
+        code.append("inline\n");
+        code.append("std::string\n");
+        code.append("ccmDebug(const ");
+        code.append(stubName).append("& in, int indent = 0)\n");
+        code.append("{\n");
+        code.append(Text.TAB).append("std::ostringstream os;\n");
+        code.append(Text.TAB).append("os << CCM_Local::doIndent(indent);\n");
+        code.append(getOutputCORBAType(node, contained));
+        code.append(Text.TAB).append("return os.str();\n");
+        code.append("}\n");
+        code.append("#endif // WXDEBUG\n");
         return code.toString();
     }
 
-    protected String getOutputCorbaTypeImplementation(MContained node,
-                                                      MContained contained) 
-    {
-        String stubName = getCorbaStubName(node,Text.SCOPE_SEPARATOR);	
-        StringBuffer code = new StringBuffer();
-        code.append("std::ostream&\n");
-        code.append("operator<<(std::ostream& o, const "); 
-        code.append(stubName);
-        code.append("& value)\n");
-        code.append("{\n");
-        code.append(getOutputCORBAType(node, contained));
-        code.append(Text.TAB).append("return o;\n");
-        code.append("}\n");
-        return code.toString();
-    }
     
     protected String getSingleValue(MTyped singleType) 
     {
@@ -1260,20 +1287,22 @@ public class CppRemoteGenerator
         return code.toString();
     }
     
-    protected String getOutputCORBAType(MContained node, MContained contained) 
+    protected String getOutputCORBAType(MContained node, 
+                                        MContained contained) 
     {
         String stubNamespace = getCorbaStubsNamespace(node,Text.SCOPE_SEPARATOR);
         StringBuffer code = new StringBuffer();
-        code.append(Text.TAB).append("o << endl;\n");
-        code.append(Text.TAB).append("o << \"sequence ");
+        code.append(Text.TAB).append("os << std::endl;\n");
+        code.append(Text.TAB).append("os << \"sequence ");
         code.append(stubNamespace); 
         code.append(contained.getIdentifier());
-        code.append(" [ \" << endl;\n");
+        code.append(" [ \" << std::endl;\n");
         code.append(Text.TAB);
-        code.append("for(unsigned long i=0; i < value.length();i++) {\n");
-        code.append(Text.tab(2)).append("o << value[i] << endl;\n");
+        code.append("for(unsigned long i=0; i < in.length();i++) {\n");
+        code.append(Text.tab(2)).append("os << ccmDebug(in[i], indent+1)");
+        code.append(" << std::endl;\n");
         code.append(Text.TAB).append("}\n");
-        code.append(Text.TAB).append("o << \"]\";\n");
+        code.append(Text.TAB).append("os << \"]\";\n");
         return code.toString();
     }
     
@@ -2611,17 +2640,16 @@ public class CppRemoteGenerator
         return code.toString();
     }
     
-    protected String getEnumCorbaOutput(MEnumDef enum) 
+    protected String getEnumMembersDebug(MEnumDef enum) 
     {
         StringBuffer code = new StringBuffer();
         for (Iterator i = enum.getMembers().iterator(); i.hasNext();) {
             String member = (String) i.next();
-            String lns = getLocalNamespace(enum,Text.SCOPE_SEPARATOR, "");
             String sns = getCorbaStubsNamespace(enum,Text.SCOPE_SEPARATOR); 
             code.append(Text.TAB).append("case "); 
-            code.append(lns).append(member).append(":\n");
-            code.append(Text.tab(2)).append("o << \""); 
-            code.append(sns).append(member).append("\" << endl;\n");
+            code.append(sns).append(member).append(":\n");
+            code.append(Text.tab(2)).append("os << \""); 
+            code.append(sns).append(member).append("\";\n");
             code.append(Text.tab(2)).append("break;\n");
         }
         return code.toString();

@@ -1,5 +1,0 @@
-    // os << "    %(CORBAType)s = " << value.%(CORBATypeIn)s << endl;
-    os << CCM_Local::doIndent(indent+1) << "%(CORBAType)s(" 
-       << ccmDebug(in.%(CORBATypeIn)s) 
-       << ")" << std::endl; 
-
