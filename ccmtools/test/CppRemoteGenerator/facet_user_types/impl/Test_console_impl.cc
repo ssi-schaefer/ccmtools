@@ -37,6 +37,16 @@ console_impl::~console_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
+Color 
+console_impl::f1(const Color& p1, Color& p2, Color& p3) 
+        throw (LocalComponents::CCMException)
+{
+    DEBUGNL("console_impl->f1(p1, p2, p3)");
+    p3=p2;
+    p2=p1;
+    return p1; 
+}
+
 Person
 console_impl::f2(const Person& p1, Person& p2, Person& p3)
     throw (LocalComponents::CCMException)
