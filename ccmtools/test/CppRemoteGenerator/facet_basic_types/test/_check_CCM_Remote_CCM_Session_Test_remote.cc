@@ -15,6 +15,8 @@
 #include <WX/Utils/debug.h>
 #include <CCM/CCMContainer.h>
 
+#include <CCM_Remote/Debug.h>
+
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
@@ -97,42 +99,49 @@ main (int argc, char *argv[])
 
     CORBA::Short short_2=3, short_3, short_r;
     short_r = IFaceiface->op1(7,short_2, short_3);
+    cout << CCM_Remote::ccmDebug(short_2) << endl;
     assert(short_2 == 7);
     assert(short_3 == 3);
     assert(short_r == 3+7);
     
     CORBA::Long long_2=3, long_3, long_r;
     long_r = IFaceiface->op2(7,long_2, long_3);
+    cout << CCM_Remote::ccmDebug(long_2) << endl;
     assert(long_2 == 7);
     assert(long_3 == 3);
     assert(long_r == 3+7);
     
     CORBA::UShort ushort_2=3, ushort_3, ushort_r;
     ushort_r = IFaceiface->op3(7,ushort_2, ushort_3);
+    cout << CCM_Remote::ccmDebug(ushort_2) << endl;
     assert(ushort_2 == 7);
     assert(ushort_3 == 3);
     assert(ushort_r == 3+7);
     
     CORBA::ULong ulong_2=3, ulong_3, ulong_r;
     ulong_r = IFaceiface->op4(7,ulong_2, ulong_3);
+    cout << CCM_Remote::ccmDebug(ulong_2) << endl;
     assert(ulong_2 == 7);
     assert(ulong_3 == 3);
     assert(ulong_r == 3+7);
     
     CORBA::Float float_2=3.0, float_3, float_r;
     float_r = IFaceiface->op5(7.0,float_2, float_3);
+    cout << CCM_Remote::ccmDebug(float_2) << endl;
     assert(float_2 == 7.0);
     assert(float_3 == 3.0);
     assert(float_r == 3.0+7.0);
     
     CORBA::Double double_2=3.0, double_3, double_r;
     double_r = IFaceiface->op6(7.0,double_2, double_3);
+    cout << CCM_Remote::ccmDebug(double_2) << endl;
     assert(double_2 == 7.0);
     assert(double_3 == 3.0);
     assert(double_r == 3.0+7.0);
     
     CORBA::Char char_2=3, char_3, char_r;
     char_r = IFaceiface->op7(7,char_2, char_3);
+    cout << CCM_Remote::ccmDebug(char_2) << endl;
     assert(char_2 == 7);
     assert(char_3 == 3);
     assert(char_r == 3+7);
@@ -141,18 +150,21 @@ main (int argc, char *argv[])
     char* string_3;
     char* string_r;
     string_r = IFaceiface->op8("sieben",string_2, string_3);
+    cout << CCM_Remote::ccmDebug(string_2) << endl;
     assert(strcmp(string_2,"sieben") == 0);
     assert(strcmp(string_3,"drei") == 0);
     assert(strcmp(string_r,"dreisieben") == 0);
     
     CORBA::Boolean bool_2=false, bool_3, bool_r;
     bool_r = IFaceiface->op9(true, bool_2, bool_3);
+    cout << CCM_Remote::ccmDebug(bool_2, false) << endl;
     assert(bool_2 == true);
     assert(bool_3 == false);
     assert(bool_r == false && true);
     
     CORBA::Octet octet_2=3, octet_3, octet_r;
     octet_r = IFaceiface->op10(7,octet_2, octet_3);
+    cout << CCM_Remote::ccmDebug(octet_2) << endl;
     assert(octet_2 == 7);
     assert(octet_3 == 3);
     assert(octet_r == 3+7);

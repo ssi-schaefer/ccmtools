@@ -108,7 +108,6 @@ main (int argc, char *argv[])
       ::Color result;
 
       result = Consoleconsole->f1(p1, p2, p3);
-      cout <<  CCM_Remote::ccmDebug(result);
 
       assert(p2 == ::red);
       assert(p3 == ::green);
@@ -132,7 +131,6 @@ main (int argc, char *argv[])
       p2->id = 23;
       
       result = Consoleconsole->f2(p1,p2,p3);
-      cout << CCM_Remote::ccmDebug(result);
 
       assert(strcmp(p3->name, "Andrea") == 0);
       assert(strcmp(p2->name, "Egon") == 0);
@@ -162,7 +160,6 @@ main (int argc, char *argv[])
       p2->resident = person;
 
       result = Consoleconsole->f3(p1,p2,p3);
-      cout << CCM_Remote::ccmDebug(result);
 
       assert(strcmp(p3->street, "Petersgasse") == 0);
       assert(p3->number == 17);
@@ -198,7 +195,6 @@ main (int argc, char *argv[])
       ::LongList_var list_r;
       
       list_r = Consoleconsole->f4(list_1,list_2,list_3);
-      cout << CCM_Remote::ccmDebug(list_r);
 
       for(unsigned long i=0; i < list_r->length(); i++) {
         assert((*list_r)[i]== (CORBA::Long)i);
@@ -229,7 +225,6 @@ main (int argc, char *argv[])
       ::StringList_var list_r;
       
       list_r = Consoleconsole->f5(list_1,list_2,list_3);
-      cout << CCM_Remote::ccmDebug(list_r);      
 
       for(unsigned long i=0;i<list_r->length();i++) {
         assert(strcmp((*list_r)[i],"Test") == 0);
@@ -261,7 +256,6 @@ main (int argc, char *argv[])
       ::PersonList_var list_r;
       
       list_r = Consoleconsole->f6(list_1,list_2,list_3);
-      cout << CCM_Remote::ccmDebug(list_r);      
 
       for(unsigned long i=0; i < list_r->length(); i++) {
         assert(strcmp((*list_r)[i].name,"Test") == 0);
@@ -284,7 +278,6 @@ main (int argc, char *argv[])
       ::time_t time_2=3, time_3, time_r;
 
       time_r = Consoleconsole->f7(7,time_2, time_3);
-      cout << CCM_Remote::ccmDebug(time_r); 
 
       assert(time_2 == 7);
       assert(time_3 == 3);
