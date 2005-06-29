@@ -45,7 +45,8 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 
 public class CppLocalGeneratorImpl extends CppGenerator
 {
-
+    protected final static String IMPL_DIR = ".";
+    
     // types for which we have a global template ; that is, a template that is
     // not contained inside another template.
 
@@ -278,28 +279,28 @@ public class CppLocalGeneratorImpl extends CppGenerator
 
             if(current_node instanceof MHomeDef) {
                 f = new ArrayList();
-                f.add("impl");
+                f.add(IMPL_DIR);
                 f.add(node_name + "_entry.h");
                 files.add(f);
             }
 
             if((flags & FLAG_APPLICATION_FILES) != 0) {
                 f = new ArrayList();
-                f.add("impl");
+                f.add(IMPL_DIR);
                 f.add(node_name + "_impl.h");
                 files.add(f);
                 f = new ArrayList();
-                f.add("impl");
+                f.add(IMPL_DIR);
                 f.add(node_name + "_impl.cc");
                 files.add(f);
             }
             else {
                 f = new ArrayList();
-                f.add("impl");
+                f.add(IMPL_DIR);
                 f.add("");
                 files.add(f);
                 f = new ArrayList();
-                f.add("impl");
+                f.add(IMPL_DIR);
                 f.add("");
                 files.add(f);
             }
@@ -320,21 +321,21 @@ public class CppLocalGeneratorImpl extends CppGenerator
                 MComponentDef component = ((MProvidesDef) current_node)
                         .getComponent();
                 f = new ArrayList();
-                f.add("impl");
+                f.add(IMPL_DIR);
                 f.add(component.getIdentifier() + "_" + node_name + "_impl.h");
                 files.add(f);
                 f = new ArrayList();
-                f.add("impl");
+                f.add(IMPL_DIR);
                 f.add(component.getIdentifier() + "_" + node_name + "_impl.cc");
                 files.add(f);
             }
             else {
                 f = new ArrayList();
-                f.add("impl");
+                f.add(IMPL_DIR);
                 f.add("");
                 files.add(f);
                 f = new ArrayList();
-                f.add("impl");
+                f.add(IMPL_DIR);
                 f.add("");
                 files.add(f);
             }
