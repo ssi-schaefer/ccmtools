@@ -64,11 +64,14 @@ CCM_Test_mirror_impl::ccm_activate()
         assert(0);
     }
     catch(CCM_Local::Error& e) {
+      /*
         cout << "OK: error exception catched! ";
         cout << "(" 
 	     << e.info[0].code << ", " 
 	     << e.info[0].message << ")" 
 	     << endl;
+      */
+      cout << ccmDebug(e) << endl;
     }
     
     try {
@@ -77,7 +80,8 @@ CCM_Test_mirror_impl::ccm_activate()
         assert(0);
     }
     catch(CCM_Local::SuperError& e) {
-        cout << "OK: super_error exception catched!" << endl;
+      // cout << "OK: super_error exception catched!" << endl;
+      cout << ccmDebug(e) << endl;
     }
   
     try {
@@ -86,7 +90,8 @@ CCM_Test_mirror_impl::ccm_activate()
         assert(0);
     }
     catch(CCM_Local::FatalError& e) {
-        cout << "OK: fatal_error exception catched!" << endl;
+      // cout << "OK: fatal_error exception catched!" << endl;
+      cout << ccmDebug(e) << endl;
     }
 }
 
