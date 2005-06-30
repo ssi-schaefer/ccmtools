@@ -7,6 +7,8 @@
 #ifndef __EXCEPTION__%(PreprocIdentifier)s__H__
 #define __EXCEPTION__%(PreprocIdentifier)s__H__
 
+%(DebugInclude)s
+
 %(MFieldDefInclude)s
 
 %(OpenNamespace)s
@@ -16,6 +18,21 @@ class %(Identifier)s
   public:
 %(MFieldDef)s
 };
+
+
+#ifdef WXDEBUG
+inline
+std::string 
+ccmDebug(const %(Identifier)s& in, int indent = 0)
+{
+    std::ostringstream os;
+    os << doIndent(indent) << "exception %(Identifier)s" << std::endl;
+    os << doIndent(indent) << "{" << std::endl;
+%(MFieldDefDebug)s
+    os << doIndent(indent) << "}";
+    return os.str();
+}
+#endif
 
 %(CloseNamespace)s
 

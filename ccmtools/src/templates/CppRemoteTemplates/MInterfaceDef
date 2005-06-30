@@ -80,6 +80,8 @@ namespace CCM_Remote {
 #include <CCM/CCMContainer.h>
 #include <CCM_Remote/PrimitiveConverter.h>
 
+%(CorbaDebugInclude)s
+
 #include "%(Identifier)s_remote.h"
 
 using namespace std;

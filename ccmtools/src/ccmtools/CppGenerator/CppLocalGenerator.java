@@ -779,6 +779,14 @@ public class CppLocalGenerator
                 code.append("ccmDebug(").append(p.getIdentifier());
                 code.append("));");
             }
+            else if(direction == MParameterMode.PARAM_INOUT) {
+                code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"INOUT' ");
+                code.append(p.getIdentifier()).append(" = \" << ");
+                code.append(getDebugNamespace(idlType));
+                code.append("ccmDebug(").append(p.getIdentifier()).append(")");
+                code.append(");");
+                code.append(Text.NL);
+            }
         }
         logger.finer("leave getDebugOperationOutParameter()");
         return code.toString();

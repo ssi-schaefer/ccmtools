@@ -4,7 +4,6 @@
     throw(CORBA::SystemException)
 {
     LDEBUGNL(CCM_REMOTE, " %(Object)sAdapterFromCorba->%(Identifier)s()");
-    
 %(ConvertInterfaceGetAttributeFromCorba)s    
 }
 
@@ -13,6 +12,6 @@ void
     throw(CORBA::SystemException)
 {
     LDEBUGNL(CCM_REMOTE, " %(Object)sAdapterFromCorba->%(Identifier)s(value)");
-
+    LDEBUGNL(CCM_REMOTE, "set " << CCM_Remote::ccmDebug(value));
 %(ConvertInterfaceSetAttributeFromCorba)s  
 }

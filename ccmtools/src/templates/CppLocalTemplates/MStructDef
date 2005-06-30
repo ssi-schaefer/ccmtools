@@ -35,7 +35,7 @@ ccmDebug(const %(Identifier)s& in, int indent = 0)
     os << doIndent(indent) << "}";
     return os.str();
 }
-#endif
+#endif // WXDEBUG
 
 %(CloseNamespace)s
 

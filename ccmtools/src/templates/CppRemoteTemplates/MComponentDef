@@ -97,6 +97,8 @@ class %(Identifier)s_impl :
 
 #ifdef HAVE_MICO  
 
+%(CorbaDebugInclude)s
+
 #include <CCM_Remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
