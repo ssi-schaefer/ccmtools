@@ -27,6 +27,7 @@
 #ifdef WXDEBUG
 
 #include <iostream>
+#include <sstream>
 
 namespace CCM_Local {
 

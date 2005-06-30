@@ -37,10 +37,6 @@ Install from source code:
 	
 For the informed, use the following :
 
-   # Install the WX library (some utility stuff like smart pointer, etc.)	
-   $ confix.py --packageroot=`pwd`/wx --bootstrap --configure --make --targets=install
-
-
    # Install the CCM Tolls runtime libraries
    # (be sure that you have already installed Mico - http://mico.org)
    $ confix.py --packageroot=`pwd`/ccm --bootstrap --configure --make --targets=install
@@ -65,9 +61,9 @@ b) wx-utils-1.2.0.tar.bz2
      $ ./configure --prefix=/home/eteinik/install/test_install
      $ make install     
   
-c) ccm-0.5.1-pre5.tar.gz 
-     $ tar xvzf ccm-0.5.1-pre5.tar.gz
-     $ cd ccm-0.5.1-pre5
+c) ccm-0.5.2.tar.gz 
+     $ tar xvzf ccm-0.5.2.tar.gz
+     $ cd ccm-0.5.2
      $ ./configure --with-mico=/opt/gcc-3.3.4/mico-2.3.11-debug/lib/mico-setup.sh --prefix=/home/eteinik/install/test_install
      $ make install          
 

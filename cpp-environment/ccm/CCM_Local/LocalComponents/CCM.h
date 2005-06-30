@@ -279,7 +279,8 @@ namespace LocalComponents {
    * Note: This interface is not part of the CCM specification!
    ***/
   class Object
-    : virtual public WX::Utils::RefCounted {
+    : virtual public WX::Utils::RefCounted 
+  {
   public:
     virtual ~Object (  ) {}
 
@@ -296,7 +297,9 @@ namespace LocalComponents {
    * base for all component implementations.
    * CCM Specification 3-39, 4-27
    ***/
-  class EnterpriseComponent {
+  class EnterpriseComponent 
+    : virtual public WX::Utils::RefCounted
+  {
   public:
     virtual ~EnterpriseComponent (  ) {}
   };
@@ -333,7 +336,9 @@ namespace LocalComponents {
    *
    * Extension to CCM-Spec: CCMException to create_component()
    ***/
-  class KeylessCCMHome {
+  class KeylessCCMHome 
+    : virtual public WX::Utils::RefCounted
+  {
   public:
     virtual ~KeylessCCMHome() {}
 
@@ -346,7 +351,9 @@ namespace LocalComponents {
    * The HomeExecutorBase is a common base for all home implementations.
    * CCM Specification 3-40
    ***/
-  class HomeExecutorBase {
+  class HomeExecutorBase 
+    : virtual public WX::Utils::RefCounted
+  {
   public:
     virtual ~HomeExecutorBase() {}
   };

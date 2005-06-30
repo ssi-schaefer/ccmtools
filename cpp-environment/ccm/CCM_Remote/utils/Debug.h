@@ -26,7 +26,11 @@
 
 #ifdef WXDEBUG
 
-#include <iostream>
+#ifdef HAVE_MICO  
+
+#include <CORBA.h>
+#include <string>
+
 #include <CCM_Local/Debug.h>
 
 namespace CCM_Remote {
@@ -126,7 +130,7 @@ namespace CCM_Remote {
     {
 	std::ostringstream os;
 	os << CCM_Local::doIndent(indent);
-	os << in << ":char*";
+	os << "\"" << in << "\"" << ":char*";
 	return os.str();   
     }
 
@@ -155,5 +159,7 @@ namespace CCM_Remote {
 } // /namespace CCM_Remote
 
 #endif // WXDEBUG
+
+#endif // HAVE_MICO
 
 #endif // __CCM__REMOTE__DEBUG__H__
