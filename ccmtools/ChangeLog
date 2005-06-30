@@ -6,6 +6,10 @@ RELEASE-0.5.2-pre2
 *) CppLocalGenerator refactoring 
 *) CppRemoteGenerator refactoring
 *) uml2idl only accepts XMI1.1 files or prints an errer message
+*) generate ccmDebug() methods for local adapters 
+*) generate ccmDebug() methods for remote adapters
+*) replaced ccmtools.CppGenerator.SourceConstants with Text.* constants 
+
 
 
 

@@ -300,7 +300,7 @@ abstract public class CppGenerator extends CodeGenerator
             if(((String) scope.get(0)).equals(local))
                 scope.remove(0);
 
-        return join(SourceConstants.scopeSeparator, scope);
+        return join(Text.SCOPE_SEPARATOR, scope);
     }
 
     /**
@@ -325,7 +325,7 @@ abstract public class CppGenerator extends CodeGenerator
 
         scope.add(node.getIdentifier());
 
-        return join(SourceConstants.fileSeparator, scope);
+        return join(Text.FILE_SEPARATOR, scope);
     }
 
     /**
@@ -345,7 +345,8 @@ abstract public class CppGenerator extends CodeGenerator
             scope.add(0, i.next());
         Collections.reverse(baseNamespace);
         scope.add(node.getIdentifier());
-        return "#include <" + join(SourceConstants.fileSeparator, scope) + ".h>";
+        return "#include <" 
+        	+ join(Text.FILE_SEPARATOR, scope) + ".h>";
     }
 
     /**
@@ -540,8 +541,8 @@ abstract public class CppGenerator extends CodeGenerator
         else if(data_type.equals("HomeInclude")) {
             String include = getFullScopeInclude(component);
             include = include.substring(0, 
-                           include.lastIndexOf(SourceConstants.fileSeparator));
-            return include + SourceConstants.fileSeparator + home.getIdentifier();
+                           include.lastIndexOf(Text.FILE_SEPARATOR));
+            return include + Text.FILE_SEPARATOR + home.getIdentifier();
         }
         else if(data_type.endsWith("AbsoluteLocalHomeName")) {
             return getLocalName(home,"_");
@@ -585,8 +586,8 @@ abstract public class CppGenerator extends CodeGenerator
         else if(data_type.equals("HomeInclude")) {
             String include = getFullScopeInclude(component);
             include = include.substring(0, 
-                         include.lastIndexOf(SourceConstants.fileSeparator));
-            return include + SourceConstants.fileSeparator + home_id;
+                         include.lastIndexOf(Text.FILE_SEPARATOR));
+            return include + Text.FILE_SEPARATOR + home_id;
         }
         else if(data_type.endsWith("AbsoluteLocalHomeName")) {
             return getLocalName(home,"_");
@@ -635,10 +636,10 @@ abstract public class CppGenerator extends CodeGenerator
         MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
 
         if(data_type.equals("CCMProvidesType")) {
-            if(data_value.indexOf(SourceConstants.scopeSeparator) < 0)
+            if(data_value.indexOf(Text.SCOPE_SEPARATOR) < 0)
                 return "CCM_" + data_value;
-            int i = data_value.lastIndexOf(SourceConstants.scopeSeparator)
-                    + SourceConstants.scopeSeparator.length();
+            int i = data_value.lastIndexOf(Text.SCOPE_SEPARATOR)
+                    + Text.SCOPE_SEPARATOR.length();
             return data_value.substring(0, i) + "CCM_"
                     + data_value.substring(i);
         }
@@ -676,10 +677,10 @@ abstract public class CppGenerator extends CodeGenerator
         MInterfaceDef iface = ((MSupportsDef) currentNode).getSupports();
 
         if(data_type.equals("CCMSupportsType")) {
-            if(data_value.indexOf(SourceConstants.scopeSeparator) < 0)
+            if(data_value.indexOf(Text.SCOPE_SEPARATOR) < 0)
                 return "CCM_" + data_value;
-            int i = data_value.lastIndexOf(SourceConstants.scopeSeparator)
-                    + SourceConstants.scopeSeparator.length();
+            int i = data_value.lastIndexOf(Text.SCOPE_SEPARATOR)
+                    + Text.SCOPE_SEPARATOR.length();
             return data_value.substring(0, i) + "CCM_"
                     + data_value.substring(i);
         }
@@ -698,10 +699,10 @@ abstract public class CppGenerator extends CodeGenerator
         MInterfaceDef iface = ((MUsesDef) currentNode).getUses();
 
         if(data_type.equals("CCMUsesType")) {
-            if(data_value.indexOf(SourceConstants.scopeSeparator) < 0)
+            if(data_value.indexOf(Text.SCOPE_SEPARATOR) < 0)
                 return "CCM_" + data_value;
-            int i = data_value.lastIndexOf(SourceConstants.scopeSeparator)
-                    + SourceConstants.scopeSeparator.length();
+            int i = data_value.lastIndexOf(Text.SCOPE_SEPARATOR)
+                    + Text.SCOPE_SEPARATOR.length();
             return data_value.substring(0, i) + "CCM_"
                     + data_value.substring(i);
         }

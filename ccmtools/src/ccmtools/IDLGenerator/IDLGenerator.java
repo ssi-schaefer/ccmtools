@@ -29,12 +29,10 @@ import java.util.List;
 
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Template;
-import ccmtools.CppGenerator.SourceConstants;
-
-import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
@@ -48,6 +46,7 @@ import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.Metamodel.ComponentIDL.MFinderDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Text;
 
 abstract public class IDLGenerator extends CodeGenerator
 {
@@ -165,9 +164,9 @@ abstract public class IDLGenerator extends CodeGenerator
         code = code.replaceAll("#ifndef", "\n#ifndef");
         code = code.replaceAll("#define(.*)$", "#define\\1\n");
 
-        String name = join(SourceConstants.manglingSeparator, namespaceStack);
+        String name = join(Text.MANGLING_SEPARATOR, namespaceStack);
         if(!name.equals(""))
-            name += SourceConstants.manglingSeparator;
+            name += Text.MANGLING_SEPARATOR;
         name += ((MContained) currentNode).getIdentifier() + ".idl";
 
         try {
@@ -226,7 +225,8 @@ abstract public class IDLGenerator extends CodeGenerator
     {
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        return "#include <" + join(SourceConstants.manglingSeparator, scope) + ".idl>";
+        return "#include <" 
+        	+ join(Text.MANGLING_SEPARATOR, scope) + ".idl>";
     }
 
     /**

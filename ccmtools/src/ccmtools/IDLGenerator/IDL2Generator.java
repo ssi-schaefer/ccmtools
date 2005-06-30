@@ -23,13 +23,11 @@ package ccmtools.IDLGenerator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.CodeGenerator.Template;
-import ccmtools.CppGenerator.SourceConstants;
-
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
@@ -38,6 +36,7 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Text;
 
 public class IDL2Generator extends IDLGenerator
 {
@@ -121,7 +120,8 @@ public class IDL2Generator extends IDLGenerator
         Collections.reverse(base_namespace);
 
         scope.add(node.getIdentifier());
-        return "#include<" + join(SourceConstants.manglingSeparator, scope) + ".idl>";
+        return "#include<" 
+        	+ join(Text.MANGLING_SEPARATOR, scope) + ".idl>";
     }
 
     /***************************************************************************

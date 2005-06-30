@@ -566,7 +566,7 @@ public class CppLocalGenerator
  
         code.append("#ifdef USING_CONFIX \n");
         code.append("#include <");
-        code.append(Text.join(SourceConstants.fileSeparator, scope));
+        code.append(Text.join(Text.FILE_SEPARATOR, scope));
         code.append(".h> \n");
         code.append("#else \n");
         code.append("#include <");

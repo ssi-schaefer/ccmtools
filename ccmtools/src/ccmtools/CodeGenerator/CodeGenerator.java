@@ -42,7 +42,6 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
-import ccmtools.CppGenerator.SourceConstants;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
@@ -69,6 +68,7 @@ import ccmtools.Metamodel.ComponentIDL.MPublishesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Text;
 
 /**
  * This code generation base class performs a large part of code generation
@@ -716,10 +716,10 @@ abstract public class CodeGenerator implements TemplateHandler
             names.add("CCM_Session_" + local);
 
         if(data_type.equals("Namespace"))
-            return join(SourceConstants.scopeSeparator, names);
+            return join(Text.SCOPE_SEPARATOR, names);
 
         if(data_type.equals("IncludeNamespace"))
-            return join(SourceConstants.fileSeparator, names);
+            return join(Text.FILE_SEPARATOR, names);
 
         logger.fine("leave handleNamespace()");
         return "";
@@ -770,7 +770,7 @@ abstract public class CodeGenerator implements TemplateHandler
             MContained cont = (MContained) idl_type;
             List scope = getScope(cont);
             scope.add(cont.getIdentifier());
-            return join(SourceConstants.scopeSeparator, scope);
+            return join(Text.SCOPE_SEPARATOR, scope);
         }
         
         logger.fine("leave getBaseLanguageType()");
@@ -879,7 +879,7 @@ abstract public class CodeGenerator implements TemplateHandler
         }
         
         logger.fine("leave getFullScopeIdentifier()");
-        return join(SourceConstants.scopeSeparator, scope);
+        return join(Text.SCOPE_SEPARATOR, scope);
     }
 
     /**
@@ -897,7 +897,7 @@ abstract public class CodeGenerator implements TemplateHandler
         scope.add(node.getIdentifier());
         
         logger.fine("leave getFullScopeInclude()");
-        return join(SourceConstants.fileSeparator, scope);
+        return join(Text.FILE_SEPARATOR, scope);
     }
 
     /**
@@ -1153,7 +1153,7 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     private String getScopeID(String var)
     {
-        return current_name + SourceConstants.scopeSeparator + var;
+        return current_name + Text.SCOPE_SEPARATOR + var;
     }
 
     /**
@@ -1317,7 +1317,8 @@ abstract public class CodeGenerator implements TemplateHandler
             // add the template contents to the appropriate parent variable's
             // current value.
 
-            Object scope_id = name_stack.peek() + SourceConstants.scopeSeparator + var;
+            Object scope_id = name_stack.peek() 
+            	+ Text.SCOPE_SEPARATOR + var;
             String prev_value = (String) output_variables.get(scope_id);
             String result = t.substituteVariables(output_variables);
 
