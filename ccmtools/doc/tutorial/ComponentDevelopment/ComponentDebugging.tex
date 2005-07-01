@@ -1,0 +1,87 @@
+% $Id$
+%==============================================================================
+\chapter{Debugging Components}
+%==============================================================================
+
+CCM Tools generate additional debug informations within the local and
+remote component adapters.
+
+For each primitive type (e.g. long, string, etc.)
+the {\tt cpp-environment} package contains {\tt ccmDebug()} 
+functions that returns a string representation.
+For user defined types, CCM Tools generate such {\tt ccmDebug()}
+functions as part of the IDL to C++ mapping.   
+
+
+%------------------------------------------------------------------------------
+\section{WXDEBUG}
+%------------------------------------------------------------------------------
+
+As part of the {\tt wx-utils} package, a bunch of debug macros have been
+defined. These macros can be used to write debug informations to the console
+or another location.
+
+To activate the wx-utils debug mechanism you have to define the {\tt WXDEBUG} 
+macro, e.g. in the {\tt .confix} file:
+\begin{verbatim} 
+    'CONFIGURE': {
+       'ENV': {
+          'CC': 'gcc',
+          'CXX': 'g++',      
+          'CFLAGS': "-g -O0 -Wall -DWXDEBUG",
+          'CXXFLAGS': "-g -O0 -Wall -DWXDEBUG",
+       },
+    }
+\end{verbatim} 
+
+After compiling generated components with {\tt -DWXDEBUG} you can activate
+debug output via the {\tt WX\_DEBUG\_LEVELS} environment variable, e.g.:
+\begin{verbatim} 
+ > export WX_DEBUG_LEVELS="CCM_LOCAL CCM_REMOTE"
+\end{verbatim} 
+
+Currently, the following debug levels are supported by CCM Tools:
+\begin{itemize}
+\item {\tt CCM\_LOCAL} \\
+Each method call to a local component's facet or supported interface
+as well as attribute accesses will be recorded (including their C++ parameter
+values and types).
+
+\item {\tt CCM\_REMOTE} \\
+Each method call to a CORBA component's facet or supported interface
+as well as attribute accesses will be recorded (including their CORBA 
+parameter values and types). Calls through receptacle adapters will not
+be logged.
+
+\item {\tt CCM\_CONTAINER} \\
+Each method that is not directly related to a business call (e.g. constructors,
+destructors or container management stuff) can be traced by activating this 
+debug level.
+\end{itemize}
+
+You can also add your own debug levels to business logic. Simply add
+wx-utils debug macros to your code as shown in the following code snippet:
+\begin{verbatim}
+  LDEBUGNL(LEVEL_1, "Message from debug level" << 1);
+  LDEBUGNL(LEVEL_2, "Message from debug level" << 1+1);
+  LDEBUGNL(LEVEL_3, "Message from debug level" << 1+1+1);
+\end{verbatim}
+Now, you can add {\tt LEVEL\_1}, {\tt LEVEL\_2} or {\tt LEVEL\_3} to the 
+{\tt WX\_DEBUG\_LEVELS} environment variable to switch on and off debugging
+messages.
+
+Of course, there are much more features out there - have a look at the wx-utils
+source code ;-)
+\begin{verbatim}
+wx-utils-1.2.0
+|-- code
+|   |-- CerrDebugWriter.cpp
+|   |-- CerrDebugWriter.h
+|   |-- CerrDebugWriter.o
+|   |-- DebugWriter.h
+|   |-- DebugWriterMgr.cpp
+|   |-- DebugWriterMgr.h
+|   |-- DebugWriterMgr.o
+|   |-- debug.cc
+|   |-- debug.h
+\end{verbatim}

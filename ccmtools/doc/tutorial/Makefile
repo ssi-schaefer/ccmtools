@@ -11,6 +11,7 @@ PARTS=\
   ComponentDevelopment/HelloComponent.tex \
   ComponentDevelopment/ComponentStructure.tex \
   ComponentDevelopment/TestDrivenDevelopment.tex \
+  ComponentDevelopment/ComponentDebugging.tex \
   ComponentDevelopment/UMLComponentDesign.tex \
   SystemDevelopment/SystemDevelopment.tex \
   SystemDevelopment/NestedComponentComposition.tex \
