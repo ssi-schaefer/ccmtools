@@ -5,7 +5,7 @@ CCMTOOLS_CMD = ccmtools
 all: remote
 
 local: ${APP_NAME}.idl
-	ccmtools-generate c++local -a -o xxx ${APP_NAME}.idl
+	${CCMTOOLS_CMD} c++local -a -o xxx ${APP_NAME}.idl
 
 remote: local
 	${CCMTOOLS_CMD} idl2 -o xxx/CORBA_Stubs ${APP_NAME}.idl
