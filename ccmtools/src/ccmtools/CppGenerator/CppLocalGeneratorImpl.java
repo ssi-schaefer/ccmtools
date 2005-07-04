@@ -130,7 +130,7 @@ public class CppLocalGeneratorImpl extends CppGenerator
 
                 File outFile = new File(output_dir + File.separator + file_dir,
                                         file_name);
-                if((file_dir == "impl") && outFile.isFile()) {
+                if((file_dir == IMPL_DIR) && outFile.isFile()) {
                     if(outFile.getName().endsWith("_entry.h")) {
                         // *_entry.h files must be overwritten by every generator
                         // call because they are part of the component logic
