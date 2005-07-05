@@ -106,14 +106,12 @@ main (int argc, char *argv[])
       assert(false);
     }
     catch(const ::ErrorException& e) {
-      /*
       ::ErrorInfoList infolist = e.info;
       for(unsigned long i = 0; i < infolist.length(); i++) {
       cout << e.info[i].code << ": " 
            << e.info[i].message << endl;
       }
-      */
-      cout << CCM_Remote::ccmDebug(e) << endl;
+      LDEBUGNL(CCM_REMOTE, CCM_Remote::ccmDebug(e));
     }
 
     try {
@@ -121,8 +119,8 @@ main (int argc, char *argv[])
       assert(false);
     }
     catch(const ::SuperError& e) {
-      // cout << "SuperError" << endl;
-      cout << CCM_Remote::ccmDebug(e) << endl;
+      cout << "SuperError" << endl;
+      LDEBUGNL(CCM_REMOTE, CCM_Remote::ccmDebug(e));
     }
 
     try {
@@ -130,8 +128,8 @@ main (int argc, char *argv[])
       assert(false);
     }
     catch(const ::FatalError& e) {
-      // cout << e.what << endl;
-      cout << CCM_Remote::ccmDebug(e) << endl;
+      cout << e.what << endl;
+      LDEBUGNL(CCM_REMOTE, CCM_Remote::ccmDebug(e));
     }
 
     cout << "==== End Test Case ======================================" << endl;
