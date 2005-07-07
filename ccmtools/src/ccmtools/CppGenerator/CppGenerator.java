@@ -415,11 +415,11 @@ abstract public class CppGenerator extends CodeGenerator
         String base_type = getBaseLanguageType(object);
 
         // Handle interfaces using smart pointers
-        // (Any ia handled as interface
+        // (Any ia handled like interfaces)
         if(idl_type instanceof MInterfaceDef
-                || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
-                        .getKind() == MPrimitiveKind.PK_ANY)) {
-            base_type = "WX::Utils::SmartPtr<" + base_type + ">";
+                || (idl_type instanceof MPrimitiveDef 
+                && ((MPrimitiveDef) idl_type).getKind() == MPrimitiveKind.PK_ANY)) {
+            base_type = "WX::Utils::SmartPtr<" + base_type + "> ";
         }
 
         // This code defines the parameter passing rules for operations:
