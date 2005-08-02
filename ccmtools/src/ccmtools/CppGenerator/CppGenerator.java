@@ -435,7 +435,7 @@ abstract public class CppGenerator extends CodeGenerator
         if(idl_type instanceof MInterfaceDef
                 || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
                         .getKind() == MPrimitiveKind.PK_ANY)) {
-            base_type = "WX::Utils::SmartPtr<" + base_type + ">";
+            base_type = "WX::Utils::SmartPtr<" + base_type + "> ";
         }
 
         // This code defines the parameter passing rules for operations:
