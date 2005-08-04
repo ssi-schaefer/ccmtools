@@ -13,7 +13,6 @@
 
 %(DebugInclude)s
 
-#include<string>
 %(MFieldDefInclude)s
 
 %(OpenNamespace)s

@@ -24,7 +24,6 @@ package ccmtools.CppGenerator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -44,6 +43,7 @@ import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
@@ -101,19 +101,19 @@ public class CppLocalGenerator
     
     // FIXME ---------------------------------
     // This hack is only temporarily to compile generated structures via PMM
-    protected String getScopedInclude(MContained contained)
-    {
-        List scope = getScope(contained);
-        Collections.reverse(baseNamespace);
-        for(Iterator i = baseNamespace.iterator(); i.hasNext();) {
-            scope.add(0, i.next());
-        }
-        Collections.reverse(baseNamespace);
-        scope.add(contained.getIdentifier());
-        String code = getPmmHack(scope, contained);
-        // System.out.println("-->" + code + "<--");	
-        return code;
-    }
+//    protected String getScopedInclude(MContained contained)
+//    {
+//        List scope = getScope(contained);
+//        Collections.reverse(baseNamespace);
+//        for(Iterator i = baseNamespace.iterator(); i.hasNext();) {
+//            scope.add(0, i.next());
+//        }
+//        Collections.reverse(baseNamespace);
+//        scope.add(contained.getIdentifier());
+//        String code = getPmmHack(scope, contained);
+//        // System.out.println("-->" + code + "<--");	
+//        return code;
+//    }
     // FIXME ---------------------------------
 
     //====================================================================
@@ -246,6 +246,7 @@ public class CppLocalGenerator
         // Get local value of CppGenerator 
         String value = super.getLocalValue(variable);
 
+        
         if(variable.equals("DebugInclude")) {
             return getDebugInclude();
         }
@@ -253,6 +254,17 @@ public class CppLocalGenerator
             MTyped type = (MTyped) currentNode;
             MIDLType idlType = type.getIdlType();
             return getDebugNamespace(idlType);
+        }
+        else if(variable.equals("LanguageTypeInclude")) {
+            StringBuffer code = new StringBuffer();
+            MTyped type = (MTyped) currentNode;
+            MIDLType idlType = type.getIdlType();
+            if(idlType instanceof MStringDef
+                    || idlType instanceof MWstringDef
+                    || idlType instanceof MPrimitiveDef) {
+                code.append(getLanguageTypeInclude(idlType));
+            return value + code.toString();
+            }
         }
         
         // Handle simple tags from templates which are related to
@@ -275,6 +287,26 @@ public class CppLocalGenerator
     }
             
     
+    protected String getLanguageTypeInclude(MIDLType idlType) 
+    {
+        StringBuffer code = new StringBuffer();
+        
+        if(idlType instanceof MStringDef) {
+            code.append("#include <string>//!!\n");
+        }
+        else if(idlType instanceof MPrimitiveDef) {
+            MPrimitiveDef primitive = (MPrimitiveDef)idlType;
+            if(primitive.getKind() == MPrimitiveKind.PK_ANY) {
+                code.append("#include <WX/Utils/value.h>//!!\n");
+            }
+        }
+        else if(idlType instanceof MContained) {
+            code.append(getScopedInclude((MContained) idlType));
+        }
+        
+        return code.toString();
+    }
+    
     protected String data_MFieldDef(String dataType, String dataValue) 
     {
         logger.fine("enter data_MFieldDef()");
@@ -291,8 +323,15 @@ public class CppLocalGenerator
     {
         logger.fine("enter data_MSequenceDef()");
         MTyped type = (MTyped) currentNode;
+        MIDLType idlType = type.getIdlType();
         if(dataType.equals("MAliasDefDebug")) {
             dataValue =  getDebugSequence(type);
+        }
+        else if(dataType.equals("LanguageTypeInclude")) {
+            MTyped singleType = (MTyped) idlType;
+            MIDLType singleIdlType = singleType.getIdlType();
+            dataValue = "#include <vector>//!!!\n"
+                + getLanguageTypeInclude(singleIdlType);
         }
         logger.fine("leave data_MSequenceDef()");
         return dataValue;
@@ -302,9 +341,16 @@ public class CppLocalGenerator
     {
         logger.fine("enter data_MArrayDef()");
         MTyped type = (MTyped) currentNode;
+        MIDLType idlType = type.getIdlType();
         
         if(dataType.equals("MAliasDefDebug")) {
             dataValue = getDebugArray(type);	 
+        }
+        else if(dataType.equals("LanguageTypeInclude")) {
+            MTyped singleType = (MTyped) idlType;
+            MIDLType singleIdlType = singleType.getIdlType();
+            dataValue = "#include <vector>//!!!\n"
+                + getLanguageTypeInclude(singleIdlType);
         }
         logger.fine("leave data_MArrayDef()");
         return dataValue;
@@ -387,16 +433,16 @@ public class CppLocalGenerator
                 writeMakefile(output_dir, file_dir, "py", "");
 
                 // FIXME ---------------------------------
-                // This hack is only temporarily to compile generated structures
-                // via PMM
-                if(currentNode instanceof MComponentDef
-                        || currentNode instanceof MHomeDef
-                        || currentNode instanceof MProvidesDef) {
-                    // Makefile.pl is not needed by components, homes and facets
-                }
-                else {
-                    writeMakefile(output_dir, file_dir, "pl", "1;");
-                }
+//                // This hack is only temporarily to compile generated structures
+//                // via PMM
+//                if(currentNode instanceof MComponentDef
+//                        || currentNode instanceof MHomeDef
+//                        || currentNode instanceof MProvidesDef) {
+//                    // Makefile.pl is not needed by components, homes and facets
+//                }
+//                else {
+//                    writeMakefile(output_dir, file_dir, "pl", "1;");
+//                }
                 // FIXME --------------------------------
             }
         }

@@ -13,6 +13,8 @@
 
 #include <LocalComponents/CCM.h>
 
+%(DebugInclude)s
+
 %(MAttributeDefInclude)s
 %(MOperationDefInclude)s
 %(BaseInclude)s
@@ -29,10 +31,23 @@ class %(Identifier)s
 %(MOperationDefPrototypeVV)s 
 };
 
+
 // Internal view of interface %(Identifier)s
 class CCM_%(Identifier)s
   : virtual public %(Identifier)s
 {};
+
+
+#ifdef WXDEBUG
+inline
+std::string 
+ccmDebug(const WX::Utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
+{
+    std::ostringstream os;
+    os << doIndent(indent) << "object %(Identifier)s" << std::endl;
+    return os.str();
+}
+#endif // WXDEBUG
 
 %(CloseNamespace)s
 

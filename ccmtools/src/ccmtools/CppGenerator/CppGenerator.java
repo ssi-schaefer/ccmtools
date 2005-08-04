@@ -435,7 +435,7 @@ abstract public class CppGenerator extends CodeGenerator
         if(idl_type instanceof MInterfaceDef
                 || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
                         .getKind() == MPrimitiveKind.PK_ANY)) {
-            base_type = "WX::Utils::SmartPtr<" + base_type + "> ";
+            base_type = "WX::Utils::SmartPtr<" + base_type + " > ";
         }
 
         // This code defines the parameter passing rules for operations:
@@ -472,7 +472,7 @@ abstract public class CppGenerator extends CodeGenerator
 
         // FIXME : can we implement bounded sequences in C++ ?
         if(object instanceof MSequenceDef)
-            return sequence_type + "<" + base_type + "> ";
+            return sequence_type + "<" + base_type + " > ";
 
         if(object instanceof MArrayDef) {
             /*
@@ -480,7 +480,7 @@ abstract public class CppGenerator extends CodeGenerator
              * std::vector <long> ... but no bounds checking.
              */
 
-            String result = "std::vector<" + base_type + ">";
+            String result = "std::vector<" + base_type + " > ";
             int dimension = ((MArrayDef) object).getBounds().size();
 
             if(dimension > 1) {
