@@ -26,8 +26,11 @@
 
 #ifdef WXDEBUG
 
+#include <string>
 #include <iostream>
 #include <sstream>
+#include <WX/Utils/value.h>
+#include <WX/Utils/smartptr.h>
 
 namespace CCM_Local {
 
@@ -175,6 +178,17 @@ namespace CCM_Local {
 	std::ostringstream os;
 	os << doIndent(indent);
 	os << ":wstring"; // TODO !!!!!!
+	return os.str();
+    }
+
+    inline 
+    std::string 
+    ccmDebug(const WX::Utils::SmartPtr<WX::Utils::Value>& in, 
+	     int indent = 0)
+    {
+	std::ostringstream os;
+	os << doIndent(indent);
+	os << ":WX::Utils::SmartPtr<WX::Utils::Value>"; // TODO !!!!!!
 	return os.str();
     }
     
