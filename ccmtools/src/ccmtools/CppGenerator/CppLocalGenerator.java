@@ -292,12 +292,12 @@ public class CppLocalGenerator
         StringBuffer code = new StringBuffer();
         
         if(idlType instanceof MStringDef) {
-            code.append("#include <string>//!!\n");
+            code.append("#include <string>\n");
         }
         else if(idlType instanceof MPrimitiveDef) {
             MPrimitiveDef primitive = (MPrimitiveDef)idlType;
             if(primitive.getKind() == MPrimitiveKind.PK_ANY) {
-                code.append("#include <WX/Utils/value.h>//!!\n");
+                code.append("#include <WX/Utils/value.h>\n");
             }
         }
         else if(idlType instanceof MContained) {
@@ -330,7 +330,7 @@ public class CppLocalGenerator
         else if(dataType.equals("LanguageTypeInclude")) {
             MTyped singleType = (MTyped) idlType;
             MIDLType singleIdlType = singleType.getIdlType();
-            dataValue = "#include <vector>//!!!\n"
+            dataValue = "#include <vector>\n"
                 + getLanguageTypeInclude(singleIdlType);
         }
         logger.fine("leave data_MSequenceDef()");

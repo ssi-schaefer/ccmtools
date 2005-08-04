@@ -32,16 +32,18 @@ public class Constants {
         "terms of the GNU Lesser General Public License.";
     
     public static final String USAGE_TEXT = 
-    	"Usage: ccmtools GENAERATOR [Options] FILES\n\n"
+       "\nUsage: ccmtools GENAERATOR [Options] FILES\n\n"
 	   + "Options:\n"
        + "  -a, --application             Generate skeletons for business logic \n"
        + "  -h, --help                    Display this help\n"
        + "  -Ipath                        Add path to the preprocessor include path\n"
        + "  -o DIR, --output=DIR          Base output in DIR (default .)\n"
        + "  -V, --version                 Display CCM Tools version information\n"
-       + "      --generator-mask=<flags>  Mask for generator debug output\n"
-       + "      --parser-mask=<flags>     Mask for parser debug output\n\n"
-       + "GENARATOR types available:\n"
+       + "  --generator-mask=<flags>      Mask for generator debug output\n"
+       + "  --parser-mask=<flags>         Mask for parser debug output\n"
+	   + "  --noexit                      Don't exit Java VM with error status\n\n"
+
+       + "Available GENERATOR types:\n"
        + "  c++local        Generate local C++ components \n"
        + "  c++local-test   Generate local C++ test client\n"
 	   + "  c++dbc          Generate local C++ components with DbC (experimental)\n"

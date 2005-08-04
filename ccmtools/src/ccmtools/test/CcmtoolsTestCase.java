@@ -55,7 +55,8 @@ public class CcmtoolsTestCase extends TestCase
      */
     protected void runCcmtoolsGenerate(List args)
     {
-        String[] parameters = new String[args.size()];
+        String[] parameters = new String[args.size()+1];
+        parameters[0] = "--noexit"; // don't halt Java VM after an error
         for(int i = 0; i < args.size(); i++) {
             parameters[i] = (String) args.get(i);
         }

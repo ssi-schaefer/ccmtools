@@ -1,3 +1,16 @@
+RELEASE-0.5.3
+============================================================================
+RELEASE-0.5.3-pre1
+----------------------------------------------------------------------------
+*) generate ccmDebug() for interface types
+*) generated local types include headerfiles from used types (string, vector, 
+   value, etc.) on demant from %(LanguageTypeInclude)s tag.
+*) generated local exceptions inherit now from LocalComponent::Exception
+*) removed PMM hack from local generator
+*) added --noexit command line parameter (by default, the Java VM exits with -1 
+   after an ccmtools error)
+
+
 RELEASE-0.5.2
 ============================================================================
 
@@ -9,9 +22,6 @@ RELEASE-0.5.2-pre2
 *) generate ccmDebug() methods for local adapters 
 *) generate ccmDebug() methods for remote adapters
 *) replaced ccmtools.CppGenerator.SourceConstants with Text.* constants 
-
-
-
 
 RELEASE-0.5.2-pre1
 ----------------------------------------------------------------------------

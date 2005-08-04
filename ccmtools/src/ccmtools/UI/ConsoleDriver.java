@@ -153,7 +153,7 @@ public class ConsoleDriver
 
     public void printError(String msg)
     {
-        err.println("Error: " + msg);
+        err.println("!!!! ERROR !!!!\n" + msg);
     }
     
     

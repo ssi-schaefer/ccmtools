@@ -7,6 +7,8 @@
 #ifndef __EXCEPTION__%(PreprocIdentifier)s__H__
 #define __EXCEPTION__%(PreprocIdentifier)s__H__
 
+#include <LocalComponents/CCM.h>
+
 %(DebugInclude)s
 
 %(MFieldDefInclude)s
@@ -14,9 +16,17 @@
 %(OpenNamespace)s
 
 class %(Identifier)s 
+  : virtual public LocalComponents::Exception 
 { 
   public:
 %(MFieldDef)s
+
+    %(Identifier)s() throw() 
+      : Exception("%(Identifier)s")  
+    {}
+
+    virtual ~%(Identifier)s() throw()
+    {}
 };
 
 
