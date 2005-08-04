@@ -63,10 +63,6 @@ CCM_Test_mirror_impl::ccm_activate()
         ctx->get_connection_console_mirror()->println(s);
         assert(0);
     }
-    catch(LocalComponents::Exception& e) {
-      // catch base class exception 
-      cout << e.what() << endl;
-    }
     catch(CCM_Local::Error& e) {
         cout << "OK: error exception catched! ";
         cout << "(" 
@@ -90,6 +86,10 @@ CCM_Test_mirror_impl::ccm_activate()
         string s = "FatalError";
         ctx->get_connection_console_mirror()->println(s);
         assert(0);
+    }
+    catch(LocalComponents::Exception& e) {
+      // catch base class exception 
+      cout << e.what() << endl;
     }
     catch(CCM_Local::FatalError& e) {
       cout << "OK: fatal_error exception catched!" << endl;
