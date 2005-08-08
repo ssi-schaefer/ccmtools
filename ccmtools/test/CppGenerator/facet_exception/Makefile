@@ -9,7 +9,7 @@ IDL_INCLUDE = -I${IDL_INTERFACE} -I${IDL_COMPONENT}
 all: local
 
 idl: Test.idl
-	ccmtools idl3 -o ${IDL3_DIR} ${APP_NAME}.idl
+	ccmtools idl3 -o ${IDL3_DIR} ${APP_NAME}.idl 
 	ccmtools idl3mirror -o ${IDL3_DIR} ${APP_NAME}.idl
 
 local: idl

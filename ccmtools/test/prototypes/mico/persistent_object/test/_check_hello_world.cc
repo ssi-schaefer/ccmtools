@@ -25,10 +25,10 @@ using namespace std;
 int main (int argc, char** argv)
 {
     // Collect commandline parameters for ORB init
-    int argc_ = 8;
+    int argc_ = 6;
     char* argv_[] = { 
       "", 
-      "-ORBInitRef","NameService=corbaloc:iiop:1.2@localhost:5050/NameService",
+      //"-ORBInitRef","NameService=corbaloc:iiop:1.2@localhost:5050/NameService",
       "-ORBIIOPAddr","inet:localhost:7777",
       "-POAImplName", "Hello",
       "-ORBIIOPVersion 1.2"

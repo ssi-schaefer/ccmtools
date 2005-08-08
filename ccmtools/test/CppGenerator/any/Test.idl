@@ -1,0 +1,31 @@
+/***
+ * any test case
+ *
+ * This test case shows the usage of IDL basic and user types as parameters
+ * in facet operations. 
+ ***/
+
+typedef sequence<any> anyList;
+
+struct pair
+{
+  string name;
+  any value;
+};
+
+interface AnyTest 
+{
+  any     op1(in any p1    , inout any p2    , out any p3    );
+  anyList op2(in anyList p1, inout anyList p2, out anyList p3);
+  pair    op3(in pair p1   , inout pair  p2  , out pair p3   );
+};
+
+component Test
+{ 
+  provides AnyTest any_test; 
+};
+
+home TestHome manages Test 
+{ 
+};
+
