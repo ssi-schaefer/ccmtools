@@ -1,5 +1,6 @@
 RELEASE-0.5.3
 ============================================================================
+
 RELEASE-0.5.3-pre1
 ----------------------------------------------------------------------------
 *) generate ccmDebug() for interface types
@@ -9,6 +10,7 @@ RELEASE-0.5.3-pre1
 *) removed PMM hack from local generator
 *) added --noexit command line parameter (by default, the Java VM exits with -1 
    after an ccmtools error)
+*) added etc/ccmtools.properties to set the impl directory's name
 
 
 RELEASE-0.5.2

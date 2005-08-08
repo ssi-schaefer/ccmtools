@@ -53,6 +53,7 @@ import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.UI.CcmtoolsProperties;
 import ccmtools.UI.Driver;
 import ccmtools.utils.Text;
 
@@ -384,11 +385,11 @@ public class CppLocalGenerator
         List out_paths = getOutputFiles();
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
+        String implDirectory = CcmtoolsProperties.Instance().get("ccmtools.impl.dir");
 
         try {
             Iterator path_iterator = out_paths.iterator();
             for(int i = 0; i < out_strings.length; i++) {
-
                 String generated_code = prettifyCode(out_strings[i]);
 
                 // out_path = [directory, filename]
@@ -396,8 +397,7 @@ public class CppLocalGenerator
 
                 // from the getOutputFiles function we know each entry in the
                 // output file list has exactly two parts ... the dirname and
-                // the
-                // filename.
+                // the filename.
                 String file_dir = (String) out_path.get(0);
                 String file_name = (String) out_path.get(1);
 
@@ -409,7 +409,7 @@ public class CppLocalGenerator
 
                 File outFile = new File(output_dir + File.separator + file_dir,
                                         file_name);
-                if((file_dir == "impl") && outFile.isFile()) {
+                if((file_dir == implDirectory) && outFile.isFile()) {
                     if(outFile.getName().endsWith("_entry.h")) {
                         // *_entry.h files must be overwritten by every generator
                         // call because they are part of the component logic
@@ -493,7 +493,10 @@ public class CppLocalGenerator
 
         List files = new ArrayList();
         List f = null;
-
+        
+        String implDirectory =
+            CcmtoolsProperties.Instance().get("ccmtools.impl.dir");
+        
         if((currentNode instanceof MComponentDef)
                 || (currentNode instanceof MHomeDef)) {
             String base_name = node_name;
@@ -524,28 +527,28 @@ public class CppLocalGenerator
 
             if(currentNode instanceof MHomeDef) {
                 f = new ArrayList();
-                f.add("impl");
+                f.add(implDirectory);
                 f.add(node_name + "_entry.h");
                 files.add(f);
             }
 
             if((flags & FLAG_APPLICATION_FILES) != 0) {
                 f = new ArrayList();
-                f.add("impl");
+                f.add(implDirectory);
                 f.add(node_name + "_impl.h");
                 files.add(f);
                 f = new ArrayList();
-                f.add("impl");
+                f.add(implDirectory);
                 f.add(node_name + "_impl.cc");
                 files.add(f);
             }
             else {
                 f = new ArrayList();
-                f.add("impl");
+                f.add(implDirectory);
                 f.add("");
                 files.add(f);
                 f = new ArrayList();
-                f.add("impl");
+                f.add(implDirectory);
                 f.add("");
                 files.add(f);
             }
@@ -566,21 +569,21 @@ public class CppLocalGenerator
                 MComponentDef component = ((MProvidesDef) currentNode)
                         .getComponent();
                 f = new ArrayList();
-                f.add("impl");
+                f.add(implDirectory);
                 f.add(component.getIdentifier() + "_" + node_name + "_impl.h");
                 files.add(f);
                 f = new ArrayList();
-                f.add("impl");
+                f.add(implDirectory);
                 f.add(component.getIdentifier() + "_" + node_name + "_impl.cc");
                 files.add(f);
             }
             else {
                 f = new ArrayList();
-                f.add("impl");
+                f.add(implDirectory);
                 f.add("");
                 files.add(f);
                 f = new ArrayList();
-                f.add("impl");
+                f.add(implDirectory);
                 f.add("");
                 files.add(f);
             }

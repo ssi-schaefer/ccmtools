@@ -118,9 +118,11 @@ public class Main
             
             // Log CCM Tools settings
             logger.config("exitOnReturn = " + isExitWithErrorStatus);
-            logger.config("ccmtools.home=" + System.getProperty("ccmtools.home"));
-            logger.config("ccmtools.templates=" + System.getProperty("ccmtools.templates"));
-
+            logger.config("ccmtools.home = " + System.getProperty("ccmtools.home"));
+            logger.config("ccmtools.templates = " + System.getProperty("ccmtools.templates"));
+            logger.config("ccmtools.impl.dir = " + 
+                          CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
+            
             GraphTraverser traverser = new CCMGraphTraverser();
             if(traverser == null) {
                 printUsage();
