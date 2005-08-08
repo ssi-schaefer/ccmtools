@@ -4,6 +4,11 @@
 
 #include "Timer.h" 
 
+/* TODO: handle system calls defined in unistd.h in a way that this
+ * Timer can also be handled under Windows platforms...
+ */
+#include <unistd.h>
+
 namespace WX {
 namespace Utils {
 
