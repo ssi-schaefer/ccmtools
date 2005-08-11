@@ -19,10 +19,11 @@
 using namespace std;
 using namespace WX::Utils;
 
-namespace CCM_Local {
-namespace CCM_Session_Test {
+namespace ccm {
+namespace local {
+namespace component {
 
-console_impl::console_impl(CCM_Local::CCM_Session_Test::CCM_Test_impl* component_impl)
+console_impl::console_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     DEBUGNL("+console_impl->console_impl()");
@@ -39,7 +40,7 @@ console_impl::~console_impl()
 
 const long
 console_impl::max_size() const
-    throw(LocalComponents::CCMException)
+    throw(Components::CCMException)
 {
     DEBUGNL(" console_impl->max_size()");
     return max_size_;
@@ -47,7 +48,7 @@ console_impl::max_size() const
 
 void
 console_impl::max_size(const long value)
-    throw(LocalComponents::CCMException)
+    throw(Components::CCMException)
 {
     DEBUGNL(" console_impl->max_size(value)");
     max_size_ = value;
@@ -55,7 +56,7 @@ console_impl::max_size(const long value)
 
 long
 console_impl::print(const std::string& msg)
-    throw (LocalComponents::CCMException)
+    throw (Components::CCMException)
 {
     DEBUGNL("console_impl->print(msg)");
     
@@ -66,5 +67,6 @@ console_impl::print(const std::string& msg)
       return max_size();
 }
 
-} // /namespace CCM_Session_Test
-} // /namespace CCM_Local
+} // /namespace component
+} // /namespace local
+} // /namespace ccm

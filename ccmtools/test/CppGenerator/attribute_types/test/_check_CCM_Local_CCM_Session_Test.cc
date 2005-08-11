@@ -20,17 +20,17 @@
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
+#include <ccm/local/Components/CCM.h>
+#include <ccm/local/HomeFinder.h>
 
-#include <CCM_Local/CCM_Session_Test/Test_gen.h>
-#include <CCM_Local/CCM_Session_Test/TestHome_gen.h>
+#include <ccm/local/component/Test_gen.h>
+#include <ccm/local/component/TestHome_gen.h>
 
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
-using namespace CCM_Session_Test;
+using namespace ccm::local;
+using namespace component;
 
 int main(int argc, char *argv[])
 {
@@ -47,10 +47,10 @@ int main(int argc, char *argv[])
   // component- and mirror component home.
   // Here we can also decide to use a Design by Contract component.  	
   int error = 0;
-  LocalComponents::HomeFinder* homeFinder;
+  Components::HomeFinder* homeFinder;
   homeFinder = HomeFinder::Instance (  );
 
-  error = deploy_CCM_Local_TestHome("TestHome");
+  error = deploy_ccm_local_TestHome("TestHome");
   if(error) {
     cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
     return(error);
@@ -73,15 +73,15 @@ int main(int argc, char *argv[])
 
     myTest->configuration_complete();
   } 
-  catch ( LocalComponents::HomeNotFound ) {
+  catch ( Components::HomeNotFound ) {
     cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
     error = -1;
   } 
-  catch ( LocalComponents::NotImplemented& e ) {
+  catch ( Components::NotImplemented& e ) {
     cout << "DEPLOYMENT ERROR: function not implemented: " << e.what (  ) << endl;
     error = -1;
   } 
-  catch ( LocalComponents::InvalidName& e ) {
+  catch ( Components::InvalidName& e ) {
     cout << "DEPLOYMENT ERROR: invalid name during connection: " << e.what (  ) << endl;
     error = -1;
   }
@@ -166,9 +166,9 @@ int main(int argc, char *argv[])
 
     {
       //Test Case for: typedef long time_t;
-      CCM_Local::time_t time_value = 3;
+      ccm::local::time_t time_value = 3;
       myTest->typedef_value(time_value);
-      CCM_Local::time_t time_result = myTest->typedef_value();
+      ccm::local::time_t time_result = myTest->typedef_value();
       assert(time_result == time_value);
      
 
@@ -205,12 +205,12 @@ int main(int argc, char *argv[])
       }
 
       // Test Case for: typedef double doubleArray[10];
-      CCM_Local::doubleArray array_value(10);
+      doubleArray array_value(10);
       for(int i=0;i<10;i++) {
         array_value.at(i) = i;
       } 
       myTest->array_value(array_value);
-      CCM_Local::doubleArray array_result = myTest->array_value();
+      doubleArray array_result = myTest->array_value();
       for(int i=0;i<10;i++) {
         assert(array_result.at(i) == i);
       }
@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
 
     cout << "== End Test Case ===============================================" << endl;
   } 
-  catch ( LocalComponents::NotImplemented& e ) {
+  catch ( Components::NotImplemented& e ) {
     cout << "TEST: function not implemented: " << e.what (  ) << endl;
     error = -1;
   }
@@ -240,11 +240,11 @@ int main(int argc, char *argv[])
 
     myTest->remove();
   } 
-  catch ( LocalComponents::HomeNotFound ) {
+  catch ( Components::HomeNotFound ) {
     cout << "TEARDOWN ERROR: can't find a home!" << endl;
     error = -1;
   } 
-  catch ( LocalComponents::NotImplemented& e ) {
+  catch ( Components::NotImplemented& e ) {
     cout << "TEARDOWN ERROR: function not implemented: " << e.what (  ) << endl;
     error = -1;
   } 
@@ -252,7 +252,7 @@ int main(int argc, char *argv[])
     cout << "TEARDOWN ERROR: there is something wrong!" << endl;
     error = -1;
   }
-  error += undeploy_CCM_Local_TestHome("TestHome");
+  error += undeploy_ccm_local_TestHome("TestHome");
   if(error) {
     cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
     return error;

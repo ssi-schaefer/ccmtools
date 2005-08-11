@@ -18,7 +18,7 @@ interface LongCommon {
   long get_attrib_long();
 };
 
-component Hello {
+component Test {
   /* basic types */
   attribute short short_value;
   attribute long long_value;
@@ -42,7 +42,7 @@ component Hello {
   //  attribute LongCommon the_long;
 };
 
-home HelloHome manages Hello {
+home TestHome manages Test {
   /* basic types */
   factory create_with_short(in short id);
   factory create_with_long(in long id);

@@ -19,10 +19,11 @@
 using namespace std;
 using namespace WX::Utils;
 
-namespace CCM_Local {
-namespace CCM_Session_Test {
+namespace ccm {
+namespace local {
+namespace component {
 
-console_impl::console_impl(CCM_Local::CCM_Session_Test::CCM_Test_impl* component_impl)
+console_impl::console_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     DEBUGNL("+console_impl->console_impl()");
@@ -39,7 +40,7 @@ console_impl::~console_impl()
 
 long
 console_impl::println(const std::string& msg)
-    throw (LocalComponents::CCMException, Error, SuperError, FatalError )
+    throw (Components::CCMException, Error, SuperError, FatalError )
 {
     DEBUGNL("console_impl->println(msg)");
 
@@ -65,5 +66,6 @@ console_impl::println(const std::string& msg)
     return msg.length();
 }
 
-} // /namespace CCM_Session_Test
-} // /namespace CCM_Local
+} // /namespace component
+} // /namespace local
+} // /namespace ccm

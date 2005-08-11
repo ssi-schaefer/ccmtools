@@ -3,19 +3,19 @@
 #define __MY_OBJECT__H__
 
 #include <iostream>
-#include <CCM_Local/Console.h>
+#include <ccm/local/Console.h>
 
 class MyObject 
-  : virtual public CCM_Local::CCM_Console
+  : virtual public ccm::local::CCM_Console
 {
 public:
   MyObject();
 
   const std::string prompt() const
-    throw(LocalComponents::CCMException);
+    throw(ccm::local::Components::CCMException);
 
   void prompt(const std::string value) 
-    throw(LocalComponents::CCMException);
+    throw(ccm::local::Components::CCMException);
 
   long println(const std::string& msg);
   

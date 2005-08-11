@@ -2,7 +2,7 @@
 #include <WX/Utils/debug.h>
 
 using namespace std;
-using namespace CCM_Local;
+using namespace ccm::local;
 
 ReceptacleObject::ReceptacleObject()
 {

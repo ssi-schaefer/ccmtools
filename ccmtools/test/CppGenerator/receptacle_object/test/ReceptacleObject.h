@@ -1,8 +1,8 @@
 
-#include<CCM_Local/IFace.h>
+#include<ccm/local/IFace.h>
 
 class ReceptacleObject
-: virtual public CCM_Local::CCM_IFace
+: virtual public ccm::local::CCM_IFace
 {
  public:
   ReceptacleObject();

@@ -19,12 +19,12 @@
 #include "MyObject.h"
 #include "Test_impl.h"
 
+namespace ccm {
+namespace local {
+namespace component {
+
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
-
-namespace CCM_Local {
-namespace CCM_Session_Test {
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -41,8 +41,8 @@ CCM_Test_impl::~CCM_Test_impl (  )
 }
 
 void
-CCM_Test_impl::set_session_context ( LocalComponents::SessionContext* context )
-  throw ( LocalComponents::CCMException )
+CCM_Test_impl::set_session_context ( Components::SessionContext* context )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_impl->set_session_context (  )" );
   ctx = dynamic_cast<CCM_Test_Context*> ( context );
@@ -50,11 +50,11 @@ CCM_Test_impl::set_session_context ( LocalComponents::SessionContext* context )
 
 void
 CCM_Test_impl::ccm_activate (  )
-  throw ( LocalComponents::CCMException )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_impl->ccm_activate (  )" );
 
-  WX::Utils::SmartPtr<CCM_TypeTest> type_test = 
+  SmartPtr<CCM_TypeTest> type_test = 
     ctx->get_connection_type_test();
   
   {
@@ -124,7 +124,7 @@ CCM_Test_impl::ccm_activate (  )
 
   {
     // test case: typedef long time_t;
-    CCM_Local::time_t time_t_2 = 3, time_t_3, time_t_r;
+    ccm::local::time_t time_t_2 = 3, time_t_3, time_t_r;
     time_t_r = type_test->op_u1(7,time_t_2, time_t_3);
     assert(time_t_2 == 7);
     assert(time_t_3 == 3);
@@ -189,15 +189,15 @@ CCM_Test_impl::ccm_activate (  )
   // Test interface types
   {
     MyObject* my_object1 = new MyObject;
-    WX::Utils::SmartPtr<Console> console1(my_object1);
+    SmartPtr<Console> console1(my_object1);
     console1->prompt("prompt1> ");
 
     MyObject* my_object2 = new MyObject;
-    WX::Utils::SmartPtr<Console> console2(my_object2);
+    SmartPtr<Console> console2(my_object2);
     console2->prompt("prompt2> ");
 
-    WX::Utils::SmartPtr<Console> console3;
-    WX::Utils::SmartPtr<Console> console4;
+    SmartPtr<Console> console3;
+    SmartPtr<Console> console4;
 
     console4 = type_test->op_i1(console1,console2,console3);
 
@@ -209,18 +209,19 @@ CCM_Test_impl::ccm_activate (  )
 
 void
 CCM_Test_impl::ccm_passivate (  )
-  throw ( LocalComponents::CCMException )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_impl->ccm_passivate (  )" );
 }
 
 void
 CCM_Test_impl::ccm_remove (  )
-  throw ( LocalComponents::CCMException )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_impl->ccm_remove (  )" );
 }
 
-} // /namespace CCM_Session_Test
-} // /namespace CCM_Local
+} // /namespace component
+} // /namespace local
+} // /namespace ccm
 

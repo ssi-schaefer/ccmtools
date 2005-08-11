@@ -19,10 +19,11 @@
 using namespace std;
 using namespace WX::Utils;
 
-namespace CCM_Local {
-namespace CCM_Session_Test {
+namespace ccm {
+namespace local {
+namespace component {
 
-a_facet_impl::a_facet_impl(CCM_Local::CCM_Session_Test::CCM_Test_impl* component_impl)
+a_facet_impl::a_facet_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     DEBUGNL("+a_facet_impl->a_facet_impl()");
@@ -39,7 +40,7 @@ a_facet_impl::~a_facet_impl()
 
 long
 a_facet_impl::op3(const std::string& str)
-    throw (LocalComponents::CCMException)
+    throw (Components::CCMException)
 {
     DEBUGNL("a_facet_impl->op3(str)");
     cout << str << endl;
@@ -48,7 +49,7 @@ a_facet_impl::op3(const std::string& str)
 
 long
 a_facet_impl::op2(const std::string& str)
-    throw (LocalComponents::CCMException)
+    throw (Components::CCMException)
 {
     DEBUGNL("a_facet_impl->op2(str)");
     cout << str << endl;
@@ -57,12 +58,13 @@ a_facet_impl::op2(const std::string& str)
 
 long
 a_facet_impl::op1(const std::string& str)
-    throw (LocalComponents::CCMException)
+    throw (Components::CCMException)
 {
     DEBUGNL("a_facet_impl->op1(str)");
     cout << str << endl;
     return str.length();
 }
 
-} // /namespace CCM_Session_Test
-} // /namespace CCM_Local
+} // /namespace component
+} // /namespace local
+} // /namespace ccm

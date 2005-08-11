@@ -19,12 +19,12 @@
 #include "Test_impl.h"
 #include "MyObject.h"
 
+namespace ccm {
+namespace local {
+namespace component {
+
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
-
-namespace CCM_Local {
-namespace CCM_Session_Test {
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -42,7 +42,7 @@ CCM_Test_impl::~CCM_Test_impl (  )
 
 short
 CCM_Test_impl::op_b1(const short p1, short& p2, short& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b1(p1, p2, p3)");
 
@@ -53,7 +53,7 @@ CCM_Test_impl::op_b1(const short p1, short& p2, short& p3)
 
 long
 CCM_Test_impl::op_b2(const long p1, long& p2, long& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b2(p1, p2, p3)");
 
@@ -64,7 +64,7 @@ CCM_Test_impl::op_b2(const long p1, long& p2, long& p3)
 
 unsigned short
 CCM_Test_impl::op_b3(const unsigned short p1, unsigned short& p2, unsigned short& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b3(p1, p2, p3)");
 
@@ -75,7 +75,7 @@ CCM_Test_impl::op_b3(const unsigned short p1, unsigned short& p2, unsigned short
 
 unsigned long
 CCM_Test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsigned long& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b4(p1, p2, p3)");
 
@@ -86,7 +86,7 @@ CCM_Test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsigned long& p
 
 float
 CCM_Test_impl::op_b5(const float p1, float& p2, float& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b5(p1, p2, p3)");
 
@@ -97,7 +97,7 @@ CCM_Test_impl::op_b5(const float p1, float& p2, float& p3)
 
 double
 CCM_Test_impl::op_b6(const double p1, double& p2, double& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b6(p1, p2, p3)");
 
@@ -108,7 +108,7 @@ CCM_Test_impl::op_b6(const double p1, double& p2, double& p3)
 
 char
 CCM_Test_impl::op_b7(const char p1, char& p2, char& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b7(p1, p2, p3)");
 
@@ -119,7 +119,7 @@ CCM_Test_impl::op_b7(const char p1, char& p2, char& p3)
 
 std::string
 CCM_Test_impl::op_b8(const std::string& p1, std::string& p2, std::string& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b8(p1, p2, p3)");
 
@@ -130,7 +130,7 @@ CCM_Test_impl::op_b8(const std::string& p1, std::string& p2, std::string& p3)
 
 bool
 CCM_Test_impl::op_b9(const bool p1, bool& p2, bool& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b9(p1, p2, p3)");
 
@@ -141,7 +141,7 @@ CCM_Test_impl::op_b9(const bool p1, bool& p2, bool& p3)
 
 unsigned char
 CCM_Test_impl::op_b10(const unsigned char p1, unsigned char& p2, unsigned char& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_b10(p1, p2, p3)");
 
@@ -152,7 +152,7 @@ CCM_Test_impl::op_b10(const unsigned char p1, unsigned char& p2, unsigned char& 
 
 time_t
 CCM_Test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_u1(p1, p2, p3)");
   
@@ -163,7 +163,7 @@ CCM_Test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
 
 Color
 CCM_Test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_u2(p1, p2, p3)");
 
@@ -174,7 +174,7 @@ CCM_Test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
 
 Pair
 CCM_Test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_u3(p1, p2, p3)");
 
@@ -188,7 +188,7 @@ CCM_Test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
 
 Map
 CCM_Test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_u4(p1, p2, p3)");
 
@@ -206,7 +206,7 @@ CCM_Test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
 
 doubleArray
 CCM_Test_impl::op_u5(const doubleArray& p1, doubleArray& p2, doubleArray& p3)
-  throw (LocalComponents::CCMException)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_u5(p1, p2, p3)");
 
@@ -219,30 +219,30 @@ CCM_Test_impl::op_u5(const doubleArray& p1, doubleArray& p2, doubleArray& p3)
   return r;
 }
 
-WX::Utils::SmartPtr<Console>
-CCM_Test_impl::op_i1(const WX::Utils::SmartPtr<Console>& p1, WX::Utils::SmartPtr<Console>& p2, 
-		     WX::Utils::SmartPtr<Console>& p3)
-  throw (LocalComponents::CCMException)
+SmartPtr<Console>
+CCM_Test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2, 
+		     SmartPtr<Console>& p3)
+  throw (Components::CCMException)
 {
   DEBUGNL(" CCM_Test_impl->op_i1(p1, p2, p3)");
 
   MyObject* my_object3 = new MyObject;
-  p3 = WX::Utils::SmartPtr<Console>(my_object3);
+  p3 = SmartPtr<Console>(my_object3);
   p3->prompt(p2->prompt());
 
   const string p1_prompt = "prompt1> ";
   p2->prompt(p1_prompt);
 
   MyObject* my_object4 = new MyObject;
-  WX::Utils::SmartPtr<Console> result(my_object4);
+  SmartPtr<Console> result(my_object4);
   result->prompt(p3->prompt() + p1_prompt);
 
   return result;
 }
 
 void
-CCM_Test_impl::set_session_context ( LocalComponents::SessionContext* context )
-  throw ( LocalComponents::CCMException )
+CCM_Test_impl::set_session_context ( Components::SessionContext* context )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_impl->set_session_context (  )" );
   ctx = dynamic_cast<CCM_Test_Context*> ( context );
@@ -250,25 +250,26 @@ CCM_Test_impl::set_session_context ( LocalComponents::SessionContext* context )
 
 void
 CCM_Test_impl::ccm_activate (  )
-  throw ( LocalComponents::CCMException )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_impl->ccm_activate (  )" );
 }
 
 void
 CCM_Test_impl::ccm_passivate (  )
-  throw ( LocalComponents::CCMException )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_impl->ccm_passivate (  )" );
 }
 
 void
 CCM_Test_impl::ccm_remove (  )
-  throw ( LocalComponents::CCMException )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_impl->ccm_remove (  )" );
 }
 
-} // /namespace CCM_Session_Test
-} // /namespace CCM_Local
+} // /namespace component
+} // /namespace local
+} // /namespace ccm
 

@@ -5,12 +5,12 @@
 
 exception can_not_create {};
 
-component Hello
+component Test
 {
   attribute string id;
 };
 
-home HelloHome manages Hello
+home TestHome manages Test
 {
   factory create_with_exception(in string id)
     raises (can_not_create);

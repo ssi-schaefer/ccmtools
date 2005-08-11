@@ -16,13 +16,15 @@
 
 #include "Test_mirror_iface_mirror_impl.h"
 
+
+namespace ccm {
+namespace local {
+namespace component {
+
 using namespace std;
 using namespace WX::Utils;
 
-namespace CCM_Local {
-namespace CCM_Session_Test_mirror {
-
-iface_mirror_impl::iface_mirror_impl(CCM_Local::CCM_Session_Test_mirror::CCM_Test_mirror_impl* component_impl)
+iface_mirror_impl::iface_mirror_impl(CCM_Test_mirror_impl* component_impl)
   : component(component_impl)
 {
     DEBUGNL("+iface_mirror_impl->iface_mirror_impl()");
@@ -39,7 +41,7 @@ iface_mirror_impl::~iface_mirror_impl()
 
 long
 iface_mirror_impl::op_b1(const long p1, long& p2, long& p3)
-    throw (LocalComponents::CCMException)
+    throw (Components::CCMException)
 {
     DEBUGNL("iface_mirror_impl->op_b1(p1, p2, p3)");
     cout << "iface_mirror_impl->op_b1(p1, p2, p3)" << endl;
@@ -50,7 +52,7 @@ iface_mirror_impl::op_b1(const long p1, long& p2, long& p3)
 
 std::string
 iface_mirror_impl::op_b2(const std::string& p1, std::string& p2, std::string& p3)
-    throw (LocalComponents::CCMException)
+    throw (Components::CCMException)
 {
     DEBUGNL("iface_mirror_impl->op_b2(p1, p2, p3)");
     cout << "iface_mirror_impl->op_b2(p1, p2, p3)" << endl;
@@ -59,5 +61,6 @@ iface_mirror_impl::op_b2(const std::string& p1, std::string& p2, std::string& p3
     return p3+p1;
 }
 
-} // /namespace CCM_Session_Test_mirror
-} // /namespace CCM_Local
+} // /namespace component
+} // /namespace local
+} // /namespace ccm

@@ -16,13 +16,15 @@
 
 #include "Test_mirror_console_mirror_impl.h"
 
+
+namespace ccm {
+namespace local {
+namespace component {
+
 using namespace std;
 using namespace WX::Utils;
 
-namespace CCM_Local {
-namespace CCM_Session_Test_mirror {
-
-console_mirror_impl::console_mirror_impl(CCM_Local::CCM_Session_Test_mirror::CCM_Test_mirror_impl* component_impl)
+console_mirror_impl::console_mirror_impl(CCM_Test_mirror_impl* component_impl)
   : component(component_impl)
 {
     DEBUGNL("+console_mirror_impl->console_mirror_impl()");
@@ -39,12 +41,13 @@ console_mirror_impl::~console_mirror_impl()
 
 long
 console_mirror_impl::println(const std::string& s2)
-    throw (LocalComponents::CCMException)
+    throw (Components::CCMException)
 {
     DEBUGNL("console_mirror_impl->println(s2)");
     cout << s2 << endl;
     return s2.length();
 }
 
-} // /namespace CCM_Session_Test
-} // /namespace CCM_Local
+} // /namespace component
+} // /namespace local
+} // /namespace ccm

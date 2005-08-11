@@ -12,14 +12,14 @@ MyObject::MyObject()
 
 const std::string 
 MyObject::prompt() const 
-  throw(LocalComponents::CCMException) 
+  throw(ccm::local::Components::CCMException) 
 {
   return prompt_;
 }
 
 void 
 MyObject::prompt(const std::string value) 
-  throw(LocalComponents::CCMException) {
+  throw(ccm::local::Components::CCMException) {
   prompt_=value;
 }
 

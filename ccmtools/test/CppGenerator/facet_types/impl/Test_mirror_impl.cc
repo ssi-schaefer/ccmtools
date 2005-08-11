@@ -15,17 +15,18 @@
 #include <cassert>
 #include <iostream>
 #include <WX/Utils/debug.h>
-#include <CCM_Local/Debug.h>
+#include <ccm/local/Debug.h>
 
 #include "Test_mirror_impl.h"
 #include "MyObject.h"
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
+using namespace ccm::local;
 
-namespace CCM_Local {
-namespace CCM_Session_Test_mirror {
+namespace ccm {
+namespace local {
+namespace component {
 
 //==============================================================================
 // CCM_Test_mirror - component implementation
@@ -42,8 +43,8 @@ CCM_Test_mirror_impl::~CCM_Test_mirror_impl (  )
 }
 
 void
-CCM_Test_mirror_impl::set_session_context ( LocalComponents::SessionContext* context )
-  throw ( LocalComponents::CCMException )
+CCM_Test_mirror_impl::set_session_context (Components::SessionContext* context )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_mirror_impl->set_session_context (  )" );
   ctx = dynamic_cast<CCM_Test_mirror_Context*> ( context );
@@ -51,7 +52,7 @@ CCM_Test_mirror_impl::set_session_context ( LocalComponents::SessionContext* con
 
 void
 CCM_Test_mirror_impl::ccm_activate (  )
-  throw ( LocalComponents::CCMException )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_mirror_impl->ccm_activate (  )" );
 
@@ -142,7 +143,7 @@ CCM_Test_mirror_impl::ccm_activate (  )
 
   {
     // test case: typedef long time_t;
-    CCM_Local::time_t time_t_2 = 3, time_t_3, time_t_r;
+    ccm::local::time_t time_t_2 = 3, time_t_3, time_t_r;
     time_t_r = type_test->op_u1(7,time_t_2, time_t_3);
     assert(time_t_2 == 7);
     assert(time_t_3 == 3);
@@ -227,19 +228,19 @@ CCM_Test_mirror_impl::ccm_activate (  )
 
 void
 CCM_Test_mirror_impl::ccm_passivate (  )
-  throw ( LocalComponents::CCMException )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_mirror_impl->ccm_passivate (  )" );
 }
 
 void
 CCM_Test_mirror_impl::ccm_remove (  )
-  throw ( LocalComponents::CCMException )
+  throw ( Components::CCMException )
 {
   DEBUGNL ( " CCM_Test_mirror_impl->ccm_remove (  )" );
 }
 
-//(MProvidesDefAdapterImplClassImpl)s
-} // /namespace CCM_Session_Test_mirror
-} // /namespace CCM_Local
+} // /namespace component
+} // /namespace local
+} // /namespace ccm
 

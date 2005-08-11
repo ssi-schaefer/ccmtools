@@ -20,28 +20,24 @@
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
+#include <ccm/local/Components/CCM.h>
+#include <ccm/local/HomeFinder.h>
 
 #ifdef CCM_USE_DBC
-#include <CCM_Local/CCM_Session_Test/Test_dbc.h>
-#include <CCM_Local/CCM_Session_Test/TestHome_dbc.h>
+#include <ccm/local/component/Test_dbc.h>
+#include <ccm/local/component/TestHome_dbc.h>
 #else
-#include <CCM_Local/CCM_Session_Test/Test_gen.h>
-#include <CCM_Local/CCM_Session_Test/TestHome_gen.h>
+#include <ccm/local/component/Test_gen.h>
+#include <ccm/local/component/TestHome_gen.h>
 #endif
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
-using namespace CCM_Session_Test;
+using namespace ccm::local;
+using namespace component;
 
 int main(int argc, char *argv[])
 {
-    // Debug tools:
-    // We use debug tools defined in the WX::Utils package.
-    Debug::instance().set_global(true);
-
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     SmartPtr<Test> myTest;
@@ -51,12 +47,12 @@ int main(int argc, char *argv[])
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    LocalComponents::HomeFinder* homeFinder;
+    Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 #ifdef CCM_USE_DBC
     error  = deploy_dbc_CCM_Local_TestHome("TestHome", false);
 #else
-    error  = deploy_CCM_Local_TestHome("TestHome");
+    error  = deploy_ccm_local_TestHome("TestHome");
 #endif
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -75,21 +71,19 @@ int main(int argc, char *argv[])
     try {
         SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
             (homeFinder->find_home_by_name("TestHome").ptr()));
-
         myTest = myTestHome->create();
-
         myTest->configuration_complete();
-     } 
-    catch ( LocalComponents::HomeNotFound ) {
+    } 
+    catch ( Components::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( Components::NotImplemented& e ) {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch ( LocalComponents::InvalidName& e ) {
+    catch ( Components::InvalidName& e ) {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
@@ -116,19 +110,13 @@ int main(int argc, char *argv[])
     // mirror component. But for supported interfaces and component attributes, 
     // we can realize test cases in the following section.
     try {
-        string str1 = "Hallo to first op()";
-	long size1 = myTest->op1(str1);
-	assert(size1 == str1.length());
-    
-	string str2 = "Hallo to second op()";
-	long size2 = myTest->op2(str2);
-	assert(size2 == str2.length());
-    
-	string str3 = "Hallo to third op()";
-	long size3 = myTest->op3(str3);
-	assert(size3 == str3.length());
+      {
+	  const long maxSize = 10;
+	  myTest->max_size(maxSize);
+	  assert(myTest->max_size() == maxSize);
+      }
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( Components::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
@@ -155,11 +143,11 @@ int main(int argc, char *argv[])
 
         myTest->remove();
     } 
-    catch ( LocalComponents::HomeNotFound ) {
+    catch ( Components::HomeNotFound ) {
         cout << "TEARDOWN ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( Components::NotImplemented& e ) {
         cout << "TEARDOWN ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
@@ -168,8 +156,8 @@ int main(int argc, char *argv[])
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    error += undeploy_CCM_Local_TestHome("TestHome");
-     if(error) {
+    error += undeploy_ccm_local_TestHome("TestHome");
+    if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
     }

@@ -20,18 +20,18 @@
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
+#include <ccm/local/Components/CCM.h>
+#include <ccm/local/HomeFinder.h>
 
-#include <CCM_Local/CCM_Session_Test/Test_gen.h>
-#include <CCM_Local/CCM_Session_Test/TestHome_gen.h>
+#include <ccm/local/component/Test_gen.h>
+#include <ccm/local/component/TestHome_gen.h>
 
 #include "MyObject.h"
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
-using namespace CCM_Session_Test;
+using namespace ccm::local;
+using namespace component;
 
 int main(int argc, char *argv[])
 {
@@ -44,9 +44,9 @@ int main(int argc, char *argv[])
   // component- and mirror component home.
   // Here we can also decide to use a Design by Contract component.  	
   int error = 0;
-  LocalComponents::HomeFinder* homeFinder;
+  Components::HomeFinder* homeFinder;
   homeFinder = HomeFinder::Instance (  );
-  error  = deploy_CCM_Local_TestHome("TestHome");
+  error  = deploy_ccm_local_TestHome("TestHome");
   if(error) {
     cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
     return(error);
@@ -69,15 +69,15 @@ int main(int argc, char *argv[])
 
     myTest->configuration_complete();
   } 
-  catch ( LocalComponents::HomeNotFound ) {
+  catch ( Components::HomeNotFound ) {
     cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
     error = -1;
   } 
-  catch ( LocalComponents::NotImplemented& e ) {
+  catch ( Components::NotImplemented& e ) {
     cout << "DEPLOYMENT ERROR: function not implemented: " << e.what (  ) << endl;
     error = -1;
   } 
-  catch ( LocalComponents::InvalidName& e ) {
+  catch ( Components::InvalidName& e ) {
     cout << "DEPLOYMENT ERROR: invalid name during connection: " << e.what (  ) << endl;
     error = -1;
   }
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
   // mirror component. But for supported interfaces and component attributes, 
   // we can realize test cases in the following section.
   try {
-    cout << "== Begin Test Case =============================================" << endl;
+    cout << "== Begin Test Case ====================================" << endl;
     {
       // basic types test cases
       short short_2=3, short_3, short_r;
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
     
     {
       // test case: typedef long time_t;
-      CCM_Local::time_t time_t_2 = 3, time_t_3, time_t_r;
+      ccm::local::time_t time_t_2 = 3, time_t_3, time_t_r;
       time_t_r = myTest->op_u1(7,time_t_2, time_t_3);
       assert(time_t_2 == 7);
       assert(time_t_3 == 3);
@@ -226,13 +226,13 @@ int main(int argc, char *argv[])
     // Test interface types
     {
       MyObject* my_object1 = new MyObject;
-      WX::Utils::SmartPtr<Console> console1(my_object1);
+      SmartPtr<Console> console1(my_object1);
       console1->prompt("prompt1> ");
       MyObject* my_object2 = new MyObject;
-      WX::Utils::SmartPtr<Console> console2(my_object2);
+      SmartPtr<Console> console2(my_object2);
       console2->prompt("prompt2> ");
-      WX::Utils::SmartPtr<Console> console3;
-      WX::Utils::SmartPtr<Console> console4;
+      SmartPtr<Console> console3;
+      SmartPtr<Console> console4;
       console4 = myTest->op_i1(console1,console2,console3);
       assert(console2->prompt()=="prompt1> ");
       assert(console3->prompt()=="prompt2> ");
@@ -241,9 +241,9 @@ int main(int argc, char *argv[])
 
 
 
-    cout << "== End Test Case ===============================================" << endl;
+    cout << "== End Test Case =====================================" << endl;
   } 
-  catch ( LocalComponents::NotImplemented& e ) {
+  catch ( Components::NotImplemented& e ) {
     cout << "TEST: function not implemented: " << e.what (  ) << endl;
     error = -1;
   }
@@ -262,11 +262,11 @@ int main(int argc, char *argv[])
   try {
     myTest->remove();
   } 
-  catch ( LocalComponents::HomeNotFound ) {
+  catch ( Components::HomeNotFound ) {
     cout << "TEARDOWN ERROR: can't find a home!" << endl;
     error = -1;
   } 
-  catch ( LocalComponents::NotImplemented& e ) {
+  catch ( Components::NotImplemented& e ) {
     cout << "TEARDOWN ERROR: function not implemented: " << e.what (  ) << endl;
     error = -1;
   } 
@@ -274,7 +274,7 @@ int main(int argc, char *argv[])
     cout << "TEARDOWN ERROR: there is something wrong!" << endl;
     error = -1;
   }
-  error += undeploy_CCM_Local_TestHome("TestHome");
+  error += undeploy_ccm_local_TestHome("TestHome");
   if(error) {
     cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
     return error;

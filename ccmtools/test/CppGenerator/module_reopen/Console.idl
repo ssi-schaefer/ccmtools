@@ -5,10 +5,10 @@
  */
 
 
-module WORLD {
+module world {
 
 interface Console {
-  string read_string(in  string prompt);
+  string read_string(in string prompt);
 };
 
-}; // end of module WORLD
+}; // end of module world

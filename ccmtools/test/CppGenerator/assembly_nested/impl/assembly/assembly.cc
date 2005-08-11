@@ -5,12 +5,13 @@
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
+using namespace ccm::local;
 
-namespace CCM_Local {
+namespace ccm {
+namespace local {
     
 Assembly::Assembly()
-	: state_ (LocalComponents::INACTIVE)
+	: state_ (Components::INACTIVE)
 {
   DEBUGNL("+Assembly::Assembly()");
 }
@@ -24,21 +25,21 @@ Assembly::~Assembly()
 
 void 
 Assembly::build()
-  throw (LocalComponents::CreateFailure)
+  throw (Components::CreateFailure)
 {
   DEBUGNL("+Assembly::build()");
-  throw LocalComponents::CreateFailure();
+  throw Components::CreateFailure();
 }
 
 
 void 
-Assembly::build(WX::Utils::SmartPtr<LocalComponents::CCMObject> facadeComponent)
-  throw (LocalComponents::CreateFailure)
+Assembly::build(SmartPtr<Components::CCMObject> facadeComponent)
+  throw (Components::CreateFailure)
 {
   DEBUGNL("+Assembly::build(WX::Utils::SmartPtr<LocalComponents::"
 	  "CCMObject> facadeComponent)");
   int error = 0;
-  LocalComponents::HomeFinder* homeFinder;
+  Components::HomeFinder* homeFinder;
   homeFinder = HomeFinder::Instance ();
   
   try {
@@ -62,16 +63,16 @@ Assembly::build(WX::Utils::SmartPtr<LocalComponents::CCMObject> facadeComponent)
     superTest->connect_innerBasicType(basicType);
     superTest->connect_innerUserType(userType);
   }
-  catch (LocalComponents::HomeNotFound) {
+  catch (Components::HomeNotFound) {
     cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
     error = -1;
   }
-  catch (LocalComponents::NotImplemented& e) {
+  catch (Components::NotImplemented& e) {
     cout << "DEPLOYMENT ERROR: function not implemented: "
 	 << e.what () << endl;
     error = -1;
   }
-  catch (LocalComponents::InvalidName& e) {
+  catch (Components::InvalidName& e) {
     cout << "DEPLOYMENT ERROR: invalid name during connection: "
 	 << e.what () << endl;
     error = -1;
@@ -86,9 +87,9 @@ Assembly::build(WX::Utils::SmartPtr<LocalComponents::CCMObject> facadeComponent)
     error = -1;
   }
   if (error < 0) {
-    throw LocalComponents::CreateFailure();
+    throw Components::CreateFailure();
   } else {
-    state_ = LocalComponents::INSERVICE;
+    state_ = Components::INSERVICE;
   }
 }
 
@@ -104,7 +105,7 @@ Assembly::configuration_complete()
 
 void
 Assembly::tear_down()
-	  throw (LocalComponents::RemoveFailure)
+	  throw (Components::RemoveFailure)
 {
   DEBUGNL("+StocktakeAssembly::tear_down()");
   int error = 0;
@@ -117,11 +118,11 @@ Assembly::tear_down()
     basicTest->remove();
     userTest->remove();
   }
-  catch (LocalComponents::HomeNotFound) {
+  catch (Components::HomeNotFound) {
     cout << "TEARDOWN ERROR: can't find a home!" << endl;
     error = -1;
   }
-  catch (LocalComponents::NotImplemented& e) {
+  catch (Components::NotImplemented& e) {
     cout << "TEARDOWN ERROR: function not implemented: " << e.what()
 	 << endl;
     error = -1;
@@ -131,7 +132,7 @@ Assembly::tear_down()
     error = -1;
   }
   
-  state_ = LocalComponents::INACTIVE;
+  state_ = Components::INACTIVE;
 }
 
 
@@ -141,4 +142,5 @@ Assembly::get_state()
   return state_;
 }
 
-} // /namespace CCM_Local
+} // /namespace local
+} // /namespace ccm

@@ -21,10 +21,11 @@
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
+using namespace ccm::local;
 
-namespace CCM_Local {
-namespace CCM_Session_SuperTest_mirror {
+namespace ccm {
+namespace local {
+namespace component {
 
 //==============================================================================
 // CCM_SuperTest_mirror - component implementation
@@ -42,8 +43,8 @@ CCM_SuperTest_mirror_impl::~CCM_SuperTest_mirror_impl()
 
 void
 CCM_SuperTest_mirror_impl::set_session_context(
-    LocalComponents::SessionContext* context)
-    throw(LocalComponents::CCMException)
+    Components::SessionContext* context)
+    throw(Components::CCMException)
 {
     DEBUGNL(" CCM_SuperTest_mirror_impl->set_session_context()");
     ctx = dynamic_cast<CCM_SuperTest_mirror_Context*>(context);
@@ -51,12 +52,12 @@ CCM_SuperTest_mirror_impl::set_session_context(
 
 void
 CCM_SuperTest_mirror_impl::ccm_activate()
-    throw(LocalComponents::CCMException)
+    throw(Components::CCMException)
 {
     DEBUGNL(" CCM_SuperTest_mirror_impl->ccm_activate()");
     {
       // basic types test cases
-      WX::Utils::SmartPtr<CCM_BasicTypeInterface> basicType = 
+      SmartPtr<CCM_BasicTypeInterface> basicType = 
 	ctx->get_connection_basicType_mirror();
 
       {
@@ -153,7 +154,7 @@ CCM_SuperTest_mirror_impl::ccm_activate()
 
     {
       // user types test cases
-      WX::Utils::SmartPtr<CCM_UserTypeInterface> userType = 
+      SmartPtr<CCM_UserTypeInterface> userType = 
 	ctx->get_connection_userType_mirror();
       {
 	// Test case: enum Color {red, green, blue, black, orange}; 
@@ -320,8 +321,8 @@ CCM_SuperTest_mirror_impl::ccm_activate()
       
       {
 	// test case: typedef long time_t;
-	const CCM_Local::time_t p1 = 7;
-	CCM_Local::time_t p2 = 3, p3, result;
+	const ccm::local::time_t p1 = 7;
+	ccm::local::time_t p2 = 3, p3, result;
 	result = userType->f7(p1, p2, p3);
 	assert(p2 == 7);
 	assert(p3 == 3);
@@ -333,7 +334,7 @@ CCM_SuperTest_mirror_impl::ccm_activate()
 
 void
 CCM_SuperTest_mirror_impl::ccm_passivate()
-    throw(LocalComponents::CCMException)
+    throw(Components::CCMException)
 {
     DEBUGNL(" CCM_SuperTest_mirror_impl->ccm_passivate()");
 
@@ -342,7 +343,7 @@ CCM_SuperTest_mirror_impl::ccm_passivate()
 
 void
 CCM_SuperTest_mirror_impl::ccm_remove()
-    throw(LocalComponents::CCMException)
+    throw(Components::CCMException)
 {
     DEBUGNL(" CCM_SuperTest_mirror_impl->ccm_remove()");
 

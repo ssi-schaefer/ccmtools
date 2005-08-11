@@ -8,17 +8,17 @@
 
 #include "Console.idl"
 
-module WORLD {
+module world {
 
-component Hello
+component Test
 {
   attribute string prompt;
 
   provides Console console;
 };
 
-home HelloHome manages Hello
+home TestHome manages Test
 {
 };
 
-}; // end of module WORLD
+}; // end of module world

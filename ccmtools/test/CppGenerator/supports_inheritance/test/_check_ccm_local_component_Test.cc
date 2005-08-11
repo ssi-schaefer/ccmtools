@@ -44,13 +44,13 @@ int main(int argc, char *argv[])
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
-    // component home.
+    // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
     Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 #ifdef CCM_USE_DBC
-    error  = deploy_dbc_CCM_Local_TestHome("TestHome", false);
+    error  = deploy_dbc_ccm_local_TestHome("TestHome", false);
 #else
     error  = deploy_ccm_local_TestHome("TestHome");
 #endif
@@ -73,8 +73,9 @@ int main(int argc, char *argv[])
             (homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
+
         myTest->configuration_complete();
-    } 
+     } 
     catch ( Components::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
@@ -110,43 +111,19 @@ int main(int argc, char *argv[])
     // Usually, the test cases for facets and receptacles are implemened in the
     // mirror component. But for supported interfaces and component attributes, 
     // we can realize test cases in the following section.
-
-    string s = "Salomon.Automation";
-    long len =  myTest->print(s);
-    assert(len == s.length());
-  
     try {
-        string s = "Error";
-        myTest->print(s);
-        assert(0);
-    }
-    catch(ccm::local::Error& e) {
-        cout << "OK: error exception catched! ";
-        cout << "(" 
-             << e.info[0].code << ", " 
-             << e.info[0].message << ")" 
-             << endl;
-    }
+        string str1 = "Hallo to first op()";
+	long size1 = myTest->op1(str1);
+	assert(size1 == str1.length());
     
-    try {
-        string s = "SuperError";
-        myTest->print(s);
-        assert(0);
-    }
-    catch(SuperError& e) {
-        cout << "OK: super_error exception catched!" << endl;
-    }
-  
-    try {
-        string s = "FatalError";
-        myTest->print(s);
-        assert(0);
-    }
-    catch(FatalError& e) {
-        cout << "OK: fatal_error exception catched!" << endl;
-    }
-
-
+	string str2 = "Hallo to second op()";
+	long size2 = myTest->op2(str2);
+	assert(size2 == str2.length());
+    
+	string str3 = "Hallo to third op()";
+	long size3 = myTest->op3(str3);
+	assert(size3 == str3.length());
+    } 
     catch ( Components::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
@@ -188,7 +165,7 @@ int main(int argc, char *argv[])
         error = -1;
     }
     error += undeploy_ccm_local_TestHome("TestHome");
-    if(error) {
+     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
     }

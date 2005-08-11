@@ -20,10 +20,10 @@
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
 
-namespace CCM_Local {
-namespace CCM_Session_Test_mirror {
+namespace ccm {
+namespace local {
+namespace component {
 
 //==============================================================================
 // CCM_Test_mirror - component implementation
@@ -41,8 +41,8 @@ CCM_Test_mirror_impl::~CCM_Test_mirror_impl()
 
 void
 CCM_Test_mirror_impl::set_session_context(
-    LocalComponents::SessionContext* context)
-    throw(LocalComponents::CCMException)
+    Components::SessionContext* context)
+    throw(Components::CCMException)
 {
     DEBUGNL(" CCM_Test_mirror_impl->set_session_context()");
     ctx = dynamic_cast<CCM_Test_mirror_Context*>(context);
@@ -50,20 +50,20 @@ CCM_Test_mirror_impl::set_session_context(
 
 void
 CCM_Test_mirror_impl::ccm_activate()
-    throw(LocalComponents::CCMException)
+    throw(Components::CCMException)
 {
     DEBUGNL(" CCM_Test_mirror_impl->ccm_activate()");
 
     string s = "Salomon.Automation";
     long len =  ctx->get_connection_console_mirror()->println(s);
-    assert(len == s.length());
+    assert(len == (long)s.length());
   
     try {
         string s = "Error";
         ctx->get_connection_console_mirror()->println(s);
         assert(0);
     }
-    catch(CCM_Local::Error& e) {
+    catch(Error& e) {
         cout << "OK: error exception catched! ";
         cout << "(" 
 	     << e.info[0].code << ", " 
@@ -77,7 +77,7 @@ CCM_Test_mirror_impl::ccm_activate()
         ctx->get_connection_console_mirror()->println(s);
         assert(0);
     }
-    catch(CCM_Local::SuperError& e) {
+    catch(SuperError& e) {
       cout << "OK: super_error exception catched!" << endl;
       LDEBUGNL(CCM_LOCAL, ccmDebug(e));
     }
@@ -87,11 +87,11 @@ CCM_Test_mirror_impl::ccm_activate()
         ctx->get_connection_console_mirror()->println(s);
         assert(0);
     }
-    catch(LocalComponents::Exception& e) {
+    catch(Components::Exception& e) {
       // catch base class exception 
       cout << e.what() << endl;
     }
-    catch(CCM_Local::FatalError& e) {
+    catch(FatalError& e) {
       cout << "OK: fatal_error exception catched!" << endl;
       LDEBUGNL(CCM_LOCAL, ccmDebug(e));
     }
@@ -99,7 +99,7 @@ CCM_Test_mirror_impl::ccm_activate()
 
 void
 CCM_Test_mirror_impl::ccm_passivate()
-    throw(LocalComponents::CCMException)
+    throw(Components::CCMException)
 {
     DEBUGNL(" CCM_Test_mirror_impl->ccm_passivate()");
 
@@ -108,13 +108,14 @@ CCM_Test_mirror_impl::ccm_passivate()
 
 void
 CCM_Test_mirror_impl::ccm_remove()
-    throw(LocalComponents::CCMException)
+    throw(Components::CCMException)
 {
     DEBUGNL(" CCM_Test_mirror_impl->ccm_remove()");
 
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-} // /namespace CCM_Session_Test_mirror
-} // /namespace CCM_Local
+} // /namespace component
+} // /namespace local
+} // /namespace ccm
 
