@@ -42,6 +42,7 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
+import ccmtools.Constants;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
@@ -713,7 +714,8 @@ abstract public class CodeGenerator implements TemplateHandler
         
         List names = new ArrayList(namespaceStack);
         if(!local.equals(""))
-            names.add("CCM_Session_" + local);
+//            names.add("CCM_Session_" + local);
+            names.add(Constants.COMPONENT_NAMESPACE);
 
         if(data_type.equals("Namespace"))
             return join(Text.SCOPE_SEPARATOR, names);

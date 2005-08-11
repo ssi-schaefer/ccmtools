@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
@@ -67,6 +68,8 @@ import ccmtools.utils.Text;
 public class CppLocalGenerator 
 	extends CppGenerator
 {
+ //   protected final String COMPONENT_NAMESPACE = "component_";
+    
     //====================================================================
     // Definition of arrays that determine the generator's behavior
     //====================================================================
@@ -94,7 +97,9 @@ public class CppLocalGenerator
         logger = Logger.getLogger("ccm.generator.cpp.local");
         logger.fine("enter CppLocalGenerator()");
         
-        baseNamespace.add("CCM_Local");
+        //baseNamespace.add("CCM_Local");
+        baseNamespace.add("ccm");
+        baseNamespace.add("local");
         
         logger.fine("leave CppLocalGenerator()");
     }
@@ -117,6 +122,7 @@ public class CppLocalGenerator
 //    }
     // FIXME ---------------------------------
 
+    
     //====================================================================
     // Code generator core methods
     //====================================================================
@@ -128,7 +134,8 @@ public class CppLocalGenerator
         List scope = getScope(contained);
 
         if(local.length() > 0) {
-            scope.add("CCM_Session_" + local);
+            //scope.add("CCM_Session_" + local);
+            scope.add(Constants.COMPONENT_NAMESPACE);
         }
         buffer.append(Text.join(separator, baseNamespace));
         buffer.append(separator);
@@ -475,7 +482,8 @@ public class CppLocalGenerator
     {
         List names = new ArrayList(namespaceStack);
         if(!local.equals("")) {
-            names.add("CCM_Session_" + local);
+            //names.add("CCM_Session_" + local);
+            names.add(Constants.COMPONENT_NAMESPACE);
         }
         return join("_", names);
     }
@@ -604,27 +612,27 @@ public class CppLocalGenerator
     // Simple %(tag)s helper methods
     //====================================================================
 
-    public String getPmmHack(List scope, MContained contained)
-    {
-        logger.finer("enter getPmmHack()");
-        StringBuffer code = new StringBuffer();
-        
-        code.append("#ifdef HAVE_CONFIG_H\n");
-        code.append("#  include <config.h>\n");
-        code.append("#endif\n");
- 
-        code.append("#ifdef USING_CONFIX \n");
-        code.append("#include <");
-        code.append(Text.join(Text.FILE_SEPARATOR, scope));
-        code.append(".h> \n");
-        code.append("#else \n");
-        code.append("#include <");
-        code.append(contained.getIdentifier());
-        code.append(".h> \n");
-        code.append("#endif\n\n");
-        logger.finer("leave getPmmHack()");
-        return code.toString();
-    }
+//    public String getPmmHack(List scope, MContained contained)
+//    {
+//        logger.finer("enter getPmmHack()");
+//        StringBuffer code = new StringBuffer();
+//        
+//        code.append("#ifdef HAVE_CONFIG_H\n");
+//        code.append("#  include <config.h>\n");
+//        code.append("#endif\n");
+// 
+//        code.append("#ifdef USING_CONFIX \n");
+//        code.append("#include <");
+//        code.append(Text.join(Text.FILE_SEPARATOR, scope));
+//        code.append(".h> \n");
+//        code.append("#else \n");
+//        code.append("#include <");
+//        code.append(contained.getIdentifier());
+//        code.append(".h> \n");
+//        code.append("#endif\n\n");
+//        logger.finer("leave getPmmHack()");
+//        return code.toString();
+//    }
     
     
     
@@ -693,7 +701,8 @@ public class CppLocalGenerator
         logger.finer("enter getDebugInclude()");
         StringBuffer code = new StringBuffer();
         code.append("#ifdef WXDEBUG\n");
-        code.append("#  include <CCM_Local").append(Text.FILE_SEPARATOR);
+        code.append("#  include <ccm").append(Text.FILE_SEPARATOR);
+        code.append("local").append(Text.FILE_SEPARATOR);
         code.append("Debug.h>\n");
         code.append("#endif // WXDEBUG\n");
         logger.finer("leave getDebugInclude()");

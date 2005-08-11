@@ -1,11 +1,11 @@
 %(LanguageType)s
-%(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefAll)s)
+FacetAdapter%(Object)s::%(Identifier)s(%(MParameterDefAll)s)
     %(MExceptionDefThrows)s
 {
-    LDEBUGNL(CCM_LOCAL," %(Object)sFacetAdapter::%(Identifier)s(%(MParameterDefName)s)");
+    LDEBUGNL(CCM_LOCAL," FacetAdapter%(Object)s::%(Identifier)s(%(MParameterDefName)s)");
 %(DebugOperationInParameter)s
     if(!ValidConnection) 
-        throw LocalComponents::InvalidConnection();
+        throw Components::InvalidConnection();
 
 %(OperationToFacetDelegation)s      
 

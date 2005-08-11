@@ -28,8 +28,8 @@ import java.util.Map;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
-import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Text;
 
 public class CppLocalTestGenerator
     extends CppGenerator
@@ -46,7 +46,9 @@ public class CppLocalTestGenerator
         throws IOException
     {
         super("CppLocalTest", d, out_dir, local_output_types);
-        baseNamespace.add("CCM_Local");
+        //baseNamespace.add("CCM_Local");
+        baseNamespace.add("ccm");
+        baseNamespace.add("local");
     }
 
     /**
@@ -68,9 +70,10 @@ public class CppLocalTestGenerator
         String file_dir = "test";
 
         String file_name = handleNamespace("IncludeNamespace", node_name);
-        file_name = file_name.replaceAll("[^\\w]", "_");
-        file_name = "_check_" + file_name + ".cc";
-	
+        file_name = file_name.replaceAll("[^\\w]", Text.MANGLING_SEPARATOR);
+//        file_name = "_check_" + file_name + ".cc";
+        file_name = "_check_" + file_name + Text.MANGLING_SEPARATOR + node_name + ".cc";
+        
 	File outFile = new File(output_dir 
 				+ File.separator
 				+ file_dir, file_name);
@@ -101,15 +104,17 @@ public class CppLocalTestGenerator
 
     /**************************************************************************/
 
-    protected String data_MComponentDef(String data_type, String data_value)
-    {
-        if (data_type.equals("UsingNamespace")) {
-            String id = ((MComponentDef) currentNode).getIdentifier();
-            String temp = handleNamespace(data_type, id);
-            return temp+"using namespace CCM_Session_"+id+"_mirror;\n";
-        }
-        return super.data_MComponentDef(data_type, data_value);
-    }
+//    protected String data_MComponentDef(String data_type, String data_value)
+//    {
+//        if (data_type.equals("UsingNamespace")) {
+//            String id = ((MComponentDef) currentNode).getIdentifier();
+//            String temp = handleNamespace(data_type, id);
+////            return temp + "using namespace CCM_Session_"+id+"_mirror;\n";
+//            return temp + "using namespace "
+//            	+ Constants.COMPONENT_NAMESPACE + ";\n";
+//        }
+//        return super.data_MComponentDef(data_type, data_value);
+//    }
 
     /**************************************************************************/
 

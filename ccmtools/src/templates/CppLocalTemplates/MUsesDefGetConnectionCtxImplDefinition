@@ -1,6 +1,6 @@
 SmartPtr<%(CCMUsesType)s>
 CCM_%(ComponentType)s_Context_impl::get_connection_%(Identifier)s()
-    throw(LocalComponents::NoConnection)
+    throw(Components::NoConnection)
 {
     LDEBUGNL(CCM_CONTAINER," CCM_%(ComponentType)s_Context_impl::get_connection_%(Identifier)s()");
     SmartPtr<%(UsesType)s> r = component_local_adapter->get_connection_%(Identifier)s(); 

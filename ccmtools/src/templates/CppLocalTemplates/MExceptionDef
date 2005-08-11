@@ -7,7 +7,7 @@
 #ifndef __EXCEPTION__%(PreprocIdentifier)s__H__
 #define __EXCEPTION__%(PreprocIdentifier)s__H__
 
-#include <LocalComponents/CCM.h>
+#include <ccm/local/Components/CCM.h>
 
 %(DebugInclude)s
 
@@ -16,7 +16,7 @@
 %(OpenNamespace)s
 
 class %(Identifier)s 
-  : virtual public LocalComponents::Exception 
+  : virtual public ccm::local::Components::Exception 
 { 
   public:
 %(MFieldDef)s

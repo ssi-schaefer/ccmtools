@@ -1,2 +1,2 @@
     %(Identifier)s_facet = 
-        SmartPtr<%(ProvidesType)s>(new %(Identifier)sFacetAdapter(this, local_component));
+        SmartPtr<%(ProvidesType)s>(new FacetAdapter%(Identifier)s(this, local_component));

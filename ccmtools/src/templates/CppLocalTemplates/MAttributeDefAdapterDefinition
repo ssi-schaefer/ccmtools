@@ -1,22 +1,22 @@
 const %(LanguageType)s
 %(ComponentType)s::%(Identifier)s() const 
-    throw(LocalComponents::CCMException)
+    throw(ccm::local::Components::CCMException)
 {
     LDEBUGNL(CCM_LOCAL," %(ComponentType)s::%(Identifier)s() = "
              <<  %(DebugNamespace)sccmDebug(local_component->%(Identifier)s()));
     if(!ValidConnection) 
-        throw LocalComponents::InvalidConnection();
+        throw ccm::local::Components::InvalidConnection();
     return local_component->%(Identifier)s();
 }
 
 void
 %(ComponentType)s::%(Identifier)s(const %(LanguageType)s value)
-    throw(LocalComponents::CCMException)
+    throw(ccm::local::Components::CCMException)
 {
     LDEBUGNL(CCM_LOCAL," %(ComponentType)s::%(Identifier)s(" 
              << %(DebugNamespace)sccmDebug(value) << ")");
     if(!ValidConnection) 
-        throw LocalComponents::InvalidConnection();
+        throw ccm::local::Components::InvalidConnection();
     local_component->%(Identifier)s(value);
 }
 

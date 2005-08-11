@@ -84,8 +84,8 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component/Test.idl");
 
             copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
-                     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
+            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
+                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
 
             runConfix("--packageroot=" + sandbox_dir
                     + " --bootstrap --configure --make --targets=check");
@@ -128,8 +128,8 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component/Test.idl");
 
             copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
-                     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
+            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
+                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
 
             runConfix("--packageroot=" + sandbox_dir
                     + " --bootstrap --configure --make --targets=check");
@@ -175,8 +175,8 @@ public class TypesTest extends CcmtoolsTestCase
             copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
                     + "/impl/Test_impl.cc");
-            copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
-                     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
+            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
+                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
 
             runConfix("--packageroot=" + sandbox_dir
                     + " --bootstrap --configure --make --targets=check");
@@ -219,8 +219,8 @@ public class TypesTest extends CcmtoolsTestCase
             copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
             copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
                     + "/impl/Test_impl.cc");
-            copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
-                     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
+            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
+                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
 
             runConfix("--packageroot=" + sandbox_dir
                     + " --bootstrap --configure --make --targets=check");
@@ -264,8 +264,8 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/idl3/component/Test.idl");
 
             copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc",
-                     sandbox_dir + "/test/_check_CCM_Local_CCM_Session_Test.cc");
+            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
+                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
             copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir
                     + "/impl/MyObject.cc");
             copyFile(test_dir + "/impl/MyObject.h", sandbox_dir
@@ -776,8 +776,8 @@ public class TypesTest extends CcmtoolsTestCase
                     + "/test/ReceptacleObject.h");
             copyFile(test_dir + "/test/ReceptacleObject.cc", sandbox_dir
                     + "/test/ReceptacleObject.cc");
-            copyFile(test_dir + "/test/_check_receptacle_object.cc",
-                     sandbox_dir + "/test/_check_receptacle_object.cc");
+            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
+                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
 
             runConfix("--packageroot=" + sandbox_dir
                     + " --bootstrap --configure --make --targets=check");

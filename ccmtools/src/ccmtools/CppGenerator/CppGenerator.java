@@ -1,9 +1,8 @@
 /**
  * CCM Tools : C++ Code Generator Library Leif Johnson <leif@ambient.2y.net>
- * Egon Teiniker <egon.teiniker@salomon.at> Copyright (C) 2002, 2003 Salomon
- * Automation
- * 
- * 
+ * Egon Teiniker <egon.teiniker@salomon.at> 
+ * Copyright (C) 2002 - 2005 Salomon Automation
+ *  
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import ccmtools.Constants;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
@@ -98,16 +98,16 @@ abstract public class CppGenerator extends CodeGenerator
             "double", // PK_LONGDOUBLE
             "long", // PK_LONGLONG
             "NULL", // PK_NULL
-            "LocalComponents::Object*", // PK_OBJREF
+            "ccm::local::Components::Object*", // PK_OBJREF
             "unsigned char", // PK_OCTET
             "(principal data type not implemented", // PK_PRINCIPAL
             "short", // PK_SHORT
             "std::string", // PK_STRING
-            "LocalComponents::TypeCode", // PK_TYPECODE
+            "ccm::local::Components::TypeCode", // PK_TYPECODE
             "unsigned long", // PK_ULONG
             "unsigned long", // PK_ULONGLONG
             "unsigned short", // PK_USHORT
-            "LocalComponents::Object*", // PK_VALUEBASE
+            "ccm::local::Components::Object*", // PK_VALUEBASE
             "void", // PK_VOID
             "wchar_t", // PK_WCHAR
             "std::wstring" // PK_WSTRING
@@ -239,8 +239,9 @@ abstract public class CppGenerator extends CodeGenerator
     {
         List names = new ArrayList(namespaceStack);
         if(!local.equals(""))
-            names.add("CCM_Session_" + local);
-
+            //names.add("CCM_Session_" + local);
+            names.add(Constants.COMPONENT_NAMESPACE);
+        
         if(data_type.equals("UsingNamespace")) {
             List tmp = new ArrayList();
             for(Iterator i = names.iterator(); i.hasNext();)
@@ -276,7 +277,8 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getFullScopeIdentifier(MContained node)
     {
-        String local = "CCM_Session_" + node.getIdentifier();
+        //String local = "CCM_Session_" + node.getIdentifier();
+        String local = Constants.COMPONENT_NAMESPACE;
         List scope = getScope(node);
 
         if(node instanceof MComponentDef || node instanceof MHomeDef)
@@ -312,7 +314,9 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getFullScopeInclude(MContained node)
     {
-        String local = "CCM_Session_" + node.getIdentifier();
+//        String local = "CCM_Session_" + node.getIdentifier();
+        String local = Constants.COMPONENT_NAMESPACE;
+
         List scope = getScope(node);
 
         if(node instanceof MComponentDef || node instanceof MHomeDef)
@@ -611,7 +615,7 @@ abstract public class CppGenerator extends CodeGenerator
     protected String data_MOperationDef(String data_type, String data_value)
     {
         if(data_type.equals("MExceptionDefThrows") && data_value.endsWith(", ")) {
-            return "throw ( LocalComponents::CCMException, "
+            return "throw (Components::CCMException, "
                     + data_value.substring(0, data_value.length() - 2) + " )";
         }
         else if(data_type.startsWith("MParameterDef")
@@ -655,11 +659,14 @@ abstract public class CppGenerator extends CodeGenerator
                     .getComponent();
             List scope = getScope((MContained) component);
             if(scope.size() > 0)
-                return "CCM_Local::" + join("::", scope) + "::CCM_Session_"
-                        + component.getIdentifier() + "::CCM_"
+//                return "CCM_Local::" + join("::", scope) + "::CCM_Session_"
+                return "ccm::local::" + join("::", scope) + "::" 
+                		+ Constants.COMPONENT_NAMESPACE
+                        + "::CCM_"
                         + component.getIdentifier();
             else
-                return "CCM_Local::CCM_Session_" + component.getIdentifier()
+//                return "CCM_Local::CCM_Session_" + component.getIdentifier()
+                return "ccm::local::" + Constants.COMPONENT_NAMESPACE 
                         + "::CCM_" + component.getIdentifier();
         }
         else if(data_type.startsWith("OpenNamespace")
@@ -803,11 +810,11 @@ abstract public class CppGenerator extends CodeGenerator
         for(Iterator es = op.getExceptionDefs().iterator(); es.hasNext();)
             ret.add(((MExceptionDef) es.next()).getIdentifier());
         if(ret.size() > 0) {
-            return "throw (LocalComponents::CCMException, " + join(", ", ret)
+            return "throw (ccm::local::Components::CCMException, " + join(", ", ret)
                     + " )";
         }
         else {
-            return "throw (LocalComponents::CCMException)";
+            return "throw (ccm::local::Components::CCMException)";
         }
     }
 

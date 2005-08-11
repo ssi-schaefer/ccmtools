@@ -1,39 +1,39 @@
 //==============================================================================
-// %(Identifier)sFacetAdapter implementation
+// FacetAdapter %(Identifier)s implementation
 //==============================================================================
 
-%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()
+FacetAdapter%(Identifier)s::FacetAdapter%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");
+    LDEBUGNL(CCM_CONTAINER,"+FacetAdapter%(Identifier)s::FacetAdapter%(Identifier)s()");
     component = NULL;
     local_component = NULL;
     ValidConnection = false;
     facet = NULL;
 }
 
-%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(%(ComponentType)s* c, CCM_%(ComponentType)s* lc)
+FacetAdapter%(Identifier)s::FacetAdapter%(Identifier)s(%(ComponentType)s* c, CCM_%(ComponentType)s* lc)
     : component(c), local_component(lc)
 {
-    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()" );
+    LDEBUGNL(CCM_CONTAINER,"+FacetAdapter%(Identifier)s::%(Identifier)sFacetAdapter()" );
     ValidConnection = true;
     facet = local_component->get_%(Identifier)s();
 }
 
-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()
+FacetAdapter%(Identifier)s::~FacetAdapter%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER,"-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()" );
+    LDEBUGNL(CCM_CONTAINER,"-FacetAdapter%(Identifier)s::~FacetAdapter%(Identifier)s()" );
     delete facet;
 }
 
 %(MAttributeProvidesAdapterDefinition)s
 %(MOperationProvidesAdapterDefinition)s
 
-WX::Utils::SmartPtr<LocalComponents::Object>
-%(Identifier)sFacetAdapter::get_component()
+SmartPtr<Components::Object>
+FacetAdapter%(Identifier)s::get_component()
 {
-    LDEBUGNL(CCM_CONTAINER," %(Identifier)sFacetAdapter::get_component()");
-    return WX::Utils::SmartPtr<LocalComponents::Object>
-    (dynamic_cast<LocalComponents::Object*> (component));
+    LDEBUGNL(CCM_CONTAINER," FacetAdapter%(Identifier)s::get_component()");
+    return SmartPtr<Components::Object>
+        (dynamic_cast<Components::Object*> (component));
 };
 
 

@@ -24,7 +24,7 @@
 
   	<!-- Define project related constants in Java -->
   	<property name="PACKAGE" value="ccmtools" />
-  	<property name="VERSION" value="0.5.3-pre1" />
+  	<property name="VERSION" value="0.5.3-pre2" />
   	<property name="CPP_PATH" value="cpp" />
 
 

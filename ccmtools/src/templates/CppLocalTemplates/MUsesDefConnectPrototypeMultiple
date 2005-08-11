@@ -1,8 +1,11 @@
     // Equivalent operations for multiple receptacle %(Identifier)s
-    LocalComponents::Cookie connect_%(Identifier)s(WX::Utils::SmartPtr<%(UsesType)s> connection)
-        throw(LocalComponents::ExceededConnectionLimit, LocalComponents::InvalidConnection);
+    ccm::local::Components::Cookie 
+    connect_%(Identifier)s(WX::Utils::SmartPtr<%(UsesType)s> connection)
+        throw(ccm::local::Components::ExceededConnectionLimit, 
+              ccm::local::Components::InvalidConnection);
 
-    WX::Utils::SmartPtr<%(UsesType)s> disconnect_%(Identifier)s(LocalComponents::Cookie ck)
-        throw(LocalComponents::InvalidConnection);
+    WX::Utils::SmartPtr<%(UsesType)s> 
+    disconnect_%(Identifier)s(ccm::local::Components::Cookie ck)
+        throw(ccm::local::Components::InvalidConnection);
 
 

@@ -11,8 +11,8 @@
  * interfaces as well as component attribute access.
  *
  * To enable debug output use -DWXDEBUG compiler flag and set the
- * WX_DEBUG_LEVELS environment variable to "CCM_REMOTE"
- * (e.g. export WX_DEBUG_LEVELS="CCM_REMOTE").
+ * WX_DEBUG_LEVELS environment variable to "CCM_LOCAL"
+ * (e.g. export WX_DEBUG_LEVELS="CCM_LOCAL").
  *
  * To enable DbC adapter use -DCCM_USE_DBC compiler flag.
  ***/
@@ -23,11 +23,11 @@
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
+#include <ccm/local/Components/CCM.h>
+#include <ccm/local/HomeFinder.h>
 
-#include <%(IncludeNamespace)s_mirror/%(Identifier)s_mirror_gen.h>
-#include <%(IncludeNamespace)s_mirror/%(HomeType)s_mirror_gen.h>
+#include <%(IncludeNamespace)s/%(Identifier)s_mirror_gen.h>
+#include <%(IncludeNamespace)s/%(HomeType)s_mirror_gen.h>
 
 #ifdef CCM_USE_DBC
 #include <%(IncludeNamespace)s/%(Identifier)s_dbc.h>
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    LocalComponents::HomeFinder* homeFinder;
+    Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 #ifdef CCM_USE_DBC
     error  = deploy_dbc_%(AbsoluteLocalHomeName)s("%(HomeType)s", false);
@@ -100,22 +100,22 @@ int main(int argc, char *argv[])
         my%(Identifier)s->configuration_complete();
         my%(Identifier)sMirror->configuration_complete();
     } 
-    catch ( LocalComponents::HomeNotFound ) {
+    catch(Components::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch(Components::NotImplemented& e ) {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch ( LocalComponents::InvalidName& e ) {
+    catch(Components::InvalidName& e ) {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
     }
 #ifdef CCM_USE_DBC
-    catch(CCM_OCL::OclException& e)
+    catch(ccm::OCL::OclException& e)
     {
         cout << "DEPLOYMENT ERROR: 'design by contract' error:" 
              << endl << e.what();
@@ -141,12 +141,12 @@ int main(int argc, char *argv[])
         // OPTIONAL : IMPLEMENT TEST CASES HERE !
 
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch(Components::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
 #ifdef CCM_USE_DBC
-    catch(CCM_OCL::OclException& e)
+    catch(ccm::OCL::OclException& e)
     {
         cout << "TEST: 'design by contract' error:" << endl << e.what();
         error = -1;
@@ -170,11 +170,11 @@ int main(int argc, char *argv[])
         my%(Identifier)s->remove();
         my%(Identifier)sMirror->remove();
     } 
-    catch ( LocalComponents::HomeNotFound ) {
+    catch(Components::HomeNotFound ) {
         cout << "TEARDOWN ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch(Components::NotImplemented& e ) {
         cout << "TEARDOWN ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
