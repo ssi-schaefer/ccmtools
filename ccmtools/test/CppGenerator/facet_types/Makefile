@@ -27,6 +27,7 @@ check:
 	cp impl/MyObject.h ${DEST_DIR}/component/Test_mirror/impl
 	cp impl/MyObject.cc ${DEST_DIR}/component/Test_mirror/impl
 	cp impl/Test_mirror_impl.cc ${DEST_DIR}/component/Test_mirror/impl
+	cp test/_check_witout_mirror.cc ${DEST_DIR}/component/Test_mirror/test
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 
