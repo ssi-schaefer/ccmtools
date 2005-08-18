@@ -20,7 +20,7 @@ check:
 	touch ${DEST_DIR}/component/Test/Makefile.py
 	touch ${DEST_DIR}/component/Test/test/Makefile.py
 	cp impl/Test_impl.cc ${DEST_DIR}/component/Test/impl
-	cp test/_check_CCM_Local_CCM_Session_Test.cc ${DEST_DIR}/component/Test/test
+	cp test/_check_ccm_local_component_Test.cc ${DEST_DIR}/component/Test/test
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 

@@ -6,7 +6,8 @@
 using namespace std;
 using namespace WX::Utils;
 
-namespace CCM_Local {
+namespace ccm {
+namespace local {
 
 AssemblyFactory::AssemblyFactory()
 {
@@ -17,15 +18,16 @@ AssemblyFactory::~AssemblyFactory()
   DEBUGNL("-AssemblyFactory::~AssemblyFactory()");
 }
 
-WX::Utils::SmartPtr<LocalComponents::Assembly>
+WX::Utils::SmartPtr<Components::Assembly>
 AssemblyFactory::create()
-  throw(LocalComponents::CreateFailure)
+  throw(Components::CreateFailure)
 {
   DEBUGNL(" AssemblyFactory::create()");
-  WX::Utils::SmartPtr<LocalComponents::Assembly>
+  WX::Utils::SmartPtr<Components::Assembly>
     assembly(new Assembly());
   return assembly;
 }
 
-} // /namespace CCM_Local
+} // /namespace ccm
+} // /namespace local
 

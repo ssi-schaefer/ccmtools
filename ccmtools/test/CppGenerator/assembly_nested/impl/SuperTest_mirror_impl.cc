@@ -19,13 +19,14 @@
 #include "SuperTest_mirror_innerBasicType_mirror_impl.h"
 #include "SuperTest_mirror_innerUserType_mirror_impl.h"
 
-using namespace std;
-using namespace WX::Utils;
-using namespace ccm::local;
 
 namespace ccm {
 namespace local {
 namespace component {
+namespace SuperTest_mirror {
+
+using namespace std;
+using namespace WX::Utils;
 
 //==============================================================================
 // CCM_SuperTest_mirror - component implementation
@@ -374,6 +375,8 @@ CCM_SuperTest_mirror_impl::get_innerUserType_mirror()
     return dynamic_cast<CCM_UserTypeInterface*>(facet);
 }
 
-} // /namespace CCM_Session_SuperTest_mirror
-} // /namespace CCM_Local
+} // /namespace SuperTest
+} // /namespace component
+} // /namespace local
+} // /namespace ccm
 

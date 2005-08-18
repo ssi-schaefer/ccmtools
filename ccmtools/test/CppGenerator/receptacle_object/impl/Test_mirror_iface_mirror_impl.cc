@@ -20,6 +20,7 @@
 namespace ccm {
 namespace local {
 namespace component {
+namespace Test_mirror {
 
 using namespace std;
 using namespace WX::Utils;
@@ -61,6 +62,7 @@ iface_mirror_impl::op_b2(const std::string& p1, std::string& p2, std::string& p3
     return p3+p1;
 }
 
+} // /namespace Test_mirror
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

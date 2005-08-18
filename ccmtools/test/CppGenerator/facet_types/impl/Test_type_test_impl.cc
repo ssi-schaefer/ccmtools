@@ -17,14 +17,15 @@
 #include "Test_type_test_impl.h"
 #include "MyObject.h"
 
-using namespace std;
-using namespace WX::Utils;
-
 namespace ccm {
 namespace local {
 namespace component {
+namespace Test {
 
-type_test_impl::type_test_impl(ccm::local::component::CCM_Test_impl* component_impl)
+using namespace std;
+using namespace WX::Utils;
+
+type_test_impl::type_test_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     DEBUGNL("+type_test_impl->type_test_impl()");
@@ -258,6 +259,7 @@ type_test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2,
     return result;
 }
 
+} // /namespace Test
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

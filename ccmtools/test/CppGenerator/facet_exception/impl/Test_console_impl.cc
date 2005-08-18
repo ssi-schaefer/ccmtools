@@ -16,12 +16,14 @@
 
 #include "Test_console_impl.h"
 
-using namespace std;
-using namespace WX::Utils;
 
 namespace ccm {
 namespace local {
 namespace component {
+namespace Test {
+
+using namespace std;
+using namespace WX::Utils;
 
 console_impl::console_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
@@ -66,6 +68,7 @@ console_impl::println(const std::string& msg)
     return msg.length();
 }
 
+} // /namespace Test
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

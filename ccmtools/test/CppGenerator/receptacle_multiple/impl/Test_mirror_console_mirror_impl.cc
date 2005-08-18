@@ -20,6 +20,7 @@
 namespace ccm {
 namespace local {
 namespace component {
+namespace Test_mirror {
 
 using namespace std;
 using namespace WX::Utils;
@@ -48,6 +49,7 @@ console_mirror_impl::println(const std::string& s2)
     return s2.length();
 }
 
+} // /namespace Test_mirror
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

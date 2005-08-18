@@ -17,7 +17,8 @@ public:
   void prompt(const std::string value) 
     throw(ccm::local::Components::CCMException);
 
-  long println(const std::string& msg);
+  long println(const std::string& msg)
+    throw(ccm::local::Components::CCMException);
   
 private: 
   std::string prompt_;

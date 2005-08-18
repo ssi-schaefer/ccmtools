@@ -16,12 +16,15 @@
 
 #include "Test_a_facet_impl.h"
 
-using namespace std;
-using namespace WX::Utils;
 
 namespace ccm {
 namespace local {
 namespace component {
+namespace Test {
+
+using namespace std;
+using namespace WX::Utils;
+
 
 a_facet_impl::a_facet_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
@@ -65,6 +68,7 @@ a_facet_impl::op1(const std::string& str)
     return str.length();
 }
 
+} // /namespace Test
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

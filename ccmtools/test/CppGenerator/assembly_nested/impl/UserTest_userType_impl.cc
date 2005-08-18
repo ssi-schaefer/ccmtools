@@ -24,6 +24,7 @@ using namespace WX::Utils;
 namespace ccm {
 namespace local {
 namespace component {
+namespace UserTest {
 
 userType_impl::userType_impl(CCM_UserTest_impl* component_impl)
   : component(component_impl)
@@ -134,6 +135,7 @@ userType_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
     return t3+t1; 
 }
 
+} // /namespace UserType
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

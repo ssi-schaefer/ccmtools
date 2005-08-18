@@ -24,6 +24,7 @@ using namespace WX::Utils;
 namespace ccm {
 namespace local {
 namespace component {
+namespace SuperTest {
 
 userType_impl::userType_impl(CCM_SuperTest_impl* component_impl)
   : component(component_impl)
@@ -110,6 +111,7 @@ userType_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
     return inner->f7(t1,t2,t3);
 }
 
+} // /namespace SuperTest
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

@@ -3,12 +3,11 @@
 
 #include "assembly.h"
 
-using namespace std;
-using namespace WX::Utils;
-using namespace ccm::local;
-
 namespace ccm {
 namespace local {
+
+using namespace std;
+using namespace WX::Utils;
     
 Assembly::Assembly()
 	: state_ (Components::INACTIVE)
@@ -36,7 +35,7 @@ void
 Assembly::build(SmartPtr<Components::CCMObject> facadeComponent)
   throw (Components::CreateFailure)
 {
-  DEBUGNL("+Assembly::build(WX::Utils::SmartPtr<LocalComponents::"
+  DEBUGNL("+Assembly::build(WX::Utils::SmartPtr<Components::"
 	  "CCMObject> facadeComponent)");
   int error = 0;
   Components::HomeFinder* homeFinder;
@@ -44,14 +43,16 @@ Assembly::build(SmartPtr<Components::CCMObject> facadeComponent)
   
   try {
     // find home ob components
-    SmartPtr<BasicTestHome> basicTestHome(dynamic_cast<BasicTestHome*>
+    SmartPtr<component::BasicTest::BasicTestHome> 
+      basicTestHome(dynamic_cast<component::BasicTest::BasicTestHome*>
        (homeFinder->find_home_by_name("BasicTestHome").ptr()));
-    SmartPtr<UserTestHome> userTestHome(dynamic_cast<UserTestHome*>
+    SmartPtr<component::UserTest::UserTestHome> 
+      userTestHome(dynamic_cast<component::UserTest::UserTestHome*>
        (homeFinder->find_home_by_name("UserTestHome").ptr()));
 
     // create components
-    superTest = SmartPtr<SuperTest>(
-		 dynamic_cast<SuperTest*>(facadeComponent.ptr()));
+    superTest = SmartPtr<component::SuperTest::SuperTest>(
+	dynamic_cast<component::SuperTest::SuperTest*>(facadeComponent.ptr()));
     basicTest = basicTestHome->create();
     userTest = userTestHome->create();
     
@@ -136,7 +137,7 @@ Assembly::tear_down()
 }
 
 
-LocalComponents::AssemblyState 
+Components::AssemblyState 
 Assembly::get_state()
 {
   return state_;

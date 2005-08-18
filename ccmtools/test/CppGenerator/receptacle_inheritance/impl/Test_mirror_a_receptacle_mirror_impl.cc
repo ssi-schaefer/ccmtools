@@ -21,6 +21,7 @@
 namespace ccm {
 namespace local {
 namespace component {
+namespace Test_mirror {
 
 using namespace std;
 using namespace WX::Utils;
@@ -61,6 +62,7 @@ a_receptacle_mirror_impl::op1(const std::string& str)
   return str.length();
 }
 
+} // /namespace Test_mirror
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

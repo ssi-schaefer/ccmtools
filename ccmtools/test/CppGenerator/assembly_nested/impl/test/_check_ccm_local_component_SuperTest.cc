@@ -19,64 +19,63 @@
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
+#include <ccm/local/Components/CCM.h>
+#include <ccm/local/HomeFinder.h>
 
-#include <CCM_Local/CCM_Session_SuperTest_mirror/SuperTest_mirror_gen.h>
-#include <CCM_Local/CCM_Session_SuperTest_mirror/SuperTestHome_mirror_gen.h>
+#include <ccm/local/component/SuperTest_mirror/SuperTest_mirror_gen.h>
+#include <ccm/local/component/SuperTest_mirror/SuperTestHome_mirror_gen.h>
 
-#include <CCM_Local/CCM_Session_SuperTest/SuperTest_gen.h>
-#include <CCM_Local/CCM_Session_SuperTest/SuperTestHome_gen.h>
+#include <ccm/local/component/SuperTest/SuperTest_gen.h>
+#include <ccm/local/component/SuperTest/SuperTestHome_gen.h>
 
-#include <CCM_Local/CCM_Session_BasicTest/BasicTest_gen.h>
-#include <CCM_Local/CCM_Session_BasicTest/BasicTestHome_gen.h>
+#include <ccm/local/component/BasicTest/BasicTest_gen.h>
+#include <ccm/local/component/BasicTest/BasicTestHome_gen.h>
 
-#include <CCM_Local/CCM_Session_UserTest/UserTest_gen.h>
-#include <CCM_Local/CCM_Session_UserTest/UserTestHome_gen.h>
+#include <ccm/local/component/UserTest/UserTest_gen.h>
+#include <ccm/local/component/UserTest/UserTestHome_gen.h>
 
-#include <CCM_Local/assembly_factory.h>
+#include <ccm/local/assembly_factory.h>
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
-using namespace CCM_Session_SuperTest;
-using namespace CCM_Session_SuperTest_mirror;
+using namespace ccm::local;
+using namespace component;
 
 int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<SuperTest> mySuperTest;
-    SmartPtr<SuperTest_mirror> mySuperTestMirror;
-    SmartPtr<LocalComponents::Object> SuperTest_provides_basicType;
-    SmartPtr<LocalComponents::Object> SuperTest_provides_userType;
+    SmartPtr<component::SuperTest::SuperTest> mySuperTest;
+    SmartPtr<component::SuperTest_mirror::SuperTest_mirror> mySuperTestMirror;
+    SmartPtr<Components::Object> SuperTest_provides_basicType;
+    SmartPtr<Components::Object> SuperTest_provides_userType;
 
-    LocalComponents::Cookie SuperTest_ck_basicType;
-    LocalComponents::Cookie SuperTest_ck_userType;
+    Components::Cookie SuperTest_ck_basicType;
+    Components::Cookie SuperTest_ck_userType;
 
-    SmartPtr<LocalComponents::Object> SuperTest_uses_innerBasicType;
-    SmartPtr<LocalComponents::Object> SuperTest_uses_innerUserType;
+    SmartPtr<Components::Object> SuperTest_uses_innerBasicType;
+    SmartPtr<Components::Object> SuperTest_uses_innerUserType;
 
-    LocalComponents::Cookie SuperTest_ck_innerBasicType;
-    LocalComponents::Cookie SuperTest_ck_innerUserType;
+    Components::Cookie SuperTest_ck_innerBasicType;
+    Components::Cookie SuperTest_ck_innerUserType;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    LocalComponents::HomeFinder* homeFinder;
+    Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 
-    error  += deploy_CCM_Local_BasicTestHome("BasicTestHome");
-    error  += deploy_CCM_Local_UserTestHome("UserTestHome");
+    error  += deploy_ccm_local_BasicTestHome("BasicTestHome");
+    error  += deploy_ccm_local_UserTestHome("UserTestHome");
 
-    SmartPtr<LocalComponents::AssemblyFactory> 
+    SmartPtr<Components::AssemblyFactory> 
       assembly_factory(new AssemblyFactory());
-    error += deploy_with_assembly_CCM_Local_SuperTestHome("SuperTestHome",
+    error += deploy_with_assembly_ccm_local_SuperTestHome("SuperTestHome",
 							 assembly_factory);
 
-    error += deploy_CCM_Local_SuperTestHome_mirror("SuperTestHome_mirror");	
+    error += deploy_ccm_local_SuperTestHome_mirror("SuperTestHome_mirror");	
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -92,11 +91,13 @@ int main(int argc, char *argv[])
     // forces components to run the ccm_set_session_context() and ccm_activate() 
     // callback methods.
     try {
-        SmartPtr<SuperTestHome> mySuperTestHome(dynamic_cast<SuperTestHome*>
+        SmartPtr<component::SuperTest::SuperTestHome> 
+	  mySuperTestHome(dynamic_cast<component::SuperTest::SuperTestHome*>
             (homeFinder->find_home_by_name("SuperTestHome").ptr()));
 
-        SmartPtr<SuperTestHome_mirror> 
-            mySuperTestHomeMirror(dynamic_cast<SuperTestHome_mirror*>
+        SmartPtr<component::SuperTest_mirror::SuperTestHome_mirror> 
+            mySuperTestHomeMirror(
+		dynamic_cast<component::SuperTest_mirror::SuperTestHome_mirror*>
             (homeFinder->find_home_by_name("SuperTestHome_mirror").ptr()));
 
         mySuperTest = mySuperTestHome->create();
@@ -115,16 +116,16 @@ int main(int argc, char *argv[])
         mySuperTest->configuration_complete();
         mySuperTestMirror->configuration_complete();
     } 
-    catch ( LocalComponents::HomeNotFound ) {
+    catch ( Components::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( Components::NotImplemented& e ) {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch ( LocalComponents::InvalidName& e ) {
+    catch ( Components::InvalidName& e ) {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
@@ -147,7 +148,7 @@ int main(int argc, char *argv[])
         // OPTIONAL : IMPLEMENT TEST CASES HERE !
 
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( Components::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
@@ -170,11 +171,11 @@ int main(int argc, char *argv[])
       mySuperTest->remove();
       mySuperTestMirror->remove();
     } 
-    catch ( LocalComponents::HomeNotFound ) {
+    catch ( Components::HomeNotFound ) {
         cout << "TEARDOWN ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( Components::NotImplemented& e ) {
         cout << "TEARDOWN ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
@@ -183,10 +184,10 @@ int main(int argc, char *argv[])
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    error += undeploy_CCM_Local_BasicTestHome("BasicTestHome");
-    error += undeploy_CCM_Local_UserTestHome("UserTestHome");
-    error += undeploy_CCM_Local_SuperTestHome("SuperTestHome");
-    error += undeploy_CCM_Local_SuperTestHome_mirror("SuperTestHome_mirror");
+    error += undeploy_ccm_local_BasicTestHome("BasicTestHome");
+    error += undeploy_ccm_local_UserTestHome("UserTestHome");
+    error += undeploy_ccm_local_SuperTestHome("SuperTestHome");
+    error += undeploy_ccm_local_SuperTestHome_mirror("SuperTestHome_mirror");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;

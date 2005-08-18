@@ -20,13 +20,15 @@
 #include "Test_mirror_impl.h"
 #include "MyObject.h"
 
-using namespace std;
-using namespace WX::Utils;
-using namespace ccm::local;
 
 namespace ccm {
 namespace local {
 namespace component {
+namespace Test_mirror {
+
+using namespace std;
+using namespace WX::Utils;
+
 
 //==============================================================================
 // CCM_Test_mirror - component implementation
@@ -240,6 +242,7 @@ CCM_Test_mirror_impl::ccm_remove (  )
   DEBUGNL ( " CCM_Test_mirror_impl->ccm_remove (  )" );
 }
 
+} // /namespace Test_mirror
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

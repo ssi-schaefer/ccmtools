@@ -21,6 +21,7 @@
 namespace ccm {
 namespace local {
 namespace component {
+namespace Test_mirror {
 
 using namespace std;
 using namespace WX::Utils;
@@ -220,6 +221,7 @@ type_test_mirror_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2,
     return result;
 }
 
+} // /namespace Test_mirror
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

@@ -18,12 +18,13 @@
 
 #include "BasicTest_basicType_impl.h"
 
-using namespace std;
-using namespace WX::Utils;
-
 namespace ccm {
 namespace local {
 namespace component {
+namespace BasicTest {
+
+using namespace std;
+using namespace WX::Utils;
 
 basicType_impl::basicType_impl(CCM_BasicTest_impl* component_impl)
   : component(component_impl)
@@ -140,6 +141,7 @@ basicType_impl::f10(const unsigned char p1, unsigned char& p2, unsigned char& p3
     return p3+p1;
 }
 
+} // /namespace BasicTest
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

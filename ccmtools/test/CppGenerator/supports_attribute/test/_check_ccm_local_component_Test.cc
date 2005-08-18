@@ -24,23 +24,22 @@
 #include <ccm/local/HomeFinder.h>
 
 #ifdef CCM_USE_DBC
-#include <ccm/local/component/Test_dbc.h>
-#include <ccm/local/component/TestHome_dbc.h>
+#include <ccm/local/component/Test/Test_dbc.h>
+#include <ccm/local/component/Test/TestHome_dbc.h>
 #else
-#include <ccm/local/component/Test_gen.h>
-#include <ccm/local/component/TestHome_gen.h>
+#include <ccm/local/component/Test/Test_gen.h>
+#include <ccm/local/component/Test/TestHome_gen.h>
 #endif
 
 using namespace std;
 using namespace WX::Utils;
 using namespace ccm::local;
-using namespace component;
 
 int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<Test> myTest;
+    SmartPtr<component::Test::Test> myTest;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
@@ -50,7 +49,7 @@ int main(int argc, char *argv[])
     Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 #ifdef CCM_USE_DBC
-    error  = deploy_dbc_CCM_Local_TestHome("TestHome", false);
+    error  = deploy_dbc_ccm_local_TestHome("TestHome", false);
 #else
     error  = deploy_ccm_local_TestHome("TestHome");
 #endif
@@ -69,7 +68,8 @@ int main(int argc, char *argv[])
     // forces components to run the ccm_set_session_context() and ccm_activate() 
     // callback methods.
     try {
-        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
+        SmartPtr<component::Test::TestHome> 
+	  myTestHome(dynamic_cast<component::Test::TestHome*>
             (homeFinder->find_home_by_name("TestHome").ptr()));
         myTest = myTestHome->create();
         myTest->configuration_complete();

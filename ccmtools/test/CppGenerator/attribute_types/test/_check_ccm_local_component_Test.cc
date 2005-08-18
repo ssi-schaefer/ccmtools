@@ -23,20 +23,19 @@
 #include <ccm/local/Components/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <ccm/local/component/Test_gen.h>
-#include <ccm/local/component/TestHome_gen.h>
+#include <ccm/local/component/Test/Test_gen.h>
+#include <ccm/local/component/Test/TestHome_gen.h>
 
 
 using namespace std;
 using namespace WX::Utils;
 using namespace ccm::local;
-using namespace component;
 
 int main(int argc, char *argv[])
 {
   cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-  SmartPtr<Test> myTest;
+  SmartPtr<component::Test::Test> myTest;
 
   // Debug tools:
   // We use debug tools defined in the WX::Utils package.
@@ -66,7 +65,8 @@ int main(int argc, char *argv[])
   // forces components to run the ccm_set_session_context() and ccm_activate() 
   // callback methods.
   try {
-    SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
+    SmartPtr<component::Test::TestHome> 
+      myTestHome(dynamic_cast<component::Test::TestHome*>
       (homeFinder->find_home_by_name("TestHome").ptr()));
 
     myTest = myTestHome->create();

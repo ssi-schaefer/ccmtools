@@ -21,6 +21,7 @@
 namespace ccm {
 namespace local {
 namespace component {
+namespace Test {
 
 using namespace std;
 using namespace WX::Utils;
@@ -81,6 +82,7 @@ CCM_Test_impl::ccm_remove (  )
   DEBUGNL ( " CCM_Test_impl->ccm_remove (  )" );
 }
 
+} // /namespace Test
 } // /namespace componet
 } // /namespace local
 } // /namespace ccm

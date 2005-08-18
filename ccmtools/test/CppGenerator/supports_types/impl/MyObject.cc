@@ -24,7 +24,9 @@ MyObject::prompt(const std::string value)
 }
 
 long 
-MyObject::println(const std::string& msg) {
+MyObject::println(const std::string& msg) 
+    throw(ccm::local::Components::CCMException)
+{
   cout << prompt_ << msg << endl;
   return msg.length();
 }

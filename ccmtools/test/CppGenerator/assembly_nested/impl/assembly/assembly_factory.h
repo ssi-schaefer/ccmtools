@@ -1,12 +1,13 @@
 #ifndef ASSEMBLY_FACTORY_H
 #define ASSEMBLY_FACTORY_H
 
-#include <LocalComponents/CCM.h>
+#include <ccm/local/Components/CCM.h>
 
-namespace CCM_Local {
+namespace ccm {
+namespace local {
 
 class AssemblyFactory
-: virtual public LocalComponents::AssemblyFactory
+: virtual public Components::AssemblyFactory
 {
 public:
   AssemblyFactory();
@@ -16,11 +17,12 @@ public:
    * Returns a new instance of StocktakeAssembly which is used by
    * the Main component's home to establish a nested component.
    */
-  virtual WX::Utils::SmartPtr<LocalComponents::Assembly> create()
-    throw (LocalComponents::CreateFailure);
+  virtual WX::Utils::SmartPtr<Components::Assembly> create()
+    throw (Components::CreateFailure);
 };
 
-} // /namespace CCM_Local
+} // /namespace ccm
+} // /namespace local
 
 #endif  /* _STOCKTAKE_ASSEMBLY_FACTORY_H */
 
