@@ -713,10 +713,11 @@ abstract public class CodeGenerator implements TemplateHandler
         logger.fine("enter handleNamespace()");
         
         List names = new ArrayList(namespaceStack);
-        if(!local.equals(""))
+        if(!local.equals("")) {
 //            names.add("CCM_Session_" + local);
             names.add(Constants.COMPONENT_NAMESPACE);
-
+            names.add(local); //!!!
+        }
         if(data_type.equals("Namespace"))
             return join(Text.SCOPE_SEPARATOR, names);
 

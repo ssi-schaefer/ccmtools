@@ -1,8 +1,8 @@
 //==============================================================================
-// %(Identifier)sFacetAdapter class
+// %(ComponentType)s's adapter for %(Identifier)s facet
 //==============================================================================
 
-class FacetAdapter%(Identifier)s
+class %(ComponentType)sFacetAdapter%(Identifier)s
   : public %(CCMProvidesType)s
 {
     friend class %(ComponentType)s;
@@ -14,9 +14,9 @@ class FacetAdapter%(Identifier)s
     bool ValidConnection;
 
  public:
-    FacetAdapter%(Identifier)s();
-    FacetAdapter%(Identifier)s(%(ComponentType)s* c, CCM_%(ComponentType)s* lc);
-    virtual ~FacetAdapter%(Identifier)s();
+    %(ComponentType)sFacetAdapter%(Identifier)s();
+    %(ComponentType)sFacetAdapter%(Identifier)s(%(ComponentType)s* c, CCM_%(ComponentType)s* lc);
+    virtual ~%(ComponentType)sFacetAdapter%(Identifier)s();
 
 %(MAttributeProvidesPrototype)s
 %(MOperationProvidesPrototype)s

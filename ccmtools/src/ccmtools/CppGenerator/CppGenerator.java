@@ -238,9 +238,11 @@ abstract public class CppGenerator extends CodeGenerator
     protected String handleNamespace(String data_type, String local)
     {
         List names = new ArrayList(namespaceStack);
-        if(!local.equals(""))
+        if(!local.equals("")) {
             //names.add("CCM_Session_" + local);
             names.add(Constants.COMPONENT_NAMESPACE);
+        	names.add(local);
+        }
         
         if(data_type.equals("UsingNamespace")) {
             List tmp = new ArrayList();
@@ -278,7 +280,8 @@ abstract public class CppGenerator extends CodeGenerator
     protected String getFullScopeIdentifier(MContained node)
     {
         //String local = "CCM_Session_" + node.getIdentifier();
-        String local = Constants.COMPONENT_NAMESPACE;
+        String local = Constants.COMPONENT_NAMESPACE 
+        			+ Text.SCOPE_SEPARATOR + node.getIdentifier(); //!!!
         List scope = getScope(node);
 
         if(node instanceof MComponentDef || node instanceof MHomeDef)
@@ -315,7 +318,8 @@ abstract public class CppGenerator extends CodeGenerator
     protected String getFullScopeInclude(MContained node)
     {
 //        String local = "CCM_Session_" + node.getIdentifier();
-        String local = Constants.COMPONENT_NAMESPACE;
+        String local = Constants.COMPONENT_NAMESPACE
+        				+ Text.FILE_SEPARATOR + node.getIdentifier(); //!!!;
 
         List scope = getScope(node);
 
@@ -662,11 +666,13 @@ abstract public class CppGenerator extends CodeGenerator
 //                return "CCM_Local::" + join("::", scope) + "::CCM_Session_"
                 return "ccm::local::" + join("::", scope) + "::" 
                 		+ Constants.COMPONENT_NAMESPACE
+                		+ Text.SCOPE_SEPARATOR + component.getIdentifier() //!!!!
                         + "::CCM_"
                         + component.getIdentifier();
             else
 //                return "CCM_Local::CCM_Session_" + component.getIdentifier()
                 return "ccm::local::" + Constants.COMPONENT_NAMESPACE 
+                		+ Text.SCOPE_SEPARATOR + component.getIdentifier() //!!!!
                         + "::CCM_" + component.getIdentifier();
         }
         else if(data_type.startsWith("OpenNamespace")

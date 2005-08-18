@@ -1,6 +1,6 @@
 %(LanguageType)s
 %(Object)s_impl::%(Identifier)s(%(MParameterDefAll)s)
-    %(MExceptionDefThrows)s
+    %(ExceptionThrows)s
 {
     // TODO : IMPLEMENT ME HERE !
 }

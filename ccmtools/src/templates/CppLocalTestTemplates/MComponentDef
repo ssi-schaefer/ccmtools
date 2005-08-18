@@ -26,8 +26,8 @@
 #include <ccm/local/Components/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <%(IncludeNamespace)s/%(Identifier)s_mirror_gen.h>
-#include <%(IncludeNamespace)s/%(HomeType)s_mirror_gen.h>
+#include <%(IncludeNamespace)s_mirror/%(Identifier)s_mirror_gen.h>
+#include <%(IncludeNamespace)s_mirror/%(HomeType)s_mirror_gen.h>
 
 #ifdef CCM_USE_DBC
 #include <%(IncludeNamespace)s/%(Identifier)s_dbc.h>
@@ -46,8 +46,8 @@ int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<%(Identifier)s> my%(Identifier)s;
-    SmartPtr<%(Identifier)s_mirror> my%(Identifier)sMirror;
+    SmartPtr<%(Namespace)s::%(Identifier)s> my%(Identifier)s;
+    SmartPtr<%(Namespace)s_mirror::%(Identifier)s_mirror> my%(Identifier)sMirror;
 %(MProvidesDefVariable)s
 %(MProvidesDefCookie)s
 %(MUsesDefVariable)s
@@ -83,11 +83,12 @@ int main(int argc, char *argv[])
     // forces components to run the ccm_set_session_context() and ccm_activate() 
     // callback methods.
     try {
-        SmartPtr<%(HomeType)s> my%(HomeType)s(dynamic_cast<%(HomeType)s*>
+        SmartPtr<%(Namespace)s::%(HomeType)s> my%(HomeType)s(
+            dynamic_cast<%(Namespace)s::%(HomeType)s*>
             (homeFinder->find_home_by_name("%(HomeType)s").ptr()));
 
-        SmartPtr<%(HomeType)s_mirror> 
-            my%(HomeType)sMirror(dynamic_cast<%(HomeType)s_mirror*>
+        SmartPtr<%(Namespace)s_mirror::%(HomeType)s_mirror> 
+            my%(HomeType)sMirror(dynamic_cast<%(Namespace)s_mirror::%(HomeType)s_mirror*>
             (homeFinder->find_home_by_name("%(HomeType)s_mirror").ptr()));
 
         my%(Identifier)s = my%(HomeType)s->create();

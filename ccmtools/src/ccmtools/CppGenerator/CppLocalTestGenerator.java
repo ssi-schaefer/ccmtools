@@ -72,7 +72,8 @@ public class CppLocalTestGenerator
         String file_name = handleNamespace("IncludeNamespace", node_name);
         file_name = file_name.replaceAll("[^\\w]", Text.MANGLING_SEPARATOR);
 //        file_name = "_check_" + file_name + ".cc";
-        file_name = "_check_" + file_name + Text.MANGLING_SEPARATOR + node_name + ".cc";
+//        file_name = "_check_" + file_name + Text.MANGLING_SEPARATOR + node_name + ".cc";
+        file_name = "_check_" + file_name + ".cc";
         
 	File outFile = new File(output_dir 
 				+ File.separator

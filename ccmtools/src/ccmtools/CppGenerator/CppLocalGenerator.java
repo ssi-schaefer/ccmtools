@@ -34,6 +34,7 @@ import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
@@ -54,6 +55,7 @@ import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.CcmtoolsProperties;
 import ccmtools.UI.Driver;
 import ccmtools.utils.Text;
@@ -68,8 +70,6 @@ import ccmtools.utils.Text;
 public class CppLocalGenerator 
 	extends CppGenerator
 {
- //   protected final String COMPONENT_NAMESPACE = "component_";
-    
     //====================================================================
     // Definition of arrays that determine the generator's behavior
     //====================================================================
@@ -93,34 +93,12 @@ public class CppLocalGenerator
     	throws IOException
     {
         super("CppLocal", uiDriver, outDir, LOCAL_OUTPUT_TEMPLATE_TYPES);
-        
         logger = Logger.getLogger("ccm.generator.cpp.local");
         logger.fine("enter CppLocalGenerator()");
-        
-        //baseNamespace.add("CCM_Local");
         baseNamespace.add("ccm");
         baseNamespace.add("local");
-        
         logger.fine("leave CppLocalGenerator()");
     }
-
-    
-    // FIXME ---------------------------------
-    // This hack is only temporarily to compile generated structures via PMM
-//    protected String getScopedInclude(MContained contained)
-//    {
-//        List scope = getScope(contained);
-//        Collections.reverse(baseNamespace);
-//        for(Iterator i = baseNamespace.iterator(); i.hasNext();) {
-//            scope.add(0, i.next());
-//        }
-//        Collections.reverse(baseNamespace);
-//        scope.add(contained.getIdentifier());
-//        String code = getPmmHack(scope, contained);
-//        // System.out.println("-->" + code + "<--");	
-//        return code;
-//    }
-    // FIXME ---------------------------------
 
     
     //====================================================================
@@ -217,9 +195,10 @@ public class CppLocalGenerator
         Map vars = new Hashtable();
 
         vars.put("Object", container.getIdentifier());
+        
         vars.put("Identifier", operation.getIdentifier());
         vars.put("LanguageType", langType);
-        vars.put("MExceptionDefThrows", getOperationExcepts(operation));
+        vars.put("ExceptionThrows", getOperationExcepts(operation));
         vars.put("MParameterDefAll", getOperationParams(operation));
         vars.put("MParameterDefName", getOperationParamNames(operation));
         
@@ -232,6 +211,7 @@ public class CppLocalGenerator
                  getOperationResult(operation));         
         vars.put("Return", getOperationReturn(operation));
 
+        
         // these tags are used for debug output generation
         vars.put("DebugOperationInParameter", 
                  getDebugOperationInParameter(operation));
@@ -277,12 +257,15 @@ public class CppLocalGenerator
         
         // Handle simple tags from templates which are related to
         // the c++local generator
-        if (currentNode instanceof MAliasDef) {
+        if (currentNode instanceof MAttributeDef) {
+            return data_MAttributeDef(variable, value);
+        }
+        else if (currentNode instanceof MAliasDef) {
             // determine the contained type of MaliasDef
             MTyped type = (MTyped) currentNode;
             MIDLType idlType = type.getIdlType();
             if (idlType instanceof MSequenceDef) {
-                return data_MSequenceDef(variable,value);
+                return data_MSequenceDef(variable, value);
             }
             else if (idlType instanceof MArrayDef) {
                 return data_MArrayDef(variable, value);
@@ -378,7 +361,80 @@ public class CppLocalGenerator
         return dataValue;
     }
     
-   
+    protected String data_MAttributeDef(String dataType, String dataValue)
+    {
+        logger.fine("enter data_MAttributeDef()");
+        MAttributeDef attr = (MAttributeDef)currentNode;
+        if(dataType.equals("InterfaceIdentifier")) {
+            dataValue = attr.getDefinedIn().getIdentifier();
+        }
+        logger.fine("leave data_MAttributeDef()");
+        return dataValue;
+    }
+    
+    protected String data_MOperationDef(String dataType, String dataValue)
+    {
+        logger.fine("enter data_MOperationDef()");
+        MOperationDef op = (MOperationDef)currentNode;
+        if(dataType.equals("InterfaceIdentifier")) {
+//            MInterfaceDef iface = (MInterfaceDef)op.getDefinedIn();
+            dataValue = op.getDefinedIn().getIdentifier();
+        }
+        else if(dataType.equals("ExceptionThrows")) {
+            dataValue = getOperationExcepts(op);
+        }
+        else if(dataType.equals("OperationToFacetDelegation")) {
+            dataValue = getOperationDelegation(op,"facet_");
+        }
+        else if(dataType.equals("OperationResult")) {
+            dataValue = getOperationResult(op);
+        }
+        else if(dataType.equals("DebugOperationInParameter")) {
+            dataValue = getDebugOperationInParameter(op);
+        }
+        else if(dataType.equals("DebugOperationOutParameter")) {
+            dataValue = getDebugOperationOutParameter(op);
+        }
+        else if(dataType.equals("DebugOperationResult")) {
+            dataValue = getDebugOperationResult(op);
+        }
+        else {
+            dataValue = super.data_MOperationDef(dataType, dataValue);
+        }
+        logger.fine("leave data_MOperationDef()");
+        return dataValue;
+    }
+        
+    protected String getLocalName(MContained contained, String separator)
+    {
+        StringBuffer code = new StringBuffer();
+        List scope = getScope(contained);
+        code.append(Text.join(separator, baseNamespace));
+        code.append(separator);
+        if (scope.size() > 0) {
+            code.append(Text.join(separator, scope));
+            code.append(separator);
+        }
+        code.append(contained.getIdentifier());
+        return code.toString();
+    }
+    
+    protected String data_MInterfaceDef(String dataType, String dataValue)
+    {
+        MInterfaceDef iface = (MInterfaceDef) currentNode;
+
+        if(dataType.equals("InterfaceInclude")) {
+            MContained contained = (MContained)currentNode;
+            dataValue = getLocalName(contained, Text.FILE_SEPARATOR);
+        }
+        else {
+            dataValue = super.data_MInterfaceDef(dataType, dataValue);
+        }
+
+        return dataValue;
+    }
+
+    
     /**
      * Write generated code to an output file.
      * 
@@ -438,19 +494,6 @@ public class CppLocalGenerator
                 }
 
                 writeMakefile(output_dir, file_dir, "py", "");
-
-                // FIXME ---------------------------------
-//                // This hack is only temporarily to compile generated structures
-//                // via PMM
-//                if(currentNode instanceof MComponentDef
-//                        || currentNode instanceof MHomeDef
-//                        || currentNode instanceof MProvidesDef) {
-//                    // Makefile.pl is not needed by components, homes and facets
-//                }
-//                else {
-//                    writeMakefile(output_dir, file_dir, "pl", "1;");
-//                }
-                // FIXME --------------------------------
             }
         }
         catch(Exception e) {
@@ -561,8 +604,7 @@ public class CppLocalGenerator
                 files.add(f);
             }
         }
-        else if((currentNode instanceof MInterfaceDef)
-                || (currentNode instanceof MStructDef)
+        else if((currentNode instanceof MStructDef)
                 || (currentNode instanceof MUnionDef)
                 || (currentNode instanceof MAliasDef)
                 || (currentNode instanceof MEnumDef)
@@ -570,6 +612,23 @@ public class CppLocalGenerator
             f = new ArrayList();
             f.add(getOutputDirectory(""));
             f.add(node_name + ".h");
+            files.add(f);
+        }
+        else if ((currentNode instanceof MInterfaceDef)) {
+            // Interface part
+            f = new ArrayList();
+            f.add(getOutputDirectory(""));
+            f.add(node_name + ".h");
+            files.add(f);
+            // Adapter part (header file)
+            f = new ArrayList();
+            f.add(getOutputDirectory("") + "_adapter");
+            f.add(node_name + "Adapter.h");
+            files.add(f);
+            // Adapter part (impl file)
+            f = new ArrayList();
+            f.add(getOutputDirectory("") + "_adapter");
+            f.add(node_name + "Adapter.cc");
             files.add(f);
         }
         else if((currentNode instanceof MProvidesDef)) {
@@ -612,34 +671,13 @@ public class CppLocalGenerator
     // Simple %(tag)s helper methods
     //====================================================================
 
-//    public String getPmmHack(List scope, MContained contained)
-//    {
-//        logger.finer("enter getPmmHack()");
-//        StringBuffer code = new StringBuffer();
-//        
-//        code.append("#ifdef HAVE_CONFIG_H\n");
-//        code.append("#  include <config.h>\n");
-//        code.append("#endif\n");
-// 
-//        code.append("#ifdef USING_CONFIX \n");
-//        code.append("#include <");
-//        code.append(Text.join(Text.FILE_SEPARATOR, scope));
-//        code.append(".h> \n");
-//        code.append("#else \n");
-//        code.append("#include <");
-//        code.append(contained.getIdentifier());
-//        code.append(".h> \n");
-//        code.append("#endif\n\n");
-//        logger.finer("leave getPmmHack()");
-//        return code.toString();
-//    }
-    
+
     
     
     //====================================================================
     // MOperationDef %(tag)s helper methods
     //====================================================================
-
+       
     public String getOperationDelegation(MOperationDef op, String target)
     {
         logger.finer("enter getOperationDelegation()");
@@ -695,7 +733,7 @@ public class CppLocalGenerator
     //====================================================================
     // Debug %(tag)s helper methods
     //====================================================================
-
+    
     public String getDebugInclude()
     {
         logger.finer("enter getDebugInclude()");

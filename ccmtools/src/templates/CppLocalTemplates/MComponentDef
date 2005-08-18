@@ -32,8 +32,6 @@
 %(OpenNamespace)s
 
 class %(HomeType)s;
-//class CCM_%(HomeType)s;
-//class CCM_%(Identifier)s_Context;
 
 //==============================================================================
 // %(Identifier)s local component adapter class
@@ -127,7 +125,9 @@ class CCM_%(Identifier)s_Context_impl
         throw(ccm::local::Components::IllegalState);
 };
 
+/*
 %(MProvidesDefAdapterClass)s
+*/
 
 %(CloseNamespace)s
 
@@ -158,15 +158,19 @@ class CCM_%(Identifier)s_Context_impl
 #include <ccm/local/Debug.h>
 #endif /* WXDEBUG */
 
-#include "%(Identifier)s_gen.h"
+// #include<Adapter.h>
+%(MProvidesDefAdapterInclude)s
 
-using namespace std;
-using namespace WX::Utils;
-using namespace ccm::local;
+#include "%(Identifier)s_gen.h"
 
 %(OpenNamespace)s
 
+using namespace std;
+using namespace WX::Utils;
+
+/*
 %(MProvidesDefAdapterClassImpl)s
+*/
 
 //==============================================================================
 // context adapter class implementation

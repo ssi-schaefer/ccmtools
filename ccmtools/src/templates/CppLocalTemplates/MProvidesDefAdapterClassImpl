@@ -1,35 +1,39 @@
 //==============================================================================
-// FacetAdapter %(Identifier)s implementation
+// %(ComponentType)sFacetAdapter %(Identifier)s implementation
 //==============================================================================
 
-FacetAdapter%(Identifier)s::FacetAdapter%(Identifier)s()
+%(ComponentType)sFacetAdapter%(Identifier)s::%(ComponentType)sFacetAdapter%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER,"+FacetAdapter%(Identifier)s::FacetAdapter%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER,"+%(ComponentType)sFacetAdapter%(Identifier)s::%(ComponentType)sFacetAdapter%(Identifier)s()");
     component = NULL;
     local_component = NULL;
     ValidConnection = false;
     facet = NULL;
 }
 
-FacetAdapter%(Identifier)s::FacetAdapter%(Identifier)s(%(ComponentType)s* c, CCM_%(ComponentType)s* lc)
+%(ComponentType)sFacetAdapter%(Identifier)s::%(ComponentType)sFacetAdapter%(Identifier)s(%(ComponentType)s* c, CCM_%(ComponentType)s* lc)
     : component(c), local_component(lc)
 {
-    LDEBUGNL(CCM_CONTAINER,"+FacetAdapter%(Identifier)s::%(Identifier)sFacetAdapter()" );
+    LDEBUGNL(CCM_CONTAINER,"%(ComponentType)s+FacetAdapter%(Identifier)s::%(ComponentType)s%(Identifier)sFacetAdapter()" );
     ValidConnection = true;
     facet = local_component->get_%(Identifier)s();
 }
 
-FacetAdapter%(Identifier)s::~FacetAdapter%(Identifier)s()
+%(ComponentType)sFacetAdapter%(Identifier)s::~%(ComponentType)sFacetAdapter%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER,"-FacetAdapter%(Identifier)s::~FacetAdapter%(Identifier)s()" );
+    LDEBUGNL(CCM_CONTAINER,"-%(ComponentType)sFacetAdapter%(Identifier)s::~%(ComponentType)sFacetAdapter%(Identifier)s()" );
     delete facet;
 }
 
+
 %(MAttributeProvidesAdapterDefinition)s
+
+
 %(MOperationProvidesAdapterDefinition)s
 
+
 SmartPtr<Components::Object>
-FacetAdapter%(Identifier)s::get_component()
+%(ComponentType)sFacetAdapter%(Identifier)s::get_component()
 {
     LDEBUGNL(CCM_CONTAINER," FacetAdapter%(Identifier)s::get_component()");
     return SmartPtr<Components::Object>
