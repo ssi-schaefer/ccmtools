@@ -16,7 +16,7 @@
 %(OpenNamespace)s
 
 class %(Identifier)s 
-  : virtual public ccm::local::Components::Exception 
+  : virtual public ::ccm::local::Components::Exception 
 { 
   public:
 %(MFieldDef)s
@@ -36,10 +36,10 @@ std::string
 ccmDebug(const %(Identifier)s& in, int indent = 0)
 {
     std::ostringstream os;
-    os << doIndent(indent) << "exception %(Identifier)s" << std::endl;
-    os << doIndent(indent) << "{" << std::endl;
+    os << ::ccm::local::doIndent(indent) << "exception %(Identifier)s" << std::endl;
+    os << ::ccm::local::doIndent(indent) << "{" << std::endl;
 %(MFieldDefDebug)s
-    os << doIndent(indent) << "}";
+    os << ::ccm::local::doIndent(indent) << "}";
     return os.str();
 }
 #endif

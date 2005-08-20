@@ -1,22 +1,22 @@
 const %(LanguageType)s
 %(InterfaceIdentifier)sFacetAdapter::%(Identifier)s() const 
-    throw(ccm::local::Components::CCMException)
+    throw(::ccm::local::Components::CCMException)
 {
     LDEBUGNL(CCM_LOCAL, " %(InterfaceIdentifier)sFacetAdapter::%(Identifier)s() = " 
-             << ccmDebug(facet_->%(Identifier)s()));
+             << ::%(DebugNamespace)s::ccmDebug(facet_->%(Identifier)s()));
     if(!validConnection()) 
-        throw ccm::local::Components::InvalidConnection();
+        throw ::ccm::local::Components::InvalidConnection();
     return facet_->%(Identifier)s();
 }
 
 void
 %(InterfaceIdentifier)sFacetAdapter::%(Identifier)s(const %(LanguageType)s value)  
-    throw(ccm::local::Components::CCMException)
+    throw(::ccm::local::Components::CCMException)
 {
     LDEBUGNL(CCM_LOCAL, " %(InterfaceIdentifier)sFacetAdapter::%(Identifier)s(" 
-             << ccmDebug(value) << ")");
+             << ::%(DebugNamespace)s::ccmDebug(value) << ")");
     if(!validConnection()) 
-        throw ccm::local::Components::InvalidConnection();
+        throw ::ccm::local::Components::InvalidConnection();
     facet_->%(Identifier)s(value);
 }
 

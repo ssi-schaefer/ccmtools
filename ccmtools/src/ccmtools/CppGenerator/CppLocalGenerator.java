@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import ccmtools.CcmtoolsProperties;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
@@ -56,7 +57,6 @@ import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
-import ccmtools.UI.CcmtoolsProperties;
 import ccmtools.UI.Driver;
 import ccmtools.utils.Text;
 
@@ -104,33 +104,47 @@ public class CppLocalGenerator
     //====================================================================
     // Code generator core methods
     //====================================================================
-        
+    
+//    protected String getLocalName(MContained contained, String separator)
+//  {
+//      StringBuffer code = new StringBuffer();
+//      List scope = getScope(contained);
+//      code.append(Text.join(separator, baseNamespace));
+//      code.append(separator);
+//      if (scope.size() > 0) {
+//          code.append(Text.join(separator, scope));
+//          code.append(separator);
+//      }
+//      code.append(contained.getIdentifier());
+//      return code.toString();
+//  }
+    
     public String getScopedNamespace(MContained contained,
                                      String separator, String local)
     {
-        StringBuffer buffer = new StringBuffer();
-        List scope = getScope(contained);
-
-        if(local.length() > 0) {
-            //scope.add("CCM_Session_" + local);
-            scope.add(Constants.COMPONENT_NAMESPACE);
-        }
-        buffer.append(Text.join(separator, baseNamespace));
-        buffer.append(separator);
-        if(scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator);
-        }
-        return buffer.toString();
+//        StringBuffer code = new StringBuffer();
+        return getLocalCppNamespace(contained, separator);
+//        List scope = getScope(contained);
+//        if(local.length() > 0) {
+//            //scope.add("CCM_Session_" + local);
+//            scope.add(Constants.COMPONENT_NAMESPACE);
+//        }
+//        code.append(Text.join(separator, baseNamespace));
+//        code.append(separator);
+//        if(scope.size() > 0) {
+//            code.append(Text.join(separator, scope));
+//            code.append(separator);
+//        }
+//        return code.toString();
     }
 
     public String getScopedName(MContained contained, 
                                 String separator, String local)
     {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(getScopedNamespace(contained, separator, local));
-        buffer.append(contained.getIdentifier());
-        return buffer.toString();
+        StringBuffer code = new StringBuffer();
+        code.append(getScopedNamespace(contained, separator, local));
+        code.append(contained.getIdentifier());
+        return code.toString();
     }    
     
     
@@ -155,7 +169,7 @@ public class CppLocalGenerator
                     || innerIdlType instanceof MStringDef
                     || innerIdlType instanceof MWstringDef) {
                 code.append(Text.join(Text.SCOPE_SEPARATOR, baseNamespace)); 
-                code.append(Text.SCOPE_SEPARATOR);
+//                code.append(Text.SCOPE_SEPARATOR);
             }
             else {
                 code.append(getScopedNamespace((MContained)idlType, 
@@ -168,7 +182,7 @@ public class CppLocalGenerator
     	}
         else {
             code.append(Text.join(Text.SCOPE_SEPARATOR, baseNamespace)); 
-            code.append(Text.SCOPE_SEPARATOR);
+//            code.append(Text.SCOPE_SEPARATOR);
         }
         return code.toString();
     }
@@ -213,13 +227,17 @@ public class CppLocalGenerator
 
         
         // these tags are used for debug output generation
+        //!!!!!!!!!!!!
+        vars.put("DebugNamespace", 
+                 "xxxx - twostep");
+        //!!!!!!!!
         vars.put("DebugOperationInParameter", 
                  getDebugOperationInParameter(operation));
         vars.put("DebugOperationOutParameter", 
                  getDebugOperationOutParameter(operation));
         vars.put("DebugOperationResult", 
                  getDebugOperationResult(operation));
-
+        
         logger.fine("leave getTwoStepOperationVariables()");
         return vars;
     }
@@ -233,7 +251,6 @@ public class CppLocalGenerator
         logger.fine("getLocalValue()");
         // Get local value of CppGenerator 
         String value = super.getLocalValue(variable);
-
         
         if(variable.equals("DebugInclude")) {
             return getDebugInclude();
@@ -244,15 +261,18 @@ public class CppLocalGenerator
             return getDebugNamespace(idlType);
         }
         else if(variable.equals("LanguageTypeInclude")) {
-            StringBuffer code = new StringBuffer();
             MTyped type = (MTyped) currentNode;
             MIDLType idlType = type.getIdlType();
-            if(idlType instanceof MStringDef
-                    || idlType instanceof MWstringDef
-                    || idlType instanceof MPrimitiveDef) {
-                code.append(getLanguageTypeInclude(idlType));
-            return value + code.toString();
-            }
+            return getLanguageTypeInclude(idlType);
+//            StringBuffer code = new StringBuffer();
+//            MTyped type = (MTyped) currentNode;
+//            MIDLType idlType = type.getIdlType();
+//            if(idlType instanceof MStringDef
+//                    || idlType instanceof MWstringDef
+//                    || idlType instanceof MPrimitiveDef) {
+//                code.append(getLanguageTypeInclude(idlType));
+//            return value + code.toString();
+//            }
         }
         
         // Handle simple tags from templates which are related to
@@ -277,7 +297,11 @@ public class CppLocalGenerator
         return value;
     }
             
-    
+    /***
+     * Generate the #include<> statement for a MIDLType model element
+     * with full scope.
+     * e.g: #include <world/europe/austria/ccm/local/Person.h>
+     */
     protected String getLanguageTypeInclude(MIDLType idlType) 
     {
         StringBuffer code = new StringBuffer();
@@ -291,12 +315,23 @@ public class CppLocalGenerator
                 code.append("#include <WX/Utils/value.h>\n");
             }
         }
-        else if(idlType instanceof MContained) {
-            code.append(getScopedInclude((MContained) idlType));
+        else if(idlType instanceof MSequenceDef
+                || idlType instanceof MArrayDef) {
+            MTyped singleType = (MTyped)idlType;
+            MIDLType singleIdlType = singleType.getIdlType();
+            code.append("#include <vector>\n");
+            code.append(getLanguageTypeInclude(singleIdlType));
         }
-        
+        else if(idlType instanceof MContained) {
+            //code.append(getScopedInclude((MContained) idlType));
+            MContained contained = (MContained)idlType;
+            code.append("#include <");
+            code.append(getLocalCppName(contained, Text.FILE_SEPARATOR));
+            code.append(".h>\n");
+        }
         return code.toString();
     }
+    
     
     protected String data_MFieldDef(String dataType, String dataValue) 
     {
@@ -318,12 +353,12 @@ public class CppLocalGenerator
         if(dataType.equals("MAliasDefDebug")) {
             dataValue =  getDebugSequence(type);
         }
-        else if(dataType.equals("LanguageTypeInclude")) {
-            MTyped singleType = (MTyped) idlType;
-            MIDLType singleIdlType = singleType.getIdlType();
-            dataValue = "#include <vector>\n"
-                + getLanguageTypeInclude(singleIdlType);
-        }
+//        else if(dataType.equals("LanguageTypeInclude")) {
+//            MTyped singleType = (MTyped) idlType;
+//            MIDLType singleIdlType = singleType.getIdlType();
+//            dataValue = "#include <vector>\n"
+//                + getLanguageTypeInclude(singleIdlType);
+//        }
         logger.fine("leave data_MSequenceDef()");
         return dataValue;
     }
@@ -337,12 +372,12 @@ public class CppLocalGenerator
         if(dataType.equals("MAliasDefDebug")) {
             dataValue = getDebugArray(type);	 
         }
-        else if(dataType.equals("LanguageTypeInclude")) {
-            MTyped singleType = (MTyped) idlType;
-            MIDLType singleIdlType = singleType.getIdlType();
-            dataValue = "#include <vector>//!!!\n"
-                + getLanguageTypeInclude(singleIdlType);
-        }
+//        else if(dataType.equals("LanguageTypeInclude")) {
+//            MTyped singleType = (MTyped) idlType;
+//            MIDLType singleIdlType = singleType.getIdlType();
+//            dataValue = "#include <vector>//!!!\n"
+//                + getLanguageTypeInclude(singleIdlType);
+//        }
         logger.fine("leave data_MArrayDef()");
         return dataValue;
     }
@@ -367,6 +402,14 @@ public class CppLocalGenerator
         MAttributeDef attr = (MAttributeDef)currentNode;
         if(dataType.equals("InterfaceIdentifier")) {
             dataValue = attr.getDefinedIn().getIdentifier();
+        }
+        //!!!!!!!!!!!!!!!
+        else if(dataType.equals("DebugNamespace")) {
+            dataValue = "xxxxxxxx";
+        }
+        //!!!!!!!!!
+        else {
+            dataValue = super.data_MAttributeDef(dataType, dataValue);
         }
         logger.fine("leave data_MAttributeDef()");
         return dataValue;
@@ -405,19 +448,6 @@ public class CppLocalGenerator
         return dataValue;
     }
         
-    protected String getLocalName(MContained contained, String separator)
-    {
-        StringBuffer code = new StringBuffer();
-        List scope = getScope(contained);
-        code.append(Text.join(separator, baseNamespace));
-        code.append(separator);
-        if (scope.size() > 0) {
-            code.append(Text.join(separator, scope));
-            code.append(separator);
-        }
-        code.append(contained.getIdentifier());
-        return code.toString();
-    }
     
     protected String data_MInterfaceDef(String dataType, String dataValue)
     {
@@ -425,7 +455,7 @@ public class CppLocalGenerator
 
         if(dataType.equals("InterfaceInclude")) {
             MContained contained = (MContained)currentNode;
-            dataValue = getLocalName(contained, Text.FILE_SEPARATOR);
+            dataValue = getLocalCppName(contained, Text.FILE_SEPARATOR);
         }
         else {
             dataValue = super.data_MInterfaceDef(dataType, dataValue);
@@ -448,7 +478,7 @@ public class CppLocalGenerator
         List out_paths = getOutputFiles();
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
-        String implDirectory = CcmtoolsProperties.Instance().get("ccmtools.impl.dir");
+        String implDirectory = CcmtoolsProperties.Instance().get("ccmtools.dir.impl");
 
         try {
             Iterator path_iterator = out_paths.iterator();
@@ -521,16 +551,6 @@ public class CppLocalGenerator
     }
 
     
-    protected String getOutputDirectory(String local)
-    {
-        List names = new ArrayList(namespaceStack);
-        if(!local.equals("")) {
-            //names.add("CCM_Session_" + local);
-            names.add(Constants.COMPONENT_NAMESPACE);
-        }
-        return join("_", names);
-    }
-
     /**
      * Create a list of lists of pathname components for output files needed by
      * the current node type.
@@ -546,7 +566,7 @@ public class CppLocalGenerator
         List f = null;
         
         String implDirectory =
-            CcmtoolsProperties.Instance().get("ccmtools.impl.dir");
+            CcmtoolsProperties.Instance().get("ccmtools.dir.impl");
         
         if((currentNode instanceof MComponentDef)
                 || (currentNode instanceof MHomeDef)) {
@@ -664,8 +684,28 @@ public class CppLocalGenerator
         return files;
     }
 
-    
+    /***
+     * Calculate the directory name for output files.
+     * 
+     * @param component name of a component which will be added to the 
+     * 		  directory name.
+     * @return A mangled name containing the namespace of a component
+     *         logic artifact.
+     */
+    protected String getOutputDirectory(String component)
+    {
+        List modules = new ArrayList(namespaceStack);
+        modules.addAll(baseNamespace);
+        if(!component.equals("")) {
+            modules.add(Constants.COMPONENT_NAMESPACE 
+                        + Text.MANGLING_SEPARATOR + component);
+        }
+        String generatorPrefix = CcmtoolsProperties.Instance().get("ccmtools.dir.gen");
+        return generatorPrefix + join("_", modules);
+    }
 
+    
+    
     
     //====================================================================
     // Simple %(tag)s helper methods
@@ -755,7 +795,7 @@ public class CppLocalGenerator
         MIDLType idlType = type.getIdlType();
         MTyped singleType = (MTyped) idlType;
         MIDLType singleIdlType = singleType.getIdlType();
-        String sequenceName = getLocalName(contained,Text.SCOPE_SEPARATOR);
+        String sequenceName = getLocalCppName(contained,Text.SCOPE_SEPARATOR);
         code.append("#ifdef WXDEBUG\n");
         code.append("inline\n");
         code.append("std::string\n"); 
@@ -763,17 +803,17 @@ public class CppLocalGenerator
         code.append("& in, int indent = 0)\n");
         code.append("{\n");
         code.append(Text.TAB).append("std::ostringstream os;\n");
-        code.append(Text.TAB).append("os << doIndent(indent) << \"sequence ");
+        code.append(Text.TAB).append("os << ::ccm::local::doIndent(indent) << \"sequence ");
         code.append(sequenceName).append("\" << endl;\n");
         code.append(Text.TAB);
-        code.append("os << doIndent(indent) << \"[\" << std::endl;\n");
+        code.append("os << ::ccm::local::doIndent(indent) << \"[\" << std::endl;\n");
         code.append(Text.TAB);
         code.append("for(unsigned int i=0; i<in.size(); i++) {\n");
         code.append(Text.tab(2)).append("os << ");
-        code.append(getDebugNamespace(singleIdlType));
-        code.append("ccmDebug(in[i], indent+1) << std::endl;\n");
+        code.append("::").append(getDebugNamespace(singleIdlType));
+        code.append("::ccmDebug(in[i], indent+1) << std::endl;\n");
         code.append(Text.TAB).append("}\n");
-        code.append(Text.TAB).append("os << doIndent(indent) << \"]\";\n");
+        code.append(Text.TAB).append("os << ::ccm::local::doIndent(indent) << \"]\";\n");
         code.append(Text.TAB).append("return os.str();\n");
         code.append("}\n");
         code.append("#endif\n");
@@ -789,7 +829,7 @@ public class CppLocalGenerator
         MIDLType idlType = type.getIdlType();
         MTyped singleType = (MTyped) idlType;
         MIDLType singleIdlType = singleType.getIdlType();
-        String sequenceName = getLocalName(contained,Text.SCOPE_SEPARATOR);
+        String sequenceName = getLocalCppName(contained,Text.SCOPE_SEPARATOR);
         code.append("#ifdef WXDEBUG\n");
         code.append("inline\n");
         code.append("std::string\n"); 
@@ -797,17 +837,17 @@ public class CppLocalGenerator
         code.append("& in, int indent = 0)\n");
         code.append("{\n");
         code.append(Text.TAB).append("std::ostringstream os;\n");
-        code.append(Text.TAB).append("os << doIndent(indent) << \"array ");
+        code.append(Text.TAB).append("os << ::ccm::local::doIndent(indent) << \"array ");
         code.append(sequenceName).append("\" << endl;\n");
         code.append(Text.TAB);
-        code.append("os << doIndent(indent) <<  \"[\" << std::endl;\n");
+        code.append("os << ::ccm::local::doIndent(indent) <<  \"[\" << std::endl;\n");
         code.append(Text.TAB);
         code.append("for(unsigned int i=0; i<in.size(); i++) {\n");
         code.append(Text.tab(2)).append("os << ");
-        code.append(getDebugNamespace(singleIdlType));            
-        code.append("ccmDebug(in[i], indent+1) << std::endl;\n");
+        code.append("::").append(getDebugNamespace(singleIdlType));            
+        code.append("::ccmDebug(in[i], indent+1) << std::endl;\n");
         code.append(Text.TAB).append("}\n");
-        code.append(Text.TAB).append("os << doIndent(indent) << \"]\";\n");
+        code.append(Text.TAB).append("os << ::ccm::local::doIndent(indent) << \"]\";\n");
         code.append(Text.TAB).append("return os.str();\n");
         code.append("}\n");
         code.append("#endif\n");
@@ -842,16 +882,16 @@ public class CppLocalGenerator
             if(direction == MParameterMode.PARAM_IN) {
                 code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"IN ");
                 code.append(p.getIdentifier()).append(" = \" << ");
-                code.append(getDebugNamespace(idlType));
-                code.append("ccmDebug(").append(p.getIdentifier()).append(")");
+                code.append("::").append(getDebugNamespace(idlType));
+                code.append("::ccmDebug(").append(p.getIdentifier()).append(")");
                 code.append(");");
                 code.append(Text.NL);
             }
             else if(direction == MParameterMode.PARAM_INOUT) {
                 code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"INOUT ");
                 code.append(p.getIdentifier()).append(" = \" << ");
-                code.append(getDebugNamespace(idlType));
-                code.append("ccmDebug(").append(p.getIdentifier()).append(")");
+                code.append("::").append(getDebugNamespace(idlType));
+                code.append("::ccmDebug(").append(p.getIdentifier()).append(")");
                 code.append(");");
                 code.append(Text.NL);
             }
@@ -871,15 +911,15 @@ public class CppLocalGenerator
             if(direction == MParameterMode.PARAM_OUT) {
                 code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"OUT ");
                 code.append(p.getIdentifier()).append(" = \" << ");
-                code.append(getDebugNamespace(idlType));
-                code.append("ccmDebug(").append(p.getIdentifier());
+                code.append("::").append(getDebugNamespace(idlType));
+                code.append("::ccmDebug(").append(p.getIdentifier());
                 code.append("));");
             }
             else if(direction == MParameterMode.PARAM_INOUT) {
                 code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \"INOUT' ");
                 code.append(p.getIdentifier()).append(" = \" << ");
-                code.append(getDebugNamespace(idlType));
-                code.append("ccmDebug(").append(p.getIdentifier()).append(")");
+                code.append("::").append(getDebugNamespace(idlType));
+                code.append("::ccmDebug(").append(p.getIdentifier()).append(")");
                 code.append(");");
                 code.append(Text.NL);
             }
@@ -897,8 +937,8 @@ public class CppLocalGenerator
         if(!langType.equals("void")) {
             code.append(Text.TAB);
             code.append("LDEBUGNL(CCM_LOCAL, \"result = \" << ");
-            code.append(getDebugNamespace(idlType));
-            code.append("ccmDebug(").append("result");
+            code.append("::").append(getDebugNamespace(idlType));
+            code.append("::ccmDebug(").append("result");
             code.append(")").append(");");
         }
         logger.finer("leave getDebugOperationResult()");

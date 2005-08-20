@@ -98,16 +98,16 @@ abstract public class CppGenerator extends CodeGenerator
             "double", // PK_LONGDOUBLE
             "long", // PK_LONGLONG
             "NULL", // PK_NULL
-            "ccm::local::Components::Object*", // PK_OBJREF
+            "::ccm::local::Components::Object*", // PK_OBJREF
             "unsigned char", // PK_OCTET
             "(principal data type not implemented", // PK_PRINCIPAL
             "short", // PK_SHORT
             "std::string", // PK_STRING
-            "ccm::local::Components::TypeCode", // PK_TYPECODE
+            "::ccm::local::Components::TypeCode", // PK_TYPECODE
             "unsigned long", // PK_ULONG
             "unsigned long", // PK_ULONGLONG
             "unsigned short", // PK_USHORT
-            "ccm::local::Components::Object*", // PK_VALUEBASE
+            "::ccm::local::Components::Object*", // PK_VALUEBASE
             "void", // PK_VOID
             "wchar_t", // PK_WCHAR
             "std::wstring" // PK_WSTRING
@@ -147,10 +147,10 @@ abstract public class CppGenerator extends CodeGenerator
      */
     public void startNode(Object node, String scope_id)
     {
-        if(node instanceof MContainer
-                && (((MContainer) node).getDefinedIn() == null))
-            for(Iterator i = baseNamespace.iterator(); i.hasNext();)
-                namespaceStack.push(i.next());
+//        if(node instanceof MContainer
+//                && (((MContainer) node).getDefinedIn() == null))
+//            for(Iterator i = baseNamespace.iterator(); i.hasNext();)
+//                namespaceStack.push(i.next());
 
         super.startNode(node, scope_id);
     }
@@ -173,13 +173,13 @@ abstract public class CppGenerator extends CodeGenerator
     {
         super.endNode(node, scope_id);
 
-        if(node instanceof MContainer
-                && (((MContainer) node).getDefinedIn() == null)) {
-            for(Iterator i = baseNamespace.iterator(); i.hasNext();) {
-                i.next();
-                namespaceStack.pop();
-            }
-        }
+//        if(node instanceof MContainer
+//                && (((MContainer) node).getDefinedIn() == null)) {
+//            for(Iterator i = baseNamespace.iterator(); i.hasNext();) {
+//                i.next();
+//                namespaceStack.pop();
+//            }
+//        }
         writeOutputIfNeeded();
     }
 
@@ -203,23 +203,7 @@ abstract public class CppGenerator extends CodeGenerator
             names.add("CCM_" + ((MInterfaceDef) i.next()).getIdentifier());
         return join(sep, names);
     }
-
-    
-    protected String getLocalName(MContained contained, String separator)
-    {
-        List scope = getScope(contained);
-        StringBuffer buffer = new StringBuffer();
-
-        buffer.append(Text.join(separator, baseNamespace));
-        buffer.append(separator);
-        if (scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator);
-        }
-        buffer.append(contained.getIdentifier());
-        return buffer.toString();
-    }
-    
+   
     
     /**
      * Build a string containing appropriately formatted namespace information
@@ -237,36 +221,77 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String handleNamespace(String data_type, String local)
     {
-        List names = new ArrayList(namespaceStack);
+        List modules = new ArrayList(namespaceStack);
+        modules.addAll(baseNamespace);
+        
         if(!local.equals("")) {
-            //names.add("CCM_Session_" + local);
-            names.add(Constants.COMPONENT_NAMESPACE);
-        	names.add(local);
+            modules.add(Constants.COMPONENT_NAMESPACE);
+        	modules.add(local);
         }
         
         if(data_type.equals("UsingNamespace")) {
             List tmp = new ArrayList();
-            for(Iterator i = names.iterator(); i.hasNext();)
+            for(Iterator i = modules.iterator(); i.hasNext();)
                 tmp.add("using namespace " + i.next() + ";\n");
             return join("", tmp);
         }
         else if(data_type.equals("OpenNamespace")) {
             List tmp = new ArrayList();
-            for(Iterator i = names.iterator(); i.hasNext();)
+            for(Iterator i = modules.iterator(); i.hasNext();)
                 tmp.add("namespace " + i.next() + " {\n");
             return join("", tmp);
         }
         else if(data_type.equals("CloseNamespace")) {
-            Collections.reverse(names);
+            Collections.reverse(modules);
             List tmp = new ArrayList();
-            for(Iterator i = names.iterator(); i.hasNext();)
+            for(Iterator i = modules.iterator(); i.hasNext();)
                 tmp.add("} // /namespace " + i.next() + "\n");
             return join("", tmp);
         }
-
         return super.handleNamespace(data_type, local);
     }
 
+    
+    protected String getLocalCppNamespace(MContained node, String separator)
+    {
+        StringBuffer code = new StringBuffer();
+        List scope = getScope(node);
+        if(scope.size() > 0) {
+            code.append(join(separator, scope));
+            code.append(separator);
+        }
+        
+        if(baseNamespace.size() > 0) {
+            code.append(join(separator, baseNamespace));
+        }
+        
+        if(node instanceof MComponentDef) {
+            code.append(separator);
+            code.append(Constants.COMPONENT_NAMESPACE );
+            code.append(separator);
+            code.append(node.getIdentifier());
+        }
+        else if(node instanceof MHomeDef ) {
+            MHomeDef home = (MHomeDef)node;
+            code.append(separator);
+            code.append(Constants.COMPONENT_NAMESPACE );
+            code.append(separator);
+            code.append(home.getComponent().getIdentifier());
+        }
+        return code.toString();
+    }
+    
+    
+    protected String getLocalCppName(MContained node, String separator)
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(getLocalCppNamespace(node, separator));
+        code.append(separator);
+        code.append(node.getIdentifier());
+        return code.toString() ;
+    }
+
+    
     /**
      * Get the fully scoped identifier for the given node. If the current scope
      * contains some or all of the full scope for this node, then the identifier
@@ -279,9 +304,26 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getFullScopeIdentifier(MContained node)
     {
-        //String local = "CCM_Session_" + node.getIdentifier();
+        return getLocalCppName(node, Text.SCOPE_SEPARATOR);
+//        StringBuffer code = new StringBuffer();
+//        List scope = getScope(node);
+//        code.append(join(Text.SCOPE_SEPARATOR, scope));
+//        code.append(Text.SCOPE_SEPARATOR);
+//        code.append(join(Text.SCOPE_SEPARATOR, baseNamespace));
+//        if(node instanceof MComponentDef 
+//                || node instanceof MHomeDef) {
+//            code.append(Text.SCOPE_SEPARATOR);
+//            code.append(Constants.COMPONENT_NAMESPACE );
+//            code.append(Text.SCOPE_SEPARATOR);
+//            code.append(node.getIdentifier());
+//        }
+//        
+//        return code.toString();
+    }
+/*        
         String local = Constants.COMPONENT_NAMESPACE 
-        			+ Text.SCOPE_SEPARATOR + node.getIdentifier(); //!!!
+        			+ Text.SCOPE_SEPARATOR + node.getIdentifier(); 
+        
         List scope = getScope(node);
 
         if(node instanceof MComponentDef || node instanceof MHomeDef)
@@ -307,6 +349,7 @@ abstract public class CppGenerator extends CodeGenerator
 
         return join(Text.SCOPE_SEPARATOR, scope);
     }
+*/
 
     /**
      * Get a fully scoped filename for the given node.
@@ -317,9 +360,25 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getFullScopeInclude(MContained node)
     {
-//        String local = "CCM_Session_" + node.getIdentifier();
+        return getLocalCppName(node, Text.FILE_SEPARATOR);
+//        StringBuffer code = new StringBuffer();
+//        List scope = getScope(node);
+//        code.append(join(Text.FILE_SEPARATOR, scope));
+//        code.append(Text.FILE_SEPARATOR);
+//        code.append(join(Text.FILE_SEPARATOR, baseNamespace));
+//        if(node instanceof MComponentDef 
+//                || node instanceof MHomeDef) {
+//            code.append(Text.FILE_SEPARATOR);
+//            code.append(Constants.COMPONENT_NAMESPACE );
+//            code.append(Text.FILE_SEPARATOR);
+//            code.append(node.getIdentifier());
+//        }
+//        
+//        return code.toString();
+    }
+/*        
         String local = Constants.COMPONENT_NAMESPACE
-        				+ Text.FILE_SEPARATOR + node.getIdentifier(); //!!!;
+        				+ Text.FILE_SEPARATOR + node.getIdentifier(); 
 
         List scope = getScope(node);
 
@@ -335,7 +394,9 @@ abstract public class CppGenerator extends CodeGenerator
 
         return join(Text.FILE_SEPARATOR, scope);
     }
-
+*/
+        
+        
     /**
      * Create an #include statement sufficient for including the given node's
      * header file. This is normally only valid for C and C++ code generators
@@ -411,6 +472,9 @@ abstract public class CppGenerator extends CodeGenerator
         else if(currentNode instanceof MInterfaceDef) {
             return data_MInterfaceDef(variable, value);
         }
+        else if(currentNode instanceof MAttributeDef) {
+            return data_MAttributeDef(variable, value);
+        }
         else if(currentNode instanceof MOperationDef) {
             return data_MOperationDef(variable, value);
         }
@@ -423,6 +487,33 @@ abstract public class CppGenerator extends CodeGenerator
         return value;
     }
 
+    /***
+     * Overides the CodeGenerator method to add the 
+     * ccm::local part to namespaces of contained types.
+     */
+    protected String getBaseLanguageType(MTyped object)
+    {
+        logger.fine("enter getBaseLanguageType()");
+        StringBuffer code = new StringBuffer();
+        MIDLType idl_type = object.getIdlType();
+        
+        if(idl_type instanceof MContained) {
+            MContained cont = (MContained) idl_type;
+            List scope = getScope(cont);
+            scope.addAll(baseNamespace);
+            scope.add(cont.getIdentifier());
+            code.append(join(Text.SCOPE_SEPARATOR, scope));
+        }
+        else {
+            code.append(super.getBaseLanguageType(object));
+        }
+        
+        logger.fine("leave getBaseLanguageType()");
+        return code.toString();
+    }
+    
+    
+    
     /**
      * Return the C++ language type for the given object. This returns the value
      * given by getLanguageType if the node is neither an MParameterDef or
@@ -437,13 +528,13 @@ abstract public class CppGenerator extends CodeGenerator
     {
         MIDLType idl_type = object.getIdlType();
         String base_type = getBaseLanguageType(object);
-
+        
         // Handle interfaces using smart pointers
         // (Any ia handled as interface
         if(idl_type instanceof MInterfaceDef
                 || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
                         .getKind() == MPrimitiveKind.PK_ANY)) {
-            base_type = "WX::Utils::SmartPtr<" + base_type + " > ";
+            base_type = "WX::Utils::SmartPtr< " + base_type + " > ";
         }
 
         // This code defines the parameter passing rules for operations:
@@ -488,13 +579,13 @@ abstract public class CppGenerator extends CodeGenerator
              * std::vector <long> ... but no bounds checking.
              */
 
-            String result = "std::vector<" + base_type + " > ";
+            String result = "std::vector< " + base_type + " > ";
             int dimension = ((MArrayDef) object).getBounds().size();
 
             if(dimension > 1) {
-                result = "std::vector<";
+                result = "std::vector< ";
                 for(int i = 1; i < dimension; i++)
-                    result += "std::vector<";
+                    result += "std::vector< ";
                 result += base_type + ">";
                 for(int i = 1; i < dimension; i++)
                     result += " >";
@@ -542,9 +633,17 @@ abstract public class CppGenerator extends CodeGenerator
                     + "' does not have exactly one home.");
         }
 
-        if(data_type.endsWith("Namespace")) {
-            return handleNamespace(data_type, ((MComponentDef) currentNode)
-                    .getIdentifier());
+        if(data_type.equals("HomeType")) {
+            return home.getIdentifier();
+        }
+        if(data_type.equals("LocalNamespace")) {
+          return getLocalCppNamespace(component, Text.SCOPE_SEPARATOR);
+        }
+        if(data_type.equals("LocalNamespaceMangled")) {
+            return getLocalCppNamespace(component, Text.MANGLING_SEPARATOR);
+          }
+        else if(data_type.endsWith("Namespace")) {
+            return handleNamespace(data_type, component.getIdentifier());
         }
         else if(data_type.equals("HomeInclude")) {
             String include = getFullScopeInclude(component);
@@ -552,9 +651,14 @@ abstract public class CppGenerator extends CodeGenerator
                            include.lastIndexOf(Text.FILE_SEPARATOR));
             return include + Text.FILE_SEPARATOR + home.getIdentifier();
         }
+        else if(data_type.equals("ComponentInclude")) {
+            return getLocalCppNamespace(component, Text.FILE_SEPARATOR);
+        }  
+        // TODO: replace %(AbsoluteLocalHomeName)s with %(LocalNamespaceMangled)s
         else if(data_type.endsWith("AbsoluteLocalHomeName")) {
-            return getLocalName(home,"_");
+            return getLocalCppName(home,"_");
         }
+        // TODO:
         return data_MInterfaceDef(data_type, data_value);
     }
 
@@ -588,7 +692,10 @@ abstract public class CppGenerator extends CodeGenerator
         String home_id = home.getIdentifier();
         String component_id = component.getIdentifier();
 
-        if(data_type.endsWith("Namespace")) {
+        if(data_type.equals("LocalNamespace")) {
+            return getLocalCppNamespace(home, Text.SCOPE_SEPARATOR);
+        }
+        else if(data_type.endsWith("Namespace")) {
             return handleNamespace(data_type, component_id);
         }
         else if(data_type.equals("HomeInclude")) {
@@ -597,8 +704,14 @@ abstract public class CppGenerator extends CodeGenerator
                          include.lastIndexOf(Text.FILE_SEPARATOR));
             return include + Text.FILE_SEPARATOR + home_id;
         }
+        else if(data_type.equals("ComponentInclude")) {
+            return getLocalCppNamespace(component, Text.FILE_SEPARATOR);
+        }
+        else if(data_type.equals("ComponentType")) {
+            return component.getIdentifier();
+        }
         else if(data_type.endsWith("AbsoluteLocalHomeName")) {
-            return getLocalName(home,"_");
+            return getLocalCppName(home,"_");
         }
         return data_MInterfaceDef(data_type, data_value);
     }
@@ -616,6 +729,15 @@ abstract public class CppGenerator extends CodeGenerator
         return data_value;
     }
 
+    protected String data_MAttributeDef(String dataType, String dataValue)
+    {
+        MAttributeDef attr = (MAttributeDef)currentNode;
+        if(dataType.equals("DefinedInIdentifier")) {
+            dataValue = attr.getDefinedIn().getIdentifier();
+        }
+        return dataValue;
+    }
+        
     protected String data_MOperationDef(String data_type, String data_value)
     {
         if(data_type.equals("MExceptionDefThrows") && data_value.endsWith(", ")) {
@@ -642,7 +764,8 @@ abstract public class CppGenerator extends CodeGenerator
     protected String data_MProvidesDef(String data_type, String data_value)
     {
         MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
-
+        MProvidesDef provides = (MProvidesDef) currentNode;
+        
         if(data_type.equals("CCMProvidesType")) {
             if(data_value.indexOf(Text.SCOPE_SEPARATOR) < 0)
                 return "CCM_" + data_value;
@@ -657,23 +780,30 @@ abstract public class CppGenerator extends CodeGenerator
         else if(data_type.startsWith("MAttribute")) {
             return fillTwoStepTemplates(iface, data_type, true);
         }
+        else if(data_type.equals("ComponentType")) {
+            MComponentDef component = provides.getComponent();
+            return component.getIdentifier();
+        }
         else if(data_type.startsWith("FullComponentType")) {
             // Return full scoped component type
-            MComponentDef component = ((MProvidesDef) currentNode)
-                    .getComponent();
-            List scope = getScope((MContained) component);
-            if(scope.size() > 0)
-//                return "CCM_Local::" + join("::", scope) + "::CCM_Session_"
-                return "ccm::local::" + join("::", scope) + "::" 
-                		+ Constants.COMPONENT_NAMESPACE
-                		+ Text.SCOPE_SEPARATOR + component.getIdentifier() //!!!!
-                        + "::CCM_"
-                        + component.getIdentifier();
-            else
-//                return "CCM_Local::CCM_Session_" + component.getIdentifier()
-                return "ccm::local::" + Constants.COMPONENT_NAMESPACE 
-                		+ Text.SCOPE_SEPARATOR + component.getIdentifier() //!!!!
-                        + "::CCM_" + component.getIdentifier();
+            MComponentDef component = provides.getComponent();
+            StringBuffer code = new StringBuffer();
+            code.append(getLocalCppNamespace(component, Text.SCOPE_SEPARATOR));
+            code.append("::CCM_");
+            code.append(component.getIdentifier());
+            return code.toString();
+            
+//            List scope = getScope((MContained) component);
+//            if(scope.size() > 0)
+//                return "ccm::local::" + join("::", scope) + "::" 
+//                		+ Constants.COMPONENT_NAMESPACE
+//                		+ Text.SCOPE_SEPARATOR + component.getIdentifier() //!!!!
+//                        + "::CCM_"
+//                        + component.getIdentifier();
+//            else
+//                return "ccm::local::" + Constants.COMPONENT_NAMESPACE 
+//                		+ Text.SCOPE_SEPARATOR + component.getIdentifier() //!!!!
+//                        + "::CCM_" + component.getIdentifier();
         }
         else if(data_type.startsWith("OpenNamespace")
                 || (data_type.startsWith("CloseNamespace"))) {
@@ -724,6 +854,11 @@ abstract public class CppGenerator extends CodeGenerator
         }
         else if(data_type.startsWith("MAttribute")) {
             return fillTwoStepTemplates(iface, data_type, true);
+        }
+        else if(data_type.equals("ComponentType")) {
+            MUsesDef uses = (MUsesDef)currentNode;
+            MComponentDef component = uses.getComponent();
+            return component.getIdentifier();
         }
 
         return data_value;
@@ -816,11 +951,11 @@ abstract public class CppGenerator extends CodeGenerator
         for(Iterator es = op.getExceptionDefs().iterator(); es.hasNext();)
             ret.add(((MExceptionDef) es.next()).getIdentifier());
         if(ret.size() > 0) {
-            return "throw (ccm::local::Components::CCMException, " + join(", ", ret)
+            return "throw (::ccm::local::Components::CCMException, " + join(", ", ret)
                     + " )";
         }
         else {
-            return "throw (ccm::local::Components::CCMException)";
+            return "throw (::ccm::local::Components::CCMException)";
         }
     }
 

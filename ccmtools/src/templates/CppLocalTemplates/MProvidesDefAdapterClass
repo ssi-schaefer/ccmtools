@@ -21,7 +21,7 @@ class %(ComponentType)sFacetAdapter%(Identifier)s
 %(MAttributeProvidesPrototype)s
 %(MOperationProvidesPrototype)s
 
-    WX::Utils::SmartPtr<ccm::local::Components::Object> get_component();
+    WX::Utils::SmartPtr< ::ccm::local::Components::Object> get_component();
 };
 
 

@@ -1,5 +1,5 @@
-    virtual ccm::local::Components::EnterpriseComponent* 
+    virtual ::ccm::local::Components::EnterpriseComponent* 
         %(Identifier)s(%(MParameterDefAll)s)
-        throw(ccm::local::Components::CCMException, 
-              ccm::local::Components::CreateFailure) = 0;
+        throw(::ccm::local::Components::CCMException, 
+              ::ccm::local::Components::CreateFailure) = 0;
 

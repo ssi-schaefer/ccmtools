@@ -1,4 +1,4 @@
-package ccmtools.UI;
+package ccmtools;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,14 +30,28 @@ public class CcmtoolsProperties
     public CcmtoolsProperties() 
     	throws IOException
     {
-        propertyPath_ = System.getProperty("ccmtools.home") + File.separator 
-        	+ "etc" + File.separator;
+        propertyPath_ = 
+            System.getProperty("ccmtools.home") 
+        	+ File.separator 
+        	+ "etc" 
+        	+ File.separator;
         load();
     }
-        
+
+    /**
+     * Read the property value for the given key.
+     * 
+     * @param key Property key.
+     * @return Property value or an empty string if there is no 
+     *         value defined in the property file.
+     */
     public String get(String key)
     {
-        return ccmtoolsProperties_.getProperty(key);
+        String value = ccmtoolsProperties_.getProperty(key);
+        if(value == null) {
+            value = "";
+        }
+        return value;
     }
 
     public void set(String key, String value)

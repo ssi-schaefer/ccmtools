@@ -32,12 +32,12 @@
 %(MOperationProvidesAdapterDefinition)s
 
 
-SmartPtr<Components::Object>
+SmartPtr< ::ccm::local::Components::Object>
 %(ComponentType)sFacetAdapter%(Identifier)s::get_component()
 {
     LDEBUGNL(CCM_CONTAINER," FacetAdapter%(Identifier)s::get_component()");
-    return SmartPtr<Components::Object>
-        (dynamic_cast<Components::Object*> (component));
+    return SmartPtr< ::ccm::local::Components::Object>
+        (dynamic_cast< ::ccm::local::Components::Object*> (component));
 };
 
 

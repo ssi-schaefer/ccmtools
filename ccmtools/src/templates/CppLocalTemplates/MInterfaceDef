@@ -23,7 +23,7 @@
 
 // External view of interface %(Identifier)s
 class %(Identifier)s
-  : virtual public ccm::local::Components::Object%(BaseType)s
+  : virtual public ::ccm::local::Components::Object%(BaseType)s
 {
   public:
     virtual ~%(Identifier)s() {}
@@ -44,7 +44,7 @@ std::string
 ccmDebug(const WX::Utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
 {
     std::ostringstream os;
-    os << doIndent(indent) << "object %(Identifier)s" << std::endl;
+    os << ::ccm::local::doIndent(indent) << "object %(Identifier)s" << std::endl;
     return os.str();
 }
 #endif // WXDEBUG
@@ -80,7 +80,7 @@ class %(Identifier)sFacetAdapter
 {
  public:
     %(Identifier)sFacetAdapter();
-    %(Identifier)sFacetAdapter(Components::Object* c, CCM_%(Identifier)s* f);
+    %(Identifier)sFacetAdapter(::ccm::local::Components::Object* c, CCM_%(Identifier)s* f);
     virtual ~%(Identifier)sFacetAdapter();
 
     inline void validConnection(const bool value) 
@@ -97,10 +97,10 @@ class %(Identifier)sFacetAdapter
 
 %(MOperationDefAdapterHeader)s
 
-    WX::Utils::SmartPtr<ccm::local::Components::Object> get_component();
+    WX::Utils::SmartPtr< ::ccm::local::Components::Object> get_component();
 
  protected:
-    Components::Object* component_;
+    ::ccm::local::Components::Object* component_;
     CCM_%(Identifier)s* facet_;
     bool validConnection_;
 
@@ -140,7 +140,7 @@ using namespace WX::Utils;
     facet_ = NULL;
 }
 
-%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(Components::Object* c, CCM_%(Identifier)s* f)
+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(::ccm::local::Components::Object* c, CCM_%(Identifier)s* f)
     : component_(c), facet_(f)
 {
     LDEBUGNL(CCM_CONTAINER,"%(ComponentType)s+FacetAdapter%(Identifier)s::%(ComponentType)s%(Identifier)sFacetAdapter()" );
@@ -160,12 +160,12 @@ using namespace WX::Utils;
 %(MOperationDefAdapterImpl)s
 
 
-SmartPtr<Components::Object>
+SmartPtr< ::ccm::local::Components::Object>
 %(Identifier)sFacetAdapter::get_component()
 {
     LDEBUGNL(CCM_CONTAINER," %(Identifier)sFacetAdapter::get_component()");
-    return SmartPtr<Components::Object>
-        (dynamic_cast<Components::Object*> (component_));
+    return SmartPtr< ::ccm::local::Components::Object>
+        (dynamic_cast< ::ccm::local::Components::Object*> (component_));
 };
  
 %(CloseNamespace)s 

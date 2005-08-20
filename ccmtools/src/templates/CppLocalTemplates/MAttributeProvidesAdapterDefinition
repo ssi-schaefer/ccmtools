@@ -1,22 +1,22 @@
 const %(LanguageType)s
 FacetAdapter%(Object)s::%(Identifier)s() const 
-    throw(ccm::local::Components::CCMException)
+    throw(::ccm::local::Components::CCMException)
 {
     LDEBUGNL(CCM_LOCAL, " FacetAdapter%(Object)s::%(Identifier)s() = " 
              << ccmDebug(facet->%(Identifier)s()));
     if(!ValidConnection) 
-        throw ccm::local::Components::InvalidConnection();
+        throw ::ccm::local::Components::InvalidConnection();
     return facet->%(Identifier)s();
 }
 
 void
 FacetAdapter%(Object)s::%(Identifier)s(const %(LanguageType)s value)  
-    throw(ccm::local::Components::CCMException)
+    throw(::ccm::local::Components::CCMException)
 {
     LDEBUGNL(CCM_LOCAL, " FacetAdapter%(Object)s::%(Identifier)s(" 
              << ccmDebug(value) << ")");
     if(!ValidConnection) 
-        throw ccm::local::Components::InvalidConnection();
+        throw ::ccm::local::Components::InvalidConnection();
     facet->%(Identifier)s(value);
 }
 

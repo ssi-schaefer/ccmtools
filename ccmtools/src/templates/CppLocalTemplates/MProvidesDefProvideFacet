@@ -1,5 +1,6 @@
     if(name == "%(Identifier)s")
-        return SmartPtr<Components::Object>
-            (dynamic_cast<Components::Object*> (provide_%(Identifier)s().ptr()));
+        return SmartPtr< ::ccm::local::Components::Object>
+            (dynamic_cast< ::ccm::local::Components::Object*> 
+                 (provide_%(Identifier)s().ptr()));
 
 

@@ -1,4 +1,4 @@
     virtual WX::Utils::SmartPtr<%(ComponentType)s> %(Identifier)s(%(MParameterDefAll)s)
-        throw(ccm::local::Components::CCMException, 
-              ccm::local::Components::CreateFailure);
+        throw(::ccm::local::Components::CCMException, 
+              ::ccm::local::Components::CreateFailure);
 

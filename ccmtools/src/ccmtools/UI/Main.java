@@ -31,6 +31,8 @@ import java.util.logging.Logger;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
+import ccmtools.CcmtoolsException;
+import ccmtools.CcmtoolsProperties;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.CCMGraphTraverser;
 import ccmtools.CodeGenerator.CodeGenerator;

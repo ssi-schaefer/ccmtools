@@ -1,5 +1,13 @@
 RELEASE-0.5.3
 ============================================================================
+RELEASE-0.5.3-pre2
+----------------------------------------------------------------------------
+*) generate a local adapter for every interface (parallel to the interface
+   directory) and reuse these adapters in the component logic.
+   
+o) changed namespace structure
+
+
 
 RELEASE-0.5.3-pre1
 ----------------------------------------------------------------------------

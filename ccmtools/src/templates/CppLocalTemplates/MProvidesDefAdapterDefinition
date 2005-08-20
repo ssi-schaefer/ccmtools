@@ -3,7 +3,7 @@ SmartPtr<%(ProvidesType)s>
 {
     LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::provide_%(Identifier)s()");
     if(!ValidConnection) 
-        throw Components::InvalidConnection();
+        throw ::ccm::local::Components::InvalidConnection();
     return %(Identifier)s_facet;
 }
 

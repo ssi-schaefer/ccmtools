@@ -22,7 +22,7 @@ std::string
 ccmDebug(const %(Identifier)s& in, int indent = 0)
 {
     std::ostringstream os;
-    os << doIndent(indent);
+    os << ::ccm::local::doIndent(indent);
     switch(in) { 
 %(MembersDebug)s
     }

@@ -46,7 +46,6 @@ public class CppLocalTestGenerator
         throws IOException
     {
         super("CppLocalTest", d, out_dir, local_output_types);
-        //baseNamespace.add("CCM_Local");
         baseNamespace.add("ccm");
         baseNamespace.add("local");
     }
@@ -66,14 +65,19 @@ public class CppLocalTestGenerator
         if(generated_code.trim().equals("")) 
 	    return;
 
-        String node_name = ((MContained) currentNode).getIdentifier();
+        MContained contained = (MContained)currentNode;
+        
+        String node_name = contained.getIdentifier();
         String file_dir = "test";
 
-        String file_name = handleNamespace("IncludeNamespace", node_name);
-        file_name = file_name.replaceAll("[^\\w]", Text.MANGLING_SEPARATOR);
+//        String file_name = handleNamespace("IncludeNamespace", node_name);
+//        file_name = file_name.replaceAll("[^\\w]", Text.MANGLING_SEPARATOR);
 //        file_name = "_check_" + file_name + ".cc";
 //        file_name = "_check_" + file_name + Text.MANGLING_SEPARATOR + node_name + ".cc";
-        file_name = "_check_" + file_name + ".cc";
+//        file_name = "_check_" + file_name + ".cc";
+        String file_name = "_check_" 
+            + getLocalCppNamespace(contained, Text.MANGLING_SEPARATOR)
+            + ".cc";
         
 	File outFile = new File(output_dir 
 				+ File.separator

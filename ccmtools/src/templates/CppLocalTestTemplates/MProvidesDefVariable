@@ -1,2 +1,2 @@
-    SmartPtr<Components::Object> %(ComponentType)s_provides_%(Identifier)s;
+    SmartPtr< Components::Object> %(ComponentType)s_provides_%(Identifier)s;
 
