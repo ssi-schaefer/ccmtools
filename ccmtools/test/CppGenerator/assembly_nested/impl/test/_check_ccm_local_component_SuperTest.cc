@@ -67,15 +67,14 @@ int main(int argc, char *argv[])
     Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 
-    error  += deploy_ccm_local_BasicTestHome("BasicTestHome");
-    error  += deploy_ccm_local_UserTestHome("UserTestHome");
+    error  += deploy_ccm_local_component_BasicTest_BasicTestHome("BasicTestHome");
+    error  += deploy_ccm_local_component_UserTest_UserTestHome("UserTestHome");
 
     SmartPtr<Components::AssemblyFactory> 
       assembly_factory(new AssemblyFactory());
-    error += deploy_with_assembly_ccm_local_SuperTestHome("SuperTestHome",
-							 assembly_factory);
+    error += deploy_with_assembly_ccm_local_component_SuperTest_SuperTestHome("SuperTestHome", assembly_factory);
 
-    error += deploy_ccm_local_SuperTestHome_mirror("SuperTestHome_mirror");	
+    error += deploy_ccm_local_component_SuperTest_mirror_SuperTestHome_mirror("SuperTestHome_mirror");	
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -184,10 +183,10 @@ int main(int argc, char *argv[])
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    error += undeploy_ccm_local_BasicTestHome("BasicTestHome");
-    error += undeploy_ccm_local_UserTestHome("UserTestHome");
-    error += undeploy_ccm_local_SuperTestHome("SuperTestHome");
-    error += undeploy_ccm_local_SuperTestHome_mirror("SuperTestHome_mirror");
+    error += undeploy_ccm_local_component_BasicTest_BasicTestHome("BasicTestHome");
+    error += undeploy_ccm_local_component_UserTest_UserTestHome("UserTestHome");
+    error += undeploy_ccm_local_component_SuperTest_SuperTestHome("SuperTestHome");
+    error += undeploy_ccm_local_component_SuperTest_mirror_SuperTestHome_mirror("SuperTestHome_mirror");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;

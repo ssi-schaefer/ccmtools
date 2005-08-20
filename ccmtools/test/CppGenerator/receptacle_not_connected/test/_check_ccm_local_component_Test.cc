@@ -62,11 +62,11 @@ int main(int argc, char *argv[])
     Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 #ifdef CCM_USE_DBC
-    error  = deploy_dbc_ccm_local_TestHome("TestHome", false);
+    error  = deploy_dbc_ccm_local_component_Test_TestHome("TestHome", false);
 #else
-    error  = deploy_ccm_local_TestHome("TestHome");
+    error  = deploy_ccm_local_component_Test_TestHome("TestHome");
 #endif
-    error += deploy_ccm_local_TestHome_mirror("TestHome_mirror");	
+    error += deploy_ccm_local_component_Test_mirror_TestHome_mirror("TestHome_mirror");	
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -190,8 +190,8 @@ int main(int argc, char *argv[])
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    error += undeploy_ccm_local_TestHome("TestHome");
-    error += undeploy_ccm_local_TestHome_mirror("TestHome_mirror");
+    error += undeploy_ccm_local_component_Test_TestHome("TestHome");
+    error += undeploy_ccm_local_component_Test_mirror_TestHome_mirror("TestHome_mirror");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;

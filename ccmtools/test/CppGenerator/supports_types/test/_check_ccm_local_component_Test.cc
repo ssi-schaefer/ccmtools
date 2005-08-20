@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
   int error = 0;
   Components::HomeFinder* homeFinder;
   homeFinder = HomeFinder::Instance (  );
-  error  = deploy_ccm_local_TestHome("TestHome");
+  error  = deploy_ccm_local_component_Test_TestHome("TestHome");
   if(error) {
     cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
     return(error);
@@ -274,7 +274,7 @@ int main(int argc, char *argv[])
     cout << "TEARDOWN ERROR: there is something wrong!" << endl;
     error = -1;
   }
-  error += undeploy_ccm_local_TestHome("TestHome");
+  error += undeploy_ccm_local_component_Test_TestHome("TestHome");
   if(error) {
     cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
     return error;
