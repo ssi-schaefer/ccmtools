@@ -478,6 +478,9 @@ abstract public class CppGenerator extends CodeGenerator
         else if(currentNode instanceof MOperationDef) {
             return data_MOperationDef(variable, value);
         }
+        else if(currentNode instanceof MExceptionDef) {
+            return data_MExceptionDef(variable, value);
+        }
         else if(currentNode instanceof MEnumDef) {
             return data_MEnumDef(variable, value);
         }
@@ -761,6 +764,24 @@ abstract public class CppGenerator extends CodeGenerator
         return data_value;
     }
 
+    
+    protected String data_MExceptionDef(String data_type, String data_value)
+    {
+	    MExceptionDef exception = (MExceptionDef)currentNode;
+	    
+        if(data_type.equals("ExceptionInclude")) {
+            StringBuffer code = new StringBuffer();
+            code.append("#include <");
+            code.append(getLocalCppNamespace(exception, Text.FILE_SEPARATOR));
+            code.append(Text.FILE_SEPARATOR);
+            code.append(exception.getIdentifier());
+            code.append(".h>\n");
+            data_value = code.toString();
+        }
+        return data_value;
+    }
+    
+    
     protected String data_MProvidesDef(String data_type, String data_value)
     {
         MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
@@ -948,11 +969,15 @@ abstract public class CppGenerator extends CodeGenerator
     protected String getOperationExcepts(MOperationDef op)
     {
         List ret = new ArrayList();
-        for(Iterator es = op.getExceptionDefs().iterator(); es.hasNext();)
-            ret.add(((MExceptionDef) es.next()).getIdentifier());
+        for(Iterator es = op.getExceptionDefs().iterator(); es.hasNext();) {
+            MExceptionDef exception = (MExceptionDef)es.next();
+            String code = getLocalCppName(exception, Text.SCOPE_SEPARATOR);
+            ret.add(code);
+        }
         if(ret.size() > 0) {
-            return "throw (::ccm::local::Components::CCMException, " + join(", ", ret)
-                    + " )";
+            return "throw (::ccm::local::Components::CCMException, " 
+            	+ join(", ", ret)
+                + " )";
         }
         else {
             return "throw (::ccm::local::Components::CCMException)";

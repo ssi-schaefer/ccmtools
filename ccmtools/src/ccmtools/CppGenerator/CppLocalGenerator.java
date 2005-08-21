@@ -274,6 +274,7 @@ public class CppLocalGenerator
 //            return value + code.toString();
 //            }
         }
+
         
         // Handle simple tags from templates which are related to
         // the c++local generator
