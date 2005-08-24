@@ -1,4 +1,5 @@
-    %(LanguageType)s %(Identifier)s(%(MParameterDefAll)s) 
-        %(ExceptionThrows)s;
+    %(LanguageType)s 
+    %(Identifier)s(%(MParameterDefAll)s) 
+    %(ExceptionThrows)s;
 
 

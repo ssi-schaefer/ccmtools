@@ -38,7 +38,6 @@ import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
@@ -113,11 +112,10 @@ abstract public class CppGenerator extends CodeGenerator
             "std::wstring" // PK_WSTRING
     };
 
-    protected final static String sequence_type = "std::vector";
+    protected final static String CPP_SEQUENCE_TYPE = "std::vector";
 
     protected List baseNamespace = null;
 
-    /** *********************************************************************** */
 
     public CppGenerator(String sublang, Driver d, File out_dir,
             String[] output_types) throws IOException
@@ -130,30 +128,6 @@ abstract public class CppGenerator extends CodeGenerator
     //====================================================================
     // Code generator core methods
     //====================================================================
-    
-    /**
-     * Acknowledge the start of the given node during graph traversal. If the
-     * node is a MContainer type and is not defined in anything, assume it's the
-     * global parse container, and push "CCM_Local" onto the namespace stack,
-     * indicating that this code is for local CCM components.
-     * 
-     * @param node
-     *            the node that the GraphTraverser object is about to
-     *            investigate.
-     * @param scope_id
-     *            the full scope identifier of the node. This identifier is a
-     *            string containing the names of parent nodes, joined together
-     *            with double colons.
-     */
-    public void startNode(Object node, String scope_id)
-    {
-//        if(node instanceof MContainer
-//                && (((MContainer) node).getDefinedIn() == null))
-//            for(Iterator i = baseNamespace.iterator(); i.hasNext();)
-//                namespaceStack.push(i.next());
-
-        super.startNode(node, scope_id);
-    }
 
     /**
      * Acknowledge and process a closing node during graph traversal. If the
@@ -172,251 +146,10 @@ abstract public class CppGenerator extends CodeGenerator
     public void endNode(Object node, String scope_id)
     {
         super.endNode(node, scope_id);
-
-//        if(node instanceof MContainer
-//                && (((MContainer) node).getDefinedIn() == null)) {
-//            for(Iterator i = baseNamespace.iterator(); i.hasNext();) {
-//                i.next();
-//                namespaceStack.pop();
-//            }
-//        }
         writeOutputIfNeeded();
     }
 
 
-    /**
-     * Join the bases of the current node using the given string as a separator.
-     * The current node should be an instance of MInterfaceDef.
-     * 
-     * @param sep
-     *            the separator to use between bases.
-     * @return a string containing the names of base interfaces, separated by
-     *         sep.
-     */
-    protected String joinBaseNames(String sep)
-    {
-        if(!(currentNode instanceof MInterfaceDef))
-            return "";
-        MInterfaceDef node = (MInterfaceDef) currentNode;
-        ArrayList names = new ArrayList();
-        for(Iterator i = node.getBases().iterator(); i.hasNext();)
-            names.add("CCM_" + ((MInterfaceDef) i.next()).getIdentifier());
-        return join(sep, names);
-    }
-   
-    
-    /**
-     * Build a string containing appropriately formatted namespace information
-     * based on the given data type and local namespace component. This is aimed
-     * at languages with C-like syntax (perl, C, C++, Java, IDL) and should be
-     * overridden for others (Python, Prolog :-).
-     * 
-     * @param data_type
-     *            a string referring to a desired type of namespace information.
-     *            This is normally a variable name from a template.
-     * @param local
-     *            a string giving the name of the current namespace component.
-     * @return a string containing the appropriately formatted namespace
-     *         information.
-     */
-    protected String handleNamespace(String data_type, String local)
-    {
-        List modules = new ArrayList(namespaceStack);
-        modules.addAll(baseNamespace);
-        
-        if(!local.equals("")) {
-            modules.add(Constants.COMPONENT_NAMESPACE);
-        	modules.add(local);
-        }
-        
-        if(data_type.equals("UsingNamespace")) {
-            List tmp = new ArrayList();
-            for(Iterator i = modules.iterator(); i.hasNext();)
-                tmp.add("using namespace " + i.next() + ";\n");
-            return join("", tmp);
-        }
-        else if(data_type.equals("OpenNamespace")) {
-            List tmp = new ArrayList();
-            for(Iterator i = modules.iterator(); i.hasNext();)
-                tmp.add("namespace " + i.next() + " {\n");
-            return join("", tmp);
-        }
-        else if(data_type.equals("CloseNamespace")) {
-            Collections.reverse(modules);
-            List tmp = new ArrayList();
-            for(Iterator i = modules.iterator(); i.hasNext();)
-                tmp.add("} // /namespace " + i.next() + "\n");
-            return join("", tmp);
-        }
-        return super.handleNamespace(data_type, local);
-    }
-
-    
-    protected String getLocalCppNamespace(MContained node, String separator)
-    {
-        StringBuffer code = new StringBuffer();
-        List scope = getScope(node);
-        if(scope.size() > 0) {
-            code.append(join(separator, scope));
-            code.append(separator);
-        }
-        
-        if(baseNamespace.size() > 0) {
-            code.append(join(separator, baseNamespace));
-        }
-        
-        if(node instanceof MComponentDef) {
-            code.append(separator);
-            code.append(Constants.COMPONENT_NAMESPACE );
-            code.append(separator);
-            code.append(node.getIdentifier());
-        }
-        else if(node instanceof MHomeDef ) {
-            MHomeDef home = (MHomeDef)node;
-            code.append(separator);
-            code.append(Constants.COMPONENT_NAMESPACE );
-            code.append(separator);
-            code.append(home.getComponent().getIdentifier());
-        }
-        return code.toString();
-    }
-    
-    
-    protected String getLocalCppName(MContained node, String separator)
-    {
-        StringBuffer code = new StringBuffer();
-        code.append(getLocalCppNamespace(node, separator));
-        code.append(separator);
-        code.append(node.getIdentifier());
-        return code.toString() ;
-    }
-
-    
-    /**
-     * Get the fully scoped identifier for the given node. If the current scope
-     * contains some or all of the full scope for this node, then the identifier
-     * will retain only those parts that are necessary to fully specify the
-     * identifier in the current namespace.
-     * 
-     * @param node
-     *            the node to use for retrieving the fully scoped identifier.
-     * @return a string containing the full scope identifier of the node.
-     */
-    protected String getFullScopeIdentifier(MContained node)
-    {
-        return getLocalCppName(node, Text.SCOPE_SEPARATOR);
-//        StringBuffer code = new StringBuffer();
-//        List scope = getScope(node);
-//        code.append(join(Text.SCOPE_SEPARATOR, scope));
-//        code.append(Text.SCOPE_SEPARATOR);
-//        code.append(join(Text.SCOPE_SEPARATOR, baseNamespace));
-//        if(node instanceof MComponentDef 
-//                || node instanceof MHomeDef) {
-//            code.append(Text.SCOPE_SEPARATOR);
-//            code.append(Constants.COMPONENT_NAMESPACE );
-//            code.append(Text.SCOPE_SEPARATOR);
-//            code.append(node.getIdentifier());
-//        }
-//        
-//        return code.toString();
-    }
-/*        
-        String local = Constants.COMPONENT_NAMESPACE 
-        			+ Text.SCOPE_SEPARATOR + node.getIdentifier(); 
-        
-        List scope = getScope(node);
-
-        if(node instanceof MComponentDef || node instanceof MHomeDef)
-            scope.add(local);
-
-        Collections.reverse(baseNamespace);
-        for(Iterator i = baseNamespace.iterator(); i.hasNext();)
-            scope.add(0, i.next());
-        Collections.reverse(baseNamespace);
-
-        scope.add(node.getIdentifier());
-
-        for(Iterator n = namespaceStack.iterator(); n.hasNext();) {
-            if(((String) n.next()).equals((String) scope.get(0)))
-                scope.remove(0);
-            else
-                break;
-        }
-
-        if(node instanceof MComponentDef || node instanceof MHomeDef)
-            if(((String) scope.get(0)).equals(local))
-                scope.remove(0);
-
-        return join(Text.SCOPE_SEPARATOR, scope);
-    }
-*/
-
-    /**
-     * Get a fully scoped filename for the given node.
-     * 
-     * @param node
-     *            the node to use for retrieving the include filename info.
-     * @return a string containing a fully scoped include file for the node.
-     */
-    protected String getFullScopeInclude(MContained node)
-    {
-        return getLocalCppName(node, Text.FILE_SEPARATOR);
-//        StringBuffer code = new StringBuffer();
-//        List scope = getScope(node);
-//        code.append(join(Text.FILE_SEPARATOR, scope));
-//        code.append(Text.FILE_SEPARATOR);
-//        code.append(join(Text.FILE_SEPARATOR, baseNamespace));
-//        if(node instanceof MComponentDef 
-//                || node instanceof MHomeDef) {
-//            code.append(Text.FILE_SEPARATOR);
-//            code.append(Constants.COMPONENT_NAMESPACE );
-//            code.append(Text.FILE_SEPARATOR);
-//            code.append(node.getIdentifier());
-//        }
-//        
-//        return code.toString();
-    }
-/*        
-        String local = Constants.COMPONENT_NAMESPACE
-        				+ Text.FILE_SEPARATOR + node.getIdentifier(); 
-
-        List scope = getScope(node);
-
-        if(node instanceof MComponentDef || node instanceof MHomeDef)
-            scope.add(local);
-
-        Collections.reverse(baseNamespace);
-        for(Iterator i = baseNamespace.iterator(); i.hasNext();)
-            scope.add(0, i.next());
-        Collections.reverse(baseNamespace);
-
-        scope.add(node.getIdentifier());
-
-        return join(Text.FILE_SEPARATOR, scope);
-    }
-*/
-        
-        
-    /**
-     * Create an #include statement sufficient for including the given node's
-     * header file. This is normally only valid for C and C++ code generators
-     * and should be overridden for other languages.
-     * 
-     * @param node
-     *            the node to use for gathering include statement information.
-     * @return a string containing an #include statement.
-     */
-    protected String getScopedInclude(MContained node)
-    {
-        List scope = getScope(node);
-        Collections.reverse(baseNamespace);
-        for(Iterator i = baseNamespace.iterator(); i.hasNext();)
-            scope.add(0, i.next());
-        Collections.reverse(baseNamespace);
-        scope.add(node.getIdentifier());
-        return "#include <" 
-        	+ join(Text.FILE_SEPARATOR, scope) + ".h>";
-    }
 
     /**
      * Get a local value for the given variable name.
@@ -490,118 +223,120 @@ abstract public class CppGenerator extends CodeGenerator
         return value;
     }
 
-    /***
-     * Overides the CodeGenerator method to add the 
-     * ccm::local part to namespaces of contained types.
-     */
-    protected String getBaseLanguageType(MTyped object)
-    {
-        logger.fine("enter getBaseLanguageType()");
-        StringBuffer code = new StringBuffer();
-        MIDLType idl_type = object.getIdlType();
-        
-        if(idl_type instanceof MContained) {
-            MContained cont = (MContained) idl_type;
-            List scope = getScope(cont);
-            scope.addAll(baseNamespace);
-            scope.add(cont.getIdentifier());
-            code.append(join(Text.SCOPE_SEPARATOR, scope));
-        }
-        else {
-            code.append(super.getBaseLanguageType(object));
-        }
-        
-        logger.fine("leave getBaseLanguageType()");
-        return code.toString();
-    }
-    
-    
     
     /**
-     * Return the C++ language type for the given object. This returns the value
-     * given by getLanguageType if the node is neither an MParameterDef or
-     * MOperationDef instance, otherwise it basically adds the C++ specific
-     * parameters needed to correctly interpret the parameter or operation
-     * direction (in, out, inout).
+     * Load an appropriate template (based on the value in the template_name
+     * argument) for the given child, and fill out its variable information.
      * 
-     * @param object
-     *            the node object to use for type finding.
+     * @param child
+     *            MInterfaceDef node to gather information from.
+     * @param template_name
+     *            the name of the template to load for variable substitution.
+     * @param attribute
+     *            true if we should fill in attribute information. If false,
+     *            then we will fill in operation information.
+     * @return a string containing the variable-substituted template requested.
      */
-    protected String getLanguageType(MTyped object)
+    protected String fillTwoStepTemplates(MInterfaceDef child,
+                                          String template_name,
+                                          boolean attribute)
     {
-        MIDLType idl_type = object.getIdlType();
-        String base_type = getBaseLanguageType(object);
-        
-        // Handle interfaces using smart pointers
-        // (Any ia handled as interface
-        if(idl_type instanceof MInterfaceDef
-                || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
-                        .getKind() == MPrimitiveKind.PK_ANY)) {
-            base_type = "WX::Utils::SmartPtr< " + base_type + " > ";
+        MContained contained = (MContained) currentNode;
+
+        // if this is a supports node, we want to actually refer to the
+        // home or component that owns this supports definition.
+        if(currentNode instanceof MSupportsDef) {
+            MContained tmp = ((MSupportsDef) contained).getComponent();
+            if(tmp == null)
+                tmp = ((MSupportsDef) contained).getHome();
+            contained = tmp;
         }
 
-        // This code defines the parameter passing rules for operations:
-        //   in : simple types are passed as const values
-        //           complex types are passed by const ref
-        //   inout : always passed by ref
-        //   out : always passed by ref
-        if(object instanceof MParameterDef) {
-            MParameterDef param = (MParameterDef) object;
-            MParameterMode direction = param.getDirection();
-            String prefix = "";
-            String suffix = "";
-            if(direction == MParameterMode.PARAM_IN) { // in
-                prefix = "const ";
-                if((idl_type instanceof MTypedefDef)
-                        || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
-                                .getKind() == MPrimitiveKind.PK_ANY)
-                        || (idl_type instanceof MStringDef)
-                        || (idl_type instanceof MWstringDef)
-                        || (idl_type instanceof MFixedDef)
-                        || (idl_type instanceof MInterfaceDef)) {
-                    suffix = "&";
-                }
+        // we need to recursively include all base interfaces here. we'll use a
+        // stack and pop off the most recent element, add operation information
+        // for that interface, then push on all the bases for that interface.
+        // lather, rinse, repeat.
+        Stack ifaces = new Stack();
+        ifaces.push(child);
+
+        StringBuffer result = new StringBuffer("");
+
+        while(!ifaces.empty()) {
+            MInterfaceDef iface = (MInterfaceDef) ifaces.pop();
+            List contents = 
+                iface.getFilteredContents(
+                    (attribute) ? MDefinitionKind.DK_ATTRIBUTE
+                                : MDefinitionKind.DK_OPERATION,false);
+
+            for(Iterator c = contents.iterator(); c.hasNext();) {
+                Map vars = null;
+                if(attribute)
+                    vars = getTwoStepAttributeVariables((MAttributeDef) c.next(), contained);
+                else
+                    vars = getTwoStepOperationVariables((MOperationDef) c.next(), contained);
+
+                Template template = template_manager.getRawTemplate(template_name);
+                result.append(template.substituteVariables(vars));
             }
-            else { // inout, out
-                prefix = "";
-                suffix = "&";
-            }
-            return prefix + base_type + suffix;
+
+            for(Iterator i = iface.getBases().iterator(); i.hasNext();)
+                ifaces.push(i.next());
         }
-
-        if((object instanceof MAliasDef) && (idl_type instanceof MTyped))
-            return getLanguageType((MTyped) idl_type);
-
-        // FIXME : can we implement bounded sequences in C++ ?
-        if(object instanceof MSequenceDef)
-            return sequence_type + "<" + base_type + " > ";
-
-        if(object instanceof MArrayDef) {
-            /*
-             * This code defines the IDL -> C++ mapping of arrays: long x[7] ->
-             * std::vector <long> ... but no bounds checking.
-             */
-
-            String result = "std::vector< " + base_type + " > ";
-            int dimension = ((MArrayDef) object).getBounds().size();
-
-            if(dimension > 1) {
-                result = "std::vector< ";
-                for(int i = 1; i < dimension; i++)
-                    result += "std::vector< ";
-                result += base_type + ">";
-                for(int i = 1; i < dimension; i++)
-                    result += " >";
-            }
-
-            return result + " ";
-        }
-
-        return base_type;
+        return result.toString();
     }
 
-    /** *********************************************************************** */
 
+    /**
+     * Get a variable hash table sutable for filling in the template from the
+     * fillTwoStepTemplates function. This function handles attributes.
+     * 
+     * @param iface
+     *            the interface from which we're starting the two step
+     *            operation.
+     * @param attr
+     *            the particular interface attribute that we're filling in a
+     *            template for.
+     * @param contained
+     *            the container in which the given interface is defined.
+     * @return a map containing the keys and values needed to fill in the
+     *         template for this interface.
+     */
+    protected Map getTwoStepAttributeVariables(MAttributeDef attr,
+                                               MContained contained)
+    {
+        String lang_type = getLanguageType(attr);
+        Map vars = new Hashtable();
+
+        vars.put("Object", contained.getIdentifier());
+        vars.put("Identifier", attr.getIdentifier());
+        vars.put("LanguageType", lang_type);
+
+        return vars;
+    }
+
+    
+    /**
+     * Get a variable hash table sutable for filling in the template from the
+     * fillTwoStepTemplates function. This version of the function handles
+     * operations from the given interface.
+     * 
+     * @param operation
+     *            the particular interface operation that we're filling in a
+     *            template for.
+     * @param container
+     *            the container in which the given interface is defined.
+     * @return a map containing the keys and values needed to fill in the
+     *         template for this interface.
+     */
+    abstract protected Map getTwoStepOperationVariables(MOperationDef op,
+                                                        MContained contained);
+
+    
+    
+    //====================================================================
+    // Node specific template %(tag)s handling
+    //====================================================================
+    
     protected String data_MAliasDef(String data_type, String data_value)
     {
         MIDLType idl_type = ((MAliasDef) currentNode).getIdlType();
@@ -813,18 +548,6 @@ abstract public class CppGenerator extends CodeGenerator
             code.append("::CCM_");
             code.append(component.getIdentifier());
             return code.toString();
-            
-//            List scope = getScope((MContained) component);
-//            if(scope.size() > 0)
-//                return "ccm::local::" + join("::", scope) + "::" 
-//                		+ Constants.COMPONENT_NAMESPACE
-//                		+ Text.SCOPE_SEPARATOR + component.getIdentifier() //!!!!
-//                        + "::CCM_"
-//                        + component.getIdentifier();
-//            else
-//                return "ccm::local::" + Constants.COMPONENT_NAMESPACE 
-//                		+ Text.SCOPE_SEPARATOR + component.getIdentifier() //!!!!
-//                        + "::CCM_" + component.getIdentifier();
         }
         else if(data_type.startsWith("OpenNamespace")
                 || (data_type.startsWith("CloseNamespace"))) {
@@ -885,10 +608,265 @@ abstract public class CppGenerator extends CodeGenerator
         return data_value;
     }
 
-    /** *********************************************************************** */
-
+    
     //====================================================================
-    // Simple %(tag)s helper methods
+    // C++ type and namespace helper methods
+    //====================================================================
+ 
+    /**
+     * Overide the CodeGenerator method to return the base types of a
+     * MInterface model element.
+     */
+    protected String joinBaseNames(String sep)
+    {
+        if(currentNode instanceof MInterfaceDef) {
+            MInterfaceDef node = (MInterfaceDef) currentNode;
+            ArrayList names = new ArrayList();
+            for(Iterator i = node.getBases().iterator(); i.hasNext();)
+                names.add("CCM_" + ((MInterfaceDef) i.next()).getIdentifier());
+            return join(sep, names);
+        }
+        else {
+            return "";
+        }
+    }
+   
+    
+    /**
+     * Override the CodeGenerator method to handle local C++ 
+     * namespace artifacts.
+     */
+    protected String handleNamespace(String data_type, String local)
+    {
+        List modules = new ArrayList(namespaceStack);
+        modules.addAll(baseNamespace);
+        
+        if(!local.equals("")) {
+            modules.add(Constants.COMPONENT_NAMESPACE);
+        	modules.add(local);
+        }
+        
+        if(data_type.equals("UsingNamespace")) {
+            List tmp = new ArrayList();
+            for(Iterator i = modules.iterator(); i.hasNext();)
+                tmp.add("using namespace " + i.next() + ";\n");
+            return join("", tmp);
+        }
+        else if(data_type.equals("OpenNamespace")) {
+            List tmp = new ArrayList();
+            for(Iterator i = modules.iterator(); i.hasNext();)
+                tmp.add("namespace " + i.next() + " {\n");
+            return join("", tmp);
+        }
+        else if(data_type.equals("CloseNamespace")) {
+            Collections.reverse(modules);
+            List tmp = new ArrayList();
+            for(Iterator i = modules.iterator(); i.hasNext();)
+                tmp.add("} // /namespace " + i.next() + "\n");
+            return join("", tmp);
+        }
+        return super.handleNamespace(data_type, local);
+    }
+
+       
+    /**
+     * Overide the CodeGenerator method to use the local C++ 
+     * namespaces and identifier.
+     */
+    protected String getFullScopeIdentifier(MContained node)
+    {
+        return getLocalCppName(node, Text.SCOPE_SEPARATOR);
+    }
+
+    
+    /**
+     * Overide the CodeGenerator method to use the
+     * local C++ namespace.
+     */
+    protected String getFullScopeInclude(MContained node)
+    {
+        return getLocalCppName(node, Text.FILE_SEPARATOR);
+    }
+        
+        
+    /**
+     * Implement the abstract method from CodeGenerator and uses
+     * local C++ namesapce.
+     */
+    protected String getScopedInclude(MContained node)
+    {
+        StringBuffer code = new StringBuffer();
+        code.append("#include <");
+        code.append(getLocalCppName(node, Text.FILE_SEPARATOR));
+        code.append(".h>\n");
+        return code.toString();
+    }
+
+    
+    /**
+     * Overide the CodeGenerator method to add  
+     * 'ccm::local' to namespaces of contained types.
+     */
+    protected String getBaseLanguageType(MTyped object)
+    {
+        logger.fine("enter getBaseLanguageType()");
+        StringBuffer code = new StringBuffer();
+        MIDLType idl_type = object.getIdlType();
+        
+        if(idl_type instanceof MContained) {
+            MContained cont = (MContained) idl_type;
+            List scope = getScope(cont);
+            scope.addAll(baseNamespace);
+            scope.add(cont.getIdentifier());
+            code.append(join(Text.SCOPE_SEPARATOR, scope));
+        }
+        else {
+            code.append(super.getBaseLanguageType(object));
+        }
+        logger.fine("leave getBaseLanguageType()");
+        return code.toString();
+    }
+    
+    
+    /**
+     * Implement the abstract CodeGenerator method to define local C++
+     * types (depending on a given model element type).
+     */
+    protected String getLanguageType(MTyped object)
+    {
+        MIDLType idl_type = object.getIdlType();
+        String base_type = getBaseLanguageType(object);
+        
+        // Handle interfaces using smart pointers
+        // (Any ia handled as interface
+        if(idl_type instanceof MInterfaceDef
+                || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
+                        .getKind() == MPrimitiveKind.PK_ANY)) {
+            base_type = "WX::Utils::SmartPtr< " + base_type + " > ";
+        }
+
+        // This code defines the parameter passing rules for operations:
+        //   in : simple types are passed as const values
+        //           complex types are passed by const ref
+        //   inout : always passed by ref
+        //   out : always passed by ref
+        if(object instanceof MParameterDef) {
+            MParameterDef param = (MParameterDef) object;
+            MParameterMode direction = param.getDirection();
+            String prefix = "";
+            String suffix = "";
+            if(direction == MParameterMode.PARAM_IN) { // in
+                prefix = "const ";
+                if((idl_type instanceof MTypedefDef)
+                        || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
+                                .getKind() == MPrimitiveKind.PK_ANY)
+                        || (idl_type instanceof MStringDef)
+                        || (idl_type instanceof MWstringDef)
+                        || (idl_type instanceof MFixedDef)
+                        || (idl_type instanceof MInterfaceDef)) {
+                    suffix = "&";
+                }
+            }
+            else { // inout, out
+                prefix = "";
+                suffix = "&";
+            }
+            return prefix + base_type + suffix;
+        }
+
+        if((object instanceof MAliasDef) && (idl_type instanceof MTyped))
+            return getLanguageType((MTyped) idl_type);
+
+        // FIXME : can we implement bounded sequences in C++ ?
+        if(object instanceof MSequenceDef)
+            return CPP_SEQUENCE_TYPE + "<" + base_type + " > ";
+
+        if(object instanceof MArrayDef) {
+            /*
+             * This code defines the IDL -> C++ mapping of arrays: long x[7] ->
+             * std::vector <long> ... but no bounds checking.
+             */
+
+            String result = "std::vector< " + base_type + " > ";
+            int dimension = ((MArrayDef) object).getBounds().size();
+
+            if(dimension > 1) {
+                result = "std::vector< ";
+                for(int i = 1; i < dimension; i++)
+                    result += "std::vector< ";
+                result += base_type + ">";
+                for(int i = 1; i < dimension; i++)
+                    result += " >";
+            }
+
+            return result + " ";
+        }
+        return base_type;
+    }
+    
+
+    /**
+     * Collect the namespace of a given model element (= MContained)
+     * with a given separator string.
+     * This method should be the base for all other namespace calculations!!!
+     * 
+     * @param node  Model element for which the namespace should be collected.  
+     * @param separator Separator string (see constants defined in 
+     *                                    ccmtools.utils.Text)
+     * @return A string with the collected namespace of the model element.
+     */
+    protected String getLocalCppNamespace(MContained node, String separator)
+    {
+        StringBuffer code = new StringBuffer();
+        List scope = getScope(node);
+        if(scope.size() > 0) {
+            code.append(join(separator, scope));
+            code.append(separator);
+        }
+        
+        if(baseNamespace.size() > 0) {
+            code.append(join(separator, baseNamespace));
+        }
+        
+        if(node instanceof MComponentDef) {
+            code.append(separator);
+            code.append(Constants.COMPONENT_NAMESPACE );
+            code.append(separator);
+            code.append(node.getIdentifier());
+        }
+        else if(node instanceof MHomeDef ) {
+            MHomeDef home = (MHomeDef)node;
+            code.append(separator);
+            code.append(Constants.COMPONENT_NAMESPACE );
+            code.append(separator);
+            code.append(home.getComponent().getIdentifier());
+        }
+        return code.toString();
+    }
+    
+    
+    /**
+     * Collect the namespace of a given model element (= MContained)
+     * with a given separator string and add the node's identifier.
+     * 
+     * @param node Model element for which the name should be collected.
+     * @param separator Separator string (see constants defined in 
+     *                                    ccmtools.utils.Text)
+     * @return A string with the collected name of the given model element.
+     */
+    protected String getLocalCppName(MContained node, String separator)
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(getLocalCppNamespace(node, separator));
+        code.append(separator);
+        code.append(node.getIdentifier());
+        return code.toString() ;
+    } 
+    
+    
+    
+    //====================================================================
+    // Simple template %(tag)s helper methods
     //====================================================================
     
     public String getCcmToolsVersion()
@@ -913,9 +891,7 @@ abstract public class CppGenerator extends CodeGenerator
         buffer.append(System.getProperty("user.name"));
         return buffer.toString();
     }
-    
-    
-    
+
     
     /**
      * Get type and name information about the parameters for the given
@@ -930,14 +906,21 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getOperationParams(MOperationDef op)
     {
-        List ret = new ArrayList();
+        List parameterList = new ArrayList();
         for(Iterator ps = op.getParameters().iterator(); ps.hasNext();) {
             MParameterDef p = (MParameterDef) ps.next();
-            ret.add(getLanguageType(p) + " " + p.getIdentifier());
+            parameterList.add(getLanguageType(p) + " " + p.getIdentifier());
         }
-        return join(", ", ret);
+        String indent = "\n" + Text.tab(2);
+        if(parameterList.size() > 1) {
+            return indent + Text.join("," + indent, parameterList);
+        }
+        else {
+            return Text.join(", ", parameterList);
+        }
     }
 
+    
     /**
      * Get name information about the parameters for the given operation. This
      * will return a comma-separated string, i.e. <name1>, <name2>, ... ,
@@ -975,129 +958,15 @@ abstract public class CppGenerator extends CodeGenerator
             ret.add(code);
         }
         if(ret.size() > 0) {
-            return "throw (::ccm::local::Components::CCMException, " 
-            	+ join(", ", ret)
+            String indent = "\n" + Text.tab(2);
+            return "throw(::ccm::local::Components::CCMException," 
+            	+ indent
+            	+ join("," + indent, ret)
                 + " )";
         }
         else {
-            return "throw (::ccm::local::Components::CCMException)";
+            return "throw(::ccm::local::Components::CCMException)";
         }
-    }
-
-    /**
-     * Load an appropriate template (based on the value in the template_name
-     * argument) for the given child, and fill out its variable information.
-     * 
-     * @param child
-     *            MInterfaceDef node to gather information from.
-     * @param template_name
-     *            the name of the template to load for variable substitution.
-     * @param attribute
-     *            true if we should fill in attribute information. If false,
-     *            then we will fill in operation information.
-     * @return a string containing the variable-substituted template requested.
-     */
-    protected String fillTwoStepTemplates(MInterfaceDef child,
-                                          String template_name,
-                                          boolean attribute)
-    {
-        MContained cont = (MContained) currentNode;
-
-        // if this is a supports node, we want to actually refer to the
-        // home or component that owns this supports definition.
-
-        if(currentNode instanceof MSupportsDef) {
-            MContained tmp = ((MSupportsDef) cont).getComponent();
-            if(tmp == null)
-                tmp = ((MSupportsDef) cont).getHome();
-            cont = tmp;
-        }
-
-        // we need to recursively include all base interfaces here. we'll use a
-        // stack and pop off the most recent element, add operation information
-        // for that interface, then push on all the bases for that interface.
-        // lather, rinse, repeat.
-
-        Stack ifaces = new Stack();
-        ifaces.push(child);
-
-        StringBuffer result = new StringBuffer("");
-
-        while(!ifaces.empty()) {
-            MInterfaceDef iface = (MInterfaceDef) ifaces.pop();
-
-            List contents = iface
-                    .getFilteredContents(
-                                         (attribute) ? MDefinitionKind.DK_ATTRIBUTE
-                                                 : MDefinitionKind.DK_OPERATION,
-                                         false);
-
-            for(Iterator c = contents.iterator(); c.hasNext();) {
-                Map vars = null;
-
-                if(attribute)
-                    vars = getTwoStepAttributeVariables((MAttributeDef) c
-                            .next(), cont);
-                else
-                    vars = getTwoStepOperationVariables((MOperationDef) c
-                            .next(), cont);
-
-                Template template = template_manager
-                        .getRawTemplate(template_name);
-
-                result.append(template.substituteVariables(vars));
-            }
-
-            for(Iterator i = iface.getBases().iterator(); i.hasNext();)
-                ifaces.push(i.next());
-        }
-
-        return result.toString();
-    }
-
-    /**
-     * Get a variable hash table sutable for filling in the template from the
-     * fillTwoStepTemplates function. This version of the function handles
-     * operations from the given interface.
-     * 
-     * @param operation
-     *            the particular interface operation that we're filling in a
-     *            template for.
-     * @param container
-     *            the container in which the given interface is defined.
-     * @return a map containing the keys and values needed to fill in the
-     *         template for this interface.
-     */
-    abstract protected Map getTwoStepOperationVariables(
-                                                        MOperationDef operation,
-                                                        MContained container);
-
-    /**
-     * Get a variable hash table sutable for filling in the template from the
-     * fillTwoStepTemplates function. This function handles attributes.
-     * 
-     * @param iface
-     *            the interface from which we're starting the two step
-     *            operation.
-     * @param attr
-     *            the particular interface attribute that we're filling in a
-     *            template for.
-     * @param container
-     *            the container in which the given interface is defined.
-     * @return a map containing the keys and values needed to fill in the
-     *         template for this interface.
-     */
-    protected Map getTwoStepAttributeVariables(MAttributeDef attr,
-                                               MContained container)
-    {
-        String lang_type = getLanguageType(attr);
-        Map vars = new Hashtable();
-
-        vars.put("Object", container.getIdentifier());
-        vars.put("Identifier", attr.getIdentifier());
-        vars.put("LanguageType", lang_type);
-
-        return vars;
     }
 }
 

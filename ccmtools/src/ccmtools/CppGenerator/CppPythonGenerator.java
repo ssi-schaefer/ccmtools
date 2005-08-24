@@ -107,7 +107,7 @@ public class CppPythonGenerator
         lang_type = lang_type.replaceAll("&", "_ref");
         lang_type = lang_type.replaceAll("const ", "const_");
         lang_type = lang_type.replaceAll("std::", "");
-        lang_type = lang_type.replaceAll(sequence_type, "");
+        lang_type = lang_type.replaceAll(CPP_SEQUENCE_TYPE, "");
         return      lang_type.replaceAll("[ ><]", "");
     }
 

@@ -141,7 +141,7 @@
       	<copy file="${lib}/oclmetamodel.jar" todir="${prefix}/lib"  overwrite="true" />       
   		
       	<copy file="${src}/ccmtools/MDR/MOF/OCL.xml"  
-            todir="${src}/templates/MDR"  overwrite="true" />	
+            todir="${prefix}/templates/MDR"  overwrite="true" />	
 
       	<copy todir="${prefix}/templates" overwrite="true">
           	<fileset dir="${src}/templates"/>

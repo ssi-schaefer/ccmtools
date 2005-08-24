@@ -1,6 +1,6 @@
 %(LanguageType)s
 CCM_%(Object)s_impl::%(Identifier)s(%(MParameterDefAll)s)
-    %(ExceptionThrows)s
+%(ExceptionThrows)s
 {
     // TODO : IMPLEMENT ME HERE !
 }

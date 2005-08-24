@@ -21,7 +21,8 @@ class %(Identifier)s_impl
 %(MAttributeDefVariable)s
 
   public:
-    %(Identifier)s_impl(%(FullComponentType)s_impl* component_impl);
+    %(Identifier)s_impl(
+        %(FullComponentType)s_impl* component_impl);
     virtual ~%(Identifier)s_impl();
 %(MAttributeProvidesPrototype)s
 %(MOperationProvidesPrototype)s
@@ -55,7 +56,8 @@ using namespace WX::Utils;
 
 %(OpenNamespace)s
 
-%(Identifier)s_impl::%(Identifier)s_impl(%(FullComponentType)s_impl* component_impl)
+%(Identifier)s_impl::%(Identifier)s_impl(
+    %(FullComponentType)s_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

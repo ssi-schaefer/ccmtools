@@ -220,11 +220,6 @@ abstract public class CodeGenerator implements TemplateHandler
 
     private Stack variables_stack;
 
-    //protected String scope_separator = "::";
-
-    //protected String file_separator = File.separator;
-    
-
     
     /** *********************************************************************** */
 
@@ -714,9 +709,8 @@ abstract public class CodeGenerator implements TemplateHandler
         
         List names = new ArrayList(namespaceStack);
         if(!local.equals("")) {
-//            names.add("CCM_Session_" + local);
             names.add(Constants.COMPONENT_NAMESPACE);
-            names.add(local); //!!!
+            names.add(local); 
         }
         if(data_type.equals("Namespace"))
             return join(Text.SCOPE_SEPARATOR, names);

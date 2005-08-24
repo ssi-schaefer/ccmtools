@@ -1,4 +1,6 @@
-    virtual %(LanguageType)s %(Identifier)s(%(MParameterDefAll)s) 
-        %(ExceptionThrows)s;
+    virtual 
+    %(LanguageType)s 
+    %(Identifier)s(%(MParameterDefAll)s) 
+    %(ExceptionThrows)s;
 
 

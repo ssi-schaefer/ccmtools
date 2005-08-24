@@ -131,7 +131,7 @@ extern "C" {
 #include <WX/Utils/debug.h>
 
 #include "%(Identifier)s_gen.h"
-#include <%(Identifier)s_entry.h>
+#include <%(AbsoluteLocalHomeName)s_entry.h>
 
 %(OpenNamespace)s
 
@@ -360,7 +360,6 @@ extern "C" {
 #define __HOME_%(PreprocIdentifier)s_IMPL__H__
 
 #include <%(HomeInclude)s_share.h>
-#include "%(Identifier)s_entry.h"
 
 %(OpenNamespace)s
 
@@ -410,6 +409,7 @@ class CCM_%(Identifier)s_impl
 
 #include "%(ComponentType)s_impl.h"
 #include "%(Identifier)s_impl.h"
+#include "%(AbsoluteLocalHomeName)s_entry.h"
 
 %(OpenNamespace)s
 
