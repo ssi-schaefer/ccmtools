@@ -31,10 +31,10 @@
 #include <CORBA.h>
 #include <string>
 
-#include <CCM_Local/Debug.h>
+#include <ccm/local/Debug.h>
 
-namespace CCM_Remote {
-
+namespace ccm {
+namespace remote {
 
     /**
      * Convert CORBA basic types into string representations which can
@@ -48,7 +48,7 @@ namespace CCM_Remote {
     ccmDebug(const CORBA::Boolean& in, bool b, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	if(in == true) {
 	    os << "true:CORBA::Boolean";
 	}
@@ -63,7 +63,7 @@ namespace CCM_Remote {
     ccmDebug(const CORBA::Char& in, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	os << (int)in << ":CORBA::Char";
 	return os.str();
     }
@@ -74,7 +74,7 @@ namespace CCM_Remote {
     ccmDebug(const CORBA::Double& in, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	os << in << ":CORBA::Double";
 	return os.str();
     }
@@ -85,7 +85,7 @@ namespace CCM_Remote {
     ccmDebug(const CORBA::Float& in, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	os << in << ":CORBA::Float";
 	return os.str();
     }
@@ -96,7 +96,7 @@ namespace CCM_Remote {
     ccmDebug(const CORBA::Long& in, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	os << in << ":CORBA::Long";
 	return os.str();
     }
@@ -107,7 +107,7 @@ namespace CCM_Remote {
     ccmDebug(const CORBA::Octet& in, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	os << (int)in << ":CORBA::Octet";
 	return os.str();   
     }
@@ -118,7 +118,7 @@ namespace CCM_Remote {
     ccmDebug(const CORBA::Short& in, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	os << in << ":CORBA::Short";
 	return os.str();   
     }
@@ -129,7 +129,7 @@ namespace CCM_Remote {
     ccmDebug(const char* in, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	os << "\"" << in << "\"" << ":char*";
 	return os.str();   
     }
@@ -140,7 +140,7 @@ namespace CCM_Remote {
     ccmDebug(const CORBA::ULong& in, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	os << in << ":CORBA::ULong";
 	return os.str();   
     }
@@ -151,12 +151,13 @@ namespace CCM_Remote {
     ccmDebug(const CORBA::UShort& in, int indent = 0)
     {
 	std::ostringstream os;
-	os << CCM_Local::doIndent(indent);
+	os << ccm::local::doIndent(indent);
 	os << in << ":CORBA::UShort";
 	return os.str();   
     }
 
-} // /namespace CCM_Remote
+} // /namespace remote
+} // /namespace ccm
 
 #endif // WXDEBUG
 

@@ -17,7 +17,8 @@
 #include <vector>
 
 
-namespace CCM_OCL {
+namespace ccm {
+namespace ocl {
 
 using std::string;
 using std::vector;
@@ -668,7 +669,8 @@ OCL_Sequence<T> OCL_subSequence( const vector<T>& seq, OCL_Integer lower, OCL_In
 }
 
 
-} // /namespace CCM_OCL
+} // /namespace ocl
+} // /namespace ccm
 
 #endif // __CCM_OCL__OCL_HELPERS__H__
 

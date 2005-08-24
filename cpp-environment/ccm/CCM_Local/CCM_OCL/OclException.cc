@@ -13,11 +13,12 @@
 using namespace std;
 
 
-namespace CCM_OCL {
+namespace ccm {
+namespace ocl {
 
 
 OclException::OclException( const char* message, const char* function, const char* file, int line ) throw()
-: CCMException(LocalComponents::OCL_ERROR),
+: CCMException(local::Components::OCL_ERROR),
   message_(message), function_(function), file_(file), line_(line)
 {
 	try
@@ -37,7 +38,7 @@ OclException::OclException( const char* message, const char* function, const cha
 
 
 OclException::OclException( const OclException& rhs ) throw()
-: CCMException(LocalComponents::OCL_ERROR),
+: CCMException(local::Components::OCL_ERROR),
   message_(rhs.message_), function_(rhs.function_), file_(rhs.file_),
   what_(rhs.what_), line_(rhs.line_)
 {
@@ -137,6 +138,7 @@ PostconditionException::~PostconditionException() throw()
 }
 
 
-} // /namespace CCM_OCL
+} // /namespace ocl
+} // /namespace ccm
 
 

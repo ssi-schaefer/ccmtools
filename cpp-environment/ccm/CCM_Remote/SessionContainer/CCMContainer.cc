@@ -314,7 +314,7 @@ CCM::SessionContainer::get_CCM_home ()
 
 
 CORBA::Object_ptr 
-CCM::SessionContainer::get_CCM_object(LocalComponents::EnterpriseComponent* o)
+CCM::SessionContainer::get_CCM_object(ccm::local::Components::EnterpriseComponent* o)
 {
     LDEBUGNL(CCM_CONTAINER, " get_CCM_object()");
     /*

@@ -1,6 +1,6 @@
 /* -*- mode: C++; c-basic-offset: 4 -*-
  *
- * CCM Tools : CCM_Local/utils
+ * CCM Tools : ccm/local/utils
  * Egon Teiniker <egon.teiniker@tugraz.at>
  * copyright (c) 2002 - 2005 Salomon Automation
  *
@@ -32,7 +32,8 @@
 #include <WX/Utils/value.h>
 #include <WX/Utils/smartptr.h>
 
-namespace CCM_Local {
+namespace ccm {
+namespace local {
 
     /**
      * Create a string with n*TAB spaces that can be used as
@@ -192,7 +193,8 @@ namespace CCM_Local {
 	return os.str();
     }
     
-} // /namespace CCM_Local
+} // /namespace local
+} // /namespace ccm
 
 #endif // WXDEBUG
 

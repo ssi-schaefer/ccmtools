@@ -4,8 +4,8 @@
 
 #include "TimerEvaluation.h" 
 
-namespace WX {
-namespace Utils {
+namespace ccm {
+namespace utils {
 
 using namespace std;
 
@@ -42,5 +42,5 @@ TimerEvaluation::getTimerResult(const Timer& timer,
 
 
 
-} // /namespace
-} // /namespace
+} // /namespace utils
+} // /namespace ccm

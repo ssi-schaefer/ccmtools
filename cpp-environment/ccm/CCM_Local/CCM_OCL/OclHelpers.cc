@@ -14,7 +14,8 @@
 using namespace std;
 
 
-namespace CCM_OCL {
+namespace ccm {
+namespace ocl {
 
 
 /**
@@ -114,6 +115,7 @@ int OCL_random( int lowerRange, int upperRange )
 }
 
 
-} // /namespace CCM_OCL
+} // /namespace ocl
+} // /namespace ccm
 
 

@@ -23,7 +23,9 @@
 #include <WX/Utils/value.h>
 
 
-namespace LocalComponents {
+namespace ccm {
+namespace local {
+namespace Components {
 
   //============================================================================
   // Exceptions
@@ -39,7 +41,7 @@ namespace LocalComponents {
   public:
     Exception()
       throw()
-      : message_("LocalComponents::Exception")
+      : message_("ccm::local::Components::Exception")
       {
       }
 
@@ -74,7 +76,7 @@ namespace LocalComponents {
   public:
     NotImplemented() 
       throw()
-      : Exception("LocalComponents::NotImplemented") 
+      : Exception("ccm::local::Components::NotImplemented") 
       {
       }
 
@@ -92,7 +94,7 @@ namespace LocalComponents {
   public:
     InvalidName() 
       throw()
-      : Exception("LocalComponents::InvalidName" ) 
+      : Exception("ccm::local::Components::InvalidName" ) 
       {
       }
   };
@@ -103,7 +105,7 @@ namespace LocalComponents {
   public:
     HomeNotFound() 
       throw()
-      : Exception("LocalComponents::HomeNotFound")
+      : Exception("ccm::local::Components::HomeNotFound")
       {
       }
   };
@@ -115,7 +117,7 @@ namespace LocalComponents {
   public:
     AlreadyConnected()
       throw()
-      : Exception("LocalComponents::AlreadyConnected")
+      : Exception("ccm::local::Components::AlreadyConnected")
       {
       }
   };
@@ -127,7 +129,7 @@ namespace LocalComponents {
   public:
     InvalidConnection()
       throw()
-      : Exception("LocalComponents::InvalidConnection")
+      : Exception("ccm::local::Components::InvalidConnection")
       {
       }
   };
@@ -139,7 +141,7 @@ namespace LocalComponents {
   public:
     NoConnection()
       throw()
-      : Exception("LocalComponents::NoConnection")
+      : Exception("ccm::local::Components::NoConnection")
       {
       }
   };
@@ -151,7 +153,7 @@ namespace LocalComponents {
   public:
     ExceededConnectionLimit()
       throw()
-      : Exception("LocalComponents::ExceededConnectionLimit")
+      : Exception("ccm::local::Components::ExceededConnectionLimit")
       {
       }
   };
@@ -163,7 +165,7 @@ namespace LocalComponents {
   public:
     CookieRequired()
       throw()
-      : Exception("LocalComponents::CookieRequired")
+      : Exception("ccm::local::Components::CookieRequired")
       {
       }
   };
@@ -175,7 +177,7 @@ namespace LocalComponents {
   public:
     IllegalState()
       throw()
-      : Exception("LocalComponents::IllegalState")
+      : Exception("ccm::local::Components::IllegalState")
       {
       }
   };
@@ -187,7 +189,7 @@ namespace LocalComponents {
   public: 
     InvalidConfiguration()
       throw()
-      : Exception("LocalComponents::InvalidConfiguration")
+      : Exception("ccm::local::Components::InvalidConfiguration")
       {
       }    
   };
@@ -201,13 +203,13 @@ namespace LocalComponents {
   public:
     CreateFailure () 
       throw()
-      : Exception("LocalComponents::CreateFailure"), reason_(0) 
+      : Exception("ccm::local::Components::CreateFailure"), reason_(0) 
       {
       }
 
     CreateFailure(const FailureReason reason) 
       throw()
-      : Exception("LocalComponents::CreateFailure"), reason_(reason) 
+      : Exception("ccm::local::Components::CreateFailure"), reason_(reason) 
       {
       }
   private:
@@ -221,13 +223,13 @@ namespace LocalComponents {
   public:
     RemoveFailure() 
       throw()
-      : Exception("LocalComponents::RemoveFailure"), reason_(0) 
+      : Exception("ccm::local::Components::RemoveFailure"), reason_(0) 
       {
       }
 
     RemoveFailure(const FailureReason reason) 
       throw()
-      : Exception("LocalComponents::RemoveFailure"), reason_(reason) 
+      : Exception("ccm::local::Components::RemoveFailure"), reason_(reason) 
       {
       }
 
@@ -254,13 +256,13 @@ namespace LocalComponents {
   public:
     CCMException() 
       throw()
-      : Exception("LocalComponents::CCMException"), reason_(SYSTEM_ERROR) 
+      : Exception("ccm::local::Components::CCMException"), reason_(SYSTEM_ERROR)
       {
       }
     
     CCMException(const CCMExceptionReason reason) 
       throw() 
-      : Exception("LocalComponents::CCMException"), reason_(reason) 
+      : Exception("ccm::local::Components::CCMException"), reason_(reason) 
       {
       }
 
@@ -400,15 +402,15 @@ namespace LocalComponents {
   public:
     virtual ~HomeFinder() {}
 
-    virtual WX::Utils::SmartPtr<LocalComponents::CCMHome>
+    virtual WX::Utils::SmartPtr<Components::CCMHome>
     find_home_by_component_type(const std::string& comp_repid)
         throw(HomeNotFound) = 0;
 
-    virtual WX::Utils::SmartPtr<LocalComponents::CCMHome>
+    virtual WX::Utils::SmartPtr<Components::CCMHome>
     find_home_by_name(const std::string& name)
         throw(HomeNotFound) = 0;
 
-    virtual WX::Utils::SmartPtr<LocalComponents::CCMHome>
+    virtual WX::Utils::SmartPtr<Components::CCMHome>
       find_home_by_type(const std::string& home_repid)
         throw(HomeNotFound) = 0;
   };
@@ -480,7 +482,7 @@ namespace LocalComponents {
      * of the component. The container calls this operation after a component
      * instance has been created.
      */
-    virtual void set_session_context (LocalComponents::SessionContext* ctx)
+    virtual void set_session_context (Components::SessionContext* ctx)
       throw (CCMException) = 0;
 
     /*
@@ -770,7 +772,9 @@ namespace LocalComponents {
 
   };
 
-} // /namespace LocalComponents
+} // /namespace Components
+} // /namespace local
+} // /namespace ccm
 
 
 #endif // __LOCAL__COMPONENTS__H__

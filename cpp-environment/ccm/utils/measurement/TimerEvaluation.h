@@ -9,8 +9,8 @@
 
 #include "Timer.h"
 
-namespace WX {
-namespace Utils {
+namespace ccm {
+namespace utils {
 
     class TimerEvaluation
     {
@@ -23,7 +23,7 @@ namespace Utils {
 					   const long size);  
     };
     
-} // /namespace
-} // /namespace
+} // /namespace utils
+} // /namespace ccm
 
 #endif /* __WX_UTILS_TIMEREVALUATION__H__ */

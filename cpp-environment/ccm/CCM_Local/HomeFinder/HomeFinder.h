@@ -7,12 +7,13 @@
 
 #include <map>
 #include <WX/Utils/smartptr.h>
-#include <LocalComponents/CCM.h>
+#include <ccm/local/Components/CCM.h>
 
-namespace CCM_Local {
+namespace ccm {
+namespace local {
 
 typedef std::map<std::string, 
-  WX::Utils::SmartPtr<LocalComponents::CCMHome> > HomePoolMap;
+  WX::Utils::SmartPtr<Components::CCMHome> > HomePoolMap;
 
 /***
  * This is a local version of a HomeFinder which returns local (C++) references
@@ -22,10 +23,10 @@ typedef std::map<std::string,
  * Note: this is a simple hard coded version - there will be a dynamic map...
  ***/
 class HomeFinder
-  : public LocalComponents::HomeFinder
+  : public Components::HomeFinder
 {
  private:
-  static LocalComponents::HomeFinder* instance;
+  static Components::HomeFinder* instance;
   HomePoolMap HomePool;
 
  protected:
@@ -33,29 +34,30 @@ class HomeFinder
   virtual ~HomeFinder (  );
 
  public:
-  static LocalComponents::HomeFinder* Instance();
+  static Components::HomeFinder* Instance();
 
   // methods from HomeFinder
-  WX::Utils::SmartPtr<LocalComponents::CCMHome>
+  WX::Utils::SmartPtr<Components::CCMHome>
   find_home_by_name(const std::string& name)
-    throw(LocalComponents::HomeNotFound);
+    throw(Components::HomeNotFound);
 
-  WX::Utils::SmartPtr<LocalComponents::CCMHome>
+  WX::Utils::SmartPtr<Components::CCMHome>
   find_home_by_type(const std::string& home_repid)
-    throw (LocalComponents::HomeNotFound);
+    throw (Components::HomeNotFound);
 
-  WX::Utils::SmartPtr<LocalComponents::CCMHome>
+  WX::Utils::SmartPtr<Components::CCMHome>
   find_home_by_component_type ( const std::string& comp_repid )
-    throw (LocalComponents::HomeNotFound);
+    throw (Components::HomeNotFound);
 
   // methods from HomeRegistration
-  void register_home(WX::Utils::SmartPtr<LocalComponents::CCMHome> home_ref, 
+  void register_home(WX::Utils::SmartPtr<Components::CCMHome> home_ref, 
 		     const std::string& home_name);
-  void unregister_home(WX::Utils::SmartPtr<LocalComponents::CCMHome> home_ref);
+  void unregister_home(WX::Utils::SmartPtr<Components::CCMHome> home_ref);
   void unregister_home(const std::string& home_name);
 };
 
-} // /namespace CCM_Local
+} // /namespace local
+} // /namespace ccm
 
 #endif // __CCM__LOCAL__HOMEFINDER__H__
 

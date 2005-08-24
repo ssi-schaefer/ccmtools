@@ -9,8 +9,8 @@
  */
 #include <unistd.h>
 
-namespace WX {
-namespace Utils {
+namespace ccm {
+namespace utils {
 
 using namespace std;
 
@@ -79,5 +79,5 @@ operator<<(std::ostream& o, const Timer& value)
   return o;
 }
 
-} // /namespace
-} // /namespace
+} // /namespace utils
+} // /namespace ccm

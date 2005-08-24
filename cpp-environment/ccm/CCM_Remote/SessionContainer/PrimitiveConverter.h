@@ -34,9 +34,11 @@
 #include <string>
 
 #include <WX/Utils/debug.h>
+
 using namespace WX::Utils;
 
-namespace CCM_Remote {
+namespace ccm {
+namespace remote {
     
     //==========================================================================
     // Convert basic types from C++ to CORBA 
@@ -195,7 +197,8 @@ namespace CCM_Remote {
 	out = (unsigned short)in;
     }
     
-} // /namespace CCM_Remote
+} // /namespace remote
+} // /namespace ccm
 
 #endif // HAVE_MICO
 #endif // __PRIMITIVE_CONVERTER_H__

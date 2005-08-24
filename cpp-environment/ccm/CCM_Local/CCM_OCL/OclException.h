@@ -12,13 +12,14 @@
 
 
 #include <string>
-#include <LocalComponents/CCM.h>
+#include <ccm/local/Components/CCM.h>
 
 
-namespace CCM_OCL {
+namespace ccm {
+namespace ocl {
 
 using std::string;
-using LocalComponents::CCMException;
+using ccm::local::Components::CCMException;
 
 
 /**
@@ -132,7 +133,8 @@ public:
 };
 
 
-} // /namespace CCM_OCL
+} // /namespace ocl
+} // /namespace ccm
 
 #endif // __CCM_OCL__OCL_EXCEPTION__H__
 

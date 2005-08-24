@@ -39,7 +39,7 @@
 #include <string>
 
 #include <WX/Utils/smartptr.h>
-#include <LocalComponents/CCM.h>
+#include <ccm/local/Components/CCM.h>
 
 #include <Components/CCM.h>
 
@@ -67,7 +67,7 @@ namespace CCM {
 	
 	virtual Components::CCMHome_ptr get_CCM_home () = 0;
 	virtual CORBA::Object_ptr
-	get_CCM_object(LocalComponents::EnterpriseComponent*) = 0;
+	get_CCM_object(ccm::local::Components::EnterpriseComponent*) = 0;
     };
     
 
@@ -91,7 +91,7 @@ namespace CCM {
 	    std::string component_short_name;
 	    std::string component_absolute_name;
 	    std::string component_id;
-	    LocalComponents::HomeExecutorBase* home_instance;
+	    ccm::local::Components::HomeExecutorBase* home_instance;
 	    PortableServer::ServantBase_var home_glue;
 	};
 	
@@ -102,7 +102,7 @@ namespace CCM {
 	struct PerComponentData {
 	    CORBA::Boolean configuration_complete;
 	    PortableServer::ServantBase_var glue;
-	    LocalComponents::EnterpriseComponent* instance;
+	    ccm::local::Components::EnterpriseComponent* instance;
 	    CORBA::Object_var reference;
 	    std::map<std::string, PortableServer::ServantBase_var> facet_glue;
 	    std::map<std::string, void*> facet_instance;
@@ -144,7 +144,7 @@ namespace CCM {
 	Components::CCMHome_ptr get_CCM_home (); 
 	
 	CORBA::Object_ptr 
-	get_CCM_object(LocalComponents::EnterpriseComponent*); 
+	get_CCM_object(ccm::local::Components::EnterpriseComponent*); 
 	
 	// Facet management
 	CORBA::Object_ptr
