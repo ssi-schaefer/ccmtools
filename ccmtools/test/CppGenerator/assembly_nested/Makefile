@@ -9,6 +9,8 @@ INTERFACE_DIR= ${APP_DIR}/src/interface
 
 all: local
 
+test: local check clean
+
 idl: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
 	ccmtools idl3mirror -o ${IDL3_DIR} Test.idl
@@ -42,12 +44,13 @@ check:
 	cp impl/Makefile.py ${APP_DIR}/src
 	cp -r impl/assembly ${COMPONENT_DIR}/SuperTest
 	cp impl/test/_check* ${COMPONENT_DIR}/SuperTest_mirror/test/
-	cp impl/BasicTest_basicType_impl.cc ${COMPONENT_DIR}/BasicTest/impl/
-	cp impl/UserTest_userType_impl.cc ${COMPONENT_DIR}/UserTest/impl/
-	cp impl/SuperTest_basicType_impl.cc ${COMPONENT_DIR}/SuperTest/impl/
-	cp impl/SuperTest_userType_impl.cc ${COMPONENT_DIR}/SuperTest/impl/	
-	cp impl/SuperTest_mirror_impl.cc ${COMPONENT_DIR}/SuperTest_mirror/impl/
+	cp impl/BasicTest_basicType_impl.cc ${COMPONENT_DIR}/BasicTest/
+	cp impl/UserTest_userType_impl.cc ${COMPONENT_DIR}/UserTest/
+	cp impl/SuperTest_basicType_impl.cc ${COMPONENT_DIR}/SuperTest/
+	cp impl/SuperTest_userType_impl.cc ${COMPONENT_DIR}/SuperTest/	
+	cp impl/SuperTest_mirror_impl.cc ${COMPONENT_DIR}/SuperTest_mirror/
 	confix.py --packageroot=`pwd`/${APP_DIR}/src --bootstrap --configure --make --targets=check
 
 clean: 
+	confix.py --packageroot=`pwd`/${APP_DIR}/src --make --targets=clean
 	rm -rf ${APP_DIR}

@@ -5,6 +5,8 @@ IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
 all: mirror
 
+test: mirror check clean
+
 idl3: ${APP_NAME}.idl
 	${CCMTOOLS_CMD} idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
 
@@ -23,8 +25,8 @@ check:
 	touch ${DEST_DIR}/component/Makefile.py
 	touch ${DEST_DIR}/component/Test/Makefile.py
 	touch ${DEST_DIR}/component/Test_mirror/Makefile.py
-	cp impl/Test_console_impl.cc ${DEST_DIR}/component/Test/impl/
-	cp impl/Test_mirror_impl.cc ${DEST_DIR}/component/Test_mirror/impl/
+	cp impl/Test_console_impl.cc ${DEST_DIR}/component/Test/
+	cp impl/Test_mirror_impl.cc ${DEST_DIR}/component/Test_mirror/
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 

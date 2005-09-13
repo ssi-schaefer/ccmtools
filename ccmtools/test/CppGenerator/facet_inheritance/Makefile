@@ -1,28 +1,34 @@
-
 APP_NAME = Test
-APP_DIR = xxx
-IDL3_DIR = ${APP_DIR}/idl3
-IDL_INTERFACE = ${IDL3_DIR}/interface
-IDL_COMPONENT = ${IDL3_DIR}/component
-IDL_INCLUDE = -I${IDL_INTERFACE} -I${IDL_COMPONENT}
+DEST_DIR = xxx
+CCMTOOLS_CMD = ccmtools
+IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
-all: local
+all: mirror
 
-idl: Test.idl
-	ccmtools idl3 -o ${IDL3_DIR} ${APP_NAME}.idl 
-	ccmtools idl3mirror -o ${IDL3_DIR} ${APP_NAME}.idl
+test: mirror check clean
 
-local: idl
-	ccmtools c++local -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_INTERFACE}/*.idl
-	ccmtools c++local -a -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/*.idl
-	ccmtools c++local-test -o ${APP_DIR} ${IDL_INCLUDE} ${IDL_COMPONENT}/${APP_NAME}.idl
+idl3: ${APP_NAME}.idl
+	${CCMTOOLS_CMD} idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
+
+local: idl3
+	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/*.idl
+	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl 
+
+mirror: local
+	${CCMTOOLS_CMD} idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl
+	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test_mirror ${DEST_DIR}/idl/component/Test_mirror.idl ${DEST_DIR}/idl/component/TestHome_mirror.idl
+	${CCMTOOLS_CMD} c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test_mirror ${DEST_DIR}/idl/component/Test.idl 
 
 check: 
-	cp impl/Makefile.py xxx
-	cp impl/Test_a_facet_impl.cc xxx/impl
-	cp impl/Test_mirror_impl.cc xxx/impl
-	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
+	cp impl/Makefile.py ${DEST_DIR}
+	touch ${DEST_DIR}/interface/Makefile.py
+	touch ${DEST_DIR}/component/Makefile.py
+	touch ${DEST_DIR}/component/Test/Makefile.py
+	touch ${DEST_DIR}/component/Test_mirror/Makefile.py
+	cp impl/Test_a_facet_impl.cc ${DEST_DIR}/component/Test/
+	cp impl/Test_mirror_impl.cc ${DEST_DIR}/component/Test_mirror/
+	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 
-	rm -rf xxx 
-	rm -rf ${HOME}/tmp/xxx
+	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=clean	
+	rm -rf ${DEST_DIR}

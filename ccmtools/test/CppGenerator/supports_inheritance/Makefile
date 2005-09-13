@@ -5,6 +5,8 @@ IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
 all: local
 
+test: local check clean
+
 idl3: ${APP_NAME}.idl
 	${CCMTOOLS_CMD} idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
 
@@ -19,7 +21,7 @@ check:
 	touch ${DEST_DIR}/component/Makefile.py
 	touch ${DEST_DIR}/component/Test/Makefile.py
 	touch ${DEST_DIR}/component/Test/test/Makefile.py
-	cp impl/Test_impl.cc ${DEST_DIR}/component/Test/impl
+	cp impl/Test_impl.cc ${DEST_DIR}/component/Test/
 	cp test/_check_ccm_local_component_Test.cc ${DEST_DIR}/component/Test/test
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
