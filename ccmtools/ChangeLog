@@ -4,10 +4,13 @@ RELEASE-0.5.3-pre2
 ----------------------------------------------------------------------------
 *) generate a local adapter for every interface (parallel to the interface
    directory) and reuse these adapters in the component logic.
+*) changed namespace structure from
+   CCM_Local::world::europe::austria::CCM_SessionTest to
+   world::europe::austria::ccm::local::component::Test   
+*) added etc/ccmtools.properties ccmtools.dir.gen to set a prefix for 
+   generated directories   
+*) added namespace to generated impl/*_entry.h filenames
    
-o) changed namespace structure
-
-
 
 RELEASE-0.5.3-pre1
 ----------------------------------------------------------------------------

@@ -30,13 +30,15 @@ import ccmtools.test.CcmtoolsTestCase;
 public class TypesTest extends CcmtoolsTestCase
 {
 
-    private String ccmtools_dir;
+    private String ccmtoolsDir;
+    private String testDir;
 
     public TypesTest(String name)
     {
         super(name);
         // get current working directory (this is where build.xml is executed)
-        ccmtools_dir = System.getProperty("user.dir");
+        ccmtoolsDir = System.getProperty("user.dir");
+        testDir = ccmtoolsDir + "/test/CppGenerator";
     }
 
     public void testVersionOption()
@@ -49,92 +51,30 @@ public class TypesTest extends CcmtoolsTestCase
         runCcmtoolsGenerate("--help");
     }
 
+    
     // ------------------------------------------------------------------------
     // Attribute test cases
     // ------------------------------------------------------------------------
 
     public void testAttributeTypes()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/attribute_types";
-        String sandbox_dir = 
-            ccmtools_dir + "/test/CppGenerator/sandbox/attribute_types";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Color.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Map.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Pair.idl" + " " + sandbox_dir
-                    + "/idl3/interface/doubleArray.idl" + " " + sandbox_dir
-                    + "/idl3/interface/time_t.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
-                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/attribute_types test");
         }
         catch(Exception e) {
             fail();
         }
     }
 
+    
     // ------------------------------------------------------------------------
     // Supports test cases
     // ------------------------------------------------------------------------
 
     public void testSupportsAttribute()
     {
-        String test_dir = ccmtools_dir
-                + "/test/CppGenerator/supports_attribute";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/supports_attribute";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
-                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/supports_attribute test");
         }
         catch(Exception e) {
             fail();
@@ -143,45 +83,8 @@ public class TypesTest extends CcmtoolsTestCase
 
     public void testSupportsException()
     {
-        String test_dir = ccmtools_dir
-                + "/test/CppGenerator/supports_exception";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/supports_exception";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Error.idl" + " " + sandbox_dir
-                    + "/idl3/interface/ErrorInfo.idl" + " " + sandbox_dir
-                    + "/idl3/interface/ErrorInfoList.idl" + " " + sandbox_dir
-                    + "/idl3/interface/FatalError.idl" + " " + sandbox_dir
-                    + "/idl3/interface/SuperError.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
-                    + "/impl/Test_impl.cc");
-            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
-                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/supports_exception test");
         }
         catch(Exception e) {
             fail();
@@ -190,42 +93,8 @@ public class TypesTest extends CcmtoolsTestCase
 
     public void testSupportsInheritance()
     {
-        String test_dir = ccmtools_dir
-                + "/test/CppGenerator/supports_inheritance";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/supports_inheritance";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Base1.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Base2.idl" + " " + sandbox_dir
-                    + "/idl3/interface/InterfaceType.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
-                    + "/impl/Test_impl.cc");
-            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
-                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/supports_inheritance test");
         }
         catch(Exception e) {
             fail();
@@ -234,99 +103,23 @@ public class TypesTest extends CcmtoolsTestCase
 
     public void testSupportsTypes()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/supports_types";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/supports_types";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Color.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Map.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Pair.idl" + " " + sandbox_dir
-                    + "/idl3/interface/TypeTest.idl" + " " + sandbox_dir
-                    + "/idl3/interface/doubleArray.idl" + " " + sandbox_dir
-                    + "/idl3/interface/time_t.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
-                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
-            copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir
-                    + "/impl/MyObject.cc");
-            copyFile(test_dir + "/impl/MyObject.h", sandbox_dir
-                    + "/impl/MyObject.h");
-            copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
-                    + "/impl/Test_impl.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/supports_types test");
         }
         catch(Exception e) {
             fail();
         }
     }
 
+    
     // ------------------------------------------------------------------------
     // Facet test cases
     // ------------------------------------------------------------------------
 
     public void testFacetAttribute()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/facet_attribute";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/facet_attribute";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/Test_console_impl.cc", sandbox_dir
-                    + "/impl/Test_console_impl.cc");
-            copyFile(test_dir + "/impl/Test_mirror_impl.cc", sandbox_dir
-                    + "/impl/Test_mirror_impl.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/facet_attribute test");
         }
         catch(Exception e) {
             fail();
@@ -335,49 +128,8 @@ public class TypesTest extends CcmtoolsTestCase
 
     public void testFacetException()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/facet_exception";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/facet_exception";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Error.idl" + " " + sandbox_dir
-                    + "/idl3/interface/ErrorInfo.idl" + " " + sandbox_dir
-                    + "/idl3/interface/ErrorInfoList.idl" + " " + sandbox_dir
-                    + "/idl3/interface/FatalError.idl" + " " + sandbox_dir
-                    + "/idl3/interface/SuperError.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/Test_console_impl.cc", sandbox_dir
-                    + "/impl/Test_console_impl.cc");
-            copyFile(test_dir + "/impl/Test_mirror_impl.cc", sandbox_dir
-                    + "/impl/Test_mirror_impl.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/facet_exception test");
         }
         catch(Exception e) {
             fail();
@@ -386,104 +138,8 @@ public class TypesTest extends CcmtoolsTestCase
 
     public void testFacetInheritance()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/facet_inheritance";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/facet_inheritance";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Base1.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Base2.idl" + " " + sandbox_dir
-                    + "/idl3/interface/InterfaceType.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/Test_a_facet_impl.cc", sandbox_dir
-                    + "/impl/Test_a_facet_impl.cc");
-            copyFile(test_dir + "/impl/Test_mirror_impl.cc", sandbox_dir
-                    + "/impl/Test_mirror_impl.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-
-    public void testFacetTypes()
-    {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/facet_types";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/facet_types";
-
-        try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Color.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Map.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Pair.idl" + " " + sandbox_dir
-                    + "/idl3/interface/TypeTest.idl" + " " + sandbox_dir
-                    + "/idl3/interface/doubleArray.idl" + " " + sandbox_dir
-                    + "/idl3/interface/time_t.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir
-                    + "/impl/MyObject.cc");
-            copyFile(test_dir + "/impl/MyObject.h", sandbox_dir
-                    + "/impl/MyObject.h");
-            copyFile(test_dir + "/impl/Test_mirror_impl.cc", sandbox_dir
-                    + "/impl/Test_mirror_impl.cc");
-            copyFile(test_dir + "/impl/Test_type_test_impl.cc", sandbox_dir
-                    + "/impl/Test_type_test_impl.cc");
-            copyFile(test_dir + "/test/_check_witout_mirror.cc", sandbox_dir
-                    + "/test/_check_witout_mirror.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/facet_inheritance test");
         }
         catch(Exception e) {
             fail();
@@ -492,89 +148,53 @@ public class TypesTest extends CcmtoolsTestCase
 
     public void testFacetRename()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/facet_rename";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/facet_rename";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Display.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Console.idl" + " " + sandbox_dir
-                    + "/idl3/component/HConsole.idl" + " " + sandbox_dir
-                    + "/idl3/component/Console_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/HConsole_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Console.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/facet_rename test");
         }
         catch(Exception e) {
             fail();
         }
     }
 
+    public void testFacetTypes()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_types test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+
+    public void testFacetModuleException()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_module_exception test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+    public void testFacetModuleTypes()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_module_types test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+
+    
     // ------------------------------------------------------------------------
     // Receptacle test cases
     // ------------------------------------------------------------------------
 
     public void testReceptacleAttribute()
     {
-        String test_dir = ccmtools_dir
-                + "/test/CppGenerator/receptacle_attribute";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/receptacle_attribute";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
-                    + "/impl/Test_impl.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/receptacle_attribute test");
         }
         catch(Exception e) {
             fail();
@@ -583,106 +203,18 @@ public class TypesTest extends CcmtoolsTestCase
 
     public void testReceptacleException()
     {
-        String test_dir = ccmtools_dir
-                + "/test/CppGenerator/receptacle_exception";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/receptacle_exception";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Error.idl" + " " + sandbox_dir
-                    + "/idl3/interface/ErrorInfo.idl" + " " + sandbox_dir
-                    + "/idl3/interface/ErrorInfoList.idl" + " " + sandbox_dir
-                    + "/idl3/interface/FatalError.idl" + " " + sandbox_dir
-                    + "/idl3/interface/SuperError.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
-                    + "/impl/Test_impl.cc");
-            copyFile(test_dir + "/impl/Test_mirror_console_mirror_impl.cc",
-                     sandbox_dir + "/impl/Test_mirror_console_mirror_impl.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/receptacle_exception test");
         }
         catch(Exception e) {
             fail();
         }
     }
 
-    public void testReceptacleTypes()
+    public void testReceptacleInheritance()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_types";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/receptacle_types";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Color.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Map.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Pair.idl" + " " + sandbox_dir
-                    + "/idl3/interface/TypeTest.idl" + " " + sandbox_dir
-                    + "/idl3/interface/doubleArray.idl" + " " + sandbox_dir
-                    + "/idl3/interface/time_t.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/MyObject.cc", sandbox_dir
-                    + "/impl/MyObject.cc");
-            copyFile(test_dir + "/impl/MyObject.h", sandbox_dir
-                    + "/impl/MyObject.h");
-            copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
-                    + "/impl/Test_impl.cc");
-            copyFile(test_dir + "/impl/Test_mirror_type_test_mirror_impl.cc",
-                     sandbox_dir + "/impl/Test_mirror_type_test_mirror_impl.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/receptacle_inheritance test");
         }
         catch(Exception e) {
             fail();
@@ -691,45 +223,18 @@ public class TypesTest extends CcmtoolsTestCase
 
     public void testReceptacleMultiple()
     {
-        String test_dir = ccmtools_dir
-                + "/test/CppGenerator/receptacle_multiple";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/receptacle_multiple";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
+            executeCommandLine("make -C " + testDir + "/receptacle_multiple test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
 
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
-                    + "/impl/Test_impl.cc");
-            copyFile(test_dir + "/impl/Test_mirror_console_mirror_impl.cc",
-                     sandbox_dir + "/impl/Test_mirror_console_mirror_impl.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+    public void testReceptacleNotConnected()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/receptacle_not_connected test");
         }
         catch(Exception e) {
             fail();
@@ -738,107 +243,111 @@ public class TypesTest extends CcmtoolsTestCase
 
     public void testReceptacleObject()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/receptacle_object";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/receptacle_object";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/IFace.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            copyFile(test_dir + "/impl/Test_impl.cc", sandbox_dir
-                    + "/impl/Test_impl.cc");
-            copyFile(test_dir + "/impl/Test_mirror_iface_mirror_impl.cc",
-                     sandbox_dir + "/impl/Test_mirror_iface_mirror_impl.cc");
-
-            copyFile(test_dir + "/test/ReceptacleObject.h", sandbox_dir
-                    + "/test/ReceptacleObject.h");
-            copyFile(test_dir + "/test/ReceptacleObject.cc", sandbox_dir
-                    + "/test/ReceptacleObject.cc");
-            copyFile(test_dir + "/test/_check_ccm_local_component_Test.cc",
-                     sandbox_dir + "/test/_check_ccm_local_component_Test.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/receptacle_object test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+    public void testReceptacleTypes()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/receptacle_types test");
         }
         catch(Exception e) {
             fail();
         }
     }
 
+    
+    // ------------------------------------------------------------------------
+    // Home test cases
+    // ------------------------------------------------------------------------
+    
+    public void testHomeException()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/home_exception test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+    public void testHomeTypes()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/home_types test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+    
+    // ------------------------------------------------------------------------
+    // Include test cases
+    // ------------------------------------------------------------------------
+    
+    public void testIncludeNested()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/include_nested test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+    
     // ------------------------------------------------------------------------
     // Module test cases
     // ------------------------------------------------------------------------
 
-    public void testModuleNested()
+    public void testModuleMixed()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/module_nested";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/module_nested";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -a -o "
-                    + sandbox_dir
-                    + " -I"
-                    + sandbox_dir
-                    + "/idl3/component"
-                    + " "
-                    + sandbox_dir
-                    + "/idl3/component/world/europe/austria/Test.idl"
-                    + " "
-                    + sandbox_dir
-                    + "/idl3/component/world/europe/austria/TestHome.idl"
-                    + " "
-                    + sandbox_dir
-                    + "/idl3/component/world/europe/austria/Test_mirror.idl"
-                    + " "
-                    + sandbox_dir
-                    + "/idl3/component/world/europe/austria/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/world/europe/austria/Test.idl");
-
-            copyFile(test_dir + "/impl/Makefile.py", sandbox_dir + "/Makefile.py");
-            
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
+            executeCommandLine("make -C " + testDir + "/module_mixed test");
         }
         catch(Exception e) {
             fail();
         }
     }
 
-    // TODO: implement other test cases
+    public void testModuleNested()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/module_nested test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+
+    public void testModuleReopen()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/module_reopen test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+
+    
+    // ------------------------------------------------------------------------
+    // Assembly test cases
+    // ------------------------------------------------------------------------
+    
+    public void testAssemblyNested()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/assembly_nested test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
 }

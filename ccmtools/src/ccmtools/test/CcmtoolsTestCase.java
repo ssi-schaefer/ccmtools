@@ -60,7 +60,7 @@ public class CcmtoolsTestCase extends TestCase
         for(int i = 0; i < args.size(); i++) {
             parameters[i] = (String) args.get(i);
         }
-        System.out.print(">>> ccmtools ");
+        System.out.print("> ccmtools ");
         for(int i = 0; i < parameters.length; i++)
             System.out.print(" " + parameters[i]);
         System.out.println();
@@ -78,7 +78,7 @@ public class CcmtoolsTestCase extends TestCase
     protected void runCcmtoolsGenerate(String args)
     {
         String[] parameters = args.split(" ");
-        System.out.print(">>> ccmtools ");
+        System.out.print("> ccmtools ");
         for(int i = 0; i < parameters.length; i++)
             System.out.print(" " + parameters[i]);
         System.out.println();
@@ -100,7 +100,7 @@ public class CcmtoolsTestCase extends TestCase
                     + "Makefile.py");
             FileWriter out = new FileWriter(outputFile);
             out.close();
-            System.out.println(">>> create " + package_root + File.separator
+            System.out.println("> create " + package_root + File.separator
                     + "Makefile.py");
         }
         catch(Exception e) {
@@ -126,7 +126,7 @@ public class CcmtoolsTestCase extends TestCase
                 out.write(c);
             in.close();
             out.close();
-            System.out.println(">>> copy from " + from);
+            System.out.println("> copy from " + from);
         }
         catch(Exception e) {
             fail("Can't copy file from [" + from + "] to [" + to + "]");
@@ -138,8 +138,21 @@ public class CcmtoolsTestCase extends TestCase
         try {
             // Run the GNU preprocessor cpp in a separate process.
             String cmd = "confix.py ";
-            System.out.println(">>>" + cmd + args);
-            Process proc = Runtime.getRuntime().exec(cmd + args);
+            System.out.println("> " + cmd + args);
+            executeCommandLine(cmd+args);
+        }
+        catch(Exception e) {
+            throw new CcmtoolsTestCaseException("Confix error");
+        }
+    }
+
+    protected void executeCommandLine(String cmd) 
+    	throws CcmtoolsTestCaseException
+    {
+        try {
+            // Run the GNU preprocessor cpp in a separate process.
+            System.out.println("> " + cmd);
+            Process proc = Runtime.getRuntime().exec(cmd);
 
             // copy input and error to the output stream
             StreamPumper inputPumper = new StreamPumper(proc.getInputStream());
@@ -156,13 +169,14 @@ public class CcmtoolsTestCase extends TestCase
             proc.destroy();
 
             if(proc.exitValue() != 0)
-                throw new CcmtoolsTestCaseException("Confix error: result != 0");
+                throw new CcmtoolsTestCaseException("exec error: result != 0");
         }
         catch(Exception e) {
-            throw new CcmtoolsTestCaseException("Confix error");
+            throw new CcmtoolsTestCaseException("exec error");
         }
+        
     }
-
+    
     // Inner class for continually pumping the input stream during
     // Process's runtime.
     class StreamPumper extends Thread

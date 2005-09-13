@@ -111,6 +111,7 @@ public class CppLocalGenerator
      */
     public String getDebugNamespace(MIDLType idlType)
     {
+        logger.fine("enter getDebugNamespace()");
         StringBuffer code = new StringBuffer();
         if(idlType instanceof MAliasDef) {
             MTyped type = (MTyped) idlType;
@@ -132,6 +133,7 @@ public class CppLocalGenerator
         else {
             code.append(Text.join(Text.SCOPE_SEPARATOR, baseNamespace)); 
         }
+        logger.fine("leave getDebugNamespace()");
         return code.toString();
     }
     
@@ -161,7 +163,7 @@ public class CppLocalGenerator
         vars.put("LanguageType", langType);
         
         vars.put("ExceptionThrows", getOperationExcepts(operation));
-        vars.put("MParameterDefAll", getOperationParams(operation));
+        vars.put("OperationParameterList", getOperationParams(operation));
         vars.put("MParameterDefName", getOperationParamNames(operation));
         
         // these tags are used to generate local adapter implementations
@@ -238,8 +240,8 @@ public class CppLocalGenerator
      */
     protected String getLanguageTypeInclude(MIDLType idlType) 
     {
+        logger.fine("enter getLanguageTypeInclude()");
         StringBuffer code = new StringBuffer();
-        
         if(idlType instanceof MStringDef) {
             code.append("#include <string>\n");
         }
@@ -259,6 +261,7 @@ public class CppLocalGenerator
         else if(idlType instanceof MContained) {
             code.append(getScopedInclude((MContained) idlType));
         }
+        logger.fine("leave getLanguageTypeInclude()");
         return code.toString();
     }
     
@@ -363,8 +366,8 @@ public class CppLocalGenerator
     
     protected String data_MInterfaceDef(String dataType, String dataValue)
     {
+        logger.fine("enter data_MInterfaceDef()");
         MInterfaceDef iface = (MInterfaceDef) currentNode;
-
         if(dataType.equals("InterfaceInclude")) {
             MContained contained = (MContained)currentNode;
             dataValue = getLocalCppName(contained, Text.FILE_SEPARATOR);
@@ -372,7 +375,7 @@ public class CppLocalGenerator
         else {
             dataValue = super.data_MInterfaceDef(dataType, dataValue);
         }
-
+        logger.fine("leave data_MInterfaceDef()");
         return dataValue;
     }
 
@@ -434,7 +437,6 @@ public class CppLocalGenerator
                 else {
                     writeFinalizedFile(file_dir, file_name, generated_code);
                 }
-
                 writeMakefile(output_dir, file_dir, "py", "");
             }
         }
@@ -448,6 +450,7 @@ public class CppLocalGenerator
                                     String extension, String content)
         throws IOException
     {
+        logger.fine("enter writeMakefile()");
         boolean result;
         File makeFile = new File(outDir, fileDir);
         makeFile = new File(makeFile, "Makefile." + extension);
@@ -459,6 +462,7 @@ public class CppLocalGenerator
         else {
             result = false; // no Makefile.py written
         }
+        logger.fine("leave writeMakefile()");
         return result;
     }
 
@@ -472,11 +476,10 @@ public class CppLocalGenerator
      */
     protected List getOutputFiles()
     {
+        logger.fine("enter getOutputFiles()");
         String node_name = ((MContained) currentNode).getIdentifier();
-
         List files = new ArrayList();
         List f = null;
-        
         String implDirectory =
             CcmtoolsProperties.Instance().get("ccmtools.dir.impl");
         
@@ -595,6 +598,7 @@ public class CppLocalGenerator
             f.add("");
             files.add(f);
         }
+        logger.fine("leave getOutputFiles()");
         return files;
     }
 
@@ -608,6 +612,7 @@ public class CppLocalGenerator
      */
     protected String getOutputDirectory(String component)
     {
+        logger.fine("enter getOutputDirectory()");
         List modules = new ArrayList(namespaceStack);
         modules.addAll(baseNamespace);
         if(!component.equals("")) {
@@ -616,6 +621,7 @@ public class CppLocalGenerator
         }
         String generatorPrefix = 
             CcmtoolsProperties.Instance().get("ccmtools.dir.gen");
+        logger.fine("leave getOutputDirectory()");
         return generatorPrefix + join("_", modules);
     }
 

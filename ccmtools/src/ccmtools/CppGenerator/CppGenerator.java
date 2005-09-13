@@ -1,5 +1,6 @@
 /**
- * CCM Tools : C++ Code Generator Library Leif Johnson <leif@ambient.2y.net>
+ * CCM Tools : C++ Code Generator Library 
+ * Leif Johnson <leif@ambient.2y.net>
  * Egon Teiniker <egon.teiniker@salomon.at> 
  * Copyright (C) 2002 - 2005 Salomon Automation
  *  
@@ -30,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.logging.Logger;
 
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.CodeGenerator;
@@ -121,7 +123,10 @@ abstract public class CppGenerator extends CodeGenerator
             String[] output_types) throws IOException
     {
         super(sublang, d, out_dir, output_types, _reserved, _language);
+        logger = Logger.getLogger("ccm.generator.cpp");
+        logger.fine("enter CppGenerator()");
         baseNamespace = new ArrayList();
+        logger.fine("leave CppGenerator()");
     }
     
     
@@ -145,8 +150,10 @@ abstract public class CppGenerator extends CodeGenerator
      */
     public void endNode(Object node, String scope_id)
     {
+        logger.fine("enter endNode()");
         super.endNode(node, scope_id);
         writeOutputIfNeeded();
+        logger.fine("leave endNode()");
     }
 
 
@@ -167,6 +174,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getLocalValue(String variable)
     {
+        logger.fine("getLocalValue()");
         String value = super.getLocalValue(variable);
 
         // Handle simple template %(tag)s 
@@ -241,8 +249,8 @@ abstract public class CppGenerator extends CodeGenerator
                                           String template_name,
                                           boolean attribute)
     {
+        logger.fine("enter fillTwoStepTemplates()");
         MContained contained = (MContained) currentNode;
-
         // if this is a supports node, we want to actually refer to the
         // home or component that owns this supports definition.
         if(currentNode instanceof MSupportsDef) {
@@ -259,7 +267,7 @@ abstract public class CppGenerator extends CodeGenerator
         Stack ifaces = new Stack();
         ifaces.push(child);
 
-        StringBuffer result = new StringBuffer("");
+        StringBuffer code = new StringBuffer();
 
         while(!ifaces.empty()) {
             MInterfaceDef iface = (MInterfaceDef) ifaces.pop();
@@ -276,13 +284,14 @@ abstract public class CppGenerator extends CodeGenerator
                     vars = getTwoStepOperationVariables((MOperationDef) c.next(), contained);
 
                 Template template = template_manager.getRawTemplate(template_name);
-                result.append(template.substituteVariables(vars));
+                code.append(template.substituteVariables(vars));
             }
 
             for(Iterator i = iface.getBases().iterator(); i.hasNext();)
                 ifaces.push(i.next());
         }
-        return result.toString();
+        logger.fine("leave fillTwoStepTemplates()");
+        return code.toString();
     }
 
 
@@ -304,13 +313,15 @@ abstract public class CppGenerator extends CodeGenerator
     protected Map getTwoStepAttributeVariables(MAttributeDef attr,
                                                MContained contained)
     {
+        logger.fine("enter getTwoStepAttributeVariables()");
         String lang_type = getLanguageType(attr);
         Map vars = new Hashtable();
 
         vars.put("Object", contained.getIdentifier());
         vars.put("Identifier", attr.getIdentifier());
         vars.put("LanguageType", lang_type);
-
+        
+        logger.fine("leave getTwoStepAttributeVariables()");
         return vars;
     }
 
@@ -339,6 +350,7 @@ abstract public class CppGenerator extends CodeGenerator
     
     protected String data_MAliasDef(String data_type, String data_value)
     {
+        logger.fine("data_MAliasDef()");
         MIDLType idl_type = ((MAliasDef) currentNode).getIdlType();
 
         if(data_type.equals("FirstBound")) {
@@ -357,6 +369,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MComponentDef(String data_type, String data_value)
     {
+        logger.fine("data_MComponentDef()");
         MComponentDef component = (MComponentDef) currentNode;
         MHomeDef home = null;
 
@@ -402,6 +415,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MEnumDef(String data_type, String data_value)
     {
+        logger.fine("data_MEnumDef()");
         if(data_type.equals("Members")) {
             List b = new ArrayList();
             MEnumDef enum = (MEnumDef) currentNode;
@@ -412,18 +426,32 @@ abstract public class CppGenerator extends CodeGenerator
         return data_value;
     }
 
-    protected String data_MFactoryDef(String data_type, String data_value)
+    protected String data_MFactoryDef(String dataType, String dataValue)
     {
-        return data_MOperationDef(data_type, data_value);
+        logger.fine("enter data_MFactoryDef()");
+        MFactoryDef factory = (MFactoryDef)currentNode;
+        if(dataType.equals("ComponentType")) {
+            dataValue = factory.getHome().getComponent().getIdentifier();
+        }
+        else if(dataType.equals("HomeType")) {
+            dataValue = factory.getHome().getIdentifier();
+        }
+        else {
+            dataValue = data_MOperationDef(dataType, dataValue);
+        }
+        logger.fine("leave data_MFactoryDef()");
+        return dataValue;
     }
 
     protected String data_MFinderDef(String data_type, String data_value)
     {
+        logger.fine("data_MFinderDef()");
         return data_MOperationDef(data_type, data_value);
     }
 
     protected String data_MHomeDef(String data_type, String data_value)
     {
+        logger.fine("data_MHomeDef()");
         MHomeDef home = (MHomeDef) currentNode;
         MComponentDef component = home.getComponent();
 
@@ -456,6 +484,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
+        logger.fine("data_MInterfaceDef()");
         MInterfaceDef iface = (MInterfaceDef) currentNode;
 
         if(data_type.equals("BaseType")) {
@@ -469,6 +498,7 @@ abstract public class CppGenerator extends CodeGenerator
 
     protected String data_MAttributeDef(String dataType, String dataValue)
     {
+        logger.fine("data_MAttributeDef()");
         MAttributeDef attr = (MAttributeDef)currentNode;
         if(dataType.equals("DefinedInIdentifier")) {
             dataValue = attr.getDefinedIn().getIdentifier();
@@ -478,9 +508,14 @@ abstract public class CppGenerator extends CodeGenerator
         
     protected String data_MOperationDef(String data_type, String data_value)
     {
+        logger.fine("data_MOperationDef()");
         if(data_type.equals("MExceptionDefThrows") && data_value.endsWith(", ")) {
             return "throw (Components::CCMException, "
                     + data_value.substring(0, data_value.length() - 2) + " )";
+        }
+        else if(data_type.equals("OperationParameterList")) {
+            MOperationDef op = (MOperationDef) currentNode;
+            return getOperationParams(op);
         }
         else if(data_type.startsWith("MParameterDef")
                 && data_value.endsWith(", ")) {
@@ -502,6 +537,7 @@ abstract public class CppGenerator extends CodeGenerator
     
     protected String data_MExceptionDef(String data_type, String data_value)
     {
+        logger.fine("enter data_MExceptionDef()");
 	    MExceptionDef exception = (MExceptionDef)currentNode;
 	    
         if(data_type.equals("ExceptionInclude")) {
@@ -513,12 +549,14 @@ abstract public class CppGenerator extends CodeGenerator
             code.append(".h>\n");
             data_value = code.toString();
         }
+        logger.fine("leave data_MExceptionDef()");
         return data_value;
     }
     
     
     protected String data_MProvidesDef(String data_type, String data_value)
     {
+        logger.fine("data_MProvidesDef()");
         MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
         MProvidesDef provides = (MProvidesDef) currentNode;
         
@@ -559,8 +597,10 @@ abstract public class CppGenerator extends CodeGenerator
         return data_value;
     }
 
+    
     protected String data_MSupportsDef(String data_type, String data_value)
     {
+        logger.fine("data_MSupportsDef()");
         MInterfaceDef iface = ((MSupportsDef) currentNode).getSupports();
 
         if(data_type.equals("CCMSupportsType")) {
@@ -581,8 +621,10 @@ abstract public class CppGenerator extends CodeGenerator
         return data_value;
     }
 
+    
     protected String data_MUsesDef(String data_type, String data_value)
     {
+        logger.fine("data_MUsesDef()");
         MInterfaceDef iface = ((MUsesDef) currentNode).getUses();
 
         if(data_type.equals("CCMUsesType")) {
@@ -619,6 +661,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String joinBaseNames(String sep)
     {
+        logger.fine("joinBaseNames()");
         if(currentNode instanceof MInterfaceDef) {
             MInterfaceDef node = (MInterfaceDef) currentNode;
             ArrayList names = new ArrayList();
@@ -638,6 +681,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String handleNamespace(String data_type, String local)
     {
+        logger.fine("handleNamespaces()");
         List modules = new ArrayList(namespaceStack);
         modules.addAll(baseNamespace);
         
@@ -675,6 +719,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getFullScopeIdentifier(MContained node)
     {
+        logger.fine("getFullScopeIdentifier()");
         return getLocalCppName(node, Text.SCOPE_SEPARATOR);
     }
 
@@ -685,6 +730,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getFullScopeInclude(MContained node)
     {
+        logger.fine("getFullScopeInclude()");
         return getLocalCppName(node, Text.FILE_SEPARATOR);
     }
         
@@ -695,10 +741,12 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getScopedInclude(MContained node)
     {
+        logger.fine("enter getScopedInclude()");
         StringBuffer code = new StringBuffer();
         code.append("#include <");
         code.append(getLocalCppName(node, Text.FILE_SEPARATOR));
         code.append(".h>\n");
+        logger.fine("leave getScopedInclude()");
         return code.toString();
     }
 
@@ -734,6 +782,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getLanguageType(MTyped object)
     {
+        logger.fine("getLanguageType()");
         MIDLType idl_type = object.getIdlType();
         String base_type = getBaseLanguageType(object);
         
@@ -817,6 +866,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getLocalCppNamespace(MContained node, String separator)
     {
+        logger.fine("enter getLocalCppNamespace()");
         StringBuffer code = new StringBuffer();
         List scope = getScope(node);
         if(scope.size() > 0) {
@@ -841,6 +891,7 @@ abstract public class CppGenerator extends CodeGenerator
             code.append(separator);
             code.append(home.getComponent().getIdentifier());
         }
+        logger.fine("leave getLocalCppNamespace()");
         return code.toString();
     }
     
@@ -856,10 +907,12 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getLocalCppName(MContained node, String separator)
     {
+        logger.fine("enter getLocalCppName()");
         StringBuffer code = new StringBuffer();
         code.append(getLocalCppNamespace(node, separator));
         code.append(separator);
         code.append(node.getIdentifier());
+        logger.fine("enter getLocalCppName()");
         return code.toString() ;
     } 
     
@@ -871,24 +924,30 @@ abstract public class CppGenerator extends CodeGenerator
     
     public String getCcmToolsVersion()
     {
+        logger.fine("enter getCcmToolsVersion()");
         StringBuffer buffer = new StringBuffer();
         buffer.append("CCM Tools version ");
         buffer.append(ccmtools.Constants.VERSION);
+        logger.fine("leave getCcmToolsVersion()");
         return buffer.toString();
     }
     
     public String getCcmGeneratorTimeStamp() 
     {
+        logger.fine("enter getCcmGeneratorTimeStamp()");
         StringBuffer buffer = new StringBuffer();
         Calendar now = Calendar.getInstance();
         buffer.append(now.getTime());
+        logger.fine("leave getCcmGeneratorTimeStamp()");
         return buffer.toString();
     }
     
     public String getCcmGeneratorUser() 
     {
+        logger.fine("enter getCcmGeneratorUser()");
         StringBuffer buffer = new StringBuffer();
         buffer.append(System.getProperty("user.name"));
+        logger.fine("leave getCcmGeneratorUser()");
         return buffer.toString();
     }
 
@@ -906,6 +965,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getOperationParams(MOperationDef op)
     {
+        logger.fine("getOperationParams()");
         List parameterList = new ArrayList();
         for(Iterator ps = op.getParameters().iterator(); ps.hasNext();) {
             MParameterDef p = (MParameterDef) ps.next();
@@ -933,9 +993,11 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getOperationParamNames(MOperationDef op)
     {
+        logger.fine("enter getOperationParamNames()");
         List ret = new ArrayList();
         for(Iterator ps = op.getParameters().iterator(); ps.hasNext();)
             ret.add(((MParameterDef) ps.next()).getIdentifier());
+        logger.fine("leave getOperationParamNames()");
         return join(", ", ret);
     }
 
@@ -951,6 +1013,7 @@ abstract public class CppGenerator extends CodeGenerator
      */
     protected String getOperationExcepts(MOperationDef op)
     {
+        logger.fine("getOperationExcepts()");
         List ret = new ArrayList();
         for(Iterator es = op.getExceptionDefs().iterator(); es.hasNext();) {
             MExceptionDef exception = (MExceptionDef)es.next();

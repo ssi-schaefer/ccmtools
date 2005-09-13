@@ -1,5 +1,5 @@
 %(LanguageType)s
-FacetAdapter%(Object)s::%(Identifier)s(%(MParameterDefAll)s)
+FacetAdapter%(Object)s::%(Identifier)s(%(OperationParameterList)s)
 %(ExceptionThrows)s
 {
     LDEBUGNL(CCM_LOCAL," FacetAdapter%(Object)s::%(Identifier)s(%(MParameterDefName)s)");

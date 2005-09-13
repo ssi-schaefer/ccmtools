@@ -125,10 +125,6 @@ class CCM_%(Identifier)s_Context_impl
         throw(::ccm::local::Components::IllegalState);
 };
 
-/*
-*(MProvidesDefAdapterClass)s
-*/
-
 %(CloseNamespace)s
 
 #endif
@@ -158,7 +154,6 @@ class CCM_%(Identifier)s_Context_impl
 #include <ccm/local/Debug.h>
 #endif /* WXDEBUG */
 
-// #include<Adapter.h>
 %(MProvidesDefAdapterInclude)s
 
 #include "%(Identifier)s_gen.h"
@@ -167,43 +162,6 @@ class CCM_%(Identifier)s_Context_impl
 
 using namespace std;
 using namespace WX::Utils;
-
-/*
-%(MProvidesDefAdapterClassImpl)s
-*/
-
-//==============================================================================
-// context adapter class implementation
-//==============================================================================
-
-CCM_%(Identifier)s_Context_impl::CCM_%(Identifier)s_Context_impl(%(Identifier)s* c)
-    : component_local_adapter(c)
-{
-    LDEBUGNL(CCM_CONTAINER,"+CCM_%(Identifier)s_Context_impl::CCM_%(Identifier)s_Context_impl()");
-}
-
-CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
-{
-    LDEBUGNL(CCM_CONTAINER,"-CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()");
-}
-
-%(MUsesDefGetConnectionCtxImplDefinition)s
-
-::ccm::local::Components::HomeExecutorBase*
-CCM_%(Identifier)s_Context_impl::get_CCM_home()
-{
-    LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_home()");
-    throw ::ccm::local::Components::NotImplemented();
-}
-
-::ccm::local::Components::Object*
-CCM_%(Identifier)s_Context_impl::get_CCM_object()
-    throw(::ccm::local::Components::IllegalState)
-{
-    LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_object()");
-    throw ::ccm::local::Components::NotImplemented();
-}
-
 
 //==============================================================================
 // local component adapter implementation
@@ -342,6 +300,39 @@ void
         assembly = SmartPtr< ::ccm::local::Components::Assembly>();
     }
     ValidConnection = false;
+}
+
+
+//==============================================================================
+// context adapter class implementation
+//==============================================================================
+
+CCM_%(Identifier)s_Context_impl::CCM_%(Identifier)s_Context_impl(%(Identifier)s* c)
+    : component_local_adapter(c)
+{
+    LDEBUGNL(CCM_CONTAINER,"+CCM_%(Identifier)s_Context_impl::CCM_%(Identifier)s_Context_impl()");
+}
+
+CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
+{
+    LDEBUGNL(CCM_CONTAINER,"-CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()");
+}
+
+%(MUsesDefGetConnectionCtxImplDefinition)s
+
+::ccm::local::Components::HomeExecutorBase*
+CCM_%(Identifier)s_Context_impl::get_CCM_home()
+{
+    LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_home()");
+    throw ::ccm::local::Components::NotImplemented();
+}
+
+::ccm::local::Components::Object*
+CCM_%(Identifier)s_Context_impl::get_CCM_object()
+    throw(::ccm::local::Components::IllegalState)
+{
+    LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_object()");
+    throw ::ccm::local::Components::NotImplemented();
 }
 
 %(CloseNamespace)s

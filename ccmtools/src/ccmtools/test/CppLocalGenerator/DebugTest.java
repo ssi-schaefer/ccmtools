@@ -1,9 +1,3 @@
-/*
- * Created on Aug 28, 2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 package ccmtools.test.CppLocalGenerator;
 
 import ccmtools.test.CcmtoolsTestCase;
@@ -17,66 +11,30 @@ import ccmtools.test.CcmtoolsTestCase;
 public class DebugTest extends CcmtoolsTestCase
 {
 
-    private String ccmtools_dir;
-
+    private String ccmtoolsDir;
+    private String testDir;
+    
     public DebugTest(String name)
     {
         super(name);
         // get current working directory (this is where build.xml is executed)
-        ccmtools_dir = System.getProperty("user.dir");
+        ccmtoolsDir = System.getProperty("user.dir");
+        testDir = ccmtoolsDir + "/test/CppGenerator";
     }
 
+    
+    /**
+     * Calling make from Java is a hack, but practical experiances have shown
+     * that using the same Makefile for C++ debugging and Java unit tests
+     * reduces development time significantly - as long as you work with Linux...
+     */
     public void testFacetException()
     {
-        String test_dir = ccmtools_dir + "/test/CppGenerator/facet_exception";
-        String sandbox_dir = ccmtools_dir
-                + "/test/CppGenerator/sandbox/facet_exception";
-
         try {
-            runCcmtoolsGenerate("idl3 -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("idl3mirror -o " + sandbox_dir + "/idl3" + " "
-                    + test_dir + "/Test.idl");
-
-            runCcmtoolsGenerate("c++local -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " " + sandbox_dir
-                    + "/idl3/interface/Console.idl" + " " + sandbox_dir
-                    + "/idl3/interface/Error.idl" + " " + sandbox_dir
-                    + "/idl3/interface/ErrorInfo.idl" + " " + sandbox_dir
-                    + "/idl3/interface/ErrorInfoList.idl" + " " + sandbox_dir
-                    + "/idl3/interface/FatalError.idl" + " " + sandbox_dir
-                    + "/idl3/interface/SuperError.idl");
-
-            runCcmtoolsGenerate("c++local -a -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome.idl" + " " + sandbox_dir
-                    + "/idl3/component/Test_mirror.idl" + " " + sandbox_dir
-                    + "/idl3/component/TestHome_mirror.idl");
-
-            runCcmtoolsGenerate("c++local-test -o " + sandbox_dir + " -I"
-                    + sandbox_dir + "/idl3/interface" + " -I" + sandbox_dir
-                    + "/idl3/component" + " " + sandbox_dir
-                    + "/idl3/component/Test.idl");
-
-            copyFile(test_dir + "/impl/Test_console_impl.cc", sandbox_dir
-                    + "/impl/Test_console_impl.cc");
-            copyFile(test_dir + "/impl/Test_mirror_impl.cc", sandbox_dir
-                    + "/impl/Test_mirror_impl.cc");
-
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --bootstrap --configure --make --targets=check");
-            runConfix("--packageroot=" + sandbox_dir
-                    + " --make --targets=clean");
-
+            executeCommandLine("make -C " + testDir + "/facet_exception test");
         }
         catch(Exception e) {
             fail();
         }
     }
-   
-    
-    
 }

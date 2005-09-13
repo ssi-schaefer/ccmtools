@@ -27,8 +27,11 @@ class %(Identifier)s
 {
   public:
     virtual ~%(Identifier)s() {}
+
 %(MAttributeDefPrototypeVV)s
+
 %(MOperationDefPrototypeVV)s 
+
 };
 
 

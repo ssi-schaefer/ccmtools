@@ -1,5 +1,5 @@
 %(LanguageType)s
-%(Object)s::%(Identifier)s(%(MParameterDefAll)s)
+%(Object)s::%(Identifier)s(%(OperationParameterList)s)
 %(ExceptionThrows)s
 {
     LDEBUGNL(CCM_LOCAL," %(Object)s::%(Identifier)s(%(MParameterDefName)s)");

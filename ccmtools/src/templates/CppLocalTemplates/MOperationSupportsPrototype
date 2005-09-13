@@ -1,5 +1,5 @@
     %(LanguageType)s 
-    %(Identifier)s(%(MParameterDefAll)s) 
+    %(Identifier)s(%(OperationParameterList)s) 
     %(ExceptionThrows)s;
 
 

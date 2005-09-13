@@ -1,7 +1,7 @@
 /* CCM Tools : C++ Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
  * Egon Teiniker <egon.teiniker@salomon.at>
- * Copyright (C) 2002, 2003, 2004 Salomon Automation
+ * Copyright (C) 2002 - 2005 Salomon Automation
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -37,17 +38,20 @@ public class CppLocalTestGenerator
     // types for which we have a global template ; that is, a template that is
     // not contained inside another template.
 
-    private final static String[] local_output_types =
-    { "MComponentDef" };
+    private final static String[] local_output_types = { 
+            "MComponentDef" 
+    };
 
-    /**************************************************************************/
-
+    
     public CppLocalTestGenerator(Driver d, File out_dir)
         throws IOException
     {
         super("CppLocalTest", d, out_dir, local_output_types);
+        logger = Logger.getLogger("ccm.generator.cpp.local.test");
+        logger.fine("enter CppLocalTestGenerator()");
         baseNamespace.add("ccm");
         baseNamespace.add("local");
+        logger.fine("leave CppLocalTestGenerator()");
     }
 
     /**
@@ -59,8 +63,9 @@ public class CppLocalTestGenerator
     public void writeOutput(Template template)
         throws IOException
     {
+        logger.fine("enter writeOutput()");
         String generated_code = 
-	    prettifyCode(template.substituteVariables(output_variables));
+            prettifyCode(template.substituteVariables(output_variables));
 
         if(generated_code.trim().equals("")) 
 	    return;
@@ -70,60 +75,46 @@ public class CppLocalTestGenerator
         String node_name = contained.getIdentifier();
         String file_dir = "test";
 
-//        String file_name = handleNamespace("IncludeNamespace", node_name);
-//        file_name = file_name.replaceAll("[^\\w]", Text.MANGLING_SEPARATOR);
-//        file_name = "_check_" + file_name + ".cc";
-//        file_name = "_check_" + file_name + Text.MANGLING_SEPARATOR + node_name + ".cc";
-//        file_name = "_check_" + file_name + ".cc";
         String file_name = "_check_" 
             + getLocalCppNamespace(contained, Text.MANGLING_SEPARATOR)
             + ".cc";
         
-	File outFile = new File(output_dir 
-				+ File.separator
-				+ file_dir, file_name);
-	if(outFile.isFile()) {
-	    if(!isCodeEqualWithFile(generated_code, outFile)) {
-		System.out.println("WARNING: " 
-				   + outFile
-				   + " already exists!");
-		file_name += ".new";
-		outFile = new File(output_dir 
-				   + File.separator
-				   + file_dir, file_name);
-	    }
-	}
+        File outFile = new File(output_dir + File.separator + file_dir,
+                                file_name);
+        if(outFile.isFile()) {
+            if(!isCodeEqualWithFile(generated_code, outFile)) {
+                uiDriver.printMessage("WARNING: " 
+                                      + outFile
+                                      + " already exists!");
+//                System.out.println("WARNING: " + outFile + " already exists!");
+                file_name += ".new";
+                outFile = new File(output_dir 
+                                   + File.separator 
+                                   + file_dir,
+                                   file_name);
+            }
+        }
 	
-	if(isCodeEqualWithFile(generated_code, outFile)) {
-	    System.out.println("skipping " + outFile);
-	}
-	else {
-	    writeFinalizedFile(file_dir, file_name, generated_code);
-	}
+        if(isCodeEqualWithFile(generated_code, outFile)) {
+            System.out.println("skipping " + outFile);
+        }
+        else {
+            writeFinalizedFile(file_dir, file_name, generated_code);
+        }
 
         File makefile = new File(file_dir, "Makefile.py");
         File check_file = new File(output_dir, makefile.toString());
-        if (! check_file.isFile())
+        if(!check_file.isFile()) {
             writeFinalizedFile(file_dir, "Makefile.py", "");
+        }
+        logger.fine("leave writeOutput()");
     }
-
-    /**************************************************************************/
-
-//    protected String data_MComponentDef(String data_type, String data_value)
-//    {
-//        if (data_type.equals("UsingNamespace")) {
-//            String id = ((MComponentDef) currentNode).getIdentifier();
-//            String temp = handleNamespace(data_type, id);
-////            return temp + "using namespace CCM_Session_"+id+"_mirror;\n";
-//            return temp + "using namespace "
-//            	+ Constants.COMPONENT_NAMESPACE + ";\n";
-//        }
-//        return super.data_MComponentDef(data_type, data_value);
-//    }
-
-    /**************************************************************************/
+    
 
     protected Map getTwoStepOperationVariables(MOperationDef operation,
                                                MContained container)
-    { return new Hashtable(); }
+    { 
+        logger.fine("getTwoStepOperationVariables()");
+        return new Hashtable(); 
+    }
 }

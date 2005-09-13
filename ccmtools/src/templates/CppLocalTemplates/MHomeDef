@@ -181,9 +181,10 @@ SmartPtr<%(ComponentType)s>
             new %(ComponentType)s(this, 
             dynamic_cast<CCM_%(ComponentType)s*>(
                 ((CCM_%(Identifier)sImplicit*)local_home)->create()),
-                assembly)
+                assembly
             )
-        );
+        )
+    );
     if(assembly_factory != SmartPtr< ::ccm::local::Components::AssemblyFactory>()) {
         assembly->build(ret);
     }
