@@ -69,6 +69,18 @@ CCM_Test_mirror_impl::ccm_activate()
     string str3 = "Hallo to third op()";
     long size3 = receptacle->op3(str3);
     assert(size3 == str3.length());
+
+    long attr1 = 1;
+    receptacle->attr1(attr1);
+    assert(attr1 == receptacle->attr1());
+
+    long attr2 = 2;
+    receptacle->attr2(attr2);
+    assert(attr2 == receptacle->attr2());
+
+    long attr3 = 3;
+    receptacle->attr3(attr3);
+    assert(attr3 == receptacle->attr3());
 }
 
 void

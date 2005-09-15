@@ -7,16 +7,19 @@
 
 interface Base1
 {
+  attribute long attr1;
   long op1(in string str);
 };
 
 interface Base2
 {
+  attribute long attr2;
   long op2(in string str);
 };
 
 interface InterfaceType : Base1, Base2 
 {
+  attribute long attr3;
   long op3(in string str);
 };
 

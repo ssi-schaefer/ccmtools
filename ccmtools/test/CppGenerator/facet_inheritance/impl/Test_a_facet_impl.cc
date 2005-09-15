@@ -41,6 +41,50 @@ a_facet_impl::~a_facet_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
+const long
+a_facet_impl::attr3() const
+    throw(::ccm::local::Components::CCMException)
+{
+    return attr3_;
+}
+
+void
+a_facet_impl::attr3(const long value)
+    throw(::ccm::local::Components::CCMException)
+{
+    attr3_ = value;
+}
+
+const long
+a_facet_impl::attr2() const
+    throw(::ccm::local::Components::CCMException)
+{
+    return attr2_;
+}
+
+void
+a_facet_impl::attr2(const long value)
+    throw(::ccm::local::Components::CCMException)
+{
+    attr2_ = value;
+}
+
+const long
+a_facet_impl::attr1() const
+    throw(::ccm::local::Components::CCMException)
+{
+    return attr1_;
+}
+
+void
+a_facet_impl::attr1(const long value)
+    throw(::ccm::local::Components::CCMException)
+{
+    attr1_ = value;
+}
+
+
+
 long
 a_facet_impl::op3(const std::string& str)
     throw (Components::CCMException)
