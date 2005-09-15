@@ -87,17 +87,24 @@ class %(Identifier)sFacetAdapter
         ::ccm::local::Components::Object* c, CCM_%(Identifier)s* f);
     virtual ~%(Identifier)sFacetAdapter();
 
-    inline void validConnection(const bool value) 
+    inline 
+    void validConnection(const bool value) 
     {
         validConnection_ = value;
     }
     
-    inline const bool validConnection() const 
+    inline 
+    const bool validConnection() const 
     {
         return validConnection_;
     }
     
+%(BaseInterfaceAdapterAttributeHeader)s
+
 %(MAttributeDefAdapterHeader)s
+
+
+%(BaseInterfaceAdapterOperationHeader)s
 
 %(MOperationDefAdapterHeader)s
 
@@ -159,8 +166,12 @@ using namespace WX::Utils;
 }
 
 
+%(BaseInterfaceAdapterAttributeImpl)s
+
 %(MAttributeDefAdapterImpl)s
 
+
+%(BaseInterfaceAdapterOperationImpl)s
 
 %(MOperationDefAdapterImpl)s
 

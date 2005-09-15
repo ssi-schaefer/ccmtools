@@ -372,6 +372,26 @@ public class CppLocalGenerator
             MContained contained = (MContained)currentNode;
             dataValue = getLocalCppName(contained, Text.FILE_SEPARATOR);
         }
+        else if(dataType.equals("BaseInterfaceAdapterAttributeHeader")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = false;
+            dataValue = getBaseInterfaceAttributes(isImpl,iface,baseInterfaceList);
+        }
+        else if(dataType.equals("BaseInterfaceAdapterAttributeImpl")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = true;
+            dataValue = getBaseInterfaceAttributes(isImpl,iface,baseInterfaceList);
+        }
+        else if(dataType.equals("BaseInterfaceAdapterOperationHeader")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = false;
+            dataValue = getBaseInterfaceOperations(isImpl,iface,baseInterfaceList);
+        }
+        else if(dataType.equals("BaseInterfaceAdapterOperationImpl")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = true;
+            dataValue = getBaseInterfaceOperations(isImpl,iface,baseInterfaceList);
+        }
         else {
             dataValue = super.data_MInterfaceDef(dataType, dataValue);
         }
@@ -379,6 +399,149 @@ public class CppLocalGenerator
         return dataValue;
     }
 
+    
+    protected String getBaseInterfaceOperations(boolean isImpl, 
+                                                MInterfaceDef iface,
+                                                List baseInterfaceList)
+    {
+        StringBuffer code = new StringBuffer();
+        for(Iterator i = baseInterfaceList.iterator(); i.hasNext();) {
+            MInterfaceDef baseIface = (MInterfaceDef) i.next();
+            List contentList = baseIface.getContentss();
+            for(Iterator j = contentList.iterator(); j.hasNext();) {
+                MContained contained = (MContained)j.next();	
+                if(contained instanceof MOperationDef) {
+                    MOperationDef op = (MOperationDef)contained;	
+                    if(isImpl) {
+                        // generate code for C++ impl file
+                        code.append(getAdapterOperationImpl(iface,op));
+                    }
+                    else { 
+                        // generate code for C++ header file 
+                        code.append(getAdapterOperationHeader(op));
+                    }
+                }
+            }
+            code.append("\n");
+        }
+        return code.toString();
+    }
+    
+    protected String getAdapterOperationHeader(MOperationDef op) 
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(Text.TAB).append("virtual").append("\n");
+        code.append(Text.TAB).append(getLanguageType(op)).append("\n");
+        code.append(Text.TAB).append(op.getIdentifier()).append("(");
+        code.append(getOperationParams(op));
+        code.append(")\n");
+        code.append(Text.tab(2)).append(getOperationExcepts(op)).append(";\n");
+        return code.toString();
+    }
+    
+    protected String getAdapterOperationImpl(MInterfaceDef iface, MOperationDef op)
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(getLanguageType(op)).append("\n");
+        code.append(iface.getIdentifier());
+        code.append("FacetAdapter::").append(op.getIdentifier()).append("(");
+        code.append(getOperationParams(op)).append(")\n");
+        code.append(Text.TAB).append(getOperationExcepts(op)).append("\n");
+        code.append("{\n");
+        code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL,\" ");
+        code.append(iface.getIdentifier());
+        code.append("FacetAdapter::").append(op.getIdentifier()).append("()\");\n");
+        code.append(getDebugOperationInParameter(op)).append("\n");
+        code.append(Text.TAB).append("if(!validConnection())\n");
+        code.append(Text.tab(2)).append("throw ::ccm::local::Components::InvalidConnection();\n\n");
+        code.append(getOperationDelegation(op,"facet_")).append("\n\n");
+        code.append(getDebugOperationOutParameter(op)).append("\n");
+        code.append(getDebugOperationResult(op)).append("\n");
+        code.append(getOperationResult(op)).append("\n");
+        code.append("}\n");
+        return code.toString();
+    }
+    
+    
+
+    
+
+    protected String getBaseInterfaceAttributes(boolean isImpl, 
+                                                MInterfaceDef iface,
+                                                List baseInterfaceList)
+    {
+        StringBuffer code = new StringBuffer();
+        for(Iterator i = baseInterfaceList.iterator(); i.hasNext();) {
+            MInterfaceDef baseIface = (MInterfaceDef) i.next();
+            List contentList = baseIface.getContentss();
+            for(Iterator j = contentList.iterator(); j.hasNext();) {
+                MContained contained = (MContained)j.next();	
+                if(contained instanceof MAttributeDef) {
+                    MAttributeDef attr = (MAttributeDef)contained;
+                    if(isImpl) {
+                        // generate code for C++ impl file
+                        code.append(getAdapterAttributeImpl(iface,attr));
+                    }
+                    else {
+                        // generate code for C++ header file 
+	                    code.append(getAdapterAttributeHeader(attr));
+                    }
+                }
+            }
+            code.append("\n");
+        }
+        return code.toString();
+    }
+    
+    protected String getAdapterAttributeHeader(MAttributeDef attr) 
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(Text.TAB).append("virtual\n");
+        code.append(Text.TAB).append("const ").append(getLanguageType(attr));
+        code.append(" ").append(attr.getIdentifier()).append("() const\n");
+        code.append(Text.tab(2)).append("throw(::ccm::local::Components::CCMException);\n\n");
+
+        code.append(Text.TAB).append("virtual\n");
+        code.append(Text.TAB).append("void ").append(attr.getIdentifier()).append("(const ");
+        code.append(getLanguageType(attr)).append(" value)\n");
+        code.append(Text.tab(2)).append("throw(::ccm::local::Components::CCMException);\n\n");
+        return code.toString();
+    }
+    
+    protected String getAdapterAttributeImpl(MInterfaceDef iface, MAttributeDef attr) 
+    {
+        StringBuffer code = new StringBuffer();
+        code.append("const ").append(getLanguageType(attr)).append("\n");
+        code.append(iface.getIdentifier()).append("FacetAdapter::").append(attr.getIdentifier());
+        code.append("() const\n");
+        code.append(Text.TAB).append("throw(::ccm::local::Components::CCMException)\n");
+        code.append("{\n");
+        code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \" ").append(iface.getIdentifier());
+        code.append("FacetAdapter::").append(attr.getIdentifier()).append("() = \"\n");
+        code.append(Text.tab(2)).append("<< ::").append(getDebugNamespace(attr.getIdlType()));
+        code.append("::ccmDebug(facet_->").append(attr.getIdentifier()).append("()));\n");
+        code.append(Text.TAB).append("if(!validConnection())\n");
+        code.append(Text.tab(2)).append("throw ::ccm::local::Components::InvalidConnection();\n");
+        code.append(Text.TAB).append("return facet_->").append(attr.getIdentifier());
+        code.append("();\n");       
+        code.append("}\n\n");
+        
+        code.append("void\n");
+        code.append(iface.getIdentifier()).append("FacetAdapter::").append(attr.getIdentifier());
+        code.append("(const ").append(getLanguageType(attr)).append(" value)\n");
+        code.append(Text.TAB).append("throw(::ccm::local::Components::CCMException)\n");
+        code.append("{\n");
+        code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \" ").append(iface.getIdentifier());
+        code.append("FacetAdapter::").append(attr.getIdentifier()).append("(\"\n");
+        code.append(Text.tab(2)).append("<< ::").append(getDebugNamespace(attr.getIdlType()));
+        code.append("::ccmDebug(value) << \")\");\n");
+        code.append(Text.TAB).append("if(!validConnection())\n");
+        code.append(Text.tab(2)).append("throw ::ccm::local::Components::InvalidConnection();\n");
+        code.append(Text.TAB).append("facet_->").append(attr.getIdentifier());
+        code.append("(value);\n");       
+        code.append("}\n\n");
+        return code.toString();
+    }
     
     /**
      * Write generated code to an output file.

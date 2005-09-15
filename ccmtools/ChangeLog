@@ -1,5 +1,12 @@
 RELEASE-0.5.3
 ============================================================================
+
+RELEASE-0.5.3-pre3
+----------------------------------------------------------------------------
+*) Bugifx: local adapter for derived interfaces (facets and receptacles)
+
+
+
 RELEASE-0.5.3-pre2
 ----------------------------------------------------------------------------
 *) generate a local adapter for every interface (parallel to the interface
