@@ -85,22 +85,19 @@ public class IDL3MirrorGenerator extends IDLGenerator
                 iface = ((MUsesDef) currentNode).getUses();
 
             if(iface != null)
-                value = "#include <" + getScopedInclude(iface) + ".idl>";
+                value = getScopedInclude(iface);
         }
         else if(variable.equals("HomeInclude")) {
             if(currentNode instanceof MComponentDef) {
                 Iterator homes = ((MComponentDef) currentNode).getHomes()
                         .iterator();
-                value = "#include <"
-                        + getScopedInclude((MHomeDef) homes.next())
-                        + "_mirror.idl>";
+                value = getScopedMirrorInclude((MHomeDef) homes.next());
             }
         }
         else if(variable.equals("ComponentInclude")) {
             if(currentNode instanceof MHomeDef) {
-                value = "#include <"
-                        + getScopedInclude(((MHomeDef) currentNode)
-                                .getComponent()) + "_mirror.idl>";
+                MComponentDef component = ((MHomeDef)currentNode).getComponent();
+                value = getScopedMirrorInclude(component);
             }
         }
         else {
@@ -115,15 +112,31 @@ public class IDL3MirrorGenerator extends IDLGenerator
     /**
      * Override IDLGenerator method to generate idl3mirror component #include <>
      * statements in the right way.
-     *  
+     * TODO: move this method up to the super class
      */
     protected String getScopedInclude(MContained node)
     {
+        StringBuffer code = new StringBuffer();
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        return join(File.separator, scope);
+        code.append("#include <");
+        code.append(join(File.separator, scope));
+        code.append(".idl>\n");
+        return code.toString();
     }
 
+    protected String getScopedMirrorInclude(MContained node)
+    {
+        StringBuffer code = new StringBuffer();
+        List scope = getScope(node);
+        scope.add(node.getIdentifier());
+        code.append("#include <");
+        code.append(join(File.separator, scope));
+        code.append("_mirror.idl>\n");
+        return code.toString();
+    }
+    
+    
     /**
      * Override IDLGenerator method to generate the mirror component files into
      * a 'component' directory.
