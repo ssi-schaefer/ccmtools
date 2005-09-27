@@ -13,9 +13,10 @@ idl3: ${APP_NAME}.idl
 local: idl3
 	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/*.idl
 	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl 
-	mkdir ${DEST_DIR}/component/Test/test
+
 
 check: 
+	mkdir ${DEST_DIR}/component/Test/test
 	cp impl/Makefile.py ${DEST_DIR}
 	touch ${DEST_DIR}/interface/Makefile.py
 	touch ${DEST_DIR}/component/Makefile.py

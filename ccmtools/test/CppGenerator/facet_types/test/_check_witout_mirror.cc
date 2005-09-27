@@ -185,5 +185,9 @@ int main(int argc, char *argv[])
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
     }
+
+    // Clean up HomeFinder singleton
+    HomeFinder::destroy();
+
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 }
