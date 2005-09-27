@@ -26,7 +26,7 @@ class HomeFinder
   : public Components::HomeFinder
 {
  private:
-  static Components::HomeFinder* instance;
+  static Components::HomeFinder* instance_;
   HomePoolMap HomePool;
 
  protected:
@@ -35,6 +35,7 @@ class HomeFinder
 
  public:
   static Components::HomeFinder* Instance();
+  static void destroy();
 
   // methods from HomeFinder
   WX::Utils::SmartPtr<Components::CCMHome>

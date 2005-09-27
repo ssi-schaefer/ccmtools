@@ -13,3 +13,4 @@ missing
 mkinstalldirs
 ccm-local.repo
 ccm-local-runtime.repo
+acinclude.m4
