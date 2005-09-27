@@ -75,17 +75,17 @@ ccmDebug(const WX::Utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
 %(OpenNamespace)s
 
 //==============================================================================
-// %(Identifier)s facet adapter (header file)
+// %(Identifier)s adapter (header file)
 //==============================================================================
 
-class %(Identifier)sFacetAdapter
+class %(Identifier)sAdapter
   : public CCM_%(Identifier)s
 {
  public:
-    %(Identifier)sFacetAdapter();
-    %(Identifier)sFacetAdapter(
+    %(Identifier)sAdapter();
+    %(Identifier)sAdapter(
         ::ccm::local::Components::Object* c, CCM_%(Identifier)s* f);
-    virtual ~%(Identifier)sFacetAdapter();
+    virtual ~%(Identifier)sAdapter();
 
     inline 
     void validConnection(const bool value) 
@@ -143,26 +143,26 @@ using namespace WX::Utils;
 // %(Identifier)s facet adapter (implementation)
 //==============================================================================
 
-%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()
+%(Identifier)sAdapter::%(Identifier)sAdapter()
 {
-    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter()");
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)sAdapter::%(Identifier)sAdapter()");
     component_ = NULL;
     validConnection_ = false;
     facet_ = NULL;
 }
 
-%(Identifier)sFacetAdapter::%(Identifier)sFacetAdapter(
+%(Identifier)sAdapter::%(Identifier)sAdapter(
     ::ccm::local::Components::Object* c, CCM_%(Identifier)s* f)
     : component_(c), facet_(f)
 {
-    LDEBUGNL(CCM_CONTAINER,"%(ComponentType)s+FacetAdapter%(Identifier)s::%(ComponentType)s%(Identifier)sFacetAdapter()" );
+    LDEBUGNL(CCM_CONTAINER,"+%(ComponentType)sAdapter%(Identifier)s::%(ComponentType)s%(Identifier)sAdapter()" );
     validConnection_ = true;
 }
 
-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()
+%(Identifier)sAdapter::~%(Identifier)sAdapter()
 {
-    LDEBUGNL(CCM_CONTAINER,"-%(Identifier)sFacetAdapter::~%(Identifier)sFacetAdapter()" );
-    delete facet_;
+    LDEBUGNL(CCM_CONTAINER,"-%(Identifier)sAdapter::~%(Identifier)sAdapter()" );
+    //delete facet_;
 }
 
 
@@ -177,9 +177,9 @@ using namespace WX::Utils;
 
 
 SmartPtr< ::ccm::local::Components::Object>
-%(Identifier)sFacetAdapter::get_component()
+%(Identifier)sAdapter::get_component()
 {
-    LDEBUGNL(CCM_CONTAINER," %(Identifier)sFacetAdapter::get_component()");
+    LDEBUGNL(CCM_CONTAINER," %(Identifier)sAdapter::get_component()");
     return SmartPtr< ::ccm::local::Components::Object>
         (dynamic_cast< ::ccm::local::Components::Object*> (component_));
 };

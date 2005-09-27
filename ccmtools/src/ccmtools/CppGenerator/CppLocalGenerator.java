@@ -444,13 +444,13 @@ public class CppLocalGenerator
         StringBuffer code = new StringBuffer();
         code.append(getLanguageType(op)).append("\n");
         code.append(iface.getIdentifier());
-        code.append("FacetAdapter::").append(op.getIdentifier()).append("(");
+        code.append("Adapter::").append(op.getIdentifier()).append("(");
         code.append(getOperationParams(op)).append(")\n");
         code.append(Text.TAB).append(getOperationExcepts(op)).append("\n");
         code.append("{\n");
         code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL,\" ");
         code.append(iface.getIdentifier());
-        code.append("FacetAdapter::").append(op.getIdentifier()).append("()\");\n");
+        code.append("Adapter::").append(op.getIdentifier()).append("()\");\n");
         code.append(getDebugOperationInParameter(op)).append("\n");
         code.append(Text.TAB).append("if(!validConnection())\n");
         code.append(Text.tab(2)).append("throw ::ccm::local::Components::InvalidConnection();\n\n");
@@ -512,12 +512,12 @@ public class CppLocalGenerator
     {
         StringBuffer code = new StringBuffer();
         code.append("const ").append(getLanguageType(attr)).append("\n");
-        code.append(iface.getIdentifier()).append("FacetAdapter::").append(attr.getIdentifier());
+        code.append(iface.getIdentifier()).append("Adapter::").append(attr.getIdentifier());
         code.append("() const\n");
         code.append(Text.TAB).append("throw(::ccm::local::Components::CCMException)\n");
         code.append("{\n");
         code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \" ").append(iface.getIdentifier());
-        code.append("FacetAdapter::").append(attr.getIdentifier()).append("() = \"\n");
+        code.append("Adapter::").append(attr.getIdentifier()).append("() = \"\n");
         code.append(Text.tab(2)).append("<< ::").append(getDebugNamespace(attr.getIdlType()));
         code.append("::ccmDebug(facet_->").append(attr.getIdentifier()).append("()));\n");
         code.append(Text.TAB).append("if(!validConnection())\n");
@@ -527,12 +527,12 @@ public class CppLocalGenerator
         code.append("}\n\n");
         
         code.append("void\n");
-        code.append(iface.getIdentifier()).append("FacetAdapter::").append(attr.getIdentifier());
+        code.append(iface.getIdentifier()).append("Adapter::").append(attr.getIdentifier());
         code.append("(const ").append(getLanguageType(attr)).append(" value)\n");
         code.append(Text.TAB).append("throw(::ccm::local::Components::CCMException)\n");
         code.append("{\n");
         code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \" ").append(iface.getIdentifier());
-        code.append("FacetAdapter::").append(attr.getIdentifier()).append("(\"\n");
+        code.append("Adapter::").append(attr.getIdentifier()).append("(\"\n");
         code.append(Text.tab(2)).append("<< ::").append(getDebugNamespace(attr.getIdlType()));
         code.append("::ccmDebug(value) << \")\");\n");
         code.append(Text.TAB).append("if(!validConnection())\n");

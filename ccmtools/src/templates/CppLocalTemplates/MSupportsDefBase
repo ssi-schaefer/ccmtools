@@ -1,1 +1,1 @@
-, virtual public %(CCMSupportsType)s
+, virtual public %(SupportsType)sAdapter

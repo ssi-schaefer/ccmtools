@@ -63,7 +63,6 @@ class %(Identifier)s
 %(MProvidesDefProvidePrototype)s
 %(MUsesDefConnectPrototype)s
 %(MUsesDefGetConnectionPrototype)s
-%(MSupportsDefAdapterPrototype)s
 
     // Navigation functions
     WX::Utils::SmartPtr< ::ccm::local::Components::Object> 
@@ -182,7 +181,10 @@ using namespace WX::Utils;
 %(Identifier)s::%(Identifier)s(%(HomeType)s* h, 
     CCM_%(Identifier)s* lc,
     SmartPtr< ::ccm::local::Components::Assembly> a)
-    : home_local_adapter(h), local_component(lc), assembly(a)
+    : %(MSupportsDefAdapterConstructor)s
+    home_local_adapter(h), 
+    local_component(lc), 
+    assembly(a)
 {
     LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s()");
     context = NULL; 
@@ -196,12 +198,12 @@ using namespace WX::Utils;
     LDEBUGNL(CCM_CONTAINER,"-%(Identifier)s::~%(Identifier)s()");
     delete context;
     delete local_component;
+    %(MProvidesDefAdapterVariableDestroy)s
 }
 
 %(MAttributeDefAdapterDefinition)s
 %(MProvidesDefAdapterDefinition)s
 %(MUsesDefAdapterDefinition)s
-%(MSupportsDefAdapterImplDefinition)s
 
 // Navigation functions
 

@@ -1,4 +1,5 @@
+    %(Identifier)s_facet_impl = local_component->get_%(Identifier)s();
     %(Identifier)s_facet = 
-        SmartPtr<%(ProvidesType)s>(new %(ProvidesType)sFacetAdapter(
+        SmartPtr<%(ProvidesType)s>(new %(ProvidesType)sAdapter(
             dynamic_cast< ::ccm::local::Components::Object*>(this), 
-            local_component->get_%(Identifier)s()));
+            %(Identifier)s_facet_impl));

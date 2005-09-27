@@ -1,8 +1,8 @@
 %(LanguageType)s
-%(InterfaceIdentifier)sFacetAdapter::%(Identifier)s(%(OperationParameterList)s)
+%(InterfaceIdentifier)sAdapter::%(Identifier)s(%(OperationParameterList)s)
 %(ExceptionThrows)s
 {
-    LDEBUGNL(CCM_LOCAL," FacetAdapter%(Object)s::%(Identifier)s(%(MParameterDefName)s)");
+    LDEBUGNL(CCM_LOCAL," %(InterfaceIdentifier)sAdapter%(Object)s::%(Identifier)s(%(MParameterDefName)s)");
 %(DebugOperationInParameter)s
     if(!validConnection()) 
         throw ::ccm::local::Components::InvalidConnection();

@@ -1,3 +1,5 @@
     WX::Utils::SmartPtr< %(ProvidesType)s> %(Identifier)s_facet;
+    %(CCMProvidesType)s* %(Identifier)s_facet_impl;
+    
 
 

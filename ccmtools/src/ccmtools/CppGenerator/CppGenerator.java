@@ -603,7 +603,10 @@ abstract public class CppGenerator extends CodeGenerator
         logger.fine("data_MSupportsDef()");
         MInterfaceDef iface = ((MSupportsDef) currentNode).getSupports();
 
-        if(data_type.equals("CCMSupportsType")) {
+        if(data_type.equals("SupportsType")) {
+            return iface.getIdentifier();
+        }
+        else if(data_type.equals("CCMSupportsType")) {
             if(data_value.indexOf(Text.SCOPE_SEPARATOR) < 0)
                 return "CCM_" + data_value;
             int i = data_value.lastIndexOf(Text.SCOPE_SEPARATOR)

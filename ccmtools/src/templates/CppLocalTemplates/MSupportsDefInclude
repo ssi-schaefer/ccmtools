@@ -1,2 +1,2 @@
-#include <%(SupportsInclude)s.h>
+#include <%(SupportsInclude)sAdapter.h>
 
