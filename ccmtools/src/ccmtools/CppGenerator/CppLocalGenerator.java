@@ -51,6 +51,7 @@ import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
@@ -216,17 +217,6 @@ public class CppLocalGenerator
         if (currentNode instanceof MAttributeDef) {
             return data_MAttributeDef(variable, value);
         }
-        else if (currentNode instanceof MAliasDef) {
-            // determine the contained type of MaliasDef
-            MTyped type = (MTyped) currentNode;
-            MIDLType idlType = type.getIdlType();
-            if (idlType instanceof MSequenceDef) {
-                return data_MSequenceDef(variable, value);
-            }
-            else if (idlType instanceof MArrayDef) {
-                return data_MArrayDef(variable, value);
-            }
-        }    
         else if (currentNode instanceof MFieldDef) {
             return data_MFieldDef(variable, value);
         }
@@ -265,6 +255,72 @@ public class CppLocalGenerator
         return code.toString();
     }
     
+    
+    protected String data_MAliasDef(String dataType, String dataValue) 
+    {
+        logger.fine("enter data_MAliasDef()");
+        MAliasDef alias = (MAliasDef)currentNode;
+        MTyped type = (MTyped) alias;
+        MIDLType idlType = type.getIdlType();
+        
+        if(dataType.equals("TypedefDefinition")) {
+            if(isTypedefAny(alias)) {
+                // handle typedef -> any
+                dataValue = getTypedefAny(alias);
+            }
+            else {
+                dataValue = getTypedef(alias);
+            }
+        }
+        else if (idlType instanceof MSequenceDef) {
+            dataValue = data_MSequenceDef(dataType, dataValue);
+        }
+        else if (idlType instanceof MArrayDef) {
+            dataValue = data_MArrayDef(dataType, dataValue);
+        } 
+        else { // fallback to super class
+            dataValue = super.data_MAliasDef(dataType,dataValue);
+        }
+        logger.fine("leave data_MAliasDef()");
+        return dataValue;
+    }
+        
+    protected boolean isTypedefAny(MAliasDef alias)
+    {
+        MTyped type = (MTyped) alias;
+        MIDLType idlType = type.getIdlType();
+        if(idlType instanceof MPrimitiveDef) {
+            MPrimitiveDef primitive = (MPrimitiveDef)idlType;
+            if(primitive.getKind() == MPrimitiveKind.PK_ANY) {
+                return true;
+            }
+        }  
+        return false;
+    }
+    
+    protected String getTypedefAny(MAliasDef alias) 
+    {
+        StringBuffer code = new StringBuffer();
+        MTypedefDef typedef = (MTypedefDef) alias;
+        code.append("// typedef ").append(typedef.getIdentifier());
+        code.append(" -> any\n");
+        // TODO: replace known typedef
+        code.append(getTypedef(alias));
+        return code.toString();
+    }
+    
+    protected String getTypedef(MAliasDef alias) 
+    {
+        StringBuffer code = new StringBuffer();
+        MTyped type = (MTyped) alias;
+        MTypedefDef typedef = (MTypedefDef) alias;
+        code.append("typedef ");
+        code.append(getLanguageType(type));
+        code.append(" ");
+        code.append(typedef.getIdentifier());
+        code.append(";\n");
+        return code.toString();
+    }
     
     protected String data_MFieldDef(String dataType, String dataValue) 
     {

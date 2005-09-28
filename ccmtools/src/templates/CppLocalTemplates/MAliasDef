@@ -19,7 +19,8 @@ using namespace std;
 
 %(OpenNamespace)s
 
-typedef %(LanguageType)s %(Identifier)s;
+%(TypedefDefinition)s
+//typedef %(LanguageType)s %(Identifier)s;
 
 %(MAliasDefDebug)s
 
