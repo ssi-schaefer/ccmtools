@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 import ccmtools.CcmtoolsProperties;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
-import ccmtools.CppGenerator.plugin.AnyManager;
+import ccmtools.CppGenerator.plugin.AnyPluginManager;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
@@ -70,7 +70,7 @@ import ccmtools.utils.Text;
 public class CppLocalGenerator 
 	extends CppGenerator
 {
-    protected AnyManager anyManager = null;
+    protected AnyPluginManager anyManager = null;
     
     //====================================================================
     // Definition of arrays that determine the generator's behavior
@@ -93,7 +93,7 @@ public class CppLocalGenerator
         logger.fine("enter CppLocalGenerator()");
         baseNamespace.add("ccm");
         baseNamespace.add("local");
-        anyManager = new AnyManager(this);
+        anyManager = new AnyPluginManager(this);
         logger.fine("leave CppLocalGenerator()");
     }
 

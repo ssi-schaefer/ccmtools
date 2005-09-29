@@ -10,21 +10,35 @@ import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 
-public class AnyManager
+/**
+ * This manager class hides all details of the any plugin mechanism from  
+ * the code generator.
+ * 
+ * 
+ */
+public class AnyPluginManager
 {
     protected CppLocalGenerator generator = null;
     protected Map mappings = null;
     
-    public AnyManager(CppLocalGenerator cppLocalGenerator)
+    public AnyPluginManager(CppLocalGenerator generator)
     {
-        this.generator = cppLocalGenerator;
+        this.generator = generator;
         mappings = new HashMap();       
+        
+//        String dir = System.getProperty("ccmtools.templates") 
+//                        + Text.FILE_SEPARATOR 
+//                        + CcmtoolsProperties.Instance().get("ccmtools.dir.plugin.any");
+//        System.out.println("!!!!!!!! " + dir);
         
         /**
          *  We fill all typedef to any mappings into this map from where
          *  the code generator can find (and use) such a predefined mapping.
          **/
-        mappings.put("StlMap", new AnyToStlMapMapping(cppLocalGenerator));
+        mappings.put("Person", new AnyToPersonMapping(generator));
+        mappings.put("DTO", new AnyToDTOMapping(generator));
+
+        mappings.put("StlMap", new AnyToStlMapMapping(generator));
         // ...
         
     }

@@ -1,0 +1,23 @@
+#include <map>
+
+<<<<<<<SPLIT>>>>>>>
+
+typedef std::map<std::string, int> StlMap;
+
+<<<<<<<SPLIT>>>>>>>
+
+#ifdef WXDEBUG
+inline
+std::string
+ccmDebug(const StlMap& in, int indent = 0)
+{
+    std::ostringstream os;
+    os << ::ccm::local::doIndent(indent) << \"StlMap:\" << std::endl;
+    StlMap::const_iterator pos;
+    for(pos = in.begin(); pos != in.end(); ++pos) {
+        os << ::ccm::local::doIndent(indent+1);
+        os << \"key = \" << pos->first << \" , value = \" << pos->second << endl;
+    }
+    return os.str();
+}
+#endif // WXDEBUG

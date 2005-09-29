@@ -27,7 +27,7 @@ public class CcmtoolsProperties
         return instance_;
     }
     
-    public CcmtoolsProperties() 
+    protected CcmtoolsProperties() 
     	throws IOException
     {
         propertyPath_ = 
