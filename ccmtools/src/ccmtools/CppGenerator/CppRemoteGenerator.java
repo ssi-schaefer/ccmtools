@@ -1085,7 +1085,7 @@ public class CppRemoteGenerator
      *            Reference to an element of the CCM model.
      * @return Generated code for the local C++ type as string.
      */
-    protected String getLanguageType(MTyped object)
+    public String getLanguageType(MTyped object)
     {
         logger.fine("getLanguageType()");
         

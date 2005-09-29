@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import ccmtools.CcmtoolsProperties;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
+import ccmtools.CppGenerator.plugin.AnyManager;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
@@ -46,7 +47,6 @@ import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
@@ -70,6 +70,8 @@ import ccmtools.utils.Text;
 public class CppLocalGenerator 
 	extends CppGenerator
 {
+    protected AnyManager anyManager = null;
+    
     //====================================================================
     // Definition of arrays that determine the generator's behavior
     //====================================================================
@@ -91,6 +93,7 @@ public class CppLocalGenerator
         logger.fine("enter CppLocalGenerator()");
         baseNamespace.add("ccm");
         baseNamespace.add("local");
+        anyManager = new AnyManager(this);
         logger.fine("leave CppLocalGenerator()");
     }
 
@@ -98,47 +101,7 @@ public class CppLocalGenerator
     //====================================================================
     // Code generator core methods
     //====================================================================
-        
-    /**
-     * Generate the namespace for ccmDebug() methods.
-     * For model elements not derived from MContained the predefined
-     * CCM_Local::ccmDebug() methods will be used (defined in the 
-     * cpp_environment).
-     * 
-     * @param baseNamespace List of predefined namespaces (e.g. CCM_Local)
-     * @param idlType IDL type of the current model element.
-     * @return A string containing the ccmDebug() method's namespace of 
-     * the current model element.
-     */
-    public String getDebugNamespace(MIDLType idlType)
-    {
-        logger.fine("enter getDebugNamespace()");
-        StringBuffer code = new StringBuffer();
-        if(idlType instanceof MAliasDef) {
-            MTyped type = (MTyped) idlType;
-            MIDLType innerIdlType = type.getIdlType();
-            if(innerIdlType instanceof MPrimitiveDef 
-                    || innerIdlType instanceof MStringDef
-                    || innerIdlType instanceof MWstringDef) {
-                code.append(Text.join(Text.SCOPE_SEPARATOR, baseNamespace)); 
-            }
-            else {
-                code.append(getLocalCppNamespace((MContained)idlType,
-                                                 Text.SCOPE_SEPARATOR));
-            }
-        }
-        else if(idlType instanceof MContained) {
-            code.append(getLocalCppNamespace((MContained)idlType, 
-                                             Text.SCOPE_SEPARATOR));
-    	}
-        else {
-            code.append(Text.join(Text.SCOPE_SEPARATOR, baseNamespace)); 
-        }
-        logger.fine("leave getDebugNamespace()");
-        return code.toString();
-    }
-    
-    
+       
     /**
      * Get a variable hash table sutable for filling in the template from the
      * fillTwoStepTemplates function. This version of the function fills in
@@ -223,104 +186,6 @@ public class CppLocalGenerator
         return value;
     }
             
-    /***
-     * Generate the #include<> statement for a MIDLType model element
-     * with full scope.
-     * e.g: #include <world/europe/austria/ccm/local/Person.h>
-     */
-    protected String getLanguageTypeInclude(MIDLType idlType) 
-    {
-        logger.fine("enter getLanguageTypeInclude()");
-        StringBuffer code = new StringBuffer();
-        if(idlType instanceof MStringDef) {
-            code.append("#include <string>\n");
-        }
-        else if(idlType instanceof MPrimitiveDef) {
-            MPrimitiveDef primitive = (MPrimitiveDef)idlType;
-            if(primitive.getKind() == MPrimitiveKind.PK_ANY) {
-                code.append("#include <WX/Utils/value.h>\n");
-            }
-        }
-        else if(idlType instanceof MSequenceDef
-                || idlType instanceof MArrayDef) {
-            MTyped singleType = (MTyped)idlType;
-            MIDLType singleIdlType = singleType.getIdlType();
-            code.append("#include <vector>\n");
-            code.append(getLanguageTypeInclude(singleIdlType));
-        }
-        else if(idlType instanceof MContained) {
-            code.append(getScopedInclude((MContained) idlType));
-        }
-        logger.fine("leave getLanguageTypeInclude()");
-        return code.toString();
-    }
-    
-    
-    protected String data_MAliasDef(String dataType, String dataValue) 
-    {
-        logger.fine("enter data_MAliasDef()");
-        MAliasDef alias = (MAliasDef)currentNode;
-        MTyped type = (MTyped) alias;
-        MIDLType idlType = type.getIdlType();
-        
-        if(dataType.equals("TypedefDefinition")) {
-            if(isTypedefAny(alias)) {
-                // handle typedef -> any
-                dataValue = getTypedefAny(alias);
-            }
-            else {
-                dataValue = getTypedef(alias);
-            }
-        }
-        else if (idlType instanceof MSequenceDef) {
-            dataValue = data_MSequenceDef(dataType, dataValue);
-        }
-        else if (idlType instanceof MArrayDef) {
-            dataValue = data_MArrayDef(dataType, dataValue);
-        } 
-        else { // fallback to super class
-            dataValue = super.data_MAliasDef(dataType,dataValue);
-        }
-        logger.fine("leave data_MAliasDef()");
-        return dataValue;
-    }
-        
-    protected boolean isTypedefAny(MAliasDef alias)
-    {
-        MTyped type = (MTyped) alias;
-        MIDLType idlType = type.getIdlType();
-        if(idlType instanceof MPrimitiveDef) {
-            MPrimitiveDef primitive = (MPrimitiveDef)idlType;
-            if(primitive.getKind() == MPrimitiveKind.PK_ANY) {
-                return true;
-            }
-        }  
-        return false;
-    }
-    
-    protected String getTypedefAny(MAliasDef alias) 
-    {
-        StringBuffer code = new StringBuffer();
-        MTypedefDef typedef = (MTypedefDef) alias;
-        code.append("// typedef ").append(typedef.getIdentifier());
-        code.append(" -> any\n");
-        // TODO: replace known typedef
-        code.append(getTypedef(alias));
-        return code.toString();
-    }
-    
-    protected String getTypedef(MAliasDef alias) 
-    {
-        StringBuffer code = new StringBuffer();
-        MTyped type = (MTyped) alias;
-        MTypedefDef typedef = (MTypedefDef) alias;
-        code.append("typedef ");
-        code.append(getLanguageType(type));
-        code.append(" ");
-        code.append(typedef.getIdentifier());
-        code.append(";\n");
-        return code.toString();
-    }
     
     protected String data_MFieldDef(String dataType, String dataValue) 
     {
@@ -334,37 +199,55 @@ public class CppLocalGenerator
         return dataValue;
     }
     
-    protected String data_MSequenceDef(String dataType, String dataValue)
+    
+    protected String data_MAliasDef(String dataType, String dataValue) 
     {
-        logger.fine("enter data_MSequenceDef()");
-        MTyped type = (MTyped) currentNode;
+        logger.fine("enter data_MAliasDef()");
+        MAliasDef alias = (MAliasDef)currentNode;
+        MTyped type = (MTyped) alias;
         MIDLType idlType = type.getIdlType();
-        if(dataType.equals("MAliasDefDebug")) {
-            dataValue =  getDebugSequence(type);
+
+        if(dataType.equals("TypedefInclude")) {
+            if(anyManager.isTypedefToAny(idlType)) {
+                dataValue = anyManager.getTypedefInclude(alias);
+            }
+            else {
+                dataValue = getLanguageTypeInclude(idlType);
+            }
         }
-        logger.fine("leave data_MSequenceDef()");
+        else if(dataType.equals("TypedefDefinition")) {
+            if(anyManager.isTypedefToAny(idlType)) {
+                dataValue = anyManager.getTypedefDefinition(alias);
+            }
+            else {
+                dataValue = getTypedef(alias);
+            }
+        }
+        else if(dataType.equals("TypedefDebug")) {
+            if(anyManager.isTypedefToAny(idlType)) {
+                dataValue =  anyManager.getTypedefDebug(alias);
+            }
+            else if(idlType instanceof MSequenceDef) {
+                dataValue =  getDebugSequence(type);
+            }
+            else if(idlType instanceof MArrayDef) {
+                dataValue = getDebugArray(type);
+            }
+        }
+        else { // fallback to super class
+            dataValue = super.data_MAliasDef(dataType,dataValue);
+        }
+        logger.fine("leave data_MAliasDef()");
         return dataValue;
     }
-    
-    protected String data_MArrayDef(String dataType, String dataValue)
-    {
-        logger.fine("enter data_MArrayDef()");
-        MTyped type = (MTyped) currentNode;
-        MIDLType idlType = type.getIdlType();
+      
         
-        if(dataType.equals("MAliasDefDebug")) {
-            dataValue = getDebugArray(type);	 
-        }
-        logger.fine("leave data_MArrayDef()");
-        return dataValue;
-    }
-    
     protected String data_MEnumDef(String dataType, String dataValue)
     {
         logger.fine("enter data_MEnumDef()");
         if(dataType.equals("MembersDebug")) {
-            MEnumDef enum = (MEnumDef) currentNode;
-            dataValue = getDebugEnum(enum);
+            MEnumDef enumDef = (MEnumDef) currentNode;
+            dataValue = getDebugEnum(enumDef);
         }
         else {
             dataValue = super.data_MEnumDef(dataType, dataValue);
@@ -386,6 +269,7 @@ public class CppLocalGenerator
         logger.fine("leave data_MAttributeDef()");
         return dataValue;
     }
+
     
     protected String data_MOperationDef(String dataType, String dataValue)
     {
@@ -456,6 +340,95 @@ public class CppLocalGenerator
     }
 
     
+    //====================================================================
+    // Code generator utility methods
+    //====================================================================
+
+    /**
+     * Generate the namespace for ccmDebug() methods.
+     * For model elements not derived from MContained the predefined
+     * CCM_Local::ccmDebug() methods will be used (defined in the 
+     * cpp_environment).
+     * 
+     * @param baseNamespace List of predefined namespaces (e.g. CCM_Local)
+     * @param idlType IDL type of the current model element.
+     * @return A string containing the ccmDebug() method's namespace of 
+     * the current model element.
+     */
+    public String getDebugNamespace(MIDLType idlType)
+    {
+        logger.fine("enter getDebugNamespace()");
+        StringBuffer code = new StringBuffer();
+        if(idlType instanceof MAliasDef) {
+            MTyped type = (MTyped) idlType;
+            MIDLType innerIdlType = type.getIdlType();
+            if(innerIdlType instanceof MPrimitiveDef 
+                    || innerIdlType instanceof MStringDef
+                    || innerIdlType instanceof MWstringDef) {
+                code.append(Text.join(Text.SCOPE_SEPARATOR, baseNamespace)); 
+            }
+            else {
+                code.append(getLocalCppNamespace((MContained)idlType,
+                                                 Text.SCOPE_SEPARATOR));
+            }
+        }
+        else if(idlType instanceof MContained) {
+            code.append(getLocalCppNamespace((MContained)idlType, 
+                                             Text.SCOPE_SEPARATOR));
+        }
+        else {
+            code.append(Text.join(Text.SCOPE_SEPARATOR, baseNamespace)); 
+        }
+        logger.fine("leave getDebugNamespace()");
+        return code.toString();
+    }
+
+    
+    /***
+     * Generate the #include<> statement for a MIDLType model element
+     * with full scope.
+     * e.g: #include <world/europe/austria/ccm/local/Person.h>
+     */
+    protected String getLanguageTypeInclude(MIDLType idlType) 
+    {
+        logger.fine("enter getLanguageTypeInclude()");
+        StringBuffer code = new StringBuffer();
+        if(idlType instanceof MStringDef) {
+            code.append("#include <string>\n");
+        }
+        else if(idlType instanceof MSequenceDef
+                || idlType instanceof MArrayDef) {
+            MTyped singleType = (MTyped)idlType;
+            MIDLType singleIdlType = singleType.getIdlType();
+            code.append("#include <vector>\n");
+            code.append(getLanguageTypeInclude(singleIdlType));
+        }
+        else if(idlType instanceof MContained) {
+            code.append(getScopedInclude((MContained) idlType));
+        }
+        logger.fine("leave getLanguageTypeInclude()");
+        return code.toString();
+    }
+    
+    
+    //====================================================================
+    // Code generation methods
+    //====================================================================    
+
+    protected String getTypedef(MAliasDef alias) 
+    {
+        StringBuffer code = new StringBuffer();
+        MTyped type = (MTyped) alias;
+        MTypedefDef typedef = (MTypedefDef) alias;
+        code.append("typedef ");
+        code.append(getLanguageType(type));
+        code.append(" ");
+        code.append(typedef.getIdentifier());
+        code.append(";\n");
+        return code.toString();
+    }
+    
+    
     protected String getBaseInterfaceOperations(boolean isImpl, 
                                                 MInterfaceDef iface,
                                                 List baseInterfaceList)
@@ -517,11 +490,8 @@ public class CppLocalGenerator
         code.append("}\n");
         return code.toString();
     }
-    
-    
 
     
-
     protected String getBaseInterfaceAttributes(boolean isImpl, 
                                                 MInterfaceDef iface,
                                                 List baseInterfaceList)
@@ -995,11 +965,11 @@ public class CppLocalGenerator
         return code.toString();
     }
            
-    public String getDebugEnum(MEnumDef enum)
+    public String getDebugEnum(MEnumDef enumDef)
     {
         logger.finer("enter getDebugEnum()");
         StringBuffer code = new StringBuffer();
-        for(Iterator i = enum.getMembers().iterator(); i.hasNext();) {
+        for(Iterator i = enumDef.getMembers().iterator(); i.hasNext();) {
             String member = (String)i.next(); 
             code.append(Text.TAB).append("case ").append(member);
             code.append(":\n");

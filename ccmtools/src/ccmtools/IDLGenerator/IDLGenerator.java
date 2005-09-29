@@ -282,7 +282,7 @@ abstract public class IDLGenerator extends CodeGenerator
      *            the node object to use for type finding.
      * @return a string describing the IDL language type.
      */
-    protected String getLanguageType(MTyped object)
+    public String getLanguageType(MTyped object)
     {
         MIDLType idl_type = object.getIdlType();
         String base_type = getBaseLanguageType(object);

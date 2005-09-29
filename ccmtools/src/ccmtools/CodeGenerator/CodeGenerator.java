@@ -540,7 +540,7 @@ abstract public class CodeGenerator implements TemplateHandler
      * @param object
      *            the node object to use for type finding.
      */
-    abstract protected String getLanguageType(MTyped object);
+    abstract public String getLanguageType(MTyped object);
 
     /** *********************************************************************** */
 

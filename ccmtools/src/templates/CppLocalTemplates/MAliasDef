@@ -13,16 +13,15 @@
 
 %(DebugInclude)s
 
-%(LanguageTypeInclude)s
+%(TypedefInclude)s
 
 using namespace std;
 
 %(OpenNamespace)s
 
 %(TypedefDefinition)s
-//typedef %(LanguageType)s %(Identifier)s;
 
-%(MAliasDefDebug)s
+%(TypedefDebug)s
 
 %(CloseNamespace)s
 

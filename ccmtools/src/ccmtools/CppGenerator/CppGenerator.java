@@ -418,8 +418,8 @@ abstract public class CppGenerator extends CodeGenerator
         logger.fine("data_MEnumDef()");
         if(data_type.equals("Members")) {
             List b = new ArrayList();
-            MEnumDef enum = (MEnumDef) currentNode;
-            for(Iterator i = enum.getMembers().iterator(); i.hasNext();)
+            MEnumDef enumDef = (MEnumDef) currentNode;
+            for(Iterator i = enumDef.getMembers().iterator(); i.hasNext();)
                 b.add((String) i.next());
             return join(", ", b);
         }
@@ -485,14 +485,11 @@ abstract public class CppGenerator extends CodeGenerator
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
         logger.fine("data_MInterfaceDef()");
-        MInterfaceDef iface = (MInterfaceDef) currentNode;
-
         if(data_type.equals("BaseType")) {
             String base = joinBaseNames(", virtual public ");
             if(base.length() > 0)
                 return ", virtual public " + base;
         }
-
         return data_value;
     }
 
@@ -783,7 +780,7 @@ abstract public class CppGenerator extends CodeGenerator
      * Implement the abstract CodeGenerator method to define local C++
      * types (depending on a given model element type).
      */
-    protected String getLanguageType(MTyped object)
+    public String getLanguageType(MTyped object)
     {
         logger.fine("getLanguageType()");
         MIDLType idl_type = object.getIdlType();

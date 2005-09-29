@@ -100,7 +100,7 @@ public class CppPythonGenerator
      *
      * @param object the node object to use for type finding.
      */
-    protected String getLanguageType(MTyped object)
+    public String getLanguageType(MTyped object)
     {
         String lang_type = super.getLanguageType(object);
         lang_type = lang_type.replaceAll("[*]", "_ptr");
