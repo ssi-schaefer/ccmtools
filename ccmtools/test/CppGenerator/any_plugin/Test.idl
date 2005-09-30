@@ -1,0 +1,19 @@
+
+
+typedef any DTO;
+typedef any Person;
+
+interface IFace
+{
+  void op1(in Person p1, in DTO p2);
+};
+
+component Test
+{
+  provides IFace facet;
+};
+
+home TestHome manages Test
+{
+};
+
