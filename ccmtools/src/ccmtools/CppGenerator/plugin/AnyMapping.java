@@ -16,6 +16,9 @@ import ccmtools.Metamodel.BaseIDL.MAliasDef;
  */
 public interface AnyMapping
 {
+    String getTypeName();
+    void   setTypeName(String typeName);
+    
     String getIncludeCode(MAliasDef alias);
     String getDefinitionCode(MAliasDef alias);
     String getDebugCode(MAliasDef alias);

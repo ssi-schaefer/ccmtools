@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import ccmtools.CcmtoolsProperties;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.CppGenerator.plugin.AnyPluginManager;
@@ -58,6 +57,7 @@ import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.CcmtoolsProperties;
 import ccmtools.utils.Text;
 
 /***

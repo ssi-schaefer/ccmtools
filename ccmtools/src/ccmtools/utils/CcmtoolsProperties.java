@@ -1,4 +1,4 @@
-package ccmtools;
+package ccmtools.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +27,7 @@ public class CcmtoolsProperties
         return instance_;
     }
     
+    
     protected CcmtoolsProperties() 
     	throws IOException
     {
@@ -38,6 +39,12 @@ public class CcmtoolsProperties
         load();
     }
 
+    
+    public boolean isDefined(String key)
+    {
+        return ccmtoolsProperties_.containsKey(key);        
+    }
+    
     /**
      * Read the property value for the given key.
      * 
@@ -59,7 +66,7 @@ public class CcmtoolsProperties
         ccmtoolsProperties_.setProperty(key, value);
     }
     
-    public void load() 
+    protected void load() 
     	throws IOException
     {
         File file = new File(propertyPath_, CCMTOOLS_PROPERTY_FILE_NAME);
@@ -70,7 +77,7 @@ public class CcmtoolsProperties
         in.close();
     }
     
-    public void save() 
+    protected void save() 
     	throws IOException
     {
         File file = new File(propertyPath_, CCMTOOLS_PROPERTY_FILE_NAME);

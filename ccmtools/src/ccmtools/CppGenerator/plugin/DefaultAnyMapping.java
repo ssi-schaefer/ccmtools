@@ -14,7 +14,7 @@ import ccmtools.Metamodel.BaseIDL.MTypedefDef;
  * 
  * @author eteinik
  */
-public class AnyDefaultMapping
+public class DefaultAnyMapping
     implements AnyMapping
 {
     /** 
@@ -22,13 +22,23 @@ public class AnyDefaultMapping
      * ist local C++ generator
      **/
     protected CppLocalGenerator generator = null;
+    protected String typeName = ""; // this default mapping will be used for many types
     
-    public AnyDefaultMapping(CppLocalGenerator cppLocalGenerator) 
+    public DefaultAnyMapping(CppLocalGenerator cppLocalGenerator) 
     {
         this.generator = cppLocalGenerator;
     }
     
-
+    public String getTypeName()
+    {
+        return typeName; 
+    }
+    
+    public void setTypeName(String typeName)
+    {
+        this.typeName = typeName;
+    }
+    
     public String getIncludeCode(MAliasDef alias)
     {
         StringBuffer code = new StringBuffer();

@@ -53,7 +53,7 @@ public class Text
      * @param n the number of newlines the resulting string should contain.
      * @return A string containing n*NEWLINE
      */
-    public static String newLine(int n)
+    public static String nl(int n)
     {
         StringBuffer buffer = new StringBuffer();
         for(int i = 0; i< n; i++) {

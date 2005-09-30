@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import ccmtools.CcmtoolsException;
-import ccmtools.CcmtoolsProperties;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.CCMGraphTraverser;
 import ccmtools.CodeGenerator.CodeGenerator;
@@ -48,6 +47,7 @@ import ccmtools.IDLGenerator.IDL2Generator;
 import ccmtools.IDLGenerator.IDL3Generator;
 import ccmtools.IDLGenerator.IDL3MirrorGenerator;
 import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.utils.CcmtoolsProperties;
 
 
 public class Main
@@ -105,6 +105,21 @@ public class Main
                                File.separator + "src" +
                                File.separator + "templates");
             }
+    
+            if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.types")) {
+                String s = System.getProperty("ccmtools.templates")
+                            + File.separator
+                            + "AnyTypes";
+                CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types", s);
+            }
+            
+            if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.templates")) {
+                String s = System.getProperty("ccmtools.templates")
+                            + File.separator
+                            + "AnyPlugins";
+                CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.templates", s);
+            }
+            
             
             // Create a UI driver that handles user output 
             uiDriver = new ConsoleDriver(Driver.M_NONE);
@@ -124,7 +139,7 @@ public class Main
             logger.config("ccmtools.templates = " + System.getProperty("ccmtools.templates"));
             logger.config("ccmtools.impl.dir = " + 
                           CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
-            
+    
             GraphTraverser traverser = new CCMGraphTraverser();
             if(traverser == null) {
                 printUsage();
@@ -340,6 +355,9 @@ public class Main
             else if(arg.startsWith("--output=")) {
                 setOutputDirectory(arg.split("=")[1]); 
             }
+            else if(arg.startsWith("--anytypes=")) {
+                 setAnyTypesFile(arg.split("=")[1]);
+            }
             else if(arg.startsWith("--noexit")) {
                 isExitWithErrorStatus = false;
             }    
@@ -404,6 +422,24 @@ public class Main
         logger.fine("leave setOutputDirectory()");
     }
 
+    private static void setAnyTypesFile(String name)
+    {
+        logger.fine("enter setAnyTypesFile()");
+        if(name.trim().equals("")) {
+            throw new IllegalArgumentException("Unspecified any types file");
+        }
+        File test = new File(name);
+        if(test.isAbsolute()) {
+            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types",
+                                              test.toString());
+        }
+        else {
+            File f = new File(System.getProperty("user.dir"), name);
+            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types",
+                                              f.toString());            
+        }
+        logger.fine("leave setAnyTypesFile()");
+    }
     
     private static void printVersion()
     {

@@ -350,4 +350,19 @@ public class TypesTest extends CcmtoolsTestCase
             fail();
         }
     }
+    
+    
+    // ------------------------------------------------------------------------
+    // Any test cases
+    // ------------------------------------------------------------------------
+    public void testAnyPlugin()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/any_plugin test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
 }
