@@ -37,20 +37,65 @@ facet_impl::~facet_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-void
+ccm::local::Person
 facet_impl::op1(
         const ccm::local::Person& p1,
-        const ccm::local::DTO& p2)
+        ccm::local::Person& p2,
+        ccm::local::Person& p3)
 throw(::ccm::local::Components::CCMException)
 {
-  cout << "Person.id        = " << p1.id << endl;
-  cout << "Person.firstName = " << p1.firstName << endl;  
-  cout << "Person.lastName  = " << p1.lastName << endl;
+  cout << "p1.id        = " << p1.id << endl;
+  cout << "p1.firstName = " << p1.firstName << endl;  
+  cout << "p1.lastName  = " << p1.lastName << endl;
 
-  cout << "DTO.id               = " << p2.id << endl;
-  cout << "DTO.Person.id        = " << p2.person.id << endl;
-  cout << "DTO.Person.firstName = " << p2.person.firstName << endl;
-  cout << "DTO.Person.lastName  = " << p2.person.lastName << endl;
+  cout << "p2.id        = " << p2.id << endl;
+  cout << "p2.firstName = " << p2.firstName << endl;  
+  cout << "p2.lastName  = " << p2.lastName << endl;
+
+  p3.id = p2.id;
+  p3.firstName = p2.firstName;
+  p3.lastName = p2.lastName;
+  
+  p2.id = p1.id;
+  p2.firstName = p1.firstName;
+  p2.lastName = p1.lastName;
+
+  ccm::local::Person result;
+  result.id = p1.id;
+  result.firstName = p1.firstName;
+  result.lastName = p1.lastName;
+  
+  return result;
+}
+
+ccm::local::DTO
+facet_impl::op2(
+        const ccm::local::DTO& p1,
+        ccm::local::DTO& p2,
+        ccm::local::DTO& p3)
+throw(::ccm::local::Components::CCMException)
+{
+  cout << "p1.id               = " << p1.id << endl;
+  cout << "p1.Person.id        = " << p1.person.id << endl;
+  cout << "p1.Person.firstName = " << p1.person.firstName << endl;
+  cout << "p1.Person.lastName  = " << p1.person.lastName << endl;
+
+  cout << "p2.id               = " << p2.id << endl;
+  cout << "p2.Person.id        = " << p2.person.id << endl;
+  cout << "p2.Person.firstName = " << p2.person.firstName << endl;
+  cout << "p2.Person.lastName  = " << p2.person.lastName << endl;
+
+  p3.id = p2.id;
+  p3.person = p2.person;
+  
+  p2.id = p1.id;
+  p2.person = p1.person;
+
+  ccm::local::DTO result;
+  result.id = p1.id;
+  result.person = p1.person;
+  
+  return result;
 }
 
 } // /namespace Test

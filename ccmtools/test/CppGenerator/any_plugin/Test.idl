@@ -1,11 +1,16 @@
 
-
+/**
+ * These types already exist as simle C structs. 
+ * Thus, we define them as known any types (see impl/AnyMappingTypes
+ * impl/Person.h and impl/DTO.h)
+ */
 typedef any DTO;
 typedef any Person;
 
 interface IFace
 {
-  void op1(in Person p1, in DTO p2);
+  Person op1(in Person p1, inout Person p2, out Person p3);
+  DTO    op2(in DTO p1, inout DTO p2, out DTO p3);
 };
 
 component Test
