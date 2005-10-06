@@ -1,11 +1,12 @@
-interface I2
+
+interface IFace
 {
   long op1(in string str);
 };
 
 component Test
 {
-  provides I2 my_facet;
+  provides IFace iface;
 };
 
 home TestHome manages Test
