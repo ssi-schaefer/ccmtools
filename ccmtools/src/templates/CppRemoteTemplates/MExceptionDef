@@ -25,7 +25,8 @@
 
 %(MFieldDefInclude)s
 
-namespace CCM_Remote {
+namespace ccm {
+namespace remote {
 
 void 
 convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out);
@@ -39,16 +40,17 @@ std::string
 ccmDebug(const %(CorbaStubName)s& in, int indent = 0)
 {
     std::ostringstream os;
-    os << CCM_Local::doIndent(indent);
+    os << ::ccm::local::doIndent(indent);
     os << "exception %(CorbaStubName)s" << std::endl;
-    os << CCM_Local::doIndent(indent) << "{" << std::endl;
+    os << ::ccm::local::doIndent(indent) << "{" << std::endl;
 %(MFieldDefDebug)s
-    os << CCM_Local::doIndent(indent) << "}";
+    os << ::ccm::local::doIndent(indent) << "}";
     return os.str();
 }
 #endif // WXDEBUG 
 
-} // /namespace CCM_Remote
+} // /namespace remote
+} // /namespace ccm
 
 #endif // HAVE_MICO
 #endif // __EXCEPTION_CONVERTER_%(PreprocIdentifier)s__H__
@@ -73,9 +75,10 @@ ccmDebug(const %(CorbaStubName)s& in, int indent = 0)
 #include <CCM_Remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
-using namespace std;
+namespace ccm {
+namespace remote {
 
-namespace CCM_Remote {
+using namespace std;
 
 void 
 convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out)
@@ -91,7 +94,8 @@ convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out)
 %(MFieldDefToCorba)s
 } 
 
-} // /namespace CCM_Remote
+} // /namespace remote
+} // /namespace ccm
 
 #endif // HAVE_MICO
 

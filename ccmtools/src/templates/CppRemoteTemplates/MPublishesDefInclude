@@ -1,1 +1,1 @@
-#include <CCM_Local/%(PublishesType)s.h>
+#include <ccm/local/%(PublishesType)s.h>

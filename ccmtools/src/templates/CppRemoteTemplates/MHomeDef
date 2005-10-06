@@ -15,7 +15,7 @@
 
 #include "%(ComponentType)s_remote.h"
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h> 
-#include <%(LocalIncludeNamespace)s%(Identifier)s_gen.h>
+#include <%(LocalIncludeNamespace)s/%(Identifier)s_gen.h>
 
 %(OpenNamespace)s
 
@@ -28,7 +28,7 @@ class %(Identifier)s_impl :
     virtual public PortableServer::RefCountServantBase
 {
   protected:
-    WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s> local_home;
+    WX::Utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> local_home;
     WX::Utils::SmartPtr<CCM::SessionContainer> ccm_container;
       
   public:
@@ -83,12 +83,13 @@ extern "C" {
 #include <coss/CosNaming.h>
 
 #include "%(Identifier)s_remote.h"
-#include <%(Identifier)s_entry.h> 
+#include <%(AbsoluteLocalHomeName)s_entry.h>
 
-using namespace std;
 using namespace WX::Utils;
 
 %(OpenNamespace)s
+
+using namespace std;
 
 //============================================================================
 // Component home adapter
@@ -98,9 +99,10 @@ using namespace WX::Utils;
     : ccm_container (c)
 {
     LDEBUGNL(CCM_CONTAINER, "+%(Identifier)s_impl::%(Identifier)s_impl()");
-    LocalComponents::HomeFinder* homeFinder = CCM_Local::HomeFinder::Instance();
-    local_home = SmartPtr<%(LocalNamespace)s%(Identifier)s>(
-        dynamic_cast<%(LocalNamespace)s%(Identifier)s*>
+    ccm::local::Components::HomeFinder* homeFinder = 
+        ccm::local::HomeFinder::Instance();
+    local_home = SmartPtr<%(LocalNamespace)s::%(Identifier)s>(
+        dynamic_cast<%(LocalNamespace)s::%(Identifier)s*>
 	(homeFinder->find_home_by_name("%(Identifier)s").ptr()));
 }
 
@@ -120,7 +122,7 @@ using namespace WX::Utils;
 {
     LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::create()");
     // create the local_component
-    SmartPtr<%(LocalNamespace)s%(ComponentType)s> local_component = 
+    SmartPtr<%(LocalNamespace)s::%(ComponentType)s> local_component = 
         local_home->create();
     // create component remote adapter
     PortableServer::ServantBase_var component_adapter =
@@ -219,7 +221,7 @@ extern "C" {
         info.component_absolute_name = "::%(ComponentType)s";
         info.component_id = "IDL:%(ComponentType)s:1.0";
         info.home_glue = 
-            new %(RemoteNamespace)s%(Identifier)s_impl(container); 
+            new %(RemoteNamespace)s::%(Identifier)s_impl(container); 
         container->load(info);
         Components::CCMHome_var home = container->get_CCM_home(); 
         ior = orb->object_to_string(home); 

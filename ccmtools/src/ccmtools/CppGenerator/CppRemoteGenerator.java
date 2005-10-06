@@ -23,12 +23,14 @@ package ccmtools.CppGenerator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
@@ -56,6 +58,7 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.CcmtoolsProperties;
 import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
@@ -74,9 +77,9 @@ public class CppRemoteGenerator
     //====================================================================
 
     protected Map  corbaMappings;
-    protected List corbaStubsNamespace = null;
-    protected List localNamespace = null;
    
+    protected final String CORBA_CONVERTER_DIR = "corba_converter"; 
+    
     /**
      * Top level node types: Types for which we have a global template; that is,
      * a template that is not contained inside another template.
@@ -137,15 +140,31 @@ public class CppRemoteGenerator
     public CppRemoteGenerator(Driver uiDriver, File outDir) 
     	throws IOException
     {
-        super("CppRemote", uiDriver, outDir, REMOTE_OUTPUT_TEMPLATE_TYPES);
+        //super("CppRemote", uiDriver, outDir, REMOTE_OUTPUT_TEMPLATE_TYPES);
+        this("CppRemote",uiDriver, outDir, REMOTE_OUTPUT_TEMPLATE_TYPES);
+    }
+    
+    public CppRemoteGenerator(String language, Driver uiDriver, 
+                              File outDir, String[] output_types) 
+        throws IOException
+    {
+        super(language, uiDriver, outDir, output_types);
         
         logger = Logger.getLogger("ccm.generator.cpp.remote");
         logger.fine("enter CppRemoteGenerator()");
-        
-        baseNamespace.add("CCM_Remote");
+
+        baseNamespace.add("ccm");
+        baseNamespace.add("local");
+
+        remoteNamespace = new ArrayList();
+        remoteNamespace.add("ccm");
+        remoteNamespace.add("remote");
+
         corbaStubsNamespace = new ArrayList();
-        localNamespace = new ArrayList();
-        localNamespace.add("CCM_Local");
+        
+//        localNamespace = new ArrayList();
+//        localNamespace.add("ccm");
+//        localNamespace.add("local");
 
         // Fill the CORBA_mappings with IDL to C++ Mapping types
         String[] labels = MPrimitiveKind.getLabels();
@@ -156,7 +175,6 @@ public class CppRemoteGenerator
         logger.fine("leave CppRemoteGenerator()");
     }
     
-
     //====================================================================
     // Code generator core methods
     //====================================================================
@@ -204,65 +222,154 @@ public class CppRemoteGenerator
     public String getLocalNamespace(MContained contained, String separator, 
                                     String local)
     {
-        StringBuffer code = new StringBuffer();
-        List scope = getScope(contained);
-        if (local.length() > 0) {
-            scope.add("CCM_Session_" + local);
-        }
-        code.append(Text.join(separator, localNamespace));
-        code.append(separator);
-        if (scope.size() > 0) {
-            code.append(Text.join(separator, scope));
-            code.append(separator);
-        }
-        return code.toString();
+        return getLocalCppNamespace(contained, separator);
+        
+//        StringBuffer code = new StringBuffer();
+//        List scope = getScope(contained);
+//        if (local.length() > 0) {
+//            scope.add("CCM_Session_" + local);
+//        }
+//        code.append(Text.join(separator, localNamespace));
+//        code.append(separator);
+//        if (scope.size() > 0) {
+//            code.append(Text.join(separator, scope));
+//            code.append(separator);
+//        }
+//        return code.toString();
     }
     
     public String getLocalName(MContained contained, String separator)
     {
-        StringBuffer code = new StringBuffer();
-        List scope = getScope(contained);
-        code.append(Text.join(separator, localNamespace));
-        code.append(separator);
-        if (scope.size() > 0) {
-            code.append(Text.join(separator, scope));
-            code.append(separator);
-        }
-        code.append(contained.getIdentifier());
-        return code.toString();
+        return getLocalCppName(contained, separator);
+        
+//        StringBuffer code = new StringBuffer();
+//        List scope = getScope(contained);
+//        code.append(Text.join(separator, localNamespace));
+//        code.append(separator);
+//        if (scope.size() > 0) {
+//            code.append(Text.join(separator, scope));
+//            code.append(separator);
+//        }
+//        code.append(contained.getIdentifier());
+//        return code.toString();
     }
     
-    public String getRemoteNamespace(String separator, String local)
+    public String getRemoteNamespace(MContained node, String separator)
     {
         StringBuffer code = new StringBuffer();
-        List names = new ArrayList(namespaceStack);
-        if (local.length() > 0) {
-            names.add("CCM_Session_" + local);
-        }
-        code.append(separator);
-        if (names.size() > 1) {
-            code.append(Text.join(separator, Text.slice(names, 0)));
+        List scope = getScope(node);
+        if(scope.size() > 0) {
+            code.append(join(separator, scope));
             code.append(separator);
         }
-        else {
-            // no additional namespace
+        
+        if(remoteNamespace.size() > 0) {
+            code.append(join(separator, remoteNamespace));
         }
+        
+        if(node instanceof MComponentDef) {
+            code.append(separator);
+            code.append(Constants.COMPONENT_NAMESPACE );
+            code.append(separator);
+            code.append(node.getIdentifier());
+        }
+        else if(node instanceof MHomeDef ) {
+            MHomeDef home = (MHomeDef)node;
+            code.append(separator);
+            code.append(Constants.COMPONENT_NAMESPACE );
+            code.append(separator);
+            code.append(home.getComponent().getIdentifier());
+        }
+        
+//        StringBuffer code = new StringBuffer();
+//        List names = new ArrayList(namespaceStack);
+//        if (local.length() > 0) {
+//            names.add("CCM_Session_" + local);
+//        }
+//        code.append(separator);
+//        if (names.size() > 1) {
+//            code.append(Text.join(separator, Text.slice(names, 0)));
+//            code.append(separator);
+//        }
+//        else {
+//            // no additional namespace
+//        }
         return code.toString();
     }
    
-    public String getRemoteName(MContained contained, String separator,
-                                String local)
+    public String getRemoteName(MContained node, String separator)
     {
         StringBuffer code = new StringBuffer();
-        List scope = getScope(contained);
-        code.append(Text.join(separator, baseNamespace));
+        code.append(getRemoteNamespace(node, separator));
         code.append(separator);
-        if(scope.size() > 0) {
-            code.append(Text.join(separator, scope));
-            code.append(separator);
-        }
-        code.append(contained.getIdentifier());
+        code.append(node.getIdentifier());
+        
+//        StringBuffer code = new StringBuffer();
+//        List scope = getScope(contained);
+//        code.append(Text.join(separator, baseNamespace));
+//        code.append(separator);
+//        if(scope.size() > 0) {
+//            code.append(Text.join(separator, scope));
+//            code.append(separator);
+//        }
+//        code.append(contained.getIdentifier());
         return code.toString();
+    }
+    
+    
+    protected String getOpenRemoteNamespace(MContained node)
+    {
+        List modules = new ArrayList(namespaceStack);
+        modules.addAll(remoteNamespace);
+        if(node instanceof MComponentDef) {
+            modules.add(Constants.COMPONENT_NAMESPACE);
+            modules.add(node.getIdentifier());
+        }
+        else if(node instanceof MHomeDef ) {
+            MHomeDef home = (MHomeDef)node;
+            modules.add(Constants.COMPONENT_NAMESPACE );
+            modules.add(home.getComponent().getIdentifier());
+        }
+        
+        StringBuffer code = new StringBuffer();
+        for(Iterator i = modules.iterator(); i.hasNext();) {
+            code.append("namespace " + i.next() + " {\n");
+        }
+        return code.toString();
+    }
+    
+    
+    protected String getCloseRemoteNamespace(MContained node)
+    {
+        List modules = new ArrayList(namespaceStack);
+        modules.addAll(remoteNamespace);
+        if(node instanceof MComponentDef) {
+            modules.add(Constants.COMPONENT_NAMESPACE);
+            modules.add(node.getIdentifier());
+        }
+        else if(node instanceof MHomeDef ) {
+            MHomeDef home = (MHomeDef)node;
+            modules.add(Constants.COMPONENT_NAMESPACE );
+            modules.add(home.getComponent().getIdentifier());
+        }
+        Collections.reverse(modules);
+
+        StringBuffer code = new StringBuffer();
+        for(Iterator i = modules.iterator(); i.hasNext();) {
+            code.append("} // /namespace " + i.next() + "\n");
+        }        
+        return code.toString();
+    }
+    
+    
+    /**
+     * Overide the CodeGenerator method to use the
+     * remote C++ namespace.
+     */
+    protected String getFullScopeInclude(MContained node)
+    {
+        logger.fine("getFullScopeInclude()");
+        return getRemoteName(node, Text.FILE_SEPARATOR);
     }
     
     
@@ -277,33 +384,42 @@ public class CppRemoteGenerator
                     + dataType +", " 
                     + local + ")");
         String code;
-        List names = new ArrayList(namespaceStack);
+        MContained contained = (MContained)currentNode;
+//        List names = new ArrayList(namespaceStack);
 //        MContained contained = (MContained)currentNode;
-
+        
         if (dataType.equals("FileNamespace")) {
-            code = Text.join(Text.MANGLING_SEPARATOR, Text.slice(names, 0));
+            code = getRemoteNamespace(contained,Text.MANGLING_SEPARATOR);
+//            code = Text.join(Text.MANGLING_SEPARATOR, Text.slice(names, 0));
         }
         else if(dataType.equals("LocalNamespace")) {
-            MContained contained = (MContained)currentNode;
+            
             code = getLocalNamespace(contained, Text.SCOPE_SEPARATOR,local);
         }
         else if(dataType.equals("RemoteNamespace")) {
-            code = getRemoteNamespace(Text.SCOPE_SEPARATOR,local);
+            code = getRemoteNamespace(contained,Text.SCOPE_SEPARATOR);
+        }
+        else if(dataType.equals("RemoteIncludeNamespace")) {
+            code = getRemoteNamespace(contained,Text.FILE_SEPARATOR);
         }
         else if(dataType.equals("LocalIncludeNamespace")) {
-            MContained contained = (MContained)currentNode;
             code = getLocalNamespace(contained, Text.FILE_SEPARATOR, local);
         }
         else if(dataType.equals("StubsNamespace")) {
-            MContained contained = (MContained)currentNode;
             code = getCorbaStubsNamespace(contained, Text.SCOPE_SEPARATOR);
         }
         else if(dataType.equals("StubsIncludeNamespace")) {
-            MContained contained = (MContained)currentNode;
             code = getCorbaStubsNamespace(contained, Text.MANGLING_SEPARATOR);
         }
         else if(dataType.equals("CorbaDebugNamespace")) {
-            code = "CCM_Remote::";
+//            code = "CCM_Remote::";
+            code = "ccm::remote::";
+        }
+        else if(dataType.equals("OpenNamespace")) {
+            code = getOpenRemoteNamespace(contained);
+        }
+        else if(dataType.equals("CloseNamespace")) {            
+            code = getCloseRemoteNamespace(contained);
         }
         else {
             code = super.handleNamespace(dataType, local);
@@ -378,13 +494,12 @@ public class CppRemoteGenerator
         StringBuffer code = new StringBuffer();
         for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
             MParameterDef p = (MParameterDef) params.next();
-            MIDLType idlType = ((MTyped) p).getIdlType();
             MParameterMode direction = p.getDirection();
             if(direction == MParameterMode.PARAM_IN) {
                 code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE, \"IN ");
                 code.append(p.getIdentifier()).append(" = \" << ");
                 //code.append(getDebugNamespace(idlType));
-                code.append("CCM_Remote::");
+                code.append("ccm::remote::");
                 code.append("ccmDebug(").append(p.getIdentifier()).append(")");
                 code.append(");\n");
             }
@@ -392,7 +507,7 @@ public class CppRemoteGenerator
                 code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE, \"INOUT ");
                 code.append(p.getIdentifier()).append(" = \" << ");
                 //code.append(getDebugNamespace(idlType));
-                code.append("CCM_Remote::");
+                code.append("ccm::remote::");
                 code.append("ccmDebug(").append(p.getIdentifier()).append(")");
                 code.append(");\n");
             }
@@ -408,13 +523,12 @@ public class CppRemoteGenerator
         StringBuffer code = new StringBuffer();
         for(Iterator params = op.getParameters().iterator();params.hasNext();) {
             MParameterDef p = (MParameterDef) params.next();
-            MIDLType idlType = ((MTyped) p).getIdlType();
             MParameterMode direction = p.getDirection();
             if(direction == MParameterMode.PARAM_OUT) {
                 code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE, \"OUT ");
                 code.append(p.getIdentifier()).append(" = \" << ");
                 //code.append(getDebugNamespace(idlType));
-                code.append("CCM_Remote::");
+                code.append("ccm::remote::");
                 code.append("ccmDebug(").append(p.getIdentifier());
                 code.append("));\n");
             }
@@ -422,7 +536,7 @@ public class CppRemoteGenerator
                 code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE, \"INOUT' ");
                 code.append(p.getIdentifier()).append(" = \" << ");
                 //code.append(getDebugNamespace(idlType));
-                code.append("CCM_Remote::");
+                code.append("ccm::remote::");
                 code.append("ccmDebug(").append(p.getIdentifier()).append(")");
                 code.append(");\n");
             }
@@ -435,53 +549,16 @@ public class CppRemoteGenerator
     {
         logger.finer("enter getDebugOperationResult()");
         StringBuffer code = new StringBuffer();
-        MIDLType idlType = op.getIdlType();
         String langType = getLanguageType(op);
         if(!langType.equals("void")) {
             code.append(Text.TAB);
             code.append("LDEBUGNL(CCM_REMOTE, \"result = \" << ");
             //code.append(getDebugNamespace(idlType));
-            code.append("CCM_Remote::ccmDebug(return_value));\n");
+            code.append("ccm::remote::ccmDebug(return_value));\n");
         }
         logger.finer("leave getDebugOperationResult()");
         return code.toString();
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -516,7 +593,7 @@ public class CppRemoteGenerator
                 return getCorbaStubName(contained,Text.SCOPE_SEPARATOR);
             }
             else if(variable.equals("CorbaRemoteName")) {
-                return getRemoteName(contained,Text.SCOPE_SEPARATOR,"");
+                return getRemoteName(contained,Text.SCOPE_SEPARATOR);
             }
             else if(variable.equals("CorbaDebugInclude")) {
                 return getCorbaDebugInclude();
@@ -795,16 +872,15 @@ public class CppRemoteGenerator
     protected String data_MEnumDef(String dataType, String dataValue)
     {
         logger.fine("enter data_MEnumDef()");
-        List ret = new ArrayList();
-        MEnumDef enum = (MEnumDef) currentNode;
+        MEnumDef enumDef = (MEnumDef) currentNode;
         if (dataType.equals("MembersFromCorba")) {
-            dataValue = getMembersFromCorba(enum);
+            dataValue = getMembersFromCorba(enumDef);
         }
         else if (dataType.equals("MembersToCorba")) {
-            dataValue = getMembersToCorba(enum);
+            dataValue = getMembersToCorba(enumDef);
         }
         else if (dataType.equals("EnumMembersDebug")) {
-            dataValue = getEnumMembersDebug(enum);
+            dataValue = getEnumMembersDebug(enumDef);
         }
         else {
             dataValue = super.data_MEnumDef(dataType, dataValue);
@@ -838,7 +914,7 @@ public class CppRemoteGenerator
             dataValue = component.getIdentifier();
         }
         else if(dataType.endsWith("AbsoluteRemoteHomeName")) {
-            dataValue = getRemoteName(home,Text.MANGLING_SEPARATOR,"");
+            dataValue = getRemoteName(home,Text.MANGLING_SEPARATOR);
         }
         else {
             dataValue = super.data_MHomeDef(dataType, dataValue);
@@ -847,6 +923,43 @@ public class CppRemoteGenerator
         return dataValue;
     }
 
+    
+    protected String data_MComponentDef(String dataType, String dataValue)
+    {
+        logger.fine("enter data_MHomeDef()");
+        MComponentDef component = (MComponentDef) currentNode;
+        List homes = component.getHomes();
+        MHomeDef home = null;
+        if(homes.size() == 1) {
+            home = (MHomeDef)homes.get(0);
+        }
+        else {
+            throw new RuntimeException("Component '"
+                                       + component.getIdentifier()
+                                       + "' does not have exactly one home.");
+        }
+        
+        if(dataType.endsWith("AbsoluteRemoteHomeName")) {
+            dataValue = getRemoteName(home,"_");
+        }
+        else if(dataType.equals("IdlIdentifier")) {
+            dataValue = getCorbaStubsNamespace(component, "::") 
+                        + Text.SCOPE_SEPARATOR
+                        + component.getIdentifier();
+        }
+        else if(dataType.equals("IdlHomeType")) {
+              dataValue = getCorbaStubsNamespace(home, "::") 
+                          + Text.SCOPE_SEPARATOR 
+                          + home.getIdentifier();
+      }
+        else {
+            dataValue = super.data_MComponentDef(dataType, dataValue);
+        }
+            
+        logger.fine("leave data_MHomeDef()");
+        return dataValue;
+    }
+    
     
     protected String data_MInterfaceDef(String dataType, String dataValue)
     {
@@ -971,7 +1084,8 @@ public class CppRemoteGenerator
         String[] remoteSuffix = {
                 "_remote.h", "_remote.cc"
         };
-
+        String generatorPrefix = CcmtoolsProperties.Instance().get("ccmtools.dir.gen");
+        
         for(int i = 0; i < sourceFiles.length; i++) {
             if(sourceFiles[i].trim().equals("")) {
                 // skip the file creation
@@ -982,9 +1096,8 @@ public class CppRemoteGenerator
                 if(currentNode instanceof MComponentDef) {
                     // write the component files
                     String componentName = ((MContained) currentNode).getIdentifier();
-                    String fileDir = handleNamespace("FileNamespace", componentName)
-                            + "_CCM_Session_" + componentName;
-
+                    String fileDir = generatorPrefix
+                                     + handleNamespace("FileNamespace", componentName);
                     Code.writeFile(uiDriver, output_dir, fileDir, componentName + remoteSuffix[i],
                                    sourceFiles[i]);
                 }
@@ -993,8 +1106,8 @@ public class CppRemoteGenerator
                     MHomeDef home = (MHomeDef) currentNode;
                     String componentName = ((MContained) home.getComponent()).getIdentifier();
                     String homeName = home.getIdentifier();
-                    String fileDir = handleNamespace("FileNamespace", componentName)
-                            + "_CCM_Session_" + componentName;
+                    String fileDir = generatorPrefix
+                                     + handleNamespace("FileNamespace", componentName);
 
                     Code.writeFile(uiDriver, output_dir, fileDir, homeName + remoteSuffix[i],
                                    sourceFiles[i]);
@@ -1006,7 +1119,7 @@ public class CppRemoteGenerator
                         || currentNode instanceof MEnumDef) {
                     // write converter files
                     String nodeName = ((MContained) currentNode).getIdentifier();
-                    String fileDir = "CORBA_Converter";
+                    String fileDir = generatorPrefix + CORBA_CONVERTER_DIR;
 
                     Code.writeFile(uiDriver, output_dir, fileDir, nodeName + remoteSuffix[i],
                                    sourceFiles[i]);
@@ -1035,7 +1148,7 @@ public class CppRemoteGenerator
         logger.finer("enter getCorbaDebugInclude()");
         StringBuffer code = new StringBuffer();
         code.append("#ifdef WXDEBUG\n");
-        code.append("#  include <CCM_Remote").append(Text.FILE_SEPARATOR);
+        code.append("#  include <ccm/remote").append(Text.FILE_SEPARATOR);
         code.append("Debug.h>\n");
         code.append("#endif // WXDEBUG\n");
         logger.finer("leave getCorbaDebugInclude()");
@@ -1066,7 +1179,7 @@ public class CppRemoteGenerator
                 buffer.append(super.getBaseLanguageType(object));
             }
             else {
-                buffer.append("CCM_Local::");
+                buffer.append("ccm::local::");
                 buffer.append(super.getBaseLanguageType(object));
             }
         }
@@ -1332,7 +1445,7 @@ public class CppRemoteGenerator
         code.append(stubName).append("& in, int indent = 0)\n");
         code.append("{\n");
         code.append(Text.TAB).append("std::ostringstream os;\n");
-        code.append(Text.TAB).append("os << CCM_Local::doIndent(indent);\n");
+        code.append(Text.TAB).append("os << ::ccm::local::doIndent(indent);\n");
         code.append(getOutputCORBAType(node, contained));
         code.append(Text.TAB).append("return os.str();\n");
         code.append("}\n");
@@ -1350,7 +1463,7 @@ public class CppRemoteGenerator
             code.append(getBaseLanguageType(singleType));
         }
         else {
-            code.append("CCM_Local::");
+            code.append("ccm::local::");
             // TODO: Handle local Namespace
             code.append(getBaseLanguageType(singleType));
         }
@@ -1651,7 +1764,7 @@ public class CppRemoteGenerator
         MIDLType idlType = ((MTyped) attr).getIdlType();	
         StringBuffer code = new StringBuffer();
         if(idlType instanceof MEnumDef) {
-            code.append(Text.TAB).append("CCM_Local::");
+            code.append(Text.TAB).append("ccm::local::");
             code.append(getBaseLanguageType((MTyped) attr));
             code.append(" result;\n");
         }
@@ -1664,9 +1777,9 @@ public class CppRemoteGenerator
         code.append(Text.TAB).append(getCORBALanguageType((MTyped)attr));
         code.append(" return_value;\n");
         code.append(Text.TAB);
-        code.append("CCM_Remote::convertToCorba(result, return_value);\n");
+        code.append("ccm::remote::convertToCorba(result, return_value);\n");
         code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE, \"get \" << "); 
-        code.append("CCM_Remote::").append("ccmDebug(return_value));\n");
+        code.append("ccm::remote::").append("ccmDebug(return_value));\n");
         code.append(Text.TAB).append("return return_value;\n");
         return code.toString();
     }
@@ -1675,17 +1788,17 @@ public class CppRemoteGenerator
     {
         logger.fine("convertUserGetAttributeFromCorba()");
         StringBuffer code = new StringBuffer();
-        code.append(Text.TAB).append("CCM_Local::");
+        code.append(Text.TAB).append("ccm::local::");
         code.append(getBaseLanguageType((MTyped) attr)).append(" result;\n");
         code.append(Text.TAB).append("result = ").append(delegate);
         code.append("->").append(attr.getIdentifier()).append("();\n");
         code.append(Text.TAB).append(getCORBALanguageType((MTyped) attr));
         code.append("_var return_value = new ");
         code.append(getCORBALanguageType((MTyped) attr)).append(";\n");
-        code.append(Text.TAB).append("CCM_Remote::");
+        code.append(Text.TAB).append("ccm::remote::");
         code.append("convertToCorba(result, return_value);\n");
         code.append(Text.TAB).append("LDEBUGNL(CCM_REMOTE, \"get \" << "); 
-        code.append("CCM_Remote::").append("ccmDebug(return_value));\n");
+        code.append("ccm::remote::").append("ccmDebug(return_value));\n");
         code.append(Text.TAB).append("return return_value._retn();\n");
         return code.toString();
     }    
@@ -1708,11 +1821,11 @@ public class CppRemoteGenerator
         		.append(getBaseLanguageType((MTyped) attr)).append(" local_value;\n");   
         }
         else {
-            code.append(Text.tab(1)).append("CCM_Local::")
+            code.append(Text.tab(1)).append("ccm::local::")
     		.append(getBaseLanguageType((MTyped) attr)).append(" local_value;\n");  
         }
         code.append(Text.TAB)
-			.append("CCM_Remote::convertFromCorba(value, local_value);\n");
+			.append("ccm::remote::convertFromCorba(value, local_value);\n");
         code.append(Text.TAB)
             .append(delegate).append("->").append(attr.getIdentifier()).append("(local_value);\n");
         return code.toString();    
@@ -1766,7 +1879,6 @@ public class CppRemoteGenerator
     protected String convertPrimitiveGetAttributeToCorba(MAttributeDef attr)
     {
         logger.fine("convertPrimitiveGetAttributeToCorba()");
-        MIDLType idlType = ((MTyped) attr).getIdlType();	
         StringBuffer code = new StringBuffer();
         code.append(Text.TAB).append(getCORBALanguageType((MTyped) attr))
             .append(" result;\n");
@@ -1776,7 +1888,7 @@ public class CppRemoteGenerator
            	.append(getLocalAttributeType(attr))
         	.append(" return_value;\n");
         code.append(Text.TAB)
-            .append("CCM_Remote::convertFromCorba(result, return_value);\n");
+            .append("ccm::remote::convertFromCorba(result, return_value);\n");
         code.append(Text.TAB).append("return return_value;\n");
         return code.toString();
     }
@@ -1792,7 +1904,7 @@ public class CppRemoteGenerator
         buffer.append(Text.tab(1)).append(getLocalAttributeType(attr))	
             .append(" return_value;\n");
         buffer.append(Text.tab(1))
-        	.append("CCM_Remote::convertFromCorba(result, return_value);\n");
+        	.append("ccm::remote::convertFromCorba(result, return_value);\n");
         buffer.append(Text.tab(1)).append("return return_value;\n");
         return buffer.toString();
     }
@@ -1845,13 +1957,12 @@ public class CppRemoteGenerator
     protected String convertPrimitiveSetAttributeToCorba(MAttributeDef attr)
     {
         logger.fine("convertPrimitiveSetAttributeToCorba()");
-        MIDLType idlType = ((MTyped)attr).getIdlType();	
         StringBuffer buffer = new StringBuffer();
     
         buffer.append(Text.tab(1))
 			.append(getCORBALanguageType((MTyped) attr)).append(" remote_value;\n");   
         buffer.append(Text.tab(1))	
-    		.append("CCM_Remote::convertToCorba(value, remote_value);\n");
+    		.append("ccm::remote::convertToCorba(value, remote_value);\n");
         buffer.append(Text.tab(1))	
     		.append("remoteInterface->").append(attr.getIdentifier())
     		.append("(remote_value);\n");
@@ -1861,14 +1972,13 @@ public class CppRemoteGenerator
     protected String convertUserSetAttributeToCorba(MAttributeDef attr)
     {
         logger.fine("convertUserSetAttributeToCorba()");
-        MIDLType idlType = ((MTyped)attr).getIdlType();	
         StringBuffer buffer = new StringBuffer();
 
         buffer.append(Text.tab(1))
 			.append(getCORBALanguageType((MTyped) attr)).append("_var remote_value = new ")
 			.append(getCORBALanguageType((MTyped) attr)).append(";\n");   
         buffer.append(Text.tab(1))	
-			.append("CCM_Remote::convertToCorba(value, remote_value);\n");
+			.append("ccm::remote::convertToCorba(value, remote_value);\n");
         buffer.append(Text.tab(1))	
 			.append("remoteInterface->").append(attr.getIdentifier())
 			.append("(remote_value);\n");
@@ -2072,7 +2182,7 @@ public class CppRemoteGenerator
         List ret = new ArrayList();
         ret.add(Text.tab(1) + cppType + " parameter_" + p.getIdentifier() + ";");
         if(direction != MParameterMode.PARAM_OUT) {
-            ret.add(Text.tab(1) + "CCM_Remote::convertFromCorba(" + p.getIdentifier()
+            ret.add(Text.tab(1) + "ccm::remote::convertFromCorba(" + p.getIdentifier()
                     + ", parameter_" + p.getIdentifier() + ");");
         }
         return Text.join("\n", ret);
@@ -2096,10 +2206,10 @@ public class CppRemoteGenerator
         else
             localScope = "";
 
-        ret.add("    CCM_Local::" + localScope + contained.getIdentifier() + " parameter_"
+        ret.add("    ccm::local::" + localScope + contained.getIdentifier() + " parameter_"
                 + p.getIdentifier() + ";");
         if(direction != MParameterMode.PARAM_OUT) {
-            ret.add("    CCM_Remote::convertFromCorba(" + p.getIdentifier() + ", parameter_"
+            ret.add("    ccm::remote::convertFromCorba(" + p.getIdentifier() + ", parameter_"
                     + p.getIdentifier() + ");");
         }
         return Text.join("\n", ret);
@@ -2140,7 +2250,7 @@ public class CppRemoteGenerator
         else if(isComplexType(idlType)) {
             MTypedefDef typedef = (MTypedefDef) idlType;
             MContained contained = (MContained) typedef;
-            ret = "    CCM_Local::" + localScope + contained.getIdentifier() + " result;";
+            ret = "    ccm::local::" + localScope + contained.getIdentifier() + " result;";
         }
         return ret;
     }
@@ -2166,7 +2276,7 @@ public class CppRemoteGenerator
             resultPrefix += "localInterface->" + op.getIdentifier() + "(";
             for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
                 MParameterDef p = (MParameterDef) params.next();
-                String base_type = (String) language_mappings.get((String) getBaseIdlType(p));
+ //               String base_type = (String) language_mappings.get((String) getBaseIdlType(p));
                 ret.add(" parameter_" + p.getIdentifier());
             }
             return resultPrefix + Text.join(", ", ret) + ");";
@@ -2198,9 +2308,9 @@ public class CppRemoteGenerator
                      getLocalName(exception, "::")
                     + "& ce) { ");
             code.add(Text.tab(2) + getCorbaStubName(exception, "::") + " te;");
-            code.add(Text.tab(2) + "CCM_Remote::convertToCorba(ce, te);");
+            code.add(Text.tab(2) + "ccm::remote::convertToCorba(ce, te);");
             code.add(Text.tab(2) + "LDEBUGNL(CCM_REMOTE, " 
-                     	+ "CCM_Remote::" + "ccmDebug(te));");
+                     	+ "ccm::remote::" + "ccmDebug(te));");
             code.add(Text.tab(2) + "throw te;");
             code.add(Text.tab(1) + "}");
         }
@@ -2251,7 +2361,7 @@ public class CppRemoteGenerator
         List ret = new ArrayList();
         MParameterMode direction = p.getDirection();
         if(direction != MParameterMode.PARAM_IN) {
-            ret.add("    CCM_Remote::convertToCorba(parameter_" + p.getIdentifier() + ", "
+            ret.add("    ccm::remote::convertToCorba(parameter_" + p.getIdentifier() + ", "
                     + p.getIdentifier() + ");");
         }
         return Text.join("\n", ret);
@@ -2268,7 +2378,7 @@ public class CppRemoteGenerator
             return "";
         }
         else if(direction == MParameterMode.PARAM_INOUT) {
-            ret.add("    CCM_Remote::convertToCorba(parameter_" + p.getIdentifier() + ", "
+            ret.add("    ccm::remote::convertToCorba(parameter_" + p.getIdentifier() + ", "
                     + p.getIdentifier() + ");");
         }
         else {
@@ -2282,7 +2392,7 @@ public class CppRemoteGenerator
 
             ret.add("    " + p.getIdentifier() + " = new " + remoteScope
                     + contained.getIdentifier() + ";");
-            ret.add("    CCM_Remote::convertToCorba(parameter_" + p.getIdentifier() + ", "
+            ret.add("    ccm::remote::convertToCorba(parameter_" + p.getIdentifier() + ", "
                     + p.getIdentifier() + ");");
         }
         return Text.join("\n", ret);
@@ -2347,7 +2457,7 @@ public class CppRemoteGenerator
         // Convert the result iff the result type is not void
         if(!base_type.equals("void")) {
             ret.add("    " + getCORBALanguageType(op) + " return_value;");
-            ret.add("    CCM_Remote::convertToCorba(result, return_value);");
+            ret.add("    ccm::remote::convertToCorba(result, return_value);");
             ret.add(getDebugOperationResult(op));
             ret.add("    return return_value;");
         }
@@ -2370,7 +2480,7 @@ public class CppRemoteGenerator
 
         ret.add("    " + remoteScope + contained.getIdentifier() + "_var " + "return_value = new "
                 + remoteScope + contained.getIdentifier() + ";");
-        ret.add("    CCM_Remote::convertToCorba(result, return_value);");
+        ret.add("    ccm::remote::convertToCorba(result, return_value);");
         ret.add(getDebugOperationResult(op));
         ret.add("    return return_value._retn();");
         return Text.join("\n", ret);
@@ -2425,14 +2535,12 @@ public class CppRemoteGenerator
         logger.fine("convertPrimitiveParameterToCorba()");
         
         MParameterMode direction = p.getDirection();
-        MIDLType idlType = ((MTyped) p).getIdlType();
-        String baseType = getBaseIdlType(p);
         String corbaType = getCorbaType(p);
         List list = new ArrayList();
 
         list.add(Text.tab(1) + corbaType + " parameter_" + p.getIdentifier() + ";");
         if(direction != MParameterMode.PARAM_OUT) {
-            list.add(Text.tab(1) + "CCM_Remote::convertToCorba(" + p.getIdentifier()
+            list.add(Text.tab(1) + "ccm::remote::convertToCorba(" + p.getIdentifier()
                     + ", parameter_" + p.getIdentifier() + ");");
         }
         return Text.join("\n", list);
@@ -2454,7 +2562,7 @@ public class CppRemoteGenerator
                     + "_var parameter_"
                     + p.getIdentifier()
                     + "= new " + getCorbaStubName(contained, "::") + ";");
-            list.add(Text.tab(1) + "CCM_Remote::convertToCorba(" 
+            list.add(Text.tab(1) + "ccm::remote::convertToCorba(" 
                      + p.getIdentifier()
                      + ", parameter_" + p.getIdentifier() + ");");
         }
@@ -2597,7 +2705,7 @@ public class CppRemoteGenerator
                      getCorbaStubName(exception, "::")
                     + "& ce) {");
             code.add(Text.tab(2) + getLocalName(exception, "::") + " te;");
-            code.add(Text.tab(2) + "CCM_Remote::convertFromCorba(ce, te);");
+            code.add(Text.tab(2) + "ccm::remote::convertFromCorba(ce, te);");
             code.add(Text.tab(2) + "throw te;");
             code.add(Text.tab(1) + "}");
         }
@@ -2641,7 +2749,7 @@ public class CppRemoteGenerator
         List list = new ArrayList();
         MParameterMode direction = p.getDirection();
         if(direction != MParameterMode.PARAM_IN) {
-            list.add("    CCM_Remote::convertFromCorba(parameter_" + p.getIdentifier() + ", "
+            list.add("    ccm::remote::convertFromCorba(parameter_" + p.getIdentifier() + ", "
                     + p.getIdentifier() + ");");
         }
         return Text.join("\n", list);
@@ -2710,12 +2818,10 @@ public class CppRemoteGenerator
     protected String convertReceptaclePrimitiveResultToCpp(MOperationDef op)
     {
         logger.fine("convertReceptaclePrimitiveResultToCpp()");
-        
-        String baseType = getBaseIdlType(op);
         List list = new ArrayList();
 
         list.add(Text.tab(1) + getLanguageType(op) + " return_value;");
-        list.add(Text.tab(1) + "CCM_Remote::convertFromCorba(result, return_value);");
+        list.add(Text.tab(1) + "ccm::remote::convertFromCorba(result, return_value);");
         list.add(Text.tab(1) + "return return_value;");
         return Text.join("\n", list);
     }
@@ -2733,7 +2839,7 @@ public class CppRemoteGenerator
                 getLocalNamespace((MContained)currentNode, "::", "") 
                 + contained.getIdentifier()
                 + " return_value;");
-        list.add(Text.tab(1) + "CCM_Remote::convertFromCorba(result, return_value);");
+        list.add(Text.tab(1) + "ccm::remote::convertFromCorba(result, return_value);");
         list.add(Text.tab(1) + "return return_value;");
         return Text.join("\n", list);
     }
@@ -2745,13 +2851,13 @@ public class CppRemoteGenerator
     // MEnumDef %(tag)s helper methods
     //====================================================================
     
-    protected String getMembersFromCorba(MEnumDef enum) 
+    protected String getMembersFromCorba(MEnumDef enumDef) 
     {
         StringBuffer code = new StringBuffer();
-        for (Iterator i = enum.getMembers().iterator(); i.hasNext();) {
+        for (Iterator i = enumDef.getMembers().iterator(); i.hasNext();) {
             String member = (String) i.next();
-            String stubNs = getCorbaStubsNamespace(enum,Text.SCOPE_SEPARATOR);
-            String localNs = getLocalNamespace(enum,Text.SCOPE_SEPARATOR, ""); 
+            String stubNs = getCorbaStubsNamespace(enumDef,Text.SCOPE_SEPARATOR);
+            String localNs = getLocalNamespace(enumDef,Text.SCOPE_SEPARATOR, ""); 
             code.append(Text.TAB).append("case "); 
             code.append(stubNs).append(member).append(":\n");
             code.append(Text.tab(2)).append("out = ");
@@ -2761,13 +2867,13 @@ public class CppRemoteGenerator
         return code.toString();
     }
     
-    protected String getMembersToCorba(MEnumDef enum) 
+    protected String getMembersToCorba(MEnumDef enumDef) 
     {
         StringBuffer code = new StringBuffer();
-        for (Iterator i = enum.getMembers().iterator(); i.hasNext();) {
+        for (Iterator i = enumDef.getMembers().iterator(); i.hasNext();) {
             String member = (String) i.next();
-            String lns = getLocalNamespace(enum,Text.SCOPE_SEPARATOR, "");
-            String sns = getCorbaStubsNamespace(enum,Text.SCOPE_SEPARATOR); 
+            String lns = getLocalNamespace(enumDef,Text.SCOPE_SEPARATOR, "");
+            String sns = getCorbaStubsNamespace(enumDef,Text.SCOPE_SEPARATOR); 
             code.append(Text.TAB).append("case "); 
             code.append(lns).append(member).append(":\n");
             code.append(Text.tab(2)).append("out = "); 
@@ -2777,12 +2883,12 @@ public class CppRemoteGenerator
         return code.toString();
     }
     
-    protected String getEnumMembersDebug(MEnumDef enum) 
+    protected String getEnumMembersDebug(MEnumDef enumDef) 
     {
         StringBuffer code = new StringBuffer();
-        for (Iterator i = enum.getMembers().iterator(); i.hasNext();) {
+        for (Iterator i = enumDef.getMembers().iterator(); i.hasNext();) {
             String member = (String) i.next();
-            String sns = getCorbaStubsNamespace(enum,Text.SCOPE_SEPARATOR); 
+            String sns = getCorbaStubsNamespace(enumDef,Text.SCOPE_SEPARATOR); 
             code.append(Text.TAB).append("case "); 
             code.append(sns).append(member).append(":\n");
             code.append(Text.tab(2)).append("os << \""); 
@@ -2812,6 +2918,7 @@ public class CppRemoteGenerator
     {
         StringBuffer code = new StringBuffer();
         code.append(getLocalNamespace(iface,Text.SCOPE_SEPARATOR,""));
+        code.append(Text.SCOPE_SEPARATOR);
         code.append("CCM_");  // internally we implement CCM_IFace types
         code.append(iface.getIdentifier());
         return code.toString();
@@ -2829,7 +2936,8 @@ public class CppRemoteGenerator
         StringBuffer code = new StringBuffer();
         List scope = getScope((MContained) supports);
         // TODO: Use local namespace
-        code.append("CCM_Local").append(Text.FILE_SEPARATOR);
+        code.append("ccm").append(Text.FILE_SEPARATOR).append("local");
+        code.append(Text.FILE_SEPARATOR);
         if (scope.size() > 0) {
             code.append(Text.join(Text.FILE_SEPARATOR, scope));
             code.append(Text.FILE_SEPARATOR);
@@ -2867,7 +2975,7 @@ public class CppRemoteGenerator
             resultPrefix += "local_adapter->" + op.getIdentifier() + "(";
             for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
                 MParameterDef p = (MParameterDef) params.next();
-                String base_type = (String) language_mappings.get((String) getBaseIdlType(p));
+ //               String base_type = (String) language_mappings.get((String) getBaseIdlType(p));
                 ret.add(" parameter_" + p.getIdentifier());
             }
             return resultPrefix + Text.join(", ", ret) + ");";
@@ -2890,7 +2998,8 @@ public class CppRemoteGenerator
         MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
         List scope = getScope((MContained) iface);
         // TODO: Refactoring namespace method
-        code.append("#include <CCM_Local").append(Text.FILE_SEPARATOR);
+        code.append("#include <ccm").append(Text.FILE_SEPARATOR).append("local");
+        code.append(Text.FILE_SEPARATOR);
         if (scope.size() > 0) {
             code.append(Text.join(Text.FILE_SEPARATOR, scope));
             code.append(Text.FILE_SEPARATOR);
@@ -2903,7 +3012,8 @@ public class CppRemoteGenerator
     protected String getProvidesConvertInclude(MProvidesDef provides)
     {
         StringBuffer code = new StringBuffer();
-        code.append("#include <CCM_Remote").append(Text.FILE_SEPARATOR);
+        code.append("#include <ccm").append(Text.FILE_SEPARATOR).append("remote");
+        code.append(Text.FILE_SEPARATOR);
         code.append(provides.getProvides().getIdentifier());
         code.append("_remote.h>\n");
         return code.toString();
@@ -2943,9 +3053,8 @@ public class CppRemoteGenerator
     {
         StringBuffer code = new StringBuffer();
         MInterfaceDef iface = ((MUsesDef) currentNode).getUses();
-        List scope = getScope((MContained) iface);
         code.append("#include <");
-        code.append(getLocalNamespace(iface, "/", ""));
+        code.append(getLocalNamespace(iface, Text.FILE_SEPARATOR, ""));
         code.append(usesDef.getUses().getIdentifier());
         code.append(".h>");
         return code.toString();
@@ -2954,8 +3063,8 @@ public class CppRemoteGenerator
     protected String getUsesConvertInclude(MUsesDef usesDef) 
     {
         StringBuffer code = new StringBuffer();
-        code.append("#include <CCM_Remote/");
-        code.append(usesDef.getUses().getIdentifier());
+        code.append("#include <ccm").append(Text.FILE_SEPARATOR).append("_Remote");
+        code.append(Text.FILE_SEPARATOR).append(usesDef.getUses().getIdentifier());
         code.append("_remote.h>");
         code.append("\n");
         return code.toString();

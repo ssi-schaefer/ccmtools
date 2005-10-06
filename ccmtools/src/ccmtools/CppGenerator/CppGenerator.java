@@ -117,8 +117,9 @@ abstract public class CppGenerator extends CodeGenerator
     protected final static String CPP_SEQUENCE_TYPE = "std::vector";
 
     protected List baseNamespace = null;
-
-
+    protected List corbaStubsNamespace = null;
+    protected List remoteNamespace = null;
+    
     public CppGenerator(String sublang, Driver d, File out_dir,
             String[] output_types) throws IOException
     {

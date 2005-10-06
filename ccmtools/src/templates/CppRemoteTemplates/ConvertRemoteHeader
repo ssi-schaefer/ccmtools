@@ -6,15 +6,15 @@
 #include <list>
 #include <set>
 
+namespace ccm {
+namespace remote {
+namespace Corba {
 
 using namespace std;
 
-namespace CCM_Remote {
-namespace Corba {
-
 
 } // /namespace Corba
-} // /namespace CCM_Remote
-
+} // /namespace remote
+} // /namespace ccm
 
 

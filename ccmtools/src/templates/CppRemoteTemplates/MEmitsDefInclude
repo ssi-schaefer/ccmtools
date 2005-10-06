@@ -1,1 +1,1 @@
-#include <CCM_Local/%(EmitsType)s.h>
+#include <ccm/local/%(EmitsType)s.h>

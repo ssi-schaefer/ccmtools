@@ -26,7 +26,7 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <CCM_Remote/%(IncludeNamespace)s/%(HomeType)s_remote.h>
+#include <%(RemoteIncludeNamespace)s/%(HomeType)s_remote.h>
 #include <%(IdlFileNamespace)s%(Identifier)s.h>
 
 using namespace std;
@@ -90,10 +90,10 @@ int main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("%(HomeType)s:1.0");
     assert (!CORBA::is_nil (obj));
-    ::%(IdlHomeType)s_var my%(HomeType)s = ::%(IdlHomeType)s::_narrow (obj);
+    %(IdlHomeType)s_var my%(HomeType)s = %(IdlHomeType)s::_narrow (obj);
 
     // Create component instances
-    ::%(IdlIdentifier)s_var my%(Identifier)s = my%(HomeType)s->create();
+    %(IdlIdentifier)s_var my%(Identifier)s = my%(HomeType)s->create();
 
     // Provide facets   
 %(MProvidesDefFacetCreate)s

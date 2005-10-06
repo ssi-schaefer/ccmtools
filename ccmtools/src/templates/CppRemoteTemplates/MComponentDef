@@ -23,8 +23,8 @@
 %(MProvidesDefInclude)s
 %(MUsesDefInclude)s
 
-#include <%(LocalIncludeNamespace)s%(Identifier)s_gen.h> 
-#include <%(LocalIncludeNamespace)s%(Identifier)s_share.h> 
+#include <%(LocalIncludeNamespace)s/%(Identifier)s_gen.h> 
+#include <%(LocalIncludeNamespace)s/%(Identifier)s_share.h> 
 
 %(OpenNamespace)s
 
@@ -38,14 +38,14 @@ class %(Identifier)s_impl :
     friend class CCM_%(Identifier)s_Context_impl;
 
   protected:
-    WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s> local_adapter;
+    WX::Utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> local_adapter;
     WX::Utils::SmartPtr<CCM::SessionContainer> ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
   public:
-    %(Identifier)s_impl(WX::Utils::SmartPtr<%(LocalNamespace)s%(Identifier)s>, 
+    %(Identifier)s_impl(WX::Utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s>, 
         WX::Utils::SmartPtr<CCM::SessionContainer> );
     virtual ~%(Identifier)s_impl ();
 
@@ -99,12 +99,12 @@ class %(Identifier)s_impl :
 
 %(CorbaDebugInclude)s
 
-#include <CCM_Remote/PrimitiveConverter.h>
+#include <ccm/remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM;
+using namespace ccm;
 
 %(OpenNamespace)s
 
@@ -112,7 +112,7 @@ using namespace CCM;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr<%(LocalNamespace)s%(Identifier)s> la, 
+%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr<%(LocalNamespace)s::%(Identifier)s> la, 
     SmartPtr<CCM::SessionContainer> c)
     : local_adapter(la), ccm_container (c)
 {

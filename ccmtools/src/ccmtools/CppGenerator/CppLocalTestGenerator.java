@@ -72,7 +72,6 @@ public class CppLocalTestGenerator
 
         MContained contained = (MContained)currentNode;
         
-        String node_name = contained.getIdentifier();
         String file_dir = "test";
 
         String file_name = "_check_" 

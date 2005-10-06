@@ -23,171 +23,28 @@ package ccmtools.CppGenerator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
 
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.Metamodel.BaseIDL.MOperationDef;
-import ccmtools.Metamodel.ComponentIDL.MComponentDef;
-import ccmtools.Metamodel.ComponentIDL.MHomeDef;
-import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.UI.Driver;
 import ccmtools.utils.Debug;
-import ccmtools.utils.Text;
 
-public class CppRemoteTestGenerator extends CppGenerator
+public class CppRemoteTestGenerator 
+    extends CppRemoteGenerator
 {
-
-    protected List CorbaStubsNamespace = null;
-    protected List LocalNamespace = null;
-    
     // types for which we have a global template ; that is, a template that is
     // not contained inside another template.
-    private final static String[] local_output_types = {
+    private final static String[] REMOTE_TEST_OUTPUT_TEMPLATE_TYPES = {
         "MComponentDef"
     };
 
-    public CppRemoteTestGenerator(Driver d, File out_dir)
+    
+    public CppRemoteTestGenerator(Driver uiDriver, File outDir)
         throws IOException
     {
-        super("CppRemoteTest", d, out_dir, local_output_types);
-
-        baseNamespace.add("CCM_Remote");
-        CorbaStubsNamespace = new ArrayList();
-        // CorbaStubsNamespace.add("CORBA_Stubs");
-        LocalNamespace = new ArrayList();
-        LocalNamespace.add("CCM_Local");
+        super("CppRemoteTest", uiDriver, outDir, REMOTE_TEST_OUTPUT_TEMPLATE_TYPES);
     }
 
-    /**
-     * Collect all defined CORBA Stub prefixes into a single string. All CORBA
-     * Stub prefixes are stored in a class attribute list called
-     * CorbaStubsNamespace which is filled in the constructor.
-     * 
-     * @param separator
-     *            A separator string that is used between two list entries
-     *            (example "::"). Example: {"CORBA_Stubs"} -> "CORBA_Stubs::"
-     */
-    protected String getCorbaStubsNamespace(String separator)
-    {
-        if(CorbaStubsNamespace.size() > 0) {
-            return join(separator, CorbaStubsNamespace) + separator;
-        }
-        else {
-            return "";
-        }
-    }
-
-    
-    protected String getLocalName(MContained contained, String separator)
-    {
-        List scope = getScope(contained);
-        StringBuffer buffer = new StringBuffer();
-
-        buffer.append(Text.join(separator, LocalNamespace));
-        buffer.append(separator);
-        if (scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator);
-        }
-        buffer.append(contained.getIdentifier());
-        return buffer.toString();
-    }
-    
-
-    protected String getRemoteName(MContained contained, String separator,
-                                   String local)
-    {
-        List scope = getScope(contained);
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.join(separator, baseNamespace));
-        buffer.append(separator);
-        if (scope.size() > 0) {
-            buffer.append(Text.join(separator, scope));
-            buffer.append(separator); 
-        }
-        buffer.append(contained.getIdentifier());
-        return buffer.toString();
-    }
-
-    
-    /**
-     * Overwrites the CppGenerator's method to handle namespaces in different
-     * ways. There are local (CCM_Local) namespaces, remote (CCM_Remote)
-     * namespaces and the namespaces of the generated stubs and skeletons.
-     * 
-     * "FileNamespace": is used to create the directory in which the remote
-     * component logic will be generated
-     * 
-     * "IncludeNamespace": is used to create the include path depending on the
-     * component's namespace. The CCM_Remote namespace is cut off because there
-     * can be local and remote include paths.
-     * 
-     * "Namespace": is used to create the scope for classes. The CCM_Remote
-     * namespace is cut off because there can be local and remote include paths.
-     * If a namespace is defined, it has to start with "::"
-     * 
-     * "ShortNamespace": corresponds with the module hierarchy in the IDL file,
-     * with a IDL-prefix.
-     * 
-     * "IdlFileNamespace":
-     * 
-     * "IdlNamespace":
-     */
-    protected String handleNamespace(String data_type, String local)
-    {
-        List names = new ArrayList(namespaceStack);
-
-        if(!local.equals(""))
-            names.add("CCM_Session_" + local);
-
-        if(data_type.equals("FileNamespace")) {
-            return join("_", slice(names, 0));
-        }
-        else if(data_type.equals("IncludeNamespace")) {
-            return join("/", slice(names, 1));
-        }
-        else if(data_type.equals("Namespace")) {
-            List NamespaceList = slice(names, 1);
-            if(NamespaceList.size() > 0) {
-                return "::" + join("::", NamespaceList);
-            }
-            return "";
-        }
-        else if(data_type.equals("ShortNamespace")) {
-            if(names.size() > 1) {
-                List shortList = new ArrayList(names.subList(1,
-                                                             names.size() - 1));
-                if(shortList.size() > 0)
-                    return getCorbaStubsNamespace("::") + join("::", shortList)
-                            + "::";
-            }
-            return getCorbaStubsNamespace("::");
-        }
-        else if(data_type.equals("IdlFileNamespace")) {
-            if(names.size() > 1) {
-                List IdlFileList = new ArrayList(names
-                        .subList(1, names.size() - 1));
-                if(IdlFileList.size() > 0)
-                    return getCorbaStubsNamespace("_") + join("_", IdlFileList)
-                            + "_";
-            }
-            return getCorbaStubsNamespace("_");
-        }
-        else if(data_type.equals("IdlNamespace")) {
-            if(names.size() > 2) {
-                List IdlFileList = new ArrayList(names
-                        .subList(2, names.size() - 1));
-                return join("::", IdlFileList) + "::";
-            }
-            return "";
-        }
-        return super.handleNamespace(data_type, local);
-    }
 
     /**
      * Write generated code to an output file.
@@ -208,7 +65,8 @@ public class CppRemoteTestGenerator extends CppGenerator
         String node_name = ((MContained) currentNode).getIdentifier();
         String file_dir = "test";
         String file_name = "_check_"
-                + handleNamespace("FileNamespace", node_name) + "_remote.cc";
+                            + handleNamespace("FileNamespace", node_name) 
+                            + ".cc";
 
         writeFinalizedFile(file_dir, file_name, generated_code);
 
@@ -219,94 +77,94 @@ public class CppRemoteTestGenerator extends CppGenerator
 
     /** *********************************************************************** */
 
-    protected Map getTwoStepOperationVariables(MOperationDef operation,
-                                               MContained container)
-    {
-        String lang_type = getLanguageType(operation);
-        Map vars = new Hashtable();
+//    protected Map getTwoStepOperationVariables(MOperationDef operation,
+//                                               MContained container)
+//    {
+//        String lang_type = getLanguageType(operation);
+//        Map vars = new Hashtable();
+//
+//        vars.put("Object", container.getIdentifier());
+//        vars.put("Identifier", operation.getIdentifier());
+//        vars.put("LanguageType", lang_type);
+//        vars.put("MExceptionDefThrows", getOperationExcepts(operation));
+//        vars.put("MParameterDefAll", getOperationParams(operation));
+//        vars.put("MParameterDefName", getOperationParamNames(operation));
+//
+//        if(!lang_type.equals("void"))
+//            vars.put("Return", "return ");
+//        else
+//            vars.put("Return", "");
+//
+//        return vars;
+//    }
 
-        vars.put("Object", container.getIdentifier());
-        vars.put("Identifier", operation.getIdentifier());
-        vars.put("LanguageType", lang_type);
-        vars.put("MExceptionDefThrows", getOperationExcepts(operation));
-        vars.put("MParameterDefAll", getOperationParams(operation));
-        vars.put("MParameterDefName", getOperationParamNames(operation));
+//    protected String data_MComponentDef(String data_type, String data_value)
+//    {
+//        MComponentDef component = (MComponentDef) currentNode;
+//        MHomeDef home = null;
+//
+//        try {
+//            home = (MHomeDef) component.getHomes().iterator().next();
+//            if(home == null)
+//                throw new RuntimeException();
+//        }
+//        catch(Exception e) {
+//            throw new RuntimeException("Component '"
+//                    + component.getIdentifier()
+//                    + "' does not have exactly one home.");
+//        }
+//        List HomeScope = getScope((MContained) home);
+//        List ComponentScope = getScope((MContained) component);
+//
+//        if(data_type.equals("HomeType")) {
+//            return home.getIdentifier();
+//        }
+//        else if(data_type.equals("IdlHomeType")) {
+//            if(HomeScope.size() > 0)
+//                return getCorbaStubsNamespace("::") + join("::", HomeScope)
+//                        + "::" + home.getIdentifier();
+//            else
+//                return getCorbaStubsNamespace("::") + home.getIdentifier();
+//        }
+//        else if(data_type.equals("Identifier")) {
+//            return component.getIdentifier();
+//        }
+//        else if(data_type.equals("IdlIdentifier")) {
+//            if(ComponentScope.size() > 0)
+//                return getCorbaStubsNamespace("::")
+//                        + join("::", ComponentScope) + "::"
+//                        + component.getIdentifier();
+//            else
+//                return getCorbaStubsNamespace("::") + component.getIdentifier();
+//        }
+//        else if(data_type.endsWith("AbsoluteRemoteHomeName")) {
+//            return getRemoteName(home,"_","");
+//        }
+//        else if(data_type.endsWith("AbsoluteLocalHomeName")) {
+//            return getLocalName(home,"_");
+//        }
+//        return super.data_MComponentDef(data_type, data_value);
+//    }
 
-        if(!lang_type.equals("void"))
-            vars.put("Return", "return ");
-        else
-            vars.put("Return", "");
-
-        return vars;
-    }
-
-    protected String data_MComponentDef(String data_type, String data_value)
-    {
-        MComponentDef component = (MComponentDef) currentNode;
-        MHomeDef home = null;
-
-        try {
-            home = (MHomeDef) component.getHomes().iterator().next();
-            if(home == null)
-                throw new RuntimeException();
-        }
-        catch(Exception e) {
-            throw new RuntimeException("Component '"
-                    + component.getIdentifier()
-                    + "' does not have exactly one home.");
-        }
-        List HomeScope = getScope((MContained) home);
-        List ComponentScope = getScope((MContained) component);
-
-        if(data_type.equals("HomeType")) {
-            return home.getIdentifier();
-        }
-        else if(data_type.equals("IdlHomeType")) {
-            if(HomeScope.size() > 0)
-                return getCorbaStubsNamespace("::") + join("::", HomeScope)
-                        + "::" + home.getIdentifier();
-            else
-                return getCorbaStubsNamespace("::") + home.getIdentifier();
-        }
-        else if(data_type.equals("Identifier")) {
-            return component.getIdentifier();
-        }
-        else if(data_type.equals("IdlIdentifier")) {
-            if(ComponentScope.size() > 0)
-                return getCorbaStubsNamespace("::")
-                        + join("::", ComponentScope) + "::"
-                        + component.getIdentifier();
-            else
-                return getCorbaStubsNamespace("::") + component.getIdentifier();
-        }
-        else if(data_type.endsWith("AbsoluteRemoteHomeName")) {
-            return getRemoteName(home,"_","");
-        }
-        else if(data_type.endsWith("AbsoluteLocalHomeName")) {
-            return getLocalName(home,"_");
-        }
-        return super.data_MComponentDef(data_type, data_value);
-    }
-
-    protected String data_MProvidesDef(String data_type, String data_value)
-    {
-        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
-        MComponentDef component = ((MProvidesDef) currentNode).getComponent();
-        List scope = getScope((MContained) iface);
-
-        if(data_type.equals("IdlProvidesType")) {
-            if(scope.size() > 0)
-                return getCorbaStubsNamespace("::") + join("::", scope) + "::"
-                        + iface.getIdentifier();
-            else
-                return getCorbaStubsNamespace("::") + iface.getIdentifier();
-        }
-        else if(data_type.equals("ProvidesType")) {
-            return iface.getIdentifier();
-        }
-        else if(data_type.equals("ComponentType")) {
-            return component.getIdentifier();
-        }
-        return super.data_MProvidesDef(data_type, data_value);
-    }
+//    protected String data_MProvidesDef(String data_type, String data_value)
+//    {
+//        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
+//        MComponentDef component = ((MProvidesDef) currentNode).getComponent();
+//        List scope = getScope((MContained) iface);
+//
+//        if(data_type.equals("IdlProvidesType")) {
+//            if(scope.size() > 0)
+//                return getCorbaStubsNamespace("::") + join("::", scope) + "::"
+//                        + iface.getIdentifier();
+//            else
+//                return getCorbaStubsNamespace("::") + iface.getIdentifier();
+//        }
+//        else if(data_type.equals("ProvidesType")) {
+//            return iface.getIdentifier();
+//        }
+//        else if(data_type.equals("ComponentType")) {
+//            return component.getIdentifier();
+//        }
+//        return super.data_MProvidesDef(data_type, data_value);
+//    }
 }

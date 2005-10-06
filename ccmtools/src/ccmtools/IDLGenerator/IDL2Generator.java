@@ -44,12 +44,6 @@ public class IDL2Generator extends IDLGenerator
     public IDL2Generator(Driver d, File out_dir) throws IOException
     {
         super("2", d, out_dir);
-
-        // Define the separator used to create file names.
-//        file_separator = "_";
-
-        // Add a namespace to all IDL2 fragments.
-        // base_namespace.add("CORBA_Stubs");
     }
 
     /***************************************************************************

@@ -3,7 +3,7 @@
 {
     LDEBUGNL(CCM_CONTAINER, " %(ComponentType)s_impl::provide_%(Identifier)s()");
     if (%(Identifier)s_facet_adapter == 0) {
-    	WX::Utils::SmartPtr<CCM_Local::%(ProvidesType)s> 
+    	WX::Utils::SmartPtr<%(LocalNamespace)s::%(ProvidesType)s> 
     	    localFacetAdapter = local_adapter->provide_%(Identifier)s();
         %(Identifier)s_facet_adapter = 
             new %(InterfaceType)sAdapterFromCorba(localFacetAdapter);

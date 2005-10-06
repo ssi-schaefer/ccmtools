@@ -25,7 +25,8 @@
 
 %(CORBASequenceConverterInclude)s
 
-namespace CCM_Remote {
+namespace ccm {
+namespace remote {
 
 %(ConvertFromCorbaDeclaration)s
 
@@ -33,7 +34,8 @@ namespace CCM_Remote {
 
 %(AliasDefDebug)s
 
-} // /namespace CCM_Remote
+} // /namespace remote
+} // /namespace ccm
 
 #endif // HAVE_MICO
 #endif // __ALIAS_CONVERTER%(PreprocIdentifier)s__H__
@@ -59,15 +61,17 @@ namespace CCM_Remote {
 #include <CCM_Remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
-using namespace std;
+namespace ccm {
+namespace remote {
 
-namespace CCM_Remote {
+using namespace std;
 
 %(ConvertFromCorbaImplementation)s
 
 %(ConvertToCorbaImplementation)s
 
-} // /namespace CCM_Remote
+} // /namespace remote
+} // /namespace ccm
 
 #endif // HAVE_MICO
 
