@@ -439,7 +439,9 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     public void handleNodeData(String field_type, String field_id, Object value)
     {
-        logger.fine("enter handleNodeData()");
+        logger.fine("enter handleNodeData(\"" + field_type + "\",\""
+                                            + field_id + "\"," 
+                                            + value + ")");
         
         String key = getScopeID(field_id);
 
@@ -912,7 +914,7 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     protected String getLocalValue(String variable)
     {
-        logger.fine("enter getLocalValue()");
+        logger.fine("enter getLocalValue(\"" + variable + "\")");
         
         String scope_id = getScopeID(variable);
         String value = "";

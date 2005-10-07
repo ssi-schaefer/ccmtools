@@ -21,7 +21,7 @@
 #include <sstream>
 
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
-#include <%(LocalIncludeNamespace)s%(Identifier)s.h>
+#include <%(LocalIncludeNamespace)s/%(Identifier)s.h>
 
 %(CORBASequenceConverterInclude)s
 
@@ -58,7 +58,7 @@ namespace remote {
 
 #include <WX/Utils/debug.h> 
 	
-#include <CCM_Remote/PrimitiveConverter.h>
+#include <ccm/remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
 namespace ccm {

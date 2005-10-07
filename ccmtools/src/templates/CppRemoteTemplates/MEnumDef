@@ -21,7 +21,7 @@
 #include <sstream>
 
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
-#include <%(LocalIncludeNamespace)s%(Identifier)s.h>
+#include <%(LocalIncludeNamespace)s/%(Identifier)s.h>
 
 namespace ccm {
 namespace remote {
@@ -82,7 +82,6 @@ void
 convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out)
 {
     LDEBUGNL(CCM_CONTAINER," convertFromCorba(%(CorbaStubName)s)");
-//    LDEBUGNL(CCM_CONTAINER, in);
 
     switch(in) {
 %(MembersFromCorba)s
@@ -98,8 +97,6 @@ convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out)
     switch(in) {
 %(MembersToCorba)s
     }
-    
-//    LDEBUGNL(CCM_CONTAINER, out);
 } 
 
 } // /namespace remote

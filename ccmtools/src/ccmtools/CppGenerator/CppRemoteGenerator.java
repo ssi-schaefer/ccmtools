@@ -140,7 +140,6 @@ public class CppRemoteGenerator
     public CppRemoteGenerator(Driver uiDriver, File outDir) 
     	throws IOException
     {
-        //super("CppRemote", uiDriver, outDir, REMOTE_OUTPUT_TEMPLATE_TYPES);
         this("CppRemote",uiDriver, outDir, REMOTE_OUTPUT_TEMPLATE_TYPES);
     }
     
@@ -161,10 +160,6 @@ public class CppRemoteGenerator
         remoteNamespace.add("remote");
 
         corbaStubsNamespace = new ArrayList();
-        
-//        localNamespace = new ArrayList();
-//        localNamespace.add("ccm");
-//        localNamespace.add("local");
 
         // Fill the CORBA_mappings with IDL to C++ Mapping types
         String[] labels = MPrimitiveKind.getLabels();
@@ -190,6 +185,9 @@ public class CppRemoteGenerator
      */
     public String getCorbaStubsNamespace(MContained contained, String separator)
     {
+        logger.fine("enter getCorbaStubsNamespace(" 
+                    + contained + ", \"" 
+                    + separator + "\")");
         StringBuffer code = new StringBuffer();
         List scope = getScope(contained);
         if(corbaStubsNamespace.size() > 0) {
@@ -200,11 +198,15 @@ public class CppRemoteGenerator
             code.append(Text.join(separator, scope));
             code.append(separator);
         }
+        logger.fine("leave getCorbaStubsNamespace()");
         return code.toString();
     }
 
     public String getCorbaStubName(MContained contained, String separator)
     {
+        logger.fine("enter getCorbaStubsName(" 
+                   + contained + ", \"" 
+                   + separator + "\")");
         StringBuffer code = new StringBuffer();
         List scope = getScope(contained);
         if(corbaStubsNamespace.size() > 0) {
@@ -216,6 +218,7 @@ public class CppRemoteGenerator
             code.append(separator);
         }
         code.append(contained.getIdentifier());
+        logger.fine("leave getCorbaStubsName()");
         return code.toString();
     }
     
@@ -223,35 +226,11 @@ public class CppRemoteGenerator
                                     String local)
     {
         return getLocalCppNamespace(contained, separator);
-        
-//        StringBuffer code = new StringBuffer();
-//        List scope = getScope(contained);
-//        if (local.length() > 0) {
-//            scope.add("CCM_Session_" + local);
-//        }
-//        code.append(Text.join(separator, localNamespace));
-//        code.append(separator);
-//        if (scope.size() > 0) {
-//            code.append(Text.join(separator, scope));
-//            code.append(separator);
-//        }
-//        return code.toString();
     }
     
     public String getLocalName(MContained contained, String separator)
     {
         return getLocalCppName(contained, separator);
-        
-//        StringBuffer code = new StringBuffer();
-//        List scope = getScope(contained);
-//        code.append(Text.join(separator, localNamespace));
-//        code.append(separator);
-//        if (scope.size() > 0) {
-//            code.append(Text.join(separator, scope));
-//            code.append(separator);
-//        }
-//        code.append(contained.getIdentifier());
-//        return code.toString();
     }
     
     public String getRemoteNamespace(MContained node, String separator)
@@ -280,20 +259,6 @@ public class CppRemoteGenerator
             code.append(separator);
             code.append(home.getComponent().getIdentifier());
         }
-        
-//        StringBuffer code = new StringBuffer();
-//        List names = new ArrayList(namespaceStack);
-//        if (local.length() > 0) {
-//            names.add("CCM_Session_" + local);
-//        }
-//        code.append(separator);
-//        if (names.size() > 1) {
-//            code.append(Text.join(separator, Text.slice(names, 0)));
-//            code.append(separator);
-//        }
-//        else {
-//            // no additional namespace
-//        }
         return code.toString();
     }
    
@@ -303,16 +268,6 @@ public class CppRemoteGenerator
         code.append(getRemoteNamespace(node, separator));
         code.append(separator);
         code.append(node.getIdentifier());
-        
-//        StringBuffer code = new StringBuffer();
-//        List scope = getScope(contained);
-//        code.append(Text.join(separator, baseNamespace));
-//        code.append(separator);
-//        if(scope.size() > 0) {
-//            code.append(Text.join(separator, scope));
-//            code.append(separator);
-//        }
-//        code.append(contained.getIdentifier());
         return code.toString();
     }
     
@@ -380,20 +335,18 @@ public class CppRemoteGenerator
      */
     protected String handleNamespace(String dataType, String local)
     {
-        logger.fine("enter handleNamespace("
-                    + dataType +", " 
-                    + local + ")");
-        String code;
-        MContained contained = (MContained)currentNode;
-//        List names = new ArrayList(namespaceStack);
-//        MContained contained = (MContained)currentNode;
-        
+        logger.fine("enter handleNamespace(\""
+                    + dataType +"\", \"" 
+                    + local + "\")");
+        String code ;
+        MContained contained = null;    
+        if(currentNode instanceof MContained) {
+            contained = (MContained)currentNode;
+        }
         if (dataType.equals("FileNamespace")) {
             code = getRemoteNamespace(contained,Text.MANGLING_SEPARATOR);
-//            code = Text.join(Text.MANGLING_SEPARATOR, Text.slice(names, 0));
         }
         else if(dataType.equals("LocalNamespace")) {
-            
             code = getLocalNamespace(contained, Text.SCOPE_SEPARATOR,local);
         }
         else if(dataType.equals("RemoteNamespace")) {
@@ -410,9 +363,8 @@ public class CppRemoteGenerator
         }
         else if(dataType.equals("StubsIncludeNamespace")) {
             code = getCorbaStubsNamespace(contained, Text.MANGLING_SEPARATOR);
-        }
+        }            
         else if(dataType.equals("CorbaDebugNamespace")) {
-//            code = "CCM_Remote::";
             code = "ccm::remote::";
         }
         else if(dataType.equals("OpenNamespace")) {
@@ -700,9 +652,9 @@ public class CppRemoteGenerator
     
     protected String data_MFieldDef(String dataType, String dataValue)
     {
-        logger.fine("enter data_MFieldDef()"); 
-        logger.finer("    parameter dataType  = " + dataType);
-        logger.finer("    parameter dataValue = " + dataValue);
+        logger.fine("enter data_MFieldDef(\"" + dataType + "\", \"" 
+                                              + dataValue + "\")"); 
+        logger.finer("   currentNode = " + currentNode);
         MTyped type = (MTyped) currentNode;
         MIDLType idlType = type.getIdlType();
         String fieldName = ((MFieldDef) currentNode).getIdentifier();
@@ -944,14 +896,12 @@ public class CppRemoteGenerator
         }
         else if(dataType.equals("IdlIdentifier")) {
             dataValue = getCorbaStubsNamespace(component, "::") 
-                        + Text.SCOPE_SEPARATOR
                         + component.getIdentifier();
         }
         else if(dataType.equals("IdlHomeType")) {
               dataValue = getCorbaStubsNamespace(home, "::") 
-                          + Text.SCOPE_SEPARATOR 
                           + home.getIdentifier();
-      }
+        }
         else {
             dataValue = super.data_MComponentDef(dataType, dataValue);
         }
@@ -1179,7 +1129,7 @@ public class CppRemoteGenerator
                 buffer.append(super.getBaseLanguageType(object));
             }
             else {
-                buffer.append("ccm::local::");
+                //buffer.append("ccm::local::");
                 buffer.append(super.getBaseLanguageType(object));
             }
         }
@@ -1200,7 +1150,7 @@ public class CppRemoteGenerator
      */
     public String getLanguageType(MTyped object)
     {
-        logger.fine("getLanguageType()");
+        logger.fine("getLanguageType(\"" + object + "\")");
         
         String base_type = getBaseIdlType(object);
 
@@ -1463,7 +1413,7 @@ public class CppRemoteGenerator
             code.append(getBaseLanguageType(singleType));
         }
         else {
-            code.append("ccm::local::");
+            //code.append("ccm::local::");
             // TODO: Handle local Namespace
             code.append(getBaseLanguageType(singleType));
         }
@@ -2837,6 +2787,7 @@ public class CppRemoteGenerator
 
         list.add(Text.tab(1) + 
                 getLocalNamespace((MContained)currentNode, "::", "") 
+                + Text.SCOPE_SEPARATOR
                 + contained.getIdentifier()
                 + " return_value;");
         list.add(Text.tab(1) + "ccm::remote::convertFromCorba(result, return_value);");
@@ -2861,7 +2812,7 @@ public class CppRemoteGenerator
             code.append(Text.TAB).append("case "); 
             code.append(stubNs).append(member).append(":\n");
             code.append(Text.tab(2)).append("out = ");
-            code.append(localNs).append(member).append(";\n");
+            code.append(localNs).append(Text.SCOPE_SEPARATOR).append(member).append(";\n");
             code.append(Text.tab(2)).append("break;\n");
         }
         return code.toString();
@@ -2875,7 +2826,7 @@ public class CppRemoteGenerator
             String lns = getLocalNamespace(enumDef,Text.SCOPE_SEPARATOR, "");
             String sns = getCorbaStubsNamespace(enumDef,Text.SCOPE_SEPARATOR); 
             code.append(Text.TAB).append("case "); 
-            code.append(lns).append(member).append(":\n");
+            code.append(lns).append(Text.SCOPE_SEPARATOR).append(member).append(":\n");
             code.append(Text.tab(2)).append("out = "); 
             code.append(sns).append(member).append(";\n");
             code.append(Text.tab(2)).append("break;\n");
@@ -2995,17 +2946,23 @@ public class CppRemoteGenerator
     protected String getProvidesInclude(MProvidesDef provides) 
     {
         StringBuffer code = new StringBuffer();
-        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
-        List scope = getScope((MContained) iface);
-        // TODO: Refactoring namespace method
-        code.append("#include <ccm").append(Text.FILE_SEPARATOR).append("local");
+        code.append("#include <");
+        code.append(getLocalNamespace(provides,Text.FILE_SEPARATOR,""));
         code.append(Text.FILE_SEPARATOR);
-        if (scope.size() > 0) {
-            code.append(Text.join(Text.FILE_SEPARATOR, scope));
-            code.append(Text.FILE_SEPARATOR);
-        }
         code.append(provides.getProvides().getIdentifier());
         code.append(".h>\n");
+        
+//        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
+//        List scope = getScope((MContained) iface);
+//        // TODO: Refactoring namespace method
+//        code.append("#include <ccm").append(Text.FILE_SEPARATOR).append("local");
+//        code.append(Text.FILE_SEPARATOR);
+//        if (scope.size() > 0) {
+//            code.append(Text.join(Text.FILE_SEPARATOR, scope));
+//            code.append(Text.FILE_SEPARATOR);
+//        }
+//        code.append(provides.getProvides().getIdentifier());
+//        code.append(".h>\n");
         return code.toString();
     }
     
@@ -3031,14 +2988,18 @@ public class CppRemoteGenerator
     protected String getProvidesType(MProvidesDef provides) 
     {
         StringBuffer code = new StringBuffer();
-        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
-        List scope = getScope((MContained) iface);
-        // TODO: Refactoring namespace method
-        if (scope.size() > 0) {
-            code.append(Text.join(Text.SCOPE_SEPARATOR, scope));
-            code.append(Text.SCOPE_SEPARATOR);
-        }
+        code.append(getLocalNamespace(provides,Text.SCOPE_SEPARATOR,""));
+        code.append(Text.SCOPE_SEPARATOR);
         code.append(provides.getProvides().getIdentifier());
+        
+//        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
+//        List scope = getScope((MContained) iface);
+//        // TODO: Refactoring namespace method
+//        if (scope.size() > 0) {
+//            code.append(Text.join(Text.SCOPE_SEPARATOR, scope));
+//            code.append(Text.SCOPE_SEPARATOR);
+//        }
+//        code.append(provides.getProvides().getIdentifier());
         return code.toString();
     }
     
