@@ -12,6 +12,7 @@ struct Person {
   string name;
 };
 
+
 struct Address {
   string street;
   long   number;
