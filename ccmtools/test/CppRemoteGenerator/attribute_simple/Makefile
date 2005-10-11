@@ -11,7 +11,6 @@ idl3: ${APP_NAME}.idl
 	${CCMTOOLS_CMD} idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
 
 local: idl3
-#	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/*.idl
 	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl 
 
 remote: local
@@ -26,7 +25,7 @@ check:
 	cp impl/Makefile.py ${DEST_DIR}/
 	touch ${DEST_DIR}/component/Makefile.py
 	touch ${DEST_DIR}/component/Test/Makefile.py
-#	cp test/_check_ccm_remote_component_Test.cc ${DEST_DIR}/component/Test/test/
+	cp test/_check_ccm_remote_component_Test.cc ${DEST_DIR}/component/Test/test/
 	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
 
 clean: 
