@@ -15,7 +15,7 @@ module world {
       
       typedef sequence<ErrorInfo> ErrorInfoList;
       
-      exception Error
+      exception SimpleError
       {
 	ErrorInfoList info;
       };
@@ -24,13 +24,14 @@ module world {
       exception FatalError{};
       
       interface Console {
-	long foo(in string msg)
-	  raises (Error, SuperError, FatalError);
+	long print(in string msg)
+	  raises (SimpleError, SuperError, FatalError);
       };
       
       component Test
       {
-	uses Console console;
+	uses Console outPort;
+	provides Console inPort;
       };
       
       home TestHome manages Test
