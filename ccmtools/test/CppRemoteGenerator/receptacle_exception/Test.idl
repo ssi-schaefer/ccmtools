@@ -11,7 +11,7 @@ struct ErrorInfo
 
 typedef sequence<ErrorInfo> ErrorInfoList;
 
-exception Error
+exception SimpleError
 {
   ErrorInfoList info;
 };
@@ -21,12 +21,13 @@ exception FatalError{};
 
 interface Console {
   long print(in string msg)
-    raises (Error, SuperError, FatalError);
+    raises (SimpleError, SuperError, FatalError);
 };
 
 component Test
 {
-  uses Console console;
+  uses Console outPort;
+  provides Console inPort;
 };
 
 home TestHome manages Test
