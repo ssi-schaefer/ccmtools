@@ -1,0 +1,33 @@
+/**
+ * Test case: supports_exception
+ *
+ */
+
+struct ErrorInfo
+{
+  long code;
+  string message;
+};
+
+typedef sequence<ErrorInfo> ErrorInfoList;
+
+exception SimpleError
+{
+  ErrorInfoList info;
+};
+
+exception SuperError{};
+exception FatalError{};
+
+interface Console {
+  long print(in string msg)
+    raises (SimpleError, SuperError, FatalError);
+};
+
+component Test supports Console 
+{
+};
+
+home TestHome manages Test
+{
+};
