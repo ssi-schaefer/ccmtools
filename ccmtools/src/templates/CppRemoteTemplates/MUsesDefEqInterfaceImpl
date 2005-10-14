@@ -7,19 +7,19 @@ void
     reference_for_receptacle_%(Identifier)s = 
         ::%(IdlUsesType)s::_duplicate (value);
 
-    SmartPtr<CCM_Local::%(UsesType)s> %(Identifier)s_adapter = 
-        SmartPtr<CCM_Local::%(UsesType)s>(
-            dynamic_cast<CCM_Local::%(UsesType)s*>
-	            (new %(InterfaceType)sAdapterToCorba(
+    SmartPtr<%(UsesType)s> %(Identifier)s_adapter = 
+        SmartPtr<%(UsesType)s>(
+            dynamic_cast<%(UsesType)s*>
+	            (new ::ccm::remote::%(InterfaceType)sAdapterToCorba(
 	                 reference_for_receptacle_%(Identifier)s)));
 
     try {
         local_adapter->connect_%(Identifier)s(%(Identifier)s_adapter);
     }
-    catch(const LocalComponents::AlreadyConnected&) {
+    catch(const ::ccm::local::Components::AlreadyConnected&) {
         throw Components::AlreadyConnected();
     }
-    catch(const LocalComponents::InvalidConnection&) {
+    catch(const ::ccm::local::Components::InvalidConnection&) {
         throw Components::InvalidConnection();
     }
 }
@@ -33,7 +33,7 @@ void
     try {
         local_adapter->disconnect_%(Identifier)s();
     }
-    catch(const LocalComponents::NoConnection&) {
+    catch(const ::ccm::local::Components::NoConnection&) {
         throw Components::NoConnection();
     }
     

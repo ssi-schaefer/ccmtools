@@ -102,11 +102,10 @@ class %(Identifier)s_impl :
 #include <ccm/remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
+%(OpenNamespace)s
+
 using namespace std;
 using namespace WX::Utils;
-using namespace ccm;
-
-%(OpenNamespace)s
 
 //============================================================================
 // Component remote adapter 

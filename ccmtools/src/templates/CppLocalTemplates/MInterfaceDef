@@ -108,7 +108,9 @@ class %(Identifier)sAdapter
 
 %(MOperationDefAdapterHeader)s
 
+/*
     WX::Utils::SmartPtr< ::ccm::local::Components::Object> get_component();
+*/
 
  protected:
     ::ccm::local::Components::Object* component_;
@@ -175,7 +177,7 @@ using namespace WX::Utils;
 
 %(MOperationDefAdapterImpl)s
 
-
+/*
 SmartPtr< ::ccm::local::Components::Object>
 %(Identifier)sAdapter::get_component()
 {
@@ -183,6 +185,7 @@ SmartPtr< ::ccm::local::Components::Object>
     return SmartPtr< ::ccm::local::Components::Object>
         (dynamic_cast< ::ccm::local::Components::Object*> (component_));
 };
+*/ 
  
 %(CloseNamespace)s 
  

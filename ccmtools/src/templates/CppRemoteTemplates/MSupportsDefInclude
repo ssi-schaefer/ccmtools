@@ -1,1 +1,2 @@
-#include <%(SupportsInclude)s.h>
+%(SupportsInclude)s
+%(SupportsConvertInclude)s
