@@ -1,0 +1,41 @@
+/**
+ * Test case: supports_module_exception
+ *
+ */
+
+module world {
+  module europe {
+    module austria {
+
+      struct ErrorInfo
+      {
+	long code;
+	string message;
+      };
+      
+      typedef sequence<ErrorInfo> ErrorInfoList;
+      
+      exception SimpleError
+      {
+	ErrorInfoList info;
+      };
+      
+      exception SuperError{};
+      exception FatalError{};
+      
+      interface Console {
+	long print(in string msg)
+	  raises (SimpleError, SuperError, FatalError);
+      };
+      
+      component Test supports Console 
+      {
+      };
+      
+      home TestHome manages Test
+      {
+      };
+      
+    }; // end of module austria
+  }; // end of module europe
+}; // end of module world
