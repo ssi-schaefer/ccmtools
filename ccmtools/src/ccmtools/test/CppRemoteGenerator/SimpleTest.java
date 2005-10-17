@@ -21,230 +21,129 @@ package ccmtools.test.CppRemoteGenerator;
 
 import ccmtools.test.CcmtoolsTestCase;
 
-/*******************************************************************************
+/**
  * This test case is derived from CcmtoolsTestCase class and implements tests
- * for idl3, idl3mirror, c++local, c++local-test code generators. These tests
- * check the code generation process, and the runtime behavior of the generated
- * code (using Confix' _check_*.cc files).
- ******************************************************************************/
+ * for idl3, idl3mirror, c++local, c++remote and c++remote-test code generators. 
+ * These tests check the code generation process, and the runtime behavior of 
+ * the generated code (using Confix' _check_*.cc files).
+ */
 public class SimpleTest extends CcmtoolsTestCase
 {
-
     private String ccmtoolsDir;
+    private String testDir;
 
     public SimpleTest(String name)
     {
         super(name);
-        // get current working directory
-        // (this is where build.xml is executed)
         ccmtoolsDir = System.getProperty("user.dir");
+        testDir = ccmtoolsDir + "/test/CppRemoteGenerator";
     }
 
+    
     // ------------------------------------------------------------------------
     // Attribute test cases
     // ------------------------------------------------------------------------
-
+    //    make -C attribute_simple test
+    //    make -C attribute_module_simple test
+    
     public void testAttributeSimple()
     {
-        String testDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/attribute_simple";
-        String sandboxDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/sandbox/attribute_simple";
-
         try {
-            runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
-            runDefaultConfix(sandboxDir);
+            executeCommandLine("make -C " + testDir + "/attribute_simple test");
         }
         catch(Exception e) {
             fail();
         }
     }
-
+    
     public void testAttributeModuleSimple()
     {
-        String testDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/attribute_module_simple";
-        String sandboxDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/sandbox/attribute_module_simple";
-
         try {
-            runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc");
-            runDefaultConfix(sandboxDir);
+            executeCommandLine("make -C " + testDir + "/attribute_module_simple test");
         }
         catch(Exception e) {
             fail();
         }
     }
 
+    
     // ------------------------------------------------------------------------
     // Supports test cases
     // ------------------------------------------------------------------------
-
+    //    make -C supports_simple test
+    //    make -C supports_module_simple test
+    
     public void testSupportsSimple()
     {
-        String testDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/supports_simple";
-        String sandboxDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/sandbox/supports_simple";
-
         try {
-            runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
-            copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
-                    + "/impl/Test_impl.cc");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
-            runDefaultConfix(sandboxDir);
+            executeCommandLine("make -C " + testDir + "/supports_simple test");
         }
         catch(Exception e) {
             fail();
         }
     }
-
+    
     public void testSupportsModuleSimple()
     {
-        String testDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/supports_module_simple";
-        String sandboxDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/sandbox/supports_module_simple";
-
         try {
-            runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
-            copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
-                    + "/impl/Test_impl.cc");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc");
-            runDefaultConfix(sandboxDir);
+            executeCommandLine("make -C " + testDir + "/supports_module_simple test");
         }
         catch(Exception e) {
             fail();
         }
     }
-
+    
+    
     // ------------------------------------------------------------------------
     // Facet test cases
     // ------------------------------------------------------------------------
-
+    //    make -C facet_simple test
+    //    make -C facet_module_simple test
+    
     public void testFacetSimple()
     {
-        String testDir = ccmtoolsDir + "/test/CppRemoteGenerator/facet_simple";
-        String sandboxDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/sandbox/facet_simple";
-
         try {
-            runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
-            copyFile(testDir + "/impl/Test_my_facet_impl.cc", sandboxDir
-                    + "/impl/Test_my_facet_impl.cc");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
-            runDefaultConfix(sandboxDir);
+            executeCommandLine("make -C " + testDir + "/facet_simple test");
         }
         catch(Exception e) {
             fail();
         }
     }
-
+    
     public void testFacetModuleSimple()
     {
-        String testDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/facet_module_simple";
-        String sandboxDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/sandbox/facet_module_simple";
-
         try {
-            runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
-            copyFile(testDir + "/impl/Test_my_facet_impl.cc", sandboxDir
-                    + "/impl/Test_my_facet_impl.cc");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_world_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_world_CCM_Session_Test_remote.cc");
-            runDefaultConfix(sandboxDir);
+            executeCommandLine("make -C " + testDir + "/facet_module_simple test");
         }
         catch(Exception e) {
             fail();
         }
     }
-
+    
+    
     // ------------------------------------------------------------------------
     // Receptacle test cases
     // ------------------------------------------------------------------------
+    //    make -C receptacle_simple test
+    //    make -C receptacle_module_simple test
 
     public void testReceptacleSimple()
     {
-        String testDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/receptacle_simple";
-        String sandboxDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/sandbox/receptacle_simple";
-
         try {
-            runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
-            copyFile(testDir + "/impl/Test_in_port_impl.cc", sandboxDir
-                    + "/impl/Test_in_port_impl.cc");
-            copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
-                    + "/impl/Test_impl.cc");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_CCM_Session_Test_remote.cc");
-            runDefaultConfix(sandboxDir);
+            executeCommandLine("make -C " + testDir + "/receptacle_simple test");
         }
         catch(Exception e) {
             fail();
         }
     }
-
+    
     public void testReceptacleModuleSimple()
     {
-        String testDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/receptacle_module_simple";
-        String sandboxDir = ccmtoolsDir
-                + "/test/CppRemoteGenerator/sandbox/receptacle_module_simple";
-
         try {
-            runDefaultCcmtoolsGenerate(testDir, sandboxDir);
-            copyFile(testDir + "/impl/Makefile.py", sandboxDir + "/Makefile.py");
-            copyFile(testDir + "/impl/Test_impl.cc", sandboxDir
-                    + "/impl/Test_impl.cc");
-            copyFile(testDir + "/impl/Test_in_port_impl.cc", sandboxDir
-                    + "/impl/Test_in_port_impl.cc");
-            copyFile(
-                     testDir
-                             + "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc",
-                     sandboxDir
-                             + "/test/_check_CCM_Remote_world_europe_austria_CCM_Session_Test_remote.cc");
-            runDefaultConfix(sandboxDir);
+            executeCommandLine("make -C " + testDir + "/receptacle_module_simple test");
         }
         catch(Exception e) {
             fail();
         }
     }
-
 }
