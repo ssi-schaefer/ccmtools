@@ -1,11 +1,10 @@
 % $Id$
 %==============================================================================
-\chapter{Debugging Components}
+\section{Debugging Components}
 %==============================================================================
 
 CCM Tools generate additional debug informations within the local and
 remote component adapters.
-
 For each primitive type (e.g. long, string, etc.)
 the {\tt cpp-environment} package contains {\tt ccmDebug()} 
 functions that returns a string representation.
@@ -14,7 +13,7 @@ functions as part of the IDL to C++ mapping.
 
 
 %------------------------------------------------------------------------------
-\section{WXDEBUG}
+\subsection{WXDEBUG}
 %------------------------------------------------------------------------------
 
 As part of the {\tt wx-utils} package, a bunch of debug macros have been
@@ -85,3 +84,53 @@ wx-utils-1.2.0
 |   |-- debug.cc
 |   |-- debug.h
 \end{verbatim}
+
+
+
+\newpage
+%------------------------------------------------------------------------------
+\subsection{Debugging the {\tt CarRental} example}
+%------------------------------------------------------------------------------
+
+To debug the {\tt CarRental} example, we simple set the {\tt WX\_DEBUG\_LEVELS}
+environment variable and start the client application 
+(make sure that you have used the {\tt -DWXDEBUG} compiler flag).
+
+\begin{verbatim} 
+> export WX_DEBUG_LEVELS="CCM_LOCAL"
+> $CCM_INSTALL/bin/CarRentalClient_CarRentalClient
+\end{verbatim} 
+%$
+
+\begin{footnotesize}
+\begin{verbatim} 
+[CustomerBusinessAdapter.cc:65]  CustomerBusinessAdapter::dollars_per_mile(5.5:double)
+[CustomerMaintenanceAdapter.cc:54]  CustomerMaintenanceAdapter::createCustomer(person)
+[CustomerMaintenanceAdapter.cc:55] IN person = struct Customer
+{
+    id(1:long)
+    first_name("Franz":string)
+    last_name("Kafka":string)
+    mileage(5.59228e-270:double)
+}
+[CustomerBusinessAdapter.cc:78]  CustomerBusinessAdapter::addCustomerMiles(id, miles)
+[CustomerBusinessAdapter.cc:79] IN id = 1:long
+[CustomerBusinessAdapter.cc:80] IN miles = 120:double
+[CustomerMaintenanceAdapter.cc:69]  CustomerMaintenanceAdapter::retrieveCustomer(id)
+[CustomerMaintenanceAdapter.cc:70] IN id = 1:long
+[CustomerMaintenanceAdapter.cc:77] result = struct Customer
+{
+    id(1:long)
+    first_name("Franz":string)
+    last_name("Kafka":string)
+    mileage(120:double)
+}
+[CustomerBusinessAdapter.cc:126]  CustomerBusinessAdapter::getCustomerDollars(id)
+[CustomerBusinessAdapter.cc:127] IN id = 1:long
+[CustomerBusinessAdapter.cc:134] result = 660:double
+
+Customer: Franz Kafka
+Miles: 120
+to pay: 660 Dollars
+\end{verbatim} 
+\end{footnotesize}

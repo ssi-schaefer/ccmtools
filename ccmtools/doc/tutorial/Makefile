@@ -1,4 +1,4 @@
-DOCUMENT_NAME=tutorial
+DOCUMENT_NAME=ccmtools_tutorial
 PARTS=\
   titlepage.tex \
   Introduction/Introduction.tex \

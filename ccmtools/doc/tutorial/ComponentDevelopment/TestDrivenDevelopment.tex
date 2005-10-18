@@ -329,42 +329,34 @@ server
 |-- idl3
 |-- component
 |   `-- CarRental
-|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental
-|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_share
-|       `-- impl
-|           |-- CarRentalHome_entry.h
-|           |-- CarRentalHome_impl.cc
-|           |-- CarRentalHome_impl.h
-|           |-- CarRental_business_impl.cc
-|           |-- CarRental_business_impl.h
-|           |-- CarRental_impl.cc
-|           |-- CarRental_impl.h
-|           |-- CarRental_maintenance_impl.cc
-|           |-- CarRental_maintenance_impl.h
-|           `-- Makefile.py
-`-- interface
-    `-- CCM_Local_BigBusiness
-        |   |-- CreateCustomerException.h
-        |   |-- Customer.h
-        |   |-- CustomerBusiness.h
-        |   |-- CustomerList.h
-        |   |-- CustomerMaintenance.h
-        |   |-- Makefile.py
-        |   |-- NoCustomerException.h
-        |   `-- RemoveCustomerException.h
-        `-- Makefile.py
+|       |-- CCM_BigBusiness_ccm_local_component_CarRental
+|       |-- CCM_BigBusiness_ccm_local_component_CarRental_share
+|       |-- CarRentalHome_impl.cc
+|       |-- CarRentalHome_impl.h
+|       |-- CarRental_business_impl.cc
+|       |-- CarRental_business_impl.h
+|       |-- CarRental_impl.cc
+|       |-- CarRental_impl.h
+|       |-- CarRental_maintenance_impl.cc
+|       |-- CarRental_maintenance_impl.h
+|       |-- BigBusiness_ccm_local_component_CarRental_CarRentalHome_entry.h
+|       `-- Makefile.py
+|-- interface
+|   |-- CCM_BigBusiness_ccm_local
+|   `-- CCM_BigBusiness_ccm_local_adapter
 \end{verbatim}
 \end{small}
 
 The component developer really ought not to care about the generated 
-{\tt CCM\_Local\_*} subdirectories (if you don't believe us, though, feel free 
+{\tt CCM\_*} subdirectories (if you don't believe us, though, feel free 
 to read through it; just don't edit anything). 
-The interesting files are listed in the {\tt impl} directory. 
+The interesting files are listed in the component's root directory 
+({\tt server/component/CarRental/}). 
 These files contain skeleton code (that are empty methods) of the component's 
 business logic.
 
 \begin{itemize}
-\item {\tt CarRentalHome\_entry.h} \\
+\item {\tt BigBusiness\_ccm\_local\_component\_CarRental\_CarRentalHome\_entry.h} \\
 This file is the business logic's entry point and declares an extern ``C'' 
 function that returns a component home instance.
 The generated implementation of this function is hosted in the 
@@ -389,7 +381,7 @@ the component's business logic
 This file is a Confix marker that denotes a directory as 'to compile'.
 \end{itemize}
 
-Files in the {\tt impl} directory are protected from overwriting.
+Files in the component's root directory are protected from overwriting.
 Running the generator again results in a bunch of warnings. 
 Instead of overwriting, the generator stores the new files with an extension 
 ({\tt *.new}) into the same directory.
@@ -549,20 +541,19 @@ This results in the following file structure:
 server
 |-- component
 |   |-- CarRental
-|   `-- CarRental_mirror
-|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror
-|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror_share
-|       `-- impl
-|           |-- CarRentalHome_mirror_entry.h
-|           |-- CarRentalHome_mirror_impl.cc
-|           |-- CarRentalHome_mirror_impl.h
-|           |-- CarRental_mirror_impl.cc
-|           |-- CarRental_mirror_impl.h
-|           `-- Makefile.py
+|   |-- CarRental_mirror
+|   |   |-- CCM_BigBusiness_ccm_local_component_CarRental_mirror
+|   |   |-- CCM_BigBusiness_ccm_local_component_CarRental_mirror_share
+|   |   |-- BigBusiness_ccm_..._CarRentalHome_mirror_entry.h
+|   |   |-- CarRentalHome_mirror_impl.cc
+|   |   |-- CarRentalHome_mirror_impl.h
+|   |   |-- CarRental_mirror_impl.cc
+|   |   |-- CarRental_mirror_impl.h
+|   |   `-- Makefile.py
 \end{verbatim}
 \end{small}
 
-The {\tt impl} directory contains generated files of the mirror
+The mirror component's root directory contains generated files for the mirror
 component's business logic that can host component test cases.
 In the next sections of this tutorial, we will implement test cases as well
 as business logic. 
@@ -586,13 +577,10 @@ The generated files are stored in the following way:
 server
 |-- component
 |   |-- CarRental
-|   `-- CarRental_mirror
-|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror
-|       |-- CCM_Local_BigBusiness_CCM_Session_CarRental_mirror_share
-|       |-- impl
-|       `-- test
-|           |-- Makefile.py
-|           `-- _check_CCM_Local_BigBusiness_CCM_Session_CarRental.cc
+|   |-- CarRental_mirror
+|   |   |-- test
+|   |   |   |-- Makefile.py
+|   |   |   `-- _check_BigBusiness_ccm_local_component_CarRental.cc
 \end{verbatim}
 \end{small}
 
@@ -620,23 +608,23 @@ Now is a good time to start the development of business code. First, we have to
 define the behavior of the business code in an executable semantic. 
 In other words, we write a test case in the mirror component 
 ({\tt CarRental\_mirror\_impl.cc}):
-
 \begin{small}
 \begin{verbatim}
 void CCM_CarRental_mirror_impl::ccm_activate()
-    throw (LocalComponents::CCMException)
+    throw(::ccm::local::Components::CCMException)
 {
     try {
       {
-          CCM_Local::BigBusiness::Customer person;
+          BigBusiness::ccm::local::Customer person;
           person.id = 1;
           person.first_name = "Franz";
           person.last_name = "Kafka";
+          person.mileage = 0.0;
           ctx->get_connection_maintenance_mirror()->
               createCustomer(person);
       }
       {
-          CCM_Local::BigBusiness::Customer person;
+          BigBusiness::ccm::local::Customer person;
           long id = 1;
           person = ctx->get_connection_maintenance_mirror()->
               retrieveCustomer(id);
@@ -645,10 +633,10 @@ void CCM_CarRental_mirror_impl::ccm_activate()
           assert(person.last_name == "Kafka");
       }
   }
-  catch(CCM_Local::BigBusiness::CreateCustomerException) {
+  catch(BigBusiness::ccm::local::CreateCustomerException) {
       cerr << "MAINTENANCE ERROR: Can't create customer!" << endl;
   }
-  catch(CCM_Local::BigBusiness::NoCustomerException) {
+  catch(BigBusiness::ccm::local::NoCustomerException) {
       cerr << "MAINTENANCE ERROR: no customer found!" << endl;
   }
 }
@@ -695,7 +683,8 @@ to hold {\tt Customer} entities.
 class CCM_CarRental_impl : virtual public CCM_CarRental
 {
   public:
-    std::vector<CCM_Local::BigBusiness::Customer> CustomerDB;
+    // Use std::vector as a dummy database
+    std::vector<BigBusiness::ccm::local::Customer> CustomerDB;
     //...
 };
 \end{verbatim}
@@ -706,24 +695,28 @@ lines:
 \begin{small}
 \begin{verbatim}
 void
-maintenance_impl::createCustomer ( const Customer& person )
-  throw (LocalComponents::CCMException, CreateCustomerException)
+maintenance_impl::createCustomer(
+    const BigBusiness::ccm::local::Customer& person)
+throw(::ccm::local::Components::CCMException,
+      BigBusiness::ccm::local::CreateCustomerException )
 {
-  component->CustomerDB.push_back(person);
+    component->CustomerDB.push_back(person);
 }
 
-Customer
-maintenance_impl::retrieveCustomer ( const long id )
-  throw (LocalComponents::CCMException, NoCustomerException)
+BigBusiness::ccm::local::Customer
+maintenance_impl::retrieveCustomer(const long id)
+throw(::ccm::local::Components::CCMException,
+      BigBusiness::ccm::local::NoCustomerException )
 {
-  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
-  for(pos = component->CustomerDB.begin(); 
-      pos != component->CustomerDB.end(); ++pos) {
-    if(pos->id == id) {
-      return *pos;
+    std::vector<BigBusiness::ccm::local::Customer>::iterator pos;
+    for(pos = component->CustomerDB.begin(); 
+        pos != component->CustomerDB.end(); 
+        ++pos) {
+      if(pos->id == id) {
+        return *pos;
+      }
     }
-  }
-  throw NoCustomerException();
+    throw NoCustomerException();
 }
 \end{verbatim}
 \end{small}
@@ -757,19 +750,20 @@ In practice, these white box tests must be much more substantial.
 \begin{small}
 \begin{verbatim}
     {
-      CCM_Local::BigBusiness::Customer person;
-
-      person.id = 2;
-      person.first_name = "Thomas";
-      person.last_name = "Bernhard";
-      ctx->get_connection_maintenance_mirror()->
-           createCustomer(person);
-
-      person.id = 3;
-      person.first_name = "Karl";
-      person.last_name = "Kraus";
-      ctx->get_connection_maintenance_mirror()->
-           createCustomer(person);
+        BigBusiness::ccm::local::Customer person;
+        person.id = 2;
+        person.first_name = "Thomas";
+        person.last_name = "Bernhard";
+        person.mileage = 0.0;
+        ctx->get_connection_maintenance_mirror()->createCustomer(person);
+    }
+    {
+        BigBusiness::ccm::local::Customer person;
+        person.id = 3;
+        person.first_name = "Karl";
+        person.last_name = "Kraus";
+        person.mileage = 0.0;
+        ctx->get_connection_maintenance_mirror()->createCustomer(person);
     }
 \end{verbatim}
 \end{small}
@@ -781,22 +775,21 @@ to validate the query results.
 \begin{small}
 \begin{verbatim}
     {
-      CCM_Local::BigBusiness::CustomerList person_list;
-
-      person_list = ctx->get_connection_maintenance_mirror()->
-                         retrieveAllCustomers();
-      assert(person_list.at(2).id == 3);
-      assert(person_list.at(2).first_name == "Karl");
-      assert(person_list.at(2).last_name == "Kraus");
-
-      assert(person_list.at(1).id == 2);
-      assert(person_list.at(1).first_name == "Thomas");
-      assert(person_list.at(1).last_name == "Bernhard");
-
-      assert(person_list.at(0).id == 1);
-      assert(person_list.at(0).first_name == "Franz");
-      assert(person_list.at(0).last_name == "Kafka");
-    }      
+        BigBusiness::ccm::local::CustomerList person_list;
+        person_list = ctx->get_connection_maintenance_mirror()->
+                           retrieveAllCustomers();
+        assert(person_list.at(2).id == 3);
+        assert(person_list.at(2).first_name == "Karl");
+        assert(person_list.at(2).last_name == "Kraus");
+        
+        assert(person_list.at(1).id == 2);
+        assert(person_list.at(1).first_name == "Thomas");
+        assert(person_list.at(1).last_name == "Bernhard");
+        
+        assert(person_list.at(0).id == 1);
+        assert(person_list.at(0).first_name == "Franz");
+        assert(person_list.at(0).last_name == "Kafka");
+    }     
 \end{verbatim}
 \end{small}
 
@@ -806,18 +799,21 @@ In the case of an empty list the {\tt NoCustomerException} is thrown.
 
 \begin{small}
 \begin{verbatim}
-CustomerList maintenance_impl::retrieveAllCustomers (  )
-  throw (LocalComponents::CCMException, NoCustomerException )
+BigBusiness::ccm::local::CustomerList
+maintenance_impl::retrieveAllCustomers()
+    throw(::ccm::local::Components::CCMException,
+        BigBusiness::ccm::local::NoCustomerException )
 {
-  if(component->CustomerDB.size() == 0)
-      throw NoCustomerException();
-  CCM_Local::BigBusiness::CustomerList customer_list;
-  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
-  for(pos = component->CustomerDB.begin(); 
-      pos != component->CustomerDB.end(); ++pos) {
-    customer_list.push_back(*pos);
-  }
-  return customer_list;
+    if(component->CustomerDB.size() == 0)
+        throw NoCustomerException();
+    BigBusiness::ccm::local::CustomerList customer_list;
+    std::vector<BigBusiness::ccm::local::Customer>::iterator pos;
+    for(pos = component->CustomerDB.begin(); 
+        pos != component->CustomerDB.end(); 
+        ++pos) {
+      customer_list.push_back(*pos);
+    }
+    return customer_list;
 }
 \end{verbatim}
 \end{small}
@@ -826,30 +822,25 @@ Next, we implement a test case for {\tt updateCustomer}.
 A new {\tt Customer} record is created and used as parameter.
 To check the update procedure, we use {\tt retrieveCustomer} 
 and compare the result record with the new values.
-
 \begin{small}
 \begin{verbatim}
     {
-      CCM_Local::BigBusiness::Customer person;
-      person.id = 1;
-      person.first_name = "Werner";
-      person.last_name = "Schwab";
-      double mileage = 0.0;
-      ctx->get_connection_maintenance_mirror()->
-           updateCustomer(person);      
-
-      CCM_Local::BigBusiness::Customer another_person;
-      another_person = 
-        ctx->get_connection_maintenance_mirror()->
-             retrieveCustomer(person.id);
-      assert(another_person.id == 1);
-      assert(another_person.first_name == "Werner");
-      assert(another_person.last_name == "Schwab");
+        BigBusiness::ccm::local::Customer person;
+        person.id = 1;
+        person.first_name = "Werner";
+        person.last_name = "Schwab";
+        person.mileage = 0.0;
+        ctx->get_connection_maintenance_mirror()->updateCustomer(person);      
+        
+        BigBusiness::ccm::local::Customer another_person;
+        another_person = ctx->get_connection_maintenance_mirror()->
+                              retrieveCustomer(person.id);
+        assert(another_person.id == 1);
+        assert(another_person.first_name == "Werner");
+        assert(another_person.last_name == "Schwab");
     }
 \end{verbatim}
 \end{small}
-
-
 
 To implement {\tt updateCustomers} we simply iterate through the {\tt Customer}
 vector and compare each item with the given person.
@@ -858,18 +849,22 @@ If person does not match, {\tt NoCustomerException} is thrown.
 
 \begin{small}
 \begin{verbatim}
-void maintenance_impl::updateCustomer ( const Customer& person )
-  throw (LocalComponents::CCMException, NoCustomerException )
+void
+maintenance_impl::updateCustomer(
+    const BigBusiness::ccm::local::Customer& person)
+    throw(::ccm::local::Components::CCMException,
+        BigBusiness::ccm::local::NoCustomerException )
 {
-  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
-  for(pos = component->CustomerDB.begin(); 
-      pos != component->CustomerDB.end(); ++pos) {
-    if(pos->id == person.id) {
-      *pos = person;
-      return;
+    std::vector<BigBusiness::ccm::local::Customer>::iterator pos;
+    for(pos = component->CustomerDB.begin(); 
+        pos != component->CustomerDB.end(); 
+        ++pos) {
+      if(pos->id == person.id) {
+        *pos = person;
+        return;
+      }
     }
-  }
-  throw NoCustomerException();  
+    throw NoCustomerException();  
 }
 \end{verbatim}
 \end{small}
@@ -883,31 +878,33 @@ Instead, the {\tt RemoveCustomerException} must be thrown.
 \begin{small}
 \begin{verbatim}
     {
-      long id = 1;
-      ctx->get_connection_maintenance_mirror()->
-           deleteCustomer(id);
-      CCM_Local::BigBusiness::Customer person;
-      person = ctx->get_connection_maintenance_mirror()->
-                    retrieveCustomer(id);
-      assert(false); // Customer found => error
+        long id = 1;
+        ctx->get_connection_maintenance_mirror()->deleteCustomer(id);
+        BigBusiness::ccm::local::Customer person;
+        person = ctx->get_connection_maintenance_mirror()->
+                      retrieveCustomer(id);
+        assert(false); // Customer found => failer
     }
 \end{verbatim}
 \end{small}
 
 \begin{small}
 \begin{verbatim}
-void maintenance_impl::deleteCustomer ( const long id )
-  throw (LocalComponents::CCMException, RemoveCustomerException)
+void
+maintenance_impl::deleteCustomer(const long id)
+    throw(::ccm::local::Components::CCMException,
+          BigBusiness::ccm::local::RemoveCustomerException )
 {
-  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
-  for(pos = component->CustomerDB.begin(); 
-      pos != component->CustomerDB.end(); ++pos) {
-    if(pos->id == id) {
-      component->CustomerDB.erase(pos);
-      return;
+    std::vector<BigBusiness::ccm::local::Customer>::iterator pos;
+    for(pos = component->CustomerDB.begin(); 
+        pos != component->CustomerDB.end(); 
+        ++pos) {
+      if(pos->id == id) {
+        component->CustomerDB.erase(pos);
+        return;
+      }
     }
-  }
-  throw RemoveCustomerException();  
+    throw RemoveCustomerException();  
 }
 \end{verbatim}
 \end{small}
@@ -944,25 +941,22 @@ value from the same customer and verifies their equality.
 
 \begin{small}
 \begin{verbatim}
-  try {
+    try {
     {
-      long id = 2;
-      double miles = 197.7;
-
-      ctx->get_connection_business_mirror()->
-           addCustomerMiles(id, miles); 
-
-      double other_miles;
-      other_miles = 
+        long id = 2;
+        double miles = 7.7;
         ctx->get_connection_business_mirror()->
-             getCustomerMiles(id); 
-      assert( abs(other_miles - miles) < 0.001);
+             addCustomerMiles(id, miles); 
+
+        double other_miles;
+        other_miles = ctx->get_connection_business_mirror()->
+                           getCustomerMiles(id); 
+        assert( abs(other_miles - miles) < 0.001);
     }
-  }
-  catch(CCM_Local::BigBusiness::NoCustomerException) {
-    cerr << "MAINTENANCE ERROR: no customer found!" << endl;
-    assert(false);
-  }
+    catch(BigBusiness::ccm::local::NoCustomerException) {
+      cerr << "MAINTENANCE ERROR: no customer found!" << endl;
+      assert(false);
+    }
 \end{verbatim}
 \end{small}
 
@@ -975,20 +969,23 @@ its current status.
 If the given id does not match, a {\tt NoCustomerException} is thrown.
 \begin{small}
 \begin{verbatim}
-void business_impl::addCustomerMiles(const long id, 
-                                     const double miles)
-  throw (LocalComponents::CCMException, NoCustomerException )
+void
+business_impl::addCustomerMiles(
+        const long id,
+        const double miles)
+    throw(::ccm::local::Components::CCMException,
+          BigBusiness::ccm::local::NoCustomerException )
 {
-  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
-
-  for(pos = component->CustomerDB.begin(); 
-      pos != component->CustomerDB.end(); ++pos) {
-    if(pos->id == id) {
-      pos->mileage += miles;
-      return;
+    std::vector<BigBusiness::ccm::local::Customer>::iterator pos;
+    for(pos = component->CustomerDB.begin(); 
+        pos != component->CustomerDB.end(); 
+        ++pos) {
+      if(pos->id == id) {
+        pos->mileage += miles;
+        return;
+      }
     }
-  }
-  throw NoCustomerException();    
+    throw NoCustomerException();  
 }
 \end{verbatim}
 \end{small}
@@ -998,18 +995,20 @@ that get the current value of a {\tt Customer}'s mileage member.
 
 \begin{small}
 \begin{verbatim}
-double business_impl::getCustomerMiles ( const long id )
-  throw (LocalComponents::CCMException, NoCustomerException )
+double
+business_impl::getCustomerMiles(const long id)
+    throw(::ccm::local::Components::CCMException,
+          BigBusiness::ccm::local::NoCustomerException )
 {
-  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
-
-  for(pos = component->CustomerDB.begin(); 
-      pos != component->CustomerDB.end(); ++pos) {
-    if(pos->id == id) {
-      return pos->mileage;
+    std::vector<BigBusiness::ccm::local::Customer>::iterator pos;
+    for(pos = component->CustomerDB.begin(); 
+        pos != component->CustomerDB.end(); 
+        ++pos) {
+      if(pos->id == id) {
+        return pos->mileage;
+      }
     }
-  }
-  throw NoCustomerException(); 
+    throw NoCustomerException(); 
 }
 \end{verbatim}
 \end{small}
@@ -1028,16 +1027,20 @@ Thus, the component's calculation can be verified.
 \begin{small}
 \begin{verbatim}
     {
-      long id = 2;
-      double dollars, miles;
-      double factor = 5.3;
-      ctx->get_connection_business_mirror()->
-           dollars_per_mile(factor);
-      miles = ctx->get_connection_business_mirror()->
-                   getCustomerMiles(id);
-      dollars = ctx->get_connection_business_mirror()->
-                     getCustomerDollars(id); 
-      assert( abs(dollars - miles*factor) < 0.001);
+        long id = 2;
+        double dollars;
+        double miles = 1.1;
+        double other_miles;
+        double factor = 5.3;
+        ctx->get_connection_business_mirror()->
+             addCustomerMiles(id, miles); 
+        ctx->get_connection_business_mirror()->
+             dollars_per_mile(factor);
+        other_miles = ctx->get_connection_business_mirror()->
+             getCustomerMiles(id);
+        dollars = ctx->get_connection_business_mirror()->
+                       getCustomerDollars(id); 
+        assert( abs(dollars - other_miles*factor) < 0.001);
     }
 \end{verbatim}
 \end{small}
@@ -1048,10 +1051,12 @@ generated by CCM Tools.
 The following code implements the {\tt getCustomerDollars()} method:
 \begin{small}
 \begin{verbatim}
-double business_impl::getCustomerDollars ( const long id )
-  throw (LocalComponents::CCMException, NoCustomerException )
+double
+business_impl::getCustomerDollars(const long id)
+    throw(::ccm::local::Components::CCMException,
+          BigBusiness::ccm::local::NoCustomerException )
 {
-  return getCustomerMiles(id) * _dollars_per_mile;
+    return getCustomerMiles(id) * dollars_per_mile_;
 }
 \end{verbatim}
 \end{small}
@@ -1060,21 +1065,20 @@ Life would be pretty ease if all business logic would be as simple to implement
 as this method ;-)
 
 
-\newpage
+
 Finally, the last test case resets a {\tt Customer}'s mileage value and 
 retrieves its Dollar status. Of course, it has to be null.
 
 \begin{small}
 \begin{verbatim}
     {
-      long id = 2;
-      double dollars;
-      ctx->get_connection_business_mirror()->
-           resetCustomerMiles(id);
-      dollars = 
+        long id = 2;
+        double dollars;
         ctx->get_connection_business_mirror()->
+             resetCustomerMiles(id);
+        dollars = ctx->get_connection_business_mirror()->
              getCustomerDollars(id); 
-      assert( abs(dollars) < 0.001);
+        assert( abs(dollars) < 0.001);
     }
 \end{verbatim}
 \end{small}
@@ -1085,18 +1089,21 @@ If no {\tt Customer} id matches, the {\tt NoCustomerException} is thrown.
 
 \begin{small}
 \begin{verbatim}
-void business_impl::resetCustomerMiles ( const long id )
-  throw (LocalComponents::CCMException, NoCustomerException )
+void
+business_impl::resetCustomerMiles(const long id)
+    throw(::ccm::local::Components::CCMException,
+          BigBusiness::ccm::local::NoCustomerException )
 {
-  std::vector<CCM_Local::BigBusiness::Customer>::iterator pos;
-  for(pos = component->CustomerDB.begin(); 
-      pos != component->CustomerDB.end(); ++pos) {
-    if(pos->id == id) {
-      pos->mileage = 0.0;
-      return;
+    std::vector<BigBusiness::ccm::local::Customer>::iterator pos;
+    for(pos = component->CustomerDB.begin(); 
+        pos != component->CustomerDB.end(); 
+        ++pos) {
+      if(pos->id == id) {
+        pos->mileage = 0.0;
+        return;
+      }
     }
-  }
-  throw NoCustomerException(); 
+    throw NoCustomerException();
 }
 \end{verbatim}
 \end{small}
@@ -1106,6 +1113,7 @@ way using CCM Tools.
 
 
 
+\newpage
 %------------------------------------------------------------------------------
 \subsubsection{Install the {\tt CarRental} component}
 %------------------------------------------------------------------------------
@@ -1117,40 +1125,37 @@ computer (specified by {\tt PREFIX} in {\tt ~/.confix}).
 Component installation is performed by Confix:
 \begin{small}
 \begin{verbatim}
-> confix.py --packageroot=`pwd`/server/component \
+> confix.py --packageroot=`pwd`/server \
             --make --targets=install
 \end{verbatim}
 \end{small}
 
-\newpage
+
 After installing a component, the component repository contains the following
 file structures:
 \begin{small}
 \begin{verbatim}
 include/
-|-- CCM_Local
-|   |-- BigBusiness
-|   |   |-- CCM_Session_CarRental/
-|   |   |-- CCM_Session_CarRental_mirror/
-|   |   |-- CreateCustomerException.h
-|   |   |-- Customer.h
-|   |   |-- CustomerBusiness.h
-|   |   |-- CustomerList.h
-|   |   |-- CustomerMaintenance.h
-|   |   |-- NoCustomerException.h
-|   |   `-- RemoveCustomerException.h
+|-- BigBusiness
+|   `-- ccm
+|       `-- local
+|           `-- component
+|               |-- CarRental
+|               `-- CarRental_mirror
 \end{verbatim}
 \end{small}
 
-\begin{tiny}
+\begin{small}
 \begin{verbatim}
 lib/
-|-- libCarRental_component_CarRental_CCM_Local_BigBusiness_CCM_Session_CarRental.a
-|-- libCarRental_component_CarRental_impl.a
-|-- libCarRental_component_CarRental_mirror_CCM_Local_BigBusiness_CCM_Session_CarRental_mirror.a
-`-- libCarRental_component_CarRental_mirror_impl.a
+|-- libCarRental_component_CarRental.a
+|-- libCarRental_component_CarRental_..._component_CarRental.a
+|-- libCarRental_component_CarRental_mirror.a
+|-- libCarRental_component_CarRental_mirror_..._component_CarRental_mirror.a
+|-- libCarRental_interface_CCM_BigBusiness_ccm_local_adapter.a
 \end{verbatim}
-\end{tiny}
+\end{small}
+
 
 
 %------------------------------------------------------------------------------
@@ -1209,28 +1214,27 @@ cases.
 
 \begin{small}
 \begin{verbatim}
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <CCM_Local/BigBusiness/CCM_Session_CarRental/CarRentalHome_gen.h>
-#include <CCM_Local/BigBusiness/CCM_Session_CarRental/CarRental_gen.h>
+#include <ccm/local/Components/CCM.h>
+#include <ccm/local/HomeFinder.h>
+
+#include <BigBusiness/ccm/local/component/CarRental/CarRental_gen.h>
+#include <BigBusiness/ccm/local/component/CarRental/CarRentalHome_gen.h>
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
-using namespace BigBusiness;
-using namespace CCM_Session_CarRental;
+using namespace ccm::local;
 
 int main(int argc, char *argv[])
 {
   int error = 0;
-  LocalComponents::HomeFinder* homeFinder;
+  Components::HomeFinder* homeFinder = HomeFinder::Instance();
 
   // Component deployment
-  homeFinder = HomeFinder::Instance (  );
-  error  = deploy_CCM_Local_BigBusiness_CarRentalHome("CarRentalHome");
+  error = deploy_BigBusiness_ccm_local_component_CarRental_CarRentalHome(
+          "CarRentalHome");
   if(error) {
     cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
     return(error);
@@ -1238,21 +1242,27 @@ int main(int argc, char *argv[])
 
   // Component instantiation
   try {
-    SmartPtr<CarRentalHome> 
-        myCarRentalHome(dynamic_cast<CarRentalHome*>
-           (homeFinder->find_home_by_name("CarRentalHome").ptr()));
+    SmartPtr<BigBusiness::ccm::local::component::CarRental::CarRental> 
+        myCarRental;
+    SmartPtr<BigBusiness::ccm::local::CustomerMaintenance> maintenance;
+    SmartPtr<BigBusiness::ccm::local::CustomerBusiness> business;
 
-    SmartPtr<CarRental> myCarRental = myCarRentalHome->create();
+    SmartPtr<BigBusiness::ccm::local::component::CarRental::CarRentalHome>
+        myCarRentalHome(dynamic_cast<
+        BigBusiness::ccm::local::component::CarRental::CarRentalHome*>
+        (homeFinder->find_home_by_name("CarRentalHome").ptr()));
 
-    SmartPtr<CCM_Local::BigBusiness::CustomerMaintenance> 
-      maintenance = myCarRental->provide_maintenance();    
-    SmartPtr<CCM_Local::BigBusiness::CustomerBusiness> 
-      business = myCarRental->provide_business();
+    myCarRental = myCarRentalHome->create();
+
+    maintenance = myCarRental->provide_maintenance();    
+    business = myCarRental->provide_business();
 
     myCarRental->configuration_complete();
 
-    // Use component
-    CCM_Local::BigBusiness::Customer person;
+    // Use component instance
+    business->dollars_per_mile(5.5);
+
+    BigBusiness::ccm::local::Customer person;
     person.id = 1;
     person.first_name = "Franz";
     person.last_name = "Kafka";
@@ -1275,11 +1285,16 @@ int main(int argc, char *argv[])
     error = -1;
   }
 
-  // Component tear down:
-  error += undeploy_CCM_Local_BigBusiness_CarRentalHome("CarRentalHome");
+  // Undeploy component type
+  error += undeploy_BigBusiness_ccm_local_component_CarRental_CarRentalHome(
+               "CarRentalHome");
   if(error) {
+    cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
     return error;
   }
+
+  // Clean up HomeFinder singleton
+  HomeFinder::destroy();
 }
 \end{verbatim}
 \end{small}
@@ -1301,7 +1316,6 @@ While components can be implemented in independently by different developers, an
 application (or client) can use deployed components from a repository.
 
 
-\newpage
 %------------------------------------------------------------------------------
 \subsubsection{Uninstall the {\tt CarRental} client}
 %------------------------------------------------------------------------------
