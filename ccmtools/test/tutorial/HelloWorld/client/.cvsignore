@@ -11,3 +11,4 @@ depcomp
 hello-client.repo
 install-sh
 missing
+acinclude.m4

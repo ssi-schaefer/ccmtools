@@ -1,35 +1,33 @@
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
+#include <ccm/local/Components/CCM.h>
+#include <ccm/local/HomeFinder.h>
 
-#include <CCM_Local/world/CCM_Session_Server/Server_gen.h>
-#include <CCM_Local/world/CCM_Session_Server/ServerHome_gen.h>
+#include <world/ccm/local/component/Server/Server_gen.h>
+#include <world/ccm/local/component/Server/ServerHome_gen.h>
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
-using namespace world;
-using namespace CCM_Session_Server;
+using namespace world::ccm::local;
 
 int main(int argc, char *argv[])
 {
-    SmartPtr<Server> server;
+    SmartPtr<component::Server::Server> server;
     SmartPtr<Hello> hello;
-    LocalComponents::HomeFinder* homeFinder;
+    ccm::local::Components::HomeFinder* homeFinder =
+      ccm::local::HomeFinder::Instance();
     int error;
 
     try {
-      homeFinder = HomeFinder::Instance();
-      error  = deploy_CCM_Local_world_ServerHome("ServerHome");
+      error = deploy_world_ccm_local_component_Server_ServerHome("ServerHome");
       if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
       }
 
-      SmartPtr<ServerHome> 
-	home(dynamic_cast<ServerHome*>
+      SmartPtr<component::Server::ServerHome> 
+	home(dynamic_cast<component::Server::ServerHome*>
 	     (homeFinder->find_home_by_name("ServerHome").ptr()));
 
       server = home->create();   
@@ -40,25 +38,28 @@ int main(int argc, char *argv[])
       cout << "sayHello(): " << s << endl;
 
       server->remove();
-      error = undeploy_CCM_Local_world_ServerHome("ServerHome");
+      error += 
+	undeploy_world_ccm_local_component_Server_ServerHome("ServerHome");
       if(error) {
         cerr << "ERROR: Can't undeploy component homes!" << endl;
         return(error);
       }
     } 
-    catch ( LocalComponents::HomeNotFound ) {
+    catch ( ccm::local::Components::HomeNotFound ) {
         cout << "ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( ccm::local::Components::NotImplemented& e ) {
         cout << "ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch ( LocalComponents::InvalidName& e ) {
+    catch ( ccm::local::Components::InvalidName& e ) {
         cout << "ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
     }
+    // Clean up HomeFinder singleton
+    ccm::local::HomeFinder::destroy();
 }
 
