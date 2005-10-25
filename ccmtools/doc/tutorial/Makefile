@@ -16,6 +16,7 @@ PARTS=\
   SystemDevelopment/SystemDevelopment.tex \
   SystemDevelopment/NestedComponentComposition.tex \
   SystemDeployment/SystemDeployment.tex \
+  SystemDeployment/RemoteComponentStructure.tex \
   SystemDeployment/RemoteComponent.tex \
   Appendix/ManPage.tex \
   Appendix/CcmtoolsInstallation.tex \
