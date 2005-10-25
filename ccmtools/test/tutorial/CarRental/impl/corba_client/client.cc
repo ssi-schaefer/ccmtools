@@ -3,7 +3,7 @@
 
 #include <CCM/CCMContainer.h>
 
-#include <CCM_Remote/BigBusiness/CCM_Session_CarRental/CarRentalHome_remote.h>
+#include <BigBusiness_CarRentalHome.h>
 #include <BigBusiness_CarRental.h>
 
 using namespace std;
