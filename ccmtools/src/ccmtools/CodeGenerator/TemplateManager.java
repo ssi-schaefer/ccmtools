@@ -46,6 +46,8 @@ public interface TemplateManager
      *         with the given node type.
      */
     Set getVariables(String node_type);
+    
+    
     /**
      * Retrieve the template associated with a particular node type. If there
      * are multiple templates whose names start with the node type, retrieve the
@@ -60,6 +62,7 @@ public interface TemplateManager
      */
     Template getTemplate(String node_type, String scope_id);
 
+    
     /**
      * Retrieve the template associated with the particular node type without
      * performing any variable substitution on the template variables. This is

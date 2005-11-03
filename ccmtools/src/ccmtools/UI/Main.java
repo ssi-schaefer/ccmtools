@@ -37,6 +37,7 @@ import ccmtools.CodeGenerator.CCMGraphTraverser;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.CodeGenerator.TemplateHandler;
+import ccmtools.CodeGenerator.TemplateLoader;
 import ccmtools.CppGenerator.CppLocalDbcGenerator;
 import ccmtools.CppGenerator.CppLocalGenerator;
 import ccmtools.CppGenerator.CppLocalTestGenerator;
@@ -244,6 +245,9 @@ public class Main
         catch(Exception e) {
             exitWithErrorStatus("Unknown error: " + e.getMessage());
         }
+        
+        logger.fine("TemplateLoader time: " + TemplateLoader.getInstance().getTimerMillis());
+ 
         logger.fine("leave main()");
     }
 

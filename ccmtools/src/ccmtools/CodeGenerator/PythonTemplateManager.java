@@ -30,7 +30,7 @@ public class PythonTemplateManager
     implements TemplateManager
 {
     private File source;
-
+    
     /**
      * Initialize the class instance by locating a likely directory for
      * templates.
@@ -49,11 +49,10 @@ public class PythonTemplateManager
         throws IOException
     {
         String templatesDir = language + "Templates";
-
         source = new File(System.getProperty("ccmtools.templates"), templatesDir);
         System.out.println("> load templates from: " + source);
         if (source.exists() && source.isDirectory()) {
-            return;
+            // 
         }
         else {
             // Stop code generation because there are no valid templates found.
@@ -103,7 +102,8 @@ public class PythonTemplateManager
         Template template = getRawTemplate(node_type);
         if (template == null) {
             return null;
-        } else {
+        } 
+        else {
             template.scopeVariables(scope_id);
             return template;
         }
@@ -146,17 +146,18 @@ public class PythonTemplateManager
     private Set loadTemplates(String node_type)
     {
         Set ret = new HashSet();
-        String[] candidates = source.list();
-
+        //String[] candidates = source.list();
+        String[] candidates = TemplateLoader.getInstance().loadTemplateList(source);
+        
         for (int i = 0; i < candidates.length; i++) {
             File file = new File(source, candidates[i]);
             if (file.getName().startsWith(node_type)) {
-                try {
+//                try {
                     ret.add(new PythonTemplate(file));
-                } 
-                catch (IOException e) {
+//                } 
+//                catch (IOException e) {
                     // TODO: logging
-                }
+//                }
             }
         }
         return ret;

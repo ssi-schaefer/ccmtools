@@ -20,12 +20,8 @@
 
 package ccmtools.CodeGenerator;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -61,7 +57,7 @@ public class PythonTemplate
     private Set variables;
     private String name;
     private String template;
-
+    
     /**
      * Create a new template object using the given file. Read the template in,
      * parse it for substitution variables, and set class instance variables
@@ -70,18 +66,19 @@ public class PythonTemplate
      * @param file a file to read from.
      */
     public PythonTemplate(File file)
-        throws IOException
+//        throws IOException
     {
         name = new String(file.getName());
 
-        StringBuffer template_buffer = new StringBuffer();
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-            template_buffer.append(line + "\n");
-        }
-        template = template_buffer.toString();
-
+        template = TemplateLoader.getInstance().loadTemplate(file);
+//        StringBuffer template_buffer = new StringBuffer();
+//        BufferedReader reader = new BufferedReader(new FileReader(file));
+//        String line = null;
+//        while ((line = reader.readLine()) != null) {
+//            template_buffer.append(line + "\n");
+//        }
+//        template = template_buffer.toString();
+        
         // chop off the last newline. don't want to artificially make this
         // template longer, e.g. if it was only one line (without terminating
         // newline) to begin with.
@@ -132,6 +129,7 @@ public class PythonTemplate
         }
     }
 
+    
     /**
      * Replace short variables in the current template with full scope
      * identifier variables.
@@ -141,16 +139,31 @@ public class PythonTemplate
      *                 CodeGeneratorHandlerImpl for information on the full
      *                 scope identifier.
      */
-    public void scopeVariables(String scope_id)
-    {
-        for (Iterator i = variables.iterator(); i.hasNext(); ) {
-            String var  = (String) i.next();
-            String from = "%\\(" + var + "\\)s";
-            String to   = "%(" + scope_id + "::" + var + ")s";
-            template = template.replaceAll(from, to);
-        }
-    }
+//    public void __scopeVariables(String scope_id)
+//    {
+//        for (Iterator i = variables.iterator(); i.hasNext(); ) {
+//            String var  = (String) i.next();
+//            String from = "%\\(" + var + "\\)s";
+//            String to   = "%(" + scope_id + "::" + var + ")s";
+//            template = template.replaceAll(from, to);
+//        }
+//    }
 
+    // Try to optimize regex usage
+    public void scopeVariables(String scopeId)
+    {
+        StringBuffer out = new StringBuffer();
+        Matcher m = key_regex.matcher(template);
+        while (m.find()) {
+            String key = m.group(1);
+            String to   = "%(" + scopeId + "::" + key + ")s";
+            m.appendReplacement(out,to);
+        }
+        m.appendTail(out);
+        template = out.toString();
+    }
+    
+    
     /**
      * Replace keys in the current template with variables from the given map.
      *
@@ -158,26 +171,48 @@ public class PythonTemplate
      *        identifiers for the corresponding values.
      * @return the fully substituted template.
      */
-    public String substituteVariables(Map var_map)
+//    public String substituteVariables(Map var_map)
+//    {
+//        String ret = template;
+//        if (var_map == null) {
+//            return ret; 
+//        }
+//        
+//        Matcher m = scoped_key_regex.matcher(ret);
+//        while (m.find()) {
+//            String key = m.group(1);
+//            if (var_map.containsKey(key)) {
+//                Object value = var_map.get(key);
+//                ret = ret.replaceAll("%\\(" + key + "\\)s", value.toString());
+//            } 
+//            else {
+//                throw new RuntimeException("Key " + key + " in template " + 
+//                                           name + " has no value");
+//            }
+//        }
+//        return ret;
+//    }
+    
+    // Try to optimize regex usage
+    public String substituteVariables(Map varMap)
     {
-        String ret = template;
-        if (var_map == null) {
-            return ret; 
-        }
+        if(varMap == null) return template;
         
-        Matcher m = scoped_key_regex.matcher(ret);
+        StringBuffer out = new StringBuffer();
+        Matcher m = scoped_key_regex.matcher(template);
         while (m.find()) {
             String key = m.group(1);
-            if (var_map.containsKey(key)) {
-                Object value = var_map.get(key);
-                ret = ret.replaceAll("%\\(" + key + "\\)s", value.toString());
+            if (varMap.containsKey(key)) {
+                Object value = varMap.get(key);
+                m.appendReplacement(out,value.toString());
             } 
             else {
                 throw new RuntimeException("Key " + key + " in template " + 
                                            name + " has no value");
             }
         }
-        return ret;
+        m.appendTail(out);
+        return out.toString();
     }
 }
 
