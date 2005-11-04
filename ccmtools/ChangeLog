@@ -3,8 +3,20 @@ RELEASE-0.5.3
 
 RELEASE-0.5.3-pre3
 ----------------------------------------------------------------------------
-*) Bugifx: local adapter for derived interfaces (facets and receptacles)
-
+*) bugifx: local adapter for derived interfaces (facets and receptacles)
+*) use local interface adapters for a supported interface's component logic.
+*) added HomeFinder::destroy() methode to destroy the singleton object.
+*) added ccmtools.CppGenerator.plugin package to allow any mapping plugins
+   (experimental).
+*) refactored local test cases
+*) changed namespace structure from
+   CCM_Local::world::europe::austria::CCM_SessionTest to
+   world::europe::austria::ccm::local::component::Test for remote C++ generators
+*) changed tutorial to show the new namespace structure
+*) refactored remote test cases
+*) added ccmtools.CodeGenerator.TemplateLoader class to implement a chaching 
+   mechanism for ccmtools templages loaded from the file system. 
+*) added ccmtools.utils.Timer class for performance measurements
 
 
 RELEASE-0.5.3-pre2
@@ -13,7 +25,7 @@ RELEASE-0.5.3-pre2
    directory) and reuse these adapters in the component logic.
 *) changed namespace structure from
    CCM_Local::world::europe::austria::CCM_SessionTest to
-   world::europe::austria::ccm::local::component::Test   
+   world::europe::austria::ccm::local::component::Test for local C++ generators  
 *) added etc/ccmtools.properties ccmtools.dir.gen to set a prefix for 
    generated directories   
 *) added namespace to generated impl/*_entry.h filenames
