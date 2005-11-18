@@ -1,0 +1,18 @@
+
+
+module world
+{
+  struct Person
+  {
+    long id;
+    string firstName;
+    string lastName;
+  };
+
+  interface IFace
+  {
+    void f1();
+    Person ff(in Person inP, inout Person inoutP, out Person outP);
+
+  };
+};
