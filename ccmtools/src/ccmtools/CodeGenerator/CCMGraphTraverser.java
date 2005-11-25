@@ -45,7 +45,6 @@ import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
  */
 public class CCMGraphTraverser implements GraphTraverser
 {
-
     private List handlers = null;
 
     public CCMGraphTraverser()
@@ -162,13 +161,14 @@ public class CCMGraphTraverser implements GraphTraverser
 
         if(scope_id.startsWith("::"))
             scope_id = scope_id.substring(2);
-
+        
         if(visited.contains(scope_id)) {
             return;
         }
-        visited.add(scope_id);
-        //System.out.println("=> visited = " + scope_id); //!!!!!!!
-
+        else {
+            visited.add(scope_id);
+        }
+        
         for(Iterator j = handlers.iterator(); j.hasNext();) {
             NodeHandler nh = (NodeHandler) j.next();
             nh.startNode(node, scope_id);
@@ -241,7 +241,7 @@ public class CCMGraphTraverser implements GraphTraverser
                 continue;
 
             Object value = null;
-            Method access = null;
+//            Method access = null;
 
             // the field is the capitalized name of the corresponding data
             // field in the class. it's used to fill out template information.
@@ -268,7 +268,6 @@ public class CCMGraphTraverser implements GraphTraverser
                 for(Iterator x = handlers.iterator(); x.hasNext();)
                     ((NodeHandler) x.next()).handleNodeData(type, field, value);
         }
-
         return children;
     }
 }

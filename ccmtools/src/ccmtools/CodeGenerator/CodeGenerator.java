@@ -339,6 +339,8 @@ abstract public class CodeGenerator implements TemplateHandler
      */
     public void endGraph()
     {
+        logger.fine("enter endGraph()");
+        logger.fine("leave endGraph()");
     }
 
     /**
@@ -359,7 +361,6 @@ abstract public class CodeGenerator implements TemplateHandler
         logger.fine("enter startNode()");
         
         currentNode = node;
-        //current_name = new String(scope_id);
         current_name = scope_id;
         current_type = node.toString().split(":")[0];
         current_variables = template_manager.getVariables(current_type);

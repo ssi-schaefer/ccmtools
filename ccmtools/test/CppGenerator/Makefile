@@ -3,43 +3,43 @@
 all: attribute
 
 attribute:
-	cd attribute_types && make test
+	make -C attribute_types test
 
 supports:
-	cd supports_attribute && make test
-	cd supports_exception && make test
-	cd supports_inheritance && make test
-	cd supports_types && make test
+	make -C supports_attribute test
+	make -C supports_exception test
+	make -C supports_inheritance test
+	make -C supports_types test
 
 facet:
-	cd facet_attribute && make test
-	cd facet_exception && make test
-	cd facet_inheritance && make test
-	cd facet_module_exception && make test
-	cd facet_module_types && make test
-	cd facet_rename && make test
-	cd facet_types && make test
+	make -C facet_attribute test
+	make -C facet_exception test
+	make -C facet_inheritance test
+	make -C facet_module_exception test
+	make -C facet_module_types test
+	make -C facet_rename test
+	make -C facet_types test
 
 receptacle:
-	cd receptacle_attribute && make test
-	cd receptacle_exception && make test
-	cd receptacle_inheritance && make test
-	cd receptacle_multiple && make test
-	cd receptacle_not_connected && make test
-	cd receptacle_object && make test
-	cd receptacle_types && make test
+	make -C receptacle_attribute test
+	make -C receptacle_exception test
+	make -C receptacle_inheritance test
+	make -C receptacle_multiple test
+	make -C receptacle_not_connected test
+	make -C receptacle_object test
+	make -C receptacle_types test
 
 home:
-	cd home_exception && make test
-	cd home_types && make test
+	make -C home_exception test
+	make -C home_types test
 
 include:
-	cd include_nested && make test
+	make -C include_nested test
 
 module:
-	cd module_mixed && make test
-	cd module_nested && make test
-	cd module_reopen && make test
+	make -C module_mixed test
+	make -C module_nested test
+	make -C module_reopen test
 
 assembly:
-	cd assembly_nested && make test
+	make -C assembly_nested test

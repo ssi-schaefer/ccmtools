@@ -34,6 +34,11 @@ public class Timer
         return millisSum;
     }
     
+    public double getTimeSec()
+    {
+        return millisSum/1000.0;
+    }
+    
     public String toString()
     {
         return Long.toString(getTimeMillis());

@@ -161,7 +161,7 @@ public class Main
                     printUsage();
                     throw new CcmtoolsException("failed to create " + generatorType 
                                                 + " template handler");
-                }
+                }                
                 handlers.add(handler);
                 traverser.addHandler(handler);
             }
