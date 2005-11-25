@@ -5,6 +5,7 @@ import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
 import ccmtools.Deployment.Metamodel.utils.ModelElement;
 import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
+import ccmtools.utils.Text;
 
 
 public class ComponentImplementationDescriptionImpl
@@ -25,6 +26,7 @@ public class ComponentImplementationDescriptionImpl
         super();
         this.label = label;
         UUID = uuid;
+        setElementName(ComponentImplementationDescription.ELEMENT_NAME);
     }
 
     public String getUUID()
@@ -68,7 +70,7 @@ public class ComponentImplementationDescriptionImpl
     }
 
     
-    public void addElement(ModelElement element)
+    public void addElementChild(ModelElement element)
     {
         if(element instanceof ComponentAssemblyDescription) {
             setAssemblyImpl((ComponentAssemblyDescription)element);
@@ -78,7 +80,7 @@ public class ComponentImplementationDescriptionImpl
         }
     }
        
-    public void addAttribute(String name, String value)
+    public void addElementAttribute(String name, String value)
     {
         if(name.equals("label")) {
             setLabel(value);
@@ -91,7 +93,7 @@ public class ComponentImplementationDescriptionImpl
     public String toXml(int indent)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(tab(indent)).append("<");
+        buffer.append(Text.tab(indent)).append("<");
         buffer.append(ComponentImplementationDescription.ELEMENT_NAME);
         if(getLabel() != null)
             buffer.append(" label=\"").append(getLabel()).append("\"");
@@ -106,7 +108,7 @@ public class ComponentImplementationDescriptionImpl
             buffer.append(getMonolithicImpl().toXml(indent+1));
         }
         
-        buffer.append(tab(indent)).append("</");
+        buffer.append(Text.tab(indent)).append("</");
         buffer.append(ComponentImplementationDescription.ELEMENT_NAME);
         buffer.append(">\n");
         return buffer.toString();

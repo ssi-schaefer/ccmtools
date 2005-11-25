@@ -1,20 +1,26 @@
 package ccmtools.Deployment.Metamodel.utils;
 
+import java.util.List;
+import java.util.Map;
+
 import org.xml.sax.Attributes;
 
 public interface ModelElement
 {
-    public abstract String getName();
-    public abstract void setName(String name);
+    String getElementName();
+    void setElementName(String name);
 
-    public abstract String getText();
-    public abstract void setText(String text);
+    String getElementText();
+    void setElementText(String text);
+
+    List getElementChildren();
+    void addElementChild(ModelElement element);
+    void setElementChildren(List children);
     
-    public abstract void addElement(ModelElement element);
+    Map getElementAttributes();
+    void addElementAttribute(String name, String value);
+    void setElementAttributes(Attributes attrs);
 
-    public abstract void addAttribute(String name, String value);
-    public abstract void addAttributes(Attributes attrs);
-
-    public abstract String toXml();
-    public abstract String toXml(int indent);
+    String toXml();
+    String toXml(int indent);
 }

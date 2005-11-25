@@ -7,6 +7,7 @@ import java.util.List;
 import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
 import ccmtools.Deployment.Metamodel.utils.ModelElement;
 import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
+import ccmtools.utils.Text;
 
 
 public class ComponentAssemblyArtifactDescriptionImpl
@@ -28,6 +29,7 @@ public class ComponentAssemblyArtifactDescriptionImpl
         this.label = label;
         spectifcType = type;
         UUID = uuid;
+        setElementName(ComponentAssemblyArtifactDescription.ELEMENT_NAME);
     }
 
     
@@ -67,21 +69,21 @@ public class ComponentAssemblyArtifactDescriptionImpl
     }
 
 
-    public void addElement(ModelElement element)
+    public void addElementChild(ModelElement element)
     {
         if(element instanceof ModelElement) {
             // Default case
             // Handle XML elements which are used for sequences attributes
             ModelElement model = (ModelElement) element;
-            String name = model.getName();
-            String text = model.getText();
+            String name = model.getElementName();
+            String text = model.getElementText();
             if(name.equals("Location")) {
                 getLocation().add(text);
             }
         }
     }
        
-    public void addAttribute(String name, String value)
+    public void addElementAttribute(String name, String value)
     {
         if(name.equals("label")) {
             setLabel(value);
@@ -97,7 +99,7 @@ public class ComponentAssemblyArtifactDescriptionImpl
     public String toXml(int indent)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(tab(indent)).append("<");
+        buffer.append(Text.tab(indent)).append("<");
         buffer.append(ComponentAssemblyArtifactDescription.ELEMENT_NAME);
         if(getLabel() != null) {
             buffer.append(" label=\"").append(getLabel()).append("\"");
@@ -113,13 +115,13 @@ public class ComponentAssemblyArtifactDescriptionImpl
         if(getLocation() != null) {
             for(Iterator i = getLocation().iterator(); i.hasNext();) {
                 String text = (String) i.next();
-                buffer.append(tab(indent + 1)).append("<Location>");
+                buffer.append(Text.tab(indent + 1)).append("<Location>");
                 buffer.append(text);
                 buffer.append("</Location>\n");
             }
         }
         
-        buffer.append(tab(indent)).append("</");
+        buffer.append(Text.tab(indent)).append("</");
         buffer.append(ComponentAssemblyArtifactDescription.ELEMENT_NAME);
         buffer.append(">\n");
         return buffer.toString();

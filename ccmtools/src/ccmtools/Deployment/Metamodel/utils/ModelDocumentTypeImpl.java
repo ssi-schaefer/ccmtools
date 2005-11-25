@@ -59,7 +59,7 @@ extends ModelElementImpl implements ModelDocumentType
             buffer.append(getElementName());
             if(getSystemID() != null) {
                 buffer.append(" SYSTEM \"").append(getSystemID());
-                buffer.append("\">\n\n");
+                buffer.append("\">\n");
             }
         }
         return buffer.toString();

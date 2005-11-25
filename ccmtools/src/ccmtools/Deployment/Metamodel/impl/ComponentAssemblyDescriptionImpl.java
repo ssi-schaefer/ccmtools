@@ -8,6 +8,7 @@ import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
 import ccmtools.Deployment.Metamodel.ComponentAssemblyDescription;
 import ccmtools.Deployment.Metamodel.utils.ModelElement;
 import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
+import ccmtools.utils.Text;
 
 
 public class ComponentAssemblyDescriptionImpl
@@ -18,6 +19,7 @@ public class ComponentAssemblyDescriptionImpl
     public ComponentAssemblyDescriptionImpl()
     {
         super();
+        setElementName(ComponentAssemblyDescription.ELEMENT_NAME);
     }
     
     
@@ -27,7 +29,7 @@ public class ComponentAssemblyDescriptionImpl
     }
 
    
-    public void addElement(ModelElement element)
+    public void addElementChild(ModelElement element)
     {
         if(element instanceof ComponentAssemblyArtifactDescription) {
             getAssemblyArtifact().add(
@@ -35,7 +37,7 @@ public class ComponentAssemblyDescriptionImpl
         }
     }
         
-    public void addAttribute(String name, String value)
+    public void addElementAttribute(String name, String value)
     {
         // No Attributes
     }
@@ -43,7 +45,7 @@ public class ComponentAssemblyDescriptionImpl
     public String toXml(int indent)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(tab(indent)).append("<");
+        buffer.append(Text.tab(indent)).append("<");
         buffer.append(ComponentAssemblyDescription.ELEMENT_NAME);
         buffer.append(">\n");
         
@@ -55,7 +57,7 @@ public class ComponentAssemblyDescriptionImpl
             }
         }
         
-        buffer.append(tab(indent)).append("</");
+        buffer.append(Text.tab(indent)).append("</");
         buffer.append(ComponentAssemblyDescription.ELEMENT_NAME);
         buffer.append(">\n");
         return buffer.toString();

@@ -8,6 +8,7 @@ import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
 import ccmtools.Deployment.Metamodel.NamedImplementationArtifact;
 import ccmtools.Deployment.Metamodel.utils.ModelElement;
 import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
+import ccmtools.utils.Text;
 
 
 public class MonolithicImplementationDescriptionImpl
@@ -19,6 +20,7 @@ public class MonolithicImplementationDescriptionImpl
     public MonolithicImplementationDescriptionImpl()
     {
         super();
+        setElementName(MonolithicImplementationDescription.ELEMENT_NAME);
     }
     
     public List getPrimaryArtifact()
@@ -27,14 +29,14 @@ public class MonolithicImplementationDescriptionImpl
     }
 
     
-    public void addElement(ModelElement element)
+    public void addElementChild(ModelElement element)
     {
         if(element instanceof NamedImplementationArtifact) {
             getPrimaryArtifact().add((NamedImplementationArtifact)element);
         }
     }
        
-    public void addAttribute(String name, String value)
+    public void addElementAttribute(String name, String value)
     {
         // No Attributes
     }
@@ -42,7 +44,7 @@ public class MonolithicImplementationDescriptionImpl
     public String toXml(int indent)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(tab(indent)).append("<");
+        buffer.append(Text.tab(indent)).append("<");
         buffer.append(MonolithicImplementationDescription.ELEMENT_NAME);
         buffer.append(">\n");
         
@@ -54,7 +56,7 @@ public class MonolithicImplementationDescriptionImpl
             }
         }
         
-        buffer.append(tab(indent)).append("</");
+        buffer.append(Text.tab(indent)).append("</");
         buffer.append(MonolithicImplementationDescription.ELEMENT_NAME);
         buffer.append(">\n");
         return buffer.toString();

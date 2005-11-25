@@ -13,6 +13,9 @@ import ccmtools.Deployment.Metamodel.ImplementationArtifactDescription;
 import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
 import ccmtools.Deployment.Metamodel.NamedImplementationArtifact;
 import ccmtools.Deployment.Metamodel.PackagedComponentImplementation;
+import ccmtools.Deployment.Metamodel.impl.DeploymentFactoryImpl;
+import ccmtools.Deployment.Metamodel.utils.ModelElement;
+import ccmtools.Deployment.Metamodel.utils.ModelFactory;
 
 public class ModelTest extends TestCase
 {
@@ -39,16 +42,52 @@ public class ModelTest extends TestCase
 
     // Test cases for the deployment model ---------------------
         
-    public void testXmlSerialization()
+    public void testXmlLoad()
     {
         try {            
+            File file = new File(testDir, "Order.xml");
+            ModelElement Order = ModelFactory.instance.loadXml(file);
+            System.out.println(Order.toXml());
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+    
+    public void testXmlSave()
+    {
+        try {
+            ModelFactory factory = ModelFactory.instance;
+            ModelElement sequence = factory.createModelElement("Sequence");
+            for(int i=0; i<10;i++) {
+                ModelElement item = factory.createModelElement("Item");
+                item.addElementAttribute("index", Integer.toString(i));
+                item.setElementText(Integer.toBinaryString(i));
+                sequence.addElementChild(item);
+            }
+            File file = new File(testDir, "Sequence.xml");
+            factory.saveXml(file, sequence);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+    
+    public void testDeploymentModelSerialization()
+    {
+        try {            
+            ModelFactory factory = new DeploymentFactoryImpl();
+            
             File file = new File(testDir, "example.xml");
 
             // save model to an XML file
-            DeploymentFactory.instance.saveXml(file, model);
+            factory.saveXml(file, model);
             
             // load example XML file
-            ComponentPackageDescription testModel = DeploymentFactory.instance.loadXml(file);
+            ComponentPackageDescription testModel 
+                = (ComponentPackageDescription) factory.loadXml(file);
               
             String s1 = model.toXml();
             String s2 = testModel.toXml();

@@ -5,14 +5,14 @@ public class ModelDocumentImpl
     extends ModelElementImpl 
     implements ModelDocument
 {
-    protected ModelDocumentType docType;
+    protected ModelDocumentType dtd;
     protected ModelElement root;
     
-    public ModelDocumentImpl(ModelElement root, ModelDocumentType docType)
+    public ModelDocumentImpl(ModelElement root, ModelDocumentType dtd)
     {
         super();
         setRoot(root);
-        setDocType(docType);
+        setDocType(dtd);
     }
     
     public ModelDocumentImpl(ModelElement root)
@@ -22,12 +22,12 @@ public class ModelDocumentImpl
 
     public ModelDocumentType getDocType()
     {
-        return docType;
+        return dtd;
     }
 
-    public void setDocType(ModelDocumentType docType)
+    public void setDocType(ModelDocumentType dtd)
     {
-        this.docType = docType;
+        this.dtd = dtd;
     }
 
     public ModelElement getRoot()
@@ -47,6 +47,7 @@ public class ModelDocumentImpl
         if(getDocType() != null) {
             buffer.append(getDocType().toXml());
         }
+        buffer.append("\n");
         buffer.append(getRoot());
         return buffer.toString();
     }

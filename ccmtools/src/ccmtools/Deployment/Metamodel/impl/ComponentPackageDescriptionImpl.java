@@ -9,6 +9,7 @@ import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
 import ccmtools.Deployment.Metamodel.PackagedComponentImplementation;
 import ccmtools.Deployment.Metamodel.utils.ModelElement;
 import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
+import ccmtools.utils.Text;
 
 public class ComponentPackageDescriptionImpl
     extends ModelElementImpl implements ComponentPackageDescription
@@ -30,6 +31,7 @@ public class ComponentPackageDescriptionImpl
         super();
         this.label = label;
         UUID = uuid;
+        setElementName(ComponentPackageDescription.ELEMENT_NAME);
     }
 
     public String getLabel()
@@ -68,7 +70,7 @@ public class ComponentPackageDescriptionImpl
     }
 
     
-    public void addElement(ModelElement element)
+    public void addElementChild(ModelElement element)
     {
         if(element instanceof ComponentInterfaceDescription) {
             setRealizes((ComponentInterfaceDescription)element);
@@ -78,7 +80,7 @@ public class ComponentPackageDescriptionImpl
         }
     }
        
-    public void addAttribute(String name, String value)
+    public void addElementAttribute(String name, String value)
     {
         if(name.equals("label")) {
             setLabel(value);
@@ -91,7 +93,7 @@ public class ComponentPackageDescriptionImpl
     public String toXml(int indent)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(tab(indent)).append("<");
+        buffer.append(Text.tab(indent)).append("<");
         buffer.append(ComponentPackageDescription.ELEMENT_NAME);
         if(getLabel() != null) {
             buffer.append(" label=\"").append(getLabel()).append("\"");
@@ -113,7 +115,7 @@ public class ComponentPackageDescriptionImpl
             }
         }
         
-        buffer.append(tab(indent)).append("</");
+        buffer.append(Text.tab(indent)).append("</");
         buffer.append(ComponentPackageDescription.ELEMENT_NAME);
         buffer.append(">\n\n");
         return buffer.toString();

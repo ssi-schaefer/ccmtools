@@ -7,6 +7,7 @@ import java.util.List;
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.utils.ModelElement;
 import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
+import ccmtools.utils.Text;
 
 
 public class ComponentInterfaceDescriptionImpl
@@ -29,6 +30,7 @@ public class ComponentInterfaceDescriptionImpl
         this.label = label;
         specificType = type;
         UUID = uuid;
+        setElementName(ComponentInterfaceDescription.ELEMENT_NAME);
     }
     
     public String getLabel()
@@ -72,14 +74,14 @@ public class ComponentInterfaceDescriptionImpl
     }
 
     
-    public void addElement(ModelElement element)
+    public void addElementChild(ModelElement element)
     {
         if(element instanceof ModelElement) {
             // Default case
             // Handle XML elements which are used for sequences attributes
             ModelElement model = (ModelElement)element;
-            String name = model.getName();
-            String text = model.getText();
+            String name = model.getElementName();
+            String text = model.getElementText();
             if(name.equals("SupportedType")) {
                 getSupportedType().add(text);
             }
@@ -89,7 +91,7 @@ public class ComponentInterfaceDescriptionImpl
         }
     }
        
-    public void addAttribute(String name, String value)
+    public void addElementAttribute(String name, String value)
     {
         if(name.equals("label")) {
             setLabel(value);
@@ -105,7 +107,7 @@ public class ComponentInterfaceDescriptionImpl
     public String toXml(int indent)
     {
         StringBuffer buffer = new StringBuffer();
-        buffer.append(tab(indent)).append("<");
+        buffer.append(Text.tab(indent)).append("<");
         buffer.append(ComponentInterfaceDescription.ELEMENT_NAME);
         if(getLabel() != null) {
             buffer.append(" label=\"").append(getLabel()).append("\"");
@@ -121,7 +123,7 @@ public class ComponentInterfaceDescriptionImpl
         if(getSupportedType() != null) {
             for(Iterator i = getSupportedType().iterator(); i.hasNext();) {
                 String text = (String) i.next();
-                buffer.append(tab(indent + 1)).append("<SupportedType>");
+                buffer.append(Text.tab(indent + 1)).append("<SupportedType>");
                 buffer.append(text);
                 buffer.append("</SupportedType>\n");
             }
@@ -130,13 +132,13 @@ public class ComponentInterfaceDescriptionImpl
         if(getIdlFile() != null) {
             for(Iterator i = getIdlFile().iterator(); i.hasNext();) {
                 String text = (String) i.next();
-                buffer.append(tab(indent + 1)).append("<IdlFile>");
+                buffer.append(Text.tab(indent + 1)).append("<IdlFile>");
                 buffer.append(text);
                 buffer.append("</IdlFile>\n");
             }
         }
         
-        buffer.append(tab(indent)).append("</");
+        buffer.append(Text.tab(indent)).append("</");
         buffer.append(ComponentInterfaceDescription.ELEMENT_NAME);
         buffer.append(">\n");
         return buffer.toString();
