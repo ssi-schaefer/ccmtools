@@ -9,20 +9,16 @@ public interface ComponentInterfaceDescription
 {
     public String ELEMENT_NAME = "ComponentInterfaceDescription";
     
-    public abstract String getLabel();
+    String getLabel();
+    void setLabel(String label);
 
-    public abstract void setLabel(String label);
+    String getUUID();
+    void setUUID(String uuid);
 
-    public abstract String getUUID();
+    String getSpecificType();
+    void setSpecificType(String specificType);
 
-    public abstract void setUUID(String uuid);
+    List getIdlFiles();
 
-    public abstract String getSpecificType();
-
-    public abstract void setSpecificType(String specificType);
-
-    public abstract List getIdlFile();
-
-    public abstract List getSupportedType();
-
+    List getSupportedTypes();
 }

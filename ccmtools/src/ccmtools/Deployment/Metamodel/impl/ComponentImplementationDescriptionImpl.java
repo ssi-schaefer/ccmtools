@@ -2,10 +2,9 @@ package ccmtools.Deployment.Metamodel.impl;
 
 import ccmtools.Deployment.Metamodel.ComponentAssemblyDescription;
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
+import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
-import ccmtools.Deployment.Metamodel.utils.ModelElement;
 import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
-import ccmtools.utils.Text;
 
 
 public class ComponentImplementationDescriptionImpl
@@ -15,6 +14,7 @@ public class ComponentImplementationDescriptionImpl
     private String UUID;
     private ComponentAssemblyDescription assemblyImpl;
     private MonolithicImplementationDescription monolithicImpl;
+    private ComponentInterfaceDescription interfaceDescription;
     
     public ComponentImplementationDescriptionImpl()
     {
@@ -26,7 +26,6 @@ public class ComponentImplementationDescriptionImpl
         super();
         this.label = label;
         UUID = uuid;
-        setElementName(ComponentImplementationDescription.ELEMENT_NAME);
     }
 
     public String getUUID()
@@ -70,47 +69,13 @@ public class ComponentImplementationDescriptionImpl
     }
 
     
-    public void addElementChild(ModelElement element)
+    public void setImplements(ComponentInterfaceDescription cid)
     {
-        if(element instanceof ComponentAssemblyDescription) {
-            setAssemblyImpl((ComponentAssemblyDescription)element);
-        }
-        else if(element instanceof MonolithicImplementationDescription) {
-            setMonolithicImpl((MonolithicImplementationDescription)element);
-        }
-    }
-       
-    public void addElementAttribute(String name, String value)
-    {
-        if(name.equals("label")) {
-            setLabel(value);
-        }
-        else if(name.equals("UUID")) {
-            setUUID(value);
-        }
+        this.interfaceDescription = cid;
     }
     
-    public String toXml(int indent)
+    public ComponentInterfaceDescription getImplements()
     {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.tab(indent)).append("<");
-        buffer.append(ComponentImplementationDescription.ELEMENT_NAME);
-        if(getLabel() != null)
-            buffer.append(" label=\"").append(getLabel()).append("\"");
-        if(getUUID() != null)
-        buffer.append(" UUID=\"").append(getUUID()).append("\"");
-        buffer.append(">\n");
-        
-        if(getAssemblyImpl() != null) {
-            buffer.append(getAssemblyImpl().toXml(indent+1));
-        }
-        if(getMonolithicImpl() != null) {
-            buffer.append(getMonolithicImpl().toXml(indent+1));
-        }
-        
-        buffer.append(Text.tab(indent)).append("</");
-        buffer.append(ComponentImplementationDescription.ELEMENT_NAME);
-        buffer.append(">\n");
-        return buffer.toString();
+        return interfaceDescription;
     }
 }

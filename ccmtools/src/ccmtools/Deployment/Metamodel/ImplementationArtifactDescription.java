@@ -7,16 +7,13 @@ import ccmtools.Deployment.Metamodel.utils.ModelElement;
 public interface ImplementationArtifactDescription
     extends ModelElement
 {
-    public String ELEMENT_NAME = "ImplementationArtifactDescription";    
+    String ELEMENT_NAME = "ImplementationArtifactDescription";    
 
-    public abstract String getLabel();
+    String getLabel();
+    void setLabel(String label);
 
-    public abstract void setLabel(String label);
+    String getUUID();
+    void setUUID(String uuid);
 
-    public abstract String getUUID();
-
-    public abstract void setUUID(String uuid);
-
-    public abstract List getLocation();
-
+    List getLocations();
 }

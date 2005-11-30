@@ -6,23 +6,20 @@ import ccmtools.Deployment.Metamodel.utils.ModelElement;
 public interface ComponentImplementationDescription
     extends ModelElement
 {
-    public String ELEMENT_NAME = "ComponentImplementationDescription";
+    String ELEMENT_NAME = "ComponentImplementationDescription";
 
-    public abstract String getUUID();
+    String getUUID();
+    void setUUID(String uuid);
 
-    public abstract void setUUID(String uuid);
+    String getLabel();
+    void setLabel(String label);
 
-    public abstract String getLabel();
+    ComponentAssemblyDescription getAssemblyImpl();
+    void setAssemblyImpl(ComponentAssemblyDescription assemblyImpl);
 
-    public abstract void setLabel(String label);
+    MonolithicImplementationDescription getMonolithicImpl();
+    void setMonolithicImpl(MonolithicImplementationDescription monolithicImpl);
 
-    public abstract ComponentAssemblyDescription getAssemblyImpl();
-
-    public abstract void setAssemblyImpl(
-                                         ComponentAssemblyDescription assemblyImpl);
-
-    public abstract MonolithicImplementationDescription getMonolithicImpl();
-
-    public abstract void setMonolithicImpl(MonolithicImplementationDescription monolithicImpl);
-
+    void setImplements(ComponentInterfaceDescription cid);
+    ComponentInterfaceDescription getImplements();
 }

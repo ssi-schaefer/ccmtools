@@ -7,8 +7,7 @@ import ccmtools.Deployment.Metamodel.utils.ModelElement;
 public interface ComponentAssemblyDescription
     extends ModelElement
 {
-    public String ELEMENT_NAME = "ComponentAssemblyDescription";
+    String ELEMENT_NAME = "ComponentAssemblyDescription";
     
-    public abstract List getAssemblyArtifact();
-
+    List getAssemblyArtifacts();
 }

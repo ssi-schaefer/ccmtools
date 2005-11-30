@@ -6,14 +6,11 @@ import ccmtools.Deployment.Metamodel.utils.ModelElement;
 public interface NamedImplementationArtifact
     extends ModelElement
 {
-    public String ELEMENT_NAME = "NamedImplementationArtifact";
+    String ELEMENT_NAME = "NamedImplementationArtifact";
     
-    public abstract String getName();
+    String getName();
+    void setName(String name);
 
-    public abstract void setName(String name);
-
-    public abstract ImplementationArtifactDescription getReferenceArtifact();
-
-    public abstract void setReferencedArtifact(ImplementationArtifactDescription referenceArtifact);
-
+    ImplementationArtifactDescription getReferenceArtifact();
+    void setReferencedArtifact(ImplementationArtifactDescription referenceArtifact);
 }

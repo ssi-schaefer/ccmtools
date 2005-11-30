@@ -1,11 +1,9 @@
 package ccmtools.Deployment.Metamodel;
 
 import ccmtools.Deployment.Metamodel.impl.DeploymentFactoryImpl;
-import ccmtools.Deployment.Metamodel.utils.ModelFactory;
 
 
 public interface DeploymentFactory
-    extends ModelFactory
 {
     /** Singleton */
     DeploymentFactory instance = new DeploymentFactoryImpl();

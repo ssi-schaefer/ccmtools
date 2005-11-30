@@ -7,8 +7,7 @@ import ccmtools.Deployment.Metamodel.utils.ModelElement;
 public interface MonolithicImplementationDescription
     extends ModelElement
 {
-    public String ELEMENT_NAME = "MonolithicImplementationDescription";
+    String ELEMENT_NAME = "MonolithicImplementationDescription";
     
-    public abstract List getPrimaryArtifact();
-
+    List getPrimaryArtifacts();
 }

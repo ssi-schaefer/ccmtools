@@ -7,20 +7,16 @@ import ccmtools.Deployment.Metamodel.utils.ModelElement;
 public interface ComponentAssemblyArtifactDescription
     extends ModelElement
 {
-    public String ELEMENT_NAME = "ComponentAssemblyArtifactDescription";
+    String ELEMENT_NAME = "ComponentAssemblyArtifactDescription";
     
-    public abstract String getLabel();
+    String getLabel();
+    void setLabel(String label);
 
-    public abstract void setLabel(String label);
+    String getUUID();
+    void setUUID(String uuid);
 
-    public abstract String getUUID();
+    String getSpectifcType();
+    void setSpecifcType(String spectifcType);
 
-    public abstract void setUUID(String uuid);
-
-    public abstract String getSpectifcType();
-
-    public abstract void setSpectifcType(String spectifcType);
-
-    public abstract List getLocation();
-
+    public abstract List getLocations();
 }

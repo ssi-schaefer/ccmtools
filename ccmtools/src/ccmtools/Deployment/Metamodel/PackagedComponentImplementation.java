@@ -9,11 +9,8 @@ public interface PackagedComponentImplementation
     String ELEMENT_NAME = "PackagedComponentImplementation";
     
     String getName();
-
     void setName(String name);
 
-    ComponentImplementationDescription getReferencedImplementation();
-    
+    ComponentImplementationDescription getReferencedImplementation();    
     void setReferencedImplementation(ComponentImplementationDescription referencedImplementation);
-
 }

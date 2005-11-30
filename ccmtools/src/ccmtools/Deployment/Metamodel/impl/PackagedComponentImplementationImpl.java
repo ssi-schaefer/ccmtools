@@ -2,9 +2,7 @@ package ccmtools.Deployment.Metamodel.impl;
 
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.PackagedComponentImplementation;
-import ccmtools.Deployment.Metamodel.utils.ModelElement;
 import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
-import ccmtools.utils.Text;
 
 
 public class PackagedComponentImplementationImpl
@@ -23,7 +21,6 @@ public class PackagedComponentImplementationImpl
     {
         super();
         this.name = name;
-        setElementName(PackagedComponentImplementation.ELEMENT_NAME);
     }
 
     public String getName()
@@ -45,39 +42,4 @@ public class PackagedComponentImplementationImpl
     {
         this.referencedImplementation = referencedImplementation;
     }
-
-    
-    public void addElementChild(ModelElement element)
-    {
-        if(element instanceof ComponentImplementationDescription) {
-            setReferencedImplementation((ComponentImplementationDescription)element);
-        }
-    }
-       
-    public void addElementAttribute(String name, String value)
-    {
-        if(name.equals("name")) {
-            setName(value);
-        }
-    }
-    
-    public String toXml(int indent)
-    {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(Text.tab(indent)).append("<");
-        buffer.append(PackagedComponentImplementation.ELEMENT_NAME);
-        if(getName() != null) {
-            buffer.append(" name=\"").append(getName()).append("\"");
-        }
-        buffer.append(">\n");
-        
-        if(getReferencedImplementation() != null) {
-            buffer.append(getReferencedImplementation().toXml(indent+1));
-        }
-        
-        buffer.append(Text.tab(indent)).append("</");
-        buffer.append(PackagedComponentImplementation.ELEMENT_NAME);
-        buffer.append(">\n");
-        return buffer.toString();
-    }    
 }

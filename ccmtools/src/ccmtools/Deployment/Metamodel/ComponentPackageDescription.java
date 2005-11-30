@@ -9,18 +9,14 @@ public interface ComponentPackageDescription
 {
     public String ELEMENT_NAME = "ComponentPackageDescription";
     
-    public abstract String getLabel();
+    String getLabel();
+    void setLabel(String label);
 
-    public abstract void setLabel(String label);
+    String getUUID();
+    void setUUID(String uuid);
 
-    public abstract String getUUID();
+    ComponentInterfaceDescription getRealizes();
+    void setRealizes(ComponentInterfaceDescription realizes);
 
-    public abstract void setUUID(String uuid);
-
-    public abstract ComponentInterfaceDescription getRealizes();
-
-    public abstract void setRealizes(ComponentInterfaceDescription realizes);
-
-    public abstract List getImplementation();
-
+    List getImplementations();
 }
