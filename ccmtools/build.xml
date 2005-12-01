@@ -24,7 +24,7 @@
 
   	<!-- Define project related constants in Java -->
   	<property name="PACKAGE" value="ccmtools" />
-  	<property name="VERSION" value="0.5.3-pre4" />
+  	<property name="VERSION" value="0.5.3" />
   	<property name="CPP_PATH" value="cpp" />
 
 
@@ -32,6 +32,7 @@
   	<path id="compile.classpath">
   		<pathelement path="${lib}/antlr.jar" />
   		<pathelement path="${lib}/dtd2java.jar" />
+  		<pathelement path="${lib}/jdom.jar" />
   		<pathelement path="${lib}/mdr01.jar" />
   		<pathelement path="${lib}/oclmetamodel.jar" />		
   		<pathelement path="${build}/classes" />
@@ -136,6 +137,7 @@
       	<mkdir dir="${prefix}" />
   		
     	<copy file="${lib}/antlr.jar"        todir="${prefix}/lib"  overwrite="true" />  
+  		<copy file="${lib}/jdom.jar"         todir="${prefix}/lib"  overwrite="true" />  
      	<copy file="${lib}/ccmtools.jar"     todir="${prefix}/lib"  overwrite="true" />    		
       	<copy file="${lib}/mdr01.jar"        todir="${prefix}/lib"  overwrite="true" />   		  		
       	<copy file="${lib}/oclmetamodel.jar" todir="${prefix}/lib"  overwrite="true" />       
