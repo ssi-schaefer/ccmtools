@@ -1,2 +1,2 @@
-PACKAGE_NAME('component')
-PACKAGE_VERSION('0.1')
+PACKAGE_NAME('benchmark-component')
+PACKAGE_VERSION('1.0.0')
