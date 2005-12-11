@@ -1,5 +1,5 @@
-
-COMPONENT_DIR = component
+DEST_DIR = xxx
+COMPONENT_DIR = xxx/component
 IDL3_DIR = idl3
 IDL_INCLUDE = -I${IDL3_DIR}
 
@@ -8,19 +8,31 @@ server: cppserver
 client: cppclient
 
 interface:
-	ccmtools-generate c++local ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/Benchmark.idl
+	ccmtools c++local ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${IDL3_DIR}/Benchmark.idl
 
 local: interface
-	ccmtools-generate c++local ${IDL_INCLUDE} -a -o ${COMPONENT_DIR} ${IDL3_DIR}/Test.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${IDL3_DIR}/Test.idl
+
+local_check: 
+	cp impl/Makefile.py ${DEST_DIR}
+	touch ${DEST_DIR}/interface/Makefile.py 
+	touch ${DEST_DIR}/component/Makefile.py
+	touch ${DEST_DIR}/component/Test/Makefile.py
+	cp impl/Test_bm_impl.cc ${DEST_DIR}/component/Test/
+	confix.py --profile=benchmark --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=install
+	confix.py --profile=benchmark --packageroot=`pwd`/ccm_local_client --bootstrap --configure --make
+
+
+# TODO: Refactor the following tasks!!!
 
 remote: local
-	ccmtools-generate idl2 ${IDL_INCLUDE} -o ${COMPONENT_DIR}/CORBA_Stubs ${IDL3_DIR}/Benchmark.idl
-	ccmtools-generate idl2 ${IDL_INCLUDE} -o ${COMPONENT_DIR}/CORBA_Stubs ${IDL3_DIR}/Test.idl
-	ccmtools-generate c++remote ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/Benchmark.idl
-	ccmtools-generate c++remote ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/Test.idl
+	ccmtools idl2 ${IDL_INCLUDE} -o ${COMPONENT_DIR}/CORBA_Stubs ${IDL3_DIR}/Benchmark.idl
+	ccmtools idl2 ${IDL_INCLUDE} -o ${COMPONENT_DIR}/CORBA_Stubs ${IDL3_DIR}/Test.idl
+	ccmtools c++remote ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/Benchmark.idl
+	ccmtools c++remote ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/Test.idl
 
 nested: 
-	ccmtools-generate c++local ${IDL_INCLUDE} -a -o ${COMPONENT_DIR} ${IDL3_DIR}/SuperTest.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${COMPONENT_DIR} ${IDL3_DIR}/SuperTest.idl
 
 dbc: 
 	ccmtools c++local ${IDL_INCLUDE} -o ${COMPONENT_DIR} ${IDL3_DIR}/DbcBenchmark.idl
@@ -29,7 +41,6 @@ dbc:
 
 install: 
 	cp impl/Makefile.py ${COMPONENT_DIR} 
-	cp impl/Test_bm_impl.cc ${COMPONENT_DIR}/impl
 	cp impl/SuperTest_bm_impl.h ${COMPONENT_DIR}/impl
 	cp impl/SuperTest_bm_impl.cc ${COMPONENT_DIR}/impl
 	cp impl/DbcTest_bmInv1_impl.cc ${COMPONENT_DIR}/impl 

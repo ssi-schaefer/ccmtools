@@ -20,43 +20,42 @@
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <WX/Utils/Timer.h>
-#include <WX/Utils/TimerEvaluation.h>
+#include <ccm/utils/Timer.h>
+#include <ccm/utils/TimerEvaluation.h>
 
-#include <LocalComponents/CCM.h>
-#include <CCM_Local/HomeFinder.h>
+#include <ccm/local/Components/CCM.h>
+#include <ccm/local/HomeFinder.h>
 
-#include <CCM_Local/CCM_Session_Test/Test_bm_impl.h>
-#include <CCM_Local/CCM_Session_Test/Test_gen.h>
-#include <CCM_Local/CCM_Session_Test/TestHome_gen.h>
+#include <ccm/local/component/Test/Test_bm_impl.h>
+#include <ccm/local/component/Test/Test_gen.h>
+#include <ccm/local/component/Test/TestHome_gen.h>
 
 using namespace std;
 using namespace WX::Utils;
-using namespace CCM_Local;
-using namespace CCM_Session_Test;
+using namespace ccm::local;
 
 
 int main(int argc, char *argv[])
 {
-    WX::Utils::Timer globalTimer;
-    WX::Utils::TimerEvaluation eval;
+    ccm::utils::Timer globalTimer;
+    ccm::utils::TimerEvaluation eval;
     globalTimer.start();
 
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<Test> myTest;
-    SmartPtr<CCM_Local::Benchmark> bm;
+    SmartPtr<component::Test::Test> myTest;
+    SmartPtr<Benchmark> bm;
 
-    LocalComponents::Cookie Test_ck_bm;
+    Components::Cookie Test_ck_bm;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    LocalComponents::HomeFinder* homeFinder;
+    Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
-    error  = deploy_CCM_Local_TestHome("TestHome");
+    error  = deploy_ccm_local_component_Test_TestHome("TestHome");
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -72,23 +71,24 @@ int main(int argc, char *argv[])
     // forces components to run the ccm_set_session_context() and ccm_activate()
     // callback methods.
     try {
-        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
+        SmartPtr<component::Test::TestHome> myTestHome(
+	     dynamic_cast<component::Test::TestHome*>
             (homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
         bm = myTest->provide_bm();
         myTest->configuration_complete();
     } 
-    catch ( LocalComponents::HomeNotFound ) {
+    catch ( Components::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( Components::NotImplemented& e ) {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch ( LocalComponents::InvalidName& e ) {
+    catch ( Components::InvalidName& e ) {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
       cout << "--- Start Test Case -----------------------------------" << endl;
 
       // Test configuration
-      WX::Utils::Timer timer;
+      ccm::utils::Timer timer;
       
       const long MAX_LOOP_COUNT = 100000000;
 
@@ -393,7 +393,7 @@ int main(int argc, char *argv[])
 
       cout << "--- Stop Test Case ------------------------------------" << endl;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( Components::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
@@ -412,11 +412,11 @@ int main(int argc, char *argv[])
     try {
         myTest->remove();
     } 
-    catch ( LocalComponents::HomeNotFound ) {
+    catch ( Components::HomeNotFound ) {
         cout << "TEARDOWN ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( LocalComponents::NotImplemented& e ) {
+    catch ( Components::NotImplemented& e ) {
         cout << "TEARDOWN ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
@@ -426,7 +426,7 @@ int main(int argc, char *argv[])
         error = -1;
     }
 
-    error += undeploy_CCM_Local_TestHome("TestHome");
+    error += undeploy_ccm_local_component_Test_TestHome("TestHome");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
