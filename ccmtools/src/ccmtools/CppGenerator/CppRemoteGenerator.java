@@ -3006,23 +3006,12 @@ public class CppRemoteGenerator
     protected String getProvidesInclude(MProvidesDef provides) 
     {
         StringBuffer code = new StringBuffer();
+        MInterfaceDef iface = ((MProvidesDef)currentNode).getProvides();
         code.append("#include <");
-        code.append(getLocalNamespace(provides,Text.FILE_SEPARATOR,""));
+        code.append(getLocalNamespace(iface,Text.FILE_SEPARATOR,""));
         code.append(Text.FILE_SEPARATOR);
         code.append(provides.getProvides().getIdentifier());
         code.append(".h>\n");
-        
-//        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
-//        List scope = getScope((MContained) iface);
-//        // TODO: Refactoring namespace method
-//        code.append("#include <ccm").append(Text.FILE_SEPARATOR).append("local");
-//        code.append(Text.FILE_SEPARATOR);
-//        if (scope.size() > 0) {
-//            code.append(Text.join(Text.FILE_SEPARATOR, scope));
-//            code.append(Text.FILE_SEPARATOR);
-//        }
-//        code.append(provides.getProvides().getIdentifier());
-//        code.append(".h>\n");
         return code.toString();
     }
     
@@ -3048,7 +3037,9 @@ public class CppRemoteGenerator
     protected String getProvidesType(MProvidesDef provides) 
     {
         StringBuffer code = new StringBuffer();
-        code.append(getLocalNamespace(provides,Text.SCOPE_SEPARATOR,""));
+        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
+        code.append(getLocalNamespace(iface,Text.SCOPE_SEPARATOR,""));
+//        code.append(getLocalNamespace(provides,Text.SCOPE_SEPARATOR,"")); 
         code.append(Text.SCOPE_SEPARATOR);
         code.append(provides.getProvides().getIdentifier());
         
@@ -3123,13 +3114,6 @@ public class CppRemoteGenerator
         MInterfaceDef iface = ((MUsesDef) currentNode).getUses();
         StringBuffer code = new StringBuffer();
         code.append(getLocalName(iface,Text.SCOPE_SEPARATOR));
-//        List scope = getScope((MContained) iface);
-//        // TODO: Refactoring namespace method
-//        if (scope.size() > 0) {
-//            code.append(Text.join(Text.SCOPE_SEPARATOR, scope));
-//            code.append(Text.SCOPE_SEPARATOR);
-//        }
-//        code.append(usesDef.getUses().getIdentifier());
         return code.toString();
     }
     

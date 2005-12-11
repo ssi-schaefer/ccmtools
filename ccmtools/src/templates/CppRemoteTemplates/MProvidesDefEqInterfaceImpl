@@ -1,3 +1,4 @@
+
 ::%(IdlProvidesType)s_ptr 
 %(ComponentType)s_impl::provide_%(Identifier)s()
 {
