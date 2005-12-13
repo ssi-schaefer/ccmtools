@@ -1,10 +1,9 @@
 package ccmtools.Deployment.Metamodel.impl;
 
-import ccmtools.Deployment.Metamodel.ComponentAssemblyDescription;
+import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
-import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
 
 
 public class ComponentImplementationDescriptionImpl
@@ -12,7 +11,7 @@ public class ComponentImplementationDescriptionImpl
 {
     private String label;
     private String UUID;
-    private ComponentAssemblyDescription assemblyImpl;
+    private ComponentAssemblyArtifactDescription assemblyImpl;
     private MonolithicImplementationDescription monolithicImpl;
     private ComponentInterfaceDescription interfaceDescription;
     
@@ -48,12 +47,12 @@ public class ComponentImplementationDescriptionImpl
         this.label = label;
     }
     
-    public ComponentAssemblyDescription getAssemblyImpl()
+    public ComponentAssemblyArtifactDescription getAssemblyImpl()
     {
         return assemblyImpl;
     }
 
-    public void setAssemblyImpl(ComponentAssemblyDescription assemblyImpl)
+    public void setAssemblyImpl(ComponentAssemblyArtifactDescription assemblyImpl)
     {
         this.assemblyImpl = assemblyImpl;
     }

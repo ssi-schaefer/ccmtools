@@ -2,7 +2,6 @@ package ccmtools.test.Deployment;
 
 import junit.framework.TestCase;
 import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
-import ccmtools.Deployment.Metamodel.ComponentAssemblyDescription;
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
@@ -125,16 +124,12 @@ public class ModelTest extends TestCase
         compAAD.setSpecifcType("IDL:wamas/stocktake/StocktakeAssembly:1.0");
         compAAD.getLocations().add("wamas/stocktake/assembly/stocktake_assembly.h");
 
-        ComponentAssemblyDescription compAD = 
-            factory.createComponentAssemblyDescription();
-        compAD.getAssemblyArtifacts().add(compAAD);
-
         ComponentImplementationDescription compImplDesc = 
             factory.createComponentImplementationDescription();
         compImplDesc.setLabel("");
         compImplDesc.setUUID("");
         compImplDesc.setMonolithicImpl(monoID);
-        compImplDesc.setAssemblyImpl(compAD);
+        compImplDesc.setAssemblyImpl(compAAD);
 
         PackagedComponentImplementation packCompImpl = 
             factory.createPackagedComponentImplementation();

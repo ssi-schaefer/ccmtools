@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccmtools.Deployment.Metamodel.ImplementationArtifactDescription;
-import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
 
 
 public class ImplementationArtifactDescriptionImpl

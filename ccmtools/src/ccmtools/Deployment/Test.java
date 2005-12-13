@@ -2,12 +2,10 @@ package ccmtools.Deployment;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.jdom.JDOMException;
 
 import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
-import ccmtools.Deployment.Metamodel.ComponentAssemblyDescription;
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
@@ -41,21 +39,20 @@ public class Test
         {
             try {
                 XmiToDeploymentMapper mapper = new XmiToDeploymentMapper();
-                ComponentPackageDescription model = mapper.loadModel(new File(testDir, "example.xml"));
+                ComponentPackageDescription model = 
+                    mapper.loadModel(new File(testDir, "example.xml"));
                 System.out.println(model);
                 
                 DeploymentToXmiMapper xmiMapper = new DeploymentToXmiMapper();
                 xmiMapper.saveModel(new File(testDir, "example.tmp.xml"), model);
                 
-                // Check for implements association
-                for(Iterator i=model.getImplementations().iterator(); i.hasNext();) {
-                    PackagedComponentImplementation impl = (PackagedComponentImplementation)i.next();
-                    ComponentInterfaceDescription cid = 
-                        impl.getReferencedImplementation().getImplements();
-                    
-                    System.out.println("getRealizes=" + cid);
-                }
-                
+//                // Check for implements association
+//                for(Iterator i=model.getImplementations().iterator(); i.hasNext();) {
+//                    PackagedComponentImplementation impl = (PackagedComponentImplementation)i.next();
+//                    ComponentInterfaceDescription cid = 
+//                        impl.getReferencedImplementation().getImplements();
+//                    System.out.println("getRealizes=" + cid);
+//                }
             }
             catch(JDOMException e) {
                 System.out.println(e.getMessage());
@@ -93,10 +90,6 @@ public class Test
         compAAD.setSpecifcType("IDL:wamas/stocktake/StocktakeAssembly:1.0");
         compAAD.getLocations().add("wamas/stocktake/assembly/stocktake_assembly.h");
 
-        ComponentAssemblyDescription compAD = 
-            factory.createComponentAssemblyDescription();
-        compAD.getAssemblyArtifacts().add(compAAD);
-
         ComponentInterfaceDescription compID = 
             factory.createComponentInterfaceDescription();
         compID.setLabel("");
@@ -112,7 +105,7 @@ public class Test
         compImplDesc.setLabel("");
         compImplDesc.setUUID("");
         compImplDesc.setMonolithicImpl(monoID);
-        compImplDesc.setAssemblyImpl(compAD);
+        compImplDesc.setAssemblyImpl(compAAD);
         compImplDesc.setImplements(compID);
 
         PackagedComponentImplementation packCompImpl = 

@@ -1,6 +1,5 @@
 package ccmtools.Deployment.Metamodel;
 
-import ccmtools.Deployment.Metamodel.utils.ModelElement;
 
 
 public interface ComponentImplementationDescription
@@ -14,8 +13,8 @@ public interface ComponentImplementationDescription
     String getLabel();
     void setLabel(String label);
 
-    ComponentAssemblyDescription getAssemblyImpl();
-    void setAssemblyImpl(ComponentAssemblyDescription assemblyImpl);
+    ComponentAssemblyArtifactDescription getAssemblyImpl();
+    void setAssemblyImpl(ComponentAssemblyArtifactDescription assemblyImpl);
 
     MonolithicImplementationDescription getMonolithicImpl();
     void setMonolithicImpl(MonolithicImplementationDescription monolithicImpl);

@@ -2,7 +2,6 @@ package ccmtools.Deployment.Metamodel;
 
 import java.util.List;
 
-import ccmtools.Deployment.Metamodel.utils.ModelElement;
 
 public interface ComponentInterfaceDescription
     extends ModelElement

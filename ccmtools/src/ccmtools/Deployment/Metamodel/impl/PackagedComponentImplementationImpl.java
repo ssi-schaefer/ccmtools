@@ -2,7 +2,6 @@ package ccmtools.Deployment.Metamodel.impl;
 
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.PackagedComponentImplementation;
-import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
 
 
 public class PackagedComponentImplementationImpl

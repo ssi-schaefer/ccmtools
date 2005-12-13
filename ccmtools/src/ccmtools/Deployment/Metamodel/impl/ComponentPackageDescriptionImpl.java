@@ -5,7 +5,6 @@ import java.util.List;
 
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
-import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
 
 public class ComponentPackageDescriptionImpl
     extends ModelElementImpl implements ComponentPackageDescription

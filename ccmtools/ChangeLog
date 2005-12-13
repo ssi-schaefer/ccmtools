@@ -1,6 +1,8 @@
+RELEASE-0.5
+============================================================================
 
 RELEASE-0.5.4
-============================================================================
+----------------------------------------------------------------------------
 *) Bugfix: Local namespaces within the remote component logic are wrong 
    for provided interfaces (the namespace of the MProvidesDef object is
    used instead of the interface namespace).

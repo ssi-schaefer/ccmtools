@@ -1,6 +1,5 @@
 package ccmtools.Deployment.Metamodel;
 
-import ccmtools.Deployment.Metamodel.utils.ModelElement;
 
 
 public interface PackagedComponentImplementation

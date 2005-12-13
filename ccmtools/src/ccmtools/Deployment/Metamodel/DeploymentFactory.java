@@ -12,7 +12,6 @@ public interface DeploymentFactory
     ComponentInterfaceDescription createComponentInterfaceDescription();
     PackagedComponentImplementation createPackagedComponentImplementation();
     ComponentImplementationDescription createComponentImplementationDescription();
-    ComponentAssemblyDescription createComponentAssemblyDescription();
     ComponentAssemblyArtifactDescription createComponentAssemblyArtifactDescription();
     MonolithicImplementationDescription createMonolithicImplementationDescription();
     NamedImplementationArtifact createNamedImplementationArtifact();

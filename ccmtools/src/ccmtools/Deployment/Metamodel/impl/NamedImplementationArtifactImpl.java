@@ -2,7 +2,6 @@ package ccmtools.Deployment.Metamodel.impl;
 
 import ccmtools.Deployment.Metamodel.ImplementationArtifactDescription;
 import ccmtools.Deployment.Metamodel.NamedImplementationArtifact;
-import ccmtools.Deployment.Metamodel.utils.ModelElementImpl;
 
 
 public class NamedImplementationArtifactImpl

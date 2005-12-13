@@ -1,7 +1,6 @@
 package ccmtools.Deployment.Metamodel.impl;
 
 import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
-import ccmtools.Deployment.Metamodel.ComponentAssemblyDescription;
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
@@ -32,11 +31,6 @@ public class DeploymentFactoryImpl
     public ComponentImplementationDescription createComponentImplementationDescription()
     {
         return new ComponentImplementationDescriptionImpl();
-    }
-    
-    public ComponentAssemblyDescription createComponentAssemblyDescription()
-    {
-        return new ComponentAssemblyDescriptionImpl();
     }
     
     public ComponentAssemblyArtifactDescription createComponentAssemblyArtifactDescription()
