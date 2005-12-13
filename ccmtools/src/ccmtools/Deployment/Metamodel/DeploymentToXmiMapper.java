@@ -35,6 +35,13 @@ public class DeploymentToXmiMapper
         outputter.output(doc, out);
     }
 
+    public String modelToString(ComponentPackageDescription model)
+    {
+        Document doc = transformToDoc(model);
+        XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
+        return outputter.outputString(doc);
+    }
+    
     public Document transformToDoc(ComponentPackageDescription in)
     {
         Element xmi = new Element("XMI");
@@ -63,7 +70,6 @@ public class DeploymentToXmiMapper
         Element out = new Element(name,ns); 
         if(in == null) return out;
         
-//        out.setAttribute("id", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("id", getId(in), xmlnsXmi);
         out.addContent(transformToXmlElement("label", in.getLabel()));
         out.addContent(transformToXmlElement("UUID", in.getUUID()));
@@ -83,7 +89,6 @@ public class DeploymentToXmiMapper
     public Element transformToXmlProxy(String name, ComponentInterfaceDescription in)
     {
         Element out = new Element(name);
-//        out.setAttribute("idref", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("idref", getId(in), xmlnsXmi);
         return out;
     }
@@ -94,7 +99,6 @@ public class DeploymentToXmiMapper
         Element out = new Element(name,ns);
         if(in == null) return out;
         
-//        out.setAttribute("id", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("id", getId(in), xmlnsXmi);
         
         out.addContent(transformToXmlElement("label", in.getLabel()));
@@ -116,7 +120,6 @@ public class DeploymentToXmiMapper
         Element out = new Element(name, ns);                                   
         if(in == null) return out;
         
-//        out.setAttribute("id", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("id", getId(in), xmlnsXmi);
         out.addContent(transformToXmlElement("name", in.getName()));
         out.addContent(transformToXmlElement("referencedImplementation", 
@@ -131,7 +134,6 @@ public class DeploymentToXmiMapper
         Element out = new Element(name, ns);
         if(in == null) return out;
         
-//        out.setAttribute("id", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("id", getId(in), xmlnsXmi);
         
         out.addContent(transformToXmlElement("label", in.getLabel()));
@@ -149,7 +151,6 @@ public class DeploymentToXmiMapper
     public Element transformToXmlProxy(String name, ComponentImplementationDescription in)
     {
         Element out = new Element("referencedImplementation");
-//        out.setAttribute("idref", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("idref", getId(in), xmlnsXmi);
         return out;
     }
@@ -160,7 +161,6 @@ public class DeploymentToXmiMapper
         Element out = new Element(name, ns);                                   
         if(in == null) return out;
         
-//        out.setAttribute("id", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("id", getId(in), xmlnsXmi);
         
         out.addContent(transformToXmlElement("label", in.getLabel()));
@@ -180,7 +180,6 @@ public class DeploymentToXmiMapper
         Element out = new Element(name, ns);                                   
         if(in == null) return out;
         
-//        out.setAttribute("id", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("id", getId(in), xmlnsXmi);
         for(Iterator i = in.getPrimaryArtifacts().iterator(); i.hasNext();) {
             NamedImplementationArtifact artifact = (NamedImplementationArtifact)i.next();
@@ -196,7 +195,6 @@ public class DeploymentToXmiMapper
         Element out = new Element(name, ns); 
         if(in == null) return out;
         
-//        out.setAttribute("id", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("id", getId(in), xmlnsXmi);
         out.addContent(transformToXmlElement("name", in.getName()));
 
@@ -213,7 +211,6 @@ public class DeploymentToXmiMapper
         Element out = new Element(name, ns); 
         if(in == null) return out;
         
-//        out.setAttribute("id", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("id", getId(in), xmlnsXmi);
         out.addContent(transformToXmlElement("label", in.getLabel()));
         out.addContent(transformToXmlElement("UUID", in.getUUID()));
@@ -227,7 +224,6 @@ public class DeploymentToXmiMapper
     public Element transformToXmlProxy(String name, ImplementationArtifactDescription in)
     {
         Element out = new Element(name);
-//        out.setAttribute("idref", in.getModelElementId(), xmlnsXmi);
         out.setAttribute("idref", getId(in), xmlnsXmi);
         return out;
     }
@@ -237,7 +233,6 @@ public class DeploymentToXmiMapper
  
     private String getId(ModelElement in)
     {
-        // return in.getModelElementId();
         return "id" + in.hashCode();
     }
 }

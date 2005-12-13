@@ -31,8 +31,9 @@
   	<!-- Define different paths that are used in the following tasks -->
   	<path id="compile.classpath">
   		<pathelement path="${lib}/antlr.jar" />
-  		<pathelement path="${lib}/dtd2java.jar" />
+  		<pathelement path="${lib}/commons-cli-1.0.jar" />
   		<pathelement path="${lib}/jdom.jar" />
+  		<pathelement path="${lib}/dtd2java.jar" />
   		<pathelement path="${lib}/mdr01.jar" />
   		<pathelement path="${lib}/oclmetamodel.jar" />		
   		<pathelement path="${build}/classes" />
@@ -40,6 +41,8 @@
 
   	<path id="test.classpath">
   		<pathelement path="${lib}/antlr.jar" />
+  		<pathelement path="${lib}/commons-cli-1.0.jar" />
+  		<pathelement path="${lib}/jdom.jar" />
   		<pathelement path="${lib}/dtd2java.jar" />
   		<pathelement path="${lib}/mdr01.jar" />
   		<pathelement path="${lib}/oclmetamodel.jar" />
@@ -136,11 +139,12 @@
       	description="Install ccmtools to prefix/.">
       	<mkdir dir="${prefix}" />
   		
-    	<copy file="${lib}/antlr.jar"        todir="${prefix}/lib"  overwrite="true" />  
-  		<copy file="${lib}/jdom.jar"         todir="${prefix}/lib"  overwrite="true" />  
-     	<copy file="${lib}/ccmtools.jar"     todir="${prefix}/lib"  overwrite="true" />    		
-      	<copy file="${lib}/mdr01.jar"        todir="${prefix}/lib"  overwrite="true" />   		  		
-      	<copy file="${lib}/oclmetamodel.jar" todir="${prefix}/lib"  overwrite="true" />       
+    	<copy file="${lib}/antlr.jar"        	todir="${prefix}/lib"  overwrite="true" />  
+  		<copy file="${lib}/commons-cli-1.0.jar"	todir="${prefix}/lib"  overwrite="true" />  
+  		<copy file="${lib}/jdom.jar"         	todir="${prefix}/lib"  overwrite="true" />  
+     	<copy file="${lib}/ccmtools.jar"     	todir="${prefix}/lib"  overwrite="true" />    		
+      	<copy file="${lib}/mdr01.jar"        	todir="${prefix}/lib"  overwrite="true" />   		  		
+      	<copy file="${lib}/oclmetamodel.jar" 	todir="${prefix}/lib"  overwrite="true" />       
   		
       	<copy file="${src}/ccmtools/MDR/MOF/OCL.xml"  
             todir="${prefix}/templates/MDR"  overwrite="true" />	
@@ -154,15 +158,17 @@
       	</copy>
       		
       	<mkdir dir="${prefix}/bin" />
-  		<copy file="${bin}/ccmtools" 
-  		    todir="${prefix}/bin"  overwrite="true" />  
-      	<copy file="${bin}/ccmtools-idl" 
-            todir="${prefix}/bin"  overwrite="true" />  
-      	<copy file="${bin}/uml2idl" 
-            todir="${prefix}/bin"  overwrite="true" />  
+  		<copy file="${bin}/ccmtools"     todir="${prefix}/bin"  overwrite="true" />  
+  		<copy file="${bin}/ccmdeploy"    todir="${prefix}/bin"  overwrite="true" />  
+      	<copy file="${bin}/ccmtools-idl" todir="${prefix}/bin"  overwrite="true" />  
+      	<copy file="${bin}/uml2idl"      todir="${prefix}/bin"  overwrite="true" />  
   		<exec executable="chmod">
   		    <arg value="+x" />
   		    <arg value="${prefix}/bin/ccmtools" />
+  		</exec>
+  		<exec executable="chmod">
+  		    <arg value="+x" />
+  		    <arg value="${prefix}/bin/ccmdeploy" />
   		</exec>
       	<exec executable="chmod">
           	<arg value="+x" />

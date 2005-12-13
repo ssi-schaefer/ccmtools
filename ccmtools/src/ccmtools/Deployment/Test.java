@@ -2,6 +2,7 @@ package ccmtools.Deployment;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.jdom.JDOMException;
 
@@ -26,9 +27,10 @@ public class Test
     public static void main(String[] args)
     {
         {
+            // Save a Deployment model as an XMI 2.1 file 
             try {                
+                ComponentPackageDescription model = createDeploymentModel();
                 DeploymentToXmiMapper mapper = new DeploymentToXmiMapper();
-                ComponentPackageDescription model = instantiateDeploymentModel();
                 mapper.saveModel(new File(testDir, "example.xml"), model);
             }
             catch(IOException e) {
@@ -37,22 +39,31 @@ public class Test
         }
         
         {
+            // Load a Deployment model from an XMI 2.1 file
+            // Save the same model to a new XMI 2.1 file
+            // Print the xmi on the console
+            // Check the association between ComponentImplementationDescription
+            // and ComponentInterfaceDescription.
             try {
                 XmiToDeploymentMapper mapper = new XmiToDeploymentMapper();
-                ComponentPackageDescription model = 
+                ComponentPackageDescription loadedModel = 
                     mapper.loadModel(new File(testDir, "example.xml"));
-                System.out.println(model);
                 
                 DeploymentToXmiMapper xmiMapper = new DeploymentToXmiMapper();
-                xmiMapper.saveModel(new File(testDir, "example.tmp.xml"), model);
+                xmiMapper.saveModel(new File(testDir, "example.tmp.xml"), loadedModel);
                 
-//                // Check for implements association
-//                for(Iterator i=model.getImplementations().iterator(); i.hasNext();) {
-//                    PackagedComponentImplementation impl = (PackagedComponentImplementation)i.next();
-//                    ComponentInterfaceDescription cid = 
-//                        impl.getReferencedImplementation().getImplements();
-//                    System.out.println("getRealizes=" + cid);
-//                }
+                String xmi = xmiMapper.modelToString(loadedModel);
+                System.out.println("loaded model:");
+                System.out.println(xmi);
+                
+                // Check for implements association
+                for(Iterator i=loadedModel.getImplementations().iterator(); i.hasNext();) {
+                    PackagedComponentImplementation impl = 
+                        (PackagedComponentImplementation)i.next();
+                    ComponentInterfaceDescription cid = 
+                        impl.getReferencedImplementation().getImplements();
+                    System.out.println("getRealizes = " + cid);
+                }
             }
             catch(JDOMException e) {
                 System.out.println(e.getMessage());
@@ -63,14 +74,14 @@ public class Test
         }
     }
     
-    private static ComponentPackageDescription instantiateDeploymentModel()
+    private static ComponentPackageDescription createDeploymentModel()
     {
         DeploymentFactory factory = DeploymentFactory.instance;
         
         ImplementationArtifactDescription implAD = 
             factory.createImplementationArtifactDescription();
-        implAD.setLabel("l");
-        implAD.setUUID("u");
+        implAD.setLabel("label");
+        implAD.setUUID("UUID");
         implAD.getLocations().add("xy.h");
         implAD.getLocations().add("xy.cc");
 
@@ -85,15 +96,15 @@ public class Test
 
         ComponentAssemblyArtifactDescription compAAD = 
             factory.createComponentAssemblyArtifactDescription();
-        compAAD.setLabel("");
-        compAAD.setUUID("");
+        compAAD.setLabel("label");
+        compAAD.setUUID("UUID");
         compAAD.setSpecifcType("IDL:wamas/stocktake/StocktakeAssembly:1.0");
         compAAD.getLocations().add("wamas/stocktake/assembly/stocktake_assembly.h");
 
         ComponentInterfaceDescription compID = 
             factory.createComponentInterfaceDescription();
-        compID.setLabel("");
-        compID.setUUID("");
+        compID.setLabel("label");
+        compID.setUUID("UUID");
         compID.setSpecificType("IDL:wamas/stocktake/MainHome:1.0");
         compID.getSupportedTypes().add("IDL:wamas/stocktake/MainHome:1.0");
         compID.getSupportedTypes().add("IDL:wamas/stocktake/Main:1.0");
@@ -102,8 +113,8 @@ public class Test
         
         ComponentImplementationDescription compImplDesc = 
             factory.createComponentImplementationDescription();
-        compImplDesc.setLabel("");
-        compImplDesc.setUUID("");
+        compImplDesc.setLabel("label");
+        compImplDesc.setUUID("UUID");
         compImplDesc.setMonolithicImpl(monoID);
         compImplDesc.setAssemblyImpl(compAAD);
         compImplDesc.setImplements(compID);
@@ -115,8 +126,8 @@ public class Test
 
         ComponentPackageDescription compPackageDescription = 
             factory.createComponentPackageDescription();
-        compPackageDescription.setLabel("");
-        compPackageDescription.setUUID("");
+        compPackageDescription.setLabel("label");
+        compPackageDescription.setUUID("UUID");
         compPackageDescription.getImplementations().add(packCompImpl);
         compPackageDescription.setRealizes(compID);
 

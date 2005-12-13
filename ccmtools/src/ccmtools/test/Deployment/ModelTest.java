@@ -25,32 +25,30 @@ public class ModelTest extends TestCase
     
     public void setUp()
     {
+        System.out.println("setUp()");
         model = instantiateDeploymentModel();
     }
     
     public void tearDown()
     {
+        System.out.println("tearDown()");
         model = null;
     }
     
 
     // Test cases for the deployment model ---------------------
         
-    public void testXmlLoad()
-    {
+//    public void testXmlLoad()
+//    {
 //        try {            
 //            File file = new File(testDir, "Order.xml");
 //            ModelElement Order = ModelFactory.instance.loadXml(file);
 //            System.out.println(Order.toXml());
 //        }
-//        catch(Exception e) {
-//            e.printStackTrace();
-//            fail(e.getMessage());
-//        }
-    }
+//    }
     
-    public void testXmlSave()
-    {
+//    public void testXmlSave()
+//    {
 //        try {
 //            ModelFactory factory = ModelFactory.instance;
 //            ModelElement sequence = factory.createModelElement("Sequence");
@@ -67,32 +65,8 @@ public class ModelTest extends TestCase
 //            e.printStackTrace();
 //            fail(e.getMessage());
 //        }
-    }
+//    }
     
-    public void testDeploymentModelSerialization()
-    {
-//        try {            
-//            ModelFactory factory = new DeploymentFactoryImpl();
-//            
-//            File file = new File(testDir, "example.xml");
-//
-//            // save model to an XML file
-//            factory.saveXml(file, model);
-//            
-//            // load example XML file
-//            ComponentPackageDescription testModel 
-//                = (ComponentPackageDescription) factory.loadXml(file);
-//              
-//            String s1 = model.toXml();
-//            String s2 = testModel.toXml();
-//            assertTrue(s1.equals(s2));
-//            
-//            System.out.println(testModel);
-//        }
-//        catch(Exception e) {
-//            fail(e.getMessage());
-//        }
-    }
     
     
     // Helper methods -------------------------------------------------
