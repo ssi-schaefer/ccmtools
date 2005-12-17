@@ -132,6 +132,7 @@ public class CcmtoolsTestCase extends TestCase
             fail("Can't copy file from [" + from + "] to [" + to + "]");
         }
     }
+    
 
     protected void runConfix(String args) throws CcmtoolsTestCaseException
     {

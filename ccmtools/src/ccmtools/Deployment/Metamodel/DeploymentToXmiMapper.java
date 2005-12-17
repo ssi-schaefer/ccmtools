@@ -44,7 +44,7 @@ public class DeploymentToXmiMapper
     
     public Document transformToDoc(ComponentPackageDescription in)
     {
-        Element xmi = new Element("XMI");
+        Element xmi = new Element("XMI", xmlnsXmi);
         xmi.setAttribute("version", "1.2", xmlnsXmi);
         xmi.addNamespaceDeclaration(xmlnsDeployment);
         xmi.addNamespaceDeclaration(xmlnsXmi);

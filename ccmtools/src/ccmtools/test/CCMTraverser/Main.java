@@ -8,7 +8,6 @@ import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
 
-
 public class Main
 {
 
