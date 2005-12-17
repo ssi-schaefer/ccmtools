@@ -83,13 +83,13 @@ public class IDL2Generator extends IDLGenerator
                         .getComponent());
             }
         }
-        // ----
         else if(variable.equals("BaseType")) {
             if(currentNode instanceof MComponentDef
-                    || currentNode instanceof MHomeDef) {
+                    || currentNode instanceof MHomeDef
+                    || currentNode instanceof MInterfaceDef) {
                 String base = joinBaseNames(", ");
                 if(base.length() > 0)
-                    return ", " + base;
+                    value = ": " + base;
             }
         }
         else {
@@ -114,8 +114,7 @@ public class IDL2Generator extends IDLGenerator
         Collections.reverse(base_namespace);
 
         scope.add(node.getIdentifier());
-        return "#include<" 
-        	+ join(Text.MANGLING_SEPARATOR, scope) + ".idl>";
+        return "#include<" + join(Text.MANGLING_SEPARATOR, scope) + ".idl>";
     }
 
     /***************************************************************************

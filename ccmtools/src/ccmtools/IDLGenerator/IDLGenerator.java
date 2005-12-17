@@ -367,8 +367,8 @@ abstract public class IDLGenerator extends CodeGenerator
     {
         if(data_type.equals("Members")) {
             List b = new ArrayList();
-            MEnumDef enum = (MEnumDef) currentNode;
-            for(Iterator i = enum.getMembers().iterator(); i.hasNext();)
+            MEnumDef enumDef = (MEnumDef) currentNode;
+            for(Iterator i = enumDef.getMembers().iterator(); i.hasNext();)
                 b.add((String) i.next());
             return join(", ", b);
         }

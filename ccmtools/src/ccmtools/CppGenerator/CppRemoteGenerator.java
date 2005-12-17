@@ -76,6 +76,14 @@ public class CppRemoteGenerator
     // Definition of arrays that determine the generator's behavior
     //====================================================================
 
+    // Shortcuts for code artifacts 
+    private static final String TAB = Text.TAB;
+    private static final String TAB2 = Text.tab(2);
+    private static final String TAB3 = Text.tab(3);
+    private static final String NL = Text.NL;
+    private static final String NL2 = Text.nl(2);
+    private static final String NL3 = Text.nl(3);
+    
     protected Map  corbaMappings;
    
     protected final String CORBA_CONVERTER_DIR = "corba_converter"; 
@@ -531,7 +539,7 @@ public class CppRemoteGenerator
      */
     protected String getLocalValue(String variable)
     {
-        logger.fine("getLocalValue(" + variable + ")");
+        logger.fine("getLocalValue(\"" + variable + "\")");
         
         // Get local value of CppGenerator 
         String value = super.getLocalValue(variable);
@@ -931,6 +939,46 @@ public class CppRemoteGenerator
         else if(dataType.equals("CCM_LocalType")) {
             dataValue = getCCM_LocalType(iface);
         }
+        else if(dataType.equals("AttributeBaseInterfaceAdapterFromCorbaHeader")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = false;
+            dataValue = getBaseInterfaceAttributesFromCorba(isImpl,iface,baseInterfaceList);
+        }
+        else if(dataType.equals("AttributeBaseInterfaceAdapterToCorbaHeader")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = false;
+            dataValue = getBaseInterfaceAttributesToCorba(isImpl,iface,baseInterfaceList);
+        }
+        else if(dataType.equals("AttributeBaseInterfaceAdapterFromCorbaImpl")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = true;
+            dataValue = getBaseInterfaceAttributesFromCorba(isImpl,iface,baseInterfaceList);
+        }
+        else if(dataType.equals("AttributeBaseInterfaceAdapterToCorbaImpl")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = true;
+            dataValue = getBaseInterfaceAttributesToCorba(isImpl,iface,baseInterfaceList);
+        }                
+        else if(dataType.equals("OperationBaseInterfaceAdapterFromCorbaHeader")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = false;
+            dataValue = getBaseInterfaceOperationsFromCorba(isImpl,iface,baseInterfaceList);
+        }
+        else if(dataType.equals("OperationBaseInterfaceAdapterToCorbaHeader")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = false;
+            dataValue = getBaseInterfaceOperationsToCorba(isImpl,iface,baseInterfaceList);
+        }
+        else if(dataType.equals("OperationBaseInterfaceAdapterFromCorbaImpl")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = true;
+            dataValue = getBaseInterfaceOperationsFromCorba(isImpl,iface,baseInterfaceList);
+        }
+        else if(dataType.equals("OperationBaseInterfaceAdapterToCorbaImpl")) {
+            List baseInterfaceList = iface.getBases();
+            boolean isImpl = true;
+            dataValue = getBaseInterfaceOperationsToCorba(isImpl,iface,baseInterfaceList);
+        }
         else {
             dataValue =  super.data_MInterfaceDef(dataType,dataValue);
         }
@@ -938,7 +986,7 @@ public class CppRemoteGenerator
         return dataValue;
     }
     
-    
+ 
     protected String data_MSupportsDef(String dataType, String dataValue)
     {
         logger.fine("enter data_MSupportsDef()");
@@ -1167,7 +1215,7 @@ public class CppRemoteGenerator
     public String getLanguageType(MTyped object)
     {
         logger.fine("getLanguageType(\"" + object + "\")");
-        
+                
         String base_type = getBaseIdlType(object);
 
         // override IDL array mapping from parent function.
@@ -1234,9 +1282,9 @@ public class CppRemoteGenerator
         logger.fine("getCORBALanguageType()");
         
         MIDLType idl_type = object.getIdlType();
+        String corba_type = "";        
         String base_type = getBaseIdlType(object);
-        String corba_type = "";
-
+                
         if (corbaMappings.containsKey(base_type)) {
             // Primitive data types are mapped via map.
             corba_type = (String) corbaMappings.get(base_type);
@@ -1251,7 +1299,9 @@ public class CppRemoteGenerator
                 corba_type = base_type;
             }
         }
-        else if (idl_type instanceof MTypedefDef) {
+        else if (idl_type instanceof MTypedefDef
+                || idl_type instanceof MInterfaceDef //!!!!!!!!!
+                ) {
             List scope = getScope((MContained) idl_type);
             if (scope.size() > 0) {
                 corba_type = Text.join("::", scope) + "::" + base_type;
@@ -1283,7 +1333,12 @@ public class CppRemoteGenerator
                 else if (idl_type instanceof MStringDef) {
                     suffix = "";
                 }
-
+                //!!!!!!!!
+                else if(idl_type instanceof MInterfaceDef) {
+                    prefix = "";
+                    suffix = "_ptr";
+                }
+                //!!!!!!!!
             }
             // OUT Parameter
             else if (direction == MParameterMode.PARAM_OUT) {
@@ -2266,18 +2321,25 @@ public class CppRemoteGenerator
             resultPrefix += "result = ";
         }
 
-        if(isPrimitiveType(idlType) || isComplexType(idlType)) {
+        if(isPrimitiveType(idlType) 
+                || isComplexType(idlType)) {
             resultPrefix += "localInterface->" + op.getIdentifier() + "(";
             for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
                 MParameterDef p = (MParameterDef) params.next();
- //               String base_type = (String) language_mappings.get((String) getBaseIdlType(p));
                 ret.add(" parameter_" + p.getIdentifier());
             }
             return resultPrefix + Text.join(", ", ret) + ");";
         }
+        //!!!!!!!!!!!!!
+        else if(idlType instanceof MInterfaceDef) {
+            return "// fixme: convertInterfaceMethodToCpp()";
+        }
+        //!!!!!!!!!
         else {
-            throw new RuntimeException("CppRemoteGeneratorImpl.convertMethodToCpp():"
-                    + "unhandled idl type " + idlType);
+            String msg = "CppRemoteGeneratorImpl.convertInterfaceMethodToCpp():"
+                + "unhandled idl type " + idlType;
+            logger.info(msg);
+            throw new RuntimeException(msg);
         }
     }
         
@@ -2416,7 +2478,8 @@ public class CppRemoteGenerator
         if(isPrimitiveType(idl_type)) {
             ret.add(convertPrimitiveResultFromCppToCorba(op));
         }
-        else if(idl_type instanceof MStructDef || idl_type instanceof MSequenceDef
+        else if(idl_type instanceof MStructDef 
+                || idl_type instanceof MSequenceDef
                 || idl_type instanceof MEnumDef) {
             ret.add(convertUserResultFromCppToCorba(op));
         }
@@ -2435,6 +2498,11 @@ public class CppRemoteGenerator
                         + ": Not supported alias type " + containedIdlType);
             }
         }
+        //!!!!!!!!!!!
+        else if(idl_type instanceof MInterfaceDef) {
+            ret.add("// fixme: convertResultToCorba()");
+        }
+        //!!!!!!!
         else {
             throw new RuntimeException("CppRemoteGeneratorImpl.convertResultToCorba()"
                     + ": Not supported type" + idl_type);
@@ -2610,6 +2678,11 @@ public class CppRemoteGenerator
                         + ": unhandled MAilasDef " + containedIdlType);
             }
         }
+        //!!!!!!!!!!!
+        else if(idlType instanceof MInterfaceDef) {
+            result = declareReceptacleCorbaInterfaceResult(op);
+        }
+        //!!!!!!!!!
         else {
             throw new RuntimeException("CppRemoteGenerator.declareReceptacleCorbaResult()"
                     + ": unhandled idlType " + idlType);
@@ -2643,6 +2716,23 @@ public class CppRemoteGenerator
         return buffer.toString();
     }
 
+    //!!!!!!!!!!!!!
+    protected String declareReceptacleCorbaInterfaceResult(MOperationDef op)
+    {
+        logger.fine("declareReceptacleCorbaUserResult()");
+        
+        MIDLType idlType = op.getIdlType();
+        MInterfaceDef iface = (MInterfaceDef)idlType;
+        //MTypedefDef typedef = (MTypedefDef) idlType;
+        //MContained contained = (MContained) typedef;
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(Text.tab(1));
+        buffer.append(getCorbaStubsNamespace((MContained)currentNode,"::"));
+        buffer.append(iface.getIdentifier());
+        buffer.append("_var result;");
+        return buffer.toString();
+    }
+    //!!!!!!!!!!!!!
     
     protected String convertInterfaceMethodToCorba(MOperationDef op)
     {
@@ -2802,6 +2892,11 @@ public class CppRemoteGenerator
                         + ": Not supported alias type " + containedIdlType);
             }
         }
+        //!!!!!!!!!!!!
+        else if(idlType instanceof MInterfaceDef) {
+            list.add("// fixme: convertReceptacleResultToCpp()");
+        }
+        //!!!!!!!!!!
         else {
             throw new RuntimeException("CppRemoteGeneratorImpl.convertReceptacleResultToCpp()"
                     + ": unhandled idl type " + idlType);
@@ -2920,6 +3015,321 @@ public class CppRemoteGenerator
     }
     
     
+    //!!!!!!!!!!!!!
+    protected String getBaseInterfaceOperationsFromCorba(boolean isImpl, 
+                                                MInterfaceDef iface,
+                                                List baseInterfaceList)
+    {
+        StringBuffer code = new StringBuffer();
+        for(Iterator i = baseInterfaceList.iterator(); i.hasNext();) {
+            MInterfaceDef baseIface = (MInterfaceDef) i.next();
+            List contentList = baseIface.getContentss();
+            for(Iterator j = contentList.iterator(); j.hasNext();) {
+                MContained contained = (MContained)j.next();    
+                if(contained instanceof MOperationDef) {
+                    MOperationDef op = (MOperationDef)contained;    
+                    if(isImpl) {
+                        // generate code for C++ impl file
+                        code.append(getAdapterOperationImplFromCorba(iface,op));
+                    }
+                    else { 
+                        // generate code for C++ header file 
+                        code.append(getAdapterOperationHeaderFromCorba(op));
+                    }
+                }
+            }
+            code.append(NL);
+        }
+        return code.toString();
+    }
+    
+    protected String getAdapterOperationHeaderFromCorba(MOperationDef op) 
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(TAB2).append("virtual").append(NL);
+        code.append(TAB2).append(getCORBALanguageType(op)).append(NL);
+        code.append(TAB2).append(op.getIdentifier()).append("(");
+        code.append(getCORBAOperationParams(op));
+        code.append(")").append(NL);
+        code.append(TAB3).append(getCORBAExcepts(op)).append(";").append(NL);
+        return code.toString();
+    }
+      
+    protected String getAdapterOperationImplFromCorba(MInterfaceDef iface, MOperationDef op)
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(getCORBALanguageType(op)).append(NL);
+        code.append(iface.getIdentifier());
+        code.append("AdapterFromCorba::").append(op.getIdentifier()).append("(");
+        code.append(getCORBAOperationParams(op)).append(")").append(NL);
+        code.append(TAB).append(getCORBAExcepts(op)).append(NL);
+        code.append("{").append(NL);
+        code.append(TAB).append("LDEBUGNL(CCM_REMOTE,\" ");
+        code.append(iface.getIdentifier());
+        code.append("AdapterFromCorba->");
+        code.append(op.getIdentifier()).append("()\");").append(NL);
+        code.append(getDebugOperationInParameter(op)).append(NL);
+        code.append(convertParameterToCpp(op)).append(NL);
+        code.append(declareCppResult(op)).append(NL);
+        code.append(TAB).append("try {").append(NL);
+        code.append(convertInterfaceMethodToCpp(op)).append(NL);
+        code.append(TAB).append("}").append(NL);
+        code.append(convertExceptionsToCorba(op)).append(NL);
+        code.append(TAB).append("catch(...) {").append(NL);
+        code.append(TAB2).append("LDEBUGNL(CCM_REMOTE, ");
+        code.append("\"exception CORBA::SystemException\");").append(NL);
+        code.append(TAB2).append("throw CORBA::SystemException();").append(NL);
+        code.append(TAB).append("}").append(NL);
+        code.append(convertParameterToCorba(op)).append(NL);
+        code.append(getDebugOperationOutParameter(op)).append(NL);
+        code.append(convertResultToCorba(op)).append(NL);
+        code.append("}").append(NL);
+        return code.toString();
+    }    
+    
+        
+    protected String getBaseInterfaceOperationsToCorba(boolean isImpl,
+                                                       MInterfaceDef iface,
+                                                       List baseInterfaceList)
+    {
+        StringBuffer code = new StringBuffer();
+        for(Iterator i = baseInterfaceList.iterator(); i.hasNext();) {
+            MInterfaceDef baseIface = (MInterfaceDef) i.next();
+            List contentList = baseIface.getContentss();
+            for(Iterator j = contentList.iterator(); j.hasNext();) {
+                MContained contained = (MContained) j.next();
+                if(contained instanceof MOperationDef) {
+                    MOperationDef op = (MOperationDef) contained;
+                    if(isImpl) {
+                        // generate code for C++ impl file
+                         code.append(getAdapterOperationImplToCorba(iface,op));
+                    }
+                    else {
+                        // generate code for C++ header file
+                        code.append(getAdapterOperationHeaderToCorba(op));
+                    }
+                }
+            }
+            code.append(NL);
+        }
+        return code.toString();
+    }
+    
+    protected String getAdapterOperationHeaderToCorba(MOperationDef op) 
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(TAB).append("virtual").append(NL);
+        code.append(TAB).append(getLanguageType(op)).append(NL);
+        code.append(TAB).append(op.getIdentifier()).append("(");
+        code.append(getOperationParams(op));
+        code.append(")").append(NL);
+        code.append(TAB2).append("throw(ccm::local::Components::CCMException ");
+        code.append(getOperationExcepts(op)).append(";").append(NL);
+        return code.toString();
+    }
+    
+        protected String getAdapterOperationImplToCorba(MInterfaceDef iface, MOperationDef op)
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(getLanguageType(op)).append(NL);
+        code.append(iface.getIdentifier());
+        code.append("AdapterToCorba::").append(op.getIdentifier()).append("(");
+        code.append(getOperationParams(op)).append(")").append(NL);
+        code.append(TAB).append("throw(ccm::local::Components::CCMException ");
+        code.append(getOperationExcepts(op)).append(NL);
+        code.append("{").append(NL);
+        code.append(TAB).append("LDEBUGNL(CCM_REMOTE,\" ");
+        code.append(iface.getIdentifier()).append("AdapterToCorba->").append(op.getIdentifier());
+        code.append("()\");").append(NL);
+        code.append(convertReceptacleParameterToCorba(op)).append(NL);
+        code.append(declareReceptacleCorbaResult(op)).append(NL);
+        code.append(TAB).append("try {").append(NL);
+        code.append(convertInterfaceMethodToCorba(op)).append(NL);
+        code.append(TAB).append("}").append(NL);
+        code.append(convertReceptacleExceptionsToCpp(op)).append(NL);
+        code.append(TAB).append("catch(const Components::NoConnection&) {").append(NL);
+        code.append(TAB2).append("throw ccm::local::Components::NoConnection();").append(NL);
+        code.append(TAB).append("}").append(NL);
+        code.append(TAB).append("catch(...) {").append(NL);
+        code.append(TAB2).append("throw ccm::local::Components::CCMException();").append(NL);
+        code.append(TAB).append("}").append(NL);
+        code.append(convertReceptacleParameterToCpp(op)).append(NL);
+        code.append(convertReceptacleResultToCpp(op)).append(NL);
+        code.append("}").append(NL);
+        return code.toString();
+    }    
+    
+   
+    protected String getBaseInterfaceAttributesFromCorba(boolean isImpl, 
+                                                MInterfaceDef iface,
+                                                List baseInterfaceList)
+    {
+        StringBuffer code = new StringBuffer();
+        for(Iterator i = baseInterfaceList.iterator(); i.hasNext();) {
+            MInterfaceDef baseIface = (MInterfaceDef) i.next();
+            List contentList = baseIface.getContentss();
+            for(Iterator j = contentList.iterator(); j.hasNext();) {
+                MContained contained = (MContained)j.next();    
+                if(contained instanceof MAttributeDef) {
+                    MAttributeDef attr = (MAttributeDef)contained;
+                    if(isImpl) {
+                        // generate code for C++ impl file
+                        code.append(getAdapterAttributeFromCorbaImpl(iface,attr));
+                    }
+                    else {
+                        // generate code for C++ header file 
+                        code.append(getAdapterAttributeFromCorbaHeader(attr));
+                    }
+                }
+            }
+            code.append(NL);
+        }
+        return code.toString();
+    }
+    
+    protected String getAdapterAttributeFromCorbaHeader(MAttributeDef attr) 
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(TAB).append("virtual ");
+        code.append(getCORBALanguageType(attr));
+        code.append(" ").append(attr.getIdentifier()).append("()").append(NL);
+        code.append(TAB2).append("throw(CORBA::SystemException);").append(NL2);
+
+        code.append(TAB).append("virtual ");
+        code.append("void ").append(attr.getIdentifier()).append("(const ");
+        code.append(getCORBALanguageType(attr)).append(" value)").append(NL);
+        code.append(TAB2).append("throw(CORBA::SystemException);").append(NL2);
+        return code.toString();
+    }
+        
+    protected String getAdapterAttributeFromCorbaImpl(MInterfaceDef iface, MAttributeDef attr) 
+    {
+        StringBuffer code = new StringBuffer();
+        // Getter method
+        code.append(getCORBALanguageType(attr)).append(NL);
+        code.append(iface.getIdentifier()).append("AdapterFromCorba::").append(attr.getIdentifier());
+        code.append("()").append(NL);
+        code.append(TAB).append("throw(CORBA::SystemException)").append(NL);
+        code.append("{").append(NL);
+        code.append(TAB).append("LDEBUGNL(CCM_REMOTE, \" ").append(iface.getIdentifier());
+        code.append("AdapterFromCorba->").append(attr.getIdentifier());
+        code.append("()\");").append(NL);
+        code.append(TAB).append(getLanguageType(attr)).append(" result;").append(NL);
+        code.append(TAB).append("result = localInterface->").append(attr.getIdentifier());
+        code.append("();").append(NL);
+        code.append(TAB).append(getCORBALanguageType(attr)).append(" return_value;").append(NL);
+        code.append(TAB).append("::ccm::remote::");
+        code.append("convertToCorba(result, return_value);").append(NL);
+        code.append(TAB).append("LDEBUGNL(CCM_REMOTE, \"get \" << ");
+        code.append("::ccm::remote::").append("ccmDebug(return_value));").append(NL);
+        code.append(TAB).append("return return_value;").append(NL);
+        code.append("}").append(NL2);
+
+        // Setter Method
+        code.append("void").append(NL);
+        code.append(iface.getIdentifier()).append("AdapterFromCorba::").append(attr.getIdentifier());
+        code.append("(const ").append(getCORBALanguageType(attr)).append(" value)").append(NL);
+        code.append(TAB).append("throw(CORBA::SystemException)").append(NL);
+        code.append("{").append(NL);
+        code.append(TAB).append("LDEBUGNL(CCM_REMOTE, \" ").append(iface.getIdentifier());
+        code.append("AdapterFromCorba->").append(attr.getIdentifier());
+        code.append("(value)\");").append(NL);
+        code.append(TAB).append("LDEBUGNL(CCM_REMOTE, \"set \" << ");
+        code.append("ccm::remote::").append("ccmDebug(value));").append(NL);
+        code.append(TAB).append(getLanguageType(attr)).append(" local_value;").append(NL);
+        code.append(TAB).append("::ccm::remote::");
+        code.append("convertFromCorba(value, local_value);").append(NL);
+        code.append(TAB).append("localInterface->");
+        code.append(attr.getIdentifier()).append("(local_value);").append(NL);
+        code.append("}").append(NL2);
+        return code.toString();
+    }    
+    
+        
+    protected String getBaseInterfaceAttributesToCorba(boolean isImpl, 
+                                                         MInterfaceDef iface,
+                                                         List baseInterfaceList)
+    {
+        StringBuffer code = new StringBuffer();
+        for(Iterator i = baseInterfaceList.iterator(); i.hasNext();) {
+            MInterfaceDef baseIface = (MInterfaceDef) i.next();
+            List contentList = baseIface.getContentss();
+            for(Iterator j = contentList.iterator(); j.hasNext();) {
+                MContained contained = (MContained) j.next();
+                if(contained instanceof MAttributeDef) {
+                    MAttributeDef attr = (MAttributeDef) contained;
+                    if(isImpl) {
+                        // generate code for C++ impl file
+                        code.append(getAdapterAttributeToCorbaImpl(iface,attr));
+                    }
+                    else {
+                        // generate code for C++ header file
+                        code.append(getAdapterAttributeToCorbaHeader(attr));
+                    }
+                }
+            }
+            code.append(NL);
+        }
+        return code.toString();
+    }
+        
+    protected String getAdapterAttributeToCorbaHeader(MAttributeDef attr) 
+    {
+        StringBuffer code = new StringBuffer();
+        code.append(TAB).append("virtual ");
+        code.append("const ").append(getLanguageType(attr));
+        code.append(" ").append(attr.getIdentifier()).append("() const").append(NL);
+        code.append(TAB2).append("throw(::ccm::local::Components::CCMException);");
+        code.append(NL2);
+        
+        code.append(TAB).append("virtual ");
+        code.append("void ").append(attr.getIdentifier()).append("(const ");
+        code.append(getLanguageType(attr)).append(" value)").append(NL);
+        code.append(TAB2).append("throw(::ccm::local::Components::CCMException);");
+        code.append(NL2);
+        return code.toString();
+    }
+    
+    protected String getAdapterAttributeToCorbaImpl(MInterfaceDef iface, MAttributeDef attr) 
+    {
+        StringBuffer code = new StringBuffer();
+        code.append("const ").append(getLanguageType(attr)).append(NL);
+        code.append(iface.getIdentifier()).append("AdapterToCorba::").append(attr.getIdentifier());
+        code.append("() const").append(NL);
+        code.append(TAB).append("throw(::ccm::local::Components::CCMException)").append(NL);
+        code.append("{").append(NL);
+        code.append(TAB).append("LDEBUGNL(CCM_REMOTE, \" ").append(iface.getIdentifier());
+        code.append("AdapterToCorba->").append(attr.getIdentifier());
+        code.append("()\");").append(NL);
+        code.append(TAB).append(getCORBALanguageType(attr)).append(" result;").append(NL);
+        code.append(TAB).append("result = remoteInterface->");
+        code.append(attr.getIdentifier()).append("();").append(NL);
+        code.append(TAB).append(getLanguageType(attr)).append(" return_value;").append(NL);
+        code.append(TAB).append("::ccm::remote::");
+        code.append("convertFromCorba(result, return_value);").append(NL);
+        code.append(TAB).append("return return_value;").append(NL);
+        code.append("}").append(NL2);
+        
+        code.append("void").append(NL);
+        code.append(iface.getIdentifier()).append("AdapterToCorba::").append(attr.getIdentifier());
+        code.append("(const ").append(getLanguageType(attr)).append(" value)").append(NL);
+        code.append(TAB).append("throw(::ccm::local::Components::CCMException)").append(NL);
+        code.append("{").append(NL);
+        code.append(TAB).append("LDEBUGNL(CCM_REMOTE, \" ").append(iface.getIdentifier());
+        code.append("AdapterToCorba->").append(attr.getIdentifier());
+        code.append("((value)\");").append(NL);
+        code.append(TAB).append(getCORBALanguageType(attr));
+        code.append(" remote_value;").append(NL);
+        code.append(TAB).append("::ccm::remote::");
+        code.append("convertToCorba(value, remote_value);").append(NL);
+        code.append(TAB).append("remoteInterface->").append(attr.getIdentifier());
+        code.append("(remote_value);").append(NL);
+        code.append("}").append(NL2);
+        return code.toString();
+    }    
+    
+    // !!!!!!!!!!!!!!
+    
        
     
     //====================================================================
@@ -2968,7 +3378,7 @@ public class CppRemoteGenerator
      */
     protected String convertMethodToCpp(MOperationDef op)
     {
-        logger.fine("convertMethodToCpp()");
+        logger.fine("convertMethodToCpp(\"" + op +"\")");
         
         List ret = new ArrayList();
         String resultPrefix;
@@ -2981,20 +3391,26 @@ public class CppRemoteGenerator
         else {
             resultPrefix = Text.tab(2) + "result = ";
         }
-
-        if(isPrimitiveType(idlType) || isComplexType(idlType)) {
+        if(isPrimitiveType(idlType) 
+                || isComplexType(idlType)) {
             resultPrefix += "local_adapter->" + op.getIdentifier() + "(";
             for(Iterator params = op.getParameters().iterator(); params.hasNext();) {
                 MParameterDef p = (MParameterDef) params.next();
- //               String base_type = (String) language_mappings.get((String) getBaseIdlType(p));
                 ret.add(" parameter_" + p.getIdentifier());
             }
             return resultPrefix + Text.join(", ", ret) + ");";
         }
-        else {
-            throw new RuntimeException("CppRemoteGeneratorImpl.convertMethodToCpp():"
-                    + "unhandled idl type " + idlType);
+        //!!!!!!!!!
+        else if(idlType instanceof MInterfaceDef) {
+            return "// fixme: convertMethodToCpp()";
         }
+        //!!!!!!!!
+        else {
+            String msg = "CppRemoteGeneratorImpl.convertMethodToCpp():"
+                + "unhandled idl type " + idlType;
+            logger.info(msg);
+            throw new RuntimeException(msg);
+        }        
     }
     
     
@@ -3141,7 +3557,8 @@ public class CppRemoteGenerator
     {
         if(type instanceof MStructDef 
                 || type instanceof MSequenceDef
-                || type instanceof MAliasDef) {
+                || type instanceof MAliasDef
+            ) {
             return true;
         }
         else {

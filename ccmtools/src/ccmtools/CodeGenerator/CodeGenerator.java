@@ -831,8 +831,15 @@ abstract public class CodeGenerator implements TemplateHandler
         else if(idl_type instanceof MTypedefDef) {
             type = ((MTypedefDef) idl_type).getIdentifier();
         }
+        //!!!!!!!!!
+        else if(idl_type instanceof MInterfaceDef) {
+            type = ((MInterfaceDef) idl_type).getIdentifier();
+        }
+        //!!!!!!!
         else {
-            throw new RuntimeException("unknown IDL type :" + idl_type);
+            String message = "Unknown IDL type :" + idl_type;
+            logger.info(message);
+            throw new RuntimeException(message);
         }
 
         logger.fine("leave getBaseIdlType()");

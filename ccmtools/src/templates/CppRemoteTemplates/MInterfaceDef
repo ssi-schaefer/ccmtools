@@ -38,7 +38,11 @@ namespace remote {
           WX::Utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> lif);
       virtual ~%(Identifier)sAdapterFromCorba();
 
+%(AttributeBaseInterfaceAdapterFromCorbaHeader)s
+
 %(MAttributeDefInterfaceAdapterFromCorbaHeader)s
+
+%(OperationBaseInterfaceAdapterFromCorbaHeader)s
 
 %(MOperationDefInterfaceAdapterFromCorbaHeader)s
   };
@@ -57,7 +61,11 @@ namespace remote {
       %(Identifier)sAdapterToCorba(%(StubsNamespace)s%(Identifier)s_ptr rif);
       virtual ~%(Identifier)sAdapterToCorba();
 
+%(AttributeBaseInterfaceAdapterToCorbaHeader)s
+
 %(MAttributeDefInterfaceAdapterToCorbaHeader)s
+
+%(OperationBaseInterfaceAdapterToCorbaHeader)s
 
 %(MOperationDefInterfaceAdapterToCorbaHeader)s
   };
@@ -109,8 +117,11 @@ namespace remote {
     // Smart pointer local_facet_adapter goes out of scope
 }
 
+%(AttributeBaseInterfaceAdapterFromCorbaImpl)s
 
 %(MAttributeDefInterfaceAdapterFromCorbaImpl)s
+
+%(OperationBaseInterfaceAdapterFromCorbaImpl)s
 
 %(MOperationDefInterfaceAdapterFromCorbaImpl)s
 
@@ -132,8 +143,11 @@ namespace remote {
     LDEBUGNL(CCM_CONTAINER, "-%(Identifier)sAdapterToCorba::~%(Identifier)sAdapterToCorba()");
 }
 
+%(AttributeBaseInterfaceAdapterToCorbaImpl)s
 
 %(MAttributeDefInterfaceAdapterToCorbaImpl)s
+
+%(OperationBaseInterfaceAdapterToCorbaImpl)s
 
 %(MOperationDefInterfaceAdapterToCorbaImpl)s
 
