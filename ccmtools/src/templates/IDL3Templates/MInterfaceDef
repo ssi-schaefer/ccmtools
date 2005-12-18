@@ -10,6 +10,7 @@
 interface %(Identifier)s
   %(BaseType)s
 {
+%(MConstantDef)s 
 %(MAttributeDef)s
 %(MOperationDef)s
 };

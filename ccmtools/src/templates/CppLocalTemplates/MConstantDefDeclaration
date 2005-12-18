@@ -1,0 +1,2 @@
+
+    static const %(LanguageType)s %(Identifier)s;

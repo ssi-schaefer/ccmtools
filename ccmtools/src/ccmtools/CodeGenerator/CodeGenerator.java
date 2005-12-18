@@ -360,6 +360,8 @@ abstract public class CodeGenerator implements TemplateHandler
     {
         logger.fine("enter startNode()");
         
+        //System.out.println(node); //!!!!!!!!
+        
         currentNode = node;
         current_name = scope_id;
         current_type = node.toString().split(":")[0];

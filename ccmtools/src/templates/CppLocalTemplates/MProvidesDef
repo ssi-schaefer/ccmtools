@@ -24,6 +24,7 @@ class %(Identifier)s_impl
     %(Identifier)s_impl(
         %(FullComponentType)s_impl* component_impl);
     virtual ~%(Identifier)s_impl();
+
 %(MAttributeProvidesPrototype)s
 %(MOperationProvidesPrototype)s
 };

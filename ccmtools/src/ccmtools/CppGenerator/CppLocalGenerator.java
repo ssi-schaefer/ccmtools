@@ -36,6 +36,7 @@ import ccmtools.CppGenerator.plugin.AnyPluginManager;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
+import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
@@ -332,6 +333,19 @@ public class CppLocalGenerator
             boolean isImpl = true;
             dataValue = getBaseInterfaceOperations(isImpl,iface,baseInterfaceList);
         }
+        //!!!!!!!!!!
+        else if(dataType.equals("MConstantDefImpl")) {
+            StringBuffer buffer = new StringBuffer();
+            for(Iterator i = iface.getContentss().iterator(); i.hasNext();) {
+                MContained contained = (MContained)i.next();
+                if(contained instanceof MConstantDef) {
+                    MConstantDef constant = (MConstantDef)contained;
+                    buffer.append(generateConstantImpl(iface,constant));                    
+                }
+            }
+            dataValue = buffer.toString();
+        }
+        //!!!!!!!!
         else {
             dataValue = super.data_MInterfaceDef(dataType, dataValue);
         }
@@ -339,6 +353,31 @@ public class CppLocalGenerator
         return dataValue;
     }
 
+    protected String generateConstantImpl(MInterfaceDef iface, MConstantDef constant)
+    {
+        if(constant == null) return "";
+
+        // TODO: Refactor to handle all types of constants
+        MIDLType idlType = constant.getIdlType();
+        Object valueObject = constant.getConstValue();
+        String type = "";
+        String value = "";
+        StringBuffer code = new StringBuffer();
+        code.append("const ");
+        if(idlType instanceof MStringDef) {
+            type = "std::string";
+            value = "\"" + (String)valueObject + "\"";
+        }
+        else if(idlType instanceof MPrimitiveDef) {
+            type = (String) language_mappings.get(((MPrimitiveDef)idlType).getKind().toString());
+            value = ((Integer)valueObject).toString();
+        }
+        code.append(" ").append(type).append(" ").append(iface.getIdentifier());
+        code.append(Text.SCOPE_SEPARATOR);
+        code.append(constant.getIdentifier()).append(" = ");
+        code.append(value).append(";\n");
+        return code.toString();
+    }
     
     //====================================================================
     // Code generator utility methods

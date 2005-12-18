@@ -28,6 +28,8 @@ class %(Identifier)s
   public:
     virtual ~%(Identifier)s() {}
 
+%(MConstantDefDeclaration)s 
+      
 %(MAttributeDefPrototypeVV)s
 
 %(MOperationDefPrototypeVV)s 
@@ -98,7 +100,7 @@ class %(Identifier)sAdapter
     {
         return validConnection_;
     }
-    
+   
 %(BaseInterfaceAdapterAttributeHeader)s
 
 %(MAttributeDefAdapterHeader)s
@@ -107,10 +109,6 @@ class %(Identifier)sAdapter
 %(BaseInterfaceAdapterOperationHeader)s
 
 %(MOperationDefAdapterHeader)s
-
-/*
-    WX::Utils::SmartPtr< ::ccm::local::Components::Object> get_component();
-*/
 
  protected:
     ::ccm::local::Components::Object* component_;
@@ -140,6 +138,12 @@ class %(Identifier)sAdapter
 
 using namespace std;
 using namespace WX::Utils;
+
+//==============================================================================
+// %(Identifier)s interface constants (implementation)
+//==============================================================================
+
+%(MConstantDefImpl)s 
  
 //==============================================================================
 // %(Identifier)s facet adapter (implementation)
