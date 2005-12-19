@@ -31,6 +31,7 @@ import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
@@ -39,7 +40,9 @@ import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
+import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
@@ -405,6 +408,20 @@ abstract public class IDLGenerator extends CodeGenerator
             return "supports "
                     + data_value.substring(0, data_value.length() - 2);
         }
+        //!!!!!!!!!!!
+        else if(data_type.equals("ConstantDefinition")) {
+            MInterfaceDef iface = (MInterfaceDef)currentNode;
+            StringBuffer buffer = new StringBuffer();
+            for(Iterator i = iface.getContentss().iterator(); i.hasNext();) {
+                MContained contained = (MContained)i.next();
+                if(contained instanceof MConstantDef) {
+                    MConstantDef constant = (MConstantDef)contained;
+                    buffer.append(generateConstantImpl(constant));                    
+                }
+            }
+            return buffer.toString();
+        }
+        //!!!!!!!!!
         return data_value;
     }
 
@@ -419,5 +436,34 @@ abstract public class IDLGenerator extends CodeGenerator
             return data_value.substring(0, data_value.length() - 2);
         return data_value;
     }
+    
+    //!!!!!!!!!!!!!!
+    protected String generateConstantImpl(MConstantDef constant)
+    {
+        if(constant == null) return "";
+
+//        const %(LanguageType)s %(Identifier)s = %(ConstValue)s;
+        
+        // TODO: Refactor to handle all types of constants
+        MIDLType idlType = constant.getIdlType();
+        Object valueObject = constant.getConstValue();
+        String type = "";
+        String value = "";
+        StringBuffer code = new StringBuffer();
+        code.append(Text.TAB).append("const ");
+        if(idlType instanceof MStringDef) {
+            type = "string";
+            value = "\"" + (String)valueObject + "\"";
+        }
+        else if(idlType instanceof MPrimitiveDef) {
+            type = (String) language_mappings.get(((MPrimitiveDef)idlType).getKind().toString());
+            value = ((Integer)valueObject).toString();
+        }
+        code.append(type).append(" ");
+        code.append(constant.getIdentifier()).append(" = ");
+        code.append(value).append(";\n");
+        return code.toString();
+    }
+    //!!!!!!!!!!!!!!!!!
 }
 

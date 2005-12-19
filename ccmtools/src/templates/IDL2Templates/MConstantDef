@@ -1,2 +1,0 @@
-
-    const %(LanguageType)s %(Identifier)s = %(ConstValue)s;

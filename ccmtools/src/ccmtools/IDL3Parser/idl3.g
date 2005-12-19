@@ -1437,7 +1437,7 @@ any_type returns [MIDLType any = null]
 // 68. <object_type> ::= "Object"
 object_type returns [MIDLType object = null]
 { object = new MPrimitiveDefImpl(); }
-    :   "object" { ((MPrimitiveDef) object).setKind(MPrimitiveKind.PK_OBJREF); } ;
+    :   "Object" { ((MPrimitiveDef) object).setKind(MPrimitiveKind.PK_OBJREF); } ;
 
 // 69. <struct_type> ::= "struct" <identifier> "{" <member_list,70> "}"
 struct_type returns [MIDLType struct = null]
