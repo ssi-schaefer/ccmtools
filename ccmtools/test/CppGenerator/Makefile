@@ -19,6 +19,7 @@ facet:
 	make -C facet_module_types test
 	make -C facet_rename test
 	make -C facet_types test
+	make -C facet_constants test
 
 receptacle:
 	make -C receptacle_attribute test
