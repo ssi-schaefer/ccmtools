@@ -55,7 +55,8 @@ public class TypesTest extends CcmtoolsTestCase
     // ------------------------------------------------------------------------
     // Attribute test cases
     // ------------------------------------------------------------------------
-
+    //    make -C attribute_types test
+    
     public void testAttributeTypes()
     {
         try {
@@ -70,7 +71,11 @@ public class TypesTest extends CcmtoolsTestCase
     // ------------------------------------------------------------------------
     // Supports test cases
     // ------------------------------------------------------------------------
-
+    //    make -C supports_attribute test
+    //    make -C supports_exception test
+    //    make -C supports_inheritance test
+    //    make -C supports_types test
+    
     public void testSupportsAttribute()
     {
         try {
@@ -115,7 +120,15 @@ public class TypesTest extends CcmtoolsTestCase
     // ------------------------------------------------------------------------
     // Facet test cases
     // ------------------------------------------------------------------------
-
+    //    make -C facet_attribute test
+    //    make -C facet_exception test
+    //    make -C facet_inheritance test
+    //    make -C facet_module_exception test
+    //    make -C facet_module_types test
+    //    make -C facet_rename test
+    //    make -C facet_types test
+    //    make -C facet_constants test
+    
     public void testFacetAttribute()
     {
         try {
@@ -186,11 +199,28 @@ public class TypesTest extends CcmtoolsTestCase
         }
     }
 
+    public void testFacetConstants()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_constants test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
     
     // ------------------------------------------------------------------------
     // Receptacle test cases
     // ------------------------------------------------------------------------
-
+    //    make -C receptacle_attribute test
+    //    make -C receptacle_exception test
+    //    make -C receptacle_inheritance test
+    //    make -C receptacle_multiple test
+    //    make -C receptacle_not_connected test
+    //    make -C receptacle_object test
+    //    make -C receptacle_types test
+    
     public void testReceptacleAttribute()
     {
         try {
@@ -265,6 +295,8 @@ public class TypesTest extends CcmtoolsTestCase
     // ------------------------------------------------------------------------
     // Home test cases
     // ------------------------------------------------------------------------
+    //    make -C home_exception test
+    //    make -C home_types test
     
     public void testHomeException()
     {
@@ -290,6 +322,7 @@ public class TypesTest extends CcmtoolsTestCase
     // ------------------------------------------------------------------------
     // Include test cases
     // ------------------------------------------------------------------------
+    //    make -C include_nested test
     
     public void testIncludeNested()
     {
@@ -305,7 +338,10 @@ public class TypesTest extends CcmtoolsTestCase
     // ------------------------------------------------------------------------
     // Module test cases
     // ------------------------------------------------------------------------
-
+    //    make -C module_mixed test
+    //    make -C module_nested test
+    //    make -C module_reopen test
+    
     public void testModuleMixed()
     {
         try {
@@ -340,6 +376,7 @@ public class TypesTest extends CcmtoolsTestCase
     // ------------------------------------------------------------------------
     // Assembly test cases
     // ------------------------------------------------------------------------
+    //    make -C assembly_nested test
     
     public void testAssemblyNested()
     {

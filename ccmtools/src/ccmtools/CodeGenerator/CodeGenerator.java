@@ -416,6 +416,8 @@ abstract public class CodeGenerator implements TemplateHandler
         current_variables = (Set) variables_stack.pop();
 
         uiDriver.outputVariables(output_variables);
+        
+        // update varibles that depend on this node
         updateVariables();
           
         // update the namespace if this is a module by removing the last item
@@ -476,141 +478,6 @@ abstract public class CodeGenerator implements TemplateHandler
         }
         
         logger.fine("leave handleNodeData()");
-    }
-
-    
-    
-
-    /** *********************************************************************** */
-
-    /**
-     * Return a boolean indicating the state of the given flag.
-     * 
-     * @return the value of the given flag.
-     */
-    public boolean getFlag(int flag)
-    {
-        return ((flags & flag) != 0);
-    }
-
-    /**
-     * Set the given flag.
-     * 
-     * @param flag
-     *            the flag to set.
-     */
-    public void setFlag(int flag)
-    {
-        flags |= flag;
-    }
-
-    /**
-     * Clear the given flag.
-     * 
-     * @param flag
-     *            the flag to clear.
-     */
-    public void clearFlag(int flag)
-    {
-        flags &= (int) ~flag;
-    }
-
-    /**
-     * Get the template manager responsible for handling this node handler's
-     * templates.
-     * 
-     * @return the current object's template manager.
-     */
-    public TemplateManager getTemplateManager()
-    {
-        return template_manager;
-    }
-
-    /** *********************************************************************** */
-
-    // abstract base class functionality. concrete derived classes must
-    // implement these functions.
-    /**
-     * Write generated code to an output file.
-     * 
-     * @param template
-     *            the template object to get the generated code structure from ;
-     *            variable values should come from the node handler object.
-     */
-    abstract protected void writeOutput(Template template) throws IOException;
-
-    /**
-     * Return the language type corresponding to the given object's IdlType.
-     * 
-     * @param object
-     *            the node object to use for type finding.
-     */
-    abstract public String getLanguageType(MTyped object);
-
-    /** *********************************************************************** */
-
-    // some helper functions ... trying to emulate python here :)
-
-    /**
-     * Join a collection of strings (a, b, c, ..., z) by combining each element
-     * with the given separator A. The resulting string will be of the form
-     * aAbAcA...Az.
-     * 
-     * @param sep
-     *            the string to use as a separator.
-     * @param parts
-     *            a collection of strings to join.
-     * @return a string containing the joined parts separated by the given
-     *         separator.
-     */
-    protected String join(String sep, Collection parts)
-    {
-        if(parts != null) {
-            if(parts.size() > 1) {
-                StringBuffer ret = new StringBuffer("");
-                for(Iterator i = parts.iterator(); i.hasNext();) {
-                    String part = (String) i.next();
-                    ret.append(part + sep);
-                }
-                ret = ret.reverse();
-                ret = new StringBuffer(ret.substring(sep.length()));
-                return ret.reverse().toString();
-            }
-
-            if(parts.size() == 1)
-                return "" + parts.iterator().next();
-        }
-
-        return new String("");
-    }
-
-    /**
-     * Slice a part of the given list. If start is negative, the function will
-     * return the part of the collection that includes all but the last "start"
-     * elements. Otherwise slice will return the subcollection that includes all
-     * but the first "start" elements.
-     * 
-     * @param parts
-     *            the source list to slice.
-     * @param start
-     *            the portion of the list to remove.
-     * @return a new sublist that includes only the desired sublist from the
-     *         original parts.
-     */
-    protected List slice(List parts, int start)
-    {
-        if(start == 0)
-            return parts;
-        if(parts == null)
-            return new ArrayList();
-        int size = parts.size();
-        if(size == 0)
-            return new ArrayList();
-        if((start >= size) || (start <= -size))
-            return new ArrayList();
-        if(start < 0)
-            return parts.subList(0, size + start);
-        return parts.subList(start, size);
     }
 
     
@@ -1250,11 +1117,13 @@ abstract public class CodeGenerator implements TemplateHandler
         for(Iterator i = variables.iterator(); i.hasNext();) {
             String var = (String) i.next();
             Object key = getScopeID(var);
-            Object value = getLocalValue(var);
+            
+            // handle variables in respect to their node types 
+            Object value = getLocalValue(var); 
 
             output_variables.put(key, value);
 
-            // TODO: use Java's Logging API	
+            // TODO: use Java's Logging API 
             //driver.message("subvariable " + key + " => " + value);
         }
         
@@ -1327,7 +1196,7 @@ abstract public class CodeGenerator implements TemplateHandler
             // current value.
 
             Object scope_id = name_stack.peek() 
-            	+ Text.SCOPE_SEPARATOR + var;
+                + Text.SCOPE_SEPARATOR + var;
             String prev_value = (String) output_variables.get(scope_id);
             String result = t.substituteVariables(output_variables);
 
@@ -1339,6 +1208,145 @@ abstract public class CodeGenerator implements TemplateHandler
         }
         logger.fine("leave updateVariables()");
     }
+
+    
+    /** *********************************************************************** */
+
+    // abstract base class functionality. concrete derived classes must
+    // implement these functions.
+    /**
+     * Write generated code to an output file.
+     * 
+     * @param template
+     *            the template object to get the generated code structure from ;
+     *            variable values should come from the node handler object.
+     */
+    abstract protected void writeOutput(Template template) throws IOException;
+
+    /**
+     * Return the language type corresponding to the given object's IdlType.
+     * 
+     * @param object
+     *            the node object to use for type finding.
+     */
+    abstract public String getLanguageType(MTyped object);
+
+    /** *********************************************************************** */
+
+    
+    
+    
+    // some helper functions ... trying to emulate python here :)
+
+    /** *********************************************************************** */
+
+    /**
+     * Return a boolean indicating the state of the given flag.
+     * 
+     * @return the value of the given flag.
+     */
+    public boolean getFlag(int flag)
+    {
+        return ((flags & flag) != 0);
+    }
+
+    /**
+     * Set the given flag.
+     * 
+     * @param flag
+     *            the flag to set.
+     */
+    public void setFlag(int flag)
+    {
+        flags |= flag;
+    }
+
+    /**
+     * Clear the given flag.
+     * 
+     * @param flag
+     *            the flag to clear.
+     */
+    public void clearFlag(int flag)
+    {
+        flags &= (int) ~flag;
+    }
+
+    /**
+     * Get the template manager responsible for handling this node handler's
+     * templates.
+     * 
+     * @return the current object's template manager.
+     */
+    public TemplateManager getTemplateManager()
+    {
+        return template_manager;
+    }
+
+    
+    /**
+     * Join a collection of strings (a, b, c, ..., z) by combining each element
+     * with the given separator A. The resulting string will be of the form
+     * aAbAcA...Az.
+     * 
+     * @param sep
+     *            the string to use as a separator.
+     * @param parts
+     *            a collection of strings to join.
+     * @return a string containing the joined parts separated by the given
+     *         separator.
+     */
+    protected String join(String sep, Collection parts)
+    {
+        if(parts != null) {
+            if(parts.size() > 1) {
+                StringBuffer ret = new StringBuffer("");
+                for(Iterator i = parts.iterator(); i.hasNext();) {
+                    String part = (String) i.next();
+                    ret.append(part + sep);
+                }
+                ret = ret.reverse();
+                ret = new StringBuffer(ret.substring(sep.length()));
+                return ret.reverse().toString();
+            }
+
+            if(parts.size() == 1)
+                return "" + parts.iterator().next();
+        }
+
+        return new String("");
+    }
+
+    /**
+     * Slice a part of the given list. If start is negative, the function will
+     * return the part of the collection that includes all but the last "start"
+     * elements. Otherwise slice will return the subcollection that includes all
+     * but the first "start" elements.
+     * 
+     * @param parts
+     *            the source list to slice.
+     * @param start
+     *            the portion of the list to remove.
+     * @return a new sublist that includes only the desired sublist from the
+     *         original parts.
+     */
+    protected List slice(List parts, int start)
+    {
+        if(start == 0)
+            return parts;
+        if(parts == null)
+            return new ArrayList();
+        int size = parts.size();
+        if(size == 0)
+            return new ArrayList();
+        if((start >= size) || (start <= -size))
+            return new ArrayList();
+        if(start < 0)
+            return parts.subList(0, size + start);
+        return parts.subList(start, size);
+    }
+
+    
 
     /**
      * This method reads a file, specified by a File object, and compares the

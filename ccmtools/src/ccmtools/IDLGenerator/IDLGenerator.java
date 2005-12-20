@@ -41,9 +41,11 @@ import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.Metamodel.ComponentIDL.MFinderDef;
@@ -330,7 +332,6 @@ abstract public class IDLGenerator extends CodeGenerator
         return base_type;
     }
 
-    /** *********************************************************************** */
 
     protected String data_MAliasDef(String data_type, String data_value)
     {
@@ -361,11 +362,13 @@ abstract public class IDLGenerator extends CodeGenerator
         return data_value;
     }
 
+    
     protected String data_MComponentDef(String data_type, String data_value)
     {
         return data_MInterfaceDef(data_type, data_value);
     }
 
+    
     protected String data_MEnumDef(String data_type, String data_value)
     {
         if(data_type.equals("Members")) {
@@ -378,16 +381,19 @@ abstract public class IDLGenerator extends CodeGenerator
         return data_value;
     }
 
+    
     protected String data_MFactoryDef(String data_type, String data_value)
     {
         return data_MOperationDef(data_type, data_value);
     }
 
+    
     protected String data_MFinderDef(String data_type, String data_value)
     {
         return data_MOperationDef(data_type, data_value);
     }
 
+    
     protected String data_MHomeDef(String data_type, String data_value)
     {
         if(data_type.equals("ComponentInclude")) {
@@ -396,6 +402,7 @@ abstract public class IDLGenerator extends CodeGenerator
         return data_MInterfaceDef(data_type, data_value);
     }
 
+    
     protected String data_MInterfaceDef(String data_type, String data_value)
     {
         if(data_type.equals("BaseType")) {
@@ -425,6 +432,7 @@ abstract public class IDLGenerator extends CodeGenerator
         return data_value;
     }
 
+    
     protected String data_MOperationDef(String data_type, String data_value)
     {
         MIDLType idl_type = ((MOperationDef) currentNode).getIdlType();
@@ -437,6 +445,7 @@ abstract public class IDLGenerator extends CodeGenerator
         return data_value;
     }
     
+    // Helper methods ----------------------------------------------------------
     //!!!!!!!!!!!!!!
     protected String generateConstantImpl(MConstantDef constant)
     {
@@ -447,23 +456,100 @@ abstract public class IDLGenerator extends CodeGenerator
         // TODO: Refactor to handle all types of constants
         MIDLType idlType = constant.getIdlType();
         Object valueObject = constant.getConstValue();
-        String type = "";
-        String value = "";
+        String type = generateConstantType(constant);
+        String value = generateConstantValue(constant);
         StringBuffer code = new StringBuffer();
         code.append(Text.TAB).append("const ");
-        if(idlType instanceof MStringDef) {
-            type = "string";
-            value = "\"" + (String)valueObject + "\"";
-        }
-        else if(idlType instanceof MPrimitiveDef) {
-            type = (String) language_mappings.get(((MPrimitiveDef)idlType).getKind().toString());
-            value = ((Integer)valueObject).toString();
-        }
+//        if(idlType instanceof MStringDef) {
+//            type = "string";
+//            value = "\"" + (String)valueObject + "\"";
+//        }
+//        else if(idlType instanceof MPrimitiveDef) {
+//            type = (String) language_mappings.get(((MPrimitiveDef)idlType).getKind().toString());
+//            value = ((Integer)valueObject).toString();
+//        }
         code.append(type).append(" ");
         code.append(constant.getIdentifier()).append(" = ");
         code.append(value).append(";\n");
         return code.toString();
     }
+    
+    protected String generateConstantType(MConstantDef constant)
+    {
+        MIDLType idlType = constant.getIdlType();
+        String type;
+        if(idlType instanceof MStringDef) {
+            type = "string";
+        }
+        else if(idlType instanceof MWstringDef) {
+            type = "wstring";
+        }
+        else if(idlType instanceof MPrimitiveDef) {
+            type = (String) language_mappings.get(((MPrimitiveDef)idlType).getKind().toString());
+        }
+        else {
+            throw new RuntimeException("IDLGenerator." +
+                    "generateConstantValue(): Unhandled constant type!");
+        }        
+        return type;
+    }
+    
+    protected String generateConstantValue(MConstantDef constant)
+    {
+        MIDLType idlType = constant.getIdlType();
+        Object valueObject = constant.getConstValue();
+        String value;
+        try { 
+            if(idlType instanceof MStringDef 
+                    || idlType instanceof MWstringDef) {
+                value = "\"" + (String) valueObject + "\"";
+            }
+            else if(idlType instanceof MPrimitiveDef) {
+                MPrimitiveDef primitive = (MPrimitiveDef) idlType;
+                if(primitive.getKind() == MPrimitiveKind.PK_OCTET
+                        || primitive.getKind() == MPrimitiveKind.PK_SHORT
+                        || primitive.getKind() == MPrimitiveKind.PK_USHORT) {
+                    value = ((Integer) valueObject).toString();
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_BOOLEAN) {
+                    if(((Boolean)valueObject).booleanValue()) 
+                        value = "TRUE";
+                    else 
+                        value = "FALSE";
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_LONG
+                        || primitive.getKind() == MPrimitiveKind.PK_ULONG
+                        || primitive.getKind() == MPrimitiveKind.PK_LONGLONG
+                        || primitive.getKind() == MPrimitiveKind.PK_ULONGLONG) {
+                    value = ((Long) valueObject).toString();
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_CHAR) {
+                    value = (String) valueObject;
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_FLOAT) {
+                    value = ((Float) valueObject).toString();
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_DOUBLE) {
+                    value = ((Double) valueObject).toString();
+                }
+                else {
+                    throw new RuntimeException("IDLGenerator."
+                            + "generateConstantValue(): Unhandled IDL type!");
+                }
+            }
+            else {
+                throw new RuntimeException("IDLGenerator."
+                        + "generateConstantValue(): Unhandled constant value!");
+            }
+        }
+        catch(Exception e) {
+            throw new RuntimeException("CppLocalGenerator." +
+                                       "generateConstantValue():" +
+                                       e.getMessage());
+        }
+        return value;
+    }
+    
     //!!!!!!!!!!!!!!!!!
 }
 

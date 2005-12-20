@@ -963,28 +963,44 @@ const_dcl returns [MConstantDef constant = null]
         {
             if (type instanceof MPrimitiveDef) {
                 MPrimitiveDef ptype = (MPrimitiveDef) type;
-                if (ptype.getKind() == MPrimitiveKind.PK_LONG) {
+                if (ptype.getKind() == MPrimitiveKind.PK_OCTET) {
                     constant.setConstValue(new Integer(expr));
-                } else if (ptype.getKind() == MPrimitiveKind.PK_SHORT) {
-                    constant.setConstValue(new Integer(expr));
-                } else if (ptype.getKind() == MPrimitiveKind.PK_ULONG) {
-                    constant.setConstValue(new Integer(expr));
-                } else if(ptype.getKind() == MPrimitiveKind.PK_USHORT) {
-                    constant.setConstValue(new Integer(expr));
-                } else if (ptype.getKind() == MPrimitiveKind.PK_BOOLEAN) {
+                } 
+                else if (ptype.getKind() == MPrimitiveKind.PK_BOOLEAN) {
                     constant.setConstValue(new Boolean(expr));
-                } else if (ptype.getKind() == MPrimitiveKind.PK_LONG) {
+                } 
+                else if (ptype.getKind() == MPrimitiveKind.PK_SHORT) {
+                    constant.setConstValue(new Integer(expr));
+                } 
+                else if(ptype.getKind() == MPrimitiveKind.PK_USHORT) {
+                    constant.setConstValue(new Integer(expr));
+                } 
+                else if (ptype.getKind() == MPrimitiveKind.PK_LONG) {
                     constant.setConstValue(new Long(expr));
-                } else if (ptype.getKind() == MPrimitiveKind.PK_LONGLONG) {
+                } 
+                else if (ptype.getKind() == MPrimitiveKind.PK_ULONG) {
                     constant.setConstValue(new Long(expr));
-                } else if (ptype.getKind() == MPrimitiveKind.PK_ULONGLONG) {
+                } 
+                else if (ptype.getKind() == MPrimitiveKind.PK_LONGLONG) {
                     constant.setConstValue(new Long(expr));
-                } else if (ptype.getKind() == MPrimitiveKind.PK_CHAR) {
+                } 
+                else if (ptype.getKind() == MPrimitiveKind.PK_ULONGLONG) {
+                    constant.setConstValue(new Long(expr));
+                } 
+                else if (ptype.getKind() == MPrimitiveKind.PK_CHAR) {
                     constant.setConstValue(expr);
                 }
-            } else if (type instanceof MStringDef) {
+                else if (ptype.getKind() == MPrimitiveKind.PK_FLOAT) {
+                    constant.setConstValue(new Float(expr));
+                }
+                else if (ptype.getKind() == MPrimitiveKind.PK_DOUBLE) {
+                    constant.setConstValue(new Double(expr));
+                }
+            } 
+            else if (type instanceof MStringDef) {
                 constant.setConstValue(expr);
-            } else if (type instanceof MWstringDef) {
+            } 
+            else if (type instanceof MWstringDef) {
                 constant.setConstValue(expr);
             }
         } ;

@@ -39,6 +39,7 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
+import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
@@ -229,6 +230,7 @@ abstract public class CppGenerator extends CodeGenerator
         else if(currentNode instanceof MAliasDef) {
             return data_MAliasDef(variable, value);
         }
+
         return value;
     }
 
@@ -651,6 +653,7 @@ abstract public class CppGenerator extends CodeGenerator
         return data_value;
     }
 
+    
     
     //====================================================================
     // C++ type and namespace helper methods

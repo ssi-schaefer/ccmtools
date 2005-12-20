@@ -47,6 +47,7 @@ import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
@@ -184,6 +185,12 @@ public class CppLocalGenerator
         else if (currentNode instanceof MFieldDef) {
             return data_MFieldDef(variable, value);
         }
+        //!!!!!!!!!!!
+        else if(currentNode instanceof MConstantDef) {
+            return data_MConstantDef(variable, value);
+        }
+        //!!!!!!!!
+        
         return value;
     }
             
@@ -256,6 +263,7 @@ public class CppLocalGenerator
         logger.fine("leave data_MEnumDef()");
         return dataValue;
     }
+    
     
     protected String data_MAttributeDef(String dataType, String dataValue)
     {
@@ -334,7 +342,9 @@ public class CppLocalGenerator
             dataValue = getBaseInterfaceOperations(isImpl,iface,baseInterfaceList);
         }
         //!!!!!!!!!!
-        else if(dataType.equals("MConstantDefImpl")) {
+        else if(dataType.equals("ConstantImplementation")) {
+            // we handle the constant impl here because we need the interface
+            // identifier to generate the class implementation code
             StringBuffer buffer = new StringBuffer();
             for(Iterator i = iface.getContentss().iterator(); i.hasNext();) {
                 MContained contained = (MContained)i.next();
@@ -353,31 +363,119 @@ public class CppLocalGenerator
         return dataValue;
     }
 
+    
+    protected String data_MConstantDef(String dataType, String dataValue)
+    {
+        MConstantDef constant = (MConstantDef) currentNode;
+        
+//        System.out.println("CCCCCC> " + constant);
+        
+        return dataValue;
+    }
+    
+
     protected String generateConstantImpl(MInterfaceDef iface, MConstantDef constant)
     {
         if(constant == null) return "";
 
-        // TODO: Refactor to handle all types of constants
-        MIDLType idlType = constant.getIdlType();
-        Object valueObject = constant.getConstValue();
-        String type = "";
-        String value = "";
         StringBuffer code = new StringBuffer();
-        code.append("const ");
-        if(idlType instanceof MStringDef) {
-            type = "std::string";
-            value = "\"" + (String)valueObject + "\"";
-        }
-        else if(idlType instanceof MPrimitiveDef) {
-            type = (String) language_mappings.get(((MPrimitiveDef)idlType).getKind().toString());
-            value = ((Integer)valueObject).toString();
-        }
+        String type = generateConstantType(constant);
+        String value = generateConstantValue(constant);
+        code.append("const ");        
         code.append(" ").append(type).append(" ").append(iface.getIdentifier());
         code.append(Text.SCOPE_SEPARATOR);
         code.append(constant.getIdentifier()).append(" = ");
         code.append(value).append(";\n");
         return code.toString();
     }
+    
+    protected String generateConstantType(MConstantDef constant)
+    {
+        MIDLType idlType = constant.getIdlType();
+        String type;
+        if(idlType instanceof MStringDef) {
+            type = "std::string";
+        }
+        else if(idlType instanceof MWstringDef) {
+            type = "std::wstring";
+        }
+        else if(idlType instanceof MPrimitiveDef) {
+            type = (String) language_mappings.get(((MPrimitiveDef)idlType).getKind().toString());
+        }
+        else {
+            throw new RuntimeException("generateConstantValue(): Unhandled constant type!");
+        }        
+        return type;
+    }
+
+    
+//    const CORBA::Boolean Constants::BOOLEAN_CONST = TRUE;
+//    const CORBA::Octet Constants::OCTET_CONST = 255;
+//    const CORBA::Short Constants::SHORT_CONST = 3;
+//    const CORBA::UShort Constants::USHORT_CONST = 7;
+//    const CORBA::Long Constants::LONG_CONST = -7777L;
+//    const CORBA::ULong Constants::ULONG_CONST = 7777UL;
+//    const CORBA::Char Constants::CHAR_CONST = 'c';
+//    const char* const Constants::STRING_CONST = "1234567890";
+//    const CORBA::Float Constants::FLOAT_CONST = 3.14;
+//    const CORBA::Double Constants::DOUBLE_CONST = 6.28318;
+    protected String generateConstantValue(MConstantDef constant)
+    {
+        MIDLType idlType = constant.getIdlType();
+        Object valueObject = constant.getConstValue();
+        String value;
+        try { 
+            if(idlType instanceof MStringDef 
+                    || idlType instanceof MWstringDef) {
+                value = "\"" + (String) valueObject + "\"";
+            }
+            else if(idlType instanceof MPrimitiveDef) {
+                MPrimitiveDef primitive = (MPrimitiveDef) idlType;
+                if(primitive.getKind() == MPrimitiveKind.PK_OCTET
+                        || primitive.getKind() == MPrimitiveKind.PK_SHORT
+                        || primitive.getKind() == MPrimitiveKind.PK_USHORT) {
+                    value = ((Integer) valueObject).toString();
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_BOOLEAN) {
+                    value = ((Boolean) valueObject).toString();
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_LONG
+                        || primitive.getKind() == MPrimitiveKind.PK_ULONG
+                        || primitive.getKind() == MPrimitiveKind.PK_LONGLONG
+                        || primitive.getKind() == MPrimitiveKind.PK_ULONGLONG) {
+                    value = ((Long) valueObject).toString();
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_CHAR) {
+                    value = (String) valueObject;
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_FLOAT) {
+                    value = ((Float) valueObject).toString();
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_DOUBLE) {
+                    value = ((Double) valueObject).toString();
+                }
+                else {
+                    throw new RuntimeException("CppLocalGenerator."
+                            + "generateConstantValue(): Unhandled IDL type!");
+                }
+            }
+            else {
+                throw new RuntimeException("CppLocalGenerator."
+                        + "generateConstantValue(): Unhandled constant value!");
+            }
+        }
+        catch(Exception e) {
+            throw new RuntimeException("CppLocalGenerator." +
+                                       "generateConstantValue():" +
+                                       e.getMessage());
+        }
+        return value;
+    }
+    
+
+    
+    
+    
     
     //====================================================================
     // Code generator utility methods

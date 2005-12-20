@@ -1,5 +1,6 @@
 package ccmtools.test.CppLocalGenerator;
 
+import ccmtools.UI.Main;
 import ccmtools.test.CcmtoolsTestCase;
 
 /**
@@ -28,9 +29,14 @@ public class DebugTest extends CcmtoolsTestCase
      * that using the same Makefile for C++ debugging and Java unit tests
      * reduces development time significantly - as long as you work with Linux...
      */
-    public void testFacetException()
+    public void testDebug()
     {
         try {
+            String[] args = {
+                    ""
+            };
+                
+            Main.main(args);
             executeCommandLine("make -C " + testDir + "/facet_exception test");
         }
         catch(Exception e) {

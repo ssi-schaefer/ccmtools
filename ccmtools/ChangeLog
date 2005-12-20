@@ -1,5 +1,10 @@
 RELEASE-0.5
 ============================================================================
+o) Deployment metamodel library
+o) Mapper Deployment model <=> XMI 2.1
+o) A command line user interface for the Component Deployment Descriptor
+   generator.
+o) Component Deployment Descriptor (CDD) generator   	 
 
 RELEASE-0.5.4
 ----------------------------------------------------------------------------
@@ -7,6 +12,19 @@ RELEASE-0.5.4
    for provided interfaces (the namespace of the MProvidesDef object is
    used instead of the interface namespace).
 
+*) Bugfix: Interface constants
+   There can not be constants (of simple types like string) within 
+   interfaces.
+   
+*) Bugfix: Unknoen type Object
+	The IDL3 parset does not accept the IDL base Interface Object as
+	a parameter or result type.
+	
+*) Bugfix: Inheritance for remote Adapter
+	The remote adapters don't support inheritance, thus, if we generate
+	remote adapters for derived IDL interfaces, the methods and attributes	
+	of the base interface are not supported.
+		   
 
 New release management!!!!
 ============================================================================

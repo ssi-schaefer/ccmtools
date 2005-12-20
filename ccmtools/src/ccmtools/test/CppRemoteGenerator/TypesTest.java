@@ -118,7 +118,8 @@ public class TypesTest extends CcmtoolsTestCase
     //    make -C facet_module_exception test
     //    make -C facet_types test
     //    make -C facet_module_types test
-    
+    //    make -C facet_constants test
+
     public void testFacetException()
     {
         try {
@@ -158,7 +159,16 @@ public class TypesTest extends CcmtoolsTestCase
             fail();
         }
     }
-    
+        
+    public void testFacetConstants()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_constants test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
     
     // ------------------------------------------------------------------------
     // Receptacle test cases
