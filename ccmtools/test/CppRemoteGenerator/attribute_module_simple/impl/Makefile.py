@@ -1,2 +1,2 @@
-PACKAGE_NAME('attribute_module_simple')
-PACKAGE_VERSION('0.0.0')
+PACKAGE_NAME('remote_attribute_module_simple')
+PACKAGE_VERSION('1.0.0')

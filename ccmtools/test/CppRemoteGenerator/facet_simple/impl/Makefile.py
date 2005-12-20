@@ -1,2 +1,2 @@
-PACKAGE_NAME('facet_simple')
-PACKAGE_VERSION('0.0.0')
+PACKAGE_NAME('remote_facet_simple')
+PACKAGE_VERSION('1.0.0')

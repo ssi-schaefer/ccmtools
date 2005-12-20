@@ -1,2 +1,2 @@
-PACKAGE_NAME('supports_module_types')
-PACKAGE_VERSION('0.0.0')
+PACKAGE_NAME('remote_supports_module_types')
+PACKAGE_VERSION('1.0.0')

@@ -1,2 +1,2 @@
-PACKAGE_NAME('receptacle_types')
-PACKAGE_VERSION('0.0.0')
+PACKAGE_NAME('remote_receptacle_types')
+PACKAGE_VERSION('1.0.0')
