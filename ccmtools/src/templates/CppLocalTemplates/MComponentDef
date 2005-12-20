@@ -42,16 +42,6 @@ class %(Identifier)s
       %(MSupportsDefBase)s
       %(BaseType)s 	
 {
-  protected:
-    %(HomeType)s* home_local_adapter;
-    CCM_%(Identifier)s* local_component;
-    CCM_%(Identifier)s_Context* context;
-    WX::Utils::SmartPtr< ::ccm::local::Components::Assembly> assembly;
-    bool ValidConnection;
-
-%(MProvidesDefAdapterVariable)s
-%(MUsesDefAdapterVariable)s
-
   public:
     %(Identifier)s();
     %(Identifier)s(%(HomeType)s* h, 
@@ -97,6 +87,19 @@ class %(Identifier)s
 
     void remove()
         throw(::ccm::local::Components::RemoveFailure);
+ 
+   protected:
+    %(HomeType)s* home_local_adapter;
+    CCM_%(Identifier)s* local_component;
+    CCM_%(Identifier)s_Context* context;
+    WX::Utils::SmartPtr< ::ccm::local::Components::Assembly> assembly;
+    bool ValidConnection;
+
+%(MProvidesDefAdapterVariable)s
+%(MUsesDefAdapterVariable)s
+        
+  private:
+    void operator=(const %(Identifier)s&);
 };
 
 
@@ -107,9 +110,6 @@ class %(Identifier)s
 class CCM_%(Identifier)s_Context_impl
     : public CCM_%(Identifier)s_Context
 {
-  private:
-    %(Identifier)s* component_local_adapter;
-
   public:
     CCM_%(Identifier)s_Context_impl(%(Identifier)s* c);
     virtual ~CCM_%(Identifier)s_Context_impl();
@@ -122,6 +122,12 @@ class CCM_%(Identifier)s_Context_impl
     // SessionContext function	
     ::ccm::local::Components::Object* get_CCM_object()
         throw(::ccm::local::Components::IllegalState);
+
+  protected:
+    %(Identifier)s* component_local_adapter;
+        
+  private:
+    void operator=(const CCM_%(Identifier)s_Context_impl&);
 };
 
 %(CloseNamespace)s
@@ -168,7 +174,7 @@ using namespace WX::Utils;
 
 %(Identifier)s::%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s()");
     home_local_adapter = NULL;
     local_component = NULL;
     context = NULL;
@@ -186,7 +192,7 @@ using namespace WX::Utils;
     local_component(lc), 
     assembly(a)
 {
-    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s()");
     context = NULL; 
     ValidConnection = true;
 %(MProvidesDefAdapterVariableInit)s
@@ -195,7 +201,7 @@ using namespace WX::Utils;
 
 %(Identifier)s::~%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER,"-%(Identifier)s::~%(Identifier)s()");
+    LDEBUGNL(CCM_CONTAINER,"~%(Identifier)s()");
     delete context;
     delete local_component;
     %(MProvidesDefAdapterVariableDestroy)s
@@ -375,7 +381,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 //==============================================================================
 
 class CCM_%(Identifier)s
-    : public ::ccm::local::Components::SessionComponent%(BaseType)s%(MSupportsDefBase)s
+    : virtual public ::ccm::local::Components::SessionComponent%(BaseType)s%(MSupportsDefBase)s
 {
   public:
 %(MAttributeDefPrototypeVV)s
@@ -391,7 +397,7 @@ class CCM_%(Identifier)s
 %(MUsesDefConnectionMap)s
 
 class CCM_%(Identifier)s_Context
-    : public ::ccm::local::Components::SessionContext
+    : virtual public ::ccm::local::Components::SessionContext
 {
   public:
 %(MUsesDefGetConnectionPrototypeVV)s
@@ -541,6 +547,4 @@ CCM_%(Identifier)s_impl::ccm_remove()
 %(MProvidesDefGetFacetDefinition)s
 
 %(CloseNamespace)s
-
-
 
