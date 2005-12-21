@@ -139,12 +139,12 @@ int main (int argc, char *argv[])
       CORBA::Float float_value = -77.77;
       myTest->float_value(float_value);
       CORBA::Float float_result = myTest->float_value();
-      assert(float_result == float_value);
+      assert(abs(float_result - float_value) < 0.001);
       
       CORBA::Double double_value = -77.7777;
       myTest->double_value(double_value);
       CORBA::Double double_result = myTest->double_value();
-      assert(double_result == double_value);
+      assert(abs(double_result - double_value) < 0.000001);
       
       CORBA::Char char_value = 'x';
       myTest->char_value(char_value);
@@ -310,12 +310,12 @@ int main (int argc, char *argv[])
       CORBA::Float float_value = -77.77;
       inBasicType->float_value(float_value);
       CORBA::Float float_result = inBasicType->float_value();
-      assert(float_result == float_value);
+      assert(abs(float_result - float_value) < 0.001);
       
       CORBA::Double double_value = -77.7777;
       inBasicType->double_value(double_value);
       CORBA::Double double_result = inBasicType->double_value();
-      assert(double_result == double_value);
+      assert(abs(double_result - double_value) < 0.000001);
       
       CORBA::Char char_value = 'x';
       inBasicType->char_value(char_value);

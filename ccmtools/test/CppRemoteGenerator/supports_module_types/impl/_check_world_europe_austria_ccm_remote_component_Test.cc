@@ -159,17 +159,17 @@ int main (int argc, char *argv[])
       {
         CORBA::Float float_2=3.0, float_3, float_r;
         float_r = myTest->fb5(7.0,float_2, float_3);
-        assert(float_2 == 7.0);
-        assert(float_3 == 3.0);
-        assert(float_r == 3.0+7.0);
+        assert(abs(float_2 - 7.0) < 0.001);
+        assert(abs(float_3 - 3.0) < 0.001);
+        assert(abs(float_r - (3.0+7.0)) < 0.001);
       }
 
       {
         CORBA::Double double_2=3.0, double_3, double_r;
         double_r = myTest->fb6(7.0,double_2, double_3);
-        assert(double_2 == 7.0);
-        assert(double_3 == 3.0);
-        assert(double_r == 3.0+7.0);
+        assert(abs(double_2 - 7.0) < 0.000001);
+        assert(abs(double_3 - 3.0) < 0.000001);
+        assert(abs(double_r - (3.0+7.0)) < 0.000001);
       }
 
       {

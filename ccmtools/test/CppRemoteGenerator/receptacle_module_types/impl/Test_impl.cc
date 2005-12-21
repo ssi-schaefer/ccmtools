@@ -118,17 +118,17 @@ CCM_Test_impl::ccm_activate()
     {
       float float_2=3.0, float_3, float_r;
       float_r = out->f5(7.0,float_2, float_3);
-      assert(float_2 == 7.0);
-      assert(float_3 == 3.0);
-      assert(float_r == 3.0+7.0);
+      assert(abs(float_2 - 7.0) < 0.001);
+      assert(abs(float_3 - 3.0) < 0.001);
+      assert(abs(float_r - (3.0+7.0)) < 0.001);
     }
     
     {
       double double_2=3.0, double_3, double_r;
       double_r = out->f6(7.0,double_2, double_3);
-      assert(double_2 == 7.0);
-      assert(double_3 == 3.0);
-      assert(double_r == 3.0+7.0);
+      assert(abs(double_2 - 7.0) < 0.000001);
+      assert(abs(double_3 - 3.0) < 0.000001);
+      assert(abs(double_r - (3.0+7.0)) < 0.000001);
     }
     
     {
