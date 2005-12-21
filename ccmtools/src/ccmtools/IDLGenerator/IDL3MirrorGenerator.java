@@ -32,6 +32,7 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Code;
 
 import java.io.File;
 import java.io.IOException;
@@ -163,10 +164,11 @@ public class IDL3MirrorGenerator extends IDLGenerator
                     dir += File.separator + join(File.separator, namespaceStack)
                             + File.separator;
                 }
-                name = ((MContained) currentNode).getIdentifier()
-                        + "_mirror.idl";
+                name = ((MContained) currentNode).getIdentifier() + "_mirror.idl";
 
-                String prettyCode = prettifyCode(code);
+                // try to prittify generated code (eliminate empty lines etc).
+                String prettyCode = Code.prettifySourceCode(code);
+                
                 File outFile = new File(output_dir + File.separator + dir, name);
                 if(isCodeEqualWithFile(prettyCode, outFile)) {
                     System.out.println("skipping " + outFile);

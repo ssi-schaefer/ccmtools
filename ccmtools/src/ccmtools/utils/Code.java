@@ -108,7 +108,7 @@ public class Code
      *            A string containing generated code that should be prettified.
      * @return A string containing a prittified version of a given source code.
      */
-    public static String prettify(String code)
+    public static String prettifySourceCode(String code)
     {
         StringBuffer pretty_code = new StringBuffer();
         Set include_set = new HashSet();
@@ -163,7 +163,6 @@ public class Code
      */
     public static boolean compareWithFile(String code, File file) throws IOException
     {
-        boolean result;
         if(file.isFile()) {
             StringBuffer buffer = new StringBuffer();
             FileInputStream stream = new FileInputStream(file);

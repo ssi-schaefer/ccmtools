@@ -51,6 +51,7 @@ import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.Metamodel.ComponentIDL.MFinderDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
 abstract public class IDLGenerator extends CodeGenerator
@@ -156,26 +157,29 @@ abstract public class IDLGenerator extends CodeGenerator
      */
     protected void writeOutput(Template template)
     {
-        String[] pieces = template.substituteVariables(output_variables)
-                .split("\n");
-
+//        String[] pieces = template.substituteVariables(output_variables).split("\n");
+        String code = template.substituteVariables(output_variables);
+        
         List code_pieces = new ArrayList();
-        for(int i = 0; i < pieces.length; i++)
-            if(!pieces[i].trim().equals(""))
-                code_pieces.add(pieces[i]);
+//        for(int i = 0; i < pieces.length; i++)
+//            if(!pieces[i].trim().equals(""))
+//                code_pieces.add(pieces[i]);
+                
+//        String code = join("\n", code_pieces);
 
-        String code = join("\n", code_pieces);
-
-        code = code.replaceAll("#ifndef", "\n#ifndef");
-        code = code.replaceAll("#define(.*)$", "#define\\1\n");
-
+//        code = code.replaceAll("#ifndef", "\n#ifndef");
+//        code = code.replaceAll("#define(.*)$", "#define\\1\n");
+        
         String name = join(Text.MANGLING_SEPARATOR, namespaceStack);
         if(!name.equals(""))
             name += Text.MANGLING_SEPARATOR;
         name += ((MContained) currentNode).getIdentifier() + ".idl";
 
+        // try to prittify generated code (eliminate empty lines etc).
+        String generatedCode = Code.prettifySourceCode(code);
+
         try {
-            writeFinalizedFile("", name, code + "\n\n");
+            writeFinalizedFile("", name, generatedCode + "\n\n");
         }
         catch(Exception e) {
             System.out.println("!!!Error " + e.getMessage());

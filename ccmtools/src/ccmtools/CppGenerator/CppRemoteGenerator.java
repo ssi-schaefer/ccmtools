@@ -1096,7 +1096,8 @@ public class CppRemoteGenerator
         String sourceCode = template.substituteVariables(output_variables);
         String[] sourceFiles = sourceCode.split("<<<<<<<SPLIT>>>>>>>");
         String[] remoteSuffix = {
-                "_remote.h", "_remote.cc"
+                "_remote.h", 
+                "_remote.cc"
         };
         String generatorPrefix = CcmtoolsProperties.Instance().get("ccmtools.dir.gen");
         
@@ -1110,21 +1111,21 @@ public class CppRemoteGenerator
                 if(currentNode instanceof MComponentDef) {
                     // write the component files
                     String componentName = ((MContained) currentNode).getIdentifier();
-                    String fileDir = generatorPrefix
-                                     + handleNamespace("FileNamespace", componentName);
+                    String fileDir = 
+                        generatorPrefix + handleNamespace("FileNamespace", componentName);
                     Code.writeFile(uiDriver, output_dir, fileDir, componentName + remoteSuffix[i],
-                                   sourceFiles[i]);
+                                   Code.prettifySourceCode(sourceFiles[i]));
                 }
                 else if(currentNode instanceof MHomeDef) {
                     // write the home files
                     MHomeDef home = (MHomeDef) currentNode;
                     String componentName = ((MContained) home.getComponent()).getIdentifier();
                     String homeName = home.getIdentifier();
-                    String fileDir = generatorPrefix
-                                     + handleNamespace("FileNamespace", componentName);
+                    String fileDir = 
+                        generatorPrefix + handleNamespace("FileNamespace", componentName);
 
                     Code.writeFile(uiDriver, output_dir, fileDir, homeName + remoteSuffix[i],
-                                   sourceFiles[i]);
+                                   Code.prettifySourceCode(sourceFiles[i]));
                     Code.writeMakefile(uiDriver, output_dir, fileDir, "py", "");
                 }
                 else if(currentNode instanceof MInterfaceDef || currentNode instanceof MAliasDef
@@ -1136,7 +1137,7 @@ public class CppRemoteGenerator
                     String fileDir = generatorPrefix + CORBA_CONVERTER_DIR;
 
                     Code.writeFile(uiDriver, output_dir, fileDir, nodeName + remoteSuffix[i],
-                                   sourceFiles[i]);
+                                   Code.prettifySourceCode(sourceFiles[i]));
                     Code.writeMakefile(uiDriver, output_dir, fileDir, "py", "");
                 }
                 else {

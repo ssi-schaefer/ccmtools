@@ -60,6 +60,7 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.UI.Driver;
 import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
 /***
@@ -341,7 +342,6 @@ public class CppLocalGenerator
             boolean isImpl = true;
             dataValue = getBaseInterfaceOperations(isImpl,iface,baseInterfaceList);
         }
-        //!!!!!!!!!!
         else if(dataType.equals("ConstantImplementation")) {
             // we handle the constant impl here because we need the interface
             // identifier to generate the class implementation code
@@ -355,7 +355,6 @@ public class CppLocalGenerator
             }
             dataValue = buffer.toString();
         }
-        //!!!!!!!!
         else {
             dataValue = super.data_MInterfaceDef(dataType, dataValue);
         }
@@ -408,17 +407,6 @@ public class CppLocalGenerator
         return type;
     }
 
-    
-//    const CORBA::Boolean Constants::BOOLEAN_CONST = TRUE;
-//    const CORBA::Octet Constants::OCTET_CONST = 255;
-//    const CORBA::Short Constants::SHORT_CONST = 3;
-//    const CORBA::UShort Constants::USHORT_CONST = 7;
-//    const CORBA::Long Constants::LONG_CONST = -7777L;
-//    const CORBA::ULong Constants::ULONG_CONST = 7777UL;
-//    const CORBA::Char Constants::CHAR_CONST = 'c';
-//    const char* const Constants::STRING_CONST = "1234567890";
-//    const CORBA::Float Constants::FLOAT_CONST = 3.14;
-//    const CORBA::Double Constants::DOUBLE_CONST = 6.28318;
     protected String generateConstantValue(MConstantDef constant)
     {
         MIDLType idlType = constant.getIdlType();
@@ -440,10 +428,12 @@ public class CppLocalGenerator
                     value = ((Boolean) valueObject).toString();
                 }
                 else if(primitive.getKind() == MPrimitiveKind.PK_LONG
-                        || primitive.getKind() == MPrimitiveKind.PK_ULONG
-                        || primitive.getKind() == MPrimitiveKind.PK_LONGLONG
+                        || primitive.getKind() == MPrimitiveKind.PK_LONGLONG) {
+                    value = ((Long) valueObject).toString() + "L";
+                }
+                else if(primitive.getKind() == MPrimitiveKind.PK_ULONG
                         || primitive.getKind() == MPrimitiveKind.PK_ULONGLONG) {
-                    value = ((Long) valueObject).toString();
+                    value = ((Long) valueObject).toString() + "UL";
                 }
                 else if(primitive.getKind() == MPrimitiveKind.PK_CHAR) {
                     value = (String) valueObject;
@@ -724,7 +714,9 @@ public class CppLocalGenerator
         try {
             Iterator path_iterator = out_paths.iterator();
             for(int i = 0; i < out_strings.length; i++) {
-                String generated_code = prettifyCode(out_strings[i]);
+                
+                // try to prittify generated code (eliminate empty lines etc).
+                String generated_code = Code.prettifySourceCode(out_strings[i]);
 
                 // out_path = [directory, filename]
                 List out_path = (List) path_iterator.next();
@@ -806,8 +798,7 @@ public class CppLocalGenerator
         String node_name = ((MContained) currentNode).getIdentifier();
         List files = new ArrayList();
         List f = null;
-        String implDirectory =
-            CcmtoolsProperties.Instance().get("ccmtools.dir.impl");
+        String implDirectory = CcmtoolsProperties.Instance().get("ccmtools.dir.impl");
         
         if((currentNode instanceof MComponentDef)
                 || (currentNode instanceof MHomeDef)) {
@@ -818,8 +809,7 @@ public class CppLocalGenerator
             // home and component files are in separate directories !
 
             if(currentNode instanceof MHomeDef) {
-                base_name = ((MHomeDef) currentNode).getComponent()
-                        .getIdentifier();
+                base_name = ((MHomeDef) currentNode).getComponent().getIdentifier();
             }
             String base = getOutputDirectory(base_name);
 

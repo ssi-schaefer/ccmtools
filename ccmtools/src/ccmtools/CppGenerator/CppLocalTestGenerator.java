@@ -30,6 +30,7 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
 public class CppLocalTestGenerator
@@ -64,11 +65,11 @@ public class CppLocalTestGenerator
         throws IOException
     {
         logger.fine("enter writeOutput()");
-        String generated_code = 
-            prettifyCode(template.substituteVariables(output_variables));
+        // try to prittify generated code (eliminate empty lines etc.
+        String generated_code = Code.prettifySourceCode(template.substituteVariables(output_variables));
 
         if(generated_code.trim().equals("")) 
-	    return;
+            return;
 
         MContained contained = (MContained)currentNode;
         
@@ -82,15 +83,9 @@ public class CppLocalTestGenerator
                                 file_name);
         if(outFile.isFile()) {
             if(!isCodeEqualWithFile(generated_code, outFile)) {
-                uiDriver.printMessage("WARNING: " 
-                                      + outFile
-                                      + " already exists!");
-//                System.out.println("WARNING: " + outFile + " already exists!");
+                uiDriver.printMessage("WARNING: " + outFile + " already exists!");
                 file_name += ".new";
-                outFile = new File(output_dir 
-                                   + File.separator 
-                                   + file_dir,
-                                   file_name);
+                outFile = new File(output_dir + File.separator + file_dir, file_name);
             }
         }
 	

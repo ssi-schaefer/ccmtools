@@ -37,6 +37,7 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Code;
 
 public class IDL3Generator extends IDLGenerator
 {
@@ -169,7 +170,8 @@ public class IDL3Generator extends IDLGenerator
             name = ((MContained) currentNode).getIdentifier() + ".idl";
         }
 
-        String prettyCode = prettifyCode(code);
+        // try to prittify generated code (eliminate empty lines etc.)
+        String prettyCode = Code.prettifySourceCode(code);
 
         try {
             File outFile = new File(output_dir + File.separator + dir, name);
