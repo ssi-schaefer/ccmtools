@@ -1,4 +1,4 @@
-package ccmtools.UI.Deployment;
+package ccmtools.Deployment.UI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,17 +27,15 @@ public class SimpleNodeHandler
         return descriptor;
     }
 
-    
+    // Callback methods for the CCM GraphTraverser ----------------------------
     
     public void startGraph()
     {
-        out("start graph");        
         descriptor = new ComponentInterfaceDescriptionImpl();
     }
 
     public void endGraph()
     {
-        out("end graph");        
     }
 
     public void startNode(Object node, String scopeId)
@@ -50,23 +48,18 @@ public class SimpleNodeHandler
             MHomeDef home = (MHomeDef)node;
             descriptor.setSpecificType(getRepoId(home));
             descriptor.getSupportedTypes().add(getRepoId(home));
-            out("Home - " + getRepoId(home));
         }
         else if(node instanceof MComponentDef) {
             MComponentDef component = (MComponentDef)node;
             descriptor.getSupportedTypes().add(getRepoId(component));
-            
-            out("Component - " + getRepoId(component));
         }
         else if(node instanceof MProvidesDef) {
             MProvidesDef provides = (MProvidesDef)node;
             MInterfaceDef iface = provides.getProvides();
-            out("Provides - " + getRepoId(iface));
         }
         else if(node instanceof MUsesDef) {
             MUsesDef uses = (MUsesDef)node;
             MInterfaceDef iface = uses.getUses();
-            out("Uses - " + getRepoId(iface));
         }
     }
 
@@ -91,7 +84,7 @@ public class SimpleNodeHandler
     
     private String getNamespace(MContained node, String sep)
     {
-        List nsList = getNamespaceList(node);
+        List nsList = getElementNamespaceList(node);
         return Text.join(sep, nsList);
     }
     
@@ -100,10 +93,10 @@ public class SimpleNodeHandler
      * model element to the top container element and collecting the 
      * names of all module definitions in-between.
      */
-    private List getNamespaceList(MContained node)
+    private List getElementNamespaceList(MContained element)
     {        
         List scope = new ArrayList();
-        MContainer c = node.getDefinedIn();
+        MContainer c = element.getDefinedIn();
         while(c.getDefinedIn() != null) {
             if(c instanceof MModuleDef)
                 scope.add(0, c.getIdentifier());

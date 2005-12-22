@@ -1,4 +1,4 @@
-package ccmtools.UI.Deployment;
+package ccmtools.Deployment.UI;
 
 import java.util.Iterator;
 
