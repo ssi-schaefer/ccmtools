@@ -10,7 +10,7 @@ RELEASE-0.5.5
 ----------------------------------------------------------------------------
 
 
-RELEASE-0.5.4
+RELEASE-0.5.4 (RELEASE-0_5_4-BRANCH)
 ----------------------------------------------------------------------------
 *) Bugfix: Namespaces in remote source code 
    Local namespaces within the remote component logic are wrong 
@@ -38,10 +38,12 @@ RELEASE-0.5.4
 
 New release management!!!!
 ============================================================================
-The release number reflects now the following schema:
+The release number now reflects the following schema:
+
               major.minor.bugfix 
+
 e.g. RELEASE-0.5.4 only contains bugfixes compared to RELEASE-0.5.3, thus
-*-preX and *-postX versions will not be used any longer.
+*-preX and *-postX versions will not be distributed any longer.
 
 
 RELEASE-0.5.3 (RELEASE-0_5_3-BRANCH)
