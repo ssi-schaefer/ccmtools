@@ -1,4 +1,4 @@
-package ccmtools.test.Deployment;
+package ccmtools.Deployment.test;
 
 import junit.framework.TestCase;
 import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
@@ -115,10 +115,10 @@ public class ModelTest extends TestCase
         compID.setLabel("");
         compID.setUUID("");
         compID.setSpecificType("IDL:wamas/stocktake/MainHome:1.0");
-        compID.getSupportedTypes().add("IDL:wamas/stocktake/MainHome:1.0");
-        compID.getSupportedTypes().add("IDL:wamas/stocktake/Main:1.0");
-        compID.getIdlFiles().add("wamas/stocktake/MainHome.idl");
-        compID.getIdlFiles().add("wamas/stocktake/Main.idl");
+        compID.getSupportedType().add("IDL:wamas/stocktake/MainHome:1.0");
+        compID.getSupportedType().add("IDL:wamas/stocktake/Main:1.0");
+        compID.getIdlFile().add("wamas/stocktake/MainHome.idl");
+        compID.getIdlFile().add("wamas/stocktake/Main.idl");
 
         ComponentPackageDescription compPackageDescription = 
             factory.createComponentPackageDescription();

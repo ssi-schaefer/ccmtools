@@ -4,6 +4,7 @@ import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
+import ccmtools.Deployment.Metamodel.ComponentPortDescription;
 import ccmtools.Deployment.Metamodel.DeploymentFactory;
 import ccmtools.Deployment.Metamodel.ImplementationArtifactDescription;
 import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
@@ -51,5 +52,10 @@ public class DeploymentFactoryImpl
     public ImplementationArtifactDescription createImplementationArtifactDescription()
     {
         return new ImplementationArtifactDescriptionImpl();
+    }
+    
+    public ComponentPortDescription createComponentPortDescription()
+    {
+        return new ComponentPortDescriptionImpl();
     }
 }

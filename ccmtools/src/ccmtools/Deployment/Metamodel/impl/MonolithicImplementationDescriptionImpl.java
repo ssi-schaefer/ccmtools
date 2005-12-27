@@ -6,7 +6,7 @@ import java.util.List;
 import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
 
 
-public class MonolithicImplementationDescriptionImpl
+class MonolithicImplementationDescriptionImpl
     extends ModelElementImpl implements MonolithicImplementationDescription
 {
     private List primaryArtifact = new ArrayList();

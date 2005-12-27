@@ -4,7 +4,7 @@ import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.PackagedComponentImplementation;
 
 
-public class PackagedComponentImplementationImpl
+class PackagedComponentImplementationImpl
     extends ModelElementImpl implements PackagedComponentImplementation
 {
     private String name;

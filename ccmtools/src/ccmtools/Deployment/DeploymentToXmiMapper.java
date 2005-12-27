@@ -1,4 +1,4 @@
-package ccmtools.Deployment.Metamodel;
+package ccmtools.Deployment;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,6 +12,17 @@ import org.jdom.Namespace;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import ccmtools.Constants;
+import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
+import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
+import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
+import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
+import ccmtools.Deployment.Metamodel.ComponentPortDescription;
+import ccmtools.Deployment.Metamodel.ImplementationArtifactDescription;
+import ccmtools.Deployment.Metamodel.ModelElement;
+import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
+import ccmtools.Deployment.Metamodel.NamedImplementationArtifact;
+import ccmtools.Deployment.Metamodel.PackagedComponentImplementation;
 
 
 public class DeploymentToXmiMapper
@@ -45,11 +56,16 @@ public class DeploymentToXmiMapper
     public Document transformToDoc(ComponentPackageDescription in)
     {
         Element xmi = new Element("XMI", xmlnsXmi);
-        xmi.setAttribute("version", "1.2", xmlnsXmi);
+        xmi.setAttribute("version", "2.1", xmlnsXmi);
         xmi.addNamespaceDeclaration(xmlnsDeployment);
         xmi.addNamespaceDeclaration(xmlnsXmi);
 //        xmi.addNamespaceDeclaration(xmlnsXsi);
 
+        Element documentation = new Element("Documentation", xmlnsXmi);
+        documentation.setAttribute("exporter", Constants.PACKAGE, xmlnsXmi);
+        documentation.setAttribute("exporterVersion", Constants.VERSION, xmlnsXmi);
+        xmi.addContent(documentation);
+        
         String name = ComponentPackageDescription.ELEMENT_NAME;  
         xmi.addContent(transformToXmlElement(name, in, xmlnsDeployment));
         Document doc = new Document(xmi);
@@ -75,16 +91,21 @@ public class DeploymentToXmiMapper
         out.addContent(transformToXmlElement("UUID", in.getUUID()));
         out.addContent(transformToXmlElement("specificType", in.getSpecificType()));
         
-        for(Iterator i = in.getSupportedTypes().iterator(); i.hasNext();) {
+        for(Iterator i = in.getSupportedType().iterator(); i.hasNext();) {
             String type = (String)i.next();
             out.addContent(transformToXmlElement("supportedType", type));
         }
-        for(Iterator i = in.getIdlFiles().iterator(); i.hasNext();) {
+        for(Iterator i = in.getIdlFile().iterator(); i.hasNext();) {
             String type = (String)i.next();
             out.addContent(transformToXmlElement("idlFile", type));
-        }        
+        }     
+        for(Iterator i = in.getPort().iterator(); i.hasNext();) {
+            ComponentPortDescription port = (ComponentPortDescription)i.next();
+            out.addContent(transformToXmlElement("port", port, ns));
+        }  
         return out;
     }
+    
     
     public Element transformToXmlProxy(String name, ComponentInterfaceDescription in)
     {
@@ -93,7 +114,29 @@ public class DeploymentToXmiMapper
         return out;
     }
     
+    
+    public Element transformToXmlElement(String name, ComponentPortDescription in, Namespace ns)
+    {
+        Element out = new Element(name, ns);
+        if(in == null) return out;
         
+        out.setAttribute("id", getId(in), xmlnsXmi);
+        
+        out.addContent(transformToXmlElement("name", in.getName()));
+        out.addContent(transformToXmlElement("specificType", in.getSpecificType()));
+        for(Iterator i = in.getSupportedType().iterator(); i.hasNext();) {
+            String type = (String)i.next();
+            out.addContent(transformToXmlElement("supportedType", type));
+        }
+        out.addContent(transformToXmlElement("provider", Boolean.toString(in.isProvider())));
+        out.addContent(transformToXmlElement("exclusiveProvider", Boolean.toString(in.isExclusiveProvider())));
+        out.addContent(transformToXmlElement("exclusiveUser", Boolean.toString(in.isExclusiveUser())));
+        out.addContent(transformToXmlElement("optional", Boolean.toString(in.isOptional())));
+        out.addContent(transformToXmlElement("kind", in.getKind().toString()));
+        return out;
+    }
+        
+
     public Element transformToXmlElement(String name, ComponentPackageDescription in, Namespace ns)
     {
         Element out = new Element(name,ns);

@@ -10,13 +10,13 @@ import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
+import ccmtools.Deployment.Metamodel.ComponentPortDescription;
 import ccmtools.Deployment.Metamodel.DeploymentFactory;
-import ccmtools.Deployment.Metamodel.DeploymentToXmiMapper;
 import ccmtools.Deployment.Metamodel.ImplementationArtifactDescription;
 import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
 import ccmtools.Deployment.Metamodel.NamedImplementationArtifact;
 import ccmtools.Deployment.Metamodel.PackagedComponentImplementation;
-import ccmtools.Deployment.Metamodel.XmiToDeploymentMapper;
+import ccmtools.Deployment.Metamodel.impl.CCMComponentPortKind;
 
 
 public class Test
@@ -101,15 +101,40 @@ public class Test
         compAAD.setSpecifcType("IDL:wamas/stocktake/StocktakeAssembly:1.0");
         compAAD.getLocations().add("wamas/stocktake/assembly/stocktake_assembly.h");
 
+        ComponentPortDescription facet = 
+            factory.createComponentPortDescription();
+        facet.setKind(CCMComponentPortKind.Facet);
+        facet.setName("BaseExt");
+        facet.setSpecificType("IDL:wamas/stocktake/BaseExt:1.0");
+        facet.getSupportedType().add("IDL:wamas/stocktake/BaseExt:1.0");
+        facet.setProvider(true);
+        facet.setExclusiveProvider(true);
+        facet.setExclusiveUser(false);
+        facet.setOptional(false);
+        
+        ComponentPortDescription receptacle = 
+            factory.createComponentPortDescription();
+        receptacle.setKind(CCMComponentPortKind.SimplexReceptacle);
+        receptacle.setName("BaseUser");
+        receptacle.setSpecificType("IDL:wamas/stocktake/BaseUser:1.0");
+        receptacle.getSupportedType().add("IDL:wamas/stocktake/BaseUser:1.0");
+        receptacle.setProvider(false);
+        receptacle.setExclusiveProvider(false);
+        receptacle.setExclusiveUser(false);
+        receptacle.setOptional(false);
+        
         ComponentInterfaceDescription compID = 
             factory.createComponentInterfaceDescription();
         compID.setLabel("label");
         compID.setUUID("UUID");
         compID.setSpecificType("IDL:wamas/stocktake/MainHome:1.0");
-        compID.getSupportedTypes().add("IDL:wamas/stocktake/MainHome:1.0");
-        compID.getSupportedTypes().add("IDL:wamas/stocktake/Main:1.0");
-        compID.getIdlFiles().add("wamas/stocktake/MainHome.idl");
-        compID.getIdlFiles().add("wamas/stocktake/Main.idl");
+        compID.getSupportedType().add("IDL:wamas/stocktake/MainHome:1.0");
+        compID.getSupportedType().add("IDL:wamas/stocktake/Main:1.0");
+        compID.getIdlFile().add("wamas/stocktake/MainHome.idl");
+        compID.getIdlFile().add("wamas/stocktake/Main.idl");
+        compID.getPort().add(facet);
+        compID.getPort().add(receptacle);
+        
         
         ComponentImplementationDescription compImplDesc = 
             factory.createComponentImplementationDescription();

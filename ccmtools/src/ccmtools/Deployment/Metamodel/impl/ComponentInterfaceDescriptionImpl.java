@@ -6,7 +6,7 @@ import java.util.List;
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 
 
-public class ComponentInterfaceDescriptionImpl
+class ComponentInterfaceDescriptionImpl
     extends ModelElementImpl implements ComponentInterfaceDescription
 {
     private String label;
@@ -14,6 +14,8 @@ public class ComponentInterfaceDescriptionImpl
     private String specificType;
     private List supportedType = new ArrayList();
     private List idlFile = new ArrayList();
+    private List port = new ArrayList();
+    
     
     public ComponentInterfaceDescriptionImpl()
     {
@@ -52,19 +54,24 @@ public class ComponentInterfaceDescriptionImpl
     {
         return specificType;
     }
-
+    
     public void setSpecificType(String specificType)
     {
         this.specificType = specificType;
     }
 
-    public List getIdlFiles()
+    public List getSupportedType()
+    {
+        return supportedType;
+    }
+    
+    public List getIdlFile()
     {
         return idlFile;
     }
-
-    public List getSupportedTypes()
+    
+    public List getPort()
     {
-        return supportedType;
+        return port;
     }
 }

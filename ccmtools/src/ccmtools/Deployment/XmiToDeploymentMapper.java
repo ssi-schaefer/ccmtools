@@ -1,4 +1,4 @@
-package ccmtools.Deployment.Metamodel;
+package ccmtools.Deployment;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,20 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
+
+import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
+import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
+import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
+import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
+import ccmtools.Deployment.Metamodel.ComponentPortDescription;
+import ccmtools.Deployment.Metamodel.DeploymentFactory;
+import ccmtools.Deployment.Metamodel.ImplementationArtifactDescription;
+import ccmtools.Deployment.Metamodel.ModelElement;
+import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
+import ccmtools.Deployment.Metamodel.NamedImplementationArtifact;
+import ccmtools.Deployment.Metamodel.PackagedComponentImplementation;
+import ccmtools.Deployment.Metamodel.impl.CCMComponentPortKind;
+
 
 
 public class XmiToDeploymentMapper
@@ -46,11 +60,9 @@ public class XmiToDeploymentMapper
     }
 
     
-    public ComponentPackageDescription 
-        transformToComponentPackageDescription(Element in)
+    public ComponentPackageDescription transformToComponentPackageDescription(Element in)
     {
-        ComponentPackageDescription out = 
-            factory.createComponentPackageDescription();
+        ComponentPackageDescription out = factory.createComponentPackageDescription();
         for(Iterator i = in.getChildren().iterator(); i.hasNext();) {
             Element element = (Element) i.next();
             String eName = element.getName();
@@ -74,28 +86,29 @@ public class XmiToDeploymentMapper
         return out;
     }
 
-    public ComponentInterfaceDescription 
-        transformToComponentInterfaceDescription(Element in)
+    public ComponentInterfaceDescription transformToComponentInterfaceDescription(Element in)
     {
-        ComponentInterfaceDescription out = 
-            factory.createComponentInterfaceDescription();
+        ComponentInterfaceDescription out = factory.createComponentInterfaceDescription();
         for(Iterator i = in.getChildren().iterator(); i.hasNext();) {
             Element element = (Element) i.next();
             String eName = element.getName();
             if(eName.equals("label")) {
                 out.setLabel(element.getTextNormalize());
             }
-            else if(element.getName().equals("UUID")) {
+            else if(eName.equals("UUID")) {
                 out.setUUID(element.getTextNormalize());
             }
-            else if(element.getName().equals("specificType")) {
+            else if(eName.equals("specificType")) {
                 out.setSpecificType(element.getTextNormalize());
             }
-            else if(element.getName().equals("supportedType")) {
-                out.getSupportedTypes().add(element.getTextNormalize());
+            else if(eName.equals("supportedType")) {
+                out.getSupportedType().add(element.getTextNormalize());
             }
-            else if(element.getName().equals("idlFile")) {
-                out.getIdlFiles().add(element.getText());
+            else if(eName.equals("idlFile")) {
+                out.getIdlFile().add(element.getText());
+            }
+            else if(eName.equals("port")) {
+                out.getPort().add(transformToComponentPortDescription(element));
             }
             else {
                 // Ignore all other child elements
@@ -105,11 +118,79 @@ public class XmiToDeploymentMapper
         return out;
     }
 
+    public ComponentPortDescription transformToComponentPortDescription(Element in)
+    {
+        ComponentPortDescription out = factory.createComponentPortDescription();
+        for(Iterator i = in.getChildren().iterator(); i.hasNext();) {
+            Element element = (Element) i.next();
+            String eName = element.getName();
+            if(eName.equals("name")) {
+                out.setName(element.getTextNormalize());
+            }
+            else if(eName.equals("specificType")) {
+                out.setSpecificType(element.getTextNormalize());
+            }
+            else if(eName.equals("supportedType")) {
+                out.getSupportedType().add(element.getTextNormalize());
+            }
+            else if(eName.equals("provider")) {
+                Boolean value = new Boolean(element.getTextNormalize());                
+                out.setProvider(value.booleanValue());
+            }
+            else if(eName.equals("exclusiveProvider")) {
+                Boolean value = new Boolean(element.getTextNormalize());   
+                out.setExclusiveProvider(value.booleanValue());
+            }
+            else if(eName.equals("exclusiveUser")) {
+                Boolean value = new Boolean(element.getTextNormalize());  
+                out.setExclusiveUser(value.booleanValue());
+            }
+            else if(eName.equals("optional")) {
+                Boolean value = new Boolean(element.getTextNormalize());  
+                out.setOptional(value.booleanValue());
+            }
+            else if(eName.equals("kind")) {
+                out.setKind(transformToCCMComponentPortKind(element));
+            }
+            else {
+                // Ignore all other child elements
+            }
+        }
+        addObjectToMap(in.getAttributeValue("id",xmlnsXmi), out);
+        return out;
+    }
+    
+    public CCMComponentPortKind transformToCCMComponentPortKind(Element in)
+    {
+        String value = in.getTextNormalize();        
+        if(value.equals("Facet")) {
+            return CCMComponentPortKind.Facet;
+        }
+        else if(value.equals("SimplexReceptacle")) {
+            return CCMComponentPortKind.SimplexReceptacle;
+        }
+        else if(value.equals("MultiplexReceptacle")) {
+            return CCMComponentPortKind.MultiplexReceptacle;
+        }
+        else if(value.equals("EventEmitter")) {
+            return CCMComponentPortKind.EventEmitter;
+        }
+        else if(value.equals("EventPublisher")) {
+            return CCMComponentPortKind.EventPublisher;
+        }
+        else if(value.equals("EventConsumer")) {
+            return CCMComponentPortKind.EventConsumer;
+        }
+        else {
+            // invalid enumeration value
+            return null;
+        }
+    }
+    
     public PackagedComponentImplementation 
         transformToPackagedComponentImplementation(Element in)
     {
-        PackagedComponentImplementation out = 
-            factory.createPackagedComponentImplementation();
+        PackagedComponentImplementation out = factory.createPackagedComponentImplementation();
         for(Iterator i = in.getChildren().iterator(); i.hasNext();) {
             Element element = (Element) i.next();
             String eName = element.getName();
@@ -127,11 +208,9 @@ public class XmiToDeploymentMapper
         return out;
     }
 
-    public ComponentImplementationDescription 
-        transformToComponentImplementationDescription(Element in)
+    public ComponentImplementationDescription transformToComponentImplementationDescription(Element in)
     {
-        ComponentImplementationDescription out = 
-            factory.createComponentImplementationDescription();
+        ComponentImplementationDescription out = factory.createComponentImplementationDescription();
         for(Iterator i = in.getChildren().iterator(); i.hasNext();) {
             Element element = (Element) i.next();
             String eName = element.getName();
@@ -161,11 +240,9 @@ public class XmiToDeploymentMapper
         return out;
     }
 
-    public ComponentAssemblyArtifactDescription 
-        transformToComponentAssemblyArtifactDescription(Element in)
+    public ComponentAssemblyArtifactDescription transformToComponentAssemblyArtifactDescription(Element in)
     {
-        ComponentAssemblyArtifactDescription out = 
-            factory.createComponentAssemblyArtifactDescription();
+        ComponentAssemblyArtifactDescription out = factory.createComponentAssemblyArtifactDescription();
         for(Iterator i = in.getChildren().iterator(); i.hasNext();) {
             Element element = (Element) i.next();
             String eName = element.getName();
@@ -189,11 +266,9 @@ public class XmiToDeploymentMapper
         return out;
     }
 
-    public MonolithicImplementationDescription 
-        transformToMonolithicImplementationDescription(Element in)
+    public MonolithicImplementationDescription transformToMonolithicImplementationDescription(Element in)
     {
-        MonolithicImplementationDescription out = 
-            factory.createMonolithicImplementationDescription();
+        MonolithicImplementationDescription out = factory.createMonolithicImplementationDescription();
         for(Iterator i = in.getChildren().iterator(); i.hasNext();) {
             Element element = (Element) i.next();
             String eName = element.getName();
@@ -208,11 +283,9 @@ public class XmiToDeploymentMapper
         return out;
     }
 
-    public NamedImplementationArtifact 
-        transformToNamedImplementationArtifact(Element in)
+    public NamedImplementationArtifact transformToNamedImplementationArtifact(Element in)
     {
-        NamedImplementationArtifact out = 
-            factory.createNamedImplementationArtifact();
+        NamedImplementationArtifact out = factory.createNamedImplementationArtifact();
         for(Iterator i = in.getChildren().iterator(); i.hasNext();) {
             Element element = (Element) i.next();
             String eName = element.getName();
@@ -230,11 +303,9 @@ public class XmiToDeploymentMapper
         return out;
     }
 
-    public ImplementationArtifactDescription 
-        transformToImplementationArtifactDescription(Element in)
+    public ImplementationArtifactDescription transformToImplementationArtifactDescription(Element in)
     {
-        ImplementationArtifactDescription out = 
-            factory.createImplementationArtifactDescription();
+        ImplementationArtifactDescription out = factory.createImplementationArtifactDescription();
         for(Iterator i = in.getChildren().iterator(); i.hasNext();) {
             Element element = (Element) i.next();
             String eName = element.getName();

@@ -22,6 +22,9 @@
 
 package ccmtools.utils;
 
+import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.Metamodel.BaseIDL.MModuleDef;
 import ccmtools.UI.Driver;
 
 import java.io.File;
@@ -31,6 +34,8 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -177,5 +182,91 @@ public class Code
             return code.equals(buffer.toString());
         }
         return false;
+    }
+    
+    
+    // Methods used to handle CORBA repository IDs ----------------------------
+    
+    public static String getRepoId(String qname)
+    {
+        return "IDL:" + qname + ":1.0";
+    }
+    
+    public static String getRepoId(String[] qname)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("IDL:");
+        if(qname != null && qname.length > 0) {
+            buffer.append(qname[0]);
+            if(qname.length > 1) {
+                for(int i = 1; i < qname.length; i++) {
+                    buffer.append("/");
+                    buffer.append(qname[i]);
+                }
+            }
+        }
+        buffer.append(":1.0");
+        return buffer.toString();
+    }
+    
+    public static List getListFromQname(String qname)
+    {
+        List list = new ArrayList();
+        if(qname != null) {
+            String[] names = qname.split("/");
+            for(int i = 0; i < names.length; i++) {
+                list.add(names[i]);
+            }
+        }
+        return list;
+    }
+    
+    public static String[] getArrayFromQname(String qname)
+    {
+        return qname.split("/");
+    }
+    
+    public static String getQnameFromRepoId(String repoId)
+    {
+        return repoId.substring(repoId.indexOf(':')+1, repoId.lastIndexOf(':'));
+    }
+    
+    
+    // Methods used to handle CCM model namespaces ----------------------------
+    
+    public static String getRepoId(MContained node)
+    {
+        return "IDL:" + getQName(node, "/") + ":1.0";
+    }
+    
+    public static String getQName(MContained node, String sep)
+    {
+        return getNamespace(node,sep) + sep + node.getIdentifier();
+    }
+    
+    public static String getNamespace(MContained node, String sep)
+    {
+        List nsList = getElementNamespaceList(node);
+        return Text.join(sep, nsList);
+    }
+    
+    /**
+     * Calculates the model element namespace by going back from the
+     * model element to the top container element and collecting the 
+     * names of all module definitions in-between.
+     *
+     * @param element
+     * @return
+     */
+    public static List getElementNamespaceList(MContained element)
+    {        
+        List scope = new ArrayList();
+        MContainer c = element.getDefinedIn();
+        while(c.getDefinedIn() != null) {
+            if(c instanceof MModuleDef)
+                scope.add(0, c.getIdentifier());
+            c = c.getDefinedIn();
+        }
+        return scope;
     }
 }

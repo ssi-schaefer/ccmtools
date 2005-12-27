@@ -4,7 +4,7 @@ import ccmtools.Deployment.Metamodel.ImplementationArtifactDescription;
 import ccmtools.Deployment.Metamodel.NamedImplementationArtifact;
 
 
-public class NamedImplementationArtifactImpl
+class NamedImplementationArtifactImpl
     extends ModelElementImpl implements NamedImplementationArtifact
 {
     private String name;

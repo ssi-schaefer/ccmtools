@@ -6,7 +6,7 @@ import java.util.List;
 import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.ComponentPackageDescription;
 
-public class ComponentPackageDescriptionImpl
+class ComponentPackageDescriptionImpl
     extends ModelElementImpl implements ComponentPackageDescription
 {
     private String label;

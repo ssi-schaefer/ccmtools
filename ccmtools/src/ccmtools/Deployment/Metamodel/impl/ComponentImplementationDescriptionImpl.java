@@ -6,7 +6,7 @@ import ccmtools.Deployment.Metamodel.ComponentInterfaceDescription;
 import ccmtools.Deployment.Metamodel.MonolithicImplementationDescription;
 
 
-public class ComponentImplementationDescriptionImpl
+class ComponentImplementationDescriptionImpl
     extends ModelElementImpl implements ComponentImplementationDescription
 {
     private String label;

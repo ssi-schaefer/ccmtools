@@ -6,7 +6,7 @@ import java.util.List;
 import ccmtools.Deployment.Metamodel.ImplementationArtifactDescription;
 
 
-public class ImplementationArtifactDescriptionImpl
+class ImplementationArtifactDescriptionImpl
     extends ModelElementImpl implements ImplementationArtifactDescription
 {
     private String label;

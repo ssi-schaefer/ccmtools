@@ -16,8 +16,10 @@ public interface ComponentInterfaceDescription
 
     String getSpecificType();
     void setSpecificType(String specificType);
+    
+    List getSupportedType();
 
-    List getIdlFiles();
-
-    List getSupportedTypes();
+    List getIdlFile();
+    
+    List getPort();
 }

@@ -16,4 +16,5 @@ public interface DeploymentFactory
     MonolithicImplementationDescription createMonolithicImplementationDescription();
     NamedImplementationArtifact createNamedImplementationArtifact();
     ImplementationArtifactDescription createImplementationArtifactDescription();
+    ComponentPortDescription createComponentPortDescription();
 }
