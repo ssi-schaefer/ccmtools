@@ -1,77 +1,75 @@
 <!--
 $Header$
 -->
+<project name="java-stubs" default="stubs.jar">
 
-<project name="java-environment" default="install">
+	<description>
+	</description>
 
-  <description>
-  This project contains java tools used by the ccmtools project.
-  Note that all tools in java-environment can be built and used
-  without the ccmtools package.   
-  </description>
+	<!-- Define different paths that are used in the following tasks -->
 
-  <!-- Define properties that are used in the following tasks.
-       Note that a property can be set from command-line:
-          $ ant -Dprefix=/usr/local
-  -->
-  <property name="src" location="src" />
-  <property name="build" location="build" />
-  <property name="lib" location="lib" />
-  <property name="doc" location="doc" />
-  <property name="prefix" location="dist" />
+	<!-- Define properties that are used in the following tasks.
+	       Note that a property can be set from command-line:
+	          $ ant -Dprefix=/usr/local
+	-->
+	<property name="src" location="src" />
+	<property name="idl" location="idl" />
+	<property name="build" location="build" />
+	<property name="lib" location="lib" />
+	<property name="prefix" location="dist" />
+	<property name="jarname" location="${lib}/Components" />
 
+	<path id="compile.classpath">
+		<pathelement path="${java.class.path}" />
+	</path>
 
-  <!-- Define different paths that are used in the following tasks -->
-  <path id="compile.classpath">
-      <fileset dir="${lib}">
-          <include name="*.jar" />
-      </fileset>
-  </path>
+	<!-- Create the generated and build directory-->
+	<target name="init"
+			description="Creates the generate and build directory." >
+	    <mkdir dir="${build}" />
+	    <mkdir dir="${lib}" />
+	    <mkdir dir="${src}-gen" />
+	</target>
 
-  <path id="run.classpath">
-      <fileset dir="${lib}">
-          <include name="*.jar" />
-      </fileset>	  
-      <pathelement path="${java.class.path}" />
-  </path>
+	
+	  <target name="stubs.generate" depends="init"
+	      description="" >
+	      <exec dir="${idl}" executable="idlj">
+	          <arg line="-td ${src}-gen -fall CCM.idl"/>
+	      </exec>
+	  </target>
 
-
-  <!-- Define the tasks needed to build and test ccmtools.uml2idl -->
-
-  <target name="init"
-      description="Creates the build directory and deletes the old jar files." >
-      <mkdir dir="${build}" />
-  </target>
-
-
-
-  <!-- Create javaDoc -->
-  <target name="doc" 
-      description="Generates javadoc for the uml_parser and uml2idl package.">
-      <javadoc packagenames="uml_parser, uml2idl"
-           sourcepath="${src}"
-	       destDir="${build}/javadoc">
-      </javadoc>
-  </target>
-
-
-  <!-- Install java-environment -->
-  <target name="install"  
-      description="Install java-environment to prefix/.">
-      <mkdir dir="${prefix}" />
-      <copy file="${lib}/Components.jar"  todir="${prefix}/lib"  overwrite="true" />
-  </target>
+	  <!-- Compile generated Java files-->
+	  <target name="stubs.compile" depends="stubs.generate"
+	      description="" >
+	      <javac srcdir="${src}-gen:${src}" destdir="${build}" 
+	             debug="on" source="1.4" target="1.4">
+	          <classpath refid="compile.classpath" />  
+	      </javac>
+	  </target>
+		  <!-- Generate a jar file from stub classes -->
+		  <target name="stubs.jar" depends="stubs.compile"
+		     description="Package stubs class files into stubs.jar" >
+		      <jar jarfile="${jarname}.jar" basedir="${build}" >
+		      </jar>
+		  </target>
 
 
-  <!-- Clean up -->
+		  <!-- Install jar file -->
+		  <target name="install"  depends="stubs.jar" 
+		      description="Install java-runtime to prefix/">
+		      <mkdir dir="${prefix}" />
+		      <copy file="${jarname}.jar"  todir="${prefix}/lib"  
+		            overwrite="true" />
+		   </target>
 
-  <target name="clean"
-      description="Clean up the build and lib directory." >
-      <delete dir="${src}/uml_parser" />
-      <delete dir="${build}" />
-      <delete file="${lib}/uml2idl.jar" />
-      <delete file="u1.idl" />
-      <delete file="u1.ocl" />
-  </target>
+
+	<!-- Clean up -->
+	<target name="clean"
+		    description="Clean up the generate, build and lib directory" >
+		<delete dir="${build}" />
+		<delete dir="${src}-gen" />
+		<delete file="${lib}/${jarname}.jar" /> 
+	</target>
 
 </project>
