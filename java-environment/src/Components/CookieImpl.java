@@ -3,7 +3,9 @@ package Components;
 public class CookieImpl
     extends Cookie
 {
-    public CookieImpl()
+	private static final long serialVersionUID = 8713831906953804415L;
+
+	public CookieImpl()
     {
     }
 }

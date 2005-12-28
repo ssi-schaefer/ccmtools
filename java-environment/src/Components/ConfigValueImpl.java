@@ -3,7 +3,9 @@ package Components;
 public class ConfigValueImpl
     extends ConfigValue
 {
-    public ConfigValueImpl()
+	private static final long serialVersionUID = 3626831445092339033L;
+
+	public ConfigValueImpl()
     {
     }
 }

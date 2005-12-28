@@ -68,8 +68,8 @@ $Header$
 	<target name="clean"
 		    description="Clean up the generate, build and lib directory" >
 		<delete dir="${build}" />
-		<delete dir="${src}-gen" />
-		<delete file="${lib}/${jarname}.jar" /> 
+		<delete dir="${src}-gen/Components" />
+		<delete file="${jarname}.jar" /> 
 	</target>
 
 </project>
