@@ -1588,11 +1588,11 @@ case_dcl[MIDLType switchType] returns [List members = null]
                         throw new TokenStreamException("union label '" + label + "' has more than one character");
                     }
                 } else if (switchType instanceof MEnumDef) {
-                    MEnumDef enum = (MEnumDef) switchType;
-                    if (enum.getMembers().contains(label)) {
+                    MEnumDef enumDef = (MEnumDef) switchType;
+                    if (enumDef.getMembers().contains(label)) {
                         labels.add(label);
                     } else {
-                        throw new TokenStreamException("union label '" + label + "' is not a valid member of enum " + enum.getIdentifier());
+                        throw new TokenStreamException("union label '" + label + "' is not a valid member of enum " + enumDef.getIdentifier());
                     }
                 }
             }
@@ -1646,19 +1646,19 @@ element_spec[List labels] returns [List fields = null]
 
 // 78. <enum_type> ::= "enum" <identifier>
 //       "{" <enumerator,79> { "," <enumerator,79> }* "}"
-enum_type returns [MIDLType enum = null]
+enum_type returns [MIDLType enumDef = null]
 {
-    enum = new MEnumDefImpl();
+    enumDef = new MEnumDefImpl();
     List members = new ArrayList();
     String name = null;
     String id = null;
 }
     :   "enum" id = identifier
         {
-            enum = (MEnumDef) verifyNameEmpty(id, (MEnumDef) enum);
-            ((MEnumDef) enum).setSourceFile(getSourceFile());
-            ((MEnumDef) enum).setIdentifier(id);
-            symbolTable.add(id, (MEnumDef) enum);
+            enumDef = (MEnumDef) verifyNameEmpty(id, (MEnumDef) enumDef);
+            ((MEnumDef) enumDef).setSourceFile(getSourceFile());
+            ((MEnumDef) enumDef).setIdentifier(id);
+            symbolTable.add(id, (MEnumDef) enumDef);
         }
         LCURLY name = enumerator
         { if (name != null) members.add(name); name = null; }
@@ -1679,7 +1679,7 @@ enum_type returns [MIDLType enum = null]
                         throw new TokenStreamException("repeated member '"+m+"' in enum '"+id+"'");
             }
 
-            ((MEnumDef) enum).setMembers(members);
+            ((MEnumDef) enumDef).setMembers(members);
         } ;
 
 // 79. <enumerator> ::= <identifier>

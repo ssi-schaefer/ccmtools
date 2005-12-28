@@ -65,7 +65,7 @@ public interface OclParsetreeCreator
     public MNumericLiteral createNumericLiteral( String value ) throws OclParserException;
     public MBooleanLiteral createBooleanLiteral( boolean value ) throws OclParserException;
     public MEnumLiteral createEnumLiteral( String firstPart, String secondPart ) throws OclParserException;
-    public void add( MEnumLiteral enum, String nextPart ) throws OclParserException;
+    public void add( MEnumLiteral enumDef, String nextPart ) throws OclParserException;
     public MCollectionLiteral createCollectionLiteral( String kind ) throws OclParserException;
     public void add( MCollectionLiteral literal, MCollectionPart item ) throws OclParserException;
     public MCollectionRange createCollectionRange( MExpression lowerRange, MExpression upperRange ) throws OclParserException;

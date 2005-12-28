@@ -24,7 +24,7 @@
 
   	<!-- Define project related constants in Java -->
   	<property name="PACKAGE" value="ccmtools" />
-  	<property name="VERSION" value="0.5.5" />
+  	<property name="VERSION" value="0.6.0" />
   	<property name="CPP_PATH" value="cpp" />
 
 
@@ -101,7 +101,7 @@
 	<!-- Compile the generated uml_parser package. -->
 	<target name="compile-uml_parser" depends="generate-uml_parser"
 		description="Compile the uml_parser package.">
-	 	<javac srcdir="${src}/uml_parser" destdir="${build}/classes" debug="on" >
+	 	<javac srcdir="${src}/uml_parser" destdir="${build}/classes" debug="on" source="1.4">
 			<classpath refid="compile.classpath" />
 	    </javac>
 	</target>
@@ -109,7 +109,7 @@
 	<!-- Compile the uml2idl package. -->	
 	<target name="compile-uml2idl" depends="compile-uml_parser"
 		description="Compile the uml2idl package.">
-	    <javac srcdir="${src}/uml2idl" destdir="${build}/classes" debug="on" >
+	    <javac srcdir="${src}/uml2idl" destdir="${build}/classes" debug="on" source="1.4">
 			<classpath refid="compile.classpath" />
 	    </javac>
 	</target>
@@ -117,7 +117,8 @@
   	<!-- Compile ccmtools source code -->
   	<target name="compile-ccmtools" depends="generate-OCLParser, generate-IDL3Parser"
      	description="Compile the ccmtools package." >
-      	<javac srcdir="${src}/ccmtools" destdir="${build}/classes" debug="on" >
+      	<javac srcdir="${src}/ccmtools" destdir="${build}/classes" 
+      		   debug="on" source="1.4" verbose="off">
           	<classpath refid="compile.classpath" />  
       	</javac>
   	</target>

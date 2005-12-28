@@ -398,16 +398,16 @@ public class OclCreatorImp extends OclModelCreator implements OclElementCreator
 
     public MEnumLiteral createEnumLiteral( String firstPart, String secondPart )
     {
-        MEnumLiteral enum = metamodel_.getMEnumLiteral().createMEnumLiteral();
-        add(enum,firstPart);
-        add(enum,secondPart);
-        enum.setOclType(createTypeEnumeration());
-        return enum;
+        MEnumLiteral enumDef = metamodel_.getMEnumLiteral().createMEnumLiteral();
+        add(enumDef,firstPart);
+        add(enumDef,secondPart);
+        enumDef.setOclType(createTypeEnumeration());
+        return enumDef;
     }
 
-    public void add( MEnumLiteral enum, String nextPart )
+    public void add( MEnumLiteral enumDef, String nextPart )
     {
-        metamodel_.getEnumNames().add(enum,makeName(nextPart));
+        metamodel_.getEnumNames().add(enumDef,makeName(nextPart));
     }
 
     protected MName makeName( String value )
