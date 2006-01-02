@@ -17,7 +17,7 @@ $Header$
 	<property name="build" location="build" />
 	<property name="lib" location="lib" />
 	<property name="prefix" location="dist" />
-	<property name="jarname" location="${lib}/Components" />
+	<property name="jarname" location="${lib}/ccm-runtime" />
 
 	<path id="compile.classpath">
 		<pathelement path="${java.class.path}" />
