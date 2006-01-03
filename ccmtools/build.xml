@@ -101,7 +101,8 @@
 	<!-- Compile the generated uml_parser package. -->
 	<target name="compile-uml_parser" depends="generate-uml_parser"
 		description="Compile the uml_parser package.">
-	 	<javac srcdir="${src}/uml_parser" destdir="${build}/classes" debug="on" source="1.4">
+	 	<javac srcdir="${src}/uml_parser" destdir="${build}/classes" 
+	 			debug="on" source="1.4" target="1.4" verbose="off">
 			<classpath refid="compile.classpath" />
 	    </javac>
 	</target>
@@ -109,7 +110,8 @@
 	<!-- Compile the uml2idl package. -->	
 	<target name="compile-uml2idl" depends="compile-uml_parser"
 		description="Compile the uml2idl package.">
-	    <javac srcdir="${src}/uml2idl" destdir="${build}/classes" debug="on" source="1.4">
+	    <javac srcdir="${src}/uml2idl" destdir="${build}/classes" 
+	    		debug="on" source="1.4" target="1.4" verbose="off">
 			<classpath refid="compile.classpath" />
 	    </javac>
 	</target>
@@ -118,7 +120,7 @@
   	<target name="compile-ccmtools" depends="generate-OCLParser, generate-IDL3Parser"
      	description="Compile the ccmtools package." >
       	<javac srcdir="${src}/ccmtools" destdir="${build}/classes" 
-      		   debug="on" source="1.4" verbose="off">
+      		  	debug="on" source="1.4" target="1.4" verbose="off">
           	<classpath refid="compile.classpath" />  
       	</javac>
   	</target>
@@ -206,7 +208,8 @@
   	<target name="test" 
      	description="Compile JUnit test cases." >
       	<mkdir dir="${build}/test" />
-      	<javac srcdir="${test}" destdir="${build}/test" debug="on" >
+      	<javac srcdir="${test}" destdir="${build}/test" 
+      			debug="on" source="1.4" target="1.4" verbose="off">
           	<classpath refid="compile.classpath" />  
       	</javac>
   	</target>
