@@ -20,24 +20,17 @@ public class Test
 		
 		List ns = new ArrayList();
 		ns.add("wamas");
-		
+
 		OperationDefinition f2 = new OperationDefinition("f2", longType);
-		{
-			ParameterDefinition p1 = new ParameterDefinition("p1", PassingDirection.IN, longType);
-			ParameterDefinition p2 = new ParameterDefinition("p2", PassingDirection.INOUT, longType);
-			ParameterDefinition p3 = new ParameterDefinition("p3", PassingDirection.OUT, longType);		
-			f2.getParameter().add(p1);
-			f2.getParameter().add(p2);
-			f2.getParameter().add(p3);
-			f2.getException().add(new ExceptionDefinition("XXXException"));
-		}
-		
+		f2.getParameter().add(new ParameterDefinition("p1", PassingDirection.IN, longType));
+		f2.getParameter().add(new ParameterDefinition("p2", PassingDirection.INOUT, longType));
+		f2.getParameter().add(new ParameterDefinition("p3", PassingDirection.OUT, longType));
+		f2.getException().add(new ExceptionDefinition("MyException"));
+
 		OperationDefinition f8 = new OperationDefinition("f8", stringType);
-		{
-			f8.getParameter().add(new ParameterDefinition("p1", PassingDirection.IN, stringType));
-			f8.getParameter().add(new ParameterDefinition("p2", PassingDirection.INOUT, stringType));
-			f8.getParameter().add(new ParameterDefinition("p3", PassingDirection.OUT, stringType));
-		}
+		f8.getParameter().add(new ParameterDefinition("p1", PassingDirection.IN, stringType));
+		f8.getParameter().add(new ParameterDefinition("p2", PassingDirection.INOUT, stringType));
+		f8.getParameter().add(new ParameterDefinition("p3", PassingDirection.OUT, stringType));
 		
 		InterfaceDefinition iface = new InterfaceDefinition("BasicTypeInterface", ns);
 		iface.getOperation().add(f2);
