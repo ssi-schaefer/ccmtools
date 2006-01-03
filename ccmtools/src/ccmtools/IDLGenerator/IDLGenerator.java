@@ -419,7 +419,6 @@ abstract public class IDLGenerator extends CodeGenerator
             return "supports "
                     + data_value.substring(0, data_value.length() - 2);
         }
-        //!!!!!!!!!!!
         else if(data_type.equals("ConstantDefinition")) {
             MInterfaceDef iface = (MInterfaceDef)currentNode;
             StringBuffer buffer = new StringBuffer();
@@ -432,7 +431,6 @@ abstract public class IDLGenerator extends CodeGenerator
             }
             return buffer.toString();
         }
-        //!!!!!!!!!
         return data_value;
     }
 

@@ -39,7 +39,6 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
-import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MDefinitionKind;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
@@ -65,6 +64,7 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
 abstract public class CppGenerator extends CodeGenerator
@@ -668,12 +668,17 @@ abstract public class CppGenerator extends CodeGenerator
         logger.fine("joinBaseNames()");
         if(currentNode instanceof MInterfaceDef) {
             MInterfaceDef node = (MInterfaceDef) currentNode;
-            ArrayList names = new ArrayList();
+            List names = new ArrayList();
             for(Iterator i = node.getBases().iterator(); i.hasNext();)
-                names.add("CCM_" + ((MInterfaceDef) i.next()).getIdentifier());
+            {
+            	MInterfaceDef iface = (MInterfaceDef)i.next();
+            	names.add(getLocalCppNamespace(iface, "::") + "::CCM_" + iface.getIdentifier()); //!!!!
+                //names.add("CCM_" + iface.getIdentifier());
+            }
             return join(sep, names);
         }
-        else {
+        else 
+        {
             return "";
         }
     }

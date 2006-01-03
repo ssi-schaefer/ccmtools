@@ -69,6 +69,7 @@ import ccmtools.Metamodel.ComponentIDL.MPublishesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.Driver;
+import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
 /**
@@ -530,14 +531,18 @@ abstract public class CodeGenerator implements TemplateHandler
         if(!(currentNode instanceof MInterfaceDef))
             return "";
         MInterfaceDef node = (MInterfaceDef) currentNode;
-        ArrayList names = new ArrayList();
-        for(Iterator i = node.getBases().iterator(); i.hasNext();)
-            names.add(((MInterfaceDef) i.next()).getIdentifier());
-        
+        List names = new ArrayList();
+        for(Iterator i = node.getBases().iterator(); i.hasNext();) 
+        {
+        	MInterfaceDef iface = (MInterfaceDef)i.next();
+        	names.add(Code.getQName(iface, "::")); //!!!!
+            //names.add(iface.getIdentifier());
+        }
         logger.fine("leave joinBaseNames()");
         return join(sep, names);
     }
 
+    
     /**
      * Find a list of the modules in which the given node is contained.
      * 
