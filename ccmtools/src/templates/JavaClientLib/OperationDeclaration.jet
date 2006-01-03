@@ -1,0 +1,8 @@
+<%@ jet package="ccmtools.JavaClientLib.templates" 
+	    class="OperationDeclarationTemplate" 
+		imports="ccmtools.JavaClientLib.metamodel.* "	    
+%>
+<% OperationDefinition op = (OperationDefinition) argument;  %>
+    <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>)     
+        throws CCMException<%=op.generateOperationExceptionList()%>;    
+
