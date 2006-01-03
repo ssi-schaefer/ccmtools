@@ -79,5 +79,18 @@ public class ServiceLocator
 		}
 	}
 	
-	
+	public org.omg.CORBA.Object findCorbaObject(String name) 
+		throws ServiceLocatorException
+	{
+		try
+		{
+			org.omg.CORBA.Object obj = getCorbaNameService().resolve_str(name);
+			return obj;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new ServiceLocatorException(e.getMessage());
+		}
+}
 }
