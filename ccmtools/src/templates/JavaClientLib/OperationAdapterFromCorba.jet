@@ -2,7 +2,7 @@
 	    class="OperationAdapterFromCorbaTemplate" 
 		imports="ccmtools.JavaClientLib.metamodel.* "	    
 %>
-<% OperationDefinition op = (OperationDefinition) argument;  %>
+<% OperationDef op = (OperationDef) argument;  %>
 
     /** Business delegate method */
     public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>) 
@@ -11,7 +11,7 @@
         {
             return localInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
         }
-        catch(Exception e)
+        catch(java.lang.Exception e)
         {
     	    throw new BAD_OPERATION(e.getMessage());
         }

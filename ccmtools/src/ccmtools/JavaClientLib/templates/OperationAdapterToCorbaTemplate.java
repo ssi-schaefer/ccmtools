@@ -20,13 +20,13 @@ public class OperationAdapterToCorbaTemplate
   protected final String TEXT_4 = ") " + NL + "        throws CCMException";
   protected final String TEXT_5 = " " + NL + "    {" + NL + "        try" + NL + "        {" + NL + "            return remoteInterface.";
   protected final String TEXT_6 = "(";
-  protected final String TEXT_7 = ");" + NL + "        }" + NL + "        catch(Exception e)" + NL + "        {" + NL + "    \t    throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }";
+  protected final String TEXT_7 = ");" + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }";
   protected final String TEXT_8 = NL;
 
   public String generate(Object argument)
   {
     StringBuffer stringBuffer = new StringBuffer();
-     OperationDefinition op = (OperationDefinition) argument;  
+     OperationDef op = (OperationDef) argument;  
     stringBuffer.append(TEXT_1);
     stringBuffer.append(op.generateOperationReturnType());
     stringBuffer.append(TEXT_2);

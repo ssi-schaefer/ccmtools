@@ -107,6 +107,19 @@ public class Text
     }
 
 
+	public static String joinList(String separator, List list)
+	{
+		StringBuffer code = new StringBuffer();
+		for(Iterator i=list.iterator(); i.hasNext();)
+		{
+			code.append((String)i.next());
+			code.append(separator);
+		}
+		return code.substring(0, code.lastIndexOf(separator));
+	}
+    
+    
+    
     /**
      * Slice a part of the given list. If start is negative, the function will
      * return the part of the collection that includes all but the last "start"

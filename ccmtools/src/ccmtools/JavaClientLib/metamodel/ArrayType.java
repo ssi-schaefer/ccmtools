@@ -1,7 +1,13 @@
 package ccmtools.JavaClientLib.metamodel;
 
-public class ArrayType
-	extends Type
-{
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+public class ArrayType
+	implements Type
+{
+	public String generateJavaMapping(PassingDirection direction)
+	{
+		// TODO
+		throw new NotImplementedException();
+	}
 }

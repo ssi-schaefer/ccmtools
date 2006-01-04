@@ -1,5 +1,6 @@
 package ccmtools.JavaClientLib.metamodel;
 
-public class Type
+public interface Type
 {
+	String generateJavaMapping(PassingDirection direction);
 }

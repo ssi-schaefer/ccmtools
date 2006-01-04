@@ -2,7 +2,7 @@
 	    class="OperationAdapterToCorbaTemplate" 
 		imports="ccmtools.JavaClientLib.metamodel.* "	    
 %>
-<% OperationDefinition op = (OperationDefinition) argument;  %>
+<% OperationDef op = (OperationDef) argument;  %>
 
     /** Business delegate method */
     public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>) 
@@ -12,7 +12,7 @@
         {
             return remoteInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
         }
-        catch(Exception e)
+        catch(java.lang.Exception e)
         {
     	    throw new CCMException(e.getMessage());
         }

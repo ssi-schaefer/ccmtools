@@ -1,8 +1,11 @@
 package ccmtools.JavaClientLib.metamodel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
+
+import ccmtools.Constants;
+import ccmtools.utils.Text;
 
 public abstract class ModelElement
 {
@@ -11,13 +14,21 @@ public abstract class ModelElement
 	public static final String TAB2 = "        ";
 	
 	private String identifier;
-	private List namespace = new ArrayList();
+	private List idlNamespace = new ArrayList();
 	private List javaNamespace = new ArrayList();
+
 	
-	public ModelElement()
+	protected ModelElement()
 	{
 	}
 
+	protected ModelElement(String identifier, List namespace)
+	{
+		setIdentifier(identifier);
+		setIdlNamespace(namespace);
+	}
+	
+	
 	public String getIdentifier()
 	{
 		return identifier;
@@ -28,31 +39,48 @@ public abstract class ModelElement
 		this.identifier = identifier;
 	}
 
-	public List getNamespace()
+	public List getIdlNamespace()
 	{
-		return namespace;
+		return idlNamespace;
 	}
 
-	public void setNamespace(List namespace)
+	public void setIdlNamespace(List namespace)
 	{
-		this.namespace = namespace;
+		this.idlNamespace = namespace;
+		
+		// javaNamespace directly depends on the idlNamesapce
 		javaNamespace.addAll(namespace);
 		javaNamespace.add("ccm");
 		javaNamespace.add("local");
 	}	
 	
+	public List getJavaNamespace()
+	{
+		return javaNamespace;
+	}
+	
 	
 	// Generator methods ------------------------------------------------------
 	
+	public String generateCcmtoolsVersion()
+	{
+		return "CCM Tools version " + Constants.VERSION;
+	}
+	
+	public String generateTimestamp()
+	{
+		Date now = new Date();
+		return now.toString();
+	}
+	
 	public String generateJavaNamespace()
 	{
-		return joinList(".", javaNamespace);
+		return Text.joinList(".", javaNamespace);
 	}
-
 	
-	public String generateCorbaNamespace()
+	public String generateIdlNamespace()
 	{
-		return joinList(".", getNamespace());
+		return Text.joinList(".", getIdlNamespace());
 	}
 	
 	public String generateJavaName()
@@ -60,22 +88,8 @@ public abstract class ModelElement
 		return generateJavaNamespace() + "." + getIdentifier();
 	}
 	
-	public String generateCorbaName()
+	public String generateIdlName()
 	{
-		return generateCorbaNamespace() + "." + getIdentifier();
-	}
-	
-	
-	// Helper methods ---------------------------------------------------------
-	
-	public String joinList(String separator, List list)
-	{
-		StringBuffer code = new StringBuffer();
-		for(Iterator i=list.iterator(); i.hasNext();)
-		{
-			code.append((String)i.next());
-			code.append(separator);
-		}
-		return code.substring(0, code.lastIndexOf(separator));
+		return generateIdlNamespace() + "." + getIdentifier();
 	}
 }

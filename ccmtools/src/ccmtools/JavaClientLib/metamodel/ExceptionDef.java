@@ -3,15 +3,16 @@ package ccmtools.JavaClientLib.metamodel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExceptionDefinition
+public class ExceptionDef
 	extends ModelElement
 {
 	List parameter = new ArrayList();
 
-	public ExceptionDefinition(String identifier)
+	public ExceptionDef(String identifier)
 	{
 		setIdentifier(identifier);
 	}
+	
 	
 	public List getParameter()
 	{

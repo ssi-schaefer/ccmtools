@@ -7,8 +7,9 @@ import java.util.List;
 import ccmtools.JavaClientLib.templates.OperationAdapterFromCorbaTemplate;
 import ccmtools.JavaClientLib.templates.OperationAdapterToCorbaTemplate;
 import ccmtools.JavaClientLib.templates.OperationDeclarationTemplate;
+import ccmtools.utils.Text;
 
-public class OperationDefinition
+public class OperationDef
 	extends ModelElement
 {
 	private Type type;
@@ -16,7 +17,7 @@ public class OperationDefinition
 	private List exception = new ArrayList();
 	
 	
-	public OperationDefinition(String identifier, Type type)
+	public OperationDef(String identifier, Type type)
 	{
 		setIdentifier(identifier);
 		setType(type);
@@ -65,21 +66,7 @@ public class OperationDefinition
 	
 	public String generateOperationReturnType()
 	{		
-		if (getType() instanceof LongType)
-		{
-			LongType t = (LongType)getType();
-			return t.generateJavaMapping(PassingDirection.RESULT);
-		}
-		else if (getType() instanceof StringType)
-		{
-			StringType t = (StringType)getType();
-			return t.generateJavaMapping(PassingDirection.RESULT);
-		}
-		// TODO...
-		else
-		{
-			throw new RuntimeException("generateOperationReturnType() - Unhandled type!");
-		}
+		return getType().generateJavaMapping(PassingDirection.RESULT);
 	}
 	
 	public String generateOperationParameterDeclarationList()
@@ -87,10 +74,10 @@ public class OperationDefinition
 		List parameterList = new ArrayList();
 		for(Iterator i=getParameter().iterator(); i.hasNext();)
 		{
-			ParameterDefinition p = (ParameterDefinition)i.next();
+			ParameterDef p = (ParameterDef)i.next();
 			parameterList.add(p.generateParameter());
 		}
-		return joinList(", ", parameterList);
+		return Text.joinList(", ", parameterList);
 	}
 	
 	public String generateOperationParameterList()
@@ -98,23 +85,26 @@ public class OperationDefinition
 		List parameterList = new ArrayList();
 		for(Iterator i=getParameter().iterator(); i.hasNext();)
 		{
-			ParameterDefinition p = (ParameterDefinition)i.next();
+			ParameterDef p = (ParameterDef)i.next();
 			parameterList.add(p.getIdentifier());
 		}
-		return joinList(", ", parameterList);
+		return Text.joinList(", ", parameterList);
 	}
 	
 	public String generateOperationExceptionList()
 	{
-		if(getException().size() == 0)
-			return "";
-		
-		List exceptionList = new ArrayList();
-		for (Iterator i = getException().iterator(); i.hasNext();)
+		StringBuffer code = new StringBuffer();
+		if(getException().size() != 0)
 		{
-			ExceptionDefinition e = (ExceptionDefinition) i.next();
-			exceptionList.add(e.getIdentifier());
+			code.append(", ");
+			List exceptionList = new ArrayList();
+			for (Iterator i = getException().iterator(); i.hasNext();)
+			{
+				ExceptionDef e = (ExceptionDef) i.next();
+				exceptionList.add(e.getIdentifier());
+			}
+			code.append(Text.joinList(", ", exceptionList));
 		}
-		return ", " + joinList(", ", exceptionList);
+		return code.toString();
 	}
 }

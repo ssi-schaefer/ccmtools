@@ -19,13 +19,13 @@ public class OperationAdapterFromCorbaTemplate
   protected final String TEXT_3 = " (";
   protected final String TEXT_4 = ") " + NL + "    {" + NL + "        try" + NL + "        {" + NL + "            return localInterface.";
   protected final String TEXT_5 = "(";
-  protected final String TEXT_6 = ");" + NL + "        }" + NL + "        catch(Exception e)" + NL + "        {" + NL + "    \t    throw new BAD_OPERATION(e.getMessage());" + NL + "        }" + NL + "    }";
+  protected final String TEXT_6 = ");" + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new BAD_OPERATION(e.getMessage());" + NL + "        }" + NL + "    }";
   protected final String TEXT_7 = NL;
 
   public String generate(Object argument)
   {
     StringBuffer stringBuffer = new StringBuffer();
-     OperationDefinition op = (OperationDefinition) argument;  
+     OperationDef op = (OperationDef) argument;  
     stringBuffer.append(TEXT_1);
     stringBuffer.append(op.generateOperationReturnType());
     stringBuffer.append(TEXT_2);

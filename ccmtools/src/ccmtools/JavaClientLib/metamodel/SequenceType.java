@@ -1,7 +1,13 @@
 package ccmtools.JavaClientLib.metamodel;
 
-public class SequenceType
-	extends Type
-{
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+public class SequenceType
+	implements Type
+{
+	public String generateJavaMapping(PassingDirection direction)
+	{
+		// TODO
+		throw new NotImplementedException();
+	}
 }

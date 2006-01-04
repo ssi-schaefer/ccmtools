@@ -24,7 +24,7 @@ public class OperationDeclarationTemplate
   public String generate(Object argument)
   {
     StringBuffer stringBuffer = new StringBuffer();
-     OperationDefinition op = (OperationDefinition) argument;  
+     OperationDef op = (OperationDef) argument;  
     stringBuffer.append(TEXT_1);
     stringBuffer.append(op.generateOperationReturnType());
     stringBuffer.append(TEXT_2);

@@ -1,13 +1,13 @@
 package ccmtools.JavaClientLib.metamodel;
 
-public class ParameterDefinition
+public class ParameterDef
 	extends ModelElement
 {
 	private PassingDirection direction;
 	private Type type;
 	
 	
-	public ParameterDefinition(String identifier, PassingDirection direction, Type type)
+	public ParameterDef(String identifier, PassingDirection direction, Type type)
 	{
 		setIdentifier(identifier);
 		setDirection(direction);
@@ -41,21 +41,7 @@ public class ParameterDefinition
 	public String generateParameter()
 	{
 		StringBuffer code = new StringBuffer();
-		if(getType() instanceof LongType) 
-		{
-			LongType t = (LongType)getType();
-			code.append(t.generateJavaMapping(getDirection()));
-		}
-		else if(getType() instanceof StringType)
-		{
-			StringType t = (StringType)getType();
-			code.append(t.generateJavaMapping(getDirection()));
-		}
-		// TODO...
-		else 
-		{
-			throw new RuntimeException("generateParameter() - Unhandled type!");
-		}
+		code.append(getType().generateJavaMapping(getDirection()));
 		code.append(" ").append(getIdentifier());
 		return code.toString();
 	}

@@ -1,5 +1,6 @@
 package ccmtools.JavaClientLib.metamodel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,23 +8,21 @@ import java.util.List;
 import ccmtools.JavaClientLib.templates.InterfaceAdapterFromCorbaTemplate;
 import ccmtools.JavaClientLib.templates.InterfaceAdapterToCorbaTemplate;
 import ccmtools.JavaClientLib.templates.InterfaceDeclarationTemplate;
+import ccmtools.utils.Text;
 
-public class InterfaceDefinition
+public class InterfaceDef
 	extends ModelElement
 {
 	private List attribute = new ArrayList();
 	private List operation = new ArrayList();
 
 	
-	public InterfaceDefinition(String identifier, List namespace)
+	public InterfaceDef(String identifier, List namespace)
 	{
-		setIdentifier(identifier);
-		setNamespace(namespace);
+		super(identifier, namespace);
 	}
 	
 		
-	// Model methods ----------------------------------------------------------
-	
 	public List getAttribute()
 	{
 		return attribute;
@@ -72,7 +71,7 @@ public class InterfaceDefinition
 		StringBuffer code = new StringBuffer();
 		for(Iterator i=getOperation().iterator(); i.hasNext();)
 		{
-			OperationDefinition op = (OperationDefinition)i.next();
+			OperationDef op = (OperationDef)i.next();
 			code.append(op.generateOperationDeclaration());
 		}
 		return code.toString();
@@ -83,7 +82,7 @@ public class InterfaceDefinition
 		StringBuffer code = new StringBuffer();
 		for(Iterator i=getOperation().iterator(); i.hasNext();)
 		{
-			OperationDefinition op = (OperationDefinition)i.next();
+			OperationDef op = (OperationDef)i.next();
 			code.append(op.generateOperationAdapterFromCorba());
 		}
 		return code.toString();
@@ -94,9 +93,32 @@ public class InterfaceDefinition
 		StringBuffer code = new StringBuffer();
 		for(Iterator i=getOperation().iterator(); i.hasNext();)
 		{
-			OperationDefinition op = (OperationDefinition)i.next();
+			OperationDef op = (OperationDef)i.next();
 			code.append(op.generateOperationAdapterToCorba());
 		}
 		return code.toString();
 	}
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String packages = Text.joinList(File.separator, getJavaNamespace());
+		
+		SourceFile interfaceDeclaration = 
+			new SourceFile(packages, getIdentifier() + ".java", generateInterfaceDeclaration());
+		
+		SourceFile interfaceAdapterToCorba = 
+			new SourceFile(packages, getIdentifier() + "AdapterToCorba.java",generateInterfaceAdapterToCorba());
+		
+		SourceFile interfaceAdapterFromCorba = 
+			new SourceFile(packages, getIdentifier() + "AdapterFromCorba.java",generateInterfaceAdapterFromCorba());
+		
+		sourceFileList.add(interfaceDeclaration);
+		sourceFileList.add(interfaceAdapterToCorba);
+		sourceFileList.add(interfaceAdapterFromCorba);
+		return sourceFileList;
+	}	
 }
