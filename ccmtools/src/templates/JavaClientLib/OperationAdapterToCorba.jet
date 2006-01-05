@@ -6,7 +6,7 @@
 
     /** Business delegate method */
     public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>) 
-        throws CCMException<%=op.generateOperationExceptionList()%> 
+        throws ccm.local.Components.CCMException<%=op.generateOperationExceptionList()%> 
     {
         try
         {
@@ -14,6 +14,6 @@
         }
         catch(java.lang.Exception e)
         {
-    	    throw new CCMException(e.getMessage());
+    	    throw new ccm.local.Components.CCMException(e.getMessage());
         }
     }

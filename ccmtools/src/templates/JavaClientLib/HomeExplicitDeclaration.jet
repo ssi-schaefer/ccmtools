@@ -10,7 +10,7 @@
  * DO NOT EDIT!
  */
 
-package <%=home.generateJavaNamespace()%>;
+package <%=home.getJavaNamespace()%>;
                  
 public interface <%=home.getIdentifier()%>Explicit 
     extends ccm.local.Components.CCMHome

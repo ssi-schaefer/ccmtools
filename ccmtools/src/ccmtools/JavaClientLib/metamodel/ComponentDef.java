@@ -11,14 +11,47 @@ import ccmtools.utils.Text;
 public class ComponentDef
 	extends ModelElement
 {
+	private List facet = new ArrayList();
+	private List receptacle = new ArrayList();
+	private List supports = new ArrayList();
+	private HomeDef home;
+	
+	
 	public ComponentDef(String identifier, List namespace)
 	{
 		super(identifier, namespace);
 	}
 	
 	
-	// Code generator methods -------------------------------------------------	
+	public List getFacet()
+	{
+		return facet;
+	}
 	
+	public List getReceptacle()
+	{
+		return receptacle;
+	}
+	
+	public List getSupports()
+	{
+		return supports;
+	}
+
+
+	public HomeDef getHome()
+	{
+		return home;
+	}
+	
+	public void setHome(HomeDef home)
+	{
+		this.home = home;
+	}
+	
+	
+	// Code generator methods -------------------------------------------------	
+
 	public String generateComponentDeclaration()
 	{
 		return new ComponentDeclarationTemplate().generate(this);
@@ -35,7 +68,7 @@ public class ComponentDef
 	public List generateSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		String packages = Text.joinList(File.separator, getJavaNamespace());
+		String packages = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile componentDeclaration = 
 			new SourceFile(packages, getIdentifier() + ".java", generateComponentDeclaration());

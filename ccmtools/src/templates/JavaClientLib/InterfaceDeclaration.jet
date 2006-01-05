@@ -1,6 +1,6 @@
 <%@ jet package="ccmtools.JavaClientLib.templates" 
 	    class="InterfaceDeclarationTemplate" 
-		imports="ccmtools.JavaClientLib.metamodel.* "	    
+		imports="java.util.Iterator ccmtools.JavaClientLib.metamodel.* "	    
 %>
 <% InterfaceDef iface = (InterfaceDef) argument; %>
 /*
@@ -10,7 +10,7 @@
  * DO NOT EDIT!
  */
 
-package <%= iface.generateJavaNamespace() %>;
+package <%= iface.getJavaNamespace() %>;
                  
 import ccm.local.Components.*;
  
@@ -19,7 +19,13 @@ import ccm.local.Components.*;
  */
 public interface <%= iface.getIdentifier() %> 
 {
-<%=iface.generateConstantDeclarationList()%>
-<%=iface.generateAttributeDeclarationList()%>
-<%=iface.generateOperationDeclarationList()%>
+<%
+for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
+{
+    OperationDef op = (OperationDef)i.next();
+%>
+<%=op.generateOperationDeclaration()%>
+<%
+}
+%>
 }

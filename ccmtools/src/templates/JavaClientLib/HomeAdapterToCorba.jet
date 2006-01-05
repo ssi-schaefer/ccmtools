@@ -10,7 +10,7 @@
  * DO NOT EDIT!
  */
 
-package <%=home.generateJavaNamespace()%>;
+package <%=home.getJavaNamespace()%>;
            
 public class <%=home.getIdentifier()%>AdapterToCorba
     implements <%=home.getIdentifier()%>
@@ -19,7 +19,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     public static final String HOME_DEFAULT_NAME = "<%=home.getIdentifier()%>:1.0";
 
     /** CORBA reference to the remote home */
-    private <%=home.generateIdlName()%> remoteHome;
+    private <%=home.getAbsoluteIdlName()%> remoteHome;
     
     public <%=home.getIdentifier()%>AdapterToCorba()
         throws ccm.local.Components.CCMException
@@ -34,7 +34,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
         {
         	Components.CCMHome ccmHome = 
         	    ccm.local.ServiceLocator.instance().findCCMHome(homeName);
-        	remoteHome = <%=home.generateIdlName()%>Helper.narrow(ccmHome);
+        	remoteHome = <%=home.getAbsoluteIdlName()%>Helper.narrow(ccmHome);
         }
         catch(java.lang.Exception e)
         {
@@ -43,12 +43,12 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     }
     
     
-    public <%=home.getComponent().generateJavaName()%> create()
+    public <%=home.getComponent().getAbsoluteJavaName()%> create()
         throws ccm.local.Components.CreateFailure
     {
         try
         {
-            return new <%=home.getComponent().generateJavaName()%>AdapterToCorba(remoteHome.create());        
+            return new <%=home.getComponent().getAbsoluteJavaName()%>AdapterToCorba(remoteHome.create());        
         }
         catch(java.lang.Exception e)
         {

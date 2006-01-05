@@ -31,7 +31,7 @@ public class HomeFactoryTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(home.generateTimestamp());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append(home.generateJavaNamespace());
+    stringBuffer.append(home.getJavaNamespace());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_5);

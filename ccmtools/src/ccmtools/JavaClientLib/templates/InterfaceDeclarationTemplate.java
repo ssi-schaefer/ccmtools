@@ -1,5 +1,6 @@
 package ccmtools.JavaClientLib.templates;
 
+import java.util.Iterator;
 import ccmtools.JavaClientLib.metamodel.*;
 
 public class InterfaceDeclarationTemplate
@@ -20,9 +21,7 @@ public class InterfaceDeclarationTemplate
   protected final String TEXT_4 = ";" + NL + "                 " + NL + "import ccm.local.Components.*;" + NL + " " + NL + "/** " + NL + " * Java interface declaration (based on the corresponding IDL interface)." + NL + " */" + NL + "public interface ";
   protected final String TEXT_5 = " " + NL + "{";
   protected final String TEXT_6 = NL;
-  protected final String TEXT_7 = NL;
-  protected final String TEXT_8 = NL;
-  protected final String TEXT_9 = NL + "}";
+  protected final String TEXT_7 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -33,17 +32,21 @@ public class InterfaceDeclarationTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(iface.generateTimestamp());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append( iface.generateJavaNamespace() );
+    stringBuffer.append( iface.getJavaNamespace() );
     stringBuffer.append(TEXT_4);
     stringBuffer.append( iface.getIdentifier() );
     stringBuffer.append(TEXT_5);
+    
+for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
+{
+    OperationDef op = (OperationDef)i.next();
+
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(iface.generateConstantDeclarationList());
+    stringBuffer.append(op.generateOperationDeclaration());
+    
+}
+
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(iface.generateAttributeDeclarationList());
-    stringBuffer.append(TEXT_8);
-    stringBuffer.append(iface.generateOperationDeclarationList());
-    stringBuffer.append(TEXT_9);
     return stringBuffer.toString();
   }
 }

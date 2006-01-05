@@ -14,8 +14,10 @@ import ccmtools.JavaClientLib.metamodel.InterfaceDef;
 import ccmtools.JavaClientLib.metamodel.OperationDef;
 import ccmtools.JavaClientLib.metamodel.ParameterDef;
 import ccmtools.JavaClientLib.metamodel.PassingDirection;
+import ccmtools.JavaClientLib.metamodel.ProvidesDef;
 import ccmtools.JavaClientLib.metamodel.SourceFile;
 import ccmtools.JavaClientLib.metamodel.StringType;
+import ccmtools.JavaClientLib.metamodel.UsesDef;
 
 public class Test
 {
@@ -37,11 +39,19 @@ public class Test
 		f8.getParameter().add(new ParameterDef("p2", PassingDirection.INOUT, stringType));
 		f8.getParameter().add(new ParameterDef("p3", PassingDirection.OUT, stringType));
 		
-		InterfaceDef iface = new InterfaceDef("BasicTypeInterface", ns);
-		iface.getOperation().add(f2);
-		iface.getOperation().add(f8);
+		InterfaceDef basicTypeInterface = new InterfaceDef("BasicTypeInterface", ns);
+		basicTypeInterface.getOperation().add(f2);
+		basicTypeInterface.getOperation().add(f8);
 
+		ProvidesDef basicTypeIn = new ProvidesDef("basicTypeIn", ns);
+		basicTypeIn.setInterface(basicTypeInterface);
+		
+		UsesDef basicTypeOut = new UsesDef("basicTypeOut", ns);
+		basicTypeOut.setInterface(basicTypeInterface);
+		
 		ComponentDef component = new ComponentDef("Test", ns);
+		component.getFacet().add(basicTypeIn);
+		component.getReceptacle().add(basicTypeOut);
 		
 		HomeDef home = new HomeDef("TestHome", ns);
 		home.setComponent(component);
@@ -54,7 +64,7 @@ public class Test
 				"test/JavaClientLib/simple/xxx/JavaClientLib/src");
 
 		List sourceFileList = new ArrayList();
-		sourceFileList.addAll(iface.generateSourceFiles());
+		sourceFileList.addAll(basicTypeInterface.generateSourceFiles());
 		sourceFileList.addAll(component.generateSourceFiles());
 		sourceFileList.addAll(home.generateSourceFiles());
 		

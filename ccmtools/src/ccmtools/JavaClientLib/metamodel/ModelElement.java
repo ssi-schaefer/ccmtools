@@ -25,7 +25,7 @@ public abstract class ModelElement
 	protected ModelElement(String identifier, List namespace)
 	{
 		setIdentifier(identifier);
-		setIdlNamespace(namespace);
+		setIdlNamespaceList(namespace);
 	}
 	
 	
@@ -39,24 +39,63 @@ public abstract class ModelElement
 		this.identifier = identifier;
 	}
 
-	public List getIdlNamespace()
+	
+	public List getIdlNamespaceList()
 	{
 		return idlNamespace;
 	}
 
-	public void setIdlNamespace(List namespace)
+	public void setIdlNamespaceList(List namespace)
 	{
-		this.idlNamespace = namespace;
-		
+		idlNamespace.addAll(namespace);
 		// javaNamespace directly depends on the idlNamesapce
-		javaNamespace.addAll(namespace);
-		javaNamespace.add("ccm");
-		javaNamespace.add("local");
+		setJavaNamespaceList(namespace);
 	}	
 	
-	public List getJavaNamespace()
+	
+	public List getJavaNamespaceList()
 	{
 		return javaNamespace;
+	}
+	
+	public void setJavaNamespaceList(List namespace)
+	{
+		javaNamespace.addAll(namespace);		
+		// Set implicit Java namespace elements
+		getJavaNamespaceList().add("ccm");
+		getJavaNamespaceList().add("local");		
+	}
+
+	
+	public String getJavaNamespace()
+	{
+		return Text.joinList(".", javaNamespace);
+	}
+	
+	public String getIdlNamespace()
+	{
+		return Text.joinList(".", getIdlNamespaceList());
+	}
+	
+	public String getAbsoluteJavaName()
+	{
+		return getJavaNamespace() + "." + getIdentifier();
+	}
+	
+	public String getAbsoluteJavaCcmName()
+	{
+		return getJavaNamespace() + ".CCM_" + getIdentifier();
+	}
+	
+	public String getAbsoluteIdlName()
+	{
+		return getIdlNamespace() + "." + getIdentifier();
+	}
+	
+	
+	public String getRepositoryId()
+	{
+		return "IDL:" + Text.joinList("/", getIdlNamespaceList()) + "/" + getIdentifier() + ":1.0";
 	}
 	
 	
@@ -71,25 +110,5 @@ public abstract class ModelElement
 	{
 		Date now = new Date();
 		return now.toString();
-	}
-	
-	public String generateJavaNamespace()
-	{
-		return Text.joinList(".", javaNamespace);
-	}
-	
-	public String generateIdlNamespace()
-	{
-		return Text.joinList(".", getIdlNamespace());
-	}
-	
-	public String generateJavaName()
-	{
-		return generateJavaNamespace() + "." + getIdentifier();
-	}
-	
-	public String generateIdlName()
-	{
-		return generateIdlNamespace() + "." + getIdentifier();
 	}
 }

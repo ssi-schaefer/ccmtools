@@ -10,11 +10,11 @@
  * DO NOT EDIT!
  */
 
-package <%=home.generateJavaNamespace()%>;
+package <%=home.getJavaNamespace()%>;
                  
 public interface <%=home.getIdentifier()%>Implicit 
     extends ccm.local.Components.KeylessCCMHome
 {
-    <%=home.getComponent().generateJavaName()%> create()
+    <%=home.getComponent().getAbsoluteJavaName()%> create()
         throws ccm.local.Components.CreateFailure;
 }

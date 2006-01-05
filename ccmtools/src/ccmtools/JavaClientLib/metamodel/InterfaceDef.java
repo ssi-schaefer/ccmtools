@@ -2,7 +2,6 @@ package ccmtools.JavaClientLib.metamodel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.JavaClientLib.templates.InterfaceAdapterFromCorbaTemplate;
@@ -52,60 +51,12 @@ public class InterfaceDef
 	}
 
 	
-	public String generateConstantDeclarationList()
-	{
-		StringBuffer code = new StringBuffer();
-		// TODO
-		return code.toString();
-	}
-	
-	public String generateAttributeDeclarationList()
-	{
-		StringBuffer code = new StringBuffer();
-		// TODO
-		return code.toString();
-	}
-	
-	public String generateOperationDeclarationList()
-	{
-		StringBuffer code = new StringBuffer();
-		for(Iterator i=getOperation().iterator(); i.hasNext();)
-		{
-			OperationDef op = (OperationDef)i.next();
-			code.append(op.generateOperationDeclaration());
-		}
-		return code.toString();
-	}
-	
-	public String generateOperationAdapterFromCorbaList()
-	{
-		StringBuffer code = new StringBuffer();
-		for(Iterator i=getOperation().iterator(); i.hasNext();)
-		{
-			OperationDef op = (OperationDef)i.next();
-			code.append(op.generateOperationAdapterFromCorba());
-		}
-		return code.toString();
-	}
-	
-	public String generateOperationAdapterToCorbaList()
-	{
-		StringBuffer code = new StringBuffer();
-		for(Iterator i=getOperation().iterator(); i.hasNext();)
-		{
-			OperationDef op = (OperationDef)i.next();
-			code.append(op.generateOperationAdapterToCorba());
-		}
-		return code.toString();
-	}
-	
-	
 	// Generate SourceFile objects --------------------------------------------
 	
 	public List generateSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		String packages = Text.joinList(File.separator, getJavaNamespace());
+		String packages = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile interfaceDeclaration = 
 			new SourceFile(packages, getIdentifier() + ".java", generateInterfaceDeclaration());

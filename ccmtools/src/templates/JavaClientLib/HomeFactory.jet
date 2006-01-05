@@ -10,7 +10,7 @@
  * DO NOT EDIT!
  */
 
-package <%=home.generateJavaNamespace()%>;
+package <%=home.getJavaNamespace()%>;
                                   
 public class <%=home.getIdentifier()%>Factory 
 {

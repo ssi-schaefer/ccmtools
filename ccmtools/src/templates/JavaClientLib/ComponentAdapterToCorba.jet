@@ -1,6 +1,6 @@
 <%@ jet package="ccmtools.JavaClientLib.templates" 
 	    class="ComponentAdapterToCorbaTemplate" 
-		imports="ccmtools.JavaClientLib.metamodel.* "	    
+		imports="java.util.Iterator ccmtools.JavaClientLib.metamodel.* "	    
 %>
 <% ComponentDef component = (ComponentDef) argument; %>
 /*
@@ -10,22 +10,100 @@
  * DO NOT EDIT!
  */
 
-package <%=component.generateJavaNamespace()%>;
+package <%=component.getJavaNamespace()%>;
                  
-public class <%=component.getIdentifier()%>AdapterToCorba 
-    implements <%=component.generateJavaName()%>
-{
-    /** CORBA reference to a remote component */
-    private <%=component.generateIdlName()%> remoteComponent;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.Policy;
+import org.omg.PortableServer.ImplicitActivationPolicyValue;
+import org.omg.PortableServer.POA;
+import org.omg.PortableServer.POAHelper;
+import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
+import org.omg.PortableServer.POAPackage.AdapterAlreadyExists;
+import org.omg.PortableServer.POAPackage.InvalidPolicy;
 
-    public <%=component.getIdentifier()%>AdapterToCorba(<%=component.generateIdlName()%> remoteComponent)
+
+public class <%=component.getIdentifier()%>AdapterToCorba 
+    implements <%=component.getAbsoluteJavaName()%>
+{
+    public static final String COMPONENT_REPOSITORY_ID = "<%=component.getRepositoryId()%>";
+
+    /** CORBA reference to a remote component */
+    private <%=component.getAbsoluteIdlName()%> remoteComponent;
+
+    /** Java references to local facet adapters */
+<%
+for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
+{
+    ProvidesDef provides = (ProvidesDef)i.next();
+%>    
+<%=provides.generateLocalFacetAdapterDeclaration()%>
+<%
+}
+%>
+
+    /** Java references to local receptacle adapters */
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
+{
+    UsesDef uses = (UsesDef)i.next();
+%>    
+<%=uses.generateLocalReceptacleAdapterDeclaration()%>
+<%
+}
+%>
+
+    /** CORBA references */
+    private ORB orb;
+    private POA componentPoa;
+    
+    
+    public <%=component.getIdentifier()%>AdapterToCorba(<%=component.getAbsoluteIdlName()%> remoteComponent)
         throws ccm.local.Components.CCMException
     {    
-        // TODO
+        this.remoteComponent = remoteComponent;
+        orb = ccm.local.ServiceLocator.instance().getCorbaOrb();
+        try
+        {
+            // Create a POA instance to handle CORBA requests for local receptacles
+            POA rootPoa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
+            rootPoa.the_POAManager().activate();									
+            Policy[] policies = new Policy[1];
+            policies[0] = rootPoa.create_implicit_activation_policy(ImplicitActivationPolicyValue.IMPLICIT_ACTIVATION);
+            componentPoa = rootPoa.create_POA("TestAdapterPOA", rootPoa.the_POAManager(),policies );
+            componentPoa.the_POAManager().activate();
+        }
+        catch (org.omg.CORBA.ORBPackage.InvalidName e)
+		{
+			throw new ccm.local.Components.CCMException(e.getMessage());
+		}
+		catch (AdapterInactive e)
+		{
+			throw new ccm.local.Components.CCMException(e.getMessage());
+		}
+		catch (AdapterAlreadyExists e)
+		{
+			throw new ccm.local.Components.CCMException(e.getMessage());
+		}
+		catch (InvalidPolicy e)
+		{
+			throw new ccm.local.Components.CCMException(e.getMessage());
+		}
     }
     
     
-    /** CCMObject methods */
+    /** Equivalent interface methods */
+<%
+for(Iterator i = component.getFacet().iterator(); i.hasNext();)
+{
+    ProvidesDef provides = (ProvidesDef)i.next();
+%>
+<%=provides.generateProvidesEquivalentMethodImplementation()%>
+<%
+}
+%>
+
+    
+    /** CCMObject interface methods */
     
     public void configuration_complete()
     {
@@ -50,13 +128,28 @@ public class <%=component.getIdentifier()%>AdapterToCorba
     }
     
     
-    /** Navigation methods */
+    /** Navigation interface methods */
     
     public Object provide_facet(String name)
         throws ccm.local.Components.InvalidName
     {
-        // TODO
-        throw new RuntimeException("provide_facet() is not implemented!");
+        if(name == null)
+        {
+            throw new ccm.local.Components.InvalidName();
+        }
+<%		
+for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
+{
+    ProvidesDef provides = (ProvidesDef)i.next();
+%>        
+<%=provides.generateProvidesNavigationMethodImplementation()%>
+<%
+}
+%>
+        else
+        {
+        	throw new ccm.local.Components.InvalidName();
+        }
     }
     
     

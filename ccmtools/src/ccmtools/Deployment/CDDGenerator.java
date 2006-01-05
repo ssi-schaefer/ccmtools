@@ -174,7 +174,7 @@ public class CDDGenerator
         if(parameters.getAssemblyObject() != null) {
             ComponentAssemblyArtifactDescription compAAD = 
                 factory.createComponentAssemblyArtifactDescription();
-            compAAD.setSpecifcType(Code.getRepoId(parameters.getAssemblyObject()));
+            compAAD.setSpecifcType(Code.getRepositoryId(parameters.getAssemblyObject()));
             compAAD.getLocations().add(parameters.getAssemblyFile());
             componentImpl.setAssemblyImpl(compAAD);
         }

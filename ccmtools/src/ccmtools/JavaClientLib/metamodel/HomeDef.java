@@ -66,7 +66,7 @@ public class HomeDef
 	public List generateSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		String packages = Text.joinList(File.separator, getJavaNamespace());
+		String packages = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile homeDeclaration = 
 			new SourceFile(packages, getIdentifier() + ".java", generateHomeDeclaration());

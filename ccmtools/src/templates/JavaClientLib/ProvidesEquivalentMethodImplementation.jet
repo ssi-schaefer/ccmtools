@@ -1,0 +1,15 @@
+<%@ jet package="ccmtools.JavaClientLib.templates" 
+	    class="ProvidesEquivalentMethodImplementationTemplate" 
+		imports="ccmtools.JavaClientLib.metamodel.* "	    
+%>
+<% ProvidesDef provides = (ProvidesDef) argument;  %>
+
+    public <%=provides.getInterface().getIdentifier()%> provide_<%=provides.getIdentifier()%>()
+    {
+        if(<%=provides.getIdentifier()%> == null)
+        {
+            <%=provides.getIdentifier()%> = 
+                new <%=provides.getInterface().getIdentifier()%>AdapterToCorba(remoteComponent.provide_<%=provides.getIdentifier()%>());
+        }
+        return <%=provides.getIdentifier()%>;
+    }

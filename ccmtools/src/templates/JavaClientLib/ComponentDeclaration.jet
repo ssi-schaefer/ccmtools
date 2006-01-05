@@ -1,6 +1,6 @@
 <%@ jet package="ccmtools.JavaClientLib.templates" 
 	    class="ComponentDeclarationTemplate" 
-		imports="ccmtools.JavaClientLib.metamodel.* "	    
+		imports="java.util.Iterator ccmtools.JavaClientLib.metamodel.* "	    
 %>
 <% ComponentDef component = (ComponentDef) argument; %>
 /*
@@ -10,10 +10,32 @@
  * DO NOT EDIT!
  */
 
-package <%=component.generateJavaNamespace()%>;
+package <%=component.getJavaNamespace()%>;
                  
 public interface <%=component.getIdentifier()%> 
     extends ccm.local.Components.CCMObject
 {
-    // TODO
+    /** Facet equivalent methods */
+    
+<%
+for(Iterator i = component.getFacet().iterator(); i.hasNext();)
+{
+    ProvidesDef provides = (ProvidesDef)i.next();
+%>
+<%=provides.generateProvidesEquivalentMethodDeclaration()%>
+<%
+}
+%>    
+    
+    /** Receptacle equivalent methods */
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+%>
+<%=uses.generateUsesEquivalentMethodDeclaration()%>
+<%
+}
+%>
+
 }

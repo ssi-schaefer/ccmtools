@@ -535,7 +535,7 @@ abstract public class CodeGenerator implements TemplateHandler
         for(Iterator i = node.getBases().iterator(); i.hasNext();) 
         {
         	MInterfaceDef iface = (MInterfaceDef)i.next();
-        	names.add(Code.getQName(iface, "::")); //!!!!
+        	names.add(Code.getAbsoluteName(iface, "::")); //!!!!
             //names.add(iface.getIdentifier());
         }
         logger.fine("leave joinBaseNames()");

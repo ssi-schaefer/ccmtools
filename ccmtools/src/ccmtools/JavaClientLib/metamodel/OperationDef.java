@@ -69,6 +69,13 @@ public class OperationDef
 		return getType().generateJavaMapping(PassingDirection.RESULT);
 	}
 	
+	/**
+	 * Generate a parameter list (with types and names) and handle the commas
+	 * in a propper way.
+	 * e.g. "int p1, org.omg.CORBA.IntHolder p2, org.omg.CORBA.IntHolder p3"
+	 * 
+	 * @return Generated code artifact.
+	 */
 	public String generateOperationParameterDeclarationList()
 	{
 		List parameterList = new ArrayList();
@@ -79,7 +86,14 @@ public class OperationDef
 		}
 		return Text.joinList(", ", parameterList);
 	}
-	
+		
+	/**
+	 * Generate a parameter list (names only), and handle the commas in
+	 * a propper way.
+	 * e.g. "p1, p2, p3"
+	 * 
+	 * @return Generated code artifact.
+	 */
 	public String generateOperationParameterList()
 	{
 		List parameterList = new ArrayList();
@@ -91,6 +105,13 @@ public class OperationDef
 		return Text.joinList(", ", parameterList);
 	}
 	
+	/**
+	 * Generate an exception list (names only), and handle the commas in
+	 * a propper way. 
+	 * e.g. ", InvalidName, NoConnection"
+	 * 
+	 * @return Generated code artifact.
+	 */
 	public String generateOperationExceptionList()
 	{
 		StringBuffer code = new StringBuffer();

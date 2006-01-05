@@ -1,0 +1,9 @@
+<%@ jet package="ccmtools.JavaClientLib.templates" 
+	    class="ProvidesNavigationMethodImplementationTemplate" 
+		imports="ccmtools.JavaClientLib.metamodel.* "	    
+%>
+<% ProvidesDef provides = (ProvidesDef) argument;  %>
+        else if(name.equals("<%=provides.getIdentifier()%>"))
+        {
+            return provide_<%=provides.getIdentifier()%>();
+        }

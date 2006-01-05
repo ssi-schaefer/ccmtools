@@ -38,7 +38,7 @@ public class HomeAdapterToCorbaTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(home.generateTimestamp());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append(home.generateJavaNamespace());
+    stringBuffer.append(home.getJavaNamespace());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_5);
@@ -48,17 +48,17 @@ public class HomeAdapterToCorbaTemplate
     stringBuffer.append(TEXT_7);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(home.generateIdlName());
+    stringBuffer.append(home.getAbsoluteIdlName());
     stringBuffer.append(TEXT_9);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_10);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(home.generateIdlName());
+    stringBuffer.append(home.getAbsoluteIdlName());
     stringBuffer.append(TEXT_12);
-    stringBuffer.append(home.getComponent().generateJavaName());
+    stringBuffer.append(home.getComponent().getAbsoluteJavaName());
     stringBuffer.append(TEXT_13);
-    stringBuffer.append(home.getComponent().generateJavaName());
+    stringBuffer.append(home.getComponent().getAbsoluteJavaName());
     stringBuffer.append(TEXT_14);
     return stringBuffer.toString();
   }

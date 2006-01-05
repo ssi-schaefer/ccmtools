@@ -187,21 +187,26 @@ public class Code
     
     // Methods used to handle CORBA repository IDs ----------------------------
     
-    public static String getRepoId(String qname)
+    public static String getRepositoryId(MContained node)
     {
-        return "IDL:" + qname + ":1.0";
+        return "IDL:" + getAbsoluteName(node, "/") + ":1.0";
     }
     
-    public static String getRepoId(String[] qname)
+    public static String getRepositoryId(String name)
+    {
+        return "IDL:" + name + ":1.0";
+    }
+    
+    public static String getRepositoryId(String[] name)
     {
         StringBuffer buffer = new StringBuffer();
         buffer.append("IDL:");
-        if(qname != null && qname.length > 0) {
-            buffer.append(qname[0]);
-            if(qname.length > 1) {
-                for(int i = 1; i < qname.length; i++) {
+        if(name != null && name.length > 0) {
+            buffer.append(name[0]);
+            if(name.length > 1) {
+                for(int i = 1; i < name.length; i++) {
                     buffer.append("/");
-                    buffer.append(qname[i]);
+                    buffer.append(name[i]);
                 }
             }
         }
@@ -209,11 +214,11 @@ public class Code
         return buffer.toString();
     }
     
-    public static List getListFromQname(String qname)
+    public static List getListFromAbsoluteName(String name)
     {
         List list = new ArrayList();
-        if(qname != null) {
-            String[] names = qname.split("/");
+        if(name != null) {
+            String[] names = name.split("/");
             for(int i = 0; i < names.length; i++) {
                 list.add(names[i]);
             }
@@ -221,12 +226,12 @@ public class Code
         return list;
     }
     
-    public static String[] getArrayFromQname(String qname)
+    public static String[] getArrayFromAbsoluteName(String name)
     {
-        return qname.split("/");
+        return name.split("/");
     }
     
-    public static String getQnameFromRepoId(String repoId)
+    public static String getNameFromRepositoryId(String repoId)
     {
         return repoId.substring(repoId.indexOf(':')+1, repoId.lastIndexOf(':'));
     }
@@ -234,19 +239,14 @@ public class Code
     
     // Methods used to handle CCM model namespaces ----------------------------
     
-    public static String getRepoId(MContained node)
-    {
-        return "IDL:" + getQName(node, "/") + ":1.0";
-    }
-    
-    public static String getQName(MContained node, String sep)
+    public static String getAbsoluteName(MContained node, String sep)
     {
         return getNamespace(node,sep) + sep + node.getIdentifier();
     }
     
     public static String getNamespace(MContained node, String sep)
     {
-        List nsList = getElementNamespaceList(node);
+        List nsList = getNamespaceList(node);
         return Text.join(sep, nsList);
     }
     
@@ -255,13 +255,13 @@ public class Code
      * model element to the top container element and collecting the 
      * names of all module definitions in-between.
      *
-     * @param element
+     * @param node
      * @return
      */
-    public static List getElementNamespaceList(MContained element)
+    public static List getNamespaceList(MContained node)
     {        
         List scope = new ArrayList();
-        MContainer c = element.getDefinedIn();
+        MContainer c = node.getDefinedIn();
         while(c.getDefinedIn() != null) {
             if(c instanceof MModuleDef)
                 scope.add(0, c.getIdentifier());

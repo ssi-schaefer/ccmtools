@@ -1,0 +1,13 @@
+<%@ jet package="ccmtools.JavaClientLib.templates" 
+	    class="UsesEquivalentMethodDeclarationTemplate" 
+		imports="ccmtools.JavaClientLib.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument;  %>
+
+    void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().getAbsoluteJavaName()%> localObj)
+        throws ccm.local.Components.AlreadyConnected, ccm.local.Components.InvalidConnection;
+
+    <%=uses.getInterface().getAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
+        throws ccm.local.Components.NoConnection;
+        
+    <%=uses.getInterface().getAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>();
