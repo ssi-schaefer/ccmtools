@@ -33,7 +33,7 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
-import ccmtools.CodeGenerator.CCMGraphTraverser;
+import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.CodeGenerator.TemplateHandler;
@@ -141,7 +141,7 @@ public class Main
             logger.config("ccmtools.impl.dir = " + 
                           CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
     
-            GraphTraverser traverser = new CCMGraphTraverser();
+            GraphTraverser traverser = new CcmGraphTraverser();
             if(traverser == null) {
                 printUsage();
                 throw new CcmtoolsException("failed to create a graph traverser");

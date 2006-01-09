@@ -12,7 +12,7 @@ import org.jdom.JDOMException;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
-import ccmtools.CodeGenerator.CCMGraphTraverser;
+import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.Deployment.Metamodel.ComponentAssemblyArtifactDescription;
 import ccmtools.Deployment.Metamodel.ComponentImplementationDescription;
@@ -197,7 +197,7 @@ public class CDDGenerator
     private ComponentInterfaceDescription traverseCcmModel()
     {
         logger.fine("enter traverseCcmModel()");
-        GraphTraverser traverser = new CCMGraphTraverser();
+        GraphTraverser traverser = new CcmGraphTraverser();
         CcmModelNodeHandler nodeHandler = new CcmModelNodeHandler();
         traverser.addHandler(nodeHandler);
         traverser.traverseGraph(ccmModel);      

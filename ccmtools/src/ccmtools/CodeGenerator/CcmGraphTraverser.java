@@ -43,11 +43,12 @@ import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
  * sends node traversal events to an object derived from the NodeHandler class
  * to perform task-specific actions with each node.
  */
-public class CCMGraphTraverser implements GraphTraverser
+public class CcmGraphTraverser 
+	implements GraphTraverser
 {
     private List handlers = null;
 
-    public CCMGraphTraverser()
+    public CcmGraphTraverser()
     {
         handlers = new ArrayList();
     }
@@ -81,7 +82,8 @@ public class CCMGraphTraverser implements GraphTraverser
      */
     public void removeHandler(NodeHandler h)
     {
-        if(handlers.contains(h)) {
+        if(handlers.contains(h)) 
+        {
             handlers.remove(h);
         }
     }
@@ -94,20 +96,26 @@ public class CCMGraphTraverser implements GraphTraverser
      */
     public void traverseGraph(MContained node)
     {
-        if(handlers.size() > 0) {
-            for(Iterator i = handlers.iterator(); i.hasNext();) {
+        if(handlers.size() > 0) 
+        {
+        	// Call startGraph() on each NodeHandler
+            for(Iterator i = handlers.iterator(); i.hasNext();) 
+            {
                 NodeHandler nh = (NodeHandler) i.next();
                 nh.startGraph();
-             }
+            }
             
             traverseRecursive(node, "", new HashSet());
 
-            for(Iterator j = handlers.iterator(); j.hasNext();) {
-                NodeHandler nh = (NodeHandler) j.next();
+            // Call endGraph() on each NodeHandler
+            for(Iterator i = handlers.iterator(); i.hasNext();) 
+            {
+                NodeHandler nh = (NodeHandler) i.next();
                 nh.endGraph();
             }
         }
-        else {
+        else 
+        {
             throw new RuntimeException("No node handler objects are available "
                                        	+ "for traversing a graph");
         }
@@ -131,58 +139,74 @@ public class CCMGraphTraverser implements GraphTraverser
     private void traverseRecursive(Object node, String context, Set visited)
     {
         if(node == null)
+        {
             return;
-
+        }
+        
         // this type check comb is silly.
 
         String id = null;
-        if(node instanceof MContained) {
+        if(node instanceof MContained) 
+        {
             id = ((MContained) node).getIdentifier();
         }
-        else if(node instanceof MFieldDef) {
+        else if(node instanceof MFieldDef) 
+        {
             id = ((MFieldDef) node).getIdentifier();
         }
-        else if(node instanceof MParameterDef) {
+        else if(node instanceof MParameterDef) 
+        {
             id = ((MParameterDef) node).getIdentifier();
         }
-        else if(node instanceof MUnionFieldDef) {
+        else if(node instanceof MUnionFieldDef) 
+        {
             id = ((MUnionFieldDef) node).getIdentifier();
         }
 
         if(id == null)
+        {
             throw new RuntimeException("Node " + node + " in context "
                     + context + " has no identifier");
-
+        }
+        
         // nodes are identified by their scope identifier. we should change this
         // eventually to use the absoluteName attribute, but that's more of a
         // parser issue.
 
-        String scope_id = context + "::" + id;
-
-        if(scope_id.startsWith("::"))
-            scope_id = scope_id.substring(2);
+        String scopeId = context + "::" + id;
+        if(scopeId.startsWith("::"))
+        {
+            scopeId = scopeId.substring(2);
+        }
         
-        if(visited.contains(scope_id)) {
+        if(visited.contains(scopeId)) 
+        {
             return;
         }
-        else {
-            visited.add(scope_id);
+        else 
+        {
+            visited.add(scopeId);
         }
         
-        for(Iterator j = handlers.iterator(); j.hasNext();) {
-            NodeHandler nh = (NodeHandler) j.next();
-            nh.startNode(node, scope_id);
+        // Call startNode() on each registered NodeHandler
+        for(Iterator i = handlers.iterator(); i.hasNext();) 
+        {
+            NodeHandler nh = (NodeHandler) i.next();
+            nh.startNode(node, scopeId);
         }
         
-        List children = processNodeData(node);
-        
-        for(Iterator i = children.iterator(); i.hasNext();) {
-            traverseRecursive(i.next(), scope_id, visited);
+        // Call this method for each child of the current node
+        List children = processNodeData(node);        
+        for(Iterator i = children.iterator(); i.hasNext();) 
+        {
+            traverseRecursive(i.next(), scopeId, visited);
         }
         
-        for(Iterator k = handlers.iterator(); k.hasNext();) {
-            NodeHandler nh = (NodeHandler) k.next();
-            nh.endNode(node, scope_id);
+        // Call endNode() on each registered NodeHandler
+        for(Iterator i = handlers.iterator(); i.hasNext();) 
+        {
+            NodeHandler nh = (NodeHandler) i.next();
+            nh.endNode(node, scopeId);
         }
     }
 
@@ -241,7 +265,6 @@ public class CCMGraphTraverser implements GraphTraverser
                 continue;
 
             Object value = null;
-//            Method access = null;
 
             // the field is the capitalized name of the corresponding data
             // field in the class. it's used to fill out template information.
@@ -250,7 +273,8 @@ public class CCMGraphTraverser implements GraphTraverser
             if(!type.endsWith("oolean"))
                 field = field.substring(1);
 
-            try {
+            try 
+            {
                 value = methods[i].invoke(node, null);
             }
             catch(IllegalAccessException e) {
@@ -261,12 +285,20 @@ public class CCMGraphTraverser implements GraphTraverser
             }
 
             if(type.endsWith("List"))
+            {
                 children.addAll((List) value);
+            }
             else if(type.endsWith("Set"))
+            {
                 children.addAll((Set) value);
+            }
             else
+            {
                 for(Iterator x = handlers.iterator(); x.hasNext();)
+                {
                     ((NodeHandler) x.next()).handleNodeData(type, field, value);
+                }
+            }
         }
         return children;
     }

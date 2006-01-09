@@ -2,7 +2,7 @@ package ccmtools.test.CCMTraverser;
 
 import java.io.File;
 
-import ccmtools.CodeGenerator.CCMGraphTraverser;
+import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.Metamodel.BaseIDL.MContainer;
@@ -16,7 +16,7 @@ public class Main
         File idlFile = new File(System.getProperty("user.dir"),"src/ccmtools/test/CCMTraverser/test.idl");
         System.out.println("> parse: " + idlFile);
         
-        GraphTraverser traverser = new CCMGraphTraverser();
+        GraphTraverser traverser = new CcmGraphTraverser();
         ParserManager parserManager = new ParserManager(Driver.M_NONE);
         traverser.addHandler(new SimpleNodeHandler());
 
