@@ -1,6 +1,6 @@
-<%@ jet package="ccmtools.JavaClientLib.templates" 
+<%@ jet package="ccmtools.generator.java.clientlib.templates" 
 	    class="UsesEquivalentMethodDeclarationTemplate" 
-		imports="ccmtools.JavaClientLib.metamodel.* "	    
+		imports="ccmtools.generator.java.clientlib.metamodel.* "	    
 %>
 <% UsesDef uses = (UsesDef) argument;  %>
 

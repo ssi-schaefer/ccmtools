@@ -1,6 +1,6 @@
-<%@ jet package="ccmtools.JavaClientLib.templates" 
+<%@ jet package="ccmtools.generator.java.clientlib.templates" 
 	    class="InterfaceDeclarationTemplate" 
-		imports="java.util.Iterator ccmtools.JavaClientLib.metamodel.* "	    
+		imports="java.util.Iterator ccmtools.generator.java.clientlib.metamodel.* "	    
 %>
 <% InterfaceDef iface = (InterfaceDef) argument; %>
 /*

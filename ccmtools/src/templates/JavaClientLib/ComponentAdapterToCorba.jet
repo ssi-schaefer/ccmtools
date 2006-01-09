@@ -1,6 +1,6 @@
-<%@ jet package="ccmtools.JavaClientLib.templates" 
+<%@ jet package="ccmtools.generator.java.clientlib.templates" 
 	    class="ComponentAdapterToCorbaTemplate" 
-		imports="java.util.Iterator ccmtools.JavaClientLib.metamodel.* "	    
+		imports="java.util.Iterator ccmtools.generator.java.clientlib.metamodel.* "	    
 %>
 <% ComponentDef component = (ComponentDef) argument; %>
 /*
@@ -102,6 +102,16 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 }
 %>
 
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+%>
+<%=uses.generateUsesEquivalentMethodImplementation()%>
+<%
+}
+%>
+
     
     /** CCMObject interface methods */
     
@@ -159,15 +169,45 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
         throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection,
                ccm.local.Components.AlreadyConnected, ccm.local.Components.ExceededConnectionLimit
     {
-         // TODO
-        throw new RuntimeException("provide_facet() is not implemented!");   
+        if(name == null)
+        {
+            throw new ccm.local.Components.InvalidName();
+        }
+       <%		
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
+{
+    UsesDef uses = (UsesDef)i.next();
+%>     
+<%=uses.generateUsesReceptacleConnectMethodImplementation()%>
+<%
+}
+%>
+        else
+        {
+            throw new ccm.local.Components.InvalidName();
+        }
     }
     
     public void disconnect(String name, ccm.local.Components.Cookie ck)
         throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection,
                ccm.local.Components.CookieRequired, ccm.local.Components.NoConnection
     {
-        // TODO
-        throw new RuntimeException("provide_facet() is not implemented!");   
+        if(name == null)
+        {
+            throw new ccm.local.Components.InvalidName();
+        }
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
+{
+    UsesDef uses = (UsesDef)i.next();
+%>     
+<%=uses.generateUsesReceptacleDisconnectMethodImplementation()%>
+<%
+}
+%>
+        else
+        {
+            throw new ccm.local.Components.InvalidName();
+        }
     }
 }
