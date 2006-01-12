@@ -1,6 +1,7 @@
 package ccmtools.generator.java.clientlib.ui;
 
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -13,6 +14,7 @@ import org.apache.commons.cli.ParseException;
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.UI.Driver;
+import ccmtools.generator.java.clientlib.JavaClientLibGenerator;
 
 public class Main
 {
@@ -34,15 +36,21 @@ public class Main
             uiDriver = new ccmtools.UI.ConsoleDriver(Driver.M_NONE);
             printVersion();
             
-            JavaClientLibParameters parameters = new JavaClientLibParameters();
+            CommandLineParameters parameters = new CommandLineParameters();
             if(parseCommandLineArgs(args, parameters)) 
             {
-//                JavaClientLibGenerator generator = new JavaClientLibGenerator(parameters, uiDriver);
-//                generator.generate();
-            	
-            	
+            	parameters.validate();
             	System.out.println(parameters); //!!!!!!!!!!!
-            
+
+            	for(Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext(); )
+            	{
+            		String generatorId = (String)i.next();
+            		if(generatorId.equals("clientlib"))
+            		{
+            			JavaClientLibGenerator generator = new JavaClientLibGenerator(parameters, uiDriver);
+            			generator.generate();
+            		}
+            	}            
             }
         }
         catch(ParseException e) {
@@ -83,7 +91,7 @@ public class Main
     }
     
     
-    private static boolean parseCommandLineArgs(String[] args, JavaClientLibParameters parameters)
+    private static boolean parseCommandLineArgs(String[] args, CommandLineParameters parameters)
         throws ParseException, CcmtoolsException
     {
         defineCommandLineOptions();

@@ -1,12 +1,19 @@
 package ccmtools.generator.java.clientlib;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ccmtools.CcmtoolsException;
+import ccmtools.Constants;
+import ccmtools.IDL3Parser.ParserManager;
+import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.UI.Driver;
 import ccmtools.generator.java.clientlib.metamodel.ComponentDef;
 import ccmtools.generator.java.clientlib.metamodel.HomeDef;
 import ccmtools.generator.java.clientlib.metamodel.IntegerType;
@@ -22,6 +29,12 @@ import ccmtools.generator.java.clientlib.metamodel.UsesDef;
 public class Test
 {
 	public static void main(String[] args)
+	{
+		generate();
+	}
+	
+	
+	public static void generate()
 	{
 		StringType stringType = new StringType();
 		IntegerType longType = new IntegerType();
@@ -95,5 +108,11 @@ public class Test
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public static void printMessage(String msg)
+	{
+		System.out.println(msg);
 	}
 }

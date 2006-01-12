@@ -8,9 +8,10 @@ public class ExceptionDef
 {
 	List parameter = new ArrayList();
 
-	public ExceptionDef(String identifier)
+	public ExceptionDef(String identifier, List ns)
 	{
 		setIdentifier(identifier);
+		setIdlNamespaceList(ns);	
 	}
 	
 	

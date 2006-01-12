@@ -1,16 +1,46 @@
-RELEASE-0.5
+RELEASE-0.6.x
 ============================================================================
-o) Deployment metamodel library
-o) Mapper Deployment model <=> XMI 2.1
-o) A command line user interface for the Component Deployment Descriptor
-   generator.
-o) Component Deployment Descriptor (CDD) generator   	 
 
-RELEASE-0.5.5
+RELEASE-0.6.0
 ----------------------------------------------------------------------------
+o) Feature: Java Client Lib Generator
+	- Java ClientLib Metamodel (implementation model) based on JET templates
+	
+*) Feature: Component Deployment Descriptor (CDD) generator 
+	- Deployment metamodel library
+	- Mapper Deployment model <=> XMI 2.1
+	- A command line user interface for the Component Deployment Descriptor
+   	  generator.
+	- Component Deployment Descriptor (CDD) generator   	 
 
+*) Bugfix: Bugzilla Bug 6699 uml2idl uses /bin/bash (should use /bin/sh)
 
-RELEASE-0.5.4 (RELEASE-0_5_4-BRANCH)
+*) Bugfix: IDL2 and IDL3 Generator
+   Added namespace for inherited interface declarations.
+   (see test/CppRemoteGenerator/facet_module_inheritance)
+   
+*) Bugfix: IDL3, IDL2, C++ local, remote Generator   
+   Added support for primitive constants.
+    	   
+*) Bugfix: IDL3, IDL2 Generator
+   Added support for CORBA::Object parameters.
+    	   
+*) Refactoring: Changed to Java 1.5 compiler (with 1.4 compliance)
+   Removed some enum variables...
+
+*) Refactoring: Changed code for local C++ interfaces and adapters adapters
+   Added protected default constructor, private copy constructor and private
+   assign operator.
+
+*) Refactoring: IDL2 and C++ remote Generator
+   Added code prittyfier support. 
+    	   
+    	   
+    	   
+RELEASE-0.5.x
+============================================================================
+	   
+RELEASE-0.5.4 (RELEASE-0_5_4-BRANCH) December 21, 2005 
 ----------------------------------------------------------------------------
 *) Bugfix: Namespaces in remote source code 
    Local namespaces within the remote component logic are wrong 
@@ -30,7 +60,7 @@ RELEASE-0.5.4 (RELEASE-0_5_4-BRANCH)
 	remote adapters for derived IDL interfaces, the methods and attributes	
 	of the base interface are not supported.
 		   
-*) Refactorings:
+*) Refactoring:
    - Code prittyfier for idl2 source code 
    - Code prittyfier for c++remote source code 
    - Generate constants in C++ style (with L and UL suffix)
@@ -38,7 +68,7 @@ RELEASE-0.5.4 (RELEASE-0_5_4-BRANCH)
 
 New release management!!!!
 ============================================================================
-The release number now reflects the following schema:
+Now, the release number reflects the following schema:
 
               major.minor.bugfix 
 
