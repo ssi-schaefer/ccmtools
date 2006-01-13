@@ -1,24 +1,90 @@
+Installation requisites:
+------------------------
+
+Confix configuration profile:
+
+benchmark_profile = {
+    'PREFIX': '/home/eteinik/install/benchmark_install',
+    'BUILDROOT': '/home/eteinik/tmp/benchmark_build',
+    'ADVANCED': 'true',
+    'CONFIX': {
+    },
+    'CONFIGURE': {
+       'ENV': {
+          'CC': 'gcc',
+          'CXX': 'g++',
+          'CFLAGS': "-O2 -Wall ",
+          'CXXFLAGS': "-O2 -Wall ",
+       },
+       'ARGS': [
+        '--with-mico=/opt/gcc-3.3.4/mico-2.3.11/lib/mico-setup.sh'
+       ]
+    },
+}
 
 
-a) Run local tests (ObjectTest, CcmLocalTest, Collocated CORBA)
-   $ make remote
-   $ make install
-   $ make check	
+> confix.py --version
+confix.py version 1.4.0
 
-   $ time ~/tmp/ccmtools_benchmark_build/xxx/test/xxx_test__check_CCM_Local_Object_Test
-   $ time ~/tmp/ccmtools_benchmark_build/xxx/test/xxx_test__check_CCM_Local_CCM_Session_Test
-   $ time ~/tmp/ccmtools_benchmark_build/xxx/test/xxx_test__check_CCM_Remote_CCM_Session_Test_remote		
+> gcc --version
+gcc (GCC) 3.3.6
+
+> ccmtools --version
+CCM Tools version 0.6.0
 
 
-b) Run remote tests	
-   $ cd server/cpp_server
-   $ make server
-   $ ~/tmp/ccmtools_benchmark_build/server/cpp_server/server_cpp_server_CCM_Remote_Server
 
-   $ cd client/cpp_client
-   $ make client
-   $ time ~/tmp/client/cpp_client/client_cpp_client_CCM_Remote_Client
+Install ccmtools C++ runtime environment:
+-----------------------------------------
 
-   $ cd client/java_client	
-   $ ant
-   $ bin/runClient
+> cd wx-toolsbox-1.0.0 
+> confix.py --profile=benchmark  --bootstrap --configure --make --targets=install
+
+> cd wx-utils-1.2.2 
+> confix.py --profile=benchmark  --bootstrap --configure --make --targets=install
+
+> cd cpp-environment
+> confix.py --profile=benchmark  --packageroot=`pwd`/ccm --bootstrap --configure --make --targets=install
+
+
+
+Build and run the benchmark examples:
+-------------------------------------
+
+> cd ccmtools/test/benchmark/ccmtools 
+
+a) Local component benchmark:
+> make local
+> make local_check
+See the //!!!!!! section in client/ccm_local_client/Client.cc to 
+change benchmark settings.
+
+
+b) Remote component benchmark with C++ client:
+> make remote
+> make remote_check
+
+
+Run benchmarks:
+---------------
+
+a) Local component benchmark:
+<benchmark_build>/ccm_collocated_client/ccm_collocated_client_Client
+
+b) Remote component benchmark with collocated C++ client:
+<benchmark_build>/ccm_collocated_client/ccm_collocated_client_Client
+
+c) Remote component benchmark with C++ client
+<benchmark_build>/ccm_server/ccm_server_Server
+<benchmark_build>/ccm_remote_client/ccm_remote_client_Client
+
+Don't forget to start the CORBA NameService for remote component tests!!
+> cd cpp-environment
+> bin/runJavaNS
+
+
+Cleanup:
+--------
+
+> make local_clean
+> make remote_clean

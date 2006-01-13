@@ -47,10 +47,12 @@ public class Client
 	    System.out.println("--- Start Test Case ------------------------");
 
 	    // A timer to measure call/response times
+	    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	    Timer timer = new Timer();
-	    final long MAX_LOOP_COUNT = 10000;
+	    final long MAX_LOOP_COUNT = 1000;
 	    final long SEQUENCE_SIZE_MAX = 1000;
 	    final long SEQUENCE_SIZE_STEP = 100;
+	    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	    //----------------------------------------------------------
 	    // ping test case

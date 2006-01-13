@@ -26,13 +26,13 @@
 #include <ccm/local/Components/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <ccm/local/component/Test/Test_bm_impl.h>
-#include <ccm/local/component/Test/Test_gen.h>
-#include <ccm/local/component/Test/TestHome_gen.h>
+#include <benchmark/ccm/local/component/Test/Test_bm_impl.h>
+#include <benchmark/ccm/local/component/Test/Test_gen.h>
+#include <benchmark/ccm/local/component/Test/TestHome_gen.h>
 
 using namespace std;
 using namespace WX::Utils;
-using namespace ccm::local;
+using namespace benchmark::ccm::local;
 
 
 int main(int argc, char *argv[])
@@ -44,18 +44,16 @@ int main(int argc, char *argv[])
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     SmartPtr<component::Test::Test> myTest;
-    SmartPtr<Benchmark> bm;
-
-    Components::Cookie Test_ck_bm;
+    SmartPtr<BenchmarkInterface> bm;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    Components::HomeFinder* homeFinder;
-    homeFinder = HomeFinder::Instance();
-    error  = deploy_ccm_local_component_Test_TestHome("TestHome");
+    ccm::local::Components::HomeFinder* homeFinder;
+    homeFinder = ccm::local::HomeFinder::Instance();
+    error  = deploy_benchmark_ccm_local_component_Test_TestHome("TestHome");
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -79,16 +77,16 @@ int main(int argc, char *argv[])
         bm = myTest->provide_bm();
         myTest->configuration_complete();
     } 
-    catch ( Components::HomeNotFound ) {
+    catch ( ccm::local::Components::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( Components::NotImplemented& e ) {
+    catch (  ccm::local::Components::NotImplemented& e ) {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch ( Components::InvalidName& e ) {
+    catch (  ccm::local::Components::InvalidName& e ) {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
@@ -112,11 +110,13 @@ int main(int argc, char *argv[])
 
       // Test configuration
       ccm::utils::Timer timer;
-      
-      const long MAX_LOOP_COUNT = 100000000;
 
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // Here you can change some benchmark settings:
+      const long MAX_LOOP_COUNT = 10000;
       const long SEQUENCE_SIZE_MAX = 1000;
       const long SEQUENCE_SIZE_STEP = 100;
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
       //----------------------------------------------------------
       // ping test case
@@ -393,7 +393,7 @@ int main(int argc, char *argv[])
 
       cout << "--- Stop Test Case ------------------------------------" << endl;
     } 
-    catch ( Components::NotImplemented& e ) {
+    catch (  ccm::local::Components::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
@@ -412,11 +412,11 @@ int main(int argc, char *argv[])
     try {
         myTest->remove();
     } 
-    catch ( Components::HomeNotFound ) {
+    catch ( ccm::local::Components::HomeNotFound ) {
         cout << "TEARDOWN ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( Components::NotImplemented& e ) {
+    catch ( ccm::local::Components::NotImplemented& e ) {
         cout << "TEARDOWN ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
@@ -426,7 +426,7 @@ int main(int argc, char *argv[])
         error = -1;
     }
 
-    error += undeploy_ccm_local_component_Test_TestHome("TestHome");
+    error += undeploy_benchmark_ccm_local_component_Test_TestHome("TestHome");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;

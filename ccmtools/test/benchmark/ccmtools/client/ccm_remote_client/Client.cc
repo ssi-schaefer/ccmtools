@@ -7,17 +7,17 @@
 #include <iostream>
 #include <string>
 
-#include <WX/Utils/debug.h>
-#include <WX/Utils/Timer.h>
-#include <WX/Utils/TimerEvaluation.h>
+#include <ccm/remote/Debug.h>
+#include <ccm/utils/Timer.h>
+#include <ccm/utils/TimerEvaluation.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
 #include <CCM/CCMContainer.h>
 
-#include <CCM_Remote/CCM_Session_Test/TestHome_remote.h>
-#include <CORBA_Stubs_Test.h>
+#include <benchmark/ccm/remote/component/Test/TestHome_remote.h>
+#include <benchmark_Test.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -28,8 +28,8 @@ using namespace WX::Utils;
 
 int main (int argc, char *argv[])
 {
-    WX::Utils::Timer globalTimer;
-    WX::Utils::TimerEvaluation eval;
+    ccm::utils::Timer globalTimer;
+    ccm::utils::TimerEvaluation eval;
     globalTimer.start();
 
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
@@ -64,27 +64,26 @@ int main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::CORBA_Stubs::TestHome_var myTestHome = 
-      ::CORBA_Stubs::TestHome::_narrow (obj);
+    ::benchmark::TestHome_var myTestHome = ::benchmark::TestHome::_narrow (obj);
 
     // Create component instances
-    ::CORBA_Stubs::Test_var myTest = myTestHome->create();
+    ::benchmark::Test_var myTest = myTestHome->create();
 
-    // Provide facets   
-    ::CORBA_Stubs::Benchmark_var bm = myTest->provide_bm();
-
+    // Provide facets
+    ::benchmark::BenchmarkInterface_var bm = myTest->provide_bm();
     myTest->configuration_complete();
 
     try {
       cout << "--- Start Test Case -----------------------------------" << endl;
 
       // Test configuration
-      WX::Utils::Timer timer;
+      ccm::utils::Timer timer;
 
-      const long MAX_LOOP_COUNT = 10000;
-
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      const long MAX_LOOP_COUNT = 100;
       const long SEQUENCE_SIZE_MAX = 10000;
       const long SEQUENCE_SIZE_STEP = 1000;
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
       //----------------------------------------------------------
@@ -151,7 +150,7 @@ int main (int argc, char *argv[])
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Remote CCM Test: void f_in3(in LongList ll1) "; 
 
-	  ::CORBA_Stubs::LongList_var value = new ::CORBA_Stubs::LongList;
+	  ::benchmark::LongList_var value = new ::benchmark::LongList;
 	  value->length(size);
 
 	  for(long i=0; i<size; i++)
@@ -215,7 +214,7 @@ int main (int argc, char *argv[])
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Collocated CCM Test: void f_inout3(inout LongList ll1) "; 
 
-	  ::CORBA_Stubs::LongList_var value = new ::CORBA_Stubs::LongList;
+	  ::benchmark::LongList_var value = new ::benchmark::LongList;
 	  value->length(size);
 	  for(long i=0; i<size; i++)
 	    (*value)[i] = i;
@@ -280,8 +279,8 @@ int main (int argc, char *argv[])
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Collocated CCM Test: void f_out3(out LongList ll1) "; 
 
-	  ::CORBA_Stubs::LongList_var value = new ::CORBA_Stubs::LongList;
-	  ::CORBA_Stubs::LongList_var result;
+	  ::benchmark::LongList_var value = new ::benchmark::LongList;
+	  ::benchmark::LongList_var result;
 	  value->length(size);
 	  for(long i=0; i<size; i++)
 	    (*value)[i] = i;
@@ -346,8 +345,8 @@ int main (int argc, char *argv[])
 	for(long size=0; size<=SEQUENCE_SIZE_MAX; size+=SEQUENCE_SIZE_STEP) {
 	  cout << "Collocated CCM Test: LongList f_ret3() "; 
 
-	  ::CORBA_Stubs::LongList_var value = new ::CORBA_Stubs::LongList;
-	  ::CORBA_Stubs::LongList_var result;
+	  ::benchmark::LongList_var value = new ::benchmark::LongList;
+	  ::benchmark::LongList_var result;
 	  value->length(size);
 	  for(long i=0; i<size; i++)
 	    (*value)[i] = i;

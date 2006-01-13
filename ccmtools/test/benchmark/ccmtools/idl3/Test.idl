@@ -1,12 +1,16 @@
 
 #include<Benchmark.idl>
 
-component Test
+module benchmark
 {
-  provides Benchmark bm;
-};
+  
+  component Test
+  {
+    provides BenchmarkInterface bm;
+  };
 
-home TestHome manages Test
-{
-};
+  home TestHome manages Test
+  {
+  };
 
+}; // /Namespace

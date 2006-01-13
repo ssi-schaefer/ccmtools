@@ -10,3 +10,6 @@ install-sh
 missing
 client.repo
 component-clients.repo
+acinclude.m4
+config.guess
+config.sub

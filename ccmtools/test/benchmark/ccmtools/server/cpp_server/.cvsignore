@@ -1,3 +1,10 @@
 Makefile.am
 Makefile.in
 server_cpp_server.py
+acinclude.m4
+aclocal.m4
+autom4te.cache
+ccm_server.repo
+config.h.in
+configure
+configure.in
