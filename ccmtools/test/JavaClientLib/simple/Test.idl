@@ -15,7 +15,7 @@ interface BasicTypeInterface {
   string         f8(in string p1, inout string p2, out string p3);
 };
 
-
+  /*
 interface UserTypeInterface {
   Person     f2(in Person p1, inout Person p2, out Person p3);
   StringList f5(in StringList p1, inout StringList p2, out StringList p3);
@@ -26,17 +26,17 @@ interface VoidTypeInterface {
   void f1(in long p1);
   long f2();
 };
-
+  */
 
 component Test
 {
   provides BasicTypeInterface basicTypeIn;
-  provides UserTypeInterface  userTypeIn;
-  provides VoidTypeInterface  voidTypeIn;
+  //  provides UserTypeInterface  userTypeIn;
+  //  provides VoidTypeInterface  voidTypeIn;
 
   uses BasicTypeInterface basicTypeOut;
-  uses UserTypeInterface  userTypeOut;
-  uses VoidTypeInterface  voidTypeOut;
+  //  uses UserTypeInterface  userTypeOut;
+  //  uses VoidTypeInterface  voidTypeOut;
 };
 
 home TestHome manages Test
