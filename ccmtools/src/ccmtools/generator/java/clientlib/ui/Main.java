@@ -15,6 +15,7 @@ import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.UI.Driver;
 import ccmtools.generator.java.clientlib.JavaClientLibGenerator;
+import ccmtools.utils.CcmtoolsProperties;
 
 public class Main
 {
@@ -23,6 +24,12 @@ public class Main
     
     /** Driver that handles user output */
     private static Driver uiDriver;
+    
+    // If the isExitWithErrorStatus flag is set, the main() function will 
+    // call exit(1) to terminate ccmtools and the running Java VM.
+    private static boolean isExitWithErrorStatus = true;
+    private static final int EXIT_STATUS_FOR_ERROR = -1;
+    
     
     /**
      * Using the main method, we can start the Java client library generator
@@ -41,11 +48,13 @@ public class Main
             {
             	parameters.validate();
             	System.out.println(parameters); //!!!!!!!!!!!
-
+            	setCcmtoolsProperties();
+            	System.out.println(CcmtoolsProperties.Instance().getPropertyMap()); //!!!!!!
+            	
             	for(Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext(); )
             	{
             		String generatorId = (String)i.next();
-            		if(generatorId.equals("clientlib"))
+            		if(generatorId.equals("java"))
             		{
             			JavaClientLibGenerator generator = new JavaClientLibGenerator(parameters, uiDriver);
             			generator.generate();
@@ -58,13 +67,32 @@ public class Main
             printUsage();
         }
         catch(CcmtoolsException e) {
-            uiDriver.printError(e.getMessage());
+        	exitWithErrorStatus(e.getMessage());
         }
         catch(FileNotFoundException e) {
             // Can't open uiDriver file
-            System.err.println(e.getMessage());
+        	exitWithErrorStatus(e.getMessage());
+        }
+        catch(Exception e)
+        {
+        	exitWithErrorStatus(e.getMessage());
         }
     }
+    
+    
+    /**
+     * Set default values in the ccmtools properties list (the items
+     * in this list depends on the content of ccmtools/etc/ccmtools.properties). 
+     */
+    private static void setCcmtoolsProperties()
+    {
+    	if(System.getProperty("ccmtools.home") == null) 
+    	{
+    		System.setProperty("ccmtools.home",System.getProperty("user.dir"));
+    	}	
+    	CcmtoolsProperties.Instance().set("ccmtools.home", System.getProperty("ccmtools.home"));
+    }
+
     
     
     private static void defineCommandLineOptions()
@@ -74,7 +102,7 @@ public class Main
         // Define boolean options
         options.addOption("h", "help", false,"Display this help");
         options.addOption("V", "version", false, "Display CCM Tools version information");
-        options.addOption("clientlib", false, "Run the Java client library generator");
+        options.addOption("java", false, "Run the Java client library generator");
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
         // Define single valued options
@@ -117,17 +145,19 @@ public class Main
             return false; // don't continue program execution
         }
         
-        if(cmd.hasOption("clientlib"))
+        if(cmd.hasOption("java"))
         {
-        	parameters.getGeneratorIds().add("clientlib");
+        	parameters.getGeneratorIds().add("java");
         }        
         
         if(cmd.hasOption("noexit"))
         {
         	parameters.setNoExit(true);
+        	isExitWithErrorStatus = false;
         }
         else
         {
+        	isExitWithErrorStatus = true;
         	parameters.setNoExit(false);
         }
         
@@ -174,10 +204,13 @@ public class Main
                          Constants.VERSION_TEXT + "\n");
     }
     
-//    private static void printArgs(String[] args)
-//    {
-//        for(int i=0; i<args.length; i++) {
-//            uiDriver.println("[" + i + "] " + args[i]);
-//        }            
-//    }
+    
+    private static void exitWithErrorStatus(String errorMessage)
+    {
+        uiDriver.printError("CCM Tools have been terminated with an error!\n" + errorMessage);
+        if(isExitWithErrorStatus) 
+        {
+            System.exit(EXIT_STATUS_FOR_ERROR);
+        }
+    }
 }

@@ -20,10 +20,11 @@
 
 package ccmtools;
 
-public class Constants {
-    public static final String PACKAGE  = "@PACKAGE@";
-    public static final String VERSION  = "@VERSION@";
-    public static final String CPP_PATH = "@CPP_PATH@";
+public class Constants 
+{
+    public static final String PACKAGE  = "ccmtools";
+    public static final String VERSION  = "0.6.0";
+    public static final String CPP_PATH = "cpp";
 
 	public static final String COMPONENT_NAMESPACE = "component";
 
@@ -54,7 +55,8 @@ public class Constants {
 	   + "  idl3mirror      Generate IDL3 mirror files\n"
 	   + "  idl2            Generate equivalent IDL2 files";
 
-    public static final String[] GENERATOR_TYPES = {
+    public static final String[] GENERATOR_TYPES = 
+    {
             "c++local", "c++local-test", "c++dbc", "c++remote",
             "c++remote-test", "idl3", "idl3mirror", "idl2"
     };

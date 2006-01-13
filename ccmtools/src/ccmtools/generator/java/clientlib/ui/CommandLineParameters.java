@@ -95,17 +95,16 @@ public class CommandLineParameters
     }
     
     /**
-     * Check if the given output paths exists.
+     * Check if the given output directory is valid.
      * 
      * @throws CcmtoolsException
      */
     private void checkOutputPath() 
         throws CcmtoolsException
     {
-        // OK, if any given output directory exists
-        File path = new File(outDir);
-        if(!path.exists()) {
-            throw new CcmtoolsException("Invalid output path " + path);
+        if(outDir == null || outDir.length() == 0) 
+        {
+        	outDir = ".";
         }
     }
 	    

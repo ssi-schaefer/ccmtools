@@ -4,34 +4,38 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 
 public class CcmtoolsProperties
 {
     protected final String CCMTOOLS_PROPERTY_FILE_NAME = "ccmtools.properties";
-    protected Properties ccmtoolsProperties_;
-    protected String propertyPath_;
-    protected static CcmtoolsProperties instance_ = null;
+    protected Properties properties;
+    protected String propertyPath;
+    protected static CcmtoolsProperties instance = null;
     
     public static CcmtoolsProperties Instance() 
     {
-        if(instance_ == null) {
+        if(instance == null) {
             try {
-                instance_ = new CcmtoolsProperties();
+                instance = new CcmtoolsProperties();
             }
             catch(IOException e) {
                 // TODO: Set default values
             }
         }
-        return instance_;
+        return instance;
     }
     
     
     protected CcmtoolsProperties() 
     	throws IOException
     {
-        propertyPath_ = 
+        propertyPath = 
             System.getProperty("ccmtools.home") 
         	+ File.separator 
         	+ "etc" 
@@ -42,7 +46,7 @@ public class CcmtoolsProperties
     
     public boolean isDefined(String key)
     {
-        return ccmtoolsProperties_.containsKey(key);        
+        return properties.containsKey(key);        
     }
     
     /**
@@ -54,7 +58,7 @@ public class CcmtoolsProperties
      */
     public String get(String key)
     {
-        String value = ccmtoolsProperties_.getProperty(key);
+        String value = properties.getProperty(key);
         if(value == null) {
             value = "";
         }
@@ -63,28 +67,44 @@ public class CcmtoolsProperties
 
     public void set(String key, String value)
     {
-        ccmtoolsProperties_.setProperty(key, value);
+        properties.setProperty(key, value);
+    }
+
+    public Set getKeySet()
+    {
+    	return properties.keySet();
+    }
+    
+    public Map getPropertyMap()
+    {
+    	Map map = new HashMap();    	
+    	Set keySet = getKeySet();
+    	for(Iterator i = keySet.iterator(); i.hasNext(); )
+    	{
+    		String key = (String)i.next();
+    		map.put(key, get(key));
+    	}
+    	return map;
     }
     
     protected void load() 
     	throws IOException
     {
-        File file = new File(propertyPath_, CCMTOOLS_PROPERTY_FILE_NAME);
+        File file = new File(propertyPath, CCMTOOLS_PROPERTY_FILE_NAME);
         System.out.println("> load properties from " + file);
-        ccmtoolsProperties_ = new Properties();
+        properties = new Properties();
         FileInputStream in = new FileInputStream(file);
-        ccmtoolsProperties_.load(in);
+        properties.load(in);
         in.close();
     }
     
     protected void save() 
     	throws IOException
     {
-        File file = new File(propertyPath_, CCMTOOLS_PROPERTY_FILE_NAME);
+        File file = new File(propertyPath, CCMTOOLS_PROPERTY_FILE_NAME);
         System.out.println("> store properties to " + file);
         FileOutputStream out = new FileOutputStream(file);
-        ccmtoolsProperties_.store(out, "");
+        properties.store(out, "");
         out.close();
     }
-    
 }
