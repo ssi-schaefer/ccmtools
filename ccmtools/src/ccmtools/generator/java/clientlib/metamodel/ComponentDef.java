@@ -6,6 +6,7 @@ import java.util.List;
 
 import ccmtools.generator.java.clientlib.templates.ComponentAdapterToCorbaTemplate;
 import ccmtools.generator.java.clientlib.templates.ComponentDeclarationTemplate;
+import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class ComponentDef
@@ -65,7 +66,7 @@ public class ComponentDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateSourceFiles()
+	public List generateClientLibSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
 		String packages = Text.joinList(File.separator, getJavaNamespaceList());

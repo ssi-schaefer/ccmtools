@@ -7,6 +7,7 @@ import java.util.List;
 import ccmtools.generator.java.clientlib.templates.InterfaceAdapterFromCorbaTemplate;
 import ccmtools.generator.java.clientlib.templates.InterfaceAdapterToCorbaTemplate;
 import ccmtools.generator.java.clientlib.templates.InterfaceDeclarationTemplate;
+import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class InterfaceDef
@@ -53,7 +54,7 @@ public class InterfaceDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateSourceFiles()
+	public List generateClientLibSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
 		String packages = Text.joinList(File.separator, getJavaNamespaceList());

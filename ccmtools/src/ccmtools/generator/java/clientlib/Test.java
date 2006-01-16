@@ -22,9 +22,9 @@ import ccmtools.generator.java.clientlib.metamodel.OperationDef;
 import ccmtools.generator.java.clientlib.metamodel.ParameterDef;
 import ccmtools.generator.java.clientlib.metamodel.PassingDirection;
 import ccmtools.generator.java.clientlib.metamodel.ProvidesDef;
-import ccmtools.generator.java.clientlib.metamodel.SourceFile;
 import ccmtools.generator.java.clientlib.metamodel.StringType;
 import ccmtools.generator.java.clientlib.metamodel.UsesDef;
+import ccmtools.utils.SourceFile;
 
 public class Test
 {
@@ -77,9 +77,9 @@ public class Test
 				"test/JavaClientLib/simple/xxx/JavaClientLib/src");
 
 		List sourceFileList = new ArrayList();
-		sourceFileList.addAll(basicTypeInterface.generateSourceFiles());
-		sourceFileList.addAll(component.generateSourceFiles());
-		sourceFileList.addAll(home.generateSourceFiles());
+		sourceFileList.addAll(basicTypeInterface.generateClientLibSourceFiles());
+		sourceFileList.addAll(component.generateClientLibSourceFiles());
+		sourceFileList.addAll(home.generateClientLibSourceFiles());
 		
 		for(Iterator i=sourceFileList.iterator(); i.hasNext();)
 		{

@@ -9,6 +9,7 @@ import ccmtools.generator.java.clientlib.templates.HomeDeclarationTemplate;
 import ccmtools.generator.java.clientlib.templates.HomeExplicitDeclarationTemplate;
 import ccmtools.generator.java.clientlib.templates.HomeFactoryTemplate;
 import ccmtools.generator.java.clientlib.templates.HomeImplicitDeclarationTemplate;
+import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class HomeDef
@@ -63,7 +64,7 @@ public class HomeDef
 
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateSourceFiles()
+	public List generateClientLibSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
 		String packages = Text.joinList(File.separator, getJavaNamespaceList());

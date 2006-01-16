@@ -22,6 +22,7 @@
 
 package ccmtools.utils;
 
+import ccmtools.CcmtoolsException;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MModuleDef;
@@ -35,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
@@ -47,7 +49,43 @@ import java.util.HashSet;
  ******************************************************************************/
 public class Code
 {
-
+	
+	/**
+	 * Helper method to write out a list of SourceFile objects.
+	 * 
+	 * @param uiDriver User interface driver to write some "> write ..." messages 
+	 * @param outDir Output directory
+	 * @param sourceFileList List of SourceFile objects
+	 *
+	 * @throws CcmtoolsException
+	 */
+	public static void writeSourceCodeFiles(Driver uiDriver, String outDir, List sourceFileList) 
+		throws CcmtoolsException
+	{
+		for (Iterator i = sourceFileList.iterator(); i.hasNext();)
+		{
+			SourceFile source = (SourceFile) i.next();
+			File location = new File(outDir, source.getPackageName());
+			File file = new File(location, source.getClassName());
+			uiDriver.println("> write " + file);
+			try
+			{
+				if (!location.isDirectory())
+				{
+					location.mkdirs();
+				}
+				FileWriter writer = new FileWriter(file);
+				writer.write(source.getCode(), 0, source.getCode().length());
+				writer.close();
+			}
+			catch (IOException e)
+			{
+				throw new CcmtoolsException("writeCode(): " + e.getMessage());
+			}
+		}
+	}
+	
+	
     /**
      * Helper function for writing finalized files. (see also
      * CodeGenerator.java)

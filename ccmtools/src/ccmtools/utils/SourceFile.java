@@ -1,4 +1,4 @@
-package ccmtools.generator.java.clientlib.metamodel;
+package ccmtools.utils;
 
 
 public class SourceFile

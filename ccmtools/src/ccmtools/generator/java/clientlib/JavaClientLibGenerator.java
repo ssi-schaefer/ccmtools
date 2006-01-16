@@ -2,9 +2,8 @@ package ccmtools.generator.java.clientlib;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -16,8 +15,12 @@ import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
-import ccmtools.generator.java.clientlib.metamodel.SourceFile;
+import ccmtools.generator.java.clientlib.metamodel.ComponentDef;
+import ccmtools.generator.java.clientlib.metamodel.HomeDef;
+import ccmtools.generator.java.clientlib.metamodel.InterfaceDef;
+import ccmtools.generator.java.clientlib.metamodel.ModelRoot;
 import ccmtools.generator.java.clientlib.ui.CommandLineParameters;
+import ccmtools.utils.Code;
 
 public class JavaClientLibGenerator
 {
@@ -34,8 +37,7 @@ public class JavaClientLibGenerator
 	public JavaClientLibGenerator(CommandLineParameters parameters, Driver uiDriver)
 	{
 		this.uiDriver = uiDriver;
-		this.parameters = (CommandLineParameters)parameters;
-		
+		this.parameters = (CommandLineParameters)parameters;		                           
         logger = Logger.getLogger("ccm.generator.java.clientlib");
         logger.fine("JavaClientLibGenerator()");
 	}
@@ -44,8 +46,7 @@ public class JavaClientLibGenerator
 	public void generate()
 		throws CcmtoolsException
 	{		
-		System.out.println("JavaClientLibGenerator.generate()"); //!!!!!!!!!
-	
+		logger.fine("enter generate()");
 		for(Iterator i = parameters.getIdlFiles().iterator(); i.hasNext(); )
 		{
 			String idlFile = (String)i.next();
@@ -53,39 +54,34 @@ public class JavaClientLibGenerator
 
 			// Transform CCM Model to Java Implementation Model
 			GraphTraverser traverser = new CcmGraphTraverser();
-	        CcmModelNodeHandler nodeHandler = new CcmModelNodeHandler();
+	        CcmToJavaModelMapper nodeHandler = new CcmToJavaModelMapper();
 	        traverser.addHandler(nodeHandler);
 	        traverser.traverseGraph(ccmModel);    
 	        
-	        // Save source code to files
-	        for(Iterator j = nodeHandler.getSourceFileList().iterator(); j.hasNext(); )
+	        // Query the Java Implementation Model and generate all source file objects 
+	        // for the Java Client Library
+	        ModelRoot javaModel = nodeHandler.getJavaModel();
+	        List sourceFileList = new ArrayList();
+	        for(Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext(); )
 	        {
-	        	SourceFile source = (SourceFile)j.next();
-	        	writeCode(parameters.getOutDir(), source);
+	        	InterfaceDef javaIface = (InterfaceDef)j.next();
+	        	sourceFileList.addAll(javaIface.generateClientLibSourceFiles());
 	        }
+	        for(Iterator j = javaModel.findAllComponents().iterator(); j.hasNext(); )
+	        {
+	        	ComponentDef javaComponent = (ComponentDef)j.next();
+	        	sourceFileList.addAll(javaComponent.generateClientLibSourceFiles());
+	        }
+	        for(Iterator j = javaModel.findAllHomes().iterator(); j.hasNext(); )
+	        {
+	        	HomeDef javaHome = (HomeDef)j.next();
+	        	sourceFileList.addAll(javaHome.generateClientLibSourceFiles());
+	        }
+	        
+	        // Save all source file objects
+	        Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 		}
-	}
-	
-	public void writeCode(String outDir, SourceFile source)
-		throws CcmtoolsException
-	{
-		File location = new File(outDir, source.getPackageName());
-		File file = new File(location, source.getClassName());		
-		uiDriver.println("> write " + file);
-		try
-		{
-			if(!location.isDirectory()) 
-			{
-				location.mkdirs();
-			}			
-			FileWriter writer = new FileWriter(file);
-			writer.write(source.getCode(), 0, source.getCode().length());
-			writer.close();
-		}
-		catch (IOException e)
-		{
-			throw new CcmtoolsException("writeCode(): " + e.getMessage());
-		}
+		logger.fine("leave generate()");
 	}
 	
 	
