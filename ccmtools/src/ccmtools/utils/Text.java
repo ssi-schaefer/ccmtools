@@ -90,7 +90,8 @@ public class Text
      */
     public static String join(String separator, Collection parts)
     {
-        if (parts != null) {
+        if (parts != null) 
+        {
             if (parts.size() > 1) {
                 StringBuffer ret = new StringBuffer("");
                 for (Iterator i = parts.iterator(); i.hasNext(); ) {
@@ -103,19 +104,26 @@ public class Text
             }
             if (parts.size() == 1) return "" + parts.iterator().next();
         }
-        return new String("");
+        return "";
     }
 
 
 	public static String joinList(String separator, List list)
 	{
-		StringBuffer code = new StringBuffer();
-		for(Iterator i=list.iterator(); i.hasNext();)
+		if (list.size() > 0)
 		{
-			code.append((String)i.next());
-			code.append(separator);
+			StringBuffer code = new StringBuffer();
+			for (Iterator i = list.iterator(); i.hasNext();)
+			{
+				code.append((String) i.next());
+				code.append(separator);
+			}
+			return code.substring(0, code.lastIndexOf(separator));
 		}
-		return code.substring(0, code.lastIndexOf(separator));
+		else
+		{
+			return "";
+		}
 	}
     
     

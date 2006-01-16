@@ -1,25 +1,24 @@
 package ccmtools.generator.java.clientlib.metamodel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ExceptionDef
+public class UnionDef
 	extends ModelElement
 	implements Type
 {
-	List parameter = new ArrayList();
-
-	public ExceptionDef(String identifier, List ns)
-	{
-		setIdentifier(identifier);
-		setIdlNamespaceList(ns);	
-	}
-		
-	public List getParameter()
-	{
-		return parameter;
-	}
+	private List members;
 	
+	public UnionDef(String identifier, List namespace)
+	{
+		super(identifier, namespace);
+	}
+
+	
+	public List getMembers()
+	{
+		return members;
+	}
+
 	public String generateJavaMapping(PassingDirection direction)
 	{
 		if(direction == PassingDirection.IN

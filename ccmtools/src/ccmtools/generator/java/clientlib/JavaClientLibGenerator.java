@@ -47,6 +47,8 @@ public class JavaClientLibGenerator
 		throws CcmtoolsException
 	{		
 		logger.fine("enter generate()");
+		try 
+		{
 		for(Iterator i = parameters.getIdlFiles().iterator(); i.hasNext(); )
 		{
 			String idlFile = (String)i.next();
@@ -59,8 +61,9 @@ public class JavaClientLibGenerator
 	        traverser.traverseGraph(ccmModel);    
 	        
 	        // Query the Java Implementation Model and generate all source file objects 
-	        // for the Java Client Library
+	        // for the Java Client Library	        
 	        ModelRoot javaModel = nodeHandler.getJavaModel();
+	        System.out.println(javaModel);
 	        List sourceFileList = new ArrayList();
 	        for(Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext(); )
 	        {
@@ -80,6 +83,11 @@ public class JavaClientLibGenerator
 	        
 	        // Save all source file objects
 	        Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		logger.fine("leave generate()");
 	}

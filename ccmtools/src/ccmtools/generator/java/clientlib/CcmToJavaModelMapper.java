@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import ccmtools.CodeGenerator.NodeHandler;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
+import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -19,19 +20,23 @@ import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
+import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.generator.java.clientlib.metamodel.ArrayDef;
 import ccmtools.generator.java.clientlib.metamodel.BooleanType;
 import ccmtools.generator.java.clientlib.metamodel.ByteType;
 import ccmtools.generator.java.clientlib.metamodel.CharType;
 import ccmtools.generator.java.clientlib.metamodel.ComponentDef;
 import ccmtools.generator.java.clientlib.metamodel.DoubleType;
 import ccmtools.generator.java.clientlib.metamodel.ExceptionDef;
+import ccmtools.generator.java.clientlib.metamodel.FixedType;
 import ccmtools.generator.java.clientlib.metamodel.FloatType;
 import ccmtools.generator.java.clientlib.metamodel.HomeDef;
 import ccmtools.generator.java.clientlib.metamodel.IntegerType;
@@ -42,9 +47,12 @@ import ccmtools.generator.java.clientlib.metamodel.OperationDef;
 import ccmtools.generator.java.clientlib.metamodel.ParameterDef;
 import ccmtools.generator.java.clientlib.metamodel.PassingDirection;
 import ccmtools.generator.java.clientlib.metamodel.ProvidesDef;
+import ccmtools.generator.java.clientlib.metamodel.SequenceDef;
 import ccmtools.generator.java.clientlib.metamodel.ShortType;
 import ccmtools.generator.java.clientlib.metamodel.StringType;
+import ccmtools.generator.java.clientlib.metamodel.StructDef;
 import ccmtools.generator.java.clientlib.metamodel.Type;
+import ccmtools.generator.java.clientlib.metamodel.TypedefDef;
 import ccmtools.generator.java.clientlib.metamodel.UsesDef;
 import ccmtools.generator.java.clientlib.metamodel.VoidType;
 import ccmtools.utils.Code;
@@ -331,6 +339,32 @@ public class CcmToJavaModelMapper
 		}
 	}
 
+	
+	public StructDef transform(MStructDef in)
+	{		
+		StructDef out = new StructDef(in.getIdentifier(), Code.getNamespaceList(in));
+		// TODO: set members
+		return out;
+	}
+	
+	public TypedefDef transform(MAliasDef in)
+	{		
+		TypedefDef out = new TypedefDef(in.getIdentifier(), Code.getNamespaceList(in));
+		return out;
+	}
+	
+//	public ArrayDef transform(MArrayDef in)
+//	{		
+//		ArrayDef out = new ArrayDef(in.getIdentifier(), Code.getNamespaceList(in));
+//		return out;
+//	}
+	
+//	public SequenceDef transform(MSequenceDef in)
+//	{		
+//		SequenceDef out = new SequenceDef();
+//		return out;
+//	}
+	
 	public Type transform(MIDLType idlType)
 	{
 		logger.finer("MIDLType: ");
@@ -342,7 +376,41 @@ public class CcmToJavaModelMapper
 		{
 			return new StringType();
 		}
-		//....
+		else if(idlType instanceof MStructDef)
+		{			
+			return transform((MStructDef)idlType);
+		}
+		else if(idlType instanceof MEnumDef)
+		{			
+			return transform((MEnumDef)idlType);
+		}
+		else if(idlType instanceof MArrayDef)
+		{
+			return transform((MArrayDef)idlType);
+		}
+		else if(idlType instanceof MSequenceDef)
+		{
+			return transform((MSequenceDef)idlType);
+		}
+		else if(idlType instanceof MUnionDef)
+		{
+			return transform((MUnionDef)idlType);
+		}
+		else if(idlType instanceof MAliasDef)
+		{
+			MAliasDef alias = (MAliasDef)idlType;
+			MTyped typed = (MTyped)alias;
+			MIDLType innerIdlType = typed.getIdlType();			
+			System.out.println("--- innerIdlType" + innerIdlType);
+			if(innerIdlType instanceof MSequenceDef)
+			{
+				return new SequenceDef(alias.getIdentifier(), Code.getNamespaceList(alias));
+			}
+			else
+			{
+				throw new RuntimeException("transform(MIDLType): unknown alias type " + idlType);
+			}
+		}
 		else
 		{
 			throw new RuntimeException("transform(MIDLType): unknown idl type " + idlType);
@@ -396,6 +464,10 @@ public class CcmToJavaModelMapper
 		else if(primitive.getKind() == MPrimitiveKind.PK_DOUBLE)
 		{
 			return new DoubleType();
+		}
+		else if(primitive.getKind() == MPrimitiveKind.PK_FIXED)
+		{
+			return new FixedType();
 		}
 //		else if(primitive.getKind() == MPrimitiveKind.PK_ANY)
 //		{
