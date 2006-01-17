@@ -79,17 +79,38 @@ public abstract class ModelElement
 	
 	public String getAbsoluteJavaName()
 	{
-		return getJavaNamespace() + "." + getIdentifier();
+		if(getJavaNamespaceList().size() == 0)
+		{
+			return getIdentifier();
+		}
+		else 
+		{
+			return getJavaNamespace() + "." + getIdentifier();
+		}
 	}
 	
 	public String getAbsoluteJavaCcmName()
 	{
-		return getJavaNamespace() + ".CCM_" + getIdentifier();
+		if(getJavaNamespaceList().size() == 0)
+		{
+			return "CCM_" + getIdentifier();
+		}
+		else
+		{
+			return getJavaNamespace() + ".CCM_" + getIdentifier();
+		}
 	}
 	
 	public String getAbsoluteIdlName()
 	{
-		return getIdlNamespace() + "." + getIdentifier();
+		if(getIdlNamespaceList().size() == 0)
+		{
+			return getIdentifier();
+		}
+		else
+		{
+			return getIdlNamespace() + "." + getIdentifier();
+		}
 	}
 	
 	

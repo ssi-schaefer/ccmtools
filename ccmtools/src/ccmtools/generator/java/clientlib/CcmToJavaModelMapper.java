@@ -32,6 +32,7 @@ import ccmtools.generator.java.clientlib.metamodel.ByteType;
 import ccmtools.generator.java.clientlib.metamodel.CharType;
 import ccmtools.generator.java.clientlib.metamodel.ComponentDef;
 import ccmtools.generator.java.clientlib.metamodel.DoubleType;
+import ccmtools.generator.java.clientlib.metamodel.EnumDef;
 import ccmtools.generator.java.clientlib.metamodel.ExceptionDef;
 import ccmtools.generator.java.clientlib.metamodel.FixedType;
 import ccmtools.generator.java.clientlib.metamodel.FloatType;
@@ -314,6 +315,14 @@ public class CcmToJavaModelMapper
 		return out;
 	}
 	
+	public EnumDef transform(MEnumDef in)
+	{		
+		EnumDef out = new EnumDef(in.getIdentifier(), Code.getNamespaceList(in));
+		// As long as we don't map parameters from CORBA to Java, we don't 
+		// have to set a enum's members.
+		return out;
+	}
+	
 	
 	public Type transform(MIDLType in)
 	{
@@ -339,7 +348,11 @@ public class CcmToJavaModelMapper
 			MAliasDef alias = (MAliasDef)in;
 			MTyped typed = (MTyped)alias;
 			MIDLType innerIdlType = typed.getIdlType();			
-			if(innerIdlType instanceof MSequenceDef)
+			if(innerIdlType instanceof MPrimitiveDef)
+			{
+				return transform((MPrimitiveDef)innerIdlType);
+			}
+			else if(innerIdlType instanceof MSequenceDef)
 			{
 				MSequenceDef seq = (MSequenceDef)innerIdlType;
 				MTyped seqType = (MTyped)seq;
