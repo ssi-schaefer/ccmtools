@@ -3,8 +3,6 @@ package ccm.local;
 import java.util.HashMap;
 import java.util.Map;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import ccm.local.Components.CCMHome;
 import ccm.local.Components.HomeNotFound;
 
@@ -32,7 +30,7 @@ public class HomeFinder
 		throws HomeNotFound
 	{
 		// TODO
-		throw new NotImplementedException();
+		throw new RuntimeException("NotImplemented");
 	}
 
 	public CCMHome find_home_by_name(String name) 
@@ -52,7 +50,7 @@ public class HomeFinder
 		throws HomeNotFound
 	{
 		// TODO
-		throw new NotImplementedException();
+	        throw new RuntimeException("NotImplemented");
 	}
 
 	public void register_home(CCMHome home, String name)
@@ -66,6 +64,7 @@ public class HomeFinder
 	public void unregister_home(CCMHome home)
 	{
 		// TODO: find key for value and call unregister_home(String name)
+	        throw new RuntimeException("NotImplemented");
 	}
 
 	public void unregister_home(String name)
