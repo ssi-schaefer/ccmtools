@@ -1,3 +1,5 @@
+package wamas;
+
 import org.omg.CORBA.IntHolder;
 import org.omg.CORBA.StringHolder;
 
@@ -26,7 +28,7 @@ public class myBasicTypeImpl
     public String f8(String p1, StringHolder p2, StringHolder p3) 
 	throws CCMException
     {
-	System.out.println("leave myBasicTypeImpl.f8()");		
+	System.out.println("enter myBasicTypeImpl.f8()");		
 	p3.value = p2.value;
 	p2.value = p1;
 	String result = p3.value + p1;

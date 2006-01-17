@@ -36,12 +36,32 @@ public class Client
 	    TestHome home = 
 		(TestHome) homeFinder.find_home_by_name("myTestHome");
 
-	    Test component = home.create();
-	    component.connect_basicTypeOut(new myBasicTypeImpl()); 
+	    Test component = home.create();	    
+	    component.connect_voidTypeOut(new wamas.myVoidTypeImpl());
+	    component.connect_basicTypeOut(new wamas.myBasicTypeImpl()); 
+	    component.connect_userTypeOut(new wamas.myUserTypeImpl());
 	    component.configuration_complete();
+
 	    
+	    /*
+	     * Test VoidTypeInterface facet
+	     */
+	    VoidTypeInterface voidType = component.provide_voidTypeIn();
+	    {
+		voidType.f1(7);
+	    }
+
+	    {
+		int result = voidType.f2();
+		assert(result == 7);
+	    }
+
+	    
+
+	    /*
+	     * Test BasicTypeInterface facet
+	     */
 	    BasicTypeInterface basicType = component.provide_basicTypeIn();
-	    
 	    {
 		int p1 = 7;
 		IntHolder p2 = new IntHolder(3);
@@ -64,6 +84,47 @@ public class Client
 		assert(s2.value.equals("sieben"));
 		assert(s3.value.equals("drei"));
 		assert(result.equals("dreisieben"));
+	    }
+
+
+	    /*
+	     * Test UserTypeInterface facet
+	     */
+	    UserTypeInterface userType = component.provide_userTypeIn();
+	    {
+		Person p1 = new Person(3, "Egon");
+		PersonHolder p2 = new PersonHolder(new Person(23, "Andrea"));
+		PersonHolder p3 = new PersonHolder();
+		
+		Person result = userType.f2(p1, p2, p3);
+		
+		assert(p3.value.name.equals("Andrea"));
+		assert(p3.value.id == 23);
+		assert(p2.value.name.equals("Egon"));
+		assert(p2.value.id == 3);
+		assert(result.name.equals("EgonAndrea"));
+		assert(result.id == 3+23);
+	    }
+	    
+	    {
+		String[] p1 = {"Egon0", "Egon1", "Egon2"};
+		String[] sa2 = {"Andrea0", "Andrea1", "Andrea2"};
+		StringListHolder p2 = new StringListHolder(sa2);
+		StringListHolder p3 = new StringListHolder();
+		
+		String[] result = userType.f5(p1, p2, p3);
+		
+		assert(p3.value[0].equals("Andrea0"));
+		assert(p3.value[1].equals("Andrea1"));
+		assert(p3.value[2].equals("Andrea2"));
+		
+		assert(p2.value[0].equals("Egon0"));
+		assert(p2.value[1].equals("Egon1"));
+		assert(p2.value[2].equals("Egon2"));
+		
+		assert(result[0].equals("Test"));
+		assert(result[1].equals("Test"));
+		assert(result[2].equals("Test"));
 	    }
 	    
 	    component.disconnect_basicTypeOut();
