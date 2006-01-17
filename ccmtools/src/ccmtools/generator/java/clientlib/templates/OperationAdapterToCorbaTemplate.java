@@ -18,10 +18,12 @@ public class OperationAdapterToCorbaTemplate
   protected final String TEXT_2 = " ";
   protected final String TEXT_3 = " (";
   protected final String TEXT_4 = ") " + NL + "        throws ccm.local.Components.CCMException";
-  protected final String TEXT_5 = " " + NL + "    {" + NL + "        try" + NL + "        {" + NL + "            return remoteInterface.";
-  protected final String TEXT_6 = "(";
-  protected final String TEXT_7 = ");" + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "    }";
-  protected final String TEXT_8 = NL;
+  protected final String TEXT_5 = " " + NL + "    {" + NL + "        try" + NL + "        {";
+  protected final String TEXT_6 = NL + "            ";
+  protected final String TEXT_7 = " remoteInterface.";
+  protected final String TEXT_8 = "(";
+  protected final String TEXT_9 = ");" + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "    }";
+  protected final String TEXT_10 = NL;
 
   public String generate(Object argument)
   {
@@ -36,11 +38,14 @@ public class OperationAdapterToCorbaTemplate
     stringBuffer.append(TEXT_4);
     stringBuffer.append(op.generateOperationExceptionList());
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(op.getIdentifier());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(op.generateOperationParameterList());
+    stringBuffer.append(op.generateOperationReturnStatement());
     stringBuffer.append(TEXT_7);
+    stringBuffer.append(op.getIdentifier());
     stringBuffer.append(TEXT_8);
+    stringBuffer.append(op.generateOperationParameterList());
+    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_10);
     return stringBuffer.toString();
   }
 }

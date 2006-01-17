@@ -10,7 +10,7 @@
     {
         try
         {
-            return remoteInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
+            <%=op.generateOperationReturnStatement()%> remoteInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
         }
         catch(java.lang.Exception e)
         {

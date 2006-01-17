@@ -9,7 +9,7 @@
     {
         try
         {
-            return localInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
+            <%=op.generateOperationReturnStatement()%> localInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
         }
         catch(java.lang.Exception e)
         {

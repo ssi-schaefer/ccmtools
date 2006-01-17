@@ -7,11 +7,13 @@ public class SequenceDef
 	implements Type
 {
 	private long bound;
-		
+	private Type elementType;
 	
-	public SequenceDef(String identifier, List namespace)
+	
+	public SequenceDef(String identifier, List namespace, Type elementType)
 	{
 		super(identifier, namespace);
+		setElementType(elementType);
 	}
 
 	public long getBound()
@@ -23,14 +25,25 @@ public class SequenceDef
 	{
 		this.bound = bound;
 	}
+	
 
+	public Type getElementType()
+	{
+		return elementType;
+	}
 
+	public void setElementType(Type elementType)
+	{
+		this.elementType = elementType;
+	}
+
+	
 	public String generateJavaMapping(PassingDirection direction)
 	{
 		if(direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return getAbsoluteIdlName();
+			return getElementType().generateJavaMapping(direction) + "[]";
 		}
 		else
 		{

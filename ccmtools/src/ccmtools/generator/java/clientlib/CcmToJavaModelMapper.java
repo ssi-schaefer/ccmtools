@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import ccmtools.CodeGenerator.NodeHandler;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
-import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -24,12 +23,10 @@ import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
-import ccmtools.Metamodel.BaseIDL.MUnionDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
-import ccmtools.generator.java.clientlib.metamodel.ArrayDef;
 import ccmtools.generator.java.clientlib.metamodel.BooleanType;
 import ccmtools.generator.java.clientlib.metamodel.ByteType;
 import ccmtools.generator.java.clientlib.metamodel.CharType;
@@ -52,7 +49,6 @@ import ccmtools.generator.java.clientlib.metamodel.ShortType;
 import ccmtools.generator.java.clientlib.metamodel.StringType;
 import ccmtools.generator.java.clientlib.metamodel.StructDef;
 import ccmtools.generator.java.clientlib.metamodel.Type;
-import ccmtools.generator.java.clientlib.metamodel.TypedefDef;
 import ccmtools.generator.java.clientlib.metamodel.UsesDef;
 import ccmtools.generator.java.clientlib.metamodel.VoidType;
 import ccmtools.utils.Code;
@@ -133,36 +129,6 @@ public class CcmToJavaModelMapper
     		InterfaceDef javaIface = transform(iface);   		
     		model.addInterface(javaIface);
     	}    
-    	else if(node instanceof MExceptionDef)
-    	{
-    		MExceptionDef exc = (MExceptionDef)node;
-    		logger.finer("MExceptionDef: " + Code.getRepositoryId(exc));
-    	}
-    	else if(node instanceof MStructDef)
-    	{
-    		MStructDef struct = (MStructDef)node;
-    		logger.finer("MStructDef: " + Code.getRepositoryId(struct));
-    	}
-    	else if(node instanceof MUnionDef)
-    	{
-    		MUnionDef union = (MUnionDef)node;
-    		logger.finer("MUnionDef: " + Code.getRepositoryId(union));
-    	}
-    	else if(node instanceof MEnumDef)
-    	{
-    		MEnumDef en = (MEnumDef)node;
-    		logger.finer("MEnumDef: " + Code.getRepositoryId(en));
-    	}
-    	else if(node instanceof MConstantDef)
-    	{
-    		MConstantDef constant = (MConstantDef)node;
-    		logger.finer("MConstantDef: " + constant.getIdentifier());
-    	}                
-    	else if(node instanceof MAliasDef)
-    	{
-    		MAliasDef alias = (MAliasDef)node;
-    		logger.finer("MAliasDef: " + Code.getRepositoryId(alias));
-    	}
     }
 
     public void handleNodeData(String fieldType, String fieldId, Object value)
@@ -343,77 +309,52 @@ public class CcmToJavaModelMapper
 	public StructDef transform(MStructDef in)
 	{		
 		StructDef out = new StructDef(in.getIdentifier(), Code.getNamespaceList(in));
-		// TODO: set members
+		// As long as we don't map parameters from CORBA to Java, we don't 
+		// have to set a structure's members.
 		return out;
 	}
 	
-	public TypedefDef transform(MAliasDef in)
-	{		
-		TypedefDef out = new TypedefDef(in.getIdentifier(), Code.getNamespaceList(in));
-		return out;
-	}
 	
-//	public ArrayDef transform(MArrayDef in)
-//	{		
-//		ArrayDef out = new ArrayDef(in.getIdentifier(), Code.getNamespaceList(in));
-//		return out;
-//	}
-	
-//	public SequenceDef transform(MSequenceDef in)
-//	{		
-//		SequenceDef out = new SequenceDef();
-//		return out;
-//	}
-	
-	public Type transform(MIDLType idlType)
+	public Type transform(MIDLType in)
 	{
 		logger.finer("MIDLType: ");
-		if(idlType instanceof MPrimitiveDef)
+		if(in instanceof MPrimitiveDef)
 		{
-			return transform((MPrimitiveDef)idlType);
+			return transform((MPrimitiveDef)in);
 		}
-		else if(idlType instanceof MStringDef)
+		else if(in instanceof MStringDef)
 		{
 			return new StringType();
 		}
-		else if(idlType instanceof MStructDef)
+		else if(in instanceof MStructDef)
 		{			
-			return transform((MStructDef)idlType);
+			return transform((MStructDef)in);
 		}
-		else if(idlType instanceof MEnumDef)
+		else if(in instanceof MEnumDef)
 		{			
-			return transform((MEnumDef)idlType);
+			return transform((MEnumDef)in);
 		}
-		else if(idlType instanceof MArrayDef)
+		else if(in instanceof MAliasDef)
 		{
-			return transform((MArrayDef)idlType);
-		}
-		else if(idlType instanceof MSequenceDef)
-		{
-			return transform((MSequenceDef)idlType);
-		}
-		else if(idlType instanceof MUnionDef)
-		{
-			return transform((MUnionDef)idlType);
-		}
-		else if(idlType instanceof MAliasDef)
-		{
-			MAliasDef alias = (MAliasDef)idlType;
+			MAliasDef alias = (MAliasDef)in;
 			MTyped typed = (MTyped)alias;
 			MIDLType innerIdlType = typed.getIdlType();			
-			System.out.println("--- innerIdlType" + innerIdlType);
 			if(innerIdlType instanceof MSequenceDef)
 			{
-				return new SequenceDef(alias.getIdentifier(), Code.getNamespaceList(alias));
-			}
+				MSequenceDef seq = (MSequenceDef)innerIdlType;
+				MTyped seqType = (MTyped)seq;
+				MIDLType seqIdl = seqType.getIdlType();						
+				return new SequenceDef(alias.getIdentifier(), Code.getNamespaceList(alias), transform(seqIdl));
+			}			
+			// TODO: Handle other alias types
 			else
 			{
-				throw new RuntimeException("transform(MIDLType): unknown alias type " + idlType);
+				throw new RuntimeException("transform(MIDLType): unknown alias type " + in);
 			}
 		}
 		else
 		{
-			throw new RuntimeException("transform(MIDLType): unknown idl type " + idlType);
+			throw new RuntimeException("transform(MIDLType): unknown idl type " + in);
 		}
 	}
 
@@ -469,10 +410,6 @@ public class CcmToJavaModelMapper
 		{
 			return new FixedType();
 		}
-//		else if(primitive.getKind() == MPrimitiveKind.PK_ANY)
-//		{
-//			return new AnyType();
-//		}
 		else
 		{
 			throw new RuntimeException("transform(MPrimitiveDef): unknown primitive type "

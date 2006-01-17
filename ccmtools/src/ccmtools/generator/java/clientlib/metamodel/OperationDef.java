@@ -69,6 +69,18 @@ public class OperationDef
 		return getType().generateJavaMapping(PassingDirection.RESULT);
 	}
 	
+	public String generateOperationReturnStatement()
+	{
+		if(getType() instanceof VoidType)
+		{
+			return "";
+		}
+		else
+		{
+			return "return ";
+		}
+	}
+	
 	/**
 	 * Generate a parameter list (with types and names) and handle the commas
 	 * in a propper way.
