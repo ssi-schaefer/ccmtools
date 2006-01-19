@@ -21,12 +21,21 @@ remote: local
 	${CCMTOOLS_CMD} c++remote-test -o ${DEST_DIR}/component/Test ${APP_NAME}.idl
 
 stubs:
-	make -C ${DEST_DIR}/component/Test/CCM_corba_stubs
+	make -C ${DEST_DIR}/component/Test/CCM_corba_stubs server
+
 check: 
 	cp impl/Makefile.py ${DEST_DIR}/
 	touch ${DEST_DIR}/interface/Makefile.py
 	touch ${DEST_DIR}/component/Makefile.py
 	touch ${DEST_DIR}/component/Test/Makefile.py
+	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
+
+check_server: 
+	cp impl/Makefile.py ${DEST_DIR}/
+	touch ${DEST_DIR}/interface/Makefile.py
+	touch ${DEST_DIR}/component/Makefile.py
+	touch ${DEST_DIR}/component/Test/Makefile.py
+	cp server/_check_world_ccm_remote_component_Test.cc ${DEST_DIR}/component/Test/test/
 	confix.py --packageroot=`pwd`/xxx --bootstrap --configure --make --targets=check
 
 clean: 
