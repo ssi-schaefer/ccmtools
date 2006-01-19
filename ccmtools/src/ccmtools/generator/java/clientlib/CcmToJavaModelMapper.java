@@ -107,15 +107,23 @@ public class CcmToJavaModelMapper
     	logger.fine("endNode(" + node + ")");
     	if(node == null)
     	{
+    		// The current node is not valid!
     		return;
     	}
-    	else if(node instanceof MHomeDef) 
+    	else if(node instanceof MContained 
+    			&& !((MContained) node).getSourceFile().equals(""))
     	{
-    		MHomeDef home = (MHomeDef)node;
-    		logger.finer("MHomeDef: " + Code.getRepositoryId(home));
-    		HomeDef javaHome = transform(home);
-    		model.addHome(javaHome);
+    		// The current node is defined in an included file
+    		// and should not be generated!
+    		return;
     	}
+    	else if (node instanceof MHomeDef)
+		{
+			MHomeDef home = (MHomeDef) node;
+			logger.finer("MHomeDef: " + Code.getRepositoryId(home));
+			HomeDef javaHome = transform(home);
+			model.addHome(javaHome);
+		}
     	else if(node instanceof MComponentDef) 
     	{
     		MComponentDef component = (MComponentDef)node;

@@ -25,11 +25,11 @@ public class ExceptionDef
 		if(direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return getIdentifier();
+			return getAbsoluteIdlName();
 		}
 		else
 		{
-			return "org.omg.CORBA." + getIdentifier() + "Holder";
+			return getAbsoluteIdlName() + "Holder";
 		}	
 	}
 }

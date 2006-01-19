@@ -47,9 +47,9 @@ public class Main
             if(parseCommandLineArgs(args, parameters)) 
             {
             	parameters.validate();
-            	System.out.println(parameters); //!!!!!!!!!!!
+//            	System.out.println(parameters); 
             	setCcmtoolsProperties();
-            	System.out.println(CcmtoolsProperties.Instance().getPropertyMap()); //!!!!!!
+//            	System.out.println(CcmtoolsProperties.Instance().getPropertyMap()); 
             	
             	for(Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext(); )
             	{

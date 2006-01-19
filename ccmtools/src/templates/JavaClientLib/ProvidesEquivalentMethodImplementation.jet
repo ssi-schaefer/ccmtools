@@ -4,7 +4,7 @@
 %>
 <% ProvidesDef provides = (ProvidesDef) argument;  %>
 
-    public <%=provides.getInterface().getIdentifier()%> provide_<%=provides.getIdentifier()%>()
+    public <%=provides.getInterface().getAbsoluteIdlName()%> provide_<%=provides.getIdentifier()%>()
     {
         if(<%=provides.getIdentifier()%> == null)
         {

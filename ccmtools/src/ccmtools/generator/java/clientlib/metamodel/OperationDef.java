@@ -134,7 +134,7 @@ public class OperationDef
 			for (Iterator i = getException().iterator(); i.hasNext();)
 			{
 				ExceptionDef e = (ExceptionDef) i.next();
-				exceptionList.add(e.getIdentifier());
+				exceptionList.add(e.generateJavaMapping(PassingDirection.IN));
 			}
 			code.append(Text.joinList(", ", exceptionList));
 		}
