@@ -1,7 +1,9 @@
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.StringHolder;
 
-import world.europe.austria.ccm.local.*;
+import world.ccm.local.*;
+import america.ccm.local.*;
+import europe.ccm.local.*;
 import ccm.local.ServiceLocator;
 
 
@@ -21,7 +23,6 @@ public class Client
         catch(Exception e) {
             e.printStackTrace();
         }
-
 	
 	try
 	{
@@ -35,58 +36,25 @@ public class Client
 	    Test component = home.create();	    
 	    component.configuration_complete();
 
-	    IFace iface = component.provide_iface();
+	    SubType iface = component.provide_iface();
 
-	    try
 	    {
-		int result = iface.foo("0123456789");
-		assert(result == 10);
-	    }
-	    catch(world.europe.austria.ErrorException e)
-	    {
-		e.printStackTrace();
-		assert(false);
-	    }
-	    
-	    try
-	    {
-		int result = iface.foo("Error");
-		assert(false);
-	    }
-	    catch(world.europe.austria.ErrorException e)
-	    {
-		//!!!!!!!!!!!!!!!!
-		/*
-		for(int i = 0; i < e.info.length; i++)
-		{
-		    System.out.println(e.info[i].code + ": " + 
-				       e.info[i].message);
-		}
-		*/
-	    }
-	    
-
-	    try
-	    {
-		int result = iface.foo("SuperError");
-		assert(false);
-	    }
-	    catch(world.europe.austria.SuperError e)
-	    {
-		System.out.println("SuperError");
+		String s = "1234567890";
+		int size = iface.op1(s);
+		assert(s.length() == size);
 	    }
 
-
-	    try
 	    {
-		int result = iface.foo("FatalError");
-		assert(false);
-	    }
-	    catch(world.europe.austria.FatalError e)
-	    {
-		System.out.println("FatalError");
+		String s = "1234567890";
+		int size = iface.op2(s);
+		assert(s.length() == size);
 	    }
 
+	    {
+		String s = "1234567890";
+		int size = iface.op3(s);
+		assert(s.length() == size);
+	    }
 
 	    component.remove();
 	    System.out.println("OK!");
@@ -101,5 +69,4 @@ public class Client
         ccm.local.HomeFinder.instance().unregister_home("myTestHome");
 	System.exit(0);
     }
-
 }

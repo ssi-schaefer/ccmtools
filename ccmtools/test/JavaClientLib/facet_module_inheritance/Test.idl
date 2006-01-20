@@ -9,7 +9,7 @@ module europe
 {
   interface SuperType1
   {
-    attribute long attr1;
+    //    attribute long attr1;
     long op1(in string str);
   };
 };
@@ -19,14 +19,14 @@ module america
 {
   interface SuperType2
   {
-    attribute long attr2;
+    //    attribute long attr2;
     long op2(in string str);
   };
 
   interface SubType 
     : europe::SuperType1, SuperType2 
   {
-    attribute long attr3;
+    //    attribute long attr3;
     long op3(in string str);
   };
 };
