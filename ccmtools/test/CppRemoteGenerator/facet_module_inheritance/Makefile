@@ -25,6 +25,7 @@ stubs:
 
 check: 
 	cp impl/Makefile.py ${DEST_DIR}/
+	cp impl/Test_iface_impl.cc ${DEST_DIR}/component/Test/ 
 	touch ${DEST_DIR}/interface/Makefile.py
 	touch ${DEST_DIR}/component/Makefile.py
 	touch ${DEST_DIR}/component/Test/Makefile.py
@@ -32,6 +33,7 @@ check:
 
 check_server: 
 	cp impl/Makefile.py ${DEST_DIR}/
+	cp impl/Test_iface_impl.cc ${DEST_DIR}/component/Test/
 	touch ${DEST_DIR}/interface/Makefile.py
 	touch ${DEST_DIR}/component/Makefile.py
 	touch ${DEST_DIR}/component/Test/Makefile.py
