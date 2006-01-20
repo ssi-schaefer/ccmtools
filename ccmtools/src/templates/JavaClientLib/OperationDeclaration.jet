@@ -4,5 +4,5 @@
 %>
 <% OperationDef op = (OperationDef) argument;  %>
     <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>)     
-        throws CCMException<%=op.generateOperationExceptionList()%>;    
+        <%=op.generateThrowsToCorba()%>;    
 

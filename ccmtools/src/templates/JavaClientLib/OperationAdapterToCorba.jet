@@ -6,12 +6,13 @@
 
     /** Business delegate method */
     public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>) 
-        throws ccm.local.Components.CCMException<%=op.generateOperationExceptionList()%> 
+        <%=op.generateThrowsToCorba()%> 
     {
         try
         {
             <%=op.generateOperationReturnStatement()%> remoteInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
         }
+<%=op.generateCatchStatementToCorba()%>
         catch(java.lang.Exception e)
         {
     	    throw new ccm.local.Components.CCMException(e.getMessage());

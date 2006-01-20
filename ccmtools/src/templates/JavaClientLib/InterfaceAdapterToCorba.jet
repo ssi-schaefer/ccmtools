@@ -25,7 +25,20 @@ public class <%=iface.getIdentifier()%>AdapterToCorba
     {
         this.remoteInterface = facet;
     }
+
 <%
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
+	{
+        OperationDef op = (OperationDef)j.next();
+%>    
+<%=op.generateOperationAdapterToCorba()%>
+<%
+    }
+}
+
 for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();

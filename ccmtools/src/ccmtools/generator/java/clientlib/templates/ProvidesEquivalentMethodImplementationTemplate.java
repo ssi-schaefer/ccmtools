@@ -30,7 +30,7 @@ public class ProvidesEquivalentMethodImplementationTemplate
     StringBuffer stringBuffer = new StringBuffer();
      ProvidesDef provides = (ProvidesDef) argument;  
     stringBuffer.append(TEXT_1);
-    stringBuffer.append(provides.getInterface().getAbsoluteIdlName());
+    stringBuffer.append(provides.getInterface().getAbsoluteJavaName());
     stringBuffer.append(TEXT_2);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_3);
@@ -39,7 +39,7 @@ public class ProvidesEquivalentMethodImplementationTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(provides.getInterface().getIdentifier());
+    stringBuffer.append(provides.getInterface().getAbsoluteJavaName());
     stringBuffer.append(TEXT_7);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_8);

@@ -164,6 +164,15 @@ public class CcmToJavaModelMapper
 		else
 		{
 			out = new InterfaceDef(in.getIdentifier(), Code.getNamespaceList(in));
+	
+			// Map base interface types
+			for(Iterator i = in.getBases().iterator(); i.hasNext(); )
+			{
+				MInterfaceDef baseIface = (MInterfaceDef)i.next();
+				out.getBaseInterfaces().add(transform(baseIface));
+			}
+			
+			// Map interface sub elements like constants, attributes and operations
 			for (Iterator i = in.getContentss().iterator(); i.hasNext();)
 			{
 				MContained child = (MContained) i.next();

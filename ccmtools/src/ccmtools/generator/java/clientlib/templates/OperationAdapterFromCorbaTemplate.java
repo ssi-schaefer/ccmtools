@@ -17,12 +17,16 @@ public class OperationAdapterFromCorbaTemplate
   protected final String TEXT_1 = NL + "    /** Business delegate method */" + NL + "    public ";
   protected final String TEXT_2 = " ";
   protected final String TEXT_3 = " (";
-  protected final String TEXT_4 = ") " + NL + "    {" + NL + "        try" + NL + "        {";
-  protected final String TEXT_5 = NL + "            ";
-  protected final String TEXT_6 = " localInterface.";
-  protected final String TEXT_7 = "(";
-  protected final String TEXT_8 = ");" + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new BAD_OPERATION(e.getMessage());" + NL + "        }" + NL + "    }";
-  protected final String TEXT_9 = NL;
+  protected final String TEXT_4 = ") ";
+  protected final String TEXT_5 = NL + "        ";
+  protected final String TEXT_6 = " " + NL + "    {" + NL + "        try" + NL + "        {";
+  protected final String TEXT_7 = NL + "            ";
+  protected final String TEXT_8 = " localInterface.";
+  protected final String TEXT_9 = "(";
+  protected final String TEXT_10 = ");" + NL + "        }";
+  protected final String TEXT_11 = NL;
+  protected final String TEXT_12 = NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new BAD_OPERATION(e.getMessage());" + NL + "        }" + NL + "    }";
+  protected final String TEXT_13 = NL;
 
   public String generate(Object argument)
   {
@@ -36,13 +40,19 @@ public class OperationAdapterFromCorbaTemplate
     stringBuffer.append(op.generateOperationParameterDeclarationList());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(op.generateOperationReturnStatement());
+    stringBuffer.append(op.generateThrowsFromCorba());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(op.getIdentifier());
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(op.generateOperationParameterList());
+    stringBuffer.append(op.generateOperationReturnStatement());
     stringBuffer.append(TEXT_8);
+    stringBuffer.append(op.getIdentifier());
     stringBuffer.append(TEXT_9);
+    stringBuffer.append(op.generateOperationParameterList());
+    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
+    stringBuffer.append(op.generateCatchStatementToCorba());
+    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_13);
     return stringBuffer.toString();
   }
 }

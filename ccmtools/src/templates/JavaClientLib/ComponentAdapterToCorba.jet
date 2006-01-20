@@ -68,26 +68,27 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
             POA rootPoa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
             rootPoa.the_POAManager().activate();									
             Policy[] policies = new Policy[1];
-            policies[0] = rootPoa.create_implicit_activation_policy(ImplicitActivationPolicyValue.IMPLICIT_ACTIVATION);
+            policies[0] = rootPoa.create_implicit_activation_policy(
+                              ImplicitActivationPolicyValue.IMPLICIT_ACTIVATION);
             componentPoa = rootPoa.create_POA("TestAdapterPOA", rootPoa.the_POAManager(),policies );
             componentPoa.the_POAManager().activate();
         }
         catch (org.omg.CORBA.ORBPackage.InvalidName e)
-		{
-			throw new ccm.local.Components.CCMException(e.getMessage());
-		}
-		catch (AdapterInactive e)
-		{
-			throw new ccm.local.Components.CCMException(e.getMessage());
-		}
-		catch (AdapterAlreadyExists e)
-		{
-			throw new ccm.local.Components.CCMException(e.getMessage());
-		}
-		catch (InvalidPolicy e)
-		{
-			throw new ccm.local.Components.CCMException(e.getMessage());
-		}
+        {
+            throw new ccm.local.Components.CCMException(e.getMessage());
+        }
+        catch (AdapterInactive e)
+        {
+            throw new ccm.local.Components.CCMException(e.getMessage());
+        }
+        catch (AdapterAlreadyExists e)
+        {
+            throw new ccm.local.Components.CCMException(e.getMessage());
+        }
+        catch (InvalidPolicy e)
+        {
+            throw new ccm.local.Components.CCMException(e.getMessage());
+        }
     }
     
     

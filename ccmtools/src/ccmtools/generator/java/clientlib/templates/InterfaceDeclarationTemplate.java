@@ -19,9 +19,11 @@ public class InterfaceDeclarationTemplate
   protected final String TEXT_2 = NL + " * <http://ccmtools.sourceforge.net>" + NL + " * ";
   protected final String TEXT_3 = NL + " * DO NOT EDIT!" + NL + " */" + NL + "" + NL + "package ";
   protected final String TEXT_4 = ";" + NL + "                 " + NL + "import ccm.local.Components.*;" + NL + " " + NL + "/** " + NL + " * Java interface declaration (based on the corresponding IDL interface)." + NL + " */" + NL + "public interface ";
-  protected final String TEXT_5 = " " + NL + "{";
-  protected final String TEXT_6 = NL;
-  protected final String TEXT_7 = NL + "}";
+  protected final String TEXT_5 = " " + NL + "{" + NL;
+  protected final String TEXT_6 = "    ";
+  protected final String TEXT_7 = NL;
+  protected final String TEXT_8 = NL;
+  protected final String TEXT_9 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -37,16 +39,30 @@ public class InterfaceDeclarationTemplate
     stringBuffer.append( iface.getIdentifier() );
     stringBuffer.append(TEXT_5);
     
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
+	{
+        OperationDef op = (OperationDef)j.next();
+
+    stringBuffer.append(TEXT_6);
+    stringBuffer.append(TEXT_7);
+    stringBuffer.append(op.generateOperationDeclaration());
+    
+    }
+}
+
 for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 
-    stringBuffer.append(TEXT_6);
+    stringBuffer.append(TEXT_8);
     stringBuffer.append(op.generateOperationDeclaration());
     
 }
 
-    stringBuffer.append(TEXT_7);
+    stringBuffer.append(TEXT_9);
     return stringBuffer.toString();
   }
 }

@@ -17,9 +17,10 @@ public class OperationDeclarationTemplate
   protected final String TEXT_1 = "    ";
   protected final String TEXT_2 = " ";
   protected final String TEXT_3 = " (";
-  protected final String TEXT_4 = ")     " + NL + "        throws CCMException";
-  protected final String TEXT_5 = ";    " + NL;
-  protected final String TEXT_6 = NL;
+  protected final String TEXT_4 = ")     ";
+  protected final String TEXT_5 = NL + "        ";
+  protected final String TEXT_6 = ";    " + NL;
+  protected final String TEXT_7 = NL;
 
   public String generate(Object argument)
   {
@@ -32,9 +33,10 @@ public class OperationDeclarationTemplate
     stringBuffer.append(TEXT_3);
     stringBuffer.append(op.generateOperationParameterDeclarationList());
     stringBuffer.append(TEXT_4);
-    stringBuffer.append(op.generateOperationExceptionList());
     stringBuffer.append(TEXT_5);
+    stringBuffer.append(op.generateThrowsToCorba());
     stringBuffer.append(TEXT_6);
+    stringBuffer.append(TEXT_7);
     return stringBuffer.toString();
   }
 }

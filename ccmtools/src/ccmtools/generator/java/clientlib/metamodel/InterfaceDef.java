@@ -15,7 +15,7 @@ public class InterfaceDef
 {
 	private List attribute = new ArrayList();
 	private List operation = new ArrayList();
-
+	private List baseInterfaces = new ArrayList(); 
 	
 	public InterfaceDef(String identifier, List namespace)
 	{
@@ -33,9 +33,15 @@ public class InterfaceDef
 		return operation;
 	}	
 	
+	public List getBaseInterfaces()
+	{
+		return baseInterfaces;
+	}
+	
+		
 	
 	// Code generator methods -------------------------------------------------
-	
+
 	public String generateInterfaceDeclaration()
 	{
 		return new InterfaceDeclarationTemplate().generate(this);

@@ -6,11 +6,13 @@
 
     /** Business delegate method */
     public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>) 
+        <%=op.generateThrowsFromCorba()%> 
     {
         try
         {
             <%=op.generateOperationReturnStatement()%> localInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
         }
+<%=op.generateCatchStatementToCorba()%>
         catch(java.lang.Exception e)
         {
     	    throw new BAD_OPERATION(e.getMessage());

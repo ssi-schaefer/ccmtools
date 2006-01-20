@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ccmtools.generator.java.clientlib.templates.CatchStatementFromCorbaTemplate;
+import ccmtools.generator.java.clientlib.templates.CatchStatementToCorbaTemplate;
 import ccmtools.generator.java.clientlib.templates.OperationAdapterFromCorbaTemplate;
 import ccmtools.generator.java.clientlib.templates.OperationAdapterToCorbaTemplate;
 import ccmtools.generator.java.clientlib.templates.OperationDeclarationTemplate;
@@ -124,9 +126,10 @@ public class OperationDef
 	 * 
 	 * @return Generated code artifact.
 	 */
-	public String generateOperationExceptionList()
+	public String generateThrowsToCorba()
 	{
 		StringBuffer code = new StringBuffer();
+		code.append("throws ccm.local.Components.CCMException");
 		if(getException().size() != 0)
 		{
 			code.append(", ");
@@ -140,4 +143,34 @@ public class OperationDef
 		}
 		return code.toString();
 	}
+
+	
+	public String generateThrowsFromCorba()
+	{
+		StringBuffer code = new StringBuffer();
+		if(getException().size() != 0)
+		{
+			code.append("throws ");
+			List exceptionList = new ArrayList();
+			for (Iterator i = getException().iterator(); i.hasNext();)
+			{
+				ExceptionDef e = (ExceptionDef) i.next();
+				exceptionList.add(e.generateJavaMapping(PassingDirection.IN));
+			}
+			code.append(Text.joinList(", ", exceptionList));
+		}
+		return code.toString();
+	}
+	
+	public String generateCatchStatementToCorba()
+	{
+		return new CatchStatementToCorbaTemplate().generate(this);
+	}
+	
+	public String generateCatchStatementFromCorba()
+	{
+		return new CatchStatementFromCorbaTemplate().generate(this);
+	}
+	
+	
 }

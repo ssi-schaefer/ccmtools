@@ -23,9 +23,11 @@ public class InterfaceAdapterToCorbaTemplate
   protected final String TEXT_6 = NL + "{" + NL + "    /** Corba reference to the remote interface */" + NL + "    private ";
   protected final String TEXT_7 = " remoteInterface;" + NL + "\t" + NL + "    public ";
   protected final String TEXT_8 = "AdapterToCorba(";
-  protected final String TEXT_9 = " facet)" + NL + "    {" + NL + "        this.remoteInterface = facet;" + NL + "    }";
-  protected final String TEXT_10 = NL;
-  protected final String TEXT_11 = NL + "}";
+  protected final String TEXT_9 = " facet)" + NL + "    {" + NL + "        this.remoteInterface = facet;" + NL + "    }" + NL;
+  protected final String TEXT_10 = "    ";
+  protected final String TEXT_11 = NL;
+  protected final String TEXT_12 = NL;
+  protected final String TEXT_13 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -49,16 +51,30 @@ public class InterfaceAdapterToCorbaTemplate
     stringBuffer.append(iface.getAbsoluteIdlName());
     stringBuffer.append(TEXT_9);
     
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
+	{
+        OperationDef op = (OperationDef)j.next();
+
+    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
+    stringBuffer.append(op.generateOperationAdapterToCorba());
+    
+    }
+}
+
 for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 
-    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_12);
     stringBuffer.append(op.generateOperationAdapterToCorba());
     
 }
 
-    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_13);
     return stringBuffer.toString();
   }
 }

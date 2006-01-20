@@ -4,12 +4,12 @@
 %>
 <% ProvidesDef provides = (ProvidesDef) argument;  %>
 
-    public <%=provides.getInterface().getAbsoluteIdlName()%> provide_<%=provides.getIdentifier()%>()
+    public <%=provides.getInterface().getAbsoluteJavaName()%> provide_<%=provides.getIdentifier()%>()
     {
         if(<%=provides.getIdentifier()%> == null)
         {
             <%=provides.getIdentifier()%> = 
-                new <%=provides.getInterface().getIdentifier()%>AdapterToCorba(remoteComponent.provide_<%=provides.getIdentifier()%>());
+                new <%=provides.getInterface().getAbsoluteJavaName()%>AdapterToCorba(remoteComponent.provide_<%=provides.getIdentifier()%>());
         }
         return <%=provides.getIdentifier()%>;
     }
