@@ -19,11 +19,15 @@ public class InterfaceDeclarationTemplate
   protected final String TEXT_2 = NL + " * <http://ccmtools.sourceforge.net>" + NL + " * ";
   protected final String TEXT_3 = NL + " * DO NOT EDIT!" + NL + " */" + NL + "" + NL + "package ";
   protected final String TEXT_4 = ";" + NL + "                 " + NL + "import ccm.local.Components.*;" + NL + " " + NL + "/** " + NL + " * Java interface declaration (based on the corresponding IDL interface)." + NL + " */" + NL + "public interface ";
-  protected final String TEXT_5 = " " + NL + "{" + NL;
+  protected final String TEXT_5 = " " + NL + "{";
   protected final String TEXT_6 = "    ";
   protected final String TEXT_7 = NL;
   protected final String TEXT_8 = NL;
-  protected final String TEXT_9 = NL + "}";
+  protected final String TEXT_9 = NL + NL;
+  protected final String TEXT_10 = "    ";
+  protected final String TEXT_11 = NL;
+  protected final String TEXT_12 = NL;
+  protected final String TEXT_13 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -42,12 +46,37 @@ public class InterfaceDeclarationTemplate
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
 	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
+	{
+        AttributeDef attr = (AttributeDef)j.next();
+
+    stringBuffer.append(TEXT_6);
+    stringBuffer.append(TEXT_7);
+    stringBuffer.append(attr.generateAttributeDeclaration());
+    
+    }
+}
+
+for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+
+    stringBuffer.append(TEXT_8);
+    stringBuffer.append(attr.generateAttributeDeclaration());
+    
+}
+
+    stringBuffer.append(TEXT_9);
+    
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
 	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
 	{
         OperationDef op = (OperationDef)j.next();
 
-    stringBuffer.append(TEXT_6);
-    stringBuffer.append(TEXT_7);
+    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
     stringBuffer.append(op.generateOperationDeclaration());
     
     }
@@ -57,12 +86,12 @@ for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 
-    stringBuffer.append(TEXT_8);
+    stringBuffer.append(TEXT_12);
     stringBuffer.append(op.generateOperationDeclaration());
     
 }
 
-    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_13);
     return stringBuffer.toString();
   }
 }

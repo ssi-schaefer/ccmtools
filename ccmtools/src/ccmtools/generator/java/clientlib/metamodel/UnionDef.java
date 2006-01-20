@@ -19,16 +19,21 @@ public class UnionDef
 		return members;
 	}
 
+	public String generateJavaMapping()
+	{
+		return generateJavaMapping(PassingDirection.IN);
+	}
+	
 	public String generateJavaMapping(PassingDirection direction)
 	{
 		if(direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return getIdentifier();
+			return getAbsoluteIdlName();
 		}
 		else
 		{
-			return "org.omg.CORBA." + getIdentifier() + "Holder";
+			return getAbsoluteIdlName() + "Holder";
 		}	
 	}
 }

@@ -27,6 +27,7 @@ import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.generator.java.clientlib.metamodel.AttributeDef;
 import ccmtools.generator.java.clientlib.metamodel.BooleanType;
 import ccmtools.generator.java.clientlib.metamodel.ByteType;
 import ccmtools.generator.java.clientlib.metamodel.CharType;
@@ -182,11 +183,11 @@ public class CcmToJavaModelMapper
 				}
 				else if (child instanceof MAttributeDef)
 				{
-
+					out.getAttributes().add(transform((MAttributeDef)child));
 				}
 				else if (child instanceof MOperationDef)
 				{
-					out.getOperation().add(transform((MOperationDef) child));
+					out.getOperation().add(transform((MOperationDef)child));
 				}
 			}
 			artifactCache.put(repoId, out);
@@ -239,7 +240,7 @@ public class CcmToJavaModelMapper
 	
 	
 	// Handle Contained elements ----------------------------------------------
-
+	
 	public ExceptionDef transform(MExceptionDef in)
 	{
 		ExceptionDef out;
@@ -292,7 +293,18 @@ public class CcmToJavaModelMapper
 		}
 		return out;
 	}
-		
+
+
+	public AttributeDef transform(MAttributeDef in)
+	{
+		logger.finer("MAttributeDef: " + in.getIdentifier());
+		AttributeDef out = new AttributeDef(in.getIdentifier(), 
+											transform(in.getIdlType()),
+											in.isReadonly());
+		return out;
+	}
+	
+	
 	public ParameterDef transform(MParameterDef in)
 	{
 		logger.finer("MParameterDef: " + in.getIdentifier());

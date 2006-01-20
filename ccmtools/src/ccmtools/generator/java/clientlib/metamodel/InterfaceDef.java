@@ -23,7 +23,7 @@ public class InterfaceDef
 	}
 	
 		
-	public List getAttribute()
+	public List getAttributes()
 	{
 		return attribute;
 	}

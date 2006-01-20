@@ -11,6 +11,10 @@ public class TypedefDef
 		super(identifier, namespace);
 	}
 
+	public String generateJavaMapping()
+	{
+		return generateJavaMapping(PassingDirection.IN);
+	}
 	
 	public String generateJavaMapping(PassingDirection direction)
 	{

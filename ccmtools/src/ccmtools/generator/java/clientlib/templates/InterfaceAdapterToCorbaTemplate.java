@@ -27,7 +27,11 @@ public class InterfaceAdapterToCorbaTemplate
   protected final String TEXT_10 = "    ";
   protected final String TEXT_11 = NL;
   protected final String TEXT_12 = NL;
-  protected final String TEXT_13 = NL + "}";
+  protected final String TEXT_13 = NL;
+  protected final String TEXT_14 = "    ";
+  protected final String TEXT_15 = NL;
+  protected final String TEXT_16 = NL;
+  protected final String TEXT_17 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -54,12 +58,37 @@ public class InterfaceAdapterToCorbaTemplate
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
 	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
+	{
+        AttributeDef attr = (AttributeDef)j.next();
+
+    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
+    stringBuffer.append(attr.generateAttributeAdapterToCorba());
+    
+    }
+}
+
+for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+
+    stringBuffer.append(TEXT_12);
+    stringBuffer.append(attr.generateAttributeAdapterToCorba());
+    
+}
+
+    stringBuffer.append(TEXT_13);
+    
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
 	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
 	{
         OperationDef op = (OperationDef)j.next();
 
-    stringBuffer.append(TEXT_10);
-    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_15);
     stringBuffer.append(op.generateOperationAdapterToCorba());
     
     }
@@ -69,12 +98,12 @@ for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 
-    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_16);
     stringBuffer.append(op.generateOperationAdapterToCorba());
     
 }
 
-    stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_17);
     return stringBuffer.toString();
   }
 }

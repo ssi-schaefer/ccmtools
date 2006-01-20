@@ -27,8 +27,28 @@ public class <%=iface.getIdentifier()%>AdapterFromCorba
     {
         this.localInterface = receptacle;
     }    	
-        
+
+<% 
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
+	{
+        AttributeDef attr = (AttributeDef)j.next();
+%>    
+<%=attr.generateAttributeAdapterFromCorba()%>
 <%
+    }
+} 
+ 
+for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>    
+<%=attr.generateAttributeAdapterFromCorba()%>
+<%
+}
+               
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
 	InterfaceDef baseIface = (InterfaceDef)i.next();

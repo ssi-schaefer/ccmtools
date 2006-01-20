@@ -20,6 +20,11 @@ public class ExceptionDef
 		return parameter;
 	}
 	
+	public String generateJavaMapping()
+	{
+		return generateJavaMapping(PassingDirection.IN);
+	}
+	
 	public String generateJavaMapping(PassingDirection direction)
 	{
 		if(direction == PassingDirection.IN

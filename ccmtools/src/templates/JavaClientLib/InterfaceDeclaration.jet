@@ -19,6 +19,28 @@ import ccm.local.Components.*;
  */
 public interface <%= iface.getIdentifier() %> 
 {
+<%
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
+	{
+        AttributeDef attr = (AttributeDef)j.next();
+%>    
+<%=attr.generateAttributeDeclaration()%>
+<%
+    }
+}
+
+for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>
+<%=attr.generateAttributeDeclaration()%>
+<%
+}
+%>
+
 
 <%
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
