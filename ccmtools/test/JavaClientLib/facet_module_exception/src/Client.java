@@ -48,6 +48,7 @@ public class Client
 		assert(false);
 	    }
 	    
+
 	    try
 	    {
 		int result = iface.foo("Error");
@@ -55,14 +56,12 @@ public class Client
 	    }
 	    catch(world.europe.austria.ErrorException e)
 	    {
-		//!!!!!!!!!!!!!!!!
-		/*
+		System.out.println("!!catched ErrorException");
 		for(int i = 0; i < e.info.length; i++)
 		{
 		    System.out.println(e.info[i].code + ": " + 
 				       e.info[i].message);
 		}
-		*/
 	    }
 	    
 
@@ -73,7 +72,7 @@ public class Client
 	    }
 	    catch(world.europe.austria.SuperError e)
 	    {
-		System.out.println("SuperError");
+		System.out.println("!!catched SuperError");
 	    }
 
 
@@ -84,7 +83,7 @@ public class Client
 	    }
 	    catch(world.europe.austria.FatalError e)
 	    {
-		System.out.println("FatalError");
+		System.out.println("!!catched FatalError");
 	    }
 
 
@@ -101,5 +100,4 @@ public class Client
         ccm.local.HomeFinder.instance().unregister_home("myTestHome");
 	System.exit(0);
     }
-
 }
