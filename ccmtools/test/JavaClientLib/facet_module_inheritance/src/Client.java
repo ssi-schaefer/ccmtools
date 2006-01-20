@@ -37,6 +37,28 @@ public class Client
 	    component.configuration_complete();
 
 	    SubType iface = component.provide_iface();
+	    
+	    {
+		int value = 1;
+		iface.attr1(value);
+		int result = iface.attr1();
+		assert(value == result);
+	    }
+
+	    {
+		int value = 2;
+		iface.attr2(value);
+		int result = iface.attr2();
+		assert(value == result);
+	    }
+
+	    {
+		int value = 3;
+		iface.attr3(value);
+		int result = iface.attr3();
+		assert(value == result);
+	    }
+
 
 	    {
 		String s = "1234567890";
