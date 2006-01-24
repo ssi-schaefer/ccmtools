@@ -104,70 +104,70 @@ int main (int argc, char *argv[])
 
     {
       //  const boolean BOOLEAN_CONST = TRUE;
-      CORBA::Boolean initial = true;
+      CORBA::Boolean initial = world::ccm::local::Constants::BOOLEAN_CONST;
       CORBA::Boolean result = constants->getBooleanValue();
       assert(initial == result);
     }
 
     {
       //  const octet OCTET_CONST = 255;
-      CORBA::Octet initial = 255;
+      CORBA::Octet initial = world::ccm::local::Constants::OCTET_CONST;
       CORBA::Octet result = constants->getOctetValue();
       assert(initial == result);
     }
 
     {
       //  const short SHORT_CONST = -7+10;
-      CORBA::Short initial = -7+10;
+      CORBA::Short initial = world::ccm::local::Constants::SHORT_CONST;
       CORBA::Short result = constants->getShortValue();
       assert(initial == result);
     }
 
     {
       //  const unsigned short USHORT_CONST = 7;
-      CORBA::UShort initial = 7;
+      CORBA::UShort initial = world::ccm::local::Constants::USHORT_CONST;
       CORBA::UShort result = constants->getUnsignedShortValue();
       assert(initial == result);
     }
 
     {
       //  const long LONG_CONST = -7777;
-      CORBA::Long initial = -7777;
+      CORBA::Long initial = world::ccm::local::Constants::LONG_CONST;
       CORBA::Long result = constants->getLongValue();
       assert(initial == result);
     }
 
     {
       //  const unsigned long ULONG_CONST = 7777;
-      CORBA::ULong initial = 7777;
+      CORBA::ULong initial = world::ccm::local::Constants::ULONG_CONST;
       CORBA::ULong result = constants->getUnsignedLongValue();
       assert(initial == result);
     }
 
     {
       //  const char CHAR_CONST = 'c';
-      CORBA::Char initial = 'c';
+      CORBA::Char initial = world::ccm::local::Constants::CHAR_CONST;
       CORBA::Char result = constants->getCharValue();
       assert(initial == result);
     }
 
     {
       //  const string STRING_CONST = "1234567890";
-      char* initial = CORBA::string_dup("1234567890");
+      string initial = world::ccm::local::Constants::STRING_CONST; 
       char* result = constants->getStringValue();
-      assert(strcmp(initial,result) == 0);
+      assert(strcmp(initial.c_str(),result) == 0);
     }
 
     {
       //  const float FLOAT_CONST = 3.14;
-      CORBA::Float initial = 3.14;
+      CORBA::Float initial = world::ccm::local::Constants::FLOAT_CONST;
       CORBA::Float result = constants->getFloatValue();
       assert(abs(initial - result) < 0.001);
     }
 
     {
       //  const double DOUBLE_CONST = 3.1415926*2.0;
-      CORBA::Double initial = 3.1415926*2.0;
+      CORBA::Double initial = world::ccm::local::Constants::DOUBLE_CONST;
       CORBA::Double result = constants->getDoubleValue();
       assert(abs(initial - result) < 0.000001);
     }
