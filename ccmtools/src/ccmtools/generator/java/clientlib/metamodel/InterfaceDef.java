@@ -13,16 +13,23 @@ import ccmtools.utils.Text;
 public class InterfaceDef
 	extends ModelElement
 {
+	private List baseInterfaces = new ArrayList(); 
+	private List constants = new ArrayList();
 	private List attribute = new ArrayList();
 	private List operation = new ArrayList();
-	private List baseInterfaces = new ArrayList(); 
+	
 	
 	public InterfaceDef(String identifier, List namespace)
 	{
 		super(identifier, namespace);
 	}
 	
-		
+	
+	public List getConstants()
+	{
+		return constants;
+	}
+			
 	public List getAttributes()
 	{
 		return attribute;
@@ -37,8 +44,7 @@ public class InterfaceDef
 	{
 		return baseInterfaces;
 	}
-	
-		
+			
 	
 	// Code generator methods -------------------------------------------------
 

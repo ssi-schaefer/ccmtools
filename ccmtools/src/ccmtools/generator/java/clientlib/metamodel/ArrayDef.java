@@ -16,6 +16,12 @@ public class ArrayDef
 		return getAbsoluteIdlName();
 	}
 	
+	
+	public String generateJavaConstant(Object value)
+	{
+		return value.toString();
+	}
+		
 	public String generateJavaMapping(PassingDirection direction)
 	{
 		if(direction == PassingDirection.IN

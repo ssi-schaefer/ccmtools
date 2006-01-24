@@ -32,6 +32,7 @@ import ccmtools.generator.java.clientlib.metamodel.BooleanType;
 import ccmtools.generator.java.clientlib.metamodel.ByteType;
 import ccmtools.generator.java.clientlib.metamodel.CharType;
 import ccmtools.generator.java.clientlib.metamodel.ComponentDef;
+import ccmtools.generator.java.clientlib.metamodel.ConstantDef;
 import ccmtools.generator.java.clientlib.metamodel.DoubleType;
 import ccmtools.generator.java.clientlib.metamodel.EnumDef;
 import ccmtools.generator.java.clientlib.metamodel.ExceptionDef;
@@ -179,7 +180,7 @@ public class CcmToJavaModelMapper
 				MContained child = (MContained) i.next();
 				if (child instanceof MConstantDef)
 				{
-
+					out.getConstants().add(transform((MConstantDef)child));
 				}
 				else if (child instanceof MAttributeDef)
 				{
@@ -352,6 +353,14 @@ public class CcmToJavaModelMapper
 		return out;
 	}
 	
+	public ConstantDef transform(MConstantDef in)
+	{
+		MTyped type = (MTyped)in;
+		MIDLType idlType = type.getIdlType();
+		ConstantDef out = new ConstantDef(in.getIdentifier(), transform(idlType), in.getConstValue());
+		return out;
+	}
+
 	
 	public Type transform(MIDLType in)
 	{
@@ -399,6 +408,7 @@ public class CcmToJavaModelMapper
 			throw new RuntimeException("transform(MIDLType): unknown idl type " + in);
 		}
 	}
+	
 
 	public Type transform(MPrimitiveDef primitive)	
 	{

@@ -3,6 +3,11 @@ package ccmtools.generator.java.clientlib.metamodel;
 public class ShortType
 	implements Type
 {
+	public String generateJavaConstant(Object value)
+	{
+		return value.toString();
+	}
+	
 	public String generateJavaMapping()
 	{
 		return "short";

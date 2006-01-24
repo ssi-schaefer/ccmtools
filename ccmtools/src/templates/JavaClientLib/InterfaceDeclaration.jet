@@ -20,6 +20,16 @@ import ccm.local.Components.*;
 public interface <%= iface.getIdentifier() %> 
 {
 <%
+for(Iterator i=iface.getConstants().iterator(); i.hasNext();)
+{
+	ConstantDef constant = (ConstantDef)i.next();	
+%>
+<%=constant.generateConstantDeclaration()%>
+<%
+}
+%>
+
+<%
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
 	InterfaceDef baseIface = (InterfaceDef)i.next();

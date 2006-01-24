@@ -20,6 +20,12 @@ public class ExceptionDef
 		return parameter;
 	}
 	
+	
+	public String generateJavaConstant(Object value)
+	{
+		return "";
+	}
+	
 	public String generateJavaMapping()
 	{
 		return getAbsoluteIdlName();

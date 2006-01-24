@@ -3,6 +3,11 @@ package ccmtools.generator.java.clientlib.metamodel;
 public class LongType
 	implements Type
 {
+	public String generateJavaConstant(Object value)
+	{
+		return value.toString();
+	}
+	
 	public String generateJavaMapping()
 	{
 		return "long";

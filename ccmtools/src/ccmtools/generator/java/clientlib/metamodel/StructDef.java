@@ -19,6 +19,11 @@ public class StructDef
 		return members;
 	}
 
+	public String generateJavaConstant(Object value)
+	{
+		return value.toString();
+	}
+	
 	public String generateJavaMapping()
 	{
 		return getAbsoluteIdlName();

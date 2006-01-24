@@ -20,14 +20,16 @@ public class InterfaceDeclarationTemplate
   protected final String TEXT_3 = NL + " * DO NOT EDIT!" + NL + " */" + NL + "" + NL + "package ";
   protected final String TEXT_4 = ";" + NL + "                 " + NL + "import ccm.local.Components.*;" + NL + " " + NL + "/** " + NL + " * Java interface declaration (based on the corresponding IDL interface)." + NL + " */" + NL + "public interface ";
   protected final String TEXT_5 = " " + NL + "{";
-  protected final String TEXT_6 = "    ";
+  protected final String TEXT_6 = NL;
   protected final String TEXT_7 = NL;
-  protected final String TEXT_8 = NL;
-  protected final String TEXT_9 = NL + NL;
-  protected final String TEXT_10 = "    ";
-  protected final String TEXT_11 = NL;
-  protected final String TEXT_12 = NL;
-  protected final String TEXT_13 = NL + "}";
+  protected final String TEXT_8 = "    ";
+  protected final String TEXT_9 = NL;
+  protected final String TEXT_10 = NL;
+  protected final String TEXT_11 = NL + NL;
+  protected final String TEXT_12 = "    ";
+  protected final String TEXT_13 = NL;
+  protected final String TEXT_14 = NL;
+  protected final String TEXT_15 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -43,6 +45,17 @@ public class InterfaceDeclarationTemplate
     stringBuffer.append( iface.getIdentifier() );
     stringBuffer.append(TEXT_5);
     
+for(Iterator i=iface.getConstants().iterator(); i.hasNext();)
+{
+	ConstantDef constant = (ConstantDef)i.next();	
+
+    stringBuffer.append(TEXT_6);
+    stringBuffer.append(constant.generateConstantDeclaration());
+    
+}
+
+    stringBuffer.append(TEXT_7);
+    
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
 	InterfaceDef baseIface = (InterfaceDef)i.next();
@@ -50,8 +63,8 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 	{
         AttributeDef attr = (AttributeDef)j.next();
 
-    stringBuffer.append(TEXT_6);
-    stringBuffer.append(TEXT_7);
+    stringBuffer.append(TEXT_8);
+    stringBuffer.append(TEXT_9);
     stringBuffer.append(attr.generateAttributeDeclaration());
     
     }
@@ -61,12 +74,12 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 
-    stringBuffer.append(TEXT_8);
+    stringBuffer.append(TEXT_10);
     stringBuffer.append(attr.generateAttributeDeclaration());
     
 }
 
-    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_11);
     
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
@@ -75,8 +88,8 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 	{
         OperationDef op = (OperationDef)j.next();
 
-    stringBuffer.append(TEXT_10);
-    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_13);
     stringBuffer.append(op.generateOperationDeclaration());
     
     }
@@ -86,12 +99,12 @@ for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 
-    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_14);
     stringBuffer.append(op.generateOperationDeclaration());
     
 }
 
-    stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_15);
     return stringBuffer.toString();
   }
 }

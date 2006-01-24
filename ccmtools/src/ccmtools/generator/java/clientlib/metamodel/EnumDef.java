@@ -20,6 +20,11 @@ public class EnumDef
 	}
 
 	
+	public String generateJavaConstant(Object value)
+	{
+		return value.toString();
+	}
+	
 	public String generateJavaMapping()
 	{
 		return getAbsoluteIdlName();

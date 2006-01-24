@@ -16,6 +16,7 @@ import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
 import ccmtools.generator.java.clientlib.metamodel.ComponentDef;
+import ccmtools.generator.java.clientlib.metamodel.ConstantDef;
 import ccmtools.generator.java.clientlib.metamodel.HomeDef;
 import ccmtools.generator.java.clientlib.metamodel.InterfaceDef;
 import ccmtools.generator.java.clientlib.metamodel.ModelRepository;
@@ -80,7 +81,11 @@ public class JavaClientLibGenerator
 	        	HomeDef javaHome = (HomeDef)j.next();
 	        	sourceFileList.addAll(javaHome.generateClientLibSourceFiles());
 	        }
-	        
+	        for(Iterator j = javaModel.findAllGlobalConstants().iterator(); j.hasNext(); )
+	        {
+	        	ConstantDef javaConstant = (ConstantDef)j.next();
+	        	sourceFileList.addAll(javaConstant.generateClientLibSourceFiles());
+	        }
 	        // Save all source file objects
 	        Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 		}

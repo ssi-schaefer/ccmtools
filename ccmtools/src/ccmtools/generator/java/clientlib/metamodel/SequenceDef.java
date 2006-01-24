@@ -38,6 +38,11 @@ public class SequenceDef
 	}
 
 	
+	public String generateJavaConstant(Object value)
+	{
+		return value.toString();
+	}
+	
 	public String generateJavaMapping()
 	{
 		return getElementType().generateJavaMapping() + "[]";

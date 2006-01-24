@@ -11,6 +11,11 @@ public class TypedefDef
 		super(identifier, namespace);
 	}
 
+	public String generateJavaConstant(Object value)
+	{
+		return value.toString();
+	}
+	
 	public String generateJavaMapping()
 	{
 		return getAbsoluteIdlName();

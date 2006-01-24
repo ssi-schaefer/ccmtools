@@ -11,15 +11,13 @@ import java.util.List;
 public class ModelRepository
 	extends ModelElement
 {
-	private List homeList;
-	private List componentList;
-	private List interfaceList;
+	private List homeList = new ArrayList();
+	private List componentList = new ArrayList();
+	private List interfaceList = new ArrayList();
+	private List constantList = new ArrayList();
 	
 	public ModelRepository()
 	{
-		homeList = new ArrayList();
-		componentList = new ArrayList();
-		interfaceList = new ArrayList();
 	}
 
 	public void addHome(HomeDef home)
@@ -37,6 +35,11 @@ public class ModelRepository
 		interfaceList.add(iface);
 	}
 	
+	public void addGlobalConstant(ConstantDef constant)
+	{
+		constantList.add(constant);
+	}
+	
 	
 	public List findAllHomes()
 	{
@@ -51,5 +54,10 @@ public class ModelRepository
 	public List findAllInterfaces()
 	{
 		return interfaceList;
+	}
+	
+	public List findAllGlobalConstants()
+	{
+		return constantList;
 	}
 }
