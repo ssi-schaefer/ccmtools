@@ -20,7 +20,7 @@ remote: local
 	${CCMTOOLS_CMD} c++remote-test -o ${DEST_DIR}/component/Test ${APP_NAME}.idl
 
 stubs:
-	make -C ${DEST_DIR}/CCM_CORBA_Stubs
+	make -C ${DEST_DIR}/CCM_CORBA_Stubs server
 
 check: 
 	cp impl/Makefile.py ${DEST_DIR}/
