@@ -1,11 +1,22 @@
 RELEASE-0.6.x
 ============================================================================
-
-RELEASE-0.6.0
+RELEASE-0.6.1
 ----------------------------------------------------------------------------
-o) Feature: Java Client Lib Generator
-	- Java ClientLib Metamodel (implementation model) based on JET templates
-	
+
+
+
+RELEASE-0.6.0 (January 24, 2006)
+----------------------------------------------------------------------------
+*) Feature: Java Client Lib Generator
+	- Implemented JavaClientLib Metamodel (implementation model) based on JET templates
+	- Implemented CCM to JavaClientLib metamodel mapper
+	- Implemented JavaClientLib generator.
+	- Implemented bin/ccmclient
+	- Implemented test/JavaClientLib/facet_module_simple
+	- Implemented test/JavaClientLib/facet_module_types
+	- Implemented test/JavaClientLib/facet_module_inheritance
+	- Implemented test/JavaClientLib/facet_module_exception
+
 *) Feature: Component Deployment Descriptor (CDD) generator 
 	- Deployment metamodel library
 	- Mapper Deployment model <=> XMI 2.1
@@ -13,6 +24,10 @@ o) Feature: Java Client Lib Generator
    	  generator.
 	- Component Deployment Descriptor (CDD) generator   	 
 
+*) Bugfix: IDL2 file installation
+	Added Confix command to generated Mapefile.py to install IDL2 files
+	without namespace directories.
+	
 *) Bugfix: Bugzilla Bug 6699 uml2idl uses /bin/bash (should use /bin/sh)
 
 *) Bugfix: IDL2 and IDL3 Generator

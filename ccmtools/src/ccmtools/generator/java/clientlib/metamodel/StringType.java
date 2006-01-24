@@ -5,7 +5,7 @@ public class StringType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return "String";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -13,7 +13,7 @@ public class StringType
 		if(direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return "String";
+			return generateJavaMapping();
 		}
 		else
 		{

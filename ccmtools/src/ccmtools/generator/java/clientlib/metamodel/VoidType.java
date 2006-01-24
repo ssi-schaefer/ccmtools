@@ -5,14 +5,14 @@ public class VoidType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.RESULT);
+		return "void";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
 	{
 		if(direction == PassingDirection.RESULT)
 		{
-			return "void";
+			return generateJavaMapping();
 		}
 		else
 		{

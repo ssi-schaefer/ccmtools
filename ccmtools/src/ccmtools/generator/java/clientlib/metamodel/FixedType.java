@@ -5,7 +5,7 @@ public class FixedType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return "java.math.BigDecimal";
 	}		
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -13,7 +13,7 @@ public class FixedType
 		if (direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return "java.math.BigDecimal";
+			return generateJavaMapping();
 		}
 		else // INOUT, OUT
 		{

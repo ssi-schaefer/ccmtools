@@ -13,7 +13,7 @@ public class ArrayDef
 
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return getAbsoluteIdlName();
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -21,11 +21,11 @@ public class ArrayDef
 		if(direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return getIdentifier();
+			return generateJavaMapping();
 		}
 		else
 		{
-			return "org.omg.CORBA." + getIdentifier() + "Holder";
+			return getAbsoluteIdlName() + "Holder";
 		}	
 	}
 }

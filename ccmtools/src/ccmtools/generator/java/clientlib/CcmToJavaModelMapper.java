@@ -41,7 +41,7 @@ import ccmtools.generator.java.clientlib.metamodel.HomeDef;
 import ccmtools.generator.java.clientlib.metamodel.IntegerType;
 import ccmtools.generator.java.clientlib.metamodel.InterfaceDef;
 import ccmtools.generator.java.clientlib.metamodel.LongType;
-import ccmtools.generator.java.clientlib.metamodel.ModelRoot;
+import ccmtools.generator.java.clientlib.metamodel.ModelRepository;
 import ccmtools.generator.java.clientlib.metamodel.OperationDef;
 import ccmtools.generator.java.clientlib.metamodel.ParameterDef;
 import ccmtools.generator.java.clientlib.metamodel.PassingDirection;
@@ -66,7 +66,7 @@ public class CcmToJavaModelMapper
     private Logger logger;
     
     /** Root element of the Java Implementation Model */
-    private ModelRoot model;
+    private ModelRepository model;
     
     
 	CcmToJavaModelMapper()
@@ -75,10 +75,10 @@ public class CcmToJavaModelMapper
 		logger.fine("CcmModelNodeHandler()");
 		
 		artifactCache = new HashMap();
-		model = new ModelRoot();
+		model = new ModelRepository();
 	}
 			
-	public ModelRoot getJavaModel()
+	public ModelRepository getJavaModel()
 	{
 		return model;
 	}

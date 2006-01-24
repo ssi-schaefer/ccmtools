@@ -18,7 +18,7 @@ import ccmtools.UI.Driver;
 import ccmtools.generator.java.clientlib.metamodel.ComponentDef;
 import ccmtools.generator.java.clientlib.metamodel.HomeDef;
 import ccmtools.generator.java.clientlib.metamodel.InterfaceDef;
-import ccmtools.generator.java.clientlib.metamodel.ModelRoot;
+import ccmtools.generator.java.clientlib.metamodel.ModelRepository;
 import ccmtools.generator.java.clientlib.ui.CommandLineParameters;
 import ccmtools.utils.Code;
 
@@ -62,7 +62,7 @@ public class JavaClientLibGenerator
 	        
 	        // Query the Java Implementation Model and generate all source file objects 
 	        // for the Java Client Library	        
-	        ModelRoot javaModel = nodeHandler.getJavaModel();
+	        ModelRepository javaModel = nodeHandler.getJavaModel();
 //	        System.out.println(javaModel);
 	        List sourceFileList = new ArrayList();
 	        for(Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext(); )

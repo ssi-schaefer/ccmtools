@@ -5,7 +5,7 @@ public class ByteType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return "byte";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -13,7 +13,7 @@ public class ByteType
 		if (direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return "byte";
+			return generateJavaMapping();
 		}
 		else // INOUT, OUT
 		{

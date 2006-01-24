@@ -5,7 +5,7 @@ public class LongType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return "long";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -13,7 +13,7 @@ public class LongType
 		if (direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return "long";
+			return generateJavaMapping();
 		}
 		else // INOUT, OUT
 		{

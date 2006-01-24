@@ -13,7 +13,7 @@ public class TypedefDef
 
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return getAbsoluteIdlName();
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -21,7 +21,7 @@ public class TypedefDef
 		if(direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return getAbsoluteIdlName();
+			return generateJavaMapping();
 		}
 		else
 		{

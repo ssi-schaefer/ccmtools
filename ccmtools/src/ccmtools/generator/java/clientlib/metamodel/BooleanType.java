@@ -5,7 +5,7 @@ public class BooleanType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return "boolean";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -13,7 +13,7 @@ public class BooleanType
 		if (direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return "boolean";
+			return generateJavaMapping();
 		}
 		else // INOUT, OUT
 		{

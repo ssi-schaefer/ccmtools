@@ -5,7 +5,7 @@ public class ShortType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return "short";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -13,7 +13,7 @@ public class ShortType
 		if (direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return "short";
+			return generateJavaMapping();
 		}
 		else // INOUT, OUT
 		{

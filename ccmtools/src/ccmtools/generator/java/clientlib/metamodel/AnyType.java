@@ -5,15 +5,15 @@ public class AnyType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return "org.omg.CORBA.Any";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
 	{
 		if (direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
-		{
-			return "org.omg.CORBA.Any";
+		{			
+			return generateJavaMapping();
 		}
 		else // INOUT, OUT
 		{

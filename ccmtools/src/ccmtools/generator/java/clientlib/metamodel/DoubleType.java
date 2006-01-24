@@ -5,7 +5,7 @@ public class DoubleType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return "double";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -13,7 +13,7 @@ public class DoubleType
 		if (direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return "double";
+			return generateJavaMapping();
 		}
 		else // INOUT, OUT
 		{

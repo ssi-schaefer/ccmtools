@@ -8,14 +8,14 @@ import java.util.List;
  * which can be used a startpoint for navigation.
  * 
  */
-public class ModelRoot
+public class ModelRepository
 	extends ModelElement
 {
 	private List homeList;
 	private List componentList;
 	private List interfaceList;
 	
-	public ModelRoot()
+	public ModelRepository()
 	{
 		homeList = new ArrayList();
 		componentList = new ArrayList();

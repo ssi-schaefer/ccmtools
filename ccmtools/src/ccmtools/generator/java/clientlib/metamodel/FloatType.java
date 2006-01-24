@@ -5,7 +5,7 @@ public class FloatType
 {
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return "float";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -13,7 +13,7 @@ public class FloatType
 		if (direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return "float";
+			return generateJavaMapping();
 		}
 		else // INOUT, OUT
 		{

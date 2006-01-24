@@ -22,7 +22,7 @@ public class ExceptionDef
 	
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return getAbsoluteIdlName();
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -30,7 +30,7 @@ public class ExceptionDef
 		if(direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return getAbsoluteIdlName();
+			return generateJavaMapping();
 		}
 		else
 		{

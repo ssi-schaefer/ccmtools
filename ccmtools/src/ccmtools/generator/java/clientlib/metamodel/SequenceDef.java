@@ -40,7 +40,7 @@ public class SequenceDef
 	
 	public String generateJavaMapping()
 	{
-		return generateJavaMapping(PassingDirection.IN);
+		return getElementType().generateJavaMapping() + "[]";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -48,7 +48,7 @@ public class SequenceDef
 		if(direction == PassingDirection.IN
 			|| direction == PassingDirection.RESULT)
 		{
-			return getElementType().generateJavaMapping(direction) + "[]";
+			return generateJavaMapping();
 		}
 		else
 		{
