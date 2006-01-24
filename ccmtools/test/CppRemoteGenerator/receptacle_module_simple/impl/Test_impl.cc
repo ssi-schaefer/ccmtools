@@ -55,10 +55,10 @@ void
 CCM_Test_impl::ccm_activate()
     throw(::ccm::local::Components::CCMException)
 {
-    string s = "1234567890";
+    string s = "Hello from the C++ ccm_activate!";
     long l;
     l = ctx->get_connection_out_port()->op1(s);
-    assert(l == s.length());
+    assert(l == (long)s.length());
 }
 
 void
