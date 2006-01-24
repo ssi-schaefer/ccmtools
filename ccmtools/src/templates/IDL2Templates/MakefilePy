@@ -1,2 +1,2 @@
-#os.system('make')
-
+FILE_PROPERTIES(filename='*.idl',
+                properties={'INSTALL_PATH': ''})
