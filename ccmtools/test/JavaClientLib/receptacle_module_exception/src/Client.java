@@ -32,9 +32,7 @@ public class Client
 			TestHome home = (TestHome) homeFinder.find_home_by_name("myTestHome");
 
 			Test component = home.create();
-			component.connect_outVoidType(new client.myVoidTypeImpl());
-			component.connect_outBasicType(new client.myBasicTypeImpl());
-			component.connect_outUserType(new client.myUserTypeImpl());
+			component.connect_outPort(new client.myConsoleImpl());
 			component.configuration_complete();
 
 			// There is no code needed because the remote component calls
@@ -44,9 +42,7 @@ public class Client
 			// this method blocks untils all tests i nthe remote ccm_activate()
 			// method are executed.
 			
-			component.disconnect_outUserType();
-			component.disconnect_outBasicType();
-			component.disconnect_outVoidType();
+			component.disconnect_outPort();
 			component.remove();
 			System.out.println("OK!");
 		}

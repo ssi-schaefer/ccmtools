@@ -21,7 +21,10 @@ public class myBasicTypeImpl
     public short f1 (short p1, ShortHolder p2, ShortHolder p3)
     {
     	System.out.println("myBasicTypeImpl.f1()");
-    	return 0;
+		p3.value = p2.value;
+		p2.value = p1;
+		short result = (short) (p3.value + p1);
+		return result;
     }
     
 
@@ -39,35 +42,50 @@ public class myBasicTypeImpl
     public short f3(short p1, ShortHolder p2, ShortHolder p3)
 	{
 		System.out.println("myBasicTypeImpl.f3()");
-		return 0;
+		p3.value = p2.value;
+		p2.value = p1;
+		short result = (short) (p3.value + p1);
+		return result;
 	}
 
 
     public int f4(int p1, IntHolder p2, IntHolder p3)
 	{
 		System.out.println("myBasicTypeImpl.f4()");
-		return 0;
+		p3.value = p2.value;
+		p2.value = p1;
+		int result = p3.value + p1;
+		return result;
 	}
 
 
     public float f5(float p1, FloatHolder p2, FloatHolder p3)
 	{
 		System.out.println("myBasicTypeImpl.f5()");
-		return (float) 0.0;
+		p3.value = p2.value;
+		p2.value = p1;
+		float result = p3.value + p1;
+		return result;
 	}
 
 
     public double f6(double p1, DoubleHolder p2, DoubleHolder p3)
 	{
 		System.out.println("myBasicTypeImpl.f6()");
-		return 0.0;
+		p3.value = p2.value;
+		p2.value = p1;
+		double result = p3.value + p1;
+		return result;
 	}
 
 
     public char f7(char p1, CharHolder p2, CharHolder p3)
 	{
 		System.out.println("myBasicTypeImpl.f7()");
-		return 0;
+		p3.value = p2.value;
+		p2.value = p1;
+		char result = (char) (p3.value + p1);
+		return result;
 	}
 
 
@@ -84,13 +102,28 @@ public class myBasicTypeImpl
     public boolean f9(boolean p1, BooleanHolder p2, BooleanHolder p3)
 	{
 		System.out.println("myBasicTypeImpl.9()");
-		return false;
+		p3.value = p2.value;
+		p2.value = p1;
+		boolean result = p3.value && p1;
+		return result;
 	}
 
 
     public byte f10(byte p1, ByteHolder p2, ByteHolder p3)
+    	throws CCMException
 	{
 		System.out.println("myBasicTypeImpl.f10()");
-		return 0;
+		try
+		{
+			p3.value = p2.value;
+			p2.value = p1;
+			byte result = (byte) (p3.value + p1);
+			return result;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new CCMException(e.getMessage());
+		}
 	}
 }

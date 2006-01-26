@@ -13,7 +13,8 @@ import world.europe.austria.PersonListHolder;
 import world.europe.austria.StringListHolder;
 import ccm.local.Components.CCMException;
 
-public class myUserTypeImpl implements world.europe.austria.ccm.local.UserTypeInterface
+public class myUserTypeImpl 
+	implements world.europe.austria.ccm.local.UserTypeInterface
 {
 
 	public myUserTypeImpl()
@@ -21,72 +22,150 @@ public class myUserTypeImpl implements world.europe.austria.ccm.local.UserTypeIn
 	}
 
 	public Color f1(Color p1, ColorHolder p2, ColorHolder p3)
+		throws CCMException
 	{
 		System.out.println("myUserTypeImpl.f1()");
-		return null;
+		try
+		{
+			p3.value = p2.value;
+			p2.value = p1;
+			Color result = Color.orange;
+			return result;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new CCMException(e.getMessage());
+		}
 	}
 
 	public Person f2(Person p1, PersonHolder p2, PersonHolder p3) 
 		throws CCMException
 	{
 		System.out.println("myUserTypeImpl.f2()");
-		p3.value = new Person(p2.value.id, p2.value.name);
-
-		p2.value.id = p1.id;
-		p2.value.name = p1.name;
-
-		Person result = new Person(p1.id + p3.value.id, p1.name + p3.value.name);
-		return result;
+		try
+		{
+			p3.value = new Person(p2.value.id, p2.value.name);
+			p2.value.id = p1.id;
+			p2.value.name = p1.name;
+			Person result = new Person(p1.id + p3.value.id, p1.name + p3.value.name);
+			return result;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new CCMException(e.getMessage());
+		}
 	}
 
 	public Address f3(Address p1, AddressHolder p2, AddressHolder p3)
+		throws CCMException
 	{
 		System.out.println("myUserTypeImpl.f3()");
-		return null;
+		try
+		{
+			Person pers = new Person(p1.resident.id + p2.value.resident.id, p1.resident.name + p2.value.resident.name);
+			Address addr = new Address(p1.street + p2.value.street, p1.number + p2.value.number, pers);
+			p3.value = p2.value;
+			p2.value = p1;
+			return addr;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new CCMException(e.getMessage());
+		}
 	}
 
+	
 	public int[] f4(int[] p1, LongListHolder p2, LongListHolder p3)
+		throws CCMException
 	{
 		System.out.println("myUserTypeImpl.f4()");
-		return null;
+		try
+		{
+			int[] result = new int[p1.length];
+			p3.value = new int[p1.length];
+			for (int i = 0; i < p1.length; i++)
+			{
+				result[i] = i;
+				p3.value[i] = p2.value[i];
+				p2.value[i] = p1[i];
+			}
+			return result;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new CCMException(e.getMessage());
+		}
 	}
 
+	
 	public String[] f5(String[] p1, StringListHolder p2, StringListHolder p3)
 			throws CCMException
 	{
 		System.out.println("myUserTypeImpl.f5()");
 		try
 		{
-			String[] p3a = new String[3];
-			p3a[0] = p2.value[0];
-			p3a[1] = p2.value[1];
-			p3a[2] = p2.value[2];
-			p3.value = p3a;
-
-			p2.value = p1;
-
-			String[] result =
+			String[] result = new String[p1.length];		
+			p3.value = new String[p1.length];
+			for(int i = 0; i< p1.length; i++)
 			{
-					"Test", "Test", "Test"
-			};
+				result[i] = "Test";
+				p3.value[i] = p2.value[i];
+				p2.value[i] = p1[i];
+			}
 			return result;
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new CCMException();
+			throw new CCMException(e.getMessage());
 		}
 	}
 
-	public Person[] f6(Person[] p1, PersonListHolder p2, PersonListHolder p3)
+	
+	public Person[] f6(Person[] p1, PersonListHolder p2, PersonListHolder p3) 
+		throws CCMException
 	{
 		System.out.println("myUserTypeImpl.f6()");
-		return null;
+		try
+		{
+			Person[] result = new Person[p1.length];
+			p3.value = new Person[p1.length];
+			for (int i = 0; i < p1.length; i++)
+			{
+				Person person = new Person(i, "Test");
+				result[i] = person;
+				p3.value[i] = p2.value[i];
+				p2.value[i] = p1[i];
+			}
+			return result;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new CCMException(e.getMessage());
+		}
 	}
 
-	public int f7(int t1, IntHolder t2, IntHolder t3)
+	
+	public int f7(int t1, IntHolder t2, IntHolder t3) 
+		throws CCMException
 	{
-		System.out.println("myUserTypeImpl.f7()");
-		return 0;
+		try
+		{
+			System.out.println("myUserTypeImpl.f7()");
+			t3.value = t2.value;
+			t2.value = t1;
+			int result = t3.value + t1;
+			return result;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new CCMException(e.getMessage());
+		}
 	}
 }
