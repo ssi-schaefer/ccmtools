@@ -15,6 +15,10 @@ public class ServiceLocator
 	/** Store CORBA specific references */
 	private ORB orb = null;
 	
+	/** Thread which calls orb.run() */
+	private Thread orbRunThread = null;
+	
+	
 	/** Get an instance of this component proxy (singleton) */
 	public static ServiceLocator instance()
 	{
@@ -25,6 +29,16 @@ public class ServiceLocator
 		return instance;
 	}
 
+	/**
+	 * Interrupt threads, close connections and free resources.
+	 *
+	 */
+	public void destroy()
+	{
+		orb = null;
+		instance = null;
+	}
+	
 	/** Don't let clients use this constructor */
 	protected ServiceLocator()
 	{
@@ -35,8 +49,11 @@ public class ServiceLocator
 		this.orb = orb;
 		
 		// Start a thread that executes orb.run()
-		Thread thread = new OrbRunThread(orb);
-		thread.start();
+		orbRunThread = new OrbRunThread(orb);
+		
+		// Deamon threads terminate when the application is finished 
+		orbRunThread.setDaemon(true);
+		orbRunThread.start();
 	}
 	
 	public ORB getCorbaOrb()
@@ -74,7 +91,7 @@ public class ServiceLocator
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new ServiceLocatorException(e.getMessage());
 		}
 	}
@@ -89,8 +106,8 @@ public class ServiceLocator
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			throw new ServiceLocatorException(e.getMessage());
 		}
-}
+	}
 }

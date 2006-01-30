@@ -26,7 +26,6 @@ public class OrbRunThread
 	 */
 	public void run()
 	{
-		System.out.println("orb.run()...");
 		orb.run();
 	}
 }
