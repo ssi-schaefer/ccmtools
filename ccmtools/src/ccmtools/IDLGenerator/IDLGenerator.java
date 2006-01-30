@@ -157,19 +157,8 @@ abstract public class IDLGenerator extends CodeGenerator
      */
     protected void writeOutput(Template template)
     {
-//        String[] pieces = template.substituteVariables(output_variables).split("\n");
         String code = template.substituteVariables(output_variables);
-        
         List code_pieces = new ArrayList();
-//        for(int i = 0; i < pieces.length; i++)
-//            if(!pieces[i].trim().equals(""))
-//                code_pieces.add(pieces[i]);
-                
-//        String code = join("\n", code_pieces);
-
-//        code = code.replaceAll("#ifndef", "\n#ifndef");
-//        code = code.replaceAll("#define(.*)$", "#define\\1\n");
-        
         String name = join(Text.MANGLING_SEPARATOR, namespaceStack);
         if(!name.equals(""))
             name += Text.MANGLING_SEPARATOR;
@@ -448,13 +437,11 @@ abstract public class IDLGenerator extends CodeGenerator
     }
     
     // Helper methods ----------------------------------------------------------
-    //!!!!!!!!!!!!!!
+
     protected String generateConstantImpl(MConstantDef constant)
     {
         if(constant == null) return "";
 
-//        const %(LanguageType)s %(Identifier)s = %(ConstValue)s;
-        
         // TODO: Refactor to handle all types of constants
         MIDLType idlType = constant.getIdlType();
         Object valueObject = constant.getConstValue();
@@ -462,14 +449,6 @@ abstract public class IDLGenerator extends CodeGenerator
         String value = generateConstantValue(constant);
         StringBuffer code = new StringBuffer();
         code.append(Text.TAB).append("const ");
-//        if(idlType instanceof MStringDef) {
-//            type = "string";
-//            value = "\"" + (String)valueObject + "\"";
-//        }
-//        else if(idlType instanceof MPrimitiveDef) {
-//            type = (String) language_mappings.get(((MPrimitiveDef)idlType).getKind().toString());
-//            value = ((Integer)valueObject).toString();
-//        }
         code.append(type).append(" ");
         code.append(constant.getIdentifier()).append(" = ");
         code.append(value).append(";\n");
@@ -551,7 +530,5 @@ abstract public class IDLGenerator extends CodeGenerator
         }
         return value;
     }
-    
-    //!!!!!!!!!!!!!!!!!
 }
 

@@ -747,17 +747,19 @@ abstract public class CodeGenerator implements TemplateHandler
         
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        for(Iterator n = namespaceStack.iterator(); n.hasNext();) {
-            String name = (String) n.next();
-            try {
-                String mine = (String) scope.get(0);
-                if(mine.equals(name))
-                    scope.remove(0);
-            }
-            catch(Exception e) {
-                break;
-            }
-        }
+        // TODO: fix IDL3 parser to support relative namespaces definitions!!!!
+        
+//        for(Iterator n = namespaceStack.iterator(); n.hasNext();) {
+//            String name = (String) n.next();
+//            try {
+//                String mine = (String) scope.get(0);
+//                if(mine.equals(name))
+//                    scope.remove(0);
+//            }
+//            catch(Exception e) {
+//                break;
+//            }
+//        }
         
         logger.fine("leave getFullScopeIdentifier()");
         return join(Text.SCOPE_SEPARATOR, scope);

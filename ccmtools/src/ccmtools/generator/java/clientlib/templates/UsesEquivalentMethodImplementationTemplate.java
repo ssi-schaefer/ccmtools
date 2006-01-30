@@ -38,7 +38,7 @@ public class UsesEquivalentMethodImplementationTemplate
     stringBuffer.append(TEXT_1);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_2);
-    stringBuffer.append(uses.getInterface().getIdentifier());
+    stringBuffer.append(uses.getInterface().getAbsoluteJavaName());
     stringBuffer.append(TEXT_3);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_4);
@@ -50,7 +50,7 @@ public class UsesEquivalentMethodImplementationTemplate
     stringBuffer.append(TEXT_7);
     stringBuffer.append(uses.getInterface().getAbsoluteIdlName());
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(uses.getInterface().getIdentifier());
+    stringBuffer.append(uses.getInterface().getAbsoluteJavaName());
     stringBuffer.append(TEXT_9);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_10);

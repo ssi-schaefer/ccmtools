@@ -4,7 +4,7 @@
 %>
 <% UsesDef uses = (UsesDef) argument;  %>
 
-    public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().getIdentifier()%> localObject)
+    public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().getAbsoluteJavaName()%> localObject)
         throws ccm.local.Components.AlreadyConnected, ccm.local.Components.InvalidConnection
     {
     	// Create CORBA objects and connect them to the remote component
@@ -41,7 +41,7 @@
 		}
     }
 
-    public <%=uses.getInterface().getIdentifier()%> disconnect_<%=uses.getIdentifier()%>()
+    public <%=uses.getInterface().getAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
         throws ccm.local.Components.NoConnection
     {
    		try
