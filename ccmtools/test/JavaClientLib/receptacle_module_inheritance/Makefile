@@ -14,7 +14,8 @@ idl2: idl3
 
 client_lib: idl2
 	make -C ${DEST_DIR}/CCM_corba_stubs client
-	ccmclient -java -o ${DEST_DIR}/JavaClientLib/src-gen ${IDL_INCLUDE} ${DEST_DIR}/idl/interface/world/europe/austria/*.idl
+	ccmclient -java -o ${DEST_DIR}/JavaClientLib/src-gen ${IDL_INCLUDE} ${DEST_DIR}/idl/interface/world/*.idl ${DEST_DIR}/idl/interface/world/america/*.idl ${DEST_DIR}/idl/interface/world/europe/*.idl
+	ccmclient -java -o ${DEST_DIR}/JavaClientLib/src-gen ${IDL_INCLUDE} ${DEST_DIR}/idl/component/world/Test*.idl
 
 check: 
 	ant -f ${DEST_DIR}/CCM_corba_stubs/build.xml install -Dprefix=../JavaClientLib -Djarname=ClientStubs

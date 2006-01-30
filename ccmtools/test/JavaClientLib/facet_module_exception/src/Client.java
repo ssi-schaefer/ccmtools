@@ -94,10 +94,13 @@ public class Client
 	{
 	    e.printStackTrace();
 	}
-	
+	finally
+	{
+	    // Unregister homes from the HomeFinder
+	    ccm.local.HomeFinder.instance().unregister_home("myTestHome");
 
-       // Unregister homes from the HomeFinder
-        ccm.local.HomeFinder.instance().unregister_home("myTestHome");
-	System.exit(0);
+	    // Tear down the ServiceLocator singleton
+	    ServiceLocator.instance().destroy();	
+	}
     }
 }

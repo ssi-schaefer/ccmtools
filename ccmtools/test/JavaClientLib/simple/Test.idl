@@ -20,8 +20,8 @@ interface VoidTypeInterface
 
 interface BasicTypeInterface 
 {
-  long           f2(in long p1, inout long p2, out long p3);
-  string         f8(in string p1, inout string p2, out string p3);
+  long    f2(in long p1, inout long p2, out long p3);
+  string  f8(in string p1, inout string p2, out string p3);
 };
 
 

@@ -228,8 +228,7 @@ public class Client
 				assert(result.id == 3 + 23);
 			}
 
-			{ // struct Address { string street; long number; Person resident;
-				// }
+			{ // struct Address { string street; long number; Person resident; }
 				world.europe.austria.Person egon = new world.europe.austria.Person(3, "Egon");
 				world.europe.austria.Address p1 = new world.europe.austria.Address("Waltendorf", 7, egon);
 
@@ -359,13 +358,17 @@ public class Client
 			component.remove();
 			System.out.println("OK!");
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
+	        catch (Exception e)
+	        {
+		    e.printStackTrace();
 		}
-
-		// Unregister homes from the HomeFinder
-		ccm.local.HomeFinder.instance().unregister_home("myTestHome");
-		System.exit(0);
-	}
+		finally
+		{
+		    // Unregister homes from the HomeFinder
+		    ccm.local.HomeFinder.instance().unregister_home("myTestHome");
+		    
+		    // Tear down the ServiceLocator singleton
+		    ServiceLocator.instance().destroy();	
+		}
+    }
 }

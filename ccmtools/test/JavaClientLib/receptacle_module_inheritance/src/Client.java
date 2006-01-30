@@ -1,8 +1,8 @@
 import org.omg.CORBA.ORB;
 
-import world.europe.austria.ccm.local.Test;
-import world.europe.austria.ccm.local.TestHome;
-import world.europe.austria.ccm.local.TestHomeFactory;
+import world.ccm.local.Test;
+import world.ccm.local.TestHome;
+import world.ccm.local.TestHomeFactory;
 import ccm.local.ServiceLocator;
 
 
@@ -32,21 +32,17 @@ public class Client
 			TestHome home = (TestHome) homeFinder.find_home_by_name("myTestHome");
 
 			Test component = home.create();
-			component.connect_outVoidType(new client.myVoidTypeImpl());
-			component.connect_outBasicType(new client.myBasicTypeImpl());
-			component.connect_outUserType(new client.myUserTypeImpl());
+			component.connect_ifaceOut(new client.mySubTypeImpl());
 			component.configuration_complete();
 
 			// There is no code needed because the remote component calls
 			// the implementations supported by the connected my*Impl objects
 			// after component.configuration_complete()
 			// Note: configuration_complete() is a synchron remote call, thus,
-			// this method blocks untils all tests i nthe remote ccm_activate()
+			// this method blocks untils all tests in the remote ccm_activate()
 			// method are executed.
 			
-			component.disconnect_outUserType();
-			component.disconnect_outBasicType();
-			component.disconnect_outVoidType();
+			component.disconnect_ifaceOut();
 			component.remove();
 			System.out.println("OK!");
 		}
@@ -58,8 +54,9 @@ public class Client
 		{
 		    // Unregister homes from the HomeFinder
 		    ccm.local.HomeFinder.instance().unregister_home("myTestHome");
+
 		    // Tear down the ServiceLocator singleton
-		    ServiceLocator.instance().destroy();	    
+		    ServiceLocator.instance().destroy();	
 		}
 	}
 }
