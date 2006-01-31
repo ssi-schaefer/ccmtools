@@ -2,7 +2,7 @@ DEST_DIR = ccmrepo
 IDL3_DIR = idl3
 IDL_INCLUDE = -I${IDL3_DIR}
 
-all: remote nested dbc 
+all: local remote
 server: cppserver
 client: cppclient
 
