@@ -25,10 +25,11 @@ import org.omg.PortableServer.POAPackage.InvalidPolicy;
 public class <%=component.getIdentifier()%>AdapterToCorba 
     implements <%=component.getAbsoluteJavaName()%>
 {
-    public static final String COMPONENT_REPOSITORY_ID = "<%=component.getRepositoryId()%>";
+    public static final String COMPONENT_REPOSITORY_ID = 
+        "<%=component.getRepositoryId()%>";
 
     /** CORBA reference to a remote component */
-    private <%=component.getAbsoluteIdlName()%> remoteComponent;
+    private <%=component.getAbsoluteIdlName()%> remoteInterface;
 
     /** Java references to local facet adapters */
 <%
@@ -60,7 +61,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     public <%=component.getIdentifier()%>AdapterToCorba(<%=component.getAbsoluteIdlName()%> remoteComponent)
         throws ccm.local.Components.CCMException
     {    
-        this.remoteComponent = remoteComponent;
+        this.remoteInterface = remoteComponent;
         orb = ccm.local.ServiceLocator.instance().getCorbaOrb();
         try
         {
@@ -93,6 +94,17 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     
     
     /** Equivalent interface methods */
+
+<%
+for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>
+<%=attr.generateAttributeAdapterToCorba()%>
+<%
+}
+%>    
+    
 <%
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
@@ -118,17 +130,17 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     
     public void configuration_complete()
     {
-        if(remoteComponent != null)
+        if(remoteInterface != null)
         {
-            remoteComponent.configuration_complete();
+            remoteInterface.configuration_complete();
         }
     }
     
     public void remove()
     {
-        if(remoteComponent != null)
+        if(remoteInterface != null)
         {
-            remoteComponent.remove();
+            remoteInterface.remove();
         }
     }
     

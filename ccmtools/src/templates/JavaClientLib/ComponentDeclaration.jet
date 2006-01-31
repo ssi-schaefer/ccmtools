@@ -15,6 +15,17 @@ package <%=component.getJavaNamespace()%>;
 public interface <%=component.getIdentifier()%> 
     extends ccm.local.Components.CCMObject
 {
+    /** Attribute equivalent methods */
+<%
+for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>
+<%=attr.generateAttributeDeclaration()%>
+<%
+}
+%>    
+
     /** Facet equivalent methods */
     
 <%

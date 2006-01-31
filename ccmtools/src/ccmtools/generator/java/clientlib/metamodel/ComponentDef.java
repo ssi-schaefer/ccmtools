@@ -12,6 +12,7 @@ import ccmtools.utils.Text;
 public class ComponentDef
 	extends ModelElement
 {
+	private List attributes = new ArrayList();
 	private List facet = new ArrayList();
 	private List receptacle = new ArrayList();
 	private List supports = new ArrayList();
@@ -23,6 +24,11 @@ public class ComponentDef
 		super(identifier, namespace);
 	}
 	
+	
+	public List getAttributes()
+	{
+		return attributes;
+	}
 	
 	public List getFacet()
 	{

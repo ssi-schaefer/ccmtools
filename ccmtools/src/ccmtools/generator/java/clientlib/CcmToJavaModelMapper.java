@@ -226,6 +226,14 @@ public class CcmToJavaModelMapper
 		else
 		{
 			out = new ComponentDef(in.getIdentifier(), Code.getNamespaceList(in));
+			for (Iterator i = in.getContentss().iterator(); i.hasNext();)
+			{
+				MContained child = (MContained) i.next();
+				if (child instanceof MAttributeDef)
+				{
+					out.getAttributes().add(transform((MAttributeDef)child));
+				}
+			}
 			for(Iterator i = in.getFacets().iterator(); i.hasNext(); )
 			{
 				out.getFacet().add(transform((MProvidesDef)i.next())); 

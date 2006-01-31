@@ -72,7 +72,7 @@ public class CommandLineParameters
 	public void validate()
 		throws CcmtoolsException
 	{
-		checkIncludePaths();
+		//checkIncludePaths();
 		checkOutputPath();
 		checkIdlFiles();
 	}

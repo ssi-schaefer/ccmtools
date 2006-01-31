@@ -20,9 +20,9 @@ public class ComponentAdapterToCorbaTemplate
   protected final String TEXT_3 = NL + " * DO NOT EDIT!" + NL + " */" + NL + "" + NL + "package ";
   protected final String TEXT_4 = ";" + NL + "                 " + NL + "import org.omg.CORBA.ORB;" + NL + "import org.omg.CORBA.Policy;" + NL + "import org.omg.PortableServer.ImplicitActivationPolicyValue;" + NL + "import org.omg.PortableServer.POA;" + NL + "import org.omg.PortableServer.POAHelper;" + NL + "import org.omg.PortableServer.POAManagerPackage.AdapterInactive;" + NL + "import org.omg.PortableServer.POAPackage.AdapterAlreadyExists;" + NL + "import org.omg.PortableServer.POAPackage.InvalidPolicy;" + NL + "" + NL + "" + NL + "public class ";
   protected final String TEXT_5 = "AdapterToCorba " + NL + "    implements ";
-  protected final String TEXT_6 = NL + "{" + NL + "    public static final String COMPONENT_REPOSITORY_ID = \"";
+  protected final String TEXT_6 = NL + "{" + NL + "    public static final String COMPONENT_REPOSITORY_ID = " + NL + "        \"";
   protected final String TEXT_7 = "\";" + NL + "" + NL + "    /** CORBA reference to a remote component */" + NL + "    private ";
-  protected final String TEXT_8 = " remoteComponent;" + NL + "" + NL + "    /** Java references to local facet adapters */";
+  protected final String TEXT_8 = " remoteInterface;" + NL + "" + NL + "    /** Java references to local facet adapters */";
   protected final String TEXT_9 = "    ";
   protected final String TEXT_10 = NL;
   protected final String TEXT_11 = NL + NL + "    /** Java references to local receptacle adapters */";
@@ -30,20 +30,22 @@ public class ComponentAdapterToCorbaTemplate
   protected final String TEXT_13 = NL;
   protected final String TEXT_14 = NL + NL + "    /** CORBA references */" + NL + "    private ORB orb;" + NL + "    private POA componentPoa;" + NL + "    " + NL + "    " + NL + "    public ";
   protected final String TEXT_15 = "AdapterToCorba(";
-  protected final String TEXT_16 = " remoteComponent)" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {    " + NL + "        this.remoteComponent = remoteComponent;" + NL + "        orb = ccm.local.ServiceLocator.instance().getCorbaOrb();" + NL + "        try" + NL + "        {" + NL + "            // Create a POA instance to handle CORBA requests for local receptacles" + NL + "            POA rootPoa = POAHelper.narrow(orb.resolve_initial_references(\"RootPOA\"));" + NL + "            rootPoa.the_POAManager().activate();\t\t\t\t\t\t\t\t\t" + NL + "            Policy[] policies = new Policy[1];" + NL + "            policies[0] = rootPoa.create_implicit_activation_policy(" + NL + "                              ImplicitActivationPolicyValue.IMPLICIT_ACTIVATION);" + NL + "            componentPoa = rootPoa.create_POA(\"TestAdapterPOA\", rootPoa.the_POAManager(),policies );" + NL + "            componentPoa.the_POAManager().activate();" + NL + "        }" + NL + "        catch (org.omg.CORBA.ORBPackage.InvalidName e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "        catch (AdapterInactive e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "        catch (AdapterAlreadyExists e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "        catch (InvalidPolicy e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** Equivalent interface methods */";
+  protected final String TEXT_16 = " remoteComponent)" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {    " + NL + "        this.remoteInterface = remoteComponent;" + NL + "        orb = ccm.local.ServiceLocator.instance().getCorbaOrb();" + NL + "        try" + NL + "        {" + NL + "            // Create a POA instance to handle CORBA requests for local receptacles" + NL + "            POA rootPoa = POAHelper.narrow(orb.resolve_initial_references(\"RootPOA\"));" + NL + "            rootPoa.the_POAManager().activate();\t\t\t\t\t\t\t\t\t" + NL + "            Policy[] policies = new Policy[1];" + NL + "            policies[0] = rootPoa.create_implicit_activation_policy(" + NL + "                              ImplicitActivationPolicyValue.IMPLICIT_ACTIVATION);" + NL + "            componentPoa = rootPoa.create_POA(\"TestAdapterPOA\", rootPoa.the_POAManager(),policies );" + NL + "            componentPoa.the_POAManager().activate();" + NL + "        }" + NL + "        catch (org.omg.CORBA.ORBPackage.InvalidName e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "        catch (AdapterInactive e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "        catch (AdapterAlreadyExists e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "        catch (InvalidPolicy e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** Equivalent interface methods */" + NL;
   protected final String TEXT_17 = NL;
-  protected final String TEXT_18 = NL;
+  protected final String TEXT_18 = "    " + NL + "    ";
   protected final String TEXT_19 = NL;
-  protected final String TEXT_20 = NL + NL + "    " + NL + "    /** CCMObject interface methods */" + NL + "    " + NL + "    public void configuration_complete()" + NL + "    {" + NL + "        if(remoteComponent != null)" + NL + "        {" + NL + "            remoteComponent.configuration_complete();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    public void remove()" + NL + "    {" + NL + "        if(remoteComponent != null)" + NL + "        {" + NL + "            remoteComponent.remove();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    public ccm.local.Components.HomeExecutorBase get_ccm_home()" + NL + "    {" + NL + "        // TODO" + NL + "        throw new RuntimeException(\"get_ccm_home() is not implemented!\");" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** Navigation interface methods */" + NL + "    " + NL + "    public Object provide_facet(String name)" + NL + "        throws ccm.local.Components.InvalidName" + NL + "    {" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }";
-  protected final String TEXT_21 = "        ";
-  protected final String TEXT_22 = NL;
-  protected final String TEXT_23 = NL + "        else" + NL + "        {" + NL + "        \tthrow new ccm.local.Components.InvalidName();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** Receptacle methods */" + NL + "    " + NL + "    public ccm.local.Components.Cookie connect(String name, Object localObject)" + NL + "        throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection," + NL + "               ccm.local.Components.AlreadyConnected, ccm.local.Components.ExceededConnectionLimit" + NL + "    {" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }";
-  protected final String TEXT_24 = "     ";
-  protected final String TEXT_25 = NL;
-  protected final String TEXT_26 = NL + "        else" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    public void disconnect(String name, ccm.local.Components.Cookie ck)" + NL + "        throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection," + NL + "               ccm.local.Components.CookieRequired, ccm.local.Components.NoConnection" + NL + "    {" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }";
-  protected final String TEXT_27 = "     ";
-  protected final String TEXT_28 = NL;
-  protected final String TEXT_29 = NL + "        else" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }" + NL + "    }" + NL + "}";
+  protected final String TEXT_20 = NL;
+  protected final String TEXT_21 = NL;
+  protected final String TEXT_22 = NL + NL + "    " + NL + "    /** CCMObject interface methods */" + NL + "    " + NL + "    public void configuration_complete()" + NL + "    {" + NL + "        if(remoteInterface != null)" + NL + "        {" + NL + "            remoteInterface.configuration_complete();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    public void remove()" + NL + "    {" + NL + "        if(remoteInterface != null)" + NL + "        {" + NL + "            remoteInterface.remove();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    public ccm.local.Components.HomeExecutorBase get_ccm_home()" + NL + "    {" + NL + "        // TODO" + NL + "        throw new RuntimeException(\"get_ccm_home() is not implemented!\");" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** Navigation interface methods */" + NL + "    " + NL + "    public Object provide_facet(String name)" + NL + "        throws ccm.local.Components.InvalidName" + NL + "    {" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }";
+  protected final String TEXT_23 = "        ";
+  protected final String TEXT_24 = NL;
+  protected final String TEXT_25 = NL + "        else" + NL + "        {" + NL + "        \tthrow new ccm.local.Components.InvalidName();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** Receptacle methods */" + NL + "    " + NL + "    public ccm.local.Components.Cookie connect(String name, Object localObject)" + NL + "        throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection," + NL + "               ccm.local.Components.AlreadyConnected, ccm.local.Components.ExceededConnectionLimit" + NL + "    {" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }";
+  protected final String TEXT_26 = "     ";
+  protected final String TEXT_27 = NL;
+  protected final String TEXT_28 = NL + "        else" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    public void disconnect(String name, ccm.local.Components.Cookie ck)" + NL + "        throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection," + NL + "               ccm.local.Components.CookieRequired, ccm.local.Components.NoConnection" + NL + "    {" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }";
+  protected final String TEXT_29 = "     ";
+  protected final String TEXT_30 = NL;
+  protected final String TEXT_31 = NL + "        else" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }" + NL + "    }" + NL + "}";
 
   public String generate(Object argument)
   {
@@ -93,63 +95,74 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     stringBuffer.append(component.getAbsoluteIdlName());
     stringBuffer.append(TEXT_16);
     
-for(Iterator i = component.getFacet().iterator(); i.hasNext();)
+for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
-    ProvidesDef provides = (ProvidesDef)i.next();
+    AttributeDef attr = (AttributeDef)i.next();
 
     stringBuffer.append(TEXT_17);
-    stringBuffer.append(provides.generateProvidesEquivalentMethodImplementation());
+    stringBuffer.append(attr.generateAttributeAdapterToCorba());
     
 }
 
     stringBuffer.append(TEXT_18);
     
-for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
-    UsesDef uses = (UsesDef)i.next();
+    ProvidesDef provides = (ProvidesDef)i.next();
 
     stringBuffer.append(TEXT_19);
-    stringBuffer.append(uses.generateUsesEquivalentMethodImplementation());
+    stringBuffer.append(provides.generateProvidesEquivalentMethodImplementation());
     
 }
 
     stringBuffer.append(TEXT_20);
+    
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+
+    stringBuffer.append(TEXT_21);
+    stringBuffer.append(uses.generateUsesEquivalentMethodImplementation());
+    
+}
+
+    stringBuffer.append(TEXT_22);
     		
 for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 
-    stringBuffer.append(TEXT_21);
-    stringBuffer.append(TEXT_22);
+    stringBuffer.append(TEXT_23);
+    stringBuffer.append(TEXT_24);
     stringBuffer.append(provides.generateProvidesNavigationMethodImplementation());
     
 }
 
-    stringBuffer.append(TEXT_23);
+    stringBuffer.append(TEXT_25);
     		
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
 {
     UsesDef uses = (UsesDef)i.next();
 
-    stringBuffer.append(TEXT_24);
-    stringBuffer.append(TEXT_25);
+    stringBuffer.append(TEXT_26);
+    stringBuffer.append(TEXT_27);
     stringBuffer.append(uses.generateUsesReceptacleConnectMethodImplementation());
     
 }
 
-    stringBuffer.append(TEXT_26);
+    stringBuffer.append(TEXT_28);
     
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
 {
     UsesDef uses = (UsesDef)i.next();
 
-    stringBuffer.append(TEXT_27);
-    stringBuffer.append(TEXT_28);
+    stringBuffer.append(TEXT_29);
+    stringBuffer.append(TEXT_30);
     stringBuffer.append(uses.generateUsesReceptacleDisconnectMethodImplementation());
     
 }
 
-    stringBuffer.append(TEXT_29);
+    stringBuffer.append(TEXT_31);
     return stringBuffer.toString();
   }
 }

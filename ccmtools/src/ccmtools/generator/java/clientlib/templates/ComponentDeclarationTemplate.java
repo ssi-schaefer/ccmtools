@@ -19,11 +19,13 @@ public class ComponentDeclarationTemplate
   protected final String TEXT_2 = NL + " * <http://ccmtools.sourceforge.net>" + NL + " * ";
   protected final String TEXT_3 = NL + " * DO NOT EDIT!" + NL + " */" + NL + "" + NL + "package ";
   protected final String TEXT_4 = ";" + NL + "                 " + NL + "public interface ";
-  protected final String TEXT_5 = " " + NL + "    extends ccm.local.Components.CCMObject" + NL + "{" + NL + "    /** Facet equivalent methods */" + NL + "    ";
+  protected final String TEXT_5 = " " + NL + "    extends ccm.local.Components.CCMObject" + NL + "{" + NL + "    /** Attribute equivalent methods */";
   protected final String TEXT_6 = NL;
-  protected final String TEXT_7 = "    " + NL + "    " + NL + "    /** Receptacle equivalent methods */";
+  protected final String TEXT_7 = "    " + NL + "" + NL + "    /** Facet equivalent methods */" + NL + "    ";
   protected final String TEXT_8 = NL;
-  protected final String TEXT_9 = NL + NL + "}";
+  protected final String TEXT_9 = "    " + NL + "    " + NL + "    /** Receptacle equivalent methods */";
+  protected final String TEXT_10 = NL;
+  protected final String TEXT_11 = NL + NL + "}";
 
   public String generate(Object argument)
   {
@@ -39,27 +41,38 @@ public class ComponentDeclarationTemplate
     stringBuffer.append(component.getIdentifier());
     stringBuffer.append(TEXT_5);
     
-for(Iterator i = component.getFacet().iterator(); i.hasNext();)
+for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
-    ProvidesDef provides = (ProvidesDef)i.next();
+    AttributeDef attr = (AttributeDef)i.next();
 
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(provides.generateProvidesEquivalentMethodDeclaration());
+    stringBuffer.append(attr.generateAttributeDeclaration());
     
 }
 
     stringBuffer.append(TEXT_7);
     
-for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
-    UsesDef uses = (UsesDef)i.next();
+    ProvidesDef provides = (ProvidesDef)i.next();
 
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(uses.generateUsesEquivalentMethodDeclaration());
+    stringBuffer.append(provides.generateProvidesEquivalentMethodDeclaration());
     
 }
 
     stringBuffer.append(TEXT_9);
+    
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+
+    stringBuffer.append(TEXT_10);
+    stringBuffer.append(uses.generateUsesEquivalentMethodDeclaration());
+    
+}
+
+    stringBuffer.append(TEXT_11);
     return stringBuffer.toString();
   }
 }

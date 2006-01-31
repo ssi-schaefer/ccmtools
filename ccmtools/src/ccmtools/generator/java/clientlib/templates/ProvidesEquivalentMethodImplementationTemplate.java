@@ -20,7 +20,7 @@ public class ProvidesEquivalentMethodImplementationTemplate
   protected final String TEXT_4 = " == null)" + NL + "        {";
   protected final String TEXT_5 = NL + "            ";
   protected final String TEXT_6 = " = " + NL + "                new ";
-  protected final String TEXT_7 = "AdapterToCorba(remoteComponent.provide_";
+  protected final String TEXT_7 = "AdapterToCorba(remoteInterface.provide_";
   protected final String TEXT_8 = "());" + NL + "        }" + NL + "        return ";
   protected final String TEXT_9 = ";" + NL + "    }";
   protected final String TEXT_10 = NL;
