@@ -5,6 +5,7 @@ INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
 all: client_lib 
 
+
 idl3: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
 
@@ -13,7 +14,8 @@ idl2: idl3
 
 client_lib: idl2
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCM_INSTALL}/include -I${IDL2_DIR} ${IDL2_DIR}/*.idl
-	ccmclient -java -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
+	ccmclient -java -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
+	ccmclient -java -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/europe/Test*.idl
 
 check: 
 	ant -f ./build.xml
