@@ -24,17 +24,19 @@ import os, sys
 FILES = []
 INCLUDES = ''
 IDL_COMPILER= ''
+OUT_DIR =''
 CMD=''
 USAGE = '''Usage: ccmtools-idl [OPTION]... IDL-FILEs...
 
 Generate stub and skeleton files based on the given IDL files.
 
 Options:
-    -h, --help                  Print out this help
-    --mico                      Use the mico IDL compiler 
-    --java                      Use the Java IDL compiler 
-    -Ipath                      Add path to the include path for IDL files
-    -V, --version               Print out ccmtools version information
+    -h, --help                 Print out this help
+    -mico                      Use the mico IDL compiler 
+    -java                      Use the Java IDL compiler 
+    -Ipath                     Add path to the include path for IDL files
+    -o path                    Define a new output path for generated files
+                               (for -java option only)
 ''' 
 
 index = 1
@@ -43,10 +45,10 @@ while index < len(sys.argv):
     arg = sys.argv[index]
     index += 1
 
-    if arg.startswith('--mico'):
+    if arg.startswith('-mico'):
         IDL_COMPILER = 'idl --relative-paths -I.'
         start += 1
-    elif arg.startswith('--java'):
+    elif arg.startswith('-java'):
         IDL_COMPILER = 'idlj -fall'
         start += 1    
     elif arg == '-h' or arg.startswith('--h'):
@@ -58,19 +60,16 @@ while index < len(sys.argv):
         elif IDL_COMPILER.startswith('idl'):    
             INCLUDES += ' -I' + arg[2:]
         start += 1
-#    elif arg == '-V' or arg.startswith('--v'):
-#        os.execlp('ccmtools-generate', 'ccmtools-generate', '--version')
-
+    elif  arg.startswith('-o'):
+    	start += 1 
+    	if IDL_COMPILER.startswith('idlj'):
+    		OUT_DIR = '-td ' + sys.argv[start]    		
+    	start += 1
 
 FILES = sys.argv[start:] 
 
 for x in FILES:
-  CMD = '%s %s ' % (IDL_COMPILER, INCLUDES) + x
+  CMD = '%s %s %s ' % (IDL_COMPILER, INCLUDES, OUT_DIR) + x
   print CMD
   os.system('%s' % (CMD))
-
-
-
-
-
 
