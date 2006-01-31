@@ -6,6 +6,6 @@ echo "Environment variable CCMTOOLS_HOME not found!"
 exit
 fi
 
-CLASSPATH=$CCMTOOLS_HOME/lib/ccm-runtime.jar:./xxx/JavaClientLib/build:./xxx/JavaClientLib/lib/ClientStubs.jar:$CLASSPATH
+CLASSPATH=$CCMTOOLS_HOME/lib/ccm-runtime.jar:./xxx/build:$CLASSPATH
 
 $JAVA_HOME/bin/java -enableassertions -cp $CLASSPATH Client -ORBInitialPort 5050 -ORBInitialHost localhost
