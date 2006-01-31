@@ -1,44 +1,41 @@
-<project name="java_client_facet_types" default="compile">
+<project name="JavaClientLibTest" default="compile.src">
 
-  <property name="dest" location="xxx/JavaClientLib" />
+  <property name="dest" location="xxx" />
+  <property name="idl2" location="${dest}/idl2" />
   <property name="src-gen" location="${dest}/src-gen" />
-  <property name="src" location="src" />
   <property name="build" location="${dest}/build" />
-  <property name="lib" location="${dest}/lib" />
-  <property name="prefix" location="dist" />
+  <property name="src" location="src" />
 
   <path id="compile.classpath">
-      <pathelement path="${lib}/ClientStubs.jar" />
       <pathelement path="${java.class.path}" />
   </path>
 
 
-  <!-- Create the generated and build directory-->
-  <target name="init"
-      description="Creates the generate and build directory." >
+  <!-- Create the build directory-->
+  <target name="init" description="" >
       <mkdir dir="${build}" />
   </target>
+ 
 
   <!-- Compile generated Java files-->
-  <target name="compile-gen" depends="init"
-      description="" >
-      <javac srcdir="${src-gen}" destdir="${build}" debug="on" >
+  <target name="compile.src-gen" depends="init" description="" >
+      <javac srcdir="${src-gen}" destdir="${build}" 
+             debug="on" source="1.4" target="1.4">
           <classpath refid="compile.classpath" />  
       </javac>
   </target>
 
   <!-- Compile manuall Java files-->
-  <target name="compile" depends="compile-gen"
-      description="" >
-      <javac srcdir="${src}" destdir="${build}" debug="on" >
+  <target name="compile.src" depends="compile.src-gen" description="" >
+      <javac srcdir="${src}" destdir="${build}" 
+             debug="on" source="1.4" target="1.4">
           <classpath refid="compile.classpath" />  
       </javac>
   </target>
 
 
   <!-- Clean up -->
-  <target name="clean"
-      description="Clean up the generate, build and lib directory" >
+  <target name="clean" description="" >
       <delete dir="${build}" />
   </target>
 
