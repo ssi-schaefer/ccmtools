@@ -18,6 +18,7 @@ import ccm.local.Components.*;
  * Java interface declaration (based on the corresponding IDL interface).
  */
 public interface <%= iface.getIdentifier() %> 
+    <%=iface.generateBaseInterfaceDeclarations()%>
 {
 <%
 for(Iterator i=iface.getConstants().iterator(); i.hasNext();)
@@ -30,18 +31,6 @@ for(Iterator i=iface.getConstants().iterator(); i.hasNext();)
 %>
 
 <%
-for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
-{
-	InterfaceDef baseIface = (InterfaceDef)i.next();
-	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
-	{
-        AttributeDef attr = (AttributeDef)j.next();
-%>    
-<%=attr.generateAttributeDeclaration()%>
-<%
-    }
-}
-
 for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
@@ -51,20 +40,7 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 }
 %>
 
-
 <%
-for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
-{
-	InterfaceDef baseIface = (InterfaceDef)i.next();
-	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
-	{
-        OperationDef op = (OperationDef)j.next();
-%>    
-<%=op.generateOperationDeclaration()%>
-<%
-    }
-}
-
 for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();

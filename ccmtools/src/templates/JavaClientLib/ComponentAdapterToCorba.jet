@@ -67,7 +67,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         {
             // Create a POA instance to handle CORBA requests for local receptacles
             POA rootPoa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
-            rootPoa.the_POAManager().activate();									
+            rootPoa.the_POAManager().activate();
             Policy[] policies = new Policy[1];
             policies[0] = rootPoa.create_implicit_activation_policy(
                               ImplicitActivationPolicyValue.IMPLICIT_ACTIVATION);
@@ -93,7 +93,44 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     }
     
     
-    /** Equivalent interface methods */
+    /** 
+     * Supported interface methods 
+     */
+    
+<%
+for(Iterator i=component.getSupports().iterator(); i.hasNext();)
+{
+	SupportsDef supports = (SupportsDef)i.next();
+	InterfaceDef iface = supports.getInterface();
+	for(Iterator j=iface.getAttributes().iterator(); j.hasNext(); )
+	{
+        AttributeDef attr = (AttributeDef)j.next();
+%>    
+<%=attr.generateAttributeAdapterToCorba()%>
+<%
+    }
+}
+%>    
+    
+<%
+for(Iterator i=component.getSupports().iterator(); i.hasNext();)
+{
+	SupportsDef supports = (SupportsDef)i.next();
+	InterfaceDef iface = supports.getInterface();
+	for(Iterator j=iface.getOperation().iterator(); j.hasNext(); )
+	{
+        OperationDef op = (OperationDef)j.next();
+%>    
+<%=op.generateOperationAdapterToCorba()%>
+<%
+    }
+} 
+%>
+
+    
+    /** 
+     * Equivalent interface methods 
+     */
 
 <%
 for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
@@ -104,7 +141,7 @@ for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 <%
 }
 %>    
-    
+            
 <%
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {

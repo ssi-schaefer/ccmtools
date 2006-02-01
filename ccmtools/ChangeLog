@@ -1,9 +1,38 @@
 RELEASE-0.6.x
 ============================================================================
-RELEASE-0.6.1
+
+RELEASE-0.6.2 (February 1, 2006)
 ----------------------------------------------------------------------------
+*) Feature: Java Client Lib Generator
+	- Implemented attribute support for interfaces and components (incl. test case)
+	- Implemented single receptacle support (incl. test cases)
+	
+*) Bugfix: IDL3 generator 
+    While the IDL3 parser only accepts absolute namespace declarations, the
+    IDL3 generator also generates relative namespaces.
+    As a workaround, I changed the IDL3 generator - IDL3 parser refactoring is needed!
+
+*) Refactoring: java-environment
+	Changed orbRunThread to be a deamon-thread that terminates at a regular
+	program exit.
+	   
+*) Refactoring: ccmtools-idl script
+ 	Added -o option to define the output directory for the IDL compiler
+ 	(for Java IDL compiler only)
+ 	Renamed --java and --mico options to -java an -mico
+ 	e.g: ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCM_INSTALL}/include -I${IDL2_DIR} ${IDL2_DIR}/*.idl
+    Changed all test/JavaClientLib test cases.
 
 
+RELEASE-0.6.1 (January 27, 2006)
+----------------------------------------------------------------------------
+*) Feature: Java Client Lib Generator
+	- Implemented Constants support for interfaces (incl. test cases)
+	- Implemented single receptacle support (incl. test cases)
+
+*) Refactoring: java.clientlib.metamodel
+	Refactored all classes which implement the Type interface.
+	
 
 RELEASE-0.6.0 (January 24, 2006)
 ----------------------------------------------------------------------------

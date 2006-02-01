@@ -13,7 +13,7 @@
 package <%=component.getJavaNamespace()%>;
                  
 public interface <%=component.getIdentifier()%> 
-    extends ccm.local.Components.CCMObject
+    extends ccm.local.Components.CCMObject<%=component.generateSupportsDeclarations()%>
 {
     /** Attribute equivalent methods */
 <%

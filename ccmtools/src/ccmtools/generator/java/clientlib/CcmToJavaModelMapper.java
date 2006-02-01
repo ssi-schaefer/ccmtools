@@ -26,6 +26,7 @@ import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.generator.java.clientlib.metamodel.AttributeDef;
 import ccmtools.generator.java.clientlib.metamodel.BooleanType;
@@ -51,6 +52,7 @@ import ccmtools.generator.java.clientlib.metamodel.SequenceDef;
 import ccmtools.generator.java.clientlib.metamodel.ShortType;
 import ccmtools.generator.java.clientlib.metamodel.StringType;
 import ccmtools.generator.java.clientlib.metamodel.StructDef;
+import ccmtools.generator.java.clientlib.metamodel.SupportsDef;
 import ccmtools.generator.java.clientlib.metamodel.Type;
 import ccmtools.generator.java.clientlib.metamodel.UsesDef;
 import ccmtools.generator.java.clientlib.metamodel.VoidType;
@@ -234,10 +236,17 @@ public class CcmToJavaModelMapper
 					out.getAttributes().add(transform((MAttributeDef)child));
 				}
 			}
+			// Map supported interfaces
+			for(Iterator i = in.getSupportss().iterator(); i.hasNext(); )
+			{
+				out.getSupports().add(transform((MSupportsDef)i.next())); 
+			}
+			// Map provided interfaces
 			for(Iterator i = in.getFacets().iterator(); i.hasNext(); )
 			{
 				out.getFacet().add(transform((MProvidesDef)i.next())); 
 			}
+			// Map used interfaces
 			for(Iterator i = in.getReceptacles().iterator(); i.hasNext(); )
 			{
 				out.getReceptacle().add(transform((MUsesDef)i.next())); 
@@ -267,6 +276,15 @@ public class CcmToJavaModelMapper
 		return out;
 	}
 	
+	
+	public SupportsDef transform(MSupportsDef in)
+	{
+		logger.finer("MSupportsDef: " + in.getIdentifier());		
+		SupportsDef out = new SupportsDef(in.getIdentifier(), Code.getNamespaceList(in));
+		out.setInterface(transform(in.getSupports()));
+		return out;
+	}
+
 	
 	public ProvidesDef transform(MProvidesDef in)
 	{

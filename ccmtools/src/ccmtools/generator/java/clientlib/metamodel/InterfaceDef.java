@@ -2,6 +2,7 @@ package ccmtools.generator.java.clientlib.metamodel;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.generator.java.clientlib.templates.InterfaceAdapterFromCorbaTemplate;
@@ -62,7 +63,24 @@ public class InterfaceDef
 	{
 		return new InterfaceAdapterToCorbaTemplate().generate(this);
 	}
-
+	
+	public String generateBaseInterfaceDeclarations()
+	{
+		List baseInterfaceList = new ArrayList();
+		for(Iterator i=getBaseInterfaces().iterator(); i.hasNext();)
+		{
+			InterfaceDef iface = (InterfaceDef)i.next();
+			baseInterfaceList.add(iface.getAbsoluteJavaName());
+		}
+		if(baseInterfaceList.size() > 0)
+		{
+			return "extends " + Text.joinList(", ", baseInterfaceList);
+		}
+		else
+		{
+			return ""; // no base interfaces
+		}
+	}
 	
 	// Generate SourceFile objects --------------------------------------------
 	

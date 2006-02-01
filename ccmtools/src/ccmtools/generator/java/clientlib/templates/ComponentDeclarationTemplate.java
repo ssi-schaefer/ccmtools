@@ -19,13 +19,14 @@ public class ComponentDeclarationTemplate
   protected final String TEXT_2 = NL + " * <http://ccmtools.sourceforge.net>" + NL + " * ";
   protected final String TEXT_3 = NL + " * DO NOT EDIT!" + NL + " */" + NL + "" + NL + "package ";
   protected final String TEXT_4 = ";" + NL + "                 " + NL + "public interface ";
-  protected final String TEXT_5 = " " + NL + "    extends ccm.local.Components.CCMObject" + NL + "{" + NL + "    /** Attribute equivalent methods */";
-  protected final String TEXT_6 = NL;
-  protected final String TEXT_7 = "    " + NL + "" + NL + "    /** Facet equivalent methods */" + NL + "    ";
-  protected final String TEXT_8 = NL;
-  protected final String TEXT_9 = "    " + NL + "    " + NL + "    /** Receptacle equivalent methods */";
-  protected final String TEXT_10 = NL;
-  protected final String TEXT_11 = NL + NL + "}";
+  protected final String TEXT_5 = " " + NL + "    extends ccm.local.Components.CCMObject";
+  protected final String TEXT_6 = NL + "{" + NL + "    /** Attribute equivalent methods */";
+  protected final String TEXT_7 = NL;
+  protected final String TEXT_8 = "    " + NL + "" + NL + "    /** Facet equivalent methods */" + NL + "    ";
+  protected final String TEXT_9 = NL;
+  protected final String TEXT_10 = "    " + NL + "    " + NL + "    /** Receptacle equivalent methods */";
+  protected final String TEXT_11 = NL;
+  protected final String TEXT_12 = NL + NL + "}";
 
   public String generate(Object argument)
   {
@@ -40,39 +41,41 @@ public class ComponentDeclarationTemplate
     stringBuffer.append(TEXT_4);
     stringBuffer.append(component.getIdentifier());
     stringBuffer.append(TEXT_5);
+    stringBuffer.append(component.generateSupportsDeclarations());
+    stringBuffer.append(TEXT_6);
     
 for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 
-    stringBuffer.append(TEXT_6);
+    stringBuffer.append(TEXT_7);
     stringBuffer.append(attr.generateAttributeDeclaration());
     
 }
 
-    stringBuffer.append(TEXT_7);
+    stringBuffer.append(TEXT_8);
     
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 
-    stringBuffer.append(TEXT_8);
+    stringBuffer.append(TEXT_9);
     stringBuffer.append(provides.generateProvidesEquivalentMethodDeclaration());
     
 }
 
-    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_10);
     
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 {
     UsesDef uses = (UsesDef)i.next();
 
-    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
     stringBuffer.append(uses.generateUsesEquivalentMethodDeclaration());
     
 }
 
-    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_12);
     return stringBuffer.toString();
   }
 }

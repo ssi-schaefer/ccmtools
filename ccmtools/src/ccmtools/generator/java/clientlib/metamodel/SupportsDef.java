@@ -5,7 +5,7 @@ import java.util.List;
 public class SupportsDef
 	extends ModelElement
 {
-	private InterfaceDef supports;
+	private InterfaceDef iface;
 	
 	public SupportsDef(String identifier, List ns)
 	{
@@ -13,14 +13,14 @@ public class SupportsDef
 	}
 
 	
-	public InterfaceDef getSupports()
+	public InterfaceDef getInterface()
 	{
-		return supports;
+		return iface;
 	}
 
-	public void setSupports(InterfaceDef supports)
+	public void setInterface(InterfaceDef supports)
 	{
-		this.supports = supports;
+		this.iface = supports;
 	}
 
 	

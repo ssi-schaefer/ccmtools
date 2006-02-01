@@ -2,6 +2,7 @@ package ccmtools.generator.java.clientlib.metamodel;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.generator.java.clientlib.templates.ComponentAdapterToCorbaTemplate;
@@ -69,6 +70,23 @@ public class ComponentDef
 		return new ComponentAdapterToCorbaTemplate().generate(this);
 	}
 	
+	public String generateSupportsDeclarations()
+	{
+		List supportsList = new ArrayList();
+		for(Iterator i=getSupports().iterator(); i.hasNext();)
+		{
+			SupportsDef s = (SupportsDef)i.next();
+			supportsList.add(s.getInterface().getAbsoluteJavaName());
+		}
+		if(supportsList.size() > 0)
+		{
+			return ", " + Text.joinList(", ", supportsList);
+		}
+		else
+		{
+			return ""; // no supported interfaces
+		}
+	}
 	
 	// Generate SourceFile objects --------------------------------------------
 	
