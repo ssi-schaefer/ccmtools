@@ -32,9 +32,25 @@ module world {
       
       typedef sequence<Person> PersonList;
       
-      
+
+      /**
+       * This interface simulates the usage of all supported primitive
+       * types in any directions (in, inout, out, return)
+       *
+       * @author eteinik, Salomon Automation G.m.b.H
+       * @version 1.0
+       */
       interface BasicTypeInterface 
       {
+	/**
+	 * This is one of the primitive test cases. Here we
+	 * test the usage of type short.
+	 *
+	 * @param p1 simulates an in parameter
+	 * @param p2 simulates an inout parameter
+	 * @param p3 simulates an out parameter
+	 * @return simulates a result
+	 */
 	short          f1(in short p1, inout short p2, out short p3);
 	long           f2(in long p1, inout long p2, out long p3);
 	unsigned short f3(in unsigned short p1, inout unsigned short p2, out unsigned short p3);

@@ -20,6 +20,9 @@ check:
 	ant -f ./build.xml
 	bin/runClient
 
+doxy: Test.idl
+	doxygen Doxyfile
+
 clean: 
 	rm -rf xxx 
-
+	rm -rf doc
