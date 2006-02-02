@@ -43,17 +43,17 @@ public class InterfaceAdapterFromCorbaTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(iface.generateTimestamp());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append( iface.getJavaNamespace() );
+    stringBuffer.append( iface.getJavaRemoteNamespace() );
     stringBuffer.append(TEXT_4);
     stringBuffer.append(iface.getIdentifier());
     stringBuffer.append(TEXT_5);
     stringBuffer.append(iface.getAbsoluteIdlName());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(iface.getIdentifier());
+    stringBuffer.append(iface.getAbsoluteJavaName());
     stringBuffer.append(TEXT_7);
     stringBuffer.append(iface.getIdentifier());
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(iface.getIdentifier());
+    stringBuffer.append(iface.getAbsoluteJavaName());
     stringBuffer.append(TEXT_9);
      
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)

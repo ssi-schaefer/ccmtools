@@ -64,7 +64,6 @@ public class JavaClientLibGenerator
 	        // Query the Java Implementation Model and generate all source file objects 
 	        // for the Java Client Library	        
 	        ModelRepository javaModel = nodeHandler.getJavaModel();
-//	        System.out.println(javaModel);
 	        List sourceFileList = new ArrayList();
 	        for(Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext(); )
 	        {

@@ -39,7 +39,7 @@ public class ProvidesEquivalentMethodImplementationTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(provides.getInterface().getAbsoluteJavaName());
+    stringBuffer.append(provides.getInterface().getAbsoluteJavaRemoteName());
     stringBuffer.append(TEXT_7);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_8);

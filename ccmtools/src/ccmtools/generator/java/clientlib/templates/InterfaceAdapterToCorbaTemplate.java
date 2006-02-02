@@ -42,7 +42,7 @@ public class InterfaceAdapterToCorbaTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(iface.generateTimestamp());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append( iface.getJavaNamespace() );
+    stringBuffer.append( iface.getJavaRemoteNamespace() );
     stringBuffer.append(TEXT_4);
     stringBuffer.append(iface.getIdentifier());
     stringBuffer.append(TEXT_5);

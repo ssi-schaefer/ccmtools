@@ -10,7 +10,7 @@
  * DO NOT EDIT!
  */
 
-package <%= iface.getJavaNamespace() %>;
+package <%= iface.getJavaRemoteNamespace() %>;
                  
 /**
  * Interface adapter from Java to CORBA.

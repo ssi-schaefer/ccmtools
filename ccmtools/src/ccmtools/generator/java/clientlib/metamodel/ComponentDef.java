@@ -93,13 +93,14 @@ public class ComponentDef
 	public List generateClientLibSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		String packages = Text.joinList(File.separator, getJavaNamespaceList());
-		
+
 		SourceFile componentDeclaration = 
-			new SourceFile(packages, getIdentifier() + ".java", generateComponentDeclaration());
+			new SourceFile(Text.joinList(File.separator, getJavaNamespaceList()), 
+					getIdentifier() + ".java", generateComponentDeclaration());
 		
 		SourceFile componentAdapterToCorba = 
-			new SourceFile(packages, getIdentifier() + "AdapterToCorba.java",generateComponentAdapterToCorba());
+			new SourceFile(Text.joinList(File.separator, getJavaRemoteNamespaceList()), 
+					getIdentifier() + "AdapterToCorba.java",generateComponentAdapterToCorba());
 		
 		sourceFileList.add(componentDeclaration);
 		sourceFileList.add(componentAdapterToCorba);

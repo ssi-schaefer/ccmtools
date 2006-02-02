@@ -44,7 +44,7 @@ public class UsesEquivalentMethodImplementationTemplate
     stringBuffer.append(TEXT_4);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(uses.getInterface().getAbsoluteJavaName());
+    stringBuffer.append(uses.getInterface().getAbsoluteJavaRemoteName());
     stringBuffer.append(TEXT_6);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_7);

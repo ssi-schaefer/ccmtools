@@ -62,7 +62,7 @@ public class ComponentAdapterToCorbaTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(component.generateTimestamp());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append(component.getJavaNamespace());
+    stringBuffer.append(component.getJavaRemoteNamespace());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(component.getIdentifier());
     stringBuffer.append(TEXT_5);

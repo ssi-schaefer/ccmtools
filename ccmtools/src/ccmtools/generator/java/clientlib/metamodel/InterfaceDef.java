@@ -87,16 +87,18 @@ public class InterfaceDef
 	public List generateClientLibSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		String packages = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile interfaceDeclaration = 
-			new SourceFile(packages, getIdentifier() + ".java", generateInterfaceDeclaration());
+			new SourceFile(Text.joinList(File.separator, getJavaNamespaceList()), 
+					getIdentifier() + ".java", generateInterfaceDeclaration());
 		
 		SourceFile interfaceAdapterToCorba = 
-			new SourceFile(packages, getIdentifier() + "AdapterToCorba.java",generateInterfaceAdapterToCorba());
+			new SourceFile(Text.joinList(File.separator, getJavaRemoteNamespaceList()), 
+					getIdentifier() + "AdapterToCorba.java",generateInterfaceAdapterToCorba());
 		
 		SourceFile interfaceAdapterFromCorba = 
-			new SourceFile(packages, getIdentifier() + "AdapterFromCorba.java",generateInterfaceAdapterFromCorba());
+			new SourceFile(Text.joinList(File.separator, getJavaRemoteNamespaceList()), 
+					getIdentifier() + "AdapterFromCorba.java",generateInterfaceAdapterFromCorba());
 		
 		sourceFileList.add(interfaceDeclaration);
 		sourceFileList.add(interfaceAdapterToCorba);

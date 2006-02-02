@@ -15,7 +15,7 @@
 				<%=uses.getIdentifier()%> = localObject;
 				org.omg.CORBA.Object remoteObject = 
 					componentPoa.servant_to_reference(
-					    new <%=uses.getInterface().getAbsoluteJavaName()%>AdapterFromCorba(localObject));
+					    new <%=uses.getInterface().getAbsoluteJavaRemoteName()%>AdapterFromCorba(localObject));
 				remoteInterface.connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().getAbsoluteIdlName()%>Helper.narrow(remoteObject));
 			}
 			else

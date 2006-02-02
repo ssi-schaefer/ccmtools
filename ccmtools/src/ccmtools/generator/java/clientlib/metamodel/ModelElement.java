@@ -15,8 +15,8 @@ public abstract class ModelElement
 	
 	private String identifier;
 	private List idlNamespace = new ArrayList();
-	private List javaNamespace = new ArrayList();
-
+	private List javaLocalNamespace = new ArrayList();
+	private List javaRemoteNamespace = new ArrayList();
 	
 	protected ModelElement()
 	{
@@ -50,31 +50,63 @@ public abstract class ModelElement
 		idlNamespace.addAll(namespace);
 		// javaNamespace directly depends on the idlNamesapce
 		setJavaNamespaceList(namespace);
+		setJavaRemoteNamespaceList(namespace);
 	}	
 	
 	
 	public List getJavaNamespaceList()
 	{
-		return javaNamespace;
+		return javaLocalNamespace;
 	}
 	
 	public void setJavaNamespaceList(List namespace)
 	{
-		javaNamespace.addAll(namespace);		
+		javaLocalNamespace.addAll(namespace);		
 		// Set implicit Java namespace elements
 		getJavaNamespaceList().add("ccm");
 		getJavaNamespaceList().add("local");		
 	}
 
-	
-	public String getJavaNamespace()
+	public List getJavaRemoteNamespaceList()
 	{
-		return Text.joinList(".", javaNamespace);
+		return javaRemoteNamespace;
 	}
+	
+	public void setJavaRemoteNamespaceList(List namespace)
+	{
+		javaRemoteNamespace.addAll(namespace);		
+		// Set implicit Java namespace elements
+		getJavaRemoteNamespaceList().add("ccm");
+		getJavaRemoteNamespaceList().add("remote");		
+	}
+	
 	
 	public String getIdlNamespace()
 	{
 		return Text.joinList(".", getIdlNamespaceList());
+	}
+	
+	public String getJavaNamespace()
+	{
+		return Text.joinList(".", javaLocalNamespace);
+	}
+
+	public String getJavaRemoteNamespace()
+	{
+		return Text.joinList(".", javaRemoteNamespace);
+	}
+	
+	
+	public String getAbsoluteIdlName()
+	{
+		if(getIdlNamespaceList().size() == 0)
+		{
+			return getIdentifier();
+		}
+		else
+		{
+			return getIdlNamespace() + "." + getIdentifier();
+		}
 	}
 	
 	public String getAbsoluteJavaName()
@@ -88,6 +120,18 @@ public abstract class ModelElement
 			return getJavaNamespace() + "." + getIdentifier();
 		}
 	}
+
+	public String getAbsoluteJavaRemoteName()
+	{
+		if(getJavaRemoteNamespaceList().size() == 0)
+		{
+			return getIdentifier();
+		}
+		else 
+		{
+			return getJavaRemoteNamespace() + "." + getIdentifier();
+		}
+	}
 	
 	public String getAbsoluteJavaCcmName()
 	{
@@ -98,18 +142,6 @@ public abstract class ModelElement
 		else
 		{
 			return getJavaNamespace() + ".CCM_" + getIdentifier();
-		}
-	}
-	
-	public String getAbsoluteIdlName()
-	{
-		if(getIdlNamespaceList().size() == 0)
-		{
-			return getIdentifier();
-		}
-		else
-		{
-			return getIdlNamespace() + "." + getIdentifier();
 		}
 	}
 	

@@ -10,7 +10,7 @@
  * DO NOT EDIT!
  */
  
-package <%= iface.getJavaNamespace() %>;
+package <%= iface.getJavaRemoteNamespace() %>;
                  
 import org.omg.CORBA.*;
 
@@ -21,9 +21,9 @@ public class <%=iface.getIdentifier()%>AdapterFromCorba
     extends <%=iface.getAbsoluteIdlName()%>POA
 {
     /** Java reference to the local interface */
-    private <%=iface.getIdentifier()%> localInterface;
+    private <%=iface.getAbsoluteJavaName()%> localInterface;
 	
-    public <%=iface.getIdentifier()%>AdapterFromCorba(<%=iface.getIdentifier()%> receptacle)
+    public <%=iface.getIdentifier()%>AdapterFromCorba(<%=iface.getAbsoluteJavaName()%> receptacle)
     {
         this.localInterface = receptacle;
     }    	

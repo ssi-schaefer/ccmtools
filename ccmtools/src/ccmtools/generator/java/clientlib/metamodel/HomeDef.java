@@ -67,22 +67,26 @@ public class HomeDef
 	public List generateClientLibSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		String packages = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile homeDeclaration = 
-			new SourceFile(packages, getIdentifier() + ".java", generateHomeDeclaration());
+			new SourceFile(Text.joinList(File.separator, getJavaNamespaceList()), 
+					getIdentifier() + ".java", generateHomeDeclaration());
 		
 		SourceFile homeImplicit = 
-			new SourceFile(packages, getIdentifier() + "Implicit.java", generateHomeImplicitDeclaration());
+			new SourceFile(Text.joinList(File.separator, getJavaNamespaceList()), 
+					getIdentifier() + "Implicit.java", generateHomeImplicitDeclaration());
 
 		SourceFile homeExplicit = 
-			new SourceFile(packages, getIdentifier() + "Explicit.java",generateHomeExplicitDeclaration());
+			new SourceFile(Text.joinList(File.separator, getJavaNamespaceList()), 
+					getIdentifier() + "Explicit.java",generateHomeExplicitDeclaration());
 		
 		SourceFile homeAdapterToCorba = 
-			new SourceFile(packages, getIdentifier() + "AdapterToCorba.java",generateHomeAdapterToCorba());
+			new SourceFile(Text.joinList(File.separator, getJavaRemoteNamespaceList()), 
+					getIdentifier() + "AdapterToCorba.java",generateHomeAdapterToCorba());
 		
 		SourceFile homeFactory = 
-			new SourceFile(packages,getIdentifier() + "Factory.java",generateHomeFactory());
+			new SourceFile(Text.joinList(File.separator, getJavaNamespaceList()),
+					getIdentifier() + "Factory.java",generateHomeFactory());
 		
 		sourceFileList.add(homeDeclaration);
 		sourceFileList.add(homeImplicit);

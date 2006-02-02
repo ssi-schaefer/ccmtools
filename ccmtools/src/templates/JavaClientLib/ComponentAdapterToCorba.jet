@@ -10,7 +10,7 @@
  * DO NOT EDIT!
  */
 
-package <%=component.getJavaNamespace()%>;
+package <%=component.getJavaRemoteNamespace()%>;
                  
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Policy;
