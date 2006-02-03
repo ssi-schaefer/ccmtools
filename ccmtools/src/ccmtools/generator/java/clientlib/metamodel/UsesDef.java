@@ -4,6 +4,9 @@ import java.util.List;
 
 import ccmtools.generator.java.clientlib.templates.UsesEquivalentMethodDeclarationTemplate;
 import ccmtools.generator.java.clientlib.templates.UsesEquivalentMethodImplementationTemplate;
+import ccmtools.generator.java.clientlib.templates.UsesMultipleEquivalentMethodDeclarationTemplate;
+import ccmtools.generator.java.clientlib.templates.UsesMultipleEquivalentMethodImplementationTemplate;
+import ccmtools.generator.java.clientlib.templates.UsesMultipleReceptacleDisconnectMethodImplementationTemplate;
 import ccmtools.generator.java.clientlib.templates.UsesReceptacleConnectMethodImplementationTemplate;
 import ccmtools.generator.java.clientlib.templates.UsesReceptacleDisconnectMethodImplementationTemplate;
 
@@ -11,6 +14,7 @@ public class UsesDef
 	extends ModelElement
 {
 	private InterfaceDef iface;
+	private boolean multiple;
 	
 	public UsesDef(String identifier, List ns)
 	{
@@ -28,12 +32,31 @@ public class UsesDef
 		this.iface = iface;
 	}
 	
+
+	public boolean isMultiple()
+	{
+		return multiple;
+	}
+
+
+	public void setMultiple(boolean multiple)
+	{
+		this.multiple = multiple;
+	}
+
 	
 	// Code generator methods -------------------------------------------------
 	
 	public String generateUsesEquivalentMethodDeclaration()
 	{
-		return new UsesEquivalentMethodDeclarationTemplate().generate(this);
+		if(isMultiple())
+		{
+			return new UsesMultipleEquivalentMethodDeclarationTemplate().generate(this);
+		}
+		else
+		{
+			return new UsesEquivalentMethodDeclarationTemplate().generate(this);			
+		}
 	}
 	
 	public String generateLocalReceptacleAdapterDeclaration()
@@ -43,7 +66,14 @@ public class UsesDef
 	
 	public String generateUsesEquivalentMethodImplementation()
 	{		
-		return new UsesEquivalentMethodImplementationTemplate().generate(this);
+		if(isMultiple())
+		{
+			return new UsesMultipleEquivalentMethodImplementationTemplate().generate(this);
+		}
+		else
+		{
+			return new UsesEquivalentMethodImplementationTemplate().generate(this);
+		}
 	}
 	
 	public String generateUsesReceptacleConnectMethodImplementation()
@@ -53,6 +83,13 @@ public class UsesDef
 	
 	public String generateUsesReceptacleDisconnectMethodImplementation()
 	{
-		return new UsesReceptacleDisconnectMethodImplementationTemplate().generate(this);
+		if(isMultiple())
+		{
+			return new UsesMultipleReceptacleDisconnectMethodImplementationTemplate().generate(this);
+		}
+		else
+		{
+			return new UsesReceptacleDisconnectMethodImplementationTemplate().generate(this);			
+		}
 	}
 }

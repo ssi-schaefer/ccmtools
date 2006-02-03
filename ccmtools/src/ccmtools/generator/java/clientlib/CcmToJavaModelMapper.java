@@ -28,6 +28,7 @@ import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.generator.java.clientlib.metamodel.AnyType;
 import ccmtools.generator.java.clientlib.metamodel.AttributeDef;
 import ccmtools.generator.java.clientlib.metamodel.BooleanType;
 import ccmtools.generator.java.clientlib.metamodel.ByteType;
@@ -299,6 +300,7 @@ public class CcmToJavaModelMapper
 	{
 		logger.finer("MUsesDef: " + in.getIdentifier());
 		UsesDef out = new UsesDef(in.getIdentifier(), Code.getNamespaceList(in));
+		out.setMultiple(in.isMultiple());
 		out.setInterface(transform(in.getUses()));
 		return out;
 	}
@@ -487,6 +489,10 @@ public class CcmToJavaModelMapper
 		else if(primitive.getKind() == MPrimitiveKind.PK_FIXED)
 		{
 			return new FixedType();
+		}
+		else if(primitive.getKind() == MPrimitiveKind.PK_ANY)
+		{
+			return new AnyType();
 		}
 		else
 		{
