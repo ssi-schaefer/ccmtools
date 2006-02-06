@@ -1,0 +1,69 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="UsesEquivalentMethodImplementationTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument;  %>
+
+    public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().getAbsoluteJavaName()%> localObject)
+        throws ccm.local.Components.AlreadyConnected, ccm.local.Components.InvalidConnection
+    {
+    	// Create CORBA objects and connect them to the remote component
+		try
+		{
+			if(<%=uses.getIdentifier()%> == null) 
+			{
+				<%=uses.getIdentifier()%> = localObject;
+				org.omg.CORBA.Object remoteObject = 
+					componentPoa.servant_to_reference(
+					    new <%=uses.getInterface().getAbsoluteJavaRemoteName()%>AdapterFromCorba(localObject));
+				remoteInterface.connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().getAbsoluteIdlName()%>Helper.narrow(remoteObject));
+			}
+			else
+			{
+				throw new ccm.local.Components.AlreadyConnected();
+			}
+		}
+		catch (org.omg.PortableServer.POAPackage.ServantNotActive e)
+		{
+			throw new ccm.local.Components.InvalidConnection();
+		}
+		catch (org.omg.PortableServer.POAPackage.WrongPolicy e)
+		{
+			throw new ccm.local.Components.InvalidConnection();
+		}
+		catch (Components.AlreadyConnected e)
+		{
+			throw new ccm.local.Components.AlreadyConnected();
+		}
+		catch (Components.InvalidConnection e)
+		{
+			throw new ccm.local.Components.InvalidConnection();
+		}
+    }
+
+    public <%=uses.getInterface().getAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
+        throws ccm.local.Components.NoConnection
+    {
+   		try
+		{
+			if(<%=uses.getIdentifier()%> != null)
+			{
+				remoteInterface.disconnect_<%=uses.getIdentifier()%>();
+				return <%=uses.getIdentifier()%>;
+			}
+			else 
+			{
+				throw new ccm.local.Components.NoConnection();
+			}
+		}
+		catch (java.lang.Exception e)
+		{
+			throw new ccm.local.Components.NoConnection();
+		}
+    
+    }
+       
+    public <%=uses.getInterface().getAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>()
+    {
+        return <%=uses.getIdentifier()%>;
+    }

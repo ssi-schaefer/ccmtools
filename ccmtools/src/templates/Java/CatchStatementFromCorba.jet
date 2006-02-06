@@ -1,0 +1,18 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="CatchStatementFromCorbaTemplate" 
+		imports="java.util.Iterator ccmtools.generator.java.metamodel.* "	    
+%>
+<% OperationDef op = (OperationDef) argument;  %>
+<%
+for(Iterator i = op.getException().iterator(); i.hasNext(); )
+{
+    ExceptionDef ex = (ExceptionDef)i.next();
+%>
+	catch(<%=ex.getAbsoluteIdlName()%> e)
+	{
+	    throw e; // currently we don't convert exceptions
+	}
+
+<%
+}
+%>

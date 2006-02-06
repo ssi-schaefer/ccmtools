@@ -91,7 +91,7 @@ public class CcmtoolsProperties
     	throws IOException
     {
         File file = new File(propertyPath, CCMTOOLS_PROPERTY_FILE_NAME);
-        System.out.println("> load properties from " + file);
+//        System.out.println("> load properties from " + file);
         properties = new Properties();
         FileInputStream in = new FileInputStream(file);
         properties.load(in);
@@ -102,7 +102,7 @@ public class CcmtoolsProperties
     	throws IOException
     {
         File file = new File(propertyPath, CCMTOOLS_PROPERTY_FILE_NAME);
-        System.out.println("> store properties to " + file);
+//        System.out.println("> store properties to " + file);
         FileOutputStream out = new FileOutputStream(file);
         properties.store(out, "");
         out.close();

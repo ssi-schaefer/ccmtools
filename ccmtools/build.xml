@@ -149,8 +149,8 @@
       		
       	<mkdir dir="${prefix}/bin" />
   		<copy file="${bin}/ccmtools"     	todir="${prefix}/bin"  overwrite="true" />  
+  		<copy file="${bin}/ccmjava"  		todir="${prefix}/bin"  overwrite="true" />  
   		<copy file="${bin}/ccmdescriptor"   todir="${prefix}/bin"  overwrite="true" />  
-  		<copy file="${bin}/ccmclient"  		todir="${prefix}/bin"  overwrite="true" />  
       	<copy file="${bin}/ccmtools-idl" 	todir="${prefix}/bin"  overwrite="true" />  
       	<copy file="${bin}/uml2idl"      	todir="${prefix}/bin"  overwrite="true" />  
   		<exec executable="chmod">
@@ -163,7 +163,7 @@
   		</exec>
   		<exec executable="chmod">
   		  	<arg value="+x" />
-  		  	<arg value="${prefix}/bin/ccmclient" />
+  		  	<arg value="${prefix}/bin/ccmjava" />
   		</exec>
       	<exec executable="chmod">
           	<arg value="+x" />

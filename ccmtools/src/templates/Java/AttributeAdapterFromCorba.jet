@@ -1,0 +1,30 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="AttributeAdapterFromCorbaTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% AttributeDef attr = (AttributeDef) argument;  %>
+
+    /** Business delegate attribute */
+    public <%=attr.getType().generateJavaMapping()%> <%=attr.getIdentifier()%>()
+    {
+        try
+        {
+            return localInterface.<%=attr.getIdentifier()%>();
+        }
+        catch(java.lang.Exception e)
+        {
+    	    throw new BAD_OPERATION(e.getMessage());
+        }
+    }
+     
+    public void <%=attr.getIdentifier()%>(<%=attr.getType().generateJavaMapping()%> value)
+    {
+        try
+        {
+            localInterface.<%=attr.getIdentifier()%>(value);
+        }
+        catch(java.lang.Exception e)
+        {
+    	    throw new BAD_OPERATION(e.getMessage());
+        }
+    } 
