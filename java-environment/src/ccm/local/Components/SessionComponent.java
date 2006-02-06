@@ -7,6 +7,7 @@ package ccm.local.Components;
  * CCM Specification 4-28
  */
 public interface SessionComponent
+	extends EnterpriseComponent
 {
     /*
      * The set_session_context operation is used to set the SessionContext
