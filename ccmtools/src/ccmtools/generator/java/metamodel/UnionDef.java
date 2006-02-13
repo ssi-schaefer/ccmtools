@@ -41,4 +41,9 @@ public class UnionDef
 			return getAbsoluteIdlName() + "Holder";
 		}	
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "null";		
+	}
 }

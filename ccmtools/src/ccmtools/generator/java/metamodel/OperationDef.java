@@ -6,6 +6,7 @@ import java.util.List;
 
 import ccmtools.generator.java.templates.CatchStatementFromCorbaTemplate;
 import ccmtools.generator.java.templates.CatchStatementToCorbaTemplate;
+import ccmtools.generator.java.templates.CcmOperationImplementationTemplate;
 import ccmtools.generator.java.templates.OperationAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.OperationAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.OperationDeclarationTemplate;
@@ -49,23 +50,18 @@ public class OperationDef
 	}
 
 	
-	// Generator methods ------------------------------------------------------
+	/**
+	 * Java Local Interface Generator
+	 * 
+	 */
 	
+	// Code generator methods -------------------------------------------------
+
 	public String generateOperationDeclaration()
 	{
 		return new OperationDeclarationTemplate().generate(this);
 	}
-	
-	public String generateOperationAdapterFromCorba()
-	{
-		return new OperationAdapterFromCorbaTemplate().generate(this);
-	}
-	
-	public String generateOperationAdapterToCorba()
-	{
-		return new OperationAdapterToCorbaTemplate().generate(this);
-	}
-	
+		
 	public String generateOperationReturnType()
 	{		
 		return getType().generateJavaMapping(PassingDirection.RESULT);
@@ -119,6 +115,62 @@ public class OperationDef
 		return Text.joinList(", ", parameterList);
 	}
 	
+	
+	
+	/**
+	 * Java Local Component Generator
+	 * 
+	 */
+	
+	// Code generator methods -------------------------------------------------
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	
+	
+	
+	/**
+	 * Java Local Implementation Generator
+	 * 
+	 */
+	
+	// Generator methods ------------------------------------------------------
+		
+	public String generateCcmOperationImplementation()
+	{
+		return new CcmOperationImplementationTemplate().generate(this);
+	}
+	
+	public String generateCcmDefaultReturnStatement()
+	{
+		if(getType() instanceof VoidType)
+		{
+			return "";
+		}
+		else
+		{
+			return "return " + getType().generateJavaDefaultReturnValue() + ";";
+		}
+	}
+	
+	
+	/**
+	 * Java Client Library Generator
+	 * 
+	 */
+
+	// Code generator methods -------------------------------------------------
+
+	public String generateOperationAdapterFromCorba()
+	{
+		return new OperationAdapterFromCorbaTemplate().generate(this);
+	}
+	
+	public String generateOperationAdapterToCorba()
+	{
+		return new OperationAdapterToCorbaTemplate().generate(this);
+	}
+
 	/**
 	 * Generate an exception list (names only), and handle the commas in
 	 * a propper way. 
@@ -144,7 +196,6 @@ public class OperationDef
 		return code.toString();
 	}
 
-	
 	public String generateThrowsFromCorba()
 	{
 		StringBuffer code = new StringBuffer();
@@ -161,7 +212,7 @@ public class OperationDef
 		}
 		return code.toString();
 	}
-	
+		
 	public String generateCatchStatementToCorba()
 	{
 		return new CatchStatementToCorbaTemplate().generate(this);
@@ -171,6 +222,4 @@ public class OperationDef
 	{
 		return new CatchStatementFromCorbaTemplate().generate(this);
 	}
-	
-	
 }

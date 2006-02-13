@@ -25,4 +25,9 @@ public class CharType
 			return "org.omg.CORBA.CharHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "0";		
+	}
 }

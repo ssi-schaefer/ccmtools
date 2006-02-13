@@ -25,4 +25,9 @@ public class FixedType
 			return "org.omg.CORBA.FixedHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "null";		
+	}
 }

@@ -25,4 +25,9 @@ public class ByteType
 			return "org.omg.CORBA.ByteHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "0";		
+	}
 }

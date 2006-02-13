@@ -14,7 +14,8 @@ import org.apache.commons.cli.ParseException;
 import ccmtools.CcmtoolsException;
 import ccmtools.UI.Driver;
 import ccmtools.generator.java.JavaClientLibGenerator;
-import ccmtools.generator.java.JavaLocalGenerator;
+import ccmtools.generator.java.JavaLocalComponentGenerator;
+import ccmtools.generator.java.JavaLocalImplementationGenerator;
 import ccmtools.utils.CcmtoolsProperties;
 
 public class Main
@@ -60,8 +61,14 @@ public class Main
             		}
             		else if(generatorId.equals("local"))
             		{
-            			JavaLocalGenerator generator = 
-            				new JavaLocalGenerator(parameters, uiDriver);
+            			JavaLocalComponentGenerator generator = 
+            				new JavaLocalComponentGenerator(parameters, uiDriver);
+            			generator.generate();
+            		}
+               		else if(generatorId.equals("impl"))
+            		{
+            			JavaLocalImplementationGenerator generator = 
+            				new JavaLocalImplementationGenerator(parameters, uiDriver);
             			generator.generate();
             		}
             	}            
@@ -109,6 +116,7 @@ public class Main
         options.addOption("V", "version", false, "Display CCM Tools version information");
         options.addOption("clientlib", false, "Run the Java client library generator");
         options.addOption("local", false, "Run the Java local component generator");
+        options.addOption("impl", false, "Run the Java local implementation generator");
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
         // Define single valued options
@@ -159,6 +167,11 @@ public class Main
         if(cmd.hasOption("local"))
         {
         	parameters.getGeneratorIds().add("local");
+        }    
+        
+        if(cmd.hasOption("impl"))
+        {
+        	parameters.getGeneratorIds().add("impl");
         }    
         
         if(cmd.hasOption("noexit"))

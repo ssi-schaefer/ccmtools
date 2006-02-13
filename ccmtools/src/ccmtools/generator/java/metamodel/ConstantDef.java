@@ -41,6 +41,12 @@ public class ConstantDef
 	}
 	
 	
+	
+	/**
+	 * Java Local Interface Generator
+	 * 
+	 */
+	
 	// Generator methods ------------------------------------------------------
 	public String generateConstantDeclaration()
 	{
@@ -60,7 +66,7 @@ public class ConstantDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateClientLibSourceFiles()
+	public List generateLocalInterfaceSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
 		String packages = Text.joinList(File.separator, getJavaNamespaceList());

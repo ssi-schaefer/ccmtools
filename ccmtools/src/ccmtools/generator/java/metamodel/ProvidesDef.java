@@ -1,13 +1,20 @@
 package ccmtools.generator.java.metamodel;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import ccmtools.generator.java.templates.CcmFacetImplementationTemplate;
+import ccmtools.generator.java.templates.CcmProvidesGetImplementationTemplate;
 import ccmtools.generator.java.templates.ProvidesEquivalentMethodImplementationTemplate;
 import ccmtools.generator.java.templates.ProvidesNavigationMethodImplementationTemplate;
+import ccmtools.utils.SourceFile;
+import ccmtools.utils.Text;
 
 public class ProvidesDef
 	extends ModelElement
 {
+	private ComponentDef component;
 	private InterfaceDef iface;
 	
 	public ProvidesDef(String identifier, List ns)
@@ -16,6 +23,17 @@ public class ProvidesDef
 	}
 
 	
+	public ComponentDef getComponent()
+	{
+		return component;
+	}
+
+	public void setComponent(ComponentDef component)
+	{
+		this.component = component;
+	}
+
+
 	public InterfaceDef getInterface()
 	{
 		return iface;
@@ -26,6 +44,68 @@ public class ProvidesDef
 		this.iface = provides;
 	}
 	
+	
+	/**
+	 * Java Local Interface Generator
+	 * 
+	 */
+	
+	// Code generator methods -------------------------------------------------
+
+	
+	
+	/**
+	 * Java Local Component Generator
+	 * 
+	 */
+	
+	// Code generator methods -------------------------------------------------
+	
+	public String generateCcmProvidesEquivalentMethodDeclaration()
+	{
+		return TAB + getInterface().getAbsoluteJavaCcmName() + " get_" + getIdentifier() + "();\n";
+	}
+	
+	
+	
+	/**
+	 * Java Local Implementation Generator
+	 * 
+	 */
+	
+	// Code generator methods -------------------------------------------------
+	
+	public String generateCcmProvidesGetImplementation()
+	{
+		return new CcmProvidesGetImplementationTemplate().generate(this);
+	}
+	
+	public String generateCcmFacetImplementation()
+	{
+		return new CcmFacetImplementationTemplate().generate(this);
+	}
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateLocalImplementationSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
+		
+		SourceFile ccmInterfaceImplementation = 
+			new SourceFile(localPackageName, getIdentifier() + "Impl.java", generateCcmFacetImplementation());
+					
+		sourceFileList.add(ccmInterfaceImplementation);
+		return sourceFileList;
+	}	
+	
+	
+	
+	/**
+	 * Java Client Library Generator
+	 * 
+	 */
 	
 	// Code generator methods -------------------------------------------------	
 	
@@ -48,5 +128,4 @@ public class ProvidesDef
 	{
 		return TAB + "private " + getInterface().getAbsoluteJavaName() + " " + getIdentifier() + ";\n";
 	}
-	
 }

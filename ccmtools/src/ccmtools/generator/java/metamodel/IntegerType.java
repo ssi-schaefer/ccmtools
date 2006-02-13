@@ -25,4 +25,9 @@ public class IntegerType
 			return "org.omg.CORBA.IntHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "0";		
+	}
 }

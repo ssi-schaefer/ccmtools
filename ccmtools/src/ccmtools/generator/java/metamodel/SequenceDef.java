@@ -60,4 +60,9 @@ public class SequenceDef
 			return getAbsoluteIdlName() + "Holder";
 		}	
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "null";		
+	}
 }

@@ -25,4 +25,9 @@ public class FloatType
 			return "org.omg.CORBA.FloatHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "0.0";		
+	}
 }

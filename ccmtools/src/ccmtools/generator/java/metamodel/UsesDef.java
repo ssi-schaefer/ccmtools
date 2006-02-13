@@ -13,12 +13,24 @@ import ccmtools.generator.java.templates.UsesReceptacleDisconnectMethodImplement
 public class UsesDef
 	extends ModelElement
 {
+	private ComponentDef component;
 	private InterfaceDef iface;
 	private boolean multiple;
 	
 	public UsesDef(String identifier, List ns)
 	{
 		super(identifier, ns);
+	}
+
+	
+	public ComponentDef getComponent()
+	{
+		return component;
+	}
+
+	public void setComponent(ComponentDef component)
+	{
+		this.component = component;
 	}
 
 	

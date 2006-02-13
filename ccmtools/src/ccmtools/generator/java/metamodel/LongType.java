@@ -25,4 +25,9 @@ public class LongType
 			return "org.omg.CORBA.LongHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "0";		
+	}
 }

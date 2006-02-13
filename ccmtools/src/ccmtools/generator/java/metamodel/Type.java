@@ -6,4 +6,6 @@ public interface Type
 	
 	String generateJavaMapping();	
 	String generateJavaMapping(PassingDirection direction);
+	
+	String generateJavaDefaultReturnValue();
 }

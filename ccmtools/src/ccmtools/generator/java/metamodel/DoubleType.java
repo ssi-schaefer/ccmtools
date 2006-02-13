@@ -25,4 +25,9 @@ public class DoubleType
 			return "org.omg.CORBA.DoubleHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "0.0";		
+	}
 }

@@ -25,4 +25,9 @@ public class ShortType
 			return "org.omg.CORBA.ShortHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "0";		
+	}
 }

@@ -48,13 +48,14 @@ public class InterfaceDef
 	}
 			
 	
+	
 	/**
-	 * Java Client Library Generator
+	 * Java Local Interface Generator
 	 * 
 	 */
 	
 	// Code generator methods -------------------------------------------------
-
+	
 	public String generateInterfaceDeclaration()
 	{
 		return new InterfaceDeclarationTemplate().generate(this);
@@ -76,8 +77,73 @@ public class InterfaceDef
 		{
 			return ""; // no base interfaces
 		}
+	}	
+		
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateLocalInterfaceSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
+		
+		SourceFile interfaceDeclaration = 
+			new SourceFile(localPackageName, getIdentifier() + ".java", generateInterfaceDeclaration());
+		
+		sourceFileList.add(interfaceDeclaration);
+		return sourceFileList;
 	}
 	
+	
+	
+	/**
+	 * Java Local Component Generator
+	 * 
+	 */
+	
+	// Code generator methods -------------------------------------------------
+	
+	public String generateCcmInterfaceDeclaration()
+	{
+		return new CcmInterfaceDeclarationTemplate().generate(this);
+	}
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateLocalComponentSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
+		
+		SourceFile ccmInterfaceDeclaration = 
+			new SourceFile(localPackageName, getCcmIdentifier() + ".java", generateCcmInterfaceDeclaration());
+				
+		sourceFileList.add(ccmInterfaceDeclaration);
+		return sourceFileList;
+	}
+	
+	
+	
+	/**
+	 * Java Local Implementation Generator
+	 * 
+	 */
+	
+	// Code generator methods -------------------------------------------------
+	
+
+	// Generate SourceFile objects --------------------------------------------
+	
+
+	
+	
+	/**
+	 * Java Client Library Generator
+	 * 
+	 */
+	
+	// Code generator methods -------------------------------------------------
 	
 	public String generateInterfaceAdapterFromCorba()
 	{
@@ -96,51 +162,14 @@ public class InterfaceDef
 	{
 		List sourceFileList = new ArrayList();
 		
-		SourceFile interfaceDeclaration = 
-			new SourceFile(Text.joinList(File.separator, getJavaNamespaceList()), 
-					getIdentifier() + ".java", generateInterfaceDeclaration());
-		
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		SourceFile interfaceAdapterToCorba = 
-			new SourceFile(Text.joinList(File.separator, getJavaRemoteNamespaceList()), 
-					getIdentifier() + "AdapterToCorba.java",generateInterfaceAdapterToCorba());
-		
+			new SourceFile(remotePackageName, getIdentifier() + "AdapterToCorba.java",generateInterfaceAdapterToCorba());		
 		SourceFile interfaceAdapterFromCorba = 
-			new SourceFile(Text.joinList(File.separator, getJavaRemoteNamespaceList()), 
-					getIdentifier() + "AdapterFromCorba.java",generateInterfaceAdapterFromCorba());
+			new SourceFile(remotePackageName, getIdentifier() + "AdapterFromCorba.java",generateInterfaceAdapterFromCorba());
 		
-		sourceFileList.add(interfaceDeclaration);
 		sourceFileList.add(interfaceAdapterToCorba);
 		sourceFileList.add(interfaceAdapterFromCorba);
-		return sourceFileList;
-	}
-	
-	
-	/**
-	 * Java Local Component Generator
-	 * 
-	 */
-	
-	// Code generator methods -------------------------------------------------
-	
-	public String generateCcmInterfaceDeclaration()
-	{
-		return new CcmInterfaceDeclarationTemplate().generate(this);
-	}
-	
-	
-	// Generate SourceFile objects --------------------------------------------
-	
-	public List generateLocalSourceFiles()
-	{
-		List sourceFileList = new ArrayList();
-		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
-		
-		SourceFile ccmInterfaceDeclaration = 
-			new SourceFile(localPackageName, getCcmIdentifier() + ".java", generateCcmInterfaceDeclaration());
-	
-		
-		
-		sourceFileList.add(ccmInterfaceDeclaration);
 		return sourceFileList;
 	}
 }

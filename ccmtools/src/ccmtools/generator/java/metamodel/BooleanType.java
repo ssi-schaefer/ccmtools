@@ -25,4 +25,9 @@ public class BooleanType
 			return "org.omg.CORBA.BooleanHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "false";		
+	}
 }

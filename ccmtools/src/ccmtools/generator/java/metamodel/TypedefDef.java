@@ -33,4 +33,9 @@ public class TypedefDef
 			return getAbsoluteIdlName() + "Holder";
 		}	
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "null";		
+	}
 }

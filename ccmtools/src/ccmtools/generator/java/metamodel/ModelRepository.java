@@ -14,6 +14,8 @@ public class ModelRepository
 	private List homeList = new ArrayList();
 	private List componentList = new ArrayList();
 	private List interfaceList = new ArrayList();
+	private List providesList = new ArrayList();
+	private List usesList = new ArrayList();
 	private List constantList = new ArrayList();
 	
 	public ModelRepository()
@@ -34,12 +36,22 @@ public class ModelRepository
 	{
 		interfaceList.add(iface);
 	}
+
+	public void addProvides(ProvidesDef provides)
+	{
+		providesList.add(provides);
+	}
+	
+	public void addUses(UsesDef uses)
+	{
+		usesList.add(uses);
+	}
 	
 	public void addGlobalConstant(ConstantDef constant)
 	{
 		constantList.add(constant);
 	}
-	
+
 	
 	public List findAllHomes()
 	{
@@ -54,6 +66,16 @@ public class ModelRepository
 	public List findAllInterfaces()
 	{
 		return interfaceList;
+	}
+	
+	public List findAllProvides()
+	{
+		return providesList;
+	}
+	
+	public List findAllUses()
+	{
+		return usesList;
 	}
 	
 	public List findAllGlobalConstants()

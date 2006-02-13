@@ -25,4 +25,9 @@ public class AnyType
 			return "org.omg.CORBA.AnyHolder";
 		}
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "null";		
+	}
 }

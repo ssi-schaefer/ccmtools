@@ -70,7 +70,7 @@ public class CcmToJavaModelMapper
     private Logger logger;
     
     /** Root element of the Java Implementation Model */
-    private ModelRepository model;
+    private ModelRepository modelRepository;
     
     
 	CcmToJavaModelMapper()
@@ -79,12 +79,12 @@ public class CcmToJavaModelMapper
 		logger.fine("CcmModelNodeHandler()");
 		
 		artifactCache = new HashMap();
-		model = new ModelRepository();
+		modelRepository = new ModelRepository();
 	}
 			
 	public ModelRepository getJavaModel()
 	{
-		return model;
+		return modelRepository;
 	}
 	
 	
@@ -127,22 +127,36 @@ public class CcmToJavaModelMapper
 			MHomeDef home = (MHomeDef) node;
 			logger.finer("MHomeDef: " + Code.getRepositoryId(home));
 			HomeDef javaHome = transform(home);
-			model.addHome(javaHome);
+			modelRepository.addHome(javaHome);
 		}
     	else if(node instanceof MComponentDef) 
     	{
     		MComponentDef component = (MComponentDef)node;
     		logger.finer("MComponentDef: " + Code.getRepositoryId(component));
     		ComponentDef javaComponent = transform(component);
-    		model.addComponent(javaComponent);
+    		modelRepository.addComponent(javaComponent);
     	}
     	else if(node instanceof MInterfaceDef)
     	{
     		MInterfaceDef iface = (MInterfaceDef)node;
     		logger.finer("MInterfaceDef: " + Code.getRepositoryId(iface));
     		InterfaceDef javaIface = transform(iface);   		
-    		model.addInterface(javaIface);
-    	}    
+    		modelRepository.addInterface(javaIface);
+    	}   
+    	else if(node instanceof MProvidesDef)
+    	{
+    		MProvidesDef provides = (MProvidesDef)node;
+    		logger.finer("MProvidesDef: " + Code.getRepositoryId(provides));
+    		ProvidesDef javaProvides = transform(provides);   		
+    		modelRepository.addProvides(javaProvides);
+    	}
+    	else if(node instanceof MUsesDef)
+    	{
+    		MUsesDef uses = (MUsesDef)node;
+    		logger.finer("MUsesDef: " + Code.getRepositoryId(uses));
+    		UsesDef javaUses = transform(uses);
+    		modelRepository.addUses(javaUses);
+    	}
     }
 
     public void handleNodeData(String fieldType, String fieldId, Object value)
@@ -156,49 +170,7 @@ public class CcmToJavaModelMapper
      */ 
     
     //  Handle container elements ----------------------------------------------
-    
-	InterfaceDef transform(MInterfaceDef in)
-	{
-		InterfaceDef out;
-		String repoId = Code.getRepositoryId(in);
-		logger.finer("MInterfaceDef: " + repoId);
-		if (artifactCache.containsKey(repoId))
-		{
-			out = (InterfaceDef) artifactCache.get(repoId);
-		}
-		else
-		{
-			out = new InterfaceDef(in.getIdentifier(), Code.getNamespaceList(in));
-	
-			// Map base interface types
-			for(Iterator i = in.getBases().iterator(); i.hasNext(); )
-			{
-				MInterfaceDef baseIface = (MInterfaceDef)i.next();
-				out.getBaseInterfaces().add(transform(baseIface));
-			}
-			
-			// Map interface sub elements like constants, attributes and operations
-			for (Iterator i = in.getContentss().iterator(); i.hasNext();)
-			{
-				MContained child = (MContained) i.next();
-				if (child instanceof MConstantDef)
-				{
-					out.getConstants().add(transform((MConstantDef)child));
-				}
-				else if (child instanceof MAttributeDef)
-				{
-					out.getAttributes().add(transform((MAttributeDef)child));
-				}
-				else if (child instanceof MOperationDef)
-				{
-					out.getOperation().add(transform((MOperationDef)child));
-				}
-			}
-			artifactCache.put(repoId, out);
-		}
-		return out;
-	}
-		
+    		
 	public HomeDef transform(MHomeDef in)
 	{		
 		HomeDef out;
@@ -216,7 +188,8 @@ public class CcmToJavaModelMapper
 		}
 		return out;
 	}
-		
+	
+	
 	public ComponentDef transform(MComponentDef in)
 	{
 		ComponentDef out;
@@ -237,20 +210,63 @@ public class CcmToJavaModelMapper
 					out.getAttributes().add(transform((MAttributeDef)child));
 				}
 			}
-			// Map supported interfaces
+			// Transform supported interfaces
 			for(Iterator i = in.getSupportss().iterator(); i.hasNext(); )
 			{
 				out.getSupports().add(transform((MSupportsDef)i.next())); 
 			}
-			// Map provided interfaces
-			for(Iterator i = in.getFacets().iterator(); i.hasNext(); )
+			// Transform provided interfaces
+//			for(Iterator i = in.getFacets().iterator(); i.hasNext(); )
+//			{
+//				out.getFacet().add(transform((MProvidesDef)i.next())); 
+//			}
+			// Transform used interfaces
+//			for(Iterator i = in.getReceptacles().iterator(); i.hasNext(); )
+//			{
+//				out.getReceptacle().add(transform((MUsesDef)i.next())); 
+//			}
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
+	
+	
+	InterfaceDef transform(MInterfaceDef in)
+	{
+		InterfaceDef out;
+		String repoId = Code.getRepositoryId(in);
+		logger.finer("MInterfaceDef: " + repoId);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (InterfaceDef) artifactCache.get(repoId);
+		}
+		else
+		{
+			out = new InterfaceDef(in.getIdentifier(), Code.getNamespaceList(in));
+	
+			// Transform base interface types
+			for(Iterator i = in.getBases().iterator(); i.hasNext(); )
 			{
-				out.getFacet().add(transform((MProvidesDef)i.next())); 
+				MInterfaceDef baseIface = (MInterfaceDef)i.next();
+				out.getBaseInterfaces().add(transform(baseIface));
 			}
-			// Map used interfaces
-			for(Iterator i = in.getReceptacles().iterator(); i.hasNext(); )
+			
+			// Transform interface sub elements like constants, attributes and operations
+			for (Iterator i = in.getContentss().iterator(); i.hasNext();)
 			{
-				out.getReceptacle().add(transform((MUsesDef)i.next())); 
+				MContained child = (MContained) i.next();
+				if (child instanceof MConstantDef)
+				{
+					out.getConstants().add(transform((MConstantDef)child));
+				}
+				else if (child instanceof MAttributeDef)
+				{
+					out.getAttributes().add(transform((MAttributeDef)child));
+				}
+				else if (child instanceof MOperationDef)
+				{
+					out.getOperation().add(transform((MOperationDef)child));
+				}
 			}
 			artifactCache.put(repoId, out);
 		}
@@ -260,18 +276,47 @@ public class CcmToJavaModelMapper
 	
 	// Handle Contained elements ----------------------------------------------
 	
-	public ExceptionDef transform(MExceptionDef in)
+	public ProvidesDef transform(MProvidesDef in)
 	{
-		ExceptionDef out;
+		ProvidesDef out;
 		String repoId = Code.getRepositoryId(in);
-		logger.finer("MExceptionDef: " + repoId);
-		if (artifactCache.containsKey(repoId))
+		logger.finer("MProvidesDef: " + repoId);		
+		if(artifactCache.containsKey(repoId))
 		{
-			out = (ExceptionDef) artifactCache.get(repoId);
+			out = (ProvidesDef)artifactCache.get(repoId);	
 		}
 		else 
 		{
-			out = new ExceptionDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out = new ProvidesDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out.setInterface(transform(in.getProvides()));
+			// Establish a bidirectional connection between ComponentDef and ProvidesDef
+			ComponentDef component = transform(in.getComponent());
+			component.getFacet().add(out);
+			out.setComponent(component); 			
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
+	
+	
+	public UsesDef transform(MUsesDef in)
+	{
+		UsesDef out;
+		String repoId = Code.getRepositoryId(in);
+		logger.finer("MUsesDef: " + repoId);
+		if(artifactCache.containsKey(repoId))
+		{
+			out = (UsesDef)artifactCache.get(repoId);
+		}
+		else
+		{
+			out = new UsesDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out.setMultiple(in.isMultiple());
+			out.setInterface(transform(in.getUses()));
+			// Establish a bidirectional connection between ComponentDef and UsesDef
+			ComponentDef component = transform(in.getComponent());
+			component.getReceptacle().add(out);
+			out.setComponent(component);
 			artifactCache.put(repoId, out);
 		}
 		return out;
@@ -280,28 +325,9 @@ public class CcmToJavaModelMapper
 	
 	public SupportsDef transform(MSupportsDef in)
 	{
-		logger.finer("MSupportsDef: " + in.getIdentifier());		
+		logger.finer("MSupportsDef: " + in.getIdentifier());	
 		SupportsDef out = new SupportsDef(in.getIdentifier(), Code.getNamespaceList(in));
 		out.setInterface(transform(in.getSupports()));
-		return out;
-	}
-
-	
-	public ProvidesDef transform(MProvidesDef in)
-	{
-		logger.finer("MProvidesDef: " + in.getIdentifier());		
-		ProvidesDef out = new ProvidesDef(in.getIdentifier(), Code.getNamespaceList(in));
-		out.setInterface(transform(in.getProvides()));
-		return out;
-	}
-	
-	
-	public UsesDef transform(MUsesDef in)
-	{
-		logger.finer("MUsesDef: " + in.getIdentifier());
-		UsesDef out = new UsesDef(in.getIdentifier(), Code.getNamespaceList(in));
-		out.setMultiple(in.isMultiple());
-		out.setInterface(transform(in.getUses()));
 		return out;
 	}
 
@@ -319,6 +345,24 @@ public class CcmToJavaModelMapper
 		{
 			MExceptionDef exc = (MExceptionDef)i.next();
 			out.getException().add(transform(exc));
+		}
+		return out;
+	}
+
+	
+	public ExceptionDef transform(MExceptionDef in)
+	{
+		ExceptionDef out;
+		String repoId = Code.getRepositoryId(in);
+		logger.finer("MExceptionDef: " + repoId);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (ExceptionDef) artifactCache.get(repoId);
+		}
+		else 
+		{
+			out = new ExceptionDef(in.getIdentifier(), Code.getNamespaceList(in));
+			artifactCache.put(repoId, out);
 		}
 		return out;
 	}

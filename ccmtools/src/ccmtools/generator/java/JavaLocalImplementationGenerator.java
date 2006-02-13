@@ -12,15 +12,15 @@ import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
 import ccmtools.generator.java.metamodel.ComponentDef;
-import ccmtools.generator.java.metamodel.ConstantDef;
 import ccmtools.generator.java.metamodel.HomeDef;
 import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.ModelRepository;
+import ccmtools.generator.java.metamodel.ProvidesDef;
 import ccmtools.generator.java.ui.CommandLineParameters;
 import ccmtools.utils.CcmModelHelper;
 import ccmtools.utils.Code;
 
-public class JavaClientLibGenerator
+public class JavaLocalImplementationGenerator
 {
 	/** UI driver for generator messages */
 	protected Driver uiDriver;
@@ -32,12 +32,12 @@ public class JavaClientLibGenerator
 	protected Logger logger;
 	
 	
-	public JavaClientLibGenerator(CommandLineParameters parameters, Driver uiDriver)
+	public JavaLocalImplementationGenerator(CommandLineParameters parameters, Driver uiDriver)
 	{
 		this.uiDriver = uiDriver;
 		this.parameters = (CommandLineParameters)parameters;		                           
-        logger = Logger.getLogger("ccm.generator.java.clientlib");
-        logger.fine("JavaClientLibGenerator()");
+        logger = Logger.getLogger("ccm.generator.java.impl");
+        logger.fine("JavaLocalImplementationGenerator()");
         printVersion();
 	}
 	
@@ -67,25 +67,22 @@ public class JavaClientLibGenerator
 				for (Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext();)
 				{
 					InterfaceDef javaIface = (InterfaceDef) j.next();
-					sourceFileList.addAll(javaIface.generateLocalInterfaceSourceFiles());
-					sourceFileList.addAll(javaIface.generateClientLibSourceFiles());
+//					sourceFileList.addAll(javaIface.generateLocalImplementationSourceFiles());
+				}
+				for (Iterator j = javaModel.findAllProvides().iterator(); j.hasNext();)
+				{
+					ProvidesDef javaProvides = (ProvidesDef) j.next();
+					sourceFileList.addAll(javaProvides.generateLocalImplementationSourceFiles());
 				}
 				for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
 				{
 					ComponentDef javaComponent = (ComponentDef) j.next();
-					sourceFileList.addAll(javaComponent.generateLocalInterfaceSourceFiles());
-					sourceFileList.addAll(javaComponent.generateClientLibSourceFiles());
+					sourceFileList.addAll(javaComponent.generateLocalImplementationSourceFiles());
 				}
 				for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
 				{
 					HomeDef javaHome = (HomeDef) j.next();
-					sourceFileList.addAll(javaHome.generateLocalInterfaceSourceFiles());
-					sourceFileList.addAll(javaHome.generateClientLibSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllGlobalConstants().iterator(); j.hasNext();)
-				{
-					ConstantDef javaConstant = (ConstantDef) j.next();
-					sourceFileList.addAll(javaConstant.generateLocalInterfaceSourceFiles());
+					sourceFileList.addAll(javaHome.generateLocalImplementationSourceFiles());
 				}
 				// Save all source file objects
 				Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
@@ -93,15 +90,14 @@ public class JavaClientLibGenerator
 		}
 		catch (Exception e)
 		{
-			throw new CcmtoolsException("Error in JavaClientLibGenerator: " + e.getMessage());
+			throw new CcmtoolsException("Error in JavaLocalImplementation Generator: " + e.getMessage());
 		}
 		logger.fine("leave generate()");
 	}
 	
-	
     private void printVersion()
     {
-        uiDriver.println("Java Client Library Generator, " + 
+        uiDriver.println("Java Local Implementation Generator, " + 
                          Constants.VERSION_TEXT + "\n");
     }
 }

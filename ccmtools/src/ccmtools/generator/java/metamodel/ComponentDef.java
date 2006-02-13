@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ccmtools.generator.java.templates.CcmComponentContextInterfaceTemplate;
+import ccmtools.generator.java.templates.CcmComponentDeclarationTemplate;
+import ccmtools.generator.java.templates.CcmComponentImplementationTemplate;
 import ccmtools.generator.java.templates.ComponentAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.ComponentDeclarationTemplate;
 import ccmtools.utils.SourceFile;
@@ -58,21 +61,17 @@ public class ComponentDef
 	}
 	
 	
+	
 	/**
-	 * Java Client Library Generator
+	 * Java Local Interface Generator
 	 * 
 	 */
 	
-	// Code generator methods -------------------------------------------------	
+	// Code generator methods -------------------------------------------------
 
 	public String generateComponentDeclaration()
 	{
 		return new ComponentDeclarationTemplate().generate(this);
-	}
-	
-	public String generateComponentAdapterToCorba()
-	{
-		return new ComponentAdapterToCorbaTemplate().generate(this);
 	}
 	
 	public String generateSupportsDeclarations()
@@ -93,24 +92,21 @@ public class ComponentDef
 		}
 	}
 	
+
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateClientLibSourceFiles()
+	public List generateLocalInterfaceSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList()); 
+	
 		SourceFile componentDeclaration = 
-			new SourceFile(Text.joinList(File.separator, getJavaNamespaceList()), 
-					getIdentifier() + ".java", generateComponentDeclaration());
-		
-		SourceFile componentAdapterToCorba = 
-			new SourceFile(Text.joinList(File.separator, getJavaRemoteNamespaceList()), 
-					getIdentifier() + "AdapterToCorba.java",generateComponentAdapterToCorba());
+			new SourceFile(localPackageName, getIdentifier() + ".java", generateComponentDeclaration());
 		
 		sourceFileList.add(componentDeclaration);
-		sourceFileList.add(componentAdapterToCorba);
 		return sourceFileList;
 	}
+	
 	
 	
 	
@@ -121,6 +117,89 @@ public class ComponentDef
 	
 	// Code generator methods -------------------------------------------------
 	
+	public String generateCcmComponentDeclaration()
+	{
+		return new CcmComponentDeclarationTemplate().generate(this);
+	}	
+		
+	public String generateCcmComponentContextInterface()
+	{
+		return new CcmComponentContextInterfaceTemplate().generate(this);
+	}
+	
+	
 	// Generate SourceFile objects --------------------------------------------
 	
+	public List generateLocalComponentSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
+		SourceFile ccmComponentDeclaration = 
+			new SourceFile(localPackageName, getCcmIdentifier() + ".java", generateCcmComponentDeclaration());
+		SourceFile ccmComponentContextInterface = 
+			new SourceFile(localPackageName, getCcmIdentifier() + "_Context.java", generateCcmComponentContextInterface());
+
+		sourceFileList.add(ccmComponentDeclaration);
+		sourceFileList.add(ccmComponentContextInterface);
+		return sourceFileList;
+	}
+	
+	
+	
+	/**
+	 * Java Local Implementation Generator
+	 * 
+	 */
+	
+	// Code generator methods -------------------------------------------------
+	
+	public String generateCcmComponentImplementation()
+	{
+		return new CcmComponentImplementationTemplate().generate(this);
+	}	
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateLocalImplementationSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
+		
+		SourceFile ccmComponentImplementation = 
+			new SourceFile(localPackageName, getIdentifier() + "Impl.java", generateCcmComponentImplementation());
+		
+		sourceFileList.add(ccmComponentImplementation);
+		return sourceFileList;
+	}
+	
+	
+	
+	/**
+	 * Java Client Library Generator
+	 * 
+	 */
+	
+	// Code generator methods -------------------------------------------------	
+
+	public String generateComponentAdapterToCorba()
+	{
+		return new ComponentAdapterToCorbaTemplate().generate(this);
+	}
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateClientLibSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList()); 
+		SourceFile componentAdapterToCorba = 
+			new SourceFile(remotePackageName, getIdentifier() + "AdapterToCorba.java",generateComponentAdapterToCorba());
+		
+		sourceFileList.add(componentAdapterToCorba);
+		return sourceFileList;
+	}
 }

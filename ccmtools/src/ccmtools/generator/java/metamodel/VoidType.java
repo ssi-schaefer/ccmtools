@@ -24,4 +24,9 @@ public class VoidType
 			return "";
 		}	
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "";		
+	}
 }

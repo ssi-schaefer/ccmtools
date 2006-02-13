@@ -25,4 +25,9 @@ public class StringType
 			return "org.omg.CORBA.StringHolder";
 		}	
 	}
+	
+	public String generateJavaDefaultReturnValue()
+	{
+		return "\"\"";		
+	}
 }
