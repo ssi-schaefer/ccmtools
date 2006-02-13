@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccmtools.generator.java.templates.CcmHomeAdapterTemplate;
 import ccmtools.generator.java.templates.CcmHomeDeclarationTemplate;
 import ccmtools.generator.java.templates.CcmHomeExplicitDeclarationTemplate;
 import ccmtools.generator.java.templates.CcmHomeFactoryTemplate;
@@ -14,6 +15,7 @@ import ccmtools.generator.java.templates.HomeDeclarationTemplate;
 import ccmtools.generator.java.templates.HomeExplicitDeclarationTemplate;
 import ccmtools.generator.java.templates.HomeFactoryTemplate;
 import ccmtools.generator.java.templates.HomeImplicitDeclarationTemplate;
+import ccmtools.generator.java.templates.LocalHomeDeployerTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -109,6 +111,16 @@ public class HomeDef
 		return new CcmHomeExplicitDeclarationTemplate().generate(this);
 	}
 	
+	public String generateCcmHomeAdapter()
+	{              
+		return new CcmHomeAdapterTemplate().generate(this);
+	}
+	
+	public String generateLocalHomeDeployer()
+	{              
+		return new LocalHomeDeployerTemplate().generate(this);
+	}
+	
 	
 	// Generate SourceFile objects --------------------------------------------
 	
@@ -124,9 +136,17 @@ public class HomeDef
 		SourceFile ccmHomeExplicitDeclaration = 
 			new SourceFile(localPackageName, getCcmIdentifier() + "Explicit.java", generateCcmHomeExplicitDeclaration());
 		
+		SourceFile ccmHomeAdapter = 
+			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateCcmHomeAdapter());
+		
+		SourceFile localHomeDeployer = 
+			new SourceFile(localPackageName, getIdentifier() + "Deployer.java", generateLocalHomeDeployer());
+		
 		sourceFileList.add(ccmHomeDeclaration);
 		sourceFileList.add(ccmHomeImplicitDeclaration);
 		sourceFileList.add(ccmHomeExplicitDeclaration);
+		sourceFileList.add(ccmHomeAdapter);
+		sourceFileList.add(localHomeDeployer);
 		return sourceFileList;
 	}
 	

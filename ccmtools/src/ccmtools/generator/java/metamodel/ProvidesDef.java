@@ -6,6 +6,8 @@ import java.util.List;
 
 import ccmtools.generator.java.templates.CcmFacetImplementationTemplate;
 import ccmtools.generator.java.templates.CcmProvidesGetImplementationTemplate;
+import ccmtools.generator.java.templates.ProvidesAdapterNavigationMethodImplementationTemplate;
+import ccmtools.generator.java.templates.ProvidesEquivalentMethodAdapterTemplate;
 import ccmtools.generator.java.templates.ProvidesEquivalentMethodImplementationTemplate;
 import ccmtools.generator.java.templates.ProvidesNavigationMethodImplementationTemplate;
 import ccmtools.utils.SourceFile;
@@ -50,7 +52,6 @@ public class ProvidesDef
 	 * 
 	 */
 	
-	// Code generator methods -------------------------------------------------
 
 	
 	
@@ -58,13 +59,23 @@ public class ProvidesDef
 	 * Java Local Component Generator
 	 * 
 	 */
-	
-	// Code generator methods -------------------------------------------------
-	
-	public String generateCcmProvidesEquivalentMethodDeclaration()
+		
+	public String generateFacetAdapterReference()
 	{
-		return TAB + getInterface().getAbsoluteJavaCcmName() + " get_" + getIdentifier() + "();\n";
+		return TAB + "private " + getInterface().getAbsoluteJavaName() + 
+				" " + getIdentifier() + "FacetAdapter;";
 	}
+	
+	public String generateProvidesEquivalentMethodAdapter()
+	{
+		return new ProvidesEquivalentMethodAdapterTemplate().generate(this);
+	}
+	
+	public String generateProvidesAdapterNavigationMethodImplementation()
+	{		
+		return new ProvidesAdapterNavigationMethodImplementationTemplate().generate(this);
+	}
+	
 	
 	
 	
@@ -74,6 +85,11 @@ public class ProvidesDef
 	 */
 	
 	// Code generator methods -------------------------------------------------
+
+	public String generateCcmProvidesEquivalentMethodDeclaration()
+	{
+		return TAB + getInterface().getAbsoluteJavaCcmName() + " get_" + getIdentifier() + "();\n";
+	}
 	
 	public String generateCcmProvidesGetImplementation()
 	{

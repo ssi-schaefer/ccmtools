@@ -40,7 +40,7 @@ public class OperationAdapterToCorbaTemplate
     stringBuffer.append(op.generateOperationParameterDeclarationList());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(op.generateThrowsToCorba());
+    stringBuffer.append(op.generateThrows());
     stringBuffer.append(TEXT_6);
     stringBuffer.append(TEXT_7);
     stringBuffer.append(op.generateOperationReturnStatement());

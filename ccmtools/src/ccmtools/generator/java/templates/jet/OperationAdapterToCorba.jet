@@ -6,7 +6,7 @@
 
     /** Business delegate method */
     public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>) 
-        <%=op.generateThrowsToCorba()%> 
+        <%=op.generateThrows()%> 
     {
         try
         {

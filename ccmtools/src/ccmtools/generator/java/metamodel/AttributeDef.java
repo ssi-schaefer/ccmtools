@@ -38,12 +38,38 @@ public class AttributeDef
 		this.type = type;
 	}
 	
-	// Generator methods ------------------------------------------------------
+	
+	/**
+	 * Java Local Interface Generator
+	 * 
+	 */
 	
 	public String generateAttributeDeclaration()
 	{
 		return new AttributeDeclarationTemplate().generate(this);
 	}
+
+	
+	
+	/**
+	 * Java Local Component Generator
+	 * 
+	 */
+	
+	public String generateAttributeAdapter()
+	{
+		//return new AttributeAdapterTemplate().generate(this);
+		return "";
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Java Client Library Generator
+	 * 
+	 */
 	
 	public String generateAttributeAdapterFromCorba()
 	{

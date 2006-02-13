@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ccmtools.generator.java.templates.CcmInterfaceAdapterTemplate;
 import ccmtools.generator.java.templates.CcmInterfaceDeclarationTemplate;
 import ccmtools.generator.java.templates.InterfaceAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.InterfaceAdapterToCorbaTemplate;
@@ -108,6 +109,10 @@ public class InterfaceDef
 		return new CcmInterfaceDeclarationTemplate().generate(this);
 	}
 	
+	public String generateCcmInterfaceAdapter()
+	{              
+		return new CcmInterfaceAdapterTemplate().generate(this);
+	}
 	
 	// Generate SourceFile objects --------------------------------------------
 	
@@ -118,8 +123,12 @@ public class InterfaceDef
 		
 		SourceFile ccmInterfaceDeclaration = 
 			new SourceFile(localPackageName, getCcmIdentifier() + ".java", generateCcmInterfaceDeclaration());
-				
+		SourceFile ccmInterfaceAdapter = 
+			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateCcmInterfaceAdapter());
+		
 		sourceFileList.add(ccmInterfaceDeclaration);
+		sourceFileList.add(ccmInterfaceAdapter);
+
 		return sourceFileList;
 	}
 	

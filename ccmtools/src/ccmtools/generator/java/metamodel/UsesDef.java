@@ -57,7 +57,10 @@ public class UsesDef
 	}
 
 	
-	// Code generator methods -------------------------------------------------
+	/**
+	 * Java Local Interface Generator
+	 * 
+	 */
 	
 	public String generateUsesEquivalentMethodDeclaration()
 	{
@@ -71,6 +74,28 @@ public class UsesDef
 		}
 	}
 	
+
+	
+	/**
+	 * Java Local Component Generator
+	 * 
+	 */
+	
+	public String generateUsesEquivalentMethodAdapter()
+	{
+		
+		return "";
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Java Local Implementation Generator
+	 * 
+	 */
+		
 	public String generateLocalReceptacleAdapterDeclaration()
 	{
 		return TAB + "private " + getInterface().getAbsoluteJavaName() + " " + getIdentifier() + ";\n";
@@ -104,4 +129,10 @@ public class UsesDef
 			return new UsesReceptacleDisconnectMethodImplementationTemplate().generate(this);			
 		}
 	}
+	
+	
+	/**
+	 * Java Client Library Generator
+	 * 
+	 */
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import ccmtools.generator.java.templates.CatchStatementFromCorbaTemplate;
 import ccmtools.generator.java.templates.CatchStatementToCorbaTemplate;
+import ccmtools.generator.java.templates.CcmOperationAdapterTemplate;
 import ccmtools.generator.java.templates.CcmOperationImplementationTemplate;
 import ccmtools.generator.java.templates.OperationAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.OperationAdapterToCorbaTemplate;
@@ -75,7 +76,7 @@ public class OperationDef
 		}
 		else
 		{
-			return "return ";
+			return "return";
 		}
 	}
 	
@@ -115,6 +116,33 @@ public class OperationDef
 		return Text.joinList(", ", parameterList);
 	}
 	
+
+	/**
+	 * Generate an exception list (names only), and handle the commas in
+	 * a propper way. 
+	 * e.g. ", InvalidName, NoConnection"
+	 * 
+	 * @return Generated code artifact.
+	 */
+	public String generateThrows()
+	{
+		StringBuffer code = new StringBuffer();
+		code.append("throws ccm.local.Components.CCMException");
+		if(getException().size() != 0)
+		{
+			code.append(", ");
+			List exceptionList = new ArrayList();
+			for (Iterator i = getException().iterator(); i.hasNext();)
+			{
+				ExceptionDef e = (ExceptionDef) i.next();
+				exceptionList.add(e.generateJavaMapping(PassingDirection.IN));
+			}
+			code.append(Text.joinList(", ", exceptionList));
+		}
+		return code.toString();
+	}
+
+	
 	
 	
 	/**
@@ -124,7 +152,10 @@ public class OperationDef
 	
 	// Code generator methods -------------------------------------------------
 	
-	// Generate SourceFile objects --------------------------------------------
+	public String generateCcmOperationAdapter()
+	{              
+		return new CcmOperationAdapterTemplate().generate(this);
+	}
 	
 	
 	
@@ -169,31 +200,6 @@ public class OperationDef
 	public String generateOperationAdapterToCorba()
 	{
 		return new OperationAdapterToCorbaTemplate().generate(this);
-	}
-
-	/**
-	 * Generate an exception list (names only), and handle the commas in
-	 * a propper way. 
-	 * e.g. ", InvalidName, NoConnection"
-	 * 
-	 * @return Generated code artifact.
-	 */
-	public String generateThrowsToCorba()
-	{
-		StringBuffer code = new StringBuffer();
-		code.append("throws ccm.local.Components.CCMException");
-		if(getException().size() != 0)
-		{
-			code.append(", ");
-			List exceptionList = new ArrayList();
-			for (Iterator i = getException().iterator(); i.hasNext();)
-			{
-				ExceptionDef e = (ExceptionDef) i.next();
-				exceptionList.add(e.generateJavaMapping(PassingDirection.IN));
-			}
-			code.append(Text.joinList(", ", exceptionList));
-		}
-		return code.toString();
 	}
 
 	public String generateThrowsFromCorba()

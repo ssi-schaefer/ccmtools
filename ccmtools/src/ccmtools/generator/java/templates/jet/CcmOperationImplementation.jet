@@ -4,7 +4,7 @@
 %>
 <% OperationDef op = (OperationDef) argument; %>
     public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%>(<%=op.generateOperationParameterDeclarationList()%>)
-        <%=op.generateThrowsToCorba()%>
+        <%=op.generateThrows()%>
     {
     	// TODO: IMPLEMENT ME HERE !
     	

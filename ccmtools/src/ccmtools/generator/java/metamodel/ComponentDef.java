@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ccmtools.generator.java.templates.CcmComponentAdapterTemplate;
+import ccmtools.generator.java.templates.CcmComponentContextImplementationTemplate;
 import ccmtools.generator.java.templates.CcmComponentContextInterfaceTemplate;
 import ccmtools.generator.java.templates.CcmComponentDeclarationTemplate;
 import ccmtools.generator.java.templates.CcmComponentImplementationTemplate;
@@ -127,6 +129,16 @@ public class ComponentDef
 		return new CcmComponentContextInterfaceTemplate().generate(this);
 	}
 	
+	public String generateCcmComponentContextImplementation()
+	{
+		return new CcmComponentContextImplementationTemplate().generate(this);
+	}
+	
+	public String generateCcmComponentAdapter()
+	{              
+		return new CcmComponentAdapterTemplate().generate(this);
+	}
+	
 	
 	// Generate SourceFile objects --------------------------------------------
 	
@@ -137,11 +149,21 @@ public class ComponentDef
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		SourceFile ccmComponentDeclaration = 
 			new SourceFile(localPackageName, getCcmIdentifier() + ".java", generateCcmComponentDeclaration());
+		
 		SourceFile ccmComponentContextInterface = 
-			new SourceFile(localPackageName, getCcmIdentifier() + "_Context.java", generateCcmComponentContextInterface());
-
+			new SourceFile(localPackageName, getCcmIdentifier() + "_Context.java", 
+					generateCcmComponentContextInterface());
+		SourceFile ccmComponentContextImpl = 
+			new SourceFile(localPackageName, getCcmIdentifier() + "_ContextImpl.java", 
+					generateCcmComponentContextImplementation());
+		
+		SourceFile ccmComponentAdapter = 
+			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateCcmComponentAdapter());
+	
 		sourceFileList.add(ccmComponentDeclaration);
 		sourceFileList.add(ccmComponentContextInterface);
+		sourceFileList.add(ccmComponentContextImpl);
+		sourceFileList.add(ccmComponentAdapter);
 		return sourceFileList;
 	}
 	
