@@ -14,9 +14,9 @@ idl2: idl3
 
 client_lib: idl2
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCM_INSTALL}/include -I${IDL2_DIR} ${IDL2_DIR}/*.idl
-	ccmclient -java -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/europe/*.idl
-	ccmclient -java -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/america/*.idl
-	ccmclient -java -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
+	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/europe/*.idl
+	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/america/*.idl
+	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
 check: 
 	ant -f ./build.xml

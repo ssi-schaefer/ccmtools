@@ -25,7 +25,7 @@ stubs:
 
 client:
 	make -C ${DEST_DIR}/CCM_CORBA_Stubs client
-	ccmclient -java -o ${DEST_DIR}/JavaClientLib/src-gen Test.idl
+	ccmjava -clientlib -o ${DEST_DIR}/JavaClientLib/src-gen Test.idl
 	ant
 
 check: 
