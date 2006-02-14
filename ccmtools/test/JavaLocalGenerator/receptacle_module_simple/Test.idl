@@ -1,0 +1,22 @@
+module world {
+  module europe {
+    module austria {
+
+      interface IFace
+      {
+	long op1(in string str);
+      };
+      
+      component Test
+      {
+	provides IFace inPort;
+	uses IFace outPort;
+      };
+      
+      home TestHome manages Test
+      {
+      };
+
+    }; // end of module austria
+  }; // end of module europe
+}; // end of module world
