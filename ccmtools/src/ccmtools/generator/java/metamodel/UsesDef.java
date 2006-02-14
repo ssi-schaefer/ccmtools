@@ -2,6 +2,8 @@ package ccmtools.generator.java.metamodel;
 
 import java.util.List;
 
+import ccmtools.generator.java.templates.ContextGetConnectionMethodImplementationTemplate;
+import ccmtools.generator.java.templates.UsesEquivalentMethodAdapterTemplate;
 import ccmtools.generator.java.templates.UsesEquivalentMethodDeclarationTemplate;
 import ccmtools.generator.java.templates.UsesEquivalentMethodImplementationTemplate;
 import ccmtools.generator.java.templates.UsesMultipleEquivalentMethodDeclarationTemplate;
@@ -57,10 +59,10 @@ public class UsesDef
 	}
 
 	
-	/**
+	/*************************************************************************
 	 * Java Local Interface Generator
 	 * 
-	 */
+	 *************************************************************************/
 	
 	public String generateUsesEquivalentMethodDeclaration()
 	{
@@ -76,25 +78,48 @@ public class UsesDef
 	
 
 	
-	/**
+	/*************************************************************************
 	 * Java Local Component Generator
 	 * 
-	 */
+	 *************************************************************************/
+	
+	public String generateReceptacleAdapterReference()
+	{
+		return TAB + "private " +  getInterface().getAbsoluteJavaName() + 
+			" " + getIdentifier() + "Receptacle = null;";
+	}
+	
+	public String generateContextGetConnectionMethodDeclaration()
+	{
+		return TAB + getInterface().getAbsoluteJavaName() + 
+				" get_connection_" + getIdentifier() + "()\n" + 
+				TAB + "throws ccm.local.Components.NoConnection;";
+	}
+	
+	public String generateContextGetConnectionMethodImplementation()
+	{
+		return new ContextGetConnectionMethodImplementationTemplate().generate(this);
+	}
 	
 	public String generateUsesEquivalentMethodAdapter()
 	{
-		
-		return "";
+		if(isMultiple())
+		{
+			//return new UsesMultipleEquivalentMethodAdapterTemplate().generate(this);
+			return null;
+		}
+		else
+		{
+			return new UsesEquivalentMethodAdapterTemplate().generate(this);			
+		}
 	}
+		
 	
 	
-	
-	
-	
-	/**
+	/*************************************************************************
 	 * Java Local Implementation Generator
 	 * 
-	 */
+	 *************************************************************************/
 		
 	public String generateLocalReceptacleAdapterDeclaration()
 	{

@@ -22,10 +22,16 @@ public class CcmComponentImplementationTemplate
   protected final String TEXT_5 = "Impl " + NL + "    implements ";
   protected final String TEXT_6 = NL + "{" + NL + "    public ";
   protected final String TEXT_7 = "_Context ctx;" + NL + "    " + NL + "    public ";
-  protected final String TEXT_8 = "Impl()" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL;
-  protected final String TEXT_9 = NL;
-  protected final String TEXT_10 = "    " + NL + "" + NL + "    public void set_session_context(ccm.local.Components.SessionContext ctx) " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        this.ctx = (";
-  protected final String TEXT_11 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "}";
+  protected final String TEXT_8 = "Impl()" + NL + "    {" + NL + "    \tSystem.out.println(\"+";
+  protected final String TEXT_9 = "Impl.";
+  protected final String TEXT_10 = "Impl()\");" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL;
+  protected final String TEXT_11 = NL;
+  protected final String TEXT_12 = "    " + NL + "" + NL + "    public void set_session_context(ccm.local.Components.SessionContext ctx) " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        System.out.println(\" ";
+  protected final String TEXT_13 = "Impl.set_session_context()\");" + NL + "        this.ctx = (";
+  protected final String TEXT_14 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        System.out.println(\" ";
+  protected final String TEXT_15 = "Impl.ccm_activate()\");" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        System.out.println(\" ";
+  protected final String TEXT_16 = "Impl.ccm_passivate()\");" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        System.out.println(\" ";
+  protected final String TEXT_17 = "Impl.ccm_remove()\");" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "}";
 
   public String generate(Object argument)
   {
@@ -46,19 +52,31 @@ public class CcmComponentImplementationTemplate
     stringBuffer.append(TEXT_7);
     stringBuffer.append(component.getIdentifier());
     stringBuffer.append(TEXT_8);
+    stringBuffer.append(component.getIdentifier());
+    stringBuffer.append(TEXT_9);
+    stringBuffer.append(component.getIdentifier());
+    stringBuffer.append(TEXT_10);
     
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 
-    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_11);
     stringBuffer.append(provides.generateCcmProvidesGetImplementation());
     
 }
 
-    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_12);
+    stringBuffer.append(component.getIdentifier());
+    stringBuffer.append(TEXT_13);
     stringBuffer.append(component.getAbsoluteJavaCcmName());
-    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_14);
+    stringBuffer.append(component.getIdentifier());
+    stringBuffer.append(TEXT_15);
+    stringBuffer.append(component.getIdentifier());
+    stringBuffer.append(TEXT_16);
+    stringBuffer.append(component.getIdentifier());
+    stringBuffer.append(TEXT_17);
     return stringBuffer.toString();
   }
 }

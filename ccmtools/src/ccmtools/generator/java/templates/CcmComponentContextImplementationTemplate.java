@@ -22,7 +22,11 @@ public class CcmComponentContextImplementationTemplate
   protected final String TEXT_5 = "_Context" + NL + "{" + NL + "    private ";
   protected final String TEXT_6 = " component;" + NL + "    " + NL + "    public ";
   protected final String TEXT_7 = "_ContextImpl(";
-  protected final String TEXT_8 = " component)" + NL + "    {" + NL + "        this.component = component;" + NL + "    }" + NL + "    " + NL + "    /** Receptacle access methods */" + NL + "    " + NL + "    " + NL + "    " + NL + "    " + NL + "    /** CCMContext methods */" + NL + "\t    " + NL + "    public ccm.local.Components.HomeExecutorBase get_CCM_home()" + NL + "    {" + NL + "        throw new RuntimeException(\"Not implemented!\");" + NL + "    }" + NL + "" + NL + "" + NL + "    /** SessionContext methods */" + NL + "    " + NL + "    public Object get_CCM_object()" + NL + "        throws ccm.local.Components.IllegalState" + NL + "    {" + NL + "        throw new RuntimeException(\"Not implemented!\");" + NL + "    }" + NL + "}";
+  protected final String TEXT_8 = " component)" + NL + "    {" + NL + "        System.out.println(\"+";
+  protected final String TEXT_9 = "_ContextImpl.";
+  protected final String TEXT_10 = "_ContextImpl()\");" + NL + "        this.component = component;" + NL + "    }" + NL + "    " + NL + "    /** Receptacle access methods */";
+  protected final String TEXT_11 = NL;
+  protected final String TEXT_12 = "      " + NL + "    " + NL + "    " + NL + "    /** CCMContext methods */" + NL + "\t    " + NL + "    public ccm.local.Components.HomeExecutorBase get_CCM_home()" + NL + "    {" + NL + "        throw new RuntimeException(\"Not implemented!\");" + NL + "    }" + NL + "" + NL + "" + NL + "    /** SessionContext methods */" + NL + "    " + NL + "    public Object get_CCM_object()" + NL + "        throws ccm.local.Components.IllegalState" + NL + "    {" + NL + "        throw new RuntimeException(\"Not implemented!\");" + NL + "    }" + NL + "}";
 
   public String generate(Object argument)
   {
@@ -43,6 +47,21 @@ public class CcmComponentContextImplementationTemplate
     stringBuffer.append(TEXT_7);
     stringBuffer.append(component.getIdentifier());
     stringBuffer.append(TEXT_8);
+    stringBuffer.append(component.getCcmIdentifier());
+    stringBuffer.append(TEXT_9);
+    stringBuffer.append(component.getCcmIdentifier());
+    stringBuffer.append(TEXT_10);
+    
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+
+    stringBuffer.append(TEXT_11);
+    stringBuffer.append(uses.generateContextGetConnectionMethodImplementation());
+    
+}
+
+    stringBuffer.append(TEXT_12);
     return stringBuffer.toString();
   }
 }

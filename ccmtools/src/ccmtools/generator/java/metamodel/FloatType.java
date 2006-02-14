@@ -28,6 +28,6 @@ public class FloatType
 	
 	public String generateJavaDefaultReturnValue()
 	{
-		return "0.0";		
+		return "0.0F";		
 	}
 }

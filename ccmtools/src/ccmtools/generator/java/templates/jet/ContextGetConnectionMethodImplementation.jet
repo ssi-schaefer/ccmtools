@@ -1,0 +1,12 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="ContextGetConnectionMethodImplementationTemplate" 
+		imports="java.util.Iterator ccmtools.generator.java.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument; %>
+
+    public <%=uses.getInterface().getAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>()
+        throws ccm.local.Components.NoConnection
+    {
+        System.out.println(" <%=uses.getComponent().getCcmIdentifier()%>_ContextImpl.get_connection_<%=uses.getIdentifier()%>()");
+        return component.get_connection_<%=uses.getIdentifier()%>();
+    }

@@ -29,7 +29,17 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 }
 %>  
 	
-	
+    /** Receptacle references */
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+%>
+<%=uses.generateReceptacleAdapterReference()%>
+<%
+}
+%>  
+		
     protected <%=component.getIdentifier()%>Adapter()
     {
     }
@@ -59,8 +69,7 @@ for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 }
 %>    
 
-    /** Facet equivalent methods */
-    
+    /** Facet equivalent methods */    
 <%
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {

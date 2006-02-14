@@ -1,0 +1,39 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="UsesEquivalentMethodAdapterTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument;  %>
+
+    public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().getAbsoluteJavaName()%> localObj)
+        throws ccm.local.Components.AlreadyConnected, 
+               ccm.local.Components.InvalidConnection
+    {
+        if(<%=uses.getIdentifier()%>Receptacle != null)
+        {
+            throw new ccm.local.Components.AlreadyConnected();
+        }	
+        else
+        {
+            <%=uses.getIdentifier()%>Receptacle = localObj;
+        }
+    }
+
+    public <%=uses.getInterface().getAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
+        throws ccm.local.Components.NoConnection
+    {
+        if(<%=uses.getIdentifier()%>Receptacle == null)
+        {
+            throw new ccm.local.Components.NoConnection();
+        }
+        else
+        {
+            <%=uses.getInterface().getAbsoluteJavaName()%> f = <%=uses.getIdentifier()%>Receptacle;
+            <%=uses.getIdentifier()%>Receptacle = null;
+            return f;
+        }
+    }
+        
+    public <%=uses.getInterface().getAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>()
+    {
+        return <%=uses.getIdentifier()%>Receptacle;
+    }

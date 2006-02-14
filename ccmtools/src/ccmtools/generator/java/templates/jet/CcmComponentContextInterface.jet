@@ -14,5 +14,14 @@ package <%=component.getJavaNamespace()%>;
 public interface <%=component.getCcmIdentifier()%>_Context 
     extends ccm.local.Components.SessionContext
 {
-
+    /** Receptacle access methods */
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+%>
+<%=uses.generateContextGetConnectionMethodDeclaration()%>
+<%
+}
+%>     
 }

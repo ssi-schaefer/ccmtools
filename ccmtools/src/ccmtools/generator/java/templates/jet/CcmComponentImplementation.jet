@@ -34,6 +34,7 @@ public class <%=component.getIdentifier()%>Impl
     
     public <%=component.getIdentifier()%>Impl()
     {
+    	System.out.println("+<%=component.getIdentifier()%>Impl.<%=component.getIdentifier()%>Impl()");
         // OPTIONAL: IMPLEMENT ME HERE !
     }
 
@@ -50,24 +51,28 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     public void set_session_context(ccm.local.Components.SessionContext ctx) 
         throws ccm.local.Components.CCMException
     {
+        System.out.println(" <%=component.getIdentifier()%>Impl.set_session_context()");
         this.ctx = (<%=component.getAbsoluteJavaCcmName()%>_Context)ctx; 
     }
 
     public void ccm_activate() 
         throws ccm.local.Components.CCMException
     {
+        System.out.println(" <%=component.getIdentifier()%>Impl.ccm_activate()");
         // OPTIONAL: IMPLEMENT ME HERE !
     }
 
     public void ccm_passivate() 
         throws ccm.local.Components.CCMException
     {
+        System.out.println(" <%=component.getIdentifier()%>Impl.ccm_passivate()");
         // OPTIONAL: IMPLEMENT ME HERE !
     }
 
     public void ccm_remove() 
         throws ccm.local.Components.CCMException
     {
+        System.out.println(" <%=component.getIdentifier()%>Impl.ccm_remove()");
         // OPTIONAL: IMPLEMENT ME HERE !
     }
 }

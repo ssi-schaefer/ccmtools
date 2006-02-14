@@ -18,12 +18,20 @@ public class <%=component.getCcmIdentifier()%>_ContextImpl
     
     public <%=component.getCcmIdentifier()%>_ContextImpl(<%=component.getIdentifier()%> component)
     {
+        System.out.println("+<%=component.getCcmIdentifier()%>_ContextImpl.<%=component.getCcmIdentifier()%>_ContextImpl()");
         this.component = component;
     }
     
     /** Receptacle access methods */
-    
-    
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+%>
+<%=uses.generateContextGetConnectionMethodImplementation()%>
+<%
+}
+%>      
     
     
     /** CCMContext methods */
