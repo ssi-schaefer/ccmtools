@@ -23,7 +23,6 @@ stubs: idl3
 	ccmtools idl2 -o ${DEST_DIR}/idl2 ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCM_INSTALL}/include -I${IDL2_DIR} ${IDL2_DIR}/*.idl
 
-
 check: 
 	cp impl/voidTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/basicTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
