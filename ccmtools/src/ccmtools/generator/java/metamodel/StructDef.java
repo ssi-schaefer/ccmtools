@@ -26,7 +26,7 @@ public class StructDef
 	
 	public String generateJavaMapping()
 	{
-		return getAbsoluteIdlName();
+		return generateAbsoluteIdlName();
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -38,7 +38,7 @@ public class StructDef
 		}
 		else
 		{
-			return getAbsoluteIdlName() + "Holder";
+			return generateAbsoluteIdlName() + "Holder";
 		}	
 	}
 	

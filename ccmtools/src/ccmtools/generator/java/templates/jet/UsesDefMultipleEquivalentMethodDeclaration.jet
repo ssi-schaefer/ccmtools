@@ -1,0 +1,14 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="UsesDefMultipleEquivalentMethodDeclarationTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument;  %>
+
+    ccm.local.Components.Cookie connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> localObj)
+        throws ccm.local.Components.ExceededConnectionLimit, 
+               ccm.local.Components.InvalidConnection;
+
+    <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(ccm.local.Components.Cookie ck)
+        throws ccm.local.Components.InvalidConnection;
+        
+    <%=uses.getInterface().generateAbsoluteJavaName()%>[] get_connections_<%=uses.getIdentifier()%>();

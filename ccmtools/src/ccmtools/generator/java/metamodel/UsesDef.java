@@ -3,14 +3,14 @@ package ccmtools.generator.java.metamodel;
 import java.util.List;
 
 import ccmtools.generator.java.templates.ContextGetConnectionMethodImplementationTemplate;
-import ccmtools.generator.java.templates.UsesEquivalentMethodAdapterTemplate;
-import ccmtools.generator.java.templates.UsesEquivalentMethodDeclarationTemplate;
-import ccmtools.generator.java.templates.UsesEquivalentMethodImplementationTemplate;
-import ccmtools.generator.java.templates.UsesMultipleEquivalentMethodDeclarationTemplate;
-import ccmtools.generator.java.templates.UsesMultipleEquivalentMethodImplementationTemplate;
-import ccmtools.generator.java.templates.UsesMultipleReceptacleDisconnectMethodImplementationTemplate;
-import ccmtools.generator.java.templates.UsesReceptacleConnectMethodImplementationTemplate;
-import ccmtools.generator.java.templates.UsesReceptacleDisconnectMethodImplementationTemplate;
+import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterLocalTemplate;
+import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.UsesDefEquivalentMethodDeclarationTemplate;
+import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodDeclarationTemplate;
+import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.UsesDefReceptacleConnectMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.UsesDefReceptacleDisconnectMethodAdapterToCorbaTemplate;
 
 public class UsesDef
 	extends ModelElement
@@ -60,38 +60,38 @@ public class UsesDef
 
 	
 	/*************************************************************************
-	 * Java Local Interface Generator
+	 * Local Interface Generator
 	 * 
 	 *************************************************************************/
 	
-	public String generateUsesEquivalentMethodDeclaration()
+	public String generateUsesDefEquivalentMethodDeclaration()
 	{
 		if(isMultiple())
 		{
-			return new UsesMultipleEquivalentMethodDeclarationTemplate().generate(this);
+			return new UsesDefMultipleEquivalentMethodDeclarationTemplate().generate(this);
 		}
 		else
 		{
-			return new UsesEquivalentMethodDeclarationTemplate().generate(this);			
+			return new UsesDefEquivalentMethodDeclarationTemplate().generate(this);			
 		}
 	}
 	
 
 	
 	/*************************************************************************
-	 * Java Local Component Generator
+	 * Local Component Generator
 	 * 
 	 *************************************************************************/
 	
 	public String generateReceptacleAdapterReference()
 	{
-		return TAB + "private " +  getInterface().getAbsoluteJavaName() + 
+		return TAB + "private " +  getInterface().generateAbsoluteJavaName() + 
 			" " + getIdentifier() + "Receptacle = null;";
 	}
 	
 	public String generateContextGetConnectionMethodDeclaration()
 	{
-		return TAB + getInterface().getAbsoluteJavaName() + 
+		return TAB + getInterface().generateAbsoluteJavaName() + 
 				" get_connection_" + getIdentifier() + "()\n" + 
 				TAB + "throws ccm.local.Components.NoConnection;";
 	}
@@ -101,7 +101,7 @@ public class UsesDef
 		return new ContextGetConnectionMethodImplementationTemplate().generate(this);
 	}
 	
-	public String generateUsesEquivalentMethodAdapter()
+	public String generateUsesDefEquivalentMethodAdapterLocal()
 	{
 		if(isMultiple())
 		{
@@ -110,54 +110,50 @@ public class UsesDef
 		}
 		else
 		{
-			return new UsesEquivalentMethodAdapterTemplate().generate(this);			
+			return new UsesDefEquivalentMethodAdapterLocalTemplate().generate(this);			
 		}
 	}
-		
 	
+		
 	
 	/*************************************************************************
-	 * Java Local Implementation Generator
+	 * Client Library Generator
 	 * 
 	 *************************************************************************/
-		
-	public String generateLocalReceptacleAdapterDeclaration()
+
+	public String generateReceptacleReferenceAdapterToCorba()
 	{
-		return TAB + "private " + getInterface().getAbsoluteJavaName() + " " + getIdentifier() + ";\n";
+		return TAB + "private " + getInterface().generateAbsoluteJavaName() + 
+				" " + getIdentifier() + ";\n";
 	}
-	
-	public String generateUsesEquivalentMethodImplementation()
+
+	public String generateUsesDefEquivalentMethodAdapterToCorba()
 	{		
 		if(isMultiple())
 		{
-			return new UsesMultipleEquivalentMethodImplementationTemplate().generate(this);
+			return new UsesDefMultipleEquivalentMethodAdapterToCorbaTemplate().generate(this);
 		}
 		else
 		{
-			return new UsesEquivalentMethodImplementationTemplate().generate(this);
+			return new UsesDefEquivalentMethodAdapterToCorbaTemplate().generate(this);
 		}
-	}
-	
-	public String generateUsesReceptacleConnectMethodImplementation()
+	}	
+
+	public String generateUsesDefReceptacleConnectMethodAdapterToCorba()
 	{
-		return new UsesReceptacleConnectMethodImplementationTemplate().generate(this);
+		return new UsesDefReceptacleConnectMethodAdapterToCorbaTemplate().generate(this);
 	}
 	
-	public String generateUsesReceptacleDisconnectMethodImplementation()
+	public String generateUsesDefReceptacleDisconnectMethodAdapterToCorba()
 	{
 		if(isMultiple())
 		{
-			return new UsesMultipleReceptacleDisconnectMethodImplementationTemplate().generate(this);
+			return new UsesDefMultipleReceptacleDisconnectMethodAdapterToCorbaTemplate().generate(this);
 		}
 		else
 		{
-			return new UsesReceptacleDisconnectMethodImplementationTemplate().generate(this);			
+			return new UsesDefReceptacleDisconnectMethodAdapterToCorbaTemplate().generate(this);			
 		}
 	}
-	
-	
-	/**
-	 * Java Client Library Generator
-	 * 
-	 */
+
 }

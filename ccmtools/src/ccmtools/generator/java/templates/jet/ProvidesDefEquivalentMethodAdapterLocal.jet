@@ -1,0 +1,16 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="ProvidesDefEquivalentMethodAdapterLocalTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% ProvidesDef provides = (ProvidesDef) argument;  %>
+
+    public <%=provides.getInterface().generateAbsoluteJavaName()%> provide_<%=provides.getIdentifier()%>()
+    {
+        System.out.println(" <%=provides.getComponent().getIdentifier()%>Adapter.provide_<%=provides.getIdentifier()%>()");
+        if(<%=provides.getIdentifier()%>FacetAdapter == null)
+        {
+            <%=provides.getIdentifier()%>FacetAdapter = 
+                new <%=provides.getInterface().generateAbsoluteJavaName()%>Adapter(localInterface.get_<%=provides.getIdentifier()%>());
+        }
+        return <%=provides.getIdentifier()%>FacetAdapter;
+    }

@@ -57,7 +57,7 @@ public class SequenceDef
 		}
 		else
 		{
-			return getAbsoluteIdlName() + "Holder";
+			return generateAbsoluteIdlName() + "Holder";
 		}	
 	}
 	

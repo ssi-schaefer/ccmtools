@@ -3,6 +3,11 @@ package ccmtools.generator.java.metamodel;
 public class IntegerType
 	implements Type
 {
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
@@ -25,6 +30,12 @@ public class IntegerType
 			return "org.omg.CORBA.IntHolder";
 		}
 	}
+	
+	
+	/*************************************************************************
+	 * Implementation Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

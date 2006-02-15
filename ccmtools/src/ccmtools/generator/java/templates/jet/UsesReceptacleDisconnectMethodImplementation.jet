@@ -1,9 +1,0 @@
-<%@ jet package="ccmtools.generator.java.templates" 
-	    class="UsesReceptacleDisconnectMethodImplementationTemplate" 
-		imports="ccmtools.generator.java.metamodel.* "	    
-%>
-<% UsesDef uses = (UsesDef) argument;  %>
-        else if(name.equals("<%=uses.getIdentifier()%>"))
-        {
-            disconnect_<%=uses.getIdentifier()%>();
-        }

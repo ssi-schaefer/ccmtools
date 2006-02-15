@@ -5,7 +5,6 @@ import java.util.List;
 
 public class ExceptionDef
 	extends ModelElement
-	implements Type
 {
 	List parameter = new ArrayList();
 
@@ -21,28 +20,22 @@ public class ExceptionDef
 	}
 	
 	
-	public String generateJavaConstant(Object value)
-	{
-		return "";
-	}
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaMapping()
 	{
-		return getAbsoluteIdlName();
+		return generateAbsoluteIdlName();
 	}
 	
-	public String generateJavaMapping(PassingDirection direction)
-	{
-		if(direction == PassingDirection.IN
-			|| direction == PassingDirection.RESULT)
-		{
-			return generateJavaMapping();
-		}
-		else
-		{
-			return getAbsoluteIdlName() + "Holder";
-		}	
-	}
+	
+	
+	/*************************************************************************
+	 * Implementation Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

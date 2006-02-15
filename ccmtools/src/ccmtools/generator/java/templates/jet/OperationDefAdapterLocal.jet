@@ -1,0 +1,12 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="OperationDefAdapterLocalTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% OperationDef op = (OperationDef) argument;  %>
+
+    public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%>(<%=op.generateOperationParameterDeclarationList()%>) 
+        <%=op.generateThrows()%> 
+    {
+        System.out.println("  <%=op.getIdentifier()%>() Adapter");
+        <%=op.generateOperationReturnStatement()%> localInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
+    }

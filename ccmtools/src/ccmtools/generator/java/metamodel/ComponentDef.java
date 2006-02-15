@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import ccmtools.generator.java.templates.CcmComponentAdapterTemplate;
-import ccmtools.generator.java.templates.CcmComponentContextImplementationTemplate;
-import ccmtools.generator.java.templates.CcmComponentContextInterfaceTemplate;
-import ccmtools.generator.java.templates.CcmComponentDeclarationTemplate;
-import ccmtools.generator.java.templates.CcmComponentImplementationTemplate;
-import ccmtools.generator.java.templates.ComponentAdapterToCorbaTemplate;
-import ccmtools.generator.java.templates.ComponentDeclarationTemplate;
+import ccmtools.generator.java.templates.ComponentDefAdapterLocalTemplate;
+import ccmtools.generator.java.templates.ComponentDefAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.ComponentDefApplicationClassTemplate;
+import ccmtools.generator.java.templates.ComponentDefApplicationInterfaceTemplate;
+import ccmtools.generator.java.templates.ComponentDefInterfaceTemplate;
+import ccmtools.generator.java.templates.ContextClassTemplate;
+import ccmtools.generator.java.templates.ContextInterfaceTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -64,16 +64,16 @@ public class ComponentDef
 	
 	
 	
-	/**
-	 * Java Local Interface Generator
+	/*************************************************************************
+	 * Local Interface Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
 
-	public String generateComponentDeclaration()
+	public String generateComponentInterface()
 	{
-		return new ComponentDeclarationTemplate().generate(this);
+		return new ComponentDefInterfaceTemplate().generate(this);
 	}
 	
 	public String generateSupportsDeclarations()
@@ -82,7 +82,7 @@ public class ComponentDef
 		for(Iterator i=getSupports().iterator(); i.hasNext();)
 		{
 			SupportsDef s = (SupportsDef)i.next();
-			supportsList.add(s.getInterface().getAbsoluteJavaName());
+			supportsList.add(s.getInterface().generateAbsoluteJavaName());
 		}
 		if(supportsList.size() > 0)
 		{
@@ -103,7 +103,7 @@ public class ComponentDef
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList()); 
 	
 		SourceFile componentDeclaration = 
-			new SourceFile(localPackageName, getIdentifier() + ".java", generateComponentDeclaration());
+			new SourceFile(localPackageName, getIdentifier() + ".java", generateComponentInterface());
 		
 		sourceFileList.add(componentDeclaration);
 		return sourceFileList;
@@ -112,31 +112,31 @@ public class ComponentDef
 	
 	
 	
-	/**
-	 * Java Local Component Generator
+	/*************************************************************************
+	 * Local Component Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateCcmComponentDeclaration()
+	public String generateComponentDefApplicationInterface()
 	{
-		return new CcmComponentDeclarationTemplate().generate(this);
+		return new ComponentDefApplicationInterfaceTemplate().generate(this);
 	}	
 		
-	public String generateCcmComponentContextInterface()
+	public String generateContextInterface()
 	{
-		return new CcmComponentContextInterfaceTemplate().generate(this);
+		return new ContextInterfaceTemplate().generate(this);
 	}
 	
-	public String generateCcmComponentContextImplementation()
+	public String generateContextClass()
 	{
-		return new CcmComponentContextImplementationTemplate().generate(this);
+		return new ContextClassTemplate().generate(this);
 	}
 	
-	public String generateCcmComponentAdapter()
+	public String generateComponentDefAdapterLocal()
 	{              
-		return new CcmComponentAdapterTemplate().generate(this);
+		return new ComponentDefAdapterLocalTemplate().generate(this);
 	}
 	
 	
@@ -148,17 +148,17 @@ public class ComponentDef
 
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		SourceFile ccmComponentDeclaration = 
-			new SourceFile(localPackageName, getCcmIdentifier() + ".java", generateCcmComponentDeclaration());
+			new SourceFile(localPackageName, generateCcmIdentifier() + ".java", generateComponentDefApplicationInterface());
 		
 		SourceFile ccmComponentContextInterface = 
-			new SourceFile(localPackageName, getCcmIdentifier() + "_Context.java", 
-					generateCcmComponentContextInterface());
+			new SourceFile(localPackageName, generateCcmIdentifier() + "_Context.java", 
+					generateContextInterface());
 		SourceFile ccmComponentContextImpl = 
-			new SourceFile(localPackageName, getCcmIdentifier() + "_ContextImpl.java", 
-					generateCcmComponentContextImplementation());
+			new SourceFile(localPackageName, generateCcmIdentifier() + "_ContextImpl.java", 
+					generateContextClass());
 		
 		SourceFile ccmComponentAdapter = 
-			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateCcmComponentAdapter());
+			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateComponentDefAdapterLocal());
 	
 		sourceFileList.add(ccmComponentDeclaration);
 		sourceFileList.add(ccmComponentContextInterface);
@@ -169,16 +169,16 @@ public class ComponentDef
 	
 	
 	
-	/**
-	 * Java Local Implementation Generator
+	/*************************************************************************
+	 * Implementation Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateCcmComponentImplementation()
+	public String generateComponentDefApplicationClass()
 	{
-		return new CcmComponentImplementationTemplate().generate(this);
+		return new ComponentDefApplicationClassTemplate().generate(this);
 	}	
 	
 	
@@ -190,7 +190,7 @@ public class ComponentDef
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile ccmComponentImplementation = 
-			new SourceFile(localPackageName, getIdentifier() + "Impl.java", generateCcmComponentImplementation());
+			new SourceFile(localPackageName, getIdentifier() + "Impl.java", generateComponentDefApplicationClass());
 		
 		sourceFileList.add(ccmComponentImplementation);
 		return sourceFileList;
@@ -198,16 +198,16 @@ public class ComponentDef
 	
 	
 	
-	/**
-	 * Java Client Library Generator
+	/*************************************************************************
+	 * Client Library Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------	
 
-	public String generateComponentAdapterToCorba()
+	public String generateComponentDefAdapterToCorba()
 	{
-		return new ComponentAdapterToCorbaTemplate().generate(this);
+		return new ComponentDefAdapterToCorbaTemplate().generate(this);
 	}
 	
 	
@@ -219,7 +219,7 @@ public class ComponentDef
 
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList()); 
 		SourceFile componentAdapterToCorba = 
-			new SourceFile(remotePackageName, getIdentifier() + "AdapterToCorba.java",generateComponentAdapterToCorba());
+			new SourceFile(remotePackageName, getIdentifier() + "AdapterToCorba.java",generateComponentDefAdapterToCorba());
 		
 		sourceFileList.add(componentAdapterToCorba);
 		return sourceFileList;

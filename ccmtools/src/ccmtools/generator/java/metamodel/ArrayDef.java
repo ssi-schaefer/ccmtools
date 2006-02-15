@@ -11,17 +11,22 @@ public class ArrayDef
 		super(identifier, namespace);
 	}
 
-	public String generateJavaMapping()
-	{
-		return getAbsoluteIdlName();
-	}
 	
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
 	}
 		
+	public String generateJavaMapping()
+	{
+		return generateAbsoluteIdlName();
+	}
+	
 	public String generateJavaMapping(PassingDirection direction)
 	{
 		if(direction == PassingDirection.IN
@@ -31,9 +36,16 @@ public class ArrayDef
 		}
 		else
 		{
-			return getAbsoluteIdlName() + "Holder";
+			return generateAbsoluteIdlName() + "Holder";
 		}	
 	}
+	
+	
+	
+	/*************************************************************************
+	 * Implementation Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

@@ -1,0 +1,20 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="OperationDefAdapterToCorbaTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% OperationDef op = (OperationDef) argument;  %>
+
+    /** Business delegate method */
+    public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>) 
+        <%=op.generateThrows()%> 
+    {
+        try
+        {
+            <%=op.generateOperationReturnStatement()%> remoteInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
+        }
+<%=op.generateOperationDefCatchStatementAdapterToCorba()%>
+        catch(java.lang.Exception e)
+        {
+    	    throw new ccm.local.Components.CCMException(e.getMessage());
+        }
+    }

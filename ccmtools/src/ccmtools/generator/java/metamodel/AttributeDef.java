@@ -1,8 +1,8 @@
 package ccmtools.generator.java.metamodel;
 
-import ccmtools.generator.java.templates.AttributeAdapterFromCorbaTemplate;
-import ccmtools.generator.java.templates.AttributeAdapterToCorbaTemplate;
-import ccmtools.generator.java.templates.AttributeDeclarationTemplate;
+import ccmtools.generator.java.templates.AttributeDefAdapterFromCorbaTemplate;
+import ccmtools.generator.java.templates.AttributeDefAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.AttributeDefDeclarationTemplate;
 
 
 public class AttributeDef
@@ -39,45 +39,43 @@ public class AttributeDef
 	}
 	
 	
-	/**
-	 * Java Local Interface Generator
+	/*************************************************************************
+	 * Local Interface Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
-	public String generateAttributeDeclaration()
+	public String generateAttributeDefDeclaration()
 	{
-		return new AttributeDeclarationTemplate().generate(this);
+		return new AttributeDefDeclarationTemplate().generate(this);
 	}
 
 	
 	
-	/**
-	 * Java Local Component Generator
+	/*************************************************************************
+	 * Local Component Generator
 	 * 
-	 */
+	 *************************************************************************/
 	
 	public String generateAttributeAdapter()
 	{
-		//return new AttributeAdapterTemplate().generate(this);
+		//return new AttributeDefAdapterLocalTemplate().generate(this);
 		return "";
 	}
 	
 	
 	
-	
-	
-	/**
-	 * Java Client Library Generator
+	/*************************************************************************
+	 * Client Library Generator
 	 * 
-	 */
+	 *************************************************************************/
 	
-	public String generateAttributeAdapterFromCorba()
+	public String generateAttributeDefAdapterFromCorba()
 	{
-		return new AttributeAdapterFromCorbaTemplate().generate(this);
+		return new AttributeDefAdapterFromCorbaTemplate().generate(this);
 	}
 	
-	public String generateAttributeAdapterToCorba()
+	public String generateAttributeDefAdapterToCorba()
 	{
-		return new AttributeAdapterToCorbaTemplate().generate(this);
+		return new AttributeDefAdapterToCorbaTemplate().generate(this);
 	}
 }

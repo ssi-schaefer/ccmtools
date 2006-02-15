@@ -3,6 +3,11 @@ package ccmtools.generator.java.metamodel;
 public class DoubleType
 	implements Type
 {
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
@@ -26,8 +31,15 @@ public class DoubleType
 		}
 	}
 	
+	
+	
+	/*************************************************************************
+	 * Implementation Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaDefaultReturnValue()
 	{
-		return "0.0";		
+		return "0.0D";		
 	}
 }

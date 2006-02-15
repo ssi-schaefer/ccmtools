@@ -1,0 +1,42 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="UsesDefEquivalentMethodAdapterLocalTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument;  %>
+
+    public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> localObj)
+        throws ccm.local.Components.AlreadyConnected, 
+               ccm.local.Components.InvalidConnection
+    {
+        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter.connect_<%=uses.getIdentifier()%>()");
+        if(<%=uses.getIdentifier()%>Receptacle != null)
+        {
+            throw new ccm.local.Components.AlreadyConnected();
+        }	
+        else
+        {
+            <%=uses.getIdentifier()%>Receptacle = localObj;
+        }
+    }
+
+    public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
+        throws ccm.local.Components.NoConnection
+    {
+        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter.disconnect_<%=uses.getIdentifier()%>()");
+        if(<%=uses.getIdentifier()%>Receptacle == null)
+        {
+            throw new ccm.local.Components.NoConnection();
+        }
+        else
+        {
+            <%=uses.getInterface().generateAbsoluteJavaName()%> f = <%=uses.getIdentifier()%>Receptacle;
+            <%=uses.getIdentifier()%>Receptacle = null;
+            return f;
+        }
+    }
+        
+    public <%=uses.getInterface().generateAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>()
+    {
+        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter. get_connection_<%=uses.getIdentifier()%>()");
+        return <%=uses.getIdentifier()%>Receptacle;
+    }

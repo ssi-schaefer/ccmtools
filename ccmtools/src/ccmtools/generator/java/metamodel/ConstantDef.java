@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccmtools.generator.java.templates.ConstantDeclarationTemplate;
-import ccmtools.generator.java.templates.GlobalConstantDeclarationTemplate;
+import ccmtools.generator.java.templates.ConstantImplementationGlobalTemplate;
+import ccmtools.generator.java.templates.ConstantImplementationTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -42,15 +42,16 @@ public class ConstantDef
 	
 	
 	
-	/**
-	 * Java Local Interface Generator
+	/*************************************************************************
+	 * Local Interface Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Generator methods ------------------------------------------------------
-	public String generateConstantDeclaration()
+
+	public String generateConstantImplementation()
 	{
-		return new ConstantDeclarationTemplate().generate(this);
+		return new ConstantImplementationTemplate().generate(this);
 	}
 	
 	public String generateConstantValue()
@@ -58,9 +59,9 @@ public class ConstantDef
 		return getType().generateJavaConstant(getValue());
 	}
 	
-	public String generateGlobalConstantDeclaration()
+	public String generateConstantImplementationGlobal()
 	{
-		return new GlobalConstantDeclarationTemplate().generate(this);
+		return new ConstantImplementationGlobalTemplate().generate(this);
 	}
 	
 	
@@ -72,7 +73,7 @@ public class ConstantDef
 		String packages = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile constantDeclaration = 
-			new SourceFile(packages, getIdentifier() + ".java", generateGlobalConstantDeclaration());
+			new SourceFile(packages, getIdentifier() + ".java", generateConstantImplementationGlobal());
 		
 		sourceFileList.add(constantDeclaration);
 		return sourceFileList;

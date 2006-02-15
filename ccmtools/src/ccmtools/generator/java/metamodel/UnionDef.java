@@ -26,7 +26,7 @@ public class UnionDef
 	
 	public String generateJavaMapping()
 	{
-		return getAbsoluteIdlName();
+		return generateAbsoluteIdlName();
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -38,7 +38,7 @@ public class UnionDef
 		}
 		else
 		{
-			return getAbsoluteIdlName() + "Holder";
+			return generateAbsoluteIdlName() + "Holder";
 		}	
 	}
 	

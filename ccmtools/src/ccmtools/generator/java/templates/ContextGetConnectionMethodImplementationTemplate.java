@@ -1,6 +1,5 @@
 package ccmtools.generator.java.templates;
 
-import java.util.Iterator;
 import ccmtools.generator.java.metamodel.*;
 
 public class ContextGetConnectionMethodImplementationTemplate
@@ -28,11 +27,11 @@ public class ContextGetConnectionMethodImplementationTemplate
     StringBuffer stringBuffer = new StringBuffer();
      UsesDef uses = (UsesDef) argument; 
     stringBuffer.append(TEXT_1);
-    stringBuffer.append(uses.getInterface().getAbsoluteJavaName());
+    stringBuffer.append(uses.getInterface().generateAbsoluteJavaName());
     stringBuffer.append(TEXT_2);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append(uses.getComponent().getCcmIdentifier());
+    stringBuffer.append(uses.getComponent().generateCcmIdentifier());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_5);

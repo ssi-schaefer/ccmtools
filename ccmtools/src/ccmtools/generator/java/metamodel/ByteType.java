@@ -2,7 +2,12 @@ package ccmtools.generator.java.metamodel;
 
 public class ByteType
 	implements Type
-{
+{	
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
@@ -26,6 +31,13 @@ public class ByteType
 		}
 	}
 	
+	
+	
+	/*************************************************************************
+	 * Implementation Generator Methods
+	 * 
+	 *************************************************************************/
+		
 	public String generateJavaDefaultReturnValue()
 	{
 		return "0";		

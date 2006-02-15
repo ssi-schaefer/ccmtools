@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import ccmtools.generator.java.templates.CatchStatementFromCorbaTemplate;
-import ccmtools.generator.java.templates.CatchStatementToCorbaTemplate;
-import ccmtools.generator.java.templates.CcmOperationAdapterTemplate;
-import ccmtools.generator.java.templates.CcmOperationImplementationTemplate;
-import ccmtools.generator.java.templates.OperationAdapterFromCorbaTemplate;
-import ccmtools.generator.java.templates.OperationAdapterToCorbaTemplate;
-import ccmtools.generator.java.templates.OperationDeclarationTemplate;
+import ccmtools.generator.java.templates.OperationDefAdapterFromCorbaTemplate;
+import ccmtools.generator.java.templates.OperationDefAdapterLocalTemplate;
+import ccmtools.generator.java.templates.OperationDefAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.OperationDefApplicationImplementationTemplate;
+import ccmtools.generator.java.templates.OperationDefCatchStatementAdapterFromCorbaTemplate;
+import ccmtools.generator.java.templates.OperationDefCatchStatementAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.OperationDefDeclarationTemplate;
 import ccmtools.utils.Text;
 
 public class OperationDef
@@ -58,9 +58,9 @@ public class OperationDef
 	
 	// Code generator methods -------------------------------------------------
 
-	public String generateOperationDeclaration()
+	public String generateOperationDefDeclaration()
 	{
-		return new OperationDeclarationTemplate().generate(this);
+		return new OperationDefDeclarationTemplate().generate(this);
 	}
 		
 	public String generateOperationReturnType()
@@ -135,7 +135,7 @@ public class OperationDef
 			for (Iterator i = getException().iterator(); i.hasNext();)
 			{
 				ExceptionDef e = (ExceptionDef) i.next();
-				exceptionList.add(e.generateJavaMapping(PassingDirection.IN));
+				exceptionList.add(e.generateJavaMapping());
 			}
 			code.append(Text.joinList(", ", exceptionList));
 		}
@@ -152,9 +152,9 @@ public class OperationDef
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateCcmOperationAdapter()
+	public String generateOperationDefAdapterLocal()
 	{              
-		return new CcmOperationAdapterTemplate().generate(this);
+		return new OperationDefAdapterLocalTemplate().generate(this);
 	}
 	
 	
@@ -167,9 +167,9 @@ public class OperationDef
 	
 	// Generator methods ------------------------------------------------------
 		
-	public String generateCcmOperationImplementation()
+	public String generateOperationDefApplicationImplementation()
 	{
-		return new CcmOperationImplementationTemplate().generate(this);
+		return new OperationDefApplicationImplementationTemplate().generate(this);
 	}
 	
 	public String generateCcmDefaultReturnStatement()
@@ -192,14 +192,14 @@ public class OperationDef
 
 	// Code generator methods -------------------------------------------------
 
-	public String generateOperationAdapterFromCorba()
+	public String generateOperationDefAdapterFromCorba()
 	{
-		return new OperationAdapterFromCorbaTemplate().generate(this);
+		return new OperationDefAdapterFromCorbaTemplate().generate(this);
 	}
 	
-	public String generateOperationAdapterToCorba()
+	public String generateOperationDefAdapterToCorba()
 	{
-		return new OperationAdapterToCorbaTemplate().generate(this);
+		return new OperationDefAdapterToCorbaTemplate().generate(this);
 	}
 
 	public String generateThrowsFromCorba()
@@ -212,20 +212,20 @@ public class OperationDef
 			for (Iterator i = getException().iterator(); i.hasNext();)
 			{
 				ExceptionDef e = (ExceptionDef) i.next();
-				exceptionList.add(e.generateJavaMapping(PassingDirection.IN));
+				exceptionList.add(e.generateJavaMapping());
 			}
 			code.append(Text.joinList(", ", exceptionList));
 		}
 		return code.toString();
 	}
 		
-	public String generateCatchStatementToCorba()
+	public String generateOperationDefCatchStatementAdapterToCorba()
 	{
-		return new CatchStatementToCorbaTemplate().generate(this);
+		return new OperationDefCatchStatementAdapterToCorbaTemplate().generate(this);
 	}
 	
-	public String generateCatchStatementFromCorba()
+	public String generateOperationDefCatchStatementAdapterFromCorba()
 	{
-		return new CatchStatementFromCorbaTemplate().generate(this);
+		return new OperationDefCatchStatementAdapterFromCorbaTemplate().generate(this);
 	}
 }

@@ -20,6 +20,11 @@ public class EnumDef
 	}
 
 	
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
@@ -27,7 +32,7 @@ public class EnumDef
 	
 	public String generateJavaMapping()
 	{
-		return getAbsoluteIdlName();
+		return generateAbsoluteIdlName();
 	}
 		
 	public String generateJavaMapping(PassingDirection direction)
@@ -39,9 +44,16 @@ public class EnumDef
 		}
 		else
 		{
-			return getAbsoluteIdlName() + "Holder";
+			return generateAbsoluteIdlName() + "Holder";
 		}	
 	}
+	
+	
+	
+	/*************************************************************************
+	 * Implementation Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

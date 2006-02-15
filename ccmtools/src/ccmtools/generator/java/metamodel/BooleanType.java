@@ -3,6 +3,11 @@ package ccmtools.generator.java.metamodel;
 public class BooleanType
 	implements Type
 {
+	/**
+	 * Java Local Interface Generator
+	 * 
+	 */
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
@@ -25,7 +30,14 @@ public class BooleanType
 			return "org.omg.CORBA.BooleanHolder";
 		}
 	}
+
 	
+	
+	/*************************************************************************
+	 * Implementation Generator Methods
+	 * 
+	 *************************************************************************/
+		
 	public String generateJavaDefaultReturnValue()
 	{
 		return "false";		

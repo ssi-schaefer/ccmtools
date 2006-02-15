@@ -2,7 +2,12 @@ package ccmtools.generator.java.metamodel;
 
 public class AnyType
 	implements Type
-{
+{	
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
@@ -25,6 +30,12 @@ public class AnyType
 			return "org.omg.CORBA.AnyHolder";
 		}
 	}
+	
+	
+	/*************************************************************************
+	 * Implementation Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

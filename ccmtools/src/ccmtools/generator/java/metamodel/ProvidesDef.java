@@ -4,12 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccmtools.generator.java.templates.CcmFacetImplementationTemplate;
-import ccmtools.generator.java.templates.CcmProvidesGetImplementationTemplate;
-import ccmtools.generator.java.templates.ProvidesAdapterNavigationMethodImplementationTemplate;
-import ccmtools.generator.java.templates.ProvidesEquivalentMethodAdapterTemplate;
-import ccmtools.generator.java.templates.ProvidesEquivalentMethodImplementationTemplate;
-import ccmtools.generator.java.templates.ProvidesNavigationMethodImplementationTemplate;
+import ccmtools.generator.java.templates.ProvidesDefApplicationClassTemplate;
+import ccmtools.generator.java.templates.ProvidesDefEquivalentMethodAdapterLocalTemplate;
+import ccmtools.generator.java.templates.ProvidesDefEquivalentMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.ProvidesDefGetMethodImplementationTemplate;
+import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterLocalTemplate;
+import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterToCorbaTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -47,58 +47,62 @@ public class ProvidesDef
 	}
 	
 	
-	/**
-	 * Java Local Interface Generator
+	/*************************************************************************
+	 * Local Interface Generator
 	 * 
-	 */
+	 *************************************************************************/
 	
-
+	public String generateProvidesDefEquivalentMethodDeclaration()
+	{
+		return TAB + getInterface().generateAbsoluteJavaName() + " provide_" + getIdentifier() + "();\n";
+	}
+		
 	
 	
-	/**
-	 * Java Local Component Generator
+	/*************************************************************************
+	 * Local Component Generator
 	 * 
-	 */
+	 *************************************************************************/
 		
 	public String generateFacetAdapterReference()
 	{
-		return TAB + "private " + getInterface().getAbsoluteJavaName() + 
+		return TAB + "private " + getInterface().generateAbsoluteJavaName() + 
 				" " + getIdentifier() + "FacetAdapter;";
 	}
 	
-	public String generateProvidesEquivalentMethodAdapter()
+	public String generateProvidesDefEquivalentMethodAdapterLocal()
 	{
-		return new ProvidesEquivalentMethodAdapterTemplate().generate(this);
+		return new ProvidesDefEquivalentMethodAdapterLocalTemplate().generate(this);
 	}
 	
-	public String generateProvidesAdapterNavigationMethodImplementation()
+	public String generateProvidesDefNavigationMethodAdapterLocal()
 	{		
-		return new ProvidesAdapterNavigationMethodImplementationTemplate().generate(this);
+		return new ProvidesDefNavigationMethodAdapterLocalTemplate().generate(this);
 	}
 	
 	
 	
 	
-	/**
-	 * Java Local Implementation Generator
+	/*************************************************************************
+	 * Local Implementation Generator
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
 
 	public String generateCcmProvidesEquivalentMethodDeclaration()
 	{
-		return TAB + getInterface().getAbsoluteJavaCcmName() + " get_" + getIdentifier() + "();\n";
+		return TAB + getInterface().generateAbsoluteJavaCcmName() + " get_" + getIdentifier() + "();\n";
 	}
 	
-	public String generateCcmProvidesGetImplementation()
+	public String generateProvidesDefGetMethodImplementation()
 	{
-		return new CcmProvidesGetImplementationTemplate().generate(this);
+		return new ProvidesDefGetMethodImplementationTemplate().generate(this);
 	}
 	
-	public String generateCcmFacetImplementation()
+	public String generateProvidesDefApplicationClass()
 	{
-		return new CcmFacetImplementationTemplate().generate(this);
+		return new ProvidesDefApplicationClassTemplate().generate(this);
 	}
 	
 	
@@ -109,39 +113,35 @@ public class ProvidesDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile ccmInterfaceImplementation = 
-			new SourceFile(localPackageName, getIdentifier() + "Impl.java", generateCcmFacetImplementation());
+		String facetName = getComponent().getIdentifier() + getIdentifier();
+		SourceFile ccmFacetImplementation = 
+			new SourceFile(localPackageName, facetName + "Impl.java", generateProvidesDefApplicationClass());
 					
-		sourceFileList.add(ccmInterfaceImplementation);
+		sourceFileList.add(ccmFacetImplementation);
 		return sourceFileList;
 	}	
 	
 	
 	
-	/**
-	 * Java Client Library Generator
+	/*************************************************************************
+	 * Client Library Generator
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------	
 	
-	public String generateProvidesEquivalentMethodDeclaration()
+	public String generateProvidesDefEquivalentMethodAdapterToCorba()
 	{
-		return TAB + getInterface().getAbsoluteJavaName() + " provide_" + getIdentifier() + "();\n";
+		return new ProvidesDefEquivalentMethodAdapterToCorbaTemplate().generate(this);
 	}
 		
-	public String generateProvidesEquivalentMethodImplementation()
-	{
-		return new ProvidesEquivalentMethodImplementationTemplate().generate(this);
-	}
-		
-	public String generateProvidesNavigationMethodImplementation()
+	public String generateProvidesDefNavigationMethodAdapterToCorba()
 	{		
-		return new ProvidesNavigationMethodImplementationTemplate().generate(this);
+		return new ProvidesDefNavigationMethodAdapterToCorbaTemplate().generate(this);
 	}
 	
 	public String generateLocalFacetAdapterDeclaration()
 	{
-		return TAB + "private " + getInterface().getAbsoluteJavaName() + " " + getIdentifier() + ";\n";
+		return TAB + "private " + getInterface().generateAbsoluteJavaName() + " " + getIdentifier() + ";\n";
 	}
 }
