@@ -24,9 +24,9 @@ stubs: idl3
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCM_INSTALL}/include -I${IDL2_DIR} ${IDL2_DIR}/*.idl
 
 check: 
-	cp impl/voidTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
-	cp impl/basicTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
-	cp impl/userTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
+	cp impl/TestvoidTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
+	cp impl/TestbasicTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
+	cp impl/TestuserTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/Client.java ${DEST_DIR}/src/
 	ant -f ./build.xml
 	bin/runClient

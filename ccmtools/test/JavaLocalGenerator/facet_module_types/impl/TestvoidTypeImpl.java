@@ -22,35 +22,37 @@ import ccm.local.Components.*;
  * @author
  * @version
  */
-public class inVoidTypeImpl 
+public class TestvoidTypeImpl 
     implements world.europe.austria.ccm.local.CCM_VoidTypeInterface
 {
     /** Reference to the facet's component implementation */
     private world.europe.austria.ccm.local.TestImpl component;
 
-    public inVoidTypeImpl(world.europe.austria.ccm.local.TestImpl component)
-    {
-        this.component = component;
-    }
 
     // This attribute is accessed by explicite set and get methods
     // which are part of VoidTypeInterface.
     int attr;
 
 
+    public TestvoidTypeImpl(world.europe.austria.ccm.local.TestImpl component)
+    {
+	System.out.println("+TestvoidTypeImpl.TestvoidTypeImpl()");
+        this.component = component;
+    }
+
     /** Business logic implementations */
     
     public void f1(int p1)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inVoidTypeImpl.f1()");
-    	 attr = p1;    	
+	System.out.println(" TestvoidTypeImpl.f1()");
+        attr = p1;	
     }    
 
     public int f2()
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inVoidTypeImpl.f2()");
+	System.out.println(" TestvoidTypeImpl.f1()");
     	return attr;
     }    
 }

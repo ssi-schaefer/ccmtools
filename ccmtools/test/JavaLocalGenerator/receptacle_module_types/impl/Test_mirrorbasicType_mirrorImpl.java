@@ -22,13 +22,13 @@ import ccm.local.Components.*;
  * @author
  * @version
  */
-public class basicTypeImpl 
+public class Test_mirrorbasicType_mirrorImpl 
     implements world.europe.austria.ccm.local.CCM_BasicTypeInterface
 {
     /** Reference to the facet's component implementation */
-    private world.europe.austria.ccm.local.TestImpl component;
+    private world.europe.austria.ccm.local.Test_mirrorImpl component;
 
-    public basicTypeImpl(world.europe.austria.ccm.local.TestImpl component)
+    public Test_mirrorbasicType_mirrorImpl(world.europe.austria.ccm.local.Test_mirrorImpl component)
     {
         this.component = component;
     }
@@ -38,80 +38,91 @@ public class basicTypeImpl
     public short f1(short p1, org.omg.CORBA.ShortHolder p2, org.omg.CORBA.ShortHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return (short)(p3.value + p1);
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f1()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return (short)(p3.value + p1);
     }    
 
     public int f2(int p1, org.omg.CORBA.IntHolder p2, org.omg.CORBA.IntHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return p3.value + p1;
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f2()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return p3.value + p1;
     }    
 
     public short f3(short p1, org.omg.CORBA.ShortHolder p2, org.omg.CORBA.ShortHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return (short)(p3.value + p1);
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f3()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return (short)(p3.value + p1);
     }    
 
     public int f4(int p1, org.omg.CORBA.IntHolder p2, org.omg.CORBA.IntHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return p3.value + p1;
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f4()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return p3.value + p1;
     }    
 
     public float f5(float p1, org.omg.CORBA.FloatHolder p2, org.omg.CORBA.FloatHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return p3.value + p1;
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f5()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return p3.value + p1;
     }    
 
     public double f6(double p1, org.omg.CORBA.DoubleHolder p2, org.omg.CORBA.DoubleHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return p3.value + p1;
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f6()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return p3.value + p1;
     }    
 
     public char f7(char p1, org.omg.CORBA.CharHolder p2, org.omg.CORBA.CharHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return (char)(p3.value + p1);
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f7()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return (char)(p3.value + p1);
     }    
 
     public String f8(String p1, org.omg.CORBA.StringHolder p2, org.omg.CORBA.StringHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return p3.value +p1;
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f8()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return p3.value +p1;
     }    
 
     public boolean f9(boolean p1, org.omg.CORBA.BooleanHolder p2, org.omg.CORBA.BooleanHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return p3.value && p1;
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f9()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return p3.value && p1;
     }    
 
     public byte f10(byte p1, org.omg.CORBA.ByteHolder p2, org.omg.CORBA.ByteHolder p3)
         throws ccm.local.Components.CCMException
     {
-	p3.value = p2.value;
-	p2.value = p1;
-	return (byte)(p3.value + p1);
+	System.out.println(" Test_mirrorbasicType_mirrorImpl.f10()");
+        p3.value = p2.value;
+        p2.value = p1;
+        return (byte)(p3.value + p1);
     }    
+
 }

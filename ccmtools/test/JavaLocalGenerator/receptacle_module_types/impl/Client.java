@@ -10,6 +10,7 @@ public class Client
 	try
 	{
 	    TestHomeDeployer.deploy("TestHome");
+	    TestHome_mirrorDeployer.deploy("TestHomeMirror");
 	}
 	catch(java.lang.Exception e)
 	{
@@ -22,27 +23,32 @@ public class Client
 	{
 	    TestHome home = 
 		(TestHome) ccm.local.HomeFinder.instance().find_home_by_name("TestHome");
-	    
+	    TestHome_mirror mirrorHome =
+                (TestHome_mirror) ccm.local.HomeFinder.instance().find_home_by_name("TestHomeMirror");
+
 	    Test component = home.create();
+	    Test_mirror mirrorComponent = mirrorHome.create();
+ 
+	    VoidTypeInterface  voidType = mirrorComponent.provide_voidType_mirror();
+	    BasicTypeInterface basicType = mirrorComponent.provide_basicType_mirror();
+	    UserTypeInterface  userType = mirrorComponent.provide_userType_mirror();
 
-	    VoidTypeInterface  inVoidType = component.provide_inVoidType();
-	    BasicTypeInterface inBasicType = component.provide_inBasicType();
-	    UserTypeInterface  inUserType = component.provide_inUserType();
+	    component.connect_voidType(voidType);
+	    component.connect_basicType(basicType);
+	    component.connect_userType(userType);
 
-	    component.connect_outVoidType(inVoidType);
-	    component.connect_outBasicType(inBasicType);
-	    component.connect_outUserType(inUserType);
-
+	    mirrorComponent.configuration_complete();
 	    component.configuration_complete();
    
 	    // In this case the component's receptacle calls the 
 	    // component facet.
 
-	    component.disconnect_outVoidType();
-	    component.disconnect_outBasicType();
-	    component.disconnect_outUserType();
+	    component.disconnect_voidType();
+	    component.disconnect_basicType();
+	    component.disconnect_userType();
 
 	    component.remove();
+	    mirrorComponent.remove();
 	}
 	catch (java.lang.Exception e)
 	{
@@ -52,5 +58,6 @@ public class Client
 
 	// Undeploy local Java component
 	TestHomeDeployer.undeploy("TestHome");
+	TestHome_mirrorDeployer.undeploy("TestHomeMirror");
     }
 }

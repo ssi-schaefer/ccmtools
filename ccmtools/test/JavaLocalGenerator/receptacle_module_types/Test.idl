@@ -63,13 +63,9 @@ module world {
       
       component Test
       {
-	provides BasicTypeInterface inBasicType; 
-	provides UserTypeInterface  inUserType;
-	provides VoidTypeInterface  inVoidType;
-	
-	uses BasicTypeInterface outBasicType;
-	uses UserTypeInterface  outUserType;
-	uses VoidTypeInterface  outVoidType;
+	uses BasicTypeInterface basicType;
+	uses UserTypeInterface  userType;
+	uses VoidTypeInterface  voidType;
       };
       
       home TestHome manages Test

@@ -10,6 +10,7 @@ public class Client
 	try
 	{
 	    TestHomeDeployer.deploy("TestHome");
+	    TestHome_mirrorDeployer.deploy("TestHomeMirror");
 	}
 	catch(java.lang.Exception e)
 	{
@@ -22,17 +23,26 @@ public class Client
 	{
 	    TestHome home = 
 		(TestHome) ccm.local.HomeFinder.instance().find_home_by_name("TestHome");
-	    
+	    TestHome_mirror mirrorHome = 
+		(TestHome_mirror) ccm.local.HomeFinder.instance().find_home_by_name("TestHomeMirror");
+
 	    Test component = home.create();
-	    IFace inPort = component.provide_inPort();
-	    component.connect_outPort(inPort);
-	    component.configuration_complete();
-   
+	    Test_mirror mirrorComponent = mirrorHome.create();
+
+	    IFace port = mirrorComponent.provide_port_mirror();
+	    component.connect_port(port);
+
+	    mirrorComponent.configuration_complete();
+	    component.configuration_complete(); // start test cases in ccm_activate()
+
+
 	    // In this case the component's receptacle calls the 
 	    // component facet.
 
-	    component.disconnect_outPort();
+	    component.disconnect_port();
+
 	    component.remove();
+	    mirrorComponent.remove();
 	}
 	catch (java.lang.Exception e)
 	{
@@ -42,5 +52,6 @@ public class Client
 
 	// Undeploy local Java component
 	TestHomeDeployer.undeploy("TestHome");
+	TestHome_mirrorDeployer.undeploy("TestHomeMirror");
     }
 }

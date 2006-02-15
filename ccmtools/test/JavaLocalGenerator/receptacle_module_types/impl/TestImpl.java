@@ -55,24 +55,6 @@ public class TestImpl
     }
 
 
-    public world.europe.austria.ccm.local.CCM_BasicTypeInterface get_inBasicType()
-    {
-        return new world.europe.austria.ccm.local.inBasicTypeImpl(this);
-    }
-
-
-    public world.europe.austria.ccm.local.CCM_UserTypeInterface get_inUserType()
-    {
-        return new world.europe.austria.ccm.local.inUserTypeImpl(this);
-    }
-
-
-    public world.europe.austria.ccm.local.CCM_VoidTypeInterface get_inVoidType()
-    {
-        return new world.europe.austria.ccm.local.inVoidTypeImpl(this);
-    }
-    
-
     public void set_session_context(ccm.local.Components.SessionContext ctx) 
         throws ccm.local.Components.CCMException
     {
@@ -92,7 +74,7 @@ public class TestImpl
 	    /*
 	     * Test VoidTypeInterface facet
 	     */
-	    VoidTypeInterface voidType = ctx.get_connection_outVoidType();
+	    VoidTypeInterface voidType = ctx.get_connection_voidType();
 	    {
 		voidType.f1(7);
 		int result = voidType.f2();
@@ -104,7 +86,7 @@ public class TestImpl
 	    /*
 	     * Test BasicTypeInterface facet
 	     */
-	    BasicTypeInterface basicType = ctx.get_connection_outBasicType();
+	    BasicTypeInterface basicType = ctx.get_connection_basicType();
 	    { // short
 		short p1 = 7;
 		ShortHolder p2 = new ShortHolder((short) 3);
@@ -242,7 +224,7 @@ public class TestImpl
 	    /*
 	     * Test UserTypeInterface facet
 	     */
-	    UserTypeInterface userType = ctx.get_connection_outUserType();
+	    UserTypeInterface userType = ctx.get_connection_userType();
 	    { // enum Color {red, green, blue, black, orange}
 		Color p1 = Color.red;
 		ColorHolder p2 = new ColorHolder(Color.blue);
@@ -389,7 +371,6 @@ public class TestImpl
 		}
 	    }
 
-	    
 	    { // typedef long time_t
 		int p1 = 7;
 		IntHolder p2 = new IntHolder(3);

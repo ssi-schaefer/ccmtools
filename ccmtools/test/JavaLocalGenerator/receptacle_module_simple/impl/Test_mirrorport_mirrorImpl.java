@@ -22,13 +22,13 @@ import ccm.local.Components.*;
  * @author
  * @version
  */
-public class inPortImpl 
+public class Test_mirrorport_mirrorImpl 
     implements world.europe.austria.ccm.local.CCM_IFace
 {
     /** Reference to the facet's component implementation */
-    private world.europe.austria.ccm.local.TestImpl component;
+    private world.europe.austria.ccm.local.Test_mirrorImpl component;
 
-    public inPortImpl(world.europe.austria.ccm.local.TestImpl component)
+    public Test_mirrorport_mirrorImpl(world.europe.austria.ccm.local.Test_mirrorImpl component)
     {
         this.component = component;
     }
@@ -38,7 +38,7 @@ public class inPortImpl
     public int op1(String str)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inPortImpl.op1()");
+	System.out.println(" port_mirrorImpl.op1()");
 	System.out.println("> " + str);
     	
     	return str.length();

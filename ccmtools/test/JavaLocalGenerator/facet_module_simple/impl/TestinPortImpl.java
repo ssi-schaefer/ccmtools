@@ -22,14 +22,15 @@ import ccm.local.Components.*;
  * @author
  * @version
  */
-public class inPortImpl 
+public class TestinPortImpl 
     implements world.ccm.local.CCM_IFace
 {
     /** Reference to the facet's component implementation */
     private world.ccm.local.TestImpl component;
 
-    public inPortImpl(world.ccm.local.TestImpl component)
+    public TestinPortImpl(world.ccm.local.TestImpl component)
     {
+	System.out.println("TestinPortImpl.TestinPortImpl()");
         this.component = component;
     }
 

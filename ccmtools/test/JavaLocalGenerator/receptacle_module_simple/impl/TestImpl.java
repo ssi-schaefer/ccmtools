@@ -33,12 +33,6 @@ public class TestImpl
     }
 
 
-    public world.europe.austria.ccm.local.CCM_IFace get_inPort()
-    {
-        return new world.europe.austria.ccm.local.inPortImpl(this);
-    }
-    
-
     public void set_session_context(ccm.local.Components.SessionContext ctx) 
         throws ccm.local.Components.CCMException
     {
@@ -51,10 +45,11 @@ public class TestImpl
     {
 	System.out.println(" TestImpl.ccm_activate()");
 
+	System.out.println("Begin Test -------");
 	try
 	{
 	    String msg = "0123456789";
-	    int len = ctx.get_connection_outPort().op1(msg);
+	    int len = ctx.get_connection_port().op1(msg);
 	    assert(len == msg.length());
 	}
 	catch(ccm.local.Components.NoConnection e)
@@ -62,6 +57,7 @@ public class TestImpl
 	    e.printStackTrace();
 	    assert(false);
 	}
+	System.out.println("End Test ---------");
     }
 
     public void ccm_passivate() 

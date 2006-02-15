@@ -22,34 +22,35 @@ import ccm.local.Components.*;
  * @author
  * @version
  */
-public class voidTypeImpl 
+public class Test_mirrorvoidType_mirrorImpl 
     implements world.europe.austria.ccm.local.CCM_VoidTypeInterface
 {
     /** Reference to the facet's component implementation */
-    private world.europe.austria.ccm.local.TestImpl component;
+    private world.europe.austria.ccm.local.Test_mirrorImpl component;
 
+    public Test_mirrorvoidType_mirrorImpl(world.europe.austria.ccm.local.Test_mirrorImpl component)
+    {
+        this.component = component;
+    }
 
     // This attribute is accessed by explicite set and get methods
     // which are part of VoidTypeInterface.
     int attr;
 
 
-    public voidTypeImpl(world.europe.austria.ccm.local.TestImpl component)
-    {
-        this.component = component;
-    }
-
     /** Business logic implementations */
     
     public void f1(int p1)
         throws ccm.local.Components.CCMException
     {
-        attr = p1;	
+	System.out.println(" Test_mirrorvoidType_mirrorImpl.f1()");
+    	 attr = p1;    	
     }    
 
     public int f2()
         throws ccm.local.Components.CCMException
     {
+	System.out.println(" Test_mirrorvoidType_mirrorImpl.f2()");
     	return attr;
     }    
 }

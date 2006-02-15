@@ -25,7 +25,7 @@ stubs: idl3
 
 check: 
 	cp impl/Client.java ${DEST_DIR}/src/
-	cp impl/inPortImpl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/TestinPortImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
 	bin/runClient
 

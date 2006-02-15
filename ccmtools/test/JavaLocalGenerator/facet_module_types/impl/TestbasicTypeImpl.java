@@ -22,14 +22,15 @@ import ccm.local.Components.*;
  * @author
  * @version
  */
-public class inBasicTypeImpl 
+public class TestbasicTypeImpl 
     implements world.europe.austria.ccm.local.CCM_BasicTypeInterface
 {
     /** Reference to the facet's component implementation */
     private world.europe.austria.ccm.local.TestImpl component;
 
-    public inBasicTypeImpl(world.europe.austria.ccm.local.TestImpl component)
+    public TestbasicTypeImpl(world.europe.austria.ccm.local.TestImpl component)
     {
+	System.out.println("+TestbasicTypeImpl.TestbasicTypeImpl()");
         this.component = component;
     }
 
@@ -38,91 +39,90 @@ public class inBasicTypeImpl
     public short f1(short p1, org.omg.CORBA.ShortHolder p2, org.omg.CORBA.ShortHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f1()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return (short)(p3.value + p1);
+	System.out.println(" TestbasicTypeImpl.f1()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return (short)(p3.value + p1);
     }    
 
     public int f2(int p1, org.omg.CORBA.IntHolder p2, org.omg.CORBA.IntHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f2()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value + p1;
+	System.out.println(" TestbasicTypeImpl.f2()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return p3.value + p1;
     }    
 
     public short f3(short p1, org.omg.CORBA.ShortHolder p2, org.omg.CORBA.ShortHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f3()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return (short)(p3.value + p1);
+	System.out.println(" TestbasicTypeImpl.f3()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return (short)(p3.value + p1);
     }    
 
     public int f4(int p1, org.omg.CORBA.IntHolder p2, org.omg.CORBA.IntHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f4()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value + p1;
+	System.out.println(" TestbasicTypeImpl.f4()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return p3.value + p1;
     }    
 
     public float f5(float p1, org.omg.CORBA.FloatHolder p2, org.omg.CORBA.FloatHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f5()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value + p1;
+	System.out.println(" TestbasicTypeImpl.f5()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return p3.value + p1;
     }    
 
     public double f6(double p1, org.omg.CORBA.DoubleHolder p2, org.omg.CORBA.DoubleHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f6()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value + p1;
+	System.out.println(" TestbasicTypeImpl.f6()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return p3.value + p1;
     }    
 
     public char f7(char p1, org.omg.CORBA.CharHolder p2, org.omg.CORBA.CharHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f7()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return (char)(p3.value + p1);
+	System.out.println(" TestbasicTypeImpl.f7()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return (char)(p3.value + p1);
     }    
 
     public String f8(String p1, org.omg.CORBA.StringHolder p2, org.omg.CORBA.StringHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f8()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value +p1;
+	System.out.println(" TestbasicTypeImpl.f8()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return p3.value +p1;
     }    
 
     public boolean f9(boolean p1, org.omg.CORBA.BooleanHolder p2, org.omg.CORBA.BooleanHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f9()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value && p1;
+	System.out.println(" TestbasicTypeImpl.f9()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return p3.value && p1;
     }    
 
     public byte f10(byte p1, org.omg.CORBA.ByteHolder p2, org.omg.CORBA.ByteHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" inBasicTypeImpl.f10()");
-        p3.value = p2.value;
-        p2.value = p1;
-        return (byte)(p3.value + p1);
+	System.out.println(" TestbasicTypeImpl.f10()");
+	p3.value = p2.value;
+	p2.value = p1;
+	return (byte)(p3.value + p1);
     }    
-
 }
