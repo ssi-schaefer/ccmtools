@@ -3,6 +3,11 @@ package ccmtools.generator.java.metamodel;
 public class StringType
 	implements Type
 {
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return "\"" + value.toString() + "\"";
@@ -25,6 +30,13 @@ public class StringType
 			return "org.omg.CORBA.StringHolder";
 		}	
 	}
+	
+	
+	
+	/*************************************************************************
+	 * Application Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

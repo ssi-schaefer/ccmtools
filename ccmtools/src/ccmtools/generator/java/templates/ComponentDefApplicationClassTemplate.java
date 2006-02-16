@@ -62,7 +62,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     ProvidesDef provides = (ProvidesDef)i.next();
 
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(provides.generateProvidesDefGetMethodImplementation());
+    stringBuffer.append(provides.generateGetMethodImplementation());
     
 }
 

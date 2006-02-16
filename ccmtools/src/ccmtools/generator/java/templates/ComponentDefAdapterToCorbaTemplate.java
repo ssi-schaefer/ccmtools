@@ -76,7 +76,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_8);
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(provides.generateLocalFacetAdapterDeclaration());
+    stringBuffer.append(provides.generateFacetAdapterDeclaration());
     
 }
 
@@ -108,7 +108,7 @@ for(Iterator i=component.getSupports().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_16);
     stringBuffer.append(TEXT_17);
-    stringBuffer.append(attr.generateAttributeDefAdapterToCorba());
+    stringBuffer.append(attr.generateAdapterToCorba());
     
     }
 }
@@ -125,7 +125,7 @@ for(Iterator i=component.getSupports().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_19);
     stringBuffer.append(TEXT_20);
-    stringBuffer.append(op.generateOperationDefAdapterToCorba());
+    stringBuffer.append(op.generateAdapterToCorba());
     
     }
 } 
@@ -137,7 +137,7 @@ for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
     AttributeDef attr = (AttributeDef)i.next();
 
     stringBuffer.append(TEXT_22);
-    stringBuffer.append(attr.generateAttributeDefAdapterToCorba());
+    stringBuffer.append(attr.generateAdapterToCorba());
     
 }
 
@@ -148,7 +148,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     ProvidesDef provides = (ProvidesDef)i.next();
 
     stringBuffer.append(TEXT_24);
-    stringBuffer.append(provides.generateProvidesDefEquivalentMethodAdapterToCorba());
+    stringBuffer.append(provides.generateEquivalentMethodAdapterToCorba());
     
 }
 
@@ -159,7 +159,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     UsesDef uses = (UsesDef)i.next();
 
     stringBuffer.append(TEXT_26);
-    stringBuffer.append(uses.generateUsesDefEquivalentMethodAdapterToCorba());
+    stringBuffer.append(uses.generateEquivalentMethodAdapterToCorba());
     
 }
 
@@ -171,7 +171,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_28);
     stringBuffer.append(TEXT_29);
-    stringBuffer.append(provides.generateProvidesDefNavigationMethodAdapterToCorba());
+    stringBuffer.append(provides.generateNavigationMethodAdapterToCorba());
     
 }
 
@@ -183,7 +183,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_31);
     stringBuffer.append(TEXT_32);
-    stringBuffer.append(uses.generateUsesDefReceptacleConnectMethodAdapterToCorba());
+    stringBuffer.append(uses.generateReceptacleConnectMethodAdapterToCorba());
     
 }
 
@@ -195,7 +195,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_34);
     stringBuffer.append(TEXT_35);
-    stringBuffer.append(uses.generateUsesDefReceptacleDisconnectMethodAdapterToCorba());
+    stringBuffer.append(uses.generateReceptacleDisconnectMethodAdapterToCorba());
     
 }
 

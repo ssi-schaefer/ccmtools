@@ -34,7 +34,7 @@ public class ByteType
 	
 	
 	/*************************************************************************
-	 * Implementation Generator Methods
+	 * Application Generator Methods
 	 * 
 	 *************************************************************************/
 		

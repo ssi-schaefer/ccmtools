@@ -33,7 +33,7 @@ public class AnyType
 	
 	
 	/*************************************************************************
-	 * Implementation Generator Methods
+	 * Application Generator Methods
 	 * 
 	 *************************************************************************/
 	

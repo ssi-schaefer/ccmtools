@@ -3,11 +3,11 @@
 		imports="ccmtools.generator.java.metamodel.* "	    
 %>
 <% OperationDef op = (OperationDef) argument; %>
-    public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%>(<%=op.generateOperationParameterDeclarationList()%>)
-        <%=op.generateThrows()%>
+    public <%=op.generateReturnType()%> <%=op.getIdentifier()%>(<%=op.generateParameterDeclarationList()%>)
+        <%=op.generateThrowsStatementLocal()%>
     {
         System.out.println("  <%=op.getIdentifier()%>()");
     	// TODO: IMPLEMENT ME HERE !
     	
-    	<%=op.generateCcmDefaultReturnStatement()%>
+    	<%=op.generateDefaultReturnStatement()%>
     }    

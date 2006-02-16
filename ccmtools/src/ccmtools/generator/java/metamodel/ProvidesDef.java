@@ -47,12 +47,13 @@ public class ProvidesDef
 	}
 	
 	
+	
 	/*************************************************************************
 	 * Local Interface Generator
 	 * 
 	 *************************************************************************/
 	
-	public String generateProvidesDefEquivalentMethodDeclaration()
+	public String generateEquivalentMethodDeclaration()
 	{
 		return TAB + getInterface().generateAbsoluteJavaName() + " provide_" + getIdentifier() + "();\n";
 	}
@@ -70,12 +71,12 @@ public class ProvidesDef
 				" " + getIdentifier() + "FacetAdapter;";
 	}
 	
-	public String generateProvidesDefEquivalentMethodAdapterLocal()
+	public String generateEquivalentMethodAdapterLocal()
 	{
 		return new ProvidesDefEquivalentMethodAdapterLocalTemplate().generate(this);
 	}
 	
-	public String generateProvidesDefNavigationMethodAdapterLocal()
+	public String generateNavigationMethodAdapterLocal()
 	{		
 		return new ProvidesDefNavigationMethodAdapterLocalTemplate().generate(this);
 	}
@@ -84,23 +85,23 @@ public class ProvidesDef
 	
 	
 	/*************************************************************************
-	 * Local Implementation Generator
+	 * Application Generator Methods
 	 * 
 	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
 
-	public String generateCcmProvidesEquivalentMethodDeclaration()
+	public String generateEquivalentApplicationMethodDeclaration()
 	{
 		return TAB + getInterface().generateAbsoluteJavaCcmName() + " get_" + getIdentifier() + "();\n";
 	}
 	
-	public String generateProvidesDefGetMethodImplementation()
+	public String generateGetMethodImplementation()
 	{
 		return new ProvidesDefGetMethodImplementationTemplate().generate(this);
 	}
 	
-	public String generateProvidesDefApplicationClass()
+	public String generateApplicationClass()
 	{
 		return new ProvidesDefApplicationClassTemplate().generate(this);
 	}
@@ -108,16 +109,16 @@ public class ProvidesDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalImplementationSourceFiles()
+	public List generateApplicationSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
-		
 		String facetName = getComponent().getIdentifier() + getIdentifier();
-		SourceFile ccmFacetImplementation = 
-			new SourceFile(localPackageName, facetName + "Impl.java", generateProvidesDefApplicationClass());
+		
+		SourceFile applicationClass = 
+			new SourceFile(localPackageName, facetName + "Impl.java", generateApplicationClass());
+		sourceFileList.add(applicationClass);
 					
-		sourceFileList.add(ccmFacetImplementation);
 		return sourceFileList;
 	}	
 	
@@ -130,17 +131,17 @@ public class ProvidesDef
 	
 	// Code generator methods -------------------------------------------------	
 	
-	public String generateProvidesDefEquivalentMethodAdapterToCorba()
+	public String generateEquivalentMethodAdapterToCorba()
 	{
 		return new ProvidesDefEquivalentMethodAdapterToCorbaTemplate().generate(this);
 	}
 		
-	public String generateProvidesDefNavigationMethodAdapterToCorba()
+	public String generateNavigationMethodAdapterToCorba()
 	{		
 		return new ProvidesDefNavigationMethodAdapterToCorbaTemplate().generate(this);
 	}
 	
-	public String generateLocalFacetAdapterDeclaration()
+	public String generateFacetAdapterDeclaration()
 	{
 		return TAB + "private " + getInterface().generateAbsoluteJavaName() + " " + getIdentifier() + ";\n";
 	}

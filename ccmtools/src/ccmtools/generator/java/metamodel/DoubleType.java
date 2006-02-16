@@ -34,7 +34,7 @@ public class DoubleType
 	
 	
 	/*************************************************************************
-	 * Implementation Generator Methods
+	 * Application Generator Methods
 	 * 
 	 *************************************************************************/
 	

@@ -3,13 +3,13 @@ package ccmtools.generator.java.templates;
 import java.util.Iterator;
 import ccmtools.generator.java.metamodel.*;
 
-public class ContextClassTemplate
+public class ComponentDefContextClassTemplate
 {
   protected static String nl;
-  public static synchronized ContextClassTemplate create(String lineSeparator)
+  public static synchronized ComponentDefContextClassTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    ContextClassTemplate result = new ContextClassTemplate();
+    ComponentDefContextClassTemplate result = new ComponentDefContextClassTemplate();
     nl = null;
     return result;
   }

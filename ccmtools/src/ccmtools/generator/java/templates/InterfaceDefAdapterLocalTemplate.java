@@ -54,7 +54,7 @@ for(Iterator i = iface.getOperation().iterator(); i.hasNext(); )
     OperationDef operation = (OperationDef)i.next();
 
     stringBuffer.append(TEXT_10);
-    stringBuffer.append(operation.generateOperationDefAdapterLocal());
+    stringBuffer.append(operation.generateAdapterLocal());
     	
 }
 

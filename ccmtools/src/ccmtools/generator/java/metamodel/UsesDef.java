@@ -2,7 +2,7 @@ package ccmtools.generator.java.metamodel;
 
 import java.util.List;
 
-import ccmtools.generator.java.templates.ContextGetConnectionMethodImplementationTemplate;
+import ccmtools.generator.java.templates.UsesDefContextGetConnectionMethodImplementationTemplate;
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodDeclarationTemplate;
@@ -64,7 +64,7 @@ public class UsesDef
 	 * 
 	 *************************************************************************/
 	
-	public String generateUsesDefEquivalentMethodDeclaration()
+	public String generateEquivalentMethodDeclaration()
 	{
 		if(isMultiple())
 		{
@@ -98,10 +98,10 @@ public class UsesDef
 	
 	public String generateContextGetConnectionMethodImplementation()
 	{
-		return new ContextGetConnectionMethodImplementationTemplate().generate(this);
+		return new UsesDefContextGetConnectionMethodImplementationTemplate().generate(this);
 	}
 	
-	public String generateUsesDefEquivalentMethodAdapterLocal()
+	public String generateEquivalentMethodAdapterLocal()
 	{
 		if(isMultiple())
 		{
@@ -127,7 +127,7 @@ public class UsesDef
 				" " + getIdentifier() + ";\n";
 	}
 
-	public String generateUsesDefEquivalentMethodAdapterToCorba()
+	public String generateEquivalentMethodAdapterToCorba()
 	{		
 		if(isMultiple())
 		{
@@ -139,12 +139,12 @@ public class UsesDef
 		}
 	}	
 
-	public String generateUsesDefReceptacleConnectMethodAdapterToCorba()
+	public String generateReceptacleConnectMethodAdapterToCorba()
 	{
 		return new UsesDefReceptacleConnectMethodAdapterToCorbaTemplate().generate(this);
 	}
 	
-	public String generateUsesDefReceptacleDisconnectMethodAdapterToCorba()
+	public String generateReceptacleDisconnectMethodAdapterToCorba()
 	{
 		if(isMultiple())
 		{

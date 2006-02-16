@@ -36,7 +36,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 %>    
-<%=provides.generateLocalFacetAdapterDeclaration()%>
+<%=provides.generateFacetAdapterDeclaration()%>
 <%
 }
 %>
@@ -105,7 +105,7 @@ for(Iterator i=component.getSupports().iterator(); i.hasNext();)
 	{
         AttributeDef attr = (AttributeDef)j.next();
 %>    
-<%=attr.generateAttributeDefAdapterToCorba()%>
+<%=attr.generateAdapterToCorba()%>
 <%
     }
 }
@@ -120,7 +120,7 @@ for(Iterator i=component.getSupports().iterator(); i.hasNext();)
 	{
         OperationDef op = (OperationDef)j.next();
 %>    
-<%=op.generateOperationDefAdapterToCorba()%>
+<%=op.generateAdapterToCorba()%>
 <%
     }
 } 
@@ -136,7 +136,7 @@ for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 %>
-<%=attr.generateAttributeDefAdapterToCorba()%>
+<%=attr.generateAdapterToCorba()%>
 <%
 }
 %>    
@@ -146,7 +146,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 %>
-<%=provides.generateProvidesDefEquivalentMethodAdapterToCorba()%>
+<%=provides.generateEquivalentMethodAdapterToCorba()%>
 <%
 }
 %>
@@ -156,7 +156,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 {
     UsesDef uses = (UsesDef)i.next();
 %>
-<%=uses.generateUsesDefEquivalentMethodAdapterToCorba()%>
+<%=uses.generateEquivalentMethodAdapterToCorba()%>
 <%
 }
 %>
@@ -201,7 +201,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 %>        
-<%=provides.generateProvidesDefNavigationMethodAdapterToCorba()%>
+<%=provides.generateNavigationMethodAdapterToCorba()%>
 <%
 }
 %>
@@ -227,7 +227,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 {
     UsesDef uses = (UsesDef)i.next();
 %>     
-<%=uses.generateUsesDefReceptacleConnectMethodAdapterToCorba()%>
+<%=uses.generateReceptacleConnectMethodAdapterToCorba()%>
 <%
 }
 %>
@@ -250,7 +250,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 {
     UsesDef uses = (UsesDef)i.next();
 %>     
-<%=uses.generateUsesDefReceptacleDisconnectMethodAdapterToCorba()%>
+<%=uses.generateReceptacleDisconnectMethodAdapterToCorba()%>
 <%
 }
 %>

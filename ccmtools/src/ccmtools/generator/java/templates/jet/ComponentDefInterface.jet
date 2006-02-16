@@ -20,7 +20,7 @@ for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 %>
-<%=attr.generateAttributeDefDeclaration()%>
+<%=attr.generateDeclaration()%>
 <%
 }
 %>    
@@ -32,7 +32,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 %>
-<%=provides.generateProvidesDefEquivalentMethodDeclaration()%>
+<%=provides.generateEquivalentMethodDeclaration()%>
 <%
 }
 %>    
@@ -43,7 +43,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 {
     UsesDef uses = (UsesDef)i.next();
 %>
-<%=uses.generateUsesDefEquivalentMethodDeclaration()%>
+<%=uses.generateEquivalentMethodDeclaration()%>
 <%
 }
 %>

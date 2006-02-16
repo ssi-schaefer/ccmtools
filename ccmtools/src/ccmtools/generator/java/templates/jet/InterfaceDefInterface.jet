@@ -24,7 +24,7 @@ for(Iterator i=iface.getConstants().iterator(); i.hasNext();)
 {
 	ConstantDef constant = (ConstantDef)i.next();	
 %>
-<%=constant.generateConstantImplementation()%>
+<%=constant.generateDeclaration()%>
 <%
 }
 %>
@@ -34,7 +34,7 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 %>
-<%=attr.generateAttributeDefDeclaration()%>
+<%=attr.generateDeclaration()%>
 <%
 }
 %>
@@ -44,7 +44,7 @@ for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 %>
-<%=op.generateOperationDefDeclaration()%>
+<%=op.generateDeclaration()%>
 <%
 }
 %>

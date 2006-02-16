@@ -34,7 +34,7 @@ public class CharType
 	
 	
 	/*************************************************************************
-	 * Implementation Generator Methods
+	 * Application Generator Methods
 	 * 
 	 *************************************************************************/
 	

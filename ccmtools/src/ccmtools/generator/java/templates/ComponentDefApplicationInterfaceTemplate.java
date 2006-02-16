@@ -39,7 +39,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     ProvidesDef provides = (ProvidesDef)i.next();
 
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(provides.generateCcmProvidesEquivalentMethodDeclaration());
+    stringBuffer.append(provides.generateEquivalentApplicationMethodDeclaration());
     
 }
 

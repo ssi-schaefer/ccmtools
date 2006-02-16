@@ -1,5 +1,5 @@
 <%@ jet package="ccmtools.generator.java.templates" 
-	    class="ConstantImplementationGlobalTemplate" 
+	    class="ConstantDefInterfaceGlobalTemplate" 
 		imports="ccmtools.generator.java.metamodel.* "	    
 %>
 <% ConstantDef constant = (ConstantDef) argument;  %>
@@ -13,5 +13,5 @@ package <%= constant.generateJavaNamespace() %>;
 
 public interface <%=constant.getIdentifier()%>
 {
-    final public static <%=constant.getType().generateJavaMapping()%> value = (<%=constant.getType().generateJavaMapping()%>) <%=constant.generateConstantValue()%>;
+    final public static <%=constant.getType().generateJavaMapping()%> value = (<%=constant.getType().generateJavaMapping()%>) <%=constant.generateJavaValue()%>;
 }

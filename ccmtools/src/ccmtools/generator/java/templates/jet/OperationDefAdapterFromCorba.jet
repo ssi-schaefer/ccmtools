@@ -5,14 +5,14 @@
 <% OperationDef op = (OperationDef) argument;  %>
 
     /** Business delegate method */
-    public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>) 
-        <%=op.generateThrowsFromCorba()%> 
+    public <%=op.generateReturnType()%> <%=op.getIdentifier()%> (<%=op.generateParameterDeclarationList()%>) 
+        <%=op.generateThrowsStatementFromCorba()%> 
     {
         try
         {
-            <%=op.generateOperationReturnStatement()%> localInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
+            <%=op.generateReturnStatement()%> localInterface.<%=op.getIdentifier()%>(<%=op.generateParameterList()%>);
         }
-<%=op.generateOperationDefCatchStatementAdapterFromCorba()%>
+<%=op.generateCatchStatementAdapterFromCorba()%>
         catch(java.lang.Exception e)
         {
     	    throw new BAD_OPERATION(e.getMessage());

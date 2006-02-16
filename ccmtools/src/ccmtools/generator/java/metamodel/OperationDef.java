@@ -51,24 +51,24 @@ public class OperationDef
 	}
 
 	
-	/**
-	 * Java Local Interface Generator
+	/*************************************************************************
+	 * Local Interface Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
 
-	public String generateOperationDefDeclaration()
+	public String generateDeclaration()
 	{
 		return new OperationDefDeclarationTemplate().generate(this);
 	}
 		
-	public String generateOperationReturnType()
+	public String generateReturnType()
 	{		
 		return getType().generateJavaMapping(PassingDirection.RESULT);
 	}
 	
-	public String generateOperationReturnStatement()
+	public String generateReturnStatement()
 	{
 		if(getType() instanceof VoidType)
 		{
@@ -87,7 +87,7 @@ public class OperationDef
 	 * 
 	 * @return Generated code artifact.
 	 */
-	public String generateOperationParameterDeclarationList()
+	public String generateParameterDeclarationList()
 	{
 		List parameterList = new ArrayList();
 		for(Iterator i=getParameter().iterator(); i.hasNext();)
@@ -105,7 +105,7 @@ public class OperationDef
 	 * 
 	 * @return Generated code artifact.
 	 */
-	public String generateOperationParameterList()
+	public String generateParameterList()
 	{
 		List parameterList = new ArrayList();
 		for(Iterator i=getParameter().iterator(); i.hasNext();)
@@ -124,7 +124,7 @@ public class OperationDef
 	 * 
 	 * @return Generated code artifact.
 	 */
-	public String generateThrows()
+	public String generateThrowsStatementLocal()
 	{
 		StringBuffer code = new StringBuffer();
 		code.append("throws ccm.local.Components.CCMException");
@@ -145,14 +145,14 @@ public class OperationDef
 	
 	
 	
-	/**
-	 * Java Local Component Generator
+	/*************************************************************************
+	 * Local Component Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateOperationDefAdapterLocal()
+	public String generateAdapterLocal()
 	{              
 		return new OperationDefAdapterLocalTemplate().generate(this);
 	}
@@ -160,19 +160,19 @@ public class OperationDef
 	
 	
 	
-	/**
-	 * Java Local Implementation Generator
+	/*************************************************************************
+	 * Application Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
 	// Generator methods ------------------------------------------------------
 		
-	public String generateOperationDefApplicationImplementation()
+	public String generateApplicationImplementation()
 	{
 		return new OperationDefApplicationImplementationTemplate().generate(this);
 	}
 	
-	public String generateCcmDefaultReturnStatement()
+	public String generateDefaultReturnStatement()
 	{
 		if(getType() instanceof VoidType)
 		{
@@ -185,24 +185,25 @@ public class OperationDef
 	}
 	
 	
-	/**
-	 * Java Client Library Generator
-	 * 
-	 */
 
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	// Code generator methods -------------------------------------------------
 
-	public String generateOperationDefAdapterFromCorba()
+	public String generateAdapterFromCorba()
 	{
 		return new OperationDefAdapterFromCorbaTemplate().generate(this);
 	}
 	
-	public String generateOperationDefAdapterToCorba()
+	public String generateAdapterToCorba()
 	{
 		return new OperationDefAdapterToCorbaTemplate().generate(this);
 	}
 
-	public String generateThrowsFromCorba()
+	public String generateThrowsStatementFromCorba()
 	{
 		StringBuffer code = new StringBuffer();
 		if(getException().size() != 0)
@@ -219,12 +220,12 @@ public class OperationDef
 		return code.toString();
 	}
 		
-	public String generateOperationDefCatchStatementAdapterToCorba()
+	public String generateCatchStatementAdapterToCorba()
 	{
 		return new OperationDefCatchStatementAdapterToCorbaTemplate().generate(this);
 	}
 	
-	public String generateOperationDefCatchStatementAdapterFromCorba()
+	public String generateCatchStatementAdapterFromCorba()
 	{
 		return new OperationDefCatchStatementAdapterFromCorbaTemplate().generate(this);
 	}

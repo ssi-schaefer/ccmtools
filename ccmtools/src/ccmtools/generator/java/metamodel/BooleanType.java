@@ -3,10 +3,10 @@ package ccmtools.generator.java.metamodel;
 public class BooleanType
 	implements Type
 {
-	/**
-	 * Java Local Interface Generator
+	/*************************************************************************
+	 * Local Interface Generator Methods
 	 * 
-	 */
+	 *************************************************************************/
 	
 	public String generateJavaConstant(Object value)
 	{
@@ -34,7 +34,7 @@ public class BooleanType
 	
 	
 	/*************************************************************************
-	 * Implementation Generator Methods
+	 * Application Generator Methods
 	 * 
 	 *************************************************************************/
 		

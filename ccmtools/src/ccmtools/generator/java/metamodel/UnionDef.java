@@ -19,6 +19,13 @@ public class UnionDef
 		return members;
 	}
 
+	
+	
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
@@ -41,6 +48,13 @@ public class UnionDef
 			return generateAbsoluteIdlName() + "Holder";
 		}	
 	}
+	
+	
+	
+	/*************************************************************************
+	 * Application Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

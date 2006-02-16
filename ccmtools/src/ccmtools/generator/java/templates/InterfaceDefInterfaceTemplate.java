@@ -48,7 +48,7 @@ for(Iterator i=iface.getConstants().iterator(); i.hasNext();)
 	ConstantDef constant = (ConstantDef)i.next();	
 
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(constant.generateConstantImplementation());
+    stringBuffer.append(constant.generateDeclaration());
     
 }
 
@@ -59,7 +59,7 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
     AttributeDef attr = (AttributeDef)i.next();
 
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(attr.generateAttributeDefDeclaration());
+    stringBuffer.append(attr.generateDeclaration());
     
 }
 
@@ -70,7 +70,7 @@ for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
     OperationDef op = (OperationDef)i.next();
 
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(op.generateOperationDefDeclaration());
+    stringBuffer.append(op.generateDeclaration());
     
 }
 

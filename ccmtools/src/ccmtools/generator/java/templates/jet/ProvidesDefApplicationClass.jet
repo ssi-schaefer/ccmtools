@@ -49,7 +49,7 @@ for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 %>
-<%=op.generateOperationDefApplicationImplementation()%>
+<%=op.generateApplicationImplementation()%>
 <%
 }
 %>

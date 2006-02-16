@@ -3,13 +3,13 @@ package ccmtools.generator.java.templates;
 import java.util.Iterator;
 import ccmtools.generator.java.metamodel.*;
 
-public class ContextInterfaceTemplate
+public class ComponentDefContextInterfaceTemplate
 {
   protected static String nl;
-  public static synchronized ContextInterfaceTemplate create(String lineSeparator)
+  public static synchronized ComponentDefContextInterfaceTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    ContextInterfaceTemplate result = new ContextInterfaceTemplate();
+    ComponentDefContextInterfaceTemplate result = new ComponentDefContextInterfaceTemplate();
     nl = null;
     return result;
   }

@@ -1,5 +1,5 @@
 <%@ jet package="ccmtools.generator.java.templates" 
-	    class="ContextClassTemplate" 
+	    class="ComponentDefContextClassTemplate" 
 		imports="java.util.Iterator ccmtools.generator.java.metamodel.* "	    
 %>
 <% ComponentDef component = (ComponentDef) argument; %>

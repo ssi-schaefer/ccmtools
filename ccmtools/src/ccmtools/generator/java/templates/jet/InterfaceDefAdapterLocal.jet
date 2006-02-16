@@ -34,7 +34,7 @@ for(Iterator i = iface.getOperation().iterator(); i.hasNext(); )
 {
     OperationDef operation = (OperationDef)i.next();
 %>
-<%=operation.generateOperationDefAdapterLocal()%>
+<%=operation.generateAdapterLocal()%>
 <%	
 }
 %>    

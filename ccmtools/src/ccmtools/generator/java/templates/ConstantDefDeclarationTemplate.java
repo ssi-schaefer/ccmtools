@@ -2,13 +2,13 @@ package ccmtools.generator.java.templates;
 
 import ccmtools.generator.java.metamodel.*;
 
-public class ConstantImplementationTemplate
+public class ConstantDefDeclarationTemplate
 {
   protected static String nl;
-  public static synchronized ConstantImplementationTemplate create(String lineSeparator)
+  public static synchronized ConstantDefDeclarationTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    ConstantImplementationTemplate result = new ConstantImplementationTemplate();
+    ConstantDefDeclarationTemplate result = new ConstantDefDeclarationTemplate();
     nl = null;
     return result;
   }
@@ -32,7 +32,7 @@ public class ConstantImplementationTemplate
     stringBuffer.append(TEXT_3);
     stringBuffer.append(constant.getType().generateJavaMapping());
     stringBuffer.append(TEXT_4);
-    stringBuffer.append(constant.generateConstantValue());
+    stringBuffer.append(constant.generateJavaValue());
     stringBuffer.append(TEXT_5);
     stringBuffer.append(TEXT_6);
     return stringBuffer.toString();

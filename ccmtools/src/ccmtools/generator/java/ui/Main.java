@@ -15,7 +15,7 @@ import ccmtools.CcmtoolsException;
 import ccmtools.UI.Driver;
 import ccmtools.generator.java.JavaClientLibGenerator;
 import ccmtools.generator.java.JavaLocalComponentGenerator;
-import ccmtools.generator.java.JavaLocalImplementationGenerator;
+import ccmtools.generator.java.JavaApplicationGenerator;
 import ccmtools.utils.CcmtoolsProperties;
 
 public class Main
@@ -67,8 +67,8 @@ public class Main
             		}
                		else if(generatorId.equals("impl"))
             		{
-            			JavaLocalImplementationGenerator generator = 
-            				new JavaLocalImplementationGenerator(parameters, uiDriver);
+            			JavaApplicationGenerator generator = 
+            				new JavaApplicationGenerator(parameters, uiDriver);
             			generator.generate();
             		}
             	}            

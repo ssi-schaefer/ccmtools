@@ -38,6 +38,12 @@ public class SequenceDef
 	}
 
 	
+	
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
@@ -60,6 +66,13 @@ public class SequenceDef
 			return generateAbsoluteIdlName() + "Holder";
 		}	
 	}
+	
+	
+	
+	/*************************************************************************
+	 * Application Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

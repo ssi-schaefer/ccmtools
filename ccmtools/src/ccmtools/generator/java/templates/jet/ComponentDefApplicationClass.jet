@@ -43,7 +43,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 %>
-<%=provides.generateProvidesDefGetMethodImplementation()%>
+<%=provides.generateGetMethodImplementation()%>
 <%
 }
 %>    

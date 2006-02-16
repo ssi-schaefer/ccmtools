@@ -1,5 +1,5 @@
 <%@ jet package="ccmtools.generator.java.templates" 
-	    class="HomeApplicationFactoryTemplate" 
+	    class="HomeDefFactoryApplicationTemplate" 
 		imports="ccmtools.generator.java.metamodel.* "	    
 %>
 <% HomeDef home = (HomeDef) argument; %>

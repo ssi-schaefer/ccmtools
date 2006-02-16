@@ -3,6 +3,11 @@ package ccmtools.generator.java.metamodel;
 public class VoidType
 	implements Type
 {
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return "";
@@ -24,6 +29,13 @@ public class VoidType
 			return "";
 		}	
 	}
+	
+	
+	
+	/*************************************************************************
+	 * Application Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

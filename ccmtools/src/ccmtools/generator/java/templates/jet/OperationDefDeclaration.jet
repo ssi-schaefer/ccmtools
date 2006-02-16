@@ -3,6 +3,6 @@
 		imports="ccmtools.generator.java.metamodel.* "	    
 %>
 <% OperationDef op = (OperationDef) argument;  %>
-    <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>)     
-        <%=op.generateThrows()%>;    
+    <%=op.generateReturnType()%> <%=op.getIdentifier()%> (<%=op.generateParameterDeclarationList()%>)     
+        <%=op.generateThrowsStatementLocal()%>;    
 

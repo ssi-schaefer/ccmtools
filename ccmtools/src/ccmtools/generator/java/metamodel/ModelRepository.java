@@ -26,51 +26,49 @@ public class ModelRepository
 	{
 		homeList.add(home);
 	}
-
-	public void addComponent(ComponentDef component)
-	{
-		componentList.add(component);
-	}
-
-	public void addInterface(InterfaceDef iface)
-	{
-		interfaceList.add(iface);
-	}
-
-	public void addProvides(ProvidesDef provides)
-	{
-		providesList.add(provides);
-	}
-	
-	public void addUses(UsesDef uses)
-	{
-		usesList.add(uses);
-	}
-	
-	public void addGlobalConstant(ConstantDef constant)
-	{
-		constantList.add(constant);
-	}
-
 	
 	public List findAllHomes()
 	{
 		return homeList;
 	}
 	
+	
+	public void addComponent(ComponentDef component)
+	{
+		componentList.add(component);
+	}
+
 	public List findAllComponents()
 	{
 		return componentList;
 	}
 	
+	
+	public void addInterface(InterfaceDef iface)
+	{
+		interfaceList.add(iface);
+	}
+
 	public List findAllInterfaces()
 	{
 		return interfaceList;
+	}
+		
+	
+	public void addProvides(ProvidesDef provides)
+	{
+		providesList.add(provides);
 	}
 	
 	public List findAllProvides()
 	{
 		return providesList;
+	}
+		
+	
+	public void addUses(UsesDef uses)
+	{
+		usesList.add(uses);
 	}
 	
 	public List findAllUses()
@@ -78,6 +76,12 @@ public class ModelRepository
 		return usesList;
 	}
 	
+		
+	public void addGlobalConstant(ConstantDef constant)
+	{
+		constantList.add(constant);
+	}
+
 	public List findAllGlobalConstants()
 	{
 		return constantList;

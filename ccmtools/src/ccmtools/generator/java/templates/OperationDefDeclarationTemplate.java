@@ -27,14 +27,14 @@ public class OperationDefDeclarationTemplate
     StringBuffer stringBuffer = new StringBuffer();
      OperationDef op = (OperationDef) argument;  
     stringBuffer.append(TEXT_1);
-    stringBuffer.append(op.generateOperationReturnType());
+    stringBuffer.append(op.generateReturnType());
     stringBuffer.append(TEXT_2);
     stringBuffer.append(op.getIdentifier());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append(op.generateOperationParameterDeclarationList());
+    stringBuffer.append(op.generateParameterDeclarationList());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(op.generateThrows());
+    stringBuffer.append(op.generateThrowsStatementLocal());
     stringBuffer.append(TEXT_6);
     stringBuffer.append(TEXT_7);
     return stringBuffer.toString();

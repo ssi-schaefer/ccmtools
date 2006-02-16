@@ -2,13 +2,13 @@ package ccmtools.generator.java.templates;
 
 import ccmtools.generator.java.metamodel.*;
 
-public class ContextGetConnectionMethodImplementationTemplate
+public class UsesDefContextGetConnectionMethodImplementationTemplate
 {
   protected static String nl;
-  public static synchronized ContextGetConnectionMethodImplementationTemplate create(String lineSeparator)
+  public static synchronized UsesDefContextGetConnectionMethodImplementationTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    ContextGetConnectionMethodImplementationTemplate result = new ContextGetConnectionMethodImplementationTemplate();
+    UsesDefContextGetConnectionMethodImplementationTemplate result = new UsesDefContextGetConnectionMethodImplementationTemplate();
     nl = null;
     return result;
   }

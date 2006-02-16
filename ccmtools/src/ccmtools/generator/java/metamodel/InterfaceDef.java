@@ -57,7 +57,7 @@ public class InterfaceDef
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateInterfaceDefInterface()
+	public String generateInterface()
 	{
 		return new InterfaceDefInterfaceTemplate().generate(this);
 	}
@@ -88,10 +88,10 @@ public class InterfaceDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile interfaceDeclaration = 
-			new SourceFile(localPackageName, getIdentifier() + ".java", generateInterfaceDefInterface());
+		SourceFile iface = 
+			new SourceFile(localPackageName, getIdentifier() + ".java", generateInterface());
+		sourceFileList.add(iface);
 		
-		sourceFileList.add(interfaceDeclaration);
 		return sourceFileList;
 	}
 	
@@ -104,12 +104,12 @@ public class InterfaceDef
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateInterfaceDefApplicationInterface()
+	public String generateApplicationInterface()
 	{
 		return new InterfaceDefApplicationInterfaceTemplate().generate(this);
 	}
 	
-	public String generateInterfaceDefAdapterLocal()
+	public String generateAdapterLocal()
 	{              
 		return new InterfaceDefAdapterLocalTemplate().generate(this);
 	}
@@ -122,14 +122,14 @@ public class InterfaceDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile ccmInterfaceDeclaration = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + ".java", generateInterfaceDefApplicationInterface());
-		SourceFile ccmInterfaceAdapter = 
-			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateInterfaceDefAdapterLocal());
+		SourceFile applicationInterface = 
+			new SourceFile(localPackageName, generateCcmIdentifier() + ".java", generateApplicationInterface());
+		sourceFileList.add(applicationInterface);
 		
-		sourceFileList.add(ccmInterfaceDeclaration);
-		sourceFileList.add(ccmInterfaceAdapter);
-
+		SourceFile applicationLocal = 
+			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateAdapterLocal());
+		sourceFileList.add(applicationLocal);
+		
 		return sourceFileList;
 	}
 	
@@ -142,12 +142,12 @@ public class InterfaceDef
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateInterfaceDefAdapterFromCorba()
+	public String generateAdapterFromCorba()
 	{
 		return new InterfaceDefAdapterFromCorbaTemplate().generate(this);
 	}
 	
-	public String generateInterfaceDefAdapterToCorba()
+	public String generateAdapterToCorba()
 	{
 		return new InterfaceDefAdapterToCorbaTemplate().generate(this);
 	}
@@ -158,15 +158,16 @@ public class InterfaceDef
 	public List generateClientLibSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
-		SourceFile interfaceAdapterToCorba = 
-			new SourceFile(remotePackageName, getIdentifier() + "AdapterToCorba.java",generateInterfaceDefAdapterToCorba());		
-		SourceFile interfaceAdapterFromCorba = 
-			new SourceFile(remotePackageName, getIdentifier() + "AdapterFromCorba.java",generateInterfaceDefAdapterFromCorba());
 		
-		sourceFileList.add(interfaceAdapterToCorba);
-		sourceFileList.add(interfaceAdapterFromCorba);
+		SourceFile adapterToCorba = 
+			new SourceFile(remotePackageName, getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());		
+		sourceFileList.add(adapterToCorba);
+
+		SourceFile adapterFromCorba = 
+			new SourceFile(remotePackageName, getIdentifier() + "AdapterFromCorba.java",generateAdapterFromCorba());
+		sourceFileList.add(adapterFromCorba);
+		
 		return sourceFileList;
 	}
 }

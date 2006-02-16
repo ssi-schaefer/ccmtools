@@ -13,14 +13,13 @@ import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
 import ccmtools.generator.java.metamodel.ComponentDef;
 import ccmtools.generator.java.metamodel.HomeDef;
-import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.ModelRepository;
 import ccmtools.generator.java.metamodel.ProvidesDef;
 import ccmtools.generator.java.ui.CommandLineParameters;
 import ccmtools.utils.CcmModelHelper;
 import ccmtools.utils.Code;
 
-public class JavaLocalImplementationGenerator
+public class JavaApplicationGenerator
 {
 	/** UI driver for generator messages */
 	protected Driver uiDriver;
@@ -32,7 +31,7 @@ public class JavaLocalImplementationGenerator
 	protected Logger logger;
 	
 	
-	public JavaLocalImplementationGenerator(CommandLineParameters parameters, Driver uiDriver)
+	public JavaApplicationGenerator(CommandLineParameters parameters, Driver uiDriver)
 	{
 		this.uiDriver = uiDriver;
 		this.parameters = (CommandLineParameters)parameters;		                           
@@ -64,25 +63,20 @@ public class JavaLocalImplementationGenerator
 				// file objects for the Java Client Library
 				ModelRepository javaModel = nodeHandler.getJavaModel();
 				List sourceFileList = new ArrayList();
-				for (Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext();)
-				{
-					InterfaceDef javaIface = (InterfaceDef) j.next();
-//					sourceFileList.addAll(javaIface.generateLocalImplementationSourceFiles());
-				}
 				for (Iterator j = javaModel.findAllProvides().iterator(); j.hasNext();)
 				{
 					ProvidesDef javaProvides = (ProvidesDef) j.next();
-					sourceFileList.addAll(javaProvides.generateLocalImplementationSourceFiles());
+					sourceFileList.addAll(javaProvides.generateApplicationSourceFiles());
 				}
 				for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
 				{
 					ComponentDef javaComponent = (ComponentDef) j.next();
-					sourceFileList.addAll(javaComponent.generateLocalImplementationSourceFiles());
+					sourceFileList.addAll(javaComponent.generateApplicationSourceFiles());
 				}
 				for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
 				{
 					HomeDef javaHome = (HomeDef) j.next();
-					sourceFileList.addAll(javaHome.generateLocalImplementationSourceFiles());
+					sourceFileList.addAll(javaHome.generateApplicationSourceFiles());
 				}
 				// Save all source file objects
 				Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);

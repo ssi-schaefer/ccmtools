@@ -19,6 +19,12 @@ public class StructDef
 		return members;
 	}
 
+	
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();
@@ -41,6 +47,13 @@ public class StructDef
 			return generateAbsoluteIdlName() + "Holder";
 		}	
 	}
+	
+	
+	
+	/*************************************************************************
+	 * Application Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

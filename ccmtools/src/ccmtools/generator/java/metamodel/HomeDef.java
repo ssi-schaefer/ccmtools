@@ -4,18 +4,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccmtools.generator.java.templates.HomeAdapterLocalTemplate;
-import ccmtools.generator.java.templates.HomeAdapterToCorbaTemplate;
-import ccmtools.generator.java.templates.HomeApplicationFactoryTemplate;
+import ccmtools.generator.java.templates.HomeDefAdapterLocalTemplate;
+import ccmtools.generator.java.templates.HomeDefAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.HomeDefApplicationClassTemplate;
 import ccmtools.generator.java.templates.HomeDefApplicationInterfaceTemplate;
-import ccmtools.generator.java.templates.HomeDefDeploymentClassTemplate;
+import ccmtools.generator.java.templates.HomeDefDeploymentLocalTemplate;
 import ccmtools.generator.java.templates.HomeDefExplicitApplicationInterfaceTemplate;
 import ccmtools.generator.java.templates.HomeDefExplicitInterfaceTemplate;
+import ccmtools.generator.java.templates.HomeDefFactoryAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.HomeDefFactoryApplicationTemplate;
 import ccmtools.generator.java.templates.HomeDefImplicitApplicationInterfaceTemplate;
 import ccmtools.generator.java.templates.HomeDefImplicitInterfaceTemplate;
 import ccmtools.generator.java.templates.HomeDefInterfaceTemplate;
-import ccmtools.generator.java.templates.HomeFactoryToCorbaTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -49,17 +49,17 @@ public class HomeDef
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateHomeDefInterface()
+	public String generateInterface()
 	{
 		return new HomeDefInterfaceTemplate().generate(this);
 	}
 		
-	public String generateHomeDefImplicitInterface()
+	public String generateImplicitInterface()
 	{
 		return new HomeDefImplicitInterfaceTemplate().generate(this);
 	}
 	
-	public String generateHomeDefExplicitInterface()
+	public String generateExplicitInterface()
 	{
 		return new HomeDefExplicitInterfaceTemplate().generate(this);
 	}
@@ -72,18 +72,18 @@ public class HomeDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile homeDeclaration = 
-			new SourceFile(localPackageName, getIdentifier() + ".java", generateHomeDefInterface());
+		SourceFile iface = 
+			new SourceFile(localPackageName, getIdentifier() + ".java", generateInterface());
+		sourceFileList.add(iface);
 		
-		SourceFile homeImplicitDeclaration = 
-			new SourceFile(localPackageName, getIdentifier() + "Implicit.java", generateHomeDefImplicitInterface());
+		SourceFile implicitInterface = 
+			new SourceFile(localPackageName, getIdentifier() + "Implicit.java", generateImplicitInterface());
+		sourceFileList.add(implicitInterface);
 		
-		SourceFile homeExplicitDeclaration = 
-			new SourceFile(localPackageName, getIdentifier() + "Explicit.java", generateHomeDefExplicitInterface());
+		SourceFile explicitInterface = 
+			new SourceFile(localPackageName, getIdentifier() + "Explicit.java", generateExplicitInterface());
+		sourceFileList.add(explicitInterface);
 				
-		sourceFileList.add(homeDeclaration);
-		sourceFileList.add(homeImplicitDeclaration);
-		sourceFileList.add(homeExplicitDeclaration);
 		return sourceFileList;
 	}
 	
@@ -96,29 +96,29 @@ public class HomeDef
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateHomeDefApplicationInterface()
+	public String generateApplicationInterface()
 	{
 		return new HomeDefApplicationInterfaceTemplate().generate(this);
 	}
 		
-	public String generateHomeDefImplicitApplicationInterface()
+	public String generateImplicitApplicationInterface()
 	{
 		return new HomeDefImplicitApplicationInterfaceTemplate().generate(this);
 	}
 	
-	public String generateHomeDefExplicitApplicationInterface()
+	public String generateExplicitApplicationInterface()
 	{
 		return new HomeDefExplicitApplicationInterfaceTemplate().generate(this);
 	}
 	
-	public String generateHomeAdapterLocal()
+	public String generateAdapterLocal()
 	{              
-		return new HomeAdapterLocalTemplate().generate(this);
+		return new HomeDefAdapterLocalTemplate().generate(this);
 	}
 	
-	public String generateHomeDefDeploymentClass()
+	public String generateDeploymentLocal()
 	{              
-		return new HomeDefDeploymentClassTemplate().generate(this);
+		return new HomeDefDeploymentLocalTemplate().generate(this);
 	}
 	
 	
@@ -129,61 +129,64 @@ public class HomeDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile ccmHomeDeclaration = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + ".java", generateHomeDefApplicationInterface());
-		SourceFile ccmHomeImplicitDeclaration = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + "Implicit.java", generateHomeDefImplicitApplicationInterface());
-		SourceFile ccmHomeExplicitDeclaration = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + "Explicit.java", generateHomeDefExplicitApplicationInterface());
+		SourceFile applicationInterface = 
+			new SourceFile(localPackageName, generateCcmIdentifier() + ".java", generateApplicationInterface());
+		sourceFileList.add(applicationInterface);
+
+		SourceFile implicitApplicationIface = 
+			new SourceFile(localPackageName, generateCcmIdentifier() + "Implicit.java", generateImplicitApplicationInterface());
+		sourceFileList.add(implicitApplicationIface);
+
+		SourceFile explicitApplicationIface = 
+			new SourceFile(localPackageName, generateCcmIdentifier() + "Explicit.java", generateExplicitApplicationInterface());
+		sourceFileList.add(explicitApplicationIface);
 		
-		SourceFile ccmHomeAdapter = 
-			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateHomeAdapterLocal());
+		SourceFile adapterLocal = 
+			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateAdapterLocal());
+		sourceFileList.add(adapterLocal);
 		
-		SourceFile localHomeDeployment = 
-			new SourceFile(localPackageName, getIdentifier() + "Deployment.java", generateHomeDefDeploymentClass());
+		SourceFile deploymentLocal = 
+			new SourceFile(localPackageName, getIdentifier() + "Deployment.java", generateDeploymentLocal());
+		sourceFileList.add(deploymentLocal);
 		
-		sourceFileList.add(ccmHomeDeclaration);
-		sourceFileList.add(ccmHomeImplicitDeclaration);
-		sourceFileList.add(ccmHomeExplicitDeclaration);
-		sourceFileList.add(ccmHomeAdapter);
-		sourceFileList.add(localHomeDeployment);
 		return sourceFileList;
 	}
 	
 	
 	
 	/*************************************************************************
-	 * Implementation Generator Methods
+	 * Application Generator Methods
 	 * 
 	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
 	
-	public String generateHomeDefApplicationClass()
+	public String generateApplicationClass()
 	{
 		return new HomeDefApplicationClassTemplate().generate(this);
 	}
 	
-	public String generateHomeApplicationFactory()
+	public String generateFactoryApplication()
 	{
-		return new HomeApplicationFactoryTemplate().generate(this);
+		return new HomeDefFactoryApplicationTemplate().generate(this);
 	}
 	
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalImplementationSourceFiles()
+	public List generateApplicationSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile ccmHomeImplementation = 
-			new SourceFile(localPackageName, getIdentifier() + "Impl.java", generateHomeDefApplicationClass());
-		SourceFile ccmHomeFactory =
-			new SourceFile(localPackageName, getIdentifier() + "Factory.java", generateHomeApplicationFactory());
+		SourceFile applicationClass = 
+			new SourceFile(localPackageName, getIdentifier() + "Impl.java", generateApplicationClass());
+		sourceFileList.add(applicationClass);
 		
-		sourceFileList.add(ccmHomeImplementation);
-		sourceFileList.add(ccmHomeFactory);
+		SourceFile factoryApplication =
+			new SourceFile(localPackageName, getIdentifier() + "Factory.java", generateFactoryApplication());
+		sourceFileList.add(factoryApplication);
+		
 		return sourceFileList;
 	}
 	
@@ -196,14 +199,14 @@ public class HomeDef
 	
 	// Code generator methods -------------------------------------------------	
 	
-	public String generateHomeAdapterToCorba()
+	public String generateAdapterToCorba()
 	{
-		return new HomeAdapterToCorbaTemplate().generate(this);
+		return new HomeDefAdapterToCorbaTemplate().generate(this);
 	}
 		
-	public String generateHomeToCorbaFactory()
+	public String generateFactoryAdapterToCorba()
 	{
-		return new HomeFactoryToCorbaTemplate().generate(this);
+		return new HomeDefFactoryAdapterToCorbaTemplate().generate(this);
 	}
 	
 
@@ -214,13 +217,15 @@ public class HomeDef
 		List sourceFileList = new ArrayList();		
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
-		SourceFile homeAdapterToCorba = 
-			new SourceFile(remotePackageName,getIdentifier() + "AdapterToCorba.java",generateHomeAdapterToCorba());
-		SourceFile homeFactory = 
-			new SourceFile(localPackageName,getIdentifier() + "Factory.java",generateHomeToCorbaFactory());
 		
-		sourceFileList.add(homeAdapterToCorba);
-		sourceFileList.add(homeFactory);
+		SourceFile adapterToCorba = 
+			new SourceFile(remotePackageName,getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());
+		sourceFileList.add(adapterToCorba);
+		
+		SourceFile factoryAdapterToCorba = 
+			new SourceFile(localPackageName,getIdentifier() + "Factory.java",generateFactoryAdapterToCorba());
+		sourceFileList.add(factoryAdapterToCorba);
+		
 		return sourceFileList;
 	}	
 }

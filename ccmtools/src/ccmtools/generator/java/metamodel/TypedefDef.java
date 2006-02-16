@@ -10,6 +10,12 @@ public class TypedefDef
 	{
 		super(identifier, namespace);
 	}
+	
+	
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
 
 	public String generateJavaConstant(Object value)
 	{
@@ -33,6 +39,13 @@ public class TypedefDef
 			return generateAbsoluteIdlName() + "Holder";
 		}	
 	}
+	
+	
+	
+	/*************************************************************************
+	 * Application Generator Methods
+	 * 
+	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
 	{

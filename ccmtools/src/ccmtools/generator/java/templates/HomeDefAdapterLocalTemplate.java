@@ -2,13 +2,13 @@ package ccmtools.generator.java.templates;
 
 import ccmtools.generator.java.metamodel.*;
 
-public class HomeAdapterLocalTemplate
+public class HomeDefAdapterLocalTemplate
 {
   protected static String nl;
-  public static synchronized HomeAdapterLocalTemplate create(String lineSeparator)
+  public static synchronized HomeDefAdapterLocalTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    HomeAdapterLocalTemplate result = new HomeAdapterLocalTemplate();
+    HomeDefAdapterLocalTemplate result = new HomeDefAdapterLocalTemplate();
     nl = null;
     return result;
   }

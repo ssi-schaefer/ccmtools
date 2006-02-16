@@ -5,14 +5,14 @@
 <% OperationDef op = (OperationDef) argument;  %>
 
     /** Business delegate method */
-    public <%=op.generateOperationReturnType()%> <%=op.getIdentifier()%> (<%=op.generateOperationParameterDeclarationList()%>) 
-        <%=op.generateThrows()%> 
+    public <%=op.generateReturnType()%> <%=op.getIdentifier()%> (<%=op.generateParameterDeclarationList()%>) 
+        <%=op.generateThrowsStatementLocal()%> 
     {
         try
         {
-            <%=op.generateOperationReturnStatement()%> remoteInterface.<%=op.getIdentifier()%>(<%=op.generateOperationParameterList()%>);
+            <%=op.generateReturnStatement()%> remoteInterface.<%=op.getIdentifier()%>(<%=op.generateParameterList()%>);
         }
-<%=op.generateOperationDefCatchStatementAdapterToCorba()%>
+<%=op.generateCatchStatementAdapterToCorba()%>
         catch(java.lang.Exception e)
         {
     	    throw new ccm.local.Components.CCMException(e.getMessage());

@@ -7,14 +7,14 @@ import java.util.List;
 import ccmtools.Constants;
 import ccmtools.utils.Text;
 
-public abstract class ModelElement
+public class ModelElement
 {
 	/** Helper constants for code generation */
 	public static final String NL = "\n";
 	public static final String TAB = "    ";
 	public static final String TAB2 = "        ";
 	
-	
+	/** Namespace lists */
 	private String identifier;
 	private List idlNamespaceList = new ArrayList();
 	private List javaNamespaceList = new ArrayList();

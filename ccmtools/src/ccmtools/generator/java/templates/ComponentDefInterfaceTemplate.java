@@ -46,7 +46,7 @@ for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
     AttributeDef attr = (AttributeDef)i.next();
 
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(attr.generateAttributeDefDeclaration());
+    stringBuffer.append(attr.generateDeclaration());
     
 }
 
@@ -57,7 +57,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     ProvidesDef provides = (ProvidesDef)i.next();
 
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(provides.generateProvidesDefEquivalentMethodDeclaration());
+    stringBuffer.append(provides.generateEquivalentMethodDeclaration());
     
 }
 
@@ -68,7 +68,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     UsesDef uses = (UsesDef)i.next();
 
     stringBuffer.append(TEXT_10);
-    stringBuffer.append(uses.generateUsesDefEquivalentMethodDeclaration());
+    stringBuffer.append(uses.generateEquivalentMethodDeclaration());
     
 }
 

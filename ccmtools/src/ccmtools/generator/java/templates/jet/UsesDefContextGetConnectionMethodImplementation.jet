@@ -1,5 +1,5 @@
 <%@ jet package="ccmtools.generator.java.templates" 
-	    class="ContextGetConnectionMethodImplementationTemplate" 
+	    class="UsesDefContextGetConnectionMethodImplementationTemplate" 
 		imports="ccmtools.generator.java.metamodel.* "	    
 %>
 <% UsesDef uses = (UsesDef) argument; %>

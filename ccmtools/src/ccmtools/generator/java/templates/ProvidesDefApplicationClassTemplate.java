@@ -66,7 +66,7 @@ for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
     OperationDef op = (OperationDef)i.next();
 
     stringBuffer.append(TEXT_12);
-    stringBuffer.append(op.generateOperationDefApplicationImplementation());
+    stringBuffer.append(op.generateApplicationImplementation());
     
 }
 

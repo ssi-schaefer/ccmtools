@@ -62,7 +62,7 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_9);
     stringBuffer.append(TEXT_10);
-    stringBuffer.append(attr.generateAttributeDefAdapterFromCorba());
+    stringBuffer.append(attr.generateAdapterFromCorba());
     
     }
 } 
@@ -73,7 +73,7 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_11);
     stringBuffer.append(TEXT_12);
-    stringBuffer.append(attr.generateAttributeDefAdapterFromCorba());
+    stringBuffer.append(attr.generateAdapterFromCorba());
     
 }
                
@@ -86,7 +86,7 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_13);
     stringBuffer.append(TEXT_14);
-    stringBuffer.append(op.generateOperationDefAdapterFromCorba());
+    stringBuffer.append(op.generateAdapterFromCorba());
     
     }
 }
@@ -97,7 +97,7 @@ for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_15);
     stringBuffer.append(TEXT_16);
-    stringBuffer.append(op.generateOperationDefAdapterFromCorba());
+    stringBuffer.append(op.generateAdapterFromCorba());
     
 }
 

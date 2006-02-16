@@ -35,7 +35,7 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 	{
         AttributeDef attr = (AttributeDef)j.next();
 %>    
-<%=attr.generateAttributeDefAdapterFromCorba()%>
+<%=attr.generateAdapterFromCorba()%>
 <%
     }
 } 
@@ -44,7 +44,7 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 %>    
-<%=attr.generateAttributeDefAdapterFromCorba()%>
+<%=attr.generateAdapterFromCorba()%>
 <%
 }
                
@@ -55,7 +55,7 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 	{
         OperationDef op = (OperationDef)j.next();
 %>    
-<%=op.generateOperationDefAdapterFromCorba()%>
+<%=op.generateAdapterFromCorba()%>
 <%
     }
 }
@@ -64,7 +64,7 @@ for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 %>    
-<%=op.generateOperationDefAdapterFromCorba()%>
+<%=op.generateAdapterFromCorba()%>
 <%
 }
 %>

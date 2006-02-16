@@ -44,7 +44,7 @@ public class AttributeDef
 	 * 
 	 *************************************************************************/
 	
-	public String generateAttributeDefDeclaration()
+	public String generateDeclaration()
 	{
 		return new AttributeDefDeclarationTemplate().generate(this);
 	}
@@ -56,7 +56,7 @@ public class AttributeDef
 	 * 
 	 *************************************************************************/
 	
-	public String generateAttributeAdapter()
+	public String generateAdapterLocal()
 	{
 		//return new AttributeDefAdapterLocalTemplate().generate(this);
 		return "";
@@ -69,12 +69,12 @@ public class AttributeDef
 	 * 
 	 *************************************************************************/
 	
-	public String generateAttributeDefAdapterFromCorba()
+	public String generateAdapterFromCorba()
 	{
 		return new AttributeDefAdapterFromCorbaTemplate().generate(this);
 	}
 	
-	public String generateAttributeDefAdapterToCorba()
+	public String generateAdapterToCorba()
 	{
 		return new AttributeDefAdapterToCorbaTemplate().generate(this);
 	}

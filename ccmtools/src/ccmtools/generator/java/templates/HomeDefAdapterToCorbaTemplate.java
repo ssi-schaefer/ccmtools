@@ -2,13 +2,13 @@ package ccmtools.generator.java.templates;
 
 import ccmtools.generator.java.metamodel.*;
 
-public class HomeAdapterToCorbaTemplate
+public class HomeDefAdapterToCorbaTemplate
 {
   protected static String nl;
-  public static synchronized HomeAdapterToCorbaTemplate create(String lineSeparator)
+  public static synchronized HomeDefAdapterToCorbaTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    HomeAdapterToCorbaTemplate result = new HomeAdapterToCorbaTemplate();
+    HomeDefAdapterToCorbaTemplate result = new HomeDefAdapterToCorbaTemplate();
     nl = null;
     return result;
   }
