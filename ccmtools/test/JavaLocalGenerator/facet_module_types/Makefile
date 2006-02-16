@@ -15,8 +15,8 @@ local: idl3
 	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
 	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
 
-	ccmjava -impl -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
-	ccmjava -impl -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
+	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
+	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
 
 stubs: idl3
 	ccmtools idl2 -o ${DEST_DIR}/idl2 ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl

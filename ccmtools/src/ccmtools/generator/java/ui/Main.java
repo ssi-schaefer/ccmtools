@@ -31,6 +31,11 @@ public class Main
     private static boolean isExitWithErrorStatus = true;
     private static final int EXIT_STATUS_FOR_ERROR = -1;
     
+    /** String constants used for generator selection */
+    private static final String APPLICATION_GENERATOR_ID = "app";
+    private static final String LOCAL_COMPONENT_GENERATOR_ID = "local";
+    private static final String CLIENT_LIB_GENERATOR_ID = "clientlib";
+    
     
     /**
      * Using the main method, we can start the Java client library generator
@@ -47,25 +52,24 @@ public class Main
             if(parseCommandLineArgs(args, parameters)) 
             {
             	parameters.validate();
-//            	System.out.println(parameters); 
             	setCcmtoolsProperties();
             	
             	for(Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext(); )
             	{
             		String generatorId = (String)i.next();
-            		if(generatorId.equals("clientlib"))
+               		if(generatorId.equals(CLIENT_LIB_GENERATOR_ID))
             		{
             			JavaClientLibGenerator generator = 
             				new JavaClientLibGenerator(parameters, uiDriver);
             			generator.generate();
             		}
-            		else if(generatorId.equals("local"))
+            		else if(generatorId.equals(LOCAL_COMPONENT_GENERATOR_ID))
             		{
             			JavaLocalComponentGenerator generator = 
             				new JavaLocalComponentGenerator(parameters, uiDriver);
             			generator.generate();
             		}
-               		else if(generatorId.equals("impl"))
+               		else if(generatorId.equals(APPLICATION_GENERATOR_ID))
             		{
             			JavaApplicationGenerator generator = 
             				new JavaApplicationGenerator(parameters, uiDriver);
@@ -114,9 +118,9 @@ public class Main
         // Define boolean options
         options.addOption("h", "help", false,"Display this help");
         options.addOption("V", "version", false, "Display CCM Tools version information");
-        options.addOption("clientlib", false, "Run the Java client library generator");
-        options.addOption("local", false, "Run the Java local component generator");
-        options.addOption("impl", false, "Run the Java local implementation generator");
+        options.addOption(CLIENT_LIB_GENERATOR_ID, false, "Run the Java client library generator");
+        options.addOption(LOCAL_COMPONENT_GENERATOR_ID, false, "Run the Java local component generator");
+        options.addOption(APPLICATION_GENERATOR_ID, false, "Run the Java application stubs generator");
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
         // Define single valued options
@@ -159,19 +163,19 @@ public class Main
             return false; // don't continue program execution
         }
         
-        if(cmd.hasOption("clientlib"))
+        if(cmd.hasOption(CLIENT_LIB_GENERATOR_ID))
         {
-        	parameters.getGeneratorIds().add("clientlib");
+        	parameters.getGeneratorIds().add(CLIENT_LIB_GENERATOR_ID);
         }        
         
-        if(cmd.hasOption("local"))
+        if(cmd.hasOption(LOCAL_COMPONENT_GENERATOR_ID))
         {
-        	parameters.getGeneratorIds().add("local");
+        	parameters.getGeneratorIds().add(LOCAL_COMPONENT_GENERATOR_ID);
         }    
         
-        if(cmd.hasOption("impl"))
+        if(cmd.hasOption(APPLICATION_GENERATOR_ID))
         {
-        	parameters.getGeneratorIds().add("impl");
+        	parameters.getGeneratorIds().add(APPLICATION_GENERATOR_ID);
         }    
         
         if(cmd.hasOption("noexit"))
