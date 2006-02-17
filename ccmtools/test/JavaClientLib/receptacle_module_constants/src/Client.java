@@ -1,10 +1,7 @@
 import org.omg.CORBA.ORB;
 
-import world.europe.ccm.local.Test;
-import world.europe.ccm.local.TestHome;
-import world.europe.ccm.local.TestHomeFactory;
+import world.europe.ccm.local.*;
 import ccm.local.ServiceLocator;
-
 
 public class Client
 {
@@ -16,8 +13,8 @@ public class Client
 			// Set up the ServiceLocator singleton
 			ServiceLocator.instance().setCorbaOrb(orb);
 
-			// Register homes to the HomeFinder
-			ccm.local.HomeFinder.instance().register_home(TestHomeFactory.create(), "myTestHome");
+			// Deploy ClientLib component
+			TestHomeClientLibDeployment.deploy("myTestHome");
 		}
 		catch (Exception e)
 		{
@@ -52,9 +49,9 @@ public class Client
 		}
 		finally
 		{
-		    // Unregister homes from the HomeFinder
-		    ccm.local.HomeFinder.instance().unregister_home("myTestHome");
-
+		    // Undeploy ClientLib component
+		    TestHomeClientLibDeployment.undeploy("myTestHome");
+		    
 		    // Tear down the ServiceLocator singleton
 		    ServiceLocator.instance().destroy();	
 		}

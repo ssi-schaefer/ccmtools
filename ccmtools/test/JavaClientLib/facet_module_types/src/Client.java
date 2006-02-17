@@ -19,11 +19,11 @@ public class Client
     {
         ORB orb = ORB.init(args, null);
         try {
-        	// Set up the ServiceLocator singleton
+	    // Set up the ServiceLocator singleton
             ServiceLocator.instance().setCorbaOrb(orb);
 	    
-            // Register homes to the HomeFinder
-            ccm.local.HomeFinder.instance().register_home(TestHomeFactory.create(),"myTestHome");
+	    // Deploy ClientLib component
+	    TestHomeClientLibDeployment.deploy("myTestHome");
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -364,9 +364,9 @@ public class Client
 		}
 		finally
 		{
-		    // Unregister homes from the HomeFinder
-		    ccm.local.HomeFinder.instance().unregister_home("myTestHome");
-		    
+		    // Undeploy ClientLib component
+		    TestHomeClientLibDeployment.undeploy("myTestHome");
+
 		    // Tear down the ServiceLocator singleton
 		    ServiceLocator.instance().destroy();	
 		}
