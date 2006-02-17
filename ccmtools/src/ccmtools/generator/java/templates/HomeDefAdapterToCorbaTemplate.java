@@ -55,7 +55,7 @@ public class HomeDefAdapterToCorbaTemplate
     stringBuffer.append(TEXT_11);
     stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
     stringBuffer.append(TEXT_12);
-    stringBuffer.append(home.getComponent().generateAbsoluteJavaRemoteName());
+    stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
     stringBuffer.append(TEXT_13);
     return stringBuffer.toString();
   }

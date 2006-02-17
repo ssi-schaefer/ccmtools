@@ -1,5 +1,5 @@
 <%@ jet package="ccmtools.generator.java.templates" 
-	    class="HomeDefFactoryAdapterToCorbaTemplate" 
+	    class="HomeDefDeploymentClientLibTemplate" 
 		imports="ccmtools.generator.java.metamodel.* "	    
 %>
 <% HomeDef home = (HomeDef) argument; %>
@@ -11,11 +11,22 @@
 
 package <%=home.generateJavaNamespace()%>;
                                   
-public class <%=home.getIdentifier()%>Factory 
+public class <%=home.getIdentifier()%>ClientLibDeployment 
 {
     public static ccm.local.Components.CCMHome create()
         throws ccm.local.Components.CCMException
     {
         return new <%=home.getIdentifier()%>AdapterToCorba();
+    }
+    
+    public static void deploy(String name)
+        throws ccm.local.Components.CCMException
+    {
+        ccm.local.HomeFinder.instance().register_home(create(), name);    
+    }
+    
+    public static void undeploy(String name)
+    {
+        ccm.local.HomeFinder.instance().unregister_home(name);    
     }
 }

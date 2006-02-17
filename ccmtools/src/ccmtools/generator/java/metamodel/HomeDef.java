@@ -8,10 +8,10 @@ import ccmtools.generator.java.templates.HomeDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.HomeDefAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.HomeDefApplicationClassTemplate;
 import ccmtools.generator.java.templates.HomeDefApplicationInterfaceTemplate;
+import ccmtools.generator.java.templates.HomeDefDeploymentClientLibTemplate;
 import ccmtools.generator.java.templates.HomeDefDeploymentLocalTemplate;
 import ccmtools.generator.java.templates.HomeDefExplicitApplicationInterfaceTemplate;
 import ccmtools.generator.java.templates.HomeDefExplicitInterfaceTemplate;
-import ccmtools.generator.java.templates.HomeDefFactoryAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.HomeDefFactoryApplicationTemplate;
 import ccmtools.generator.java.templates.HomeDefImplicitApplicationInterfaceTemplate;
 import ccmtools.generator.java.templates.HomeDefImplicitInterfaceTemplate;
@@ -203,12 +203,11 @@ public class HomeDef
 	{
 		return new HomeDefAdapterToCorbaTemplate().generate(this);
 	}
-		
-	public String generateFactoryAdapterToCorba()
-	{
-		return new HomeDefFactoryAdapterToCorbaTemplate().generate(this);
+			
+	public String generateClientLibDeployment()
+	{              
+		return new HomeDefDeploymentClientLibTemplate().generate(this);
 	}
-	
 
 	// Generate SourceFile objects --------------------------------------------
 	
@@ -216,15 +215,14 @@ public class HomeDef
 	{
 		List sourceFileList = new ArrayList();		
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
-		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		
 		SourceFile adapterToCorba = 
-			new SourceFile(remotePackageName,getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());
+			new SourceFile(localPackageName,getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());
 		sourceFileList.add(adapterToCorba);
 		
-		SourceFile factoryAdapterToCorba = 
-			new SourceFile(localPackageName,getIdentifier() + "Factory.java",generateFactoryAdapterToCorba());
-		sourceFileList.add(factoryAdapterToCorba);
+		SourceFile deploymentClientLib = 
+			new SourceFile(localPackageName,getIdentifier() + "ClientLibDeployment.java",generateClientLibDeployment());
+		sourceFileList.add(deploymentClientLib);
 		
 		return sourceFileList;
 	}	

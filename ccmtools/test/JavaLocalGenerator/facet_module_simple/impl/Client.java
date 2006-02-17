@@ -8,7 +8,7 @@ public class Client
 		// Deploy local Java component
 		try
 		{
-			world.ccm.local.TestHomeDeployment.deploy("myTest");
+			TestHomeDeployment.deploy("myTest");
 		}
 		catch (java.lang.Exception e)
 		{
@@ -38,8 +38,10 @@ public class Client
 		{
 			e.printStackTrace();
 		}
-
-		// Undeploy local Java component
-		world.ccm.local.TestHomeDeployment.undeploy("myTest");
+		finally
+		{
+			// Undeploy local Java component
+			TestHomeDeployment.undeploy("myTest");
+		}
 	}
 }

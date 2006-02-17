@@ -59,7 +59,7 @@ public class ComponentDefAdapterToCorbaTemplate
     stringBuffer.append(TEXT_1);
     stringBuffer.append(component.generateCcmtoolsVersion());
     stringBuffer.append(TEXT_2);
-    stringBuffer.append(component.generateJavaRemoteNamespace());
+    stringBuffer.append(component.generateJavaNamespace());
     stringBuffer.append(TEXT_3);
     stringBuffer.append(component.getIdentifier());
     stringBuffer.append(TEXT_4);

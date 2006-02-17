@@ -47,7 +47,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     {
         try
         {
-            return new <%=home.getComponent().generateAbsoluteJavaRemoteName()%>AdapterToCorba(remoteHome.create());        
+            return new <%=home.getComponent().generateAbsoluteJavaName()%>AdapterToCorba(remoteHome.create());        
         }
         catch(java.lang.Exception e)
         {

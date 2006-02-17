@@ -215,10 +215,11 @@ public class ComponentDef
 	public List generateClientLibSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
+		//String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile adapterToCorba = 
-			new SourceFile(remotePackageName, getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());
+			new SourceFile(localPackageName, getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());
 		sourceFileList.add(adapterToCorba);
 		
 		return sourceFileList;
