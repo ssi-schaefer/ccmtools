@@ -48,7 +48,7 @@ public class TestImpl
 
 	try
 	{
-	    System.out.println(">> Facet inheritance test ...");
+	    System.out.println(">> Receptacle inheritance test ...");
 	    world.america.ccm.local.SubType iface = ctx.get_connection_iface();
 	    
 	    {

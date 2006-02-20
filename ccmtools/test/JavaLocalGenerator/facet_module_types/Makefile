@@ -28,8 +28,10 @@ check:
 	cp impl/TestbasicTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/TestuserTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/Client.java ${DEST_DIR}/src/
+	cp impl/DynamicClient.java ${DEST_DIR}/src/
 	ant -f ./build.xml
 	bin/runClient
+	bin/runDynamicClient
 
 clean: 
 	rm -rf ${DEST_DIR}
