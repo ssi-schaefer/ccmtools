@@ -7,15 +7,36 @@ import ccm.local.ServiceLocator;
 
 public class Client
 {
+    private static boolean isTest;
+
     public static void main(String[] args)
     {
-        ORB orb = ORB.init(args, null);
+	if(args.length == 0)
+	{
+	    System.out.println("Client using a local CCM component (test mode)");
+	    isTest = true;
+	}
+	else
+	{
+	    System.out.println("Client using a clientlib to access the remote CCM component");
+	    isTest = false;
+	}
+
+
         try {
-	    // Set up the ServiceLocator singleton
-            ServiceLocator.instance().setCorbaOrb(orb);
-	    
             // Deploy ClientLib component
-	    TestHomeClientLibDeployment.deploy("myTestHome");
+	    if(isTest)
+	    {
+		TestHomeDeployment.deploy("myTestHome");
+	    }
+	    else
+	    {
+		// Set up the ServiceLocator singleton
+		ORB orb = ORB.init(args, null);
+		ServiceLocator.instance().setCorbaOrb(orb);
+
+		TestHomeClientLibDeployment.deploy("myTestHome");
+	    }
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -52,10 +73,17 @@ public class Client
 	finally
 	{
 	    // Undeploy ClientLib component
-	    TestHomeClientLibDeployment.undeploy("myTestHome");
+	    if(isTest)
+	    {
+		TestHomeDeployment.undeploy("myTestHome");
+	    }
+	    else
+	    {
+		TestHomeClientLibDeployment.undeploy("myTestHome");
 
-	    // Tear down the ServiceLocator singleton
-	    ServiceLocator.instance().destroy();
+		// Tear down the ServiceLocator singleton
+		ServiceLocator.instance().destroy();
+	    }
 	}
     }
 }
