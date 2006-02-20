@@ -14,7 +14,7 @@ public class OperationDefAdapterLocalTemplate
   }
 
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
-  protected final String TEXT_1 = NL + "    public ";
+  protected final String TEXT_1 = NL + "    /** Business delegate method */" + NL + "    public ";
   protected final String TEXT_2 = " ";
   protected final String TEXT_3 = "(";
   protected final String TEXT_4 = ") ";

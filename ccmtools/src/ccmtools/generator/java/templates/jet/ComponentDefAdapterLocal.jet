@@ -154,14 +154,34 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     
     /** Receptacle methods */
     
-    public ccm.local.Components.Cookie connect(String name, Object connection)
+    public ccm.local.Components.Cookie connect(String name, Object obj)
         throws ccm.local.Components.InvalidName, 
                ccm.local.Components.InvalidConnection,
                ccm.local.Components.AlreadyConnected, 
                ccm.local.Components.ExceededConnectionLimit
     {
         System.out.println(" <%=component.getIdentifier()%>Adapter.connect()");
-        throw new ccm.local.Components.InvalidName();
+        if(name == null)
+        {
+            throw new ccm.local.Components.InvalidName();
+        }
+        if(obj == null)
+        {
+            throw new ccm.local.Components.InvalidConnection();
+        }    
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
+{
+    UsesDef uses = (UsesDef)i.next();
+%>     
+<%=uses.generateReceptacleConnectMethodAdapterLocal()%>
+<%
+}
+%>     
+        else
+        {
+            throw new ccm.local.Components.InvalidName();
+        }
     }
     
     public void disconnect(String name, ccm.local.Components.Cookie ck)
@@ -171,6 +191,22 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
                ccm.local.Components.NoConnection
     {
         System.out.println(" <%=component.getIdentifier()%>Adapter.disconnect()");
-        throw new ccm.local.Components.InvalidName();
+        if(name == null)
+        {
+            throw new ccm.local.Components.InvalidName();
+        } 
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
+{
+    UsesDef uses = (UsesDef)i.next();
+%>     
+<%=uses.generateReceptacleDisconnectMethodAdapterLocal()%>
+<%
+}
+%>     
+        else
+        {
+            throw new ccm.local.Components.InvalidName();
+        }
     }    
 }

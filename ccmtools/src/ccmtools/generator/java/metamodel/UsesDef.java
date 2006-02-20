@@ -9,7 +9,9 @@ import ccmtools.generator.java.templates.UsesDefEquivalentMethodDeclarationTempl
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodDeclarationTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.UsesDefReceptacleConnectMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefReceptacleConnectMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.UsesDefReceptacleDisconnectMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefReceptacleDisconnectMethodAdapterToCorbaTemplate;
 
 public class UsesDef
@@ -114,7 +116,17 @@ public class UsesDef
 		}
 	}
 	
+	public String generateReceptacleConnectMethodAdapterLocal()
+	{
+		return new UsesDefReceptacleConnectMethodAdapterLocalTemplate().generate(this);
+	}
 		
+	public String generateReceptacleDisconnectMethodAdapterLocal()
+	{
+		return new UsesDefReceptacleDisconnectMethodAdapterLocalTemplate().generate(this);
+	}
+
+	
 	
 	/*************************************************************************
 	 * Client Library Generator

@@ -35,16 +35,6 @@ public class TypesTest
         testDir = ccmtoolsDir + "/test/JavaLocalGenerator";
     }
 
-//    public void testVersionOption()
-//    {
-//        runCcmtoolsGenerate("-version");
-//    }
-//
-//    public void testHelpOption()
-//    {
-//        runCcmtoolsGenerate("-help");
-//    }
-
     
     // ------------------------------------------------------------------------
     // Attribute test cases
@@ -114,74 +104,56 @@ public class TypesTest
     // ------------------------------------------------------------------------
     // Facet test cases
     // ------------------------------------------------------------------------
-    //    make -C facet_attribute test
-    //    make -C facet_exception test
-    //    make -C facet_inheritance test
-    //    make -C facet_module_exception test
-    //    make -C facet_module_types test
-    //    make -C facet_rename test
-    //    make -C facet_types test
-    //    make -C facet_constants test
     
-//    public void testFacetAttribute()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_attribute test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
+    public void testFacetModuleAttribute()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_module_attributes test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
 
-//    public void testFacetException()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_exception test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
+    public void testFacetModuleConstants()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_module_constants test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
 
-//    public void testFacetInheritance()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_inheritance test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
+    public void testFacetModuleException()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_module_exception test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
 
-//    public void testFacetRename()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_rename test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
+    public void testFacetModuleInheritance()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_module_inheritance test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
 
-//    public void testFacetTypes()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_types test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
-
-//    public void testFacetModuleException()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_module_exception test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
+    public void testFacetModuleSimple()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_module_simple test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
     
     public void testFacetModuleTypes()
     {
@@ -193,58 +165,52 @@ public class TypesTest
         }
     }
 
-//    public void testFacetConstants()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_constants test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
     
     
     // ------------------------------------------------------------------------
     // Receptacle test cases
     // ------------------------------------------------------------------------
-    //    make -C receptacle_attribute test
-    //    make -C receptacle_exception test
-    //    make -C receptacle_inheritance test
-    //    make -C receptacle_multiple test
-    //    make -C receptacle_not_connected test
-    //    make -C receptacle_object test
-    //    make -C receptacle_types test
     
-//    public void testReceptacleAttribute()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/receptacle_attribute test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
-//
-//    public void testReceptacleException()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/receptacle_exception test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
-//
-//    public void testReceptacleInheritance()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/receptacle_inheritance test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
-//
+    public void testReceptacleModuleAttributes()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/receptacle_module_attributes test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+    public void testReceptacleModuleConstants()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/receptacle_module_constants test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    } 
+
+    public void testReceptacleModuleException()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/receptacle_module_exception test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+
+    public void testReceptacleModuleInheritance()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/receptacle_module_inheritance test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+
 //    public void testReceptacleMultiple()
 //    {
 //        try {
@@ -274,6 +240,16 @@ public class TypesTest
 //            fail();
 //        }
 //    }
+    
+    public void testReceptacleModuleSimple()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/receptacle_module_simple test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
     
     public void testReceptacleModuleTypes()
     {

@@ -1,7 +1,9 @@
 package ccmtools.generator.java.metamodel;
 
 import ccmtools.generator.java.templates.AttributeDefAdapterFromCorbaTemplate;
+import ccmtools.generator.java.templates.AttributeDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.AttributeDefAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.AttributeDefApplicationImplementationTemplate;
 import ccmtools.generator.java.templates.AttributeDefDeclarationTemplate;
 
 
@@ -58,10 +60,25 @@ public class AttributeDef
 	
 	public String generateAdapterLocal()
 	{
-		//return new AttributeDefAdapterLocalTemplate().generate(this);
-		return "";
+		return new AttributeDefAdapterLocalTemplate().generate(this);
 	}
 	
+	
+	/*************************************************************************
+	 * Application Generator Methods
+	 * 
+	 *************************************************************************/
+	
+	public String generateApplicationDeclaration()
+	{
+		return TAB + "private " + getType().generateJavaMapping() + " " + 
+				getIdentifier() + "_;";		
+	}
+	
+	public String generateApplicationImplementation()
+	{
+		return new AttributeDefApplicationImplementationTemplate().generate(this);
+	}
 	
 	
 	/*************************************************************************

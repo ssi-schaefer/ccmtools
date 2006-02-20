@@ -42,8 +42,71 @@ public class <%=provides.getComponent().getIdentifier()%><%=provides.getIdentifi
         this.component = component;
     }
 
+<%
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
+	{
+        AttributeDef attr = (AttributeDef)j.next();
+%>    
+<%=attr.generateApplicationDeclaration()%>
+<%
+    }
+}
+%>
+<%
+for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>
+<%=attr.generateApplicationDeclaration()%>
+<%
+}
+%> 
+
+
     /** Business logic implementations */
+
+<%
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
+	{
+        AttributeDef attr = (AttributeDef)j.next();
+%>    
+<%=attr.generateApplicationImplementation()%>
+<%
+    }
+}
+%>
+  
+<%
+for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>
+<%=attr.generateApplicationImplementation()%>
+<%
+}
+%> 
     
+    
+<%
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
+	{
+        OperationDef op = (OperationDef)j.next();
+%>    
+<%=op.generateApplicationImplementation()%>
+<%
+    }
+}    
+%> 
+
 <%
 for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {

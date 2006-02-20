@@ -23,9 +23,17 @@ public class InterfaceDefAdapterLocalTemplate
   protected final String TEXT_6 = " localInterface;" + NL + "    " + NL + "    protected ";
   protected final String TEXT_7 = "Adapter()" + NL + "    {" + NL + "    }" + NL + "" + NL + "    public ";
   protected final String TEXT_8 = "Adapter(";
-  protected final String TEXT_9 = " localInterface)" + NL + "    {" + NL + "        this.localInterface = localInterface;" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** Adapter delegation methods */";
-  protected final String TEXT_10 = NL;
-  protected final String TEXT_11 = "    " + NL + "    " + NL + "}";
+  protected final String TEXT_9 = " localInterface)" + NL + "    {" + NL + "        this.localInterface = localInterface;" + NL + "    }" + NL + "    " + NL;
+  protected final String TEXT_10 = "    ";
+  protected final String TEXT_11 = NL;
+  protected final String TEXT_12 = NL + "    ";
+  protected final String TEXT_13 = NL;
+  protected final String TEXT_14 = "        " + NL + "    " + NL;
+  protected final String TEXT_15 = "    ";
+  protected final String TEXT_16 = NL;
+  protected final String TEXT_17 = NL;
+  protected final String TEXT_18 = NL;
+  protected final String TEXT_19 = "    " + NL + "    " + NL + "}";
 
   public String generate(Object argument)
   {
@@ -49,16 +57,59 @@ public class InterfaceDefAdapterLocalTemplate
     stringBuffer.append(iface.generateAbsoluteJavaCcmName());
     stringBuffer.append(TEXT_9);
     
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
+	{
+        AttributeDef attr = (AttributeDef)j.next();
+
+    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
+    stringBuffer.append(attr.generateAdapterLocal());
+    
+    }
+}
+
+    stringBuffer.append(TEXT_12);
+    
+for(Iterator i = iface.getAttributes().iterator(); i.hasNext(); )
+{
+    AttributeDef attr = (AttributeDef)i.next();
+
+    stringBuffer.append(TEXT_13);
+    stringBuffer.append(attr.generateAdapterLocal());
+    	
+}
+
+    stringBuffer.append(TEXT_14);
+    
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
+	{
+        OperationDef op = (OperationDef)j.next();
+
+    stringBuffer.append(TEXT_15);
+    stringBuffer.append(TEXT_16);
+    stringBuffer.append(op.generateAdapterLocal());
+    
+    }
+}    
+
+    stringBuffer.append(TEXT_17);
+    
 for(Iterator i = iface.getOperation().iterator(); i.hasNext(); )
 {
     OperationDef operation = (OperationDef)i.next();
 
-    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_18);
     stringBuffer.append(operation.generateAdapterLocal());
     	
 }
 
-    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_19);
     return stringBuffer.toString();
   }
 }

@@ -1,0 +1,20 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="AttributeDefAdapterLocalTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% AttributeDef attr = (AttributeDef) argument;  %>
+
+    /** Business delegate attribute */
+    public <%=attr.getType().generateJavaMapping()%> <%=attr.getIdentifier()%>()
+        throws ccm.local.Components.CCMException
+    {
+        System.out.println(" <%=attr.getIdentifier()%>() Adapter");
+        return localInterface.<%=attr.getIdentifier()%>();
+    }
+     
+    public void <%=attr.getIdentifier()%>(<%=attr.getType().generateJavaMapping()%> value)
+        throws ccm.local.Components.CCMException
+    {
+        System.out.println(" <%=attr.getIdentifier()%>(value) Adapter");
+        localInterface.<%=attr.getIdentifier()%>(value);
+    } 

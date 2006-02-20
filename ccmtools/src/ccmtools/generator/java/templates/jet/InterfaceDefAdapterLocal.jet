@@ -27,8 +27,46 @@ public class <%=iface.getIdentifier()%>Adapter
         this.localInterface = localInterface;
     }
     
+
+<%
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
+	{
+        AttributeDef attr = (AttributeDef)j.next();
+%>    
+<%=attr.generateAdapterLocal()%>
+<%
+    }
+}
+%>
     
-    /** Adapter delegation methods */
+<%
+for(Iterator i = iface.getAttributes().iterator(); i.hasNext(); )
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>
+<%=attr.generateAdapterLocal()%>
+<%	
+}
+%>        
+    
+
+<%
+for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+{
+	InterfaceDef baseIface = (InterfaceDef)i.next();
+	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
+	{
+        OperationDef op = (OperationDef)j.next();
+%>    
+<%=op.generateAdapterLocal()%>
+<%
+    }
+}    
+%>
+
 <%
 for(Iterator i = iface.getOperation().iterator(); i.hasNext(); )
 {
