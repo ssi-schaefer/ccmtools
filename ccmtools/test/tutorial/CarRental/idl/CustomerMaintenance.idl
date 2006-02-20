@@ -10,12 +10,16 @@ module BigBusiness {
   {
     void createCustomer(in Customer person) 
       raises (CreateCustomerException);
+
     Customer retrieveCustomer(in long id)  
       raises (NoCustomerException);
+
     CustomerList retrieveAllCustomers()  
       raises (NoCustomerException);
+
     void updateCustomer(in Customer person)  
       raises (NoCustomerException);
+
     void deleteCustomer(in long id)  
       raises (RemoveCustomerException);
   };

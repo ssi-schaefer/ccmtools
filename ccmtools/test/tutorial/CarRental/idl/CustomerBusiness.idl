@@ -11,10 +11,13 @@ module BigBusiness {
     
     void addCustomerMiles(in long id, in double miles) 
       raises(NoCustomerException);
+
     void resetCustomerMiles(in long id) 
       raises(NoCustomerException);
+
     double getCustomerMiles(in long id) 
       raises(NoCustomerException);
+
     double getCustomerDollars(in long id) 
       raises(NoCustomerException);
   };

@@ -7,7 +7,7 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <CCM_Remote/BigBusiness/CCM_Session_CarRental/CarRentalHome_remote.h>
+#include <BigBusiness/ccm/remote/component/CarRental/CarRentalHome_remote.h>
 #include <BigBusiness_CarRental.h>
 
 using namespace std;
@@ -23,8 +23,8 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_CCM_Local_BigBusiness_CarRentalHome("CarRentalHome");
-    error += deploy_CCM_Remote_BigBusiness_CarRentalHome(orb, "CarRentalHome:1.0");
+    error += deploy_BigBusiness_ccm_local_component_CarRental_CarRentalHome("CarRentalHome");
+    error += deploy_BigBusiness_ccm_remote_component_CarRental_CarRentalHome(orb, "CarRentalHome:1.0");
     if(!error) {
         cout << "CarRentalHome server is running..." << endl;
     }

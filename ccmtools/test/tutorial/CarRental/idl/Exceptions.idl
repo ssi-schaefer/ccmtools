@@ -4,7 +4,9 @@
 module BigBusiness {
 
   exception CreateCustomerException{};
+
   exception RemoveCustomerException{};
+
   exception NoCustomerException{};
 
 }; // End of module BigBusiness
