@@ -47,7 +47,7 @@ public class ComponentDefAdapterLocalTemplate
   protected final String TEXT_30 = "     ";
   protected final String TEXT_31 = NL;
   protected final String TEXT_32 = "     " + NL + "        else" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    public void disconnect(String name, ccm.local.Components.Cookie ck)" + NL + "        throws ccm.local.Components.InvalidName, " + NL + "               ccm.local.Components.InvalidConnection," + NL + "               ccm.local.Components.CookieRequired, " + NL + "               ccm.local.Components.NoConnection" + NL + "    {" + NL + "        System.out.println(\" ";
-  protected final String TEXT_33 = "Adapter.disconnect()\");" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        } ";
+  protected final String TEXT_33 = "Adapter.disconnect()\");" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }" + NL + "        if(ck == null)" + NL + "        {" + NL + "            throw new ccm.local.Components.CookieRequired();" + NL + "        } ";
   protected final String TEXT_34 = "     ";
   protected final String TEXT_35 = NL;
   protected final String TEXT_36 = "     " + NL + "        else" + NL + "        {" + NL + "            throw new ccm.local.Components.InvalidName();" + NL + "        }" + NL + "    }    " + NL + "}";

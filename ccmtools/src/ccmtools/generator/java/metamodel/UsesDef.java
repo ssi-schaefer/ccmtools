@@ -6,8 +6,11 @@ import ccmtools.generator.java.templates.UsesDefContextGetConnectionMethodImplem
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodDeclarationTemplate;
+import ccmtools.generator.java.templates.UsesDefMultipleContextGetConnectionMethodImplementationTemplate;
+import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodDeclarationTemplate;
+import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefReceptacleConnectMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefReceptacleConnectMethodAdapterToCorbaTemplate;
@@ -87,28 +90,49 @@ public class UsesDef
 	
 	public String generateReceptacleAdapterReference()
 	{
-		return TAB + "private " +  getInterface().generateAbsoluteJavaName() + 
-			" " + getIdentifier() + "Receptacle = null;";
+		if(isMultiple())
+		{
+			return TAB + "private java.util.Map " + getIdentifier() 
+					+ "ReceptacleMap = new java.util.HashMap();";
+		}
+		else
+		{
+			return TAB + "private " +  getInterface().generateAbsoluteJavaName() + 
+					" " + getIdentifier() + "Receptacle = null;";			
+		}
 	}
 	
 	public String generateContextGetConnectionMethodDeclaration()
 	{
-		return TAB + getInterface().generateAbsoluteJavaName() + 
+		if(isMultiple())
+		{
+			return TAB + "java.util.Map get_connections_" +  getIdentifier() + "();"; 
+		}
+		else
+		{
+			return TAB + getInterface().generateAbsoluteJavaName() + 
 				" get_connection_" + getIdentifier() + "()\n" + 
 				TAB + "throws ccm.local.Components.NoConnection;";
+		}	
 	}
 	
 	public String generateContextGetConnectionMethodImplementation()
 	{
-		return new UsesDefContextGetConnectionMethodImplementationTemplate().generate(this);
+		if(isMultiple())
+		{
+			return new UsesDefMultipleContextGetConnectionMethodImplementationTemplate().generate(this);
+		}
+		else
+		{
+			return new UsesDefContextGetConnectionMethodImplementationTemplate().generate(this);
+		}
 	}
 	
 	public String generateEquivalentMethodAdapterLocal()
 	{
 		if(isMultiple())
 		{
-			//return new UsesMultipleEquivalentMethodAdapterTemplate().generate(this);
-			return null;
+			return new UsesDefMultipleEquivalentMethodAdapterLocalTemplate().generate(this);
 		}
 		else
 		{
@@ -123,7 +147,14 @@ public class UsesDef
 		
 	public String generateReceptacleDisconnectMethodAdapterLocal()
 	{
-		return new UsesDefReceptacleDisconnectMethodAdapterLocalTemplate().generate(this);
+		if(isMultiple())
+		{
+			return new UsesDefMultipleReceptacleDisconnectMethodAdapterLocalTemplate().generate(this);
+		}
+		else
+		{
+			return new UsesDefReceptacleDisconnectMethodAdapterLocalTemplate().generate(this);
+		}
 	}
 
 	

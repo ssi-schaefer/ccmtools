@@ -1,0 +1,11 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="UsesDefMultipleContextGetConnectionMethodImplementationTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument; %>
+
+    public java.util.Map get_connections_<%=uses.getIdentifier()%>()
+    {
+        System.out.println(" <%=uses.getComponent().generateCcmIdentifier()%>_ContextImpl.get_connections_<%=uses.getIdentifier()%>()");
+        return component.get_connections_<%=uses.getIdentifier()%>();
+    }

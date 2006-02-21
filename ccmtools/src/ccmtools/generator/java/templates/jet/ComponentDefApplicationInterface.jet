@@ -14,6 +14,22 @@ package <%=component.generateJavaNamespace()%>;
 public interface <%=component.generateCcmIdentifier()%> 
     extends ccm.local.Components.SessionComponent
 {
+
+    /** Component attribute accessor methods */
+    
+<%
+for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>
+<%=attr.generateDeclaration()%>
+<%
+}
+%>    
+
+
+    /** Facet implementation factory methods */
+
 <%
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {

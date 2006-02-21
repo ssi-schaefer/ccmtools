@@ -19,11 +19,9 @@ public class UsesDefMultipleEquivalentMethodDeclarationTemplate
   protected final String TEXT_3 = " localObj)" + NL + "        throws ccm.local.Components.ExceededConnectionLimit, " + NL + "               ccm.local.Components.InvalidConnection;" + NL;
   protected final String TEXT_4 = NL + "    ";
   protected final String TEXT_5 = " disconnect_";
-  protected final String TEXT_6 = "(ccm.local.Components.Cookie ck)" + NL + "        throws ccm.local.Components.InvalidConnection;" + NL + "        ";
-  protected final String TEXT_7 = NL + "    ";
-  protected final String TEXT_8 = "[] get_connections_";
-  protected final String TEXT_9 = "();";
-  protected final String TEXT_10 = NL;
+  protected final String TEXT_6 = "(ccm.local.Components.Cookie ck)" + NL + "        throws ccm.local.Components.InvalidConnection;" + NL + "        " + NL + "    java.util.Map get_connections_";
+  protected final String TEXT_7 = "();";
+  protected final String TEXT_8 = NL;
 
   public String generate(Object argument)
   {
@@ -39,12 +37,9 @@ public class UsesDefMultipleEquivalentMethodDeclarationTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(TEXT_7);
-    stringBuffer.append(uses.getInterface().generateAbsoluteJavaName());
-    stringBuffer.append(TEXT_8);
     stringBuffer.append(uses.getIdentifier());
-    stringBuffer.append(TEXT_9);
-    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_7);
+    stringBuffer.append(TEXT_8);
     return stringBuffer.toString();
   }
 }

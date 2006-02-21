@@ -100,4 +100,16 @@ public class ReceptacleTest
 			fail();
 		}
 	}
+	
+	public void testReceptacleMultiple()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/receptacle_multiple test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
 }

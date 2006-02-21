@@ -11,6 +11,7 @@ public class TestSuite
 		junit.framework.TestSuite suite = 
 			new junit.framework.TestSuite("Local Java Components Test Suite");	
 
+		suite.addTest(ComponentTest.suite());
 		suite.addTest(FacetTest.suite());
 		suite.addTest(ReceptacleTest.suite());
 		return suite;

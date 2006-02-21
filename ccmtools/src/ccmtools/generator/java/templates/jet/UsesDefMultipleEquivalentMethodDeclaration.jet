@@ -11,4 +11,4 @@
     <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(ccm.local.Components.Cookie ck)
         throws ccm.local.Components.InvalidConnection;
         
-    <%=uses.getInterface().generateAbsoluteJavaName()%>[] get_connections_<%=uses.getIdentifier()%>();
+    java.util.Map get_connections_<%=uses.getIdentifier()%>();

@@ -1,0 +1,48 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="UsesDefMultipleEquivalentMethodAdapterLocalTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument;  %>
+
+    public ccm.local.Components.Cookie connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> obj)
+        throws ccm.local.Components.ExceededConnectionLimit, 
+               ccm.local.Components.InvalidConnection
+    {
+        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter.connect_<%=uses.getIdentifier()%>()");
+
+        if(obj == null)
+        {
+            throw new ccm.local.Components.InvalidConnection();
+        }	
+        else
+        {
+            ccm.local.Components.Cookie ck = new ccm.local.Components.Cookie();            
+            <%=uses.getIdentifier()%>ReceptacleMap.put(ck, obj);
+            return ck;
+        }
+    }
+
+    public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(ccm.local.Components.Cookie ck)
+        throws ccm.local.Components.InvalidConnection
+    {
+	    System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter.disconnect_<%=uses.getIdentifier()%>()");
+        
+        if(ck == null || !<%=uses.getIdentifier()%>ReceptacleMap.containsKey(ck))
+        {
+            throw new ccm.local.Components.InvalidConnection();
+        }
+        else
+        {
+            <%=uses.getInterface().generateAbsoluteJavaName()%> f = 
+                (<%=uses.getInterface().generateAbsoluteJavaName()%>)<%=uses.getIdentifier()%>ReceptacleMap.get(ck);
+            <%=uses.getIdentifier()%>ReceptacleMap.remove(ck);
+            return f;
+        }
+    }
+        
+    public java.util.Map get_connections_<%=uses.getIdentifier()%>()
+    {
+        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter. get_connection_<%=uses.getIdentifier()%>()");    
+        // here we return a copy of the receptacle map
+        return new java.util.HashMap(<%=uses.getIdentifier()%>ReceptacleMap);
+    }

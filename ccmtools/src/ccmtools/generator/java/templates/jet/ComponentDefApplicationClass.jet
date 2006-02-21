@@ -30,7 +30,20 @@ package <%=component.generateJavaNamespace()%>;
 public class <%=component.getIdentifier()%>Impl 
     implements <%=component.generateCcmIdentifier()%>
 {
+    /** Component attribute variables */
+    
+<%
+for(Iterator i=component.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>
+<%=attr.generateApplicationDeclaration()%>
+<%
+}
+%> 
+
     public <%=component.generateAbsoluteJavaCcmName()%>_Context ctx;
+    
     
     public <%=component.getIdentifier()%>Impl()
     {
@@ -38,6 +51,19 @@ public class <%=component.getIdentifier()%>Impl
         // OPTIONAL: IMPLEMENT ME HERE !
     }
 
+<%
+for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+%>
+<%=attr.generateApplicationImplementation()%>
+<%
+}
+%>    
+
+
+    /** Facet implementation factory methods */
+    
 <%
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
@@ -48,6 +74,8 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 }
 %>    
 
+    /** Component callback methods */
+    
     public void set_session_context(ccm.local.Components.SessionContext ctx) 
         throws ccm.local.Components.CCMException
     {

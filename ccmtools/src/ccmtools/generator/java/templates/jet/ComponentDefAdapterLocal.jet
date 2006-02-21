@@ -194,6 +194,10 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();
+        }
+        if(ck == null)
+        {
+            throw new ccm.local.Components.CookieRequired();
         } 
 <%
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
