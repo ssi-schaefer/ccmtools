@@ -189,12 +189,21 @@
 
   	<target name="check.java.local" depends=""
      	description="Run JUnit test cases." >
-     	<junit printsummary="yes" haltonfailure="yes" showoutput="yes">
+     	<junit printsummary="yes" 
+     		   haltonfailure="yes" 
+     		   showoutput="yes">
           	<classpath refid="compile.classpath" />
-	  		<formatter type="brief" />
+	  		<formatter type="xml" />
 	  		<test name="ccmtools.generator.java.test.local.JavaLocalComponentTestSuite" />
      	</junit>
+  		<junitreport todir="./reports">
+  		  <fileset dir=".">
+  		    <include name="TEST-*.xml"/>
+  		  </fileset>
+  		  <report format="frames" todir="./report/html"/>
+  		</junitreport>
   	</target>
+	
 	
 
 	<!-- Clean up -->
