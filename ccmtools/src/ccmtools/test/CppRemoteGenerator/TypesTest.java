@@ -19,6 +19,8 @@
 
 package ccmtools.test.CppRemoteGenerator;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import ccmtools.test.CcmtoolsTestCase;
 
 
@@ -34,6 +36,11 @@ public class TypesTest extends CcmtoolsTestCase
         testDir = ccmtoolsDir + "/test/CppRemoteGenerator";
     }
 
+    public static Test suite()
+    {
+    	return new TestSuite(TypesTest.class);
+    }
+    
     
     // ------------------------------------------------------------------------
     // Attribute test cases

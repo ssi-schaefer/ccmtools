@@ -19,6 +19,8 @@
 
 package ccmtools.test.CppLocalGenerator;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
 import ccmtools.test.CcmtoolsTestCase;
 
 /*******************************************************************************
@@ -27,7 +29,8 @@ import ccmtools.test.CcmtoolsTestCase;
  * check the code generation process, and the runtime behavior of the generated
  * code (using Confix' _check_*.cc files).
  ******************************************************************************/
-public class TypesTest extends CcmtoolsTestCase
+public class TypesTest 
+	extends CcmtoolsTestCase
 {
 
     private String ccmtoolsDir;
@@ -41,6 +44,16 @@ public class TypesTest extends CcmtoolsTestCase
         testDir = ccmtoolsDir + "/test/CppGenerator";
     }
 
+    public static Test suite()
+    {
+    	return new TestSuite(TypesTest.class);
+    }
+    
+    
+    // ------------------------------------------------------------------------
+    // CLI test cases
+    // ------------------------------------------------------------------------
+    
     public void testVersionOption()
     {
         runCcmtoolsGenerate("--version");

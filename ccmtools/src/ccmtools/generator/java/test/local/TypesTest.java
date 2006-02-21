@@ -101,116 +101,11 @@ public class TypesTest
 //    }
 
     
-    // ------------------------------------------------------------------------
-    // Facet test cases
-    // ------------------------------------------------------------------------
-    
-    public void testFacetModuleAttribute()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/facet_module_attributes test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-
-    public void testFacetModuleConstants()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/facet_module_constants test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-
-    public void testFacetModuleException()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/facet_module_exception test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-
-    public void testFacetModuleInheritance()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/facet_module_inheritance test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-
-    public void testFacetModuleSimple()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/facet_module_simple test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-    
-    public void testFacetModuleTypes()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/facet_module_types test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-
-    
     
     // ------------------------------------------------------------------------
     // Receptacle test cases
     // ------------------------------------------------------------------------
     
-    public void testReceptacleModuleAttributes()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/receptacle_module_attributes test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-    
-    public void testReceptacleModuleConstants()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/receptacle_module_constants test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    } 
-
-    public void testReceptacleModuleException()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/receptacle_module_exception test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-
-    public void testReceptacleModuleInheritance()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/receptacle_module_inheritance test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-
 //    public void testReceptacleMultiple()
 //    {
 //        try {
@@ -240,26 +135,6 @@ public class TypesTest
 //            fail();
 //        }
 //    }
-    
-    public void testReceptacleModuleSimple()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/receptacle_module_simple test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
-    
-    public void testReceptacleModuleTypes()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/receptacle_module_types test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
 
     
     // ------------------------------------------------------------------------

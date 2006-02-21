@@ -1,13 +1,16 @@
 package ccmtools.generator.java.test.local;
 
 import junit.framework.Test;
-import junit.framework.TestSuite;
+import junit.framework.TestCase;
 
-public class JavaLocalComponentTestSuite
+public class TestSuite
+	extends TestCase	
 {
 	public static Test suite()
 	{
-		TestSuite suite= new TestSuite("Local Java Components Test Suite");	
+		junit.framework.TestSuite suite = 
+			new junit.framework.TestSuite("Local Java Components Test Suite");	
+
 		suite.addTest(FacetTest.suite());
 		suite.addTest(ReceptacleTest.suite());
 		return suite;
