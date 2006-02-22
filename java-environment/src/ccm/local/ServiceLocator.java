@@ -1,5 +1,8 @@
 package ccm.local;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CosNaming.NamingContextExt;
@@ -10,7 +13,11 @@ import Components.CCMHomeHelper;
 
 public class ServiceLocator
 {
+	/** There can be only one... */
 	private static ServiceLocator instance ;
+	
+	/** Use the java Logger as default logging mechanism */
+	private Logger logger = Logger.getLogger("ccm");
 	
 	/** Store CORBA specific references */
 	private ORB orb = null;
@@ -41,9 +48,36 @@ public class ServiceLocator
 	
 	/** Don't let clients use this constructor */
 	protected ServiceLocator()
-	{
+	{		
 	}
 
+	
+	/*************************************************************************
+	 * Default Logger Settings and Helper Methods
+	 * 
+	 *************************************************************************/
+	
+	public Logger getLogger()
+	{
+		return logger;
+	}
+	
+	public void setLogger(Logger logger)
+	{
+		this.logger = logger;
+	}
+	
+	public void setLogLevel(Level level)
+	{
+		logger.setLevel(level);
+	}
+	
+	
+	/*************************************************************************
+	 * CORBA Settings and Helper Methods 
+	 * 
+	 *************************************************************************/
+	
 	public void setCorbaOrb(ORB orb)
 	{
 		this.orb = orb;
