@@ -1,11 +1,22 @@
 import world.europe.austria.ccm.local.*;
 import ccm.local.Components.*;
 
+import java.util.logging.*;
+
 public class DynamicClient
 {
 	public static void main(String[] args)
 	{
-		// Deploy local Java component
+	    // Configure Logger
+	    Logger logger = Logger.getLogger("ccm.local");
+	    logger.setLevel(Level.FINE);	    
+	    Handler handler = new ConsoleHandler();
+	    handler.setLevel(Level.ALL);
+	    handler.setFormatter(new ccm.local.MinimalFormatter());
+	    logger.addHandler(handler);
+	    ccm.local.ServiceLocator.instance().setLogger(logger);
+
+	        // Deploy local Java component
 		try
 		{
 			TestHomeDeployment.deploy("TestHome");

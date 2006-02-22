@@ -30,7 +30,6 @@ public class Test_mirroruserType_mirrorImpl
 
     public Test_mirroruserType_mirrorImpl(world.europe.austria.ccm.local.Test_mirrorImpl component)
     {
-        System.out.println("+Test_mirroruserType_mirrorImpl.userType_mirrorImpl()");
         this.component = component;
     }
 
@@ -136,8 +135,4 @@ public class Test_mirroruserType_mirrorImpl
     {
         this.time_t_value_ = value;
     }
- 
-    
-     
-
 }

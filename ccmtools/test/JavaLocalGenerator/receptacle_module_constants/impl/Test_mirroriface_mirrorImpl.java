@@ -30,7 +30,6 @@ public class Test_mirroriface_mirrorImpl
 
     public Test_mirroriface_mirrorImpl(world.europe.ccm.local.Test_mirrorImpl component)
     {
-        System.out.println("+Test_mirroriface_mirrorImpl.iface_mirrorImpl()");
         this.component = component;
     }
  

@@ -40,7 +40,6 @@ public class Test_mirroruserType_mirrorImpl
 					 world.europe.austria.ColorHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirroruserType_mirrorImpl.f1()");
         p3.value = p2.value;
         p2.value = p1;
         return world.europe.austria.Color.orange;
@@ -51,7 +50,6 @@ public class Test_mirroruserType_mirrorImpl
 					  world.europe.austria.PersonHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirroruserType_mirrorImpl.f2()");
         world.europe.austria.Person r =
             new world.europe.austria.Person(p1.id + p2.value.id, p1.name + p2.value.name);
         p3.value = p2.value;
@@ -64,7 +62,6 @@ public class Test_mirroruserType_mirrorImpl
 					   world.europe.austria.AddressHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirroruserType_mirrorImpl.f3()");
         world.europe.austria.Person pers = 
 	    new world.europe.austria.Person(p1.resident.id + p2.value.resident.id, 
 					    p1.resident.name + p2.value.resident.name);
@@ -81,7 +78,6 @@ public class Test_mirroruserType_mirrorImpl
 		    world.europe.austria.LongListHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirroruserType_mirrorImpl.f4()");
         int[] result = new int[p1.length];
         p3.value = new int[p1.length];
         for (int i = 0; i < p1.length; i++)
@@ -98,7 +94,6 @@ public class Test_mirroruserType_mirrorImpl
 		       world.europe.austria.StringListHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirroruserType_mirrorImpl.f5()");
         String[] result = new String[p1.length];
         p3.value = new String[p1.length];
         for(int i = 0; i< p1.length; i++)
@@ -115,7 +110,6 @@ public class Test_mirroruserType_mirrorImpl
 					    world.europe.austria.PersonListHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirroruserType_mirrorImpl.f6()");
         world.europe.austria.Person[] result = 
 	    new world.europe.austria.Person[p1.length];
         p3.value = new world.europe.austria.Person[p1.length];
@@ -133,7 +127,6 @@ public class Test_mirroruserType_mirrorImpl
     public int f7(int t1, org.omg.CORBA.IntHolder t2, org.omg.CORBA.IntHolder t3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirroruserType_mirrorImpl.f7()");
         t3.value = t2.value;
         t2.value = t1;
         return t3.value + t1;

@@ -30,7 +30,6 @@ public class Test_mirroriface_mirrorImpl
 
     public Test_mirroriface_mirrorImpl(world.ccm.local.Test_mirrorImpl component)
     {
-        System.out.println("+Test_mirroriface_mirrorImpl.iface_mirrorImpl()");
         this.component = component;
     }
     
@@ -105,5 +104,4 @@ public class Test_mirroriface_mirrorImpl
         System.out.println("app> " + str);
     	return str.length();
     }    
-
 }

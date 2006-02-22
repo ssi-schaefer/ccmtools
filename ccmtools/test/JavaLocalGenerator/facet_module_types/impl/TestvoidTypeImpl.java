@@ -36,7 +36,6 @@ public class TestvoidTypeImpl
 
     public TestvoidTypeImpl(world.europe.austria.ccm.local.TestImpl component)
     {
-	System.out.println("+TestvoidTypeImpl.TestvoidTypeImpl()");
         this.component = component;
     }
 
@@ -45,14 +44,12 @@ public class TestvoidTypeImpl
     public void f1(int p1)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" TestvoidTypeImpl.f1()");
         attr = p1;	
     }    
 
     public int f2()
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" TestvoidTypeImpl.f1()");
     	return attr;
     }    
 }

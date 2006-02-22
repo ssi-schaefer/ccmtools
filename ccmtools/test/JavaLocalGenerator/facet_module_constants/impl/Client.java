@@ -11,14 +11,24 @@ import org.omg.CORBA.StringHolder;
 
 import world.ccm.local.*;
 import world.europe.ccm.local.*;
-import ccm.local.ServiceLocator;
 
+import ccm.local.ServiceLocator;
+import java.util.logging.*;
 
 public class Client
 {
     public static void main(String[] args)
     {
         try {
+	    // Configure Logger
+	    Logger logger = Logger.getLogger("ccm.local");
+	    logger.setLevel(Level.FINE);	    
+	    Handler handler = new ConsoleHandler();
+	    handler.setLevel(Level.ALL);
+	    handler.setFormatter(new ccm.local.MinimalFormatter());
+	    logger.addHandler(handler);
+	    ccm.local.ServiceLocator.instance().setLogger(logger);
+
             // Deploy ClientLib component
 	    TestHomeDeployment.deploy("myTestHome");
         }

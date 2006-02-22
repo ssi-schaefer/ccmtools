@@ -43,14 +43,12 @@ public class Test_mirrorvoidType_mirrorImpl
     public void f1(int p1)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorvoidType_mirrorImpl.f1()");
     	 attr = p1;    	
     }    
 
     public int f2()
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorvoidType_mirrorImpl.f2()");
     	return attr;
     }    
 }

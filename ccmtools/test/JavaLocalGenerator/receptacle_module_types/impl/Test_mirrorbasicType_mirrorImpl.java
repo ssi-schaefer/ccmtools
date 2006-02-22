@@ -38,7 +38,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public short f1(short p1, org.omg.CORBA.ShortHolder p2, org.omg.CORBA.ShortHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f1()");
         p3.value = p2.value;
         p2.value = p1;
         return (short)(p3.value + p1);
@@ -47,7 +46,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public int f2(int p1, org.omg.CORBA.IntHolder p2, org.omg.CORBA.IntHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f2()");
         p3.value = p2.value;
         p2.value = p1;
         return p3.value + p1;
@@ -56,7 +54,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public short f3(short p1, org.omg.CORBA.ShortHolder p2, org.omg.CORBA.ShortHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f3()");
         p3.value = p2.value;
         p2.value = p1;
         return (short)(p3.value + p1);
@@ -65,7 +62,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public int f4(int p1, org.omg.CORBA.IntHolder p2, org.omg.CORBA.IntHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f4()");
         p3.value = p2.value;
         p2.value = p1;
         return p3.value + p1;
@@ -74,7 +70,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public float f5(float p1, org.omg.CORBA.FloatHolder p2, org.omg.CORBA.FloatHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f5()");
         p3.value = p2.value;
         p2.value = p1;
         return p3.value + p1;
@@ -83,7 +78,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public double f6(double p1, org.omg.CORBA.DoubleHolder p2, org.omg.CORBA.DoubleHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f6()");
         p3.value = p2.value;
         p2.value = p1;
         return p3.value + p1;
@@ -92,7 +86,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public char f7(char p1, org.omg.CORBA.CharHolder p2, org.omg.CORBA.CharHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f7()");
         p3.value = p2.value;
         p2.value = p1;
         return (char)(p3.value + p1);
@@ -101,7 +94,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public String f8(String p1, org.omg.CORBA.StringHolder p2, org.omg.CORBA.StringHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f8()");
         p3.value = p2.value;
         p2.value = p1;
         return p3.value +p1;
@@ -110,7 +102,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public boolean f9(boolean p1, org.omg.CORBA.BooleanHolder p2, org.omg.CORBA.BooleanHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f9()");
         p3.value = p2.value;
         p2.value = p1;
         return p3.value && p1;
@@ -119,7 +110,6 @@ public class Test_mirrorbasicType_mirrorImpl
     public byte f10(byte p1, org.omg.CORBA.ByteHolder p2, org.omg.CORBA.ByteHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" Test_mirrorbasicType_mirrorImpl.f10()");
         p3.value = p2.value;
         p2.value = p1;
         return (byte)(p3.value + p1);

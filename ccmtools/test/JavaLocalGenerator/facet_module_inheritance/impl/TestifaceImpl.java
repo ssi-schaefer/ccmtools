@@ -30,7 +30,6 @@ public class TestifaceImpl
 
     public TestifaceImpl(world.ccm.local.TestImpl component)
     {
-        System.out.println("+TestifaceImpl.ifaceImpl()");
         this.component = component;
     }
     

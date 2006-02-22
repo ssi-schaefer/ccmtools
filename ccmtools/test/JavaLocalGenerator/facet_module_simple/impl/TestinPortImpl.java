@@ -30,7 +30,6 @@ public class TestinPortImpl
 
     public TestinPortImpl(world.ccm.local.TestImpl component)
     {
-	System.out.println("TestinPortImpl.TestinPortImpl()");
         this.component = component;
     }
 
@@ -40,7 +39,6 @@ public class TestinPortImpl
         throws ccm.local.Components.CCMException
     {
     	System.out.println("> " + str);
-    	
     	return str.length();
     }    
 

@@ -36,7 +36,6 @@ public class TestImpl
     
     public TestImpl()
     {
-    	System.out.println("+TestImpl.TestImpl()");
         // OPTIONAL: IMPLEMENT ME HERE !
     }
     
@@ -50,15 +49,12 @@ public class TestImpl
     public void set_session_context(ccm.local.Components.SessionContext ctx) 
         throws ccm.local.Components.CCMException
     {
-        System.out.println(" TestImpl.set_session_context()");
         this.ctx = (world.ccm.local.CCM_Test_Context)ctx; 
     }
 
     public void ccm_activate() 
         throws ccm.local.Components.CCMException
     {
-        System.out.println(" TestImpl.ccm_activate()");
-
 	Map receptacleMap = ctx.get_connections_port();
 
 	for(Iterator i = receptacleMap.values().iterator(); i.hasNext();)
@@ -73,14 +69,12 @@ public class TestImpl
     public void ccm_passivate() 
         throws ccm.local.Components.CCMException
     {
-        System.out.println(" TestImpl.ccm_passivate()");
         // OPTIONAL: IMPLEMENT ME HERE !
     }
 
     public void ccm_remove() 
         throws ccm.local.Components.CCMException
     {
-        System.out.println(" TestImpl.ccm_remove()");
         // OPTIONAL: IMPLEMENT ME HERE !
     }
 }

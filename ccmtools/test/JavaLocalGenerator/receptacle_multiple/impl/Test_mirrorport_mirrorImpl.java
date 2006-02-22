@@ -30,7 +30,6 @@ public class Test_mirrorport_mirrorImpl
 
     public Test_mirrorport_mirrorImpl(world.ccm.local.Test_mirrorImpl component)
     {
-        System.out.println("+Test_mirrorport_mirrorImpl.port_mirrorImpl()");
         this.component = component;
     }
  
@@ -41,9 +40,7 @@ public class Test_mirrorport_mirrorImpl
     public int println(String str)
         throws ccm.local.Components.CCMException
     {
-        System.out.println("  println()");
-	
-	System.out.println("> " + str);
+	System.out.println("app> " + str);
     	return str.length();
     }    
 

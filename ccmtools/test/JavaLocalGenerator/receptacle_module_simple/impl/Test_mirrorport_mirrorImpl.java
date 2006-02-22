@@ -38,10 +38,7 @@ public class Test_mirrorport_mirrorImpl
     public int op1(String str)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" port_mirrorImpl.op1()");
-	System.out.println("> " + str);
-    	
+	System.out.println("app> " + str);
     	return str.length();
     }    
-
 }

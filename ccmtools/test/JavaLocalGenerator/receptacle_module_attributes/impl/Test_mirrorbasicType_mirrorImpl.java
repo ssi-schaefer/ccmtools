@@ -30,7 +30,6 @@ public class Test_mirrorbasicType_mirrorImpl
 
     public Test_mirrorbasicType_mirrorImpl(world.europe.austria.ccm.local.Test_mirrorImpl component)
     {
-        System.out.println("+Test_mirrorbasicType_mirrorImpl.basicType_mirrorImpl()");
         this.component = component;
     }
 
@@ -178,8 +177,4 @@ public class Test_mirrorbasicType_mirrorImpl
     {
         this.octet_value_ = value;
     }
- 
-    
-     
-
 }

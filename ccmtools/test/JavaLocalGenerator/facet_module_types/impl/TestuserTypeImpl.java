@@ -31,7 +31,6 @@ public class TestuserTypeImpl
 
     public TestuserTypeImpl(world.europe.austria.ccm.local.TestImpl component)
     {
-	System.out.println("+TestuserTypeImpl.TestuserTypeImpl()");
         this.component = component;
     }
 
@@ -42,7 +41,6 @@ public class TestuserTypeImpl
 					 world.europe.austria.ColorHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" TestuserTypeImpl.f1()");
 	p3.value = p2.value;
 	p2.value = p1;
 	return world.europe.austria.Color.orange;
@@ -54,7 +52,6 @@ public class TestuserTypeImpl
 					  world.europe.austria.PersonHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" TestuserTypeImpl.f2()");
 	world.europe.austria.Person r = 
 	    new world.europe.austria.Person(p1.id + p2.value.id, p1.name + p2.value.name);	
 	p3.value = p2.value;
@@ -68,7 +65,6 @@ public class TestuserTypeImpl
 					   world.europe.austria.AddressHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" TestuserTypeImpl.f3()");
 	Person pers = new Person(p1.resident.id + p2.value.resident.id, p1.resident.name + p2.value.resident.name);
 	Address addr = new Address(p1.street + p2.value.street, p1.number + p2.value.number, pers);
 	p3.value = p2.value;
@@ -82,7 +78,6 @@ public class TestuserTypeImpl
 		    world.europe.austria.LongListHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" TestuserTypeImpl.f4()");
 	int[] result = new int[p1.length];
 	p3.value = new int[p1.length];
 	for (int i = 0; i < p1.length; i++)
@@ -100,7 +95,6 @@ public class TestuserTypeImpl
 		       world.europe.austria.StringListHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" TestuserTypeImpl.f5()");
 	String[] result = new String[p1.length];
 	p3.value = new String[p1.length];
 	for(int i = 0; i< p1.length; i++)
@@ -118,7 +112,6 @@ public class TestuserTypeImpl
 					    world.europe.austria.PersonListHolder p3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" TestuserTypeImpl.f6()");
 	Person[] result = new Person[p1.length];
 	p3.value = new Person[p1.length];
 	for (int i = 0; i < p1.length; i++)
@@ -137,7 +130,6 @@ public class TestuserTypeImpl
 		  org.omg.CORBA.IntHolder t3)
         throws ccm.local.Components.CCMException
     {
-	System.out.println(" TestuserTypeImpl.f7()");
 	t3.value = t2.value;
 	t2.value = t1;
 	return t3.value + t1;
