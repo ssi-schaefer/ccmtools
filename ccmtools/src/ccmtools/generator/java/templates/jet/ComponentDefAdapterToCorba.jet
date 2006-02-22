@@ -10,6 +10,9 @@
  */
 
 package <%=component.generateJavaNamespace()%>;
+
+import java.util.logging.Logger;
+import ccm.local.ServiceLocator;
                  
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Policy;
@@ -24,6 +27,8 @@ import org.omg.PortableServer.POAPackage.InvalidPolicy;
 public class <%=component.getIdentifier()%>AdapterToCorba 
     implements <%=component.generateAbsoluteJavaName()%>
 {
+    private Logger logger = ServiceLocator.instance().getLogger();
+    
     public static final String COMPONENT_REPOSITORY_ID = 
         "<%=component.generateRepositoryId()%>";
 
@@ -60,6 +65,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     public <%=component.getIdentifier()%>AdapterToCorba(<%=component.generateAbsoluteIdlName()%> remoteComponent)
         throws ccm.local.Components.CCMException
     {    
+        logger.fine("remoteComponent = " + remoteComponent);
         this.remoteInterface = remoteComponent;
         orb = ccm.local.ServiceLocator.instance().getCorbaOrb();
         try
@@ -166,6 +172,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     
     public void configuration_complete()
     {
+        logger.fine("");
         if(remoteInterface != null)
         {
             remoteInterface.configuration_complete();
@@ -174,6 +181,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     
     public void remove()
     {
+        logger.fine("");
         if(remoteInterface != null)
         {
             remoteInterface.remove();
@@ -182,8 +190,9 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     
     public ccm.local.Components.HomeExecutorBase get_ccm_home()
     {
+        logger.fine("");
         // TODO
-        throw new RuntimeException("get_ccm_home() is not implemented!");
+        throw new RuntimeException("Not implemented!");
     }
     
     
@@ -192,6 +201,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     public Object provide_facet(String name)
         throws ccm.local.Components.InvalidName
     {
+        logger.fine("name = " + name);
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();
@@ -218,6 +228,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
         throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection,
                ccm.local.Components.AlreadyConnected, ccm.local.Components.ExceededConnectionLimit
     {
+        logger.fine("name = " + name + ", obj = " + localObject);
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();
@@ -241,6 +252,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection,
                ccm.local.Components.CookieRequired, ccm.local.Components.NoConnection
     {
+        logger.fine("name = " + name + ", ck = " + ck);
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();

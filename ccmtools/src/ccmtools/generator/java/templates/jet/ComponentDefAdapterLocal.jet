@@ -10,10 +10,16 @@
  */
 
 package <%=component.generateJavaNamespace()%>;
+
+import java.util.logging.Logger;
+import ccm.local.ServiceLocator;
+
                  
 public class <%=component.getIdentifier()%>Adapter 
     implements <%=component.generateAbsoluteJavaName()%>
 {
+    private Logger logger = ServiceLocator.instance().getLogger();
+    
     private <%=component.generateAbsoluteJavaCcmName()%> localInterface;
     private <%=component.generateAbsoluteJavaCcmName()%>_Context ctx;
 
@@ -41,17 +47,17 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 		
     protected <%=component.getIdentifier()%>Adapter()
     {
+        logger.fine("");
     }
 	
     public <%=component.getIdentifier()%>Adapter(<%=component.generateAbsoluteJavaCcmName()%> localInterface)
     {
-        System.out.println("+<%=component.getIdentifier()%>Adapter.<%=component.getIdentifier()%>Adapter()");
+        logger.fine("localInterface = " + localInterface);
         this.localInterface = localInterface;
     }
 	
 	
     /** Supported interface methods */ 
-	
 	
 	
     /** 
@@ -96,7 +102,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     public void configuration_complete()
         throws ccm.local.Components.InvalidConfiguration
     {
-        System.out.println(" <%=component.getIdentifier()%>Adapter.configuration_complete()");
+        logger.fine("");
         ctx = new <%=component.generateAbsoluteJavaCcmName()%>_ContextImpl(this); 
         try
         {
@@ -112,7 +118,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     public void remove()
         throws ccm.local.Components.RemoveFailure
     { 
-        System.out.println(" <%=component.getIdentifier()%>Adapter.remove()");
+        logger.fine("");
         try 
         {
             localInterface.ccm_remove();
@@ -134,7 +140,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     public Object provide_facet(String name)
         throws ccm.local.Components.InvalidName
     {
-        System.out.println(" <%=component.getIdentifier()%>Adapter.provide_facet()");
+        logger.fine("");
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();
@@ -160,7 +166,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
                ccm.local.Components.AlreadyConnected, 
                ccm.local.Components.ExceededConnectionLimit
     {
-        System.out.println(" <%=component.getIdentifier()%>Adapter.connect()");
+        logger.fine("");
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();
@@ -190,7 +196,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
                ccm.local.Components.CookieRequired, 
                ccm.local.Components.NoConnection
     {
-        System.out.println(" <%=component.getIdentifier()%>Adapter.disconnect()");
+        logger.fine("");
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();

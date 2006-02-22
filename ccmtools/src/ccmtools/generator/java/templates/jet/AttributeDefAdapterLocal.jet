@@ -8,13 +8,14 @@
     public <%=attr.getType().generateJavaMapping()%> <%=attr.getIdentifier()%>()
         throws ccm.local.Components.CCMException
     {
-        System.out.println(" <%=attr.getIdentifier()%>() Adapter");
-        return localInterface.<%=attr.getIdentifier()%>();
+        <%=attr.getType().generateJavaMapping()%> result = localInterface.<%=attr.getIdentifier()%>();
+        logger.fine("result = " + result);
+        return result;
     }
      
     public void <%=attr.getIdentifier()%>(<%=attr.getType().generateJavaMapping()%> value)
         throws ccm.local.Components.CCMException
     {
-        System.out.println(" <%=attr.getIdentifier()%>(value) Adapter");
+        logger.fine("value = " + value);
         localInterface.<%=attr.getIdentifier()%>(value);
     } 

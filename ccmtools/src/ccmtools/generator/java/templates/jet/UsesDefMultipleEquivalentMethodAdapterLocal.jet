@@ -8,8 +8,7 @@
         throws ccm.local.Components.ExceededConnectionLimit, 
                ccm.local.Components.InvalidConnection
     {
-        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter.connect_<%=uses.getIdentifier()%>()");
-
+        logger.fine("obj = " + obj);
         if(obj == null)
         {
             throw new ccm.local.Components.InvalidConnection();
@@ -25,8 +24,7 @@
     public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(ccm.local.Components.Cookie ck)
         throws ccm.local.Components.InvalidConnection
     {
-	    System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter.disconnect_<%=uses.getIdentifier()%>()");
-        
+	    logger.fine("ck = " + ck);        
         if(ck == null || !<%=uses.getIdentifier()%>ReceptacleMap.containsKey(ck))
         {
             throw new ccm.local.Components.InvalidConnection();
@@ -42,7 +40,7 @@
         
     public java.util.Map get_connections_<%=uses.getIdentifier()%>()
     {
-        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter. get_connection_<%=uses.getIdentifier()%>()");    
-        // here we return a copy of the receptacle map
+        logger.fine("");
+        // return a copy of the receptacle map
         return new java.util.HashMap(<%=uses.getIdentifier()%>ReceptacleMap);
     }

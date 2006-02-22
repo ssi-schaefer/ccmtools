@@ -38,7 +38,6 @@ public class <%=provides.getComponent().getIdentifier()%><%=provides.getIdentifi
 
     public <%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(<%=provides.getComponent().generateAbsoluteJavaName()%>Impl component)
     {
-        System.out.println("+<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl.<%=provides.getIdentifier()%>Impl()");
         this.component = component;
     }
 

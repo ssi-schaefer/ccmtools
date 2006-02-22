@@ -8,6 +8,6 @@
     public <%=op.generateReturnType()%> <%=op.getIdentifier()%>(<%=op.generateParameterDeclarationList()%>) 
         <%=op.generateThrowsStatementLocal()%> 
     {
-        System.out.println("  <%=op.getIdentifier()%>() Adapter");
+        logger.fine("");
         <%=op.generateReturnStatement()%> localInterface.<%=op.getIdentifier()%>(<%=op.generateParameterList()%>);
     }

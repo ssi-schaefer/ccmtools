@@ -6,8 +6,6 @@
     public <%=op.generateReturnType()%> <%=op.getIdentifier()%>(<%=op.generateParameterDeclarationList()%>)
         <%=op.generateThrowsStatementLocal()%>
     {
-        System.out.println("  <%=op.getIdentifier()%>()");
     	// TODO: IMPLEMENT ME HERE !
-    	
     	<%=op.generateDefaultReturnStatement()%>
     }    

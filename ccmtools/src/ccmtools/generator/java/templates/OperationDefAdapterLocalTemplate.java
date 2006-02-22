@@ -19,13 +19,12 @@ public class OperationDefAdapterLocalTemplate
   protected final String TEXT_3 = "(";
   protected final String TEXT_4 = ") ";
   protected final String TEXT_5 = NL + "        ";
-  protected final String TEXT_6 = " " + NL + "    {" + NL + "        System.out.println(\"  ";
-  protected final String TEXT_7 = "() Adapter\");";
-  protected final String TEXT_8 = NL + "        ";
-  protected final String TEXT_9 = " localInterface.";
-  protected final String TEXT_10 = "(";
-  protected final String TEXT_11 = ");" + NL + "    }";
-  protected final String TEXT_12 = NL;
+  protected final String TEXT_6 = " " + NL + "    {" + NL + "        logger.fine(\"\");";
+  protected final String TEXT_7 = NL + "        ";
+  protected final String TEXT_8 = " localInterface.";
+  protected final String TEXT_9 = "(";
+  protected final String TEXT_10 = ");" + NL + "    }";
+  protected final String TEXT_11 = NL;
 
   public String generate(Object argument)
   {
@@ -41,16 +40,14 @@ public class OperationDefAdapterLocalTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(op.generateThrowsStatementLocal());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(op.getIdentifier());
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(TEXT_8);
     stringBuffer.append(op.generateReturnStatement());
-    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_8);
     stringBuffer.append(op.getIdentifier());
-    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_9);
     stringBuffer.append(op.generateParameterList());
+    stringBuffer.append(TEXT_10);
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(TEXT_12);
     return stringBuffer.toString();
   }
 }

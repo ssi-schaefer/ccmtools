@@ -6,7 +6,7 @@
 
     public <%=provides.getInterface().generateAbsoluteJavaName()%> provide_<%=provides.getIdentifier()%>()
     {
-        System.out.println(" <%=provides.getComponent().getIdentifier()%>Adapter.provide_<%=provides.getIdentifier()%>()");
+        logger.fine("");
         if(<%=provides.getIdentifier()%>FacetAdapter == null)
         {
             <%=provides.getIdentifier()%>FacetAdapter = 

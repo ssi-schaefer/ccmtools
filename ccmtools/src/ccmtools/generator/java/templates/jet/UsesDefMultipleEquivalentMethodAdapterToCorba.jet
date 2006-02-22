@@ -8,6 +8,7 @@
         throws ccm.local.Components.ExceededConnectionLimit, 
                ccm.local.Components.InvalidConnection
     {
+        logger.fine("obj = " + localObject);
         // TODO: implement template! 
         throw new ccm.local.Components.InvalidConnection();     
     }
@@ -15,12 +16,14 @@
     public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(ccm.local.Components.Cookie ck)
         throws ccm.local.Components.InvalidConnection
     {
+        logger.fine("ck = " + ck);
         // TODO: implement template! 
         throw new ccm.local.Components.InvalidConnection();
     }
 
     public <%=uses.getInterface().generateAbsoluteJavaName()%>[] get_connections_<%=uses.getIdentifier()%>()
     {
+        logger.fine("")
         // TODO: implement template! 
         return null;
     }

@@ -16,7 +16,7 @@ public class ProvidesDefEquivalentMethodAdapterToCorbaTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = NL + "    public ";
   protected final String TEXT_2 = " provide_";
-  protected final String TEXT_3 = "()" + NL + "    {" + NL + "        if(";
+  protected final String TEXT_3 = "()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        if(";
   protected final String TEXT_4 = " == null)" + NL + "        {";
   protected final String TEXT_5 = NL + "            ";
   protected final String TEXT_6 = " = " + NL + "                new ";

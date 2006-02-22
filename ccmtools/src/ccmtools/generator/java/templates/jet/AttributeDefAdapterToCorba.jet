@@ -10,7 +10,9 @@
     {
         try
         {
-            return remoteInterface.<%=attr.getIdentifier()%>();
+            <%=attr.getType().generateJavaMapping()%> result = remoteInterface.<%=attr.getIdentifier()%>();
+            logger.fine("result = " + result);
+            return result;
         }
         catch(java.lang.Exception e)
         {
@@ -21,6 +23,7 @@
     public void <%=attr.getIdentifier()%>(<%=attr.getType().generateJavaMapping()%> value)
         throws ccm.local.Components.CCMException
     {
+        logger.fine("value = " + value);
         try
         {
             remoteInterface.<%=attr.getIdentifier()%>(value);

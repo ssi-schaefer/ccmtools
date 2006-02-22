@@ -9,7 +9,9 @@
     {
         try
         {
-            return localInterface.<%=attr.getIdentifier()%>();
+            <%=attr.getType().generateJavaMapping()%> result = localInterface.<%=attr.getIdentifier()%>();
+            logger.fine("result = " + result);
+            return result;
         }
         catch(java.lang.Exception e)
         {
@@ -19,6 +21,7 @@
      
     public void <%=attr.getIdentifier()%>(<%=attr.getType().generateJavaMapping()%> value)
     {
+        logger.fine("value = " + value);
         try
         {
             localInterface.<%=attr.getIdentifier()%>(value);

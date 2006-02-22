@@ -11,19 +11,25 @@
 
 package <%= iface.generateJavaNamespace() %>;
                  
-import ccm.local.Components.*;
- 
+import java.util.logging.Logger;
+import ccm.local.ServiceLocator;
+                 
+                  
 public class <%=iface.getIdentifier()%>Adapter 
     implements <%=iface.generateAbsoluteJavaName()%>
 {
+    private Logger logger = ServiceLocator.instance().getLogger();
+    
     private <%=iface.generateAbsoluteJavaCcmName()%> localInterface;
     
     protected <%=iface.getIdentifier()%>Adapter()
     {
+        logger.fine("");
     }
 
     public <%=iface.getIdentifier()%>Adapter(<%=iface.generateAbsoluteJavaCcmName()%> localInterface)
     {
+        logger.fine("localInterface = " + localInterface);
         this.localInterface = localInterface;
     }
     

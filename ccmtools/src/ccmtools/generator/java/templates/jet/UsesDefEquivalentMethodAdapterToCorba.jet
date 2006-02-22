@@ -7,6 +7,7 @@
     public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> localObject)
         throws ccm.local.Components.AlreadyConnected, ccm.local.Components.InvalidConnection
     {
+        logger.fine("localInterface = " + localObject);
     	// Create CORBA objects and connect them to the remote component
 		try
 		{
@@ -44,6 +45,7 @@
     public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
         throws ccm.local.Components.NoConnection
     {
+        logger.fine("");
    		try
 		{
 			if(<%=uses.getIdentifier()%> != null)
@@ -65,6 +67,7 @@
        
     public <%=uses.getInterface().generateAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>()
     {
+        logger.fine("");
         return <%=uses.getIdentifier()%>;
     }
     

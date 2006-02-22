@@ -16,10 +16,10 @@ public class OperationDefAdapterFromCorbaTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = NL + "    /** Business delegate method */" + NL + "    public ";
   protected final String TEXT_2 = " ";
-  protected final String TEXT_3 = " (";
+  protected final String TEXT_3 = "(";
   protected final String TEXT_4 = ") ";
   protected final String TEXT_5 = NL + "        ";
-  protected final String TEXT_6 = " " + NL + "    {" + NL + "        try" + NL + "        {";
+  protected final String TEXT_6 = " " + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {";
   protected final String TEXT_7 = NL + "            ";
   protected final String TEXT_8 = " localInterface.";
   protected final String TEXT_9 = "(";

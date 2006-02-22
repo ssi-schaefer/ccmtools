@@ -23,23 +23,21 @@ public class ProvidesDefApplicationClassTemplate
   protected final String TEXT_6 = NL + "{" + NL + "    /** Reference to the facet's component implementation */" + NL + "    private ";
   protected final String TEXT_7 = "Impl component;" + NL + "" + NL + "    public ";
   protected final String TEXT_8 = "Impl(";
-  protected final String TEXT_9 = "Impl component)" + NL + "    {" + NL + "        System.out.println(\"+";
-  protected final String TEXT_10 = "Impl.";
-  protected final String TEXT_11 = "Impl()\");" + NL + "        this.component = component;" + NL + "    }" + NL;
-  protected final String TEXT_12 = "    ";
-  protected final String TEXT_13 = NL;
-  protected final String TEXT_14 = NL;
-  protected final String TEXT_15 = " " + NL + "" + NL + "" + NL + "    /** Business logic implementations */" + NL;
-  protected final String TEXT_16 = "    ";
+  protected final String TEXT_9 = "Impl component)" + NL + "    {" + NL + "        this.component = component;" + NL + "    }" + NL;
+  protected final String TEXT_10 = "    ";
+  protected final String TEXT_11 = NL;
+  protected final String TEXT_12 = NL;
+  protected final String TEXT_13 = " " + NL + "" + NL + "" + NL + "    /** Business logic implementations */" + NL;
+  protected final String TEXT_14 = "    ";
+  protected final String TEXT_15 = NL;
+  protected final String TEXT_16 = NL + "  ";
   protected final String TEXT_17 = NL;
-  protected final String TEXT_18 = NL + "  ";
-  protected final String TEXT_19 = NL;
-  protected final String TEXT_20 = " " + NL + "    " + NL + "    ";
-  protected final String TEXT_21 = "    ";
+  protected final String TEXT_18 = " " + NL + "    " + NL + "    ";
+  protected final String TEXT_19 = "    ";
+  protected final String TEXT_20 = NL;
+  protected final String TEXT_21 = " " + NL;
   protected final String TEXT_22 = NL;
-  protected final String TEXT_23 = " " + NL;
-  protected final String TEXT_24 = NL;
-  protected final String TEXT_25 = NL + "}";
+  protected final String TEXT_23 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -67,11 +65,6 @@ InterfaceDef iface = provides.getInterface();
     stringBuffer.append(TEXT_8);
     stringBuffer.append(provides.getComponent().generateAbsoluteJavaName());
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(provides.getComponent().getIdentifier());
-    stringBuffer.append(provides.getIdentifier());
-    stringBuffer.append(TEXT_10);
-    stringBuffer.append(provides.getIdentifier());
-    stringBuffer.append(TEXT_11);
     
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
@@ -80,8 +73,8 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 	{
         AttributeDef attr = (AttributeDef)j.next();
 
-    stringBuffer.append(TEXT_12);
-    stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
     stringBuffer.append(attr.generateApplicationDeclaration());
     
     }
@@ -92,12 +85,12 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 
-    stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_12);
     stringBuffer.append(attr.generateApplicationDeclaration());
     
 }
 
-    stringBuffer.append(TEXT_15);
+    stringBuffer.append(TEXT_13);
     
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
@@ -106,25 +99,25 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 	{
         AttributeDef attr = (AttributeDef)j.next();
 
+    stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_15);
+    stringBuffer.append(attr.generateApplicationImplementation());
+    
+    }
+}
+
     stringBuffer.append(TEXT_16);
+    
+for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+
     stringBuffer.append(TEXT_17);
     stringBuffer.append(attr.generateApplicationImplementation());
     
-    }
 }
 
     stringBuffer.append(TEXT_18);
-    
-for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
-{
-    AttributeDef attr = (AttributeDef)i.next();
-
-    stringBuffer.append(TEXT_19);
-    stringBuffer.append(attr.generateApplicationImplementation());
-    
-}
-
-    stringBuffer.append(TEXT_20);
     
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
@@ -133,25 +126,25 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 	{
         OperationDef op = (OperationDef)j.next();
 
-    stringBuffer.append(TEXT_21);
-    stringBuffer.append(TEXT_22);
+    stringBuffer.append(TEXT_19);
+    stringBuffer.append(TEXT_20);
     stringBuffer.append(op.generateApplicationImplementation());
     
     }
 }    
 
-    stringBuffer.append(TEXT_23);
+    stringBuffer.append(TEXT_21);
     
 for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 
-    stringBuffer.append(TEXT_24);
+    stringBuffer.append(TEXT_22);
     stringBuffer.append(op.generateApplicationImplementation());
     
 }
 
-    stringBuffer.append(TEXT_25);
+    stringBuffer.append(TEXT_23);
     return stringBuffer.toString();
   }
 }

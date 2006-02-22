@@ -8,7 +8,7 @@
         throws ccm.local.Components.AlreadyConnected, 
                ccm.local.Components.InvalidConnection
     {
-        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter.connect_<%=uses.getIdentifier()%>()");
+        logger.fine("obj = " + localObj);
         if(<%=uses.getIdentifier()%>Receptacle != null)
         {
             throw new ccm.local.Components.AlreadyConnected();
@@ -22,7 +22,7 @@
     public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
         throws ccm.local.Components.NoConnection
     {
-        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter.disconnect_<%=uses.getIdentifier()%>()");
+        logger.fine("");
         if(<%=uses.getIdentifier()%>Receptacle == null)
         {
             throw new ccm.local.Components.NoConnection();
@@ -37,6 +37,6 @@
         
     public <%=uses.getInterface().generateAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>()
     {
-        System.out.println(" <%=uses.getComponent().getIdentifier()%>Adapter. get_connection_<%=uses.getIdentifier()%>()");
+        logger.fine("");
         return <%=uses.getIdentifier()%>Receptacle;
     }

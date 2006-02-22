@@ -7,6 +7,6 @@
     public <%=uses.getInterface().generateAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>()
         throws ccm.local.Components.NoConnection
     {
-        System.out.println(" <%=uses.getComponent().generateCcmIdentifier()%>_ContextImpl.get_connection_<%=uses.getIdentifier()%>()");
+        logger.fine("");
         return component.get_connection_<%=uses.getIdentifier()%>();
     }

@@ -10,11 +10,16 @@
  */
 
 package <%=home.generateJavaNamespace()%>;
+
+import java.util.logging.Logger;
+import ccm.local.ServiceLocator;
+
            
 public class <%=home.getIdentifier()%>AdapterToCorba
     implements <%=home.getIdentifier()%>
 {
-    public static final String HOME_REPO_ID = "IDL:<%%>:1.0";
+    private Logger logger = ServiceLocator.instance().getLogger();
+    
     public static final String HOME_DEFAULT_NAME = "<%=home.getIdentifier()%>:1.0";
 
     /** CORBA reference to the remote home */
@@ -23,12 +28,14 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     public <%=home.getIdentifier()%>AdapterToCorba()
         throws ccm.local.Components.CCMException
     {
+        logger.fine("");
         this(HOME_DEFAULT_NAME);
     }
     
     public <%=home.getIdentifier()%>AdapterToCorba(String homeName)
         throws ccm.local.Components.CCMException
     {
+        logger.fine("homeName = " + homeName);
         try
         {
         	Components.CCMHome ccmHome = 
@@ -45,6 +52,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     public <%=home.getComponent().generateAbsoluteJavaName()%> create()
         throws ccm.local.Components.CreateFailure
     {
+        logger.fine("");
         try
         {
             return new <%=home.getComponent().generateAbsoluteJavaName()%>AdapterToCorba(remoteHome.create());        
@@ -58,6 +66,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     public ccm.local.Components.CCMObject create_component()
         throws ccm.local.Components.CCMException, ccm.local.Components.CreateFailure
     {
+        logger.fine("");
         return (ccm.local.Components.CCMObject)create();
     }
     
@@ -65,6 +74,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     public void remove_component(ccm.local.Components.CCMObject component)
         throws ccm.local.Components.CCMException, ccm.local.Components.RemoveFailure
     {
+        logger.fine("component = " + component);
         throw new RuntimeException("Not Implemented");
     }
 }

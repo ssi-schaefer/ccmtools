@@ -5,9 +5,10 @@
 <% OperationDef op = (OperationDef) argument;  %>
 
     /** Business delegate method */
-    public <%=op.generateReturnType()%> <%=op.getIdentifier()%> (<%=op.generateParameterDeclarationList()%>) 
+    public <%=op.generateReturnType()%> <%=op.getIdentifier()%>(<%=op.generateParameterDeclarationList()%>) 
         <%=op.generateThrowsStatementLocal()%> 
     {
+        logger.fine("");
         try
         {
             <%=op.generateReturnStatement()%> remoteInterface.<%=op.getIdentifier()%>(<%=op.generateParameterList()%>);

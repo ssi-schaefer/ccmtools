@@ -6,6 +6,7 @@
 
     public <%=provides.getInterface().generateAbsoluteJavaName()%> provide_<%=provides.getIdentifier()%>()
     {
+        logger.fine("");
         if(<%=provides.getIdentifier()%> == null)
         {
             <%=provides.getIdentifier()%> = 

@@ -10,6 +10,10 @@
  */
 
 package <%= iface.generateJavaRemoteNamespace() %>;
+   
+import java.util.logging.Logger;
+import ccm.local.ServiceLocator;
+
                  
 /**
  * Interface adapter from Java to CORBA.
@@ -17,11 +21,14 @@ package <%= iface.generateJavaRemoteNamespace() %>;
 public class <%=iface.getIdentifier()%>AdapterToCorba
     implements <%=iface.generateAbsoluteJavaName()%>
 {
+    private Logger logger = ServiceLocator.instance().getLogger();
+    
     /** Corba reference to the remote interface */
     private <%=iface.generateAbsoluteIdlName()%> remoteInterface;
 	
     public <%=iface.getIdentifier()%>AdapterToCorba(<%=iface.generateAbsoluteIdlName()%> facet)
     {
+        logger.fine("remoteInterface = " + facet);
         this.remoteInterface = facet;
     }
 

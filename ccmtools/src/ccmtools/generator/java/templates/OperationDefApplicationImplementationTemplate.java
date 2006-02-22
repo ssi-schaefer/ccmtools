@@ -19,10 +19,9 @@ public class OperationDefApplicationImplementationTemplate
   protected final String TEXT_3 = "(";
   protected final String TEXT_4 = ")";
   protected final String TEXT_5 = NL + "        ";
-  protected final String TEXT_6 = NL + "    {" + NL + "        System.out.println(\"  ";
-  protected final String TEXT_7 = "()\");" + NL + "    \t// TODO: IMPLEMENT ME HERE !" + NL + "    \t" + NL + "    \t";
-  protected final String TEXT_8 = NL + "    }    ";
-  protected final String TEXT_9 = NL;
+  protected final String TEXT_6 = NL + "    {" + NL + "    \t// TODO: IMPLEMENT ME HERE !" + NL + "    \t";
+  protected final String TEXT_7 = NL + "    }    ";
+  protected final String TEXT_8 = NL;
 
   public String generate(Object argument)
   {
@@ -38,11 +37,9 @@ public class OperationDefApplicationImplementationTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(op.generateThrowsStatementLocal());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(op.getIdentifier());
-    stringBuffer.append(TEXT_7);
     stringBuffer.append(op.generateDefaultReturnStatement());
+    stringBuffer.append(TEXT_7);
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(TEXT_9);
     return stringBuffer.toString();
   }
 }

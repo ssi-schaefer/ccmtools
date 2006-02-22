@@ -10,15 +10,20 @@
  */
 
 package <%=component.generateJavaNamespace()%>;
-                 
+            
+import java.util.logging.Logger;
+import ccm.local.ServiceLocator;
+                     
 public class <%=component.generateCcmIdentifier()%>_ContextImpl 
     implements <%=component.generateAbsoluteJavaCcmName()%>_Context
 {
+    private Logger logger = ServiceLocator.instance().getLogger();
+
     private <%=component.getIdentifier()%> component;
     
     public <%=component.generateCcmIdentifier()%>_ContextImpl(<%=component.getIdentifier()%> component)
     {
-        System.out.println("+<%=component.generateCcmIdentifier()%>_ContextImpl.<%=component.generateCcmIdentifier()%>_ContextImpl()");
+        logger.fine("component = " + component);
         this.component = component;
     }
     
@@ -38,6 +43,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 	    
     public ccm.local.Components.HomeExecutorBase get_CCM_home()
     {
+        logger.fine("");
         throw new RuntimeException("Not implemented!");
     }
 
@@ -47,6 +53,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     public Object get_CCM_object()
         throws ccm.local.Components.IllegalState
     {
+        logger.fine("");
         throw new RuntimeException("Not implemented!");
     }
 }

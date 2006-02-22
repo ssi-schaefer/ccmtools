@@ -16,11 +16,11 @@ public class UsesDefMultipleEquivalentMethodAdapterToCorbaTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = NL + "    public ccm.local.Components.Cookie connect_";
   protected final String TEXT_2 = "(";
-  protected final String TEXT_3 = " localObject)" + NL + "        throws ccm.local.Components.ExceededConnectionLimit, " + NL + "               ccm.local.Components.InvalidConnection" + NL + "    {" + NL + "        // TODO: implement template! " + NL + "        throw new ccm.local.Components.InvalidConnection();     " + NL + "    }" + NL + "" + NL + "    public ";
+  protected final String TEXT_3 = " localObject)" + NL + "        throws ccm.local.Components.ExceededConnectionLimit, " + NL + "               ccm.local.Components.InvalidConnection" + NL + "    {" + NL + "        logger.fine(\"obj = \" + localObject);" + NL + "        // TODO: implement template! " + NL + "        throw new ccm.local.Components.InvalidConnection();     " + NL + "    }" + NL + "" + NL + "    public ";
   protected final String TEXT_4 = " disconnect_";
-  protected final String TEXT_5 = "(ccm.local.Components.Cookie ck)" + NL + "        throws ccm.local.Components.InvalidConnection" + NL + "    {" + NL + "        // TODO: implement template! " + NL + "        throw new ccm.local.Components.InvalidConnection();" + NL + "    }" + NL + "" + NL + "    public ";
+  protected final String TEXT_5 = "(ccm.local.Components.Cookie ck)" + NL + "        throws ccm.local.Components.InvalidConnection" + NL + "    {" + NL + "        logger.fine(\"ck = \" + ck);" + NL + "        // TODO: implement template! " + NL + "        throw new ccm.local.Components.InvalidConnection();" + NL + "    }" + NL + "" + NL + "    public ";
   protected final String TEXT_6 = "[] get_connections_";
-  protected final String TEXT_7 = "()" + NL + "    {" + NL + "        // TODO: implement template! " + NL + "        return null;" + NL + "    }";
+  protected final String TEXT_7 = "()" + NL + "    {" + NL + "        logger.fine(\"\")" + NL + "        // TODO: implement template! " + NL + "        return null;" + NL + "    }";
 
   public String generate(Object argument)
   {

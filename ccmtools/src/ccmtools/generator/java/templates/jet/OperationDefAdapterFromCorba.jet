@@ -5,9 +5,10 @@
 <% OperationDef op = (OperationDef) argument;  %>
 
     /** Business delegate method */
-    public <%=op.generateReturnType()%> <%=op.getIdentifier()%> (<%=op.generateParameterDeclarationList()%>) 
+    public <%=op.generateReturnType()%> <%=op.getIdentifier()%>(<%=op.generateParameterDeclarationList()%>) 
         <%=op.generateThrowsStatementFromCorba()%> 
     {
+        logger.fine("");
         try
         {
             <%=op.generateReturnStatement()%> localInterface.<%=op.getIdentifier()%>(<%=op.generateParameterList()%>);
