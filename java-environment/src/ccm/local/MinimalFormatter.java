@@ -9,7 +9,7 @@ public class MinimalFormatter
     public synchronized String format(LogRecord record) 
     {
     	StringBuffer buffer = new StringBuffer();
-    	buffer.append("[").append(record.getLevel()).append("] ");
+    	buffer.append("[CCM:").append(record.getLevel()).append("] ");
     	buffer.append(record.getSourceClassName()).append(".");
     	buffer.append(record.getSourceMethodName()).append("()");
     	if(record.getMessage().length() != 0)
