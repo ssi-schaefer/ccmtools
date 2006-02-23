@@ -28,8 +28,8 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     public <%=home.getIdentifier()%>AdapterToCorba()
         throws ccm.local.Components.CCMException
     {
-        logger.fine("");
         this(HOME_DEFAULT_NAME);
+        logger.fine("");
     }
     
     public <%=home.getIdentifier()%>AdapterToCorba(String homeName)

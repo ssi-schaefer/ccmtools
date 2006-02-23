@@ -3,7 +3,7 @@ package ccmtools.generator.java.test.local;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-public class TestSuite
+public class JavaLocalSuite
 	extends TestCase	
 {
 	public static Test suite()

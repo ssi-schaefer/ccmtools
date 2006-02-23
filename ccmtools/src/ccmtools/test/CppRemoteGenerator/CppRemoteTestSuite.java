@@ -3,7 +3,7 @@ package ccmtools.test.CppRemoteGenerator;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-public class TestSuite
+public class CppRemoteTestSuite
 	extends TestCase	
 {
 	public static Test suite()
@@ -11,8 +11,14 @@ public class TestSuite
 		junit.framework.TestSuite suite = 
 			new junit.framework.TestSuite("Remote C++ Components Test Suite");	
 
-		suite.addTest(TypesTest.suite());
-		suite.addTest(SimpleTest.suite());
+		suite.addTest(ComponentTest.suite());
+		
+		suite.addTest(SupportsTest.suite());
+		
+		suite.addTest(FacetTest.suite());
+		
+		suite.addTest(ReceptacleTest.suite());
+		
 		return suite;
 	}
 }
