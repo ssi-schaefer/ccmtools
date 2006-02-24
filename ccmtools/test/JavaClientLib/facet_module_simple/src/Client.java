@@ -51,18 +51,18 @@ public class Client
 		ccm.local.HomeFinder.instance();
 	    TestHome home = 
 		(TestHome) homeFinder.find_home_by_name("myTestHome");
-
+	    
 	    Test component = home.create();	    
 	    component.configuration_complete();
-
+	    
 	    I2 iface = component.provide_my_facet();
-
+	    
 	    {
 		String s = "1234567890";
 		int size = iface.op1(s);
 		assert(s.length() == size);
 	    }
-
+	    
 	    component.remove();
 	    System.out.println("OK!");
 	}

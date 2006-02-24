@@ -8,6 +8,8 @@ import java.util.logging.*;
 
 public class Client
 {
+    private static final int NUMBER_OF_CALLS = 3;
+
     public static void main(String[] args)
     {
 	// Configure Logger
@@ -36,26 +38,30 @@ public class Client
 	{
 	    System.out.println("Client");
 	    
-	    ccm.local.Components.HomeFinder homeFinder = 
-		ccm.local.HomeFinder.instance();
-	    TestHome home = 
-		(TestHome) homeFinder.find_home_by_name("myTestHome");
-
-	    Test component = home.create();
-	    component.connect_out_port(new client.myI2());
-	    // run the test in the component's ccm_activate() method
-	    component.configuration_complete(); 
-
-	    I2 iface = component.provide_in_port();
-
+	    for(int i = 0; i< NUMBER_OF_CALLS; i++)
 	    {
-		String s = "Hello from the Java Client!";
-		int size = iface.op1(s);
-		assert(s.length() == size);
+		System.out.println("  create, use and remove component #" + i);
+		ccm.local.Components.HomeFinder homeFinder = 
+		    ccm.local.HomeFinder.instance();
+		TestHome home = 
+		    (TestHome) homeFinder.find_home_by_name("myTestHome");
+		
+		Test component = home.create();
+		component.connect_out_port(new client.myI2());
+		// run the test in the component's ccm_activate() method
+		component.configuration_complete(); 
+		
+		I2 iface = component.provide_in_port();
+		
+		{
+		    String s = "Hello from the Java Client!";
+		    int size = iface.op1(s);
+		    assert(s.length() == size);
+		}
+		
+		component.disconnect_out_port();
+		component.remove();
 	    }
-
-	    component.disconnect_out_port();
-	    component.remove();
 	    System.out.println("OK!");
 	}
 	catch (Exception e)
