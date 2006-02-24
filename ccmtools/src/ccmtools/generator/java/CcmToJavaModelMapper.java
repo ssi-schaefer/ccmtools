@@ -215,16 +215,6 @@ public class CcmToJavaModelMapper
 			{
 				out.getSupports().add(transform((MSupportsDef)i.next())); 
 			}
-			// Transform provided interfaces
-//			for(Iterator i = in.getFacets().iterator(); i.hasNext(); )
-//			{
-//				out.getFacet().add(transform((MProvidesDef)i.next())); 
-//			}
-			// Transform used interfaces
-//			for(Iterator i = in.getReceptacles().iterator(); i.hasNext(); )
-//			{
-//				out.getReceptacle().add(transform((MUsesDef)i.next())); 
-//			}
 			artifactCache.put(repoId, out);
 		}
 		return out;
