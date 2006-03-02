@@ -92,6 +92,7 @@ public class JavaLocalComponentGenerator
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			throw new CcmtoolsException("Error in JavaLocalComponentGenerator: " + e.getMessage());
 		}
 		logger.fine("leave generate()");

@@ -158,10 +158,11 @@ public class InterfaceDef
 	public List generateClientLibSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		
 		SourceFile adapterToCorba = 
-			new SourceFile(remotePackageName, getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());		
+			new SourceFile(localPackageName, getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());		
 		sourceFileList.add(adapterToCorba);
 
 		SourceFile adapterFromCorba = 

@@ -11,7 +11,6 @@
 
 package <%= iface.generateJavaNamespace() %>;
                  
-import ccm.local.Components.*;
  
 /** 
  * Java interface declaration (based on the corresponding IDL interface).

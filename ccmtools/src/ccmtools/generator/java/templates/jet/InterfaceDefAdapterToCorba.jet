@@ -9,7 +9,7 @@
  * DO NOT EDIT!
  */
 
-package <%= iface.generateJavaRemoteNamespace() %>;
+package <%= iface.generateJavaNamespace() %>;
    
 import java.util.logging.Logger;
 import ccm.local.ServiceLocator;

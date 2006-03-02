@@ -39,7 +39,7 @@ public class ProvidesDefEquivalentMethodAdapterToCorbaTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(provides.getInterface().generateAbsoluteJavaRemoteName());
+    stringBuffer.append(provides.getInterface().generateAbsoluteJavaName());
     stringBuffer.append(TEXT_7);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_8);

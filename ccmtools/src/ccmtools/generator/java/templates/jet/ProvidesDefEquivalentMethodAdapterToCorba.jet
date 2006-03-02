@@ -10,7 +10,7 @@
         if(<%=provides.getIdentifier()%> == null)
         {
             <%=provides.getIdentifier()%> = 
-                new <%=provides.getInterface().generateAbsoluteJavaRemoteName()%>AdapterToCorba(remoteInterface.provide_<%=provides.getIdentifier()%>());
+                new <%=provides.getInterface().generateAbsoluteJavaName()%>AdapterToCorba(remoteInterface.provide_<%=provides.getIdentifier()%>());
         }
         return <%=provides.getIdentifier()%>;
     }

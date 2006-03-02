@@ -4,7 +4,6 @@
 %>
 <% OperationDef op = (OperationDef) argument;  %>
 
-    /** Business delegate method */
     public <%=op.generateReturnType()%> <%=op.getIdentifier()%>(<%=op.generateParameterDeclarationList()%>) 
         <%=op.generateThrowsStatementLocal()%> 
     {

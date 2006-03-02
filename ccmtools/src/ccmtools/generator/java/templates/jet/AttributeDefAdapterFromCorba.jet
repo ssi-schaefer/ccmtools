@@ -4,7 +4,6 @@
 %>
 <% AttributeDef attr = (AttributeDef) argument;  %>
 
-    /** Business delegate attribute */
     public <%=attr.getType().generateJavaMapping()%> <%=attr.getIdentifier()%>()
     {
         try

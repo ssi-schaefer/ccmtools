@@ -23,7 +23,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     public static final String HOME_DEFAULT_NAME = "<%=home.getIdentifier()%>:1.0";
 
     /** CORBA reference to the remote home */
-    private <%=home.generateAbsoluteIdlName()%> remoteHome;
+    private String homeName;
     
     public <%=home.getIdentifier()%>AdapterToCorba()
         throws ccm.local.Components.CCMException
@@ -36,16 +36,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
         throws ccm.local.Components.CCMException
     {
         logger.fine("homeName = " + homeName);
-        try
-        {
-        	Components.CCMHome ccmHome = 
-        	    ccm.local.ServiceLocator.instance().findCCMHome(homeName);
-        	remoteHome = <%=home.generateAbsoluteIdlName()%>Helper.narrow(ccmHome);
-        }
-        catch(java.lang.Exception e)
-        {
-            throw new ccm.local.Components.CCMException(e.getMessage());
-        }
+        this.homeName = homeName;
     }
     
     
@@ -55,6 +46,10 @@ public class <%=home.getIdentifier()%>AdapterToCorba
         logger.fine("");
         try
         {
+        	Components.CCMHome ccmHome = 
+        	    ccm.local.ServiceLocator.instance().findCCMHome(homeName);
+        	<%=home.generateAbsoluteIdlName()%>  remoteHome = 
+        	    <%=home.generateAbsoluteIdlName()%>Helper.narrow(ccmHome);
             return new <%=home.getComponent().generateAbsoluteJavaName()%>AdapterToCorba(remoteHome.create());        
         }
         catch(java.lang.Exception e)

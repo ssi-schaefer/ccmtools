@@ -39,7 +39,7 @@ public class InterfaceDefAdapterToCorbaTemplate
     stringBuffer.append(TEXT_1);
     stringBuffer.append( iface.generateCcmtoolsVersion());
     stringBuffer.append(TEXT_2);
-    stringBuffer.append( iface.generateJavaRemoteNamespace() );
+    stringBuffer.append( iface.generateJavaNamespace() );
     stringBuffer.append(TEXT_3);
     stringBuffer.append(iface.getIdentifier());
     stringBuffer.append(TEXT_4);

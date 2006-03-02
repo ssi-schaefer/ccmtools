@@ -19,12 +19,12 @@ public class HomeDefAdapterToCorbaTemplate
   protected final String TEXT_3 = ";" + NL + "" + NL + "import java.util.logging.Logger;" + NL + "import ccm.local.ServiceLocator;" + NL + "" + NL + "           " + NL + "public class ";
   protected final String TEXT_4 = "AdapterToCorba" + NL + "    implements ";
   protected final String TEXT_5 = NL + "{" + NL + "    private Logger logger = ServiceLocator.instance().getLogger();" + NL + "    " + NL + "    public static final String HOME_DEFAULT_NAME = \"";
-  protected final String TEXT_6 = ":1.0\";" + NL + "" + NL + "    /** CORBA reference to the remote home */" + NL + "    private ";
-  protected final String TEXT_7 = " remoteHome;" + NL + "    " + NL + "    public ";
-  protected final String TEXT_8 = "AdapterToCorba()" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        this(HOME_DEFAULT_NAME);" + NL + "        logger.fine(\"\");" + NL + "    }" + NL + "    " + NL + "    public ";
-  protected final String TEXT_9 = "AdapterToCorba(String homeName)" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        logger.fine(\"homeName = \" + homeName);" + NL + "        try" + NL + "        {" + NL + "        \tComponents.CCMHome ccmHome = " + NL + "        \t    ccm.local.ServiceLocator.instance().findCCMHome(homeName);" + NL + "        \tremoteHome = ";
-  protected final String TEXT_10 = "Helper.narrow(ccmHome);" + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    " + NL + "    public ";
-  protected final String TEXT_11 = " create()" + NL + "        throws ccm.local.Components.CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {" + NL + "            return new ";
+  protected final String TEXT_6 = ":1.0\";" + NL + "" + NL + "    /** CORBA reference to the remote home */" + NL + "    private String homeName;" + NL + "    " + NL + "    public ";
+  protected final String TEXT_7 = "AdapterToCorba()" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        this(HOME_DEFAULT_NAME);" + NL + "        logger.fine(\"\");" + NL + "    }" + NL + "    " + NL + "    public ";
+  protected final String TEXT_8 = "AdapterToCorba(String homeName)" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        logger.fine(\"homeName = \" + homeName);" + NL + "        this.homeName = homeName;" + NL + "    }" + NL + "    " + NL + "    " + NL + "    public ";
+  protected final String TEXT_9 = " create()" + NL + "        throws ccm.local.Components.CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {" + NL + "        \tComponents.CCMHome ccmHome = " + NL + "        \t    ccm.local.ServiceLocator.instance().findCCMHome(homeName);" + NL + "        \t";
+  protected final String TEXT_10 = "  remoteHome = " + NL + "        \t    ";
+  protected final String TEXT_11 = "Helper.narrow(ccmHome);" + NL + "            return new ";
   protected final String TEXT_12 = "AdapterToCorba(remoteHome.create());        " + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CreateFailure();" + NL + "        }" + NL + "    } " + NL + "    " + NL + "    public ccm.local.Components.CCMObject create_component()" + NL + "        throws ccm.local.Components.CCMException, ccm.local.Components.CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return (ccm.local.Components.CCMObject)create();" + NL + "    }" + NL + "    " + NL + "    " + NL + "    public void remove_component(ccm.local.Components.CCMObject component)" + NL + "        throws ccm.local.Components.CCMException, ccm.local.Components.RemoveFailure" + NL + "    {" + NL + "        logger.fine(\"component = \" + component);" + NL + "        throw new RuntimeException(\"Not Implemented\");" + NL + "    }" + NL + "}";
 
   public String generate(Object argument)
@@ -42,15 +42,15 @@ public class HomeDefAdapterToCorbaTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(home.generateAbsoluteIdlName());
+    stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_7);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(home.getIdentifier());
+    stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
     stringBuffer.append(TEXT_9);
     stringBuffer.append(home.generateAbsoluteIdlName());
     stringBuffer.append(TEXT_10);
-    stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
+    stringBuffer.append(home.generateAbsoluteIdlName());
     stringBuffer.append(TEXT_11);
     stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
     stringBuffer.append(TEXT_12);

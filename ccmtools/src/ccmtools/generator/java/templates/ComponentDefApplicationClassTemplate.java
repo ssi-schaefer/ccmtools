@@ -20,16 +20,22 @@ public class ComponentDefApplicationClassTemplate
   protected final String TEXT_3 = " component business logic." + NL + " *" + NL + " * // TODO: WRITE YOUR DESCRIPTION HERE !" + NL + " *" + NL + " * @author" + NL + " * @version" + NL + " */" + NL + "" + NL + "package ";
   protected final String TEXT_4 = ";" + NL + "   " + NL + "/**" + NL + " * This class implements component equivalent and supported interfaces" + NL + " * as well as component attributes." + NL + " * Additionally, session component callback methods must be implemented." + NL + " *" + NL + " * // TODO: WRITE YOUR DESCRIPTION HERE !" + NL + " *" + NL + " * @author" + NL + " * @version" + NL + " */   " + NL + "public class ";
   protected final String TEXT_5 = "Impl " + NL + "    implements ";
-  protected final String TEXT_6 = NL + "{" + NL + "    /** Component attribute variables */" + NL + "    ";
+  protected final String TEXT_6 = NL + "{" + NL + "    /** Supported interface attribute variables */" + NL;
   protected final String TEXT_7 = NL;
-  protected final String TEXT_8 = " " + NL + "" + NL + "    public ";
-  protected final String TEXT_9 = "_Context ctx;" + NL + "    " + NL + "    " + NL + "    public ";
-  protected final String TEXT_10 = "Impl()" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL;
-  protected final String TEXT_11 = NL;
-  protected final String TEXT_12 = "    " + NL + "" + NL + "" + NL + "    /** Facet implementation factory methods */" + NL + "    ";
+  protected final String TEXT_8 = "    " + NL + "    " + NL + "" + NL + "    /** Component attribute variables */" + NL + "    ";
+  protected final String TEXT_9 = NL;
+  protected final String TEXT_10 = " " + NL + "" + NL + "    public ";
+  protected final String TEXT_11 = "_Context ctx;" + NL + "    " + NL + "    " + NL + "    public ";
+  protected final String TEXT_12 = "Impl()" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface constants */" + NL + "    " + NL + "    " + NL + "    " + NL + "" + NL + "    /** Supported interface attributes */";
   protected final String TEXT_13 = NL;
-  protected final String TEXT_14 = "    " + NL + "" + NL + "    /** Component callback methods */" + NL + "    " + NL + "    public void set_session_context(ccm.local.Components.SessionContext ctx) " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        this.ctx = (";
-  protected final String TEXT_15 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "}";
+  protected final String TEXT_14 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */";
+  protected final String TEXT_15 = NL;
+  protected final String TEXT_16 = "    " + NL + "" + NL + "" + NL + "    /** Component attribute accessor methods */" + NL;
+  protected final String TEXT_17 = NL;
+  protected final String TEXT_18 = "    " + NL + "" + NL + "" + NL + "    /** Facet implementation factory methods */" + NL + "    ";
+  protected final String TEXT_19 = NL;
+  protected final String TEXT_20 = "    " + NL + "" + NL + "    /** Component callback methods */" + NL + "    " + NL + "    public void set_session_context(ccm.local.Components.SessionContext ctx) " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        this.ctx = (";
+  protected final String TEXT_21 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "}";
 
   public String generate(Object argument)
   {
@@ -47,44 +53,89 @@ public class ComponentDefApplicationClassTemplate
     stringBuffer.append(component.generateCcmIdentifier());
     stringBuffer.append(TEXT_6);
     
-for(Iterator i=component.getAttributes().iterator(); i.hasNext();)
+for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
-    AttributeDef attr = (AttributeDef)i.next();
+    SupportsDef supports = (SupportsDef)i.next();
+    for(Iterator j = supports.getInterface().getAttributes().iterator(); j.hasNext();)
+    {
+    	AttributeDef attr = (AttributeDef)j.next();
 
     stringBuffer.append(TEXT_7);
     stringBuffer.append(attr.generateApplicationDeclaration());
     
+	}
 }
 
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(component.generateAbsoluteJavaCcmName());
+    
+for(Iterator i=component.getAttributes().iterator(); i.hasNext();)
+{
+    AttributeDef attr = (AttributeDef)i.next();
+
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(component.getIdentifier());
+    stringBuffer.append(attr.generateApplicationDeclaration());
+    
+}
+
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(component.generateAbsoluteJavaCcmName());
+    stringBuffer.append(TEXT_11);
+    stringBuffer.append(component.getIdentifier());
+    stringBuffer.append(TEXT_12);
+    
+for(Iterator i = component.getSupports().iterator(); i.hasNext();)
+{
+    SupportsDef supports = (SupportsDef)i.next();
+    for(Iterator j = supports.getInterface().getAttributes().iterator(); j.hasNext();)
+    {
+    	AttributeDef attr = (AttributeDef)j.next();
+
+    stringBuffer.append(TEXT_13);
+    stringBuffer.append(attr.generateApplicationImplementation());
+    
+	}
+}
+
+    stringBuffer.append(TEXT_14);
+    
+for(Iterator i = component.getSupports().iterator(); i.hasNext();)
+{
+    SupportsDef supports = (SupportsDef)i.next();
+    for(Iterator j = supports.getInterface().getOperation().iterator(); j.hasNext();)
+    {
+    	OperationDef op = (OperationDef)j.next();
+
+    stringBuffer.append(TEXT_15);
+    stringBuffer.append(op.generateApplicationImplementation());
+    
+	}
+}
+
+    stringBuffer.append(TEXT_16);
     
 for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 
-    stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_17);
     stringBuffer.append(attr.generateApplicationImplementation());
     
 }
 
-    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_18);
     
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 
-    stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_19);
     stringBuffer.append(provides.generateGetMethodImplementation());
     
 }
 
-    stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_20);
     stringBuffer.append(component.generateAbsoluteJavaCcmName());
-    stringBuffer.append(TEXT_15);
+    stringBuffer.append(TEXT_21);
     return stringBuffer.toString();
   }
 }
