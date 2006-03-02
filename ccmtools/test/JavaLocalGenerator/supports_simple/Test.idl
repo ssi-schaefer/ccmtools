@@ -1,0 +1,19 @@
+
+module world 
+{
+
+  interface IFace
+  {
+    long op1(in string str);
+  };
+  
+  component Test
+     supports IFace
+  {
+  };
+  
+  home TestHome manages Test
+  {
+  };
+
+};
