@@ -59,30 +59,76 @@ public class Code
 	 *
 	 * @throws CcmtoolsException
 	 */
-	public static void writeSourceCodeFiles(Driver uiDriver, String outDir, List sourceFileList) 
-		throws CcmtoolsException
+	public static void writeSourceCodeFiles(Driver uiDriver, String outDir, List sourceFileList)
+			throws CcmtoolsException
 	{
-		for (Iterator i = sourceFileList.iterator(); i.hasNext();)
+		try
 		{
-			SourceFile source = (SourceFile) i.next();
-			File location = new File(outDir, source.getPackageName());
-			File file = new File(location, source.getClassName());
-			uiDriver.println("> write " + file);
-			try
+			for (Iterator i = sourceFileList.iterator(); i.hasNext();)
 			{
-				if (!location.isDirectory())
-				{
-					location.mkdirs();
-				}
-				FileWriter writer = new FileWriter(file);
-				writer.write(source.getCode(), 0, source.getCode().length());
-				writer.close();
-			}
-			catch (IOException e)
-			{
-				throw new CcmtoolsException("writeCode(): " + e.getMessage());
+				SourceFile source = (SourceFile) i.next();
+				writeJavaSourceFile(uiDriver, outDir, source, "");
 			}
 		}
+		catch (IOException e)
+		{
+			throw new CcmtoolsException("writeCode(): " + e.getMessage());
+		}
+	}
+
+	
+	public static void writeJavaApplicationFiles(Driver uiDriver, String outDir, List sourceFileList)
+			throws CcmtoolsException
+	{
+		try
+		{
+			for (Iterator i = sourceFileList.iterator(); i.hasNext();)
+			{
+				SourceFile source = (SourceFile) i.next();
+				
+				File location = new File(outDir, source.getPackageName());			
+				File file = new File(location, source.getClassName());
+				if(file.exists())
+				{
+					uiDriver.println("WARNING " + file + " already exists!");
+					writeJavaSourceFile(uiDriver, outDir, source, ".new");
+				}
+				else
+				{
+					writeJavaSourceFile(uiDriver, outDir, source, "");
+				}
+			}
+		}
+		catch (IOException e)
+		{
+			throw new CcmtoolsException("writeCode(): " + e.getMessage());
+		}
+	}
+	
+	
+	public static void writeJavaSourceFile(Driver uiDriver, String outDir, SourceFile source, 
+											String suffix)
+		throws IOException
+	{
+		File location = new File(outDir, source.getPackageName());
+		File file = new File(location, source.getClassName() + suffix);
+		String sourceCode = source.getCode()+"\n";
+
+		if(compareWithFile(sourceCode, file))
+		{
+			uiDriver.println("skipping " + file);
+		}
+		else
+		{
+			uiDriver.println("writing " + file);
+			if (!location.isDirectory())
+			{
+				location.mkdirs();
+			}
+			FileWriter writer = new FileWriter(file);
+			writer.write(source.getCode(), 0, source.getCode().length());
+			writer.close();
+		}		
 	}
 	
 	
@@ -215,8 +261,8 @@ public class Code
             while((line = reader.readLine()) != null) {
                 buffer.append(line + "\n");
             }
-            //System.out.println(">>>>" + code + "<<<<");
-            //System.out.println(">>>>" + buffer + "<<<<");
+//            System.out.println(">>>>" + code + "<<<<");
+//            System.out.println(">>>>" + buffer + "<<<<");
             return code.equals(buffer.toString());
         }
         return false;

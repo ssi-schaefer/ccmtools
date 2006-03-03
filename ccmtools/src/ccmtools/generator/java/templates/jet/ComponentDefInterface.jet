@@ -14,43 +14,6 @@ package <%=component.generateJavaNamespace()%>;
 public interface <%=component.getIdentifier()%> 
     extends ccm.local.Components.CCMObject<%=component.generateSupportsDeclarations()%>
 {
-    /** Supported interface constants */
-    
-    
-    
-
-    /** Supported interface attributes */
-<%
-for(Iterator i = component.getSupports().iterator(); i.hasNext();)
-{
-    SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getAttributes().iterator(); j.hasNext();)
-    {
-    	AttributeDef attr = (AttributeDef)j.next();
-%>
-<%=attr.generateDeclaration()%>
-<%
-	}
-}
-%>    
-    
-    
-    /** Supported interface methods */
-<%
-for(Iterator i = component.getSupports().iterator(); i.hasNext();)
-{
-    SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getOperation().iterator(); j.hasNext();)
-    {
-    	OperationDef op = (OperationDef)j.next();
-%>
-<%=op.generateDeclaration()%>
-<%
-	}
-}
-%>    
-
-
     /** Attribute equivalent methods */
 <%
 for(Iterator i = component.getAttributes().iterator(); i.hasNext();)

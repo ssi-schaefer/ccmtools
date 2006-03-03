@@ -19,7 +19,6 @@ public class HomeDefFactoryApplicationTemplate
   protected final String TEXT_3 = ";" + NL + "       " + NL + "public class ";
   protected final String TEXT_4 = "Factory " + NL + "{" + NL + "    public static ccm.local.Components.HomeExecutorBase create()" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        return new ";
   protected final String TEXT_5 = "Impl();" + NL + "    }" + NL + "}";
-  protected final String TEXT_6 = NL;
 
   public String generate(Object argument)
   {
@@ -34,7 +33,6 @@ public class HomeDefFactoryApplicationTemplate
     stringBuffer.append(TEXT_4);
     stringBuffer.append(home.generateAbsoluteJavaName());
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(TEXT_6);
     return stringBuffer.toString();
   }
 }

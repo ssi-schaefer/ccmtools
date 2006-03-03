@@ -255,7 +255,7 @@ public class CcmToJavaModelMapper
 				}
 				else if (child instanceof MOperationDef)
 				{
-					out.getOperation().add(transform((MOperationDef)child));
+					out.getOperations().add(transform((MOperationDef)child));
 				}
 			}
 			artifactCache.put(repoId, out);

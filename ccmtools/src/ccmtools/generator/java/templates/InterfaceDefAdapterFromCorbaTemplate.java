@@ -22,16 +22,13 @@ public class InterfaceDefAdapterFromCorbaTemplate
   protected final String TEXT_5 = "POA" + NL + "{" + NL + "    private Logger logger = ServiceLocator.instance().getLogger();" + NL + "    " + NL + "    /** Java reference to the local interface */" + NL + "    private ";
   protected final String TEXT_6 = " localInterface;" + NL + "\t" + NL + "    public ";
   protected final String TEXT_7 = "AdapterFromCorba(";
-  protected final String TEXT_8 = " receptacle)" + NL + "    {" + NL + "        logger.fine(\"receptacle = \" + receptacle + \")\");" + NL + "        this.localInterface = receptacle;" + NL + "    }    \t" + NL;
+  protected final String TEXT_8 = " receptacle)" + NL + "    {" + NL + "        logger.fine(\"receptacle = \" + receptacle + \")\");" + NL + "        this.localInterface = receptacle;" + NL + "    }    \t" + NL + NL;
   protected final String TEXT_9 = "    ";
   protected final String TEXT_10 = NL;
-  protected final String TEXT_11 = "    ";
-  protected final String TEXT_12 = NL;
-  protected final String TEXT_13 = "    ";
-  protected final String TEXT_14 = NL;
-  protected final String TEXT_15 = "    ";
-  protected final String TEXT_16 = NL;
-  protected final String TEXT_17 = NL + "}";
+  protected final String TEXT_11 = NL + NL;
+  protected final String TEXT_12 = "    ";
+  protected final String TEXT_13 = NL;
+  protected final String TEXT_14 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -53,55 +50,29 @@ public class InterfaceDefAdapterFromCorbaTemplate
     stringBuffer.append(iface.generateAbsoluteJavaName());
     stringBuffer.append(TEXT_8);
      
-for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
+for(Iterator i=iface.getAllAttributes().iterator(); i.hasNext();)
 {
-	InterfaceDef baseIface = (InterfaceDef)i.next();
-	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
-	{
-        AttributeDef attr = (AttributeDef)j.next();
+    AttributeDef attr = (AttributeDef)i.next();
 
     stringBuffer.append(TEXT_9);
     stringBuffer.append(TEXT_10);
     stringBuffer.append(attr.generateAdapterFromCorba());
     
-    }
-} 
- 
-for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
-{
-    AttributeDef attr = (AttributeDef)i.next();
+}
 
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(TEXT_12);
-    stringBuffer.append(attr.generateAdapterFromCorba());
-    
-}
-               
-for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
-{
-	InterfaceDef baseIface = (InterfaceDef)i.next();
-	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
-	{
-        OperationDef op = (OperationDef)j.next();
-
-    stringBuffer.append(TEXT_13);
-    stringBuffer.append(TEXT_14);
-    stringBuffer.append(op.generateAdapterFromCorba());
-    
-    }
-}
-
-for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
+                   
+for(Iterator i=iface.getAllOperations().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 
-    stringBuffer.append(TEXT_15);
-    stringBuffer.append(TEXT_16);
+    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_13);
     stringBuffer.append(op.generateAdapterFromCorba());
     
 }
 
-    stringBuffer.append(TEXT_17);
+    stringBuffer.append(TEXT_14);
     return stringBuffer.toString();
   }
 }

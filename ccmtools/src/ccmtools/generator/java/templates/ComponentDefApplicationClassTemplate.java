@@ -26,9 +26,9 @@ public class ComponentDefApplicationClassTemplate
   protected final String TEXT_9 = NL;
   protected final String TEXT_10 = " " + NL + "" + NL + "    public ";
   protected final String TEXT_11 = "_Context ctx;" + NL + "    " + NL + "    " + NL + "    public ";
-  protected final String TEXT_12 = "Impl()" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface constants */" + NL + "    " + NL + "    " + NL + "    " + NL + "" + NL + "    /** Supported interface attributes */";
+  protected final String TEXT_12 = "Impl()" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
   protected final String TEXT_13 = NL;
-  protected final String TEXT_14 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */";
+  protected final String TEXT_14 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */" + NL + "    ";
   protected final String TEXT_15 = NL;
   protected final String TEXT_16 = "    " + NL + "" + NL + "" + NL + "    /** Component attribute accessor methods */" + NL;
   protected final String TEXT_17 = NL;
@@ -56,7 +56,7 @@ public class ComponentDefApplicationClassTemplate
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getAttributes().iterator(); j.hasNext();)
+    for(Iterator j = supports.getInterface().getAllAttributes().iterator(); j.hasNext();)
     {
     	AttributeDef attr = (AttributeDef)j.next();
 
@@ -86,7 +86,7 @@ for(Iterator i=component.getAttributes().iterator(); i.hasNext();)
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getAttributes().iterator(); j.hasNext();)
+    for(Iterator j = supports.getInterface().getAllAttributes().iterator(); j.hasNext();)
     {
     	AttributeDef attr = (AttributeDef)j.next();
 
@@ -101,7 +101,7 @@ for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getOperation().iterator(); j.hasNext();)
+    for(Iterator j = supports.getInterface().getAllOperations().iterator(); j.hasNext();)
     {
     	OperationDef op = (OperationDef)j.next();
 

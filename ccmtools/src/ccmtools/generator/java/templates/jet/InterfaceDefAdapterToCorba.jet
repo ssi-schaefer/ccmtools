@@ -33,19 +33,7 @@ public class <%=iface.getIdentifier()%>AdapterToCorba
     }
 
 <%
-for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
-{
-	InterfaceDef baseIface = (InterfaceDef)i.next();
-	for(Iterator j=baseIface.getAttributes().iterator(); j.hasNext(); )
-	{
-        AttributeDef attr = (AttributeDef)j.next();
-%>    
-<%=attr.generateAdapterToCorba()%>
-<%
-    }
-}
-
-for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
+for(Iterator i=iface.getAllAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 %>
@@ -55,19 +43,7 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 %>
 
 <%
-for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
-{
-	InterfaceDef baseIface = (InterfaceDef)i.next();
-	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
-	{
-        OperationDef op = (OperationDef)j.next();
-%>    
-<%=op.generateAdapterToCorba()%>
-<%
-    }
-}
-
-for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
+for(Iterator i=iface.getAllOperations().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 %>

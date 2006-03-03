@@ -65,7 +65,7 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_10);
     
-for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
+for(Iterator i=iface.getOperations().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 

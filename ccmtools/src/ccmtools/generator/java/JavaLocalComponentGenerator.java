@@ -81,11 +81,6 @@ public class JavaLocalComponentGenerator
 					sourceFileList.addAll(javaHome.generateLocalInterfaceSourceFiles());
 					sourceFileList.addAll(javaHome.generateLocalComponentSourceFiles());
 				}
-//				for (Iterator j = javaModel.findAllGlobalConstants().iterator(); j.hasNext();)
-//				{
-//					ConstantDef javaConstant = (ConstantDef) j.next();
-//					sourceFileList.addAll(javaConstant.generateClientLibSourceFiles());
-//				}
 				// Save all source file objects
 				Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 			}

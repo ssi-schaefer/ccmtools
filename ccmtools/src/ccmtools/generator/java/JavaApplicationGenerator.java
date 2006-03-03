@@ -79,7 +79,7 @@ public class JavaApplicationGenerator
 					sourceFileList.addAll(javaHome.generateApplicationSourceFiles());
 				}
 				// Save all source file objects
-				Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+				Code.writeJavaApplicationFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 			}
 		}
 		catch (Exception e)

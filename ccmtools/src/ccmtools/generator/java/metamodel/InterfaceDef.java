@@ -32,16 +32,55 @@ public class InterfaceDef
 	{
 		return constants;
 	}
-			
+	
+	public List getAllConstants()
+	{
+		List allConstants = new ArrayList();
+		for(Iterator i = getBaseInterfaces().iterator(); i.hasNext();)
+		{
+			InterfaceDef iface = (InterfaceDef)i.next();
+			allConstants.addAll(iface.getAllConstants());			
+		}
+		allConstants.addAll(getConstants());
+		return allConstants;
+	}
+	
+	
 	public List getAttributes()
 	{
 		return attribute;
 	}
 
-	public List getOperation()
+	public List getAllAttributes()
+	{
+		List allAttributes = new ArrayList();
+		for(Iterator i = getBaseInterfaces().iterator(); i.hasNext();)
+		{
+			InterfaceDef iface = (InterfaceDef)i.next();
+			allAttributes.addAll(iface.getAllAttributes());
+		}
+		allAttributes.addAll(getAttributes());
+		return allAttributes;
+	}
+	
+	
+	public List getOperations()
 	{
 		return operation;
 	}	
+	
+	public List getAllOperations()
+	{
+		List allOperations = new ArrayList();
+		for(Iterator i = getBaseInterfaces().iterator(); i.hasNext();)
+		{
+			InterfaceDef iface = (InterfaceDef)i.next();
+			allOperations.addAll(iface.getAllOperations());
+		}		
+		allOperations.addAll(getOperations());
+		return allOperations;
+	}
+	
 	
 	public List getBaseInterfaces()
 	{

@@ -28,7 +28,7 @@ public class ComponentDefAdapterLocalTemplate
   protected final String TEXT_11 = "  " + NL + "\t\t" + NL + "\t\t" + NL + "    protected ";
   protected final String TEXT_12 = "Adapter()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "    }" + NL + "\t" + NL + "    public ";
   protected final String TEXT_13 = "Adapter(";
-  protected final String TEXT_14 = " localInterface)" + NL + "    {" + NL + "        logger.fine(\"localInterface = \" + localInterface);" + NL + "        this.localInterface = localInterface;" + NL + "    }" + NL + "\t" + NL + "\t" + NL + "\t" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface constants */" + NL + "    " + NL + "    " + NL + "    " + NL + "" + NL + "    /** Supported interface attributes */";
+  protected final String TEXT_14 = " localInterface)" + NL + "    {" + NL + "        logger.fine(\"localInterface = \" + localInterface);" + NL + "        this.localInterface = localInterface;" + NL + "    }" + NL + "\t" + NL + "\t" + NL + "\t" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */";
   protected final String TEXT_15 = NL;
   protected final String TEXT_16 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */";
   protected final String TEXT_17 = NL;
@@ -98,7 +98,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getAttributes().iterator(); j.hasNext();)
+    for(Iterator j = supports.getInterface().getAllAttributes().iterator(); j.hasNext();)
     {
     	AttributeDef attr = (AttributeDef)j.next();
 
@@ -113,7 +113,7 @@ for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getOperation().iterator(); j.hasNext();)
+    for(Iterator j = supports.getInterface().getAllOperations().iterator(); j.hasNext();)
     {
     	OperationDef op = (OperationDef)j.next();
 

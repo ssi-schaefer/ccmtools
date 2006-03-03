@@ -12,47 +12,8 @@
 package <%=component.generateJavaNamespace()%>;
                  
 public interface <%=component.generateCcmIdentifier()%> 
-    extends ccm.local.Components.SessionComponent
+    extends ccm.local.Components.SessionComponent<%=component.generateSupportsCcmDeclarations()%>
 {
-    /** Supported interface constants */
-    
-    
-    
-
-    /** Supported interface attributes */
-<%
-for(Iterator i = component.getSupports().iterator(); i.hasNext();)
-{
-    SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getAttributes().iterator(); j.hasNext();)
-    {
-    	AttributeDef attr = (AttributeDef)j.next();
-%>
-<%=attr.generateDeclaration()%>
-<%
-	}
-}
-%>    
-    
-    
-    /** Supported interface methods */
-<%
-for(Iterator i = component.getSupports().iterator(); i.hasNext();)
-{
-    SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getOperation().iterator(); j.hasNext();)
-    {
-    	OperationDef op = (OperationDef)j.next();
-%>
-<%=op.generateDeclaration()%>
-<%
-	}
-}
-%>    
-
-
-
-
     /** Component attribute accessor methods */
     
 <%

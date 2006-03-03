@@ -50,6 +50,28 @@ public class SupportsTest
     }
     
     
+    public void testSupportsException()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/supports_exceptions test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+    
+    public void testSupportsInheritance()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/supports_inheritance test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+        
     public void testSupportsSimple()
     {
         try {

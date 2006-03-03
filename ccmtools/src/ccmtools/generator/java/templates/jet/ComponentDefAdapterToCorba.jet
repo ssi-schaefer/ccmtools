@@ -70,7 +70,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     }
     
     
-    /** 
+    /* 
      * Supported interface methods 
      */
     
@@ -79,7 +79,7 @@ for(Iterator i=component.getSupports().iterator(); i.hasNext();)
 {
 	SupportsDef supports = (SupportsDef)i.next();
 	InterfaceDef iface = supports.getInterface();
-	for(Iterator j=iface.getAttributes().iterator(); j.hasNext(); )
+	for(Iterator j=iface.getAllAttributes().iterator(); j.hasNext(); )
 	{
         AttributeDef attr = (AttributeDef)j.next();
 %>    
@@ -94,7 +94,7 @@ for(Iterator i=component.getSupports().iterator(); i.hasNext();)
 {
 	SupportsDef supports = (SupportsDef)i.next();
 	InterfaceDef iface = supports.getInterface();
-	for(Iterator j=iface.getOperation().iterator(); j.hasNext(); )
+	for(Iterator j=iface.getAllOperations().iterator(); j.hasNext(); )
 	{
         OperationDef op = (OperationDef)j.next();
 %>    

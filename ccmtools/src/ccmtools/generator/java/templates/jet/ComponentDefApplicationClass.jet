@@ -36,7 +36,7 @@ public class <%=component.getIdentifier()%>Impl
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getAttributes().iterator(); j.hasNext();)
+    for(Iterator j = supports.getInterface().getAllAttributes().iterator(); j.hasNext();)
     {
     	AttributeDef attr = (AttributeDef)j.next();
 %>
@@ -72,17 +72,13 @@ for(Iterator i=component.getAttributes().iterator(); i.hasNext();)
      * Supported interface methods 
      */
 
-    /** Supported interface constants */
-    
-    
-    
-
     /** Supported interface attributes */
+
 <%
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getAttributes().iterator(); j.hasNext();)
+    for(Iterator j = supports.getInterface().getAllAttributes().iterator(); j.hasNext();)
     {
     	AttributeDef attr = (AttributeDef)j.next();
 %>
@@ -94,11 +90,12 @@ for(Iterator i = component.getSupports().iterator(); i.hasNext();)
     
     
     /** Supported interface methods */
+    
 <%
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
-    for(Iterator j = supports.getInterface().getOperation().iterator(); j.hasNext();)
+    for(Iterator j = supports.getInterface().getAllOperations().iterator(); j.hasNext();)
     {
     	OperationDef op = (OperationDef)j.next();
 %>

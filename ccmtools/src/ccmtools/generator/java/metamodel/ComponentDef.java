@@ -94,6 +94,24 @@ public class ComponentDef
 		}
 	}
 	
+	
+	public String generateSupportsCcmDeclarations()
+	{
+		List supportsList = new ArrayList();
+		for(Iterator i=getSupports().iterator(); i.hasNext();)
+		{
+			SupportsDef s = (SupportsDef)i.next();
+			supportsList.add(s.getInterface().generateAbsoluteJavaCcmName());
+		}
+		if(supportsList.size() > 0)
+		{
+			return ", " + Text.joinList(", ", supportsList);
+		}
+		else
+		{
+			return ""; // no supported interfaces
+		}
+	}
 
 	// Generate SourceFile objects --------------------------------------------
 	

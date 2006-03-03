@@ -30,7 +30,7 @@ public class ComponentDefAdapterToCorbaTemplate
   protected final String TEXT_13 = NL + NL + "    /** CORBA references */" + NL + "    private POA componentPoa;" + NL + "    " + NL + "    " + NL + "    public ";
   protected final String TEXT_14 = "AdapterToCorba(";
   protected final String TEXT_15 = " remoteComponent)" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {    " + NL + "        logger.fine(\"remoteComponent = \" + remoteComponent);" + NL + "        this.remoteInterface = remoteComponent;" + NL + "        try" + NL + "        {" + NL + "            componentPoa = ccm.local.ServiceLocator.instance().createSessionComponentPoa(\"";
-  protected final String TEXT_16 = "Poa\");" + NL + "        }" + NL + "        catch(ccm.local.ServiceLocatorException e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** " + NL + "     * Supported interface methods " + NL + "     */" + NL + "    ";
+  protected final String TEXT_16 = "Poa\");" + NL + "        }" + NL + "        catch(ccm.local.ServiceLocatorException e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "    ";
   protected final String TEXT_17 = "    ";
   protected final String TEXT_18 = NL;
   protected final String TEXT_19 = "    " + NL + "    ";
@@ -105,7 +105,7 @@ for(Iterator i=component.getSupports().iterator(); i.hasNext();)
 {
 	SupportsDef supports = (SupportsDef)i.next();
 	InterfaceDef iface = supports.getInterface();
-	for(Iterator j=iface.getAttributes().iterator(); j.hasNext(); )
+	for(Iterator j=iface.getAllAttributes().iterator(); j.hasNext(); )
 	{
         AttributeDef attr = (AttributeDef)j.next();
 
@@ -122,7 +122,7 @@ for(Iterator i=component.getSupports().iterator(); i.hasNext();)
 {
 	SupportsDef supports = (SupportsDef)i.next();
 	InterfaceDef iface = supports.getInterface();
-	for(Iterator j=iface.getOperation().iterator(); j.hasNext(); )
+	for(Iterator j=iface.getAllOperations().iterator(); j.hasNext(); )
 	{
         OperationDef op = (OperationDef)j.next();
 

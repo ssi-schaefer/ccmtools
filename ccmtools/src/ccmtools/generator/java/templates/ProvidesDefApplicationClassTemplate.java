@@ -122,7 +122,7 @@ for(Iterator i=iface.getAttributes().iterator(); i.hasNext();)
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 {
 	InterfaceDef baseIface = (InterfaceDef)i.next();
-	for(Iterator j=baseIface.getOperation().iterator(); j.hasNext(); )
+	for(Iterator j=baseIface.getOperations().iterator(); j.hasNext(); )
 	{
         OperationDef op = (OperationDef)j.next();
 
@@ -135,7 +135,7 @@ for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_21);
     
-for(Iterator i=iface.getOperation().iterator(); i.hasNext();)
+for(Iterator i=iface.getOperations().iterator(); i.hasNext();)
 {
     OperationDef op = (OperationDef)i.next();
 
