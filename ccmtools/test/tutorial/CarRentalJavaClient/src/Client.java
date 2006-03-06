@@ -4,6 +4,7 @@ import org.omg.CORBA.StringHolder;
 import BigBusiness.ccm.local.*;
 import ccm.local.ServiceLocator;
 
+import java.util.logging.*;
 
 public class Client
 {
@@ -11,6 +12,15 @@ public class Client
 
     public static void main(String[] args)
     {
+	// Configure Logger
+	Logger logger = Logger.getLogger("ccm.local");
+	logger.setLevel(Level.FINE);            
+	Handler handler = new ConsoleHandler();
+	handler.setLevel(Level.ALL);
+	handler.setFormatter(new ccm.local.MinimalFormatter());
+	logger.addHandler(handler);
+	ccm.local.ServiceLocator.instance().setLogger(logger);
+
         try 
 	{
 	    // Set up the ServiceLocator singleton

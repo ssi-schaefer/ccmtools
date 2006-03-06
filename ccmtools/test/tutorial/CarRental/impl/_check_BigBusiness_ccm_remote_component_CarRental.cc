@@ -98,10 +98,10 @@ int main (int argc, char *argv[])
 
     // Provide facets   
     ::BigBusiness::CustomerMaintenance_var maintenance = 
-	myCarRental->provide_maintenance();
+				myCarRental->provide_maintenance();
 
     ::BigBusiness::CustomerBusiness_var business = 
-	myCarRental->provide_business();
+				myCarRental->provide_business();
 
     myCarRental->configuration_complete();
 
@@ -120,7 +120,7 @@ int main (int argc, char *argv[])
     double dollars = business->getCustomerDollars(1); 
 
     cout << " Customer: " << person->first_name 
-	 << " " << person->last_name << endl;
+			 << " " << person->last_name << endl;
     cout << " Miles: " <<  person->mileage << endl;
     cout << " to pay: " << dollars << " Dollars" << endl;
 
