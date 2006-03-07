@@ -126,12 +126,12 @@ public class TestuserTypeImpl
 
 
     public int f7(int t1, 
-		  org.omg.CORBA.IntHolder t2, 
-		  org.omg.CORBA.IntHolder t3)
+		  ccm.local.IntegerHolder t2, 
+		  ccm.local.IntegerHolder t3)
         throws ccm.local.Components.CCMException
     {
-	t3.value = t2.value;
-	t2.value = t1;
-	return t3.value + t1;
+	t3.setValue(t2.getValue());
+	t2.setValue(t1);
+	return t3.getValue() + t1;
     }    
 }

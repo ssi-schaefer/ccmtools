@@ -13,14 +13,7 @@
 package world.europe.austria.ccm.local;
  
 
-import org.omg.CORBA.ShortHolder;
-import org.omg.CORBA.IntHolder;
-import org.omg.CORBA.FloatHolder;
-import org.omg.CORBA.DoubleHolder;
-import org.omg.CORBA.CharHolder;
-import org.omg.CORBA.BooleanHolder;
-import org.omg.CORBA.ByteHolder;
-import org.omg.CORBA.StringHolder;
+import ccm.local.*;
 
 import world.europe.austria.Color;
 import world.europe.austria.ColorHolder;
@@ -63,25 +56,29 @@ public class TestImpl
     public void ccm_activate() 
         throws ccm.local.Components.CCMException
     {
-	System.out.println("Begin Test Case -----");
+
 
 	try 
 	{	
 	    /*
 	     * Test VoidTypeInterface facet
 	     */
+	    System.out.println("Receptacle Void Types Test...");
+
 	    VoidTypeInterface voidType = ctx.get_connection_voidType();
 	    {
 		voidType.f1(7);
 		int result = voidType.f2();
 		assert(result == 7);
 	    }
-
+	    System.out.println("OK!");
 
 
 	    /*
 	     * Test BasicTypeInterface facet
 	     */
+	    System.out.println("Receptacle Basic Types Test...");
+
 	    BasicTypeInterface basicType = ctx.get_connection_basicType();
 	    { // short
 		short p1 = 7;
@@ -90,20 +87,20 @@ public class TestImpl
 		
 		short result = basicType.f1(p1, p2, p3);
 		
-		assert(p2.value == 7);
-		assert(p3.value == 3);
+		assert(p2.getValue() == 7);
+		assert(p3.getValue() == 3);
 		assert(result == 3 + 7);
 	    }
 
 	    { // long
 		int p1 = 7;
-		IntHolder p2 = new IntHolder(3);
-		IntHolder p3 = new IntHolder();
+		IntegerHolder p2 = new IntegerHolder(3);
+		IntegerHolder p3 = new IntegerHolder();
 		
 		int result = basicType.f2(p1, p2, p3);
 		
-		assert(p2.value == 7);
-		assert(p3.value == 3);
+		assert(p2.getValue() == 7);
+		assert(p3.getValue() == 3);
 		assert(result == 3 + 7);
 	    }
 
@@ -114,20 +111,20 @@ public class TestImpl
 		
 		short result = basicType.f3(p1, p2, p3);
 		
-		assert(p2.value == 7);
-		assert(p3.value == 3);
+		assert(p2.getValue() == 7);
+		assert(p3.getValue() == 3);
 		assert(result == 3 + 7);
 	    }
 	    
 	    { // unsigned long
 		int p1 = 7;
-		IntHolder p2 = new IntHolder(3);
-		IntHolder p3 = new IntHolder();
+		IntegerHolder p2 = new IntegerHolder(3);
+		IntegerHolder p3 = new IntegerHolder();
 		
 		int result = basicType.f4(p1, p2, p3);
 		
-		assert(p2.value == 7);
-		assert(p3.value == 3);
+		assert(p2.getValue() == 7);
+		assert(p3.getValue() == 3);
 		assert(result == 3 + 7);
 	    }
 	    
@@ -138,8 +135,8 @@ public class TestImpl
 		
 		float result = basicType.f5(p1, p2, p3);
 		
-		assert(Math.abs(p2.value - 7.0) < 0.001);
-		assert(Math.abs(p3.value - 3.0) < 0.001);
+		assert(Math.abs(p2.getValue() - 7.0) < 0.001);
+		assert(Math.abs(p3.getValue() - 3.0) < 0.001);
 		assert(Math.abs(result - (3.0 + 7.0)) < 0.001);
 	    }
 	    
@@ -150,8 +147,8 @@ public class TestImpl
 		
 		float result = basicType.f5(p1, p2, p3);
 		
-		assert(Math.abs(p2.value - 7.0) < 0.001);
-		assert(Math.abs(p3.value - 3.0) < 0.001);
+		assert(Math.abs(p2.getValue() - 7.0) < 0.001);
+		assert(Math.abs(p3.getValue() - 3.0) < 0.001);
 		assert(Math.abs(result - (3.0 + 7.0)) < 0.001);
 	    }
 	    
@@ -162,20 +159,20 @@ public class TestImpl
 		
 		double result = basicType.f6(p1, p2, p3);
 		
-		assert(Math.abs(p2.value - 7.0) < 0.000001);
-		assert(Math.abs(p3.value - 3.0) < 0.000001);
+		assert(Math.abs(p2.getValue() - 7.0) < 0.000001);
+		assert(Math.abs(p3.getValue() - 3.0) < 0.000001);
 		assert(Math.abs(result - (3.0 + 7.0)) < 0.000001);
 	    }
 	    
 	    { // char
 		char p1 = (char) 7;
-		CharHolder p2 = new CharHolder((char) 3);
-		CharHolder p3 = new CharHolder();
+		CharacterHolder p2 = new CharacterHolder((char) 3);
+		CharacterHolder p3 = new CharacterHolder();
 		
 		char result = basicType.f7(p1, p2, p3);
 		
-		assert(p2.value == (char) 7);
-		assert(p3.value == (char) 3);
+		assert(p2.getValue() == (char) 7);
+		assert(p3.getValue() == (char) 3);
 		assert(result == (char) (3 + 7));
 	    }
 	    
@@ -186,8 +183,8 @@ public class TestImpl
 		
 		String result = basicType.f8(s1, s2, s3);
 		
-		assert(s2.value.equals("sieben"));
-		assert(s3.value.equals("drei"));
+		assert(s2.getValue().equals("sieben"));
+		assert(s3.getValue().equals("drei"));
 		assert(result.equals("dreisieben"));
 	    }
 	    
@@ -198,8 +195,8 @@ public class TestImpl
 		
 		boolean result = basicType.f9(p1, p2, p3);
 		
-		assert(p2.value == true);
-		assert(p3.value == false);
+		assert(p2.getValue() == true);
+		assert(p3.getValue() == false);
 		assert(result == false && true);
 	    }
 	    
@@ -210,16 +207,18 @@ public class TestImpl
 		
 		byte result = basicType.f10(p1, p2, p3);
 		
-		assert(p2.value == (byte) 7);
-		assert(p3.value == (byte) 3);
+		assert(p2.getValue() == (byte) 7);
+		assert(p3.getValue() == (byte) 3);
 		assert(result == (byte) (3 + 7));
 	    }
-
+	    System.out.println("OK!");
 
 
 	    /*
 	     * Test UserTypeInterface facet
 	     */
+	    System.out.println("Receptacle User Types Test...");
+
 	    UserTypeInterface userType = ctx.get_connection_userType();
 	    { // enum Color {red, green, blue, black, orange}
 		Color p1 = Color.red;
@@ -369,24 +368,24 @@ public class TestImpl
 
 	    { // typedef long time_t
 		int p1 = 7;
-		IntHolder p2 = new IntHolder(3);
-		IntHolder p3 = new IntHolder();
+		IntegerHolder p2 = new IntegerHolder(3);
+		IntegerHolder p3 = new IntegerHolder();
 		
 		int result = userType.f7(p1, p2, p3);
 		
-		assert(p2.value == 7);
-		assert(p3.value == 3);
+		assert(p2.getValue() == 7);
+		assert(p3.getValue() == 3);
 		assert(result == 3 + 7);
 	    }	    
+	    System.out.println("OK!");
 	}
 	catch(ccm.local.Components.NoConnection e)
 	{
 	    e.printStackTrace();
 	    assert(false);
 	}
-
-	System.out.println("End Test Case -------");
     }
+
 
     public void ccm_passivate() 
         throws ccm.local.Components.CCMException

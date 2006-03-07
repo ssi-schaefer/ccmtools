@@ -62,85 +62,86 @@ public class TestImpl
     
     /** Supported interface methods */
 
-    public short fb1(short p1, org.omg.CORBA.ShortHolder p2, org.omg.CORBA.ShortHolder p3)
+    public short fb1(short p1, ccm.local.ShortHolder p2, ccm.local.ShortHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return (short)(p3.value + p1);
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return (short)(p3.getValue() + p1);
     }    
 
-    public int fb2(int p1, org.omg.CORBA.IntHolder p2, org.omg.CORBA.IntHolder p3)
+    public int fb2(int p1, ccm.local.IntegerHolder p2, ccm.local.IntegerHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value + p1;
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return p3.getValue() + p1;
     }    
 
-    public short fb3(short p1, org.omg.CORBA.ShortHolder p2, org.omg.CORBA.ShortHolder p3)
+    public short fb3(short p1, ccm.local.ShortHolder p2, ccm.local.ShortHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return (short)(p3.value + p1);
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return (short)(p3.getValue() + p1);
     }    
 
-    public int fb4(int p1, org.omg.CORBA.IntHolder p2, org.omg.CORBA.IntHolder p3)
+    public int fb4(int p1, ccm.local.IntegerHolder p2, ccm.local.IntegerHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value + p1;
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return p3.getValue() + p1;
     }    
 
-    public float fb5(float p1, org.omg.CORBA.FloatHolder p2, org.omg.CORBA.FloatHolder p3)
+    public float fb5(float p1, ccm.local.FloatHolder p2, ccm.local.FloatHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value + p1;
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return p3.getValue() + p1;
     }    
 
-    public double fb6(double p1, org.omg.CORBA.DoubleHolder p2, org.omg.CORBA.DoubleHolder p3)
+    public double fb6(double p1, ccm.local.DoubleHolder p2, ccm.local.DoubleHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value + p1;
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return p3.getValue() + p1;
     }    
 
-    public char fb7(char p1, org.omg.CORBA.CharHolder p2, org.omg.CORBA.CharHolder p3)
+    public char fb7(char p1, ccm.local.CharacterHolder p2, ccm.local.CharacterHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return (char)(p3.value + p1);
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return (char)(p3.getValue() + p1);
     }    
 
-    public String fb8(String p1, org.omg.CORBA.StringHolder p2, org.omg.CORBA.StringHolder p3)
+    public String fb8(String p1, ccm.local.StringHolder p2, ccm.local.StringHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value +p1;
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return p3.getValue() + p1;
     }    
 
-    public boolean fb9(boolean p1, org.omg.CORBA.BooleanHolder p2, org.omg.CORBA.BooleanHolder p3)
+    public boolean fb9(boolean p1, ccm.local.BooleanHolder p2, ccm.local.BooleanHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return p3.value && p1;
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return p3.getValue() && p1;
     }    
 
-    public byte fb10(byte p1, org.omg.CORBA.ByteHolder p2, org.omg.CORBA.ByteHolder p3)
+    public byte fb10(byte p1, ccm.local.ByteHolder p2, ccm.local.ByteHolder p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
-        return (byte)(p3.value + p1);
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
+        return (byte)(p3.getValue() + p1);
     }    
+
 
 
 
@@ -229,12 +230,13 @@ public class TestImpl
         return result;
     }    
 
-    public int fu7(int t1, org.omg.CORBA.IntHolder t2, org.omg.CORBA.IntHolder t3)
+    public int fu7(int t1, ccm.local.IntegerHolder t2, 
+		   ccm.local.IntegerHolder t3)
         throws ccm.local.Components.CCMException
     {
-        t3.value = t2.value;
-        t2.value = t1;
-        return t3.value + t1;
+        t3.setValue(t2.getValue());
+        t2.setValue(t1);
+        return t3.getValue() + t1;
     }    
 
 

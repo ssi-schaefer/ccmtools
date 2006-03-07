@@ -14,8 +14,6 @@ idl3: Test.idl
 local: idl3
 	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
 	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
-
-	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
 
 stubs: idl3
@@ -28,10 +26,8 @@ check:
 	cp impl/TestbasicTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/TestuserTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/Client.java ${DEST_DIR}/src/
-	cp impl/DynamicClient.java ${DEST_DIR}/src/
 	ant -f ./build.xml
 	bin/runClient
-	bin/runDynamicClient
 
 clean: 
 	rm -rf ${DEST_DIR}

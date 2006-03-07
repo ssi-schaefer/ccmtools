@@ -17,8 +17,6 @@ idl3mirror: idl3
 local: idl3mirror
 	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
 	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
-
-	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
 
 stubs: idl3
@@ -28,14 +26,12 @@ stubs: idl3
 
 check: 
 	cp impl/Client.java ${DEST_DIR}/src/
-	cp impl/DynamicClient.java ${DEST_DIR}/src/
 	cp impl/TestImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/Test_mirrorvoidType_mirrorImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/Test_mirrorbasicType_mirrorImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/Test_mirroruserType_mirrorImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	ant -f ./build.xml
 	bin/runClient
-	bin/runDynamicClient
 
 clean: 
 	rm -rf ${DEST_DIR}
