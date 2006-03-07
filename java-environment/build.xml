@@ -43,7 +43,7 @@ $Header$
 	  <target name="stubs.compile" depends="stubs.generate"
 	      description="" >
 	      <javac srcdir="${src}-gen:${src}" destdir="${build}" 
-	             debug="on" source="1.4" target="1.4">
+	             debug="on" source="1.5" target="1.5">
 	          <classpath refid="compile.classpath" />  
 	      </javac>
 	  </target>
