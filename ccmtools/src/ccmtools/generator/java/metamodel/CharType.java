@@ -27,7 +27,7 @@ public class CharType
 		}
 		else // INOUT, OUT
 		{
-			return "org.omg.CORBA.CharHolder";
+			return "ccm.local.CharacterHolder";
 		}
 	}
 	

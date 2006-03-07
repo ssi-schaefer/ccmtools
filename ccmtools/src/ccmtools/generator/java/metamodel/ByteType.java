@@ -27,7 +27,7 @@ public class ByteType
 		}
 		else // INOUT, OUT
 		{
-			return "org.omg.CORBA.ByteHolder";
+			return "ccm.local.ByteHolder";
 		}
 	}
 	

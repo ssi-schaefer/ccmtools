@@ -27,7 +27,7 @@ public class StringType
 		}
 		else
 		{
-			return "org.omg.CORBA.StringHolder";
+			return "ccm.local.StringHolder";
 		}	
 	}
 	

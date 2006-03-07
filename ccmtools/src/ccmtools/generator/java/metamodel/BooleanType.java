@@ -27,7 +27,7 @@ public class BooleanType
 		}
 		else // INOUT, OUT
 		{
-			return "org.omg.CORBA.BooleanHolder";
+			return "ccm.local.BooleanHolder";
 		}
 	}
 

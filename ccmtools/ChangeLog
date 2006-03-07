@@ -1,6 +1,23 @@
 RELEASE-0.6.x
 ============================================================================
 
+
+RELEASE-0.6.3 (March 6, 2006)
+----------------------------------------------------------------------------
+*) Feature: Local Java Component Generator
+	- Implemented local Java component generator
+	- Implemented JUnit test cases for local components (also using the
+	  mirror component concept).
+	
+*) Refactoring: Java Client Lib Generator
+	- Changed command line from 'ccmclient -java' to 'ccmjava -clientlib'.
+	- Refactored generator namespace structure (to generator.java.*) 
+	- Renamed lots of the Jet templates
+	
+*) Refactoring: c++local and c++remote 
+	- Restructured JUnit tests (added test suites)	
+	
+
 RELEASE-0.6.2 (February 1, 2006)
 ----------------------------------------------------------------------------
 *) Feature: Java Client Lib Generator

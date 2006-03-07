@@ -27,7 +27,7 @@ public class FloatType
 		}
 		else // INOUT, OUT
 		{
-			return "org.omg.CORBA.FloatHolder";
+			return "ccm.local.FloatHolder";
 		}
 	}
 	

@@ -27,7 +27,7 @@ public class IntegerType
 		}
 		else // INOUT, OUT
 		{
-			return "org.omg.CORBA.IntHolder";
+			return "ccm.local.IntegerHolder";
 		}
 	}
 	

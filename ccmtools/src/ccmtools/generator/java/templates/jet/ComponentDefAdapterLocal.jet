@@ -176,7 +176,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     public Object provide_facet(String name)
         throws ccm.local.Components.InvalidName
     {
-        logger.fine("");
+        logger.fine("name = " + name);
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();
@@ -202,7 +202,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
                ccm.local.Components.AlreadyConnected, 
                ccm.local.Components.ExceededConnectionLimit
     {
-        logger.fine("");
+        logger.fine("name = " + name + ", obj = " + obj);
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();
@@ -232,7 +232,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
                ccm.local.Components.CookieRequired, 
                ccm.local.Components.NoConnection
     {
-        logger.fine("");
+        logger.fine("name = " + name + ", ck = " + ck );
         if(name == null)
         {
             throw new ccm.local.Components.InvalidName();

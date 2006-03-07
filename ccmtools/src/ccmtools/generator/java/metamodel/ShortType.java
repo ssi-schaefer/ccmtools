@@ -27,7 +27,7 @@ public class ShortType
 		}
 		else // INOUT, OUT
 		{
-			return "org.omg.CORBA.ShortHolder";
+			return "ccm.local.ShortHolder";
 		}
 	}
 	

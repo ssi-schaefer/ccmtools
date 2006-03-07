@@ -27,7 +27,7 @@ public class LongType
 		}
 		else // INOUT, OUT
 		{
-			return "org.omg.CORBA.LongHolder";
+			return "ccm.local.LongHolder";
 		}
 	}
 	

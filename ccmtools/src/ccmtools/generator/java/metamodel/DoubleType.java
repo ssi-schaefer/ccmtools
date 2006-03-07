@@ -27,7 +27,7 @@ public class DoubleType
 		}
 		else // INOUT, OUT
 		{
-			return "org.omg.CORBA.DoubleHolder";
+			return "ccm.local.DoubleHolder";
 		}
 	}
 	
