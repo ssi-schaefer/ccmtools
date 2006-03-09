@@ -5,6 +5,8 @@ IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
 all: local
 
+test: local check clean
+
 idl3: ${APP_NAME}.idl
 	${CCMTOOLS_CMD} idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
 
