@@ -23,7 +23,6 @@
 #include <WX/Utils/debug.h>
 #include <WX/Utils/smartptr.h>
 #include <WX/Utils/value.h>
-#include <WX/Utils/struct.h>
 #include <WX/Utils/value_simple.h>
 
 #include <ccm/local/Components/CCM.h>
@@ -141,7 +140,17 @@ int main(int argc, char *argv[])
 
         result = any_test->op3(p1, p2, p3);
 	
+	assert(p2.name == "key1");
+	IntValue* p2Value = dynamic_cast<IntValue*>(p2.value.ptr());
+	assert(p2Value->value() == 1);
+
+	assert(p3.name == "key2");
+	IntValue* p3Value = dynamic_cast<IntValue*>(p3.value.ptr());
+	assert(p3Value->value() == 2);
 	
+	assert(result.name == "keyresult");
+	IntValue* resultValue = dynamic_cast<IntValue*>(result.value.ptr());
+	assert(resultValue->value() == 3);
       }
     } 
     catch(Components::NotImplemented& e ) {

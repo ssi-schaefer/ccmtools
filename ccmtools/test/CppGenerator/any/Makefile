@@ -15,7 +15,7 @@ local: idl3
 
 check: 
 	cp impl/Makefile.py ${DEST_DIR}
-	cp impl/Test_any_test_impl.cc ${DEST_DIR}/component/Test/impl
+	cp impl/Test_any_test_impl.cc ${DEST_DIR}/component/Test/
 	cp test/_check_ccm_local_component_Test.cc ${DEST_DIR}/component/Test/test
 	touch ${DEST_DIR}/interface/Makefile.py
 	touch ${DEST_DIR}/component/Makefile.py
