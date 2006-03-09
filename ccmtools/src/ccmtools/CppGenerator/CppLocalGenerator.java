@@ -530,6 +530,14 @@ public class CppLocalGenerator
             code.append("#include <vector>\n");
             code.append(getLanguageTypeInclude(singleIdlType));
         }
+        else if(idlType instanceof MPrimitiveDef)
+        {
+        	MPrimitiveDef type = (MPrimitiveDef)idlType;
+        	if(type.getKind() == MPrimitiveKind.PK_ANY)
+        	{
+        		code.append("#include <WX/Utils/value.h>\n");
+        	}
+        }
         else if(idlType instanceof MContained) {
             code.append(getScopedInclude((MContained) idlType));
         }

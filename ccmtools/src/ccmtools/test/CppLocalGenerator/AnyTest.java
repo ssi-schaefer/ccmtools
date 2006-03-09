@@ -27,6 +27,16 @@ public class AnyTest
     // Any test cases
     // ------------------------------------------------------------------------
     
+    public void testAny()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/any test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }  
+    
     public void testAnyPlugin()
     {
         try {
