@@ -44,11 +44,15 @@ public class StructDef
 		}
 		else
 		{
-			return generateAbsoluteIdlName() + "Holder";
+			return generateJavaHolderType();
 		}	
 	}
 	
-	
+	public String generateJavaHolderType()
+	{
+		return generateCorbaHolderType();
+	}	
+		
 	
 	/*************************************************************************
 	 * Application Generator Methods
@@ -58,5 +62,39 @@ public class StructDef
 	public String generateJavaDefaultReturnValue()
 	{
 		return "null";		
+	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+	
+	public String generateCorbaMapping()
+	{
+		return generateAbsoluteIdlName();
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}		
+	
+	public String generateCorbaHolderType()
+	{
+		return generateAbsoluteIdlName() + "Holder";
+	}
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
 	}
 }

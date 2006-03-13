@@ -2,6 +2,11 @@ package ccmtools.generator.java.metamodel;
 
 public interface Type
 {
+	/*************************************************************************
+	 * Local Interface Generator Methods
+	 * 
+	 *************************************************************************/
+	
 	/**
 	 * Generate a Java constant from the given value according to the
 	 * particular type.
@@ -32,7 +37,15 @@ public interface Type
 	 */
 	String generateJavaMapping(PassingDirection direction);
 	
+	String generateJavaHolderType();
+
 	
+	
+	/*************************************************************************
+	 * Application Generator Methods
+	 * 
+	 *************************************************************************/
+		
 	/**
 	 * Generate the Java default initial value for the given type.
 	 * This default value is, for example, used for return values of 
@@ -41,4 +54,19 @@ public interface Type
 	 * @return String containing the generated Java default return value.
 	 */
 	String generateJavaDefaultReturnValue();
+	
+
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+	
+	String generateCorbaMapping();
+	
+	String generateCorbaMapping(PassingDirection direction);
+	
+	String generateCorbaConverterType();
+	
+	String generateCorbaHolderType();
 }

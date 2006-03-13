@@ -27,8 +27,13 @@ public class IntegerType
 		}
 		else // INOUT, OUT
 		{
-			return "ccm.local.IntegerHolder";
+			return generateJavaHolderType();
 		}
+	}
+	
+	public String generateJavaHolderType()
+	{
+		return "ccm.local.IntegerHolder";
 	}
 	
 	
@@ -40,5 +45,39 @@ public class IntegerType
 	public String generateJavaDefaultReturnValue()
 	{
 		return "0";		
+	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+	
+	public String generateCorbaMapping()
+	{
+		return "int";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}
+	
+	public String generateCorbaHolderType()
+	{
+		return "org.omg.CORBA.IntHolder";
+	}
+
+	public String generateCorbaConverterType()
+	{
+		return "";
 	}
 }

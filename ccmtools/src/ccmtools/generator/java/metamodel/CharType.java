@@ -27,8 +27,13 @@ public class CharType
 		}
 		else // INOUT, OUT
 		{
-			return "ccm.local.CharacterHolder";
+			return generateJavaHolderType();
 		}
+	}
+	
+	public String generateJavaHolderType()
+	{
+		return "ccm.local.CharacterHolder";
 	}
 	
 	
@@ -42,4 +47,38 @@ public class CharType
 	{
 		return "' '";		
 	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+	
+	public String generateCorbaMapping()
+	{
+		return "char";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}
+	
+	public String generateCorbaHolderType()
+	{
+		return "org.omg.CORBA.CharHolder";
+	}
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
+	}	
 }

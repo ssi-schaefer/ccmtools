@@ -1,10 +1,16 @@
 RELEASE-0.6.x
 ============================================================================
 
+RELEASE-0.6.4 
+----------------------------------------------------------------------------
+*) Bugfix: Start scripts (ccmtools, uml2idl, ccmjava, ccmdescriptor) don't
+	check for an existing JAVA_HOME environment variable.
+	
+
 
 RELEASE-0.6.4 (March 9, 2006)
 ----------------------------------------------------------------------------
-*) Bugfix: Missing #include <WX/Utils/value.h> in C++ struct header files
+*) Bugfix: Missing #include <WX/Utils/value.h> in C++ struct header files.
 
 *) Feature: Parameter mapping for local Java components
 	- Implemented primitive Holder

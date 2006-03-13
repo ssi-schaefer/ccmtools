@@ -27,11 +27,15 @@ public class DoubleType
 		}
 		else // INOUT, OUT
 		{
-			return "ccm.local.DoubleHolder";
+			return generateJavaHolderType();
 		}
 	}
 	
-	
+	public String generateJavaHolderType()
+	{
+		return "ccm.local.DoubleHolder";
+	}
+		
 	
 	/*************************************************************************
 	 * Application Generator Methods
@@ -41,5 +45,39 @@ public class DoubleType
 	public String generateJavaDefaultReturnValue()
 	{
 		return "0.0D";		
+	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+
+	public String generateCorbaMapping()
+	{
+		return "double";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}
+
+	public String generateCorbaHolderType()
+	{
+		return "org.omg.CORBA.DoubleHolder";
+	}
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
 	}
 }

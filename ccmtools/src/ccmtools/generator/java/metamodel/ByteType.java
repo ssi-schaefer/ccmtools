@@ -27,8 +27,13 @@ public class ByteType
 		}
 		else // INOUT, OUT
 		{
-			return "ccm.local.ByteHolder";
+			return generateJavaHolderType();
 		}
+	}
+	
+	public String generateJavaHolderType()
+	{
+		return "ccm.local.ByteHolder";
 	}
 	
 	
@@ -41,5 +46,39 @@ public class ByteType
 	public String generateJavaDefaultReturnValue()
 	{
 		return "0";		
+	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+
+	public String generateCorbaMapping()
+	{
+		return "byte";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}
+		
+	public String generateCorbaHolderType()
+	{
+		return "org.omg.CORBA.ByteHolder";
+	}
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
 	}
 }

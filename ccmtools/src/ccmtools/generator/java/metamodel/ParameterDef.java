@@ -41,8 +41,6 @@ public class ParameterDef
 	 * 
 	 *************************************************************************/
 	
-	// Generator methods ------------------------------------------------------
-	
 	public String generateParameter()
 	{
 		StringBuffer code = new StringBuffer();
@@ -50,4 +48,107 @@ public class ParameterDef
 		code.append(" ").append(getIdentifier());
 		return code.toString();
 	}
+
+
+	
+	/*************************************************************************
+	 * Client Library Generator
+	 * 
+	 *************************************************************************/
+	
+	public String generateCorbaParameter()
+	{
+		StringBuffer code = new StringBuffer();
+		code.append(getType().generateCorbaMapping(getDirection()));
+		code.append(" ").append(getIdentifier());
+		return code.toString();
+	}
+	
+	
+	public String generateInConverterToCorba()
+	{
+		if (direction == PassingDirection.IN)
+		{
+			return getType().generateCorbaMapping() + " " + getIdentifier() + "Remote = " + 
+				getType().generateCorbaConverterType() + "(" + getIdentifier() + ");";
+		}
+		else if(direction == PassingDirection.INOUT)
+		{
+			return  getType().generateCorbaHolderType() + " " + 
+				getIdentifier() + "Remote = new " + getType().generateCorbaHolderType() + 
+				"(" + getType().generateCorbaConverterType() + "(" + 
+				getIdentifier() + ".getValue()));";			
+		}
+		else if(direction == PassingDirection.OUT)
+		{
+			return getType().generateCorbaHolderType() + " " +
+				getIdentifier() + "Remote = new " + getType().generateCorbaHolderType() + "();"; 
+		}
+		else // PassingDirection.RESULT
+		{
+			return "";
+		}
+	}	
+	
+	public String generateInConverterFromCorba()
+	{
+		if (direction == PassingDirection.IN)
+		{
+			return getType().generateJavaMapping() + " " + getIdentifier() + "Local = " + 
+				getType().generateCorbaConverterType() + "(" + getIdentifier() + ");";
+		}
+		else if(direction == PassingDirection.INOUT)
+		{
+			return  getType().generateJavaHolderType() + " " + 
+				getIdentifier() + "Local = new " + getType().generateJavaHolderType() + 
+				"(" + getType().generateCorbaConverterType() + "(" + 
+				getIdentifier() + ".value));";			
+		}
+		else if(direction == PassingDirection.OUT)
+		{
+			return getType().generateJavaHolderType() + " " +
+				getIdentifier() + "Local = new " + getType().generateJavaHolderType() + "();"; 
+		}
+		else // PassingDirection.RESULT
+		{
+			return "";
+		}
+	}	
+	
+	
+	public String generateOutConverterToCorba()
+	{
+		if(direction == PassingDirection.IN)
+		{
+			return "";
+		}
+		else if(direction == PassingDirection.INOUT || direction == PassingDirection.OUT)
+		{
+			return getIdentifier() + ".value = " + 
+					getType().generateCorbaConverterType() + "(" + getIdentifier() + "Local.getValue());";
+		}
+		else // PassingDirection.RESULT
+		{
+			return "";
+		}
+	}
+	
+	public String generateOutConverterFromCorba()
+	{
+		if(direction == PassingDirection.IN)
+		{
+			return "";
+		}
+		else if(direction == PassingDirection.INOUT || direction == PassingDirection.OUT)
+		{
+			return getIdentifier() + ".setValue(" + 
+					getType().generateCorbaConverterType() + "(" + getIdentifier() + "Remote.value));";
+		}
+		else // PassingDirection.RESULT
+		{
+			return "";
+		}
+	}
 }
+
+

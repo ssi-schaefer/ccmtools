@@ -26,9 +26,14 @@ public class VoidType
 		}
 		else
 		{
-			return "";
+			return generateJavaHolderType();
 		}	
 	}
+	
+	public String generateJavaHolderType()
+	{
+		return generateCorbaHolderType();
+	}	
 	
 	
 	
@@ -40,5 +45,40 @@ public class VoidType
 	public String generateJavaDefaultReturnValue()
 	{
 		return "";		
+	}
+	
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+
+	public String generateCorbaMapping()
+	{
+		return "void";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}		
+	
+	public String generateCorbaHolderType()
+	{
+		return "";
+	}	
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
 	}
 }

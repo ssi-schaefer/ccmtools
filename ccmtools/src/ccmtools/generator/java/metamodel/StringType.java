@@ -27,8 +27,13 @@ public class StringType
 		}
 		else
 		{
-			return "ccm.local.StringHolder";
+			return generateJavaHolderType();
 		}	
+	}
+	
+	public String generateJavaHolderType()
+	{
+		return "ccm.local.StringHolder";
 	}
 	
 	
@@ -41,5 +46,40 @@ public class StringType
 	public String generateJavaDefaultReturnValue()
 	{
 		return "\"\"";		
+	}
+	
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+
+	public String generateCorbaMapping()
+	{
+		return "String";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}		
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
+	}
+	
+	public String generateCorbaHolderType()
+	{
+		return "org.omg.CORBA.StringHolder";
 	}
 }

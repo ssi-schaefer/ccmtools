@@ -27,10 +27,15 @@ public class BooleanType
 		}
 		else // INOUT, OUT
 		{
-			return "ccm.local.BooleanHolder";
+			return generateJavaHolderType();
 		}
 	}
 
+	public String generateJavaHolderType()
+	{
+		return "ccm.local.BooleanHolder";
+	}
+	
 	
 	
 	/*************************************************************************
@@ -42,4 +47,39 @@ public class BooleanType
 	{
 		return "false";		
 	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+	
+	public String generateCorbaMapping()
+	{
+		return "boolean";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}
+	
+	public String generateCorbaHolderType()
+	{
+		return "org.omg.CORBA.BooleanHolder";
+	}
+
+
+	public String generateCorbaConverterType()
+	{
+		return "";
+	}	
 }

@@ -27,10 +27,14 @@ public class ShortType
 		}
 		else // INOUT, OUT
 		{
-			return "ccm.local.ShortHolder";
+			return generateJavaHolderType();
 		}
 	}
 	
+	public String generateJavaHolderType()
+	{
+		return "ccm.local.ShortHolder";
+	}
 	
 	
 	/*************************************************************************
@@ -41,5 +45,39 @@ public class ShortType
 	public String generateJavaDefaultReturnValue()
 	{
 		return "0";		
+	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+
+	public String generateCorbaMapping()
+	{
+		return "short";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}		
+	
+	public String generateCorbaHolderType()
+	{
+		return "org.omg.CORBA.ShortHolder";
+	}
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
 	}
 }

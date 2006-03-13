@@ -27,8 +27,13 @@ public class FloatType
 		}
 		else // INOUT, OUT
 		{
-			return "ccm.local.FloatHolder";
+			return generateJavaHolderType();
 		}
+	}
+	
+	public String generateJavaHolderType()
+	{
+		return "ccm.local.FloatHolder";
 	}
 	
 	
@@ -41,5 +46,39 @@ public class FloatType
 	public String generateJavaDefaultReturnValue()
 	{
 		return "0.0F";		
+	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+	
+	public String generateCorbaMapping()
+	{
+		return "float";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}		
+	
+	public String generateCorbaHolderType()
+	{
+		return "org.omg.CORBA.FloatHolder";
+	}
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
 	}
 }

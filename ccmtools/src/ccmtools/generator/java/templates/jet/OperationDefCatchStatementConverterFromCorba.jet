@@ -1,5 +1,5 @@
 <%@ jet package="ccmtools.generator.java.templates" 
-	    class="OperationDefCatchStatementAdapterFromCorbaTemplate" 
+	    class="OperationDefCatchStatementConverterFromCorbaTemplate" 
 		imports="java.util.Iterator ccmtools.generator.java.metamodel.* "	    
 %>
 <% OperationDef op = (OperationDef) argument;  %>

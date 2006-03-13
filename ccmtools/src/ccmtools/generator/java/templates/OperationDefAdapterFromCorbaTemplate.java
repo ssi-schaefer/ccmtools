@@ -19,14 +19,19 @@ public class OperationDefAdapterFromCorbaTemplate
   protected final String TEXT_3 = "(";
   protected final String TEXT_4 = ") ";
   protected final String TEXT_5 = NL + "        ";
-  protected final String TEXT_6 = " " + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {";
-  protected final String TEXT_7 = NL + "            ";
-  protected final String TEXT_8 = " localInterface.";
-  protected final String TEXT_9 = "(";
-  protected final String TEXT_10 = ");" + NL + "        }";
-  protected final String TEXT_11 = NL;
-  protected final String TEXT_12 = NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new BAD_OPERATION(e.getMessage());" + NL + "        }" + NL + "    }";
-  protected final String TEXT_13 = NL;
+  protected final String TEXT_6 = " " + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        " + NL + "        // Convert CORBA parameters to local Java parameters ";
+  protected final String TEXT_7 = NL;
+  protected final String TEXT_8 = NL + NL + "        // Define local Java result type ";
+  protected final String TEXT_9 = NL;
+  protected final String TEXT_10 = NL + NL + "        try" + NL + "        {" + NL + "        \t";
+  protected final String TEXT_11 = " " + NL + "        }";
+  protected final String TEXT_12 = NL;
+  protected final String TEXT_13 = NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new BAD_OPERATION(e.getMessage());" + NL + "        }" + NL + "        " + NL + "        // Convert local Java parameters to CORBA parameters";
+  protected final String TEXT_14 = NL;
+  protected final String TEXT_15 = "            " + NL + "" + NL + "        // Convert local Java result to a CORBA result                 ";
+  protected final String TEXT_16 = NL;
+  protected final String TEXT_17 = NL + "    }";
+  protected final String TEXT_18 = NL;
 
   public String generate(Object argument)
   {
@@ -37,22 +42,29 @@ public class OperationDefAdapterFromCorbaTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(op.getIdentifier());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append(op.generateParameterDeclarationList());
+    stringBuffer.append(op.generateCorbaParameterDeclarationList());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(TEXT_5);
     stringBuffer.append(op.generateThrowsStatementFromCorba());
     stringBuffer.append(TEXT_6);
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(op.generateReturnStatement());
+    stringBuffer.append(op.generateInParameterConvertersFromCorba());
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(op.getIdentifier());
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(op.generateParameterList());
+    stringBuffer.append(op.generateResultDeclaration());
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(op.generateMethodConverterFromCorba());
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(op.generateCatchStatementAdapterFromCorba());
     stringBuffer.append(TEXT_12);
+    stringBuffer.append(op.generateCatchStatementConverterFromCorba());
     stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_14);
+    stringBuffer.append(op.generateOutParameterConvertersToCorba());
+    stringBuffer.append(TEXT_15);
+    stringBuffer.append(TEXT_16);
+    stringBuffer.append(op.generateResultConverterToCorba());
+    stringBuffer.append(TEXT_17);
+    stringBuffer.append(TEXT_18);
     return stringBuffer.toString();
   }
 }

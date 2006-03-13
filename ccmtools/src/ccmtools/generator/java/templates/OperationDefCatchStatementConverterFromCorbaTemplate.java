@@ -3,13 +3,13 @@ package ccmtools.generator.java.templates;
 import java.util.Iterator;
 import ccmtools.generator.java.metamodel.*;
 
-public class OperationDefCatchStatementAdapterFromCorbaTemplate
+public class OperationDefCatchStatementConverterFromCorbaTemplate
 {
   protected static String nl;
-  public static synchronized OperationDefCatchStatementAdapterFromCorbaTemplate create(String lineSeparator)
+  public static synchronized OperationDefCatchStatementConverterFromCorbaTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    OperationDefCatchStatementAdapterFromCorbaTemplate result = new OperationDefCatchStatementAdapterFromCorbaTemplate();
+    OperationDefCatchStatementConverterFromCorbaTemplate result = new OperationDefCatchStatementConverterFromCorbaTemplate();
     nl = null;
     return result;
   }

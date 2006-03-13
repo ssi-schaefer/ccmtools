@@ -31,6 +31,11 @@ public class LongType
 		}
 	}
 	
+	public String generateJavaHolderType()
+	{
+		return "ccm.local.LongHolder";
+	}
+	
 	
 	
 	/*************************************************************************
@@ -41,5 +46,39 @@ public class LongType
 	public String generateJavaDefaultReturnValue()
 	{
 		return "0";		
+	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+
+	public String generateCorbaMapping()
+	{
+		return "long";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}		
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
+	}
+	
+	public String generateCorbaHolderType()
+	{
+		return "org.omg.CORBA.LongHolder";
 	}
 }

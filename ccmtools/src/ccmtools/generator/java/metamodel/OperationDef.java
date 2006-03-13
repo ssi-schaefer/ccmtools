@@ -8,8 +8,8 @@ import ccmtools.generator.java.templates.OperationDefAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.OperationDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.OperationDefAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.OperationDefApplicationImplementationTemplate;
-import ccmtools.generator.java.templates.OperationDefCatchStatementAdapterFromCorbaTemplate;
-import ccmtools.generator.java.templates.OperationDefCatchStatementAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.OperationDefCatchStatementConverterFromCorbaTemplate;
+import ccmtools.generator.java.templates.OperationDefCatchStatementConverterToCorbaTemplate;
 import ccmtools.generator.java.templates.OperationDefDeclarationTemplate;
 import ccmtools.utils.Text;
 
@@ -56,8 +56,6 @@ public class OperationDef
 	 * 
 	 *************************************************************************/
 	
-	// Code generator methods -------------------------------------------------
-
 	public String generateDeclaration()
 	{
 		return new OperationDefDeclarationTemplate().generate(this);
@@ -107,11 +105,16 @@ public class OperationDef
 	 */
 	public String generateParameterList()
 	{
+		return generateParameterList("");
+	}
+		
+	public String generateParameterList(String suffix)
+	{
 		List parameterList = new ArrayList();
 		for(Iterator i=getParameter().iterator(); i.hasNext();)
 		{
 			ParameterDef p = (ParameterDef)i.next();
-			parameterList.add(p.getIdentifier());
+			parameterList.add(p.getIdentifier() + suffix);
 		}
 		return Text.joinList(", ", parameterList);
 	}
@@ -191,8 +194,17 @@ public class OperationDef
 	 * 
 	 *************************************************************************/
 	
-	// Code generator methods -------------------------------------------------
-
+	public String generateCorbaParameterDeclarationList()
+	{
+		List parameterList = new ArrayList();
+		for(Iterator i=getParameter().iterator(); i.hasNext();)
+		{
+			ParameterDef p = (ParameterDef)i.next();
+			parameterList.add(p.generateCorbaParameter());
+		}
+		return Text.joinList(", ", parameterList);
+	}
+	
 	public String generateAdapterFromCorba()
 	{
 		return new OperationDefAdapterFromCorbaTemplate().generate(this);
@@ -219,14 +231,154 @@ public class OperationDef
 		}
 		return code.toString();
 	}
-		
-	public String generateCatchStatementAdapterToCorba()
+	
+	
+	public String generateCatchStatementConverterToCorba()
 	{
-		return new OperationDefCatchStatementAdapterToCorbaTemplate().generate(this);
+		return new OperationDefCatchStatementConverterToCorbaTemplate().generate(this);
 	}
 	
-	public String generateCatchStatementAdapterFromCorba()
+	public String generateCatchStatementConverterFromCorba()
 	{
-		return new OperationDefCatchStatementAdapterFromCorbaTemplate().generate(this);
+		return new OperationDefCatchStatementConverterFromCorbaTemplate().generate(this);
 	}
+	
+	
+	public String generateInParameterConvertersToCorba()
+	{
+		StringBuffer code = new StringBuffer();
+		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		{
+			ParameterDef parameter = (ParameterDef)i.next();
+			code.append(TAB2);
+			code.append(parameter.generateInConverterToCorba());
+			code.append(NL);
+		}		
+		return code.toString();
+	}
+	
+	public String generateInParameterConvertersFromCorba()
+	{
+		StringBuffer code = new StringBuffer();
+		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		{
+			ParameterDef parameter = (ParameterDef)i.next();
+			code.append(TAB2);
+			code.append(parameter.generateInConverterFromCorba());
+			code.append(NL);
+		}		
+		return code.toString();
+	}	
+			
+	
+	public String generateOutParameterConvertersToCorba()
+	{
+		StringBuffer code = new StringBuffer();
+		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		{
+			ParameterDef parameter = (ParameterDef)i.next();
+			code.append(TAB2);
+			code.append(parameter.generateOutConverterToCorba());
+			code.append(NL);
+		}		
+		return code.toString();
+	}
+		
+	public String generateOutParameterConvertersFromCorba()
+	{
+		StringBuffer code = new StringBuffer();
+		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		{
+			ParameterDef parameter = (ParameterDef)i.next();
+			code.append(TAB2);
+			code.append(parameter.generateOutConverterFromCorba());
+			code.append(NL);
+		}		
+		return code.toString();
+	}
+		
+		
+	public String generateMethodConverterToCorba()
+	{
+		if (!(getType() instanceof VoidType))
+		{
+			return "resultRemote = remoteInterface." + 
+				getIdentifier() + "(" + generateParameterList("Remote") + ");";
+		}
+		else
+		{
+			return "remoteInterface." + 
+				getIdentifier() + "(" + generateParameterList("Remote") + ");";
+		}
+	}
+	
+	public String generateMethodConverterFromCorba()
+	{
+		if (!(getType() instanceof VoidType))
+		{
+			return "resultLocal = localInterface." + 
+				getIdentifier() + "(" + generateParameterList("Local") + ");";
+		}
+		else
+		{
+			return "localInterface." + 
+				getIdentifier() + "(" + generateParameterList("Local") + ");";
+		}
+	}
+
+
+	
+	public String generateResultDeclaration()
+	{
+		if (!(getType() instanceof VoidType))
+		{
+			return TAB2 + getType().generateJavaMapping() + " resultLocal;";
+		}
+		else
+		{
+			return "";
+		}
+	}
+	
+	public String generateCorbaResultDeclaration()
+	{
+		if (!(getType() instanceof VoidType))
+		{
+			return TAB2 + getType().generateCorbaMapping() + " resultRemote;";
+		}
+		else
+		{
+			return "";
+		}
+	}
+	
+	public String generateResultConverterFromCorba()
+	{
+		StringBuffer code = new StringBuffer();
+		if (!(getType() instanceof VoidType))
+		{
+			code.append(TAB2).append(getType().generateJavaMapping());
+			code.append(" result;").append(NL);
+			code.append(TAB2);
+			code.append("result = " + getType().generateCorbaConverterType() + "(resultRemote);");
+			code.append(NL);
+			code.append(TAB2).append("return result;").append(NL);
+		}
+		return code.toString();
+	}	
+	
+	public String generateResultConverterToCorba()
+	{
+		StringBuffer code = new StringBuffer();
+		if (!(getType() instanceof VoidType))
+		{
+			code.append(TAB2).append(getType().generateCorbaMapping());
+			code.append(" result;").append(NL);
+			code.append(TAB2);
+			code.append("result = " + getType().generateCorbaConverterType() + "(resultLocal);");
+			code.append(NL);
+			code.append(TAB2).append("return result;").append(NL);
+		}
+		return code.toString();
+	}	
 }

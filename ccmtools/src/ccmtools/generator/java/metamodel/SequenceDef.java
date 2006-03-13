@@ -63,9 +63,14 @@ public class SequenceDef
 		}
 		else
 		{
-			return generateAbsoluteIdlName() + "Holder";
+			return generateJavaHolderType();
 		}	
 	}
+	
+	public String generateJavaHolderType()
+	{
+		return generateCorbaHolderType();
+	}	
 	
 	
 	
@@ -77,5 +82,39 @@ public class SequenceDef
 	public String generateJavaDefaultReturnValue()
 	{
 		return "null";		
+	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+
+	public String generateCorbaMapping()
+	{
+		return getElementType().generateJavaMapping() + "[]";
+	}
+	
+	public String generateCorbaMapping(PassingDirection direction)
+	{
+		if (direction == PassingDirection.IN
+			|| direction == PassingDirection.RESULT)
+		{
+			return generateCorbaMapping();
+		}
+		else // INOUT, OUT
+		{
+			return generateCorbaHolderType();
+		}
+	}		
+
+	public String generateCorbaHolderType()
+	{
+		return generateAbsoluteIdlName() + "Holder";
+	}	
+	
+	public String generateCorbaConverterType()
+	{
+		return "";
 	}
 }
