@@ -1,5 +1,11 @@
 #!/bin/sh
 
+if [ -z "$JAVA_HOME" ]; then
+echo "ERROR!"
+echo "Environment variable JAVA_HOME not found!" 
+exit
+fi
+
 if [ -z "$CCMTOOLS_HOME" ]; then
 echo "ERROR!"
 echo "Environment variable CCMTOOLS_HOME not found!" 
