@@ -27,7 +27,7 @@ public class LongType
 		}
 		else // INOUT, OUT
 		{
-			return "ccm.local.LongHolder";
+			return "ccm.local.Holder<Long>";
 		}
 	}
 	

@@ -33,7 +33,7 @@ public class FixedType
 	
 	public String generateJavaHolderType()
 	{
-		return generateCorbaHolderType();
+		return "ccm.local.Holder<java.math.BigDecimal>";
 	}
 	
 	

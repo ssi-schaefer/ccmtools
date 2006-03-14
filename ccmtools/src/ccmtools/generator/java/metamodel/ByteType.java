@@ -33,7 +33,7 @@ public class ByteType
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.ByteHolder";
+		return "ccm.local.Holder<Byte>";
 	}
 	
 	

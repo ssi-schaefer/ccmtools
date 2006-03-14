@@ -51,7 +51,7 @@ public class UnionDef
 	
 	public String generateJavaHolderType()
 	{
-		return generateCorbaHolderType();
+		return "ccm.local.Holder<" + generateAbsoluteIdlName() + ">";
 	}	
 	
 	

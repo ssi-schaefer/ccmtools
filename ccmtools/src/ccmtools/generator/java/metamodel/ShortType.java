@@ -33,7 +33,7 @@ public class ShortType
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.ShortHolder";
+		return "ccm.local.Holder<Short>";
 	}
 	
 	

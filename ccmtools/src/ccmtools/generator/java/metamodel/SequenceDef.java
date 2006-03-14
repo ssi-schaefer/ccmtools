@@ -69,7 +69,7 @@ public class SequenceDef
 	
 	public String generateJavaHolderType()
 	{
-		return generateCorbaHolderType();
+		return "ccm.local.Holder<" + generateJavaMapping() + ">";
 	}	
 	
 	

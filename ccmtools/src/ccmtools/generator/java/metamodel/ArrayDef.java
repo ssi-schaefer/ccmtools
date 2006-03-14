@@ -42,7 +42,7 @@ public class ArrayDef
 	
 	public String generateJavaHolderType()
 	{
-		return generateCorbaHolderType();
+		return "ccm.local.Holder<" + generateAbsoluteIdlName() + ">";
 	}
 		
 	

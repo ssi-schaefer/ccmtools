@@ -33,7 +33,7 @@ public class DoubleType
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.DoubleHolder";
+		return "ccm.local.Holder<Double>";
 	}
 		
 	

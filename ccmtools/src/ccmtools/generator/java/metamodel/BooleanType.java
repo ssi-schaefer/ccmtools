@@ -33,7 +33,7 @@ public class BooleanType
 
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.BooleanHolder";
+		return "ccm.local.Holder<Boolean>";
 	}
 	
 	

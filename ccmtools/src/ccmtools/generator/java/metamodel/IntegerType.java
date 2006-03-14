@@ -33,7 +33,7 @@ public class IntegerType
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.IntegerHolder";
+		return "ccm.local.Holder<Integer>";
 	}
 	
 	

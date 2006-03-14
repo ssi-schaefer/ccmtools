@@ -33,7 +33,7 @@ public class AnyType
 	
 	public String generateJavaHolderType()
 	{
-		return generateCorbaHolderType();
+		return "ccm.local.Holder<org.omg.CORBA.Any>";
 	}
 	
 

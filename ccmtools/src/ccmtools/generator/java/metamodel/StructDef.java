@@ -50,7 +50,7 @@ public class StructDef
 	
 	public String generateJavaHolderType()
 	{
-		return generateCorbaHolderType();
+		return "ccm.local.Holder<" + generateAbsoluteIdlName() + ">";
 	}	
 		
 	

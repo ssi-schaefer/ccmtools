@@ -33,7 +33,7 @@ public class CharType
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.CharacterHolder";
+		return "ccm.local.Holder<Character>";
 	}
 	
 	

@@ -33,7 +33,7 @@ public class FloatType
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.FloatHolder";
+		return "ccm.local.Holder<Float>";
 	}
 	
 	

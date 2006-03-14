@@ -50,7 +50,7 @@ public class EnumDef
 	
 	public String generateJavaHolderType()
 	{
-		return generateCorbaHolderType();
+		return "ccm.local.Holder<" + generateAbsoluteIdlName() + ">";
 	}
 
 	
