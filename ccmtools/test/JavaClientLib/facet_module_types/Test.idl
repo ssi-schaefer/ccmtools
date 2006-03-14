@@ -63,6 +63,7 @@ module world {
 	octet          f10(in octet p1, inout octet p2, out octet p3);
       };
       
+
       interface UserTypeInterface 
       {
 	Color      f1(in Color p1, inout Color p2, out Color p3);
@@ -73,7 +74,7 @@ module world {
 	PersonList f6(in PersonList p1, inout PersonList p2, out PersonList p3);
 	time_t     f7(in time_t t1, inout time_t t2, out time_t t3);
       };
-      
+
       
       interface VoidTypeInterface {
 	void f1(in long p1);

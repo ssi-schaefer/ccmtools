@@ -20,7 +20,7 @@
   <!-- Compile generated Java files-->
   <target name="compile.src-gen" depends="init" description="" >
       <javac srcdir="${src-gen}" destdir="${build}" 
-             debug="on" source="1.4" target="1.4">
+             debug="on" source="1.5" target="1.5">
           <classpath refid="compile.classpath" />  
       </javac>
   </target>
@@ -28,7 +28,7 @@
   <!-- Compile manuall Java files-->
   <target name="compile.src" depends="compile.src-gen" description="" >
       <javac srcdir="${src}" destdir="${build}" 
-             debug="on" source="1.4" target="1.4">
+             debug="on" source="1.5" target="1.5">
           <classpath refid="compile.classpath" />  
       </javac>
   </target>
