@@ -12,6 +12,7 @@
 
 package world.europe.austria.ccm.local;
 
+import ccm.local.*;
 import world.europe.austria.*;
    
 /**
@@ -62,7 +63,7 @@ public class TestImpl
     
     /** Supported interface methods */
 
-    public short fb1(short p1, ccm.local.ShortHolder p2, ccm.local.ShortHolder p3)
+    public short fb1(short p1, Holder<Short> p2, Holder<Short> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -70,7 +71,7 @@ public class TestImpl
         return (short)(p3.getValue() + p1);
     }    
 
-    public int fb2(int p1, ccm.local.IntegerHolder p2, ccm.local.IntegerHolder p3)
+    public int fb2(int p1, Holder<Integer> p2, Holder<Integer> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -78,7 +79,7 @@ public class TestImpl
         return p3.getValue() + p1;
     }    
 
-    public short fb3(short p1, ccm.local.ShortHolder p2, ccm.local.ShortHolder p3)
+    public short fb3(short p1, Holder<Short> p2, Holder<Short> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -86,7 +87,7 @@ public class TestImpl
         return (short)(p3.getValue() + p1);
     }    
 
-    public int fb4(int p1, ccm.local.IntegerHolder p2, ccm.local.IntegerHolder p3)
+    public int fb4(int p1, Holder<Integer> p2, Holder<Integer> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -94,7 +95,7 @@ public class TestImpl
         return p3.getValue() + p1;
     }    
 
-    public float fb5(float p1, ccm.local.FloatHolder p2, ccm.local.FloatHolder p3)
+    public float fb5(float p1, Holder<Float> p2, Holder<Float> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -102,7 +103,7 @@ public class TestImpl
         return p3.getValue() + p1;
     }    
 
-    public double fb6(double p1, ccm.local.DoubleHolder p2, ccm.local.DoubleHolder p3)
+    public double fb6(double p1, Holder<Double> p2, Holder<Double> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -110,7 +111,7 @@ public class TestImpl
         return p3.getValue() + p1;
     }    
 
-    public char fb7(char p1, ccm.local.CharacterHolder p2, ccm.local.CharacterHolder p3)
+    public char fb7(char p1, Holder<Character> p2, Holder<Character> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -118,7 +119,7 @@ public class TestImpl
         return (char)(p3.getValue() + p1);
     }    
 
-    public String fb8(String p1, ccm.local.StringHolder p2, ccm.local.StringHolder p3)
+    public String fb8(String p1, Holder<String> p2, Holder<String> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -126,7 +127,7 @@ public class TestImpl
         return p3.getValue() + p1;
     }    
 
-    public boolean fb9(boolean p1, ccm.local.BooleanHolder p2, ccm.local.BooleanHolder p3)
+    public boolean fb9(boolean p1, Holder<Boolean> p2, Holder<Boolean> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -134,7 +135,7 @@ public class TestImpl
         return p3.getValue() && p1;
     }    
 
-    public byte fb10(byte p1, ccm.local.ByteHolder p2, ccm.local.ByteHolder p3)
+    public byte fb10(byte p1, Holder<Byte> p2, Holder<Byte> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -147,91 +148,92 @@ public class TestImpl
 
 
     public world.europe.austria.Color fu1(world.europe.austria.Color p1, 
-					  world.europe.austria.ColorHolder p2, 
-					  world.europe.austria.ColorHolder p3)
+					  Holder<world.europe.austria.Color> p2, 
+					  Holder<world.europe.austria.Color> p3)
         throws ccm.local.Components.CCMException
     {
-        p3.value = p2.value;
-        p2.value = p1;
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
         return world.europe.austria.Color.orange;
     }    
 
     public world.europe.austria.Person fu2(world.europe.austria.Person p1, 
-					   world.europe.austria.PersonHolder p2, 
-					   world.europe.austria.PersonHolder p3)
+					   Holder<world.europe.austria.Person> p2, 
+					   Holder<world.europe.austria.Person> p3)
         throws ccm.local.Components.CCMException
     {
         world.europe.austria.Person r =
-            new world.europe.austria.Person(p1.id + p2.value.id, p1.name + p2.value.name);
-        p3.value = p2.value;
-        p2.value = p1;
+            new world.europe.austria.Person(p1.id + p2.getValue().id, p1.name + p2.getValue().name);
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
         return r;
     }    
 
     public world.europe.austria.Address fu3(world.europe.austria.Address p1, 
-					    world.europe.austria.AddressHolder p2, 
-					    world.europe.austria.AddressHolder p3)
+					    Holder<world.europe.austria.Address> p2, 
+					    Holder<world.europe.austria.Address> p3)
         throws ccm.local.Components.CCMException
     {
-        Person pers = new Person(p1.resident.id + p2.value.resident.id, p1.resident.name + p2.value.resident.name);
-        Address addr = new Address(p1.street + p2.value.street, p1.number + p2.value.number, pers);
-        p3.value = p2.value;
-        p2.value = p1;
+        Person pers = new Person(p1.resident.id + p2.getValue().resident.id, 
+				 p1.resident.name + p2.getValue().resident.name);
+        Address addr = new Address(p1.street + p2.getValue().street, 
+				   p1.number + p2.getValue().number, pers);
+        p3.setValue(p2.getValue());
+        p2.setValue(p1);
         return addr;
     }    
 
     public int[] fu4(int[] p1, 
-		     world.europe.austria.LongListHolder p2, 
-		     world.europe.austria.LongListHolder p3)
+		     Holder<int[]> p2, 
+		     Holder<int[]> p3)
         throws ccm.local.Components.CCMException
     {
         int[] result = new int[p1.length];
-        p3.value = new int[p1.length];
+        p3.setValue(new int[p1.length]);
         for (int i = 0; i < p1.length; i++)
         {
             result[i] = i;
-            p3.value[i] = p2.value[i];
-            p2.value[i] = p1[i];
+            p3.getValue()[i] = p2.getValue()[i];
+            p2.getValue()[i] = p1[i];
         }
         return result;
 
     }    
 
     public String[] fu5(String[] p1, 
-			world.europe.austria.StringListHolder p2, 
-			world.europe.austria.StringListHolder p3)
+			Holder<String[]> p2, 
+			Holder<String[]> p3)
         throws ccm.local.Components.CCMException
     {
         String[] result = new String[p1.length];
-        p3.value = new String[p1.length];
+        p3.setValue(new String[p1.length]);
         for(int i = 0; i< p1.length; i++)
         {
             result[i] = "Test";
-            p3.value[i] = p2.value[i];
-            p2.value[i] = p1[i];
+            p3.getValue()[i] = p2.getValue()[i];
+            p2.getValue()[i] = p1[i];
         }
         return result;
     }    
 
     public world.europe.austria.Person[] fu6(world.europe.austria.Person[] p1, 
-					     world.europe.austria.PersonListHolder p2, 
-					     world.europe.austria.PersonListHolder p3)
+					     Holder<world.europe.austria.Person[]> p2, 
+					     Holder<world.europe.austria.Person[]> p3)
         throws ccm.local.Components.CCMException
     {
         Person[] result = new Person[p1.length];
-        p3.value = new Person[p1.length];
+        p3.setValue(new Person[p1.length]);
         for (int i = 0; i < p1.length; i++)
         {
             Person person = new Person(i, "Test");
             result[i] = person;
-            p3.value[i] = p2.value[i];
-            p2.value[i] = p1[i];
+            p3.getValue()[i] = p2.getValue()[i];
+            p2.getValue()[i] = p1[i];
         }
         return result;
     }    
 
-    public int fu7(int t1, ccm.local.IntegerHolder t2, 
-		   ccm.local.IntegerHolder t3)
+    public int fu7(int t1, Holder<Integer> t2, Holder<Integer> t3)
         throws ccm.local.Components.CCMException
     {
         t3.setValue(t2.getValue());
