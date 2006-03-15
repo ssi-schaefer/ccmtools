@@ -72,6 +72,8 @@ public class CcmToJavaModelMapper
     /** Root element of the Java Implementation Model */
     private ModelRepository modelRepository;
     
+    private AnyPluginManager anyPluginManager;
+    
     
 	CcmToJavaModelMapper()
 	{
@@ -80,6 +82,7 @@ public class CcmToJavaModelMapper
 		
 		artifactCache = new HashMap();
 		modelRepository = new ModelRepository();
+		anyPluginManager = new AnyPluginManager();
 	}
 			
 	public ModelRepository getJavaModel()
@@ -450,7 +453,15 @@ public class CcmToJavaModelMapper
 			MIDLType innerIdlType = typed.getIdlType();			
 			if(innerIdlType instanceof MPrimitiveDef)
 			{
-				return transform((MPrimitiveDef)innerIdlType);
+				MPrimitiveDef primitive = (MPrimitiveDef)innerIdlType;
+				if(primitive.getKind() == MPrimitiveKind.PK_ANY)
+				{
+					return anyPluginManager.load(alias.getIdentifier());
+				}
+				else
+				{
+					return transform(primitive);
+				}
 			}
 			else if(innerIdlType instanceof MSequenceDef)
 			{
