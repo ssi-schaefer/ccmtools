@@ -16,14 +16,8 @@ package world.europe.austria.ccm.local;
 import ccm.local.*;
 
 import world.europe.austria.Color;
-import world.europe.austria.ColorHolder;
 import world.europe.austria.Person;
-import world.europe.austria.PersonHolder;
 import world.europe.austria.Address;
-import world.europe.austria.AddressHolder;
-import world.europe.austria.LongListHolder;
-import world.europe.austria.StringListHolder;
-import world.europe.austria.PersonListHolder;
 
 
 /**
@@ -82,8 +76,8 @@ public class TestImpl
 	    BasicTypeInterface basicType = ctx.get_connection_basicType();
 	    { // short
 		short p1 = 7;
-		ShortHolder p2 = new ShortHolder((short) 3);
-		ShortHolder p3 = new ShortHolder();
+		Holder<Short> p2 = new Holder<Short>((short) 3);
+		Holder<Short> p3 = new Holder<Short>();
 		
 		short result = basicType.f1(p1, p2, p3);
 		
@@ -94,8 +88,8 @@ public class TestImpl
 
 	    { // long
 		int p1 = 7;
-		IntegerHolder p2 = new IntegerHolder(3);
-		IntegerHolder p3 = new IntegerHolder();
+		Holder<Integer> p2 = new Holder<Integer>(3);
+		Holder<Integer> p3 = new Holder<Integer>();
 		
 		int result = basicType.f2(p1, p2, p3);
 		
@@ -106,8 +100,8 @@ public class TestImpl
 
 	    { // unsigned short
 		short p1 = 7;
-		ShortHolder p2 = new ShortHolder((short) 3);
-		ShortHolder p3 = new ShortHolder();
+		Holder<Short> p2 = new Holder<Short>((short) 3);
+		Holder<Short> p3 = new Holder<Short>();
 		
 		short result = basicType.f3(p1, p2, p3);
 		
@@ -118,8 +112,8 @@ public class TestImpl
 	    
 	    { // unsigned long
 		int p1 = 7;
-		IntegerHolder p2 = new IntegerHolder(3);
-		IntegerHolder p3 = new IntegerHolder();
+		Holder<Integer> p2 = new Holder<Integer>(3);
+		Holder<Integer> p3 = new Holder<Integer>();
 		
 		int result = basicType.f4(p1, p2, p3);
 		
@@ -130,20 +124,8 @@ public class TestImpl
 	    
 	    { // float
 		float p1 = (float) 7.0;
-		FloatHolder p2 = new FloatHolder((float) 3.0);
-		FloatHolder p3 = new FloatHolder();
-		
-		float result = basicType.f5(p1, p2, p3);
-		
-		assert(Math.abs(p2.getValue() - 7.0) < 0.001);
-		assert(Math.abs(p3.getValue() - 3.0) < 0.001);
-		assert(Math.abs(result - (3.0 + 7.0)) < 0.001);
-	    }
-	    
-	    { // float
-		float p1 = (float) 7.0;
-		FloatHolder p2 = new FloatHolder((float) 3.0);
-		FloatHolder p3 = new FloatHolder();
+		Holder<Float> p2 = new Holder<Float>((float) 3.0);
+		Holder<Float> p3 = new Holder<Float>();
 		
 		float result = basicType.f5(p1, p2, p3);
 		
@@ -154,8 +136,8 @@ public class TestImpl
 	    
 	    { // double
 		double p1 = 7.0;
-		DoubleHolder p2 = new DoubleHolder(3.0);
-		DoubleHolder p3 = new DoubleHolder();
+		Holder<Double> p2 = new Holder<Double>(3.0);
+		Holder<Double> p3 = new Holder<Double>();
 		
 		double result = basicType.f6(p1, p2, p3);
 		
@@ -166,8 +148,8 @@ public class TestImpl
 	    
 	    { // char
 		char p1 = (char) 7;
-		CharacterHolder p2 = new CharacterHolder((char) 3);
-		CharacterHolder p3 = new CharacterHolder();
+		Holder<Character> p2 = new Holder<Character>((char) 3);
+		Holder<Character> p3 = new Holder<Character>();
 		
 		char result = basicType.f7(p1, p2, p3);
 		
@@ -178,8 +160,8 @@ public class TestImpl
 	    
 	    {
 		String s1 = "sieben";
-		StringHolder s2 = new StringHolder("drei");
-		StringHolder s3 = new StringHolder();
+		Holder<String> s2 = new Holder<String>("drei");
+		Holder<String> s3 = new Holder<String>();
 		
 		String result = basicType.f8(s1, s2, s3);
 		
@@ -190,8 +172,8 @@ public class TestImpl
 	    
 	    { // boolean
 		boolean p1 = true;
-		BooleanHolder p2 = new BooleanHolder(false);
-		BooleanHolder p3 = new BooleanHolder();
+		Holder<Boolean> p2 = new Holder<Boolean>(false);
+		Holder<Boolean> p3 = new Holder<Boolean>();
 		
 		boolean result = basicType.f9(p1, p2, p3);
 		
@@ -202,8 +184,8 @@ public class TestImpl
 	    
 	    { // octet
 		byte p1 = (byte) 7;
-		ByteHolder p2 = new ByteHolder((byte) 3);
-		ByteHolder p3 = new ByteHolder();
+		Holder<Byte> p2 = new Holder<Byte>((byte) 3);
+		Holder<Byte> p3 = new Holder<Byte>();
 		
 		byte result = basicType.f10(p1, p2, p3);
 		
@@ -222,28 +204,28 @@ public class TestImpl
 	    UserTypeInterface userType = ctx.get_connection_userType();
 	    { // enum Color {red, green, blue, black, orange}
 		Color p1 = Color.red;
-		ColorHolder p2 = new ColorHolder(Color.blue);
-		ColorHolder p3 = new ColorHolder();
+		Holder<Color> p2 = new Holder<Color>(Color.blue);
+		Holder<Color> p3 = new Holder<Color>();
 		
 		Color result = userType.f1(p1, p2, p3);
 		
-		assert(p2.value == Color.red);
-		assert(p3.value == Color.blue);
+		assert(p2.getValue() == Color.red);
+		assert(p3.getValue() == Color.blue);
 		assert(result == Color.orange);
 	    }
 
 
 	    { // struct Person { long id; string name; }
 		Person p1 = new Person(3, "Egon");
-		PersonHolder p2 = new PersonHolder(new Person(23, "Andrea"));
-		PersonHolder p3 = new PersonHolder();
+		Holder<Person> p2 = new Holder<Person>(new Person(23, "Andrea"));
+		Holder<Person> p3 = new Holder<Person>();
 		
 		Person result = userType.f2(p1, p2, p3);
 		
-		assert(p3.value.name.equals("Andrea"));
-		assert(p3.value.id == 23);
-		assert(p2.value.name.equals("Egon"));
-		assert(p2.value.id == 3);
+		assert(p3.getValue().name.equals("Andrea"));
+		assert(p3.getValue().id == 23);
+		assert(p2.getValue().name.equals("Egon"));
+		assert(p2.getValue().id == 3);
 		assert(result.name.equals("EgonAndrea"));
 		assert(result.id == 3 + 23);
 	    }
@@ -254,21 +236,21 @@ public class TestImpl
 		Address p1 = new Address("Waltendorf", 7, egon);
 		
 		Person andrea = new Person(23, "Andrea");
-		AddressHolder p2 = new AddressHolder(new Address("Petersgasse", 17, andrea));
+		Holder<Address> p2 = new Holder<Address>(new Address("Petersgasse", 17, andrea));
 		
-		AddressHolder p3 = new AddressHolder();
+		Holder<Address> p3 = new Holder<Address>();
 		
 		Address result = userType.f3(p1, p2, p3);
 		
-		assert(p3.value.street.equals("Petersgasse"));
-		assert(p3.value.number == 17);
-		assert(p3.value.resident.name.equals("Andrea"));
-		assert(p3.value.resident.id == 23);
+		assert(p3.getValue().street.equals("Petersgasse"));
+		assert(p3.getValue().number == 17);
+		assert(p3.getValue().resident.name.equals("Andrea"));
+		assert(p3.getValue().resident.id == 23);
 		
-		assert(p2.value.street.equals("Waltendorf"));
-		assert(p2.value.number == 7);
-		assert(p2.value.resident.name.equals("Egon"));
-		assert(p2.value.resident.id == 3);
+		assert(p2.getValue().street.equals("Waltendorf"));
+		assert(p2.getValue().number == 7);
+		assert(p2.getValue().resident.name.equals("Egon"));
+		assert(p2.getValue().resident.id == 3);
 		
 		assert(result.street.equals("WaltendorfPetersgasse"));
 		assert(result.number == 24);
@@ -286,8 +268,8 @@ public class TestImpl
 		    p2Value[i] = i + i;
 		}
 		
-		LongListHolder p2 = new LongListHolder(p2Value);
-		LongListHolder p3 = new LongListHolder();
+		Holder<int[]> p2 = new Holder<int[]>(p2Value);
+		Holder<int[]> p3 = new Holder<int[]>();
 		
 		int[] result = userType.f4(p1, p2, p3);
 		
@@ -295,13 +277,13 @@ public class TestImpl
 		{
 		    assert(result[i] == i);
 		}
-		for (int i = 0; i < p2.value.length; i++)
+		for (int i = 0; i < p2.getValue().length; i++)
 		{
-		    assert(p2.value[i] == i);
+		    assert(p2.getValue()[i] == i);
 		}
-		for (int i = 0; i < p3.value.length; i++)
+		for (int i = 0; i < p3.getValue().length; i++)
 		{
-		    assert(p3.value[i] == i + i);
+		    assert(p3.getValue()[i] == i + i);
 		}
 	    }
 
@@ -315,8 +297,8 @@ public class TestImpl
 		    p2Value[i] = "Andrea";
 		}
 		
-		StringListHolder p2 = new StringListHolder(p2Value);
-		StringListHolder p3 = new StringListHolder();
+		Holder<String[]> p2 = new Holder<String[]>(p2Value);
+		Holder<String[]> p3 = new Holder<String[]>();
 		
 		String[] result = userType.f5(p1, p2, p3);
 		
@@ -324,13 +306,13 @@ public class TestImpl
 		{
 		    assert(result[i].equals("Test"));
 		}
-		for (int i = 0; i < p2.value.length; i++)
+		for (int i = 0; i < p2.getValue().length; i++)
 		{
-		    assert(p2.value[i].equals("Egon"));
+		    assert(p2.getValue()[i].equals("Egon"));
 		}
-		for (int i = 0; i < p3.value.length; i++)
+		for (int i = 0; i < p3.getValue().length; i++)
 		{
-		    assert(p3.value[0].equals("Andrea"));
+		    assert(p3.getValue()[0].equals("Andrea"));
 		}
 	    }
 
@@ -344,8 +326,8 @@ public class TestImpl
 		    Person p = p1[i] = new Person(i, "Andrea");
 		    p2Value[i] = new Person(i + i, "Egon");
 		}
-		PersonListHolder p2 = new PersonListHolder(p2Value);
-		PersonListHolder p3 = new PersonListHolder();
+		Holder<Person[]> p2 = new Holder<Person[]>(p2Value);
+		Holder<Person[]> p3 = new Holder<Person[]>();
 		
 		Person[] result = userType.f6(p1, p2, p3);
 		
@@ -354,22 +336,22 @@ public class TestImpl
 		    assert(result[i].name.equals("Test"));
 		    assert(result[i].id == i);
 		}
-		for (int i = 0; i < p2.value.length; i++)
+		for (int i = 0; i < p2.getValue().length; i++)
 		{
-		    assert(p2.value[i].name.equals("Andrea"));
-		    assert(p2.value[i].id == i);
+		    assert(p2.getValue()[i].name.equals("Andrea"));
+		    assert(p2.getValue()[i].id == i);
 		}
-		for (int i = 0; i < p3.value.length; i++)
+		for (int i = 0; i < p3.getValue().length; i++)
 		{
-		    assert(p3.value[i].name.equals("Egon"));
-		    assert(p3.value[i].id == i + i);
+		    assert(p3.getValue()[i].name.equals("Egon"));
+		    assert(p3.getValue()[i].id == i + i);
 		}
 	    }
 
 	    { // typedef long time_t
 		int p1 = 7;
-		IntegerHolder p2 = new IntegerHolder(3);
-		IntegerHolder p3 = new IntegerHolder();
+		Holder<Integer> p2 = new Holder<Integer>(3);
+		Holder<Integer> p3 = new Holder<Integer>();
 		
 		int result = userType.f7(p1, p2, p3);
 		

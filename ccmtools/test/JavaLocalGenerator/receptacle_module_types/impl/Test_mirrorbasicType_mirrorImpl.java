@@ -13,6 +13,7 @@
 package world.europe.austria.ccm.local;
                  
 import ccm.local.Components.*;
+import ccm.local.*;
  
 /** 
  * This class implements a component facet's methods.
@@ -37,7 +38,7 @@ public class Test_mirrorbasicType_mirrorImpl
 
     /** Business logic implementations */
 
-    public short f1(short p1, ccm.local.ShortHolder p2, ccm.local.ShortHolder p3)
+    public short f1(short p1, Holder<Short> p2, Holder<Short> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -45,7 +46,7 @@ public class Test_mirrorbasicType_mirrorImpl
         return (short)(p3.getValue() + p1);
     }    
 
-    public int f2(int p1, ccm.local.IntegerHolder p2, ccm.local.IntegerHolder p3)
+    public int f2(int p1, Holder<Integer> p2, Holder<Integer> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -53,7 +54,7 @@ public class Test_mirrorbasicType_mirrorImpl
         return p3.getValue() + p1;
     }    
 
-    public short f3(short p1, ccm.local.ShortHolder p2, ccm.local.ShortHolder p3)
+    public short f3(short p1, Holder<Short> p2, Holder<Short> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -61,7 +62,7 @@ public class Test_mirrorbasicType_mirrorImpl
         return (short)(p3.getValue() + p1);
     }    
 
-    public int f4(int p1, ccm.local.IntegerHolder p2, ccm.local.IntegerHolder p3)
+    public int f4(int p1, Holder<Integer> p2, Holder<Integer> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -69,7 +70,7 @@ public class Test_mirrorbasicType_mirrorImpl
         return p3.getValue() + p1;
     }    
 
-    public float f5(float p1, ccm.local.FloatHolder p2, ccm.local.FloatHolder p3)
+    public float f5(float p1, Holder<Float> p2, Holder<Float> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -77,7 +78,7 @@ public class Test_mirrorbasicType_mirrorImpl
         return p3.getValue() + p1;
     }    
 
-    public double f6(double p1, ccm.local.DoubleHolder p2, ccm.local.DoubleHolder p3)
+    public double f6(double p1, Holder<Double> p2, Holder<Double> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -85,7 +86,7 @@ public class Test_mirrorbasicType_mirrorImpl
         return p3.getValue() + p1;
     }    
 
-    public char f7(char p1, ccm.local.CharacterHolder p2, ccm.local.CharacterHolder p3)
+    public char f7(char p1, Holder<Character> p2, Holder<Character> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -93,7 +94,7 @@ public class Test_mirrorbasicType_mirrorImpl
         return (char)(p3.getValue() + p1);
     }    
 
-    public String f8(String p1, ccm.local.StringHolder p2, ccm.local.StringHolder p3)
+    public String f8(String p1, Holder<String> p2, Holder<String> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -101,7 +102,7 @@ public class Test_mirrorbasicType_mirrorImpl
         return p3.getValue() + p1;
     }    
 
-    public boolean f9(boolean p1, ccm.local.BooleanHolder p2, ccm.local.BooleanHolder p3)
+    public boolean f9(boolean p1, Holder<Boolean> p2, Holder<Boolean> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
@@ -109,7 +110,7 @@ public class Test_mirrorbasicType_mirrorImpl
         return p3.getValue() && p1;
     }    
 
-    public byte f10(byte p1, ccm.local.ByteHolder p2, ccm.local.ByteHolder p3)
+    public byte f10(byte p1, Holder<Byte> p2, Holder<Byte> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
