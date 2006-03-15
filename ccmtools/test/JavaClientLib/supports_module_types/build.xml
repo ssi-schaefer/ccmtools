@@ -1,4 +1,4 @@
-<project name="JavaClientLibTest" default="compile.src">
+<project name="JavaClientLibTest" default="compile">
 
   <property name="dest" location="xxx" />
   <property name="idl2" location="${dest}/idl2" />
@@ -18,17 +18,9 @@
  
 
   <!-- Compile generated Java files-->
-  <target name="compile.src-gen" depends="init" description="" >
-      <javac srcdir="${src-gen}" destdir="${build}" 
-             debug="on" source="1.4" target="1.4">
-          <classpath refid="compile.classpath" />  
-      </javac>
-  </target>
-
-  <!-- Compile manuall Java files-->
-  <target name="compile.src" depends="compile.src-gen" description="" >
-      <javac srcdir="${src}" destdir="${build}" 
-             debug="on" source="1.4" target="1.4">
+  <target name="compile" depends="init" description="" >
+      <javac srcdir="${src-gen}:${src}" destdir="${build}" 
+             debug="on" source="1.5" target="1.5">
           <classpath refid="compile.classpath" />  
       </javac>
   </target>
