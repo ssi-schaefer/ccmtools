@@ -29,8 +29,6 @@ stubs: idl3
 check: 
 	cp impl/Client.java ${DEST_DIR}/src/
 	cp impl/TestImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
-#	cp impl/Test_mirrorbasicType_mirrorImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
-#	cp impl/Test_mirroruserType_mirrorImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	ant -f ./build.xml
 	bin/runClient
 
