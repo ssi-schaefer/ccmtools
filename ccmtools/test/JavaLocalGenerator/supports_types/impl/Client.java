@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 import world.europe.austria.ccm.local.*;
 import ccm.local.Components.*;
 
@@ -237,89 +240,89 @@ public class Client
 			}
 
 			{ // typedef sequence<long> LongList
-				int[] p1 = new int[5];
-				int[] p2Value = new int[5];
+				List<Integer> p1 = new ArrayList<Integer>(5);
+				List<Integer> p2Value = new ArrayList<Integer>(5);
 				for (int i = 0; i < 5; i++)
 				{
-					p1[i] = i;
-					p2Value[i] = i + i;
+					p1.add(i);
+					p2Value.add(i + i);
 				}
 
-				Holder<int[]> p2 = new Holder<int[]>(p2Value);
-				Holder<int[]> p3 = new Holder<int[]>();
+				Holder<List<Integer>> p2 = new Holder<List<Integer>>(p2Value);
+				Holder<List<Integer>> p3 = new Holder<List<Integer>>();
 
-				int[] result = component.fu4(p1, p2, p3);
+				List<Integer> result = component.fu4(p1, p2, p3);
 
-				for (int i = 0; i < result.length; i++)
+				for (int i = 0; i < result.size(); i++)
 				{
-					assert(result[i] == i);
+					assert(result.get(i) == i);
 				}
-				for (int i = 0; i < p2.getValue().length; i++)
+				for (int i = 0; i < p2.getValue().size(); i++)
 				{
-					assert(p2.getValue()[i] == i);
+					assert(p2.getValue().get(i) == i);
 				}
-				for (int i = 0; i < p3.getValue().length; i++)
+				for (int i = 0; i < p3.getValue().size(); i++)
 				{
-					assert(p3.getValue()[i] == i + i);
+					assert(p3.getValue().get(i) == i + i);
 				}
 			}
 
 			{ // typedef sequence<string> StringList
-				String[] p1 = new String[5];
-				String[] p2Value = new String[5];
+				List<String> p1 = new ArrayList<String>(5);
+				List<String> p2Value = new ArrayList<String>(5);
 				for (int i = 0; i < 5; i++)
 				{
-					p1[i] = "Egon";
-					p2Value[i] = "Andrea";
+					p1.add("Egon");
+					p2Value.add("Andrea");
 				}
 
-				Holder<String[]> p2 = new Holder<String[]>(p2Value);
-				Holder<String[]> p3 = new Holder<String[]>();
+				Holder<List<String>> p2 = new Holder<List<String>>(p2Value);
+				Holder<List<String>> p3 = new Holder<List<String>>();
 
-				String[] result = component.fu5(p1, p2, p3);
+				List<String> result = component.fu5(p1, p2, p3);
 
-				for (int i = 0; i < result.length; i++)
+				for (int i = 0; i < result.size(); i++)
 				{
-					assert(result[i].equals("Test"));
+					assert(result.get(i).equals("Test"));
 				}
-				for (int i = 0; i < p2.getValue().length; i++)
+				for (int i = 0; i < p2.getValue().size(); i++)
 				{
-					assert(p2.getValue()[i].equals("Egon"));
+					assert(p2.getValue().get(i).equals("Egon"));
 				}
-				for (int i = 0; i < p3.getValue().length; i++)
+				for (int i = 0; i < p3.getValue().size(); i++)
 				{
-					assert(p3.getValue()[0].equals("Andrea"));
+					assert(p3.getValue().get(0).equals("Andrea"));
 				}
 			}
 
 			{ // typedef sequence<Person> PersonList
 
-				Person[] p1 = new Person[5];
-				Person[] p2Value = new Person[5];
+				List<Person> p1 = new ArrayList<Person>(5);
+				List<Person> p2Value = new ArrayList<Person>(5);
 				for (int i = 0; i < 5; i++)
 				{
-					Person p = p1[i] = new Person(i, "Andrea");
-					p2Value[i] = new Person(i + i, "Egon");
+				    p1.add(new Person(i, "Andrea"));
+				    p2Value.add(new Person(i + i, "Egon"));
 				}
-				Holder<Person[]> p2 = new Holder<Person[]>(p2Value);
-				Holder<Person[]> p3 = new Holder<Person[]>();
+				Holder<List<Person>> p2 = new Holder<List<Person>>(p2Value);
+				Holder<List<Person>> p3 = new Holder<List<Person>>();
 
-				Person[] result = component.fu6(p1, p2, p3);
+				List<Person> result = component.fu6(p1, p2, p3);
 
-				for (int i = 0; i < result.length; i++)
+				for (int i = 0; i < result.size(); i++)
 				{
-					assert(result[i].name.equals("Test"));
-					assert(result[i].id == i);
+					assert(result.get(i).name.equals("Test"));
+					assert(result.get(i).id == i);
 				}
-				for (int i = 0; i < p2.getValue().length; i++)
+				for (int i = 0; i < p2.getValue().size(); i++)
 				{
-					assert(p2.getValue()[i].name.equals("Andrea"));
-					assert(p2.getValue()[i].id == i);
+					assert(p2.getValue().get(i).name.equals("Andrea"));
+					assert(p2.getValue().get(i).id == i);
 				}
-				for (int i = 0; i < p3.getValue().length; i++)
+				for (int i = 0; i < p3.getValue().size(); i++)
 				{
-					assert(p3.getValue()[i].name.equals("Egon"));
-					assert(p3.getValue()[i].id == i + i);
+					assert(p3.getValue().get(i).name.equals("Egon"));
+					assert(p3.getValue().get(i).id == i + i);
 				}
 			}
 
