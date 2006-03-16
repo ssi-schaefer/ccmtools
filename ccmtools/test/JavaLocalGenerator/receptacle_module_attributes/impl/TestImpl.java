@@ -11,6 +11,10 @@
  */
 
 package world.europe.austria.ccm.local;
+
+import java.util.List;
+import java.util.ArrayList;
+
    
 /**
  * This class implements component equivalent and supported interfaces
@@ -144,49 +148,47 @@ public class TestImpl
             }
             {
                 // typedef sequence<long> LongList
-                int[] value = new int[10];
-                for(int i = 0; i< value.length; i++)
+                List<Integer> value = new ArrayList<Integer>(10);
+                for(int i = 0; i< value.size(); i++)
                 {
-                    value[i] = i;
+                    value.add(i);
                 }
                 userType.longList_value(value);
-                int[] result = userType.longList_value();
-                for(int i = 0; i<result.length; i++)
+                List<Integer> result = userType.longList_value();
+                for(int i = 0; i<result.size(); i++)
                 {
-                    assert(result[i] == value[i]);
+                    assert(result.get(i) == value.get(i));
                 }
             }
             {
                 // typedef sequence<string> StringList
-                String[] value = new String[10];
-                for(int i = 0; i< value.length; i++)
+                List<String> value = new ArrayList<String>(10);
+                for(int i = 0; i< value.size(); i++)
                 {
-                    value[i] = "Egon";
+                    value.add("Egon");
                 }
                 userType.stringList_value(value);
-                String[] result = userType.stringList_value();
-                for(int i = 0; i<result.length; i++)
+                List<String> result = userType.stringList_value();
+                for(int i = 0; i<result.size(); i++)
                 {
-                    assert(result[i].equals(value[i]));
+                    assert(result.get(i).equals(value.get(i)));
                 }
             }
             {
                 // typedef sequence<Person> PersonList
-                world.europe.austria.Person[] value =
-                    new world.europe.austria.Person[10];
-                for(int i = 0; i< value.length; i++)
+                List<world.europe.austria.Person> value =
+                    new ArrayList<world.europe.austria.Person>(10);
+                for(int i = 0; i< value.size(); i++)
                 {
-                    world.europe.austria.Person p =
-                        new world.europe.austria.Person(i, "Andrea");
-                    value[i] = p;
+                    value.add(new world.europe.austria.Person(i, "Andrea"));
                 }
                 userType.personList_value(value);
-                world.europe.austria.Person[] result =
+                List<world.europe.austria.Person> result =
                     userType.personList_value();
-                for(int i = 0; i<result.length; i++)
+                for(int i = 0; i<result.size(); i++)
                 {
-                    assert(result[i].id == value[i].id);
-                    assert(result[i].name.equals(value[i].name));
+                    assert(result.get(i).id == value.get(i).id);
+                    assert(result.get(i).name.equals(value.get(i).name));
                 }
             }
             {
