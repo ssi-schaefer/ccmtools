@@ -38,7 +38,7 @@ public class OperationDefAdapterFromCorbaTemplate
     StringBuffer stringBuffer = new StringBuffer();
      OperationDef op = (OperationDef) argument;  
     stringBuffer.append(TEXT_1);
-    stringBuffer.append(op.generateReturnType());
+    stringBuffer.append(op.generateCorbaReturnType());
     stringBuffer.append(TEXT_2);
     stringBuffer.append(op.getIdentifier());
     stringBuffer.append(TEXT_3);

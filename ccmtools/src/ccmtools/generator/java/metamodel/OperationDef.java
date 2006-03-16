@@ -63,7 +63,7 @@ public class OperationDef
 		
 	public String generateReturnType()
 	{		
-		return getType().generateJavaMapping(PassingDirection.RESULT);
+		return getType().generateJavaMapping();
 	}
 	
 	public String generateReturnStatement()
@@ -193,6 +193,11 @@ public class OperationDef
 	 * Client Library Generator Methods
 	 * 
 	 *************************************************************************/
+	
+	public String generateCorbaReturnType()
+	{		
+		return getType().generateCorbaMapping();
+	}
 	
 	public String generateCorbaParameterDeclarationList()
 	{

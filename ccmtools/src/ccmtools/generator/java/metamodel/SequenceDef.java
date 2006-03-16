@@ -1,6 +1,12 @@
 package ccmtools.generator.java.metamodel;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+
+import ccmtools.generator.java.templates.SequenceDefCorbaConverterTemplate;
+import ccmtools.utils.SourceFile;
+import ccmtools.utils.Text;
 
 public class SequenceDef
 	extends ModelElement
@@ -52,6 +58,11 @@ public class SequenceDef
 	public String generateJavaMapping()
 	{
 		return "java.util.List<" + getElementType().generateJavaMappingObject() + ">";
+	}
+	
+	public String generateJavaMappingImpl()
+	{
+		return "java.util.ArrayList<" + getElementType().generateJavaMappingObject() + ">";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -120,6 +131,26 @@ public class SequenceDef
 	
 	public String generateCorbaConverterType()
 	{
-		return "";
+		return generateAbsoluteJavaRemoteName() + "CorbaConverter.convert";
+	}
+	
+	public String generateCorbaConverter()
+	{
+		return new SequenceDefCorbaConverterTemplate().generate(this);
+	}
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateClientLibSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
+		
+		SourceFile corbaConverter = 
+			new SourceFile(remotePackageName, getIdentifier() + "CorbaConverter.java",generateCorbaConverter());		
+		sourceFileList.add(corbaConverter);
+
+		return sourceFileList;
 	}
 }

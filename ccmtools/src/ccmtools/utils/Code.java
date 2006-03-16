@@ -298,6 +298,16 @@ public class Code
         return buffer.toString();
     }
     
+    public static String getRepositoryId(List ns, String name)
+    {
+    	StringBuffer buffer = new StringBuffer();
+    	buffer.append("IDL:");
+    	buffer.append(Text.joinList("/", ns));
+    	buffer.append("/").append(name);
+    	buffer.append(":1.0");
+    	return buffer.toString();
+    }
+    
     public static List getListFromAbsoluteName(String name)
     {
         List list = new ArrayList();

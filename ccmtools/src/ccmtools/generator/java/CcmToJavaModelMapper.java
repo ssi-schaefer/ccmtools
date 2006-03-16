@@ -2,6 +2,7 @@ package ccmtools.generator.java;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -160,11 +161,26 @@ public class CcmToJavaModelMapper
     		UsesDef javaUses = transform(uses);
     		modelRepository.addUses(javaUses);
     	}
+    	else if(node instanceof MAliasDef)
+    	{
+    		MAliasDef alias = (MAliasDef)node;
+    		logger.finer("MAliasDef: " + Code.getRepositoryId(alias));    		
+    		MTyped typed = (MTyped)alias;
+    		MIDLType innerIdlType = typed.getIdlType();			    		
+    		if(innerIdlType instanceof MSequenceDef)
+    		{
+    			MSequenceDef sequence = (MSequenceDef)innerIdlType;
+    			SequenceDef javaSequence = transform(sequence, alias.getIdentifier(), Code.getNamespaceList(alias));
+    			modelRepository.addSequence(javaSequence);
+    		}			
+    		// TODO: Handle other alias types
+
+    	
+    	}
     }
 
     public void handleNodeData(String fieldType, String fieldId, Object value)
     {
-        logger.finest("handleNodeData(" + fieldType + ", " + fieldId + ")");        
     }
     
     
@@ -429,7 +445,7 @@ public class CcmToJavaModelMapper
 	
 	public Type transform(MIDLType in)
 	{
-		logger.finer("MIDLType: ");
+		logger.finer("MIDLType: " + in);
 		if(in instanceof MPrimitiveDef)
 		{
 			return transform((MPrimitiveDef)in);
@@ -448,33 +464,7 @@ public class CcmToJavaModelMapper
 		}
 		else if(in instanceof MAliasDef)
 		{
-			MAliasDef alias = (MAliasDef)in;
-			MTyped typed = (MTyped)alias;
-			MIDLType innerIdlType = typed.getIdlType();			
-			if(innerIdlType instanceof MPrimitiveDef)
-			{
-				MPrimitiveDef primitive = (MPrimitiveDef)innerIdlType;
-				if(primitive.getKind() == MPrimitiveKind.PK_ANY)
-				{
-					return anyPluginManager.load(alias.getIdentifier());
-				}
-				else
-				{
-					return transform(primitive);
-				}
-			}
-			else if(innerIdlType instanceof MSequenceDef)
-			{
-				MSequenceDef seq = (MSequenceDef)innerIdlType;
-				MTyped seqType = (MTyped)seq;
-				MIDLType seqIdl = seqType.getIdlType();						
-				return new SequenceDef(alias.getIdentifier(), Code.getNamespaceList(alias), transform(seqIdl));
-			}			
-			// TODO: Handle other alias types
-			else
-			{
-				throw new RuntimeException("transform(MIDLType): unknown alias type " + in);
-			}
+			return transform((MAliasDef)in);
 		}
 		else
 		{
@@ -482,10 +472,62 @@ public class CcmToJavaModelMapper
 		}
 	}
 	
+	public Type transform(MAliasDef in)
+	{
+		Type out;
+		String repoId = Code.getRepositoryId(in);
+		logger.finer("MAliasDef: " + repoId);
+		MTyped typed = (MTyped)in;
+		MIDLType innerIdlType = typed.getIdlType();			
+		if(innerIdlType instanceof MPrimitiveDef)
+		{
+			MPrimitiveDef primitive = (MPrimitiveDef)innerIdlType;
+			if(primitive.getKind() == MPrimitiveKind.PK_ANY)
+			{
+				out = anyPluginManager.load(in.getIdentifier());
+			}
+			else
+			{
+				out = transform(primitive);
+			}
+		}
+		else if(innerIdlType instanceof MSequenceDef)
+		{
+			out =  transform((MSequenceDef)innerIdlType, in.getIdentifier(), Code.getNamespaceList(in));
+		}			
+		// TODO: Handle other alias types
+		else
+		{
+			throw new RuntimeException("transform(MIDLType): unknown alias type " + in);
+		}
+		return out;
+	}
+	
+	
+	
+	public SequenceDef transform(MSequenceDef in, String id, List ns)
+	{
+		SequenceDef out;
+		String repoId = Code.getRepositoryId(ns,id);
+		logger.finer("MSequenceDef: " + repoId);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (SequenceDef) artifactCache.get(repoId);
+		}
+		else
+		{
+			MTyped seqType = (MTyped)in;
+			MIDLType seqIdl = seqType.getIdlType();		
+			out = new SequenceDef(id, ns, transform(seqIdl));
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
 
+	
 	public Type transform(MPrimitiveDef primitive)	
 	{
-		logger.finer("MPrimitiveDef: ");
+		logger.finer("MPrimitiveDef: " + primitive.getKind());
 		if(primitive.getKind() == MPrimitiveKind.PK_VOID)
 		{
 			return new VoidType();

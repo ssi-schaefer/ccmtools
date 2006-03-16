@@ -18,6 +18,9 @@ public class ModelRepository
 	private List usesList = new ArrayList();
 	private List constantList = new ArrayList();
 	
+	private List sequenceList = new  ArrayList();
+	
+	
 	public ModelRepository()
 	{
 	}
@@ -86,4 +89,16 @@ public class ModelRepository
 	{
 		return constantList;
 	}
+	
+	
+	public void addSequence(SequenceDef constant)
+	{
+		sequenceList.add(constant);
+	}
+
+	public List findAllSequences()
+	{
+		return sequenceList;
+	}
+	
 }

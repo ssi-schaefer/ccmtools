@@ -16,6 +16,7 @@ import ccmtools.generator.java.metamodel.ConstantDef;
 import ccmtools.generator.java.metamodel.HomeDef;
 import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.ModelRepository;
+import ccmtools.generator.java.metamodel.SequenceDef;
 import ccmtools.generator.java.ui.CommandLineParameters;
 import ccmtools.utils.CcmModelHelper;
 import ccmtools.utils.Code;
@@ -87,6 +88,14 @@ public class JavaClientLibGenerator
 					ConstantDef javaConstant = (ConstantDef) j.next();
 					sourceFileList.addAll(javaConstant.generateLocalInterfaceSourceFiles());
 				}
+				
+				// Save data type converter				
+				for (Iterator j = javaModel.findAllSequences().iterator(); j.hasNext();)
+				{
+					SequenceDef javaSequence = (SequenceDef) j.next();
+					sourceFileList.addAll(javaSequence.generateClientLibSourceFiles());
+				}
+				
 				// Save all source file objects
 				Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 			}

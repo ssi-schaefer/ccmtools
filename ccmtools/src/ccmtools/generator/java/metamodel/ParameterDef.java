@@ -75,14 +75,16 @@ public class ParameterDef
 		else if(direction == PassingDirection.INOUT)
 		{
 			return  getType().generateCorbaHolderType() + " " + 
-				getIdentifier() + "Remote = new " + getType().generateCorbaHolderType() + 
+				getIdentifier() + "Remote = " + NL + 
+				TAB3 + "new " + getType().generateCorbaHolderType() + 
 				"(" + getType().generateCorbaConverterType() + "(" + 
 				getIdentifier() + ".getValue()));";			
 		}
 		else if(direction == PassingDirection.OUT)
 		{
 			return getType().generateCorbaHolderType() + " " +
-				getIdentifier() + "Remote = new " + getType().generateCorbaHolderType() + "();"; 
+				getIdentifier() + "Remote = " + NL + 
+				TAB3 + "new " + getType().generateCorbaHolderType() + "();"; 
 		}
 		else // PassingDirection.RESULT
 		{

@@ -5,7 +5,7 @@
 <% OperationDef op = (OperationDef) argument;  %>
 
     /** Business delegate method */
-    public <%=op.generateReturnType()%> <%=op.getIdentifier()%>(<%=op.generateCorbaParameterDeclarationList()%>) 
+    public <%=op.generateCorbaReturnType()%> <%=op.getIdentifier()%>(<%=op.generateCorbaParameterDeclarationList()%>) 
         <%=op.generateThrowsStatementFromCorba()%> 
     {
         logger.fine("");
