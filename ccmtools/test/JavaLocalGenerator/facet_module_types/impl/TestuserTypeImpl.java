@@ -11,6 +11,9 @@
  */
 
 package world.europe.austria.ccm.local;
+
+import java.util.List;
+import java.util.ArrayList;
                  
 import ccm.local.Components.*;
 import ccm.local.*;
@@ -66,61 +69,63 @@ public class TestuserTypeImpl
 					   Holder<world.europe.austria.Address> p3)
         throws ccm.local.Components.CCMException
     {
-	Person pers = new Person(p1.resident.id + p2.getValue().resident.id, p1.resident.name + p2.getValue().resident.name);
-	Address addr = new Address(p1.street + p2.getValue().street, p1.number + p2.getValue().number, pers);
+	Person pers = new Person(p1.resident.id + p2.getValue().resident.id, 
+				 p1.resident.name + p2.getValue().resident.name);
+	Address addr = new Address(p1.street + p2.getValue().street, 
+				   p1.number + p2.getValue().number, pers);
 	p3.setValue(p2.getValue());
 	p2.setValue(p1);
 	return addr;	
     }    
 
 
-    public int[] f4(int[] p1, 
-		    Holder<int[]> p2, 
-		    Holder<int[]> p3)
+    public List<Integer> f4(List<Integer> p1, 
+		    Holder<List<Integer>> p2, 
+		    Holder<List<Integer>> p3)
         throws ccm.local.Components.CCMException
     {
-	int[] result = new int[p1.length];
-	p3.setValue(new int[p1.length]);
-	for (int i = 0; i < p1.length; i++)
+	List<Integer> result = new ArrayList<Integer>(p1.size());
+	p3.setValue(new ArrayList<Integer>(p1.size()));
+	for (int i = 0; i < p1.size(); i++)
 	{
-	    result[i] = i;
-	    p3.getValue()[i] = p2.getValue()[i];
-	    p2.getValue()[i] = p1[i];
+	    result.add(i);
+	    p3.getValue().add(p2.getValue().get(i));
+	    p2.getValue().set(i, p1.get(i));
 	}
 	return result;
     }    
 
 
-    public String[] f5(String[] p1, 
-		       Holder<String[]> p2, 
-		       Holder<String[]> p3)
+    public List<String> f5(List<String> p1, 
+		       Holder<List<String>> p2, 
+		       Holder<List<String>> p3)
         throws ccm.local.Components.CCMException
     {
-	String[] result = new String[p1.length];
-	p3.setValue(new String[p1.length]);
-	for(int i = 0; i< p1.length; i++)
+	List<String> result = new ArrayList<String>(p1.size());
+	p3.setValue(new ArrayList<String>(p1.size()));
+	for(int i = 0; i< p1.size(); i++)
 	{
-	    result[i] = "Test";
-	    p3.getValue()[i] = p2.getValue()[i];
-	    p2.getValue()[i] = p1[i];
+	    result.add("Test");
+	    p3.getValue().add(p2.getValue().get(i));
+	    p2.getValue().set(i, p1.get(i));
 	}
 	return result;
     }    
 
 
-    public world.europe.austria.Person[] f6(world.europe.austria.Person[] p1, 
-					    Holder<world.europe.austria.Person[]> p2, 
-					    Holder<world.europe.austria.Person[]> p3)
+    public List<world.europe.austria.Person> f6(List<world.europe.austria.Person> p1, 
+					    Holder<List<world.europe.austria.Person>> p2, 
+					    Holder<List<world.europe.austria.Person>> p3)
         throws ccm.local.Components.CCMException
     {
-	Person[] result = new Person[p1.length];
-	p3.setValue(new Person[p1.length]);
-	for (int i = 0; i < p1.length; i++)
+	List<Person> result = new ArrayList<Person>(p1.size());
+	p3.setValue(new ArrayList<Person>(p1.size()));
+	for (int i = 0; i < p1.size(); i++)
 	{
 	    Person person = new Person(i, "Test");
-	    result[i] = person;
-	    p3.getValue()[i] = p2.getValue()[i];
-	    p2.getValue()[i] = p1[i];
+	    result.add(person);
+	    p3.getValue().add(p2.getValue().get(i));
+	    p2.getValue().set(i, p1.get(i));
 	}
 	return result;
     }    
