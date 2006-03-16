@@ -40,9 +40,14 @@ public class TypedefDef
 		}	
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return generateJavaMapping();
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return generateCorbaHolderType();
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}	
 	
 	

@@ -30,9 +30,14 @@ public class VoidType
 		}	
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return "Void";
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return generateCorbaHolderType();
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}	
 	
 	

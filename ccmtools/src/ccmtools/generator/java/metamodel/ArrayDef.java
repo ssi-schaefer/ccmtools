@@ -40,9 +40,14 @@ public class ArrayDef
 		}	
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return generateJavaMapping();
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateAbsoluteIdlName() + ">";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 		
 	

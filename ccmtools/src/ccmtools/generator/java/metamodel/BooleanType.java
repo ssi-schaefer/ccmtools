@@ -30,10 +30,15 @@ public class BooleanType
 			return generateJavaHolderType();
 		}
 	}
-
+	
+	public String generateJavaMappingObject()
+	{
+		return "Boolean";
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<Boolean>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

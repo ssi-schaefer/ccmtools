@@ -31,9 +31,14 @@ public class FloatType
 		}
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return "Float";
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<Float>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

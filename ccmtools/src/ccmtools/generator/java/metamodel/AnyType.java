@@ -31,9 +31,14 @@ public class AnyType
 		}
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return generateJavaMapping();
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<org.omg.CORBA.Any>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 

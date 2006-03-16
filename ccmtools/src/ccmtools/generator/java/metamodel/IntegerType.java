@@ -31,9 +31,14 @@ public class IntegerType
 		}
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return "Integer";
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<Integer>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

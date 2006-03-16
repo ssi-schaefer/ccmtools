@@ -31,9 +31,14 @@ public class FixedType
 		}
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return generateJavaMapping();
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<java.math.BigDecimal>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

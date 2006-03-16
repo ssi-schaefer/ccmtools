@@ -31,9 +31,14 @@ public class StringType
 		}	
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return generateJavaMapping();
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<String>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

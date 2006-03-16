@@ -37,6 +37,16 @@ public interface Type
 	 */
 	String generateJavaMapping(PassingDirection direction);
 	
+	
+	/**
+	 * Generate the Java mapping as an Object type (e.g. int results
+	 * in Integer).
+	 * 
+	 * @return String containing the generated Java mapping Object.
+	 */
+	String generateJavaMappingObject();
+	
+	
 	String generateJavaHolderType();
 
 	

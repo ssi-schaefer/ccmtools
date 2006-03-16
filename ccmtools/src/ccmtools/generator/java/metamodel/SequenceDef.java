@@ -51,7 +51,7 @@ public class SequenceDef
 	
 	public String generateJavaMapping()
 	{
-		return getElementType().generateJavaMapping() + "[]";
+		return "java.util.List<" + getElementType().generateJavaMappingObject() + ">";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -67,9 +67,14 @@ public class SequenceDef
 		}	
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return generateJavaMapping();
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateJavaMapping() + ">";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}	
 	
 	

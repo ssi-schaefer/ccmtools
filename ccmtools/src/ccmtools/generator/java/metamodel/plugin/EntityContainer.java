@@ -18,7 +18,7 @@ public class EntityContainer
 	
 	public String generateJavaMapping()
 	{
-		return "IEntityContainer";
+		return "wx.entitycontainer.IEntityContainer";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -34,9 +34,14 @@ public class EntityContainer
 		}
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return generateJavaMapping();
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.localHolder<IEntityContainer>";
+		return "ccm.localHolder<" + generateJavaMappingObject() + ">";
 	}
 	
 
@@ -77,7 +82,7 @@ public class EntityContainer
 	
 	public String generateCorbaConverterType()
 	{
-		return "SomeDynAnyConverter.convert";
+		return "EntityContainerCorbaConverter.convert";
 	}
 	
 	public String generateCorbaHolderType()

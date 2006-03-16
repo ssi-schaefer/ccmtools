@@ -31,9 +31,14 @@ public class ShortType
 		}
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return "Short";
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<Short>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

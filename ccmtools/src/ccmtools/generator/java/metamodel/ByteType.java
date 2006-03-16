@@ -31,9 +31,14 @@ public class ByteType
 		}
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return "Byte";
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<Byte>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

@@ -31,9 +31,14 @@ public class DoubleType
 		}
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return "Double";
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<Double>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 		
 	

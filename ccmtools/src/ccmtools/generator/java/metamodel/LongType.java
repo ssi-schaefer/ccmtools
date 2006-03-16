@@ -27,13 +27,18 @@ public class LongType
 		}
 		else // INOUT, OUT
 		{
-			return "ccm.local.Holder<Long>";
+			return generateJavaHolderType();
 		}
+	}
+	
+	public String generateJavaMappingObject()
+	{
+		return "Long";
 	}
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.LongHolder";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

@@ -31,9 +31,14 @@ public class CharType
 		}
 	}
 	
+	public String generateJavaMappingObject()
+	{
+		return "Character";
+	}
+	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<Character>";
+		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

@@ -90,7 +90,7 @@ public class ModelElement
 	 * Utility Methods
 	 * 
 	 *************************************************************************/
-	
+		
 	public String generateIdlNamespace()
 	{
 		return Text.joinList(".", getIdlNamespaceList());
