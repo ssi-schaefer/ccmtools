@@ -11,6 +11,9 @@
  */
 
 package world.europe.austria.ccm.local;
+
+import java.util.List;
+import java.util.ArrayList;
                  
 import ccm.local.Components.*;
 import ccm.local.*;
@@ -75,53 +78,51 @@ public class Test_mirroruserType_mirrorImpl
         return addr;
     }    
 
-    public int[] f4(int[] p1, 
-		    Holder<int[]> p2, 
-		    Holder<int[]> p3)
+    public List<Integer> f4(List<Integer> p1, 
+		    Holder<List<Integer>> p2, 
+		    Holder<List<Integer>> p3)
         throws ccm.local.Components.CCMException
     {
-        int[] result = new int[p1.length];
-        p3.setValue(new int[p1.length]);
-        for (int i = 0; i < p1.length; i++)
+        List<Integer> result = new ArrayList<Integer>(p1.size());
+        p3.setValue(new ArrayList<Integer>(p1.size()));
+        for (int i = 0; i < p1.size(); i++)
         {
-            result[i] = i;
-            p3.getValue()[i] = p2.getValue()[i];
-            p2.getValue()[i] = p1[i];
+            result.add(i);
+            p3.getValue().add(p2.getValue().get(i));
+            p2.getValue().set(i, p1.get(i));
         }
         return result;
     }    
 
-    public String[] f5(String[] p1, 
-		       Holder<String[]> p2, 
-		       Holder<String[]> p3)
+    public List<String> f5(List<String> p1, 
+		       Holder<List<String>> p2, 
+		       Holder<List<String>> p3)
         throws ccm.local.Components.CCMException
     {
-        String[] result = new String[p1.length];
-        p3.setValue(new String[p1.length]);
-        for(int i = 0; i< p1.length; i++)
+        List<String> result = new ArrayList<String>(p1.size());
+        p3.setValue(new ArrayList<String>(p1.size()));
+        for(int i = 0; i< p1.size(); i++)
         {
-            result[i] = "Test";
-            p3.getValue()[i] = p2.getValue()[i];
-            p2.getValue()[i] = p1[i];
+            result.add("Test");
+            p3.getValue().add(p2.getValue().get(i));
+            p2.getValue().set(i, p1.get(i));
         }
         return result;
     }    
 
-    public world.europe.austria.Person[] f6(world.europe.austria.Person[] p1, 
-					    Holder<world.europe.austria.Person[]> p2, 
-					    Holder<world.europe.austria.Person[]> p3)
+    public List<world.europe.austria.Person> f6(List<world.europe.austria.Person> p1, 
+					    Holder<List<world.europe.austria.Person>> p2, 
+					    Holder<List<world.europe.austria.Person>> p3)
         throws ccm.local.Components.CCMException
     {
-        world.europe.austria.Person[] result = 
-	    new world.europe.austria.Person[p1.length];
-        p3.setValue(new world.europe.austria.Person[p1.length]);
-        for (int i = 0; i < p1.length; i++)
+        List<world.europe.austria.Person> result = 
+	    new ArrayList<world.europe.austria.Person>(p1.size());
+        p3.setValue(new ArrayList<world.europe.austria.Person>(p1.size()));
+        for (int i = 0; i < p1.size(); i++)
         {
-            world.europe.austria.Person person = 
-		new world.europe.austria.Person(i, "Test");
-            result[i] = person;
-            p3.getValue()[i] = p2.getValue()[i];
-            p2.getValue()[i] = p1[i];
+            result.add(new world.europe.austria.Person(i, "Test"));
+            p3.getValue().add(p2.getValue().get(i));
+            p2.getValue().set(i, p1.get(i));
         }
         return result;
     }    
