@@ -1,6 +1,7 @@
 package client;
 
-import org.omg.CORBA.IntHolder;
+import java.util.List;
+import java.util.ArrayList;
 
 import world.europe.austria.Address;
 import world.europe.austria.Color;
@@ -78,19 +79,19 @@ public class myUserTypeImpl
 	}
 
 	
-	public int[] f4(int[] p1, Holder<int[]> p2, Holder<int[]> p3)
+	public List<Integer> f4(List<Integer> p1, Holder<List<Integer>> p2, Holder<List<Integer>> p3)
 		throws CCMException
 	{
 		System.out.println("myUserTypeImpl.f4()");
 		try
 		{
-			int[] result = new int[p1.length];
-			p3.setValue(new int[p1.length]);
-			for (int i = 0; i < p1.length; i++)
+			List<Integer> result = new ArrayList<Integer>(p1.size());
+			p3.setValue(new ArrayList<Integer>(p1.size()));
+			for (int i = 0; i < p1.size(); i++)
 			{
-				result[i] = i;
-				p3.getValue()[i] = p2.getValue()[i];
-				p2.getValue()[i] = p1[i];
+				result.add(i);
+				p3.getValue().add(p2.getValue().get(i));
+				p2.getValue().set(i, p1.get(i));
 			}
 			return result;
 		}
@@ -102,19 +103,19 @@ public class myUserTypeImpl
 	}
 
 	
-	public String[] f5(String[] p1, Holder<String[]> p2, Holder<String[]> p3)
+	public List<String> f5(List<String> p1, Holder<List<String>> p2, Holder<List<String>> p3)
 			throws CCMException
 	{
 		System.out.println("myUserTypeImpl.f5()");
 		try
 		{
-			String[] result = new String[p1.length];		
-			p3.setValue(new String[p1.length]);
-			for(int i = 0; i< p1.length; i++)
+			List<String> result = new ArrayList<String>(p1.size());		
+			p3.setValue(new ArrayList<String>(p1.size()));
+			for(int i = 0; i< p1.size(); i++)
 			{
-				result[i] = "Test";
-				p3.getValue()[i] = p2.getValue()[i];
-				p2.getValue()[i] = p1[i];
+				result.add("Test");
+				p3.getValue().add(p2.getValue().get(i));
+				p2.getValue().set(i, p1.get(i));
 			}
 			return result;
 		}
@@ -126,20 +127,20 @@ public class myUserTypeImpl
 	}
 
 	
-	public Person[] f6(Person[] p1, Holder<Person[]> p2, Holder<Person[]> p3) 
+	public List<Person> f6(List<Person> p1, Holder<List<Person>> p2, Holder<List<Person>> p3) 
 		throws CCMException
 	{
 		System.out.println("myUserTypeImpl.f6()");
 		try
 		{
-			Person[] result = new Person[p1.length];
-			p3.setValue(new Person[p1.length]);
-			for (int i = 0; i < p1.length; i++)
+			List<Person> result = new ArrayList<Person>(p1.size());
+			p3.setValue(new ArrayList<Person>(p1.size()));
+			for (int i = 0; i < p1.size(); i++)
 			{
 				Person person = new Person(i, "Test");
-				result[i] = person;
-				p3.getValue()[i] = p2.getValue()[i];
-				p2.getValue()[i] = p1[i];
+				result.add(person);
+				p3.getValue().add(p2.getValue().get(i));
+				p2.getValue().set(i, p1.get(i));
 			}
 			return result;
 		}
