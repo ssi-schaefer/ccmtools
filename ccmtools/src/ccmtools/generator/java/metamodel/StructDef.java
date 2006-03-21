@@ -1,12 +1,21 @@
 package ccmtools.generator.java.metamodel;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import ccmtools.generator.java.templates.StructDefConstructorTemplate;
+import ccmtools.generator.java.templates.StructDefDefaultConstructorTemplate;
+import ccmtools.generator.java.templates.StructDefImplementationTemplate;
+import ccmtools.utils.SourceFile;
+import ccmtools.utils.Text;
 
 public class StructDef
 	extends ModelElement
 	implements Type
 {
-	private List members;
+	private List fields = new ArrayList();
 		
 	public StructDef(String identifier, List namespace)
 	{
@@ -14,9 +23,9 @@ public class StructDef
 	}
 	
 	
-	public List getMembers()
+	public List getFields()
 	{
-		return members;
+		return fields;
 	}
 
 	
@@ -32,7 +41,7 @@ public class StructDef
 	
 	public String generateJavaMapping()
 	{
-		return generateAbsoluteIdlName();
+		return generateAbsoluteJavaName();
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -58,6 +67,49 @@ public class StructDef
 		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 	}	
 		
+	
+	public String generateImplementation()
+	{
+		return new StructDefImplementationTemplate().generate(this);
+	}
+	
+	public String generateConstructorParameterList()
+	{
+		List parameterList = new ArrayList();
+		for(Iterator i=getFields().iterator(); i.hasNext();)
+		{
+			FieldDef field = (FieldDef)i.next();
+			parameterList.add(field.getType().generateJavaMapping() + " " + field.getIdentifier());
+		}
+		return Text.joinList(", ", parameterList);	
+	}
+	
+	public String generateConstructor()
+	{
+		return new StructDefConstructorTemplate().generate(this);
+	}
+	
+	public String generateDefaultConstructor()
+	{
+		return new StructDefDefaultConstructorTemplate().generate(this);
+	}
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateLocalInterfaceSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
+		
+		SourceFile struct = 
+			new SourceFile(localPackageName, getIdentifier() + ".java", generateImplementation());
+		sourceFileList.add(struct);
+		
+		return sourceFileList;
+	}
+			
+	
 	
 	/*************************************************************************
 	 * Application Generator Methods

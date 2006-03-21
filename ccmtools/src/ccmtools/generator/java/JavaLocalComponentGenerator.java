@@ -15,6 +15,7 @@ import ccmtools.generator.java.metamodel.ComponentDef;
 import ccmtools.generator.java.metamodel.HomeDef;
 import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.ModelRepository;
+import ccmtools.generator.java.metamodel.StructDef;
 import ccmtools.generator.java.ui.CommandLineParameters;
 import ccmtools.utils.CcmModelHelper;
 import ccmtools.utils.Code;
@@ -81,6 +82,13 @@ public class JavaLocalComponentGenerator
 					sourceFileList.addAll(javaHome.generateLocalInterfaceSourceFiles());
 					sourceFileList.addAll(javaHome.generateLocalComponentSourceFiles());
 				}
+				
+				for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
+				{
+					StructDef javaStruct = (StructDef) j.next();
+					sourceFileList.addAll(javaStruct.generateLocalInterfaceSourceFiles());
+				}
+				
 				// Save all source file objects
 				Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 			}

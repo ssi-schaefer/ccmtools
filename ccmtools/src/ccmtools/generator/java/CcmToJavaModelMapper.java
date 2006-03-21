@@ -13,6 +13,7 @@ import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MExceptionDef;
+import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MOperationDef;
@@ -39,6 +40,7 @@ import ccmtools.generator.java.metamodel.ConstantDef;
 import ccmtools.generator.java.metamodel.DoubleType;
 import ccmtools.generator.java.metamodel.EnumDef;
 import ccmtools.generator.java.metamodel.ExceptionDef;
+import ccmtools.generator.java.metamodel.FieldDef;
 import ccmtools.generator.java.metamodel.FixedType;
 import ccmtools.generator.java.metamodel.FloatType;
 import ccmtools.generator.java.metamodel.HomeDef;
@@ -160,6 +162,13 @@ public class CcmToJavaModelMapper
     		logger.finer("MUsesDef: " + Code.getRepositoryId(uses));
     		UsesDef javaUses = transform(uses);
     		modelRepository.addUses(javaUses);
+    	}
+    	else if(node instanceof MStructDef)
+    	{
+    		MStructDef struct = (MStructDef)node;
+    		logger.finer("MStructDef: " + Code.getRepositoryId(struct));
+    		StructDef javaStruct = transform(struct);
+    		modelRepository.addStruct(javaStruct);    		
     	}
     	else if(node instanceof MAliasDef)
     	{
@@ -416,13 +425,29 @@ public class CcmToJavaModelMapper
 			throw new RuntimeException("transform(MParameterMode): unknown mode!");
 		}
 	}
-
 	
 	public StructDef transform(MStructDef in)
 	{		
-		StructDef out = new StructDef(in.getIdentifier(), Code.getNamespaceList(in));
-		// As long as we don't map parameters from CORBA to Java, we don't 
-		// have to set a structure's members.
+		StructDef out;
+		String repoId = Code.getRepositoryId(in);
+		logger.finer("MStructDef: " + repoId);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (StructDef)artifactCache.get(repoId);
+		}
+		else 
+		{
+			out = new StructDef(in.getIdentifier(), Code.getNamespaceList(in));
+			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
+			{
+				MFieldDef member = (MFieldDef)i.next();	
+				MIDLType idlType = member.getIdlType();
+				FieldDef field = new FieldDef();
+				field.setIdentifier(member.getIdentifier());
+				field.setType(transform(idlType));
+				out.getFields().add(field);					
+			}
+		}
 		return out;
 	}
 	

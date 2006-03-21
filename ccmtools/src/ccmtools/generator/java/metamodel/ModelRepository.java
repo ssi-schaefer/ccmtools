@@ -18,6 +18,7 @@ public class ModelRepository
 	private List usesList = new ArrayList();
 	private List constantList = new ArrayList();
 	
+	private List structList = new ArrayList();
 	private List sequenceList = new  ArrayList();
 	
 	
@@ -80,9 +81,9 @@ public class ModelRepository
 	}
 	
 		
-	public void addGlobalConstant(ConstantDef constant)
+	public void addGlobalConstant(ConstantDef value)
 	{
-		constantList.add(constant);
+		constantList.add(value);
 	}
 
 	public List findAllGlobalConstants()
@@ -90,10 +91,20 @@ public class ModelRepository
 		return constantList;
 	}
 	
-	
-	public void addSequence(SequenceDef constant)
+	public void addStruct(StructDef value)
 	{
-		sequenceList.add(constant);
+		structList.add(value);
+	}
+
+	public List findAllStructs()
+	{
+		return structList;
+	}
+	
+	
+	public void addSequence(SequenceDef value)
+	{
+		sequenceList.add(value);
 	}
 
 	public List findAllSequences()

@@ -1,0 +1,15 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="FieldDefAccessorsTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% FieldDef field = (FieldDef) argument;  %>
+
+    public <%=field.getType().generateJavaMapping()%> <%=field.generateGetterName()%>()
+    {
+        return this.<%=field.getIdentifier()%>;
+    }     
+
+    public void <%=field.generateSetterName()%>(<%=field.getType().generateJavaMapping()%> value)
+    {
+        this.<%=field.getIdentifier()%> = value;
+    }
