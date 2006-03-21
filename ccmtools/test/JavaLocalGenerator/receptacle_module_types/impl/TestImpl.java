@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import ccm.local.*;
 
 import world.europe.austria.Color;
-import world.europe.austria.Person;
-import world.europe.austria.Address;
 
 
 /**
@@ -218,18 +216,20 @@ public class TestImpl
 
 
 	    { // struct Person { long id; string name; }
-		Person p1 = new Person(3, "Egon");
+		Person p1 = new Person();
+		p1.setId(3);
+		p1.setName("Egon");
 		Holder<Person> p2 = new Holder<Person>(new Person(23, "Andrea"));
 		Holder<Person> p3 = new Holder<Person>();
 		
 		Person result = userType.f2(p1, p2, p3);
 		
-		assert(p3.getValue().name.equals("Andrea"));
-		assert(p3.getValue().id == 23);
-		assert(p2.getValue().name.equals("Egon"));
-		assert(p2.getValue().id == 3);
-		assert(result.name.equals("EgonAndrea"));
-		assert(result.id == 3 + 23);
+		assert(p3.getValue().getName().equals("Andrea"));
+		assert(p3.getValue().getId() == 23);
+		assert(p2.getValue().getName().equals("Egon"));
+		assert(p2.getValue().getId() == 3);
+		assert(result.getName().equals("EgonAndrea"));
+		assert(result.getId() == 3 + 23);
 	    }
 
 
@@ -244,20 +244,20 @@ public class TestImpl
 		
 		Address result = userType.f3(p1, p2, p3);
 		
-		assert(p3.getValue().street.equals("Petersgasse"));
-		assert(p3.getValue().number == 17);
-		assert(p3.getValue().resident.name.equals("Andrea"));
-		assert(p3.getValue().resident.id == 23);
+		assert(p3.getValue().getStreet().equals("Petersgasse"));
+		assert(p3.getValue().getNumber() == 17);
+		assert(p3.getValue().getResident().getName().equals("Andrea"));
+		assert(p3.getValue().getResident().getId() == 23);
 		
-		assert(p2.getValue().street.equals("Waltendorf"));
-		assert(p2.getValue().number == 7);
-		assert(p2.getValue().resident.name.equals("Egon"));
-		assert(p2.getValue().resident.id == 3);
+		assert(p2.getValue().getStreet().equals("Waltendorf"));
+		assert(p2.getValue().getNumber() == 7);
+		assert(p2.getValue().getResident().getName().equals("Egon"));
+		assert(p2.getValue().getResident().getId() == 3);
 		
-		assert(result.street.equals("WaltendorfPetersgasse"));
-		assert(result.number == 24);
-		assert(result.resident.name.equals("EgonAndrea"));
-		assert(result.resident.id == 26);
+		assert(result.getStreet().equals("WaltendorfPetersgasse"));
+		assert(result.getNumber() == 24);
+		assert(result.getResident().getName().equals("EgonAndrea"));
+		assert(result.getResident().getId() == 26);
 	    }
 
 	    
@@ -335,18 +335,18 @@ public class TestImpl
 		
 		for (int i = 0; i < result.size(); i++)
 		{
-		    assert(result.get(i).name.equals("Test"));
-		    assert(result.get(i).id == i);
+		    assert(result.get(i).getName().equals("Test"));
+		    assert(result.get(i).getId() == i);
 		}
 		for (int i = 0; i < p2.getValue().size(); i++)
 		{
-		    assert(p2.getValue().get(i).name.equals("Andrea"));
-		    assert(p2.getValue().get(i).id == i);
+		    assert(p2.getValue().get(i).getName().equals("Andrea"));
+		    assert(p2.getValue().get(i).getId() == i);
 		}
 		for (int i = 0; i < p3.getValue().size(); i++)
 		{
-		    assert(p3.getValue().get(i).name.equals("Egon"));
-		    assert(p3.getValue().get(i).id == i + i);
+		    assert(p3.getValue().get(i).getName().equals("Egon"));
+		    assert(p3.getValue().get(i).getId() == i + i);
 		}
 	    }
 

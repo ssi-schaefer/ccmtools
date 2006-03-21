@@ -49,30 +49,23 @@ public class Test_mirroruserType_mirrorImpl
         return world.europe.austria.Color.orange;
     }    
 
-    public world.europe.austria.Person f2(world.europe.austria.Person p1, 
-					  Holder<world.europe.austria.Person> p2, 
-					  Holder<world.europe.austria.Person> p3)
+    public Person f2(Person p1, Holder<Person> p2, Holder<Person> p3)
         throws ccm.local.Components.CCMException
     {
-        world.europe.austria.Person r =
-            new world.europe.austria.Person(p1.id + p2.getValue().id, 
-					    p1.name + p2.getValue().name);
+        Person r = new Person(p1.getId() + p2.getValue().getId(), 
+			      p1.getName() + p2.getValue().getName());
         p3.setValue(p2.getValue());
         p2.setValue(p1);
         return r;
     }    
 
-    public world.europe.austria.Address f3(world.europe.austria.Address p1, 
-					   Holder<world.europe.austria.Address> p2, 
-					   Holder<world.europe.austria.Address> p3)
+    public Address f3(Address p1, Holder<Address> p2, Holder<Address> p3)
         throws ccm.local.Components.CCMException
     {
-        world.europe.austria.Person pers = 
-	    new world.europe.austria.Person(p1.resident.id + p2.getValue().resident.id, 
-					    p1.resident.name + p2.getValue().resident.name);
-        world.europe.austria.Address addr = 
-	    new world.europe.austria.Address(p1.street + p2.getValue().street, 
-					     p1.number + p2.getValue().number, pers);
+        Person person = new Person(p1.getResident().getId() + p2.getValue().getResident().getId(), 
+				   p1.getResident().getName() + p2.getValue().getResident().getName());
+        Address addr = new Address(p1.getStreet() + p2.getValue().getStreet(), 
+				   p1.getNumber() + p2.getValue().getNumber(), person);
         p3.setValue(p2.getValue());
         p2.setValue(p1);
         return addr;
@@ -110,17 +103,14 @@ public class Test_mirroruserType_mirrorImpl
         return result;
     }    
 
-    public List<world.europe.austria.Person> f6(List<world.europe.austria.Person> p1, 
-					    Holder<List<world.europe.austria.Person>> p2, 
-					    Holder<List<world.europe.austria.Person>> p3)
+    public List<Person> f6(List<Person> p1, Holder<List<Person>> p2, Holder<List<Person>> p3)
         throws ccm.local.Components.CCMException
     {
-        List<world.europe.austria.Person> result = 
-	    new ArrayList<world.europe.austria.Person>(p1.size());
-        p3.setValue(new ArrayList<world.europe.austria.Person>(p1.size()));
+        List<Person> result = new ArrayList<Person>(p1.size());
+        p3.setValue(new ArrayList<Person>(p1.size()));
         for (int i = 0; i < p1.size(); i++)
         {
-            result.add(new world.europe.austria.Person(i, "Test"));
+            result.add(new Person(i, "Test"));
             p3.getValue().add(p2.getValue().get(i));
             p2.getValue().set(i, p1.get(i));
         }
