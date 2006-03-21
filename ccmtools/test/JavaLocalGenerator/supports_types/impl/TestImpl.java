@@ -160,27 +160,23 @@ public class TestImpl
         return world.europe.austria.Color.orange;
     }    
 
-    public world.europe.austria.Person fu2(world.europe.austria.Person p1, 
-					   Holder<world.europe.austria.Person> p2, 
-					   Holder<world.europe.austria.Person> p3)
+    public Person fu2(Person p1, Holder<Person> p2, Holder<Person> p3)
         throws ccm.local.Components.CCMException
     {
-        world.europe.austria.Person r =
-            new world.europe.austria.Person(p1.id + p2.getValue().id, p1.name + p2.getValue().name);
+        Person r = new Person(p1.getId() + p2.getValue().getId(), 
+			      p1.getName() + p2.getValue().getName());
         p3.setValue(p2.getValue());
         p2.setValue(p1);
         return r;
     }    
 
-    public world.europe.austria.Address fu3(world.europe.austria.Address p1, 
-					    Holder<world.europe.austria.Address> p2, 
-					    Holder<world.europe.austria.Address> p3)
+    public Address fu3(Address p1, Holder<Address> p2, Holder<Address> p3)
         throws ccm.local.Components.CCMException
     {
-        Person pers = new Person(p1.resident.id + p2.getValue().resident.id, 
-				 p1.resident.name + p2.getValue().resident.name);
-        Address addr = new Address(p1.street + p2.getValue().street, 
-				   p1.number + p2.getValue().number, pers);
+        Person person = new Person(p1.getResident().getId() + p2.getValue().getResident().getId(), 
+				   p1.getResident().getName() + p2.getValue().getResident().getName());
+        Address addr = new Address(p1.getStreet() + p2.getValue().getStreet(), 
+				   p1.getNumber() + p2.getValue().getNumber(), person);
         p3.setValue(p2.getValue());
         p2.setValue(p1);
         return addr;
@@ -219,9 +215,7 @@ public class TestImpl
         return result;
     }    
 
-    public List<world.europe.austria.Person> fu6(List<world.europe.austria.Person> p1, 
-					     Holder<List<world.europe.austria.Person>> p2, 
-					     Holder<List<world.europe.austria.Person>> p3)
+    public List<Person> fu6(List<Person> p1, Holder<List<Person>> p2, Holder<List<Person>> p3)
         throws ccm.local.Components.CCMException
     {
         List<Person> result = new ArrayList<Person>(p1.size());
