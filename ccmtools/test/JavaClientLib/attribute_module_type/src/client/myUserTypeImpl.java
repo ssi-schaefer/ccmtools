@@ -1,16 +1,18 @@
 package client;
 
+import java.util.List;
+import java.util.ArrayList;
 import world.europe.austria.ccm.local.*;
 
 public class myUserTypeImpl
     implements UserTypeInterface
 {
     private world.europe.austria.Color colorValue;
-    private world.europe.austria.Person personValue;
-    private world.europe.austria.Address addressValue;
-    private int[] longListValue;
-    private String[] stringListValue;
-    private world.europe.austria.Person[] personListValue;
+    private Person personValue;
+    private Address addressValue;
+    private List<Integer> longListValue;
+    private List<String> stringListValue;
+    private List<Person> personListValue;
     private int time_tValue;
     
     public world.europe.austria.Color color_value()
@@ -28,14 +30,14 @@ public class myUserTypeImpl
     }
 
 
-    public world.europe.austria.Person person_value()
+    public Person person_value()
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.person_value() - get");
 	return personValue;
     }
 
-    public void person_value(world.europe.austria.Person value)
+    public void person_value(Person value)
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.person_value() - set");
@@ -43,14 +45,14 @@ public class myUserTypeImpl
     }
 
 
-    public world.europe.austria.Address address_value()
+    public Address address_value()
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.address_value() - get");
 	return addressValue;
     }
 
-    public void address_value(world.europe.austria.Address value)
+    public void address_value(Address value)
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.adderss_value() - set");
@@ -58,28 +60,28 @@ public class myUserTypeImpl
     }
 
 
-    public int[] longList_value()
+    public List<Integer> longList_value()
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.longList_value() - get");
 	return longListValue;
     }
 
-    public void longList_value(int[] value)
+    public void longList_value(List<Integer> value)
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.longList_value() - set");
 	longListValue = value;
     }
 
-    public String[] stringList_value()
+    public List<String> stringList_value()
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.stringList_value() - get");
 	return stringListValue;
     }
 
-    public void stringList_value(String[] value)
+    public void stringList_value(List<String> value)
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.stringList_value() - set");
@@ -87,14 +89,14 @@ public class myUserTypeImpl
     }
 
 
-    public world.europe.austria.Person[] personList_value()
+    public List<Person> personList_value()
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.personList_value() - get");
 	return personListValue;
     }
 
-    public void personList_value(world.europe.austria.Person[] value)
+    public void personList_value(List<Person> value)
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.personList_value() - set");

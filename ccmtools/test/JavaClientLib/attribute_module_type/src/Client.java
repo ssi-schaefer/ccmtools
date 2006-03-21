@@ -1,3 +1,7 @@
+
+import java.util.List;
+import java.util.ArrayList;
+
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.StringHolder;
 
@@ -114,73 +118,67 @@ public class Client
 	    }	    
 	    {
 		// struct Person { long id; string name; }
-		world.europe.austria.Person value = 
-		    new world.europe.austria.Person(3, "Egon");
+		Person value = new Person(3, "Egon");
 		component.person_value(value); 
-		world.europe.austria.Person result = component.person_value();
-		assert(result.id == value.id);
-		assert(result.name.equals(value.name));
+		Person result = component.person_value();
+		assert(result.getId() == value.getId());
+		assert(result.getName().equals(value.getName()));
 	    }
 	    {
 		// struct Address { string street; long number; Person resident; }
 		String street = "Waltendorf";
 		int number = 7;
-		world.europe.austria.Person resident = 
-		    new world.europe.austria.Person(3, "Egon");
-		world.europe.austria.Address value = 
-		    new world.europe.austria.Address(street, number, resident);
+		Person resident = new Person(3, "Egon");
+		Address value = new Address(street, number, resident);
 		component.address_value(value); 
-		world.europe.austria.Address result = component.address_value();
-		assert(result.street.equals(value.street));
-		assert(result.number == value.number);
-		assert(result.resident.id == value.resident.id);
-		assert(result.resident.name.equals(value.resident.name));
+		Address result = component.address_value();
+		assert(result.getStreet().equals(value.getStreet()));
+		assert(result.getNumber() == value.getNumber());
+		assert(result.getResident().getId() == value.getResident().getId());
+		assert(result.getResident().getName().equals(value.getResident().getName()));
 	    }
 	    {
 		// typedef sequence<long> LongList
-		int[] value = new int[10];
-		for(int i = 0; i< value.length; i++)
+		List<Integer> value = new ArrayList<Integer>();
+		for(int i = 0; i< value.size(); i++)
 		{
-		    value[i] = i;
+		    value.add(i);
 		}
 		component.longList_value(value);
-		int[] result = component.longList_value(); 
-		for(int i = 0; i<result.length; i++)
+		List<Integer> result = component.longList_value(); 
+		for(int i = 0; i<result.size(); i++)
 		{
-		    assert(result[i] == value[i]);
+		    assert(result.get(i) == value.get(i));
 		}    
 	    }
 	    {
 		// typedef sequence<string> StringList
-		String[] value = new String[10];
-		for(int i = 0; i< value.length; i++)
+		List<String> value = new ArrayList<String>();
+		for(int i = 0; i< value.size(); i++)
 		{
-		    value[i] = "Egon";
+		    value.add("Egon");
 		}
 		component.stringList_value(value);
-		String[] result = component.stringList_value(); 
-		for(int i = 0; i<result.length; i++)
+		List<String> result = component.stringList_value(); 
+		for(int i = 0; i<result.size(); i++)
 		{
-		    assert(result[i].equals(value[i]));
+		    assert(result.get(i).equals(value.get(i)));
 		}    	
 	    }
 	    {
 		// typedef sequence<Person> PersonList
-		world.europe.austria.Person[] value = 
-		    new world.europe.austria.Person[10];
-		for(int i = 0; i< value.length; i++)
+		List<Person> value = new ArrayList<Person>();
+		for(int i = 0; i< value.size(); i++)
 		{
-		    world.europe.austria.Person p = 
-			new world.europe.austria.Person(i, "Andrea");
-		    value[i] = p;
+		    Person p = new Person(i, "Andrea");
+		    value.add(p);
 		}
 		component.personList_value(value);
-		world.europe.austria.Person[] result = 
-		    component.personList_value(); 
-		for(int i = 0; i<result.length; i++)
+		List<Person> result = component.personList_value(); 
+		for(int i = 0; i<result.size(); i++)
 		{
-		    assert(result[i].id == value[i].id);
-		    assert(result[i].name.equals(value[i].name));
+		    assert(result.get(i).getId() == value.get(i).getId());
+		    assert(result.get(i).getName().equals(value.get(i).getName()));
 		}    	
 	    }
 	    {
@@ -276,73 +274,67 @@ public class Client
 	    }	    
 	    {
 		// struct Person { long id; string name; }
-		world.europe.austria.Person value = 
-		    new world.europe.austria.Person(3, "Egon");
+		Person value = new Person(3, "Egon");
 		userType.person_value(value); 
-		world.europe.austria.Person result = userType.person_value();
-		assert(result.id == value.id);
-		assert(result.name.equals(value.name));
+		Person result = userType.person_value();
+		assert(result.getId() == value.getId());
+		assert(result.getName().equals(value.getName()));
 	    }
 	    {
 		// struct Address { string street; long number; Person resident; }
 		String street = "Waltendorf";
 		int number = 7;
-		world.europe.austria.Person resident = 
-		    new world.europe.austria.Person(3, "Egon");
-		world.europe.austria.Address value = 
-		    new world.europe.austria.Address(street, number, resident);
+		Person resident = new Person(3, "Egon");
+		Address value = new Address(street, number, resident);
 		userType.address_value(value); 
-		world.europe.austria.Address result = userType.address_value();
-		assert(result.street.equals(value.street));
-		assert(result.number == value.number);
-		assert(result.resident.id == value.resident.id);
-		assert(result.resident.name.equals(value.resident.name));
+		Address result = userType.address_value();
+		assert(result.getStreet().equals(value.getStreet()));
+		assert(result.getNumber() == value.getNumber());
+		assert(result.getResident().getId() == value.getResident().getId());
+		assert(result.getResident().getName().equals(value.getResident().getName()));
 	    }
 	    {
 		// typedef sequence<long> LongList
-		int[] value = new int[10];
-		for(int i = 0; i< value.length; i++)
+		List<Integer> value = new ArrayList<Integer>();
+		for(int i = 0; i< value.size(); i++)
 		{
-		    value[i] = i;
+		    value.add(i);
 		}
 		userType.longList_value(value);
-		int[] result = userType.longList_value(); 
-		for(int i = 0; i<result.length; i++)
+		List<Integer> result = userType.longList_value(); 
+		for(int i = 0; i<result.size(); i++)
 		{
-		    assert(result[i] == value[i]);
+		    assert(result.get(i) == value.get(i));
 		}    
 	    }
 	    {
 		// typedef sequence<string> StringList
-		String[] value = new String[10];
-		for(int i = 0; i< value.length; i++)
+		List<String> value = new ArrayList<String>();
+		for(int i = 0; i< value.size(); i++)
 		{
-		    value[i] = "Egon";
+		    value.add("Egon");
 		}
 		userType.stringList_value(value);
-		String[] result = userType.stringList_value(); 
-		for(int i = 0; i<result.length; i++)
+		List<String> result = userType.stringList_value(); 
+		for(int i = 0; i<result.size(); i++)
 		{
-		    assert(result[i].equals(value[i]));
+		    assert(result.get(i).equals(value.get(i)));
 		}    	
 	    }
 	    {
 		// typedef sequence<Person> PersonList
-		world.europe.austria.Person[] value = 
-		    new world.europe.austria.Person[10];
-		for(int i = 0; i< value.length; i++)
+		List<Person> value = new ArrayList<Person>();
+		for(int i = 0; i< value.size(); i++)
 		{
-		    world.europe.austria.Person p = 
-			new world.europe.austria.Person(i, "Andrea");
-		    value[i] = p;
+		    Person p = new Person(i, "Andrea");
+		    value.add(p);
 		}
 		userType.personList_value(value);
-		world.europe.austria.Person[] result = 
-		    userType.personList_value(); 
-		for(int i = 0; i<result.length; i++)
+		List<Person> result = userType.personList_value(); 
+		for(int i = 0; i<result.size(); i++)
 		{
-		    assert(result[i].id == value[i].id);
-		    assert(result[i].name.equals(value[i].name));
+		    assert(result.get(i).getId() == value.get(i).getId());
+		    assert(result.get(i).getName().equals(value.get(i).getName()));
 		}    	
 	    }
 	    {
