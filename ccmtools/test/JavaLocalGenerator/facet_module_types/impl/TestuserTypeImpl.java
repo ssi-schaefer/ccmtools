@@ -17,7 +17,7 @@ import java.util.ArrayList;
                  
 import ccm.local.Components.*;
 import ccm.local.*;
-import world.europe.austria.*;
+
 
 /** 
  * This class implements a component facet's methods.
@@ -51,37 +51,31 @@ public class TestuserTypeImpl
     }    
 
     
-    public world.europe.austria.Person f2(world.europe.austria.Person p1, 
-					  Holder<world.europe.austria.Person> p2, 
-					  Holder<world.europe.austria.Person> p3)
+    public Person f2(Person p1, Holder<Person> p2, Holder<Person> p3)
         throws ccm.local.Components.CCMException
     {
-	world.europe.austria.Person r = 
-	    new world.europe.austria.Person(p1.id + p2.getValue().id, p1.name + p2.getValue().name);	
+	Person r = new Person(p1.getId() + p2.getValue().getId(), 
+			      p1.getName() + p2.getValue().getName());	
 	p3.setValue(p2.getValue());
 	p2.setValue(p1);
 	return r;
     }    
 
 
-    public world.europe.austria.Address f3(world.europe.austria.Address p1, 
-					   Holder<world.europe.austria.Address> p2, 
-					   Holder<world.europe.austria.Address> p3)
+    public Address f3(Address p1, Holder<Address> p2, Holder<Address> p3)
         throws ccm.local.Components.CCMException
     {
-	Person pers = new Person(p1.resident.id + p2.getValue().resident.id, 
-				 p1.resident.name + p2.getValue().resident.name);
-	Address addr = new Address(p1.street + p2.getValue().street, 
-				   p1.number + p2.getValue().number, pers);
+	Person person = new Person(p1.getResident().getId() + p2.getValue().getResident().getId(), 
+				 p1.getResident().getName() + p2.getValue().getResident().getName());
+	Address addr = new Address(p1.getStreet() + p2.getValue().getStreet(), 
+				   p1.getNumber() + p2.getValue().getNumber(), person);
 	p3.setValue(p2.getValue());
 	p2.setValue(p1);
 	return addr;	
     }    
 
 
-    public List<Integer> f4(List<Integer> p1, 
-		    Holder<List<Integer>> p2, 
-		    Holder<List<Integer>> p3)
+    public List<Integer> f4(List<Integer> p1, Holder<List<Integer>> p2, Holder<List<Integer>> p3)
         throws ccm.local.Components.CCMException
     {
 	List<Integer> result = new ArrayList<Integer>(p1.size());
@@ -96,9 +90,7 @@ public class TestuserTypeImpl
     }    
 
 
-    public List<String> f5(List<String> p1, 
-		       Holder<List<String>> p2, 
-		       Holder<List<String>> p3)
+    public List<String> f5(List<String> p1, Holder<List<String>> p2, Holder<List<String>> p3)
         throws ccm.local.Components.CCMException
     {
 	List<String> result = new ArrayList<String>(p1.size());
@@ -113,9 +105,7 @@ public class TestuserTypeImpl
     }    
 
 
-    public List<world.europe.austria.Person> f6(List<world.europe.austria.Person> p1, 
-					    Holder<List<world.europe.austria.Person>> p2, 
-					    Holder<List<world.europe.austria.Person>> p3)
+    public List<Person> f6(List<Person> p1, Holder<List<Person>> p2, Holder<List<Person>> p3)
         throws ccm.local.Components.CCMException
     {
 	List<Person> result = new ArrayList<Person>(p1.size());
@@ -131,9 +121,7 @@ public class TestuserTypeImpl
     }    
 
 
-    public int f7(int t1, 
-		  Holder<Integer> t2, 
-		  Holder<Integer> t3)
+    public int f7(int t1, Holder<Integer> t2, Holder<Integer> t3)
         throws ccm.local.Components.CCMException
     {
 	t3.setValue(t2.getValue());
