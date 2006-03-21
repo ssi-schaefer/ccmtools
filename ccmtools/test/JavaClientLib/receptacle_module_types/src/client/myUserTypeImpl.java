@@ -3,11 +3,10 @@ package client;
 import java.util.List;
 import java.util.ArrayList;
 
-import world.europe.austria.Address;
 import world.europe.austria.Color;
-import world.europe.austria.Person;
-import ccm.local.Components.CCMException;
 
+import world.europe.austria.ccm.local.*;
+import ccm.local.Components.CCMException;
 import ccm.local.Holder;
 
 
@@ -43,11 +42,11 @@ public class myUserTypeImpl
 		System.out.println("myUserTypeImpl.f2()");
 		try
 		{
-			p3.setValue(new Person(p2.getValue().id, p2.getValue().name));
-			p2.getValue().id = p1.id;
-			p2.getValue().name = p1.name;
-			Person result = new Person(p1.id + p3.getValue().id, 
-						   p1.name + p3.getValue().name);
+			p3.setValue(new Person(p2.getValue().getId(), p2.getValue().getName()));
+			p2.getValue().setId(p1.getId());
+			p2.getValue().setName(p1.getName());
+			Person result = new Person(p1.getId() + p3.getValue().getId(), 
+						   p1.getName() + p3.getValue().getName());
 			return result;
 		}
 		catch (Exception e)
@@ -63,10 +62,12 @@ public class myUserTypeImpl
 		System.out.println("myUserTypeImpl.f3()");
 		try
 		{
-			Person pers = new Person(p1.resident.id + p2.getValue().resident.id, 
-						 p1.resident.name + p2.getValue().resident.name);
-			Address addr = new Address(p1.street + p2.getValue().street, 
-						   p1.number + p2.getValue().number, pers);
+			Person person = 
+			    new Person(p1.getResident().getId() + p2.getValue().getResident().getId(), 
+				       p1.getResident().getName() + p2.getValue().getResident().getName());
+			Address addr = 
+			    new Address(p1.getStreet() + p2.getValue().getStreet(), 
+					p1.getNumber() + p2.getValue().getNumber(), person);
 			p3.setValue(p2.getValue());
 			p2.setValue(p1);
 			return addr;
