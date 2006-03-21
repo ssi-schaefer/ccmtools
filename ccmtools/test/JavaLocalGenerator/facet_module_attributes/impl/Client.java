@@ -1,7 +1,8 @@
 import java.util.List;
 import java.util.ArrayList;
 
-import world.*;
+
+import world.ccm.local.*;
 import world.europe.ccm.local.*;
 import world.europe.austria.ccm.local.*;
 
@@ -117,27 +118,24 @@ public class Client
 			}
 			{
 			    // struct Person { long id; string name; }
-			    world.Person value =
-				new world.Person(3, "Egon");
+			    Person value = new Person(3, "Egon");
 			    userType.person_value(value);
-			    world.Person result = userType.person_value();
-			    assert(result.id == value.id);
-			    assert(result.name.equals(value.name));
+			    Person result = userType.person_value();
+			    assert(result.getId() == value.getId());
+			    assert(result.getName().equals(value.getName()));
 			}
 			{
 			    // struct Address { string street; long number; Person resident; }
 			    String street = "Waltendorf";
 			    int number = 7;
-			    world.Person resident =
-				new world.Person(3, "Egon");
-			    world.Address value =
-				new world.Address(street, number, resident);
+			    Person resident = new Person(3, "Egon");
+			    Address value = new Address(street, number, resident);
 			    userType.address_value(value);
-			    world.Address result = userType.address_value();
-			    assert(result.street.equals(value.street));
-			    assert(result.number == value.number);
-			    assert(result.resident.id == value.resident.id);
-			    assert(result.resident.name.equals(value.resident.name));
+			    Address result = userType.address_value();
+			    assert(result.getStreet().equals(value.getStreet()));
+			    assert(result.getNumber() == value.getNumber());
+			    assert(result.getResident().getId() == value.getResident().getId());
+			    assert(result.getResident().getName().equals(value.getResident().getName()));
 			}
 			
 			{
@@ -170,19 +168,17 @@ public class Client
 			}
 			{
 			    // typedef sequence<Person> PersonList
-			    List<world.Person> value =
-				new ArrayList<world.Person>(10);
+			    List<Person> value = new ArrayList<Person>(10);
 			    for(int i = 0; i< value.size(); i++)
 			    {
-				value.add(new world.Person(i, "Andrea"));
+				value.add(new Person(i, "Andrea"));
 			    }
 			    userType.personList_value(value);
-			    List<world.Person> result =
-				userType.personList_value();
+			    List<Person> result = userType.personList_value();
 			    for(int i = 0; i<result.size(); i++)
 			    {
-				assert(result.get(i).id == value.get(i).id);
-				assert(result.get(i).name.equals(value.get(i).name));
+				assert(result.get(i).getId() == value.get(i).getId());
+				assert(result.get(i).getName().equals(value.get(i).getName()));
 			    }
 			}
 			{
