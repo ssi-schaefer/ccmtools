@@ -3,6 +3,7 @@ package ccmtools.generator.java.metamodel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import ccmtools.Constants;
 import ccmtools.utils.Text;
@@ -177,5 +178,15 @@ public class ModelElement
 	{
 		Date now = new Date();
 		return now.toString();
+	}
+	
+	public String generateUUID()
+	{
+		return UUID.randomUUID().toString(); 
+	}
+	
+	public String generateSerialVersionUID()
+	{
+		return Long.toString(UUID.randomUUID().getLeastSignificantBits());
 	}
 }

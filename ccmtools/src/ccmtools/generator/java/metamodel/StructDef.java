@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.generator.java.templates.StructDefConstructorTemplate;
+import ccmtools.generator.java.templates.StructDefCorbaConverterTemplate;
 import ccmtools.generator.java.templates.StructDefDefaultConstructorTemplate;
 import ccmtools.generator.java.templates.StructDefImplementationTemplate;
 import ccmtools.utils.SourceFile;
@@ -152,6 +153,26 @@ public class StructDef
 	
 	public String generateCorbaConverterType()
 	{
-		return "";
+		return generateAbsoluteJavaRemoteName() + "CorbaConverter.convert";
+	}
+	
+	public String generateCorbaConverter()
+	{
+		return new StructDefCorbaConverterTemplate().generate(this);
+	}
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateClientLibSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
+		
+		SourceFile corbaConverter = 
+			new SourceFile(remotePackageName, getIdentifier() + "CorbaConverter.java",generateCorbaConverter());		
+		sourceFileList.add(corbaConverter);
+
+		return sourceFileList;
 	}
 }

@@ -9,11 +9,15 @@
  * DO NOT EDIT!
  */
 
-package <%= struct.generateJavaNamespace() %>;
-                 
+package <%=struct.generateJavaNamespace() %>;
+
+import java.io.Serializable;              
  
 public class <%= struct.getIdentifier() %> 
+     implements Serializable
 {
+    private static final long serialVersionUID = <%=struct.generateSerialVersionUID()%>L;
+    
 <%
 for(Iterator i=struct.getFields().iterator(); i.hasNext();)
 {

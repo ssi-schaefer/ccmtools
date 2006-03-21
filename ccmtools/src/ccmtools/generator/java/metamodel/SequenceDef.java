@@ -108,7 +108,7 @@ public class SequenceDef
 
 	public String generateCorbaMapping()
 	{
-		return getElementType().generateJavaMapping() + "[]";
+		return getElementType().generateCorbaMapping() + "[]";
 	}
 	
 	public String generateCorbaMapping(PassingDirection direction)

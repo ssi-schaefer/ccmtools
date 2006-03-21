@@ -95,6 +95,7 @@ public class JavaClientLibGenerator
 				{
 					StructDef javaStruct = (StructDef) j.next();
 					sourceFileList.addAll(javaStruct.generateLocalInterfaceSourceFiles());
+					sourceFileList.addAll(javaStruct.generateClientLibSourceFiles());
 				}
 				
 				for (Iterator j = javaModel.findAllSequences().iterator(); j.hasNext();)

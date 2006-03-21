@@ -7,11 +7,14 @@
     public <%=attr.getType().generateJavaMapping()%> <%=attr.getIdentifier()%>()
         throws ccm.local.Components.CCMException
     {
+        logger.fine("");
         try
         {
-            <%=attr.getType().generateJavaMapping()%> result = remoteInterface.<%=attr.getIdentifier()%>();
-            logger.fine("result = " + result);
-            return result;
+            <%=attr.getType().generateCorbaMapping()%> valueRemote;
+            valueRemote = remoteInterface.<%=attr.getIdentifier()%>();
+            <%=attr.getType().generateJavaMapping()%> value;
+            value = <%=attr.getType().generateCorbaConverterType()%>(valueRemote);
+            return value;
         }
         catch(java.lang.Exception e)
         {
@@ -22,10 +25,12 @@
     public void <%=attr.getIdentifier()%>(<%=attr.getType().generateJavaMapping()%> value)
         throws ccm.local.Components.CCMException
     {
-        logger.fine("value = " + value);
+        logger.fine("");
         try
         {
-            remoteInterface.<%=attr.getIdentifier()%>(value);
+            <%=attr.getType().generateCorbaMapping()%> valueRemote;
+            valueRemote = <%=attr.getType().generateCorbaConverterType()%>(value);
+            remoteInterface.<%=attr.getIdentifier()%>(valueRemote);            
         }
         catch(java.lang.Exception e)
         {

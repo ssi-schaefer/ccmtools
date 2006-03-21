@@ -13,6 +13,7 @@ package <%=seq.generateJavaRemoteNamespace()%>;
 
 public class <%=seq.getIdentifier()%>CorbaConverter
 {
+    /** Convert a local Java type into a CORBA type */
     public static <%=seq.generateCorbaMapping()%> convert(<%=seq.generateJavaMapping()%> in)
     {
         <%=seq.generateCorbaMapping()%> out = new <%=seq.getElementType().generateCorbaMapping()%>[in.size()];
@@ -24,6 +25,7 @@ public class <%=seq.getIdentifier()%>CorbaConverter
     }
 
 
+	/** Convert a CORBA type into a local Java type */
     public static <%=seq.generateJavaMapping()%> convert(<%=seq.generateCorbaMapping()%> in)
     {
         <%=seq.generateJavaMapping()%> out = new <%=seq.generateJavaMappingImpl()%>(in.length);

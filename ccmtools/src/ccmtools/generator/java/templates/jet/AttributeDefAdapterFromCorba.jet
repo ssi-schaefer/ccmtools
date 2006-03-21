@@ -4,13 +4,16 @@
 %>
 <% AttributeDef attr = (AttributeDef) argument;  %>
 
-    public <%=attr.getType().generateJavaMapping()%> <%=attr.getIdentifier()%>()
+    public <%=attr.getType().generateCorbaMapping()%> <%=attr.getIdentifier()%>()
     {
+        logger.fine("");
         try
         {
-            <%=attr.getType().generateJavaMapping()%> result = localInterface.<%=attr.getIdentifier()%>();
-            logger.fine("result = " + result);
-            return result;
+            <%=attr.getType().generateJavaMapping()%> valueLocal;
+            valueLocal = localInterface.<%=attr.getIdentifier()%>();
+            <%=attr.getType().generateCorbaMapping()%> value;
+            value = <%=attr.getType().generateCorbaConverterType()%>(valueLocal);
+            return value;
         }
         catch(java.lang.Exception e)
         {
@@ -18,12 +21,14 @@
         }
     }
      
-    public void <%=attr.getIdentifier()%>(<%=attr.getType().generateJavaMapping()%> value)
+    public void <%=attr.getIdentifier()%>(<%=attr.getType().generateCorbaMapping()%> value)
     {
-        logger.fine("value = " + value);
+        logger.fine("");
         try
         {
-            localInterface.<%=attr.getIdentifier()%>(value);
+            <%=attr.getType().generateJavaMapping()%> valueLocal;
+            valueLocal = <%=attr.getType().generateCorbaConverterType()%>(value);
+            localInterface.<%=attr.getIdentifier()%>(valueLocal);
         }
         catch(java.lang.Exception e)
         {
