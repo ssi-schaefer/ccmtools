@@ -122,4 +122,54 @@ public class Test_mirroruserType_mirrorImpl
         t2.setValue(t1);
         return t3.getValue() + t1;
     }    
+
+    public int[] f8(int[] p1, ccm.local.Holder<int[]> p2, ccm.local.Holder<int[]> p3)
+        throws ccm.local.Components.CCMException
+    {
+	// For this test, we assume that all arrays are of the same size
+        int length = 10; 
+        int[] result = new int[length];
+        p3.setValue(new int[length]);
+        for(int i = 0; i < length; i++)
+        {
+            result[i] = i;
+            p3.getValue()[i] = p2.getValue()[i];
+            p2.getValue()[i] = p1[i];
+        }
+        return result;
+    }
+
+    public String[] f9(String[] p1, ccm.local.Holder<String[]> p2, ccm.local.Holder<String[]> p3)
+        throws ccm.local.Components.CCMException
+    {
+	// For this test, we assume that all arrays are of the same size
+        int length = 10; 
+        String[] result = new String[length];
+        p3.setValue(new String[length]);
+        for(int i = 0; i < length; i++)
+        {
+            result[i] = "result" + i;
+            p3.getValue()[i] = p2.getValue()[i];
+            p2.getValue()[i] = p1[i];
+        }
+        return result;
+    }
+
+
+    public Person[] f10(Person[] p1, ccm.local.Holder<Person[]> p2, ccm.local.Holder<Person[]> p3)
+        throws ccm.local.Components.CCMException
+    {
+	// For this test, we assume that all arrays are of the same size
+        int length = 10; 
+        Person[] result = new Person[length];
+        p3.setValue(new Person[length]);
+        for(int i = 0; i < length; i++)
+        {
+            Person person = new Person(i, "result" + i);
+            result[i] = person;
+            p3.getValue()[i] = p2.getValue()[i];
+            p2.getValue()[i] = p1[i];
+        }
+        return result;
+    }
 }
