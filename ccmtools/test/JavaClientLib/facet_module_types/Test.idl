@@ -27,11 +27,16 @@ module world {
       typedef long time_t;
       
       typedef sequence<long> LongList;
-      
       typedef sequence<string> StringList;
-      
       typedef sequence<Person> PersonList;
-      
+
+      //  typedef long LongArray[10];
+      //  typedef string StringArray[10];
+      //  typedef Person PersonArray[10];
+
+      //  typedef long LongMatrix[10][5];
+      //  typedef long LongCube[10][5][7];
+
 
       /**
        * This interface simulates the usage of all supported primitive
@@ -73,6 +78,13 @@ module world {
 	StringList f5(in StringList p1, inout StringList p2, out StringList p3);
 	PersonList f6(in PersonList p1, inout PersonList p2, out PersonList p3);
 	time_t     f7(in time_t t1, inout time_t t2, out time_t t3);
+
+	// LongArray   f8(in LongArray p1, inout LongArray p2, out LongArray p3);
+	// StringArray f9(in StringArray p1, inout StringArray p2, out StringArray p3);
+	// PersonArray f10(in PersonArray p1, inout PersonArray p2, out PersonArray p3);
+
+	// LongMatrix  f11(in LongMatrix p1, inout LongMatrix p2, out LongMatrix p3);
+	// LongCube    f12(in LongCube p1, inout LongCube p2, out LongCube p3);
       };
 
       
