@@ -111,9 +111,9 @@ public class Client
 			UserTypeInterface userType = component.provide_userType();
 			{
 			    // enum Color {red, green, blue, black, orange}
-			    world.Color value = world.Color.blue;
+			    Color value = Color.blue;
 			    userType.color_value(value);
-			    world.Color result = userType.color_value();
+			    Color result = userType.color_value();
 			    assert(result == value);
 			}
 			{

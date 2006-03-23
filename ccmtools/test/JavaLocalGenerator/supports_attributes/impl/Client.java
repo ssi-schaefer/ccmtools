@@ -108,9 +108,9 @@ public class Client
 			System.out.println("Supported Interface Attributes (User Types) Test...");
 			{
 			    // enum Color {red, green, blue, black, orange}
-			    world.Color value = world.Color.blue;
+			    Color value = Color.blue;
 			    component.color_value(value);
-			    world.Color result = component.color_value();
+			    Color result = component.color_value();
 			    assert(result == value);
 			}
 			{

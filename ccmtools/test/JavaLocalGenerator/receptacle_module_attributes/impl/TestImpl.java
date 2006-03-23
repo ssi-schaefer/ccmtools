@@ -117,9 +117,9 @@ public class TestImpl
 	    System.out.println("Receptacle attributes (User Types) Test...");
             {
                 // enum Color {red, green, blue, black, orange}
-                world.europe.austria.Color value = world.europe.austria.Color.blue;
+                Color value = Color.blue;
                 userType.color_value(value);
-                world.europe.austria.Color result = userType.color_value();
+                Color result = userType.color_value();
                 assert(result == value);
             }
             {

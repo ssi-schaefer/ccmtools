@@ -5,8 +5,6 @@ import world.europe.austria.ccm.local.*;
 import ccm.local.Components.*;
 import ccm.local.*;
 
-import world.europe.austria.Color;
-
 import java.util.logging.*;
 
 public class Client

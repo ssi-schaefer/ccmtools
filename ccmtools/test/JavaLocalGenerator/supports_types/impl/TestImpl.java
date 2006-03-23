@@ -150,14 +150,12 @@ public class TestImpl
 
 
 
-    public world.europe.austria.Color fu1(world.europe.austria.Color p1, 
-					  Holder<world.europe.austria.Color> p2, 
-					  Holder<world.europe.austria.Color> p3)
+    public Color fu1(Color p1, Holder<Color> p2, Holder<Color> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
         p2.setValue(p1);
-        return world.europe.austria.Color.orange;
+        return Color.orange;
     }    
 
     public Person fu2(Person p1, Holder<Person> p2, Holder<Person> p3)
@@ -173,10 +171,12 @@ public class TestImpl
     public Address fu3(Address p1, Holder<Address> p2, Holder<Address> p3)
         throws ccm.local.Components.CCMException
     {
-        Person person = new Person(p1.getResident().getId() + p2.getValue().getResident().getId(), 
-				   p1.getResident().getName() + p2.getValue().getResident().getName());
-        Address addr = new Address(p1.getStreet() + p2.getValue().getStreet(), 
-				   p1.getNumber() + p2.getValue().getNumber(), person);
+        Person person = 
+	    new Person(p1.getResident().getId() + p2.getValue().getResident().getId(), 
+		       p1.getResident().getName() + p2.getValue().getResident().getName());
+        Address addr = 
+	    new Address(p1.getStreet() + p2.getValue().getStreet(), 
+			p1.getNumber() + p2.getValue().getNumber(), person);
         p3.setValue(p2.getValue());
         p2.setValue(p1);
         return addr;

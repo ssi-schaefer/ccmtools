@@ -39,14 +39,12 @@ public class Test_mirroruserType_mirrorImpl
 
     /** Business logic implementations */
     
-    public world.europe.austria.Color f1(world.europe.austria.Color p1, 
-					 Holder<world.europe.austria.Color> p2, 
-					 Holder<world.europe.austria.Color> p3)
+    public Color f1(Color p1, Holder<Color> p2, Holder<Color> p3)
         throws ccm.local.Components.CCMException
     {
         p3.setValue(p2.getValue());
         p2.setValue(p1);
-        return world.europe.austria.Color.orange;
+        return Color.orange;
     }    
 
     public Person f2(Person p1, Holder<Person> p2, Holder<Person> p3)

@@ -17,8 +17,6 @@ import java.util.ArrayList;
 
 import ccm.local.*;
 
-import world.europe.austria.Color;
-
 
 /**
  * This class implements component equivalent and supported interfaces
