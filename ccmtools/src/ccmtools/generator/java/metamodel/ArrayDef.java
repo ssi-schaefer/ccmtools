@@ -1,5 +1,6 @@
 package ccmtools.generator.java.metamodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayDef
@@ -9,6 +10,8 @@ public class ArrayDef
 	/** Array type which is the same for all elements staored in an array. */
 	private Type type;
 
+	/** Stores the bound of every array dimension */
+	private List bounds = new ArrayList();
 	
 	public ArrayDef(String identifier, List namespace)
 	{
@@ -26,8 +29,14 @@ public class ArrayDef
 		this.type = type;
 	}
 
+	
+	public List getBounds()
+	{
+		return bounds;
+	}
 
-
+	
+	
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
@@ -40,7 +49,17 @@ public class ArrayDef
 		
 	public String generateJavaMapping()
 	{
-		return getType().generateJavaMapping() + "[]";
+		return getType().generateJavaMapping() + generateDimensions();
+	}
+	
+	public String generateDimensions()
+	{
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < getBounds().size(); i++)
+		{
+			sb.append("[]");
+		}		
+		return  sb.toString();
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -85,7 +104,7 @@ public class ArrayDef
 
 	public String generateCorbaMapping()
 	{
-		return getType().generateCorbaMapping() + "[]";
+		return getType().generateCorbaMapping() + generateDimensions();
 	}
 	
 	public String generateCorbaMapping(PassingDirection direction)

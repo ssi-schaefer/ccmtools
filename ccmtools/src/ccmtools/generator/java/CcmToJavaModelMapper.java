@@ -603,6 +603,7 @@ public class CcmToJavaModelMapper
 			MIDLType arrayIdlType = arrayType.getIdlType();		
 			out = new ArrayDef(id, ns);
 			out.setType(transform(arrayIdlType));
+			out.getBounds().addAll(in.getBounds());
 			artifactCache.put(repoId, out);
 		}
 		return out;
