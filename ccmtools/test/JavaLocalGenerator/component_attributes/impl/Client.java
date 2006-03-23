@@ -108,9 +108,9 @@ public class Client
 		System.out.println("Component attributes (user types) test...");
 		{
 		    // enum Color {red, green, blue, black, orange}
-		    world.europe.austria.Color value = world.europe.austria.Color.blue;
+		    Color value = Color.blue;
 		    component.color_value(value);
-		    world.europe.austria.Color result = component.color_value();
+		    Color result = component.color_value();
 		    assert(result == value);
 		}
 		{
