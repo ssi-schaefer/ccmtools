@@ -7,7 +7,7 @@ import world.europe.austria.ccm.local.*;
 public class myUserTypeImpl
     implements UserTypeInterface
 {
-    private world.europe.austria.Color colorValue;
+    private Color colorValue;
     private Person personValue;
     private Address addressValue;
     private List<Integer> longListValue;
@@ -15,14 +15,14 @@ public class myUserTypeImpl
     private List<Person> personListValue;
     private int time_tValue;
     
-    public world.europe.austria.Color color_value()
+    public Color color_value()
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.color_value() - get");
 	return colorValue;
     }
 
-    public void color_value(world.europe.austria.Color value)
+    public void color_value(Color value)
         throws ccm.local.Components.CCMException
     {
 	System.out.println("myUserTypeImpl.color_value() - set");

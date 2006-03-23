@@ -111,9 +111,9 @@ public class Client
 	    System.out.print("Component Attributes (User Types) Test...");
 	    {
 		// enum Color {red, green, blue, black, orange}
-		world.europe.austria.Color value = world.europe.austria.Color.blue;
+		Color value = Color.blue;
 		component.color_value(value);     
-		world.europe.austria.Color result = component.color_value();
+		Color result = component.color_value();
 		assert(result == value);
 	    }	    
 	    {
@@ -267,9 +267,9 @@ public class Client
 	    UserTypeInterface userType = component.provide_inUserType();
 	    {
 		// enum Color {red, green, blue, black, orange}
-		world.europe.austria.Color value = world.europe.austria.Color.blue;
+		Color value = Color.blue;
 	        userType.color_value(value);     
-		world.europe.austria.Color result = userType.color_value();
+		Color result = userType.color_value();
 		assert(result == value);
 	    }	    
 	    {
