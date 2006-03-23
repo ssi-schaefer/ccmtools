@@ -113,9 +113,18 @@ public class CcmToJavaModelMapper
     	logger.fine("startNode(" + node +")");
     }
 
+    
+    /**
+     * Handle possible root elements in the CCM metamodel.
+     * Each root element will be a starting point for the CCM metamodel to 
+     * JavaImplementation metamodel transformation.
+     * Note that each transformed reoot element will be added to the
+     * ModelRepository from which source files can be generated.
+     */
     public void endNode(Object node, String scopeId)
     {                
     	logger.fine("endNode(" + node + ")");
+    	
     	if(node == null)
     	{
     		// The current node is not valid!
@@ -162,6 +171,13 @@ public class CcmToJavaModelMapper
     		logger.finer("MUsesDef: " + Code.getRepositoryId(uses));
     		UsesDef javaUses = transform(uses);
     		modelRepository.addUses(javaUses);
+    	}
+    	else if(node instanceof MEnumDef)
+    	{
+    		MEnumDef enumeration = (MEnumDef)node;
+    		logger.finer("MEnumDef: " + Code.getRepositoryId(enumeration));
+    		EnumDef javaEnum = transform(enumeration);
+    		modelRepository.addEnum(javaEnum);    
     	}
     	else if(node instanceof MStructDef)
     	{
@@ -426,6 +442,28 @@ public class CcmToJavaModelMapper
 		}
 	}
 	
+	public EnumDef transform(MEnumDef in)
+	{		
+		EnumDef out;
+		String repoId = Code.getRepositoryId(in);
+		logger.finer("MEnumDef: " + repoId);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (EnumDef)artifactCache.get(repoId);
+		}
+		else 
+		{			
+			out = new EnumDef(in.getIdentifier(), Code.getNamespaceList(in));
+			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
+			{
+				String member = (String)i.next();
+				out.getMembers().add(member);
+			}
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
+	
 	public StructDef transform(MStructDef in)
 	{		
 		StructDef out;
@@ -447,15 +485,8 @@ public class CcmToJavaModelMapper
 				field.setType(transform(idlType));
 				out.getFields().add(field);					
 			}
+			artifactCache.put(repoId, out);
 		}
-		return out;
-	}
-	
-	public EnumDef transform(MEnumDef in)
-	{		
-		EnumDef out = new EnumDef(in.getIdentifier(), Code.getNamespaceList(in));
-		// As long as we don't map parameters from CORBA to Java, we don't 
-		// have to set a enum's members.
 		return out;
 	}
 	

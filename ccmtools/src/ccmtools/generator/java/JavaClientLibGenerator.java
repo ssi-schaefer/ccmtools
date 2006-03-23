@@ -13,6 +13,7 @@ import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
 import ccmtools.generator.java.metamodel.ComponentDef;
 import ccmtools.generator.java.metamodel.ConstantDef;
+import ccmtools.generator.java.metamodel.EnumDef;
 import ccmtools.generator.java.metamodel.HomeDef;
 import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.ModelRepository;
@@ -90,7 +91,13 @@ public class JavaClientLibGenerator
 					sourceFileList.addAll(javaConstant.generateLocalInterfaceSourceFiles());
 				}
 				
-				// Save data type converter				
+				// Save data type converter		
+				for (Iterator j = javaModel.findAllEnums().iterator(); j.hasNext();)
+				{
+					EnumDef javaEnum = (EnumDef) j.next();
+					sourceFileList.addAll(javaEnum.generateLocalInterfaceSourceFiles());
+//					sourceFileList.addAll(javaEnum.generateClientLibSourceFiles());
+				}				
 				for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
 				{
 					StructDef javaStruct = (StructDef) j.next();

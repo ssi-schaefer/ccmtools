@@ -12,6 +12,7 @@ import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
 import ccmtools.generator.java.metamodel.ComponentDef;
+import ccmtools.generator.java.metamodel.EnumDef;
 import ccmtools.generator.java.metamodel.HomeDef;
 import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.ModelRepository;
@@ -83,6 +84,11 @@ public class JavaLocalComponentGenerator
 					sourceFileList.addAll(javaHome.generateLocalComponentSourceFiles());
 				}
 				
+				for (Iterator j = javaModel.findAllEnums().iterator(); j.hasNext();)
+				{
+					EnumDef javaEnum = (EnumDef) j.next();
+					sourceFileList.addAll(javaEnum.generateLocalInterfaceSourceFiles());
+				}
 				for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
 				{
 					StructDef javaStruct = (StructDef) j.next();

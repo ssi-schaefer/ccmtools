@@ -18,6 +18,7 @@ public class ModelRepository
 	private List usesList = new ArrayList();
 	private List constantList = new ArrayList();
 	
+	private List enumList = new ArrayList();
 	private List structList = new ArrayList();
 	private List sequenceList = new  ArrayList();
 	
@@ -90,6 +91,18 @@ public class ModelRepository
 	{
 		return constantList;
 	}
+	
+	
+	public void addEnum(EnumDef value)
+	{
+		enumList.add(value);
+	}
+
+	public List findAllEnums()
+	{
+		return enumList;
+	}
+	
 	
 	public void addStruct(StructDef value)
 	{
