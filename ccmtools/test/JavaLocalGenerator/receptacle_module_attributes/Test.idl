@@ -30,12 +30,14 @@ module world
       typedef long time_t;
 
       typedef sequence<long> LongList;
-      
       typedef sequence<string> StringList;
-      
       typedef sequence<Person> PersonList;
+
+      typedef long LongArray[10];
+      typedef string StringArray[10];
+      typedef Person PersonArray[10];
       
-      
+
       interface BasicTypeInterface
       {
 	attribute short short_value;
@@ -56,10 +58,16 @@ module world
 	attribute Color color_value;
 	attribute Person person_value;
 	attribute Address address_value;
+
 	attribute LongList longList_value;
 	attribute StringList stringList_value;
 	attribute PersonList personList_value;
+
 	attribute time_t time_t_value;
+
+	attribute LongArray longArray_value;
+	attribute StringArray stringArray_value;
+	attribute PersonArray personArray_value;
       };
       
       
