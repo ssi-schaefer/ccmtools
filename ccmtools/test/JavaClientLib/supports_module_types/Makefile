@@ -5,6 +5,8 @@ INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
 all: client_lib 
 
+test: client_lib check clean
+
 idl3: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
 
