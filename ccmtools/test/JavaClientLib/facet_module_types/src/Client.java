@@ -185,16 +185,15 @@ public class Client
 		UserTypeInterface userType = component.provide_userType();
 
 		{ // enum Color {red, green, blue, black, orange}
-		    world.europe.austria.Color p1 = world.europe.austria.Color.red;
-		    Holder<world.europe.austria.Color> p2 = 
-			new Holder<world.europe.austria.Color>(world.europe.austria.Color.blue);
-		    Holder<world.europe.austria.Color> p3 = new Holder<world.europe.austria.Color>();
+		    Color p1 = Color.red;
+		    Holder<Color> p2 = new Holder<Color>(Color.blue);
+		    Holder<Color> p3 = new Holder<Color>();
 		    
-		    world.europe.austria.Color result = userType.f1(p1, p2, p3);
+		    Color result = userType.f1(p1, p2, p3);
 		    
-		    assert(p2.getValue() == world.europe.austria.Color.red);
-		    assert(p3.getValue() == world.europe.austria.Color.blue);
-		    assert(result == world.europe.austria.Color.orange);
+		    assert(p2.getValue() == Color.red);
+		    assert(p3.getValue() == Color.blue);
+		    assert(result == Color.orange);
 		}
 		
 		{ // struct Person { long id; string name; }
