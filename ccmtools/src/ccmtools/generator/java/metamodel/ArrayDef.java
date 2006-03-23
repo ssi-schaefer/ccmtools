@@ -1,7 +1,12 @@
 package ccmtools.generator.java.metamodel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import ccmtools.generator.java.templates.ArrayDefCorbaConverterTemplate;
+import ccmtools.utils.SourceFile;
+import ccmtools.utils.Text;
 
 public class ArrayDef
 	extends ModelElement
@@ -52,12 +57,27 @@ public class ArrayDef
 		return getType().generateJavaMapping() + generateDimensions();
 	}
 	
+	public String generateJavaMappingImpl()
+	{
+		return getType().generateJavaMapping() + generateDimensionsImpl();
+	}
+	
 	public String generateDimensions()
 	{
 		StringBuffer sb = new StringBuffer();
 		for(int i = 0; i < getBounds().size(); i++)
 		{
 			sb.append("[]");
+		}		
+		return  sb.toString();
+	}
+	
+	public String generateDimensionsImpl()
+	{
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < getBounds().size(); i++)
+		{
+			sb.append("[").append(getBounds().get(i)).append("]");
 		}		
 		return  sb.toString();
 	}
@@ -107,6 +127,11 @@ public class ArrayDef
 		return getType().generateCorbaMapping() + generateDimensions();
 	}
 	
+	public String generateCorbaMappingImpl()
+	{
+		return getType().generateCorbaMapping() + generateDimensionsImpl();
+	}
+	
 	public String generateCorbaMapping(PassingDirection direction)
 	{
 		if (direction == PassingDirection.IN
@@ -127,6 +152,42 @@ public class ArrayDef
 	
 	public String generateCorbaConverterType()
 	{
-		return "";
+		if(isPrimitiveType(getType()))
+		{	
+			return ""; // There is no converter for primitive types
+		}
+		else
+		{
+			return generateAbsoluteJavaRemoteName() + "CorbaConverter.convert";
+		}
 	}
+	
+	public String generateCorbaConverter()
+	{
+		if(isPrimitiveType(getType()))
+		{
+			return ""; // There is no converter for primitive types
+		}
+		else
+		{
+			// TODO: implement a converter for multidimensional arrays
+			return new ArrayDefCorbaConverterTemplate().generate(this);
+		}
+	}
+
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateClientLibSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
+		if(!isPrimitiveType(getType()))
+		{
+			SourceFile corbaConverter = 
+				new SourceFile(remotePackageName, getIdentifier() + "CorbaConverter.java",generateCorbaConverter());		
+			sourceFileList.add(corbaConverter);
+		}
+		return sourceFileList;
+	}	
 }

@@ -2,13 +2,13 @@ package ccmtools.generator.java.templates;
 
 import ccmtools.generator.java.metamodel.*;
 
-public class SequenceDefCorbaConverterTemplate
+public class ArrayDefCorbaConverterTemplate
 {
   protected static String nl;
-  public static synchronized SequenceDefCorbaConverterTemplate create(String lineSeparator)
+  public static synchronized ArrayDefCorbaConverterTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    SequenceDefCorbaConverterTemplate result = new SequenceDefCorbaConverterTemplate();
+    ArrayDefCorbaConverterTemplate result = new ArrayDefCorbaConverterTemplate();
     nl = null;
     return result;
   }
@@ -22,48 +22,48 @@ public class SequenceDefCorbaConverterTemplate
   protected final String TEXT_6 = " in)" + NL + "    {";
   protected final String TEXT_7 = NL + "        ";
   protected final String TEXT_8 = " out = new ";
-  protected final String TEXT_9 = "[in.size()];" + NL + "        for(int i = 0; i< in.size(); i++)" + NL + "        {" + NL + "            out[i] = ";
-  protected final String TEXT_10 = "(in.get(i));" + NL + "        }" + NL + "        return out;" + NL + "    }" + NL + "" + NL + "" + NL + "\t/** Convert a CORBA type into a local Java type */" + NL + "    public static ";
+  protected final String TEXT_9 = ";" + NL + "        for(int i = 0; i< in.length; i++)" + NL + "        {" + NL + "            out[i] = ";
+  protected final String TEXT_10 = "(in[i]);" + NL + "        }" + NL + "        return out;" + NL + "    }" + NL + "" + NL + "" + NL + "    /** Convert a CORBA type into a local Java type */" + NL + "    public static ";
   protected final String TEXT_11 = " convert(";
   protected final String TEXT_12 = " in)" + NL + "    {";
   protected final String TEXT_13 = NL + "        ";
   protected final String TEXT_14 = " out = new ";
-  protected final String TEXT_15 = "();" + NL + "        for(int i = 0; i< in.length;i++)" + NL + "        {" + NL + "            out.add(";
-  protected final String TEXT_16 = "(in[i]));" + NL + "        }" + NL + "        return out;" + NL + "    }" + NL + "};" + NL;
+  protected final String TEXT_15 = "; " + NL + "        for(int i = 0; i< in.length;i++)" + NL + "        {" + NL + "            out[i] = ";
+  protected final String TEXT_16 = "(in[i]);" + NL + "        }" + NL + "        return out;" + NL + "    }" + NL + "};";
   protected final String TEXT_17 = NL;
 
   public String generate(Object argument)
   {
     StringBuffer stringBuffer = new StringBuffer();
-     SequenceDef seq = (SequenceDef) argument;  
+     ArrayDef array = (ArrayDef) argument;  
     stringBuffer.append(TEXT_1);
-    stringBuffer.append(seq.generateCcmtoolsVersion());
+    stringBuffer.append(array.generateCcmtoolsVersion());
     stringBuffer.append(TEXT_2);
-    stringBuffer.append(seq.generateJavaRemoteNamespace());
+    stringBuffer.append(array.generateJavaRemoteNamespace());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append(seq.getIdentifier());
+    stringBuffer.append(array.getIdentifier());
     stringBuffer.append(TEXT_4);
-    stringBuffer.append(seq.generateCorbaMapping());
+    stringBuffer.append(array.generateCorbaMapping());
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(seq.generateJavaMapping());
+    stringBuffer.append(array.generateJavaMapping());
     stringBuffer.append(TEXT_6);
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(seq.generateCorbaMapping());
+    stringBuffer.append(array.generateCorbaMapping());
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(seq.getElementType().generateCorbaMapping());
+    stringBuffer.append(array.generateCorbaMappingImpl());
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(seq.getElementType().generateCorbaConverterType());
+    stringBuffer.append(array.getType().generateCorbaConverterType());
     stringBuffer.append(TEXT_10);
-    stringBuffer.append(seq.generateJavaMapping());
+    stringBuffer.append(array.generateJavaMapping());
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(seq.generateCorbaMapping());
+    stringBuffer.append(array.generateCorbaMapping());
     stringBuffer.append(TEXT_12);
     stringBuffer.append(TEXT_13);
-    stringBuffer.append(seq.generateJavaMapping());
+    stringBuffer.append(array.generateJavaMapping());
     stringBuffer.append(TEXT_14);
-    stringBuffer.append(seq.generateJavaMappingImpl());
+    stringBuffer.append(array.generateJavaMappingImpl());
     stringBuffer.append(TEXT_15);
-    stringBuffer.append(seq.getElementType().generateCorbaConverterType());
+    stringBuffer.append(array.getType().generateCorbaConverterType());
     stringBuffer.append(TEXT_16);
     stringBuffer.append(TEXT_17);
     return stringBuffer.toString();

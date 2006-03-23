@@ -40,5 +40,27 @@ public class ComponentTest
 		}
 	}
 
-
+	public void testDynamicProvide()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/component_dynamic_provide test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
+	
+	public void testDynamicConnect()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/component_dynamic_connect test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
 }

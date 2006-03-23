@@ -94,6 +94,29 @@ public class ModelElement
 	 * 
 	 *************************************************************************/
 		
+	public boolean isPrimitiveType(Type t)
+	{
+		if(t instanceof AnyType
+			|| t instanceof BooleanType
+			|| t instanceof ByteType
+			|| t instanceof CharType
+			|| t instanceof DoubleType
+			|| t instanceof FixedType
+			|| t instanceof FloatType
+			|| t instanceof IntegerType
+			|| t instanceof LongType
+			|| t instanceof ShortType
+			|| t instanceof StringType
+			|| t instanceof VoidType)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	public String generateIdlNamespace()
 	{
 		return Text.joinList(".", getIdlNamespaceList());

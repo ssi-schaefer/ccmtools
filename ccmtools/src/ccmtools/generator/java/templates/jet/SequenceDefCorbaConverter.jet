@@ -28,7 +28,7 @@ public class <%=seq.getIdentifier()%>CorbaConverter
 	/** Convert a CORBA type into a local Java type */
     public static <%=seq.generateJavaMapping()%> convert(<%=seq.generateCorbaMapping()%> in)
     {
-        <%=seq.generateJavaMapping()%> out = new <%=seq.generateJavaMappingImpl()%>(in.length);
+        <%=seq.generateJavaMapping()%> out = new <%=seq.generateJavaMappingImpl()%>();
         for(int i = 0; i< in.length;i++)
         {
             out.add(<%=seq.getElementType().generateCorbaConverterType()%>(in[i]));

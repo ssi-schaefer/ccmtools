@@ -21,6 +21,7 @@ public class ModelRepository
 	private List enumList = new ArrayList();
 	private List structList = new ArrayList();
 	private List sequenceList = new  ArrayList();
+	private List arrayList = new  ArrayList();
 	
 	
 	public ModelRepository()
@@ -125,4 +126,13 @@ public class ModelRepository
 		return sequenceList;
 	}
 	
+	public void addArray(ArrayDef value)
+	{
+		arrayList.add(value);
+	}
+
+	public List findAllArrays()
+	{
+		return arrayList;
+	}
 }

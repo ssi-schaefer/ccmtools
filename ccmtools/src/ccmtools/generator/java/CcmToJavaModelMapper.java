@@ -199,13 +199,18 @@ public class CcmToJavaModelMapper
     			MSequenceDef sequence = (MSequenceDef)innerIdlType;
     			SequenceDef javaSequence = transform(sequence, alias.getIdentifier(), Code.getNamespaceList(alias));
     			modelRepository.addSequence(javaSequence);
-    		}			
+    		}
+    		if(innerIdlType instanceof MArrayDef)
+    		{
+    			MArrayDef array = (MArrayDef)innerIdlType;
+    			ArrayDef javaArray = transform(array, alias.getIdentifier(), Code.getNamespaceList(alias));
+    			modelRepository.addArray(javaArray);
+    		}
     		// TODO: Handle other alias types
-
-    	
     	}
     }
 
+    
     public void handleNodeData(String fieldType, String fieldId, Object value)
     {
     }

@@ -11,6 +11,7 @@ import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
+import ccmtools.generator.java.metamodel.ArrayDef;
 import ccmtools.generator.java.metamodel.ComponentDef;
 import ccmtools.generator.java.metamodel.ConstantDef;
 import ccmtools.generator.java.metamodel.EnumDef;
@@ -108,6 +109,11 @@ public class JavaClientLibGenerator
 				{
 					SequenceDef javaSequence = (SequenceDef) j.next();
 					sourceFileList.addAll(javaSequence.generateClientLibSourceFiles());
+				}
+				for (Iterator j = javaModel.findAllArrays().iterator(); j.hasNext();)
+				{
+					ArrayDef javaArray = (ArrayDef) j.next();
+					sourceFileList.addAll(javaArray.generateClientLibSourceFiles());
 				}
 				
 				// Save all source file objects
