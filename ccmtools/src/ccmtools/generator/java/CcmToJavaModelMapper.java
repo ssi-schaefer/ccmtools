@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import ccmtools.CodeGenerator.NodeHandler;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
+import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
@@ -31,6 +32,7 @@ import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.generator.java.metamodel.AnyType;
+import ccmtools.generator.java.metamodel.ArrayDef;
 import ccmtools.generator.java.metamodel.AttributeDef;
 import ccmtools.generator.java.metamodel.BooleanType;
 import ccmtools.generator.java.metamodel.ByteType;
@@ -549,8 +551,14 @@ public class CcmToJavaModelMapper
 		}
 		else if(innerIdlType instanceof MSequenceDef)
 		{
-			out =  transform((MSequenceDef)innerIdlType, in.getIdentifier(), Code.getNamespaceList(in));
+			MSequenceDef sequence = (MSequenceDef)innerIdlType;
+			out =  transform(sequence, in.getIdentifier(), Code.getNamespaceList(in));
 		}			
+		else if(innerIdlType instanceof MArrayDef)
+		{
+			MArrayDef array = (MArrayDef)innerIdlType;
+			out = transform(array, in.getIdentifier(), Code.getNamespaceList(in));
+		}
 		// TODO: Handle other alias types
 		else
 		{
@@ -580,6 +588,25 @@ public class CcmToJavaModelMapper
 		return out;
 	}
 
+	public ArrayDef transform(MArrayDef in, String id, List ns)
+	{
+		ArrayDef out;
+		String repoId = Code.getRepositoryId(ns,id);
+		logger.finer("MArrayDef: " + repoId);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (ArrayDef) artifactCache.get(repoId);
+		}
+		else
+		{
+			MTyped arrayType = (MTyped)in;
+			MIDLType arrayIdlType = arrayType.getIdlType();		
+			out = new ArrayDef(id, ns);
+			out.setType(transform(arrayIdlType));
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
 	
 	public Type transform(MPrimitiveDef primitive)	
 	{

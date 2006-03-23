@@ -6,12 +6,28 @@ public class ArrayDef
 	extends ModelElement
 	implements Type
 {
+	/** Array type which is the same for all elements staored in an array. */
+	private Type type;
+
+	
 	public ArrayDef(String identifier, List namespace)
 	{
 		super(identifier, namespace);
 	}
 
 	
+	public Type getType()
+	{
+		return type;
+	}
+
+	public void setType(Type type)
+	{
+		this.type = type;
+	}
+
+
+
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
@@ -24,7 +40,7 @@ public class ArrayDef
 		
 	public String generateJavaMapping()
 	{
-		return generateAbsoluteIdlName();
+		return getType().generateJavaMapping() + "[]";
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -69,7 +85,7 @@ public class ArrayDef
 
 	public String generateCorbaMapping()
 	{
-		return generateAbsoluteIdlName();
+		return getType().generateCorbaMapping() + "[]";
 	}
 	
 	public String generateCorbaMapping(PassingDirection direction)
