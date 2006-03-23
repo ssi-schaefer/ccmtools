@@ -2,8 +2,10 @@ package ccmtools.generator.java.metamodel;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import ccmtools.generator.java.templates.EnumDefCorbaConverterTemplate;
 import ccmtools.generator.java.templates.EnumDefImplementationTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
@@ -131,6 +133,54 @@ public class EnumDef
 	
 	public String generateCorbaConverterType()
 	{
-		return "";
+		return generateAbsoluteJavaRemoteName() + "CorbaConverter.convert";
 	}
+	
+	public String generateCorbaConverter()
+	{
+		return new EnumDefCorbaConverterTemplate().generate(this);
+	}
+	
+	public String generateCaseConvertersToCorba()
+	{
+		StringBuffer sb = new StringBuffer();
+		for(Iterator i = getMembers().iterator(); i.hasNext();)
+		{
+			String member = (String)i.next();
+			sb.append(TAB3).append("case ").append(member).append(":").append(NL);
+			sb.append(TAB4).append("out = ").append(generateAbsoluteIdlName()).append(".").append(member);
+			sb.append(";").append(NL);
+			sb.append(TAB4).append("break;").append(NL);
+		}
+		return sb.toString();
+	}
+	
+	public String generateCaseConvertersFromCorba()
+	{		
+		StringBuffer sb = new StringBuffer();
+		for(Iterator i = getMembers().iterator(); i.hasNext();)
+		{
+			String member = (String)i.next();
+			sb.append(TAB3).append("case ").append(generateAbsoluteIdlName());
+			sb.append("._").append(member).append(":").append(NL);
+			sb.append(TAB4).append("out = ").append(generateAbsoluteJavaName());
+			sb.append(".").append(member).append(";").append(NL);
+			sb.append(TAB4).append("break;").append(NL);
+		}
+		return sb.toString();
+	}
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateClientLibSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
+		
+		SourceFile corbaConverter = 
+			new SourceFile(remotePackageName, getIdentifier() + "CorbaConverter.java",generateCorbaConverter());		
+		sourceFileList.add(corbaConverter);
+
+		return sourceFileList;
+	}	
 }

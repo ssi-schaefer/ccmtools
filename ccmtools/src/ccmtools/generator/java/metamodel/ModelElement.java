@@ -15,6 +15,7 @@ public class ModelElement
 	public static final String TAB = "    ";
 	public static final String TAB2 = "        ";
 	public static final String TAB3 = "            ";
+	public static final String TAB4 = "                 ";
 	
 	/** Namespace lists */
 	private String identifier;

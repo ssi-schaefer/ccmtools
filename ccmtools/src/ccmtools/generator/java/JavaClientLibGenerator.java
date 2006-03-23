@@ -96,15 +96,14 @@ public class JavaClientLibGenerator
 				{
 					EnumDef javaEnum = (EnumDef) j.next();
 					sourceFileList.addAll(javaEnum.generateLocalInterfaceSourceFiles());
-//					sourceFileList.addAll(javaEnum.generateClientLibSourceFiles());
+					sourceFileList.addAll(javaEnum.generateClientLibSourceFiles());
 				}				
 				for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
 				{
 					StructDef javaStruct = (StructDef) j.next();
 					sourceFileList.addAll(javaStruct.generateLocalInterfaceSourceFiles());
 					sourceFileList.addAll(javaStruct.generateClientLibSourceFiles());
-				}
-				
+				}				
 				for (Iterator j = javaModel.findAllSequences().iterator(); j.hasNext();)
 				{
 					SequenceDef javaSequence = (SequenceDef) j.next();
