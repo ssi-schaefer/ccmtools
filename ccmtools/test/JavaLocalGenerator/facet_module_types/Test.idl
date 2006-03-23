@@ -5,9 +5,12 @@
  * different parameter types and directions.
  **/
 
-module world {
-  module europe {
-    module austria {
+module world 
+{
+  module europe 
+  {
+    module austria 
+    {
 
       enum Color {red, green, blue, black, orange};
 
@@ -68,7 +71,8 @@ module world {
       };
       
       
-      interface VoidTypeInterface {
+      interface VoidTypeInterface 
+      {
 	void f1(in long p1);
 	long f2();
       };
