@@ -173,4 +173,20 @@ public class TestuserTypeImpl
 	}
         return result;
     }
+
+
+    public int[][] f11 (int[][] p1, ccm.local.Holder<int[][]> p2, ccm.local.Holder<int[][]> p3)     
+        throws ccm.local.Components.CCMException
+    {
+	// TODO: implement test case
+	return null;
+    }    
+
+
+    public int[][][] f12 (int[][][] p1, ccm.local.Holder<int[][][]> p2, ccm.local.Holder<int[][][]> p3)     
+        throws ccm.local.Components.CCMException
+    {
+	// TODO: implement test case
+	return null;
+    }   
 }

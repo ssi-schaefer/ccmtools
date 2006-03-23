@@ -37,6 +37,9 @@ module world
       typedef string StringArray[10];
       typedef Person PersonArray[10];
 
+      typedef long LongMatrix[10][5];
+      typedef long LongCube[10][5][7];
+
       
       interface BasicTypeInterface 
       {
@@ -68,6 +71,8 @@ module world
 	StringArray f9(in StringArray p1, inout StringArray p2, out StringArray p3);
 	PersonArray f10(in PersonArray p1, inout PersonArray p2, out PersonArray p3);
 
+	LongMatrix  f11(in LongMatrix p1, inout LongMatrix p2, out LongMatrix p3);
+	LongCube    f12(in LongCube p1, inout LongCube p2, out LongCube p3);
       };
       
       

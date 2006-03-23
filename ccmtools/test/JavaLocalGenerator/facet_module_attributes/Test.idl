@@ -31,7 +31,11 @@ module world
   typedef long LongArray[10];
   typedef string StringArray[10];
   typedef Person PersonArray[10];
-  
+
+  typedef long LongMatrix[10][5];
+  typedef long LongCube[10][5][7];
+
+
   module europe 
   {
 
@@ -65,6 +69,10 @@ module world
       attribute LongArray longArray_value;
       attribute StringArray stringArray_value;
       attribute PersonArray personArray_value;
+      
+
+      attribute LongMatrix longMatrix_value;
+      attribute LongCube longCube_value;
     };
     
 
