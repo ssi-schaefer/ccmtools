@@ -3,8 +3,6 @@ package client;
 import java.util.List;
 import java.util.ArrayList;
 
-import world.europe.austria.Color;
-
 import world.europe.austria.ccm.local.*;
 import ccm.local.Components.CCMException;
 import ccm.local.Holder;
