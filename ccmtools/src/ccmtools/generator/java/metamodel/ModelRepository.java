@@ -20,6 +20,7 @@ public class ModelRepository
 	
 	private List enumList = new ArrayList();
 	private List structList = new ArrayList();
+	private List exceptionList = new ArrayList();
 	private List sequenceList = new  ArrayList();
 	private List arrayList = new  ArrayList();
 	
@@ -113,6 +114,17 @@ public class ModelRepository
 	public List findAllStructs()
 	{
 		return structList;
+	}
+	
+	
+	public void addException(ExceptionDef value)
+	{
+		exceptionList.add(value);
+	}
+
+	public List findAllExceptions()
+	{
+		return exceptionList;
 	}
 	
 	

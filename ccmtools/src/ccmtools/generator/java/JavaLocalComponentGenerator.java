@@ -13,6 +13,7 @@ import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
 import ccmtools.generator.java.metamodel.ComponentDef;
 import ccmtools.generator.java.metamodel.EnumDef;
+import ccmtools.generator.java.metamodel.ExceptionDef;
 import ccmtools.generator.java.metamodel.HomeDef;
 import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.ModelRepository;
@@ -93,6 +94,11 @@ public class JavaLocalComponentGenerator
 				{
 					StructDef javaStruct = (StructDef) j.next();
 					sourceFileList.addAll(javaStruct.generateLocalInterfaceSourceFiles());
+				}
+				for (Iterator j = javaModel.findAllExceptions().iterator(); j.hasNext();)
+				{
+					ExceptionDef javaException = (ExceptionDef) j.next();
+					sourceFileList.addAll(javaException.generateLocalInterfaceSourceFiles());
 				}
 				
 				// Save all source file objects

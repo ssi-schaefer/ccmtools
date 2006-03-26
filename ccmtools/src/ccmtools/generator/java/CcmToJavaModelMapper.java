@@ -188,8 +188,17 @@ public class CcmToJavaModelMapper
     		StructDef javaStruct = transform(struct);
     		modelRepository.addStruct(javaStruct);    		
     	}
+    	else if(node instanceof MExceptionDef)
+    	{
+    		MExceptionDef exception = (MExceptionDef)node;
+    		logger.finer("MExceptionDef: " + Code.getRepositoryId(exception));
+    		ExceptionDef javaException = transform(exception);
+    		modelRepository.addException(javaException);    	
+    	}
     	else if(node instanceof MAliasDef)
     	{
+    		// Note that only the MAiliasDef object knows the identifier of these
+    		// CCM model elements, thus, we have to handle MAliasDef nodes here! 
     		MAliasDef alias = (MAliasDef)node;
     		logger.finer("MAliasDef: " + Code.getRepositoryId(alias));    		
     		MTyped typed = (MTyped)alias;
@@ -206,7 +215,6 @@ public class CcmToJavaModelMapper
     			ArrayDef javaArray = transform(array, alias.getIdentifier(), Code.getNamespaceList(alias));
     			modelRepository.addArray(javaArray);
     		}
-    		// TODO: Handle other alias types
     	}
     }
 
@@ -403,6 +411,15 @@ public class CcmToJavaModelMapper
 		else 
 		{
 			out = new ExceptionDef(in.getIdentifier(), Code.getNamespaceList(in));
+			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
+			{
+				MFieldDef member = (MFieldDef)i.next();	
+				MIDLType idlType = member.getIdlType();
+				FieldDef field = new FieldDef();
+				field.setIdentifier(member.getIdentifier());
+				field.setType(transform(idlType));
+				out.getFields().add(field);					
+			}			
 			artifactCache.put(repoId, out);
 		}
 		return out;

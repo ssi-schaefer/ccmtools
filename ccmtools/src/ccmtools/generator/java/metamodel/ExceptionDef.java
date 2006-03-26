@@ -1,23 +1,32 @@
 package ccmtools.generator.java.metamodel;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import ccmtools.generator.java.templates.ExceptionDefConstructorTemplate;
+import ccmtools.generator.java.templates.ExceptionDefDefaultConstructorTemplate;
+import ccmtools.generator.java.templates.ExceptionDefImplementationTemplate;
+import ccmtools.utils.SourceFile;
+import ccmtools.utils.Text;
 
 public class ExceptionDef
 	extends ModelElement
 {
-	List parameter = new ArrayList();
-
+	private List fields = new ArrayList();
+	
 	public ExceptionDef(String identifier, List ns)
 	{
 		setIdentifier(identifier);
 		setIdlNamespaceList(ns);	
 	}
 		
-	public List getParameter()
+	public List getFields()
 	{
-		return parameter;
+		return fields;
 	}
+	
 	
 	
 	/*************************************************************************
@@ -27,7 +36,57 @@ public class ExceptionDef
 	
 	public String generateJavaMapping()
 	{
-		return generateAbsoluteIdlName();
+		return generateAbsoluteJavaName();
+	}
+	
+	public String generateImplementation()
+	{
+		return new ExceptionDefImplementationTemplate().generate(this);
+	}
+	
+	public String generateConstructor()
+	{
+		if(getFields().size() > 0)
+		{
+			return new ExceptionDefConstructorTemplate().generate(this);
+		}
+		else
+		{
+			return "";
+		}
+		
+	}
+	
+	public String generateDefaultConstructor()
+	{
+		return new ExceptionDefDefaultConstructorTemplate().generate(this);
+	}
+	
+	public String generateConstructorParameterList()
+	{
+		List parameterList = new ArrayList();
+		for(Iterator i=getFields().iterator(); i.hasNext();)
+		{
+			FieldDef field = (FieldDef)i.next();
+			parameterList.add(field.getType().generateJavaMapping() + " " + field.getIdentifier());
+		}
+		return Text.joinList(", ", parameterList);	
+	}
+	
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateLocalInterfaceSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
+		
+		SourceFile exception = 
+			new SourceFile(localPackageName, getIdentifier() + ".java", generateImplementation());
+		sourceFileList.add(exception);
+		
+		return sourceFileList;
 	}
 	
 	
@@ -41,4 +100,16 @@ public class ExceptionDef
 	{
 		return "null";		
 	}
+	
+	
+	/*************************************************************************
+	 * Client Library Generator Methods
+	 * 
+	 *************************************************************************/
+	
+	public String generateCorbaMapping()
+	{
+		return generateAbsoluteIdlName();
+	}
+	
 }

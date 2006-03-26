@@ -1,0 +1,32 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="ExceptionDefConstructorTemplate" 
+		imports="java.util.Iterator ccmtools.generator.java.metamodel.* "	    
+%>
+<% ExceptionDef exception = (ExceptionDef) argument; %>
+    public <%=exception.getIdentifier()%>(<%=exception.generateConstructorParameterList()%>) 
+    {
+        super(REPOSITORY_ID);
+<%
+for(Iterator i=exception.getFields().iterator(); i.hasNext();)
+{
+	FieldDef field = (FieldDef)i.next();
+%>
+        <%=field.generateSetterName()%>(<%=field.getIdentifier()%>);
+<%
+}
+%>
+    }
+        
+    public <%=exception.getIdentifier()%>(String reason, <%=exception.generateConstructorParameterList()%>)    
+    {
+        super(REPOSITORY_ID + " " + reason);
+<%
+for(Iterator i=exception.getFields().iterator(); i.hasNext();)
+{
+	FieldDef field = (FieldDef)i.next();
+%>
+        <%=field.generateSetterName()%>(<%=field.getIdentifier()%>);
+<%
+}
+%>       
+    }
