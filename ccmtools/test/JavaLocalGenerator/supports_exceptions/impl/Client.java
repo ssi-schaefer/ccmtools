@@ -1,7 +1,10 @@
 import world.europe.austria.ccm.local.*;
 
-import ccm.local.Components.*;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.logging.*;
+
+import ccm.local.Components.*;
 
 public class Client
 {
@@ -42,7 +45,7 @@ public class Client
 			    int result = component.foo("0123456789");
 			    assert(result == 10);
 			}
-			catch(world.europe.austria.ErrorException e)
+			catch(ErrorException e)
 			{
 			    e.printStackTrace();
 			    assert(false);
@@ -53,13 +56,13 @@ public class Client
 			    int result = component.foo("Error");
 			    assert(false);
 			}
-			catch(world.europe.austria.ErrorException e)
+			catch(ErrorException e)
 			{
-			    System.out.println("> catched ErrorException");
-			    for(int i = 0; i < e.info.length; i++)
+			    System.out.println("catched: " + e.getMessage());
+			    for(int i = 0; i < e.getInfo().size(); i++)
 			    {
-				System.out.println(e.info[i].code + ": " +
-						   e.info[i].message);
+				System.out.println(e.getInfo().get(i).getCode() + ": " +
+						   e.getInfo().get(i).getMessage());
 			    }
 			}
 
@@ -68,9 +71,9 @@ public class Client
 			    int result = component.foo("SuperError");
 			    assert(false);
 			}
-			catch(world.europe.austria.SuperError e)
+			catch(SuperError e)
 			{
-			    System.out.println("> catched SuperError");
+			    System.out.println("catched: " + e.getMessage());
 			}
 
 
@@ -79,9 +82,9 @@ public class Client
 			    int result = component.foo("FatalError");
 			    assert(false);
 			}
-			catch(world.europe.austria.FatalError e)
+			catch(FatalError e)
 			{
-			    System.out.println("> catched FatalError");
+			    System.out.println("catched: " + e.getMessage());
 			}
 			
 			System.out.println("OK!");

@@ -11,6 +11,9 @@
  */
 
 package world.europe.austria.ccm.local;
+
+import java.util.List;
+import java.util.ArrayList;
                  
 import ccm.local.Components.*;
  
@@ -37,28 +40,23 @@ public class Test_mirroriface_mirrorImpl
 
     public int foo(String msg)
         throws ccm.local.Components.CCMException, 
-	       world.europe.austria.ErrorException, 
-	       world.europe.austria.SuperError, 
-	       world.europe.austria.FatalError
+	       ErrorException, 
+	       SuperError, 
+	       FatalError
     {
         if(msg.equals("Error"))
         {
-            world.europe.austria.ErrorException error =
-                new world.europe.austria.ErrorException();
-            world.europe.austria.ErrorInfo[] errorInfoList =
-                new world.europe.austria.ErrorInfo[1];
-            world.europe.austria.ErrorInfo errorInfo =
-                new world.europe.austria.ErrorInfo(7, "A simple error!");
-            errorInfoList[0] = errorInfo;
-            error.info = errorInfoList;
-            throw error;
+            ErrorInfo errorInfo = new ErrorInfo(7, "A simple error!");
+            List<ErrorInfo> errorInfoList = new ArrayList<ErrorInfo>();
+            errorInfoList.add(errorInfo);
+            throw new ErrorException(errorInfoList);
         }
 
         if(msg.equals("SuperError"))
-            throw new world.europe.austria.SuperError();
+            throw new SuperError();
 
         if(msg.equals("FatalError"))
-            throw new world.europe.austria.FatalError();
+            throw new FatalError();
 
         return msg.length();
     }    
