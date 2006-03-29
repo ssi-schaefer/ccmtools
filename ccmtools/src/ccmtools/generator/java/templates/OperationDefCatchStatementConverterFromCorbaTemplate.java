@@ -16,7 +16,8 @@ public class OperationDefCatchStatementConverterFromCorbaTemplate
 
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "\tcatch(";
-  protected final String TEXT_2 = " e)" + NL + "\t{" + NL + "\t    throw e; // currently we don't convert user exceptions" + NL + "\t}" + NL;
+  protected final String TEXT_2 = " e)" + NL + "\t{" + NL + "\t    throw ";
+  protected final String TEXT_3 = "(e);" + NL + "\t}" + NL;
 
   public String generate(Object argument)
   {
@@ -28,8 +29,10 @@ for(Iterator i = op.getException().iterator(); i.hasNext(); )
     ExceptionDef ex = (ExceptionDef)i.next();
 
     stringBuffer.append(TEXT_1);
-    stringBuffer.append(ex.generateAbsoluteIdlName());
+    stringBuffer.append(ex.generateJavaMapping());
     stringBuffer.append(TEXT_2);
+    stringBuffer.append(ex.generateCorbaConverterType());
+    stringBuffer.append(TEXT_3);
     
 }
 

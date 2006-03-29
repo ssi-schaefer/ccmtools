@@ -15,6 +15,7 @@ import ccmtools.generator.java.metamodel.ArrayDef;
 import ccmtools.generator.java.metamodel.ComponentDef;
 import ccmtools.generator.java.metamodel.ConstantDef;
 import ccmtools.generator.java.metamodel.EnumDef;
+import ccmtools.generator.java.metamodel.ExceptionDef;
 import ccmtools.generator.java.metamodel.HomeDef;
 import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.ModelRepository;
@@ -104,7 +105,13 @@ public class JavaClientLibGenerator
 					StructDef javaStruct = (StructDef) j.next();
 					sourceFileList.addAll(javaStruct.generateLocalInterfaceSourceFiles());
 					sourceFileList.addAll(javaStruct.generateClientLibSourceFiles());
-				}				
+				}		
+				for (Iterator j = javaModel.findAllExceptions().iterator(); j.hasNext();)
+				{
+					ExceptionDef javaException = (ExceptionDef) j.next();
+					sourceFileList.addAll(javaException.generateLocalInterfaceSourceFiles());
+					sourceFileList.addAll(javaException.generateClientLibSourceFiles());
+				}
 				for (Iterator j = javaModel.findAllSequences().iterator(); j.hasNext();)
 				{
 					SequenceDef javaSequence = (SequenceDef) j.next();

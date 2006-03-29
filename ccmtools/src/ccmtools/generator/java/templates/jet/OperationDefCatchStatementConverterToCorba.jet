@@ -8,9 +8,9 @@ for(Iterator i = op.getException().iterator(); i.hasNext(); )
 {
     ExceptionDef ex = (ExceptionDef)i.next();
 %>
-	catch(<%=ex.generateAbsoluteIdlName()%> e)
+	catch(<%=ex.generateCorbaMapping()%> e)
 	{	    
-	    throw e; // currently we don't convert user exceptions
+	    throw <%=ex.generateCorbaConverterType()%>(e);
 	}
 
 <%

@@ -1,11 +1,28 @@
 RELEASE-0.6.x
 ============================================================================
 
-RELEASE-0.6.4 
+RELEASE-0.6.5 
 ----------------------------------------------------------------------------
 *) Bugfix: Start scripts (ccmtools, uml2idl, ccmjava, ccmdescriptor) don't
 	check for an existing JAVA_HOME environment variable.
+
+*) Feature: IDL -> Java mapping for local Java components
+	- enum
+	- sequence
+	- array
+	- struct
+	- exception 	
+	- generic Holder<> class
 	
+*) Feature: CorbaConverter between standard IDL mapping and local Java components
+	- enum
+	- sequence
+	- array
+	- struct
+	- exception 	
+
+*) Feature: AnyPlugin for Java component generator
+	- first version to support local EntityContainer mapping
 
 
 RELEASE-0.6.4 (March 9, 2006)

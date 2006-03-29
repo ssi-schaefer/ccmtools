@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.generator.java.templates.ExceptionDefConstructorTemplate;
+import ccmtools.generator.java.templates.ExceptionDefCorbaConverterTemplate;
 import ccmtools.generator.java.templates.ExceptionDefDefaultConstructorTemplate;
 import ccmtools.generator.java.templates.ExceptionDefImplementationTemplate;
 import ccmtools.utils.SourceFile;
@@ -112,4 +113,28 @@ public class ExceptionDef
 		return generateAbsoluteIdlName();
 	}
 	
+	public String generateCorbaConverter()
+	{
+		return new ExceptionDefCorbaConverterTemplate().generate(this);
+	}
+	
+	public String generateCorbaConverterType()
+	{
+		return generateAbsoluteJavaRemoteName() + "CorbaConverter.convert";
+	}
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateClientLibSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
+		
+		SourceFile corbaConverter = 
+			new SourceFile(remotePackageName, getIdentifier() + "CorbaConverter.java",generateCorbaConverter());		
+		sourceFileList.add(corbaConverter);
+
+		return sourceFileList;
+	}	
 }
