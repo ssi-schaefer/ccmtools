@@ -80,7 +80,7 @@ public class CcmToJavaModelMapper
     private AnyPluginManager anyPluginManager;
     
     
-	CcmToJavaModelMapper()
+	public CcmToJavaModelMapper()
 	{
 		logger = Logger.getLogger("ccm.generator.java.clientlib");
 		logger.fine("CcmModelNodeHandler()");

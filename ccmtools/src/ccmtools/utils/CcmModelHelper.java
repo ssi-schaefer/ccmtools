@@ -40,7 +40,7 @@ public class CcmModelHelper
 			}
 			cmd.append(source);
 
-			uiDriver.printMessage(cmd.toString());
+			//uiDriver.printMessage(cmd.toString());
 			Process preproc = Runtime.getRuntime().exec(cmd.toString());
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(preproc.getInputStream()));
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
@@ -60,7 +60,7 @@ public class CcmModelHelper
 						+ source + ").");
 
 			// step (1). parse the resulting preprocessed file.
-			uiDriver.printMessage("parse " + idlfile.toString());
+			//uiDriver.printMessage("parse " + idlfile.toString());
 			manager.reset();
 			manager.setOriginalFile(source.toString());
 			ccmModel = manager.parseFile(idlfile.toString());

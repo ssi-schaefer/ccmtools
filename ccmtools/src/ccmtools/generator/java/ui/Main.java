@@ -12,10 +12,14 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
+import ccmtools.CodeGenerator.CcmGraphTraverser;
+import ccmtools.CodeGenerator.GraphTraverser;
+import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
-import ccmtools.generator.java.JavaClientLibGenerator;
-import ccmtools.generator.java.JavaLocalComponentGenerator;
-import ccmtools.generator.java.JavaApplicationGenerator;
+import ccmtools.generator.java.CcmToJavaModelMapper;
+import ccmtools.generator.java.ComponentGenerator;
+import ccmtools.generator.java.metamodel.ModelRepository;
+import ccmtools.utils.CcmModelHelper;
 import ccmtools.utils.CcmtoolsProperties;
 
 public class Main
@@ -31,12 +35,7 @@ public class Main
     private static boolean isExitWithErrorStatus = true;
     private static final int EXIT_STATUS_FOR_ERROR = -1;
     
-    /** String constants used for generator selection */
-    private static final String APPLICATION_GENERATOR_ID = "app";
-    private static final String LOCAL_COMPONENT_GENERATOR_ID = "local";
-    private static final String CLIENT_LIB_GENERATOR_ID = "clientlib";
-    
-    
+
     /**
      * Using the main method, we can start the Java client library generator
      * as an application.
@@ -53,29 +52,50 @@ public class Main
             {
             	parameters.validate();
             	setCcmtoolsProperties();
+    			ComponentGenerator generator = new ComponentGenerator(parameters, uiDriver);
             	
-            	for(Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext(); )
-            	{
-            		String generatorId = (String)i.next();
-               		if(generatorId.equals(CLIENT_LIB_GENERATOR_ID))
-            		{
-            			JavaClientLibGenerator generator = 
-            				new JavaClientLibGenerator(parameters, uiDriver);
-            			generator.generate();
-            		}
-            		else if(generatorId.equals(LOCAL_COMPONENT_GENERATOR_ID))
-            		{
-            			JavaLocalComponentGenerator generator = 
-            				new JavaLocalComponentGenerator(parameters, uiDriver);
-            			generator.generate();
-            		}
-               		else if(generatorId.equals(APPLICATION_GENERATOR_ID))
-            		{
-            			JavaApplicationGenerator generator = 
-            				new JavaApplicationGenerator(parameters, uiDriver);
-            			generator.generate();
-            		}
-            	}            
+    			for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
+    			{
+    				String idlFile = (String) i.next();
+    				MContainer ccmModel = 
+    					CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+
+    				// Transform CCM Model to Java Implementation Model
+    				GraphTraverser traverser = new CcmGraphTraverser();
+    				CcmToJavaModelMapper nodeHandler = new CcmToJavaModelMapper();
+    				traverser.addHandler(nodeHandler);
+    				traverser.traverseGraph(ccmModel);
+
+    				// Query the Java Implementation Model and generate all source
+    				// file objects for the Java Client Library
+    				ModelRepository javaModel = nodeHandler.getJavaModel();
+    			
+    				generator.generate(javaModel);	
+    				
+    			}
+    				
+    			
+    			
+//            	for(Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext(); )
+//            	{
+//            		String generatorId = (String)i.next();
+//            		if(generatorId.equals(INTERFACE_GENERATOR_ID))
+//            		{
+//            			generator.generateInterface();               			
+//            		}
+//            		else if(generatorId.equals(LOCAL_COMPONENT_GENERATOR_ID))
+//            		{
+//            			generator.generateLocalComponent();
+//            		}
+//            		else if(generatorId.equals(CLIENT_LIB_GENERATOR_ID))
+//            		{
+//            			generator.generateClientLib();
+//            		}
+//               		else if(generatorId.equals(APPLICATION_GENERATOR_ID))
+//            		{
+//            			generator.generateApplication();
+//            		}
+//            	}            
             }
         }
         catch(ParseException e) {
@@ -118,9 +138,14 @@ public class Main
         // Define boolean options
         options.addOption("h", "help", false,"Display this help");
         options.addOption("V", "version", false, "Display CCM Tools version information");
-        options.addOption(CLIENT_LIB_GENERATOR_ID, false, "Run the Java client library generator");
-        options.addOption(LOCAL_COMPONENT_GENERATOR_ID, false, "Run the Java local component generator");
-        options.addOption(APPLICATION_GENERATOR_ID, false, "Run the Java application stubs generator");
+        options.addOption(ComponentGenerator.CLIENT_LIB_GENERATOR_ID, 
+        					false, "Run the Java client library generator");
+        options.addOption(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID, 
+        					false, "Run the Java local component generator");
+        options.addOption(ComponentGenerator.APPLICATION_GENERATOR_ID, 
+        					false, "Run the Java application stubs generator");
+        options.addOption(ComponentGenerator.INTERFACE_GENERATOR_ID, 
+        					false, "Run the Java interface generator");
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
         // Define single valued options
@@ -163,20 +188,25 @@ public class Main
             return false; // don't continue program execution
         }
         
-        if(cmd.hasOption(CLIENT_LIB_GENERATOR_ID))
+        if(cmd.hasOption(ComponentGenerator.CLIENT_LIB_GENERATOR_ID))
         {
-        	parameters.getGeneratorIds().add(CLIENT_LIB_GENERATOR_ID);
+        	parameters.getGeneratorIds().add(ComponentGenerator.CLIENT_LIB_GENERATOR_ID);
         }        
         
-        if(cmd.hasOption(LOCAL_COMPONENT_GENERATOR_ID))
+        if(cmd.hasOption(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID))
         {
-        	parameters.getGeneratorIds().add(LOCAL_COMPONENT_GENERATOR_ID);
+        	parameters.getGeneratorIds().add(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID);
         }    
         
-        if(cmd.hasOption(APPLICATION_GENERATOR_ID))
+        if(cmd.hasOption(ComponentGenerator.APPLICATION_GENERATOR_ID))
         {
-        	parameters.getGeneratorIds().add(APPLICATION_GENERATOR_ID);
-        }    
+        	parameters.getGeneratorIds().add(ComponentGenerator.APPLICATION_GENERATOR_ID);
+        }  
+        
+        if(cmd.hasOption(ComponentGenerator.INTERFACE_GENERATOR_ID))
+        {
+        	parameters.getGeneratorIds().add(ComponentGenerator.INTERFACE_GENERATOR_ID);
+        }  
         
         if(cmd.hasOption("noexit"))
         {
