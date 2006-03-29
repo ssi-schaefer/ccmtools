@@ -9,9 +9,9 @@ idl3: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
 
 local: idl3
-	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
-	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
-	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
+	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
+	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
+
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
 clientlib: idl3
@@ -28,6 +28,7 @@ check:
 	cp impl/Testmy_facetImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
 	bin/runTest
+	bin/runClient
 
 # This task runs the Client with the -ORB* parameters,
 # therefore, the client library component is used to
