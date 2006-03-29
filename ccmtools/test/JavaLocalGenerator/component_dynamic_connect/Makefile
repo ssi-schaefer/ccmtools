@@ -15,14 +15,13 @@ idl3mirror: idl3
 	ccmtools idl3mirror ${INCLUDE} -o ${IDL3_DIR} ${IDL3_DIR}/component/world/europe/austria/Test*.idl 
 
 local: idl3mirror
-	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
-	ccmjava -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
+	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
+	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
+
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
 
 check: 
 	cp impl/DynamicClient.java ${DEST_DIR}/src/
-#	cp impl/TestImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
-#	cp impl/Test_mirrorport_mirrorImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	ant -f ./build.xml
 	bin/runClient
 
