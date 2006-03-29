@@ -41,7 +41,7 @@ public class Client
 		int result = iface.foo("0123456789");
 		assert(result == 10);
 	    }
-	    catch(world.europe.austria.ErrorException e)
+	    catch(ErrorException e)
 	    {
 		e.printStackTrace();
 		assert(false);
@@ -53,13 +53,13 @@ public class Client
 		int result = iface.foo("Error");
 		assert(false);
 	    }
-	    catch(world.europe.austria.ErrorException e)
+	    catch(ErrorException e)
 	    {
-		System.out.println("!!catched ErrorException");
-		for(int i = 0; i < e.info.length; i++)
+		System.out.println("catched: " + e.getMessage());
+		for(int i = 0; i < e.getInfo().size(); i++)
 		{
-		    System.out.println(e.info[i].code + ": " + 
-				       e.info[i].message);
+		    System.out.println(e.getInfo().get(i).getCode() + ": " + 
+				       e.getInfo().get(i).getMessage());
 		}
 	    }
 	    
@@ -69,9 +69,9 @@ public class Client
 		int result = iface.foo("SuperError");
 		assert(false);
 	    }
-	    catch(world.europe.austria.SuperError e)
+	    catch(SuperError e)
 	    {
-		System.out.println("!!catched SuperError");
+		System.out.println("catched: " + e.getMessage());
 	    }
 
 
@@ -80,11 +80,10 @@ public class Client
 		int result = iface.foo("FatalError");
 		assert(false);
 	    }
-	    catch(world.europe.austria.FatalError e)
+	    catch(FatalError e)
 	    {
-		System.out.println("!!catched FatalError");
+		System.out.println("catched: " + e.getMessage());
 	    }
-
 
 	    component.remove();
 	    System.out.println("OK!");

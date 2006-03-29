@@ -1,5 +1,4 @@
 import org.omg.CORBA.ORB;
-import org.omg.CORBA.StringHolder;
 
 import world.europe.austria.ccm.local.*;
 import ccm.local.ServiceLocator;
@@ -51,13 +50,13 @@ public class Client
 		int result = component.print("SimpleError");
 		assert(false);
 	    }
-	    catch(world.europe.austria.SimpleError e)
+	    catch(SimpleError e)
 	    {
-		System.out.println("catched SimpleError!!");
-		for(int i = 0; i < e.info.length; i++)
+		System.out.println("catched: " + e.getMessage());
+		for(int i = 0; i < e.getInfo().size(); i++)
 		{
-		    System.out.println(e.info[i].code + ": " + 
-				       e.info[i].message);
+		    System.out.println(e.getInfo().get(i).getCode() + ": " + 
+				       e.getInfo().get(i).getMessage());
 		}
 	    }
 	    
@@ -67,9 +66,9 @@ public class Client
 		int result = component.print("SuperError");
 		assert(false);
 	    }
-	    catch(world.europe.austria.SuperError e)
+	    catch(SuperError e)
 	    {
-		System.out.println("catched SuperError!!");
+		System.out.println("catched: " + e.getMessage());
 	    }
 
 
@@ -78,11 +77,10 @@ public class Client
 		int result = component.print("FatalError");
 		assert(false);
 	    }
-	    catch(world.europe.austria.FatalError e)
+	    catch(FatalError e)
 	    {
-		System.out.println("catched FatalError!!");
+		System.out.println("catched: " + e.getMessage());
 	    }
-
 
 	    component.remove();
 	    System.out.println("OK!");
