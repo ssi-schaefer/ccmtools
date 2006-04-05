@@ -10,6 +10,7 @@ test: local check clean
 
 idl3: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
+	ccmconfix -makefiles -pn test-idl3 -pv 0.0.1 -o ${IDL3_DIR}
 
 local: idl3
 	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
