@@ -10,10 +10,13 @@
  */
 
 package <%=home.generateJavaNamespace()%>;
-                 
+
+import ccm.local.Components.KeylessCCMHome;
+import ccm.local.Components.CreateFailure;
+
 public interface <%=home.getIdentifier()%>Implicit 
-    extends ccm.local.Components.KeylessCCMHome
+    extends KeylessCCMHome
 {
-    <%=home.getComponent().generateAbsoluteJavaName()%> create()
-        throws ccm.local.Components.CreateFailure;
+    <%=home.getComponent().getIdentifier()%> create()
+        throws CreateFailure;
 }

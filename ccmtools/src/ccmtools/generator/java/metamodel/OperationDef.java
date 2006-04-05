@@ -54,7 +54,7 @@ public class OperationDef
 	
 	public Set getJavaImportStatements()
 	{
-		Set importStatements = getType().getJavaImportStatements();			
+		Set importStatements = getType().getJavaImportStatements();
 		for(Iterator i = getException().iterator(); i.hasNext();)
 		{
 			ExceptionDef ex = (ExceptionDef)i.next();
@@ -65,7 +65,6 @@ public class OperationDef
 			ParameterDef param = (ParameterDef)i.next();
 			importStatements.addAll(param.getJavaImportStatements());
 		}	
-		importStatements.add("ccm.local.Components.CCMException");
 		return importStatements;
 	}
 	

@@ -45,7 +45,8 @@ public class AttributeDef
 	
 	public Set getJavaImportStatements()
 	{
-		return getType().getJavaImportStatements();
+		Set importStatements = getType().getJavaImportStatements();
+		return importStatements;
 	}
 
 	

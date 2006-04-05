@@ -3,6 +3,8 @@ package ccmtools.generator.java.metamodel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ccmtools.generator.java.templates.HomeDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.HomeDefAdapterToCorbaTemplate;
@@ -39,16 +41,27 @@ public class HomeDef
 	{
 		this.component = component;
 	}
+		
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = new TreeSet();
+		// Some component management methods can throw this exception type
+		importStatements.add(generateAbsoluteJavaCcmName());
+		importStatements.add(getComponent().generateAbsoluteJavaName());
+		return importStatements;
+	}
 	
 	
-
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
 	
-	// Code generator methods -------------------------------------------------
-	
+	public String generateJavaImportStatements()
+	{
+		return generateJavaImportStatements(getJavaImportStatements());
+	}
+		
 	public String generateInterface()
 	{
 		return new HomeDefInterfaceTemplate().generate(this);

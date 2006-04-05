@@ -10,37 +10,43 @@
  */
 
 package <%=home.generateJavaNamespace()%>;
-                 
+
+import ccm.local.Components.CCMHome;
+import ccm.local.Components.CCMException;
+import ccm.local.Components.AssemblyFactory;
+import ccm.local.HomeFinder;
+
+
 public class <%=home.getIdentifier()%>Deployment 
 {
-    public static ccm.local.Components.CCMHome create()
-        throws ccm.local.Components.CCMException
+    public static CCMHome create()
+        throws CCMException
     {
-        return new <%=home.generateAbsoluteJavaName()%>Adapter((<%=home.generateAbsoluteJavaCcmName()%>)<%=home.generateAbsoluteJavaName()%>Factory.create());    
+        return new <%=home.getIdentifier()%>Adapter((<%=home.generateCcmIdentifier()%>)<%=home.getIdentifier()%>Factory.create());    
     }
 
-    public static ccm.local.Components.CCMHome create(ccm.local.Components.AssemblyFactory factory)
-        throws ccm.local.Components.CCMException
+    public static CCMHome create(AssemblyFactory factory)
+        throws CCMException
     {
-        return new <%=home.generateAbsoluteJavaName()%>Adapter((<%=home.generateAbsoluteJavaCcmName()%>)<%=home.generateAbsoluteJavaName()%>Factory.create(), factory);    
+        return new <%=home.getIdentifier()%>Adapter((<%=home.generateCcmIdentifier()%>)<%=home.getIdentifier()%>Factory.create(), factory);    
     }
 
 
     public static void deploy(String name)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
-        ccm.local.HomeFinder.instance().register_home(create(), name);    
+        HomeFinder.instance().register_home(create(), name);    
     }
     
-    public static void deploy(String name, ccm.local.Components.AssemblyFactory factory)
-        throws ccm.local.Components.CCMException
+    public static void deploy(String name, AssemblyFactory factory)
+        throws CCMException
     {
-        ccm.local.HomeFinder.instance().register_home(create(factory), name);    
+        HomeFinder.instance().register_home(create(factory), name);    
     }
     
     
     public static void undeploy(String name)
     {
-        ccm.local.HomeFinder.instance().unregister_home(name);    
+        HomeFinder.instance().unregister_home(name);    
     }
 }

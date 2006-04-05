@@ -31,7 +31,7 @@ public class InterfaceDefApplicationInterfaceTemplate
     stringBuffer.append(TEXT_3);
     stringBuffer.append(iface.generateCcmIdentifier());
     stringBuffer.append(TEXT_4);
-    stringBuffer.append(iface.generateAbsoluteJavaName());
+    stringBuffer.append(iface.getIdentifier());
     stringBuffer.append(TEXT_5);
     return stringBuffer.toString();
   }

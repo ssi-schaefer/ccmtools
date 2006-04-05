@@ -12,29 +12,36 @@
 package <%=home.generateJavaNamespace()%>;
    
 import java.util.logging.Logger;
+
+import ccm.local.Components.Assembly;
+import ccm.local.Components.AssemblyFactory;
+import ccm.local.Components.CCMException;
+import ccm.local.Components.CCMException;
+import ccm.local.Components.CCMObject;
+import ccm.local.Components.CreateFailure;
+import ccm.local.Components.RemoveFailure;
 import ccm.local.ServiceLocator;
 
-                 
 public class <%=home.getIdentifier()%>Adapter 
-    implements <%=home.generateAbsoluteJavaName()%>
+    implements <%=home.getIdentifier()%>
 {
     private Logger logger = ServiceLocator.instance().getLogger();
     
-    private <%=home.generateAbsoluteJavaCcmName()%> localInterface;
-    private ccm.local.Components.AssemblyFactory assemblyFactory;
+    private <%=home.generateCcmIdentifier()%> localInterface;
+    private AssemblyFactory assemblyFactory;
     
     protected <%=home.getIdentifier()%>Adapter()
     {
         this(null, null);
     }
     
-    public <%=home.getIdentifier()%>Adapter(<%=home.generateAbsoluteJavaCcmName()%> localInterface)
+    public <%=home.getIdentifier()%>Adapter(<%=home.generateCcmIdentifier()%> localInterface)
     {
         this(localInterface, null);
     }
     
-    public <%=home.getIdentifier()%>Adapter(<%=home.generateAbsoluteJavaCcmName()%> localInterface,
-        ccm.local.Components.AssemblyFactory assemblyFactory)
+    public <%=home.getIdentifier()%>Adapter(<%=home.generateCcmIdentifier()%> localInterface, 
+            AssemblyFactory assemblyFactory)
     {
         logger.fine("localInterface = " + localInterface + ", " + assemblyFactory);
         this.localInterface = localInterface;
@@ -42,43 +49,41 @@ public class <%=home.getIdentifier()%>Adapter
     }
 
     
-    public <%=home.getComponent().generateAbsoluteJavaName()%> create()
-        throws ccm.local.Components.CreateFailure
+    public <%=home.getComponent().getIdentifier()%> create()
+        throws CreateFailure
     {
         logger.fine("");
         try
         {
-            <%=home.getComponent().generateAbsoluteJavaCcmName()%> c = (<%=home.getComponent().generateAbsoluteJavaCcmName()%>)localInterface.create();
-            <%=home.getComponent().generateAbsoluteJavaName()%> component;
+            <%=home.getComponent().generateCcmIdentifier()%> c = (<%=home.getComponent().generateCcmIdentifier()%>)localInterface.create();
+            <%=home.getComponent().getIdentifier()%> component;
             if(assemblyFactory != null)
             {
-                ccm.local.Components.Assembly assembly = assemblyFactory.create();
-                component = new <%=home.getComponent().generateAbsoluteJavaName()%>Adapter(c, assembly);
+                Assembly assembly = assemblyFactory.create();
+                component = new <%=home.getComponent().getIdentifier()%>Adapter(c, assembly);
                 assembly.build(component);
             }
             else
             {
-                component = new <%=home.getComponent().generateAbsoluteJavaName()%>Adapter(c);
+                component = new <%=home.getComponent().getIdentifier()%>Adapter(c);
             }
             return component;
         }
-        catch(ccm.local.Components.CCMException e)
+        catch(CCMException e)
         {
-            throw new ccm.local.Components.CreateFailure();
+            throw new CreateFailure();
         }    
     }
     
-    public void remove_component(ccm.local.Components.CCMObject component) 
-        throws ccm.local.Components.CCMException, 
-               ccm.local.Components.RemoveFailure
+    public void remove_component(CCMObject component) 
+        throws CCMException, RemoveFailure
     {
         logger.fine("");	
         component.remove();
     }
 
     public ccm.local.Components.CCMObject create_component() 
-        throws ccm.local.Components.CCMException, 
-               ccm.local.Components.CreateFailure
+        throws CCMException, CreateFailure
     {
         logger.fine("");
         return create();

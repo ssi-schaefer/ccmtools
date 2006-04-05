@@ -63,4 +63,28 @@ public class ComponentTest
 			fail();
 		}
 	}
+	
+	public void testAssemblyNested()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/component_assembly_nested test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
+	
+	public void testBuildFromInstall()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/build_from_install test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
 }

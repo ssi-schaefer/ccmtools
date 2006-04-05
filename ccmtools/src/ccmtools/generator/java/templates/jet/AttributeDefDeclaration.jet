@@ -5,7 +5,7 @@
 <% AttributeDef attr = (AttributeDef) argument;  %>
 
     <%=attr.getType().generateJavaMapping()%> <%=attr.getIdentifier()%>()
-        throws ccm.local.Components.CCMException;     
+        throws CCMException;     
 
     void <%=attr.getIdentifier()%>(<%=attr.getType().generateJavaMapping()%> value)
-        throws ccm.local.Components.CCMException;     
+        throws CCMException;     

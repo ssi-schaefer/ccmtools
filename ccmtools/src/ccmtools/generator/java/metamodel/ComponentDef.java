@@ -67,10 +67,19 @@ public class ComponentDef
 	public Set getJavaImportStatements()
 	{
 		Set importStatements = new TreeSet();
+		// Some component management methods can throw this exception type
+		importStatements.add("ccm.local.Components.CCMException");
+		// Each component class refers to its context object
+		importStatements.add(generateAbsoluteJavaCcmName() + "_Context");
 		for(Iterator i = getAttributes().iterator(); i.hasNext();)
 		{
 			AttributeDef a = (AttributeDef)i.next();
 			importStatements.addAll(a.getType().getJavaImportStatements());
+		}
+		for(Iterator i=getSupports().iterator(); i.hasNext();)
+		{
+			SupportsDef s = (SupportsDef)i.next();
+			importStatements.addAll(s.getInterface().getJavaImportStatements());
 		}
 		return importStatements;
 	}
@@ -97,11 +106,11 @@ public class ComponentDef
 		for(Iterator i=getSupports().iterator(); i.hasNext();)
 		{
 			SupportsDef s = (SupportsDef)i.next();
-			supportsList.add(s.getInterface().generateAbsoluteJavaName());
+			supportsList.add(s.getInterface().getIdentifier());
 		}
 		if(supportsList.size() > 0)
 		{
-			return ", " + Text.joinList(", ", supportsList);
+			return "," + NL + TAB + Text.joinList( "," + NL + TAB, supportsList);
 		}
 		else
 		{
@@ -116,11 +125,11 @@ public class ComponentDef
 		for(Iterator i=getSupports().iterator(); i.hasNext();)
 		{
 			SupportsDef s = (SupportsDef)i.next();
-			supportsList.add(s.getInterface().generateAbsoluteJavaCcmName());
+			supportsList.add(s.getInterface().generateCcmIdentifier());
 		}
 		if(supportsList.size() > 0)
 		{
-			return ", " + Text.joinList(", ", supportsList);
+			return "," + NL + TAB + Text.joinList("," + NL + TAB, supportsList);
 		}
 		else
 		{

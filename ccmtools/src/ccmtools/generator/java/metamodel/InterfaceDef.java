@@ -104,6 +104,7 @@ public class InterfaceDef
 		}		
 		// Namespace of the local implementatio interface
 		importStatements.add(generateAbsoluteJavaCcmName());
+		importStatements.add(generateAbsoluteJavaName());
 		return importStatements;
 	}
 	

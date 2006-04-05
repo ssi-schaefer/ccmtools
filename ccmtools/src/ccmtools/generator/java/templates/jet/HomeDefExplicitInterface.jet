@@ -10,8 +10,10 @@
  */
 
 package <%=home.generateJavaNamespace()%>;
-                 
+
+import ccm.local.Components.CCMHome;              
+
 public interface <%=home.getIdentifier()%>Explicit 
-    extends ccm.local.Components.CCMHome
+    extends CCMHome
 {
 }

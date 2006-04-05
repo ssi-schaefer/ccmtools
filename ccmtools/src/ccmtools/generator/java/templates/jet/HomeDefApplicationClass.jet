@@ -16,7 +16,12 @@
  */
 
 package <%=home.generateJavaNamespace()%>;
-                 
+
+import ccm.local.Components.CCMException;           
+import ccm.local.Components.EnterpriseComponent;
+
+<%=home.generateJavaImportStatements()%>
+      
 /**
  * This class implements a component home's attributes and factory methods.  
  *
@@ -26,16 +31,16 @@ package <%=home.generateJavaNamespace()%>;
  * @version
  */
 public class <%=home.getIdentifier()%>Impl 
-    implements <%=home.generateAbsoluteJavaCcmName()%>
+    implements <%=home.generateCcmIdentifier()%>
 {
     public <%=home.getIdentifier()%>Impl()
     {
         // OPTIONAL: IMPLEMENT ME HERE !
     }
     
-    public ccm.local.Components.EnterpriseComponent create()
-        throws ccm.local.Components.CCMException
+    public EnterpriseComponent create()
+        throws CCMException
     {
-        return (ccm.local.Components.EnterpriseComponent) new <%=home.getComponent().generateAbsoluteJavaName()%>Impl();
+        return (EnterpriseComponent) new <%=home.getComponent().getIdentifier()%>Impl();
     }
 }

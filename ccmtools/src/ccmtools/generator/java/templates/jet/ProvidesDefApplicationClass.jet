@@ -19,6 +19,8 @@ InterfaceDef iface = provides.getInterface();
  */
 
 package <%=iface.generateJavaNamespace()%>;
+
+import ccm.local.Components.CCMException;  
                  
 <%=iface.generateJavaImportStatements()%>   
  
