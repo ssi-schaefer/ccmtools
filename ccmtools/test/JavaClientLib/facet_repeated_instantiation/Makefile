@@ -5,6 +5,8 @@ INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
 all: local clientlib stubs
 
+test-build: clientlib build clean 
+
 idl3: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
 
@@ -21,6 +23,10 @@ clientlib: idl3
 stubs: idl3
 	ccmtools idl2 -o ${IDL2_DIR} Test.idl
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCM_INSTALL}/include -I${IDL2_DIR} ${IDL2_DIR}/*.idl
+
+build:
+	mkdir ${DEST_DIR}/src
+	ant -f ./build.xml
 
 check: 
 	cp impl/Testmy_facetImpl.java ${DEST_DIR}/src/world/ccm/local/

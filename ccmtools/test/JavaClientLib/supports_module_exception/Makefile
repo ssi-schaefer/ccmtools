@@ -6,6 +6,8 @@ INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
 all: client_lib 
 
+test-build: client_lib build clean
+
 idl3: ${IDL_FILE}
 	ccmtools idl3 -o ${IDL3_DIR} ${IDL_FILE}
 
@@ -18,8 +20,10 @@ client_lib: idl2
 	ccmjava -iface -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
 	ccmjava -iface -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
 
-check: 
+build:
 	ant -f ./build.xml
+
+check: build 
 	bin/runClient
 
 clean: 
