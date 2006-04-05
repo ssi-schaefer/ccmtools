@@ -43,5 +43,6 @@ public interface Assembly
      *
      * Note: This is an CCM extension to support nested components.
      */
-    void configuration_complete();
+    void configuration_complete()
+    	throws InvalidConfiguration;
 }
