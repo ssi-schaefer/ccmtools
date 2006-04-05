@@ -3,6 +3,7 @@ package ccmtools.generator.java.metamodel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import ccmtools.generator.java.templates.OperationDefAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.OperationDefAdapterLocalTemplate;
@@ -51,6 +52,24 @@ public class OperationDef
 	}
 
 	
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = getType().getJavaImportStatements();			
+		for(Iterator i = getException().iterator(); i.hasNext();)
+		{
+			ExceptionDef ex = (ExceptionDef)i.next();
+			importStatements.addAll(ex.getJavaImportStatements());
+		}
+		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		{
+			ParameterDef param = (ParameterDef)i.next();
+			importStatements.addAll(param.getJavaImportStatements());
+		}	
+		importStatements.add("ccm.local.Components.CCMException");
+		return importStatements;
+	}
+	
+	
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
@@ -93,7 +112,14 @@ public class OperationDef
 			ParameterDef p = (ParameterDef)i.next();
 			parameterList.add(p.generateParameter());
 		}
-		return Text.joinList(", ", parameterList);
+		if(parameterList.size() > 1)
+		{
+			return NL + TAB3 + Text.joinList("," + NL + TAB3, parameterList);
+		}
+		else
+		{
+			return Text.joinList(", ", parameterList);
+		}
 	}
 		
 	/**
@@ -130,17 +156,18 @@ public class OperationDef
 	public String generateThrowsStatementLocal()
 	{
 		StringBuffer code = new StringBuffer();
-		code.append("throws ccm.local.Components.CCMException");
+//		code.append("throws ccm.local.Components.CCMException");
+		code.append("throws CCMException");
 		if(getException().size() != 0)
 		{
-			code.append(", ");
+			code.append(",").append(NL).append(TAB3);
 			List exceptionList = new ArrayList();
 			for (Iterator i = getException().iterator(); i.hasNext();)
 			{
 				ExceptionDef e = (ExceptionDef) i.next();
 				exceptionList.add(e.generateJavaMapping());
 			}
-			code.append(Text.joinList(", ", exceptionList));
+			code.append(Text.joinList(", " + NL + TAB3, exceptionList));
 		}
 		return code.toString();
 	}
@@ -207,7 +234,14 @@ public class OperationDef
 			ParameterDef p = (ParameterDef)i.next();
 			parameterList.add(p.generateCorbaParameter());
 		}
-		return Text.joinList(", ", parameterList);
+		if(parameterList.size() > 1)
+		{
+			return NL + TAB3 + Text.joinList(", " + NL + TAB3 , parameterList);
+		}
+		else
+		{
+			return Text.joinList(", ", parameterList);
+		}
 	}
 	
 	public String generateAdapterFromCorba()
@@ -232,7 +266,14 @@ public class OperationDef
 				ExceptionDef e = (ExceptionDef) i.next();
 				exceptionList.add(e.generateCorbaMapping());
 			}
-			code.append(Text.joinList(", ", exceptionList));
+			if(exceptionList.size() > 1)
+			{
+				code.append(Text.joinList(", " + NL + TAB3 , exceptionList));
+			}
+			else
+			{
+				code.append(Text.joinList(", ", exceptionList));
+			}
 		}
 		return code.toString();
 	}

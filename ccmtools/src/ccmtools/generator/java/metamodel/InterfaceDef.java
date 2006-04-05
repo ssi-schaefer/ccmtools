@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ccmtools.generator.java.templates.InterfaceDefAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.InterfaceDefAdapterLocalTemplate;
@@ -87,14 +89,35 @@ public class InterfaceDef
 		return baseInterfaces;
 	}
 			
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = new TreeSet();
+		for(Iterator i = getAttributes().iterator(); i.hasNext();)
+		{
+			AttributeDef attr = (AttributeDef)i.next();
+			importStatements.addAll(attr.getJavaImportStatements());
+		}
+		for(Iterator i = getOperations().iterator(); i.hasNext();)
+		{
+			OperationDef op = (OperationDef)i.next();
+			importStatements.addAll(op.getJavaImportStatements());
+		}		
+		// Namespace of the local implementatio interface
+		importStatements.add(generateAbsoluteJavaCcmName());
+		return importStatements;
+	}
+	
 	
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
-	
-	// Code generator methods -------------------------------------------------
+
+	public String generateJavaImportStatements()
+	{
+		return generateJavaImportStatements(getJavaImportStatements());
+	}
 	
 	public String generateInterface()
 	{

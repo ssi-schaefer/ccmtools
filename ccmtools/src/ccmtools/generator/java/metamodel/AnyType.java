@@ -1,8 +1,19 @@
 package ccmtools.generator.java.metamodel;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 public class AnyType
 	implements Type
 {	
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = new TreeSet();
+		importStatements.add(generateJavaMapping());
+		return importStatements;
+	}
+	
+
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
@@ -38,7 +49,8 @@ public class AnyType
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+		return "Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 

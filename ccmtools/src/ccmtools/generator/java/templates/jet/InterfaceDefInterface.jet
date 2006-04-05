@@ -11,6 +11,7 @@
 
 package <%= iface.generateJavaNamespace() %>;
                  
+<%=iface.generateJavaImportStatements()%> 
  
 /** 
  * Java interface declaration (based on the corresponding IDL interface).

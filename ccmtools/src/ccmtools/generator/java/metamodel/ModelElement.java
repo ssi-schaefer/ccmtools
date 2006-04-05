@@ -2,7 +2,9 @@ package ccmtools.generator.java.metamodel;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import ccmtools.Constants;
@@ -94,6 +96,37 @@ public class ModelElement
 	 * 
 	 *************************************************************************/
 		
+	/**
+	 * An import statement is needed if the imported model element has been
+	 * defined in a different package than the current model element.
+	 * E.g. package world.ccm.local.Address;
+	 *      import  world.ccm.local.Person; // not needed
+	 *      import  world.europe.ccm.local.Color; // is needed
+	 */
+	public boolean isNeededJavaImportStatement(String statement)
+	{
+		String packages = statement.substring(0, statement.lastIndexOf("."));
+		if(packages.equals(generateJavaNamespace()))
+			return false;
+		else
+			return true;
+	}
+
+	public String generateJavaImportStatements(Set importStatements)
+	{
+		StringBuffer sb = new StringBuffer();	
+		for(Iterator i = importStatements.iterator(); i.hasNext();)
+		{
+			String statement = (String)i.next();
+			if(isNeededJavaImportStatement(statement))
+			{
+				sb.append("import ").append(statement).append(";").append(NL);
+			}
+		}
+		return sb.toString();
+	}
+
+	
 	public boolean isPrimitiveType(Type t)
 	{
 		if(t instanceof AnyType

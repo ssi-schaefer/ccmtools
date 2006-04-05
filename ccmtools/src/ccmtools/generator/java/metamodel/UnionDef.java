@@ -1,6 +1,8 @@
 package ccmtools.generator.java.metamodel;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class UnionDef
 	extends ModelElement
@@ -19,6 +21,11 @@ public class UnionDef
 		return members;
 	}
 
+	
+	public Set getJavaImportStatements()
+	{
+		return new TreeSet();
+	}
 	
 	
 	/*************************************************************************
@@ -56,7 +63,8 @@ public class UnionDef
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+		return "Holder<" + generateJavaMappingObject() + ">";
 	}	
 	
 	

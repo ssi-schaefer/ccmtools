@@ -20,7 +20,7 @@ InterfaceDef iface = provides.getInterface();
 
 package <%=iface.generateJavaNamespace()%>;
                  
-import ccm.local.Components.*;
+<%=iface.generateJavaImportStatements()%>   
  
 /** 
  * This class implements a component facet's methods.

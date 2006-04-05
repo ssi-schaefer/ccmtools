@@ -1,11 +1,17 @@
 package ccmtools.generator.java.metamodel;
 
+import java.util.Set;
+
 public interface Type
 {
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
+	
+	Set getJavaImportStatements();
+	
+	
 	
 	/**
 	 * Generate a Java constant from the given value according to the

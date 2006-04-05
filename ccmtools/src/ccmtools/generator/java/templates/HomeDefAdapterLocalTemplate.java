@@ -19,15 +19,20 @@ public class HomeDefAdapterLocalTemplate
   protected final String TEXT_3 = ";" + NL + "   " + NL + "import java.util.logging.Logger;" + NL + "import ccm.local.ServiceLocator;" + NL + "" + NL + "                 " + NL + "public class ";
   protected final String TEXT_4 = "Adapter " + NL + "    implements ";
   protected final String TEXT_5 = NL + "{" + NL + "    private Logger logger = ServiceLocator.instance().getLogger();" + NL + "    " + NL + "    private ";
-  protected final String TEXT_6 = " localInterface;" + NL + "    " + NL + "    protected ";
-  protected final String TEXT_7 = "Adapter()" + NL + "    {" + NL + "    }" + NL + "    " + NL + "    public ";
+  protected final String TEXT_6 = " localInterface;" + NL + "    private ccm.local.Components.AssemblyFactory assemblyFactory;" + NL + "    " + NL + "    protected ";
+  protected final String TEXT_7 = "Adapter()" + NL + "    {" + NL + "        this(null, null);" + NL + "    }" + NL + "    " + NL + "    public ";
   protected final String TEXT_8 = "Adapter(";
-  protected final String TEXT_9 = " localInterface)" + NL + "    {" + NL + "        logger.fine(\"localInterface = \" + localInterface);" + NL + "        this.localInterface = localInterface;" + NL + "    }" + NL + "    " + NL + "    " + NL + "    public ";
-  protected final String TEXT_10 = " create()" + NL + "        throws ccm.local.Components.CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {";
-  protected final String TEXT_11 = NL + "            ";
-  protected final String TEXT_12 = " c = " + NL + "                (";
-  protected final String TEXT_13 = ")localInterface.create();" + NL + "            return new ";
-  protected final String TEXT_14 = "Adapter(c);" + NL + "        }" + NL + "        catch(ccm.local.Components.CCMException e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CreateFailure();" + NL + "        }    " + NL + "    }" + NL + "    " + NL + "    public void remove_component(ccm.local.Components.CCMObject component) " + NL + "        throws ccm.local.Components.CCMException, " + NL + "               ccm.local.Components.RemoveFailure" + NL + "    {" + NL + "        logger.fine(\"\");\t" + NL + "        component.remove();" + NL + "    }" + NL + "" + NL + "    public ccm.local.Components.CCMObject create_component() " + NL + "        throws ccm.local.Components.CCMException, " + NL + "               ccm.local.Components.CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return create();" + NL + "    }" + NL + "}";
+  protected final String TEXT_9 = " localInterface)" + NL + "    {" + NL + "        this(localInterface, null);" + NL + "    }" + NL + "    " + NL + "    public ";
+  protected final String TEXT_10 = "Adapter(";
+  protected final String TEXT_11 = " localInterface," + NL + "        ccm.local.Components.AssemblyFactory assemblyFactory)" + NL + "    {" + NL + "        logger.fine(\"localInterface = \" + localInterface + \", \" + assemblyFactory);" + NL + "        this.localInterface = localInterface;" + NL + "        this.assemblyFactory = assemblyFactory;" + NL + "    }" + NL + "" + NL + "    " + NL + "    public ";
+  protected final String TEXT_12 = " create()" + NL + "        throws ccm.local.Components.CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {";
+  protected final String TEXT_13 = NL + "            ";
+  protected final String TEXT_14 = " c = (";
+  protected final String TEXT_15 = ")localInterface.create();";
+  protected final String TEXT_16 = NL + "            ";
+  protected final String TEXT_17 = " component;" + NL + "            if(assemblyFactory != null)" + NL + "            {" + NL + "                ccm.local.Components.Assembly assembly = assemblyFactory.create();" + NL + "                component = new ";
+  protected final String TEXT_18 = "Adapter(c, assembly);" + NL + "                assembly.build(component);" + NL + "            }" + NL + "            else" + NL + "            {" + NL + "                component = new ";
+  protected final String TEXT_19 = "Adapter(c);" + NL + "            }" + NL + "            return component;" + NL + "        }" + NL + "        catch(ccm.local.Components.CCMException e)" + NL + "        {" + NL + "            throw new ccm.local.Components.CreateFailure();" + NL + "        }    " + NL + "    }" + NL + "    " + NL + "    public void remove_component(ccm.local.Components.CCMObject component) " + NL + "        throws ccm.local.Components.CCMException, " + NL + "               ccm.local.Components.RemoveFailure" + NL + "    {" + NL + "        logger.fine(\"\");\t" + NL + "        component.remove();" + NL + "    }" + NL + "" + NL + "    public ccm.local.Components.CCMObject create_component() " + NL + "        throws ccm.local.Components.CCMException, " + NL + "               ccm.local.Components.CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return create();" + NL + "    }" + NL + "}";
 
   public String generate(Object argument)
   {
@@ -50,15 +55,24 @@ public class HomeDefAdapterLocalTemplate
     stringBuffer.append(TEXT_8);
     stringBuffer.append(home.generateAbsoluteJavaCcmName());
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
+    stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(home.generateAbsoluteJavaCcmName());
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(home.getComponent().generateAbsoluteJavaCcmName());
-    stringBuffer.append(TEXT_12);
-    stringBuffer.append(home.getComponent().generateAbsoluteJavaCcmName());
-    stringBuffer.append(TEXT_13);
     stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
+    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_13);
+    stringBuffer.append(home.getComponent().generateAbsoluteJavaCcmName());
     stringBuffer.append(TEXT_14);
+    stringBuffer.append(home.getComponent().generateAbsoluteJavaCcmName());
+    stringBuffer.append(TEXT_15);
+    stringBuffer.append(TEXT_16);
+    stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
+    stringBuffer.append(TEXT_17);
+    stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
+    stringBuffer.append(TEXT_18);
+    stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
+    stringBuffer.append(TEXT_19);
     return stringBuffer.toString();
   }
 }

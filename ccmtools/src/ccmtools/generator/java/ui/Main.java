@@ -70,32 +70,10 @@ public class Main
     				// file objects for the Java Client Library
     				ModelRepository javaModel = nodeHandler.getJavaModel();
     			
-    				generator.generate(javaModel);	
-    				
+    				// Run the Java component generator which can handle all of the
+    				// different generator flags (-iface, -local, -app, -clientlib, etc.)
+    				generator.generate(javaModel);	    				
     			}
-    				
-    			
-    			
-//            	for(Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext(); )
-//            	{
-//            		String generatorId = (String)i.next();
-//            		if(generatorId.equals(INTERFACE_GENERATOR_ID))
-//            		{
-//            			generator.generateInterface();               			
-//            		}
-//            		else if(generatorId.equals(LOCAL_COMPONENT_GENERATOR_ID))
-//            		{
-//            			generator.generateLocalComponent();
-//            		}
-//            		else if(generatorId.equals(CLIENT_LIB_GENERATOR_ID))
-//            		{
-//            			generator.generateClientLib();
-//            		}
-//               		else if(generatorId.equals(APPLICATION_GENERATOR_ID))
-//            		{
-//            			generator.generateApplication();
-//            		}
-//            	}            
             }
         }
         catch(ParseException e) {

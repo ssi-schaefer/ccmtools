@@ -1,12 +1,22 @@
 package ccmtools.generator.java.metamodel;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 public class IntegerType
 	implements Type
 {
+	public Set getJavaImportStatements()
+	{
+		return new TreeSet();
+	}
+
+	
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
+	
 	
 	public String generateJavaConstant(Object value)
 	{
@@ -38,7 +48,8 @@ public class IntegerType
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+		return "Holder<" + generateJavaMappingObject() + ">";
 	}
 	
 	

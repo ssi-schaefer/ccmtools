@@ -1,5 +1,7 @@
 package ccmtools.generator.java.metamodel;
 
+import java.util.Set;
+
 public class ParameterDef
 	extends ModelElement
 {
@@ -35,6 +37,18 @@ public class ParameterDef
 		this.type = type;
 	}
 
+	
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = getType().getJavaImportStatements();			
+		if(getDirection() == PassingDirection.INOUT
+				|| getDirection() == PassingDirection.OUT)
+		{
+			importStatements.add("ccm.local.Holder");
+		}
+		return importStatements;
+	}
+	
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods

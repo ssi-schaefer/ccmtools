@@ -3,6 +3,7 @@ package ccmtools.generator.java.metamodel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import ccmtools.generator.java.templates.ArrayDefCorbaConverterTemplate;
 import ccmtools.utils.SourceFile;
@@ -40,6 +41,11 @@ public class ArrayDef
 		return bounds;
 	}
 
+	
+	public Set getJavaImportStatements()
+	{
+		return getType().getJavaImportStatements();
+	}
 	
 	
 	/*************************************************************************
@@ -102,7 +108,8 @@ public class ArrayDef
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+		return "Holder<" + generateJavaMappingObject() + ">";
 	}
 		
 	

@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ccmtools.generator.java.templates.ComponentDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.ComponentDefAdapterToCorbaTemplate;
@@ -62,15 +64,28 @@ public class ComponentDef
 		this.home = home;
 	}
 	
-	
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = new TreeSet();
+		for(Iterator i = getAttributes().iterator(); i.hasNext();)
+		{
+			AttributeDef a = (AttributeDef)i.next();
+			importStatements.addAll(a.getType().getJavaImportStatements());
+		}
+		return importStatements;
+	}
+
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
 	
-	// Code generator methods -------------------------------------------------
-
+	public String generateJavaImportStatements()
+	{
+		return generateJavaImportStatements(getJavaImportStatements());
+	}
+	
 	public String generateInterface()
 	{
 		return new ComponentDefInterfaceTemplate().generate(this);

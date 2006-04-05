@@ -7,14 +7,14 @@ This file describes how to get and install the CCM Tools on your box.
 Prerequisites 
 =============
 To install the CCM Tools, the following programs must be available: 
-  Java SDK     1.4      (http://java.sun.com/j2se) 
+  Java SDK     1.5      (http://java.sun.com/j2se) 
   Apache Ant   1.5.3    (http://ant.apache.org) 
   Python       2.2      (http://python.org) 
-  cpp          2.96     (http://www.gnu.org) 
+  cpp          3.3.x    (http://www.gnu.org) 
 
 To build the generated local C++ components, we also need: 
-  Confix       1.3pre35 (http://confix.sourceforge.net) 
-  gcc          2.95.3   (http://www.gnu.org) 
+  Confix       1.4.x    (http://confix.sourceforge.net) 
+  gcc          3.3.x    (http://www.gnu.org) 
 
 To generate and build remote C++ components, we additionally need: 
   mico         2.3.10   (http://www.mico.org/)

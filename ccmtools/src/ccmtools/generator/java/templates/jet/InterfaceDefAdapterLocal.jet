@@ -13,27 +13,27 @@ package <%= iface.generateJavaNamespace() %>;
                  
 import java.util.logging.Logger;
 import ccm.local.ServiceLocator;
-                 
+
+<%=iface.generateJavaImportStatements()%>                  
                   
 public class <%=iface.getIdentifier()%>Adapter 
-    implements <%=iface.generateAbsoluteJavaName()%>
+    implements <%=iface.getIdentifier()%>
 {
     private Logger logger = ServiceLocator.instance().getLogger();
     
-    private <%=iface.generateAbsoluteJavaCcmName()%> localInterface;
+    private <%=iface.generateCcmIdentifier()%> localInterface;
     
     protected <%=iface.getIdentifier()%>Adapter()
     {
         logger.fine("");
     }
 
-    public <%=iface.getIdentifier()%>Adapter(<%=iface.generateAbsoluteJavaCcmName()%> localInterface)
+    public <%=iface.getIdentifier()%>Adapter(<%=iface.generateCcmIdentifier()%> localInterface)
     {
         logger.fine("localInterface = " + localInterface);
         this.localInterface = localInterface;
     }
     
-
 <%
 for(Iterator i = iface.getAllAttributes().iterator(); i.hasNext(); )
 {
@@ -44,7 +44,6 @@ for(Iterator i = iface.getAllAttributes().iterator(); i.hasNext(); )
 }
 %>        
     
-
 <%
 for(Iterator i = iface.getAllOperations().iterator(); i.hasNext(); )
 {

@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ccmtools.generator.java.templates.ExceptionDefConstructorTemplate;
 import ccmtools.generator.java.templates.ExceptionDefCorbaConverterTemplate;
@@ -27,7 +29,20 @@ public class ExceptionDef
 	{
 		return fields;
 	}
+
 	
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = new TreeSet();
+//		importStatements.add(generateJavaMapping());
+		importStatements.add(generateAbsoluteJavaName());
+		for(Iterator i = getFields().iterator(); i.hasNext();)
+		{
+			FieldDef field = (FieldDef)i.next();
+			importStatements.addAll(field.getType().getJavaImportStatements());
+		}
+		return importStatements;
+	}
 	
 	
 	/*************************************************************************
@@ -35,9 +50,15 @@ public class ExceptionDef
 	 * 
 	 *************************************************************************/
 	
+	public String generateJavaImportStatements()
+	{
+		return generateJavaImportStatements(getJavaImportStatements());
+	}
+	
 	public String generateJavaMapping()
 	{
-		return generateAbsoluteJavaName();
+//		return generateAbsoluteJavaName();
+		return getIdentifier();
 	}
 	
 	public String generateImplementation()

@@ -11,10 +11,10 @@
 
 package <%=struct.generateJavaNamespace() %>;
 
-import java.io.Serializable;              
+<%=struct.generateJavaImportStatements()%>
  
 public class <%= struct.getIdentifier() %> 
-     implements Serializable
+     implements java.io.Serializable
 {
     private static final long serialVersionUID = <%=struct.generateSerialVersionUID()%>L;
     

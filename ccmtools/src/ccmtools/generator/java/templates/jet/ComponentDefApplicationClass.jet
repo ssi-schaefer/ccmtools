@@ -17,6 +17,8 @@
 
 package <%=component.generateJavaNamespace()%>;
    
+<%=component.generateJavaImportStatements()%>  
+   
 /**
  * This class implements component equivalent and supported interfaces
  * as well as component attributes.

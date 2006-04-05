@@ -1,5 +1,7 @@
 package ccmtools.generator.java.metamodel;
 
+import java.util.Set;
+
 import ccmtools.generator.java.templates.AttributeDefAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.AttributeDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.AttributeDefAdapterToCorbaTemplate;
@@ -41,11 +43,17 @@ public class AttributeDef
 	}
 	
 	
+	public Set getJavaImportStatements()
+	{
+		return getType().getJavaImportStatements();
+	}
+
+	
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
-	
+
 	public String generateDeclaration()
 	{
 		return new AttributeDefDeclarationTemplate().generate(this);

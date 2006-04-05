@@ -1,6 +1,8 @@
 package ccmtools.generator.java.metamodel;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class TypedefDef
 	extends ModelElement
@@ -12,11 +14,17 @@ public class TypedefDef
 	}
 	
 	
+	public Set getJavaImportStatements()
+	{
+		return new TreeSet();
+	}
+	
+
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
-
+	
 	public String generateJavaConstant(Object value)
 	{
 		return value.toString();

@@ -10,6 +10,8 @@
  */
 
 package <%=component.generateJavaNamespace()%>;
+
+<%=component.generateJavaImportStatements()%>          
                  
 public interface <%=component.generateCcmIdentifier()%> 
     extends ccm.local.Components.SessionComponent<%=component.generateSupportsCcmDeclarations()%>

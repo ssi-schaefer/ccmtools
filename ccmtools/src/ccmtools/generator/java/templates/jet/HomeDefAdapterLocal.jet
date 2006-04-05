@@ -21,17 +21,26 @@ public class <%=home.getIdentifier()%>Adapter
     private Logger logger = ServiceLocator.instance().getLogger();
     
     private <%=home.generateAbsoluteJavaCcmName()%> localInterface;
+    private ccm.local.Components.AssemblyFactory assemblyFactory;
     
     protected <%=home.getIdentifier()%>Adapter()
     {
+        this(null, null);
     }
     
     public <%=home.getIdentifier()%>Adapter(<%=home.generateAbsoluteJavaCcmName()%> localInterface)
     {
-        logger.fine("localInterface = " + localInterface);
-        this.localInterface = localInterface;
+        this(localInterface, null);
     }
     
+    public <%=home.getIdentifier()%>Adapter(<%=home.generateAbsoluteJavaCcmName()%> localInterface,
+        ccm.local.Components.AssemblyFactory assemblyFactory)
+    {
+        logger.fine("localInterface = " + localInterface + ", " + assemblyFactory);
+        this.localInterface = localInterface;
+        this.assemblyFactory = assemblyFactory;
+    }
+
     
     public <%=home.getComponent().generateAbsoluteJavaName()%> create()
         throws ccm.local.Components.CreateFailure
@@ -39,9 +48,19 @@ public class <%=home.getIdentifier()%>Adapter
         logger.fine("");
         try
         {
-            <%=home.getComponent().generateAbsoluteJavaCcmName()%> c = 
-                (<%=home.getComponent().generateAbsoluteJavaCcmName()%>)localInterface.create();
-            return new <%=home.getComponent().generateAbsoluteJavaName()%>Adapter(c);
+            <%=home.getComponent().generateAbsoluteJavaCcmName()%> c = (<%=home.getComponent().generateAbsoluteJavaCcmName()%>)localInterface.create();
+            <%=home.getComponent().generateAbsoluteJavaName()%> component;
+            if(assemblyFactory != null)
+            {
+                ccm.local.Components.Assembly assembly = assemblyFactory.create();
+                component = new <%=home.getComponent().generateAbsoluteJavaName()%>Adapter(c, assembly);
+                assembly.build(component);
+            }
+            else
+            {
+                component = new <%=home.getComponent().generateAbsoluteJavaName()%>Adapter(c);
+            }
+            return component;
         }
         catch(ccm.local.Components.CCMException e)
         {

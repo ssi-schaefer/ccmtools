@@ -1,5 +1,8 @@
 package ccmtools.generator.java.metamodel.plugin;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ccmtools.generator.java.metamodel.PassingDirection;
 import ccmtools.generator.java.metamodel.Type;
 
@@ -10,6 +13,13 @@ public class EntityContainer
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
+	
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = new HashSet();
+		importStatements.add("import wx.entitycontainer.IEntityContainer;");
+		return importStatements;
+	}
 	
 	public String generateJavaConstant(Object value)
 	{

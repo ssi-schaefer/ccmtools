@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ccmtools.generator.java.templates.EnumDefCorbaConverterTemplate;
 import ccmtools.generator.java.templates.EnumDefImplementationTemplate;
@@ -28,6 +30,15 @@ public class EnumDef
 	}
 
 	
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = new TreeSet();
+//		importStatements.add(generateJavaMapping());
+		importStatements.add(generateAbsoluteJavaName()); //!!!!
+		return importStatements;
+	}
+
+	
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
@@ -40,7 +51,8 @@ public class EnumDef
 	
 	public String generateJavaMapping()
 	{
-		return generateAbsoluteJavaName();
+//		return generateAbsoluteJavaName();
+		return getIdentifier();
 	}
 		
 	public String generateJavaMapping(PassingDirection direction)
@@ -63,7 +75,8 @@ public class EnumDef
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+		return "Holder<" + generateJavaMappingObject() + ">";
 	}
 
 	public String generateImplementation()

@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ccmtools.generator.java.templates.StructDefConstructorTemplate;
 import ccmtools.generator.java.templates.StructDefCorbaConverterTemplate;
@@ -30,10 +32,30 @@ public class StructDef
 	}
 
 	
+	public Set getJavaImportStatements()
+	{
+		// We put all import statements into s set to eliminate doubles
+		Set importStatements = new TreeSet();
+//		importStatements.add(generateJavaMapping());
+		importStatements.add(generateAbsoluteJavaName()); //!!!!!!!
+		for(Iterator i = getFields().iterator(); i.hasNext();)
+		{
+			FieldDef field = (FieldDef)i.next();
+			importStatements.addAll(field.getType().getJavaImportStatements());
+		}
+		return importStatements;
+	}
+
+	
 	/*************************************************************************
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
+	
+	public String generateJavaImportStatements()
+	{
+		return generateJavaImportStatements(getJavaImportStatements());
+	}
 	
 	public String generateJavaConstant(Object value)
 	{
@@ -42,7 +64,8 @@ public class StructDef
 	
 	public String generateJavaMapping()
 	{
-		return generateAbsoluteJavaName();
+//		return generateAbsoluteJavaName();
+		return getIdentifier();
 	}
 	
 	public String generateJavaMapping(PassingDirection direction)
@@ -65,7 +88,8 @@ public class StructDef
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+		return "Holder<" + generateJavaMappingObject() + ">";
 	}	
 		
 	

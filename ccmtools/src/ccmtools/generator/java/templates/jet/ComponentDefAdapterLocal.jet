@@ -14,6 +14,7 @@ package <%=component.generateJavaNamespace()%>;
 import java.util.logging.Logger;
 import ccm.local.ServiceLocator;
 
+<%=component.generateJavaImportStatements()%>  
                  
 public class <%=component.getIdentifier()%>Adapter 
     implements <%=component.generateAbsoluteJavaName()%>
@@ -22,6 +23,7 @@ public class <%=component.getIdentifier()%>Adapter
     
     private <%=component.generateAbsoluteJavaCcmName()%> localInterface;
     private <%=component.generateAbsoluteJavaCcmName()%>_Context ctx;
+    private ccm.local.Components.Assembly assembly;
 
     /** Facet adapter references */
 <%
@@ -48,15 +50,21 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 		
     protected <%=component.getIdentifier()%>Adapter()
     {
-        logger.fine("");
+        this(null, null);
     }
 	
     public <%=component.getIdentifier()%>Adapter(<%=component.generateAbsoluteJavaCcmName()%> localInterface)
     {
-        logger.fine("localInterface = " + localInterface);
-        this.localInterface = localInterface;
+        this(localInterface, null);
     }
 	
+    public <%=component.getIdentifier()%>Adapter(<%=component.generateAbsoluteJavaCcmName()%> localInterface,
+         ccm.local.Components.Assembly assembly)
+    {
+        logger.fine("localInterface = " + localInterface + ", " + assembly);
+        this.localInterface = localInterface;
+        this.assembly = assembly;
+    }
 	
 	
     /* 
@@ -94,7 +102,6 @@ for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 }
 %>    
 
-	
 	
     /* 
      * Equivalent interface methods 
@@ -142,6 +149,10 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         ctx = new <%=component.generateAbsoluteJavaCcmName()%>_ContextImpl(this); 
         try
         {
+            if(assembly != null) 
+            { 
+		        assembly.configuration_complete(); 
+	        }
             localInterface.set_session_context(ctx);
             localInterface.ccm_activate();
         }
@@ -158,6 +169,11 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         try 
         {
             localInterface.ccm_remove();
+            if(assembly != null) 
+	        { 
+		        assembly.tear_down(); 
+	 	        assembly = null;
+	        }
         }
         catch(ccm.local.Components.CCMException e)
         {

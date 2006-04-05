@@ -3,6 +3,7 @@ package ccmtools.generator.java.metamodel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import ccmtools.generator.java.templates.SequenceDefCorbaConverterTemplate;
 import ccmtools.utils.SourceFile;
@@ -44,6 +45,14 @@ public class SequenceDef
 	}
 
 	
+	public Set getJavaImportStatements()
+	{
+		Set s = getElementType().getJavaImportStatements();
+		s.add("java.util.List");
+//		s.add("import java.util.ArrayList;");
+		return s; 
+	}
+	
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
@@ -57,7 +66,8 @@ public class SequenceDef
 	
 	public String generateJavaMapping()
 	{
-		return "java.util.List<" + getElementType().generateJavaMappingObject() + ">";
+//		return "java.util.List<" + getElementType().generateJavaMappingObject() + ">";
+		return "List<" + getElementType().generateJavaMappingObject() + ">";
 	}
 	
 	public String generateJavaMappingImpl()
@@ -85,7 +95,8 @@ public class SequenceDef
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+		return "Holder<" + generateJavaMappingObject() + ">";
 	}	
 	
 	

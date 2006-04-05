@@ -20,7 +20,10 @@ public class HomeDefDeploymentLocalTemplate
   protected final String TEXT_4 = "Deployment " + NL + "{" + NL + "    public static ccm.local.Components.CCMHome create()" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        return new ";
   protected final String TEXT_5 = "Adapter((";
   protected final String TEXT_6 = ")";
-  protected final String TEXT_7 = "Factory.create());    " + NL + "    }" + NL + "" + NL + "    public static void deploy(String name)" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        ccm.local.HomeFinder.instance().register_home(create(), name);    " + NL + "    }" + NL + "    " + NL + "    public static void undeploy(String name)" + NL + "    {" + NL + "        ccm.local.HomeFinder.instance().unregister_home(name);    " + NL + "    }" + NL + "}";
+  protected final String TEXT_7 = "Factory.create());    " + NL + "    }" + NL + "" + NL + "    public static ccm.local.Components.CCMHome create(ccm.local.Components.AssemblyFactory factory)" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        return new ";
+  protected final String TEXT_8 = "Adapter((";
+  protected final String TEXT_9 = ")";
+  protected final String TEXT_10 = "Factory.create(), factory);    " + NL + "    }" + NL + "" + NL + "" + NL + "    public static void deploy(String name)" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        ccm.local.HomeFinder.instance().register_home(create(), name);    " + NL + "    }" + NL + "    " + NL + "    public static void deploy(String name, ccm.local.Components.AssemblyFactory factory)" + NL + "        throws ccm.local.Components.CCMException" + NL + "    {" + NL + "        ccm.local.HomeFinder.instance().register_home(create(factory), name);    " + NL + "    }" + NL + "    " + NL + "    " + NL + "    public static void undeploy(String name)" + NL + "    {" + NL + "        ccm.local.HomeFinder.instance().unregister_home(name);    " + NL + "    }" + NL + "}";
 
   public String generate(Object argument)
   {
@@ -39,6 +42,12 @@ public class HomeDefDeploymentLocalTemplate
     stringBuffer.append(TEXT_6);
     stringBuffer.append(home.generateAbsoluteJavaName());
     stringBuffer.append(TEXT_7);
+    stringBuffer.append(home.generateAbsoluteJavaName());
+    stringBuffer.append(TEXT_8);
+    stringBuffer.append(home.generateAbsoluteJavaCcmName());
+    stringBuffer.append(TEXT_9);
+    stringBuffer.append(home.generateAbsoluteJavaName());
+    stringBuffer.append(TEXT_10);
     return stringBuffer.toString();
   }
 }
