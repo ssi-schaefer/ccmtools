@@ -9,13 +9,14 @@
  * DO NOT EDIT!
  */
  
-package <%= iface.generateJavaRemoteNamespace() %>;
+package <%=iface.generateJavaRemoteNamespace()%>;
                  
 import java.util.logging.Logger;
 import ccm.local.ServiceLocator;
 
-import org.omg.CORBA.*;
+import org.omg.CORBA.BAD_OPERATION;
 
+<%=iface.generateJavaImportStatements(iface.generateJavaRemoteNamespace())%>
 
 /**
  * Interface adapter from CORBA to Java.
@@ -26,9 +27,9 @@ public class <%=iface.getIdentifier()%>AdapterFromCorba
     private Logger logger = ServiceLocator.instance().getLogger();
     
     /** Java reference to the local interface */
-    private <%=iface.generateAbsoluteJavaName()%> localInterface;
+    private <%=iface.getIdentifier()%> localInterface;
 	
-    public <%=iface.getIdentifier()%>AdapterFromCorba(<%=iface.generateAbsoluteJavaName()%> receptacle)
+    public <%=iface.getIdentifier()%>AdapterFromCorba(<%=iface.getIdentifier()%> receptacle)
     {
         logger.fine("receptacle = " + receptacle + ")");
         this.localInterface = receptacle;

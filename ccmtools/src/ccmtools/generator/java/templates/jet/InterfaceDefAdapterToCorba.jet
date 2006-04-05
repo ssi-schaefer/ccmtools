@@ -9,17 +9,20 @@
  * DO NOT EDIT!
  */
 
-package <%= iface.generateJavaNamespace() %>;
+package <%=iface.generateJavaNamespace()%>;
    
 import java.util.logging.Logger;
+
+import ccm.local.Components.CCMException;  
 import ccm.local.ServiceLocator;
 
+<%=iface.generateJavaImportStatements()%>    
                  
 /**
  * Interface adapter from Java to CORBA.
  */
 public class <%=iface.getIdentifier()%>AdapterToCorba
-    implements <%=iface.generateAbsoluteJavaName()%>
+    implements <%=iface.getIdentifier()%>
 {
     private Logger logger = ServiceLocator.instance().getLogger();
     

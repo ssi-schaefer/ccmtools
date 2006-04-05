@@ -103,10 +103,10 @@ public class ModelElement
 	 *      import  world.ccm.local.Person; // not needed
 	 *      import  world.europe.ccm.local.Color; // is needed
 	 */
-	public boolean isNeededJavaImportStatement(String statement)
+	public boolean isNeededJavaImportStatement(String namespace, String statement)
 	{
 		String packages = statement.substring(0, statement.lastIndexOf("."));
-		if(packages.equals(generateJavaNamespace()))
+		if(packages.equals(namespace))
 			return false;
 		else
 			return true;
@@ -114,11 +114,16 @@ public class ModelElement
 
 	public String generateJavaImportStatements(Set importStatements)
 	{
+		return generateJavaImportStatements(generateJavaNamespace(), importStatements);
+	}
+
+	public String generateJavaImportStatements(String namespace, Set importStatements)
+	{
 		StringBuffer sb = new StringBuffer();	
 		for(Iterator i = importStatements.iterator(); i.hasNext();)
 		{
 			String statement = (String)i.next();
-			if(isNeededJavaImportStatement(statement))
+			if(isNeededJavaImportStatement(namespace, statement))
 			{
 				sb.append("import ").append(statement).append(";").append(NL);
 			}
@@ -126,7 +131,6 @@ public class ModelElement
 		return sb.toString();
 	}
 
-	
 	public boolean isPrimitiveType(Type t)
 	{
 		if(t instanceof AnyType

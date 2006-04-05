@@ -11,6 +11,8 @@
  
 package <%=seq.generateJavaRemoteNamespace()%>;
 
+<%=seq.generateJavaImportStatements(seq.generateJavaRemoteNamespace())%>
+
 public class <%=seq.getIdentifier()%>CorbaConverter
 {
     /** Convert a local Java type into a CORBA type */

@@ -33,8 +33,7 @@ public class EnumDef
 	public Set getJavaImportStatements()
 	{
 		Set importStatements = new TreeSet();
-//		importStatements.add(generateJavaMapping());
-		importStatements.add(generateAbsoluteJavaName()); //!!!!
+		importStatements.add(generateAbsoluteJavaName()); 
 		return importStatements;
 	}
 
@@ -43,6 +42,16 @@ public class EnumDef
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
+	
+	public String generateJavaImportStatements()
+	{
+		return generateJavaImportStatements(getJavaImportStatements());
+	}
+	
+	public String generateJavaImportStatements(String namespace)
+	{
+		return generateJavaImportStatements(namespace, getJavaImportStatements());
+	}
 	
 	public String generateJavaConstant(Object value)
 	{
@@ -176,8 +185,8 @@ public class EnumDef
 			String member = (String)i.next();
 			sb.append(TAB3).append("case ").append(generateAbsoluteIdlName());
 			sb.append("._").append(member).append(":").append(NL);
-			sb.append(TAB4).append("out = ").append(generateAbsoluteJavaName());
-			sb.append(".").append(member).append(";").append(NL);
+			sb.append(TAB4).append("out = ").append(getIdentifier()).append(".");
+			sb.append(member).append(";").append(NL);
 			sb.append(TAB4).append("break;").append(NL);
 		}
 		return sb.toString();

@@ -34,7 +34,6 @@ public class ExceptionDef
 	public Set getJavaImportStatements()
 	{
 		Set importStatements = new TreeSet();
-//		importStatements.add(generateJavaMapping());
 		importStatements.add(generateAbsoluteJavaName());
 		for(Iterator i = getFields().iterator(); i.hasNext();)
 		{
@@ -49,15 +48,20 @@ public class ExceptionDef
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
-	
+
 	public String generateJavaImportStatements()
 	{
 		return generateJavaImportStatements(getJavaImportStatements());
 	}
+
+	public String generateJavaImportStatements(String namespace)
+	{
+		return generateJavaImportStatements(namespace, getJavaImportStatements());
+	}
+	
 	
 	public String generateJavaMapping()
 	{
-//		return generateAbsoluteJavaName();
 		return getIdentifier();
 	}
 	

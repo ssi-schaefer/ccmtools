@@ -11,6 +11,8 @@
  
 package <%=enumeration.generateJavaRemoteNamespace()%>;
 
+<%=enumeration.generateJavaImportStatements(enumeration.generateJavaRemoteNamespace())%>
+
 public class <%=enumeration.getIdentifier()%>CorbaConverter
 {
     /** Convert a local Java type into a CORBA type */

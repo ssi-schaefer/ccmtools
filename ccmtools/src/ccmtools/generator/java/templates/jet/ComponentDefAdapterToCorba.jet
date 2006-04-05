@@ -12,13 +12,24 @@
 package <%=component.generateJavaNamespace()%>;
 
 import java.util.logging.Logger;
+import ccm.local.Components.AlreadyConnected;
+import ccm.local.Components.CCMException;
+import ccm.local.Components.Cookie;
+import ccm.local.Components.CookieRequired;
+import ccm.local.Components.ExceededConnectionLimit;
+import ccm.local.Components.HomeExecutorBase;
+import ccm.local.Components.InvalidName;
+import ccm.local.Components.InvalidConnection;
+import ccm.local.Components.NoConnection;
 import ccm.local.ServiceLocator;
+import ccm.local.ServiceLocatorException;
+
+<%=component.generateJavaImportStatements()%>  
                  
 import org.omg.PortableServer.POA;
 
-
 public class <%=component.getIdentifier()%>AdapterToCorba 
-    implements <%=component.generateAbsoluteJavaName()%>
+    implements <%=component.getIdentifier()%>
 {
     private Logger logger = ServiceLocator.instance().getLogger();
     
@@ -55,17 +66,17 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     
     
     public <%=component.getIdentifier()%>AdapterToCorba(<%=component.generateAbsoluteIdlName()%> remoteComponent)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {    
         logger.fine("remoteComponent = " + remoteComponent);
         this.remoteInterface = remoteComponent;
         try
         {
-            componentPoa = ccm.local.ServiceLocator.instance().createSessionComponentPoa("<%=component.getIdentifier()%>Poa");
+            componentPoa = ServiceLocator.instance().createSessionComponentPoa("<%=component.getIdentifier()%>Poa");
         }
-        catch(ccm.local.ServiceLocatorException e)
+        catch(ServiceLocatorException e)
         {
-            throw new ccm.local.Components.CCMException(e.getMessage());
+            throw new CCMException(e.getMessage());
         }
     }
     
@@ -160,7 +171,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         }
     }
     
-    public ccm.local.Components.HomeExecutorBase get_ccm_home()
+    public HomeExecutorBase get_ccm_home()
     {
         logger.fine("");
         // TODO
@@ -171,12 +182,12 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     /** Navigation interface methods */
     
     public Object provide_facet(String name)
-        throws ccm.local.Components.InvalidName
+        throws InvalidName
     {
         logger.fine("name = " + name);
         if(name == null)
         {
-            throw new ccm.local.Components.InvalidName();
+            throw new InvalidName();
         }
 <%		
 for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
@@ -189,21 +200,21 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 %>
         else
         {
-            throw new ccm.local.Components.InvalidName();
+            throw new InvalidName();
         }
     }
     
     
     /** Receptacle methods */
     
-    public ccm.local.Components.Cookie connect(String name, Object localObject)
-        throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection,
-               ccm.local.Components.AlreadyConnected, ccm.local.Components.ExceededConnectionLimit
+    public Cookie connect(String name, Object localObject)
+        throws InvalidName, InvalidConnection,
+               AlreadyConnected, ExceededConnectionLimit
     {
         logger.fine("name = " + name + ", obj = " + localObject);
         if(name == null)
         {
-            throw new ccm.local.Components.InvalidName();
+            throw new InvalidName();
         }
        <%		
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
@@ -216,18 +227,18 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 %>
         else
         {
-            throw new ccm.local.Components.InvalidName();
+            throw new InvalidName();
         }
     }
     
-    public void disconnect(String name, ccm.local.Components.Cookie ck)
-        throws ccm.local.Components.InvalidName, ccm.local.Components.InvalidConnection,
-               ccm.local.Components.CookieRequired, ccm.local.Components.NoConnection
+    public void disconnect(String name, Cookie ck)
+        throws InvalidName, InvalidConnection,
+               CookieRequired, NoConnection
     {
         logger.fine("name = " + name + ", ck = " + ck);
         if(name == null)
         {
-            throw new ccm.local.Components.InvalidName();
+            throw new InvalidName();
         }
 <%
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
@@ -240,7 +251,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 %>
         else
         {
-            throw new ccm.local.Components.InvalidName();
+            throw new InvalidName();
         }
     }
 }

@@ -11,6 +11,8 @@
  
 package <%=exception.generateJavaRemoteNamespace()%>;
 
+<%=exception.generateJavaImportStatements(exception.generateJavaRemoteNamespace())%>
+
 public class <%=exception.getIdentifier()%>CorbaConverter
 {
     /** Convert a local Java type into a CORBA type */

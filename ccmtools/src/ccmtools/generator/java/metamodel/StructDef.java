@@ -36,8 +36,7 @@ public class StructDef
 	{
 		// We put all import statements into s set to eliminate doubles
 		Set importStatements = new TreeSet();
-//		importStatements.add(generateJavaMapping());
-		importStatements.add(generateAbsoluteJavaName()); //!!!!!!!
+		importStatements.add(generateAbsoluteJavaName());
 		for(Iterator i = getFields().iterator(); i.hasNext();)
 		{
 			FieldDef field = (FieldDef)i.next();
@@ -55,6 +54,11 @@ public class StructDef
 	public String generateJavaImportStatements()
 	{
 		return generateJavaImportStatements(getJavaImportStatements());
+	}
+	
+	public String generateJavaImportStatements(String namespace)
+	{
+		return generateJavaImportStatements(namespace, getJavaImportStatements());
 	}
 	
 	public String generateJavaConstant(Object value)

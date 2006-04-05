@@ -79,7 +79,7 @@ public class ComponentDef
 		for(Iterator i=getSupports().iterator(); i.hasNext();)
 		{
 			SupportsDef s = (SupportsDef)i.next();
-			importStatements.addAll(s.getInterface().getJavaImportStatements());
+			importStatements.addAll(s.getJavaImportStatements());
 		}
 		return importStatements;
 	}
@@ -94,6 +94,7 @@ public class ComponentDef
 	{
 		return generateJavaImportStatements(getJavaImportStatements());
 	}
+	
 	
 	public String generateInterface()
 	{

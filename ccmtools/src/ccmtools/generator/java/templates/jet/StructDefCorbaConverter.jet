@@ -11,6 +11,8 @@
  
 package <%=struct.generateJavaRemoteNamespace()%>;
 
+<%=struct.generateJavaImportStatements(struct.generateJavaRemoteNamespace())%>
+
 public class <%=struct.getIdentifier()%>CorbaConverter
 {
     /** Convert a local Java type into a CORBA type */

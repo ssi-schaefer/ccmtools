@@ -3,6 +3,7 @@ package ccmtools.generator.java.metamodel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import ccmtools.generator.java.templates.ProvidesDefApplicationClassTemplate;
 import ccmtools.generator.java.templates.ProvidesDefEquivalentMethodAdapterLocalTemplate;
@@ -45,6 +46,16 @@ public class ProvidesDef
 	{
 		this.iface = provides;
 	}
+		
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = getInterface().getJavaImportStatements();
+		importStatements.add(getInterface().generateAbsoluteJavaCcmName());
+		importStatements.add(getInterface().generateAbsoluteJavaName());
+		importStatements.add(getComponent().generateAbsoluteJavaName() + "Impl");
+		importStatements.add("ccm.local.Components.CCMException");
+		return importStatements;
+	}
 	
 	
 	
@@ -52,6 +63,16 @@ public class ProvidesDef
 	 * Local Interface Generator
 	 * 
 	 *************************************************************************/
+	
+	public String generateJavaImportStatements()
+	{
+		return generateJavaImportStatements(getJavaImportStatements());
+	}
+	
+	public String generateJavaImportStatements(String namespace)
+	{
+		return generateJavaImportStatements(namespace, getJavaImportStatements());
+	}
 	
 	public String generateEquivalentMethodDeclaration()
 	{

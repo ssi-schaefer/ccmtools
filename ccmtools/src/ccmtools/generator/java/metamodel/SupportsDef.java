@@ -1,6 +1,7 @@
 package ccmtools.generator.java.metamodel;
 
 import java.util.List;
+import java.util.Set;
 
 public class SupportsDef
 	extends ModelElement
@@ -23,6 +24,14 @@ public class SupportsDef
 		this.iface = supports;
 	}
 
+	public Set getJavaImportStatements()
+	{
+		Set importStatements = getInterface().getJavaImportStatements();
+		importStatements.add(getInterface().generateAbsoluteJavaCcmName());
+		importStatements.add(getInterface().generateAbsoluteJavaName());
+		importStatements.add("ccm.local.Components.CCMException");
+		return importStatements;
+	}
 	
 	
 	/*************************************************************************

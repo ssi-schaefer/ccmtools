@@ -20,10 +20,8 @@ InterfaceDef iface = provides.getInterface();
 
 package <%=iface.generateJavaNamespace()%>;
 
-import ccm.local.Components.CCMException;  
-                 
-<%=iface.generateJavaImportStatements()%>   
- 
+<%=provides.generateJavaImportStatements(iface.generateJavaNamespace())%>   
+
 /** 
  * This class implements a component facet's methods.
  *
@@ -33,12 +31,12 @@ import ccm.local.Components.CCMException;
  * @version
  */
 public class <%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl 
-    implements <%=iface.generateAbsoluteJavaCcmName()%>
+    implements <%=iface.generateCcmIdentifier()%>
 {
     /** Reference to the facet's component implementation */
-    private <%=provides.getComponent().generateAbsoluteJavaName()%>Impl component;
+    private <%=provides.getComponent().getIdentifier()%>Impl component;
 
-    public <%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(<%=provides.getComponent().generateAbsoluteJavaName()%>Impl component)
+    public <%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(<%=provides.getComponent().getIdentifier()%>Impl component)
     {
         this.component = component;
     }

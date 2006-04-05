@@ -102,8 +102,6 @@ public class InterfaceDef
 			OperationDef op = (OperationDef)i.next();
 			importStatements.addAll(op.getJavaImportStatements());
 		}		
-		// Namespace of the local implementatio interface
-		importStatements.add(generateAbsoluteJavaCcmName());
 		importStatements.add(generateAbsoluteJavaName());
 		return importStatements;
 	}
@@ -119,6 +117,12 @@ public class InterfaceDef
 	{
 		return generateJavaImportStatements(getJavaImportStatements());
 	}
+	
+	public String generateJavaImportStatements(String namespace)
+	{
+		return generateJavaImportStatements(namespace, getJavaImportStatements());
+	}
+	
 	
 	public String generateInterface()
 	{

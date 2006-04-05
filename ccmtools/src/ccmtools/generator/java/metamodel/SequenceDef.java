@@ -49,7 +49,6 @@ public class SequenceDef
 	{
 		Set s = getElementType().getJavaImportStatements();
 		s.add("java.util.List");
-//		s.add("import java.util.ArrayList;");
 		return s; 
 	}
 	
@@ -58,6 +57,17 @@ public class SequenceDef
 	 * Local Interface Generator Methods
 	 * 
 	 *************************************************************************/
+	
+	public String generateJavaImportStatements()
+	{
+		return generateJavaImportStatements(getJavaImportStatements());
+	}
+	
+	public String generateJavaImportStatements(String namespace)
+	{
+		return generateJavaImportStatements(namespace, getJavaImportStatements());
+	}
+	
 	
 	public String generateJavaConstant(Object value)
 	{
