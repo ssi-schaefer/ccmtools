@@ -21,6 +21,10 @@ local: idl3mirror
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
 
 check: 
+# First, we check if the generated code compiles at all
+	ant -f ./build.xml
+	ant -f ./build.xml clean
+# Second, we check if a functional test runs through
 	cp impl/DynamicClient.java ${DEST_DIR}/src/
 	ant -f ./build.xml
 	bin/runClient

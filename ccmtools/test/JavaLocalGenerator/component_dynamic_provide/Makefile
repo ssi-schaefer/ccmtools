@@ -18,6 +18,10 @@ local: idl3
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
 check: 
+# First, we check if the generated code compiles at all
+	ant -f ./build.xml
+	ant -f ./build.xml clean
+# Second, we check if a functional test runs through
 	cp impl/DynamicClient.java ${DEST_DIR}/src/
 	cp impl/TestinPortImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml

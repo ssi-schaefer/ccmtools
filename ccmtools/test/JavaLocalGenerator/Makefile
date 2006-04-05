@@ -4,6 +4,7 @@ component-test:
 	make -C component_attributes test
 	make -C component_dynamic_connect test
 	make -C component_dynamic_provide test
+	make -C component_assembly_nested test
 	make -C build_from_install
 
 facet-test:

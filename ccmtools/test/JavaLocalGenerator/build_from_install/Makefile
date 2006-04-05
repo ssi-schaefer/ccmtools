@@ -27,6 +27,10 @@ local: idl3
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${CCM_INSTALL}/include/world/europe/austria/Test*.idl
 
 check: 
+# First, we check if the generated code compiles at all
+	ant -f ./build.xml
+	ant -f ./build.xml clean
+# Second, we check if a functional test runs through
 	cp impl/TestvoidTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/TestbasicTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/
 	cp impl/TestuserTypeImpl.java ${DEST_DIR}/src/world/europe/austria/ccm/local/

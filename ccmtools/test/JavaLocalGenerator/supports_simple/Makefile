@@ -19,6 +19,10 @@ local: idl3
 
 
 check: 
+# First, we check if the generated code compiles at all
+	ant -f ./build.xml
+	ant -f ./build.xml clean
+# Second, we check if a functional test runs through
 	cp impl/Client.java ${DEST_DIR}/src/
 	cp impl/TestImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
