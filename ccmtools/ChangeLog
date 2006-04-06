@@ -1,28 +1,38 @@
 RELEASE-0.6.x
 ============================================================================
 
-RELEASE-0.6.5 
+RELEASE-0.6.5 (April 6, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: Start scripts (ccmtools, uml2idl, ccmjava, ccmdescriptor) don't
 	check for an existing JAVA_HOME environment variable.
 
-*) Feature: IDL -> Java mapping for local Java components
-	- enum
-	- sequence
-	- array
-	- struct
-	- exception 	
-	- generic Holder<> class
-	
-*) Feature: CorbaConverter between standard IDL mapping and local Java components
-	- enum
-	- sequence
-	- array
-	- struct
-	- exception 	
+*) Feature: Confix Generator
+	We have implemented a simple Confix generator that can generate all of
+	this Makefile.py stuff. Such a tool is helpful when installing a bunch 
+	of generated IDL3 files.
 
+*) Feature: Local Java Components
+	- Support for nested components (an assembly factory can be deployed
+	  with every local Java component home at deployment time).
+	- Improved import statement generation
+	- IDL -> Java mapping for local Java components
+	  (enum, sequence, array, struct, exception, generic Holder<> class)
+	- CorbaConverter between standard IDL mapping and local Java components
+	  (enum, sequence, array, struct, exception) 	
+	Note that for local Java components (-iface -local -app) we do not need
+	to generate CORBA stubs, we use pure Java code.
+		
 *) Feature: AnyPlugin for Java component generator
 	- first version to support local EntityContainer mapping
+
+*) Refactoring: Changed execution order for Java generators
+	Now, all kinds of generators will be called for a particular source file
+	without to parse the source file again.
+	
+*) Refactoring: Collected all Java generators into a single ComponentGenerator
+	class. Each generator type has become a single generate* method.
+	Now, we can fine tune the generator's behavior using command line flags
+	(e.g. -iface, -local, -app, -clientlib)
 
 
 RELEASE-0.6.4 (March 9, 2006)

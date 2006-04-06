@@ -3,13 +3,13 @@ package ccmtools.generator.java.test.local;
 import junit.framework.Test;
 import junit.framework.TestCase;
 
-public class JavaLocalSuite
+public class JavaLocalTestSuite
 	extends TestCase	
 {
 	public static Test suite()
 	{
 		junit.framework.TestSuite suite = 
-			new junit.framework.TestSuite("Local Java Components Test Suite");	
+			new junit.framework.TestSuite("Java Local Components Test Suite");	
 
 		suite.addTest(ComponentTest.suite());
 		suite.addTest(SupportsTest.suite());
