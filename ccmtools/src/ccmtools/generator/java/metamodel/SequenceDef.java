@@ -76,7 +76,6 @@ public class SequenceDef
 	
 	public String generateJavaMapping()
 	{
-//		return "java.util.List<" + getElementType().generateJavaMappingObject() + ">";
 		return "List<" + getElementType().generateJavaMappingObject() + ">";
 	}
 	
@@ -105,7 +104,6 @@ public class SequenceDef
 	
 	public String generateJavaHolderType()
 	{
-//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 		return "Holder<" + generateJavaMappingObject() + ">";
 	}	
 	

@@ -47,7 +47,6 @@ public class LongType
 	
 	public String generateJavaHolderType()
 	{
-//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 		return "Holder<" + generateJavaMappingObject() + ">";
 	}
 	

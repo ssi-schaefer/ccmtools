@@ -68,7 +68,6 @@ public class StructDef
 	
 	public String generateJavaMapping()
 	{
-//		return generateAbsoluteJavaName();
 		return getIdentifier();
 	}
 	
@@ -92,7 +91,6 @@ public class StructDef
 	
 	public String generateJavaHolderType()
 	{
-//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 		return "Holder<" + generateJavaMappingObject() + ">";
 	}	
 		

@@ -60,7 +60,6 @@ public class EnumDef
 	
 	public String generateJavaMapping()
 	{
-//		return generateAbsoluteJavaName();
 		return getIdentifier();
 	}
 		
@@ -84,7 +83,6 @@ public class EnumDef
 	
 	public String generateJavaHolderType()
 	{
-//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 		return "Holder<" + generateJavaMappingObject() + ">";
 	}
 
