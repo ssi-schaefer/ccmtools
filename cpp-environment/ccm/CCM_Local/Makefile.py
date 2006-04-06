@@ -5,7 +5,7 @@
 
 try:
     PACKAGE_NAME('ccm-local-runtime')
-    PACKAGE_VERSION('0.6.2')
+    PACKAGE_VERSION('0.6.5')
 except Error, e:
     # we'll get here if this is not the package root, and have to
     # ignore this.
