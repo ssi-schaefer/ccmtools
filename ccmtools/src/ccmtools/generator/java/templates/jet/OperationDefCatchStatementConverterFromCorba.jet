@@ -8,9 +8,18 @@ for(Iterator i = op.getException().iterator(); i.hasNext(); )
 {
     ExceptionDef ex = (ExceptionDef)i.next();
 %>
-	catch(<%=ex.generateJavaMapping()%> e)
+	catch(<%=ex.generateJavaMapping()%> eLocal)
 	{
-	    throw <%=ex.generateCorbaConverterType()%>(e);
+	    try
+	    {
+	        <%=ex.generateCorbaMapping()%> eRemote =
+	             <%=ex.generateCorbaConverterType()%>(eLocal);
+	        throw eRemote;
+	    }
+	    catch(ccm.local.CorbaConverterException eConvert)
+	    {
+	        throw new BAD_OPERATION(eConvert.getMessage());
+	    }
 	}
 
 <%

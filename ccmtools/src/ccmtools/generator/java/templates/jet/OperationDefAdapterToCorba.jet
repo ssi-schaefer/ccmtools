@@ -9,25 +9,25 @@
     {
         logger.fine("");
                 
-        // Convert local Java parameters to CORBA parameters 
-<%=op.generateInParameterConvertersToCorba()%>
-
-        // Define CORBA result type 
-<%=op.generateCorbaResultDeclaration()%>
-            
         try
         {
+            // Convert local Java parameters to CORBA parameters 
+<%=op.generateInParameterConvertersToCorba()%>
+
+            // Define CORBA result type 
+<%=op.generateCorbaResultDeclaration()%>
+            
             <%=op.generateMethodConverterToCorba()%>        
+        
+            // Convert CORBA parameters to local Java parameters
+<%=op.generateOutParameterConvertersFromCorba()%>            
+
+            // Convert CORBA result to a local Java result                 
+<%=op.generateResultConverterFromCorba()%>
         }
 <%=op.generateCatchStatementConverterToCorba()%>
         catch(java.lang.Exception e)
         {
-    	    throw new ccm.local.Components.CCMException(e.getMessage());
+    	    throw new CCMException(e.getMessage());
         }
-        
-        // Convert CORBA parameters to local Java parameters
-<%=op.generateOutParameterConvertersFromCorba()%>            
-
-        // Convert CORBA result to a local Java result                 
-<%=op.generateResultConverterFromCorba()%>
     }

@@ -11,12 +11,15 @@
  
 package <%=exception.generateJavaRemoteNamespace()%>;
 
+import ccm.local.CorbaConverterException;
+
 <%=exception.generateJavaImportStatements(exception.generateJavaRemoteNamespace())%>
 
 public class <%=exception.getIdentifier()%>CorbaConverter
 {
     /** Convert a local Java type into a CORBA type */
     public static <%=exception.generateCorbaMapping()%> convert(<%=exception.generateJavaMapping()%> in)
+       throws CorbaConverterException
     {
         <%=exception.generateCorbaMapping()%> out = new <%=exception.generateCorbaMapping()%>();
 
@@ -35,6 +38,7 @@ for(Iterator i=exception.getFields().iterator(); i.hasNext();)
 
     /** Convert a CORBA type into a local Java type */
     public static <%=exception.generateJavaMapping()%> convert(<%=exception.generateCorbaMapping()%> in)
+       throws CorbaConverterException
     {
         <%=exception.generateJavaMapping()%> out = new <%=exception.generateJavaMapping()%>();
 <%

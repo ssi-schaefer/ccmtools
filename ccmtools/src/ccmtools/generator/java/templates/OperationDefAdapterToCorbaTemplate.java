@@ -19,19 +19,19 @@ public class OperationDefAdapterToCorbaTemplate
   protected final String TEXT_3 = "(";
   protected final String TEXT_4 = ") ";
   protected final String TEXT_5 = NL + "        ";
-  protected final String TEXT_6 = " " + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "                " + NL + "        // Convert local Java parameters to CORBA parameters ";
+  protected final String TEXT_6 = " " + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "                " + NL + "        try" + NL + "        {" + NL + "            // Convert local Java parameters to CORBA parameters ";
   protected final String TEXT_7 = NL;
-  protected final String TEXT_8 = NL + NL + "        // Define CORBA result type ";
+  protected final String TEXT_8 = NL + NL + "            // Define CORBA result type ";
   protected final String TEXT_9 = NL;
-  protected final String TEXT_10 = NL + "            " + NL + "        try" + NL + "        {";
+  protected final String TEXT_10 = NL + "            ";
   protected final String TEXT_11 = NL + "            ";
-  protected final String TEXT_12 = "        " + NL + "        }";
+  protected final String TEXT_12 = "        " + NL + "        " + NL + "            // Convert CORBA parameters to local Java parameters";
   protected final String TEXT_13 = NL;
-  protected final String TEXT_14 = NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new ccm.local.Components.CCMException(e.getMessage());" + NL + "        }" + NL + "        " + NL + "        // Convert CORBA parameters to local Java parameters";
+  protected final String TEXT_14 = "            " + NL + "" + NL + "            // Convert CORBA result to a local Java result                 ";
   protected final String TEXT_15 = NL;
-  protected final String TEXT_16 = "            " + NL + "" + NL + "        // Convert CORBA result to a local Java result                 ";
+  protected final String TEXT_16 = NL + "        }";
   protected final String TEXT_17 = NL;
-  protected final String TEXT_18 = NL + "    }";
+  protected final String TEXT_18 = NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }";
   protected final String TEXT_19 = NL;
 
   public String generate(Object argument)
@@ -58,13 +58,13 @@ public class OperationDefAdapterToCorbaTemplate
     stringBuffer.append(op.generateMethodConverterToCorba());
     stringBuffer.append(TEXT_12);
     stringBuffer.append(TEXT_13);
-    stringBuffer.append(op.generateCatchStatementConverterToCorba());
+    stringBuffer.append(op.generateOutParameterConvertersFromCorba());
     stringBuffer.append(TEXT_14);
     stringBuffer.append(TEXT_15);
-    stringBuffer.append(op.generateOutParameterConvertersFromCorba());
+    stringBuffer.append(op.generateResultConverterFromCorba());
     stringBuffer.append(TEXT_16);
     stringBuffer.append(TEXT_17);
-    stringBuffer.append(op.generateResultConverterFromCorba());
+    stringBuffer.append(op.generateCatchStatementConverterToCorba());
     stringBuffer.append(TEXT_18);
     stringBuffer.append(TEXT_19);
     return stringBuffer.toString();

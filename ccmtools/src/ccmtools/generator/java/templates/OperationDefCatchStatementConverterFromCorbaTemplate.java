@@ -16,8 +16,9 @@ public class OperationDefCatchStatementConverterFromCorbaTemplate
 
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "\tcatch(";
-  protected final String TEXT_2 = " e)" + NL + "\t{" + NL + "\t    throw ";
-  protected final String TEXT_3 = "(e);" + NL + "\t}" + NL;
+  protected final String TEXT_2 = " eLocal)" + NL + "\t{" + NL + "\t    try" + NL + "\t    {" + NL + "\t        ";
+  protected final String TEXT_3 = " eRemote =" + NL + "\t             ";
+  protected final String TEXT_4 = "(eLocal);" + NL + "\t        throw eRemote;" + NL + "\t    }" + NL + "\t    catch(ccm.local.CorbaConverterException eConvert)" + NL + "\t    {" + NL + "\t        throw new BAD_OPERATION(eConvert.getMessage());" + NL + "\t    }" + NL + "\t}" + NL;
 
   public String generate(Object argument)
   {
@@ -31,8 +32,10 @@ for(Iterator i = op.getException().iterator(); i.hasNext(); )
     stringBuffer.append(TEXT_1);
     stringBuffer.append(ex.generateJavaMapping());
     stringBuffer.append(TEXT_2);
-    stringBuffer.append(ex.generateCorbaConverterType());
+    stringBuffer.append(ex.generateCorbaMapping());
     stringBuffer.append(TEXT_3);
+    stringBuffer.append(ex.generateCorbaConverterType());
+    stringBuffer.append(TEXT_4);
     
 }
 

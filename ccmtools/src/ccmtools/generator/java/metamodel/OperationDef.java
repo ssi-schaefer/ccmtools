@@ -295,7 +295,7 @@ public class OperationDef
 		for(Iterator i = getParameter().iterator(); i.hasNext();)
 		{
 			ParameterDef parameter = (ParameterDef)i.next();
-			code.append(TAB2);
+			code.append(TAB3);
 			code.append(parameter.generateInConverterToCorba());
 			code.append(NL);
 		}		
@@ -308,7 +308,7 @@ public class OperationDef
 		for(Iterator i = getParameter().iterator(); i.hasNext();)
 		{
 			ParameterDef parameter = (ParameterDef)i.next();
-			code.append(TAB2);
+			code.append(TAB3);
 			code.append(parameter.generateInConverterFromCorba());
 			code.append(NL);
 		}		
@@ -322,7 +322,7 @@ public class OperationDef
 		for(Iterator i = getParameter().iterator(); i.hasNext();)
 		{
 			ParameterDef parameter = (ParameterDef)i.next();
-			code.append(TAB2);
+			code.append(TAB3);
 			code.append(parameter.generateOutConverterToCorba());
 			code.append(NL);
 		}		
@@ -335,7 +335,7 @@ public class OperationDef
 		for(Iterator i = getParameter().iterator(); i.hasNext();)
 		{
 			ParameterDef parameter = (ParameterDef)i.next();
-			code.append(TAB2);
+			code.append(TAB3);
 			code.append(parameter.generateOutConverterFromCorba());
 			code.append(NL);
 		}		
@@ -377,7 +377,7 @@ public class OperationDef
 	{
 		if (!(getType() instanceof VoidType))
 		{
-			return TAB2 + getType().generateJavaMapping() + " resultLocal;";
+			return TAB3 + getType().generateJavaMapping() + " resultLocal;";
 		}
 		else
 		{
@@ -389,7 +389,7 @@ public class OperationDef
 	{
 		if (!(getType() instanceof VoidType))
 		{
-			return TAB2 + getType().generateCorbaMapping() + " resultRemote;";
+			return TAB3 + getType().generateCorbaMapping() + " resultRemote;";
 		}
 		else
 		{
@@ -402,12 +402,12 @@ public class OperationDef
 		StringBuffer code = new StringBuffer();
 		if (!(getType() instanceof VoidType))
 		{
-			code.append(TAB2).append(getType().generateJavaMapping());
+			code.append(TAB3).append(getType().generateJavaMapping());
 			code.append(" result;").append(NL);
-			code.append(TAB2);
+			code.append(TAB3);
 			code.append("result = " + getType().generateCorbaConverterType() + "(resultRemote);");
 			code.append(NL);
-			code.append(TAB2).append("return result;").append(NL);
+			code.append(TAB3).append("return result;").append(NL);
 		}
 		return code.toString();
 	}	
@@ -417,12 +417,12 @@ public class OperationDef
 		StringBuffer code = new StringBuffer();
 		if (!(getType() instanceof VoidType))
 		{
-			code.append(TAB2).append(getType().generateCorbaMapping());
+			code.append(TAB3).append(getType().generateCorbaMapping());
 			code.append(" result;").append(NL);
-			code.append(TAB2);
+			code.append(TAB3);
 			code.append("result = " + getType().generateCorbaConverterType() + "(resultLocal);");
 			code.append(NL);
-			code.append(TAB2).append("return result;").append(NL);
+			code.append(TAB3).append("return result;").append(NL);
 		}
 		return code.toString();
 	}	
