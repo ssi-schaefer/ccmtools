@@ -7,6 +7,8 @@ import ccm.local.*;
 
 import java.util.logging.*;
 
+import ccm.local.AssemblyFactory;
+
 public class Client
 {
 	public static void main(String[] args)
@@ -23,8 +25,8 @@ public class Client
 		// Deploy local Java component
 		try
 		{
-		    world.AssemblyFactory assemblyFactory = new world.AssemblyFactory();
-		    SuperTestHomeDeployment.deploy("SuperTestHome", assemblyFactory);
+		    SuperTestHomeDeployment.deploy("SuperTestHome", 
+						   new AssemblyFactory(world.Assembly.class));
 		    BasicTestHomeDeployment.deploy("BasicTestHome");
 		    UserTestHomeDeployment.deploy("UserTestHome");
 		}

@@ -17,12 +17,7 @@ local: idl3
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/*.idl
 
 check: 
-# First, we check if the generated code compiles at all
-	ant -f ./build.xml
-	ant -f ./build.xml clean
-# Second, we check if a functional test runs through
 	cp impl/Assembly.java ${DEST_DIR}/src/world/
-	cp impl/AssemblyFactory.java ${DEST_DIR}/src/world/
 	cp impl/SuperTestbasicTypeImpl.java ${DEST_DIR}/src/world/ccm/local/
 	cp impl/SuperTestuserTypeImpl.java ${DEST_DIR}/src/world/ccm/local/
 	cp impl/BasicTestbasicTypeImpl.java ${DEST_DIR}/src/world/ccm/local/
