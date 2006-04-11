@@ -1,6 +1,5 @@
 APP_NAME = Test
 DEST_DIR = xxx
-CCMTOOLS_CMD = ccmtools
 IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
 all: remote stubs
@@ -8,40 +7,34 @@ all: remote stubs
 test: remote stubs check clean
 
 idl3: ${APP_NAME}.idl
-	${CCMTOOLS_CMD} idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
+	ccmtools idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
 
 local: idl3
-	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -o ${DEST_DIR}/interface/ ${DEST_DIR}/idl/interface/world/europe/austria/*.idl
-	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/world/europe/austria/Test.idl ${DEST_DIR}/idl/component/world/europe/austria/TestHome.idl 
+	ccmtools c++local ${IDL_INCLUDE} -o ${DEST_DIR}/src/interface/ ${DEST_DIR}/idl/interface/world/europe/austria/*.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/src/component/Test ${DEST_DIR}/idl/component/world/europe/austria/Test*.idl 
 
 remote: local
-	${CCMTOOLS_CMD} idl2 -o ${DEST_DIR}/CCM_corba_stubs Test.idl
-	${CCMTOOLS_CMD} c++remote -o ${DEST_DIR}/component/Test/ Test.idl
-	${CCMTOOLS_CMD} c++remote-test -o ${DEST_DIR}/component/Test/ Test.idl
+	ccmtools idl2 -o ${DEST_DIR}/src/CCM_corba_stubs Test.idl
+	ccmtools c++remote -o ${DEST_DIR}/src/component/Test/ Test.idl
+	ccmtools c++remote-test -o ${DEST_DIR}/src/component/Test/ Test.idl
 
 stubs:
-	make -C ${DEST_DIR}/CCM_corba_stubs server
+	make -C ${DEST_DIR}/src/CCM_corba_stubs server
 
 check: 
-	cp impl/Makefile.py ${DEST_DIR}
-	touch ${DEST_DIR}/interface/Makefile.py
-	touch ${DEST_DIR}/component/Makefile.py
-	touch ${DEST_DIR}/component/Test/Makefile.py
-	cp impl/Test_iface_impl.cc ${DEST_DIR}/component/Test/
-	cp test/_check_world_europe_austria_ccm_remote_component_Test.cc ${DEST_DIR}/component/Test/test/
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "remote_facet_module_exception" -pversion "1.0.0"
+	cp impl/Test_iface_impl.cc ${DEST_DIR}/src/component/Test/
+	cp test/_check_world_europe_austria_ccm_remote_component_Test.cc ${DEST_DIR}/src/component/Test/test/
+	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
 
 check_server: 
-	cp impl/Makefile.py ${DEST_DIR}
-	touch ${DEST_DIR}/interface/Makefile.py
-	touch ${DEST_DIR}/component/Makefile.py
-	touch ${DEST_DIR}/component/Test/Makefile.py
-	cp impl/Test_iface_impl.cc ${DEST_DIR}/component/Test/
-	cp server/_check_world_europe_austria_ccm_remote_component_Test.cc ${DEST_DIR}/component/Test/test/
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "remote_facet_module_exception" -pversion "1.0.0"
+	cp impl/Test_iface_impl.cc ${DEST_DIR}/src/component/Test/
+	cp server/_check_world_europe_austria_ccm_remote_component_Test.cc ${DEST_DIR}/src/component/Test/test/
+	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
+	confix.py --packageroot=`pwd`/${DEST_DIR}/src --make --targets=clean	
 	rm -rf ${DEST_DIR}
 
 
