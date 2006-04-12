@@ -98,16 +98,17 @@ public class Main
         // Define single valued options
         
         OptionBuilder.withArgName("name");
-        OptionBuilder.withLongOpt("packagename");
         OptionBuilder.hasArg();
+        OptionBuilder.withValueSeparator();
         OptionBuilder.withDescription("Confix package name");
-        options.addOption(OptionBuilder.create("pn"));
+        OptionBuilder.withLongOpt("packagename");
+        options.addOption(OptionBuilder.create(ConfixGenerator.PACKAGE_NAME));
         
         OptionBuilder.withArgName("version");
-        OptionBuilder.withLongOpt("packageversion");
         OptionBuilder.hasArg();
         OptionBuilder.withDescription("Confix package version number (e.g. 1.0.0)");
-        options.addOption(OptionBuilder.create("pv"));
+        OptionBuilder.withLongOpt("packageversion");
+        options.addOption(OptionBuilder.create(ConfixGenerator.PACKAGE_VERSION));
         
         OptionBuilder.withArgName("path");
         OptionBuilder.withLongOpt("output");
@@ -148,14 +149,14 @@ public class Main
         	parameters.getGeneratorIds().add(ConfixGenerator.MAKEFILE_PY_GENERATOR_ID);
         }
         
-        if(cmd.hasOption("pv"))
+        if(cmd.hasOption(ConfixGenerator.PACKAGE_VERSION))
         {
-        	parameters.setPackageVersion(cmd.getOptionValue("pv"));
+        	parameters.setPackageVersion(cmd.getOptionValue(ConfixGenerator.PACKAGE_VERSION));
         }        
         
-        if(cmd.hasOption("pn"))
+        if(cmd.hasOption(ConfixGenerator.PACKAGE_NAME))
         {
-        	parameters.setPackageName(cmd.getOptionValue("pn"));
+        	parameters.setPackageName(cmd.getOptionValue(ConfixGenerator.PACKAGE_NAME));
         }    
                 
         if(cmd.hasOption("noexit"))

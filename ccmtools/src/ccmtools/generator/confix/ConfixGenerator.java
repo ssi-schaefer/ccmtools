@@ -3,7 +3,9 @@ package ccmtools.generator.confix;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
@@ -15,7 +17,9 @@ public class ConfixGenerator
 {
     /** String constants used for generator selection */
     public static final String MAKEFILE_PY_GENERATOR_ID = "makefiles";
-
+    public static final String PACKAGE_VERSION = "pversion";
+    public static final String PACKAGE_NAME = "pname";
+    
 	/** UI driver for generator messages */
 	protected Driver uiDriver;
 	
@@ -25,15 +29,20 @@ public class ConfixGenerator
 	/** Java standard logger object */
 	protected Logger logger;
 	
+	private Set ignoredDirs;
 	
 	public ConfixGenerator(CommandLineParameters parameters, Driver uiDriver)
 	{
-		this.uiDriver = uiDriver;
-		this.parameters = (CommandLineParameters)parameters;		                           
+		this.uiDriver = uiDriver;		
+		this.parameters = (CommandLineParameters)parameters;
+		ignoredDirs = new HashSet();
+		ignoredDirs.add("CVS"); // ignore CVS directories for Makefile.py generation
+		
         logger = Logger.getLogger("ccm.generator.confix");
         logger.fine("");
         printVersion();
 	}
+	
 	
 	public void generate() 
 		throws  CcmtoolsException
@@ -86,6 +95,10 @@ public class ConfixGenerator
 			String[] fileList =  currentFile.list();
 			for(int i = 0; i< fileList.length; i++)
 			{
+				if(ignoredDirs.contains(fileList[i]))
+				{					
+					continue; // Don't generate a Makefile.py file in this directory
+				}
 				File f = new File(currentFile, fileList[i]);
 				traverseDirectoryTree(f);
 			}
