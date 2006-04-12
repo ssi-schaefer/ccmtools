@@ -33,7 +33,7 @@ check:
 
 check_server: 
 	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "remote_receptacle_module_types" -pversion "1.0.0"
-	cp impl/Test_impl.cc ${DEST_DIR}/component/Test/
+	cp impl/Test_impl.cc ${DEST_DIR}/src/component/Test/
 	cp impl/Test_inBasicType_impl.cc ${DEST_DIR}/src/component/Test/
 	cp impl/Test_inUserType_impl.cc ${DEST_DIR}/src/component/Test/
 	cp impl/Test_inVoidType_impl.h ${DEST_DIR}/src/component/Test/

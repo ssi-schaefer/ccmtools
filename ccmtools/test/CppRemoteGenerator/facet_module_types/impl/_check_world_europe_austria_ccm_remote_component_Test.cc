@@ -105,8 +105,6 @@ int main (int argc, char *argv[])
     ::world::europe::austria::VoidTypeInterface_var voidType = 
 	myTest->provide_voidType();
 
-
-	
     myTest->configuration_complete();
 
     cout << "==== Begin Test Case ===================================" << endl;
