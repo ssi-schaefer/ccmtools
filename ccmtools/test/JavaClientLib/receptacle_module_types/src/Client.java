@@ -39,7 +39,7 @@ public class Client
 			// the implementations supported by the connected my*Impl objects
 			// after component.configuration_complete()
 			// Note: configuration_complete() is a synchron remote call, thus,
-			// this method blocks untils all tests i nthe remote ccm_activate()
+			// this method blocks untils all tests in the remote ccm_activate()
 			// method are executed.
 			
 			component.disconnect_outUserType();

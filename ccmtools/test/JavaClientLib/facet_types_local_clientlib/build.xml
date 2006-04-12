@@ -1,0 +1,35 @@
+<project name="JavaClientLibTest" default="compile.src">
+
+  <property name="dest" location="xxx" />
+  <property name="idl2" location="${dest}/idl2" />
+  <property name="src-gen" location="${dest}/src-gen" />
+  <property name="src-app" location="${dest}/src" />
+  <property name="src" location="src" />
+  <property name="build" location="${dest}/build" />
+
+  <path id="compile.classpath">
+      <pathelement path="${java.class.path}" />
+  </path>
+
+
+  <!-- Create the build directory-->
+  <target name="init" description="" >
+      <mkdir dir="${build}" />
+  </target>
+ 
+
+  <!-- Compile generated Java files-->
+  <target name="compile.src" depends="init" description="" >
+      <javac srcdir="${src-gen}:${src-app}:${src}" destdir="${build}" 
+             debug="on" source="1.5" target="1.5">
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <!-- Clean up -->
+  <target name="clean" description="" >
+      <delete dir="${build}" />
+  </target>
+
+</project>
