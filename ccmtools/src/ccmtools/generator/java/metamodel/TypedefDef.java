@@ -71,7 +71,7 @@ public class TypedefDef
 	
 	
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 	

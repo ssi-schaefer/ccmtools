@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ccmtools.generator.java.templates.HomeDefAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.HomeDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.HomeDefAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.HomeDefApplicationClassTemplate;
 import ccmtools.generator.java.templates.HomeDefApplicationInterfaceTemplate;
 import ccmtools.generator.java.templates.HomeDefDeploymentClientLibTemplate;
+import ccmtools.generator.java.templates.HomeDefDeploymentCorbaComponentTemplate;
 import ccmtools.generator.java.templates.HomeDefDeploymentLocalTemplate;
 import ccmtools.generator.java.templates.HomeDefExplicitApplicationInterfaceTemplate;
 import ccmtools.generator.java.templates.HomeDefExplicitInterfaceTemplate;
@@ -46,6 +48,7 @@ public class HomeDef
 	{
 		Set importStatements = new TreeSet();
 		// Some component management methods can throw this exception type
+		importStatements.add(generateAbsoluteJavaName());
 		importStatements.add(generateAbsoluteJavaCcmName());
 		importStatements.add(getComponent().generateAbsoluteJavaName());
 		return importStatements;
@@ -62,6 +65,11 @@ public class HomeDef
 		return generateJavaImportStatements(getJavaImportStatements());
 	}
 		
+	public String generateJavaImportStatements(String namespace)
+	{
+		return generateJavaImportStatements(namespace, getJavaImportStatements());
+	}
+	
 	public String generateInterface()
 	{
 		return new HomeDefInterfaceTemplate().generate(this);
@@ -85,16 +93,16 @@ public class HomeDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile iface = 
-			new SourceFile(localPackageName, getIdentifier() + ".java", generateInterface());
+		SourceFile iface = new SourceFile(localPackageName, getIdentifier() + 
+				".java", generateInterface());
 		sourceFileList.add(iface);
 		
-		SourceFile implicitInterface = 
-			new SourceFile(localPackageName, getIdentifier() + "Implicit.java", generateImplicitInterface());
+		SourceFile implicitInterface = new SourceFile(localPackageName, getIdentifier() + 
+				"Implicit.java", generateImplicitInterface());
 		sourceFileList.add(implicitInterface);
 		
-		SourceFile explicitInterface = 
-			new SourceFile(localPackageName, getIdentifier() + "Explicit.java", generateExplicitInterface());
+		SourceFile explicitInterface = new SourceFile(localPackageName, getIdentifier() + 
+				"Explicit.java", generateExplicitInterface());
 		sourceFileList.add(explicitInterface);
 				
 		return sourceFileList;
@@ -106,8 +114,6 @@ public class HomeDef
 	 * Local Component Generator Methods
 	 * 
 	 *************************************************************************/
-	
-	// Code generator methods -------------------------------------------------
 	
 	public String generateApplicationInterface()
 	{
@@ -142,24 +148,24 @@ public class HomeDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile applicationInterface = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + ".java", generateApplicationInterface());
+		SourceFile applicationInterface = new SourceFile(localPackageName, 
+				generateCcmIdentifier() + ".java", generateApplicationInterface());
 		sourceFileList.add(applicationInterface);
 
-		SourceFile implicitApplicationIface = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + "Implicit.java", generateImplicitApplicationInterface());
+		SourceFile implicitApplicationIface = new SourceFile(localPackageName, 
+				generateCcmIdentifier() + "Implicit.java", generateImplicitApplicationInterface());
 		sourceFileList.add(implicitApplicationIface);
 
-		SourceFile explicitApplicationIface = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + "Explicit.java", generateExplicitApplicationInterface());
+		SourceFile explicitApplicationIface = new SourceFile(localPackageName, 
+				generateCcmIdentifier() + "Explicit.java", generateExplicitApplicationInterface());
 		sourceFileList.add(explicitApplicationIface);
 		
-		SourceFile adapterLocal = 
-			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateAdapterLocal());
+		SourceFile adapterLocal = new SourceFile(localPackageName, 
+				getIdentifier() + "Adapter.java", generateAdapterLocal());
 		sourceFileList.add(adapterLocal);
 		
-		SourceFile deploymentLocal = 
-			new SourceFile(localPackageName, getIdentifier() + "Deployment.java", generateDeploymentLocal());
+		SourceFile deploymentLocal = new SourceFile(localPackageName, 
+				getIdentifier() + "Deployment.java", generateDeploymentLocal());
 		sourceFileList.add(deploymentLocal);
 		
 		return sourceFileList;
@@ -171,8 +177,6 @@ public class HomeDef
 	 * Application Generator Methods
 	 * 
 	 *************************************************************************/
-	
-	// Code generator methods -------------------------------------------------
 	
 	public String generateApplicationClass()
 	{
@@ -192,12 +196,12 @@ public class HomeDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile applicationClass = 
-			new SourceFile(localPackageName, getIdentifier() + "Impl.java", generateApplicationClass());
+		SourceFile applicationClass = new SourceFile(localPackageName, getIdentifier() + 
+				"Impl.java", generateApplicationClass());
 		sourceFileList.add(applicationClass);
 		
-		SourceFile factoryApplication =
-			new SourceFile(localPackageName, getIdentifier() + "Factory.java", generateFactoryApplication());
+		SourceFile factoryApplication = new SourceFile(localPackageName, getIdentifier() + 
+				"Factory.java", generateFactoryApplication());
 		sourceFileList.add(factoryApplication);
 		
 		return sourceFileList;
@@ -206,12 +210,10 @@ public class HomeDef
 	
 	
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * Client Library Component Generator Methods
 	 * 
 	 *************************************************************************/
-	
-	// Code generator methods -------------------------------------------------	
-	
+		
 	public String generateAdapterToCorba()
 	{
 		return new HomeDefAdapterToCorbaTemplate().generate(this);
@@ -224,20 +226,55 @@ public class HomeDef
 
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateClientLibSourceFiles()
+	public List generateClientLibComponentSourceFiles()
 	{
 		List sourceFileList = new ArrayList();		
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile adapterToCorba = 
-			new SourceFile(localPackageName,getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());
+		SourceFile adapterToCorba = new SourceFile(localPackageName, getIdentifier() + 
+				"AdapterToCorba.java",generateAdapterToCorba());
 		sourceFileList.add(adapterToCorba);
 		
-		SourceFile deploymentClientLib = 
-			new SourceFile(localPackageName,getIdentifier() + "ClientLibDeployment.java",generateClientLibDeployment());
+		SourceFile deploymentClientLib = new SourceFile(localPackageName, getIdentifier() + 
+				"ClientLibDeployment.java",generateClientLibDeployment());
 		sourceFileList.add(deploymentClientLib);
 		
 		return sourceFileList;
 	}	
+
+	
+
+	/*************************************************************************
+	 * CORBA Component Generator Methods
+	 * 
+	 *************************************************************************/
+		
+	public String generateAdapterFromCorba()
+	{
+		return new HomeDefAdapterFromCorbaTemplate().generate(this);
+	}
+			
+	public String generateCorbaComponentDeployment()
+	{              
+		return new HomeDefDeploymentCorbaComponentTemplate().generate(this);
+	}
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateCorbaComponentSourceFiles()
+	{
+		List sourceFileList = new ArrayList();		
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
+		
+		SourceFile adapterFromCorba = new SourceFile(remotePackageName, getIdentifier() + 
+				"AdapterFromCorba.java",generateAdapterFromCorba());
+		sourceFileList.add(adapterFromCorba);
+		
+		SourceFile deploymentCorbaComponent = new SourceFile(remotePackageName, getIdentifier() + 
+				"Deployment.java",generateCorbaComponentDeployment());
+		sourceFileList.add(deploymentCorbaComponent);
+		
+		return sourceFileList;
+	}		
 }
 

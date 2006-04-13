@@ -29,7 +29,7 @@ public class ComponentGenerator
     public static final String APPLICATION_GENERATOR_ID = "app";
     public static final String LOCAL_COMPONENT_GENERATOR_ID = "local";
     public static final String CLIENT_LIB_GENERATOR_ID = "clientlib";
-	
+    public static final String CORBA_COMPONENT_GENERATOR_ID = "remote";
 	
 	/** UI driver for generator messages */
 	protected Driver uiDriver;
@@ -68,7 +68,11 @@ public class ComponentGenerator
     		}
     		else if(generatorId.equals(CLIENT_LIB_GENERATOR_ID))
     		{
-    			generateClientLib(javaModel);
+    			generateClientLibComponent(javaModel);
+    		}
+    		else if(generatorId.equals(CORBA_COMPONENT_GENERATOR_ID))
+    		{
+    			generateCorbaComponent(javaModel);
     		}
        		else if(generatorId.equals(APPLICATION_GENERATOR_ID))
     		{
@@ -128,7 +132,7 @@ public class ComponentGenerator
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new CcmtoolsException("Error in ComponentGenerator: " + e.getMessage());
+			throw new CcmtoolsException("Error in generateInterface: " + e.getMessage());
 		}
 		logger.fine("leave");
 	}
@@ -163,7 +167,7 @@ public class ComponentGenerator
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new CcmtoolsException("Error in ComponentGenerator: " + e.getMessage());
+			throw new CcmtoolsException("Error in generateLocalComponent: " + e.getMessage());
 		}
 		logger.fine("leave");
 	}
@@ -197,73 +201,124 @@ public class ComponentGenerator
 		}
 		catch (Exception e)
 		{
-			throw new CcmtoolsException("Error in ComponentGenerator: " + e.getMessage());
+			throw new CcmtoolsException("Error in generateApplication: " + e.getMessage());
 		}
 		logger.fine("leave");
 	}
 	
 	
-	public void generateClientLib(ModelRepository javaModel)
+	public void generateClientLibComponent(ModelRepository javaModel)
 		throws CcmtoolsException
 	{
 		logger.fine("enter");
 		try
 		{
-				List sourceFileList = new ArrayList();
-				for (Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext();)
-				{
-					InterfaceDef javaIface = (InterfaceDef) j.next();
-					sourceFileList.addAll(javaIface.generateClientLibSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
-				{
-					ComponentDef javaComponent = (ComponentDef) j.next();
-					sourceFileList.addAll(javaComponent.generateClientLibSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
-				{
-					HomeDef javaHome = (HomeDef) j.next();
-					sourceFileList.addAll(javaHome.generateClientLibSourceFiles());
-				}
+			List sourceFileList = generateCorbaConverterList(javaModel);
 
-				// Save data type converter
-				for (Iterator j = javaModel.findAllEnums().iterator(); j.hasNext();)
-				{
-					EnumDef javaEnum = (EnumDef) j.next();
-					sourceFileList.addAll(javaEnum.generateClientLibSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
-				{
-					StructDef javaStruct = (StructDef) j.next();
-					sourceFileList.addAll(javaStruct.generateClientLibSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllExceptions().iterator(); j.hasNext();)
-				{
-					ExceptionDef javaException = (ExceptionDef) j.next();
-					sourceFileList.addAll(javaException.generateClientLibSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllSequences().iterator(); j.hasNext();)
-				{
-					SequenceDef javaSequence = (SequenceDef) j.next();
-					sourceFileList.addAll(javaSequence.generateClientLibSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllArrays().iterator(); j.hasNext();)
-				{
-					ArrayDef javaArray = (ArrayDef) j.next();
-					sourceFileList.addAll(javaArray.generateClientLibSourceFiles());
-				}
+			for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
+			{
+				ComponentDef javaComponent = (ComponentDef) j.next();
+				sourceFileList.addAll(javaComponent.generateClientLibComponentSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
+			{
+				HomeDef javaHome = (HomeDef) j.next();
+				sourceFileList.addAll(javaHome.generateClientLibComponentSourceFiles());
+			}
 
-				// Save all source file objects
-				Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+			// Save all source file objects
+			Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+			logger.fine("leave");
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new CcmtoolsException("Error in ComponentGenerator: " + e.getMessage());
+			throw new CcmtoolsException("Error in generateClientLib: " + e.getMessage());
 		}
-		logger.fine("leave");
 	}
 
+	
+	public void generateCorbaComponent(ModelRepository javaModel) 
+		throws CcmtoolsException
+	{
+		logger.fine("enter");
+		try
+		{
+			List sourceFileList = generateCorbaConverterList(javaModel);
+
+			for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
+			{
+				ComponentDef javaComponent = (ComponentDef) j.next();
+				sourceFileList.addAll(javaComponent.generateCorbaComponentSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
+			{
+				HomeDef javaHome = (HomeDef) j.next();
+				sourceFileList.addAll(javaHome.generateCorbaComponentSourceFiles());
+			}
+
+			// Save all source file objects
+			Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+			logger.fine("leave");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new CcmtoolsException("Error in generateCorbaComponent: " + e.getMessage());
+		}	
+	}
+
+
+	private List generateCorbaConverterList(ModelRepository javaModel) 
+		throws CcmtoolsException
+	{
+		logger.fine("enter");
+		try
+		{
+			List sourceFileList = new ArrayList();
+			for (Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext();)
+			{
+				InterfaceDef javaIface = (InterfaceDef) j.next();
+				sourceFileList.addAll(javaIface.generateCorbaComponentSourceFiles());
+			}
+
+			for (Iterator j = javaModel.findAllEnums().iterator(); j.hasNext();)
+			{
+				EnumDef javaEnum = (EnumDef) j.next();
+				sourceFileList.addAll(javaEnum.generateCorbaComponentSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
+			{
+				StructDef javaStruct = (StructDef) j.next();
+				sourceFileList.addAll(javaStruct.generateCorbaComponentSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllExceptions().iterator(); j.hasNext();)
+			{
+				ExceptionDef javaException = (ExceptionDef) j.next();
+				sourceFileList.addAll(javaException.generateCorbaComponentSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllSequences().iterator(); j.hasNext();)
+			{
+				SequenceDef javaSequence = (SequenceDef) j.next();
+				sourceFileList.addAll(javaSequence.generateCorbaComponentSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllArrays().iterator(); j.hasNext();)
+			{
+				ArrayDef javaArray = (ArrayDef) j.next();
+				sourceFileList.addAll(javaArray.generateCorbaComponentSourceFiles());
+			}
+			return sourceFileList;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new CcmtoolsException("Error in generateClientLib: " + e.getMessage());
+		}
+		finally
+		{
+			logger.fine("leave");
+		}
+	}
 	
     private void printVersion()
     {

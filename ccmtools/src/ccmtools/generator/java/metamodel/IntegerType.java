@@ -64,7 +64,7 @@ public class IntegerType
 	
 	
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 	

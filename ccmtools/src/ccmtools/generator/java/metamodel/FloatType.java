@@ -64,7 +64,7 @@ public class FloatType
 	
 	
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 	

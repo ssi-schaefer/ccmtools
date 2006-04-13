@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ccmtools.generator.java.templates.ComponentDefAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.ComponentDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.ComponentDefAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.ComponentDefApplicationClassTemplate;
@@ -160,8 +161,6 @@ public class ComponentDef
 	 * 
 	 *************************************************************************/
 	
-	// Code generator methods -------------------------------------------------
-	
 	public String generateApplicationInterface()
 	{
 		return new ComponentDefApplicationInterfaceTemplate().generate(this);
@@ -190,20 +189,20 @@ public class ComponentDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile applicationInterface = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + ".java", generateApplicationInterface());
+		SourceFile applicationInterface = new SourceFile(localPackageName, 
+				generateCcmIdentifier() + ".java", generateApplicationInterface());
 		sourceFileList.add(applicationInterface);
 		
-		SourceFile contextInterface = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + "_Context.java", generateContextInterface());
+		SourceFile contextInterface = new SourceFile(localPackageName, 
+				generateCcmIdentifier() + "_Context.java", generateContextInterface());
 		sourceFileList.add(contextInterface);
 
-		SourceFile contextClass = 
-			new SourceFile(localPackageName, generateCcmIdentifier() + "_ContextImpl.java", generateContextClass());
+		SourceFile contextClass = new SourceFile(localPackageName, 
+				generateCcmIdentifier() + "_ContextImpl.java", generateContextClass());
 		sourceFileList.add(contextClass);
 		
-		SourceFile adapterLocal = 
-			new SourceFile(localPackageName, getIdentifier() + "Adapter.java", generateAdapterLocal());
+		SourceFile adapterLocal = new SourceFile(localPackageName, 
+				getIdentifier() + "Adapter.java", generateAdapterLocal());
 		sourceFileList.add(adapterLocal);
 	
 		return sourceFileList;
@@ -215,8 +214,6 @@ public class ComponentDef
 	 * Application Generator Methods
 	 * 
 	 *************************************************************************/
-	
-	// Code generator methods -------------------------------------------------
 	
 	public String generateApplicationClass()
 	{
@@ -231,8 +228,8 @@ public class ComponentDef
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile applicationClass = 
-			new SourceFile(localPackageName, getIdentifier() + "Impl.java", generateApplicationClass());		
+		SourceFile applicationClass = new SourceFile(localPackageName, getIdentifier() + 
+				"Impl.java", generateApplicationClass());		
 		sourceFileList.add(applicationClass);
 		
 		return sourceFileList;
@@ -241,12 +238,10 @@ public class ComponentDef
 	
 	
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * Client Library Component Generator Methods
 	 * 
 	 *************************************************************************/
 	
-	// Code generator methods -------------------------------------------------	
-
 	public String generateAdapterToCorba()
 	{
 		return new ComponentDefAdapterToCorbaTemplate().generate(this);
@@ -255,14 +250,39 @@ public class ComponentDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateClientLibSourceFiles()
+	public List generateClientLibComponentSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		//String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile adapterToCorba = 
-			new SourceFile(localPackageName, getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());
+		SourceFile adapterToCorba = new SourceFile(localPackageName, getIdentifier() + 
+				"AdapterToCorba.java",generateAdapterToCorba());
+		sourceFileList.add(adapterToCorba);
+		
+		return sourceFileList;
+	}
+	
+	
+	/*************************************************************************
+	 * CORBA Component Generator Methods
+	 * 
+	 *************************************************************************/
+	
+	public String generateAdapterFromCorba()
+	{
+		return new ComponentDefAdapterFromCorbaTemplate().generate(this);
+	}
+	
+	
+	// Generate SourceFile objects --------------------------------------------
+	
+	public List generateCorbaComponentSourceFiles()
+	{
+		List sourceFileList = new ArrayList();
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
+		
+		SourceFile adapterToCorba = new SourceFile(remotePackageName, getIdentifier() + 
+				"AdapterFromCorba.java",generateAdapterFromCorba());
 		sourceFileList.add(adapterToCorba);
 		
 		return sourceFileList;

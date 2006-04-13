@@ -66,7 +66,7 @@ public class ParameterDef
 
 	
 	/*************************************************************************
-	 * Client Library Generator
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 	

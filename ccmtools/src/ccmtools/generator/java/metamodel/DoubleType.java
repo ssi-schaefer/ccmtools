@@ -63,7 +63,7 @@ public class DoubleType
 	
 	
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 

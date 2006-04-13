@@ -63,7 +63,7 @@ public class ShortType
 	
 	
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 

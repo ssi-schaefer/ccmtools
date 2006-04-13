@@ -216,7 +216,7 @@ public class OperationDef
 	
 
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 	
@@ -370,7 +370,6 @@ public class OperationDef
 				getIdentifier() + "(" + generateParameterList("Local") + ");";
 		}
 	}
-
 
 	
 	public String generateResultDeclaration()

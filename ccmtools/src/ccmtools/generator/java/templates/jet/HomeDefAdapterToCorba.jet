@@ -40,6 +40,8 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     }
     
     
+    /** Home implicit operations */
+        
     public <%=home.getComponent().generateAbsoluteJavaName()%> create()
         throws ccm.local.Components.CreateFailure
     {
@@ -58,6 +60,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
         }
     } 
     
+    // This operation is defined in ccm.local.Components.KeylessCCMHomeOperations
     public ccm.local.Components.CCMObject create_component()
         throws ccm.local.Components.CCMException, ccm.local.Components.CreateFailure
     {
@@ -66,6 +69,9 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     }
     
     
+    /** Home explicit operations */
+        
+    // This operation is defined in ccm.local.Components.CCMHome
     public void remove_component(ccm.local.Components.CCMObject component)
         throws ccm.local.Components.CCMException, ccm.local.Components.RemoveFailure
     {

@@ -146,7 +146,7 @@ public class ProvidesDef
 	
 	
 	/*************************************************************************
-	 * Client Library Generator
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 	

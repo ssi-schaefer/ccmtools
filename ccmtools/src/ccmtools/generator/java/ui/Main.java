@@ -124,6 +124,8 @@ public class Main
         					false, "Run the Java application stubs generator");
         options.addOption(ComponentGenerator.INTERFACE_GENERATOR_ID, 
         					false, "Run the Java interface generator");
+        options.addOption(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID, 
+							false, "Run the Java CORBA component generator");
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
         // Define single valued options
@@ -186,6 +188,11 @@ public class Main
         	parameters.getGeneratorIds().add(ComponentGenerator.INTERFACE_GENERATOR_ID);
         }  
         
+        if(cmd.hasOption(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID))
+        {
+        	parameters.getGeneratorIds().add(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID);
+        }  
+
         if(cmd.hasOption("noexit"))
         {
         	parameters.setNoExit(true);

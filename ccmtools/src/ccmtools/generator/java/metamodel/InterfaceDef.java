@@ -203,12 +203,10 @@ public class InterfaceDef
 	
 	
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
-	
-	// Code generator methods -------------------------------------------------
-	
+		
 	public String generateAdapterFromCorba()
 	{
 		return new InterfaceDefAdapterFromCorbaTemplate().generate(this);
@@ -222,18 +220,18 @@ public class InterfaceDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateClientLibSourceFiles()
+	public List generateCorbaComponentSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		
-		SourceFile adapterToCorba = 
-			new SourceFile(localPackageName, getIdentifier() + "AdapterToCorba.java",generateAdapterToCorba());		
+		SourceFile adapterToCorba = new SourceFile(localPackageName, getIdentifier() + 
+				"AdapterToCorba.java",generateAdapterToCorba());		
 		sourceFileList.add(adapterToCorba);
 
-		SourceFile adapterFromCorba = 
-			new SourceFile(remotePackageName, getIdentifier() + "AdapterFromCorba.java",generateAdapterFromCorba());
+		SourceFile adapterFromCorba = new SourceFile(remotePackageName, getIdentifier() + 
+				"AdapterFromCorba.java",generateAdapterFromCorba());
 		sourceFileList.add(adapterFromCorba);
 		
 		return sourceFileList;

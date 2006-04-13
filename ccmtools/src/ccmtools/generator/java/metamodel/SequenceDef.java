@@ -121,7 +121,7 @@ public class SequenceDef
 	
 	
 	/*************************************************************************
-	 * Client Library Generator Methods
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 
@@ -161,7 +161,7 @@ public class SequenceDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateClientLibSourceFiles()
+	public List generateCorbaComponentSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());

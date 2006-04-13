@@ -91,7 +91,7 @@ public class AttributeDef
 	
 	
 	/*************************************************************************
-	 * Client Library Generator
+	 * CORBA Component Generator Methods
 	 * 
 	 *************************************************************************/
 	

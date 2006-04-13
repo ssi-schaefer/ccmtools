@@ -82,17 +82,17 @@ public class CommandLineParameters
      * 
      * @throws CcmtoolsException
      */
-    private void checkIncludePaths() 
-        throws CcmtoolsException
-    {
-        // OK, if any given include directory exists
-        for(Iterator i = includePaths.iterator(); i.hasNext();) {
-            File path = new File((String) i.next());
-            if(!path.exists()) {
-                throw new CcmtoolsException("Invalid include path " + path);
-            }
-        }
-    }
+//    private void checkIncludePaths() 
+//        throws CcmtoolsException
+//    {
+//        // OK, if any given include directory exists
+//        for(Iterator i = includePaths.iterator(); i.hasNext();) {
+//            File path = new File((String) i.next());
+//            if(!path.exists()) {
+//                throw new CcmtoolsException("Invalid include path " + path);
+//            }
+//        }
+//    }
     
     /**
      * Check if the given output directory is valid.
