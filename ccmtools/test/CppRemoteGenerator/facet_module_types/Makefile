@@ -24,19 +24,19 @@ check_local:
 	confix.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
 
 
-remote: 
+remote: local
 	ccmtools idl2 -o ${DEST_DIR}/src/CCM_CORBA_Stubs ${APP_NAME}.idl
 	ccmtools c++remote -o ${DEST_DIR}/src/component/Test ${APP_NAME}.idl
 
 stubs:
 	make -C ${DEST_DIR}/src/CCM_CORBA_Stubs server
 
-check: 
+check: check_local
 	cp impl/_check_world_europe_austria_ccm_remote_component_Test.cc ${DEST_DIR}/src/component/Test/test/
 	confix.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
 
 
-check_server:
+check_server: check_local
 	cp server/_check_world_europe_austria_ccm_remote_component_Test.cc ${DEST_DIR}/src/component/Test/test/
 	confix.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
 
