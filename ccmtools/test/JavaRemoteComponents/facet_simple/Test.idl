@@ -1,0 +1,19 @@
+
+module world 
+{
+
+  interface IFace
+  {
+    long op1(in string str);
+  };
+
+  component Test
+  {
+    provides IFace inPort;
+  };
+
+  home TestHome manages Test
+  {
+  };
+
+}; // /module world
