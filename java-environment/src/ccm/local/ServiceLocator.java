@@ -182,8 +182,8 @@ public class ServiceLocator
 				POA rootPoa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 				rootPoa.the_POAManager().activate();
 				Policy[] policies = new Policy[1];
-				policies[0] = rootPoa
-						.create_implicit_activation_policy(ImplicitActivationPolicyValue.IMPLICIT_ACTIVATION);
+				policies[0] = rootPoa.create_implicit_activation_policy(
+						ImplicitActivationPolicyValue.IMPLICIT_ACTIVATION);
 				POA sessionPoa = rootPoa.create_POA(name, rootPoa.the_POAManager(), policies);
 				sessionPoa.the_POAManager().activate();
 				poaMap.put(name, sessionPoa);
