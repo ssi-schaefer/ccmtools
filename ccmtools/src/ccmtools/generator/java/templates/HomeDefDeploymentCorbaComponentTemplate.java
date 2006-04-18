@@ -19,15 +19,14 @@ public class HomeDefDeploymentCorbaComponentTemplate
   protected final String TEXT_3 = ";" + NL + "" + NL + "import java.util.logging.Logger;" + NL + "import ccm.local.ServiceLocator;" + NL + "import ccm.local.Components.CCMException;" + NL + "" + NL + "import org.omg.PortableServer.POA;" + NL + "import org.omg.CosNaming.NamingContextExt;" + NL + "import org.omg.CosNaming.NamingContextExtHelper;" + NL;
   protected final String TEXT_4 = NL;
   protected final String TEXT_5 = NL + "                                  " + NL + "public class ";
-  protected final String TEXT_6 = "Deployment " + NL + "{" + NL + "    /** Logger */" + NL + "    private static Logger logger = ServiceLocator.instance().getLogger();" + NL + "    " + NL + "    " + NL + "    public static Components.CCMHome create()" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"\");";
-  protected final String TEXT_7 = NL + "        ";
-  protected final String TEXT_8 = " localHome = (";
+  protected final String TEXT_6 = "Deployment " + NL + "{" + NL + "    /** Logger */" + NL + "    private static Logger logger = ServiceLocator.instance().getLogger();" + NL + "        " + NL + "    public static void deploy(String name)" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"name = \" + name);" + NL + "        try" + NL + "        {" + NL + "            String ior = deployWithIor();" + NL + "            org.omg.CORBA.Object obj = " + NL + "                ServiceLocator.instance().getCorbaOrb().string_to_object(ior);" + NL + "            NamingContextExt ns = " + NL + "                ServiceLocator.instance().getCorbaNameService();" + NL + "            ns.rebind(ns.to_name(name), obj);" + NL + "        }" + NL + "        catch(Exception e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "" + NL + "    public static String deployWithIor()" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {";
+  protected final String TEXT_7 = NL + "            ";
+  protected final String TEXT_8 = " localHome = " + NL + "                (";
   protected final String TEXT_9 = ")";
-  protected final String TEXT_10 = "Deployment.create();" + NL + "        return (Components.CCMHome) new ";
-  protected final String TEXT_11 = "AdapterFromCorba(localHome);" + NL + "    }" + NL + "    " + NL + "    public static void deploy(String name)" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"name = \" + name);" + NL + "        try" + NL + "        {" + NL + "            String ior = deployWithIor();" + NL + "            org.omg.CORBA.Object obj = " + NL + "                ServiceLocator.instance().getCorbaOrb().string_to_object(ior);" + NL + "            NamingContextExt ns = " + NL + "                ServiceLocator.instance().getCorbaNameService();" + NL + "            ns.rebind(ns.to_name(name), obj);" + NL + "        }" + NL + "        catch(Exception e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "" + NL + "    public static String deployWithIor()" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {" + NL + "            POA componentPoa = ServiceLocator.instance().createSessionComponentPoa(\"";
-  protected final String TEXT_12 = "Poa\");" + NL + "            org.omg.CORBA.Object remoteHome = " + NL + "                componentPoa.servant_to_reference((";
-  protected final String TEXT_13 = "AdapterFromCorba)create());        " + NL + "            return ServiceLocator.instance().getCorbaOrb().object_to_string(remoteHome);" + NL + "        }" + NL + "        catch(Exception e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    public static void undeploy(String name)" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"name = \" + name);" + NL + "        try" + NL + "        {" + NL + "            NamingContextExt ns = " + NL + "                ServiceLocator.instance().getCorbaNameService();" + NL + "            ns.unbind(ns.to_name(name));" + NL + "        }" + NL + "        catch(Exception e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "}";
-  protected final String TEXT_14 = NL;
+  protected final String TEXT_10 = "Deployment.create();" + NL + "            POA componentPoa = " + NL + "                ServiceLocator.instance().createSessionComponentPoa(\"";
+  protected final String TEXT_11 = "Poa\");" + NL + "            org.omg.CORBA.Object remoteHome = " + NL + "                componentPoa.servant_to_reference(new ";
+  protected final String TEXT_12 = "AdapterFromCorba(localHome));        " + NL + "            String ior = ServiceLocator.instance().getCorbaOrb().object_to_string(remoteHome); " + NL + "            logger.finer(\"ior = \" + ior);" + NL + "            return ior;" + NL + "        }" + NL + "        catch(Exception e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "    " + NL + "    public static void undeploy(String name)" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"name = \" + name);" + NL + "        try" + NL + "        {" + NL + "            NamingContextExt ns = " + NL + "                ServiceLocator.instance().getCorbaNameService();" + NL + "            ns.unbind(ns.to_name(name));" + NL + "        }" + NL + "        catch(Exception e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "}";
+  protected final String TEXT_13 = NL;
 
   public String generate(Object argument)
   {
@@ -48,15 +47,13 @@ public class HomeDefDeploymentCorbaComponentTemplate
     stringBuffer.append(TEXT_8);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(home.getIdentifier());
+    stringBuffer.append(home.generateAbsoluteJavaName());
     stringBuffer.append(TEXT_10);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_11);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_12);
-    stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_13);
-    stringBuffer.append(TEXT_14);
     return stringBuffer.toString();
   }
 }

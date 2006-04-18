@@ -25,16 +25,7 @@ public class <%=home.getIdentifier()%>Deployment
 {
     /** Logger */
     private static Logger logger = ServiceLocator.instance().getLogger();
-    
-    
-    public static Components.CCMHome create()
-        throws CCMException
-    {
-        logger.fine("");
-        <%=home.getIdentifier()%> localHome = (<%=home.getIdentifier()%>)<%=home.getIdentifier()%>Deployment.create();
-        return (Components.CCMHome) new <%=home.getIdentifier()%>AdapterFromCorba(localHome);
-    }
-    
+        
     public static void deploy(String name)
         throws CCMException
     {
@@ -61,10 +52,15 @@ public class <%=home.getIdentifier()%>Deployment
         logger.fine("");
         try
         {
-            POA componentPoa = ServiceLocator.instance().createSessionComponentPoa("<%=home.getIdentifier()%>Poa");
+            <%=home.getIdentifier()%> localHome = 
+                (<%=home.getIdentifier()%>)<%=home.generateAbsoluteJavaName()%>Deployment.create();
+            POA componentPoa = 
+                ServiceLocator.instance().createSessionComponentPoa("<%=home.getIdentifier()%>Poa");
             org.omg.CORBA.Object remoteHome = 
-                componentPoa.servant_to_reference((<%=home.getIdentifier()%>AdapterFromCorba)create());        
-            return ServiceLocator.instance().getCorbaOrb().object_to_string(remoteHome);
+                componentPoa.servant_to_reference(new <%=home.getIdentifier()%>AdapterFromCorba(localHome));        
+            String ior = ServiceLocator.instance().getCorbaOrb().object_to_string(remoteHome); 
+            logger.finer("ior = " + ior);
+            return ior;
         }
         catch(Exception e)
         {
