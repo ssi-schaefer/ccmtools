@@ -3,9 +3,9 @@ IDL3_DIR = ${DEST_DIR}/idl3
 IDL2_DIR = ${DEST_DIR}/idl2
 INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
-all: remote
+all: remote clientlib
 
-test: remote check clean 
+test: remote clientlib check clean 
 
 idl3: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
@@ -22,6 +22,10 @@ stubs: idl3
 remote: local stubs
 	ccmjava -remote -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
 	ccmjava -remote -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
+
+clientlib: idl3
+	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
+	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
 check: 
 	cp impl/TestinPortImpl.java ${DEST_DIR}/src/world/ccm/local/

@@ -34,7 +34,10 @@ public class Client
 	    // Set up the ServiceLocator singleton
 	    ORB orb = ORB.init(args, null);
 	    ServiceLocator.instance().setCorbaOrb(orb);
+
        	    world.ccm.remote.TestHomeDeployment.deploy("myTestHome");
+	    TestHomeClientLibDeployment.deploy("myTestHome");
+	    System.out.println("> Server is running...");
 	    // orb.run();
 	}
         catch(Exception e) 
@@ -47,10 +50,8 @@ public class Client
 	{
 	    /**
 	     * Client-side code (co-located)
-	     */
-	    NamingContextExt ns = 
-                ServiceLocator.instance().getCorbaNameService();
-	    
+	     *
+	    NamingContextExt ns = ServiceLocator.instance().getCorbaNameService();
 	    org.omg.CORBA.Object obj = ns.resolve_str("myTestHome");
 	    world.TestHome home = world.TestHomeHelper.narrow(obj);
 	    world.Test component = home.create();
@@ -61,6 +62,23 @@ public class Client
 	    int size = iface.op1(s);
 	    assert(s.length() == size);
 
+	    component.remove();
+	    */
+
+
+	    /**
+	     * Client-side code (co-located with clientlib)
+	     **/
+	    ccm.local.Components.HomeFinder homeFinder = ccm.local.HomeFinder.instance();
+            TestHome home = (TestHome) homeFinder.find_home_by_name("myTestHome");
+            Test component = home.create();
+            component.configuration_complete();
+
+            IFace iface = component.provide_inPort();
+
+	    String s = "1234567890";
+	    int size = iface.op1(s);
+	    assert(s.length() == size);
 	    component.remove();
         }
         catch(Exception e) 
@@ -75,6 +93,7 @@ public class Client
 	    /**
 	     * Server-side code (Part 2)
 	     */
+	    TestHomeClientLibDeployment.undeploy("myTestHome");
 	    world.ccm.remote.TestHomeDeployment.undeploy("myTestHome");
 	    System.out.println("OK!");
 	}
