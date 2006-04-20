@@ -13,16 +13,11 @@ package <%=home.generateJavaNamespace()%>;
                                   
 public class <%=home.getIdentifier()%>ClientLibDeployment 
 {
-    public static ccm.local.Components.CCMHome create()
-        throws ccm.local.Components.CCMException
-    {
-        return new <%=home.getIdentifier()%>AdapterToCorba();
-    }
-    
     public static void deploy(String name)
         throws ccm.local.Components.CCMException
     {
-        ccm.local.HomeFinder.instance().register_home(create(), name);    
+        <%=home.getIdentifier()%> home = new <%=home.getIdentifier()%>AdapterToCorba(name);
+        ccm.local.HomeFinder.instance().register_home(home, name);    
     }
     
     public static void undeploy(String name)
