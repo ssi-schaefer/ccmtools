@@ -12,21 +12,32 @@
 package <%=home.generateJavaRemoteNamespace()%>;
 
 import java.util.logging.Logger;
+
 import ccm.local.ServiceLocator;
+import ccm.remote.CCMSessionContainer;
+
+import org.omg.PortableServer.Servant;
 
 <%=home.generateJavaImportStatements(home.generateJavaRemoteNamespace())%>
            
 public class <%=home.getIdentifier()%>AdapterFromCorba
    extends <%=home.generateAbsoluteIdlName()%>POA
 {
+    /** Default logger instance */
     private Logger logger = ServiceLocator.instance().getLogger();
+
+    /** CCM session container instance */
+    private CCMSessionContainer container;
 
     /** Java reference to the local interface */
     private <%=home.getIdentifier()%> localHome;
     
-    public <%=home.getIdentifier()%>AdapterFromCorba(<%=home.getIdentifier()%> localHome)
+    
+    public <%=home.getIdentifier()%>AdapterFromCorba(CCMSessionContainer container, 
+        <%=home.getIdentifier()%> localHome)
     {
         logger.fine("localHome = " + localHome);
+        this.container = container;
         this.localHome = localHome;
     }
     
@@ -37,16 +48,24 @@ public class <%=home.getIdentifier()%>AdapterFromCorba
         throws Components.CreateFailure
     {
         logger.fine("");
-        // TODO    
-        return null;
+        try
+        {
+            <%=home.getComponent().getIdentifier()%> localComponent = localHome.create();
+            Servant servant = new <%=home.getComponent().getIdentifier()%>AdapterFromCorba(container,localComponent);
+            Components.CCMObject obj = container.getCorbaComponentFromServant(servant); 
+            return <%=home.getComponent().generateAbsoluteIdlName()%>Helper.narrow(obj);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            throw new Components.CreateFailure();
+        }
     }
 
     // This operation is defined in Components.KeylessCCMHomeOperations
     public Components.CCMObject create_component()
     {
-        logger.fine("");
-        // TODO
-        return null;
+        throw new RuntimeException("Not implemented!");
     }
 
 
@@ -55,7 +74,6 @@ public class <%=home.getIdentifier()%>AdapterFromCorba
     // This operation is defined in Components.CCMHome 
     public void remove_component (Components.CCMObject comp)
     {
-        logger.fine("");
-        // TODO
+        throw new RuntimeException("Not implemented!");    
     }
 }

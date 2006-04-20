@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Set;
 
 import ccmtools.generator.java.templates.ProvidesDefApplicationClassTemplate;
+import ccmtools.generator.java.templates.ProvidesDefEquivalentMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.ProvidesDefEquivalentMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.ProvidesDefEquivalentMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.ProvidesDefGetMethodImplementationTemplate;
+import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterToCorbaTemplate;
 import ccmtools.utils.SourceFile;
@@ -157,13 +159,35 @@ public class ProvidesDef
 		return new ProvidesDefEquivalentMethodAdapterToCorbaTemplate().generate(this);
 	}
 		
+	public String generateEquivalentMethodAdapterFromCorba()
+	{
+		return new ProvidesDefEquivalentMethodAdapterFromCorbaTemplate().generate(this);
+	}
+	
+	
 	public String generateNavigationMethodAdapterToCorba()
 	{		
 		return new ProvidesDefNavigationMethodAdapterToCorbaTemplate().generate(this);
 	}
+
+	public String generateNavigationMethodAdapterFromCorba()
+	{		
+		return new ProvidesDefNavigationMethodAdapterFromCorbaTemplate().generate(this);
+	}
+
 	
 	public String generateFacetAdapterDeclaration()
 	{
 		return TAB + "private " + getInterface().generateAbsoluteJavaName() + " " + getIdentifier() + ";\n";
+	}
+	
+	public String generateCorbaFacetAdapterDeclaration()
+	{
+		return TAB + "private " + getInterface().generateAbsoluteIdlName() + " " + getIdentifier() + "Facet;\n";
+	}
+	
+	public String generateCorbaFacetAdapterDeclarationInit()
+	{
+		return TAB2 + getIdentifier() + "Facet = null;\n";
 	}
 }

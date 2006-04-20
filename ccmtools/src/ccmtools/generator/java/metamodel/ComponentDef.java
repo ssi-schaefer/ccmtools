@@ -82,6 +82,7 @@ public class ComponentDef
 			SupportsDef s = (SupportsDef)i.next();
 			importStatements.addAll(s.getJavaImportStatements());
 		}
+		importStatements.add(generateAbsoluteJavaName());
 		return importStatements;
 	}
 
@@ -96,6 +97,10 @@ public class ComponentDef
 		return generateJavaImportStatements(getJavaImportStatements());
 	}
 	
+	public String generateJavaImportStatements(String namespace)
+	{
+		return generateJavaImportStatements(namespace, getJavaImportStatements());
+	}
 	
 	public String generateInterface()
 	{

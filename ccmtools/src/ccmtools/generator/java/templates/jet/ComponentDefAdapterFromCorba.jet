@@ -9,19 +9,151 @@
  * DO NOT EDIT!
  */
 
+package <%=component.generateJavaRemoteNamespace()%>;
+
 import java.util.logging.Logger;
+
 import ccm.local.ServiceLocator;
-                 
-import org.omg.PortableServer.POA;
+import ccm.local.Components.CCMException;     
+import ccm.remote.CCMSessionContainer;
+
+import org.omg.PortableServer.Servant;
+          
+<%=component.generateJavaImportStatements(component.generateJavaRemoteNamespace())%>
 
 public class <%=component.getIdentifier()%>AdapterFromCorba 
+     extends <%=component.generateAbsoluteIdlName()%>POA
 {
+    /** Default logger instance */
     private Logger logger = ServiceLocator.instance().getLogger();
-    
-    public <%=component.getIdentifier()%>AdapterFromCorba(<%=component.generateAbsoluteJavaName()%> localComponent)
+  
+    /** CCM session container instance */  
+    private CCMSessionContainer container;
+
+    /** Local component instance */
+    private <%=component.getIdentifier()%> localComponent;
+        
+    /** References to CORBA facet adapters */
+<%
+for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
+{
+    ProvidesDef provides = (ProvidesDef)i.next();
+%>    
+<%=provides.generateCorbaFacetAdapterDeclaration()%>
+<%
+}
+%>   
+        
+    public <%=component.getIdentifier()%>AdapterFromCorba(CCMSessionContainer container, 
+        <%=component.getIdentifier()%> localComponent)
     {    
         logger.fine("localComponent = " + localComponent);
+        	this.container = container;
+        this.localComponent = localComponent;
+<%
+for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
+{
+    ProvidesDef provides = (ProvidesDef)i.next();
+%>    
+<%=provides.generateCorbaFacetAdapterDeclarationInit()%>
+<%
+}
+%>                 
     }
     
+    /** 
+     * Equivalent interface methods 
+     */
+     
+<%
+for(Iterator i = component.getFacet().iterator(); i.hasNext();)
+{
+    ProvidesDef provides = (ProvidesDef)i.next();
+%>
+<%=provides.generateEquivalentMethodAdapterFromCorba()%>
+<%
+}
+%>
+     
+    /** CCMObject interface methods */
+    
+    public Components.CCMHome get_ccm_home ()
+    {
+        logger.fine("");
+        return container.getCorbaHome();
+    }
 
+    public void configuration_complete ()
+    {
+        logger.fine("");
+        try
+        {
+            localComponent.configuration_complete();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void remove ()
+    {
+        logger.fine("");
+        //TODO
+    }
+    
+    
+    /** 
+     * Navigation interface methods 
+     */
+
+    public org.omg.CORBA.Object provide_facet (String name) 
+        throws Components.InvalidName
+    {
+        logger.fine("");	
+        if(name == null)
+        {
+            throw new Components.InvalidName();
+        }
+<%		
+for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
+{
+    ProvidesDef provides = (ProvidesDef)i.next();
+%>        
+<%=provides.generateNavigationMethodAdapterFromCorba()%>
+<%
+}
+%>
+        else
+        {
+            throw new Components.InvalidName();
+        }
+    }
+
+
+
+    /** 
+     * Receptacle interface methods 
+     */
+     
+    public Components.Cookie connect(String name, org.omg.CORBA.Object obj) 
+        throws Components.InvalidName, 
+        Components.InvalidConnection, 
+        Components.AlreadyConnected, 
+        Components.ExceededConnectionLimit
+    {
+        logger.fine("");
+        //TODO
+        return null;
+    }
+
+    public void disconnect(String name, Components.Cookie ck) 
+        throws Components.InvalidName, 
+        Components.InvalidConnection, 
+        Components.CookieRequired, 
+        Components.NoConnection
+    {
+        logger.fine("");
+        //TODO
+    }
 }

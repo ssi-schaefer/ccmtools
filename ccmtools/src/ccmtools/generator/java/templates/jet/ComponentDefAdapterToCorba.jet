@@ -205,7 +205,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     }
     
     
-    /** Receptacle methods */
+    /** Receptacle interface methods */
     
     public Cookie connect(String name, Object localObject)
         throws InvalidName, InvalidConnection,
