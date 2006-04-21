@@ -35,7 +35,7 @@ $Header$
 	  <target name="stubs.generate" depends="init"
 	      description="" >
 	      <exec dir="${idl}" executable="idlj">
-	          <arg line="-td ${src}-gen -fall CCM.idl"/>
+	          <arg line="-td ${src}-gen -fall ${prefix}/idl/Components/CCM.idl"/>
 	      </exec>
 	  </target>
 
