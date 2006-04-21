@@ -27,7 +27,7 @@ public class Client
             // Deploy ClientLib component
 	    if(isTest)
 	    {
-		TestHomeDeployment.deploy("myTestHome");
+		TestHomeDeployment.deploy("TestHome:1.0");
 	    }
 	    else
 	    {
@@ -35,7 +35,7 @@ public class Client
 		ORB orb = ORB.init(args, null);
 		ServiceLocator.instance().setCorbaOrb(orb);
 
-		TestHomeClientLibDeployment.deploy("myTestHome");
+		TestHomeClientLibDeployment.deploy("TestHome:1.0");
 	    }
         }
         catch(Exception e) {
@@ -50,7 +50,7 @@ public class Client
 	    ccm.local.Components.HomeFinder homeFinder = 
 		ccm.local.HomeFinder.instance();
 	    TestHome home = 
-		(TestHome) homeFinder.find_home_by_name("myTestHome");
+		(TestHome) homeFinder.find_home_by_name("TestHome:1.0");
 	    
 	    Test component = home.create();	    
 	    component.configuration_complete();
@@ -75,11 +75,11 @@ public class Client
 	    // Undeploy ClientLib component
 	    if(isTest)
 	    {
-		TestHomeDeployment.undeploy("myTestHome");
+		TestHomeDeployment.undeploy("TestHome:1.0");
 	    }
 	    else
 	    {
-		TestHomeClientLibDeployment.undeploy("myTestHome");
+		TestHomeClientLibDeployment.undeploy("TestHome:1.0");
 
 		// Tear down the ServiceLocator singleton
 		ServiceLocator.instance().destroy();

@@ -11,7 +11,7 @@ idl3: Test.idl
 
 idl2: idl3
 	ccmtools idl2 -o ${IDL2_DIR} Test.idl
-	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCM_INSTALL}/include -I${IDL2_DIR} ${IDL2_DIR}/*.idl
+	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCMTOOLS_HOME}/include -I${IDL2_DIR} ${IDL2_DIR}/*.idl
 
 clientlib: idl2
 	ccmjava -iface -local -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/europe/austria/*.idl
