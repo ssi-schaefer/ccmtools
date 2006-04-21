@@ -48,7 +48,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
         <%=component.getIdentifier()%> localComponent)
     {    
         logger.fine("localComponent = " + localComponent);
-        	this.container = container;
+        this.container = container;
         this.localComponent = localComponent;
 <%
 for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
@@ -75,39 +75,46 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 }
 %>
      
-    /** CCMObject interface methods */
+    /** 
+     * The following operations are defined in the Components::CCMObject
+     * interface.
+     */
     
-    public Components.CCMHome get_ccm_home ()
+    public Components.CCMHome get_ccm_home()
     {
         logger.fine("");
         return container.getCorbaHome();
     }
 
-    public void configuration_complete ()
+    public void configuration_complete()
+        throws Components.InvalidConfiguration
     {
         logger.fine("");
         try
         {
             localComponent.configuration_complete();
         }
-        catch(Exception e)
+        catch(ccm.local.Components.InvalidConfiguration e)
         {
             e.printStackTrace();
+            throw new Components.InvalidConfiguration();
         }
     }
 
-    public void remove ()
+    public void remove()
+        throws Components.RemoveFailure
     {
         logger.fine("");
-        //TODO
+        //TODO:
     }
     
     
     /** 
-     * Navigation interface methods 
+     * The following operations are defined in the Components::Navigation
+     * interface.
      */
 
-    public org.omg.CORBA.Object provide_facet (String name) 
+    public org.omg.CORBA.Object provide_facet(String name) 
         throws Components.InvalidName
     {
         logger.fine("");	
@@ -131,9 +138,9 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     }
 
 
-
     /** 
-     * Receptacle interface methods 
+     * The following operations are defined in the Components::Receptacles
+     * interface.
      */
      
     public Components.Cookie connect(String name, org.omg.CORBA.Object obj) 
@@ -143,7 +150,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
         Components.ExceededConnectionLimit
     {
         logger.fine("");
-        //TODO
+        //TODO:
         return null;
     }
 
@@ -154,6 +161,6 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
         Components.NoConnection
     {
         logger.fine("");
-        //TODO
+        //TODO:
     }
 }

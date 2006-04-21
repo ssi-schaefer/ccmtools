@@ -12,6 +12,7 @@
 package <%=component.generateJavaNamespace()%>;
 
 import java.util.logging.Logger;
+
 import ccm.local.Components.AlreadyConnected;
 import ccm.local.Components.CCMException;
 import ccm.local.Components.Cookie;
@@ -20,7 +21,10 @@ import ccm.local.Components.ExceededConnectionLimit;
 import ccm.local.Components.HomeExecutorBase;
 import ccm.local.Components.InvalidName;
 import ccm.local.Components.InvalidConnection;
+import ccm.local.Components.InvalidConfiguration; 
 import ccm.local.Components.NoConnection;
+import ccm.local.Components.RemoveFailure; 
+
 import ccm.local.ServiceLocator;
 import ccm.local.ServiceLocatorException;
 
@@ -154,20 +158,37 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     /** CCMObject interface methods */
     
     public void configuration_complete()
+        throws InvalidConfiguration
     {
         logger.fine("");
         if(remoteInterface != null)
         {
-            remoteInterface.configuration_complete();
+            try
+            {
+                remoteInterface.configuration_complete();
+            }
+            catch(Components.InvalidConfiguration e)
+            {
+                e.printStackTrace();
+                throw new InvalidConfiguration();
+            }    
         }
     }
     
     public void remove()
+        throws RemoveFailure
     {
         logger.fine("");
         if(remoteInterface != null)
         {
-            remoteInterface.remove();
+            try
+            {
+                remoteInterface.remove();
+            }
+            catch(Components.RemoveFailure e)
+            {
+                throw new RemoveFailure();
+            }
         }
     }
     

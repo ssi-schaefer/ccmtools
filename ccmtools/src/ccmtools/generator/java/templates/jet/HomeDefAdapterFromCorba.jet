@@ -51,8 +51,10 @@ public class <%=home.getIdentifier()%>AdapterFromCorba
         try
         {
             <%=home.getComponent().getIdentifier()%> localComponent = localHome.create();
-            Servant servant = new <%=home.getComponent().getIdentifier()%>AdapterFromCorba(container,localComponent);
-            Components.CCMObject obj = container.getCorbaComponentFromServant(servant); 
+            Servant servant = 
+                new <%=home.getComponent().getIdentifier()%>AdapterFromCorba(container,localComponent);
+            Components.CCMObject obj = 
+                container.getCorbaComponentFromServant(servant); 
             return <%=home.getComponent().generateAbsoluteIdlName()%>Helper.narrow(obj);
         }
         catch(Exception e)
@@ -62,18 +64,26 @@ public class <%=home.getIdentifier()%>AdapterFromCorba
         }
     }
 
-    // This operation is defined in Components.KeylessCCMHomeOperations
+    /** 
+     * This operation is defined in the Components::KeylessCCMHome interface
+     */
     public Components.CCMObject create_component()
+        throws Components.CreateFailure
     {
-        throw new RuntimeException("Not implemented!");
+        logger.fine("");
+        return create();
     }
 
 
     /** Home explicit operations */
     
-    // This operation is defined in Components.CCMHome 
-    public void remove_component (Components.CCMObject comp)
+    /**
+     * This operation is defined in the Components::CCMHome interface
+     */ 
+    public void remove_component(Components.CCMObject comp)
+        throws Components.RemoveFailure
     {
+        // TODO:
         throw new RuntimeException("Not implemented!");    
     }
 }
