@@ -20,7 +20,7 @@ public class FacetTest
 
     public static Test suite()
     {
-    	return new TestSuite(FacetTest.class);
+    		return new TestSuite(FacetTest.class);
     }
     
     
@@ -28,63 +28,73 @@ public class FacetTest
     // Facet test cases
     // ------------------------------------------------------------------------
     
-//    public void testFacetModuleAttribute()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_module_attributes test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
-//
-//    public void testFacetModuleConstants()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_module_constants test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
-//
-//    public void testFacetModuleException()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_module_exception test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
-//
-//    public void testFacetModuleInheritance()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_module_inheritance test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
-//
-    public void testFacetSimple()
+    public void testFacetModuleAttribute()
     {
         try {
-            executeCommandLine("make -C " + testDir + "/facet_simple test");
+            executeCommandLine("make -C " + testDir + "/facet_attributes test");
         }
         catch(Exception e) {
             fail();
         }
     }
+
+    public void testFacetModuleConstants()
+    {
+        try 
+        {
+            executeCommandLine("make -C " + testDir + "/facet_constants test");
+        }
+        catch(Exception e) 
+        {
+            fail();
+        }
+    }
+
+    public void testFacetModuleException()
+    {
+        try 
+        {
+            executeCommandLine("make -C " + testDir + "/facet_exceptions test");
+        }
+        catch(Exception e) 
+        {
+            fail();
+        }
+    }
+
+    public void testFacetModuleInheritance()
+    {
+        try 
+        {
+            executeCommandLine("make -C " + testDir + "/facet_inheritance test");
+        }
+        catch(Exception e) 
+        {
+            fail();
+        }
+    }
+
+    public void testFacetSimple()
+    {
+        try 
+        {
+            executeCommandLine("make -C " + testDir + "/facet_simple test");
+        }
+        catch(Exception e) 
+        {
+            fail();
+        }
+    }
     
-//    public void testFacetModuleTypes()
-//    {
-//        try {
-//            executeCommandLine("make -C " + testDir + "/facet_module_types test");
-//        }
-//        catch(Exception e) {
-//            fail();
-//        }
-//    }
+    public void testFacetModuleTypes()
+    {
+        try 
+        {
+            executeCommandLine("make -C " + testDir + "/facet_types test");
+        }
+        catch(Exception e) 
+        {
+            fail();
+        }
+    }
 }

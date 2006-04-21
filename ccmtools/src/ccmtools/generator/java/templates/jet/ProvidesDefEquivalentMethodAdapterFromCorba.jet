@@ -13,7 +13,8 @@
             {
                 <%=provides.getInterface().generateAbsoluteJavaName()%> localAdapter = 
                     localComponent.provide_<%=provides.getIdentifier()%>();
-                Servant servant = new <%=provides.getInterface().getIdentifier()%>AdapterFromCorba(localAdapter);
+                Servant servant = 
+                    new <%=provides.getInterface().generateAbsoluteJavaRemoteName()%>AdapterFromCorba(localAdapter);
                 org.omg.CORBA.Object obj = 
                     container.getCorbaObjectFromServant(servant);
                 <%=provides.getIdentifier()%>Facet = <%=provides.getInterface().generateAbsoluteIdlName()%>Helper.narrow(obj);

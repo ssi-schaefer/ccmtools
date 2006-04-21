@@ -20,7 +20,7 @@ public class ProvidesDefEquivalentMethodAdapterFromCorbaTemplate
   protected final String TEXT_4 = "Facet == null)" + NL + "            {";
   protected final String TEXT_5 = NL + "                ";
   protected final String TEXT_6 = " localAdapter = " + NL + "                    localComponent.provide_";
-  protected final String TEXT_7 = "();" + NL + "                Servant servant = new ";
+  protected final String TEXT_7 = "();" + NL + "                Servant servant = " + NL + "                    new ";
   protected final String TEXT_8 = "AdapterFromCorba(localAdapter);" + NL + "                org.omg.CORBA.Object obj = " + NL + "                    container.getCorbaObjectFromServant(servant);";
   protected final String TEXT_9 = NL + "                ";
   protected final String TEXT_10 = "Facet = ";
@@ -44,7 +44,7 @@ public class ProvidesDefEquivalentMethodAdapterFromCorbaTemplate
     stringBuffer.append(TEXT_6);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(provides.getInterface().getIdentifier());
+    stringBuffer.append(provides.getInterface().generateAbsoluteJavaRemoteName());
     stringBuffer.append(TEXT_8);
     stringBuffer.append(TEXT_9);
     stringBuffer.append(provides.getIdentifier());
