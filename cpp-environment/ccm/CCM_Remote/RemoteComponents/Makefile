@@ -1,2 +1,2 @@
 all: 
-	idl CCM.idl
+	idl ${CCMTOOLS_HOME}/idl/Components/CCM.idl
