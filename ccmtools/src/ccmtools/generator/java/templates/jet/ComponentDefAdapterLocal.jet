@@ -18,7 +18,7 @@ import ccm.local.Components.Assembly;
 import ccm.local.Components.Cookie;
 import ccm.local.Components.CookieRequired;
 import ccm.local.Components.ExceededConnectionLimit;
-import ccm.local.Components.HomeExecutorBase;
+import ccm.local.Components.CCMHome;
 import ccm.local.Components.InvalidConfiguration;
 import ccm.local.Components.InvalidConnection;
 import ccm.local.Components.InvalidName;
@@ -192,7 +192,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         }
     }
     
-    public HomeExecutorBase get_ccm_home()
+    public CCMHome get_ccm_home()
     {
         throw new RuntimeException("Not implemented!");
     }

@@ -12,11 +12,11 @@ $Header$
 	       Note that a property can be set from command-line:
 	          $ ant -Dprefix=/usr/local
 	-->
+	<property name="prefix" location="dist" />
 	<property name="src" location="src" />
-	<property name="idl" location="idl" />
+	<property name="idl" location="${prefix}/idl" />
 	<property name="build" location="build" />
 	<property name="lib" location="lib" />
-	<property name="prefix" location="dist" />
 	<property name="jarname" location="${lib}/ccm-runtime" />
 
 	<path id="compile.classpath">

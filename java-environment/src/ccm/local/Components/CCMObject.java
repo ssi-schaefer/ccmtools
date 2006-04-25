@@ -12,7 +12,7 @@ public interface CCMObject
      * The get_ccm_home() operation returns a CCMHome reference to the
      * home which manages this component.
      */
-    HomeExecutorBase get_ccm_home();
+    CCMHome get_ccm_home();
 
     /*
      * This operation is called by a configurator to indicate that the
