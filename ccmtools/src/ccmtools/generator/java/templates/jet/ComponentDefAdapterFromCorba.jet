@@ -33,13 +33,24 @@ public class <%=component.getIdentifier()%>AdapterFromCorba
     /** Local component instance */
     private <%=component.getIdentifier()%> localComponent;
         
-    /** References to CORBA facet adapters */
+    /** CORBA facet references */
 <%
 for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 %>    
-<%=provides.generateCorbaFacetAdapterDeclaration()%>
+<%=provides.generateCorbaFacetReferenceDeclaration()%>
+<%
+}
+%>   
+
+    /** CORBA receptacle references */
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
+{
+    UsesDef uses = (UsesDef)i.next();
+%>    
+<%=uses.generateCorbaReceptacleReferenceDeclaration()%>
 <%
 }
 %>   
@@ -55,10 +66,19 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 %>    
-<%=provides.generateCorbaFacetAdapterDeclarationInit()%>
+<%=provides.generateCorbaFacetReferenceInit()%>
 <%
 }
-%>                 
+%>              
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
+{
+    UsesDef uses = (UsesDef)i.next();
+%>    
+<%=uses.generateCorbaReceptacleReferenceInit()%>
+<%
+}
+%>     
     }
     
     /** 
@@ -75,6 +95,16 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 }
 %>
      
+<%
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+%>
+<%=uses.generateEquivalentMethodAdapterFromCorba()%>
+<%
+}
+%>
+    
     /** 
      * The following operations are defined in the Components::CCMObject
      * interface.
@@ -149,9 +179,24 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
         Components.AlreadyConnected, 
         Components.ExceededConnectionLimit
     {
-        logger.fine("");
-        //TODO:
-        return null;
+        logger.fine("name = " + name + ", obj = " + obj);
+        if(name == null) 
+        {
+            throw new Components.InvalidName("connection name is null!");
+        }
+<%		
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
+{
+    UsesDef uses = (UsesDef)i.next();
+%>        
+<%=uses.generateReceptacleConnectMethodAdapterFromCorba()%>
+<%
+}
+%>
+        else
+        {
+            throw new Components.InvalidName(name);
+        }	
     }
 
     public void disconnect(String name, Components.Cookie ck) 
@@ -160,7 +205,23 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
         Components.CookieRequired, 
         Components.NoConnection
     {
-        logger.fine("");
-        //TODO:
+        logger.fine("name = " + name + ", ck = " + ck);
+        if(name == null)
+        {
+            throw new Components.InvalidName("connection name is null!");
+        }
+<%		
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
+{
+    UsesDef uses = (UsesDef)i.next();
+%>        
+<%=uses.generateReceptacleDisconnectMethodAdapterFromCorba()%>
+<%
+}
+%>
+        else
+        {
+            throw new Components.InvalidName(name);
+        }	
     }
 }

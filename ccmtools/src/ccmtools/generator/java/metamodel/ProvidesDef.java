@@ -152,8 +152,6 @@ public class ProvidesDef
 	 * 
 	 *************************************************************************/
 	
-	// Code generator methods -------------------------------------------------	
-	
 	public String generateEquivalentMethodAdapterToCorba()
 	{
 		return new ProvidesDefEquivalentMethodAdapterToCorbaTemplate().generate(this);
@@ -181,12 +179,12 @@ public class ProvidesDef
 		return TAB + "private " + getInterface().generateAbsoluteJavaName() + " " + getIdentifier() + ";\n";
 	}
 	
-	public String generateCorbaFacetAdapterDeclaration()
+	public String generateCorbaFacetReferenceDeclaration()
 	{
 		return TAB + "private " + getInterface().generateAbsoluteIdlName() + " " + getIdentifier() + "Facet;\n";
 	}
 	
-	public String generateCorbaFacetAdapterDeclarationInit()
+	public String generateCorbaFacetReferenceInit()
 	{
 		return TAB2 + getIdentifier() + "Facet = null;\n";
 	}

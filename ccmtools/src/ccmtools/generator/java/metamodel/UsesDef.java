@@ -3,6 +3,7 @@ package ccmtools.generator.java.metamodel;
 import java.util.List;
 
 import ccmtools.generator.java.templates.UsesDefContextGetConnectionMethodImplementationTemplate;
+import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodDeclarationTemplate;
@@ -10,10 +11,13 @@ import ccmtools.generator.java.templates.UsesDefMultipleContextGetConnectionMeth
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodDeclarationTemplate;
+import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.UsesDefReceptacleConnectMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefReceptacleConnectMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefReceptacleConnectMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.UsesDefReceptacleDisconnectMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefReceptacleDisconnectMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefReceptacleDisconnectMethodAdapterToCorbaTemplate;
 
@@ -182,6 +186,11 @@ public class UsesDef
 		}
 	}	
 
+	public String generateEquivalentMethodAdapterFromCorba()
+	{
+		return new UsesDefEquivalentMethodAdapterFromCorbaTemplate().generate(this);
+	}
+	
 	public String generateReceptacleConnectMethodAdapterToCorba()
 	{
 		return new UsesDefReceptacleConnectMethodAdapterToCorbaTemplate().generate(this);
@@ -199,4 +208,30 @@ public class UsesDef
 		}
 	}
 
+	public String generateReceptacleConnectMethodAdapterFromCorba()
+	{
+		return new UsesDefReceptacleConnectMethodAdapterFromCorbaTemplate().generate(this);
+	}
+	
+	public String generateReceptacleDisconnectMethodAdapterFromCorba()
+	{
+		if(isMultiple())
+		{
+			return new UsesDefMultipleReceptacleDisconnectMethodAdapterFromCorbaTemplate().generate(this);
+		}
+		else
+		{
+			return new UsesDefReceptacleDisconnectMethodAdapterFromCorbaTemplate().generate(this);			
+		}
+	}
+
+	public String generateCorbaReceptacleReferenceDeclaration()
+	{
+		return TAB +  "private " + getInterface().generateAbsoluteIdlName() + " " + getIdentifier() + "Receptacle;\n";
+	}
+	
+	public String generateCorbaReceptacleReferenceInit()
+	{
+		return TAB2 + getIdentifier() + "Receptacle = null;\n";
+	}
 }

@@ -1,0 +1,53 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="UsesDefEquivalentMethodAdapterFromCorbaTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument;  %>
+
+    public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteIdlName()%> obj)
+        throws Components.AlreadyConnected, Components.InvalidConnection
+    {
+        logger.fine("");
+        try
+        {
+            <%=uses.getIdentifier()%>Receptacle = obj;
+            <%=uses.getInterface().generateAbsoluteJavaName()%> localInterfaceAdapter = 
+                new <%=uses.getInterface().generateAbsoluteJavaName()%>AdapterToCorba(obj);
+            localComponent.connect_<%=uses.getIdentifier()%>(localInterfaceAdapter);
+        }
+        catch(ccm.local.Components.AlreadyConnected e)
+        {
+            e.printStackTrace();
+            throw new Components.AlreadyConnected(e.getMessage());
+        }
+        catch(ccm.local.Components.InvalidConnection e)
+        {
+            e.printStackTrace();
+            throw new Components.InvalidConnection(e.getMessage());
+        }
+    }
+
+    public <%=uses.getInterface().generateAbsoluteIdlName()%> disconnect_<%=uses.getIdentifier()%>()
+        throws Components.NoConnection
+    {
+        logger.fine("");
+        try
+        {
+            localComponent.disconnect_<%=uses.getIdentifier()%>();
+            <%=uses.getInterface().generateAbsoluteIdlName()%> result = <%=uses.getIdentifier()%>Receptacle;
+            <%=uses.getIdentifier()%>Receptacle = null; 
+            return result;
+        }
+        catch(ccm.local.Components.NoConnection e)
+        {
+            e.printStackTrace();
+            throw new Components.NoConnection(e.getMessage());
+        }
+    }
+     
+    public <%=uses.getInterface().generateAbsoluteIdlName()%> get_connection_<%=uses.getIdentifier()%>()
+    {
+        logger.fine("");
+        return <%=uses.getIdentifier()%>Receptacle;
+    }
+     
