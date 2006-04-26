@@ -29,53 +29,53 @@ public class ReceptacleTest
     // Receptacle test cases
     // ------------------------------------------------------------------------
     
-//	public void testReceptacleModuleAttributes()
-//	{
-//		try
-//		{
-//			executeCommandLine("make -C " + testDir + "/");
-//		}
-//		catch (Exception e)
-//		{
-//			fail();
-//		}
-//	}
+	public void testReceptacleAttributes()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/receptacle_attributes test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
 
-//	public void testReceptacleModuleConstants()
-//	{
-//		try
-//		{
-//			executeCommandLine("make -C " + testDir + "/receptacle_module_constants test");
-//		}
-//		catch (Exception e)
-//		{
-//			fail();
-//		}
-//	}
-//
-//	public void testReceptacleModuleException()
-//	{
-//		try
-//		{
-//			executeCommandLine("make -C " + testDir + "/receptacle_module_exception test");
-//		}
-//		catch (Exception e)
-//		{
-//			fail();
-//		}
-//	}
-//
-//	public void testReceptacleModuleInheritance()
-//	{
-//		try
-//		{
-//			executeCommandLine("make -C " + testDir + "/receptacle_module_inheritance test");
-//		}
-//		catch (Exception e)
-//		{
-//			fail();
-//		}
-//	}
+	public void testReceptacleConstants()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/receptacle_constants test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
+
+	public void testReceptacleExceptions()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/receptacle_exceptions test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
+
+	public void testReceptacleInheritance()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/receptacle_inheritance test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
 
 	public void testReceptacleSimple()
 	{
@@ -89,17 +89,17 @@ public class ReceptacleTest
 		}
 	}
 
-//	public void testReceptacleModuleTypes()
-//	{
-//		try
-//		{
-//			executeCommandLine("make -C " + testDir + "/receptacle_module_types test");
-//		}
-//		catch (Exception e)
-//		{
-//			fail();
-//		}
-//	}
+	public void testReceptacleModuleTypes()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/receptacle_types test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
 	
 //	public void testReceptacleMultiple()
 //	{
