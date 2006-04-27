@@ -1,0 +1,19 @@
+
+module world 
+{
+
+  interface IFace
+  {
+    long foo(in string str);
+  };
+  
+  component Test
+  {
+    provides IFace port;
+  };
+  
+  home TestHome manages Test
+  {
+  };
+
+};
