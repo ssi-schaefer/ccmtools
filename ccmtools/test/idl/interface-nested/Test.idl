@@ -1,0 +1,24 @@
+
+
+
+module world
+{
+  interface Test
+  {
+    struct portConnection
+    {
+      long id;
+      string name;
+    };
+
+    typedef sequence <portConnection> portConnections;
+
+    exception NotFound
+    {
+      string name;
+    };
+
+    portConnections get_connections();
+  };
+  
+};
