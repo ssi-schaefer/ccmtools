@@ -41,20 +41,22 @@ public class ComponentDefAdapterFromCorbaTemplate
   protected final String TEXT_24 = NL;
   protected final String TEXT_25 = "    " + NL + "    " + NL + "    /** Supported interface methods */";
   protected final String TEXT_26 = NL;
-  protected final String TEXT_27 = "    " + NL + "    " + NL + "    " + NL + "    /** " + NL + "     * Equivalent interface methods " + NL + "     */" + NL + "     ";
+  protected final String TEXT_27 = "    " + NL + "    " + NL + "    " + NL + "    /** " + NL + "     * Equivalent interface methods " + NL + "     */" + NL + "     " + NL + "    /** Attribute equivalent methods */" + NL + "    ";
   protected final String TEXT_28 = NL;
-  protected final String TEXT_29 = NL + "     ";
+  protected final String TEXT_29 = "    " + NL + "" + NL + "" + NL + "    /** Facet equivalent methods */    " + NL + "    ";
   protected final String TEXT_30 = NL;
-  protected final String TEXT_31 = NL + "    " + NL + "    /** " + NL + "     * The following operations are defined in the Components::CCMObject" + NL + "     * interface." + NL + "     */" + NL + "    " + NL + "    public Components.CCMHome get_ccm_home()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return container.getCorbaHome();" + NL + "    }" + NL + "" + NL + "    public void configuration_complete()" + NL + "        throws Components.InvalidConfiguration" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {" + NL + "            localInterface.configuration_complete();" + NL + "        }" + NL + "        catch(ccm.local.Components.InvalidConfiguration e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new Components.InvalidConfiguration();" + NL + "        }" + NL + "    }" + NL + "" + NL + "    public void remove()" + NL + "        throws Components.RemoveFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        //TODO:" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** " + NL + "     * The following operations are defined in the Components::Navigation" + NL + "     * interface." + NL + "     */" + NL + "" + NL + "    public org.omg.CORBA.Object provide_facet(String name) " + NL + "        throws Components.InvalidName" + NL + "    {" + NL + "        logger.fine(\"\");\t" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new Components.InvalidName();" + NL + "        }";
-  protected final String TEXT_32 = "        ";
-  protected final String TEXT_33 = NL;
-  protected final String TEXT_34 = NL + "        else" + NL + "        {" + NL + "            throw new Components.InvalidName();" + NL + "        }" + NL + "    }" + NL + "" + NL + "" + NL + "    /** " + NL + "     * The following operations are defined in the Components::Receptacles" + NL + "     * interface." + NL + "     */" + NL + "     " + NL + "    public Components.Cookie connect(String name, org.omg.CORBA.Object obj) " + NL + "        throws Components.InvalidName, " + NL + "        Components.InvalidConnection, " + NL + "        Components.AlreadyConnected, " + NL + "        Components.ExceededConnectionLimit" + NL + "    {" + NL + "        logger.fine(\"name = \" + name + \", obj = \" + obj);" + NL + "        if(name == null) " + NL + "        {" + NL + "            throw new Components.InvalidName(\"connection name is null!\");" + NL + "        }";
-  protected final String TEXT_35 = "        ";
-  protected final String TEXT_36 = NL;
-  protected final String TEXT_37 = NL + "        else" + NL + "        {" + NL + "            throw new Components.InvalidName(name);" + NL + "        }\t" + NL + "    }" + NL + "" + NL + "    public void disconnect(String name, Components.Cookie ck) " + NL + "        throws Components.InvalidName, " + NL + "        Components.InvalidConnection, " + NL + "        Components.CookieRequired, " + NL + "        Components.NoConnection" + NL + "    {" + NL + "        logger.fine(\"name = \" + name + \", ck = \" + ck);" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new Components.InvalidName(\"connection name is null!\");" + NL + "        }";
-  protected final String TEXT_38 = "        ";
-  protected final String TEXT_39 = NL;
-  protected final String TEXT_40 = NL + "        else" + NL + "        {" + NL + "            throw new Components.InvalidName(name);" + NL + "        }\t" + NL + "    }" + NL + "}";
+  protected final String TEXT_31 = NL + "     " + NL + "    /** Receptacle equivalent methods */" + NL + "         ";
+  protected final String TEXT_32 = NL;
+  protected final String TEXT_33 = NL + "    " + NL + "    /** " + NL + "     * The following operations are defined in the Components::CCMObject" + NL + "     * interface." + NL + "     */" + NL + "    " + NL + "    public Components.CCMHome get_ccm_home()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return container.getCorbaHome();" + NL + "    }" + NL + "" + NL + "    public void configuration_complete()" + NL + "        throws Components.InvalidConfiguration" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {" + NL + "            localInterface.configuration_complete();" + NL + "        }" + NL + "        catch(ccm.local.Components.InvalidConfiguration e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new Components.InvalidConfiguration();" + NL + "        }" + NL + "    }" + NL + "" + NL + "    public void remove()" + NL + "        throws Components.RemoveFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        //TODO:" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** " + NL + "     * The following operations are defined in the Components::Navigation" + NL + "     * interface." + NL + "     */" + NL + "" + NL + "    public org.omg.CORBA.Object provide_facet(String name) " + NL + "        throws Components.InvalidName" + NL + "    {" + NL + "        logger.fine(\"\");\t" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new Components.InvalidName();" + NL + "        }";
+  protected final String TEXT_34 = "        ";
+  protected final String TEXT_35 = NL;
+  protected final String TEXT_36 = NL + "        else" + NL + "        {" + NL + "            throw new Components.InvalidName();" + NL + "        }" + NL + "    }" + NL + "" + NL + "" + NL + "    /** " + NL + "     * The following operations are defined in the Components::Receptacles" + NL + "     * interface." + NL + "     */" + NL + "     " + NL + "    public Components.Cookie connect(String name, org.omg.CORBA.Object obj) " + NL + "        throws Components.InvalidName, " + NL + "        Components.InvalidConnection, " + NL + "        Components.AlreadyConnected, " + NL + "        Components.ExceededConnectionLimit" + NL + "    {" + NL + "        logger.fine(\"name = \" + name + \", obj = \" + obj);" + NL + "        if(name == null) " + NL + "        {" + NL + "            throw new Components.InvalidName(\"connection name is null!\");" + NL + "        }";
+  protected final String TEXT_37 = "        ";
+  protected final String TEXT_38 = NL;
+  protected final String TEXT_39 = NL + "        else" + NL + "        {" + NL + "            throw new Components.InvalidName(name);" + NL + "        }\t" + NL + "    }" + NL + "" + NL + "    public void disconnect(String name, Components.Cookie ck) " + NL + "        throws Components.InvalidName, " + NL + "        Components.InvalidConnection, " + NL + "        Components.CookieRequired, " + NL + "        Components.NoConnection" + NL + "    {" + NL + "        logger.fine(\"name = \" + name + \", ck = \" + ck);" + NL + "        if(name == null)" + NL + "        {" + NL + "            throw new Components.InvalidName(\"connection name is null!\");" + NL + "        }";
+  protected final String TEXT_40 = "        ";
+  protected final String TEXT_41 = NL;
+  protected final String TEXT_42 = NL + "        else" + NL + "        {" + NL + "            throw new Components.InvalidName(name);" + NL + "        }\t" + NL + "    }" + NL + "}";
 
   public String generate(Object argument)
   {
@@ -158,63 +160,74 @@ for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 
     stringBuffer.append(TEXT_27);
     
-for(Iterator i = component.getFacet().iterator(); i.hasNext();)
+for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
-    ProvidesDef provides = (ProvidesDef)i.next();
+    AttributeDef attr = (AttributeDef)i.next();
 
     stringBuffer.append(TEXT_28);
-    stringBuffer.append(provides.generateEquivalentMethodAdapterFromCorba());
+    stringBuffer.append(attr.generateAdapterFromCorba());
     
 }
 
     stringBuffer.append(TEXT_29);
     
-for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
-    UsesDef uses = (UsesDef)i.next();
+    ProvidesDef provides = (ProvidesDef)i.next();
 
     stringBuffer.append(TEXT_30);
-    stringBuffer.append(uses.generateEquivalentMethodAdapterFromCorba());
+    stringBuffer.append(provides.generateEquivalentMethodAdapterFromCorba());
     
 }
 
     stringBuffer.append(TEXT_31);
+    
+for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
+{
+    UsesDef uses = (UsesDef)i.next();
+
+    stringBuffer.append(TEXT_32);
+    stringBuffer.append(uses.generateEquivalentMethodAdapterFromCorba());
+    
+}
+
+    stringBuffer.append(TEXT_33);
     		
 for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 
-    stringBuffer.append(TEXT_32);
-    stringBuffer.append(TEXT_33);
+    stringBuffer.append(TEXT_34);
+    stringBuffer.append(TEXT_35);
     stringBuffer.append(provides.generateNavigationMethodAdapterFromCorba());
     
 }
 
-    stringBuffer.append(TEXT_34);
+    stringBuffer.append(TEXT_36);
     		
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
 {
     UsesDef uses = (UsesDef)i.next();
 
-    stringBuffer.append(TEXT_35);
-    stringBuffer.append(TEXT_36);
+    stringBuffer.append(TEXT_37);
+    stringBuffer.append(TEXT_38);
     stringBuffer.append(uses.generateReceptacleConnectMethodAdapterFromCorba());
     
 }
 
-    stringBuffer.append(TEXT_37);
+    stringBuffer.append(TEXT_39);
     		
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
 {
     UsesDef uses = (UsesDef)i.next();
 
-    stringBuffer.append(TEXT_38);
-    stringBuffer.append(TEXT_39);
+    stringBuffer.append(TEXT_40);
+    stringBuffer.append(TEXT_41);
     stringBuffer.append(uses.generateReceptacleDisconnectMethodAdapterFromCorba());
     
 }
 
-    stringBuffer.append(TEXT_40);
+    stringBuffer.append(TEXT_42);
     return stringBuffer.toString();
   }
 }

@@ -11,7 +11,7 @@ public class JavaRemoteTestSuite
 		junit.framework.TestSuite suite = 
 			new junit.framework.TestSuite("Java Remote Components Test Suite");	
 
-//		suite.addTest(ComponentTest.suite());
+		suite.addTest(ComponentTest.suite());
 		suite.addTest(SupportsTest.suite());
 		suite.addTest(FacetTest.suite());
 		suite.addTest(ReceptacleTest.suite());
