@@ -1,0 +1,11 @@
+module world
+{
+  interface Test
+  {
+    attribute long id;
+
+    readonly attribute string name;
+    
+  };
+  
+};

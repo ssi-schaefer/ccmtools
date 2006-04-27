@@ -1,0 +1,11 @@
+module world
+{
+
+  local interface Test
+  {
+    attribute long id;
+    
+    long foo(in string str);
+  };
+
+};
