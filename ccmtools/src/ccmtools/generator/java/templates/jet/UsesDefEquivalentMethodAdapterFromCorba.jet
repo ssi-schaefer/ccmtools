@@ -13,7 +13,7 @@
             <%=uses.getIdentifier()%>Receptacle = obj;
             <%=uses.getInterface().generateAbsoluteJavaName()%> localInterfaceAdapter = 
                 new <%=uses.getInterface().generateAbsoluteJavaName()%>AdapterToCorba(obj);
-            localComponent.connect_<%=uses.getIdentifier()%>(localInterfaceAdapter);
+            localInterface.connect_<%=uses.getIdentifier()%>(localInterfaceAdapter);
         }
         catch(ccm.local.Components.AlreadyConnected e)
         {
@@ -33,7 +33,7 @@
         logger.fine("");
         try
         {
-            localComponent.disconnect_<%=uses.getIdentifier()%>();
+            localInterface.disconnect_<%=uses.getIdentifier()%>();
             <%=uses.getInterface().generateAbsoluteIdlName()%> result = <%=uses.getIdentifier()%>Receptacle;
             <%=uses.getIdentifier()%>Receptacle = null; 
             return result;

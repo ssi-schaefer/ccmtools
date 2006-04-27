@@ -12,7 +12,7 @@
             if(<%=provides.getIdentifier()%>Facet == null)
             {
                 <%=provides.getInterface().generateAbsoluteJavaName()%> localAdapter = 
-                    localComponent.provide_<%=provides.getIdentifier()%>();
+                    localInterface.provide_<%=provides.getIdentifier()%>();
                 Servant servant = 
                     new <%=provides.getInterface().generateAbsoluteJavaRemoteName()%>AdapterFromCorba(localAdapter);
                 org.omg.CORBA.Object obj = 

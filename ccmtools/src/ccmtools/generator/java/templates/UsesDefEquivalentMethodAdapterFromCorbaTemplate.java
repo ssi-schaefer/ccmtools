@@ -21,10 +21,10 @@ public class UsesDefEquivalentMethodAdapterFromCorbaTemplate
   protected final String TEXT_5 = "Receptacle = obj;";
   protected final String TEXT_6 = NL + "            ";
   protected final String TEXT_7 = " localInterfaceAdapter = " + NL + "                new ";
-  protected final String TEXT_8 = "AdapterToCorba(obj);" + NL + "            localComponent.connect_";
+  protected final String TEXT_8 = "AdapterToCorba(obj);" + NL + "            localInterface.connect_";
   protected final String TEXT_9 = "(localInterfaceAdapter);" + NL + "        }" + NL + "        catch(ccm.local.Components.AlreadyConnected e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new Components.AlreadyConnected(e.getMessage());" + NL + "        }" + NL + "        catch(ccm.local.Components.InvalidConnection e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new Components.InvalidConnection(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "" + NL + "    public ";
   protected final String TEXT_10 = " disconnect_";
-  protected final String TEXT_11 = "()" + NL + "        throws Components.NoConnection" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {" + NL + "            localComponent.disconnect_";
+  protected final String TEXT_11 = "()" + NL + "        throws Components.NoConnection" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {" + NL + "            localInterface.disconnect_";
   protected final String TEXT_12 = "();";
   protected final String TEXT_13 = NL + "            ";
   protected final String TEXT_14 = " result = ";

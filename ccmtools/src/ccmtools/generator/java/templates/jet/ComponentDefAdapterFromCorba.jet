@@ -18,6 +18,7 @@ import ccm.local.Components.CCMException;
 import ccm.remote.CCMSessionContainer;
 
 import org.omg.PortableServer.Servant;
+import org.omg.CORBA.BAD_OPERATION;
           
 <%=component.generateJavaImportStatements(component.generateJavaRemoteNamespace())%>
 
@@ -31,7 +32,7 @@ public class <%=component.getIdentifier()%>AdapterFromCorba
     private CCMSessionContainer container;
 
     /** Local component instance */
-    private <%=component.getIdentifier()%> localComponent;
+    private <%=component.getIdentifier()%> localInterface;
         
     /** CORBA facet references */
 <%
@@ -60,7 +61,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     {    
         logger.fine("localComponent = " + localComponent);
         this.container = container;
-        this.localComponent = localComponent;
+        this.localInterface = localComponent;
 <%
 for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
 {
@@ -80,6 +81,42 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 }
 %>     
     }
+    
+    
+    /* 
+     * Supported interface methods 
+     */
+
+    /** Supported interface attributes */
+<%
+for(Iterator i = component.getSupports().iterator(); i.hasNext();)
+{
+    SupportsDef supports = (SupportsDef)i.next();
+    for(Iterator j = supports.getInterface().getAllAttributes().iterator(); j.hasNext();)
+    {
+    	AttributeDef attr = (AttributeDef)j.next();
+%>
+<%=attr.generateAdapterFromCorba()%>
+<%
+	}
+}
+%>    
+    
+    /** Supported interface methods */
+<%
+for(Iterator i = component.getSupports().iterator(); i.hasNext();)
+{
+    SupportsDef supports = (SupportsDef)i.next();
+    for(Iterator j = supports.getInterface().getAllOperations().iterator(); j.hasNext();)
+    {
+    	OperationDef op = (OperationDef)j.next();
+%>
+<%=op.generateAdapterFromCorba()%>
+<%
+	}
+}
+%>    
+    
     
     /** 
      * Equivalent interface methods 
@@ -122,7 +159,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         logger.fine("");
         try
         {
-            localComponent.configuration_complete();
+            localInterface.configuration_complete();
         }
         catch(ccm.local.Components.InvalidConfiguration e)
         {
