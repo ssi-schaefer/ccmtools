@@ -137,7 +137,7 @@ public class ServiceLocator
 		}
 		catch (Exception e)
 		{
-			//e.printStackTrace();
+			e.printStackTrace();
 			throw new ServiceLocatorException(e.getMessage());
 		}
 	}
