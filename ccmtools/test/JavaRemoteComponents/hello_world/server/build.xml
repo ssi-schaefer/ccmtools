@@ -1,0 +1,43 @@
+<project name="HelloWorldServer" default="jar">
+
+  <property name="dest" location="." />
+  <property name="idl2" location="${dest}/idl2" />
+  <property name="src-gen" location="${dest}/src-gen" />
+  <property name="src" location="${dest}/src" />
+  <property name="build" location="${dest}/build" />
+  <property name="lib" location="${dest}/lib" />
+  <property name="jarname" location="${lib}/HelloWorldComponent" />
+
+
+  <path id="compile.classpath">
+      <pathelement path="${java.class.path}" />
+  </path>
+
+
+  <!-- Create the build directory-->
+  <target name="init" description="" >
+      <mkdir dir="${build}" />
+      <mkdir dir="${lib}" />
+  </target>
+ 
+
+  <!-- Compile generated Java files-->
+  <target name="compile" depends="init" description="" >
+      <javac srcdir="${src-gen}:${src}" destdir="${build}" 
+             debug="on" source="1.5" target="1.5">
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+  <target name="jar" depends="compile" >
+      <jar jarfile="${jarname}.jar" basedir="${build}" />
+  </target>
+
+
+  <!-- Clean up -->
+  <target name="clean" description="" >
+      <delete dir="${build}" />
+      <delete dir="${lib}" />
+  </target>
+
+</project>
