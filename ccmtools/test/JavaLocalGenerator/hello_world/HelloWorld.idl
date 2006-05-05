@@ -1,0 +1,19 @@
+
+module world 
+{
+
+  interface Hello
+  {
+    string sayHello();
+  };
+  
+  component HelloWorld
+  {
+    provides Hello hello;
+  };
+  
+  home HelloWorldHome manages HelloWorld
+  {
+  };
+
+};
