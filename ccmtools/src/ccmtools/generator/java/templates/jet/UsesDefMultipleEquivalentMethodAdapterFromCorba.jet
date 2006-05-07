@@ -1,0 +1,29 @@
+<%@ jet package="ccmtools.generator.java.templates" 
+	    class="UsesDefMultipleEquivalentMethodAdapterFromCorbaTemplate" 
+		imports="ccmtools.generator.java.metamodel.* "	    
+%>
+<% UsesDef uses = (UsesDef) argument;  %>
+
+    public Components.Cookie connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteIdlName()%> obj)
+        throws Components.ExceededConnectionLimit, Components.InvalidConnection
+    {
+        logger.fine("");
+        // TODO: 
+        return null;
+    }
+
+    public <%=uses.getInterface().generateAbsoluteIdlName()%> disconnect_<%=uses.getIdentifier()%>(Components.Cookie ck)
+        throws Components.InvalidConnection
+    {
+        logger.fine("");
+        // TODO:
+        return null;
+    }
+
+    public <%=uses.getComponent().generateAbsoluteIdlName()%>Package.<%=uses.getIdentifier()%>Connection[] get_connections_<%=uses.getIdentifier()%>()
+    {
+        logger.fine("");
+        // TODO:
+        return null;
+    }
+     

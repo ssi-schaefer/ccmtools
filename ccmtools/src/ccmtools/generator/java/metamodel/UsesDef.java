@@ -8,9 +8,11 @@ import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterLocalTemp
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefEquivalentMethodDeclarationTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleContextGetConnectionMethodImplementationTemplate;
+import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleEquivalentMethodDeclarationTemplate;
+import ccmtools.generator.java.templates.UsesDefMultipleReceptacleConnectMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.UsesDefMultipleReceptacleDisconnectMethodAdapterToCorbaTemplate;
@@ -188,7 +190,14 @@ public class UsesDef
 
 	public String generateEquivalentMethodAdapterFromCorba()
 	{
-		return new UsesDefEquivalentMethodAdapterFromCorbaTemplate().generate(this);
+		if(isMultiple())
+		{
+			return new UsesDefMultipleEquivalentMethodAdapterFromCorbaTemplate().generate(this);
+		}
+		else
+		{
+			return new UsesDefEquivalentMethodAdapterFromCorbaTemplate().generate(this);
+		}
 	}
 	
 	public String generateReceptacleConnectMethodAdapterToCorba()
@@ -210,7 +219,14 @@ public class UsesDef
 
 	public String generateReceptacleConnectMethodAdapterFromCorba()
 	{
-		return new UsesDefReceptacleConnectMethodAdapterFromCorbaTemplate().generate(this);
+		if(isMultiple())
+		{
+			return new UsesDefMultipleReceptacleConnectMethodAdapterFromCorbaTemplate().generate(this);
+		}
+		else
+		{
+			return new UsesDefReceptacleConnectMethodAdapterFromCorbaTemplate().generate(this);
+		}
 	}
 	
 	public String generateReceptacleDisconnectMethodAdapterFromCorba()
