@@ -15,7 +15,7 @@ package world.europe.austria.ccm.local;
 import java.util.List;
 import java.util.ArrayList;
                  
-import ccm.local.Components.*;
+import Components.ccm.local.CCMException;
 import ccm.local.*;
 
 
@@ -41,7 +41,7 @@ public class TestuserTypeImpl
     /** Business logic implementations */
     
     public Color f1(Color p1, Holder<Color> p2, Holder<Color> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	p3.setValue(p2.getValue());
 	p2.setValue(p1);
@@ -50,7 +50,7 @@ public class TestuserTypeImpl
 
     
     public Person f2(Person p1, Holder<Person> p2, Holder<Person> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	Person r = new Person(p1.getId() + p2.getValue().getId(), 
 			      p1.getName() + p2.getValue().getName());	
@@ -61,7 +61,7 @@ public class TestuserTypeImpl
 
 
     public Address f3(Address p1, Holder<Address> p2, Holder<Address> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	Person person = new Person(p1.getResident().getId() + p2.getValue().getResident().getId(), 
 				 p1.getResident().getName() + p2.getValue().getResident().getName());
@@ -74,7 +74,7 @@ public class TestuserTypeImpl
 
 
     public List<Integer> f4(List<Integer> p1, Holder<List<Integer>> p2, Holder<List<Integer>> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	List<Integer> result = new ArrayList<Integer>(p1.size());
 	p3.setValue(new ArrayList<Integer>(p1.size()));
@@ -89,7 +89,7 @@ public class TestuserTypeImpl
 
 
     public List<String> f5(List<String> p1, Holder<List<String>> p2, Holder<List<String>> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	List<String> result = new ArrayList<String>(p1.size());
 	p3.setValue(new ArrayList<String>(p1.size()));
@@ -104,7 +104,7 @@ public class TestuserTypeImpl
 
 
     public List<Person> f6(List<Person> p1, Holder<List<Person>> p2, Holder<List<Person>> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	List<Person> result = new ArrayList<Person>(p1.size());
 	p3.setValue(new ArrayList<Person>(p1.size()));
@@ -120,7 +120,7 @@ public class TestuserTypeImpl
 
 
     public int f7(int t1, Holder<Integer> t2, Holder<Integer> t3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	t3.setValue(t2.getValue());
 	t2.setValue(t1);
@@ -129,7 +129,7 @@ public class TestuserTypeImpl
 
 
     public int[] f8(int[] p1, ccm.local.Holder<int[]> p2, ccm.local.Holder<int[]> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	int length = 10; // For this test, we assume that all arrays are of the same size
 	int[] result = new int[length];
@@ -144,7 +144,7 @@ public class TestuserTypeImpl
     }
 
     public String[] f9(String[] p1, ccm.local.Holder<String[]> p2, ccm.local.Holder<String[]> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	int length = 10; // For this test, we assume that all arrays are of the same size
 	String[] result = new String[length];
@@ -159,7 +159,7 @@ public class TestuserTypeImpl
     }
 
     public Person[] f10(Person[] p1, ccm.local.Holder<Person[]> p2, ccm.local.Holder<Person[]> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	int length = 10; // For this test, we assume that all arrays are of the same size
 	Person[] result = new Person[length];
@@ -176,7 +176,7 @@ public class TestuserTypeImpl
 
 
     public int[][] f11 (int[][] p1, ccm.local.Holder<int[][]> p2, ccm.local.Holder<int[][]> p3)     
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	// TODO: implement test case
 	return null;
@@ -184,7 +184,7 @@ public class TestuserTypeImpl
 
 
     public int[][][] f12 (int[][][] p1, ccm.local.Holder<int[][][]> p2, ccm.local.Holder<int[][][]> p3)     
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	// TODO: implement test case
 	return null;

@@ -12,7 +12,7 @@
 
 package world.ccm.local;
                  
-import ccm.local.Components.*;
+import Components.ccm.local.CCMException;
  
 /** 
  * This class implements a component facet's methods.
@@ -36,61 +36,61 @@ public class TestifaceImpl
     /** Business logic implementations */
     
     public boolean getBooleanValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.BOOLEAN_CONST;
     }    
 
     public byte getOctetValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.OCTET_CONST;
     }    
 
     public short getShortValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.SHORT_CONST;
     }    
 
     public short getUnsignedShortValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.USHORT_CONST;
     }    
 
     public int getLongValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.LONG_CONST;
     }    
 
     public int getUnsignedLongValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.ULONG_CONST;
     }    
 
     public char getCharValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.CHAR_CONST;
     }    
 
     public String getStringValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.STRING_CONST;
     }    
 
     public float getFloatValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.FLOAT_CONST;
     }    
 
     public double getDoubleValue()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return Constants.DOUBLE_CONST;
     }    

@@ -12,7 +12,7 @@
 
 package world.ccm.local;
 
-import ccm.local.Components.CCMException;
+import Components.ccm.local.CCMException;
    
 
 /** 
@@ -34,13 +34,7 @@ public class TestinPortImpl
         this.component = component;
     }
  
-
-
     /** Business logic implementations */
-
-   
-    
-     
 
     public int op1(String str)
         throws CCMException

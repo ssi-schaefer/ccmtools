@@ -12,9 +12,9 @@
 
 package world.europe.ccm.local;
    
-import ccm.local.Components.SessionContext; 
+import Components.ccm.local.SessionContext; 
+import Components.ccm.local.CCMException;
 
-import ccm.local.Components.CCMException;
 import world.ccm.local.CCM_Constants;
 import world.ccm.local.Constants;
   

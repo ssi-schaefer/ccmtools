@@ -12,10 +12,10 @@
 
 package world.europe.ccm.local;
    
-import ccm.local.Components.SessionContext; 
+import Components.ccm.local.SessionContext; 
 
-import ccm.local.Components.CCMException;
-  
+import Components.ccm.local.CCMException;
+import Components.ccm.local.NoConnection;
    
 /**
  * This class implements component equivalent and supported interfaces
@@ -131,7 +131,7 @@ public class TestImpl
                 assert(Math.abs(world.ccm.local.Constants.DOUBLE_CONST - result) < 0.000001);
             }
         }
-        catch(ccm.local.Components.NoConnection e)
+        catch(NoConnection e)
         {
             e.printStackTrace();
             assert(false);

@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import world.europe.austria.ccm.local.*;
-import ccm.local.Components.CCMException;
+import Components.ccm.local.CCMException;
+import Components.ccm.local.CCMExceptionReason;
 import ccm.local.Holder;
 
 
@@ -30,7 +31,7 @@ public class MyUserTypeImpl
                 catch (Exception e)
                 {
                         e.printStackTrace();
-                        throw new CCMException(e.getMessage());
+                        throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
         public Person f2(Person p1, Holder<Person> p2, Holder<Person> p3)
@@ -49,7 +50,7 @@ public class MyUserTypeImpl
                 catch (Exception e)
                 {
                         e.printStackTrace();
-                        throw new CCMException(e.getMessage());
+                        throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
         public Address f3(Address p1, Holder<Address> p2, Holder<Address> p3)
@@ -71,7 +72,7 @@ public class MyUserTypeImpl
                 catch (Exception e)
                 {
                         e.printStackTrace();
-                        throw new CCMException(e.getMessage());
+                        throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
 
@@ -94,7 +95,7 @@ public class MyUserTypeImpl
                 catch (Exception e)
                 {
                         e.printStackTrace();
-                        throw new CCMException(e.getMessage());
+                        throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
         public List<String> f5(List<String> p1, Holder<List<String>> p2, Holder<List<String>> p3)
@@ -116,7 +117,7 @@ public class MyUserTypeImpl
                 catch (Exception e)
                 {
                         e.printStackTrace();
-                        throw new CCMException(e.getMessage());
+                        throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
         public List<Person> f6(List<Person> p1, Holder<List<Person>> p2, Holder<List<Person>> p3)
@@ -139,7 +140,7 @@ public class MyUserTypeImpl
                 catch (Exception e)
                 {
                         e.printStackTrace();
-                        throw new CCMException(e.getMessage());
+                        throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
 
@@ -157,7 +158,7 @@ public class MyUserTypeImpl
                 catch (Exception e)
                 {
                         e.printStackTrace();
-                        throw new CCMException(e.getMessage());
+                        throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
 }

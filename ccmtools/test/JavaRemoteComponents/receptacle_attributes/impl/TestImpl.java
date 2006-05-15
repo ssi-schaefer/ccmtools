@@ -15,8 +15,9 @@ package world.europe.austria.ccm.local;
 import java.util.List;
 import java.util.ArrayList;
 
-import ccm.local.Components.SessionContext; 
-import ccm.local.Components.CCMException;
+import Components.ccm.local.SessionContext; 
+import Components.ccm.local.CCMException;
+import Components.ccm.local.NoConnection;
 
 import world.ccm.local.*;  
 import world.europe.ccm.local.*;  
@@ -236,7 +237,7 @@ public class TestImpl
 
             System.out.println("OK!");
         }
-        catch(ccm.local.Components.NoConnection e)
+        catch(NoConnection e)
         {
             e.printStackTrace();
             assert(false);

@@ -12,9 +12,9 @@
 
 package world.ccm.local;
    
-import ccm.local.Components.SessionContext; 
-
-import ccm.local.Components.CCMException;
+import Components.ccm.local.SessionContext; 
+import Components.ccm.local.NoConnection;
+import Components.ccm.local.CCMException;
   
    
 /**
@@ -84,7 +84,7 @@ public class TestImpl
             int len = ctx.get_connection_port().foo(msg);
             assert(len == msg.length());
         }
-        catch(ccm.local.Components.NoConnection e)
+        catch(NoConnection e)
         {
             e.printStackTrace();
             assert(false);

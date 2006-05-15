@@ -12,7 +12,7 @@
 
 package world.ccm.local;
 
-import ccm.local.Components.CCMException;
+import Components.ccm.local.CCMException;
    
 
 /** 

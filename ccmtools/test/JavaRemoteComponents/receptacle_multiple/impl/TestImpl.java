@@ -11,10 +11,13 @@
  */
 
 package world.ccm.local;
-   
+
+import java.util.Map;
+import java.util.Iterator;
+    
 import Components.ccm.local.SessionContext; 
 import Components.ccm.local.CCMException;
-import Components.ccm.local.NoConnection;
+
    
 /**
  * This class implements component equivalent and supported interfaces
@@ -75,49 +78,15 @@ public class TestImpl
     public void ccm_activate() 
         throws CCMException
     {
-        try
-        {
-            System.out.println(">> Receptacle inheritance test ...");
-            world.america.ccm.local.SubType iface = ctx.get_connection_port();
+        // OPTIONAL: IMPLEMENT ME HERE !
+	Map receptacleMap = ctx.get_connections_port();
 
-            {
-                int value = 1;
-                iface.attr1(value);
-                int result = iface.attr1();
-                assert(value == result);
-            }
-            {
-                int value = 2;
-                iface.attr2(value);
-                int result = iface.attr2();
-                assert(value == result);
-            }
-            {
-                int value = 3;
-                iface.attr3(value);
-                int result = iface.attr3();
-                assert(value == result);
-            }
-            {
-                String s = "1234567890";
-                int size = iface.op1(s);
-                assert(s.length() == size);
-            }
-            {
-                String s = "1234567890";
-                int size = iface.op2(s);
-                assert(s.length() == size);
-            }            {
-                String s = "1234567890";
-                int size = iface.op3(s);
-                assert(s.length() == size);
-            }
-            System.out.println(">> OK!");
-        }
-        catch(NoConnection e)
+        for(Iterator i = receptacleMap.values().iterator(); i.hasNext();)
         {
-            e.printStackTrace();
-            assert(false);
+            world.ccm.local.IFace receptacle = (world.ccm.local.IFace)i.next();
+            String s = "01234567890";
+            int len = receptacle.foo(s);
+            assert(len == s.length());
         }
     }
 

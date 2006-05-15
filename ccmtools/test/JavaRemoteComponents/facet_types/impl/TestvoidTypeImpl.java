@@ -12,7 +12,7 @@
 
 package world.europe.austria.ccm.local;
                  
-import ccm.local.Components.*;
+import Components.ccm.local.CCMException;
  
 /** 
  * This class implements a component facet's methods.
@@ -42,13 +42,13 @@ public class TestvoidTypeImpl
     /** Business logic implementations */
     
     public void f1(int p1)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         attr = p1;	
     }    
 
     public int f2()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
     	return attr;
     }    

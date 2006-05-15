@@ -12,9 +12,8 @@
 
 package world.ccm.local;
    
-import ccm.local.Components.SessionContext; 
-
-import ccm.local.Components.CCMException;
+import Components.ccm.local.SessionContext; 
+import Components.ccm.local.CCMException;
   
    
 /**

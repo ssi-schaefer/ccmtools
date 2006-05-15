@@ -1,7 +1,5 @@
 package client;
 
-import ccm.local.Components.CCMException;
-
 public class MyIFace
     implements world.ccm.local.IFace
 {

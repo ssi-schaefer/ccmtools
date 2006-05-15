@@ -5,7 +5,8 @@ import org.omg.CosNaming.NamingContextExtHelper;
 
 import world.ccm.local.*;
 import ccm.local.ServiceLocator;
-import ccm.local.Components.Cookie;
+import Components.ccm.local.Cookie;
+import Components.ccm.local.HomeFinder;
 
 import java.util.logging.*;
 
@@ -51,7 +52,7 @@ public class Client
 	     * Client-side code (co-located with clientlib)
 	     **/
 	    TestHomeClientLibDeployment.deploy("TestHome");
-	    ccm.local.Components.HomeFinder homeFinder = ccm.local.HomeFinder.instance();
+	    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
             TestHome home = (TestHome) homeFinder.find_home_by_name("TestHome");
             Test component = home.create();
 	    Cookie ck = component.connect("port",new client.MyIFace());

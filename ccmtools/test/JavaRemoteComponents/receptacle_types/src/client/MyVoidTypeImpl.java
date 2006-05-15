@@ -1,6 +1,6 @@
 package client;
 
-import ccm.local.Components.CCMException;
+import Components.ccm.local.CCMException;
 
 public class MyVoidTypeImpl
     implements world.europe.austria.ccm.local.VoidTypeInterface

@@ -14,7 +14,7 @@ package world.europe.austria.ccm.local;
 
 import java.util.List;                 
 import java.util.ArrayList;                 
-import ccm.local.Components.*;
+import Components.ccm.local.*;
  
 /** 
  * This class implements a component facet's methods.
@@ -41,7 +41,7 @@ public class TestifaceImpl
    
     
     public int foo(String msg)
-        throws ccm.local.Components.CCMException, 
+        throws CCMException, 
 	       FatalError, 
 	       SuperError, 
 	       ErrorException

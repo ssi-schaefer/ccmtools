@@ -4,10 +4,9 @@ import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 
 import world.ccm.local.*;
-import world.europe.ccm.local.*;
-import world.america.ccm.local.*;
 import ccm.local.ServiceLocator;
 import Components.ccm.local.HomeFinder;
+import Components.ccm.local.Cookie;
 
 import java.util.logging.*;
 
@@ -38,8 +37,8 @@ public class Client
 	    ORB orb = ORB.init(args, null);
 	    ServiceLocator.instance().setCorbaOrb(orb);
 
-       	    world.ccm.remote.TestHomeDeployment.deploy("myTestHome");
-	    TestHomeClientLibDeployment.deploy("myTestHome");
+       	    world.ccm.remote.TestHomeDeployment.deploy("TestHome");
+	    TestHomeClientLibDeployment.deploy("TestHome");
 	    System.out.println("> Server is running...");
 	    // orb.run();
 	}
@@ -55,15 +54,20 @@ public class Client
 	     * Client-side code (co-located with clientlib)
 	     **/
 	    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
-            TestHome home = (TestHome) homeFinder.find_home_by_name("myTestHome");
+            TestHome home = (TestHome) homeFinder.find_home_by_name("TestHome");
             Test component = home.create();
-	    component.connect_port(new client.MySubTypeImpl());
+	    Cookie ck1 = component.connect_port(new client.MyIFace("one"));
+	    Cookie ck2 = component.connect_port(new client.MyIFace("two"));
+	    Cookie ck3 = component.connect_port(new client.MyIFace("three"));
+
             component.configuration_complete();
 	    
 	    // now the remote component's business logic calls methods to the
 	    // connected object.
 
-	    component.disconnect_port();
+	    component.disconnect_port(ck1);
+	    component.disconnect_port(ck2);
+	    component.disconnect_port(ck3);
 	    component.remove();
         }
         catch(Exception e) 
@@ -78,8 +82,8 @@ public class Client
 	    /**
 	     * Server-side code (Part 2)
 	     */
-	    TestHomeClientLibDeployment.undeploy("myTestHome");
-	    world.ccm.remote.TestHomeDeployment.undeploy("myTestHome");
+	    TestHomeClientLibDeployment.undeploy("TestHome");
+	    world.ccm.remote.TestHomeDeployment.undeploy("TestHome");
 	    System.out.println("OK!");
 	}
 	catch (Exception e)

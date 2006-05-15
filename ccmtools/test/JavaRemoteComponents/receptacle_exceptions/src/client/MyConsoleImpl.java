@@ -3,7 +3,7 @@ package client;
 import java.util.List;
 import java.util.ArrayList;
 
-import ccm.local.Components.CCMException;
+import Components.ccm.local.CCMException;
 
 import world.europe.austria.ccm.local.*;
 

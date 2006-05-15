@@ -5,6 +5,7 @@ import org.omg.CosNaming.NamingContextExtHelper;
 
 import world.europe.austria.ccm.local.*;
 import ccm.local.ServiceLocator;
+import Components.ccm.local.HomeFinder;
 
 import java.util.logging.*;
 
@@ -51,7 +52,7 @@ public class Client
 	    /**
 	     * Client-side code (co-located with clientlib)
 	     **/
-	    ccm.local.Components.HomeFinder homeFinder = ccm.local.HomeFinder.instance();
+	    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
             TestHome home = (TestHome) homeFinder.find_home_by_name("myTestHome");
             Test component = home.create();
             component.configuration_complete();

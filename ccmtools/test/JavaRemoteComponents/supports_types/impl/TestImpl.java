@@ -12,9 +12,9 @@
 
 package world.europe.austria.ccm.local;
    
-import ccm.local.Components.SessionContext; 
+import Components.ccm.local.SessionContext; 
+import Components.ccm.local.CCMException;
 
-import ccm.local.Components.CCMException;
 import ccm.local.Holder;
 import java.util.List;
 import java.util.ArrayList;

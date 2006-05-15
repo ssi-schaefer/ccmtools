@@ -12,7 +12,7 @@
 
 package america.ccm.local;
                  
-import ccm.local.Components.*;
+import Components.ccm.local.CCMException;
  
 /** 
  * This class implements a component facet's methods.
@@ -42,26 +42,26 @@ public class TestifaceImpl
     
 
     public int attr1()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         return this.attr1_;
     }     
 
     public void attr1(int value)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         this.attr1_ = value;
     }
     
 
     public int attr2()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         return this.attr2_;
     }     
 
     public void attr2(int value)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         this.attr2_ = value;
     }
@@ -69,13 +69,13 @@ public class TestifaceImpl
   
 
     public int attr3()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         return this.attr3_;
     }     
 
     public void attr3(int value)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         this.attr3_ = value;
     }
@@ -83,7 +83,7 @@ public class TestifaceImpl
     
         
     public int op1(String str)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         System.out.println("app> " + str);
 	return str.length();
@@ -91,7 +91,7 @@ public class TestifaceImpl
 
     
     public int op2(String str)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         System.out.println("app> " + str);
 	return str.length();
@@ -99,7 +99,7 @@ public class TestifaceImpl
  
 
     public int op3(String str)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         System.out.println("app> " + str);
 	return str.length();
