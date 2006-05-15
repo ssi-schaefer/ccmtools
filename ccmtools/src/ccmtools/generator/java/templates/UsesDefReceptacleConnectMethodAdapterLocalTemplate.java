@@ -17,7 +17,7 @@ public class UsesDefReceptacleConnectMethodAdapterLocalTemplate
   protected final String TEXT_1 = "        else if(name.equals(\"";
   protected final String TEXT_2 = "\"))" + NL + "        {" + NL + "            connect_";
   protected final String TEXT_3 = "((";
-  protected final String TEXT_4 = ") obj);" + NL + "            return new ccm.local.Components.Cookie();" + NL + "        }";
+  protected final String TEXT_4 = ") obj);" + NL + "            return new CookieImpl();" + NL + "        }";
 
   public String generate(Object argument)
   {

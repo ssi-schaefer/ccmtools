@@ -3,11 +3,12 @@ package ccm.local;
 import java.util.HashMap;
 import java.util.Map;
 
-import ccm.local.Components.CCMHome;
-import ccm.local.Components.HomeNotFound;
+import Components.ccm.local.CCMHome;
+import Components.ccm.local.HomeNotFound;
+
 
 public class HomeFinder
-	implements ccm.local.Components.HomeFinder
+	implements Components.ccm.local.HomeFinder
 {
 	protected static HomeFinder instance = null;
 	

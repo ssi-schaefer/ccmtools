@@ -12,9 +12,20 @@
 package <%=component.generateJavaRemoteNamespace()%>;
 
 import java.util.logging.Logger;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.HashMap;
+
+import Components.ccm.local.AlreadyConnected;
+import Components.ccm.local.Cookie;
+import Components.ccm.local.CookieImpl;
+import Components.ccm.local.CCMException;   
+import Components.ccm.local.ExceededConnectionLimit;
+import Components.ccm.local.InvalidConfiguration;
+import Components.ccm.local.InvalidConnection;
+import Components.ccm.local.NoConnection;
 
 import ccm.local.ServiceLocator;
-import ccm.local.Components.CCMException;     
 import ccm.remote.CCMSessionContainer;
 
 import org.omg.PortableServer.Servant;
@@ -178,7 +189,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         {
             localInterface.configuration_complete();
         }
-        catch(ccm.local.Components.InvalidConfiguration e)
+        catch(InvalidConfiguration e)
         {
             e.printStackTrace();
             throw new Components.InvalidConfiguration();

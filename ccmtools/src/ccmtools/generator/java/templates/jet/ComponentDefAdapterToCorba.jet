@@ -12,33 +12,38 @@
 package <%=component.generateJavaNamespace()%>;
 
 import java.util.logging.Logger;
+import java.util.Map;
+import java.util.HashMap;
 
-import ccm.local.Components.AlreadyConnected;
-import ccm.local.Components.CCMException;
-import ccm.local.Components.Cookie;
-import ccm.local.Components.CookieRequired;
-import ccm.local.Components.ExceededConnectionLimit;
-import ccm.local.Components.CCMHome;
-import ccm.local.Components.InvalidName;
-import ccm.local.Components.InvalidConnection;
-import ccm.local.Components.InvalidConfiguration; 
-import ccm.local.Components.NoConnection;
-import ccm.local.Components.RemoveFailure; 
+import org.omg.PortableServer.POA;
+import org.omg.PortableServer.POAPackage.ServantNotActive;
+import org.omg.PortableServer.POAPackage.WrongPolicy;
+import org.omg.PortableServer.Servant;
+
+import Components.ccm.local.AlreadyConnected;
+import Components.ccm.local.CCMException;
+import Components.ccm.local.CCMExceptionReason;
+import Components.ccm.local.Cookie;
+import Components.ccm.local.CookieImpl;
+import Components.ccm.local.CookieRequired;
+import Components.ccm.local.ExceededConnectionLimit;
+import Components.ccm.local.CCMHome;
+import Components.ccm.local.InvalidName;
+import Components.ccm.local.InvalidConnection;
+import Components.ccm.local.InvalidConfiguration; 
+import Components.ccm.local.NoConnection;
+import Components.ccm.local.RemoveFailure; 
 
 import ccm.local.ServiceLocator;
 import ccm.local.ServiceLocatorException;
 
 <%=component.generateJavaImportStatements()%>  
                  
-import org.omg.PortableServer.POA;
 
 public class <%=component.getIdentifier()%>AdapterToCorba 
     implements <%=component.getIdentifier()%>
 {
     private Logger logger = ServiceLocator.instance().getLogger();
-    
-    public static final String COMPONENT_REPOSITORY_ID = 
-        "<%=component.generateRepositoryId()%>";
 
     /** CORBA reference to a remote component */
     private <%=component.generateAbsoluteIdlName()%> remoteInterface;
@@ -80,7 +85,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         }
         catch(ServiceLocatorException e)
         {
-            throw new CCMException(e.getMessage());
+            throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
         }
     }
     

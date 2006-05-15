@@ -2,45 +2,47 @@
 	    class="UsesDefMultipleEquivalentMethodAdapterLocalTemplate" 
 		imports="ccmtools.generator.java.metamodel.* "	    
 %>
-<% UsesDef uses = (UsesDef) argument;  %>
+<% 
+UsesDef uses = (UsesDef) argument;  
+InterfaceDef iface = uses.getInterface();
+%>
 
-    public ccm.local.Components.Cookie connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> obj)
-        throws ccm.local.Components.ExceededConnectionLimit, 
-               ccm.local.Components.InvalidConnection
+    public Cookie connect_<%=uses.getIdentifier()%>(<%=iface.generateAbsoluteJavaName()%> obj)
+        throws ExceededConnectionLimit, 
+               InvalidConnection
     {
-        logger.fine("obj = " + obj);
+        logger.fine("Object reference = " + obj);
         if(obj == null)
         {
-            throw new ccm.local.Components.InvalidConnection();
+            throw new InvalidConnection();
         }	
         else
         {
-            ccm.local.Components.Cookie ck = new ccm.local.Components.Cookie();            
+            Cookie ck = new CookieImpl();            
             <%=uses.getIdentifier()%>ReceptacleMap.put(ck, obj);
             return ck;
         }
     }
 
-    public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(ccm.local.Components.Cookie ck)
-        throws ccm.local.Components.InvalidConnection
+    public <%=iface.generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(Cookie ck)
+        throws InvalidConnection
     {
-	    logger.fine("ck = " + ck);        
+	    logger.fine("Cookie = " + ck);        
         if(ck == null || !<%=uses.getIdentifier()%>ReceptacleMap.containsKey(ck))
         {
-            throw new ccm.local.Components.InvalidConnection();
+            throw new InvalidConnection();
         }
         else
         {
-            <%=uses.getInterface().generateAbsoluteJavaName()%> f = 
-                (<%=uses.getInterface().generateAbsoluteJavaName()%>)<%=uses.getIdentifier()%>ReceptacleMap.get(ck);
+            <%=uses.getInterface().generateAbsoluteJavaName()%> f = <%=uses.getIdentifier()%>ReceptacleMap.get(ck);
             <%=uses.getIdentifier()%>ReceptacleMap.remove(ck);
             return f;
         }
     }
         
-    public java.util.Map get_connections_<%=uses.getIdentifier()%>()
+    public java.util.Map<Cookie, <%=iface.generateAbsoluteJavaName()%>> get_connections_<%=uses.getIdentifier()%>()
     {
         logger.fine("");
         // return a copy of the receptacle map
-        return new java.util.HashMap(<%=uses.getIdentifier()%>ReceptacleMap);
+        return new java.util.HashMap<Cookie, <%=iface.generateAbsoluteJavaName()%>>(<%=uses.getIdentifier()%>ReceptacleMap);
     }

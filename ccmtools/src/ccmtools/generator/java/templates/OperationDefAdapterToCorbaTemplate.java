@@ -31,7 +31,7 @@ public class OperationDefAdapterToCorbaTemplate
   protected final String TEXT_15 = NL;
   protected final String TEXT_16 = NL + "        }";
   protected final String TEXT_17 = NL;
-  protected final String TEXT_18 = NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }";
+  protected final String TEXT_18 = NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t        throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);" + NL + "        }" + NL + "    }";
   protected final String TEXT_19 = NL;
 
   public String generate(Object argument)

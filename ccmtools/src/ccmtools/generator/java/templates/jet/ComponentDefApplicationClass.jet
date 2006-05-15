@@ -17,7 +17,8 @@
 
 package <%=component.generateJavaNamespace()%>;
    
-import ccm.local.Components.SessionContext; 
+import Components.ccm.local.CCMException;     
+import Components.ccm.local.SessionContext; 
 
 <%=component.generateJavaImportStatements()%>  
    

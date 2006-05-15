@@ -6,5 +6,5 @@
         else if(name.equals("<%=uses.getIdentifier()%>"))
         {
             connect_<%=uses.getIdentifier()%>((<%=uses.getInterface().generateAbsoluteJavaName()%>) obj);
-            return new ccm.local.Components.Cookie();
+            return new CookieImpl();
         }

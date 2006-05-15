@@ -5,9 +5,9 @@
 <% UsesDef uses = (UsesDef) argument;  %>
 
     void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> localObj)
-        throws ccm.local.Components.AlreadyConnected, ccm.local.Components.InvalidConnection;
+        throws AlreadyConnected, InvalidConnection;
 
     <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
-        throws ccm.local.Components.NoConnection;
+        throws NoConnection;
         
     <%=uses.getInterface().generateAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>();

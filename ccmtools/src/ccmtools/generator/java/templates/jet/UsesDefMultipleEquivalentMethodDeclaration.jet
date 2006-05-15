@@ -4,11 +4,11 @@
 %>
 <% UsesDef uses = (UsesDef) argument;  %>
 
-    ccm.local.Components.Cookie connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> localObj)
-        throws ccm.local.Components.ExceededConnectionLimit, 
-               ccm.local.Components.InvalidConnection;
+    Cookie connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> localObj)
+        throws ExceededConnectionLimit, 
+               InvalidConnection;
 
-    <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(ccm.local.Components.Cookie ck)
-        throws ccm.local.Components.InvalidConnection;
+    <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(Cookie ck)
+        throws InvalidConnection;
         
     java.util.Map get_connections_<%=uses.getIdentifier()%>();

@@ -16,7 +16,7 @@ public class UsesDefContextGetConnectionMethodImplementationTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = NL + "    public ";
   protected final String TEXT_2 = " get_connection_";
-  protected final String TEXT_3 = "()" + NL + "        throws ccm.local.Components.NoConnection" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return component.get_connection_";
+  protected final String TEXT_3 = "()" + NL + "        throws NoConnection" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return component.get_connection_";
   protected final String TEXT_4 = "();" + NL + "    }";
   protected final String TEXT_5 = NL;
 

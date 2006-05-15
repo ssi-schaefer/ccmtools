@@ -2,28 +2,82 @@
 	    class="UsesDefMultipleEquivalentMethodAdapterFromCorbaTemplate" 
 		imports="ccmtools.generator.java.metamodel.* "	    
 %>
-<% UsesDef uses = (UsesDef) argument;  %>
+<% 
+UsesDef uses = (UsesDef) argument;  
+InterfaceDef iface = uses.getInterface();
+%>
 
-    public Components.Cookie connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteIdlName()%> obj)
+    public Components.Cookie connect_<%=uses.getIdentifier()%>(<%=iface.generateAbsoluteIdlName()%> obj)
         throws Components.ExceededConnectionLimit, Components.InvalidConnection
     {
-        logger.fine("");
-        // TODO: 
-        return null;
+        logger.fine("Object reference = " + obj);
+        if(obj == null)
+        {
+            throw new Components.InvalidConnection("Given object reference is null!");
+        }
+        else
+        {
+            try
+            {
+                <%=iface.generateAbsoluteJavaName()%> localInterfaceAdapter =
+                    new world.ccm.local.IFaceAdapterToCorba(obj);
+                Cookie lck = localInterface.connect_<%=uses.getIdentifier()%>(localInterfaceAdapter);
+                Components.Cookie ck = new Components.CookieImpl(lck.getCookieValue());
+                <%=uses.getIdentifier()%>ReceptacleMap.put(ck, obj);
+                return ck;
+            }
+            catch(ExceededConnectionLimit e)
+            {
+                e.printStackTrace();
+                throw new Components.ExceededConnectionLimit(e.getMessage());
+            }
+            catch(InvalidConnection e)
+            {
+                e.printStackTrace();
+                throw new Components.InvalidConnection(e.getMessage());
+            }
+        }    
     }
 
-    public <%=uses.getInterface().generateAbsoluteIdlName()%> disconnect_<%=uses.getIdentifier()%>(Components.Cookie ck)
+    public <%=iface.generateAbsoluteIdlName()%> disconnect_<%=uses.getIdentifier()%>(Components.Cookie ck)
         throws Components.InvalidConnection
     {
-        logger.fine("");
-        // TODO:
-        return null;
+        logger.fine("Cookie = " + ck);
+
+        if(ck == null || !portReceptacleMap.containsKey(ck))
+        {
+            throw new Components.InvalidConnection();
+        }
+        else
+        {
+            try
+            { 
+                Cookie lck = new CookieImpl(ck.CookieValue);
+                localInterface.disconnect_port(lck);
+                <%=iface.generateAbsoluteIdlName()%> f = <%=uses.getIdentifier()%>ReceptacleMap.get(ck);
+                <%=uses.getIdentifier()%>ReceptacleMap.remove(ck);
+                return f;
+            }
+            catch(InvalidConnection e)
+            {
+                e.printStackTrace();
+                throw new Components.InvalidConnection(e.getMessage());
+            }
+        }    
     }
 
     public <%=uses.getComponent().generateAbsoluteIdlName()%>Package.<%=uses.getIdentifier()%>Connection[] get_connections_<%=uses.getIdentifier()%>()
     {
         logger.fine("");
-        // TODO:
-        return null;
+        <%=uses.getComponent().generateAbsoluteIdlName()%>Package.<%=uses.getIdentifier()%>Connection[] connections = 
+            new <%=uses.getComponent().generateAbsoluteIdlName()%>Package.<%=uses.getIdentifier()%>Connection[portReceptacleMap.size()];
+        for(Iterator i = <%=uses.getIdentifier()%>ReceptacleMap.keySet().iterator(); i.hasNext();)
+        {
+            Components.Cookie ck = (Components.Cookie)i.next();
+            <%=iface.generateAbsoluteIdlName()%> obj = <%=uses.getIdentifier()%>ReceptacleMap.get(ck);
+            <%=uses.getComponent().generateAbsoluteIdlName()%>Package.<%=uses.getIdentifier()%>Connection c = new
+                <%=uses.getComponent().generateAbsoluteIdlName()%>Package.<%=uses.getIdentifier()%>Connection(obj, ck);
+        }       
+        return connections;    
     }
      

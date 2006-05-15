@@ -22,13 +22,13 @@ public class AttributeDefAdapterToCorbaTemplate
   protected final String TEXT_6 = "();";
   protected final String TEXT_7 = NL + "            ";
   protected final String TEXT_8 = " value;" + NL + "            value = ";
-  protected final String TEXT_9 = "(valueRemote);" + NL + "            return value;" + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "     " + NL + "    public void ";
+  protected final String TEXT_9 = "(valueRemote);" + NL + "            return value;" + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);" + NL + "        }" + NL + "    }" + NL + "     " + NL + "    public void ";
   protected final String TEXT_10 = "(";
   protected final String TEXT_11 = " value)" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {";
   protected final String TEXT_12 = NL + "            ";
   protected final String TEXT_13 = " valueRemote;" + NL + "            valueRemote = ";
   protected final String TEXT_14 = "(value);" + NL + "            remoteInterface.";
-  protected final String TEXT_15 = "(valueRemote);            " + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new CCMException(e.getMessage());" + NL + "        }" + NL + "    } ";
+  protected final String TEXT_15 = "(valueRemote);            " + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);" + NL + "        }" + NL + "    } ";
   protected final String TEXT_16 = NL;
 
   public String generate(Object argument)

@@ -11,9 +11,9 @@
 
 package <%=home.generateJavaNamespace()%>;
 
-import ccm.local.Components.CCMHome;
-import ccm.local.Components.CCMException;
-import ccm.local.Components.AssemblyFactory;
+import Components.ccm.local.CCMHome;
+import Components.ccm.local.CCMException;
+import Components.ccm.local.AssemblyFactory;
 import ccm.local.HomeFinder;
 
 

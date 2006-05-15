@@ -28,6 +28,6 @@
 <%=op.generateCatchStatementConverterToCorba()%>
         catch(java.lang.Exception e)
         {
-    	    throw new CCMException(e.getMessage());
+    	        throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
         }
     }

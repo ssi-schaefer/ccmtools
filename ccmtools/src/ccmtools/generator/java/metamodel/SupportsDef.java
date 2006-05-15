@@ -29,7 +29,7 @@ public class SupportsDef
 		Set importStatements = getInterface().getJavaImportStatements();
 		importStatements.add(getInterface().generateAbsoluteJavaCcmName());
 		importStatements.add(getInterface().generateAbsoluteJavaName());
-		importStatements.add("ccm.local.Components.CCMException");
+//		importStatements.add("ccm.local.Components.CCMException");
 		return importStatements;
 	}
 	

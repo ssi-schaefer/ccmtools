@@ -21,7 +21,6 @@ public class ExceptionDefDefaultConstructorTemplate
   protected final String TEXT_4 = "(";
   protected final String TEXT_5 = ");";
   protected final String TEXT_6 = NL + "    }";
-  protected final String TEXT_7 = NL;
 
   public String generate(Object argument)
   {
@@ -44,7 +43,6 @@ for(Iterator i=exception.getFields().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(TEXT_7);
     return stringBuffer.toString();
   }
 }

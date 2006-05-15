@@ -13,8 +13,9 @@ package <%=home.generateJavaRemoteNamespace()%>;
 
 import java.util.logging.Logger;
 
+import Components.ccm.local.CCMException;
+import Components.ccm.local.CCMExceptionReason;
 import ccm.local.ServiceLocator;
-import ccm.local.Components.CCMException;
 import ccm.remote.CCMSessionContainer;
 
 import org.omg.PortableServer.POA;
@@ -46,7 +47,7 @@ public class <%=home.getIdentifier()%>Deployment
         catch(Exception e)
         {
             e.printStackTrace();
-            throw new CCMException(e.getMessage());
+            throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
         }
     }
     

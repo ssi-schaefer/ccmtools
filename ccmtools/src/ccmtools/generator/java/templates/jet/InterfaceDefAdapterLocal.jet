@@ -13,7 +13,7 @@ package <%= iface.generateJavaNamespace() %>;
                  
 import java.util.logging.Logger;
 
-import ccm.local.Components.CCMException;  
+import Components.ccm.local.CCMException;  
 import ccm.local.ServiceLocator;
 
 <%=iface.generateJavaImportStatements()%>                  

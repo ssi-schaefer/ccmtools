@@ -98,8 +98,11 @@ public class UsesDef
 	{
 		if(isMultiple())
 		{
-			return TAB + "private java.util.Map " + getIdentifier() 
-					+ "ReceptacleMap = new java.util.HashMap();";
+			return TAB + "private java.util.Map<Cookie, " + getInterface().generateAbsoluteJavaName() 
+					+ "> " + getIdentifier() 
+					+ "ReceptacleMap = " + NL + TAB2 
+					+ " new java.util.HashMap<Cookie, " + getInterface().generateAbsoluteJavaName() 
+					+ ">();";
 		}
 		else
 		{
@@ -118,7 +121,7 @@ public class UsesDef
 		{
 			return TAB + getInterface().generateAbsoluteJavaName() + 
 				" get_connection_" + getIdentifier() + "()\n" + 
-				TAB + "throws ccm.local.Components.NoConnection;";
+				TAB2 + "throws NoConnection;";
 		}	
 	}
 	
@@ -172,8 +175,19 @@ public class UsesDef
 
 	public String generateReceptacleReferenceAdapterToCorba()
 	{
-		return TAB + "private " + getInterface().generateAbsoluteJavaName() + 
-				" " + getIdentifier() + ";\n";
+		if(isMultiple())
+		{
+			return TAB +  "private Map<Cookie, " 
+				+ getInterface().generateAbsoluteJavaName() + "> " 
+				+ getIdentifier() + "ReceptacleMap = " + NL + TAB2 
+				+ "new HashMap<Cookie, " 
+				+ getInterface().generateAbsoluteJavaName() + ">();\n";
+		}
+		else
+		{
+			return TAB + "private " + getInterface().generateAbsoluteJavaName()  
+				+ " " + getIdentifier() + ";\n";			
+		}
 	}
 
 	public String generateEquivalentMethodAdapterToCorba()
@@ -243,11 +257,29 @@ public class UsesDef
 
 	public String generateCorbaReceptacleReferenceDeclaration()
 	{
-		return TAB +  "private " + getInterface().generateAbsoluteIdlName() + " " + getIdentifier() + "Receptacle;\n";
+		if(isMultiple())
+		{
+			return TAB +  "private Map<Components.Cookie, " 
+				+ getInterface().generateAbsoluteIdlName() + "> " 
+				+ getIdentifier() + "ReceptacleMap;\n";
+		}
+		else
+		{
+			return TAB +  "private " + getInterface().generateAbsoluteIdlName() + " " 
+				+ getIdentifier() + "Receptacle;\n";
+		}
 	}
 	
 	public String generateCorbaReceptacleReferenceInit()
 	{
-		return TAB2 + getIdentifier() + "Receptacle = null;\n";
+		if(isMultiple())
+		{
+			return TAB2 + getIdentifier() + "ReceptacleMap = new HashMap<Components.Cookie, " 
+				+ getInterface().generateAbsoluteIdlName() + ">();\n";	
+		}
+		else
+		{
+			return TAB2 + getIdentifier() + "Receptacle = null;\n";			
+		}
 	}
 }

@@ -50,6 +50,7 @@ import ccmtools.generator.java.metamodel.IntegerType;
 import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.LongType;
 import ccmtools.generator.java.metamodel.ModelRepository;
+import ccmtools.generator.java.metamodel.ObjectType;
 import ccmtools.generator.java.metamodel.OperationDef;
 import ccmtools.generator.java.metamodel.ParameterDef;
 import ccmtools.generator.java.metamodel.PassingDirection;
@@ -581,6 +582,12 @@ public class CcmToJavaModelMapper
 			MArrayDef array = (MArrayDef)innerIdlType;
 			out = transform(array, in.getIdentifier(), Code.getNamespaceList(in));
 		}
+		//!!!!!!!!
+		else if(innerIdlType instanceof MStringDef)
+		{
+			out = transform(innerIdlType);
+		}
+		//!!!!!
 		// TODO: Handle other alias types
 		else
 		{
@@ -686,6 +693,10 @@ public class CcmToJavaModelMapper
 		else if(primitive.getKind() == MPrimitiveKind.PK_ANY)
 		{
 			return new AnyType();
+		}
+		else if(primitive.getKind() == MPrimitiveKind.PK_OBJREF)
+		{
+			return new ObjectType();
 		}
 		else
 		{

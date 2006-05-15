@@ -11,6 +11,7 @@ import ccmtools.generator.java.templates.ExceptionDefConstructorTemplate;
 import ccmtools.generator.java.templates.ExceptionDefCorbaConverterTemplate;
 import ccmtools.generator.java.templates.ExceptionDefDefaultConstructorTemplate;
 import ccmtools.generator.java.templates.ExceptionDefImplementationTemplate;
+import ccmtools.generator.java.templates.ExceptionDefReasonConstructorTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -78,7 +79,7 @@ public class ExceptionDef
 		}
 		else
 		{
-			return "";
+			return new ExceptionDefReasonConstructorTemplate().generate(this);
 		}
 		
 	}

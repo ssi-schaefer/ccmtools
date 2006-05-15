@@ -17,9 +17,10 @@ import Components.CCMHome;
 import Components.CCMHomeHelper;
 import Components.CCMObject;
 import Components.CCMObjectHelper;
+import Components.ccm.local.CCMException;
+import Components.ccm.local.CCMExceptionReason;
 import ccm.local.ServiceLocator;
 import ccm.local.ServiceLocatorException;
-import ccm.local.Components.CCMException;
 
 public class CCMSessionContainer
 {
@@ -56,7 +57,7 @@ public class CCMSessionContainer
 		catch (ServiceLocatorException e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 	}
 
@@ -102,22 +103,22 @@ public class CCMSessionContainer
 		catch (NotFound e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (CannotProceed e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (InvalidName e)
 		{
 			e.printStackTrace();			
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (ServiceLocatorException e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 	}
 	
@@ -133,22 +134,22 @@ public class CCMSessionContainer
 		catch (NotFound e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (CannotProceed e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (InvalidName e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (ServiceLocatorException e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 	}
 	
@@ -171,13 +172,13 @@ public class CCMSessionContainer
 		catch (ServantNotActive e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 
 		}
 		catch (WrongPolicy e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 	}
 	
@@ -199,12 +200,12 @@ public class CCMSessionContainer
 		catch (ServantNotActive e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (WrongPolicy e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 	}
 	
@@ -226,12 +227,12 @@ public class CCMSessionContainer
 		catch (ServantNotActive e)
 		{		
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (WrongPolicy e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 	}
 	
@@ -253,17 +254,17 @@ public class CCMSessionContainer
 		catch (ObjectNotActive e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (WrongPolicy e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 		catch (WrongAdapter e)
 		{
 			e.printStackTrace();
-			throw new CCMException(e.getMessage());
+			throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 		}
 	}
 }

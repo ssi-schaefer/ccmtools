@@ -11,8 +11,10 @@
 
 package <%=component.generateJavaNamespace()%>;
                  
+import Components.ccm.local.NoConnection;             
+
 public interface <%=component.generateCcmIdentifier()%>_Context 
-    extends ccm.local.Components.SessionContext
+    extends Components.ccm.local.SessionContext
 {
     /** Receptacle access methods */
 <%

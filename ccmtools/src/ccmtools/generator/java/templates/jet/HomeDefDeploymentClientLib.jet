@@ -14,7 +14,7 @@ package <%=home.generateJavaNamespace()%>;
 public class <%=home.getIdentifier()%>ClientLibDeployment 
 {
     public static void deploy(String name)
-        throws ccm.local.Components.CCMException
+        throws Components.ccm.local.CCMException
     {
         <%=home.getIdentifier()%> home = new <%=home.getIdentifier()%>AdapterToCorba(name);
         ccm.local.HomeFinder.instance().register_home(home, name);    

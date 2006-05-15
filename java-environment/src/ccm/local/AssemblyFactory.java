@@ -1,10 +1,10 @@
 package ccm.local;
 
-import ccm.local.Components.Assembly;
-import ccm.local.Components.CreateFailure;
+import Components.ccm.local.Assembly;
+import Components.ccm.local.CreateFailure;
 
 public class AssemblyFactory
-	implements ccm.local.Components.AssemblyFactory 
+	implements Components.ccm.local.AssemblyFactory 
 {
 	private Class assemblyClass;
 
@@ -30,7 +30,7 @@ public class AssemblyFactory
 	}
 	
 	
-    public ccm.local.Components.Assembly create()
+    public Components.ccm.local.Assembly create()
 		throws CreateFailure
     {
 		try

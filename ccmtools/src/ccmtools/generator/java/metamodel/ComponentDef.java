@@ -69,7 +69,7 @@ public class ComponentDef
 	{
 		Set importStatements = new TreeSet();
 		// Some component management methods can throw this exception type
-		importStatements.add("ccm.local.Components.CCMException");
+//		importStatements.add("Components.ccm.local.CCMException");
 		// Each component class refers to its context object
 		importStatements.add(generateAbsoluteJavaCcmName() + "_Context");
 		for(Iterator i = getAttributes().iterator(); i.hasNext();)

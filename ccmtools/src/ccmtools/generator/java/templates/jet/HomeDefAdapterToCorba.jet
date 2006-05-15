@@ -12,8 +12,13 @@
 package <%=home.generateJavaNamespace()%>;
 
 import java.util.logging.Logger;
-import ccm.local.ServiceLocator;
 
+import Components.ccm.local.CCMException;
+import Components.ccm.local.CCMObject;
+import Components.ccm.local.CreateFailure;
+import Components.ccm.local.RemoveFailure;
+
+import ccm.local.ServiceLocator;
            
 public class <%=home.getIdentifier()%>AdapterToCorba
     implements <%=home.getIdentifier()%>
@@ -26,14 +31,14 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     private String homeName;
     
     public <%=home.getIdentifier()%>AdapterToCorba()
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         this(HOME_DEFAULT_NAME);
         logger.fine("");
     }
     
     public <%=home.getIdentifier()%>AdapterToCorba(String homeName)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         logger.fine("homeName = " + homeName);
         this.homeName = homeName;
@@ -43,7 +48,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     /** Home implicit operations */
         
     public <%=home.getComponent().generateAbsoluteJavaName()%> create()
-        throws ccm.local.Components.CreateFailure
+        throws CreateFailure
     {
         logger.fine("");
         try
@@ -56,24 +61,24 @@ public class <%=home.getIdentifier()%>AdapterToCorba
         }
         catch(java.lang.Exception e)
         {
-            throw new ccm.local.Components.CreateFailure();
+            throw new CreateFailure();
         }
     } 
     
     // This operation is defined in ccm.local.Components.KeylessCCMHomeOperations
-    public ccm.local.Components.CCMObject create_component()
-        throws ccm.local.Components.CCMException, ccm.local.Components.CreateFailure
+    public CCMObject create_component()
+        throws CCMException, CreateFailure
     {
         logger.fine("");
-        return (ccm.local.Components.CCMObject)create();
+        return (CCMObject)create();
     }
     
     
     /** Home explicit operations */
         
     // This operation is defined in ccm.local.Components.CCMHome
-    public void remove_component(ccm.local.Components.CCMObject component)
-        throws ccm.local.Components.CCMException, ccm.local.Components.RemoveFailure
+    public void remove_component(CCMObject component)
+        throws CCMException, RemoveFailure
     {
         logger.fine("component = " + component);
         throw new RuntimeException("Not Implemented");

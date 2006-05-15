@@ -14,7 +14,7 @@ package <%=exception.generateJavaNamespace() %>;
 <%=exception.generateJavaImportStatements()%>
  
 public class <%= exception.getIdentifier() %> 
-    extends ccm.local.Components.Exception
+    extends Components.ccm.local.UserException
 {
     private static final String REPOSITORY_ID = "<%=exception.generateRepositoryId()%>";
     

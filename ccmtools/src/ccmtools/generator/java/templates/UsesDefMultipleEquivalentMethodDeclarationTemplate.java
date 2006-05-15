@@ -14,12 +14,12 @@ public class UsesDefMultipleEquivalentMethodDeclarationTemplate
   }
 
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
-  protected final String TEXT_1 = NL + "    ccm.local.Components.Cookie connect_";
+  protected final String TEXT_1 = NL + "    Cookie connect_";
   protected final String TEXT_2 = "(";
-  protected final String TEXT_3 = " localObj)" + NL + "        throws ccm.local.Components.ExceededConnectionLimit, " + NL + "               ccm.local.Components.InvalidConnection;" + NL;
+  protected final String TEXT_3 = " localObj)" + NL + "        throws ExceededConnectionLimit, " + NL + "               InvalidConnection;" + NL;
   protected final String TEXT_4 = NL + "    ";
   protected final String TEXT_5 = " disconnect_";
-  protected final String TEXT_6 = "(ccm.local.Components.Cookie ck)" + NL + "        throws ccm.local.Components.InvalidConnection;" + NL + "        " + NL + "    java.util.Map get_connections_";
+  protected final String TEXT_6 = "(Cookie ck)" + NL + "        throws InvalidConnection;" + NL + "        " + NL + "    java.util.Map get_connections_";
   protected final String TEXT_7 = "();";
   protected final String TEXT_8 = NL;
 

@@ -13,13 +13,13 @@ package <%=home.generateJavaNamespace()%>;
    
 import java.util.logging.Logger;
 
-import ccm.local.Components.Assembly;
-import ccm.local.Components.AssemblyFactory;
-import ccm.local.Components.CCMException;
-import ccm.local.Components.CCMException;
-import ccm.local.Components.CCMObject;
-import ccm.local.Components.CreateFailure;
-import ccm.local.Components.RemoveFailure;
+import Components.ccm.local.Assembly;
+import Components.ccm.local.AssemblyFactory;
+import Components.ccm.local.CCMException;
+import Components.ccm.local.CCMObject;
+import Components.ccm.local.CreateFailure;
+import Components.ccm.local.RemoveFailure;
+
 import ccm.local.ServiceLocator;
 
 public class <%=home.getIdentifier()%>Adapter 
@@ -82,7 +82,7 @@ public class <%=home.getIdentifier()%>Adapter
         component.remove();
     }
 
-    public ccm.local.Components.CCMObject create_component() 
+    public CCMObject create_component() 
         throws CCMException, CreateFailure
     {
         logger.fine("");

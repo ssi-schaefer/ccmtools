@@ -11,8 +11,7 @@
 
 package <%= iface.generateJavaNamespace() %>;
                  
-import ccm.local.Components.*;
- 
+                  
 public interface <%=iface.generateCcmIdentifier()%> 
     extends <%=iface.getIdentifier()%>
 {
