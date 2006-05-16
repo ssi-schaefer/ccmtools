@@ -81,7 +81,7 @@ public class TestImpl
         try
         {
             String msg = "0123456789";
-            int len = ctx.get_connection_port().op1(msg);
+            int len = ctx.get_connection_port().foo(msg);
             assert(len == msg.length());
         }
         catch(NoConnection e)
