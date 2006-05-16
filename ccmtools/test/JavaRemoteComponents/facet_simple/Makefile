@@ -34,14 +34,13 @@ clientlib: idl3
 
 build: 
 	cp impl/TestImpl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/TestinPortImpl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/TestportImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
 
 check_local: build
 	bin/runClientLocal
 
 check: build
-	ant -f ./build.xml
 	bin/runClient
 
 clean: 

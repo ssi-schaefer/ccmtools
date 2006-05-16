@@ -63,10 +63,10 @@ public class Client
             Test component = home.create();
             component.configuration_complete();
 
-            IFace iface = component.provide_inPort();
+            IFace port = component.provide_port();
 
 	    String s = "1234567890";
-	    int size = iface.op1(s);
+	    int size = port.foo(s);
 	    assert(s.length() == size);
 	    component.remove();
         }

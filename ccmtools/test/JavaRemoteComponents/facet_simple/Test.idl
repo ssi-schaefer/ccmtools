@@ -4,12 +4,12 @@ module world
 
   interface IFace
   {
-    long op1(in string str);
+    long foo(in string str);
   };
 
   component Test
   {
-    provides IFace inPort;
+    provides IFace port;
   };
 
   home TestHome manages Test

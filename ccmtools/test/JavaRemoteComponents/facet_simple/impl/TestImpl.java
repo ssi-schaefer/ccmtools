@@ -65,9 +65,9 @@ public class TestImpl
     /** Facet implementation factory methods */
     
 
-    public world.ccm.local.CCM_IFace get_inPort()
+    public world.ccm.local.CCM_IFace get_port()
     {
-        return new world.ccm.local.TestinPortImpl(this);
+        return new world.ccm.local.TestportImpl(this);
     }
     
 

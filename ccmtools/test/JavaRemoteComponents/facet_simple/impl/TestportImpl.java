@@ -23,20 +23,20 @@ import Components.ccm.local.CCMException;
  * @author
  * @version
  */
-public class TestinPortImpl 
+public class TestportImpl 
     implements CCM_IFace
 {
     /** Reference to the facet's component implementation */
     private TestImpl component;
 
-    public TestinPortImpl(TestImpl component)
+    public TestportImpl(TestImpl component)
     {
         this.component = component;
     }
  
     /** Business logic implementations */
 
-    public int op1(String str)
+    public int foo(String str)
         throws CCMException
     {
 	System.out.println(">>> " + str);
