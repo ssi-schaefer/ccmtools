@@ -21,7 +21,7 @@ public class Client
 
     public static void main(String[] args)
     {
-	System.out.println("Test Client");
+	System.out.println("facet attributes test case:");
 
 	// Configure Logger
 	Logger logger = Logger.getLogger("ccm.local");
@@ -37,15 +37,21 @@ public class Client
 	    /**
 	     * Server-side code (Part 1)
 	     */
-
-	    // Set up the ServiceLocator singleton
-	    ORB orb = ORB.init(args, null);
-	    ServiceLocator.instance().setCorbaOrb(orb);
-
-       	    world.europe.austria.ccm.remote.TestHomeDeployment.deploy("myTestHome");
-	    TestHomeClientLibDeployment.deploy("myTestHome");
-	    System.out.println("> Server is running...");
-	    // orb.run();
+            if(args.length == 0)
+            {
+                TestHomeDeployment.deploy("TestHome");
+            }
+            else
+            {
+		// Set up the ServiceLocator singleton
+		ORB orb = ORB.init(args, null);
+		ServiceLocator.instance().setCorbaOrb(orb);
+		
+		world.europe.austria.ccm.remote.TestHomeDeployment.deploy("TestHome");
+		TestHomeClientLibDeployment.deploy("TestHome");
+		System.out.println("> Server is running...");
+		// orb.run();
+	    }
 	}
         catch(Exception e) 
         {
@@ -59,7 +65,7 @@ public class Client
 	     * Client-side code (co-located with clientlib)
 	     **/
 	    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
-            TestHome home = (TestHome) homeFinder.find_home_by_name("myTestHome");
+            TestHome home = (TestHome) homeFinder.find_home_by_name("TestHome");
             Test component = home.create();
             component.configuration_complete();
 
@@ -216,6 +222,57 @@ public class Client
 		assert(result == value);
 	    }
 
+
+	    /*
+                        {
+                            // typedef long LongArray[10]
+                            int length = 10;
+                            int[] value = new int[length];
+                            for(int i = 0; i< value.length; i++)
+                            {
+                                value[i] = i;
+                            }
+                            userType.longArray_value(value);
+                            int[] result = userType.longArray_value();
+                            for(int i = 0; i<result.length; i++)
+                            {
+                                assert(result[i] == value[i]);
+                            }
+                        }
+
+                        {
+                            // typedef string StringArray[10]
+                            int length = 10;
+                            String[] value = new String[length];
+                            for(int i = 0; i< value.length; i++)
+                            {
+                                value[i] = "Egon";
+                            }
+                            userType.stringArray_value(value);
+                            String[] result = userType.stringArray_value();
+                            for(int i = 0; i<result.length; i++)
+                            {
+                                assert(result[i].equals(value[i]));
+                            }
+                        }
+
+                        {
+                            // typedef Person PersonArray[10]
+                            Person[] value = new Person[10];
+                            for(int i = 0; i< value.length; i++)
+                            {
+                                value[i] = new Person(i, "Andrea");
+                            }
+                            userType.personArray_value(value);
+                            Person[] result = userType.personArray_value();
+                            for(int i = 0; i < result.length; i++)
+                            {
+                                assert(result[i].getId() == value[i].getId());
+                                assert(result[i].getName().equals(value[i].getName()));
+                            }
+                        }
+	    */
+
 	    System.out.println("OK!");
 
 
@@ -233,8 +290,15 @@ public class Client
 	    /**
 	     * Server-side code (Part 2)
 	     */
-	    TestHomeClientLibDeployment.undeploy("myTestHome");
-	    world.europe.austria.ccm.remote.TestHomeDeployment.undeploy("myTestHome");
+            if(args.length == 0)
+            {
+                TestHomeDeployment.undeploy("TestHome");
+            }
+            else
+            {
+		TestHomeClientLibDeployment.undeploy("TestHome");
+		world.europe.austria.ccm.remote.TestHomeDeployment.undeploy("TestHome");
+	    }
 	    System.out.println("OK!");
 	}
 	catch (Exception e)
