@@ -3,12 +3,17 @@ IDL3_DIR = ${DEST_DIR}/idl3
 IDL2_DIR = ${DEST_DIR}/idl2
 INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
-all: remote clientlib
+all: metainf remote clientlib
 
-test: remote clientlib check_local check clean 
+test: metainf remote clientlib check_local check clean 
 
 idl3: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
+
+# Generate component metadata in a component descriptor file.
+metainf: idl3
+	mkdir ${DEST_DIR}/META-INF
+	ccmdescriptor -o ${DEST_DIR}/META-INF -name TestHome ${INCLUDE} ${IDL3_DIR}/component/world/TestHome.idl
 
 local: idl3
 	ccmjava -iface -local -o ${DEST_DIR}/src-gen-local ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
@@ -28,6 +33,7 @@ clientlib: idl3
 	ccmjava -clientlib -o ${DEST_DIR}/src-gen-remote ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
 build: 
+	cp impl/TestImpl.java ${DEST_DIR}/src/world/ccm/local/
 	cp impl/TestinPortImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
 
