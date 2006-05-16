@@ -24,6 +24,7 @@ import Components.ccm.local.ExceededConnectionLimit;
 import Components.ccm.local.InvalidConfiguration;
 import Components.ccm.local.InvalidConnection;
 import Components.ccm.local.NoConnection;
+import Components.ccm.local.RemoveFailure;
 
 import ccm.local.ServiceLocator;
 import ccm.remote.CCMSessionContainer;
@@ -200,7 +201,23 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         throws Components.RemoveFailure
     {
         logger.fine("");
-        //TODO:
+        try
+        {
+            if(localInterface == null)
+            {
+                throw new Components.RemoveFailure("Can't remove component because its " 
+                       + "local reference is null!");
+            }
+            else
+            {
+                localInterface.remove();
+            }
+        }
+        catch(RemoveFailure e)
+        {
+        	    e.printStackTrace();
+            throw new Components.RemoveFailure(e.getMessage());
+        }
     }
     
     

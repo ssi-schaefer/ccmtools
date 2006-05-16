@@ -145,6 +145,7 @@
   		<copy file="${bin}/ccmtools"     	todir="${prefix}/bin"  overwrite="true" />  
   		<copy file="${bin}/ccmjava"  		todir="${prefix}/bin"  overwrite="true" />  
   		<copy file="${bin}/ccmconfix"  		todir="${prefix}/bin"  overwrite="true" /> 
+      	<copy file="${bin}/ccmns"      		todir="${prefix}/bin"  overwrite="true" />  
   		<copy file="${bin}/ccmdescriptor"   todir="${prefix}/bin"  overwrite="true" />  
       	<copy file="${bin}/ccmtools-idl" 	todir="${prefix}/bin"  overwrite="true" />  
       	<copy file="${bin}/uml2idl"      	todir="${prefix}/bin"  overwrite="true" />  
@@ -159,6 +160,10 @@
   		<exec executable="chmod">
   		  	<arg value="+x" />
   		  	<arg value="${prefix}/bin/ccmconfix" />
+  		</exec>
+  		<exec executable="chmod">
+  		  	<arg value="+x" />
+  		  	<arg value="${prefix}/bin/ccmns" />
   		</exec>
   		<exec executable="chmod">
   		    <arg value="+x" />

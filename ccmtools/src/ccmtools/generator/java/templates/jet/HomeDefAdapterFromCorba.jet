@@ -80,10 +80,17 @@ public class <%=home.getIdentifier()%>AdapterFromCorba
     /**
      * This operation is defined in the Components::CCMHome interface
      */ 
-    public void remove_component(Components.CCMObject comp)
+    public void remove_component(Components.CCMObject component)
         throws Components.RemoveFailure
     {
-        // TODO:
-        throw new RuntimeException("Not implemented!");    
+        logger.fine("");
+        if(component == null)
+        {
+            throw new Components.RemoveFailure("Can't remove component because its reference is null!");
+        }
+        else
+        {
+            component.remove();
+        }
     }
 }

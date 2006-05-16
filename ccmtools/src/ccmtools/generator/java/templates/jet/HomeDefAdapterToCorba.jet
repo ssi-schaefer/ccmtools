@@ -81,6 +81,13 @@ public class <%=home.getIdentifier()%>AdapterToCorba
         throws CCMException, RemoveFailure
     {
         logger.fine("component = " + component);
-        throw new RuntimeException("Not Implemented");
+        if(component == null)
+        {
+            throw new RemoveFailure("Can't remove component because its reference is null!");
+        }
+        else
+        {
+            component.remove();
+        } 
     }
 }

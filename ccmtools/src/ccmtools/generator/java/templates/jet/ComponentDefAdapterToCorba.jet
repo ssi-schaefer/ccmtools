@@ -184,16 +184,21 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         throws RemoveFailure
     {
         logger.fine("");
-        if(remoteInterface != null)
+        try
         {
-            try
+            if(remoteInterface == null)
+            {
+                throw new RemoveFailure("Can't remove component because its remote reference is null!");           
+            
+            }
+            else
             {
                 remoteInterface.remove();
             }
-            catch(Components.RemoveFailure e)
-            {
-                throw new RemoveFailure();
-            }
+        }
+        catch(Components.RemoveFailure e)
+        {
+            throw new RemoveFailure();
         }
     }
     
