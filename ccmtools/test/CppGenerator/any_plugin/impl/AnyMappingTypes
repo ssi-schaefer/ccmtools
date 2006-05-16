@@ -1,3 +1,8 @@
+# AnyMappingTypes
+#
+# This file defines a list of known types for the ccmtools generator.
+# Note that there must be 'typedef any Person;' and 'typedef any DTO;'
+# declarations in the corresponding IDL3 files.
 
 Person
 DTO
