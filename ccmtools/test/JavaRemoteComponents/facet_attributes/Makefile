@@ -5,7 +5,7 @@ INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
 all: metainf remote clientlib
 
-test: metainf remote clientlib check clean 
+test: metainf remote clientlib check_local check clean 
 
 idl3: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
