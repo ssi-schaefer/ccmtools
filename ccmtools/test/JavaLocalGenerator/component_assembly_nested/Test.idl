@@ -23,11 +23,9 @@ module world
     typedef long time_t;
     
     typedef sequence<long> LongList;
-    
     typedef sequence<string> StringList;
-    
     typedef sequence<Person> PersonList;
-    
+
     
     interface BasicTypeInterface 
     {
@@ -56,7 +54,7 @@ module world
     };
     
     
-    /*
+    /**
      * Inner component for basic type tests.
      */
     component BasicTest
@@ -69,7 +67,7 @@ module world
     };
     
     
-    /*
+    /**
      * Inner component for user type tests.
      */
     component UserTest
@@ -82,7 +80,7 @@ module world
     };
     
     
-    /*
+    /**
      * Super component that contains both inner components.
      */
     component SuperTest

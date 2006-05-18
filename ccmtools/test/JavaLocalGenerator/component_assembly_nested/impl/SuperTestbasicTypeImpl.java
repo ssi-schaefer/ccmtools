@@ -12,7 +12,7 @@
 
 package world.ccm.local;
                  
-import ccm.local.Components.*;
+import Components.ccm.local.*;
  
 /** 
  * This class implements a component facet's methods.
@@ -38,7 +38,7 @@ public class SuperTestbasicTypeImpl
     /** Business logic implementations */
 
     public short f1(short p1, ccm.local.Holder<Short> p2, ccm.local.Holder<Short> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -47,12 +47,12 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public int f2(int p1, ccm.local.Holder<Integer> p2, ccm.local.Holder<Integer> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 
 	try 
@@ -62,12 +62,12 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public short f3(short p1, ccm.local.Holder<Short> p2, ccm.local.Holder<Short> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -76,12 +76,12 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public int f4(int p1, ccm.local.Holder<Integer> p2, ccm.local.Holder<Integer> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -90,12 +90,12 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public float f5(float p1, ccm.local.Holder<Float> p2, ccm.local.Holder<Float> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -104,12 +104,12 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new  CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public double f6(double p1, ccm.local.Holder<Double> p2, ccm.local.Holder<Double> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -118,12 +118,12 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public char f7(char p1, ccm.local.Holder<Character> p2, ccm.local.Holder<Character> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -132,12 +132,12 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public String f8(String p1, ccm.local.Holder<String> p2, ccm.local.Holder<String> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -146,12 +146,12 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public boolean f9(boolean p1, ccm.local.Holder<Boolean> p2, ccm.local.Holder<Boolean> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -160,12 +160,12 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public byte f10(byte p1, ccm.local.Holder<Byte> p2, ccm.local.Holder<Byte> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -174,7 +174,7 @@ public class SuperTestbasicTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 

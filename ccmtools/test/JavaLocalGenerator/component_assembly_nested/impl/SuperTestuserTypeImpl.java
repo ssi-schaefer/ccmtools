@@ -12,7 +12,7 @@
 
 package world.ccm.local;
                  
-import ccm.local.Components.*;
+import Components.ccm.local.*;
  
 /** 
  * This class implements a component facet's methods.
@@ -38,7 +38,7 @@ public class SuperTestuserTypeImpl
     /** Business logic implementations */
 
     public world.ccm.local.Color f1(world.ccm.local.Color p1, ccm.local.Holder<world.ccm.local.Color> p2, ccm.local.Holder<world.ccm.local.Color> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -47,12 +47,12 @@ public class SuperTestuserTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public world.ccm.local.Person f2(world.ccm.local.Person p1, ccm.local.Holder<world.ccm.local.Person> p2, ccm.local.Holder<world.ccm.local.Person> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -61,12 +61,12 @@ public class SuperTestuserTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public world.ccm.local.Address f3(world.ccm.local.Address p1, ccm.local.Holder<world.ccm.local.Address> p2, ccm.local.Holder<world.ccm.local.Address> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -75,12 +75,12 @@ public class SuperTestuserTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public java.util.List<Integer> f4(java.util.List<Integer> p1, ccm.local.Holder<java.util.List<Integer>> p2, ccm.local.Holder<java.util.List<Integer>> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -89,12 +89,12 @@ public class SuperTestuserTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public java.util.List<String> f5(java.util.List<String> p1, ccm.local.Holder<java.util.List<String>> p2, ccm.local.Holder<java.util.List<String>> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -103,12 +103,12 @@ public class SuperTestuserTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public java.util.List<world.ccm.local.Person> f6(java.util.List<world.ccm.local.Person> p1, ccm.local.Holder<java.util.List<world.ccm.local.Person>> p2, ccm.local.Holder<java.util.List<world.ccm.local.Person>> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -117,12 +117,12 @@ public class SuperTestuserTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 
     public int f7(int t1, ccm.local.Holder<Integer> t2, ccm.local.Holder<Integer> t3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
 	try 
 	{
@@ -131,7 +131,7 @@ public class SuperTestuserTypeImpl
 	catch(java.lang.Exception e)
 	{
 	    e.printStackTrace();
-	    throw new  ccm.local.Components.CCMException(e.getMessage());
+	    throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
 	}   
     }    
 }

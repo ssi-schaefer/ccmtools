@@ -14,7 +14,7 @@ package world.ccm.local;
 
 import java.util.List;
 import java.util.ArrayList;
-import ccm.local.Components.*;
+import Components.ccm.local.*;
  
 /** 
  * This class implements a component facet's methods.
@@ -40,7 +40,7 @@ public class UserTestuserTypeImpl
     /** Business logic implementations */
 
     public world.ccm.local.Color f1(world.ccm.local.Color p1, ccm.local.Holder<world.ccm.local.Color> p2, ccm.local.Holder<world.ccm.local.Color> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         p3.setValue(p2.getValue());
         p2.setValue(p1);
@@ -48,7 +48,7 @@ public class UserTestuserTypeImpl
     }    
 
     public world.ccm.local.Person f2(world.ccm.local.Person p1, ccm.local.Holder<world.ccm.local.Person> p2, ccm.local.Holder<world.ccm.local.Person> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         Person r = new Person(p1.getId() + p2.getValue().getId(),
                               p1.getName() + p2.getValue().getName());
@@ -58,7 +58,7 @@ public class UserTestuserTypeImpl
     }    
 
     public world.ccm.local.Address f3(world.ccm.local.Address p1, ccm.local.Holder<world.ccm.local.Address> p2, ccm.local.Holder<world.ccm.local.Address> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         Person person = new Person(p1.getResident().getId() + p2.getValue().getResident().getId(),
                                  p1.getResident().getName() + p2.getValue().getResident().getName());
@@ -70,7 +70,7 @@ public class UserTestuserTypeImpl
     }    
 
     public java.util.List<Integer> f4(java.util.List<Integer> p1, ccm.local.Holder<java.util.List<Integer>> p2, ccm.local.Holder<java.util.List<Integer>> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         List<Integer> result = new ArrayList<Integer>(p1.size());
         p3.setValue(new ArrayList<Integer>(p1.size()));
@@ -84,7 +84,7 @@ public class UserTestuserTypeImpl
     }    
 
     public java.util.List<String> f5(java.util.List<String> p1, ccm.local.Holder<java.util.List<String>> p2, ccm.local.Holder<java.util.List<String>> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         List<String> result = new ArrayList<String>(p1.size());
         p3.setValue(new ArrayList<String>(p1.size()));
@@ -98,7 +98,7 @@ public class UserTestuserTypeImpl
     }    
 
     public java.util.List<world.ccm.local.Person> f6(java.util.List<world.ccm.local.Person> p1, ccm.local.Holder<java.util.List<world.ccm.local.Person>> p2, ccm.local.Holder<java.util.List<world.ccm.local.Person>> p3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
         List<Person> result = new ArrayList<Person>(p1.size());
         p3.setValue(new ArrayList<Person>(p1.size()));
@@ -113,7 +113,7 @@ public class UserTestuserTypeImpl
     }    
 
     public int f7(int t1, ccm.local.Holder<Integer> t2, ccm.local.Holder<Integer> t3)
-        throws ccm.local.Components.CCMException
+        throws CCMException
     {
        t3.setValue(t2.getValue());
         t2.setValue(t1);

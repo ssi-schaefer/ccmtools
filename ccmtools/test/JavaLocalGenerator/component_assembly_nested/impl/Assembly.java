@@ -1,13 +1,12 @@
 package world;
 
-import ccm.local.Components.AssemblyState;
-import ccm.local.Components.CreateFailure;
-import ccm.local.Components.RemoveFailure;
-import ccm.local.Components.HomeNotFound;
-import ccm.local.Components.InvalidConfiguration;
-import ccm.local.Components.CCMObject;
-import ccm.local.Components.HomeFinder;
-
+import Components.ccm.local.AssemblyState;
+import Components.ccm.local.CreateFailure;
+import Components.ccm.local.RemoveFailure;
+import Components.ccm.local.HomeNotFound;
+import Components.ccm.local.InvalidConfiguration;
+import Components.ccm.local.CCMObject;
+import Components.ccm.local.HomeFinder;
 
 import world.ccm.local.SuperTest;
 import world.ccm.local.SuperTestHome;
@@ -26,7 +25,7 @@ import world.ccm.local.SuperTestHome;
 import world.ccm.local.SuperTest;
 
 public class Assembly
-    implements ccm.local.Components.Assembly
+    implements Components.ccm.local.Assembly
 {
     private AssemblyState state;
 
