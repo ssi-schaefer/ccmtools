@@ -15,7 +15,7 @@ public class ComponentTest
 		super(name);
 		// get current working directory (this is where build.xml is executed)
 		ccmtoolsDir = System.getProperty("user.dir");
-		testDir = ccmtoolsDir + "/test/JavaLocalGenerator";
+		testDir = ccmtoolsDir + "/test/JavaLocalComponents";
 	}
 	
     public static Test suite()
