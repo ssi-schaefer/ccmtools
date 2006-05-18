@@ -17,10 +17,10 @@ public class Client
 
     public static void main(String[] args)
     {
-	System.out.println("Test Client");
+	System.out.println("receptacle inheritance test case:");
 
 	// Configure Logger
-	Logger logger = Logger.getLogger("ccm.local");
+	Logger logger = Logger.getLogger("test");
 	logger.setLevel(Level.FINER);
 	Handler handler = new ConsoleHandler();
 	handler.setLevel(Level.ALL);
@@ -33,15 +33,21 @@ public class Client
 	    /**
 	     * Server-side code (Part 1)
 	     */
-
-	    // Set up the ServiceLocator singleton
-	    ORB orb = ORB.init(args, null);
-	    ServiceLocator.instance().setCorbaOrb(orb);
-
-       	    world.ccm.remote.TestHomeDeployment.deploy("myTestHome");
-	    TestHomeClientLibDeployment.deploy("myTestHome");
-	    System.out.println("> Server is running...");
-	    // orb.run();
+            if(args.length == 0)
+            {
+                TestHomeDeployment.deploy("TestHome");
+            }
+            else
+            {
+		// Set up the ServiceLocator singleton
+		ORB orb = ORB.init(args, null);
+		ServiceLocator.instance().setCorbaOrb(orb);
+		
+		world.ccm.remote.TestHomeDeployment.deploy("TestHome");
+		TestHomeClientLibDeployment.deploy("TestHome");
+		System.out.println("> Server is running...");
+		// orb.run();
+	    }
 	}
         catch(Exception e) 
         {
@@ -55,7 +61,7 @@ public class Client
 	     * Client-side code (co-located with clientlib)
 	     **/
 	    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
-            TestHome home = (TestHome) homeFinder.find_home_by_name("myTestHome");
+            TestHome home = (TestHome) homeFinder.find_home_by_name("TestHome");
             Test component = home.create();
 	    component.connect_port(new client.MySubTypeImpl());
             component.configuration_complete();
@@ -74,12 +80,18 @@ public class Client
 	
 	try
 	{
-
 	    /**
 	     * Server-side code (Part 2)
 	     */
-	    TestHomeClientLibDeployment.undeploy("myTestHome");
-	    world.ccm.remote.TestHomeDeployment.undeploy("myTestHome");
+            if(args.length == 0)
+            {
+                TestHomeDeployment.undeploy("TestHome");
+            }
+            else
+            {
+		TestHomeClientLibDeployment.undeploy("TestHome");
+		world.ccm.remote.TestHomeDeployment.undeploy("TestHome");
+	    }
 	    System.out.println("OK!");
 	}
 	catch (Exception e)
@@ -88,7 +100,6 @@ public class Client
 	}
 	finally
 	{
-
 	    // Tear down the ServiceLocator singleton
 	    ServiceLocator.instance().destroy();
 	}

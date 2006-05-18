@@ -18,10 +18,10 @@ public class Client
 
     public static void main(String[] args)
     {
-	System.out.println("Test Client");
+	System.out.println("component attributes test case:");
 
 	// Configure Logger
-	Logger logger = Logger.getLogger("ccm.local");
+	Logger logger = Logger.getLogger("test");
 	logger.setLevel(Level.FINER);
 	Handler handler = new ConsoleHandler();
 	handler.setLevel(Level.ALL);
@@ -34,13 +34,20 @@ public class Client
 	    /**
 	     * Server-side code (Part 1)
 	     */
-
-	    // Set up the ServiceLocator singleton
-	    ORB orb = ORB.init(args, null);
-	    ServiceLocator.instance().setCorbaOrb(orb);
-       	    world.europe.austria.ccm.remote.TestHomeDeployment.deploy("TestHome");
-	    System.out.println("> Server is running...");
-	    // orb.run();
+            if(args.length == 0)
+            {
+                TestHomeDeployment.deploy("TestHome");
+            }
+            else
+            {
+		// Set up the ServiceLocator singleton
+		ORB orb = ORB.init(args, null);
+		ServiceLocator.instance().setCorbaOrb(orb);
+		world.europe.austria.ccm.remote.TestHomeDeployment.deploy("TestHome");
+		TestHomeClientLibDeployment.deploy("TestHome");
+		System.out.println("> Server is running...");
+		// orb.run();
+	    }
 	}
         catch(Exception e) 
         {
@@ -53,7 +60,6 @@ public class Client
 	    /**
 	     * Client-side code (co-located with clientlib)
 	     **/
-	    TestHomeClientLibDeployment.deploy("TestHome");
 	    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
             TestHome home = (TestHome) homeFinder.find_home_by_name("TestHome");
             Test component = home.create();
@@ -213,10 +219,60 @@ public class Client
 		int result = component.time_t_value();
 		assert(result == value);
 	    }
+
+	    /*
+                {
+                    // typedef long LongArray[10]
+                    int length = 10;
+                    int[] value = new int[length];
+                    for(int i = 0; i< value.length; i++)
+                    {
+                        value[i] = i;
+                    }
+                    component.longArray_value(value);
+                    int[] result = component.longArray_value();
+                    for(int i = 0; i<result.length; i++)
+                    {
+                        assert(result[i] == value[i]);
+                    }
+                }
+
+                {
+                    // typedef string StringArray[10]
+                    int length = 10;
+                    String[] value = new String[length];
+                    for(int i = 0; i< value.length; i++)
+                    {
+                        value[i] = "Egon";
+                    }
+                    component.stringArray_value(value);
+                    String[] result = component.stringArray_value();
+                    for(int i = 0; i<result.length; i++)
+                    {
+                        assert(result[i].equals(value[i]));
+                    }
+                }
+
+                {
+                    // typedef Person PersonArray[10]
+                    Person[] value = new Person[10];
+                    for(int i = 0; i< value.length; i++)
+                    {
+                        value[i] = new Person(i, "Andrea");
+                    }
+                    component.personArray_value(value);
+                    Person[] result = component.personArray_value();
+                    for(int i = 0; i < result.length; i++)
+                    {
+                        assert(result[i].getId() == value[i].getId());
+                        assert(result[i].getName().equals(value[i].getName()));
+                    }
+                }
+	    */
 	    
 	    System.out.println("OK!");
 	    component.remove();
-	    TestHomeClientLibDeployment.undeploy("TestHome");
+
         }
         catch(Exception e) 
         {
@@ -226,11 +282,18 @@ public class Client
 	
 	try
 	{
-
 	    /**
 	     * Server-side code (Part 2)
 	     */
-	    world.europe.austria.ccm.remote.TestHomeDeployment.undeploy("TestHome");
+	    if(args.length == 0)
+            {
+                TestHomeDeployment.undeploy("TestHome");
+            }
+            else
+            {	
+		TestHomeClientLibDeployment.undeploy("TestHome");
+		world.europe.austria.ccm.remote.TestHomeDeployment.undeploy("TestHome");
+	    }
 	    System.out.println("OK!");
 	}
 	catch (Exception e)
@@ -239,7 +302,6 @@ public class Client
 	}
 	finally
 	{
-
 	    // Tear down the ServiceLocator singleton
 	    ServiceLocator.instance().destroy();
 	}

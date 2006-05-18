@@ -235,6 +235,55 @@ public class TestImpl
                 assert(result == value);
             }
 
+    /*
+            {
+                // typedef long LongArray[10]
+                int length = 10;
+                int[] value = new int[length];
+                for(int i = 0; i< value.length; i++)
+                {
+                    value[i] = i;
+                }
+                userType.longArray_value(value);
+                int[] result = userType.longArray_value();
+                for(int i = 0; i<result.length; i++)
+                {
+                    assert(result[i] == value[i]);
+                }
+            }
+
+            {
+                // typedef string StringArray[10]
+                int length = 10;
+                String[] value = new String[length];
+                for(int i = 0; i< value.length; i++)
+                {
+                    value[i] = "Egon";
+                }
+                userType.stringArray_value(value);
+                String[] result = userType.stringArray_value();
+                for(int i = 0; i<result.length; i++)
+                {
+                    assert(result[i].equals(value[i]));
+                }
+            }
+
+            {
+                // typedef Person PersonArray[10]
+                Person[] value = new Person[10];
+                for(int i = 0; i< value.length; i++)
+                {
+                    value[i] = new Person(i, "Andrea");
+                }
+                userType.personArray_value(value);
+                Person[] result = userType.personArray_value();
+                for(int i = 0; i < result.length; i++)
+                {
+                    assert(result[i].getId() == value[i].getId());
+                    assert(result[i].getName().equals(value[i].getName()));
+                }
+            }
+    */
             System.out.println("OK!");
         }
         catch(NoConnection e)

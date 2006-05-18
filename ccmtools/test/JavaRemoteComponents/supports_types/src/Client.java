@@ -18,10 +18,10 @@ public class Client
 
     public static void main(String[] args)
     {
-	System.out.println("Test Client");
+	System.out.println("supports types test case:");
 
 	// Configure Logger
-	Logger logger = Logger.getLogger("ccm.local");
+	Logger logger = Logger.getLogger("test");
 	logger.setLevel(Level.FINER);
 	Handler handler = new ConsoleHandler();
 	handler.setLevel(Level.ALL);
@@ -34,15 +34,20 @@ public class Client
 	    /**
 	     * Server-side code (Part 1)
 	     */
-
-	    // Set up the ServiceLocator singleton
-	    ORB orb = ORB.init(args, null);
-	    ServiceLocator.instance().setCorbaOrb(orb);
-
-       	    world.europe.austria.ccm.remote.TestHomeDeployment.deploy("myTestHome");
-	    TestHomeClientLibDeployment.deploy("myTestHome");
-	    System.out.println("> Server is running...");
-	    // orb.run();
+            if(args.length == 0)
+            {
+                TestHomeDeployment.deploy("TestHome");
+            }
+            else
+            {
+		// Set up the ServiceLocator singleton
+		ORB orb = ORB.init(args, null);
+		ServiceLocator.instance().setCorbaOrb(orb);
+		world.europe.austria.ccm.remote.TestHomeDeployment.deploy("TestHome");
+		TestHomeClientLibDeployment.deploy("TestHome");
+		System.out.println("> Server is running...");
+		// orb.run();
+	    }
 	}
         catch(Exception e) 
         {
@@ -56,7 +61,7 @@ public class Client
 	     * Client-side code (co-located with clientlib)
 	     **/
 	    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
-            TestHome home = (TestHome) homeFinder.find_home_by_name("myTestHome");
+            TestHome home = (TestHome) homeFinder.find_home_by_name("TestHome");
             Test component = home.create();
             component.configuration_complete();
 
@@ -356,6 +361,100 @@ public class Client
 		assert(p3.getValue() == 3);
 		assert(result == 3 + 7);
 	    }
+
+	    /*
+                        { // typedef long LongArray[10]
+                            int length = 10;
+                            int[] p1 = new int[length];
+                            int[] p2Value = new int[length];
+                            for (int i = 0; i < length; i++)
+                            {
+                                p1[i] = i;
+                                p2Value[i] = i + i;
+                            }
+
+                            Holder<int[]> p2 = new Holder<int[]>(p2Value);
+                            Holder<int[]> p3 = new Holder<int[]>();
+
+                            int[] result = component.fu8(p1, p2, p3);
+
+                            for (int i = 0; i < result.length; i++)
+                            {
+                                assert(result[i] == i);
+                            }
+                            for (int i = 0; i < p2.getValue().length; i++)
+                            {
+                                assert(p2.getValue()[i] == i);
+                            }
+                            for (int i = 0; i < p3.getValue().length; i++)
+                            {
+                                assert(p3.getValue()[i] == i + i);
+                            }
+                        }
+
+                        { // typedef string StringArray[10]
+                            int length = 10;
+                            String[] p1 = new String[length];
+                            String[] p2Value = new String[length];
+                            for (int i = 0; i < length; i++)
+                            {
+                                p1[i] = "Egon" + i;
+                                p2Value[i] = "Andrea" + i;
+                            }
+
+                            Holder<String[]> p2 = new Holder<String[]>(p2Value);
+                            Holder<String[]> p3 = new Holder<String[]>();
+
+                            String[] result = component.fu9(p1, p2, p3);
+
+                            for (int i = 0; i < result.length; i++)
+                            {
+                                assert(result[i].equals("result" + i));
+                            }
+                            for (int i = 0; i < p2.getValue().length; i++)
+                            {
+                                assert(p2.getValue()[i].equals("Egon" + i));
+                            }
+                            for (int i = 0; i < p3.getValue().length; i++)
+                            {
+                                assert(p3.getValue()[i].equals("Andrea" + i));
+                            }
+                        }
+
+
+                        { // typedef Person PersonArray[10]
+
+                            int length = 10;
+                            Person[] p1 = new Person[length];
+                            Person[] p2Value = new Person[length];
+                            for(int i = 0; i < length; i++)
+                            {
+                                Person p = new Person(i, "Andrea" + i);
+                                p1[i] = p;
+                                p2Value[i] = new Person(i + i, "Egon" + i);
+                            }
+                            Holder<Person[]> p2 = new Holder<Person[]>(p2Value);
+                            Holder<Person[]> p3 = new Holder<Person[]>();
+
+                            Person[] result = component.fu10(p1, p2, p3);
+
+                            for (int i = 0; i < result.length; i++)
+                            {
+                                assert(result[i].getName().equals("result" + i));
+                                assert(result[i].getId() == i);
+                            }
+                            for (int i = 0; i < p2.getValue().length; i++)
+                            {
+                                assert(p2.getValue()[i].getName().equals("Andrea" + i));
+                                assert(p2.getValue()[i].getId() == i);
+                            }
+                            for (int i = 0; i < p3.getValue().length; i++)
+                            {
+                                assert(p3.getValue()[i].getName().equals("Egon" + i));
+                                assert(p3.getValue()[i].getId() == i + i);
+                            }
+                        }
+	    */
 	    
 	    component.remove();
         }
@@ -367,12 +466,18 @@ public class Client
 	
 	try
 	{
-
 	    /**
 	     * Server-side code (Part 2)
 	     */
-	    TestHomeClientLibDeployment.undeploy("myTestHome");
-	    world.europe.austria.ccm.remote.TestHomeDeployment.undeploy("myTestHome");
+            if(args.length == 0)
+            {
+                TestHomeDeployment.undeploy("TestHome");
+            }
+            else
+            {
+		TestHomeClientLibDeployment.undeploy("TestHome");
+		world.europe.austria.ccm.remote.TestHomeDeployment.undeploy("TestHome");
+	    }
 	    System.out.println("OK!");
 	}
 	catch (Exception e)
@@ -381,7 +486,6 @@ public class Client
 	}
 	finally
 	{
-
 	    // Tear down the ServiceLocator singleton
 	    ServiceLocator.instance().destroy();
 	}

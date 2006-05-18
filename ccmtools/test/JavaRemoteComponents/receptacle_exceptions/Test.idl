@@ -21,19 +21,23 @@ module world {
       };
       
       exception SuperError{};
-      exception FatalError{};
-      
 
-      interface Console 
+      exception FatalError
       {
-	long print(in string msg)
+        string what;
+      };
+
+
+      interface IFace 
+      {
+	long foo(in string msg)
 	  raises (ErrorException, SuperError, FatalError);
       };
 
       
       component Test
       {
-	uses Console port;
+	uses IFace port;
       };
       
       home TestHome manages Test
@@ -43,7 +47,3 @@ module world {
     }; // end of module austria
   }; // end of module europe
 }; // end of module world
-
-
-
-

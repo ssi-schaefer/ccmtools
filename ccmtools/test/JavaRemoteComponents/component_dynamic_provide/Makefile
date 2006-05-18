@@ -3,12 +3,16 @@ IDL3_DIR = ${DEST_DIR}/idl3
 IDL2_DIR = ${DEST_DIR}/idl2
 INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
-all: remote clientlib
+all: metainf remote clientlib
 
-test: remote clientlib check clean 
+test: metainf remote clientlib check_local check clean 
 
 idl3: Test.idl
 	ccmtools idl3 -o ${IDL3_DIR} Test.idl
+
+metainf: idl3
+	mkdir ${DEST_DIR}/META-INF
+	ccmdescriptor -o ${DEST_DIR}/META-INF -name TestHome ${INCLUDE} ${IDL3_DIR}/component/world/TestHome.idl
 
 local: idl3
 	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
@@ -27,11 +31,16 @@ clientlib: idl3
 	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
 	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
-check: 
+build:
 	cp impl/TestportImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
+
+check_local: build
+	bin/runLocalClient
+
+check: build
 	bin/runClient
 
 clean: 
-	rm -rf xxx 
+	rm -rf ${DEST_DIR} 
 

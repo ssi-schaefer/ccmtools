@@ -7,20 +7,20 @@ import Components.ccm.local.CCMException;
 
 import world.europe.austria.ccm.local.*;
 
-public class MyConsoleImpl
-        implements world.europe.austria.ccm.local.Console
+public class MyIFaceImpl
+        implements world.europe.austria.ccm.local.IFace
 {
-        public MyConsoleImpl()
+        public MyIFaceImpl()
         {
         }
 
-        public int print(String msg)
+        public int foo(String msg)
             throws CCMException,
                    ErrorException,
                    SuperError,
                    FatalError
         {
-	    System.out.println("MyConsoleImpl.print(" + msg + ")");
+	    System.out.println("MyIFaceImpl.foo(" + msg + ")");
 
 	    if(msg.equals("ErrorException"))
             {

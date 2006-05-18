@@ -80,11 +80,11 @@ public class TestImpl
        try
         {
             System.out.println(">> Receptacle exceptions test ...");
-            Console iface = ctx.get_connection_port();
+            IFace port = ctx.get_connection_port();
 
             try
             {
-                int result = iface.print("0123456789");
+                int result = port.foo("0123456789");
                 assert(result == 10);
             }
             catch(ErrorException e)
@@ -100,7 +100,7 @@ public class TestImpl
 
             try
             {
-                int result = iface.print("ErrorException");
+                int result = port.foo("ErrorException");
                 assert(false);
             }
             catch(ErrorException e)
@@ -120,7 +120,7 @@ public class TestImpl
 
             try
             {
-                int result = iface.print("SuperError");
+                int result = port.foo("SuperError");
                 assert(false);
             }
             catch(SuperError e)
@@ -135,7 +135,7 @@ public class TestImpl
 
 	    try
             {
-                int result = iface.print("FatalError");
+                int result = port.foo("FatalError");
                 assert(false);
             }
             catch(FatalError e)
