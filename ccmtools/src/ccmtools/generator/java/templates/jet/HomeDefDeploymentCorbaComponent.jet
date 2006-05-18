@@ -51,8 +51,7 @@ public class <%=home.getIdentifier()%>Deployment
         }
     }
     
-    // TODO: Move the following methods into a base class!!!!
-        
+
     public static void deploy(String name)
         throws CCMException
     {
@@ -61,13 +60,15 @@ public class <%=home.getIdentifier()%>Deployment
         container.registerCorbaHome(name);
     }
 
-    public static String deployWithIor()
+
+    public static String deployToIor()
         throws CCMException
     {
         logger.fine("");
         deploy();
         return container.getCorbaHomeIor();
     }
+    
     
     public static void undeploy(String name)
         throws CCMException

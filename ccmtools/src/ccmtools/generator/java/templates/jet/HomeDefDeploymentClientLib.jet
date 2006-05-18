@@ -10,18 +10,51 @@
  */
 
 package <%=home.generateJavaNamespace()%>;
-                                  
+
+import java.util.logging.Logger;
+
+import Components.ccm.local.CCMException;
+import Components.ccm.local.CCMExceptionReason;
+import ccm.local.ServiceLocatorException;
+import ccm.local.ServiceLocator;    
+                              
 public class <%=home.getIdentifier()%>ClientLibDeployment 
 {
+   /** Default logger instance */
+    private static Logger logger = ServiceLocator.instance().getLogger();
+    
+    
     public static void deploy(String name)
-        throws Components.ccm.local.CCMException
+        throws CCMException
     {
-        <%=home.getIdentifier()%> home = new <%=home.getIdentifier()%>AdapterToCorba(name);
-        ccm.local.HomeFinder.instance().register_home(home, name);    
+        logger.fine("name = " + name);
+        try
+        {
+            Components.CCMHome remoteHome = ServiceLocator.instance().findCCMHome(name);
+            <%=home.getIdentifier()%> localHome = new <%=home.getIdentifier()%>AdapterToCorba(remoteHome);
+            ccm.local.HomeFinder.instance().register_home(localHome, name);    
+        }
+        catch(ServiceLocatorException e)
+        {
+            throw new CCMException(e.getMessage(),CCMExceptionReason.SYSTEM_ERROR);
+        }
     }
+
+    
+    public static void deployWithIor(String name, String ior)
+        throws CCMException
+    {
+        logger.fine("name = " + name + ", ior = " + ior);
+        org.omg.CORBA.Object obj = ServiceLocator.instance().getCorbaOrb().string_to_object(ior);
+        Components.CCMHome remoteHome = Components.CCMHomeHelper.narrow(obj);
+        <%=home.getIdentifier()%> localHome = new <%=home.getIdentifier()%>AdapterToCorba(remoteHome);
+        ccm.local.HomeFinder.instance().register_home(localHome, name);    
+    }
+
     
     public static void undeploy(String name)
     {
+        logger.fine("name = " + name);
         ccm.local.HomeFinder.instance().unregister_home(name);    
     }
 }

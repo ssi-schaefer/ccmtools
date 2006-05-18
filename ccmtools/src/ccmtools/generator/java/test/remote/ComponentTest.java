@@ -63,4 +63,16 @@ public class ComponentTest
 			fail();
 		}
 	}
+	
+	public void testIorDeployment()
+	{
+		try
+		{
+			executeCommandLine("make -C " + testDir + "/component_ior_deployment test");
+		}
+		catch (Exception e)
+		{
+			fail();
+		}
+	}
 }
