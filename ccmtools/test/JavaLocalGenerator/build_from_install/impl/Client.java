@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import world.europe.austria.ccm.local.*;
-import ccm.local.Components.*;
+import Components.ccm.local.*;
 import ccm.local.*;
 
 import java.util.logging.*;
@@ -12,7 +12,7 @@ public class Client
 	public static void main(String[] args)
 	{
 	    // Configure Logger
-	    Logger logger = Logger.getLogger("ccm.local");
+	    Logger logger = Logger.getLogger("test");
 	    logger.setLevel(Level.FINE);	    
 	    Handler handler = new ConsoleHandler();
 	    handler.setLevel(Level.ALL);
