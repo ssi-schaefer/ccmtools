@@ -10,7 +10,7 @@ public class Client
 	    // Deploy local Java component
 	    try
 	    {
-		HelloWorldHomeDeployment.deploy("HelloWorld");
+		HelloWorldHomeDeployment.deploy("HelloWorldHome");
 	    }
 	    catch (java.lang.Exception e)
 	    {
@@ -21,15 +21,15 @@ public class Client
 	    try
 	    {
 		HelloWorldHome home = 
-		    (HelloWorldHome) ccm.local.HomeFinder.instance().find_home_by_name("HelloWorld");
+		    (HelloWorldHome) ccm.local.HomeFinder.instance().find_home_by_name("HelloWorldHome");
 
 		HelloWorld component = home.create();
 		Hello facet = component.provide_hello();
-		
-		{
-		    String msg = facet.sayHello();
-		    System.out.println(">> " + msg);
-		}
+		component.configuration_complete();
+
+		String msg = facet.sayHello();
+		System.out.println(">> " + msg);
+
 		component.remove();
 	    }
 	    catch (java.lang.Exception e)
@@ -39,7 +39,7 @@ public class Client
 	    finally
 	    {
 		// Undeploy local Java component
-		HelloWorldHomeDeployment.undeploy("HelloWorld");
+		HelloWorldHomeDeployment.undeploy("HelloWorldHome");
 	    }
 	}
 }

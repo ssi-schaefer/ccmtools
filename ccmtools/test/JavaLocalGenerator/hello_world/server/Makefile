@@ -22,6 +22,7 @@ check:
 	ant -f ./build.xml
 
 clean: 
+	ant clean
 	rm -rf ${DEST_DIR}/idl3
-	rm -rf ${DEST_DIR}/build
 	rm -rf ${DEST_DIR}/src-gen
+	rm -rf ${DEST_DIR}/src

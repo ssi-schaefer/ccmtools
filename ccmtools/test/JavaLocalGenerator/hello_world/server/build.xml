@@ -16,6 +16,7 @@
   <!-- Create the build directory-->
   <target name="init" description="" >
       <mkdir dir="${build}" />
+      <mkdir dir="${lib}" />
   </target>
  
 
@@ -35,7 +36,7 @@
   <!-- Clean up -->
   <target name="clean" description="" >
       <delete dir="${build}" />
-      <delete file="${jarname}" />
+      <delete dir="${lib}" />
   </target>
 
 </project>
