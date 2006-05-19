@@ -1,6 +1,37 @@
 RELEASE-0.6.x
 ============================================================================
 
+RELEASE-0.6.6 (May 19, 2006)
+----------------------------------------------------------------------------
+*) Feature: Remote Java Components
+	- Implemented minimal CCMSessionContainer 
+	- Implemented ccmjava -remote generator to generate remote Java components.
+	- Implemented test cases for remote Java components
+	- Collected test cases for local, clientlib and remote components.
+    Note: The current version of the remote Java generator does not support 
+    parameter mappings for arrays, any types, interfaces, valuetypes and unions.
+    
+*) Feature: Local Java Components
+	- Implemented support for local super components in Java.
+
+*) Feature: Confix Generator bin/ccmconfix
+    This generator can be used to generate all Makefile.py files in a given
+    source tree. We use it for C++ and IDL soures which will be installed
+    using Confix. 
+    
+*) Feature: bin/ccmns
+	- Added simple start script for Java's CORBA NameService
+	 
+*) Refactoring: java-environment
+	- Changed exception implementations (to be equal with the mapping of
+	  local Java components)
+	- Changed namespace ccm.local.Components to Components.ccm.local (to be
+	  equal with the mapping of 	local Java components)
+	- Changed implementation of the local and remote Cookie class.
+	- Moved CCM.idl to $CCMTOOLS_HOME/idl/Components, thus, there is only one
+	  Version of these IDL3 definitions (for both C++ and Java).
+	  
+
 RELEASE-0.6.5 (April 6, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: Start scripts (ccmtools, uml2idl, ccmjava, ccmdescriptor) don't
