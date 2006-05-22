@@ -38,7 +38,6 @@ import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.CodeGenerator.TemplateHandler;
 import ccmtools.CodeGenerator.TemplateLoader;
-import ccmtools.CppGenerator.CppLocalDbcGenerator;
 import ccmtools.CppGenerator.CppLocalGenerator;
 import ccmtools.CppGenerator.CppLocalTestGenerator;
 import ccmtools.CppGenerator.CppRemoteGenerator;
@@ -274,9 +273,6 @@ public class Main
             else if(generatorType.equalsIgnoreCase("c++local-test")) {
                 handler = new CppLocalTestGenerator(driver,
                                                         outputDirectory);
-            }
-            else if(generatorType.equalsIgnoreCase("c++dbc")) {
-                handler = new CppLocalDbcGenerator(driver, outputDirectory);
             }
             else if(generatorType.equalsIgnoreCase("c++remote")) {
                 handler = new CppRemoteGenerator(driver, outputDirectory);

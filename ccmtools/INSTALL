@@ -24,11 +24,11 @@ How to get it
 =============
 The current ccmtools version can be checked out from sourceforge CVS:
 
- $ cvs -d :pserver:anonymous@cvs.sf.net:/cvsroot/ccmtools login
+ $ cvs -d :pserver:anonymous@ccmtools.cvs.sf.net:/cvsroot/ccmtools login
  Password: <press enter>
- $ cvs -d :pserver:anonymous@cvs.sf.net:/cvsroot/ccmtools co ccmtools
- $ cvs -d :pserver:anonymous@cvs.sf.net:/cvsroot/ccmtools co cpp-environment
- $ cvs -d :pserver:anonymous@cvs.sf.net:/cvsroot/ccmtools co java-environment
+ $ cvs -d :pserver:anonymous@ccmtools.cvs.sf.net:/cvsroot/ccmtools co ccmtools
+ $ cvs -d :pserver:anonymous@ccmtools.cvs.sf.net:/cvsroot/ccmtools co cpp-environment
+ $ cvs -d :pserver:anonymous@ccmtools.cvs.sf.net:/cvsroot/ccmtools co java-environment
 
 Now you have the following directory structure: 
 
