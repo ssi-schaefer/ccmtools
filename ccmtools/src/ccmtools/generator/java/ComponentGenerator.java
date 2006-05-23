@@ -51,35 +51,34 @@ public class ComponentGenerator
 	}
 	
 	
-	public void generate(ModelRepository javaModel) 
-		throws CcmtoolsException
+	public void generate(ModelRepository javaModel) throws CcmtoolsException
 	{
 		logger.fine("enter");
-    	for(Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext(); )
-    	{
-    		String generatorId = (String)i.next();
-    		if(generatorId.equals(INTERFACE_GENERATOR_ID))
-    		{
-    			generateInterface(javaModel);               			
-    		}
-    		else if(generatorId.equals(LOCAL_COMPONENT_GENERATOR_ID))
-    		{
-    			generateLocalComponent(javaModel);
-    		}
-    		else if(generatorId.equals(CLIENT_LIB_GENERATOR_ID))
-    		{
-    			generateClientLibComponent(javaModel);
-    		}
-    		else if(generatorId.equals(CORBA_COMPONENT_GENERATOR_ID))
-    		{
-    			generateCorbaComponent(javaModel);
-    		}
-       		else if(generatorId.equals(APPLICATION_GENERATOR_ID))
-    		{
-    			generateApplication(javaModel);
-    		}
-    	}        
-    	logger.fine("leave");
+		for (Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext();)
+		{
+			String generatorId = (String) i.next();
+			if (generatorId.equals(INTERFACE_GENERATOR_ID))
+			{
+				generateInterface(javaModel);
+			}
+			else if (generatorId.equals(LOCAL_COMPONENT_GENERATOR_ID))
+			{
+				generateLocalComponent(javaModel);
+			}
+			else if (generatorId.equals(CLIENT_LIB_GENERATOR_ID))
+			{
+				generateClientLibComponent(javaModel);
+			}
+			else if (generatorId.equals(CORBA_COMPONENT_GENERATOR_ID))
+			{
+				generateCorbaComponent(javaModel);
+			}
+			else if (generatorId.equals(APPLICATION_GENERATOR_ID))
+			{
+				generateApplication(javaModel);
+			}
+		}
+		logger.fine("leave");
 	}
 	
 	
@@ -89,45 +88,45 @@ public class ComponentGenerator
 		logger.fine("enter");
 		try
 		{
-				List sourceFileList = new ArrayList();
-				for (Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext();)
-				{
-					InterfaceDef javaIface = (InterfaceDef) j.next();
-					sourceFileList.addAll(javaIface.generateLocalInterfaceSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
-				{
-					ComponentDef javaComponent = (ComponentDef) j.next();
-					sourceFileList.addAll(javaComponent.generateLocalInterfaceSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
-				{
-					HomeDef javaHome = (HomeDef) j.next();
-					sourceFileList.addAll(javaHome.generateLocalInterfaceSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllGlobalConstants().iterator(); j.hasNext();)
-				{
-					ConstantDef javaConstant = (ConstantDef) j.next();
-					sourceFileList.addAll(javaConstant.generateLocalInterfaceSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllEnums().iterator(); j.hasNext();)
-				{
-					EnumDef javaEnum = (EnumDef) j.next();
-					sourceFileList.addAll(javaEnum.generateLocalInterfaceSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
-				{
-					StructDef javaStruct = (StructDef) j.next();
-					sourceFileList.addAll(javaStruct.generateLocalInterfaceSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllExceptions().iterator(); j.hasNext();)
-				{
-					ExceptionDef javaException = (ExceptionDef) j.next();
-					sourceFileList.addAll(javaException.generateLocalInterfaceSourceFiles());
-				}
-				
-				// Save all source file objects
-				Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+			List sourceFileList = new ArrayList();
+			for (Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext();)
+			{
+				InterfaceDef javaIface = (InterfaceDef) j.next();
+				sourceFileList.addAll(javaIface.generateLocalInterfaceSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
+			{
+				ComponentDef javaComponent = (ComponentDef) j.next();
+				sourceFileList.addAll(javaComponent.generateLocalInterfaceSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
+			{
+				HomeDef javaHome = (HomeDef) j.next();
+				sourceFileList.addAll(javaHome.generateLocalInterfaceSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllGlobalConstants().iterator(); j.hasNext();)
+			{
+				ConstantDef javaConstant = (ConstantDef) j.next();
+				sourceFileList.addAll(javaConstant.generateLocalInterfaceSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllEnums().iterator(); j.hasNext();)
+			{
+				EnumDef javaEnum = (EnumDef) j.next();
+				sourceFileList.addAll(javaEnum.generateLocalInterfaceSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
+			{
+				StructDef javaStruct = (StructDef) j.next();
+				sourceFileList.addAll(javaStruct.generateLocalInterfaceSourceFiles());
+			}
+			for (Iterator j = javaModel.findAllExceptions().iterator(); j.hasNext();)
+			{
+				ExceptionDef javaException = (ExceptionDef) j.next();
+				sourceFileList.addAll(javaException.generateLocalInterfaceSourceFiles());
+			}
+
+			// Save all source file objects
+			Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 		}
 		catch (Exception e)
 		{

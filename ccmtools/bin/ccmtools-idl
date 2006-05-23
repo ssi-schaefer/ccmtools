@@ -71,5 +71,6 @@ FILES = sys.argv[start:]
 for x in FILES:
   CMD = '%s %s %s ' % (IDL_COMPILER, INCLUDES, OUT_DIR) + x
   print CMD
-  os.system('%s' % (CMD))
+  if os.system('%s' % (CMD)) != 0:
+  	sys.exit(-1)
 

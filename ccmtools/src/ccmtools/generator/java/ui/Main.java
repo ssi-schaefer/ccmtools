@@ -2,6 +2,7 @@ package ccmtools.generator.java.ui;
 
 import java.io.FileNotFoundException;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -30,6 +31,9 @@ public class Main
     /** Driver that handles user output */
     private static Driver uiDriver;
     
+	/** Java standard logger object */
+	protected static Logger logger;
+	
     // If the isExitWithErrorStatus flag is set, the main() function will 
     // call exit(1) to terminate ccmtools and the running Java VM.
     private static boolean isExitWithErrorStatus = true;
@@ -43,74 +47,85 @@ public class Main
      * @param args
      */
     public static void main(String[] args)
-    {
-        try {
-            uiDriver = new ccmtools.UI.ConsoleDriver(Driver.M_NONE);
-            
-            CommandLineParameters parameters = new CommandLineParameters();
-            if(parseCommandLineArgs(args, parameters)) 
-            {
-            	parameters.validate();
-            	setCcmtoolsProperties();
-    			ComponentGenerator generator = new ComponentGenerator(parameters, uiDriver);
-            	
-    			for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
-    			{
-    				String idlFile = (String) i.next();
-    				MContainer ccmModel = 
-    					CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+	{
+		logger = Logger.getLogger("ccm.generator.java");
+		logger.fine("");
 
-    				// Transform CCM Model to Java Implementation Model
-    				GraphTraverser traverser = new CcmGraphTraverser();
-    				CcmToJavaModelMapper nodeHandler = new CcmToJavaModelMapper();
-    				traverser.addHandler(nodeHandler);
-    				traverser.traverseGraph(ccmModel);
+		try
+		{
+			uiDriver = new ccmtools.UI.ConsoleDriver(Driver.M_NONE);
 
-    				// Query the Java Implementation Model and generate all source
-    				// file objects for the Java Client Library
-    				ModelRepository javaModel = nodeHandler.getJavaModel();
-    			
-    				// Run the Java component generator which can handle all of the
-    				// different generator flags (-iface, -local, -app, -clientlib, etc.)
-    				generator.generate(javaModel);	    				
-    			}
-            }
-        }
-        catch(ParseException e) {
-            uiDriver.printError(e.getMessage());
-            printUsage();
-        }
-        catch(CcmtoolsException e) {
-        	exitWithErrorStatus(e.getMessage());
-        }
-        catch(FileNotFoundException e) {
-            // Can't open uiDriver file
-        	exitWithErrorStatus(e.getMessage());
-        }
-        catch(Exception e)
-        {
-        	exitWithErrorStatus(e.getMessage());
-        }
-    }
+			CommandLineParameters parameters = new CommandLineParameters();
+			if (parseCommandLineArgs(args, parameters))
+			{
+				parameters.validate();
+				setCcmtoolsProperties();
+				ComponentGenerator generator = new ComponentGenerator(parameters, uiDriver);
+
+				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
+				{
+					String idlFile = (String) i.next();
+					MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+
+					// Transform CCM Model to Java Implementation Model
+					GraphTraverser traverser = new CcmGraphTraverser();
+					CcmToJavaModelMapper nodeHandler = new CcmToJavaModelMapper();
+					traverser.addHandler(nodeHandler);
+					traverser.traverseGraph(ccmModel);
+
+					// Query the Java Implementation Model and generate all
+					// source
+					// file objects for the Java Client Library
+					ModelRepository javaModel = nodeHandler.getJavaModel();
+
+					// Run the Java component generator which can handle all of
+					// the
+					// different generator flags (-iface, -local, -app,
+					// -clientlib, etc.)
+					generator.generate(javaModel);
+				}
+			}
+		}
+		catch (ParseException e)
+		{
+			uiDriver.printError(e.getMessage());
+			printUsage();
+		}
+		catch (CcmtoolsException e)
+		{
+			exitWithErrorStatus(e.getMessage());
+		}
+		catch (FileNotFoundException e)
+		{
+			// Can't open uiDriver file
+			exitWithErrorStatus(e.getMessage());
+		}
+		catch (Exception e)
+		{
+			exitWithErrorStatus(e.getMessage());
+		}
+	}
     
     
     /**
-     * Set default values in the ccmtools properties list (the items
-     * in this list depends on the content of ccmtools/etc/ccmtools.properties). 
-     */
+	 * Set default values in the ccmtools properties list (the items in this
+	 * list depends on the content of ccmtools/etc/ccmtools.properties).
+	 */
     private static void setCcmtoolsProperties()
-    {
-    	if(System.getProperty("ccmtools.home") == null) 
-    	{
-    		System.setProperty("ccmtools.home",System.getProperty("user.dir"));
-    	}	
-    	CcmtoolsProperties.Instance().set("ccmtools.home", System.getProperty("ccmtools.home"));
-    }
+	{
+    		logger.fine("");		
+		if (System.getProperty("ccmtools.home") == null)
+		{
+			System.setProperty("ccmtools.home", System.getProperty("user.dir"));
+		}
+		CcmtoolsProperties.Instance().set("ccmtools.home", System.getProperty("ccmtools.home"));
+	}
 
     
     
     private static void defineCommandLineOptions()
     {
+    		logger.fine("");
         options = new Options();
         
         // Define boolean options
@@ -145,6 +160,7 @@ public class Main
     private static boolean parseCommandLineArgs(String[] args, CommandLineParameters parameters)
         throws ParseException, CcmtoolsException
     {
+    		logger.fine("");
         defineCommandLineOptions();
 
         if(args.length == 0) {
@@ -168,58 +184,59 @@ public class Main
             return false; // don't continue program execution
         }
         
-        if(cmd.hasOption(ComponentGenerator.CLIENT_LIB_GENERATOR_ID))
-        {
-        	parameters.getGeneratorIds().add(ComponentGenerator.CLIENT_LIB_GENERATOR_ID);
-        }        
-        
-        if(cmd.hasOption(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID))
-        {
-        	parameters.getGeneratorIds().add(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID);
-        }    
-        
-        if(cmd.hasOption(ComponentGenerator.APPLICATION_GENERATOR_ID))
-        {
-        	parameters.getGeneratorIds().add(ComponentGenerator.APPLICATION_GENERATOR_ID);
-        }  
-        
-        if(cmd.hasOption(ComponentGenerator.INTERFACE_GENERATOR_ID))
-        {
-        	parameters.getGeneratorIds().add(ComponentGenerator.INTERFACE_GENERATOR_ID);
-        }  
-        
-        if(cmd.hasOption(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID))
-        {
-        	parameters.getGeneratorIds().add(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID);
-        }  
+        if (cmd.hasOption(ComponentGenerator.CLIENT_LIB_GENERATOR_ID))
+		{
+			parameters.getGeneratorIds().add(ComponentGenerator.CLIENT_LIB_GENERATOR_ID);
+		}
 
-        if(cmd.hasOption("noexit"))
-        {
-        	parameters.setNoExit(true);
-        	isExitWithErrorStatus = false;
-        }
-        else
-        {
-        	isExitWithErrorStatus = true;
-        	parameters.setNoExit(false);
-        }
-        
-        if(cmd.hasOption("o")) 
-        {
-            parameters.setOutDir(cmd.getOptionValue("o"));
-        }
-        
-        if(cmd.hasOption("I")) 
-        {
-            String[] paths = cmd.getOptionValues("I");
-            if(paths != null) {
-                parameters.getIncludePaths().clear();
-                for(int i = 0; i < paths.length; i++) 
-                {
-                    parameters.getIncludePaths().add(paths[i]);
-                }
-            }
-        }
+		if (cmd.hasOption(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID))
+		{
+			parameters.getGeneratorIds().add(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID);
+		}
+
+		if (cmd.hasOption(ComponentGenerator.APPLICATION_GENERATOR_ID))
+		{
+			parameters.getGeneratorIds().add(ComponentGenerator.APPLICATION_GENERATOR_ID);
+		}
+
+		if (cmd.hasOption(ComponentGenerator.INTERFACE_GENERATOR_ID))
+		{
+			parameters.getGeneratorIds().add(ComponentGenerator.INTERFACE_GENERATOR_ID);
+		}
+
+		if (cmd.hasOption(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID))
+		{
+			parameters.getGeneratorIds().add(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID);
+		}
+
+		if (cmd.hasOption("noexit"))
+		{
+			parameters.setNoExit(true);
+			isExitWithErrorStatus = false;
+		}
+		else
+		{
+			isExitWithErrorStatus = true;
+			parameters.setNoExit(false);
+		}
+
+		if (cmd.hasOption("o"))
+		{
+			parameters.setOutDir(cmd.getOptionValue("o"));
+		}
+
+		if (cmd.hasOption("I"))
+		{
+			String[] paths = cmd.getOptionValues("I");
+			if (paths != null)
+			{
+				parameters.getIncludePaths().clear();
+				for (int i = 0; i < paths.length; i++)
+				{
+					parameters.getIncludePaths().add(paths[i]);
+				}
+			}
+		}
 
         // handle parameters (= args without options)
         String[] arguments = cmd.getArgs();
@@ -237,12 +254,14 @@ public class Main
         
     private static void printUsage()
     {
+    		logger.fine("");
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("ccmjava [options] *.idl", options);
     }
         
     private static void exitWithErrorStatus(String errorMessage)
     {
+    		logger.fine("");
         uiDriver.printError("CCM Tools have been terminated with an error!\n" + errorMessage);
         if(isExitWithErrorStatus) 
         {

@@ -28,7 +28,7 @@ public class FacetTest
     // Facet test cases
     // ------------------------------------------------------------------------
     
-    public void testFacetModuleAttribute()
+    public void testFacetAttribute()
     {
         try {
             executeCommandLine("make -C " + testDir + "/facet_attributes test");
@@ -38,7 +38,7 @@ public class FacetTest
         }
     }
 
-    public void testFacetModuleConstants()
+    public void testFacetConstants()
     {
         try 
         {
@@ -50,7 +50,7 @@ public class FacetTest
         }
     }
 
-    public void testFacetModuleException()
+    public void testFacetException()
     {
         try 
         {
@@ -62,7 +62,7 @@ public class FacetTest
         }
     }
 
-    public void testFacetModuleInheritance()
+    public void testFacetInheritance()
     {
         try 
         {
@@ -86,7 +86,7 @@ public class FacetTest
         }
     }
     
-    public void testFacetModuleTypes()
+    public void testFacetTypes()
     {
         try 
         {

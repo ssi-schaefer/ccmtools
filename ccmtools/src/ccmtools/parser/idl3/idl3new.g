@@ -1,8 +1,9 @@
-header {
+header 
+{
 /* CCM Tools : IDL3 Parser
  * Edin Arnautovic <edin.arnautovic@salomon.at>
  * Leif Johnson <leif@ambient.2y.net>
- * Copyright (C) 2002, 2003 Salomon Automation
+ * Copyright (C) 2002 - 2006 Salomon Automation
  *
  * Generated using antlr <http://antlr.org/> from source grammar file :
  *
@@ -55,545 +56,19 @@ import ccmtools.Metamodel.ComponentIDL.*;
  * adapted for CORBA 3.0 by Edin Arnautovic <edin.arnautovic@salomon.at>
  */
 
-/* TODO :
- * o unions :
- *   - if 'default' label exists, verify there is a default available in the
- *     discriminator
- * o operations:
- *   - verify that "oneway" operations have no out or inout params and have a
- *     void return type
- * o make name lookup more rigorous (see FIXMEs)
- * o add enum support to const attribute definitions (already there ?)
- * o implement better scope handling (especially lookups in symbol table)
- */
 
-/* ROAD MAP :
- *
- * This file is very long. As such this little note is here to help locating a
- * particular identifier or some such. The symbols are arranged in more or less
- * decreasing scope. The file starts with the Parser definition and then
- * contains the grammar rules, arranged in increasing numeric order, as they are
- * numbered in the OMG IDL Grammar (section 3.4, CORBA version 3.0
- * specification). The rules are grouped roughly as follows (B stands for Base
- * IDL, C stands for Component IDL) :
- *
- * B specification (top level symbol), definitions, modules
- * B interfaces, values, constants, literals
- * B types, structs, unions, enums
- * B operations, parameters, attributes, exceptions
- *
- * C components, emits, publishes, consumes, provides, uses
- * C homes, factories, finders
- * C events
- *
- * Rules are specified in comments above each rule's implementation. Rules have
- * cross-referenced rule numbers to hopefully make it easier to find different
- * parts in a rule. Rules in comments generally have the form :
- *
- * // na. <A> ::= <B,nb> | <C,nc>
- *
- * The bottom of this file contains the lexer definition and rules.
- */
-
-class IDL3Parser extends Parser;
-options { exportVocab = IDL3; k = 2; }
+class Idl3Parser extends Parser;
+options { exportVocab = Idl3; k = 2; }
 {
-    // debug levels for the parser are allowed to use the lower 24 bits of a
-    // long int.
-    private final static long DEBUG_FORWARD_DECL = 0x000001;
-    private final static long DEBUG_INTERFACE    = 0x000002;
-    private final static long DEBUG_COMPONENT    = 0x000004;
-    private final static long DEBUG_EVENT        = 0x000008;
-    private final static long DEBUG_EXCEPTION    = 0x000010;
-    private final static long DEBUG_OPERATION    = 0x000020;
-    private final static long DEBUG_PARAMETER    = 0x000040;
-    private final static long DEBUG_IDL_TYPE     = 0x000080;
-    private final static long DEBUG_TYPEDEF      = 0x000100;
-    private final static long DEBUG_NAMESPACE    = 0x000200;
-    private final static long DEBUG_PARSER_TOKEN = 0x000400;
-    private final static long DEBUG_SYMBOL_TABLE = 0x000800;
-    private final static long DEBUG_FILE         = 0x001000;
-    private final static long DEBUG_VALUE        = 0x002000;
-    private final static long DEBUG_CONSTANT     = 0x004000;
-    private final static long DEBUG_INHERITANCE  = 0x008000;
-    private final static long DEBUG_PRIMARY_KEY  = 0x010000;
-    private final static long DEBUG_CONTAINER    = 0x020000;
-
-    // padding for future debug level manipulation ...
-    private final static long DEBUG_UNUSED_F     = 0x040000;
-    private final static long DEBUG_UNUSED_G     = 0x080000;
-    private final static long DEBUG_UNUSED_H     = 0x100000;
-    private final static long DEBUG_UNUSED_I     = 0x200000;
-    private final static long DEBUG_UNUSED_J     = 0x400000;
-    private final static long DEBUG_UNUSED_K     = 0x800000;
-
-    private final static String[] keywords =
-    {
-        "abstract", "any", "attribute", "boolean", "case", "char", "component",
-        "const", "consumes", "context", "custom", "default", "double",
-        "exception", "emits", "enum", "eventtype", "factory", "FALSE", "finder",
-        "fixed", "float", "getraises", "home", "import", "in", "inout",
-        "interface", "local", "long", "module", "multiple", "native", "Object",
-        "octet", "oneway", "out", "primarykey", "private", "provides", "public",
-        "publishes", "raises", "readonly", "setraises", "sequence", "short",
-        "string", "struct", "supports", "switch", "TRUE", "truncatable",
-        "typedef", "typeid", "typeprefix", "unsigned", "union", "uses",
-        "ValueBase", "valuetype", "void", "wchar", "wstring",
-    };
-
-    private long debug = 0;
-
-    private IDL3SymbolTable symbolTable;
-    private Map scopeTable;
+    private Map scopeTable = new Hashtable();
     private MContainer specification = null;
-    private ParserManager manager;
 
-    /*
-     *  Set up the current class instance for a parse, by specifying the parser
-     *  manager object that this parser belongs to. This loads the parser
-     *  manager's symbol table into this parser instance.
-     */
-    public void setManager(ParserManager m)
-    {
-        manager = m;
-        symbolTable = manager.getSymbolTable();
-        scopeTable = new Hashtable();
-    }
-
-    /*
-     * Set the debug level for this parser class instance.
-     */
-    public void setDebug(long d) { debug = d; }
-
-    /*
-     * Translate the given object scope id into a CORBA compatible repository
-     * identifier.
-     */
-    private String createRepositoryId(String id)
-    {
-        String scope = symbolTable.currentScopeAsString();
-        String replaced = scope.replaceAll("::", "/");
-
-        if(scope.equals("")) {
-            return "IDL:"+ replaced + id + ":1.0";
-        } else {
-            return "IDL:"+ replaced + "/" + id + ":1.0";
-        }
-    }
-
-    /*
-     * Find out if a given string is an IDL keyword.
-     */
-    private boolean checkKeyword(String id)
-    {
-        for (int i = 0; i < keywords.length; i++)
-            if (keywords[i].equalsIgnoreCase(id)) return false;
-        return true;
-    }
-
-    /*
-     * Find out if the given string could be a Long object. If so, return the
-     * Long object, and if not throw a semantic exception.
-     */
-    private Long checkLong(String expr)
-        throws TokenStreamException
-    {
-        Long result = null;
-        try {
-            result = new Long(expr);
-            return result;
-        } catch (Exception e) {
-            throw new TokenStreamException(
-                "can't evaluate '"+expr+"' as an integer");
-        }
-    }
-
-    /*
-     * Check to make sure the given string is a positive (1 or greater) valid
-     * long integer. Throw an exception if not.
-     */
-    private void checkPositive(String bound)
-        throws TokenStreamException
-    {
-        try {
-            Long limit = new Long(bound);
-            if (limit.longValue() < 1) { throw new RuntimeException(); }
-        } catch (RuntimeException e) {
-            throw new TokenStreamException("invalid positive value "+bound);
-        }
-    }
-
-    /*
-     * Find out if the given string could be a Float object. If so, return the *
-     * Float object, and if not throw a semantic exception.
-     */
-    private Float checkFloat(String expr)
-        throws TokenStreamException
-    {
-        Float result = null;
-        try {
-            result = new Float(expr);
-            return result;
-        } catch (Exception e) {
-            throw new TokenStreamException(
-                "can't evaluate '"+expr+"' as a float");
-        }
-    }
-
-    /*
-     * Get the currently active source file. Returns an empty string if the
-     * current source file is the same as the original source file.
-     */
-    private String getSourceFile()
-    {
-        String source = manager.getSourceFile();
-        if (source.equals(manager.getOriginalFile())) source = "";
-        if ((debug & DEBUG_FILE) != 0)
-            System.out.println("[f] setting source file to '"+source+"'");
-        return source;
-    }
-
-    /*
-     * See if the given identifier points to an object that's already in the
-     * symbol table. If the identifier is found, and points to an object of the
-     * same type as the given query object, then check to see if the looked up
-     * object is a forward declaration (which means it has a null definition
-     * body in some sense, usually meaning that there are no members associated
-     * with the definition). If the looked up object is not a forward
-     * declaration, throw a semantic error.
-     */
-    private MContained verifyNameEmpty(String id, MContained query)
-        throws TokenStreamException
-    {
-        MContained lookup =
-            lookupName(id, DEBUG_TYPEDEF | DEBUG_INTERFACE);
-
-        if (lookup == null) return query;
-
-        Class qtype = query.getClass().getInterfaces()[0];
-
-        if (! qtype.isInstance(lookup)) return query;
-
-        if (((lookup instanceof MStructDef) &&
-                (((MStructDef) lookup).getMembers().size() == 0)) ||
-            ((lookup instanceof MUnionDef) &&
-                (((MUnionDef) lookup).getUnionMembers().size() == 0)) ||
-            ((lookup instanceof MEnumDef) &&
-                (((MEnumDef) lookup).getMembers().size() == 0)) ||
-            ((lookup instanceof MExceptionDef) &&
-                (((MExceptionDef) lookup).getMembers().size() == 0)) ||
-            ((lookup instanceof MComponentDef) &&
-                ((((MComponentDef) lookup).getContentss().size() == 0) &&
-                 (((MComponentDef) lookup).getEmitss().size() == 0) &&
-                 (((MComponentDef) lookup).getPublishess().size() == 0) &&
-                 (((MComponentDef) lookup).getConsumess().size() == 0) &&
-                 (((MComponentDef) lookup).getFacets().size() == 0) &&
-                 (((MComponentDef) lookup).getReceptacles().size() == 0))) ||
-            ((lookup instanceof MHomeDef) &&
-                ((((MHomeDef) lookup).getContentss().size() == 0) &&
-                 (((MHomeDef) lookup).getFactories().size() == 0) &&
-                 (((MHomeDef) lookup).getFinders().size() == 0))) ||
-            ((lookup instanceof MInterfaceDef) &&
-                (((MInterfaceDef) lookup).getContentss().size() == 0)) ||
-            (lookup instanceof MModuleDef)) {
-            return lookup;
-        }
-
-        throw new TokenStreamException(
-            "identifier '"+id+"' was used more than once");
-    }
-
-    /*
-     * Verify that the given name exists and is an instance of the correct
-     * class. Throw an exception if not.
-     */
-    private MContained verifyNameExists(String id, MContained query)
-        throws TokenStreamException
-    {
-        MContained lookup =
-            lookupName(id, DEBUG_IDL_TYPE | DEBUG_TYPEDEF);
-
-        try {
-            Class qtype = query.getClass().getInterfaces()[0];
-            if (qtype.isInstance(lookup)) return lookup;
-            throw new RuntimeException();
-        } catch (RuntimeException e) {
-            throw new TokenStreamException("identifier '"+id+"' is undefined or of the wrong type");
-        }
-    }
-
-    /*
-     * Get the IDL type for a given identifier.
-     */
-    private MIDLType getIDLType(String id)
-        throws TokenStreamException
-    {
-        MContained contained = new MContainedImpl();
-        contained = verifyNameExists(id, contained);
-
-        if (contained instanceof MIDLType)
-            return (MIDLType) contained;
-
-        if (contained instanceof MTyped)
-            return ((MTyped) contained).getIdlType();
-
-        throw new TokenStreamException("cannot find IDL type for '"+
-            contained.getIdentifier()+"'");
-    }
-
-    /*
-     * Add the contents to the given container. Check to ensure each item is
-     * defined in the current file being parsed.
-     */
-    private void checkAddContents(MContainer container, List contents)
-        throws TokenStreamException
-    {
-        if (container == null)
-            throw new TokenStreamException(
-                "can't add contents ("+contents+") to a null container");
-
-        Iterator it = contents.iterator();
-        while (it.hasNext()) {
-            MContained item = (MContained) it.next();
-
-            if (item == null)
-                throw new TokenStreamException(
-                    "can't add a null item from '"+contents+
-                    "' to container '"+container+"'");
-
-            item.setDefinedIn(container);
-            container.addContents(item);
-
-            if ((debug & DEBUG_CONTAINER) != 0)
-                System.out.println(
-                    "[C] adding "+item.getIdentifier()+" to container "+
-                    container.getIdentifier());
-        }
-    }
-
-    /*
-     * Set the base list for the given interface, after checking to make sure
-     * the given bases actually exist and have the correct abstract / local
-     * attributes.
-     */
-    private void checkSetBases(MInterfaceDef iface, List bases)
-        throws TokenStreamException
-    {
-        String id = iface.getIdentifier();
-
-        ArrayList verified = new ArrayList();
-        for (Iterator it = bases.iterator(); it.hasNext(); ) {
-            String inherit = (String) it.next();
-            MContained lookup = lookupName(inherit, DEBUG_INTERFACE | DEBUG_INHERITANCE);
-
-            if ((lookup == null) || (! (lookup instanceof MInterfaceDef)))
-                throw new TokenStreamException("interface '"+id+"' can't inherit from undefined interface '"+inherit+"'");
-
-            MInterfaceDef base = (MInterfaceDef) lookup;
-
-            if (iface.isAbstract() != base.isAbstract())
-                throw new TokenStreamException("interface '"+id+"' can't inherit from '"+inherit+"' because one interface is abstract");
-
-            if ((! iface.isLocal()) && base.isLocal())
-                throw new TokenStreamException("interface '"+id+"' can't inherit from '"+inherit+"' because '"+id+"' is not local");
-
-            if ((debug & DEBUG_INTERFACE) != 0)
-                System.out.println("[f] adding base '"+inherit+"' to interface '"+id+"'");
-
-            verified.add(base);
-        }
-
-        iface.setBases(verified);
-    }
-
-    /*
-     * Set the supported interface list for the given interface (actually has to
-     * be a component or home, but they're both of type MInterfaceDef), after
-     * checking to make sure the given supported interfaces actually exist.
-     */
-    private void checkSetSupports(MInterfaceDef iface, List supports)
-        throws TokenStreamException
-    {
-        List slist = new ArrayList();
-        for (Iterator it = supports.iterator(); it.hasNext(); ) {
-            String name = (String) it.next();
-            MContained lookup = lookupName(name, DEBUG_INTERFACE | DEBUG_INHERITANCE);
-            if ((lookup == null) || (! (lookup instanceof MInterfaceDef))) {
-                throw new TokenStreamException("interface '"+iface.getIdentifier()+"' can't support undefined interface '"+name+"'");
-            } else {
-                MSupportsDef support = new MSupportsDefImpl();
-                support.setIdentifier("support_"+name);
-                support.setSupports((MInterfaceDef) lookup);
-                support.setDefinedIn(iface);
-                if (iface instanceof MComponentDef) {
-                    support.setComponent((MComponentDef) iface);
-                } else if (iface instanceof MHomeDef) {
-                    support.setHome((MHomeDef) iface);
-                }
-                slist.add(support);
-            }
-        }
-
-        if (iface instanceof MComponentDef)
-            ((MComponentDef) iface).setSupportss(slist);
-        else if (iface instanceof MHomeDef)
-            ((MHomeDef) iface).setSupportss(slist);
-        else throw new RuntimeException(iface.getIdentifier()+" must be a component or home instance");
-    }
-
-    /*
-     * Examine the given list of objects for repeated identifiers, and set them
-     * to the member list appropriate for the type of the given box.
-     */
-    private void checkSetMembers(MContained box, List members)
-        throws TokenStreamException
-    {
-        MExceptionDef exception = null;
-        MStructDef struct = null;
-        MUnionDef union = null;
-
-        if (box instanceof MExceptionDef) exception = (MExceptionDef) box;
-        else if (box instanceof MStructDef) struct = (MStructDef) box;
-        else if (box instanceof MUnionDef) union = (MUnionDef) box;
-
-        if ((struct == null) && (exception == null) && (union == null))
-            throw new RuntimeException(box+" must be an exception, union, or struct");
-
-        if ((members.size() == 0) && (exception == null))
-            throw new TokenStreamException("container '"+box.getIdentifier()+"' has no members");
-
-        // check if there are fields with same identifier.
-
-        String outID = "";
-        String inID = "";
-        Iterator o = members.iterator();
-        Iterator i = members.iterator();
-        try {
-            if (union != null) {
-                MUnionFieldDef out, in;
-                while (o.hasNext()) {
-                    out = (MUnionFieldDef) o.next(); outID = out.getIdentifier();
-                    while (i.hasNext()) {
-                        in = (MUnionFieldDef) i.next(); inID = in.getIdentifier();
-                        if (outID.equals(inID) && ! out.equals(in))
-                            throw new RuntimeException();
-                    }
-                }
-            } else {
-                MFieldDef out, in;
-                while (o.hasNext()) {
-                    out = (MFieldDef) o.next(); outID = out.getIdentifier();
-                    while (i.hasNext()) {
-                        in = (MFieldDef) i.next(); inID = in.getIdentifier();
-                        if (outID.equals(inID) && ! out.equals(in))
-                            throw new RuntimeException();
-                    }
-                }
-            }
-        } catch (RuntimeException e) {
-            throw new TokenStreamException("repeated identifier '"+outID+"' in '"+box.getIdentifier()+"'");
-        }
-
-        // add the members to the given box.
-        Iterator it = members.iterator();
-        if (union != null) {
-            while (it.hasNext()) ((MUnionFieldDef) it.next()).setUnion(union);
-            union.setUnionMembers(members);
-        } else {
-            while (it.hasNext()) {
-                MFieldDef f = (MFieldDef) it.next();
-                if (struct != null) f.setStructure(struct);
-                else f.setException(exception);
-            }
-            if (struct != null) struct.setMembers(members);
-            else exception.setMembers(members);
-        }
-    }
-
-    /*
-     * Set the parameter list for the given operation.
-     */
-    private void checkSetParameters(MOperationDef op, List params)
-    {
-        for (Iterator p = params.iterator(); p.hasNext(); )
-            ((MParameterDef) p.next()).setOperation(op);
-        op.setParameters(params);
-    }
-
-    /*
-     * Set the exception list for the given operation. Check that the given
-     * exceptions have been defined somewhere.
-     */
-    private void checkSetExceptions(MOperationDef op, List excepts)
-        throws TokenStreamException
-    {
-        op.setExceptionDefs(new HashSet(excepts));
-    }
-
-    /*
-     * Set the base(s) of this value def according to the name given.
-     */
-    private void addValueBase(MValueDef val, String name)
-    {
-        MValueDef inherited = (MValueDef)
-            lookupName(name, DEBUG_VALUE | DEBUG_INHERITANCE);
-
-        if ((inherited != null) && (inherited.getContentss() != null)) {
-            if (inherited.isAbstract()) val.addAbstractBase(inherited);
-            else val.setBase(inherited);
-        }
-    }
-
-    /*
-     * Set the supports information for the given value using the given name.
-     */
-    private void addValueSupports(MValueDef val, String name)
-        throws TokenStreamException
-    {
-        String id = val.getIdentifier();
-        MContained support =
-            lookupName(name, DEBUG_VALUE | DEBUG_INTERFACE);
-
-        if (support != null) {
-            val.setInterfaceDef((MInterfaceDef) support);
-            if ((debug & (DEBUG_INTERFACE | DEBUG_INHERITANCE)) != 0)
-                System.out.println("[v] added support '"+name+"' to value '"+id+"'");
-        } else {
-            throw new TokenStreamException("value '"+id+"' can't inherit from undefined value '"+name+"'");
-        }
-    }
-
-    /*
-     * This function is a debug wrapper for the symbol table function of the
-     * same name. It essentially just calls the symbolTable function, but if
-     * needed first it prints stuff.
-     */
-    private MContained lookupName(String name, long level)
-    {
-        MContained result = null;
-
-        if ((debug & level) != 0) {
-            if ((debug & DEBUG_SYMBOL_TABLE) != 0)
-                System.out.println(symbolTable.toString());
-            System.out.println("[L] looking up '" + name + "'");
-        }
-
-        if (name.indexOf("::") > 0) {
-            result = this.symbolTable.lookupScopedName(name);
-        } else {
-            String look = new String(name);
-            if (look.startsWith("::"))
-                look = look.substring(2, look.length());
-            result = this.symbolTable.lookupNameInCurrentScope(look);
-        }
-
-        if ((debug & level) != 0) {
-            if (result == null) System.out.println("[L] '"+name+"' not found");
-            else System.out.println("[L] '"+name+"' ("+result+") found");
-        }
-
-        return result;
-    }
+	private ParserHelper helper;	
+	
+	public void setHelper(ParserHelper helper)
+	{
+		this.helper = helper;
+	}
 }
 
 /******************************************************************************/
@@ -610,14 +85,14 @@ specification returns [MContainer container = null]
     :   ( import_dcl )*
         ( decls = definition { definitions.addAll(decls); } )+
         {
-            checkAddContents(container, definitions);
+            helper.checkAddContents(container, definitions);
 
-            if ((debug & DEBUG_FILE) != 0)
-                System.out.println("[f] input file "+
-                    manager.getOriginalFile()+" parsed");
+//            if ((debug & DEBUG_FILE) != 0)
+//                System.out.println("[f] input file "+
+//                    manager.getOriginalFile()+" parsed");
 
-            if ((debug & DEBUG_SYMBOL_TABLE) != 0)
-                System.out.println(symbolTable.toString());
+//            if ((debug & DEBUG_SYMBOL_TABLE) != 0)
+//                System.out.println(symbolTable.toString());
         } ;
 
 // 2. <definition> ::= <type_dcl,42> ";" <-- this rule returns a list
@@ -657,15 +132,15 @@ module returns [MModuleDef mod = null]
 }
     :   "module" id = identifier
         {
-            mod = (MModuleDef) verifyNameEmpty(id, mod);
-            mod.setSourceFile(getSourceFile());
+            mod = (MModuleDef) helper.verifyNameEmpty(id, mod);
+            mod.setSourceFile(helper.getIncludedSourceFile());
             mod.setIdentifier(id);
-            symbolTable.add(id, mod);
+            helper.getSymbolTable().add(id, mod);
         }
-        LCURLY { symbolTable.pushScope(id); }
+        LCURLY { helper.getSymbolTable().pushScope(id); }
         ( decls = definition { definitions.addAll(decls); } )*
-        { checkAddContents(mod, definitions); }
-        RCURLY { symbolTable.popScope(); } ;
+        { helper.checkAddContents(mod, definitions); }
+        RCURLY { helper.getSymbolTable().popScope(); } ;
 
 // (lmj) this was renamed to iface to prevent collisions with Java keywords
 //
@@ -683,9 +158,9 @@ iface returns [MInterfaceDef iface = null]
 interface_dcl[MInterfaceDef iface]
 { List exports = new ArrayList(); }
     :   interface_header[iface]
-        LCURLY { symbolTable.pushScope(iface.getIdentifier()); }
-        exports = interface_body { checkAddContents(iface, exports); }
-        RCURLY { symbolTable.popScope(); } ;
+        LCURLY { helper.getSymbolTable().pushScope(iface.getIdentifier()); }
+        exports = interface_body { helper.checkAddContents(iface, exports); }
+        RCURLY { helper.getSymbolTable().popScope(); } ;
 
 // 6. <forward_dcl> ::= [ "abstract" | "local" ] "interface" <identifier>
 forward_dcl returns [MInterfaceDef iface = null]
@@ -694,11 +169,11 @@ forward_dcl returns [MInterfaceDef iface = null]
         |   "local"    { iface.setLocal(true); } )?
         "interface" id = identifier
         {
-            iface = (MInterfaceDef) verifyNameEmpty(id, iface);
-            iface.setSourceFile(getSourceFile());
+            iface = (MInterfaceDef) helper.verifyNameEmpty(id, iface);
+            iface.setSourceFile(helper.getIncludedSourceFile());
             iface.setIdentifier(id);
-            iface.setRepositoryId(createRepositoryId(id));
-            symbolTable.add(id, iface);
+            iface.setRepositoryId(helper.createRepositoryId(id));
+            helper.getSymbolTable().add(id, iface);
         } ;
 
 // 7. <interface_header> ::= [ "abstract" | "local" ] "interface" <identifier>
@@ -741,7 +216,7 @@ interface_inheritance_spec[MInterfaceDef iface]
 { List inherits = new ArrayList(); String name = null; }
     :   COLON name = interface_name { inherits.add(name); }
         ( COMMA name = interface_name { inherits.add(name); } )*
-        { checkSetBases(iface, inherits); } ;
+        { helper.checkSetBases(iface, inherits); } ;
 
 // 11. <interface_name> ::= <scoped_name,12>
 interface_name returns [String name = null] : name = scoped_name ;
@@ -776,10 +251,10 @@ value_forward_dcl returns [MValueDef val = null]
 { val = new MValueDefImpl(); String id = null; }
     :   ( "abstract" { val.setAbstract(true); } )? "valuetype" id = identifier
         {
-            val = (MValueDef) verifyNameEmpty(id, val);
-            val.setSourceFile(getSourceFile());
+            val = (MValueDef) helper.verifyNameEmpty(id, val);
+            val.setSourceFile(helper.getIncludedSourceFile());
             val.setIdentifier(id);
-            symbolTable.add(id, val);
+            helper.getSymbolTable().add(id, val);
         } ;
 
 // 15. <value_box_dcl> ::= "valuetype"  <identifier> <type_spec,44>
@@ -791,8 +266,8 @@ value_box_dcl returns [MValueBoxDef valbox = null]
 }
     :   "valuetype" id = identifier type = type_spec
         {
-            valbox = (MValueBoxDef) verifyNameEmpty(id, valbox);
-            valbox.setSourceFile(getSourceFile());
+            valbox = (MValueBoxDef) helper.verifyNameEmpty(id, valbox);
+            valbox.setSourceFile(helper.getIncludedSourceFile());
             valbox.setIdentifier(id);
             valbox.setIdlType(type);
         } ;
@@ -814,25 +289,25 @@ value_abs_dcl returns [MValueDef val = null]
 }
     :   "abstract" { val.setAbstract(true); } "valuetype" id = identifier
         {
-            val = (MValueDef) verifyNameEmpty(id, val);
-            val.setSourceFile(getSourceFile());
+            val = (MValueDef) helper.verifyNameEmpty(id, val);
+            val.setSourceFile(helper.getIncludedSourceFile());
             val.setIdentifier(id);
-            symbolTable.add(id, val);
+            helper.getSymbolTable().add(id, val);
         }
         value_inheritance_spec[val]
-        LCURLY { symbolTable.pushScope(id); }
+        LCURLY { helper.getSymbolTable().pushScope(id); }
         ( decls = export { exports.addAll(decls); } )*
-        { checkAddContents(val, exports); }
-        RCURLY { symbolTable.popScope(); } ;
+        { helper.checkAddContents(val, exports); }
+        RCURLY { helper.getSymbolTable().popScope(); } ;
 
 // 17. <value_dcl> ::= <value_header,18> "{"  < value_element,21>* "}"
 value_dcl returns [MValueDef val = null]
 { List elements = new ArrayList(); List decls = null; }
     :   val = value_header
-        LCURLY { symbolTable.pushScope(val.getIdentifier()); }
+        LCURLY { helper.getSymbolTable().pushScope(val.getIdentifier()); }
         ( decls = value_element { elements.addAll(decls); } )*
-        { checkAddContents(val, elements); }
-        RCURLY { symbolTable.popScope(); } ;
+        { helper.checkAddContents(val, elements); }
+        RCURLY { helper.getSymbolTable().popScope(); } ;
 
 // 18. <value_header> ::= ["custom" ] "valuetype" <identifier>
 //       [ <value_inheritance_spec,19> ]
@@ -846,10 +321,10 @@ value_header returns [MValueDef val = null]
 { val = new MValueDefImpl(); String id = null; }
     :   ( "custom" { val.setCustom(true); } )? "valuetype" id = identifier
         {
-            val = (MValueDef) verifyNameEmpty(id, val);
-            val.setSourceFile(getSourceFile());
+            val = (MValueDef) helper.verifyNameEmpty(id, val);
+            val.setSourceFile(helper.getIncludedSourceFile());
             val.setIdentifier(id);
-            symbolTable.add(id, val);
+            helper.getSymbolTable().add(id, val);
         }
         value_inheritance_spec[val] ;
 
@@ -859,11 +334,11 @@ value_header returns [MValueDef val = null]
 value_inheritance_spec[MValueDef val]
 { String name = null; MValueDef inherited = null; }
     :   (   COLON ( "truncatable" { val.setTruncatable(true); } )?
-            name = value_name { addValueBase(val, name); }
-            ( COMMA name = value_name { addValueBase(val, name); } )*
+            name = value_name { helper.addValueBase(val, name); }
+            ( COMMA name = value_name { helper.addValueBase(val, name); } )*
         )?
-        (   "supports" name = interface_name { addValueSupports(val, name); }
-            ( COMMA    name = interface_name { addValueSupports(val, name); } )*
+        (   "supports" name = interface_name { helper.addValueSupports(val, name); }
+            ( COMMA    name = interface_name { helper.addValueSupports(val, name); } )*
         )? ;
 
 // 20. <value_name> ::= <scoped_name,12>
@@ -918,9 +393,9 @@ init_dcl returns [MFactoryDef factory = null]
     List excepts = null;
 }
     :   "factory" id = identifier
-        { factory.setIdentifier(id); symbolTable.add(id, factory); }
-        LPAREN ( params = init_param_decls { checkSetParameters((MOperationDef) factory, params); } )?
-        RPAREN ( excepts = raises_expr { checkSetExceptions((MOperationDef) factory, excepts); } )?
+        { factory.setIdentifier(id); helper.getSymbolTable().add(id, factory); }
+        LPAREN ( params = init_param_decls { helper.checkSetParameters((MOperationDef) factory, params); } )?
+        RPAREN ( excepts = raises_expr { helper.checkSetExceptions((MOperationDef) factory, excepts); } )?
         SEMI ;
 
 // 24. <init_param_decls> ::= <init_param_decl,25> { "," <init_param_decl,24> }*
@@ -954,10 +429,10 @@ const_dcl returns [MConstantDef constant = null]
 }
     :   "const" type = const_type { constant.setIdlType(type); } id = identifier
         {
-            constant = (MConstantDef) verifyNameEmpty(id, constant);
-            constant.setSourceFile(getSourceFile());
+            constant = (MConstantDef) helper.verifyNameEmpty(id, constant);
+            constant.setSourceFile(helper.getIncludedSourceFile());
             constant.setIdentifier(id);
-            symbolTable.add(id, constant);
+            helper.getSymbolTable().add(id, constant);
         }
         ASSIGN expr = const_exp
         {
@@ -1025,7 +500,7 @@ const_type returns [MIDLType type = null]
     |   type = string_type
     |   type = wide_string_type
     |   ( fixed_pt_const_type ) => type = fixed_pt_const_type
-    |   name = scoped_name { type = getIDLType(name); }
+    |   name = scoped_name { type = helper.getIDLType(name); }
     |   type = octet_type
     ;
 
@@ -1043,7 +518,7 @@ or_expr returns [String expr = null]
         (
             OR right = or_expr
             {
-                Long a = checkLong(expr); Long b = checkLong(right);
+                Long a = helper.checkLong(expr); Long b = helper.checkLong(right);
                 long result = a.longValue() | b.longValue();
                 expr = "" + result;
             }
@@ -1060,7 +535,7 @@ xor_expr returns [String expr = null]
         (
             XOR right = xor_expr
             {
-                Long a = checkLong(expr); Long b = checkLong(right);
+                Long a = helper.checkLong(expr); Long b = helper.checkLong(right);
                 long result = a.longValue() ^ b.longValue();
                 expr = "" + result;
             }
@@ -1077,7 +552,7 @@ and_expr returns [String expr = null]
         (
             AND right = and_expr
             {
-                Long a = checkLong(expr); Long b = checkLong(right);
+                Long a = helper.checkLong(expr); Long b = helper.checkLong(right);
                 long result = a.longValue() & b.longValue();
                 expr = "" + result;
             }
@@ -1096,9 +571,13 @@ shift_expr returns [String expr = null]
         (
             ( LSHIFT { goLeft = true; } | RSHIFT ) right = shift_expr
             {
-                Long a = checkLong(expr); Long b = checkLong(right);
+                Long a = helper.checkLong(expr); 
+                Long b = helper.checkLong(right);
                 long result = a.longValue() >> b.longValue();
-                if (goLeft) { result = a.longValue() << b.longValue(); }
+                if (goLeft) 
+                { 
+                		result = a.longValue() << b.longValue(); 
+                	}
                 expr = "" + result;
             }
         )? ;
@@ -1121,13 +600,23 @@ add_expr returns [String expr = null]
                 // fails (because the numbers are floats) then try using float
                 // math instead.
                 try {
-                    a = new Long(expr); b = new Long(right);
+                    a = new Long(expr); 
+                    b = new Long(right);
                     result = new Long(a.longValue() - b.longValue());
-                    if (add) { result = new Long(a.longValue() + b.longValue()); }
-                } catch (NumberFormatException e) {
-                    a = checkFloat(expr); b = checkFloat(right);
+                    if (add) 
+                    { 
+                    		result = new Long(a.longValue() + b.longValue()); 
+                    	}
+                } 
+                catch (NumberFormatException e) 
+                {
+                    a = helper.checkFloat(expr); 
+                    b = helper.checkFloat(right);
                     result = new Float(a.floatValue() - b.floatValue());
-                    if (add) { result = new Float(a.floatValue() + b.floatValue()); }
+                    if (add) 
+                    { 
+                    		result = new Float(a.floatValue() + b.floatValue()); 
+                    	}
                 }
                 expr = result.toString();
             }
@@ -1147,22 +636,36 @@ mult_expr returns [String expr = null]
         (
             ( MOD | STAR { op = 1; } | DIV { op = 2; } ) right = mult_expr
             {
-                if (op == 0) {
-                    Long a = checkLong(expr); Long b = checkLong(right);
+                if (op == 0) 
+                {
+                    Long a = helper.checkLong(expr); 
+                    Long b = helper.checkLong(right);
                     long result = a.longValue() % b.longValue();
                     expr = "" + result;
-                } else {
+                } 
+                else 
+                {
                     // try to evaluate the expression as an integer first. if
                     // that fails, try using float math instead.
                     try {
-                        Long a = new Long(expr); Long b = new Long(right);
+                        Long a = new Long(expr); 
+                        Long b = new Long(right);
                         long result = a.longValue() * b.longValue();
-                        if (op == 2) { result = a.longValue() / b.longValue(); }
+                        if (op == 2) 
+                        { 
+                        		result = a.longValue() / b.longValue(); 
+                        	}
                         expr = "" + result;
-                    } catch (NumberFormatException e) {
-                        Float a = checkFloat(expr); Float b = checkFloat(right);
+                    } 
+                    catch (NumberFormatException e) 
+                    {
+                        Float a = helper.checkFloat(expr); 
+                        Float b = helper.checkFloat(right);
                         float result = a.floatValue() * b.floatValue();
-                        if (op == 2) { result = a.floatValue() / b.floatValue(); }
+                        if (op == 2) 
+                        { 
+                        		result = a.floatValue() / b.floatValue(); 
+                        	}
                         expr = "" + result;
                     }
                 }
@@ -1175,11 +678,14 @@ unary_expr returns [String expr = null]
 { String op = null; }
     :   op = unary_operator expr = primary_expr
         {
-            if (op.equals("~")) {
-                Long a = checkLong(expr);
+            if (op.equals("~")) 
+            {
+                Long a = helper.checkLong(expr);
                 long result = ~ a.longValue();
                 expr = "" + result;
-            } else {
+            } 
+            else 
+            {
                 expr = op + expr;
             }
         }
@@ -1200,7 +706,7 @@ primary_expr returns [String expr = null]
     :   expr = scoped_name
         {
             MConstantDef constant = new MConstantDefImpl();
-            constant = (MConstantDef) verifyNameExists(expr, constant);
+            constant = (MConstantDef) helper.verifyNameExists(expr, constant);
             expr = constant.getConstValue().toString();
         }
     |   expr = literal
@@ -1228,13 +734,13 @@ literal returns [String literal = null]
 
 // 40. <boolean_literal> ::= "TRUE" | "FALSE"
 boolean_literal returns [String bool = null]
-    :   "TRUE"  { bool = new String("TRUE");  }
-    |   "FALSE" { bool = new String("FALSE"); }
+    :   "TRUE"  { bool = "TRUE";  }
+    |   "FALSE" { bool = "FALSE"; }
     ;
 
 // 41. <positive_int_const> ::= <const_exp,29>
 positive_int_const returns [String expr = null]
-    :   expr = const_exp { checkPositive(expr); } ;
+    :   expr = const_exp { helper.checkPositive(expr); } ;
 
 // 42. <type_dcl> ::= "typedef" <type_declarator,43>    <-- this returns a list
 //     | <struct_type,69>
@@ -1266,11 +772,13 @@ type_declarator returns [List declarations = null]
 }
     :   type = type_spec decls = declarators
         {
-            for (Iterator it = decls.iterator(); it.hasNext(); ) {
+            for (Iterator it = decls.iterator(); it.hasNext(); ) 
+            {
                 DeclaratorHelper declarator = (DeclaratorHelper) it.next();
                 String id = declarator.getDeclarator();
 
-                if (declarator.isArray()) {
+                if (declarator.isArray()) 
+                {
                     MArrayDef array = declarator.getArray();
                     array.setIdlType(type);
                     type = (MIDLType) array;
@@ -1279,10 +787,10 @@ type_declarator returns [List declarations = null]
                 MAliasDef alias = new MAliasDefImpl();
                 alias.setIdlType(type);
                 alias.setIdentifier(id);
-                alias.setSourceFile(getSourceFile());
+                alias.setSourceFile(helper.getIncludedSourceFile());
                 declarations.add(alias);
 
-                symbolTable.add(id, alias);
+                helper.getSymbolTable().add(id, alias);
             }
         } ;
 
@@ -1297,7 +805,7 @@ simple_type_spec returns [MIDLType type = null]
 { String name = null; }
     :   type = base_type_spec
     |   type = template_type_spec
-    |   name = scoped_name { type = getIDLType(name); }
+    |   name = scoped_name { type = helper.getIDLType(name); }
     ;
 
 // 46. <base_type_spec> ::= <floating_pt_type,53>
@@ -1340,28 +848,34 @@ constr_type_spec returns [MIDLType type = null]
 
 // 49. <declarators> ::= <declarator,50> { "," <declarator,50> }*
 declarators returns [List declarations = null]
-{ declarations = new ArrayList(); DeclaratorHelper helper; }
-    :   helper = declarator { declarations.add(helper); }
-        ( COMMA helper = declarator { declarations.add(helper); } )* ;
+{ declarations = new ArrayList(); 
+  DeclaratorHelper h; }
+    :   h = declarator { declarations.add(h); }
+        ( COMMA h = declarator { declarations.add(h); } )* ;
 
 // 50. <declarator> ::= <simple_declarator,51> | <complex_declarator,52>
-declarator returns [DeclaratorHelper helper = null]
-{ helper = new DeclaratorHelper(); String name; }
+declarator returns [DeclaratorHelper h = null]
+{ 
+	h = new DeclaratorHelper(); 
+	String name; 
+}
     :   ( simple_declarator ) => name = simple_declarator
-        { helper.setDeclarator(name); }
-    |   ( complex_declarator ) => helper = complex_declarator
+        { h.setDeclarator(name); }
+    |   ( complex_declarator ) => h = complex_declarator
     ;
 
 // 51. <simple_declarator> ::= <identifier>
 simple_declarator returns [String name = null] : name = identifier ;
 
 // 52. <complex_declarator> ::= <array_declarator,83>
-complex_declarator returns [DeclaratorHelper helper = null]
-    :   helper = array_declarator ;
+complex_declarator returns [DeclaratorHelper h = null]
+    :   h = array_declarator ;
 
 // 53. <floating_pt_type> ::= "float" | "double" | "long double"
 floating_pt_type returns [MIDLType number = null]
-{ number = new MPrimitiveDefImpl(); }
+{ 
+	number = new MPrimitiveDefImpl(); 
+}
     :   "float"  { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_FLOAT);  }
     |   "double" { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_DOUBLE); }
     |   ( "long" "double" ) => "long" "double"
@@ -1370,7 +884,9 @@ floating_pt_type returns [MIDLType number = null]
 
 // 54. <integer_type> ::= <signed_int,55> | <unsigned_int,59>
 integer_type returns [MIDLType number = null]
-{ number = new MPrimitiveDefImpl(); }
+{ 
+	number = new MPrimitiveDefImpl(); 
+}
     :   number = signed_int | number = unsigned_int ;
 
 // 55. <signed_int> ::= <signed_short_int,56>
@@ -1384,17 +900,23 @@ signed_int returns [MPrimitiveDef number = null]
 
 // 56. <signed_short_int> ::= "short"
 signed_short_int returns [MPrimitiveDef number = null]
-{ number = new MPrimitiveDefImpl(); }
+{ 
+	number = new MPrimitiveDefImpl(); 
+}
     :   "short" { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_SHORT); } ;
 
 // 57. <signed_long_int> ::= "long"
 signed_long_int returns [MPrimitiveDef number = null]
-{ number = new MPrimitiveDefImpl(); }
+{ 
+	number = new MPrimitiveDefImpl(); 
+}
     :   "long" { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_LONG); } ;
 
 // 58. <signed_longlong_int> ::= "long" "long"
 signed_longlong_int returns [MPrimitiveDef number = null]
-{ number = new MPrimitiveDefImpl(); }
+{ 
+	number = new MPrimitiveDefImpl(); 
+}
     :   "long" "long"
         { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_LONGLONG); } ;
 
@@ -1409,50 +931,68 @@ unsigned_int returns [MPrimitiveDef number = null]
 
 // 60. <unsigned_short_int> ::= "unsigned" "short"
 unsigned_short_int returns [MPrimitiveDef number = null]
-{ number = new MPrimitiveDefImpl(); }
+{ 
+	number = new MPrimitiveDefImpl(); 
+}
     :   "unsigned" "short"
         { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_USHORT); } ;
 
 // 61. <unsigned_long_int> ::= "unsigned" "long"
 unsigned_long_int returns [MPrimitiveDef number = null]
-{ number = new MPrimitiveDefImpl(); }
+{ 
+	number = new MPrimitiveDefImpl(); 
+}
     :   "unsigned" "long"
         { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_ULONG); } ;
 
 // 62. <unsigned_longlong_int> ::= "unsigned" "long" "long"
 unsigned_longlong_int returns [MPrimitiveDef number = null]
-{ number = new MPrimitiveDefImpl(); }
+{ 
+	number = new MPrimitiveDefImpl(); 
+}
     :   "unsigned" "long" "long"
         { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_ULONGLONG); } ;
 
 // 63. <char_type> ::= "char"
 char_type returns [MIDLType ch = null]
-{ ch = new MPrimitiveDefImpl(); }
+{ 
+	ch = new MPrimitiveDefImpl(); 
+}
     :   "char" { ((MPrimitiveDef) ch).setKind(MPrimitiveKind.PK_CHAR); } ;
 
 // 64. <wide_char_type> ::= "wchar"
 wide_char_type returns [MIDLType wch = null]
-{ wch = new MPrimitiveDefImpl(); }
+{ 
+	wch = new MPrimitiveDefImpl(); 
+}
     :   "wchar" { ((MPrimitiveDef) wch).setKind(MPrimitiveKind.PK_WCHAR); } ;
 
 // 65. <boolean_type> ::= "boolean"
 boolean_type returns [MIDLType bool = null]
-{ bool = new MPrimitiveDefImpl(); }
+{ 
+	bool = new MPrimitiveDefImpl(); 
+}
     :   "boolean" { ((MPrimitiveDef) bool).setKind(MPrimitiveKind.PK_BOOLEAN); } ;
 
 // 66. <octet_type> ::= "octet"
 octet_type returns [MIDLType octet = null]
-{ octet = new MPrimitiveDefImpl(); }
+{ 
+	octet = new MPrimitiveDefImpl(); 
+}
     :   "octet" { ((MPrimitiveDef) octet).setKind(MPrimitiveKind.PK_OCTET); } ;
 
 // 67. <any_type> ::= "any"
 any_type returns [MIDLType any = null]
-{ any = new MPrimitiveDefImpl(); }
+{ 
+	any = new MPrimitiveDefImpl(); 
+}
     :   "any" { ((MPrimitiveDef) any).setKind(MPrimitiveKind.PK_ANY); } ;
 
 // 68. <object_type> ::= "Object"
 object_type returns [MIDLType object = null]
-{ object = new MPrimitiveDefImpl(); }
+{ 
+	object = new MPrimitiveDefImpl(); 
+}
     :   "Object" { ((MPrimitiveDef) object).setKind(MPrimitiveKind.PK_OBJREF); } ;
 
 // 69. <struct_type> ::= "struct" <identifier> "{" <member_list,70> "}"
@@ -1464,17 +1004,20 @@ struct_type returns [MIDLType struct = null]
 }
     :   "struct" id = identifier
         {
-            struct = (MStructDef) verifyNameEmpty(id, (MStructDef) struct);
-            ((MStructDef) struct).setSourceFile(getSourceFile());
+            struct = (MStructDef) helper.verifyNameEmpty(id, (MStructDef) struct);
+            ((MStructDef) struct).setSourceFile(helper.getIncludedSourceFile());
             ((MStructDef) struct).setIdentifier(id);
-            symbolTable.add(id, (MStructDef) struct);
+            helper.getSymbolTable().add(id, (MStructDef) struct);
         }
         LCURLY members = member_list RCURLY
-        { checkSetMembers((MStructDef) struct, members); } ;
+        { helper.checkSetMembers((MStructDef) struct, members); } ;
 
 // 70. <member_list> ::= <member,71>+
 member_list returns [List members = null]
-{ members = new ArrayList(); List decls = null; }
+{ 
+	members = new ArrayList(); 
+	List decls = null; 
+}
     :   ( decls = member { members.addAll(decls); } )+ ;
 
 // 71. <member> ::= <type_spec,44> <declarators,49> ";"
@@ -1486,11 +1029,13 @@ member returns [List members = null]
 }
     :   type = type_spec decls = declarators
         {
-            for (Iterator it = decls.iterator(); it.hasNext(); ) {
+            for (Iterator it = decls.iterator(); it.hasNext(); ) 
+            {
                 DeclaratorHelper declarator = (DeclaratorHelper) it.next();
                 String id = declarator.getDeclarator();
 
-                if (declarator.isArray()) {
+                if (declarator.isArray()) 
+                {
                     MArrayDef array = declarator.getArray();
                     array.setIdlType(type);
                     type = (MIDLType) array;
@@ -1515,15 +1060,15 @@ union_type returns [MIDLType union = null]
 }
     :   "union" id = identifier
         {
-            union = (MUnionDef) verifyNameEmpty(id, (MUnionDef) union);
-            ((MUnionDef) union).setSourceFile(getSourceFile());
+            union = (MUnionDef) helper.verifyNameEmpty(id, (MUnionDef) union);
+            ((MUnionDef) union).setSourceFile(helper.getIncludedSourceFile());
             ((MUnionDef) union).setIdentifier(id);
-            symbolTable.add(id, (MUnionDef) union);
+            helper.getSymbolTable().add(id, (MUnionDef) union);
         }
         "switch" LPAREN type = switch_type_spec RPAREN
         { ((MUnionDef) union).setDiscriminatorType(type); }
         LCURLY members = switch_body[type] RCURLY
-        { checkSetMembers((MUnionDef) union, members); } ;
+        { helper.checkSetMembers((MUnionDef) union, members); } ;
 
 // 73. <switch_type_spec> ::= <integer_type,54>
 //     | <char_type,63>
@@ -1538,61 +1083,95 @@ switch_type_spec returns [MIDLType type = null]
     |   type = wide_char_type
     |   type = boolean_type
     |   type = enum_type
-    |   name = scoped_name { type = getIDLType(name); }
+    |   name = scoped_name { type = helper.getIDLType(name); }
     ;
 
 // 74. <switch_body> ::= <case_dcl,75>+
 switch_body[MIDLType switchType] returns [List members = null]
-{ members = new ArrayList(); List decls = null; }
+{ 
+	members = new ArrayList(); 
+	List decls = null; 
+}
     :   ( decls = case_dcl[switchType] { members.addAll(decls); } )+ ;
 
 // (lmj) renamed this to case_dcl to avoid colliding with the java keyword
 //
 // 75. <case_dcl> ::= <case_label,76>+ <element_spec,77> ";"
 case_dcl[MIDLType switchType] returns [List members = null]
-{ String label = null; List labels = null; }
+{ 
+	String label = null; 
+	List labels = null; 
+}
     :   (   label = case_label
             {
-                if (label.equals("")) {
+                if (label.equals("")) 
+                {
                     // a zero length string indicates the 'default' label
                     labels.add(label);
-                } else if (switchType instanceof MPrimitiveDef) {
+                } 
+                else if (switchType instanceof MPrimitiveDef) 
+                {
                     MPrimitiveDef ptype = (MPrimitiveDef) switchType;
-                    if (ptype.getKind() == MPrimitiveKind.PK_BOOLEAN) {
+                    if (ptype.getKind() == MPrimitiveKind.PK_BOOLEAN) 
+                    {
                         labels.add(new Boolean(label));
-                    } else {
-                        if (label.charAt(0) == '-') {
+                    } 
+                    else 
+                    {
+                        if (label.charAt(0) == '-') 
+                        {
                             if ((ptype.getKind() == MPrimitiveKind.PK_SHORT) ||
                                 (ptype.getKind() == MPrimitiveKind.PK_LONG)  ||
-                                (ptype.getKind() == MPrimitiveKind.PK_LONGLONG)) {
+                                (ptype.getKind() == MPrimitiveKind.PK_LONGLONG)) 
+                            {
                                 labels.add(new Long(label));
-                            } else if (ptype.getKind() == MPrimitiveKind.PK_USHORT) {
+                            } 
+                            else if (ptype.getKind() == MPrimitiveKind.PK_USHORT) 
+                            {
                                 labels.add(new Long(Long.parseLong(label) + (1<<16)));
-                            } else if (ptype.getKind() == MPrimitiveKind.PK_ULONG) {
+                            } 
+                            else if (ptype.getKind() == MPrimitiveKind.PK_ULONG) 
+                            {
                                 labels.add(new Long(Long.parseLong(label) + (1<<32)));
-                            } else if (ptype.getKind() == MPrimitiveKind.PK_ULONGLONG) {
+                            } 
+                            else if (ptype.getKind() == MPrimitiveKind.PK_ULONGLONG) 
+                            {
                                 labels.add(new Long(Long.parseLong(label) + (1<<64)));
-                            } else {
+                            } 
+                            else 
+                            {
                                 throw new TokenStreamException("invalid primitive type for union label '" + label + "'");
                             }
-                        } else {
+                        } 
+                        else 
+                        {
                             labels.add(new Long(label));
                         }
                         labels.add(new Short(label));
                     }
-                } else if ((switchType instanceof MStringDef) ||
-                           (switchType instanceof MWstringDef)) {
-                    if (label.length() == 1) {
+                } 
+                else if ((switchType instanceof MStringDef) || (switchType instanceof MWstringDef)) 
+                {
+                    if (label.length() == 1) 
+                    {
                         labels.add(new String(label));
-                    } else {
+                    } 
+                    else 
+                    {
                         throw new TokenStreamException("union label '" + label + "' has more than one character");
                     }
-                } else if (switchType instanceof MEnumDef) {
+                } 
+                else if (switchType instanceof MEnumDef) 
+                {
                     MEnumDef enumDef = (MEnumDef) switchType;
-                    if (enumDef.getMembers().contains(label)) {
+                    if (enumDef.getMembers().contains(label)) 
+                    {
                         labels.add(label);
-                    } else {
-                        throw new TokenStreamException("union label '" + label + "' is not a valid member of enum " + enumDef.getIdentifier());
+                    } 
+                    else 
+                    {
+                        throw new TokenStreamException("union label '" + label + "' is not a valid member of enum " 
+                        		+ enumDef.getIdentifier());
                     }
                 }
             }
@@ -1608,29 +1187,36 @@ case_label returns [String label = null]
 element_spec[List labels] returns [List fields = null]
 {
     fields = new ArrayList();
-    DeclaratorHelper helper = null;
+    DeclaratorHelper h = null;
     MIDLType type = null;
 }
-    :   type = type_spec helper = declarator
+    :   type = type_spec h = declarator
         {
-            String id = helper.getDeclarator();
+            String id = h.getDeclarator();
 
-            if (helper.isArray()) {
-                MArrayDef array = helper.getArray();
+            if (h.isArray()) 
+            {
+                MArrayDef array = h.getArray();
                 array.setIdlType(type);
                 type = array;
             }
 
-            for (Iterator l = labels.iterator(); l.hasNext(); ) {
+            for (Iterator l = labels.iterator(); l.hasNext(); ) 
+            {
                 Object case_label = l.next();
 
-                for (Iterator f = fields.iterator(); f.hasNext(); ) {
+                for (Iterator f = fields.iterator(); f.hasNext(); ) 
+                {
                     MUnionFieldDef field = (MUnionFieldDef) f.next();
                     Object field_label = field.getLabel();
-                    if (case_label.equals(field_label)) {
-                        if (case_label.toString().equals("")) {
+                    if (case_label.equals(field_label)) 
+                    {
+                        if (case_label.toString().equals("")) 
+                        {
                             throw new TokenStreamException("unions cannot have multiple 'default' labels");
-                        } else {
+                        } 
+                        else 
+                        {
                             throw new TokenStreamException("case label '"+case_label+ "' was used more than once in one union");
                         }
                     }
@@ -1655,10 +1241,10 @@ enum_type returns [MIDLType enumDef = null]
 }
     :   "enum" id = identifier
         {
-            enumDef = (MEnumDef) verifyNameEmpty(id, (MEnumDef) enumDef);
-            ((MEnumDef) enumDef).setSourceFile(getSourceFile());
+            enumDef = (MEnumDef) helper.verifyNameEmpty(id, (MEnumDef) enumDef);
+            ((MEnumDef) enumDef).setSourceFile(helper.getIncludedSourceFile());
             ((MEnumDef) enumDef).setIdentifier(id);
-            symbolTable.add(id, (MEnumDef) enumDef);
+            helper.getSymbolTable().add(id, (MEnumDef) enumDef);
         }
         LCURLY name = enumerator
         { if (name != null) members.add(name); name = null; }
@@ -1672,7 +1258,8 @@ enum_type returns [MIDLType enumDef = null]
                 throw new TokenStreamException("enum '"+id+"' is empty");
 
             Object[] membs = members.toArray();
-            for (int i = 0; i < membs.length; i++) {
+            for (int i = 0; i < membs.length; i++) 
+            {
                 String m = membs[i].toString();
                 for (int j = i+1; j < membs.length; j++)
                     if (m.equals(membs[j].toString()))
@@ -1711,7 +1298,10 @@ sequence_type returns [MIDLType sequence = null]
 //
 // 81. <string_type> ::= "string" [ "<" <positive_int_const,41> ">" ]
 string_type returns [MIDLType str = null]
-{ str = new MStringDefImpl(); String bound = null; }
+{ 
+	str = new MStringDefImpl(); 
+	String bound = null; 
+}
     :   "string"
         (   LT bound = positive_int_const GT
             { ((MStringDef) str).setBound(new Long(bound)); } )? ;
@@ -1723,22 +1313,25 @@ string_type returns [MIDLType str = null]
 //
 // 82. <wide_string_type> ::= "wstring" [ "<" <positive_int_const,41> ">" ]
 wide_string_type returns [MIDLType wstr = null]
-{ wstr = new MWstringDefImpl(); String bound = null; }
+{ 
+	wstr = new MWstringDefImpl(); 
+	String bound = null; 
+}
     :   "wstring"
         (   LT bound = positive_int_const GT
             { ((MWstringDef) wstr).setBound(new Long(bound)); } )? ;
 
 // 83. <array_declarator> ::= <identifier> <fixed_array_size,84>+
-array_declarator returns [DeclaratorHelper helper = null]
+array_declarator returns [DeclaratorHelper h = null]
 {
-    helper = new DeclaratorHelper();
+    h = new DeclaratorHelper();
     String name;
     String size;
     MArrayDef array = new MArrayDefImpl();
 }
-    :   name = identifier { helper.setDeclarator(name); }
+    :   name = identifier { h.setDeclarator(name); }
         ( size = fixed_array_size { array.addBound(new Long(size)); } )+
-        { helper.setArray(array); } ;
+        { h.setArray(array); } ;
 
 // 84. <fixed_array_size> ::= "[" <positive_int_const,41> "]"
 fixed_array_size returns [String size = null]
@@ -1761,15 +1354,15 @@ except_dcl returns [MExceptionDef except = null]
 }
     :   "exception" id = identifier
         {
-            except = (MExceptionDef) verifyNameEmpty(id, except);
-            except.setSourceFile(getSourceFile());
+            except = (MExceptionDef) helper.verifyNameEmpty(id, except);
+            except.setSourceFile(helper.getIncludedSourceFile());
             except.setIdentifier(id);
-            symbolTable.add(id, except);
+            helper.getSymbolTable().add(id, except);
         }
-        LCURLY { symbolTable.pushScope(id); }
+        LCURLY { helper.getSymbolTable().pushScope(id); }
         ( decls = member { members.addAll(decls); } )*
-        { checkSetMembers(except, members); }
-        RCURLY { symbolTable.popScope(); } ;
+        { helper.checkSetMembers(except, members); }
+        RCURLY { helper.getSymbolTable().popScope(); } ;
 
 // 87. <op_dcl> ::= [ <op_attribute,88> ] <op_type_spec,89> <identifier>
 //       <parameter_dcls,90> [ <raises_expr,93> ] [ <context_expr,94> ]
@@ -1785,14 +1378,14 @@ op_dcl returns [MOperationDef operation = null]
 }
     :   ( oneway = op_attribute )? type = op_type_spec id = identifier
         {
-            operation = (MOperationDef) verifyNameEmpty(id, operation);
-            operation.setSourceFile(getSourceFile());
+            operation = (MOperationDef) helper.verifyNameEmpty(id, operation);
+            operation.setSourceFile(helper.getIncludedSourceFile());
             operation.setIdentifier(id);
             operation.setIdlType(type);
             operation.setOneway(oneway);
-            symbolTable.add(id, operation);
+            helper.getSymbolTable().add(id, operation);
         }
-        params = parameter_dcls[id] { checkSetParameters(operation, params); }
+        params = parameter_dcls[id] { helper.checkSetParameters(operation, params); }
         (
             exceptions = raises_expr
             { operation.setExceptionDefs(new HashSet(exceptions)); }
@@ -1804,7 +1397,9 @@ op_attribute returns [boolean oneway = false] : "oneway" { oneway = true; } ;
 
 // 89. <op_type_spec> ::= <param_type_spec,95> | "void"
 op_type_spec returns [MIDLType type = null]
-{ type = new MPrimitiveDefImpl(); }
+{ 
+	type = new MPrimitiveDefImpl(); 
+}
     :   type = param_type_spec
     |   "void" { ((MPrimitiveDef) type).setKind(MPrimitiveKind.PK_VOID); }
     ;
@@ -1820,12 +1415,12 @@ parameter_dcls[String scope] returns [List params = null]
     params = new ArrayList();
     MParameterDef param = null;
 }
-    :   LPAREN { symbolTable.pushScope(scope); }
+    :   LPAREN { helper.getSymbolTable().pushScope(scope); }
         (
             param = param_dcl { params.add(param); }
             ( COMMA param = param_dcl { params.add(param); } )*
         )?
-        RPAREN { symbolTable.popScope(); }
+        RPAREN { helper.getSymbolTable().popScope(); }
     ;
 
 // 91. <param_dcl> ::= <param_attribute,92> <param_type_spec,95>
@@ -1850,17 +1445,20 @@ param_attribute[MParameterDef param]
 // 93. <raises_expr> ::= "raises" "(" <scoped_name,12>
 //       { ","  <scoped_name,12> }* ")"
 raises_expr returns [List exceptions = null]
-{ exceptions = new ArrayList(); String name = null; }
+{ 
+	exceptions = new ArrayList(); 
+	String name = null; 
+}
     :   "raises" LPAREN name = scoped_name
         {
             MExceptionDef exception = new MExceptionDefImpl();
-            exception = (MExceptionDef) verifyNameExists(name, exception);
+            exception = (MExceptionDef) helper.verifyNameExists(name, exception);
             exceptions.add(exception);
         }
         (   COMMA name = scoped_name
             {
                 MExceptionDef exception = new MExceptionDefImpl();
-                exception = (MExceptionDef) verifyNameExists(name, exception);
+                exception = (MExceptionDef) helper.verifyNameExists(name, exception);
                 exceptions.add(exception);
             }
         )* RPAREN ;
@@ -1881,7 +1479,7 @@ param_type_spec returns [MIDLType type = null]
     :   type = base_type_spec
     |   type = string_type
     |   type = wide_string_type
-    |   name = scoped_name { type = getIDLType(name); }
+    |   name = scoped_name { type = helper.getIDLType(name); }
     ;
 
 // 96. <fixed_pt_type> ::= "fixed" "<" <positive_int_const,41> ","
@@ -1900,32 +1498,38 @@ fixed_pt_type returns [MIDLType type = null]
 
 // 97. <fixed_pt_const_type> ::= "fixed"
 fixed_pt_const_type returns [MIDLType type = null]
-{ type = new MFixedDefImpl(); }
+{ 
+	type = new MFixedDefImpl(); 
+}
     :   "fixed" ;
 
 // 98. <value_base_type> ::= "ValueBase"
 value_base_type returns [MIDLType type = null]
-{ type = new MPrimitiveDefImpl(); }
+{ 
+	type = new MPrimitiveDefImpl(); 
+}
     :   "ValueBase"
         { ((MPrimitiveDef) type).setKind(MPrimitiveKind.PK_VALUEBASE); } ;
 
 // 99. <constr_forward_decl> ::= "struct" <identifier> | "union" <identifier>
 constr_forward_decl returns [MIDLType type = null]
-{ String id = null; }
+{ 
+	String id = null; 
+}
     :   "struct" id = identifier
         {
             MStructDef struct = new MStructDefImpl();
-            struct = (MStructDef) verifyNameEmpty(id, struct);
-            struct.setSourceFile(getSourceFile());
-            symbolTable.add(id, struct);
+            struct = (MStructDef) helper.verifyNameEmpty(id, struct);
+            struct.setSourceFile(helper.getIncludedSourceFile());
+            helper.getSymbolTable().add(id, struct);
             type = (MIDLType) struct;
         }
     |   "union" id = identifier
         {
             MUnionDef union = new MUnionDefImpl();
-            union = (MUnionDef) verifyNameEmpty(id, union);
-            union.setSourceFile(getSourceFile());
-            symbolTable.add(id, union);
+            union = (MUnionDef) helper.verifyNameEmpty(id, union);
+            union.setSourceFile(helper.getIncludedSourceFile());
+            helper.getSymbolTable().add(id, union);
             type = (MIDLType) union;
         }
     ;
@@ -1934,7 +1538,9 @@ constr_forward_decl returns [MIDLType type = null]
 //
 // 100. <import_dcl> ::= "import" <imported_scope,101> ";"
 import_dcl
-{ String scope = null; }
+{ 
+	String scope = null; 
+}
     :   "import" scope = imported_scope SEMI { scopeTable.put(scope, scope); } ;
 
 // 101. <imported_scope> ::= <scoped_name,12> | <string_literal>
@@ -1943,7 +1549,10 @@ imported_scope returns [String scope = null]
 
 // 102. <type_id_dcl> ::= "typeid" <scoped_name,12> <string_literal>
 type_id_dcl
-{ String scope = null; String id = null; }
+{ 
+	String scope = null; 
+	String id = null; 
+}
     :   "typeid" scope = scoped_name id = string_literal
         { scopeTable.put(id, scope); } ;
 
@@ -1951,7 +1560,10 @@ type_id_dcl
 
 // 103. <type_id_dcl> ::= "typeprefix" <scoped_name,12> <string_literal>
 type_prefix_dcl
-{ String scope = null; String id = null; }
+{ 
+	String scope = null; 
+	String id = null; 
+}
     :   "typeprefix" scope = scoped_name id = string_literal
         { scopeTable.put(id, scope); } ;
 
@@ -1967,11 +1579,12 @@ readonly_attr_spec returns [List attributes = null]
     :   "readonly" "attribute" type = param_type_spec
         decls = readonly_attr_declarator
         {
-            for (Iterator it = decls.iterator(); it.hasNext(); ) {
+            for (Iterator it = decls.iterator(); it.hasNext(); ) 
+            {
                 MAttributeDef attr = (MAttributeDef) it.next();
                 attr.setIdlType(type);
                 attributes.add(attr);
-                symbolTable.add(id, attr);
+                helper.getSymbolTable().add(id, attr);
             }
         } ;
 
@@ -1991,8 +1604,8 @@ readonly_attr_declarator returns [List attributes = null]
 }
     :   id = simple_declarator
         {
-            attr = (MAttributeDef) verifyNameEmpty(id, attr);
-            attr.setSourceFile(getSourceFile());
+            attr = (MAttributeDef) helper.verifyNameEmpty(id, attr);
+            attr.setSourceFile(helper.getIncludedSourceFile());
             attr.setIdentifier(id);
             attr.setReadonly(true);
             attributes.add(attr);
@@ -2001,8 +1614,8 @@ readonly_attr_declarator returns [List attributes = null]
             { attr.setGetExceptions(new HashSet(excepts)); }
         |   (   COMMA id = simple_declarator
                 {
-                    attr = (MAttributeDef) verifyNameEmpty(id, attr);
-                    attr.setSourceFile(getSourceFile());
+                    attr = (MAttributeDef) helper.verifyNameEmpty(id, attr);
+                    attr.setSourceFile(helper.getIncludedSourceFile());
                     attr.setIdentifier(id);
                     attr.setReadonly(true);
                     attributes.add(attr);
@@ -2018,12 +1631,13 @@ attr_spec returns [List attributes = null]
 }
     :   "attribute" type = param_type_spec decls = attr_declarator
         {
-            for (Iterator it = decls.iterator(); it.hasNext(); ) {
+            for (Iterator it = decls.iterator(); it.hasNext(); ) 
+            {
                 MAttributeDef attr = (MAttributeDef) it.next();
                 attr.setIdlType(type);
                 attr.setReadonly(false);
                 attributes.add(attr);
-                symbolTable.add(attr.getIdentifier(), attr);
+                helper.getSymbolTable().add(attr.getIdentifier(), attr);
             }
         } ;
 
@@ -2042,8 +1656,8 @@ attr_declarator returns [List attributes = null]
 }
     :   id = simple_declarator
         {
-            attr = (MAttributeDef) verifyNameEmpty(id, attr);
-            attr.setSourceFile(getSourceFile());
+            attr = (MAttributeDef) helper.verifyNameEmpty(id, attr);
+            attr.setSourceFile(helper.getIncludedSourceFile());
             attr.setIdentifier(id);
             attr.setReadonly(false);
             attributes.add(attr);
@@ -2051,8 +1665,8 @@ attr_declarator returns [List attributes = null]
         (   attr_raises_expr[attr]
         |   (   COMMA id = simple_declarator
                 {
-                    attr = (MAttributeDef) verifyNameEmpty(id, attr);
-                    attr.setSourceFile(getSourceFile());
+                    attr = (MAttributeDef) helper.verifyNameEmpty(id, attr);
+                    attr.setSourceFile(helper.getIncludedSourceFile());
                     attr.setIdentifier(id);
                     attr.setReadonly(false);
                     attributes.add(attr);
@@ -2078,18 +1692,21 @@ set_excep_expr returns [List exceptions = null]
 
 // 111. <exception_list> ::= "(" <scoped_name,12> { "," <scoped_name,12> }* ")"
 exception_list returns [List exceptions = null]
-{ exceptions = new ArrayList(); String name = null; }
+{ 
+	exceptions = new ArrayList(); 
+	String name = null; 
+}
     :   LPAREN name = scoped_name
         {
             MExceptionDef except = new MExceptionDefImpl();
-            except = (MExceptionDef) verifyNameExists(name, except);
+            except = (MExceptionDef) helper.verifyNameExists(name, except);
             exceptions.add(except);
         }
         (
             COMMA name = scoped_name
             {
                 MExceptionDef except = new MExceptionDefImpl();
-                except = (MExceptionDef) verifyNameExists(name, except);
+                except = (MExceptionDef) helper.verifyNameExists(name, except);
                 exceptions.add(except);
             }
         )*
@@ -2103,103 +1720,137 @@ component returns [MComponentDef component = null]
 
 // 113. <component_forward_dcl> ::= "component" <identifier>
 component_forward_dcl returns [MComponentDef component = null]
-{ component = new MComponentDefImpl(); String id = null; }
+{ 
+	component = new MComponentDefImpl(); 
+	String id = null; 
+}
     :   "component" id = identifier
         {
-            component = (MComponentDef) verifyNameEmpty(id, component);
-            component.setSourceFile(getSourceFile());
-            component.setRepositoryId(createRepositoryId(id));
+            component = (MComponentDef) helper.verifyNameEmpty(id, component);
+            component.setSourceFile(helper.getIncludedSourceFile());
+            component.setRepositoryId(helper.createRepositoryId(id));
             component.setIdentifier(id);
-            symbolTable.add(id, component);
+            helper.getSymbolTable().add(id, component);
         } ;
 
 // 114. <component_dcl> ::=  <component_header,115> "{" <component_body,118> "}"
 component_dcl returns [MComponentDef component = null]
-{ component = new MComponentDefImpl(); List decls =  null; }
+{ 
+	component = new MComponentDefImpl(); 
+	List decls =  null; 
+}
     :   component = component_header
-        LCURLY { symbolTable.pushScope(component.getIdentifier()); }
+        LCURLY { helper.getSymbolTable().pushScope(component.getIdentifier()); }
         decls = component_body
         {
-            for (Iterator it = decls.iterator(); it.hasNext(); ) {
+            for (Iterator it = decls.iterator(); it.hasNext(); ) 
+            {
                 MContained element = (MContained) it.next();
                 element.setDefinedIn(component);
-                element.setSourceFile(getSourceFile());
+                element.setSourceFile(helper.getIncludedSourceFile());
 
-                if ((debug & DEBUG_COMPONENT) != 0)
-                    System.out.print(
-                        "[c] adding '"+element.getIdentifier()+
-                        "' to component '"+component.getIdentifier()+"'");
+//                if ((debug & DEBUG_COMPONENT) != 0)
+//                    System.out.print(
+//                        "[c] adding '"+element.getIdentifier()+
+//                        "' to component '"+component.getIdentifier()+"'");
 
-                if (element instanceof MEmitsDef) {
+                if (element instanceof MEmitsDef) 
+                {
                     ((MEmitsDef) element).setComponent(component);
                     component.addEmits((MEmitsDef) element);
-                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
-                        System.out.println(" as emits");
-                } else if (element instanceof MPublishesDef) {
+//                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
+//                        System.out.println(" as emits");
+                } 
+                else if (element instanceof MPublishesDef) 
+                {
                     ((MPublishesDef) element).setComponent(component);
                     component.addPublishes((MPublishesDef) element);
-                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
-                        System.out.println(" as publishes");
-                } else if (element instanceof MConsumesDef) {
+//                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
+//                        System.out.println(" as publishes");
+                } 
+                else if (element instanceof MConsumesDef) 
+                {
                     ((MConsumesDef) element).setComponent(component);
                     component.addConsumes((MConsumesDef) element);
-                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
-                        System.out.println(" as consumes");
-                } else if (element instanceof MProvidesDef) {
+//                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
+//                        System.out.println(" as consumes");
+                } 
+                else if (element instanceof MProvidesDef) 
+                {
                     ((MProvidesDef) element).setComponent(component);
                     component.addFacet((MProvidesDef) element);
-                    if ((debug & (DEBUG_COMPONENT + DEBUG_INTERFACE)) != 0)
-                        System.out.println(" as facet");
-                } else if (element instanceof MUsesDef) {
+//                    if ((debug & (DEBUG_COMPONENT + DEBUG_INTERFACE)) != 0)
+//                        System.out.println(" as facet");
+                } 
+                else if (element instanceof MUsesDef) 
+                {
                     ((MUsesDef) element).setComponent(component);
                     component.addReceptacle((MUsesDef) element);
-                    if ((debug & (DEBUG_COMPONENT + DEBUG_INTERFACE)) != 0)
-                        System.out.println(" as receptacle");
-                } else if (element instanceof MAttributeDef) {
+//                    if ((debug & (DEBUG_COMPONENT + DEBUG_INTERFACE)) != 0)
+//                        System.out.println(" as receptacle");
+                } 
+                else if (element instanceof MAttributeDef) 
+                {
                     ((MAttributeDef) element).setDefinedIn(component);
                     component.addContents((MAttributeDef) element);
-                    if ((debug & DEBUG_COMPONENT) != 0)
-                        System.out.println(" as attribute");
-                } else {
+//                    if ((debug & DEBUG_COMPONENT) != 0)
+//                        System.out.println(" as attribute");
+                } 
+                else 
+                {
                     throw new TokenStreamException(
                         "can't add element '"+element.getIdentifier()+
                         "' to component '"+component.getIdentifier()+"'");
                 }
             }
         }
-        RCURLY { symbolTable.popScope(); } ;
+        RCURLY { helper.getSymbolTable().popScope(); } ;
 
 // 115. <component_header> ::= "component" <identifier>
 //        [ <component_inheritance_spec,116> ]
 //        [ <supported_interface_spec,117> ]
 component_header returns [MComponentDef component = null]
-{ component = new MComponentDefImpl(); String id; List base; List sups; }
+{ 
+	component = new MComponentDefImpl(); 
+	String id; 
+	List base; 
+	List sups; 
+}
     :   "component" id = identifier
         {
-            component = (MComponentDef) verifyNameEmpty(id, component);
-            component.setSourceFile(getSourceFile());
-            component.setRepositoryId(createRepositoryId(id));
+            component = (MComponentDef) helper.verifyNameEmpty(id, component);
+            component.setSourceFile(helper.getIncludedSourceFile());
+            component.setRepositoryId(helper.createRepositoryId(id));
             component.setIdentifier(id);
-            symbolTable.add(id, component);
+            helper.getSymbolTable().add(id, component);
         }
-        ( base = component_inheritance_spec { checkSetBases(component, base); } )?
-        ( sups = supported_interface_spec { checkSetSupports(component, sups); } )? ;
+        ( base = component_inheritance_spec { helper.checkSetBases(component, base); } )?
+        ( sups = supported_interface_spec { helper.checkSetSupports(component, sups); } )? ;
 
 // 116. <supported_interface_spec> ::= "supports" <scoped_name,12>
 //        { "," <scoped_name,12> }*
 supported_interface_spec returns [List supports = null]
-{ supports = new ArrayList(); String name = null; }
+{ 
+	supports = new ArrayList(); 
+	String name = null;
+}
     :   "supports" name = scoped_name { supports.add(name); }
         ( COMMA name = scoped_name { supports.add(name); } )* ;
 
 // 117. <component_inheritance_spec> ::= ":" <scoped_name,12>
 component_inheritance_spec returns [List names = null]
-{ names = new ArrayList(); String name = null; }
+{ 
+	names = new ArrayList(); 
+	String name = null; 
+}
     :   COLON name = scoped_name { names.add(name); } ;
 
 // 118. <component_body> ::= <component_export,119>*
 component_body returns [List exports = null]
-{ exports = new ArrayList(); List decls = null; }
+{ 
+	exports = new ArrayList(); 
+	List decls = null; 
+}
     :   ( decls = component_export { exports.addAll(decls); } )* ;
 
 // 119. <component_export> ::= <provides_dcl,120> ";"
@@ -2209,7 +1860,10 @@ component_body returns [List exports = null]
 //      | <consumes_dcl,125> ";"
 //      | <attr_dcl,85> ";"       <-- this returns a list
 component_export returns [List exports = null]
-{ exports = new ArrayList(); MContained holder = null; }
+{ 
+	exports = new ArrayList(); 
+	MContained holder = null; 
+}
     :   holder = provides_dcl SEMI  { exports.add(holder); }
     |   holder = uses_dcl SEMI      { exports.add(holder); }
     |   holder = emits_dcl SEMI     { exports.add(holder); }
@@ -2227,18 +1881,21 @@ provides_dcl returns [MProvidesDef provides = null]
 }
     :   "provides" iface = interface_type id = identifier
         {
-            provides = (MProvidesDef) verifyNameEmpty(id, provides);
-            provides.setSourceFile(getSourceFile());
+            provides = (MProvidesDef) helper.verifyNameEmpty(id, provides);
+            provides.setSourceFile(helper.getIncludedSourceFile());
             provides.setIdentifier(id);
             provides.setProvides(iface);
-            symbolTable.add(id, provides);
+            helper.getSymbolTable().add(id, provides);
         } ;
 
 // 121. <interface_type> ::= <scoped_name,12> | "Object"
 interface_type returns [MInterfaceDef iface = null]
-{ iface = new MInterfaceDefImpl(); String name = null; }
+{ 
+	iface = new MInterfaceDefImpl(); 
+	String name = null; 
+}
     :   name = scoped_name
-        { iface = (MInterfaceDef) verifyNameExists(name, iface); }
+        { iface = (MInterfaceDef) helper.verifyNameExists(name, iface); }
     |   "Object" // FIXME : what do we do with this ? { ((MPrimitiveDef) type).setKind(MPrimitiveKind.PK_OBJREF); }
     ;
 
@@ -2252,11 +1909,11 @@ uses_dcl returns [MUsesDef uses = null]
     :   "uses" ( "multiple" { uses.setMultiple(true); } )?
         iface = interface_type id = identifier
         {
-            uses = (MUsesDef) verifyNameEmpty(id, uses);
-            uses.setSourceFile(getSourceFile());
+            uses = (MUsesDef) helper.verifyNameEmpty(id, uses);
+            uses.setSourceFile(helper.getIncludedSourceFile());
             uses.setIdentifier(id);
             uses.setUses(iface);
-            symbolTable.add(id, uses);
+            helper.getSymbolTable().add(id, uses);
         } ;
 
 // 123. <emits_dcl> ::= "emits" <scoped_name,12> <identifier>
@@ -2269,12 +1926,12 @@ emits_dcl returns [MEmitsDef emits = null]
 }
     :   "emits" name = scoped_name id = identifier
         {
-            emits = (MEmitsDef) verifyNameEmpty(id, emits);
-            event = (MEventDef) verifyNameExists(name, event);
+            emits = (MEmitsDef) helper.verifyNameEmpty(id, emits);
+            event = (MEventDef) helper.verifyNameExists(name, event);
             emits.setType(event);
-            emits.setSourceFile(getSourceFile());
+            emits.setSourceFile(helper.getIncludedSourceFile());
             emits.setIdentifier(id);
-            symbolTable.add(id, emits);
+            helper.getSymbolTable().add(id, emits);
         }
     ;
 
@@ -2288,12 +1945,12 @@ publishes_dcl returns [MPublishesDef publishes = null]
 }
     :   "publishes" name = scoped_name id = identifier
         {
-            publishes = (MPublishesDef) verifyNameEmpty(id, publishes);
-            event = (MEventDef) verifyNameExists(name, event);
+            publishes = (MPublishesDef) helper.verifyNameEmpty(id, publishes);
+            event = (MEventDef) helper.verifyNameExists(name, event);
             publishes.setType(event);
-            publishes.setSourceFile(getSourceFile());
+            publishes.setSourceFile(helper.getIncludedSourceFile());
             publishes.setIdentifier(id);
-            symbolTable.add(id, publishes);
+            helper.getSymbolTable().add(id, publishes);
         } ;
 
 // 125. <consumes_dcl> ::= "consumes" <scoped_name> <identifier>
@@ -2306,12 +1963,12 @@ consumes_dcl returns [MConsumesDef consumes = null]
 }
     :   "consumes" name = scoped_name id = identifier
         {
-            consumes = (MConsumesDef) verifyNameEmpty(id, consumes);
-            event = (MEventDef) verifyNameExists(name, event);
+            consumes = (MConsumesDef) helper.verifyNameEmpty(id, consumes);
+            event = (MEventDef) helper.verifyNameExists(name, event);
             consumes.setType(event);
-            consumes.setSourceFile(getSourceFile());
+            consumes.setSourceFile(helper.getIncludedSourceFile());
             consumes.setIdentifier(id);
-            symbolTable.add(id, consumes);
+            helper.getSymbolTable().add(id, consumes);
         } ;
 
 // 126. <home_dcl> ::= <home_header,127> <home_body,130>
@@ -2333,17 +1990,17 @@ home_header returns [MHomeDef home = null]
 }
     :   "home" id = identifier
         {
-            home = (MHomeDef) verifyNameEmpty(id, home);
-            home.setRepositoryId(createRepositoryId(id));
-            home.setSourceFile(getSourceFile());
+            home = (MHomeDef) helper.verifyNameEmpty(id, home);
+            home.setRepositoryId(helper.createRepositoryId(id));
+            home.setSourceFile(helper.getIncludedSourceFile());
             home.setIdentifier(id);
-            symbolTable.add(id, home);
+            helper.getSymbolTable().add(id, home);
         }
         ( b = home_inheritance_spec { if (b != null) { home.addBase(b); } } )?
-        ( sups = supported_interface_spec { checkSetSupports(home, sups); } )?
+        ( sups = supported_interface_spec { helper.checkSetSupports(home, sups); } )?
         "manages" name = scoped_name
         {
-            component = (MComponentDef) verifyNameExists(name, component);
+            component = (MComponentDef) helper.verifyNameExists(name, component);
             home.setComponent(component);
             component.addHome(home);
         }
@@ -2351,25 +2008,32 @@ home_header returns [MHomeDef home = null]
 
 // 128. <home_inheritance_spec> ::= ":" <scoped_name,12>
 home_inheritance_spec returns [MHomeDef base = null]
-{ String name = null; }
+{ 
+	String name = null; 
+}
     :   COLON name = scoped_name
         {
-            MContained lookup = lookupName(name, DEBUG_COMPONENT);
+            MContained lookup = helper.lookupName(name);
             if ((lookup != null) && (lookup instanceof MHomeDef))
-            { base = (MHomeDef) lookup; }
+            { 
+            		base = (MHomeDef) lookup; 
+            	}
         } ;
 
 // 129. <primary_key_spec> ::= "primarykey" <scoped_name,12>
 primary_key_spec returns [MValueDef key = null]
-{ key = new MValueDefImpl(); String name = null; }
+{ 
+	key = new MValueDefImpl(); 
+	String name = null; 
+}
     :   "primarykey" name = scoped_name
-        { key = (MValueDef) verifyNameExists(name, key); } ;
+        { key = (MValueDef) helper.verifyNameExists(name, key); } ;
 
 // 130. <home_body> ::= "{" <home_export,131>* "}"
 home_body[MHomeDef home]
-    :   LCURLY { symbolTable.pushScope(home.getIdentifier()); }
+    :   LCURLY { helper.getSymbolTable().pushScope(home.getIdentifier()); }
         ( home_export[home] )*
-        RCURLY { symbolTable.popScope(); } ;
+        RCURLY { helper.getSymbolTable().popScope(); } ;
 
 // 131. <home_export ::= <export,9>
 //      | <factory_dcl,132> ";" | <finder_dcl,133> ";"
@@ -2379,7 +2043,7 @@ home_export[MHomeDef home]
     MFactoryDef factory = null;
     MFinderDef finder = null;
 }
-    :   exports = export { checkAddContents(home, exports); }
+    :   exports = export { helper.checkAddContents(home, exports); }
     |   factory = factory_dcl SEMI
         {
             factory.setHome(home);
@@ -2403,15 +2067,15 @@ factory_dcl returns [MFactoryDef factory = null]
 }
     :   "factory" id = identifier
         {
-            factory = (MFactoryDef) verifyNameEmpty(id, factory);
-            factory.setSourceFile(getSourceFile());
+            factory = (MFactoryDef) helper.verifyNameEmpty(id, factory);
+            factory.setSourceFile(helper.getIncludedSourceFile());
             factory.setIdentifier(id);
-            symbolTable.add(id, factory);
+            helper.getSymbolTable().add(id, factory);
         }
         LPAREN ( params = init_param_decls
-            { checkSetParameters((MOperationDef) factory, params); } )?
+            { helper.checkSetParameters((MOperationDef) factory, params); } )?
         RPAREN ( excepts = raises_expr
-            { checkSetExceptions((MOperationDef) factory, excepts); } )? ;
+            { helper.checkSetExceptions((MOperationDef) factory, excepts); } )? ;
 
 // 133. <finder_dcl> ::= "finder" <identifier>
 //        "(" [ <init_param_decls,24> ] ")" [ <raises_expr,93> ]
@@ -2424,15 +2088,15 @@ finder_dcl returns [MFinderDef finder = null]
 }
     :   "finder" id = identifier
         {
-            finder = (MFinderDef) verifyNameEmpty(id, finder);
-            finder.setSourceFile(getSourceFile());
+            finder = (MFinderDef) helper.verifyNameEmpty(id, finder);
+            finder.setSourceFile(helper.getIncludedSourceFile());
             finder.setIdentifier(id);
-            symbolTable.add(id, finder);
+            helper.getSymbolTable().add(id, finder);
         }
         LPAREN ( params = init_param_decls
-            { checkSetParameters((MOperationDef) finder, params); } )?
+            { helper.checkSetParameters((MOperationDef) finder, params); } )?
         RPAREN ( excepts = raises_expr
-            { checkSetExceptions((MOperationDef) finder, excepts); } )? ;
+            { helper.checkSetExceptions((MOperationDef) finder, excepts); } )? ;
 
 // 134. <event> ::= <event_dcl,137> | <event_abs_dcl,136>
 //      | <event_forward_dcl,135>
@@ -2447,15 +2111,15 @@ event_forward_dcl returns [MEventDef event = null]
 { event = new MEventDefImpl(); String id = null; }
     :   ( "abstract" { event.setAbstract(true); } )? "eventtype" id = identifier
         {
-            event = (MEventDef) verifyNameEmpty(id, event);
-            event.setSourceFile(getSourceFile());
+            event = (MEventDef) helper.verifyNameEmpty(id, event);
+            event.setSourceFile(helper.getIncludedSourceFile());
             event.setIdentifier(id);
-            symbolTable.add(id, event);
+            helper.getSymbolTable().add(id, event);
             event.setContentss(null);
 
-            if ((debug & (DEBUG_EVENT | DEBUG_FORWARD_DECL)) != 0) {
-                System.out.println("[d] event forward declaration for " + id);
-            }
+//            if ((debug & (DEBUG_EVENT | DEBUG_FORWARD_DECL)) != 0) {
+//                System.out.println("[d] event forward declaration for " + id);
+//            }
         }
     ;
 
@@ -2476,20 +2140,21 @@ event_abs_dcl returns [MEventDef event = null]
 }
     :   "abstract" { event.setAbstract(true); } "eventtype" id = identifier
         {
-            event = (MEventDef) verifyNameEmpty(id, event);
-            event.setSourceFile(getSourceFile());
+            event = (MEventDef) helper.verifyNameEmpty(id, event);
+            event.setSourceFile(helper.getIncludedSourceFile());
             event.setIdentifier(id);
-            symbolTable.add(id, event);
+            helper.getSymbolTable().add(id, event);
         }
         value_inheritance_spec[(MValueDef) event]
-        LCURLY { symbolTable.pushScope(id); }
+        LCURLY { helper.getSymbolTable().pushScope(id); }
         ( decls = export { exports.addAll(decls); } )*
         RCURLY
         {
-            for (Iterator i = exports.iterator(); i.hasNext(); ) {
+            for (Iterator i = exports.iterator(); i.hasNext(); ) 
+            {
                 ((MContained) i.next()).setDefinedIn(event);
             }
-            symbolTable.popScope();
+            helper.getSymbolTable().popScope();
         } ;
 
 // 137. <event_dcl> ::= <event_header,138> "{" <value_element,21>* "}"
@@ -2500,11 +2165,12 @@ event_dcl returns [MEventDef event = null]
     List decls = null;
 }
     :   event = event_header
-        LCURLY { symbolTable.pushScope(event.getIdentifier()); }
+        LCURLY { helper.getSymbolTable().pushScope(event.getIdentifier()); }
         (
             decls = value_element
             {
-                for (Iterator i = decls.iterator(); i.hasNext(); ) {
+                for (Iterator i = decls.iterator(); i.hasNext(); ) 
+                {
                     ((MContained) i.next()).setDefinedIn(event);
                 }
                 elements.addAll(decls);
@@ -2513,7 +2179,7 @@ event_dcl returns [MEventDef event = null]
         RCURLY
         {
             event.setContentss(elements);
-            symbolTable.popScope();
+            helper.getSymbolTable().popScope();
         } ;
 
 // 138. <event_header> ::= [ "custom"  ] "eventtype" <identifier>
@@ -2525,13 +2191,16 @@ event_dcl returns [MEventDef event = null]
 // 138. <event_header> ::= [ "custom"  ] "eventtype" <identifier>
 //        <value_inheritance_spec,19>
 event_header returns [MEventDef event = null]
-{ event = new MEventDefImpl(); String id = null; }
+{ 
+	event = new MEventDefImpl(); 
+	String id = null; 
+}
     :   ( "custom" { event.setCustom(true); } )? "eventtype" id = identifier
         {
-            event = (MEventDef) verifyNameEmpty(id, event);
-            event.setSourceFile(getSourceFile());
+            event = (MEventDef) helper.verifyNameEmpty(id, event);
+            event.setSourceFile(helper.getIncludedSourceFile());
             event.setIdentifier(id);
-            symbolTable.add(id, event);
+            helper.getSymbolTable().add(id, event);
         }
         value_inheritance_spec[(MValueDef) event] ;
 
@@ -2575,43 +2244,22 @@ fixed_pt_literal returns [String literal = null]
     ;
 
 identifier returns [String identifier = null]
-    :   i:IDENT { identifier = i.getText(); } { checkKeyword(identifier) }? ;
+    :   i:IDENT { identifier = i.getText(); } { helper.checkKeyword(identifier) }? ;
+
+
 
 /******************************************************************************/
 /* IDL LEXICAL RULES  */
 
-class IDL3Lexer extends Lexer;
-options { exportVocab = IDL3; k = 4; charVocabulary = '\u0000'..'\u0377'; }
+class Idl3Lexer extends Lexer;
+options { exportVocab = Idl3; k = 4; charVocabulary = '\u0000'..'\u0377'; }
 {
-    // debug levels for the lexer. i assume the lexer will have fewer semantic
-    // issues (== those that require debugging) so the lexer only gets the top
-    // eight bits for flags.
-    private final static long DEBUG_FILE     = 0x01000000;
-    private final static long DEBUG_INCLUDE  = 0x02000000;
-
-    // unused debug flags, implement as needed.
-    private final static long DEBUG_UNUSED_C = 0x04000000;
-    private final static long DEBUG_UNUSED_D = 0x08000000;
-    private final static long DEBUG_UNUSED_E = 0x10000000;
-    private final static long DEBUG_UNUSED_F = 0x20000000;
-    private final static long DEBUG_UNUSED_G = 0x40000000;
-    private final static long DEBUG_UNUSED_H = 0x80000000;
-
-    private long debug = 0;
-
-    private ParserManager manager;
-
-    /*
-     *  Set up the current class instance for a parse, by specifying the parser
-     *  manager object that this parser belongs to. This loads the parser
-     *  manager's symbol table into this parser instance.
-     */
-    public void setManager(ParserManager m) { manager = m; }
-
-    /*
-     * Set the debug level for this parser class instance.
-     */
-    public void setDebug(long d) { debug = d; }
+	private ParserHelper helper;	
+	
+	public void setHelper(ParserHelper helper)
+	{
+		this.helper = helper;
+	}
 }
 
 SEMI     options { paraphrase = ";" ; } : ';'  ;
@@ -2650,12 +2298,9 @@ PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
     :   "# " ( DIGIT )+ ' ' s:STRING_LITERAL
         {
             String include = s.getText();
-            if (include.length() > 0 && include.charAt(0) != '<') {
-                manager.setSourceFile(s.getText());
-                if ((debug & DEBUG_FILE) != 0) {
-                    String label = "[f] source from file : ";
-                    System.out.println(label + s.getText());
-                }
+            if (include.length() > 0 && include.charAt(0) != '<') 
+            {
+                helper.setSourceFile(s.getText());
             }
         }
         ( ' ' ( DIGIT )+ )? ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
@@ -2707,10 +2352,13 @@ ESC options { paraphrase = "an escape sequence"; }
 
 CHAR_LITERAL        options { paraphrase = "a character literal"; }
     :   '\'' ( ESC | ~ '\'' ) '\'' ;
+    
 WIDE_CHAR_LITERAL   options { paraphrase = "a character literal"; }
     :   'L' '\'' ( ESC | ~ '\'' ) '\'' ;
+    
 STRING_LITERAL      options { paraphrase = "a string literal"; }
     :   '"'! ( ESC | ~ ( '"' | '\\' ) )* '"'! ;
+    
 WIDE_STRING_LITERAL options { paraphrase = "a string literal"; }
     :   'L'! '"'! ( ESC | ~ '"' )* '"'! ;
 

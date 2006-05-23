@@ -22,32 +22,34 @@ package ccmtools.parser.idl3;
 
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
 
-class DeclaratorHelper{
-    private MArrayDef arrayDef = null;
-    private String declarator = null;
+class DeclaratorHelper
+{
+	private MArrayDef arrayDef = null;
 
-    public boolean isArray()
-    {
-	return (arrayDef != null);
-    }
+	private String declarator = null;
 
-    public MArrayDef getArray()
-    {
-	return arrayDef;
-    }
+	public boolean isArray()
+	{
+		return (arrayDef != null);
+	}
 
-    public void setArray(MArrayDef arrayDef)
-    {
-	this.arrayDef = arrayDef;
-    }
+	public MArrayDef getArray()
+	{
+		return arrayDef;
+	}
 
-    public String getDeclarator()
-    {
-	return declarator;
-    }
+	public void setArray(MArrayDef arrayDef)
+	{
+		this.arrayDef = arrayDef;
+	}
 
-    public void setDeclarator(String declarator)
-    {
-	this.declarator = declarator;
-    }
+	public String getDeclarator()
+	{
+		return declarator;
+	}
+
+	public void setDeclarator(String declarator)
+	{
+		this.declarator = declarator;
+	}
 }

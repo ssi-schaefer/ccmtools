@@ -8,7 +8,7 @@ import java.util.List;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
-import ccmtools.IDL3Parser.ParserManager;
+
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.UI.Driver;
 
@@ -22,8 +22,6 @@ public class CcmModelHelper
 		File source = new File(fileName);
 		try
 		{
-			ParserManager manager = new ParserManager(Driver.M_NONE);
-
 			// create the name of the temporary idl file generated from the
 			// preprocessor cpp
 			String tmpFile = "_CCM_" + source.getName();
@@ -32,8 +30,7 @@ public class CcmModelHelper
 			// step (0). run the C preprocessor on the input file.
 			// Run the GNU preprocessor cpp in a separate process.
 			StringBuffer cmd = new StringBuffer();
-			cmd.append(Constants.CPP_PATH);
-			cmd.append(" -o ").append(idlfile).append(" ");
+			cmd.append(Constants.CPP_PATH).append(" -o ").append(idlfile).append(" ");
 			for (Iterator i = includes.iterator(); i.hasNext();)
 			{
 				cmd.append("-I").append((String) i.next()).append(" ");
@@ -56,14 +53,20 @@ public class CcmModelHelper
 			// value of the attempted command
 			preproc.waitFor();
 			if (preproc.exitValue() != 0)
-				throw new CcmtoolsException("Preprocessor: " + "Please verify your include paths or file names ("
+				throw new CcmtoolsException("Preprocessor: Please verify your include paths or file names ("
 						+ source + ").");
 
 			// step (1). parse the resulting preprocessed file.
-			//uiDriver.printMessage("parse " + idlfile.toString());
-			manager.reset();
-			manager.setOriginalFile(source.toString());
-			ccmModel = manager.parseFile(idlfile.toString());
+//			uiDriver.printMessage("parse " + idlfile.toString());
+
+			ccmtools.parser.idl3.ParserManager manager = new ccmtools.parser.idl3.ParserManager(source.toString());			
+//!!!!!!!!!!!!!!!!
+//          old version:
+//			ccmtools.IDL3Parser.ParserManager manager = new ccmtools.IDL3Parser.ParserManager();
+//			manager.setOriginalFile(source.toString());
+//!!!!!!!!!!!!!!!!
+			
+			ccmModel = manager.parseFile(idlfile.toString());			
 			if (ccmModel == null)
 			{
 				throw new CcmtoolsException("Parser error " + source + ":\n" + "parser returned an empty CCM model");
@@ -72,6 +75,7 @@ public class CcmModelHelper
 			kopf_name = kopf_name.replaceAll("[^\\w]", "_");
 			ccmModel.setIdentifier(kopf_name);
 
+			System.out.println(ccmModel);
 			idlfile.deleteOnExit();
 		}
 		catch (Exception e)

@@ -216,10 +216,10 @@
       	<delete file="${src}/ccmtools/IDL3Parser/IDL3TokenTypes.java" />
       	<delete file="${src}/ccmtools/IDL3Parser/IDL3TokenTypes.txt" />
 
-      	<delete file="${src}/ccmtools/parser/idl3/IDL3Lexer.java" />
-      	<delete file="${src}/ccmtools/parser/idl3/IDL3Parser.java" />
-      	<delete file="${src}/ccmtools/parser/idl3/IDL3TokenTypes.java" />
-      	<delete file="${src}/ccmtools/parser/idl3/IDL3TokenTypes.txt" />
+      	<delete file="${src}/ccmtools/parser/idl3/Idl3Lexer.java" />
+      	<delete file="${src}/ccmtools/parser/idl3/Idl3Parser.java" />
+      	<delete file="${src}/ccmtools/parser/idl3/Idl3TokenTypes.java" />
+      	<delete file="${src}/ccmtools/parser/idl3/Idl3TokenTypes.txt" />
 
   		<delete dir="${src}/uml_parser" />
       		

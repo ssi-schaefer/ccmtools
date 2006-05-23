@@ -20,37 +20,24 @@
 
 package ccmtools.parser.idl3;
 
-import ccmtools.Metamodel.BaseIDL.MContainer;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.util.Iterator;
+import java.util.logging.Logger;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
+import ccmtools.Metamodel.BaseIDL.MContainer;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+public class ParserManager 
+{
+	/** Java standard logger object */
+	protected Logger logger;
 
-public class ParserManager {
-    private long debug;
-
-    private IDL3SymbolTable symbolTable;
-
-    private String originalFile; // the original file being parsed.
-    private String sourceFile;   // the source of the current section of code.
-    private List errors;
-
-    /**
-     * Create a new ParserManager class instance with no debug output enabled.
-     */
-    public ParserManager()
-    {
-        this.debug = 0;
-        reset();
-    }
-
+	/** Helper class that encapsulates all utility and validation methods for the parser */
+	ParserHelper helper;
+	
+	
     /**
      * Create a new ParserManager class instance using the given debug flags to
      * control debug output. The debug flags are passed directly on to the
@@ -59,72 +46,16 @@ public class ParserManager {
      * @param debug the flags to enable for debug output. Pass -1 to enable all
      *              output.
      */
-    public ParserManager(long debug)
-    {
-        this.debug = debug;
-        reset();
+    public ParserManager(String originalFile)
+    {                
+        logger = Logger.getLogger("ccm.parser.idl3");
+        logger.fine("");       
+        helper = new ParserHelper();
+        helper.setOriginalFile(originalFile);
+        // Note: all other files are included files and causes no code generation.
     }
 
-    /**
-     * Reset the parser manager. This clears out the symbol table.
-     */
-    public void reset()
-    {
-        symbolTable = new IDL3SymbolTable();
-        errors = new ArrayList();
-        originalFile = null;
-        sourceFile = null;
-    }
-
-    /**
-     * Get the current symbol table being maintained by the parser manager.
-     *
-     * @return the current symbol table, normally for debug output. Be careful;
-     *         externally manipulating the symbol table could have severe side
-     *         effects.
-     */
-    public IDL3SymbolTable getSymbolTable() { return symbolTable; }
-
-    /**
-     * Find out which file the parser manager started with.
-     *
-     * @return the name of the original file given to parse.
-     */
-    public String getOriginalFile() { return originalFile; }
-
-    /**
-     * Set the name of the file that the parser manager started with.
-     *
-     * @param f the name of the original file to be parsed.
-     */
-    public void setOriginalFile(String f)
-    {
-        if (originalFile == null) {
-            File file = new File(f);
-            try { originalFile = file.getCanonicalPath(); }
-            catch (IOException e) { originalFile = f; }
-        }
-    }
-
-    /**
-     * Find out which file the parser is currently handling.
-     *
-     * @return the name of the file that originated the current code section.
-     */
-    public String getSourceFile() { return sourceFile; }
-
-    /**
-     * Set the name of the file that the parser is currently handling.
-     *
-     * @param f the name of the file that provided the current code section.
-     */
-    public void setSourceFile(String f)
-    {
-        File file = new File(f);
-        try { sourceFile = file.getCanonicalPath(); }
-        catch (IOException e) { sourceFile = f; }
-    }
-
+    
     /**
      * Parse an IDL3 file.
      *
@@ -135,54 +66,56 @@ public class ParserManager {
     public MContainer parseFile(String filename)
         throws RecognitionException, TokenStreamException
     {
-	MContainer spec = null;
-        IDL3Parser parser = null;
-        IDL3Lexer lexer = null;
-        DataInputStream stream = null;
+    		logger.fine("");
+    		logger.finer("filename = " + filename);	
+		MContainer spec = null;
+		Idl3Parser parser = null;
+		Idl3Lexer lexer = null;
+		DataInputStream stream = null;
+		
+		try
+		{
+			stream = new DataInputStream(new FileInputStream(filename));
 
-        try {
-            stream = new DataInputStream(new FileInputStream(filename));
-        } catch (Exception e) {
-            throw new RuntimeException(
-                "Error opening input file '" + filename + "': " + e);
-        }
+			helper.setSourceFile(filename);
 
-	try {
-            lexer = new IDL3Lexer(stream);
-            lexer.setDebug(debug);
-            lexer.setManager(this);
-        } catch (Exception e) {
-            throw new RuntimeException("Error creating lexer: " + e);
-        }
+			lexer = new Idl3Lexer(stream);
+			lexer.setHelper(helper);
+			
+			parser = new Idl3Parser(lexer);
+			parser.setHelper(helper);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException("Error creating parser: " + e.getMessage());
+		}
 
-        try {
-            parser = new IDL3Parser(lexer);
-            parser.setDebug(debug);
-            parser.setManager(this);
-        } catch (Exception e) {
-            throw new RuntimeException("Error creating parser: " + e);
-        }
+		helper.getSymbolTable().pushFile();
+		
+		try
+		{
+			spec = parser.specification();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			logger.fine("Exception: " + e.getMessage());
+			helper.getErrorList().add(e.getMessage());
+		}
 
-        setOriginalFile(filename);
-        setSourceFile(filename);
+		helper.getSymbolTable().popFile();
 
-        symbolTable.pushFile();
+		if (helper.getErrorList().size() > 0)
+		{
+			StringBuffer msg = new StringBuffer("Errors during parsing:");
+			for (Iterator i = helper.getErrorList().iterator(); i.hasNext();)
+			{
+				msg.append("\n").append(i.next());
+			}
+			throw new RuntimeException(msg.toString());
+		}
 
-        try {
-            spec = parser.specification();
-        } catch (Exception e) {
-            errors.add(e);
-        }
-
-        symbolTable.popFile();
-
-        if (errors.size() > 0) {
-            StringBuffer msg = new StringBuffer("Errors during parsing:");
-            for (Iterator i = errors.iterator(); i.hasNext(); )
-                msg.append("\n" + i.next().toString());
-            throw new RuntimeException(msg.toString());
-        }
-
-	return spec;
-    }
+		return spec;
+	}
 }

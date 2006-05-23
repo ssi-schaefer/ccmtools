@@ -83,9 +83,8 @@ public class CcmToJavaModelMapper
     
 	public CcmToJavaModelMapper()
 	{
-		logger = Logger.getLogger("ccm.generator.java.clientlib");
-		logger.fine("CcmModelNodeHandler()");
-		
+		logger = Logger.getLogger("ccm.generator.java");
+		logger.fine("");		
 		artifactCache = new HashMap();
 		modelRepository = new ModelRepository();
 		anyPluginManager = new AnyPluginManager();
@@ -102,31 +101,32 @@ public class CcmToJavaModelMapper
      */ 
     
     public void startGraph()
-    {
-    	logger.fine("startGraph()");
-    }
+	{
+		logger.fine("startGraph()");
+	}
 
-    public void endGraph()
-    {
-    	logger.fine("endGraph()");
-    }
+	public void endGraph()
+	{
+		logger.fine("endGraph()");
+	}
 
-    public void startNode(Object node, String scopeId)
-    {
-    	logger.fine("startNode(" + node +")");
-    }
+	public void startNode(Object node, String scopeId)
+	{
+		logger.fine("");
+		logger.finer("node = " + node + ", id = " + scopeId);
+	}
 
     
     /**
-     * Handle possible root elements in the CCM metamodel.
-     * Each root element will be a starting point for the CCM metamodel to 
-     * JavaImplementation metamodel transformation.
-     * Note that each transformed reoot element will be added to the
-     * ModelRepository from which source files can be generated.
-     */
+	 * Handle possible root elements in the CCM metamodel. Each root element
+	 * will be a starting point for the CCM metamodel to JavaImplementation
+	 * metamodel transformation. Note that each transformed reoot element will
+	 * be added to the ModelRepository from which source files can be generated.
+	 */
     public void endNode(Object node, String scopeId)
-    {                
-    	logger.fine("endNode(" + node + ")");
+    {
+    		logger.fine("");
+    		logger.finer("node = " + node + ", scopeId = " + scopeId);
     	
     	if(node == null)
     	{
@@ -136,6 +136,8 @@ public class CcmToJavaModelMapper
     	else if(node instanceof MContained 
     			&& !((MContained) node).getSourceFile().equals(""))
     	{
+    		logger.finer("node = " + node + " has been defined in an included file (" 
+    				+ ((MContained) node).getSourceFile() + ")");
     		// The current node is defined in an included file
     		// and should not be generated!
     		return;
