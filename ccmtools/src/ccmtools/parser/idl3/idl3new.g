@@ -22,21 +22,6 @@ header
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package ccmtools.parser.idl3;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import ccmtools.Metamodel.BaseIDL.*;
-import ccmtools.Metamodel.ComponentIDL.*;
-
-}
-
 /*
  * This is a (semi-)complete parser for the IDL language as defined by the CORBA
  * 3.0 specification. It will allow those who need an IDL parser to get
@@ -56,6 +41,191 @@ import ccmtools.Metamodel.ComponentIDL.*;
  * adapted for CORBA 3.0 by Edin Arnautovic <edin.arnautovic@salomon.at>
  */
 
+package ccmtools.parser.idl3;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import ccmtools.Metamodel.BaseIDL.*;
+import ccmtools.Metamodel.ComponentIDL.*;
+
+}
+
+
+/**
+ * IDL3 Lexer Rules
+ *
+ *
+ */
+
+class Idl3Lexer extends Lexer;
+options 
+{ 
+	exportVocab = Idl3; 
+	k = 4; 
+	charVocabulary = '\u0000'..'\u0377'; 
+}
+{
+	/*
+	 *  This code is put into the Idl3Lexer class
+	 */
+	 
+	/** A common helper class of the IDL3 lexer and parser */ 
+	private ParserHelper helper;	
+	
+	/** Setter method for the helper class */
+	public void setHelper(ParserHelper helper)
+	{
+		this.helper = helper;
+	}
+}
+
+SEMI     options { paraphrase = ";" ; } : ';'  ;
+QUESTION options { paraphrase = "?" ; } : '?'  ;
+LPAREN   options { paraphrase = "(" ; } : '('  ;
+RPAREN   options { paraphrase = ")" ; } : ')'  ;
+LBRACK   options { paraphrase = "[" ; } : '['  ;
+RBRACK   options { paraphrase = "]" ; } : ']'  ;
+LCURLY   options { paraphrase = "{" ; } : '{'  ;
+RCURLY   options { paraphrase = "}" ; } : '}'  ;
+OR       options { paraphrase = "|" ; } : '|'  ;
+XOR      options { paraphrase = "^" ; } : '^'  ;
+AND      options { paraphrase = "&" ; } : '&'  ;
+COLON    options { paraphrase = ":" ; } : ':'  ;
+COMMA    options { paraphrase = "," ; } : ','  ;
+DOT      options { paraphrase = "." ; } : '.'  ;
+ASSIGN   options { paraphrase = "=" ; } : '='  ;
+NOT      options { paraphrase = "!" ; } : '!'  ;
+LT       options { paraphrase = "<" ; } : '<'  ;
+GT       options { paraphrase = ">" ; } : '>'  ;
+DIV      options { paraphrase = "/" ; } : '/'  ;
+PLUS     options { paraphrase = "+" ; } : '+'  ;
+MINUS    options { paraphrase = "-" ; } : '-'  ;
+TILDE    options { paraphrase = "~" ; } : '~'  ;
+STAR     options { paraphrase = "*" ; } : '*'  ;
+MOD      options { paraphrase = "%" ; } : '%'  ;
+LSHIFT   options { paraphrase = "<<"; } : "<<" ;
+RSHIFT   options { paraphrase = ">>"; } : ">>" ;
+SCOPEOP  options { paraphrase = "::"; } : "::" ;
+
+WS 
+options 
+{ 
+	paraphrase = "white space"; 
+}
+	:   ( ' ' 
+		| '\t' 
+		| '\f' 
+		// handle newlines
+		| 	( "\r\n"		// DOS/Windows
+			| '\n' 		// Unix
+			| '\r' 		// Macintosh
+			)
+			// increment the line count in the scanner 
+			{ newline(); } 
+		)
+        { $setType(Token.SKIP); } 
+	;
+
+SL_COMMENT 
+	:   "//" ( ~( '\n' | '\r' ))* 
+        { $setType(Token.SKIP); } 
+	;
+
+ML_COMMENT 
+    :   "/*"
+        ( options { generateAmbigWarnings = false; }
+        :   { LA(2) != '/' }? '*'
+        |   '\r' '\n' { newline(); }
+        |   '\r'      { newline(); }
+        |   '\n'      { newline(); }
+        |   ~ ( '*' | '\n' | '\r' )
+        )*
+        "*/" { $setType(Token.SKIP); } 
+	;
+
+
+PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
+    :   "# " ( DIGIT )+ ' ' s:STRING_LITERAL
+        {
+            String include = s.getText();
+            if (include.length() > 0 && include.charAt(0) != '<') 
+            {
+                helper.setSourceFile(s.getText());
+            }
+        }
+        ( ' ' ( DIGIT )+ )? ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
+        { $setType(Token.SKIP); } 
+	;
+
+
+protected DIGIT options { paraphrase = "a digit"; } : '0'..'9' ;
+
+protected OCTDIGIT options { paraphrase = "an octal digit"; } : '0'..'7' ;
+
+protected HEX_LETTER options { paraphrase = "a hexadecimal letter"; }
+    :    ( 'a'..'f' | 'A'..'F' ) ;
+
+protected EXPONENT options { paraphrase = "an exponent"; }
+    :   ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ ;
+
+protected IDENT_LETTER options { paraphrase = "an identifier character"; }
+    :   ( 'g'..'z' | 'G'..'Z' | '_' ) ;
+
+protected
+ESC options { paraphrase = "an escape sequence"; }
+    :   '\\'
+        (   'n' | 't' | 'v' | 'b' | 'r' | 'f' | 'a' | '\\' | '?' | '\'' | '"'
+        |   ( '0'..'3' )
+            ( options { warnWhenFollowAmbig = false; }
+            : OCTDIGIT ( options { warnWhenFollowAmbig = false; } : OCTDIGIT )?
+            )?
+        |   'x' ( DIGIT | HEX_LETTER )
+            ( options { warnWhenFollowAmbig = false; } :
+                ( DIGIT | HEX_LETTER ) )?
+        ) ;
+
+CHAR_LITERAL        options { paraphrase = "a character literal"; }
+    :   '\'' ( ESC | ~ '\'' ) '\'' ;
+    
+WIDE_CHAR_LITERAL   options { paraphrase = "a character literal"; }
+    :   'L' '\'' ( ESC | ~ '\'' ) '\'' ;
+    
+STRING_LITERAL      options { paraphrase = "a string literal"; }
+    :   '"'! ( ESC | ~ ( '"' | '\\' ) )* '"'! ;
+    
+WIDE_STRING_LITERAL options { paraphrase = "a string literal"; }
+    :   'L'! '"'! ( ESC | ~ '"' )* '"'! ;
+
+OCT options { paraphrase = "an octal value"; } : "0" ( OCTDIGIT )+ ;
+
+INT options { paraphrase = "an integer value"; }
+    :   '1'..'9' ( DIGIT )*
+        ( '.' ( DIGIT )* { $setType(FLOAT); } )?
+        ( EXPONENT { $setType(FLOAT); } )? ;
+
+HEX options { paraphrase = "a hexadecimal value"; }
+    :   ( "0x" | "0X" ) ( DIGIT | HEX_LETTER )+ ;
+
+FLOAT options { paraphrase = "a floating point value"; }
+    :   '.' ( DIGIT )+ ( EXPONENT )? ;
+
+IDENT options { paraphrase = "an identifier"; }
+    :   ( HEX_LETTER | IDENT_LETTER )
+        ( 'a'..'z' | 'A'..'Z' | '_' | '0'..'9' )* ;
+
+
+
+/**
+ * IDL3 Parser Rules
+ *
+ *
+ */
 
 class Idl3Parser extends Parser;
 options { exportVocab = Idl3; k = 2; }
@@ -86,13 +256,6 @@ specification returns [MContainer container = null]
         ( decls = definition { definitions.addAll(decls); } )+
         {
             helper.checkAddContents(container, definitions);
-
-//            if ((debug & DEBUG_FILE) != 0)
-//                System.out.println("[f] input file "+
-//                    manager.getOriginalFile()+" parsed");
-
-//            if ((debug & DEBUG_SYMBOL_TABLE) != 0)
-//                System.out.println(symbolTable.toString());
         } ;
 
 // 2. <definition> ::= <type_dcl,42> ";" <-- this rule returns a list
@@ -1749,52 +1912,35 @@ component_dcl returns [MComponentDef component = null]
                 element.setDefinedIn(component);
                 element.setSourceFile(helper.getIncludedSourceFile());
 
-//                if ((debug & DEBUG_COMPONENT) != 0)
-//                    System.out.print(
-//                        "[c] adding '"+element.getIdentifier()+
-//                        "' to component '"+component.getIdentifier()+"'");
-
                 if (element instanceof MEmitsDef) 
                 {
                     ((MEmitsDef) element).setComponent(component);
                     component.addEmits((MEmitsDef) element);
-//                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
-//                        System.out.println(" as emits");
                 } 
                 else if (element instanceof MPublishesDef) 
                 {
                     ((MPublishesDef) element).setComponent(component);
                     component.addPublishes((MPublishesDef) element);
-//                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
-//                        System.out.println(" as publishes");
                 } 
                 else if (element instanceof MConsumesDef) 
                 {
                     ((MConsumesDef) element).setComponent(component);
                     component.addConsumes((MConsumesDef) element);
-//                    if ((debug & (DEBUG_COMPONENT + DEBUG_EVENT)) != 0)
-//                        System.out.println(" as consumes");
                 } 
                 else if (element instanceof MProvidesDef) 
                 {
                     ((MProvidesDef) element).setComponent(component);
                     component.addFacet((MProvidesDef) element);
-//                    if ((debug & (DEBUG_COMPONENT + DEBUG_INTERFACE)) != 0)
-//                        System.out.println(" as facet");
                 } 
                 else if (element instanceof MUsesDef) 
                 {
                     ((MUsesDef) element).setComponent(component);
                     component.addReceptacle((MUsesDef) element);
-//                    if ((debug & (DEBUG_COMPONENT + DEBUG_INTERFACE)) != 0)
-//                        System.out.println(" as receptacle");
                 } 
                 else if (element instanceof MAttributeDef) 
                 {
                     ((MAttributeDef) element).setDefinedIn(component);
                     component.addContents((MAttributeDef) element);
-//                    if ((debug & DEBUG_COMPONENT) != 0)
-//                        System.out.println(" as attribute");
                 } 
                 else 
                 {
@@ -2116,10 +2262,6 @@ event_forward_dcl returns [MEventDef event = null]
             event.setIdentifier(id);
             helper.getSymbolTable().add(id, event);
             event.setContentss(null);
-
-//            if ((debug & (DEBUG_EVENT | DEBUG_FORWARD_DECL)) != 0) {
-//                System.out.println("[d] event forward declaration for " + id);
-//            }
         }
     ;
 
@@ -2204,6 +2346,7 @@ event_header returns [MEventDef event = null]
         }
         value_inheritance_spec[(MValueDef) event] ;
 
+
 // **** LITERALS and IDENTIFIERS ****
 
 integer_literal returns [String literal = null]
@@ -2246,136 +2389,4 @@ fixed_pt_literal returns [String literal = null]
 identifier returns [String identifier = null]
     :   i:IDENT { identifier = i.getText(); } { helper.checkKeyword(identifier) }? ;
 
-
-
-/******************************************************************************/
-/* IDL LEXICAL RULES  */
-
-class Idl3Lexer extends Lexer;
-options { exportVocab = Idl3; k = 4; charVocabulary = '\u0000'..'\u0377'; }
-{
-	private ParserHelper helper;	
-	
-	public void setHelper(ParserHelper helper)
-	{
-		this.helper = helper;
-	}
-}
-
-SEMI     options { paraphrase = ";" ; } : ';'  ;
-QUESTION options { paraphrase = "?" ; } : '?'  ;
-LPAREN   options { paraphrase = "(" ; } : '('  ;
-RPAREN   options { paraphrase = ")" ; } : ')'  ;
-LBRACK   options { paraphrase = "[" ; } : '['  ;
-RBRACK   options { paraphrase = "]" ; } : ']'  ;
-LCURLY   options { paraphrase = "{" ; } : '{'  ;
-RCURLY   options { paraphrase = "}" ; } : '}'  ;
-OR       options { paraphrase = "|" ; } : '|'  ;
-XOR      options { paraphrase = "^" ; } : '^'  ;
-AND      options { paraphrase = "&" ; } : '&'  ;
-COLON    options { paraphrase = ":" ; } : ':'  ;
-COMMA    options { paraphrase = "," ; } : ','  ;
-DOT      options { paraphrase = "." ; } : '.'  ;
-ASSIGN   options { paraphrase = "=" ; } : '='  ;
-NOT      options { paraphrase = "!" ; } : '!'  ;
-LT       options { paraphrase = "<" ; } : '<'  ;
-GT       options { paraphrase = ">" ; } : '>'  ;
-DIV      options { paraphrase = "/" ; } : '/'  ;
-PLUS     options { paraphrase = "+" ; } : '+'  ;
-MINUS    options { paraphrase = "-" ; } : '-'  ;
-TILDE    options { paraphrase = "~" ; } : '~'  ;
-STAR     options { paraphrase = "*" ; } : '*'  ;
-MOD      options { paraphrase = "%" ; } : '%'  ;
-LSHIFT   options { paraphrase = "<<"; } : "<<" ;
-RSHIFT   options { paraphrase = ">>"; } : ">>" ;
-SCOPEOP  options { paraphrase = "::"; } : "::" ;
-
-WS options { paraphrase = "white space"; }
-    :   ( ' ' | '\t' | '\f' | '\n' { newline(); } | '\r' )
-        { $setType(Token.SKIP); } ;
-
-PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
-    :   "# " ( DIGIT )+ ' ' s:STRING_LITERAL
-        {
-            String include = s.getText();
-            if (include.length() > 0 && include.charAt(0) != '<') 
-            {
-                helper.setSourceFile(s.getText());
-            }
-        }
-        ( ' ' ( DIGIT )+ )? ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
-        { $setType(Token.SKIP); newline(); } ;
-
-// this is cracked up, but for some reason antlr can't handle dollars at the end
-// of a single-line comment.
-
-SL_COMMENT options { paraphrase = "a comment"; }
-    :   "//" ( options { warnWhenFollowAmbig = false; } : '$' )?
-        ( ~ ( '\n' | '\r' ) )* ( '\n' | '\r' ( '\n' )? )
-        { $setType(Token.SKIP); newline(); } ;
-
-ML_COMMENT options { paraphrase = "a comment"; }
-    :   "/*"
-        ( options { generateAmbigWarnings = false; }
-        :   { LA(2) != '/' }? '*'
-        |   '\r' '\n' { newline(); }
-        |   '\r'      { newline(); }
-        |   '\n'      { newline(); }
-        |   ~ ( '*' | '\n' | '\r' )
-        )*
-        "*/" { $setType(Token.SKIP); } ;
-
-protected DIGIT options { paraphrase = "a digit"; } : '0'..'9' ;
-protected OCTDIGIT options { paraphrase = "an octal digit"; } : '0'..'7' ;
-
-protected HEX_LETTER options { paraphrase = "a hexadecimal letter"; }
-    :    ( 'a'..'f' | 'A'..'F' ) ;
-
-protected EXPONENT options { paraphrase = "an exponent"; }
-    :   ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ ;
-
-protected IDENT_LETTER options { paraphrase = "an identifier character"; }
-    :   ( 'g'..'z' | 'G'..'Z' | '_' ) ;
-
-protected
-ESC options { paraphrase = "an escape sequence"; }
-    :   '\\'
-        (   'n' | 't' | 'v' | 'b' | 'r' | 'f' | 'a' | '\\' | '?' | '\'' | '"'
-        |   ( '0'..'3' )
-            ( options { warnWhenFollowAmbig = false; }
-            : OCTDIGIT ( options { warnWhenFollowAmbig = false; } : OCTDIGIT )?
-            )?
-        |   'x' ( DIGIT | HEX_LETTER )
-            ( options { warnWhenFollowAmbig = false; } :
-                ( DIGIT | HEX_LETTER ) )?
-        ) ;
-
-CHAR_LITERAL        options { paraphrase = "a character literal"; }
-    :   '\'' ( ESC | ~ '\'' ) '\'' ;
-    
-WIDE_CHAR_LITERAL   options { paraphrase = "a character literal"; }
-    :   'L' '\'' ( ESC | ~ '\'' ) '\'' ;
-    
-STRING_LITERAL      options { paraphrase = "a string literal"; }
-    :   '"'! ( ESC | ~ ( '"' | '\\' ) )* '"'! ;
-    
-WIDE_STRING_LITERAL options { paraphrase = "a string literal"; }
-    :   'L'! '"'! ( ESC | ~ '"' )* '"'! ;
-
-OCT options { paraphrase = "an octal value"; } : "0" ( OCTDIGIT )+ ;
-
-INT options { paraphrase = "an integer value"; }
-    :   '1'..'9' ( DIGIT )*
-        ( '.' ( DIGIT )* { $setType(FLOAT); } )?
-        ( EXPONENT { $setType(FLOAT); } )? ;
-
-HEX options { paraphrase = "a hexadecimal value"; }
-    :   ( "0x" | "0X" ) ( DIGIT | HEX_LETTER )+ ;
-
-FLOAT options { paraphrase = "a floating point value"; }
-    :   '.' ( DIGIT )+ ( EXPONENT )? ;
-
-IDENT options { paraphrase = "an identifier"; }
-    :   ( HEX_LETTER | IDENT_LETTER )
-        ( 'a'..'z' | 'A'..'Z' | '_' | '0'..'9' )* ;
 

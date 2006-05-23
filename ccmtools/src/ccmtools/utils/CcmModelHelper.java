@@ -74,8 +74,6 @@ public class CcmModelHelper
 			String kopf_name = source.getName();// .split("\\.")[0];
 			kopf_name = kopf_name.replaceAll("[^\\w]", "_");
 			ccmModel.setIdentifier(kopf_name);
-
-			System.out.println(ccmModel);
 			idlfile.deleteOnExit();
 		}
 		catch (Exception e)
