@@ -3,7 +3,7 @@
 if [ -z "$JAVA_HOME" ]; then
 echo "ERROR!"
 echo "Environment variable JAVA_HOME not found!" 
-exit
+exit 1
 fi
 
 JAVA_LAUNCHER="$JAVA_HOME"/bin/orbd
@@ -15,4 +15,5 @@ orbd -ORBInitialPort 5050
 else
 echo "ERROR!"
 echo "Java executable not found in" $JAVA_HOME/bin/orbd
+exit 1
 fi
