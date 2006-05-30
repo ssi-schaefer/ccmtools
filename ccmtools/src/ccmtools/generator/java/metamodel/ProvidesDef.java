@@ -135,7 +135,7 @@ public class ProvidesDef
 	public List generateApplicationSourceFiles()
 	{
 		List sourceFileList = new ArrayList();
-		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
+		String localPackageName = Text.joinList(File.separator, getInterface().getJavaNamespaceList());
 		String facetName = getComponent().getIdentifier() + getIdentifier();
 		
 		SourceFile applicationClass = 
