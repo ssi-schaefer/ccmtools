@@ -1,0 +1,10 @@
+
+module world
+{
+
+  interface IFace
+  {
+    long op1(in string str);
+  };
+
+}; // /module world

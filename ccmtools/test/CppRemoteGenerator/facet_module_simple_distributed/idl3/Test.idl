@@ -1,0 +1,19 @@
+
+#include<IFace.idl>
+
+module world
+{
+  module europe
+  {
+    component Test
+    {
+      provides world::IFace iface;
+    };
+
+    home TestHome manages Test
+    {
+    };
+
+  }; // /module europe
+
+}; // /module world
