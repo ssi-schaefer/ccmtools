@@ -261,8 +261,6 @@ public class Code
             while((line = reader.readLine()) != null) {
                 buffer.append(line + "\n");
             }
-//            System.out.println(">>>>" + code + "<<<<");
-//            System.out.println(">>>>" + buffer + "<<<<");
             return code.equals(buffer.toString());
         }
         return false;
@@ -273,7 +271,7 @@ public class Code
     
     public static String getRepositoryId(MContained node)
     {
-        return "IDL:" + getAbsoluteName(node, "/") + ":1.0";
+    		return "IDL:" + getAbsoluteName(node, "/") + ":1.0";
     }
     
     public static String getRepositoryId(String name)
@@ -299,14 +297,14 @@ public class Code
     }
     
     public static String getRepositoryId(List ns, String name)
-    {
-    	StringBuffer buffer = new StringBuffer();
-    	buffer.append("IDL:");
-    	buffer.append(Text.joinList("/", ns));
-    	buffer.append("/").append(name);
-    	buffer.append(":1.0");
-    	return buffer.toString();
-    }
+	{
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("IDL:");
+		buffer.append(Text.joinList("/", ns));
+		buffer.append("/").append(name);
+		buffer.append(":1.0");
+		return buffer.toString();
+	}
     
     public static List getListFromAbsoluteName(String name)
     {
@@ -335,7 +333,14 @@ public class Code
     
     public static String getAbsoluteName(MContained node, String sep)
     {
-        return getNamespace(node,sep) + sep + node.getIdentifier();
+   		if(getNamespaceList(node).size() == 0)
+		{
+   			return node.getIdentifier();
+		}
+   		else
+   		{
+   			return getNamespace(node,sep) + sep + node.getIdentifier();
+   		}
     }
     
     public static String getNamespace(MContained node, String sep)

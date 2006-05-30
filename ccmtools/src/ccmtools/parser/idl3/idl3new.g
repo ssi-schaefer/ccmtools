@@ -57,11 +57,11 @@ import ccmtools.Metamodel.ComponentIDL.*;
 }
 
 
-/**
- * IDL3 Lexer Rules
+/*****************************************************************************
+ * IDL3 Lexer 
  *
  *
- */
+ *****************************************************************************/
 
 class Idl3Lexer extends Lexer;
 options 
@@ -221,11 +221,11 @@ IDENT options { paraphrase = "an identifier"; }
 
 
 
-/**
- * IDL3 Parser Rules
+/*****************************************************************************
+ * IDL3 Parser 
  *
  *
- */
+ *****************************************************************************/
 
 class Idl3Parser extends Parser;
 options { exportVocab = Idl3; k = 2; }
@@ -241,7 +241,6 @@ options { exportVocab = Idl3; k = 2; }
 	}
 }
 
-/******************************************************************************/
 
 // 1. <specification> ::= <import_dcl,100>* <definition,2>+
 specification returns [MContainer container = null]
@@ -1039,10 +1038,18 @@ floating_pt_type returns [MIDLType number = null]
 { 
 	number = new MPrimitiveDefImpl(); 
 }
-    :   "float"  { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_FLOAT);  }
-    |   "double" { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_DOUBLE); }
+    :   "float"  
+    		{ 
+    			((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_FLOAT);  
+    		}
+    |   "double" 
+    		{ 
+    			((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_DOUBLE); 
+    		}
     |   ( "long" "double" ) => "long" "double"
-        { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_LONGDOUBLE); }
+        { 
+        		((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_LONGDOUBLE); 
+        	}
     ;
 
 // 54. <integer_type> ::= <signed_int,55> | <unsigned_int,59>
@@ -1066,14 +1073,22 @@ signed_short_int returns [MPrimitiveDef number = null]
 { 
 	number = new MPrimitiveDefImpl(); 
 }
-    :   "short" { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_SHORT); } ;
+    :   "short" 
+    		{ 
+    			((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_SHORT); 
+    		} 
+    	;
 
 // 57. <signed_long_int> ::= "long"
 signed_long_int returns [MPrimitiveDef number = null]
 { 
 	number = new MPrimitiveDefImpl(); 
 }
-    :   "long" { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_LONG); } ;
+    :   "long" 
+    		{ 
+    			((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_LONG); 
+    		} 
+    	;
 
 // 58. <signed_longlong_int> ::= "long" "long"
 signed_longlong_int returns [MPrimitiveDef number = null]
@@ -1081,7 +1096,10 @@ signed_longlong_int returns [MPrimitiveDef number = null]
 	number = new MPrimitiveDefImpl(); 
 }
     :   "long" "long"
-        { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_LONGLONG); } ;
+        { 
+        		((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_LONGLONG); 
+        	} 
+    ;
 
 // 59. <unsigned_int> ::= <unsigned_short_int,60>
 //     | <signed_long_int,61>
@@ -1098,7 +1116,10 @@ unsigned_short_int returns [MPrimitiveDef number = null]
 	number = new MPrimitiveDefImpl(); 
 }
     :   "unsigned" "short"
-        { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_USHORT); } ;
+        { 
+        		((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_USHORT); 
+        	} 
+    ;
 
 // 61. <unsigned_long_int> ::= "unsigned" "long"
 unsigned_long_int returns [MPrimitiveDef number = null]
@@ -1106,7 +1127,10 @@ unsigned_long_int returns [MPrimitiveDef number = null]
 	number = new MPrimitiveDefImpl(); 
 }
     :   "unsigned" "long"
-        { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_ULONG); } ;
+        { 
+        		((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_ULONG); 
+        	} 
+    ;
 
 // 62. <unsigned_longlong_int> ::= "unsigned" "long" "long"
 unsigned_longlong_int returns [MPrimitiveDef number = null]
@@ -1114,49 +1138,77 @@ unsigned_longlong_int returns [MPrimitiveDef number = null]
 	number = new MPrimitiveDefImpl(); 
 }
     :   "unsigned" "long" "long"
-        { ((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_ULONGLONG); } ;
+        { 
+     		System.out.println(">>>>unsigned long long ");
+        		((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_ULONGLONG); 
+        	} 
+	;
 
 // 63. <char_type> ::= "char"
 char_type returns [MIDLType ch = null]
 { 
 	ch = new MPrimitiveDefImpl(); 
 }
-    :   "char" { ((MPrimitiveDef) ch).setKind(MPrimitiveKind.PK_CHAR); } ;
+    :   "char" 
+    		{ 
+    			((MPrimitiveDef) ch).setKind(MPrimitiveKind.PK_CHAR); 
+    		} 
+    	;
 
 // 64. <wide_char_type> ::= "wchar"
 wide_char_type returns [MIDLType wch = null]
 { 
 	wch = new MPrimitiveDefImpl(); 
 }
-    :   "wchar" { ((MPrimitiveDef) wch).setKind(MPrimitiveKind.PK_WCHAR); } ;
+    :   "wchar" 
+    		{ 
+    			((MPrimitiveDef) wch).setKind(MPrimitiveKind.PK_WCHAR); 
+    		} 
+    	;
 
 // 65. <boolean_type> ::= "boolean"
 boolean_type returns [MIDLType bool = null]
 { 
 	bool = new MPrimitiveDefImpl(); 
 }
-    :   "boolean" { ((MPrimitiveDef) bool).setKind(MPrimitiveKind.PK_BOOLEAN); } ;
+    :   "boolean" 
+    		{ 
+    			((MPrimitiveDef) bool).setKind(MPrimitiveKind.PK_BOOLEAN); 
+    		} 
+    	;
 
 // 66. <octet_type> ::= "octet"
 octet_type returns [MIDLType octet = null]
 { 
 	octet = new MPrimitiveDefImpl(); 
 }
-    :   "octet" { ((MPrimitiveDef) octet).setKind(MPrimitiveKind.PK_OCTET); } ;
+    :   "octet" 
+    		{ 
+    			((MPrimitiveDef) octet).setKind(MPrimitiveKind.PK_OCTET); 
+    		} 
+    	;
 
 // 67. <any_type> ::= "any"
 any_type returns [MIDLType any = null]
 { 
 	any = new MPrimitiveDefImpl(); 
 }
-    :   "any" { ((MPrimitiveDef) any).setKind(MPrimitiveKind.PK_ANY); } ;
+    :   "any" 
+    		{ 
+    			((MPrimitiveDef) any).setKind(MPrimitiveKind.PK_ANY); 
+    		} 
+    	;
 
 // 68. <object_type> ::= "Object"
 object_type returns [MIDLType object = null]
 { 
 	object = new MPrimitiveDefImpl(); 
 }
-    :   "Object" { ((MPrimitiveDef) object).setKind(MPrimitiveKind.PK_OBJREF); } ;
+    :   "Object" 
+    		{ 
+    			((MPrimitiveDef) object).setKind(MPrimitiveKind.PK_OBJREF); 
+    		} 
+    	;
 
 // 69. <struct_type> ::= "struct" <identifier> "{" <member_list,70> "}"
 struct_type returns [MIDLType struct = null]
@@ -1173,7 +1225,10 @@ struct_type returns [MIDLType struct = null]
             helper.getSymbolTable().add(id, (MStructDef) struct);
         }
         LCURLY members = member_list RCURLY
-        { helper.checkSetMembers((MStructDef) struct, members); } ;
+        { 
+        		helper.checkSetMembers((MStructDef) struct, members); 
+        	} 
+    ;
 
 // 70. <member_list> ::= <member,71>+
 member_list returns [List members = null]
@@ -1653,10 +1708,10 @@ fixed_pt_type returns [MIDLType type = null]
     String digits = null;
     String scale = null;
 }
-    :   "fixed" LT scale = positive_int_const
-        { ((MFixedDef) type).setScale(Short.parseShort(scale)); }
-        COMMA digits = positive_int_const
+    :   "fixed" LT digits = positive_int_const
         { ((MFixedDef) type).setDigits(Integer.parseInt(digits)); }
+        COMMA scale = positive_int_const
+        { ((MFixedDef) type).setScale(Short.parseShort(scale)); }
         GT ;
 
 // 97. <fixed_pt_const_type> ::= "fixed"

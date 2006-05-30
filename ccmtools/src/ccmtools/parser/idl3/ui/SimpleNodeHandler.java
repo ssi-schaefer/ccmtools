@@ -1,25 +1,31 @@
 package ccmtools.parser.idl3.ui;
 
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 import ccmtools.CodeGenerator.NodeHandler;
+import ccmtools.Metamodel.BaseIDL.MAliasDef;
+import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MExceptionDef;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.Metamodel.BaseIDL.MOperationDef;
-import ccmtools.Metamodel.BaseIDL.MParameterDef;
+import ccmtools.Metamodel.BaseIDL.MEnumDef;
+import ccmtools.Metamodel.BaseIDL.MFieldDef;
+import ccmtools.Metamodel.BaseIDL.MFixedDef;
+import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
-import ccmtools.Metamodel.ComponentIDL.MComponentDef;
-import ccmtools.Metamodel.ComponentIDL.MHomeDef;
-import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
-import ccmtools.Metamodel.ComponentIDL.MUsesDef;
+import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MWstringDef;
+import ccmtools.utils.Code;
 
 
 public class SimpleNodeHandler
     implements NodeHandler
 {		
+	private static final String TAB = "\t";
+	private static final String NL = "\n";
+	
     /** Java logging */
     private Logger logger;
     
@@ -60,104 +66,235 @@ public class SimpleNodeHandler
         	{
         		return; // included file
         	}
-        	else if (node instanceof MHomeDef)
-    		{
-    			MHomeDef home = (MHomeDef) node;
-    			System.out.println("MHomeDef: " + home.getRepositoryId());
-    		}
-        	else if(node instanceof MComponentDef) 
-        	{
-        		MComponentDef component = (MComponentDef)node;
-        		System.out.println("MComponentDef: " + component.getRepositoryId());
-        	}
-        	else if(node instanceof MInterfaceDef)
-        	{
-        		MInterfaceDef iface = (MInterfaceDef)node;
-        		System.out.println("MInterfaceDef: " + iface.getRepositoryId());
-        	}
-		else if (node instanceof MProvidesDef)
-		{
-			MProvidesDef provides = (MProvidesDef) node;
-			System.out.println("MProvidesDef: " + provides.getIdentifier() + "->" 
-					+ provides.getProvides().getRepositoryId());
-		}
-		else if (node instanceof MUsesDef)
-		{
-			MUsesDef uses = (MUsesDef) node;
-			System.out.println("MUsesDef: " + uses.getIdentifier() + "->" 
-					+ uses.getUses().getRepositoryId());
-		}        
-        	else if(node instanceof MStructDef)
-        	{
-        		MStructDef struct = (MStructDef)node;
-        		System.out.println("MStructDef: " + struct.getIdentifier());
-        	}
-    		
-    		
-        	else if(node instanceof MPrimitiveDef)
-        	{
-        		MPrimitiveDef primitiveType = (MPrimitiveDef)node;
-        		System.out.println("MPrimitiveDef: " +  primitiveType.getKind());
-        	}
         	else if(node instanceof MStringDef)
         	{
         		MStringDef str = (MStringDef)node;
-        		System.out.println("MStringDef: " + str.getBound());
+        		print(str);
         	}
-        	else if(node instanceof MOperationDef)
+        	else if(node instanceof MWstringDef)
         	{
-        		MOperationDef op = (MOperationDef)node;
-        		System.out.println("MOperationDef: " + op.getIdentifier()
-        				+ ":" + op.getIdlType());
+        		MWstringDef str = (MWstringDef)node;
+        		print(str);
         	}
-        	else if(node instanceof MParameterDef)
+        	else if(node instanceof MPrimitiveDef)
         	{
-        		MParameterDef parameter = (MParameterDef)node;
-        		System.out.println("MParameterDef: " + parameter.getIdentifier() 
-        				+ ":" + parameter.getIdlType());
+        		MPrimitiveDef type = (MPrimitiveDef)node;
+        		print(type);
         	}
-        	else if(node instanceof MExceptionDef)
+        	else if(node instanceof MEnumDef)
         	{
-        		MExceptionDef exception = (MExceptionDef)node;
-        		System.out.println("MExceptionDef: " + exception.getIdentifier());
+        		MEnumDef enumeration = (MEnumDef)node;
+        		print(enumeration);
+        	}	
+        	else if(node instanceof MStructDef)
+        	{
+        		MStructDef struct = (MStructDef)node;
+        		print(struct);
         	}
-
-
-//        	else if(node instanceof MEnumDef)
+        	else if(node instanceof MSequenceDef)
+        	{
+        		MSequenceDef sequence = (MSequenceDef)node;
+        		print(sequence);
+        	}
+        	else if(node instanceof MArrayDef)
+        	{
+        		MArrayDef array = (MArrayDef)node;
+        		print(array);
+        	}
+        	else if(node instanceof MAliasDef)
+        	{
+        		// Note that only the MAiliasDef object knows the identifier of these
+        		// CCM model elements, thus, we have to handle MAliasDef nodes here! 
+        		MAliasDef alias = (MAliasDef)node;
+        		print(Code.getRepositoryId(alias) + ":(MAliasDef)");    		
+        		MTyped typed = (MTyped)alias;
+        		MIDLType innerIdlType = typed.getIdlType();			    		
+        		endNode(innerIdlType, scopeId);        		
+        	}
+    		
+//        	else if (node instanceof MHomeDef)
+//    		{
+//    			MHomeDef home = (MHomeDef) node;
+//    			System.out.println("MHomeDef: " + home.getRepositoryId());
+//    		}
+//        	else if(node instanceof MComponentDef) 
 //        	{
-//        		MEnumDef enumeration = (MEnumDef)node;
-//        		System.out.println("MEnumDef: " + Code.getRepositoryId(enumeration));
+//        		MComponentDef component = (MComponentDef)node;
+//        		System.out.println("MComponentDef: " + component.getRepositoryId());
 //        	}
-
+//        	else if(node instanceof MInterfaceDef)
+//        	{
+//        		MInterfaceDef iface = (MInterfaceDef)node;
+//        		System.out.println("MInterfaceDef: " + iface.getRepositoryId());
+//        	}
+//		else if (node instanceof MProvidesDef)
+//		{
+//			MProvidesDef provides = (MProvidesDef) node;
+//			System.out.println("MProvidesDef: " + provides.getIdentifier() + "->" 
+//					+ provides.getProvides().getRepositoryId());
+//		}
+//		else if (node instanceof MUsesDef)
+//		{
+//			MUsesDef uses = (MUsesDef) node;
+//			System.out.println("MUsesDef: " + uses.getIdentifier() + "->" 
+//					+ uses.getUses().getRepositoryId());
+//		}        
+//    		
+//        	else if(node instanceof MOperationDef)
+//        	{
+//        		MOperationDef op = (MOperationDef)node;
+//        		System.out.println("MOperationDef: " + op.getIdentifier()
+//        				+ ":" + op.getIdlType());
+//        	}
+//        	else if(node instanceof MParameterDef)
+//        	{
+//        		MParameterDef parameter = (MParameterDef)node;
+//        		System.out.println("MParameterDef: " + parameter.getIdentifier() 
+//        				+ ":" + parameter.getIdlType());
+//        	}
 //        	else if(node instanceof MExceptionDef)
 //        	{
 //        		MExceptionDef exception = (MExceptionDef)node;
-//        		System.out.println("MExceptionDef: " + Code.getRepositoryId(exception));
+//        		System.out.println("MExceptionDef: " + exception.getIdentifier());
 //        	}
-//        	else if(node instanceof MAliasDef)
-//        	{
-//        		// Note that only the MAiliasDef object knows the identifier of these
-//        		// CCM model elements, thus, we have to handle MAliasDef nodes here! 
-//        		MAliasDef alias = (MAliasDef)node;
-//        		System.out.println("MAliasDef: " + Code.getRepositoryId(alias));    		
-//        		MTyped typed = (MTyped)alias;
-//        		MIDLType innerIdlType = typed.getIdlType();			    		
-//        		if(innerIdlType instanceof MSequenceDef)
-//        		{
-//        			MSequenceDef sequence = (MSequenceDef)innerIdlType;
-//        			System.out.println("MSequenceDef: " + sequence);
-//        		}
-//        		if(innerIdlType instanceof MArrayDef)
-//        		{
-//        			MArrayDef array = (MArrayDef)innerIdlType;
-//        			System.out.println("MArrayDef: " + array);
-//        		}
-//        	}
-
-    
     }
 
 	public void handleNodeData(String fieldType, String fieldId, Object value)
 	{
 	}
+	
+	
+	/*************************************************************************
+	 * Pretty Printer Methods 
+	 *************************************************************************/
+
+	private void print(MPrimitiveDef type)
+	{
+		println(":PrimitiveDef(" + type.getKind().toString() + ")");
+	}
+	
+	private void print(MStringDef in)
+	{
+		if(in.getBound() != null)
+		{
+			println(":StringDef (bound = " + in.getBound() + ")");
+		}
+		else
+		{
+			println(":StringDef");
+		}
+	}
+	
+	private void print(MWstringDef in)
+	{
+		if(in.getBound() != null)
+		{
+			println(":WstringDef (bound = " + in.getBound() + ")");
+		}
+		else
+		{
+			println(":WstringDef");
+		}
+	}
+	
+	private void print(MFixedDef in)
+	{
+		println(":FixedDef <digits = " + in.getDigits() + ", scale = " + in.getScale() + ">");
+	}
+	
+	private void print(MEnumDef in)
+	{
+		println(Code.getRepositoryId(in) + ":EnumDef");
+		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
+		{
+			String member = (String)i.next();
+			println(TAB + member);
+		}	
+	}
+	
+	private void print(MStructDef in)
+	{
+		println(Code.getRepositoryId(in) + ":StructDef");
+		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
+		{
+			MFieldDef member = (MFieldDef)i.next();
+			print(TAB + member.getIdentifier());
+			print(member.getIdlType());
+		}		
+	}
+
+	private void print(MArrayDef in)
+	{
+		println(":ArrayDef");
+		for(int i=0; i < in.getBounds().size(); i++)
+		{
+			Long bound = (Long)in.getBounds().get(i);
+			println(TAB + "bound[" + i + "] = " + bound);
+		}
+	}
+	
+	private void print(MSequenceDef in)
+	{
+		if(in.getBound() == null)
+		{
+			print(":SequenceDef");
+		}
+		else
+		{
+			print(":SequenceDef(bound = " + in.getBound() + ")");
+		}
+		print(in.getIdlType());
+	}
+
+	
+	private void print(MIDLType in)
+	{
+		if(in instanceof MPrimitiveDef)
+		{
+			print((MPrimitiveDef)in);
+		}
+		else if(in instanceof MStringDef)
+		{
+			print((MStringDef)in);
+		}
+		else if(in instanceof MWstringDef)
+		{
+			print((MWstringDef)in);
+		}
+		else if(in instanceof MFixedDef)
+		{
+			print((MFixedDef)in);
+		}		
+		else if(in instanceof MEnumDef)
+		{			
+			print((MEnumDef)in);
+		}
+		else if(in instanceof MSequenceDef)
+		{
+			print((MSequenceDef)in);
+		}
+		else if(in instanceof MStructDef)
+		{			
+			print((MStructDef)in);
+		}
+//		else if(in instanceof MAliasDef)
+//		{
+//			return transform((MAliasDef)in);
+//		}
+		else
+		{
+			throw new RuntimeException("print(MIDLType): unknown idl type " + in);
+		}
+	}
+
+	
+	private void print(String in)
+	{
+		System.out.print(in);
+	}
+	
+	private void println(String in)
+	{
+		System.out.println(in);
+	}	
 }
