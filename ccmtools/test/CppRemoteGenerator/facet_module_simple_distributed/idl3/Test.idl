@@ -1,4 +1,7 @@
 
+#ifndef __world_europe_TEST__
+#define __world_europe_TEST__
+
 #include<IFace.idl>
 
 module world
@@ -17,3 +20,5 @@ module world
   }; // /module europe
 
 }; // /module world
+
+#endif
