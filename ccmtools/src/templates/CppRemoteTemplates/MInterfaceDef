@@ -20,8 +20,7 @@
 
 %(MOperationDefInclude)s
 
-namespace ccm {
-namespace remote {
+%(OpenNamespace)s
 
   //============================================================================
   // Interface adapter from CORBA to C++ 
@@ -70,8 +69,7 @@ namespace remote {
 %(MOperationDefInterfaceAdapterToCorbaHeader)s
   };
 
-} // /namespace remote
-} // /namespace ccm
+%(CloseNamespace)s
 
 #endif // HAVE_MICO
 #endif // __IFACE_%(PreprocIdentifier)s__H__
@@ -97,8 +95,7 @@ namespace remote {
 using namespace std;
 using namespace WX::Utils;
 
-namespace ccm {
-namespace remote {
+%(OpenNamespace)s
 
 //============================================================================
 // Interface adapter from CORBA implementation
@@ -151,6 +148,4 @@ namespace remote {
 
 %(MOperationDefInterfaceAdapterToCorbaImpl)s
 
-} // /namespace remote
-} // /namespace ccm
-
+%(CloseNamespace)s

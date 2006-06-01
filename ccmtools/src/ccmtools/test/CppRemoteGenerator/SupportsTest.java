@@ -26,15 +26,15 @@ public class SupportsTest
     // Supports test cases
     // ------------------------------------------------------------------------
     
-    public void testSupportsSimple()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/supports_simple test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
+//    public void testSupportsSimple()
+//    {
+//        try {
+//            executeCommandLine("make -C " + testDir + "/supports_simple test");
+//        }
+//        catch(Exception e) {
+//            fail();
+//        }
+//    }
     
     public void testSupportsModuleSimple()
     {
@@ -46,15 +46,15 @@ public class SupportsTest
         }
     }
     
-    public void testSupportsException()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/supports_exception test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
+//    public void testSupportsException()
+//    {
+//        try {
+//            executeCommandLine("make -C " + testDir + "/supports_exception test");
+//        }
+//        catch(Exception e) {
+//            fail();
+//        }
+//    }
     
     public void testSupportsModuleException()
     {
@@ -66,15 +66,15 @@ public class SupportsTest
         }
     }
     
-    public void testSupportsTypes()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/supports_types test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
+//    public void testSupportsTypes()
+//    {
+//        try {
+//            executeCommandLine("make -C " + testDir + "/supports_types test");
+//        }
+//        catch(Exception e) {
+//            fail();
+//        }
+//    }
     
     public void testSupportsModuleTypes()
     {

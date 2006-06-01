@@ -26,15 +26,15 @@ public class ComponentTest
     // Attribute test cases
     // ------------------------------------------------------------------------
     
-    public void testAttributeSimple()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/attribute_simple test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
+//    public void testAttributeSimple()
+//    {
+//        try {
+//            executeCommandLine("make -C " + testDir + "/attribute_simple test");
+//        }
+//        catch(Exception e) {
+//            fail();
+//        }
+//    }
     
     public void testAttributeModuleSimple()
     {
@@ -46,15 +46,15 @@ public class ComponentTest
         }
     }
 
-    public void testAttributeTypes()
-    {
-        try {
-            executeCommandLine("make -C " + testDir + "/attribute_types test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
+//    public void testAttributeTypes()
+//    {
+//        try {
+//            executeCommandLine("make -C " + testDir + "/attribute_types test");
+//        }
+//        catch(Exception e) {
+//            fail();
+//        }
+//    }
     
     public void testAttributeModuleTypes()
     {
