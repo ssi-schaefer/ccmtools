@@ -119,7 +119,7 @@ int main (int argc, char *argv[])
         cout << e.info[i].code << ": " 
              << e.info[i].message << endl;
       }
-      LDEBUGNL(CCM_REMOTE, ::ccm::remote::ccmDebug(e)); //!!!
+      LDEBUGNL(CCM_REMOTE, ::world::europe::austria::ccm::remote::ccmDebug(e)); //!!!
     } 
     catch(const CORBA::SystemException& e) {
       cout << "CORBA::SystemException catched!" << endl;
@@ -133,7 +133,7 @@ int main (int argc, char *argv[])
     } 
     catch(const ::world::europe::austria::SuperError& e) {
       cout << "SuperError" << endl;
-      LDEBUGNL(CCM_REMOTE, ::ccm::remote::ccmDebug(e));
+      LDEBUGNL(CCM_REMOTE, ::world::europe::austria::ccm::remote::ccmDebug(e));
     }   
     catch(const CORBA::SystemException& e) {
       cout << "CORBA::SystemException catched!" << endl;
@@ -146,7 +146,7 @@ int main (int argc, char *argv[])
       assert(false);
     } 
     catch(const ::world::europe::austria::FatalError& e) {
-      LDEBUGNL(CCM_REMOTE, ::ccm::remote::ccmDebug(e));
+      LDEBUGNL(CCM_REMOTE, ::world::europe::austria::ccm::remote::ccmDebug(e));
     } 
     catch(const CORBA::SystemException& e) {
       cout << "CORBA::SystemException catched!" << endl;
