@@ -28,6 +28,7 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.UI.Driver;
 import ccmtools.utils.Debug;
+import ccmtools.utils.Text;
 
 public class CppRemoteTestGenerator 
     extends CppRemoteGenerator
@@ -62,10 +63,11 @@ public class CppRemoteTestGenerator
         if(generated_code.trim().equals(""))
             return;
 
-        String node_name = ((MContained) currentNode).getIdentifier();
+      //  String node_name = ((MContained) currentNode).getIdentifier();
+        String namespace = getRemoteNamespace(((MContained) currentNode),Text.MANGLING_SEPARATOR);
         String file_dir = "test";
         String file_name = "_check_"
-                            + handleNamespace("FileNamespace", node_name) 
+                            + namespace.substring(0, namespace.length()-1)
                             + ".cc";
 
         writeFinalizedFile(file_dir, file_name, generated_code);

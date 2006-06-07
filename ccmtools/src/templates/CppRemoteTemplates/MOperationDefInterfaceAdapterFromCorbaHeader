@@ -1,5 +1,5 @@
 
-      virtual %(CORBAType)s %(Identifier)s(%(CORBAParameters)s) 
+      virtual %(CORBAResultType)s %(Identifier)s(%(CORBAParameters)s) 
           %(CORBAExceptions)s;
 
 

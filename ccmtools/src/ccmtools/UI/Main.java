@@ -243,6 +243,7 @@ public class Main
             exitWithErrorStatus(e.getMessage());
         }
         catch(Exception e) {
+        		e.printStackTrace();
             exitWithErrorStatus("Unknown error: " + e.getMessage());
         }
         
