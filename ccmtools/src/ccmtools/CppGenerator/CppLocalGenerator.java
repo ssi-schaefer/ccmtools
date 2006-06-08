@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.CppGenerator.plugin.AnyPluginManager;
@@ -89,7 +90,7 @@ public class CppLocalGenerator
 
     
     public CppLocalGenerator(Driver uiDriver, File outDir) 
-    	throws IOException
+    		throws IOException, CcmtoolsException
     {
         super("CppLocal", uiDriver, outDir, LOCAL_OUTPUT_TEMPLATE_TYPES);
         logger = Logger.getLogger("ccm.generator.cpp.local");

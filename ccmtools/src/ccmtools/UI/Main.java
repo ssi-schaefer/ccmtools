@@ -300,7 +300,7 @@ public class Main
                 handler.setFlag(CodeGenerator.FLAG_APPLICATION_FILES);
             }
         }
-        catch(IOException e) {
+        catch(Exception e) {
             String error = "Failed to create a language generator for " + generatorType 
             + "\n" + e.getMessage();
             logger.info(error);

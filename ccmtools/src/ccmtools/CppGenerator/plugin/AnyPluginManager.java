@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import ccmtools.CcmtoolsException;
 import ccmtools.CppGenerator.CppLocalGenerator;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
@@ -20,20 +21,44 @@ import ccmtools.Metamodel.BaseIDL.MTypedefDef;
  */
 public class AnyPluginManager
 {
-    protected CppLocalGenerator generator = null;
-    protected Map anyMappings = new HashMap();
-
+    private Map anyMappings = new HashMap();
+    
+    // TODO: AnyPluginList should be read from config file        
+    /** List of AnyPlugin classes */
+    private String[] AnyPluginList = 
+    {
+    		"ccmtools.CppGenerator.plugin.PdlAnyPlugin" 
+    	};
+    
     
     public AnyPluginManager(CppLocalGenerator generator)
+    		throws CcmtoolsException
     {
-        this.generator = generator;
-
         registerMapping(new DefaultAnyMapping(generator));
 
-        // TODO: AnyMapping registrations should be triggert by config files !!!!!!!!!!        
-        AnyPlugin plugin = new PdlAnyPlugin();
-        plugin.load();
-        registerMappings(plugin.getAnyMappings());
+        for(int i = 0; i < AnyPluginList.length; i++)
+        {
+        		AnyPlugin plugin = loadAnyPlugin(AnyPluginList[i]);
+        		registerMappings(plugin.getAnyMappings());
+        }
+    }
+
+    
+    protected AnyPlugin loadAnyPlugin(String name)
+    		throws CcmtoolsException
+    {
+    		try
+    		{
+    			System.out.println("> load AnyPlugin " + PdlAnyPlugin.class);		
+    			AnyPlugin plugin = (AnyPlugin)Class.forName(name).newInstance();
+    			plugin.load();
+    			return plugin;
+    		}
+    		catch(Exception e)
+    		{
+    			e.printStackTrace();
+    			throw new CcmtoolsException(e.getMessage());
+    		}
     }
     
     /**

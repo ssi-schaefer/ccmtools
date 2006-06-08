@@ -1,2 +1,0 @@
-PACKAGE_NAME('facet_rename')
-PACKAGE_VERSION('0.0.0')

@@ -13,8 +13,7 @@ public class PdlAnyPlugin
 	implements AnyPlugin
 {
 	public void load()
-	{
-		System.out.println("> load PdlAnyPlugin:");				
+	{				
 	}
 
 	public void unload()

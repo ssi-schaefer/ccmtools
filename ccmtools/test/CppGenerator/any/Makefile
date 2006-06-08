@@ -16,13 +16,9 @@ local: idl3
 	${CCMTOOLS_CMD} c++local-test ${IDL_INCLUDE} -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/Test.idl 
 
 check: 
-	cp impl/Makefile.py ${DEST_DIR}
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "any" -pversion "1.0.0"
 	cp impl/Test_any_test_impl.cc ${DEST_DIR}/component/Test/
 	cp test/_check_ccm_local_component_Test.cc ${DEST_DIR}/component/Test/test
-	touch ${DEST_DIR}/interface/Makefile.py
-	touch ${DEST_DIR}/component/Makefile.py
-	touch ${DEST_DIR}/component/Test/Makefile.py
-	touch ${DEST_DIR}/component/Test/test/Makefile.py
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 

@@ -1,6 +1,14 @@
 RELEASE-0.6.x
 ============================================================================
 
+RELEASE-0.6.8
+----------------------------------------------------------------------------
+o) Refactoring: Local C++ Components
+	Any plugin structure refactored (better support for C structures as
+	interface parameters)
+	
+
+
 RELEASE-0.6.7 (June 8, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: Remote C++ Components
