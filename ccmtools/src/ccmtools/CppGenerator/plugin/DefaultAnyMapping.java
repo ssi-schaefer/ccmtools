@@ -21,23 +21,19 @@ public class DefaultAnyMapping
      * To use some utility methods, a mapping object has to know
      * ist local C++ generator
      **/
+	public static final String DEFAULT_ANY_MAPPING = "WX::Utils::Value";
     protected CppLocalGenerator generator = null;
-    protected String typeName = ""; // this default mapping will be used for many types
     
     public DefaultAnyMapping(CppLocalGenerator cppLocalGenerator) 
     {
         this.generator = cppLocalGenerator;
     }
     
-    public String getTypeName()
+    public String getIdlTypeName()
     {
-        return typeName; 
+        return DEFAULT_ANY_MAPPING; 
     }
     
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
     
     public String getIncludeCode(MAliasDef alias)
     {

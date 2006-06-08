@@ -1,6 +1,21 @@
 RELEASE-0.6.x
 ============================================================================
 
+RELEASE-0.6.7 (June 8, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: Remote C++ Components
+	CORBA Converters will be generated in the same namespaces as their
+	IDL type definitions (*_remote.h Files).
+	For each namespace a new directory will be created too.
+	  
+*) Bugfix: 	Remote C++ Components
+	ccmDebug() methods will be generated in the same namespaces as their
+	IDL type definitions.
+	
+*) Refactoring: CppRemoteGenerator
+	Refactored namespace arithmetics.
+		
+
 RELEASE-0.6.6 (May 19, 2006)
 ----------------------------------------------------------------------------
 *) Feature: Remote Java Components

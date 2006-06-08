@@ -1,0 +1,11 @@
+# PdlAnyMappings
+#
+# This file defines a list of known C struct types for the PdlAnyPlugin.
+# Note that there must be 'typedef any PDL_Person;' and 'typedef any PDL_DTO;'
+# declarations in the corresponding IDL3 files.
+
+# IDL Type : PDL/C Struct Type
+
+PDL_Person : Person
+PDL_DTO    : DTO
+ 

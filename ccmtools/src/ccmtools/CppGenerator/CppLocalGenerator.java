@@ -216,34 +216,45 @@ public class CppLocalGenerator
         MTyped type = (MTyped) alias;
         MIDLType idlType = type.getIdlType();
 
-        if(dataType.equals("TypedefInclude")) {
-            if(anyManager.isTypedefToAny(idlType)) {
+        if(dataType.equals("TypedefInclude")) 
+        {
+            if(anyManager.isTypedefToAny(idlType)) 
+            {
                 dataValue = anyManager.getTypedefInclude(alias);
             }
-            else {
+            else 
+            {
                 dataValue = getLanguageTypeInclude(idlType);
             }
         }
-        else if(dataType.equals("TypedefDefinition")) {
-            if(anyManager.isTypedefToAny(idlType)) {
+        else if(dataType.equals("TypedefDefinition")) 
+        {
+            if(anyManager.isTypedefToAny(idlType)) 
+            {
                 dataValue = anyManager.getTypedefDefinition(alias);
             }
-            else {
+            else 
+            {
                 dataValue = getTypedef(alias);
             }
         }
-        else if(dataType.equals("TypedefDebug")) {
-            if(anyManager.isTypedefToAny(idlType)) {
+        else if(dataType.equals("TypedefDebug")) 
+        {
+            if(anyManager.isTypedefToAny(idlType)) 
+            {
                 dataValue =  anyManager.getTypedefDebug(alias);
             }
-            else if(idlType instanceof MSequenceDef) {
+            else if(idlType instanceof MSequenceDef) 
+            {
                 dataValue =  getDebugSequence(type);
             }
-            else if(idlType instanceof MArrayDef) {
+            else if(idlType instanceof MArrayDef) 
+            {
                 dataValue = getDebugArray(type);
             }
         }
-        else { // fallback to super class
+        else 
+        { // fallback to super class
             dataValue = super.data_MAliasDef(dataType,dataValue);
         }
         logger.fine("leave data_MAliasDef()");

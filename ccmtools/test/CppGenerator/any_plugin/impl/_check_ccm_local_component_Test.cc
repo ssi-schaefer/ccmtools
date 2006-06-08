@@ -51,14 +51,8 @@ int main(int argc, char *argv[])
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    Components::HomeFinder* homeFinder = 
-        HomeFinder::Instance();
-#ifdef CCM_USE_DBC
-    error  = deploy_dbc_ccm_local_component_Test_TestHome("TestHome", false);
-#else
-    error  = deploy_ccm_local_component_Test_TestHome("TestHome");
-#endif
-             
+    Components::HomeFinder* homeFinder =  HomeFinder::Instance();
+    error  = deploy_ccm_local_component_Test_TestHome("TestHome");             
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -98,14 +92,6 @@ int main(int argc, char *argv[])
              << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(ccm::OCL::OclException& e)
-    {
-        cout << "DEPLOYMENT ERROR: 'design by contract' error:" 
-             << endl << e.what();
-        error = -1;
-    }
-#endif
     catch ( ... )  {
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         error = -1;
@@ -149,7 +135,7 @@ int main(int argc, char *argv[])
 
 	// Note: we mix global and ccm::local structures and use them
 	// as parameter for a facet method call.
-	ccm::local::Person p2;
+	ccm::local::PDL_Person p2;
 	p2.id = person2.id;
         p2.firstName = person2.firstName;
         p2.lastName = person2.lastName;
@@ -204,13 +190,6 @@ int main(int argc, char *argv[])
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(ccm::OCL::OclException& e)
-    {
-        cout << "TEST: 'design by contract' error:" << endl << e.what();
-        error = -1;
-    }
-#endif
     catch(...) {
         cout << "TEST: there is something wrong!" << endl;
         error = -1;

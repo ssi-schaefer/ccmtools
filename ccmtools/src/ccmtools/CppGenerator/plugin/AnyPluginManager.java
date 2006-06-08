@@ -1,11 +1,5 @@
 package ccmtools.CppGenerator.plugin;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +11,6 @@ import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
-import ccmtools.utils.CcmtoolsProperties;
 
 /**
  * This manager class hides all details of the any plugin mechanism from  
@@ -28,19 +21,19 @@ import ccmtools.utils.CcmtoolsProperties;
 public class AnyPluginManager
 {
     protected CppLocalGenerator generator = null;
-    protected Map anyMappings = null;
+    protected Map anyMappings = new HashMap();
+
     
     public AnyPluginManager(CppLocalGenerator generator)
     {
         this.generator = generator;
-        anyMappings = new HashMap();       
-                       
-        /**
-         *  We fill all typedef to any mappings into this map from where
-         *  the code generator can find (and use) such a predefined mapping.
-         **/
-        registerSimpleMappings("SimpleTypes");
-        registerTemplateMappings();
+
+        registerMapping(new DefaultAnyMapping(generator));
+
+        // TODO: AnyMapping registrations should be triggert by config files !!!!!!!!!!        
+        AnyPlugin plugin = new PdlAnyPlugin();
+        plugin.load();
+        registerMappings(plugin.getAnyMappings());
     }
     
     /**
@@ -53,9 +46,11 @@ public class AnyPluginManager
      */
     public boolean isTypedefToAny(MIDLType idlType)
     {
-        if(idlType instanceof MPrimitiveDef) {
+        if(idlType instanceof MPrimitiveDef) 
+        {
             MPrimitiveDef primitive = (MPrimitiveDef)idlType;
-            if(primitive.getKind() == MPrimitiveKind.PK_ANY) {
+            if(primitive.getKind() == MPrimitiveKind.PK_ANY) 
+            {
                 return true;
             }
         }  
@@ -90,78 +85,35 @@ public class AnyPluginManager
     
     // Helper methods to manage mapping instances
 
+    
+    public void registerMapping(AnyMapping mapping)
+    {
+    		if(mapping.getIdlTypeName() != null
+    				&& mapping.getIdlTypeName().length() > 0)
+    		{
+    			System.out.println("    register any to " + mapping.getIdlTypeName() + " mapping");
+    			anyMappings.put(mapping.getIdlTypeName(), mapping);
+    		}
+    }
+    
+    public void registerMappings(List mappingList)
+    {
+    	  for(Iterator i = mappingList.iterator(); i.hasNext();) 
+      {
+    		  registerMapping((AnyMapping)i.next());
+      }
+    }
+    
     protected AnyMapping findMapping(String identifier)
     {
-        if(anyMappings.containsKey(identifier)) {
-            return (AnyMapping) anyMappings.get(identifier);
+        if(anyMappings.containsKey(identifier)) 
+        {
+            return (AnyMapping)anyMappings.get(identifier);
         }
-        else {
+        else 
+        {
             // Use default mapping
-            return new DefaultAnyMapping(generator);
+            return (AnyMapping)anyMappings.get(DefaultAnyMapping.DEFAULT_ANY_MAPPING);
         }
-    }
-    
-    
-    protected void registerMapping(AnyMapping mapping)
-    {
-        anyMappings.put(mapping.getTypeName(), mapping);
-    }
-        
-    
-    /**
-     * Load a list of simple type names from a file, instantiate a SimpleAnyMapping object
-     * for each type and register each of these mapping objects.
-     * 
-     * @param templateName Name of the file containing the simple type names.
-     */
-    protected void registerSimpleMappings(String templateName) 
-    {
-        List list = loadSimpleTypes();
-        for(Iterator i = list.iterator(); i.hasNext();) {
-            String typeName = (String) i.next();
-            registerMapping(new SimpleAnyMapping(typeName));
-            System.out.println("   - register any to " + typeName + " mapping");
-        }
-    }
-
-    /**
-     * Load all any mapping templates of the given directory, instantiate a 
-     * SimpleAnyMapping object for each template and egister each of these mapping objects.
-     */
-    protected void registerTemplateMappings()
-    {
-        File dir = new File(CcmtoolsProperties.Instance().get("ccmtools.dir.plugin.any.templates"));
-        System.out.println("> load any template plugins from: " + dir);     
-        
-        // TODO
-        
-    }
-    
-    protected List loadSimpleTypes()
-    {
-        File file = new File(CcmtoolsProperties.Instance().get("ccmtools.dir.plugin.any.types"));
-        System.out.println("> load any type plugins from: " + file);     
-        List list = new ArrayList();
-        
-        if(file.exists()) {
-            try {
-                BufferedReader in = new BufferedReader(new FileReader(file));
-                String line;
-                while((line = in.readLine()) != null) {
-                    String typeName = line.trim();
-                    if(typeName.length() > 0) {
-                        list.add(typeName.trim());
-                    }
-                }
-                in.close();
-            }
-            catch(FileNotFoundException e) {
-                // TODO: log e.printStackTrace();
-            }
-            catch(IOException e) {
-                // TODO: log e.printStackTrace();
-            }
-        }
-        return list;
     }
 }
