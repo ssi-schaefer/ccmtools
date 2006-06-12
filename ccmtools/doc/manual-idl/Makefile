@@ -2,7 +2,8 @@ DOCUMENT_NAME=ccmtools_manual_idl
 PARTS=\
   Titlepage.tex \
   Introduction.tex \
-  Idl.tex
+  Idl.tex \
+  IdlExamples.tex
 
 FIGURES= \
 
