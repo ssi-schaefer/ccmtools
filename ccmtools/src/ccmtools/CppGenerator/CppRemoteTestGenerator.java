@@ -2,7 +2,11 @@
  * CCM Tools : C++ Code Generator Library Egon Teiniker
  * <egon.teiniker@tugraz.at> copyright (c) 2002, 2003 Salomon Automation
  * 
+<<<<<<< CppRemoteTestGenerator.java
  * $Id$
+=======
+ * $Id$
+>>>>>>> 1.3.6.1
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -76,97 +80,4 @@ public class CppRemoteTestGenerator
         // directory - needed by Confix
         writeFinalizedFile(file_dir, "Makefile.py", "");
     }
-
-    /** *********************************************************************** */
-
-//    protected Map getTwoStepOperationVariables(MOperationDef operation,
-//                                               MContained container)
-//    {
-//        String lang_type = getLanguageType(operation);
-//        Map vars = new Hashtable();
-//
-//        vars.put("Object", container.getIdentifier());
-//        vars.put("Identifier", operation.getIdentifier());
-//        vars.put("LanguageType", lang_type);
-//        vars.put("MExceptionDefThrows", getOperationExcepts(operation));
-//        vars.put("MParameterDefAll", getOperationParams(operation));
-//        vars.put("MParameterDefName", getOperationParamNames(operation));
-//
-//        if(!lang_type.equals("void"))
-//            vars.put("Return", "return ");
-//        else
-//            vars.put("Return", "");
-//
-//        return vars;
-//    }
-
-//    protected String data_MComponentDef(String data_type, String data_value)
-//    {
-//        MComponentDef component = (MComponentDef) currentNode;
-//        MHomeDef home = null;
-//
-//        try {
-//            home = (MHomeDef) component.getHomes().iterator().next();
-//            if(home == null)
-//                throw new RuntimeException();
-//        }
-//        catch(Exception e) {
-//            throw new RuntimeException("Component '"
-//                    + component.getIdentifier()
-//                    + "' does not have exactly one home.");
-//        }
-//        List HomeScope = getScope((MContained) home);
-//        List ComponentScope = getScope((MContained) component);
-//
-//        if(data_type.equals("HomeType")) {
-//            return home.getIdentifier();
-//        }
-//        else if(data_type.equals("IdlHomeType")) {
-//            if(HomeScope.size() > 0)
-//                return getCorbaStubsNamespace("::") + join("::", HomeScope)
-//                        + "::" + home.getIdentifier();
-//            else
-//                return getCorbaStubsNamespace("::") + home.getIdentifier();
-//        }
-//        else if(data_type.equals("Identifier")) {
-//            return component.getIdentifier();
-//        }
-//        else if(data_type.equals("IdlIdentifier")) {
-//            if(ComponentScope.size() > 0)
-//                return getCorbaStubsNamespace("::")
-//                        + join("::", ComponentScope) + "::"
-//                        + component.getIdentifier();
-//            else
-//                return getCorbaStubsNamespace("::") + component.getIdentifier();
-//        }
-//        else if(data_type.endsWith("AbsoluteRemoteHomeName")) {
-//            return getRemoteName(home,"_","");
-//        }
-//        else if(data_type.endsWith("AbsoluteLocalHomeName")) {
-//            return getLocalName(home,"_");
-//        }
-//        return super.data_MComponentDef(data_type, data_value);
-//    }
-
-//    protected String data_MProvidesDef(String data_type, String data_value)
-//    {
-//        MInterfaceDef iface = ((MProvidesDef) currentNode).getProvides();
-//        MComponentDef component = ((MProvidesDef) currentNode).getComponent();
-//        List scope = getScope((MContained) iface);
-//
-//        if(data_type.equals("IdlProvidesType")) {
-//            if(scope.size() > 0)
-//                return getCorbaStubsNamespace("::") + join("::", scope) + "::"
-//                        + iface.getIdentifier();
-//            else
-//                return getCorbaStubsNamespace("::") + iface.getIdentifier();
-//        }
-//        else if(data_type.equals("ProvidesType")) {
-//            return iface.getIdentifier();
-//        }
-//        else if(data_type.equals("ComponentType")) {
-//            return component.getIdentifier();
-//        }
-//        return super.data_MProvidesDef(data_type, data_value);
-//    }
 }
