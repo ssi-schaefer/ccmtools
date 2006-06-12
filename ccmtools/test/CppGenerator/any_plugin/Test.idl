@@ -1,16 +1,16 @@
-
 /**
  * These types already exist as simle C structs. 
- * Thus, we define them as known any types (see impl/AnyMappingTypes
- * impl/Person.h and impl/DTO.h)
+ * Thus, we define them as known any types.
  */
-typedef any DTO;
-typedef any Person;
+typedef any PDL_DTO;   // see impl/PdlAnyMappings.ccmany
+typedef any PDL_Person; // see impl/PdlAnyMappings.ccmany
+typedef any Other;
 
 interface IFace
 {
-  Person op1(in Person p1, inout Person p2, out Person p3);
-  DTO    op2(in DTO p1, inout DTO p2, out DTO p3);
+  PDL_Person op1(in PDL_Person p1, inout PDL_Person p2, out PDL_Person p3);
+  PDL_DTO    op2(in PDL_DTO p1, inout PDL_DTO p2, out PDL_DTO p3);
+  Other      op3(in Other p1, inout Other p2, out Other p3);
 };
 
 component Test

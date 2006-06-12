@@ -37,11 +37,11 @@ facet_impl::~facet_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-ccm::local::Person
+ccm::local::PDL_Person
 facet_impl::op1(
-        const ccm::local::Person& p1,
-        ccm::local::Person& p2,
-        ccm::local::Person& p3)
+        const ccm::local::PDL_Person& p1,
+        ccm::local::PDL_Person& p2,
+        ccm::local::PDL_Person& p3)
 throw(::ccm::local::Components::CCMException)
 {
   cout << "p1.id        = " << p1.id << endl;
@@ -60,7 +60,7 @@ throw(::ccm::local::Components::CCMException)
   p2.firstName = p1.firstName;
   p2.lastName = p1.lastName;
 
-  ccm::local::Person result;
+  ccm::local::PDL_Person result;
   result.id = p1.id;
   result.firstName = p1.firstName;
   result.lastName = p1.lastName;
@@ -68,11 +68,11 @@ throw(::ccm::local::Components::CCMException)
   return result;
 }
 
-ccm::local::DTO
+ccm::local::PDL_DTO
 facet_impl::op2(
-        const ccm::local::DTO& p1,
-        ccm::local::DTO& p2,
-        ccm::local::DTO& p3)
+        const ccm::local::PDL_DTO& p1,
+        ccm::local::PDL_DTO& p2,
+        ccm::local::PDL_DTO& p3)
 throw(::ccm::local::Components::CCMException)
 {
   cout << "p1.id               = " << p1.id << endl;
@@ -91,11 +91,21 @@ throw(::ccm::local::Components::CCMException)
   p2.id = p1.id;
   p2.person = p1.person;
 
-  ccm::local::DTO result;
+  ccm::local::PDL_DTO result;
   result.id = p1.id;
   result.person = p1.person;
   
   return result;
+}
+
+ccm::local::Other 
+facet_impl::op3(
+        const ccm::local::Other& p1,
+        ccm::local::Other& p2,
+        ccm::local::Other& p3) 
+throw(::ccm::local::Components::CCMException)
+{
+
 }
 
 } // /namespace Test

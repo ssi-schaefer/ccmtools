@@ -1,8 +1,6 @@
 package ccmtools.CppGenerator.plugin;
 
-import ccmtools.CppGenerator.CppLocalGenerator;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
-import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 
 
@@ -11,34 +9,17 @@ import ccmtools.Metamodel.BaseIDL.MTypedefDef;
  * for local C++ components.
  * The debug method for WX::Utils::Value objects is already defined
  * in the cpp-environment library.
- * 
- * @author eteinik
  */
 public class DefaultAnyMapping
     implements AnyMapping
 {
-    /** 
-     * To use some utility methods, a mapping object has to know
-     * ist local C++ generator
-     **/
-    protected CppLocalGenerator generator = null;
-    protected String typeName = ""; // this default mapping will be used for many types
+	public static final String DEFAULT_ANY_MAPPING = "WX::Utils::Value";
     
-    public DefaultAnyMapping(CppLocalGenerator cppLocalGenerator) 
+    public String getIdlTypeName()
     {
-        this.generator = cppLocalGenerator;
+        return DEFAULT_ANY_MAPPING; 
     }
-    
-    public String getTypeName()
-    {
-        return typeName; 
-    }
-    
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
-    
+        
     public String getIncludeCode(MAliasDef alias)
     {
         StringBuffer code = new StringBuffer();
@@ -49,10 +30,9 @@ public class DefaultAnyMapping
     public String getDefinitionCode(MAliasDef alias)
     {
         MTypedefDef typedef = (MTypedefDef) alias;
-        MTyped type = (MTyped) alias;
         StringBuffer code = new StringBuffer();
         code.append("typedef ");
-        code.append(generator.getLanguageType(type));
+        code.append("WX::Utils::SmartPtr<WX::Utils::Value>");
         code.append(" ");
         code.append(typedef.getIdentifier());
         code.append(";\n");
