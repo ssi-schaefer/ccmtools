@@ -499,21 +499,23 @@ public class CppLocalGenerator
         if(idlType instanceof MAliasDef) {
             MTyped type = (MTyped) idlType;
             MIDLType innerIdlType = type.getIdlType();
-            if(innerIdlType instanceof MPrimitiveDef 
+            if((innerIdlType instanceof MPrimitiveDef && !anyManager.isTypedefToAny(innerIdlType))
                     || innerIdlType instanceof MStringDef
-                    || innerIdlType instanceof MWstringDef) {
+                    || innerIdlType instanceof MWstringDef) 
+            {
                 code.append(Text.join(Text.SCOPE_SEPARATOR, baseNamespace)); 
             }
-            else {
-                code.append(getLocalCppNamespace((MContained)idlType,
-                                                 Text.SCOPE_SEPARATOR));
+            else 
+            {
+                code.append(getLocalCppNamespace((MContained)idlType, Text.SCOPE_SEPARATOR));
             }
         }
-        else if(idlType instanceof MContained) {
-            code.append(getLocalCppNamespace((MContained)idlType, 
-                                             Text.SCOPE_SEPARATOR));
+        else if(idlType instanceof MContained) 
+        {
+            code.append(getLocalCppNamespace((MContained)idlType, Text.SCOPE_SEPARATOR));
         }
-        else {
+        else 
+        {
             code.append(Text.join(Text.SCOPE_SEPARATOR, baseNamespace)); 
         }
         logger.fine("leave getDebugNamespace()");
