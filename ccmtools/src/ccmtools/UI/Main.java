@@ -244,7 +244,7 @@ public class Main
         }
         catch(Exception e) {
         		e.printStackTrace();
-            exitWithErrorStatus("Unknown error: " + e.getMessage());
+            exitWithErrorStatus("Error: " + e.getMessage());
         }
         
         logger.fine("TemplateLoader time: " + TemplateLoader.getInstance().getTimerMillis());
@@ -443,7 +443,21 @@ public class Main
             CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types",
                                               f.toString());            
         }
+        checkAnyTypesFile(CcmtoolsProperties.Instance().get("ccmtools.dir.plugin.any.types"));
         logger.fine("leave setAnyTypesFile()");
+    }
+    
+    private static void checkAnyTypesFile(String path)
+    {
+    		File file = new File(path);
+    		if(file.exists())
+    		{
+    			return;
+    		}
+    		else
+    		{
+    			throw new RuntimeException("Any-Types file (" + path + " does not exist!");
+    		}
     }
     
     private static void printVersion()
