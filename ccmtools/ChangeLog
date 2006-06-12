@@ -5,13 +5,23 @@ HEAD
 BRANCH-0.6.x
 ============================================================================
 
+RELEASE-0.6.9 (June 12, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: Local C++ Components Any Plugin
+	The c++local generator has to terminate if the given --anytypes=*.ccmany 
+	file does not exist.
+	
+*) Bugfix: Local C++ Components Any Plugin
+    The namespace for ccmDebug() methods that are related to any typedefs
+    must be the same as defined by the MAliasDef model element.
+
+
 RELEASE-0.6.8 (June 9, 2006)
 ----------------------------------------------------------------------------
 *) Refactoring: Local C++ Components
 	Any plugin structure refactored (better support for C structures as
 	interface parameters)
 	
-
 
 RELEASE-0.6.7 (June 8, 2006)
 ----------------------------------------------------------------------------
