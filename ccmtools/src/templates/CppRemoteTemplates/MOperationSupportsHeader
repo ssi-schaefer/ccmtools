@@ -1,2 +1,2 @@
-       %(CORBAType)s %(Identifier)s ( %(MParameterDefCORBA)s ) %(MExceptionDefCORBA)s;
+       %(CORBAResultType)s %(Identifier)s (%(MParameterDefCORBA)s) %(MExceptionDefCORBA)s;
 

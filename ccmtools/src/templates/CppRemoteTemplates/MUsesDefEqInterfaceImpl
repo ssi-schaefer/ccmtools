@@ -10,7 +10,7 @@ void
     SmartPtr<%(UsesType)s> %(Identifier)s_adapter = 
         SmartPtr<%(UsesType)s>(
             dynamic_cast<%(UsesType)s*>
-	            (new ::ccm::remote::%(InterfaceType)sAdapterToCorba(
+	            (new %(UsesConvertNamespace)s%(InterfaceType)sAdapterToCorba(
 	                 reference_for_receptacle_%(Identifier)s)));
 
     try {

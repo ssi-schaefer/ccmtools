@@ -23,8 +23,7 @@
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
 #include <%(LocalIncludeNamespace)s/%(Identifier)s.h>
 
-namespace ccm {
-namespace remote {
+%(OpenNamespace)s
 
 void 
 convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out);
@@ -47,8 +46,7 @@ ccmDebug(const %(CorbaStubName)s& in, int indent = 0)
 }
 #endif // WXDEBUG 
 
-} // /namespace remote
-} // /namespace ccm
+%(CloseNamespace)s
 
 #endif // HAVE_MICO
 #endif // __ENUM_CONVERTER_%(PreprocIdentifier)s__H__
@@ -73,8 +71,7 @@ ccmDebug(const %(CorbaStubName)s& in, int indent = 0)
 #include <ccm/remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
-namespace ccm {
-namespace remote {
+%(OpenNamespace)s
 
 using namespace std;
 
@@ -99,8 +96,7 @@ convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out)
     }
 } 
 
-} // /namespace remote
-} // /namespace ccm
+%(CloseNamespace)s
 
 #endif // HAVE_MICO
 

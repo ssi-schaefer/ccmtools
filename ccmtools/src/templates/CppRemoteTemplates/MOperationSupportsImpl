@@ -1,4 +1,4 @@
-%(CORBAType)s 
+%(CORBAResultType)s 
 %(Object)s_impl::%(Identifier)s (%(MParameterDefCORBA)s)
     %(MExceptionDefCORBA)s
 {
