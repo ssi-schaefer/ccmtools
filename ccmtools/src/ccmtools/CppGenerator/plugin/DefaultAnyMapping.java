@@ -1,6 +1,7 @@
 package ccmtools.CppGenerator.plugin;
 
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
+import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 
 
@@ -14,6 +15,7 @@ public class DefaultAnyMapping
     implements AnyMapping
 {
 	public static final String DEFAULT_ANY_MAPPING = "WX::Utils::Value";
+    private static final String TAB = "    ";
     
     public String getIdlTypeName()
     {
@@ -43,8 +45,16 @@ public class DefaultAnyMapping
     {
         StringBuffer code = new StringBuffer();
         code.append("#ifdef WXDEBUG\n");
-        code.append("// use ccmDebug(const WX::Utils::SmartPtr<WX::Utils::Value>&)\n");
-        code.append("// defined in ccm/CCM_Local/utils/Debug.h\n");
+        code.append("inline\n");
+        code.append("std::string\n");
+        code.append("ccmDebug(const ").append(alias.getIdentifier()).append("& in, int indent = 0)\n");
+        code.append("{\n");
+        code.append(TAB).append("// TODO: use ccmDebug(const WX::Utils::SmartPtr<WX::Utils::Value>&)\n");
+        code.append(TAB).append("// defined in ccm/CCM_Local/utils/Debug.h\n");
+        code.append(TAB).append("std::ostringstream os;\n");
+        code.append(TAB).append("os << \"").append(alias.getIdentifier()).append(" (alias WX::Utils::Value)\";\n");
+        code.append(TAB).append("return os.str();\n");
+        code.append("}\n");        
         code.append("#endif\n");
         return code.toString();
     }

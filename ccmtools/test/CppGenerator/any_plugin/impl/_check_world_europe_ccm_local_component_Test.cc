@@ -26,14 +26,8 @@
 #include <ccm/local/Components/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-
-#ifdef CCM_USE_DBC
-#include <ccm/local/component/Test/Test_dbc.h>
-#include <ccm/local/component/Test/TestHome_dbc.h>
-#else
-#include <ccm/local/component/Test/Test_gen.h>
-#include <ccm/local/component/Test/TestHome_gen.h>
-#endif
+#include <world/europe/ccm/local/component/Test/Test_gen.h>
+#include <world/europe/ccm/local/component/Test/TestHome_gen.h>
 
 using namespace std;
 using namespace WX::Utils;
@@ -43,8 +37,8 @@ int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr< ccm::local::component::Test::Test> myTest;
-    SmartPtr< ccm::local::IFace> facet;
+    SmartPtr< world::europe::ccm::local::component::Test::Test> myTest;
+    SmartPtr< world::europe::ccm::local::IFace> facet;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
@@ -52,7 +46,7 @@ int main(int argc, char *argv[])
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
     Components::HomeFinder* homeFinder =  HomeFinder::Instance();
-    error  = deploy_ccm_local_component_Test_TestHome("TestHome");             
+    error  = deploy_world_europe_ccm_local_component_Test_TestHome("TestHome");             
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -68,8 +62,8 @@ int main(int argc, char *argv[])
     // forces components to run the ccm_set_session_context() and ccm_activate() 
     // callback methods.
     try {
-        SmartPtr< ccm::local::component::Test::TestHome> myTestHome(
-            dynamic_cast< ccm::local::component::Test::TestHome*>
+        SmartPtr< world::europe::ccm::local::component::Test::TestHome> myTestHome(
+            dynamic_cast< world::europe::ccm::local::component::Test::TestHome*>
             (homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
@@ -135,7 +129,7 @@ int main(int argc, char *argv[])
 
 	// Note: we mix global and ccm::local structures and use them
 	// as parameter for a facet method call.
-	ccm::local::PDL_Person p2;
+	world::ccm::local::PDL_Person p2;
 	p2.id = person2.id;
         p2.firstName = person2.firstName;
         p2.lastName = person2.lastName;
@@ -218,7 +212,7 @@ int main(int argc, char *argv[])
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    error += undeploy_ccm_local_component_Test_TestHome("TestHome");
+    error += undeploy_world_europe_ccm_local_component_Test_TestHome("TestHome");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;

@@ -20,13 +20,15 @@
 using namespace std;
 using namespace WX::Utils;
 
+namespace world {
+namespace europe {
 namespace ccm {
 namespace local {
 namespace component {
 namespace Test {
 
 facet_impl::facet_impl(
-    ccm::local::component::Test::CCM_Test_impl* component_impl)
+    world::europe::ccm::local::component::Test::CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
@@ -37,11 +39,11 @@ facet_impl::~facet_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-ccm::local::PDL_Person
+world::ccm::local::PDL_Person
 facet_impl::op1(
-        const ccm::local::PDL_Person& p1,
-        ccm::local::PDL_Person& p2,
-        ccm::local::PDL_Person& p3)
+        const world::ccm::local::PDL_Person& p1,
+        world::ccm::local::PDL_Person& p2,
+        world::ccm::local::PDL_Person& p3)
 throw(::ccm::local::Components::CCMException)
 {
   cout << "p1.id        = " << p1.id << endl;
@@ -60,7 +62,7 @@ throw(::ccm::local::Components::CCMException)
   p2.firstName = p1.firstName;
   p2.lastName = p1.lastName;
 
-  ccm::local::PDL_Person result;
+  world::ccm::local::PDL_Person result;
   result.id = p1.id;
   result.firstName = p1.firstName;
   result.lastName = p1.lastName;
@@ -68,11 +70,11 @@ throw(::ccm::local::Components::CCMException)
   return result;
 }
 
-ccm::local::PDL_DTO
+world::ccm::local::PDL_DTO
 facet_impl::op2(
-        const ccm::local::PDL_DTO& p1,
-        ccm::local::PDL_DTO& p2,
-        ccm::local::PDL_DTO& p3)
+        const world::ccm::local::PDL_DTO& p1,
+        world::ccm::local::PDL_DTO& p2,
+        world::ccm::local::PDL_DTO& p3)
 throw(::ccm::local::Components::CCMException)
 {
   cout << "p1.id               = " << p1.id << endl;
@@ -91,18 +93,18 @@ throw(::ccm::local::Components::CCMException)
   p2.id = p1.id;
   p2.person = p1.person;
 
-  ccm::local::PDL_DTO result;
+  world::ccm::local::PDL_DTO result;
   result.id = p1.id;
   result.person = p1.person;
   
   return result;
 }
 
-ccm::local::Other 
+world::ccm::local::Other 
 facet_impl::op3(
-        const ccm::local::Other& p1,
-        ccm::local::Other& p2,
-        ccm::local::Other& p3) 
+        const world::ccm::local::Other& p1,
+        world::ccm::local::Other& p2,
+        world::ccm::local::Other& p3) 
 throw(::ccm::local::Components::CCMException)
 {
 
@@ -112,3 +114,5 @@ throw(::ccm::local::Components::CCMException)
 } // /namespace component
 } // /namespace local
 } // /namespace ccm
+} // /namespace europe
+} // /namespace world
