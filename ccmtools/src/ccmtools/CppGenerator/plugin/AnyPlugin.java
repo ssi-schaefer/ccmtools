@@ -1,15 +1,11 @@
 package ccmtools.CppGenerator.plugin;
 
-import java.util.List;
+import ccmtools.Metamodel.BaseIDL.MAliasDef;
 
 public interface AnyPlugin
 {
 	void load();
 	void unload();
 	
-	/**
-	 * Generate a list of AnyMapping objects which can be registered
-	 * to the AnyPluginManager.
-	 */
-	List getAnyMappings();
+	String generateCode(MAliasDef alias, String tag);
 }

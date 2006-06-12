@@ -1,9 +1,13 @@
-RELEASE-0.6.x
+HEAD
 ============================================================================
 
-RELEASE-0.6.8
+
+BRANCH-0.6.x
+============================================================================
+
+RELEASE-0.6.8 (June 9, 2006)
 ----------------------------------------------------------------------------
-o) Refactoring: Local C++ Components
+*) Refactoring: Local C++ Components
 	Any plugin structure refactored (better support for C structures as
 	interface parameters)
 	

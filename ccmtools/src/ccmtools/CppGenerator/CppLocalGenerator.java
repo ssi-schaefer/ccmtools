@@ -97,7 +97,7 @@ public class CppLocalGenerator
         logger.fine("enter CppLocalGenerator()");
         baseNamespace.add("ccm");
         baseNamespace.add("local");
-        anyManager = new AnyPluginManager(this);
+        anyManager = new AnyPluginManager();
         logger.fine("leave CppLocalGenerator()");
     }
 
@@ -221,7 +221,7 @@ public class CppLocalGenerator
         {
             if(anyManager.isTypedefToAny(idlType)) 
             {
-                dataValue = anyManager.getTypedefInclude(alias);
+            		dataValue = anyManager.generateCode(alias, dataType);
             }
             else 
             {
@@ -232,7 +232,7 @@ public class CppLocalGenerator
         {
             if(anyManager.isTypedefToAny(idlType)) 
             {
-                dataValue = anyManager.getTypedefDefinition(alias);
+            			dataValue = anyManager.generateCode(alias, dataType);
             }
             else 
             {
@@ -243,7 +243,7 @@ public class CppLocalGenerator
         {
             if(anyManager.isTypedefToAny(idlType)) 
             {
-                dataValue =  anyManager.getTypedefDebug(alias);
+            		dataValue = anyManager.generateCode(alias, dataType);
             }
             else if(idlType instanceof MSequenceDef) 
             {
@@ -378,8 +378,6 @@ public class CppLocalGenerator
     protected String data_MConstantDef(String dataType, String dataValue)
     {
         MConstantDef constant = (MConstantDef) currentNode;
-        
-//        System.out.println("CCCCCC> " + constant);
         
         return dataValue;
     }

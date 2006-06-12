@@ -4,16 +4,26 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import ccmtools.Metamodel.BaseIDL.MAliasDef;
+import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 import ccmtools.utils.CcmtoolsProperties;
 
 public class PdlAnyPlugin
 	implements AnyPlugin
 {
+	private AnyMapping defaultMapping = new DefaultAnyMapping();	
+
+	private Map anyMappings = new HashMap();
+	
+	
 	public void load()
-	{				
+	{
+		createAnyMappings();
 	}
 
 	public void unload()
@@ -21,27 +31,77 @@ public class PdlAnyPlugin
 	}
 	
 	
+	public String generateCode(MAliasDef alias, String tag)
+	{
+		String identifier = ((MTypedefDef)alias).getIdentifier();
+		String code;
+		if(tag == null || tag.length() == 0)
+		{
+			code = "";
+		}
+		else if(tag.equals("TypedefInclude"))
+		{
+			code = findMapping(identifier).getIncludeCode(alias);
+		}
+		else if(tag.equals("TypedefDefinition"))
+		{
+			code = findMapping(identifier).getDefinitionCode(alias);
+		}
+		else if(tag.equals("TypedefDebug"))
+		{
+			code = findMapping(identifier).getDebugCode(alias);
+		}
+		else
+		{
+			throw new RuntimeException("Unknown Tag: " + tag + " !");
+		}		
+		return code;
+	}
+	
+	
+	// Utility methods -------------------------------------------------------
+	
+    private AnyMapping findMapping(String identifier)
+    {
+        if(anyMappings.containsKey(identifier)) 
+        {
+            return (AnyMapping)anyMappings.get(identifier);
+        }
+        else 
+        {            
+            return defaultMapping;
+        }
+    }
+
+	private void registerMapping(AnyMapping mapping)
+	{
+		if (mapping.getIdlTypeName() != null && mapping.getIdlTypeName().length() > 0)
+		{
+			System.out.println("    register any to " + mapping.getIdlTypeName() + " mapping");
+			anyMappings.put(mapping.getIdlTypeName(), mapping);
+		}
+	}
+
 	/**
      * Load a list of PDL types from a file and instantiate a PdlAnyMapping object
      * for each type.
      */ 
-    public List getAnyMappings()
+    private void createAnyMappings()
     {
    		File file = new File(CcmtoolsProperties.Instance().get("ccmtools.dir.plugin.any.types"));
-        System.out.println("> load any mappings from: " + file);     
-        List mappingList = new ArrayList();
         List pdlTypeList = loadPdlTypes(file);
         for(Iterator i = pdlTypeList.iterator(); i.hasNext();) 
         {
             PdlType type = (PdlType)i.next();
-            mappingList.add(new PdlAnyMapping(type));            
+            registerMapping(new PdlAnyMapping(type));            
         }	
-        return mappingList;
     }
     
-    protected List loadPdlTypes(File file)
+    private List loadPdlTypes(File file)
     {
-	    	List list = new ArrayList();
+        System.out.println("> load any mappings from: " + file);     
+
+    		List list = new ArrayList();
     		try 
     		{
     			if(file.exists()) 

@@ -79,7 +79,7 @@
 	<target name="compile-uml_parser" depends="generate-uml_parser"
 		description="Compile the uml_parser package.">
 	 	<javac srcdir="${src}/uml_parser" destdir="${build}/classes" 
-	 			debug="on" source="1.4" target="1.4" verbose="off">
+	 			debug="on" source="1.5" target="1.5" verbose="off">
 			<classpath refid="compile.classpath" />
 	    </javac>
 	</target>
@@ -88,7 +88,7 @@
 	<target name="compile-uml2idl" depends="compile-uml_parser"
 		description="Compile the uml2idl package.">
 	    <javac srcdir="${src}/uml2idl" destdir="${build}/classes" 
-	    		debug="on" source="1.4" target="1.4" verbose="off">
+	    		debug="on" source="1.5" target="1.5" verbose="off">
 			<classpath refid="compile.classpath" />
 	    </javac>
 	</target>

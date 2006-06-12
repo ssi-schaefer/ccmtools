@@ -1,17 +1,14 @@
 package ccmtools.CppGenerator.plugin;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.CppGenerator.CppLocalGenerator;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
-import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 
 /**
  * This manager class hides all details of the any plugin mechanism from  
@@ -21,45 +18,32 @@ import ccmtools.Metamodel.BaseIDL.MTypedefDef;
  */
 public class AnyPluginManager
 {
-    private Map anyMappings = new HashMap();
-    
-    // TODO: AnyPluginList should be read from config file        
     /** List of AnyPlugin classes */
     private String[] AnyPluginList = 
     {
     		"ccmtools.CppGenerator.plugin.PdlAnyPlugin" 
     	};
+    // TODO: AnyPluginList should be read from a config file and all
+    // plugin classes should be loaded with a sepearte ClassLoader.
     
-    
-    public AnyPluginManager(CppLocalGenerator generator)
+
+	private List anyPlugins = new ArrayList();
+
+	private List getPlugins()
+    {
+    		return anyPlugins;
+    }
+        
+	
+    public AnyPluginManager()
     		throws CcmtoolsException
     {
-        registerMapping(new DefaultAnyMapping(generator));
-
         for(int i = 0; i < AnyPluginList.length; i++)
         {
-        		AnyPlugin plugin = loadAnyPlugin(AnyPluginList[i]);
-        		registerMappings(plugin.getAnyMappings());
+        		loadPlugin(AnyPluginList[i]);
         }
     }
 
-    
-    protected AnyPlugin loadAnyPlugin(String name)
-    		throws CcmtoolsException
-    {
-    		try
-    		{
-    			System.out.println("> load AnyPlugin " + PdlAnyPlugin.class);		
-    			AnyPlugin plugin = (AnyPlugin)Class.forName(name).newInstance();
-    			plugin.load();
-    			return plugin;
-    		}
-    		catch(Exception e)
-    		{
-    			e.printStackTrace();
-    			throw new CcmtoolsException(e.getMessage());
-    		}
-    }
     
     /**
      * Check if a typedef (given as an IDLType model element)
@@ -82,63 +66,38 @@ public class AnyPluginManager
         return false;
     }
     
-    /**
-     * These following methods represents the structure used by the 
-     * CppLocalTemplates/MAliasDef template to generate a typedef
-     * definition.
-     * Note that by using the findMapping() method, we can plug in 
-     * new mappings pretty easyly.
-     */
     
-    public String getTypedefInclude(MAliasDef alias)
-    {
-        String identifier = ((MTypedefDef)alias).getIdentifier();
-        return findMapping(identifier).getIncludeCode(alias);
-    }
-    
-    public String getTypedefDefinition(MAliasDef alias) 
-    {
-        String identifier = ((MTypedefDef)alias).getIdentifier();
-        return findMapping(identifier).getDefinitionCode(alias);
-    }
-    
-    public String getTypedefDebug(MAliasDef alias)
-    {
-        String identifier = ((MTypedefDef)alias).getIdentifier();
-        return findMapping(identifier).getDebugCode(alias);
-    }
-    
-    // Helper methods to manage mapping instances
-
-    
-    public void registerMapping(AnyMapping mapping)
-    {
-    		if(mapping.getIdlTypeName() != null
-    				&& mapping.getIdlTypeName().length() > 0)
+    	public String generateCode(MAliasDef alias, String tag)
+    	{
+    		String code = "";
+    		for(Iterator i = getPlugins().iterator(); i.hasNext();)
     		{
-    			System.out.println("    register any to " + mapping.getIdlTypeName() + " mapping");
-    			anyMappings.put(mapping.getIdlTypeName(), mapping);
+    			AnyPlugin plugin = (AnyPlugin)i.next();
+    			code = plugin.generateCode(alias, tag);
     		}
-    }
+    		// Note that, if there are more than one plugin for a particular IDL type, 
+    		// the last registered plugin wins.
+    		return code;
+    	}    
+
+    	
+    	// Utility Methods ---------------------------------------------------
     
-    public void registerMappings(List mappingList)
+    private AnyPlugin loadPlugin(String absoluteClassName)
+    		throws CcmtoolsException
     {
-    	  for(Iterator i = mappingList.iterator(); i.hasNext();) 
-      {
-    		  registerMapping((AnyMapping)i.next());
-      }
-    }
-    
-    protected AnyMapping findMapping(String identifier)
-    {
-        if(anyMappings.containsKey(identifier)) 
-        {
-            return (AnyMapping)anyMappings.get(identifier);
-        }
-        else 
-        {
-            // Use default mapping
-            return (AnyMapping)anyMappings.get(DefaultAnyMapping.DEFAULT_ANY_MAPPING);
-        }
-    }
+    		try
+    		{
+    			System.out.println("> load AnyPlugin " + PdlAnyPlugin.class);		
+    			AnyPlugin plugin = (AnyPlugin)Class.forName(absoluteClassName).newInstance();
+    			plugin.load();
+    			getPlugins().add(plugin);
+    			return plugin;
+    		}
+    		catch(Exception e)
+    		{
+    			e.printStackTrace();
+    			throw new CcmtoolsException(e.getMessage());
+    		}
+    }    
 }
