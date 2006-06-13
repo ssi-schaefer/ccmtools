@@ -11,45 +11,40 @@
  */
 
 package world.europe.austria.ccm.local;
-                 
+
 import Components.ccm.local.CCMException;
- 
-/** 
+import world.ccm.local.CCM_VoidTypeInterface;
+
+/**
  * This class implements a component facet's methods.
- *
- * // TODO: WRITE YOUR DESCRIPTION HERE !
- *
+ *  // TODO: WRITE YOUR DESCRIPTION HERE !
+ * 
  * @author
  * @version
  */
-public class TestvoidTypeImpl 
-    implements world.europe.austria.ccm.local.CCM_VoidTypeInterface
+public class TestvoidTypeImpl implements CCM_VoidTypeInterface
 {
-    /** Reference to the facet's component implementation */
-    private world.europe.austria.ccm.local.TestImpl component;
+	/** Reference to the facet's component implementation */
+	private world.europe.austria.ccm.local.TestImpl component;
 
+	// This attribute is accessed by explicite set and get methods
+	// which are part of VoidTypeInterface.
+	int attr;
 
-    // This attribute is accessed by explicite set and get methods
-    // which are part of VoidTypeInterface.
-    int attr;
+	public TestvoidTypeImpl(world.europe.austria.ccm.local.TestImpl component)
+	{
+		this.component = component;
+	}
 
+	/** Business logic implementations */
 
-    public TestvoidTypeImpl(world.europe.austria.ccm.local.TestImpl component)
-    {
-        this.component = component;
-    }
+	public void f1(int p1) throws CCMException
+	{
+		attr = p1;
+	}
 
-    /** Business logic implementations */
-    
-    public void f1(int p1)
-        throws CCMException
-    {
-        attr = p1;	
-    }    
-
-    public int f2()
-        throws CCMException
-    {
-    	return attr;
-    }    
+	public int f2() throws CCMException
+	{
+		return attr;
+	}
 }

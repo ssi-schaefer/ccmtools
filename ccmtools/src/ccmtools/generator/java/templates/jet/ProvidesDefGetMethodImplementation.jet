@@ -6,5 +6,5 @@
 
     public <%=provides.getInterface().generateAbsoluteJavaCcmName()%> get_<%=provides.getIdentifier()%>()
     {
-        return new <%=provides.getInterface().generateJavaNamespace()%>.<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(this);
+        return new <%=provides.generateJavaNamespace()%>.<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(this);
     }

@@ -18,9 +18,9 @@ InterfaceDef iface = provides.getInterface();
  * @version
  */
 
-package <%=iface.generateJavaNamespace()%>;
+package <%=provides.generateJavaNamespace()%>; 
 
-<%=provides.generateJavaImportStatements(iface.generateJavaNamespace())%>   
+<%=provides.generateJavaImportStatements(provides.generateJavaNamespace())%>   
 
 /** 
  * This class implements a component facet's methods.
