@@ -10,10 +10,12 @@
  * @version
  */
 
-package world.ccm.local;
+package world.europe.ccm.local;
                  
 import Components.ccm.local.CCMException;
- 
+import world.ccm.local.CCM_Constants;
+import world.ccm.local.Constants;
+
 /** 
  * This class implements a component facet's methods.
  *
@@ -23,7 +25,7 @@ import Components.ccm.local.CCMException;
  * @version
  */
 public class TestifaceImpl 
-    implements world.ccm.local.CCM_Constants
+    implements CCM_Constants
 {
     /** Reference to the facet's component implementation */
     private world.europe.ccm.local.TestImpl component;

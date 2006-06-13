@@ -35,7 +35,7 @@ clientlib: idl3
 	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
 build:
-	cp impl/TestifaceImpl.java ${DEST_DIR}/src/america/ccm/local/
+	cp impl/TestifaceImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
 
 check_local: build

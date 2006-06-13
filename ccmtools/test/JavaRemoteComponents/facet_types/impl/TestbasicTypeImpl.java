@@ -11,7 +11,8 @@
  */
 
 package world.europe.austria.ccm.local;
-                 
+import world.europe.ccm.local.CCM_BasicTypeInterface;
+
 import Components.ccm.local.CCMException;
  
 /** 
@@ -23,7 +24,7 @@ import Components.ccm.local.CCMException;
  * @version
  */
 public class TestbasicTypeImpl 
-    implements world.europe.austria.ccm.local.CCM_BasicTypeInterface
+    implements CCM_BasicTypeInterface
 {
     /** Reference to the facet's component implementation */
     private world.europe.austria.ccm.local.TestImpl component;

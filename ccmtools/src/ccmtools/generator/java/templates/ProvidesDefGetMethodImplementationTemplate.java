@@ -30,7 +30,7 @@ public class ProvidesDefGetMethodImplementationTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_3);
-    stringBuffer.append(provides.getInterface().generateJavaNamespace());
+    stringBuffer.append(provides.generateJavaNamespace());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(provides.getComponent().getIdentifier());
     stringBuffer.append(provides.getIdentifier());

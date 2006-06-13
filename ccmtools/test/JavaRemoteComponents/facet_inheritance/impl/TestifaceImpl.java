@@ -10,10 +10,11 @@
  * @version
  */
 
-package america.ccm.local;
+package world.ccm.local;
                  
 import Components.ccm.local.CCMException;
- 
+import america.ccm.local.CCM_SubType;
+
 /** 
  * This class implements a component facet's methods.
  *
@@ -23,7 +24,7 @@ import Components.ccm.local.CCMException;
  * @version
  */
 public class TestifaceImpl 
-    implements america.ccm.local.CCM_SubType
+    implements CCM_SubType 
 {
     /** Reference to the facet's component implementation */
     private world.ccm.local.TestImpl component;
