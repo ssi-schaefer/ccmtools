@@ -1,0 +1,14 @@
+#ifndef __USER_TYPE_STRUCT__IDL__
+#define __USER_TYPE_STRUCT__IDL__
+
+#include "../enum/DayOfWeek.idl"
+#include "TimeOfDay.idl"
+
+struct UserTypeStruct
+{
+	DayOfWeek enumMember;
+	TimeOfDay structMember;
+};
+
+
+#endif // __USER_TYPE_STRUCT__IDL__

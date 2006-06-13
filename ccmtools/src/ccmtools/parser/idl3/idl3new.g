@@ -69,6 +69,7 @@ options
 	exportVocab = Idl3; 
 	k = 4; 
 	charVocabulary = '\u0000'..'\u0377'; 
+	defaultErrorHandler=false;
 }
 {
 	/*
@@ -85,7 +86,7 @@ options
 	}
 }
 
-SEMI     options { paraphrase = ";" ; } : ';'  ;
+SEMI     options { paraphrase = "a semicolon (';')" ; } : ';'  ;
 QUESTION options { paraphrase = "?" ; } : '?'  ;
 LPAREN   options { paraphrase = "(" ; } : '('  ;
 RPAREN   options { paraphrase = ")" ; } : ')'  ;
@@ -1236,7 +1237,8 @@ member_list returns [List members = null]
 	members = new ArrayList(); 
 	List decls = null; 
 }
-    :   ( decls = member { members.addAll(decls); } )+ ;
+    :   ( decls = member { members.addAll(decls); } )+ 
+    ;
 
 // 71. <member> ::= <type_spec,44> <declarators,49> ";"
 member returns [List members = null]
@@ -1245,7 +1247,7 @@ member returns [List members = null]
     List decls = null;
     MIDLType type = null;
 }
-    :   type = type_spec decls = declarators
+    :   type = type_spec decls = declarators SEMI 
         {
             for (Iterator it = decls.iterator(); it.hasNext(); ) 
             {
@@ -1265,7 +1267,7 @@ member returns [List members = null]
                 members.add(field);
             }
         }
-        SEMI ;
+	;
 
 // 72. <union_type> ::= "union" <identifier> "switch"
 //       "(" <switch_type_spec,73> ")" "{" <switch_body,74> "}"

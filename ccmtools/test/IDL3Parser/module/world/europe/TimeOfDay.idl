@@ -1,0 +1,19 @@
+#ifndef __TIME_OF_DAY__IDL__
+#define __TIME_OF_DAY__IDL__
+
+module world
+{
+	module europe
+	{
+			struct TimeOfDay
+			{		
+				short hh;
+				short mm;
+				short ss;
+			};
+			
+	}; // /module europe
+	
+}; // /module world	
+
+#endif // __TIME_OF_DAY__IDL__

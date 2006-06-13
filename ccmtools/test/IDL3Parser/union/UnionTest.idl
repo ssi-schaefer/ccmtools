@@ -1,0 +1,16 @@
+#ifndef __UNION_TEST__IDL__
+#define __UNION_TEST__IDL__
+
+union ColorCount switch(Color)
+{
+	case red:
+	case green:
+	case blue:
+		unsigned long numInStock;
+	case black:
+		float discount;
+	default:
+		string orderDetail;		
+};
+
+#endif // __UNION_TEST__IDL__

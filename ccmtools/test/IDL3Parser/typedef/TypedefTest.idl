@@ -1,0 +1,29 @@
+#ifndef __TYPEDEF_TEST__IDL__
+#define __TYPEDEF_TEST__IDL__
+
+typedef short 			ShortType;	
+typedef long 			LongType;
+typedef long 			long lLongType;
+typedef short 			uShortType;
+typedef unsigned long 	uLongType;
+	
+typedef float 			FloatType;
+typedef double 			DoubleType;
+typedef long double     lDoubleType;
+
+typedef char 			CharType;
+typedef wchar     		WCharType;
+typedef string 			StringType;
+typedef wstring			WStringType;	
+
+typedef boolean 			BooleanType;
+typedef octet 			OctetType;	
+typedef any 				AnyType;
+typedef Object			ObjectType;
+
+typedef fixed<9,2>      FixedType;
+
+typedef LongType 		MetaLongType;
+typedef StringType		MetaStringType;
+
+#endif // __TYPEDEF_TEST__IDL__

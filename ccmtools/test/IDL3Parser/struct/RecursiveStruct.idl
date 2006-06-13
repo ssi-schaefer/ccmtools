@@ -1,0 +1,10 @@
+#ifndef __RECURSIVE_STRUCT_TEST__IDL__
+#define __RECURSIVE_STRUCT_TEST__IDL__
+
+struct RecursiveStruct
+{	
+	long value;
+	sequence<RecursiveStruct> children;
+};
+
+#endif // __RECURSIVE_STRUCT_TEST__IDL__

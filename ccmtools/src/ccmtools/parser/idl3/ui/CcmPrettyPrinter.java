@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import ccmtools.CodeGenerator.NodeHandler;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MFieldDef;
@@ -20,7 +21,7 @@ import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.utils.Code;
 
 
-public class SimpleNodeHandler
+public class CcmPrettyPrinter
     implements NodeHandler
 {		
 	private static final String TAB = "\t";
@@ -30,7 +31,7 @@ public class SimpleNodeHandler
     private Logger logger;
     
     
-	public SimpleNodeHandler()
+	public CcmPrettyPrinter()
 	{
 		logger = Logger.getLogger("ccm.parser.idl3");
 		logger.fine("");		
@@ -81,11 +82,21 @@ public class SimpleNodeHandler
         		MPrimitiveDef type = (MPrimitiveDef)node;
         		print(type);
         	}
+    		else if(node instanceof MFixedDef)
+    		{
+    			MFixedDef fixed = (MFixedDef)node;
+    			print(fixed);
+    		}	
         	else if(node instanceof MEnumDef)
         	{
         		MEnumDef enumeration = (MEnumDef)node;
         		print(enumeration);
         	}	
+        	else if(node instanceof MConstantDef)
+        	{
+        		MConstantDef constant = (MConstantDef)node;
+        		print(constant);
+        	}
         	else if(node instanceof MStructDef)
         	{
         		MStructDef struct = (MStructDef)node;
@@ -168,9 +179,9 @@ public class SimpleNodeHandler
 	 * Pretty Printer Methods 
 	 *************************************************************************/
 
-	private void print(MPrimitiveDef type)
+	private void print(MPrimitiveDef in)
 	{
-		println(":PrimitiveDef(" + type.getKind().toString() + ")");
+		println(":PrimitiveDef(" + in.getKind().toString() + ")");
 	}
 	
 	private void print(MStringDef in)
@@ -200,6 +211,15 @@ public class SimpleNodeHandler
 	private void print(MFixedDef in)
 	{
 		println(":FixedDef <digits = " + in.getDigits() + ", scale = " + in.getScale() + ">");
+	}
+	
+	private void print(MConstantDef in)
+	{
+		print(Code.getRepositoryId(in) + ":ConstantDef");
+		MIDLType idlType = in.getIdlType();
+		Object value = in.getConstValue();
+		print(idlType);
+		println(" = " + value);
 	}
 	
 	private void print(MEnumDef in)
