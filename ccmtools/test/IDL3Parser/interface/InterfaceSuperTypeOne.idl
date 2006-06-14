@@ -1,0 +1,14 @@
+#ifndef __INTERFACE_SUPER_TYPE_ONE__IDL__
+#define __INTERFACE_SUPER_TYPE_ONE__IDL__
+
+module europe
+{
+	interface InterfaceSuperTypeOne
+  	{
+    		attribute long attr1;
+    		long op1(in string str);
+  	};
+
+}; // /module europe
+
+#endif // __INTERFACE_SUPER_TYPE_ONE__IDL__

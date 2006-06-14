@@ -1,0 +1,14 @@
+#ifndef __EXCEPTION_USER_TYPE__IDL__
+#define __EXCEPTION_USER_TYPE__IDL__
+
+#include <enum/DayOfWeek.idl>
+#include <struct/TimeOfDay.idl>
+
+exception ExceptionUserType
+{
+	DayOfWeek enumMember;
+	TimeOfDay structMember;
+	
+};
+
+#endif // __EXCEPTION_USER_TYPE__IDL__

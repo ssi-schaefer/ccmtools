@@ -1,0 +1,22 @@
+#ifndef __INTERFACE_CONSTANTS__IDL__
+#define __INTERFACE_CONSTANTS__IDL__
+
+module world
+{
+  	interface InterfaceConstants
+  	{
+    		const boolean BOOLEAN_CONST = TRUE;
+    		const octet OCTET_CONST = 255;
+    		const short SHORT_CONST = -7+10;
+    		const unsigned short USHORT_CONST = 7;
+    		const long LONG_CONST = -7777;
+    		const unsigned long ULONG_CONST = 7777;
+    		const char CHAR_CONST = 'c';
+    		const string STRING_CONST = "1234567890";  
+    		const float FLOAT_CONST = 3.14;
+    		const double DOUBLE_CONST = 3.1415926*2.0;
+  	};
+
+}; // /module world
+
+#endif // __INTERFACE_CONSTANTS__IDL__

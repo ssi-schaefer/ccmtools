@@ -1,0 +1,32 @@
+#ifndef __EXCEPTION_BASIC_TYPE__IDL__
+#define __EXCEPTION_BASIC_TYPE__IDL__
+
+exception ExceptionBasicType
+{
+	short 			shortMember;	
+	long 			longMember;
+	long long       llongMember;
+	unsigned short 	ushortMember;
+	unsigned long 	ulongMember;
+//	unsigned long long ullongMember; !!!
+	
+	float 			floatMember;
+	double 			doubleMember;
+	long double     ldoubleMember;
+	
+	char 			charMember;
+	wchar     		wcharMember;
+	string 			stringMember;
+	string<10>		stringBoundedMember;
+	wstring			wstringMember;
+	wstring<11>		wstringBoundedMember;	
+		
+	boolean 			booleanMember;
+	octet 			octetMember;	
+	any 				anyMember;
+	Object			objectMember;
+	
+	fixed<9,2>      fixedMember;
+};
+
+#endif // __EXCEPTION_BASIC_TYPE__IDL__

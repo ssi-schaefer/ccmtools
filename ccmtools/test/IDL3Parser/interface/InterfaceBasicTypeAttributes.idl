@@ -1,0 +1,25 @@
+#ifndef __INTERFACE_BASIC_TYPE_ATTRIBUTE__IDL__
+#define __INTERFACE_BASIC_TYPE_ATTRIBUTE__IDL__
+
+module world 
+{
+  	module europe 
+  	{
+    		interface InterfaceBasicTypeAttributes
+    		{
+      		attribute short short_value;
+      		attribute long long_value;
+      		attribute unsigned short ushort_value;
+      		attribute unsigned long ulong_value;
+      		attribute float float_value;
+      		attribute double double_value;
+      		attribute char char_value;
+      		attribute string string_value;
+      		attribute boolean boolean_value;
+      		attribute octet octet_value;
+    		};
+
+  	}; // end of module europe
+}; // end of module world
+
+#endif // __INTERFACE_BASIC_TYPE_ATTRIBUTE__IDL__

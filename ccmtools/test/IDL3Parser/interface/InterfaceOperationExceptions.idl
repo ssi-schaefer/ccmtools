@@ -1,0 +1,37 @@
+#ifndef __INTERFACE_OPERATION_EXCEPTIONS__IDL__
+#define __INTERFACE_OPERATION_EXCEPTIONS__IDL__
+
+module world 
+{
+  	module europe 
+  	{
+		struct ErrorInfo
+      	{
+			long code;
+			string message;
+      	};
+      
+      	typedef sequence<ErrorInfo> ErrorInfoList;
+      
+      	exception ErrorException
+      	{
+			ErrorInfoList info;
+      	};
+      
+      	exception SuperError{};
+
+      	exception FatalError
+      	{
+			string what;
+      	};
+      
+      	interface InterfaceOperationExceptions
+      	{
+			long foo(in string msg)
+	  			raises (ErrorException, SuperError, FatalError);
+      	};
+      	
+  	}; // end of module europe
+}; // end of module world
+
+#endif // __INTERFACE_OPERATION_EXCEPTIONS__IDL__
