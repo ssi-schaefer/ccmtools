@@ -5,6 +5,14 @@ HEAD
 BRANCH-0.6.x
 ============================================================================
 
+RELEASE-0.6.10 (June 12, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: Local Java Components
+	Facet implementation classes must be defined in the same namespaces as
+	the component (and the ProvidesDef model element), and also be generated
+	in the right directory structure.
+	
+
 RELEASE-0.6.9 (June 12, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: Local C++ Components Any Plugin
