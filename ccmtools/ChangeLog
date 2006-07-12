@@ -1,17 +1,28 @@
 HEAD
 ============================================================================
 
+RELEASE-0.7.0 (July, 2006)
+----------------------------------------------------------------------------
+
 
 BRANCH-0.6.x
 ============================================================================
 
-RELEASE-0.6.10 (June 12, 2006)
+RELEASE-0.6.10 (July, 2006)
 ----------------------------------------------------------------------------
+*) Bugfix: Local C++ Components
+	Include statements in the interface/*.h files follow now the Confix
+	rules (using "*.h" for local includes and <*/*/*/.h> for other includes).
+	
 *) Bugfix: Local Java Components
 	Facet implementation classes must be defined in the same namespaces as
 	the component (and the ProvidesDef model element), and also be generated
 	in the right directory structure.
 	
+*) Refactoring: cpp-environment
+   Added coco.in files to be able to build the (local and remote) cpp-environment
+   also using CoCo.
+    
 
 RELEASE-0.6.9 (June 12, 2006)
 ----------------------------------------------------------------------------

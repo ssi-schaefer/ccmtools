@@ -21,7 +21,7 @@ public class OperationDefCatchStatementConverterToCorbaTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      OperationDef op = (OperationDef) argument;  
     
 for(Iterator i = op.getException().iterator(); i.hasNext(); )

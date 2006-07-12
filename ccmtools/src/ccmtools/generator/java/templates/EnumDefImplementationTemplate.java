@@ -24,7 +24,7 @@ public class EnumDefImplementationTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      EnumDef enumeration = (EnumDef) argument; 
     stringBuffer.append(TEXT_1);
     stringBuffer.append(enumeration.generateCcmtoolsVersion());

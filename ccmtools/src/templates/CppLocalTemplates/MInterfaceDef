@@ -11,9 +11,7 @@
 
 %(DebugInclude)s
 
-%(MAttributeDefInclude)s
-%(MOperationDefInclude)s
-%(BaseInclude)s
+%(InterfaceIncludes)s
 
 %(OpenNamespace)s
 

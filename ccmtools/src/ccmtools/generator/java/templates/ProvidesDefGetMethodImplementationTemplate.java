@@ -23,7 +23,7 @@ public class ProvidesDefGetMethodImplementationTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      ProvidesDef provides = (ProvidesDef) argument;  
     stringBuffer.append(TEXT_1);
     stringBuffer.append(provides.getInterface().generateAbsoluteJavaCcmName());

@@ -33,7 +33,7 @@ public class InterfaceDefAdapterLocalTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      InterfaceDef iface = (InterfaceDef) argument; 
     stringBuffer.append(TEXT_1);
     stringBuffer.append( iface.generateCcmtoolsVersion());

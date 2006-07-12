@@ -29,7 +29,7 @@ public class ComponentDefApplicationInterfaceTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      ComponentDef component = (ComponentDef) argument; 
     stringBuffer.append(TEXT_1);
     stringBuffer.append(component.generateCcmtoolsVersion());

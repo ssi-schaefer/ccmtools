@@ -25,7 +25,7 @@ public class AttributeDefApplicationImplementationTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      AttributeDef attr = (AttributeDef) argument;  
     stringBuffer.append(TEXT_1);
     stringBuffer.append(attr.getType().generateJavaMapping());
