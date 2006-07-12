@@ -10,3 +10,5 @@ ACINCLUDE_M4(
 CONFIGURE_IN(
     lines=['MY_PRIVATE_MICO_CHECK'],
     order=AC_LIBRARIES)
+
+EXTRA_DIST('coco2.in')
