@@ -1,0 +1,52 @@
+#ifndef __INTERFACE_READONLY_ATTRIBUTE__IDL__
+#define __INTERFACE_READONLY_ATTRIBUTE__IDL__
+
+#include <typedef/BasicTypeTypedef.idl>
+#include <enum/Color.idl>
+#include <struct/Address.idl>
+#include <array/BasicTypeArray.idl>
+#include <sequence/BasicTypeSequence.idl>
+
+#include "InterfaceBasicTypeAttributes.idl"
+
+interface InterfaceReadonlyAttribute
+{
+	// Here we define a readonly attribute which causes only a getter 
+	// access method.
+
+	readonly attribute short 			roShortValue;
+	readonly attribute long 				roLongValue;
+	readonly attribute long long			roLLongValue;
+	readonly attribute unsigned short 	roUShortValue;
+	readonly attribute unsigned long 	roULongValue;
+//	readonly attribute unsigned long long roULLongValue;
+	
+	readonly attribute float 			roFloatValue;
+	readonly attribute double 			roDoubleValue;
+	readonly attribute long double		roLDoubleValue;
+	
+	readonly attribute char 				roCharValue;
+	readonly attribute wchar				roWcharValue;
+	readonly attribute string 			roStringValue;
+	readonly attribute string<5> 		roBStringValue;
+	readonly attribute wstring 			roWstringValue;
+	readonly attribute wstring<5>		roBWstringValue;
+	
+	readonly attribute boolean 			roBooleanValue;
+	readonly attribute octet 			roOctetValue;
+	readonly attribute any				roAnyValue;
+	readonly attribute Object			roObjectValue;
+	
+	
+	// Here we define a readonly attribute which causes only a getter 
+	// access method.
+
+	readonly attribute LongType 						roTypedefValue;
+	readonly attribute Color 						roEnumValue;
+	readonly attribute Address 						roStructValue;
+	readonly attribute LongArray 					roArrayValue;
+	readonly attribute LongSeq 						roSequenceValue;
+  	readonly attribute InterfaceBasicTypeAttributes 	roInterfaceValue;  	
+};
+
+#endif // __INTERFACE_READONLY_ATTRIBUTE__IDL__

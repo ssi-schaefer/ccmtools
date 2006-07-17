@@ -95,17 +95,46 @@ public class CcmPrettyPrinter
         	else if(node instanceof MEnumDef)
         	{
         		MEnumDef enumeration = (MEnumDef)node;
+        		if(enumeration.getDefinedIn() instanceof MInterfaceDef)
+        		{
+        			// If an exception is defined within an interface,
+        			// the interface is responsable for printing it.
+        			return;
+        		}
         		print(enumeration);
         	}	
         	else if(node instanceof MConstantDef)
         	{
         		MConstantDef constant = (MConstantDef)node;
+        		if(constant.getDefinedIn() instanceof MInterfaceDef)
+        		{
+        			// If an exception is defined within an interface,
+        			// the interface is responsable for printing it.
+        			return;
+        		}
         		print(constant);
         	}
         	else if(node instanceof MStructDef)
         	{
         		MStructDef struct = (MStructDef)node;
+        		if(struct.getDefinedIn() instanceof MInterfaceDef)
+        		{
+        			// If an exception is defined within an interface,
+        			// the interface is responsable for printing it.
+        			return;
+        		}
         		print(struct);
+        	}
+        	else if(node instanceof MExceptionDef)
+        	{
+        		MExceptionDef ex = (MExceptionDef)node;
+        		if(ex.getDefinedIn() instanceof MInterfaceDef)
+        		{
+        			// If an exception is defined within an interface,
+        			// the interface is responsable for printing it.
+        			return;
+        		}
+        		print(ex);
         	}
         	else if(node instanceof MSequenceDef)
         	{
@@ -122,6 +151,12 @@ public class CcmPrettyPrinter
         		// Note that only the MAiliasDef object knows the identifier of these
         		// CCM model elements, thus, we have to handle MAliasDef nodes here! 
         		MAliasDef alias = (MAliasDef)node;
+        		if(alias.getDefinedIn() instanceof MInterfaceDef)
+        		{
+        			// If an exception is defined within an interface,
+        			// the interface is responsable for printing it.
+        			return;
+        		}
         		print(alias);
         	}
         	else if(node instanceof MInterfaceDef)
@@ -218,17 +253,29 @@ public class CcmPrettyPrinter
 	
 	private void print(MEnumDef in)
 	{
-		println(Code.getRepositoryId(in) + ":EnumDef");
+		print(Code.getRepositoryId(in) + ":EnumDef {");
 		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 		{
 			String member = (String)i.next();
-			println(TAB + member);
+			print(" " + member);
 		}	
+		println("}");
 	}
 	
 	private void print(MStructDef in)
 	{
 		println(Code.getRepositoryId(in) + ":StructDef");
+		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
+		{
+			MFieldDef member = (MFieldDef)i.next();
+			print(TAB + member.getIdentifier());
+			print(member.getIdlType());
+		}		
+	}
+
+	private void print(MExceptionDef in)
+	{
+		println(Code.getRepositoryId(in) + ":ExceptionDef");
 		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 		{
 			MFieldDef member = (MFieldDef)i.next();
@@ -272,25 +319,34 @@ public class CcmPrettyPrinter
 		for(Iterator i = in.getParameters().iterator(); i.hasNext();)
 		{
 			MParameterDef parameter = (MParameterDef)i.next();
-			print(TAB);
+			print(TAB + "parameter: ");
 			print(parameter.getIdentifier());
 			print(parameter.getIdlType());
 		}
 		for(Iterator i = in.getExceptionDefs().iterator(); i.hasNext();)
 		{
 			MExceptionDef ex = (MExceptionDef)i.next();
-			print(TAB);
-			print(ex.getIdentifier());
+			print(TAB + "rainses: ");
+			println(ex.getIdentifier());
 		}
-		
+		if(in.getContexts() != null)
+		{
+			print(TAB + "context: ");
+			println(in.getContexts());
+		}
 	}
 	
 	private void print(MInterfaceDef in)
 	{
 		println(Code.getRepositoryId(in) + ":InterfaceDef");
+		for(Iterator i = in.getBases().iterator(); i.hasNext();)
+		{
+			MInterfaceDef baseInterface = (MInterfaceDef)i.next();
+			println(TAB + "extends " + baseInterface.getRepositoryId());
+		}
 		for(Iterator i = in.getContentss().iterator(); i.hasNext();)
 		{
-			MContained contained = (MContained)i.next();
+			MContained contained = (MContained)i.next();					
 			if(contained instanceof MAttributeDef)
 			{
 				MAttributeDef attr = (MAttributeDef)contained;
@@ -303,13 +359,21 @@ public class CcmPrettyPrinter
 				print(attr.getIdlType());
 			}
 			else if(contained instanceof MOperationDef)
-			{
-				MOperationDef op = (MOperationDef)contained;
-				print(op);
+			{				
+				print((MOperationDef)contained);
 			}
 			else if(contained instanceof MConstantDef)
 			{
-				
+				print((MConstantDef)contained);
+			}
+			else if(contained instanceof MIDLType)
+			{
+				print((MIDLType)contained);
+			}
+			else if(contained instanceof MExceptionDef)
+			{
+				MExceptionDef ex = (MExceptionDef)contained;
+				print(ex);
 			}
 			else
 			{

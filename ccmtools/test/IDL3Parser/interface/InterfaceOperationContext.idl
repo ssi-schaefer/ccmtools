@@ -1,0 +1,9 @@
+#ifndef __INTERFACE_OPERATION_CONTEXT__IDL__
+#define __INTERFACE_OPERATION_CONTEXT__IDL__
+
+interface InterfaceOperationContext
+{
+	void foo() context ("CCM_LOCAL", "CCM_REMOTE");
+};
+
+#endif // __INTERFACE_OPERATION_CONTEXT__IDL__

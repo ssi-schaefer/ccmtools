@@ -31,33 +31,6 @@ interface InterfaceBasicTypeAttributes
 	attribute Object				objectValue;
 	
 //	attribute fixed<9,2>			fixedValue; !!!
-
-
-	// Here we define a readonly attribute which causes only a getter 
-	// access method.
-
-	readonly attribute short 			roShortValue;
-	readonly attribute long 				roLongValue;
-	readonly attribute long long			roLLongValue;
-	readonly attribute unsigned short 	roUShortValue;
-	readonly attribute unsigned long 	roULongValue;
-//	readonly attribute unsigned long long roULLongValue;
-	
-	readonly attribute float 			roFloatValue;
-	readonly attribute double 			roDoubleValue;
-	readonly attribute long double		roLDoubleValue;
-	
-	readonly attribute char 				roCharValue;
-	readonly attribute wchar				roWcharValue;
-	readonly attribute string 			roStringValue;
-	readonly attribute string<5> 		roBStringValue;
-	readonly attribute wstring 			roWstringValue;
-	readonly attribute wstring<5>		roBWstringValue;
-	
-	readonly attribute boolean 			roBooleanValue;
-	readonly attribute octet 			roOctetValue;
-	readonly attribute any				roAnyValue;
-	readonly attribute Object			roObjectValue;
 };
 
 #endif // __INTERFACE_BASIC_TYPE_ATTRIBUTE__IDL__

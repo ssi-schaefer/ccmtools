@@ -5,14 +5,14 @@ exception ExceptionBasicType
 {
 	short 			shortMember;	
 	long 			longMember;
-	long long       llongMember;
-	unsigned short 	ushortMember;
-	unsigned long 	ulongMember;
-//	unsigned long long ullongMember; !!!
+	long long       lLongMember;
+	unsigned short 	uShortMember;
+	unsigned long 	uLongMember;
+//	unsigned long long uLLongMember; !!!
 	
 	float 			floatMember;
 	double 			doubleMember;
-	long double     ldoubleMember;
+	long double     lDoubleMember;
 	
 	char 			charMember;
 	wchar     		wcharMember;

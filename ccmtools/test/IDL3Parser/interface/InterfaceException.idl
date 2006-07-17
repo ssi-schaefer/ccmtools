@@ -1,0 +1,59 @@
+#ifndef __INTERFACE_EXCEPTION__IDL__
+#define __INTERFACE_EXCEPTION__IDL__
+
+#include <typedef/BasicTypeTypedef.idl>
+#include <enum/Color.idl>
+#include <struct/Address.idl>
+#include <array/BasicTypeArray.idl>
+#include <sequence/BasicTypeSequence.idl>
+
+
+interface InterfaceException
+{
+	exception ExceptionEmpty
+	{
+	};
+
+	exception ExceptionBasicType
+	{
+		short 			shortMember;	
+		long 			longMember;
+		long long       lLongMember;
+		unsigned short 	uShortMember;
+		unsigned long 	uLongMember;
+		//	unsigned long long uLLongMember; !!!
+	
+		float 			floatMember;
+		double 			doubleMember;
+		long double     lDoubleMember;
+	
+		char 			charMember;
+		wchar     		wcharMember;
+		string 			stringMember;
+		string<10>		stringBoundedMember;
+		wstring			wstringMember;
+		wstring<11>		wstringBoundedMember;	
+		
+		boolean 			booleanMember;
+		octet 			octetMember;	
+		any 				anyMember;
+		Object			objectMember;
+	
+		fixed<9,2>      fixedMember;
+	};
+	
+	exception ExceptionUserType
+	{
+		LongType 	typedefMember;
+		Color		enumMember;
+		Address		structMember;
+		LongArray	arrayMember;
+		LongSeq		sequencemember;
+	};
+	
+	
+	void foo()
+		raises (ExceptionEmpty, ExceptionBasicType, ExceptionUserType);
+};
+
+#endif // __INTERFACE_EXCEPTION__IDL__

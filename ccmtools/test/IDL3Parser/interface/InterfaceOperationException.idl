@@ -1,0 +1,14 @@
+#ifndef __INTERFACE_OPERATION_EXCEPTION__IDL__
+#define __INTERFACE_OPERATION_EXCEPTION__IDL__
+
+#include <exception/ExceptionEmpty.idl>
+#include <exception/ExceptionBasicType.idl>
+#include <exception/ExceptionUserType.idl>
+
+interface InterfaceOperationException
+{
+	void foo()
+		raises (ExceptionEmpty, ExceptionBasicType, ExceptionUserType);
+};
+
+#endif // __INTERFACE_OPERATION_EXCEPTION__IDL__

@@ -22,16 +22,6 @@ interface InterfaceUserTypeAttributes
 	attribute LongSeq 						sequenceValue;
   	attribute InterfaceBasicTypeAttributes 	interfaceValue;
 
-
-	// Here we define a readonly attribute which causes only a getter 
-	// access method.
-
-	readonly attribute LongType 						roTypedefValue;
-	readonly attribute Color 						roEnumValue;
-	readonly attribute Address 						roStructValue;
-	readonly attribute LongArray 					roArrayValue;
-	readonly attribute LongSeq 						roSequenceValue;
-  	readonly attribute InterfaceBasicTypeAttributes 	roInterfaceValue;
 };
 
 #endif // __INTERFACE_USER_TYPE_ATTRIBUTES__IDL__

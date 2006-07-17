@@ -1,14 +1,19 @@
 #ifndef __EXCEPTION_USER_TYPE__IDL__
 #define __EXCEPTION_USER_TYPE__IDL__
 
-#include <enum/DayOfWeek.idl>
-#include <struct/TimeOfDay.idl>
+#include <typedef/BasicTypeTypedef.idl>
+#include <enum/Color.idl>
+#include <struct/Address.idl>
+#include <array/BasicTypeArray.idl>
+#include <sequence/BasicTypeSequence.idl>
 
 exception ExceptionUserType
 {
-	DayOfWeek enumMember;
-	TimeOfDay structMember;
-	
+	LongType 	typedefMember;
+	Color		enumMember;
+	Address		structMember;
+	LongArray	arrayMember;
+	LongSeq		sequencemember;
 };
 
 #endif // __EXCEPTION_USER_TYPE__IDL__

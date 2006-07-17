@@ -1,0 +1,76 @@
+#ifndef __MODULE_NESTED__IDL__
+#define __MODULE_NESTED__IDL__
+
+typedef long LongType;
+
+module world
+{
+	enum Color
+	{
+    		red,
+    		green,
+    		blue,
+		black,
+		orange
+	};
+
+	struct Person
+	{
+    		long id;
+    		string name;
+	};
+
+	module america
+	{
+		typedef long LongArray[10];
+
+		typedef sequence<long> LongSeq;
+		
+	}; // end of module america
+
+	module europe
+	{
+		struct Address
+		{
+			string street;
+    			long number;
+    			Person resident;
+		};
+
+		interface InterfaceBasicTypeAttributes
+		{
+			attribute float 				floatValue;
+			attribute double 			doubleValue;
+			attribute long double		lDoubleValue;
+		};
+
+		module austria
+		{
+			interface InterfaceUserType
+			{
+				::LongType typedefOpAbsolute(in ::LongType p1);										
+				LongType	 typedefOpRelative(in LongType p1);		
+				
+				::world::Color enumOpAbsolute(in ::world::Color p1);
+				Color enumOpRelative(in Color p1);
+								
+				::world::europe::Address structOpAbsolute(in ::world::europe::Address p1);
+				Address structOpRelative(in Address p1);
+				
+				::world::america::LongArray arrayOpAbsolute(in ::world::america::LongArray p1);
+				// america::LongArray arrayOpReletive(in america::LongArray p1); !!!!!
+				
+				::world::america::LongSeq sequenceOpAbsolute(in ::world::america::LongSeq p1); 
+				// america::LongSeq sequenceOpRelative(in america::LongSeq p1); !!!!!
+				
+				::world::europe::InterfaceBasicTypeAttributes 
+					interfaceOpAbsolute(in ::world::europe::InterfaceBasicTypeAttributes p1);				
+				InterfaceBasicTypeAttributes interfaceOpRelative(in InterfaceBasicTypeAttributes p1);
+			};
+			
+		}; // end of module austria
+	}; // end of module europe
+}; // end of module world	
+
+#endif // __MODULE_NESTED__IDL__
+
