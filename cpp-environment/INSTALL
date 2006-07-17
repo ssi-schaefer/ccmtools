@@ -52,20 +52,18 @@ install three packages:
 a) wx-toolsbox-0.2.1.tar.bz2 
      $ tar xvjf wx-toolsbox-0.2.1.tar.bz2
      $ cd wx-toolsbox-0.2.1
-     $ ./configure --prefix=/home/eteinik/install/test_install
+	 $ confix --packageroot=`pwd`/ccm --bootstrap --configure --make --targets="install"
      $ make install
 
 b) wx-utils-1.2.0.tar.bz2 
      $ tar xvjf wx-utils-1.2.0.tar.bz2
      $ cd wx-utils-1.2.0
-     $ ./configure --prefix=/home/eteinik/install/test_install
+	 $ confix --packageroot=`pwd`/ccm --bootstrap --configure --make --targets="install"
      $ make install     
   
-c) ccm-0.5.2.tar.gz 
-     $ tar xvzf ccm-0.5.2.tar.gz
-     $ cd ccm-0.5.2
-     $ ./configure --with-mico=/opt/gcc-3.3.4/mico-2.3.11-debug/lib/mico-setup.sh --prefix=/home/eteinik/install/test_install
+c) ccm-runtime-0.7.0.tar.gz 
+     $ tar xvzf ccm-runtime-0.7.0.tar.gz
+     $ cd ccm-runtime-0.7.0
+     $ confix --packageroot=`pwd`/ccm --bootstrap --configure --make --targets="install"
      $ make install          
 
-Note that the used --prefix and the --with-mico options have the same 
-values as defined in the ~/.confix file.

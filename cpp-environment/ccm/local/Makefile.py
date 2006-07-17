@@ -4,9 +4,11 @@
 # package.
 
 try:
-    PACKAGE_NAME('ccm-local-runtime')
+    PACKAGE_NAME('ccm-runtime-local')
     PACKAGE_VERSION('0.7.0')
 except Error, e:
     # we'll get here if this is not the package root, and have to
     # ignore this.
     pass
+
+EXTRA_DIST('coco2.in')

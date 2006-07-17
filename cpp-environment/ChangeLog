@@ -1,0 +1,9 @@
+HEAD
+============================================================================
+
+RELEASE-0.7.0 (July, 2006)
+----------------------------------------------------------------------------
+*) Refactoring: 
+	Changed directory names from CCM_Local, CCM_Remote to local, remote.
+	Removed OCL and Python code.
+	
