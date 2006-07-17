@@ -71,21 +71,24 @@ public class Main
 			}
 		}
 		catch (ParseException e)
-		{
+		{			
 			uiDriver.printError(e.getMessage());
 			printUsage();
 		}
 		catch (CcmtoolsException e)
 		{
+			e.printStackTrace();			
 			exitWithErrorStatus(e.getMessage());
 		}
 		catch (FileNotFoundException e)
 		{
 			// Can't open uiDriver file
+			e.printStackTrace();	
 			exitWithErrorStatus(e.getMessage());
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();	
 			exitWithErrorStatus(e.getMessage());
 		}
 	}

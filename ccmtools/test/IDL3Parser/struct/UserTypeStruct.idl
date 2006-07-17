@@ -1,13 +1,17 @@
 #ifndef __USER_TYPE_STRUCT__IDL__
 #define __USER_TYPE_STRUCT__IDL__
 
-#include "../enum/DayOfWeek.idl"
-#include "TimeOfDay.idl"
+#include <typedef/BasicTypeTypedef.idl>
+#include <enum/Color.idl>
+
+#include "Person.idl"
 
 struct UserTypeStruct
 {
-	DayOfWeek enumMember;
-	TimeOfDay structMember;
+	MetaLongType	 typedefMember;
+	Color enumMember;
+	Person structMember;
+	//...
 };
 
 

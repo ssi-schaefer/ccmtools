@@ -1,0 +1,35 @@
+#ifndef __USER_TYPE_SEQUENCE__IDL__
+#define __USER_TYPE_SEQUENCE__IDL__
+
+#include <typedef/BasicTypeTypedef.idl>
+#include <enum/Color.idl>
+#include <struct/Address.idl>
+#include <array/BasicTypeArray.idl>
+
+#include "BasicTypeSequence.idl"
+
+/*
+ * Here we define sequences of user type values
+ */
+
+typedef sequence<LongType> 		LongTypeSeq;	
+typedef sequence<Color> 			EnumSeq;
+typedef sequence<Address>   		StructSeq;
+typedef sequence<LongArray>		ArraySeq;
+typedef sequence<LongSeq>  		SequenceSeq;
+typedef sequence<sequence<long> > AnonymousSequenceSeq;
+
+
+/*
+ * Here we define bounded sequences of user type values
+ */
+
+typedef sequence<LongType, 10> 		LongTypeBSeq;	
+typedef sequence<Color, 10> 			EnumBSeq;
+typedef sequence<Address, 10>   		StructBSeq;
+typedef sequence<LongArray, 10>		ArrayBSeq;
+typedef sequence<LongSeq, 10>  		SequenceBSeq;
+typedef sequence<sequence<long>,10 > AnonymousSequenceBSeq;
+
+
+#endif // __USER_TYPE_SEQUENCE__IDL__

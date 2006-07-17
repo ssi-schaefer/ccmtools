@@ -1,0 +1,15 @@
+#ifndef __INTERFACE_VOID_TYPE_OPERATIONS__IDL__
+#define __INTERFACE_VOID_TYPE_OPERATIONS__IDL__
+
+interface VoidTypeInterface
+{
+	void f0();	
+	void f1(in long p1);
+	long f2();
+	
+	oneway void of0();
+	oneway void of1(in long p1);
+	oneway long of2();
+};
+
+#endif // __INTERFACE_VOID_TYPE_OPERATIONS__IDL__

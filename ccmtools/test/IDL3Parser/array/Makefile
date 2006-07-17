@@ -1,6 +1,7 @@
+INCLUDE= -I../
 
 all: idl3
 
-idl3: ArrayTest.idl
-	ccmparser ArrayTest.idl
-
+idl3: 
+	ccmparser BasicTypeArray.idl
+	ccmparser ${INCLUDE} UserTypeArray.idl

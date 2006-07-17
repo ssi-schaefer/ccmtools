@@ -20,7 +20,7 @@ public class UsesDefReceptacleDisconnectMethodAdapterToCorbaTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      UsesDef uses = (UsesDef) argument;  
     stringBuffer.append(TEXT_1);
     stringBuffer.append(uses.getIdentifier());

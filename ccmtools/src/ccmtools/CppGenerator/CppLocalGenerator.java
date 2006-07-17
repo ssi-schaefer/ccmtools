@@ -24,10 +24,12 @@ package ccmtools.CppGenerator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
@@ -199,13 +201,40 @@ public class CppLocalGenerator
     
     protected String data_MFieldDef(String dataType, String dataValue) 
     {
-        logger.fine("enter data_MFieldDef()");
-        if(dataType.equals("DebugNamespace")) {
-            MTyped type = (MTyped) currentNode;
-            MIDLType idlType = type.getIdlType();
+        logger.fine("begin");
+        MTyped type = (MTyped) currentNode;
+        MIDLType idlType = type.getIdlType();
+        if(dataType.equals("DebugNamespace")) 
+        {
             return getDebugNamespace(idlType);
         }
-        logger.fine("leave data_MFieldDef()");
+        else if(dataType.equals("FieldDefInclude"))
+        {
+        		if(idlType instanceof MContained)
+        		{
+        			MFieldDef field = (MFieldDef)currentNode;
+        			MContained contained = (MContained)idlType;   
+        			MContained base;
+        			if(field.getStructure() != null)
+        			{
+        				base = field.getStructure();
+        	        	}
+        			else	 if(field.getException() != null)
+        			{
+        				base = field.getException();
+        	        	}
+        			else
+        			{
+        				throw new RuntimeException("MFieldDef without MStructDef or MExceptionDef!");
+        	        	}
+        	        	return getConfixInclude(base, contained, contained.getIdentifier());
+        		}
+        		else
+        		{
+        			 return getLanguageTypeInclude(idlType);
+        		}
+        }
+        logger.fine("end");
         return dataValue;
     }
     
@@ -223,6 +252,12 @@ public class CppLocalGenerator
             {
             		dataValue = anyManager.generateCode(alias, dataType);
             }
+            else if(idlType instanceof MSequenceDef)
+            {
+            		MTyped singleType = (MTyped) idlType;
+            		MIDLType singleIdlType = singleType.getIdlType();
+            		dataValue = getConfixInclude(alias, singleIdlType);
+            }
             else 
             {
                 dataValue = getLanguageTypeInclude(idlType);
@@ -232,7 +267,7 @@ public class CppLocalGenerator
         {
             if(anyManager.isTypedefToAny(idlType)) 
             {
-            			dataValue = anyManager.generateCode(alias, dataType);
+            		dataValue = anyManager.generateCode(alias, dataType);
             }
             else 
             {
@@ -334,6 +369,13 @@ public class CppLocalGenerator
             MContained contained = (MContained)currentNode;
             dataValue = getLocalCppName(contained, Text.FILE_SEPARATOR);
         }
+        else if(dataType.equals("InterfaceIncludes"))
+        {
+        		StringBuffer code = new StringBuffer();
+        		Set includeSet = getInterfaceIncludes(iface);
+        		includeSet.addAll(getBaseInterfaceIncludes(iface));
+        		dataValue = Text.join("\n", includeSet);
+        }
         else if(dataType.equals("BaseInterfaceAdapterAttributeHeader")) {
             List baseInterfaceList = iface.getBases();
             boolean isImpl = false;
@@ -374,6 +416,99 @@ public class CppLocalGenerator
         return dataValue;
     }
 
+
+    protected String getUserTypeName(MIDLType idlType)
+    {
+    		if(idlType instanceof MPrimitiveDef || 
+    				idlType instanceof MStringDef ||
+    				idlType instanceof MWstringDef)
+    		{
+    			return "";    			
+    		}
+    		else if(idlType instanceof MContained)
+    		{
+    			return ((MContained)idlType).getIdentifier();
+    		}
+    		else
+    		{
+    			throw new RuntimeException("Unhandled IDLType: " + idlType);
+    		}
+    }
+    
+    protected Set getAttributeIncludes(MInterfaceDef iface)
+    {
+    		Set includeSet = new HashSet();
+    		for(Iterator i = iface.getContentss().iterator(); i.hasNext(); )
+    		{
+    			MContained contained = (MContained)i.next();
+    			if(contained instanceof MAttributeDef)
+    			{
+    				MAttributeDef attr = (MAttributeDef)contained;
+    				MTyped type = (MTyped)attr;    				
+    				includeSet.add(getConfixInclude(iface, contained, getUserTypeName(type.getIdlType())));    				
+    			}
+    		}
+    		return includeSet;
+    }
+    
+    protected Set getOperationIncludes(MInterfaceDef iface)
+    {
+    		Set includeSet = new HashSet();
+		for(Iterator i = iface.getContentss().iterator(); i.hasNext(); )
+		{
+			MContained contained = (MContained)i.next();
+			if(contained instanceof MOperationDef)
+			{
+				MOperationDef op = (MOperationDef)contained;
+				MTyped type = (MTyped)op;    												
+				if(op.getIdlType() instanceof MContained)
+				{
+					MContained containedResult = (MContained) op.getIdlType();
+					includeSet.add(getConfixInclude(iface, containedResult, 
+							containedResult.getIdentifier()));					
+				}
+				
+				for(Iterator e = op.getExceptionDefs().iterator(); e.hasNext();)
+				{
+					MExceptionDef ex = (MExceptionDef)e.next();
+					includeSet.add(getConfixInclude(iface, ex, ex.getIdentifier()));
+				}
+				
+				for(Iterator p = op.getParameters().iterator(); p.hasNext();)
+				{
+					MParameterDef param = (MParameterDef)p.next();
+					if(param.getIdlType() instanceof MContained)
+					{
+						MContained containedParam = (MContained)param.getIdlType();
+						includeSet.add(getConfixInclude(iface, containedParam, 
+								containedParam.getIdentifier()));
+					}
+				}
+			}
+		}
+		return includeSet;	
+    }
+    
+    protected Set getInterfaceIncludes(MInterfaceDef iface)
+    {
+    		Set includeSet = new HashSet(); 
+    		includeSet.addAll(getAttributeIncludes(iface));
+		includeSet.addAll(getOperationIncludes(iface));
+//		System.out.println("!!!" + iface.getIdentifier() + "\n" + includeSet);
+		return includeSet;
+    }
+    
+    protected Set getBaseInterfaceIncludes(MInterfaceDef iface)
+    {
+    		Set includeSet = new HashSet(); 
+    		
+    		for(Iterator i = iface.getBases().iterator(); i.hasNext();)
+    		{
+    			MInterfaceDef base = (MInterfaceDef)i.next();
+    			includeSet.add(getConfixInclude(iface, base, base.getIdentifier()));
+    		}
+    		return includeSet;
+    }
     
     protected String data_MConstantDef(String dataType, String dataValue)
     {
@@ -522,6 +657,49 @@ public class CppLocalGenerator
         return code.toString();
     }
 
+    protected String getConfixInclude(MIDLType base, MIDLType element)
+    {
+    		logger.fine("begin");	
+    		String includeStatement;
+    		if(base instanceof MContained && element instanceof MContained)
+    		{
+    			includeStatement = getConfixInclude((MContained)base, (MContained)element, 
+    					((MContained)element).getIdentifier());
+    		}
+    		else
+    		{
+    			includeStatement = getLanguageTypeInclude(element);
+    		}
+    		logger.fine("end");	
+    		return includeStatement;
+    }
+    
+    protected String getConfixInclude(MContained base, MContained element, String baseType)
+    {
+    		logger.fine("begin");	
+    		
+    		if(baseType.length() == 0)
+    			return ""; // No defined type => no include statement
+    		
+    		String baseNamespace = getLocalCppNamespace(base, "/");
+		String elementNamespace =  getLocalCppNamespace(element, "/");	
+		
+		StringBuffer code = new StringBuffer();
+		if(baseNamespace.equals(elementNamespace))
+		{
+			code.append("#include \"");
+			code.append(baseType);
+			code.append(".h\"\n");
+		}
+		else
+		{
+			code.append(getScopedInclude(element));
+		}
+
+		logger.fine("end");
+		return code.toString();		
+    }
+    
     
     /***
      * Generate the #include<> statement for a MIDLType model element
@@ -530,7 +708,7 @@ public class CppLocalGenerator
      */
     protected String getLanguageTypeInclude(MIDLType idlType) 
     {
-        logger.fine("enter getLanguageTypeInclude()");
+        logger.fine("begin");
         StringBuffer code = new StringBuffer();
         if(idlType instanceof MStringDef) {
             code.append("#include <string>\n");
@@ -553,7 +731,7 @@ public class CppLocalGenerator
         else if(idlType instanceof MContained) {
             code.append(getScopedInclude((MContained) idlType));
         }
-        logger.fine("leave getLanguageTypeInclude()");
+        logger.fine("end");
         return code.toString();
     }
     

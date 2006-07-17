@@ -1,6 +1,7 @@
+INCLUDE= -I../
 
 all: idl3
 
-idl3: SequenceTest.idl
-	ccmparser SequenceTest.idl
-
+idl3: 
+	ccmparser BasicTypeSequence.idl
+	ccmparser ${INCLUDE} UserTypeSequence.idl

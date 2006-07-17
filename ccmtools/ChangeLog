@@ -1,11 +1,61 @@
-RELEASE-0.7.x
+HEAD
 ============================================================================
 
+RELEASE-0.7.0 (July, 2006)
+----------------------------------------------------------------------------
 
 
-
-RELEASE-0.6.x
+BRANCH-0.6.x
 ============================================================================
+
+RELEASE-0.6.10 (July, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: Local C++ Components
+	Include statements in the interface/*.h files follow now the Confix
+	rules (using "*.h" for local includes and <*/*/*/.h> for other includes).
+	
+*) Bugfix: Local Java Components
+	Facet implementation classes must be defined in the same namespaces as
+	the component (and the ProvidesDef model element), and also be generated
+	in the right directory structure.
+	
+*) Refactoring: cpp-environment
+   Added coco.in files to be able to build the (local and remote) cpp-environment
+   also using CoCo.
+    
+
+RELEASE-0.6.9 (June 12, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: Local C++ Components Any Plugin
+	The c++local generator has to terminate if the given --anytypes=*.ccmany 
+	file does not exist.
+	
+*) Bugfix: Local C++ Components Any Plugin
+    The namespace for ccmDebug() methods that are related to any typedefs
+    must be the same as defined by the MAliasDef model element.
+
+
+RELEASE-0.6.8 (June 9, 2006)
+----------------------------------------------------------------------------
+*) Refactoring: Local C++ Components
+	Any plugin structure refactored (better support for C structures as
+	interface parameters)
+	
+
+RELEASE-0.6.7 (June 8, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: Remote C++ Components
+	CORBA Converters will be generated in the same namespaces as their
+	IDL type definitions (*_remote.h Files).
+	For each namespace a new directory will be created too.
+	  
+*) Bugfix: 	Remote C++ Components
+	ccmDebug() methods will be generated in the same namespaces as their
+	IDL type definitions.
+	
+*) Refactoring: CppRemoteGenerator
+	Refactored namespace arithmetics.
+		
 
 RELEASE-0.6.6 (May 19, 2006)
 ----------------------------------------------------------------------------

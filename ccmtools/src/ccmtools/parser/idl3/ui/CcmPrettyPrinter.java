@@ -6,12 +6,17 @@ import java.util.logging.Logger;
 import ccmtools.CodeGenerator.NodeHandler;
 import ccmtools.Metamodel.BaseIDL.MAliasDef;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
+import ccmtools.Metamodel.BaseIDL.MExceptionDef;
 import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MParameterDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
@@ -117,27 +122,15 @@ public class CcmPrettyPrinter
         		// Note that only the MAiliasDef object knows the identifier of these
         		// CCM model elements, thus, we have to handle MAliasDef nodes here! 
         		MAliasDef alias = (MAliasDef)node;
-        		print(Code.getRepositoryId(alias) + ":(MAliasDef)");    		
-        		MTyped typed = (MTyped)alias;
-        		MIDLType innerIdlType = typed.getIdlType();			    		
-        		endNode(innerIdlType, scopeId);        		
+        		print(alias);
         	}
+        	else if(node instanceof MInterfaceDef)
+        	{
+        		MInterfaceDef iface = (MInterfaceDef)node;
+        		print(iface);
+        	}
+
     		
-//        	else if (node instanceof MHomeDef)
-//    		{
-//    			MHomeDef home = (MHomeDef) node;
-//    			System.out.println("MHomeDef: " + home.getRepositoryId());
-//    		}
-//        	else if(node instanceof MComponentDef) 
-//        	{
-//        		MComponentDef component = (MComponentDef)node;
-//        		System.out.println("MComponentDef: " + component.getRepositoryId());
-//        	}
-//        	else if(node instanceof MInterfaceDef)
-//        	{
-//        		MInterfaceDef iface = (MInterfaceDef)node;
-//        		System.out.println("MInterfaceDef: " + iface.getRepositoryId());
-//        	}
 //		else if (node instanceof MProvidesDef)
 //		{
 //			MProvidesDef provides = (MProvidesDef) node;
@@ -151,22 +144,15 @@ public class CcmPrettyPrinter
 //					+ uses.getUses().getRepositoryId());
 //		}        
 //    		
-//        	else if(node instanceof MOperationDef)
+//        	else if (node instanceof MHomeDef)
+//    		{
+//    			MHomeDef home = (MHomeDef) node;
+//    			System.out.println("MHomeDef: " + home.getRepositoryId());
+//    		}
+//        	else if(node instanceof MComponentDef) 
 //        	{
-//        		MOperationDef op = (MOperationDef)node;
-//        		System.out.println("MOperationDef: " + op.getIdentifier()
-//        				+ ":" + op.getIdlType());
-//        	}
-//        	else if(node instanceof MParameterDef)
-//        	{
-//        		MParameterDef parameter = (MParameterDef)node;
-//        		System.out.println("MParameterDef: " + parameter.getIdentifier() 
-//        				+ ":" + parameter.getIdlType());
-//        	}
-//        	else if(node instanceof MExceptionDef)
-//        	{
-//        		MExceptionDef exception = (MExceptionDef)node;
-//        		System.out.println("MExceptionDef: " + exception.getIdentifier());
+//        		MComponentDef component = (MComponentDef)node;
+//        		System.out.println("MComponentDef: " + component.getRepositoryId());
 //        	}
     }
 
@@ -179,6 +165,14 @@ public class CcmPrettyPrinter
 	 * Pretty Printer Methods 
 	 *************************************************************************/
 
+	private void print(MAliasDef in)
+	{		
+		print(Code.getRepositoryId(in) + ":(MAliasDef)");    		
+		MTyped typed = (MTyped)in;
+		MIDLType innerIdlType = typed.getIdlType();			    		
+		endNode(innerIdlType, "");        		
+	}
+	
 	private void print(MPrimitiveDef in)
 	{
 		println(":PrimitiveDef(" + in.getKind().toString() + ")");
@@ -245,7 +239,8 @@ public class CcmPrettyPrinter
 
 	private void print(MArrayDef in)
 	{
-		println(":ArrayDef");
+		print(":ArrayDef");
+		print(in.getIdlType());
 		for(int i=0; i < in.getBounds().size(); i++)
 		{
 			Long bound = (Long)in.getBounds().get(i);
@@ -266,6 +261,62 @@ public class CcmPrettyPrinter
 		print(in.getIdlType());
 	}
 
+	private void print(MOperationDef in)
+	{
+		if(in.isOneway())
+		{
+			print("oneway ");
+		}
+		print(in.getIdentifier() + " ");
+		print(in.getIdlType());
+		for(Iterator i = in.getParameters().iterator(); i.hasNext();)
+		{
+			MParameterDef parameter = (MParameterDef)i.next();
+			print(TAB);
+			print(parameter.getIdentifier());
+			print(parameter.getIdlType());
+		}
+		for(Iterator i = in.getExceptionDefs().iterator(); i.hasNext();)
+		{
+			MExceptionDef ex = (MExceptionDef)i.next();
+			print(TAB);
+			print(ex.getIdentifier());
+		}
+		
+	}
+	
+	private void print(MInterfaceDef in)
+	{
+		println(Code.getRepositoryId(in) + ":InterfaceDef");
+		for(Iterator i = in.getContentss().iterator(); i.hasNext();)
+		{
+			MContained contained = (MContained)i.next();
+			if(contained instanceof MAttributeDef)
+			{
+				MAttributeDef attr = (MAttributeDef)contained;
+				print(TAB);
+				if(attr.isReadonly())
+				{
+					print("readonly ");
+				}
+				print(attr.getIdentifier());
+				print(attr.getIdlType());
+			}
+			else if(contained instanceof MOperationDef)
+			{
+				MOperationDef op = (MOperationDef)contained;
+				print(op);
+			}
+			else if(contained instanceof MConstantDef)
+			{
+				
+			}
+			else
+			{
+				throw new RuntimeException("Unhandled containment in interface " + in.getRepositoryId());
+			}
+		}		
+	}
 	
 	private void print(MIDLType in)
 	{
@@ -295,12 +346,16 @@ public class CcmPrettyPrinter
 		}
 		else if(in instanceof MStructDef)
 		{			
-			print((MStructDef)in);
+			println(":" + ((MStructDef)in).getIdentifier());
 		}
-//		else if(in instanceof MAliasDef)
-//		{
-//			return transform((MAliasDef)in);
-//		}
+		else if(in instanceof MInterfaceDef)
+		{
+			println(":" + ((MInterfaceDef)in).getRepositoryId());
+		}
+		else if(in instanceof MAliasDef)
+		{
+			print((MAliasDef)in);
+		}
 		else
 		{
 			throw new RuntimeException("print(MIDLType): unknown idl type " + in);

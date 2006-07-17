@@ -35,7 +35,7 @@ public class UsesDefMultipleEquivalentMethodAdapterLocalTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      
 UsesDef uses = (UsesDef) argument;  
 InterfaceDef iface = uses.getInterface();

@@ -3,6 +3,7 @@ header
 /* CCM Tools : IDL3 Parser
  * Edin Arnautovic <edin.arnautovic@salomon.at>
  * Leif Johnson <leif@ambient.2y.net>
+ * Egon Teiniker <egon.teiniker@salomon.at>
  * Copyright (C) 2002 - 2006 Salomon Automation
  *
  * Generated using antlr <http://antlr.org/> from source grammar file :

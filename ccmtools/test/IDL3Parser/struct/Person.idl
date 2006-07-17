@@ -1,0 +1,10 @@
+#ifndef __PERSON__IDL__
+#define __PERSON__IDL__
+
+struct Person
+{
+    long id;
+    string name;
+};
+
+#endif // __PERSON__IDL__

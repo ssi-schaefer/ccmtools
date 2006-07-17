@@ -23,7 +23,7 @@ public class ConstantDefDeclarationTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      ConstantDef constant = (ConstantDef) argument;  
     stringBuffer.append(TEXT_1);
     stringBuffer.append(constant.getType().generateJavaMapping());

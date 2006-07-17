@@ -1,59 +1,37 @@
 #ifndef __INTERFACE_USER_TYPE_ATTRIBUTES__IDL__
 #define __INTERFACE_USER_TYPE_ATTRIBUTES__IDL__
 
-module world 
+#include <typedef/BasicTypeTypedef.idl>
+#include <enum/Color.idl>
+#include <struct/Address.idl>
+#include <array/BasicTypeArray.idl>
+#include <sequence/BasicTypeSequence.idl>
+
+#include "InterfaceBasicTypeAttributes.idl"
+
+interface InterfaceUserTypeAttributes
 {
-  	enum Color {red, green, blue, black, orange};
-  
-  	struct Person 
-  	{
-    		long id;
-    		string name;
-  	};
-  
-  	struct Address 
-  	{
-    		string street;
-    		long   number;
-    		Person resident;
-  	};
-  
-  	typedef long time_t;
-  
-  	typedef sequence<long> LongList;
-  	typedef sequence<string> StringList;
-  	typedef sequence<Person> PersonList;
+	// Here we define interface attributes which causes the
+	// generation of a pair of getter und setter methods for
+	// each attribute.
+	
+	attribute LongType 						typedefValue;
+	attribute Color 							enumValue;
+	attribute Address 						structValue;
+	attribute LongArray 						arrayValue;
+	attribute LongSeq 						sequenceValue;
+  	attribute InterfaceBasicTypeAttributes 	interfaceValue;
 
-  	typedef long LongArray[10];
-  	typedef string StringArray[10];
-  	typedef Person PersonArray[10];
 
-  	typedef long LongMatrix[10][5];
-  	typedef long LongCube[10][5][7];
+	// Here we define a readonly attribute which causes only a getter 
+	// access method.
 
-  	module europe 
-  	{
-	    interface InterfaceUserTypeAttributes
-    		{
-      		attribute Color color_value;
-      		attribute Person person_value;
-      		attribute Address address_value;
-  
-      		attribute LongList longList_value;
-      		attribute StringList stringList_value;
-      		attribute PersonList personList_value;
-      
-      		attribute time_t time_t_value;
-
-      		attribute LongArray longArray_value;
-      		attribute StringArray stringArray_value;
-     		attribute PersonArray personArray_value;
-
-      		attribute LongMatrix longMatrix_value;
-      		attribute LongCube longCube_value;
-    		};
-    		
-  	}; // end of module europe
-}; // end of module world
+	readonly attribute LongType 						roTypedefValue;
+	readonly attribute Color 						roEnumValue;
+	readonly attribute Address 						roStructValue;
+	readonly attribute LongArray 					roArrayValue;
+	readonly attribute LongSeq 						roSequenceValue;
+  	readonly attribute InterfaceBasicTypeAttributes 	roInterfaceValue;
+};
 
 #endif // __INTERFACE_USER_TYPE_ATTRIBUTES__IDL__

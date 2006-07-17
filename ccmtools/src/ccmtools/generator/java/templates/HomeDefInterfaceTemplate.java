@@ -23,7 +23,7 @@ public class HomeDefInterfaceTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      HomeDef home = (HomeDef) argument; 
     stringBuffer.append(TEXT_1);
     stringBuffer.append(home.generateCcmtoolsVersion());

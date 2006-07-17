@@ -1,6 +1,6 @@
 
 all: idl3
 
-idl3: TypedefTest.idl
-	ccmparser TypedefTest.idl
+idl3: BasicTypeTypedef.idl
+	ccmparser BasicTypeTypedef.idl
 

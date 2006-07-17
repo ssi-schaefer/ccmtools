@@ -25,7 +25,7 @@ public class StructDefDefaultConstructorTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      StructDef struct = (StructDef) argument; 
     stringBuffer.append(TEXT_1);
     stringBuffer.append(struct.getIdentifier());

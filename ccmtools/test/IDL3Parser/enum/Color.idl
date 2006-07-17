@@ -1,0 +1,13 @@
+#ifndef __COLOR__IDL__
+#define __COLOR__IDL__
+
+enum Color
+{
+    red,
+    green,
+    blue,
+    black,
+    orange
+};
+
+#endif // __COLOR__IDL__

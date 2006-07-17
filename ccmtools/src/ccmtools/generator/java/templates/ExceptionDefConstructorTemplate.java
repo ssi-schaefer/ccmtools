@@ -31,7 +31,7 @@ public class ExceptionDefConstructorTemplate
 
   public String generate(Object argument)
   {
-    StringBuffer stringBuffer = new StringBuffer();
+    final StringBuffer stringBuffer = new StringBuffer();
      ExceptionDef exception = (ExceptionDef) argument; 
     stringBuffer.append(TEXT_1);
     stringBuffer.append(exception.getIdentifier());

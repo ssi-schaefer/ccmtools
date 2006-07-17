@@ -1,0 +1,13 @@
+#ifndef __EMPTY__IDL__
+#define __EMPTY__IDL__
+
+
+/*
+ * Note that IDL does not permit empty enumerations!!!
+ */
+ 
+enum Empty
+{
+};
+
+#endif // __EMPTY__IDL__

@@ -1,6 +1,7 @@
+INCLUDE= -I../
 
 all: idl3
 
 idl3: 
-	ccmparser GlobalConstants.idl
-
+	ccmparser ${INCLUDE} ConstantGlobal.idl
+	ccmparser ConstantExpression.idl
