@@ -1,0 +1,18 @@
+#ifndef __COMPONENT_FACET__IDL__
+#define __COMPONENT_FACET__IDL__
+
+#include <interface/InterfaceBasicTypeAttributes.idl>
+#include <interface/InterfaceUserTypeOperation.idl>
+
+component ComponentFacet
+{
+	provides InterfaceBasicTypeAttributes basicTypes;
+	provides InterfaceUserTypeOperation userTypes;
+};
+
+home ComponentFacetHome
+	manages ComponentFacet
+{
+};
+
+#endif // __COMPONENT_FACET__IDL__

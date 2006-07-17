@@ -1,0 +1,20 @@
+#ifndef __HOME_FINDER_OPERATION__IDL__
+#define __HOME_FINDER_OPERATION__IDL__
+
+exception CreateError
+{
+};
+
+component SimpleComponent
+{
+	attribute string Id;
+};
+
+home SimpleComponentHome
+	manages SimpleComponent
+{
+	finder findComponent(in string name)
+		raises(CreateError);
+};
+
+#endif // __HOME_FINDER_OPERATION__IDL__

@@ -23,6 +23,13 @@ import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MWstringDef;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
+import ccmtools.Metamodel.ComponentIDL.MFinderDef;
+import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.utils.Code;
 
 
@@ -159,36 +166,22 @@ public class CcmPrettyPrinter
         		}
         		print(alias);
         	}
+        	else if(node instanceof MHomeDef)
+    		{
+    			MHomeDef home = (MHomeDef) node;
+    			print(home);
+    		}
+        	else if(node instanceof MComponentDef) 
+        	{
+        		MComponentDef component = (MComponentDef)node;
+        		print(component);
+        	}
         	else if(node instanceof MInterfaceDef)
         	{
         		MInterfaceDef iface = (MInterfaceDef)node;
         		print(iface);
         	}
 
-    		
-//		else if (node instanceof MProvidesDef)
-//		{
-//			MProvidesDef provides = (MProvidesDef) node;
-//			System.out.println("MProvidesDef: " + provides.getIdentifier() + "->" 
-//					+ provides.getProvides().getRepositoryId());
-//		}
-//		else if (node instanceof MUsesDef)
-//		{
-//			MUsesDef uses = (MUsesDef) node;
-//			System.out.println("MUsesDef: " + uses.getIdentifier() + "->" 
-//					+ uses.getUses().getRepositoryId());
-//		}        
-//    		
-//        	else if (node instanceof MHomeDef)
-//    		{
-//    			MHomeDef home = (MHomeDef) node;
-//    			System.out.println("MHomeDef: " + home.getRepositoryId());
-//    		}
-//        	else if(node instanceof MComponentDef) 
-//        	{
-//        		MComponentDef component = (MComponentDef)node;
-//        		System.out.println("MComponentDef: " + component.getRepositoryId());
-//        	}
     }
 
 	public void handleNodeData(String fieldType, String fieldId, Object value)
@@ -381,6 +374,140 @@ public class CcmPrettyPrinter
 			}
 		}		
 	}
+
+	private void print(MComponentDef in)
+	{
+		println(Code.getRepositoryId(in) + ":ComponentDef");
+		for(Iterator i = in.getBases().iterator(); i.hasNext();)
+		{
+			MInterfaceDef baseInterface = (MInterfaceDef)i.next();
+			println(TAB + "extends " + baseInterface.getRepositoryId());
+		}
+		for(Iterator i = in.getHomes().iterator(); i.hasNext();)
+		{
+			MHomeDef home = (MHomeDef)i.next();
+			println(TAB + "home: " + home.getRepositoryId());
+		}
+		for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
+		{
+			MSupportsDef supports = (MSupportsDef)i.next();
+			MInterfaceDef supportedInterface = (MInterfaceDef)supports.getSupports();
+			println(TAB + "supports " + supportedInterface.getRepositoryId());
+		}
+		for(Iterator i = in.getFacets().iterator(); i.hasNext();)
+		{
+			MProvidesDef provides = (MProvidesDef)i.next();
+			println(TAB + "provides: " + provides.getProvides().getRepositoryId());
+		}
+		for(Iterator i = in.getReceptacles().iterator(); i.hasNext();)
+		{
+			MUsesDef uses = (MUsesDef)i.next();
+			if(uses.isMultiple())
+			{
+				print(TAB + "uses(multiple): ");
+			}
+			else
+			{
+				print(TAB + "uses: ");
+			}
+			println(uses.getUses().getRepositoryId());
+		}
+		
+		for(Iterator i = in.getContentss().iterator(); i.hasNext();)
+		{
+			MContained contained = (MContained)i.next();					
+			if(contained instanceof MAttributeDef)
+			{
+				MAttributeDef attr = (MAttributeDef)contained;
+				print(TAB);
+				if(attr.isReadonly())
+				{
+					print("readonly ");
+				}
+				print(attr.getIdentifier());
+				print(attr.getIdlType());
+			}
+			else
+			{
+				throw new RuntimeException("Unhandled containment in component " + in.getRepositoryId());
+			}
+		}
+	}
+
+	private void print(MHomeDef in)
+	{
+		println(Code.getRepositoryId(in) + ":HomeDef");
+		for(Iterator i = in.getBases().iterator(); i.hasNext();)
+		{
+			MInterfaceDef baseInterface = (MInterfaceDef)i.next();
+			println(TAB + "extends " + baseInterface.getRepositoryId());
+		}
+		MComponentDef component = in.getComponent();
+		println(TAB + "manages: " + component.getRepositoryId());
+		for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
+		{
+			MSupportsDef supports = (MSupportsDef)i.next();
+			MInterfaceDef supportedInterface = (MInterfaceDef)supports.getSupports();
+			println(TAB + "supports " + supportedInterface.getRepositoryId());
+		}
+		for(Iterator i = in.getFactories().iterator(); i.hasNext();)
+		{
+			MFactoryDef factory = (MFactoryDef)i.next();
+			print(factory);
+		}
+		for(Iterator i = in.getFinders().iterator(); i.hasNext();)
+		{
+			MFinderDef finder = (MFinderDef)i.next();
+			print(finder);
+		}
+	}
+	
+	private void print(MFactoryDef in)
+	{
+		println("factory: " + in.getIdentifier());
+		for(Iterator i = in.getParameters().iterator(); i.hasNext();)
+		{
+			MParameterDef parameter = (MParameterDef)i.next();
+			print(TAB + "parameter: ");
+			print(parameter.getIdentifier());
+			print(parameter.getIdlType());
+		}
+		for(Iterator i = in.getExceptionDefs().iterator(); i.hasNext();)
+		{
+			MExceptionDef ex = (MExceptionDef)i.next();
+			print(TAB + "rainses: ");
+			println(ex.getIdentifier());
+		}
+		if(in.getContexts() != null)
+		{
+			print(TAB + "context: ");
+			println(in.getContexts());
+		}
+	}
+	
+	private void print(MFinderDef in)
+	{
+		println("finder: " + in.getIdentifier());
+		for(Iterator i = in.getParameters().iterator(); i.hasNext();)
+		{
+			MParameterDef parameter = (MParameterDef)i.next();
+			print(TAB + "parameter: ");
+			print(parameter.getIdentifier());
+			print(parameter.getIdlType());
+		}
+		for(Iterator i = in.getExceptionDefs().iterator(); i.hasNext();)
+		{
+			MExceptionDef ex = (MExceptionDef)i.next();
+			print(TAB + "rainses: ");
+			println(ex.getIdentifier());
+		}
+		if(in.getContexts() != null)
+		{
+			print(TAB + "context: ");
+			println(in.getContexts());
+		}
+	}
+
 	
 	private void print(MIDLType in)
 	{

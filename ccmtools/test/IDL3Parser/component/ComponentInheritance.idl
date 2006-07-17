@@ -1,0 +1,23 @@
+#ifndef __COMPONENT_INHERITANCE__IDL__
+#define __COMPONENT_INHERITANCE__IDL__
+
+#include <interface/InterfaceBasicTypeAttributes.idl>
+#include <interface/InterfaceUserTypeOperation.idl>
+
+component SuperComponent
+{
+	provides InterfaceBasicTypeAttributes basicTypes;
+};
+
+component SubComponent
+	: SuperComponent
+{
+	provides InterfaceUserTypeOperation userTypes;
+};
+
+home SubComponentHome
+	manages SubComponent
+{
+};
+
+#endif // __COMPONENT_INHERITANCE__IDL__

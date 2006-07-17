@@ -1,0 +1,18 @@
+#ifndef __COMPONENT_RECEPTACLE__IDL__
+#define __COMPONENT_RECEPTACLE__IDL__
+
+#include <interface/InterfaceBasicTypeAttributes.idl>
+#include <interface/InterfaceUserTypeOperation.idl>
+
+component ComponentReceptacle
+{
+	uses InterfaceBasicTypeAttributes basicTypes;
+	uses multiple InterfaceUserTypeOperation userTypes;
+};
+
+home ComponentReceptacleHome
+	manages ComponentReceptacle
+{
+};
+
+#endif // __COMPONENT_RECEPTACLE__IDL__

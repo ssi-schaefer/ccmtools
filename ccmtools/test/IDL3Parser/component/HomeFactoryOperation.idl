@@ -1,0 +1,20 @@
+#ifndef __HOME_FACTORY_OPERATION__IDL__
+#define __HOME_FACTORY_OPERATION__IDL__
+
+exception CreateError
+{
+};
+
+component SimpleComponent
+{
+	attribute string Id;
+};
+
+home SimpleComponentHome
+	manages SimpleComponent
+{
+	factory createComponent(in string name)
+		raises(CreateError);
+};
+
+#endif // __HOME_FACTORY_OPERATION__IDL__

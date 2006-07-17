@@ -1,0 +1,20 @@
+#ifndef __HOME_INHERITANCE__IDL__
+#define __HOME_INHERITANCE__IDL__
+
+component SimpleComponent
+{
+	attribute string Id;
+};
+
+home SuperHome 
+	manages SimpleComponent
+{
+};
+
+home SubHome
+	: SuperHome
+	manages SimpleComponent
+{
+};
+
+#endif // __HOME_INHERITANCE__IDL__

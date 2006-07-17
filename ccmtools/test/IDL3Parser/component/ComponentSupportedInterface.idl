@@ -1,0 +1,17 @@
+#ifndef __COMPONENT_SUPPORTED_INTERFACE__IDL__
+#define __COMPONENT_SUPPORTED_INTERFACE__IDL__
+
+#include <interface/InterfaceBasicTypeAttributes.idl>
+#include <interface/InterfaceUserTypeOperation.idl>
+
+component ComponentSupportedInterface
+	supports InterfaceBasicTypeAttributes, InterfaceUserTypeOperation
+{
+};
+
+home ComponentSupportedInterfaceHome
+	manages ComponentSupportedInterface
+{
+};
+
+#endif // __COMPONENT_SUPPORTED_INTERFACE__IDL__
