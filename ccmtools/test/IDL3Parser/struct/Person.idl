@@ -3,7 +3,7 @@
 
 struct Person
 {
-    long id
+    long id;
     string name;
 };
 

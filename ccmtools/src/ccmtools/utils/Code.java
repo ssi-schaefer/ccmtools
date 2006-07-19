@@ -357,13 +357,16 @@ public class Code
      * @param node
      * @return
      */
-    public static List getNamespaceList(MContained node)
+    public static List<String> getNamespaceList(MContained node)
     {        
-        List scope = new ArrayList();
+        List<String> scope = new ArrayList<String>();
         MContainer c = node.getDefinedIn();
-        while(c.getDefinedIn() != null) {
+        while(c.getDefinedIn() != null) 
+        {
             if(c instanceof MModuleDef)
+            {
                 scope.add(0, c.getIdentifier());
+            }
             c = c.getDefinedIn();
         }
         return scope;

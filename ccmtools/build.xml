@@ -76,7 +76,7 @@
 	<target name="compile-uml_parser" depends="generate-uml_parser"
 		description="Compile the uml_parser package.">
 	 	<javac srcdir="${src}/uml_parser" destdir="${build}/classes" 
-	 			debug="on" source="1.4" target="1.4" verbose="off">
+	 			debug="on" source="1.5" target="1.5" verbose="off">
 			<classpath refid="compile.classpath" />
 	    </javac>
 	</target>
@@ -85,7 +85,7 @@
 	<target name="compile-uml2idl" depends="compile-uml_parser"
 		description="Compile the uml2idl package.">
 	    <javac srcdir="${src}/uml2idl" destdir="${build}/classes" 
-	    		debug="on" source="1.4" target="1.4" verbose="off">
+	    		debug="on" source="1.5" target="1.5" verbose="off">
 			<classpath refid="compile.classpath" />
 	    </javac>
 	</target>
@@ -94,7 +94,7 @@
   	<target name="compile-ccmtools" depends="generate-IDL3Parser, generate-IDL3Parser-new"
      	description="Compile the ccmtools package." >
       	<javac srcdir="${src}/ccmtools" destdir="${build}/classes" 
-      		  	debug="on" source="1.4" target="1.4" verbose="off">
+      		  	debug="on" source="1.5" target="1.5" verbose="off">
           	<classpath refid="compile.classpath" />  
       	</javac>
   	</target>
@@ -115,60 +115,28 @@
       	description="Install ccmtools to prefix/.">
       	<mkdir dir="${prefix}" />
   		
-    	<copy file="${lib}/antlr.jar"        	todir="${prefix}/lib"  overwrite="true" />  
+    		<copy file="${lib}/antlr.jar"        	todir="${prefix}/lib"  overwrite="true" />  
   		<copy file="${lib}/commons-cli-1.0.jar"	todir="${prefix}/lib"  overwrite="true" />  
   		<copy file="${lib}/jdom.jar"         	todir="${prefix}/lib"  overwrite="true" />  
      	<copy file="${lib}/ccmtools.jar"     	todir="${prefix}/lib"  overwrite="true" />    		
       	<copy file="${lib}/junit.jar"        	todir="${prefix}/lib"  overwrite="true" />   		  		
   		
-      	<copy todir="${prefix}/templates" overwrite="true">
-          	<fileset dir="${src}/templates"/>
-      	</copy>
+      	<copy todir="${prefix}/templates" overwrite="true"> <fileset dir="${src}/templates"/> </copy>
 
-      	<copy todir="${prefix}/idl" overwrite="true">
-          	<fileset dir="${idl}"/>
-      	</copy>
+      	<copy todir="${prefix}/idl" overwrite="true"> <fileset dir="${idl}"/> </copy>
 
-      	<copy todir="${prefix}/etc" overwrite="true">
-          	<fileset dir="${etc}"/>
-      	</copy>
-
+      	<copy todir="${prefix}/etc" overwrite="true"> <fileset dir="${etc}"/> </copy>
   		
-      	<copy todir="${prefix}/bin" overwrite="true">
-          	<fileset dir="${bin}"/>
-      	</copy>
-  		<exec executable="chmod">
-  		    <arg value="+x" />
-  		    <arg value="${prefix}/bin/ccmtools" />
-  		</exec>
-  		<exec executable="chmod">
-  		  	<arg value="+x" />
-  		  	<arg value="${prefix}/bin/ccmjava" />
-  		</exec>
-  		<exec executable="chmod">
-  		  	<arg value="+x" />
-  		  	<arg value="${prefix}/bin/ccmparser" />
-  		</exec>
-  		<exec executable="chmod">
-  		  	<arg value="+x" />
-  		  	<arg value="${prefix}/bin/ccmconfix" />
-  		</exec>
-  		<exec executable="chmod">
-  		  	<arg value="+x" />
-  		  	<arg value="${prefix}/bin/ccmns" />
-  		</exec>
-  		<exec executable="chmod">
-  		    <arg value="+x" />
-  		    <arg value="${prefix}/bin/ccmdescriptor" />
-  		</exec>
-      	<exec executable="chmod">
-          	<arg value="+x" />
-          	<arg value="${prefix}/bin/ccmtools-idl" />
-      	</exec>
-      	<exec executable="chmod">
-          	<arg value="+x" />
-          	<arg value="${prefix}/bin/uml2idl" />
-      	</exec>
+      	<copy todir="${prefix}/bin" overwrite="true"> <fileset dir="${bin}"/> </copy>
+  		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmtools"/>      </exec>
+  		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmjava"/>       </exec>
+  		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmidl"/>        </exec>
+  		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmparser"/>     </exec>
+  		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmconfix"/>     </exec>
+  		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmns"/>         </exec>
+  		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmdescriptor"/> </exec>
+      	<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmtools-idl"/>  </exec>
+      	<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/uml2idl"/>       </exec>
   	</target>
 	
 
