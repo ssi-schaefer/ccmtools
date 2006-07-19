@@ -93,16 +93,7 @@ public class ParserManager
 
 		helper.getSymbolTable().pushFile();
 		
-		try
-		{
-			spec = parser.specification();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			logger.fine("Exception: " + e.getMessage());
-			helper.getErrorList().add(e.getMessage());
-		}
+		spec = parser.specification();
 
 		helper.getSymbolTable().popFile();
 

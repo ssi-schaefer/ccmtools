@@ -1,0 +1,11 @@
+#ifndef __IMPORT_TEST__IDL__
+#define __IMPORT_TEST__IDL__
+
+// imported namespaces are put into the scopeTable.
+import org::omg::Components;
+import IDL::framework;
+
+// There must be et least one IDL definition to make the parser happy
+typedef long LongType;
+
+#endif // __IMPORT_TEST__IDL__

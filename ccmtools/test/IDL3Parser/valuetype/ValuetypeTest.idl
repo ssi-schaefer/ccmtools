@@ -1,0 +1,24 @@
+#ifndef __VALUETYPE_TEST__IDL__
+#define __VALUETYPE_TEST__IDL__
+
+valuetype Login
+{
+    public long id;
+    public string name;
+    private string password;
+    
+    boolean hasAccess();
+};
+
+valuetype xy : Login
+{
+	public double time;
+	
+	void login();
+};
+
+abstract valuetype EventBase
+{
+};
+
+#endif // __VALUETYPE_TEST__IDL__

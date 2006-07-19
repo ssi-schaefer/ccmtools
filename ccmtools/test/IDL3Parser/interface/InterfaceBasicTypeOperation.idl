@@ -3,7 +3,7 @@
 
 interface InterfaceBasicTypeOperation 
 {
-	short         	shortOp(in short p1, inout short p2, out short p3);
+	short         	shortOp(in short p1, inout short p2, out short p3)
 	long           	longOp(in long p1, inout long p2, out long p3);
 	long long		lLongOp(in long long p1, inout long long p2, out long long p3);
 	unsigned short 	uShortOp(in unsigned short p1, inout unsigned short p2, out unsigned short p3);

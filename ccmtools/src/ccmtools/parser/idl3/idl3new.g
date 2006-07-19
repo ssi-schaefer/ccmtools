@@ -87,7 +87,10 @@ options
 	}
 }
 
-SEMI     options { paraphrase = "a semicolon (';')" ; } : ';'  ;
+SEMI     options { paraphrase = "a semicolon (';')" ; } 
+	: ';'  
+	;
+
 QUESTION options { paraphrase = "?" ; } : '?'  ;
 LPAREN   options { paraphrase = "(" ; } : '('  ;
 RPAREN   options { paraphrase = ")" ; } : ')'  ;
@@ -230,11 +233,15 @@ IDENT options { paraphrase = "an identifier"; }
  *****************************************************************************/
 
 class Idl3Parser extends Parser;
-options { exportVocab = Idl3; k = 2; }
+options 
+{ 
+	exportVocab = Idl3; 
+	k = 2;
+	defaultErrorHandler=false; 
+}
 {
     private Map scopeTable = new Hashtable();
     private MContainer specification = null;
-
 	private ParserHelper helper;	
 	
 	public void setHelper(ParserHelper helper)
@@ -253,11 +260,14 @@ specification returns [MContainer container = null]
     List definitions = new ArrayList();
     specification = container;
 }
-    :   ( import_dcl )*
-        ( decls = definition { definitions.addAll(decls); } )+
-        {
+    :   
+    ( import_dcl )*
+    ( decls = definition { definitions.addAll(decls); } )+
+    		{
             helper.checkAddContents(container, definitions);
-        } ;
+        } 
+    ;
+
 
 // 2. <definition> ::= <type_dcl,42> ";" <-- this rule returns a list
 //    | <const_dcl,27> ";"
@@ -272,7 +282,10 @@ specification returns [MContainer container = null]
 //    | <home_dcl,126> ";"
 //
 definition returns [List definitions = null]
-{ definitions = new ArrayList(); MContained holder = null; }
+{ 
+	definitions = new ArrayList(); 
+	MContained holder = null; 
+}
     :   definitions = type_dcl    SEMI
     |   holder = const_dcl        SEMI { definitions.add(holder); }
     |   holder = except_dcl       SEMI { definitions.add(holder); }
@@ -285,6 +298,7 @@ definition returns [List definitions = null]
     |   holder = component        SEMI { definitions.add(holder); }
     |   holder = home_dcl         SEMI { definitions.add(holder); }
     ;
+
 
 // 3. <module> ::= "module" <identifier> "{" <definition,2>+ "}"
 module returns [MModuleDef mod = null]
@@ -301,10 +315,14 @@ module returns [MModuleDef mod = null]
             mod.setIdentifier(id);
             helper.getSymbolTable().add(id, mod);
         }
-        LCURLY { helper.getSymbolTable().pushScope(id); }
+        LCURLY 
+        { helper.getSymbolTable().pushScope(id); }
         ( decls = definition { definitions.addAll(decls); } )*
         { helper.checkAddContents(mod, definitions); }
-        RCURLY { helper.getSymbolTable().popScope(); } ;
+        RCURLY 
+        { helper.getSymbolTable().popScope(); } 
+    ;
+    
 
 // (lmj) this was renamed to iface to prevent collisions with Java keywords
 //
@@ -316,7 +334,9 @@ module returns [MModuleDef mod = null]
 //
 // 4. <iface> ::= <forward_dcl,6> [ <interface_dcl,5> ]
 iface returns [MInterfaceDef iface = null]
-    :   iface = forward_dcl ( interface_dcl[iface] )? ;
+    :   iface = forward_dcl ( interface_dcl[iface] )? 
+    ;
+    
 
 // 5. <interface_dcl> ::= <interface_header,7> "{" <interface_body,8> "}"
 interface_dcl[MInterfaceDef iface]
@@ -324,7 +344,9 @@ interface_dcl[MInterfaceDef iface]
     :   interface_header[iface]
         LCURLY { helper.getSymbolTable().pushScope(iface.getIdentifier()); }
         exports = interface_body { helper.checkAddContents(iface, exports); }
-        RCURLY { helper.getSymbolTable().popScope(); } ;
+        RCURLY { helper.getSymbolTable().popScope(); } 
+    ;
+
 
 // 6. <forward_dcl> ::= [ "abstract" | "local" ] "interface" <identifier>
 forward_dcl returns [MInterfaceDef iface = null]
@@ -338,7 +360,9 @@ forward_dcl returns [MInterfaceDef iface = null]
             iface.setIdentifier(id);
             iface.setRepositoryId(helper.createRepositoryId(id));
             helper.getSymbolTable().add(id, iface);
-        } ;
+        } 
+    ;
+
 
 // 7. <interface_header> ::= [ "abstract" | "local" ] "interface" <identifier>
 //      [ <interface_inheritance_spec,10> ]
@@ -348,13 +372,20 @@ forward_dcl returns [MInterfaceDef iface = null]
 //
 // 7. <interface_header> ::= [ <interface_inheritance_spec,10> ]
 interface_header[MInterfaceDef iface]
-    :   ( interface_inheritance_spec[iface] )? ;
-
+    :   ( interface_inheritance_spec[iface] )? 
+    ;
+	
+	
 // 8. <interface_body> ::= <export,9>*
 interface_body returns [List exports = null]
-{ exports = new ArrayList(); List decls = null; }
-    :   ( decls = export { exports.addAll(decls); } )* ;
-
+{ 
+	exports = new ArrayList(); 
+	List decls = null; 
+}
+    :   ( decls = export { exports.addAll(decls); } )* 
+    ;
+	
+	
 // 9. <export> ::=
 //      <type_dcl,42> ";"   <-- this rule can return a list of declarations
 //    | <const_dcl,27> ";"
@@ -927,6 +958,7 @@ type_dcl returns [List decls = null]
         { decls.add(type); }
     ;
 
+
 // 43. <type_declarator> ::= <type_spec,44> <declarators,49>
 type_declarator returns [List declarations = null]
 {
@@ -1012,10 +1044,14 @@ constr_type_spec returns [MIDLType type = null]
 
 // 49. <declarators> ::= <declarator,50> { "," <declarator,50> }*
 declarators returns [List declarations = null]
-{ declarations = new ArrayList(); 
-  DeclaratorHelper h; }
+{ 
+	declarations = new ArrayList(); 
+  	DeclaratorHelper h; 
+}
     :   h = declarator { declarations.add(h); }
-        ( COMMA h = declarator { declarations.add(h); } )* ;
+    ( COMMA h = declarator { declarations.add(h); } )* 
+    ;
+
 
 // 50. <declarator> ::= <simple_declarator,51> | <complex_declarator,52>
 declarator returns [DeclaratorHelper h = null]
@@ -1028,12 +1064,18 @@ declarator returns [DeclaratorHelper h = null]
     |   ( complex_declarator ) => h = complex_declarator
     ;
 
+
 // 51. <simple_declarator> ::= <identifier>
-simple_declarator returns [String name = null] : name = identifier ;
+simple_declarator returns [String name = null] 
+	: name = identifier 
+	;
+
 
 // 52. <complex_declarator> ::= <array_declarator,83>
 complex_declarator returns [DeclaratorHelper h = null]
-    :   h = array_declarator ;
+    :   h = array_declarator 
+    ;
+
 
 // 53. <floating_pt_type> ::= "float" | "double" | "long double"
 floating_pt_type returns [MIDLType number = null]
@@ -1141,7 +1183,6 @@ unsigned_longlong_int returns [MPrimitiveDef number = null]
 }
     :   "unsigned" "long" "long"
         { 
-     		System.out.println(">>>>unsigned long long ");
         		((MPrimitiveDef) number).setKind(MPrimitiveKind.PK_ULONGLONG); 
         	} 
 	;
@@ -1232,14 +1273,21 @@ struct_type returns [MIDLType struct = null]
         	} 
     ;
 
+
 // 70. <member_list> ::= <member,71>+
 member_list returns [List members = null]
 { 
 	members = new ArrayList(); 
 	List decls = null; 
 }
-    :   ( decls = member { members.addAll(decls); } )+ 
+    :   
+    ( decls = member 
+    		{ 
+			members.addAll(decls); 
+    		} 
+    	)+ 
     ;
+
 
 // 71. <member> ::= <type_spec,44> <declarators,49> ";"
 member returns [List members = null]
@@ -1248,7 +1296,9 @@ member returns [List members = null]
     List decls = null;
     MIDLType type = null;
 }
-    :   type = type_spec decls = declarators SEMI 
+    :   type = type_spec 
+    		decls = declarators 
+        SEMI 
         {
             for (Iterator it = decls.iterator(); it.hasNext(); ) 
             {
@@ -1270,6 +1320,8 @@ member returns [List members = null]
         }
 	;
 
+	
+	
 // 72. <union_type> ::= "union" <identifier> "switch"
 //       "(" <switch_type_spec,73> ")" "{" <switch_body,74> "}"
 union_type returns [MIDLType union = null]
@@ -1291,6 +1343,7 @@ union_type returns [MIDLType union = null]
         LCURLY members = switch_body[type] RCURLY
         { helper.checkSetMembers((MUnionDef) union, members); } ;
 
+
 // 73. <switch_type_spec> ::= <integer_type,54>
 //     | <char_type,63>
 //     | <wide_char_type,64> <-- (lmj) i added this rule, seemed to belong
@@ -1307,6 +1360,7 @@ switch_type_spec returns [MIDLType type = null]
     |   name = scoped_name { type = helper.getIDLType(name); }
     ;
 
+
 // 74. <switch_body> ::= <case_dcl,75>+
 switch_body[MIDLType switchType] returns [List members = null]
 { 
@@ -1314,6 +1368,7 @@ switch_body[MIDLType switchType] returns [List members = null]
 	List decls = null; 
 }
     :   ( decls = case_dcl[switchType] { members.addAll(decls); } )+ ;
+
 
 // (lmj) renamed this to case_dcl to avoid colliding with the java keyword
 //
@@ -1397,6 +1452,7 @@ case_dcl[MIDLType switchType] returns [List members = null]
                 }
             }
         )+ members = element_spec[labels] SEMI ;
+
 
 // 76. <case_label> ::= "case" <const_exp,29> ":" | "default" ":"
 case_label returns [String label = null]
@@ -1611,8 +1667,10 @@ op_dcl returns [MOperationDef operation = null]
             exceptions = raises_expr
             { operation.setExceptionDefs(new HashSet(exceptions)); }
         )?
-        ( context = context_expr { operation.setContexts(context); } )? ;
-
+        ( context = context_expr { operation.setContexts(context); } )? 
+    ;
+	
+	
 // 88. <op_attribute> ::= "oneway"
 op_attribute returns [boolean oneway = false] : "oneway" { oneway = true; } ;
 
@@ -2445,6 +2503,7 @@ fixed_pt_literal returns [String literal = null]
     ;
 
 identifier returns [String identifier = null]
-    :   i:IDENT { identifier = i.getText(); } { helper.checkKeyword(identifier) }? ;
+    :   i:IDENT { identifier = i.getText(); } { helper.checkKeyword(identifier) }? 
+    ;
 
 

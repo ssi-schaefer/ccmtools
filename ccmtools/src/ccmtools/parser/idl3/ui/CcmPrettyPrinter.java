@@ -22,6 +22,8 @@ import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
+import ccmtools.Metamodel.BaseIDL.MValueDef;
+import ccmtools.Metamodel.BaseIDL.MValueMemberDef;
 import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
 import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
@@ -181,7 +183,12 @@ public class CcmPrettyPrinter
         		MInterfaceDef iface = (MInterfaceDef)node;
         		print(iface);
         	}
-
+        	else if(node instanceof MValueDef)
+        	{
+        		MValueDef value = (MValueDef)node;
+        		print(value);        		
+        	}
+    		
     }
 
 	public void handleNodeData(String fieldType, String fieldId, Object value)
@@ -193,6 +200,60 @@ public class CcmPrettyPrinter
 	 * Pretty Printer Methods 
 	 *************************************************************************/
 
+	private void print(String in)
+	{
+		System.out.print(in);
+	}
+	
+	private void println(String in)
+	{
+		System.out.println(in);
+	}	
+
+	private void print(MIDLType in)
+	{
+		if(in instanceof MPrimitiveDef)
+		{
+			print((MPrimitiveDef)in);
+		}
+		else if(in instanceof MStringDef)
+		{
+			print((MStringDef)in);
+		}
+		else if(in instanceof MWstringDef)
+		{
+			print((MWstringDef)in);
+		}
+		else if(in instanceof MFixedDef)
+		{
+			print((MFixedDef)in);
+		}		
+		else if(in instanceof MEnumDef)
+		{			
+			print((MEnumDef)in);
+		}
+		else if(in instanceof MSequenceDef)
+		{
+			print((MSequenceDef)in);
+		}
+		else if(in instanceof MStructDef)
+		{			
+			println(":" + ((MStructDef)in).getIdentifier());
+		}
+		else if(in instanceof MInterfaceDef)
+		{
+			println(":" + ((MInterfaceDef)in).getRepositoryId());
+		}
+		else if(in instanceof MAliasDef)
+		{
+			print((MAliasDef)in);
+		}
+		else
+		{
+			throw new RuntimeException("print(MIDLType): unknown idl type " + in);
+		}
+	}
+	
 	private void print(MAliasDef in)
 	{		
 		print(Code.getRepositoryId(in) + ":(MAliasDef)");    		
@@ -507,60 +568,54 @@ public class CcmPrettyPrinter
 			println(in.getContexts());
 		}
 	}
-
 	
-	private void print(MIDLType in)
+	private void print(MValueDef in)
 	{
-		if(in instanceof MPrimitiveDef)
+		println(Code.getRepositoryId(in) + ":ValueDef");
+		println(TAB + "isAbstract   : " + in.isAbstract());
+		println(TAB + "isCustom     : " + in.isCustom());
+		println(TAB + "isTruncatable: " + in.isTruncatable());
+		if(in.getBase() != null)
 		{
-			print((MPrimitiveDef)in);
+			println("extends: " + Code.getRepositoryId(in.getBase()));
 		}
-		else if(in instanceof MStringDef)
+		for(Iterator i = in.getAbstractBases().iterator(); i.hasNext();)
 		{
-			print((MStringDef)in);
+			MInterfaceDef baseInterface = (MInterfaceDef)i.next();
+			println(TAB + "extends abstract: " + baseInterface.getRepositoryId());
 		}
-		else if(in instanceof MWstringDef)
+		if(in.getInterfaceDef() != null)
 		{
-			print((MWstringDef)in);
+			println("supports: " + Code.getRepositoryId(in.getInterfaceDef()));
 		}
-		else if(in instanceof MFixedDef)
+		for(Iterator i = in.getContentss().iterator(); i.hasNext();)
 		{
-			print((MFixedDef)in);
-		}		
-		else if(in instanceof MEnumDef)
-		{			
-			print((MEnumDef)in);
-		}
-		else if(in instanceof MSequenceDef)
-		{
-			print((MSequenceDef)in);
-		}
-		else if(in instanceof MStructDef)
-		{			
-			println(":" + ((MStructDef)in).getIdentifier());
-		}
-		else if(in instanceof MInterfaceDef)
-		{
-			println(":" + ((MInterfaceDef)in).getRepositoryId());
-		}
-		else if(in instanceof MAliasDef)
-		{
-			print((MAliasDef)in);
-		}
-		else
-		{
-			throw new RuntimeException("print(MIDLType): unknown idl type " + in);
+			MContained contained = (MContained)i.next();					
+			if(contained instanceof MValueMemberDef)
+			{
+				MValueMemberDef member = (MValueMemberDef)contained;
+				print(TAB);
+				if(member.isPublicMember())
+				{
+					print("public ");
+				}
+				else
+				{
+					print("private ");
+				}
+				print(member.getIdentifier());
+				print(member.getIdlType());
+			}
+			else if(contained instanceof MOperationDef)
+			{				
+				print((MOperationDef)contained);
+			}
+			else
+			{
+				println(contained.toString());
+				throw new RuntimeException("Unhandled containment in valuedef "
+						+ Code.getRepositoryId(in));
+			}
 		}
 	}
-
-	
-	private void print(String in)
-	{
-		System.out.print(in);
-	}
-	
-	private void println(String in)
-	{
-		System.out.println(in);
-	}	
 }

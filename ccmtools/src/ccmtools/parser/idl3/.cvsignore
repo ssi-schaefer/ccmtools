@@ -6,3 +6,4 @@ Idl3Lexer.java
 Idl3Parser.java
 Idl3TokenTypes.java
 Idl3TokenTypes.txt
+Idl3LexerTokenTypes.java

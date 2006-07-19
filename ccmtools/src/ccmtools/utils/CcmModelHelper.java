@@ -60,11 +60,6 @@ public class CcmModelHelper
 //			uiDriver.printMessage("parse " + idlfile.toString());
 
 			ccmtools.parser.idl3.ParserManager manager = new ccmtools.parser.idl3.ParserManager(source.toString());			
-//!!!!!!!!!!!!!!!!
-//          old version:
-//			ccmtools.IDL3Parser.ParserManager manager = new ccmtools.IDL3Parser.ParserManager();
-//			manager.setOriginalFile(source.toString());
-//!!!!!!!!!!!!!!!!
 			
 			ccmModel = manager.parseFile(idlfile.toString());			
 			if (ccmModel == null)

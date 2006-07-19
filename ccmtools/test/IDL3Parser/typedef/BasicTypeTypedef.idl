@@ -10,7 +10,7 @@
 /*
  * Here we define aliases for basic IDL types
  */
-typedef short 			ShortType;	
+typedef short 			ShortType;
 typedef long 			LongType;
 typedef long long 		LLongType;
 typedef unsigned short 	UShortType;
