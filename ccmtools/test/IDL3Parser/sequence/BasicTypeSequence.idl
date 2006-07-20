@@ -5,26 +5,26 @@
  * Here we define sequences of basic type values
  */
  
-typedef sequence<short> 				ShortSeq;	
-typedef sequence<long> 				LongSeq;
-typedef sequence<long long> 			LLongSeq;
-typedef sequence<unsigned short> 	UShortSeq;
-typedef sequence<unsigned long> 		ULongSeq;
-//typedef sequence<unsigned long long> ULLongSeq; !!!
+typedef sequence<short>                 ShortSeq;	
+typedef sequence<long> 		        LongSeq;
+typedef sequence<long long> 	        LLongSeq;
+typedef sequence<unsigned short>        UShortSeq;
+typedef sequence<unsigned long>         ULongSeq;
+//typedef sequence<unsigned long long>  ULLongSeq; !!!
  
-typedef sequence<float> 				FloatSeq;
-typedef sequence<double> 			DoubleSeq;
+typedef sequence<float> 	        FloatSeq;
+typedef sequence<double> 		DoubleSeq;
 typedef sequence<long double>     	LDoubleSeq; 
  
-typedef sequence<char> 				CharSeq;
-typedef sequence<wchar>     			WCharSeq;
-typedef sequence<string> 			StringSeq;
-typedef sequence<wstring	>			WStringSeq;
+typedef sequence<char> 			CharSeq;
+typedef sequence<wchar>     		WCharSeq;
+typedef sequence<string> 		StringSeq;
+typedef sequence<wstring>		WStringSeq;
  
-typedef sequence<boolean> 			BooleanSeq;
-typedef sequence<octet> 				OctetSeq;	
-typedef sequence<any> 				AnySeq;
-typedef sequence<Object>				ObjectSeq;
+typedef sequence<boolean> 		BooleanSeq;
+typedef sequence<octet> 		OctetSeq;	
+typedef sequence<any> 			AnySeq;
+typedef sequence<Object>		ObjectSeq;
 
 typedef sequence<fixed<9,2> >      	FixedSeq;
 
@@ -33,28 +33,28 @@ typedef sequence<fixed<9,2> >      	FixedSeq;
  * Here we define bounded sequences of basic type values
  */
 
-typedef sequence<short,10> 					ShortBSeq;	
-typedef sequence<long,10> 					LongSBeq;
-typedef sequence<long long, 10> 				LLongBSeq;
-typedef sequence<unsigned short, 10> 		UShortBSeq;
-typedef sequence<unsigned long, 10> 			ULongBSeq;
+typedef sequence<short,10> 		        ShortBSeq;	
+typedef sequence<long,10> 		        LongBSeq;
+typedef sequence<long long, 10> 	        LLongBSeq;
+typedef sequence<unsigned short, 10> 	        UShortBSeq;
+typedef sequence<unsigned long, 10> 		ULongBSeq;
 //typedef sequence<unsigned long long, 10> 	ULLongBSeq; !!!
  
-typedef sequence<float, 10> 					FloatBSeq;
-typedef sequence<double, 10> 				DoubleBSeq;
+typedef sequence<float, 10> 			FloatBSeq;
+typedef sequence<double, 10> 			DoubleBSeq;
 typedef sequence<long double, 10>     		LDoubleBSeq; 
  
-typedef sequence<char, 10> 					CharBSeq;
-typedef sequence<wchar, 10>     				WCharBSeq;
-typedef sequence<string, 10> 				StringBSeq;
-typedef sequence<wstring	, 10>				WStringBSeq;
+typedef sequence<char, 10> 			CharBSeq;
+typedef sequence<wchar, 10>     		WCharBSeq;
+typedef sequence<string, 10> 			StringBSeq;
+typedef sequence<wstring	, 10>		WStringBSeq;
  
-typedef sequence<boolean, 10> 				BooleanBSeq;
-typedef sequence<octet, 10> 					OctetBSeq;	
-typedef sequence<any, 10> 					AnyBSeq;
-typedef sequence<Object, 10>					ObjectBSeq;
+typedef sequence<boolean, 10> 			BooleanBSeq;
+typedef sequence<octet, 10> 			OctetBSeq;	
+typedef sequence<any, 10> 			AnyBSeq;
+typedef sequence<Object, 10>			ObjectBSeq;
 
-typedef sequence<fixed<9,2>, 10>    		  	FixedBSeq;
+typedef sequence<fixed<9,2>, 10>    		FixedBSeq;
 
 
 #endif // __BASIC_TYPE_SEQUENCE__IDL__

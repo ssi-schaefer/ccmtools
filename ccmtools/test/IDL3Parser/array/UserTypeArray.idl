@@ -11,18 +11,17 @@
  * Here we define vectors of user type values
  */
  
-typedef LongType 		LongTypeArray[10];	
-typedef Color 			EnumArray[10];
-typedef Address   		StructArray[10];
+typedef LongType 	LongTypeArray[10];	
+typedef Color 		EnumArray[10];
+typedef Address   	StructArray[10];
 typedef LongArray       ArrayArray[10];
 
 /*
  * Here we define matrices of user type values
  */
- 
-typedef LongType 		LongTypeMatrix[10][20];	
-typedef Color 			EnumTypeMatrix[10][20]; 
-typedef Address   		StructMatrix[10][20];
+typedef LongType 	LongTypeMatrix[10][20];	
+typedef Color 		EnumTypeMatrix[10][20]; 
+typedef Address   	StructMatrix[10][20];
 typedef LongArray       ArrayMatrix[10][20];
 
  
@@ -30,9 +29,9 @@ typedef LongArray       ArrayMatrix[10][20];
  * Here, we define cubes of user type values
  */
 
-typedef LongType 		LongCube[10][20][30];	
-typedef Color 			EnumTypeCube[10][20][30];
-typedef Address   		StructCube[10][20][30];
+typedef LongType        LongTypeCube[10][20][30];	
+typedef Color 		EnumTypeCube[10][20][30];
+typedef Address   	StructCube[10][20][30];
 typedef LongArray       ArrayCube[10][20][30];
 
 #endif // __USER_TYPE_ARRAY__IDL__

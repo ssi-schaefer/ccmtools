@@ -19,15 +19,17 @@ public class TypedefDefTemplate
   protected final String TEXT_3 = NL;
   protected final String TEXT_4 = NL;
   protected final String TEXT_5 = NL;
-  protected final String TEXT_6 = NL + " ";
+  protected final String TEXT_6 = NL;
   protected final String TEXT_7 = NL;
-  protected final String TEXT_8 = "typedef ";
-  protected final String TEXT_9 = " ";
-  protected final String TEXT_10 = "; " + NL;
-  protected final String TEXT_11 = NL;
-  protected final String TEXT_12 = NL;
+  protected final String TEXT_8 = NL + " ";
+  protected final String TEXT_9 = NL;
+  protected final String TEXT_10 = "typedef ";
+  protected final String TEXT_11 = " ";
+  protected final String TEXT_12 = "; " + NL;
   protected final String TEXT_13 = NL;
   protected final String TEXT_14 = NL;
+  protected final String TEXT_15 = NL;
+  protected final String TEXT_16 = NL;
 
   public String generate(Object argument)
   {
@@ -40,21 +42,24 @@ public class TypedefDefTemplate
     stringBuffer.append(model.generateIncludeGuardOpen());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(model.generateModulesOpen() );
+    stringBuffer.append(model.generateIncludeStatements());
     stringBuffer.append(TEXT_6);
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(model.indent());
+    stringBuffer.append(model.generateModulesOpen() );
     stringBuffer.append(TEXT_8);
-    stringBuffer.append(model.getAlias().generateIdlMapping());
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(model.getIdentifier());
+    stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(model.getAlias().generateIdlMapping());
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(model.generateModulesClose() );
+    stringBuffer.append(model.getIdentifier());
     stringBuffer.append(TEXT_12);
     stringBuffer.append(TEXT_13);
-    stringBuffer.append(model.generateIncludeGuardClose());
+    stringBuffer.append(model.generateModulesClose() );
     stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_15);
+    stringBuffer.append(model.generateIncludeGuardClose());
+    stringBuffer.append(TEXT_16);
     return stringBuffer.toString();
   }
 }

@@ -71,28 +71,37 @@ public class CommandLineParameters
 	public void validate()
 		throws CcmtoolsException
 	{
+		checkGeneratorId();
 		checkOutputPath();
 		checkIdlFiles();
 	}
-	
+
+	/**
+	 * Check if at least one geerator type is specified.
+	 */
+	private void checkGeneratorId()
+		throws CcmtoolsException
+	{
+		if(getGeneratorIds().size() == 0)
+		{
+			throw new CcmtoolsException("At least one generator type must be specified (e.g. -idl3)!");
+		}
+	}
     
     /**
      * Check if the given output directory is valid.
-     * 
-     * @throws CcmtoolsException
      */
     private void checkOutputPath() 
         throws CcmtoolsException
     {
         if(outDir == null || outDir.length() == 0) 
         {
-        	outDir = ".";
+        		outDir = ".";
         }
     }
 	    
     /**
      * Check if the given IDL file exists.
-     * @throws CcmtoolsException
      */
     private void checkIdlFiles() 
         throws CcmtoolsException

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import ccmtools.CodeGenerator.NodeHandler;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
 import ccmtools.Metamodel.BaseIDL.MFieldDef;
@@ -14,14 +15,17 @@ import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.Metamodel.BaseIDL.MSequenceDef;
 import ccmtools.Metamodel.BaseIDL.MStringDef;
 import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.generator.idl.metamodel.AnyType;
+import ccmtools.generator.idl.metamodel.ArrayDef;
 import ccmtools.generator.idl.metamodel.BooleanType;
 import ccmtools.generator.idl.metamodel.CharType;
+import ccmtools.generator.idl.metamodel.ConstantDef;
 import ccmtools.generator.idl.metamodel.DoubleType;
 import ccmtools.generator.idl.metamodel.EnumDef;
 import ccmtools.generator.idl.metamodel.FieldDef;
@@ -34,6 +38,7 @@ import ccmtools.generator.idl.metamodel.ModelElement;
 import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.generator.idl.metamodel.ObjectType;
 import ccmtools.generator.idl.metamodel.OctetType;
+import ccmtools.generator.idl.metamodel.SequenceDef;
 import ccmtools.generator.idl.metamodel.ShortType;
 import ccmtools.generator.idl.metamodel.StringType;
 import ccmtools.generator.idl.metamodel.StructDef;
@@ -138,13 +143,15 @@ public class CcmToIdlModelMapper
         		MTypedefDef typedef = (MTypedefDef)node;
         		logger.finer("MTypedefDef: " + Code.getRepositoryId(typedef));
         		TypedefDef idlTypedef = transform(typedef);
-        		modelRepository.addTypedef(idlTypedef);            		
+        		modelRepository.addTypedef(idlTypedef);            		        			
         	}
-//        	else if(node instanceof MArrayDef)
-//        	{
-//        		MArrayDef array = (MArrayDef)node;
-//        		System.out.println(">>>> " + array);
-//        	}
+        	else if(node instanceof MConstantDef)
+        	{
+        		MConstantDef constant = (MConstantDef)node;
+        		logger.finer("MTypedefDef: " + Code.getRepositoryId(constant));
+        		ConstantDef idlConstant = transform(constant);
+        		modelRepository.addGlobalConstant(idlConstant);
+        	}
 		//...
 	}
 
@@ -156,7 +163,52 @@ public class CcmToIdlModelMapper
     /*************************************************************************
      * Model mapper methods
      *************************************************************************/ 
-    
+    	
+	public Type transform(MIDLType in)
+	{
+		logger.finer("MIDLType: " + in);
+		if(in instanceof MPrimitiveDef)
+		{
+			return transform((MPrimitiveDef)in);
+		}
+		else if(in instanceof MStringDef)
+		{			
+			return transform((MStringDef)in);
+		}
+		else if(in instanceof MWstringDef)
+		{
+			return transform((MWstringDef)in);
+		}
+		else if(in instanceof MFixedDef)
+		{
+			return transform((MFixedDef)in);
+		}
+		else if(in instanceof MStructDef)
+		{			
+			return transform((MStructDef)in);
+		}
+		else if(in instanceof MEnumDef)
+		{			
+			return transform((MEnumDef)in);
+		}
+		else if(in instanceof MTypedefDef)
+		{
+			return transform((MTypedefDef)in);
+		}
+		else if(in instanceof MArrayDef)
+		{
+			return transform((MArrayDef)in);
+		}
+		else if(in instanceof MSequenceDef)
+		{
+			return transform((MSequenceDef)in);
+		}
+		else
+		{
+			throw new RuntimeException("Unhandled idl type " + in);
+		}
+	}
+	
 	public Type transform(MPrimitiveDef primitive)	
 	{
 		logger.finer("MPrimitiveDef: " + primitive.getKind());
@@ -226,57 +278,52 @@ public class CcmToIdlModelMapper
 		}
 		else
 		{
-			throw new RuntimeException("unhandled primitive type "	+ primitive.getKind());
+			throw new RuntimeException("Unhandled primitive type "	+ primitive.getKind());
 		}
 	}
-	
-	public Type transform(MIDLType in)
+
+	public StringType transform(MStringDef in)
 	{
-		logger.finer("MIDLType: " + in);
-		if(in instanceof MPrimitiveDef)
-		{
-			return transform((MPrimitiveDef)in);
-		}
-		else if(in instanceof MStringDef)
-		{
-			MStringDef str = (MStringDef)in;
-			StringType out = new StringType();
-			out.setBound(str.getBound());
-			return out;
-		}
-		else if(in instanceof MWstringDef)
-		{
-			MWstringDef wstr = (MWstringDef)in;
-			WStringType out = new WStringType();
-			out.setBound(wstr.getBound());
-			return out;
-		}
-		else if(in instanceof MFixedDef)
-		{
-			MFixedDef fixed = (MFixedDef)in;
-			FixedType out = new FixedType();
-			out.setDigits(fixed.getDigits());
-			out.setScale(fixed.getScale());
-			return out;
-		}
-		else if(in instanceof MStructDef)
-		{			
-			return transform((MStructDef)in);
-		}
-		else if(in instanceof MEnumDef)
-		{			
-			return transform((MEnumDef)in);
-		}
-		else if(in instanceof MTypedefDef)
-		{
-			return transform((MTypedefDef)in);
-		}
-		else
-		{
-			throw new RuntimeException("unhandled idl type " + in);
-		}
+		StringType out = new StringType();
+		logger.finer("MStringDef: " + in);
+		out.setBound(in.getBound());
+		return out;		
 	}
 	
+	public WStringType transform(MWstringDef in)
+	{
+		WStringType out = new WStringType();
+		logger.finer("MWstringDef: " + in);
+		out.setBound(in.getBound());
+		return out;
+	}
+	
+	public FixedType transform(MFixedDef in)
+	{
+		FixedType out = new FixedType();
+		logger.finer("MFixedDef: " + in);
+		out.setDigits(in.getDigits());
+		out.setScale(in.getScale());
+		return out;
+	}
+	
+	public SequenceDef transform(MSequenceDef in)
+	{
+		SequenceDef out = new SequenceDef();
+		logger.finer("MSequenceDef: " + in);
+		out.setBound(in.getBound());
+		out.setElementType(transform(in.getIdlType()));
+		return out;
+	}
+	
+	public ArrayDef transform(MArrayDef in)
+	{
+		ArrayDef out = new ArrayDef();
+		logger.finer("MArrayDef: " + in);
+		out.getBounds().addAll(in.getBounds());
+		out.setElementType(transform(in.getIdlType()));		
+		return out;
+	}
 	
 	public EnumDef transform(MEnumDef in)
 	{		
@@ -338,9 +385,26 @@ public class CcmToIdlModelMapper
 		else 
 		{
 			out = new TypedefDef(in.getIdentifier(), Code.getNamespaceList(in));
-			MIDLType idlType = ((MTyped)in).getIdlType();
-			out.setAlias(transform(idlType));
+			out.setAlias(transform(((MTyped)in).getIdlType()));
 			artifactCache.put(repoId, out);
+		}
+		return out;
+	}	
+	
+	public ConstantDef transform(MConstantDef in)
+	{
+		ConstantDef out;
+		String repoId = Code.getRepositoryId(in);
+		logger.finer("MConstantDef: " + repoId);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (ConstantDef)artifactCache.get(repoId);
+		}
+		else 
+		{
+			out = new ConstantDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out.setType(transform(((MTyped)in).getIdlType()));
+			out.setConstValue(in.getConstValue());
 		}
 		return out;
 	}

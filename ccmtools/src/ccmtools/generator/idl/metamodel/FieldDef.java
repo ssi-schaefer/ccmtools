@@ -30,5 +30,5 @@ public class FieldDef
 	public String generateIdl3Code()
 	{
 		return TAB + getType().generateIdlMapping() + " " + getIdentifier() + ";" + NL; 
-	}
+	}		
 }

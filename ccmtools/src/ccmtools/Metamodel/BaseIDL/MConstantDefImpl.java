@@ -47,8 +47,7 @@ public class  MConstantDefImpl
     // override toString()
     public String toString()
     {
-	return "MConstantDef: "+ identifier + " " + TypedBy_.toString() +
-            " = " + constValue_.toString();
+    		return "MConstantDef: "+ identifier + " " + TypedBy_ + " = " + constValue_;
     }
 
     //----------------------------------------------------------------

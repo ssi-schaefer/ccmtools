@@ -11,6 +11,8 @@
 
 <%=model.generateIncludeGuardOpen()%>
 
+<%=model.generateIncludeStatements()%>
+
 <%=model.generateModulesOpen() %>
  
 <%=model.indent()%>struct <%=model.getIdentifier() %> 

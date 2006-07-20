@@ -1,6 +1,7 @@
 package ccmtools.generator.idl.metamodel;
 
 
+
 public interface Type
 {
 	/**
@@ -8,4 +9,11 @@ public interface Type
 	 */
 	String generateIdlMapping();	
 
+	/**
+	 * Generate the IDL mapping for a particular constant. 
+	 */
+	String generateIdlConstant(Object value);
+	
+	
+	String generateIncludePath();
 }

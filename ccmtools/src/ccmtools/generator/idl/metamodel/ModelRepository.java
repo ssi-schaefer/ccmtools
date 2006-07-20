@@ -14,6 +14,7 @@ public class ModelRepository
 	private List<TypedefDef> typedefList = new ArrayList<TypedefDef>();
 	private List<EnumDef> enumList = new ArrayList<EnumDef>();
 	private List<StructDef> structList = new ArrayList<StructDef>();
+	private List<ConstantDef> constantList = new ArrayList<ConstantDef>();
 	
 //	private List exceptionList = new ArrayList();
 //	private List sequenceList = new  ArrayList();
@@ -24,7 +25,6 @@ public class ModelRepository
 //	private List interfaceList = new ArrayList();
 //	private List providesList = new ArrayList();
 //	private List usesList = new ArrayList();
-//	private List constantList = new ArrayList();
 	
 	public ModelRepository()
 	{
@@ -35,7 +35,6 @@ public class ModelRepository
 	{
 		typedefList.add(value);
 	}
-
 	public List<TypedefDef> findAllTypedefs()
 	{
 		return typedefList;
@@ -46,7 +45,6 @@ public class ModelRepository
 	{
 		enumList.add(value);
 	}
-
 	public List<EnumDef> findAllEnums()
 	{
 		return enumList;
@@ -57,19 +55,20 @@ public class ModelRepository
 	{
 		structList.add(value);
 	}
-
 	public List<StructDef> findAllStructs()
 	{
 		return structList;
 	}
 	
 
-	
-	
-	
-	
-	
-	
+	public void addGlobalConstant(ConstantDef value)
+	{
+		constantList.add(value);
+	}
+	public List<ConstantDef> findAllGlobalConstants()
+	{
+		return constantList;
+	}
 	
 	
 	
@@ -125,17 +124,6 @@ public class ModelRepository
 //	public List findAllUses()
 //	{
 //		return usesList;
-//	}
-//	
-//		
-//	public void addGlobalConstant(ConstantDef value)
-//	{
-//		constantList.add(value);
-//	}
-//
-//	public List findAllGlobalConstants()
-//	{
-//		return constantList;
 //	}
 	
 	

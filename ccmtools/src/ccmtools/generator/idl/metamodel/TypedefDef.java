@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccmtools.generator.idl.templates.ArrayDefTemplate;
 import ccmtools.generator.idl.templates.TypedefDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
@@ -15,6 +16,11 @@ public class TypedefDef
 {
 	private Type alias;
 	
+	public TypedefDef(String identifier, List<String> namespace)
+	{
+		super(identifier, namespace);
+	}
+	
 	public void setAlias(Type alias)
 	{
 		this.alias = alias;
@@ -24,21 +30,44 @@ public class TypedefDef
 	{
 		return alias;
 	}
-	
-	public TypedefDef(String identifier, List<String> namespace)
-	{
-		super(identifier, namespace);
-	}
 
+	
+	/*************************************************************************
+	 * IDL3 generator methods
+	 *************************************************************************/
 	
 	public String generateIdlMapping()
 	{
 		return getIdentifier();
 	}
 	
+	public String generateIdlConstant(Object value)
+	{
+		return ""; // not allowed as a constant
+	}
+	
+	public String generateIncludePath()
+	{
+		return generateAbsoluteIdlName("/");
+	}
+	
+	public String generateIncludeStatements()
+	{
+		return generateIncludeStatement(getAlias().generateIncludePath());
+	}
+	
 	public String generateIdl3Code()
 	{
-		return new TypedefDefTemplate().generate(this); 
+		if(getAlias() instanceof ArrayDef)
+		{
+			// The specific structure of an array definition (e.g. typedef long LongArray[10];
+			// forces this special case...
+			return new ArrayDefTemplate().generate(this);
+		}
+		else
+		{
+			return new TypedefDefTemplate().generate(this);
+		}
 	}
 	
 	

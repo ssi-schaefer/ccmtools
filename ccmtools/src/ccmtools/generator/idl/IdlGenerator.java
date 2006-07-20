@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.UI.Driver;
+import ccmtools.generator.idl.metamodel.ConstantDef;
 import ccmtools.generator.idl.metamodel.EnumDef;
 import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.generator.idl.metamodel.StructDef;
@@ -87,6 +88,10 @@ public class IdlGenerator
 			for(StructDef idlStruct : idlModelRepo.findAllStructs())
 			{
 				sourceFileList.addAll(idlStruct.generateIdl3SourceFiles());
+			}
+			for(ConstantDef idlConstant : idlModelRepo.findAllGlobalConstants())
+			{
+				sourceFileList.addAll(idlConstant.generateIdl3SourceFiles());
 			}
 			
 			// Save all source file objects

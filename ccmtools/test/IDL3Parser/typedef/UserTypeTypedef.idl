@@ -14,7 +14,7 @@ typedef Person 			StructType;
 /*
  * Here we define aliases for existing typedefs
  */
-typedef EnumType			MetaEnumType;
+typedef EnumType		MetaEnumType;
 typedef StructType 		MetaStructType;
 
 

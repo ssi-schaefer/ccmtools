@@ -6,7 +6,7 @@
  */
  
 const long LONG_ADD_CONST = 7 + 3;
-const long LONG_SUB_CONST = 3 - 7 ;
+const long LONG_SUB_CONST = 3 - 7;
 const long LONG_MUL_CONST = 7 * 3;
 const long LONG_DIV_CONST = 7 / 3;
 const long LONG_MOD_CONST = 7 % 3;

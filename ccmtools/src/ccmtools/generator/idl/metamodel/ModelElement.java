@@ -2,6 +2,7 @@ package ccmtools.generator.idl.metamodel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import ccmtools.Constants;
 import ccmtools.utils.Text;
@@ -76,13 +77,17 @@ public class ModelElement
 		return "IDL:" + Text.joinList("/", getIdlNamespaceList()) + "/" + getIdentifier() + ":1.0";
 	}
 
+	public String generateIdlNamespace(String separator)
+	{
+		return Text.joinList(separator, getIdlNamespaceList());
+	}
 	
 	public String generateIdlNamespace()
 	{
-		return Text.joinList(".", getIdlNamespaceList());
+		return generateIdlNamespace(".");
 	}
 	
-	public String generateAbsoluteIdlName()
+	public String generateAbsoluteIdlName(String separator)
 	{
 		if(getIdlNamespaceList().size() == 0)
 		{
@@ -90,8 +95,13 @@ public class ModelElement
 		}
 		else
 		{
-			return generateIdlNamespace() + "." + getIdentifier();
+			return generateIdlNamespace() + separator + getIdentifier();
 		}
+	}
+	
+	public String generateAbsoluteIdlName()
+	{
+		return generateAbsoluteIdlName(".");
 	}
 		
 	public String generateModulesOpen()
@@ -121,7 +131,7 @@ public class ModelElement
 	public String generateIncludeGuardOpen()
 	{
 		StringBuilder code = new StringBuilder();
-		String mangledName = (Text.joinList("_", getIdlNamespaceList()) + "_" +getIdentifier()).toUpperCase();
+		String mangledName = (generateAbsoluteIdlName("_")).toUpperCase();
 		code.append("#ifndef __").append(mangledName).append("__IDL__").append(NL);
 		code.append("#define __").append(mangledName).append("__IDL__").append(NL);
 		return code.toString();
@@ -130,8 +140,31 @@ public class ModelElement
 	public String generateIncludeGuardClose()
 	{
 		StringBuilder code = new StringBuilder();
-		String mangledName = (Text.joinList("_", getIdlNamespaceList()) + "_" +getIdentifier()).toUpperCase();		
+		String mangledName = (generateAbsoluteIdlName("_")).toUpperCase();		
 		code.append("#endif /* __").append(mangledName).append("__IDL__ */").append(NL);		
 		return code.toString();		
+	}
+		
+	public String generateIncludeStatement(String includePath)
+	{
+		if(includePath == null || includePath.length() == 0)
+		{
+			// primitive typed don't need include statements
+			return "";
+		}
+		else
+		{
+			return "#include <" + includePath + ".idl>" + NL;
+		}
+	}
+	
+	public String generateIncludeStatements(Set<String> includePaths)
+	{
+		StringBuilder code = new StringBuilder();	
+		for(String path : includePaths)
+		{
+			code.append(generateIncludeStatement(path));
+		}
+		return code.toString();
 	}
 }

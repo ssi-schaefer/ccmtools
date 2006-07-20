@@ -4,26 +4,42 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import ccmtools.generator.idl.templates.EnumDefTemplate;
+import ccmtools.generator.idl.templates.ConstantDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
-public class EnumDef
+public class ConstantDef
 	extends ModelElement
-	implements Type
 {
-	private List<String> members = new ArrayList<String>();
-	
-	public EnumDef(String identifier, List<String> namespace)
+	private Type type;
+	private Object constValue;
+		
+	public ConstantDef(String identifier, List<String> namespace)
 	{
 		super(identifier, namespace);
 	}
-	
-	public List<String> getMembers()
+			
+	public Type getType()
 	{
-		return members;
+		return type;
 	}
-		
+
+	public void setType(Type type)
+	{
+		this.type = type;
+	}
+	
+	
+	public Object getConstValue()
+	{
+		return constValue;
+	}	
+	
+	public void setConstValue(Object value)
+	{
+		this.constValue = value;
+	}
+	
 	
 	/*************************************************************************
 	 * IDL3 generator methods
@@ -33,27 +49,17 @@ public class EnumDef
 	{
 		return getIdentifier();
 	}
-
-	public String generateIdlConstant(Object value)
-	{
-		return ""; // not allowed as a constant
-	}
-		
-	public String generateIncludePath()
-	{
-		return generateAbsoluteIdlName("/");
-	}
-	
-	
+				
 	public String generateIdl3Code()
 	{
-		return new EnumDefTemplate().generate(this); 
+		return new ConstantDefTemplate().generate(this); 
 	}
 	
-	public String generateMemberList()
+	public String generateConstantValue()
 	{
-		return TAB + Text.joinList(","+ NL + indent() + TAB, getMembers());
+		return getType().generateIdlConstant(getConstValue());
 	}
+	
 	
 	// Generate SourceFile objects --------------------------------------------
 	

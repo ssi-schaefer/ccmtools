@@ -3,6 +3,8 @@ package ccmtools.generator.idl.metamodel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ccmtools.generator.idl.templates.StructDefTemplate;
 import ccmtools.utils.SourceFile;
@@ -33,6 +35,26 @@ public class StructDef
 	public String generateIdlMapping()
 	{
 		return getIdentifier();
+	}
+	
+	public String generateIdlConstant(Object value)
+	{
+		return ""; // not allowed as a constant
+	}
+		
+	public String generateIncludePath()
+	{
+		return generateAbsoluteIdlName("/");
+	}
+	
+	public String generateIncludeStatements()
+	{
+		Set<String> includePaths = new TreeSet<String>();
+		for(FieldDef field: getFields())
+		{
+			includePaths.add(field.getType().generateIncludePath());
+		}
+		return generateIncludeStatements(includePaths);
 	}
 	
 	public String generateFieldList()
