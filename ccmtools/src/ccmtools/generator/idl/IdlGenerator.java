@@ -9,6 +9,8 @@ import ccmtools.Constants;
 import ccmtools.UI.Driver;
 import ccmtools.generator.idl.metamodel.ConstantDef;
 import ccmtools.generator.idl.metamodel.EnumDef;
+import ccmtools.generator.idl.metamodel.ExceptionDef;
+import ccmtools.generator.idl.metamodel.InterfaceDef;
 import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.generator.idl.metamodel.StructDef;
 import ccmtools.generator.idl.metamodel.TypedefDef;
@@ -93,6 +95,15 @@ public class IdlGenerator
 			{
 				sourceFileList.addAll(idlConstant.generateIdl3SourceFiles());
 			}
+			for(ExceptionDef idlException : idlModelRepo.findAllExceptions())
+			{
+				sourceFileList.addAll(idlException.generateIdl3SourceFiles());
+			}
+			for(InterfaceDef idlInterface : idlModelRepo.findAllInterfaces())
+			{
+				sourceFileList.addAll(idlInterface.generateIdl3SourceFiles());
+			}
+			//...
 			
 			// Save all source file objects
 			Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);

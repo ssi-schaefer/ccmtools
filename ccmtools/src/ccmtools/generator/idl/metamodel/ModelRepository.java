@@ -15,21 +15,17 @@ public class ModelRepository
 	private List<EnumDef> enumList = new ArrayList<EnumDef>();
 	private List<StructDef> structList = new ArrayList<StructDef>();
 	private List<ConstantDef> constantList = new ArrayList<ConstantDef>();
-	
-//	private List exceptionList = new ArrayList();
-//	private List sequenceList = new  ArrayList();
-//	private List arrayList = new  ArrayList();
-	
+	private List<ExceptionDef> exceptionList = new ArrayList<ExceptionDef>();
+	private List<InterfaceDef> interfaceList = new ArrayList<InterfaceDef>();
+		
 //	private List homeList = new ArrayList();
 //	private List componentList = new ArrayList();
-//	private List interfaceList = new ArrayList();
 //	private List providesList = new ArrayList();
 //	private List usesList = new ArrayList();
 	
 	public ModelRepository()
 	{
 	}
-
 
 	public void addTypedef(TypedefDef value)
 	{
@@ -39,8 +35,7 @@ public class ModelRepository
 	{
 		return typedefList;
 	}
-	
-	
+		
 	public void addEnum(EnumDef value)
 	{
 		enumList.add(value);
@@ -49,8 +44,7 @@ public class ModelRepository
 	{
 		return enumList;
 	}
-	
-	
+		
 	public void addStruct(StructDef value)
 	{
 		structList.add(value);
@@ -60,7 +54,6 @@ public class ModelRepository
 		return structList;
 	}
 	
-
 	public void addGlobalConstant(ConstantDef value)
 	{
 		constantList.add(value);
@@ -70,7 +63,24 @@ public class ModelRepository
 		return constantList;
 	}
 	
-	
+	public void addException(ExceptionDef value)
+	{
+		exceptionList.add(value);
+	}
+	public List<ExceptionDef> findAllExceptions()
+	{
+		return exceptionList;
+	}
+
+	public void addInterface(InterfaceDef iface)
+	{
+		interfaceList.add(iface);
+	}
+	public List<InterfaceDef> findAllInterfaces()
+	{
+		return interfaceList;
+	}
+
 	
 //	public void addHome(HomeDef home)
 //	{
@@ -94,15 +104,6 @@ public class ModelRepository
 //	}
 //	
 //	
-//	public void addInterface(InterfaceDef iface)
-//	{
-//		interfaceList.add(iface);
-//	}
-//
-//	public List findAllInterfaces()
-//	{
-//		return interfaceList;
-//	}
 //		
 //	
 //	public void addProvides(ProvidesDef provides)
@@ -128,15 +129,6 @@ public class ModelRepository
 	
 	
 	
-//	public void addException(ExceptionDef value)
-//	{
-//		exceptionList.add(value);
-//	}
-//
-//	public List findAllExceptions()
-//	{
-//		return exceptionList;
-//	}
 //	
 //	
 //	public void addSequence(SequenceDef value)

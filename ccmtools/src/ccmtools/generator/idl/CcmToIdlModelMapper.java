@@ -10,9 +10,11 @@ import ccmtools.Metamodel.BaseIDL.MArrayDef;
 import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
+import ccmtools.Metamodel.BaseIDL.MExceptionDef;
 import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
+import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
@@ -28,9 +30,11 @@ import ccmtools.generator.idl.metamodel.CharType;
 import ccmtools.generator.idl.metamodel.ConstantDef;
 import ccmtools.generator.idl.metamodel.DoubleType;
 import ccmtools.generator.idl.metamodel.EnumDef;
+import ccmtools.generator.idl.metamodel.ExceptionDef;
 import ccmtools.generator.idl.metamodel.FieldDef;
 import ccmtools.generator.idl.metamodel.FixedType;
 import ccmtools.generator.idl.metamodel.FloatType;
+import ccmtools.generator.idl.metamodel.InterfaceDef;
 import ccmtools.generator.idl.metamodel.LongDoubleType;
 import ccmtools.generator.idl.metamodel.LongLongType;
 import ccmtools.generator.idl.metamodel.LongType;
@@ -151,6 +155,20 @@ public class CcmToIdlModelMapper
         		logger.finer("MTypedefDef: " + Code.getRepositoryId(constant));
         		ConstantDef idlConstant = transform(constant);
         		modelRepository.addGlobalConstant(idlConstant);
+        	}
+        	else if(node instanceof MExceptionDef)
+        	{
+        		MExceptionDef exception = (MExceptionDef)node;
+        		logger.finer("MExceptionDef: " + Code.getRepositoryId(exception));
+        		ExceptionDef idlException = transform(exception);
+        		modelRepository.addException(idlException);    		
+        	}
+        	else if(node instanceof MInterfaceDef)
+        	{
+        		MInterfaceDef iface = (MInterfaceDef)node;
+        		logger.finer("MInterfaceDef: " + Code.getRepositoryId(iface));
+        		InterfaceDef idlInterface = transform(iface);
+        		modelRepository.addInterface(idlInterface);    		
         	}
 		//...
 	}
@@ -372,6 +390,32 @@ public class CcmToIdlModelMapper
 		}
 		return out;
 	}
+		
+	public ExceptionDef transform(MExceptionDef in)
+	{		
+		ExceptionDef out;
+		String repoId = Code.getRepositoryId(in);
+		logger.finer("MExceptionDef: " + repoId);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (ExceptionDef)artifactCache.get(repoId);
+		}
+		else 
+		{
+			out = new ExceptionDef(in.getIdentifier(), Code.getNamespaceList(in));
+			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
+			{
+				MFieldDef member = (MFieldDef)i.next();	
+				MIDLType idlType = member.getIdlType();
+				FieldDef field = new FieldDef();
+				field.setIdentifier(member.getIdentifier());
+				field.setType(transform(idlType));
+				out.getFields().add(field);					
+			}
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}	
 	
 	public TypedefDef transform(MTypedefDef in)
 	{
@@ -408,5 +452,31 @@ public class CcmToIdlModelMapper
 		}
 		return out;
 	}
+	
+	
+	public InterfaceDef transform(MInterfaceDef in)
+	{		
+		InterfaceDef out;
+		String repoId = Code.getRepositoryId(in);
+		logger.finer("MInterfaceDef: " + repoId);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (InterfaceDef)artifactCache.get(repoId);
+		}
+		else 
+		{
+			out = new InterfaceDef(in.getIdentifier(), Code.getNamespaceList(in));
+			
+			for(Iterator i = in.getContentss().iterator(); i.hasNext();)
+			{
+				
+				
+			}
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
+	
+	
 	
 }
