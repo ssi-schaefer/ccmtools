@@ -7,7 +7,7 @@ all: mirror
 test: mirror check clean
 
 idl3: ${APP_NAME}.idl
-	ccmtools idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
+	ccmidl -idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
 
 local: idl3
 	ccmtools c++local ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/world/*.idl

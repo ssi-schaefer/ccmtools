@@ -1,0 +1,13 @@
+#ifndef __ENUM__system_Group__
+#define __ENUM__system_Group__
+
+module system {
+
+enum Group
+{
+GUEST, USER, ADMIN
+};
+
+}; // /module system
+
+#endif

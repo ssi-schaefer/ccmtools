@@ -1,4 +1,3 @@
-
 APP_DIR = xxx
 IDL3_DIR = ${APP_DIR}/idl3
 IDL_INTERFACE = ${IDL3_DIR}/interface
@@ -12,7 +11,7 @@ all: local
 test: local check clean
 
 idl: Test.idl
-	ccmtools idl3 -o ${IDL3_DIR} Test.idl
+	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 	ccmtools idl3mirror -o ${IDL3_DIR} Test.idl
 
 local: interface basic user super super_mirror

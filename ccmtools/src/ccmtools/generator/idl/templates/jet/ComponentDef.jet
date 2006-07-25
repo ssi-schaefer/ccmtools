@@ -26,4 +26,7 @@
 
 <%=model.generateModulesClose() %>
 
+// This is a hack to make the CppGenerator happy !!!
+<%=model.generateCppGeneratorHack()%> 
+
 <%=model.generateIncludeGuardClose()%>

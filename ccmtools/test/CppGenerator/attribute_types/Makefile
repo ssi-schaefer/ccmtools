@@ -1,6 +1,5 @@
 APP_NAME = Test
 DEST_DIR = xxx
-CCMTOOLS_CMD = ccmtools
 IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
 all: local
@@ -8,11 +7,11 @@ all: local
 test: local check clean
 
 idl3: ${APP_NAME}.idl
-	${CCMTOOLS_CMD} idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
+	ccmidl -idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
 
 local: idl3
-	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/*.idl
-	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl 
+	ccmtools c++local ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/*.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl 
 	mkdir ${DEST_DIR}/component/Test/test
 
 check: 

@@ -159,4 +159,17 @@ public class ComponentDef
 		return code.toString();
 	}
 	
+    public String generateCppGeneratorHack()
+    {
+        HomeDef home = getHomes().iterator().next();
+        if(home != null)
+        {
+            return generateIncludeStatement(home.generateIncludePath());
+        }
+        else
+        {
+            return "// no home found";
+        }
+    }
+    
 }

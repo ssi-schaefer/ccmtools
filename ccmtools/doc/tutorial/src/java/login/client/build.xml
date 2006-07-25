@@ -1,0 +1,35 @@
+<project name="LoginClient" default="compile">
+
+  <property name="dest" location="." />
+  <property name="server" location="../server" />
+  <property name="idl2" location="${dest}/idl2" />
+  <property name="build" location="${dest}/build" />
+  <property name="src" location="${dest}/src" />
+
+  <path id="compile.classpath">
+      <pathelement path="${java.class.path}" />
+      <pathelement location="${server}/lib/LoginServer.jar" />
+  </path>
+
+
+  <!-- Create the build directory-->
+  <target name="init" description="" >
+      <mkdir dir="${build}" />
+  </target>
+ 
+
+  <!-- Compile generated Java files-->
+  <target name="compile" depends="init" description="" >
+      <javac srcdir="${src}" destdir="${build}" 
+             debug="on" source="1.5" target="1.5">
+          <classpath refid="compile.classpath" />  
+      </javac>
+  </target>
+
+
+  <!-- Clean up -->
+  <target name="clean" description="" >
+      <delete dir="${build}" />
+  </target>
+
+</project>

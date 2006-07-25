@@ -1,0 +1,22 @@
+
+#include <system/PersonData.idl>
+
+#include <system/InvalidData.idl>
+
+#ifndef __INTERFACE__system_Login__
+#define __INTERFACE__system_Login__
+
+module system {
+
+interface Login
+  
+{
+ 
+
+    boolean login ( in system::PersonData person ) raises ( InvalidData );
+
+};
+
+}; // /module system
+
+#endif

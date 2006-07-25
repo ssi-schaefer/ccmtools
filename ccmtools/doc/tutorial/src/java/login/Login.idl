@@ -1,0 +1,42 @@
+
+
+module system
+{
+  enum Group
+  {
+    GUEST,
+    USER,
+    ADMIN
+  };
+
+  struct PersonData
+  {
+    long id;
+    string name;
+    string password;
+    Group group;
+  };
+
+  exception InvalidData
+  {
+    string message;
+  };
+
+
+  interface Login
+  {
+    boolean login(in PersonData person)
+      raises(InvalidData);
+  };
+
+
+  component Server
+  {
+    provides Login login; 
+  };
+
+  home ServerHome manages Server
+  {
+  };
+
+};

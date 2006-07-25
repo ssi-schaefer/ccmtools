@@ -1,6 +1,5 @@
 APP_NAME = Test
 DEST_DIR = xxx
-CCMTOOLS_CMD = ccmtools
 IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
 all: local
@@ -8,15 +7,15 @@ all: local
 test: local check clean
 
 idl3: ${APP_NAME}.idl
-	${CCMTOOLS_CMD} idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
+	ccmidl -idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
 
 local: idl3
-	${CCMTOOLS_CMD} c++local --anytypes=impl/PdlAnyMappings.ccmany ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/world/*.idl
-	${CCMTOOLS_CMD} c++local --anytypes=impl/PdlAnyMappings.ccmany ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/world/europe/*.idl
+	ccmtools c++local --anytypes=impl/PdlAnyMappings.ccmany ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/world/*.idl
+	ccmtools c++local --anytypes=impl/PdlAnyMappings.ccmany ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/world/europe/*.idl
 
-	${CCMTOOLS_CMD} c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/world/europe/Test*.idl 
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/world/europe/Test*.idl 
 
-	${CCMTOOLS_CMD} c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/world/europe/Test.idl 
+	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/world/europe/Test.idl 
 
 check: 
 	ccmconfix -makefiles -o ${DEST_DIR} -pname "any-plugin" -pversion "1.0.0"

@@ -35,9 +35,11 @@ public class ComponentDefTemplate
   protected final String TEXT_19 = NL;
   protected final String TEXT_20 = "};" + NL;
   protected final String TEXT_21 = NL;
-  protected final String TEXT_22 = NL;
+  protected final String TEXT_22 = NL + NL + "// This is a hack to make the CppGenerator happy !!!";
   protected final String TEXT_23 = NL;
-  protected final String TEXT_24 = NL;
+  protected final String TEXT_24 = " " + NL;
+  protected final String TEXT_25 = NL;
+  protected final String TEXT_26 = NL;
 
   public String generate(Object argument)
   {
@@ -80,8 +82,11 @@ public class ComponentDefTemplate
     stringBuffer.append(model.generateModulesClose() );
     stringBuffer.append(TEXT_22);
     stringBuffer.append(TEXT_23);
-    stringBuffer.append(model.generateIncludeGuardClose());
+    stringBuffer.append(model.generateCppGeneratorHack());
     stringBuffer.append(TEXT_24);
+    stringBuffer.append(TEXT_25);
+    stringBuffer.append(model.generateIncludeGuardClose());
+    stringBuffer.append(TEXT_26);
     return stringBuffer.toString();
   }
 }
