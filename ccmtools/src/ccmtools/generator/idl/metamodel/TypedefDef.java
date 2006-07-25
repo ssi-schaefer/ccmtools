@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ccmtools.generator.idl.templates.ArrayDefTemplate;
+import ccmtools.generator.idl.templates.TypedefDefFileTemplate;
 import ccmtools.generator.idl.templates.TypedefDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
@@ -57,6 +58,21 @@ public class TypedefDef
 	}
 	
 	public String generateIdl3Code()
+	{
+		return new TypedefDefFileTemplate().generate(this);
+//		if(getAlias() instanceof ArrayDef)
+//		{
+//			// The specific structure of an array definition (e.g. typedef long LongArray[10];
+//			// forces this special case...
+//			return new ArrayDefFileTemplate().generate(this);
+//		}
+//		else
+//		{
+//			return new TypedefDefFileTemplate().generate(this);
+//		}
+	}
+	
+	public String generateTypedef()
 	{
 		if(getAlias() instanceof ArrayDef)
 		{

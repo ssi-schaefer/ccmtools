@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import ccmtools.generator.idl.templates.EnumDefFileTemplate;
 import ccmtools.generator.idl.templates.EnumDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
@@ -31,7 +32,7 @@ public class EnumDef
 	
 	public String generateIdlMapping()
 	{
-		return getIdentifier();
+		return generateAbsoluteIdlName();
 	}
 
 	public String generateIdlConstant(Object value)
@@ -47,12 +48,17 @@ public class EnumDef
 	
 	public String generateIdl3Code()
 	{
-		return new EnumDefTemplate().generate(this); 
+		return new EnumDefFileTemplate().generate(this); 
 	}
 	
 	public String generateMemberList()
 	{
 		return TAB + Text.joinList(","+ NL + indent() + TAB, getMembers());
+	}
+	
+	public String generateEnumeration()
+	{
+		return new EnumDefTemplate().generate(this); 
 	}
 	
 	// Generate SourceFile objects --------------------------------------------

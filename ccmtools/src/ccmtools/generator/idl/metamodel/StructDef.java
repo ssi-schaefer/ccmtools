@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ccmtools.generator.idl.templates.StructDefFileTemplate;
 import ccmtools.generator.idl.templates.StructDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
@@ -69,7 +70,12 @@ public class StructDef
 	
 	public String generateIdl3Code()
 	{
-		return new StructDefTemplate().generate(this); 
+		return new StructDefFileTemplate().generate(this); 
+	}
+	
+	public String generateStructure()
+	{
+		return new StructDefTemplate().generate(this);
 	}
 	
 	

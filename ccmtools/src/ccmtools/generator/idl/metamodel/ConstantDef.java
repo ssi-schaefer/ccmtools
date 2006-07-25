@@ -60,6 +60,12 @@ public class ConstantDef
 		return getType().generateIdlConstant(getConstValue());
 	}
 	
+	public String generateInterfaceConstant()
+	{
+		return "const " + getType().generateIdlMapping() + " " + getIdentifier() + " = " 
+			+ generateConstantValue() + ";" + NL;
+	}
+	
 	
 	// Generate SourceFile objects --------------------------------------------
 	

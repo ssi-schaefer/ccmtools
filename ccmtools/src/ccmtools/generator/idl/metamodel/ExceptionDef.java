@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ccmtools.generator.idl.templates.ExceptionDefFileTemplate;
 import ccmtools.generator.idl.templates.ExceptionDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
@@ -32,7 +33,7 @@ public class ExceptionDef
 	
 	public String generateIdlMapping()
 	{
-		return getIdentifier();
+		return generateAbsoluteIdlName();
 	}
 	
 	public String generateIdlConstant(Object value)
@@ -65,9 +66,14 @@ public class ExceptionDef
 		return code.toString();
 	}
 	
+	public String generateException()
+	{
+		return new ExceptionDefTemplate().generate(this);
+	}
+	
 	public String generateIdl3Code()
 	{
-		return new ExceptionDefTemplate().generate(this); 
+		return new ExceptionDefFileTemplate().generate(this); 
 	}
 	
 	

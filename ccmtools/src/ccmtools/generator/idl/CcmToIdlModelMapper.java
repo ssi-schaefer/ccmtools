@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import ccmtools.CodeGenerator.NodeHandler;
 import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.Metamodel.BaseIDL.MAttributeDef;
 import ccmtools.Metamodel.BaseIDL.MConstantDef;
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MEnumDef;
@@ -15,6 +16,9 @@ import ccmtools.Metamodel.BaseIDL.MFieldDef;
 import ccmtools.Metamodel.BaseIDL.MFixedDef;
 import ccmtools.Metamodel.BaseIDL.MIDLType;
 import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.Metamodel.BaseIDL.MOperationDef;
+import ccmtools.Metamodel.BaseIDL.MParameterDef;
+import ccmtools.Metamodel.BaseIDL.MParameterMode;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.Metamodel.BaseIDL.MSequenceDef;
@@ -25,6 +29,7 @@ import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.generator.idl.metamodel.AnyType;
 import ccmtools.generator.idl.metamodel.ArrayDef;
+import ccmtools.generator.idl.metamodel.AttributeDef;
 import ccmtools.generator.idl.metamodel.BooleanType;
 import ccmtools.generator.idl.metamodel.CharType;
 import ccmtools.generator.idl.metamodel.ConstantDef;
@@ -42,6 +47,9 @@ import ccmtools.generator.idl.metamodel.ModelElement;
 import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.generator.idl.metamodel.ObjectType;
 import ccmtools.generator.idl.metamodel.OctetType;
+import ccmtools.generator.idl.metamodel.OperationDef;
+import ccmtools.generator.idl.metamodel.ParameterDef;
+import ccmtools.generator.idl.metamodel.PassingDirection;
 import ccmtools.generator.idl.metamodel.SequenceDef;
 import ccmtools.generator.idl.metamodel.ShortType;
 import ccmtools.generator.idl.metamodel.StringType;
@@ -128,26 +136,34 @@ public class CcmToIdlModelMapper
 			// and should not be generated!
 			return;
 		}
+		else if(node instanceof MContained && ((MContained)node).getDefinedIn() instanceof MInterfaceDef)
+		{
+			// Model elements defined within an interface will not generate a separate
+			// file.
+			MInterfaceDef iface = (MInterfaceDef)((MContained)node).getDefinedIn();
+			logger.finer("  defined in  " + Code.getRepositoryId(iface));
+			return;
+		}
     		else if(node instanceof MEnumDef)
     		{
     			MEnumDef enumeration = (MEnumDef)node;
     			logger.finer("MEnumDef: " + Code.getRepositoryId(enumeration));
     			EnumDef idlEnum = transform(enumeration);
-    			modelRepository.addEnum(idlEnum);    
+    			modelRepository.addEnum(idlEnum);
     		}
         	else if(node instanceof MStructDef)
         	{
         		MStructDef struct = (MStructDef)node;
         		logger.finer("MStructDef: " + Code.getRepositoryId(struct));
         		StructDef idlStruct = transform(struct);
-        		modelRepository.addStruct(idlStruct);    		
+        		modelRepository.addStruct(idlStruct);
         	}
         	else if(node instanceof MTypedefDef)
         	{
         		MTypedefDef typedef = (MTypedefDef)node;
         		logger.finer("MTypedefDef: " + Code.getRepositoryId(typedef));
         		TypedefDef idlTypedef = transform(typedef);
-        		modelRepository.addTypedef(idlTypedef);            		        			
+        		modelRepository.addTypedef(idlTypedef);
         	}
         	else if(node instanceof MConstantDef)
         	{
@@ -160,8 +176,8 @@ public class CcmToIdlModelMapper
         	{
         		MExceptionDef exception = (MExceptionDef)node;
         		logger.finer("MExceptionDef: " + Code.getRepositoryId(exception));
-        		ExceptionDef idlException = transform(exception);
-        		modelRepository.addException(idlException);    		
+        		ExceptionDef idlException = transform(exception);	
+        		modelRepository.addException(idlException);
         	}
         	else if(node instanceof MInterfaceDef)
         	{
@@ -220,6 +236,10 @@ public class CcmToIdlModelMapper
 		else if(in instanceof MSequenceDef)
 		{
 			return transform((MSequenceDef)in);
+		}
+		else if(in instanceof MInterfaceDef)
+		{
+			return transform((MInterfaceDef)in);
 		}
 		else
 		{
@@ -467,14 +487,106 @@ public class CcmToIdlModelMapper
 		{
 			out = new InterfaceDef(in.getIdentifier(), Code.getNamespaceList(in));
 			
+			for(Iterator i = in.getBases().iterator(); i.hasNext(); )
+			{
+				MInterfaceDef baseIface = (MInterfaceDef)i.next();
+				out.getBaseInterfaces().add(transform(baseIface));
+			}
 			for(Iterator i = in.getContentss().iterator(); i.hasNext();)
 			{
-				
-				
+				MContained child = (MContained) i.next();
+				if(child instanceof MConstantDef)
+				{
+					out.getConstants().add(transform((MConstantDef)child));
+				}
+				else if(child instanceof MEnumDef)
+				{
+					out.getEnumerations().add(transform((MEnumDef)child));
+				}
+				else if(child instanceof MStructDef)
+				{
+					out.getStructures().add(transform((MStructDef)child));
+				}
+				else if(child instanceof MTypedefDef)
+				{
+					out.getTypedefs().add(transform((MTypedefDef)child));
+				}
+				else if(child instanceof MExceptionDef)
+				{
+					out.getExceptions().add(transform((MExceptionDef)child));
+				}
+				else if(child instanceof MAttributeDef)
+				{
+					out.getAttributes().add(transform((MAttributeDef)child));
+				}
+				else if(child instanceof MOperationDef)
+				{
+					out.getOperations().add(transform((MOperationDef)child));
+				}				
+				// ...
 			}
 			artifactCache.put(repoId, out);
 		}
 		return out;
+	}
+	
+	public AttributeDef transform(MAttributeDef in)
+	{
+		logger.finer("MAttributeDef: " + in.getIdentifier());
+		AttributeDef out = new AttributeDef(in.getIdentifier());
+		out.setType(transform(in.getIdlType()));
+		out.setReadonly(in.isReadonly());
+		return out;
+	}
+	
+	public OperationDef transform(MOperationDef in)
+	{
+		logger.finer("MOperationDef: " + in.getIdentifier());
+		OperationDef out = new OperationDef(in.getIdentifier());
+		out.setType(transform(in.getIdlType()));
+		out.setOneway(in.isOneway());
+		out.setContext(in.getContexts());
+		for(Iterator i = in.getParameters().iterator(); i.hasNext(); )
+		{
+			MParameterDef parameter = (MParameterDef)i.next();
+			out.getParameters().add(transform(parameter));
+		}
+		for(Iterator i = in.getExceptionDefs().iterator(); i.hasNext(); )
+		{
+			MExceptionDef exc = (MExceptionDef)i.next();
+			out.getExceptions().add(transform(exc));
+		}
+		return out;
+	}
+	
+	public ParameterDef transform(MParameterDef in)
+	{
+		logger.finer("MParameterDef: " + in.getIdentifier());
+		ParameterDef out = new ParameterDef(in.getIdentifier());
+		out.setDirection(transform(in.getDirection()));
+		out.setType(transform(in.getIdlType()));
+		return out;
+	}
+	
+	public PassingDirection transform(MParameterMode in)
+	{
+		logger.finer("MParameterMode: ");
+		if(in == MParameterMode.PARAM_IN)
+		{
+			return PassingDirection.IN;
+		}
+		else if(in == MParameterMode.PARAM_INOUT)
+		{
+			return PassingDirection.INOUT;
+		}
+		else if(in == MParameterMode.PARAM_OUT)
+		{
+			return PassingDirection.OUT;
+		}
+		else
+		{
+			throw new RuntimeException("Unknown parameter mode " + in + "!");
+		}
 	}
 	
 	
