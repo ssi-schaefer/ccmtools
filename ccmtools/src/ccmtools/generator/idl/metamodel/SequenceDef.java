@@ -6,6 +6,10 @@ public class SequenceDef
 	extends ModelElement
 	implements Type
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	/** Type which is the same for all elements stored in a sequence. */
 	private Type elementType;
 	
@@ -35,10 +39,8 @@ public class SequenceDef
 	}	
 	
 	
-	
-	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 	
 	public String generateIdlMapping()
@@ -54,13 +56,14 @@ public class SequenceDef
 		return code.toString();
 	}
 	
-	public String generateIdlConstant(Object value)
-	{
-		return ""; // not allowed as a constant
-	}
-	
 	public String generateIncludePath()
 	{
 		return getElementType().generateIncludePath();
 	}
+
+	
+	/*************************************************************************
+	 * IDL3 Generator Methods Implementation
+	 *************************************************************************/
+
 }

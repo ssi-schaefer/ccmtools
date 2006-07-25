@@ -8,7 +8,7 @@ all: metainf remote clientlib
 test: metainf remote clientlib check_local check clean 
 
 idl3: Test.idl
-	ccmtools idl3 -o ${IDL3_DIR} Test.idl
+	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 
 # Generate component metadata in a component descriptor file.
 metainf: idl3

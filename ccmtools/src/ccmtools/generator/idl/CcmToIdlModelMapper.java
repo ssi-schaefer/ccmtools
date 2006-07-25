@@ -27,11 +27,17 @@ import ccmtools.Metamodel.BaseIDL.MStructDef;
 import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 import ccmtools.Metamodel.BaseIDL.MWstringDef;
+import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MHomeDef;
+import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.generator.idl.metamodel.AnyType;
 import ccmtools.generator.idl.metamodel.ArrayDef;
 import ccmtools.generator.idl.metamodel.AttributeDef;
 import ccmtools.generator.idl.metamodel.BooleanType;
 import ccmtools.generator.idl.metamodel.CharType;
+import ccmtools.generator.idl.metamodel.ComponentDef;
 import ccmtools.generator.idl.metamodel.ConstantDef;
 import ccmtools.generator.idl.metamodel.DoubleType;
 import ccmtools.generator.idl.metamodel.EnumDef;
@@ -39,6 +45,7 @@ import ccmtools.generator.idl.metamodel.ExceptionDef;
 import ccmtools.generator.idl.metamodel.FieldDef;
 import ccmtools.generator.idl.metamodel.FixedType;
 import ccmtools.generator.idl.metamodel.FloatType;
+import ccmtools.generator.idl.metamodel.HomeDef;
 import ccmtools.generator.idl.metamodel.InterfaceDef;
 import ccmtools.generator.idl.metamodel.LongDoubleType;
 import ccmtools.generator.idl.metamodel.LongLongType;
@@ -50,6 +57,7 @@ import ccmtools.generator.idl.metamodel.OctetType;
 import ccmtools.generator.idl.metamodel.OperationDef;
 import ccmtools.generator.idl.metamodel.ParameterDef;
 import ccmtools.generator.idl.metamodel.PassingDirection;
+import ccmtools.generator.idl.metamodel.FacetDef;
 import ccmtools.generator.idl.metamodel.SequenceDef;
 import ccmtools.generator.idl.metamodel.ShortType;
 import ccmtools.generator.idl.metamodel.StringType;
@@ -59,6 +67,7 @@ import ccmtools.generator.idl.metamodel.TypedefDef;
 import ccmtools.generator.idl.metamodel.UnsignedLongLongType;
 import ccmtools.generator.idl.metamodel.UnsignedLongType;
 import ccmtools.generator.idl.metamodel.UnsignedShortType;
+import ccmtools.generator.idl.metamodel.ReceptacleDef;
 import ccmtools.generator.idl.metamodel.VoidType;
 import ccmtools.generator.idl.metamodel.WCharType;
 import ccmtools.generator.idl.metamodel.WStringType;
@@ -179,6 +188,20 @@ public class CcmToIdlModelMapper
         		ExceptionDef idlException = transform(exception);	
         		modelRepository.addException(idlException);
         	}
+        	else if(node instanceof MComponentDef)
+        	{
+        		MComponentDef component = (MComponentDef)node;
+        		logger.finer("MComponentDef: " + Code.getRepositoryId(component));
+        		ComponentDef idlComponent = transform(component);
+        		modelRepository.addComponent(idlComponent);    		
+        	}
+        	else if(node instanceof MHomeDef)
+        	{
+        		MHomeDef home = (MHomeDef)node;
+        		logger.finer("MHomeDef: " + Code.getRepositoryId(home));
+        		HomeDef idlHome = transform(home);
+        		modelRepository.addHome(idlHome);    		
+        	}		
         	else if(node instanceof MInterfaceDef)
         	{
         		MInterfaceDef iface = (MInterfaceDef)node;
@@ -200,7 +223,7 @@ public class CcmToIdlModelMapper
     	
 	public Type transform(MIDLType in)
 	{
-		logger.finer("MIDLType: " + in);
+		logger.fine("MIDLType: " + in);
 		if(in instanceof MPrimitiveDef)
 		{
 			return transform((MPrimitiveDef)in);
@@ -249,7 +272,7 @@ public class CcmToIdlModelMapper
 	
 	public Type transform(MPrimitiveDef primitive)	
 	{
-		logger.finer("MPrimitiveDef: " + primitive.getKind());
+		logger.fine("MPrimitiveDef: " + primitive.getKind());
 		if(primitive.getKind() == MPrimitiveKind.PK_VOID)
 		{
 			return new VoidType();
@@ -323,7 +346,7 @@ public class CcmToIdlModelMapper
 	public StringType transform(MStringDef in)
 	{
 		StringType out = new StringType();
-		logger.finer("MStringDef: " + in);
+		logger.fine("MStringDef: " + in);
 		out.setBound(in.getBound());
 		return out;		
 	}
@@ -331,7 +354,7 @@ public class CcmToIdlModelMapper
 	public WStringType transform(MWstringDef in)
 	{
 		WStringType out = new WStringType();
-		logger.finer("MWstringDef: " + in);
+		logger.fine("MWstringDef: " + in);
 		out.setBound(in.getBound());
 		return out;
 	}
@@ -339,7 +362,7 @@ public class CcmToIdlModelMapper
 	public FixedType transform(MFixedDef in)
 	{
 		FixedType out = new FixedType();
-		logger.finer("MFixedDef: " + in);
+		logger.fine("MFixedDef: " + in);
 		out.setDigits(in.getDigits());
 		out.setScale(in.getScale());
 		return out;
@@ -348,7 +371,7 @@ public class CcmToIdlModelMapper
 	public SequenceDef transform(MSequenceDef in)
 	{
 		SequenceDef out = new SequenceDef();
-		logger.finer("MSequenceDef: " + in);
+		logger.fine("MSequenceDef: " + in);
 		out.setBound(in.getBound());
 		out.setElementType(transform(in.getIdlType()));
 		return out;
@@ -357,8 +380,12 @@ public class CcmToIdlModelMapper
 	public ArrayDef transform(MArrayDef in)
 	{
 		ArrayDef out = new ArrayDef();
-		logger.finer("MArrayDef: " + in);
-		out.getBounds().addAll(in.getBounds());
+		logger.fine("MArrayDef: " + in);
+//		out.getBounds().addAll(in.getBounds());
+		for(Iterator i=in.getBounds().iterator(); i.hasNext();)
+		{
+			out.getBounds().add((Long)i.next());
+		}
 		out.setElementType(transform(in.getIdlType()));		
 		return out;
 	}
@@ -367,13 +394,13 @@ public class CcmToIdlModelMapper
 	{		
 		EnumDef out;
 		String repoId = Code.getRepositoryId(in);
-		logger.finer("MEnumDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
 			out = (EnumDef)artifactCache.get(repoId);
 		}
 		else 
 		{			
+			logger.fine("MEnumDef: " + repoId);
 			out = new EnumDef(in.getIdentifier(), Code.getNamespaceList(in));
 			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 			{
@@ -389,13 +416,13 @@ public class CcmToIdlModelMapper
 	{		
 		StructDef out;
 		String repoId = Code.getRepositoryId(in);
-		logger.finer("MStructDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
 			out = (StructDef)artifactCache.get(repoId);
 		}
 		else 
 		{
+			logger.fine("MStructDef: " + repoId);
 			out = new StructDef(in.getIdentifier(), Code.getNamespaceList(in));
 			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 			{
@@ -415,13 +442,13 @@ public class CcmToIdlModelMapper
 	{		
 		ExceptionDef out;
 		String repoId = Code.getRepositoryId(in);
-		logger.finer("MExceptionDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
 			out = (ExceptionDef)artifactCache.get(repoId);
 		}
 		else 
 		{
+			logger.fine("MExceptionDef: " + repoId);
 			out = new ExceptionDef(in.getIdentifier(), Code.getNamespaceList(in));
 			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 			{
@@ -441,13 +468,13 @@ public class CcmToIdlModelMapper
 	{
 		TypedefDef out;
 		String repoId = Code.getRepositoryId(in);
-		logger.finer("MTypedefDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
 			out = (TypedefDef)artifactCache.get(repoId);
 		}
 		else 
 		{
+			logger.fine("MTypedefDef: " + repoId);
 			out = new TypedefDef(in.getIdentifier(), Code.getNamespaceList(in));
 			out.setAlias(transform(((MTyped)in).getIdlType()));
 			artifactCache.put(repoId, out);
@@ -459,13 +486,13 @@ public class CcmToIdlModelMapper
 	{
 		ConstantDef out;
 		String repoId = Code.getRepositoryId(in);
-		logger.finer("MConstantDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
 			out = (ConstantDef)artifactCache.get(repoId);
 		}
 		else 
 		{
+			logger.fine("MConstantDef: " + repoId);
 			out = new ConstantDef(in.getIdentifier(), Code.getNamespaceList(in));
 			out.setType(transform(((MTyped)in).getIdlType()));
 			out.setConstValue(in.getConstValue());
@@ -478,13 +505,13 @@ public class CcmToIdlModelMapper
 	{		
 		InterfaceDef out;
 		String repoId = Code.getRepositoryId(in);
-		logger.finer("MInterfaceDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
 			out = (InterfaceDef)artifactCache.get(repoId);
 		}
 		else 
 		{
+			logger.fine("MInterfaceDef: " + repoId);
 			out = new InterfaceDef(in.getIdentifier(), Code.getNamespaceList(in));
 			
 			for(Iterator i = in.getBases().iterator(); i.hasNext(); )
@@ -532,7 +559,7 @@ public class CcmToIdlModelMapper
 	
 	public AttributeDef transform(MAttributeDef in)
 	{
-		logger.finer("MAttributeDef: " + in.getIdentifier());
+		logger.fine("MAttributeDef: " + in.getIdentifier());
 		AttributeDef out = new AttributeDef(in.getIdentifier());
 		out.setType(transform(in.getIdlType()));
 		out.setReadonly(in.isReadonly());
@@ -541,7 +568,7 @@ public class CcmToIdlModelMapper
 	
 	public OperationDef transform(MOperationDef in)
 	{
-		logger.finer("MOperationDef: " + in.getIdentifier());
+		logger.fine("MOperationDef: " + in.getIdentifier());
 		OperationDef out = new OperationDef(in.getIdentifier());
 		out.setType(transform(in.getIdlType()));
 		out.setOneway(in.isOneway());
@@ -561,7 +588,7 @@ public class CcmToIdlModelMapper
 	
 	public ParameterDef transform(MParameterDef in)
 	{
-		logger.finer("MParameterDef: " + in.getIdentifier());
+		logger.fine("MParameterDef: " + in.getIdentifier());
 		ParameterDef out = new ParameterDef(in.getIdentifier());
 		out.setDirection(transform(in.getDirection()));
 		out.setType(transform(in.getIdlType()));
@@ -570,7 +597,7 @@ public class CcmToIdlModelMapper
 	
 	public PassingDirection transform(MParameterMode in)
 	{
-		logger.finer("MParameterMode: ");
+		logger.fine("MParameterMode: ");
 		if(in == MParameterMode.PARAM_IN)
 		{
 			return PassingDirection.IN;
@@ -589,6 +616,116 @@ public class CcmToIdlModelMapper
 		}
 	}
 	
+	public ComponentDef transform(MComponentDef in)
+	{		
+		ComponentDef out;
+		String repoId = Code.getRepositoryId(in);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (ComponentDef)artifactCache.get(repoId);
+		}
+		else 
+		{
+			logger.fine("MComponentDef: " + repoId);
+			out = new ComponentDef(in.getIdentifier(), Code.getNamespaceList(in));
+
+			if(in.getBases() != null)
+			{
+				// A component type may have at most one base component type (IDL Spec. p3-60)
+				if(in.getBases().size() > 0)
+				{
+					MComponentDef base = (MComponentDef)in.getBases().get(0);
+					out.setBase(transform(base));
+				}
+			}
+			for(Iterator i = in.getContentss().iterator(); i.hasNext();)
+			{
+				MContained child = (MContained) i.next();
+				if (child instanceof MAttributeDef)
+				{
+					out.getAttributes().add(transform((MAttributeDef)child));
+				}
+			}
+			for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
+			{
+				MInterfaceDef supportedInterface = ((MSupportsDef)i.next()).getSupports();
+				out.getSupports().add(transform(supportedInterface));
+			}
+			for(Iterator i = in.getFacets().iterator(); i.hasNext();)
+			{
+				MProvidesDef provides = (MProvidesDef)i.next();
+				FacetDef facet = transform(provides);
+				facet.setComponent(out);
+				out.getFacets().add(facet);
+			}
+			for(Iterator i = in.getReceptacles().iterator(); i.hasNext();)
+			{
+				MUsesDef uses = (MUsesDef)i.next();
+				ReceptacleDef receptacle = transform(uses);
+				receptacle.setComponent(out);
+				receptacle.setMultiple(uses.isMultiple());
+				out.getReceptacles().add(receptacle);
+			}
+			// ...
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
 	
+	public FacetDef transform(MProvidesDef in)
+	{
+		FacetDef out;
+		String repoId = Code.getRepositoryId(in);
+		if(artifactCache.containsKey(repoId))
+		{
+			out = (FacetDef)artifactCache.get(repoId);	
+		}
+		else 
+		{
+			logger.finer("MProvidesDef: " + repoId);		
+			out = new FacetDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out.setInterface(transform(in.getProvides()));
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
 	
+	public ReceptacleDef transform(MUsesDef in)
+	{
+		ReceptacleDef out;
+		String repoId = Code.getRepositoryId(in);
+		if(artifactCache.containsKey(repoId))
+		{
+			out = (ReceptacleDef)artifactCache.get(repoId);	
+		}
+		else 
+		{
+			logger.finer("MUsesDef: " + repoId);		
+			out = new ReceptacleDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out.setInterface(transform(in.getUses()));
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
+	
+	public HomeDef transform(MHomeDef in)
+	{		
+		HomeDef out;
+		String repoId = Code.getRepositoryId(in);
+		if (artifactCache.containsKey(repoId))
+		{
+			out = (HomeDef)artifactCache.get(repoId);
+		}
+		else 
+		{
+			logger.fine("MHomeDef: " + repoId);
+			out = new HomeDef(in.getIdentifier(), Code.getNamespaceList(in));
+			ComponentDef component = transform(in.getComponent());
+			component.getHomes().add(out);
+			out.setComponent(component);
+			//...
+			artifactCache.put(repoId, out);
+		}
+		return out;
+	}
 }

@@ -1,18 +1,20 @@
 package ccmtools.generator.idl.metamodel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import ccmtools.generator.idl.templates.EnumDefFileTemplate;
 import ccmtools.generator.idl.templates.EnumDefTemplate;
-import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class EnumDef
 	extends ModelElement
 	implements Type
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	private List<String> members = new ArrayList<String>();
 	
 	public EnumDef(String identifier, List<String> namespace)
@@ -27,26 +29,17 @@ public class EnumDef
 		
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 	
-	public String generateIdlMapping()
-	{
-		return generateAbsoluteIdlName();
-	}
-
-	public String generateIdlConstant(Object value)
-	{
-		return ""; // not allowed as a constant
-	}
-		
-	public String generateIncludePath()
-	{
-		return generateAbsoluteIdlName("/");
-	}
+	// Use ModelElement default implementations
 	
 	
-	public String generateIdl3Code()
+	/*************************************************************************
+	 * IDL3 Generator Methods Implementation
+	 *************************************************************************/
+	
+	public String generateIdl3()
 	{
 		return new EnumDefFileTemplate().generate(this); 
 	}
@@ -63,14 +56,14 @@ public class EnumDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateIdl3SourceFiles()
-	{
-		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
-		
-		SourceFile enumeration = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
-		sourceFileList.add(enumeration);
-		
-		return sourceFileList;
-	}
+//	public List<SourceFile> generateIdl3SourceFiles()
+//	{
+//		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+//		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
+//		
+//		SourceFile enumeration = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
+//		sourceFileList.add(enumeration);
+//		
+//		return sourceFileList;
+//	}
 }

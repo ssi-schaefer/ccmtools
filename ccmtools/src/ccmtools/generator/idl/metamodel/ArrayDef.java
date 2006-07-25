@@ -7,6 +7,10 @@ public class ArrayDef
 	extends ModelElement
 	implements Type
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	/** Type which is the same for all elements staored in an array. */
 	private Type elementType;
 
@@ -23,17 +27,15 @@ public class ArrayDef
 	{
 		this.elementType = type;
 	}
-
 	
 	public List<Long> getBounds()
 	{
 		return bounds;
 	}
 
-
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 	
 	public String generateIdlMapping()
@@ -45,14 +47,15 @@ public class ArrayDef
 		}		
 		return code.toString();
 	}
-	
-	public String generateIdlConstant(Object value)
-	{
-		return ""; // not allowed
-	}	
-	
+		
 	public String generateIncludePath()
 	{
 		return getElementType().generateIncludePath();
 	}
+	
+	
+	/*************************************************************************
+	 * IDL3 Generator Methods Implementation
+	 *************************************************************************/
+	
 }

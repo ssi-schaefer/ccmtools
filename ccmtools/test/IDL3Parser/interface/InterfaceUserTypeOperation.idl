@@ -11,15 +11,15 @@
 
 interface InterfaceUserTypeOperation
 {
-	LongType		typedefOp(in LongType p1, inout LongType p2, out LongType p3);		
-	Color      	enumOp(in Color p1, inout Color p2, out Color p3);
-	Address    	structOp(in Address p1, inout Address p2, out Address p3);
-	LongArray   arrayOp(in LongArray p1, inout LongArray p2, out LongArray p3);
-	LongSeq   	sequenceOp(in LongSeq p1, inout LongSeq p2, out LongSeq p3);
-
-	InterfaceBasicTypeOperation interfaceOp(in InterfaceBasicTypeOperation p1,
-									inout InterfaceBasicTypeOperation p2,
-									out InterfaceBasicTypeOperation p3);
+  LongType   typedefOp(in LongType p1, inout LongType p2, out LongType p3);		
+  Color      enumOp(in Color p1, inout Color p2, out Color p3);
+  Address    structOp(in Address p1, inout Address p2, out Address p3);
+  LongArray  arrayOp(in LongArray p1, inout LongArray p2, out LongArray p3);
+  LongSeq    sequenceOp(in LongSeq p1, inout LongSeq p2, out LongSeq p3);
+  
+  InterfaceBasicTypeOperation interfaceOp(in InterfaceBasicTypeOperation p1,
+					  inout InterfaceBasicTypeOperation p2,
+					  out InterfaceBasicTypeOperation p3);
 };
 
 #endif // __INTERFACE_USER_TYPE_OPERATION__IDL__

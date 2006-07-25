@@ -10,12 +10,12 @@
 
 component ComponentUserTypeAttribute
 {
-	attribute LongType 						typedefValue;
-	attribute Color 							enumValue;
-	attribute Address 						structValue;
-	attribute LongArray 						arrayValue;
-	attribute LongSeq 						sequenceValue;
-  	attribute InterfaceBasicTypeAttributes 	interfaceValue;
+	attribute LongType typedefValue;
+	attribute Color enumValue;
+	attribute Address structValue;
+	attribute LongArray arrayValue;
+	attribute LongSeq sequenceValue;
+  	attribute InterfaceBasicTypeAttributes interfaceValue;
 };
 
 #endif // __COMPONENT_USER_TYPE_ATTRIBUTE__IDL__

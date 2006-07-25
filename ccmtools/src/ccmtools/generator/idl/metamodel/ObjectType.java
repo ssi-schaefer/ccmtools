@@ -3,11 +3,10 @@ package ccmtools.generator.idl.metamodel;
 
 
 public class ObjectType
-	implements Type
+	extends TypeImpl
 {
-	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 	
 	public String generateIdlMapping()
@@ -20,8 +19,8 @@ public class ObjectType
 		return ""; // not allowed as a constant
 	}
 	
-	public String generateIncludePath()
-	{
-		return ""; // primitive typed don't need include statements
-	}
+//	public String generateIncludePath()
+//	{
+//		return ""; // primitive typed don't need include statements
+//	}
 }

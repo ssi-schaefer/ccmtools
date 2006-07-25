@@ -24,9 +24,9 @@ module world
 
 module america
 {
-	typedef long LongArray[10];
-
-	typedef sequence<long> LongSeq;
+  typedef long LongArray[10];
+  
+  typedef sequence<long> LongSeq;
 		
 }; // end of module america
 
@@ -44,9 +44,9 @@ module world
 
 		interface InterfaceBasicTypeAttributes
 		{
-			attribute float 				floatValue;
-			attribute double 			doubleValue;
-			attribute long double		lDoubleValue;
+		        attribute float floatValue;
+			attribute double doubleValue;
+			attribute long double lDoubleValue;
 		};
 	}; // end of module europe
 
@@ -58,12 +58,14 @@ module world
 			interface InterfaceUserType
 			{
 				::LongType typedefOpAbsolute(in ::LongType p1);										
-				LongType	 typedefOpRelative(in LongType p1);		
+			        LongType typedefOpRelative(in LongType p1);		
 				
 				::world::Color enumOpAbsolute(in ::world::Color p1);
+
 				Color enumOpRelative(in Color p1);
 								
 				::world::europe::Address structOpAbsolute(in ::world::europe::Address p1);
+
 				Address structOpRelative(in Address p1);
 				
 				::america::LongArray arrayOpAbsolute(in ::america::LongArray p1);

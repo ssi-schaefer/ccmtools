@@ -39,9 +39,9 @@ module world
 
 		interface InterfaceBasicTypeAttributes
 		{
-			attribute float 				floatValue;
-			attribute double 			doubleValue;
-			attribute long double		lDoubleValue;
+			attribute float floatValue;
+			attribute double doubleValue;
+			attribute long double lDoubleValue;
 		};
 
 		module austria
@@ -49,7 +49,7 @@ module world
 			interface InterfaceUserType
 			{
 				::LongType typedefOpAbsolute(in ::LongType p1);										
-				LongType	 typedefOpRelative(in LongType p1);		
+				LongType typedefOpRelative(in LongType p1);		
 				
 				::world::Color enumOpAbsolute(in ::world::Color p1);
 				Color enumOpRelative(in Color p1);

@@ -1,15 +1,11 @@
 package ccmtools.generator.idl.metamodel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import ccmtools.generator.idl.templates.InterfaceDefTemplate;
-import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 
@@ -17,6 +13,10 @@ public class InterfaceDef
 	extends ModelElement
 	implements Type
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	private List<InterfaceDef> baseInterfaces = new ArrayList<InterfaceDef>(); 
 	private List<ConstantDef> constants = new ArrayList<ConstantDef>();
 	private List<AttributeDef> attributes = new ArrayList<AttributeDef>();
@@ -32,8 +32,7 @@ public class InterfaceDef
 	{
 		super(identifier, namespace);
 	}
-	
-	
+		
 	public List<InterfaceDef> getBaseInterfaces()
 	{
 		return baseInterfaces;
@@ -76,22 +75,19 @@ public class InterfaceDef
 	
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 	
-	public String generateIdlMapping()
-	{
-		return getIdentifier();
-	}
+	// Use ModelElement default implementations
+
 	
-	public String generateIdlConstant(Object value)
+	/*************************************************************************
+	 * IDL3 Generator Methods Implementation
+	 *************************************************************************/
+
+	public String generateIdl3()
 	{
-		return ""; // not allowed as a constant
-	}
-		
-	public String generateIncludePath()
-	{
-		return generateAbsoluteIdlName("/");
+		return new InterfaceDefTemplate().generate(this); 
 	}
 	
 	public String generateIncludeStatements()
@@ -126,7 +122,7 @@ public class InterfaceDef
 			code.append(indent()).append(TAB).append(": ");
 			for(InterfaceDef iface : getBaseInterfaces())
 			{
-				baseList.add(iface.generateAbsoluteIdlName());
+				baseList.add(iface.generateIdlMapping());
 			}
 			code.append(Text.join(", ", baseList));
 		}
@@ -178,7 +174,7 @@ public class InterfaceDef
 		StringBuilder code = new StringBuilder();
 		for(AttributeDef attr : getAttributes())
 		{
-			code.append(indent()).append(TAB).append(attr.generateIdl3Code());
+			code.append(indent()).append(TAB).append(attr.generateIdl3());
 		}
 		return code.toString();
 	}
@@ -188,7 +184,7 @@ public class InterfaceDef
 		StringBuilder code = new StringBuilder();
 		for(OperationDef op : getOperations())
 		{
-			code.append(indent()).append(TAB).append(op.generateIdl3Code());
+			code.append(indent()).append(TAB).append(op.generateIdl3());
 		}
 		return code.toString();
 	}
@@ -203,22 +199,17 @@ public class InterfaceDef
 		return code.toString();
 	}
 	
-	public String generateIdl3Code()
-	{
-		return new InterfaceDefTemplate().generate(this); 
-	}
-	
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateIdl3SourceFiles()
-	{
-		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
-		
-		SourceFile source = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
-		sourceFileList.add(source);
-		
-		return sourceFileList;
-	}	
+//	public List<SourceFile> generateIdl3SourceFiles()
+//	{
+//		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+//		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
+//		
+//		SourceFile source = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
+//		sourceFileList.add(source);
+//		
+//		return sourceFileList;
+//	}	
 }

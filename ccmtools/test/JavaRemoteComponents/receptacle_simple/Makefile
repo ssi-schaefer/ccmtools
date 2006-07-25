@@ -8,7 +8,7 @@ all: metainf remote clientlib
 test: metainf remote clientlib check clean 
 
 idl3: Test.idl
-	ccmtools idl3 -o ${IDL3_DIR} Test.idl
+	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 
 metainf: idl3
 	mkdir ${DEST_DIR}/META-INF

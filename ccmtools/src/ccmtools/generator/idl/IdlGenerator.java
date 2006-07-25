@@ -7,9 +7,11 @@ import java.util.logging.Logger;
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.UI.Driver;
+import ccmtools.generator.idl.metamodel.ComponentDef;
 import ccmtools.generator.idl.metamodel.ConstantDef;
 import ccmtools.generator.idl.metamodel.EnumDef;
 import ccmtools.generator.idl.metamodel.ExceptionDef;
+import ccmtools.generator.idl.metamodel.HomeDef;
 import ccmtools.generator.idl.metamodel.InterfaceDef;
 import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.generator.idl.metamodel.StructDef;
@@ -102,6 +104,14 @@ public class IdlGenerator
 			for(InterfaceDef idlInterface : idlModelRepo.findAllInterfaces())
 			{
 				sourceFileList.addAll(idlInterface.generateIdl3SourceFiles());
+			}
+			for(ComponentDef idlComponent : idlModelRepo.findAllComponents())
+			{
+				sourceFileList.addAll(idlComponent.generateIdl3SourceFiles());
+			}
+			for(HomeDef idlHome : idlModelRepo.findAllHomes())
+			{
+				sourceFileList.addAll(idlHome.generateIdl3SourceFiles());
 			}
 			//...
 			

@@ -1,20 +1,20 @@
 package ccmtools.generator.idl.metamodel;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import ccmtools.generator.idl.templates.ArrayDefTemplate;
 import ccmtools.generator.idl.templates.TypedefDefFileTemplate;
 import ccmtools.generator.idl.templates.TypedefDefTemplate;
-import ccmtools.utils.SourceFile;
-import ccmtools.utils.Text;
 
 
 public class TypedefDef
 	extends ModelElement
 	implements Type
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	private Type alias;
 	
 	public TypedefDef(String identifier, List<String> namespace)
@@ -34,42 +34,24 @@ public class TypedefDef
 
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 	
-	public String generateIdlMapping()
-	{
-		return getIdentifier();
-	}
+	// Use ModelElement default implementations
 	
-	public String generateIdlConstant(Object value)
-	{
-		return ""; // not allowed as a constant
-	}
 	
-	public String generateIncludePath()
+	/*************************************************************************
+	 * IDL3 Generator Methods Implementation
+	 *************************************************************************/
+
+	public String generateIdl3()
 	{
-		return generateAbsoluteIdlName("/");
+		return new TypedefDefFileTemplate().generate(this);
 	}
 	
 	public String generateIncludeStatements()
 	{
 		return generateIncludeStatement(getAlias().generateIncludePath());
-	}
-	
-	public String generateIdl3Code()
-	{
-		return new TypedefDefFileTemplate().generate(this);
-//		if(getAlias() instanceof ArrayDef)
-//		{
-//			// The specific structure of an array definition (e.g. typedef long LongArray[10];
-//			// forces this special case...
-//			return new ArrayDefFileTemplate().generate(this);
-//		}
-//		else
-//		{
-//			return new TypedefDefFileTemplate().generate(this);
-//		}
 	}
 	
 	public String generateTypedef()
@@ -89,14 +71,14 @@ public class TypedefDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateIdl3SourceFiles()
-	{
-		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
-		
-		SourceFile enumeration = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
-		sourceFileList.add(enumeration);
-		
-		return sourceFileList;
-	}
+//	public List<SourceFile> generateIdl3SourceFiles()
+//	{
+//		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+//		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
+//		
+//		SourceFile enumeration = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
+//		sourceFileList.add(enumeration);
+//		
+//		return sourceFileList;
+//	}
 }

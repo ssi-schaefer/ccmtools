@@ -17,15 +17,8 @@ public class ModelRepository
 	private List<ConstantDef> constantList = new ArrayList<ConstantDef>();
 	private List<ExceptionDef> exceptionList = new ArrayList<ExceptionDef>();
 	private List<InterfaceDef> interfaceList = new ArrayList<InterfaceDef>();
-		
-//	private List homeList = new ArrayList();
-//	private List componentList = new ArrayList();
-//	private List providesList = new ArrayList();
-//	private List usesList = new ArrayList();
-	
-	public ModelRepository()
-	{
-	}
+	private List<ComponentDef> componentList = new ArrayList<ComponentDef>();
+	private List<HomeDef> homeList = new ArrayList<HomeDef>();
 
 	public void addTypedef(TypedefDef value)
 	{
@@ -81,30 +74,27 @@ public class ModelRepository
 		return interfaceList;
 	}
 
+	public void addHome(HomeDef home)
+	{
+		homeList.add(home);
+	}
+	public List<HomeDef> findAllHomes()
+	{
+		return homeList;
+	}
+		
+	public void addComponent(ComponentDef component)
+	{
+		componentList.add(component);
+	}
+		public List<ComponentDef> findAllComponents()
+	{
+		return componentList;
+	}
 	
-//	public void addHome(HomeDef home)
-//	{
-//		homeList.add(home);
-//	}
-//	
-//	public List findAllHomes()
-//	{
-//		return homeList;
-//	}
-//	
-//	
-//	public void addComponent(ComponentDef component)
-//	{
-//		componentList.add(component);
-//	}
-//
-//	public List findAllComponents()
-//	{
-//		return componentList;
-//	}
-//	
-//	
-//		
+	
+	
+	
 //	
 //	public void addProvides(ProvidesDef provides)
 //	{
@@ -125,29 +115,5 @@ public class ModelRepository
 //	public List findAllUses()
 //	{
 //		return usesList;
-//	}
-	
-	
-	
-//	
-//	
-//	public void addSequence(SequenceDef value)
-//	{
-//		sequenceList.add(value);
-//	}
-//
-//	public List findAllSequences()
-//	{
-//		return sequenceList;
-//	}
-//	
-//	public void addArray(ArrayDef value)
-//	{
-//		arrayList.add(value);
-//	}
-//
-//	public List findAllArrays()
-//	{
-//		return arrayList;
 //	}
 }

@@ -1,6 +1,5 @@
 package ccmtools.generator.idl.metamodel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -8,12 +7,14 @@ import java.util.TreeSet;
 
 import ccmtools.generator.idl.templates.ExceptionDefFileTemplate;
 import ccmtools.generator.idl.templates.ExceptionDefTemplate;
-import ccmtools.utils.SourceFile;
-import ccmtools.utils.Text;
 
 public class ExceptionDef
 	extends ModelElement
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	private List<FieldDef> fields = new ArrayList<FieldDef>();
 	
 	public ExceptionDef(String identifier, List<String> namespace)
@@ -28,22 +29,19 @@ public class ExceptionDef
 
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 	
-	public String generateIdlMapping()
-	{
-		return generateAbsoluteIdlName();
-	}
+	// Use ModelElement default implementations
 	
-	public String generateIdlConstant(Object value)
+	
+	/*************************************************************************
+	 * IDL3 Generator Methods Implementation
+	 *************************************************************************/
+	
+	public String generateIdl3()
 	{
-		return ""; // not allowed as a constant
-	}
-		
-	public String generateIncludePath()
-	{
-		return generateAbsoluteIdlName("/");
+		return new ExceptionDefFileTemplate().generate(this); 
 	}
 	
 	public String generateIncludeStatements()
@@ -61,7 +59,7 @@ public class ExceptionDef
 		StringBuilder code = new StringBuilder();
 		for(FieldDef field : getFields())
 		{
-			code.append(indent()).append(field.generateIdl3Code());
+			code.append(indent()).append(field.generateIdl3());
 		}
 		return code.toString();
 	}
@@ -71,22 +69,17 @@ public class ExceptionDef
 		return new ExceptionDefTemplate().generate(this);
 	}
 	
-	public String generateIdl3Code()
-	{
-		return new ExceptionDefFileTemplate().generate(this); 
-	}
-	
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateIdl3SourceFiles()
-	{
-		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
-		
-		SourceFile source = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
-		sourceFileList.add(source);
-		
-		return sourceFileList;
-	}	
+//	public List<SourceFile> generateIdl3SourceFiles()
+//	{
+//		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+//		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
+//		
+//		SourceFile source = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
+//		sourceFileList.add(source);
+//		
+//		return sourceFileList;
+//	}	
 }

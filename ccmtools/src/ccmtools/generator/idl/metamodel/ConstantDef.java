@@ -1,16 +1,16 @@
 package ccmtools.generator.idl.metamodel;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import ccmtools.generator.idl.templates.ConstantDefTemplate;
-import ccmtools.utils.SourceFile;
-import ccmtools.utils.Text;
 
 public class ConstantDef
 	extends ModelElement
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	private Type type;
 	private Object constValue;
 		
@@ -42,15 +42,10 @@ public class ConstantDef
 	
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * IDL3 Generator Methods Implementation
 	 *************************************************************************/
 	
-	public String generateIdlMapping()
-	{
-		return getIdentifier();
-	}
-				
-	public String generateIdl3Code()
+	public String generateIdl3()
 	{
 		return new ConstantDefTemplate().generate(this); 
 	}
@@ -66,17 +61,17 @@ public class ConstantDef
 			+ generateConstantValue() + ";" + NL;
 	}
 	
-	
+
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateIdl3SourceFiles()
-	{
-		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
-		
-		SourceFile enumeration = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
-		sourceFileList.add(enumeration);
-		
-		return sourceFileList;
-	}
+//	public List<SourceFile> generateIdl3SourceFiles()
+//	{
+//		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+//		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
+//		
+//		SourceFile enumeration = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
+//		sourceFileList.add(enumeration);
+//		
+//		return sourceFileList;
+//	}
 }

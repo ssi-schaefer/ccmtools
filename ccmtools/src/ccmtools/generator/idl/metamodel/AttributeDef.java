@@ -4,6 +4,10 @@ package ccmtools.generator.idl.metamodel;
 public class AttributeDef
 	extends ModelElement
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	private boolean isReadonly;
 	private Type type;
 	
@@ -34,10 +38,10 @@ public class AttributeDef
 
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * IDL3 Generator Methods Implementation
 	 *************************************************************************/
 	
-	public String generateIdl3Code()
+	public String generateIdl3()
 	{
 		StringBuilder code = new StringBuilder();
 		if(isReadonly())
@@ -49,5 +53,4 @@ public class AttributeDef
 		code.append(";").append(NL);
 		return code.toString();
 	}
-
 }

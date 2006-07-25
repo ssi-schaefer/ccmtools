@@ -4,6 +4,10 @@ package ccmtools.generator.idl.metamodel;
 public class ParameterDef
 	extends ModelElement
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	private PassingDirection direction;
 	private Type type;
 	
@@ -22,8 +26,7 @@ public class ParameterDef
 	{
 		this.direction = direction;
 	}
-	
-	
+		
 	public Type getType()
 	{
 		return type;
@@ -34,20 +37,20 @@ public class ParameterDef
 		this.type = type;
 	}
 	
+	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * IDL3 Generator Methods Implementation
 	 *************************************************************************/
-	
-	public String generateIncludePath()
-	{
-		return getType().generateIncludePath();
-	}
-	
-	public String generateIdl3Code()
+
+	public String generateIdl3()
 	{
 		return getDirection() + " " + getType().generateIdlMapping() + " " + getIdentifier(); 
 	}
-	
+		
+	public String generateIncludePath()
+	{
+		return getType().generateIncludePath();
+	}	
 }
 
 

@@ -1,6 +1,5 @@
 package ccmtools.generator.idl.metamodel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -8,13 +7,15 @@ import java.util.TreeSet;
 
 import ccmtools.generator.idl.templates.StructDefFileTemplate;
 import ccmtools.generator.idl.templates.StructDefTemplate;
-import ccmtools.utils.SourceFile;
-import ccmtools.utils.Text;
 
 public class StructDef
 	extends ModelElement
 	implements Type
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	private List<FieldDef> fields = new ArrayList<FieldDef>();
 		
 	public StructDef(String identifier, List<String> namespace)
@@ -30,22 +31,19 @@ public class StructDef
 
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 	
-	public String generateIdlMapping()
-	{
-		return getIdentifier();
-	}
+	// Use ModelElement default implementations
 	
-	public String generateIdlConstant(Object value)
+	
+	/*************************************************************************
+	 * IDL3 Generator Methods Implementation
+	 *************************************************************************/
+	
+	public String generateIdl3()
 	{
-		return ""; // not allowed as a constant
-	}
-		
-	public String generateIncludePath()
-	{
-		return generateAbsoluteIdlName("/");
+		return new StructDefFileTemplate().generate(this); 
 	}
 	
 	public String generateIncludeStatements()
@@ -63,14 +61,9 @@ public class StructDef
 		StringBuilder code = new StringBuilder();
 		for(FieldDef field : getFields())
 		{
-			code.append(indent()).append(field.generateIdl3Code());
+			code.append(indent()).append(field.generateIdl3());
 		}
 		return code.toString();
-	}
-	
-	public String generateIdl3Code()
-	{
-		return new StructDefFileTemplate().generate(this); 
 	}
 	
 	public String generateStructure()
@@ -81,14 +74,14 @@ public class StructDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateIdl3SourceFiles()
-	{
-		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
-		
-		SourceFile enumeration = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
-		sourceFileList.add(enumeration);
-		
-		return sourceFileList;
-	}
+//	public List<SourceFile> generateIdl3SourceFiles()
+//	{
+//		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+//		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
+//		
+//		SourceFile enumeration = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
+//		sourceFileList.add(enumeration);
+//		
+//		return sourceFileList;
+//	}
 }

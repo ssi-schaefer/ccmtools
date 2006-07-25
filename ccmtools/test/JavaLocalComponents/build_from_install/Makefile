@@ -15,7 +15,7 @@ test: local check clean
 # Note that there is no separation into an interface and a component directory.
 
 idl3: Test.idl
-	ccmtools idl3 -o ${IDL3_DIR} Test.idl
+	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 # The ccmconfix generator gets the confix package name (-pn) and package 
 # version (-pv) settings as command line parameters. These parameters are used
 # to generate the toplevel Makefile.py file.

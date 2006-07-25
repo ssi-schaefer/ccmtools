@@ -3,8 +3,12 @@ package ccmtools.generator.idl.metamodel;
 
 
 public class WStringType
-	implements Type
+	extends TypeImpl
 {
+	/*************************************************************************
+	 * IDL Model Implementation
+	 *************************************************************************/
+	
 	private Long bound = null;
 	
 	
@@ -20,7 +24,7 @@ public class WStringType
 
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 
 	public String generateIdlMapping()
@@ -40,8 +44,8 @@ public class WStringType
 		return "L\"" + value.toString() + "\"";
 	}
 	
-	public String generateIncludePath()
-	{
-		return ""; // primitive typed don't need include statements
-	}
+//	public String generateIncludePath()
+//	{
+//		return ""; // primitive typed don't need include statements
+//	}
 }

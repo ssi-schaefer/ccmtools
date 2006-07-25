@@ -15,11 +15,11 @@ interface InterfaceUserTypeAttributes
 	// generation of a pair of getter und setter methods for
 	// each attribute.
 	
-	attribute LongType 						typedefValue;
-	attribute Color 							enumValue;
-	attribute Address 						structValue;
-	attribute LongArray 						arrayValue;
-	attribute LongSeq 						sequenceValue;
+	attribute LongType 	typedefValue;
+	attribute Color 	enumValue;
+	attribute Address 	structValue;
+	attribute LongArray 	arrayValue;
+	attribute LongSeq 	sequenceValue;
   	attribute InterfaceBasicTypeAttributes 	interfaceValue;
 
 };

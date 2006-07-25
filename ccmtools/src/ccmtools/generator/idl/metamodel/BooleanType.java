@@ -3,11 +3,11 @@ package ccmtools.generator.idl.metamodel;
 
 
 public class BooleanType
-	implements Type
+	extends TypeImpl
 {
 	
 	/*************************************************************************
-	 * IDL3 generator methods
+	 * Type Interface Implementation
 	 *************************************************************************/
 	
 	public String generateIdlMapping()
@@ -20,8 +20,8 @@ public class BooleanType
 		return value.toString().toUpperCase();
 	}
 	
-	public String generateIncludePath()
-	{
-		return ""; // primitive typed don't need include statements
-	}
+//	public String generateIncludePath()
+//	{
+//		return ""; // primitive typed don't need include statements
+//	}
 }

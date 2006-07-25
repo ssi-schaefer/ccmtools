@@ -8,7 +8,7 @@ all: local
 test: local check clean
 
 idl3: Test.idl
-	ccmtools idl3 -o ${IDL3_DIR} Test.idl
+	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 
 local: idl3
 	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl

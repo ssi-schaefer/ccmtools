@@ -7,28 +7,28 @@ interface InterfaceBasicTypeAttributes
 	// generation of a pair of getter und setter methods for
 	// each attribute.
 	
-	attribute short 				shortValue;
-	attribute long 				longValue;
-	attribute long long			lLongValue;
+	attribute short 		shortValue;
+	attribute long 			longValue;
+	attribute long long		lLongValue;
 	attribute unsigned short 	uShortValue;
-	attribute unsigned long 		uLongValue;
+	attribute unsigned long 	uLongValue;
 //	attribute unsigned long long uLLongValue;
 	
-	attribute float 				floatValue;
-	attribute double 			doubleValue;
+	attribute float 		floatValue;
+	attribute double 		doubleValue;
 	attribute long double		lDoubleValue;
 	
-	attribute char 				charValue;
-	attribute wchar				wcharValue;
-	attribute string 			stringValue;
-	attribute string<5> 			bStringValue;
-	attribute wstring 			wstringValue;
-	attribute wstring<5>			bWstringValue;
+	attribute char 			charValue;
+	attribute wchar			wcharValue;
+	attribute string 		stringValue;
+	attribute string<5> 		bStringValue;
+	attribute wstring 		wstringValue;
+	attribute wstring<5>		bWstringValue;
 	
-	attribute boolean 			booleanValue;
-	attribute octet 				octetValue;
-	attribute any				anyValue;
-	attribute Object				objectValue;
+	attribute boolean 		booleanValue;
+	attribute octet 		octetValue;
+	attribute any			anyValue;
+	attribute Object		objectValue;
 	
 //	attribute fixed<9,2>			fixedValue; !!!
 };
