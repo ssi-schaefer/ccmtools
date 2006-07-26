@@ -4,14 +4,14 @@
 #include <interface/InterfaceBasicTypeAttributes.idl>
 #include <interface/InterfaceUserTypeOperation.idl>
 
-component SimpleComponent
+component HomeSupportedInterface
 {
-	attribute string Id;
+    attribute string Id;
 };
 
-home ComponentSupportedInterfaceHome
-	supports InterfaceBasicTypeAttributes, InterfaceUserTypeOperation
-	manages SimpleComponent
+home HomeSupportedInterfaceHome
+    supports InterfaceBasicTypeAttributes, InterfaceUserTypeOperation
+    manages HomeSupportedInterface
 {
 };
 

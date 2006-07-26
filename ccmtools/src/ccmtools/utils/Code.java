@@ -189,6 +189,39 @@ public class Code
         return result;
     }
 
+    public static String removeEmptyLines(String code)
+    {
+        StringBuilder out = new StringBuilder();
+        int indexFrom = 0;
+        int indexNewline = 0;
+        boolean isEmptyLineSuccessor = false;
+        do 
+        {
+            indexNewline = code.indexOf('\n', indexFrom);
+            String codeLine = code.substring(indexFrom, indexNewline);
+            indexFrom = indexNewline + 1;
+            if(codeLine.length() > 0) 
+            {
+                isEmptyLineSuccessor = false;
+                out.append(codeLine).append('\n');
+            }
+            else 
+            {
+                if(isEmptyLineSuccessor) 
+                {
+                    // Ignore next empty line
+                }
+                else 
+                {
+                    out.append('\n');
+                    isEmptyLineSuccessor = true;
+                }
+            }                         
+        }while(indexFrom < code.length());
+        return out.toString();
+    }
+    
+    
     /**
      * This method removes empty lines (if more than one) and similar #include
      * statements from the generated code.
@@ -208,29 +241,37 @@ public class Code
             newline_index = code.indexOf('\n', from_index);
             String code_line = code.substring(from_index, newline_index);
             from_index = newline_index + 1;
-            if(code_line.length() != 0) {
+            if(code_line.length() != 0) 
+            {
                 isEmptyLineSuccessor = false;
 
-                if(code_line.startsWith("#include")) {
-                    if(include_set.contains(code_line)) {
+                if(code_line.startsWith("#include")) 
+                {
+                    if(include_set.contains(code_line)) 
+                    {
                         // Ignore similar #include statements
                     }
-                    else {
+                    else 
+                    {
                         include_set.add(code_line);
                         pretty_code.append(code_line);
                         pretty_code.append('\n');
                     }
                 }
-                else {
+                else 
+                {
                     pretty_code.append(code_line);
                     pretty_code.append('\n');
                 }
             }
-            else {
-                if(isEmptyLineSuccessor) {
+            else 
+            {
+                if(isEmptyLineSuccessor) 
+                {
                     // Ignore second empty line
                 }
-                else {
+                else 
+                {
                     isEmptyLineSuccessor = true;
                     pretty_code.append('\n');
                 }

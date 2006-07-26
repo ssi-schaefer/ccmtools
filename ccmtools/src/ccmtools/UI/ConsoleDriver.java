@@ -153,7 +153,7 @@ public class ConsoleDriver
 
     public void printError(String msg)
     {
-        err.println("!!!! ERROR !!!!\n" + msg);
+        err.println("!!!! CCM Tools Error: " + msg);
     }
     
     

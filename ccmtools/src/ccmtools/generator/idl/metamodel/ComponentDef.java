@@ -161,15 +161,16 @@ public class ComponentDef
 	
     public String generateCppGeneratorHack()
     {
-        HomeDef home = getHomes().iterator().next();
-        if(home != null)
+        StringBuilder code = new StringBuilder();
+        if(getHomes() != null)
         {
-            return generateIncludeStatement(home.generateIncludePath());
+            if(getHomes().size() > 0)
+            {
+                HomeDef home = getHomes().get(0); // take the first you can find...
+                code.append(generateIncludeStatement(home.generateIncludePath()));
+            }
         }
-        else
-        {
-            return "// no home found";
-        }
+        return code.toString();
     }
     
 }

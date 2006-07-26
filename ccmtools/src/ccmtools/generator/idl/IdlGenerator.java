@@ -7,15 +7,8 @@ import java.util.logging.Logger;
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.UI.Driver;
-import ccmtools.generator.idl.metamodel.ComponentDef;
-import ccmtools.generator.idl.metamodel.ConstantDef;
-import ccmtools.generator.idl.metamodel.EnumDef;
-import ccmtools.generator.idl.metamodel.ExceptionDef;
-import ccmtools.generator.idl.metamodel.HomeDef;
-import ccmtools.generator.idl.metamodel.InterfaceDef;
+import ccmtools.generator.idl.metamodel.Idl3Generator;
 import ccmtools.generator.idl.metamodel.ModelRepository;
-import ccmtools.generator.idl.metamodel.StructDef;
-import ccmtools.generator.idl.metamodel.TypedefDef;
 import ccmtools.generator.idl.ui.CommandLineParameters;
 import ccmtools.utils.Code;
 import ccmtools.utils.SourceFile;
@@ -80,48 +73,29 @@ public class IdlGenerator
 		logger.fine("begin");
 		try
 		{
-			List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-			for(TypedefDef idlTypedef : idlModelRepo.findAllTypedefs())
-			{
-				sourceFileList.addAll(idlTypedef.generateIdl3SourceFiles());
-			}
-			for(EnumDef idlEnum : idlModelRepo.findAllEnums())
-			{
-				sourceFileList.addAll(idlEnum.generateIdl3SourceFiles());
-			}
-			for(StructDef idlStruct : idlModelRepo.findAllStructs())
-			{
-				sourceFileList.addAll(idlStruct.generateIdl3SourceFiles());
-			}
-			for(ConstantDef idlConstant : idlModelRepo.findAllGlobalConstants())
-			{
-				sourceFileList.addAll(idlConstant.generateIdl3SourceFiles());
-			}
-			for(ExceptionDef idlException : idlModelRepo.findAllExceptions())
-			{
-				sourceFileList.addAll(idlException.generateIdl3SourceFiles());
-			}
-			for(InterfaceDef idlInterface : idlModelRepo.findAllInterfaces())
-			{
-				sourceFileList.addAll(idlInterface.generateIdl3SourceFiles());
-			}
-			for(ComponentDef idlComponent : idlModelRepo.findAllComponents())
-			{
-				sourceFileList.addAll(idlComponent.generateIdl3SourceFiles());
-			}
-			for(HomeDef idlHome : idlModelRepo.findAllHomes())
-			{
-				sourceFileList.addAll(idlHome.generateIdl3SourceFiles());
-			}
-			//...
-			
+		    List<Idl3Generator> idl3ModelElements = new ArrayList<Idl3Generator>();
+            idl3ModelElements.addAll(idlModelRepo.findAllTypedefs());
+            idl3ModelElements.addAll(idlModelRepo.findAllEnums());
+            idl3ModelElements.addAll(idlModelRepo.findAllStructs());
+            idl3ModelElements.addAll(idlModelRepo.findAllGlobalConstants());
+            idl3ModelElements.addAll(idlModelRepo.findAllExceptions());
+            idl3ModelElements.addAll(idlModelRepo.findAllInterfaces());
+            idl3ModelElements.addAll(idlModelRepo.findAllComponents());
+            idl3ModelElements.addAll(idlModelRepo.findAllHomes());
+            
+            List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+            for(Idl3Generator idl3Element : idl3ModelElements)
+            {
+                sourceFileList.addAll(idl3Element.generateIdl3SourceFiles());
+            }
+            
 			// Save all source file objects
 			Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
-			throw new CcmtoolsException(e.getMessage());
+//			e.printStackTrace();
+			throw new CcmtoolsException("[IDL3 Generator] " + e.getMessage());
 		}
 		logger.fine("end");
 	}
@@ -130,6 +104,7 @@ public class IdlGenerator
 	public void generateIdl3Mirror(ModelRepository idlModel)
 		throws CcmtoolsException
 	{
+        
 	}
 		
 	public void generateIdl2(ModelRepository idlModel)

@@ -1,0 +1,38 @@
+#ifndef __HOME_FACTORY_BASIC_TYPES__IDL__
+#define __HOME_FACTORY_BASIC_TYPES__IDL__
+
+component HomeFactoryBasicTypes
+{
+	attribute string Id;
+};
+
+home HomeFactoryBasicTypesHome
+	manages HomeFactoryBasicTypes
+{
+    factory createWithShort(in short id);
+    factory createWithLong(in long id);
+    factory createWithLongLong(in long long id);
+    factory createWithUShort(in unsigned short id);
+    factory createWithULong(in unsigned long id);
+    //factory createWithULongLong(in unsigned long long id);
+    
+    factory createWithFloat(in float id);
+    factory createWithDouble(in double id);
+    factory createWithLongDouble(in long double id);
+    
+    factory createWithChar(in char id);
+    factory createWithWChar(in wchar id);
+    factory createWithString(in string id);
+    factory createWithBoundedString(in string<7> id);
+    factory createWithWString(in wstring id);
+    factory createWithBoundedWString(in wstring<3> id);
+    
+    factory createWithBoolean(in boolean id);
+    factory createWithOctet(in octet id);
+    factory createWithAny(in any id);
+    factory createWithObject(in Object id);
+    
+    //factory createWithFixed(in fixed<7,3> id);
+};
+
+#endif // __HOME_FACTORY_BASIC_TYPES__IDL__

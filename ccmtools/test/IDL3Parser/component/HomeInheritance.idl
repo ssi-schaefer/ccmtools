@@ -12,8 +12,8 @@ home SuperHome
 };
 
 home SubHome
-	: SuperHome
-	manages SimpleComponent
+   : SuperHome
+   manages SimpleComponent
 {
 };
 

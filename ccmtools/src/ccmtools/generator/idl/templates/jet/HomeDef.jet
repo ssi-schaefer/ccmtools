@@ -16,9 +16,11 @@
 <%=model.generateModulesOpen() %>
  
 <%=model.indent()%>home <%=model.getIdentifier()%> 
+<%=model.generateBaseHome()%>
+<%=model.generateSupportedInterfaces()%>
 <%=model.indent()%>    manages <%=model.getComponent().generateAbsoluteIdlName()%>
 <%=model.indent()%>{
-
+<%=model.generateFactoryMethods()%>
 <%=model.indent()%>};
 
 <%=model.generateModulesClose() %>

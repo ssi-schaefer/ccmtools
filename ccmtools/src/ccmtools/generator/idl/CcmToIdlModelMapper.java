@@ -28,6 +28,8 @@ import ccmtools.Metamodel.BaseIDL.MTyped;
 import ccmtools.Metamodel.BaseIDL.MTypedefDef;
 import ccmtools.Metamodel.BaseIDL.MWstringDef;
 import ccmtools.Metamodel.ComponentIDL.MComponentDef;
+import ccmtools.Metamodel.ComponentIDL.MFactoryDef;
+import ccmtools.Metamodel.ComponentIDL.MFinderDef;
 import ccmtools.Metamodel.ComponentIDL.MHomeDef;
 import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
@@ -42,6 +44,8 @@ import ccmtools.generator.idl.metamodel.ConstantDef;
 import ccmtools.generator.idl.metamodel.DoubleType;
 import ccmtools.generator.idl.metamodel.EnumDef;
 import ccmtools.generator.idl.metamodel.ExceptionDef;
+import ccmtools.generator.idl.metamodel.FacetDef;
+import ccmtools.generator.idl.metamodel.FactoryMethodDef;
 import ccmtools.generator.idl.metamodel.FieldDef;
 import ccmtools.generator.idl.metamodel.FixedType;
 import ccmtools.generator.idl.metamodel.FloatType;
@@ -57,7 +61,7 @@ import ccmtools.generator.idl.metamodel.OctetType;
 import ccmtools.generator.idl.metamodel.OperationDef;
 import ccmtools.generator.idl.metamodel.ParameterDef;
 import ccmtools.generator.idl.metamodel.PassingDirection;
-import ccmtools.generator.idl.metamodel.FacetDef;
+import ccmtools.generator.idl.metamodel.ReceptacleDef;
 import ccmtools.generator.idl.metamodel.SequenceDef;
 import ccmtools.generator.idl.metamodel.ShortType;
 import ccmtools.generator.idl.metamodel.StringType;
@@ -67,7 +71,6 @@ import ccmtools.generator.idl.metamodel.TypedefDef;
 import ccmtools.generator.idl.metamodel.UnsignedLongLongType;
 import ccmtools.generator.idl.metamodel.UnsignedLongType;
 import ccmtools.generator.idl.metamodel.UnsignedShortType;
-import ccmtools.generator.idl.metamodel.ReceptacleDef;
 import ccmtools.generator.idl.metamodel.VoidType;
 import ccmtools.generator.idl.metamodel.WCharType;
 import ccmtools.generator.idl.metamodel.WStringType;
@@ -631,8 +634,7 @@ public class CcmToIdlModelMapper
 
 			if(in.getBases() != null)
 			{
-				// A component type may have at most one base component type (IDL Spec. p3-60)
-				if(in.getBases().size() > 0)
+				if(in.getBases().size() == 1) // single inheritynce only
 				{
 					MComponentDef base = (MComponentDef)in.getBases().get(0);
 					out.setBase(transform(base));
@@ -723,9 +725,50 @@ public class CcmToIdlModelMapper
 			ComponentDef component = transform(in.getComponent());
 			component.getHomes().add(out);
 			out.setComponent(component);
-			//...
+            if(in.getBases() != null)
+            {
+                if(in.getBases().size() == 1) // single inheritance only!
+                {
+                    MHomeDef base = (MHomeDef)in.getBases().get(0);
+                    out.setBase(transform(base));
+                }         
+            }
+            for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
+            {
+                MInterfaceDef supportedInterface = ((MSupportsDef)i.next()).getSupports();
+                out.getSupports().add(transform(supportedInterface));
+            }
+            for(Iterator i = in.getFactories().iterator(); i.hasNext();)
+            {
+                MFactoryDef factory = (MFactoryDef)i.next();
+                out.getFactories().add(transform(factory));
+            }
+            // Check section
+            for(Iterator i = in.getFinders().iterator(); i.hasNext();)
+            {
+                MFinderDef finder = (MFinderDef)i.next();
+                throw new RuntimeException("Home's finder methods like '" + finder.getIdentifier() 
+                        + "()' are not supported by CCM Tools!");                
+            }
 			artifactCache.put(repoId, out);
 		}
 		return out;
 	}
+    
+    public FactoryMethodDef transform(MFactoryDef in)
+    {
+        logger.fine("MFactoryDef: " + in.getIdentifier());
+        FactoryMethodDef out = new FactoryMethodDef(in.getIdentifier());
+        for(Iterator i = in.getParameters().iterator(); i.hasNext(); )
+        {
+            MParameterDef parameter = (MParameterDef)i.next();
+            out.getParameters().add(transform(parameter));
+        }
+        for(Iterator i = in.getExceptionDefs().iterator(); i.hasNext(); )
+        {
+            MExceptionDef exc = (MExceptionDef)i.next();
+            out.getExceptions().add(transform(exc));
+        }
+        return out;
+    }    
 }

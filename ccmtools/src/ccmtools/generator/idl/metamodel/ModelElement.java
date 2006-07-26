@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import ccmtools.Constants;
+import ccmtools.utils.Code;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -116,7 +117,8 @@ public class ModelElement
 		{
 			packageName = INTERFACE_PREFIX + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
 		}
-		SourceFile sourceFile = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3());
+        String sourceCode = Code.removeEmptyLines(generateIdl3());
+		SourceFile sourceFile = new SourceFile(packageName, getIdentifier() + ".idl", sourceCode);
 		sourceFileList.add(sourceFile);
 		
 		return sourceFileList;

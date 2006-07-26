@@ -26,15 +26,18 @@ public class HomeDefTemplate
   protected final String TEXT_10 = "home ";
   protected final String TEXT_11 = " ";
   protected final String TEXT_12 = NL;
-  protected final String TEXT_13 = "    manages ";
+  protected final String TEXT_13 = NL;
   protected final String TEXT_14 = NL;
-  protected final String TEXT_15 = "{" + NL;
+  protected final String TEXT_15 = "    manages ";
   protected final String TEXT_16 = NL;
-  protected final String TEXT_17 = "};" + NL;
+  protected final String TEXT_17 = "{";
   protected final String TEXT_18 = NL;
   protected final String TEXT_19 = NL;
-  protected final String TEXT_20 = NL;
+  protected final String TEXT_20 = "};" + NL;
   protected final String TEXT_21 = NL;
+  protected final String TEXT_22 = NL;
+  protected final String TEXT_23 = NL;
+  protected final String TEXT_24 = NL;
 
   public String generate(Object argument)
   {
@@ -58,21 +61,27 @@ public class HomeDefTemplate
     stringBuffer.append(model.getIdentifier());
     stringBuffer.append(TEXT_11);
     stringBuffer.append(TEXT_12);
-    stringBuffer.append(model.indent());
+    stringBuffer.append(model.generateBaseHome());
     stringBuffer.append(TEXT_13);
-    stringBuffer.append(model.getComponent().generateAbsoluteIdlName());
+    stringBuffer.append(model.generateSupportedInterfaces());
     stringBuffer.append(TEXT_14);
     stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_15);
+    stringBuffer.append(model.getComponent().generateAbsoluteIdlName());
     stringBuffer.append(TEXT_16);
     stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_17);
     stringBuffer.append(TEXT_18);
-    stringBuffer.append(model.generateModulesClose() );
+    stringBuffer.append(model.generateFactoryMethods());
     stringBuffer.append(TEXT_19);
+    stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_20);
-    stringBuffer.append(model.generateIncludeGuardClose());
     stringBuffer.append(TEXT_21);
+    stringBuffer.append(model.generateModulesClose() );
+    stringBuffer.append(TEXT_22);
+    stringBuffer.append(TEXT_23);
+    stringBuffer.append(model.generateIncludeGuardClose());
+    stringBuffer.append(TEXT_24);
     return stringBuffer.toString();
   }
 }

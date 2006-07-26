@@ -61,9 +61,6 @@ public class Main
 				parameters.validate();
 				setCcmtoolsProperties();
 				IdlGenerator generator = new IdlGenerator(parameters, uiDriver);
-				
-				System.out.println(parameters); //!!!!!!!
-				
 				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
 				{
 					String idlFile = (String) i.next();
@@ -93,7 +90,7 @@ public class Main
 		}
 		catch (CcmtoolsException e)
 		{
-			e.printStackTrace();
+//			e.printStackTrace();
 			exitWithErrorStatus(e.getMessage());
 		}
 		catch (FileNotFoundException e)
@@ -250,7 +247,7 @@ public class Main
     private static void exitWithErrorStatus(String errorMessage)
     {
     		logger.fine("");
-        uiDriver.printError("CCM Tools have been terminated with an error!\n" + errorMessage);
+        uiDriver.printError(errorMessage);
         if(isExitWithErrorStatus) 
         {
             System.exit(EXIT_STATUS_FOR_ERROR);
