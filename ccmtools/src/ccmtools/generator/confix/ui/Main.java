@@ -38,33 +38,37 @@ public class Main
      */
     public static void main(String[] args)
     {
-        try {
+        try 
+        {
             uiDriver = new ccmtools.UI.ConsoleDriver(Driver.M_NONE);
             
             CommandLineParameters parameters = new CommandLineParameters();
             if(parseCommandLineArgs(args, parameters)) 
             {
-            	parameters.validate();
-            	setCcmtoolsProperties();
-            	ConfixGenerator generator = new ConfixGenerator(parameters, uiDriver);
-            	generator.generate();
-              }
+                parameters.validate();
+            	    setCcmtoolsProperties();
+            	    ConfixGenerator generator = new ConfixGenerator(parameters, uiDriver);
+            	    generator.generate();
+            }
         }
-        catch(ParseException e) {
+        catch(ParseException e) 
+        {
             uiDriver.printError(e.getMessage());
             printUsage();
             exitWithErrorStatus(e.getMessage());
         }
-        catch(CcmtoolsException e) {
-        	exitWithErrorStatus(e.getMessage());
+        catch(CcmtoolsException e) 
+        {
+        	    exitWithErrorStatus(e.getMessage());
         }
-        catch(FileNotFoundException e) {
+        catch(FileNotFoundException e) 
+        {
             // Can't open uiDriver file
-        	exitWithErrorStatus(e.getMessage());
+        	    exitWithErrorStatus(e.getMessage());
         }
         catch(Exception e)
         {
-        	exitWithErrorStatus(e.getMessage());
+        	    exitWithErrorStatus(e.getMessage());
         }
     }
     
@@ -75,11 +79,11 @@ public class Main
      */
     private static void setCcmtoolsProperties()
     {
-    	if(System.getProperty("ccmtools.home") == null) 
-    	{
-    		System.setProperty("ccmtools.home",System.getProperty("user.dir"));
-    	}	
-    	CcmtoolsProperties.Instance().set("ccmtools.home", System.getProperty("ccmtools.home"));
+        if(System.getProperty("ccmtools.home") == null)
+        {
+            System.setProperty("ccmtools.home", System.getProperty("user.dir"));
+        }
+        CcmtoolsProperties.Instance().set("ccmtools.home", System.getProperty("ccmtools.home"));
     }
 
     
@@ -123,7 +127,8 @@ public class Main
     {
         defineCommandLineOptions();
 
-        if(args.length == 0) {
+        if(args.length == 0) 
+        {
             // no parameters are not enough...
             throw new ParseException("Too few parameters!");
         }
@@ -146,28 +151,28 @@ public class Main
         
         if(cmd.hasOption(ConfixGenerator.MAKEFILE_PY_GENERATOR_ID))
         {
-        	parameters.getGeneratorIds().add(ConfixGenerator.MAKEFILE_PY_GENERATOR_ID);
+            parameters.getGeneratorIds().add(ConfixGenerator.MAKEFILE_PY_GENERATOR_ID);
         }
         
         if(cmd.hasOption(ConfixGenerator.PACKAGE_VERSION))
         {
-        	parameters.setPackageVersion(cmd.getOptionValue(ConfixGenerator.PACKAGE_VERSION));
+            parameters.setPackageVersion(cmd.getOptionValue(ConfixGenerator.PACKAGE_VERSION));
         }        
         
         if(cmd.hasOption(ConfixGenerator.PACKAGE_NAME))
         {
-        	parameters.setPackageName(cmd.getOptionValue(ConfixGenerator.PACKAGE_NAME));
+            parameters.setPackageName(cmd.getOptionValue(ConfixGenerator.PACKAGE_NAME));
         }    
                 
         if(cmd.hasOption("noexit"))
         {
-        	parameters.setNoExit(true);
-        	isExitWithErrorStatus = false;
+            parameters.setNoExit(true);
+            isExitWithErrorStatus = false;
         }
         else
         {
-        	isExitWithErrorStatus = true;
-        	parameters.setNoExit(false);
+            isExitWithErrorStatus = true;
+            parameters.setNoExit(false);
         }
         
         if(cmd.hasOption("o")) 

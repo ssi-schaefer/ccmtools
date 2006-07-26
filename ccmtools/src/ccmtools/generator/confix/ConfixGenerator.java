@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -29,44 +28,40 @@ public class ConfixGenerator
 	/** Java standard logger object */
 	protected Logger logger;
 	
-	private Set ignoredDirs;
+	private Set<String> ignoredDirs = new HashSet<String>();
 	
 	public ConfixGenerator(CommandLineParameters parameters, Driver uiDriver)
 	{
 		this.uiDriver = uiDriver;		
 		this.parameters = (CommandLineParameters)parameters;
-		ignoredDirs = new HashSet();
 		ignoredDirs.add("CVS"); // ignore CVS directories for Makefile.py generation
-		
         logger = Logger.getLogger("ccm.generator.confix");
         logger.fine("");
         printVersion();
 	}
 	
 	
-	public void generate() 
-		throws  CcmtoolsException
-	{
-		logger.fine("begin");
-		try
-		{
-			for(Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext(); )
-	    	{
-				String generatorId = (String)i.next();
-	    		if(generatorId.equals(MAKEFILE_PY_GENERATOR_ID))
-	    		{
-	    			generateMakefilePy();               			
-	    		}				
-	    		// TODO: implement other Confix generators
-	    	}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			throw new CcmtoolsException("Error in ConfixGenerator: " + e.getMessage());
-		}		
-		logger.fine("end");
-	}
+	public void generate() throws CcmtoolsException
+    {
+        logger.fine("begin");
+        try
+        {
+            for(String generatorId : parameters.getGeneratorIds())
+            {
+                if (generatorId.equals(MAKEFILE_PY_GENERATOR_ID))
+                {
+                    generateMakefilePy();
+                }
+                // TODO: implement other Confix generators
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new CcmtoolsException("[Confix Generator] " + e.getMessage());
+        }
+        logger.fine("end");
+    }
 	
 	
 	private void generateMakefilePy()
@@ -81,7 +76,7 @@ public class ConfixGenerator
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			throw new CcmtoolsException("Error in ConfixGenerator.generateMakefilePy: " + e.getMessage());
+			throw new CcmtoolsException(e.getMessage());
 		}		
 		logger.fine("end");
 	}

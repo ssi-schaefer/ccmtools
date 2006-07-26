@@ -1,7 +1,6 @@
 package ccmtools.generator.confix.ui;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.CcmtoolsException;
@@ -11,7 +10,7 @@ public class CommandLineParameters
 	private static final String NL = "\n";
 	
 	/** List of generator IDs */
-	private List generatorIds = new ArrayList();
+	private List<String> generatorIds = new ArrayList<String>();
 		
     /** Path to the output directory */
     private String outDir;
@@ -71,7 +70,7 @@ public class CommandLineParameters
 	}
 
 	
-	public List getGeneratorIds()
+	public List<String> getGeneratorIds()
 	{
 		return generatorIds;
 	}
@@ -97,7 +96,7 @@ public class CommandLineParameters
     {
         if(outDir == null || outDir.length() == 0) 
         {
-        	outDir = ".";
+            outDir = ".";
         }
     }
 	        
@@ -106,13 +105,12 @@ public class CommandLineParameters
      * 
      * @throws CcmtoolsException
      */
-    private void checkPackageName()
-    	throws CcmtoolsException
+    private void checkPackageName() throws CcmtoolsException
     {
-    	if(getPackageName() == null || getPackageName().length() == 0)
-    	{
-    		throw new CcmtoolsException("A valid Confix package name must be specified!"); 
-    	}
+        if (getPackageName() == null || getPackageName().length() == 0)
+        {
+            throw new CcmtoolsException("A valid Confix package name must be specified!");
+        }
     }
     
     /**
@@ -120,41 +118,39 @@ public class CommandLineParameters
      * 
      * @throws CcmtoolsException
      */
-    private void checkPackageVersion()
-    	throws CcmtoolsException
+    private void checkPackageVersion() throws CcmtoolsException
     {
-    	if(getPackageVersion() == null || getPackageVersion().length() == 0)
-    	{
-    		throw new CcmtoolsException("A valid Confix package version must be specified!"); 
-    	}
-    	else
-    	{
-    		// TODO: check for ?.?.? pattern
-    	}
+        if (getPackageVersion() == null || getPackageVersion().length() == 0)
+        {
+            throw new CcmtoolsException("A valid Confix package version must be specified!");
+        }
+        else
+        {
+            // TODO: check for ?.?.? pattern
+        }
     }
     
     
     // Housekeeping methods ---------------------------------------------------
     
 	public String toString()
-	{
-		StringBuffer buffer = new StringBuffer();
+    {
+        StringBuffer buffer = new StringBuffer();
 
-		for(Iterator i = getGeneratorIds().iterator(); i.hasNext(); )
-		{
-			buffer.append("Generator IDs: ");
-			buffer.append((String)i.next()).append(NL);
-		}
-		
-        if(getOutDir() != null)
+        for(String generatorId : getGeneratorIds())
         {
-        	buffer.append("Output directory: ").append(getOutDir()).append(NL);
+            buffer.append("Generator IDs: ");
+            buffer.append(generatorId).append(NL);
         }
-        
+
+        if (getOutDir() != null)
+        {
+            buffer.append("Output directory: ").append(getOutDir()).append(NL);
+        }
+
         buffer.append("Package name: ").append(packageName).append(NL);
         buffer.append("Package version: ").append(packageVersion).append(NL);
-        
-		return buffer.toString();
-	}
 
+        return buffer.toString();
+    }
 }
