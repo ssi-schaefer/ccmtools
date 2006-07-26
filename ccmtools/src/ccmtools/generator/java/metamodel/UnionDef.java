@@ -8,23 +8,23 @@ public class UnionDef
 	extends ModelElement
 	implements Type
 {
-	private List members;
+	private List<FieldDef> members;
 	
-	public UnionDef(String identifier, List namespace)
+	public UnionDef(String identifier, List<String> namespace)
 	{
 		super(identifier, namespace);
 	}
 
 	
-	public List getMembers()
+	public List<FieldDef> getMembers()
 	{
 		return members;
 	}
 
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		return new TreeSet();
+		return new TreeSet<String>();
 	}
 	
 	
@@ -63,7 +63,6 @@ public class UnionDef
 	
 	public String generateJavaHolderType()
 	{
-//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 		return "Holder<" + generateJavaMappingObject() + ">";
 	}	
 	

@@ -7,13 +7,7 @@ public class FieldDef
 	extends ModelElement
 {
 	private Type type;
-		
-	public FieldDef()
-	{
-		super();
-	}
-	
-	
+			
 	public Type getType()
 	{
 		return type;

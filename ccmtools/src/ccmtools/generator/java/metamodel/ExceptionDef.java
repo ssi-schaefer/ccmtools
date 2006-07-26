@@ -2,7 +2,6 @@ package ccmtools.generator.java.metamodel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,27 +17,26 @@ import ccmtools.utils.Text;
 public class ExceptionDef
 	extends ModelElement
 {
-	private List fields = new ArrayList();
+	private List<FieldDef> fields = new ArrayList<FieldDef>();
 	
-	public ExceptionDef(String identifier, List ns)
+	public ExceptionDef(String identifier, List<String> namespace)
 	{
 		setIdentifier(identifier);
-		setIdlNamespaceList(ns);	
+		setIdlNamespaceList(namespace);	
 	}
 		
-	public List getFields()
+	public List<FieldDef> getFields()
 	{
 		return fields;
 	}
 
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = new TreeSet();
+		Set<String> importStatements = new TreeSet<String>();
 		importStatements.add(generateAbsoluteJavaName());
-		for(Iterator i = getFields().iterator(); i.hasNext();)
+		for(FieldDef field : getFields())
 		{
-			FieldDef field = (FieldDef)i.next();
 			importStatements.addAll(field.getType().getJavaImportStatements());
 		}
 		return importStatements;
@@ -91,10 +89,9 @@ public class ExceptionDef
 	
 	public String generateConstructorParameterList()
 	{
-		List parameterList = new ArrayList();
-		for(Iterator i=getFields().iterator(); i.hasNext();)
+		List<String> parameterList = new ArrayList<String>();
+		for(FieldDef field : getFields())
 		{
-			FieldDef field = (FieldDef)i.next();
 			parameterList.add(field.getType().generateJavaMapping() + " " + field.getIdentifier());
 		}
 		return Text.joinList(", ", parameterList);	
@@ -104,15 +101,12 @@ public class ExceptionDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalInterfaceSourceFiles()
+	public List<SourceFile> generateLocalInterfaceSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
-		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
-		
-		SourceFile exception = 
-			new SourceFile(localPackageName, getIdentifier() + ".java", generateImplementation());
-		sourceFileList.add(exception);
-		
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());		
+		SourceFile exception = new SourceFile(localPackageName, getIdentifier() + ".java", generateImplementation());
+		sourceFileList.add(exception);		
 		return sourceFileList;
 	}
 	
@@ -152,15 +146,12 @@ public class ExceptionDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
-		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
-		
-		SourceFile corbaConverter = 
-			new SourceFile(remotePackageName, getIdentifier() + "CorbaConverter.java",generateCorbaConverter());		
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());		
+		SourceFile corbaConverter = new SourceFile(remotePackageName, getIdentifier() + "CorbaConverter.java",generateCorbaConverter());		
 		sourceFileList.add(corbaConverter);
-
 		return sourceFileList;
 	}	
 }

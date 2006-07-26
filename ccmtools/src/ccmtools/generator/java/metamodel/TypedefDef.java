@@ -8,15 +8,15 @@ public class TypedefDef
 	extends ModelElement
 	implements Type
 {
-	public TypedefDef(String identifier, List namespace)
+	public TypedefDef(String identifier, List<String> namespace)
 	{
 		super(identifier, namespace);
 	}
 	
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		return new TreeSet();
+		return new TreeSet<String>();
 	}
 	
 

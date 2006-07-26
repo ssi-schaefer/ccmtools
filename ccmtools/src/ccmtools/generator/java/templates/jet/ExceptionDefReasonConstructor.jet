@@ -1,6 +1,6 @@
 <%@ jet package="ccmtools.generator.java.templates" 
 	    class="ExceptionDefReasonConstructorTemplate" 
-		imports="java.util.Iterator ccmtools.generator.java.metamodel.* "	    
+		imports="ccmtools.generator.java.metamodel.* "	    
 %>
 <% ExceptionDef exception = (ExceptionDef) argument; %>
     public <%=exception.getIdentifier()%>(String reason)    

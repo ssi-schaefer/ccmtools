@@ -2,7 +2,6 @@ package ccmtools.generator.java.metamodel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,28 +17,27 @@ public class StructDef
 	extends ModelElement
 	implements Type
 {
-	private List fields = new ArrayList();
+	private List<FieldDef> fields = new ArrayList<FieldDef>();
 		
-	public StructDef(String identifier, List namespace)
+	public StructDef(String identifier, List<String> namespace)
 	{
 		super(identifier, namespace);
 	}
 	
 	
-	public List getFields()
+	public List<FieldDef> getFields()
 	{
 		return fields;
 	}
 
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
 		// We put all import statements into s set to eliminate doubles
-		Set importStatements = new TreeSet();
+		Set<String> importStatements = new TreeSet<String>();
 		importStatements.add(generateAbsoluteJavaName());
-		for(Iterator i = getFields().iterator(); i.hasNext();)
+		for(FieldDef field : getFields())
 		{
-			FieldDef field = (FieldDef)i.next();
 			importStatements.addAll(field.getType().getJavaImportStatements());
 		}
 		return importStatements;
@@ -102,10 +100,9 @@ public class StructDef
 	
 	public String generateConstructorParameterList()
 	{
-		List parameterList = new ArrayList();
-		for(Iterator i=getFields().iterator(); i.hasNext();)
+		List<String> parameterList = new ArrayList<String>();
+		for(FieldDef field : getFields())
 		{
-			FieldDef field = (FieldDef)i.next();
 			parameterList.add(field.getType().generateJavaMapping() + " " + field.getIdentifier());
 		}
 		return Text.joinList(", ", parameterList);	
@@ -124,13 +121,12 @@ public class StructDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalInterfaceSourceFiles()
+	public List<SourceFile> generateLocalInterfaceSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile struct = 
-			new SourceFile(localPackageName, getIdentifier() + ".java", generateImplementation());
+		SourceFile struct = new SourceFile(localPackageName, getIdentifier() + ".java", generateImplementation());
 		sourceFileList.add(struct);
 		
 		return sourceFileList;
@@ -190,9 +186,9 @@ public class StructDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		
 		SourceFile corbaConverter = 

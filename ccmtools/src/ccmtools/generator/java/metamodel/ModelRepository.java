@@ -11,30 +11,26 @@ import java.util.List;
 public class ModelRepository
 	extends ModelElement
 {
-	private List homeList = new ArrayList();
-	private List componentList = new ArrayList();
-	private List interfaceList = new ArrayList();
-	private List providesList = new ArrayList();
-	private List usesList = new ArrayList();
-	private List constantList = new ArrayList();
+	private List<HomeDef> homeList = new ArrayList<HomeDef>();
+	private List<ComponentDef> componentList = new ArrayList<ComponentDef>();
+	private List<InterfaceDef> interfaceList = new ArrayList<InterfaceDef>();
+	private List<ProvidesDef> providesList = new ArrayList<ProvidesDef>();
+	private List<UsesDef> usesList = new ArrayList<UsesDef>();
+	private List<ConstantDef> constantList = new ArrayList<ConstantDef>();
 	
-	private List enumList = new ArrayList();
-	private List structList = new ArrayList();
-	private List exceptionList = new ArrayList();
-	private List sequenceList = new  ArrayList();
-	private List arrayList = new  ArrayList();
+	private List<EnumDef> enumList = new ArrayList<EnumDef>();
+	private List<StructDef> structList = new ArrayList<StructDef>();
+	private List<ExceptionDef> exceptionList = new ArrayList<ExceptionDef>();
+	private List<SequenceDef> sequenceList = new  ArrayList<SequenceDef>();
+	private List<ArrayDef> arrayList = new  ArrayList<ArrayDef>();
 	
 	
-	public ModelRepository()
-	{
-	}
-
 	public void addHome(HomeDef home)
 	{
 		homeList.add(home);
 	}
 	
-	public List findAllHomes()
+	public List<HomeDef> findAllHomes()
 	{
 		return homeList;
 	}
@@ -45,7 +41,7 @@ public class ModelRepository
 		componentList.add(component);
 	}
 
-	public List findAllComponents()
+	public List<ComponentDef> findAllComponents()
 	{
 		return componentList;
 	}
@@ -56,7 +52,7 @@ public class ModelRepository
 		interfaceList.add(iface);
 	}
 
-	public List findAllInterfaces()
+	public List<InterfaceDef> findAllInterfaces()
 	{
 		return interfaceList;
 	}
@@ -67,7 +63,7 @@ public class ModelRepository
 		providesList.add(provides);
 	}
 	
-	public List findAllProvides()
+	public List<ProvidesDef> findAllProvides()
 	{
 		return providesList;
 	}
@@ -78,7 +74,7 @@ public class ModelRepository
 		usesList.add(uses);
 	}
 	
-	public List findAllUses()
+	public List<UsesDef> findAllUses()
 	{
 		return usesList;
 	}
@@ -89,7 +85,7 @@ public class ModelRepository
 		constantList.add(value);
 	}
 
-	public List findAllGlobalConstants()
+	public List<ConstantDef> findAllGlobalConstants()
 	{
 		return constantList;
 	}
@@ -100,7 +96,7 @@ public class ModelRepository
 		enumList.add(value);
 	}
 
-	public List findAllEnums()
+	public List<EnumDef> findAllEnums()
 	{
 		return enumList;
 	}
@@ -111,7 +107,7 @@ public class ModelRepository
 		structList.add(value);
 	}
 
-	public List findAllStructs()
+	public List<StructDef> findAllStructs()
 	{
 		return structList;
 	}
@@ -122,7 +118,7 @@ public class ModelRepository
 		exceptionList.add(value);
 	}
 
-	public List findAllExceptions()
+	public List<ExceptionDef> findAllExceptions()
 	{
 		return exceptionList;
 	}
@@ -133,7 +129,7 @@ public class ModelRepository
 		sequenceList.add(value);
 	}
 
-	public List findAllSequences()
+	public List<SequenceDef> findAllSequences()
 	{
 		return sequenceList;
 	}
@@ -143,7 +139,7 @@ public class ModelRepository
 		arrayList.add(value);
 	}
 
-	public List findAllArrays()
+	public List<ArrayDef> findAllArrays()
 	{
 		return arrayList;
 	}

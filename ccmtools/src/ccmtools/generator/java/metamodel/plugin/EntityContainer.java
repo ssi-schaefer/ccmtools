@@ -14,9 +14,9 @@ public class EntityContainer
 	 * 
 	 *************************************************************************/
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = new HashSet();
+		Set<String> importStatements = new HashSet<String>();
 		importStatements.add("import wx.entitycontainer.IEntityContainer;");
 		return importStatements;
 	}

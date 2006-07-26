@@ -32,6 +32,7 @@ public class AttributeDef
 		this.isReadonly = isReadonly;
 	}
 	
+    
 	public Type getType()
 	{
 		return type;
@@ -43,9 +44,9 @@ public class AttributeDef
 	}
 	
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = getType().getJavaImportStatements();
+		Set<String> importStatements = getType().getJavaImportStatements();
 		return importStatements;
 	}
 
@@ -80,8 +81,7 @@ public class AttributeDef
 	
 	public String generateApplicationDeclaration()
 	{
-		return TAB + "private " + getType().generateJavaMapping() + " " + 
-				getIdentifier() + "_;";		
+		return TAB + "private " + getType().generateJavaMapping() + " " + getIdentifier() + "_;";		
 	}
 	
 	public String generateApplicationImplementation()

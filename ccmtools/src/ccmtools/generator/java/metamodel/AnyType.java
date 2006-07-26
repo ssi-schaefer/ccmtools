@@ -6,9 +6,9 @@ import java.util.TreeSet;
 public class AnyType
 	implements Type
 {	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = new TreeSet();
+		Set<String> importStatements = new TreeSet<String>();
 		importStatements.add(generateJavaMapping());
 		return importStatements;
 	}

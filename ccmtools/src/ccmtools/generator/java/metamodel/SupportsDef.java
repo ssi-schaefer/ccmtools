@@ -8,9 +8,9 @@ public class SupportsDef
 {
 	private InterfaceDef iface;
 	
-	public SupportsDef(String identifier, List ns)
+	public SupportsDef(String identifier, List<String> namespace)
 	{
-		super(identifier, ns);
+		super(identifier, namespace);
 	}
 
 	
@@ -24,12 +24,12 @@ public class SupportsDef
 		this.iface = supports;
 	}
 
-	public Set getJavaImportStatements()
+    
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = getInterface().getJavaImportStatements();
+		Set<String> importStatements = getInterface().getJavaImportStatements();
 		importStatements.add(getInterface().generateAbsoluteJavaCcmName());
 		importStatements.add(getInterface().generateAbsoluteJavaName());
-//		importStatements.add("ccm.local.Components.CCMException");
 		return importStatements;
 	}
 	

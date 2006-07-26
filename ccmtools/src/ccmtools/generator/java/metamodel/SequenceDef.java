@@ -17,7 +17,7 @@ public class SequenceDef
 	private Type elementType;
 	
 	
-	public SequenceDef(String identifier, List namespace, Type elementType)
+	public SequenceDef(String identifier, List<String> namespace, Type elementType)
 	{
 		super(identifier, namespace);
 		setElementType(elementType);
@@ -45,11 +45,11 @@ public class SequenceDef
 	}
 
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set s = getElementType().getJavaImportStatements();
-		s.add("java.util.List");
-		return s; 
+		Set<String> importStatements = getElementType().getJavaImportStatements();
+		importStatements.add("java.util.List");
+		return importStatements; 
 	}
 	
 	
@@ -161,9 +161,9 @@ public class SequenceDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		
 		SourceFile corbaConverter = 

@@ -30,9 +30,9 @@ public class UsesDef
 	private InterfaceDef iface;
 	private boolean multiple;
 	
-	public UsesDef(String identifier, List ns)
+	public UsesDef(String identifier, List<String> namespace)
 	{
-		super(identifier, ns);
+		super(identifier, namespace);
 	}
 
 	

@@ -9,7 +9,7 @@ public interface Type
 	 * 
 	 *************************************************************************/
 	
-	Set getJavaImportStatements();
+	Set<String> getJavaImportStatements();
 	
 	
 	

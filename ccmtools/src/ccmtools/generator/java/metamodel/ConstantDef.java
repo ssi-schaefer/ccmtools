@@ -21,21 +21,25 @@ public class ConstantDef
 		setType(type);	
 		setValue(value);
 	}
-			
+
+    
 	public Type getType()
 	{
 		return type;
 	}
-	public void setType(Type type)
+	
+    public void setType(Type type)
 	{
 		this.type = type;
 	}
-		
+	
+    
 	public Object getValue()
 	{
 		return value;
 	}	
-	public void setValue(Object value)
+	
+    public void setValue(Object value)
 	{
 		this.value = value;
 	}
@@ -67,15 +71,12 @@ public class ConstantDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalInterfaceSourceFiles()
+	public List<SourceFile> generateLocalInterfaceSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
-		String packages = Text.joinList(File.separator, getJavaNamespaceList());
-		
-		SourceFile interfaceGlobal = 
-			new SourceFile(packages, getIdentifier() + ".java", generateInterfaceGlobal());
-		sourceFileList.add(interfaceGlobal);
-		
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+		String packages = Text.joinList(File.separator, getJavaNamespaceList());		
+		SourceFile interfaceGlobal = new SourceFile(packages, getIdentifier() + ".java", generateInterfaceGlobal());
+		sourceFileList.add(interfaceGlobal);		
 		return sourceFileList;
 	}	
 }

@@ -2,7 +2,6 @@ package ccmtools.generator.java.metamodel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -21,35 +20,35 @@ import ccmtools.utils.Text;
 public class ComponentDef
 	extends ModelElement
 {
-	private List attributes = new ArrayList();
-	private List facet = new ArrayList();
-	private List receptacle = new ArrayList();
-	private List supports = new ArrayList();
+	private List<AttributeDef> attributes = new ArrayList<AttributeDef>();
+	private List<ProvidesDef> facet = new ArrayList<ProvidesDef>();
+	private List<UsesDef> receptacle = new ArrayList<UsesDef>();
+	private List<SupportsDef> supports = new ArrayList<SupportsDef>();
 	private HomeDef home;
 	
 	
-	public ComponentDef(String identifier, List namespace)
+	public ComponentDef(String identifier, List<String> namespace)
 	{
 		super(identifier, namespace);
 	}
 	
 	
-	public List getAttributes()
+	public List<AttributeDef> getAttributes()
 	{
 		return attributes;
 	}
 	
-	public List getFacet()
+	public List<ProvidesDef> getFacet()
 	{
 		return facet;
 	}
 	
-	public List getReceptacle()
+	public List<UsesDef> getReceptacle()
 	{
 		return receptacle;
 	}
 	
-	public List getSupports()
+	public List<SupportsDef> getSupports()
 	{
 		return supports;
 	}
@@ -65,21 +64,17 @@ public class ComponentDef
 		this.home = home;
 	}
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = new TreeSet();
-		// Some component management methods can throw this exception type
-//		importStatements.add("Components.ccm.local.CCMException");
+		Set<String> importStatements = new TreeSet<String>();
 		// Each component class refers to its context object
 		importStatements.add(generateAbsoluteJavaCcmName() + "_Context");
-		for(Iterator i = getAttributes().iterator(); i.hasNext();)
+		for(AttributeDef a : getAttributes())
 		{
-			AttributeDef a = (AttributeDef)i.next();
 			importStatements.addAll(a.getType().getJavaImportStatements());
 		}
-		for(Iterator i=getSupports().iterator(); i.hasNext();)
+		for(SupportsDef s : getSupports())
 		{
-			SupportsDef s = (SupportsDef)i.next();
 			importStatements.addAll(s.getJavaImportStatements());
 		}
 		importStatements.add(generateAbsoluteJavaName());
@@ -109,10 +104,9 @@ public class ComponentDef
 	
 	public String generateSupportsDeclarations()
 	{
-		List supportsList = new ArrayList();
-		for(Iterator i=getSupports().iterator(); i.hasNext();)
+		List<String> supportsList = new ArrayList<String>();
+		for(SupportsDef s : getSupports())
 		{
-			SupportsDef s = (SupportsDef)i.next();
 			supportsList.add(s.getInterface().getIdentifier());
 		}
 		if(supportsList.size() > 0)
@@ -128,10 +122,9 @@ public class ComponentDef
 	
 	public String generateSupportsCcmDeclarations()
 	{
-		List supportsList = new ArrayList();
-		for(Iterator i=getSupports().iterator(); i.hasNext();)
+		List<String> supportsList = new ArrayList<String>();
+		for(SupportsDef s : getSupports())
 		{
-			SupportsDef s = (SupportsDef)i.next();
 			supportsList.add(s.getInterface().generateCcmIdentifier());
 		}
 		if(supportsList.size() > 0)
@@ -146,15 +139,12 @@ public class ComponentDef
 
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalInterfaceSourceFiles()
+	public List<SourceFile> generateLocalInterfaceSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
-		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList()); 
-	
-		SourceFile iface = 
-			new SourceFile(localPackageName, getIdentifier() + ".java", generateInterface());
-		sourceFileList.add(iface);
-		
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList()); 	
+		SourceFile iface = new SourceFile(localPackageName, getIdentifier() + ".java", generateInterface());
+		sourceFileList.add(iface);		
 		return sourceFileList;
 	}
 	
@@ -189,9 +179,9 @@ public class ComponentDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalComponentSourceFiles()
+	public List<SourceFile> generateLocalComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile applicationInterface = new SourceFile(localPackageName, 
@@ -228,9 +218,9 @@ public class ComponentDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateApplicationSourceFiles()
+	public List<SourceFile> generateApplicationSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile applicationClass = new SourceFile(localPackageName, getIdentifier() + 
@@ -255,9 +245,9 @@ public class ComponentDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateClientLibComponentSourceFiles()
+	public List<SourceFile> generateClientLibComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile adapterToCorba = new SourceFile(localPackageName, getIdentifier() + 
@@ -281,9 +271,9 @@ public class ComponentDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		
 		SourceFile adapterToCorba = new SourceFile(remotePackageName, getIdentifier() + 

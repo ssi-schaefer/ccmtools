@@ -1,7 +1,6 @@
 package ccmtools.generator.java.metamodel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -18,8 +17,8 @@ public class OperationDef
 	extends ModelElement
 {
 	private Type type;
-	private List parameter = new ArrayList();
-	private List exception = new ArrayList();
+	private List<ParameterDef> parameter = new ArrayList<ParameterDef>();
+	private List<ExceptionDef> exception = new ArrayList<ExceptionDef>();
 	
 	
 	public OperationDef(String identifier, Type type)
@@ -40,29 +39,27 @@ public class OperationDef
 	}
 	
 	
-	public List getException()
+	public List<ExceptionDef> getException()
 	{
 		return exception;
 	}
 
 	
-	public List getParameter()
+	public List<ParameterDef> getParameter()
 	{
 		return parameter;
 	}
 
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = getType().getJavaImportStatements();
-		for(Iterator i = getException().iterator(); i.hasNext();)
+		Set<String> importStatements = getType().getJavaImportStatements();
+		for(ExceptionDef ex : getException())
 		{
-			ExceptionDef ex = (ExceptionDef)i.next();
 			importStatements.addAll(ex.getJavaImportStatements());
 		}
-		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		for(ParameterDef param : getParameter())
 		{
-			ParameterDef param = (ParameterDef)i.next();
 			importStatements.addAll(param.getJavaImportStatements());
 		}	
 		return importStatements;
@@ -105,10 +102,9 @@ public class OperationDef
 	 */
 	public String generateParameterDeclarationList()
 	{
-		List parameterList = new ArrayList();
-		for(Iterator i=getParameter().iterator(); i.hasNext();)
+		List<String> parameterList = new ArrayList<String>();
+		for(ParameterDef p : getParameter())
 		{
-			ParameterDef p = (ParameterDef)i.next();
 			parameterList.add(p.generateParameter());
 		}
 		if(parameterList.size() > 1)
@@ -135,10 +131,9 @@ public class OperationDef
 		
 	public String generateParameterList(String suffix)
 	{
-		List parameterList = new ArrayList();
-		for(Iterator i=getParameter().iterator(); i.hasNext();)
+		List<String> parameterList = new ArrayList<String>();
+		for(ParameterDef p : getParameter())
 		{
-			ParameterDef p = (ParameterDef)i.next();
 			parameterList.add(p.getIdentifier() + suffix);
 		}
 		return Text.joinList(", ", parameterList);
@@ -154,16 +149,14 @@ public class OperationDef
 	 */
 	public String generateThrowsStatementLocal()
 	{
-		StringBuffer code = new StringBuffer();
-//		code.append("throws ccm.local.Components.CCMException");
+		StringBuilder code = new StringBuilder();
 		code.append("throws CCMException");
 		if(getException().size() != 0)
 		{
 			code.append(",").append(NL).append(TAB3);
-			List exceptionList = new ArrayList();
-			for (Iterator i = getException().iterator(); i.hasNext();)
+			List<String> exceptionList = new ArrayList<String>();
+			for (ExceptionDef e : getException())
 			{
-				ExceptionDef e = (ExceptionDef) i.next();
 				exceptionList.add(e.generateJavaMapping());
 			}
 			code.append(Text.joinList(", " + NL + TAB3, exceptionList));
@@ -227,10 +220,9 @@ public class OperationDef
 	
 	public String generateCorbaParameterDeclarationList()
 	{
-		List parameterList = new ArrayList();
-		for(Iterator i=getParameter().iterator(); i.hasNext();)
+		List<String> parameterList = new ArrayList<String>();
+		for(ParameterDef p : getParameter())
 		{
-			ParameterDef p = (ParameterDef)i.next();
 			parameterList.add(p.generateCorbaParameter());
 		}
 		if(parameterList.size() > 1)
@@ -255,14 +247,13 @@ public class OperationDef
 
 	public String generateThrowsStatementFromCorba()
 	{
-		StringBuffer code = new StringBuffer();
+		StringBuilder code = new StringBuilder();
 		if(getException().size() != 0)
 		{
 			code.append("throws ");
-			List exceptionList = new ArrayList();
-			for (Iterator i = getException().iterator(); i.hasNext();)
+			List<String> exceptionList = new ArrayList<String>();
+			for (ExceptionDef e : getException())
 			{
-				ExceptionDef e = (ExceptionDef) i.next();
 				exceptionList.add(e.generateCorbaMapping());
 			}
 			if(exceptionList.size() > 1)
@@ -291,10 +282,9 @@ public class OperationDef
 	
 	public String generateInParameterConvertersToCorba()
 	{
-		StringBuffer code = new StringBuffer();
-		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		StringBuilder code = new StringBuilder();
+		for(ParameterDef parameter : getParameter())
 		{
-			ParameterDef parameter = (ParameterDef)i.next();
 			code.append(TAB3);
 			code.append(parameter.generateInConverterToCorba());
 			code.append(NL);
@@ -304,10 +294,9 @@ public class OperationDef
 	
 	public String generateInParameterConvertersFromCorba()
 	{
-		StringBuffer code = new StringBuffer();
-		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		StringBuilder code = new StringBuilder();
+		for(ParameterDef parameter : getParameter())
 		{
-			ParameterDef parameter = (ParameterDef)i.next();
 			code.append(TAB3);
 			code.append(parameter.generateInConverterFromCorba());
 			code.append(NL);
@@ -318,10 +307,9 @@ public class OperationDef
 	
 	public String generateOutParameterConvertersToCorba()
 	{
-		StringBuffer code = new StringBuffer();
-		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		StringBuilder code = new StringBuilder();
+		for(ParameterDef parameter : getParameter())
 		{
-			ParameterDef parameter = (ParameterDef)i.next();
 			code.append(TAB3);
 			code.append(parameter.generateOutConverterToCorba());
 			code.append(NL);
@@ -331,10 +319,9 @@ public class OperationDef
 		
 	public String generateOutParameterConvertersFromCorba()
 	{
-		StringBuffer code = new StringBuffer();
-		for(Iterator i = getParameter().iterator(); i.hasNext();)
+		StringBuilder code = new StringBuilder();
+		for(ParameterDef parameter : getParameter())
 		{
-			ParameterDef parameter = (ParameterDef)i.next();
 			code.append(TAB3);
 			code.append(parameter.generateOutConverterFromCorba());
 			code.append(NL);
@@ -398,7 +385,7 @@ public class OperationDef
 	
 	public String generateResultConverterFromCorba()
 	{
-		StringBuffer code = new StringBuffer();
+		StringBuilder code = new StringBuilder();
 		if (!(getType() instanceof VoidType))
 		{
 			code.append(TAB3).append(getType().generateJavaMapping());
@@ -413,7 +400,7 @@ public class OperationDef
 	
 	public String generateResultConverterToCorba()
 	{
-		StringBuffer code = new StringBuffer();
+		StringBuilder code = new StringBuilder();
 		if (!(getType() instanceof VoidType))
 		{
 			code.append(TAB3).append(getType().generateCorbaMapping());

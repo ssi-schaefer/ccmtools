@@ -25,7 +25,7 @@ import ccmtools.generator.java.metamodel.plugin.EntityContainer;
  */
 public class AnyPluginManager
 {
-	private Map plugins = new HashMap();
+	private Map<String,Type> plugins = new HashMap<String,Type>();
 	
 	public AnyPluginManager()
 	{
@@ -39,7 +39,7 @@ public class AnyPluginManager
 	{
 		if(plugins.containsKey(identifier))
 		{
-			return (Type)plugins.get(identifier);
+			return plugins.get(identifier);
 		}
 		else // no plugin registered
 		{

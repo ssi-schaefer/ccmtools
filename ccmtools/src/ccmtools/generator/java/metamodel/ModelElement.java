@@ -2,7 +2,6 @@ package ccmtools.generator.java.metamodel;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -21,16 +20,15 @@ public class ModelElement
 	
 	/** Namespace lists */
 	private String identifier;
-	private List idlNamespaceList = new ArrayList();
-	private List javaNamespaceList = new ArrayList();
-	private List javaRemoteNamespaceList = new ArrayList();
-	
+	private List<String> idlNamespaceList = new ArrayList<String>();
+	private List<String> javaNamespaceList = new ArrayList<String>();
+	private List<String> javaRemoteNamespaceList = new ArrayList<String>();
 	
 	protected ModelElement()
-	{
-	}
-
-	protected ModelElement(String identifier, List namespace)
+    {   
+    }
+    
+	protected ModelElement(String identifier, List<String> namespace)
 	{
 		setIdentifier(identifier);
 		setIdlNamespaceList(namespace);
@@ -48,12 +46,12 @@ public class ModelElement
 	}
 
 	
-	public List getIdlNamespaceList()
+	public List<String> getIdlNamespaceList()
 	{
 		return idlNamespaceList;
 	}
 
-	public void setIdlNamespaceList(List namespace)
+	public void setIdlNamespaceList(List<String> namespace)
 	{
 		idlNamespaceList.addAll(namespace);
 		// javaNamespace directly depends on the idlNamesapce
@@ -62,12 +60,12 @@ public class ModelElement
 	}	
 	
 	
-	public List getJavaNamespaceList()
+	public List<String> getJavaNamespaceList()
 	{
 		return javaNamespaceList;
 	}
 	
-	public void setJavaNamespaceList(List namespace)
+	public void setJavaNamespaceList(List<String> namespace)
 	{
 		javaNamespaceList.addAll(namespace);		
 		// Set implicit Java namespace elements
@@ -76,12 +74,12 @@ public class ModelElement
 	}
 
 	
-	public List getJavaRemoteNamespaceList()
+	public List<String> getJavaRemoteNamespaceList()
 	{
 		return javaRemoteNamespaceList;
 	}
 	
-	public void setJavaRemoteNamespaceList(List namespace)
+	public void setJavaRemoteNamespaceList(List<String> namespace)
 	{
 		javaRemoteNamespaceList.addAll(namespace);		
 		// Set implicit Java namespace elements
@@ -112,17 +110,16 @@ public class ModelElement
 			return true;
 	}
 
-	public String generateJavaImportStatements(Set importStatements)
+	public String generateJavaImportStatements(Set<String> importStatements)
 	{
 		return generateJavaImportStatements(generateJavaNamespace(), importStatements);
 	}
 
-	public String generateJavaImportStatements(String namespace, Set importStatements)
+	public String generateJavaImportStatements(String namespace, Set<String> importStatements)
 	{
 		StringBuffer sb = new StringBuffer();	
-		for(Iterator i = importStatements.iterator(); i.hasNext();)
+		for(String statement : importStatements)
 		{
-			String statement = (String)i.next();
 			if(isNeededJavaImportStatement(namespace, statement))
 			{
 				sb.append("import ").append(statement).append(";").append(NL);

@@ -49,6 +49,7 @@ import ccmtools.generator.java.metamodel.HomeDef;
 import ccmtools.generator.java.metamodel.IntegerType;
 import ccmtools.generator.java.metamodel.InterfaceDef;
 import ccmtools.generator.java.metamodel.LongType;
+import ccmtools.generator.java.metamodel.ModelElement;
 import ccmtools.generator.java.metamodel.ModelRepository;
 import ccmtools.generator.java.metamodel.ObjectType;
 import ccmtools.generator.java.metamodel.OperationDef;
@@ -70,7 +71,7 @@ public class CcmToJavaModelMapper
     implements NodeHandler
 {
 	/** This map is used to cache source code artifacts like interfaces, exceptions, etc. */
-	private Map artifactCache;
+	private Map<String,ModelElement> artifactCache;
 		
     /** Java logging */
     private Logger logger;
@@ -85,7 +86,7 @@ public class CcmToJavaModelMapper
 	{
 		logger = Logger.getLogger("ccm.generator.java");
 		logger.fine("");		
-		artifactCache = new HashMap();
+		artifactCache = new HashMap<String,ModelElement>();
 		modelRepository = new ModelRepository();
 		anyPluginManager = new AnyPluginManager();
 	}
@@ -127,98 +128,97 @@ public class CcmToJavaModelMapper
     {
     		logger.fine("");
     		logger.finer("node = " + node + ", scopeId = " + scopeId);
-    	
-    	if(node == null)
-    	{
-    		// The current node is not valid!
-    		return;
-    	}
-    	else if(node instanceof MContained 
-    			&& !((MContained) node).getSourceFile().equals(""))
-    	{
-    		logger.finer("node = " + node + " has been defined in an included file (" 
-    				+ ((MContained) node).getSourceFile() + ")");
-    		// The current node is defined in an included file
-    		// and should not be generated!
-    		return;
-    	}
-    	else if (node instanceof MHomeDef)
-		{
-			MHomeDef home = (MHomeDef) node;
-			logger.finer("MHomeDef: " + Code.getRepositoryId(home));
-			HomeDef javaHome = transform(home);
-			modelRepository.addHome(javaHome);
-		}
-    	else if(node instanceof MComponentDef) 
-    	{
-    		MComponentDef component = (MComponentDef)node;
-    		logger.finer("MComponentDef: " + Code.getRepositoryId(component));
-    		ComponentDef javaComponent = transform(component);
-    		modelRepository.addComponent(javaComponent);
-    	}
-    	else if(node instanceof MInterfaceDef)
-    	{
-    		MInterfaceDef iface = (MInterfaceDef)node;
-    		logger.finer("MInterfaceDef: " + Code.getRepositoryId(iface));
-    		InterfaceDef javaIface = transform(iface);   		
-    		modelRepository.addInterface(javaIface);
-    	}   
-    	else if(node instanceof MProvidesDef)
-    	{
-    		MProvidesDef provides = (MProvidesDef)node;
-    		logger.finer("MProvidesDef: " + Code.getRepositoryId(provides));
-    		ProvidesDef javaProvides = transform(provides);   		
-    		modelRepository.addProvides(javaProvides);
-    	}
-    	else if(node instanceof MUsesDef)
-    	{
-    		MUsesDef uses = (MUsesDef)node;
-    		logger.finer("MUsesDef: " + Code.getRepositoryId(uses));
-    		UsesDef javaUses = transform(uses);
-    		modelRepository.addUses(javaUses);
-    	}
-    	else if(node instanceof MEnumDef)
-    	{
-    		MEnumDef enumeration = (MEnumDef)node;
-    		logger.finer("MEnumDef: " + Code.getRepositoryId(enumeration));
-    		EnumDef javaEnum = transform(enumeration);
-    		modelRepository.addEnum(javaEnum);    
-    	}
-    	else if(node instanceof MStructDef)
-    	{
-    		MStructDef struct = (MStructDef)node;
-    		logger.finer("MStructDef: " + Code.getRepositoryId(struct));
-    		StructDef javaStruct = transform(struct);
-    		modelRepository.addStruct(javaStruct);    		
-    	}
-    	else if(node instanceof MExceptionDef)
-    	{
-    		MExceptionDef exception = (MExceptionDef)node;
-    		logger.finer("MExceptionDef: " + Code.getRepositoryId(exception));
-    		ExceptionDef javaException = transform(exception);
-    		modelRepository.addException(javaException);    	
-    	}
-    	else if(node instanceof MAliasDef)
-    	{
-    		// Note that only the MAiliasDef object knows the identifier of these
-    		// CCM model elements, thus, we have to handle MAliasDef nodes here! 
-    		MAliasDef alias = (MAliasDef)node;
-    		logger.finer("MAliasDef: " + Code.getRepositoryId(alias));    		
-    		MTyped typed = (MTyped)alias;
-    		MIDLType innerIdlType = typed.getIdlType();			    		
-    		if(innerIdlType instanceof MSequenceDef)
-    		{
-    			MSequenceDef sequence = (MSequenceDef)innerIdlType;
-    			SequenceDef javaSequence = transform(sequence, alias.getIdentifier(), Code.getNamespaceList(alias));
-    			modelRepository.addSequence(javaSequence);
-    		}
-    		if(innerIdlType instanceof MArrayDef)
-    		{
-    			MArrayDef array = (MArrayDef)innerIdlType;
-    			ArrayDef javaArray = transform(array, alias.getIdentifier(), Code.getNamespaceList(alias));
-    			modelRepository.addArray(javaArray);
-    		}
-    	}
+
+        if (node == null)
+        {
+            // The current node is not valid!
+            return;
+        }
+        else if (node instanceof MContained && !((MContained) node).getSourceFile().equals(""))
+        {
+            logger.finer("node = " + node + " has been defined in an included file ("
+                    + ((MContained) node).getSourceFile() + ")");
+            // The current node is defined in an included file
+            // and should not be generated!
+            return;
+        }
+    	    else if (node instanceof MHomeDef)
+        {
+            MHomeDef home = (MHomeDef) node;
+            logger.finer("MHomeDef: " + Code.getRepositoryId(home));
+            HomeDef javaHome = transform(home);
+            modelRepository.addHome(javaHome);
+        }
+        else if (node instanceof MComponentDef)
+        {
+            MComponentDef component = (MComponentDef) node;
+            logger.finer("MComponentDef: " + Code.getRepositoryId(component));
+            ComponentDef javaComponent = transform(component);
+            modelRepository.addComponent(javaComponent);
+        }
+        else if (node instanceof MInterfaceDef)
+        {
+            MInterfaceDef iface = (MInterfaceDef) node;
+            logger.finer("MInterfaceDef: " + Code.getRepositoryId(iface));
+            InterfaceDef javaIface = transform(iface);
+            modelRepository.addInterface(javaIface);
+        }
+        else if (node instanceof MProvidesDef)
+        {
+            MProvidesDef provides = (MProvidesDef) node;
+            logger.finer("MProvidesDef: " + Code.getRepositoryId(provides));
+            ProvidesDef javaProvides = transform(provides);
+            modelRepository.addProvides(javaProvides);
+        }
+        else if (node instanceof MUsesDef)
+        {
+            MUsesDef uses = (MUsesDef) node;
+            logger.finer("MUsesDef: " + Code.getRepositoryId(uses));
+            UsesDef javaUses = transform(uses);
+            modelRepository.addUses(javaUses);
+        }
+        else if (node instanceof MEnumDef)
+        {
+            MEnumDef enumeration = (MEnumDef) node;
+            logger.finer("MEnumDef: " + Code.getRepositoryId(enumeration));
+            EnumDef javaEnum = transform(enumeration);
+            modelRepository.addEnum(javaEnum);
+        }
+        else if (node instanceof MStructDef)
+        {
+            MStructDef struct = (MStructDef) node;
+            logger.finer("MStructDef: " + Code.getRepositoryId(struct));
+            StructDef javaStruct = transform(struct);
+            modelRepository.addStruct(javaStruct);
+        }
+        else if (node instanceof MExceptionDef)
+        {
+            MExceptionDef exception = (MExceptionDef) node;
+            logger.finer("MExceptionDef: " + Code.getRepositoryId(exception));
+            ExceptionDef javaException = transform(exception);
+            modelRepository.addException(javaException);
+        }
+        else if (node instanceof MAliasDef)
+        {
+            // Note that only the MAiliasDef object knows the identifier of these
+            // CCM model elements, thus, we have to handle MAliasDef nodes here!
+            MAliasDef alias = (MAliasDef) node;
+            logger.finer("MAliasDef: " + Code.getRepositoryId(alias));
+            MTyped typed = (MTyped) alias;
+            MIDLType innerIdlType = typed.getIdlType();
+            if (innerIdlType instanceof MSequenceDef)
+            {
+                MSequenceDef sequence = (MSequenceDef) innerIdlType;
+                SequenceDef javaSequence = transform(sequence, alias.getIdentifier(), Code.getNamespaceList(alias));
+                modelRepository.addSequence(javaSequence);
+            }
+            if (innerIdlType instanceof MArrayDef)
+            {
+                MArrayDef array = (MArrayDef) innerIdlType;
+                ArrayDef javaArray = transform(array, alias.getIdentifier(), Code.getNamespaceList(alias));
+                modelRepository.addArray(javaArray);
+            }
+        }
     }
 
     
@@ -584,12 +584,10 @@ public class CcmToJavaModelMapper
 			MArrayDef array = (MArrayDef)innerIdlType;
 			out = transform(array, in.getIdentifier(), Code.getNamespaceList(in));
 		}
-		//!!!!!!!!
 		else if(innerIdlType instanceof MStringDef)
 		{
 			out = transform(innerIdlType);
 		}
-		//!!!!!
 		// TODO: Handle other alias types
 		else
 		{
@@ -600,7 +598,7 @@ public class CcmToJavaModelMapper
 	
 	
 	
-	public SequenceDef transform(MSequenceDef in, String id, List ns)
+	public SequenceDef transform(MSequenceDef in, String id, List<String> ns)
 	{
 		SequenceDef out;
 		String repoId = Code.getRepositoryId(ns,id);
@@ -619,7 +617,7 @@ public class CcmToJavaModelMapper
 		return out;
 	}
 
-	public ArrayDef transform(MArrayDef in, String id, List ns)
+	public ArrayDef transform(MArrayDef in, String id, List<String> ns)
 	{
 		ArrayDef out;
 		String repoId = Code.getRepositoryId(ns,id);
@@ -634,7 +632,11 @@ public class CcmToJavaModelMapper
 			MIDLType arrayIdlType = arrayType.getIdlType();		
 			out = new ArrayDef(id, ns);
 			out.setType(transform(arrayIdlType));
-			out.getBounds().addAll(in.getBounds());
+			for(Iterator i = in.getBounds().iterator(); i.hasNext();)
+            {
+                Long bound = (Long)i.next();
+			    out.getBounds().add(bound);
+            }
 			artifactCache.put(repoId, out);
 		}
 		return out;
@@ -702,8 +704,7 @@ public class CcmToJavaModelMapper
 		}
 		else
 		{
-			throw new RuntimeException("transform(MPrimitiveDef): unknown primitive type "
-					+ primitive.getKind());
+			throw new RuntimeException("Unknown primitive type (" + primitive.getKind() + ")!");
 		}
 	}
 }

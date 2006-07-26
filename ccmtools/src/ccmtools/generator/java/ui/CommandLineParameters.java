@@ -2,7 +2,6 @@ package ccmtools.generator.java.ui;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.CcmtoolsException;
@@ -10,24 +9,24 @@ import ccmtools.CcmtoolsException;
 public class CommandLineParameters
 {
 	/** List of generator IDs */
-	private List generatorIds = new ArrayList();
+	private List<String> generatorIds = new ArrayList<String>();
 	
 	/** */
 	private boolean noExit;
 	
     /** List of possible include paths */    
-    private List includePaths = new ArrayList();
+    private List<String> includePaths = new ArrayList<String>();
 
     /** Path to the output directory */
     private String outDir;
     
     /** List of IDL input files */
-    private List idlFiles = new ArrayList();
+    private List<String> idlFiles = new ArrayList<String>();
     
     
     // Parameter getter and setter methods ------------------------------------
     
-	public List getIncludePaths()
+	public List<String> getIncludePaths()
 	{
 		return includePaths;
 	}
@@ -55,13 +54,13 @@ public class CommandLineParameters
 	}
 
 	
-	public List getIdlFiles()
+	public List<String> getIdlFiles()
 	{
 		return idlFiles;
 	}
 
 
-	public List getGeneratorIds()
+	public List<String> getGeneratorIds()
 	{
 		return generatorIds;
 	}
@@ -72,27 +71,10 @@ public class CommandLineParameters
 	public void validate()
 		throws CcmtoolsException
 	{
-		//checkIncludePaths();
 		checkOutputPath();
 		checkIdlFiles();
 	}
 	
-	 /**
-     * Check if the given include paths exists.
-     * 
-     * @throws CcmtoolsException
-     */
-//    private void checkIncludePaths() 
-//        throws CcmtoolsException
-//    {
-//        // OK, if any given include directory exists
-//        for(Iterator i = includePaths.iterator(); i.hasNext();) {
-//            File path = new File((String) i.next());
-//            if(!path.exists()) {
-//                throw new CcmtoolsException("Invalid include path " + path);
-//            }
-//        }
-//    }
     
     /**
      * Check if the given output directory is valid.
@@ -102,9 +84,9 @@ public class CommandLineParameters
     private void checkOutputPath() 
         throws CcmtoolsException
     {
-        if(outDir == null || outDir.length() == 0) 
+        if (outDir == null || outDir.length() == 0)
         {
-        	outDir = ".";
+            outDir = ".";
         }
     }
 	    
@@ -115,15 +97,16 @@ public class CommandLineParameters
     private void checkIdlFiles() 
         throws CcmtoolsException
     {
-    	 for(Iterator i = getIdlFiles().iterator(); i.hasNext();) {
-             String idlFile = (String) i.next();
-             if(!isExistingFile(idlFile, getIncludePaths())) {
+    	     for(String idlFile : getIdlFiles()) 
+    	     {
+             if(!isExistingFile(idlFile, getIncludePaths())) 
+             {
                  throw new CcmtoolsException("Invalid IDL input file " + idlFile);
              }
          }
     }
     
-    private boolean isExistingFile(String fileName, List includePaths)
+    private boolean isExistingFile(String fileName, List<String> includePaths)
     {
         // File without name does not exist
         if(fileName == null)
@@ -137,9 +120,11 @@ public class CommandLineParameters
         // OK, if the assembly file can be found in any given
         // include path
         boolean hasFound = false;
-        for(Iterator i = includePaths.iterator(); i.hasNext();) {
-            File path = new File((String) i.next(), fileName);
-            if(path.exists()) {
+        for (String includePath : includePaths)
+        {
+            File path = new File(includePath, fileName);
+            if (path.exists())
+            {
                 hasFound = true;
             }
         }    
@@ -152,33 +137,30 @@ public class CommandLineParameters
     
 	public String toString()
 	{
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
-		for(Iterator i = getGeneratorIds().iterator(); i.hasNext(); )
+		for(String generatorId : getGeneratorIds())
 		{
-			buffer.append("Generator IDs: ");
-			buffer.append((String)i.next()).append("\n");
+			buffer.append("Generator IDs: ").append(generatorId).append("\n");
 		}
 		
 		buffer.append("No Exit: ").append(isNoExit()).append("\n");
 		
-        for(Iterator i=includePaths.iterator(); i.hasNext();) {
-            buffer.append("Include Path: ");
-            buffer.append((String)i.next()).append("\n");
+        for(String includePath : includePaths) 
+        {            
+            buffer.append("Include Path: ").append(includePath).append("\n");
         }
 
         if(getOutDir() != null)
         {
-        	buffer.append("Output directory: ").append(getOutDir()).append("\n");
+            buffer.append("Output directory: ").append(getOutDir()).append("\n");
         }
         
-		for(Iterator i = getIdlFiles().iterator(); i.hasNext(); )
+		for(String idlFile : getIdlFiles())
 		{
-			buffer.append("IDL input files: ");
-			buffer.append((String)i.next()).append("\n");
+			buffer.append("IDL input files: ").append(idlFile).append("\n");
 		}
 		
 		return buffer.toString();
 	}
-
 }

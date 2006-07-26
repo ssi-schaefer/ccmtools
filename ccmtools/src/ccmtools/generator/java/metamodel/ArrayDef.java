@@ -17,9 +17,9 @@ public class ArrayDef
 	private Type type;
 
 	/** Stores the bound of every array dimension */
-	private List bounds = new ArrayList();
+	private List<Long> bounds = new ArrayList<Long>();
 	
-	public ArrayDef(String identifier, List namespace)
+	public ArrayDef(String identifier, List<String> namespace)
 	{
 		super(identifier, namespace);
 	}
@@ -36,13 +36,13 @@ public class ArrayDef
 	}
 
 	
-	public List getBounds()
+	public List<Long> getBounds()
 	{
 		return bounds;
 	}
 
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
 		return getType().getJavaImportStatements();
 	}
@@ -108,7 +108,6 @@ public class ArrayDef
 	
 	public String generateJavaHolderType()
 	{
-//		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
 		return "Holder<" + generateJavaMappingObject() + ">";
 	}
 		
@@ -185,9 +184,9 @@ public class ArrayDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		if(!isPrimitiveType(getType()))
 		{

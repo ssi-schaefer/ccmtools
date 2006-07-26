@@ -38,9 +38,9 @@ public class ParameterDef
 	}
 
 	
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = getType().getJavaImportStatements();			
+		Set<String> importStatements = getType().getJavaImportStatements();			
 		if(getDirection() == PassingDirection.INOUT
 				|| getDirection() == PassingDirection.OUT)
 		{

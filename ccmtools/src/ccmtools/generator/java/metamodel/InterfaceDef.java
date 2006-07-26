@@ -2,7 +2,6 @@ package ccmtools.generator.java.metamodel;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -18,29 +17,28 @@ import ccmtools.utils.Text;
 public class InterfaceDef
 	extends ModelElement
 {
-	private List baseInterfaces = new ArrayList(); 
-	private List constants = new ArrayList();
-	private List attribute = new ArrayList();
-	private List operation = new ArrayList();
+	private List<InterfaceDef> baseInterfaces = new ArrayList<InterfaceDef>(); 
+	private List<ConstantDef> constants = new ArrayList<ConstantDef>();
+	private List<AttributeDef> attribute = new ArrayList<AttributeDef>();
+	private List<OperationDef> operation = new ArrayList<OperationDef>();
 	
 	
-	public InterfaceDef(String identifier, List namespace)
+	public InterfaceDef(String identifier, List<String> namespace)
 	{
 		super(identifier, namespace);
 	}
 	
 	
-	public List getConstants()
+	public List<ConstantDef> getConstants()
 	{
 		return constants;
 	}
 	
-	public List getAllConstants()
+	public List<ConstantDef> getAllConstants()
 	{
-		List allConstants = new ArrayList();
-		for(Iterator i = getBaseInterfaces().iterator(); i.hasNext();)
+		List<ConstantDef> allConstants = new ArrayList<ConstantDef>();
+		for(InterfaceDef iface : getBaseInterfaces())
 		{
-			InterfaceDef iface = (InterfaceDef)i.next();
 			allConstants.addAll(iface.getAllConstants());			
 		}
 		allConstants.addAll(getConstants());
@@ -48,17 +46,16 @@ public class InterfaceDef
 	}
 	
 	
-	public List getAttributes()
+	public List<AttributeDef> getAttributes()
 	{
 		return attribute;
 	}
 
-	public List getAllAttributes()
+	public List<AttributeDef> getAllAttributes()
 	{
-		List allAttributes = new ArrayList();
-		for(Iterator i = getBaseInterfaces().iterator(); i.hasNext();)
+		List<AttributeDef> allAttributes = new ArrayList<AttributeDef>();
+		for(InterfaceDef iface : getBaseInterfaces())
 		{
-			InterfaceDef iface = (InterfaceDef)i.next();
 			allAttributes.addAll(iface.getAllAttributes());
 		}
 		allAttributes.addAll(getAttributes());
@@ -66,17 +63,16 @@ public class InterfaceDef
 	}
 	
 	
-	public List getOperations()
+	public List<OperationDef> getOperations()
 	{
 		return operation;
 	}	
 	
-	public List getAllOperations()
+	public List<OperationDef> getAllOperations()
 	{
-		List allOperations = new ArrayList();
-		for(Iterator i = getBaseInterfaces().iterator(); i.hasNext();)
+		List<OperationDef> allOperations = new ArrayList<OperationDef>();
+		for(InterfaceDef iface : getBaseInterfaces())
 		{
-			InterfaceDef iface = (InterfaceDef)i.next();
 			allOperations.addAll(iface.getAllOperations());
 		}		
 		allOperations.addAll(getOperations());
@@ -84,22 +80,20 @@ public class InterfaceDef
 	}
 	
 	
-	public List getBaseInterfaces()
+	public List<InterfaceDef> getBaseInterfaces()
 	{
 		return baseInterfaces;
 	}
 			
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = new TreeSet();
-		for(Iterator i = getAttributes().iterator(); i.hasNext();)
+		Set<String> importStatements = new TreeSet<String>();
+		for(AttributeDef attr : getAttributes())
 		{
-			AttributeDef attr = (AttributeDef)i.next();
 			importStatements.addAll(attr.getJavaImportStatements());
 		}
-		for(Iterator i = getOperations().iterator(); i.hasNext();)
+		for(OperationDef op : getOperations())
 		{
-			OperationDef op = (OperationDef)i.next();
 			importStatements.addAll(op.getJavaImportStatements());
 		}		
 		importStatements.add(generateAbsoluteJavaName());
@@ -131,10 +125,9 @@ public class InterfaceDef
 		
 	public String generateBaseInterfaceDeclarations()
 	{
-		List baseInterfaceList = new ArrayList();
-		for(Iterator i=getBaseInterfaces().iterator(); i.hasNext();)
+		List<String> baseInterfaceList = new ArrayList<String>();
+		for(InterfaceDef iface : getBaseInterfaces())
 		{
-			InterfaceDef iface = (InterfaceDef)i.next();
 			baseInterfaceList.add(iface.generateAbsoluteJavaName());
 		}
 		if(baseInterfaceList.size() > 0)
@@ -150,15 +143,12 @@ public class InterfaceDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalInterfaceSourceFiles()
+	public List<SourceFile> generateLocalInterfaceSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
-		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
-		
-		SourceFile iface = 
-			new SourceFile(localPackageName, getIdentifier() + ".java", generateInterface());
-		sourceFileList.add(iface);
-		
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());		
+		SourceFile iface = new SourceFile(localPackageName, getIdentifier() + ".java", generateInterface());
+		sourceFileList.add(iface);		
 		return sourceFileList;
 	}
 	
@@ -184,9 +174,9 @@ public class InterfaceDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalComponentSourceFiles()
+	public List<SourceFile> generateLocalComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile applicationInterface = 
@@ -220,9 +210,9 @@ public class InterfaceDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		

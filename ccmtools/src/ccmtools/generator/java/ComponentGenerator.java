@@ -21,6 +21,7 @@ import ccmtools.generator.java.metamodel.SequenceDef;
 import ccmtools.generator.java.metamodel.StructDef;
 import ccmtools.generator.java.ui.CommandLineParameters;
 import ccmtools.utils.Code;
+import ccmtools.utils.SourceFile;
 
 public class ComponentGenerator
 {
@@ -54,9 +55,8 @@ public class ComponentGenerator
 	public void generate(ModelRepository javaModel) throws CcmtoolsException
 	{
 		logger.fine("enter");
-		for (Iterator i = parameters.getGeneratorIds().iterator(); i.hasNext();)
+		for (String generatorId : parameters.getGeneratorIds())
 		{
-			String generatorId = (String) i.next();
 			if (generatorId.equals(INTERFACE_GENERATOR_ID))
 			{
 				generateInterface(javaModel);
@@ -88,40 +88,33 @@ public class ComponentGenerator
 		logger.fine("enter");
 		try
 		{
-			List sourceFileList = new ArrayList();
-			for (Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext();)
+			List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+			for(InterfaceDef javaIface : javaModel.findAllInterfaces())
 			{
-				InterfaceDef javaIface = (InterfaceDef) j.next();
 				sourceFileList.addAll(javaIface.generateLocalInterfaceSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
+			for(ComponentDef javaComponent : javaModel.findAllComponents())
 			{
-				ComponentDef javaComponent = (ComponentDef) j.next();
 				sourceFileList.addAll(javaComponent.generateLocalInterfaceSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
+			for(HomeDef javaHome : javaModel.findAllHomes())
 			{
-				HomeDef javaHome = (HomeDef) j.next();
 				sourceFileList.addAll(javaHome.generateLocalInterfaceSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllGlobalConstants().iterator(); j.hasNext();)
+			for(ConstantDef javaConstant : javaModel.findAllGlobalConstants())
 			{
-				ConstantDef javaConstant = (ConstantDef) j.next();
 				sourceFileList.addAll(javaConstant.generateLocalInterfaceSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllEnums().iterator(); j.hasNext();)
+			for(EnumDef javaEnum : javaModel.findAllEnums())
 			{
-				EnumDef javaEnum = (EnumDef) j.next();
 				sourceFileList.addAll(javaEnum.generateLocalInterfaceSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
+			for(StructDef javaStruct : javaModel.findAllStructs())
 			{
-				StructDef javaStruct = (StructDef) j.next();
 				sourceFileList.addAll(javaStruct.generateLocalInterfaceSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllExceptions().iterator(); j.hasNext();)
+			for(ExceptionDef javaException : javaModel.findAllExceptions())
 			{
-				ExceptionDef javaException = (ExceptionDef) j.next();
 				sourceFileList.addAll(javaException.generateLocalInterfaceSourceFiles());
 			}
 
@@ -131,7 +124,7 @@ public class ComponentGenerator
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new CcmtoolsException("Error in generateInterface: " + e.getMessage());
+			throw new CcmtoolsException("[Java Interface Generator] " + e.getMessage());
 		}
 		logger.fine("leave");
 	}
@@ -143,20 +136,17 @@ public class ComponentGenerator
 		logger.fine("enter");
 		try
 		{
-				List sourceFileList = new ArrayList();
-				for (Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext();)
+				List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+				for(InterfaceDef javaIface : javaModel.findAllInterfaces())
 				{
-					InterfaceDef javaIface = (InterfaceDef) j.next();
 					sourceFileList.addAll(javaIface.generateLocalComponentSourceFiles());
 				}
-				for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
+				for(ComponentDef javaComponent : javaModel.findAllComponents())
 				{
-					ComponentDef javaComponent = (ComponentDef) j.next();
 					sourceFileList.addAll(javaComponent.generateLocalComponentSourceFiles());
 				}
-				for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
+				for(HomeDef javaHome : javaModel.findAllHomes())
 				{
-					HomeDef javaHome = (HomeDef) j.next();
 					sourceFileList.addAll(javaHome.generateLocalComponentSourceFiles());
 				}
 
@@ -166,7 +156,7 @@ public class ComponentGenerator
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new CcmtoolsException("Error in generateLocalComponent: " + e.getMessage());
+			throw new CcmtoolsException("[Java Local Component Generator] " + e.getMessage());
 		}
 		logger.fine("leave");
 	}
@@ -177,30 +167,27 @@ public class ComponentGenerator
 	{
 		logger.fine("enter");
 		try
-		{
-				List sourceFileList = new ArrayList();
-				for (Iterator j = javaModel.findAllProvides().iterator(); j.hasNext();)
-				{
-					ProvidesDef javaProvides = (ProvidesDef) j.next();
-					sourceFileList.addAll(javaProvides.generateApplicationSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
-				{
-					ComponentDef javaComponent = (ComponentDef) j.next();
-					sourceFileList.addAll(javaComponent.generateApplicationSourceFiles());
-				}
-				for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
-				{
-					HomeDef javaHome = (HomeDef) j.next();
-					sourceFileList.addAll(javaHome.generateApplicationSourceFiles());
-				}
-				
-				// Save all source file objects
-				Code.writeJavaApplicationFiles(uiDriver, parameters.getOutDir(), sourceFileList);
-		}
+        {
+            List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+            for (ProvidesDef javaProvides : javaModel.findAllProvides())
+            {
+                sourceFileList.addAll(javaProvides.generateApplicationSourceFiles());
+            }
+            for (ComponentDef javaComponent : javaModel.findAllComponents())
+            {
+                sourceFileList.addAll(javaComponent.generateApplicationSourceFiles());
+            }
+            for (HomeDef javaHome : javaModel.findAllHomes())
+            {
+                sourceFileList.addAll(javaHome.generateApplicationSourceFiles());
+            }
+
+            // Save all source file objects
+            Code.writeJavaApplicationFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+        }
 		catch (Exception e)
 		{
-			throw new CcmtoolsException("Error in generateApplication: " + e.getMessage());
+			throw new CcmtoolsException("[Java Application Skeleton Generator] " + e.getMessage());
 		}
 		logger.fine("leave");
 	}
@@ -212,7 +199,7 @@ public class ComponentGenerator
 		logger.fine("enter");
 		try
 		{
-			List sourceFileList = generateCorbaConverterList(javaModel);
+			List<SourceFile> sourceFileList = generateCorbaConverterList(javaModel);
 
 			for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
 			{
@@ -243,16 +230,14 @@ public class ComponentGenerator
 		logger.fine("enter");
 		try
 		{
-			List sourceFileList = generateCorbaConverterList(javaModel);
+			List<SourceFile> sourceFileList = generateCorbaConverterList(javaModel);
 
-			for (Iterator j = javaModel.findAllComponents().iterator(); j.hasNext();)
+			for(ComponentDef javaComponent : javaModel.findAllComponents())
 			{
-				ComponentDef javaComponent = (ComponentDef) j.next();
 				sourceFileList.addAll(javaComponent.generateCorbaComponentSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllHomes().iterator(); j.hasNext();)
+			for(HomeDef javaHome : javaModel.findAllHomes())
 			{
-				HomeDef javaHome = (HomeDef) j.next();
 				sourceFileList.addAll(javaHome.generateCorbaComponentSourceFiles());
 			}
 
@@ -263,47 +248,41 @@ public class ComponentGenerator
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new CcmtoolsException("Error in generateCorbaComponent: " + e.getMessage());
+			throw new CcmtoolsException("[Java CORBA Component Generator] " + e.getMessage());
 		}	
 	}
 
 
-	private List generateCorbaConverterList(ModelRepository javaModel) 
+	private List<SourceFile> generateCorbaConverterList(ModelRepository javaModel) 
 		throws CcmtoolsException
 	{
 		logger.fine("enter");
 		try
 		{
-			List sourceFileList = new ArrayList();
-			for (Iterator j = javaModel.findAllInterfaces().iterator(); j.hasNext();)
+			List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+			for(InterfaceDef javaIface : javaModel.findAllInterfaces())
 			{
-				InterfaceDef javaIface = (InterfaceDef) j.next();
 				sourceFileList.addAll(javaIface.generateCorbaComponentSourceFiles());
 			}
 
-			for (Iterator j = javaModel.findAllEnums().iterator(); j.hasNext();)
+			for(EnumDef javaEnum : javaModel.findAllEnums())
 			{
-				EnumDef javaEnum = (EnumDef) j.next();
 				sourceFileList.addAll(javaEnum.generateCorbaComponentSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllStructs().iterator(); j.hasNext();)
+			for(StructDef javaStruct : javaModel.findAllStructs())
 			{
-				StructDef javaStruct = (StructDef) j.next();
 				sourceFileList.addAll(javaStruct.generateCorbaComponentSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllExceptions().iterator(); j.hasNext();)
+			for (ExceptionDef javaException : javaModel.findAllExceptions())
 			{
-				ExceptionDef javaException = (ExceptionDef) j.next();
 				sourceFileList.addAll(javaException.generateCorbaComponentSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllSequences().iterator(); j.hasNext();)
+			for (SequenceDef javaSequence : javaModel.findAllSequences())
 			{
-				SequenceDef javaSequence = (SequenceDef) j.next();
 				sourceFileList.addAll(javaSequence.generateCorbaComponentSourceFiles());
 			}
-			for (Iterator j = javaModel.findAllArrays().iterator(); j.hasNext();)
+			for (ArrayDef javaArray : javaModel.findAllArrays())
 			{
-				ArrayDef javaArray = (ArrayDef) j.next();
 				sourceFileList.addAll(javaArray.generateCorbaComponentSourceFiles());
 			}
 			return sourceFileList;
@@ -311,7 +290,7 @@ public class ComponentGenerator
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new CcmtoolsException("Error in generateClientLib: " + e.getMessage());
+			throw new CcmtoolsException("[Java Client Library Generator] " + e.getMessage());
 		}
 		finally
 		{

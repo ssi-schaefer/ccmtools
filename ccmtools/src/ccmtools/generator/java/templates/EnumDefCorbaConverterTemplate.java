@@ -1,6 +1,5 @@
 package ccmtools.generator.java.templates;
 
-import java.util.Iterator;
 import ccmtools.generator.java.metamodel.*;
 
 public class EnumDefCorbaConverterTemplate

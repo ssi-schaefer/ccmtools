@@ -22,9 +22,9 @@ public class ProvidesDef
 	private ComponentDef component;
 	private InterfaceDef iface;
 	
-	public ProvidesDef(String identifier, List ns)
+	public ProvidesDef(String identifier, List<String> namespace)
 	{
-		super(identifier, ns);
+		super(identifier, namespace);
 	}
 
 	
@@ -49,9 +49,9 @@ public class ProvidesDef
 		this.iface = provides;
 	}
 		
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = getInterface().getJavaImportStatements();
+		Set<String> importStatements = getInterface().getJavaImportStatements();
 		importStatements.add(getInterface().generateAbsoluteJavaCcmName());
 		importStatements.add(getInterface().generateAbsoluteJavaName());
 		importStatements.add(getComponent().generateAbsoluteJavaName() + "Impl");
@@ -132,9 +132,9 @@ public class ProvidesDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateApplicationSourceFiles()
+	public List<SourceFile> generateApplicationSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		String facetName = getComponent().getIdentifier() + getIdentifier();
 		

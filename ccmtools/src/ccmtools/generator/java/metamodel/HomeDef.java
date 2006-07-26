@@ -28,7 +28,7 @@ public class HomeDef
 {
 	private ComponentDef component;
 	
-	public HomeDef(String identifier, List namespace)
+	public HomeDef(String identifier, List<String> namespace)
 	{
 		super(identifier, namespace);
 	}
@@ -44,9 +44,9 @@ public class HomeDef
 		this.component = component;
 	}
 		
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		Set importStatements = new TreeSet();
+		Set<String> importStatements = new TreeSet<String>();
 		// Some component management methods can throw this exception type
 		importStatements.add(generateAbsoluteJavaName());
 		importStatements.add(generateAbsoluteJavaCcmName());
@@ -88,21 +88,20 @@ public class HomeDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalInterfaceSourceFiles()
+	public List<SourceFile> generateLocalInterfaceSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
-		SourceFile iface = new SourceFile(localPackageName, getIdentifier() + 
-				".java", generateInterface());
+		SourceFile iface = new SourceFile(localPackageName, getIdentifier() + ".java", generateInterface());
 		sourceFileList.add(iface);
 		
-		SourceFile implicitInterface = new SourceFile(localPackageName, getIdentifier() + 
-				"Implicit.java", generateImplicitInterface());
+		SourceFile implicitInterface = new SourceFile(localPackageName, getIdentifier() + "Implicit.java", 
+                generateImplicitInterface());
 		sourceFileList.add(implicitInterface);
 		
-		SourceFile explicitInterface = new SourceFile(localPackageName, getIdentifier() + 
-				"Explicit.java", generateExplicitInterface());
+		SourceFile explicitInterface = new SourceFile(localPackageName, getIdentifier() + "Explicit.java", 
+                generateExplicitInterface());
 		sourceFileList.add(explicitInterface);
 				
 		return sourceFileList;
@@ -143,9 +142,9 @@ public class HomeDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateLocalComponentSourceFiles()
+	public List<SourceFile> generateLocalComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile applicationInterface = new SourceFile(localPackageName, 
@@ -191,9 +190,9 @@ public class HomeDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateApplicationSourceFiles()
+	public List<SourceFile> generateApplicationSourceFiles()
 	{
-		List sourceFileList = new ArrayList();
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile applicationClass = new SourceFile(localPackageName, getIdentifier() + 
@@ -226,9 +225,9 @@ public class HomeDef
 
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateClientLibComponentSourceFiles()
+	public List<SourceFile> generateClientLibComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();		
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();		
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
 		
 		SourceFile adapterToCorba = new SourceFile(localPackageName, getIdentifier() + 
@@ -261,9 +260,9 @@ public class HomeDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaComponentSourceFiles()
 	{
-		List sourceFileList = new ArrayList();		
+		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();		
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());
 		
 		SourceFile adapterFromCorba = new SourceFile(remotePackageName, getIdentifier() + 

@@ -6,9 +6,9 @@ import java.util.TreeSet;
 public class CharType
 	implements Type
 {
-	public Set getJavaImportStatements()
+	public Set<String> getJavaImportStatements()
 	{
-		return new TreeSet();
+		return new TreeSet<String>();
 	}
 
 	
