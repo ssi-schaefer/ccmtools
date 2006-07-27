@@ -414,6 +414,14 @@ public class CcmModelPrettyPrinter
 	private void print(MInterfaceDef in)
 	{
 		println(Code.getRepositoryId(in) + ":InterfaceDef");
+        if(in.isAbstract())
+        {
+            println(TAB + "abstract");
+        }
+        if(in.isLocal())
+        {
+            println(TAB + "local");
+        }
 		for(Iterator i = in.getBases().iterator(); i.hasNext();)
 		{
 			MInterfaceDef baseInterface = (MInterfaceDef)i.next();

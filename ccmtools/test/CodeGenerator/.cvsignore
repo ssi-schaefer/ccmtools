@@ -1,6 +1,0 @@
-Makefile
-Makefile.in
-classdist_check.stamp
-*.class
-classdist_noinst.stamp
-*.output

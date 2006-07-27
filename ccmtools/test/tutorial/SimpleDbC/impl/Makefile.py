@@ -1,2 +1,0 @@
-PACKAGE_NAME('dbctest')
-PACKAGE_VERSION('0.0.0')

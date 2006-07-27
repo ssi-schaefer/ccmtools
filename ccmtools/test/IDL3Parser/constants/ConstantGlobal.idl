@@ -6,25 +6,25 @@
 const short 			SHORT_CONST = -3;
 const long 			LONG_CONST = -7777;
 const long long 		LONG_LONG_CONST = 7777777;
-const unsigned short 		USHORT_CONST = 7;
-const unsigned long 		ULONG_CONST = 7777;
+const unsigned short USHORT_CONST = 7;
+const unsigned long  ULONG_CONST = 7777;
 //const unsigned long long 	ULLONG_CONST = 7777777; !!!
 
 const float 			FLOAT_CONST = 3.14;
-const double 			DOUBLE_CONST = 3.1415926;
-//const long double		LDOUBLE_CONST = 3.1415926; !!!
+const double 		DOUBLE_CONST = 3.1415926;
+//const long double	LDOUBLE_CONST = 3.1415926; !!!
 
 const char 			CHAR_CONST = 'c';
-//const wchar 			WCHAR_CONST = L'c'; !!!
-const string 			STRING_CONST = "1234567890";  
+//const wchar 		WCHAR_CONST = L'c'; !!!
+const string 		STRING_CONST = "1234567890";  
 const string<5> 		BSTRING_CONST = "1234567890";  
-const wstring 			WSTRING_CONST = L"1234567890";
+const wstring 		WSTRING_CONST = L"1234567890";
 const wstring<5>		BWSTRING_CONST = L"1234567890";
 
-const boolean 			BOOLEAN_CONST = TRUE;
+const boolean 		BOOLEAN_CONST = TRUE;
 const octet 			OCTET_CONST = 255;
 
-//const Color			ENUM_CONST = red; !!!!
-//const fixed<9,2>		FIXED_CONST = 3.14D; //!!!
+//const Color		ENUM_CONST = red; !!!!
+//const fixed<9,2>	FIXED_CONST = 3.14D; //!!!
 
 #endif // __CONSTANT_GLOBAL__IDL__

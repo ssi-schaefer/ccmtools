@@ -18,6 +18,8 @@ o) const long double
 o) const wchar WCHAR_CONST = L'c';
 o) const fixed<9,2>	FIXED_CONST = 3.14D;
 o) const Color ENUM_CONST = red;
+o) Integer Literals: base-8 base-16
+o) Char Literals - Escape Sequences: '\n', '\xhh', '\uhhhh'
 
 
 Misc:
