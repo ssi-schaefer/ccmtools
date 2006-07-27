@@ -17,6 +17,7 @@ public class HomeDef
 	
     private HomeDef base; 
 	private ComponentDef component;
+    private List<AttributeDef> attributes = new ArrayList<AttributeDef>(); 
     private List<InterfaceDef> supports = new ArrayList<InterfaceDef>();
 	private List<FactoryMethodDef> factories = new ArrayList<FactoryMethodDef>();
     
@@ -36,7 +37,13 @@ public class HomeDef
         this.base = base;
     }
 
-        
+    
+    public List<AttributeDef> getAttributes()
+    {
+        return attributes;
+    }
+    
+    
     public List<InterfaceDef> getSupports()
     {
         return supports;
@@ -76,6 +83,10 @@ public class HomeDef
         {
             includePaths.add(getBase().generateIncludePath());
         }
+        for(AttributeDef attr: getAttributes())
+        {
+            includePaths.addAll(attr.generateIncludePaths());
+        }
         for(InterfaceDef iface : getSupports())
         {
             includePaths.add(iface.generateIncludePath());
@@ -94,6 +105,16 @@ public class HomeDef
         if(getBase() != null)
         {
             code.append(indent()).append(TAB).append(": ").append(getBase().generateIdlMapping());
+        }
+        return code.toString();
+    }
+    
+    public String generateAttributes()
+    {
+        StringBuilder code = new StringBuilder();
+        for(AttributeDef attribte : getAttributes())
+        {
+            code.append(attribte.generateAttribute(indent() + TAB));
         }
         return code.toString();
     }

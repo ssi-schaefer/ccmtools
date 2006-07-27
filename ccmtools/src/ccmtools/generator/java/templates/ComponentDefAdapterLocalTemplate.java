@@ -52,6 +52,7 @@ public class ComponentDefAdapterLocalTemplate
   protected final String TEXT_35 = "     ";
   protected final String TEXT_36 = NL;
   protected final String TEXT_37 = "     " + NL + "        else" + NL + "        {" + NL + "            throw new InvalidName();" + NL + "        }" + NL + "    }    " + NL + "}";
+  protected final String TEXT_38 = NL;
 
   public String generate(Object argument)
   {
@@ -205,6 +206,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_37);
+    stringBuffer.append(TEXT_38);
     return stringBuffer.toString();
   }
 }

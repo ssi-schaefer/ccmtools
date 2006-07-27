@@ -18,6 +18,7 @@ public class UsesDefMultipleReceptacleConnectMethodAdapterFromCorbaTemplate
   protected final String TEXT_2 = "\"))" + NL + "        {" + NL + "            connect_";
   protected final String TEXT_3 = "(";
   protected final String TEXT_4 = "Helper.narrow(obj));" + NL + "            return new Components.CookieImpl();" + NL + "        }";
+  protected final String TEXT_5 = NL;
 
   public String generate(Object argument)
   {
@@ -30,6 +31,7 @@ public class UsesDefMultipleReceptacleConnectMethodAdapterFromCorbaTemplate
     stringBuffer.append(TEXT_3);
     stringBuffer.append(uses.getInterface().generateAbsoluteIdlName());
     stringBuffer.append(TEXT_4);
+    stringBuffer.append(TEXT_5);
     return stringBuffer.toString();
   }
 }

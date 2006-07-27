@@ -30,6 +30,7 @@ public class InterfaceDefAdapterLocalTemplate
   protected final String TEXT_13 = "        " + NL + "    ";
   protected final String TEXT_14 = NL;
   protected final String TEXT_15 = "    " + NL + "    " + NL + "}";
+  protected final String TEXT_16 = NL;
 
   public String generate(Object argument)
   {
@@ -77,6 +78,7 @@ for(Iterator i = iface.getAllOperations().iterator(); i.hasNext(); )
 }
 
     stringBuffer.append(TEXT_15);
+    stringBuffer.append(TEXT_16);
     return stringBuffer.toString();
   }
 }

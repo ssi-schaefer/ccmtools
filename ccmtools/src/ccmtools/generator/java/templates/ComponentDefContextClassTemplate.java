@@ -25,6 +25,7 @@ public class ComponentDefContextClassTemplate
   protected final String TEXT_8 = " component)" + NL + "    {" + NL + "        logger.fine(\"component = \" + component);" + NL + "        this.component = component;" + NL + "    }" + NL + "    " + NL + "    /** Receptacle access methods */";
   protected final String TEXT_9 = NL;
   protected final String TEXT_10 = "      " + NL + "    " + NL + "    " + NL + "    /** CCMContext methods */" + NL + "\t    " + NL + "    public HomeExecutorBase get_CCM_home()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        throw new RuntimeException(\"Not implemented!\");" + NL + "    }" + NL + "" + NL + "" + NL + "    /** SessionContext methods */" + NL + "    " + NL + "    public Object get_CCM_object()" + NL + "        throws IllegalState" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        throw new RuntimeException(\"Not implemented!\");" + NL + "    }" + NL + "}";
+  protected final String TEXT_11 = NL;
 
   public String generate(Object argument)
   {
@@ -56,6 +57,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
     return stringBuffer.toString();
   }
 }

@@ -40,6 +40,7 @@ public class ProvidesDefApplicationClassTemplate
   protected final String TEXT_23 = " " + NL;
   protected final String TEXT_24 = NL;
   protected final String TEXT_25 = NL + "}";
+  protected final String TEXT_26 = NL;
 
   public String generate(Object argument)
   {
@@ -150,6 +151,7 @@ for(Iterator i=iface.getOperations().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_25);
+    stringBuffer.append(TEXT_26);
     return stringBuffer.toString();
   }
 }

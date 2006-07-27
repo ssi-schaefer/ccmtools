@@ -30,6 +30,7 @@ public class HomeDefAdapterFromCorbaTemplate
   protected final String TEXT_14 = " localComponent = localHome.create();" + NL + "            Servant servant = " + NL + "                new ";
   protected final String TEXT_15 = "AdapterFromCorba(container,localComponent);" + NL + "            Components.CCMObject obj = " + NL + "                container.getCorbaComponentFromServant(servant); " + NL + "            return ";
   protected final String TEXT_16 = "Helper.narrow(obj);" + NL + "        }" + NL + "        catch(Exception e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "            throw new Components.CreateFailure();" + NL + "        }" + NL + "    }" + NL + "" + NL + "    /** " + NL + "     * This operation is defined in the Components::KeylessCCMHome interface" + NL + "     */" + NL + "    public Components.CCMObject create_component()" + NL + "        throws Components.CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return create();" + NL + "    }" + NL + "" + NL + "" + NL + "    /** Home explicit operations */" + NL + "    " + NL + "    /**" + NL + "     * This operation is defined in the Components::CCMHome interface" + NL + "     */ " + NL + "    public void remove_component(Components.CCMObject component)" + NL + "        throws Components.RemoveFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        if(component == null)" + NL + "        {" + NL + "            throw new Components.RemoveFailure(\"Can't remove component because its reference is null!\");" + NL + "        }" + NL + "        else" + NL + "        {" + NL + "            component.remove();" + NL + "        }" + NL + "    }" + NL + "}";
+  protected final String TEXT_17 = NL;
 
   public String generate(Object argument)
   {
@@ -63,6 +64,7 @@ public class HomeDefAdapterFromCorbaTemplate
     stringBuffer.append(TEXT_15);
     stringBuffer.append(home.getComponent().generateAbsoluteIdlName());
     stringBuffer.append(TEXT_16);
+    stringBuffer.append(TEXT_17);
     return stringBuffer.toString();
   }
 }

@@ -85,7 +85,7 @@ public class ComponentDef
 		}
 		for(AttributeDef attr: getAttributes())
 		{
-			includePaths.add(attr.getType().generateIncludePath());
+			includePaths.addAll(attr.generateIncludePaths());
 		}
 		for(InterfaceDef supportedIface : getSupports())
 		{
@@ -103,6 +103,16 @@ public class ComponentDef
 		return generateIncludeStatements(includePaths);
 	}
 	
+    public String generateAttributes()
+    {
+        StringBuilder code = new StringBuilder();
+        for(AttributeDef attribte : getAttributes())
+        {
+            code.append(attribte.generateAttribute(indent() + TAB));
+        }
+        return code.toString();
+    }
+    
 	public String generateSupportedInterfaces()
 	{
 		StringBuilder code = new StringBuilder();
@@ -135,16 +145,6 @@ public class ComponentDef
 		for(ReceptacleDef receptacle : getReceptacles())
 		{
 			code.append(indent()).append(TAB).append(receptacle.generateIdl3());
-		}
-		return code.toString();
-	}
-	
-	public String generateAttributes()
-	{
-		StringBuilder code = new StringBuilder();
-		for(AttributeDef attribte : getAttributes())
-		{
-			code.append(indent()).append(TAB).append(attribte.generateIdl3());
 		}
 		return code.toString();
 	}

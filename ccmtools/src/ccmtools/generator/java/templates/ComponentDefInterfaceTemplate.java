@@ -28,6 +28,7 @@ public class ComponentDefInterfaceTemplate
   protected final String TEXT_11 = "    " + NL + "    " + NL + "    /** Receptacle equivalent methods */";
   protected final String TEXT_12 = NL;
   protected final String TEXT_13 = "    " + NL + "}";
+  protected final String TEXT_14 = NL;
 
   public String generate(Object argument)
   {
@@ -78,6 +79,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_14);
     return stringBuffer.toString();
   }
 }

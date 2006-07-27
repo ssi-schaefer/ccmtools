@@ -17,6 +17,7 @@ public class ProvidesDefNavigationMethodAdapterLocalTemplate
   protected final String TEXT_1 = "        else if(name.equals(\"";
   protected final String TEXT_2 = "\"))" + NL + "        {" + NL + "            return provide_";
   protected final String TEXT_3 = "();" + NL + "        }";
+  protected final String TEXT_4 = NL;
 
   public String generate(Object argument)
   {
@@ -27,6 +28,7 @@ public class ProvidesDefNavigationMethodAdapterLocalTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_3);
+    stringBuffer.append(TEXT_4);
     return stringBuffer.toString();
   }
 }

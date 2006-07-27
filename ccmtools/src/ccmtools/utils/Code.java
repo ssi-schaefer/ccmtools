@@ -22,24 +22,18 @@
 
 package ccmtools.utils;
 
-import ccmtools.CcmtoolsException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import ccmtools.Metamodel.BaseIDL.MContained;
 import ccmtools.Metamodel.BaseIDL.MContainer;
 import ccmtools.Metamodel.BaseIDL.MModuleDef;
 import ccmtools.UI.Driver;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
 
 /*******************************************************************************
  * This class collects some helper methods to handle source code as strings and
@@ -50,86 +44,87 @@ import java.util.HashSet;
 public class Code
 {
 	
-	/**
-	 * Helper method to write out a list of SourceFile objects.
-	 * 
-	 * @param uiDriver User interface driver to write some "> write ..." messages 
-	 * @param outDir Output directory
-	 * @param sourceFileList List of SourceFile objects
-	 *
-	 * @throws CcmtoolsException
-	 */
-	public static void writeSourceCodeFiles(Driver uiDriver, String outDir, List sourceFileList)
-			throws CcmtoolsException
-	{
-		try
-		{
-			for (Iterator i = sourceFileList.iterator(); i.hasNext();)
-			{
-				SourceFile source = (SourceFile) i.next();
-				writeJavaSourceFile(uiDriver, outDir, source, "");
-			}
-		}
-		catch (IOException e)
-		{
-			throw new CcmtoolsException("writeCode(): " + e.getMessage());
-		}
-	}
+//	/**
+//	 * Helper method to write out a list of SourceFile objects.
+//	 * 
+//	 * @param uiDriver User interface driver to write some "> write ..." messages 
+//	 * @param outDir Output directory
+//	 * @param sourceFileList List of SourceFile objects
+//	 *
+//	 * @throws CcmtoolsException
+//	 */
+//	public static void writeSourceCodeFiles(Driver uiDriver, String outDir, List sourceFileList)
+//			throws CcmtoolsException
+//	{
+//		try
+//		{
+//			for (Iterator i = sourceFileList.iterator(); i.hasNext();)
+//			{
+//				SourceFile source = (SourceFile) i.next();
+//				writeJavaSourceFile(uiDriver, outDir, source, "");
+//			}
+//		}
+//		catch (IOException e)
+//		{
+//			throw new CcmtoolsException("writeCode(): " + e.getMessage());
+//		}
+//	}
 
 	
-	public static void writeJavaApplicationFiles(Driver uiDriver, String outDir, List sourceFileList)
-			throws CcmtoolsException
-	{
-		try
-		{
-			for (Iterator i = sourceFileList.iterator(); i.hasNext();)
-			{
-				SourceFile source = (SourceFile) i.next();
-				
-				File location = new File(outDir, source.getPackageName());			
-				File file = new File(location, source.getClassName());
-				if(file.exists())
-				{
-					uiDriver.println("WARNING " + file + " already exists!");
-					writeJavaSourceFile(uiDriver, outDir, source, ".new");
-				}
-				else
-				{
-					writeJavaSourceFile(uiDriver, outDir, source, "");
-				}
-			}
-		}
-		catch (IOException e)
-		{
-			throw new CcmtoolsException("writeCode(): " + e.getMessage());
-		}
-	}
+//	public static void writeJavaApplicationFiles(Driver uiDriver, String outDir, List sourceFileList)
+//			throws CcmtoolsException
+//	{
+//		try
+//		{
+//			for (Iterator i = sourceFileList.iterator(); i.hasNext();)
+//			{
+//				SourceFile source = (SourceFile) i.next();
+//				
+//				File location = new File(outDir, source.getPackageName());			
+//				File file = new File(location, source.getClassName());
+//				if(file.exists())
+//				{
+//					uiDriver.println("WARNING " + file + " already exists!");
+//					writeJavaSourceFile(uiDriver, outDir, source, ".new");
+//				}
+//				else
+//				{
+//					writeJavaSourceFile(uiDriver, outDir, source, "");
+//				}
+//			}
+//		}
+//		catch (IOException e)
+//		{
+//			throw new CcmtoolsException("writeCode(): " + e.getMessage());
+//		}
+//	}
 	
 	
-	public static void writeJavaSourceFile(Driver uiDriver, String outDir, SourceFile source, 
-											String suffix)
-		throws IOException
-	{
-		File location = new File(outDir, source.getPackageName());
-		File file = new File(location, source.getClassName() + suffix);
-		String sourceCode = source.getCode()+"\n";
-
-		if(compareWithFile(sourceCode, file))
-		{
-			uiDriver.println("skipping " + file);
-		}
-		else
-		{
-			uiDriver.println("writing " + file);
-			if (!location.isDirectory())
-			{
-				location.mkdirs();
-			}
-			FileWriter writer = new FileWriter(file);
-			writer.write(source.getCode(), 0, source.getCode().length());
-			writer.close();
-		}		
-	}
+//	public static void writeJavaSourceFile(Driver uiDriver, String outDir, SourceFile source, 
+//											String suffix)
+//		throws IOException
+//	{
+//		File location = new File(outDir, source.getPackageName());
+//		File file = new File(location, source.getClassName() + suffix);
+////		String sourceCode = source.getCode()+"\n";
+//        String sourceCode = source.getCode();
+//        
+//		if(compareWithFile(sourceCode, file))
+//		{
+//			uiDriver.println("skipping " + file);
+//		}
+//		else
+//		{
+//			uiDriver.println("writing " + file);
+//			if (!location.isDirectory())
+//			{
+//				location.mkdirs();
+//			}
+//			FileWriter writer = new FileWriter(file);
+//			writer.write(source.getCode(), 0, source.getCode().length());
+//			writer.close();
+//		}		
+//	}
 	
 	
     /**
@@ -189,39 +184,7 @@ public class Code
         return result;
     }
 
-    public static String removeEmptyLines(String code)
-    {
-        StringBuilder out = new StringBuilder();
-        int indexFrom = 0;
-        int indexNewline = 0;
-        boolean isEmptyLineSuccessor = false;
-        do 
-        {
-            indexNewline = code.indexOf('\n', indexFrom);
-            String codeLine = code.substring(indexFrom, indexNewline);
-            indexFrom = indexNewline + 1;
-            if(codeLine.length() > 0) 
-            {
-                isEmptyLineSuccessor = false;
-                out.append(codeLine).append('\n');
-            }
-            else 
-            {
-                if(isEmptyLineSuccessor) 
-                {
-                    // Ignore next empty line
-                }
-                else 
-                {
-                    out.append('\n');
-                    isEmptyLineSuccessor = true;
-                }
-            }                         
-        }while(indexFrom < code.length());
-        return out.toString();
-    }
-    
-    
+
     /**
      * This method removes empty lines (if more than one) and similar #include
      * statements from the generated code.
@@ -280,32 +243,36 @@ public class Code
         return pretty_code.toString();
     }
 
-    /**
-     * This method reads a file, specified by a File object, and compares the
-     * file's content with a given code string.
-     * 
-     * @param code
-     *            A string containing source code.
-     * @param file
-     *            A File object that points to a file which should be compare.
-     * @return true if the file's content is equal with the given code string
-     *         false in all other cases
-     */
-    public static boolean compareWithFile(String code, File file) throws IOException
-    {
-        if(file.isFile()) {
-            StringBuffer buffer = new StringBuffer();
-            FileInputStream stream = new FileInputStream(file);
-            InputStreamReader input = new InputStreamReader(stream);
-            BufferedReader reader = new BufferedReader(input);
-            String line = null;
-            while((line = reader.readLine()) != null) {
-                buffer.append(line + "\n");
-            }
-            return code.equals(buffer.toString());
-        }
-        return false;
-    }
+//    /**
+//     * This method reads a file, specified by a File object, and compares the
+//     * file's content with a given code string.
+//     * 
+//     * @param code
+//     *            A string containing source code.
+//     * @param file
+//     *            A File object that points to a file which should be compare.
+//     * @return true if the file's content is equal with the given code string
+//     *         false in all other cases
+//     */
+//    public static boolean compareWithFile(String code, File file) throws IOException
+//    {
+//        if(file.isFile()) 
+//        {
+//            StringBuffer buffer = new StringBuffer();
+//            FileInputStream stream = new FileInputStream(file);
+//            InputStreamReader input = new InputStreamReader(stream);
+//            BufferedReader reader = new BufferedReader(input);
+//            String line = null;
+//            while((line = reader.readLine()) != null) 
+//            {
+//                buffer.append(line + "\n");
+//            }
+//            System.out.println(">>>" + buffer + "<<<");
+//            System.out.println(">>>" + code + "<<<");
+//            return code.equals(buffer.toString());
+//        }
+//        return false;
+//    }
     
     
     // Methods used to handle CORBA repository IDs ----------------------------

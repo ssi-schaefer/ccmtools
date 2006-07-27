@@ -20,6 +20,7 @@ public class HomeDefImplicitInterfaceTemplate
   protected final String TEXT_4 = "Implicit " + NL + "    extends KeylessCCMHome" + NL + "{";
   protected final String TEXT_5 = NL + "    ";
   protected final String TEXT_6 = " create()" + NL + "        throws CreateFailure;" + NL + "}";
+  protected final String TEXT_7 = NL;
 
   public String generate(Object argument)
   {
@@ -35,6 +36,7 @@ public class HomeDefImplicitInterfaceTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(home.getComponent().getIdentifier());
     stringBuffer.append(TEXT_6);
+    stringBuffer.append(TEXT_7);
     return stringBuffer.toString();
   }
 }

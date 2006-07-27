@@ -17,6 +17,7 @@ public class UsesDefMultipleReceptacleDisconnectMethodAdapterLocalTemplate
   protected final String TEXT_1 = "        else if(name.equals(\"";
   protected final String TEXT_2 = "\"))" + NL + "        {" + NL + "            disconnect_";
   protected final String TEXT_3 = "(ck);" + NL + "        }";
+  protected final String TEXT_4 = NL;
 
   public String generate(Object argument)
   {
@@ -27,6 +28,7 @@ public class UsesDefMultipleReceptacleDisconnectMethodAdapterLocalTemplate
     stringBuffer.append(TEXT_2);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_3);
+    stringBuffer.append(TEXT_4);
     return stringBuffer.toString();
   }
 }

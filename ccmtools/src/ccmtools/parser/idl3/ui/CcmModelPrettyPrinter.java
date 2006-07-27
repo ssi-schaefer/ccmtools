@@ -35,17 +35,17 @@ import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.utils.Code;
 
 
-public class CcmPrettyPrinter
+public class CcmModelPrettyPrinter
     implements NodeHandler
 {		
 	private static final String TAB = "\t";
-	private static final String NL = "\n";
+//	private static final String NL = "\n";
 	
     /** Java logging */
     private Logger logger;
     
     
-	public CcmPrettyPrinter()
+	public CcmModelPrettyPrinter()
 	{
 		logger = Logger.getLogger("ccm.parser.idl3");
 		logger.fine("");		
@@ -362,6 +362,27 @@ public class CcmPrettyPrinter
 		print(in.getIdlType());
 	}
 
+    private void print(MAttributeDef in)
+    {
+        print(TAB);
+        if(in.isReadonly())
+        {
+            print("readonly ");
+        }
+        print(in.getIdentifier());
+        print(in.getIdlType());
+        for(Iterator i = in.getGetExceptions().iterator(); i.hasNext();)
+        {
+            MExceptionDef ex = (MExceptionDef)i.next();
+            println(TAB + "get raises: " + Code.getRepositoryId(ex));
+        }
+        for(Iterator i = in.getSetExceptions().iterator(); i.hasNext();)
+        {
+            MExceptionDef ex = (MExceptionDef)i.next();
+            println(TAB + "set raises: " + Code.getRepositoryId(ex));
+        }        
+    }
+    
 	private void print(MOperationDef in)
 	{
 		if(in.isOneway())
@@ -403,14 +424,7 @@ public class CcmPrettyPrinter
 			MContained contained = (MContained)i.next();					
 			if(contained instanceof MAttributeDef)
 			{
-				MAttributeDef attr = (MAttributeDef)contained;
-				print(TAB);
-				if(attr.isReadonly())
-				{
-					print("readonly ");
-				}
-				print(attr.getIdentifier());
-				print(attr.getIdlType());
+				print((MAttributeDef)contained);
 			}
 			else if(contained instanceof MOperationDef)
 			{				
@@ -479,14 +493,7 @@ public class CcmPrettyPrinter
 			MContained contained = (MContained)i.next();					
 			if(contained instanceof MAttributeDef)
 			{
-				MAttributeDef attr = (MAttributeDef)contained;
-				print(TAB);
-				if(attr.isReadonly())
-				{
-					print("readonly ");
-				}
-				print(attr.getIdentifier());
-				print(attr.getIdlType());
+				print((MAttributeDef)contained);
 			}
 			else
 			{
@@ -521,6 +528,18 @@ public class CcmPrettyPrinter
 			MFinderDef finder = (MFinderDef)i.next();
 			print(finder);
 		}
+        for(Iterator i = in.getContentss().iterator(); i.hasNext();)
+        {
+            MContained contained = (MContained)i.next();                    
+            if(contained instanceof MAttributeDef)
+            {
+                print((MAttributeDef)contained);
+            }
+            else
+            {
+                throw new RuntimeException("Unhandled containment in component " + in.getRepositoryId());
+            }
+        }
 	}
 	
 	private void print(MFactoryDef in)

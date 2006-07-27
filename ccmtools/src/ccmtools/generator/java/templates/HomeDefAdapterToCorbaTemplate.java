@@ -24,6 +24,7 @@ public class HomeDefAdapterToCorbaTemplate
   protected final String TEXT_8 = "Helper.narrow(ccmHome);" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** Home implicit operations */" + NL + "        " + NL + "    public ";
   protected final String TEXT_9 = " create()" + NL + "        throws CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {" + NL + "            return new ";
   protected final String TEXT_10 = "AdapterToCorba(remoteHome.create());        " + NL + "        }" + NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "            throw new CreateFailure();" + NL + "        }" + NL + "    } " + NL + "    " + NL + "    // This operation is defined in ccm.local.Components.KeylessCCMHomeOperations" + NL + "    public CCMObject create_component()" + NL + "        throws CCMException, CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return (CCMObject)create();" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /** Home explicit operations */" + NL + "        " + NL + "    // This operation is defined in ccm.local.Components.CCMHome" + NL + "    public void remove_component(CCMObject component)" + NL + "        throws CCMException, RemoveFailure" + NL + "    {" + NL + "        logger.fine(\"component = \" + component);" + NL + "        if(component == null)" + NL + "        {" + NL + "            throw new RemoveFailure(\"Can't remove component because its reference is null!\");" + NL + "        }" + NL + "        else" + NL + "        {" + NL + "            component.remove();" + NL + "        } " + NL + "    }" + NL + "}";
+  protected final String TEXT_11 = NL;
 
   public String generate(Object argument)
   {
@@ -48,6 +49,7 @@ public class HomeDefAdapterToCorbaTemplate
     stringBuffer.append(TEXT_9);
     stringBuffer.append(home.getComponent().generateAbsoluteJavaName());
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
     return stringBuffer.toString();
   }
 }

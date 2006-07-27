@@ -33,11 +33,12 @@ public class HomeDefTemplate
   protected final String TEXT_17 = "{";
   protected final String TEXT_18 = NL;
   protected final String TEXT_19 = NL;
-  protected final String TEXT_20 = "};" + NL;
-  protected final String TEXT_21 = NL;
+  protected final String TEXT_20 = NL;
+  protected final String TEXT_21 = "};" + NL;
   protected final String TEXT_22 = NL;
   protected final String TEXT_23 = NL;
   protected final String TEXT_24 = NL;
+  protected final String TEXT_25 = NL;
 
   public String generate(Object argument)
   {
@@ -72,16 +73,18 @@ public class HomeDefTemplate
     stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_17);
     stringBuffer.append(TEXT_18);
-    stringBuffer.append(model.generateFactoryMethods());
+    stringBuffer.append(model.generateAttributes());
     stringBuffer.append(TEXT_19);
-    stringBuffer.append(model.indent());
+    stringBuffer.append(model.generateFactoryMethods());
     stringBuffer.append(TEXT_20);
+    stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_21);
-    stringBuffer.append(model.generateModulesClose() );
     stringBuffer.append(TEXT_22);
+    stringBuffer.append(model.generateModulesClose() );
     stringBuffer.append(TEXT_23);
-    stringBuffer.append(model.generateIncludeGuardClose());
     stringBuffer.append(TEXT_24);
+    stringBuffer.append(model.generateIncludeGuardClose());
+    stringBuffer.append(TEXT_25);
     return stringBuffer.toString();
   }
 }

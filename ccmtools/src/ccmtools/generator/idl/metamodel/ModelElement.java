@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import ccmtools.Constants;
-import ccmtools.utils.Code;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
+import ccmtools.utils.Utility;
+
 
 public class ModelElement
 	implements Idl3Generator
@@ -111,16 +112,17 @@ public class ModelElement
 		String packageName;
 		if(this instanceof ComponentDef || this instanceof HomeDef)
 		{
-			packageName = COMPONENT_PREFIX + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
+			packageName = COMPONENT_PREFIX 
+                + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
 		}
 		else
 		{
-			packageName = INTERFACE_PREFIX + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
+			packageName = INTERFACE_PREFIX 
+                + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
 		}
-        String sourceCode = Code.removeEmptyLines(generateIdl3());
+        String sourceCode = Utility.removeEmptyLines(generateIdl3());
 		SourceFile sourceFile = new SourceFile(packageName, getIdentifier() + ".idl", sourceCode);
-		sourceFileList.add(sourceFile);
-		
+		sourceFileList.add(sourceFile);		
 		return sourceFileList;
 	}
 	

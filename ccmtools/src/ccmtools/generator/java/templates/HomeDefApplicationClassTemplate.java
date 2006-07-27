@@ -24,6 +24,7 @@ public class HomeDefApplicationClassTemplate
   protected final String TEXT_8 = NL + "{" + NL + "    public ";
   protected final String TEXT_9 = "Impl()" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "    " + NL + "    public EnterpriseComponent create()" + NL + "        throws CCMException" + NL + "    {" + NL + "        return (EnterpriseComponent) new ";
   protected final String TEXT_10 = "Impl();" + NL + "    }" + NL + "}";
+  protected final String TEXT_11 = NL;
 
   public String generate(Object argument)
   {
@@ -47,6 +48,7 @@ public class HomeDefApplicationClassTemplate
     stringBuffer.append(TEXT_9);
     stringBuffer.append(home.getComponent().getIdentifier());
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
     return stringBuffer.toString();
   }
 }

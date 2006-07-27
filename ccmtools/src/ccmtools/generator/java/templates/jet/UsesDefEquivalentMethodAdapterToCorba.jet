@@ -70,4 +70,3 @@
         logger.fine("");
         return <%=uses.getIdentifier()%>;
     }
-    

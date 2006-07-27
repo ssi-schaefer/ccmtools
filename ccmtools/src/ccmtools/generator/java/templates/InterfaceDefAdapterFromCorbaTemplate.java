@@ -31,6 +31,7 @@ public class InterfaceDefAdapterFromCorbaTemplate
   protected final String TEXT_14 = "    ";
   protected final String TEXT_15 = NL;
   protected final String TEXT_16 = NL + "}";
+  protected final String TEXT_17 = NL;
 
   public String generate(Object argument)
   {
@@ -78,6 +79,7 @@ for(Iterator i=iface.getAllOperations().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_16);
+    stringBuffer.append(TEXT_17);
     return stringBuffer.toString();
   }
 }

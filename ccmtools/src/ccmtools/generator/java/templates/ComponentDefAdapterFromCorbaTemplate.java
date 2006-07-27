@@ -57,6 +57,7 @@ public class ComponentDefAdapterFromCorbaTemplate
   protected final String TEXT_40 = "        ";
   protected final String TEXT_41 = NL;
   protected final String TEXT_42 = NL + "        else" + NL + "        {" + NL + "            throw new Components.InvalidName(name);" + NL + "        }\t" + NL + "    }" + NL + "}";
+  protected final String TEXT_43 = NL;
 
   public String generate(Object argument)
   {
@@ -228,6 +229,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_42);
+    stringBuffer.append(TEXT_43);
     return stringBuffer.toString();
   }
 }

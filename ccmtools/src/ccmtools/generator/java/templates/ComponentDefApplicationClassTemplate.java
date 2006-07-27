@@ -38,6 +38,7 @@ public class ComponentDefApplicationClassTemplate
   protected final String TEXT_21 = NL;
   protected final String TEXT_22 = "    " + NL + "" + NL + "    /** Component callback methods */" + NL + "    " + NL + "    public void set_session_context(SessionContext ctx) " + NL + "        throws CCMException" + NL + "    {" + NL + "        this.ctx = (";
   protected final String TEXT_23 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "}";
+  protected final String TEXT_24 = NL;
 
   public String generate(Object argument)
   {
@@ -141,6 +142,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     stringBuffer.append(TEXT_22);
     stringBuffer.append(component.generateCcmIdentifier());
     stringBuffer.append(TEXT_23);
+    stringBuffer.append(TEXT_24);
     return stringBuffer.toString();
   }
 }

@@ -1341,7 +1341,8 @@ union_type returns [MIDLType union = null]
         "switch" LPAREN type = switch_type_spec RPAREN
         { ((MUnionDef) union).setDiscriminatorType(type); }
         LCURLY members = switch_body[type] RCURLY
-        { helper.checkSetMembers((MUnionDef) union, members); } ;
+        { helper.checkSetMembers((MUnionDef) union, members); } 
+    ;
 
 
 // 73. <switch_type_spec> ::= <integer_type,54>

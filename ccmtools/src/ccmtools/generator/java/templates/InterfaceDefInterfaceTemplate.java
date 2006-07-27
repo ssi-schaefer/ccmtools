@@ -29,6 +29,7 @@ public class InterfaceDefInterfaceTemplate
   protected final String TEXT_12 = NL;
   protected final String TEXT_13 = NL;
   protected final String TEXT_14 = NL + "}";
+  protected final String TEXT_15 = NL;
 
   public String generate(Object argument)
   {
@@ -80,6 +81,7 @@ for(Iterator i=iface.getOperations().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_15);
     return stringBuffer.toString();
   }
 }

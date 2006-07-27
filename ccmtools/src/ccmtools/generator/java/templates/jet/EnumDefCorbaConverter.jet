@@ -46,4 +46,3 @@ public class <%=enumeration.getIdentifier()%>CorbaConverter
         return out;
     }
 };
-

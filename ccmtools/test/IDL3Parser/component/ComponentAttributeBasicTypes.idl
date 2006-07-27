@@ -1,7 +1,7 @@
-#ifndef __COMPONENT_BASIC_TYPE_ATTRIBUTE__IDL__
-#define __COMPONENT_BASIC_TYPE_ATTRIBUTE__IDL__
+#ifndef __COMPONENT_ATTRIBUTE_BASIC_TYPE__IDL__
+#define __COMPONENT_ATTRIBUTE_BASIC_TYPE__IDL__
 
-component ComponentBasicTypeAttribute
+component ComponentAttributeBasicTypes
 {
 	attribute short		shortValue;
 	attribute long 		longValue;
@@ -30,4 +30,4 @@ component ComponentBasicTypeAttribute
 
 };
 
-#endif // __COMPONENT_BASIC_TYPE_ATTRIBUTE__IDL__
+#endif // __COMPONENT_ATTRIBUTE_BASIC_TYPE__IDL__

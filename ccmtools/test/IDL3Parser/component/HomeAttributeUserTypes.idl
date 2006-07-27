@@ -1,0 +1,25 @@
+#ifndef __HOME_ATTRIBUTE_USER_TYPES__IDL__
+#define __HOME_ATTRIBUTE_USER_TYPES__IDL__
+
+#include <component/ComponentSimple.idl> 
+
+#include <typedef/BasicTypeTypedef.idl>
+#include <enum/Color.idl>
+#include <struct/Address.idl>
+#include <array/BasicTypeArray.idl>
+#include <sequence/BasicTypeSequence.idl>
+#include <interface/InterfaceBasicTypeAttributes.idl>
+
+
+home HomeAttributeUserTypes
+    manages ComponentSimple
+{
+        attribute LongType typedefValue;
+        attribute Color enumValue;
+        attribute Address structValue;
+        attribute LongArray arrayValue;
+        attribute LongSeq sequenceValue;
+        attribute InterfaceBasicTypeAttributes interfaceValue;
+};
+
+#endif // __HOME_ATTRIBUTE_USER_TYPES__IDL__

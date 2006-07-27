@@ -64,7 +64,7 @@ public class Main
 					MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
 
 					GraphTraverser traverser = new CcmGraphTraverser();
-					CcmPrettyPrinter nodeHandler = new CcmPrettyPrinter();
+					CcmModelPrettyPrinter nodeHandler = new CcmModelPrettyPrinter();
 					traverser.addHandler(nodeHandler);
 					traverser.traverseGraph(ccmModel);
 				}

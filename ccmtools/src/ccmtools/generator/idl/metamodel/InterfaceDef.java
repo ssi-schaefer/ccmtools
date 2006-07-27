@@ -103,7 +103,7 @@ public class InterfaceDef
 		}		
 		for(AttributeDef attr: getAttributes())
 		{
-			includePaths.add(attr.getType().generateIncludePath());
+			includePaths.addAll(attr.generateIncludePaths());
 		}
 		for(OperationDef op: getOperations())
 		{
@@ -174,7 +174,7 @@ public class InterfaceDef
 		StringBuilder code = new StringBuilder();
 		for(AttributeDef attr : getAttributes())
 		{
-			code.append(indent()).append(TAB).append(attr.generateIdl3());
+			code.append(attr.generateAttribute(indent() + TAB));
 		}
 		return code.toString();
 	}

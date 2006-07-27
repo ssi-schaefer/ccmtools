@@ -80,4 +80,3 @@ InterfaceDef iface = uses.getInterface();
         }       
         return connections;    
     }
-     

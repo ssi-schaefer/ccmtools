@@ -34,7 +34,7 @@ public class UsesDefEquivalentMethodAdapterFromCorbaTemplate
   protected final String TEXT_18 = " get_connection_";
   protected final String TEXT_19 = "()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return ";
   protected final String TEXT_20 = "Receptacle;" + NL + "    }";
-  protected final String TEXT_21 = NL + "     ";
+  protected final String TEXT_21 = NL;
 
   public String generate(Object argument)
   {

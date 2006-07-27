@@ -19,7 +19,7 @@ public class OperationDefDeclarationTemplate
   protected final String TEXT_3 = " (";
   protected final String TEXT_4 = ")     ";
   protected final String TEXT_5 = NL + "        ";
-  protected final String TEXT_6 = ";    " + NL;
+  protected final String TEXT_6 = ";    ";
   protected final String TEXT_7 = NL;
 
   public String generate(Object argument)

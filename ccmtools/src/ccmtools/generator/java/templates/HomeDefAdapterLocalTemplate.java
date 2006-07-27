@@ -33,6 +33,7 @@ public class HomeDefAdapterLocalTemplate
   protected final String TEXT_17 = " component;" + NL + "            if(assemblyFactory != null)" + NL + "            {" + NL + "                Assembly assembly = assemblyFactory.create();" + NL + "                component = new ";
   protected final String TEXT_18 = "Adapter(c, assembly);" + NL + "                assembly.build(component);" + NL + "            }" + NL + "            else" + NL + "            {" + NL + "                component = new ";
   protected final String TEXT_19 = "Adapter(c);" + NL + "            }" + NL + "            return component;" + NL + "        }" + NL + "        catch(CCMException e)" + NL + "        {" + NL + "            throw new CreateFailure();" + NL + "        }    " + NL + "    }" + NL + "    " + NL + "    public void remove_component(CCMObject component) " + NL + "        throws CCMException, RemoveFailure" + NL + "    {" + NL + "        logger.fine(\"\");\t" + NL + "        component.remove();" + NL + "    }" + NL + "" + NL + "    public CCMObject create_component() " + NL + "        throws CCMException, CreateFailure" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return create();" + NL + "    }" + NL + "}";
+  protected final String TEXT_20 = NL;
 
   public String generate(Object argument)
   {
@@ -73,6 +74,7 @@ public class HomeDefAdapterLocalTemplate
     stringBuffer.append(TEXT_18);
     stringBuffer.append(home.getComponent().getIdentifier());
     stringBuffer.append(TEXT_19);
+    stringBuffer.append(TEXT_20);
     return stringBuffer.toString();
   }
 }

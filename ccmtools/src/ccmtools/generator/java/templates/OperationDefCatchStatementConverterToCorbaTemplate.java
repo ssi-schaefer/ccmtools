@@ -18,6 +18,7 @@ public class OperationDefCatchStatementConverterToCorbaTemplate
   protected final String TEXT_1 = "\tcatch(";
   protected final String TEXT_2 = " e)" + NL + "\t{\t    " + NL + "\t    throw ";
   protected final String TEXT_3 = "(e);" + NL + "\t}" + NL;
+  protected final String TEXT_4 = NL;
 
   public String generate(Object argument)
   {
@@ -36,6 +37,7 @@ for(Iterator i = op.getException().iterator(); i.hasNext(); )
     
 }
 
+    stringBuffer.append(TEXT_4);
     return stringBuffer.toString();
   }
 }

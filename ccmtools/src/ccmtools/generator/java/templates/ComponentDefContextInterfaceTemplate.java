@@ -21,6 +21,7 @@ public class ComponentDefContextInterfaceTemplate
   protected final String TEXT_4 = "_Context " + NL + "    extends Components.ccm.local.SessionContext" + NL + "{" + NL + "    /** Receptacle access methods */";
   protected final String TEXT_5 = NL;
   protected final String TEXT_6 = "     " + NL + "}";
+  protected final String TEXT_7 = NL;
 
   public String generate(Object argument)
   {
@@ -44,6 +45,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_6);
+    stringBuffer.append(TEXT_7);
     return stringBuffer.toString();
   }
 }

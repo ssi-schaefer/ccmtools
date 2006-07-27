@@ -10,26 +10,26 @@
 /*
  * Here we define aliases for basic IDL types
  */
-typedef short 			ShortType;
-typedef long 			LongType;
-typedef long long 		LLongType;
+typedef short 		ShortType;
+typedef long 		LongType;
+typedef long long 	LLongType;
 typedef unsigned short 	UShortType;
 typedef unsigned long 	ULongType;
 //typedef unsigned long long ULLongType; !!!	
 	
-typedef float 			FloatType;
-typedef double 			DoubleType;
+typedef float 		FloatType;
+typedef double 		DoubleType;
 typedef long double     LDoubleType;
 
-typedef char 			CharType;
-typedef wchar     		WCharType;
-typedef string 			StringType;
-typedef wstring			WStringType;	
+typedef char 		CharType;
+typedef wchar     	WCharType;
+typedef string 		StringType;
+typedef wstring		WStringType;	
 
-typedef boolean 			BooleanType;
-typedef octet 			OctetType;	
-typedef any 				AnyType;
-typedef Object			ObjectType;
+typedef boolean 	BooleanType;
+typedef octet 		OctetType;	
+typedef any 		AnyType;
+typedef Object		ObjectType;
 
 typedef fixed<9,2>      FixedType;
 
@@ -37,27 +37,27 @@ typedef fixed<9,2>      FixedType;
 /*
  * Here we define aliases for existing typedefs
  */
-typedef ShortType		MetaShortType;
-typedef LongType 		MetaLongType;
-typedef LLongType		MetaLLongType;
-typedef UShortType		MetaUShortType;
-typedef ULongType		MetaULongType;
+typedef ShortType	MetaShortType;
+typedef LongType 	MetaLongType;
+typedef LLongType	MetaLLongType;
+typedef UShortType	MetaUShortType;
+typedef ULongType	MetaULongType;
 
-typedef FloatType		MetaFloatType;
-typedef DoubleType		MetaDoubleType;
-typedef LDoubleType		MetaLDoubleType;
+typedef FloatType	MetaFloatType;
+typedef DoubleType	MetaDoubleType;
+typedef LDoubleType	MetaLDoubleType;
 
-typedef CharType			MetaCharType;
-typedef WCharType		MetaWCharType;
-typedef StringType		MetaStringType;
-typedef WStringType		MetaWStringType;
+typedef CharType	MetaCharType;
+typedef WCharType	MetaWCharType;
+typedef StringType	MetaStringType;
+typedef WStringType	MetaWStringType;
 
-typedef BooleanType		MetaBooleanType;
-typedef OctetType		MetaOctetType;
-typedef AnyType			MetaAnyType;
-typedef ObjectType		MetaObjectType;
+typedef BooleanType	MetaBooleanType;
+typedef OctetType	MetaOctetType;
+typedef AnyType		MetaAnyType;
+typedef ObjectType	MetaObjectType;
 
-typedef FixedType		MetaFixedType;
+typedef FixedType	MetaFixedType;
 
 
 /*

@@ -20,6 +20,7 @@
 <%=model.generateSupportedInterfaces()%>
 <%=model.indent()%>    manages <%=model.getComponent().generateAbsoluteIdlName()%>
 <%=model.indent()%>{
+<%=model.generateAttributes()%>
 <%=model.generateFactoryMethods()%>
 <%=model.indent()%>};
 

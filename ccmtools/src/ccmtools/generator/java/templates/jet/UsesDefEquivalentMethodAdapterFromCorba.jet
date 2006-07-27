@@ -50,4 +50,3 @@
         logger.fine("");
         return <%=uses.getIdentifier()%>Receptacle;
     }
-     

@@ -32,6 +32,7 @@ public class UsesDefMultipleEquivalentMethodAdapterToCorbaTemplate
   protected final String TEXT_16 = "()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        // return a copy of the receptacle map" + NL + "        return new java.util.HashMap<Cookie, ";
   protected final String TEXT_17 = ">(";
   protected final String TEXT_18 = "ReceptacleMap);" + NL + "    }";
+  protected final String TEXT_19 = NL;
 
   public String generate(Object argument)
   {
@@ -73,6 +74,7 @@ InterfaceDef iface = uses.getInterface();
     stringBuffer.append(TEXT_17);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_18);
+    stringBuffer.append(TEXT_19);
     return stringBuffer.toString();
   }
 }

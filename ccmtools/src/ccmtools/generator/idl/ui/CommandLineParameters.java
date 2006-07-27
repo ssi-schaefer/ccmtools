@@ -110,7 +110,7 @@ public class CommandLineParameters
     	 	{
             if(!isExistingFile(idlFile, getIncludePaths())) 
             {
-                 throw new CcmtoolsException("Invalid IDL input file " + idlFile);
+                 throw new CcmtoolsException("Invalid IDL input file: " + idlFile);
             }
     	 	}
     }

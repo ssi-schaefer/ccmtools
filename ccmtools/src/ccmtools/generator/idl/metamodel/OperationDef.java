@@ -129,11 +129,12 @@ public class OperationDef
 	
 	public String generateExceptionList()
 	{
-		List<String> exceptionList = new ArrayList<String>();
-		for(ExceptionDef ex : getExceptions())
-		{
-			exceptionList.add(ex.generateIdlMapping());	
-		}
-		return Text.join(", ", exceptionList);
+        return Helper.generateExceptionList(getExceptions());
+//		List<String> exceptionList = new ArrayList<String>();
+//		for(ExceptionDef ex : getExceptions())
+//		{
+//			exceptionList.add(ex.generateIdlMapping());	
+//		}
+//		return Text.join(", ", exceptionList);
 	}
 }

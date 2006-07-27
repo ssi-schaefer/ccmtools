@@ -20,8 +20,8 @@ import ccmtools.generator.java.metamodel.ProvidesDef;
 import ccmtools.generator.java.metamodel.SequenceDef;
 import ccmtools.generator.java.metamodel.StructDef;
 import ccmtools.generator.java.ui.CommandLineParameters;
-import ccmtools.utils.Code;
 import ccmtools.utils.SourceFile;
+import ccmtools.utils.Utility;
 
 public class ComponentGenerator
 {
@@ -119,7 +119,7 @@ public class ComponentGenerator
 			}
 
 			// Save all source file objects
-			Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+			Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 		}
 		catch (Exception e)
 		{
@@ -151,7 +151,7 @@ public class ComponentGenerator
 				}
 
 				// Save all source file objects
-				Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+				Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 		}
 		catch (Exception e)
 		{
@@ -183,7 +183,7 @@ public class ComponentGenerator
             }
 
             // Save all source file objects
-            Code.writeJavaApplicationFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+            Utility.writeApplicationFiles(uiDriver, parameters.getOutDir(), sourceFileList);
         }
 		catch (Exception e)
 		{
@@ -213,7 +213,7 @@ public class ComponentGenerator
 			}
 
 			// Save all source file objects
-			Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+			Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 			logger.fine("leave");
 		}
 		catch (Exception e)
@@ -242,7 +242,7 @@ public class ComponentGenerator
 			}
 
 			// Save all source file objects
-			Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+			Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 			logger.fine("leave");
 		}
 		catch (Exception e)

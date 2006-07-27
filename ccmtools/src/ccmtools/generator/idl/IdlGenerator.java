@@ -10,8 +10,8 @@ import ccmtools.UI.Driver;
 import ccmtools.generator.idl.metamodel.Idl3Generator;
 import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.generator.idl.ui.CommandLineParameters;
-import ccmtools.utils.Code;
 import ccmtools.utils.SourceFile;
+import ccmtools.utils.Utility;
 
 public class IdlGenerator
 {
@@ -90,7 +90,7 @@ public class IdlGenerator
             }
             
 			// Save all source file objects
-			Code.writeSourceCodeFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+			Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 		}
 		catch (Exception e)
 		{

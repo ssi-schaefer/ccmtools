@@ -1,0 +1,20 @@
+#ifndef __COMPONENT_ATTRIBUTE_EXCEPTIONS__IDL__
+#define __COMPONENT_ATTRIBUTE_EXCEPTIONS__IDL__
+
+#include<exception/ExceptionEmpty.idl>
+#include<exception/ExceptionBasicType.idl>
+#include<exception/ExceptionUserType.idl>
+#include<struct/Person.idl>
+
+component ComponentAttributeExceptions
+{
+    attribute long longValue
+	getraises(ExceptionEmpty)
+        setraises(ExceptionBasicType, ExceptionUserType);
+
+    attribute Person structValue
+        getraises(ExceptionEmpty)
+        setraises(ExceptionBasicType);
+};
+
+#endif // __COMPONENT_ATTRIBUTE_EXCEPTIONS__IDL__

@@ -20,6 +20,7 @@ public class HomeDefApplicationInterfaceTemplate
   protected final String TEXT_4 = " " + NL + "    extends ";
   protected final String TEXT_5 = "Explicit, ";
   protected final String TEXT_6 = "Implicit" + NL + "{" + NL + "}";
+  protected final String TEXT_7 = NL;
 
   public String generate(Object argument)
   {
@@ -36,6 +37,7 @@ public class HomeDefApplicationInterfaceTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(home.generateCcmIdentifier());
     stringBuffer.append(TEXT_6);
+    stringBuffer.append(TEXT_7);
     return stringBuffer.toString();
   }
 }

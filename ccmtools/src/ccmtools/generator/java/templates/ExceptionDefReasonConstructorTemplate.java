@@ -16,6 +16,7 @@ public class ExceptionDefReasonConstructorTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "    public ";
   protected final String TEXT_2 = "(String reason)    " + NL + "    {" + NL + "        super(REPOSITORY_ID + \" \" + reason);" + NL + "    }";
+  protected final String TEXT_3 = NL;
 
   public String generate(Object argument)
   {
@@ -24,6 +25,7 @@ public class ExceptionDefReasonConstructorTemplate
     stringBuffer.append(TEXT_1);
     stringBuffer.append(exception.getIdentifier());
     stringBuffer.append(TEXT_2);
+    stringBuffer.append(TEXT_3);
     return stringBuffer.toString();
   }
 }

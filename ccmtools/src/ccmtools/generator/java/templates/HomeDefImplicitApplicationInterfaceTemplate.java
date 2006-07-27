@@ -18,6 +18,7 @@ public class HomeDefImplicitApplicationInterfaceTemplate
   protected final String TEXT_2 = NL + " * <http://ccmtools.sourceforge.net>" + NL + " * DO NOT EDIT!" + NL + " */" + NL + "" + NL + "package ";
   protected final String TEXT_3 = ";" + NL + "                 " + NL + "public interface ";
   protected final String TEXT_4 = "Implicit " + NL + "{" + NL + "    Components.ccm.local.EnterpriseComponent create()" + NL + "        throws Components.ccm.local.CCMException;" + NL + "}";
+  protected final String TEXT_5 = NL;
 
   public String generate(Object argument)
   {
@@ -30,6 +31,7 @@ public class HomeDefImplicitApplicationInterfaceTemplate
     stringBuffer.append(TEXT_3);
     stringBuffer.append(home.generateCcmIdentifier());
     stringBuffer.append(TEXT_4);
+    stringBuffer.append(TEXT_5);
     return stringBuffer.toString();
   }
 }

@@ -40,7 +40,7 @@ public class StructDefCorbaConverterTemplate
   protected final String TEXT_23 = "(";
   protected final String TEXT_24 = "(in.";
   protected final String TEXT_25 = "));";
-  protected final String TEXT_26 = NL + "        return out;" + NL + "    }" + NL + "};" + NL;
+  protected final String TEXT_26 = NL + "        return out;" + NL + "    }" + NL + "};";
   protected final String TEXT_27 = NL;
 
   public String generate(Object argument)

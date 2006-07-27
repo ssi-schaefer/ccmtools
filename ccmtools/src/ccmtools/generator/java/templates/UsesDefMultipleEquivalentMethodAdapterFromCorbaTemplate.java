@@ -47,7 +47,7 @@ public class UsesDefMultipleEquivalentMethodAdapterFromCorbaTemplate
   protected final String TEXT_31 = NL + "                ";
   protected final String TEXT_32 = "Package.";
   protected final String TEXT_33 = "Connection(obj, ck);" + NL + "        }       " + NL + "        return connections;    " + NL + "    }";
-  protected final String TEXT_34 = NL + "     ";
+  protected final String TEXT_34 = NL;
 
   public String generate(Object argument)
   {

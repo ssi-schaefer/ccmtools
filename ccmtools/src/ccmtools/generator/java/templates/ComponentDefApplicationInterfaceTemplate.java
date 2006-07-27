@@ -26,6 +26,7 @@ public class ComponentDefApplicationInterfaceTemplate
   protected final String TEXT_9 = "    " + NL + "" + NL + "" + NL + "    /** Facet implementation factory methods */" + NL;
   protected final String TEXT_10 = NL;
   protected final String TEXT_11 = "    " + NL + "}";
+  protected final String TEXT_12 = NL;
 
   public String generate(Object argument)
   {
@@ -65,6 +66,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 }
 
     stringBuffer.append(TEXT_11);
+    stringBuffer.append(TEXT_12);
     return stringBuffer.toString();
   }
 }

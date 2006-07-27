@@ -31,7 +31,7 @@ public class SequenceDefCorbaConverterTemplate
   protected final String TEXT_15 = NL + "        ";
   protected final String TEXT_16 = " out = new ";
   protected final String TEXT_17 = "();" + NL + "        for(int i = 0; i< in.length;i++)" + NL + "        {" + NL + "            out.add(";
-  protected final String TEXT_18 = "(in[i]));" + NL + "        }" + NL + "        return out;" + NL + "    }" + NL + "};" + NL;
+  protected final String TEXT_18 = "(in[i]));" + NL + "        }" + NL + "        return out;" + NL + "    }" + NL + "};";
   protected final String TEXT_19 = NL;
 
   public String generate(Object argument)

@@ -20,6 +20,7 @@ public class EnumDefImplementationTemplate
   protected final String TEXT_4 = " " + NL + "{";
   protected final String TEXT_5 = NL + "    ";
   protected final String TEXT_6 = NL + "}";
+  protected final String TEXT_7 = NL;
 
   public String generate(Object argument)
   {
@@ -35,6 +36,7 @@ public class EnumDefImplementationTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append(enumeration.generateMemberList());
     stringBuffer.append(TEXT_6);
+    stringBuffer.append(TEXT_7);
     return stringBuffer.toString();
   }
 }

@@ -30,7 +30,7 @@ public class UsesDefEquivalentMethodAdapterToCorbaTemplate
   protected final String TEXT_14 = " get_connection_";
   protected final String TEXT_15 = "()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return ";
   protected final String TEXT_16 = ";" + NL + "    }";
-  protected final String TEXT_17 = NL + "    ";
+  protected final String TEXT_17 = NL;
 
   public String generate(Object argument)
   {

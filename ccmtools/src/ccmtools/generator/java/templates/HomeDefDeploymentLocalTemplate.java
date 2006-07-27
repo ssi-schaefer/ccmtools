@@ -24,6 +24,7 @@ public class HomeDefDeploymentLocalTemplate
   protected final String TEXT_8 = "Adapter((";
   protected final String TEXT_9 = ")";
   protected final String TEXT_10 = "Factory.create(), factory);    " + NL + "    }" + NL + "" + NL + "" + NL + "    public static void deploy(String name)" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"name = \" + name);" + NL + "        HomeFinder.instance().register_home(create(), name);    " + NL + "    }" + NL + "    " + NL + "    public static void deploy(String name, AssemblyFactory factory)" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"name = \" + name + \", assemblyFactory = \" + factory);" + NL + "        HomeFinder.instance().register_home(create(factory), name);    " + NL + "    }" + NL + "    " + NL + "    " + NL + "    public static void undeploy(String name)" + NL + "    {" + NL + "        logger.fine(\"name = \" + name);" + NL + "        HomeFinder.instance().unregister_home(name);    " + NL + "    }" + NL + "}";
+  protected final String TEXT_11 = NL;
 
   public String generate(Object argument)
   {
@@ -48,6 +49,7 @@ public class HomeDefDeploymentLocalTemplate
     stringBuffer.append(TEXT_9);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_11);
     return stringBuffer.toString();
   }
 }

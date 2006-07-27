@@ -19,6 +19,7 @@ public class InterfaceDefApplicationInterfaceTemplate
   protected final String TEXT_3 = ";" + NL + "                 " + NL + "                  " + NL + "public interface ";
   protected final String TEXT_4 = " " + NL + "    extends ";
   protected final String TEXT_5 = NL + "{" + NL + "}";
+  protected final String TEXT_6 = NL;
 
   public String generate(Object argument)
   {
@@ -33,6 +34,7 @@ public class InterfaceDefApplicationInterfaceTemplate
     stringBuffer.append(TEXT_4);
     stringBuffer.append(iface.getIdentifier());
     stringBuffer.append(TEXT_5);
+    stringBuffer.append(TEXT_6);
     return stringBuffer.toString();
   }
 }

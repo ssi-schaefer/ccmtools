@@ -31,7 +31,7 @@ public class EnumDefCorbaConverterTemplate
   protected final String TEXT_15 = NL + "        ";
   protected final String TEXT_16 = " out; " + NL + "        switch(in.value())" + NL + "        {";
   protected final String TEXT_17 = NL;
-  protected final String TEXT_18 = NL + "            default:" + NL + "                out = null;" + NL + "        }" + NL + "        return out;" + NL + "    }" + NL + "};" + NL;
+  protected final String TEXT_18 = NL + "            default:" + NL + "                out = null;" + NL + "        }" + NL + "        return out;" + NL + "    }" + NL + "};";
   protected final String TEXT_19 = NL;
 
   public String generate(Object argument)

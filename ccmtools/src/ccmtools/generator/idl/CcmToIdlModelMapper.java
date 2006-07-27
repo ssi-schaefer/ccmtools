@@ -566,6 +566,16 @@ public class CcmToIdlModelMapper
 		AttributeDef out = new AttributeDef(in.getIdentifier());
 		out.setType(transform(in.getIdlType()));
 		out.setReadonly(in.isReadonly());
+        for(Iterator i=in.getGetExceptions().iterator(); i.hasNext();)
+        {
+            MExceptionDef ex = (MExceptionDef)i.next();
+            out.getGetterExceptions().add(transform(ex));
+        }
+        for(Iterator i=in.getSetExceptions().iterator(); i.hasNext();)
+        {
+            MExceptionDef ex = (MExceptionDef)i.next();
+            out.getSetterExceptions().add(transform(ex));
+        }
 		return out;
 	}
 	
@@ -640,14 +650,6 @@ public class CcmToIdlModelMapper
 					out.setBase(transform(base));
 				}
 			}
-			for(Iterator i = in.getContentss().iterator(); i.hasNext();)
-			{
-				MContained child = (MContained) i.next();
-				if (child instanceof MAttributeDef)
-				{
-					out.getAttributes().add(transform((MAttributeDef)child));
-				}
-			}
 			for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
 			{
 				MInterfaceDef supportedInterface = ((MSupportsDef)i.next()).getSupports();
@@ -668,7 +670,14 @@ public class CcmToIdlModelMapper
 				receptacle.setMultiple(uses.isMultiple());
 				out.getReceptacles().add(receptacle);
 			}
-			// ...
+			for(Iterator i = in.getContentss().iterator(); i.hasNext();)
+			{
+			    MContained child = (MContained) i.next();
+			    if (child instanceof MAttributeDef)
+			    {
+			        out.getAttributes().add(transform((MAttributeDef)child));
+			    }
+			}
 			artifactCache.put(repoId, out);
 		}
 		return out;
@@ -750,6 +759,15 @@ public class CcmToIdlModelMapper
                 throw new RuntimeException("Home's finder methods like '" + finder.getIdentifier() 
                         + "()' are not supported by CCM Tools!");                
             }
+            for(Iterator i = in.getContentss().iterator(); i.hasNext();)
+            {
+                MContained child = (MContained) i.next();
+                if (child instanceof MAttributeDef)
+                {
+                    out.getAttributes().add(transform((MAttributeDef)child));
+                }
+            }
+            
 			artifactCache.put(repoId, out);
 		}
 		return out;

@@ -21,6 +21,7 @@ public class HomeDefFactoryApplicationTemplate
   protected final String TEXT_5 = NL + NL + "public class ";
   protected final String TEXT_6 = "Factory " + NL + "{" + NL + "    public static HomeExecutorBase create()" + NL + "        throws CCMException" + NL + "    {" + NL + "        return new ";
   protected final String TEXT_7 = "Impl();" + NL + "    }" + NL + "}";
+  protected final String TEXT_8 = NL;
 
   public String generate(Object argument)
   {
@@ -38,6 +39,7 @@ public class HomeDefFactoryApplicationTemplate
     stringBuffer.append(TEXT_6);
     stringBuffer.append(home.getIdentifier());
     stringBuffer.append(TEXT_7);
+    stringBuffer.append(TEXT_8);
     return stringBuffer.toString();
   }
 }

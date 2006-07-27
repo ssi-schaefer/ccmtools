@@ -1,5 +1,5 @@
-#ifndef __COMPONENT_USER_TYPE_ATTRIBUTE__IDL__
-#define __COMPONENT_USER_TYPE_ATTRIBUTE__IDL__
+#ifndef __COMPONENT_ATTRIBUTE_USER_TYPES__IDL__
+#define __COMPONENT_ATTRIBUTE_USER_TYPES__IDL__
 
 #include <typedef/BasicTypeTypedef.idl>
 #include <enum/Color.idl>
@@ -8,7 +8,7 @@
 #include <sequence/BasicTypeSequence.idl>
 #include <interface/InterfaceBasicTypeAttributes.idl>
 
-component ComponentUserTypeAttribute
+component ComponentAttributeUserTypes
 {
 	attribute LongType typedefValue;
 	attribute Color enumValue;
@@ -18,4 +18,4 @@ component ComponentUserTypeAttribute
   	attribute InterfaceBasicTypeAttributes interfaceValue;
 };
 
-#endif // __COMPONENT_USER_TYPE_ATTRIBUTE__IDL__
+#endif // __COMPONENT_ATTRIBUTE_USER_TYPES__IDL__
