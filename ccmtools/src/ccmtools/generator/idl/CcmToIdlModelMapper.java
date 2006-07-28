@@ -686,7 +686,8 @@ public class CcmToIdlModelMapper
 	public FacetDef transform(MProvidesDef in)
 	{
 		FacetDef out;
-		String repoId = Code.getRepositoryId(in);
+        // ProvidesDef are scoped by their component too
+        String repoId = Code.getRepositoryId(in.getComponent()) + "/" + Code.getRepositoryId(in);
 		if(artifactCache.containsKey(repoId))
 		{
 			out = (FacetDef)artifactCache.get(repoId);	
@@ -704,7 +705,8 @@ public class CcmToIdlModelMapper
 	public ReceptacleDef transform(MUsesDef in)
 	{
 		ReceptacleDef out;
-		String repoId = Code.getRepositoryId(in);
+        // UsesDef are scoped by their component too
+        String repoId = Code.getRepositoryId(in.getComponent()) + "/" + Code.getRepositoryId(in);
 		if(artifactCache.containsKey(repoId))
 		{
 			out = (ReceptacleDef)artifactCache.get(repoId);	

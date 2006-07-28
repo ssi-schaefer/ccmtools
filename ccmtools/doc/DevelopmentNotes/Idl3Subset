@@ -7,14 +7,19 @@ IDL3 subset which is used by all CCM Tools generators.
 Following IDL3 constructs are (currently) not supported by the CCM Tools (see the IDL3
 specification as an IDL3 reference): 
 
-		- "readonly" Attributes 
-		- Component (single) Inheritance
-		- Home (singe) Interitance
+		! "readonly" Attributes 
+		! Attribute Exceptions (getraise, setraise)
+		! Component (single) Inheritance
+		! Home (singe) Interitance
+
+		- 64bit Types (long long, unsigned long long, long double)
 		- Bounded String
 		- Boundet Sequence
 		- Fixed Type
+		- Union
 		- Native Type
-		- 64bit Types (long long, unsigned long long, long double)
+		- Value Declaration
+		- Event Declaration
 		- Anonymous Types (already deprecated)
 		- "abstract" Interface
 		- "local" Interface
@@ -22,9 +27,6 @@ specification as an IDL3 reference):
 			Components and Homes
 		- "oneway" Operations
 		- Operation "context" Expressions
-		- Union
-		- Value Declaration
-		- Event Declaration
 		- Component Event Ports ("emits", "publishes", "consumes")
 		- Primary Key Specification for Homes
 		- Finder Methods for Homes
@@ -34,4 +36,5 @@ specification as an IDL3 reference):
 		- Repository Identifier Prefix Declaration
 
 		
-		
+----------
+(!) ... Should be put into work in the next release 		

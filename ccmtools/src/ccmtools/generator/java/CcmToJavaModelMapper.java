@@ -331,7 +331,8 @@ public class CcmToJavaModelMapper
 	public ProvidesDef transform(MProvidesDef in)
 	{
 		ProvidesDef out;
-		String repoId = Code.getRepositoryId(in);
+		// ProvidesDef are scoped by their component too
+		String repoId = Code.getRepositoryId(in.getComponent()) + "/" + Code.getRepositoryId(in);
 		logger.finer("MProvidesDef: " + repoId);		
 		if(artifactCache.containsKey(repoId))
 		{
@@ -354,7 +355,8 @@ public class CcmToJavaModelMapper
 	public UsesDef transform(MUsesDef in)
 	{
 		UsesDef out;
-		String repoId = Code.getRepositoryId(in);
+        // UsesDef are scoped by their component too
+        String repoId = Code.getRepositoryId(in.getComponent()) + "/" + Code.getRepositoryId(in);
 		logger.finer("MUsesDef: " + repoId);
 		if(artifactCache.containsKey(repoId))
 		{
