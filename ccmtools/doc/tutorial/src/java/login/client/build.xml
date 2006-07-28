@@ -5,7 +5,8 @@
   <property name="idl2" location="${dest}/idl2" />
   <property name="build" location="${dest}/build" />
   <property name="src" location="${dest}/src" />
-
+  <property name="src-gen" location="${dest}/src-gen:${dest}/src-gen-remote" />
+	
   <path id="compile.classpath">
       <pathelement path="${java.class.path}" />
       <pathelement location="${server}/lib/LoginServer.jar" />
@@ -20,7 +21,7 @@
 
   <!-- Compile generated Java files-->
   <target name="compile" depends="init" description="" >
-      <javac srcdir="${src}" destdir="${build}" 
+      <javac srcdir="${src}:${src-gen}" destdir="${build}" 
              debug="on" source="1.5" target="1.5">
           <classpath refid="compile.classpath" />  
       </javac>
