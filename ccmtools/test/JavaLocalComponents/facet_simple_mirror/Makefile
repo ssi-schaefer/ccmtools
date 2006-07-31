@@ -3,42 +3,31 @@ IDL3_DIR = ${DEST_DIR}/idl3
 IDL2_DIR = ${DEST_DIR}/idl2
 INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
-all: metainf remote clientlib
+all: local
 
-test: metainf remote clientlib check_local check clean 
+test: local check clean
 
 idl3: Test.idl
 	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
+
+idl3mirror: idl3
+#	ccmtools idl3mirror -o ${IDL3_DIR} ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl 
+	ccmidl -idl3mirror -o ${IDL3_DIR} ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl 
 
 # Generate component metadata in a component descriptor file.
 metainf: idl3
 	mkdir ${DEST_DIR}/META-INF
 	ccmdescriptor -o ${DEST_DIR}/META-INF -name TestHome ${INCLUDE} ${IDL3_DIR}/component/world/TestHome.idl
 
-local: idl3
-	ccmjava -iface -local -o ${DEST_DIR}/src-gen-local ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
-	ccmjava -iface -local -o ${DEST_DIR}/src-gen-local ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
+local: idl3mirror metainf
+	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
+	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
-stubs: local
-	ccmtools idl2 -o ${IDL2_DIR} Test.idl
-	ccmtools-idl -java -o ${DEST_DIR}/src-gen-remote -I${CCMTOOLS_HOME}/idl -I${IDL2_DIR} ${IDL2_DIR}/*.idl
-
-remote: stubs
-	ccmjava -remote -o ${DEST_DIR}/src-gen-remote ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
-	ccmjava -remote -o ${DEST_DIR}/src-gen-remote ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
-
-clientlib: idl3
-	ccmjava -clientlib -o ${DEST_DIR}/src-gen-remote ${INCLUDE} ${IDL3_DIR}/interface/world/*.idl
-	ccmjava -clientlib -o ${DEST_DIR}/src-gen-remote ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
-
 build: 
-	cp impl/TestImpl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/TestportImpl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/Client.java ${DEST_DIR}/src/
+#	cp impl/TestportImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
-
-check_local: build
-	bin/runClientLocal
 
 check: build
 	bin/runClient

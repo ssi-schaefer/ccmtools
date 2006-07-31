@@ -67,6 +67,8 @@ public class ClientLocal
                 System.out.println("We don't know you...");
             }
             
+            assert(result);
+            
             System.out.println("OK!");
             server.remove();
         }
