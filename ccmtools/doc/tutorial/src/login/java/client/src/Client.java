@@ -5,11 +5,11 @@ import java.util.logging.Logger;
 
 import org.omg.CORBA.ORB;
 
-import system.ccm.local.Group;
-import system.ccm.local.Login;
-import system.ccm.local.PersonData;
-import system.ccm.local.Server;
-import system.ccm.local.ServerHome;
+import application.ccm.local.Group;
+import application.ccm.local.Login;
+import application.ccm.local.PersonData;
+import application.ccm.local.Server;
+import application.ccm.local.ServerHome;
 import Components.ccm.local.HomeFinder;
 import ccm.local.ServiceLocator;
 
@@ -35,17 +35,10 @@ public class Client
          */
         try
         {
-//            if (args.length == 0)
-//            {
-//                system.ccm.local.ServerHomeDeployment.deploy(COMPONENT_HOME_NAME);
-//            }
-//            else
-//            {
-                // Set up the ServiceLocator singleton
-                ORB orb = ORB.init(args, null);
-                ServiceLocator.instance().setCorbaOrb(orb);
-                system.ccm.local.ServerHomeClientLibDeployment.deploy(COMPONENT_HOME_NAME);
-//            }
+            // Set up the ServiceLocator singleton
+            ORB orb = ORB.init(args, null);
+            ServiceLocator.instance().setCorbaOrb(orb);
+            application.ccm.local.ServerHomeClientLibDeployment.deploy(COMPONENT_HOME_NAME);
         }
         catch (Exception e)
         {
@@ -76,6 +69,8 @@ public class Client
             {
                 System.out.println("We don't know you...");
             }
+
+            assert(result);
             
             server.remove();
         }
@@ -90,14 +85,7 @@ public class Client
          */
         try
         {
-//            if (args.length == 0)
-//            {
-//                system.ccm.local.ServerHomeDeployment.undeploy(COMPONENT_HOME_NAME);
-//            }
-//            else
-//            {
-                system.ccm.local.ServerHomeClientLibDeployment.undeploy(COMPONENT_HOME_NAME);
-//            }
+            application.ccm.local.ServerHomeClientLibDeployment.undeploy(COMPONENT_HOME_NAME);
             System.out.println("OK!");
         }
         catch (Exception e)

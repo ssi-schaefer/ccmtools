@@ -10,7 +10,7 @@
  * @version
  */
 
-package system.ccm.local; 
+package application.ccm.local; 
 
 import Components.ccm.local.CCMException;
    

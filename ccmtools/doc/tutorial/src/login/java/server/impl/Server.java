@@ -35,7 +35,7 @@ public class Server
             ORB orb = ORB.init(args, null);
             ServiceLocator.instance().setCorbaOrb(orb);
 
-            system.ccm.remote.ServerHomeDeployment.deploy(COMPONENT_HOME_NAME);
+            application.ccm.remote.ServerHomeDeployment.deploy(COMPONENT_HOME_NAME);
             System.out.println("> Server is running...");
             orb.run();
         }

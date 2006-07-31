@@ -5,11 +5,11 @@ import java.util.logging.Logger;
 
 import org.omg.CORBA.ORB;
 
-import system.ccm.local.Group;
-import system.ccm.local.Login;
-import system.ccm.local.PersonData;
-import system.ccm.local.Server;
-import system.ccm.local.ServerHome;
+import application.ccm.local.Group;
+import application.ccm.local.Login;
+import application.ccm.local.PersonData;
+import application.ccm.local.Server;
+import application.ccm.local.ServerHome;
 import Components.ccm.local.HomeFinder;
 import ccm.local.ServiceLocator;
 
@@ -35,7 +35,7 @@ public class ClientLocal
          */
         try
         {
-	    system.ccm.local.ServerHomeDeployment.deploy(COMPONENT_HOME_NAME);
+            application.ccm.local.ServerHomeDeployment.deploy(COMPONENT_HOME_NAME);
         }
         catch (Exception e)
         {
@@ -83,7 +83,7 @@ public class ClientLocal
          */
         try
         {
-	    system.ccm.local.ServerHomeDeployment.undeploy(COMPONENT_HOME_NAME);
+            application.ccm.local.ServerHomeDeployment.undeploy(COMPONENT_HOME_NAME);
         }
         catch (Exception e)
         {

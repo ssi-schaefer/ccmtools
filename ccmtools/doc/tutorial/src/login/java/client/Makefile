@@ -15,10 +15,10 @@ stubs:
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCMTOOLS_HOME}/idl -I${IDL2_DIR} ${IDL2_DIR}/*.idl
 
 clientlib: idl3 stubs
-	ccmjava -iface -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/system/*.idl
-	ccmjava -iface -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/system/Server*.idl
-	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/system/*.idl
-	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/system/Server*.idl
+	ccmjava -iface -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/application/*.idl
+	ccmjava -iface -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
+	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/application/*.idl
+	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
 
 run: 
 	ant -f ./build.xml

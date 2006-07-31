@@ -12,14 +12,14 @@ idl3: ${IDL_SOURCE}
 	ccmidl -idl3 -o ${IDL3_DIR} ${IDL_SOURCE}
 
 local: idl3
-	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/system/*.idl
-	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/system/Server*.idl
-	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/system/Server*.idl
+	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/application/*.idl
+	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
+	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
 
 
 check: 
 	cp impl/ClientLocal.java ${DEST_DIR}/src
-	cp impl/ServerloginImpl.java ${DEST_DIR}/src/system/ccm/local/
+	cp impl/ServerloginImpl.java ${DEST_DIR}/src/application/ccm/local/
 	ant -f ./build.xml
 	bin/runClientLocal 
 
@@ -29,8 +29,8 @@ stubs: #local
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCMTOOLS_HOME}/idl -I${IDL2_DIR} ${IDL2_DIR}/*.idl
 
 remote: stubs
-	ccmjava -remote -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/system/*.idl
-	ccmjava -remote -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/system/Server*.idl
+	ccmjava -remote -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/application/*.idl
+	ccmjava -remote -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
 
 run:
 	cp impl/Server.java ${DEST_DIR}/src 
