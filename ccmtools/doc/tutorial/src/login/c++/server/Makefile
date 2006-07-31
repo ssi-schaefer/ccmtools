@@ -13,9 +13,9 @@ idl3: ${IDL_SOURCE}
 local: idl3
 	ccmtools c++local ${INCLUDE} -o ${DEST_DIR}/src/interface ${IDL3_DIR}/interface/application/*.idl
 	ccmtools c++local ${INCLUDE} -a -o ${DEST_DIR}/src/component/Server ${IDL3_DIR}/component/application/Server*.idl 
-	ccmtools c++local-test ${INCLUDE} -o ${DEST_DIR}/src/component/Server ${IDL3_DIR}/component/application/Server.idl
 
 check: 
+	ccmtools c++local-test ${INCLUDE} -o ${DEST_DIR}/src/component/Server ${IDL3_DIR}/component/application/Server.idl
 	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "login" -pversion "1.0.0" 
 	cp impl/Server_login_impl.cc ${DEST_DIR}/src/component/Server/
 	cp impl/_check_application_ccm_local_component_Server.cc ${DEST_DIR}/src/component/Server/test/
@@ -26,13 +26,15 @@ stubs: #local
 	make -C ${DEST_DIR}/src/component/Server/CCM_corba_stubs server
 
 remote: stubs
-	ccmtools c++remote -o ${DEST_DIR}/src/component/Server/ ${IDL3_DIR}/interface/application/*.idl 
-	ccmtools c++remote -o ${DEST_DIR}/src/component/Server/ ${IDL3_DIR}/component/application/Server*.idl 
-	ccmtools c++remote-test -o ${DEST_DIR}/src/component/Server ${IDL3_DIR}/component/application/Server.idl 
+	ccmtools c++remote ${INCLUDE} -o ${DEST_DIR}/src/component/Server/ ${IDL3_DIR}/interface/application/*.idl 
+	ccmtools c++remote  ${INCLUDE} -o ${DEST_DIR}/src/component/Server/ ${IDL3_DIR}/component/application/Server*.idl 
+
 
 run: 
+	ccmtools c++remote-test ${INCLUDE} -o ${DEST_DIR}/src/component/Server ${IDL3_DIR}/component/application/Server.idl 
 	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "login" -pversion "1.0.0" 
-#	cp test/_check_ccm_remote_component_Test.cc ${DEST_DIR}/src/component/Test/test/
+	cp impl/Server_login_impl.cc ${DEST_DIR}/src/component/Server/
+	cp impl/_check_application_ccm_remote_component_Server.cc ${DEST_DIR}/src/component/Server/test/
 	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
 
 clean: 

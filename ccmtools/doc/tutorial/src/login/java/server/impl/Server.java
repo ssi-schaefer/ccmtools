@@ -9,7 +9,7 @@ import ccm.local.ServiceLocator;
 
 public class Server
 {
-    public static final String COMPONENT_HOME_NAME = "LoginHome";
+    public static final String COMPONENT_HOME_NAME = "ServerHome";
 
     public static void main(String[] args)
     {
