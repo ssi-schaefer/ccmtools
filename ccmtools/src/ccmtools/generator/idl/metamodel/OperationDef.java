@@ -16,8 +16,8 @@ public class OperationDef
 	 *************************************************************************/
 	
 	private Type type;
-	private List<ParameterDef> parameter = new ArrayList<ParameterDef>();
-	private List<ExceptionDef> exception = new ArrayList<ExceptionDef>();
+	private List<ParameterDef> parameters = new ArrayList<ParameterDef>();
+	private List<ExceptionDef> exceptions = new ArrayList<ExceptionDef>();
 	private boolean oneway;
 	private List<String> contexts;
 	
@@ -39,12 +39,12 @@ public class OperationDef
 		
 	public List<ExceptionDef> getExceptions()
 	{
-		return exception;
+		return exceptions;
 	}
 	
 	public List<ParameterDef> getParameters()
 	{
-		return parameter;
+		return parameters;
 	}
 
 	public void setOneway(boolean value)
@@ -105,7 +105,10 @@ public class OperationDef
 	public Set<String> generateIncludePaths()
 	{
 		Set<String> includePaths = new TreeSet<String>();
-		includePaths.add(getType().generateIncludePath());
+        if(getType() != null)
+        {
+            includePaths.add(getType().generateIncludePath());
+        }
 		for(ParameterDef parameter : getParameters())
 		{
 			includePaths.add(parameter.generateIncludePath());
@@ -128,13 +131,7 @@ public class OperationDef
 	}
 	
 	public String generateExceptionList()
-	{
-        return Helper.generateExceptionList(getExceptions());
-//		List<String> exceptionList = new ArrayList<String>();
-//		for(ExceptionDef ex : getExceptions())
-//		{
-//			exceptionList.add(ex.generateIdlMapping());	
-//		}
-//		return Text.join(", ", exceptionList);
+	{        
+        return Helper.generateExceptionList(exceptions);
 	}
 }

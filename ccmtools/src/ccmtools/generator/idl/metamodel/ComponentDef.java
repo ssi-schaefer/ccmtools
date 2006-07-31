@@ -9,15 +9,15 @@ import ccmtools.generator.idl.templates.ComponentDefTemplate;
 import ccmtools.utils.Text;
 
 public class ComponentDef
-	extends ModelElement
+	extends InterfaceDef
 	implements Type
 {
 	/*************************************************************************
 	 * IDL Model Implementation
 	 *************************************************************************/
 	
-	private ComponentDef base;
-	private List<AttributeDef> attributes = new ArrayList<AttributeDef>();
+	private ComponentDef baseComponent;
+//	private List<AttributeDef> attributes = new ArrayList<AttributeDef>();
 	private List<FacetDef> facet = new ArrayList<FacetDef>();
 	private List<ReceptacleDef> receptacles = new ArrayList<ReceptacleDef>();
 	private List<InterfaceDef> supports = new ArrayList<InterfaceDef>();
@@ -30,21 +30,21 @@ public class ComponentDef
 	}
 	
 
-	public ComponentDef getBase()
+	public ComponentDef getBaseComponent()
 	{
-		return base;
+		return baseComponent;
 	}
 
-	public void setBase(ComponentDef value)
+	public void setBaseComponent(ComponentDef value)
 	{
-		this.base = value;
+		this.baseComponent = value;
 	}
 	
 	
-	public List<AttributeDef> getAttributes()
-	{
-		return attributes;
-	}
+//	public List<AttributeDef> getAttributes()
+//	{
+//		return attributes;
+//	}
 	
 	public List<FacetDef> getFacets()
 	{
@@ -66,7 +66,15 @@ public class ComponentDef
 		return homes;
 	}
 	
-	
+
+    /*************************************************************************
+     * Type Interface Implementation
+     *************************************************************************/
+    
+    // Use ModelElement default implementations
+
+    
+    
 	/*************************************************************************
 	 * IDL3 Generator Methods Implementation
 	 *************************************************************************/
@@ -79,9 +87,9 @@ public class ComponentDef
 	public String generateIncludeStatements()
 	{
 		Set<String> includePaths = new TreeSet<String>();
-		if(getBase() != null)
+		if(getBaseComponent() != null)
 		{
-			includePaths.add(getBase().generateIncludePath());
+			includePaths.add(getBaseComponent().generateIncludePath());
 		}
 		for(AttributeDef attr: getAttributes())
 		{
@@ -103,15 +111,15 @@ public class ComponentDef
 		return generateIncludeStatements(includePaths);
 	}
 	
-    public String generateAttributes()
-    {
-        StringBuilder code = new StringBuilder();
-        for(AttributeDef attribte : getAttributes())
-        {
-            code.append(attribte.generateAttribute(indent() + TAB));
-        }
-        return code.toString();
-    }
+//    public String generateAttributes()
+//    {
+//        StringBuilder code = new StringBuilder();
+//        for(AttributeDef attribte : getAttributes())
+//        {
+//            code.append(attribte.generateAttribute(indent() + TAB));
+//        }
+//        return code.toString();
+//    }
     
 	public String generateSupportedInterfaces()
 	{
@@ -152,9 +160,9 @@ public class ComponentDef
 	public String generateBaseComponent()
 	{
 		StringBuilder code = new StringBuilder();
-		if(getBase() != null)
+		if(getBaseComponent() != null)
 		{
-			code.append(indent()).append(TAB).append(": ").append(getBase().generateIdlMapping());
+			code.append(indent()).append(TAB).append(": ").append(getBaseComponent().generateIdlMapping());
 		}
 		return code.toString();
 	}
@@ -171,6 +179,5 @@ public class ComponentDef
             }
         }
         return code.toString();
-    }
-    
+    }    
 }

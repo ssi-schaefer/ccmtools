@@ -18,9 +18,4 @@ public class ObjectType
 	{
 		return ""; // not allowed as a constant
 	}
-	
-//	public String generateIncludePath()
-//	{
-//		return ""; // primitive typed don't need include statements
-//	}
 }

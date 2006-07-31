@@ -43,9 +43,4 @@ public class StringType
 	{
 		return "\"" + value.toString() + "\"";
 	}
-	
-//	public String generateIncludePath()
-//	{
-//		return ""; // primitive typed don't need include statements
-//	}
 }

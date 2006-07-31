@@ -68,18 +68,4 @@ public class ExceptionDef
 	{
 		return new ExceptionDefTemplate().generate(this);
 	}
-	
-	
-	// Generate SourceFile objects --------------------------------------------
-	
-//	public List<SourceFile> generateIdl3SourceFiles()
-//	{
-//		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-//		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
-//		
-//		SourceFile source = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
-//		sourceFileList.add(source);
-//		
-//		return sourceFileList;
-//	}	
 }

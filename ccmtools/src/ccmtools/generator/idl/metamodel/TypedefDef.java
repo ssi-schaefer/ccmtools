@@ -67,18 +67,4 @@ public class TypedefDef
 			return new TypedefDefTemplate().generate(this);
 		}
 	}
-	
-	
-	// Generate SourceFile objects --------------------------------------------
-	
-//	public List<SourceFile> generateIdl3SourceFiles()
-//	{
-//		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-//		String packageName = Text.joinList(File.separator, getIdlNamespaceList());
-//		
-//		SourceFile enumeration = new SourceFile(packageName, getIdentifier() + ".idl", generateIdl3Code());
-//		sourceFileList.add(enumeration);
-//		
-//		return sourceFileList;
-//	}
 }

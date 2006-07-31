@@ -647,7 +647,7 @@ public class CcmToIdlModelMapper
 				if(in.getBases().size() == 1) // single inheritynce only
 				{
 					MComponentDef base = (MComponentDef)in.getBases().get(0);
-					out.setBase(transform(base));
+					out.setBaseComponent(transform(base));
 				}
 			}
 			for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
@@ -741,7 +741,7 @@ public class CcmToIdlModelMapper
                 if(in.getBases().size() == 1) // single inheritance only!
                 {
                     MHomeDef base = (MHomeDef)in.getBases().get(0);
-                    out.setBase(transform(base));
+                    out.setBaseHome(transform(base));
                 }         
             }
             for(Iterator i = in.getSupportss().iterator(); i.hasNext();)

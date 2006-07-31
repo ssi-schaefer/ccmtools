@@ -1,7 +1,6 @@
 package ccmtools.generator.idl.metamodel;
 
 
-
 public abstract class TypeImpl
 	implements Type
 {	

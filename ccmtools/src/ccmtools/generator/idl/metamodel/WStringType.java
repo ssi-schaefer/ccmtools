@@ -43,9 +43,4 @@ public class WStringType
 	{
 		return "L\"" + value.toString() + "\"";
 	}
-	
-//	public String generateIncludePath()
-//	{
-//		return ""; // primitive typed don't need include statements
-//	}
 }

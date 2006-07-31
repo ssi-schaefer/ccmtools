@@ -48,5 +48,4 @@ public class FacetDef
 	{
 		return "provides " + getInterface().generateIdlMapping() + " " + getIdentifier() + ";" + NL; 
 	}
-	
 }

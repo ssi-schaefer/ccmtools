@@ -9,15 +9,15 @@ import ccmtools.generator.idl.templates.HomeDefTemplate;
 import ccmtools.utils.Text;
 
 public class HomeDef
-	extends ModelElement
+	extends InterfaceDef
 {
 	/*************************************************************************
 	 * IDL Model Implementation
 	 *************************************************************************/
 	
-    private HomeDef base; 
+    private HomeDef baseHome; 
 	private ComponentDef component;
-    private List<AttributeDef> attributes = new ArrayList<AttributeDef>(); 
+//    private List<AttributeDef> attributes = new ArrayList<AttributeDef>(); 
     private List<InterfaceDef> supports = new ArrayList<InterfaceDef>();
 	private List<FactoryMethodDef> factories = new ArrayList<FactoryMethodDef>();
     
@@ -27,21 +27,21 @@ public class HomeDef
 	}
 
     
-	public HomeDef getBase()
+	public HomeDef getBaseHome()
     {
-        return base;
+        return baseHome;
     }
 
-    public void setBase(HomeDef base)
+    public void setBaseHome(HomeDef base)
     {
-        this.base = base;
+        this.baseHome = base;
     }
-
-    
-    public List<AttributeDef> getAttributes()
-    {
-        return attributes;
-    }
+//
+//    
+//    public List<AttributeDef> getAttributes()
+//    {
+//        return attributes;
+//    }
     
     
     public List<InterfaceDef> getSupports()
@@ -64,7 +64,15 @@ public class HomeDef
     {
         return factories;
     }
-	
+
+    
+    /*************************************************************************
+     * Type Interface Implementation
+     *************************************************************************/
+    
+    // Use ModelElement default implementations
+
+    
     
 	/*************************************************************************
 	 * IDL3 Generator Methods Implementation
@@ -79,9 +87,9 @@ public class HomeDef
 	{
 		Set<String> includePaths = new TreeSet<String>();
 		includePaths.add(getComponent().generateIncludePath());
-        if(getBase() != null)
+        if(getBaseHome() != null)
         {
-            includePaths.add(getBase().generateIncludePath());
+            includePaths.add(getBaseHome().generateIncludePath());
         }
         for(AttributeDef attr: getAttributes())
         {
@@ -102,22 +110,22 @@ public class HomeDef
     public String generateBaseHome()
     {
         StringBuilder code = new StringBuilder();
-        if(getBase() != null)
+        if(getBaseHome() != null)
         {
-            code.append(indent()).append(TAB).append(": ").append(getBase().generateIdlMapping());
+            code.append(indent()).append(TAB).append(": ").append(getBaseHome().generateIdlMapping());
         }
         return code.toString();
     }
     
-    public String generateAttributes()
-    {
-        StringBuilder code = new StringBuilder();
-        for(AttributeDef attribte : getAttributes())
-        {
-            code.append(attribte.generateAttribute(indent() + TAB));
-        }
-        return code.toString();
-    }
+//    public String generateAttributes()
+//    {
+//        StringBuilder code = new StringBuilder();
+//        for(AttributeDef attribte : getAttributes())
+//        {
+//            code.append(attribte.generateAttribute(indent() + TAB));
+//        }
+//        return code.toString();
+//    }
     
     public String generateSupportedInterfaces()
     {
