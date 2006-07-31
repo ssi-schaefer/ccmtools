@@ -68,4 +68,34 @@ public class ReceptacleDef
 		code.append(";").append(NL);
 		return code.toString();
 	}
+
+    
+    
+    /*************************************************************************
+     * IDL3 Mirror Generator Methods Implementation
+     *************************************************************************/ 
+
+    public String generateIdl3Mirror(String indent)
+    {
+        StringBuilder code = new StringBuilder();
+        if(isMultiple())
+        {
+            for(int i = 0; i < 3; i++)
+            {
+                code.append(indent).append(TAB);
+                code.append(generateIdl3MirrorReceptacle(getIdentifier() + i));
+            }
+        }
+        else
+        {
+            code.append(indent).append(TAB);
+            code.append(generateIdl3MirrorReceptacle(getIdentifier()));
+        }
+        return code.toString();
+    }
+
+    public String generateIdl3MirrorReceptacle(String identifier)
+    {
+        return "provides " + getInterface().generateIdlMapping() + " " + identifier + ";" + NL;
+    }        
 }

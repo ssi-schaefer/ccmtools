@@ -641,7 +641,17 @@ public class CcmToIdlModelMapper
 		{
 			logger.fine("MComponentDef: " + repoId);
 			out = new ComponentDef(in.getIdentifier(), Code.getNamespaceList(in));
-
+			//!!!!!!!!!
+            // Here we set the component (1)----(*) home connection from the wrong
+            // side, but this is needed until we generate IDL used by the CppGenerator...
+//            for(Iterator i = in.getHomes().iterator(); i.hasNext();)
+//            {
+//                MHomeDef home = (MHomeDef)i.next();
+//                HomeDef idlHome = transform(home);
+//                idlHome.setComponent(out);
+//			    out.getHomes().add(idlHome);
+//            }
+            //!!!!!!!!!!
 			if(in.getBases() != null)
 			{
 				if(in.getBases().size() == 1) // single inheritynce only

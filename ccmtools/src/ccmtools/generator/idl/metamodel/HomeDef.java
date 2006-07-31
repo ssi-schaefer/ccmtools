@@ -1,15 +1,20 @@
 package ccmtools.generator.idl.metamodel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ccmtools.generator.idl.templates.HomeDefMirrorTemplate;
 import ccmtools.generator.idl.templates.HomeDefTemplate;
+import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
+import ccmtools.utils.Utility;
 
 public class HomeDef
 	extends InterfaceDef
+    implements Idl3MirrorGenerator
 {
 	/*************************************************************************
 	 * IDL Model Implementation
@@ -17,7 +22,6 @@ public class HomeDef
 	
     private HomeDef baseHome; 
 	private ComponentDef component;
-//    private List<AttributeDef> attributes = new ArrayList<AttributeDef>(); 
     private List<InterfaceDef> supports = new ArrayList<InterfaceDef>();
 	private List<FactoryMethodDef> factories = new ArrayList<FactoryMethodDef>();
     
@@ -102,8 +106,7 @@ public class HomeDef
         for(FactoryMethodDef factory : getFactories())
         {
             includePaths.addAll(factory.generateIncludePaths());
-        }
-		
+        }		
 		return generateIncludeStatements(includePaths);
 	}
     
@@ -116,17 +119,7 @@ public class HomeDef
         }
         return code.toString();
     }
-    
-//    public String generateAttributes()
-//    {
-//        StringBuilder code = new StringBuilder();
-//        for(AttributeDef attribte : getAttributes())
-//        {
-//            code.append(attribte.generateAttribute(indent() + TAB));
-//        }
-//        return code.toString();
-//    }
-    
+        
     public String generateSupportedInterfaces()
     {
         StringBuilder code = new StringBuilder();
@@ -153,4 +146,56 @@ public class HomeDef
         }        
         return code.toString();
     }
+
+
+
+    /*************************************************************************
+     * IDL3 Mirror Generator Methods Implementation
+     *************************************************************************/
+
+    public String generateIdl3Mirror()
+    {
+        
+        return new HomeDefMirrorTemplate().generate(this); 
+    }
+
+    public String generateIdl3MirrorIncludeStatements()
+    {
+        Set<String> includePaths = new TreeSet<String>();
+        if(getComponent() != null)
+        {
+            includePaths.add(getComponent().generateIdl3MirrorIncludePath());
+        }
+        if(getBaseHome() != null)
+        {
+            includePaths.add(getBaseHome().generateIncludePath());
+        }
+        for(AttributeDef attr: getAttributes())
+        {
+            includePaths.addAll(attr.generateIncludePaths());
+        }
+        for(InterfaceDef iface : getSupports())
+        {
+            includePaths.add(iface.generateIncludePath());
+        }
+        for(FactoryMethodDef factory : getFactories())
+        {
+            includePaths.addAll(factory.generateIncludePaths());
+        }
+        
+        return generateIncludeStatements(includePaths);
+    }
+    
+    public List<SourceFile> generateIdl3MirrorSourceFiles()
+    {
+        List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+        String packageName;
+        packageName = COMPONENT_PREFIX 
+                + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
+        String sourceCode = Utility.removeEmptyLines(generateIdl3Mirror());
+        SourceFile sourceFile = new SourceFile(packageName, getIdentifier() + "Mirror.idl", sourceCode);
+        sourceFileList.add(sourceFile);     
+        return sourceFileList;
+    }
+
 }

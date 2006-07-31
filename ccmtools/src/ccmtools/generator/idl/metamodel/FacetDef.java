@@ -48,4 +48,14 @@ public class FacetDef
 	{
 		return "provides " + getInterface().generateIdlMapping() + " " + getIdentifier() + ";" + NL; 
 	}
+    
+    
+    /*************************************************************************
+     * IDL3 Mirror Generator Methods Implementation
+     *************************************************************************/ 
+
+    public String generateIdl3Mirror()
+    {
+        return "uses " + getInterface().generateIdlMapping() + " " + getIdentifier() + ";" + NL; 
+    }
 }

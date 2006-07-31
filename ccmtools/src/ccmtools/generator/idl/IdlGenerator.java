@@ -8,6 +8,7 @@ import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.UI.Driver;
 import ccmtools.generator.idl.metamodel.Idl3Generator;
+import ccmtools.generator.idl.metamodel.Idl3MirrorGenerator;
 import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.generator.idl.ui.CommandLineParameters;
 import ccmtools.utils.SourceFile;
@@ -94,20 +95,41 @@ public class IdlGenerator
 		}
 		catch (Exception e)
 		{
-//			e.printStackTrace();
 			throw new CcmtoolsException("[IDL3 Generator] " + e.getMessage());
 		}
 		logger.fine("end");
 	}
 
 	
-	public void generateIdl3Mirror(ModelRepository idlModel)
+	public void generateIdl3Mirror(ModelRepository idlModelRepo)
 		throws CcmtoolsException
 	{
-        
+        logger.fine("begin");
+        try
+        {
+            List<Idl3MirrorGenerator> idl3ModelElements = new ArrayList<Idl3MirrorGenerator>();
+            idl3ModelElements.addAll(idlModelRepo.findAllComponents());
+            idl3ModelElements.addAll(idlModelRepo.findAllHomes());
+
+            List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+            for(Idl3MirrorGenerator idl3Element : idl3ModelElements)
+            {
+                sourceFileList.addAll(idl3Element.generateIdl3MirrorSourceFiles());
+            }
+            
+            // Save all source file objects
+            Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new CcmtoolsException("[IDL3Mirror Generator] " + e.getMessage());
+        }
+        logger.fine("end"); 
 	}
 		
-	public void generateIdl2(ModelRepository idlModel)
+    
+	public void generateIdl2(ModelRepository idlModelRepo)
 		throws CcmtoolsException
 	{
 		

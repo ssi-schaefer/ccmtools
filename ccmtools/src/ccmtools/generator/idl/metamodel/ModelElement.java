@@ -212,24 +212,34 @@ public class ModelElement
 		}
 		return code.toString();
 	}
-	
-	public String generateIncludeGuardOpen()
+
+    
+    public String generateIncludeGuardOpen()
+    {
+        return generateIncludeGuardOpen(generateAbsoluteIdlName("_"));
+    }
+    
+	public String generateIncludeGuardOpen(String mangledName)
 	{
 		StringBuilder code = new StringBuilder();
-		String mangledName = (generateAbsoluteIdlName("_")).toUpperCase();
-		code.append("#ifndef __").append(mangledName).append("__IDL__").append(NL);
-		code.append("#define __").append(mangledName).append("__IDL__").append(NL);
+		code.append("#ifndef __").append(mangledName.toUpperCase()).append("__IDL__").append(NL);
+		code.append("#define __").append(mangledName.toUpperCase()).append("__IDL__").append(NL);
 		return code.toString();
 	}
-	
-	public String generateIncludeGuardClose()
+
+    public String generateIncludeGuardClose()
+    {
+        return generateIncludeGuardClose(generateAbsoluteIdlName("_"));
+    }
+        
+	public String generateIncludeGuardClose(String mangledName)
 	{
 		StringBuilder code = new StringBuilder();
-		String mangledName = (generateAbsoluteIdlName("_")).toUpperCase();		
-		code.append("#endif /* __").append(mangledName).append("__IDL__ */").append(NL);		
+		code.append("#endif /* __").append(mangledName.toUpperCase()).append("__IDL__ */").append(NL);		
 		return code.toString();		
 	}
 			
+    
 	public String generateIncludeStatement(String includePath)
 	{
 		if(includePath == null || includePath.length() == 0)

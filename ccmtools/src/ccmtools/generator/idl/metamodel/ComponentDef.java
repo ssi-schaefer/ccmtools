@@ -1,23 +1,26 @@
 package ccmtools.generator.idl.metamodel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ccmtools.generator.idl.templates.ComponentDefMirrorTemplate;
 import ccmtools.generator.idl.templates.ComponentDefTemplate;
+import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
+import ccmtools.utils.Utility;
 
 public class ComponentDef
 	extends InterfaceDef
-	implements Type
+	implements Type, Idl3MirrorGenerator
 {
 	/*************************************************************************
 	 * IDL Model Implementation
 	 *************************************************************************/
 	
 	private ComponentDef baseComponent;
-//	private List<AttributeDef> attributes = new ArrayList<AttributeDef>();
 	private List<FacetDef> facet = new ArrayList<FacetDef>();
 	private List<ReceptacleDef> receptacles = new ArrayList<ReceptacleDef>();
 	private List<InterfaceDef> supports = new ArrayList<InterfaceDef>();
@@ -40,11 +43,6 @@ public class ComponentDef
 		this.baseComponent = value;
 	}
 	
-	
-//	public List<AttributeDef> getAttributes()
-//	{
-//		return attributes;
-//	}
 	
 	public List<FacetDef> getFacets()
 	{
@@ -111,16 +109,6 @@ public class ComponentDef
 		return generateIncludeStatements(includePaths);
 	}
 	
-//    public String generateAttributes()
-//    {
-//        StringBuilder code = new StringBuilder();
-//        for(AttributeDef attribte : getAttributes())
-//        {
-//            code.append(attribte.generateAttribute(indent() + TAB));
-//        }
-//        return code.toString();
-//    }
-    
 	public String generateSupportedInterfaces()
 	{
 		StringBuilder code = new StringBuilder();
@@ -179,5 +167,75 @@ public class ComponentDef
             }
         }
         return code.toString();
+    }
+
+
+    
+    /*************************************************************************
+     * IDL3 Mirror Generator Methods Implementation
+     *************************************************************************/   
+        
+    public String generateIdl3Mirror()
+    {        
+        return new ComponentDefMirrorTemplate().generate(this); 
+    }
+
+    public String generateIdl3MirrorIncludePath()
+    {
+        if(getIdlNamespaceList().size() == 0)
+        {
+            return getIdentifier() + "Mirror";
+        }
+        else
+        {
+            return Text.joinList("/", getIdlNamespaceList()) + "/" + getIdentifier() + "Mirror";
+        }
+    }
+    
+    public String generateIdl3MirrorProvidedInterfaces()
+    {
+        StringBuilder code = new StringBuilder();
+        for(FacetDef facet : getFacets())
+        {
+            code.append(indent()).append(TAB).append(facet.generateIdl3Mirror());
+        }
+        return code.toString();
+    }
+    
+    public String generateIdl3MirrorUsedInterfaces()
+    {
+        StringBuilder code = new StringBuilder();
+        for(ReceptacleDef receptacle : getReceptacles())
+        {
+            code.append(receptacle.generateIdl3Mirror(indent()));
+        }
+        return code.toString();
+    }
+
+    
+    public String generateIdl3MirrorCppGeneratorHack()
+    {
+        StringBuilder code = new StringBuilder();
+        if(getHomes() != null)
+        {
+            if(getHomes().size() > 0)
+            {
+                HomeDef home = getHomes().get(0); // take the first you can find...
+                code.append(generateIncludeStatement(home.generateIncludePath() + "Mirror"));
+            }
+        }
+        return code.toString();
+    }
+    
+    public List<SourceFile> generateIdl3MirrorSourceFiles()
+    {
+        List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+        String packageName;
+        packageName = COMPONENT_PREFIX 
+                + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
+        String sourceCode = Utility.removeEmptyLines(generateIdl3Mirror());
+        SourceFile sourceFile = new SourceFile(packageName, getIdentifier() + "Mirror.idl", sourceCode);
+        sourceFileList.add(sourceFile);     
+        return sourceFileList;    
     }    
 }
