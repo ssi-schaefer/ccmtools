@@ -15,9 +15,9 @@ fi
 JAVA_LAUNCHER="$JAVA_HOME"/bin/java
 if [ -x $JAVA_LAUNCHER ]; then 
 
-CLASSPATH=$CCMTOOLS_HOME/lib/antlr.jar:$CCMTOOLS_HOME/lib/mdr01.jar:$CCMTOOLS_HOME/lib/oclmetamodel.jar:$CCMTOOLS_HOME/lib/ccmtools.jar:$CLASSPATH
+CLASSPATH="$CCMTOOLS_HOME/lib/antlr.jar:$CCMTOOLS_HOME/lib/mdr01.jar:$CCMTOOLS_HOME/lib/oclmetamodel.jar:$CCMTOOLS_HOME/lib/ccmtools.jar:$CLASSPATH"
 
-exec $JAVA_HOME/bin/java -cp $CLASSPATH -Dccmtools.home=$CCMTOOLS_HOME -Dccmtools.templates=$CCMTOOLS_HOME/templates -Djava.util.logging.config.file=$CCMTOOLS_HOME/etc/logging.properties ccmtools.UI.Main $@  
+exec "$JAVA_HOME"/bin/java -cp $CLASSPATH -Dccmtools.home="$CCMTOOLS_HOME" -Dccmtools.templates="$CCMTOOLS_HOME"/templates -Djava.util.logging.config.file="$CCMTOOLS_HOME"/etc/logging.properties ccmtools.UI.Main $@  
 
 else
 echo "ERROR!"

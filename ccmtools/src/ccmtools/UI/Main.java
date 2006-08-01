@@ -106,7 +106,11 @@ public class Main
                                File.separator + "src" +
                                File.separator + "templates");
             }
-    
+            if(CcmtoolsProperties.Instance().get("ccmtools.cpp") == null)
+            {
+                CcmtoolsProperties.Instance().set("ccmtools.cpp", Constants.CPP_PATH);
+            }
+            
             if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.types")) {
                 String s = System.getProperty("ccmtools.templates")
                             + File.separator
@@ -137,9 +141,9 @@ public class Main
             // Log CCM Tools settings
             logger.config("exitOnReturn = " + isExitWithErrorStatus);
             logger.config("ccmtools.home = " + System.getProperty("ccmtools.home"));
+            logger.config("ccmtools.cpp = " + CcmtoolsProperties.Instance().get("ccmtools.cpp"));
             logger.config("ccmtools.templates = " + System.getProperty("ccmtools.templates"));
-            logger.config("ccmtools.impl.dir = " + 
-                          CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
+            logger.config("ccmtools.impl.dir = " + CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
     
             GraphTraverser traverser = new CcmGraphTraverser();
             if(traverser == null) {
@@ -177,15 +181,13 @@ public class Main
                 
                 // step (0). run the C preprocessor on the input file.
                 // Run the GNU preprocessor cpp in a separate process.
-                String cmd = Constants.CPP_PATH + " -o "+ idlfile + " " + includePath 
-                		+ " " + source;
+                String cmd = CcmtoolsProperties.Instance().get("ccmtools.cpp") + " -o "+ idlfile 
+                                + " " + includePath	+ " " + source;
                 logger.fine(cmd);
                 uiDriver.printMessage(cmd);
                 Process preproc = Runtime.getRuntime().exec(cmd);
-                BufferedReader stdInput = 
-                    new BufferedReader(new InputStreamReader(preproc.getInputStream()));
-                BufferedReader stdError = 
-                    new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
+                BufferedReader stdInput = new BufferedReader(new InputStreamReader(preproc.getInputStream()));
+                BufferedReader stdError = new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
 
                 // Read the output and any errors from the command
                 String s;
