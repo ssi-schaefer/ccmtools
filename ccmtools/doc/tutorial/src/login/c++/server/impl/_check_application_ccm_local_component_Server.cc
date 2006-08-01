@@ -57,29 +57,29 @@ int main(int argc, char *argv[])
 
 
     try {
-      // Component deployment:
-      // We use the HomeFinder method find_home_by_name() to get a smart pointer 
-      // to a component home. From a component home, we get a smart pointer to a 
-      // component instance using the create() method.
-      // Component and mirror component are connected via provide_facet() and 
-      // connect() methods.
-      // The last step of deployment is to call configuration_complete() that 
-      // forces components to run the ccm_set_session_context() and ccm_activate() 
-      // callback methods.
       SmartPtr<application::ccm::local::component::Server::ServerHome> serverHome(
             dynamic_cast<application::ccm::local::component::Server::ServerHome*>
             (homeFinder->find_home_by_name("ServerHome").ptr()));
 
-        server = serverHome->create();
-        login = server->provide_login();
-        server->configuration_complete();
+      server = serverHome->create();
+      login = server->provide_login();
+      server->configuration_complete();
 
-	// Component test:
-	// After component deployment, we can access components and their facets.
-	// Usually, the test cases for facets and receptacles are implemened in the
-	// mirror component. But for supported interfaces and component attributes, 
-	// we can realize test cases in the following section.
+      try {
+	PersonData person;
+	person.id = 0;
+	person.name = "";
+	person.password = "";
+	person.group = USER;
 	
+	login->isValidUser(person);
+	assert(false);
+      }
+      catch(InvalidPersonData& e) {
+	cout << "Caught InvalidPersonData exception!" << endl;
+      }
+
+      try {
 	PersonData person;
 	person.id = 277;
 	person.name = "eteinik";
@@ -93,38 +93,38 @@ int main(int argc, char *argv[])
 	else {
 	  cout << "We don't know you !!!" << endl;
 	}
-	
-	assert(result == true);
-	
-	// Component tear down:
-	// Finally, the component and mirror component instances are disconnected 
-	// and removed. Thus component homes can be undeployed.
-	server->remove();
+      }
+      catch(InvalidPersonData& e) {
+	cout << "Error: InvalidPersonData!!" << endl;
+      }
+      
+      
+      server->remove();
     } 
     catch(Components::HomeNotFound ) {
-        cout << "TEARDOWN ERROR: can't find a home!" << endl;
-        error = -1;
+      cout << "TEARDOWN ERROR: can't find a home!" << endl;
+      error = -1;
     } 
     catch(Components::NotImplemented& e ) {
-        cout << "TEARDOWN ERROR: function not implemented: " 
-	     << e.what (  ) << endl;
-        error = -1;
+      cout << "TEARDOWN ERROR: function not implemented: " 
+	   << e.what (  ) << endl;
+      error = -1;
     } 
     catch(Components::InvalidName& e ) {
-        cout << "DEPLOYMENT ERROR: invalid name during connection: " 
-             << e.what (  ) << endl;
-        error = -1;
+      cout << "DEPLOYMENT ERROR: invalid name during connection: " 
+	   << e.what (  ) << endl;
+      error = -1;
     }
     catch(...) {
-        cout << "TEARDOWN ERROR: there is something wrong!" << endl;
-        error = -1;
+      cout << "TEARDOWN ERROR: there is something wrong!" << endl;
+      error = -1;
     }
     error += undeploy_application_ccm_local_component_Server_ServerHome("ServerHome");
     if(error) {
-        cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
-        return error;
+      cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
+      return error;
     }
-        
+    
     // Clean up HomeFinder singleton
     HomeFinder::destroy();
     

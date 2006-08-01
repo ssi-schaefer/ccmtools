@@ -8,6 +8,7 @@ import org.omg.CORBA.ORB;
 import application.ccm.local.Group;
 import application.ccm.local.Login;
 import application.ccm.local.PersonData;
+import application.ccm.local.InvalidPersonData;
 import application.ccm.local.Server;
 import application.ccm.local.ServerHome;
 import Components.ccm.local.HomeFinder;
@@ -52,22 +53,38 @@ public class ClientLocal
             ServerHome home = (ServerHome) homeFinder.find_home_by_name(COMPONENT_HOME_NAME);
             Server server = home.create();
             server.configuration_complete();
-
             Login login = server.provide_login();
             
-            PersonData person = new PersonData(277, "eteinik", "eteinik", Group.USER);
-            boolean result = login.isValidUser(person);
-            
-            if(result)
+            try
             {
-                System.out.println("Welcome " + person.getName());
+                PersonData person = new PersonData(0, "", "", Group.USER);
+                login.isValidUser(person);
+                assert(false);
             }
-            else
+            catch (InvalidPersonData e)
             {
-                System.out.println("We don't know you...");
+                System.err.println("Caught InvalidPersonData exception!");
             }
+
             
-            assert(result);
+            try
+            {
+                PersonData person = new PersonData(277, "eteinik", "eteinik", Group.USER);
+                boolean result = login.isValidUser(person);
+
+                if (result)
+                {
+                    System.out.println("Welcome " + person.getName());
+                }
+                else
+                {
+                    System.out.println("We don't know you...");
+                }
+            }
+            catch (InvalidPersonData e)
+            {
+                System.err.println("Error: InvalidPersonData!");
+            }
             
             System.out.println("OK!");
             server.remove();
