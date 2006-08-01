@@ -34,6 +34,7 @@ remote: stubs
 
 run:
 	cp impl/Server.java ${DEST_DIR}/src 
+	cp impl/ServerloginImpl.java ${DEST_DIR}/src/application/ccm/local/
 	ant -f ./build.xml
 	bin/runServer
 
