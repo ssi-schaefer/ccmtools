@@ -9,10 +9,8 @@ module world
 
   component Test
   {
-    provides IFace inPort;
-
-    uses IFace	   outPort;
-	uses multiple IFace outPorts;
+    uses IFace	   singlePort;
+	uses multiple IFace multiPort;
   };
 
   home TestHome manages Test

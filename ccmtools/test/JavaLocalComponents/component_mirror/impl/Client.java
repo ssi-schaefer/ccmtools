@@ -28,7 +28,7 @@ public class Client
          try
         {
             TestHomeDeployment.deploy("TestHome");
-            TestHome_mirrorDeployment.deploy("TestHomeMirror");
+            TestHomeMirrorDeployment.deploy("TestHomeMirror");
         }
         catch (java.lang.Exception e)
         {
@@ -39,15 +39,32 @@ public class Client
 	    try
 	    {
 	        TestHome home = (TestHome) ccm.local.HomeFinder.instance().find_home_by_name("TestHome");		
+            TestHomeMirror mirrorHome = (TestHomeMirror) ccm.local.HomeFinder.instance().find_home_by_name("TestHomeMirror"); 
+
             Test component = home.create();
-            TestHome_mirror mirrorHome = (TestHome_mirror) ccm.local.HomeFinder.instance().find_home_by_name("TestHomeMirror"); 
-            Test_mirror mirrorComponent = mirrorHome.create();
+            TestMirror mirrorComponent = mirrorHome.create();
+            
+            IFace singlePort = mirrorComponent.provide_singlePort();
+            component.connect_singlePort(singlePort);
+            
+            IFace multiPort0 = mirrorComponent.provide_multiPort0();
+            IFace multiPort1 = mirrorComponent.provide_multiPort1();
+            IFace multiPort2 = mirrorComponent.provide_multiPort2();
+
+            Cookie ck0 = component.connect_multiPort(multiPort0);
+            Cookie ck1 = component.connect_multiPort(multiPort1);
+            Cookie ck2 = component.connect_multiPort(multiPort2);
+                        
             component.configuration_complete();
             mirrorComponent.configuration_complete();
-		
-            System.out.println("OK!");
-            component.remove();
+
+            component.disconnect_multiPort(ck0);
+            component.disconnect_multiPort(ck1);
+            component.disconnect_multiPort(ck2);
+            
             mirrorComponent.remove();
+            component.remove();
+            System.out.println("OK!");
 	    }
 	    catch (java.lang.Exception e)
 	    {
@@ -56,6 +73,6 @@ public class Client
 	    
 	    // Undeploy local Java component
         TestHomeDeployment.undeploy("TestHome");
-	    TestHome_mirrorDeployment.undeploy("TestHomeMirror");
+	    TestHomeMirrorDeployment.undeploy("TestHomeMirror");
 	}
 }

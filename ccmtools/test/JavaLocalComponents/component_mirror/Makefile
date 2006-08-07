@@ -11,7 +11,6 @@ idl3: Test.idl
 	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 
 idl3mirror: idl3
-#	ccmtools idl3mirror -o ${IDL3_DIR} ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl 
 	ccmidl -idl3mirror -o ${IDL3_DIR} ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl 
 
 # Generate component metadata in a component descriptor file.
@@ -26,7 +25,11 @@ local: idl3mirror metainf
 
 build: 
 	cp impl/Client.java ${DEST_DIR}/src/
-#	cp impl/TestportImpl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/TestImpl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/TestMirrorsinglePortImpl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/TestMirrormultiPort0Impl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/TestMirrormultiPort1Impl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/TestMirrormultiPort2Impl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
 
 check: build
