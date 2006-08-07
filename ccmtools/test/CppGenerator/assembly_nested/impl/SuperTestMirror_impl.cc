@@ -15,51 +15,46 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "SuperTest_mirror_impl.h"
-#include "SuperTest_mirror_innerBasicType_mirror_impl.h"
-#include "SuperTest_mirror_innerUserType_mirror_impl.h"
+#include "SuperTestMirror_impl.h"
+#include "SuperTestMirror_innerBasicType_impl.h"
+#include "SuperTestMirror_innerUserType_impl.h"
 
 
 namespace ccm {
 namespace local {
 namespace component {
-namespace SuperTest_mirror {
+namespace SuperTestMirror {
 
 using namespace std;
 using namespace WX::Utils;
 
 //==============================================================================
-// CCM_SuperTest_mirror - component implementation
+// CCM_SuperTestMirror - component implementation
 //==============================================================================
 
-CCM_SuperTest_mirror_impl::CCM_SuperTest_mirror_impl()
+CCM_SuperTestMirror_impl::CCM_SuperTestMirror_impl()
 {
-    DEBUGNL("+CCM_SuperTest_mirror_impl->CCM_SuperTest_mirror_impl()");
 }
 
-CCM_SuperTest_mirror_impl::~CCM_SuperTest_mirror_impl()
+CCM_SuperTestMirror_impl::~CCM_SuperTestMirror_impl()
 {
-    DEBUGNL("-CCM_SuperTest_mirror_impl->~CCM_SuperTest_mirror_impl()");
 }
 
 void
-CCM_SuperTest_mirror_impl::set_session_context(
+CCM_SuperTestMirror_impl::set_session_context(
     Components::SessionContext* context)
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_SuperTest_mirror_impl->set_session_context()");
-    ctx = dynamic_cast<CCM_SuperTest_mirror_Context*>(context);
+    ctx = dynamic_cast<CCM_SuperTestMirror_Context*>(context);
 }
 
 void
-CCM_SuperTest_mirror_impl::ccm_activate()
+CCM_SuperTestMirror_impl::ccm_activate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_SuperTest_mirror_impl->ccm_activate()");
     {
       // basic types test cases
-      SmartPtr<CCM_BasicTypeInterface> basicType = 
-	ctx->get_connection_basicType_mirror();
+      SmartPtr<CCM_BasicTypeInterface> basicType = ctx->get_connection_basicType();
 
       {
 	short short_2=3, short_3, short_r;
@@ -155,8 +150,7 @@ CCM_SuperTest_mirror_impl::ccm_activate()
 
     {
       // user types test cases
-      SmartPtr<CCM_UserTypeInterface> userType = 
-	ctx->get_connection_userType_mirror();
+      SmartPtr<CCM_UserTypeInterface> userType = ctx->get_connection_userType();
       {
 	// Test case: enum Color {red, green, blue, black, orange}; 
 	Color Color_2,Color_3, Color_r;
@@ -334,20 +328,16 @@ CCM_SuperTest_mirror_impl::ccm_activate()
 }
 
 void
-CCM_SuperTest_mirror_impl::ccm_passivate()
+CCM_SuperTestMirror_impl::ccm_passivate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_SuperTest_mirror_impl->ccm_passivate()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_SuperTest_mirror_impl::ccm_remove()
+CCM_SuperTestMirror_impl::ccm_remove()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_SuperTest_mirror_impl->ccm_remove()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
@@ -356,10 +346,9 @@ CCM_SuperTest_mirror_impl::ccm_remove()
 //==============================================================================
 
 CCM_BasicTypeInterface*
-CCM_SuperTest_mirror_impl::get_innerBasicType_mirror()
+CCM_SuperTestMirror_impl::get_innerBasicType()
 {
-    DEBUGNL(" CCM_SuperTest_mirror_impl->get_innerBasicType_mirror()");
-    innerBasicType_mirror_impl* facet = new innerBasicType_mirror_impl(this);
+    innerBasicType_impl* facet = new innerBasicType_impl(this);
     return dynamic_cast<CCM_BasicTypeInterface*>(facet);
 }
 
@@ -368,10 +357,9 @@ CCM_SuperTest_mirror_impl::get_innerBasicType_mirror()
 //==============================================================================
 
 CCM_UserTypeInterface*
-CCM_SuperTest_mirror_impl::get_innerUserType_mirror()
+CCM_SuperTestMirror_impl::get_innerUserType()
 {
-    DEBUGNL(" CCM_SuperTest_mirror_impl->get_innerUserType_mirror()");
-    innerUserType_mirror_impl* facet = new innerUserType_mirror_impl(this);
+    innerUserType_impl* facet = new innerUserType_impl(this);
     return dynamic_cast<CCM_UserTypeInterface*>(facet);
 }
 

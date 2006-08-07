@@ -12,9 +12,7 @@ idl3: ${APP_NAME}.idl
 local: idl3
 	ccmtools c++local --anytypes=impl/PdlAnyMappings.ccmany ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/world/*.idl
 	ccmtools c++local --anytypes=impl/PdlAnyMappings.ccmany ${IDL_INCLUDE} -o ${DEST_DIR}/interface ${DEST_DIR}/idl/interface/world/europe/*.idl
-
 	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/world/europe/Test*.idl 
-
 	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/world/europe/Test.idl 
 
 check: 

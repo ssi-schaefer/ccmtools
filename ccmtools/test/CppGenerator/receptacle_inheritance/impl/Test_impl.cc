@@ -34,19 +34,16 @@ using namespace WX::Utils;
 
 CCM_Test_impl::CCM_Test_impl (  )
 {
-  DEBUGNL ( "+CCM_Test_impl->CCM_Test_impl (  )" );
 }
 
 CCM_Test_impl::~CCM_Test_impl (  )
 {
-  DEBUGNL ( "-CCM_Test_impl->~CCM_Test_impl (  )" );
 }
 
 void
 CCM_Test_impl::set_session_context ( Components::SessionContext* context )
   throw ( Components::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->set_session_context (  )" );
   ctx = dynamic_cast<CCM_Test_Context*> ( context );
 }
 
@@ -54,7 +51,6 @@ void
 CCM_Test_impl::ccm_activate (  )
   throw ( Components::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->ccm_activate (  )" );
 
   WX::Utils::SmartPtr<CCM_InterfaceType> receptacle = 
     ctx->get_connection_a_receptacle();
@@ -87,14 +83,12 @@ void
 CCM_Test_impl::ccm_passivate (  )
   throw ( Components::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->ccm_passivate (  )" );
 }
 
 void
 CCM_Test_impl::ccm_remove (  )
   throw ( Components::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->ccm_remove (  )" );
 }
 
 } // /namespace Test

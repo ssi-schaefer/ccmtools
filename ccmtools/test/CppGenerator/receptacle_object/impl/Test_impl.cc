@@ -33,12 +33,10 @@ using namespace WX::Utils;
 
 CCM_Test_impl::CCM_Test_impl()
 {
-    DEBUGNL("+CCM_Test_impl->CCM_Test_impl()");
 }
 
 CCM_Test_impl::~CCM_Test_impl()
 {
-    DEBUGNL("-CCM_Test_impl->~CCM_Test_impl()");
 }
 
 void
@@ -46,7 +44,6 @@ CCM_Test_impl::set_session_context(
     Components::SessionContext* context)
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_impl->set_session_context()");
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
@@ -54,19 +51,15 @@ void
 CCM_Test_impl::ccm_activate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_impl->ccm_activate()");
-    
     // basic types test cases
     long long_2=3, long_3, long_r;
-    long_r = 
-      ctx->get_connection_iface()->op_b1(7,long_2, long_3);
+    long_r = ctx->get_connection_iface()->op_b1(7,long_2, long_3);
     assert(long_2 == 7);
     assert(long_3 == 3);
     assert(long_r == 3+7);
     
     string string_2="drei", string_3, string_r;
-    string_r = 
-      ctx->get_connection_iface()->op_b2("sieben",string_2, string_3);
+    string_r = ctx->get_connection_iface()->op_b2("sieben",string_2, string_3);
     assert(string_2 == "sieben");
     assert(string_3 == "drei");
     assert(string_r == "dreisieben");
@@ -76,8 +69,6 @@ void
 CCM_Test_impl::ccm_passivate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_impl->ccm_passivate()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
@@ -85,8 +76,6 @@ void
 CCM_Test_impl::ccm_remove()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_impl->ccm_remove()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 

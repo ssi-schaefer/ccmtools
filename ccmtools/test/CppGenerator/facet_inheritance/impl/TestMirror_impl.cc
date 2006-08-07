@@ -1,6 +1,5 @@
-
 /***
- * Test_mirror component business logic implementation.
+ * TestMirror component business logic implementation.
  * 
  * // TODO: WRITE YOUR DESCRIPTION HERE! 
  *
@@ -16,48 +15,42 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_mirror_impl.h"
+#include "TestMirror_impl.h"
 
 
 namespace ccm {
 namespace local {
 namespace component {
-namespace Test_mirror {
+namespace TestMirror {
 
 using namespace std;
 using namespace WX::Utils;
 
 //==============================================================================
-// CCM_Test_mirror - component implementation
+// CCM_TestMirror - component implementation
 //==============================================================================
 
-CCM_Test_mirror_impl::CCM_Test_mirror_impl()
+CCM_TestMirror_impl::CCM_TestMirror_impl()
 {
-    DEBUGNL("+CCM_Test_mirror_impl->CCM_Test_mirror_impl()");
 }
 
-CCM_Test_mirror_impl::~CCM_Test_mirror_impl()
+CCM_TestMirror_impl::~CCM_TestMirror_impl()
 {
-    DEBUGNL("-CCM_Test_mirror_impl->~CCM_Test_mirror_impl()");
 }
 
 void
-CCM_Test_mirror_impl::set_session_context(
+CCM_TestMirror_impl::set_session_context(
     Components::SessionContext* context)
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_mirror_impl->set_session_context()");
-    ctx = dynamic_cast<CCM_Test_mirror_Context*>(context);
+    ctx = dynamic_cast<CCM_TestMirror_Context*>(context);
 }
 
 void
-CCM_Test_mirror_impl::ccm_activate()
+CCM_TestMirror_impl::ccm_activate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_mirror_impl->ccm_activate()");
-
-    WX::Utils::SmartPtr<CCM_InterfaceType> receptacle = 
-        ctx->get_connection_a_facet_mirror();
+    WX::Utils::SmartPtr<CCM_InterfaceType> receptacle = ctx->get_connection_a_facet();
     string str1 = "Hallo to first op()";
     long size1 = receptacle->op1(str1);
     assert(size1 == str1.length());
@@ -84,24 +77,20 @@ CCM_Test_mirror_impl::ccm_activate()
 }
 
 void
-CCM_Test_mirror_impl::ccm_passivate()
+CCM_TestMirror_impl::ccm_passivate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_mirror_impl->ccm_passivate()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_mirror_impl::ccm_remove()
+CCM_TestMirror_impl::ccm_remove()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_mirror_impl->ccm_remove()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-} // /namespace Test_mirror
+} // /namespace TestMirror
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

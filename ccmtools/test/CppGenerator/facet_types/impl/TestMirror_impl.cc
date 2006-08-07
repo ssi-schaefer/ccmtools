@@ -17,14 +17,14 @@
 #include <WX/Utils/debug.h>
 #include <ccm/local/Debug.h>
 
-#include "Test_mirror_impl.h"
+#include "TestMirror_impl.h"
 #include "MyObject.h"
 
 
 namespace ccm {
 namespace local {
 namespace component {
-namespace Test_mirror {
+namespace TestMirror {
 
 using namespace std;
 using namespace WX::Utils;
@@ -34,33 +34,26 @@ using namespace WX::Utils;
 // CCM_Test_mirror - component implementation
 //==============================================================================
 
-CCM_Test_mirror_impl::CCM_Test_mirror_impl (  )
+CCM_TestMirror_impl::CCM_TestMirror_impl (  )
 {
-  DEBUGNL ( "+CCM_Test_mirror_impl->CCM_Test_mirror_impl (  )" );
 }
 
-CCM_Test_mirror_impl::~CCM_Test_mirror_impl (  )
+CCM_TestMirror_impl::~CCM_TestMirror_impl (  )
 {
-  DEBUGNL ( "-CCM_Test_mirror_impl->~CCM_Test_mirror_impl (  )" );
-}
-
-void
-CCM_Test_mirror_impl::set_session_context (Components::SessionContext* context )
-  throw ( Components::CCMException )
-{
-  DEBUGNL ( " CCM_Test_mirror_impl->set_session_context (  )" );
-  ctx = dynamic_cast<CCM_Test_mirror_Context*> ( context );
 }
 
 void
-CCM_Test_mirror_impl::ccm_activate (  )
+CCM_TestMirror_impl::set_session_context (Components::SessionContext* context )
   throw ( Components::CCMException )
 {
-  DEBUGNL ( " CCM_Test_mirror_impl->ccm_activate (  )" );
+  ctx = dynamic_cast<CCM_TestMirror_Context*> ( context );
+}
 
-
-  WX::Utils::SmartPtr<CCM_TypeTest> type_test = 
-    ctx->get_connection_type_test_mirror();
+void
+CCM_TestMirror_impl::ccm_activate (  )
+  throw ( Components::CCMException )
+{
+  WX::Utils::SmartPtr<CCM_TypeTest> type_test = ctx->get_connection_type_test();
 
   {
     // no types test case
@@ -229,17 +222,15 @@ CCM_Test_mirror_impl::ccm_activate (  )
 }
 
 void
-CCM_Test_mirror_impl::ccm_passivate (  )
+CCM_TestMirror_impl::ccm_passivate (  )
   throw ( Components::CCMException )
 {
-  DEBUGNL ( " CCM_Test_mirror_impl->ccm_passivate (  )" );
 }
 
 void
-CCM_Test_mirror_impl::ccm_remove (  )
+CCM_TestMirror_impl::ccm_remove (  )
   throw ( Components::CCMException )
 {
-  DEBUGNL ( " CCM_Test_mirror_impl->ccm_remove (  )" );
 }
 
 } // /namespace Test_mirror

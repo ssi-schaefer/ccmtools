@@ -14,20 +14,16 @@ local: idl3
 	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl 
 
 mirror: local
-	ccmtools idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl
-	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test_mirror ${DEST_DIR}/idl/component/Test_mirror.idl ${DEST_DIR}/idl/component/TestHome_mirror.idl
-	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test_mirror ${DEST_DIR}/idl/component/Test.idl 
+	ccmidl -idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/TestMirror ${DEST_DIR}/idl/component/TestMirror.idl ${DEST_DIR}/idl/component/TestHomeMirror.idl
+	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/TestMirror ${DEST_DIR}/idl/component/Test.idl 
 
 check: 
-	cp impl/Makefile.py ${DEST_DIR}
-	touch ${DEST_DIR}/interface/Makefile.py
-	touch ${DEST_DIR}/component/Makefile.py
-	touch ${DEST_DIR}/component/Test/Makefile.py
-	touch ${DEST_DIR}/component/Test_mirror/Makefile.py
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "receptacle_exception" -pversion "1.0.0"
 	cp impl/Test_impl.cc ${DEST_DIR}/component/Test/
-	cp impl/Test_mirror_console_mirror_impl.cc ${DEST_DIR}/component/Test_mirror/
+	cp impl/TestMirror_console_impl.cc ${DEST_DIR}/component/TestMirror/
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=clean	
+	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}

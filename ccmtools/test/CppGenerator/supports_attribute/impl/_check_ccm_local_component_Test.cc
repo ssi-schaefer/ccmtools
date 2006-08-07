@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     SmartPtr<component::Test::Test> myTest;
-   
+
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
     // component- and mirror component home.
@@ -48,7 +48,6 @@ int main(int argc, char *argv[])
     int error = 0;
     Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
-
 #ifdef CCM_USE_DBC
     error  = deploy_dbc_ccm_local_component_Test_TestHome("TestHome", false);
 #else
@@ -72,7 +71,6 @@ int main(int argc, char *argv[])
         SmartPtr<component::Test::TestHome> 
 	  myTestHome(dynamic_cast<component::Test::TestHome*>
             (homeFinder->find_home_by_name("TestHome").ptr()));
-
         myTest = myTestHome->create();
         myTest->configuration_complete();
     } 
@@ -111,34 +109,11 @@ int main(int argc, char *argv[])
     // Usually, the test cases for facets and receptacles are implemened in the
     // mirror component. But for supported interfaces and component attributes, 
     // we can realize test cases in the following section.
-
     try {
-      {	
-	SmartPtr<TypeTest> type_test;
-	type_test = myTest->provide_type_test();
-	long long_2=3, long_3, long_r;
-	long_r = type_test->op_b2(7,long_2, long_3);
-	assert(long_2 == 7);
-	assert(long_3 == 3);
-	assert(long_r == 3+7);
-      }
-      {	
-	SmartPtr<TypeTest> type_test;
-	type_test = myTest->provide_type_test();
-	long long_2=3, long_3, long_r;
-	long_r = type_test->op_b2(7,long_2, long_3);
-	assert(long_2 == 7);
-	assert(long_3 == 3);
-	assert(long_r == 3+7);
-      }
-      {	
-	SmartPtr<TypeTest> type_test;
-	type_test = myTest->provide_type_test();
-	long long_2=3, long_3, long_r;
-	long_r = type_test->op_b2(7,long_2, long_3);
-	assert(long_2 == 7);
-	assert(long_3 == 3);
-	assert(long_r == 3+7);
+      {
+	  const long maxSize = 10;
+	  myTest->max_size(maxSize);
+	  assert(myTest->max_size() == maxSize);
       }
     } 
     catch ( Components::NotImplemented& e ) {
@@ -165,6 +140,7 @@ int main(int argc, char *argv[])
     // Finally, the component and mirror component instances are disconnected 
     // and removed. Thus component homes can be undeployed.
     try {
+
         myTest->remove();
     } 
     catch ( Components::HomeNotFound ) {
@@ -185,9 +161,5 @@ int main(int argc, char *argv[])
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
     }
-
-    // Clean up HomeFinder singleton
-    HomeFinder::destroy();
-
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 }

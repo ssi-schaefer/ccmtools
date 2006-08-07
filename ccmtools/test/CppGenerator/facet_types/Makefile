@@ -14,17 +14,17 @@ local: idl3
 	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/src/component/Test ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl 
 
 mirror: local
-	ccmtools idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl
-	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/src/component/Test_mirror ${DEST_DIR}/idl/component/Test_mirror.idl ${DEST_DIR}/idl/component/TestHome_mirror.idl
-	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/src//component/Test_mirror ${DEST_DIR}/idl/component/Test.idl 
+	ccmidl -idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/Test.idl ${DEST_DIR}/idl/component/TestHome.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/src/component/TestMirror ${DEST_DIR}/idl/component/TestMirror.idl ${DEST_DIR}/idl/component/TestHomeMirror.idl
+	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/src/component/TestMirror ${DEST_DIR}/idl/component/Test.idl 
 
 check: 
 	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "facet_types" -pversion "1.0.0"
 	cp impl/Test_type_test_impl.cc ${DEST_DIR}/src/component/Test/
-	cp impl/MyObject.h ${DEST_DIR}/src/component/Test_mirror/
-	cp impl/MyObject.cc ${DEST_DIR}/src/component/Test_mirror/
-	cp impl/Test_mirror_impl.cc ${DEST_DIR}/src/component/Test_mirror/
-	cp test/_check_witout_mirror.cc ${DEST_DIR}/src/component/Test_mirror/test
+	cp impl/MyObject.h ${DEST_DIR}/src/component/TestMirror/
+	cp impl/MyObject.cc ${DEST_DIR}/src/component/TestMirror/
+	cp impl/TestMirror_impl.cc ${DEST_DIR}/src/component/TestMirror/
+	cp impl/_check_witout_mirror.cc ${DEST_DIR}/src/component/TestMirror/test
 	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
 
 clean: 

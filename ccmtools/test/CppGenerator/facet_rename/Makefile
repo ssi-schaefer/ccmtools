@@ -14,16 +14,12 @@ local: idl3
 	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/Console.idl ${DEST_DIR}/idl/component/HConsole.idl 
 
 mirror: local
-	ccmtools idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/Console.idl ${DEST_DIR}/idl/component/HConsole.idl
-	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test_mirror ${DEST_DIR}/idl/component/Console_mirror.idl ${DEST_DIR}/idl/component/HConsole_mirror.idl
-	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test_mirror ${DEST_DIR}/idl/component/Console.idl 
+	ccmidl -idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/Console.idl ${DEST_DIR}/idl/component/HConsole.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/TestMirror ${DEST_DIR}/idl/component/ConsoleMirror.idl ${DEST_DIR}/idl/component/HConsoleMirror.idl
+	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/TestMirror ${DEST_DIR}/idl/component/Console.idl 
 
 check: 
-	cp impl/Makefile.py ${DEST_DIR}
-	touch ${DEST_DIR}/interface/Makefile.py
-	touch ${DEST_DIR}/component/Makefile.py
-	touch ${DEST_DIR}/component/Test/Makefile.py
-	touch ${DEST_DIR}/component/Test_mirror/Makefile.py
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "facet_rename" -pversion "1.0.0"
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 

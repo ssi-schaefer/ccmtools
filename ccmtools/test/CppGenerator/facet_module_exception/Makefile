@@ -15,16 +15,12 @@ local: idl3
 	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/world/europe/Test.idl ${DEST_DIR}/idl/component/world/europe/TestHome.idl 
 
 mirror: local
-	ccmtools idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/world/europe/Test.idl ${DEST_DIR}/idl/component/world/europe/TestHome.idl
-	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test_mirror ${DEST_DIR}/idl/component/world/europe/Test_mirror.idl ${DEST_DIR}/idl/component/world/europe/TestHome_mirror.idl
-	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test_mirror ${DEST_DIR}/idl/component/world/europe/Test.idl 
+	ccmidl -idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/world/europe/Test.idl ${DEST_DIR}/idl/component/world/europe/TestHome.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/TestMirror ${DEST_DIR}/idl/component/world/europe/TestMirror.idl ${DEST_DIR}/idl/component/world/europe/TestHomeMirror.idl
+	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/TestMirror ${DEST_DIR}/idl/component/world/europe/Test.idl 
 
 check: 
-	cp impl/Makefile.py ${DEST_DIR}
-	touch ${DEST_DIR}/interface/Makefile.py
-	touch ${DEST_DIR}/component/Makefile.py
-	touch ${DEST_DIR}/component/Test/Makefile.py
-	touch ${DEST_DIR}/component/Test_mirror/Makefile.py
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "facet_module_exception" -pversion "1.0.0"
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 

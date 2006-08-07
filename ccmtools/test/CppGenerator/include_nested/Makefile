@@ -14,18 +14,14 @@ local: idl3
 	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Hello ${DEST_DIR}/idl/component/Hello.idl ${DEST_DIR}/idl/component/HelloHome.idl 
 
 mirror: local
-	ccmtools idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/Hello.idl ${DEST_DIR}/idl/component/HelloHome.idl
-	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Hello_mirror ${DEST_DIR}/idl/component/Hello_mirror.idl ${DEST_DIR}/idl/component/HelloHome_mirror.idl
-	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Hello_mirror ${DEST_DIR}/idl/component/Hello.idl 
+	ccmidl -idl3mirror ${IDL_INCLUDE} -o ${DEST_DIR}/idl ${DEST_DIR}/idl/component/Hello.idl ${DEST_DIR}/idl/component/HelloHome.idl
+	ccmtools c++local ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/HelloMirror ${DEST_DIR}/idl/component/HelloMirror.idl ${DEST_DIR}/idl/component/HelloHomeMirror.idl
+	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/HelloMirror ${DEST_DIR}/idl/component/Hello.idl 
 
 check: 
-	cp impl/Makefile.py ${DEST_DIR}
-	touch ${DEST_DIR}/interface/Makefile.py
-	touch ${DEST_DIR}/component/Makefile.py
-	touch ${DEST_DIR}/component/Hello/Makefile.py
-	touch ${DEST_DIR}/component/Hello_mirror/Makefile.py
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "include_nested" -pversion "1.0.0"
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=clean	
+	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}

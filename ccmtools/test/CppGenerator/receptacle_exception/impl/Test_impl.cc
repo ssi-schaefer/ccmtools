@@ -32,12 +32,10 @@ using namespace WX::Utils;
 
 CCM_Test_impl::CCM_Test_impl()
 {
-    DEBUGNL("+CCM_Test_impl->CCM_Test_impl()");
 }
 
 CCM_Test_impl::~CCM_Test_impl()
 {
-    DEBUGNL("-CCM_Test_impl->~CCM_Test_impl()");
 }
 
 void
@@ -45,7 +43,6 @@ CCM_Test_impl::set_session_context(
     Components::SessionContext* context)
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_impl->set_session_context()");
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
@@ -53,8 +50,6 @@ void
 CCM_Test_impl::ccm_activate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_impl->ccm_activate()");
-
     string s = "Salomon.Automation";
     long len =  ctx->get_connection_console()->print(s);
     assert(len == s.length());
@@ -95,8 +90,6 @@ void
 CCM_Test_impl::ccm_passivate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_impl->ccm_passivate()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
@@ -104,8 +97,6 @@ void
 CCM_Test_impl::ccm_remove()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_impl->ccm_remove()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 

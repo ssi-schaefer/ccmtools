@@ -1,4 +1,3 @@
-
 /***
  * Test_mirror component business logic implementation.
  * 
@@ -16,52 +15,47 @@
 #include <iostream>
 #include <WX/Utils/debug.h>
 
-#include "Test_mirror_impl.h"
+#include "TestMirror_impl.h"
 
 namespace ccm {
 namespace local {
 namespace component {
-namespace Test_mirror {
+namespace TestMirror {
 
 using namespace std;
 using namespace WX::Utils;
 
 //==============================================================================
-// CCM_Test_mirror - component implementation
+// CCM_TestMirror - component implementation
 //==============================================================================
 
-CCM_Test_mirror_impl::CCM_Test_mirror_impl()
+CCM_TestMirror_impl::CCM_TestMirror_impl()
 {
-    DEBUGNL("+CCM_Test_mirror_impl->CCM_Test_mirror_impl()");
 }
 
-CCM_Test_mirror_impl::~CCM_Test_mirror_impl()
+CCM_TestMirror_impl::~CCM_TestMirror_impl()
 {
-    DEBUGNL("-CCM_Test_mirror_impl->~CCM_Test_mirror_impl()");
 }
 
 void
-CCM_Test_mirror_impl::set_session_context(
+CCM_TestMirror_impl::set_session_context(
     Components::SessionContext* context)
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_mirror_impl->set_session_context()");
-    ctx = dynamic_cast<CCM_Test_mirror_Context*>(context);
+    ctx = dynamic_cast<CCM_TestMirror_Context*>(context);
 }
 
 void
-CCM_Test_mirror_impl::ccm_activate()
+CCM_TestMirror_impl::ccm_activate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_mirror_impl->ccm_activate()");
-
     string s = "Salomon.Automation";
-    long len =  ctx->get_connection_console_mirror()->println(s);
+    long len =  ctx->get_connection_console()->println(s);
     assert(len == (long)s.length());
   
     try {
         string s = "Error";
-        ctx->get_connection_console_mirror()->println(s);
+        ctx->get_connection_console()->println(s);
         assert(0);
     }
     catch(Error& e) {
@@ -75,7 +69,7 @@ CCM_Test_mirror_impl::ccm_activate()
     
     try {
         string s = "SuperError";
-        ctx->get_connection_console_mirror()->println(s);
+        ctx->get_connection_console()->println(s);
         assert(0);
     }
     catch(SuperError& e) {
@@ -85,7 +79,7 @@ CCM_Test_mirror_impl::ccm_activate()
   
     try {
         string s = "FatalError";
-        ctx->get_connection_console_mirror()->println(s);
+        ctx->get_connection_console()->println(s);
         assert(0);
     }
     catch(Components::Exception& e) {
@@ -99,24 +93,20 @@ CCM_Test_mirror_impl::ccm_activate()
 }
 
 void
-CCM_Test_mirror_impl::ccm_passivate()
+CCM_TestMirror_impl::ccm_passivate()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_mirror_impl->ccm_passivate()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_mirror_impl::ccm_remove()
+CCM_TestMirror_impl::ccm_remove()
     throw(Components::CCMException)
 {
-    DEBUGNL(" CCM_Test_mirror_impl->ccm_remove()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-} // /namespace Test_mirror
+} // /namespace TestMirror
 } // /namespace component
 } // /namespace local
 } // /namespace ccm

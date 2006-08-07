@@ -17,7 +17,7 @@ local: idl3
 check: 
 	ccmconfix -makefiles -o ${DEST_DIR} -pname "any" -pversion "1.0.0"
 	cp impl/Test_any_test_impl.cc ${DEST_DIR}/component/Test/
-	cp test/_check_ccm_local_component_Test.cc ${DEST_DIR}/component/Test/test
+	cp impl/_check_ccm_local_component_Test.cc ${DEST_DIR}/component/Test/test
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 

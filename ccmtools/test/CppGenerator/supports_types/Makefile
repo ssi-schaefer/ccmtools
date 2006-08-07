@@ -16,17 +16,13 @@ local: idl3
 
 check: 
 	mkdir ${DEST_DIR}/component/Test/test
-	cp impl/Makefile.py ${DEST_DIR}
-	touch ${DEST_DIR}/interface/Makefile.py
-	touch ${DEST_DIR}/component/Makefile.py
-	touch ${DEST_DIR}/component/Test/Makefile.py
-	touch ${DEST_DIR}/component/Test/test/Makefile.py
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "supports_types" -pversion "1.0.0"
 	cp impl/MyObject.cc ${DEST_DIR}/component/Test/
 	cp impl/MyObject.h ${DEST_DIR}/component/Test/
 	cp impl/Test_impl.cc ${DEST_DIR}/component/Test/
-	cp test/_check_ccm_local_component_Test.cc ${DEST_DIR}/component/Test/test
+	cp impl/_check_ccm_local_component_Test.cc ${DEST_DIR}/component/Test/test
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=clean	
+	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}
