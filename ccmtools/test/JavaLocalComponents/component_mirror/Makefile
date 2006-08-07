@@ -26,6 +26,8 @@ local: idl3mirror metainf
 build: 
 	cp impl/Client.java ${DEST_DIR}/src/
 	cp impl/TestImpl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/TestMirrorImpl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/TestinPortImpl.java ${DEST_DIR}/src/world/ccm/local/
 	cp impl/TestMirrorsinglePortImpl.java ${DEST_DIR}/src/world/ccm/local/
 	cp impl/TestMirrormultiPort0Impl.java ${DEST_DIR}/src/world/ccm/local/
 	cp impl/TestMirrormultiPort1Impl.java ${DEST_DIR}/src/world/ccm/local/

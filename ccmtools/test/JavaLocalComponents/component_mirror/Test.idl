@@ -9,7 +9,10 @@ module world
 
   component Test
   {
-    uses IFace	   singlePort;
+	provides IFace inPort;
+	
+    uses IFace singlePort;
+	
 	uses multiple IFace multiPort;
   };
 

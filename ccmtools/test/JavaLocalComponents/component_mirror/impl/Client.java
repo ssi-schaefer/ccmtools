@@ -44,6 +44,9 @@ public class Client
             Test component = home.create();
             TestMirror mirrorComponent = mirrorHome.create();
             
+            IFace inPort = component.provide_inPort();
+            mirrorComponent.connect_inPort(inPort);
+            
             IFace singlePort = mirrorComponent.provide_singlePort();
             component.connect_singlePort(singlePort);
             
