@@ -155,7 +155,6 @@ public class HomeDef
 
     public String generateIdl3Mirror()
     {
-        
         return new HomeDefMirrorTemplate().generate(this); 
     }
 

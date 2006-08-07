@@ -27,12 +27,15 @@ public class Constants
     public static final String CPP_PATH = "cpp";
 
 	public static final String COMPONENT_NAMESPACE = "component";
+    
+    public static final String  CCMTOOLS_VERSION_TEXT = "CCM Tools version " + Constants.VERSION;
 
-	public static final String  VERSION_TEXT = 
-	    "CCM Tools version " + Constants.VERSION + "\n"     +
+    public static final String  CCMTOOLS_COPYRIGHT_TEXT = 
         "Copyright (C) 2002 - 2006 Salomon Automation \n"   +
         "The CCM Tools library is distributed under the \n" +
         "terms of the GNU Lesser General Public License.";
+
+    public static final String  VERSION_TEXT = CCMTOOLS_VERSION_TEXT + "\n" + CCMTOOLS_COPYRIGHT_TEXT;
     
     public static final String USAGE_TEXT = 
        "\nUsage: ccmtools GENAERATOR [Options] FILES\n\n"

@@ -641,17 +641,20 @@ public class CcmToIdlModelMapper
 		{
 			logger.fine("MComponentDef: " + repoId);
 			out = new ComponentDef(in.getIdentifier(), Code.getNamespaceList(in));
-			//!!!!!!!!!
-            // Here we set the component (1)----(*) home connection from the wrong
-            // side, but this is needed until we generate IDL used by the CppGenerator...
-//            for(Iterator i = in.getHomes().iterator(); i.hasNext();)
-//            {
-//                MHomeDef home = (MHomeDef)i.next();
-//                HomeDef idlHome = transform(home);
+            // Here we set the component (1)----(*) home connection (for the given
+            // ComponentDef instance we create a new HomeDef instance).
+            for(Iterator i = in.getHomes().iterator(); i.hasNext();)
+            {
+                MHomeDef home = (MHomeDef)i.next();
+                HomeDef idlHome = transform(home, out);                
 //                idlHome.setComponent(out);
-//			    out.getHomes().add(idlHome);
+			    out.getHomes().add(idlHome);
+            }
+//            for(HomeDef home : out.getHomes())
+//            {
+//                System.out.println("*** HomeDef: " + home + "  " + home.getIdentifier());
+//                System.out.println("*** ComponenDef: " + home.getComponent() + "  " + home.getComponent().getIdentifier() );
 //            }
-            //!!!!!!!!!!
 			if(in.getBases() != null)
 			{
 				if(in.getBases().size() == 1) // single inheritynce only
@@ -731,8 +734,19 @@ public class CcmToIdlModelMapper
 		return out;
 	}
 	
-	public HomeDef transform(MHomeDef in)
-	{		
+    public HomeDef transform(MHomeDef in)
+    {
+        return transform(in, null);
+    }
+
+    /**
+     * If we map a home for a known component, we must not instantiate
+     * a new ComponentDef instance to connect it with the new HomeDef
+     * instance - this would start an instantiation cycle (home creates
+     * component creates home ...).
+     */
+    public HomeDef transform(MHomeDef in, ComponentDef component)
+    {
 		HomeDef out;
 		String repoId = Code.getRepositoryId(in);
 		if (artifactCache.containsKey(repoId))
@@ -743,9 +757,15 @@ public class CcmToIdlModelMapper
 		{
 			logger.fine("MHomeDef: " + repoId);
 			out = new HomeDef(in.getIdentifier(), Code.getNamespaceList(in));
-			ComponentDef component = transform(in.getComponent());
-			component.getHomes().add(out);
-			out.setComponent(component);
+            // Here we set the home (*)----(1) component connection if there is no
+            // existing connection from the component side.
+            if(component == null) 
+            {
+			    // there is no ComponentDef instance available, so we create a new one
+			    component = transform(in.getComponent());
+			    component.getHomes().add(out);
+            }
+            out.setComponent(component);
             if(in.getBases() != null)
             {
                 if(in.getBases().size() == 1) // single inheritance only!

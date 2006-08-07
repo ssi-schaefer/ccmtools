@@ -135,6 +135,10 @@ public class ConfixGenerator
 	
     private void printVersion()
     {
-        uiDriver.println("Confix Generator, " + Constants.VERSION_TEXT);
+        uiDriver.println("+");
+        uiDriver.println("+ Confix Generator, " + Constants.CCMTOOLS_VERSION_TEXT);
+        uiDriver.println("+");
+        uiDriver.println("+");
+        uiDriver.println(Constants.CCMTOOLS_COPYRIGHT_TEXT);
     }
 }

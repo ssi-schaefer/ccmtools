@@ -13,8 +13,6 @@
  * To enable debug output use -DWXDEBUG compiler flag and set the
  * WX_DEBUG_LEVELS environment variable to "CCM_LOCAL"
  * (e.g. export WX_DEBUG_LEVELS="CCM_LOCAL").
- *
- * To enable DbC adapter use -DCCM_USE_DBC compiler flag.
  ***/
 
 #include <cassert>
@@ -26,16 +24,11 @@
 #include <ccm/local/Components/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <%(ComponentInclude)s_mirror/%(Identifier)s_mirror_gen.h>
-#include <%(ComponentInclude)s_mirror/%(HomeType)s_mirror_gen.h>
+#include <%(ComponentInclude)sMirror/%(Identifier)sMirror_gen.h>
+#include <%(ComponentInclude)sMirror/%(HomeType)sMirror_gen.h>
 
-#ifdef CCM_USE_DBC
-#include <%(ComponentInclude)s/%(Identifier)s_dbc.h>
-#include <%(ComponentInclude)s/%(HomeType)s_dbc.h>
-#else
 #include <%(ComponentInclude)s/%(Identifier)s_gen.h>
 #include <%(ComponentInclude)s/%(HomeType)s_gen.h>
-#endif
 
 using namespace std;
 using namespace WX::Utils;
@@ -46,7 +39,7 @@ int main(int argc, char *argv[])
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     SmartPtr< %(LocalNamespace)s::%(Identifier)s> my%(Identifier)s;
-    SmartPtr< %(LocalNamespace)s_mirror::%(Identifier)s_mirror> my%(Identifier)sMirror;
+    SmartPtr< %(LocalNamespace)sMirror::%(Identifier)sMirror> my%(Identifier)sMirror;
 %(MProvidesDefVariable)s
 %(MProvidesDefCookie)s
 %(MUsesDefVariable)s
@@ -58,14 +51,9 @@ int main(int argc, char *argv[])
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    Components::HomeFinder* homeFinder = 
-        HomeFinder::Instance();
-#ifdef CCM_USE_DBC
-    error  = deploy_dbc_%(LocalNamespaceMangled)s_%(HomeType)s("%(HomeType)s", false);
-#else
+    Components::HomeFinder* homeFinder = HomeFinder::Instance();
     error  = deploy_%(LocalNamespaceMangled)s_%(HomeType)s("%(HomeType)s");
-#endif
-    error += deploy_%(LocalNamespaceMangled)s_mirror_%(HomeType)s_mirror("%(HomeType)s_mirror");	
+    error += deploy_%(LocalNamespaceMangled)sMirror_%(HomeType)sMirror("%(HomeType)sMirror");	
              
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -87,9 +75,9 @@ int main(int argc, char *argv[])
             dynamic_cast< %(LocalNamespace)s::%(HomeType)s*>
             (homeFinder->find_home_by_name("%(HomeType)s").ptr()));
 
-        SmartPtr< %(LocalNamespace)s_mirror::%(HomeType)s_mirror> 
-            my%(HomeType)sMirror(dynamic_cast< %(LocalNamespace)s_mirror::%(HomeType)s_mirror*>
-            (homeFinder->find_home_by_name("%(HomeType)s_mirror").ptr()));
+        SmartPtr< %(LocalNamespace)sMirror::%(HomeType)sMirror> 
+            my%(HomeType)sMirror(dynamic_cast< %(LocalNamespace)sMirror::%(HomeType)sMirror*>
+            (homeFinder->find_home_by_name("%(HomeType)sMirror").ptr()));
 
         my%(Identifier)s = my%(HomeType)s->create();
         my%(Identifier)sMirror = my%(HomeType)sMirror->create();
@@ -98,6 +86,7 @@ int main(int argc, char *argv[])
 %(MUsesDefCreate)s
 %(MProvidesDefConnect)s
 %(MUsesDefConnect)s
+
         my%(Identifier)s->configuration_complete();
         my%(Identifier)sMirror->configuration_complete();
     } 
@@ -115,14 +104,6 @@ int main(int argc, char *argv[])
              << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(ccm::OCL::OclException& e)
-    {
-        cout << "DEPLOYMENT ERROR: 'design by contract' error:" 
-             << endl << e.what();
-        error = -1;
-    }
-#endif
     catch ( ... )  {
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         error = -1;
@@ -146,19 +127,12 @@ int main(int argc, char *argv[])
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(ccm::OCL::OclException& e)
-    {
-        cout << "TEST: 'design by contract' error:" << endl << e.what();
-        error = -1;
-    }
-#endif
     catch(...) {
         cout << "TEST: there is something wrong!" << endl;
         error = -1;
     }
     if(error < 0) {
-	return error;
+        return error;
     }
   
 
@@ -185,7 +159,7 @@ int main(int argc, char *argv[])
         error = -1;
     }
     error += undeploy_%(LocalNamespaceMangled)s_%(HomeType)s("%(HomeType)s");
-    error += undeploy_%(LocalNamespaceMangled)s_mirror_%(HomeType)s_mirror("%(HomeType)s_mirror");
+    error += undeploy_%(LocalNamespaceMangled)sMirror_%(HomeType)sMirror("%(HomeType)sMirror");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;

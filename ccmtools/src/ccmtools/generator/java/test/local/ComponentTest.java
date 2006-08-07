@@ -27,6 +27,18 @@ public class ComponentTest
     // ------------------------------------------------------------------------
     // Component test cases
     // ------------------------------------------------------------------------
+
+    public void testComponentMirror()
+    {
+        try
+        {
+            executeCommandLine("make -C " + testDir + "/component_mirror test");
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+    }
     
 	public void testAssemblyNested()
 	{

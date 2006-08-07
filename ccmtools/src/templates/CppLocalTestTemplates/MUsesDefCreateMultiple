@@ -1,3 +1,3 @@
-        %(ComponentType)s_uses_%(Identifier)s =
-            my%(ComponentType)sMirror->provide_facet("%(Identifier)s_mirror");
-
+        %(ComponentType)s_uses_%(Identifier)s0 = my%(ComponentType)sMirror->provide_facet("%(Identifier)s0");
+        %(ComponentType)s_uses_%(Identifier)s1 = my%(ComponentType)sMirror->provide_facet("%(Identifier)s1");
+        %(ComponentType)s_uses_%(Identifier)s2 = my%(ComponentType)sMirror->provide_facet("%(Identifier)s2");
