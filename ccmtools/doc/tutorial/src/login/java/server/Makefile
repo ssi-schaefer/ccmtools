@@ -11,7 +11,7 @@ test: local check clean
 idl3: ${IDL_SOURCE}
 	ccmidl -idl3 -o ${IDL3_DIR} ${IDL_SOURCE}
 
-local: idl3
+local: #idl3
 	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/application/*.idl
 	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
