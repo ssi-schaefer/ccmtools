@@ -1,0 +1,15 @@
+module example
+{
+	struct Person
+	{
+		long id;
+		string name;
+	};
+		
+	typedef sequence<string> StringSequence;
+
+	interface AnyInterface
+	{
+		void f1(in any p1);
+	};
+};
