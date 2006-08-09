@@ -1,4 +1,3 @@
-APP_NAME = Test
 DEST_DIR = xxx
 IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
@@ -6,8 +5,8 @@ all: mirror
 
 test: mirror check clean
 
-idl3: ${APP_NAME}.idl
-	ccmidl -idl3 -o ${DEST_DIR}/idl ${APP_NAME}.idl
+idl3: Test.idl
+	ccmidl -idl3 -o ${DEST_DIR}/idl Test.idl
 
 local: idl3
 	ccmtools c++local ${IDL_INCLUDE} -o ${DEST_DIR}/src/interface ${DEST_DIR}/idl/interface/*.idl
@@ -28,5 +27,5 @@ check:
 	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=clean	
+	confix.py --packageroot=`pwd`/${DEST_DIR}/src --make --targets=clean	
 	rm -rf ${DEST_DIR}

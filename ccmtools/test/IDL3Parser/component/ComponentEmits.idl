@@ -1,0 +1,16 @@
+#ifndef __COMPONENT_EMITS__IDL__
+#define __COMPONENT_EMITS__IDL__
+
+#include <events/EventtypeTest.idl>
+
+component ComponentEmits
+{
+  emits Login login;
+};
+
+home ComponentEmitsHome
+	manages ComponentEmits
+{
+};
+
+#endif // __COMPONENT_EMITS__IDL__

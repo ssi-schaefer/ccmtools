@@ -1,0 +1,17 @@
+#ifndef __HOME_PRIMARY_KEY__IDL__
+#define __HOME_PRIMARY_KEY__IDL__
+
+#include <valuetype/ValuetypeTest.idl>
+
+component PrimaryKeys
+{
+    attribute string Id;
+};
+
+home PrimaryKeysHome
+    manages PrimaryKeys
+    primarykey Login
+{
+};
+
+#endif // __HOME_PRIMARY_KEY__IDL__

@@ -1,0 +1,24 @@
+#ifndef __EVENTTYPE_TEST__IDL__
+#define __EVENTTYPE_TEST__IDL__
+
+eventtype Login
+{
+    public long id;
+    public string name;
+    private string password;
+    
+    boolean hasAccess();
+};
+
+eventtype NewLogin : Login
+{
+	public double time;
+	
+	void login();
+};
+
+abstract eventtype EventBase
+{
+};
+
+#endif // __EVENTTYPE_TEST__IDL__

@@ -8,6 +8,7 @@ all: local
 test: local check clean
 
 idl3: Test.idl
+	ccmmodel -check Test.idl
 	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 
 idl3mirror: idl3

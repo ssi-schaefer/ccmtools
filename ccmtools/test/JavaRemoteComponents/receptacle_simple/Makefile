@@ -8,6 +8,7 @@ all: metainf remote clientlib
 test: metainf remote clientlib check clean 
 
 idl3: Test.idl
+	ccmmodel -check Test.idl
 	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 
 metainf: idl3

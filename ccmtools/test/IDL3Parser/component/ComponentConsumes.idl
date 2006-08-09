@@ -1,0 +1,16 @@
+#ifndef __COMPONENT_CONSUMES__IDL__
+#define __COMPONENT_CONSUMES__IDL__
+
+#include <events/EventtypeTest.idl>
+
+component ComponentConsumes
+{
+  consumes Login login;
+};
+
+home ComponentConsumesHome
+	manages ComponentConsumes
+{
+};
+
+#endif // __COMPONENT_CONSUMES__IDL__

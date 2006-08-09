@@ -13,8 +13,8 @@ test: local check clean
 # Here the IDL3 files will be installed to the confix PREFIX/include directory.
 # We generate the local Java component from these installed IDL3 files.
 # Note that there is no separation into an interface and a component directory.
-
 idl3: Test.idl
+	ccmmodel -check Test.idl
 	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 # The ccmconfix generator gets the confix package name (-pn) and package 
 # version (-pv) settings as command line parameters. These parameters are used

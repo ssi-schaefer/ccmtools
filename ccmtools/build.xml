@@ -131,6 +131,7 @@
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmtools"/>      </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmjava"/>       </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmidl"/>        </exec>
+  		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmmodel"/>     </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmparser"/>     </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmconfix"/>     </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmns"/>         </exec>

@@ -1,4 +1,3 @@
-APP_NAME = 
 DEST_DIR = xxx
 IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
@@ -7,6 +6,7 @@ all: mirror
 test: mirror check clean
 
 idl3: Console.idl Hello.idl Lcd.idl Message.idl
+	ccmmodel -check Console.idl Hello.idl Lcd.idl Message.idl
 	ccmidl -idl3 -o ${DEST_DIR}/idl Console.idl Hello.idl Lcd.idl Message.idl
 
 local: idl3

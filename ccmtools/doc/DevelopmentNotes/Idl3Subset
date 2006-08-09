@@ -12,25 +12,31 @@ specification as an IDL3 reference):
 		! Component (single) Inheritance
 		! Home (singe) Interitance
 
-		- 64bit Types (long long, unsigned long long, long double)
+		- long long 64bit Type
+		- unsigned long long 64bit Type
+		- long double 64bit Type
 		- Bounded String
 		- Boundet Sequence
 		- Fixed Type
 		- Union
-		- Native Type
-		- Value Declaration
-		- Event Declaration
-		- Anonymous Types (already deprecated)
+		- "oneway" Operations
+		- Operation "context" Expressions
 		- "abstract" Interface
 		- "local" Interface
 		- Nested Type- and Exception Definitions within Interfaces
-			Components and Homes
-		- "oneway" Operations
-		- Operation "context" Expressions
-		- Component Event Ports ("emits", "publishes", "consumes")
-		- Primary Key Specification for Homes
+		- Nested Type- and Exception Definitions within Components Homes
+		- Nested Type- and Exception Definitions within Homes
 		- Finder Methods for Homes
 		- Supported Interfaces for Homes
+		- Native Type
+		- Value Declaration
+		- Event Declaration
+		- Component Event Ports 'emits' 
+		- Component Event Ports 	'publishes' 
+		- Component Event Ports 	'consumes'
+		- Primary Key Specification for Homes
+
+		- Anonymous Types (already deprecated)
 		- Import Declaration
 		- Repository Identity Declaration
 		- Repository Identifier Prefix Declaration

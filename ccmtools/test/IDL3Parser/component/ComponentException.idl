@@ -1,0 +1,46 @@
+#ifndef __COMPONENT_EXCEPTION__IDL__
+#define __COMPONENT_EXCEPTION__IDL__
+
+#include <typedef/BasicTypeTypedef.idl>
+#include <enum/Color.idl>
+#include <struct/Address.idl>
+#include <array/BasicTypeArray.idl>
+#include <sequence/BasicTypeSequence.idl>
+
+
+component ComponentException
+{
+/*
+  exception ExceptionEmpty
+  {
+  };
+  
+  exception ExceptionBasicType
+  {
+    short shortMember;	
+    long longMember;
+    long long lLongMember;
+    unsigned short uShortMember;
+    unsigned long uLongMember;
+  };
+  
+  exception ExceptionUserType
+  {
+    LongType typedefMember;
+    Color enumMember;
+    Address structMember;
+    LongArray arrayMember;
+    LongSeq sequencemember;
+  };
+    
+  void foo()
+    raises (ExceptionEmpty, ExceptionBasicType, ExceptionUserType);
+  */
+};
+
+home ComponentExceptionHome
+	manages ComponentException
+{
+};
+
+#endif // __COMPONENT_EXCEPTION__IDL__
