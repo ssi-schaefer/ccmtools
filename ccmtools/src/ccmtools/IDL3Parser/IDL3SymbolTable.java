@@ -33,7 +33,7 @@ import java.util.SortedSet;
 import java.util.Stack;
 import java.util.TreeSet;
 
-import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.metamodel.BaseIDL.MContained;
 
 public class IDL3SymbolTable {
     /* holds list of scopes */

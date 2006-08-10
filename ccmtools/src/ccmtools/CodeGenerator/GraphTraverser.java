@@ -20,7 +20,7 @@
 
 package ccmtools.CodeGenerator;
 
-import ccmtools.Metamodel.BaseIDL.MContained;
+import ccmtools.metamodel.BaseIDL.MContained;
 
 import java.util.List;
 

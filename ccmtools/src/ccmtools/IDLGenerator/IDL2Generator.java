@@ -28,14 +28,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.CodeGenerator.Template;
-import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.Metamodel.ComponentIDL.MComponentDef;
-import ccmtools.Metamodel.ComponentIDL.MHomeDef;
-import ccmtools.Metamodel.ComponentIDL.MProvidesDef;
-import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
-import ccmtools.Metamodel.ComponentIDL.MUsesDef;
-import ccmtools.UI.Driver;
+import ccmtools.metamodel.BaseIDL.MContained;
+import ccmtools.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.metamodel.ComponentIDL.MComponentDef;
+import ccmtools.metamodel.ComponentIDL.MHomeDef;
+import ccmtools.metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.metamodel.ComponentIDL.MUsesDef;
+import ccmtools.ui.Driver;
 import ccmtools.utils.Text;
 
 public class IDL2Generator extends IDLGenerator

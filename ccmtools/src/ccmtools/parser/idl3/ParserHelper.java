@@ -9,26 +9,26 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import antlr.TokenStreamException;
-import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MContainedImpl;
-import ccmtools.Metamodel.BaseIDL.MContainer;
-import ccmtools.Metamodel.BaseIDL.MEnumDef;
-import ccmtools.Metamodel.BaseIDL.MExceptionDef;
-import ccmtools.Metamodel.BaseIDL.MFieldDef;
-import ccmtools.Metamodel.BaseIDL.MIDLType;
-import ccmtools.Metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.Metamodel.BaseIDL.MModuleDef;
-import ccmtools.Metamodel.BaseIDL.MOperationDef;
-import ccmtools.Metamodel.BaseIDL.MParameterDef;
-import ccmtools.Metamodel.BaseIDL.MStructDef;
-import ccmtools.Metamodel.BaseIDL.MTyped;
-import ccmtools.Metamodel.BaseIDL.MUnionDef;
-import ccmtools.Metamodel.BaseIDL.MUnionFieldDef;
-import ccmtools.Metamodel.BaseIDL.MValueDef;
-import ccmtools.Metamodel.ComponentIDL.MComponentDef;
-import ccmtools.Metamodel.ComponentIDL.MHomeDef;
-import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
-import ccmtools.Metamodel.ComponentIDL.MSupportsDefImpl;
+import ccmtools.metamodel.BaseIDL.MContained;
+import ccmtools.metamodel.BaseIDL.MContainedImpl;
+import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MEnumDef;
+import ccmtools.metamodel.BaseIDL.MExceptionDef;
+import ccmtools.metamodel.BaseIDL.MFieldDef;
+import ccmtools.metamodel.BaseIDL.MIDLType;
+import ccmtools.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.metamodel.BaseIDL.MModuleDef;
+import ccmtools.metamodel.BaseIDL.MOperationDef;
+import ccmtools.metamodel.BaseIDL.MParameterDef;
+import ccmtools.metamodel.BaseIDL.MStructDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
+import ccmtools.metamodel.BaseIDL.MUnionDef;
+import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
+import ccmtools.metamodel.BaseIDL.MValueDef;
+import ccmtools.metamodel.ComponentIDL.MComponentDef;
+import ccmtools.metamodel.ComponentIDL.MHomeDef;
+import ccmtools.metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.metamodel.ComponentIDL.MSupportsDefImpl;
 
 public class ParserHelper
 {

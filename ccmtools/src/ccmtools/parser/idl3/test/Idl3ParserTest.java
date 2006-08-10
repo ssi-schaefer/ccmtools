@@ -7,14 +7,14 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.Metamodel.BaseIDL.MContainer;
-import ccmtools.Metamodel.BaseIDL.MFieldDef;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
-import ccmtools.Metamodel.BaseIDL.MStringDef;
-import ccmtools.Metamodel.BaseIDL.MStructDef;
-import ccmtools.UI.Driver;
+import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MFieldDef;
+import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.metamodel.BaseIDL.MStringDef;
+import ccmtools.metamodel.BaseIDL.MStructDef;
 import ccmtools.test.CcmtoolsTestCase;
+import ccmtools.ui.Driver;
 import ccmtools.utils.CcmModelHelper;
 
 public class Idl3ParserTest 
@@ -35,7 +35,7 @@ public class Idl3ParserTest
 		ccmtoolsDir = System.getProperty("user.dir");
 		testDir = ccmtoolsDir + "/test/IDL3Parser";
 		includePaths.add("testDir");
-		uiDriver = new ccmtools.UI.ConsoleDriver(Driver.M_NONE);
+		uiDriver = new ccmtools.ui.ConsoleDriver(Driver.M_NONE);
 	}
 	
     public static Test suite()

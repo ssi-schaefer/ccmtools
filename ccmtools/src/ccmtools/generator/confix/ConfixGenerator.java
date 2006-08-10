@@ -9,8 +9,7 @@ import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
-import ccmtools.UI.Driver;
-import ccmtools.generator.confix.ui.CommandLineParameters;
+import ccmtools.ui.Driver;
 
 public class ConfixGenerator
 {

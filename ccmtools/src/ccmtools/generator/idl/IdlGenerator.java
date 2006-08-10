@@ -6,11 +6,11 @@ import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
-import ccmtools.UI.Driver;
+import ccmtools.generator.idl.metamodel.Idl2Generator;
 import ccmtools.generator.idl.metamodel.Idl3Generator;
 import ccmtools.generator.idl.metamodel.Idl3MirrorGenerator;
 import ccmtools.generator.idl.metamodel.ModelRepository;
-import ccmtools.generator.idl.ui.CommandLineParameters;
+import ccmtools.ui.Driver;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Utility;
 
@@ -136,6 +136,27 @@ public class IdlGenerator
 	public void generateIdl2(ModelRepository idlModelRepo)
 		throws CcmtoolsException
 	{
-		
+        logger.fine("begin");
+        try
+        {
+            List<Idl2Generator> idl2Elements = new ArrayList<Idl2Generator>();
+//            idl2Elements.addAll(idlModelRepo.findAllComponents());
+//            idl2Elements.addAll(idlModelRepo.findAllHomes());
+
+//            List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+//            for(Idl2Generator idl2Element : idl2Elements)
+//            {
+//                sourceFileList.addAll(idl2Element.generateIdl2SourceFiles());
+//            }
+            
+            // Save all source file objects
+//            Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new CcmtoolsException("[IDL2 Generator] " + e.getMessage());
+        }
+        logger.fine("end"); 	
 	}
 }

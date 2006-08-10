@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
-import ccmtools.UI.Driver;
 import ccmtools.generator.java.metamodel.ArrayDef;
 import ccmtools.generator.java.metamodel.ComponentDef;
 import ccmtools.generator.java.metamodel.ConstantDef;
@@ -19,7 +18,7 @@ import ccmtools.generator.java.metamodel.ModelRepository;
 import ccmtools.generator.java.metamodel.ProvidesDef;
 import ccmtools.generator.java.metamodel.SequenceDef;
 import ccmtools.generator.java.metamodel.StructDef;
-import ccmtools.generator.java.ui.CommandLineParameters;
+import ccmtools.ui.Driver;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Utility;
 

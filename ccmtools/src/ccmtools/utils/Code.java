@@ -30,10 +30,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ccmtools.Metamodel.BaseIDL.MContained;
-import ccmtools.Metamodel.BaseIDL.MContainer;
-import ccmtools.Metamodel.BaseIDL.MModuleDef;
-import ccmtools.UI.Driver;
+import ccmtools.metamodel.BaseIDL.MContained;
+import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MModuleDef;
+import ccmtools.ui.Driver;
 
 /*******************************************************************************
  * This class collects some helper methods to handle source code as strings and

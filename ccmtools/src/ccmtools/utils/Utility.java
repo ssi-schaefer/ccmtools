@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.UI.Driver;
+import ccmtools.ui.Driver;
 
 public class Utility
 {

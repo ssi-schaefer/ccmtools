@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
-import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MContainer;
 
 public class ParserManager 
 {

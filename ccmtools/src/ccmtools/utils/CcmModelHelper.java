@@ -10,8 +10,8 @@ import java.util.List;
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 
-import ccmtools.Metamodel.BaseIDL.MContainer;
-import ccmtools.UI.Driver;
+import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.ui.Driver;
 
 public class CcmModelHelper
 {

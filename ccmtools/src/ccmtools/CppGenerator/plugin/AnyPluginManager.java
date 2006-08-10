@@ -5,10 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.Metamodel.BaseIDL.MAliasDef;
-import ccmtools.Metamodel.BaseIDL.MIDLType;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.Metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.metamodel.BaseIDL.MAliasDef;
+import ccmtools.metamodel.BaseIDL.MIDLType;
+import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 
 /**
  * This manager class hides all details of the any plugin mechanism from  

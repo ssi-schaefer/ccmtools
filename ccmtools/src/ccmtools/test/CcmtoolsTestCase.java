@@ -64,7 +64,7 @@ public class CcmtoolsTestCase extends TestCase
         for(int i = 0; i < parameters.length; i++)
             System.out.print(" " + parameters[i]);
         System.out.println();
-        ccmtools.UI.Main.main(parameters);
+        ccmtools.ui.Main.main(parameters);
     }
 
     /**
@@ -82,7 +82,7 @@ public class CcmtoolsTestCase extends TestCase
         for(int i = 0; i < parameters.length; i++)
             System.out.print(" " + parameters[i]);
         System.out.println();
-        ccmtools.UI.Main.main(parameters);
+        ccmtools.ui.Main.main(parameters);
     }
 
     /**

@@ -20,7 +20,7 @@
 
 package ccmtools.IDL3Parser;
 
-import ccmtools.Metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MContainer;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;

@@ -20,7 +20,7 @@
 
 package ccmtools.IDL3Parser;
 
-import ccmtools.Metamodel.BaseIDL.MArrayDef;
+import ccmtools.metamodel.BaseIDL.MArrayDef;
 
 class DeclaratorHelper{
     private MArrayDef arrayDef = null;

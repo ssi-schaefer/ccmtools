@@ -1,6 +1,6 @@
 package ccmtools.CppGenerator.plugin;
 
-import ccmtools.Metamodel.BaseIDL.MAliasDef;
+import ccmtools.metamodel.BaseIDL.MAliasDef;
 
 /**
  * This mapping object can be used in all cases where the any target
