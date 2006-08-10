@@ -8,12 +8,16 @@ RELEASE-0.7.0 (July, 2006)
 BRANCH-0.6.x
 ============================================================================
 
-RELEASE-0.6.11 (August , 2006)
+RELEASE-0.6.11 (August 10, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: ccmtools.UI.Main (reported by Duft Markus)
 	The 'ccmtools.cpp' property is not used to determine the right C preprocessor 
 	command (default 'cpp').
 	
+*) Bugfix: C preprocessor without -o option (reported by Duft Markus)
+	Don't use the cpp's -o option, instead write the stdout stream in a file.
+	So we can use C preprocessors which do not support such a -o option too.	
+		
 *) Bugfix: Startscripts (reported by Duft Markus)
 	When used with Interix, some path variables can contain spaces and, thus, 
 	must be quoted.
