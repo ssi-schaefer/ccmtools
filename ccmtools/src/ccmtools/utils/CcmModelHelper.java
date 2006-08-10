@@ -2,6 +2,7 @@ package ccmtools.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
@@ -30,22 +31,33 @@ public class CcmModelHelper
 			// step (0). run the C preprocessor on the input file.
 			// Run the GNU preprocessor cpp in a separate process.
 			StringBuffer cmd = new StringBuffer();
-			cmd.append(Constants.CPP_PATH).append(" -o ").append(idlfile).append(" ");
+            if(CcmtoolsProperties.Instance().get("ccmtools.cpp").length() != 0)
+            {
+                cmd.append(CcmtoolsProperties.Instance().get("ccmtools.cpp"));                
+            }
+            else
+            {
+                cmd.append(Constants.CPP_PATH);
+            }
+            cmd.append(" ");
 			for (Iterator i = includes.iterator(); i.hasNext();)
 			{
 				cmd.append("-I").append((String) i.next()).append(" ");
 			}
 			cmd.append(source);
-
-			//uiDriver.printMessage(cmd.toString());
+                        
+			uiDriver.printMessage(cmd.toString()); // show cpp command line
 			Process preproc = Runtime.getRuntime().exec(cmd.toString());
 			BufferedReader stdInput = new BufferedReader(new InputStreamReader(preproc.getInputStream()));
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
 
 			// Read the output and any errors from the command
 			String s;
+            StringBuffer code = new StringBuffer();
 			while ((s = stdInput.readLine()) != null)
-				uiDriver.printMessage(s);
+            {
+                code.append(s).append("\n");
+            }
 			while ((s = stdError.readLine()) != null)
 				uiDriver.printMessage(s);
 
@@ -53,9 +65,17 @@ public class CcmModelHelper
 			// value of the attempted command
 			preproc.waitFor();
 			if (preproc.exitValue() != 0)
+            {
 				throw new CcmtoolsException("Preprocessor: Please verify your include paths or file names ("
 						+ source + ").");
-
+            }
+            else
+            {
+                FileWriter writer = new FileWriter(idlfile);
+                writer.write(code.toString(), 0, code.toString().length());
+                writer.close();
+            }
+            
 			// step (1). parse the resulting preprocessed file.
 //			uiDriver.printMessage("parse " + idlfile.toString());
 

@@ -22,6 +22,7 @@ package ccmtools.UI;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -105,7 +106,11 @@ public class Main
                                File.separator + "src" +
                                File.separator + "templates");
             }
-    
+            if(CcmtoolsProperties.Instance().get("ccmtools.cpp") == null)
+            {
+                CcmtoolsProperties.Instance().set("ccmtools.cpp", Constants.CPP_PATH);
+            }
+            
             if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.types")) {
                 String s = System.getProperty("ccmtools.templates")
                             + File.separator
@@ -136,9 +141,9 @@ public class Main
             // Log CCM Tools settings
             logger.config("exitOnReturn = " + isExitWithErrorStatus);
             logger.config("ccmtools.home = " + System.getProperty("ccmtools.home"));
+            logger.config("ccmtools.cpp = " + CcmtoolsProperties.Instance().get("ccmtools.cpp"));
             logger.config("ccmtools.templates = " + System.getProperty("ccmtools.templates"));
-            logger.config("ccmtools.impl.dir = " + 
-                          CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
+            logger.config("ccmtools.impl.dir = " + CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
     
             GraphTraverser traverser = new CcmGraphTraverser();
             if(traverser == null) {
@@ -158,8 +163,7 @@ public class Main
                 TemplateHandler handler = createTemplateHandler(uiDriver, generatorType);
                 if(handler == null) {
                     printUsage();
-                    throw new CcmtoolsException("failed to create " + generatorType 
-                                                + " template handler");
+                    throw new CcmtoolsException("failed to create " + generatorType + " template handler");
                 }                
                 handlers.add(handler);
                 traverser.addHandler(handler);
@@ -176,20 +180,25 @@ public class Main
                 
                 // step (0). run the C preprocessor on the input file.
                 // Run the GNU preprocessor cpp in a separate process.
-                String cmd = Constants.CPP_PATH + " -o "+ idlfile + " " + includePath 
-                		+ " " + source;
+//                String cmd = CcmtoolsProperties.Instance().get("ccmtools.cpp") + " -o "+ idlfile 
+//                                + " " + includePath	+ " " + source;
+                String cmd = CcmtoolsProperties.Instance().get("ccmtools.cpp") 
+                                + " " + includePath + " " + source;
+
                 logger.fine(cmd);
                 uiDriver.printMessage(cmd);
                 Process preproc = Runtime.getRuntime().exec(cmd);
-                BufferedReader stdInput = 
-                    new BufferedReader(new InputStreamReader(preproc.getInputStream()));
-                BufferedReader stdError = 
-                    new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
+                BufferedReader stdInput = new BufferedReader(new InputStreamReader(preproc.getInputStream()));
+                BufferedReader stdError = new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
 
                 // Read the output and any errors from the command
+                StringBuffer code = new StringBuffer();
                 String s;
                 while((s = stdInput.readLine()) != null)
-                    uiDriver.printMessage(s);
+                {
+//                    uiDriver.printMessage(s);
+                    code.append(s).append("\n");
+                }
                 while((s = stdError.readLine()) != null)
                     uiDriver.printMessage(s);
 
@@ -197,10 +206,17 @@ public class Main
                 // value of the attempted command
                 preproc.waitFor();
                 if(preproc.exitValue() != 0)
-                   throw new CcmtoolsException("Preprocessor: "
-                                + "Please verify your include paths or file names ("
+                {
+                   throw new CcmtoolsException("Preprocessor: Please verify your include paths or file names ("
                                 + source + ").");
-
+                }
+                else
+                {
+//                    System.out.println(">>>> Write:\n" + code);
+                    FileWriter writer = new FileWriter(idlfile);
+                    writer.write(code.toString(), 0, code.toString().length());
+                    writer.close();
+                }
                 
                 // step (1). parse the resulting preprocessed file.
                 uiDriver.printMessage("parse " + idlfile.toString());

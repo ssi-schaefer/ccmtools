@@ -1,19 +1,18 @@
 #!/bin/sh
 
 if [ -z "$JAVA_HOME" ]; then
-echo "ERROR!"
-echo "Environment variable JAVA_HOME not found!" 
-exit 1
+	echo "ERROR!"
+	echo "Environment variable JAVA_HOME not found!" 
+	exit 1
 fi
 
 JAVA_LAUNCHER="$JAVA_HOME"/bin/orbd
 if [ -x $JAVA_LAUNCHER ]; then 
-
-echo "Run CORBA naming service on port 5050..."
-orbd -ORBInitialPort 5050
-
+	echo "Run CORBA naming service on port 5050..."
+	echo "(orbd -ORBInitialPort 5050)"
+	orbd -ORBInitialPort 5050
 else
-echo "ERROR!"
-echo "Java executable not found in" $JAVA_HOME/bin/orbd
-exit 1
+	echo "ERROR!"
+	echo "Executable orbd not found in" "$JAVA_HOME/bin"
+	exit 1
 fi
