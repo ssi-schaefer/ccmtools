@@ -109,4 +109,25 @@ public class AttributeDef
         code.append(";").append(NL);
         return code.toString();
     }
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
+    public Set<String> generateIdl2IncludePaths()
+    {
+        Set<String> includePaths = new TreeSet<String>();
+        
+        includePaths.add(getType().generateIdl2IncludePath());
+        for(ExceptionDef ex : getGetterExceptions())
+        {
+            includePaths.add(ex.generateIdl2IncludePath());
+        }       
+        for(ExceptionDef ex : getSetterExceptions())
+        {
+            includePaths.add(ex.generateIdl2IncludePath());
+        }       
+        return includePaths;
+    }
 }

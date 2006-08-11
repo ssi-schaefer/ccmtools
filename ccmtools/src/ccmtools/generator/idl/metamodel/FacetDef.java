@@ -58,4 +58,15 @@ public class FacetDef
     {
         return "uses " + getInterface().generateIdlMapping() + " " + getIdentifier() + ";" + NL; 
     }
+
+
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
+    public String generateIdl2()
+    {
+        return getInterface().generateIdlMapping() + " provide_" + getIdentifier() + "();" + NL; 
+    }
+
 }

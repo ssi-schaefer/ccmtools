@@ -29,4 +29,10 @@ public class FieldDef
 	{
 		return TAB + getType().generateIdlMapping() + " " + getIdentifier() + ";" + NL; 
 	}		
+
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
 }

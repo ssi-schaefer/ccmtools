@@ -2,6 +2,9 @@ package ccmtools.generator.idl.metamodel;
 
 import java.util.List;
 
+import ccmtools.generator.idl.templates.Idl2MultipleConnectionTemplate;
+import ccmtools.generator.idl.templates.Idl2SingleConnectionTemplate;
+
 public class ReceptacleDef
 	extends ModelElement
 {
@@ -98,4 +101,21 @@ public class ReceptacleDef
     {
         return "provides " + getInterface().generateIdlMapping() + " " + identifier + ";" + NL;
     }        
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
+    public String generateIdl2()
+    {
+        if(isMultiple())
+        {
+            return new Idl2MultipleConnectionTemplate().generate(this);
+        }
+        else
+        {
+            return new Idl2SingleConnectionTemplate().generate(this);            
+        }
+    }
 }

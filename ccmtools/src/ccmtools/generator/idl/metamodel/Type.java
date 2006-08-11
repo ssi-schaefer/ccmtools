@@ -16,4 +16,6 @@ public interface Type
 	
 	
 	String generateIncludePath();
+    
+    String generateIdl2IncludePath();
 }

@@ -13,4 +13,9 @@ public abstract class TypeImpl
 	{
 		return ""; // primitive typed don't need include statements
 	}	
+    
+    public String generateIdl2IncludePath()
+    {
+        return ""; // primitive typed don't need include statements
+    }   
 }

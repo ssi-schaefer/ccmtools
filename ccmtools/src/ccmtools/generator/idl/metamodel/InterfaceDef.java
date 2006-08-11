@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ccmtools.generator.idl.templates.Idl2InterfaceDefTemplate;
 import ccmtools.generator.idl.templates.InterfaceDefTemplate;
 import ccmtools.utils.Text;
 
@@ -198,4 +199,36 @@ public class InterfaceDef
 		}
 		return code.toString();
 	}
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
+    public String generateIdl2()
+    {
+        return new Idl2InterfaceDefTemplate().generate(this); 
+    }
+    
+    public String generateIdl2IncludeStatements()
+    {
+        Set<String> includePaths = new TreeSet<String>();
+        for(InterfaceDef iface : getBaseInterfaces())
+        {
+            includePaths.add(iface.generateIdl2IncludePath());
+        }   
+        for(ConstantDef constant : getConstants())
+        {
+            includePaths.add(constant.getType().generateIdl2IncludePath());
+        }       
+        for(AttributeDef attr: getAttributes())
+        {
+            includePaths.addAll(attr.generateIdl2IncludePaths());
+        }
+        for(OperationDef op: getOperations())
+        {
+            includePaths.addAll(op.generateIdl2IncludePaths());         
+        }
+        return generateIncludeStatements(includePaths);
+    }
 }

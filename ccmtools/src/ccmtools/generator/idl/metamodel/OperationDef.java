@@ -134,4 +134,27 @@ public class OperationDef
 	{        
         return Helper.generateExceptionList(exceptions);
 	}
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
+    public Set<String> generateIdl2IncludePaths()
+    {
+        Set<String> includePaths = new TreeSet<String>();
+        if(getType() != null)
+        {
+            includePaths.add(getType().generateIdl2IncludePath());
+        }
+        for(ParameterDef parameter : getParameters())
+        {
+            includePaths.add(parameter.generateIdl2IncludePath());
+        }
+        for(ExceptionDef ex : getExceptions())
+        {
+            includePaths.add(ex.generateIdl2IncludePath());
+        }       
+        return includePaths;
+    }
 }

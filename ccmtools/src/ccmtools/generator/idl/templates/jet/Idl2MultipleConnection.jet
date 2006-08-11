@@ -1,0 +1,20 @@
+<%@ jet package="ccmtools.generator.idl.templates" 
+	    class="Idl2MultipleConnectionTemplate" 
+		imports="ccmtools.generator.idl.metamodel.* "	    
+%>
+<% ReceptacleDef model = (ReceptacleDef) argument; %>
+<%=model.indent()%>    struct <%=model.getIdentifier()%>Connection
+<%=model.indent()%>    {
+<%=model.indent()%>        <%=model.getInterface().generateAbsoluteIdlName()%> objref;
+<%=model.indent()%>        ::Components::Cookie ck;
+<%=model.indent()%>    };
+
+<%=model.indent()%>    typedef sequence<<%=model.getIdentifier()%>Connection> <%=model.getIdentifier()%>Connections;
+
+<%=model.indent()%>    ::Components::Cookie connect_<%=model.getIdentifier()%>(in <%=model.getInterface().generateAbsoluteIdlName()%> connection)
+<%=model.indent()%>        raises(::Components::ExceededConnectionLimit, ::Components::InvalidConnection);
+
+<%=model.indent()%>    <%=model.getInterface().generateAbsoluteIdlName()%> disconnect_<%=model.getIdentifier()%>(in ::Components::Cookie ck)
+<%=model.indent()%>        raises(::Components::InvalidConnection);
+
+<%=model.indent()%>    <%=model.getIdentifier()%>Connections get_connections_<%=model.getIdentifier()%>();

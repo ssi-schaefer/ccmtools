@@ -21,7 +21,7 @@ local: idl3
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/europe/austria/Test*.idl
 
 stubs: idl3
-	ccmtools idl2 -o ${IDL2_DIR} Test.idl
+	ccmidl -idl2 -o ${IDL2_DIR} Test.idl
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCMTOOLS_HOME}/idl -I${IDL2_DIR} ${IDL2_DIR}/*.idl
 
 remote: local stubs

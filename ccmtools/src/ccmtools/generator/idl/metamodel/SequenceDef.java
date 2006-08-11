@@ -60,10 +60,15 @@ public class SequenceDef
 	{
 		return getElementType().generateIncludePath();
 	}
-
-	
-	/*************************************************************************
-	 * IDL3 Generator Methods Implementation
-	 *************************************************************************/
-
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
+    public String generateIdl2IncludePath()
+    {
+        return getElementType().generateIdl2IncludePath();
+    }
+    
 }

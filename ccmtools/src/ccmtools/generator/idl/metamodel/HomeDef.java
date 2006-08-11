@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import ccmtools.generator.idl.templates.HomeDefMirrorTemplate;
 import ccmtools.generator.idl.templates.HomeDefTemplate;
+import ccmtools.generator.idl.templates.Idl2HomeDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 import ccmtools.utils.Utility;
@@ -40,12 +41,6 @@ public class HomeDef
     {
         this.baseHome = base;
     }
-//
-//    
-//    public List<AttributeDef> getAttributes()
-//    {
-//        return attributes;
-//    }
     
     
     public List<InterfaceDef> getSupports()
@@ -197,4 +192,46 @@ public class HomeDef
         return sourceFileList;
     }
 
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+
+    public String generateIdl2()
+    {
+        return new Idl2HomeDefTemplate().generate(this); 
+    }
+    
+    public String generateIdl2IncludeStatements()
+    {
+        Set<String> includePaths = new TreeSet<String>();
+        includePaths.add(getComponent().generateIdl2IncludePath());
+        if(getBaseHome() != null)
+        {
+            includePaths.add(getBaseHome().generateIdl2IncludePath());
+        }
+        for(AttributeDef attr: getAttributes())
+        {
+            includePaths.addAll(attr.generateIdl2IncludePaths());
+        }
+        for(InterfaceDef iface : getSupports())
+        {
+            includePaths.add(iface.generateIdl2IncludePath());
+        }
+        for(FactoryMethodDef factory : getFactories())
+        {
+            includePaths.addAll(factory.generateIdl2IncludePaths());
+        }       
+        return generateIncludeStatements(includePaths);
+    }
+    
+    public String generateIdl2DefaultCreate()
+    {
+        StringBuilder code = new StringBuilder();
+        code.append(indent()).append(TAB).append(getComponent().generateAbsoluteIdlName()).append(" ");
+        code.append("create()").append(NL);
+        code.append(indent()).append(TAB2).append("raises(Components::CreateFailure);");        
+        return code.toString();
+    }
+    
 }

@@ -60,4 +60,10 @@ public class ConstantDef
 		return "const " + getType().generateIdlMapping() + " " + getIdentifier() + " = " 
 			+ generateConstantValue() + ";" + NL;
 	}
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+	
 }

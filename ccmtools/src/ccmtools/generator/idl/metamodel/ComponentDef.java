@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import ccmtools.generator.idl.templates.ComponentDefMirrorTemplate;
 import ccmtools.generator.idl.templates.ComponentDefTemplate;
+import ccmtools.generator.idl.templates.Idl2ComponentDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 import ccmtools.utils.Utility;
@@ -238,4 +239,77 @@ public class ComponentDef
         sourceFileList.add(sourceFile);     
         return sourceFileList;    
     }    
+
+
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/   
+        
+    public String generateIdl2()
+    {        
+        return new Idl2ComponentDefTemplate().generate(this); 
+    }
+    
+    public String generateIdl2SupportedInterfaces()
+    {
+        StringBuilder code = new StringBuilder();
+        if(getSupports().size() > 0)
+        {
+            List<String> supportsList = new ArrayList<String>();
+            code.append(indent()).append(TAB).append(", ");
+            for(InterfaceDef iface : getSupports())
+            {
+                supportsList.add(iface.generateAbsoluteIdlName());
+            }
+            code.append(Text.join(", ", supportsList));
+        }
+        return code.toString();
+    }
+    
+    public String generateIdl2ProvidedInterfaces()
+    {
+        StringBuilder code = new StringBuilder();
+        for(FacetDef facet : getFacets())
+        {
+            code.append(indent()).append(TAB).append(facet.generateIdl2());
+        }
+        return code.toString();
+    }
+    
+    public String generateIdl2UsedInterfaces()
+    {
+        StringBuilder code = new StringBuilder();
+        for(ReceptacleDef receptacle : getReceptacles())
+        {
+            code.append(receptacle.generateIdl2());
+        }
+        return code.toString();
+    }
+    
+    public String generateIdl2IncludeStatements()
+    {
+        Set<String> includePaths = new TreeSet<String>();
+        if(getBaseComponent() != null)
+        {
+            includePaths.add(getBaseComponent().generateIdl2IncludePath());
+        }
+        for(AttributeDef attr: getAttributes())
+        {
+            includePaths.addAll(attr.generateIdl2IncludePaths());
+        }
+        for(InterfaceDef supportedIface : getSupports())
+        {
+            includePaths.add(supportedIface.generateIdl2IncludePath());
+        }
+        for(FacetDef facet : getFacets())
+        {
+            includePaths.add(facet.getInterface().generateIdl2IncludePath());
+        }
+        for(ReceptacleDef receptacle : getReceptacles())
+        {
+            includePaths.add(receptacle.getInterface().generateIdl2IncludePath());
+        }
+        // ...
+        return generateIncludeStatements(includePaths);
+    }
 }

@@ -12,7 +12,7 @@ import ccmtools.utils.Utility;
 
 
 public class ModelElement
-	implements Idl3Generator
+	implements Idl3Generator, Idl2Generator
 {
 	/*************************************************************************
 	 * IDL Model Implementation
@@ -100,7 +100,7 @@ public class ModelElement
 
 	
 	/*************************************************************************
-	 * Default Implementations for the Idl3Generator Interface
+	 * Default Implementations for the IDL3 Generator Interface
 	 *************************************************************************/
 	
 	public static final String INTERFACE_PREFIX = "interface";
@@ -131,7 +131,44 @@ public class ModelElement
 		throw new RuntimeException("Not implemented!");
 	}
 	
-	
+
+    /*************************************************************************
+     * Default Implementations for the IDL2 Generator Interface
+     *************************************************************************/
+    
+	public String generateIdl2()
+	{
+	    return generateIdl3(); 
+	}
+    
+    public String generateIdl2IncludePath()
+    {
+        if(getIdlNamespaceList().size() == 0)
+        {
+            return getIdentifier();
+        }
+        else
+        {
+            return Text.joinList("_", getIdlNamespaceList()) + "_" + getIdentifier();
+        }
+    }
+
+    public List<SourceFile> generateIdl2SourceFiles()
+    {
+        List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+        String packageName = Text.joinList("_", getIdlNamespaceList());
+        String sourceCode = generateIdl2();
+        if(sourceCode.length() > 0)
+        {
+            SourceFile sourceFile = new SourceFile("", packageName + "_" + getIdentifier() + ".idl",  
+                Utility.removeEmptyLines(sourceCode));
+            sourceFileList.add(sourceFile);     
+        }
+        return sourceFileList;
+    }
+
+    
+    
 	/*************************************************************************
 	 * Code Generator Utilities 
 	 *************************************************************************/
@@ -262,4 +299,5 @@ public class ModelElement
 		}
 		return code.toString();
 	}
+
 }

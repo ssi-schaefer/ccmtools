@@ -139,18 +139,24 @@ public class IdlGenerator
         logger.fine("begin");
         try
         {
-            List<Idl2Generator> idl2Elements = new ArrayList<Idl2Generator>();
-//            idl2Elements.addAll(idlModelRepo.findAllComponents());
-//            idl2Elements.addAll(idlModelRepo.findAllHomes());
-
-//            List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-//            for(Idl2Generator idl2Element : idl2Elements)
-//            {
-//                sourceFileList.addAll(idl2Element.generateIdl2SourceFiles());
-//            }
+            List<Idl2Generator> idl2ModelElements = new ArrayList<Idl2Generator>();
+            idl2ModelElements.addAll(idlModelRepo.findAllTypedefs());
+            idl2ModelElements.addAll(idlModelRepo.findAllEnums());
+            idl2ModelElements.addAll(idlModelRepo.findAllStructs());
+            idl2ModelElements.addAll(idlModelRepo.findAllGlobalConstants());
+            idl2ModelElements.addAll(idlModelRepo.findAllExceptions());
+            idl2ModelElements.addAll(idlModelRepo.findAllInterfaces());
+            idl2ModelElements.addAll(idlModelRepo.findAllComponents());
+            idl2ModelElements.addAll(idlModelRepo.findAllHomes());
+            
+            List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+            for(Idl2Generator idl2Element : idl2ModelElements)
+            {
+                sourceFileList.addAll(idl2Element.generateIdl2SourceFiles());
+            }
             
             // Save all source file objects
-//            Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+            Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
         }
         catch (Exception e)
         {

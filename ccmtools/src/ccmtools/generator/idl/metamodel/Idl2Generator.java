@@ -9,5 +9,7 @@ public interface Idl2Generator
 {
 	String generateIdl2();
 	
+    String generateIdl2IncludePath();
+    
 	List<SourceFile> generateIdl2SourceFiles();
 }

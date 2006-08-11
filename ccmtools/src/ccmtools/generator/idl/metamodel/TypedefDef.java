@@ -3,6 +3,7 @@ package ccmtools.generator.idl.metamodel;
 import java.util.List;
 
 import ccmtools.generator.idl.templates.ArrayDefTemplate;
+import ccmtools.generator.idl.templates.Idl2TypedefDefFileTemplate;
 import ccmtools.generator.idl.templates.TypedefDefFileTemplate;
 import ccmtools.generator.idl.templates.TypedefDefTemplate;
 
@@ -67,4 +68,20 @@ public class TypedefDef
 			return new TypedefDefTemplate().generate(this);
 		}
 	}
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
+    public String generateIdl2()
+    {
+        return new Idl2TypedefDefFileTemplate().generate(this);
+    }
+        
+    public String generateIdl2IncludeStatements()
+    {
+        return generateIncludeStatement(getAlias().generateIdl2IncludePath());
+    }
+    
 }

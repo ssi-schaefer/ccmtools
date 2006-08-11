@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ccmtools.generator.idl.templates.Idl2StructDefFileTemplate;
 import ccmtools.generator.idl.templates.StructDefFileTemplate;
 import ccmtools.generator.idl.templates.StructDefTemplate;
 
@@ -70,4 +71,25 @@ public class StructDef
 	{
 		return new StructDefTemplate().generate(this);
 	}
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
+    public String generateIdl2()
+    {
+        return new Idl2StructDefFileTemplate().generate(this); 
+    }
+    
+    public String generateIdl2IncludeStatements()
+    {
+        Set<String> includePaths = new TreeSet<String>();
+        for(FieldDef field: getFields())
+        {
+            includePaths.add(field.getType().generateIdl2IncludePath());
+        }
+        return generateIncludeStatements(includePaths);
+    }
+
 }

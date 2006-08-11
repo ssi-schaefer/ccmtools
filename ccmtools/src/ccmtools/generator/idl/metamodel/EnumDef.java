@@ -53,4 +53,10 @@ public class EnumDef
 	{
 		return new EnumDefTemplate().generate(this); 
 	}
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+    
 }

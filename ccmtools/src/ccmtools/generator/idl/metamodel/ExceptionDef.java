@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import ccmtools.generator.idl.templates.ExceptionDefFileTemplate;
 import ccmtools.generator.idl.templates.ExceptionDefTemplate;
+import ccmtools.generator.idl.templates.Idl2ExceptionDefFileTemplate;
 
 public class ExceptionDef
 	extends ModelElement
@@ -68,4 +69,25 @@ public class ExceptionDef
 	{
 		return new ExceptionDefTemplate().generate(this);
 	}
+    
+    
+    /*************************************************************************
+     * IDL2 Generator Methods Implementation
+     *************************************************************************/
+   
+    public String generateIdl2()
+    {
+        return new Idl2ExceptionDefFileTemplate().generate(this); 
+    }
+
+    public String generateIdl2IncludeStatements()
+    {
+        Set<String> includePaths = new TreeSet<String>();
+        for(FieldDef field: getFields())
+        {
+            includePaths.add(field.getType().generateIdl2IncludePath());
+        }
+        return generateIncludeStatements(includePaths);
+    }
+
 }
