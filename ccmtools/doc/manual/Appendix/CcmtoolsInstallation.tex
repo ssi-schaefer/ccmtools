@@ -1,0 +1,258 @@
+% $Id$
+%==============================================================================
+\chapter{CCM Tools Installation}
+%==============================================================================
+
+
+%------------------------------------------------------------------------------
+\section{Prerequisites}
+%------------------------------------------------------------------------------
+
+To install the CCM Tools, the following programs must be available:
+\begin{description}
+\item [Java SDK $\ge$ 1.5.x] ({\tt http://java.sun.com/j2se})
+\item [Apache Ant $\ge$ 1.6.x] ({\tt http://ant.apache.org})
+\item [Python $\ge$ 2.4.x] ({\tt http://python.org})
+\item [cpp $\ge$ 3.3.x] ({\tt http://www.gnu.org})
+\end{description}
+
+To build the generated C++ components, we also need:
+\begin{description}
+\item [Confix $\ge$ 1.5.x] ({\tt http://confix.sourceforge.net})
+\item [gcc $\ge$ 3.3.x] ({\tt http://www.gnu.org})
+\item [mico $\ge$ 2.3.11] ({\tt http://www.mico.org/})
+\end{description}
+
+
+%------------------------------------------------------------------------------
+\section{How to get it}
+%------------------------------------------------------------------------------
+
+The project is hosted at Sourceforge ({\tt http://ccmtools.sf.net}). See the web
+site for releases and announcements.
+
+You can also subscribe to the {\tt ccmtools-announce} mailing list for CCM Tools
+release announcements. The {\tt ccmtools-users} mailing list provides a forum
+for discussion about using the CCM Tools.
+
+
+%------------------------------------------------------------------------------
+\section{Binary distribution}
+%------------------------------------------------------------------------------
+
+Installing the CCM Tools from a binary package is quite simple:
+\begin{small}
+\begin{verbatim}
+$ tar xvzf ccmtools-x.y.z-bin.tar.gz 
+\end{verbatim}
+\end{small}
+
+\noindent
+This package comes with the following structure:
+\begin{small}
+\begin{verbatim}
+ccmtools-x.y.z
+|-- bin
+|-- lib
+`-- templates
+    |-- CppLocalTemplates
+    |-- CppLocalTestTemplates
+    |-- CppRemoteTemplates
+    |-- CppRemoteTestTemplates
+    |-- IDL2Templates
+    |-- IDL3MirrorTemplates
+    `-- IDL3Templates
+\end{verbatim}
+\end{small}
+
+\noindent
+Finally, you can set your environment variables:
+
+\begin{small}
+\begin{verbatim}
+ $ export CCMTOOLS_HOME=<CCM_INSTALL_PATH>
+ $ export PATH=$CCMTOOLS_HOME/bin:$PATH	    
+
+ # Additionally, the following settings are needed for using remote
+ # components based on the Mico ORB
+ $ export CCM_NAME_SERVICE=corbaloc:iiop:1.2@localhost:5050/NameService
+ $ export CCM_COMPONENT_REPOSITORY=${CCMTOOLS_HOME} 
+ $ export CCM_INSTALL=<MY_INSTALL_PATH>
+\end{verbatim}
+\end{small}
+
+\noindent
+Note that you also need a C++ runtime environment to compile and run the
+generated components.
+These C++ runtime packages must be installed from source.
+
+
+\newpage
+%------------------------------------------------------------------------------
+\section{Source distribution}
+%------------------------------------------------------------------------------
+
+
+%------------------------------------------------------------------------------
+\subsection{CCM Tools package:}
+%------------------------------------------------------------------------------
+Installing the CCM Tools from source requires the following steps:
+
+\begin{small}
+\begin{verbatim} 
+ $ tar xvzf ccmtools-x.y.z.tar.gz
+\end{verbatim}
+\end{small}
+
+\noindent
+Alternatively, you can check out an up-to-date version from CVS:
+\begin{small}
+\begin{verbatim}
+ $ cvs -d :pserver:anonymous@ccmtools.cvs.sf.net:/cvsroot/ccmtools login
+ Password: <press enter>
+ $ cvs -d :pserver:anonymous@ccmtools.cvs.sf.net:/cvsroot/ccmtools co ccmtools
+\end{verbatim}
+\end{small}
+
+\noindent
+To build the CCM Tools we use Ant: 
+\begin{small}
+\begin{verbatim}
+ $ cd ccmtools
+ $ ant install -Dprefix=<CCM_INSTALL_PATH>
+\end{verbatim}
+\end{small}
+
+\noindent
+Don't forget to set your environment variables properly
+(as described in the 'Binary distribution' section). 
+
+
+%------------------------------------------------------------------------------
+\subsection{Java runtime package:}
+%------------------------------------------------------------------------------
+To access remote CCM components from Java clients, we have to install
+a Java client's runtime environment called {\tt java-environment}:
+
+\begin{small}
+\begin{verbatim}
+ $ tar xvzf java-environment-x.y.z.tar.gz
+\end{verbatim}
+\end{small}
+
+Alternatively, you can check out an up-to-date version from CVS:
+\begin{small}
+\begin{verbatim}
+ $ cvs -d :pserver:anonymous@ccmtools.cvs.sf.net:/cvsroot/ccmtools \
+       co java-environment
+\end{verbatim}
+\end{small}
+
+To build and install the java-environment we use Ant:
+\begin{small}
+\begin{verbatim}
+ $ cd java-environment
+ $ ant install -Dprefix=<CCM_INSTALL_PATH>
+\end{verbatim}
+\end{small}
+
+\noindent
+To used this runtime library from a Java client, 
+don't forget to set the {\tt CLASSPATH} variable:
+\begin{small}
+\begin{verbatim}
+ $ export CLASSPATH=<CCM_INSTALL_PATH>/lib/Components.java:$CLASSPATH
+\end{verbatim}
+\end{small}
+
+
+
+%------------------------------------------------------------------------------
+\subsection{C++ runtime packages:}
+%------------------------------------------------------------------------------
+As shown in Fig.~\ref{ccmtools-structure}, to compile and run generated CCM
+components, we need a C++ runtime environment.
+
+\noindent
+To build and install C++ environment packages as well as generated C++ components, 
+we use {\tt Confix}. 
+{\tt Confix} is a build tool that is based on {\tt automake} and 
+{\tt autoconf} - visit the {\tt confix.sf.net} page to read the
+exhaustive manual. 
+
+\noindent
+It's a good idea to create a CCM Tools profile in Confix' configuration file
+({\tt .confix}), as described in the Confix manual.
+\begin{small}
+\begin{verbatim}
+ccm_tools_profile = {
+    'PREFIX': '<MY_INSTALL_PATH>',        # use your own path!
+    'BUILDROOT': '<MY_BUILD_PATH>',       # use your own path!
+    'ADVANCED': 'true',
+    'USE_LIBTOOL': 'true',
+    'CONFIX': {
+    },
+    'CONFIGURE': {
+       'ENV': {
+          'CC': 'gcc',                     # use your own path!
+          'CXX': 'g++',                    # use your own path!    
+          'CFLAGS': "-g -O0 -Wall",
+          'CXXFLAGS': "-g -O0 -Wall",
+          },
+       'ARGS': [
+        '--with-mico=<MICO_INSTALL_PATH>/lib/mico-setup.sh'
+	# use your own mico install path!
+       ]
+    },
+}
+
+PROFILES = {
+    'ccmtools': ccm_tools_profile,
+    'default' : ccm_tools_profile
+}
+\end{verbatim}
+\end{small}
+
+\noindent
+It's important that you substitute your own paths in the {\tt .confix} file.\\
+We can configure the {\tt ccm\_tools\_profile} as default profile, thus we 
+don't need to use the {\tt --profile=ccmtools} confix option.
+Additionally, we advise to set the {\tt ADVANCED} flag to {\tt true} instead of
+using the {\tt --advanced} command--line option. 
+
+
+\noindent
+To install the CCM Tools runtime packages, the following steps are needed: 
+
+\begin{small}
+\begin{verbatim}
+ $ tar xvjf wx-toolsbox-x.y.z.tar.bz2
+ $ cd wx-toolsbox-x.y.z
+ $ confix.py --bootstrap --configure --make --targets="install"
+
+ $ tar xvjf wx-utils-x.y.z.tar.bz2
+ $ cd wx-utils-x.y.z
+ $ confix.py --bootstrap --configure --make --targets="install"
+
+ $ tar xvzf cpp-environment-A.B.X.tar.gz
+ $ cd cpp-environment
+ $ confix.py --packageroot=`pwd`/ccm --bootstrap --configure \
+             --make --targets="install"
+\end{verbatim}
+\end{small}
+
+Note that you can alternatively check out an up-to-date version of the
+{\tt cpp-environment} package from CVS:
+\begin{small}
+\begin{verbatim}
+ $ cvs -d :pserver:anonymous@ccmtools.cvs.sf.net:/cvsroot/ccmtools \
+       co cpp-environment
+\end{verbatim}
+\end{small}
+
+Perfect, all tools and libraries have been installed and are ready to work!
+
+
+
+
+

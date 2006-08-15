@@ -1,0 +1,23 @@
+% $Id$
+%=============================================================================
+\section{Modules}
+%=============================================================================
+IDL uses the {\tt module} construct to create namespaces.
+Modules combine related definitions into a logical group and prevent pollution
+of the global namespace.
+
+Identifiers in a module need be unique only within that module.
+Modules do not hide their contents, so you can use a type defined in one module
+inside another module.
+
+Modules can contain any definition that can appear at global scope.
+In addition, modules can contain other modules, so you can create nested
+hierarchies. 
+
+Modules can be reopened. 
+Incremental definition of modules is useful if specifications are written by a
+number of developers (instead of creating a giant definition inside a single
+module, you can break the module into a number of separate source files).
+
+
+\newpage

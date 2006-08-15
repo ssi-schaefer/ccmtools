@@ -1,0 +1,72 @@
+% $Id$
+%=============================================================================
+\section{Basic IDL Types}
+%=============================================================================
+IDL provides a number of build--in basic types. 
+The CORBA specification requires that language mappings preserve the {\it size}
+of basic IDL types.
+To avoid restricting the possible target environments and languages, the 
+specification leaves the size and range requirements for IDL basic types loose.
+
+
+%-----------------------------------------------------------------------------
+\subsection{Integer Types}
+%-----------------------------------------------------------------------------
+
+\begin{itemize}
+  \item {\tt short} (range from $-2^{15}$ to $2^{15}-1$, size $\geq$ 16 bits)
+  \item {\tt long} (range from $-2^{31}$ to $2^{31}-1$, size $\geq$ 32 bits)
+  \item {\tt unsigned short} (range from $0$ to $2^{16}-1$, size  $\geq$
+  16 bits)
+  \item {\tt unsigned long} (range from $0$ to $2^{32}-1$, size $\geq$ 32
+  bits)
+\end{itemize}
+
+%-----------------------------------------------------------------------------
+\subsection{Floating--Point Types}
+%-----------------------------------------------------------------------------
+
+\begin{itemize}
+  \item {\tt float} (IEEE single--precision, size $\geq$ 32 bits)
+  \item {\tt double} (IEEE double--precision, size $\geq$ 64 bits)
+\end{itemize}
+
+
+%-----------------------------------------------------------------------------
+\subsection{Characters}
+%-----------------------------------------------------------------------------
+\begin{itemize}
+  \item {\tt char} (ISO Latin--1, $\geq$ 8 bits)
+  \item {\tt wchar} ($\geq$ 16 bits)
+\end{itemize}
+
+%-----------------------------------------------------------------------------
+\subsection{Strings}
+%-----------------------------------------------------------------------------
+\begin{itemize}
+  \item {\tt string} (ISO Latin--1, variable--length)
+  \item {\tt wstring} (variable--length)
+\end{itemize}
+
+%-----------------------------------------------------------------------------
+\subsection{Booleans}
+%-----------------------------------------------------------------------------
+Boolean values can have only the values {\tt TRUE} and {\tt FALSE}. 
+
+%-----------------------------------------------------------------------------
+\subsection{Octets}
+%-----------------------------------------------------------------------------
+The IDL type {\tt octet} is an 8--bit type that is guaranteed not to undergo any
+changes in representation as it is transmitted between processes.
+
+%-----------------------------------------------------------------------------
+\subsection{Type any}
+%-----------------------------------------------------------------------------
+Type {\tt any} is a universal container type. A value of type {\tt any} can hold
+a value of any other IDL type (e.g. {\tt long}, {\tt string}, or even another
+value of type {\tt any}).
+Type {\tt any} is useful when you don't know at compile time what IDL types you
+will eventually need to transmit between client and server, you can find out at
+runtime what type of value is contained in the {\tt any}.
+
+\newpage

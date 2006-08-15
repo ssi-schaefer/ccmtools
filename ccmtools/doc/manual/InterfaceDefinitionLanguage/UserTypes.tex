@@ -1,0 +1,80 @@
+% $Id$
+%=============================================================================
+\section{User--Defined IDL Types}
+%=============================================================================
+In addition to providing the build--in basic types, IDL permits you to define
+complex types: enumerations, structures and sequences. You can also use {\tt 
+typedef} to explicitly name a type.
+
+%-----------------------------------------------------------------------------
+\subsection{Named Types}
+%-----------------------------------------------------------------------------
+
+You can use {\tt typedef} to create a new name for a type or to rename an
+existing type.
+
+Example:
+\begin{verbatim}
+    typedef long TimeStamp;
+\end{verbatim}
+
+Be careful about the semantics of IDL {\tt typedef}. It depends on the language
+mapping whether an IDL {\tt typedef} results in a new, separate type or only an
+alias. 
+To avoid potential problems, you should define each logical type exactly once
+and then use that definition consistently throughout your specification.
+
+
+%-----------------------------------------------------------------------------
+\subsection{Enumerations}
+%-----------------------------------------------------------------------------
+An IDL enumerated type definition looks much like the C++ version.
+
+Example:
+\begin{verbatim}
+    enum Color 
+    {
+        red, 
+        green, 
+        blue
+    };
+\end{verbatim}
+
+This example introduces a type named {\tt Color} that becomes a new type in its
+own right - there is no need to use a {\tt typedef} to name the type.
+
+
+%-----------------------------------------------------------------------------
+\subsection{Structures}
+%-----------------------------------------------------------------------------
+IDL supports structures containing one or more named members of arbitrary type,
+includeing user--defined complex types.
+
+Example:
+\begin{verbatim}
+    struct TimeOfDay
+    {
+        short hh;
+        short mm;
+        short ss;
+    };
+\end{verbatim}
+
+This definition introduces a new type called {\tt TimeOfDay}.
+Structure definition form a namespace, so the names of the structure members
+need to be unique only within their enclosing structure.
+
+%-----------------------------------------------------------------------------
+\subsection{Sequences}
+%-----------------------------------------------------------------------------
+Sequences are variable--length vectors that can contain any element type. 
+
+Example:
+\begin{verbatim}
+    typedef sequence<Color> Colors; 
+\end{verbatim}
+
+A sequence can hold any number of elements up to the memory limits of your
+platform. 
+
+\newpage
