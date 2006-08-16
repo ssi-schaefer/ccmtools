@@ -4,17 +4,19 @@ IDL3REPO = ../idl3/idl3Repo
 APP_NAME = Test
 IDL_INCLUDE= -I${IDL3REPO}/interface -I${IDL3REPO}/component
 
-all: remote stubs install
+all: remote install
 
 local: 
 	ccmtools c++local ${IDL_INCLUDE} -o ${DEST_DIR} ${IDL3REPO}/interface/america/*.idl
 
-remote: local 
-	ccmtools idl2 ${IDL_INCLUDE} -o ${DEST_DIR}/CCM_corba_stubs ${IDL3REPO}/interface/america/*.idl
+remote: local stubs
 	ccmtools c++remote ${IDL_INCLUDE} -o ${DEST_DIR} ${IDL3REPO}/interface/america/*.idl
 
 stubs:
-	make -C ${DEST_DIR}/CCM_corba_stubs server
+	ccmidl -idl2 ${IDL_INCLUDE} -o ${DEST_DIR}/CCM_corba_stubs ${IDL3REPO}/interface/america/*.idl
+	ccmidl -idl2 ${IDL_INCLUDE} -o ${DEST_DIR}/CCM_corba_stubs ${IDL3REPO}/interface/world/*.idl
+	cp impl/Makefile ${DEST_DIR}/CCM_corba_stubs
+#	make -C ${DEST_DIR}/CCM_corba_stubs 
 
 
 install: 

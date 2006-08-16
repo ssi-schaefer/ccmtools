@@ -1,9 +1,9 @@
 DEST_DIR = xxx
 IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
 
-all: local remote stubs 
+all: local remote
 
-test: remote stubs check clean
+test: remote check clean
 
 idl3: Test.idl
 	ccmmodel -check Test.idl
@@ -23,13 +23,13 @@ check_local:
 	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "remote_facet_module_types" -pversion "1.0.0" 
 	confix.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
 
-
-remote: local
-	ccmtools idl2 -o ${DEST_DIR}/src/CCM_CORBA_Stubs Test.idl
-	ccmtools c++remote -o ${DEST_DIR}/src/component/Test Test.idl
-
 stubs:
-	make -C ${DEST_DIR}/src/CCM_CORBA_Stubs server
+	ccmidl -idl2 -o ${DEST_DIR}/src/CCM_corba_stubs Test.idl
+	cp impl/Makefile ${DEST_DIR}/src/CCM_corba_stubs
+	make -C ${DEST_DIR}/src/CCM_corba_stubs 
+
+remote: local stubs
+	ccmtools c++remote -o ${DEST_DIR}/src/component/Test Test.idl
 
 check: check_local
 	cp impl/_check_world_europe_austria_ccm_remote_component_Test.cc ${DEST_DIR}/src/component/Test/test/

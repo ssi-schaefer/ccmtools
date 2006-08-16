@@ -2,7 +2,7 @@
 #ifndef __world_europe_TEST__
 #define __world_europe_TEST__
 
-#include<IFace.idl>
+#include "IFace.idl"
 
 module world
 {
