@@ -1,9 +1,0 @@
-
-all: server client
-
-server: 
-	ccmtools-idl -mico -I${CCMTOOLS_HOME}/idl *.idl
-
-client:
-	ccmtools-idl -java -I${CCMTOOLS_HOME}/idl *.idl
-	

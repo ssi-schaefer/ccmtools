@@ -156,12 +156,19 @@ public class ModelElement
     public List<SourceFile> generateIdl2SourceFiles()
     {
         List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-        String packageName = Text.joinList("_", getIdlNamespaceList());
+        String fileName;
+        if(getIdlNamespaceList().size() > 0)
+        {
+            fileName = Text.joinList("_", getIdlNamespaceList()) + "_" + getIdentifier() + ".idl";
+        }
+        else
+        {
+            fileName = getIdentifier() + ".idl";
+        }
         String sourceCode = generateIdl2();
         if(sourceCode.length() > 0)
         {
-            SourceFile sourceFile = new SourceFile("", packageName + "_" + getIdentifier() + ".idl",  
-                Utility.removeEmptyLines(sourceCode));
+            SourceFile sourceFile = new SourceFile("", fileName, Utility.removeEmptyLines(sourceCode));
             sourceFileList.add(sourceFile);     
         }
         return sourceFileList;

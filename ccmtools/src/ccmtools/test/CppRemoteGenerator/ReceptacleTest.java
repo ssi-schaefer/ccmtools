@@ -65,6 +65,26 @@ public class ReceptacleTest
             fail();
         }
     }
+        
+    public void testReceptacleInheritance()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/receptacle_inheritance test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+    public void testReceptacleModuleInheritance()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/receptacle_module_inheritance test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
     
     public void testReceptacleTypes()
     {

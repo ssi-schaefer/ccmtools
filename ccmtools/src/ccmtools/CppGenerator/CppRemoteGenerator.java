@@ -3747,7 +3747,7 @@ public class CppRemoteGenerator
         // Setter Method
         code.append("void").append(NL);
         code.append(iface.getIdentifier()).append("AdapterFromCorba::").append(attr.getIdentifier());
-        code.append("(const ").append(getAbsoluteCorbaType(attr, "::")).append(" value)").append(NL);
+        code.append("(const ").append(getAbsoluteCorbaType(idlType, "::")).append(" value)").append(NL);
         code.append(TAB).append("throw(CORBA::SystemException)").append(NL);
         code.append("{").append(NL);
         code.append(TAB).append("LDEBUGNL(CCM_REMOTE, \" ").append(iface.getIdentifier());

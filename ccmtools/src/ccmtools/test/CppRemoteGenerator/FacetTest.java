@@ -66,6 +66,26 @@ public class FacetTest
         }
     }
     
+    public void testFacetInheritance()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_inheritance test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
+    public void testFacetModuleInheritance()
+    {
+        try {
+            executeCommandLine("make -C " + testDir + "/facet_module_inheritance test");
+        }
+        catch(Exception e) {
+            fail();
+        }
+    }
+    
     public void testFacetTypes()
     {
         try {

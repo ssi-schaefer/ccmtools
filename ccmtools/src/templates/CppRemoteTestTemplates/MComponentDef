@@ -26,7 +26,7 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <%(RemoteIncludeNamespace)s/%(HomeType)s_remote.h>
+#include <%(RemoteIncludeNamespace)s%(HomeType)s_remote.h>
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
 
 using namespace std;

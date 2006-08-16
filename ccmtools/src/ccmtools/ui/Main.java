@@ -44,7 +44,6 @@ import ccmtools.CppGenerator.CppLocalTestGenerator;
 import ccmtools.CppGenerator.CppRemoteGenerator;
 import ccmtools.CppGenerator.CppRemoteTestGenerator;
 import ccmtools.IDL3Parser.ParserManager;
-import ccmtools.IDLGenerator.IDL2Generator;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.utils.CcmtoolsProperties;
 
@@ -274,38 +273,50 @@ public class Main
      *         there was an error.
      */
     private static TemplateHandler createTemplateHandler(Driver driver, String generatorType)
+        throws CcmtoolsException
     {
         logger.fine("enter createTemplateHandler()");
         TemplateHandler handler = null;
-        try {
-            if(generatorType.equalsIgnoreCase("c++local")) {
+        try 
+        {
+            if(generatorType.equalsIgnoreCase("c++local")) 
+            {
                 handler = new CppLocalGenerator(driver, outputDirectory);
             }
-            else if(generatorType.equalsIgnoreCase("c++local-test")) {
-                handler = new CppLocalTestGenerator(driver,
-                                                        outputDirectory);
+            else if(generatorType.equalsIgnoreCase("c++local-test")) 
+            {
+                handler = new CppLocalTestGenerator(driver, outputDirectory);
             }
-            else if(generatorType.equalsIgnoreCase("c++remote")) {
+            else if(generatorType.equalsIgnoreCase("c++remote")) 
+            {
                 handler = new CppRemoteGenerator(driver, outputDirectory);
             }
-            else if(generatorType.equalsIgnoreCase("c++remote-test")) {
-                handler = new CppRemoteTestGenerator(driver,
-                                                         outputDirectory);
+            else if(generatorType.equalsIgnoreCase("c++remote-test")) 
+            {
+                handler = new CppRemoteTestGenerator(driver,outputDirectory);
             }
-            else if(generatorType.equalsIgnoreCase("idl2")) {
-                handler = new IDL2Generator(driver, outputDirectory);
+            // !!!!!!!!!!!!!!!!!!!!!!!
+            else if(generatorType.equalsIgnoreCase("idl3")) 
+            {
+                throw new RuntimeException("Please use 'ccmidl -idl3' instead of 'ccmtools idl3'.");
             }
+            else if(generatorType.equalsIgnoreCase("idl3mirror")) 
+            {
+                throw new RuntimeException("Please use 'ccmidl -idl3mirror' instead of 'ccmtools idl3mirror'.");
+            }
+            else if(generatorType.equalsIgnoreCase("idl2")) 
+            {
+                throw new RuntimeException("Please use 'ccmidl -idl2' instead of 'ccmtools idl2'.");
+            }
+            //!!!!!!!!!!!!!!!!!!!!!!!
             
             if((generateFlags & GENERATE_APPLICATION_FILES) != 0) {
                 handler.setFlag(CodeGenerator.FLAG_APPLICATION_FILES);
             }
         }
         catch(Exception e) {
-            String error = "Failed to create a language generator for " + generatorType 
-            + "\n" + e.getMessage();
-            logger.info(error);
-            driver.printError(error);
-            handler = null;
+            String msg = "Failed to create a language generator for " + generatorType + ": " + e.getMessage();
+            throw new CcmtoolsException(msg);
         }
         logger.fine("leave createTemplateHandler()");
         return handler;
@@ -474,10 +485,10 @@ public class Main
 
     private static void exitWithErrorStatus(String errorMessage)
     {
-        logger.info(errorMessage);
-        uiDriver.printError("CCM Tools have been terminated with an error!\n" +
-                            errorMessage);
-        if(isExitWithErrorStatus) {
+        logger.fine(errorMessage);
+        uiDriver.printError(errorMessage);
+        if(isExitWithErrorStatus) 
+        {
             System.exit(EXIT_STATUS_FOR_ERROR);
         }
     }
