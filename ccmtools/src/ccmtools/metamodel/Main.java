@@ -12,6 +12,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
+import ccmtools.Constants;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.ui.Driver;
 import ccmtools.utils.CcmModelHelper;
@@ -167,6 +168,7 @@ public class Main
         
         if(cmd.hasOption("V")) 
         {
+            CcmModelChecker.printVersion(uiDriver);
             return false; // don't continue program execution
         }
         
@@ -218,7 +220,7 @@ public class Main
         return true; // continue program after cl parsing
     }
 
-        
+
     private static void printUsage()
     {
     		logger.fine("");

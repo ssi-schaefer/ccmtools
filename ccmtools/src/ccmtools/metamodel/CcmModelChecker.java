@@ -76,10 +76,10 @@ public class CcmModelChecker
         this.parameters = (CommandLineParameters)parameters;    
         logger = Logger.getLogger("ccm.metamodel.checker");
 		logger.fine("");
-        printVersion();
+        printVersion(uiDriver);
 	}
 
-	private void printVersion()
+	public static void printVersion(Driver uiDriver)
 	{
 	    uiDriver.println("+");
 	    uiDriver.println("+ CCM Model Checker, " + Constants.CCMTOOLS_VERSION_TEXT);

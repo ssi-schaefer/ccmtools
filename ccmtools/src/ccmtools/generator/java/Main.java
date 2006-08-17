@@ -179,6 +179,7 @@ public class Main
         
         if(cmd.hasOption("V")) 
         {
+            ComponentGenerator.printVersion(uiDriver);
             return false; // don't continue program execution
         }
         

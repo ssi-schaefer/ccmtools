@@ -11,6 +11,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
+import ccmtools.Constants;
 import ccmtools.ui.Driver;
 import ccmtools.utils.CcmtoolsProperties;
 
@@ -145,6 +146,7 @@ public class Main
         
         if(cmd.hasOption("V")) 
         {
+            ConfixGenerator.printVersion(uiDriver);
             return false; // don't continue program execution
         }
         
@@ -182,7 +184,13 @@ public class Main
         return true; // continue program after cl parsing
     }
 
-        
+
+    private static void printVersion()
+    {
+        uiDriver.println("Confix Generator");
+        uiDriver.println(Constants.VERSION_TEXT);
+    }
+    
     private static void printUsage()
     {
         HelpFormatter formatter = new HelpFormatter();
@@ -191,7 +199,7 @@ public class Main
         
     private static void exitWithErrorStatus(String errorMessage)
     {
-        uiDriver.printError("CCM Tools have been terminated with an error!\n" + errorMessage);
+        uiDriver.printError(errorMessage);
         if(isExitWithErrorStatus) 
         {
             System.exit(EXIT_STATUS_FOR_ERROR);

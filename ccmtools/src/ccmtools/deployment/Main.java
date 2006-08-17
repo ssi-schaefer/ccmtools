@@ -11,7 +11,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.Constants;
 import ccmtools.ui.Driver;
 
 public class Main
@@ -32,8 +31,6 @@ public class Main
     {
         try {
             uiDriver = new ccmtools.ui.ConsoleDriver(Driver.M_NONE);
-            printVersion();
-            
             DeploymentParameters parameters = new DeploymentParameters();
             if(parseCommandLineArgs(args, parameters)) {
                 CDDGenerator deployment = new CDDGenerator(parameters, uiDriver);
@@ -60,7 +57,7 @@ public class Main
         
         // Define boolean options
         options.addOption("h", "help", false,"Print this message");
-        options.addOption("v", "version", false, "Print the version information and exit");
+        options.addOption("V", "version", false, "Print the version information and exit");
 
         // Define single valued options
         OptionBuilder.withArgName("path");
@@ -113,7 +110,8 @@ public class Main
             printUsage();
             return false; // don't continue program execution
         }
-        if(cmd.hasOption("v")) {
+        if(cmd.hasOption("V")) {
+            CDDGenerator.printVersion(uiDriver);
             return false; // don't continue program execution
         }
         if(cmd.hasOption("o")) {
@@ -147,24 +145,10 @@ public class Main
         return true; // continue program after cl parsing
     }
 
-        
+    
     private static void printUsage()
     {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("ccmdeploy [options] <home>.idl", options);
     }
-        
-    private static void printVersion()
-    {
-        uiDriver.println("\n" + 
-                         "Component Deployment Descriptor Generator\n" + 
-                         Constants.VERSION_TEXT + "\n");
-    }
-    
-//    private static void printArgs(String[] args)
-//    {
-//        for(int i=0; i<args.length; i++) {
-//            uiDriver.println("[" + i + "] " + args[i]);
-//        }            
-//    }
 }

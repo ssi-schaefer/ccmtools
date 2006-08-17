@@ -36,7 +36,7 @@ public class ConfixGenerator
 		ignoredDirs.add("CVS"); // ignore CVS directories for Makefile.py generation
         logger = Logger.getLogger("ccm.generator.confix");
         logger.fine("");
-        printVersion();
+        printVersion(uiDriver);
 	}
 	
 	
@@ -132,7 +132,7 @@ public class ConfixGenerator
 		}
 	}
 	
-    private void printVersion()
+    public static void printVersion(Driver uiDriver)
     {
         uiDriver.println("+");
         uiDriver.println("+ Confix Generator, " + Constants.CCMTOOLS_VERSION_TEXT);

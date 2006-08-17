@@ -13,6 +13,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
+import ccmtools.Constants;
 import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.generator.idl.metamodel.ModelRepository;
@@ -174,6 +175,7 @@ public class Main
         
         if(cmd.hasOption("V")) 
         {
+            IdlGenerator.printVersion(uiDriver);
             return false; // don't continue program execution
         }
         

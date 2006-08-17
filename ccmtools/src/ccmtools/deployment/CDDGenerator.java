@@ -58,12 +58,23 @@ public class CDDGenerator
         this.parameters = parameters;
         this.uiDriver = uiDriver;
         
+        printVersion(uiDriver);
+        
         checkIncludePaths(parameters.getIncludePaths());
         checkOutputPath(parameters.getOutDir());
         checkHomeIdl(parameters.getHomeIdl(), parameters.getIncludePaths());
-        checkAssemblyObject(parameters.getAssemblyObject());
+        checkAssemblyObject(parameters.getAssemblyObject());        
     }
-            
+        
+    public static void printVersion(Driver uiDriver)
+    {
+        uiDriver.println("+");
+        uiDriver.println("+ Component Descriptor Generator, " + Constants.CCMTOOLS_VERSION_TEXT);
+        uiDriver.println("+");
+        uiDriver.println("+");
+        uiDriver.println(Constants.CCMTOOLS_COPYRIGHT_TEXT);
+    }
+    
     
     /**
      * Generate a D&C model from the parameters object and the CCM model 

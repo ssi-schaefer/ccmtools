@@ -47,10 +47,19 @@ public class ComponentGenerator
 		this.parameters = (CommandLineParameters)parameters;		                           
         logger = Logger.getLogger("ccm.generator.java");
         logger.fine("");
-        printVersion();
+        printVersion(uiDriver);
 	}
 	
-	
+    public static void printVersion(Driver uiDriver)
+    {
+        uiDriver.println("+");
+        uiDriver.println("+ Java Component Generator, " + Constants.CCMTOOLS_VERSION_TEXT);
+        uiDriver.println("+");
+        uiDriver.println("+");
+        uiDriver.println(Constants.CCMTOOLS_COPYRIGHT_TEXT);
+    }
+    
+    
 	public void generate(ModelRepository javaModel) throws CcmtoolsException
 	{
 		logger.fine("enter");
@@ -296,9 +305,4 @@ public class ComponentGenerator
 			logger.fine("leave");
 		}
 	}
-	
-    private void printVersion()
-    {
-        uiDriver.println("Java Component Generator, " + Constants.VERSION_TEXT);
-    }
 }

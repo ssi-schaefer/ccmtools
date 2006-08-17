@@ -36,10 +36,10 @@ public class IdlGenerator
 		this.parameters = (CommandLineParameters)parameters;		                           
         logger = Logger.getLogger("ccm.generator.idl");
         logger.fine("");
-        printVersion();
+        printVersion(uiDriver);
 	}
 		
-    private void printVersion()
+    public static void printVersion(Driver uiDriver)
     {
         uiDriver.println("+");
         uiDriver.println("+ IDL Generator, " + Constants.CCMTOOLS_VERSION_TEXT);
