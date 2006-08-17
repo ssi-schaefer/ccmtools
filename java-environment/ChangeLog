@@ -1,0 +1,7 @@
+HEAD
+============================================================================
+
+RELEASE-0.7.0 (August 17, 2006)
+----------------------------------------------------------------------------
+o) Feature: Added ccm.remote.utils.IOR Class
+	This is a simple class to handle IOR files.
