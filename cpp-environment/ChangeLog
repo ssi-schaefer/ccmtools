@@ -1,9 +1,10 @@
 HEAD
 ============================================================================
 
-RELEASE-0.7.0 (July, 2006)
+RELEASE-0.7.0 (JAugust 17, 2006)
 ----------------------------------------------------------------------------
-*) Refactoring: 
+o) Refactoring: 
 	Changed directory names from CCM_Local, CCM_Remote to local, remote.
 	Removed OCL and Python code.
-	
+
+o) Bugfixes: We have merged all bugfixes made in RELEASE-0_6_6-BRANCH to the trunk.
