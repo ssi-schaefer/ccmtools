@@ -1,14 +1,57 @@
 HEAD
 ============================================================================
 
-RELEASE-0.7.0 (July, 2006)
+RELEASE-0.7.0 (August 17, 2006)
 ----------------------------------------------------------------------------
+o) Feature: New IDL Generators (IDL3, IDL3Mirror, IDL2)
+	These new IDL generators (IDL3, IDL3Mirror, IDL2) use a separate implementation
+	model and JET templates. From an existing CCM Model (established by the IDL3
+	parser) a mapper class creates an IDL implementation model (defined by an
+	IDL implementation metamodel). Using this more object oriented approach,
+	together with the precompiled JET templates, the new generators are easier
+	to maintain an much faster.
+	To show the modularity of the ccmtools, we have introduced a separate start
+	script 'ccmidl' with three generator options (-idl3 -idl3mirror, -idl2).
 
+o) Feature: CCM Model Checker
+	We have started to implement a CCM model checker which validates the CCM Model
+	(created by the IDL3 Parser) against the IDL3 subset supported by the 
+	CCM Tools.
+	The CCM Tools user should be informed as soon as possible if the written
+	IDL3 source files are valid for the CCM Tools code generators.
+	We have introduced a new start script 'ccmmodel' with the '-check' option.
+	
+o) Bugfixes: We have merged all bugfixes made in RELEASE-0_6_6-BRANCH to the trunk.
 
+o) Refactoring: Renamed Namespaces
+	We have renamed the following namespaces within the CCM Tools source code:
+	- from ccmtools.Demployment.* to ccmtools.deployment.*
+	- from ccmtools.Metamodel.* to ccmtools.metamodel.*
+	- from ccmtools.UI to ccmtools.ui
+	- moved classes from ccmtools.xyz.ui to ccmtools.xyz namespace
+	
+o) Refactoring: Move source code towards Java 1.5
+	We started to change the source code to support Java 1.5 features (and to 
+	eliminate the compiler warnings).
+	Until now, we have changed the following packages:
+	- ccmtools.generator.confix
+	- ccmtools.generator.idl
+	- ccmtools.generator.java
+	
+o) Refactoring: Test Cases
+	We have changed the test cases to support the new generators.
+	
+o) Refactoring: Removed 'out of date' Packages
+	We have removed some source code relicts:
+	- Python generator prototype
+	- DbC generator prototype
+	
+		
+	
 BRANCH-0.6.x
 ============================================================================
 
-RELEASE-0.6.10 (July, 2006)
+RELEASE-0.6.10 (July 12, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: Local C++ Components
 	Include statements in the interface/*.h files follow now the Confix
