@@ -38,7 +38,7 @@ public class Constants
     public static final String  VERSION_TEXT = CCMTOOLS_VERSION_TEXT + "\n" + CCMTOOLS_COPYRIGHT_TEXT;
     
     public static final String USAGE_TEXT = 
-       "\nUsage: ccmtools GENAERATOR [Options] FILES\n\n"
+       "\nUsage: ccmtools GENERATOR [Options] FILES\n\n"
 	   + "Options:\n"
        + "  -a, --application             Generate skeletons for business logic \n"
        + "  -h, --help                    Display this help\n"

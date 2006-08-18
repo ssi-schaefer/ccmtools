@@ -12,10 +12,8 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.Constants;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.ui.Driver;
-import ccmtools.utils.CcmModelHelper;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 
 public class Main
@@ -24,7 +22,7 @@ public class Main
     private static Options options;
     
     /** Driver that handles user output */
-    private static Driver uiDriver;
+    private static UserInterfaceDriver uiDriver;
     
 	/** Java standard logger object */
 	protected static Logger logger;
@@ -48,7 +46,7 @@ public class Main
 
 		try
 		{
-			uiDriver = new ccmtools.ui.ConsoleDriver(Driver.M_NONE);
+			uiDriver = new ccmtools.ui.ConsoleDriver();
 
 			CommandLineParameters parameters = new CommandLineParameters();
 			if (parseCommandLineArgs(args, parameters))

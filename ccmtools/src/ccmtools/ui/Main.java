@@ -20,30 +20,25 @@
 
 package ccmtools.ui;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.CodeGenerator.TemplateHandler;
-import ccmtools.CodeGenerator.TemplateLoader;
 import ccmtools.CppGenerator.CppLocalGenerator;
 import ccmtools.CppGenerator.CppLocalTestGenerator;
 import ccmtools.CppGenerator.CppRemoteGenerator;
 import ccmtools.CppGenerator.CppRemoteTestGenerator;
 import ccmtools.IDL3Parser.ParserManager;
+import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.utils.CcmtoolsProperties;
 
@@ -51,7 +46,7 @@ import ccmtools.utils.CcmtoolsProperties;
 public class Main
 {
     private static Logger logger;
-    private static Driver uiDriver;
+    private static UserInterfaceDriver uiDriver;
 
     private static final int GENERATE_APPLICATION_FILES = 0x0001;
 
@@ -60,17 +55,30 @@ public class Main
     private static boolean isExitWithErrorStatus;
     private static final int EXIT_STATUS_FOR_ERROR = -1;
     
-    private static List availableGeneratorTypes = null;
-    private static List usedGeneratorTypes = null;
+    private static List<String> availableGeneratorTypes = null;
+    private static List<String> usedGeneratorTypes = null;
 
     private static String includePath;
-    private static List filenames;
+    private static List<String> filenames;
     private static File outputDirectory = new File(System.getProperty("user.dir"));
     private static File baseOutputDirectory = new File(outputDirectory, "");
 
     private static int generateFlags = 0;
 
     
+    // Begin Hack!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+    private static void showNewIdlGeneratorWarning(UserInterfaceDriver uiDriver, String id)
+    {
+        uiDriver.println("!!!!!!!!!!!!!!!!!!! W A R N I N G !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        uiDriver.println("         YOU BETTER USE THE NEW IDL GENERATOR SCRIPT");
+        uiDriver.println("");
+        uiDriver.println("        use 'ccmidl -" + id + "'  instead of 'ccmtools " + id + "'");
+        uiDriver.println("");
+        uiDriver.println("!!!!!!!!!!!!!!!!!!! W A R N I N G !!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+    // End Hack!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!            
+    
+        
     /**
      * Parse and generate code for each input IDL3 file. For each input file, we
      * need to (0) run the C preprocessor on the file to assemble includes and
@@ -80,85 +88,76 @@ public class Main
      */
     public static void main(String[] args)
     {
-        try {
-            /* 
-             * Settings for ccmtools generators 
-             * (from command line, properties and default values)
-             */
-            
-            logger = Logger.getLogger("ccm.main");
-            logger.fine("enter main()");
-        
-            isExitWithErrorStatus = true; 
-
-            // Set default values for ccmtools.home and ccmtools.template properties 
-            // to the current ccmtools directory (if not set from the command line).
-            // These settings are used by ccmtools JUnit tests.
-            if(System.getProperty("ccmtools.home") == null) {
-                System.setProperty("ccmtools.home",System.getProperty("user.dir"));
-            }
-            if(System.getProperty("ccmtools.templates") == null) {
-                System.setProperty("ccmtools.templates", 
-                               System.getProperty("ccmtools.home") + 
-                               File.separator + "src" +
-                               File.separator + "templates");
-            }
-            if(CcmtoolsProperties.Instance().get("ccmtools.cpp") == null)
-            {
-                CcmtoolsProperties.Instance().set("ccmtools.cpp", Constants.CPP_PATH);
-            }
-            
-            if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.types")) {
-                String s = System.getProperty("ccmtools.templates")
-                            + File.separator
-                            + "AnyTypes";
-                CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types", s);
-            }
-            
-            if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.templates")) {
-                String s = System.getProperty("ccmtools.templates")
-                            + File.separator
-                            + "AnyPlugins";
-                CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.templates", s);
-            }
-            
-            
+        logger = Logger.getLogger("ccm.main");
+        logger.fine("enter main()");
+        try 
+        {
             // Create a UI driver that handles user output 
-            uiDriver = new ConsoleDriver(Driver.M_NONE);
+            uiDriver = new ConsoleDriver();
             
             // Print out the current version of ccmtools
             printVersion();  
-        
+            
+            // Begin Hack!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!            
+            // This method is a hack to delegate 'ccmtools idlx' calls to the new
+            // IDL code generator script (e.g. 'ccmidl -idlx').
+            // We should remove this as fast as possible!!!!!
+            if(args.length > 1)
+            {                
+                if(args[0].equals("idl3"))
+                {
+                    showNewIdlGeneratorWarning(uiDriver,args[0]);
+                    args[0] = "-idl3";
+                    ccmtools.generator.idl.Main.main(args);
+                    return;
+                }
+                else if(args[0].equals("idl3mirror"))
+                {   
+                    showNewIdlGeneratorWarning(uiDriver,args[0]);
+                    args[0] = "-idl3mirror";
+                    ccmtools.generator.idl.Main.main(args);
+                    return;
+                }
+                else if(args[0].equals("idl2"))
+                {
+                    showNewIdlGeneratorWarning(uiDriver,args[0]);
+                    args[0] = "-idl2";
+                    ccmtools.generator.idl.Main.main(args);
+                    return;
+                }
+            }        
+            // End Hack!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!            
+                      
+            setPropertyDefaultValues();
+                    
             // Parse command line parameters
             boolean continueProcessing = parseCommandLineArguments(args);
-            if(!continueProcessing) {
+            if(!continueProcessing) 
+            {
                 return; // terminate main()        
             }
             
-            // Log CCM Tools settings
-            logger.config("exitOnReturn = " + isExitWithErrorStatus);
-            logger.config("ccmtools.home = " + System.getProperty("ccmtools.home"));
-            logger.config("ccmtools.cpp = " + CcmtoolsProperties.Instance().get("ccmtools.cpp"));
-            logger.config("ccmtools.templates = " + System.getProperty("ccmtools.templates"));
-            logger.config("ccmtools.impl.dir = " + CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
-    
             GraphTraverser traverser = new CcmGraphTraverser();
-            if(traverser == null) {
+            if(traverser == null) 
+            {
                 printUsage();
                 throw new CcmtoolsException("failed to create a graph traverser");
             }
 
-            ParserManager manager = new ParserManager(Driver.M_NONE);
-            if(manager == null) {
+            ParserManager manager = new ParserManager();
+            if(manager == null) 
+            {
                 printUsage();
                 throw new CcmtoolsException("failed to create a parser manager");
             }
 
-            ArrayList handlers = new ArrayList();
-            for(Iterator l = usedGeneratorTypes.iterator(); l.hasNext();) {
+            List<TemplateHandler> handlers = new ArrayList<TemplateHandler>();
+            for(Iterator l = usedGeneratorTypes.iterator(); l.hasNext();) 
+            {
                 String generatorType = (String) l.next();
                 TemplateHandler handler = createTemplateHandler(uiDriver, generatorType);
-                if(handler == null) {
+                if(handler == null) 
+                {
                     printUsage();
                     throw new CcmtoolsException("failed to create " + generatorType + " template handler");
                 }                
@@ -167,97 +166,80 @@ public class Main
             }
 
             MContainer ccmModel = null;
-            for(Iterator f = filenames.iterator(); f.hasNext();) {
-                File source = new File((String) f.next());
-
-                // create the name of the temporary idl file generated from the preprocessor cpp
-                String tmpFile = "_CCM_" + source.getName();
-                File idlfile = new File(System.getProperty("user.dir"), 
-                                        tmpFile.substring(0, tmpFile.lastIndexOf(".idl")));
-                
-                // step (0). run the C preprocessor on the input file.
-                // Run the GNU preprocessor cpp in a separate process.
-                String cmd = CcmtoolsProperties.Instance().get("ccmtools.cpp") + " " + includePath + " " + source;
-
-                logger.fine(cmd);
-                uiDriver.printMessage(cmd);
-                Process preproc = Runtime.getRuntime().exec(cmd);
-                BufferedReader stdInput = new BufferedReader(new InputStreamReader(preproc.getInputStream()));
-                BufferedReader stdError = new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
-
-                // Read the output and any errors from the command
-                StringBuffer code = new StringBuffer();
-                String s;
-                while((s = stdInput.readLine()) != null)
-                {
-                    code.append(s).append("\n");
-                }
-                while((s = stdError.readLine()) != null)
-                    uiDriver.printMessage(s);
-
-                // Wait for the process to complete and evaluate the return
-                // value of the attempted command
-                preproc.waitFor();
-                if(preproc.exitValue() != 0)
-                {
-                   throw new CcmtoolsException("Preprocessor: Please verify your include paths or file names ("
-                                + source + ").");
-                }
-                else
-                {
-                    FileWriter writer = new FileWriter(idlfile);
-                    writer.write(code.toString(), 0, code.toString().length());
-                    writer.close();
-                }
-                
-                // step (1). parse the resulting preprocessed file.
-                uiDriver.printMessage("parse " + idlfile.toString());
-                manager.reset();
-                manager.setOriginalFile(source.toString());
-                ccmModel = manager.parseFile(idlfile.toString());
-                if(ccmModel == null) 
-                {
-                    throw new CcmtoolsException("Parser error " + source + ":\n" 
-                                                + "Parser returned an empty CCM model");
-                }
-                String kopf_name = source.getName().split("\\.")[0];
-                kopf_name = kopf_name.replaceAll("[^\\w]", "_");
-                ccmModel.setIdentifier(kopf_name);
-
-
-                // step (2). traverse the resulting metamodel graph.
+            for(Iterator f = filenames.iterator(); f.hasNext();) 
+            {
+                String fileName = (String)f.next();
+                ccmModel = CcmModelHelper.loadCcmModel(uiDriver, fileName, includePath); 
                 uiDriver.printMessage("traverse CCM model");
                 traverser.traverseGraph(ccmModel);
-
-                // delete the preprocessed temporary file if everything worked.
-                idlfile.deleteOnExit();
                 uiDriver.printMessage("done.");
             }
         }
-        catch(IllegalArgumentException e) {
+        catch(IllegalArgumentException e) 
+        {
             printUsage();
             exitWithErrorStatus("Usage error: " + e.getMessage());
         }
-        catch(RecognitionException e) {
-            exitWithErrorStatus("Parser error: " + e.getMessage());
-        }
-        catch(TokenStreamException e) {
-            exitWithErrorStatus("Parser error: " + e.getMessage());
-        }
-        catch(CcmtoolsException e) {
+        catch(CcmtoolsException e) 
+        {
             exitWithErrorStatus(e.getMessage());
         }
-        catch(IOException e) {
+        catch(IOException e) 
+        {
             exitWithErrorStatus(e.getMessage());
         }
-        catch(Exception e) {
+        catch(Exception e) 
+        {
         		e.printStackTrace();
             exitWithErrorStatus("Error: " + e.getMessage());
         }
-        
-        logger.fine("TemplateLoader time: " + TemplateLoader.getInstance().getTimerMillis());
- 
         logger.fine("leave main()");
+    }
+
+    
+    private static void setPropertyDefaultValues()
+    {
+        // By default, exit with an error status
+        isExitWithErrorStatus = true;
+        
+        // Set default values for ccmtools.home and ccmtools.template properties 
+        // to the current ccmtools directory (if not set from the command line).
+        if(System.getProperty("ccmtools.home") == null) 
+        {
+            System.setProperty("ccmtools.home",System.getProperty("user.dir"));
+        }
+        if(System.getProperty("ccmtools.templates") == null) 
+        {
+            System.setProperty("ccmtools.templates", 
+                           System.getProperty("ccmtools.home") + 
+                           File.separator + "src" +
+                           File.separator + "templates");
+        }
+        
+        // Set C preprocessor 
+        if(CcmtoolsProperties.Instance().get("ccmtools.cpp") == null)
+        {
+            CcmtoolsProperties.Instance().set("ccmtools.cpp", Constants.CPP_PATH);
+        }
+        
+        if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.types")) 
+        {
+            String s = System.getProperty("ccmtools.templates") + File.separator + "AnyTypes";
+            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types", s);
+        }
+        
+        if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.templates")) 
+        {
+            String s = System.getProperty("ccmtools.templates") + File.separator + "AnyPlugins";
+            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.templates", s);
+        }
+
+        // Log CCM Tools settings
+        logger.config("exitOnReturn = " + isExitWithErrorStatus);
+        logger.config("ccmtools.home = " + System.getProperty("ccmtools.home"));
+        logger.config("ccmtools.cpp = " + CcmtoolsProperties.Instance().get("ccmtools.cpp"));
+        logger.config("ccmtools.templates = " + System.getProperty("ccmtools.templates"));
+        logger.config("ccmtools.impl.dir = " + CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
     }
 
     
@@ -272,7 +254,7 @@ public class Main
      * @return the newly created node handler (i.e. code generator), or exit if
      *         there was an error.
      */
-    private static TemplateHandler createTemplateHandler(Driver driver, String generatorType)
+    private static TemplateHandler createTemplateHandler(UserInterfaceDriver driver, String generatorType)
         throws CcmtoolsException
     {
         logger.fine("enter createTemplateHandler()");
@@ -341,16 +323,16 @@ public class Main
     private static boolean parseCommandLineArguments(String args[])
     {
         logger.fine("enter parseArgs()");
-        usedGeneratorTypes = new ArrayList();
-        availableGeneratorTypes = new ArrayList();
-        filenames = new ArrayList();
+        usedGeneratorTypes = new ArrayList<String>();
+        availableGeneratorTypes = new ArrayList<String>();
+        filenames = new ArrayList<String>();
         includePath = "";
 
         for(int i = 0; i < Constants.GENERATOR_TYPES.length; i++) {
             availableGeneratorTypes.add(Constants.GENERATOR_TYPES[i]);
         }
         
-        List argv = new ArrayList();
+        List<String> argv = new ArrayList<String>();
         for(int i = 0; i < args.length; i++) {
             argv.add(args[i]);
         }
@@ -425,14 +407,17 @@ public class Main
     private static void setOutputDirectory(String val)
     {
         logger.fine("enter setOutputDirectory()");
-        if(val.trim().equals("")) {
+        if(val.trim().equals("")) 
+        {
             throw new IllegalArgumentException("Unspecified output directory");
         }
         File test = new File(val);
-        if(test.isAbsolute()) {
+        if(test.isAbsolute()) 
+        {
             outputDirectory = test;
         }
-        else {
+        else 
+        {
             outputDirectory = new File(baseOutputDirectory, val);
         }
         logger.fine("leave setOutputDirectory()");
@@ -445,14 +430,14 @@ public class Main
             throw new IllegalArgumentException("Unspecified any types file");
         }
         File test = new File(name);
-        if(test.isAbsolute()) {
-            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types",
-                                              test.toString());
+        if(test.isAbsolute()) 
+        {
+            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types", test.toString());
         }
-        else {
+        else 
+        {
             File f = new File(System.getProperty("user.dir"), name);
-            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types",
-                                              f.toString());            
+            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types", f.toString());            
         }
         checkAnyTypesFile(CcmtoolsProperties.Instance().get("ccmtools.dir.plugin.any.types"));
         logger.fine("leave setAnyTypesFile()");

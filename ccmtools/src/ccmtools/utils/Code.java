@@ -33,7 +33,7 @@ import java.util.Set;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MModuleDef;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 
 /*******************************************************************************
  * This class collects some helper methods to handle source code as strings and
@@ -42,91 +42,7 @@ import ccmtools.ui.Driver;
  *  
  ******************************************************************************/
 public class Code
-{
-	
-//	/**
-//	 * Helper method to write out a list of SourceFile objects.
-//	 * 
-//	 * @param uiDriver User interface driver to write some "> write ..." messages 
-//	 * @param outDir Output directory
-//	 * @param sourceFileList List of SourceFile objects
-//	 *
-//	 * @throws CcmtoolsException
-//	 */
-//	public static void writeSourceCodeFiles(Driver uiDriver, String outDir, List sourceFileList)
-//			throws CcmtoolsException
-//	{
-//		try
-//		{
-//			for (Iterator i = sourceFileList.iterator(); i.hasNext();)
-//			{
-//				SourceFile source = (SourceFile) i.next();
-//				writeJavaSourceFile(uiDriver, outDir, source, "");
-//			}
-//		}
-//		catch (IOException e)
-//		{
-//			throw new CcmtoolsException("writeCode(): " + e.getMessage());
-//		}
-//	}
-
-	
-//	public static void writeJavaApplicationFiles(Driver uiDriver, String outDir, List sourceFileList)
-//			throws CcmtoolsException
-//	{
-//		try
-//		{
-//			for (Iterator i = sourceFileList.iterator(); i.hasNext();)
-//			{
-//				SourceFile source = (SourceFile) i.next();
-//				
-//				File location = new File(outDir, source.getPackageName());			
-//				File file = new File(location, source.getClassName());
-//				if(file.exists())
-//				{
-//					uiDriver.println("WARNING " + file + " already exists!");
-//					writeJavaSourceFile(uiDriver, outDir, source, ".new");
-//				}
-//				else
-//				{
-//					writeJavaSourceFile(uiDriver, outDir, source, "");
-//				}
-//			}
-//		}
-//		catch (IOException e)
-//		{
-//			throw new CcmtoolsException("writeCode(): " + e.getMessage());
-//		}
-//	}
-	
-	
-//	public static void writeJavaSourceFile(Driver uiDriver, String outDir, SourceFile source, 
-//											String suffix)
-//		throws IOException
-//	{
-//		File location = new File(outDir, source.getPackageName());
-//		File file = new File(location, source.getClassName() + suffix);
-////		String sourceCode = source.getCode()+"\n";
-//        String sourceCode = source.getCode();
-//        
-//		if(compareWithFile(sourceCode, file))
-//		{
-//			uiDriver.println("skipping " + file);
-//		}
-//		else
-//		{
-//			uiDriver.println("writing " + file);
-//			if (!location.isDirectory())
-//			{
-//				location.mkdirs();
-//			}
-//			FileWriter writer = new FileWriter(file);
-//			writer.write(source.getCode(), 0, source.getCode().length());
-//			writer.close();
-//		}		
-//	}
-	
-	
+{	
     /**
      * Helper function for writing finalized files. (see also
      * CodeGenerator.java)
@@ -140,7 +56,7 @@ public class Code
      * @param output
      *            a string holding the destination file's contents.
      */
-    public static void writeFile(Driver driver, File outDir, String directory, String file,
+    public static void writeFile(UserInterfaceDriver driver, File outDir, String directory, String file,
             String output) throws IOException
     {
         File local_dir = new File(outDir, directory);
@@ -168,7 +84,7 @@ public class Code
      *            A string that will be pasted into the Makefile.
      * @return true if the Makefile has been written, false in all other cases.
      */
-    public static boolean writeMakefile(Driver driver, File outDir, String fileDir,
+    public static boolean writeMakefile(UserInterfaceDriver driver, File outDir, String fileDir,
             String extension, String content) throws IOException
     {
         boolean result;
@@ -196,7 +112,7 @@ public class Code
     public static String prettifySourceCode(String code)
     {
         StringBuffer pretty_code = new StringBuffer();
-        Set include_set = new HashSet();
+        Set<String> include_set = new HashSet<String>();
         int from_index = 0;
         int newline_index = 0;
         boolean isEmptyLineSuccessor = false;
@@ -243,37 +159,6 @@ public class Code
         return pretty_code.toString();
     }
 
-//    /**
-//     * This method reads a file, specified by a File object, and compares the
-//     * file's content with a given code string.
-//     * 
-//     * @param code
-//     *            A string containing source code.
-//     * @param file
-//     *            A File object that points to a file which should be compare.
-//     * @return true if the file's content is equal with the given code string
-//     *         false in all other cases
-//     */
-//    public static boolean compareWithFile(String code, File file) throws IOException
-//    {
-//        if(file.isFile()) 
-//        {
-//            StringBuffer buffer = new StringBuffer();
-//            FileInputStream stream = new FileInputStream(file);
-//            InputStreamReader input = new InputStreamReader(stream);
-//            BufferedReader reader = new BufferedReader(input);
-//            String line = null;
-//            while((line = reader.readLine()) != null) 
-//            {
-//                buffer.append(line + "\n");
-//            }
-//            System.out.println(">>>" + buffer + "<<<");
-//            System.out.println(">>>" + code + "<<<");
-//            return code.equals(buffer.toString());
-//        }
-//        return false;
-//    }
-    
     
     // Methods used to handle CORBA repository IDs ----------------------------
     
@@ -316,7 +201,7 @@ public class Code
     
     public static List getListFromAbsoluteName(String name)
     {
-        List list = new ArrayList();
+        List<String> list = new ArrayList<String>();
         if(name != null) {
             String[] names = name.split("/");
             for(int i = 0; i < names.length; i++) {

@@ -21,6 +21,7 @@ package ccmtools.test;
 
 public class CcmtoolsTestCaseException extends Exception
 {
+    private static final long serialVersionUID = 6139615727824239476L;
 
     public CcmtoolsTestCaseException(String message)
     {

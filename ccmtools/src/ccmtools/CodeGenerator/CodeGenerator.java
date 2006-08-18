@@ -68,7 +68,7 @@ import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MPublishesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
@@ -179,7 +179,7 @@ import ccmtools.utils.Text;
 abstract public class CodeGenerator implements TemplateHandler
 {
     protected Logger logger;
-    protected Driver uiDriver;
+    protected UserInterfaceDriver uiDriver;
     
     protected TemplateManager template_manager;
 
@@ -248,7 +248,7 @@ abstract public class CodeGenerator implements TemplateHandler
      *            assigned in the same order as the elements of the enum.
      * @see ccmtools.CodeGenerator.GraphTraverser
      */
-    public CodeGenerator(String language, Driver d, File out_dir,
+    public CodeGenerator(String language, UserInterfaceDriver d, File out_dir,
             String[] _output_types, String[] _reserved_words,
             String[] _language_map) throws IOException
     {
@@ -368,8 +368,8 @@ abstract public class CodeGenerator implements TemplateHandler
         current_type = node.toString().split(":")[0];
         current_variables = template_manager.getVariables(current_type);
 
-        uiDriver.nodeStart(node, scope_id);
-        uiDriver.currentVariables(current_variables);
+//        uiDriver.nodeStart(node, scope_id);
+//        uiDriver.currentVariables(current_variables);
 
         node_stack.push(currentNode);
         name_stack.push(current_name);
@@ -416,7 +416,7 @@ abstract public class CodeGenerator implements TemplateHandler
         current_type = (String) type_stack.pop();
         current_variables = (Set) variables_stack.pop();
 
-        uiDriver.outputVariables(output_variables);
+//        uiDriver.outputVariables(output_variables);
         
         // update varibles that depend on this node
         updateVariables();
@@ -426,7 +426,7 @@ abstract public class CodeGenerator implements TemplateHandler
         if(node instanceof MModuleDef)
             namespaceStack.pop();
 
-        uiDriver.nodeEnd(node, scope_id);
+//        uiDriver.nodeEnd(node, scope_id);
         
         logger.fine("leave endNode()");
     }
@@ -451,7 +451,7 @@ abstract public class CodeGenerator implements TemplateHandler
         
         String key = getScopeID(field_id);
 
-        uiDriver.nodeData(currentNode, field_id, value);
+//        uiDriver.nodeData(currentNode, field_id, value);
 
         if(field_type.endsWith("boolean")) {
             Boolean hack = new Boolean(value.toString());
@@ -1197,7 +1197,7 @@ abstract public class CodeGenerator implements TemplateHandler
                 throw new RuntimeException("Cannot find a template for "
                         + current_name + " (" + full_var + ")");
 
-            uiDriver.templateContents(t.substituteVariables(output_variables));
+//            uiDriver.templateContents(t.substituteVariables(output_variables));
 
             // add the template contents to the appropriate parent variable's
             // current value.
@@ -1390,57 +1390,5 @@ abstract public class CodeGenerator implements TemplateHandler
         logger.fine("leave isCodeEqualWithFile()");
         return false;
     }
-
-    /**
-     * This method removes empty lines (if more than one) and similar #include
-     * statements from the generated code.
-     * 
-     * @param code
-     *            A string containing generated code that should be prettified.
-     * @return A string containing a prittified version of a given source code.
-     */
-//    protected String prettifyCode(String code)
-//    {
-//        logger.fine("enter prettifyCode()");
-//        StringBuffer pretty_code = new StringBuffer();
-//        Set include_set = new HashSet();
-//        int from_index = 0;
-//        int newline_index = 0;
-//        boolean isEmptyLineSuccessor = false;
-//        do {
-//            newline_index = code.indexOf('\n', from_index);
-//            String code_line = code.substring(from_index, newline_index);
-//            from_index = newline_index + 1;
-//            if(code_line.length() != 0) {
-//                isEmptyLineSuccessor = false;
-//
-//                if(code_line.startsWith("#include")) {
-//                    if(include_set.contains(code_line)) {
-//                        // Ignore similar #include statements
-//                    }
-//                    else {
-//                        include_set.add(code_line);
-//                        pretty_code.append(code_line);
-//                        pretty_code.append('\n');
-//                    }
-//                }
-//                else {
-//                    pretty_code.append(code_line);
-//                    pretty_code.append('\n');
-//                }
-//            }
-//            else {
-//                if(isEmptyLineSuccessor) {
-//                    // Ignore second empty line
-//                }
-//                else {
-//                    isEmptyLineSuccessor = true;
-//                    pretty_code.append('\n');
-//                }
-//            }
-//        } while(from_index < code.length());
-//        logger.fine("leave prettifyCode()");
-//        return pretty_code.toString();
-//    }
 }
 

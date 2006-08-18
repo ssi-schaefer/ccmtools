@@ -22,7 +22,7 @@ import ccmtools.deployment.metamodel.ComponentPackageDescription;
 import ccmtools.deployment.metamodel.DeploymentFactory;
 import ccmtools.deployment.metamodel.PackagedComponentImplementation;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Code;
 
 
@@ -38,7 +38,7 @@ public class CDDGenerator
     private Logger logger;
 
     /** Driver that handles user output */
-    private Driver uiDriver;
+    private UserInterfaceDriver uiDriver;
 
     
     /**
@@ -49,7 +49,7 @@ public class CDDGenerator
      * @param uiDriver
      * @throws CcmtoolsException
      */
-    public CDDGenerator(DeploymentParameters parameters, Driver uiDriver) 
+    public CDDGenerator(DeploymentParameters parameters, UserInterfaceDriver uiDriver) 
         throws CcmtoolsException
     {
         logger = Logger.getLogger("ccm.generator.cdd");
@@ -66,7 +66,7 @@ public class CDDGenerator
         checkAssemblyObject(parameters.getAssemblyObject());        
     }
         
-    public static void printVersion(Driver uiDriver)
+    public static void printVersion(UserInterfaceDriver uiDriver)
     {
         uiDriver.println("+");
         uiDriver.println("+ Component Descriptor Generator, " + Constants.CCMTOOLS_VERSION_TEXT);
@@ -224,7 +224,7 @@ public class CDDGenerator
         File source = new File(fileName);
         MContainer ccmModel = null;
         try {
-            ParserManager manager = new ParserManager(Driver.M_NONE);
+            ParserManager manager = new ParserManager();
 
             // create the name of the temporary idl file generated from the
             // preprocessor cpp

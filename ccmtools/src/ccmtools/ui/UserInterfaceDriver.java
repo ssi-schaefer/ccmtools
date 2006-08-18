@@ -1,4 +1,4 @@
-/* CCM Tools : User Interface Library
+/* CCM Tools : Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
  * Copyright (C) 2002, 2003 Salomon Automation
  *
@@ -20,39 +20,10 @@
 
 package ccmtools.ui;
 
-
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-
-
-public class ConsoleDriver
-    implements UserInterfaceDriver
+public interface UserInterfaceDriver
 {
-    private PrintStream out;
-    private PrintStream err;
-    
-    public ConsoleDriver() 
-        throws FileNotFoundException
-    {
-        out = System.out;
-        err = System.err;
-    }
-    
-        
-    public void println(String msg)
-    {
-        out.println(msg);
-    }
-    
-    
-    public void printMessage(String msg)
-    {
-        out.println("> " + msg);
-    }
-
-    
-    public void printError(String msg)
-    {
-        err.println("!!!! CCM Tools Error: " + msg);
-    }
+    void println(String str);
+    void printMessage(String msg);
+    void printError(String err);
 }
+

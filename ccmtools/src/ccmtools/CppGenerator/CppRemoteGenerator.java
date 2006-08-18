@@ -58,7 +58,7 @@ import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 import ccmtools.utils.Code;
 import ccmtools.utils.Text;
@@ -153,13 +153,13 @@ public class CppRemoteGenerator
      * 
      * @exception IOException
      */
-    public CppRemoteGenerator(Driver uiDriver, File outDir) 
+    public CppRemoteGenerator(UserInterfaceDriver uiDriver, File outDir) 
     		throws IOException
     {
         this("CppRemote",uiDriver, outDir, REMOTE_OUTPUT_TEMPLATE_TYPES);
     }
     
-    public CppRemoteGenerator(String language, Driver uiDriver, File outDir, String[] output_types) 
+    public CppRemoteGenerator(String language, UserInterfaceDriver uiDriver, File outDir, String[] output_types) 
         throws IOException
     {
         super(language, uiDriver, outDir, output_types);

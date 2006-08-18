@@ -10,7 +10,7 @@ import ccmtools.generator.idl.metamodel.Idl2Generator;
 import ccmtools.generator.idl.metamodel.Idl3Generator;
 import ccmtools.generator.idl.metamodel.Idl3MirrorGenerator;
 import ccmtools.generator.idl.metamodel.ModelRepository;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Utility;
 
@@ -21,7 +21,7 @@ public class IdlGenerator
 	public static final String IDL2_ID = "idl2";
 	
 	/** UI driver for generator messages */
-	protected Driver uiDriver;
+	protected UserInterfaceDriver uiDriver;
 	
 	/** Command line parameters */
 	protected CommandLineParameters parameters;
@@ -30,7 +30,7 @@ public class IdlGenerator
 	protected Logger logger;
 	
 	
-	public IdlGenerator(CommandLineParameters parameters, Driver uiDriver)
+	public IdlGenerator(CommandLineParameters parameters, UserInterfaceDriver uiDriver)
 	{
 		this.uiDriver = uiDriver;
 		this.parameters = (CommandLineParameters)parameters;		                           
@@ -39,7 +39,7 @@ public class IdlGenerator
         printVersion(uiDriver);
 	}
 		
-    public static void printVersion(Driver uiDriver)
+    public static void printVersion(UserInterfaceDriver uiDriver)
     {
         uiDriver.println("+");
         uiDriver.println("+ IDL Generator, " + Constants.CCMTOOLS_VERSION_TEXT);

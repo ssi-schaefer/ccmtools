@@ -35,7 +35,7 @@ import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Code;
 
 
@@ -51,12 +51,12 @@ public class CcmModelPrinter
     protected CommandLineParameters parameters;
     
     /** UI driver for generator messages */
-    protected Driver uiDriver;
+    protected UserInterfaceDriver uiDriver;
     
     /** Java logging */
     private Logger logger;
         
-	public CcmModelPrinter(Driver uiDriver, CommandLineParameters parameters)
+	public CcmModelPrinter(UserInterfaceDriver uiDriver, CommandLineParameters parameters)
 	{
         this.uiDriver = uiDriver;
         this.parameters = (CommandLineParameters)parameters;    

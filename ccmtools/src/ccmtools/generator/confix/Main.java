@@ -11,8 +11,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.Constants;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 
 public class Main
@@ -21,7 +20,7 @@ public class Main
     private static Options options;
     
     /** Driver that handles user output */
-    private static Driver uiDriver;
+    private static UserInterfaceDriver uiDriver;
     
     // If the isExitWithErrorStatus flag is set, the main() function will 
     // call exit(1) to terminate ccmtools and the running Java VM.
@@ -40,7 +39,7 @@ public class Main
     {
         try 
         {
-            uiDriver = new ccmtools.ui.ConsoleDriver(Driver.M_NONE);
+            uiDriver = new ccmtools.ui.ConsoleDriver();
             
             CommandLineParameters parameters = new CommandLineParameters();
             if(parseCommandLineArgs(args, parameters)) 
@@ -185,12 +184,6 @@ public class Main
     }
 
 
-    private static void printVersion()
-    {
-        uiDriver.println("Confix Generator");
-        uiDriver.println(Constants.VERSION_TEXT);
-    }
-    
     private static void printUsage()
     {
         HelpFormatter formatter = new HelpFormatter();

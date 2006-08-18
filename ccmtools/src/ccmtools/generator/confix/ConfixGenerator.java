@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 
 public class ConfixGenerator
 {
@@ -19,7 +19,7 @@ public class ConfixGenerator
     public static final String PACKAGE_NAME = "pname";
     
 	/** UI driver for generator messages */
-	protected Driver uiDriver;
+	protected UserInterfaceDriver uiDriver;
 	
 	/** Command line parameters */
 	protected CommandLineParameters parameters;
@@ -29,7 +29,7 @@ public class ConfixGenerator
 	
 	private Set<String> ignoredDirs = new HashSet<String>();
 	
-	public ConfixGenerator(CommandLineParameters parameters, Driver uiDriver)
+	public ConfixGenerator(CommandLineParameters parameters, UserInterfaceDriver uiDriver)
 	{
 		this.uiDriver = uiDriver;		
 		this.parameters = (CommandLineParameters)parameters;
@@ -132,7 +132,7 @@ public class ConfixGenerator
 		}
 	}
 	
-    public static void printVersion(Driver uiDriver)
+    public static void printVersion(UserInterfaceDriver uiDriver)
     {
         uiDriver.println("+");
         uiDriver.println("+ Confix Generator, " + Constants.CCMTOOLS_VERSION_TEXT);

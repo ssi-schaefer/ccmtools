@@ -7,6 +7,7 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
+import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
@@ -14,8 +15,7 @@ import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStructDef;
 import ccmtools.test.CcmtoolsTestCase;
-import ccmtools.ui.Driver;
-import ccmtools.utils.CcmModelHelper;
+import ccmtools.ui.UserInterfaceDriver;
 
 public class Idl3ParserTest 
 	extends CcmtoolsTestCase
@@ -24,9 +24,9 @@ public class Idl3ParserTest
 	private String testDir;
 	
     /** Driver that handles user output */
-    private static Driver uiDriver;
+    private static UserInterfaceDriver uiDriver;
     
-    private List includePaths = new ArrayList();
+    private List<String> includePaths = new ArrayList<String>();
     
 	public Idl3ParserTest(String name) throws FileNotFoundException
 	{
@@ -35,7 +35,7 @@ public class Idl3ParserTest
 		ccmtoolsDir = System.getProperty("user.dir");
 		testDir = ccmtoolsDir + "/test/IDL3Parser";
 		includePaths.add("testDir");
-		uiDriver = new ccmtools.ui.ConsoleDriver(Driver.M_NONE);
+		uiDriver = new ccmtools.ui.ConsoleDriver();
 	}
 	
     public static Test suite()

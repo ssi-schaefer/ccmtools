@@ -59,11 +59,11 @@ public class ParserManager {
      * @param debug the flags to enable for debug output. Pass -1 to enable all
      *              output.
      */
-    public ParserManager(long debug)
-    {
-        this.debug = debug;
-        reset();
-    }
+//    public ParserManager(long debug)
+//    {
+//        this.debug = debug;
+//        reset();
+//    }
 
     /**
      * Reset the parser manager. This clears out the symbol table.

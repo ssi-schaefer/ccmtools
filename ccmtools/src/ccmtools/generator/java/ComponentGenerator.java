@@ -18,7 +18,7 @@ import ccmtools.generator.java.metamodel.ModelRepository;
 import ccmtools.generator.java.metamodel.ProvidesDef;
 import ccmtools.generator.java.metamodel.SequenceDef;
 import ccmtools.generator.java.metamodel.StructDef;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Utility;
 
@@ -32,7 +32,7 @@ public class ComponentGenerator
     public static final String CORBA_COMPONENT_GENERATOR_ID = "remote";
 	
 	/** UI driver for generator messages */
-	protected Driver uiDriver;
+	protected UserInterfaceDriver uiDriver;
 	
 	/** Command line parameters */
 	protected CommandLineParameters parameters;
@@ -41,7 +41,7 @@ public class ComponentGenerator
 	protected Logger logger;
 	
 	
-	public ComponentGenerator(CommandLineParameters parameters, Driver uiDriver)
+	public ComponentGenerator(CommandLineParameters parameters, UserInterfaceDriver uiDriver)
 	{
 		this.uiDriver = uiDriver;
 		this.parameters = (CommandLineParameters)parameters;		                           
@@ -50,7 +50,7 @@ public class ComponentGenerator
         printVersion(uiDriver);
 	}
 	
-    public static void printVersion(Driver uiDriver)
+    public static void printVersion(UserInterfaceDriver uiDriver)
     {
         uiDriver.println("+");
         uiDriver.println("+ Java Component Generator, " + Constants.CCMTOOLS_VERSION_TEXT);

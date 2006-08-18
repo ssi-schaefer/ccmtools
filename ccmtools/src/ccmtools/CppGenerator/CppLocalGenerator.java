@@ -61,7 +61,7 @@ import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 import ccmtools.utils.Code;
 import ccmtools.utils.Text;
@@ -91,7 +91,7 @@ public class CppLocalGenerator
     };
 
     
-    public CppLocalGenerator(Driver uiDriver, File outDir) 
+    public CppLocalGenerator(UserInterfaceDriver uiDriver, File outDir) 
     		throws IOException, CcmtoolsException
     {
         super("CppLocal", uiDriver, outDir, LOCAL_OUTPUT_TEMPLATE_TYPES);

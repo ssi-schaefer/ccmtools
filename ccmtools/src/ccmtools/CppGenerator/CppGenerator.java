@@ -63,7 +63,7 @@ import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
@@ -121,7 +121,7 @@ abstract public class CppGenerator extends CodeGenerator
     protected List corbaStubsNamespace = null;
     protected List remoteNamespace = null;
     
-    public CppGenerator(String sublang, Driver d, File out_dir,
+    public CppGenerator(String sublang, UserInterfaceDriver d, File out_dir,
             String[] output_types) throws IOException
     {
         super(sublang, d, out_dir, output_types, _reserved, _language);

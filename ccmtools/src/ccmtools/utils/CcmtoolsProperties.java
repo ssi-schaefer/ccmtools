@@ -20,11 +20,14 @@ public class CcmtoolsProperties
     
     public static CcmtoolsProperties Instance() 
     {
-        if(instance == null) {
-            try {
+        if(instance == null) 
+        {
+            try 
+            {
                 instance = new CcmtoolsProperties();
             }
-            catch(IOException e) {
+            catch(IOException e) 
+            {
                 // TODO: Set default values
             }
         }
@@ -33,13 +36,9 @@ public class CcmtoolsProperties
     
     
     protected CcmtoolsProperties() 
-    	throws IOException
+        throws IOException
     {
-        propertyPath = 
-            System.getProperty("ccmtools.home") 
-        	+ File.separator 
-        	+ "etc" 
-        	+ File.separator;
+        propertyPath = System.getProperty("ccmtools.home") + File.separator + "etc" + File.separator;
         load();
     }
 
@@ -59,7 +58,8 @@ public class CcmtoolsProperties
     public String get(String key)
     {
         String value = properties.getProperty(key);
-        if(value == null) {
+        if(value == null) 
+        {
             value = "";
         }
         return value;
@@ -72,23 +72,23 @@ public class CcmtoolsProperties
 
     public Set getKeySet()
     {
-    	return properties.keySet();
+    	    return properties.keySet();
     }
     
-    public Map getPropertyMap()
+    public Map<String, String> getPropertyMap()
     {
-    	Map map = new HashMap();    	
-    	Set keySet = getKeySet();
-    	for(Iterator i = keySet.iterator(); i.hasNext(); )
-    	{
-    		String key = (String)i.next();
-    		map.put(key, get(key));
-    	}
-    	return map;
+    	    Map<String, String> map = new HashMap<String, String>();    	
+    	    Set keySet = getKeySet();
+    	    for(Iterator i = keySet.iterator(); i.hasNext(); )
+    	    {
+    	        String key = (String)i.next();
+    	        map.put(key, get(key));
+    	    }
+    	    return map;
     }
     
     protected void load() 
-    	throws IOException
+    	    throws IOException
     {
         File file = new File(propertyPath, CCMTOOLS_PROPERTY_FILE_NAME);
 //        System.out.println("> load properties from " + file);
@@ -99,7 +99,7 @@ public class CcmtoolsProperties
     }
     
     protected void save() 
-    	throws IOException
+    	    throws IOException
     {
         File file = new File(propertyPath, CCMTOOLS_PROPERTY_FILE_NAME);
 //        System.out.println("> store properties to " + file);

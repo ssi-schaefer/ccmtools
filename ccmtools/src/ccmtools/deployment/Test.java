@@ -28,7 +28,8 @@ public class Test
     {
         {
             // Save a Deployment model as an XMI 2.1 file 
-            try {                
+            try 
+            {                
                 ComponentPackageDescription model = createDeploymentModel();
                 DeploymentToXmiMapper mapper = new DeploymentToXmiMapper();
                 mapper.saveModel(new File(testDir, "example.xml"), model);
@@ -44,7 +45,8 @@ public class Test
             // Print the xmi on the console
             // Check the association between ComponentImplementationDescription
             // and ComponentInterfaceDescription.
-            try {
+            try 
+            {
                 XmiToDeploymentMapper mapper = new XmiToDeploymentMapper();
                 ComponentPackageDescription loadedModel = 
                     mapper.loadModel(new File(testDir, "example.xml"));
@@ -57,7 +59,8 @@ public class Test
                 System.out.println(xmi);
                 
                 // Check for implements association
-                for(Iterator i=loadedModel.getImplementations().iterator(); i.hasNext();) {
+                for(Iterator i=loadedModel.getImplementations().iterator(); i.hasNext();) 
+                {
                     PackagedComponentImplementation impl = 
                         (PackagedComponentImplementation)i.next();
                     ComponentInterfaceDescription cid = 
@@ -65,10 +68,12 @@ public class Test
                     System.out.println("getRealizes = " + cid);
                 }
             }
-            catch(JDOMException e) {
+            catch(JDOMException e) 
+            {
                 System.out.println(e.getMessage());
             }
-            catch(IOException e) {
+            catch(IOException e) 
+            {
                 System.out.println(e.getMessage());
             }
         }

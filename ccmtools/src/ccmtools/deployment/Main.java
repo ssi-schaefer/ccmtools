@@ -11,7 +11,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 
 public class Main
 {
@@ -19,7 +19,7 @@ public class Main
     private static Options options;
     
     /** Driver that handles user output */
-    private static Driver uiDriver;
+    private static UserInterfaceDriver uiDriver;
     
     /**
      * Using the main method, we can start the component deployment
@@ -30,7 +30,8 @@ public class Main
     public static void main(String[] args)
     {
         try {
-            uiDriver = new ccmtools.ui.ConsoleDriver(Driver.M_NONE);
+            uiDriver = new ccmtools.ui.ConsoleDriver();
+            
             DeploymentParameters parameters = new DeploymentParameters();
             if(parseCommandLineArgs(args, parameters)) {
                 CDDGenerator deployment = new CDDGenerator(parameters, uiDriver);

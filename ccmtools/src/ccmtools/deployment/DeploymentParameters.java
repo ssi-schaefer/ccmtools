@@ -20,7 +20,7 @@ public class DeploymentParameters
     private String homeFinderName;
     
     /** List of possible include paths */    
-    private List includePaths = new ArrayList();
+    private List<String> includePaths = new ArrayList<String>();
     
     /** Component home IDL file */
     private String homeIdl;
@@ -70,7 +70,7 @@ public class DeploymentParameters
     }
 
     
-    public List getIncludePaths()
+    public List<String> getIncludePaths()
     {
         return includePaths;
     }

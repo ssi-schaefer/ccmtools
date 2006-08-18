@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 
 public class Utility
 {
@@ -56,7 +56,7 @@ public class Utility
      * File IO Utility Methods
      *************************************************************************/
           
-    public static void writeSourceFiles(Driver uiDriver, String outDir, List<SourceFile> sourceFileList)
+    public static void writeSourceFiles(UserInterfaceDriver uiDriver, String outDir, List<SourceFile> sourceFileList)
         throws CcmtoolsException
     {
         try
@@ -73,7 +73,7 @@ public class Utility
     }
     
     
-    public static void writeApplicationFiles(Driver uiDriver, String outDir, List<SourceFile> sourceFileList)
+    public static void writeApplicationFiles(UserInterfaceDriver uiDriver, String outDir, List<SourceFile> sourceFileList)
         throws CcmtoolsException
     {
         try
@@ -100,7 +100,7 @@ public class Utility
     }
     
     
-    public static void writeSourceCodeToFile(Driver uiDriver, String outDir, SourceFile source, String suffix)
+    public static void writeSourceCodeToFile(UserInterfaceDriver uiDriver, String outDir, SourceFile source, String suffix)
         throws IOException
     {
         File location = new File(outDir, source.getPackageName());

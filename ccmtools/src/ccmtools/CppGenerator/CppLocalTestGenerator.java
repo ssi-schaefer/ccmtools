@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MOperationDef;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
@@ -44,7 +44,7 @@ public class CppLocalTestGenerator
     };
 
     
-    public CppLocalTestGenerator(Driver d, File out_dir)
+    public CppLocalTestGenerator(UserInterfaceDriver d, File out_dir)
         throws IOException
     {
         super("CppLocalTest", d, out_dir, local_output_types);

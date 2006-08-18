@@ -24,8 +24,7 @@ import java.io.IOException;
 
 import ccmtools.CodeGenerator.Template;
 import ccmtools.metamodel.BaseIDL.MContained;
-import ccmtools.ui.Driver;
-import ccmtools.utils.Debug;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Text;
 
 public class CppRemoteTestGenerator 
@@ -38,7 +37,7 @@ public class CppRemoteTestGenerator
     };
 
     
-    public CppRemoteTestGenerator(Driver uiDriver, File outDir)
+    public CppRemoteTestGenerator(UserInterfaceDriver uiDriver, File outDir)
         throws IOException
     {
         super("CppRemoteTest", uiDriver, outDir, REMOTE_TEST_OUTPUT_TEMPLATE_TYPES);
@@ -54,8 +53,6 @@ public class CppRemoteTestGenerator
      */
     public void writeOutput(Template template) throws IOException
     {
-        Debug.println(Debug.METHODS, "writeOutput(" + template + ")");
-
         String generated_code = template.substituteVariables(output_variables);
 
         if(generated_code.trim().equals(""))

@@ -40,7 +40,7 @@ import ccmtools.metamodel.ComponentIDL.MFinderDef;
 import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MPublishesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
-import ccmtools.ui.Driver;
+import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
@@ -65,12 +65,12 @@ public class CcmModelChecker
     protected CommandLineParameters parameters;
     
     /** UI driver for generator messages */
-    protected Driver uiDriver;
+    protected UserInterfaceDriver uiDriver;
     
     /** Java logging */
     private Logger logger;
         
-	public CcmModelChecker(Driver uiDriver, CommandLineParameters parameters)
+	public CcmModelChecker(UserInterfaceDriver uiDriver, CommandLineParameters parameters)
 	{
         this.uiDriver = uiDriver;
         this.parameters = (CommandLineParameters)parameters;    
@@ -79,7 +79,7 @@ public class CcmModelChecker
         printVersion(uiDriver);
 	}
 
-	public static void printVersion(Driver uiDriver)
+	public static void printVersion(UserInterfaceDriver uiDriver)
 	{
 	    uiDriver.println("+");
 	    uiDriver.println("+ CCM Model Checker, " + Constants.CCMTOOLS_VERSION_TEXT);
