@@ -1,9 +1,7 @@
 package ccmtools.deployment;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,13 +12,13 @@ import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
-import ccmtools.IDL3Parser.ParserManager;
 import ccmtools.deployment.metamodel.ComponentAssemblyArtifactDescription;
 import ccmtools.deployment.metamodel.ComponentImplementationDescription;
 import ccmtools.deployment.metamodel.ComponentInterfaceDescription;
 import ccmtools.deployment.metamodel.ComponentPackageDescription;
 import ccmtools.deployment.metamodel.DeploymentFactory;
 import ccmtools.deployment.metamodel.PackagedComponentImplementation;
+import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Code;
@@ -89,7 +87,7 @@ public class CDDGenerator
         logger.fine("generate()");
         
         try {
-            ccmModel = loadCcmModel(parameters.getHomeIdl(), parameters.getIncludePaths());
+            ccmModel = CcmModelHelper.loadCcmModel(uiDriver, parameters.getHomeIdl(), parameters.getIncludePaths());
             if(ccmModel == null) {
                 throw new CcmtoolsException("Component model can't be created!");
             }
@@ -217,74 +215,74 @@ public class CDDGenerator
     }
     
     
-    private MContainer loadCcmModel(String fileName, List includes) 
-        throws CcmtoolsException
-    {
-        logger.fine("enter loadCcmModel()");
-        File source = new File(fileName);
-        MContainer ccmModel = null;
-        try {
-            ParserManager manager = new ParserManager();
-
-            // create the name of the temporary idl file generated from the
-            // preprocessor cpp
-            String tmpFile = "_CCM_" + source.getName();
-            File idlfile = new File(System.getProperty("user.dir"), tmpFile
-                    .substring(0, tmpFile.lastIndexOf(".idl")));
-
-            // step (0). run the C preprocessor on the input file.
-            // Run the GNU preprocessor cpp in a separate process.
-            StringBuffer cmd = new StringBuffer();
-            cmd.append(Constants.CPP_PATH);
-            cmd.append(" -o ").append(idlfile).append(" ");
-            for(Iterator i = includes.iterator(); i.hasNext();) {
-                cmd.append("-I").append((String) i.next()).append(" ");
-            }
-            cmd.append(source);
-
-            uiDriver.printMessage(cmd.toString());
-            Process preproc = Runtime.getRuntime().exec(cmd.toString());
-            BufferedReader stdInput = 
-                new BufferedReader(new InputStreamReader(preproc.getInputStream()));
-            BufferedReader stdError = 
-                new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
-
-            // Read the output and any errors from the command
-            String s;
-            while((s = stdInput.readLine()) != null)
-                uiDriver.printMessage(s);
-            while((s = stdError.readLine()) != null)
-                uiDriver.printMessage(s);
-
-            // Wait for the process to complete and evaluate the return
-            // value of the attempted command
-            preproc.waitFor();
-            if(preproc.exitValue() != 0)
-                throw new CcmtoolsException("Preprocessor: "
-                        + "Please verify your include paths or file names ("
-                        + source + ").");
-
-            // step (1). parse the resulting preprocessed file.
-            uiDriver.printMessage("parse " + idlfile.toString());
-            manager.reset();
-            manager.setOriginalFile(source.toString());
-            ccmModel = manager.parseFile(idlfile.toString());
-            if(ccmModel == null) {
-                throw new CcmtoolsException("Parser error " + source + ":\n"
-                        + "parser returned an empty CCM model");
-            }
-            String kopf_name = source.getName();//.split("\\.")[0];
-            kopf_name = kopf_name.replaceAll("[^\\w]", "_");
-            ccmModel.setIdentifier(kopf_name);
-            
-            idlfile.deleteOnExit();
-        }
-        catch(Exception e) {
-            throw new CcmtoolsException("CCDGenerator.loadCcmModel():" + e.getMessage());
-        }
-        logger.fine("leave loadCcmModel()");
-        return ccmModel;
-    }
+//    private MContainer loadCcmModel(String fileName, List includes) 
+//        throws CcmtoolsException
+//    {
+//        logger.fine("enter loadCcmModel()");
+//        File source = new File(fileName);
+//        MContainer ccmModel = null;
+//        try {
+//            ParserManager manager = new ParserManager();
+//
+//            // create the name of the temporary idl file generated from the
+//            // preprocessor cpp
+//            String tmpFile = "_CCM_" + source.getName();
+//            File idlfile = new File(System.getProperty("user.dir"), tmpFile
+//                    .substring(0, tmpFile.lastIndexOf(".idl")));
+//
+//            // step (0). run the C preprocessor on the input file.
+//            // Run the GNU preprocessor cpp in a separate process.
+//            StringBuffer cmd = new StringBuffer();
+//            cmd.append(Constants.CPP_PATH);
+//            cmd.append(" -o ").append(idlfile).append(" ");
+//            for(Iterator i = includes.iterator(); i.hasNext();) {
+//                cmd.append("-I").append((String) i.next()).append(" ");
+//            }
+//            cmd.append(source);
+//
+//            uiDriver.printMessage(cmd.toString());
+//            Process preproc = Runtime.getRuntime().exec(cmd.toString());
+//            BufferedReader stdInput = 
+//                new BufferedReader(new InputStreamReader(preproc.getInputStream()));
+//            BufferedReader stdError = 
+//                new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
+//
+//            // Read the output and any errors from the command
+//            String s;
+//            while((s = stdInput.readLine()) != null)
+//                uiDriver.printMessage(s);
+//            while((s = stdError.readLine()) != null)
+//                uiDriver.printMessage(s);
+//
+//            // Wait for the process to complete and evaluate the return
+//            // value of the attempted command
+//            preproc.waitFor();
+//            if(preproc.exitValue() != 0)
+//                throw new CcmtoolsException("Preprocessor: "
+//                        + "Please verify your include paths or file names ("
+//                        + source + ").");
+//
+//            // step (1). parse the resulting preprocessed file.
+//            uiDriver.printMessage("parse " + idlfile.toString());
+//            manager.reset();
+//            manager.setOriginalFile(source.toString());
+//            ccmModel = manager.parseFile(idlfile.toString());
+//            if(ccmModel == null) {
+//                throw new CcmtoolsException("Parser error " + source + ":\n"
+//                        + "parser returned an empty CCM model");
+//            }
+//            String kopf_name = source.getName();//.split("\\.")[0];
+//            kopf_name = kopf_name.replaceAll("[^\\w]", "_");
+//            ccmModel.setIdentifier(kopf_name);
+//            
+//            idlfile.deleteOnExit();
+//        }
+//        catch(Exception e) {
+//            throw new CcmtoolsException("CCDGenerator.loadCcmModel():" + e.getMessage());
+//        }
+//        logger.fine("leave loadCcmModel()");
+//        return ccmModel;
+//    }
 
 
     // Parameter validation methods -------------------------------------------

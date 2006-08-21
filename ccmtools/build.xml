@@ -57,15 +57,7 @@
 	</target>
 	
   	<!-- Generate IDL3 parser source code using ANTLR -->
-  	<target name="generate-IDL3Parser" depends="init"
-    	description="Generate the idl3_parser using antlr." >
-      	<mkdir dir="${src}/ccmtools/IDL3Parser" />
-      	<antlr target="${src}/ccmtools/IDL3Parser/idl3.g" dir="${src}/ccmtools/IDL3Parser" >
-           	<classpath refid="compile.classpath" />
-      	</antlr>
-  	</target>
-
-  	<target name="generate-IDL3Parser-new" depends="init">
+  	<target name="generate-IDL3Parser" depends="init">
       	<antlr target="${src}/ccmtools/parser/idl3/idl3new.g" 
       		      dir="${src}/ccmtools/parser/idl3" >
            	<classpath refid="compile.classpath" />
@@ -91,7 +83,7 @@
 	</target>
 	  
   	<!-- Compile ccmtools source code -->
-  	<target name="compile-ccmtools" depends="generate-IDL3Parser, generate-IDL3Parser-new"
+  	<target name="compile-ccmtools" depends="generate-IDL3Parser"
      	description="Compile the ccmtools package." >
       	<javac srcdir="${src}/ccmtools" destdir="${build}/classes" 
       		  	debug="on" source="1.5" target="1.5" verbose="off">
@@ -178,11 +170,6 @@
       	description="Clean up the build and lib directory." >
 
       	<delete file="${src}/${PACKAGE}/Constants.java" />
-
-      	<delete file="${src}/ccmtools/IDL3Parser/IDL3Lexer.java" />
-      	<delete file="${src}/ccmtools/IDL3Parser/IDL3Parser.java" />
-      	<delete file="${src}/ccmtools/IDL3Parser/IDL3TokenTypes.java" />
-      	<delete file="${src}/ccmtools/IDL3Parser/IDL3TokenTypes.txt" />
 
       	<delete file="${src}/ccmtools/parser/idl3/Idl3Lexer.java" />
       	<delete file="${src}/ccmtools/parser/idl3/Idl3Parser.java" />

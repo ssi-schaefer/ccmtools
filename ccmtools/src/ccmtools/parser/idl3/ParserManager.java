@@ -37,14 +37,15 @@ public class ParserManager
 	/** Helper class that encapsulates all utility and validation methods for the parser */
 	ParserHelper helper;
 	
-	
+    public ParserManager()
+    {                
+        this("");
+    }
+    
     /**
      * Create a new ParserManager class instance using the given debug flags to
      * control debug output. The debug flags are passed directly on to the
      * underlying lexer and parser class instances.
-     *
-     * @param debug the flags to enable for debug output. Pass -1 to enable all
-     *              output.
      */
     public ParserManager(String originalFile)
     {                
