@@ -1,26 +1,27 @@
 #!/bin/sh
 
 if [ -z "$JAVA_HOME" ]; then
-echo "ERROR!"
-echo "Environment variable JAVA_HOME not found!" 
-exit 1
+	echo "ERROR!"
+	echo "Environment variable JAVA_HOME not found!" 
+	exit 1
 fi
 
 if [ -z "$CCMTOOLS_HOME" ]; then
-echo "ERROR!"
-echo "Environment variable CCMTOOLS_HOME not found!" 
-exit 1
+	echo "ERROR!"
+	echo "Environment variable CCMTOOLS_HOME not found!" 
+	exit 1
 fi
 
-JAVA_LAUNCHER="$JAVA_HOME"/bin/java
+JAVA_LAUNCHER="$JAVA_HOME/bin/java"
 if [ -x $JAVA_LAUNCHER ]; then 
-
-CLASSPATH=$CCMTOOLS_HOME/lib/antlr.jar:$CCMTOOLS_HOME/lib/commons-cli-1.0.jar:$CCMTOOLS_HOME/lib/jdom.jar:$CCMTOOLS_HOME/lib/ccmtools.jar:$:$CCMTOOLS_HOME/lib/ccm-runtime.jar:CLASSPATH
-
-exec $JAVA_HOME/bin/java -cp $CLASSPATH -Dccmtools.home=$CCMTOOLS_HOME -Djava.util.logging.config.file=$CCMTOOLS_HOME/etc/logging.properties ccmtools.generator.idl.Main $@  
-
+	if [ "`uname`" = "Interix" ]; then
+		CLASSPATH="$CCMTOOLS_HOME/lib/antlr.jar;$CCMTOOLS_HOME/lib/commons-cli-1.0.jar;$CCMTOOLS_HOME/lib/jdom.jar;$CCMTOOLS_HOME/lib/ccmtools.jar;$CCMTOOLS_HOME/lib/ccm-runtime.jar:$CLASSPATH"
+	else
+		CLASSPATH="$CCMTOOLS_HOME/lib/antlr.jar:$CCMTOOLS_HOME/lib/commons-cli-1.0.jar:$CCMTOOLS_HOME/lib/jdom.jar:$CCMTOOLS_HOME/lib/ccmtools.jar:$CCMTOOLS_HOME/lib/ccm-runtime.jar:$CLASSPATH"
+	fi		
+	exec "$JAVA_HOME/bin/java" -cp $CLASSPATH -Dccmtools.home="$CCMTOOLS_HOME" -Djava.util.logging.config.file="$CCMTOOLS_HOME/etc/logging.properties" ccmtools.generator.idl.Main $@  
 else
-echo "ERROR!"
-echo "Java executable not found in" $JAVA_HOME/bin/java
-exit 1
+	echo "ERROR!"
+	echo "Java executable not found in" "$JAVA_HOME/bin"
+	exit 1
 fi

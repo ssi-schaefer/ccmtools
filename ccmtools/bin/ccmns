@@ -6,7 +6,7 @@ if [ -z "$JAVA_HOME" ]; then
 	exit 1
 fi
 
-JAVA_LAUNCHER="$JAVA_HOME"/bin/orbd
+JAVA_LAUNCHER="$JAVA_HOME/bin/orbd"
 if [ -x $JAVA_LAUNCHER ]; then 
 	echo "Run CORBA naming service on port 5050..."
 	echo "(orbd -ORBInitialPort 5050)"
