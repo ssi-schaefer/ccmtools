@@ -13,11 +13,15 @@ import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 
 public class Main
 {
+    public static final String PARSER_ID = "parser";
+    public static final String PARSER_TEXT = "Only parse IDL files and report errors.";
+    
     /** commons CLI options */
     private static Options options;
     
@@ -56,7 +60,14 @@ public class Main
 
                 for(String actionId : parameters.getActionIds())
                 {
-                    if(actionId.equals(CcmModelPrinter.MODEL_PRINTER_ID))
+                    if(actionId.equals(PARSER_ID))
+                    {
+                        for (String idlFile : parameters.getIdlFiles())
+                        {
+                            ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+                        }
+                    }
+                    else if(actionId.equals(CcmModelPrinter.MODEL_PRINTER_ID))
                     {
                         for (String idlFile : parameters.getIdlFiles())
                         {
@@ -132,6 +143,7 @@ public class Main
         options.addOption("V", "version", false, "Display CCM Tools version information");
         options.addOption(CcmModelPrinter.MODEL_PRINTER_ID, false, CcmModelPrinter.MODEL_PRINTER_TEXT);
         options.addOption(CcmModelChecker.MODEL_CHECKER_ID, false, CcmModelChecker.MODEL_CHECKER_TEXT);
+        options.addOption(PARSER_ID, false, PARSER_TEXT);
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
         // Define single valued options
@@ -179,7 +191,12 @@ public class Main
         {
             parameters.getActionIds().add(CcmModelChecker.MODEL_CHECKER_ID);
         }
-        
+
+        if (cmd.hasOption("parser"))
+        {
+            parameters.getActionIds().add("parser");
+        }
+
 		if (cmd.hasOption("noexit"))
 		{
 			parameters.setNoExit(true);

@@ -41,7 +41,7 @@ import ccmtools.utils.Code;
 
 public class CcmModelPrinter
 {		
-    public static final String MODEL_PRINTER_ID = "print";
+    public static final String MODEL_PRINTER_ID = "printer";
     public static final String MODEL_PRINTER_TEXT = "Print CCM model to stdout";
     
 	private static final String TAB = "    ";

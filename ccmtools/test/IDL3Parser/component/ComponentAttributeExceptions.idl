@@ -9,12 +9,12 @@
 component ComponentAttributeExceptions
 {
     attribute long longValue
-	getraises(ExceptionEmpty)
-        setraises(ExceptionBasicType, ExceptionUserType);
+	getRaises(ExceptionEmpty)
+        setRaises(ExceptionBasicType, ExceptionUserType);
 
     attribute Person structValue
-        getraises(ExceptionEmpty)
-        setraises(ExceptionBasicType);
+        getRaises(ExceptionEmpty)
+        setRaises(ExceptionBasicType);
 };
 
 #endif // __COMPONENT_ATTRIBUTE_EXCEPTIONS__IDL__

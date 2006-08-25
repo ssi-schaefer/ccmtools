@@ -1,0 +1,1611 @@
+
+/** Preliminary Declarations Section */
+
+import java.util.*;
+import java_cup.runtime.*;
+
+import ccmtools.metamodel.BaseIDL.*;
+import ccmtools.metamodel.ComponentIDL.*;
+
+parser code 
+{:
+	/**
+	 * This method overides the original report_error() method
+	 * and generates a useful error message.
+	 */
+	public void report_error(String message, Object info)
+	{
+		StringBuilder out = new StringBuilder();
+		if(info instanceof Symbol)
+		{
+			Symbol s = (Symbol)info;
+			out.append(ParserHelper.getInstance().getCurrentSourceFile());
+			out.append(" line " + ParserHelper.getInstance().getCurrentSourceLine());
+		}
+		out.append(": " + message);
+		throw new RuntimeException(out.toString());
+	}
+	
+	public void report_fatal_error(String message, Object info)
+	{
+		System.exit(1);
+	}
+:};
+
+
+/** Declaration of Terminals and Non Terminals Section */
+
+terminal String		T_PRAGMA;
+terminal String 		T_INCLUDE;
+
+terminal 	T_LEFT_CURLY_BRACKET;
+terminal 	T_RIGHT_CURLY_BRACKET;
+terminal		T_LEFT_SQUARE_BRACKET;
+terminal	 	T_RIGHT_SQUARE_BRACKET;
+terminal		T_LEFT_PARANTHESIS;
+terminal		T_RIGHT_PARANTHESIS;
+terminal		T_COLON;
+terminal 	T_COMMA;
+terminal 	T_SEMICOLON;  
+terminal	 	T_SCOPE;
+terminal		T_EQUAL;
+terminal 	T_SHIFTRIGHT;
+terminal 	T_SHIFTLEFT;
+terminal		T_PLUS_SIGN;
+terminal 	T_MINUS_SIGN; 
+terminal		T_ASTERISK; 
+terminal		T_SOLIDUS;
+terminal		T_PERCENT_SIGN;
+terminal 	T_TILDE;
+terminal 	T_VERTICAL_LINE; 
+terminal		T_CIRCUMFLEX; 
+terminal		T_AMPERSAND;
+terminal		T_LESS_THAN_SIGN;
+terminal 	T_GREATER_THAN_SIGN;
+
+terminal		T_IMPORT;
+terminal		T_CONST;
+terminal		T_TYPEDEF;
+terminal		T_FLOAT;
+terminal		T_DOUBLE;
+terminal		T_CHAR;
+terminal		T_WCHAR;
+terminal		T_FIXED;
+terminal		T_BOOLEAN;
+terminal		T_STRING;
+terminal		T_WSTRING;
+terminal		T_VOID;
+terminal		T_UNSIGNED;
+terminal		T_LONG;
+terminal		T_SHORT;
+terminal		T_FALSE;
+terminal		T_TRUE;
+terminal		T_STRUCT;
+terminal		T_UNION;
+terminal		T_SWITCH;
+terminal		T_CASE;
+terminal		T_DEFAULT;
+terminal		T_ENUM;
+terminal		T_IN;
+terminal		T_OUT;
+terminal		T_INTERFACE;
+terminal		T_ABSTRACT;
+terminal		T_VALUETYPE;
+terminal		T_TRUNCATABLE;
+terminal		T_SUPPORTS;
+terminal		T_CUSTOM;
+terminal		T_PUBLIC;
+terminal		T_PRIVATE;
+terminal		T_FACTORY;
+terminal		T_NATIVE;
+terminal		T_VALUEBASE;
+terminal		T_TYPEID;
+terminal		T_TYPEPREFIX;
+terminal		T_GETRAISES;
+terminal		T_SETRAISES;
+terminal		T_LOCAL;
+
+terminal		T_MODULE;
+terminal		T_OCTET;
+terminal		T_ANY;
+terminal		T_SEQUENCE;
+terminal		T_READONLY;
+terminal		T_ATTRIBUTE;
+terminal		T_EXCEPTION;
+terminal		T_ONEWAY;
+terminal		T_INOUT;
+terminal		T_RAISES;
+terminal		T_CONTEXT;
+
+terminal		T_OBJECT;
+
+terminal		T_COMPONENT;
+terminal		T_PROVIDES;
+terminal		T_USES;
+terminal		T_MULTIPLE;
+terminal		T_EMITS;
+terminal		T_PUBLISHES;
+terminal		T_CONSUMES;
+terminal		T_HOME;
+terminal		T_MANAGES;
+terminal		T_PRIMARYKEY;
+terminal		T_FINDER;
+terminal		T_EVENTTYPE;
+
+terminal 	String		T_IDENTIFIER;
+terminal		Double		T_FLOATING_PT_LITERAL;
+terminal		BigInteger	T_FIXED_PT_LITERAL;     
+terminal		Integer		T_INTEGER_LITERAL;
+terminal		Character 	T_CHARACTER_LITERAL;
+terminal		Character 	T_WCHARACTER_LITERAL;
+terminal  	String 		T_STRING_LITERAL;
+terminal		String 		T_WSTRING_LITERAL;
+
+nonterminal	MContainer 	specification;
+nonterminal		definitions;
+nonterminal		definition;
+nonterminal		module;
+nonterminal		interface;
+nonterminal		interface_dcl;
+nonterminal		forward_dcl;
+nonterminal		interface_header;
+nonterminal		interface_body;
+nonterminal		exports;
+nonterminal		export;
+
+nonterminal		interface_inheritance_spec;	/* 10 */
+nonterminal		interface_names;
+nonterminal		scoped_names;
+nonterminal String		scoped_name;
+nonterminal		value;
+nonterminal		value_forward_dcl;
+nonterminal		value_box_dcl;
+nonterminal		value_abs_dcl;
+nonterminal		value_body;
+nonterminal		value_dcl;
+nonterminal		value_elements;
+nonterminal		value_header;
+nonterminal		value_inheritance_spec;
+nonterminal		value_inheritance_bases;
+nonterminal		value_names;
+
+nonterminal		value_name;			/* 20 */
+nonterminal		value_element;
+nonterminal		state_member;
+nonterminal		init_dcl;
+nonterminal		init_param_decls;
+nonterminal		init_param_decl;
+nonterminal		init_param_attribute;
+nonterminal		const_dcl;
+nonterminal		const_type;
+nonterminal		const_exp;
+
+nonterminal		or_expr;				/* 30 */
+nonterminal		xor_expr;
+nonterminal		and_expr;
+nonterminal		shift_expr;
+nonterminal		add_expr;
+nonterminal		mult_expr;
+nonterminal		unary_expr;
+nonterminal		primary_expr;
+nonterminal		literal; 			/* 40 */
+
+nonterminal		positive_int_const;
+nonterminal		type_dcl;
+nonterminal		type_spec;
+nonterminal		simple_type_spec;
+nonterminal		base_type_spec;
+nonterminal		template_type_spec;
+nonterminal		constr_type_spec;
+nonterminal		declarators;
+
+nonterminal 		declarator;			/* 50 */
+nonterminal		simple_declarator;
+nonterminal		complex_declarator;
+nonterminal		floating_pt_type;
+nonterminal		integer_type;
+nonterminal		signed_int;
+nonterminal		signed_short_int;
+nonterminal		signed_long_int;
+nonterminal		signed_longlong_int;
+nonterminal		unsigned_int;
+
+nonterminal		unsigned_short_int;	/* 60 */
+nonterminal		unsigned_long_int;
+nonterminal		unsigned_longlong_int;
+nonterminal		char_type;
+nonterminal		wide_char_type;
+nonterminal		boolean_type;
+nonterminal		octet_type;
+nonterminal		any_type;
+nonterminal		object_type;
+nonterminal		struct_type;
+
+nonterminal		member_list;			/* 70 */
+nonterminal		member;
+nonterminal		union_type;
+nonterminal		switch_type_spec;
+nonterminal		switch_body;
+nonterminal		case;
+nonterminal		case_label;
+nonterminal		element_spec;
+nonterminal		enum_type;
+nonterminal		enumerators;
+nonterminal		enumerator;
+
+nonterminal		sequence_type;		/* 80 */
+nonterminal		string_type;
+nonterminal		wide_string_type;
+nonterminal		array_declarator;
+nonterminal List<Integer>		fixed_array_sizes;
+nonterminal	Integer				fixed_array_size;
+nonterminal		attr_dcl;
+nonterminal		except_dcl;
+nonterminal		members;
+nonterminal		op_dcl;
+nonterminal		op_attribute;
+nonterminal		op_type_spec;
+
+nonterminal		parameter_dcls;		/* 90 */
+nonterminal		param_dcls;
+nonterminal		param_dcl;
+nonterminal		param_attribute;
+nonterminal		raises_expr;
+nonterminal		context_expr;
+nonterminal		string_literals;
+nonterminal		T_string_literal;
+nonterminal		T_wstring_literal;
+nonterminal		param_type_spec;
+nonterminal		fixed_pt_type;
+nonterminal		fixed_pt_const_type;
+nonterminal		value_base_type;
+nonterminal		constr_forward_decl;
+
+nonterminal		import_dcl;				/* 100 */
+nonterminal		imported_scope;
+nonterminal		type_id_dcl;
+nonterminal		type_prefix_dcl;
+nonterminal		readonly_attr_spec;
+nonterminal		readonly_attr_declarator;
+nonterminal		simple_declarators;
+nonterminal		attr_spec;
+nonterminal		attr_declarator;
+nonterminal		attr_raises_expr;
+nonterminal		get_excep_expr;
+nonterminal		set_excep_expr;
+
+nonterminal		exception_list;		/* 110 */
+nonterminal		component;
+nonterminal		component_forward_dcl;
+nonterminal		component_dcl;
+nonterminal		component_header;
+nonterminal		supported_interface_spec;
+nonterminal		component_inheritance_spec;
+nonterminal		component_body;
+nonterminal		component_export;
+nonterminal		provides_dcl;
+
+nonterminal		interface_type;		/* 120 */
+nonterminal		uses_dcl;
+nonterminal		emits_dcl;
+nonterminal		publishes_dcl;
+nonterminal		consumes_dcl;
+nonterminal		home_dcl;
+nonterminal		home_header;
+nonterminal		home_inheritance_spec;
+nonterminal		primary_key_spec;
+nonterminal		home_body;
+
+nonterminal		home_exports;		/* 130 */
+nonterminal		home_export;
+nonterminal		factory_dcl;
+nonterminal		finder_dcl;
+nonterminal		event;
+nonterminal		event_forward_dcl;
+nonterminal		event_abs_dcl;
+nonterminal		event_dcl;
+nonterminal		event_header;
+
+
+
+/** Precedence and Associatively of Terminals Section */
+
+
+/** Grammar Section */
+
+start with specification;
+
+/* 1 */
+specification 
+	::= 
+		definitions
+	;
+		
+						
+definitions 
+	::=
+		definition
+	| 
+		definition definitions	
+	;
+
+
+/* 2 */	
+definition 
+	::=	T_INCLUDE
+	|	T_PRAGMA
+	|	type_dcl T_SEMICOLON
+	| 	const_dcl T_SEMICOLON
+	| 	except_dcl T_SEMICOLON
+	| 	interface T_SEMICOLON
+	| 	module T_SEMICOLON
+	| 	value T_SEMICOLON
+	| 	type_id_dcl T_SEMICOLON
+	| 	type_prefix_dcl T_SEMICOLON
+	| 	event T_SEMICOLON
+	| 	component T_SEMICOLON
+	| 	home_dcl T_SEMICOLON
+	| 	import_dcl T_SEMICOLON
+	;
+
+		
+/* 3 */
+module
+	::= 
+		T_MODULE T_IDENTIFIER:id 
+		T_LEFT_CURLY_BRACKET 
+		{:
+			ParserHelper.getInstance().getScope().pushModule(id);
+		:}
+		definitions 
+		T_RIGHT_CURLY_BRACKET
+		{:
+			ParserHelper.getInstance().getScope().popModule();
+		:}
+	;
+	
+	
+/* 4 */	
+interface
+	::= 	interface_dcl
+	| forward_dcl
+ 	;
+	
+	
+/* 5 */
+interface_dcl
+	::= interface_header T_LEFT_CURLY_BRACKET interface_body T_RIGHT_CURLY_BRACKET
+	;
+	
+	
+/* 6 */
+forward_dcl
+	::= 
+		T_INTERFACE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+	| 
+		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+	| 
+		T_LOCAL T_INTERFACE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+	;
+	
+	
+/* 7 */
+interface_header
+	::= 
+		T_INTERFACE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}	
+	| 	
+		T_INTERFACE T_IDENTIFIER:id
+		 interface_inheritance_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	| 
+		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	| 
+		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id 
+		interface_inheritance_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	| 
+		T_LOCAL T_INTERFACE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	| 
+		T_LOCAL T_INTERFACE T_IDENTIFIER:id
+		interface_inheritance_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	; 
+
+
+/* 8 */
+interface_body
+	::= /*empty*/
+	| exports
+	;
+
+exports
+	::= export
+	| export exports
+	;
+
+
+/* 9 */
+export
+	::= type_dcl T_SEMICOLON
+	| const_dcl T_SEMICOLON 
+	| except_dcl T_SEMICOLON
+	| attr_dcl T_SEMICOLON
+	| op_dcl T_SEMICOLON 
+	| type_id_dcl T_SEMICOLON
+	| type_prefix_dcl T_SEMICOLON
+	;
+
+
+/* 10 */
+/* 11 */
+interface_inheritance_spec
+	::= T_COLON interface_names
+	;
+
+interface_names
+	::= scoped_names
+	;
+
+scoped_names
+	::= scoped_name
+	| scoped_name T_COMMA scoped_names
+	;
+
+
+/* 12 */
+scoped_name
+	::= T_IDENTIFIER
+	| T_SCOPE T_IDENTIFIER
+	| scoped_name T_SCOPE T_IDENTIFIER
+	;
+
+
+/* 13 */
+value
+	::= value_dcl
+	| value_abs_dcl
+	| value_box_dcl
+	| value_forward_dcl
+	;
+
+
+/* 14 */
+value_forward_dcl
+	::= 
+		T_VALUETYPE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+		
+	| 
+		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+	;
+
+
+/* 15 */
+value_box_dcl
+	::= 
+		T_VALUETYPE T_IDENTIFIER:id
+	 	type_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	;
+
+
+/* 16 */
+value_abs_dcl
+	::= 
+		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	 	T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
+	| 
+		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id 
+			value_inheritance_spec 
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+		T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
+	;
+
+value_body
+	::= /*empty*/
+	| exports
+	;
+
+
+/* 17 */
+value_dcl
+	::= value_header T_LEFT_CURLY_BRACKET value_elements T_RIGHT_CURLY_BRACKET
+	| value_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+	;
+
+value_elements
+	::= value_element
+	| value_element value_elements
+	;
+
+
+/* 18 */
+value_header
+	::= 
+		T_VALUETYPE T_IDENTIFIER:id 	value_inheritance_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	| 
+		T_CUSTOM T_VALUETYPE T_IDENTIFIER:id 
+			value_inheritance_spec		
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}
+	| 
+		T_VALUETYPE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	| 
+		T_CUSTOM T_VALUETYPE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}			
+	;
+
+
+/* 19 */
+value_inheritance_spec
+	::= T_COLON value_inheritance_bases
+	| T_COLON value_inheritance_bases T_SUPPORTS interface_names 
+	| T_SUPPORTS interface_names
+	;
+
+
+value_inheritance_bases
+	::= value_name
+	| value_name T_COMMA value_names
+	| T_TRUNCATABLE value_name
+	| T_TRUNCATABLE value_name T_COMMA value_names
+	;
+
+value_names
+	::= scoped_names
+	;
+
+
+/* 20 */
+value_name
+	::= scoped_name
+	;
+
+
+/* 21 */
+value_element
+	::= export
+	| state_member
+	| init_dcl
+	;
+
+
+/* 22 */
+state_member
+	::= T_PUBLIC type_spec declarators T_SEMICOLON
+	| T_PRIVATE type_spec declarators T_SEMICOLON
+	;
+
+
+/* 23 */
+init_dcl
+	::= T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS T_SEMICOLON
+	| T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS T_SEMICOLON
+	;
+
+
+/* 24 */
+init_param_decls
+	::= init_param_decl
+	| init_param_decl T_COMMA init_param_decls
+	;
+
+
+/* 25 */
+init_param_decl
+	::= init_param_attribute param_type_spec simple_declarator
+	;
+
+
+/* 26 */
+init_param_attribute
+	::= T_IN
+	;
+
+
+/* 27 */
+const_dcl
+	::= 
+		T_CONST const_type T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	 	T_EQUAL const_exp
+	;
+
+
+/* 28 */
+const_type
+	::= integer_type
+	| char_type
+	| wide_char_type
+	| boolean_type
+	| floating_pt_type
+	| string_type
+	| wide_string_type
+	| fixed_pt_const_type
+	| scoped_name 
+	| octet_type
+	;
+
+
+/* 29 */
+const_exp
+	::= or_expr
+	;
+
+
+/* 30 */
+or_expr
+	::= xor_expr
+	| or_expr T_VERTICAL_LINE xor_expr
+	;
+
+
+/* 31 */
+xor_expr
+	::= and_expr
+	| xor_expr T_CIRCUMFLEX and_expr
+	;
+
+
+/* 32 */
+and_expr
+	::= shift_expr
+	| and_expr T_AMPERSAND shift_expr
+	;
+
+
+/* 33 */
+shift_expr
+	::= add_expr
+	| shift_expr T_SHIFTRIGHT add_expr
+	| shift_expr T_SHIFTLEFT add_expr
+	;
+
+
+/* 34 */
+add_expr
+	::= mult_expr
+	| add_expr T_PLUS_SIGN mult_expr
+	| add_expr T_MINUS_SIGN mult_expr
+	;
+
+
+/* 35 */
+mult_expr
+	::= unary_expr
+	| mult_expr T_ASTERISK unary_expr
+	| mult_expr T_SOLIDUS unary_expr
+	| mult_expr T_PERCENT_SIGN unary_expr
+	;
+
+
+/* 36 */
+/* 37 */
+unary_expr
+	::= T_MINUS_SIGN primary_expr
+	| T_PLUS_SIGN primary_expr
+	| T_TILDE primary_expr
+	| primary_expr
+	;
+
+
+/* 38 */
+primary_expr
+	::= scoped_name
+	| literal
+	| T_LEFT_PARANTHESIS const_exp T_RIGHT_PARANTHESIS
+	;
+
+
+/* 39 */
+/* 40 */
+literal
+	::= T_INTEGER_LITERAL
+	| T_string_literal
+	| T_wstring_literal
+	| T_CHARACTER_LITERAL
+	| T_WCHARACTER_LITERAL
+	| T_FIXED_PT_LITERAL
+	| T_FLOATING_PT_LITERAL
+	| T_TRUE  /*boolean_literal*/
+	| T_FALSE /*boolean_literal*/
+	;
+
+
+/* 41 */
+positive_int_const
+	::= const_exp
+	;
+
+
+/* 42 */
+/* 43 */
+type_dcl
+	::= T_TYPEDEF type_spec declarators
+	| struct_type
+	| union_type
+	| enum_type
+	| T_NATIVE simple_declarator
+	| constr_forward_decl
+	;
+
+
+/* 44 */
+type_spec
+	::= simple_type_spec
+	| constr_type_spec 
+	;
+
+
+/* 45 */
+simple_type_spec
+	::= base_type_spec
+	| template_type_spec
+	| scoped_name:sn
+	;
+
+
+/* 46 */
+base_type_spec
+	::= floating_pt_type
+	| integer_type
+	| char_type
+	| wide_char_type
+	| boolean_type
+	| octet_type
+	| any_type
+	| object_type
+	| value_base_type
+	;
+
+
+/* 47 */
+template_type_spec
+	::= sequence_type
+	| string_type
+	| wide_string_type
+	| fixed_pt_type
+	;
+
+
+/* 48 */
+constr_type_spec
+	::= struct_type
+	| union_type
+	| enum_type
+	;
+
+
+/* 49 */
+declarators
+	::= declarator
+	| declarator:d T_COMMA declarators:l
+	;
+
+
+/* 50 */
+declarator
+	::= simple_declarator
+	| complex_declarator
+	;
+
+/* 51 */
+simple_declarator
+	::= 
+		T_IDENTIFIER:id
+//		{:
+//			ParserHelper.getInstance().registerTypeId(id);
+//		:}
+	;
+
+
+/* 52 */
+complex_declarator
+	::= array_declarator
+	;
+
+
+/* 53 */
+floating_pt_type
+	::= T_FLOAT
+	| T_DOUBLE
+	| T_LONG T_DOUBLE
+	;
+
+
+/* 54 */
+integer_type
+	::= signed_int
+	| unsigned_int
+	;
+
+
+/* 55 */
+signed_int
+	::= signed_long_int
+	| signed_short_int
+	| signed_longlong_int
+	;
+
+
+/* 56 */
+signed_short_int
+	::= T_SHORT
+	;
+
+
+/* 57 */
+signed_long_int
+	::= T_LONG
+	;
+
+
+/* 58 */
+signed_longlong_int
+	::= T_LONG T_LONG
+	;
+
+
+/* 59 */
+unsigned_int
+	::= unsigned_long_int
+	| unsigned_short_int
+	| unsigned_longlong_int
+	;
+
+
+/* 60 */
+unsigned_short_int
+	::= T_UNSIGNED T_SHORT
+	;
+
+
+/* 61 */
+unsigned_long_int
+	::= T_UNSIGNED T_LONG
+	;
+
+/* 62 */
+unsigned_longlong_int
+	::= T_UNSIGNED T_LONG T_LONG
+	;
+
+
+/* 63 */
+char_type
+	::= T_CHAR
+	;
+
+
+/* 64 */
+wide_char_type
+	::= T_WCHAR
+	;
+
+
+/* 65 */
+boolean_type
+	::= T_BOOLEAN
+	;
+
+
+/* 66 */
+octet_type
+	::= T_OCTET
+	;
+
+
+/* 67 */
+any_type
+	::= T_ANY
+	;
+
+
+/* 68 */
+object_type
+	::= T_OBJECT
+	;
+
+
+/* 69 */
+struct_type
+	::= 
+		T_STRUCT T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	 	T_LEFT_CURLY_BRACKET member_list T_RIGHT_CURLY_BRACKET
+	;
+
+
+/* 70 */
+member_list
+	::= member
+	| member member_list
+	;
+
+
+/* 71 */
+member
+	::= type_spec declarators T_SEMICOLON
+	;
+
+
+/* 72 */
+union_type
+	::= 	
+		T_UNION T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+		T_SWITCH T_LEFT_PARANTHESIS switch_type_spec 
+		T_RIGHT_PARANTHESIS T_LEFT_CURLY_BRACKET switch_body T_RIGHT_CURLY_BRACKET
+	; 
+
+
+/* 73 */
+switch_type_spec
+	::= integer_type
+	| char_type
+	| boolean_type
+	| enum_type
+	| scoped_name
+	;
+
+
+/* 74 */
+switch_body
+	::= case
+	| case switch_body
+	;
+
+
+/* 75 */
+case	
+	::= case_label case
+	| case_label element_spec T_SEMICOLON
+	| case_label T_PRAGMA element_spec T_SEMICOLON   /* New */
+	;
+
+
+/* 76 */
+case_label
+	::= T_CASE const_exp T_COLON 
+	| T_DEFAULT T_COLON
+	;
+
+
+/* 77 */
+element_spec
+	::= type_spec declarator
+	;
+
+
+/* 78 */
+enum_type
+	::= T_ENUM T_IDENTIFIER:id 
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+		T_LEFT_CURLY_BRACKET enumerators T_RIGHT_CURLY_BRACKET
+	;
+
+enumerators
+	::= enumerator
+	| enumerator T_COMMA enumerators
+	| T_PRAGMA enumerators
+	;
+
+
+/* 79 */
+enumerator
+	::= T_IDENTIFIER
+	;
+
+
+/* 80 */
+sequence_type
+	::= T_SEQUENCE T_LESS_THAN_SIGN simple_type_spec T_COMMA positive_int_const T_GREATER_THAN_SIGN
+	| T_SEQUENCE T_LESS_THAN_SIGN simple_type_spec T_GREATER_THAN_SIGN
+	;
+
+
+/* 81 */
+string_type
+	::= T_STRING T_LESS_THAN_SIGN positive_int_const T_GREATER_THAN_SIGN
+	| T_STRING
+	;
+
+
+/* 82 */
+wide_string_type
+	::= T_WSTRING T_LESS_THAN_SIGN positive_int_const T_GREATER_THAN_SIGN
+	| T_WSTRING
+	;
+
+
+/* 83 */
+array_declarator
+	::= T_IDENTIFIER:id
+//		{:
+//			ParserHelper.getInstance().registerTypeId(id);
+//		:}
+		fixed_array_sizes
+	;
+
+fixed_array_sizes
+	::= fixed_array_size
+	| fixed_array_size fixed_array_sizes
+	;
+
+
+/* 84 */
+fixed_array_size
+	::= T_LEFT_SQUARE_BRACKET positive_int_const T_RIGHT_SQUARE_BRACKET
+	;
+
+
+/* 85 */
+attr_dcl
+	::= readonly_attr_spec
+	| attr_spec
+	;
+
+
+/* 86 */
+except_dcl
+	::= 
+		T_EXCEPTION T_IDENTIFIER:id 
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}			 	
+		T_LEFT_CURLY_BRACKET members T_RIGHT_CURLY_BRACKET
+	;
+
+members
+	::= /*empty*/
+	| member members
+	;
+
+
+/* 87 */
+op_dcl
+	::= op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr context_expr
+	| op_attribute op_type_spec T_IDENTIFIER parameter_dcls context_expr
+	| op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr
+	| op_attribute op_type_spec T_IDENTIFIER parameter_dcls
+	;
+
+
+/* 88 */
+op_attribute
+	::= /*empty*/
+	| T_ONEWAY
+	;
+
+
+/* 89 */
+op_type_spec	
+	::= param_type_spec
+	| T_VOID
+	;
+
+
+/* 90 */
+parameter_dcls
+	::= T_LEFT_PARANTHESIS param_dcls T_RIGHT_PARANTHESIS
+	| T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+	;
+
+param_dcls
+	::= param_dcl
+	| param_dcl T_COMMA param_dcls
+	;
+
+
+/* 91 */
+param_dcl
+	::= param_attribute param_type_spec simple_declarator
+	;
+
+
+/* 92 */
+param_attribute
+	::= T_IN
+	| T_OUT
+	| T_INOUT
+	;
+
+
+/* 93 */
+raises_expr
+	::= T_RAISES T_LEFT_PARANTHESIS scoped_names T_RIGHT_PARANTHESIS
+	;
+
+/* 94 */
+context_expr
+	::= T_CONTEXT T_LEFT_PARANTHESIS string_literals T_RIGHT_PARANTHESIS
+	;
+
+string_literals
+	::= T_string_literal
+	| T_string_literal T_COMMA string_literals
+	;
+
+T_string_literal
+	::= T_STRING_LITERAL
+	| T_STRING_LITERAL T_string_literal
+	;
+
+T_wstring_literal
+	::= T_WSTRING_LITERAL
+	| T_WSTRING_LITERAL T_wstring_literal
+	;
+
+
+/* 95 */
+param_type_spec
+	::= base_type_spec
+	| template_type_spec
+	| scoped_name
+	;
+
+
+/* 96 */
+fixed_pt_type
+	::= T_FIXED T_LESS_THAN_SIGN positive_int_const T_COMMA T_INTEGER_LITERAL T_GREATER_THAN_SIGN
+	;
+
+
+/* 97 */
+fixed_pt_const_type
+	::= T_FIXED
+	;
+
+
+/* 98 */
+value_base_type
+	::= T_VALUEBASE
+	;
+
+
+/* 99 A (from 2.4, not in CCM) */
+constr_forward_decl
+	::= 
+		T_STRUCT T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+	| 
+		T_UNION T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+	;
+
+
+/* 99 */
+/* 100 */
+import_dcl
+	::= T_IMPORT imported_scope
+	;
+
+imported_scope
+	::= scoped_name
+	| T_string_literal
+	;
+
+
+/* 101 */
+type_id_dcl
+	::= T_TYPEID scoped_name T_string_literal
+	;
+
+
+/* 102 */
+type_prefix_dcl
+	::= T_TYPEPREFIX scoped_name T_string_literal
+	;
+
+
+/* 103 */
+readonly_attr_spec
+	::= T_READONLY T_ATTRIBUTE param_type_spec readonly_attr_declarator
+	;
+
+
+/* 104 */
+readonly_attr_declarator
+	::= simple_declarator raises_expr
+	| simple_declarators
+	;
+
+simple_declarators
+	::= simple_declarator
+	| simple_declarator T_COMMA simple_declarators
+	;
+
+
+/* 105 */
+attr_spec
+	::= T_ATTRIBUTE param_type_spec attr_declarator
+	;
+
+
+/* 106 */
+attr_declarator
+	::= simple_declarator attr_raises_expr
+	| simple_declarators
+	;
+
+
+/* 107 */
+attr_raises_expr
+	::= get_excep_expr
+	| set_excep_expr
+	| get_excep_expr set_excep_expr
+	| set_excep_expr get_excep_expr
+	;
+
+
+/* 108 */
+get_excep_expr
+	::= T_GETRAISES exception_list
+	;
+
+
+/* 109 */
+set_excep_expr
+	::= T_SETRAISES exception_list
+	;
+
+
+/* 110 */
+exception_list
+	::= T_LEFT_PARANTHESIS scoped_names T_RIGHT_PARANTHESIS
+	;
+
+
+/* 111 */
+component
+	::= component_dcl
+	| component_forward_dcl
+	;
+
+
+/* 112 */
+component_forward_dcl
+	::= T_COMPONENT T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+	;
+
+
+/* 113 */
+component_dcl
+	::= component_header T_LEFT_CURLY_BRACKET component_body T_RIGHT_CURLY_BRACKET
+	| component_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+	;
+
+
+/* 114 */
+component_header
+	::= 
+		T_COMPONENT T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	| 
+		T_COMPONENT T_IDENTIFIER:id component_inheritance_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	| 
+		T_COMPONENT T_IDENTIFIER:id supported_interface_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	| 
+		T_COMPONENT T_IDENTIFIER:id component_inheritance_spec supported_interface_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	;
+
+
+/* 115 */
+supported_interface_spec
+	::= T_SUPPORTS interface_names
+	;
+
+
+/* 116 */
+component_inheritance_spec
+	::= T_COLON scoped_name
+	;
+
+
+/* 117 */
+component_body
+	::= component_export
+	| component_export component_body
+	;
+
+
+/* 118 */
+component_export
+	::= provides_dcl T_SEMICOLON
+	| uses_dcl T_SEMICOLON
+	| emits_dcl T_SEMICOLON
+	| publishes_dcl T_SEMICOLON
+	| consumes_dcl T_SEMICOLON
+	| attr_dcl T_SEMICOLON
+	;
+
+
+/* 119 */
+provides_dcl
+	::= T_PROVIDES interface_type T_IDENTIFIER
+	;
+
+
+/* 120 */
+interface_type
+	::= scoped_name
+	| T_OBJECT
+	;
+
+
+/* 121 */
+uses_dcl
+	::= T_USES interface_type T_IDENTIFIER
+	| T_USES T_MULTIPLE interface_type T_IDENTIFIER
+	;
+
+
+/* 122 */
+emits_dcl
+	::= T_EMITS scoped_name T_IDENTIFIER
+	;
+
+
+/* 123 */
+publishes_dcl
+	::= T_PUBLISHES scoped_name T_IDENTIFIER
+	;
+
+
+/* 124 */
+consumes_dcl
+	::= T_CONSUMES scoped_name T_IDENTIFIER
+	;
+
+
+/* 125 */
+home_dcl
+	::= home_header home_body
+	;
+
+
+/* 126 */
+home_header
+	::= 
+		T_HOME T_IDENTIFIER:id 
+			T_MANAGES scoped_name
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	| 
+		T_HOME T_IDENTIFIER:id 
+			home_inheritance_spec T_MANAGES scoped_name
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	| 
+		T_HOME T_IDENTIFIER:id 
+			T_MANAGES scoped_name primary_key_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	| 
+		T_HOME T_IDENTIFIER:id 
+			home_inheritance_spec T_MANAGES scoped_name primary_key_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	| 
+		T_HOME T_IDENTIFIER:id 
+			supported_interface_spec T_MANAGES scoped_name
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	| 
+		T_HOME T_IDENTIFIER:id 
+			home_inheritance_spec supported_interface_spec T_MANAGES scoped_name
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	| 
+		T_HOME T_IDENTIFIER:id 
+			supported_interface_spec T_MANAGES scoped_name primary_key_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	| 
+		T_HOME T_IDENTIFIER:id 
+			home_inheritance_spec supported_interface_spec T_MANAGES scoped_name primary_key_spec 
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	;
+
+
+/* 127 */
+home_inheritance_spec
+	::= T_COLON scoped_name
+	;
+
+
+/* 128 */
+primary_key_spec
+	::= T_PRIMARYKEY scoped_name
+	;
+
+
+/* 129 */
+home_body
+	::= T_LEFT_CURLY_BRACKET home_exports T_RIGHT_CURLY_BRACKET
+	| T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+	;
+
+
+/* 130 */
+home_exports
+	::= home_export
+	| home_export home_exports
+	;
+
+home_export
+	::= export
+	| factory_dcl T_SEMICOLON
+	| finder_dcl T_SEMICOLON
+	;
+
+
+/* 131 */
+factory_dcl
+	::= T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS raises_expr
+	| T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS raises_expr
+	| T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS
+	| T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+	;
+
+
+/* 132 */
+finder_dcl
+	::= T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS raises_expr
+	| T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS raises_expr
+	| T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS
+	| T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+	;
+
+
+/* 134 */
+event
+	::= event_dcl
+	| event_abs_dcl
+	| event_forward_dcl
+	;
+
+
+/* 135 */
+event_forward_dcl
+	::= 
+		T_EVENTTYPE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+	| 
+		T_ABSTRACT T_EVENTTYPE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerForwardDclId(id);
+		:}
+	;
+
+
+/* 136 */
+event_abs_dcl
+	::= 
+		T_ABSTRACT T_EVENTTYPE T_IDENTIFIER:id 
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}			 	
+		T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
+	| 
+		T_ABSTRACT T_EVENTTYPE T_IDENTIFIER:id value_inheritance_spec 
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+		T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
+	;
+
+
+/* 137 */
+event_dcl
+	::= event_header T_LEFT_CURLY_BRACKET value_elements T_RIGHT_CURLY_BRACKET
+	| event_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+	;
+
+
+/* 138 */
+event_header
+	::= 
+		T_EVENTTYPE T_IDENTIFIER:id value_inheritance_spec 
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	| 
+		T_CUSTOM T_EVENTTYPE T_IDENTIFIER:id value_inheritance_spec
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+		
+	| 
+		T_EVENTTYPE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}				
+	| 
+		T_CUSTOM T_EVENTTYPE T_IDENTIFIER:id
+		{:
+			ParserHelper.getInstance().registerTypeId(id);
+		:}		
+	;

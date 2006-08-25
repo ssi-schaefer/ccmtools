@@ -52,7 +52,7 @@ import ccmtools.utils.Text;
  */
 public class CcmModelChecker
 {		
-    public static final String MODEL_CHECKER_ID = "check";
+    public static final String MODEL_CHECKER_ID = "checker";
     public static final String MODEL_CHECKER_TEXT = "Check CCM model";
     
     private static final String TAB = "    ";

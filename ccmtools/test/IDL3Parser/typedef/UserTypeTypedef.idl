@@ -7,21 +7,21 @@
 /*
  * Here we define aliases for user defined IDL types
  */
-typedef Color 			EnumType;
-typedef Person 			StructType;
+typedef Color 		EnumType;
+typedef Person 		StructType;
 
 
 /*
  * Here we define aliases for existing typedefs
  */
-typedef EnumType		MetaEnumType;
-typedef StructType 		MetaStructType;
+typedef EnumType	MetaEnumType;
+typedef StructType 	MetaStructType;
 
 
 /*
  * Here we define aliases 2nd order...
  */
-typedef MetaEnumType		MetaMetaEnumType;
+typedef MetaEnumType	MetaMetaEnumType;
 typedef MetaStructType 	MetaMetaStructType;
 
 

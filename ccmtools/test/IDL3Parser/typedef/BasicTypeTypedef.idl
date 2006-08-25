@@ -15,7 +15,7 @@ typedef long 		LongType;
 typedef long long 	LLongType;
 typedef unsigned short 	UShortType;
 typedef unsigned long 	ULongType;
-//typedef unsigned long long ULLongType; !!!	
+typedef unsigned long long ULLongType; 	
 	
 typedef float 		FloatType;
 typedef double 		DoubleType;

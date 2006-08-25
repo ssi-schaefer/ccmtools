@@ -1,7 +1,7 @@
 #ifndef __COLOR__IDL__
 #define __COLOR__IDL__
 
-enum Color
+enum Color  
 {
     red,
     green,
