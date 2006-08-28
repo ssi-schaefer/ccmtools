@@ -38,8 +38,13 @@ public class CcmtoolsProperties
     protected CcmtoolsProperties() 
         throws IOException
     {
-        propertyPath = System.getProperty("ccmtools.home") + File.separator + "etc" + File.separator;
-        load();
+        properties = new Properties();
+
+        if(System.getProperty("ccmtools.home") != null)
+        {
+            propertyPath = System.getProperty("ccmtools.home") + File.separator + "etc" + File.separator;
+            load();
+        }
     }
 
     
@@ -92,7 +97,6 @@ public class CcmtoolsProperties
     {
         File file = new File(propertyPath, CCMTOOLS_PROPERTY_FILE_NAME);
 //        System.out.println("> load properties from " + file);
-        properties = new Properties();
         FileInputStream in = new FileInputStream(file);
         properties.load(in);
         in.close();

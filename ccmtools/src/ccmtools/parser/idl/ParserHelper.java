@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -163,7 +164,7 @@ public class ParserHelper
     
     public Double createFloat(String in)
     {
-        return null;
+        return Double.parseDouble(in);
     }
     
     public BigInteger createFixed(String in)
@@ -173,7 +174,7 @@ public class ParserHelper
     
     public Integer createInteger(String in)
     {
-        return null;
+        return Integer.parseInt(in);
     }
     
     public Integer createOctet(String in)
@@ -205,8 +206,27 @@ public class ParserHelper
     {
         return null;
     }
-        
-    
+
+    public MContainer loadCcmModel(UserInterfaceDriver uiDriver, String idlSource)
+        throws CcmtoolsException
+    {
+        try
+        {
+            uiDriver.printMessage("parse");
+            ParserHelper.getInstance().init();
+            Idl3Scanner scanner = new Idl3Scanner(new StringReader(idlSource));
+            Idl3Parser parser = new Idl3Parser(scanner);
+            MContainer ccmModel = (MContainer) parser.parse().value;
+            uiDriver.printMessage("done");
+            return ccmModel;
+        }
+        catch (Exception e)
+        {
+            throw new CcmtoolsException(e.getMessage());
+        }
+    }
+
+
     public MContainer loadCcmModel(UserInterfaceDriver uiDriver, String idlFileName, List<String> includePaths)
         throws CcmtoolsException
     {    
@@ -286,7 +306,7 @@ public class ParserHelper
                 writer.write(code.toString(), 0, code.toString().length());
                 writer.close();
             }
-            //        tmpFile.deleteOnExit();
+//          tmpFile.deleteOnExit();
         }
         catch (Exception e)
         {

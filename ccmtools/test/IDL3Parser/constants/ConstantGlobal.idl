@@ -1,9 +1,10 @@
 #ifndef __CONSTANT_GLOBAL__IDL__
 #define __CONSTANT_GLOBAL__IDL__
 
-#include <enum/Color.idl>
+//#include <enum/Color.idl>
 
 const short 		SHORT_CONST = -3;
+
 const long 		LONG_CONST = -7777;
 const long long 	LONG_LONG_CONST = 7777777;
 const unsigned short    USHORT_CONST = 7;
