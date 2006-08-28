@@ -160,7 +160,7 @@ nonterminal		export;
 nonterminal		interface_inheritance_spec;	
 nonterminal		interface_names;
 nonterminal		scoped_names;
-nonterminal String		scoped_name;
+nonterminal MIDLType		scoped_name;
 nonterminal		value;
 nonterminal		value_forward_dcl;
 nonterminal		value_box_dcl;
@@ -197,7 +197,7 @@ nonterminal	Object			primary_expr;
 nonterminal	Object			literal; 			
 
 /* 40 */
-nonterminal	String			positive_int_const;
+nonterminal	Integer			positive_int_const;
 
 nonterminal		type_dcl;
 nonterminal		type_spec;
@@ -337,7 +337,7 @@ specification
 	::= 
 		definitions:l
 		{:
-			System.out.println("1: ");
+			ParserHelper.getInstance().getLogger().fine("1: ");
 			MContainer container = new MContainerImpl();
 			container.setContentss(l);
 			
@@ -351,7 +351,7 @@ definitions
 	::=
 		definition:d
 		{:
-			System.out.println("2: ");		
+			ParserHelper.getInstance().getLogger().fine("2: definition");
 			List l = new ArrayList();
 			l.add(d);
 			RESULT = l;
@@ -359,7 +359,7 @@ definitions
 	| 
 		definition:d definitions	:l
 		{:
-			System.out.println("2s: ");		
+			ParserHelper.getInstance().getLogger().fine("2: definition definitions");
 			if(d != null)
 			{
 				l.add(d);
@@ -383,6 +383,7 @@ definition
 	| 	
 		const_dcl:c T_SEMICOLON
 		{:
+			ParserHelper.getInstance().getLogger().fine("2b: const_dcl");
 			RESULT = c;
 		:}
 	| 	
@@ -716,6 +717,7 @@ const_dcl
 		:}		
 	 	T_EQUAL const_exp:e
 	 	{:
+	 		ParserHelper.getInstance().getLogger().fine("27: T_EQUAL const_exp = " + e);
 	 		MConstantDef constant = new MConstantDefImpl();
 	 		constant.setIdentifier(id);
 //	 		constant.setSourceFile();
@@ -724,27 +726,61 @@ const_dcl
 			{
 				MPrimitiveDef primitive = (MPrimitiveDef)t;
 				constant.setIdlType(t);
-				if(primitive.getKind() == MPrimitiveKind.PK_SHORT)
+				if(primitive.getKind() == MPrimitiveKind.PK_SHORT 
+					|| primitive.getKind() == MPrimitiveKind.PK_USHORT)
 				{
-					System.out.println(e);
-					if(e instanceof Integer)
-					{
-						int i = (((Integer)e).intValue());
-						constant.setConstValue(new Short((short)i));
-					}
-					else
-					{
-						throw new RuntimeException("A short constant needs an integer expression!");
-					}	
+					short i = (short)(((Integer)e).intValue());
+					constant.setConstValue(new Short(i));
 				}
+				else if(primitive.getKind() == MPrimitiveKind.PK_LONG 
+					|| primitive.getKind() == MPrimitiveKind.PK_ULONG)
+				{
+					constant.setConstValue((Integer)e);				
+				}
+				else if(primitive.getKind() == MPrimitiveKind.PK_LONGLONG 
+					|| primitive.getKind() == MPrimitiveKind.PK_ULONGLONG)
+				{
+					long l = (((Integer)e).intValue());
+					constant.setConstValue(new Long(l));		
+				}
+				else if(primitive.getKind() == MPrimitiveKind.PK_FLOAT)
+				{
+					float f = (float)((Double)e).doubleValue();
+					constant.setConstValue(new Float(f));				
+				}				
+				else if(primitive.getKind() == MPrimitiveKind.PK_DOUBLE)
+				{
+					constant.setConstValue((Double)e);				
+				}				
+				else if(primitive.getKind() == MPrimitiveKind.PK_LONGDOUBLE)
+				{
+					constant.setConstValue((Double)e);				
+				}				
+				else if(primitive.getKind() == MPrimitiveKind.PK_CHAR
+					|| primitive.getKind() == MPrimitiveKind.PK_WCHAR)
+				{
+					constant.setConstValue((Character)e);				
+				}	
+				else if(primitive.getKind() == MPrimitiveKind.PK_OCTET)
+				{
+					constant.setConstValue((Integer)e);				
+				}	
+				else if(primitive.getKind() == MPrimitiveKind.PK_BOOLEAN)
+				{
+					constant.setConstValue((Boolean)e);				
+				}									
 			}
 			else if(t instanceof MStringDef)
 			{
-			
+				MStringDef str = (MStringDef)t;
+				constant.setIdlType(str);
+				constant.setConstValue((String)e);
 			}
 			else if(t instanceof MWstringDef)
 			{
-			
+				MWstringDef str = (MWstringDef)t;
+				constant.setIdlType(str);
+				constant.setConstValue((String)e);			
 			}
 			RESULT = constant;
 	 	:}
@@ -756,51 +792,61 @@ const_type
 	::= 
 		integer_type:t
 		{:
+			ParserHelper.getInstance().getLogger().fine("28: integer_type = " + t);
 			RESULT = t;
 		:}
 	| 
 		char_type:t
 		{:
+			ParserHelper.getInstance().getLogger().fine("28: char_type = " + t);		
 			RESULT = t;
 		:}
 	| 
 		wide_char_type:t
 		{:
+			ParserHelper.getInstance().getLogger().fine("28: wide_char_type = " + t);		
 			RESULT = t;
 		:}
 	| 
 		boolean_type:t
 		{:
+			ParserHelper.getInstance().getLogger().fine("28: boolean_type = " + t);		
 			RESULT = t;
 		:}
 	| 
 		floating_pt_type:t
 		{:
+			ParserHelper.getInstance().getLogger().fine("28: floating_pt_type = " + t);		
 			RESULT = t;
 		:}		
 	| 
 		string_type:t
 		{:
+			ParserHelper.getInstance().getLogger().fine("28: string_type = " + t);
 			RESULT = t;
 		:}		
 	| 
 		wide_string_type:t
 		{:
+			ParserHelper.getInstance().getLogger().fine("28: wide_string_type = " + t);		
 			RESULT = t;
 		:}
 	| 
 		fixed_pt_const_type:t
 		{:
+			ParserHelper.getInstance().getLogger().fine("28: fixed_pt_const_type = " + t);		
 			RESULT = t;
 		:}
 	| 	
 		scoped_name:t 
 		{:
-//			RESULT = t;
+			ParserHelper.getInstance().getLogger().fine("28: scoped_name = " + t);
+			RESULT = t;
 		:}
 	| 
 		octet_type:t
 		{:
+			ParserHelper.getInstance().getLogger().fine("28: octet_type = " + t);
 			RESULT = t;
 		:}
 	;
@@ -810,7 +856,7 @@ const_type
 const_exp
 	::= or_expr:e
 		{:
-			System.out.println("29: or_expr = " + e);
+			ParserHelper.getInstance().getLogger().fine("29: or_expr = " + e);
 			RESULT = e;
 		:}
 	;
@@ -821,7 +867,7 @@ or_expr
 	::= 
 		xor_expr:e
 		{:
-			System.out.println("30: or_expr = " + e);
+			ParserHelper.getInstance().getLogger().fine("30: xor_expr = " + e);
 			RESULT = e;		
 		:}
 	| 
@@ -834,7 +880,7 @@ xor_expr
 	::= 
 		and_expr:e
 		{:
-			System.out.println("31: and_expr = " + e);
+			ParserHelper.getInstance().getLogger().fine("31: and_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -847,7 +893,7 @@ and_expr
 	::= 
 		shift_expr:e
 		{:
-			System.out.println("32: shift_expr = " + e);
+			ParserHelper.getInstance().getLogger().fine("32: and_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -860,7 +906,7 @@ shift_expr
 	::= 
 		add_expr:e
 		{:
-			System.out.println("33: add_expr = " + e);
+			ParserHelper.getInstance().getLogger().fine("33: add_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -875,7 +921,7 @@ add_expr
 	::= 
 		mult_expr:e
 		{:
-			System.out.println("34: mult_expr = " + e);
+			ParserHelper.getInstance().getLogger().fine("34: mult_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -890,7 +936,7 @@ mult_expr
 	::= 
 		unary_expr:e
 		{:
-			System.out.println("35: unary_expr = " + e);
+			ParserHelper.getInstance().getLogger().fine("35: unary_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -908,7 +954,7 @@ unary_expr
 	::= 
 		T_MINUS_SIGN primary_expr:e
 		{:
-			System.out.println("36: primary_expr = " + e);
+			ParserHelper.getInstance().getLogger().fine("36|37: T_MINUS_SIGN primary_expr = " + e);
 			if(e instanceof Integer)
 			{
 				RESULT = new Integer(-((Integer)e).intValue());
@@ -925,6 +971,7 @@ unary_expr
 	| 
 		T_PLUS_SIGN primary_expr:e
 		{:
+			ParserHelper.getInstance().getLogger().fine("36|37: T_PLUS_SIGN primary_expr = " + e);		
 			RESULT = e;
 		:}
 	| 
@@ -932,6 +979,7 @@ unary_expr
 	| 
 		primary_expr:e
 		{:
+			ParserHelper.getInstance().getLogger().fine("36|37: primary_expr = " + e);		
 			RESULT = e;
 		:}
 	;
@@ -944,7 +992,7 @@ primary_expr
 	| 
 		literal:l
 		{:
-			System.out.println("38: literal = " + l);
+			ParserHelper.getInstance().getLogger().fine("38: literal = " + l);		
 			RESULT = l;
 		:}
 	| 
@@ -958,56 +1006,69 @@ literal
 	::= 
 		T_INTEGER_LITERAL:i
 		{:
-			System.out.println("39: T_INTEGER_LITERAL = " + i);
+			ParserHelper.getInstance().getLogger().fine("39|40: T_INTEGER_LITERAL = " + i);
 			RESULT = i;
 		:}
 	| 
 		T_string_literal:s
 		{:
+			ParserHelper.getInstance().getLogger().fine("39|40: T_string_literal = " + s);
 			RESULT = s;
 		:}
 	| 
 		T_wstring_literal:ws
 		{:
+			ParserHelper.getInstance().getLogger().fine("39|40: T_wstring_literal = " + ws);			
 			RESULT = ws;
 		:}
 	| 
 		T_CHARACTER_LITERAL:c
 		{:
+			ParserHelper.getInstance().getLogger().fine("39|40: T_CHARACTER_LITERAL = " + c);		
 			RESULT = c;
 		:}
 
 	| 
 		T_WCHARACTER_LITERAL:wc
 		{:
+			ParserHelper.getInstance().getLogger().fine("39|40: T_WCHARACTER_LITERAL = " + wc);			
 			RESULT = wc;
 		:}	
 	| 
 		T_FIXED_PT_LITERAL:fp
 		{:
+			ParserHelper.getInstance().getLogger().fine("39|40: T_FIXED_PT_LITERAL = " + fp);			
 			RESULT = fp;
 		:}		
 	| 
 		T_FLOATING_PT_LITERAL:f
 		{:
+			ParserHelper.getInstance().getLogger().fine("39|40: T_FLOATING_PT_LITERAL = " + f);			
 			RESULT = f;
 		:}		
 	| 
-		T_TRUE:b  /*boolean_literal*/
+		T_TRUE /*boolean_literal*/
 		{:
-			RESULT = b;
+			ParserHelper.getInstance().getLogger().fine("39|40: T_TRUE");			
+			RESULT = Boolean.TRUE;
 		:}
 	| 
-		T_FALSE:b /*boolean_literal*/
+		T_FALSE /*boolean_literal*/
 		{:
-			RESULT = b;
+			ParserHelper.getInstance().getLogger().fine("39|40: T_FALSE");			
+			RESULT = Boolean.FALSE;
 		:}
 	;
 
 
 /* 41 */
 positive_int_const
-	::= const_exp
+	::= 
+		const_exp:e
+		{:
+			ParserHelper.getInstance().getLogger().fine("41: const_exp = " + e);		
+			RESULT = (Integer)e;
+		:}
 	;
 
 
@@ -1100,9 +1161,30 @@ complex_declarator
 
 /* 53 */
 floating_pt_type
-	::= T_FLOAT
-	| T_DOUBLE
-	| T_LONG T_DOUBLE
+	::= 
+		T_FLOAT
+		{:
+			ParserHelper.getInstance().getLogger().fine("53: T_FLOAT");			
+			MPrimitiveDef s = new MPrimitiveDefImpl();
+			s.setKind(MPrimitiveKind.PK_FLOAT);
+			RESULT = s;
+		:}	
+	| 
+		T_DOUBLE
+		{:
+			ParserHelper.getInstance().getLogger().fine("53: T_DOUBLE");			
+			MPrimitiveDef s = new MPrimitiveDefImpl();
+			s.setKind(MPrimitiveKind.PK_DOUBLE);
+			RESULT = s;
+		:}			
+	| 
+		T_LONG T_DOUBLE
+		{:
+			ParserHelper.getInstance().getLogger().fine("53: T_LONG T_DOUBLE");			
+			MPrimitiveDef s = new MPrimitiveDefImpl();
+			s.setKind(MPrimitiveKind.PK_LONGDOUBLE);
+			RESULT = s;
+		:}			
 	;
 
 
@@ -1111,11 +1193,13 @@ integer_type
 	::= 
 		signed_int:i
 		{:
+			ParserHelper.getInstance().getLogger().fine("54: signed_int = " + i);			
 			RESULT = i;
 		:}
 	| 
 		unsigned_int:i
 		{:
+			ParserHelper.getInstance().getLogger().fine("54: unsigned_int = " + i);					
 			RESULT = i;
 		:}
 	;
@@ -1126,16 +1210,19 @@ signed_int
 	::= 
 		signed_long_int:i
 		{:
+			ParserHelper.getInstance().getLogger().fine("55: signed_long_int = " + i);					
 			RESULT = i;
 		:}
 	| 
 		signed_short_int:i
 		{:
+			ParserHelper.getInstance().getLogger().fine("55: signed_short_int = " + i);					
 			RESULT = i;
 		:}
 	| 
 		signed_longlong_int:i
 		{:
+			ParserHelper.getInstance().getLogger().fine("55: signed_longlong_int = " + i);	
 			RESULT = i;		
 		:}
 	;
@@ -1146,7 +1233,7 @@ signed_short_int
 	::= 
 		T_SHORT 
 		{:
-			System.out.println("56:");			
+			ParserHelper.getInstance().getLogger().fine("56: T_SHORT");			
 			MPrimitiveDef s = new MPrimitiveDefImpl();
 			s.setKind(MPrimitiveKind.PK_SHORT);
 			RESULT = s;
@@ -1159,7 +1246,7 @@ signed_long_int
 	::= 
 		T_LONG
 		{:
-			System.out.println("57:");			
+			ParserHelper.getInstance().getLogger().fine("57: T_LONG");			
 			MPrimitiveDef s = new MPrimitiveDefImpl();
 			s.setKind(MPrimitiveKind.PK_LONG);
 			RESULT = s;
@@ -1172,7 +1259,7 @@ signed_longlong_int
 	::= 
 		T_LONG T_LONG
 		{:
-			System.out.println("58:");			
+			ParserHelper.getInstance().getLogger().fine("58: T_LONG T_LONG");			
 			MPrimitiveDef s = new MPrimitiveDefImpl();
 			s.setKind(MPrimitiveKind.PK_LONGLONG);
 			RESULT = s;
@@ -1185,18 +1272,21 @@ unsigned_int
 	::= 
 		unsigned_long_int:i
 		{:
+			ParserHelper.getInstance().getLogger().fine("59: unsigned_long_int = " + i);			
 			RESULT = i;
 		:}
 		
 	| 
 		unsigned_short_int:i
 		{:
+			ParserHelper.getInstance().getLogger().fine("59: unsigned_short_int = " + i);					
 			RESULT = i;
 		:}
 		
 	| 
 		unsigned_longlong_int:i
 		{:
+			ParserHelper.getInstance().getLogger().fine("59: unsigned_longlong_int = " + i);					
 			RESULT = i;
 		:}		
 	;
@@ -1207,7 +1297,7 @@ unsigned_short_int
 	::= 
 		T_UNSIGNED T_SHORT 
 		{:
-			System.out.println("60:");			
+			ParserHelper.getInstance().getLogger().fine("60: T_UNSIGNED T_SHORT");			
 			MPrimitiveDef s = new MPrimitiveDefImpl();
 			s.setKind(MPrimitiveKind.PK_USHORT);
 			RESULT = s;
@@ -1220,7 +1310,7 @@ unsigned_long_int
 	::= 
 		T_UNSIGNED T_LONG
 		{:
-			System.out.println("61:");			
+			ParserHelper.getInstance().getLogger().fine("61: T_UNSIGNED T_LONG");			
 			MPrimitiveDef s = new MPrimitiveDefImpl();
 			s.setKind(MPrimitiveKind.PK_ULONG);
 			RESULT = s;
@@ -1232,7 +1322,7 @@ unsigned_longlong_int
 	::= 
 		T_UNSIGNED T_LONG T_LONG
 		{:
-			System.out.println("62:");					
+			ParserHelper.getInstance().getLogger().fine("62: T_UNSIGNED T_LONG T_LONG");			
 			MPrimitiveDef s = new MPrimitiveDefImpl();
 			s.setKind(MPrimitiveKind.PK_ULONGLONG);
 			RESULT = s;
@@ -1242,37 +1332,79 @@ unsigned_longlong_int
 
 /* 63 */
 char_type
-	::= T_CHAR
+	::= 
+		T_CHAR
+		{:
+			ParserHelper.getInstance().getLogger().fine("63: T_CHAR");			
+			MPrimitiveDef s = new MPrimitiveDefImpl();
+			s.setKind(MPrimitiveKind.PK_CHAR);
+			RESULT = s;	
+		:}
 	;
 
 
 /* 64 */
 wide_char_type
-	::= T_WCHAR
+	::= 	
+		T_WCHAR
+		{:
+			ParserHelper.getInstance().getLogger().fine("64: T_WCHAR");			
+			MPrimitiveDef s = new MPrimitiveDefImpl();
+			s.setKind(MPrimitiveKind.PK_WCHAR);
+			RESULT = s;	
+		:}
 	;
 
 
 /* 65 */
 boolean_type
-	::= T_BOOLEAN
+	::= 		
+		T_BOOLEAN
+		{:
+			ParserHelper.getInstance().getLogger().fine("65: T_BOOLEAN");			
+			MPrimitiveDef s = new MPrimitiveDefImpl();
+			s.setKind(MPrimitiveKind.PK_BOOLEAN);
+			RESULT = s;	
+		:}		
 	;
 
 
 /* 66 */
 octet_type
-	::= T_OCTET
+	::= 
+		T_OCTET
+		{:
+			ParserHelper.getInstance().getLogger().fine("66: T_OCTET");			
+			MPrimitiveDef s = new MPrimitiveDefImpl();
+			s.setKind(MPrimitiveKind.PK_OCTET);
+			RESULT = s;	
+		:}				
 	;
 
 
 /* 67 */
 any_type
-	::= T_ANY
+	::= 
+		T_ANY
+		{:
+			ParserHelper.getInstance().getLogger().fine("67: T_ANY");			
+			MPrimitiveDef s = new MPrimitiveDefImpl();
+			s.setKind(MPrimitiveKind.PK_ANY);
+			RESULT = s;	
+		:}				
 	;
 
 
 /* 68 */
 object_type
-	::= T_OBJECT
+	::= 
+		T_OBJECT
+		{:
+			ParserHelper.getInstance().getLogger().fine("68: T_OBJECT");			
+			MPrimitiveDef s = new MPrimitiveDefImpl();
+			s.setKind(MPrimitiveKind.PK_OBJREF);
+			RESULT = s;	
+		:}				
 	;
 
 
@@ -1381,15 +1513,41 @@ sequence_type
 
 /* 81 */
 string_type
-	::= T_STRING T_LESS_THAN_SIGN positive_int_const T_GREATER_THAN_SIGN
-	| T_STRING
+	::= 
+		T_STRING T_LESS_THAN_SIGN positive_int_const:b T_GREATER_THAN_SIGN
+		{:
+			ParserHelper.getInstance().getLogger().fine("81: T_STRING positive_int_const = " + b);			
+			MStringDef s = new MStringDefImpl();			
+			s.setBound(new Long(b.intValue()));
+			RESULT = s;					
+		:}
+	| 
+		T_STRING
+		{:
+			ParserHelper.getInstance().getLogger().fine("81: T_STRING");			
+			MStringDef s = new MStringDefImpl();			
+			RESULT = s;			
+		:}
 	;
 
 
 /* 82 */
 wide_string_type
-	::= T_WSTRING T_LESS_THAN_SIGN positive_int_const T_GREATER_THAN_SIGN
-	| T_WSTRING
+	::= 
+		T_WSTRING T_LESS_THAN_SIGN positive_int_const:b T_GREATER_THAN_SIGN
+		{:
+			ParserHelper.getInstance().getLogger().fine("82: T_WSTRING positive_int_const = " + b);			
+			MWstringDef s = new MWstringDefImpl();			
+			s.setBound(new Long(b.intValue()));
+			RESULT = s;					
+		:}		
+	| 
+		T_WSTRING
+		{:
+			ParserHelper.getInstance().getLogger().fine("82: T_STRING");			
+			MWstringDef s = new MWstringDefImpl();			
+			RESULT = s;			
+		:}		
 	;
 
 
@@ -1497,18 +1655,32 @@ context_expr
 	;
 
 string_literals
-	::= T_string_literal
-	| T_string_literal T_COMMA string_literals
+	::= 
+		T_string_literal
+	| 
+		T_string_literal T_COMMA string_literals
 	;
 
 T_string_literal
-	::= T_STRING_LITERAL
-	| T_STRING_LITERAL T_string_literal
+	::= 
+		T_STRING_LITERAL:s
+		{:
+			ParserHelper.getInstance().getLogger().fine("94: T_STRING_LITERAL = " + s);	
+			RESULT = s;
+		:}
+	| 
+		T_STRING_LITERAL T_string_literal
 	;
 
 T_wstring_literal
-	::= T_WSTRING_LITERAL
-	| T_WSTRING_LITERAL T_wstring_literal
+	::= 
+		T_WSTRING_LITERAL:s
+		{:
+			ParserHelper.getInstance().getLogger().fine("94: T_WSTRING_LITERAL = " + s);	
+			RESULT = s;
+		:}
+	| 
+		T_WSTRING_LITERAL T_wstring_literal
 	;
 
 

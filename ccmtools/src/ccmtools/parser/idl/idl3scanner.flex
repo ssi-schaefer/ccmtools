@@ -136,8 +136,8 @@ CORBA_Identifier				= 	[a-zA-Z_][a-zA-Z0-9_]*
 	"double"				{ return symbol(sym.T_DOUBLE); }
 	"char"				{ return symbol(sym.T_CHAR); }
 	"wchar"				{ return symbol(sym.T_WCHAR); }
-	"fixed"             { return symbol(sym.T_FIXED); }
-	"boolean	"			{ return symbol(sym.T_BOOLEAN); }
+	"fixed"             	{ return symbol(sym.T_FIXED); }	
+	"boolean"			{ return symbol(sym.T_BOOLEAN); }	
 	"string"				{ return symbol(sym.T_STRING); }
 	"wstring"			{ return symbol(sym.T_WSTRING); }
 	"void"				{ return symbol(sym.T_VOID); }
@@ -153,7 +153,7 @@ CORBA_Identifier				= 	[a-zA-Z_][a-zA-Z0-9_]*
 	"default"			{ return symbol(sym.T_DEFAULT); }
 	"enum"				{ return symbol(sym.T_ENUM); }
 	"in"					{ return symbol(sym.T_IN); }
-	"out	"				{ return symbol(sym.T_OUT); }
+	"out"				{ return symbol(sym.T_OUT); }
 	"interface"			{ return symbol(sym.T_INTERFACE); }
 	"abstract"			{ return symbol(sym.T_ABSTRACT); }
 	"valuetype"			{ return symbol(sym.T_VALUETYPE); }
@@ -162,7 +162,7 @@ CORBA_Identifier				= 	[a-zA-Z_][a-zA-Z0-9_]*
 	"custom"				{ return symbol(sym.T_CUSTOM); }
 	"public"				{ return symbol(sym.T_PUBLIC); }
 	"private"			{ return symbol(sym.T_PRIVATE); }
-	"factory	"			{ return symbol(sym.T_FACTORY); }
+	"factory"			{ return symbol(sym.T_FACTORY); }
 	"native"				{ return symbol(sym.T_NATIVE); }
 	"ValueBase"			{ return symbol(sym.T_VALUEBASE); }
 	"typeId"				{ return symbol(sym.T_TYPEID); }
@@ -173,7 +173,7 @@ CORBA_Identifier				= 	[a-zA-Z_][a-zA-Z0-9_]*
 
 	"module"				{ return symbol(sym.T_MODULE); }
 	"octet"				{ return symbol(sym.T_OCTET); }
-	"any	"				{ return symbol(sym.T_ANY); }
+	"any"				{ return symbol(sym.T_ANY); }
 	"sequence"			{ return symbol(sym.T_SEQUENCE); }
 	"readonly"			{ return symbol(sym.T_READONLY); }
 	"attribute"			{ return symbol(sym.T_ATTRIBUTE); }
@@ -181,9 +181,9 @@ CORBA_Identifier				= 	[a-zA-Z_][a-zA-Z0-9_]*
 	"oneway"				{ return symbol(sym.T_ONEWAY); }
 	"inout"				{ return symbol(sym.T_INOUT); }
 	"raises"				{ return symbol(sym.T_RAISES); }
-	"context	"			{ return symbol(sym.T_CONTEXT); }
+	"context"			{ return symbol(sym.T_CONTEXT); }
 
-	"Object"            { return symbol(sym.T_OBJECT); }
+	"Object"        		{ return symbol(sym.T_OBJECT); }
 
 	"component"			{ return symbol(sym.T_COMPONENT); }
 	"provides"			{ return symbol(sym.T_PROVIDES); }

@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
@@ -21,6 +25,8 @@ import ccmtools.utils.CcmtoolsProperties;
 public class ParserHelper
 {
     private static ParserHelper instance = null;
+    
+    private Logger logger;
     
     private int currentSourceLine;    
     private String currentSourceFile;
@@ -41,6 +47,15 @@ public class ParserHelper
     
     private ParserHelper()
     {
+        logger = Logger.getLogger("ccmtools.parser.idl");
+        //!!!!!!!!!!
+        logger.setLevel(Level.FINE);
+        Handler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        handler.setFormatter(new ccm.local.MinimalFormatter());
+        logger.addHandler(handler);
+        ccm.local.ServiceLocator.instance().setLogger(logger);
+        //!!!!!!!!
         init();        
     }
     
@@ -56,6 +71,12 @@ public class ParserHelper
         currentSourceLine = 0;
         currentSourceFile = "";
         mainSourceFile = "";
+    }
+    
+    
+    public Logger getLogger()
+    {
+        return logger;
     }
     
     
@@ -95,7 +116,7 @@ public class ParserHelper
     public void registerTypeId(String name)
     {
         String absoluteId = scope + name;
-        System.out.println("registerType: " + absoluteId);
+        logger.fine("registerType: " + absoluteId);
         if(!(typeIdTable.register(new Identifier(absoluteId))))
         {      
             throw new RuntimeException(getCurrentSourceFile() + " line " + getCurrentSourceLine() + " : "
@@ -106,7 +127,7 @@ public class ParserHelper
     public void registerForwardDclId(String name)
     {
         String absoluteId = scope + name;
-        System.out.println("registerForwardDcl: " + absoluteId);
+        logger.fine("registerForwardDcl: " + absoluteId);
         forwardDclTable.register(new Identifier(absoluteId));
     }
 
@@ -117,11 +138,19 @@ public class ParserHelper
     }
     
     
+    /*************************************************************************
+     * Parser Utility Methods
+     * 
+     *************************************************************************/
+    
+    
+    
+    
     
     /*
-     * Utility Methods
+     * Scanner Utility Methods
      */
-    
+        
     // # linenumber filename flags
     // # 1 "/home/eteinik/sandbox/workspace-development/TelegramGenerator/examples/simple_test/example1.tgen"
     public void handlePreprocessorLine(String line)
@@ -179,32 +208,35 @@ public class ParserHelper
     
     public Integer createOctet(String in)
     {
-        return null;
+        return Integer.parseInt(in,8);
     }
     
     public Integer createHex(String in)
     {
-        return null;
+        int start = (in.toUpperCase()).indexOf("0X") + 2; 
+        return Integer.parseInt(in.substring(start),16);
     }
     
     public Character createChar(String in)
     {
-        return null;
+        // in = "'c'";
+        return new Character(in.charAt(in.indexOf('\'')+1));
     }
     
     public Character createWChar(String in)
     {
-        return null;
+        // in = "L'c'";
+        return new Character(in.charAt(in.indexOf('\'')+1));
     }
     
     public String createString(String in)
     {
-        return null;
+        return in.substring(in.indexOf('"')+1, in.lastIndexOf('"'));
     }
     
     public String createWString(String in)
     {
-        return null;
+        return in.substring(in.indexOf('"')+1, in.lastIndexOf('"'));
     }
 
     public MContainer loadCcmModel(UserInterfaceDriver uiDriver, String idlSource)
@@ -222,6 +254,7 @@ public class ParserHelper
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             throw new CcmtoolsException(e.getMessage());
         }
     }
