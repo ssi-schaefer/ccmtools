@@ -102,15 +102,19 @@ HomeFinder::unregister_home ( SmartPtr<Components::CCMHome> home_ref )
 }
 
 void
-HomeFinder::unregister_home ( const std::string& home_name )
+HomeFinder::unregister_home(const std::string& home_name)
 {
   LDEBUGNL(CCM_CONTAINER," HomeFinder->unregister_home ( home_name )" );
   HomePoolMap::iterator pos;
   pos = HomePool.find(home_name);
-  if ( pos == HomePool.end (  ) )
-    throw Components::HomeNotFound (  );
+  if(pos == HomePool.end())
+  {
+    throw Components::HomeNotFound();
+  }
   else
-    return HomePool.erase ( pos );
+  {
+    HomePool.erase(pos);
+  }
 }
 
 } // /namespace local
