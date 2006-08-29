@@ -1,0 +1,78 @@
+#line 1 "..\\idl\\NonMtreeDialogs.idl"
+#line 1 "C:\\SFU\\tools\\mduft\\toolsbox-3.5.1.6pre.mduft\\i586-pc-interix3\\WX\\include\\wx\\owiljava\\DialogManager.idl"
+
+
+
+module wx {
+module owiljava {
+
+    
+
+
+     interface DialogManager {};
+        
+     interface DefaultDialogManager : DialogManager {
+
+        
+
+
+        void showDialog();
+    };
+
+}; 
+}; 
+
+#line 24 "C:\\SFU\\tools\\mduft\\toolsbox-3.5.1.6pre.mduft\\i586-pc-interix3\\WX\\include\\wx\\owiljava\\DialogManager.idl"
+#line 2 "..\\idl\\NonMtreeDialogs.idl"
+
+module wx {
+module owiljava {
+
+     
+     
+     
+
+    
+
+
+    interface TestDialog1 : DialogManager {
+
+        
+
+
+        long showTestDialog(in long level);
+    };
+
+    
+
+
+
+    struct TestDialogParams {
+        long    id;
+        double  qty;
+        string  name;
+    };
+
+    interface TestDialog2 : DialogManager {
+
+        
+
+
+        long showTestDialog(in TestDialogParams params);
+    };
+
+     
+     
+     
+    
+
+
+    interface TestDialog3 : DialogManager {
+
+        
+
+
+        long showTestDialog(in string name,in boolean state);
+    };
+};
+};

@@ -182,11 +182,8 @@ public class Main
                 
                 // step (0). run the C preprocessor on the input file.
                 // Run the GNU preprocessor cpp in a separate process.
-//                String cmd = CcmtoolsProperties.Instance().get("ccmtools.cpp") + " -o "+ idlfile 
-//                                + " " + includePath	+ " " + source;
                 String cmd = CcmtoolsProperties.Instance().get("ccmtools.cpp") 
                                 + " " + includePath + " " + source;
-
                 logger.fine(cmd);
                 uiDriver.printMessage(cmd);
                 Process preproc = Runtime.getRuntime().exec(cmd);
@@ -198,7 +195,6 @@ public class Main
                 String s;
                 while((s = stdInput.readLine()) != null)
                 {
-//                    uiDriver.printMessage(s);
                     code.append(s).append("\n");
                 }
                 while((s = stdError.readLine()) != null)
@@ -214,16 +210,15 @@ public class Main
                 }
                 else
                 {
-//                    System.out.println(">>>> Write:\n" + code);
                     FileWriter writer = new FileWriter(idlfile);
                     writer.write(code.toString(), 0, code.toString().length());
                     writer.close();
                 }
-                
                 // step (1). parse the resulting preprocessed file.
                 uiDriver.printMessage("parse " + idlfile.toString());
                 manager.reset();
                 manager.setOriginalFile(source.toString());
+                System.out.println("setOriginalFile = " + source.toString());
                 ccmModel = manager.parseFile(idlfile.toString());
                 if(ccmModel == null) {
                     throw new CcmtoolsException("Parser error " + source + ":\n" 

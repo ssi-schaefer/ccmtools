@@ -2647,12 +2647,15 @@ WS options { paraphrase = "white space"; }
         { $setType(Token.SKIP); } ;
 
 PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
-    :   "# " ( DIGIT )+ ' ' s:STRING_LITERAL
+    :   "#" ("line")? ' ' ( DIGIT )+ ' ' s:STRING_LITERAL
         {
             String include = s.getText();
-            if (include.length() > 0 && include.charAt(0) != '<') {
+            if (include.length() > 0 && include.charAt(0) != '<') 
+            {
+	            System.out.println("setSourceFile = " + include);
                 manager.setSourceFile(s.getText());
-                if ((debug & DEBUG_FILE) != 0) {
+                if ((debug & DEBUG_FILE) != 0) 
+                {
                     String label = "[f] source from file : ";
                     System.out.println(label + s.getText());
                 }
