@@ -6,6 +6,7 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MConstantDef;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
@@ -41,12 +42,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const short SHORT_CONST = -7;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-            
-            MConstantDef constant = (MConstantDef)modelElements.get(0);            
+            MConstantDef constant = parseSource("const short SHORT_CONST = -7;");
             assertEquals(constant.getIdentifier(), "SHORT_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_SHORT);
@@ -64,12 +60,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const unsigned short USHORT_CONST = 7;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-            
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const unsigned short USHORT_CONST = 7;");
             assertEquals(constant.getIdentifier(), "USHORT_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_USHORT);
@@ -88,12 +79,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const long LONG_CONST = -7777;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const long LONG_CONST = -7777;");
             assertEquals(constant.getIdentifier(), "LONG_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_LONG);            
@@ -111,12 +97,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const unsigned long ULONG_CONST = 7777;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const unsigned long ULONG_CONST = 7777;");
             assertEquals(constant.getIdentifier(), "ULONG_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_ULONG);            
@@ -135,12 +116,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const long long LONG_LONG_CONST = -7777777;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const long long LONG_LONG_CONST = -7777777;");
             assertEquals(constant.getIdentifier(), "LONG_LONG_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_LONGLONG);            
@@ -158,12 +134,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const unsigned long long ULONG_LONG_CONST = 7777777;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const unsigned long long ULONG_LONG_CONST = 7777777;");
             assertEquals(constant.getIdentifier(), "ULONG_LONG_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_ULONGLONG);
@@ -182,12 +153,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const float FLOAT_CONST = 3.14;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const float FLOAT_CONST = 3.14;");
             assertEquals(constant.getIdentifier(), "FLOAT_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_FLOAT);
@@ -205,12 +171,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const double DOUBLE_CONST = 3.1415926;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const double DOUBLE_CONST = 3.1415926;");
             assertEquals(constant.getIdentifier(), "DOUBLE_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_DOUBLE);
@@ -228,12 +189,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const long double LDOUBLE_CONST = 3.1415926;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const long double LDOUBLE_CONST = 3.1415926;");
             assertEquals(constant.getIdentifier(), "LDOUBLE_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_LONGDOUBLE);
@@ -252,12 +208,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const char CHAR_CONST = 'c';";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const char CHAR_CONST = 'c';");
             assertEquals(constant.getIdentifier(), "CHAR_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_CHAR);
@@ -275,12 +226,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const wchar WCHAR_CONST = L'c';";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const wchar WCHAR_CONST = L'c';");
             assertEquals(constant.getIdentifier(), "WCHAR_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_WCHAR);
@@ -299,12 +245,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const string STRING_CONST = \"1234567890\";";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const string STRING_CONST = \"1234567890\";");
             assertEquals(constant.getIdentifier(), "STRING_CONST");
             assertTrue(constant.getIdlType() instanceof MStringDef);
             String constValue = (String)constant.getConstValue();
@@ -321,12 +262,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const string<5> BSTRING_CONST = \"1234567890\";";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const string<5> BSTRING_CONST = \"1234567890\";");
             assertEquals(constant.getIdentifier(), "BSTRING_CONST");
             assertTrue(constant.getIdlType() instanceof MStringDef);
             MStringDef s = (MStringDef)constant.getIdlType();
@@ -346,12 +282,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const wstring WSTRING_CONST = L\"1234567890\";";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const wstring WSTRING_CONST = L\"1234567890\";");
             assertEquals(constant.getIdentifier(), "WSTRING_CONST");
             assertTrue(constant.getIdlType() instanceof MWstringDef);
             String constValue = (String)constant.getConstValue();
@@ -368,12 +299,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const wstring<5> BWSTRING_CONST = L\"1234567890\";";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const wstring<5> BWSTRING_CONST = L\"1234567890\";");
             assertEquals(constant.getIdentifier(), "BWSTRING_CONST");
             assertTrue(constant.getIdlType() instanceof MWstringDef);
             MWstringDef s = (MWstringDef)constant.getIdlType();
@@ -393,12 +319,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {
-            String idlSource = "const octet OCTET_CONST = 0715;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const octet OCTET_CONST = 0715;");
             assertEquals(constant.getIdentifier(), "OCTET_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_OCTET);            
@@ -417,12 +338,7 @@ public class ConstantsTest extends TestCase
     {       
         try
         {                             
-            String idlSource = "const boolean BOOLEAN_CONST = TRUE;";
-            MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlSource);
-            List modelElements = ccmModel.getContentss();
-            System.out.println(modelElements);
-                
-            MConstantDef constant = (MConstantDef)modelElements.get(0);
+            MConstantDef constant = parseSource("const boolean BOOLEAN_CONST = TRUE;");
             assertEquals(constant.getIdentifier(), "BOOLEAN_CONST");
             MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
             assertEquals(kind, MPrimitiveKind.PK_BOOLEAN);            
@@ -436,4 +352,20 @@ public class ConstantsTest extends TestCase
         }
     } 
 
+    
+    
+    /*
+     * Utility Methods
+     */
+    
+    private MConstantDef parseSource(String sourceCode) 
+        throws CcmtoolsException
+    {
+        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        List modelElements = ccmModel.getContentss();
+        MConstantDef constant = (MConstantDef)modelElements.get(0);            
+        System.out.println(modelElements);
+        return constant;
+    }
+    
 }

@@ -146,7 +146,7 @@ terminal		String 		T_WSTRING_LITERAL;
 /* 1 */
 nonterminal	MContainer 		specification;
 nonterminal List				definitions;  	// List<MConatined>
-nonterminal	MContained		definition;
+nonterminal	Object			definition;
 nonterminal	MModuleDef		module;
 nonterminal	MInterfaceDef	interface;
 nonterminal		interface_dcl;
@@ -199,7 +199,7 @@ nonterminal	Object			literal;
 /* 40 */
 nonterminal	Integer			positive_int_const;
 
-nonterminal		type_dcl;
+nonterminal	MIDLType			type_dcl;
 nonterminal		type_spec;
 nonterminal		simple_type_spec;
 nonterminal		base_type_spec;
@@ -241,8 +241,8 @@ nonterminal		case;
 nonterminal		case_label;
 nonterminal		element_spec;
 nonterminal	MEnumDef				enum_type;
-nonterminal		enumerators;
-nonterminal		enumerator;
+nonterminal	List					enumerators;
+nonterminal	String				enumerator;
 
 /* 80 */
 nonterminal	MSequenceDef			sequence_type;		
@@ -379,7 +379,10 @@ definition
 	|	
 		T_PRAGMA
 	|	
-		type_dcl T_SEMICOLON
+		type_dcl:t T_SEMICOLON
+		{:
+			RESULT = t;
+		:}
 	| 	
 		const_dcl:c T_SEMICOLON
 		{:
@@ -720,8 +723,7 @@ const_dcl
 	 		ParserHelper.getInstance().getLogger().fine("27: T_EQUAL const_exp = " + e);
 	 		MConstantDef constant = new MConstantDefImpl();
 	 		constant.setIdentifier(id);
-//	 		constant.setSourceFile();
-		
+			constant.setSourceFile(ParserHelper.getInstance().getCurrentSourceFile());
 			if(t instanceof MPrimitiveDef)
 			{
 				MPrimitiveDef primitive = (MPrimitiveDef)t;
@@ -1075,12 +1077,22 @@ positive_int_const
 /* 42 */
 /* 43 */
 type_dcl
-	::= T_TYPEDEF type_spec declarators
-	| struct_type
-	| union_type
-	| enum_type
-	| T_NATIVE simple_declarator
-	| constr_forward_decl
+	::= 
+		T_TYPEDEF type_spec declarators
+	| 
+		struct_type
+	| 
+		union_type
+	| 
+		enum_type:t
+		{:
+			ParserHelper.getInstance().getLogger().fine("42: enum_type = " + t);	
+			RESULT = t;
+		:}
+	| 
+		T_NATIVE simple_declarator
+	| 
+		constr_forward_decl
 	;
 
 
@@ -1488,19 +1500,49 @@ enum_type
 		{:
 			ParserHelper.getInstance().registerTypeId(id);
 		:}		
-		T_LEFT_CURLY_BRACKET enumerators T_RIGHT_CURLY_BRACKET
+		T_LEFT_CURLY_BRACKET enumerators:l T_RIGHT_CURLY_BRACKET
+		{:
+			ParserHelper.getInstance().getLogger().fine("78: enumerators = " + l);	
+			MEnumDef enumeration = new MEnumDefImpl();
+			enumeration.setIdentifier(id);
+			enumeration.setSourceFile(ParserHelper.getInstance().getCurrentSourceFile());
+			if(l.size() > 0)
+			{
+				Collections.reverse(l);
+				enumeration.setMembers(l);
+			}
+			else
+			{
+				// error
+			}			
+			RESULT = enumeration;
+		:}
 	;
 
 enumerators
-	::= enumerator
-	| enumerator T_COMMA enumerators
-	| T_PRAGMA enumerators
+	::= 
+		enumerator:e
+		{:
+			List l = new ArrayList();
+			l.add(e);
+			RESULT = l;
+		:}
+	| 
+		enumerator:e T_COMMA enumerators:l
+		{:
+			l.add(e);
+			RESULT = l;
+		:}
 	;
 
 
 /* 79 */
 enumerator
-	::= T_IDENTIFIER
+	::= 
+		T_IDENTIFIER:id
+		{:
+			RESULT = id;
+		:}
 	;
 
 
