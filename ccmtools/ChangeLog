@@ -8,6 +8,20 @@ RELEASE-0.7.0 (July, 2006)
 BRANCH-0.6.x
 ============================================================================
 
+
+RELEASE-0.6.12 (August 29, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: ccmtools/IDL3Parser/idl3.g (reported by Duft Markus)
+	C preprocessor output lines (e.g. #line 12 "some/file.idl") generated
+	from interix (using the Windows cl command) are not parsed correctly.
+	
+*) Bugfix: ccm/CCM_Local/HomeFinder.cc 	(reported by Duft Markus)
+	A void method returns a result (ignored by gcc!!)
+
+*) Bugfix: ccm/utils/measurement/Timer.cc (reported by Duft Markus)
+	Some changes needed by interix.
+
+
 RELEASE-0.6.11 (August 10, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: ccmtools.UI.Main (reported by Duft Markus)
