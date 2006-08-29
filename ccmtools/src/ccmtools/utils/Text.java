@@ -43,6 +43,8 @@ public class Text
         
     public static final String SCOPE_SEPARATOR = "::";
     
+    public static final String INCLUDE_SEPARATOR = "/";
+    
     public static final String FILE_SEPARATOR = File.separator;
     
     public static final String MANGLING_SEPARATOR = "_";

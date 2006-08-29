@@ -512,8 +512,8 @@ public class CppRemoteGenerator
     		logger.fine("begin");
     		// Here we use the remote namespace to compare because we have to
     		// support these ugly *_component_ComponentName namespace artefact.
-		String baseNamespace = getRemoteNamespace(base, "/");
-		String elementNamespace =  getRemoteNamespace(element, "/");
+		String baseNamespace = getRemoteNamespace(base, Text.INCLUDE_SEPARATOR);
+		String elementNamespace =  getRemoteNamespace(element, Text.INCLUDE_SEPARATOR);
 		
 		StringBuffer code = new StringBuffer();
 		if(baseNamespace.equals(elementNamespace))
@@ -525,7 +525,7 @@ public class CppRemoteGenerator
 		else
 		{
 			code.append("#include <");
-			code.append(getRemoteNamespace(element, "/"));
+			code.append(getRemoteNamespace(element, Text.INCLUDE_SEPARATOR));
 			code.append(baseType);
 			code.append("_remote.h>\n");
 		}
@@ -555,7 +555,7 @@ public class CppRemoteGenerator
         logger.finer("begin");
         StringBuffer code = new StringBuffer();
         code.append("#ifdef WXDEBUG\n");
-        code.append("#  include <ccm/remote").append(Text.FILE_SEPARATOR);
+        code.append("#  include <ccm" + Text.INCLUDE_SEPARATOR + "remote").append(Text.INCLUDE_SEPARATOR);
         code.append("Debug.h>\n");
         code.append("#endif // WXDEBUG\n");
         logger.finer("end");
@@ -603,11 +603,11 @@ public class CppRemoteGenerator
         }
         else if(dataType.equals("RemoteIncludeNamespace")) 
         {
-            code = getRemoteNamespace(contained,Text.FILE_SEPARATOR);
+            code = getRemoteNamespace(contained,Text.INCLUDE_SEPARATOR);
         }
         else if(dataType.equals("LocalIncludeNamespace")) 
         {
-            code = getLocalNamespace(contained, Text.FILE_SEPARATOR);
+            code = getLocalNamespace(contained, Text.INCLUDE_SEPARATOR);
         }
         else if(dataType.equals("StubsNamespace")) 
         {
@@ -3870,8 +3870,8 @@ public class CppRemoteGenerator
     		logger.fine("begin");
         StringBuffer code = new StringBuffer();
         code.append("#include <");
-        code.append(getLocalNamespace(supports,Text.FILE_SEPARATOR));
-        code.append(Text.FILE_SEPARATOR);
+        code.append(getLocalNamespace(supports,Text.INCLUDE_SEPARATOR));
+        code.append(Text.INCLUDE_SEPARATOR);
         code.append(supports.getSupports().getIdentifier());
         code.append(".h>\n");
         logger.fine("end");
@@ -3946,7 +3946,7 @@ public class CppRemoteGenerator
     		StringBuffer code = new StringBuffer();
         MInterfaceDef iface = ((MProvidesDef)currentNode).getProvides();
         code.append("#include <");
-        code.append(getLocalNamespace(iface,"/")).append("/");
+        code.append(getLocalNamespace(iface,Text.INCLUDE_SEPARATOR)).append(Text.INCLUDE_SEPARATOR);
         code.append(provides.getProvides().getIdentifier());
         code.append(".h>\n");
         logger.fine("end");
@@ -3999,7 +3999,7 @@ public class CppRemoteGenerator
         StringBuffer code = new StringBuffer();
         MInterfaceDef iface = ((MUsesDef) currentNode).getUses();
         code.append("#include <");
-        code.append(getLocalNamespace(iface, "/")).append("/");
+        code.append(getLocalNamespace(iface, Text.INCLUDE_SEPARATOR)).append(Text.INCLUDE_SEPARATOR);
         code.append(usesDef.getUses().getIdentifier());
         code.append(".h>");
         logger.fine("end");

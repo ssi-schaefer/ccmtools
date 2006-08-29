@@ -367,7 +367,7 @@ public class CppLocalGenerator
         MInterfaceDef iface = (MInterfaceDef) currentNode;
         if(dataType.equals("InterfaceInclude")) {
             MContained contained = (MContained)currentNode;
-            dataValue = getLocalCppName(contained, Text.FILE_SEPARATOR);
+            dataValue = getLocalCppName(contained, Text.INCLUDE_SEPARATOR);
         }
         else if(dataType.equals("InterfaceIncludes"))
         {
@@ -494,7 +494,6 @@ public class CppLocalGenerator
     		Set includeSet = new HashSet(); 
     		includeSet.addAll(getAttributeIncludes(iface));
 		includeSet.addAll(getOperationIncludes(iface));
-//		System.out.println("!!!" + iface.getIdentifier() + "\n" + includeSet);
 		return includeSet;
     }
     
@@ -681,8 +680,8 @@ public class CppLocalGenerator
     		if(baseType.length() == 0)
     			return ""; // No defined type => no include statement
     		
-    		String baseNamespace = getLocalCppNamespace(base, "/");
-		String elementNamespace =  getLocalCppNamespace(element, "/");	
+    		String baseNamespace = getLocalCppNamespace(base, Text.INCLUDE_SEPARATOR);
+		String elementNamespace =  getLocalCppNamespace(element, Text.INCLUDE_SEPARATOR);	
 		
 		StringBuffer code = new StringBuffer();
 		if(baseNamespace.equals(elementNamespace))
@@ -725,7 +724,7 @@ public class CppLocalGenerator
         	MPrimitiveDef type = (MPrimitiveDef)idlType;
         	if(type.getKind() == MPrimitiveKind.PK_ANY)
         	{
-        		code.append("#include <WX/Utils/value.h>\n");
+        		code.append("#include <WX" + Text.INCLUDE_SEPARATOR + "Utils" +Text.INCLUDE_SEPARATOR + "value.h>\n");
         	}
         }
         else if(idlType instanceof MContained) {
@@ -1214,8 +1213,8 @@ public class CppLocalGenerator
         logger.finer("enter getDebugInclude()");
         StringBuffer code = new StringBuffer();
         code.append("#ifdef WXDEBUG\n");
-        code.append("#  include <ccm").append(Text.FILE_SEPARATOR);
-        code.append("local").append(Text.FILE_SEPARATOR);
+        code.append("#  include <ccm").append(Text.INCLUDE_SEPARATOR);
+        code.append("local").append(Text.INCLUDE_SEPARATOR);
         code.append("Debug.h>\n");
         code.append("#endif // WXDEBUG\n");
         logger.finer("leave getDebugInclude()");

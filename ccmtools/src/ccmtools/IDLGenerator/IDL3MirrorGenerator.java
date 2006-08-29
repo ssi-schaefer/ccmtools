@@ -33,6 +33,7 @@ import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.Driver;
 import ccmtools.utils.Code;
+import ccmtools.utils.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -121,7 +122,7 @@ public class IDL3MirrorGenerator extends IDLGenerator
         List scope = getScope(node);
         scope.add(node.getIdentifier());
         code.append("#include <");
-        code.append(join(File.separator, scope));
+        code.append(join(Text.INCLUDE_SEPARATOR, scope));
         code.append(".idl>\n");
         return code.toString();
     }
@@ -132,7 +133,7 @@ public class IDL3MirrorGenerator extends IDLGenerator
         List scope = getScope(node);
         scope.add(node.getIdentifier());
         code.append("#include <");
-        code.append(join(File.separator, scope));
+        code.append(join(Text.INCLUDE_SEPARATOR, scope));
         code.append("_mirror.idl>\n");
         return code.toString();
     }

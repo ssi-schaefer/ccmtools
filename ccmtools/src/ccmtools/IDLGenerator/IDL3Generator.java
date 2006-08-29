@@ -38,6 +38,7 @@ import ccmtools.Metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.Metamodel.ComponentIDL.MUsesDef;
 import ccmtools.UI.Driver;
 import ccmtools.utils.Code;
+import ccmtools.utils.Text;
 
 public class IDL3Generator extends IDLGenerator
 {
@@ -126,7 +127,7 @@ public class IDL3Generator extends IDLGenerator
     {
         List scope = getScope(node);
         scope.add(node.getIdentifier());
-        return "#include <" + join(File.separator, scope) + ".idl>";
+        return "#include <" + join(Text.INCLUDE_SEPARATOR, scope) + ".idl>";
     }
 
     /**
