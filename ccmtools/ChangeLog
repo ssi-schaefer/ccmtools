@@ -8,6 +8,14 @@ RELEASE-0.7.0 (July, 2006)
 BRANCH-0.6.x
 ============================================================================
 
+RELEASE-0.6.12 (August 30, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: C++ and IDL generators
+	Generated include paths use the Java File.separator character. 
+	That does not work because the '/' separators are turned into '\'
+	characters wich causes problems...
+	(e.g. "world/europe/Color.idl" => worldeuropeColor.idl).
+	
 
 RELEASE-0.6.12 (August 29, 2006)
 ----------------------------------------------------------------------------
