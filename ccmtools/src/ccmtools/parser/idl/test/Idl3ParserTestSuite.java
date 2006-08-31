@@ -13,6 +13,7 @@ public class Idl3ParserTestSuite
 		suite.addTest(LiteralTest.suite());
 		suite.addTest(ConstantsTest.suite());
         suite.addTest(EnumTest.suite());
+        suite.addTest(StructTest.suite());
         
 		return suite;
 	}

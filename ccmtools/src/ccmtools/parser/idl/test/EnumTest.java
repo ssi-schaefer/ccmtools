@@ -21,7 +21,7 @@ public class EnumTest extends TestCase
     public EnumTest()
         throws FileNotFoundException
     {
-        super("Literal Test");
+        super("IDL Enum Test");
         
         uiDriver = new ConsoleDriver();
     }
@@ -32,24 +32,31 @@ public class EnumTest extends TestCase
     }
     
      
-    public void testIntegerLiteral()
+    public void testEnum() 
+        throws CcmtoolsException
     {       
+        MEnumDef enumeration = parseSource("enum Color { red, green, blue };"); 
+        assertEquals(enumeration.getIdentifier(), "Color");
+        assertEquals(enumeration.getMember(0), "red");
+        assertEquals(enumeration.getMember(1), "green");
+        assertEquals(enumeration.getMember(2), "blue");
+    } 
+
+    public void testEmptyEnumError() 
+        throws CcmtoolsException
+    {
         try
         {
-            {
-                MEnumDef enumeration = parseSource("enum Color { red, green, blue };"); 
-                assertEquals(enumeration.getIdentifier(), "Color");
-                assertEquals(enumeration.getMember(0), "red");
-                assertEquals(enumeration.getMember(1), "green");
-                assertEquals(enumeration.getMember(2), "blue");
-            }            
+            parseSource("enum Color { };");
+            fail();
         }
         catch(Exception e)
         {
-            e.printStackTrace();
-            fail();
+            /* OK */
+            System.out.println(e.getMessage());
         }
     } 
+    
     
     /*
      * Utility Methods

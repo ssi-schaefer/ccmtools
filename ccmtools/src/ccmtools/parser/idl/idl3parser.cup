@@ -31,8 +31,17 @@ parser code
 	{
 		System.exit(1);
 	}
+	
 :};
 
+
+action code
+{:
+	private ParserHelper helper = ParserHelper.getInstance();
+	
+	
+
+:}
 
 /** Declaration of Terminals and Non Terminals Section */
 
@@ -182,75 +191,74 @@ nonterminal		init_param_decls;
 nonterminal		init_param_decl;
 nonterminal		init_param_attribute;
 
-nonterminal	MConstantDef		const_dcl;
-nonterminal	MIDLType			const_type;
-nonterminal	Object			const_exp;
-/* 30 */
-nonterminal	Object			or_expr;				
-nonterminal	Object			xor_expr;
-nonterminal	Object			and_expr;
-nonterminal	Object			shift_expr;
-nonterminal	Object			add_expr;
-nonterminal	Object			mult_expr;
-nonterminal	Object			unary_expr;
-nonterminal	Object			primary_expr;
-nonterminal	Object			literal; 			
+nonterminal	MConstantDef	 const_dcl;
+nonterminal	MIDLType	 const_type;
+nonterminal	Object const_exp;
 
-/* 40 */
-nonterminal	Integer			positive_int_const;
+nonterminal	Object or_expr;	 					/* 30 */		
+nonterminal	Object xor_expr;
+nonterminal	Object and_expr;
+nonterminal	Object shift_expr;
+nonterminal	Object add_expr;
+nonterminal	Object mult_expr;
+nonterminal	Object unary_expr;
+nonterminal	Object primary_expr;
+nonterminal	Object literal; 			
 
-nonterminal	MIDLType			type_dcl;
-nonterminal		type_spec;
-nonterminal		simple_type_spec;
-nonterminal		base_type_spec;
-nonterminal		template_type_spec;
-nonterminal		constr_type_spec;
-nonterminal		declarators;
+nonterminal	Integer	positive_int_const; 			/* 41 */
 
-/* 50 */
-nonterminal 		declarator;			
-nonterminal		simple_declarator;
-nonterminal		complex_declarator;
-nonterminal	MPrimitiveDef		floating_pt_type;
-nonterminal	MPrimitiveDef		integer_type;
-nonterminal	MPrimitiveDef		signed_int;
-nonterminal	MPrimitiveDef		signed_short_int;
-nonterminal	MPrimitiveDef		signed_long_int;
-nonterminal	MPrimitiveDef 		signed_longlong_int;
-nonterminal	MPrimitiveDef		unsigned_int;
-/* 60 */
-nonterminal	MPrimitiveDef		unsigned_short_int;	
-nonterminal	MPrimitiveDef		unsigned_long_int;
-nonterminal	MPrimitiveDef		unsigned_longlong_int;
-nonterminal	MPrimitiveDef		char_type;
-nonterminal	MPrimitiveDef		wide_char_type;
-nonterminal	MPrimitiveDef		boolean_type;
-nonterminal	MPrimitiveDef		octet_type;
-nonterminal	MPrimitiveDef		any_type;
-nonterminal	MPrimitiveDef		object_type;
+nonterminal	MIDLType	 type_dcl;
+nonterminal	MIDLType type_spec;
+nonterminal	MIDLType simple_type_spec;
+nonterminal	MIDLType base_type_spec;
+nonterminal	MIDLType template_type_spec;
+nonterminal	MIDLType constr_type_spec;
 
+nonterminal	List	 declarators;
+nonterminal String declarator;					/* 50 */
+nonterminal	String simple_declarator;
+nonterminal	String complex_declarator;
 
-nonterminal	MStructDef			struct_type;
-/* 70 */
-nonterminal		member_list;			
-nonterminal		member;
-nonterminal		union_type;
+nonterminal	MPrimitiveDef floating_pt_type;
+nonterminal	MPrimitiveDef integer_type;
+nonterminal	MPrimitiveDef signed_int;
+nonterminal	MPrimitiveDef signed_short_int;
+nonterminal	MPrimitiveDef signed_long_int;
+nonterminal	MPrimitiveDef signed_longlong_int;
+nonterminal	MPrimitiveDef unsigned_int;
+nonterminal	MPrimitiveDef unsigned_short_int;	/* 60 */
+nonterminal	MPrimitiveDef unsigned_long_int;
+nonterminal	MPrimitiveDef unsigned_longlong_int;
+nonterminal	MPrimitiveDef char_type;
+nonterminal	MPrimitiveDef wide_char_type;
+nonterminal	MPrimitiveDef boolean_type;
+nonterminal	MPrimitiveDef octet_type;
+nonterminal	MPrimitiveDef any_type;
+nonterminal	MPrimitiveDef object_type;
+
+nonterminal	MStructDef struct_type;
+nonterminal List member_list;					/* 70 */			
+nonterminal	MFieldDef member;
+
+nonterminal	MUnionDef union_type;
 nonterminal		switch_type_spec;
 nonterminal		switch_body;
 nonterminal		case;
 nonterminal		case_label;
 nonterminal		element_spec;
-nonterminal	MEnumDef				enum_type;
-nonterminal	List					enumerators;
-nonterminal	String				enumerator;
 
-/* 80 */
-nonterminal	MSequenceDef			sequence_type;		
-nonterminal	MStringDef			string_type;
-nonterminal	MWstringDef			wide_string_type;
-nonterminal		array_declarator;
-nonterminal List<Integer>		fixed_array_sizes;
-nonterminal	Integer				fixed_array_size;
+nonterminal	MEnumDef	 enum_type;
+nonterminal	List	 enumerators;
+nonterminal	String enumerator;
+
+nonterminal	MSequenceDef sequence_type;			/* 80 */	
+nonterminal	MStringDef string_type;
+nonterminal	MWstringDef wide_string_type;
+
+nonterminal	String array_declarator;
+
+nonterminal List<Integer> fixed_array_sizes;
+nonterminal	Integer fixed_array_size;
 nonterminal		attr_dcl;
 nonterminal		except_dcl;
 nonterminal		members;
@@ -258,20 +266,23 @@ nonterminal		op_dcl;
 nonterminal		op_attribute;
 nonterminal		op_type_spec;
 
-/* 90 */
-nonterminal		parameter_dcls;		
+
+nonterminal		parameter_dcls;					/* 90 */
 nonterminal		param_dcls;
 nonterminal		param_dcl;
 nonterminal		param_attribute;
 nonterminal		raises_expr;
 nonterminal		context_expr;
 nonterminal		string_literals;
-nonterminal		T_string_literal;
-nonterminal		T_wstring_literal;
+nonterminal	String T_string_literal;
+nonterminal	String T_wstring_literal;
+
 nonterminal		param_type_spec;
-nonterminal		fixed_pt_type;
-nonterminal	MFixedDef			fixed_pt_const_type;
-nonterminal		value_base_type;
+
+nonterminal MFixedDef fixed_pt_type;
+
+nonterminal	MFixedDef fixed_pt_const_type;
+nonterminal	MIDLType value_base_type;
 nonterminal		constr_forward_decl;
 
 /* 100 */
@@ -337,11 +348,7 @@ specification
 	::= 
 		definitions:l
 		{:
-			ParserHelper.getInstance().getLogger().fine("1: ");
-			MContainer container = new MContainerImpl();
-			container.setContentss(l);
-			
-			RESULT = container;
+			RESULT = helper.parseSpecification(l);
 		:}
 	;
 		
@@ -351,27 +358,14 @@ definitions
 	::=
 		definition:d
 		{:
-			ParserHelper.getInstance().getLogger().fine("2: definition");
-			List l = new ArrayList();
-			l.add(d);
-			RESULT = l;
+			RESULT = helper.parseDefinitions(d);
 		:}
 	| 
 		definition:d definitions	:l
 		{:
-			ParserHelper.getInstance().getLogger().fine("2: definition definitions");
-			if(d != null)
-			{
-				l.add(d);
-			}
-			else
-			{
-				// processed some T_INCLUDE or T_PRAGMA lines
-			}
-			RESULT = l;
+			RESULT = helper.parseDefinitions(d,l);
 		:}
 	;
-
 
 definition 
 	::=	
@@ -379,36 +373,65 @@ definition
 	|	
 		T_PRAGMA
 	|	
-		type_dcl:t T_SEMICOLON
+		type_dcl:d T_SEMICOLON
 		{:
-			RESULT = t;
+			RESULT = d;
 		:}
 	| 	
-		const_dcl:c T_SEMICOLON
+		const_dcl:d T_SEMICOLON
 		{:
-			ParserHelper.getInstance().getLogger().fine("2b: const_dcl");
-			RESULT = c;
+			RESULT = d;
 		:}
 	| 	
-		except_dcl T_SEMICOLON
+		except_dcl:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}
 	| 	
-		interface T_SEMICOLON
+		interface:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}		
 	| 	
-		module T_SEMICOLON
+		module:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}
 	| 	
-		value T_SEMICOLON
+		value:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}
 	| 	
-		type_id_dcl T_SEMICOLON
+		type_id_dcl:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}
 	| 	
-		type_prefix_dcl T_SEMICOLON
+		type_prefix_dcl:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}
 	| 	
-		event T_SEMICOLON
+		event:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}
 	| 	
-		component T_SEMICOLON
+		component:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}
 	| 	
-		home_dcl T_SEMICOLON
+		home_dcl:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}
 	| 	
-		import_dcl T_SEMICOLON
+		import_dcl:d T_SEMICOLON
+		{:
+			RESULT = d;
+		:}
 	;
 
 		
@@ -418,12 +441,15 @@ module
 		T_MODULE T_IDENTIFIER:id 
 		T_LEFT_CURLY_BRACKET 
 		{:
-			ParserHelper.getInstance().getScope().pushModule(id);
+			helper.getScope().pushModule(id);
 		:}
-		definitions 
+		definitions:d
+		{:
+
+		:} 
 		T_RIGHT_CURLY_BRACKET
 		{:
-			ParserHelper.getInstance().getScope().popModule();
+			helper.getScope().popModule();
 		:}
 	;
 	
@@ -446,17 +472,17 @@ forward_dcl
 	::= 
 		T_INTERFACE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 	| 
 		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 	| 
 		T_LOCAL T_INTERFACE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 	;
 	
@@ -466,35 +492,35 @@ interface_header
 	::= 
 		T_INTERFACE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}	
 	| 	
 		T_INTERFACE T_IDENTIFIER:id
 		 interface_inheritance_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	| 
 		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	| 
 		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id 
 		interface_inheritance_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	| 
 		T_LOCAL T_INTERFACE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	| 
 		T_LOCAL T_INTERFACE T_IDENTIFIER:id
 		interface_inheritance_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	; 
 
@@ -561,13 +587,13 @@ value_forward_dcl
 	::= 
 		T_VALUETYPE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 		
 	| 
 		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 	;
 
@@ -578,7 +604,7 @@ value_box_dcl
 		T_VALUETYPE T_IDENTIFIER:id
 	 	type_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	;
 
@@ -588,14 +614,14 @@ value_abs_dcl
 	::= 
 		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	 	T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
 	| 
 		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id 
 			value_inheritance_spec 
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 		T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
 	;
@@ -623,23 +649,23 @@ value_header
 	::= 
 		T_VALUETYPE T_IDENTIFIER:id 	value_inheritance_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	| 
 		T_CUSTOM T_VALUETYPE T_IDENTIFIER:id 
 			value_inheritance_spec		
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}
 	| 
 		T_VALUETYPE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	| 
 		T_CUSTOM T_VALUETYPE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}			
 	;
 
@@ -716,75 +742,11 @@ const_dcl
 	::= 
 		T_CONST const_type:t T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	 	T_EQUAL const_exp:e
 	 	{:
-	 		ParserHelper.getInstance().getLogger().fine("27: T_EQUAL const_exp = " + e);
-	 		MConstantDef constant = new MConstantDefImpl();
-	 		constant.setIdentifier(id);
-			constant.setSourceFile(ParserHelper.getInstance().getCurrentSourceFile());
-			if(t instanceof MPrimitiveDef)
-			{
-				MPrimitiveDef primitive = (MPrimitiveDef)t;
-				constant.setIdlType(t);
-				if(primitive.getKind() == MPrimitiveKind.PK_SHORT 
-					|| primitive.getKind() == MPrimitiveKind.PK_USHORT)
-				{
-					short i = (short)(((Integer)e).intValue());
-					constant.setConstValue(new Short(i));
-				}
-				else if(primitive.getKind() == MPrimitiveKind.PK_LONG 
-					|| primitive.getKind() == MPrimitiveKind.PK_ULONG)
-				{
-					constant.setConstValue((Integer)e);				
-				}
-				else if(primitive.getKind() == MPrimitiveKind.PK_LONGLONG 
-					|| primitive.getKind() == MPrimitiveKind.PK_ULONGLONG)
-				{
-					long l = (((Integer)e).intValue());
-					constant.setConstValue(new Long(l));		
-				}
-				else if(primitive.getKind() == MPrimitiveKind.PK_FLOAT)
-				{
-					float f = (float)((Double)e).doubleValue();
-					constant.setConstValue(new Float(f));				
-				}				
-				else if(primitive.getKind() == MPrimitiveKind.PK_DOUBLE)
-				{
-					constant.setConstValue((Double)e);				
-				}				
-				else if(primitive.getKind() == MPrimitiveKind.PK_LONGDOUBLE)
-				{
-					constant.setConstValue((Double)e);				
-				}				
-				else if(primitive.getKind() == MPrimitiveKind.PK_CHAR
-					|| primitive.getKind() == MPrimitiveKind.PK_WCHAR)
-				{
-					constant.setConstValue((Character)e);				
-				}	
-				else if(primitive.getKind() == MPrimitiveKind.PK_OCTET)
-				{
-					constant.setConstValue((Integer)e);				
-				}	
-				else if(primitive.getKind() == MPrimitiveKind.PK_BOOLEAN)
-				{
-					constant.setConstValue((Boolean)e);				
-				}									
-			}
-			else if(t instanceof MStringDef)
-			{
-				MStringDef str = (MStringDef)t;
-				constant.setIdlType(str);
-				constant.setConstValue((String)e);
-			}
-			else if(t instanceof MWstringDef)
-			{
-				MWstringDef str = (MWstringDef)t;
-				constant.setIdlType(str);
-				constant.setConstValue((String)e);			
-			}
-			RESULT = constant;
+	 		RESULT = helper.parseConstDcl(t, id, e);
 	 	:}
 	;
 
@@ -794,61 +756,51 @@ const_type
 	::= 
 		integer_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: integer_type = " + t);
 			RESULT = t;
 		:}
 	| 
 		char_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: char_type = " + t);		
 			RESULT = t;
 		:}
 	| 
 		wide_char_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: wide_char_type = " + t);		
 			RESULT = t;
 		:}
 	| 
 		boolean_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: boolean_type = " + t);		
 			RESULT = t;
 		:}
 	| 
 		floating_pt_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: floating_pt_type = " + t);		
 			RESULT = t;
 		:}		
 	| 
 		string_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: string_type = " + t);
 			RESULT = t;
 		:}		
 	| 
 		wide_string_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: wide_string_type = " + t);		
 			RESULT = t;
 		:}
 	| 
 		fixed_pt_const_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: fixed_pt_const_type = " + t);		
 			RESULT = t;
 		:}
 	| 	
 		scoped_name:t 
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: scoped_name = " + t);
 			RESULT = t;
 		:}
 	| 
 		octet_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("28: octet_type = " + t);
 			RESULT = t;
 		:}
 	;
@@ -858,7 +810,6 @@ const_type
 const_exp
 	::= or_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("29: or_expr = " + e);
 			RESULT = e;
 		:}
 	;
@@ -869,7 +820,6 @@ or_expr
 	::= 
 		xor_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("30: xor_expr = " + e);
 			RESULT = e;		
 		:}
 	| 
@@ -882,7 +832,6 @@ xor_expr
 	::= 
 		and_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("31: and_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -895,7 +844,6 @@ and_expr
 	::= 
 		shift_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("32: and_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -908,7 +856,6 @@ shift_expr
 	::= 
 		add_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("33: add_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -923,7 +870,6 @@ add_expr
 	::= 
 		mult_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("34: mult_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -938,7 +884,6 @@ mult_expr
 	::= 
 		unary_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("35: unary_expr = " + e);
 			RESULT = e;
 		:}
 	| 
@@ -956,32 +901,24 @@ unary_expr
 	::= 
 		T_MINUS_SIGN primary_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("36|37: T_MINUS_SIGN primary_expr = " + e);
-			if(e instanceof Integer)
-			{
-				RESULT = new Integer(-((Integer)e).intValue());
-			}
-			else if(e instanceof Double)
-			{
-				RESULT = new Double(-((Double)e).doubleValue());
-			}
-			else
-			{
-				RESULT = e; //????
-			}
+			RESULT = helper.parseUnaryExprMinusSign(e);
 		:}
 	| 
 		T_PLUS_SIGN primary_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("36|37: T_PLUS_SIGN primary_expr = " + e);		
+			helper.getLogger().fine("36: T_PLUS_SIGN primary_expr = " + e);		
 			RESULT = e;
 		:}
 	| 
 		T_TILDE primary_expr:e
+		{:
+			helper.getLogger().fine("36: T_TILDE primary_expr = " + e);		
+			RESULT = e;		
+		:}
 	| 
 		primary_expr:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("36|37: primary_expr = " + e);		
+			helper.getLogger().fine("36: primary_expr = " + e);		
 			RESULT = e;
 		:}
 	;
@@ -994,7 +931,7 @@ primary_expr
 	| 
 		literal:l
 		{:
-			ParserHelper.getInstance().getLogger().fine("38: literal = " + l);		
+			helper.getLogger().fine("38: literal = " + l);		
 			RESULT = l;
 		:}
 	| 
@@ -1008,56 +945,47 @@ literal
 	::= 
 		T_INTEGER_LITERAL:i
 		{:
-			ParserHelper.getInstance().getLogger().fine("39|40: T_INTEGER_LITERAL = " + i);
 			RESULT = i;
 		:}
 	| 
 		T_string_literal:s
 		{:
-			ParserHelper.getInstance().getLogger().fine("39|40: T_string_literal = " + s);
 			RESULT = s;
 		:}
 	| 
 		T_wstring_literal:ws
 		{:
-			ParserHelper.getInstance().getLogger().fine("39|40: T_wstring_literal = " + ws);			
 			RESULT = ws;
 		:}
 	| 
 		T_CHARACTER_LITERAL:c
 		{:
-			ParserHelper.getInstance().getLogger().fine("39|40: T_CHARACTER_LITERAL = " + c);		
 			RESULT = c;
 		:}
 
 	| 
 		T_WCHARACTER_LITERAL:wc
 		{:
-			ParserHelper.getInstance().getLogger().fine("39|40: T_WCHARACTER_LITERAL = " + wc);			
 			RESULT = wc;
 		:}	
 	| 
 		T_FIXED_PT_LITERAL:fp
 		{:
-			ParserHelper.getInstance().getLogger().fine("39|40: T_FIXED_PT_LITERAL = " + fp);			
 			RESULT = fp;
 		:}		
 	| 
 		T_FLOATING_PT_LITERAL:f
 		{:
-			ParserHelper.getInstance().getLogger().fine("39|40: T_FLOATING_PT_LITERAL = " + f);			
 			RESULT = f;
 		:}		
 	| 
 		T_TRUE /*boolean_literal*/
 		{:
-			ParserHelper.getInstance().getLogger().fine("39|40: T_TRUE");			
 			RESULT = Boolean.TRUE;
 		:}
 	| 
 		T_FALSE /*boolean_literal*/
 		{:
-			ParserHelper.getInstance().getLogger().fine("39|40: T_FALSE");			
 			RESULT = Boolean.FALSE;
 		:}
 	;
@@ -1068,8 +996,7 @@ positive_int_const
 	::= 
 		const_exp:e
 		{:
-			ParserHelper.getInstance().getLogger().fine("41: const_exp = " + e);		
-			RESULT = (Integer)e;
+			RESULT = helper.parsePositiveIntConst(e);
 		:}
 	;
 
@@ -1080,13 +1007,17 @@ type_dcl
 	::= 
 		T_TYPEDEF type_spec declarators
 	| 
-		struct_type
+		struct_type:t
+		{:
+			helper.getLogger().fine("42: struct_type = " + t);	
+			RESULT = t;
+		:}
 	| 
 		union_type
 	| 
 		enum_type:t
 		{:
-			ParserHelper.getInstance().getLogger().fine("42: enum_type = " + t);	
+			helper.getLogger().fine("42: enum_type = " + t);	
 			RESULT = t;
 		:}
 	| 
@@ -1098,76 +1029,180 @@ type_dcl
 
 /* 44 */
 type_spec
-	::= simple_type_spec
-	| constr_type_spec 
+	::= 
+		simple_type_spec:t
+		{:
+			RESULT = t;
+		:}		
+	| 
+		constr_type_spec:t
+		{:
+			RESULT = t;
+		:}
 	;
 
 
 /* 45 */
 simple_type_spec
-	::= base_type_spec
-	| template_type_spec
-	| scoped_name:sn
+	::= 
+		base_type_spec:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		template_type_spec:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		scoped_name:t
+		{:
+			RESULT = t;
+		:}
 	;
 
 
 /* 46 */
 base_type_spec
-	::= floating_pt_type
-	| integer_type
-	| char_type
-	| wide_char_type
-	| boolean_type
-	| octet_type
-	| any_type
-	| object_type
-	| value_base_type
+	::= 
+		floating_pt_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		integer_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		char_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		wide_char_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		boolean_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		octet_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		any_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		object_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		value_base_type:t
+		{:
+			RESULT = t;
+		:}
 	;
 
 
 /* 47 */
 template_type_spec
-	::= sequence_type
-	| string_type
-	| wide_string_type
-	| fixed_pt_type
+	::= 
+		sequence_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		string_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		wide_string_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		fixed_pt_type:t
+		{:
+			RESULT = t;
+		:}
 	;
 
 
 /* 48 */
 constr_type_spec
-	::= struct_type
-	| union_type
-	| enum_type
+	::= 
+		struct_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		union_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		enum_type:t
+		{:
+			RESULT = t;
+		:}
 	;
 
 
 /* 49 */
 declarators
-	::= declarator
-	| declarator:d T_COMMA declarators:l
+	::= 
+		declarator:d
+		{:
+			RESULT = helper.parseDeclarators(d);
+		:}	
+	| 
+		declarator:d T_COMMA declarators:l
+		{:
+			RESULT = helper.parseDeclarators(d, l);
+		:}
 	;
 
 
 /* 50 */
 declarator
-	::= simple_declarator
-	| complex_declarator
+	::= 
+		simple_declarator:d
+		{:
+			RESULT = d;
+		:}
+	| 
+		complex_declarator:d
+		{:
+			RESULT = d;
+		:}
 	;
 
 /* 51 */
 simple_declarator
 	::= 
 		T_IDENTIFIER:id
-//		{:
-//			ParserHelper.getInstance().registerTypeId(id);
-//		:}
+		{:
+			RESULT = helper.parseSimpleDeclarator(id);
+		:}
 	;
 
 
 /* 52 */
 complex_declarator
-	::= array_declarator
+	::= 
+		array_declarator:d
+		{:
+			RESULT = d;
+		:}
 	;
 
 
@@ -1176,26 +1211,17 @@ floating_pt_type
 	::= 
 		T_FLOAT
 		{:
-			ParserHelper.getInstance().getLogger().fine("53: T_FLOAT");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_FLOAT);
-			RESULT = s;
+			RESULT = helper.parseFloatType();
 		:}	
 	| 
 		T_DOUBLE
 		{:
-			ParserHelper.getInstance().getLogger().fine("53: T_DOUBLE");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_DOUBLE);
-			RESULT = s;
+			RESULT = helper.parseDoubleType();
 		:}			
 	| 
 		T_LONG T_DOUBLE
 		{:
-			ParserHelper.getInstance().getLogger().fine("53: T_LONG T_DOUBLE");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_LONGDOUBLE);
-			RESULT = s;
+			RESULT = helper.parseLongDoubleType();
 		:}			
 	;
 
@@ -1205,13 +1231,11 @@ integer_type
 	::= 
 		signed_int:i
 		{:
-			ParserHelper.getInstance().getLogger().fine("54: signed_int = " + i);			
 			RESULT = i;
 		:}
 	| 
 		unsigned_int:i
 		{:
-			ParserHelper.getInstance().getLogger().fine("54: unsigned_int = " + i);					
 			RESULT = i;
 		:}
 	;
@@ -1222,19 +1246,16 @@ signed_int
 	::= 
 		signed_long_int:i
 		{:
-			ParserHelper.getInstance().getLogger().fine("55: signed_long_int = " + i);					
 			RESULT = i;
 		:}
 	| 
 		signed_short_int:i
 		{:
-			ParserHelper.getInstance().getLogger().fine("55: signed_short_int = " + i);					
 			RESULT = i;
 		:}
 	| 
 		signed_longlong_int:i
 		{:
-			ParserHelper.getInstance().getLogger().fine("55: signed_longlong_int = " + i);	
 			RESULT = i;		
 		:}
 	;
@@ -1245,10 +1266,7 @@ signed_short_int
 	::= 
 		T_SHORT 
 		{:
-			ParserHelper.getInstance().getLogger().fine("56: T_SHORT");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_SHORT);
-			RESULT = s;
+			RESULT = helper.parseSignedShortType();
 		:}
 	;
 
@@ -1258,10 +1276,7 @@ signed_long_int
 	::= 
 		T_LONG
 		{:
-			ParserHelper.getInstance().getLogger().fine("57: T_LONG");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_LONG);
-			RESULT = s;
+			RESULT = helper.parseSignedLongType();
 		:}		
 	;
 
@@ -1271,10 +1286,7 @@ signed_longlong_int
 	::= 
 		T_LONG T_LONG
 		{:
-			ParserHelper.getInstance().getLogger().fine("58: T_LONG T_LONG");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_LONGLONG);
-			RESULT = s;
+			RESULT = helper.parseSignedLongLongType();
 		:}
 	;
 
@@ -1284,21 +1296,18 @@ unsigned_int
 	::= 
 		unsigned_long_int:i
 		{:
-			ParserHelper.getInstance().getLogger().fine("59: unsigned_long_int = " + i);			
 			RESULT = i;
 		:}
 		
 	| 
 		unsigned_short_int:i
 		{:
-			ParserHelper.getInstance().getLogger().fine("59: unsigned_short_int = " + i);					
 			RESULT = i;
 		:}
 		
 	| 
 		unsigned_longlong_int:i
 		{:
-			ParserHelper.getInstance().getLogger().fine("59: unsigned_longlong_int = " + i);					
 			RESULT = i;
 		:}		
 	;
@@ -1309,10 +1318,7 @@ unsigned_short_int
 	::= 
 		T_UNSIGNED T_SHORT 
 		{:
-			ParserHelper.getInstance().getLogger().fine("60: T_UNSIGNED T_SHORT");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_USHORT);
-			RESULT = s;
+			RESULT = helper.parseUnsignedShortType();
 		:}
 	;
 
@@ -1322,10 +1328,7 @@ unsigned_long_int
 	::= 
 		T_UNSIGNED T_LONG
 		{:
-			ParserHelper.getInstance().getLogger().fine("61: T_UNSIGNED T_LONG");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_ULONG);
-			RESULT = s;
+			RESULT = helper.parseUnsignedLongType();
 		:}		
 	;
 
@@ -1334,10 +1337,7 @@ unsigned_longlong_int
 	::= 
 		T_UNSIGNED T_LONG T_LONG
 		{:
-			ParserHelper.getInstance().getLogger().fine("62: T_UNSIGNED T_LONG T_LONG");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_ULONGLONG);
-			RESULT = s;
+			RESULT = helper.parseUnsignedLongLongType();
 		:}	
 	;
 
@@ -1347,10 +1347,7 @@ char_type
 	::= 
 		T_CHAR
 		{:
-			ParserHelper.getInstance().getLogger().fine("63: T_CHAR");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_CHAR);
-			RESULT = s;	
+			RESULT = helper.parseCharType();
 		:}
 	;
 
@@ -1360,10 +1357,7 @@ wide_char_type
 	::= 	
 		T_WCHAR
 		{:
-			ParserHelper.getInstance().getLogger().fine("64: T_WCHAR");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_WCHAR);
-			RESULT = s;	
+			RESULT = helper.parseWideCharType();
 		:}
 	;
 
@@ -1373,10 +1367,7 @@ boolean_type
 	::= 		
 		T_BOOLEAN
 		{:
-			ParserHelper.getInstance().getLogger().fine("65: T_BOOLEAN");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_BOOLEAN);
-			RESULT = s;	
+			RESULT = helper.parseBooleanType();
 		:}		
 	;
 
@@ -1386,10 +1377,7 @@ octet_type
 	::= 
 		T_OCTET
 		{:
-			ParserHelper.getInstance().getLogger().fine("66: T_OCTET");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_OCTET);
-			RESULT = s;	
+			RESULT = helper.parseOctetType();
 		:}				
 	;
 
@@ -1399,10 +1387,7 @@ any_type
 	::= 
 		T_ANY
 		{:
-			ParserHelper.getInstance().getLogger().fine("67: T_ANY");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_ANY);
-			RESULT = s;	
+			RESULT = helper.parseAnyType();
 		:}				
 	;
 
@@ -1412,10 +1397,7 @@ object_type
 	::= 
 		T_OBJECT
 		{:
-			ParserHelper.getInstance().getLogger().fine("68: T_OBJECT");			
-			MPrimitiveDef s = new MPrimitiveDefImpl();
-			s.setKind(MPrimitiveKind.PK_OBJREF);
-			RESULT = s;	
+			RESULT = helper.parseObjectType();
 		:}				
 	;
 
@@ -1425,22 +1407,37 @@ struct_type
 	::= 
 		T_STRUCT T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
-	 	T_LEFT_CURLY_BRACKET member_list T_RIGHT_CURLY_BRACKET
+	 	T_LEFT_CURLY_BRACKET member_list:l T_RIGHT_CURLY_BRACKET
+	 	{:
+	 		RESULT = helper.parseStructType(id, l);
+	 	:}
 	;
 
 
 /* 70 */
 member_list
-	::= member
-	| member member_list
+	::= 
+		member:m
+		{:
+			RESULT = helper.parseMemberList(m);
+		:}
+	| 
+		member:m member_list:l
+		{:
+			RESULT = helper.parseMemberList(m,l);
+		:}
 	;
 
 
 /* 71 */
 member
-	::= type_spec declarators T_SEMICOLON
+	::= 
+		type_spec:t declarators:d T_SEMICOLON
+		{:
+			RESULT = helper.parseMember(t,d);
+		:}
 	;
 
 
@@ -1449,7 +1446,7 @@ union_type
 	::= 	
 		T_UNION T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 		T_SWITCH T_LEFT_PARANTHESIS switch_type_spec 
 		T_RIGHT_PARANTHESIS T_LEFT_CURLY_BRACKET switch_body T_RIGHT_CURLY_BRACKET
@@ -1498,24 +1495,11 @@ element_spec
 enum_type
 	::= T_ENUM T_IDENTIFIER:id 
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 		T_LEFT_CURLY_BRACKET enumerators:l T_RIGHT_CURLY_BRACKET
 		{:
-			ParserHelper.getInstance().getLogger().fine("78: enumerators = " + l);	
-			MEnumDef enumeration = new MEnumDefImpl();
-			enumeration.setIdentifier(id);
-			enumeration.setSourceFile(ParserHelper.getInstance().getCurrentSourceFile());
-			if(l.size() > 0)
-			{
-				Collections.reverse(l);
-				enumeration.setMembers(l);
-			}
-			else
-			{
-				// error
-			}			
-			RESULT = enumeration;
+			RESULT = helper.parseEnumType(id, l);
 		:}
 	;
 
@@ -1523,15 +1507,12 @@ enumerators
 	::= 
 		enumerator:e
 		{:
-			List l = new ArrayList();
-			l.add(e);
-			RESULT = l;
+			RESULT = helper.parseEnumerator(e); 
 		:}
 	| 
 		enumerator:e T_COMMA enumerators:l
 		{:
-			l.add(e);
-			RESULT = l;
+			RESULT = helper.parseEnumerators(e,l);
 		:}
 	;
 
@@ -1558,17 +1539,12 @@ string_type
 	::= 
 		T_STRING T_LESS_THAN_SIGN positive_int_const:b T_GREATER_THAN_SIGN
 		{:
-			ParserHelper.getInstance().getLogger().fine("81: T_STRING positive_int_const = " + b);			
-			MStringDef s = new MStringDefImpl();			
-			s.setBound(new Long(b.intValue()));
-			RESULT = s;					
+			RESULT = helper.	parseBoundedStringType(b);
 		:}
 	| 
 		T_STRING
 		{:
-			ParserHelper.getInstance().getLogger().fine("81: T_STRING");			
-			MStringDef s = new MStringDefImpl();			
-			RESULT = s;			
+			RESULT = helper.parseStringType();
 		:}
 	;
 
@@ -1578,17 +1554,12 @@ wide_string_type
 	::= 
 		T_WSTRING T_LESS_THAN_SIGN positive_int_const:b T_GREATER_THAN_SIGN
 		{:
-			ParserHelper.getInstance().getLogger().fine("82: T_WSTRING positive_int_const = " + b);			
-			MWstringDef s = new MWstringDefImpl();			
-			s.setBound(new Long(b.intValue()));
-			RESULT = s;					
+			RESULT = helper.parseBoundedWideStringType(b);
 		:}		
 	| 
 		T_WSTRING
 		{:
-			ParserHelper.getInstance().getLogger().fine("82: T_STRING");			
-			MWstringDef s = new MWstringDefImpl();			
-			RESULT = s;			
+			RESULT = helper.parseWideStringType();
 		:}		
 	;
 
@@ -1597,7 +1568,7 @@ wide_string_type
 array_declarator
 	::= T_IDENTIFIER:id
 //		{:
-//			ParserHelper.getInstance().registerTypeId(id);
+//			helper.registerTypeId(id);
 //		:}
 		fixed_array_sizes
 	;
@@ -1626,7 +1597,7 @@ except_dcl
 	::= 
 		T_EXCEPTION T_IDENTIFIER:id 
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}			 	
 		T_LEFT_CURLY_BRACKET members T_RIGHT_CURLY_BRACKET
 	;
@@ -1707,22 +1678,26 @@ T_string_literal
 	::= 
 		T_STRING_LITERAL:s
 		{:
-			ParserHelper.getInstance().getLogger().fine("94: T_STRING_LITERAL = " + s);	
-			RESULT = s;
+			RESULT = helper.parseStringLiteral(s);
 		:}
 	| 
-		T_STRING_LITERAL T_string_literal
+		T_STRING_LITERAL:s1 T_string_literal:s2
+		{:
+			RESULT = helper.parseStringConcatenation(s1, s2);
+		:}
 	;
 
 T_wstring_literal
 	::= 
 		T_WSTRING_LITERAL:s
 		{:
-			ParserHelper.getInstance().getLogger().fine("94: T_WSTRING_LITERAL = " + s);	
-			RESULT = s;
+			RESULT = helper.parseWideStringLiteral(s);	
 		:}
 	| 
-		T_WSTRING_LITERAL T_wstring_literal
+		T_WSTRING_LITERAL:s1 T_wstring_literal:s2
+		{:
+			RESULT = helper.parseWideStringConcatenation(s1, s2);
+		:}
 	;
 
 
@@ -1736,19 +1711,28 @@ param_type_spec
 
 /* 96 */
 fixed_pt_type
-	::= T_FIXED T_LESS_THAN_SIGN positive_int_const T_COMMA T_INTEGER_LITERAL T_GREATER_THAN_SIGN
+	::= 
+		T_FIXED T_LESS_THAN_SIGN positive_int_const:d T_COMMA T_INTEGER_LITERAL:s T_GREATER_THAN_SIGN
+		{:
+			RESULT = helper.parseFixedType(d,s);
+		:}
 	;
 
 
 /* 97 */
 fixed_pt_const_type
-	::= T_FIXED
+	::= 
+		T_FIXED
 	;
 
 
 /* 98 */
 value_base_type
-	::= T_VALUEBASE
+	::= 
+		T_VALUEBASE
+		{:
+			RESULT = helper.parseValueBaseType();
+		:}
 	;
 
 
@@ -1757,12 +1741,12 @@ constr_forward_decl
 	::= 
 		T_STRUCT T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 	| 
 		T_UNION T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 	;
 
@@ -1860,7 +1844,7 @@ component
 component_forward_dcl
 	::= T_COMPONENT T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 	;
 
@@ -1877,22 +1861,22 @@ component_header
 	::= 
 		T_COMPONENT T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	| 
 		T_COMPONENT T_IDENTIFIER:id component_inheritance_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	| 
 		T_COMPONENT T_IDENTIFIER:id supported_interface_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	| 
 		T_COMPONENT T_IDENTIFIER:id component_inheritance_spec supported_interface_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	;
 
@@ -1977,49 +1961,49 @@ home_header
 		T_HOME T_IDENTIFIER:id 
 			T_MANAGES scoped_name
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id 
 			home_inheritance_spec T_MANAGES scoped_name
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id 
 			T_MANAGES scoped_name primary_key_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id 
 			home_inheritance_spec T_MANAGES scoped_name primary_key_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id 
 			supported_interface_spec T_MANAGES scoped_name
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	| 
 		T_HOME T_IDENTIFIER:id 
 			home_inheritance_spec supported_interface_spec T_MANAGES scoped_name
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id 
 			supported_interface_spec T_MANAGES scoped_name primary_key_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	| 
 		T_HOME T_IDENTIFIER:id 
 			home_inheritance_spec supported_interface_spec T_MANAGES scoped_name primary_key_spec 
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	;
 
@@ -2087,12 +2071,12 @@ event_forward_dcl
 	::= 
 		T_EVENTTYPE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 	| 
 		T_ABSTRACT T_EVENTTYPE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerForwardDclId(id);
+			helper.registerForwardDclId(id);
 		:}
 	;
 
@@ -2102,13 +2086,13 @@ event_abs_dcl
 	::= 
 		T_ABSTRACT T_EVENTTYPE T_IDENTIFIER:id 
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}			 	
 		T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
 	| 
 		T_ABSTRACT T_EVENTTYPE T_IDENTIFIER:id value_inheritance_spec 
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 		T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
 	;
@@ -2126,22 +2110,22 @@ event_header
 	::= 
 		T_EVENTTYPE T_IDENTIFIER:id value_inheritance_spec 
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	| 
 		T_CUSTOM T_EVENTTYPE T_IDENTIFIER:id value_inheritance_spec
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 		
 	| 
 		T_EVENTTYPE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}				
 	| 
 		T_CUSTOM T_EVENTTYPE T_IDENTIFIER:id
 		{:
-			ParserHelper.getInstance().registerTypeId(id);
+			helper.registerTypeId(id);
 		:}		
 	;

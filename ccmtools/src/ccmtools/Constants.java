@@ -53,8 +53,7 @@ public class Constants
        + "  c++local        Generate local C++ components \n"
        + "  c++local-test   Generate local C++ test client\n"
 	   + "  c++dbc          Generate local C++ components with DbC (experimental)\n"
-	   + "  c++remote       Generate remote C++ components (for Mico ORB)\n\n"
-	   + "  idl2            Generate equivalent IDL2 files";
+	   + "  c++remote       Generate remote C++ components (for Mico ORB)";
 
     public static final String[] GENERATOR_TYPES = 
     {
