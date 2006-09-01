@@ -10,38 +10,40 @@ As shown in the following listing, a component definition can imply the
 definition of a component home, one or more interfaces, operation parameters and
 exceptions. 
 
+\begin{footnotesize}
 \begin{lstlisting}[language=IDL]
-module application
-{
-    enum Group { GUEST, USER, ADMIN };
-
-    struct PersonData
+    module application
     {
-        long id;
-        string name;
-        string password;
-        Group group;
-    };
+        enum Group { GUEST, USER, ADMIN };
 
-    exception InvalidPersonData
-    {
-        string message;
-    };
+        struct PersonData
+        {
+            long id;
+            string name;
+            string password;
+            Group group;
+        };
 
-    interface Login
-    {
-        boolean isValidUser(in PersonData person)
-          raises(InvalidPersonData);
-    };
+        exception InvalidPersonData
+        {
+            string message;
+        };
 
-    component Server
-    {
-        provides Login login; 
-    };
+        interface Login
+        {
+            boolean isValidUser(in PersonData person)
+              raises(InvalidPersonData);
+        };
 
-    home ServerHome manages Server { };
-};
+        component Server
+        {
+            provides Login login; 
+        };
+
+        home ServerHome manages Server { };
+    };
 \end{lstlisting}
+\end{footnotesize}
 
 \newpage
 

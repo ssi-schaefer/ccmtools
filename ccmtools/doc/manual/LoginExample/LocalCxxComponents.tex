@@ -1,0 +1,354 @@
+% $Id$
+%==============================================================================
+\section{Use Case 1: Local C++ Components}
+\label{section:LocalC++ComponentImplementation}
+%==============================================================================
+
+To introduce the first CCM Tools use case, we implement a local C++ component and a
+collocated unit test. This use case is adequate for a developers who implements
+large but modulare C++ applications.
+
+\vspace{3mm}
+The implementation of local C++ components requires the following activities:
+\begin{itemize}
+	\item Model a component's structure in IDL 
+			(see section~\ref{section:ComponentDefinition}). 
+	\item Generate component logic (= component skeletons).
+	\item Implement a component's business logic.
+	\item Implement a component's client.
+
+\end{itemize}
+
+It is an inportant point that the modeling of IDL interfaces and components 
+is completely independent of component implementations.
+As you will see, we use the IDL artefacts stored in the IDL repository directory
+to generate both C++ and Java implementations.  
+ 
+ 
+%------------------------------------------------------------------------------
+\subsection{Generate component logic}
+\label{subsection:GenerateComponentLogic}
+%------------------------------------------------------------------------------
+
+Let's start development. From the IDL repository directory the CCM Tools
+generate a component skeleton which establishes the component's structure,
+provides C++ interfaces to clients or other components and uses the C++ runtime 
+environment.
+
+\begin{verbatim}
+> mkdir c++
+> mkdir c++/server
+> cd c++/server
+
+> ccmtools c++local -I../../idl3repo/interface -I../../idl3repo/component \
+                    -o ./src/interface                                    \
+                    ../../idl3repo/interface/application/*.idl            
+
+> ccmtools c++local -I../../idl3repo/interface -I../../idl3repo/component \
+                    -a -o ./src/component/Server                          \
+                    ../../idl3repo/component/application/Server*.idl
+\end{verbatim}
+
+After this code generation step, the following directory structure has been created:
+\begin{verbatim}
+Login/c++/server
+  `-- src
+    |-- component
+    |   `-- Server
+    |       |-- CCM_application_ccm_local_component_Server
+    |       |-- CCM_application_ccm_local_component_Server_share
+    |       `-- application_ccm_local_component_Server_ServerHome_entry.h
+    `-- interface
+        |-- CCM_application_ccm_local
+        `-- CCM_application_ccm_local_adapter
+\end{verbatim}
+
+Basically, all directories starting with '{\tt CCM\_}' contain component logic
+which is completely generated (so there is no need to check--in these directories
+into a CVS like system).
+
+\vspace{3mm}
+The component logic fills the gap between a component's interfaces and its
+business logic implementation. 
+
+\vspace{3mm}
+Note that generated component logic can change between different CCM Tools
+versions to improve a component's non functional behavior. Such changes do neither
+affect component interfaces nor your business logic implementation which
+realizes the functional behavior of components.   
+
+
+%------------------------------------------------------------------------------
+\subsection{Implement business logic}
+\label{subsection:ImplementBusinessLogic}
+%------------------------------------------------------------------------------
+
+Component business logic must be embedded in the generated component logic.
+To make life easier, we used the {\tt -a} option during code generation.
+This flag forces the code generator to generate application skeletons.
+
+\vspace{3mm}
+You can find these application skeletons in the {\tt src/component/Server}
+subdirectory:
+
+\begin{verbatim}
+Login/c++/server
+  `-- src
+    |-- component
+    |   `-- Server
+    |       |-- ServerHome_impl.cc
+    |       |-- ServerHome_impl.h
+    |       |-- Server_impl.cc
+    |       |-- Server_impl.h
+    |       |-- Server_login_impl.cc
+    |       |-- Server_login_impl.h
+\end{verbatim}
+
+As a developer, you are responsible for these files because they represent the
+component's business logic (you should check--in these files into a CVS like system).
+
+\vspace{3mm}
+There is a direct relationship between IDL and these business logic files:
+\begin{itemize}
+	\item {\tt ServerHome\_impl.*}\\
+	For each component home, an implementation class is generated which provides an
+	implementation of the default {\tt create()} operation.
+	Additionally, the {\tt ServerHome\_impl.cc} file contains the implementation of
+	the global:
+	\begin{verbatim}
+    create_application_ccm_local_component_Server_ServerHome()
+    \end{verbatim}
+ 	function which represents the business logic entry point used by the generated 
+ 	component logic. 
+
+\item {\tt Server\_impl.*}\\
+	For each component, an implementation class is generated which provides 
+	default implementations of the component's callback operations.
+	
+\item {\tt Server\_login\_impl.*}\\
+	For each facet, an implementation class is generated which provides operation
+	skeletons for hosting business logic implementation.
+\end{itemize}
+
+It is a good idea to generate these applikation skeletons only once - when starting 
+component implementation. 
+Small changes in IDL definitions can be appended pretty easy to these
+implementation classes manually.
+
+ \vspace{3mm}
+Note that these implementation files are not overwritten by the CCM Tools.
+The generator replaces only untouched source files, otherwise the new
+generated files are stored with a {\tt .new} suffix.
+
+ \vspace{3mm}
+To implement the Login example's business logic, you open the 
+{\tt Server\_login\_impl.cc} file and implement the following code snippet:
+
+\begin{footnotesize}
+\begin{lstlisting}[language=C++]
+bool
+login_impl::isValidUser(
+    const application::ccm::local::PersonData& person)
+    throw(::ccm::local::Components::CCMException,
+          application::ccm::local::InvalidPersonData )
+{
+    if(person.name.length() == 0)
+        throw application::ccm::local::InvalidPersonData();
+
+    if(person.id == 277 
+       && person.name == "eteinik"
+       && person.group == USER) 
+    {
+        return true;
+    }
+    else 
+    {
+        return false;
+    }
+}
+\end{lstlisting}
+\end{footnotesize}
+
+Now, we can use Confix to build our component example. To tell Confix which
+directory should be built, a {\tt Makefile.py} file must be created in each
+source code directory.
+You can delegate this work to CCM Tools:
+\begin{verbatim}
+> ccmconfix -makefiles -o ./src -pname "login" -pversion "1.0.0"
+\end{verbatim}
+ 
+Finally, you start Confix to build all generated and manually implemented source
+files:
+\begin{verbatim}
+> confix.py --packageroot=`pwd`/src --bootstrap --configure --make 
+\end{verbatim}
+
+Hey, we a now ready to test this local C++ component implementation.
+
+
+%------------------------------------------------------------------------------
+\subsection{Implement local component client}
+\label{subsection:ImplementLocalComponentClient}
+%------------------------------------------------------------------------------
+
+Instead of a real client with a complex GUI, we simply implement a unit test for
+the component we have built in the last section.
+
+\vspace{3mm}
+We create a {\tt src/component/Server/test} directory and store the following
+code in a file called {\tt \_check\_local\_component\_Server.cc}:
+ 
+\begin{footnotesize} 
+\begin{lstlisting}[language=C++]
+#include <cassert>
+#include <iostream>
+
+#include <WX/Utils/debug.h>
+#include <WX/Utils/smartptr.h>
+
+#include <ccm/local/Components/CCM.h>
+#include <ccm/local/HomeFinder.h>
+
+#include <application/ccm/local/component/Server/Server_gen.h>
+#include <application/ccm/local/component/Server/ServerHome_gen.h>
+
+using namespace std;
+using namespace WX::Utils;
+using namespace ccm::local;
+using namespace application::ccm::local;
+
+int main(int argc, char *argv[])
+{
+  SmartPtr<component::Server::Server> server;
+  SmartPtr<Login> login;
+  Components::HomeFinder* homeFinder = HomeFinder::Instance();
+  if(deploy_application_ccm_local_component_Server_ServerHome("ServerHome")) 
+  {
+      cerr << "ERROR: Can't deploy component homes!" << endl;
+      return -1;
+  }
+
+  try 
+  {
+      SmartPtr<component::Server::ServerHome> serverHome(
+        dynamic_cast<component::Server::ServerHome*>
+          (homeFinder->find_home_by_name("ServerHome").ptr()));
+
+      server = serverHome->create();
+      login = server->provide_login();
+      server->configuration_complete();
+
+      // Implement your test cases here !!!
+    
+      server->remove();
+  } 
+  catch(Components::Exception& e ) 
+  {
+      cout << "ERROR: " << e.what() << endl;
+      return -2;
+  } 
+
+  if(undeploy_application_ccm_local_component_Server_ServerHome("ServerHome")) 
+  {
+    cerr << "ERROR: Can't undeploy component home!" << endl;
+    return -3;
+  }
+}
+\end{lstlisting}
+\end{footnotesize}
+
+This code snipped is verry similar in all unit tests of such simple components.
+It deploys the component home object, creates a component instance, uses 
+the component's euqivalent interface to get a facet, and completes the
+configuration phase. 
+Following the setup process, we can execute our component test cases (we will
+discuss the implementation of these test case later).
+Finally, we remove the component instance and undeploy the component home object.
+Each functional test case can be inserted into this unit test template shown above.
+
+
+\vspace{3mm}
+Our first test shows the usage of the {\tt Server} component and its {\tt login}
+facet. We fill the {\tt PersonData} structure with valid data and call the
+{\tt isValidUser()} operation. Depending on the component's result we print out
+a message to the console.
+
+\begin{footnotesize}
+\begin{lstlisting}[language=C++]
+    try 
+    {
+        PersonData person;
+        person.id = 277;
+        person.name = "eteinik";
+        person.password = "eteinik";
+        person.group = USER;
+	
+        bool result = login->isValidUser(person);
+        if(result) 
+        {
+            cout << "Welcome " << person.name << endl;
+        }
+        else 
+        {
+            cout << "Sorry, we don't know you !!!" << endl;
+        }
+    }
+    catch(InvalidPersonData& e) 
+    {
+        cout << "Error: InvalidPersonData!!" << endl;
+    }
+\end{lstlisting}
+\end{footnotesize}
+
+
+The second test shows the component's behavior for an invalid {\tt PersonData}
+structure. The test expects an {\tt InvalidPersonData} exception to succeed.
+
+\begin{footnotesize}
+\begin{lstlisting}[language=C++]
+    try 
+    {
+        PersonData person;
+        person.id = 0;
+        person.name = "";
+        person.password = "";
+        person.group = USER;
+
+        login->isValidUser(person);
+        assert(false);
+    }
+    catch(InvalidPersonData& e) 
+    {
+        cout << "OK, caught InvalidPersonData exception!" << endl;
+    }
+\end{lstlisting}
+\end{footnotesize}
+
+It is up to you to decide if you put both test cases into the same {\tt \_check\_*}
+file or to implement each test case in its own file.
+Note that each {\tt \_check\_*} file will end in a separate executable, thus,
+for huge applications you will need a lot of disk space.
+
+To run these unit tests, we use Confix again:
+\begin{verbatim}
+> touch src/component/Server/test/Makefile.py
+> confix.py --packageroot=`pwd`/src --bootstrap --configure \
+            --make --targets=check 
+\end{verbatim}
+
+At the end of this build process, you hopefully see an output like:
+\begin{verbatim}
+Welcome eteinik
+OK, caught InvalidPersonData exception!
+PASS: login__check_local_component_Server
+==================
+All 1 tests passed
+==================
+\end{verbatim}
+
+Of course, to implement a component for such a simple functionality is somewhat
+academical, but this example shows how simple a component development cycle can
+be by using CCM Tools. 
+
+
+\newpage
