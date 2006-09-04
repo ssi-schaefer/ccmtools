@@ -28,11 +28,17 @@ int main (int argc, char *argv[])
     }
 
     // Initialize ORB 
-    ostringstream os;
-    os << "NameService=" << NameServiceLocation;
-    char* argv_[] = { "", "-ORBInitRef", (char*)os.str().c_str()}; 
+    //    ostringstream os;
+    //    os << "NameService=" << NameServiceLocation;
+    //    char* argv_[] = { "", "-ORBInitRef", (char*)os.str().c_str()}; 
+
+    char* argv_[] = { "", 
+                    "-ORBInitRef", 
+                    "NameService=corbaloc:iiop:1.2@localhost:5050/NameService"};
     int   argc_   = 3;
-    DEBUGNL(">> " << argv_[0] << " "<< argv_[1] << argv_[2]);
+    //    DEBUGNL(">> " << argv_[0] << " "<< argv_[1] << argv_[2]);
+    cout << "args = [" << argv_[1] << ", " << argv_[2] << "]" << endl;
+
     CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
 
     CORBA::Object_var obj = orb->resolve_initial_references("NameService");
@@ -45,7 +51,6 @@ int main (int argc, char *argv[])
     obj = nc->resolve_str("ServerHome");
     assert (!CORBA::is_nil (obj));
     ::application::ServerHome_var home = ::application::ServerHome::_narrow(obj);
-
     // Create component instances
     ::application::Server_var server = home->create();
     ::application::Login_var login = server->provide_login();
@@ -65,7 +70,6 @@ int main (int argc, char *argv[])
     {
       cout << "Caught InvalidPersonData exception!" << endl;	
     }
-
 
     try {
       ::application::PersonData person;

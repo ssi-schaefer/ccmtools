@@ -49,9 +49,11 @@ int main (int argc, char *argv[])
     // Initialize ORB 
     ostringstream os;
     os << "NameService=" << NameServiceLocation;
-    char* argv_[] = { "", "-ORBInitRef", (char*)os.str().c_str()}; 
+    //    char* argv_[] = { "", "-ORBInitRef", (char*)os.str().c_str()}; 
+    char* argv_[] = { "", "-ORBInitRef", "NameService=corbaloc:iiop:1.2@localhost:5050/NameService"}; 
     int   argc_   = 3;
-    DEBUGNL(">> " << argv_[0] << " "<< argv_[1] << argv_[2]);
+    //    DEBUGNL(">> " << argv_[0] << " "<< argv_[1] << argv_[2]);
+    cout << "args = [" << argv_[1] << ", " << argv_[2] << "]" << endl;
     CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
 
 

@@ -1,6 +1,5 @@
-IDL_SOURCE=../../Login.idl
 DEST_DIR = .
-IDL3_DIR = ${DEST_DIR}/idl3
+IDL3_DIR = ../../idl3repo
 IDL2_DIR = ${DEST_DIR}/idl2
 INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
@@ -8,14 +7,10 @@ all: local remote run
 
 test: local check clean
 
-idl3: ${IDL_SOURCE}
-	ccmidl -idl3 -o ${IDL3_DIR} ${IDL_SOURCE}
-
-local: idl3
+local: 
 	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/application/*.idl
 	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
-
 
 check: 
 	cp impl/ClientLocal.java ${DEST_DIR}/src

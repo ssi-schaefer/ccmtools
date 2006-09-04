@@ -19,7 +19,8 @@ check:
 
 
 stubs: #local
-	ccmidl -idl2 -o ${DEST_DIR}/component/Server/CCM_corba_stubs ${IDL_SOURCE}
+	ccmidl -idl2 ${INCLUDE} -o ${DEST_DIR}/component/Server/CCM_corba_stubs ${IDL3_DIR}/interface/application/*.idl
+	ccmidl -idl2 ${INCLUDE} -o ${DEST_DIR}/component/Server/CCM_corba_stubs ${IDL3_DIR}/component/application/Server*.idl
 	cp impl/Makefile ${DEST_DIR}/component/Server/CCM_corba_stubs
 	make -C ${DEST_DIR}/component/Server/CCM_corba_stubs 
 

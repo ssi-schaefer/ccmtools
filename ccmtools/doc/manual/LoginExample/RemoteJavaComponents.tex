@@ -4,6 +4,26 @@
 \label{section:RemoteJavaComponentImplementation}
 %==============================================================================
 
+In this CCM Tools use case, we implement a remote Java component and remote Java
+test client which uses a Java client library component.
+This use case is adequate for developers who implement large and distributed
+Java applications.
+ 
+\vspace{3mm}
+The implementation of remote Java components requires the following activities:
+\begin{itemize}
+	\item Model a component's structure in IDL 
+			(see section~\ref{section:ComponentDefinition}). 
+	\item Implement a local Java component (see section~\ref{section:LocalJavaComponentImplementation}).
+	\item Generate remote component logic in Java.
+	\item Implement a minimal CORBA server in Java.
+	\item Implement a remote component client in Java.
+\end{itemize}
+
+As described for the C++ use case
+(section~\ref{section:RemoteC++ComponentImplementation}), the
+step from local to remote components is completely automated by the CCM
+Tools.
 
 
 

@@ -6,7 +6,7 @@
 
 To introduce the first CCM Tools use case, we implement a local C++ component and a
 collocated unit test. This use case is adequate for a developers who implements
-large but modulare C++ applications.
+large but modular C++ applications.
 
 \vspace{3mm}
 The implementation of local C++ components requires the following activities:
@@ -19,9 +19,9 @@ The implementation of local C++ components requires the following activities:
 
 \end{itemize}
 
-It is an inportant point that the modeling of IDL interfaces and components 
+It is an important point that the modeling of IDL interfaces and components 
 is completely independent of component implementations.
-As you will see, we use the IDL artefacts stored in the IDL repository directory
+As you will see, we use the IDL artifacts stored in the IDL repository directory
 to generate both C++ and Java implementations.  
  
  
@@ -80,7 +80,7 @@ realizes the functional behavior of components.
 
 %------------------------------------------------------------------------------
 \subsection{Implement business logic}
-\label{subsection:ImplementBusinessLogic}
+\label{subsection:ImplementC++BusinessLogic}
 %------------------------------------------------------------------------------
 
 Component business logic must be embedded in the generated component logic.
@@ -127,10 +127,10 @@ There is a direct relationship between IDL and these business logic files:
 	
 \item {\tt Server\_login\_impl.*}\\
 	For each facet, an implementation class is generated which provides operation
-	skeletons for hosting business logic implementation.
+	skeletons for hosting business logic implementations.
 \end{itemize}
 
-It is a good idea to generate these applikation skeletons only once - when starting 
+It is a good idea to generate these application skeletons only once - when starting 
 component implementation. 
 Small changes in IDL definitions can be appended pretty easy to these
 implementation classes manually.
@@ -187,7 +187,7 @@ Hey, we a now ready to test this local C++ component implementation.
 
 
 %------------------------------------------------------------------------------
-\subsection{Implement local component client}
+\subsection{Implement a local component client in C++}
 \label{subsection:ImplementLocalComponentClient}
 %------------------------------------------------------------------------------
 
@@ -257,9 +257,9 @@ int main(int argc, char *argv[])
 \end{lstlisting}
 \end{footnotesize}
 
-This code snipped is verry similar in all unit tests of such simple components.
+This code snipped is very similar in all unit tests of such simple components.
 It deploys the component home object, creates a component instance, uses 
-the component's euqivalent interface to get a facet, and completes the
+the component's equivalent interface to get a facet, and completes the
 configuration phase. 
 Following the setup process, we can execute our component test cases (we will
 discuss the implementation of these test case later).
