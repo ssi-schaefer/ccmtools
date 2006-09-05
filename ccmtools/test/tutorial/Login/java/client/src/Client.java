@@ -11,6 +11,7 @@ import application.ccm.local.PersonData;
 import application.ccm.local.InvalidPersonData;
 import application.ccm.local.Server;
 import application.ccm.local.ServerHome;
+import application.ccm.local.ServerHomeClientLibDeployment;
 import Components.ccm.local.HomeFinder;
 import ccm.local.ServiceLocator;
 
@@ -39,7 +40,7 @@ public class Client
             // Set up the ServiceLocator singleton
             ORB orb = ORB.init(args, null);
             ServiceLocator.instance().setCorbaOrb(orb);
-            application.ccm.local.ServerHomeClientLibDeployment.deploy(COMPONENT_HOME_NAME);
+            ServerHomeClientLibDeployment.deploy(COMPONENT_HOME_NAME);
         }
         catch (Exception e)
         {
@@ -102,7 +103,7 @@ public class Client
          */
         try
         {
-            application.ccm.local.ServerHomeClientLibDeployment.undeploy(COMPONENT_HOME_NAME);
+            ServerHomeClientLibDeployment.undeploy(COMPONENT_HOME_NAME);
             System.out.println("OK!");
         }
         catch (Exception e)

@@ -1,6 +1,6 @@
 DEST_DIR = .
 IDL3_DIR = ../../idl3repo
-IDL2_DIR = ${DEST_DIR}/idl2
+IDL2_DIR = ${DEST_DIR}/src-gen/idl2
 INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
 all: local remote run
@@ -18,9 +18,9 @@ check:
 	ant -f ./build.xml
 	bin/runClientLocal 
 
-
-stubs: local
-	ccmidl -idl2 -o ${IDL2_DIR} ${IDL_SOURCE}
+stubs: #local
+	ccmidl -idl2 ${INCLUDE} -o ${IDL2_DIR} ${IDL3_DIR}/interface/application/*.idl
+	ccmidl -idl2 ${INCLUDE} -o ${IDL2_DIR} ${IDL3_DIR}/component/application/Server*.idl
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCMTOOLS_HOME}/idl -I${IDL2_DIR} ${IDL2_DIR}/*.idl
 
 remote: stubs
@@ -35,7 +35,5 @@ run:
 
 clean: 
 	ant clean
-	rm -rf ${DEST_DIR}/idl3
-	rm -rf ${DEST_DIR}/idl2
 	rm -rf ${DEST_DIR}/src
 	rm -rf ${DEST_DIR}/src-gen

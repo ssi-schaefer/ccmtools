@@ -4,7 +4,80 @@
 \label{section:MirrorComponentConcept}
 %==============================================================================
 
+A serious problem in component testing is to satisfy all component ports without
+having other components to connect to.
+In a software system, a component always is connected to other components via
+facets and receptacles.
+To develop an test a single component, the CCM Tools support the generation of 
+mirror components. 
 
+\vspace{3mm}
+A {\bf Mirror Component} represents the complement of a given component. For every
+facet in the original component there is a receptacle in the mirror component
+and vice versa.
+Within the mirror component, a developer can implement test cases which
+describes the desired behavior of a component.
 
+\vspace{3mm}
+To create IDL mirror component definitions from the {\tt Server} component stored
+in the IDL repository directory, we use the following CCM Tools call: 
+\begin{footnotesize}
+\begin{verbatim}
+> cd Login
+
+> ccmidl -idl3mirror                                \
+         -Iidl3repo/interface -Iidl3repo/component  \
+         -o idl3repo                                \
+         idl3repo/component/application/Server*.idl
+\end{verbatim}
+\end{footnotesize}
+
+After that call, the IDL repository directory contains the new mirror component
+definitions: 
+ 
+\begin{footnotesize}
+\begin{verbatim}
+Login
+|-- idl3repo
+|   |-- component
+|   |   `-- application
+|   |       |-- Server.idl
+|   |       |-- ServerHome.idl
+|   |       |-- ServerHomeMirror.idl
+|   |       `-- ServerMirror.idl
+\end{verbatim}
+\end{footnotesize}
+
+In the IDL repository directory we have two new IDL files:
+\begin{itemize}
+  \item {\tt ServerMirror.idl} \\
+  This file contains the mirror component's IDL definitions:
+    \begin{lstlisting}[language=C++]
+    #include <application/Login.idl>
+
+    module application {
+        component ServerMirror
+        {
+            uses ::application::Login login;
+        };
+    }; // /module application
+	\end{lstlisting} 
+  \item {\tt ServerHomeMirror.idl} \\
+  This file contains the IDL definition of the mirror component's home:
+    \begin{lstlisting}[language=C++]
+    #include <application/ServerMirror.idl>
+
+    module application {
+        home ServerHomeMirror
+            manages ::application::ServerMirror
+        {
+        };
+    }; // /module application
+	\end{lstlisting} 
+\end{itemize}
+
+Based on these new IDL definitions, we can use all CCM Tools generators to implement 
+this mirror component either in C++ or Java.
 
 \newpage
+

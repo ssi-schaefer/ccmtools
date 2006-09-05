@@ -4,30 +4,36 @@
 \label{section:LocalJavaComponentImplementation}
 %==============================================================================
 
-This CCM Tools use case is very similar to the implementation of local C++
-components (see section~\ref{section:LocalC++ComponentImplementation}), and is
-intended for developers who implement large but modular Java applications. 
+In this section, we implement a local Java component and a collocated test
+client.
+This CCM Tools use case is intended for developers who implement large and
+modular Java applications. 
 
 \vspace{3mm}
 The implementation of local Java components requires the following activities:
 \begin{itemize}
 	\item Model a component's structure in IDL 
 			(see section~\ref{section:ComponentDefinition}). 
-	\item Generate Java component logic (= component skeletons).
-	\item Implement a component's business logic in Java.
-	\item Implement a component's client in Java.
+	\item Generate local component logic in Java.
+	\item Implement component business logic in Java.
+	\item Implement a collocated client in Java.
 \end{itemize}
 
-Because of the similarities to local C++ component development, we give a very
-brief description of these steps in the next few sections.
+In the following sections, we use the IDL definitions stored in the IDL
+repository directory as starting point for all Java code generations. 
+
 
 %------------------------------------------------------------------------------
-\subsection{Generate Java component logic}
+\subsection{Generate local component logic in Java}
 \label{subsection:GenerateJavaComponentLogic}
 %------------------------------------------------------------------------------
 
-We generate component skeletons from the IDL repository directory:
-
+A local Java component logic includes a set of Java interfaces ({\tt -iface}
+option) and a pure Java implementation ({\tt -local}) of these interfaces which
+delegates client calls to the business logic. 
+The local Java component logic can be generated from the IDL repository using
+CCM Tools:
+\begin{footnotesize}
 \begin{verbatim}
 > mkdir java
 > mkdir java/server
@@ -43,8 +49,10 @@ We generate component skeletons from the IDL repository directory:
           -o ./src-gen                                          \
           ../../idl3repo/component/application/Server*.idl
 \end{verbatim}
+\end{footnotesize}
 
-After this code generation, the resulting file structure looks like:
+This code generation steps result in the following file structure:
+\begin{footnotesize}
 \begin{verbatim}
 Login/java/server
 `-- src-gen
@@ -52,25 +60,38 @@ Login/java/server
         `-- ccm
             `-- local
 \end{verbatim}
+\end{footnotesize}
+
+In contrast to C++ component logic, in Java we store all generated files into a
+temporary directory called {\tt src-gen}.
 
 
 %------------------------------------------------------------------------------
-\subsection{Implement business logic in Java}
+\subsection{Implement component business logic in Java}
 \label{subsection:ImplementBusinessLogicInJava}
 %------------------------------------------------------------------------------
 
-We generate the application class skeletons in a separate {\tt src} directory: 
+A set of generated interfaces act as a defined borderline between component
+and business logic. A business logic developer is free to name the
+implementation classes as long as the right interfaces will be implemented. 
+
+\vspace{3mm}
+As a CCM Tools feature, these implementation classes can be generated with
+default implementations (mostly empty method skeletons).
+We generate these application class skeletons in a separate directory called {\tt src}: 
+\begin{footnotesize}
 \begin{verbatim}
 > ccmjava -app                                                  \
           -I../../idl3repo/interface -I../../idl3repo/component \
           -o ./src                                              \
           ../../idl3repo/component/application/Server*.idl      
 \end{verbatim}
-
-In Java, we strictly separate generated component logic ({\tt src-gen})
+\end{footnotesize}
+Note that we strictly separate generated component logic ({\tt src-gen})
 from business logic ({\tt src}). 
-So, as a developer you are responsible for the whole {\tt src} directory tree.
-
+As a developer, you are responsible for the {\tt src} directory tree - you
+better use a CVS like code versioning system to check this directory in.
+\begin{footnotesize}
 \begin{verbatim}
 Login/java/server
 |-- src
@@ -83,12 +104,11 @@ Login/java/server
 |               `-- ServerloginImpl.java
 `-- src-gen
 \end{verbatim}
-
+\end{footnotesize}
 
 \vspace{3mm}
-There is a direct relationship between IDL and generated business logic skeleton
-classes:
-
+There is a direct relationship between IDL definitions and generated business
+logic skeleton classes:
 \begin{itemize}
 	\item {ServerHomeFactory.java} \\
 	For each component home, a factory class is generated which implements a {\tt create()}
@@ -109,13 +129,12 @@ classes:
 
 \vspace{3mm}
 Note that these implementation files are not overwritten by the CCM Tools.
-The generator replaces only untouched source files, otherwise the new
-generated files are stored with a {\tt .new} suffix.
+The generator replaces only untouched implementation files, otherwise the 
+re--generated files are stored with a {\tt .new} suffix.
 
  \vspace{3mm}
 To implement the Login example's business logic, you open the 
 {\tt ServerloginImpl.java} file and implement the following code snippet:
-
 \begin{footnotesize}
 \begin{lstlisting}[language=Java]
 public boolean isValidUser(PersonData person)
@@ -142,27 +161,20 @@ We use Ant to build our Java component example. Here is the adequate
 {\tt build.xml} file:
 \begin{footnotesize}
 \begin{verbatim}
-<project name="LoginServer" default="jar">
+<project name="LoginServer" default="compile">
 
-  <property name="dest" location="." />
-  <property name="idl2" location="${dest}/idl2" />
   <property name="build" location="${dest}/build" />
   <property name="src" location="${dest}/src" />
   <property name="src-gen" location="${dest}/src-gen" />
-  <property name="lib" location="${dest}/lib" />
-  <property name="jarname" location="${lib}/LoginServer" />
 
   <path id="compile.classpath">
       <pathelement path="${java.class.path}" />
   </path>
 
-  <!-- Create the build directory-->
   <target name="init" description="" >
       <mkdir dir="${build}" />
-      <mkdir dir="${lib}" />
   </target>
  
-  <!-- Compile generated Java files-->
   <target name="compile" depends="init" description="" >
       <javac srcdir="${src-gen}:${src}" destdir="${build}" 
              debug="on" source="1.5" target="1.5">
@@ -170,34 +182,31 @@ We use Ant to build our Java component example. Here is the adequate
       </javac>
   </target>
 
-  <target name="jar" depends="compile" >
-      <jar jarfile="${jarname}.jar" basedir="${build}" />
-  </target>    
-
-  <!-- Clean up -->
   <target name="clean" description="" >
       <delete dir="${build}" />
-      <delete dir="${lib}" />
   </target>
 </project>
 \end{verbatim}
 \end{footnotesize}
 
-You start the build process for this local Java component example with:
+As you know, you start the Ant build process with:
+\begin{footnotesize}
 \begin{verbatim}
 > ant
 \end{verbatim}
+\end{footnotesize}
 
 OK, you have implemented your firts Java component using CCM Tools.
 
 
 %------------------------------------------------------------------------------
-\subsection{Implement a local component client in Java}
+\subsection{Implement a collocated client in Java}
 \label{subsection:ImplementLocalComponentClient}
 %------------------------------------------------------------------------------
 
 To test our local component, we implement a simple {\tt ClientLocal} class
-within the {\tt src} directory:
+within the component's {\tt src} directory:
+\begin{footnotesize}
 \begin{verbatim}
 Login/java/server
 |-- src
@@ -205,11 +214,14 @@ Login/java/server
 |   `-- application
 `-- src-gen
 \end{verbatim}
+\end{footnotesize}
 
-The Java implementation follows the C++ client structure 
-(see section~\ref{subsection:ImplementC++BusinessLogic}), 
-thus, you can compare both APIs easily.
-
+The first listing shows a client's setup and tear down code. Before we can use
+a component type, we have to call the components {\tt deploy()} method which
+instantiates the component's home object and register it to the local {\tt HomeFinder}.
+On the other hand, before we terminate an application we have to call a
+component's {\tt undeploy()} method to free a component's home object. 
+	
 \begin{footnotesize}
 \begin{lstlisting}[language=Java]
 import application.ccm.local.*;
@@ -222,63 +234,18 @@ public class ClientLocal
     {
         try
         {
-            application.ccm.local.ServerHomeDeployment.deploy("ServerHome");
+            ServerHomeDeployment.deploy("ServerHome");
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
 
-        try
-        {            
-            HomeFinder homeFinder = ccm.local.HomeFinder.instance();
-            ServerHome home = 
-                (ServerHome) homeFinder.find_home_by_name("ServerHome");
-            Server server = home.create();
-            server.configuration_complete();
-            Login login = server.provide_login();
-                        
-            try
-            {
-                PersonData person = 
-                    new PersonData(277, "eteinik", "eteinik", Group.USER);
-                boolean result = login.isValidUser(person);
-
-                if (result)
-                {
-                    System.out.println("Welcome " + person.getName());
-                }
-                else
-                {
-                    System.out.println("We don't know you...");
-                }
-            }
-            catch (InvalidPersonData e)
-            {
-                System.err.println("Error: InvalidPersonData!");
-            }
-
-            try
-            {
-                PersonData person = new PersonData(0, "", "", Group.USER);
-                login.isValidUser(person);
-                assert(false);
-            }
-            catch (InvalidPersonData e)
-            {
-                System.err.println("OK, caught InvalidPersonData exception!");
-            }
-
-            server.remove();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        // TODO: client's business logic implementation
 
         try
         {
-            application.ccm.local.ServerHomeDeployment.undeploy("ServerHome");
+            ServerHomeDeployment.undeploy("ServerHome");
         }
         catch (Exception e)
         {
@@ -289,9 +256,61 @@ public class ClientLocal
 \end{lstlisting}
 \end{footnotesize}
 
-To run this test, we start the Ant build and execute the local client
-from the command line:
+The second listing shows a client's business logic implementation. Note that all
+interactions between client and component are based on generated interfaces.
 
+\begin{footnotesize}
+\begin{lstlisting}[language=Java]
+try
+{            
+    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
+    ServerHome home = (ServerHome) homeFinder.find_home_by_name("ServerHome");
+    Server server = home.create();
+    server.configuration_complete();
+    Login login = server.provide_login();
+                        
+    try
+    {
+        PersonData person = new PersonData(277, "eteinik", "eteinik", Group.USER);
+        boolean result = login.isValidUser(person);
+
+       if (result)
+       {
+           System.out.println("Welcome " + person.getName());
+       }
+       else
+       {
+           System.out.println("We don't know you...");
+       }
+    }
+    catch (InvalidPersonData e)
+    {
+        System.err.println("Error: InvalidPersonData!");
+    }
+
+    try
+    {
+        PersonData person = new PersonData(0, "", "", Group.USER);
+        login.isValidUser(person);
+        assert(false);
+    }
+    catch (InvalidPersonData e)
+    {
+        System.err.println("OK, caught InvalidPersonData exception!");
+    }
+
+    server.remove();
+}
+catch (Exception e)
+{
+    e.printStackTrace();
+}
+\end{lstlisting}
+\end{footnotesize}
+
+To run this test, we start the Ant build process and execute the local client
+from the command line:
+\begin{footnotesize}
 \begin{verbatim}
 > ant
 
@@ -299,13 +318,16 @@ from the command line:
        -cp $CCMTOOLS_HOME/lib/ccm-runtime.jar:./build \
        ClientLocal
 \end{verbatim}
+\end{footnotesize}
 
 Now you should see the following console output:
+\begin{footnotesize}
 \begin{verbatim}
 Welcome eteinik
 OK, caught InvalidPersonData exception!
 \end{verbatim}
+\end{footnotesize}
 
-Well done ;-)
+Well done! 
 
 \newpage
