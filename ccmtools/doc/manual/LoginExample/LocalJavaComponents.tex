@@ -12,11 +12,10 @@ modular Java applications.
 \vspace{3mm}
 The implementation of local Java components requires the following activities:
 \begin{itemize}
-	\item Model a component's structure in IDL 
-			(see section~\ref{section:ComponentDefinition}). 
-	\item Generate local component logic in Java.
-	\item Implement component business logic in Java.
-	\item Implement a collocated client in Java.
+	\item Model the component's structure in IDL (see section~\ref{section:ComponentDefinition}). 
+	\item Generate the local component logic.
+	\item Implement the component business logic.
+	\item Implement a collocated component client.
 \end{itemize}
 
 In the following sections, we use the IDL definitions stored in the IDL
@@ -24,15 +23,14 @@ repository directory as starting point for all Java code generations.
 
 
 %------------------------------------------------------------------------------
-\subsection{Generate local component logic in Java}
+\subsection{Generate the local component logic}
 \label{subsection:GenerateJavaComponentLogic}
 %------------------------------------------------------------------------------
-
 A local Java component logic includes a set of Java interfaces ({\tt -iface}
-option) and a pure Java implementation ({\tt -local}) of these interfaces which
-delegates client calls to the business logic. 
-The local Java component logic can be generated from the IDL repository using
-CCM Tools:
+option) and a pure Java implementation ({\tt -local}) which
+delegates client calls to the hosted business logic. 
+Local Java component logic can be generated from the IDL repository using
+the CCM Tools:
 \begin{footnotesize}
 \begin{verbatim}
 > mkdir java
@@ -51,7 +49,7 @@ CCM Tools:
 \end{verbatim}
 \end{footnotesize}
 
-This code generation steps result in the following file structure:
+These code generation steps result in the following file structure:
 \begin{footnotesize}
 \begin{verbatim}
 Login/java/server
@@ -62,23 +60,23 @@ Login/java/server
 \end{verbatim}
 \end{footnotesize}
 
-In contrast to C++ component logic, in Java we store all generated files into a
-temporary directory called {\tt src-gen}.
+In contrast to C++ component logic, in Java we store all generated files in a
+temporary {\tt src-gen} directory.
 
 
 %------------------------------------------------------------------------------
-\subsection{Implement component business logic in Java}
+\subsection{Implement the component business logic}
 \label{subsection:ImplementBusinessLogicInJava}
 %------------------------------------------------------------------------------
-
-A set of generated interfaces act as a defined borderline between component
-and business logic. A business logic developer is free to name the
+A set of generated interfaces act as the borderline between component-
+and business logic. A business logic developer is free to realize the
 implementation classes as long as the right interfaces will be implemented. 
 
 \vspace{3mm}
 As a CCM Tools feature, these implementation classes can be generated with
 default implementations (mostly empty method skeletons).
-We generate these application class skeletons in a separate directory called {\tt src}: 
+These application class skeletons are generated in a separate directory called
+{\tt src}: 
 \begin{footnotesize}
 \begin{verbatim}
 > ccmjava -app                                                  \
@@ -87,10 +85,10 @@ We generate these application class skeletons in a separate directory called {\t
           ../../idl3repo/component/application/Server*.idl      
 \end{verbatim}
 \end{footnotesize}
-Note that we strictly separate generated component logic ({\tt src-gen})
-from business logic ({\tt src}). 
+Note the strict separation between generated component logic ({\tt src-gen})
+and business logic ({\tt src}). 
 As a developer, you are responsible for the {\tt src} directory tree - you
-better use a CVS like code versioning system to check this directory in.
+should use a CVS like code versioning system for this directory.
 \begin{footnotesize}
 \begin{verbatim}
 Login/java/server
@@ -110,30 +108,30 @@ Login/java/server
 There is a direct relationship between IDL definitions and generated business
 logic skeleton classes:
 \begin{itemize}
-	\item {ServerHomeFactory.java} \\
+	\item {\tt ServerHomeFactory.java} \\
 	For each component home, a factory class is generated which implements a {\tt create()}
-	method that acts as entry point for business logic instantiations.
+	method that acts as entry point for business logic instantiation.
 		  
 	\item {\tt ServerHomeImpl.java}\\
 	For each component home, an implementation class is generated which provides an
-	implementation of the default {\tt create()} operation.
+	implementation of the default {\tt create()} method.
 
 \item {\tt ServerImpl.java}\\
 	For each component, an implementation class is generated which provides 
 	default implementations of the component's callback operations.
 	
 \item {\tt ServerloginImpl.*}\\
-	For each facet, an implementation class is generated which provides operation
-	skeletons for hosting business logic implementations.
+	For each facet, an implementation class is generated which provides
+	skeletons for business logic implementations.
 \end{itemize}
 
 \vspace{3mm}
-Note that these implementation files are not overwritten by the CCM Tools.
-The generator replaces only untouched implementation files, otherwise the 
-re--generated files are stored with a {\tt .new} suffix.
+Note that these implementation files can not be overwritten by the CCM Tools.
+Generators replaces only untouched implementation files, otherwise the 
+re--generated files are stored with a '{\tt .new}' suffix.
 
  \vspace{3mm}
-To implement the Login example's business logic, you open the 
+To implement the Login example's business logic, you can open the 
 {\tt ServerloginImpl.java} file and implement the following code snippet:
 \begin{footnotesize}
 \begin{lstlisting}[language=Java]
@@ -157,15 +155,15 @@ public boolean isValidUser(PersonData person)
 \end{lstlisting}
 \end{footnotesize}
 
-We use Ant to build our Java component example. Here is the adequate
+Ant is used to build the Java component example. Here is an adequate
 {\tt build.xml} file:
 \begin{footnotesize}
 \begin{verbatim}
 <project name="LoginServer" default="compile">
 
-  <property name="build" location="${dest}/build" />
-  <property name="src" location="${dest}/src" />
-  <property name="src-gen" location="${dest}/src-gen" />
+  <property name="build" location="build" />
+  <property name="src" location="src" />
+  <property name="src-gen" location="src-gen" />
 
   <path id="compile.classpath">
       <pathelement path="${java.class.path}" />
@@ -189,23 +187,22 @@ We use Ant to build our Java component example. Here is the adequate
 \end{verbatim}
 \end{footnotesize}
 
-As you know, you start the Ant build process with:
+You can start the Ant build process with:
 \begin{footnotesize}
 \begin{verbatim}
 > ant
 \end{verbatim}
 \end{footnotesize}
 
-OK, you have implemented your firts Java component using CCM Tools.
+OK, you have implemented the firts Java component.
 
 
 %------------------------------------------------------------------------------
-\subsection{Implement a collocated client in Java}
+\subsection{Implement a collocated component client}
 \label{subsection:ImplementLocalComponentClient}
 %------------------------------------------------------------------------------
-
-To test our local component, we implement a simple {\tt ClientLocal} class
-within the component's {\tt src} directory:
+To test the local component, a simple {\tt ClientLocal} class is implemented in 
+the component's {\tt src} directory:
 \begin{footnotesize}
 \begin{verbatim}
 Login/java/server
@@ -216,11 +213,13 @@ Login/java/server
 \end{verbatim}
 \end{footnotesize}
 
-The first listing shows a client's setup and tear down code. Before we can use
-a component type, we have to call the components {\tt deploy()} method which
-instantiates the component's home object and register it to the local {\tt HomeFinder}.
-On the other hand, before we terminate an application we have to call a
-component's {\tt undeploy()} method to free a component's home object. 
+The following listing shows a client's setup and tear down code. Before 
+a component type can be used, we call the component's {\tt deploy()} method
+which instantiates the component home object and register it to the local {\tt
+HomeFinder} singleton.
+On the other hand, before we terminate an application we call a
+component's {\tt undeploy()} method to free the registered component home
+object. 
 	
 \begin{footnotesize}
 \begin{lstlisting}[language=Java]
@@ -256,7 +255,7 @@ public class ClientLocal
 \end{lstlisting}
 \end{footnotesize}
 
-The second listing shows a client's business logic implementation. Note that all
+The next listing shows a client's business logic implementation. Note that all
 interactions between client and component are based on generated interfaces.
 
 \begin{footnotesize}
@@ -308,7 +307,7 @@ catch (Exception e)
 \end{lstlisting}
 \end{footnotesize}
 
-To run this test, we start the Ant build process and execute the local client
+To run this test, start the Ant build process and execute the local client
 from the command line:
 \begin{footnotesize}
 \begin{verbatim}
@@ -320,7 +319,7 @@ from the command line:
 \end{verbatim}
 \end{footnotesize}
 
-Now you should see the following console output:
+Now, you should see the following console output:
 \begin{footnotesize}
 \begin{verbatim}
 Welcome eteinik

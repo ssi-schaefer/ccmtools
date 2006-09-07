@@ -12,37 +12,36 @@ Java applications.
 \vspace{3mm}
 The implementation of remote Java components requires the following activities:
 \begin{itemize}
-	\item Model a component's structure in IDL 
-			(see section~\ref{section:ComponentDefinition}). 
-	\item Implement a local Java component (see section~\ref{section:LocalJavaComponentImplementation}).
-	\item Generate remote component logic in Java.
-	\item Implement a minimal CORBA server in Java.
-	\item Generate a client library component in Java.
-	\item Implement a local component client in Java.
+	\item Model the component's structure in IDL (see section~\ref{section:ComponentDefinition}). 
+	\item Implement the local component (see section~\ref{section:LocalJavaComponentImplementation}).
+	\item Generate the remote component logic.
+	\item Implement a minimal CORBA server.
+	\item Generate the client library component.
+	\item Implement a local component client.
 \end{itemize}
 
-You will see in the next sections that most of the development steps from local
-to remote Java components is completely automated by the CCM Tools.
+You will see in the next sections that most of the development steps needed to
+extend local components to remote Java components can be completely automated by
+the CCM Tools.
 
 \vspace{3mm}
 This section assumes that there is already a local Java component implementation
-which we can transform into a remote one.
+which can be transform into a remote one.
 
 
 %------------------------------------------------------------------------------
 \subsection{Generate remote component logic in Java}
 \label{subsection:GenerateRemoteComponentLogicJava}
 %------------------------------------------------------------------------------
-For remote Java components, we use CORBA middleware to overcome process
-boundaries, thus, for noncritical applications you can simply use the Java
-build--in ORB.
+We use CORBA middleware to overcome process boundaries.
+For noncritical applications you can use the Java build--in CORBA ORB.
 To turn a local Java component into a remote component, we have to generate CORBA
 stubs and skeletons as well as a bunch of adapter and converter classes.
 
 \vspace{3mm}
 Generation of CORBA stubs and skeletons includes an IDL3 to IDL2 transformation
-and calls to an extern IDL compiler. Here we use the CCM Tools script {\tt ccmtools-idl}
-to call Java's build--in IDL compiler:
+and multiple calls to an external IDL compiler. We can use the CCM Tools script
+{\tt ccmtools-idl} to call Java's build--in IDL compiler:
 \begin{footnotesize}
 \begin{verbatim}
 > ccmidl -idl2                                                 \
@@ -62,7 +61,7 @@ to call Java's build--in IDL compiler:
 \end{verbatim}
 \end{footnotesize}
 
-Another pair of CCM Tools calls create the adapter and converter classes:
+Another pair of CCM Tools calls create CORBA adapter and converter classes:
 \begin{footnotesize}
 \begin{verbatim}
 > ccmjava -remote                                               \
@@ -77,7 +76,7 @@ Another pair of CCM Tools calls create the adapter and converter classes:
 \end{verbatim}
 \end{footnotesize}
 
-After all, we see the following directory structure: 
+After all, you can see the following directory structure: 
 \begin{footnotesize}
 \begin{verbatim}
 Login/java/server
@@ -90,7 +89,7 @@ Login/java/server
 \end{verbatim}
 \end{footnotesize}
 
-Each single file in this {\tt src-gen} directory has been generated, therefore, 
+Each single file in this {\tt src-gen} directory has been generated, so, 
 there is no need for a CVS like check--in.
 
 
@@ -98,9 +97,8 @@ there is no need for a CVS like check--in.
 \subsection{Implement minimal CORBA server in Java}
 \label{subsection:ImplementMinimalCorbaServerJava}
 %------------------------------------------------------------------------------
-
-To startup the remote component, we implement a minimal CORBA server which
-simply initialize the ORB with passed command line parameters, deploys the remote
+For starting up a remote component, a minimal CORBA server can be implemented 
+which initialize the ORB (by passing command line parameters), deploys the remote
 component home and runs the ORB.
 
 \begin{footnotesize}
@@ -141,14 +139,14 @@ Login/java/server
 \end{footnotesize}
 
 Don't forget to start a CORBA name service, because a component deployment
-implies the registration of the component's home object.
+implies the registration of the component home object.
 \begin{footnotesize}
 \begin{verbatim}
 > orbd -ORBInitialPort 5050
 \end{verbatim}
 \end{footnotesize}
 
-We run the same Ant build script we have already used for building the
+We can run the same Ant build script as we have used for building the
 local Java component. 
 \begin{footnotesize}
 \begin{verbatim}
@@ -224,8 +222,7 @@ On top of CORBA stubs and skeletons we generate the client library component:
 \end{verbatim}
 \end{footnotesize}
 
-As you can see from the CCM Tools calls, all generated files are collected in
-the temporary {\tt src-gen} directory.
+All generated files are collected in the temporary {\tt src-gen} directory.
 
 
 
@@ -233,13 +230,12 @@ the temporary {\tt src-gen} directory.
 \subsection{Implement local component client in Java}
 \label{subsection:ImplementRemoteComponentClientInJava}
 %------------------------------------------------------------------------------
-
 Based on the generated client library component, we can implement a
-component's client much like a regular local Java component client.
+component client much like a simple local Java component client.
 
 \vspace{3mm}
-As you can see in the following listing, only the client's setup and tear down
-sections are different to the local component client implementation:
+As shown in the following listing, only the client's setup and tear down
+sections are different to a local component client implementation:
 \begin{footnotesize}
 \begin{lstlisting}[language=Java]
 import org.omg.CORBA.ORB;
@@ -288,7 +284,7 @@ Login/java/client
 \end{verbatim}
 \end{footnotesize}
 
-As a client--side Ant build script we can reuse the script from the server--side.
+As Ant build script we can reuse the script from the server--side.
 \begin{footnotesize}
 \begin{verbatim}
 > ant
@@ -311,6 +307,6 @@ Welcome eteinik
 OK, caught InvalidPersonData exception!
 \end{verbatim}
 \end{footnotesize}
-Congratulations, your remote Java component is working now!
+Congratulations, the remote Java component is working now!
 
 \newpage

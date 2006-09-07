@@ -8,8 +8,8 @@ A serious problem in component testing is to satisfy all component ports without
 having other components to connect to.
 In a software system, a component always is connected to other components via
 facets and receptacles.
-To develop an test a single component, the CCM Tools support the generation of 
-mirror components. 
+To develop and test a single component, the CCM Tools support the generation of 
+IDL mirror component definitions. 
 
 \vspace{3mm}
 A {\bf Mirror Component} represents the complement of a given component. For every
@@ -22,12 +22,11 @@ describes the desired behavior of a component.
 Implementation of local mirror component tests require the
 following activities:
 \begin{itemize}
-	\item Model a component's structure in IDL 
-			(see section~\ref{section:ComponentDefinition}). 
+	\item Model the component's structure in IDL (see section~\ref{section:ComponentDefinition}). 
 	\item Implement the local component (see section~\ref{section:LocalC++ComponentImplementation})
 
 	\item Generate the mirror component definition.
-	\item Generate local mirror component logic.
+	\item Generate the local mirror component logic.
 	\item Implement mirror component test cases.
 
 \end{itemize}
@@ -101,18 +100,17 @@ These new files are:
 \end{itemize}
 
 Based on these new IDL definitions, we can use existing CCM Tools generators to
-implement this mirror component.
+realize this mirror component.
 
 
 %------------------------------------------------------------------------------
-\subsection{Generate local mirror component logic in C++}
+\subsection{Generate the local mirror component logic}
 \label{subsection:GenerateLocalMirrorComponentLogicCxx}
 %------------------------------------------------------------------------------
-
-A mirror component can be generated in the same way as the component under test.
+A mirror component can be generated in the same way as a component under test.
 In addition to the mirror component logic, the {\tt c++local-test} generator creates
 a {\tt \_check\_*} file which handles the test setup where both components will be
-instantiated and connected by facets and receptacles.   
+instantiated and connected by their facets and receptacles.   
 
 \begin{footnotesize}
 \begin{verbatim}
@@ -132,7 +130,8 @@ instantiated and connected by facets and receptacles.
 \end{verbatim}
 \end{footnotesize}
 
-We generate the mirror component parallel to the component under test:
+These generated mirror component files are stored parallel to the other 
+component directory:
 \begin{footnotesize}
 \begin{verbatim}
 Login/c++/server
@@ -155,11 +154,10 @@ Login/c++/server
 
 
 %------------------------------------------------------------------------------
-\subsection{Implement mirror component test cases in C++}
+\subsection{Implement mirror component test cases}
 \label{subsection:ImplementMirrorComponentTestCasesCxx}
 %------------------------------------------------------------------------------
-
-As a mirror component's business logic, we implement our two test cases.
+As the mirror component's business logic, we implement two test cases.
 We used the {\tt -a} option to force the CCM Tools to generate application class
 skeletons.
 In the {\tt ServerMirror\_impl.cc} class we implement the following code snippet:
@@ -219,9 +217,9 @@ CCM_ServerMirror_impl::ccm_activate()
 
 {\tt ccm\_activate()} is a callback method which will be called from the component 
 logic during the client's {\tt configuration\_complete()} call.
-Within this callback, we implement these test cases. 
+Within this callback method, we implement these test cases. 
 To call operations on the original component's facet, we use {\tt get\_connection\_login()} 
-within the mirror component test case to get the connected receptacle reference. 
+in the mirror component test case to get the connected receptacle reference. 
 
 \vspace{3mm}
 Finally, we use Confix to build both components and to run the unit test:
@@ -247,5 +245,5 @@ All 1 tests passed
 The mirror component test concept handles the complete test setup for you, thus,
 you can focus on your test cases only.
 
- \newpage
+\newpage
 
