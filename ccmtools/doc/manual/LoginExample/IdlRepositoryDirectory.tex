@@ -4,17 +4,20 @@
 \label{section:IdlRepositoryDirectory}
 %==============================================================================
 
-First of all, we store the IDL source code in a file called {\tt Login.idl}
-and tell the CCM Tools to generate an {\bf IDL Repository Directory}.
+From the {\tt Login.idl} file, the CCM Tools generate an 
+{\bf IDL Repository Directory}.
 This {\tt idl3repo} directory contains all defined IDL artifacts in separated
 files and in a uniform structure.
-
+\begin{footnotesize}
 \begin{verbatim}
 	> ccmidl -idl3 -o ./idl3repo Login.idl
 \end{verbatim}
+\end{footnotesize}
 
-After this step, we should have the following directory structure:
+After this step, you should see the following directory structure:
+\begin{footnotesize}
 \begin{verbatim}
+        Login
         |-- Login.idl
         |-- idl3repo
         |   |-- component
@@ -28,9 +31,10 @@ After this step, we should have the following directory structure:
         |           |-- Login.idl
         |           `-- PersonData.idl
 \end{verbatim}
+\end{footnotesize}
 
-In the repository, which is the starting point for all other CCM Tools activities,
-there are two subdirectories:
+In this IDL repository, which is the starting point for all other CCM Tools
+activities, there are two subdirectories:
 \begin{itemize}
  	\item The {\tt interface} directory contains all IDL interface,
  	parameter, exception, etc. definitions.
@@ -41,6 +45,8 @@ there are two subdirectories:
 
 Each IDL artefact is stored in its own file within a directory that
 conforms to the defined IDL module hierarchy.
+
+\vspace{3mm}
 For example, the interface {\tt Login} has been defined in the module 
 {\tt application}, thus, this interface is stored in the directory 
 {\tt interface/application} in a file named {\tt Login.idl} within the IDL 

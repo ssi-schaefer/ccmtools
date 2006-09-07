@@ -40,6 +40,7 @@ IDL3, usual IDL compilers assume IDL2 (no keywords like {\tt component} or
 {\tt home}).
 For that reason, a separate CCM Tools generator transforms IDL3 to IDL2, as defined in
 the CCM specification:
+\begin{footnotesize}
 \begin{verbatim}
 > ccmidl -idl2 -I../../idl3repo/interface -I../../idl3repo/component \
          -o src/component/Server/CCM_corba_stubs                     \  
@@ -49,23 +50,28 @@ the CCM specification:
          -o src/component/Server/CCM_corba_stubs                     \
          ../../idl3repo/component/application/Server*.idl
 \end{verbatim}
+\end{footnotesize}
 
 All generated IDL2 files are stored in a directory called {\tt CCM\_corba\_stubs}:
+\begin{footnotesize}
 \begin{verbatim}
     Login/c++/server
     |-- component
     |   `-- Server
     |       |-- CCM_corba_stubs
 \end{verbatim}
+\end{footnotesize}
 
 We go into this {\tt CCM\_corba\_stubs} directory and call the IDL compiler for
 every single file (fortunately, the CCM Tools provide a script that can do this
 in a single call):
+\begin{footnotesize}
 \begin{verbatim}
 > cd src/component/Server/CCM_corba_stubs
 > ccmtools-idl -mico -I${CCMTOOLS_HOME}/idl *.idl
 > cd ../../../../
 \end{verbatim}
+\end{footnotesize}
 
 The transformed IDL2 files include interfaces which are part of the
 installed CCM Tools, thus, the IDL compiler needs the include path to {\tt CCMTOOLS\_HOME/idl} .
@@ -73,6 +79,7 @@ installed CCM Tools, thus, the IDL compiler needs the include path to {\tt CCMTO
 \vspace{3mm}
 As a glue between the local C++ interfaces and the CORBA stubs and skeletons, we
 generate some adapters and converters:
+\begin{footnotesize}
 \begin{verbatim}
 > ccmtools c++remote -I../../idl3repo/interface -I../../idl3repo/component \
                      -o src/component/Server/                              \
@@ -82,9 +89,11 @@ generate some adapters and converters:
                      -o src/component/Server/                              \
                      ../../idl3repo/component/application/Server*.idl
 \end{verbatim}
+\end{footnotesize}
 
 All new source files are stored in {\tt CCM\_*\_remote\_*} directories (we call
 it remote component logic).
+\begin{footnotesize}
 \begin{verbatim}
 Login/c++/server
 `-- src
@@ -94,6 +103,8 @@ Login/c++/server
     |       |-- CCM_application_ccm_remote_corba_converter
     |       `-- CCM_corba_stubs
 \end{verbatim}
+\end{footnotesize}
+
 Remember, there is no reason to check--in generated component logic into a CVS
 like system because this code can be generated from the IDL repository directly.
 
@@ -163,6 +174,7 @@ int main (int argc, char *argv[])
 
 We save this {\tt \_check\_application\_ccm\_remote\_component\_Server.cc} file
 into the component's {\tt test} directory:
+\begin{footnotesize}
 \begin{verbatim}
 Login/c++/server
 `-- src
@@ -171,6 +183,7 @@ Login/c++/server
     |       `-- test
     |           `-- _check_application_ccm_remote_component_Server.cc
 \end{verbatim}
+\end{footnotesize}
 
 A minimal CORBA server code initializes the ORB and deploys the local and
 remote components. Remote component deployment implies the registration of the
@@ -179,23 +192,28 @@ component home object at the CORBA name service.
 \vspace{3mm}
 Make sure that you run a CORBA name service on your box (e.g. {\tt orbd} which 
 ist a Java tool):
+\begin{footnotesize}
 \begin{verbatim}
 > orbd -ORBInitialPort 5050
 \end{verbatim}
-
+\end{footnotesize}
 
 Finally, we run Confix to build all source files and to start the unit test:
+\begin{footnotesize}
 \begin{verbatim}
 > ccmconfix -makefiles -o src -pname "login" -pversion "1.0.0"
 
 > confix.py --packageroot=`pwd`/src --bootstrap --configure \
             --make --targets=check
 \end{verbatim}
+\end{footnotesize}
 
 At the end of the build process, you should see the following line:
+\begin{footnotesize}
 \begin{verbatim}
 ServerHome server is running...
 \end{verbatim}
+\end{footnotesize}
 
 
 %------------------------------------------------------------------------------
@@ -207,7 +225,7 @@ We implement the remote component client as a simple unit test.
 Because this client runs in a separate process (probably on a different machine), we
 have to generate and build the CORBA stub and skeleton classes for the client 
 again:
-
+\begin{footnotesize}
 \begin{verbatim}
 > ccmidl -idl2 -I../../idl3repo/interface -I../../idl3repo/component \
          -o src/component/Server/CCM_corba_stubs                     \  
@@ -217,10 +235,11 @@ again:
          -o src/component/Server/CCM_corba_stubs                     \
          ../../idl3repo/component/application/Server*.idl
 \end{verbatim}
-
+\end{footnotesize}
 
 In addition to the generated stubs and skeletons, we store the remote test
 client in a file named {\tt \_check\_client.cc} within the following directory structure:
+\begin{footnotesize}
 \begin{verbatim}
 Login/c++/client
 `-- src
@@ -230,6 +249,7 @@ Login/c++/client
     `-- test
         `-- _check_client.cc
 \end{verbatim}
+\end{footnotesize}
 
 The remote client's implementation follows the local client's structure but uses
 the IDL to C++ mapping specified by the OMG.
@@ -318,15 +338,18 @@ int main (int argc, char *argv[])
 \end{footnotesize}
 
 Again, we use Confix to build and run the test client:
+\begin{footnotesize}
 \begin{verbatim}
 > ccmconfix -makefiles -o src -pname "login-remote-client" -pversion "1.0.0"
 
 > confix.py --packageroot=`pwd`/src --bootstrap --configure \
             --make --targets=check
 \end{verbatim}
+\end{footnotesize}
 
 When we see the following output on the console, we have successfully
 implemented our first distributed component application:
+\begin{footnotesize}
 \begin{verbatim}
 Welcome eteinik
 OK, caught InvalidPersonData exception!
@@ -335,10 +358,10 @@ PASS: login-remote-client__check_client
 All 1 tests passed
 ==================
 \end{verbatim}
+\end{footnotesize}
 
 The important point is that we did not change the business logic implementation.
 Instead, we reused the local component and generated a remote layer using the
 CCM Tools.
-
 
 \newpage

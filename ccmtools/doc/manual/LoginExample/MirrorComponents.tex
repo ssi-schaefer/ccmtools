@@ -19,8 +19,30 @@ Within the mirror component, a developer can implement test cases which
 describes the desired behavior of a component.
 
 \vspace{3mm}
-To create IDL mirror component definitions from the {\tt Server} component stored
-in the IDL repository directory, we use the following CCM Tools call: 
+Implementation of local mirror component tests require the
+following activities:
+\begin{itemize}
+	\item Model a component's structure in IDL 
+			(see section~\ref{section:ComponentDefinition}). 
+	\item Implement the local component (see section~\ref{section:LocalC++ComponentImplementation})
+
+	\item Generate the mirror component definition.
+	\item Generate local mirror component logic.
+	\item Implement mirror component test cases.
+
+\end{itemize}
+
+In the following sections, we will implement mirror component test cases for a
+local C++ component implementation.
+
+
+%------------------------------------------------------------------------------
+\subsection{Generate the mirror component definition}
+\label{subsection:GenerateMirrorComponentDefinition}
+%------------------------------------------------------------------------------
+
+To create an IDL mirror component definition from the {\tt Server} component we
+use the following CCM Tools call: 
 \begin{footnotesize}
 \begin{verbatim}
 > cd Login
@@ -32,9 +54,7 @@ in the IDL repository directory, we use the following CCM Tools call:
 \end{verbatim}
 \end{footnotesize}
 
-After that call, the IDL repository directory contains the new mirror component
-definitions: 
- 
+Now, the IDL repository directory contains the new mirror component definition:
 \begin{footnotesize}
 \begin{verbatim}
 Login
@@ -48,10 +68,11 @@ Login
 \end{verbatim}
 \end{footnotesize}
 
-In the IDL repository directory we have two new IDL files:
+These new files are:
 \begin{itemize}
   \item {\tt ServerMirror.idl} \\
   This file contains the mirror component's IDL definitions:
+    \begin{footnotesize}
     \begin{lstlisting}[language=C++]
     #include <application/Login.idl>
 
@@ -62,8 +83,10 @@ In the IDL repository directory we have two new IDL files:
         };
     }; // /module application
 	\end{lstlisting} 
+    \end{footnotesize}
   \item {\tt ServerHomeMirror.idl} \\
-  This file contains the IDL definition of the mirror component's home:
+    This file contains the IDL definition of the mirror component's home:
+    \begin{footnotesize}
     \begin{lstlisting}[language=C++]
     #include <application/ServerMirror.idl>
 
@@ -74,10 +97,155 @@ In the IDL repository directory we have two new IDL files:
         };
     }; // /module application
 	\end{lstlisting} 
+    \end{footnotesize}
 \end{itemize}
 
-Based on these new IDL definitions, we can use all CCM Tools generators to implement 
-this mirror component either in C++ or Java.
+Based on these new IDL definitions, we can use existing CCM Tools generators to
+implement this mirror component.
 
-\newpage
+
+%------------------------------------------------------------------------------
+\subsection{Generate local mirror component logic in C++}
+\label{subsection:GenerateLocalMirrorComponentLogicCxx}
+%------------------------------------------------------------------------------
+
+A mirror component can be generated in the same way as the component under test.
+In addition to the mirror component logic, the {\tt c++local-test} generator creates
+a {\tt \_check\_*} file which handles the test setup where both components will be
+instantiated and connected by facets and receptacles.   
+
+\begin{footnotesize}
+\begin{verbatim}
+> cd c++/server
+
+> ccmtools c++local                                                  \
+           -I../../idl3repo/interface -I../../idl3repo/component     \
+           -a                                                        \
+           -o src/component/ServerMirror                             \
+           ../../idl3repo/component/application/ServerMirror.idl     \
+           ../../idl3repo/component/application/ServerHomeMirror.idl
+
+> ccmtools c++local-test                                             \
+           -I../../idl3repo/interface -I../../idl3repo/component     \
+           -o src/component/ServerMirror                             \
+           ../../idl3repo/component/application/Server.idl           
+\end{verbatim}
+\end{footnotesize}
+
+We generate the mirror component parallel to the component under test:
+\begin{footnotesize}
+\begin{verbatim}
+Login/c++/server
+`-- src
+    |-- component
+    |   |-- Server
+    |   `-- ServerMirror
+    |       |-- CCM_application_ccm_local_component_ServerMirror
+    |       |-- CCM_application_ccm_local_component_ServerMirror_share
+    |       |-- ServerHomeMirror_impl.cc
+    |       |-- ServerHomeMirror_impl.h
+    |       |-- ServerMirror_impl.cc
+    |       |-- ServerMirror_impl.h
+    |       |-- application_ccm_local_component_ServerMirror_ServerHomeMirror_entry.h
+    |       `-- test
+    |           `-- _check_application_ccm_local_component_Server.cc
+\end{verbatim}
+\end{footnotesize}
+
+
+
+%------------------------------------------------------------------------------
+\subsection{Implement mirror component test cases in C++}
+\label{subsection:ImplementMirrorComponentTestCasesCxx}
+%------------------------------------------------------------------------------
+
+As a mirror component's business logic, we implement our two test cases.
+We used the {\tt -a} option to force the CCM Tools to generate application class
+skeletons.
+In the {\tt ServerMirror\_impl.cc} class we implement the following code snippet:
+\begin{footnotesize}
+\begin{lstlisting}[language=C++]
+void
+CCM_ServerMirror_impl::ccm_activate()
+    throw(::ccm::local::Components::CCMException)
+{
+    try
+    {
+        SmartPtr<Login> login =  ctx->get_connection_login();
+        try 
+        {
+            PersonData person;
+            person.id = 277;
+            person.name = "eteinik";
+            person.password = "eteinik";
+            person.group = USER;
+            bool result = login->isValidUser(person);
+            if(result) 
+            {
+                cout << "Welcome " << person.name << endl;
+            }
+            else 
+            {
+                cout << "We don't know you !!!" << endl;
+            }
+        }
+        catch(InvalidPersonData& e) 
+        {
+            cout << "Error: InvalidPersonData!!" << endl;
+        }
+        
+        try 
+        {
+            PersonData person;
+            person.id = 0;
+            person.name = "";
+            person.password = "";
+            person.group = USER;      
+            login->isValidUser(person);
+            assert(false);
+        }
+        catch(InvalidPersonData& e) 
+        {
+            cout << "OK, caught InvalidPersonData exception!" << endl;
+        }
+    }
+    catch(::ccm::local::Components::Exception& e)
+    {
+        cerr << "ERROR: " << e.what() << endl;
+    }
+}
+\end{lstlisting} 
+\end{footnotesize}
+
+{\tt ccm\_activate()} is a callback method which will be called from the component 
+logic during the client's {\tt configuration\_complete()} call.
+Within this callback, we implement these test cases. 
+To call operations on the original component's facet, we use {\tt get\_connection\_login()} 
+within the mirror component test case to get the connected receptacle reference. 
+
+\vspace{3mm}
+Finally, we use Confix to build both components and to run the unit test:
+\begin{footnotesize}
+\begin{verbatim}
+> ccmconfix -makefiles -o src -pname "login" -pversion "1.0.0"
+
+> confix.py --packageroot=`pwd`/src --bootstrap --configure --make --targets=check
+\end{verbatim}
+\end{footnotesize}
+Not surprisingly, you should see the following output on your command line:
+\begin{footnotesize}
+\begin{verbatim}
+Welcome eteinik
+OK, caught InvalidPersonData exception!
+PASS: login__check_application_ccm_local_component_Server
+==================
+All 1 tests passed
+==================
+\end{verbatim}
+\end{footnotesize}
+
+The mirror component test concept handles the complete test setup for you, thus,
+you can focus on your test cases only.
+
+ \newpage
 

@@ -11,30 +11,29 @@ large but modular C++ applications.
 \vspace{3mm}
 The implementation of local C++ components requires the following activities:
 \begin{itemize}
-	\item Model a component's structure in IDL 
+	\item Model the component's structure in IDL 
 			(see section~\ref{section:ComponentDefinition}). 
-	\item Generate component logic (= component skeletons).
-	\item Implement a component's business logic.
-	\item Implement a component's client.
-
+	\item Generate the local component logic.
+	\item Implement the component's business logic.
+	\item Implement a local component client.
 \end{itemize}
 
-It is an important point that the modeling of IDL interfaces and components 
+It is an important point that modeling of IDL interfaces and components 
 is completely independent of component implementations.
-As you will see, we use the IDL artifacts stored in the IDL repository directory
-to generate both C++ and Java implementations.  
+As you will see, we use IDL artifacts stored in the IDL repository directory
+to generate both C++ and Java code.  
  
  
 %------------------------------------------------------------------------------
-\subsection{Generate component logic}
+\subsection{Generate the local component logic}
 \label{subsection:GenerateComponentLogic}
 %------------------------------------------------------------------------------
 
-Let's start development. From the IDL repository directory the CCM Tools
+From the IDL repository directory the CCM Tools
 generate a component skeleton which establishes the component's structure,
-provides C++ interfaces to clients or other components and uses the C++ runtime 
+provides C++ interfaces to clients or other components, and uses the C++ runtime 
 environment.
-
+\begin{footnotesize}
 \begin{verbatim}
 > mkdir c++
 > mkdir c++/server
@@ -45,11 +44,14 @@ environment.
                     ../../idl3repo/interface/application/*.idl            
 
 > ccmtools c++local -I../../idl3repo/interface -I../../idl3repo/component \
-                    -a -o ./src/component/Server                          \
+                    -a                                                    \
+                    -o ./src/component/Server                             \
                     ../../idl3repo/component/application/Server*.idl
 \end{verbatim}
+\end{footnotesize}
 
-After this code generation step, the following directory structure has been created:
+After this code generation step, you can see the following directory structure:
+\begin{footnotesize}
 \begin{verbatim}
 Login/c++/server
   `-- src
@@ -62,35 +64,34 @@ Login/c++/server
         |-- CCM_application_ccm_local
         `-- CCM_application_ccm_local_adapter
 \end{verbatim}
+\end{footnotesize}
 
 Basically, all directories starting with '{\tt CCM\_}' contain component logic
 which is completely generated (so there is no need to check--in these directories
 into a CVS like system).
-
-\vspace{3mm}
 The component logic fills the gap between a component's interfaces and its
 business logic implementation. 
 
 \vspace{3mm}
 Note that generated component logic can change between different CCM Tools
-versions to improve a component's non functional behavior. Such changes do neither
+versions to improve component non functional behavior. Such changes do neither
 affect component interfaces nor your business logic implementation which
 realizes the functional behavior of components.   
 
 
 %------------------------------------------------------------------------------
-\subsection{Implement business logic}
+\subsection{Implement the component's business logic}
 \label{subsection:ImplementC++BusinessLogic}
 %------------------------------------------------------------------------------
 
-Component business logic must be embedded in the generated component logic.
+Component business logic will be embedded in the generated component logic.
 To make life easier, we used the {\tt -a} option during code generation.
 This flag forces the code generator to generate application skeletons.
 
 \vspace{3mm}
-You can find these application skeletons in the {\tt src/component/Server}
-subdirectory:
-
+You can find these application skeletons {\tt *\_impl.* files} in the 
+{\tt src/component/Server} subdirectory:
+\begin{footnotesize}
 \begin{verbatim}
 Login/c++/server
   `-- src
@@ -103,6 +104,7 @@ Login/c++/server
     |       |-- Server_login_impl.cc
     |       |-- Server_login_impl.h
 \end{verbatim}
+\end{footnotesize}
 
 As a developer, you are responsible for these files because they represent the
 component's business logic (you should check--in these files into a CVS like system).
@@ -114,10 +116,8 @@ There is a direct relationship between IDL and these business logic files:
 	For each component home, an implementation class is generated which provides an
 	implementation of the default {\tt create()} operation.
 	Additionally, the {\tt ServerHome\_impl.cc} file contains the implementation of
-	the global:
-	\begin{verbatim}
-    create_application_ccm_local_component_Server_ServerHome()
-    \end{verbatim}
+	the global: \\
+    {\tt create\_application\_ccm\_local\_component\_Server\_ServerHome()} 
  	function which represents the business logic entry point used by the generated 
  	component logic. 
 
@@ -126,8 +126,8 @@ There is a direct relationship between IDL and these business logic files:
 	default implementations of the component's callback operations.
 	
 \item {\tt Server\_login\_impl.*}\\
-	For each facet, an implementation class is generated which provides operation
-	skeletons for hosting business logic implementations.
+	For each facet, an implementation class is generated which provides empty
+	business logic operation skeletons.
 \end{itemize}
 
 It is a good idea to generate these application skeletons only once - when starting 
@@ -137,8 +137,8 @@ implementation classes manually.
 
  \vspace{3mm}
 Note that these implementation files are not overwritten by the CCM Tools.
-The generator replaces only untouched source files, otherwise the new
-generated files are stored with a {\tt .new} suffix.
+The generator replaces only untouched source files, otherwise the
+generated files are stored with a '{\tt .new}' suffix.
 
  \vspace{3mm}
 To implement the Login example's business logic, you open the 
@@ -169,25 +169,29 @@ login_impl::isValidUser(
 \end{lstlisting}
 \end{footnotesize}
 
-Now, we can use Confix to build our component example. To tell Confix which
+Now, we can use Confix to build this component example. To tell Confix which
 directory should be built, a {\tt Makefile.py} file must be created in each
 source code directory.
-You can delegate this work to CCM Tools:
+Of course, you can delegate this work to the CCM Tools:
+\begin{footnotesize}
 \begin{verbatim}
 > ccmconfix -makefiles -o ./src -pname "login" -pversion "1.0.0"
 \end{verbatim}
- 
+\end{footnotesize} 
+
 Finally, you start Confix to build all generated and manually implemented source
 files:
+\begin{footnotesize}
 \begin{verbatim}
 > confix.py --packageroot=`pwd`/src --bootstrap --configure --make 
 \end{verbatim}
+\end{footnotesize}
 
-Hey, we a now ready to test this local C++ component implementation.
+Now we are ready to test this local C++ component implementation.
 
 
 %------------------------------------------------------------------------------
-\subsection{Implement a local component client in C++}
+\subsection{Implement a local component client}
 \label{subsection:ImplementLocalComponentClient}
 %------------------------------------------------------------------------------
 
@@ -257,19 +261,26 @@ int main(int argc, char *argv[])
 \end{lstlisting}
 \end{footnotesize}
 
-This code snipped is very similar in all unit tests of such simple components.
+Each functional test case can be inserted into this unit test template shown above.
+This code snipped is very similar for all simple component unit tests 
+(see section~\ref{section:MirrorComponentConcept} for a more sophisticated test
+setting).
 It deploys the component home object, creates a component instance, uses 
 the component's equivalent interface to get a facet, and completes the
 configuration phase. 
-Following the setup process, we can execute our component test cases (we will
-discuss the implementation of these test case later).
+
+\vspace{3mm}
+After this setup process, we can execute our component test cases (we will
+discuss the implementation of these test cases later).
+
+\vspace{3mm}
 Finally, we remove the component instance and undeploy the component home object.
-Each functional test case can be inserted into this unit test template shown above.
 
 
 \vspace{3mm}
-Our first test shows the usage of the {\tt Server} component and its {\tt login}
-facet. We fill the {\tt PersonData} structure with valid data and call the
+Our first test case shows the usage of the {\tt Server} component and its 
+{\tt login} facet. 
+We fill the {\tt PersonData} structure with valid data and call the
 {\tt isValidUser()} operation. Depending on the component's result we print out
 a message to the console.
 
@@ -300,9 +311,9 @@ a message to the console.
 \end{lstlisting}
 \end{footnotesize}
 
-
-The second test shows the component's behavior for an invalid {\tt PersonData}
-structure. The test expects an {\tt InvalidPersonData} exception to succeed.
+The second test case shows the component's behavior for an invalid 
+{\tt PersonData} structure. This test expects an {\tt InvalidPersonData}
+exception to succeed.
 
 \begin{footnotesize}
 \begin{lstlisting}[language=C++]
@@ -326,17 +337,23 @@ structure. The test expects an {\tt InvalidPersonData} exception to succeed.
 
 It is up to you to decide if you put both test cases into the same {\tt \_check\_*}
 file or to implement each test case in its own file.
-Note that each {\tt \_check\_*} file will end in a separate executable, thus,
-for huge applications you will need a lot of disk space.
 
+\vspace{3mm}
+Note that each {\tt \_check\_*} file will end in a separate executable, thus,
+for large applications you will need a lot of disk space.
+
+\vspace{3mm}
 To run these unit tests, we use Confix again:
+\begin{footnotesize}
 \begin{verbatim}
 > touch src/component/Server/test/Makefile.py
 > confix.py --packageroot=`pwd`/src --bootstrap --configure \
             --make --targets=check 
 \end{verbatim}
+\end{footnotesize}
 
 At the end of this build process, you hopefully see an output like:
+\begin{footnotesize}
 \begin{verbatim}
 Welcome eteinik
 OK, caught InvalidPersonData exception!
@@ -345,10 +362,10 @@ PASS: login__check_local_component_Server
 All 1 tests passed
 ==================
 \end{verbatim}
+\end{footnotesize}
 
 Of course, to implement a component for such a simple functionality is somewhat
 academical, but this example shows how simple a component development cycle can
 be by using CCM Tools. 
-
 
 \newpage

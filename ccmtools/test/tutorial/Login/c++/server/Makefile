@@ -8,13 +8,24 @@ all: local
 
 local: 
 	ccmtools c++local ${INCLUDE} -o ${DEST_DIR}/interface ${IDL3_DIR}/interface/application/*.idl
-	ccmtools c++local ${INCLUDE} -a -o ${DEST_DIR}/component/Server ${IDL3_DIR}/component/application/Server*.idl 
+	ccmtools c++local ${INCLUDE} -a -o ${DEST_DIR}/component/Server ${IDL3_DIR}/component/application/Server.idl ${IDL3_DIR}/component/application/ServerHome.idl
 
 check: 
 	ccmtools c++local-test ${INCLUDE} -o ${DEST_DIR}/component/Server ${IDL3_DIR}/component/application/Server.idl
 	ccmconfix -makefiles -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
 	cp impl/Server_login_impl.cc ${DEST_DIR}/component/Server/
 	cp impl/_check_application_ccm_local_component_Server.cc ${DEST_DIR}/component/Server/test/
+	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+
+
+mirror:
+	ccmtools c++local ${INCLUDE} -a -o ${DEST_DIR}/component/ServerMirror ${IDL3_DIR}/component/application/ServerMirror.idl ${IDL3_DIR}/component/application/ServerHomeMirror.idl
+	ccmtools c++local-test ${INCLUDE} -o ${DEST_DIR}/component/ServerMirror ${IDL3_DIR}/component/application/Server.idl
+
+mirrorcheck:
+	cp impl/Server_login_impl.cc ${DEST_DIR}/component/Server/
+	cp impl/ServerMirror_impl.cc ${DEST_DIR}/component/ServerMirror/
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 
