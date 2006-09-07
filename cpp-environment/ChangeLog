@@ -1,7 +1,13 @@
 HEAD
 ============================================================================
 
-RELEASE-0.7.0 (JAugust 17, 2006)
+RELEASE-0.7.1 (September 7, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: ccm/remote/Makefile.py
+ 	Added optional package-name and package-version definitions.
+
+
+RELEASE-0.7.0 (August 17, 2006)
 ----------------------------------------------------------------------------
 o) Refactoring: 
 	Changed directory names from CCM_Local, CCM_Remote to local, remote.

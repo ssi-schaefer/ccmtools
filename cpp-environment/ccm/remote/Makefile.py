@@ -11,4 +11,12 @@ CONFIGURE_IN(
     lines=['MY_PRIVATE_MICO_CHECK'],
     order=AC_LIBRARIES)
 
+try:
+     PACKAGE_NAME('ccm-remote-runtime')
+     PACKAGE_VERSION('0.6.6')
+except Error, e:
+     # we'll get here if this is not the package root, and have to
+     # ignore this.
+     pass
+
 EXTRA_DIST('coco2.in')
