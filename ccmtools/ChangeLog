@@ -9,6 +9,7 @@ RELEASE-0.7.1 (September 7, 2006)
 
 *) Refactoring: Changed new start scripts to support Interix.
 
+*) Refactoring: Redirected ccmtools idlx generator calls to ccmidl -idlx
 
 
 RELEASE-0.7.0 (August 17, 2006)
