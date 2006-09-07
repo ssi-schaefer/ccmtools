@@ -4,7 +4,7 @@ RELEASE-0.7.1 (September 7, 2006)
 ----------------------------------------------------------------------------
 *) Feature: Added LoginExample chapter to the CCM Tools manual.
 
-*) Feature: Startet implementation of a new IDL3 parser based on JFlex+Cup
+*) Feature: Started implementation of a new IDL3 parser based on JFlex+Cup
 	Implemented lexer and parser and some simple JUnit test cases.
 
 *) Refactoring: Changed new start scripts to support Interix.
