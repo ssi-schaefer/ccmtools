@@ -23,7 +23,7 @@ package ccmtools;
 public class Constants 
 {
     public static final String PACKAGE  = "ccmtools";
-    public static final String VERSION  = "0.6.13";
+    public static final String VERSION  = "0.6.14";
     public static final String CPP_PATH = "cpp";
 
 	public static final String COMPONENT_NAMESPACE = "component";

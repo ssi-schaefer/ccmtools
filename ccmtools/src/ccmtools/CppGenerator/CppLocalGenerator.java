@@ -684,7 +684,17 @@ public class CppLocalGenerator
 		String elementNamespace =  getLocalCppNamespace(element, Text.INCLUDE_SEPARATOR);	
 		
 		StringBuffer code = new StringBuffer();
-		if(baseNamespace.equals(elementNamespace))
+        if(base instanceof MAliasDef)
+        {
+            MTyped type = (MTyped) base;
+            MIDLType idlType = type.getIdlType();
+            if(idlType instanceof MSequenceDef || idlType instanceof MArrayDef) 
+            {
+                code.append("#include <vector>\n");
+            }
+        }
+        
+        if(baseNamespace.equals(elementNamespace))
 		{
 			code.append("#include \"");
 			code.append(baseType);
