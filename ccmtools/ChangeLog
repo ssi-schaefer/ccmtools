@@ -8,7 +8,15 @@ RELEASE-0.7.0 (July, 2006)
 BRANCH-0.6.x
 ============================================================================
 
-RELEASE-0.6.12 (August 30, 2006)
+RELEASE-0.6.14 (September )
+----------------------------------------------------------------------------
+*) Bugfix: Local C++ Generator (reported by Carlo Jennetten)
+	The CppLocalGenerator.getConfixInclude() method generates no #include<vector>
+	statement for sequences of struct and sequences of string.
+	
+	
+
+RELEASE-0.6.13 (August 30, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: C++ and IDL generators
 	Generated include paths use the Java File.separator character. 

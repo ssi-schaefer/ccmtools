@@ -659,18 +659,29 @@ public class CppLocalGenerator
     protected String getConfixInclude(MIDLType base, MIDLType element)
     {
     		logger.fine("begin");	
-    		String includeStatement;
+            
+        StringBuffer code = new StringBuffer();        
+        if(base instanceof MAliasDef)
+        {
+            MTyped type = (MTyped) base;
+            MIDLType idlType = type.getIdlType();
+            if(idlType instanceof MSequenceDef || idlType instanceof MArrayDef) 
+            {
+                code.append("#include <vector>\n");
+            }            
+        }
+        
     		if(base instanceof MContained && element instanceof MContained)
     		{
-    			includeStatement = getConfixInclude((MContained)base, (MContained)element, 
-    					((MContained)element).getIdentifier());
+    			code.append(getConfixInclude((MContained)base, (MContained)element, 
+    					((MContained)element).getIdentifier()));
     		}
     		else
     		{
-    			includeStatement = getLanguageTypeInclude(element);
+    			code.append(getLanguageTypeInclude(element));
     		}
     		logger.fine("end");	
-    		return includeStatement;
+    		return code.toString();
     }
     
     protected String getConfixInclude(MContained base, MContained element, String baseType)
@@ -683,17 +694,7 @@ public class CppLocalGenerator
     		String baseNamespace = getLocalCppNamespace(base, Text.INCLUDE_SEPARATOR);
 		String elementNamespace =  getLocalCppNamespace(element, Text.INCLUDE_SEPARATOR);	
 		
-		StringBuffer code = new StringBuffer();
-        if(base instanceof MAliasDef)
-        {
-            MTyped type = (MTyped) base;
-            MIDLType idlType = type.getIdlType();
-            if(idlType instanceof MSequenceDef || idlType instanceof MArrayDef) 
-            {
-                code.append("#include <vector>\n");
-            }
-        }
-        
+		StringBuffer code = new StringBuffer();        
         if(baseNamespace.equals(elementNamespace))
 		{
 			code.append("#include \"");
