@@ -1,2 +1,0 @@
-PACKAGE_NAME('module_mixed')
-PACKAGE_VERSION('0.0.0')
