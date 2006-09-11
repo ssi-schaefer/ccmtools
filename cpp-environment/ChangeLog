@@ -1,7 +1,7 @@
 BRANCH-0.6.x
 ============================================================================
 
-RELEASE-0.6.14 (September )
+RELEASE-0.6.14 (September 11, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: ccm/CCM_Remote/Makefile.py
  	Added optional package-name and package-version definitions.
