@@ -5,10 +5,11 @@
 
 #include "Timer.h" 
 
-/* TODO: handle system calls defined in unistd.h in a way that this
- * Timer can also be handled under Windows platforms...
- */
-#include <unistd.h>
+#if defined(_WIN32) || defined(__INTERIX)
+#define CLK_TCK 1000
+#else
+#define CLK_TCK sysconf(_SC_CLK_TCK)
+#endif
 
 namespace ccm {
 namespace utils {
@@ -47,19 +48,19 @@ Timer::stop()
 double 
 Timer::getRealTime() const
 {
-  return double(realTimeStop - realTimeStart) / sysconf(_SC_CLK_TCK);
+    return double(realTimeStop - realTimeStart) / CLK_TCK;
 }
 
 double 
 Timer::getUserTime() const
 {
-  return double(userTimeStop - userTimeStart) / sysconf(_SC_CLK_TCK);
+    return double(userTimeStop - userTimeStart) / CLK_TCK;
 }
 
 double 
 Timer::getSystemTime() const
 {
-  return double(systemTimeStop - systemTimeStart) / sysconf(_SC_CLK_TCK);
+	return double(systemTimeStop - systemTimeStart) / CLK_TCK;
 }
 
 string 
