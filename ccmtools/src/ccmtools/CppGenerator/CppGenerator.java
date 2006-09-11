@@ -402,11 +402,11 @@ abstract public class CppGenerator extends CodeGenerator
         else if(data_type.equals("HomeInclude")) {
             String include = getFullScopeInclude(component);
             include = include.substring(0, 
-                           include.lastIndexOf(Text.FILE_SEPARATOR));
-            return include + Text.FILE_SEPARATOR + home.getIdentifier();
+                           include.lastIndexOf(Text.INCLUDE_SEPARATOR));
+            return include + Text.INCLUDE_SEPARATOR + home.getIdentifier();
         }
         else if(data_type.equals("ComponentInclude")) {
-            return getLocalCppNamespace(component, Text.FILE_SEPARATOR);
+            return getLocalCppNamespace(component, Text.INCLUDE_SEPARATOR);
         }  
         // TODO: replace %(AbsoluteLocalHomeName)s with %(LocalNamespaceMangled)s
         else if(data_type.endsWith("AbsoluteLocalHomeName")) {
@@ -470,11 +470,11 @@ abstract public class CppGenerator extends CodeGenerator
         else if(data_type.equals("HomeInclude")) {
             String include = getFullScopeInclude(component);
             include = include.substring(0, 
-                         include.lastIndexOf(Text.FILE_SEPARATOR));
-            return include + Text.FILE_SEPARATOR + home_id;
+                         include.lastIndexOf(Text.INCLUDE_SEPARATOR));
+            return include + Text.INCLUDE_SEPARATOR + home_id;
         }
         else if(data_type.equals("ComponentInclude")) {
-            return getLocalCppNamespace(component, Text.FILE_SEPARATOR);
+            return getLocalCppNamespace(component, Text.INCLUDE_SEPARATOR);
         }
         else if(data_type.equals("ComponentType")) {
             return component.getIdentifier();
@@ -543,8 +543,8 @@ abstract public class CppGenerator extends CodeGenerator
         if(data_type.equals("ExceptionInclude")) {
             StringBuffer code = new StringBuffer();
             code.append("#include <");
-            code.append(getLocalCppNamespace(exception, Text.FILE_SEPARATOR));
-            code.append(Text.FILE_SEPARATOR);
+            code.append(getLocalCppNamespace(exception, Text.INCLUDE_SEPARATOR));
+            code.append(Text.INCLUDE_SEPARATOR);
             code.append(exception.getIdentifier());
             code.append(".h>\n");
             data_value = code.toString();
@@ -740,7 +740,7 @@ abstract public class CppGenerator extends CodeGenerator
     protected String getFullScopeInclude(MContained node)
     {
         logger.fine("getFullScopeInclude()");
-        return getLocalCppName(node, Text.FILE_SEPARATOR);
+        return getLocalCppName(node, Text.INCLUDE_SEPARATOR);
     }
         
         
@@ -753,7 +753,7 @@ abstract public class CppGenerator extends CodeGenerator
         logger.fine("enter getScopedInclude()");
         StringBuffer code = new StringBuffer();
         code.append("#include <");
-        code.append(getLocalCppName(node, Text.FILE_SEPARATOR));
+        code.append(getLocalCppName(node, Text.INCLUDE_SEPARATOR));
         code.append(".h>\n");
         logger.fine("leave getScopedInclude()");
         return code.toString();

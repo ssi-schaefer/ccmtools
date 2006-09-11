@@ -1,5 +1,13 @@
 HEAD
 ============================================================================
+RELEASE-0.7.2 (September , 2006)
+----------------------------------------------------------------------------
+*) Bugfix: merged changes from RELEASE-0_6_14
+	- Bugfix: #include<vector> (reported by Carlo Jennetten)
+	- Bugfixes: Interix (reported by Duft Markus)
+
+
+
 RELEASE-0.7.1 (September 7, 2006)
 ----------------------------------------------------------------------------
 *) Feature: Added LoginExample chapter to the CCM Tools manual.

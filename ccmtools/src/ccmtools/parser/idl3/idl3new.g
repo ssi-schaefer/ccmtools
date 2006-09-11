@@ -156,7 +156,7 @@ ML_COMMENT
 
 
 PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
-    :   "# " ( DIGIT )+ ' ' s:STRING_LITERAL
+    :   "#" ("line")? ' ' ( DIGIT )+ ' ' s:STRING_LITERAL
         {
             String include = s.getText();
             if (include.length() > 0 && include.charAt(0) != '<') 
