@@ -373,9 +373,9 @@ definition
 	|	
 		T_PRAGMA
 	|	
-		type_dcl:d T_SEMICOLON
+		type_dcl:t T_SEMICOLON
 		{:
-			RESULT = d;
+			RESULT = t;
 		:}
 	| 	
 		const_dcl:d T_SEMICOLON
@@ -1005,7 +1005,10 @@ positive_int_const
 /* 43 */
 type_dcl
 	::= 
-		T_TYPEDEF type_spec declarators
+		T_TYPEDEF type_spec:t declarators:l
+		{:
+			RESULT = helper.parseTypeDcl(t,l);
+		:}
 	| 
 		struct_type:t
 		{:
@@ -1047,16 +1050,19 @@ simple_type_spec
 	::= 
 		base_type_spec:t
 		{:
+			helper.getLogger().fine("45: base_type_spec = " + t);
 			RESULT = t;
 		:}
 	| 
 		template_type_spec:t
 		{:
+			helper.getLogger().fine("45: template_type_spec = " + t);		
 			RESULT = t;
 		:}
 	| 
 		scoped_name:t
 		{:
+			helper.getLogger().fine("45: scoped_name = " + t);				
 			RESULT = t;
 		:}
 	;
@@ -1529,8 +1535,16 @@ enumerator
 
 /* 80 */
 sequence_type
-	::= T_SEQUENCE T_LESS_THAN_SIGN simple_type_spec T_COMMA positive_int_const T_GREATER_THAN_SIGN
-	| T_SEQUENCE T_LESS_THAN_SIGN simple_type_spec T_GREATER_THAN_SIGN
+	::= 
+		T_SEQUENCE T_LESS_THAN_SIGN simple_type_spec:t T_COMMA positive_int_const:b T_GREATER_THAN_SIGN
+		{:
+			RESULT = helper.	parseSequenceType(t, b);
+		:}
+	| 
+		T_SEQUENCE T_LESS_THAN_SIGN simple_type_spec:t T_GREATER_THAN_SIGN
+		{:
+			RESULT = helper.	parseSequenceType(t);
+		:}
 	;
 
 

@@ -60,15 +60,15 @@
       	</antlr>
   	</target>
 	
-  	<!-- Generate IDL3 parser source code using JFlex+Cup -->
+  	<!-- Generate IDL parser source code using JFlex+Cup -->
   	<target name="generate.IdlScanner" depends="init">
 		<java jar="${lib}/JFlex.jar" fork="true"> 				
-			<arg line = "-d ${src-gen}/ccmtools/parser/idl ${src}/ccmtools/parser/idl/idl3scanner.flex" />
+			<arg line = "-d ${src-gen}/ccmtools/parser/idl ${src}/ccmtools/parser/idl/idlscanner.flex" />
 		</java>
   	</target>
 	<target name="generate.IdlParser" depends="init">
 		<java jar="${lib}/java-cup-11a.jar" fork="true"> 				
-			<arg line = "-destdir ${src-gen}/ccmtools/parser/idl -dump_grammar -package ccmtools.parser.idl -parser Idl3Parser ${src}/ccmtools/parser/idl/idl3parser.cup" />
+			<arg line = "-destdir ${src-gen}/ccmtools/parser/idl -dump_grammar -package ccmtools.parser.idl -parser IdlParser ${src}/ccmtools/parser/idl/idlparser.cup" />
 		</java>		
   	</target>
 	

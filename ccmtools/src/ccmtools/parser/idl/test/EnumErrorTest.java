@@ -14,34 +14,39 @@ import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
 
-public class EnumTest extends TestCase
+public class EnumErrorTest extends TestCase
 {
     private UserInterfaceDriver uiDriver;
     
-    public EnumTest()
+    public EnumErrorTest()
         throws FileNotFoundException
     {
-        super("IDL Enum Test");
+        super("IDL Enum Error Test");
         
         uiDriver = new ConsoleDriver();
     }
         
     public static Test suite()
     {
-        return new TestSuite(EnumTest.class);
+        return new TestSuite(EnumErrorTest.class);
     }
     
      
-    public void testEnum() 
+    public void testEmptyEnumError() 
         throws CcmtoolsException
-    {       
-        MEnumDef enumeration = parseSource("enum Color { red, green, blue };"); 
-        assertEquals(enumeration.getIdentifier(), "Color");
-        assertEquals(enumeration.getMember(0), "red");
-        assertEquals(enumeration.getMember(1), "green");
-        assertEquals(enumeration.getMember(2), "blue");
+    {
+        try
+        {
+            parseSource("enum Color { };");
+            fail();
+        }
+        catch(Exception e)
+        {
+            /* OK */
+            System.out.println(e.getMessage());
+        }
     } 
-
+    
     
     /*
      * Utility Methods

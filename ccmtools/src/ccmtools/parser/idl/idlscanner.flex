@@ -9,7 +9,7 @@ import java_cup.runtime.*;
 /** Options and Declarations Section */
 
 %public
-%class Idl3Scanner
+%class IdlScanner
 %unicode
 %line
 %column

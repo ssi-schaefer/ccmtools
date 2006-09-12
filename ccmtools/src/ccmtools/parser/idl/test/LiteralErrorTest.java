@@ -7,53 +7,70 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
+import ccmtools.metamodel.BaseIDL.MConstantDef;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.metamodel.BaseIDL.MEnumDef;
 import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
 
-public class EnumTest extends TestCase
+public class LiteralErrorTest extends TestCase
 {
     private UserInterfaceDriver uiDriver;
     
-    public EnumTest()
+    public LiteralErrorTest()
         throws FileNotFoundException
     {
-        super("IDL Enum Test");
+        super("IDL Literal Error Test");
         
         uiDriver = new ConsoleDriver();
     }
         
     public static Test suite()
     {
-        return new TestSuite(EnumTest.class);
+        return new TestSuite(LiteralErrorTest.class);
     }
     
-     
-    public void testEnum() 
-        throws CcmtoolsException
-    {       
-        MEnumDef enumeration = parseSource("enum Color { red, green, blue };"); 
-        assertEquals(enumeration.getIdentifier(), "Color");
-        assertEquals(enumeration.getMember(0), "red");
-        assertEquals(enumeration.getMember(1), "green");
-        assertEquals(enumeration.getMember(2), "blue");
-    } 
+    public void testBoundedStringLiteralError() throws CcmtoolsException
+    {
+        try
+        {
+            parseSource("const string<7> STRING_LITERAL = \"01234567\";");
+            fail();
+        }
+        catch (Exception e)
+        {
 
+        }
+    }
+    
+    public void testBoundedWideStringLiteralError() 
+        throws CcmtoolsException
+    {
+        try
+        {
+            parseSource("const wstring<7> STRING_LITERAL = L\"01234567\";");
+            fail();
+        }
+        catch (Exception e)
+        {
+
+        }
+    }
+    
     
     /*
      * Utility Methods
      */
     
-    private MEnumDef parseSource(String sourceCode) 
+    private MConstantDef parseSource(String sourceCode) 
         throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
         MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
+        MConstantDef constant = (MConstantDef)modelElements.get(0);
         System.out.println(modelElements);
-        return (MEnumDef)modelElements.get(0);
+        return constant;
     }
 }

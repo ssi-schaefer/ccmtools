@@ -1,7 +1,5 @@
 package ccmtools.parser.idl;
 
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,13 +10,12 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
+import ccmtools.metamodel.BaseIDL.MAliasDef;
+import ccmtools.metamodel.BaseIDL.MAliasDefImpl;
 import ccmtools.metamodel.BaseIDL.MConstantDef;
 import ccmtools.metamodel.BaseIDL.MConstantDefImpl;
 import ccmtools.metamodel.BaseIDL.MContainer;
@@ -33,10 +30,13 @@ import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDefImpl;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.metamodel.BaseIDL.MSequenceDef;
+import ccmtools.metamodel.BaseIDL.MSequenceDefImpl;
 import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStringDefImpl;
 import ccmtools.metamodel.BaseIDL.MStructDef;
 import ccmtools.metamodel.BaseIDL.MStructDefImpl;
+import ccmtools.metamodel.BaseIDL.MTypedefDef;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.metamodel.BaseIDL.MWstringDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
@@ -312,6 +312,22 @@ public class ParserHelper
     }
     
     
+    /* 42 */
+    public MTypedefDef parseTypeDcl(MIDLType type, List declarators)
+    {
+        getLogger().fine("42: T_TYPEDEF type_spec declarators = " + type + " " + declarators);
+        MAliasDef alias = new MAliasDefImpl();
+        alias.setIdlType(type);
+        String identifier = null;
+        if(declarators != null)
+        {
+            identifier = (String)declarators.get(0);
+        }
+        alias.setIdentifier(identifier);
+        return alias;
+    }
+    
+    
     /* 49 */
     public List parseDeclarators(String declarator)
     {
@@ -567,6 +583,27 @@ public class ParserHelper
     }
     
     
+    /* 80 */
+    public MSequenceDef parseSequenceType(MIDLType simpleType)
+    {
+        getLogger().fine("89: sequence < simple_type_spec > = " + simpleType);  
+        MSequenceDef seq = new MSequenceDefImpl();
+        seq.setIdlType(simpleType);
+        return seq;
+    }
+    
+    public MSequenceDef parseSequenceType(MIDLType simpleType, Integer bound)
+    {
+        getLogger().fine("89: sequence < simple_type_spec, positive_int_const> = " + simpleType 
+                + ", " + bound);  
+        MSequenceDef seq = new MSequenceDefImpl();
+        seq.setIdlType(simpleType);
+        seq.setBound(new Long(bound.longValue()));
+        return seq;
+    }
+
+    
+    
     /* 81 */
     public MStringDef parseStringType()
     {
@@ -752,8 +789,8 @@ public class ParserHelper
         {
             uiDriver.printMessage("parse");
             ParserHelper.getInstance().init();
-            Idl3Scanner scanner = new Idl3Scanner(new StringReader(idlSource));
-            Idl3Parser parser = new Idl3Parser(scanner);
+            IdlScanner scanner = new IdlScanner(new StringReader(idlSource));
+            IdlParser parser = new IdlParser(scanner);
             MContainer ccmModel = (MContainer) parser.parse().value;
             uiDriver.printMessage("done");
             return ccmModel;
@@ -779,8 +816,8 @@ public class ParserHelper
             uiDriver.printMessage("parse " + tmpFileName);
             ParserHelper.getInstance().init();
             ParserHelper.getInstance().setMainSourceFile(idlFile.getAbsolutePath());
-            Idl3Scanner scanner = new Idl3Scanner(new FileReader(tmpIdlFile));
-            Idl3Parser parser = new Idl3Parser(scanner);                    
+            IdlScanner scanner = new IdlScanner(new FileReader(tmpIdlFile));
+            IdlParser parser = new IdlParser(scanner);                    
             MContainer ccmModel = (MContainer)parser.parse().value;    
             uiDriver.printMessage("done");
             return ccmModel;

@@ -64,7 +64,7 @@ public class CommandLineParameters
 	// Parameter validation methods -------------------------------------------
 	
 	public void validate()
-		throws Idl3ParserException
+		throws IdlParserException
 	{
 		checkOutputPath();
 		checkInputFiles();
@@ -77,7 +77,7 @@ public class CommandLineParameters
      * @throws GeneratorException
      */
     private void checkOutputPath() 
-        throws Idl3ParserException
+        throws IdlParserException
     {
         if(outDir == null || outDir.length() == 0) 
         {
@@ -91,14 +91,14 @@ public class CommandLineParameters
      * @throws GeneratorException
      */
     private void checkInputFiles() 
-        throws Idl3ParserException
+        throws IdlParserException
     {
     	 for(Iterator i = getIdlFiles().iterator(); i.hasNext();) 
          {
              String idlFile = (String) i.next();
              if(!isExistingFile(idlFile, getIncludePaths())) 
              {
-                 throw new Idl3ParserException("Invalid IDL input file " + idlFile);
+                 throw new IdlParserException("Invalid IDL input file " + idlFile);
              }
          }
     }

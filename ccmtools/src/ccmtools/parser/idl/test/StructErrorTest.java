@@ -8,52 +8,57 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.metamodel.BaseIDL.MEnumDef;
+import ccmtools.metamodel.BaseIDL.MStructDef;
 import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
 
-public class EnumTest extends TestCase
+public class StructErrorTest extends TestCase
 {
     private UserInterfaceDriver uiDriver;
     
-    public EnumTest()
+    public StructErrorTest()
         throws FileNotFoundException
     {
-        super("IDL Enum Test");
+        super("IDL Struct Error Test");
         
         uiDriver = new ConsoleDriver();
     }
         
     public static Test suite()
     {
-        return new TestSuite(EnumTest.class);
+        return new TestSuite(StructErrorTest.class);
     }
     
      
-    public void testEnum() 
+    public void testEmptyStructError() 
         throws CcmtoolsException
-    {       
-        MEnumDef enumeration = parseSource("enum Color { red, green, blue };"); 
-        assertEquals(enumeration.getIdentifier(), "Color");
-        assertEquals(enumeration.getMember(0), "red");
-        assertEquals(enumeration.getMember(1), "green");
-        assertEquals(enumeration.getMember(2), "blue");
-    } 
+    {
+        try
+        {
+            parseSource("struct Person { };");
+            fail();
+        }
+        catch (Exception e)
+        {
+            /* OK */
+            System.out.println(e.getMessage());
+        }
+    }                
 
     
     /*
      * Utility Methods
      */
     
-    private MEnumDef parseSource(String sourceCode) 
+    private MStructDef parseSource(String sourceCode) 
         throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
         MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
-        return (MEnumDef)modelElements.get(0);
+        return (MStructDef)modelElements.get(0);
     }
 }

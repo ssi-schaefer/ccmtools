@@ -9,52 +9,65 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
-import ccmtools.metamodel.BaseIDL.MFixedDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
-import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStructDef;
-import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
 
-public class StructTest extends TestCase
+public class StructOfBaseTypesTest extends TestCase
 {
     private UserInterfaceDriver uiDriver;
     
-    public StructTest()
+    public StructOfBaseTypesTest()
         throws FileNotFoundException
     {
-        super("IDL Struct Test");
+        super("IDL Struct Of BaseTypes Test");
         
         uiDriver = new ConsoleDriver();
     }
         
     public static Test suite()
     {
-        return new TestSuite(StructTest.class);
+        return new TestSuite(StructOfBaseTypesTest.class);
     }
     
-     
-    public void testEmptyStructError() 
+
+    
+    public void testStructOfFloatMembers() 
         throws CcmtoolsException
     {
-        try
-        {
-            parseSource("struct Person { };");
-            fail();
-        }
-        catch (Exception e)
-        {
-            /* OK */
-            System.out.println(e.getMessage());
-        }
-    }                
+        MStructDef struct = parseSource("struct s {" + 
+                                                   "float floatMember;" +
+                                                   "double doubleMember;" +
+                                                   "long double ldoubleMember;" +
+                                                   "};");
 
-
-    public void testStructSignedIntegerMembers() 
+        assertEquals(struct.getIdentifier(), "s");
+ 
+        MFieldDef floatMember = struct.getMember(0);
+        assertTrue(floatMember.getIdlType() instanceof MPrimitiveDef);
+        MPrimitiveDef p0 = (MPrimitiveDef)floatMember.getIdlType();
+        assertEquals(p0.getKind(), MPrimitiveKind.PK_FLOAT);
+        assertEquals(floatMember.getIdentifier(), "floatMember");
+        
+        MFieldDef doubleMember = struct.getMember(1);
+        assertTrue(doubleMember.getIdlType() instanceof MPrimitiveDef);
+        MPrimitiveDef p1 = (MPrimitiveDef)doubleMember.getIdlType();
+        assertEquals(p1.getKind(), MPrimitiveKind.PK_DOUBLE);
+        assertEquals(doubleMember.getIdentifier(), "doubleMember");
+        
+        MFieldDef ldoubleMember = struct.getMember(2);
+        assertTrue(ldoubleMember.getIdlType() instanceof MPrimitiveDef);
+        MPrimitiveDef p2 = (MPrimitiveDef)ldoubleMember.getIdlType();
+        assertEquals(p2.getKind(), MPrimitiveKind.PK_LONGDOUBLE);
+        assertEquals(ldoubleMember.getIdentifier(), "ldoubleMember");        
+    }
+    
+    
+    public void testStructOfSignedIntegerMembers() 
         throws CcmtoolsException
     {       
         MStructDef struct = parseSource("struct s {" +
@@ -84,7 +97,7 @@ public class StructTest extends TestCase
     } 
 
 
-    public void testStructUnsignedIntegerMembers() 
+    public void testStructOfUnsignedIntegerMembers() 
         throws CcmtoolsException
     {       
         MStructDef struct = parseSource("struct s {" +
@@ -114,39 +127,8 @@ public class StructTest extends TestCase
         assertEquals(ullongMember.getIdentifier(), "ullongMember");        
     }    
     
-    
-    public void testStructFloatMembers() 
-        throws CcmtoolsException
-    {
-        MStructDef struct = parseSource("struct s {" + 
-                                                   "float floatMember;" +
-                                                   "double doubleMember;" +
-                                                   "long double ldoubleMember;" +
-                                                   "};");
 
-        assertEquals(struct.getIdentifier(), "s");
- 
-        MFieldDef floatMember = struct.getMember(0);
-        assertTrue(floatMember.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef p0 = (MPrimitiveDef)floatMember.getIdlType();
-        assertEquals(p0.getKind(), MPrimitiveKind.PK_FLOAT);
-        assertEquals(floatMember.getIdentifier(), "floatMember");
-        
-        MFieldDef doubleMember = struct.getMember(1);
-        assertTrue(doubleMember.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef p1 = (MPrimitiveDef)doubleMember.getIdlType();
-        assertEquals(p1.getKind(), MPrimitiveKind.PK_DOUBLE);
-        assertEquals(doubleMember.getIdentifier(), "doubleMember");
-        
-        MFieldDef ldoubleMember = struct.getMember(2);
-        assertTrue(ldoubleMember.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef p2 = (MPrimitiveDef)ldoubleMember.getIdlType();
-        assertEquals(p2.getKind(), MPrimitiveKind.PK_LONGDOUBLE);
-        assertEquals(ldoubleMember.getIdentifier(), "ldoubleMember");        
-    }
-       
-
-    public void testStructCharMembers() throws CcmtoolsException
+    public void testStructOfCharMembers() throws CcmtoolsException
     {
         MStructDef struct = parseSource("struct s { char charMember; };");
 
@@ -160,7 +142,7 @@ public class StructTest extends TestCase
     }
 
 
-    public void testStructWideCharMembers() 
+    public void testStructOfWideCharMembers() 
         throws CcmtoolsException
     {
         MStructDef struct = parseSource("struct s { wchar wcharMember; };");
@@ -175,7 +157,7 @@ public class StructTest extends TestCase
     }
     
     
-    public void testStructBooleanMembers() 
+    public void testStructOfBooleanMembers() 
         throws CcmtoolsException
     {
         MStructDef struct = parseSource("struct s { boolean booleanMember; };");
@@ -189,7 +171,7 @@ public class StructTest extends TestCase
     }
     
 
-    public void testStructOctedMembers() 
+    public void testStructOfOctedMembers() 
         throws CcmtoolsException
     {
         MStructDef struct = parseSource("struct s { octet octetMember; };");
@@ -204,7 +186,7 @@ public class StructTest extends TestCase
     }
     
 
-    public void testStructAnyMembers() 
+    public void testStructOfAnyMembers() 
         throws CcmtoolsException
     {
         MStructDef struct = parseSource("struct s { any anyMember; };");
@@ -219,7 +201,7 @@ public class StructTest extends TestCase
     }
     
 
-    public void testStructObjectMembers() 
+    public void testStructOfObjectMembers() 
         throws CcmtoolsException
     {
         MStructDef struct = parseSource("struct s { Object objectMember; };");
@@ -234,7 +216,7 @@ public class StructTest extends TestCase
     }
     
     
-    public void testStructValueBaseMembers() 
+    public void testStructOfValueBaseMembers() 
         throws CcmtoolsException
     {
         MStructDef struct = parseSource("struct s { ValueBase valueBaseMember; };");
@@ -247,79 +229,7 @@ public class StructTest extends TestCase
         assertEquals(b.getKind(), MPrimitiveKind.PK_VALUEBASE);
         assertEquals(valueBaseMember.getIdentifier(), "valueBaseMember");
     }
-    
-    
-    // TODO: sequence_type, 80
-  
-
-    public void testStructStringMembers() throws CcmtoolsException
-    {
-        MStructDef struct = parseSource("struct s { string stringMember; string<7> bstringMember; };");
-
-        assertEquals(struct.getIdentifier(), "s");
-
-        MFieldDef stringMember = struct.getMember(0);
-        assertTrue(stringMember.getIdlType() instanceof MStringDef);
-        assertEquals(stringMember.getIdentifier(), "stringMember");
-
-        MFieldDef bstringMember = struct.getMember(1);
-        assertTrue(bstringMember.getIdlType() instanceof MStringDef);
-        MStringDef s = (MStringDef) bstringMember.getIdlType();
-        assertEquals(s.getBound().longValue(), 7);
-        assertEquals(bstringMember.getIdentifier(), "bstringMember");
-    }
-   
-    
-    public void testStructWideStringMembers() throws CcmtoolsException
-    {
-        MStructDef struct = parseSource("struct s { wstring wstringMember; wstring<13> bwstringMember; };");
-
-        assertEquals(struct.getIdentifier(), "s");
-
-        MFieldDef wstringMember = struct.getMember(0);
-        assertTrue(wstringMember.getIdlType() instanceof MWstringDef);
-        assertEquals(wstringMember.getIdentifier(), "wstringMember");
-
-        MFieldDef bwstringMember = struct.getMember(1);
-        assertTrue(bwstringMember.getIdlType() instanceof MWstringDef);
-        MWstringDef w = (MWstringDef)bwstringMember.getIdlType();
-        assertEquals(w.getBound().longValue(), 13);
-        assertEquals(bwstringMember.getIdentifier(), "bwstringMember");
-    }
-    
-
-    public void testStructFixedMembers() throws CcmtoolsException
-    {
-        MStructDef struct = parseSource("struct s { fixed<9,2> fixedMember; };");
-
-        assertEquals(struct.getIdentifier(), "s");
         
-        MFieldDef fixedMember = struct.getMember(0);
-        assertTrue(fixedMember.getIdlType() instanceof MFixedDef);
-        MFixedDef f = (MFixedDef)fixedMember.getIdlType();
-        assertEquals(f.getDigits(), 9);
-        assertEquals(f.getScale(), 2);
-        assertEquals(fixedMember.getIdentifier(), "fixedMember");
-    }
-    
-    
-    // TODO: struct_type, 69 
-
-    
-    // TODO: union_type, 72
-    
-    
-    // TODO: enum_type, 78
-//    public void testStructEnumMembers() throws CcmtoolsException
-//    {
-//        MStructDef struct = parseSource(
-//                "enum Color { red, green, blue }; " +
-//                "struct s { Color enumMember; };");
-//
-//        assertEquals(struct.getIdentifier(), "s");
-//
-//    }
-    
         
     /*
      * Utility Methods

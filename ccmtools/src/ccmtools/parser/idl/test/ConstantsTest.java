@@ -105,6 +105,43 @@ public class ConstantsTest extends TestCase
         assertEquals(constValue.intValue(), 7777777);          
     } 
     
+
+    public void testCharConstant()
+        throws CcmtoolsException
+    {       
+        MConstantDef constant = parseSource("const char CHAR_CONST = 'c';");
+        assertEquals(constant.getIdentifier(), "CHAR_CONST");
+        MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
+        assertEquals(kind, MPrimitiveKind.PK_CHAR);
+        Character constValue = (Character)constant.getConstValue();
+        assertEquals(constValue.charValue(), 'c');          
+    }
+    
+    public void testWideCharConstant()
+        throws CcmtoolsException
+    {       
+        MConstantDef constant = parseSource("const wchar WCHAR_CONST = L'c';");
+        assertEquals(constant.getIdentifier(), "WCHAR_CONST");
+        MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
+        assertEquals(kind, MPrimitiveKind.PK_WCHAR);
+        Character constValue = (Character)constant.getConstValue();
+        assertEquals(constValue.charValue(), 'c');          
+    } 
+
+    
+
+    public void testBooleanConstant()
+        throws CcmtoolsException
+    {       
+        MConstantDef constant = parseSource("const boolean BOOLEAN_CONST = TRUE;");
+        assertEquals(constant.getIdentifier(), "BOOLEAN_CONST");
+        MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
+        assertEquals(kind, MPrimitiveKind.PK_BOOLEAN);            
+        Boolean constValue = (Boolean)constant.getConstValue();
+        assertEquals(constValue.booleanValue(),true);        
+    } 
+    
+    
     
     public void testFloatConstant()
         throws CcmtoolsException
@@ -140,28 +177,7 @@ public class ConstantsTest extends TestCase
     } 
 
 
-    public void testCharConstant()
-        throws CcmtoolsException
-    {       
-        MConstantDef constant = parseSource("const char CHAR_CONST = 'c';");
-        assertEquals(constant.getIdentifier(), "CHAR_CONST");
-        MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
-        assertEquals(kind, MPrimitiveKind.PK_CHAR);
-        Character constValue = (Character)constant.getConstValue();
-        assertEquals(constValue.charValue(), 'c');          
-    }
     
-    public void testWideCharConstant()
-        throws CcmtoolsException
-    {       
-        MConstantDef constant = parseSource("const wchar WCHAR_CONST = L'c';");
-        assertEquals(constant.getIdentifier(), "WCHAR_CONST");
-        MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
-        assertEquals(kind, MPrimitiveKind.PK_WCHAR);
-        Character constValue = (Character)constant.getConstValue();
-        assertEquals(constValue.charValue(), 'c');          
-    } 
-
     
     public void testStringConstant()
         throws CcmtoolsException
@@ -209,6 +225,13 @@ public class ConstantsTest extends TestCase
     }
     
     
+    
+    // TODO: fixed_pt_const_type
+    
+    
+    // TODO: scoped_name
+    
+        
     public void testOctetConstant()
         throws CcmtoolsException
     {       
@@ -221,29 +244,6 @@ public class ConstantsTest extends TestCase
     } 
 
 
-    public void testBooleanConstant()
-        throws CcmtoolsException
-    {       
-        MConstantDef constant = parseSource("const boolean BOOLEAN_CONST = TRUE;");
-        assertEquals(constant.getIdentifier(), "BOOLEAN_CONST");
-        MPrimitiveKind kind = ((MPrimitiveDef)constant.getIdlType()).getKind();
-        assertEquals(kind, MPrimitiveKind.PK_BOOLEAN);            
-        Boolean constValue = (Boolean)constant.getConstValue();
-        assertEquals(constValue.booleanValue(),true);        
-    } 
-
-//    public void testEnumConstant()
-//        throws CcmtoolsException
-//    {       
-//        MConstantDef constant = parseSource("const Color ENUM_CONST = red;");
-//        assertEquals(constant.getIdentifier(), "ENUM_CONST");
-//        assertTrue(constant.getIdlType() instanceof MEnumDef);
-//        MEnumDef enumeration = (MEnumDef)constant.getIdlType();
-//        
-//        
-//    } 
-    
-    
     
     /*
      * Utility Methods
