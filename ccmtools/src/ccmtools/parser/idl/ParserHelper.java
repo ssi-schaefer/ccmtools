@@ -10,6 +10,9 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
@@ -22,6 +25,8 @@ import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MContainerImpl;
 import ccmtools.metamodel.BaseIDL.MEnumDef;
 import ccmtools.metamodel.BaseIDL.MEnumDefImpl;
+import ccmtools.metamodel.BaseIDL.MExceptionDef;
+import ccmtools.metamodel.BaseIDL.MExceptionDefImpl;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
 import ccmtools.metamodel.BaseIDL.MFieldDefImpl;
 import ccmtools.metamodel.BaseIDL.MFixedDef;
@@ -70,12 +75,12 @@ public class ParserHelper
     {
         logger = Logger.getLogger("ccmtools.parser.idl");
         //!!!!!!!!!!
-//        logger.setLevel(Level.FINE);
-//        Handler handler = new ConsoleHandler();
-//        handler.setLevel(Level.ALL);
-//        handler.setFormatter(new ccm.local.MinimalFormatter());
-//        logger.addHandler(handler);
-//        ccm.local.ServiceLocator.instance().setLogger(logger);
+        logger.setLevel(Level.FINE);
+        Handler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        handler.setFormatter(new ccm.local.MinimalFormatter());
+        logger.addHandler(handler);
+        ccm.local.ServiceLocator.instance().setLogger(logger);
         //!!!!!!!!
         init();        
     }
@@ -635,6 +640,18 @@ public class ParserHelper
         MWstringDef s = new MWstringDefImpl();          
         s.setBound(new Long(bound.intValue()));
         return s;                 
+    }
+    
+    
+    /* 86 */
+    public MExceptionDef parseExceptionDcl(String id, List members) 
+    {
+        getLogger().fine("86: T_LEFT_CURLY_BRACKET members T_RIGHT_CURLY_BRACKET");  
+        MExceptionDef ex = new MExceptionDefImpl();
+        ex.setIdentifier(id);
+        Collections.reverse(members);
+        ex.setMembers(members);
+        return ex;
     }
     
     

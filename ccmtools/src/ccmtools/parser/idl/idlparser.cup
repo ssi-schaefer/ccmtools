@@ -260,8 +260,8 @@ nonterminal	String array_declarator;
 nonterminal List<Integer> fixed_array_sizes;
 nonterminal	Integer fixed_array_size;
 nonterminal		attr_dcl;
-nonterminal		except_dcl;
-nonterminal		members;
+nonterminal	MExceptionDef except_dcl;
+nonterminal	List members;
 nonterminal		op_dcl;
 nonterminal		op_attribute;
 nonterminal		op_type_spec;
@@ -1613,12 +1613,24 @@ except_dcl
 		{:
 			helper.registerTypeId(id);
 		:}			 	
-		T_LEFT_CURLY_BRACKET members T_RIGHT_CURLY_BRACKET
+		T_LEFT_CURLY_BRACKET members:l T_RIGHT_CURLY_BRACKET
+		{:
+			RESULT = helper.parseExceptionDcl(id, l);
+		:}
 	;
 
 members
-	::= /*empty*/
-	| member members
+	::= 
+		/*empty*/
+		{:
+			RESULT = new ArrayList();
+		:}
+	| 
+		member:m members:l
+		{:
+			l.add(m);
+			RESULT = l;
+		:}
 	;
 
 

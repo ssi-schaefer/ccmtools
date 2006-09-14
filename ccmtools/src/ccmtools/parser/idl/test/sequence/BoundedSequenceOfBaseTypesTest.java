@@ -1,32 +1,22 @@
-package ccmtools.parser.idl.test;
+package ccmtools.parser.idl.test.sequence;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
-import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MSequenceDef;
-import ccmtools.parser.idl.ParserHelper;
-import ccmtools.ui.ConsoleDriver;
-import ccmtools.ui.UserInterfaceDriver;
 
 
-public class BoundedSequenceOfBaseTypesTest extends TestCase
+public class BoundedSequenceOfBaseTypesTest extends SequenceTest
 {
-    private UserInterfaceDriver uiDriver;
-    
     public BoundedSequenceOfBaseTypesTest()
         throws FileNotFoundException
     {
-        super("IDL Bounded Sequence Of BaseTypes Test");
-        
-        uiDriver = new ConsoleDriver();
+        super(BoundedSequenceOfBaseTypesTest.class.getName());
     }
         
     public static Test suite()
@@ -268,21 +258,5 @@ public class BoundedSequenceOfBaseTypesTest extends TestCase
         assertTrue(seq.getIdlType() instanceof MPrimitiveDef);
         MPrimitiveDef type = (MPrimitiveDef) seq.getIdlType();
         assertEquals(type.getKind(), MPrimitiveKind.PK_VALUEBASE);
-    }
-    
-    
-    
-    /*
-     * Utility Methods
-     */
-    
-    private MAliasDef parseSource(String sourceCode) 
-        throws CcmtoolsException
-    {
-        System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
-        List modelElements = ccmModel.getContentss();
-        System.out.println(modelElements);
-        return (MAliasDef)modelElements.get(0);
     }
 }

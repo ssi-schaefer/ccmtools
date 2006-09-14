@@ -1,32 +1,22 @@
-package ccmtools.parser.idl.test;
+package ccmtools.parser.idl.test.typedef;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
-import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MFixedDef;
 import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
-import ccmtools.parser.idl.ParserHelper;
-import ccmtools.ui.ConsoleDriver;
-import ccmtools.ui.UserInterfaceDriver;
 
 
-public class TypedefOfTemplateTypesTest extends TestCase
+public class TypedefOfTemplateTypesTest extends TypedefTest
 {
-    private UserInterfaceDriver uiDriver;
-    
     public TypedefOfTemplateTypesTest()
         throws FileNotFoundException
     {
-        super("IDL Struct Test");
-        
-        uiDriver = new ConsoleDriver();
+        super(TypedefOfTemplateTypesTest.class.getName());
     }
         
     public static Test suite()
@@ -96,19 +86,4 @@ public class TypedefOfTemplateTypesTest extends TestCase
         assertEquals(type.getDigits(), 9);
         assertEquals(type.getScale(), 2);
     }             
-
-    
-    /*
-     * Utility Methods
-     */
-    
-    private MAliasDef parseSource(String sourceCode) 
-        throws CcmtoolsException
-    {
-        System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
-        List modelElements = ccmModel.getContentss();
-        System.out.println(modelElements);
-        return (MAliasDef)modelElements.get(0);
-    }
 }

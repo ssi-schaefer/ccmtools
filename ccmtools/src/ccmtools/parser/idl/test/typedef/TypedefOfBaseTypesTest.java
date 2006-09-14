@@ -1,4 +1,4 @@
-package ccmtools.parser.idl.test;
+package ccmtools.parser.idl.test.typedef;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -16,16 +16,12 @@ import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
 
-public class TypedefOfBaseTypesTest extends TestCase
+public class TypedefOfBaseTypesTest extends TypedefTest
 {
-    private UserInterfaceDriver uiDriver;
-    
     public TypedefOfBaseTypesTest()
         throws FileNotFoundException
     {
-        super("IDL Typedef Of BaseTypes Test");
-        
-        uiDriver = new ConsoleDriver();
+        super(TypedefOfBaseTypesTest.class.getName());
     }
         
     public static Test suite()
@@ -232,19 +228,4 @@ public class TypedefOfBaseTypesTest extends TestCase
         MPrimitiveDef type = (MPrimitiveDef) alias.getIdlType();
         assertEquals(type.getKind(), MPrimitiveKind.PK_VALUEBASE);
     }             
-
-    
-    /*
-     * Utility Methods
-     */
-    
-    private MAliasDef parseSource(String sourceCode) 
-        throws CcmtoolsException
-    {
-        System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
-        List modelElements = ccmModel.getContentss();
-        System.out.println(modelElements);
-        return (MAliasDef)modelElements.get(0);
-    }
 }

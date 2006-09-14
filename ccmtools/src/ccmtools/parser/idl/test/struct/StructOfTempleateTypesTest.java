@@ -1,13 +1,10 @@
-package ccmtools.parser.idl.test;
+package ccmtools.parser.idl.test.struct;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
 import ccmtools.metamodel.BaseIDL.MFixedDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
@@ -16,21 +13,14 @@ import ccmtools.metamodel.BaseIDL.MSequenceDef;
 import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStructDef;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
-import ccmtools.parser.idl.ParserHelper;
-import ccmtools.ui.ConsoleDriver;
-import ccmtools.ui.UserInterfaceDriver;
 
 
-public class StructOfTempleateTypesTest extends TestCase
+public class StructOfTempleateTypesTest extends StructTest
 {
-    private UserInterfaceDriver uiDriver;
-    
     public StructOfTempleateTypesTest()
         throws FileNotFoundException
     {
-        super("IDL Struct Of TemplateTypes Test");
-        
-        uiDriver = new ConsoleDriver();
+        super(StructOfTempleateTypesTest.class.getName());
     }
         
     public static Test suite()
@@ -44,7 +34,6 @@ public class StructOfTempleateTypesTest extends TestCase
         MStructDef struct = parseSource("struct s { sequence<short> SeqShortMember; sequence<long,7> BSeqLongMember; };");
 
         assertEquals(struct.getIdentifier(), "s");
-
         {
             MFieldDef field = struct.getMember(0);
             assertTrue(field.getIdlType() instanceof MSequenceDef);
@@ -69,16 +58,18 @@ public class StructOfTempleateTypesTest extends TestCase
         MStructDef struct = parseSource("struct s { string stringMember; string<7> bstringMember; };");
 
         assertEquals(struct.getIdentifier(), "s");
-
-        MFieldDef stringMember = struct.getMember(0);
-        assertTrue(stringMember.getIdlType() instanceof MStringDef);
-        assertEquals(stringMember.getIdentifier(), "stringMember");
-
-        MFieldDef bstringMember = struct.getMember(1);
-        assertTrue(bstringMember.getIdlType() instanceof MStringDef);
-        MStringDef s = (MStringDef) bstringMember.getIdlType();
-        assertEquals(s.getBound().longValue(), 7);
-        assertEquals(bstringMember.getIdentifier(), "bstringMember");
+        {
+            MFieldDef field = struct.getMember(0);
+            assertTrue(field.getIdlType() instanceof MStringDef);
+            assertEquals(field.getIdentifier(), "stringMember");
+        }
+        {
+            MFieldDef field = struct.getMember(1);
+            assertTrue(field.getIdlType() instanceof MStringDef);
+            MStringDef s = (MStringDef) field.getIdlType();
+            assertEquals(s.getBound().longValue(), 7);
+            assertEquals(field.getIdentifier(), "bstringMember");
+        }
     }
    
     
@@ -87,16 +78,18 @@ public class StructOfTempleateTypesTest extends TestCase
         MStructDef struct = parseSource("struct s { wstring wstringMember; wstring<13> bwstringMember; };");
 
         assertEquals(struct.getIdentifier(), "s");
-
-        MFieldDef wstringMember = struct.getMember(0);
-        assertTrue(wstringMember.getIdlType() instanceof MWstringDef);
-        assertEquals(wstringMember.getIdentifier(), "wstringMember");
-
-        MFieldDef bwstringMember = struct.getMember(1);
-        assertTrue(bwstringMember.getIdlType() instanceof MWstringDef);
-        MWstringDef w = (MWstringDef)bwstringMember.getIdlType();
-        assertEquals(w.getBound().longValue(), 13);
-        assertEquals(bwstringMember.getIdentifier(), "bwstringMember");
+        {
+            MFieldDef field = struct.getMember(0);
+            assertTrue(field.getIdlType() instanceof MWstringDef);
+            assertEquals(field.getIdentifier(), "wstringMember");
+        }
+        {
+            MFieldDef field = struct.getMember(1);
+            assertTrue(field.getIdlType() instanceof MWstringDef);
+            MWstringDef w = (MWstringDef) field.getIdlType();
+            assertEquals(w.getBound().longValue(), 13);
+            assertEquals(field.getIdentifier(), "bwstringMember");
+        }
     }
     
 
@@ -106,27 +99,11 @@ public class StructOfTempleateTypesTest extends TestCase
 
         assertEquals(struct.getIdentifier(), "s");
         
-        MFieldDef fixedMember = struct.getMember(0);
-        assertTrue(fixedMember.getIdlType() instanceof MFixedDef);
-        MFixedDef f = (MFixedDef)fixedMember.getIdlType();
+        MFieldDef field = struct.getMember(0);
+        assertTrue(field.getIdlType() instanceof MFixedDef);
+        MFixedDef f = (MFixedDef)field.getIdlType();
         assertEquals(f.getDigits(), 9);
         assertEquals(f.getScale(), 2);
-        assertEquals(fixedMember.getIdentifier(), "fixedMember");
-    }
-
-    
-    
-    /*
-     * Utility Methods
-     */
-    
-    private MStructDef parseSource(String sourceCode) 
-        throws CcmtoolsException
-    {
-        System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
-        List modelElements = ccmModel.getContentss();
-        System.out.println(modelElements);
-        return (MStructDef)modelElements.get(0);
+        assertEquals(field.getIdentifier(), "fixedMember");
     }
 }

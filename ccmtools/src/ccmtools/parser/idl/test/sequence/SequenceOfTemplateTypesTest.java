@@ -1,35 +1,25 @@
-package ccmtools.parser.idl.test;
+package ccmtools.parser.idl.test.sequence;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
-import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MFixedDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MSequenceDef;
 import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
-import ccmtools.parser.idl.ParserHelper;
-import ccmtools.ui.ConsoleDriver;
-import ccmtools.ui.UserInterfaceDriver;
 
 
-public class SequenceOfTemplateTypesTest extends TestCase
+public class SequenceOfTemplateTypesTest extends SequenceTest
 {
-    private UserInterfaceDriver uiDriver;
-    
     public SequenceOfTemplateTypesTest()
         throws FileNotFoundException
     {
-        super("IDL Sequence Of TemplateTypes Test");
-        
-        uiDriver = new ConsoleDriver();
+        super(SequenceOfTemplateTypesTest.class.getName());
     }
         
     public static Test suite()
@@ -115,20 +105,5 @@ public class SequenceOfTemplateTypesTest extends TestCase
         MFixedDef type = (MFixedDef)seq.getIdlType();
         assertEquals(type.getDigits(), 9);
         assertEquals(type.getScale(), 3);
-    }
-    
-    
-    /*
-     * Utility Methods
-     */
-    
-    private MAliasDef parseSource(String sourceCode) 
-        throws CcmtoolsException
-    {
-        System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
-        List modelElements = ccmModel.getContentss();
-        System.out.println(modelElements);
-        return (MAliasDef)modelElements.get(0);
     }
 }
