@@ -2,6 +2,7 @@ package ccmtools.parser.idl.test;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
+import ccmtools.parser.idl.test.array.ArrayTestSuite;
 import ccmtools.parser.idl.test.constant.ConstantTestSuite;
 import ccmtools.parser.idl.test.enumeration.EnumTestSuite;
 import ccmtools.parser.idl.test.exception.ExceptionTestSuite;
@@ -28,6 +29,8 @@ public class IdlParserTestSuite
         suite.addTest(TypedefTestSuite.suite());
         
         suite.addTest(SequenceTestSuite.suite());
+        
+        suite.addTest(ArrayTestSuite.suite());
         
         suite.addTest(ExceptionTestSuite.suite());
         

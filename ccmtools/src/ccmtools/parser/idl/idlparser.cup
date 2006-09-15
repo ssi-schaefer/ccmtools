@@ -215,9 +215,9 @@ nonterminal	MIDLType template_type_spec;
 nonterminal	MIDLType constr_type_spec;
 
 nonterminal	List	 declarators;
-nonterminal String declarator;					/* 50 */
-nonterminal	String simple_declarator;
-nonterminal	String complex_declarator;
+nonterminal Declarator declarator;					/* 50 */
+nonterminal	Declarator simple_declarator;
+nonterminal	Declarator complex_declarator;
 
 nonterminal	MPrimitiveDef floating_pt_type;
 nonterminal	MPrimitiveDef integer_type;
@@ -252,13 +252,15 @@ nonterminal	List	 enumerators;
 nonterminal	String enumerator;
 
 nonterminal	MSequenceDef sequence_type;			/* 80 */	
+
 nonterminal	MStringDef string_type;
+
 nonterminal	MWstringDef wide_string_type;
 
-nonterminal	String array_declarator;
-
+nonterminal	Declarator array_declarator;
 nonterminal List<Integer> fixed_array_sizes;
 nonterminal	Integer fixed_array_size;
+
 nonterminal		attr_dcl;
 nonterminal	MExceptionDef except_dcl;
 nonterminal	List members;
@@ -1584,18 +1586,34 @@ array_declarator
 //		{:
 //			helper.registerTypeId(id);
 //		:}
-		fixed_array_sizes
+		fixed_array_sizes:l
+		{:
+			
+			RESULT = helper.parseArrayDeclarator(id, l);
+		:}
 	;
 
 fixed_array_sizes
-	::= fixed_array_size
-	| fixed_array_size fixed_array_sizes
+	::= 
+		fixed_array_size:i
+		{:
+			RESULT = helper.parseFixedArraySizes(i);
+		:}
+	| 
+		fixed_array_size:i fixed_array_sizes:l
+		{:
+			RESULT = helper.parseFixedArraySizes(i,l);
+		:}
 	;
 
 
 /* 84 */
 fixed_array_size
-	::= T_LEFT_SQUARE_BRACKET positive_int_const T_RIGHT_SQUARE_BRACKET
+	::= 
+		T_LEFT_SQUARE_BRACKET positive_int_const:i T_RIGHT_SQUARE_BRACKET
+		{:
+			RESULT = i;
+		:}
 	;
 
 

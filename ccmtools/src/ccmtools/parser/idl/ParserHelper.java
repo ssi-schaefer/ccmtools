@@ -19,6 +19,8 @@ import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MAliasDefImpl;
+import ccmtools.metamodel.BaseIDL.MArrayDef;
+import ccmtools.metamodel.BaseIDL.MArrayDefImpl;
 import ccmtools.metamodel.BaseIDL.MConstantDef;
 import ccmtools.metamodel.BaseIDL.MConstantDefImpl;
 import ccmtools.metamodel.BaseIDL.MContainer;
@@ -321,20 +323,31 @@ public class ParserHelper
     public MTypedefDef parseTypeDcl(MIDLType type, List declarators)
     {
         getLogger().fine("42: T_TYPEDEF type_spec declarators = " + type + " " + declarators);
-        MAliasDef alias = new MAliasDefImpl();
-        alias.setIdlType(type);
-        String identifier = null;
-        if(declarators != null)
+        if(declarators == null)
         {
-            identifier = (String)declarators.get(0);
+            throw new RuntimeException("Empty declarators list!");
         }
-        alias.setIdentifier(identifier);
+        
+        MAliasDef alias = new MAliasDefImpl();
+        Declarator declarator = (Declarator)declarators.get(0);
+        if(declarator instanceof ArrayDeclarator)
+        {
+            MArrayDef array = ((ArrayDeclarator)declarator).getArray();
+            array.setIdlType(type);
+            alias.setIdlType(array);
+        }
+        else
+        {
+            alias.setIdlType(type);
+        }   
+        alias.setIdentifier(declarator.toString());
+        
         return alias;
     }
     
     
     /* 49 */
-    public List parseDeclarators(String declarator)
+    public List parseDeclarators(Declarator declarator)
     {
         getLogger().fine("49: declarator  = " + declarator);
         List l = new ArrayList();
@@ -342,7 +355,7 @@ public class ParserHelper
         return l;
     }
 
-    public List parseDeclarators(String declarator, List declarators)
+    public List parseDeclarators(Declarator declarator, List declarators)
     {
         getLogger().fine("49: declarator T_COMMA declarators = " + declarator + " " + declarators);
         declarators.add(declarator);
@@ -351,11 +364,11 @@ public class ParserHelper
     
     
     /* 51 */
-    public String parseSimpleDeclarator(String identifier)
+    public Declarator parseSimpleDeclarator(String identifier)
     {
         getLogger().fine("51: T_IDENTIFIER = " + identifier);
 //        helper.registerTypeId(id);
-        return identifier;
+        return new Declarator(identifier);
     }
     
     
@@ -539,18 +552,18 @@ public class ParserHelper
     public MFieldDef parseMember(MIDLType typeSpec, List declarators)
     {
         getLogger().fine("71: type_spec declarators = " + typeSpec + " " + declarators);
-        MFieldDef m = new MFieldDefImpl();
-        m.setIdlType(typeSpec);
+        MFieldDef field = new MFieldDefImpl();
+        field.setIdlType(typeSpec);
         if(declarators.size() > 0)
         {
-            String id = (String)declarators.get(0);  
-            m.setIdentifier(id);
+            Declarator declarator = (Declarator)declarators.get(0);
+            field.setIdentifier(declarator.toString());
         }
         else
         {
             throw new RuntimeException("No declarators defined for member type " + typeSpec);
         }
-        return m;
+        return field;
     }
     
     
@@ -641,6 +654,32 @@ public class ParserHelper
         s.setBound(new Long(bound.intValue()));
         return s;                 
     }
+    
+    
+    /* 83 */
+    public Declarator parseArrayDeclarator(String id, List fixed_array_sizes)
+    {
+        MArrayDef array = new MArrayDefImpl();
+        Collections.reverse(fixed_array_sizes);
+        array.setBounds(fixed_array_sizes);
+        return new ArrayDeclarator(id,array);
+    }
+    
+    public List parseFixedArraySizes(Integer fixedArraySize)
+    {
+        getLogger().fine("83: fixed_array_size = " + fixedArraySize);
+        List l = new ArrayList();
+        l.add(fixedArraySize);        
+        return l;
+    }
+    
+    public List parseFixedArraySizes(Integer fixedArraySize, List l)
+    {
+        getLogger().fine("83: fixed_array_sizes = " + fixedArraySize);
+        l.add(fixedArraySize);        
+        return l;
+    }
+    
     
     
     /* 86 */
