@@ -7,6 +7,7 @@ import ccmtools.parser.idl.test.constant.ConstantTestSuite;
 import ccmtools.parser.idl.test.enumeration.EnumTestSuite;
 import ccmtools.parser.idl.test.exception.ExceptionTestSuite;
 import ccmtools.parser.idl.test.literal.LiteralTestSuite;
+import ccmtools.parser.idl.test.notsupported.NotSupportedTest;
 import ccmtools.parser.idl.test.sequence.SequenceTestSuite;
 import ccmtools.parser.idl.test.struct.StructTestSuite;
 import ccmtools.parser.idl.test.typedef.TypedefTestSuite;
@@ -33,7 +34,9 @@ public class IdlParserTestSuite
         suite.addTest(ArrayTestSuite.suite());
         
         suite.addTest(ExceptionTestSuite.suite());
-        
+
+        suite.addTest(NotSupportedTest.suite());
+
         return suite;
 	}
 }

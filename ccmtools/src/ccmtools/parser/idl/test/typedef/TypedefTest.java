@@ -28,11 +28,11 @@ public class TypedefTest extends TestCase
      * Utility Methods
      */
     
-    public MAliasDef parseSource(String sourceCode) 
+    public MAliasDef parseSource(String sourceLine) 
         throws CcmtoolsException
     {
-        System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        System.out.println("[" + sourceLine + "]");
+        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceLine);
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
         return (MAliasDef)modelElements.get(0);

@@ -1,19 +1,13 @@
 package ccmtools.parser.idl.test.typedef;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
-import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
-import ccmtools.parser.idl.ParserHelper;
-import ccmtools.ui.ConsoleDriver;
-import ccmtools.ui.UserInterfaceDriver;
 
 
 public class TypedefOfBaseTypesTest extends TypedefTest

@@ -15,6 +15,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import java_cup.runtime.Symbol;
+
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
@@ -64,6 +66,14 @@ public class ParserHelper
     private IdentifierTable forwardDclTable = new IdentifierTable();     
     private Scope scope = new Scope();
     
+    private ModelRepository modelRepo = new ModelRepository();
+    
+    public ModelRepository getModelRepository()
+    {
+        return modelRepo;
+    }
+    
+    
     public static ParserHelper getInstance()
     {
         if(instance == null)
@@ -101,6 +111,30 @@ public class ParserHelper
         mainSourceFile = "";
     }
     
+    
+    public void reportError(String message, Object info)
+    {
+        StringBuilder out = new StringBuilder();
+        out.append("ERROR: ");
+        if(info instanceof Symbol)
+        {
+            out.append(getCurrentSourceFile());
+            out.append(" line " + getCurrentSourceLine()).append(": ");
+        }
+        out.append(message);
+        throw new RuntimeException(out.toString());
+    }
+    
+
+    public void notSupported(String message)
+    {
+        notSupported(message, null);
+    }
+    
+    public void notSupported(String message, Object info)
+    {
+        reportError("CCM Tools do not support " + message + "!", info);
+    }
     
     public Logger getLogger()
     {
@@ -202,6 +236,14 @@ public class ParserHelper
         }
         return definitions;
     }
+    
+    
+    /* 12 */
+    public Identifier parseScopedName(String id)
+    {
+        return new Identifier(id);
+    }
+    
     
     
     /* 27 */
@@ -330,17 +372,20 @@ public class ParserHelper
         
         MAliasDef alias = new MAliasDefImpl();
         Declarator declarator = (Declarator)declarators.get(0);
+        Identifier id = new Identifier(declarator.toString());
+        alias.setIdentifier(declarator.toString());
         if(declarator instanceof ArrayDeclarator)
         {
             MArrayDef array = ((ArrayDeclarator)declarator).getArray();
             array.setIdlType(type);
             alias.setIdlType(array);
+            getModelRepository().registerIdlType(id, array);
         }
         else
         {
             alias.setIdlType(type);
+            getModelRepository().registerIdlType(id, alias);
         }   
-        alias.setIdentifier(declarator.toString());
         
         return alias;
     }
@@ -503,9 +548,9 @@ public class ParserHelper
     public MPrimitiveDef parseAnyType()
     {
         getLogger().fine("67: T_ANY");           
-        MPrimitiveDef t = new MPrimitiveDefImpl();
-        t.setKind(MPrimitiveKind.PK_ANY);
-        return t; 
+        MPrimitiveDef type = new MPrimitiveDefImpl();
+        type.setKind(MPrimitiveKind.PK_ANY);
+        return type; 
     }
     
     
@@ -513,21 +558,23 @@ public class ParserHelper
     public MPrimitiveDef parseObjectType()
     {
         getLogger().fine("68: T_OBJECT");            
-        MPrimitiveDef t = new MPrimitiveDefImpl();
-        t.setKind(MPrimitiveKind.PK_OBJREF);
-        return t; 
+        MPrimitiveDef type = new MPrimitiveDefImpl();
+        type.setKind(MPrimitiveKind.PK_OBJREF);
+        return type; 
     }
     
 
     /* 69 */
-    public MStructDef parseStructType(String identifier, List memberList)
+    public MStructDef parseStructType(String id, List memberList)
     {
         getLogger().fine("69: T_LEFT_CURLY_BRACKET member_list T_RIGHT_CURLY_BRACKET");  
-        MStructDef t = new MStructDefImpl();
-        t.setIdentifier(identifier);
+        Identifier identifier = new Identifier(id);
+        MStructDef type = new MStructDefImpl();
+        type.setIdentifier(id);
         Collections.reverse(memberList);
-        t.setMembers(memberList);
-        return t;
+        type.setMembers(memberList);
+        getModelRepository().registerIdlType(identifier, type);
+        return type;
     }
   
     
@@ -566,14 +613,14 @@ public class ParserHelper
         return field;
     }
     
-    
-    
+        
     /* 78 */
-    public MEnumDef parseEnumType(String identifier, List enumerators)
+    public MEnumDef parseEnumType(String id, List enumerators)
     {
         getLogger().fine("78: enumerators = " + enumerators);  
+        Identifier identifier = new Identifier(id);
         MEnumDef enumeration = new MEnumDefImpl();
-        enumeration.setIdentifier(identifier);
+        enumeration.setIdentifier(id);
         enumeration.setSourceFile(ParserHelper.getInstance().getCurrentSourceFile());
         if(enumerators.size() > 0)
         {
@@ -582,8 +629,9 @@ public class ParserHelper
         }
         else
         {
-            throw new RuntimeException("Enumeration " + identifier + " has no members!");
+            throw new RuntimeException("Enumeration " + id + " has no members!");
         }           
+        getModelRepository().registerIdlType(identifier, enumeration);
         return enumeration;
     }
     
@@ -686,11 +734,13 @@ public class ParserHelper
     public MExceptionDef parseExceptionDcl(String id, List members) 
     {
         getLogger().fine("86: T_LEFT_CURLY_BRACKET members T_RIGHT_CURLY_BRACKET");  
-        MExceptionDef ex = new MExceptionDefImpl();
-        ex.setIdentifier(id);
+        Identifier identifier = new Identifier(id);
+        MExceptionDef type = new MExceptionDefImpl();
+        type.setIdentifier(id);
         Collections.reverse(members);
-        ex.setMembers(members);
-        return ex;
+        type.setMembers(members);
+        getModelRepository().registerException(identifier, type);
+        return type;
     }
     
     

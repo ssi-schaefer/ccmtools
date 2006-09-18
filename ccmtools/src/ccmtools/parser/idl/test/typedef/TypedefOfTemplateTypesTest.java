@@ -25,9 +25,10 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
     }
 
     
-    // typedef sequence<short> SeqShort; see SequenceOf* test cases
+    // typedef sequence<short> SeqShort; 
+    // siehe sequence test cases
     
-    
+       
     public void testTypedefOfString() 
         throws CcmtoolsException
     {

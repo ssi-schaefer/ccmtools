@@ -38,9 +38,6 @@ parser code
 action code
 {:
 	private ParserHelper helper = ParserHelper.getInstance();
-	
-	
-
 :}
 
 /** Declaration of Terminals and Non Terminals Section */
@@ -169,7 +166,7 @@ nonterminal		export;
 nonterminal		interface_inheritance_spec;	
 nonterminal		interface_names;
 nonterminal		scoped_names;
-nonterminal MIDLType		scoped_name;
+nonterminal Identifier scoped_name;
 nonterminal		value;
 nonterminal		value_forward_dcl;
 nonterminal		value_box_dcl;
@@ -569,9 +566,21 @@ scoped_names
 
 /* 12 */
 scoped_name
-	::= T_IDENTIFIER
-	| T_SCOPE T_IDENTIFIER
-	| scoped_name T_SCOPE T_IDENTIFIER
+	::= 
+		T_IDENTIFIER:id
+		{:
+			RESULT = helper.parseScopedName(id);
+		:}	
+	| 
+		T_SCOPE T_IDENTIFIER:id
+		{:
+			RESULT = helper.parseScopedName("::" + id);
+		:}
+	| 
+		scoped_name:sn T_SCOPE T_IDENTIFIER:id
+		{:
+			RESULT = helper.parseScopedName(sn + "::" + id);
+		:}
 	;
 
 
@@ -796,9 +805,9 @@ const_type
 			RESULT = t;
 		:}
 	| 	
-		scoped_name:t 
+		scoped_name:id 
 		{:
-			RESULT = t;
+			RESULT = helper.getModelRepository().findIdlType(id);
 		:}
 	| 
 		octet_type:t
@@ -1026,7 +1035,10 @@ type_dcl
 			RESULT = t;
 		:}
 	| 
-		T_NATIVE simple_declarator
+		T_NATIVE simple_declarator:id
+		{:
+			helper.notSupported("native declarations (e.g. " + id + ")");
+		:}
 	| 
 		constr_forward_decl
 	;
@@ -1062,10 +1074,9 @@ simple_type_spec
 			RESULT = t;
 		:}
 	| 
-		scoped_name:t
+		scoped_name:id
 		{:
-			helper.getLogger().fine("45: scoped_name = " + t);				
-			RESULT = t;
+			RESULT = helper.getModelRepository().findIdlType(id);
 		:}
 	;
 
@@ -1809,13 +1820,21 @@ imported_scope
 
 /* 101 */
 type_id_dcl
-	::= T_TYPEID scoped_name T_string_literal
+	::= 
+		T_TYPEID scoped_name:ns T_string_literal:s
+		{:
+			helper.notSupported("repository identity declarations (e.g. " + s + "-> " + ns + ")");
+		:}
 	;
 
 
 /* 102 */
 type_prefix_dcl
-	::= T_TYPEPREFIX scoped_name T_string_literal
+	::= 
+		T_TYPEPREFIX scoped_name T_string_literal:s
+		{:
+			helper.notSupported("repository identity prefix declarations (e.g. " + s + ")");
+		:}		
 	;
 
 
