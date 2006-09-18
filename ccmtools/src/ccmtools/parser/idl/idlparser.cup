@@ -238,11 +238,11 @@ nonterminal List member_list;					/* 70 */
 nonterminal	MFieldDef member;
 
 nonterminal	MUnionDef union_type;
-nonterminal		switch_type_spec;
-nonterminal		switch_body;
-nonterminal		case;
-nonterminal		case_label;
-nonterminal		element_spec;
+nonterminal	MIDLType switch_type_spec;
+nonterminal	List switch_body;
+nonterminal	MUnionFieldDef case;
+nonterminal	Object case_label;
+nonterminal	MUnionFieldDef element_spec;
 
 nonterminal	MEnumDef	 enum_type;
 nonterminal	List	 enumerators;
@@ -1027,7 +1027,10 @@ type_dcl
 			RESULT = t;
 		:}
 	| 
-		union_type
+		union_type:t
+		{:
+			RESULT = t;
+		:}
 	| 
 		enum_type:t
 		{:
@@ -1467,46 +1470,96 @@ union_type
 		{:
 			helper.registerTypeId(id);
 		:}				
-		T_SWITCH T_LEFT_PARANTHESIS switch_type_spec 
-		T_RIGHT_PARANTHESIS T_LEFT_CURLY_BRACKET switch_body T_RIGHT_CURLY_BRACKET
+		T_SWITCH T_LEFT_PARANTHESIS switch_type_spec:sw 
+		T_RIGHT_PARANTHESIS T_LEFT_CURLY_BRACKET switch_body:b T_RIGHT_CURLY_BRACKET
+		{:
+			RESULT = helper.parseUnionType(id, sw, b);		
+		:}
 	; 
 
 
 /* 73 */
 switch_type_spec
-	::= integer_type
-	| char_type
-	| boolean_type
-	| enum_type
-	| scoped_name
+	::= 
+		integer_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		char_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		boolean_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		enum_type:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		scoped_name:id
+		{:
+			RESULT = helper.getModelRepository().findIdlType(id);
+		:}
 	;
 
 
 /* 74 */
 switch_body
-	::= case
-	| case switch_body
+	::= 
+		case:c
+		{:
+			RESULT = helper.parseSwitchBody(c);
+		:}
+	| 
+		case:c switch_body:l
+		{:
+			RESULT = helper.parseSwitchBody(c, l);
+		:}
 	;
 
 
 /* 75 */
 case	
-	::= case_label case
-	| case_label element_spec T_SEMICOLON
-	| case_label T_PRAGMA element_spec T_SEMICOLON   /* New */
+	::= 
+		case_label:l case
+		{:
+			RESULT = helper.parseCase(l);
+		:}
+	| 
+		case_label:l element_spec:e T_SEMICOLON
+		{:
+			RESULT = helper.parseCase(l, e);
+		:}
 	;
 
 
 /* 76 */
 case_label
-	::= T_CASE const_exp T_COLON 
-	| T_DEFAULT T_COLON
+	::= 
+		T_CASE const_exp:c T_COLON 
+		{:
+			RESULT = c;
+		:}
+	| 
+		T_DEFAULT T_COLON
+		{:
+			RESULT = "default";
+		:}
 	;
 
 
 /* 77 */
 element_spec
-	::= type_spec declarator
+	::= 
+		type_spec:t declarator:id
+		{:
+			RESULT = helper.parseElementSpec(t, id);
+		:}
 	;
 
 

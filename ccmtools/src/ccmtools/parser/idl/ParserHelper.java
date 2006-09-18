@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java_cup.runtime.Symbol;
-
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
@@ -46,6 +45,10 @@ import ccmtools.metamodel.BaseIDL.MStringDefImpl;
 import ccmtools.metamodel.BaseIDL.MStructDef;
 import ccmtools.metamodel.BaseIDL.MStructDefImpl;
 import ccmtools.metamodel.BaseIDL.MTypedefDef;
+import ccmtools.metamodel.BaseIDL.MUnionDef;
+import ccmtools.metamodel.BaseIDL.MUnionDefImpl;
+import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
+import ccmtools.metamodel.BaseIDL.MUnionFieldDefImpl;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.metamodel.BaseIDL.MWstringDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
@@ -614,6 +617,66 @@ public class ParserHelper
     }
     
         
+    /* 72 */
+    public MUnionDef parseUnionType(String id, MIDLType discriminatorType, List switchBody)
+    {
+        getLogger().fine("72: union_type = " + id );
+        Identifier identifier = new Identifier(id);
+        MUnionDef union = new MUnionDefImpl();
+        union.setIdentifier(id);
+        union.setDiscriminatorType(discriminatorType);
+        Collections.reverse(switchBody);
+        union.setUnionMembers(switchBody);
+        getModelRepository().registerIdlType(identifier, union);
+        return union;
+    }
+   
+    
+    /* 74 */
+    public List parseSwitchBody(MUnionFieldDef c)
+    {
+        List l = new ArrayList();
+        l.add(c);
+        return l;
+    }
+    
+    public List parseSwitchBody(MUnionFieldDef c, List l)
+    {
+        l.add(c);
+        return l;
+    }
+    
+    
+    /* 75 */
+    public MUnionFieldDef parseCase(Object label)
+    {
+        getLogger().fine("75: case = " + label );
+        MUnionFieldDef element = new MUnionFieldDefImpl();
+        element.setLabel(label);
+        return element;
+    }
+    
+    public MUnionFieldDef parseCase(Object label, MUnionFieldDef element)
+    {
+        getLogger().fine("75: case = " + label + ", " + element);
+        element.setLabel(label);
+        return element;
+    }
+        
+    
+    /* 77 */
+    public MUnionFieldDef parseElementSpec(MIDLType type, Declarator declarator)
+    {
+        getLogger().fine("77: element_spec = " + type + ", " + declarator);  
+        MUnionFieldDef field = new MUnionFieldDefImpl();
+        field.setIdentifier(declarator.toString());
+        field.setIdlType(type);
+        //...
+        return field;
+    }
+    
+    
+    
     /* 78 */
     public MEnumDef parseEnumType(String id, List enumerators)
     {
