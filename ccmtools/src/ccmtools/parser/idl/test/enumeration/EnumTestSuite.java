@@ -10,7 +10,7 @@ public class EnumTestSuite
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(EnumTestSuite.class.getName());	
         suite.addTest(EmptyEnumTest.suite());
-        suite.addTest(EnumSimpleTest.suite());
+        suite.addTest(EnumColorTest.suite());
 		return suite;
 	}
 }

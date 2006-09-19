@@ -40,11 +40,19 @@ public class UnionTest extends TestCase
  
     public void testOptionalValue() throws CcmtoolsException
     {
-        MUnionDef union = parseSource(
-                "union UnionOptional switch(boolean) { " +
+        MUnionDef union = parseSource(getUnionOptionalSource());
+        checkUnionOptional(union);
+    }
+    
+    public static String getUnionOptionalSource()
+    {
+        return  "union UnionOptional switch(boolean) { " +
                 "   case TRUE: unsigned short a; " +
-                "};");
-
+                "};";
+    }
+    
+    public static void checkUnionOptional(MUnionDef union)
+    {
         assertEquals(union.getIdentifier(), "UnionOptional");
         assertTrue(union.getDiscriminatorType() instanceof MPrimitiveDef);
         MPrimitiveDef discriminator = (MPrimitiveDef)union.getDiscriminatorType();
@@ -59,8 +67,8 @@ public class UnionTest extends TestCase
         assertEquals(type.getKind(), MPrimitiveKind.PK_USHORT);
         assertEquals(member.getIdentifier(), "a");
     }
+       
     
-        
     public void testLongDiscriminator() throws CcmtoolsException
     {
         MUnionDef union = parseSource(

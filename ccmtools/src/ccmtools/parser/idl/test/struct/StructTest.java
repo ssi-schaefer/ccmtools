@@ -6,6 +6,10 @@ import java.util.List;
 import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MFieldDef;
+import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStructDef;
 import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.ConsoleDriver;
@@ -25,6 +29,31 @@ public class StructTest extends TestCase
     }
         
 
+    public static String getStructPersonSource()
+    {
+        return "struct Person { long id; string name; };";
+    }
+    
+    public static void checkStructPerson(MStructDef struct)
+    {
+        assertEquals(struct.getIdentifier(), "Person");
+        {
+            assertTrue(struct.getMember(0) instanceof MFieldDef);
+            MFieldDef field = (MFieldDef)struct.getMember(0);
+            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
+            MPrimitiveDef type = (MPrimitiveDef)field.getIdlType();
+            assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+            assertEquals(field.getIdentifier(), "id");
+        }
+        {
+            assertTrue(struct.getMember(1) instanceof MFieldDef);
+            MFieldDef field = (MFieldDef)struct.getMember(1);
+            assertTrue(field.getIdlType() instanceof MStringDef);
+            assertEquals(field.getIdentifier(), "name");
+        }
+    }
+    
+    
     /*
      * Utility Methods
      */

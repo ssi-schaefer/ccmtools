@@ -16,7 +16,13 @@ public class EnumTest extends TestCase
 {
     protected UserInterfaceDriver uiDriver;
     
-    public EnumTest(String title)
+    public EnumTest()
+        throws FileNotFoundException
+    {
+        this(EnumTest.class.getName());
+    }
+
+    public EnumTest(String title) 
         throws FileNotFoundException
     {
         super(title);
@@ -24,9 +30,23 @@ public class EnumTest extends TestCase
     }
 
     
-    /*
-     * Utility Methods
-     */
+    /** Default test case methods */
+    
+    public static String getEnumColorSource()
+    {
+        return "enum Color { red, green, blue };";
+    }
+    
+    public static void checkEnumColor(MEnumDef enumeration)
+    {
+        assertEquals(enumeration.getIdentifier(), "Color");
+        assertEquals(enumeration.getMember(0), "red");
+        assertEquals(enumeration.getMember(1), "green");
+        assertEquals(enumeration.getMember(2), "blue");
+    }
+    
+    
+    /** Utility Methods */
     
     public MEnumDef parseSource(String sourceCode) 
         throws CcmtoolsException

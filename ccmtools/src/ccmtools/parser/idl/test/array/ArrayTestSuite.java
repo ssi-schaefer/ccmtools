@@ -12,6 +12,7 @@ public class ArrayTestSuite
         suite.addTest(ArrayOfBaseTypesTest.suite());
         suite.addTest(ArrayDimensionsTest.suite());
         suite.addTest(ArrayOfTemplateTypesTest.suite());
+        suite.addTest(ArrayOfConstructedTypesTest.suite());
         return suite;
 	}
 }

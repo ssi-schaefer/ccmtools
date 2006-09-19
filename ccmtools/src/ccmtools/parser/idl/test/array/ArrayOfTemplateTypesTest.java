@@ -8,6 +8,8 @@ import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
 import ccmtools.metamodel.BaseIDL.MFixedDef;
+import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MSequenceDef;
 import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
@@ -27,7 +29,27 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
     }
 
     
-    // TODO: Array of Sequences
+    public void testArrayOfSequenceOfLong() throws CcmtoolsException
+    {
+        MAliasDef alias = parseSource(
+                "typedef sequence<long> SeqLong;" +
+                "typedef SeqLong ArraySeq[7];");
+
+        assertEquals(alias.getIdentifier(), "ArraySeq");        
+        assertTrue(alias.getIdlType() instanceof MArrayDef);
+        MArrayDef array = (MArrayDef) alias.getIdlType();
+        assertEquals(array.getBounds().get(0), 7);
+        
+        assertTrue(array.getIdlType() instanceof MAliasDef);
+        MAliasDef innerAlias = (MAliasDef)array.getIdlType();
+        assertEquals(innerAlias.getIdentifier(), "SeqLong");
+        assertTrue(innerAlias.getIdlType() instanceof MSequenceDef);
+        MSequenceDef seq = (MSequenceDef)innerAlias.getIdlType();
+        
+        assertTrue(seq.getIdlType() instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)seq.getIdlType();
+        assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+    }
     
     
     public void testArrayOfString() throws CcmtoolsException
