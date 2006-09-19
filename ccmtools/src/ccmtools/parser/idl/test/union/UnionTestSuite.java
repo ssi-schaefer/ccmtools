@@ -9,9 +9,7 @@ public class UnionTestSuite
 	public static Test suite()
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(UnionTestSuite.class.getName());	
-//        suite.addTest(TypedefOfBaseTypesTest.suite());
-//        suite.addTest(TypedefOfTemplateTypesTest.suite());
-//        suite.addTest(TypedefOfScopedNameTest.suite());
+        suite.addTest(UnionTest.suite());
 		return suite;
 	}
 }

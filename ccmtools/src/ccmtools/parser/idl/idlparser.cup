@@ -1526,9 +1526,9 @@ switch_body
 /* 75 */
 case	
 	::= 
-		case_label:l case
+		case_label:l case:c
 		{:
-			RESULT = helper.parseCase(l);
+			RESULT = helper.parseCase(l, c);
 		:}
 	| 
 		case_label:l element_spec:e T_SEMICOLON

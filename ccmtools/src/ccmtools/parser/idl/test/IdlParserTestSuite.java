@@ -11,13 +11,14 @@ import ccmtools.parser.idl.test.notsupported.NotSupportedTest;
 import ccmtools.parser.idl.test.sequence.SequenceTestSuite;
 import ccmtools.parser.idl.test.struct.StructTestSuite;
 import ccmtools.parser.idl.test.typedef.TypedefTestSuite;
+import ccmtools.parser.idl.test.union.UnionTestSuite;
 
 public class IdlParserTestSuite
 	extends TestCase	
 {
-	public static Test suite()
+    public static Test suite()
 	{
-		junit.framework.TestSuite suite = new junit.framework.TestSuite(IdlParserTestSuite.class.getName());	
+		junit.framework.TestSuite suite = new junit.framework.TestSuite("IDL Parser Test Suite");	
 
         suite.addTest(LiteralTestSuite.suite());
 		
@@ -35,6 +36,8 @@ public class IdlParserTestSuite
         
         suite.addTest(ExceptionTestSuite.suite());
 
+        suite.addTest(UnionTestSuite.suite());
+        
         suite.addTest(NotSupportedTest.suite());
 
         return suite;

@@ -635,6 +635,7 @@ public class ParserHelper
     /* 74 */
     public List parseSwitchBody(MUnionFieldDef c)
     {
+        getLogger().fine("74: case = " + c );
         List l = new ArrayList();
         l.add(c);
         return l;
@@ -642,24 +643,36 @@ public class ParserHelper
     
     public List parseSwitchBody(MUnionFieldDef c, List l)
     {
+        getLogger().fine("74: case switch_body = " + c + ", " + l);
         l.add(c);
         return l;
     }
     
     
     /* 75 */
-    public MUnionFieldDef parseCase(Object label)
-    {
-        getLogger().fine("75: case = " + label );
-        MUnionFieldDef element = new MUnionFieldDefImpl();
-        element.setLabel(label);
-        return element;
-    }
-    
     public MUnionFieldDef parseCase(Object label, MUnionFieldDef element)
     {
         getLogger().fine("75: case = " + label + ", " + element);
-        element.setLabel(label);
+        if(element.getLabel() == null)
+        {
+            element.setLabel(label);
+        }
+        else
+        {
+            List labels = new ArrayList();
+            labels.add(label);
+            // If there are multiple labels for the same type, a list of
+            // lebels will be generated.
+            if(element.getLabel() instanceof List)
+            {
+                labels.addAll((List)element.getLabel());
+            }
+            else
+            {
+                labels.add(element.getLabel());
+            }
+            element.setLabel(labels);
+        }
         return element;
     }
         
