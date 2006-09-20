@@ -6,9 +6,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MStructDef;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
 public class StructOfBaseTypesTest extends StructTest
@@ -29,31 +28,25 @@ public class StructOfBaseTypesTest extends StructTest
         throws CcmtoolsException
     {
         MStructDef struct = parseSource("struct s {" + 
-                                                   "float floatMember;" +
-                                                   "double doubleMember;" +
-                                                   "long double ldoubleMember;" +
-                                                   "};");
+                                        "   float floatMember;" +
+                                        "   double doubleMember;" +
+                                        "   long double ldoubleMember;" +
+                                        "};");
 
         assertEquals(struct.getIdentifier(), "s");
         {
-            MFieldDef field = struct.getMember(0);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p0 = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p0.getKind(), MPrimitiveKind.PK_FLOAT);
+            MFieldDef field = struct.getMember(0);            
+            PrimitiveTest.checkFloatType(field);
             assertEquals(field.getIdentifier(), "floatMember");
         }
         {
             MFieldDef field = struct.getMember(1);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p1 = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p1.getKind(), MPrimitiveKind.PK_DOUBLE);
+            PrimitiveTest.checkDoubleType(field);
             assertEquals(field.getIdentifier(), "doubleMember");
         }
         {
             MFieldDef field = struct.getMember(2);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p2 = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p2.getKind(), MPrimitiveKind.PK_LONGDOUBLE);
+            PrimitiveTest.checkLongDoubleType(field);
             assertEquals(field.getIdentifier(), "ldoubleMember");
         }
     }
@@ -63,30 +56,25 @@ public class StructOfBaseTypesTest extends StructTest
         throws CcmtoolsException
     {       
         MStructDef struct = parseSource("struct s {" +
-                                                   "short shortMember;" +
-                                                   "long  longMember;" +
-                                                   "long long llongMember;" +
-                                                   "};");         
+                                        "   short shortMember;" +
+                                        "   long  longMember;" +
+                                        "   long long llongMember;" +
+                                        "};");         
+        
         assertEquals(struct.getIdentifier(), "s");                
         {
             MFieldDef field = struct.getMember(0);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p0 = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p0.getKind(), MPrimitiveKind.PK_SHORT);
+            PrimitiveTest.checkShortType(field);
             assertEquals(field.getIdentifier(), "shortMember");
         }
         {
             MFieldDef field = struct.getMember(1);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p1 = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p1.getKind(), MPrimitiveKind.PK_LONG);
+            PrimitiveTest.checkLongType(field);
             assertEquals(field.getIdentifier(), "longMember");
         }
         {
             MFieldDef field = struct.getMember(2);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p2 = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p2.getKind(), MPrimitiveKind.PK_LONGLONG);
+            PrimitiveTest.checkLongLongType(field);
             assertEquals(field.getIdentifier(), "llongMember");
         }
     } 
@@ -96,32 +84,26 @@ public class StructOfBaseTypesTest extends StructTest
         throws CcmtoolsException
     {       
         MStructDef struct = parseSource("struct s {" +
-                                                   "unsigned short ushortMember;" +
-                                                   "unsigned long ulongMember;" +
-                                                   "unsigned long long ullongMember;" +
-                                                   "};"); 
+                                        "   unsigned short ushortMember;" +
+                                        "   unsigned long ulongMember;" +
+                                        "   unsigned long long ullongMember;" +
+                                        "};"); 
     
         assertEquals(struct.getIdentifier(), "s");      
         {
-        MFieldDef field = struct.getMember(0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef p0 = (MPrimitiveDef)field.getIdlType();
-        assertEquals(p0.getKind(), MPrimitiveKind.PK_USHORT);
-        assertEquals(field.getIdentifier(), "ushortMember");
+            MFieldDef field = struct.getMember(0);
+            PrimitiveTest.checkUnsignedShortType(field);
+            assertEquals(field.getIdentifier(), "ushortMember");
         }
         {
-        MFieldDef field = struct.getMember(1);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef p1 = (MPrimitiveDef)field.getIdlType();
-        assertEquals(p1.getKind(), MPrimitiveKind.PK_ULONG);
-        assertEquals(field.getIdentifier(), "ulongMember");
+            MFieldDef field = struct.getMember(1);
+            PrimitiveTest.checkUnsignedLongType(field);
+            assertEquals(field.getIdentifier(), "ulongMember");
         }
         {
-        MFieldDef field = struct.getMember(2);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef p2 = (MPrimitiveDef)field.getIdlType();
-        assertEquals(p2.getKind(), MPrimitiveKind.PK_ULONGLONG);
-        assertEquals(field.getIdentifier(), "ullongMember");
+            MFieldDef field = struct.getMember(2);
+            PrimitiveTest.checkUnsignedLongLongType(field);
+            assertEquals(field.getIdentifier(), "ullongMember");
         }
     }    
     
@@ -133,9 +115,7 @@ public class StructOfBaseTypesTest extends StructTest
         assertEquals(struct.getIdentifier(), "s");
 
         MFieldDef field = struct.getMember(0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef c = (MPrimitiveDef) field.getIdlType();
-        assertEquals(c.getKind(), MPrimitiveKind.PK_CHAR);
+        PrimitiveTest.checkCharType(field);
         assertEquals(field.getIdentifier(), "charMember");
     }
 
@@ -148,9 +128,7 @@ public class StructOfBaseTypesTest extends StructTest
         assertEquals(struct.getIdentifier(), "s");
         
         MFieldDef field = struct.getMember(0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef w = (MPrimitiveDef)field.getIdlType();
-        assertEquals(w.getKind(), MPrimitiveKind.PK_WCHAR);
+        PrimitiveTest.checkWideCharType(field);
         assertEquals(field.getIdentifier(), "wcharMember");        
     }
     
@@ -161,10 +139,9 @@ public class StructOfBaseTypesTest extends StructTest
         MStructDef struct = parseSource("struct s { boolean booleanMember; };");
 
         assertEquals(struct.getIdentifier(), "s");
+        
         MFieldDef field = struct.getMember(0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef b = (MPrimitiveDef)field.getIdlType();
-        assertEquals(b.getKind(), MPrimitiveKind.PK_BOOLEAN);
+        PrimitiveTest.checkBooleanType(field);
         assertEquals(field.getIdentifier(), "booleanMember");
     }
     
@@ -177,9 +154,7 @@ public class StructOfBaseTypesTest extends StructTest
         assertEquals(struct.getIdentifier(), "s");
         
         MFieldDef field = struct.getMember(0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef b = (MPrimitiveDef)field.getIdlType();
-        assertEquals(b.getKind(), MPrimitiveKind.PK_OCTET);
+        PrimitiveTest.checkOctetType(field);
         assertEquals(field.getIdentifier(), "octetMember");
     }
     
@@ -192,9 +167,7 @@ public class StructOfBaseTypesTest extends StructTest
         assertEquals(struct.getIdentifier(), "s");
         
         MFieldDef field = struct.getMember(0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef a = (MPrimitiveDef)field.getIdlType();
-        assertEquals(a.getKind(), MPrimitiveKind.PK_ANY);
+        PrimitiveTest.checkAnyType(field);
         assertEquals(field.getIdentifier(), "anyMember");
     }
     
@@ -207,9 +180,7 @@ public class StructOfBaseTypesTest extends StructTest
         assertEquals(struct.getIdentifier(), "s");
 
         MFieldDef field = struct.getMember(0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef a = (MPrimitiveDef)field.getIdlType();
-        assertEquals(a.getKind(), MPrimitiveKind.PK_OBJREF);
+        PrimitiveTest.checkObjectType(field);
         assertEquals(field.getIdentifier(), "objectMember");
     }
     
@@ -222,9 +193,7 @@ public class StructOfBaseTypesTest extends StructTest
         assertEquals(struct.getIdentifier(), "s");
 
         MFieldDef field = struct.getMember(0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef b = (MPrimitiveDef)field.getIdlType();
-        assertEquals(b.getKind(), MPrimitiveKind.PK_VALUEBASE);
+        PrimitiveTest.checkValueBaseType(field);
         assertEquals(field.getIdentifier(), "valueBaseMember");
     }
 }

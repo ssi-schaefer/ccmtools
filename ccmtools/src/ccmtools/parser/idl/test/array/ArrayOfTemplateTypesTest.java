@@ -7,12 +7,9 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
-import ccmtools.metamodel.BaseIDL.MFixedDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MSequenceDef;
-import ccmtools.metamodel.BaseIDL.MStringDef;
-import ccmtools.metamodel.BaseIDL.MWstringDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
 public class ArrayOfTemplateTypesTest extends ArrayTest
@@ -45,10 +42,8 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         assertEquals(innerAlias.getIdentifier(), "SeqLong");
         assertTrue(innerAlias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef)innerAlias.getIdlType();
-        
-        assertTrue(seq.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)seq.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+
+        PrimitiveTest.checkLongType((MTyped)seq);
     }
     
     
@@ -60,7 +55,8 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         assertTrue(alias.getIdlType() instanceof MArrayDef);
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
-        assertTrue(array.getIdlType() instanceof MStringDef);
+        
+        PrimitiveTest.checkStringType(array);
     }
 
 
@@ -73,9 +69,7 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        assertTrue(array.getIdlType() instanceof MStringDef);
-        MStringDef type = (MStringDef)array.getIdlType();
-        assertEquals(type.getBound().longValue(), 6);
+        PrimitiveTest.checkBoundedStringType(array, 6);
     }
     
     
@@ -88,7 +82,7 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        assertTrue(array.getIdlType() instanceof MWstringDef);
+        PrimitiveTest.checkWideStringType(array);
     }
     
     public void testArrayOfBoundedWideString() throws CcmtoolsException
@@ -99,10 +93,8 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         assertTrue(alias.getIdlType() instanceof MArrayDef);
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
-        
-        assertTrue(array.getIdlType() instanceof MWstringDef);
-        MWstringDef type = (MWstringDef)array.getIdlType();
-        assertEquals(type.getBound().longValue(), 3);
+
+        PrimitiveTest.checkBoundedWideStringType(array, 3);
     }
 
     public void testArrayOfFixed() throws CcmtoolsException
@@ -114,11 +106,6 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        assertTrue(array.getIdlType() instanceof MFixedDef);
-        MFixedDef type = (MFixedDef)array.getIdlType();
-        assertEquals(type.getDigits(), 9);
-        assertEquals(type.getScale(), 3);
-    }
-    
-    
+        PrimitiveTest.checkFixedType(array);
+    }    
 }

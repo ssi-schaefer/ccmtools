@@ -6,13 +6,10 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
-import ccmtools.metamodel.BaseIDL.MFixedDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MSequenceDef;
-import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStructDef;
-import ccmtools.metamodel.BaseIDL.MWstringDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
 public class StructOfTempleateTypesTest extends StructTest
@@ -31,43 +28,45 @@ public class StructOfTempleateTypesTest extends StructTest
 
     public void testStructOfSequenceMembers() throws CcmtoolsException
     {
-        MStructDef struct = parseSource("struct s { sequence<short> SeqShortMember; sequence<long,7> BSeqLongMember; };");
+        MStructDef struct = parseSource(
+                "struct s { " +
+                "   sequence<short> SeqShortMember; " +
+                "   sequence<long,7> BSeqLongMember; " +
+                "};");
 
         assertEquals(struct.getIdentifier(), "s");
         {
             MFieldDef field = struct.getMember(0);
             assertTrue(field.getIdlType() instanceof MSequenceDef);
             MSequenceDef seq = (MSequenceDef) field.getIdlType();
-            assertTrue(seq.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef type = (MPrimitiveDef) seq.getIdlType();
-            assertEquals(type.getKind(), MPrimitiveKind.PK_SHORT);
+            PrimitiveTest.checkShortType(seq);
         }
         {
             MFieldDef field = struct.getMember(1);
             assertTrue(field.getIdlType() instanceof MSequenceDef);
             MSequenceDef seq = (MSequenceDef) field.getIdlType();
             assertEquals(seq.getBound().longValue(), 7);
-            MPrimitiveDef type = (MPrimitiveDef) seq.getIdlType();
-            assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+            PrimitiveTest.checkLongType((MTyped)seq);
         }
     }
 
     
     public void testStructOfStringMembers() throws CcmtoolsException
     {
-        MStructDef struct = parseSource("struct s { string stringMember; string<7> bstringMember; };");
+        MStructDef struct = parseSource(
+                "struct s { " +
+                "   string stringMember; " +
+                "   string<7> bstringMember; " +
+                "};");
 
         assertEquals(struct.getIdentifier(), "s");
         {
             MFieldDef field = struct.getMember(0);
-            assertTrue(field.getIdlType() instanceof MStringDef);
-            assertEquals(field.getIdentifier(), "stringMember");
+            PrimitiveTest.checkStringType(field);
         }
         {
             MFieldDef field = struct.getMember(1);
-            assertTrue(field.getIdlType() instanceof MStringDef);
-            MStringDef s = (MStringDef) field.getIdlType();
-            assertEquals(s.getBound().longValue(), 7);
+            PrimitiveTest.checkBoundedStringType(field, 7);
             assertEquals(field.getIdentifier(), "bstringMember");
         }
     }
@@ -75,19 +74,21 @@ public class StructOfTempleateTypesTest extends StructTest
     
     public void testStructOfWideStringMembers() throws CcmtoolsException
     {
-        MStructDef struct = parseSource("struct s { wstring wstringMember; wstring<13> bwstringMember; };");
+        MStructDef struct = parseSource(
+                "struct s { " +
+                "   wstring wstringMember; " +
+                "   wstring<13> bwstringMember; " +
+                "};");
 
         assertEquals(struct.getIdentifier(), "s");
         {
             MFieldDef field = struct.getMember(0);
-            assertTrue(field.getIdlType() instanceof MWstringDef);
+            PrimitiveTest.checkWideStringType(field);
             assertEquals(field.getIdentifier(), "wstringMember");
         }
         {
             MFieldDef field = struct.getMember(1);
-            assertTrue(field.getIdlType() instanceof MWstringDef);
-            MWstringDef w = (MWstringDef) field.getIdlType();
-            assertEquals(w.getBound().longValue(), 13);
+            PrimitiveTest.checkBoundedWideStringType(field, 13);
             assertEquals(field.getIdentifier(), "bwstringMember");
         }
     }
@@ -95,15 +96,12 @@ public class StructOfTempleateTypesTest extends StructTest
 
     public void testStructOfFixedMembers() throws CcmtoolsException
     {
-        MStructDef struct = parseSource("struct s { fixed<9,2> fixedMember; };");
+        MStructDef struct = parseSource("struct s { fixed<9,3> fixedMember; };");
 
         assertEquals(struct.getIdentifier(), "s");
         
         MFieldDef field = struct.getMember(0);
-        assertTrue(field.getIdlType() instanceof MFixedDef);
-        MFixedDef f = (MFixedDef)field.getIdlType();
-        assertEquals(f.getDigits(), 9);
-        assertEquals(f.getScale(), 2);
+        PrimitiveTest.checkFixedType(field);
         assertEquals(field.getIdentifier(), "fixedMember");
     }
 }

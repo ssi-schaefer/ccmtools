@@ -7,8 +7,7 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
 public class ArrayDimensionsTest extends ArrayTest
@@ -34,9 +33,7 @@ public class ArrayDimensionsTest extends ArrayTest
         assertEquals(array.getBounds().get(0), 7);
         assertEquals(array.getBounds().get(1), 2);
         
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_FLOAT);
+        PrimitiveTest.checkFloatType(array);
     }
     
 
@@ -51,9 +48,7 @@ public class ArrayDimensionsTest extends ArrayTest
         assertEquals(array.getBounds().get(1), 2);
         assertEquals(array.getBounds().get(2), 3);
         
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_FLOAT);
+        PrimitiveTest.checkFloatType(array);
     }
 
     public void testHyperCubeOfFloat() throws CcmtoolsException
@@ -68,10 +63,8 @@ public class ArrayDimensionsTest extends ArrayTest
         assertEquals(array.getBounds().get(2), 3);
         assertEquals(array.getBounds().get(3), 2);
         assertEquals(array.getBounds().get(4), 1);
-        
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_FLOAT);
+
+        PrimitiveTest.checkFloatType(array);
     }
 
 }

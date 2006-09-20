@@ -8,14 +8,11 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.metamodel.BaseIDL.MEnumDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
-import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MUnionDef;
 import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
-import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.test.enumeration.EnumTest;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
@@ -54,17 +51,14 @@ public class UnionTest extends TestCase
     public static void checkUnionOptional(MUnionDef union)
     {
         assertEquals(union.getIdentifier(), "UnionOptional");
-        assertTrue(union.getDiscriminatorType() instanceof MPrimitiveDef);
-        MPrimitiveDef discriminator = (MPrimitiveDef)union.getDiscriminatorType();
-        assertEquals(discriminator.getKind(), MPrimitiveKind.PK_BOOLEAN);
+        PrimitiveTest.checkBooleanType(union.getDiscriminatorType());
      
         MUnionFieldDef member = union.getUnionMember(0);
         assertTrue(member.getLabel() instanceof Boolean);
         Boolean label = (Boolean)member.getLabel();
         assertEquals(label.booleanValue(), true);
-        assertTrue(member.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)member.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_USHORT);
+
+        PrimitiveTest.checkUnsignedShortType(member);
         assertEquals(member.getIdentifier(), "a");
     }
        
@@ -78,17 +72,14 @@ public class UnionTest extends TestCase
                 " };");
     
         assertEquals(union.getIdentifier(), "UnionLongSwitch");
-        assertTrue(union.getDiscriminatorType() instanceof MPrimitiveDef);
-        MPrimitiveDef discriminator = (MPrimitiveDef)union.getDiscriminatorType();
-        assertEquals(discriminator.getKind(), MPrimitiveKind.PK_LONG);
+        PrimitiveTest.checkLongType(union.getDiscriminatorType());
         {
             MUnionFieldDef member = union.getUnionMember(0);
             assertTrue(member.getLabel() instanceof Integer);
             Integer label = (Integer)member.getLabel();
             assertEquals(label.intValue(), 17);
-            assertTrue(member.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef type = (MPrimitiveDef)member.getIdlType();
-            assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+            
+            PrimitiveTest.checkLongType(member);
             assertEquals(member.getIdentifier(), "a");
         }
         {
@@ -96,7 +87,8 @@ public class UnionTest extends TestCase
             assertTrue(member.getLabel() instanceof Integer);
             Integer label = (Integer)member.getLabel();
             assertEquals(label.intValue(), 3);
-            assertTrue(member.getIdlType() instanceof MStringDef);
+            
+            PrimitiveTest.checkStringType(member);
             assertEquals(member.getIdentifier(), "b");
         }
     }
@@ -113,32 +105,26 @@ public class UnionTest extends TestCase
                 " };");
 
         assertEquals(union.getIdentifier(), "ColorCount");
-        assertTrue(union.getDiscriminatorType() instanceof MEnumDef);
-        MEnumDef discriminator = (MEnumDef)union.getDiscriminatorType();
-        assertEquals(discriminator.getIdentifier(), "Color");
+        EnumTest.checkEnumColor(union.getDiscriminatorType());
         {
             MUnionFieldDef member = union.getUnionMember(0);
             //TODO Enum Constants!!!!!
             //assertTrue(member.getLabel() instanceof ???);
-            assertTrue(member.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef type = (MPrimitiveDef)member.getIdlType();
-            assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+            PrimitiveTest.checkLongType(member);
             assertEquals(member.getIdentifier(), "x");
         }
         {
             MUnionFieldDef member = union.getUnionMember(1);
             //TODO Enum Constants!!!!!
             //assertTrue(member.getLabel() instanceof ???);
-            assertTrue(member.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef type = (MPrimitiveDef)member.getIdlType();
-            assertEquals(type.getKind(), MPrimitiveKind.PK_FLOAT);
+            PrimitiveTest.checkFloatType(member);
             assertEquals(member.getIdentifier(), "y");
         }
         {
             MUnionFieldDef member = union.getUnionMember(2);
             //TODO Enum Constants!!!!!
             //assertTrue(member.getLabel() instanceof ???);
-            assertTrue(member.getIdlType() instanceof MStringDef);
+            PrimitiveTest.checkStringType(member);
             assertEquals(member.getIdentifier(), "z");
         }
         
@@ -154,17 +140,13 @@ public class UnionTest extends TestCase
                 " };");
     
         assertEquals(union.getIdentifier(), "UnionCharSwitch");
-        assertTrue(union.getDiscriminatorType() instanceof MPrimitiveDef);
-        MPrimitiveDef discriminator = (MPrimitiveDef)union.getDiscriminatorType();
-        assertEquals(discriminator.getKind(), MPrimitiveKind.PK_CHAR);
+        PrimitiveTest.checkCharType(union.getDiscriminatorType());
         {
             MUnionFieldDef member = union.getUnionMember(0);
             assertTrue(member.getLabel() instanceof Character);
             Character c = (Character)member.getLabel();
             assertEquals(c.charValue(), 'A');
-            assertTrue(member.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef type = (MPrimitiveDef)member.getIdlType();
-            assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+            PrimitiveTest.checkLongType(member);
             assertEquals(member.getIdentifier(), "a");
         }
         {
@@ -172,7 +154,7 @@ public class UnionTest extends TestCase
             assertTrue(member.getLabel() instanceof Character);
             Character c = (Character)member.getLabel();
             assertEquals(c.charValue(), 'B');
-            assertTrue(member.getIdlType() instanceof MStringDef);
+            PrimitiveTest.checkStringType(member);
             assertEquals(member.getIdentifier(), "b");
         }
     }
@@ -188,9 +170,7 @@ public class UnionTest extends TestCase
                 " };");
     
         assertEquals(union.getIdentifier(), "MultipleCases");
-        assertTrue(union.getDiscriminatorType() instanceof MPrimitiveDef);
-        MPrimitiveDef discriminator = (MPrimitiveDef)union.getDiscriminatorType();
-        assertEquals(discriminator.getKind(), MPrimitiveKind.PK_CHAR);
+        PrimitiveTest.checkCharType(union.getDiscriminatorType());
         {
             MUnionFieldDef member = union.getUnionMember(0);
             assertTrue(member.getLabel() instanceof List);
@@ -198,7 +178,7 @@ public class UnionTest extends TestCase
             assertEquals(labels.get(0), 'A');
             assertEquals(labels.get(1), 'B');
             assertEquals(labels.get(2), 'C');
-            assertTrue(member.getIdlType() instanceof MStringDef);
+            PrimitiveTest.checkStringType(member);
             assertEquals(member.getIdentifier(), "c");
         }
     }
@@ -214,17 +194,13 @@ public class UnionTest extends TestCase
                 " };");
     
         assertEquals(union.getIdentifier(), "UnionDefaultCase");
-        assertTrue(union.getDiscriminatorType() instanceof MPrimitiveDef);
-        MPrimitiveDef discriminator = (MPrimitiveDef)union.getDiscriminatorType();
-        assertEquals(discriminator.getKind(), MPrimitiveKind.PK_CHAR);
+        PrimitiveTest.checkCharType(union.getDiscriminatorType());
         {
             MUnionFieldDef member = union.getUnionMember(0);
             assertTrue(member.getLabel() instanceof Character);
             Character c = (Character)member.getLabel();
             assertEquals(c.charValue(), 'A');
-            assertTrue(member.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef type = (MPrimitiveDef)member.getIdlType();
-            assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+            PrimitiveTest.checkLongType(member);
             assertEquals(member.getIdentifier(), "a");
         }
         {
@@ -232,7 +208,7 @@ public class UnionTest extends TestCase
             assertTrue(member.getLabel() instanceof Character);
             Character c = (Character)member.getLabel();
             assertEquals(c.charValue(), 'B');
-            assertTrue(member.getIdlType() instanceof MStringDef);
+            PrimitiveTest.checkStringType(member);
             assertEquals(member.getIdentifier(), "b");
         }
         {
@@ -240,7 +216,7 @@ public class UnionTest extends TestCase
             assertTrue(member.getLabel() instanceof String);
             String label = (String)member.getLabel();
             assertEquals(label, "default");
-            assertTrue(member.getIdlType() instanceof MWstringDef);
+            PrimitiveTest.checkWideStringType(member);
             assertEquals(member.getIdentifier(), "c");
         }
     }

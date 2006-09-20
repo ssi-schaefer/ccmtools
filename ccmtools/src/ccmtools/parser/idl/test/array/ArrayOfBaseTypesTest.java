@@ -7,8 +7,8 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.metamodel.BaseIDL.MTyped;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
 public class ArrayOfBaseTypesTest extends ArrayTest
@@ -34,9 +34,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef)alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_FLOAT);
+        PrimitiveTest.checkFloatType(array);
     }
 
     public void testArrayOfDouble() throws CcmtoolsException
@@ -47,10 +45,8 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         assertTrue(alias.getIdlType() instanceof MArrayDef);
         MArrayDef array = (MArrayDef)alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
-
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_DOUBLE);
+        
+        PrimitiveTest.checkDoubleType(array);
     }
 
     public void testArrayOfLongDouble() throws CcmtoolsException
@@ -61,10 +57,8 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         assertTrue(alias.getIdlType() instanceof MArrayDef);
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
-        
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_LONGDOUBLE);
+
+        PrimitiveTest.checkLongDoubleType(array);
     }
     
 
@@ -77,9 +71,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 3);
 
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_SHORT);
+        PrimitiveTest.checkShortType(array);
     }
 
     public void testArrayOfLong() throws CcmtoolsException
@@ -91,9 +83,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 3);
 
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+        PrimitiveTest.checkLongType((MTyped)array);
     }
 
     public void testArrayOfLongLong() throws CcmtoolsException
@@ -105,9 +95,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 3);
 
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_LONGLONG);
+        PrimitiveTest.checkLongLongType(array);
     }             
 
     
@@ -120,10 +108,8 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         assertTrue(alias.getIdlType() instanceof MArrayDef);
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
-
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_USHORT);
+        
+        PrimitiveTest.checkUnsignedShortType(array);
     }
 
     public void testArrayOfUnsignedLong() 
@@ -136,9 +122,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_ULONG);
+        PrimitiveTest.checkUnsignedLongType(array);
     }
 
     public void testArrayOfUnsignedLongLong() 
@@ -150,10 +134,8 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         assertTrue(alias.getIdlType() instanceof MArrayDef);
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
-
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_ULONGLONG);
+        
+        PrimitiveTest.checkUnsignedLongLongType(array);
     }
 
     
@@ -166,9 +148,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_CHAR);
+        PrimitiveTest.checkCharType((MTyped)array);
     }
     
     public void testArrayOfWChar() throws CcmtoolsException
@@ -180,9 +160,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_WCHAR);
+        PrimitiveTest.checkWideCharType(array);
     }
     
     
@@ -195,9 +173,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_BOOLEAN);
+        PrimitiveTest.checkBooleanType((MTyped)array);
     }
     
     
@@ -210,9 +186,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_OCTET);
+        PrimitiveTest.checkOctetType(array);
     }
     
     
@@ -225,9 +199,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_ANY);
+        PrimitiveTest.checkAnyType(array);
     }
     
     
@@ -240,9 +212,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_OBJREF);
+        PrimitiveTest.checkObjectType(array);    
     }
     
     
@@ -255,8 +225,6 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 777);
         
-        assertTrue(array.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef) array.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_VALUEBASE);
+        PrimitiveTest.checkValueBaseType(array);
     }
 }

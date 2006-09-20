@@ -6,15 +6,12 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
-import ccmtools.metamodel.BaseIDL.MEnumDef;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
-import ccmtools.metamodel.BaseIDL.MFixedDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MSequenceDef;
-import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStructDef;
-import ccmtools.metamodel.BaseIDL.MWstringDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
+import ccmtools.parser.idl.test.enumeration.EnumTest;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
 public class TypedefOfScopedNameTest extends TypedefTest
@@ -43,10 +40,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         assertTrue(typedef.getIdlType() instanceof MAliasDef);
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "FloatType");
-        
-        assertTrue(alias.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef prim = (MPrimitiveDef)alias.getIdlType();
-        assertEquals(prim.getKind(), MPrimitiveKind.PK_FLOAT);        
+        PrimitiveTest.checkFloatType(alias);
     }             
 
     
@@ -66,9 +60,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef)alias.getIdlType();
-        assertTrue(seq.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef prim = (MPrimitiveDef)seq.getIdlType();
-        assertEquals(prim.getKind(), MPrimitiveKind.PK_SHORT);        
+        PrimitiveTest.checkShortType(seq);
     }             
     
 
@@ -84,7 +76,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "StringType");
         
-        assertTrue(alias.getIdlType() instanceof MStringDef);
+        PrimitiveTest.checkStringType(alias);        
     }             
     
 
@@ -99,15 +91,15 @@ public class TypedefOfScopedNameTest extends TypedefTest
         assertTrue(typedef.getIdlType() instanceof MAliasDef);
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "WStringType");
-        
-        assertTrue(alias.getIdlType() instanceof MWstringDef);
+    
+        PrimitiveTest.checkWideStringType(alias);
     }             
     
     
     public void testTypedefOfMetaFixedType() throws CcmtoolsException
     {
         MAliasDef typedef = parseSource(
-                "typedef fixed<9,2> FixedType;" +
+                "typedef fixed<9,3> FixedType;" +
                 "typedef FixedType MetaFixedType;");
         
         assertEquals(typedef.getIdentifier(), "MetaFixedType");
@@ -115,11 +107,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         assertTrue(typedef.getIdlType() instanceof MAliasDef);
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "FixedType");
-        
-        assertTrue(alias.getIdlType() instanceof MFixedDef);
-        MFixedDef type = (MFixedDef) alias.getIdlType();
-        assertEquals(type.getDigits(), 9);
-        assertEquals(type.getScale(), 2);
+        PrimitiveTest.checkFixedType(alias);
     }             
     
     
@@ -137,14 +125,12 @@ public class TypedefOfScopedNameTest extends TypedefTest
         assertTrue(typedef.getIdlType() instanceof MAliasDef);
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "MetaFloatType");
-        
+
         assertTrue(alias.getIdlType() instanceof MAliasDef);
         MAliasDef alias2 = (MAliasDef)alias.getIdlType();
         assertEquals(alias2.getIdentifier(), "FloatType");
                 
-        assertTrue(alias2.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef prim = (MPrimitiveDef)alias2.getIdlType();
-        assertEquals(prim.getKind(), MPrimitiveKind.PK_FLOAT);        
+        PrimitiveTest.checkFloatType(alias2);
     }
     
     
@@ -162,14 +148,12 @@ public class TypedefOfScopedNameTest extends TypedefTest
         MStructDef structure = (MStructDef)typedef.getIdlType();
         {
             MFieldDef field = structure.getMember(0);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef type = (MPrimitiveDef) field.getIdlType();
-            assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
+            PrimitiveTest.checkLongType(field);
             assertEquals(field.getIdentifier(), "id");
         }
         {
             MFieldDef field = structure.getMember(1);
-            assertTrue(field.getIdlType() instanceof MStringDef);
+            PrimitiveTest.checkStringType(field);
             assertEquals(field.getIdentifier(), "name");
         }
     }                 
@@ -181,16 +165,10 @@ public class TypedefOfScopedNameTest extends TypedefTest
     public void testTypedefOfEnumType() throws CcmtoolsException
     {
         MAliasDef typedef = parseSource(
-                "enum Color {red, green, blue};" +
+                EnumTest.getEnumColorSource() +
                 "typedef Color EnumType;");
         
         assertEquals(typedef.getIdentifier(), "EnumType");
-        
-        assertTrue(typedef.getIdlType() instanceof MEnumDef);
-        MEnumDef enumeration = (MEnumDef)typedef.getIdlType();
-        assertEquals(enumeration.getIdentifier(), "Color");
-        assertEquals(enumeration.getMember(0), "red");
-        assertEquals(enumeration.getMember(1), "green");
-        assertEquals(enumeration.getMember(2), "blue");
+        EnumTest.checkEnumColor((MTyped)typedef);
     }                 
 }

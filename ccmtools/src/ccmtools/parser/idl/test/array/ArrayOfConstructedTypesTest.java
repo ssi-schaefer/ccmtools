@@ -44,8 +44,7 @@ public class ArrayOfConstructedTypesTest extends ArrayTest
         MStructDef struct = (MStructDef)array.getIdlType();
         StructTest.checkStructPerson(struct);
     }
-    
-    
+       
     public void testArrayOfUnion() throws CcmtoolsException
     {
         MAliasDef alias = parseSource(

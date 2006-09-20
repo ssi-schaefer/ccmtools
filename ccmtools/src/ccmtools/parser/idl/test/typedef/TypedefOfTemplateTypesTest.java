@@ -6,9 +6,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
-import ccmtools.metamodel.BaseIDL.MFixedDef;
-import ccmtools.metamodel.BaseIDL.MStringDef;
-import ccmtools.metamodel.BaseIDL.MWstringDef;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
 public class TypedefOfTemplateTypesTest extends TypedefTest
@@ -35,8 +33,7 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef string StringType;");
 
         assertEquals(alias.getIdentifier(), "StringType");
-        
-        assertTrue(alias.getIdlType() instanceof MStringDef);
+        PrimitiveTest.checkStringType(alias);
     }             
         
     public void testTypedefOfBoundedString() 
@@ -45,10 +42,7 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef string<7> BStringType;");
 
         assertEquals(alias.getIdentifier(), "BStringType");
-        
-        assertTrue(alias.getIdlType() instanceof MStringDef);
-        MStringDef type = (MStringDef) alias.getIdlType();
-        assertEquals(type.getBound().longValue(), 7);
+        PrimitiveTest.checkBoundedStringType(alias, 7);
     }             
     
     
@@ -58,8 +52,7 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef wstring WStringType;");
 
         assertEquals(alias.getIdentifier(), "WStringType");
-        
-        assertTrue(alias.getIdlType() instanceof MWstringDef);
+        PrimitiveTest.checkWideStringType(alias);        
     }             
     
     public void testTypedefOfBoundedWString() 
@@ -68,23 +61,16 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef wstring<13> BWStringType;");
 
         assertEquals(alias.getIdentifier(), "BWStringType");
-        
-        assertTrue(alias.getIdlType() instanceof MWstringDef);
-        MWstringDef type = (MWstringDef) alias.getIdlType();
-        assertEquals(type.getBound().longValue(), 13);
+        PrimitiveTest.checkBoundedWideStringType(alias, 13);       
     }             
     
         
     public void testTypedefOfFixed() 
         throws CcmtoolsException
     {
-        MAliasDef alias = parseSource("typedef fixed<9,2> FixedType;");
+        MAliasDef alias = parseSource("typedef fixed<9,3> FixedType;");
 
         assertEquals(alias.getIdentifier(), "FixedType");
-        
-        assertTrue(alias.getIdlType() instanceof MFixedDef);
-        MFixedDef type = (MFixedDef) alias.getIdlType();
-        assertEquals(type.getDigits(), 9);
-        assertEquals(type.getScale(), 2);
+        PrimitiveTest.checkFixedType(alias);        
     }             
 }

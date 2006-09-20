@@ -7,8 +7,7 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MExceptionDef;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
 public class ExceptionOfBaseTypesTest extends ExceptionTest
@@ -37,23 +36,17 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
         {
             MFieldDef field = getMember(e,0);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p = (MPrimitiveDef)field.getIdlType();
-            assertEquals(p.getKind(), MPrimitiveKind.PK_FLOAT);
+            PrimitiveTest.checkFloatType(field);
             assertEquals(field.getIdentifier(), "floatMember");
         }
         {
             MFieldDef field = getMember(e,1);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p.getKind(), MPrimitiveKind.PK_DOUBLE);
+            PrimitiveTest.checkDoubleType(field);
             assertEquals(field.getIdentifier(), "doubleMember");
         }
         {
             MFieldDef field = getMember(e,2);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p.getKind(), MPrimitiveKind.PK_LONGDOUBLE);
+            PrimitiveTest.checkLongDoubleType(field);
             assertEquals(field.getIdentifier(), "ldoubleMember");
         }
     }
@@ -70,23 +63,17 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");                        
         {
             MFieldDef field = getMember(e,0);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p.getKind(), MPrimitiveKind.PK_SHORT);
+            PrimitiveTest.checkShortType(field);
             assertEquals(field.getIdentifier(), "shortMember");
         }
         {
             MFieldDef field = getMember(e,1);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p.getKind(), MPrimitiveKind.PK_LONG);
+            PrimitiveTest.checkLongType(field);    
             assertEquals(field.getIdentifier(), "longMember");
         }
         {
             MFieldDef field = getMember(e,2);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p.getKind(), MPrimitiveKind.PK_LONGLONG);
+            PrimitiveTest.checkLongLongType(field);
             assertEquals(field.getIdentifier(), "llongMember");
         }
     } 
@@ -104,23 +91,17 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
         {
             MFieldDef field = getMember(e,0);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p0 = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p0.getKind(), MPrimitiveKind.PK_USHORT);
+            PrimitiveTest.checkUnsignedShortType(field);
             assertEquals(field.getIdentifier(), "ushortMember");
         }
         {
             MFieldDef field = getMember(e,1);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p1 = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p1.getKind(), MPrimitiveKind.PK_ULONG);
+            PrimitiveTest.checkUnsignedLongType(field);
             assertEquals(field.getIdentifier(), "ulongMember");
         }
         {
             MFieldDef field = getMember(e,2);
-            assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-            MPrimitiveDef p2 = (MPrimitiveDef) field.getIdlType();
-            assertEquals(p2.getKind(), MPrimitiveKind.PK_ULONGLONG);
+            PrimitiveTest.checkUnsignedLongLongType(field);
             assertEquals(field.getIdentifier(), "ullongMember");
         }
     }    
@@ -133,9 +114,7 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
 
         MFieldDef field = getMember(e,0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef c = (MPrimitiveDef) field.getIdlType();
-        assertEquals(c.getKind(), MPrimitiveKind.PK_CHAR);
+        PrimitiveTest.checkCharType(field);
         assertEquals(field.getIdentifier(), "charMember");
     }
 
@@ -148,9 +127,7 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
         
         MFieldDef field = getMember(e,0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef w = (MPrimitiveDef)field.getIdlType();
-        assertEquals(w.getKind(), MPrimitiveKind.PK_WCHAR);
+        PrimitiveTest.checkWideCharType(field);
         assertEquals(field.getIdentifier(), "wcharMember");        
     }
     
@@ -163,9 +140,7 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
 
         MFieldDef field = getMember(e,0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef b = (MPrimitiveDef)field.getIdlType();
-        assertEquals(b.getKind(), MPrimitiveKind.PK_BOOLEAN);
+        PrimitiveTest.checkBooleanType(field);
         assertEquals(field.getIdentifier(), "booleanMember");
     }
     
@@ -178,9 +153,7 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
         
         MFieldDef field = getMember(e,0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef b = (MPrimitiveDef)field.getIdlType();
-        assertEquals(b.getKind(), MPrimitiveKind.PK_OCTET);
+        PrimitiveTest.checkOctetType(field);
         assertEquals(field.getIdentifier(), "octetMember");
     }
     
@@ -193,9 +166,7 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
         
         MFieldDef field = getMember(e,0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef a = (MPrimitiveDef)field.getIdlType();
-        assertEquals(a.getKind(), MPrimitiveKind.PK_ANY);
+        PrimitiveTest.checkAnyType(field);
         assertEquals(field.getIdentifier(), "anyMember");
     }
     
@@ -208,9 +179,7 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
 
         MFieldDef field = getMember(e,0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef a = (MPrimitiveDef)field.getIdlType();
-        assertEquals(a.getKind(), MPrimitiveKind.PK_OBJREF);
+        PrimitiveTest.checkObjectType(field);
         assertEquals(field.getIdentifier(), "objectMember");
     }
     
@@ -223,9 +192,7 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
 
         MFieldDef field = getMember(e,0);
-        assertTrue(field.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef b = (MPrimitiveDef)field.getIdlType();
-        assertEquals(b.getKind(), MPrimitiveKind.PK_VALUEBASE);
+        PrimitiveTest.checkValueBaseType(field);
         assertEquals(field.getIdentifier(), "valueBaseMember");
     }
 }

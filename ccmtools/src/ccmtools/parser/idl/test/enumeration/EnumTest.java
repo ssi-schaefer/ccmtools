@@ -7,6 +7,8 @@ import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MEnumDef;
+import ccmtools.metamodel.BaseIDL.MIDLType;
+import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
@@ -44,6 +46,19 @@ public class EnumTest extends TestCase
         assertEquals(enumeration.getMember(1), "green");
         assertEquals(enumeration.getMember(2), "blue");
     }
+    
+    public static void checkEnumColor(MTyped typed)
+    {
+        checkEnumColor(typed.getIdlType());
+    }
+
+    public static void checkEnumColor(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MEnumDef);        
+        MEnumDef enumeration = (MEnumDef)idlType;
+        EnumTest.checkEnumColor(enumeration);
+    }
+
     
     
     /** Utility Methods */
