@@ -33,6 +33,7 @@ public class ConstantTest extends TestCase
     public MConstantDef parseSource(String sourceCode) 
         throws CcmtoolsException
     {
+        System.out.println("[" + sourceCode + "]");
         MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         MConstantDef constant = (MConstantDef)modelElements.get(0);            

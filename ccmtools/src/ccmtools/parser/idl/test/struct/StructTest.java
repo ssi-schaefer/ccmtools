@@ -1,16 +1,19 @@
 package ccmtools.parser.idl.test.struct;
 
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
+import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStructDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
@@ -32,6 +35,13 @@ public class StructTest extends TestCase
     public static String getStructPersonSource()
     {
         return "struct Person { long id; string name; };";
+    }
+
+    public static void checkStructPerson(MTyped typed)
+    {
+        assertTrue(typed.getIdlType() instanceof MStructDef);
+        MStructDef type = (MStructDef)typed.getIdlType();
+        checkStructPerson(type);
     }
     
     public static void checkStructPerson(MStructDef struct)
@@ -66,5 +76,22 @@ public class StructTest extends TestCase
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
         return (MStructDef)modelElements.get(0);
+    }
+    
+    public MStructDef parseSource(String sourceCode, String id) throws CcmtoolsException
+    {
+        System.out.println("[" + sourceCode + "]");
+        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        List modelElements = ccmModel.getContentss();
+        System.out.println("#" + modelElements.size() + ":  " + modelElements);
+        for(Iterator i = modelElements.iterator(); i.hasNext(); )
+        {
+            MContained element = (MContained)i.next();
+            if(element.getIdentifier().equals(id))
+            {
+                return (MStructDef)element;
+            }
+        }
+        return null;
     }
 }

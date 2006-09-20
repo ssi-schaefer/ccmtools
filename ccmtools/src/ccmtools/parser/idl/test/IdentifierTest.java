@@ -7,15 +7,15 @@ import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import ccmtools.parser.idl.Identifier;
+import ccmtools.parser.idl.ScopedName;
 
 
 public class IdentifierTest extends TestCase
 {
-    Identifier a;
-    Identifier b;
-    Identifier c;
-    Identifier d;
+    ScopedName a;
+    ScopedName b;
+    ScopedName c;
+    ScopedName d;
     
     public IdentifierTest()
     {
@@ -30,10 +30,10 @@ public class IdentifierTest extends TestCase
     
     public void setUp()
     {
-        a = new Identifier("Hallo");
-        b = new Identifier("Hallo");
-        c = new Identifier("haLLo");        
-        d = new Identifier("Gallo");
+        a = new ScopedName("Hallo");
+        b = new ScopedName("Hallo");
+        c = new ScopedName("haLLo");        
+        d = new ScopedName("Gallo");
     }
     
     public void testEqual()
@@ -59,7 +59,7 @@ public class IdentifierTest extends TestCase
     
     public void testSetAdd()
     {
-        Set<Identifier> set = new HashSet<Identifier>();
+        Set<ScopedName> set = new HashSet<ScopedName>();
         assertTrue(set.add(a));  // "Hallo"
         assertFalse(set.add(b)); // "Hallo" == "Hallo"
         assertFalse(set.add(c)); // "Hallo" == "haLLo"  
@@ -68,7 +68,7 @@ public class IdentifierTest extends TestCase
     
     public void testSetContains()
     {
-        Set<Identifier> set = new HashSet<Identifier>();
+        Set<ScopedName> set = new HashSet<ScopedName>();
         assertTrue(set.add(a));  // "Hallo"
         
         assertTrue(set.contains(b));

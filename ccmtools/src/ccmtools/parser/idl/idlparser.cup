@@ -166,7 +166,7 @@ nonterminal		export;
 nonterminal		interface_inheritance_spec;	
 nonterminal		interface_names;
 nonterminal		scoped_names;
-nonterminal Identifier scoped_name;
+nonterminal ScopedName scoped_name;
 nonterminal		value;
 nonterminal		value_forward_dcl;
 nonterminal		value_box_dcl;
@@ -282,7 +282,7 @@ nonterminal MFixedDef fixed_pt_type;
 
 nonterminal	MFixedDef fixed_pt_const_type;
 nonterminal	MIDLType value_base_type;
-nonterminal		constr_forward_decl;
+nonterminal	MIDLType constr_forward_decl;
 
 /* 100 */
 nonterminal		import_dcl;				
@@ -471,17 +471,17 @@ forward_dcl
 	::= 
 		T_INTERFACE T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+//			helper.getModelRepository().registerForwardDeclaration(id);
 		:}
 	| 
 		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+//			helper.getModelRepository().registerForwardDeclaration(id);
 		:}
 	| 
 		T_LOCAL T_INTERFACE T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+//			helper.getModelRepository().registerForwardDeclaration(id);
 		:}
 	;
 	
@@ -598,13 +598,13 @@ value_forward_dcl
 	::= 
 		T_VALUETYPE T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+//			helper.getModelRepository().registerForwardDeclaration(id);
 		:}
 		
 	| 
 		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+//			helper.getModelRepository().registerForwardDeclaration(id);
 		:}
 	;
 
@@ -938,7 +938,10 @@ unary_expr
 /* 38 */
 primary_expr
 	::= 
-		scoped_name
+		scoped_name:id
+		{:
+			RESULT = id;
+		:}
 	| 
 		literal:l
 		{:
@@ -1043,7 +1046,11 @@ type_dcl
 			helper.notSupported("native declarations (e.g. " + id + ")");
 		:}
 	| 
-		constr_forward_decl
+		constr_forward_decl:t
+		{:
+			helper.getLogger().fine("42: constr_forward_decl = " + t);	
+//			RESULT = t;
+		:}
 	;
 
 
@@ -1849,12 +1856,12 @@ constr_forward_decl
 	::= 
 		T_STRUCT T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+			RESULT = helper.parseStructForwardDeclaration(id);
 		:}
 	| 
 		T_UNION T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+			RESULT = helper.parseUnionForwardDeclaration(id);
 		:}
 	;
 
@@ -1960,7 +1967,7 @@ component
 component_forward_dcl
 	::= T_COMPONENT T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+//			helper.getModelRepository().registerForwardDeclaration(id);
 		:}
 	;
 
@@ -2187,12 +2194,12 @@ event_forward_dcl
 	::= 
 		T_EVENTTYPE T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+//			helper.getModelRepository().registerForwardDeclaration(id);
 		:}
 	| 
 		T_ABSTRACT T_EVENTTYPE T_IDENTIFIER:id
 		{:
-			helper.registerForwardDclId(id);
+//			helper.getModelRepository().registerForwardDeclaration(id);
 		:}
 	;
 

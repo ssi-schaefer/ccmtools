@@ -1,16 +1,20 @@
 package ccmtools.parser.idl.test.union;
 
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
+import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.metamodel.BaseIDL.MUnionDef;
 import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ScopedName;
 import ccmtools.parser.idl.test.enumeration.EnumTest;
 import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 import ccmtools.ui.ConsoleDriver;
@@ -46,6 +50,13 @@ public class UnionTest extends TestCase
         return  "union UnionOptional switch(boolean) { " +
                 "   case TRUE: unsigned short a; " +
                 "};";
+    }
+    
+    public static void checkUnionOptional(MTyped typed)
+    {
+        assertTrue(typed.getIdlType() instanceof MUnionDef);
+        MUnionDef union = (MUnionDef)typed.getIdlType();
+        checkUnionOptional(union);
     }
     
     public static void checkUnionOptional(MUnionDef union)
@@ -108,22 +119,23 @@ public class UnionTest extends TestCase
         EnumTest.checkEnumColor(union.getDiscriminatorType());
         {
             MUnionFieldDef member = union.getUnionMember(0);
-            //TODO Enum Constants!!!!!
-            //assertTrue(member.getLabel() instanceof ???);
+            ScopedName label = (ScopedName)member.getLabel();
+            assertEquals(label, new ScopedName("red"));
             PrimitiveTest.checkLongType(member);
             assertEquals(member.getIdentifier(), "x");
         }
         {
             MUnionFieldDef member = union.getUnionMember(1);
-            //TODO Enum Constants!!!!!
-            //assertTrue(member.getLabel() instanceof ???);
+            assertTrue(member.getLabel() instanceof ScopedName);
+            ScopedName label = (ScopedName)member.getLabel();
+            assertEquals(label, new ScopedName("green"));
             PrimitiveTest.checkFloatType(member);
             assertEquals(member.getIdentifier(), "y");
         }
         {
             MUnionFieldDef member = union.getUnionMember(2);
-            //TODO Enum Constants!!!!!
-            //assertTrue(member.getLabel() instanceof ???);
+            ScopedName label = (ScopedName)member.getLabel();
+            assertEquals(label, new ScopedName("blue"));
             PrimitiveTest.checkStringType(member);
             assertEquals(member.getIdentifier(), "z");
         }
@@ -235,4 +247,22 @@ public class UnionTest extends TestCase
         System.out.println(modelElements);
         return (MUnionDef)modelElements.get(0);
     }
+
+    public MUnionDef parseSource(String sourceLine, String id) throws CcmtoolsException
+    {
+        System.out.println("[" + sourceLine + "]");
+        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceLine);
+        List modelElements = ccmModel.getContentss();
+        System.out.println("#" + modelElements.size() + ":  " + modelElements);
+        for(Iterator i = modelElements.iterator(); i.hasNext(); )
+        {
+            MContained element = (MContained)i.next();
+            if(element.getIdentifier().equals(id))
+            {
+                return (MUnionDef)element;
+            }
+        }        
+        return null;
+    }
+
 }

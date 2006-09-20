@@ -4,7 +4,7 @@ package ccmtools.parser.idl.test;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import ccmtools.parser.idl.Identifier;
+import ccmtools.parser.idl.ScopedName;
 import ccmtools.parser.idl.IdentifierTable;
 
 
@@ -24,10 +24,10 @@ public class IdentifierTableTest extends TestCase
     public void testRegister()
     {
         IdentifierTable table = new IdentifierTable();
-        table.register(new Identifier("Hallo"));
+        table.register(new ScopedName("Hallo"));
         try
         {
-            table.register(new Identifier("Hallo"));
+            table.register(new ScopedName("Hallo"));
             fail();
         }
         catch(Exception e)
@@ -37,13 +37,13 @@ public class IdentifierTableTest extends TestCase
         
         try
         {
-            table.register(new Identifier("haLLo"));
+            table.register(new ScopedName("haLLo"));
             fail();
         }
         catch(Exception e)
         {
             // OK
         }
-        table.register(new Identifier("Gallo"));
+        table.register(new ScopedName("Gallo"));
     }
 }

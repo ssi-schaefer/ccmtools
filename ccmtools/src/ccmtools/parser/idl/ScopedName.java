@@ -1,11 +1,11 @@
 package ccmtools.parser.idl;
 
-public class Identifier
+public class ScopedName
 {
     private final String id; 
 
     
-    public Identifier(String id)
+    public ScopedName(String id)
     {
         this.id = id;
     }
@@ -31,9 +31,9 @@ public class Identifier
         {
             return true;
         }
-        if (obj instanceof Identifier) 
+        if (obj instanceof ScopedName) 
         {
-            Identifier anotherId = (Identifier)obj;
+            ScopedName anotherId = (ScopedName)obj;
             return this.id.toUpperCase().equals(anotherId.id.toUpperCase());
         }
         else

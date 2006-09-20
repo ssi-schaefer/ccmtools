@@ -8,21 +8,43 @@ import ccmtools.metamodel.BaseIDL.MIDLType;
 
 public class ModelRepository
 {
-    private Map<Identifier, MIDLType> idlType = new HashMap<Identifier, MIDLType>();
-    private Map<Identifier, MExceptionDef> exceptions = new HashMap<Identifier, MExceptionDef>();
+    private Map<ScopedName, MIDLType> idlType = new HashMap<ScopedName, MIDLType>();
+    private Map<ScopedName, MExceptionDef> exceptions = new HashMap<ScopedName, MExceptionDef>();
     
-    public void registerIdlType(Identifier id, MIDLType element)
+    private IdentifierTable forwardDclTable = new IdentifierTable();
+
+    
+    public void registerForwardDeclaration(ScopedName id)
     {
-        if(!idlType.containsKey(id))
+        forwardDclTable.register(id);
+    }
+
+    public boolean isForwardDeclaration(ScopedName id)
+    {        
+        return forwardDclTable.contains(id);
+    }
+    
+
+    
+    public void registerIdlType(ScopedName id, MIDLType element)
+    {
+        if(idlType.containsKey(id))
         {
-            System.out.println("+++ add: [" + id + ", " + element + "]");
+            System.out.println("+++ ModelRepository.contains: [" + id + "]");
+            System.out.println("+++ " + idlType);
+        }
+        else
+        {
+            System.out.println("+++ ModelRepository.register: [" + id + ", " + element + "]");
+            System.out.println("+++ " + idlType);
             idlType.put(id, element);
         }
     }
     
-    public MIDLType findIdlType(Identifier id)
+    public MIDLType findIdlType(ScopedName id)
     {
-        System.out.println("+++ find: [" + id + "]");
+        System.out.println("+++ ModelRepository.find: [" + id + "]");
+        System.out.println("+++ " + idlType);
         MIDLType type = idlType.get(id); 
         if(type == null)
         {
@@ -32,7 +54,7 @@ public class ModelRepository
     }
 
 
-    public void registerException(Identifier id, MExceptionDef ex)
+    public void registerException(ScopedName id, MExceptionDef ex)
     {
         if(!idlType.containsKey(id) && !exceptions.containsKey(id))
         {
@@ -41,7 +63,7 @@ public class ModelRepository
         }
     }
     
-    public MExceptionDef findIdlException(Identifier id)
+    public MExceptionDef findIdlException(ScopedName id)
     {
         System.out.println("+++ find: [" + id + "]");
         MExceptionDef ex = exceptions.get(id); 
@@ -50,5 +72,13 @@ public class ModelRepository
             throw new RuntimeException("Unknown exception " + id + "!");
         }        
         return ex;
+    }
+    
+    
+    public void clear()
+    {
+        idlType.clear();
+        exceptions.clear();
+        forwardDclTable.clear();
     }
 }

@@ -11,6 +11,7 @@ public class ConstantTestSuite
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(ConstantTestSuite.class.getName());	
         suite.addTest(ConstantOfBaseTypesTest.suite());
         suite.addTest(ConstantOfTemplateTypesTest.suite());
-		return suite;
+        suite.addTest(ConstantOfConstructedTypesTest.suite());
+        return suite;
 	}
 }

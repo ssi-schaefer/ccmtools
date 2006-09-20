@@ -65,16 +65,36 @@ public class ParserHelper
     private String currentSourceFile;
     private String mainSourceFile;
     
-    private IdentifierTable typeIdTable = new IdentifierTable();
-    private IdentifierTable forwardDclTable = new IdentifierTable();     
+    private IdentifierTable typeIdTable = new IdentifierTable();         
     private Scope scope = new Scope();
-    
     private ModelRepository modelRepo = new ModelRepository();
-    
+
+    public Logger getLogger()
+    {
+        return logger;
+    }
+
+    public Scope getScope()
+    {
+        return scope;
+    }
+        
     public ModelRepository getModelRepository()
     {
         return modelRepo;
     }
+
+    public void registerTypeId(String name)
+    {
+        String absoluteId = scope + name;
+        logger.fine("registerType: " + absoluteId);
+        if(!(typeIdTable.register(new ScopedName(absoluteId))))
+        {      
+            reportError(getCurrentSourceFile() + " line " + getCurrentSourceLine() + " : "
+                    + "Re-defined type identifier '" + name + "'");            
+        }
+    }
+
     
     
     public static ParserHelper getInstance()
@@ -106,7 +126,7 @@ public class ParserHelper
         System.out.println("init ParserHelper");
         
         typeIdTable.clear();
-        forwardDclTable.clear();
+        getModelRepository().clear();
         scope.clear();
         
         currentSourceLine = 0;
@@ -114,6 +134,11 @@ public class ParserHelper
         mainSourceFile = "";
     }
     
+    
+    public void reportError(String message)
+    {
+        reportError(message, null);
+    }
     
     public void reportError(String message, Object info)
     {
@@ -139,12 +164,7 @@ public class ParserHelper
         reportError("CCM Tools do not support " + message + "!", info);
     }
     
-    public Logger getLogger()
-    {
-        return logger;
-    }
-    
-    
+        
     public int getCurrentSourceLine()
     {
         return currentSourceLine;
@@ -178,29 +198,6 @@ public class ParserHelper
     }
 
     
-    public void registerTypeId(String name)
-    {
-        String absoluteId = scope + name;
-        logger.fine("registerType: " + absoluteId);
-        if(!(typeIdTable.register(new Identifier(absoluteId))))
-        {      
-            throw new RuntimeException(getCurrentSourceFile() + " line " + getCurrentSourceLine() + " : "
-                    + "Re-defined type identifier '" + name + "'");            
-        }
-    }
-
-    public void registerForwardDclId(String name)
-    {
-        String absoluteId = scope + name;
-        logger.fine("registerForwardDcl: " + absoluteId);
-        forwardDclTable.register(new Identifier(absoluteId));
-    }
-
-    
-    public Scope getScope()
-    {
-        return scope;
-    }
     
     
     /*************************************************************************
@@ -242,9 +239,9 @@ public class ParserHelper
     
     
     /* 12 */
-    public Identifier parseScopedName(String id)
+    public ScopedName parseScopedName(String id)
     {
-        return new Identifier(id);
+        return new ScopedName(id);
     }
     
     
@@ -310,7 +307,7 @@ public class ParserHelper
             String value = (String)constExpr;
             if(type.getBound() != null && type.getBound().longValue() < value.length())
             {
-                throw new RuntimeException("String literal " + identifier + " is out of bound (max. "
+                reportError("String literal " + identifier + " is out of bound (max. "
                         + type.getBound() + " characters)!");
             }
             constant.setIdlType(type);
@@ -322,11 +319,24 @@ public class ParserHelper
             String value = (String)constExpr;
             if(type.getBound() != null && type.getBound().longValue() < value.length())
             {
-                throw new RuntimeException("Wide string literal " + identifier + " is out of bound (max. "
+                reportError("Wide string literal " + identifier + " is out of bound (max. "
                         + type.getBound() + " characters)!");
             }
             constant.setIdlType(type);
             constant.setConstValue(value);          
+        }
+        else if(constType instanceof MEnumDef)
+        {
+            MEnumDef type = (MEnumDef)constType;
+            if(constExpr instanceof ScopedName)
+            {
+                constant.setIdlType(type);
+                constant.setConstValue(constExpr);
+            }
+            else
+            {
+                reportError("Unknown enum literal " + constExpr);
+            }
         }
         return constant;
     }
@@ -348,7 +358,7 @@ public class ParserHelper
         return result;
     }
     
-
+    
     /* 41 */
     public Integer parsePositiveIntConst(Object constExp)
     {
@@ -375,7 +385,7 @@ public class ParserHelper
         
         MAliasDef alias = new MAliasDefImpl();
         Declarator declarator = (Declarator)declarators.get(0);
-        Identifier id = new Identifier(declarator.toString());
+        ScopedName id = new ScopedName(declarator.toString());
         alias.setIdentifier(declarator.toString());
         if(declarator instanceof ArrayDeclarator)
         {
@@ -571,12 +581,21 @@ public class ParserHelper
     public MStructDef parseStructType(String id, List memberList)
     {
         getLogger().fine("69: T_LEFT_CURLY_BRACKET member_list T_RIGHT_CURLY_BRACKET");  
-        Identifier identifier = new Identifier(id);
-        MStructDef type = new MStructDefImpl();
+        ScopedName identifier = new ScopedName(id);
+        MStructDef type;
+        if(getModelRepository().isForwardDeclaration(identifier))
+        {
+            MIDLType forwardDcl = getModelRepository().findIdlType(identifier); 
+            type = (MStructDef)forwardDcl;
+        }
+        else
+        {
+            type = new MStructDefImpl();
+            getModelRepository().registerIdlType(identifier, type);
+        }
         type.setIdentifier(id);
         Collections.reverse(memberList);
         type.setMembers(memberList);
-        getModelRepository().registerIdlType(identifier, type);
         return type;
     }
   
@@ -621,14 +640,24 @@ public class ParserHelper
     public MUnionDef parseUnionType(String id, MIDLType discriminatorType, List switchBody)
     {
         getLogger().fine("72: union_type = " + id );
-        Identifier identifier = new Identifier(id);
-        MUnionDef union = new MUnionDefImpl();
-        union.setIdentifier(id);
-        union.setDiscriminatorType(discriminatorType);
+        ScopedName identifier = new ScopedName(id);
+        MUnionDef type;
+        if(getModelRepository().isForwardDeclaration(identifier))
+        {
+            MIDLType forwardDcl = getModelRepository().findIdlType(identifier); 
+            type = (MUnionDef)forwardDcl;
+        }
+        else
+        {
+            type = new MUnionDefImpl();
+            getModelRepository().registerIdlType(identifier, type);
+        }
+        type.setIdentifier(id);
+        type.setDiscriminatorType(discriminatorType);
         Collections.reverse(switchBody);
-        union.setUnionMembers(switchBody);
-        getModelRepository().registerIdlType(identifier, union);
-        return union;
+        type.setUnionMembers(switchBody);
+        getModelRepository().registerIdlType(identifier, type);
+        return type;
     }
    
     
@@ -694,7 +723,7 @@ public class ParserHelper
     public MEnumDef parseEnumType(String id, List enumerators)
     {
         getLogger().fine("78: enumerators = " + enumerators);  
-        Identifier identifier = new Identifier(id);
+        ScopedName identifier = new ScopedName(id);
         MEnumDef enumeration = new MEnumDefImpl();
         enumeration.setIdentifier(id);
         enumeration.setSourceFile(ParserHelper.getInstance().getCurrentSourceFile());
@@ -810,7 +839,7 @@ public class ParserHelper
     public MExceptionDef parseExceptionDcl(String id, List members) 
     {
         getLogger().fine("86: T_LEFT_CURLY_BRACKET members T_RIGHT_CURLY_BRACKET");  
-        Identifier identifier = new Identifier(id);
+        ScopedName identifier = new ScopedName(id);
         MExceptionDef type = new MExceptionDefImpl();
         type.setIdentifier(id);
         Collections.reverse(members);
@@ -867,8 +896,28 @@ public class ParserHelper
     }
     
     
-    
-    
+    /* 99 A (from 2.4, not in CCM) */
+    public MStructDef parseStructForwardDeclaration(String id)
+    {
+        getLogger().fine("99: T_STRUCT T_IDENTIFIER = " + id);            
+        MStructDef type = new MStructDefImpl();
+        type.setIdentifier(id);  
+        ScopedName identifier = new ScopedName(id);        
+        getModelRepository().registerForwardDeclaration(identifier);
+        getModelRepository().registerIdlType(identifier, type);
+        return type;
+    }
+
+    public MUnionDef parseUnionForwardDeclaration(String id)
+    {
+        getLogger().fine("99: T_UNION T_IDENTIFIER = " + id);    
+        MUnionDef type = new MUnionDefImpl();
+        type.setIdentifier(id);        
+        ScopedName identifier = new ScopedName(id);
+        getModelRepository().registerForwardDeclaration(identifier);
+        getModelRepository().registerIdlType(identifier, type);
+        return type;
+    }
     
     
     
