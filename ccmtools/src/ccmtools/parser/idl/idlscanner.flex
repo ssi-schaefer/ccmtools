@@ -167,8 +167,8 @@ CORBA_Identifier				= 	[a-zA-Z_][a-zA-Z0-9_]*
 	"ValueBase"			{ return symbol(sym.T_VALUEBASE); }
 	"typeid"				{ return symbol(sym.T_TYPEID); }
 	"typeprefix"			{ return symbol(sym.T_TYPEPREFIX); }
-	"getRaises"			{ return symbol(sym.T_GETRAISES); }
-	"setRaises"			{ return symbol(sym.T_SETRAISES); }
+	"getraises"			{ return symbol(sym.T_GETRAISES); }
+	"setraises"			{ return symbol(sym.T_SETRAISES); }
 	"local"				{ return symbol(sym.T_LOCAL); }
 
 	"module"				{ return symbol(sym.T_MODULE); }

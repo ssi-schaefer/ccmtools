@@ -259,7 +259,7 @@ nonterminal	Declarator array_declarator;
 nonterminal List<Integer> fixed_array_sizes;
 nonterminal	Integer fixed_array_size;
 
-nonterminal		attr_dcl;
+nonterminal	List attr_dcl;
 nonterminal	MExceptionDef except_dcl;
 nonterminal	List members;
 nonterminal		op_dcl;
@@ -271,13 +271,13 @@ nonterminal		parameter_dcls;					/* 90 */
 nonterminal		param_dcls;
 nonterminal		param_dcl;
 nonterminal		param_attribute;
-nonterminal		raises_expr;
+nonterminal	List raises_expr;  		// List<MExceptionDef>
 nonterminal		context_expr;
 nonterminal		string_literals;
 nonterminal	String T_string_literal;
 nonterminal	String T_wstring_literal;
 
-nonterminal		param_type_spec;
+nonterminal	MIDLType param_type_spec;
 
 nonterminal MFixedDef fixed_pt_type;
 
@@ -285,22 +285,21 @@ nonterminal	MFixedDef fixed_pt_const_type;
 nonterminal	MIDLType value_base_type;
 nonterminal	MIDLType constr_forward_decl;
 
-/* 100 */
-nonterminal		import_dcl;				
+nonterminal		import_dcl;			/* 100 */
 nonterminal		imported_scope;
 nonterminal		type_id_dcl;
 nonterminal		type_prefix_dcl;
-nonterminal		readonly_attr_spec;
-nonterminal		readonly_attr_declarator;
-nonterminal		simple_declarators;
-nonterminal		attr_spec;
-nonterminal		attr_declarator;
-nonterminal		attr_raises_expr;
-nonterminal		get_excep_expr;
-nonterminal		set_excep_expr;
 
-/* 110 */
-nonterminal		exception_list;		
+nonterminal	List readonly_attr_spec;  		// List<MAttributeDef>
+nonterminal	List readonly_attr_declarator;  // List<Declarator>
+nonterminal	List simple_declarators;        // List<Declarator>
+nonterminal List attr_spec; 					// List<MAttributeDef>
+nonterminal	List attr_declarator;           // List<Declarator>
+nonterminal	AttributeRaisesExpression attr_raises_expr;
+nonterminal	List get_excep_expr;				// List<MExceptionDef>
+nonterminal	List set_excep_expr;				// List<MExceptionDef>
+nonterminal	List exception_list;				// List<MExceptionDef>		/* 110 */
+
 nonterminal		component;
 nonterminal		component_forward_dcl;
 nonterminal		component_dcl;
@@ -547,7 +546,7 @@ interface_body
 	| 
 		exports:l
 		{:
-			RESULT = l;
+			RESULT = helper.parseInterfaceBody(l);
 		:}
 	;
 
@@ -1765,8 +1764,16 @@ fixed_array_size
 
 /* 85 */
 attr_dcl
-	::= readonly_attr_spec
-	| attr_spec
+	::= 
+		readonly_attr_spec:a
+		{:
+			RESULT = a;
+		:}
+	| 
+		attr_spec:a
+		{:
+			RESULT = a;
+		:}
 	;
 
 
@@ -1849,7 +1856,11 @@ param_attribute
 
 /* 93 */
 raises_expr
-	::= T_RAISES T_LEFT_PARANTHESIS scoped_names T_RIGHT_PARANTHESIS
+	::= 
+		T_RAISES T_LEFT_PARANTHESIS scoped_names:l T_RIGHT_PARANTHESIS
+		{:
+			RESULT = helper.parseExceptionList(l);
+		:}
 	;
 
 /* 94 */
@@ -1893,9 +1904,21 @@ T_wstring_literal
 
 /* 95 */
 param_type_spec
-	::= base_type_spec
-	| template_type_spec
-	| scoped_name
+	::= 
+		base_type_spec:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		template_type_spec:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		scoped_name:id
+		{:
+			RESULT = helper.getModelRepository().findIdlType(id);	
+		:}
 	;
 
 
@@ -1953,7 +1976,7 @@ imported_scope
 	;
 
 
-/* 101 */
+/* 102 */
 type_id_dcl
 	::= 
 		T_TYPEID scoped_name:ns T_string_literal:s
@@ -1963,7 +1986,7 @@ type_id_dcl
 	;
 
 
-/* 102 */
+/* 103 */
 type_prefix_dcl
 	::= 
 		T_TYPEPREFIX scoped_name T_string_literal:s
@@ -1973,65 +1996,126 @@ type_prefix_dcl
 	;
 
 
-/* 103 */
-readonly_attr_spec
-	::= T_READONLY T_ATTRIBUTE param_type_spec readonly_attr_declarator
-	;
-
-
 /* 104 */
-readonly_attr_declarator
-	::= simple_declarator raises_expr
-	| simple_declarators
-	;
-
-simple_declarators
-	::= simple_declarator
-	| simple_declarator T_COMMA simple_declarators
+readonly_attr_spec
+	::= 	
+		T_READONLY T_ATTRIBUTE param_type_spec:t readonly_attr_declarator:d
+		{:
+			RESULT = helper.parseReadonlyAttrSpec(t, d);
+		:}
 	;
 
 
 /* 105 */
-attr_spec
-	::= T_ATTRIBUTE param_type_spec attr_declarator
+readonly_attr_declarator
+	::= 
+		simple_declarator:d raises_expr:r
+		{:
+			RESULT = helper.parseReadonlyAttrDeclarator(d, r);
+		:}
+	| 
+		simple_declarators:l
+		{:
+			RESULT = l;
+		:}
+	;
+
+simple_declarators
+	::= 
+		simple_declarator:d
+		{:
+			RESULT = helper.parseSimpleDeclarators(d);
+		:}
+	| 
+		simple_declarator:d T_COMMA simple_declarators:l
+		{:
+			RESULT = helper.parseSimpleDeclarators(d, l);
+		:}
 	;
 
 
 /* 106 */
-attr_declarator
-	::= simple_declarator attr_raises_expr
-	| simple_declarators
+attr_spec
+	::= 
+		T_ATTRIBUTE param_type_spec:t attr_declarator:d
+		{:
+			RESULT = helper.parseAttrSpec(t, d);
+		:}
 	;
 
 
 /* 107 */
-attr_raises_expr
-	::= get_excep_expr
-	| set_excep_expr
-	| get_excep_expr set_excep_expr
-	| set_excep_expr get_excep_expr
+attr_declarator
+	::= 
+		simple_declarator:d attr_raises_expr:r
+		{:
+			RESULT = helper.parseAttrDeclarator(d, r);
+		:}
+	| 
+		simple_declarators:l
+		{:
+			RESULT = l;
+		:}
 	;
 
 
 /* 108 */
-get_excep_expr
-	::= T_GETRAISES exception_list
+attr_raises_expr
+	::= 
+		get_excep_expr:g
+		{:
+			RESULT = helper.parseAttrGetRaisesExpr(g);
+		:}		
+	| 
+		set_excep_expr:s
+		{:
+			RESULT = helper.parseAttrSetRaisesExpr(s);
+		:}		
+	| 
+		get_excep_expr:g set_excep_expr:s
+		{:
+			RESULT = helper.parseAttrGetAndSetRaisesExpr(g,s);
+		:}		
+	| 
+		set_excep_expr:s get_excep_expr:g
+		{:
+			RESULT = helper.parseAttrGetAndSetRaisesExpr(g,s);
+		:}				
 	;
 
 
 /* 109 */
-set_excep_expr
-	::= T_SETRAISES exception_list
+get_excep_expr
+	::= 
+		T_GETRAISES exception_list:l
+		{:
+			RESULT = l;
+		:}
 	;
 
 
 /* 110 */
-exception_list
-	::= T_LEFT_PARANTHESIS scoped_names T_RIGHT_PARANTHESIS
+set_excep_expr
+	::= 
+		T_SETRAISES exception_list:l
+		{:
+			RESULT = l;
+		:}
 	;
 
 
 /* 111 */
+exception_list
+	::= 
+		T_LEFT_PARANTHESIS scoped_names:l T_RIGHT_PARANTHESIS
+		{:
+			RESULT = helper.parseExceptionList(l);
+		:}
+	;
+
+
+
+/* 112 */
 component
 	::= component_dcl
 	| component_forward_dcl

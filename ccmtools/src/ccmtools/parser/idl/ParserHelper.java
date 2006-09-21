@@ -23,8 +23,11 @@ import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MAliasDefImpl;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
 import ccmtools.metamodel.BaseIDL.MArrayDefImpl;
+import ccmtools.metamodel.BaseIDL.MAttributeDef;
+import ccmtools.metamodel.BaseIDL.MAttributeDefImpl;
 import ccmtools.metamodel.BaseIDL.MConstantDef;
 import ccmtools.metamodel.BaseIDL.MConstantDefImpl;
+import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MContainerImpl;
 import ccmtools.metamodel.BaseIDL.MEnumDef;
@@ -245,7 +248,13 @@ public class ParserHelper
     public MInterfaceDef parseInterfaceDcl(MInterfaceDef iface, List body)
     {
         getLogger().fine("5: interface_header { interface_body }");
-        iface.setContentss(body);     
+        
+        for(Iterator i=body.iterator(); i.hasNext();)
+        {      
+            MContained content = (MContained)i.next();
+            content.setDefinedIn(iface);
+            iface.addContents(content);
+        }
         String id = iface.getIdentifier();
         ScopedName identifier = new ScopedName(id);
         registerTypeId(id);
@@ -265,7 +274,7 @@ public class ParserHelper
 
     public MInterfaceDef parseInterfaceHeader(String id, List inheritanceSpec)
     {
-        getLogger().fine("8: T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
+        getLogger().fine("7: T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
         MInterfaceDef iface = new MInterfaceDefImpl();
         iface.setIdentifier(id);
         Collections.reverse(inheritanceSpec);
@@ -276,7 +285,7 @@ public class ParserHelper
     
     public MInterfaceDef parseAbstractInterfaceHeader(String id)
     {
-        getLogger().fine("8: T_ABSTRACT T_INTERFACE T_IDENTIFIER = " + id);
+        getLogger().fine("7: T_ABSTRACT T_INTERFACE T_IDENTIFIER = " + id);
         MInterfaceDef iface = new MInterfaceDefImpl();
         iface.setIdentifier(id);
         iface.setAbstract(true);
@@ -285,7 +294,7 @@ public class ParserHelper
 
     public MInterfaceDef parseAbstractInterfaceHeader(String id, List inheritanceSpec)
     {
-        getLogger().fine("8: T_ABSTRACT T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
+        getLogger().fine("7: T_ABSTRACT T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
         MInterfaceDef iface = new MInterfaceDefImpl();
         iface.setIdentifier(id);
         iface.setAbstract(true);
@@ -296,7 +305,7 @@ public class ParserHelper
 
     public MInterfaceDef parseLocalInterfaceHeader(String id)
     {
-        getLogger().fine("8:  T_LOCAL T_INTERFACE T_IDENTIFIER = " + id);
+        getLogger().fine("7:  T_LOCAL T_INTERFACE T_IDENTIFIER = " + id);
         MInterfaceDef iface = new MInterfaceDefImpl();
         iface.setIdentifier(id);
         iface.setLocal(true);
@@ -305,7 +314,7 @@ public class ParserHelper
     
     public MInterfaceDef parseLocalInterfaceHeader(String id, List inheritanceSpec)
     {
-        getLogger().fine("8:  T_LOCAL T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
+        getLogger().fine("7:  T_LOCAL T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
         MInterfaceDef iface = new MInterfaceDefImpl();
         iface.setIdentifier(id);
         iface.setLocal(true);
@@ -322,20 +331,40 @@ public class ParserHelper
         getLogger().fine("8: interface_body");
         return new ArrayList();        
     }
+
+    public List parseInterfaceBody(List exports)
+    {
+        getLogger().fine("8: interface_body = " + exports);
+        return exports;        
+    }
     
     public List parseExports(Object export)
     {
         getLogger().fine("8: exports " + export);
         List exports = new ArrayList();
-        exports.add(export);
+        addExport(export, exports);
         return exports;
     }
     
     public List parseExports(Object export, List exports)
     {
         getLogger().fine("8: exports " + export + ", " + exports);
-        exports.add(export);
+        addExport(export, exports);
         return exports;
+    }
+    
+    private void addExport(Object export, List exports)
+    {
+        if(export instanceof List)
+        {
+            List exportList = (List)export;
+            Collections.reverse(exportList);
+            exports.addAll(exportList);
+        }
+        else
+        {
+            exports.add(export);
+        }
     }
     
     
@@ -991,7 +1020,7 @@ public class ParserHelper
         getModelRepository().registerException(identifier, type);
         return type;
     }
-    
+        
     
     /* 94?? */
     public String parseStringLiteral(String s)
@@ -1061,6 +1090,137 @@ public class ParserHelper
         getModelRepository().registerForwardDeclaration(identifier);
         getModelRepository().registerIdlType(identifier, type);
         return type;
+    }
+    
+    
+    /* 104 */
+    public List parseReadonlyAttrSpec(MIDLType type, List declarators)
+    {
+        getLogger().fine("104: T_READONLY T_ATTRIBUTE param_type_spec readonly_attr_declarator = " + type + ", " + declarators);
+        List attributes = new ArrayList();
+        for(Iterator i=declarators.iterator(); i.hasNext();)
+        {
+            Declarator id = (Declarator)i.next();
+            MAttributeDef attr = new MAttributeDefImpl();
+            attr.setIdentifier(id.toString());
+            attr.setIdlType(type);
+            attr.setReadonly(true);
+            if(id instanceof ReadonlyAttributeDeclarator)
+            {
+                ReadonlyAttributeDeclarator attrDeclarator = (ReadonlyAttributeDeclarator)id;
+                for(Iterator j=attrDeclarator.getExceptions().iterator(); j.hasNext();)
+                {
+                    attr.addGetException((MExceptionDef)j.next());
+                }
+            }
+            attributes.add(attr);
+        }
+        return attributes;
+    }
+    
+    
+    /* 105 */
+    public List parseReadonlyAttrDeclarator(Declarator simpleDeclarator, List exceptions)
+    {
+        getLogger().fine("105: simple_declarator:d raises_expr:r = " + simpleDeclarator + ", " + exceptions);
+        List result = new ArrayList();
+        result.add(new ReadonlyAttributeDeclarator(simpleDeclarator, exceptions));
+        return result;        
+    }   
+    
+    public List parseSimpleDeclarators(Declarator simpleDeclarator)
+    {
+        getLogger().fine("105: simple_declarator = " + simpleDeclarator);   
+        List declarators = new ArrayList();
+        declarators.add(simpleDeclarator);
+        return declarators;
+    }
+        
+    public List parseSimpleDeclarators(Declarator simpleDeclarator, List declarators)
+    {
+        getLogger().fine("105: simple_declarator T_COMMA simple_declarators = " + simpleDeclarator + ", " + declarators); 
+        declarators.add(simpleDeclarator);
+        return declarators;
+    }
+    
+    
+    /* 106 */
+    public List parseAttrSpec(MIDLType type, List declarators)
+    {
+        getLogger().fine("106: T_ATTRIBUTE param_type_spec attr_declarator = " + type + ", " + declarators);
+        List attributes = new ArrayList();
+        for(Iterator i=declarators.iterator(); i.hasNext();)
+        {
+            Declarator id = (Declarator)i.next();
+            MAttributeDef attr = new MAttributeDefImpl();
+            attr.setIdentifier(id.toString());
+            attr.setIdlType(type);
+            if(id instanceof AttributeDeclarator)
+            {
+                AttributeDeclarator attrDeclarator = (AttributeDeclarator)id;
+                for(Iterator j=attrDeclarator.getGetterExceptions().iterator(); j.hasNext();)
+                {
+                    attr.addGetException((MExceptionDef)j.next());
+                }
+                for(Iterator j=attrDeclarator.getSetterExceptions().iterator(); j.hasNext();)
+                {
+                    attr.addSetException((MExceptionDef)j.next());
+                }
+            }
+            attributes.add(attr);
+        }
+        return attributes;
+    }
+    
+    /* 107 */
+    public List parseAttrDeclarator(Declarator declarator, AttributeRaisesExpression raisesExpr)
+    {
+        getLogger().fine("107: simple_declarator attr_raises_expr = " + declarator + ", " + raisesExpr);        
+        List result = new ArrayList();
+        result.add(new AttributeDeclarator(declarator, raisesExpr));
+        return result;
+    }
+    
+    
+    /* 108 */
+    public AttributeRaisesExpression parseAttrGetRaisesExpr(List exceptions)
+    {
+        getLogger().fine("108: get_excep_expr = " + exceptions);
+        return new AttributeRaisesExpression(exceptions, new ArrayList());
+    }
+    
+    public AttributeRaisesExpression parseAttrSetRaisesExpr(List exceptions)
+    {
+        getLogger().fine("108: set_excep_expr = " + exceptions);
+        return new AttributeRaisesExpression(new ArrayList(), exceptions);
+    }
+    
+    public AttributeRaisesExpression parseAttrGetAndSetRaisesExpr(List getExceptions, List setExceptions)
+    {
+        getLogger().fine("108: get_excep_expr set_excep_expr = " + getExceptions + ", " + setExceptions);
+        return new AttributeRaisesExpression(getExceptions, setExceptions);
+    }
+    
+    
+    /* 111 *//* 93 */
+    public List parseExceptionList(List scopedNames)
+    {
+        getLogger().fine("111: ( scoped_names )" + scopedNames);
+        List exceptions = new ArrayList();
+        for(Iterator i = scopedNames.iterator(); i.hasNext();)
+        {            
+            ScopedName id = (ScopedName)i.next();
+            MExceptionDef ex = getModelRepository().findIdlException(id);
+            if(ex == null)
+            {
+                reportError("Declared exception " + id + "not found!");
+            }
+            else
+            {
+                exceptions.add(ex);
+            }
+        }        
+        return exceptions;
     }
     
     

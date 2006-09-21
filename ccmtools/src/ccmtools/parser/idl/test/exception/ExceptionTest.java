@@ -9,6 +9,7 @@ import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MExceptionDef;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
 import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
@@ -23,7 +24,22 @@ public class ExceptionTest extends TestCase
         super(title);        
         uiDriver = new ConsoleDriver();
     }
-               
+         
+    
+    
+    public static String getSimpleExceptionSource()
+    {
+        return "exception SimpleError { string what; };";
+    }
+    
+    public static void checkSimpleException(MExceptionDef ex)
+    {
+        assertEquals(ex.getIdentifier(), "SimpleError");
+        MFieldDef field = (MFieldDef)ex.getMembers().get(0);
+        PrimitiveTest.checkStringType(field);
+        assertEquals(field.getIdentifier(), "what");
+    }
+    
     
     /*
      * Utility Methods
