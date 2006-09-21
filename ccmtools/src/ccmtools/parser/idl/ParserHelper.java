@@ -9,6 +9,7 @@ import java.io.StringReader;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -35,6 +36,8 @@ import ccmtools.metamodel.BaseIDL.MFieldDefImpl;
 import ccmtools.metamodel.BaseIDL.MFixedDef;
 import ccmtools.metamodel.BaseIDL.MFixedDefImpl;
 import ccmtools.metamodel.BaseIDL.MIDLType;
+import ccmtools.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.metamodel.BaseIDL.MInterfaceDefImpl;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDefImpl;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
@@ -235,6 +238,147 @@ public class ParserHelper
             // processed some T_INCLUDE or T_PRAGMA lines
         }
         return definitions;
+    }
+    
+    
+    /* 5 */
+    public MInterfaceDef parseInterfaceDcl(MInterfaceDef iface, List body)
+    {
+        getLogger().fine("5: interface_header { interface_body }");
+        iface.setContentss(body);     
+        String id = iface.getIdentifier();
+        ScopedName identifier = new ScopedName(id);
+        registerTypeId(id);
+        getModelRepository().registerIdlType(identifier, iface);
+        return iface;
+    }
+    
+        
+    /* 7 */
+    public MInterfaceDef parseInterfaceHeader(String id)
+    {
+        getLogger().fine("8: T_INTERFACE T_IDENTIFIER = " + id);
+        MInterfaceDef iface = new MInterfaceDefImpl();
+        iface.setIdentifier(id);
+        return iface;
+    }
+
+    public MInterfaceDef parseInterfaceHeader(String id, List inheritanceSpec)
+    {
+        getLogger().fine("8: T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
+        MInterfaceDef iface = new MInterfaceDefImpl();
+        iface.setIdentifier(id);
+        Collections.reverse(inheritanceSpec);
+        iface.setBases(inheritanceSpec);
+        return iface;
+    }
+
+    
+    public MInterfaceDef parseAbstractInterfaceHeader(String id)
+    {
+        getLogger().fine("8: T_ABSTRACT T_INTERFACE T_IDENTIFIER = " + id);
+        MInterfaceDef iface = new MInterfaceDefImpl();
+        iface.setIdentifier(id);
+        iface.setAbstract(true);
+        return iface;
+    }
+
+    public MInterfaceDef parseAbstractInterfaceHeader(String id, List inheritanceSpec)
+    {
+        getLogger().fine("8: T_ABSTRACT T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
+        MInterfaceDef iface = new MInterfaceDefImpl();
+        iface.setIdentifier(id);
+        iface.setAbstract(true);
+        Collections.reverse(inheritanceSpec);
+        iface.setBases(inheritanceSpec);
+        return iface;
+    }
+
+    public MInterfaceDef parseLocalInterfaceHeader(String id)
+    {
+        getLogger().fine("8:  T_LOCAL T_INTERFACE T_IDENTIFIER = " + id);
+        MInterfaceDef iface = new MInterfaceDefImpl();
+        iface.setIdentifier(id);
+        iface.setLocal(true);
+        return iface;
+    }
+    
+    public MInterfaceDef parseLocalInterfaceHeader(String id, List inheritanceSpec)
+    {
+        getLogger().fine("8:  T_LOCAL T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
+        MInterfaceDef iface = new MInterfaceDefImpl();
+        iface.setIdentifier(id);
+        iface.setLocal(true);
+        Collections.reverse(inheritanceSpec);
+        iface.setBases(inheritanceSpec);        
+        return iface;
+    }
+    
+    
+    
+    /* 8 */
+    public List parseInterfaceBody()
+    {
+        getLogger().fine("8: interface_body");
+        return new ArrayList();        
+    }
+    
+    public List parseExports(Object export)
+    {
+        getLogger().fine("8: exports " + export);
+        List exports = new ArrayList();
+        exports.add(export);
+        return exports;
+    }
+    
+    public List parseExports(Object export, List exports)
+    {
+        getLogger().fine("8: exports " + export + ", " + exports);
+        exports.add(export);
+        return exports;
+    }
+    
+    
+    /* 10 */
+    public List parseInterfaceInheritanceSpec(List scopedNames)
+    {
+        getLogger().fine("10: T_COLON interface_names = " + scopedNames);
+        List baseIFaces = new ArrayList();
+        for(Iterator i = scopedNames.iterator(); i.hasNext();)
+        {
+            ScopedName id = (ScopedName)i.next();
+            MIDLType type = getModelRepository().findIdlType(id); 
+            if(type == null)
+            {
+                reportError("Base interface " + id + "not found!" );
+            }
+            else if(!(type instanceof MInterfaceDef))
+            {
+                reportError("Base interface specification contains " + type + "which is not an interface!");
+            }
+            else
+            {
+                baseIFaces.add(type);
+            }            
+        }        
+        return baseIFaces;
+    }
+    
+    
+    /* 11 */
+    public List parseScopedNames(ScopedName id)
+    {
+        getLogger().fine("11: scoped_name = " + id);
+        List l = new ArrayList();
+        l.add(id);
+        return l;
+    }
+    
+    public List parseScopedNames(ScopedName id, List scopedNames)
+    {
+        getLogger().fine("11: scoped_name T_COMMA scoped_names = " + id + ", " + scopedNames);
+        scopedNames.add(id);
+        return scopedNames;
     }
     
     

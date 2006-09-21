@@ -150,23 +150,24 @@ terminal		String 		T_WSTRING_LITERAL;
 
 
 /* 1 */
-nonterminal	MContainer 		specification;
-nonterminal List				definitions;  	// List<MConatined>
-nonterminal	Object			definition;
-nonterminal	MModuleDef		module;
-nonterminal	MInterfaceDef	interface;
-nonterminal		interface_dcl;
-nonterminal		forward_dcl;
-nonterminal		interface_header;
-nonterminal		interface_body;
-nonterminal		exports;
-nonterminal		export;
+nonterminal	MContainer specification;
+nonterminal List	 definitions;  				// List<MConatined>
+nonterminal	Object definition;
+nonterminal	MModuleDef module;
 
-/* 10 */
-nonterminal		interface_inheritance_spec;	
-nonterminal		interface_names;
-nonterminal		scoped_names;
+nonterminal	MInterfaceDef interface;
+nonterminal	MInterfaceDef interface_dcl;
+nonterminal	MInterfaceDef forward_dcl;
+nonterminal	MInterfaceDef interface_header;
+nonterminal	List interface_body;
+nonterminal	List exports;
+nonterminal	Object export;
+nonterminal	List interface_inheritance_spec;  /* 10 */
+nonterminal	List interface_names;
+
+nonterminal	List scoped_names;
 nonterminal ScopedName scoped_name;
+
 nonterminal		value;
 nonterminal		value_forward_dcl;
 nonterminal		value_box_dcl;
@@ -455,14 +456,26 @@ module
 	
 /* 4 */	
 interface
-	::= 	interface_dcl
-	| forward_dcl
+	::= 	
+		interface_dcl:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		forward_dcl:t
+		{:
+			RESULT = t;
+		:}
  	;
 	
 	
 /* 5 */
 interface_dcl
-	::= interface_header T_LEFT_CURLY_BRACKET interface_body T_RIGHT_CURLY_BRACKET
+	::= 
+		interface_header:i T_LEFT_CURLY_BRACKET interface_body:l T_RIGHT_CURLY_BRACKET
+		{:
+			RESULT = helper.parseInterfaceDcl(i, l);
+		:}
 	;
 	
 	
@@ -491,76 +504,138 @@ interface_header
 	::= 
 		T_INTERFACE T_IDENTIFIER:id
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseInterfaceHeader(id);
 		:}	
 	| 	
 		T_INTERFACE T_IDENTIFIER:id
-		 interface_inheritance_spec
+		interface_inheritance_spec:l
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseInterfaceHeader(id,l);
 		:}		
 	| 
 		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseAbstractInterfaceHeader(id);
 		:}		
 	| 
 		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id 
-		interface_inheritance_spec
+		interface_inheritance_spec:l
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseAbstractInterfaceHeader(id,l);
 		:}		
 	| 
 		T_LOCAL T_INTERFACE T_IDENTIFIER:id
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseLocalInterfaceHeader(id);
 		:}		
 	| 
 		T_LOCAL T_INTERFACE T_IDENTIFIER:id
-		interface_inheritance_spec
+		interface_inheritance_spec:l
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseLocalInterfaceHeader(id, l);
 		:}		
 	; 
 
 
 /* 8 */
 interface_body
-	::= /*empty*/
-	| exports
+	::= 
+		/*empty*/
+		{:
+			RESULT = helper.parseInterfaceBody();
+		:}
+	| 
+		exports:l
+		{:
+			RESULT = l;
+		:}
 	;
 
 exports
-	::= export
-	| export exports
+	::= 	
+		export:e
+		{:
+			RESULT = helper.parseExports(e);
+		:}
+	| 
+		export:e exports:l
+		{:
+			RESULT = helper.parseExports(e, l);
+		:}
 	;
 
 
 /* 9 */
 export
-	::= type_dcl T_SEMICOLON
-	| const_dcl T_SEMICOLON 
-	| except_dcl T_SEMICOLON
-	| attr_dcl T_SEMICOLON
-	| op_dcl T_SEMICOLON 
-	| type_id_dcl T_SEMICOLON
-	| type_prefix_dcl T_SEMICOLON
+	::= 
+		type_dcl:t T_SEMICOLON
+		{:
+			RESULT = t;
+		:}
+	| 
+		const_dcl:t T_SEMICOLON 
+		{:
+			RESULT = t;
+		:}
+	| 
+		except_dcl:t T_SEMICOLON
+		{:
+			RESULT = t;
+		:}
+	| 
+		attr_dcl:t T_SEMICOLON
+		{:
+			RESULT = t;
+		:}
+	| 
+		op_dcl:t T_SEMICOLON 
+		{:
+			RESULT = t;
+		:}
+	| 
+		type_id_dcl:t T_SEMICOLON
+		{:
+			RESULT = t;
+		:}
+	| 	
+		type_prefix_dcl:t T_SEMICOLON
+		{:
+			RESULT = t;
+		:}
 	;
 
 
 /* 10 */
-/* 11 */
 interface_inheritance_spec
-	::= T_COLON interface_names
+	::= 
+		T_COLON interface_names:l
+		{:
+			RESULT = helper.parseInterfaceInheritanceSpec(l);
+		:}
+		
 	;
 
+
+/* 11 */
 interface_names
-	::= scoped_names
+	::= 
+		scoped_names:l
+		{:
+			RESULT = l;
+		:}
 	;
 
 scoped_names
-	::= scoped_name
-	| scoped_name T_COMMA scoped_names
+	::= 
+		scoped_name:id
+		{:
+			RESULT = helper.parseScopedNames(id);
+		:}
+	| 
+		scoped_name:id T_COMMA scoped_names:l
+		{:
+			RESULT = helper.parseScopedNames(id, l);		
+		:}
 	;
 
 
