@@ -11,7 +11,10 @@ public class TypedefTestSuite
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(TypedefTestSuite.class.getName());	
         suite.addTest(TypedefOfBaseTypesTest.suite());
         suite.addTest(TypedefOfTemplateTypesTest.suite());
+        suite.addTest(TypedefOfConstructedTypesTest.suite());
+        
         suite.addTest(TypedefOfScopedNameTest.suite());
-		return suite;
+		
+        return suite;
 	}
 }

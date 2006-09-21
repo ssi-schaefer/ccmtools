@@ -9,6 +9,7 @@ import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
+import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MStringDef;
@@ -41,6 +42,13 @@ public class StructTest extends TestCase
     {
         assertTrue(typed.getIdlType() instanceof MStructDef);
         MStructDef type = (MStructDef)typed.getIdlType();
+        checkStructPerson(type);
+    }
+    
+    public static void checkStructPerson(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MStructDef);
+        MStructDef type = (MStructDef)idlType;
         checkStructPerson(type);
     }
     

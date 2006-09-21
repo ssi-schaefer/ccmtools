@@ -12,6 +12,7 @@ public class StructTestSuite
         suite.addTest(EmptyStructTest.suite());
         suite.addTest(StructOfBaseTypesTest.suite());
         suite.addTest(StructOfTempleateTypesTest.suite());
+        suite.addTest(StructOfConstructedTypesTest.suite());
 		return suite;
 	}
 }

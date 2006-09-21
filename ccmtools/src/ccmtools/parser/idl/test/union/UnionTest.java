@@ -10,6 +10,7 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.metamodel.BaseIDL.MUnionDef;
 import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
@@ -59,6 +60,13 @@ public class UnionTest extends TestCase
         checkUnionOptional(union);
     }
     
+    public static void checkUnionOptional(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MUnionDef);
+        MUnionDef union = (MUnionDef)idlType;
+        checkUnionOptional(union);
+    }
+
     public static void checkUnionOptional(MUnionDef union)
     {
         assertEquals(union.getIdentifier(), "UnionOptional");
