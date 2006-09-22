@@ -33,7 +33,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkFloatType(seq);
+        PrimitiveTest.checkFloatType((MTyped)seq);
     }
 
     public void testBoundedSequenceOfDouble() throws CcmtoolsException
@@ -44,7 +44,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkDoubleType(seq);
+        PrimitiveTest.checkDoubleType((MTyped)seq);
     }
 
     public void testBoundedSequenceOfLongDouble() throws CcmtoolsException
@@ -55,7 +55,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkLongDoubleType(seq);
+        PrimitiveTest.checkLongDoubleType((MTyped)seq);
     }
     
     
@@ -67,7 +67,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkShortType(seq);
+        PrimitiveTest.checkShortType((MTyped)seq);
     }
 
     public void testBoundedSequenceOfLong() throws CcmtoolsException
@@ -89,7 +89,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkLongLongType(seq);
+        PrimitiveTest.checkLongLongType((MTyped)seq);
     }             
 
     
@@ -102,7 +102,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkUnsignedShortType(seq);
+        PrimitiveTest.checkUnsignedShortType((MTyped)seq);
     }
 
     public void testBoundedSequenceOfUnsignedLong() 
@@ -114,7 +114,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkUnsignedLongType(seq);
+        PrimitiveTest.checkUnsignedLongType((MTyped)seq);
     }
 
     public void testBoundedSequenceOfUnsignedLongLong() 
@@ -126,7 +126,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 8);
-        PrimitiveTest.checkUnsignedLongLongType(seq);
+        PrimitiveTest.checkUnsignedLongLongType((MTyped)seq);
     }
 
     
@@ -149,7 +149,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkWideCharType(seq);
+        PrimitiveTest.checkWideCharType((MTyped)seq);
     }
     
     
@@ -173,7 +173,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkOctetType(seq);
+        PrimitiveTest.checkOctetType((MTyped)seq);
     }
     
     
@@ -185,7 +185,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkAnyType(seq);
+        PrimitiveTest.checkAnyType((MTyped)seq);
     }
     
     
@@ -197,7 +197,7 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkObjectType(seq);
+        PrimitiveTest.checkObjectType((MTyped)seq);
     }
     
     
@@ -209,6 +209,6 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 777);
-        PrimitiveTest.checkValueBaseType(seq);
+        PrimitiveTest.checkValueBaseType((MTyped)seq);
     }
 }

@@ -6,6 +6,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
@@ -33,7 +34,7 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef string StringType;");
 
         assertEquals(alias.getIdentifier(), "StringType");
-        PrimitiveTest.checkStringType(alias);
+        PrimitiveTest.checkStringType((MTyped)alias);
     }             
         
     public void testTypedefOfBoundedString() 
@@ -42,7 +43,7 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef string<7> BStringType;");
 
         assertEquals(alias.getIdentifier(), "BStringType");
-        PrimitiveTest.checkBoundedStringType(alias, 7);
+        PrimitiveTest.checkBoundedStringType((MTyped)alias, 7);
     }             
     
     
@@ -52,7 +53,7 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef wstring WStringType;");
 
         assertEquals(alias.getIdentifier(), "WStringType");
-        PrimitiveTest.checkWideStringType(alias);        
+        PrimitiveTest.checkWideStringType((MTyped)alias);        
     }             
     
     public void testTypedefOfBoundedWString() 
@@ -61,7 +62,7 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef wstring<13> BWStringType;");
 
         assertEquals(alias.getIdentifier(), "BWStringType");
-        PrimitiveTest.checkBoundedWideStringType(alias, 13);       
+        PrimitiveTest.checkBoundedWideStringType((MTyped)alias, 13);       
     }             
     
         
@@ -71,6 +72,6 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef fixed<9,3> FixedType;");
 
         assertEquals(alias.getIdentifier(), "FixedType");
-        PrimitiveTest.checkFixedType(alias);        
+        PrimitiveTest.checkFixedType((MTyped)alias);        
     }             
 }

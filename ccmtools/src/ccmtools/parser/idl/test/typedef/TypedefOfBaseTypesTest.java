@@ -30,7 +30,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef float FloatType;");
 
         assertEquals(alias.getIdentifier(), "FloatType");
-        PrimitiveTest.checkFloatType(alias);   
+        PrimitiveTest.checkFloatType((MTyped)alias);   
     }             
     
     public void testTypedefOfDouble() 
@@ -39,7 +39,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef double DoubleType;");
 
         assertEquals(alias.getIdentifier(), "DoubleType");
-        PrimitiveTest.checkDoubleType(alias);
+        PrimitiveTest.checkDoubleType((MTyped)alias);
     }             
     
     public void testTypedefOfLongDouble() 
@@ -48,7 +48,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef long double LDoubleType;");
 
         assertEquals(alias.getIdentifier(), "LDoubleType");
-        PrimitiveTest.checkLongDoubleType(alias);        
+        PrimitiveTest.checkLongDoubleType((MTyped)alias);        
     }             
     
          
@@ -58,7 +58,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef short ShortType;");
         
         assertEquals(alias.getIdentifier(), "ShortType");
-        PrimitiveTest.checkShortType(alias);        
+        PrimitiveTest.checkShortType((MTyped)alias);        
     }                
     
     public void testTypedefOfLong() 
@@ -76,7 +76,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef long long LLongType;");
 
         assertEquals(alias.getIdentifier(), "LLongType");
-        PrimitiveTest.checkLongLongType(alias);        
+        PrimitiveTest.checkLongLongType((MTyped)alias);        
     }
     
     
@@ -86,7 +86,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef unsigned short UShortType;");
 
         assertEquals(alias.getIdentifier(), "UShortType");
-        PrimitiveTest.checkUnsignedShortType(alias);        
+        PrimitiveTest.checkUnsignedShortType((MTyped)alias);        
     }                
 
     public void testTypedefOfUnsignedLong() 
@@ -95,7 +95,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef unsigned long ULongType;");
 
         assertEquals(alias.getIdentifier(), "ULongType");
-        PrimitiveTest.checkUnsignedLongType(alias);        
+        PrimitiveTest.checkUnsignedLongType((MTyped)alias);        
     }                
     
     public void testTypedefOfUnsignedLongLong() 
@@ -104,7 +104,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef unsigned long long ULLongType;");
 
         assertEquals(alias.getIdentifier(), "ULLongType");
-        PrimitiveTest.checkUnsignedLongLongType(alias);        
+        PrimitiveTest.checkUnsignedLongLongType((MTyped)alias);        
     }                    
     
     
@@ -123,7 +123,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef wchar WCharType;");
 
         assertEquals(alias.getIdentifier(), "WCharType");
-        PrimitiveTest.checkWideCharType(alias);     
+        PrimitiveTest.checkWideCharType((MTyped)alias);     
     }             
 
             
@@ -143,7 +143,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef octet OctetType;");
 
         assertEquals(alias.getIdentifier(), "OctetType");
-        PrimitiveTest.checkOctetType(alias);    
+        PrimitiveTest.checkOctetType((MTyped)alias);    
     }             
     
     
@@ -153,7 +153,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef any AnyType;");
 
         assertEquals(alias.getIdentifier(), "AnyType");
-        PrimitiveTest.checkAnyType(alias);        
+        PrimitiveTest.checkAnyType((MTyped)alias);        
     }             
     
     
@@ -163,7 +163,7 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef Object ObjectType;");
 
         assertEquals(alias.getIdentifier(), "ObjectType");
-        PrimitiveTest.checkObjectType(alias);    
+        PrimitiveTest.checkObjectType((MTyped)alias);    
     }
 
     
@@ -172,6 +172,6 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef ValueBase ValueBaseType;");
 
         assertEquals(alias.getIdentifier(), "ValueBaseType");
-        PrimitiveTest.checkValueBaseType(alias);        
+        PrimitiveTest.checkValueBaseType((MTyped)alias);        
     }             
 }

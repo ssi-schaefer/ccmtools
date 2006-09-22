@@ -7,6 +7,7 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
@@ -33,7 +34,7 @@ public class ArrayDimensionsTest extends ArrayTest
         assertEquals(array.getBounds().get(0), 7);
         assertEquals(array.getBounds().get(1), 2);
         
-        PrimitiveTest.checkFloatType(array);
+        PrimitiveTest.checkFloatType((MTyped)array);
     }
     
 
@@ -48,7 +49,7 @@ public class ArrayDimensionsTest extends ArrayTest
         assertEquals(array.getBounds().get(1), 2);
         assertEquals(array.getBounds().get(2), 3);
         
-        PrimitiveTest.checkFloatType(array);
+        PrimitiveTest.checkFloatType((MTyped)array);
     }
 
     public void testHyperCubeOfFloat() throws CcmtoolsException
@@ -64,7 +65,7 @@ public class ArrayDimensionsTest extends ArrayTest
         assertEquals(array.getBounds().get(3), 2);
         assertEquals(array.getBounds().get(4), 1);
 
-        PrimitiveTest.checkFloatType(array);
+        PrimitiveTest.checkFloatType((MTyped)array);
     }
 
 }

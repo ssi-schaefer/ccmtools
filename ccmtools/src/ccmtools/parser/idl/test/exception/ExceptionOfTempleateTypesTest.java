@@ -40,7 +40,7 @@ public class ExceptionOfTempleateTypesTest extends ExceptionTest
             MFieldDef field = getMember(e,0);
             assertTrue(field.getIdlType() instanceof MSequenceDef);
             MSequenceDef seq = (MSequenceDef) field.getIdlType();
-            PrimitiveTest.checkShortType(seq);
+            PrimitiveTest.checkShortType((MTyped)seq);
         }
         {
             MFieldDef field = getMember(e,1);

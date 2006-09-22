@@ -10,41 +10,25 @@ import ccmtools.metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
-public class InterfaceReadonlyAttributeTest extends InterfaceTest
+public class InterfaceAttributeListTest extends InterfaceTest
 {
-    public InterfaceReadonlyAttributeTest()
+    public InterfaceAttributeListTest()
         throws FileNotFoundException
     {
-        super(InterfaceReadonlyAttributeTest.class.getName());
+        super(InterfaceAttributeListTest.class.getName());
     }
         
     public static Test suite()
     {
-        return new TestSuite(InterfaceReadonlyAttributeTest.class);
+        return new TestSuite(InterfaceAttributeListTest.class);
     }
     
-     
-    public void testInterfaceReadonlyAttributeBaseType() throws CcmtoolsException
+         
+    public void testInterfaceAttributeList() throws CcmtoolsException
     {
         MInterfaceDef iface = parseSource(
                 "interface IFace { " +
-                "   readonly attribute long longAttr;" +
-                "};");
-
-        assertEquals(iface.getIdentifier(), "IFace");
-        assertTrue(iface.getContentss().get(0) instanceof MAttributeDef);
-        MAttributeDef attr = (MAttributeDef)iface.getContentss().get(0);
-        assertTrue(attr.isReadonly());
-        
-        PrimitiveTest.checkLongType(attr.getIdlType());
-        assertEquals(attr.getIdentifier(), "longAttr");
-    }
-
-    public void testInterfaceReadonlyAttributeListBaseType() throws CcmtoolsException
-    {
-        MInterfaceDef iface = parseSource(
-                "interface IFace { " +
-                "   readonly attribute long longAttr1, longAttr2;" +
+                "   attribute long longAttr1, longAttr2, longAttr3;" +
                 "};");
 
         assertEquals(iface.getIdentifier(), "IFace");
@@ -52,17 +36,19 @@ public class InterfaceReadonlyAttributeTest extends InterfaceTest
             assertTrue(iface.getContentss().get(0) instanceof MAttributeDef);
             MAttributeDef attr = (MAttributeDef)iface.getContentss().get(0);
             PrimitiveTest.checkLongType(attr.getIdlType());
-            assertTrue(attr.isReadonly());
             assertEquals(attr.getIdentifier(), "longAttr1");
         }
         {
             assertTrue(iface.getContentss().get(1) instanceof MAttributeDef);
             MAttributeDef attr = (MAttributeDef)iface.getContentss().get(1);
             PrimitiveTest.checkLongType(attr.getIdlType());
-            assertTrue(attr.isReadonly());
             assertEquals(attr.getIdentifier(), "longAttr2");
         }
-
+        {
+            assertTrue(iface.getContentss().get(2) instanceof MAttributeDef);
+            MAttributeDef attr = (MAttributeDef)iface.getContentss().get(2);
+            PrimitiveTest.checkLongType(attr.getIdlType());
+            assertEquals(attr.getIdentifier(), "longAttr3");
+        }
     }
-
 }

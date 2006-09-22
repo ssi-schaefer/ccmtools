@@ -11,10 +11,16 @@ public class InterfaceTestSuite
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(InterfaceTestSuite.class.getName());	
         suite.addTest(InterfaceHeaderTest.suite());
         
-        suite.addTest(InterfaceAttributeTest.suite());
+        suite.addTest(InterfaceAttributeOfBaseTypesTest.suite());
+        suite.addTest(InterfaceAttributeOfTemplateTypesTest.suite());
+        suite.addTest(InterfaceAttributeOfConstructedTypesTest.suite());        
+        suite.addTest(InterfaceAttributeListTest.suite());
         suite.addTest(InterfaceAttributeExceptionsTest.suite());
         
-        suite.addTest(InterfaceReadonlyAttributeTest.suite());
+        suite.addTest(InterfaceReadonlyAttributeOfBaseTypesTest.suite());
+        suite.addTest(InterfaceReadonlyAttributeOfTemplateTypesTest.suite());
+        suite.addTest(InterfaceReadonlyAttributeOfConstructedTypesTest.suite());
+        suite.addTest(InterfaceReadonlyAttributeListTest.suite());
         suite.addTest(InterfaceReadonlyAttributeExceptionsTest.suite());
         return suite;
 	}

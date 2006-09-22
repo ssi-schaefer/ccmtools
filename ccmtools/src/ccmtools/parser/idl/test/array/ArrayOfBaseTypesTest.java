@@ -7,6 +7,7 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
+import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
@@ -34,7 +35,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef)alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        PrimitiveTest.checkFloatType(array);
+        PrimitiveTest.checkFloatType((MTyped)array);
     }
 
     public void testArrayOfDouble() throws CcmtoolsException
@@ -46,7 +47,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef)alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkDoubleType(array);
+        PrimitiveTest.checkDoubleType((MTyped)array);
     }
 
     public void testArrayOfLongDouble() throws CcmtoolsException
@@ -58,7 +59,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        PrimitiveTest.checkLongDoubleType(array);
+        PrimitiveTest.checkLongDoubleType((MTyped)array);
     }
     
 
@@ -71,7 +72,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 3);
 
-        PrimitiveTest.checkShortType(array);
+        PrimitiveTest.checkShortType((MTyped)array);
     }
 
     public void testArrayOfLong() throws CcmtoolsException
@@ -95,7 +96,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 3);
 
-        PrimitiveTest.checkLongLongType(array);
+        PrimitiveTest.checkLongLongType((MTyped)array);
     }             
 
     
@@ -109,7 +110,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkUnsignedShortType(array);
+        PrimitiveTest.checkUnsignedShortType((MTyped)array);
     }
 
     public void testArrayOfUnsignedLong() 
@@ -122,7 +123,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        PrimitiveTest.checkUnsignedLongType(array);
+        PrimitiveTest.checkUnsignedLongType((MTyped)array);
     }
 
     public void testArrayOfUnsignedLongLong() 
@@ -135,7 +136,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkUnsignedLongLongType(array);
+        PrimitiveTest.checkUnsignedLongLongType((MTyped)array);
     }
 
     
@@ -160,7 +161,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        PrimitiveTest.checkWideCharType(array);
+        PrimitiveTest.checkWideCharType((MTyped)array);
     }
     
     
@@ -186,7 +187,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkOctetType(array);
+        PrimitiveTest.checkOctetType((MTyped)array);
     }
     
     
@@ -199,7 +200,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkAnyType(array);
+        PrimitiveTest.checkAnyType((MTyped)array);
     }
     
     
@@ -212,7 +213,7 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkObjectType(array);    
+        PrimitiveTest.checkObjectType((MTyped)array);    
     }
     
     
@@ -225,6 +226,6 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 777);
         
-        PrimitiveTest.checkValueBaseType(array);
+        PrimitiveTest.checkValueBaseType((MTyped)array);
     }
 }

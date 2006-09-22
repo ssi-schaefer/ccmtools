@@ -11,34 +11,51 @@ import ccmtools.metamodel.BaseIDL.MWstringDef;
 
 public class PrimitiveTest extends TestCase
 {
+    
     public static void checkFloatType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
-        assertEquals(type.getKind(), MPrimitiveKind.PK_FLOAT);
+        checkFloatType(typed.getIdlType());
     }
+    public static void checkFloatType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
+        assertEquals(type.getKind(), MPrimitiveKind.PK_FLOAT);
+    }    
     
     
     public static void checkDoubleType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkDoubleType(typed.getIdlType());
+    }
+    public static void checkDoubleType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_DOUBLE);
     }
 
     
     public static void checkLongDoubleType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkLongDoubleType(typed.getIdlType());
+    }
+    public static void checkLongDoubleType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_LONGDOUBLE);
     }
     
     
     public static void checkShortType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkShortType(typed.getIdlType());
+    }
+    public static void checkShortType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_SHORT);
     }
 
@@ -47,7 +64,6 @@ public class PrimitiveTest extends TestCase
     {
         checkLongType(typed.getIdlType());
     }
-
     public static void checkLongType(MIDLType idlType)
     {
         assertTrue(idlType instanceof MPrimitiveDef);
@@ -55,32 +71,51 @@ public class PrimitiveTest extends TestCase
         assertEquals(type.getKind(), MPrimitiveKind.PK_LONG);
     }
 
-    
+
     public static void checkLongLongType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkLongLongType(typed.getIdlType());
+    }
+    public static void checkLongLongType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_LONGLONG);
     }
     
+
     public static void checkUnsignedShortType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkUnsignedShortType(typed.getIdlType());
+    }
+    public static void checkUnsignedShortType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_USHORT);
     }
     
+
     public static void checkUnsignedLongType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkUnsignedLongType(typed.getIdlType());
+    }
+    public static void checkUnsignedLongType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_ULONG);
     }
+
     
     public static void checkUnsignedLongLongType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkUnsignedLongLongType(typed.getIdlType());
+    }
+    public static void checkUnsignedLongLongType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_ULONGLONG);
     }
     
@@ -89,7 +124,6 @@ public class PrimitiveTest extends TestCase
     {
         checkCharType(typed.getIdlType());
     }
-
     public static void checkCharType(MIDLType idlType)
     {
         assertTrue(idlType instanceof MPrimitiveDef);
@@ -100,8 +134,12 @@ public class PrimitiveTest extends TestCase
     
     public static void checkWideCharType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkWideCharType(typed.getIdlType());
+    }    
+    public static void checkWideCharType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_WCHAR);
     }
     
@@ -109,8 +147,7 @@ public class PrimitiveTest extends TestCase
     public static void checkBooleanType(MTyped typed)
     {
         checkBooleanType(typed.getIdlType());
-    }
-    
+    }    
     public static void checkBooleanType(MIDLType idlType)
     {
         assertTrue(idlType instanceof MPrimitiveDef);
@@ -121,63 +158,105 @@ public class PrimitiveTest extends TestCase
     
     public static void checkOctetType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkOctetType(typed.getIdlType());
+    }
+    public static void checkOctetType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_OCTET);
     }
     
+    
     public static void checkAnyType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkAnyType(typed.getIdlType());
+    }
+    public static void checkAnyType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_ANY);
     }
     
+    
     public static void checkObjectType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkObjectType(typed.getIdlType());
+    }
+    public static void checkObjectType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_OBJREF);
     }
     
+    
     public static void checkValueBaseType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MPrimitiveDef);
-        MPrimitiveDef type = (MPrimitiveDef)typed.getIdlType();
+        checkValueBaseType(typed.getIdlType());
+    }
+    public static void checkValueBaseType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
         assertEquals(type.getKind(), MPrimitiveKind.PK_VALUEBASE);
     }
     
+    
     public static void checkStringType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MStringDef);
+        checkStringType(typed.getIdlType());
     }
+    public static void checkStringType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MStringDef);
+    }
+
     
     public static void checkBoundedStringType(MTyped typed, int bound)
     {
-        assertTrue(typed.getIdlType() instanceof MStringDef);
-        MStringDef type = (MStringDef)typed.getIdlType();
+        checkBoundedStringType(typed.getIdlType(), bound);
+    }
+    public static void checkBoundedStringType(MIDLType idlType, int bound)
+    {
+        assertTrue(idlType instanceof MStringDef);
+        MStringDef type = (MStringDef)idlType;
         assertEquals(type.getBound().longValue(), bound);
     }
+    
     
     public static void checkWideStringType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MWstringDef);
+        checkWideStringType(typed.getIdlType());
+    }
+    public static void checkWideStringType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MWstringDef);
     }
 
+    
     public static void checkBoundedWideStringType(MTyped typed, int bound)
     {
-        assertTrue(typed.getIdlType() instanceof MWstringDef);
-        MWstringDef type = (MWstringDef)typed.getIdlType();
+        checkBoundedWideStringType(typed.getIdlType(), bound);
+    }
+    public static void checkBoundedWideStringType(MIDLType idlType, int bound)
+    {
+        assertTrue(idlType instanceof MWstringDef);
+        MWstringDef type = (MWstringDef)idlType;
         assertEquals(type.getBound().longValue(), bound);
     }
+
     
     public static void checkFixedType(MTyped typed)
     {
-        assertTrue(typed.getIdlType() instanceof MFixedDef);
-        MFixedDef type = (MFixedDef)typed.getIdlType();
+        checkFixedType(typed.getIdlType());
+    }
+    public static void checkFixedType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MFixedDef);
+        MFixedDef type = (MFixedDef)idlType;
         assertEquals(type.getDigits(), 9);
         assertEquals(type.getScale(), 3);
     }
-    
-    
 }

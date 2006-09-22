@@ -39,7 +39,7 @@ public class StructOfTempleateTypesTest extends StructTest
             MFieldDef field = struct.getMember(0);
             assertTrue(field.getIdlType() instanceof MSequenceDef);
             MSequenceDef seq = (MSequenceDef) field.getIdlType();
-            PrimitiveTest.checkShortType(seq);
+            PrimitiveTest.checkShortType((MTyped)seq);
         }
         {
             MFieldDef field = struct.getMember(1);

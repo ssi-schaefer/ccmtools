@@ -248,7 +248,7 @@ public class ParserHelper
     public MInterfaceDef parseInterfaceDcl(MInterfaceDef iface, List body)
     {
         getLogger().fine("5: interface_header { interface_body }");
-        
+        Collections.reverse(body);
         for(Iterator i=body.iterator(); i.hasNext();)
         {      
             MContained content = (MContained)i.next();
@@ -358,7 +358,6 @@ public class ParserHelper
         if(export instanceof List)
         {
             List exportList = (List)export;
-            Collections.reverse(exportList);
             exports.addAll(exportList);
         }
         else

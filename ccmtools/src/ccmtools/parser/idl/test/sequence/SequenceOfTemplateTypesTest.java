@@ -7,6 +7,7 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MSequenceDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
@@ -35,7 +36,7 @@ public class SequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(seq.getIdlType() instanceof MSequenceDef);        
         MSequenceDef innerSeq = (MSequenceDef)seq.getIdlType();
         
-        PrimitiveTest.checkShortType(innerSeq);   
+        PrimitiveTest.checkShortType((MTyped)innerSeq);   
     }
 
     
@@ -47,7 +48,7 @@ public class SequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         
-        PrimitiveTest.checkStringType(seq);
+        PrimitiveTest.checkStringType((MTyped)seq);
     }
     
     public void testSequenceOfBoundedString() throws CcmtoolsException
@@ -58,7 +59,7 @@ public class SequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
 
-        PrimitiveTest.checkBoundedStringType(seq, 6);
+        PrimitiveTest.checkBoundedStringType((MTyped)seq, 6);
     }
     
     public void testSequenceOfWideString() throws CcmtoolsException
@@ -69,7 +70,7 @@ public class SequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
 
-        PrimitiveTest.checkWideStringType(seq);
+        PrimitiveTest.checkWideStringType((MTyped)seq);
     }
     
     public void testSequenceOfBoundedWideString() throws CcmtoolsException
@@ -80,7 +81,7 @@ public class SequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
 
-        PrimitiveTest.checkBoundedWideStringType(seq, 7);
+        PrimitiveTest.checkBoundedWideStringType((MTyped)seq, 7);
     }
 
     public void testSequenceOfFixed() throws CcmtoolsException
@@ -91,6 +92,6 @@ public class SequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
 
-        PrimitiveTest.checkFixedType(seq);
+        PrimitiveTest.checkFixedType((MTyped)seq);
     }
 }

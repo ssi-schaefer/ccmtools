@@ -56,7 +56,7 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkStringType(array);
+        PrimitiveTest.checkStringType((MTyped)array);
     }
 
 
@@ -69,7 +69,7 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkBoundedStringType(array, 6);
+        PrimitiveTest.checkBoundedStringType((MTyped)array, 6);
     }
     
     
@@ -82,7 +82,7 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkWideStringType(array);
+        PrimitiveTest.checkWideStringType((MTyped)array);
     }
     
     public void testArrayOfBoundedWideString() throws CcmtoolsException
@@ -94,7 +94,7 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
 
-        PrimitiveTest.checkBoundedWideStringType(array, 3);
+        PrimitiveTest.checkBoundedWideStringType((MTyped)array, 3);
     }
 
     public void testArrayOfFixed() throws CcmtoolsException
@@ -106,6 +106,6 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkFixedType(array);
+        PrimitiveTest.checkFixedType((MTyped)array);
     }    
 }

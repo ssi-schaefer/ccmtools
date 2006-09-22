@@ -7,7 +7,10 @@ import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MSequenceDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
@@ -23,7 +26,21 @@ public class SequenceTest extends TestCase
         uiDriver = new ConsoleDriver();
     }
         
-
+    public static String getSimpleSequenceSource()
+    {
+        return "typedef sequence<long> SimpleSequence;";
+    }
+    
+    public static void checkSimpleSequence(MTyped type)
+    {
+        assertTrue(type.getIdlType() instanceof MAliasDef);
+        MAliasDef alias = (MAliasDef)type.getIdlType();
+        assertEquals(alias.getIdentifier(), "SimpleSequence");
+        assertTrue(alias.getIdlType() instanceof MSequenceDef);
+        MSequenceDef seq = (MSequenceDef) alias.getIdlType();
+        PrimitiveTest.checkLongType((MTyped)seq);        
+    }
+    
     /*
      * Utility Methods
      */

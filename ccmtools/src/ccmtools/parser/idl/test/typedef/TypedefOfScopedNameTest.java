@@ -40,7 +40,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         assertTrue(typedef.getIdlType() instanceof MAliasDef);
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "FloatType");
-        PrimitiveTest.checkFloatType(alias);
+        PrimitiveTest.checkFloatType((MTyped)alias);
     }             
 
     
@@ -60,7 +60,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef)alias.getIdlType();
-        PrimitiveTest.checkShortType(seq);
+        PrimitiveTest.checkShortType((MTyped)seq);
     }             
     
 
@@ -76,7 +76,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "StringType");
         
-        PrimitiveTest.checkStringType(alias);        
+        PrimitiveTest.checkStringType((MTyped)alias);        
     }             
     
 
@@ -92,7 +92,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "WStringType");
     
-        PrimitiveTest.checkWideStringType(alias);
+        PrimitiveTest.checkWideStringType((MTyped)alias);
     }             
     
     
@@ -107,7 +107,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         assertTrue(typedef.getIdlType() instanceof MAliasDef);
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "FixedType");
-        PrimitiveTest.checkFixedType(alias);
+        PrimitiveTest.checkFixedType((MTyped)alias);
     }             
     
     
@@ -130,7 +130,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         MAliasDef alias2 = (MAliasDef)alias.getIdlType();
         assertEquals(alias2.getIdentifier(), "FloatType");
                 
-        PrimitiveTest.checkFloatType(alias2);
+        PrimitiveTest.checkFloatType((MTyped)alias2);
     }
     
     

@@ -7,6 +7,7 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MSequenceDef;
+import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
 
@@ -35,7 +36,7 @@ public class BoundedSequenceOfTemplateTypesTest extends SequenceTest
         
         assertTrue(seq.getIdlType() instanceof MSequenceDef);       
         MSequenceDef innerSeq = (MSequenceDef)seq.getIdlType();         
-        PrimitiveTest.checkShortType(innerSeq);
+        PrimitiveTest.checkShortType((MTyped)innerSeq);
     }
 
     
@@ -47,7 +48,7 @@ public class BoundedSequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);        
-        PrimitiveTest.checkStringType(seq);
+        PrimitiveTest.checkStringType((MTyped)seq);
     }
     
     public void testBoundedSequenceOfBoundedString() throws CcmtoolsException
@@ -58,7 +59,7 @@ public class BoundedSequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkBoundedStringType(seq, 6);
+        PrimitiveTest.checkBoundedStringType((MTyped)seq, 6);
     }
     
     public void testBoundedSequenceOfWideString() throws CcmtoolsException
@@ -69,7 +70,7 @@ public class BoundedSequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkWideStringType(seq);
+        PrimitiveTest.checkWideStringType((MTyped)seq);
     }
     
     public void testBoundedSequenceOfBoundedWideString() throws CcmtoolsException
@@ -80,7 +81,7 @@ public class BoundedSequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkBoundedWideStringType(seq, 6);
+        PrimitiveTest.checkBoundedWideStringType((MTyped)seq, 6);
     }
 
     public void testBoundedSequenceOfFixed() throws CcmtoolsException
@@ -91,6 +92,6 @@ public class BoundedSequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkFixedType(seq);
+        PrimitiveTest.checkFixedType((MTyped)seq);
     }
 }
