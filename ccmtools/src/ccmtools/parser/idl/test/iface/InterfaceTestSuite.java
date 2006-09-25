@@ -22,6 +22,14 @@ public class InterfaceTestSuite
         suite.addTest(InterfaceReadonlyAttributeOfConstructedTypesTest.suite());
         suite.addTest(InterfaceReadonlyAttributeListTest.suite());
         suite.addTest(InterfaceReadonlyAttributeExceptionsTest.suite());
+        
+        suite.addTest(InterfaceOperationVoidTypesTest.suite());
+        suite.addTest(InterfaceOperationOnewayTest.suite());
+        
+        suite.addTest(InterfaceOperationBaseTypesTest.suite());
+        suite.addTest(InterfaceOperationTemplateTypesTest.suite());
+        suite.addTest(InterfaceOperationConstructedTypesTest.suite());
+        
         return suite;
 	}
 }

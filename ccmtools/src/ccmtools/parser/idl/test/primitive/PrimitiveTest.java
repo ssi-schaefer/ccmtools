@@ -11,6 +11,17 @@ import ccmtools.metamodel.BaseIDL.MWstringDef;
 
 public class PrimitiveTest extends TestCase
 {
+    public static void checkVoidType(MTyped typed)
+    {
+        checkVoidType(typed.getIdlType());
+    }
+    public static void checkVoidType(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MPrimitiveDef);
+        MPrimitiveDef type = (MPrimitiveDef)idlType;
+        assertEquals(type.getKind(), MPrimitiveKind.PK_VOID);
+    }    
+    
     
     public static void checkFloatType(MTyped typed)
     {

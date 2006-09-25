@@ -262,18 +262,17 @@ nonterminal	Integer fixed_array_size;
 nonterminal	List attr_dcl;
 nonterminal	MExceptionDef except_dcl;
 nonterminal	List members;
-nonterminal		op_dcl;
-nonterminal		op_attribute;
-nonterminal		op_type_spec;
-
-
-nonterminal		parameter_dcls;					/* 90 */
-nonterminal		param_dcls;
-nonterminal		param_dcl;
-nonterminal		param_attribute;
+nonterminal	MOperationDef op_dcl;
+nonterminal	Boolean op_attribute;
+nonterminal MIDLType op_type_spec;
+nonterminal	List parameter_dcls;					/* 90 */
+nonterminal List param_dcls;
+nonterminal	MParameterDef param_dcl;
+nonterminal	MParameterMode param_attribute;
 nonterminal	List raises_expr;  		// List<MExceptionDef>
-nonterminal		context_expr;
-nonterminal		string_literals;
+nonterminal	List context_expr;
+nonterminal List string_literals;
+
 nonterminal	String T_string_literal;
 nonterminal	String T_wstring_literal;
 
@@ -1807,50 +1806,115 @@ members
 
 /* 87 */
 op_dcl
-	::= op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr context_expr
-	| op_attribute op_type_spec T_IDENTIFIER parameter_dcls context_expr
-	| op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr
-	| op_attribute op_type_spec T_IDENTIFIER parameter_dcls
+	::= 
+		op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr context_expr
+		{:
+		
+		:}
+	| 
+		op_attribute op_type_spec T_IDENTIFIER parameter_dcls context_expr
+		{:
+		
+		:}
+	| 
+		op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr
+		{:
+		
+		:}
+	| 
+		op_attribute:a op_type_spec:t T_IDENTIFIER:id parameter_dcls:pl
+		{:
+			RESULT = helper.parseOpDcl(a,t,id,pl);
+		:}
 	;
 
 
 /* 88 */
 op_attribute
-	::= /*empty*/
-	| T_ONEWAY
+	::= 
+		/*empty*/
+		{:
+			RESULT = Boolean.FALSE; // is oneway = false
+		:}		
+	| 
+		T_ONEWAY
+		{:
+			RESULT = Boolean.TRUE; // is oneway = true
+		:}
 	;
 
 
 /* 89 */
 op_type_spec	
-	::= param_type_spec
-	| T_VOID
+	::= 
+		param_type_spec:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		T_VOID
+		{:
+			RESULT = helper.parseOpTypeVoid();
+		:}
 	;
 
 
 /* 90 */
 parameter_dcls
-	::= T_LEFT_PARANTHESIS param_dcls T_RIGHT_PARANTHESIS
-	| T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+	::= 
+		T_LEFT_PARANTHESIS param_dcls:l T_RIGHT_PARANTHESIS
+		{:
+			RESULT = l;
+		:}
+	| 
+		T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+		{:
+			RESULT = helper.parseParameterDcls();
+		:}
+		
 	;
 
 param_dcls
-	::= param_dcl
-	| param_dcl T_COMMA param_dcls
+	::= 
+		param_dcl:p
+		{:
+			RESULT = helper.	parseParameterDcls(p);		
+		:}
+	| 
+		param_dcl:p T_COMMA param_dcls:l
+		{:
+			RESULT = helper.	parseParameterDcls(p,l);	
+		:}
 	;
 
 
 /* 91 */
 param_dcl
-	::= param_attribute param_type_spec simple_declarator
+	::= 
+		param_attribute:a param_type_spec:t simple_declarator:id
+		{:
+			RESULT = helper.parseParameterDcl(a, t, id);
+		:}
 	;
 
 
 /* 92 */
 param_attribute
-	::= T_IN
-	| T_OUT
-	| T_INOUT
+	::= 
+		T_IN
+		{:
+			RESULT = MParameterMode.PARAM_IN;
+		:}		
+	| 
+		T_OUT
+		{:
+			RESULT = MParameterMode.PARAM_OUT;
+		:}		
+	| 
+		T_INOUT
+		{:
+			RESULT = MParameterMode.PARAM_INOUT;
+		:}		
 	;
 
 
@@ -1863,10 +1927,16 @@ raises_expr
 		:}
 	;
 
+
 /* 94 */
 context_expr
-	::= T_CONTEXT T_LEFT_PARANTHESIS string_literals T_RIGHT_PARANTHESIS
+	::= 
+		T_CONTEXT T_LEFT_PARANTHESIS string_literals:l T_RIGHT_PARANTHESIS
+		{:
+			RESULT = l;
+		:}
 	;
+
 
 string_literals
 	::= 

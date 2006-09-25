@@ -41,6 +41,11 @@ import ccmtools.metamodel.BaseIDL.MFixedDefImpl;
 import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.metamodel.BaseIDL.MInterfaceDefImpl;
+import ccmtools.metamodel.BaseIDL.MOperationDef;
+import ccmtools.metamodel.BaseIDL.MOperationDefImpl;
+import ccmtools.metamodel.BaseIDL.MParameterDef;
+import ccmtools.metamodel.BaseIDL.MParameterDefImpl;
+import ccmtools.metamodel.BaseIDL.MParameterMode;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDefImpl;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
@@ -1020,6 +1025,93 @@ public class ParserHelper
         return type;
     }
         
+    
+    /* 87 */
+    public MOperationDef parseOpDcl(Boolean isOneway, MIDLType type, String id, List parameters)
+    {
+        getLogger().fine("87: op_attribute op_type_spec T_IDENTIFIER parameter_dcls");
+        MOperationDef operation = new MOperationDefImpl();
+        operation.setOneway(isOneway.booleanValue());        
+        operation.setIdlType(type);
+        operation.setIdentifier(id);
+        Collections.reverse(parameters);
+        operation.setParameters(parameters);
+        if(operation.isOneway() && !isVoidOperation(operation))
+        {
+            reportError("An oneway operation must not return a value (e.g. " + operation.getIdlType() + ")!");
+        }
+        return operation;
+    }
+    
+    
+    private boolean isVoidOperation(MOperationDef op)
+    {
+        if(op.getIdlType() instanceof MPrimitiveDef)
+        {
+            MPrimitiveDef type = (MPrimitiveDef)op.getIdlType();
+            if(type.getKind() == MPrimitiveKind.PK_VOID)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    
+    /* 89 */
+    public MIDLType parseOpTypeVoid()
+    {
+        MPrimitiveDef type = new MPrimitiveDefImpl();
+        type.setKind(MPrimitiveKind.PK_VOID);
+        return type;
+    }
+    
+    /* 90 */
+    public List parseParameterDcls()
+    {
+        getLogger().fine("90: T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS");  
+        List l = new ArrayList();
+        return l;
+    }
+    
+    public List parseParameterDcls(MParameterDef parameter)
+    {
+        getLogger().fine("90: param_dcl = "  + parameter);  
+        List l = new ArrayList();
+        l.add(parameter);
+        return l;
+    }
+    
+    public List parseParameterDcls(MParameterDef parameter, List l)
+    {
+        getLogger().fine("90: param_dcl T_COMMA param_dcls = " + parameter + ", " + l);
+        l.add(parameter);
+        return l;
+    }
+    
+    
+    /* 91 */
+    public MParameterDef parseParameterDcl(MParameterMode mode, MIDLType type, Declarator id)
+    {
+        getLogger().fine("91: param_attribute param_type_spec simple_declarator = " + mode + ", " + type + ", " + id);  
+        MParameterDef parameter = new MParameterDefImpl();
+        parameter.setDirection(mode);
+        parameter.setIdlType(type);
+        parameter.setIdentifier(id.toString());
+        return parameter;
+    }
+    
+    
+    
+    
+    
     
     /* 94?? */
     public String parseStringLiteral(String s)
