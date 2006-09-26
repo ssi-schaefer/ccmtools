@@ -168,31 +168,28 @@ nonterminal	List interface_names;
 nonterminal	List scoped_names;
 nonterminal ScopedName scoped_name;
 
-nonterminal		value;
-nonterminal		value_forward_dcl;
-nonterminal		value_box_dcl;
-nonterminal		value_abs_dcl;
-nonterminal		value_body;
-nonterminal		value_dcl;
-nonterminal		value_elements;
-nonterminal		value_header;
-nonterminal		value_inheritance_spec;
-nonterminal		value_inheritance_bases;
-nonterminal		value_names;
-
-/* 20 */
-nonterminal		value_name;			
-nonterminal		value_element;
-nonterminal		state_member;
-nonterminal		init_dcl;
-nonterminal		init_param_decls;
-nonterminal		init_param_decl;
-nonterminal		init_param_attribute;
+nonterminal	MContained value;
+nonterminal	MValueDef value_forward_dcl;
+nonterminal	MValueBoxDef value_box_dcl;
+nonterminal	MValueDef value_abs_dcl;
+nonterminal List value_body;
+nonterminal	MValueDef value_dcl;
+nonterminal List value_elements;
+nonterminal MValueDef value_header;
+nonterminal List value_inheritance_spec;
+nonterminal List value_inheritance_bases;
+nonterminal List value_names;
+nonterminal	ScopedName value_name;		/* 20 */
+nonterminal Object value_element;
+nonterminal MValueMemberDef state_member;
+nonterminal	MFactoryDef init_dcl;
+nonterminal List init_param_decls;
+nonterminal MParameterDef init_param_decl;
+nonterminal MParameterMode init_param_attribute;
 
 nonterminal	MConstantDef	 const_dcl;
 nonterminal	MIDLType	 const_type;
 nonterminal	Object const_exp;
-
 nonterminal	Object or_expr;	 					/* 30 */		
 nonterminal	Object xor_expr;
 nonterminal	Object and_expr;
@@ -202,7 +199,6 @@ nonterminal	Object mult_expr;
 nonterminal	Object unary_expr;
 nonterminal	Object primary_expr;
 nonterminal	Object literal; 			
-
 nonterminal	Integer	positive_int_const; 			/* 41 */
 
 nonterminal	MIDLType	 type_dcl;
@@ -659,10 +655,26 @@ scoped_name
 
 /* 13 */
 value
-	::= value_dcl
-	| value_abs_dcl
-	| value_box_dcl
-	| value_forward_dcl
+	::= 
+		value_dcl:v
+		{:
+			RESULT = v;
+		:}
+	| 
+		value_abs_dcl:v
+		{:
+			RESULT = v;
+		:}
+	| 
+		value_box_dcl:v
+		{:
+			RESULT = v;
+		:}
+	| 
+		value_forward_dcl:v
+		{:
+			RESULT = v;
+		:}
 	;
 
 
@@ -685,10 +697,9 @@ value_forward_dcl
 /* 15 */
 value_box_dcl
 	::= 
-		T_VALUETYPE T_IDENTIFIER:id
-	 	type_spec
+		T_VALUETYPE T_IDENTIFIER:id 	type_spec:t
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseValueBoxDeclaration(id, t);
 		:}		
 	;
 
@@ -718,13 +729,20 @@ value_body
 
 /* 17 */
 value_dcl
-	::= value_header T_LEFT_CURLY_BRACKET value_elements T_RIGHT_CURLY_BRACKET
-	| value_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+	::= 
+		value_header T_LEFT_CURLY_BRACKET value_elements T_RIGHT_CURLY_BRACKET
+	| 
+		value_header:h T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+		{:
+			RESULT = helper.parseValueDeclaration(h);
+		:}
 	;
 
 value_elements
-	::= value_element
-	| value_element value_elements
+	::= 
+		value_element
+	| 
+		value_element value_elements
 	;
 
 
@@ -733,91 +751,116 @@ value_header
 	::= 
 		T_VALUETYPE T_IDENTIFIER:id 	value_inheritance_spec
 		{:
-			helper.registerTypeId(id);
+			
 		:}		
 	| 
-		T_CUSTOM T_VALUETYPE T_IDENTIFIER:id 
-			value_inheritance_spec		
+		T_CUSTOM T_VALUETYPE T_IDENTIFIER:id value_inheritance_spec
 		{:
-			helper.registerTypeId(id);
+		
 		:}
 	| 
 		T_VALUETYPE T_IDENTIFIER:id
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseValueHeader(id);
 		:}				
 	| 
 		T_CUSTOM T_VALUETYPE T_IDENTIFIER:id
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseCustomValueHeader(id);
 		:}			
 	;
 
 
 /* 19 */
 value_inheritance_spec
-	::= T_COLON value_inheritance_bases
-	| T_COLON value_inheritance_bases T_SUPPORTS interface_names 
-	| T_SUPPORTS interface_names
+	::= 
+		T_COLON value_inheritance_bases
+	| 
+		T_COLON value_inheritance_bases T_SUPPORTS interface_names 
+	| 
+		T_SUPPORTS interface_names
 	;
 
 
 value_inheritance_bases
-	::= value_name
-	| value_name T_COMMA value_names
-	| T_TRUNCATABLE value_name
-	| T_TRUNCATABLE value_name T_COMMA value_names
+	::= 
+		value_name
+	| 
+		value_name T_COMMA value_names
+	| 
+		T_TRUNCATABLE value_name
+	| 
+		T_TRUNCATABLE value_name T_COMMA value_names
 	;
 
 value_names
-	::= scoped_names
+	::= 
+		scoped_names:l
+		{:
+			RESULT = l;
+		:}
 	;
 
 
 /* 20 */
 value_name
-	::= scoped_name
+	::= 
+		scoped_name:id
+		{:
+			RESULT = id;
+		:}
 	;
 
 
 /* 21 */
 value_element
-	::= export
-	| state_member
-	| init_dcl
+	::= 
+		export
+	| 
+		state_member
+	| 
+		init_dcl
 	;
 
 
 /* 22 */
 state_member
-	::= T_PUBLIC type_spec declarators T_SEMICOLON
-	| T_PRIVATE type_spec declarators T_SEMICOLON
+	::= 
+		T_PUBLIC type_spec declarators T_SEMICOLON
+	| 
+		T_PRIVATE type_spec declarators T_SEMICOLON
 	;
 
 
 /* 23 */
 init_dcl
-	::= T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS T_SEMICOLON
-	| T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS T_SEMICOLON
+	::= 
+		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS T_SEMICOLON
+	| 
+		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS T_SEMICOLON
 	;
 
 
 /* 24 */
 init_param_decls
-	::= init_param_decl
-	| init_param_decl T_COMMA init_param_decls
+	::= 
+		init_param_decl
+	| 
+		init_param_decl T_COMMA init_param_decls
 	;
 
 
 /* 25 */
 init_param_decl
-	::= init_param_attribute param_type_spec simple_declarator
+	::= 
+		init_param_attribute param_type_spec simple_declarator
 	;
 
 
 /* 26 */
 init_param_attribute
-	::= T_IN
+	::= 
+		T_IN
 	;
 
 

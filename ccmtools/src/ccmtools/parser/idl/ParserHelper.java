@@ -60,6 +60,10 @@ import ccmtools.metamodel.BaseIDL.MUnionDef;
 import ccmtools.metamodel.BaseIDL.MUnionDefImpl;
 import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.metamodel.BaseIDL.MUnionFieldDefImpl;
+import ccmtools.metamodel.BaseIDL.MValueBoxDef;
+import ccmtools.metamodel.BaseIDL.MValueBoxDefImpl;
+import ccmtools.metamodel.BaseIDL.MValueDef;
+import ccmtools.metamodel.BaseIDL.MValueDefImpl;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.metamodel.BaseIDL.MWstringDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
@@ -454,6 +458,46 @@ public class ParserHelper
     {
         return new ScopedName(id);
     }
+    
+    
+    /* 15 */
+    public MValueBoxDef parseValueBoxDeclaration(String id, MIDLType idlType)    
+    {
+        getLogger().fine("15: T_VALUETYPE T_IDENTIFIER type_spec = " + id + ", " + idlType);
+        registerTypeId(id);
+        MValueBoxDef value = new MValueBoxDefImpl();
+        value.setIdentifier(id);
+        value.setIdlType(idlType);
+        return value;
+    }
+    
+    
+    /* 17 */
+    public MValueDef parseValueDeclaration(MValueDef header)
+    {
+        getLogger().fine("17: value_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET = " + header);
+        return header;
+    }
+    
+    
+    /* 18 */
+    public MValueDef parseCustomValueHeader(String id)
+    {
+        getLogger().fine("18: T_CUSTOM T_VALUETYPE T_IDENTIFIER = " + id);
+        MValueDef value = parseValueHeader(id);
+        value.setCustom(true);
+        return value;
+    }
+    
+    public MValueDef parseValueHeader(String id)
+    {
+        getLogger().fine("18: = T_VALUETYPE T_IDENTIFIER = " + id);
+        registerTypeId(id);
+        MValueDef value = new MValueDefImpl();
+        value.setIdentifier(id);
+        return value;
+    }
+    
     
     
     
