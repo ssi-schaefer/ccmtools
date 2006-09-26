@@ -9,7 +9,10 @@ public class InterfaceTestSuite
 	public static Test suite()
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(InterfaceTestSuite.class.getName());	
+        
         suite.addTest(InterfaceHeaderTest.suite());
+        suite.addTest(InterfaceBodyTest.suite());
+        suite.addTest(InterfaceForwardDeclarationTest.suite());
         
         suite.addTest(InterfaceAttributeOfBaseTypesTest.suite());
         suite.addTest(InterfaceAttributeOfTemplateTypesTest.suite());

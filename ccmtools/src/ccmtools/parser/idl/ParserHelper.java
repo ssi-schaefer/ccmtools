@@ -122,12 +122,12 @@ public class ParserHelper
     {
         logger = Logger.getLogger("ccmtools.parser.idl");
         //!!!!!!!!!!
-//        logger.setLevel(Level.FINE);
-//        Handler handler = new ConsoleHandler();
-//        handler.setLevel(Level.ALL);
-//        handler.setFormatter(new ccm.local.MinimalFormatter());
-//        logger.addHandler(handler);
-//        ccm.local.ServiceLocator.instance().setLogger(logger);
+        logger.setLevel(Level.FINE);
+        Handler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        handler.setFormatter(new ccm.local.MinimalFormatter());
+        logger.addHandler(handler);
+        ccm.local.ServiceLocator.instance().setLogger(logger);
         //!!!!!!!!
         init();        
     }
@@ -268,12 +268,52 @@ public class ParserHelper
         return iface;
     }
     
-        
+    
+    /* 6 */
+    public MInterfaceDef parseInterfaceForwardDeclaration(String id)
+    {
+        getLogger().fine("6: T_INTERFACE T_IDENTIFIER = " + id);
+        MInterfaceDef type = new MInterfaceDefImpl();
+        type.setIdentifier(id);  
+        ScopedName identifier = new ScopedName(id);        
+        getModelRepository().registerForwardDeclaration(identifier);
+        getModelRepository().registerIdlType(identifier, type);        
+        return type;
+    }
+    
+    public MInterfaceDef parseAbstractInterfaceForwardDeclaration(String id)
+    {
+        getLogger().fine("6: T_ABSTRACT T_INTERFACE T_IDENTIFIER = " + id);
+        MInterfaceDef iface = parseInterfaceForwardDeclaration(id);
+        iface.setAbstract(true);
+        return iface;
+    }
+    
+    public MInterfaceDef parseLocalInterfaceForwardDeclaration(String id)
+    {
+        getLogger().fine("6: T_LOCAL T_INTERFACE T_IDENTIFIER = " + id);
+        MInterfaceDef iface = parseInterfaceForwardDeclaration(id);
+        iface.setLocal(true);
+        return iface;
+    }
+    
+    
     /* 7 */
     public MInterfaceDef parseInterfaceHeader(String id)
     {
-        getLogger().fine("8: T_INTERFACE T_IDENTIFIER = " + id);
-        MInterfaceDef iface = new MInterfaceDefImpl();
+        getLogger().fine("7: T_INTERFACE T_IDENTIFIER = " + id);
+        ScopedName identifier = new ScopedName(id);
+        MInterfaceDef iface;
+        if(getModelRepository().isForwardDeclaration(identifier))
+        {
+            MIDLType forwardDcl = getModelRepository().findIdlType(identifier); 
+            iface = (MInterfaceDef)forwardDcl;
+        }
+        else
+        {
+            iface = new MInterfaceDefImpl();
+            getModelRepository().registerIdlType(identifier, iface);
+        }
         iface.setIdentifier(id);
         return iface;
     }
@@ -281,8 +321,7 @@ public class ParserHelper
     public MInterfaceDef parseInterfaceHeader(String id, List inheritanceSpec)
     {
         getLogger().fine("7: T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
-        MInterfaceDef iface = new MInterfaceDefImpl();
-        iface.setIdentifier(id);
+        MInterfaceDef iface = parseInterfaceHeader(id);
         Collections.reverse(inheritanceSpec);
         iface.setBases(inheritanceSpec);
         return iface;
@@ -292,8 +331,7 @@ public class ParserHelper
     public MInterfaceDef parseAbstractInterfaceHeader(String id)
     {
         getLogger().fine("7: T_ABSTRACT T_INTERFACE T_IDENTIFIER = " + id);
-        MInterfaceDef iface = new MInterfaceDefImpl();
-        iface.setIdentifier(id);
+        MInterfaceDef iface = parseInterfaceHeader(id);
         iface.setAbstract(true);
         return iface;
     }
@@ -301,9 +339,7 @@ public class ParserHelper
     public MInterfaceDef parseAbstractInterfaceHeader(String id, List inheritanceSpec)
     {
         getLogger().fine("7: T_ABSTRACT T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
-        MInterfaceDef iface = new MInterfaceDefImpl();
-        iface.setIdentifier(id);
-        iface.setAbstract(true);
+        MInterfaceDef iface = parseAbstractInterfaceHeader(id);
         Collections.reverse(inheritanceSpec);
         iface.setBases(inheritanceSpec);
         return iface;
@@ -312,8 +348,7 @@ public class ParserHelper
     public MInterfaceDef parseLocalInterfaceHeader(String id)
     {
         getLogger().fine("7:  T_LOCAL T_INTERFACE T_IDENTIFIER = " + id);
-        MInterfaceDef iface = new MInterfaceDefImpl();
-        iface.setIdentifier(id);
+        MInterfaceDef iface = parseInterfaceHeader(id);
         iface.setLocal(true);
         return iface;
     }
@@ -321,9 +356,7 @@ public class ParserHelper
     public MInterfaceDef parseLocalInterfaceHeader(String id, List inheritanceSpec)
     {
         getLogger().fine("7:  T_LOCAL T_INTERFACE T_IDENTIFIER interface_inheritance_spec = " + id + ", " + inheritanceSpec);
-        MInterfaceDef iface = new MInterfaceDefImpl();
-        iface.setIdentifier(id);
-        iface.setLocal(true);
+        MInterfaceDef iface = parseLocalInterfaceHeader(id);
         Collections.reverse(inheritanceSpec);
         iface.setBases(inheritanceSpec);        
         return iface;

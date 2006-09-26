@@ -482,17 +482,17 @@ forward_dcl
 	::= 
 		T_INTERFACE T_IDENTIFIER:id
 		{:
-//			helper.getModelRepository().registerForwardDeclaration(id);
+			helper.parseInterfaceForwardDeclaration(id);
 		:}
 	| 
 		T_ABSTRACT T_INTERFACE T_IDENTIFIER:id
 		{:
-//			helper.getModelRepository().registerForwardDeclaration(id);
+			helper.parseAbstractInterfaceForwardDeclaration(id);
 		:}
 	| 
 		T_LOCAL T_INTERFACE T_IDENTIFIER:id
 		{:
-//			helper.getModelRepository().registerForwardDeclaration(id);
+			helper.parseLocalInterfaceForwardDeclaration(id);
 		:}
 	;
 	
@@ -1122,7 +1122,7 @@ type_dcl
 		constr_forward_decl:t
 		{:
 			helper.getLogger().fine("42: constr_forward_decl = " + t);	
-//			RESULT = t;
+			RESULT = t;
 		:}
 	;
 

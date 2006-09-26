@@ -15,8 +15,8 @@ import ccmtools.ui.UserInterfaceDriver;
 public class ConstantTest extends TestCase
 {
     private UserInterfaceDriver uiDriver;
-    public final float FLOAT_DELTA = 0.001f;
-    public final double DOUBLE_DELTA = 0.000001;
+    public final static float FLOAT_DELTA = 0.001f;
+    public final static double DOUBLE_DELTA = 0.000001;
     
     public ConstantTest(String title)
         throws FileNotFoundException
