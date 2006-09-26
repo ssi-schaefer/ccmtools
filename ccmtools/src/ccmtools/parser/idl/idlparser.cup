@@ -1807,24 +1807,24 @@ members
 /* 87 */
 op_dcl
 	::= 
-		op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr context_expr
+		op_attribute:a op_type_spec:t T_IDENTIFIER:id parameter_dcls:pl raises_expr:el context_expr:cl
 		{:
-		
+			RESULT = helper.parseOperationWithExceptionsAndContext(a,t,id,pl,el,cl);
 		:}
 	| 
-		op_attribute op_type_spec T_IDENTIFIER parameter_dcls context_expr
+		op_attribute:a op_type_spec:t T_IDENTIFIER:id parameter_dcls:pl context_expr:cl
 		{:
-		
+			RESULT = helper.parseOperationWithContext(a,t,id,pl,cl);		
 		:}
 	| 
-		op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr
+		op_attribute:a op_type_spec:t T_IDENTIFIER:id parameter_dcls:pl raises_expr:el
 		{:
-		
+			RESULT = helper.parseOperationWithExceptions(a,t,id,pl,el);	
 		:}
 	| 
 		op_attribute:a op_type_spec:t T_IDENTIFIER:id parameter_dcls:pl
 		{:
-			RESULT = helper.parseOpDcl(a,t,id,pl);
+			RESULT = helper.parseOperation(a,t,id,pl);
 		:}
 	;
 
@@ -1933,16 +1933,21 @@ context_expr
 	::= 
 		T_CONTEXT T_LEFT_PARANTHESIS string_literals:l T_RIGHT_PARANTHESIS
 		{:
-			RESULT = l;
+			RESULT = helper.parseContextExpr(l);
 		:}
 	;
 
-
 string_literals
 	::= 
-		T_string_literal
+		T_string_literal:s
+		{:
+			RESULT = helper.parseStringLiterals(s);
+		:}
 	| 
-		T_string_literal T_COMMA string_literals
+		T_string_literal:s T_COMMA string_literals:l
+		{:
+			RESULT = helper.parseStringLiterals(s,l);
+		:}
 	;
 
 T_string_literal

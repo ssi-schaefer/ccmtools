@@ -700,6 +700,6 @@ public class ParserHelper
         throws TokenStreamException
     {
     		logger.fine("");
-    		op.setExceptionDefs(new HashSet(excepts));
+    		op.setExceptionDefs(new ArrayList(excepts));
     }
 }

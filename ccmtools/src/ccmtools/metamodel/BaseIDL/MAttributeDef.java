@@ -20,7 +20,7 @@
 
 package ccmtools.metamodel.BaseIDL;
 
-import java.util.Set;
+import java.util.List;
 
 public interface MAttributeDef
     extends MContained, MTyped
@@ -30,14 +30,14 @@ public interface MAttributeDef
     void setReadonly(boolean __arg);
 
     // association: direct role: [*] --> opposite role: getException[*]
-    Set getGetExceptions();
-    void setGetExceptions(Set __arg);
+    List getGetExceptions();
+    void setGetExceptions(List __arg);
     void addGetException(MExceptionDef __arg);
     void removeGetException(MExceptionDef __arg);
 
     // association: direct role: [*] --> opposite role: setException[*]
-    Set getSetExceptions();
-    void setSetExceptions(Set __arg);
+    List getSetExceptions();
+    void setSetExceptions(List __arg);
     void addSetException(MExceptionDef __arg);
     void removeSetException(MExceptionDef __arg);
 }

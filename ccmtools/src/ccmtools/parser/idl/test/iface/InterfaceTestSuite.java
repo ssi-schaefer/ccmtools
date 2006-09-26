@@ -23,8 +23,11 @@ public class InterfaceTestSuite
         suite.addTest(InterfaceReadonlyAttributeListTest.suite());
         suite.addTest(InterfaceReadonlyAttributeExceptionsTest.suite());
         
+        
         suite.addTest(InterfaceOperationVoidTypesTest.suite());
         suite.addTest(InterfaceOperationOnewayTest.suite());
+        suite.addTest(InterfaceOperationContextTest.suite());  
+        suite.addTest(InterfaceOperationExceptionsTest.suite());  
         
         suite.addTest(InterfaceOperationBaseTypesTest.suite());
         suite.addTest(InterfaceOperationTemplateTypesTest.suite());

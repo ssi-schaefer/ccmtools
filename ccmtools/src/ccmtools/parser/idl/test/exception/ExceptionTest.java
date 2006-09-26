@@ -27,19 +27,30 @@ public class ExceptionTest extends TestCase
          
     
     
+    public static String getEmptyExceptionSource()
+    {
+        return "exception EmptyException {};";
+    }
+    
+    public static void checkEmptyException(MExceptionDef ex)
+    {
+        assertEquals(ex.getIdentifier(), "EmptyException");
+    }
+
+    
     public static String getSimpleExceptionSource()
     {
-        return "exception SimpleError { string what; };";
+        return "exception SimpleException { string what; };";
     }
     
     public static void checkSimpleException(MExceptionDef ex)
     {
-        assertEquals(ex.getIdentifier(), "SimpleError");
+        assertEquals(ex.getIdentifier(), "SimpleException");
         MFieldDef field = (MFieldDef)ex.getMembers().get(0);
         PrimitiveTest.checkStringType(field);
         assertEquals(field.getIdentifier(), "what");
     }
-    
+
     
     /*
      * Utility Methods

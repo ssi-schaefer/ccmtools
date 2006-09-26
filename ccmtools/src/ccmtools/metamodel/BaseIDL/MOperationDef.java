@@ -41,8 +41,8 @@ public interface MOperationDef
     void removeParameter(MParameterDef __arg);
 
     // association: direct role: [*] --> opposite role: exceptionDef[*]
-    Set getExceptionDefs();
-    void setExceptionDefs(Set __arg);
+    List getExceptionDefs();
+    void setExceptionDefs(List __arg);
     void addExceptionDef(MExceptionDef __arg);
     void removeExceptionDef(MExceptionDef __arg);
 }

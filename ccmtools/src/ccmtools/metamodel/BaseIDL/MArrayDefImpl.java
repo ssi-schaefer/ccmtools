@@ -40,7 +40,7 @@ public class MArrayDefImpl
     {
         TypedBy_ = null;
         typeCode_ = null;
-	bounds_ = new ArrayList();
+        bounds_ = new ArrayList();
     }
 
     // override toString()

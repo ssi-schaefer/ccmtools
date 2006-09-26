@@ -1666,7 +1666,7 @@ op_dcl returns [MOperationDef operation = null]
         params = parameter_dcls[id] { helper.checkSetParameters(operation, params); }
         (
             exceptions = raises_expr
-            { operation.setExceptionDefs(new HashSet(exceptions)); }
+            { operation.setExceptionDefs(new ArrayList(exceptions)); }
         )?
         ( context = context_expr { operation.setContexts(context); } )? 
     ;
@@ -1891,7 +1891,7 @@ readonly_attr_declarator returns [List attributes = null]
             attributes.add(attr);
         }
         (   excepts = raises_expr
-            { attr.setGetExceptions(new HashSet(excepts)); }
+            { attr.setGetExceptions(new ArrayList(excepts)); }
         |   (   COMMA id = simple_declarator
                 {
                     attr = (MAttributeDef) helper.verifyNameEmpty(id, attr);
@@ -1957,9 +1957,9 @@ attr_declarator returns [List attributes = null]
 //      | <set_excep_expr,110>
 attr_raises_expr[MAttributeDef attr]
 { List gets = null; List sets = null; }
-    :   gets = get_excep_expr   { attr.setGetExceptions(new HashSet(gets)); }
-        ( sets = set_excep_expr { attr.setSetExceptions(new HashSet(sets)); } )?
-    |   sets = set_excep_expr   { attr.setSetExceptions(new HashSet(sets)); }
+    :   gets = get_excep_expr   { attr.setGetExceptions(new ArrayList(gets)); }
+        ( sets = set_excep_expr { attr.setSetExceptions(new ArrayList(sets)); } )?
+    |   sets = set_excep_expr   { attr.setSetExceptions(new ArrayList(sets)); }
     ;
 
 // 109. <get_excep_expr> ::= "getraises" <exception_list,111>

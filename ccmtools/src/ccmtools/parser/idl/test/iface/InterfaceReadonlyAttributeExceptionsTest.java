@@ -30,8 +30,9 @@ public class InterfaceReadonlyAttributeExceptionsTest extends InterfaceTest
     {
         MInterfaceDef iface = parseSource(
                 ExceptionTest.getSimpleExceptionSource() +
+                ExceptionTest.getEmptyExceptionSource() +
                 "interface IFace { " +
-                "   readonly attribute long longAttr raises(SimpleError);" +
+                "   readonly attribute long longAttr raises(SimpleException, EmptyException);" +
                 "};");
 
         assertEquals(iface.getIdentifier(), "IFace");
@@ -41,7 +42,7 @@ public class InterfaceReadonlyAttributeExceptionsTest extends InterfaceTest
         PrimitiveTest.checkLongType(attr.getIdlType());
         assertEquals(attr.getIdentifier(), "longAttr");
         
-        MExceptionDef ex = (MExceptionDef)attr.getGetExceptions().iterator().next();
-        ExceptionTest.checkSimpleException(ex);
+        ExceptionTest.checkSimpleException((MExceptionDef)attr.getGetExceptions().get(0));
+        ExceptionTest.checkEmptyException((MExceptionDef)attr.getGetExceptions().get(1));
     }
 }

@@ -48,7 +48,7 @@ public class MFinderDefImpl
 
     private MParameterDef parameters_;
     private MHomeDef Home_;
-    private Set CanRaiseSet_;
+    private List CanRaiseSet_;
     private List ParameterList_;
     private MContainer Contains;
     private MIDLType TypedBy_;
@@ -58,8 +58,8 @@ public class MFinderDefImpl
         isOneway_ = false;
         parameters_ = null;
         Home_ = null;
-	CanRaiseSet_ = new HashSet();
-	ParameterList_ = new ArrayList();
+        CanRaiseSet_ = new ArrayList();
+        ParameterList_ = new ArrayList();
         Contains = null;
         TypedBy_ = null;
         sourceFile = "";
@@ -115,8 +115,8 @@ public class MFinderDefImpl
     public void setHome(MHomeDef __arg)         {Home_ = __arg;}
 
     // association: direct role: [*] --> opposite role: exceptionDef[*]
-    public Set getExceptionDefs()                       {return CanRaiseSet_;}
-    public void setExceptionDefs(Set __arg)             {CanRaiseSet_ = new HashSet(__arg);}
+    public List getExceptionDefs()                       {return CanRaiseSet_;}
+    public void setExceptionDefs(List __arg)             {CanRaiseSet_ = new ArrayList(__arg);}
     public void addExceptionDef(MExceptionDef __arg)    {CanRaiseSet_.add(__arg);}
     public void removeExceptionDef(MExceptionDef __arg) {CanRaiseSet_.remove(__arg);}
 

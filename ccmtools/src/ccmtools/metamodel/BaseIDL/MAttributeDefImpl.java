@@ -20,8 +20,10 @@
 
 package ccmtools.metamodel.BaseIDL;
 
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MAttributeDefImpl
     implements MAttributeDef
@@ -39,13 +41,13 @@ public class MAttributeDefImpl
 
     private MContainer Contains;
     private MIDLType TypedBy_;
-    private Set GetRaisesSet_;
-    private Set SetRaisesSet_;
+    private List GetRaisesSet_;
+    private List SetRaisesSet_;
 
     public MAttributeDefImpl()
     {
-	GetRaisesSet_ = new HashSet();
-	SetRaisesSet_ = new HashSet();
+        GetRaisesSet_ = new ArrayList();
+        SetRaisesSet_ = new ArrayList();
         Contains = null;
         TypedBy_ = null;
         sourceFile = "";
@@ -102,14 +104,14 @@ public class MAttributeDefImpl
     public void setIdlType(MIDLType __arg)      {TypedBy_ = __arg;}
 
     // assocation: direct role: [*] --> oposide role: getException[*]
-    public Set getGetExceptions()                       {return (Set)GetRaisesSet_;}
-    public void setGetExceptions(Set __arg)             {GetRaisesSet_ = new HashSet(__arg);}
+    public List getGetExceptions()                       {return GetRaisesSet_;}
+    public void setGetExceptions(List __arg)             {GetRaisesSet_ = new ArrayList(__arg);}
     public void addGetException(MExceptionDef __arg)    {GetRaisesSet_.add(__arg);}
     public void removeGetException(MExceptionDef __arg) {GetRaisesSet_.remove(__arg);}
 
     // association: direct role: [*] --> opposite role: setException[*]
-    public Set getSetExceptions()                       {return (Set)SetRaisesSet_;}
-    public void setSetExceptions(Set __arg)             {SetRaisesSet_ = new HashSet(__arg);}
+    public List getSetExceptions()                       {return SetRaisesSet_;}
+    public void setSetExceptions(List __arg)             {SetRaisesSet_ = new ArrayList(__arg);}
     public void addSetException(MExceptionDef __arg)    {SetRaisesSet_.add(__arg);}
     public void removeSetException(MExceptionDef __arg) {SetRaisesSet_.remove(__arg);}
 }

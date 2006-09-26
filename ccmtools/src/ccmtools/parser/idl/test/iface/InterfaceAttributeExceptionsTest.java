@@ -30,8 +30,9 @@ public class InterfaceAttributeExceptionsTest extends InterfaceTest
     {
         MInterfaceDef iface = parseSource(
                 ExceptionTest.getSimpleExceptionSource() +
+                ExceptionTest.getEmptyExceptionSource() +
                 "interface IFace { " +
-                "   attribute long longAttr getraises(SimpleError);" +
+                "   attribute long longAttr getraises(EmptyException, SimpleException);" +
                 "};");
 
         assertEquals(iface.getIdentifier(), "IFace");
@@ -41,8 +42,8 @@ public class InterfaceAttributeExceptionsTest extends InterfaceTest
         PrimitiveTest.checkLongType(attr.getIdlType());
         assertEquals(attr.getIdentifier(), "longAttr");
         
-        MExceptionDef ex = (MExceptionDef)attr.getGetExceptions().iterator().next();
-        ExceptionTest.checkSimpleException(ex);
+        ExceptionTest.checkEmptyException((MExceptionDef)attr.getGetExceptions().get(0));
+        ExceptionTest.checkSimpleException((MExceptionDef)attr.getGetExceptions().get(1));
     }
     
     
@@ -50,8 +51,9 @@ public class InterfaceAttributeExceptionsTest extends InterfaceTest
     {
         MInterfaceDef iface = parseSource(
                 ExceptionTest.getSimpleExceptionSource() +
+                ExceptionTest.getEmptyExceptionSource() +
                 "interface IFace { " +
-                "   attribute long longAttr setraises(SimpleError);" +
+                "   attribute long longAttr setraises(EmptyException, SimpleException);" +
                 "};");
 
         assertEquals(iface.getIdentifier(), "IFace");
@@ -61,8 +63,8 @@ public class InterfaceAttributeExceptionsTest extends InterfaceTest
         PrimitiveTest.checkLongType(attr.getIdlType());
         assertEquals(attr.getIdentifier(), "longAttr");
         
-        MExceptionDef ex = (MExceptionDef)attr.getSetExceptions().iterator().next();
-        ExceptionTest.checkSimpleException(ex);
+        ExceptionTest.checkEmptyException((MExceptionDef)attr.getSetExceptions().get(0));
+        ExceptionTest.checkSimpleException((MExceptionDef)attr.getSetExceptions().get(1));
     }
     
     
@@ -71,7 +73,7 @@ public class InterfaceAttributeExceptionsTest extends InterfaceTest
         MInterfaceDef iface = parseSource(
                 ExceptionTest.getSimpleExceptionSource() +
                 "interface IFace { " +
-                "   attribute long longAttr getraises(SimpleError) setraises(SimpleError);" +
+                "   attribute long longAttr getraises(SimpleException) setraises(SimpleException);" +
                 "};");
 
         assertEquals(iface.getIdentifier(), "IFace");
@@ -80,14 +82,8 @@ public class InterfaceAttributeExceptionsTest extends InterfaceTest
         
         PrimitiveTest.checkLongType(attr.getIdlType());
         assertEquals(attr.getIdentifier(), "longAttr");
-        {
-            MExceptionDef ex = (MExceptionDef)attr.getGetExceptions().iterator().next();
-            ExceptionTest.checkSimpleException(ex);
-        }
-        {
-            MExceptionDef ex = (MExceptionDef)attr.getSetExceptions().iterator().next();
-            ExceptionTest.checkSimpleException(ex);
-        }
+        ExceptionTest.checkSimpleException((MExceptionDef)attr.getGetExceptions().get(0));
+        ExceptionTest.checkSimpleException((MExceptionDef)attr.getSetExceptions().get(0));
     }
 
     
@@ -96,7 +92,7 @@ public class InterfaceAttributeExceptionsTest extends InterfaceTest
         MInterfaceDef iface = parseSource(
                 ExceptionTest.getSimpleExceptionSource() +
                 "interface IFace { " +
-                "   attribute long longAttr setraises(SimpleError) getraises(SimpleError);" +
+                "   attribute long longAttr setraises(SimpleException) getraises(SimpleException);" +
                 "};");
 
         assertEquals(iface.getIdentifier(), "IFace");
@@ -105,13 +101,7 @@ public class InterfaceAttributeExceptionsTest extends InterfaceTest
         
         PrimitiveTest.checkLongType(attr.getIdlType());
         assertEquals(attr.getIdentifier(), "longAttr");
-        {
-            MExceptionDef ex = (MExceptionDef)attr.getGetExceptions().iterator().next();
-            ExceptionTest.checkSimpleException(ex);
-        }
-        {
-            MExceptionDef ex = (MExceptionDef)attr.getSetExceptions().iterator().next();
-            ExceptionTest.checkSimpleException(ex);
-        }
+        ExceptionTest.checkSimpleException((MExceptionDef)attr.getGetExceptions().get(0));
+        ExceptionTest.checkSimpleException((MExceptionDef)attr.getSetExceptions().get(0));        
     }
 }

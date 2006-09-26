@@ -64,6 +64,7 @@ import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.metamodel.BaseIDL.MWstringDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.Text;
 
 
 public class ParserHelper
@@ -121,12 +122,12 @@ public class ParserHelper
     {
         logger = Logger.getLogger("ccmtools.parser.idl");
         //!!!!!!!!!!
-        logger.setLevel(Level.FINE);
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        handler.setFormatter(new ccm.local.MinimalFormatter());
-        logger.addHandler(handler);
-        ccm.local.ServiceLocator.instance().setLogger(logger);
+//        logger.setLevel(Level.FINE);
+//        Handler handler = new ConsoleHandler();
+//        handler.setLevel(Level.ALL);
+//        handler.setFormatter(new ccm.local.MinimalFormatter());
+//        logger.addHandler(handler);
+//        ccm.local.ServiceLocator.instance().setLogger(logger);
         //!!!!!!!!
         init();        
     }
@@ -1027,7 +1028,35 @@ public class ParserHelper
         
     
     /* 87 */
-    public MOperationDef parseOpDcl(Boolean isOneway, MIDLType type, String id, List parameters)
+    public MOperationDef parseOperationWithExceptionsAndContext(Boolean isOneway, MIDLType type, String id, 
+                                                    List parameters, List exceptions, List contexts)    
+    {
+        getLogger().fine("87: op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr context_expr");
+        MOperationDef operation = parseOperationWithExceptions(isOneway,type,id,parameters,exceptions);
+        operation.setContexts(Text.joinList(" ", contexts));              
+        return operation;
+    }
+        
+    public MOperationDef parseOperationWithContext(Boolean isOneway, MIDLType type, String id, 
+                                                    List parameters, List contexts)
+    {
+        getLogger().fine("87: op_attribute op_type_spec T_IDENTIFIER parameter_dcls context_expr " + contexts);
+        MOperationDef operation = parseOperation(isOneway,type,id,parameters);
+        operation.setContexts(Text.joinList(" ", contexts));              
+        return operation;    
+    }
+    
+    public MOperationDef parseOperationWithExceptions(Boolean isOneway, MIDLType type, String id, 
+                                                    List parameters, List exceptions)
+    {
+        getLogger().fine("87: op_attribute op_type_spec T_IDENTIFIER parameter_dcls raises_expr");
+        MOperationDef operation = parseOperation(isOneway, type, id, parameters);
+        Collections.reverse(exceptions);
+        operation.setExceptionDefs(exceptions);
+        return operation;
+    }
+    
+    public MOperationDef parseOperation(Boolean isOneway, MIDLType type, String id, List parameters)
     {
         getLogger().fine("87: op_attribute op_type_spec T_IDENTIFIER parameter_dcls");
         MOperationDef operation = new MOperationDefImpl();
@@ -1036,10 +1065,12 @@ public class ParserHelper
         operation.setIdentifier(id);
         Collections.reverse(parameters);
         operation.setParameters(parameters);
+        // TODO: Semantic checks should be placed into the metamodel !!!!!!! 
         if(operation.isOneway() && !isVoidOperation(operation))
         {
             reportError("An oneway operation must not return a value (e.g. " + operation.getIdlType() + ")!");
         }
+        // TODO: Semantic checks should be placed into the metamodel !!!!!!!
         return operation;
     }
     
@@ -1114,6 +1145,25 @@ public class ParserHelper
     
     
     /* 94?? */
+    public List parseContextExpr(List literals)
+    {
+        Collections.reverse(literals);
+        return literals;
+    }
+    
+    public List parseStringLiterals(String literal)
+    {
+        List literals = new ArrayList();
+        literals.add(literal);
+        return literals;
+    }
+    
+    public List parseStringLiterals(String literal, List literals)
+    {
+        literals.add(literal);
+        return literals;
+    }
+    
     public String parseStringLiteral(String s)
     {
         getLogger().fine("94??: T_STRING_LITERAL = " + s); 
@@ -1199,10 +1249,8 @@ public class ParserHelper
             if(id instanceof ReadonlyAttributeDeclarator)
             {
                 ReadonlyAttributeDeclarator attrDeclarator = (ReadonlyAttributeDeclarator)id;
-                for(Iterator j=attrDeclarator.getExceptions().iterator(); j.hasNext();)
-                {
-                    attr.addGetException((MExceptionDef)j.next());
-                }
+                Collections.reverse(attrDeclarator.getExceptions());
+                attr.setGetExceptions(attrDeclarator.getExceptions());
             }
             attributes.add(attr);
         }
@@ -1249,14 +1297,10 @@ public class ParserHelper
             if(id instanceof AttributeDeclarator)
             {
                 AttributeDeclarator attrDeclarator = (AttributeDeclarator)id;
-                for(Iterator j=attrDeclarator.getGetterExceptions().iterator(); j.hasNext();)
-                {
-                    attr.addGetException((MExceptionDef)j.next());
-                }
-                for(Iterator j=attrDeclarator.getSetterExceptions().iterator(); j.hasNext();)
-                {
-                    attr.addSetException((MExceptionDef)j.next());
-                }
+                Collections.reverse(attrDeclarator.getGetterExceptions());
+                attr.setGetExceptions(attrDeclarator.getGetterExceptions());
+                Collections.reverse(attrDeclarator.getSetterExceptions());                
+                attr.setSetExceptions(attrDeclarator.getSetterExceptions());
             }
             attributes.add(attr);
         }
