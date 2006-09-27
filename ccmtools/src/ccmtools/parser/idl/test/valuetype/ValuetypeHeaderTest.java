@@ -41,4 +41,19 @@ public class ValuetypeHeaderTest extends ValuetypeTest
         assertTrue(value.isCustom());
         assertEquals(value.getContentss().size(),0);
     }       
+    
+    
+    public void testValuetypeInheritance() throws CcmtoolsException
+    {
+        MValueDef value = parseSource(
+                "valuetype EmptyValue { };" +
+                "valuetype SubValue : EmptyValue { };");
+        
+        assertEquals(value.getIdentifier(), "SubValue");
+        
+        assertTrue(value.getBase() instanceof MValueDef);
+        MValueDef base = (MValueDef)value.getBase();
+        assertEquals(base.getIdentifier(), "EmptyValue");
+        assertEquals(base.getContentss().size(), 0);    
+    }    
 }

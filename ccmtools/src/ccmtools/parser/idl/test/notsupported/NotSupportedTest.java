@@ -30,21 +30,6 @@ public class NotSupportedTest extends TestCase
     }
         
     
-    public void testNativeType() throws CcmtoolsException
-    {
-        try
-        {
-            parseSource("native MyNativeType;");
-            fail();
-        }
-        catch(Exception e)
-        {
-            // OK
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    
     public void testRepoIdDeclaration() throws CcmtoolsException
     {
         try

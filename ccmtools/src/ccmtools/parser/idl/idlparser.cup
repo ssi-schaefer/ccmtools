@@ -176,8 +176,8 @@ nonterminal List value_body;
 nonterminal	MValueDef value_dcl;
 nonterminal List value_elements;
 nonterminal MValueDef value_header;
-nonterminal List value_inheritance_spec;
-nonterminal List value_inheritance_bases;
+nonterminal MValueDef value_inheritance_spec;
+nonterminal MValueDef value_inheritance_bases;
 nonterminal List value_names;
 nonterminal	ScopedName value_name;		/* 20 */
 nonterminal Object value_element;
@@ -722,8 +722,10 @@ value_abs_dcl
 	;
 
 value_body
-	::= /*empty*/
-	| exports
+	::= 
+		/*empty*/
+	| 
+		exports
 	;
 
 
@@ -749,14 +751,14 @@ value_elements
 /* 18 */
 value_header
 	::= 
-		T_VALUETYPE T_IDENTIFIER:id 	value_inheritance_spec
+		T_VALUETYPE T_IDENTIFIER:id 	value_inheritance_spec:v
 		{:
-			
+			RESULT = helper.parseValueHeader(id,v);
 		:}		
 	| 
-		T_CUSTOM T_VALUETYPE T_IDENTIFIER:id value_inheritance_spec
+		T_CUSTOM T_VALUETYPE T_IDENTIFIER:id value_inheritance_spec:v
 		{:
-		
+			RESULT = helper.parseCustomValueHeader(id,v);
 		:}
 	| 
 		T_VALUETYPE T_IDENTIFIER:id
@@ -774,7 +776,10 @@ value_header
 /* 19 */
 value_inheritance_spec
 	::= 
-		T_COLON value_inheritance_bases
+		T_COLON value_inheritance_bases:v
+		{:
+			RESULT = v;
+		:}
 	| 
 		T_COLON value_inheritance_bases T_SUPPORTS interface_names 
 	| 
@@ -783,8 +788,11 @@ value_inheritance_spec
 
 
 value_inheritance_bases
-	::= 
-		value_name
+	::= // list of valuetypes
+		value_name:id
+		{:
+			RESULT = helper.parseValueInheritanceBases(id);
+		:}
 	| 
 		value_name T_COMMA value_names
 	| 
@@ -797,7 +805,7 @@ value_names
 	::= 
 		scoped_names:l
 		{:
-			RESULT = l;
+			RESULT = l;  // list of valuetypes
 		:}
 	;
 
@@ -807,7 +815,7 @@ value_name
 	::= 
 		scoped_name:id
 		{:
-			RESULT = id;
+			RESULT = id; //helper.getModelRepository().findIdlType(id);
 		:}
 	;
 
@@ -1157,9 +1165,9 @@ type_dcl
 			RESULT = t;
 		:}
 	| 
-		T_NATIVE simple_declarator:id
+		T_NATIVE simple_declarator:d
 		{:
-			helper.notSupported("native declarations (e.g. " + id + ")");
+			RESULT = helper.parseNativeTypeDcl(d);
 		:}
 	| 
 		constr_forward_decl:t

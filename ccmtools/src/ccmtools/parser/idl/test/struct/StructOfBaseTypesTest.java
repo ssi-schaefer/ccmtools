@@ -196,4 +196,19 @@ public class StructOfBaseTypesTest extends StructTest
         PrimitiveTest.checkValueBaseType(field);
         assertEquals(field.getIdentifier(), "valueBaseMember");
     }
+    
+    
+    public void testStructOfNativeMembers() throws CcmtoolsException
+    {
+        MStructDef struct = parseSource(
+                "native AID;" + 
+                "struct StructNative { AID aid; };");
+
+        assertEquals(struct.getIdentifier(), "StructNative");
+
+        MFieldDef field = struct.getMember(0);
+        PrimitiveTest.checkNativeType(field, "AID");
+        assertEquals(field.getIdentifier(), "aid");
+    }
+
 }

@@ -613,4 +613,43 @@ public class InterfaceOperationBaseTypesTest extends InterfaceTest
             assertEquals(parameter.getIdentifier(), "p3");            
         }              
     }
+
+
+    public void testInterfaceOperationOfNativeTypes() throws CcmtoolsException
+    {
+        MInterfaceDef iface = parseSource(
+                "native AID;" + 
+                "interface IFace { " +
+                "   AID op(in AID p1, inout AID p2, out AID p3);" +
+                "};");
+
+        assertEquals(iface.getIdentifier(), "IFace");
+        assertTrue(iface.getContentss().get(0) instanceof MOperationDef);
+        MOperationDef op = (MOperationDef) iface.getContentss().get(0);
+        assertEquals(op.getIdentifier(), "op");
+        PrimitiveTest.checkNativeType(op.getIdlType(), "AID");
+
+        {
+            assertTrue(op.getParameters().get(0) instanceof MParameterDef);
+            MParameterDef parameter = (MParameterDef)op.getParameters().get(0);
+            assertEquals(parameter.getDirection(), MParameterMode.PARAM_IN);
+            PrimitiveTest.checkNativeType(parameter.getIdlType(), "AID");
+            assertEquals(parameter.getIdentifier(), "p1");            
+        }
+        {
+            assertTrue(op.getParameters().get(1) instanceof MParameterDef);
+            MParameterDef parameter = (MParameterDef)op.getParameters().get(1);
+            assertEquals(parameter.getDirection(), MParameterMode.PARAM_INOUT);
+            PrimitiveTest.checkNativeType(parameter.getIdlType(), "AID");
+            assertEquals(parameter.getIdentifier(), "p2");            
+        }
+        {
+            assertTrue(op.getParameters().get(2) instanceof MParameterDef);
+            MParameterDef parameter = (MParameterDef)op.getParameters().get(2);
+            assertEquals(parameter.getDirection(), MParameterMode.PARAM_OUT);
+            PrimitiveTest.checkNativeType(parameter.getIdlType(), "AID");
+            assertEquals(parameter.getIdentifier(), "p3");            
+        }              
+    }
+
 }

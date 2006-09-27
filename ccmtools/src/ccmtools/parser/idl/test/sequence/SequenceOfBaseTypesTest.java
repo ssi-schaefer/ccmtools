@@ -195,4 +195,18 @@ public class SequenceOfBaseTypesTest extends SequenceTest
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         PrimitiveTest.checkValueBaseType((MTyped)seq);        
     }
+
+    
+    public void testSequenceOfNativeType() throws CcmtoolsException
+    {
+        MAliasDef alias = parseSource(
+                "native AID;" + 
+                "typedef sequence<AID> SeqNative;");
+
+        assertEquals(alias.getIdentifier(), "SeqNative");
+        assertTrue(alias.getIdlType() instanceof MSequenceDef);
+        MSequenceDef seq = (MSequenceDef) alias.getIdlType();
+        PrimitiveTest.checkNativeType(seq.getIdlType(), "AID");        
+    }
+
 }

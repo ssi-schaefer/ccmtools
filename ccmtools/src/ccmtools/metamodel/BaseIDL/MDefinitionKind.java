@@ -60,7 +60,8 @@ public class MDefinitionKind
                                              "DK_VALUE",
                                              "DK_VALUEBOX",
                                              "DK_VALUEMEMBER",
-                                             "DK_WSTRING"};
+                                             "DK_WSTRING",
+                                             "DK_NATIVE"};
 
     // Typesafe enum pattern (Item 21 from _Effective Java_)
     private final int definitionKind_;
@@ -113,4 +114,5 @@ public class MDefinitionKind
     public static final MDefinitionKind DK_VALUEBOX    = new MDefinitionKind(36);
     public static final MDefinitionKind DK_VALUEMEMBER = new MDefinitionKind(37);
     public static final MDefinitionKind DK_WSTRING     = new MDefinitionKind(38);
+    public static final MDefinitionKind DK_NATIVE      = new MDefinitionKind(39);
 }

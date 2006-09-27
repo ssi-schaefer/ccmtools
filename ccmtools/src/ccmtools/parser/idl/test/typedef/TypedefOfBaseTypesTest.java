@@ -174,4 +174,15 @@ public class TypedefOfBaseTypesTest extends TypedefTest
         assertEquals(alias.getIdentifier(), "ValueBaseType");
         PrimitiveTest.checkValueBaseType((MTyped)alias);        
     }             
+
+
+    public void testTypedefOfNativeType() throws CcmtoolsException
+    {
+        MAliasDef alias = parseSource(
+                "native AID;" + 
+                "typedef AID NativeType;");
+
+        assertEquals(alias.getIdentifier(), "NativeType");
+        PrimitiveTest.checkNativeType(alias.getIdlType(), "AID");        
+    }             
 }

@@ -7,7 +7,6 @@ import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
-import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.test.primitive.PrimitiveTest;
 
@@ -228,4 +227,20 @@ public class ArrayOfBaseTypesTest extends ArrayTest
         
         PrimitiveTest.checkValueBaseType((MTyped)array);
     }
+    
+    
+    public void testStructOfNativeMembers() throws CcmtoolsException
+    {
+        MAliasDef alias = parseSource(
+                "native AID;" + 
+                "typedef AID ArrayNative[666];");
+
+        assertEquals(alias.getIdentifier(), "ArrayNative");
+
+        assertTrue(alias.getIdlType() instanceof MArrayDef);
+        MArrayDef array = (MArrayDef) alias.getIdlType();
+        assertEquals(array.getBounds().get(0), 666);
+
+        PrimitiveTest.checkNativeType(array.getIdlType(), "AID");
+    }    
 }

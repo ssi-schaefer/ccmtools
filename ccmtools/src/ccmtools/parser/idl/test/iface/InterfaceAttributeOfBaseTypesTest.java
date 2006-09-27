@@ -279,4 +279,21 @@ public class InterfaceAttributeOfBaseTypesTest extends InterfaceTest
             assertEquals(attr.getIdentifier(), "valueBaseAttr");
         }        
     }
+    
+    public void testInterfaceAttributeOfNative() throws CcmtoolsException
+    {
+        MInterfaceDef iface = parseSource(
+                "native AID;" + 
+                "interface IFace { " +
+                "   attribute AID nativeAttr;" +
+                "};");
+
+        assertEquals(iface.getIdentifier(), "IFace");
+        {
+            assertTrue(iface.getContentss().get(0) instanceof MAttributeDef);
+            MAttributeDef attr = (MAttributeDef)iface.getContentss().get(0);        
+            PrimitiveTest.checkNativeType(attr, "AID");
+            assertEquals(attr.getIdentifier(), "nativeAttr");
+        }        
+    }    
 }

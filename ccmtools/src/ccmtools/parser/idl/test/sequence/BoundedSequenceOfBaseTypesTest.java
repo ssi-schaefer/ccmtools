@@ -211,4 +211,19 @@ public class BoundedSequenceOfBaseTypesTest extends SequenceTest
         assertEquals(seq.getBound().longValue(), 777);
         PrimitiveTest.checkValueBaseType((MTyped)seq);
     }
+
+
+    public void testBoundedSequenceOfNativeType() throws CcmtoolsException
+    {
+        MAliasDef alias = parseSource(
+                "native AID;" + 
+                "typedef sequence<AID,666> SeqNative;");
+
+        assertEquals(alias.getIdentifier(), "SeqNative");
+        assertTrue(alias.getIdlType() instanceof MSequenceDef);
+        MSequenceDef seq = (MSequenceDef) alias.getIdlType();
+        assertEquals(seq.getBound().longValue(), 666);
+        PrimitiveTest.checkNativeType(seq.getIdlType(), "AID");
+    }
+
 }

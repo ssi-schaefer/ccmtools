@@ -3,6 +3,7 @@ package ccmtools.parser.idl.test.primitive;
 import junit.framework.TestCase;
 import ccmtools.metamodel.BaseIDL.MFixedDef;
 import ccmtools.metamodel.BaseIDL.MIDLType;
+import ccmtools.metamodel.BaseIDL.MNativeDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MStringDef;
@@ -270,4 +271,16 @@ public class PrimitiveTest extends TestCase
         assertEquals(type.getDigits(), 9);
         assertEquals(type.getScale(), 3);
     }
+    
+    
+    public static void checkNativeType(MTyped typed, String nativeType)
+    {
+        checkNativeType(typed.getIdlType(), nativeType);
+    }
+    public static void checkNativeType(MIDLType idlType, String nativeType)
+    {
+        assertTrue(idlType instanceof MNativeDef);
+        MNativeDef type = (MNativeDef)idlType;
+        assertEquals(type.getNativeType(), nativeType);
+    }    
 }

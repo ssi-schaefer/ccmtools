@@ -195,4 +195,19 @@ public class ExceptionOfBaseTypesTest extends ExceptionTest
         PrimitiveTest.checkValueBaseType(field);
         assertEquals(field.getIdentifier(), "valueBaseMember");
     }
+    
+
+    public void testExceptionOfNativeMembers() throws CcmtoolsException
+    {
+        MExceptionDef e = parseSource(
+                "native AID;" + 
+                "exception Ex { AID nativeMember; };");
+
+        assertEquals(e.getIdentifier(), "Ex");
+
+        MFieldDef field = getMember(e, 0);
+        PrimitiveTest.checkNativeType(field, "AID");
+        assertEquals(field.getIdentifier(), "nativeMember");
+    }
+
 }

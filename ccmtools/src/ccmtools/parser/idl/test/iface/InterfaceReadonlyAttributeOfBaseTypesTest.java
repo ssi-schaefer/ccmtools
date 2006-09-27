@@ -299,4 +299,23 @@ public class InterfaceReadonlyAttributeOfBaseTypesTest extends InterfaceTest
             assertEquals(attr.getIdentifier(), "valueBaseAttr");
         }
     }    
+
+    public void testInterfaceReadonlyAttributeOfNativeType() throws CcmtoolsException
+    {
+        MInterfaceDef iface = parseSource(
+                "native AID;" + 
+                "interface IFace { " +
+                "   readonly attribute AID nativeAttr;" +
+                "};");
+
+        assertEquals(iface.getIdentifier(), "IFace");
+        {
+            assertTrue(iface.getContentss().get(0) instanceof MAttributeDef);
+            MAttributeDef attr = (MAttributeDef)iface.getContentss().get(0);
+            assertTrue(attr.isReadonly());        
+            PrimitiveTest.checkNativeType(attr.getIdlType(), "AID");
+            assertEquals(attr.getIdentifier(), "nativeAttr");
+        }
+    }    
+
 }

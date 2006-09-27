@@ -41,6 +41,8 @@ import ccmtools.metamodel.BaseIDL.MFixedDefImpl;
 import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.metamodel.BaseIDL.MInterfaceDefImpl;
+import ccmtools.metamodel.BaseIDL.MNativeDef;
+import ccmtools.metamodel.BaseIDL.MNativeDefImpl;
 import ccmtools.metamodel.BaseIDL.MOperationDef;
 import ccmtools.metamodel.BaseIDL.MOperationDefImpl;
 import ccmtools.metamodel.BaseIDL.MParameterDef;
@@ -473,32 +475,75 @@ public class ParserHelper
     
     
     /* 17 */
-    public MValueDef parseValueDeclaration(MValueDef header)
+    public MValueDef parseValueDeclaration(MValueDef value)
     {
-        getLogger().fine("17: value_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET = " + header);
-        return header;
+        getLogger().fine("17: value_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET = " + value);
+        String id = value.getIdentifier();
+        ScopedName identifier = new ScopedName(id);
+        registerTypeId(id);
+        getModelRepository().registerIdlType(identifier, value);
+        return value;
     }
     
     
     /* 18 */
-    public MValueDef parseCustomValueHeader(String id)
+    public MValueDef parseValueHeader(String id, MValueDef value)
     {
-        getLogger().fine("18: T_CUSTOM T_VALUETYPE T_IDENTIFIER = " + id);
-        MValueDef value = parseValueHeader(id);
-        value.setCustom(true);
-        return value;
-    }
-    
-    public MValueDef parseValueHeader(String id)
-    {
-        getLogger().fine("18: = T_VALUETYPE T_IDENTIFIER = " + id);
-        registerTypeId(id);
-        MValueDef value = new MValueDefImpl();
+        getLogger().fine("18: T_VALUETYPE T_IDENTIFIER value_inheritance_spec = " + id + ", " + value);
         value.setIdentifier(id);
         return value;
     }
     
+    public MValueDef parseCustomValueHeader(String id, MValueDef value)
+    {
+        getLogger().fine("18: T_CUSTOM T_VALUETYPE T_IDENTIFIER value_inheritance_spec = " + id + ", " + value);        
+        value.setCustom(true);
+        return value;
+    }
+
+    public MValueDef parseValueHeader(String id)
+    {
+        getLogger().fine("18: T_VALUETYPE T_IDENTIFIER = " + id);
+        MValueDef value = new MValueDefImpl();
+        return parseValueHeader(id, value);
+    }
+        
+    public MValueDef parseCustomValueHeader(String id)
+    {
+        getLogger().fine("18: T_CUSTOM T_VALUETYPE T_IDENTIFIER = " + id);
+        MValueDef value = parseValueHeader(id);
+        return parseCustomValueHeader(id, value);
+    }
     
+    
+    /* 19 */
+    
+    
+    public MValueDef parseValueInheritanceBases(ScopedName id)
+    {
+        getLogger().fine("19: value_name = " + id);
+        MValueDef value = new MValueDefImpl();
+        MIDLType idlType = getModelRepository().findIdlType(id);
+        if(idlType instanceof MValueDef)
+        {
+            MValueDef base = (MValueDef)idlType;
+            if(base.isAbstract())
+            {
+                // multiple inheritance for abstract values
+                value.addAbstractBase(base);
+            }
+            else
+            {
+                // single inheritance for stateful values
+                value.setBase(base);
+            }
+        }
+        else
+        {
+            reportError("Can't inherit from a type other than valuetype (e.g. " + id + ")!");
+        }
+        return value;        
+    }
     
     
     /* 27 */
@@ -658,6 +703,16 @@ public class ParserHelper
         return alias;
     }
     
+    public MNativeDef parseNativeTypeDcl(Declarator declarator)
+    {
+        getLogger().fine("42:T_NATIVE simple_declarator = " + declarator);        
+        MNativeDef type = new MNativeDefImpl();        
+        type.setNativeType(declarator.toString());
+        ScopedName id = new ScopedName(declarator.toString());
+        getModelRepository().registerIdlType(id, type);
+        return type;
+    }
+        
     
     /* 49 */
     public List parseDeclarators(Declarator declarator)
