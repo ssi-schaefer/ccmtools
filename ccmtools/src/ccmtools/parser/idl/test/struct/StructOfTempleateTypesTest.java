@@ -101,7 +101,7 @@ public class StructOfTempleateTypesTest extends StructTest
         assertEquals(struct.getIdentifier(), "s");
         
         MFieldDef field = struct.getMember(0);
-        PrimitiveTest.checkFixedType(field);
+        PrimitiveTest.checkFixedType(field, 9, 3);
         assertEquals(field.getIdentifier(), "fixedMember");
     }
 }

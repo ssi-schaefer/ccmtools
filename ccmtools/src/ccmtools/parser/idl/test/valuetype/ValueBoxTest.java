@@ -28,9 +28,10 @@ public class ValueBoxTest extends ValuetypeTest
     // Base types 
     public void testValueBoxOfLong() throws CcmtoolsException
     {
-        MValueBoxDef value = parseBoxSource("valuetype LongValue long;");
+        MValueBoxDef value = parseBoxSource(
+                "valuetype LongValue long;", 
+                "LongValue");
         
-        assertEquals(value.getIdentifier(), "LongValue");
         PrimitiveTest.checkLongType(value.getIdlType());
     }                
     // TODO: implement tests for the other base types
@@ -39,9 +40,10 @@ public class ValueBoxTest extends ValuetypeTest
     // Template types
     public void testValueBoxOfSequence() throws CcmtoolsException
     {
-        MValueBoxDef value = parseBoxSource("valuetype SeqValue sequence<long>;");
+        MValueBoxDef value = parseBoxSource(
+                "valuetype SeqValue sequence<long>;",
+                "SeqValue");
 
-        assertEquals(value.getIdentifier(), "SeqValue");
         assertTrue(value.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef)value.getIdlType();
         PrimitiveTest.checkLongType(seq.getIdlType());        
@@ -54,9 +56,9 @@ public class ValueBoxTest extends ValuetypeTest
     {
         MValueBoxDef value = parseBoxSource(
                 StructTest.getStructPersonSource() +
-                "valuetype StructValue Person;");
+                "valuetype StructValue Person;",
+                "StructValue");
 
-        assertEquals(value.getIdentifier(), "StructValue");
         StructTest.checkStructPerson(value.getIdlType());
     }
     // TODO: implement tests of the other constructed types

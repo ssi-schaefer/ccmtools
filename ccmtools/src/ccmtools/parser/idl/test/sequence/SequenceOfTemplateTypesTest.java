@@ -92,6 +92,6 @@ public class SequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
 
-        PrimitiveTest.checkFixedType((MTyped)seq);
+        PrimitiveTest.checkFixedType(seq.getIdlType(),9,3);
     }
 }

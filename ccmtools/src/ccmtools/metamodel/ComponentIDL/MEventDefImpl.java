@@ -55,18 +55,18 @@ public class MEventDefImpl
     private List ContainsList;
     private List AbstractDerivedFromList;
     private MValueDef ValueDerivedFrom;
-    private MInterfaceDef interfaceDef;
+    private List InterfaceDefList;
 
     public MEventDefImpl()
     {
         isAbstract = false;
         isCustom = false;
         isTruncatable = false;
-	ContainsList = new ArrayList();
-	AbstractDerivedFromList = new ArrayList();
+        ContainsList = new ArrayList();
+        AbstractDerivedFromList = new ArrayList();
         Contains = null;
         ValueDerivedFrom = null;
-        interfaceDef = null;
+        InterfaceDefList = new ArrayList();
         sourceFile = "";
     }
 
@@ -143,10 +143,12 @@ public class MEventDefImpl
     public MValueDef getBase()                  {return ValueDerivedFrom;}
     public void setBase(MValueDef __arg)        {ValueDerivedFrom = __arg ;}
 
-    // association: direct role: [*] --> opposite role: interfaceDef[0..1]
-    public MInterfaceDef getInterfaceDef()           {return interfaceDef;}
-    public void setInterfaceDef(MInterfaceDef __arg) {interfaceDef = __arg ;}
-
+    // association: direct role: [*] --> opposite role: interfaceDef[*]
+    public List getInterfaceDefs()                      {return InterfaceDefList;}
+    public void setInterfaceDefs(List __arg)            {InterfaceDefList = new ArrayList(__arg);}
+    public void addInterfaceDef(MInterfaceDef __arg)    {InterfaceDefList.add(__arg);}
+    public void removeInterfaceDef(MInterfaceDef __arg) {InterfaceDefList.remove(__arg);}
+    
     //----------------------------------------------------------------
     // implementation of operations
     //----------------------------------------------------------------

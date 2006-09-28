@@ -106,6 +106,6 @@ public class ArrayOfTemplateTypesTest extends ArrayTest
         MArrayDef array = (MArrayDef) alias.getIdlType();
         assertEquals(array.getBounds().get(0), 7);
         
-        PrimitiveTest.checkFixedType((MTyped)array);
+        PrimitiveTest.checkFixedType((MTyped)array, 9,3);
     }    
 }

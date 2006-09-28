@@ -181,7 +181,7 @@ nonterminal MValueDef value_inheritance_bases;
 nonterminal List value_names;
 nonterminal	ScopedName value_name;		/* 20 */
 nonterminal Object value_element;
-nonterminal MValueMemberDef state_member;
+nonterminal List state_member;
 nonterminal	MFactoryDef init_dcl;
 nonterminal List init_param_decls;
 nonterminal MParameterDef init_param_decl;
@@ -732,7 +732,10 @@ value_body
 /* 17 */
 value_dcl
 	::= 
-		value_header T_LEFT_CURLY_BRACKET value_elements T_RIGHT_CURLY_BRACKET
+		value_header:h T_LEFT_CURLY_BRACKET value_elements:l T_RIGHT_CURLY_BRACKET
+		{:
+			RESULT = helper.parseValueDeclaration(h,l);
+		:}
 	| 
 		value_header:h T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
 		{:
@@ -742,9 +745,15 @@ value_dcl
 
 value_elements
 	::= 
-		value_element
+		value_element:e
+		{:
+			RESULT = helper.parseValueElements(e);
+		:}
 	| 
-		value_element value_elements
+		value_element:e value_elements:l
+		{:
+			RESULT = helper.parseValueElements(e,l);
+		:}
 	;
 
 
@@ -781,31 +790,46 @@ value_inheritance_spec
 			RESULT = v;
 		:}
 	| 
-		T_COLON value_inheritance_bases T_SUPPORTS interface_names 
+		T_COLON value_inheritance_bases:v T_SUPPORTS interface_names:s 
+		{:
+			RESULT = helper.parseValueSupportsInterfaces(v,s);
+		:}
 	| 
-		T_SUPPORTS interface_names
+		T_SUPPORTS interface_names:l
+		{:
+			RESULT = helper.parseValueSupportsInterfaces(l);
+		:}
 	;
 
 
 value_inheritance_bases
-	::= // list of valuetypes
+	::= 
 		value_name:id
 		{:
 			RESULT = helper.parseValueInheritanceBases(id);
 		:}
 	| 
-		value_name T_COMMA value_names
+		value_name:id T_COMMA value_names:l
+		{:
+			RESULT = helper.parseValueInheritanceBases(id, l);
+		:}
 	| 
-		T_TRUNCATABLE value_name
+		T_TRUNCATABLE value_name:id
+		{:
+			RESULT = helper.parseTruncatableValueInheritanceBases(id);
+		:}
 	| 
-		T_TRUNCATABLE value_name T_COMMA value_names
+		T_TRUNCATABLE value_name:id T_COMMA value_names:l
+		{:
+			RESULT = helper.parseTruncatableValueInheritanceBases(id, l);
+		:}		
 	;
 
 value_names
 	::= 
 		scoped_names:l
 		{:
-			RESULT = l;  // list of valuetypes
+			RESULT = l;  
 		:}
 	;
 
@@ -815,7 +839,7 @@ value_name
 	::= 
 		scoped_name:id
 		{:
-			RESULT = id; //helper.getModelRepository().findIdlType(id);
+			RESULT = id; 
 		:}
 	;
 
@@ -823,45 +847,75 @@ value_name
 /* 21 */
 value_element
 	::= 
-		export
+		export:e
+		{:
+			RESULT = e;
+		:}
 	| 
-		state_member
+		state_member:m
+		{:
+			RESULT = m;
+		:}
 	| 
-		init_dcl
+		init_dcl:f
+		{:
+			RESULT = f;
+		:}
 	;
 
 
 /* 22 */
 state_member
 	::= 
-		T_PUBLIC type_spec declarators T_SEMICOLON
+		T_PUBLIC type_spec:t declarators:l T_SEMICOLON
+		{:
+			RESULT = helper.parsePublicStateMember(t, l);
+		:}
 	| 
-		T_PRIVATE type_spec declarators T_SEMICOLON
+		T_PRIVATE type_spec:t declarators:l T_SEMICOLON
+		{:
+			RESULT = helper.parsePrivateStateMember(t, l);		
+		:}
 	;
 
 
 /* 23 */
 init_dcl
 	::= 
-		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS T_SEMICOLON
+		T_FACTORY T_IDENTIFIER:id T_LEFT_PARANTHESIS init_param_decls:l T_RIGHT_PARANTHESIS T_SEMICOLON
+		{:
+			RESULT = helper.parseInitDeclaration(id,l);
+		:}
 	| 
-		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS T_SEMICOLON
+		T_FACTORY T_IDENTIFIER:id T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS T_SEMICOLON
+		{:
+			RESULT = helper.parseInitDeclaration(id);
+		:}
 	;
 
 
 /* 24 */
 init_param_decls
 	::= 
-		init_param_decl
+		init_param_decl:p
+		{:
+			RESULT = helper.parseInitParameterDeclarations(p);
+		:}
 	| 
-		init_param_decl T_COMMA init_param_decls
+		init_param_decl:p T_COMMA init_param_decls:l
+		{:
+			RESULT = helper.parseInitParameterDeclarations(p,l);
+		:}
 	;
 
 
 /* 25 */
 init_param_decl
 	::= 
-		init_param_attribute param_type_spec simple_declarator
+		init_param_attribute param_type_spec:t simple_declarator:d
+		{:
+			RESULT = helper.parseInitParameterDeclaration(t,d);
+		:}
 	;
 
 

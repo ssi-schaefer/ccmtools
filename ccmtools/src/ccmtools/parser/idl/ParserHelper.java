@@ -66,8 +66,12 @@ import ccmtools.metamodel.BaseIDL.MValueBoxDef;
 import ccmtools.metamodel.BaseIDL.MValueBoxDefImpl;
 import ccmtools.metamodel.BaseIDL.MValueDef;
 import ccmtools.metamodel.BaseIDL.MValueDefImpl;
+import ccmtools.metamodel.BaseIDL.MValueMemberDef;
+import ccmtools.metamodel.BaseIDL.MValueMemberDefImpl;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.metamodel.BaseIDL.MWstringDefImpl;
+import ccmtools.metamodel.ComponentIDL.MFactoryDef;
+import ccmtools.metamodel.ComponentIDL.MFactoryDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 import ccmtools.utils.Text;
@@ -128,12 +132,12 @@ public class ParserHelper
     {
         logger = Logger.getLogger("ccmtools.parser.idl");
         //!!!!!!!!!!
-        logger.setLevel(Level.FINE);
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        handler.setFormatter(new ccm.local.MinimalFormatter());
-        logger.addHandler(handler);
-        ccm.local.ServiceLocator.instance().setLogger(logger);
+//        logger.setLevel(Level.FINE);
+//        Handler handler = new ConsoleHandler();
+//        handler.setLevel(Level.ALL);
+//        handler.setFormatter(new ccm.local.MinimalFormatter());
+//        logger.addHandler(handler);
+//        ccm.local.ServiceLocator.instance().setLogger(logger);
         //!!!!!!!!
         init();        
     }
@@ -475,15 +479,51 @@ public class ParserHelper
     
     
     /* 17 */
+    public MValueDef parseValueDeclaration(MValueDef value, List elementList)
+    {
+        getLogger().fine("17: value_header { value_elements } = " + value + ", " + elementList);
+        String id = value.getIdentifier();
+        ScopedName identifier = new ScopedName(id);
+        registerTypeId(id);
+        Collections.reverse(elementList);
+        value.setContentss(elementList);
+        getModelRepository().registerIdlType(identifier, value);
+        return value;
+    }
+    
     public MValueDef parseValueDeclaration(MValueDef value)
     {
-        getLogger().fine("17: value_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET = " + value);
+        getLogger().fine("17: value_header { } = " + value);
         String id = value.getIdentifier();
         ScopedName identifier = new ScopedName(id);
         registerTypeId(id);
         getModelRepository().registerIdlType(identifier, value);
         return value;
     }
+    
+    public List parseValueElements(Object element)
+    {
+        getLogger().fine("17: value_element = " + element);
+        List elementList = new ArrayList();
+        return parseValueElements(element, elementList);
+    }
+    
+    public List parseValueElements(Object element, List elementList)
+    {
+        getLogger().fine("17: value_element value_elements = " + element);
+        if(element instanceof List)
+        {
+            List l = (List)element;
+            elementList.addAll(l);
+        }
+        else
+        {
+            elementList.add(element);
+        }
+        return elementList;
+    }
+    
+    
     
     
     /* 18 */
@@ -516,13 +556,73 @@ public class ParserHelper
     }
     
     
-    /* 19 */
+    /* 19 */    
+    public MValueDef parseValueSupportsInterfaces(List supports)
+    {
+        getLogger().fine("19: T_SUPPORTS interface_names = " + supports);
+        MValueDef value = new MValueDefImpl();
+        return parseValueSupportsInterfaces(value, supports);
+    }
     
+    public MValueDef parseValueSupportsInterfaces(MValueDef value, List supports)
+    {
+        getLogger().fine("19:  T_COLON value_inheritance_bases T_SUPPORTS interface_names = " + value + ", " + supports);
+        Collections.reverse(supports);
+        for(Iterator i = supports.iterator(); i.hasNext();)
+        {
+            ScopedName id = (ScopedName)i.next();
+            MIDLType idlType = getModelRepository().findIdlType(id);
+            if(idlType instanceof MInterfaceDef)
+            {
+                value.addInterfaceDef((MInterfaceDef)idlType);
+            }
+            else
+            {
+                reportError("Only interface types can be supported, " + id + " is not an interface!");
+            }
+        }
+        return value;
+    }
     
     public MValueDef parseValueInheritanceBases(ScopedName id)
     {
         getLogger().fine("19: value_name = " + id);
         MValueDef value = new MValueDefImpl();
+        setValueBase(value, id);
+        return value;        
+    }
+    
+
+    public MValueDef parseValueInheritanceBases(ScopedName id, List ids)
+    {
+        getLogger().fine("19: value_name T_COMMA value_names = " + id + ", " + ids);
+        MValueDef value = new MValueDefImpl();
+        setValueBase(value, id);
+        for(Iterator i = ids.iterator(); i.hasNext();)
+        {
+            setValueBase(value, (ScopedName)i.next());
+        }        
+        return value;        
+    }
+
+    public MValueDef parseTruncatableValueInheritanceBases(ScopedName id)
+    {
+        getLogger().fine("19: T_TRUNCATABLE value_name = " + id);
+        MValueDef value = parseValueInheritanceBases(id);
+        value.setTruncatable(true);
+        return value;        
+    }
+
+    public MValueDef parseTruncatableValueInheritanceBases(ScopedName id, List ids)
+    {
+        getLogger().fine("19: T_TRUNCATABLE value_name T_COMMA value_names = " + id + ", " + ids);
+        MValueDef value = parseValueInheritanceBases(id, ids);
+        value.setTruncatable(true);            
+        return value;        
+    }
+    
+    private void setValueBase(MValueDef value, ScopedName id)
+    {
         MIDLType idlType = getModelRepository().findIdlType(id);
         if(idlType instanceof MValueDef)
         {
@@ -535,14 +635,98 @@ public class ParserHelper
             else
             {
                 // single inheritance for stateful values
-                value.setBase(base);
+                if(value.getBase() == null)
+                {
+                    value.setBase(base);
+                }
+                else
+                {
+                    reportError("A valuetype can only inherit from a single valuetype (e.g. " + id + ")!");
+                }
             }
         }
         else
         {
             reportError("Can't inherit from a type other than valuetype (e.g. " + id + ")!");
         }
-        return value;        
+    }
+    
+    
+    /* 22 */
+    
+    public List parsePublicStateMember(MIDLType idlType, List declarators)
+    {
+        getLogger().fine("22: public type_spec declarators ; = " + idlType + ", " + declarators);
+        return setStateMember(idlType, declarators, true);
+    }
+    
+    public List parsePrivateStateMember(MIDLType idlType, List declarators)
+    {
+        getLogger().fine("22: private type_spec declarators ; = " + idlType + ", " + declarators);
+        return setStateMember(idlType, declarators, false);        
+    }
+    
+    private List setStateMember(MIDLType idlType, List declarators, boolean isPublic)
+    {    
+        List members = new ArrayList();        
+        for(Iterator i = declarators.iterator(); i.hasNext();)
+        {
+            Declarator d = (Declarator)i.next();        
+            MValueMemberDef member = new MValueMemberDefImpl();
+            member.setIdlType(idlType);            
+            member.setIdentifier(d.toString()); // ?? Array Declarator siehe (42)
+            member.setPublicMember(isPublic);
+            members.add(member);
+        }
+        return members;            
+    }
+    
+    
+    /* 23 */
+    public MFactoryDef parseInitDeclaration(String id)
+    {
+        getLogger().fine("23: factory T_IDENTIFIER ( ); = " + id);
+        MFactoryDef factory = new MFactoryDefImpl();
+        factory.setIdentifier(id);
+        return factory;
+    }
+    
+    public MFactoryDef parseInitDeclaration(String id, List parameters)
+    {
+        getLogger().fine("23: factory T_IDENTIFIER ( init_param_decls ); = " + id + ", " + parameters);
+        MFactoryDef factory = new MFactoryDefImpl();
+        factory.setIdentifier(id);
+        Collections.reverse(parameters);
+        factory.setParameters(parameters);
+        return factory;
+    }    
+    
+    
+    /* 24 */
+    public List parseInitParameterDeclarations(MParameterDef parameter)
+    {
+        getLogger().fine("24: init_param_decl = " + parameter);
+        List parameterList = new ArrayList();
+        return parseInitParameterDeclarations(parameter, parameterList);
+    }
+
+    public List parseInitParameterDeclarations(MParameterDef parameter, List parameterList)
+    {
+        getLogger().fine("24: init_param_decl , init_param_decls = " + parameter + ", " + parameterList);
+        parameterList.add(parameter);
+        return parameterList;
+    }
+    
+    
+    /* 25 */
+    public MParameterDef parseInitParameterDeclaration(MIDLType idlType, Declarator declarator)
+    {
+        getLogger().fine("25: init_param_attribute param_type_spec simple_declarator = " + idlType + ", " + declarator);
+        MParameterDef parameter = new MParameterDefImpl();
+        parameter.setIdentifier(declarator.toString());
+        parameter.setIdlType(idlType);
+        parameter.setDirection(MParameterMode.PARAM_IN);
+        return parameter;
     }
     
     

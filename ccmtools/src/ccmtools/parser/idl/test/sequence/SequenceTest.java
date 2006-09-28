@@ -27,26 +27,49 @@ public class SequenceTest extends TestCase
         uiDriver = new ConsoleDriver();
     }
         
-    public static String getSimpleSequenceSource()
+    public static String getLongSequenceSource()
     {
-        return "typedef sequence<long> SimpleSequence;";
+        return "typedef sequence<long> LongSequence;";
     }
     
-    public static void checkSimpleSequence(MTyped type)
+    public static void checkLongSequence(MTyped type)
     {
-        checkSimpleSequence(type.getIdlType());
+        checkLongSequence(type.getIdlType());
     }
 
-    public static void checkSimpleSequence(MIDLType idlType)
+    public static void checkLongSequence(MIDLType idlType)
     {
         assertTrue(idlType instanceof MAliasDef);
         MAliasDef alias = (MAliasDef)idlType;
-        assertEquals(alias.getIdentifier(), "SimpleSequence");
+        assertEquals(alias.getIdentifier(), "LongSequence");
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         PrimitiveTest.checkLongType((MTyped)seq);        
     }
 
+
+    public static String getBoundedLongSequenceSource()
+    {
+        return "typedef sequence<long,7> BoundedLongSequence;";
+    }
+    
+    public static void checkBoundedLongSequence(MTyped type)
+    {
+        checkBoundedLongSequence(type.getIdlType());
+    }
+
+    public static void checkBoundedLongSequence(MIDLType idlType)
+    {
+        assertTrue(idlType instanceof MAliasDef);
+        MAliasDef alias = (MAliasDef)idlType;
+        assertEquals(alias.getIdentifier(), "BoundedLongSequence");
+        assertTrue(alias.getIdlType() instanceof MSequenceDef);
+        MSequenceDef seq = (MSequenceDef) alias.getIdlType();
+        PrimitiveTest.checkLongType((MTyped)seq);   
+        assertEquals(seq.getBound().intValue(),7);
+    }
+
+    
     
     /*
      * Utility Methods

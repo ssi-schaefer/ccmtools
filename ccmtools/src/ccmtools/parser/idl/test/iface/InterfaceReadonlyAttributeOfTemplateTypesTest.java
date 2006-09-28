@@ -28,9 +28,9 @@ public class InterfaceReadonlyAttributeOfTemplateTypesTest extends InterfaceTest
     public void testInterfaceReadonlyAttributeOfSequence() throws CcmtoolsException
     {
         MInterfaceDef iface = parseSource(
-                SequenceTest.getSimpleSequenceSource() +
+                SequenceTest.getLongSequenceSource() +
                 "interface IFace { " +
-                "   readonly attribute SimpleSequence seqAttr;" +
+                "   readonly attribute LongSequence seqAttr;" +
                 "};");
 
         assertEquals(iface.getIdentifier(), "IFace");
@@ -38,7 +38,7 @@ public class InterfaceReadonlyAttributeOfTemplateTypesTest extends InterfaceTest
             assertTrue(iface.getContentss().get(0) instanceof MAttributeDef);
             MAttributeDef attr = (MAttributeDef)iface.getContentss().get(0);
             assertTrue(attr.isReadonly());        
-            SequenceTest.checkSimpleSequence(attr);
+            SequenceTest.checkLongSequence(attr);
             assertEquals(attr.getIdentifier(), "seqAttr");
         }
     }
@@ -98,7 +98,7 @@ public class InterfaceReadonlyAttributeOfTemplateTypesTest extends InterfaceTest
     public void testInterfaceReadonlyAttributeOfFixed() throws CcmtoolsException
     {
         MInterfaceDef iface = parseSource(
-                SequenceTest.getSimpleSequenceSource() +
+                SequenceTest.getLongSequenceSource() +
                 "interface IFace { " +
                 "   readonly attribute fixed<9,3> fixedAttr;" +
                 "};");
@@ -108,7 +108,7 @@ public class InterfaceReadonlyAttributeOfTemplateTypesTest extends InterfaceTest
             assertTrue(iface.getContentss().get(0) instanceof MAttributeDef);
             MAttributeDef attr = (MAttributeDef)iface.getContentss().get(0);
             assertTrue(attr.isReadonly());        
-            PrimitiveTest.checkFixedType(attr);
+            PrimitiveTest.checkFixedType(attr,9,3);
             assertEquals(attr.getIdentifier(), "fixedAttr");
         }
     }    

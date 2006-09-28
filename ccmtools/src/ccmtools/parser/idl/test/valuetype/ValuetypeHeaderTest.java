@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
+import ccmtools.metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.metamodel.BaseIDL.MValueDef;
 
 
@@ -43,17 +44,121 @@ public class ValuetypeHeaderTest extends ValuetypeTest
     }       
     
     
-    public void testValuetypeInheritance() throws CcmtoolsException
+    public void testValuetypeSingleInheritance() throws CcmtoolsException
     {
         MValueDef value = parseSource(
                 "valuetype EmptyValue { };" +
                 "valuetype SubValue : EmptyValue { };");
         
         assertEquals(value.getIdentifier(), "SubValue");
-        
-        assertTrue(value.getBase() instanceof MValueDef);
-        MValueDef base = (MValueDef)value.getBase();
-        assertEquals(base.getIdentifier(), "EmptyValue");
+        MValueDef base = getBaseValuetype(value, "EmptyValue");
         assertEquals(base.getContentss().size(), 0);    
+    }    
+
+    
+//    public void testValuetypeSingleAbstractInheritance() throws CcmtoolsException
+//    {
+//        MValueDef value = parseSource(
+//                "abstract valuetype EmptyValue { };" +
+//                "valuetype SubValue : EmptyValue { };");
+//        
+//        assertEquals(value.getIdentifier(), "SubValue");
+//        
+//        assertTrue(value.getBase() instanceof MValueDef);
+//        MValueDef base = (MValueDef)value.getAbstractBases().get(0);
+//        assertEquals(base.getIdentifier(), "EmptyValue");
+//        assertEquals(base.getContentss().size(), 0);    
+//    }    
+
+    
+    public void testValuetypeMultipleInheritanceError() throws CcmtoolsException
+    {
+        try
+        {
+            parseSource(
+                "valuetype OneValue { };" +
+                "valuetype AnotherValue { };" +
+                "valuetype SubValue : OneValue, AnotherValue { };");
+        
+            fail();
+        }
+        catch(Exception e)
+        {
+            // OK
+            System.out.println(">> " + e.getMessage());
+        }
+    }    
+
+    
+    public void testValuetypeSingleTruncatableInheritance() throws CcmtoolsException
+    {
+        MValueDef value = parseSource(
+                "valuetype EmptyValue { };" +
+                "valuetype SubValue : truncatable EmptyValue { };", "SubValue");
+        
+        assertTrue(value.isTruncatable());       
+        MValueDef base = getBaseValuetype(value, "EmptyValue");
+        assertEquals(base.getContentss().size(), 0);    
+    }    
+
+    
+    public void testValuetypeMultipleTruncatableInheritanceError() throws CcmtoolsException
+    {
+        try
+        {
+            parseSource(
+                "valuetype OneValue { };" +
+                "valuetype AnotherValue { };" +
+                "valuetype SubValue : truncatable OneValue, AnotherValue { };");
+        
+            fail();
+        }
+        catch(Exception e)
+        {
+            // OK
+            System.out.println(">> " + e.getMessage());
+        }
+    }    
+
+    
+    public void testValuetypeSupportedInterfaces() throws CcmtoolsException
+    {
+        MValueDef value = parseSource(
+                "interface OneIFace { };" +
+                "interface AnotherIFace { };" +
+                "valuetype Value supports OneIFace, AnotherIFace { };", "Value");
+              
+        assertEquals(value.getContentss().size(),0);
+        {
+            MInterfaceDef iface = getSupportedInterface(value,0,"OneIFace");
+            assertEquals(iface.getContentss().size(), 0);
+        }
+        {
+            MInterfaceDef iface = getSupportedInterface(value,1, "AnotherIFace");
+            assertEquals(iface.getContentss().size(), 0);
+        }
+    }    
+
+    
+    public void testValuetypeInheritanceAndSupportedInterfaces() throws CcmtoolsException
+    {
+        MValueDef value = parseSource(
+                "valuetype OneValue { };" +
+                "interface OneIFace { };" +
+                "interface AnotherIFace { };" +
+                "valuetype Value : OneValue supports OneIFace, AnotherIFace { };", "Value");
+        
+        assertEquals(value.getContentss().size(),0);
+        
+        MValueDef base = getBaseValuetype(value, "OneValue");
+        assertEquals(base.getContentss().size(), 0);          
+        {            
+            MInterfaceDef iface = getSupportedInterface(value, 0, "OneIFace");
+            assertEquals(iface.getContentss().size(), 0);
+        }
+        {
+            MInterfaceDef iface = getSupportedInterface(value, 1, "AnotherIFace");
+            assertEquals(iface.getContentss().size(), 0);
+        }        
     }    
 }

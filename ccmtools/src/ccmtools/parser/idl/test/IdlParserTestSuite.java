@@ -14,6 +14,7 @@ import ccmtools.parser.idl.test.sequence.SequenceTestSuite;
 import ccmtools.parser.idl.test.struct.StructTestSuite;
 import ccmtools.parser.idl.test.typedef.TypedefTestSuite;
 import ccmtools.parser.idl.test.union.UnionTestSuite;
+import ccmtools.parser.idl.test.valuetype.ValuetypeTestSuite;
 
 public class IdlParserTestSuite
 	extends TestCase	
@@ -41,6 +42,8 @@ public class IdlParserTestSuite
         suite.addTest(UnionTestSuite.suite());
         
         suite.addTest(InterfaceTestSuite.suite());
+        
+        suite.addTest(ValuetypeTestSuite.suite());
         
         suite.addTest(ForwardDeclarationTestSuite.suite());
         

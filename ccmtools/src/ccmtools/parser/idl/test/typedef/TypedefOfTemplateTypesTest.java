@@ -72,6 +72,6 @@ public class TypedefOfTemplateTypesTest extends TypedefTest
         MAliasDef alias = parseSource("typedef fixed<9,3> FixedType;");
 
         assertEquals(alias.getIdentifier(), "FixedType");
-        PrimitiveTest.checkFixedType((MTyped)alias);        
+        PrimitiveTest.checkFixedType((MTyped)alias, 9,3);        
     }             
 }

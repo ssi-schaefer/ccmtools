@@ -260,16 +260,16 @@ public class PrimitiveTest extends TestCase
     }
 
     
-    public static void checkFixedType(MTyped typed)
+    public static void checkFixedType(MTyped typed, int digits, int scale)
     {
-        checkFixedType(typed.getIdlType());
+        checkFixedType(typed.getIdlType(), digits, scale);
     }
-    public static void checkFixedType(MIDLType idlType)
+    public static void checkFixedType(MIDLType idlType, int digits, int scale)
     {
         assertTrue(idlType instanceof MFixedDef);
         MFixedDef type = (MFixedDef)idlType;
-        assertEquals(type.getDigits(), 9);
-        assertEquals(type.getScale(), 3);
+        assertEquals(type.getDigits(), digits);
+        assertEquals(type.getScale(), scale);
     }
     
     

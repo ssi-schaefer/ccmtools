@@ -92,6 +92,6 @@ public class BoundedSequenceOfTemplateTypesTest extends SequenceTest
         assertTrue(alias.getIdlType() instanceof MSequenceDef);
         MSequenceDef seq = (MSequenceDef) alias.getIdlType();
         assertEquals(seq.getBound().longValue(), 7);
-        PrimitiveTest.checkFixedType((MTyped)seq);
+        PrimitiveTest.checkFixedType(seq.getIdlType(),9,3);
     }
 }

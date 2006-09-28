@@ -28,16 +28,16 @@ public class InterfaceAttributeOfTemplateTypesTest extends InterfaceTest
     public void testInterfaceAttributeOfSequenceType() throws CcmtoolsException
     {
         MInterfaceDef iface = parseSource(
-                SequenceTest.getSimpleSequenceSource() +
+                SequenceTest.getLongSequenceSource() +
                 "interface IFace { " +
-                "   attribute SimpleSequence seqAttr;" +
+                "   attribute LongSequence seqAttr;" +
                 "};");
 
         assertEquals(iface.getIdentifier(), "IFace");
         {
             assertTrue(iface.getContentss().get(0) instanceof MAttributeDef);
             MAttributeDef attr = (MAttributeDef)iface.getContentss().get(0);        
-            SequenceTest.checkSimpleSequence(attr);
+            SequenceTest.checkLongSequence(attr);
             assertEquals(attr.getIdentifier(), "seqAttr");
         }
     }
@@ -46,7 +46,7 @@ public class InterfaceAttributeOfTemplateTypesTest extends InterfaceTest
     public void testInterfaceAttributeOfStringType() throws CcmtoolsException
     {
         MInterfaceDef iface = parseSource(
-                SequenceTest.getSimpleSequenceSource() +
+                SequenceTest.getLongSequenceSource() +
                 "interface IFace { " +
                 "   attribute string stringAttr;" +
                 "   attribute string<7> bstringAttr;" +
@@ -71,7 +71,7 @@ public class InterfaceAttributeOfTemplateTypesTest extends InterfaceTest
     public void testInterfaceAttributeOfWideStringType() throws CcmtoolsException
     {
         MInterfaceDef iface = parseSource(
-                SequenceTest.getSimpleSequenceSource() +
+                SequenceTest.getLongSequenceSource() +
                 "interface IFace { " +
                 "   attribute wstring wstringAttr;" +
                 "   attribute wstring<7> bwstringAttr;" +
@@ -96,7 +96,7 @@ public class InterfaceAttributeOfTemplateTypesTest extends InterfaceTest
     public void testInterfaceAttributeOfFixedType() throws CcmtoolsException
     {
         MInterfaceDef iface = parseSource(
-                SequenceTest.getSimpleSequenceSource() +
+                SequenceTest.getLongSequenceSource() +
                 "interface IFace { " +
                 "   attribute fixed<9,3> fixedAttr;" +
                 "};");
@@ -105,7 +105,7 @@ public class InterfaceAttributeOfTemplateTypesTest extends InterfaceTest
         {
             assertTrue(iface.getContentss().get(0) instanceof MAttributeDef);
             MAttributeDef attr = (MAttributeDef)iface.getContentss().get(0);        
-            PrimitiveTest.checkFixedType(attr);
+            PrimitiveTest.checkFixedType(attr, 9,3);
             assertEquals(attr.getIdentifier(), "fixedAttr");
         }
     }

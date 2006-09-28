@@ -47,8 +47,10 @@ public interface MValueDef
     MValueDef getBase();
     void setBase(MValueDef __arg);
 
-    // association: direct role: [*] --> opposite role: interfaceDef[0..1]
-    MInterfaceDef getInterfaceDef();
-    void setInterfaceDef(MInterfaceDef __arg);
+    // association: direct role: [*] --> opposite role: interfaceDef[*]
+    List getInterfaceDefs();
+    void setInterfaceDefs(List __arg);
+    void addInterfaceDef(MInterfaceDef __arg);
+    void removeInterfaceDef(MInterfaceDef __arg);
 }
 

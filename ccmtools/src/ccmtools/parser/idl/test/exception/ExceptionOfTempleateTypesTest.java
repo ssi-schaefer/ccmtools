@@ -103,7 +103,7 @@ public class ExceptionOfTempleateTypesTest extends ExceptionTest
         assertEquals(e.getIdentifier(), "Ex");
         
         MFieldDef field = getMember(e,0);
-        PrimitiveTest.checkFixedType(field);
+        PrimitiveTest.checkFixedType(field, 9,3);
         assertEquals(field.getIdentifier(), "fixedMember");
     }
 }

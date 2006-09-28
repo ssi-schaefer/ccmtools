@@ -618,9 +618,12 @@ public class CcmModelPrinter
 			MInterfaceDef baseInterface = (MInterfaceDef)i.next();
 			println(TAB + "extends abstract: " + baseInterface.getRepositoryId());
 		}
-		if(in.getInterfaceDef() != null)
+		if(in.getInterfaceDefs() != null)
 		{
-			println("supports: " + Code.getRepositoryId(in.getInterfaceDef()));
+            for(Iterator i = in.getInterfaceDefs().iterator(); i.hasNext();)
+            {
+                println("supports: " + Code.getRepositoryId((MInterfaceDef)i.next()));
+            }
 		}
 		for(Iterator i = in.getContentss().iterator(); i.hasNext();)
 		{

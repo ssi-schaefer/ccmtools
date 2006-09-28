@@ -30,36 +30,36 @@ public class InterfaceOperationTemplateTypesTest extends InterfaceTest
     public void testInterfaceOperationOfSequenceTypes() throws CcmtoolsException
     {
         MInterfaceDef iface = parseSource(
-                SequenceTest.getSimpleSequenceSource() +
+                SequenceTest.getLongSequenceSource() +
                 "interface IFace { " +
-                "   SimpleSequence op(in SimpleSequence p1, inout SimpleSequence p2, out SimpleSequence p3);" +
+                "   LongSequence op(in LongSequence p1, inout LongSequence p2, out LongSequence p3);" +
                 "};");
 
         assertEquals(iface.getIdentifier(), "IFace");
         assertTrue(iface.getContentss().get(0) instanceof MOperationDef);
         MOperationDef op = (MOperationDef) iface.getContentss().get(0);
         assertEquals(op.getIdentifier(), "op");
-        SequenceTest.checkSimpleSequence(op.getIdlType());
+        SequenceTest.checkLongSequence(op.getIdlType());
 
         {
             assertTrue(op.getParameters().get(0) instanceof MParameterDef);
             MParameterDef parameter = (MParameterDef)op.getParameters().get(0);
             assertEquals(parameter.getDirection(), MParameterMode.PARAM_IN);
-            SequenceTest.checkSimpleSequence(parameter.getIdlType());
+            SequenceTest.checkLongSequence(parameter.getIdlType());
             assertEquals(parameter.getIdentifier(), "p1");            
         }
         {
             assertTrue(op.getParameters().get(1) instanceof MParameterDef);
             MParameterDef parameter = (MParameterDef)op.getParameters().get(1);
             assertEquals(parameter.getDirection(), MParameterMode.PARAM_INOUT);
-            SequenceTest.checkSimpleSequence(parameter.getIdlType());
+            SequenceTest.checkLongSequence(parameter.getIdlType());
             assertEquals(parameter.getIdentifier(), "p2");            
         }
         {
             assertTrue(op.getParameters().get(2) instanceof MParameterDef);
             MParameterDef parameter = (MParameterDef)op.getParameters().get(2);
             assertEquals(parameter.getDirection(), MParameterMode.PARAM_OUT);
-            SequenceTest.checkSimpleSequence(parameter.getIdlType());
+            SequenceTest.checkLongSequence(parameter.getIdlType());
             assertEquals(parameter.getIdentifier(), "p3");            
         }              
     }
@@ -210,27 +210,27 @@ public class InterfaceOperationTemplateTypesTest extends InterfaceTest
         assertTrue(iface.getContentss().get(0) instanceof MOperationDef);
         MOperationDef op = (MOperationDef) iface.getContentss().get(0);
         assertEquals(op.getIdentifier(), "op");
-        PrimitiveTest.checkFixedType(op.getIdlType());
+        PrimitiveTest.checkFixedType(op.getIdlType(),9,3);
 
         {
             assertTrue(op.getParameters().get(0) instanceof MParameterDef);
             MParameterDef parameter = (MParameterDef)op.getParameters().get(0);
             assertEquals(parameter.getDirection(), MParameterMode.PARAM_IN);
-            PrimitiveTest.checkFixedType(parameter.getIdlType());
+            PrimitiveTest.checkFixedType(parameter.getIdlType(),9,3);
             assertEquals(parameter.getIdentifier(), "p1");            
         }
         {
             assertTrue(op.getParameters().get(1) instanceof MParameterDef);
             MParameterDef parameter = (MParameterDef)op.getParameters().get(1);
             assertEquals(parameter.getDirection(), MParameterMode.PARAM_INOUT);
-            PrimitiveTest.checkFixedType(parameter.getIdlType());
+            PrimitiveTest.checkFixedType(parameter.getIdlType(),9,3);
             assertEquals(parameter.getIdentifier(), "p2");            
         }
         {
             assertTrue(op.getParameters().get(2) instanceof MParameterDef);
             MParameterDef parameter = (MParameterDef)op.getParameters().get(2);
             assertEquals(parameter.getDirection(), MParameterMode.PARAM_OUT);
-            PrimitiveTest.checkFixedType(parameter.getIdlType());
+            PrimitiveTest.checkFixedType(parameter.getIdlType(),9,3);
             assertEquals(parameter.getIdentifier(), "p3");            
         }              
     }

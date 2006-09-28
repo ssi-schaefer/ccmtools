@@ -12,9 +12,12 @@ public class ValuetypeTestSuite
 
 		suite.addTest(ValueBoxTest.suite());
         suite.addTest(ValuetypeHeaderTest.suite());
-//        suite.addTest(StructOfTempleateTypesTest.suite());
-//        suite.addTest(StructOfConstructedTypesTest.suite());
-
+        suite.addTest(ValuetypeFactoryTest.suite());
+        
+        suite.addTest(ValuetypeMemberVisibilityTest.suite());
+        suite.addTest(ValuetypeMemberOfBaseTypeTest.suite());
+        suite.addTest(ValuetypeMemberOfTemplateTypeTest.suite());
+        suite.addTest(ValuetypeMemberOfConstructedTypeTest.suite());
         return suite;
 	}
 }

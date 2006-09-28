@@ -255,7 +255,7 @@ public class ParserHelper
 
         if (support != null) 
         {
-            val.setInterfaceDef((MInterfaceDef) support);
+            val.addInterfaceDef((MInterfaceDef) support);
         } 
         else 
         {

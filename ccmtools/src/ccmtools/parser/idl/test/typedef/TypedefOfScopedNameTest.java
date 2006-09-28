@@ -107,7 +107,7 @@ public class TypedefOfScopedNameTest extends TypedefTest
         assertTrue(typedef.getIdlType() instanceof MAliasDef);
         MAliasDef alias = (MAliasDef)typedef.getIdlType();
         assertEquals(alias.getIdentifier(), "FixedType");
-        PrimitiveTest.checkFixedType((MTyped)alias);
+        PrimitiveTest.checkFixedType((MTyped)alias,9,3);
     }             
     
     
