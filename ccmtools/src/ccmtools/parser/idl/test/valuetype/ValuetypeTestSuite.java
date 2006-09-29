@@ -18,6 +18,11 @@ public class ValuetypeTestSuite
         suite.addTest(ValuetypeMemberOfBaseTypeTest.suite());
         suite.addTest(ValuetypeMemberOfTemplateTypeTest.suite());
         suite.addTest(ValuetypeMemberOfConstructedTypeTest.suite());
+        
+        
+        suite.addTest(AbstractValuetypeTest.suite());
+        suite.addTest(AbstractValuetypeAttributeOfBaseTypesTest.suite());
+        
         return suite;
 	}
 }

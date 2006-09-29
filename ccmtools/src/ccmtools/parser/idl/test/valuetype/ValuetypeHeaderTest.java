@@ -56,19 +56,28 @@ public class ValuetypeHeaderTest extends ValuetypeTest
     }    
 
     
-//    public void testValuetypeSingleAbstractInheritance() throws CcmtoolsException
-//    {
-//        MValueDef value = parseSource(
-//                "abstract valuetype EmptyValue { };" +
-//                "valuetype SubValue : EmptyValue { };");
-//        
-//        assertEquals(value.getIdentifier(), "SubValue");
-//        
-//        assertTrue(value.getBase() instanceof MValueDef);
-//        MValueDef base = (MValueDef)value.getAbstractBases().get(0);
-//        assertEquals(base.getIdentifier(), "EmptyValue");
-//        assertEquals(base.getContentss().size(), 0);    
-//    }    
+    public void testValuetypeSingleAbstractInheritance() throws CcmtoolsException
+    {
+        MValueDef value = parseSource(
+                "abstract valuetype OneValue { };" +
+                "valuetype SubValue : OneValue { };");
+        
+        assertEquals(value.getIdentifier(), "SubValue");
+        getAbstractBase(value, 0, "OneValue");
+    }    
+
+    
+    public void testValuetypeMultipleAbstractInheritance() throws CcmtoolsException
+    {
+        MValueDef value = parseSource(
+                "abstract valuetype OneValue { };" +
+                "abstract valuetype AnotherValue { };" +
+                "valuetype SubValue : OneValue, AnotherValue { };");
+        
+        assertEquals(value.getIdentifier(), "SubValue");
+        getAbstractBase(value, 0, "OneValue");
+        getAbstractBase(value, 1, "AnotherValue");
+    }    
 
     
     public void testValuetypeMultipleInheritanceError() throws CcmtoolsException
@@ -100,7 +109,6 @@ public class ValuetypeHeaderTest extends ValuetypeTest
         MValueDef base = getBaseValuetype(value, "EmptyValue");
         assertEquals(base.getContentss().size(), 0);    
     }    
-
     
     public void testValuetypeMultipleTruncatableInheritanceError() throws CcmtoolsException
     {

@@ -132,12 +132,12 @@ public class ParserHelper
     {
         logger = Logger.getLogger("ccmtools.parser.idl");
         //!!!!!!!!!!
-//        logger.setLevel(Level.FINE);
-//        Handler handler = new ConsoleHandler();
-//        handler.setLevel(Level.ALL);
-//        handler.setFormatter(new ccm.local.MinimalFormatter());
-//        logger.addHandler(handler);
-//        ccm.local.ServiceLocator.instance().setLogger(logger);
+        logger.setLevel(Level.FINE);
+        Handler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        handler.setFormatter(new ccm.local.MinimalFormatter());
+        logger.addHandler(handler);
+        ccm.local.ServiceLocator.instance().setLogger(logger);
         //!!!!!!!!
         init();        
     }
@@ -476,6 +476,35 @@ public class ParserHelper
         value.setIdlType(idlType);
         return value;
     }
+    
+    
+    /* 16 */
+    public MValueDef parseValueAbstractDeclaration(String id, List elementList)
+    {
+        getLogger().fine("16: T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id = " + id);        
+        MValueDef value = new MValueDefImpl();
+        setAbstractValueDefinition(value, id, elementList);
+        return value;
+    }
+        
+    public MValueDef parseValueAbstractDeclaration(String id, MValueDef value, List elementList)
+    {
+        getLogger().fine("16: abstract valuetype T_IDENTIFIER value_inheritance_spec { value_body:b } = " 
+                + id  +", " + value + ", " + elementList);
+        setAbstractValueDefinition(value, id, elementList);        
+        return value;
+    }
+    
+    private void setAbstractValueDefinition(MValueDef value, String id, List elementList)
+    {
+        ScopedName identifier = new ScopedName(id);
+        value.setIdentifier(id);
+        value.setAbstract(true);
+        Collections.reverse(elementList);
+        value.setContentss(elementList);
+        getModelRepository().registerIdlType(identifier, value);
+    }
+    
     
     
     /* 17 */

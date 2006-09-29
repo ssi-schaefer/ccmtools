@@ -6,6 +6,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
+import ccmtools.metamodel.BaseIDL.MAttributeDef;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MIDLType;
@@ -180,5 +181,23 @@ public class ValuetypeTest extends TestCase
         MParameterDef attr = (MParameterDef)factory.getParameters().get(index);
         assertEquals(attr.getIdentifier(), id);
         return attr.getIdlType();
+    }
+    
+    
+    public MAttributeDef getAttributeType(MValueDef value, int index, String id)
+    {
+        assertTrue(value.getContentss().get(index) instanceof MAttributeDef);
+        MAttributeDef attr = (MAttributeDef)value.getContentss().get(index);
+        assertEquals(attr.getIdentifier(), id);
+        return attr;
+    }
+    
+    public MValueDef getAbstractBase(MValueDef value, int index, String id)
+    {
+        assertTrue(value.getAbstractBases().get(index) instanceof MValueDef);
+        MValueDef abstractBase = (MValueDef)value.getAbstractBases().get(index);
+        assertEquals(abstractBase.getIdentifier(), id);
+        assertTrue(abstractBase.isAbstract());
+        return abstractBase;
     }
 }

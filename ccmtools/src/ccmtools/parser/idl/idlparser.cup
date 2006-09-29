@@ -710,22 +710,33 @@ value_abs_dcl
 		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id
 		{:
 			helper.registerTypeId(id);
+		:}				
+	 	T_LEFT_CURLY_BRACKET value_body:b T_RIGHT_CURLY_BRACKET
+		{:
+			RESULT = helper.parseValueAbstractDeclaration(id,b);			
 		:}		
-	 	T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
 	| 
-		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id 
-			value_inheritance_spec 
+		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id value_inheritance_spec:l 
 		{:
 			helper.registerTypeId(id);
 		:}				
-		T_LEFT_CURLY_BRACKET value_body T_RIGHT_CURLY_BRACKET
+		T_LEFT_CURLY_BRACKET value_body:b T_RIGHT_CURLY_BRACKET
+		{:
+			RESULT = helper.parseValueAbstractDeclaration(id,l,b);			
+		:}		
 	;
 
 value_body
 	::= 
 		/*empty*/
+		{:
+			RESULT = new ArrayList();
+		:}
 	| 
-		exports
+		exports:e
+		{:
+			RESULT = e;
+		:}
 	;
 
 
