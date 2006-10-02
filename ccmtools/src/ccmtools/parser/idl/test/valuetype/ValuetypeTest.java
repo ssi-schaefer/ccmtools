@@ -11,7 +11,9 @@ import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.metamodel.BaseIDL.MOperationDef;
 import ccmtools.metamodel.BaseIDL.MParameterDef;
+import ccmtools.metamodel.BaseIDL.MParameterMode;
 import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.metamodel.BaseIDL.MValueBoxDef;
 import ccmtools.metamodel.BaseIDL.MValueDef;
@@ -191,6 +193,24 @@ public class ValuetypeTest extends TestCase
         assertEquals(attr.getIdentifier(), id);
         return attr;
     }
+
+    
+    public MOperationDef getOperationType(MValueDef value, int index, String id)
+    {
+        assertTrue(value.getContentss().get(index) instanceof MOperationDef);
+        MOperationDef op = (MOperationDef)value.getContentss().get(index);
+        assertEquals(op.getIdentifier(), id);
+        return op;
+    }
+    
+    public MIDLType getParameterType(MOperationDef op, int index, String id, MParameterMode dir)
+    {
+        MParameterDef param = (MParameterDef)op.getParameters().get(index);
+        assertEquals(param.getIdentifier(), id);
+        assertEquals(param.getDirection(), dir);
+        return param.getIdlType();
+    }
+
     
     public MValueDef getAbstractBase(MValueDef value, int index, String id)
     {

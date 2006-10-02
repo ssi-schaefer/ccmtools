@@ -683,13 +683,12 @@ value_forward_dcl
 	::= 
 		T_VALUETYPE T_IDENTIFIER:id
 		{:
-//			helper.getModelRepository().registerForwardDeclaration(id);
-		:}
-		
+			RESULT = helper.parseValueForwardDeclaration(id);
+		:}		
 	| 
 		T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id
 		{:
-//			helper.getModelRepository().registerForwardDeclaration(id);
+			RESULT = helper.parseAbstractValueForwardDeclaration(id);	
 		:}
 	;
 

@@ -464,7 +464,27 @@ public class ParserHelper
     {
         return new ScopedName(id);
     }
+
     
+    /* 14 */
+    public MValueDef parseValueForwardDeclaration(String id)
+    {
+        getLogger().fine("14: valuetype T_IDENTIFIER = " + id);        
+        MValueDef value = new MValueDefImpl();
+        value.setIdentifier(id);  
+        ScopedName identifier = new ScopedName(id);        
+        getModelRepository().registerForwardDeclaration(identifier);
+        getModelRepository().registerIdlType(identifier, value);
+        return value;
+    }
+    
+    public MValueDef parseAbstractValueForwardDeclaration(String id)
+    {
+        getLogger().fine("14: abstract valuetype T_IDENTIFIER = " + id); 
+        MValueDef value = parseValueForwardDeclaration(id);
+        value.setAbstract(true);
+        return value;
+    }
     
     /* 15 */
     public MValueBoxDef parseValueBoxDeclaration(String id, MIDLType idlType)    
@@ -482,7 +502,18 @@ public class ParserHelper
     public MValueDef parseValueAbstractDeclaration(String id, List elementList)
     {
         getLogger().fine("16: T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id = " + id);        
-        MValueDef value = new MValueDefImpl();
+        ScopedName identifier = new ScopedName(id);
+        MValueDef value;
+        if(getModelRepository().isForwardDeclaration(identifier))
+        {
+            MIDLType forwardDcl = getModelRepository().findIdlType(identifier); 
+            value = (MValueDef)forwardDcl;
+        }
+        else
+        {
+            value = new MValueDefImpl();
+            getModelRepository().registerIdlType(identifier, value);
+        }
         setAbstractValueDefinition(value, id, elementList);
         return value;
     }
@@ -556,25 +587,41 @@ public class ParserHelper
     
     
     /* 18 */
-    public MValueDef parseValueHeader(String id, MValueDef value)
+    public MValueDef parseValueHeader(String id, MValueDef inheritanceValue)
     {
-        getLogger().fine("18: T_VALUETYPE T_IDENTIFIER value_inheritance_spec = " + id + ", " + value);
-        value.setIdentifier(id);
+        getLogger().fine("18: T_VALUETYPE T_IDENTIFIER value_inheritance_spec = " + id + ", " + inheritanceValue);
+        MValueDef value = parseValueHeader(id);
+        value.setBase(inheritanceValue.getBase());
+        value.setAbstractBases(inheritanceValue.getAbstractBases());    
+        value.setInterfaceDefs(inheritanceValue.getInterfaceDefs());
+        value.setTruncatable(inheritanceValue.isTruncatable());
         return value;
     }
     
-    public MValueDef parseCustomValueHeader(String id, MValueDef value)
+    public MValueDef parseCustomValueHeader(String id, MValueDef inheritanceValue)
     {
-        getLogger().fine("18: T_CUSTOM T_VALUETYPE T_IDENTIFIER value_inheritance_spec = " + id + ", " + value);        
-        value.setCustom(true);
-        return value;
+        getLogger().fine("18: T_CUSTOM T_VALUETYPE T_IDENTIFIER value_inheritance_spec = " + id + ", " + inheritanceValue);        
+        inheritanceValue.setCustom(true);
+        return inheritanceValue;
     }
 
     public MValueDef parseValueHeader(String id)
     {
         getLogger().fine("18: T_VALUETYPE T_IDENTIFIER = " + id);
-        MValueDef value = new MValueDefImpl();
-        return parseValueHeader(id, value);
+        ScopedName identifier = new ScopedName(id);
+        MValueDef value;
+        if(getModelRepository().isForwardDeclaration(identifier))
+        {
+            MIDLType forwardDcl = getModelRepository().findIdlType(identifier); 
+            value = (MValueDef)forwardDcl;
+        }
+        else
+        {
+            value = new MValueDefImpl();
+            getModelRepository().registerIdlType(identifier, value);
+        }
+        value.setIdentifier(id);
+        return value;
     }
         
     public MValueDef parseCustomValueHeader(String id)
