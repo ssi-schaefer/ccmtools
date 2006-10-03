@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_facet_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace world {
 namespace europe {
@@ -44,7 +44,7 @@ facet_impl::op1(
         const world::ccm::local::PDL_Person& p1,
         world::ccm::local::PDL_Person& p2,
         world::ccm::local::PDL_Person& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   cout << "p1.id        = " << p1.id << endl;
   cout << "p1.firstName = " << p1.firstName << endl;  
@@ -75,7 +75,7 @@ facet_impl::op2(
         const world::ccm::local::PDL_DTO& p1,
         world::ccm::local::PDL_DTO& p2,
         world::ccm::local::PDL_DTO& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   cout << "p1.id               = " << p1.id << endl;
   cout << "p1.Person.id        = " << p1.person.id << endl;
@@ -105,7 +105,7 @@ facet_impl::op3(
         const world::ccm::local::Other& p1,
         world::ccm::local::Other& p2,
         world::ccm::local::Other& p3) 
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
 
 }

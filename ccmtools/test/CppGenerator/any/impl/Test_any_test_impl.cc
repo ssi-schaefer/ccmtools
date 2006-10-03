@@ -13,13 +13,13 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
-#include <WX/Utils/value_simple.h>
+#include <wx/utils/debug.h>
+#include <wx/utils/value_simple.h>
 
 #include "Test_any_test_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace ccm {
 namespace local {
@@ -38,11 +38,11 @@ any_test_impl::~any_test_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-WX::Utils::SmartPtr< WX::Utils::Value > 
+wx::utils::SmartPtr< wx::utils::Value > 
 any_test_impl::op1(
-        const WX::Utils::SmartPtr< WX::Utils::Value > & p1,
-        WX::Utils::SmartPtr< WX::Utils::Value > & p2,
-        WX::Utils::SmartPtr< WX::Utils::Value > & p3)
+        const wx::utils::SmartPtr< wx::utils::Value > & p1,
+        wx::utils::SmartPtr< wx::utils::Value > & p2,
+        wx::utils::SmartPtr< wx::utils::Value > & p3)
 throw(::ccm::local::Components::CCMException)
 {
     // TODO : IMPLEMENT ME HERE !

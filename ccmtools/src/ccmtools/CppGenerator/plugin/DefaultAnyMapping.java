@@ -5,15 +5,15 @@ import ccmtools.metamodel.BaseIDL.MTypedefDef;
 
 
 /***
- * This any default mapping uses WX::Utils::Value objects
+ * This any default mapping uses wx::utils::Value objects
  * for local C++ components.
- * The debug method for WX::Utils::Value objects is already defined
+ * The debug method for wx::utils::Value objects is already defined
  * in the cpp-environment library.
  */
 public class DefaultAnyMapping
     implements AnyMapping
 {
-	public static final String DEFAULT_ANY_MAPPING = "WX::Utils::Value";
+	public static final String DEFAULT_ANY_MAPPING = "wx::utils::Value";
     private static final String TAB = "    ";
     
     public String getIdlTypeName()
@@ -24,7 +24,7 @@ public class DefaultAnyMapping
     public String getIncludeCode(MAliasDef alias)
     {
         StringBuffer code = new StringBuffer();
-        code.append("#include <WX/Utils/value.h>\n");
+        code.append("#include <wx/utils/Value.h>\n");
         return code.toString();
     }
     
@@ -33,7 +33,7 @@ public class DefaultAnyMapping
         MTypedefDef typedef = (MTypedefDef) alias;
         StringBuffer code = new StringBuffer();
         code.append("typedef ");
-        code.append("WX::Utils::SmartPtr<WX::Utils::Value>");
+        code.append("wx::utils::SmartPtr<wx::utils::Value>");
         code.append(" ");
         code.append(typedef.getIdentifier());
         code.append(";\n");
@@ -48,10 +48,10 @@ public class DefaultAnyMapping
         code.append("std::string\n");
         code.append("ccmDebug(const ").append(alias.getIdentifier()).append("& in, int indent = 0)\n");
         code.append("{\n");
-        code.append(TAB).append("// TODO: use ccmDebug(const WX::Utils::SmartPtr<WX::Utils::Value>&)\n");
+        code.append(TAB).append("// TODO: use ccmDebug(const wx::utils::SmartPtr<wx::utils::Value>&)\n");
         code.append(TAB).append("// defined in ccm/CCM_Local/utils/Debug.h\n");
         code.append(TAB).append("std::ostringstream os;\n");
-        code.append(TAB).append("os << \"").append(alias.getIdentifier()).append(" (alias WX::Utils::Value)\";\n");
+        code.append(TAB).append("os << \"").append(alias.getIdentifier()).append(" (alias wx::utils::Value)\";\n");
         code.append(TAB).append("return os.str();\n");
         code.append("}\n");        
         code.append("#endif\n");

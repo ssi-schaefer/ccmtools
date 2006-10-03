@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_impl.h"
 
@@ -23,7 +23,7 @@ namespace component {
 namespace Test {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -41,36 +41,36 @@ CCM_Test_impl::~CCM_Test_impl()
 
 void
 CCM_Test_impl::set_session_context(
-    Components::SessionContext* context)
-    throw(Components::CCMException)
+    Components::ccm::local::SessionContext* context)
+    throw(::Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
 void
 CCM_Test_impl::ccm_activate()
-    throw(Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
   try {
     string s = "1234567890";
     ctx->get_connection_console().ptr()->println(s);
     assert(false);
   }
-  catch(Components::NoConnection& e) {
+  catch(::Components::ccm::local::NoConnection& e) {
     cerr << "!! NoConnection exception: Receptacle console is not connected!" << endl;
   }
 }
 
 void
 CCM_Test_impl::ccm_passivate()
-    throw(Components::CCMException)
+    throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_Test_impl::ccm_remove()
-    throw(Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

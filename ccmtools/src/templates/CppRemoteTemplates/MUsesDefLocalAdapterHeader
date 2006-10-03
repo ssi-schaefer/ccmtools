@@ -1,2 +1,2 @@
-      WX::Utils::SmartPtr<CCM_Local::%(CCM_UsesType)s> %(Identifier)s_adapter;
+      wx::utils::SmartPtr<CCM_Local::%(CCM_UsesType)s> %(Identifier)s_adapter;
 

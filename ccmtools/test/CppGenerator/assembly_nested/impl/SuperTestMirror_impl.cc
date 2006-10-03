@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "SuperTestMirror_impl.h"
 #include "SuperTestMirror_innerBasicType_impl.h"
@@ -26,7 +26,7 @@ namespace component {
 namespace SuperTestMirror {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // CCM_SuperTestMirror - component implementation
@@ -42,15 +42,15 @@ CCM_SuperTestMirror_impl::~CCM_SuperTestMirror_impl()
 
 void
 CCM_SuperTestMirror_impl::set_session_context(
-    Components::SessionContext* context)
-    throw(Components::CCMException)
+    Components::ccm::local::SessionContext* context)
+    throw(Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_SuperTestMirror_Context*>(context);
 }
 
 void
 CCM_SuperTestMirror_impl::ccm_activate()
-    throw(Components::CCMException)
+    throw(Components::ccm::local::CCMException)
 {
     {
       // basic types test cases
@@ -329,14 +329,14 @@ CCM_SuperTestMirror_impl::ccm_activate()
 
 void
 CCM_SuperTestMirror_impl::ccm_passivate()
-    throw(Components::CCMException)
+    throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_SuperTestMirror_impl::ccm_remove()
-    throw(Components::CCMException)
+    throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

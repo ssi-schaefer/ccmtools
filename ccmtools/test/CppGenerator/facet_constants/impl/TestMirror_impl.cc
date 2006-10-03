@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "TestMirror_impl.h"
 
@@ -23,7 +23,7 @@ namespace component {
 namespace TestMirror {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // CCM_TestMirror - component implementation
@@ -41,17 +41,17 @@ CCM_TestMirror_impl::~CCM_TestMirror_impl()
 
 void
 CCM_TestMirror_impl::set_session_context(
-    ::ccm::local::Components::SessionContext* context)
-    throw(::ccm::local::Components::CCMException)
+    ::Components::ccm::local::SessionContext* context)
+    throw(::Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_TestMirror_Context*>(context);
 }
 
 void
 CCM_TestMirror_impl::ccm_activate()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
-   WX::Utils::SmartPtr<CCM_Constants> constants = ctx->get_connection_iface();
+   SmartPtr<CCM_Constants> constants = ctx->get_connection_iface();
    {
      //  const boolean BOOLEAN_CONST = TRUE;
      bool initial = true;
@@ -125,14 +125,14 @@ CCM_TestMirror_impl::ccm_activate()
 
 void
 CCM_TestMirror_impl::ccm_passivate()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_TestMirror_impl::ccm_remove()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

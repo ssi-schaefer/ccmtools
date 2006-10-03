@@ -3629,7 +3629,7 @@ public class CppRemoteGenerator
         code.append(TAB).append(op.getIdentifier()).append("(");
         code.append(getOperationParams(op));
         code.append(")").append(NL);
-        code.append(TAB2).append("throw(::ccm::local::Components::CCMException ");
+        code.append(TAB2).append("throw(::Components::ccm::local::CCMException ");
         code.append(getOperationExcepts(op)).append(";").append(NL);
         logger.fine("end");
         return code.toString();
@@ -3643,7 +3643,7 @@ public class CppRemoteGenerator
         code.append(iface.getIdentifier());
         code.append("AdapterToCorba::").append(op.getIdentifier()).append("(");
         code.append(getOperationParams(op)).append(")").append(NL);
-        code.append(TAB).append("throw(::ccm::local::Components::CCMException ");
+        code.append(TAB).append("throw(::Components::ccm::local::CCMException ");
         code.append(getOperationExcepts(op)).append(NL);
         code.append("{").append(NL);
         code.append(TAB).append("LDEBUGNL(CCM_REMOTE,\" ");
@@ -3656,10 +3656,10 @@ public class CppRemoteGenerator
         code.append(TAB).append("}").append(NL);
         code.append(convertReceptacleExceptionsToCpp(op)).append(NL);
         code.append(TAB).append("catch(const Components::NoConnection&) {").append(NL);
-        code.append(TAB2).append("throw ::ccm::local::Components::NoConnection();").append(NL);
+        code.append(TAB2).append("throw ::Components::ccm::local::NoConnection();").append(NL);
         code.append(TAB).append("}").append(NL);
         code.append(TAB).append("catch(...) {").append(NL);
-        code.append(TAB2).append("throw ::ccm::local::Components::CCMException();").append(NL);
+        code.append(TAB2).append("throw ::Components::ccm::local::CCMException();").append(NL);
         code.append(TAB).append("}").append(NL);
         code.append(convertReceptacleParameterToCpp(op)).append(NL);
         code.append(convertReceptacleResultToCpp(op)).append(NL);
@@ -3805,13 +3805,13 @@ public class CppRemoteGenerator
         code.append(TAB).append("virtual ");
         code.append("const ").append(getLanguageType(attr));
         code.append(" ").append(attr.getIdentifier()).append("() const").append(NL);
-        code.append(TAB2).append("throw(::ccm::local::Components::CCMException);");
+        code.append(TAB2).append("throw(::Components::ccm::local::CCMException);");
         code.append(NL2);
         
         code.append(TAB).append("virtual ");
         code.append("void ").append(attr.getIdentifier()).append("(const ");
         code.append(getLanguageType(attr)).append(" value)").append(NL);
-        code.append(TAB2).append("throw(::ccm::local::Components::CCMException);");
+        code.append(TAB2).append("throw(::Components::ccm::local::CCMException);");
         code.append(NL2);
         logger.fine("end");
         return code.toString();
@@ -3825,7 +3825,7 @@ public class CppRemoteGenerator
         code.append("const ").append(getLanguageType(attr)).append(NL);
         code.append(iface.getIdentifier()).append("AdapterToCorba::").append(attr.getIdentifier());
         code.append("() const").append(NL);
-        code.append(TAB).append("throw(::ccm::local::Components::CCMException)").append(NL);
+        code.append(TAB).append("throw(::Components::ccm::local::CCMException)").append(NL);
         code.append("{").append(NL);
         code.append(TAB).append("LDEBUGNL(CCM_REMOTE, \" ").append(iface.getIdentifier());
         code.append("AdapterToCorba->").append(attr.getIdentifier());
@@ -3842,7 +3842,7 @@ public class CppRemoteGenerator
         code.append("void").append(NL);
         code.append(iface.getIdentifier()).append("AdapterToCorba::").append(attr.getIdentifier());
         code.append("(const ").append(getLanguageType(attr)).append(" value)").append(NL);
-        code.append(TAB).append("throw(::ccm::local::Components::CCMException)").append(NL);
+        code.append(TAB).append("throw(::Components::ccm::local::CCMException)").append(NL);
         code.append("{").append(NL);
         code.append(TAB).append("LDEBUGNL(CCM_REMOTE, \" ").append(iface.getIdentifier());
         code.append("AdapterToCorba->").append(attr.getIdentifier());

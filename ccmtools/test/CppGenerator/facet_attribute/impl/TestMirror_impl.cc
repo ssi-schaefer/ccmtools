@@ -14,7 +14,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "TestMirror_impl.h"
 
@@ -24,7 +24,7 @@ namespace component {
 namespace TestMirror {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // CCM_Test_mirror - component implementation
@@ -40,15 +40,15 @@ CCM_TestMirror_impl::~CCM_TestMirror_impl()
 
 void
 CCM_TestMirror_impl::set_session_context(
-    Components::SessionContext* context)
-    throw(Components::CCMException)
+    Components::ccm::local::SessionContext* context)
+    throw(Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_TestMirror_Context*>(context);
 }
 
 void
 CCM_TestMirror_impl::ccm_activate()
-    throw(Components::CCMException)
+    throw(Components::ccm::local::CCMException)
 {
     {
       const long maxSize = 10;
@@ -73,14 +73,14 @@ CCM_TestMirror_impl::ccm_activate()
 
 void
 CCM_TestMirror_impl::ccm_passivate()
-    throw(Components::CCMException)
+    throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_TestMirror_impl::ccm_remove()
-    throw(Components::CCMException)
+    throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

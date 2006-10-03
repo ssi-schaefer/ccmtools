@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "TestMirror_a_receptacle_impl.h"
 
@@ -24,7 +24,7 @@ namespace component {
 namespace TestMirror {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 
 a_receptacle_impl::a_receptacle_impl(CCM_TestMirror_impl* component_impl)
@@ -41,42 +41,42 @@ a_receptacle_impl::~a_receptacle_impl()
 
 const long
 a_receptacle_impl::attr3() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     return attr3_;
 }
 
 void
 a_receptacle_impl::attr3(const long value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     attr3_ = value;
 }
 
 const long
 a_receptacle_impl::attr2() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     return attr2_;
 }
 
 void
 a_receptacle_impl::attr2(const long value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     attr2_ = value;
 }
 
 const long
 a_receptacle_impl::attr1() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     return attr1_;
 }
 
 void
 a_receptacle_impl::attr1(const long value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     attr1_ = value;
 }
@@ -84,7 +84,7 @@ a_receptacle_impl::attr1(const long value)
 
 long
 a_receptacle_impl::op3(const std::string& str)
-    throw (Components::CCMException)
+    throw (::Components::ccm::local::CCMException)
 {
   cout << str << endl;
   return str.length();
@@ -92,7 +92,7 @@ a_receptacle_impl::op3(const std::string& str)
 
 long
 a_receptacle_impl::op2(const std::string& str)
-    throw (ccm::local::Components::CCMException)
+    throw (::Components::ccm::local::CCMException)
 {
   cout << str << endl;
   return str.length();
@@ -100,7 +100,7 @@ a_receptacle_impl::op2(const std::string& str)
 
 long
 a_receptacle_impl::op1(const std::string& str)
-    throw (ccm::local::Components::CCMException)
+    throw (::Components::ccm::local::CCMException)
 {
   cout << str << endl;
   return str.length();

@@ -13,8 +13,8 @@
 
 #ifdef HAVE_MICO 
 
-#include <WX/Utils/smartptr.h>
-#include <WX/Utils/debug.h> 
+#include <wx/utils/smartptr.h>
+#include <wx/utils/debug.h> 
 #include <CCM/CCMContainer.h>
 
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
@@ -38,15 +38,15 @@ class %(Identifier)s_impl :
     friend class CCM_%(Identifier)s_Context_impl;
 
   protected:
-    WX::Utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> local_adapter;
-    WX::Utils::SmartPtr<CCM::SessionContainer> ccm_container;
+    wx::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> local_adapter;
+    wx::utils::SmartPtr<CCM::SessionContainer> ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
   public:
-    %(Identifier)s_impl(WX::Utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s>, 
-        WX::Utils::SmartPtr<CCM::SessionContainer> );
+    %(Identifier)s_impl(wx::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s>, 
+        wx::utils::SmartPtr<CCM::SessionContainer> );
     virtual ~%(Identifier)s_impl ();
 
     // Component Attributes
@@ -105,7 +105,7 @@ class %(Identifier)s_impl :
 %(OpenNamespace)s
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //============================================================================
 // Component remote adapter 

@@ -6,7 +6,7 @@ all: mirror
 test: mirror check clean
 
 idl3: Console.idl Hello.idl Lcd.idl Message.idl
-	ccmmodel -check Console.idl Hello.idl Lcd.idl Message.idl
+	ccmmodel -checker Console.idl Hello.idl Lcd.idl Message.idl
 	ccmidl -idl3 -o ${DEST_DIR}/idl Console.idl Hello.idl Lcd.idl Message.idl
 
 local: idl3

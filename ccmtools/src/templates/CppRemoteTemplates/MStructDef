@@ -69,7 +69,7 @@ ccmDebug(const %(CorbaStubName)s& in, int indent = 0)
 
 #ifdef HAVE_MICO 
 
-#include <WX/Utils/debug.h> 
+#include <wx/utils/debug.h> 
 
 #include <ccm/remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"

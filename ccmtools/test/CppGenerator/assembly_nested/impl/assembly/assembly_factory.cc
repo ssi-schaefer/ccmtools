@@ -1,10 +1,10 @@
 #include "assembly.h"
 #include "assembly_factory.h"
 
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace ccm {
 namespace local {
@@ -18,12 +18,12 @@ AssemblyFactory::~AssemblyFactory()
   DEBUGNL("-AssemblyFactory::~AssemblyFactory()");
 }
 
-WX::Utils::SmartPtr<Components::Assembly>
+wx::utils::SmartPtr<Components::ccm::local::Assembly>
 AssemblyFactory::create()
-  throw(Components::CreateFailure)
+  throw(Components::ccm::local::CreateFailure)
 {
   DEBUGNL(" AssemblyFactory::create()");
-  WX::Utils::SmartPtr<Components::Assembly>
+  wx::utils::SmartPtr<Components::ccm::local::Assembly>
     assembly(new Assembly());
   return assembly;
 }

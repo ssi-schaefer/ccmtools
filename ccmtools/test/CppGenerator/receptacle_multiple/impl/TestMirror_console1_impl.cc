@@ -12,7 +12,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "TestMirror_console1_impl.h"
 
@@ -23,7 +23,7 @@ namespace component {
 namespace TestMirror {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 console1_impl::console1_impl(CCM_TestMirror_impl* component_impl)
   : component(component_impl)
@@ -38,7 +38,7 @@ console1_impl::~console1_impl()
 
 long
 console1_impl::println(const std::string& s2)
-    throw (Components::CCMException)
+    throw (::Components::ccm::local::CCMException)
 {
     cout << "Console 1 : " << s2 << endl;
     return s2.length();

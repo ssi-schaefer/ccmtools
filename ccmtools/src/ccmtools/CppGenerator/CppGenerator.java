@@ -64,7 +64,6 @@ import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
 abstract public class CppGenerator extends CodeGenerator
@@ -90,7 +89,7 @@ abstract public class CppGenerator extends CodeGenerator
     // c++ language types that get mapped from corba primitive kinds.
 
     private final static String[] _language = {
-            "", "WX::Utils::Value", // PK_ANY
+            "", "wx::utils::Value", // PK_ANY
             "bool", // PK_BOOLEAN
             "char", // PK_CHAR
             "double", // PK_DOUBLE
@@ -100,16 +99,16 @@ abstract public class CppGenerator extends CodeGenerator
             "double", // PK_LONGDOUBLE
             "long", // PK_LONGLONG
             "NULL", // PK_NULL
-            "::ccm::local::Components::Object*", // PK_OBJREF
+            "::Components::ccm::local::Object*", // PK_OBJREF
             "unsigned char", // PK_OCTET
             "(principal data type not implemented", // PK_PRINCIPAL
             "short", // PK_SHORT
             "std::string", // PK_STRING
-            "::ccm::local::Components::TypeCode", // PK_TYPECODE
+            "::Components::ccm::local::TypeCode", // PK_TYPECODE
             "unsigned long", // PK_ULONG
             "unsigned long", // PK_ULONGLONG
             "unsigned short", // PK_USHORT
-            "::ccm::local::Components::Object*", // PK_VALUEBASE
+            "::Components::ccm::local::Object*", // PK_VALUEBASE
             "void", // PK_VOID
             "wchar_t", // PK_WCHAR
             "std::wstring" // PK_WSTRING
@@ -800,7 +799,7 @@ abstract public class CppGenerator extends CodeGenerator
         if(idl_type instanceof MInterfaceDef
                 || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
                         .getKind() == MPrimitiveKind.PK_ANY)) {
-            base_type = "WX::Utils::SmartPtr< " + base_type + " > ";
+            base_type = "wx::utils::SmartPtr< " + base_type + " > ";
         }
 
         // This code defines the parameter passing rules for operations:
@@ -1031,13 +1030,13 @@ abstract public class CppGenerator extends CodeGenerator
         }
         if(ret.size() > 0) {
             String indent = "\n" + Text.tab(2);
-            return "throw(::ccm::local::Components::CCMException," 
+            return "throw(::Components::ccm::local::CCMException," 
             	+ indent
             	+ join("," + indent, ret)
                 + " )";
         }
         else {
-            return "throw(::ccm::local::Components::CCMException)";
+            return "throw(::Components::ccm::local::CCMException)";
         }
     }
 }

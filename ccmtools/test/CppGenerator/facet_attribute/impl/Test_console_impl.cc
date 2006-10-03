@@ -12,7 +12,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_console_impl.h"
 
@@ -22,7 +22,7 @@ namespace component {
 namespace Test {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 console_impl::console_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
@@ -41,7 +41,7 @@ console_impl::~console_impl()
 
 const long
 console_impl::max_size() const
-    throw(Components::CCMException)
+    throw(Components::ccm::local::CCMException)
 {
     DEBUGNL(" console_impl->max_size()");
     return max_size_;
@@ -49,7 +49,7 @@ console_impl::max_size() const
 
 void
 console_impl::max_size(const long value)
-    throw(Components::CCMException)
+    throw(Components::ccm::local::CCMException)
 {
     DEBUGNL(" console_impl->max_size(value)");
     max_size_ = value;
@@ -57,7 +57,7 @@ console_impl::max_size(const long value)
 
 long
 console_impl::print(const std::string& msg)
-    throw (Components::CCMException)
+    throw (Components::ccm::local::CCMException)
 {
     DEBUGNL("console_impl->print(msg)");
     

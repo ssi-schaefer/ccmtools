@@ -16,10 +16,10 @@ void
     try {
         local_adapter->connect_%(Identifier)s(%(Identifier)s_adapter);
     }
-    catch(const ::ccm::local::Components::AlreadyConnected&) {
+    catch(const ::Components::ccm::local::AlreadyConnected&) {
         throw Components::AlreadyConnected();
     }
-    catch(const ::ccm::local::Components::InvalidConnection&) {
+    catch(const ::Components::ccm::local::InvalidConnection&) {
         throw Components::InvalidConnection();
     }
 }
@@ -33,7 +33,7 @@ void
     try {
         local_adapter->disconnect_%(Identifier)s();
     }
-    catch(const ::ccm::local::Components::NoConnection&) {
+    catch(const ::Components::ccm::local::NoConnection&) {
         throw Components::NoConnection();
     }
     

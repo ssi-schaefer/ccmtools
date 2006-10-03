@@ -12,20 +12,20 @@ MyObject::MyObject()
 
 const std::string 
 MyObject::prompt() const 
-  throw(ccm::local::Components::CCMException) 
+  throw(::Components::ccm::local::CCMException) 
 {
   return prompt_;
 }
 
 void 
 MyObject::prompt(const std::string value) 
-  throw(ccm::local::Components::CCMException) {
+  throw(::Components::ccm::local::CCMException) {
   prompt_=value;
 }
 
 long 
 MyObject::println(const std::string& msg) 
-    throw(ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
   cout << prompt_ << msg << endl;
   return msg.length();

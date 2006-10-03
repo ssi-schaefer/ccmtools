@@ -20,10 +20,10 @@
 #include <cassert>
 #include <iostream>
 
-#include <WX/Utils/debug.h>
-#include <WX/Utils/smartptr.h>
+#include <wx/utils/debug.h>
+#include <wx/utils/smartptr.h>
 
-#include <ccm/local/Components/CCM.h>
+#include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
 
@@ -36,7 +36,7 @@
 #endif
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 using namespace ccm::local;
 
 int main(int argc, char *argv[])
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    Components::HomeFinder* homeFinder =  HomeFinder::Instance();
+    Components::ccm::local::HomeFinder* homeFinder =  HomeFinder::Instance();
     error  = deploy_ccm_local_component_Test_TestHome("TestHome");             
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -78,16 +78,16 @@ int main(int argc, char *argv[])
 
         myTest->configuration_complete();
     } 
-    catch(Components::HomeNotFound ) {
+    catch(Components::ccm::local::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch(Components::NotImplemented& e ) {
+    catch(Components::ccm::local::NotImplemented& e ) {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch(Components::InvalidName& e ) {
+    catch(Components::ccm::local::InvalidName& e ) {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 
 	::Person person2;
 	person2.id = 290;
-        person2.firstName = "Jörg";
+        person2.firstName = "Jï¿½rg";
         person2.lastName = "Faschingbauer";
 
 	::DTO dto1;
@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
 	assert(result.person.lastName == dto1.person.lastName);
       }
     } 
-    catch(Components::NotImplemented& e ) {
+    catch(Components::ccm::local::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
@@ -205,11 +205,11 @@ int main(int argc, char *argv[])
     try {
         myTest->remove();
     } 
-    catch(Components::HomeNotFound ) {
+    catch(Components::ccm::local::HomeNotFound ) {
         cout << "TEARDOWN ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch(Components::NotImplemented& e ) {
+    catch(Components::ccm::local::NotImplemented& e ) {
         cout << "TEARDOWN ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;

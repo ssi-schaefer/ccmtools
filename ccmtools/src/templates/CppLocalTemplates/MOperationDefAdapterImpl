@@ -5,7 +5,7 @@
     LDEBUGNL(CCM_LOCAL," %(InterfaceIdentifier)sAdapter%(Object)s::%(Identifier)s(%(MParameterDefName)s)");
 %(DebugOperationInParameter)s
     if(!validConnection()) 
-        throw ::ccm::local::Components::InvalidConnection();
+        throw ::Components::ccm::local::InvalidConnection();
 
 %(OperationToFacetDelegation)s      
 

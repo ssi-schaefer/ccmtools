@@ -14,7 +14,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_impl.h"
 
@@ -25,7 +25,7 @@ namespace component {
 namespace Test {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 
 //==============================================================================
@@ -41,18 +41,18 @@ CCM_Test_impl::~CCM_Test_impl (  )
 }
 
 void
-CCM_Test_impl::set_session_context ( Components::SessionContext* context )
-  throw ( Components::CCMException )
+CCM_Test_impl::set_session_context ( Components::ccm::local::SessionContext* context )
+  throw ( Components::ccm::local::CCMException )
 {
   ctx = dynamic_cast<CCM_Test_Context*> ( context );
 }
 
 void
 CCM_Test_impl::ccm_activate (  )
-  throw ( Components::CCMException )
+  throw ( Components::ccm::local::CCMException )
 {
 
-  WX::Utils::SmartPtr<CCM_InterfaceType> receptacle = 
+  SmartPtr<CCM_InterfaceType> receptacle = 
     ctx->get_connection_a_receptacle();
   string str1 = "Hallo to first op()";
   long size1 = receptacle->op1(str1);
@@ -81,13 +81,13 @@ CCM_Test_impl::ccm_activate (  )
 
 void
 CCM_Test_impl::ccm_passivate (  )
-  throw ( Components::CCMException )
+  throw ( Components::ccm::local::CCMException )
 {
 }
 
 void
 CCM_Test_impl::ccm_remove (  )
-  throw ( Components::CCMException )
+  throw ( Components::ccm::local::CCMException )
 {
 }
 

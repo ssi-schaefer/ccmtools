@@ -1,33 +1,33 @@
-::ccm::local::Components::Cookie
+::Components::ccm::local::Cookie
 %(ComponentType)s::connect_%(Identifier)s(SmartPtr<%(UsesType)s> f)
-    throw(::ccm::local::Components::ExceededConnectionLimit, 
-          ::ccm::local::Components::InvalidConnection)
+    throw(::Components::ccm::local::ExceededConnectionLimit, 
+          ::Components::ccm::local::InvalidConnection)
 {
     LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::connect_%(Identifier)s()");
     if(!ValidConnection) 
-        throw ::ccm::local::Components::InvalidConnection();
+        throw ::Components::ccm::local::InvalidConnection();
     stringstream s;
     s << "CCM_%(Identifier)s:" << %(Identifier)s_receptacle_counter++;
-    ::ccm::local::Components::Cookie ck(s.str());
+    ::Components::ccm::local::Cookie ck(s.str());
     SmartPtr<%(CCMUsesType)s> ccmf(dynamic_cast<%(CCMUsesType)s*>(f.ptr()));
     %(Identifier)s_receptacles.insert(make_pair(ck, ccmf));
     return ck;
 }
 
 SmartPtr<%(UsesType)s>
-%(ComponentType)s::disconnect_%(Identifier)s(::ccm::local::Components::Cookie ck)
-    throw(::ccm::local::Components::InvalidConnection)
+%(ComponentType)s::disconnect_%(Identifier)s(::Components::ccm::local::Cookie ck)
+    throw(::Components::ccm::local::InvalidConnection)
 {
     LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::disconnect_%(Identifier)s()");
     if(!ValidConnection) 
-        throw ::ccm::local::Components::InvalidConnection();
+        throw ::Components::ccm::local::InvalidConnection();
     if(%(Identifier)s_receptacles.find(ck) != %(Identifier)s_receptacles.end()) {
         SmartPtr<%(CCMUsesType)s> f(%(Identifier)s_receptacles[ck]);
         %(Identifier)s_receptacles.erase(ck);
         return f;
     } 
     else 
-        throw ::ccm::local::Components::InvalidConnection();
+        throw ::Components::ccm::local::InvalidConnection();
 }
 
 %(Identifier)sConnections&
@@ -35,7 +35,7 @@ SmartPtr<%(UsesType)s>
 {
     LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::get_connections_%(Identifier)s()" );
     if(!ValidConnection) 
-        throw ::ccm::local::Components::InvalidConnection();
+        throw ::Components::ccm::local::InvalidConnection();
     return %(Identifier)s_receptacles;
 }
 

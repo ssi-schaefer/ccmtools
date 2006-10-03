@@ -28,11 +28,11 @@ class %(Identifier)s_impl :
     virtual public PortableServer::RefCountServantBase
 {
   protected:
-    WX::Utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> local_home;
-    WX::Utils::SmartPtr<CCM::SessionContainer> ccm_container;
+    wx::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> local_home;
+    wx::utils::SmartPtr<CCM::SessionContainer> ccm_container;
       
   public:
-    %(Identifier)s_impl(WX::Utils::SmartPtr<CCM::SessionContainer> c);
+    %(Identifier)s_impl(wx::utils::SmartPtr<CCM::SessionContainer> c);
     virtual ~%(Identifier)s_impl();
 
     // Implicit operations
@@ -85,7 +85,7 @@ extern "C" {
 #include "%(Identifier)s_remote.h"
 #include <%(AbsoluteLocalHomeName)s_entry.h>
 
-using namespace WX::Utils;
+using namespace wx::utils;
 
 %(OpenNamespace)s
 
@@ -99,7 +99,7 @@ using namespace std;
     : ccm_container (c)
 {
     LDEBUGNL(CCM_CONTAINER, "+%(Identifier)s_impl::%(Identifier)s_impl()");
-    ::ccm::local::Components::HomeFinder* homeFinder = 
+    ::Components::ccm::local::HomeFinder* homeFinder = 
         ::ccm::local::HomeFinder::Instance();
     local_home = SmartPtr<%(LocalNamespace)s::%(Identifier)s>(
         dynamic_cast<%(LocalNamespace)s::%(Identifier)s*>

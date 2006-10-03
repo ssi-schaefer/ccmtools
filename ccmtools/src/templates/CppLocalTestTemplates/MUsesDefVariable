@@ -1,2 +1,2 @@
-    SmartPtr< Components::Object> %(ComponentType)s_uses_%(Identifier)s;
+    SmartPtr< ::Components::ccm::local::Object> %(ComponentType)s_uses_%(Identifier)s;
 

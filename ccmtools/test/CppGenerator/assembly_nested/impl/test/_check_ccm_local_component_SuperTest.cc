@@ -14,10 +14,10 @@
 #include <cassert>
 #include <iostream>
 
-#include <WX/Utils/debug.h>
-#include <WX/Utils/smartptr.h>
+#include <wx/utils/debug.h>
+#include <wx/utils/smartptr.h>
 
-#include <ccm/local/Components/CCM.h>
+#include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
 #include <ccm/local/component/SuperTestMirror/SuperTestMirror_gen.h>
@@ -35,7 +35,7 @@
 #include <ccm/local/assembly_factory.h>
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 using namespace ccm::local;
 using namespace component;
 
@@ -45,30 +45,30 @@ int main(int argc, char *argv[])
 
     SmartPtr<component::SuperTest::SuperTest> mySuperTest;
     SmartPtr<component::SuperTestMirror::SuperTestMirror> mySuperTestMirror;
-    SmartPtr<Components::Object> SuperTest_provides_basicType;
-    SmartPtr<Components::Object> SuperTest_provides_userType;
+    SmartPtr<Components::ccm::local::Object> SuperTest_provides_basicType;
+    SmartPtr<Components::ccm::local::Object> SuperTest_provides_userType;
 
-    Components::Cookie SuperTest_ck_basicType;
-    Components::Cookie SuperTest_ck_userType;
+    Components::ccm::local::Cookie SuperTest_ck_basicType;
+    Components::ccm::local::Cookie SuperTest_ck_userType;
 
-    SmartPtr<Components::Object> SuperTest_uses_innerBasicType;
-    SmartPtr<Components::Object> SuperTest_uses_innerUserType;
+    SmartPtr<Components::ccm::local::Object> SuperTest_uses_innerBasicType;
+    SmartPtr<Components::ccm::local::Object> SuperTest_uses_innerUserType;
 
-    Components::Cookie SuperTest_ck_innerBasicType;
-    Components::Cookie SuperTest_ck_innerUserType;
+    Components::ccm::local::Cookie SuperTest_ck_innerBasicType;
+    Components::ccm::local::Cookie SuperTest_ck_innerUserType;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    Components::HomeFinder* homeFinder;
+    Components::ccm::local::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 
     error  += deploy_ccm_local_component_BasicTest_BasicTestHome("BasicTestHome");
     error  += deploy_ccm_local_component_UserTest_UserTestHome("UserTestHome");
 
-    SmartPtr<Components::AssemblyFactory> assembly_factory(new AssemblyFactory());
+    SmartPtr<Components::ccm::local::AssemblyFactory> assembly_factory(new AssemblyFactory());
     error += deploy_with_assembly_ccm_local_component_SuperTest_SuperTestHome("SuperTestHome", assembly_factory);
 
     error += deploy_ccm_local_component_SuperTestMirror_SuperTestHomeMirror("SuperTestHomeMirror");	
@@ -108,16 +108,16 @@ int main(int argc, char *argv[])
         mySuperTest->configuration_complete();
         mySuperTestMirror->configuration_complete();
     } 
-    catch ( Components::HomeNotFound ) {
+    catch ( Components::ccm::local::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( Components::NotImplemented& e ) {
+    catch ( Components::ccm::local::NotImplemented& e ) {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch ( Components::InvalidName& e ) {
+    catch ( Components::ccm::local::InvalidName& e ) {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
         // OPTIONAL : IMPLEMENT TEST CASES HERE !
 
     } 
-    catch ( Components::NotImplemented& e ) {
+    catch ( Components::ccm::local::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
@@ -163,11 +163,11 @@ int main(int argc, char *argv[])
       mySuperTest->remove();
       mySuperTestMirror->remove();
     } 
-    catch ( Components::HomeNotFound ) {
+    catch ( Components::ccm::local::HomeNotFound ) {
         cout << "TEARDOWN ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch ( Components::NotImplemented& e ) {
+    catch ( Components::ccm::local::NotImplemented& e ) {
         cout << "TEARDOWN ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;

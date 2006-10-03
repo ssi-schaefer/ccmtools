@@ -1,5 +1,5 @@
-typedef std::map< ::ccm::local::Components::Cookie, 
-                 WX::Utils::SmartPtr< %(CCMUsesType)s> > %(Identifier)sConnections;
+typedef std::map< ::Components::ccm::local::Cookie, 
+                 wx::utils::SmartPtr< %(CCMUsesType)s> > %(Identifier)sConnections;
 
 
 

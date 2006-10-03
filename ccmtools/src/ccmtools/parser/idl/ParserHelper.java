@@ -132,12 +132,12 @@ public class ParserHelper
     {
         logger = Logger.getLogger("ccmtools.parser.idl");
         //!!!!!!!!!!
-        logger.setLevel(Level.FINE);
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        handler.setFormatter(new ccm.local.MinimalFormatter());
-        logger.addHandler(handler);
-        ccm.local.ServiceLocator.instance().setLogger(logger);
+//        logger.setLevel(Level.FINE);
+//        Handler handler = new ConsoleHandler();
+//        handler.setLevel(Level.ALL);
+//        handler.setFormatter(new ccm.local.MinimalFormatter());
+//        logger.addHandler(handler);
+//        ccm.local.ServiceLocator.instance().setLogger(logger);
         //!!!!!!!!
         init();        
     }

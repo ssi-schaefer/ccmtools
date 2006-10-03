@@ -14,7 +14,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 #include <ccm/local/Debug.h>
 
 #include "TestMirror_impl.h"
@@ -27,7 +27,7 @@ namespace component {
 namespace TestMirror {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 
 //==============================================================================
@@ -43,17 +43,17 @@ CCM_TestMirror_impl::~CCM_TestMirror_impl (  )
 }
 
 void
-CCM_TestMirror_impl::set_session_context (Components::SessionContext* context )
-  throw ( Components::CCMException )
+CCM_TestMirror_impl::set_session_context (Components::ccm::local::SessionContext* context )
+  throw ( Components::ccm::local::CCMException )
 {
   ctx = dynamic_cast<CCM_TestMirror_Context*> ( context );
 }
 
 void
 CCM_TestMirror_impl::ccm_activate (  )
-  throw ( Components::CCMException )
+  throw ( Components::ccm::local::CCMException )
 {
-  WX::Utils::SmartPtr<CCM_TypeTest> type_test = ctx->get_connection_type_test();
+  SmartPtr<CCM_TypeTest> type_test = ctx->get_connection_type_test();
 
   {
     // no types test case
@@ -203,15 +203,15 @@ CCM_TestMirror_impl::ccm_activate (  )
   // Test interface types
   {
     MyObject* my_object1 = new MyObject;
-    WX::Utils::SmartPtr<Console> console1(my_object1);
+    SmartPtr<Console> console1(my_object1);
     console1->prompt("prompt1> ");
 
     MyObject* my_object2 = new MyObject;
-    WX::Utils::SmartPtr<Console> console2(my_object2);
+    SmartPtr<Console> console2(my_object2);
     console2->prompt("prompt2> ");
 
-    WX::Utils::SmartPtr<Console> console3;
-    WX::Utils::SmartPtr<Console> console4;
+    SmartPtr<Console> console3;
+    SmartPtr<Console> console4;
 
     console4 = type_test->op_i1(console1,console2,console3);
 
@@ -223,13 +223,13 @@ CCM_TestMirror_impl::ccm_activate (  )
 
 void
 CCM_TestMirror_impl::ccm_passivate (  )
-  throw ( Components::CCMException )
+  throw ( Components::ccm::local::CCMException )
 {
 }
 
 void
 CCM_TestMirror_impl::ccm_remove (  )
-  throw ( Components::CCMException )
+  throw ( Components::ccm::local::CCMException )
 {
 }
 

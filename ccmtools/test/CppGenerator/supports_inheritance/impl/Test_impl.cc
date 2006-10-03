@@ -14,7 +14,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_impl.h"
 
@@ -25,7 +25,7 @@ namespace component {
 namespace Test {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -43,7 +43,7 @@ CCM_Test_impl::~CCM_Test_impl()
 
 long
 CCM_Test_impl::op3(const std::string& str)
-    throw (Components::CCMException)
+    throw (::Components::ccm::local::CCMException)
 {
     DEBUGNL(" CCM_Test_impl->op3(str)");
     cout << str << endl;
@@ -52,7 +52,7 @@ CCM_Test_impl::op3(const std::string& str)
 
 long
 CCM_Test_impl::op2(const std::string& str)
-    throw (Components::CCMException)
+    throw (::Components::ccm::local::CCMException)
 {
     DEBUGNL(" CCM_Test_impl->op2(str)");
     cout << str << endl;
@@ -61,7 +61,7 @@ CCM_Test_impl::op2(const std::string& str)
 
 long
 CCM_Test_impl::op1(const std::string& str)
-    throw (Components::CCMException)
+    throw (::Components::ccm::local::CCMException)
 {
     DEBUGNL(" CCM_Test_impl->op1(str)");
     cout << str << endl;
@@ -70,8 +70,8 @@ CCM_Test_impl::op1(const std::string& str)
 
 void
 CCM_Test_impl::set_session_context(
-    Components::SessionContext* context)
-    throw(Components::CCMException)
+    Components::ccm::local::SessionContext* context)
+    throw(::Components::ccm::local::CCMException)
 {
     DEBUGNL(" CCM_Test_impl->set_session_context()");
     ctx = dynamic_cast<CCM_Test_Context*>(context);
@@ -79,7 +79,7 @@ CCM_Test_impl::set_session_context(
 
 void
 CCM_Test_impl::ccm_activate()
-    throw(Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     DEBUGNL(" CCM_Test_impl->ccm_activate()");
 
@@ -88,7 +88,7 @@ CCM_Test_impl::ccm_activate()
 
 void
 CCM_Test_impl::ccm_passivate()
-    throw(Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     DEBUGNL(" CCM_Test_impl->ccm_passivate()");
 
@@ -97,7 +97,7 @@ CCM_Test_impl::ccm_passivate()
 
 void
 CCM_Test_impl::ccm_remove()
-    throw(Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     DEBUGNL(" CCM_Test_impl->ccm_remove()");
 

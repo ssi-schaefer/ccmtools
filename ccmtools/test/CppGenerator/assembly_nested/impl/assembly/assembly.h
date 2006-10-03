@@ -3,10 +3,10 @@
 #define ASSEMBLY_H
 
 
-#include <WX/Utils/debug.h>
-#include <WX/Utils/smartptr.h>
+#include <wx/utils/debug.h>
+#include <wx/utils/smartptr.h>
 
-#include <ccm/local/Components/CCM.h>
+#include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
 #include <ccm/local/component/BasicTest/BasicTest_gen.h>
@@ -26,23 +26,23 @@ using namespace std;
 using namespace ccm::local;
 
 class Assembly
-: public Components::Assembly
+: public Components::ccm::local::Assembly
 {
 private:
-	Components::AssemblyState state_;
+	Components::ccm::local::AssemblyState state_;
 
 	// Super Component: SuperTest
-	WX::Utils::SmartPtr<component::SuperTest::SuperTest> superTest;
-	WX::Utils::SmartPtr<BasicTypeInterface> innerBasicType;
-	WX::Utils::SmartPtr<UserTypeInterface> innerUserType;
+	wx::utils::SmartPtr<component::SuperTest::SuperTest> superTest;
+	wx::utils::SmartPtr<BasicTypeInterface> innerBasicType;
+	wx::utils::SmartPtr<UserTypeInterface> innerUserType;
 
 	// Inner Component: BasicTest
-	WX::Utils::SmartPtr<component::BasicTest::BasicTest> basicTest;
-	WX::Utils::SmartPtr<BasicTypeInterface> basicType;
+	wx::utils::SmartPtr<component::BasicTest::BasicTest> basicTest;
+	wx::utils::SmartPtr<BasicTypeInterface> basicType;
 
 	// Inner Component: UserTest
-	WX::Utils::SmartPtr<component::UserTest::UserTest> userTest;
-	WX::Utils::SmartPtr<UserTypeInterface> userType;
+	wx::utils::SmartPtr<component::UserTest::UserTest> userTest;
+	wx::utils::SmartPtr<UserTypeInterface> userType;
 
 public:
 	Assembly();
@@ -54,7 +54,7 @@ public:
 	 * interconnects them according to the assembly descriptor.
 	 */
 	virtual void build()
-	    throw (Components::CreateFailure);
+	    throw (Components::ccm::local::CreateFailure);
 
 	/*
 	 * Build a component assembly based on a given facade component.
@@ -62,8 +62,8 @@ public:
 	 * Note: This is an CCM extension to support nested components.
 	 */
 	virtual void build(
-	WX::Utils::SmartPtr<Components::CCMObject> facadeComponent)
-	    throw (Components::CreateFailure);
+	wx::utils::SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
+	    throw (Components::ccm::local::CreateFailure);
 
 	/*
 	 * Call configuration_complete on every component instance in the 
@@ -79,12 +79,12 @@ public:
 	 * created by the build operation.
 	 */
 	virtual void tear_down()
-	    throw (Components::RemoveFailure);
+	    throw (Components::ccm::local::RemoveFailure);
 
 	/*
 	 * Returns whether the assembly is active or inactive.
 	 */
-	virtual Components::AssemblyState get_state();
+	virtual Components::ccm::local::AssemblyState get_state();
 };
 
 } // /namespace local

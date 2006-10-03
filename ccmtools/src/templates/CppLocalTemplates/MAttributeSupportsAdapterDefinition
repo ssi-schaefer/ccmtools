@@ -1,6 +1,6 @@
 const %(LanguageType)s
 %(Object)s::%(Identifier)s() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     LDEBUGNL(CCM_LOCAL," %(Object)s::%(Identifier)s() = "
              << ccmDebug(local_component->%(Identifier)s()));
@@ -9,7 +9,7 @@ const %(LanguageType)s
 
 void
 %(Object)s::%(Identifier)s(const %(LanguageType)s value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     LDEBUGNL(CCM_LOCAL," %(Object)s::%(Identifier)s("
              << ccmDebug(value) << ")");

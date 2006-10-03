@@ -24,7 +24,7 @@
 #include "%(Identifier)s_server.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //============================================================================
 // Main for a standalone component

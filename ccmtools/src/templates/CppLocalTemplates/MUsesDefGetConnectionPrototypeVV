@@ -1,2 +1,2 @@
-    virtual WX::Utils::SmartPtr< %(CCMUsesType)s> get_connection_%(Identifier)s() = 0;
+    virtual wx::utils::SmartPtr< %(CCMUsesType)s> get_connection_%(Identifier)s() = 0;
 

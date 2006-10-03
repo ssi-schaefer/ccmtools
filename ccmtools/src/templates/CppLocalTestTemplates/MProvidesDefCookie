@@ -1,2 +1,2 @@
-    Components::Cookie %(ComponentType)s_ck_%(Identifier)s;
+    ::Components::ccm::local::Cookie %(ComponentType)s_ck_%(Identifier)s;
 

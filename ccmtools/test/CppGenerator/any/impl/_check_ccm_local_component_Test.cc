@@ -20,10 +20,10 @@
 #include <cassert>
 #include <iostream>
 
-#include <WX/Utils/debug.h>
-#include <WX/Utils/smartptr.h>
-#include <WX/Utils/value.h>
-#include <WX/Utils/value_simple.h>
+#include <wx/utils/debug.h>
+#include <wx/utils/smartptr.h>
+#include <wx/utils/Value.h>
+#include <wx/utils/value_simple.h>
 
 #include <ccm/local/Components/CCM.h>
 #include <ccm/local/HomeFinder.h>
@@ -37,7 +37,7 @@
 #endif
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 using namespace ccm::local;
 
 int main(int argc, char *argv[])

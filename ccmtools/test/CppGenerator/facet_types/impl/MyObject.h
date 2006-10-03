@@ -12,13 +12,13 @@ public:
   MyObject();
 
   const std::string prompt() const
-    throw(ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
   void prompt(const std::string value) 
-    throw(ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
   long println(const std::string& msg)
-    throw(ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 private: 
   std::string prompt_;
 };

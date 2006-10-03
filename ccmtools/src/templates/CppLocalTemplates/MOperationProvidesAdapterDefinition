@@ -5,7 +5,7 @@ FacetAdapter%(Object)s::%(Identifier)s(%(OperationParameterList)s)
     LDEBUGNL(CCM_LOCAL," FacetAdapter%(Object)s::%(Identifier)s(%(MParameterDefName)s)");
 %(DebugOperationInParameter)s
     if(!ValidConnection) 
-        throw ::ccm::local::Components::InvalidConnection();
+        throw ::Components::ccm::local::InvalidConnection();
 
 %(OperationToFacetDelegation)s      
 

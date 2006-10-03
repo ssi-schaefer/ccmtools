@@ -7,7 +7,7 @@
 #ifndef __IFACE_%(PreprocIdentifier)s__H__
 #define __IFACE_%(PreprocIdentifier)s__H__
 
-#include <ccm/local/Components/CCM.h>
+#include <Components/ccm/local/CCM.h>
 
 %(DebugInclude)s
 
@@ -23,7 +23,7 @@
 
 // External view of interface %(Identifier)s
 class %(Identifier)s
-  : virtual public ::ccm::local::Components::Object%(BaseType)s
+  : virtual public ::Components::ccm::local::Object%(BaseType)s
 {
   public:
     virtual ~%(Identifier)s() {}
@@ -52,7 +52,7 @@ class CCM_%(Identifier)s
 #ifdef WXDEBUG
 inline
 std::string 
-ccmDebug(const WX::Utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
+ccmDebug(const wx::utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
 {
     std::ostringstream os;
     os << ::ccm::local::doIndent(indent) << "object %(Identifier)s" << std::endl;
@@ -75,8 +75,8 @@ ccmDebug(const WX::Utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
 #ifndef __INTERFACE_ADAPTER_%(PreprocIdentifier)s__H__
 #define __INTERFACE_ADAPTER_%(PreprocIdentifier)s__H__
 
-#include <WX/Utils/smartptr.h>
-#include <ccm/local/Components/CCM.h>
+#include <wx/utils/smartptr.h>
+#include <Components/ccm/local/CCM.h>
 
 #include <%(InterfaceInclude)s.h> 
 
@@ -134,7 +134,7 @@ class %(Identifier)sAdapter
  * DO NOT EDIT !
  */
 
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 %(DebugInclude)s
 
@@ -143,7 +143,7 @@ class %(Identifier)sAdapter
 %(OpenNamespace)s
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // %(Identifier)s interface constants (implementation)

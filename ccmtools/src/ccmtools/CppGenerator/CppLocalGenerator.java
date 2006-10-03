@@ -741,7 +741,7 @@ public class CppLocalGenerator
         	MPrimitiveDef type = (MPrimitiveDef)idlType;
         	if(type.getKind() == MPrimitiveKind.PK_ANY)
         	{
-        		code.append("#include <WX" + Text.INCLUDE_SEPARATOR + "Utils" +Text.INCLUDE_SEPARATOR + "value.h>\n");
+        		code.append("#include <wx/utils/Value.h>\n");
         	}
         }
         else if(idlType instanceof MContained) {
@@ -823,7 +823,7 @@ public class CppLocalGenerator
         code.append("Adapter::").append(op.getIdentifier()).append("()\");\n");
         code.append(getDebugOperationInParameter(op)).append("\n");
         code.append(Text.TAB).append("if(!validConnection())\n");
-        code.append(Text.tab(2)).append("throw ::ccm::local::Components::InvalidConnection();\n\n");
+        code.append(Text.tab(2)).append("throw ::Components::ccm::local::InvalidConnection();\n\n");
         code.append(getOperationDelegation(op,"facet_")).append("\n\n");
         code.append(getDebugOperationOutParameter(op)).append("\n");
         code.append(getDebugOperationResult(op)).append("\n");
@@ -866,12 +866,12 @@ public class CppLocalGenerator
         code.append(Text.TAB).append("virtual\n");
         code.append(Text.TAB).append("const ").append(getLanguageType(attr));
         code.append(" ").append(attr.getIdentifier()).append("() const\n");
-        code.append(Text.tab(2)).append("throw(::ccm::local::Components::CCMException);\n\n");
+        code.append(Text.tab(2)).append("throw(::Components::ccm::local::CCMException);\n\n");
 
         code.append(Text.TAB).append("virtual\n");
         code.append(Text.TAB).append("void ").append(attr.getIdentifier()).append("(const ");
         code.append(getLanguageType(attr)).append(" value)\n");
-        code.append(Text.tab(2)).append("throw(::ccm::local::Components::CCMException);\n\n");
+        code.append(Text.tab(2)).append("throw(::Components::ccm::local::CCMException);\n\n");
         return code.toString();
     }
     
@@ -881,14 +881,14 @@ public class CppLocalGenerator
         code.append("const ").append(getLanguageType(attr)).append("\n");
         code.append(iface.getIdentifier()).append("Adapter::").append(attr.getIdentifier());
         code.append("() const\n");
-        code.append(Text.TAB).append("throw(::ccm::local::Components::CCMException)\n");
+        code.append(Text.TAB).append("throw(::Components::ccm::local::CCMException)\n");
         code.append("{\n");
         code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \" ").append(iface.getIdentifier());
         code.append("Adapter::").append(attr.getIdentifier()).append("() = \"\n");
         code.append(Text.tab(2)).append("<< ::").append(getDebugNamespace(attr.getIdlType()));
         code.append("::ccmDebug(facet_->").append(attr.getIdentifier()).append("()));\n");
         code.append(Text.TAB).append("if(!validConnection())\n");
-        code.append(Text.tab(2)).append("throw ::ccm::local::Components::InvalidConnection();\n");
+        code.append(Text.tab(2)).append("throw ::Components::ccm::local::InvalidConnection();\n");
         code.append(Text.TAB).append("return facet_->").append(attr.getIdentifier());
         code.append("();\n");       
         code.append("}\n\n");
@@ -896,14 +896,14 @@ public class CppLocalGenerator
         code.append("void\n");
         code.append(iface.getIdentifier()).append("Adapter::").append(attr.getIdentifier());
         code.append("(const ").append(getLanguageType(attr)).append(" value)\n");
-        code.append(Text.TAB).append("throw(::ccm::local::Components::CCMException)\n");
+        code.append(Text.TAB).append("throw(::Components::ccm::local::CCMException)\n");
         code.append("{\n");
         code.append(Text.TAB).append("LDEBUGNL(CCM_LOCAL, \" ").append(iface.getIdentifier());
         code.append("Adapter::").append(attr.getIdentifier()).append("(\"\n");
         code.append(Text.tab(2)).append("<< ::").append(getDebugNamespace(attr.getIdlType()));
         code.append("::ccmDebug(value) << \")\");\n");
         code.append(Text.TAB).append("if(!validConnection())\n");
-        code.append(Text.tab(2)).append("throw ::ccm::local::Components::InvalidConnection();\n");
+        code.append(Text.tab(2)).append("throw ::Components::ccm::local::InvalidConnection();\n");
         code.append(Text.TAB).append("facet_->").append(attr.getIdentifier());
         code.append("(value);\n");       
         code.append("}\n\n");

@@ -13,8 +13,8 @@
 
 #include <string>
 #include <map>
-#include <WX/Utils/smartptr.h>
-#include <ccm/local/Components/CCM.h>
+#include <wx/utils/smartptr.h>
+#include <Components/ccm/local/CCM.h>
 
 #include <%(SelfInclude)s_share.h>
 #include <%(HomeInclude)s_share.h>
@@ -38,7 +38,7 @@ class %(HomeType)s;
 //==============================================================================
 
 class %(Identifier)s
-    : virtual public ::ccm::local::Components::CCMObject 
+    : virtual public ::Components::ccm::local::CCMObject 
       %(MSupportsDefBase)s
       %(BaseType)s 	
 {
@@ -46,7 +46,7 @@ class %(Identifier)s
     %(Identifier)s();
     %(Identifier)s(%(HomeType)s* h, 
         CCM_%(Identifier)s* lc,  
-        WX::Utils::SmartPtr< ::ccm::local::Components::Assembly> a);
+        wx::utils::SmartPtr< ::Components::ccm::local::Assembly> a);
     virtual ~%(Identifier)s();
 
 %(MAttributeDefPrototype)s
@@ -55,44 +55,44 @@ class %(Identifier)s
 %(MUsesDefGetConnectionPrototype)s
 
     // Navigation functions
-    WX::Utils::SmartPtr< ::ccm::local::Components::Object> 
+    wx::utils::SmartPtr< ::Components::ccm::local::Object> 
     provide_facet(const std::string& name)
-        throw(::ccm::local::Components::InvalidName);
+        throw(::Components::ccm::local::InvalidName);
 
     // Receptacle functions
-    ::ccm::local::Components::Cookie 
-    connect(const ::ccm::local::Components::FeatureName& name, 
-        WX::Utils::SmartPtr< ::ccm::local::Components::Object> connection)
-        throw(::ccm::local::Components::InvalidName, 
-              ::ccm::local::Components::InvalidConnection,
-              ::ccm::local::Components::AlreadyConnected, 
-              ::ccm::local::Components::ExceededConnectionLimit);
+    ::Components::ccm::local::Cookie 
+    connect(const ::Components::ccm::local::FeatureName& name, 
+        wx::utils::SmartPtr< ::Components::ccm::local::Object> connection)
+        throw(::Components::ccm::local::InvalidName, 
+              ::Components::ccm::local::InvalidConnection,
+              ::Components::ccm::local::AlreadyConnected, 
+              ::Components::ccm::local::ExceededConnectionLimit);
 
     void 
-    disconnect(const ::ccm::local::Components::FeatureName& name, 
-        const ::ccm::local::Components::Cookie& ck)
-        throw(::ccm::local::Components::InvalidName, 
-              ::ccm::local::Components::InvalidConnection,
-              ::ccm::local::Components::CookieRequired, 
-              ::ccm::local::Components::NoConnection );
+    disconnect(const ::Components::ccm::local::FeatureName& name, 
+        const ::Components::ccm::local::Cookie& ck)
+        throw(::Components::ccm::local::InvalidName, 
+              ::Components::ccm::local::InvalidConnection,
+              ::Components::ccm::local::CookieRequired, 
+              ::Components::ccm::local::NoConnection );
 
     // CCMObject functions
-    ::ccm::local::Components::HomeExecutorBase* get_ccm_home();
+    ::Components::ccm::local::HomeExecutorBase* get_ccm_home();
 
     void configuration_complete()
-        throw(::ccm::local::Components::InvalidConfiguration);
+        throw(::Components::ccm::local::InvalidConfiguration);
 
     void configuration_complete(CCM_%(Identifier)s_Context* ctx)
-        throw(::ccm::local::Components::InvalidConfiguration);
+        throw(::Components::ccm::local::InvalidConfiguration);
 
     void remove()
-        throw(::ccm::local::Components::RemoveFailure);
+        throw(::Components::ccm::local::RemoveFailure);
  
    protected:
     %(HomeType)s* home_local_adapter;
     CCM_%(Identifier)s* local_component;
     CCM_%(Identifier)s_Context* context;
-    WX::Utils::SmartPtr< ::ccm::local::Components::Assembly> assembly;
+    wx::utils::SmartPtr< ::Components::ccm::local::Assembly> assembly;
     bool ValidConnection;
 
 %(MProvidesDefAdapterVariable)s
@@ -117,11 +117,11 @@ class CCM_%(Identifier)s_Context_impl
 %(MUsesDefGetCtxConnectionPrototype)s
 
     // CCMContext function
-    ::ccm::local::Components::HomeExecutorBase* get_CCM_home();
+    ::Components::ccm::local::HomeExecutorBase* get_CCM_home();
 
     // SessionContext function	
-    ::ccm::local::Components::Object* get_CCM_object()
-        throw(::ccm::local::Components::IllegalState);
+    ::Components::ccm::local::Object* get_CCM_object()
+        throw(::Components::ccm::local::IllegalState);
 
   protected:
     %(Identifier)s* component_local_adapter;
@@ -149,7 +149,7 @@ class CCM_%(Identifier)s_Context_impl
 #include <cassert>
 #include <iostream>
 #include <sstream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -166,7 +166,7 @@ class CCM_%(Identifier)s_Context_impl
 %(OpenNamespace)s
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // local component adapter implementation
@@ -178,7 +178,7 @@ using namespace WX::Utils;
     home_local_adapter = NULL;
     local_component = NULL;
     context = NULL;
-    assembly = SmartPtr< ::ccm::local::Components::Assembly>();	
+    assembly = SmartPtr< ::Components::ccm::local::Assembly>();	
     ValidConnection = false;
 %(MProvidesDefAdapterVariableInitDefault)s
 %(MUsesDefAdapterVariableInitDefault)s
@@ -186,7 +186,7 @@ using namespace WX::Utils;
 
 %(Identifier)s::%(Identifier)s(%(HomeType)s* h, 
     CCM_%(Identifier)s* lc,
-    SmartPtr< ::ccm::local::Components::Assembly> a)
+    SmartPtr< ::Components::ccm::local::Assembly> a)
     : %(MSupportsDefAdapterConstructor)s
     home_local_adapter(h), 
     local_component(lc), 
@@ -213,61 +213,61 @@ using namespace WX::Utils;
 
 // Navigation functions
 
-WX::Utils::SmartPtr< ::ccm::local::Components::Object>
+wx::utils::SmartPtr< ::Components::ccm::local::Object>
 %(Identifier)s::provide_facet(const std::string& name)
-    throw(::ccm::local::Components::InvalidName)
+    throw(::Components::ccm::local::InvalidName)
 {
     LDEBUGNL(CCM_CONTAINER," %(Identifier)s::provide_facet(" << name << " )");
 %(MProvidesDefProvideFacet)s
-    throw ::ccm::local::Components::InvalidName();
+    throw ::Components::ccm::local::InvalidName();
 }
 
 
 // Receptacle functions
 
-::ccm::local::Components::Cookie
-%(Identifier)s::connect(const ::ccm::local::Components::FeatureName& name, 
-                        SmartPtr< ::ccm::local::Components::Object> connection)
-    throw(::ccm::local::Components::InvalidName, 
-          ::ccm::local::Components::InvalidConnection,
-          ::ccm::local::Components::AlreadyConnected, 
-          ::ccm::local::Components::ExceededConnectionLimit)
+::Components::ccm::local::Cookie
+%(Identifier)s::connect(const ::Components::ccm::local::FeatureName& name, 
+                        SmartPtr< ::Components::ccm::local::Object> connection)
+    throw(::Components::ccm::local::InvalidName, 
+          ::Components::ccm::local::InvalidConnection,
+          ::Components::ccm::local::AlreadyConnected, 
+          ::Components::ccm::local::ExceededConnectionLimit)
 {
     LDEBUGNL(CCM_CONTAINER," %(Identifier)s::connect ( " << name << " )");
 %(MUsesDefConnectFacet)s
-    throw ::ccm::local::Components::InvalidName();
+    throw ::Components::ccm::local::InvalidName();
 }
 
 void
-%(Identifier)s::disconnect(const ::ccm::local::Components::FeatureName& name, 
-                           const ::ccm::local::Components::Cookie& ck)
-    throw(::ccm::local::Components::InvalidName, 
-          ::ccm::local::Components::InvalidConnection,
-          ::ccm::local::Components::CookieRequired, 
-          ::ccm::local::Components::NoConnection )
+%(Identifier)s::disconnect(const ::Components::ccm::local::FeatureName& name, 
+                           const ::Components::ccm::local::Cookie& ck)
+    throw(::Components::ccm::local::InvalidName, 
+          ::Components::ccm::local::InvalidConnection,
+          ::Components::ccm::local::CookieRequired, 
+          ::Components::ccm::local::NoConnection )
 {
     LDEBUGNL(CCM_CONTAINER," %(Identifier)s::disconnect ( " << name << " )");
     if(!ValidConnection) 
-        throw ::ccm::local::Components::InvalidConnection();
+        throw ::Components::ccm::local::InvalidConnection();
 
 %(MUsesDefDisconnectFacet)s
-    throw ::ccm::local::Components::InvalidName();
+    throw ::Components::ccm::local::InvalidName();
 }
 
 
 // CCMObject functions
 
-::ccm::local::Components::HomeExecutorBase*
+::Components::ccm::local::HomeExecutorBase*
 %(Identifier)s::get_ccm_home (  )
 {
     LDEBUGNL(CCM_CONTAINER," %(Identifier)s::get_ccm_home()");
-    throw ::ccm::local::Components::NotImplemented();
+    throw ::Components::ccm::local::NotImplemented();
 }
 
 
 void
 %(Identifier)s::configuration_complete()
-    throw(::ccm::local::Components::InvalidConfiguration)
+    throw(::Components::ccm::local::InvalidConfiguration)
 {
     LDEBUGNL(CCM_CONTAINER," %(Identifier)s::configuration_complete()");
     configuration_complete(new CCM_%(Identifier)s_Context_impl(this));
@@ -276,14 +276,14 @@ void
 
 void
 %(Identifier)s::configuration_complete(CCM_%(Identifier)s_Context* ctx)
-    throw(::ccm::local::Components::InvalidConfiguration)
+    throw(::Components::ccm::local::InvalidConfiguration)
 {
     LDEBUGNL(CCM_CONTAINER," %(Identifier)s::configuration_complete()");
     if(!ValidConnection) 
-        throw ::ccm::local::Components::InvalidConnection();
+        throw ::Components::ccm::local::InvalidConnection();
     if(!context)
       context = ctx;
-    if(assembly != SmartPtr< ::ccm::local::Components::Assembly>()) { 
+    if(assembly != SmartPtr< ::Components::ccm::local::Assembly>()) { 
         assembly->configuration_complete(); 
     }
     local_component->set_session_context(context);
@@ -293,19 +293,19 @@ void
 
 void
 %(Identifier)s::remove()
-    throw(::ccm::local::Components::RemoveFailure)
+    throw(::Components::ccm::local::RemoveFailure)
 {
     LDEBUGNL(CCM_CONTAINER," %(Identifier)s::remove()");
     if(!ValidConnection) 
-        throw ::ccm::local::Components::InvalidConnection();
+        throw ::Components::ccm::local::InvalidConnection();
     local_component->ccm_remove();
 %(MProvidesDefImplRemove)s
 
-    if(assembly != SmartPtr< ::ccm::local::Components::Assembly>()) { 
+    if(assembly != SmartPtr< ::Components::ccm::local::Assembly>()) { 
         assembly->tear_down(); 
         // To resolve a cyclic smart pointer reference between a component
         // and an assembly object, the assembly smart pointer must be cleaned.
-        assembly = SmartPtr< ::ccm::local::Components::Assembly>();
+        assembly = SmartPtr< ::Components::ccm::local::Assembly>();
     }
     ValidConnection = false;
 }
@@ -328,19 +328,19 @@ CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
 
 %(MUsesDefGetConnectionCtxImplDefinition)s
 
-::ccm::local::Components::HomeExecutorBase*
+::Components::ccm::local::HomeExecutorBase*
 CCM_%(Identifier)s_Context_impl::get_CCM_home()
 {
     LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_home()");
-    throw ::ccm::local::Components::NotImplemented();
+    throw ::Components::ccm::local::NotImplemented();
 }
 
-::ccm::local::Components::Object*
+::Components::ccm::local::Object*
 CCM_%(Identifier)s_Context_impl::get_CCM_object()
-    throw(::ccm::local::Components::IllegalState)
+    throw(::Components::ccm::local::IllegalState)
 {
     LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_object()");
-    throw ::ccm::local::Components::NotImplemented();
+    throw ::Components::ccm::local::NotImplemented();
 }
 
 %(CloseNamespace)s
@@ -361,8 +361,8 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 #define __COMPONENT_%(PreprocIdentifier)s_SHARE__H__
 
 #include <map>
-#include <WX/Utils/smartptr.h>
-#include <ccm/local/Components/CCM.h>
+#include <wx/utils/smartptr.h>
+#include <Components/ccm/local/CCM.h>
 
 %(MAttributeDefInclude)s
 %(MConstantDefInclude)s
@@ -381,7 +381,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 //==============================================================================
 
 class CCM_%(Identifier)s
-    : virtual public ::ccm::local::Components::SessionComponent%(BaseType)s%(MSupportsDefBase)s
+    : virtual public ::Components::ccm::local::SessionComponent%(BaseType)s%(MSupportsDefBase)s
 {
   public:
 %(MAttributeDefPrototypeVV)s
@@ -397,7 +397,7 @@ class CCM_%(Identifier)s
 %(MUsesDefConnectionMap)s
 
 class CCM_%(Identifier)s_Context
-    : virtual public ::ccm::local::Components::SessionContext
+    : virtual public ::Components::ccm::local::SessionContext
 {
   public:
 %(MUsesDefGetConnectionPrototypeVV)s
@@ -458,14 +458,14 @@ class CCM_%(Identifier)s_impl
 %(MSupportsDefImplPrototype)s
 
     // CCM callback methods
-    virtual void set_session_context(::ccm::local::Components::SessionContext* ctx)
-        throw(::ccm::local::Components::CCMException);
+    virtual void set_session_context(::Components::ccm::local::SessionContext* ctx)
+        throw(::Components::ccm::local::CCMException);
     virtual void ccm_activate()
-        throw(::ccm::local::Components::CCMException);
+        throw(::Components::ccm::local::CCMException);
     virtual void ccm_passivate()
-        throw(::ccm::local::Components::CCMException);
+        throw(::Components::ccm::local::CCMException);
     virtual void ccm_remove()
-        throw(::ccm::local::Components::CCMException);
+        throw(::Components::ccm::local::CCMException);
 };
 
 %(CloseNamespace)s
@@ -488,7 +488,7 @@ class CCM_%(Identifier)s_impl
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "%(Identifier)s_impl.h"
 %(MProvidesDefImplInclude)s
@@ -496,7 +496,7 @@ class CCM_%(Identifier)s_impl
 %(OpenNamespace)s
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // CCM_%(Identifier)s - component implementation
@@ -517,29 +517,29 @@ CCM_%(Identifier)s_impl::~CCM_%(Identifier)s_impl()
 
 void
 CCM_%(Identifier)s_impl::set_session_context(
-    ::ccm::local::Components::SessionContext* context)
-    throw(::ccm::local::Components::CCMException)
+    ::Components::ccm::local::SessionContext* context)
+    throw(::Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_%(Identifier)s_Context*>(context);
 }
 
 void
 CCM_%(Identifier)s_impl::ccm_activate()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_%(Identifier)s_impl::ccm_passivate()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_%(Identifier)s_impl::ccm_remove()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

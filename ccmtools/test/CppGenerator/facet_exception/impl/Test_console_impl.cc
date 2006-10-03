@@ -12,7 +12,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_console_impl.h"
 
@@ -23,7 +23,7 @@ namespace component {
 namespace Test {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 console_impl::console_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
@@ -42,7 +42,7 @@ console_impl::~console_impl()
 
 long
 console_impl::println(const std::string& msg)
-    throw (Components::CCMException, Error, SuperError, FatalError )
+    throw (Components::ccm::local::CCMException, Error, SuperError, FatalError )
 {
     DEBUGNL("console_impl->println(msg)");
 
