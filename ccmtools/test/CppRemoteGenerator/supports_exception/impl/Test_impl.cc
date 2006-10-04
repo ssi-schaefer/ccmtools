@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_impl.h"
 
@@ -23,7 +23,7 @@ namespace component {
 namespace Test {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -41,7 +41,7 @@ CCM_Test_impl::~CCM_Test_impl()
 
 long
 CCM_Test_impl::print(const std::string& msg)
-throw(::ccm::local::Components::CCMException,
+throw(::Components::ccm::local::CCMException,
         ccm::local::FatalError,
         ccm::local::SuperError,
         ccm::local::SimpleError )
@@ -70,29 +70,29 @@ throw(::ccm::local::Components::CCMException,
 
 void
 CCM_Test_impl::set_session_context(
-    ::ccm::local::Components::SessionContext* context)
-    throw(::ccm::local::Components::CCMException)
+    ::Components::ccm::local::SessionContext* context)
+    throw(::Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
 void
 CCM_Test_impl::ccm_activate()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_Test_impl::ccm_passivate()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_Test_impl::ccm_remove()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

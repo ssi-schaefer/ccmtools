@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_impl.h"
 #include "Test_inBasicType_impl.h"
@@ -29,7 +29,7 @@ namespace component {
 namespace Test {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -47,15 +47,15 @@ CCM_Test_impl::~CCM_Test_impl()
 
 void
 CCM_Test_impl::set_session_context(
-    ::ccm::local::Components::SessionContext* context)
-    throw(::ccm::local::Components::CCMException)
+    ::Components::ccm::local::SessionContext* context)
+    throw(::Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
 void
 CCM_Test_impl::ccm_activate()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
   // ------------------------------------------------------------------
   // Void Type Check
@@ -187,7 +187,7 @@ CCM_Test_impl::ccm_activate()
       assert(p3 == ccm::local::green);
       assert(result == ccm::local::orange);
     }
-    catch(::ccm::local::Components::Exception& e) {
+    catch(::Components::ccm::local::Exception& e) {
       cerr << e.what() << endl;
     }
     
@@ -206,7 +206,7 @@ CCM_Test_impl::ccm_activate()
       assert(result.name  == "EgonAndrea");
       assert(result.id == 26);
     }
-    catch(::ccm::local::Components::Exception& e) {
+    catch(::Components::ccm::local::Exception& e) {
       cerr << e.what() << endl;
     }
     
@@ -244,7 +244,7 @@ CCM_Test_impl::ccm_activate()
       assert(result.resident.name == "EgonAndrea");
       assert(result.resident.id == 26);
     }
-    catch(::ccm::local::Components::Exception& e) {
+    catch(::Components::ccm::local::Exception& e) {
       cerr << e.what() << endl;
     }
     
@@ -277,7 +277,7 @@ CCM_Test_impl::ccm_activate()
 	assert(p == (long)(i+i));
       }
     }
-    catch(::ccm::local::Components::Exception& e) {
+    catch(::Components::ccm::local::Exception& e) {
       cerr << e.what() << endl;
     }
     
@@ -310,7 +310,7 @@ CCM_Test_impl::ccm_activate()
 	assert(p == "two");
       }
     }
-    catch(::ccm::local::Components::Exception& e) {
+    catch(::Components::ccm::local::Exception& e) {
       cerr << e.what() << endl;
     }
     
@@ -347,7 +347,7 @@ CCM_Test_impl::ccm_activate()
 	assert(p.name == "Andrea");
       }
     }
-    catch(::ccm::local::Components::Exception& e) {
+    catch(::Components::ccm::local::Exception& e) {
       cerr  << e.what() << endl;
     }
     
@@ -360,7 +360,7 @@ CCM_Test_impl::ccm_activate()
       assert(p3 == 3);
       assert(result == 3+7);
     }
-    catch(::ccm::local::Components::Exception& e) {
+    catch(::Components::ccm::local::Exception& e) {
       cerr << e.what() << endl;
     }
     
@@ -370,14 +370,14 @@ CCM_Test_impl::ccm_activate()
 
 void
 CCM_Test_impl::ccm_passivate()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_Test_impl::ccm_remove()
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

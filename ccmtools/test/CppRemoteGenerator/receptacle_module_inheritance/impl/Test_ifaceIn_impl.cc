@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_ifaceIn_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace world {
 namespace ccm {
@@ -40,63 +40,63 @@ ifaceIn_impl::~ifaceIn_impl()
 
 const long
 ifaceIn_impl::attr3() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     return attr3_;
 }
 
 void
 ifaceIn_impl::attr3(const long value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     attr3_ = value;
 }
 
 const long
 ifaceIn_impl::attr2() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     return attr2_;
 }
 
 void
 ifaceIn_impl::attr2(const long value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     attr2_ = value;
 }
 
 const long
 ifaceIn_impl::attr1() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     return attr1_;
 }
 
 void
 ifaceIn_impl::attr1(const long value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     attr1_ = value;
 }
 
 long
 ifaceIn_impl::op3(const std::string& str)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     return str.length();
 }
 
 long
 ifaceIn_impl::op2(const std::string& str)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     return str.length();
 }
 
 long
 ifaceIn_impl::op1(const std::string& str)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     return str.length();
 }

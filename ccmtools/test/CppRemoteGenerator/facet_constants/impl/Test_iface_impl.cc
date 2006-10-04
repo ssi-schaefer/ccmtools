@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_iface_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace ccm {
 namespace local {
@@ -52,70 +52,70 @@ iface_impl::~iface_impl()
 
 bool
 iface_impl::getBooleanValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::BOOLEAN_CONST;
 }
 
 unsigned char
 iface_impl::getOctetValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::OCTET_CONST;
 }
 
 short
 iface_impl::getShortValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::SHORT_CONST;
 }
 
 unsigned short
 iface_impl::getUnsignedShortValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::USHORT_CONST;
 }
 
 long
 iface_impl::getLongValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::LONG_CONST;
 }
 
 unsigned long
 iface_impl::getUnsignedLongValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::ULONG_CONST;
 }
 
 char
 iface_impl::getCharValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::CHAR_CONST;
 }
 
 std::string
 iface_impl::getStringValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::STRING_CONST;
 }
 
 float
 iface_impl::getFloatValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::FLOAT_CONST; 
 }
 
 double
 iface_impl::getDoubleValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::DOUBLE_CONST;
 }

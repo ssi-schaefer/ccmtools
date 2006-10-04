@@ -25,16 +25,11 @@
 #include <wx/utils/Value.h>
 #include <wx/utils/value_simple.h>
 
-#include <ccm/local/Components/CCM.h>
+#include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#ifdef CCM_USE_DBC
-#include <ccm/local/component/Test/Test_dbc.h>
-#include <ccm/local/component/Test/TestHome_dbc.h>
-#else
 #include <ccm/local/component/Test/Test_gen.h>
 #include <ccm/local/component/Test/TestHome_gen.h>
-#endif
 
 using namespace std;
 using namespace wx::utils;
@@ -47,20 +42,16 @@ int main(int argc, char *argv[])
     SmartPtr< ccm::local::component::Test::Test> myTest;
     SmartPtr<ccm::local::AnyTest> any_test;
 
-    Components::Cookie Test_ck_any_test;
+    Components::ccm::local::Cookie Test_ck_any_test;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    Components::HomeFinder* homeFinder = 
+    Components::ccm::local::HomeFinder* homeFinder = 
         HomeFinder::Instance();
-#ifdef CCM_USE_DBC
-    error  = deploy_dbc_ccm_local_component_Test_TestHome("TestHome", false);
-#else
     error  = deploy_ccm_local_component_Test_TestHome("TestHome");
-#endif
              
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -87,28 +78,20 @@ int main(int argc, char *argv[])
 
         myTest->configuration_complete();
     } 
-    catch(Components::HomeNotFound ) {
+    catch(::Components::ccm::local::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch(Components::NotImplemented& e ) {
+    catch(::Components::ccm::local::NotImplemented& e ) {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch(Components::InvalidName& e ) {
+    catch(::Components::ccm::local::InvalidName& e ) {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(ccm::OCL::OclException& e)
-    {
-        cout << "DEPLOYMENT ERROR: 'design by contract' error:" 
-             << endl << e.what();
-        error = -1;
-    }
-#endif
     catch ( ... )  {
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         error = -1;
@@ -153,17 +136,10 @@ int main(int argc, char *argv[])
 	assert(resultValue->value() == 3);
       }
     } 
-    catch(Components::NotImplemented& e ) {
+    catch(::Components::ccm::local::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(ccm::OCL::OclException& e)
-    {
-        cout << "TEST: 'design by contract' error:" << endl << e.what();
-        error = -1;
-    }
-#endif
     catch(...) {
         cout << "TEST: there is something wrong!" << endl;
         error = -1;
@@ -179,11 +155,11 @@ int main(int argc, char *argv[])
     try {
         myTest->remove();
     } 
-    catch(Components::HomeNotFound ) {
+    catch(::Components::ccm::local::HomeNotFound ) {
         cout << "TEARDOWN ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch(Components::NotImplemented& e ) {
+    catch(::Components::ccm::local::NotImplemented& e ) {
         cout << "TEARDOWN ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;

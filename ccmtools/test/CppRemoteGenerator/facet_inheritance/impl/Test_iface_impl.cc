@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_iface_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace ccm {
 namespace local {
@@ -39,49 +39,49 @@ iface_impl::~iface_impl()
 
 const long
 iface_impl::attr3() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     return attr3_;
 }
 
 void
 iface_impl::attr3(const long value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     attr3_ = value;
 }
 
 const long
 iface_impl::attr2() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     return attr2_;
 }
 
 void
 iface_impl::attr2(const long value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     attr2_ = value;
 }
 
 const long
 iface_impl::attr1() const
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     return attr1_;
 }
 
 void
 iface_impl::attr1(const long value)
-    throw(::ccm::local::Components::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     attr1_ = value;
 }
 
 long
 iface_impl::op3(const std::string& str)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     cout << str << endl;
     return str.length();
@@ -89,7 +89,7 @@ throw(::ccm::local::Components::CCMException)
 
 long
 iface_impl::op2(const std::string& str)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     cout << str << endl;
     return str.length();
@@ -97,7 +97,7 @@ throw(::ccm::local::Components::CCMException)
 
 long
 iface_impl::op1(const std::string& str)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     cout << str << endl;
     return str.length();

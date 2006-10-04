@@ -36,12 +36,12 @@ class inVoidType_impl
     virtual 
     void 
     f1(const long p1) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     virtual 
     long 
     f2() 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
 };
 

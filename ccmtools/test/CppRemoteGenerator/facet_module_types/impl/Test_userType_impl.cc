@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_userType_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace world {
 namespace europe {
@@ -45,7 +45,7 @@ userType_impl::f1(
         const world::europe::austria::ccm::local::Color& p1,
         world::europe::austria::ccm::local::Color& p2,
         world::europe::austria::ccm::local::Color& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -57,7 +57,7 @@ userType_impl::f2(
         const world::europe::austria::ccm::local::Person& p1,
         world::europe::austria::ccm::local::Person& p2,
         world::europe::austria::ccm::local::Person& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     Person r;
     r.name = p1.name + p2.name;
@@ -72,7 +72,7 @@ userType_impl::f3(
         const world::europe::austria::ccm::local::Address& p1,
         world::europe::austria::ccm::local::Address& p2,
         world::europe::austria::ccm::local::Address& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     Address r;
     r.street = p1.street + p2.street;
@@ -89,7 +89,7 @@ userType_impl::f4(
         const world::europe::austria::ccm::local::LongList& p1,
         world::europe::austria::ccm::local::LongList& p2,
         world::europe::austria::ccm::local::LongList& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     LongList r;
     for(unsigned long i=0;i<p1.size();i++) {
@@ -105,7 +105,7 @@ userType_impl::f5(
         const world::europe::austria::ccm::local::StringList& p1,
         world::europe::austria::ccm::local::StringList& p2,
         world::europe::austria::ccm::local::StringList& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     StringList r;
     for(unsigned long i=0;i<p1.size();i++) {
@@ -121,7 +121,7 @@ userType_impl::f6(
         const world::europe::austria::ccm::local::PersonList& p1,
         world::europe::austria::ccm::local::PersonList& p2,
         world::europe::austria::ccm::local::PersonList& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     PersonList r;
     for(unsigned long i=0; i < p1.size(); i++) {
@@ -140,7 +140,7 @@ userType_impl::f7(
         const world::europe::austria::ccm::local::time_t& t1,
         world::europe::austria::ccm::local::time_t& t2,
         world::europe::austria::ccm::local::time_t& t3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     t3=t2;
     t2=t1;

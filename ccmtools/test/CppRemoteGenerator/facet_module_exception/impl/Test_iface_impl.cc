@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_iface_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace world {
 namespace europe {
@@ -42,7 +42,7 @@ iface_impl::~iface_impl()
 
 long
 iface_impl::foo(const std::string& msg)
-throw(::ccm::local::Components::CCMException,
+throw(::Components::ccm::local::CCMException,
         world::europe::austria::ccm::local::SuperError,
         world::europe::austria::ccm::local::ErrorException,
         world::europe::austria::ccm::local::FatalError )

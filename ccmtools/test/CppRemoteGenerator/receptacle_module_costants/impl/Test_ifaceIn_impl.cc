@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_ifaceIn_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace world {
 namespace europe {
@@ -54,70 +54,70 @@ ifaceIn_impl::~ifaceIn_impl()
 
 bool
 ifaceIn_impl::getBooleanValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::BOOLEAN_CONST;
 }
 
 unsigned char
 ifaceIn_impl::getOctetValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::OCTET_CONST;
 }
 
 short
 ifaceIn_impl::getShortValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::SHORT_CONST;
 }
 
 unsigned short
 ifaceIn_impl::getUnsignedShortValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::USHORT_CONST;
 }
 
 long
 ifaceIn_impl::getLongValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::LONG_CONST;
 }
 
 unsigned long
 ifaceIn_impl::getUnsignedLongValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::ULONG_CONST;
 }
 
 char
 ifaceIn_impl::getCharValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::CHAR_CONST;
 }
 
 std::string
 ifaceIn_impl::getStringValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::STRING_CONST;
 }
 
 float
 ifaceIn_impl::getFloatValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::FLOAT_CONST;
 }
 
 double
 ifaceIn_impl::getDoubleValue()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return Constants::DOUBLE_CONST;
 }

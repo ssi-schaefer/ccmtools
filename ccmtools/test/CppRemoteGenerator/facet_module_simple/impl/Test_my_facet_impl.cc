@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_my_facet_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace world {
 namespace ccm {
@@ -40,7 +40,7 @@ my_facet_impl::~my_facet_impl()
 
 long
 my_facet_impl::op1(const std::string& str)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     cout << ">>> " << str << endl;
     return str.length();

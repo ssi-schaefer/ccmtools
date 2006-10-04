@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_iface_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace ccm {
 namespace local {
@@ -39,12 +39,13 @@ iface_impl::~iface_impl()
 
 long
 iface_impl::foo(const std::string& msg)
-throw(::ccm::local::Components::CCMException,
+throw(::Components::ccm::local::CCMException,
         ccm::local::FatalError,
         ccm::local::SuperError,
         ccm::local::ErrorException )
 {
-    if(msg == "Error") {
+    if(msg == "Error") 
+    {
         ErrorException error;
         ErrorInfoList errorInfoList;
         ErrorInfo errorInfo1;
@@ -60,15 +61,18 @@ throw(::ccm::local::Components::CCMException,
         error.info = errorInfoList;
         throw error;
     }
-    else if(msg == "SuperError") {
+    else if(msg == "SuperError") 
+    {
       throw SuperError();
     }
-    else if(msg == "FatalError") {
+    else if(msg == "FatalError") 
+    {
       FatalError fatalError;
       fatalError.what = "This is a fatal error condition!";
       throw fatalError;
     }
-    else {
+    else 
+    {
       cout << ">> " << msg << endl;
     }
     return msg.length();

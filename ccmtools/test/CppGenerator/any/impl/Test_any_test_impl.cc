@@ -38,12 +38,12 @@ any_test_impl::~any_test_impl()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-wx::utils::SmartPtr< wx::utils::Value > 
+SmartPtr< wx::utils::Value > 
 any_test_impl::op1(
-        const wx::utils::SmartPtr< wx::utils::Value > & p1,
-        wx::utils::SmartPtr< wx::utils::Value > & p2,
-        wx::utils::SmartPtr< wx::utils::Value > & p3)
-throw(::ccm::local::Components::CCMException)
+        const SmartPtr< wx::utils::Value > & p1,
+        SmartPtr< wx::utils::Value > & p2,
+        SmartPtr< wx::utils::Value > & p3)
+throw(::Components::ccm::local::CCMException)
 {
     // TODO : IMPLEMENT ME HERE !
 }
@@ -53,7 +53,7 @@ any_test_impl::op2(
         const ccm::local::anyList& p1,
         ccm::local::anyList& p2,
         ccm::local::anyList& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     // TODO : IMPLEMENT ME HERE !
 }
@@ -63,15 +63,15 @@ any_test_impl::op3(
         const ccm::local::pair& p1,
         ccm::local::pair& p2,
         ccm::local::pair& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 { 
   p3=p2;
   p2=p1;
 
   ccm::local::pair result;
-  result.name = "keyresult";
-  SmartPtr<Value> vr(new IntValue(3));
-  result.value = vr;
+//  result.name = "keyresult";
+//  SmartPtr<Value> vr(new IntValue(3));
+ // result.value = vr; !!!!!
 
   return result;
 }

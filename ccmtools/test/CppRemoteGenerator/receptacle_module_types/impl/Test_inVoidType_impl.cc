@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_inVoidType_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace world {
 namespace europe {
@@ -42,14 +42,14 @@ inVoidType_impl::~inVoidType_impl()
 
 void
 inVoidType_impl::f1(const long p1)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   attr = p1;
 }
 
 long
 inVoidType_impl::f2()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return attr;
 }

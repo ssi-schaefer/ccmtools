@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_inUserType_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace ccm {
 namespace local {
@@ -42,7 +42,7 @@ inUserType_impl::f1(
         const ccm::local::Color& p1,
         ccm::local::Color& p2,
         ccm::local::Color& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -54,7 +54,7 @@ inUserType_impl::f2(
         const ccm::local::Person& p1,
         ccm::local::Person& p2,
         ccm::local::Person& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     Person r;
     r.name = p1.name + p2.name;
@@ -69,7 +69,7 @@ inUserType_impl::f3(
         const ccm::local::Address& p1,
         ccm::local::Address& p2,
         ccm::local::Address& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     Address r;
     r.street = p1.street + p2.street;
@@ -86,7 +86,7 @@ inUserType_impl::f4(
         const ccm::local::LongList& p1,
         ccm::local::LongList& p2,
         ccm::local::LongList& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     LongList r;
     for(unsigned long i=0;i<p1.size();i++) {
@@ -102,7 +102,7 @@ inUserType_impl::f5(
         const ccm::local::StringList& p1,
         ccm::local::StringList& p2,
         ccm::local::StringList& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     StringList r;
     for(unsigned long i=0;i<p1.size();i++) {
@@ -118,7 +118,7 @@ inUserType_impl::f6(
         const ccm::local::PersonList& p1,
         ccm::local::PersonList& p2,
         ccm::local::PersonList& p3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     PersonList r;
     for(unsigned long i=0; i < p1.size(); i++) {
@@ -137,7 +137,7 @@ inUserType_impl::f7(
         const ccm::local::time_t& t1,
         ccm::local::time_t& t2,
         ccm::local::time_t& t3)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     t3=t2;
     t2=t1;

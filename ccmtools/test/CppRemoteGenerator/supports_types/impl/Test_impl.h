@@ -54,137 +54,137 @@ class CCM_Test_impl
         const short p1,
         short& p2,
         short& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     long 
     fb2(
         const long p1,
         long& p2,
         long& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     unsigned short 
     fb3(
         const unsigned short p1,
         unsigned short& p2,
         unsigned short& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     unsigned long 
     fb4(
         const unsigned long p1,
         unsigned long& p2,
         unsigned long& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     float 
     fb5(
         const float p1,
         float& p2,
         float& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     double 
     fb6(
         const double p1,
         double& p2,
         double& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     char 
     fb7(
         const char p1,
         char& p2,
         char& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     std::string 
     fb8(
         const std::string& p1,
         std::string& p2,
         std::string& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     bool 
     fb9(
         const bool p1,
         bool& p2,
         bool& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     unsigned char 
     fb10(
         const unsigned char p1,
         unsigned char& p2,
         unsigned char& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     ccm::local::Color 
     fu1(
         const ccm::local::Color& p1,
         ccm::local::Color& p2,
         ccm::local::Color& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     ccm::local::Person 
     fu2(
         const ccm::local::Person& p1,
         ccm::local::Person& p2,
         ccm::local::Person& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     ccm::local::Address 
     fu3(
         const ccm::local::Address& p1,
         ccm::local::Address& p2,
         ccm::local::Address& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     ccm::local::LongList 
     fu4(
         const ccm::local::LongList& p1,
         ccm::local::LongList& p2,
         ccm::local::LongList& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     ccm::local::StringList 
     fu5(
         const ccm::local::StringList& p1,
         ccm::local::StringList& p2,
         ccm::local::StringList& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     ccm::local::PersonList 
     fu6(
         const ccm::local::PersonList& p1,
         ccm::local::PersonList& p2,
         ccm::local::PersonList& p3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     ccm::local::time_t 
     fu7(
         const ccm::local::time_t& t1,
         ccm::local::time_t& t2,
         ccm::local::time_t& t3) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     void 
     fv1(const long p1) 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     long 
     fv2() 
-    throw(::ccm::local::Components::CCMException);
+    throw(::Components::ccm::local::CCMException);
 
     // CCM callback methods
-    virtual void set_session_context(::ccm::local::Components::SessionContext* ctx)
-        throw(::ccm::local::Components::CCMException);
+    virtual void set_session_context(::Components::ccm::local::SessionContext* ctx)
+        throw(::Components::ccm::local::CCMException);
     virtual void ccm_activate()
-        throw(::ccm::local::Components::CCMException);
+        throw(::Components::ccm::local::CCMException);
     virtual void ccm_passivate()
-        throw(::ccm::local::Components::CCMException);
+        throw(::Components::ccm::local::CCMException);
     virtual void ccm_remove()
-        throw(::ccm::local::Components::CCMException);
+        throw(::Components::ccm::local::CCMException);
 };
 
 } // /namespace Test

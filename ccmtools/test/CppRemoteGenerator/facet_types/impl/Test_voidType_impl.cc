@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_voidType_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace ccm {
 namespace local {
@@ -39,14 +39,14 @@ voidType_impl::~voidType_impl()
 
 void
 voidType_impl::f1(const long p1)
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
     attr = p1;
 }
 
 long
 voidType_impl::f2()
-throw(::ccm::local::Components::CCMException)
+throw(::Components::ccm::local::CCMException)
 {
   return attr;
 }

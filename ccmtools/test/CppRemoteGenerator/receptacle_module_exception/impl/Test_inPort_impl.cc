@@ -13,12 +13,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Test_inPort_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace world {
 namespace europe {
@@ -42,7 +42,7 @@ inPort_impl::~inPort_impl()
 
 long
 inPort_impl::print(const std::string& msg)
-throw(::ccm::local::Components::CCMException,
+throw(::Components::ccm::local::CCMException,
         world::europe::austria::ccm::local::SuperError,
         world::europe::austria::ccm::local::SimpleError,
         world::europe::austria::ccm::local::FatalError )

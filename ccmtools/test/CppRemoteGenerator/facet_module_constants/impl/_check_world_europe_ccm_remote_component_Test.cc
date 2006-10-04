@@ -20,7 +20,7 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
@@ -30,7 +30,7 @@
 #include <world_europe_Test.h>
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // Implementation of remote client test
