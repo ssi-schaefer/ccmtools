@@ -46,7 +46,7 @@ public class Main
             {
                 parameters.validate();
             	    setCcmtoolsProperties();
-            	    ConfixGenerator generator = new ConfixGenerator(parameters, uiDriver);
+            	    ConfixGenerator generator = new ConfixGenerator(uiDriver, parameters);
             	    generator.generate();
             }
         }
@@ -95,8 +95,8 @@ public class Main
         options.addOption("h", "help", false,"Display this help");
         options.addOption("V", "version", false, "Display CCM Tools version information");
         options.addOption("noexit", false, "Don't exit Java VM with error status");
-        options.addOption(ConfixGenerator.MAKEFILE_PY_GENERATOR_ID, false, 
-        					"Run the Makefile.py generator");
+        options.addOption(ConfixGenerator.MAKEFILE_PY_GENERATOR_ID, false, "Run the Makefile.py generator");
+        options.addOption(ConfixGenerator.CONFIX2_GENERATOR_ID, false, "Run the Confix2 files generator");
         
         // Define single valued options
         
@@ -153,6 +153,10 @@ public class Main
         {
             parameters.getGeneratorIds().add(ConfixGenerator.MAKEFILE_PY_GENERATOR_ID);
         }
+        else if(cmd.hasOption(ConfixGenerator.CONFIX2_GENERATOR_ID))
+        {
+            parameters.getGeneratorIds().add(ConfixGenerator.CONFIX2_GENERATOR_ID);
+        }
         
         if(cmd.hasOption(ConfixGenerator.PACKAGE_VERSION))
         {
@@ -190,6 +194,7 @@ public class Main
         formatter.printHelp("ccmconfix [options]", options);
     }
         
+    
     private static void exitWithErrorStatus(String errorMessage)
     {
         uiDriver.printError(errorMessage);

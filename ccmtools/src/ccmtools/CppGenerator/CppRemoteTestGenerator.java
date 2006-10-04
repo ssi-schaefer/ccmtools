@@ -63,17 +63,10 @@ public class CppRemoteTestGenerator
         if(generated_code.trim().equals(""))
             return;
 
-      //  String node_name = ((MContained) currentNode).getIdentifier();
         String namespace = getRemoteNamespace(((MContained) currentNode),Text.MANGLING_SEPARATOR);
         String file_dir = "test";
-        String file_name = "_check_"
-                            + namespace.substring(0, namespace.length()-1)
-                            + ".cc";
+        String file_name = "_check_" + namespace.substring(0, namespace.length()-1) + ".cc";
 
         writeFinalizedFile(file_dir, file_name, generated_code);
-
-        // generate an empty Makefile.py in the CCM_Test
-        // directory - needed by Confix
-        writeFinalizedFile(file_dir, "Makefile.py", "");
     }
 }

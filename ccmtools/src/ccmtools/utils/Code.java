@@ -71,35 +71,6 @@ public class Code
             driver.println("writing " + out_file.toString());
     }
 
-    /**
-     * This method writes a Makefile with a given extension (e.g. .py or .pl)
-     * and a given content to the file system. If a Makefile already exists, it
-     * will not be overwritten.
-     * 
-     * @param outDir
-     * @param fileDir
-     * @param extension
-     *            A strint that will be used as an extension to Makefile.
-     * @param content
-     *            A string that will be pasted into the Makefile.
-     * @return true if the Makefile has been written, false in all other cases.
-     */
-    public static boolean writeMakefile(UserInterfaceDriver driver, File outDir, String fileDir,
-            String extension, String content) throws IOException
-    {
-        boolean result;
-        File makeFile = new File(outDir, fileDir);
-        makeFile = new File(makeFile, "Makefile." + extension);
-        if(!makeFile.isFile()) {
-            writeFile(driver, outDir, fileDir, "Makefile." + extension, content);
-            result = true;
-        }
-        else {
-            result = false;
-        }
-        return result;
-    }
-
 
     /**
      * This method removes empty lines (if more than one) and similar #include

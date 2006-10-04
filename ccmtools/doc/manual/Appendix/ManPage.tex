@@ -5,6 +5,77 @@
 %==============================================================================
 
 %------------------------------------------------------------------------------
+\section{ccmconfix}
+%------------------------------------------------------------------------------
+\begin{description}
+
+\item [NAME:] 
+  {\tt ccmconfix} - Confix input files generator.
+
+\item [SYNOPSIS:] 
+  {\tt ccmconfix [OPTIONS]}
+
+\item [DESCRIPTION:]
+The {\tt ccmconfix} generator can be used to generate Confix input files.
+Confix needs a {\tt Makefile.py} file in every source code directory (note that
+Confix2 assumes {\tt Confix2.dir} and {\tt Confix.pkg} files instead of {\tt Makefile.py}).
+
+\item [OPTIONS:]
+  The {\tt ccmtconfix} generator handles the following options:
+  \begin{itemize}
+  \item {\tt -h,--help} \\
+    Prints out a short description of the available command line parameters.
+
+  \item {\tt -V, --version} \\
+    Prints out the current version of installed CCM Tools.
+  \end{itemize}
+
+  \item {\tt -o, --output <path> } \\
+    Specifies the directory where the generation of Confix input files starts.
+    The generator writes these files in the specified output directory as well
+    as in every subdirectory (use the {\tt etc/ccmtools.properties} file to
+    define a list of directories which will be ignored by the generator).
+
+  \item {\tt -makefiles} \\
+    Forces the generator to write {\tt Makefile.py} files as used by Confix 1.x.
+
+  \item {\tt -confix2} \\
+    Forces the generator to write {\tt Confix2.dir} and {\tt Confix.pkg} files as used by Confix 2.x.
+
+  \item {\tt -pname, --packagename <name>} \\
+  	Forces the generator to write {\tt PACKAGE\_NAME()} and  
+	{\tt PACKAGE\_VERSION()} definitions in the top--level {\tt Makefile.py} (or the
+	{\tt Confix2.pkg}) file.
+  
+  \item {\tt -pversion, --packageversion <version>} \\ 
+    Specifies the used {\tt PACKAGE\_VERSION()} number. By default, a ``0.0.0'' string
+    is used.
+  
+\item [SEE ALSO:]
+   {\tt Confix Manual}
+\end{description}
+
+
+
+\newpage
+%------------------------------------------------------------------------------
+\section{ccmidl}
+%------------------------------------------------------------------------------
+\dots
+
+
+
+\newpage
+%------------------------------------------------------------------------------
+\section{ccmjava}
+%------------------------------------------------------------------------------
+\dots
+
+
+
+
+\newpage
+%------------------------------------------------------------------------------
 \section{ccmtools}
 %------------------------------------------------------------------------------
 
@@ -87,6 +158,8 @@ selected to create the desired output.
 \end{description}
 
 
+
+\newpage
 %------------------------------------------------------------------------------
 \section{ccmtools-idl}
 %------------------------------------------------------------------------------
@@ -143,6 +216,8 @@ selected to create the desired output.
 \end{description}
 
 
+
+\newpage
 %------------------------------------------------------------------------------
 \section{uml2idl}
 %------------------------------------------------------------------------------

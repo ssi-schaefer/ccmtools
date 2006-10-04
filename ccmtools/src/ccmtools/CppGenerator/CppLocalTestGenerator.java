@@ -71,42 +71,33 @@ public class CppLocalTestGenerator
         if(generated_code.trim().equals("")) 
             return;
 
-        MContained contained = (MContained)currentNode;
-        
+        MContained contained = (MContained)currentNode;        
         String file_dir = "test";
-
-        String file_name = "_check_" 
-            + getLocalCppNamespace(contained, Text.MANGLING_SEPARATOR)
-            + ".cc";
-        
-        File outFile = new File(output_dir + File.separator + file_dir,
-                                file_name);
-        if(outFile.isFile()) {
-            if(!isCodeEqualWithFile(generated_code, outFile)) {
+        String file_name = "_check_" + getLocalCppNamespace(contained, Text.MANGLING_SEPARATOR) + ".cc";        
+        File outFile = new File(output_dir + File.separator + file_dir, file_name);
+        if(outFile.isFile()) 
+        {
+            if(!isCodeEqualWithFile(generated_code, outFile)) 
+            {
                 uiDriver.printMessage("WARNING: " + outFile + " already exists!");
                 file_name += ".new";
                 outFile = new File(output_dir + File.separator + file_dir, file_name);
             }
         }
 	
-        if(isCodeEqualWithFile(generated_code, outFile)) {
+        if(isCodeEqualWithFile(generated_code, outFile)) 
+        {
             System.out.println("skipping " + outFile);
         }
-        else {
+        else 
+        {
             writeFinalizedFile(file_dir, file_name, generated_code);
-        }
-
-        File makefile = new File(file_dir, "Makefile.py");
-        File check_file = new File(output_dir, makefile.toString());
-        if(!check_file.isFile()) {
-            writeFinalizedFile(file_dir, "Makefile.py", "");
         }
         logger.fine("leave writeOutput()");
     }
     
 
-    protected Map getTwoStepOperationVariables(MOperationDef operation,
-                                               MContained container)
+    protected Map getTwoStepOperationVariables(MOperationDef operation, MContained container)
     { 
         logger.fine("getTwoStepOperationVariables()");
         return new Hashtable(); 

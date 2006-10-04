@@ -66,7 +66,7 @@ public class CommandLineParameters
     {
         if(getActionIds().size() == 0)
         {
-            throw new CcmtoolsException("No action (e.g. -check, -print) specified!");
+            throw new CcmtoolsException("No action specified!");
         }
     }
 	    

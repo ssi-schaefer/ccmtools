@@ -81,7 +81,7 @@ public class CommandLineParameters
 	public void validate()
 		throws CcmtoolsException
 	{
-		checkOutputPath();
+		checkOutputPath();        
 		checkPackageName();
 		checkPackageVersion();
 	}
@@ -107,9 +107,9 @@ public class CommandLineParameters
      */
     private void checkPackageName() throws CcmtoolsException
     {
-        if (getPackageName() == null || getPackageName().length() == 0)
+        if (getPackageName() == null)
         {
-            throw new CcmtoolsException("A valid Confix package name must be specified!");
+            setPackageName("");
         }
     }
     
@@ -120,9 +120,9 @@ public class CommandLineParameters
      */
     private void checkPackageVersion() throws CcmtoolsException
     {
-        if (getPackageVersion() == null || getPackageVersion().length() == 0)
+        if(getPackageVersion() == null)
         {
-            throw new CcmtoolsException("A valid Confix package version must be specified!");
+            setPackageVersion("");
         }
         else
         {

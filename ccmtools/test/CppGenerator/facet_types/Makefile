@@ -19,12 +19,12 @@ mirror: local
 	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/src/component/TestMirror ${DEST_DIR}/idl/component/Test.idl 
 
 check: 
-	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "facet_types" -pversion "1.0.0"
 	cp impl/Test_type_test_impl.cc ${DEST_DIR}/src/component/Test/
 	cp impl/MyObject.h ${DEST_DIR}/src/component/TestMirror/
 	cp impl/MyObject.cc ${DEST_DIR}/src/component/TestMirror/
 	cp impl/TestMirror_impl.cc ${DEST_DIR}/src/component/TestMirror/
 	cp impl/_check_witout_mirror.cc ${DEST_DIR}/src/component/TestMirror/test
+	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "facet_types" -pversion "1.0.0"
 	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
 
 clean: 

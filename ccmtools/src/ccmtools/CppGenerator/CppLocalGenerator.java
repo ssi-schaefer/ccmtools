@@ -925,10 +925,11 @@ public class CppLocalGenerator
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
         String implDirectory = CcmtoolsProperties.Instance().get("ccmtools.dir.impl");
 
-        try {
+        try 
+        {
             Iterator path_iterator = out_paths.iterator();
-            for(int i = 0; i < out_strings.length; i++) {
-                
+            for(int i = 0; i < out_strings.length; i++) 
+            {               
                 // try to prittify generated code (eliminate empty lines etc).
                 String generated_code = Code.prettifySourceCode(out_strings[i]);
 
@@ -947,55 +948,37 @@ public class CppLocalGenerator
                 if(file_name.equals(""))
                     continue;
 
-                File outFile = new File(output_dir + File.separator + file_dir,
-                                        file_name);
-                if((file_dir == implDirectory) && outFile.isFile()) {
-                    if(outFile.getName().endsWith("_entry.h")) {
+                File outFile = new File(output_dir + File.separator + file_dir, file_name);
+                if((file_dir == implDirectory) && outFile.isFile()) 
+                {
+                    if(outFile.getName().endsWith("_entry.h")) 
+                    {
                         // *_entry.h files must be overwritten by every generator
                         // call because they are part of the component logic
                         writeFinalizedFile(file_dir, file_name, generated_code);
                     }
-                    else if(!isCodeEqualWithFile(generated_code, outFile)) {
-                        uiDriver.printMessage("WARNING: " + outFile
-                                + " already exists!");
+                    else if(!isCodeEqualWithFile(generated_code, outFile)) 
+                    {
+                        uiDriver.printMessage("WARNING: " + outFile + " already exists!");
                         file_name += ".new";
-                        outFile = new File(output_dir + File.separator
-                                + file_dir, file_name);
+                        outFile = new File(output_dir + File.separator + file_dir, file_name);
                     }
                 }
-                if(isCodeEqualWithFile(generated_code, outFile)) {
+                if(isCodeEqualWithFile(generated_code, outFile)) 
+                {
                     uiDriver.printMessage("Skipping " + outFile);
                 }
-                else {
+                else 
+                {
                     writeFinalizedFile(file_dir, file_name, generated_code);
                 }
-                writeMakefile(output_dir, file_dir, "py", "");
             }
         }
-        catch(Exception e) {
+        catch(Exception e) 
+        {
             uiDriver.printError("!!!Error " + e.getMessage());
         }
         logger.fine("leave writeOutput()");
-    }
-
-    protected boolean writeMakefile(File outDir, String fileDir,
-                                    String extension, String content)
-        throws IOException
-    {
-        logger.fine("enter writeMakefile()");
-        boolean result;
-        File makeFile = new File(outDir, fileDir);
-        makeFile = new File(makeFile, "Makefile." + extension);
-
-        if(!makeFile.isFile()) {
-            writeFinalizedFile(fileDir, "Makefile." + extension, content);
-            result = true;
-        }
-        else {
-            result = false; // no Makefile.py written
-        }
-        logger.fine("leave writeMakefile()");
-        return result;
     }
 
     

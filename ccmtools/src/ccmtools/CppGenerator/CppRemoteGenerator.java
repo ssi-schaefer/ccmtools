@@ -1519,7 +1519,6 @@ public class CppRemoteGenerator
 
                     Code.writeFile(uiDriver, output_dir, fileDir, homeName + remoteSuffix[i],
                                    Code.prettifySourceCode(sourceFiles[i]));
-                    Code.writeMakefile(uiDriver, output_dir, fileDir, "py", "");
                 }
                 else if(currentNode instanceof MInterfaceDef || currentNode instanceof MAliasDef
                         || currentNode instanceof MStructDef || currentNode instanceof MExceptionDef
@@ -1533,7 +1532,6 @@ public class CppRemoteGenerator
 
                     Code.writeFile(uiDriver, output_dir, fileDir, nodeName + remoteSuffix[i],
                                    Code.prettifySourceCode(sourceFiles[i]));
-                    Code.writeMakefile(uiDriver, output_dir, fileDir, "py", "");
                 }
                 else 
                 {
