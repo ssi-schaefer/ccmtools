@@ -33,6 +33,7 @@ public class ConfixGenerator
 	{
 		this.uiDriver = uiDriver;		
 		this.parameters = (CommandLineParameters)parameters;
+        // TODO: Read ignore dir list from etc/ccmtools.properties
 		ignoredDirs.add("CVS"); // ignore CVS directories for Makefile.py generation
         logger = Logger.getLogger("ccm.generator.confix");
         logger.fine("");

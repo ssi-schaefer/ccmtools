@@ -8,7 +8,7 @@ all: local
 test: local check clean
 
 idl3: Test.idl
-	ccmmodel -check Test.idl
+	ccmmodel -validator Test.idl
 	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 
 local: idl3

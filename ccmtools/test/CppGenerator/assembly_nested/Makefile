@@ -13,7 +13,7 @@ test: local check clean
 local: interface basic user super super_mirror
 
 idl: Test.idl
-	ccmmodel -checker Test.idl
+	ccmmodel -validator Test.idl
 	ccmidl -idl3 -o ${IDL3_DIR} Test.idl
 	ccmidl -idl3mirror -o ${IDL3_DIR} Test.idl
 

@@ -6,7 +6,7 @@ all: mirror
 test: mirror check clean
 
 idl3: Test.idl Console.idl
-	ccmmodel -checker Test.idl Console.idl
+	ccmmodel -validator Test.idl Console.idl
 	ccmidl -idl3 -o ${DEST_DIR}/idl Test.idl Console.idl
 
 local: idl3

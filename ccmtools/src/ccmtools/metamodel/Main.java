@@ -77,13 +77,13 @@ public class Main
                             printer.traverse(ccmModel);
                         }
                     }
-                    else if(actionId.equals(CcmModelChecker.MODEL_CHECKER_ID))
+                    else if(actionId.equals(CcmModelValidator.MODEL_CHECKER_ID))
                     {
                         for (String idlFile : parameters.getIdlFiles())
                         {
                             MContainer ccmModel = 
                                 CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
-                            CcmModelChecker checker = new CcmModelChecker(uiDriver, parameters);
+                            CcmModelValidator checker = new CcmModelValidator(uiDriver, parameters);
                             if(!checker.isValidModel(ccmModel))
                             {
                                 uiDriver.printError(checker.getErrorMessage());
@@ -97,6 +97,7 @@ public class Main
 		{			
 			uiDriver.printError(e.getMessage());
 			printUsage();
+            exitWithErrorStatus(e.getMessage());
 		}
 		catch (CcmtoolsException e)
 		{
@@ -142,7 +143,7 @@ public class Main
         options.addOption("h", "help", false,"Display this help");
         options.addOption("V", "version", false, "Display CCM Tools version information");
         options.addOption(CcmModelPrinter.MODEL_PRINTER_ID, false, CcmModelPrinter.MODEL_PRINTER_TEXT);
-        options.addOption(CcmModelChecker.MODEL_CHECKER_ID, false, CcmModelChecker.MODEL_CHECKER_TEXT);
+        options.addOption(CcmModelValidator.MODEL_CHECKER_ID, false, CcmModelValidator.MODEL_CHECKER_TEXT);
         options.addOption(PARSER_ID, false, PARSER_TEXT);
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
@@ -178,7 +179,7 @@ public class Main
         
         if(cmd.hasOption("V")) 
         {
-            CcmModelChecker.printVersion(uiDriver);
+            CcmModelValidator.printVersion(uiDriver);
             return false; // don't continue program execution
         }
         
@@ -187,9 +188,9 @@ public class Main
             parameters.getActionIds().add(CcmModelPrinter.MODEL_PRINTER_ID);
         }
         
-        if (cmd.hasOption(CcmModelChecker.MODEL_CHECKER_ID))
+        if (cmd.hasOption(CcmModelValidator.MODEL_CHECKER_ID))
         {
-            parameters.getActionIds().add(CcmModelChecker.MODEL_CHECKER_ID);
+            parameters.getActionIds().add(CcmModelValidator.MODEL_CHECKER_ID);
         }
 
         if (cmd.hasOption("parser"))

@@ -50,10 +50,10 @@ import ccmtools.utils.Text;
  * by the CCM Tools generator backends, thus, we can reduce roundtrip times
  * for invalid IDL files.
  */
-public class CcmModelChecker
+public class CcmModelValidator
 {		
-    public static final String MODEL_CHECKER_ID = "checker";
-    public static final String MODEL_CHECKER_TEXT = "Check CCM model";
+    public static final String MODEL_CHECKER_ID = "validator";
+    public static final String MODEL_CHECKER_TEXT = "Validate CCM model";
     
     private static final String TAB = "    ";
     private static final String NL = "\n";
@@ -70,11 +70,11 @@ public class CcmModelChecker
     /** Java logging */
     private Logger logger;
         
-	public CcmModelChecker(UserInterfaceDriver uiDriver, CommandLineParameters parameters)
+	public CcmModelValidator(UserInterfaceDriver uiDriver, CommandLineParameters parameters)
 	{
         this.uiDriver = uiDriver;
         this.parameters = (CommandLineParameters)parameters;    
-        logger = Logger.getLogger("ccm.metamodel.checker");
+        logger = Logger.getLogger("ccm.metamodel.validator");
 		logger.fine("");
         printVersion(uiDriver);
 	}
@@ -82,7 +82,7 @@ public class CcmModelChecker
 	public static void printVersion(UserInterfaceDriver uiDriver)
 	{
 	    uiDriver.println("+");
-	    uiDriver.println("+ CCM Model Checker, " + Constants.CCMTOOLS_VERSION_TEXT);
+	    uiDriver.println("+ CCM Model Validator, " + Constants.CCMTOOLS_VERSION_TEXT);
 	    uiDriver.println("+");
 	    uiDriver.println("+");
 	    uiDriver.println(Constants.CCMTOOLS_COPYRIGHT_TEXT);
