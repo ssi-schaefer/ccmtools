@@ -1,7 +1,25 @@
 HEAD
 ============================================================================
-RELEASE-0.7.2 (September , 2006)
+
+
+RELEASE-0.7.2 (October 5, 2006)
 ----------------------------------------------------------------------------
+*) Refactoring: Changed namespace WX::Utils to wx::utils
+
+*) Refactoring: Changed namespace ccm::local::Components to Components::ccm::local 
+
+*) Refactoring: Generation of Makefile.py files
+	Removed the Makefile.py files generation from the C++ component generators, 
+	thus, the ccmconfix generator will be used for that.
+	e.g. ccmconfix -makefiles -o ${DEST_DIR} 
+	Also, a Confix2 support is already integrated by using the -confix2 option 
+	(instead of	the -makefiles option).
+
+*) Bugfix: CCM model validator (ccmmodel -validator) 
+	If no option (or a wrong option) is specified, the tool stops with a -1 result.
+	Changed option name from -checker to -validator.
+	Note that the CCM model validator is still experimental. 
+
 *) Bugfix: merged changes from RELEASE-0_6_14
 	- Bugfix: #include<vector> (reported by Carlo Jennetten)
 	- Bugfixes: Interix (reported by Duft Markus)
