@@ -40,20 +40,17 @@ int main(int argc, char *argv[])
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     SmartPtr< ccm::local::component::Test::Test> myTest;
-    SmartPtr<ccm::local::AnyTest> any_test;
-
-    Components::ccm::local::Cookie Test_ck_any_test;
+    SmartPtr<ccm::local::AnyTest> test;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    Components::ccm::local::HomeFinder* homeFinder = 
-        HomeFinder::Instance();
-    error  = deploy_ccm_local_component_Test_TestHome("TestHome");
-             
-    if(error) {
+    Components::ccm::local::HomeFinder* homeFinder = HomeFinder::Instance();
+    error  = deploy_ccm_local_component_Test_TestHome("TestHome");             
+    if(error) 
+    {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
     }
@@ -67,36 +64,42 @@ int main(int argc, char *argv[])
     // The last step of deployment is to call configuration_complete() that 
     // forces components to run the ccm_set_session_context() and ccm_activate() 
     // callback methods.
-    try {
+    try 
+    {
         SmartPtr< ccm::local::component::Test::TestHome> myTestHome(
             dynamic_cast< ccm::local::component::Test::TestHome*>
             (homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
 
-        any_test = myTest->provide_any_test();
+        test = myTest->provide_test();
 
         myTest->configuration_complete();
     } 
-    catch(::Components::ccm::local::HomeNotFound ) {
+    catch(::Components::ccm::local::HomeNotFound ) 
+    {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch(::Components::ccm::local::NotImplemented& e ) {
+    catch(::Components::ccm::local::NotImplemented& e ) 
+    {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     }  
-    catch(::Components::ccm::local::InvalidName& e ) {
+    catch(::Components::ccm::local::InvalidName& e ) 
+    {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
         error = -1;
     }
-    catch ( ... )  {
+    catch ( ... )  
+    {
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    if (error < 0) {
+    if (error < 0) 
+    {
         return error;
     }
 
@@ -105,72 +108,123 @@ int main(int argc, char *argv[])
     // Usually, the test cases for facets and receptacles are implemened in the
     // mirror component. But for supported interfaces and component attributes, 
     // we can realize test cases in the following section.
-    try {
+    try 
+    {
+		{	// any op1(in any p1, inout any p2, out any p3);		
+			SmartPtr<Value> p1(new ShortValue(11));
+			SmartPtr<Value> p2(new ShortValue(22));
+			SmartPtr<Value> p3;
+			SmartPtr<Value> result = test->op1(p1, p2, p3);
+			
+			ShortValue* p2Value = dynamic_cast<ShortValue*>(p2.ptr());
+			assert(p2Value->value() == 11);
 
-      {
-        ccm::local::pair p1;
-        p1.name = "key1";
-        SmartPtr<Value> v1(new IntValue(1));
-        p1.value = v1;
+			ShortValue* p3Value = dynamic_cast<ShortValue*>(p3.ptr());
+			assert(p3Value->value() == 22);
 
-        ccm::local::pair p2;
-        p2.name = "key2";
-        SmartPtr<Value> v2(new IntValue(2));
-        p2.value = v2;
+			ShortValue* resultValue = dynamic_cast<ShortValue*>(result.ptr());
+			assert(resultValue->value() == 11);
+		}
 
-        ccm::local::pair p3;
-        ccm::local::pair result;
+		{	// anyList op2(in anyList p1, inout anyList p2, out anyList p3);
+				
+      		AnyList p1;
+      		AnyList p2;
+      		AnyList p3;
+      		AnyList result;
+      		for(int i = 0; i < 5; i++) 
+      		{
+        			SmartPtr<Value> p1Value(new ShortValue(i));
+        			SmartPtr<Value> p2Value(new ShortValue(i+i));
+        			p1.push_back(p1Value);
+        			p2.push_back(p2Value);
+      		}
+      		result = result = test->op2(p1, p2, p3);
+      		for(int i = 0; i < 5; i++) 
+      		{
+        			ShortValue* p2Value = dynamic_cast<ShortValue*>(p2.at(i).ptr());
+        			assert(p2Value->value() == i);
 
-        result = any_test->op3(p1, p2, p3);
+        			ShortValue* p3Value = dynamic_cast<ShortValue*>(p3.at(i).ptr());
+				assert(p3Value->value() == i+i);
+
+        			ShortValue* resultValue = dynamic_cast<ShortValue*>(result.at(i).ptr());
+				assert(resultValue->value() == i);
+      		}
+		}
+		
+      	{	// pair op3(in pair p1, inout pair  p2, out pair p3);
+        		Pair p1;
+        		p1.name = "key1";
+        		SmartPtr<Value> v1(new LongValue(1));
+        		p1.value = v1;
+
+        		Pair p2;
+        		p2.name = "key2";
+        		SmartPtr<Value> v2(new LongValue(2));
+        		p2.value = v2;
+
+        		Pair p3;
+        		Pair result;
+
+        		result = test->op3(p1, p2, p3);
 	
-	assert(p2.name == "key1");
-	IntValue* p2Value = dynamic_cast<IntValue*>(p2.value.ptr());
-	assert(p2Value->value() == 1);
+			assert(p2.name == "key1");
+			LongValue* p2Value = dynamic_cast<LongValue*>(p2.value.ptr());
+			assert(p2Value->value() == 1);
 
-	assert(p3.name == "key2");
-	IntValue* p3Value = dynamic_cast<IntValue*>(p3.value.ptr());
-	assert(p3Value->value() == 2);
+			assert(p3.name == "key2");
+			LongValue* p3Value = dynamic_cast<LongValue*>(p3.value.ptr());
+			assert(p3Value->value() == 2);
 	
-	assert(result.name == "keyresult");
-	IntValue* resultValue = dynamic_cast<IntValue*>(result.value.ptr());
-	assert(resultValue->value() == 3);
-      }
+			assert(result.name == "key1");
+			LongValue* resultValue = dynamic_cast<LongValue*>(result.value.ptr());
+			assert(resultValue->value() == 1);
+      	}
     } 
-    catch(::Components::ccm::local::NotImplemented& e ) {
+    catch(::Components::ccm::local::NotImplemented& e ) 
+    {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
-    catch(...) {
+    catch(...) 
+    {
         cout << "TEST: there is something wrong!" << endl;
         error = -1;
     }
-    if(error < 0) {
-	return error;
+    if(error < 0) 
+    	{
+		return error;
     }
   
 
     // Component tear down:
     // Finally, the component and mirror component instances are disconnected 
     // and removed. Thus component homes can be undeployed.
-    try {
+    try 
+    {
         myTest->remove();
     } 
-    catch(::Components::ccm::local::HomeNotFound ) {
+    catch(::Components::ccm::local::HomeNotFound ) 
+    {
         cout << "TEARDOWN ERROR: can't find a home!" << endl;
         error = -1;
     } 
-    catch(::Components::ccm::local::NotImplemented& e ) {
+    catch(::Components::ccm::local::NotImplemented& e ) 
+    {
         cout << "TEARDOWN ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         error = -1;
     } 
-    catch(...) {
+    catch(...) 
+    {
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
     error += undeploy_ccm_local_component_Test_TestHome("TestHome");
 
-    if(error) {
+    if(error) 
+    {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
     }

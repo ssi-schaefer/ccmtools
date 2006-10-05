@@ -1,0 +1,10 @@
+autom4te.cache
+confix-admin
+acinclude.m4
+aclocal.m4
+config.h.in
+configure
+configure.in
+Makefile.am
+Makefile.in
+ValuesExample.repo

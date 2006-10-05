@@ -16,7 +16,7 @@
 #include <wx/utils/debug.h>
 #include <wx/utils/value_simple.h>
 
-#include "Test_any_test_impl.h"
+#include "Test_test_impl.h"
 
 using namespace std;
 using namespace wx::utils;
@@ -26,54 +26,52 @@ namespace local {
 namespace component {
 namespace Test {
 
-any_test_impl::any_test_impl(
+test_impl::test_impl(
     ccm::local::component::Test::CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-any_test_impl::~any_test_impl()
+test_impl::~test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 SmartPtr< wx::utils::Value > 
-any_test_impl::op1(
+test_impl::op1(
         const SmartPtr< wx::utils::Value > & p1,
         SmartPtr< wx::utils::Value > & p2,
         SmartPtr< wx::utils::Value > & p3)
 throw(::Components::ccm::local::CCMException)
 {
-    // TODO : IMPLEMENT ME HERE !
+  	p3=p2;
+  	p2=p1;
+  	return p1;
 }
 
-ccm::local::anyList
-any_test_impl::op2(
-        const ccm::local::anyList& p1,
-        ccm::local::anyList& p2,
-        ccm::local::anyList& p3)
+ccm::local::AnyList
+test_impl::op2(
+        const ccm::local::AnyList& p1,
+        ccm::local::AnyList& p2,
+        ccm::local::AnyList& p3)
 throw(::Components::ccm::local::CCMException)
 {
-    // TODO : IMPLEMENT ME HERE !
+  	p3=p2;
+  	p2=p1;
+	return p1;
 }
 
-ccm::local::pair
-any_test_impl::op3(
-        const ccm::local::pair& p1,
-        ccm::local::pair& p2,
-        ccm::local::pair& p3)
+ccm::local::Pair
+test_impl::op3(
+        const ccm::local::Pair& p1,
+        ccm::local::Pair& p2,
+        ccm::local::Pair& p3)
 throw(::Components::ccm::local::CCMException)
 { 
-  p3=p2;
-  p2=p1;
-
-  ccm::local::pair result;
-//  result.name = "keyresult";
-//  SmartPtr<Value> vr(new IntValue(3));
- // result.value = vr; !!!!!
-
-  return result;
+  	p3=p2;
+  	p2=p1;
+	return p1;
 }
 
 } // /namespace Test
