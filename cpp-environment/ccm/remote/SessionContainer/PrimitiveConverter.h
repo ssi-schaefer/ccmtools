@@ -33,9 +33,9 @@
 #include <CORBA.h>
 #include <string>
 
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace ccm {
 namespace remote {

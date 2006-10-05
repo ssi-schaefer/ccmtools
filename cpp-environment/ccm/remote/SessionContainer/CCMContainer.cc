@@ -31,12 +31,12 @@
 
 #ifdef HAVE_MICO  
 
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "CCMContainer.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 
 //============================================================================
@@ -314,7 +314,7 @@ CCM::SessionContainer::get_CCM_home ()
 
 
 CORBA::Object_ptr 
-CCM::SessionContainer::get_CCM_object(ccm::local::Components::EnterpriseComponent* o)
+CCM::SessionContainer::get_CCM_object(Components::ccm::local::EnterpriseComponent* o)
 {
     LDEBUGNL(CCM_CONTAINER, " get_CCM_object()");
     /*

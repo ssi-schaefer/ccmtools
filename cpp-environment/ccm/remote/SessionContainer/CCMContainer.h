@@ -38,8 +38,8 @@
 #include <map>
 #include <string>
 
-#include <WX/Utils/smartptr.h>
-#include <ccm/local/Components/CCM.h>
+#include <wx/utils/smartptr.h>
+#include <Components/ccm/local/CCM.h>
 
 #include <Components/CCM.h>
 
@@ -50,7 +50,7 @@ namespace CCM {
   //============================================================================
   
     class ContainerBase
-	: virtual public WX::Utils::RefCounted
+	: virtual public wx::utils::RefCounted
     {
     protected:
 	static CORBA::ULong globalContainerNumber_;
@@ -67,7 +67,7 @@ namespace CCM {
 	
 	virtual Components::CCMHome_ptr get_CCM_home () = 0;
 	virtual CORBA::Object_ptr
-	get_CCM_object(ccm::local::Components::EnterpriseComponent*) = 0;
+	get_CCM_object(Components::ccm::local::EnterpriseComponent*) = 0;
     };
     
 
@@ -91,7 +91,7 @@ namespace CCM {
 	    std::string component_short_name;
 	    std::string component_absolute_name;
 	    std::string component_id;
-	    ccm::local::Components::HomeExecutorBase* home_instance;
+	    Components::ccm::local::HomeExecutorBase* home_instance;
 	    PortableServer::ServantBase_var home_glue;
 	};
 	
@@ -102,7 +102,7 @@ namespace CCM {
 	struct PerComponentData {
 	    CORBA::Boolean configuration_complete;
 	    PortableServer::ServantBase_var glue;
-	    ccm::local::Components::EnterpriseComponent* instance;
+	    Components::ccm::local::EnterpriseComponent* instance;
 	    CORBA::Object_var reference;
 	    std::map<std::string, PortableServer::ServantBase_var> facet_glue;
 	    std::map<std::string, void*> facet_instance;
@@ -144,7 +144,7 @@ namespace CCM {
 	Components::CCMHome_ptr get_CCM_home (); 
 	
 	CORBA::Object_ptr 
-	get_CCM_object(ccm::local::Components::EnterpriseComponent*); 
+	get_CCM_object(Components::ccm::local::EnterpriseComponent*); 
 	
 	// Facet management
 	CORBA::Object_ptr

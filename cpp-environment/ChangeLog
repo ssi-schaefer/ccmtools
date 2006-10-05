@@ -1,8 +1,13 @@
 HEAD
 ============================================================================
 
-RELEASE-0.7.2 (September , 2006)
+RELEASE-0.7.2 (October 5, 2006)
 ----------------------------------------------------------------------------
+*) Refactoring: Upgrade to wx-utils-3.1.0
+	Changed namespace WX::Utils to wx::utils
+	
+*) Refactoring: Changed namespace ccm::local::Components to Components::ccm::local
+
 *) Bugfix: merged changes from RELEASE-0_6_14
 	=> ccm/local/HomeFinder.cc
 	=> utils/measurement/Timer.cc
