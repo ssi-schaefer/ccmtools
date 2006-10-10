@@ -15,10 +15,14 @@ local: idl3
 	ccmtools c++local-test ${IDL_INCLUDE} -o ${DEST_DIR}/component/Test ${DEST_DIR}/idl/component/Test.idl 
 
 check: 
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "any" -pversion "1.0.0"
 	cp impl/Test_test_impl.cc ${DEST_DIR}/component/Test/
-	cp impl/_check_ccm_local_component_Test.cc ${DEST_DIR}/component/Test/test
+	cp impl/_check_ccm_local_Test.cc ${DEST_DIR}/component/Test/test
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "any" -pversion "1.0.0"
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+
+check_empty: 
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "any" -pversion "1.0.0"
+	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make 
 
 clean: 
 	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	

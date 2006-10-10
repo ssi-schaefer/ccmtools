@@ -43,16 +43,15 @@ Assembly::build(SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
   
   try {
     // find home ob components
-    SmartPtr<component::BasicTest::BasicTestHome> 
-      basicTestHome(dynamic_cast<component::BasicTest::BasicTestHome*>
+    SmartPtr<BasicTestHome> 
+      basicTestHome(dynamic_cast<BasicTestHome*>
        (homeFinder->find_home_by_name("BasicTestHome").ptr()));
-    SmartPtr<component::UserTest::UserTestHome> 
-      userTestHome(dynamic_cast<component::UserTest::UserTestHome*>
+    SmartPtr<UserTestHome> 
+      userTestHome(dynamic_cast<UserTestHome*>
        (homeFinder->find_home_by_name("UserTestHome").ptr()));
 
     // create components
-    superTest = SmartPtr<component::SuperTest::SuperTest>(
-	dynamic_cast<component::SuperTest::SuperTest*>(facadeComponent.ptr()));
+    superTest = SmartPtr<SuperTest>(dynamic_cast<SuperTest*>(facadeComponent.ptr()));
     basicTest = basicTestHome->create();
     userTest = userTestHome->create();
     

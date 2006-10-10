@@ -24,23 +24,21 @@ namespace world {
 namespace europe {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-facet_impl::facet_impl(
-    world::europe::ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_facet_impl::Test_facet_impl(
+    world::europe::ccm::local::CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-facet_impl::~facet_impl()
+Test_facet_impl::~Test_facet_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 world::ccm::local::PDL_Person
-facet_impl::op1(
+Test_facet_impl::op1(
         const world::ccm::local::PDL_Person& p1,
         world::ccm::local::PDL_Person& p2,
         world::ccm::local::PDL_Person& p3)
@@ -71,7 +69,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 world::ccm::local::PDL_DTO
-facet_impl::op2(
+Test_facet_impl::op2(
         const world::ccm::local::PDL_DTO& p1,
         world::ccm::local::PDL_DTO& p2,
         world::ccm::local::PDL_DTO& p3)
@@ -101,7 +99,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 world::ccm::local::Other 
-facet_impl::op3(
+Test_facet_impl::op3(
         const world::ccm::local::Other& p1,
         world::ccm::local::Other& p2,
         world::ccm::local::Other& p3) 
@@ -110,8 +108,6 @@ throw(::Components::ccm::local::CCMException)
 
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace europe

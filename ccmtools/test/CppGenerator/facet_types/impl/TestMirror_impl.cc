@@ -23,8 +23,6 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace TestMirror {
 
 using namespace std;
 using namespace wx::utils;
@@ -233,8 +231,6 @@ CCM_TestMirror_impl::ccm_remove (  )
 {
 }
 
-} // /namespace Test_mirror
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 

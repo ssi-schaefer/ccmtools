@@ -73,7 +73,8 @@ public class CppLocalTestGenerator
 
         MContained contained = (MContained)currentNode;        
         String file_dir = "test";
-        String file_name = "_check_" + getLocalCppNamespace(contained, Text.MANGLING_SEPARATOR) + ".cc";        
+        String file_name = "_check_" + getLocalCppNamespace(contained, Text.MANGLING_SEPARATOR) + "_" 
+                                + contained.getIdentifier() + ".cc";        
         File outFile = new File(output_dir + File.separator + file_dir, file_name);
         if(outFile.isFile()) 
         {

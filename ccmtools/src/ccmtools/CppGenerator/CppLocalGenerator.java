@@ -33,7 +33,6 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.CppGenerator.plugin.AnyPluginManager;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
@@ -423,6 +422,130 @@ public class CppLocalGenerator
         return dataValue;
     }
 
+    
+    protected String data_MProvidesDef(String dataType, String dataValue)
+    {
+        MProvidesDef provides = (MProvidesDef)currentNode;
+        StringBuilder code = new StringBuilder();
+        
+        if(dataType.equals("generateOperationsImpl"))
+        {
+            List<MOperationDef> opList = getOperationList(provides.getProvides());
+            for(MOperationDef op : opList)
+            {
+                code.append(generateOperationImpl(provides,op));                
+            }            
+        }
+        else if(dataType.equals("generateAttributeImpl"))
+        {
+            List<MAttributeDef> attrList = getAttributeList(provides.getProvides());
+            for(MAttributeDef attr : attrList)
+            {
+                code.append(generateAttributeImpl(provides,attr));                
+            }    
+        }
+        else
+        {
+            code.append(super.data_MProvidesDef(dataType, dataValue));
+        }
+        return code.toString();
+    }
+    
+    
+    protected List<MAttributeDef> getAttributeList(MInterfaceDef iface)
+    {
+        List<MAttributeDef> attrList = new ArrayList<MAttributeDef>();
+        for(Iterator i = iface.getBases().iterator(); i.hasNext();)
+        {
+            MInterfaceDef base = (MInterfaceDef)i.next();
+            attrList.addAll(getAttributeList(base));
+        }
+        for(Iterator i = iface.getContentss().iterator(); i.hasNext();)
+        {
+            MContained contained = (MContained)i.next();
+            if(contained instanceof MAttributeDef)
+            {
+                attrList.add((MAttributeDef)contained);
+            }     
+        }
+        return attrList;
+    }
+    
+    
+    protected List<MOperationDef> getOperationList(MInterfaceDef iface)
+    {
+        List<MOperationDef> opList = new ArrayList<MOperationDef>();
+        for(Iterator i = iface.getBases().iterator(); i.hasNext();)
+        {
+            MInterfaceDef base = (MInterfaceDef)i.next();
+            opList.addAll(getOperationList(base));
+        }
+        for(Iterator i = iface.getContentss().iterator(); i.hasNext();)
+        {
+            MContained contained = (MContained)i.next();
+            if(contained instanceof MOperationDef)
+            {
+                opList.add((MOperationDef)contained);
+            }     
+        }
+        return opList;
+    }
+    
+    protected String generateOperationImpl(MProvidesDef provides, MOperationDef op)
+    {
+        StringBuilder code = new StringBuilder();        
+        code.append(getLanguageType(op)).append("\n");
+        code.append(provides.getComponent().getIdentifier()).append("_").append(provides.getIdentifier());
+        code.append("_impl::").append(op.getIdentifier()).append("(");
+        code.append(getOperationParams(op)).append(")\n");
+        code.append("    ").append(getOperationExcepts(op)).append("\n");
+        code.append("{\n");
+        code.append("    // TODO : IMPLEMENT ME HERE !\n");
+        code.append("}\n\n");
+        return code.toString();
+    }
+
+
+    protected String generateAttributeImpl(MProvidesDef provides, MAttributeDef attr)
+    {
+        StringBuilder code = new StringBuilder(); 
+
+        /*
+        const %(LanguageType)s
+        %(Object)s_impl::%(Identifier)s() const
+            throw(::Components::ccm::local::CCMException)
+        {
+            return %(Identifier)s_;
+        }
+        */
+
+        code.append("const ").append(getLanguageType(attr)).append("\n");
+        code.append(provides.getComponent().getIdentifier()).append("_").append(provides.getIdentifier());
+        code.append("_impl::").append(attr.getIdentifier()).append("() const\n");
+        code.append("    throw(::Components::ccm::local::CCMException)\n");
+        code.append("{\n");
+        code.append("    return ").append(attr.getIdentifier()).append("_;\n");
+        code.append("}\n\n");
+        
+        /*
+        void
+        %(Object)s_impl::%(Identifier)s(const %(LanguageType)s value)
+            throw(::Components::ccm::local::CCMException)
+        {
+            %(Identifier)s_ = value;
+        }
+        */        
+        code.append("void\n");
+        code.append(provides.getComponent().getIdentifier()).append("_").append(provides.getIdentifier());
+        code.append("_impl::").append(attr.getIdentifier()).append("(const ");
+        code.append(getLanguageType(attr)).append(" value)\n");
+        code.append("    throw(::Components::ccm::local::CCMException)\n");
+        code.append("{\n");
+        code.append("    ").append(attr.getIdentifier()).append("_ = value;\n");
+        code.append("}\n\n");
+        return code.toString();
+    }
+    
     protected String getUserTypeName(MIDLType idlType)
     {
     		if(idlType instanceof MPrimitiveDef || 
@@ -1128,10 +1251,10 @@ public class CppLocalGenerator
         logger.fine("enter getOutputDirectory()");
         List modules = new ArrayList(namespaceStack);
         modules.addAll(baseNamespace);
-        if(!component.equals("")) {
-            modules.add(Constants.COMPONENT_NAMESPACE 
-                        + Text.MANGLING_SEPARATOR + component);
-        }
+//        if(!component.equals("")) {
+//            modules.add(Constants.COMPONENT_NAMESPACE 
+//                        + Text.MANGLING_SEPARATOR + component);
+//        }
         String generatorPrefix = 
             CcmtoolsProperties.Instance().get("ccmtools.dir.gen");
         logger.fine("leave getOutputDirectory()");

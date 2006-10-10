@@ -19,9 +19,13 @@ mirror: local
 	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/TestMirror ${DEST_DIR}/idl/component/Test.idl 
 
 check: 
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "receptacle_inheritance" -pversion "1.0.0"
 	cp impl/Test_impl.cc ${DEST_DIR}/component/Test/
 	cp impl/TestMirror_a_receptacle_impl.cc ${DEST_DIR}/component/TestMirror/
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "receptacle_inheritance" -pversion "1.0.0"
+	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+
+check_empty:
+	ccmconfix -makefiles -o ${DEST_DIR} -pname "receptacle_inheritance" -pversion "1.0.0"
 	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 

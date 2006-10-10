@@ -35,7 +35,6 @@ super_mirror:
 
 
 check: 
-	ccmconfix -makefiles -o ${APP_DIR}/src -pname "assembly_nested" -pversion "1.0.0"
 	cp -r impl/assembly ${COMPONENT_DIR}/SuperTest
 	cp impl/test/_check* ${COMPONENT_DIR}/SuperTestMirror/test/
 	cp impl/BasicTest_basicType_impl.cc ${COMPONENT_DIR}/BasicTest/
@@ -43,8 +42,14 @@ check:
 	cp impl/SuperTest_basicType_impl.cc ${COMPONENT_DIR}/SuperTest/
 	cp impl/SuperTest_userType_impl.cc ${COMPONENT_DIR}/SuperTest/	
 	cp impl/SuperTestMirror_impl.cc ${COMPONENT_DIR}/SuperTestMirror/
+	ccmconfix -makefiles -o ${APP_DIR}/src -pname "assembly_nested" -pversion "1.0.0"
 	confix.py --packageroot=`pwd`/${APP_DIR}/src --bootstrap --configure --make --targets=check
 
+check_empty: 
+	ccmconfix -makefiles -o ${APP_DIR}/src -pname "assembly_nested" -pversion "1.0.0"
+	confix.py --packageroot=`pwd`/${APP_DIR}/src --bootstrap --configure --make 
+	
+	
 clean: 
 	confix.py --packageroot=`pwd`/${APP_DIR}/src --make --targets=clean
 	rm -rf ${APP_DIR}

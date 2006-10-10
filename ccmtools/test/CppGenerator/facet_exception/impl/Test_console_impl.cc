@@ -19,33 +19,25 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
 using namespace std;
 using namespace wx::utils;
 
-console_impl::console_impl(CCM_Test_impl* component_impl)
+Test_console_impl::Test_console_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
 {
-    DEBUGNL("+console_impl->console_impl()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-console_impl::~console_impl()
+Test_console_impl::~Test_console_impl()
 {
-    DEBUGNL ( "-console_impl->~console_impl (  )" );
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 long
-console_impl::println(const std::string& msg)
-    throw (Components::ccm::local::CCMException, Error, SuperError, FatalError )
+Test_console_impl::println(const std::string& msg)
+    throw (::Components::ccm::local::CCMException, Error, SuperError, FatalError )
 {
-    DEBUGNL("console_impl->println(msg)");
-
     cout << ">> " << msg << endl;
 
     if(msg == "Error") {
@@ -68,7 +60,5 @@ console_impl::println(const std::string& msg)
     return msg.length();
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

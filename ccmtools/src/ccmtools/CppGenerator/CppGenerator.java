@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Logger;
 
-import ccmtools.Constants;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
@@ -396,12 +395,11 @@ abstract public class CppGenerator extends CodeGenerator
             return getLocalCppNamespace(component, Text.MANGLING_SEPARATOR);
           }
         else if(data_type.endsWith("Namespace")) {
-            return handleNamespace(data_type, component.getIdentifier());
+            return handleNamespace(data_type);
         }
         else if(data_type.equals("HomeInclude")) {
             String include = getFullScopeInclude(component);
-            include = include.substring(0, 
-                           include.lastIndexOf(Text.INCLUDE_SEPARATOR));
+            include = include.substring(0, include.lastIndexOf(Text.INCLUDE_SEPARATOR));
             return include + Text.INCLUDE_SEPARATOR + home.getIdentifier();
         }
         else if(data_type.equals("ComponentInclude")) {
@@ -464,7 +462,7 @@ abstract public class CppGenerator extends CodeGenerator
             return getLocalCppNamespace(home, Text.SCOPE_SEPARATOR);
         }
         else if(data_type.endsWith("Namespace")) {
-            return handleNamespace(data_type, component_id);
+            return handleNamespace(data_type);
         }
         else if(data_type.equals("HomeInclude")) {
             String include = getFullScopeInclude(component);
@@ -591,7 +589,7 @@ abstract public class CppGenerator extends CodeGenerator
             // Add component Namespace to facet impl class files
             MComponentDef component = ((MProvidesDef) currentNode)
                     .getComponent();
-            return handleNamespace(data_type, component.getIdentifier());
+            return handleNamespace(data_type);
         }
         return data_value;
     }
@@ -687,37 +685,41 @@ abstract public class CppGenerator extends CodeGenerator
      * Override the CodeGenerator method to handle local C++ 
      * namespace artifacts.
      */
-    protected String handleNamespace(String data_type, String local)
+    protected String handleNamespace(String data_type)
     {
         logger.fine("handleNamespaces()");
         List modules = new ArrayList(namespaceStack);
         modules.addAll(baseNamespace);
         
-        if(!local.equals("")) {
-            modules.add(Constants.COMPONENT_NAMESPACE);
-        	modules.add(local);
-        }
+//        if(!local.equals("")) 
+//        {
+//            modules.add(Constants.COMPONENT_NAMESPACE);
+//        	    modules.add(local);
+//        }
         
-        if(data_type.equals("UsingNamespace")) {
+        if(data_type.equals("UsingNamespace")) 
+        {
             List tmp = new ArrayList();
             for(Iterator i = modules.iterator(); i.hasNext();)
                 tmp.add("using namespace " + i.next() + ";\n");
             return join("", tmp);
         }
-        else if(data_type.equals("OpenNamespace")) {
+        else if(data_type.equals("OpenNamespace")) 
+        {
             List tmp = new ArrayList();
             for(Iterator i = modules.iterator(); i.hasNext();)
                 tmp.add("namespace " + i.next() + " {\n");
             return join("", tmp);
         }
-        else if(data_type.equals("CloseNamespace")) {
+        else if(data_type.equals("CloseNamespace")) 
+        {
             Collections.reverse(modules);
             List tmp = new ArrayList();
             for(Iterator i = modules.iterator(); i.hasNext();)
                 tmp.add("} // /namespace " + i.next() + "\n");
             return join("", tmp);
         }
-        return super.handleNamespace(data_type, local);
+        return super.handleNamespace(data_type);
     }
 
        
@@ -886,19 +888,19 @@ abstract public class CppGenerator extends CodeGenerator
             code.append(join(separator, baseNamespace));
         }
         
-        if(node instanceof MComponentDef) {
-            code.append(separator);
-            code.append(Constants.COMPONENT_NAMESPACE );
-            code.append(separator);
-            code.append(node.getIdentifier());
-        }
-        else if(node instanceof MHomeDef ) {
-            MHomeDef home = (MHomeDef)node;
-            code.append(separator);
-            code.append(Constants.COMPONENT_NAMESPACE );
-            code.append(separator);
-            code.append(home.getComponent().getIdentifier());
-        }
+//        if(node instanceof MComponentDef) {
+//            code.append(separator);
+//            code.append(Constants.COMPONENT_NAMESPACE );
+//            code.append(separator);
+//            code.append(node.getIdentifier());
+//        }
+//        else if(node instanceof MHomeDef ) {
+//            MHomeDef home = (MHomeDef)node;
+//            code.append(separator);
+//            code.append(Constants.COMPONENT_NAMESPACE );
+//            code.append(separator);
+//            code.append(home.getComponent().getIdentifier());
+//        }
         logger.fine("leave getLocalCppNamespace()");
         return code.toString();
     }

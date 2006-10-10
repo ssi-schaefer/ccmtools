@@ -23,8 +23,8 @@
 #include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <ccm/local/component/Test/Test_gen.h>
-#include <ccm/local/component/Test/TestHome_gen.h>
+#include <ccm/local/Test_gen.h>
+#include <ccm/local/TestHome_gen.h>
 
 using namespace std;
 using namespace wx::utils;
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<component::Test::Test> myTest;
+    SmartPtr<Test> myTest;
 
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     int error = 0;
     Components::ccm::local::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
-    error  = deploy_ccm_local_component_Test_TestHome("TestHome");
+    error  = deploy_ccm_local_TestHome("TestHome");
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -59,12 +59,13 @@ int main(int argc, char *argv[])
     // forces components to run the ccm_set_session_context() and ccm_activate() 
     // callback methods.
     try {
-        SmartPtr<component::Test::TestHome> 
-	  myTestHome(dynamic_cast<component::Test::TestHome*>
+        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
             (homeFinder->find_home_by_name("TestHome").ptr()));
+
         myTest = myTestHome->create();
+
         myTest->configuration_complete();
-    } 
+     } 
     catch ( ::Components::ccm::local::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         error = -1;
@@ -93,11 +94,17 @@ int main(int argc, char *argv[])
     // mirror component. But for supported interfaces and component attributes, 
     // we can realize test cases in the following section.
     try {
-      {
-	  const long maxSize = 10;
-	  myTest->max_size(maxSize);
-	  assert(myTest->max_size() == maxSize);
-      }
+        string str1 = "Hallo to first op()";
+	long size1 = myTest->op1(str1);
+	assert(size1 == str1.length());
+    
+	string str2 = "Hallo to second op()";
+	long size2 = myTest->op2(str2);
+	assert(size2 == str2.length());
+    
+	string str3 = "Hallo to third op()";
+	long size3 = myTest->op3(str3);
+	assert(size3 == str3.length());
     } 
     catch ( ::Components::ccm::local::NotImplemented& e ) {
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
@@ -132,8 +139,8 @@ int main(int argc, char *argv[])
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    error += undeploy_ccm_local_component_Test_TestHome("TestHome");
-    if(error) {
+    error += undeploy_ccm_local_TestHome("TestHome");
+     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
     }

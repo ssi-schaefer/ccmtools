@@ -19,8 +19,6 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace TestMirror {
 
 using namespace std;
 using namespace wx::utils;
@@ -40,14 +38,14 @@ CCM_TestMirror_impl::~CCM_TestMirror_impl()
 void
 CCM_TestMirror_impl::set_session_context(
     Components::ccm::local::SessionContext* context)
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_TestMirror_Context*>(context);
 }
 
 void
 CCM_TestMirror_impl::ccm_activate()
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     string s = "Salomon.Automation";
     long len =  ctx->get_connection_console()->println(s);
@@ -82,7 +80,7 @@ CCM_TestMirror_impl::ccm_activate()
         ctx->get_connection_console()->println(s);
         assert(0);
     }
-    catch(Components::ccm::local::Exception& e) {
+    catch(::Components::ccm::local::Exception& e) {
       // catch base class exception 
       cout << e.what() << endl;
     }
@@ -94,20 +92,18 @@ CCM_TestMirror_impl::ccm_activate()
 
 void
 CCM_TestMirror_impl::ccm_passivate()
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 CCM_TestMirror_impl::ccm_remove()
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-} // /namespace TestMirror
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 

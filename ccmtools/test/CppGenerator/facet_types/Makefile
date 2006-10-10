@@ -27,6 +27,10 @@ check:
 	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "facet_types" -pversion "1.0.0"
 	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
 
+check_empty:
+	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "facet_types" -pversion "1.0.0"
+	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
+
 clean: 
 	confix.py --packageroot=`pwd`/${DEST_DIR}/src --make --targets=clean	
 	rm -rf ${DEST_DIR}

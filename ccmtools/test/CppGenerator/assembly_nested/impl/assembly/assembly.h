@@ -9,14 +9,14 @@
 #include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <ccm/local/component/BasicTest/BasicTest_gen.h>
-#include <ccm/local/component/BasicTest/BasicTestHome_gen.h>
+#include <ccm/local/BasicTest_gen.h>
+#include <ccm/local/BasicTestHome_gen.h>
 
-#include <ccm/local/component/UserTest/UserTest_gen.h>
-#include <ccm/local/component/UserTest/UserTestHome_gen.h>
+#include <ccm/local/UserTest_gen.h>
+#include <ccm/local/UserTestHome_gen.h>
 
-#include <ccm/local/component/SuperTest/SuperTest_gen.h>
-#include <ccm/local/component/SuperTest/SuperTestHome_gen.h>
+#include <ccm/local/SuperTest_gen.h>
+#include <ccm/local/SuperTestHome_gen.h>
 
 
 namespace ccm {
@@ -32,16 +32,16 @@ private:
 	Components::ccm::local::AssemblyState state_;
 
 	// Super Component: SuperTest
-	wx::utils::SmartPtr<component::SuperTest::SuperTest> superTest;
+	wx::utils::SmartPtr<SuperTest> superTest;
 	wx::utils::SmartPtr<BasicTypeInterface> innerBasicType;
 	wx::utils::SmartPtr<UserTypeInterface> innerUserType;
 
 	// Inner Component: BasicTest
-	wx::utils::SmartPtr<component::BasicTest::BasicTest> basicTest;
+	wx::utils::SmartPtr<BasicTest> basicTest;
 	wx::utils::SmartPtr<BasicTypeInterface> basicType;
 
 	// Inner Component: UserTest
-	wx::utils::SmartPtr<component::UserTest::UserTest> userTest;
+	wx::utils::SmartPtr<UserTest> userTest;
 	wx::utils::SmartPtr<UserTypeInterface> userType;
 
 public:

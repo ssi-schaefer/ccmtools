@@ -22,11 +22,9 @@ using namespace wx::utils;
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-iface_impl::iface_impl(
-    ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_iface_impl::Test_iface_impl(
+    ccm::local::CCM_Test_impl* component_impl)
   : component(component_impl)
 {
   cout << "  BOOLEAN_CONST = " << Constants::BOOLEAN_CONST << endl; 
@@ -45,82 +43,80 @@ iface_impl::iface_impl(
   cout << "  DOUBLE_CONST = " << Constants::DOUBLE_CONST << endl;
 }
 
-iface_impl::~iface_impl()
+Test_iface_impl::~Test_iface_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 bool
-iface_impl::getBooleanValue()
+Test_iface_impl::getBooleanValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::BOOLEAN_CONST;
 }
 
 unsigned char
-iface_impl::getOctetValue()
+Test_iface_impl::getOctetValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::OCTET_CONST;
 }
 
 short
-iface_impl::getShortValue()
+Test_iface_impl::getShortValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::SHORT_CONST;
 }
 
 unsigned short
-iface_impl::getUnsignedShortValue()
+Test_iface_impl::getUnsignedShortValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::USHORT_CONST;
 }
 
 long
-iface_impl::getLongValue()
+Test_iface_impl::getLongValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::LONG_CONST;
 }
 
 unsigned long
-iface_impl::getUnsignedLongValue()
+Test_iface_impl::getUnsignedLongValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::ULONG_CONST;
 }
 
 char
-iface_impl::getCharValue()
+Test_iface_impl::getCharValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::CHAR_CONST;
 }
 
 std::string
-iface_impl::getStringValue()
+Test_iface_impl::getStringValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::STRING_CONST;
 }
 
 float
-iface_impl::getFloatValue()
+Test_iface_impl::getFloatValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::FLOAT_CONST; 
 }
 
 double
-iface_impl::getDoubleValue()
+Test_iface_impl::getDoubleValue()
 throw(::Components::ccm::local::CCMException)
 {
   return Constants::DOUBLE_CONST;
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

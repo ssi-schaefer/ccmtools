@@ -24,8 +24,8 @@
 #include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <%(ComponentInclude)sMirror/%(Identifier)sMirror_gen.h>
-#include <%(ComponentInclude)sMirror/%(HomeType)sMirror_gen.h>
+#include <%(ComponentInclude)s/%(Identifier)sMirror_gen.h>
+#include <%(ComponentInclude)s/%(HomeType)sMirror_gen.h>
 
 #include <%(ComponentInclude)s/%(Identifier)s_gen.h>
 #include <%(ComponentInclude)s/%(HomeType)s_gen.h>
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     SmartPtr< %(LocalNamespace)s::%(Identifier)s> my%(Identifier)s;
-    SmartPtr< %(LocalNamespace)sMirror::%(Identifier)sMirror> my%(Identifier)sMirror;
+    SmartPtr< %(LocalNamespace)s::%(Identifier)sMirror> my%(Identifier)sMirror;
 %(MProvidesDefVariable)s
 %(MProvidesDefCookie)s
 %(MUsesDefVariable)s
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     int error = 0;
     ::Components::ccm::local::HomeFinder* homeFinder = HomeFinder::Instance();
     error  = deploy_%(LocalNamespaceMangled)s_%(HomeType)s("%(HomeType)s");
-    error += deploy_%(LocalNamespaceMangled)sMirror_%(HomeType)sMirror("%(HomeType)sMirror");	
+    error += deploy_%(LocalNamespaceMangled)s_%(HomeType)sMirror("%(HomeType)sMirror");	
              
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
             dynamic_cast< %(LocalNamespace)s::%(HomeType)s*>
             (homeFinder->find_home_by_name("%(HomeType)s").ptr()));
 
-        SmartPtr< %(LocalNamespace)sMirror::%(HomeType)sMirror> 
-            my%(HomeType)sMirror(dynamic_cast< %(LocalNamespace)sMirror::%(HomeType)sMirror*>
+        SmartPtr< %(LocalNamespace)s::%(HomeType)sMirror> 
+            my%(HomeType)sMirror(dynamic_cast< %(LocalNamespace)s::%(HomeType)sMirror*>
             (homeFinder->find_home_by_name("%(HomeType)sMirror").ptr()));
 
         my%(Identifier)s = my%(HomeType)s->create();
@@ -159,7 +159,7 @@ int main(int argc, char *argv[])
         error = -1;
     }
     error += undeploy_%(LocalNamespaceMangled)s_%(HomeType)s("%(HomeType)s");
-    error += undeploy_%(LocalNamespaceMangled)sMirror_%(HomeType)sMirror("%(HomeType)sMirror");
+    error += undeploy_%(LocalNamespaceMangled)s_%(HomeType)sMirror("%(HomeType)sMirror");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;

@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import ccmtools.Constants;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
@@ -252,40 +251,40 @@ public class CppRemoteGenerator
 
 			if (node instanceof MComponentDef)
 			{
-				code.append(Constants.COMPONENT_NAMESPACE);
-				code.append(separator);
+//				code.append(Constants.COMPONENT_NAMESPACE);
+//				code.append(separator);
 				code.append(node.getIdentifier());
 				code.append(separator);
 			}
 			else if (node instanceof MHomeDef)
 			{
 				MHomeDef home = (MHomeDef) node;
-				code.append(Constants.COMPONENT_NAMESPACE);
-				code.append(separator);
+//				code.append(Constants.COMPONENT_NAMESPACE);
+//				code.append(separator);
 				code.append(home.getComponent().getIdentifier());
 				code.append(separator);
 			}
 			else if (node instanceof MProvidesDef)
 			{
 				MProvidesDef provides = (MProvidesDef) node;
-				code.append(Constants.COMPONENT_NAMESPACE);
-				code.append(separator);
+//				code.append(Constants.COMPONENT_NAMESPACE);
+//				code.append(separator);
 				code.append(provides.getComponent().getIdentifier());
 				code.append(separator);
 			}
 			else if (node instanceof MUsesDef)
 			{
 				MUsesDef uses = (MUsesDef) node;
-				code.append(Constants.COMPONENT_NAMESPACE);
-				code.append(separator);
+//				code.append(Constants.COMPONENT_NAMESPACE);
+//				code.append(separator);
 				code.append(uses.getComponent().getIdentifier());
 				code.append(separator);
 			}
 			else if (node instanceof MSupportsDef)
 			{
 				MSupportsDef supports = (MSupportsDef) node;
-				code.append(Constants.COMPONENT_NAMESPACE);
-				code.append(separator);
+//				code.append(Constants.COMPONENT_NAMESPACE);
+//				code.append(separator);
 				code.append(supports.getComponent().getIdentifier());
 				code.append(separator);
 			}
@@ -330,17 +329,17 @@ public class CppRemoteGenerator
     		logger.fine("begin");
         List modules = new ArrayList(namespaceStack);
         modules.addAll(remoteNamespace);
-        if(node instanceof MComponentDef) 
-        {
-            modules.add(Constants.COMPONENT_NAMESPACE);
-            modules.add(node.getIdentifier());
-        }
-        else if(node instanceof MHomeDef ) 
-        {
-            MHomeDef home = (MHomeDef)node;
-            modules.add(Constants.COMPONENT_NAMESPACE );
-            modules.add(home.getComponent().getIdentifier());
-        }
+//        if(node instanceof MComponentDef) 
+//        {
+//            modules.add(Constants.COMPONENT_NAMESPACE);
+//            modules.add(node.getIdentifier());
+//        }
+//        else if(node instanceof MHomeDef ) 
+//        {
+//            MHomeDef home = (MHomeDef)node;
+//            modules.add(Constants.COMPONENT_NAMESPACE );
+//            modules.add(home.getComponent().getIdentifier());
+//        }
         
         StringBuffer code = new StringBuffer();
         for(Iterator i = modules.iterator(); i.hasNext();) 
@@ -357,17 +356,17 @@ public class CppRemoteGenerator
     		logger.fine("begin");
         List modules = new ArrayList(namespaceStack);
         modules.addAll(remoteNamespace);
-        if(node instanceof MComponentDef) 
-        {
-            modules.add(Constants.COMPONENT_NAMESPACE);
-            modules.add(node.getIdentifier());
-        }
-        else if(node instanceof MHomeDef) 
-        {
-            MHomeDef home = (MHomeDef)node;
-            modules.add(Constants.COMPONENT_NAMESPACE );
-            modules.add(home.getComponent().getIdentifier());
-        }
+//        if(node instanceof MComponentDef) 
+//        {
+//            modules.add(Constants.COMPONENT_NAMESPACE);
+//            modules.add(node.getIdentifier());
+//        }
+//        else if(node instanceof MHomeDef) 
+//        {
+//            MHomeDef home = (MHomeDef)node;
+//            modules.add(Constants.COMPONENT_NAMESPACE );
+//            modules.add(home.getComponent().getIdentifier());
+//        }
         Collections.reverse(modules);
 
         StringBuffer code = new StringBuffer();
@@ -635,7 +634,7 @@ public class CppRemoteGenerator
         }
         else 
         {
-            code = super.handleNamespace(dataType, local);
+            code = super.handleNamespace(dataType);
         }
         logger.fine("end");
         return code;

@@ -18,25 +18,23 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace TestMirror {
 
 using namespace std;
 using namespace wx::utils;
 
-console_impl::console_impl(CCM_TestMirror_impl* component_impl)
+TestMirror_console_impl::TestMirror_console_impl(CCM_TestMirror_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-console_impl::~console_impl()
+TestMirror_console_impl::~TestMirror_console_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 long
-console_impl::print(const std::string& msg)
+TestMirror_console_impl::print(const std::string& msg)
     throw (Components::ccm::local::CCMException, SuperError, Error, FatalError )
 {
     cout << ">> " << msg << endl;
@@ -61,7 +59,5 @@ console_impl::print(const std::string& msg)
     return msg.length();
 }
 
-} // /namespace Test_mirror
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

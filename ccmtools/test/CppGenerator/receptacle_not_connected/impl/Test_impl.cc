@@ -19,8 +19,6 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
 using namespace std;
 using namespace wx::utils;
@@ -53,7 +51,7 @@ CCM_Test_impl::ccm_activate()
 {
   try {
     string s = "1234567890";
-    ctx->get_connection_console().ptr()->println(s);
+    ctx->get_connection_console()->println(s);
     assert(false);
   }
   catch(::Components::ccm::local::NoConnection& e) {
@@ -75,8 +73,6 @@ CCM_Test_impl::ccm_remove()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 

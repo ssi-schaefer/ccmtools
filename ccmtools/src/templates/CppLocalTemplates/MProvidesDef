@@ -13,7 +13,7 @@
 
 %(OpenNamespace)s
 
-class %(Identifier)s_impl
+class %(ComponentType)s_%(Identifier)s_impl
     : virtual public %(CCMProvidesType)s
 {
   protected:
@@ -21,9 +21,9 @@ class %(Identifier)s_impl
 %(MAttributeDefVariable)s
 
   public:
-    %(Identifier)s_impl(
+    %(ComponentType)s_%(Identifier)s_impl(
         %(FullComponentType)s_impl* component_impl);
-    virtual ~%(Identifier)s_impl();
+    virtual ~%(ComponentType)s_%(Identifier)s_impl();
 
 %(MAttributeProvidesPrototype)s
 %(MOperationProvidesPrototype)s
@@ -57,19 +57,19 @@ using namespace wx::utils;
 
 %(OpenNamespace)s
 
-%(Identifier)s_impl::%(Identifier)s_impl(
+%(ComponentType)s_%(Identifier)s_impl::%(ComponentType)s_%(Identifier)s_impl(
     %(FullComponentType)s_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-%(Identifier)s_impl::~%(Identifier)s_impl()
+%(ComponentType)s_%(Identifier)s_impl::~%(ComponentType)s_%(Identifier)s_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-%(MAttributeProvidesAdapterImplDefinition)s
-%(MOperationProvidesAdapterImplDefinition)s
+%(generateAttributeImpl)s
+%(generateOperationsImpl)s
 
 %(CloseNamespace)s

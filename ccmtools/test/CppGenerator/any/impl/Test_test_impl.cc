@@ -23,23 +23,21 @@ using namespace wx::utils;
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-test_impl::test_impl(
-    ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_test_impl::Test_test_impl(
+    ccm::local::CCM_Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-test_impl::~test_impl()
+Test_test_impl::~Test_test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 SmartPtr< wx::utils::Value > 
-test_impl::op1(
+Test_test_impl::op1(
         const SmartPtr< wx::utils::Value > & p1,
         SmartPtr< wx::utils::Value > & p2,
         SmartPtr< wx::utils::Value > & p3)
@@ -51,7 +49,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::AnyList
-test_impl::op2(
+Test_test_impl::op2(
         const ccm::local::AnyList& p1,
         ccm::local::AnyList& p2,
         ccm::local::AnyList& p3)
@@ -63,7 +61,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::Pair
-test_impl::op3(
+Test_test_impl::op3(
         const ccm::local::Pair& p1,
         ccm::local::Pair& p2,
         ccm::local::Pair& p3)
@@ -74,7 +72,5 @@ throw(::Components::ccm::local::CCMException)
 	return p1;
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

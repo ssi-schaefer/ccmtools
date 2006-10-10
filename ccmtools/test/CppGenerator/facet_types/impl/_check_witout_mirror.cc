@@ -22,8 +22,8 @@
 #include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <ccm/local/component/Test/Test_gen.h>
-#include <ccm/local/component/Test/TestHome_gen.h>
+#include <ccm/local/Test_gen.h>
+#include <ccm/local/TestHome_gen.h>
 
 using namespace std;
 using namespace wx::utils;
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<component::Test::Test> myTest;
+    SmartPtr<Test> myTest;
    
     // Component bootstrap:
     // We get an instance of the local HomeFinder and register the deployed
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     Components::ccm::local::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
 
-    error  = deploy_ccm_local_component_Test_TestHome("TestHome");
+    error  = deploy_ccm_local_TestHome("TestHome");
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -59,9 +59,7 @@ int main(int argc, char *argv[])
     // forces components to run the ccm_set_session_context() and ccm_activate() 
     // callback methods.
     try {
-        SmartPtr<component::Test::TestHome> 
-	  myTestHome(dynamic_cast<component::Test::TestHome*>
-            (homeFinder->find_home_by_name("TestHome").ptr()));
+        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>(homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
         myTest->configuration_complete();
@@ -155,7 +153,7 @@ int main(int argc, char *argv[])
         cout << "TEARDOWN ERROR: there is something wrong!" << endl;
         error = -1;
     }
-    error += undeploy_ccm_local_component_Test_TestHome("TestHome");
+    error += undeploy_ccm_local_TestHome("TestHome");
     if(error) {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;

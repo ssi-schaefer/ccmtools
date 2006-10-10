@@ -42,7 +42,6 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
-import ccmtools.Constants;
 import ccmtools.metamodel.BaseIDL.MAttributeDef;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
@@ -556,7 +555,8 @@ abstract public class CodeGenerator implements TemplateHandler
         
         List scope = new ArrayList();
         MContainer c = node.getDefinedIn();
-        while(c.getDefinedIn() != null) {
+        while(c.getDefinedIn() != null) 
+        {
             if(c instanceof MModuleDef)
                 scope.add(0, c.getIdentifier());
             c = c.getDefinedIn();
@@ -580,15 +580,16 @@ abstract public class CodeGenerator implements TemplateHandler
      * @return a string containing the appropriately formatted namespace
      *         information.
      */
-    protected String handleNamespace(String data_type, String local)
+    protected String handleNamespace(String data_type)
     {
         logger.fine("enter handleNamespace()");
         
         List names = new ArrayList(namespaceStack);
-        if(!local.equals("")) {
-            names.add(Constants.COMPONENT_NAMESPACE);
-            names.add(local); 
-        }
+//        if(!local.equals("")) 
+//        {
+//            names.add(Constants.COMPONENT_NAMESPACE);
+//            names.add(local); 
+//        }
         if(data_type.equals("Namespace"))
             return join(Text.SCOPE_SEPARATOR, names);
 
@@ -972,7 +973,7 @@ abstract public class CodeGenerator implements TemplateHandler
             // This is just a useful default ; subclasses should override this
             // case if they need to pass a particular second parameter.
 
-            value = handleNamespace(variable, "");
+            value = handleNamespace(variable);
         }
 
         logger.fine("leave getLocalValue()");

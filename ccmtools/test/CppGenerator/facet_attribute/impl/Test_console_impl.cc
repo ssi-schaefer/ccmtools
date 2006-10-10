@@ -16,51 +16,42 @@
 
 #include "Test_console_impl.h"
 
+
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
 using namespace std;
 using namespace wx::utils;
 
-console_impl::console_impl(CCM_Test_impl* component_impl)
+Test_console_impl::Test_console_impl(CCM_Test_impl* component_impl)
   : component(component_impl)
 {
-    DEBUGNL("+console_impl->console_impl()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-console_impl::~console_impl()
+Test_console_impl::~Test_console_impl()
 {
-    DEBUGNL ( "-console_impl->~console_impl (  )" );
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 const long
-console_impl::max_size() const
+Test_console_impl::max_size() const
     throw(Components::ccm::local::CCMException)
 {
-    DEBUGNL(" console_impl->max_size()");
     return max_size_;
 }
 
 void
-console_impl::max_size(const long value)
+Test_console_impl::max_size(const long value)
     throw(Components::ccm::local::CCMException)
 {
-    DEBUGNL(" console_impl->max_size(value)");
     max_size_ = value;
 }
 
 long
-console_impl::print(const std::string& msg)
+Test_console_impl::print(const std::string& msg)
     throw (Components::ccm::local::CCMException)
 {
-    DEBUGNL("console_impl->print(msg)");
-    
     cout << ">> " << msg << endl;
     if(msg.length() < max_size())
       return msg.length();
@@ -68,7 +59,5 @@ console_impl::print(const std::string& msg)
       return max_size();
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

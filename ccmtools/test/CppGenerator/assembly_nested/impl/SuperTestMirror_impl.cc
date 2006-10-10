@@ -22,8 +22,6 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace SuperTestMirror {
 
 using namespace std;
 using namespace wx::utils;
@@ -348,7 +346,7 @@ CCM_SuperTestMirror_impl::ccm_remove()
 CCM_BasicTypeInterface*
 CCM_SuperTestMirror_impl::get_innerBasicType()
 {
-    innerBasicType_impl* facet = new innerBasicType_impl(this);
+    SuperTestMirror_innerBasicType_impl* facet = new SuperTestMirror_innerBasicType_impl(this);
     return dynamic_cast<CCM_BasicTypeInterface*>(facet);
 }
 
@@ -359,12 +357,10 @@ CCM_SuperTestMirror_impl::get_innerBasicType()
 CCM_UserTypeInterface*
 CCM_SuperTestMirror_impl::get_innerUserType()
 {
-    innerUserType_impl* facet = new innerUserType_impl(this);
+    SuperTestMirror_innerUserType_impl* facet = new SuperTestMirror_innerUserType_impl(this);
     return dynamic_cast<CCM_UserTypeInterface*>(facet);
 }
 
-} // /namespace SuperTest
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 

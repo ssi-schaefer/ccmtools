@@ -23,39 +23,31 @@ using namespace wx::utils;
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace UserTest {
 
-userType_impl::userType_impl(CCM_UserTest_impl* component_impl)
+UserTest_userType_impl::UserTest_userType_impl(CCM_UserTest_impl* component_impl)
   : component(component_impl)
 {
-    DEBUGNL("+userType_impl->userType_impl()");
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-userType_impl::~userType_impl()
+UserTest_userType_impl::~UserTest_userType_impl()
 {
-    DEBUGNL ( "-userType_impl->~userType_impl (  )" );
-
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 Color
-userType_impl::f1(const Color& p1, Color& p2, Color& p3)
+UserTest_userType_impl::f1(const Color& p1, Color& p2, Color& p3)
     throw (Components::ccm::local::CCMException)
 {
-    DEBUGNL("userType_impl->f1(p1, p2, p3)");
     p3=p2;
     p2=p1;
     return p1;
 }
 
 Person
-userType_impl::f2(const Person& p1, Person& p2, Person& p3)
+UserTest_userType_impl::f2(const Person& p1, Person& p2, Person& p3)
     throw (Components::ccm::local::CCMException)
 {
-    DEBUGNL("userType_impl->f2(p1, p2, p3)");
     Person r;
     r.name = p1.name + p2.name;
     r.id = p1.id + p2.id; 
@@ -65,10 +57,9 @@ userType_impl::f2(const Person& p1, Person& p2, Person& p3)
 }
 
 Address
-userType_impl::f3(const Address& p1, Address& p2, Address& p3)
+UserTest_userType_impl::f3(const Address& p1, Address& p2, Address& p3)
     throw (Components::ccm::local::CCMException)
 {
-    DEBUGNL("userType_impl->f3(p1, p2, p3)");
     Address r;
     r.street = p1.street + p2.street;
     r.number = p1.number + p2.number;
@@ -81,10 +72,9 @@ userType_impl::f3(const Address& p1, Address& p2, Address& p3)
 }
 
 LongList
-userType_impl::f4(const LongList& p1, LongList& p2, LongList& p3)
+UserTest_userType_impl::f4(const LongList& p1, LongList& p2, LongList& p3)
     throw (Components::ccm::local::CCMException)
 {
-    DEBUGNL("userType_impl->f4(p1, p2, p3)");
     LongList r;
     for(unsigned long i=0;i<p1.size();i++) {
       r.push_back(i);
@@ -95,10 +85,9 @@ userType_impl::f4(const LongList& p1, LongList& p2, LongList& p3)
 }
 
 StringList
-userType_impl::f5(const StringList& p1, StringList& p2, StringList& p3)
+UserTest_userType_impl::f5(const StringList& p1, StringList& p2, StringList& p3)
     throw (Components::ccm::local::CCMException)
 {
-    DEBUGNL("userType_impl->f5(p1, p2, p3)");
     StringList r;
     for(unsigned long i=0;i<p1.size();i++) {
       r.push_back("Test");
@@ -109,10 +98,9 @@ userType_impl::f5(const StringList& p1, StringList& p2, StringList& p3)
 }
 
 PersonList
-userType_impl::f6(const PersonList& p1, PersonList& p2, PersonList& p3)
+UserTest_userType_impl::f6(const PersonList& p1, PersonList& p2, PersonList& p3)
     throw (Components::ccm::local::CCMException)
 {
-    DEBUGNL("userType_impl->f6(p1, p2, p3)");
     PersonList r;
     for(unsigned long i=0; i < p1.size(); i++) {
       Person v;
@@ -126,16 +114,13 @@ userType_impl::f6(const PersonList& p1, PersonList& p2, PersonList& p3)
 }
 
 time_t
-userType_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
+UserTest_userType_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
     throw (Components::ccm::local::CCMException)
 {
-    DEBUGNL("userType_impl->f7(t1, t2, t3)");
     t3=t2;
     t2=t1;
     return t3+t1; 
 }
 
-} // /namespace UserType
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
