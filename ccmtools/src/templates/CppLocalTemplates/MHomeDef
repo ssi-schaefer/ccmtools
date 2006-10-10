@@ -377,12 +377,12 @@ extern "C" {
  * @author
  * @version 
  **/
-class CCM_%(Identifier)s_impl
+class %(Identifier)s_impl
     : virtual public CCM_%(Identifier)s%(BaseType)s
 {
   public:
-    CCM_%(Identifier)s_impl();
-    virtual ~CCM_%(Identifier)s_impl();
+    %(Identifier)s_impl();
+    virtual ~%(Identifier)s_impl();
 
     virtual ::Components::ccm::local::EnterpriseComponent* create()
         throw(::Components::ccm::local::CCMException);
@@ -422,25 +422,25 @@ using namespace std;
 using namespace wx::utils;
 
 //==============================================================================
-// CCM_%(Identifier)s - home implementation 
+// %(Identifier)s_impl - home implementation 
 //==============================================================================
 
-CCM_%(Identifier)s_impl::CCM_%(Identifier)s_impl()
+%(Identifier)s_impl::%(Identifier)s_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-CCM_%(Identifier)s_impl::~CCM_%(Identifier)s_impl()
+%(Identifier)s_impl::~%(Identifier)s_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 ::Components::ccm::local::EnterpriseComponent*
-CCM_%(Identifier)s_impl::create()
+%(Identifier)s_impl::create()
     throw(::Components::ccm::local::CCMException)
 {
     return dynamic_cast< ::Components::ccm::local::EnterpriseComponent* >
-        (new CCM_%(ComponentType)s_impl());
+        (new %(ComponentType)s_impl());
 }
 
 %(MFactoryDefImplDefinition)s
@@ -458,7 +458,7 @@ extern "C" {
 create_%(AbsoluteLocalHomeName)s()
 {
     return dynamic_cast< ::Components::ccm::local::HomeExecutorBase* >
-        (new %(LocalNamespace)s::CCM_%(Identifier)s_impl());
+        (new %(LocalNamespace)s::%(Identifier)s_impl());
 }
 
 } // end of extern "C"

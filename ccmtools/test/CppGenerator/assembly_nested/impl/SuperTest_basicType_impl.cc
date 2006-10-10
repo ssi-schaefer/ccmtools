@@ -24,7 +24,7 @@ using namespace wx::utils;
 namespace ccm {
 namespace local {
 
-SuperTest_basicType_impl::SuperTest_basicType_impl(CCM_SuperTest_impl* component_impl)
+SuperTest_basicType_impl::SuperTest_basicType_impl(SuperTest_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

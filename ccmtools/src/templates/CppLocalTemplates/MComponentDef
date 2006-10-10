@@ -440,7 +440,7 @@ class CCM_%(Identifier)s_Context
  * @author
  * @version 
  **/
-class CCM_%(Identifier)s_impl
+class %(Identifier)s_impl
     : virtual public CCM_%(Identifier)s%(BaseType)s
 {
   private:
@@ -450,8 +450,8 @@ class CCM_%(Identifier)s_impl
   public:
     CCM_%(Identifier)s_Context* ctx;
 
-    CCM_%(Identifier)s_impl();
-    virtual ~CCM_%(Identifier)s_impl();
+    %(Identifier)s_impl();
+    virtual ~%(Identifier)s_impl();
 
 %(MAttributeDefPrototype)s
 %(MProvidesDefGetFacetPrototype)s
@@ -499,15 +499,15 @@ using namespace std;
 using namespace wx::utils;
 
 //==============================================================================
-// CCM_%(Identifier)s - component implementation
+// %(Identifier)s - component implementation
 //==============================================================================
 
-CCM_%(Identifier)s_impl::CCM_%(Identifier)s_impl()
+%(Identifier)s_impl::%(Identifier)s_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-CCM_%(Identifier)s_impl::~CCM_%(Identifier)s_impl()
+%(Identifier)s_impl::~%(Identifier)s_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
@@ -516,7 +516,7 @@ CCM_%(Identifier)s_impl::~CCM_%(Identifier)s_impl()
 %(MSupportsDefImplDefinition)s
 
 void
-CCM_%(Identifier)s_impl::set_session_context(
+%(Identifier)s_impl::set_session_context(
     ::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
@@ -524,21 +524,21 @@ CCM_%(Identifier)s_impl::set_session_context(
 }
 
 void
-CCM_%(Identifier)s_impl::ccm_activate()
+%(Identifier)s_impl::ccm_activate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_%(Identifier)s_impl::ccm_passivate()
+%(Identifier)s_impl::ccm_passivate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_%(Identifier)s_impl::ccm_remove()
+%(Identifier)s_impl::ccm_remove()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

@@ -24,7 +24,7 @@ using namespace wx::utils;
 namespace ccm {
 namespace local {
 
-UserTest_userType_impl::UserTest_userType_impl(CCM_UserTest_impl* component_impl)
+UserTest_userType_impl::UserTest_userType_impl(UserTest_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

@@ -24,7 +24,7 @@ namespace ccm {
 namespace local {
 
 Test_iface_impl::Test_iface_impl(
-    ccm::local::CCM_Test_impl* component_impl)
+    ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
   cout << "  BOOLEAN_CONST = " << Constants::BOOLEAN_CONST << endl; 

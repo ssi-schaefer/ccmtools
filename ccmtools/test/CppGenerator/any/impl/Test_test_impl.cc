@@ -25,7 +25,7 @@ namespace ccm {
 namespace local {
 
 Test_test_impl::Test_test_impl(
-    ccm::local::CCM_Test_impl* component_impl)
+    ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

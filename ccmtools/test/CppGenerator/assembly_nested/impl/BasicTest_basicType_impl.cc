@@ -24,7 +24,7 @@ namespace local {
 using namespace std;
 using namespace wx::utils;
 
-BasicTest_basicType_impl::BasicTest_basicType_impl(CCM_BasicTest_impl* component_impl)
+BasicTest_basicType_impl::BasicTest_basicType_impl(BasicTest_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

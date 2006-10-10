@@ -23,7 +23,7 @@ namespace local {
 using namespace std;
 using namespace wx::utils;
 
-TestMirror_console2_impl::TestMirror_console2_impl(CCM_TestMirror_impl* component_impl)
+TestMirror_console2_impl::TestMirror_console2_impl(TestMirror_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

@@ -29,16 +29,16 @@ using namespace wx::utils;
 // CCM_Test - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl()
+Test_impl::Test_impl()
 {
 }
 
-CCM_Test_impl::~CCM_Test_impl()
+Test_impl::~Test_impl()
 {
 }
 
 long
-CCM_Test_impl::op3(const std::string& str)
+Test_impl::op3(const std::string& str)
     throw (::Components::ccm::local::CCMException)
 {
     cout << str << endl;
@@ -46,7 +46,7 @@ CCM_Test_impl::op3(const std::string& str)
 }
 
 long
-CCM_Test_impl::op2(const std::string& str)
+Test_impl::op2(const std::string& str)
     throw (::Components::ccm::local::CCMException)
 {
     cout << str << endl;
@@ -54,7 +54,7 @@ CCM_Test_impl::op2(const std::string& str)
 }
 
 long
-CCM_Test_impl::op1(const std::string& str)
+Test_impl::op1(const std::string& str)
     throw (::Components::ccm::local::CCMException)
 {
     cout << str << endl;
@@ -62,7 +62,7 @@ CCM_Test_impl::op1(const std::string& str)
 }
 
 void
-CCM_Test_impl::set_session_context(
+Test_impl::set_session_context(
     Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
@@ -70,21 +70,21 @@ CCM_Test_impl::set_session_context(
 }
 
 void
-CCM_Test_impl::ccm_activate()
+Test_impl::ccm_activate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::ccm_passivate()
+Test_impl::ccm_passivate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::ccm_remove()
+Test_impl::ccm_remove()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

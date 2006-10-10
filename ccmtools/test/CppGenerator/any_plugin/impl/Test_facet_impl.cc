@@ -26,7 +26,7 @@ namespace ccm {
 namespace local {
 
 Test_facet_impl::Test_facet_impl(
-    world::europe::ccm::local::CCM_Test_impl* component_impl)
+    world::europe::ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

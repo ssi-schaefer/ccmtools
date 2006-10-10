@@ -23,7 +23,7 @@ namespace local {
 using namespace std;
 using namespace wx::utils;
 
-Test_console_impl::Test_console_impl(CCM_Test_impl* component_impl)
+Test_console_impl::Test_console_impl(Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

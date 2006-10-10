@@ -30,16 +30,16 @@ using namespace wx::utils;
 // CCM_SuperTestMirror - component implementation
 //==============================================================================
 
-CCM_SuperTestMirror_impl::CCM_SuperTestMirror_impl()
+SuperTestMirror_impl::SuperTestMirror_impl()
 {
 }
 
-CCM_SuperTestMirror_impl::~CCM_SuperTestMirror_impl()
+SuperTestMirror_impl::~SuperTestMirror_impl()
 {
 }
 
 void
-CCM_SuperTestMirror_impl::set_session_context(
+SuperTestMirror_impl::set_session_context(
     Components::ccm::local::SessionContext* context)
     throw(Components::ccm::local::CCMException)
 {
@@ -47,7 +47,7 @@ CCM_SuperTestMirror_impl::set_session_context(
 }
 
 void
-CCM_SuperTestMirror_impl::ccm_activate()
+SuperTestMirror_impl::ccm_activate()
     throw(Components::ccm::local::CCMException)
 {
     {
@@ -326,14 +326,14 @@ CCM_SuperTestMirror_impl::ccm_activate()
 }
 
 void
-CCM_SuperTestMirror_impl::ccm_passivate()
+SuperTestMirror_impl::ccm_passivate()
     throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_SuperTestMirror_impl::ccm_remove()
+SuperTestMirror_impl::ccm_remove()
     throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
@@ -344,7 +344,7 @@ CCM_SuperTestMirror_impl::ccm_remove()
 //==============================================================================
 
 CCM_BasicTypeInterface*
-CCM_SuperTestMirror_impl::get_innerBasicType()
+SuperTestMirror_impl::get_innerBasicType()
 {
     SuperTestMirror_innerBasicType_impl* facet = new SuperTestMirror_innerBasicType_impl(this);
     return dynamic_cast<CCM_BasicTypeInterface*>(facet);
@@ -355,7 +355,7 @@ CCM_SuperTestMirror_impl::get_innerBasicType()
 //==============================================================================
 
 CCM_UserTypeInterface*
-CCM_SuperTestMirror_impl::get_innerUserType()
+SuperTestMirror_impl::get_innerUserType()
 {
     SuperTestMirror_innerUserType_impl* facet = new SuperTestMirror_innerUserType_impl(this);
     return dynamic_cast<CCM_UserTypeInterface*>(facet);

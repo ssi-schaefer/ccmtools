@@ -1,12 +1,12 @@
 const %(LanguageType)s
-CCM_%(DefinedInIdentifier)s_impl::%(Identifier)s() const
+%(DefinedInIdentifier)s_impl::%(Identifier)s() const
     throw(::Components::ccm::local::CCMException)
 {
     return %(Identifier)s_;
 }
 
 void
-CCM_%(DefinedInIdentifier)s_impl::%(Identifier)s(const %(LanguageType)s value)
+%(DefinedInIdentifier)s_impl::%(Identifier)s(const %(LanguageType)s value)
   throw(::Components::ccm::local::CCMException)
 {
     %(Identifier)s_ = value;

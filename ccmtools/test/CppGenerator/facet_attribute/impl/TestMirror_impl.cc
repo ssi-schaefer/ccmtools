@@ -28,16 +28,16 @@ using namespace wx::utils;
 // CCM_Test_mirror - component implementation
 //==============================================================================
 
-CCM_TestMirror_impl::CCM_TestMirror_impl()
+TestMirror_impl::TestMirror_impl()
 {
 }
 
-CCM_TestMirror_impl::~CCM_TestMirror_impl()
+TestMirror_impl::~TestMirror_impl()
 {
 }
 
 void
-CCM_TestMirror_impl::set_session_context(
+TestMirror_impl::set_session_context(
     Components::ccm::local::SessionContext* context)
     throw(Components::ccm::local::CCMException)
 {
@@ -45,7 +45,7 @@ CCM_TestMirror_impl::set_session_context(
 }
 
 void
-CCM_TestMirror_impl::ccm_activate()
+TestMirror_impl::ccm_activate()
     throw(Components::ccm::local::CCMException)
 {
     {
@@ -70,14 +70,14 @@ CCM_TestMirror_impl::ccm_activate()
 }
 
 void
-CCM_TestMirror_impl::ccm_passivate()
+TestMirror_impl::ccm_passivate()
     throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_TestMirror_impl::ccm_remove()
+TestMirror_impl::ccm_remove()
     throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

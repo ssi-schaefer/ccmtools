@@ -25,7 +25,7 @@ using namespace std;
 using namespace wx::utils;
 
 
-TestMirror_a_receptacle_impl::TestMirror_a_receptacle_impl(CCM_TestMirror_impl* component_impl)
+TestMirror_a_receptacle_impl::TestMirror_a_receptacle_impl(TestMirror_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

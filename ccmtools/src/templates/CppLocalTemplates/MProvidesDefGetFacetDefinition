@@ -3,7 +3,7 @@
 //==============================================================================
 
 %(CCMProvidesType)s*
-CCM_%(ComponentType)s_impl::get_%(Identifier)s()
+%(ComponentType)s_impl::get_%(Identifier)s()
 {
     %(ComponentType)s_%(Identifier)s_impl* facet = new %(ComponentType)s_%(Identifier)s_impl(this);
     return dynamic_cast< %(CCMProvidesType)s*>(facet);

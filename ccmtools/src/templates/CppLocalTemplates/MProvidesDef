@@ -17,12 +17,12 @@ class %(ComponentType)s_%(Identifier)s_impl
     : virtual public %(CCMProvidesType)s
 {
   protected:
-    %(FullComponentType)s_impl* component;
+    %(ComponentType)s_impl* component;
 %(MAttributeDefVariable)s
 
   public:
     %(ComponentType)s_%(Identifier)s_impl(
-        %(FullComponentType)s_impl* component_impl);
+        %(ComponentType)s_impl* component_impl);
     virtual ~%(ComponentType)s_%(Identifier)s_impl();
 
 %(MAttributeProvidesPrototype)s
@@ -58,7 +58,7 @@ using namespace wx::utils;
 %(OpenNamespace)s
 
 %(ComponentType)s_%(Identifier)s_impl::%(ComponentType)s_%(Identifier)s_impl(
-    %(FullComponentType)s_impl* component_impl)
+    %(ComponentType)s_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

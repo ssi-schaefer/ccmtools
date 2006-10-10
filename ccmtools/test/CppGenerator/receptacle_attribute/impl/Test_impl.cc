@@ -25,19 +25,19 @@ using namespace std;
 using namespace wx::utils;
 
 //==============================================================================
-// CCM_Test - component implementation
+// Test - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl()
+Test_impl::Test_impl()
 {
 }
 
-CCM_Test_impl::~CCM_Test_impl()
+Test_impl::~Test_impl()
 {
 }
 
 void
-CCM_Test_impl::set_session_context(
+Test_impl::set_session_context(
     Components::ccm::local::SessionContext* context)
     throw(Components::ccm::local::CCMException)
 {
@@ -45,7 +45,7 @@ CCM_Test_impl::set_session_context(
 }
 
 void
-CCM_Test_impl::ccm_activate()
+Test_impl::ccm_activate()
     throw(Components::ccm::local::CCMException)
 {
   const long maxSize = 10;
@@ -54,14 +54,14 @@ CCM_Test_impl::ccm_activate()
 }
 
 void
-CCM_Test_impl::ccm_passivate()
+Test_impl::ccm_passivate()
     throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::ccm_remove()
+Test_impl::ccm_remove()
     throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

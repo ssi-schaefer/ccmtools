@@ -29,21 +29,21 @@ using namespace wx::utils;
 // CCM_Test - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl (  )
+Test_impl::Test_impl (  )
 {
-  DEBUGNL ( "+CCM_Test_impl->CCM_Test_impl (  )" );
+  DEBUGNL ( "+Test_impl->Test_impl (  )" );
 }
 
-CCM_Test_impl::~CCM_Test_impl (  )
+Test_impl::~Test_impl (  )
 {
-  DEBUGNL ( "-CCM_Test_impl->~CCM_Test_impl (  )" );
+  DEBUGNL ( "-Test_impl->~Test_impl (  )" );
 }
 
 short
-CCM_Test_impl::op_b1(const short p1, short& p2, short& p3)
+Test_impl::op_b1(const short p1, short& p2, short& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b1(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b1(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -51,10 +51,10 @@ CCM_Test_impl::op_b1(const short p1, short& p2, short& p3)
 }
 
 long
-CCM_Test_impl::op_b2(const long p1, long& p2, long& p3)
+Test_impl::op_b2(const long p1, long& p2, long& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b2(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b2(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -62,10 +62,10 @@ CCM_Test_impl::op_b2(const long p1, long& p2, long& p3)
 }
 
 unsigned short
-CCM_Test_impl::op_b3(const unsigned short p1, unsigned short& p2, unsigned short& p3)
+Test_impl::op_b3(const unsigned short p1, unsigned short& p2, unsigned short& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b3(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b3(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -73,10 +73,10 @@ CCM_Test_impl::op_b3(const unsigned short p1, unsigned short& p2, unsigned short
 }
 
 unsigned long
-CCM_Test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsigned long& p3)
+Test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsigned long& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b4(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b4(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -84,10 +84,10 @@ CCM_Test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsigned long& p
 }
 
 float
-CCM_Test_impl::op_b5(const float p1, float& p2, float& p3)
+Test_impl::op_b5(const float p1, float& p2, float& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b5(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b5(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -95,10 +95,10 @@ CCM_Test_impl::op_b5(const float p1, float& p2, float& p3)
 }
 
 double
-CCM_Test_impl::op_b6(const double p1, double& p2, double& p3)
+Test_impl::op_b6(const double p1, double& p2, double& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b6(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b6(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -106,10 +106,10 @@ CCM_Test_impl::op_b6(const double p1, double& p2, double& p3)
 }
 
 char
-CCM_Test_impl::op_b7(const char p1, char& p2, char& p3)
+Test_impl::op_b7(const char p1, char& p2, char& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b7(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b7(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -117,10 +117,10 @@ CCM_Test_impl::op_b7(const char p1, char& p2, char& p3)
 }
 
 std::string
-CCM_Test_impl::op_b8(const std::string& p1, std::string& p2, std::string& p3)
+Test_impl::op_b8(const std::string& p1, std::string& p2, std::string& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b8(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b8(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -128,10 +128,10 @@ CCM_Test_impl::op_b8(const std::string& p1, std::string& p2, std::string& p3)
 }
 
 bool
-CCM_Test_impl::op_b9(const bool p1, bool& p2, bool& p3)
+Test_impl::op_b9(const bool p1, bool& p2, bool& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b9(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b9(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -139,10 +139,10 @@ CCM_Test_impl::op_b9(const bool p1, bool& p2, bool& p3)
 }
 
 unsigned char
-CCM_Test_impl::op_b10(const unsigned char p1, unsigned char& p2, unsigned char& p3)
+Test_impl::op_b10(const unsigned char p1, unsigned char& p2, unsigned char& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_b10(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_b10(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -150,10 +150,10 @@ CCM_Test_impl::op_b10(const unsigned char p1, unsigned char& p2, unsigned char& 
 }
 
 time_t
-CCM_Test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
+Test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_u1(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_u1(p1, p2, p3)");
   
   p3=p2;
   p2=p1;
@@ -161,10 +161,10 @@ CCM_Test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
 }
 
 Color
-CCM_Test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
+Test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_u2(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_u2(p1, p2, p3)");
 
   p3=p2;
   p2=p1;
@@ -172,10 +172,10 @@ CCM_Test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
 }
 
 Pair
-CCM_Test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
+Test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_u3(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_u3(p1, p2, p3)");
 
   Pair r;
   r.key = p1.key + p2.key;
@@ -186,10 +186,10 @@ CCM_Test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
 }
 
 Map
-CCM_Test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
+Test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_u4(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_u4(p1, p2, p3)");
 
   Map r;
   for(unsigned int i=0;i<p1.size();i++) {
@@ -204,10 +204,10 @@ CCM_Test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
 }
 
 doubleArray
-CCM_Test_impl::op_u5(const doubleArray& p1, doubleArray& p2, doubleArray& p3)
+Test_impl::op_u5(const doubleArray& p1, doubleArray& p2, doubleArray& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_u5(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_u5(p1, p2, p3)");
 
   doubleArray r(10);
   for(unsigned int i=0; i<p1.size(); i++) {
@@ -219,11 +219,11 @@ CCM_Test_impl::op_u5(const doubleArray& p1, doubleArray& p2, doubleArray& p3)
 }
 
 SmartPtr<Console>
-CCM_Test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2, 
+Test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2, 
 		     SmartPtr<Console>& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" CCM_Test_impl->op_i1(p1, p2, p3)");
+  DEBUGNL(" Test_impl->op_i1(p1, p2, p3)");
 
   MyObject* my_object3 = new MyObject;
   p3 = SmartPtr<Console>(my_object3);
@@ -240,32 +240,32 @@ CCM_Test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2,
 }
 
 void
-CCM_Test_impl::set_session_context ( Components::ccm::local::SessionContext* context )
+Test_impl::set_session_context ( Components::ccm::local::SessionContext* context )
   throw ( ::Components::ccm::local::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->set_session_context (  )" );
+  DEBUGNL ( " Test_impl->set_session_context (  )" );
   ctx = dynamic_cast<CCM_Test_Context*> ( context );
 }
 
 void
-CCM_Test_impl::ccm_activate (  )
+Test_impl::ccm_activate (  )
   throw ( ::Components::ccm::local::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->ccm_activate (  )" );
+  DEBUGNL ( " Test_impl->ccm_activate (  )" );
 }
 
 void
-CCM_Test_impl::ccm_passivate (  )
+Test_impl::ccm_passivate (  )
   throw ( ::Components::ccm::local::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->ccm_passivate (  )" );
+  DEBUGNL ( " Test_impl->ccm_passivate (  )" );
 }
 
 void
-CCM_Test_impl::ccm_remove (  )
+Test_impl::ccm_remove (  )
   throw ( ::Components::ccm::local::CCMException )
 {
-  DEBUGNL ( " CCM_Test_impl->ccm_remove (  )" );
+  DEBUGNL ( " Test_impl->ccm_remove (  )" );
 }
 
 } // /namespace local

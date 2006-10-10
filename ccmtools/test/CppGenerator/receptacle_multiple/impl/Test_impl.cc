@@ -28,23 +28,23 @@ using namespace wx::utils;
 // CCM_Test - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl (  )
+Test_impl::Test_impl (  )
 {
 }
 
-CCM_Test_impl::~CCM_Test_impl (  )
+Test_impl::~Test_impl (  )
 {
 }
 
 void
-CCM_Test_impl::set_session_context ( Components::ccm::local::SessionContext* context )
+Test_impl::set_session_context ( Components::ccm::local::SessionContext* context )
   throw ( Components::ccm::local::CCMException )
 {
   ctx = dynamic_cast<CCM_Test_Context*> ( context );
 }
 
 void
-CCM_Test_impl::ccm_activate (  )
+Test_impl::ccm_activate (  )
   throw ( Components::ccm::local::CCMException )
 {
   cout << "=== Begin test case =======================================" << endl;
@@ -62,13 +62,13 @@ CCM_Test_impl::ccm_activate (  )
 }
 
 void
-CCM_Test_impl::ccm_passivate (  )
+Test_impl::ccm_passivate (  )
   throw ( ::Components::ccm::local::CCMException )
 {
 }
 
 void
-CCM_Test_impl::ccm_remove (  )
+Test_impl::ccm_remove (  )
   throw ( ::Components::ccm::local::CCMException )
 {
 }

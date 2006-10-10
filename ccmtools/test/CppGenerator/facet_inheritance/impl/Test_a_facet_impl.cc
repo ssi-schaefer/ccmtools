@@ -24,7 +24,7 @@ using namespace std;
 using namespace wx::utils;
 
 
-Test_a_facet_impl::Test_a_facet_impl(CCM_Test_impl* component_impl)
+Test_a_facet_impl::Test_a_facet_impl(Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !

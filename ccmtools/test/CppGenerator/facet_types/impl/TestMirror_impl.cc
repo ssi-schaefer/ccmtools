@@ -32,23 +32,23 @@ using namespace wx::utils;
 // CCM_Test_mirror - component implementation
 //==============================================================================
 
-CCM_TestMirror_impl::CCM_TestMirror_impl (  )
+TestMirror_impl::TestMirror_impl (  )
 {
 }
 
-CCM_TestMirror_impl::~CCM_TestMirror_impl (  )
+TestMirror_impl::~TestMirror_impl (  )
 {
 }
 
 void
-CCM_TestMirror_impl::set_session_context (Components::ccm::local::SessionContext* context )
+TestMirror_impl::set_session_context (Components::ccm::local::SessionContext* context )
   throw ( Components::ccm::local::CCMException )
 {
   ctx = dynamic_cast<CCM_TestMirror_Context*> ( context );
 }
 
 void
-CCM_TestMirror_impl::ccm_activate (  )
+TestMirror_impl::ccm_activate (  )
   throw ( Components::ccm::local::CCMException )
 {
   SmartPtr<CCM_TypeTest> type_test = ctx->get_connection_type_test();
@@ -220,13 +220,13 @@ CCM_TestMirror_impl::ccm_activate (  )
 }
 
 void
-CCM_TestMirror_impl::ccm_passivate (  )
+TestMirror_impl::ccm_passivate (  )
   throw ( Components::ccm::local::CCMException )
 {
 }
 
 void
-CCM_TestMirror_impl::ccm_remove (  )
+TestMirror_impl::ccm_remove (  )
   throw ( Components::ccm::local::CCMException )
 {
 }
