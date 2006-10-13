@@ -220,8 +220,7 @@ extern "C" {
         info.component_short_name = "%(ComponentType)s";
         info.component_absolute_name = "::%(ComponentType)s";
         info.component_id = "IDL:%(ComponentType)s:1.0";
-        info.home_glue = 
-            new %(RemoteNamespace)s%(Identifier)s_impl(container); 
+        info.home_glue = new %(RemoteNamespace)s%(Identifier)s_impl(container); 
         container->load(info);
         Components::CCMHome_var home = container->get_CCM_home(); 
         ior = orb->object_to_string(home); 

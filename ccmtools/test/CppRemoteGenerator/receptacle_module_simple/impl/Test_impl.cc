@@ -23,8 +23,6 @@ namespace europe {
 namespace austria {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
 using namespace std;
 using namespace wx::utils;
@@ -33,26 +31,25 @@ using namespace wx::utils;
 // CCM_Test - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl()
+Test_impl::Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-CCM_Test_impl::~CCM_Test_impl()
+Test_impl::~Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::set_session_context(
-    ::Components::ccm::local::SessionContext* context)
+Test_impl::set_session_context(::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
 void
-CCM_Test_impl::ccm_activate()
+Test_impl::ccm_activate()
     throw(::Components::ccm::local::CCMException)
 {
     string s = "Hello from the C++ ccm_activate!";
@@ -62,14 +59,14 @@ CCM_Test_impl::ccm_activate()
 }
 
 void
-CCM_Test_impl::ccm_passivate()
+Test_impl::ccm_passivate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::ccm_remove()
+Test_impl::ccm_remove()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
@@ -80,14 +77,12 @@ CCM_Test_impl::ccm_remove()
 //==============================================================================
 
 world::europe::austria::ccm::local::CCM_I2*
-CCM_Test_impl::get_in_port()
+Test_impl::get_in_port()
 {
-    in_port_impl* facet = new in_port_impl(this);
+    Test_in_port_impl* facet = new Test_in_port_impl(this);
     return dynamic_cast< world::europe::austria::ccm::local::CCM_I2*>(facet);
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace austria

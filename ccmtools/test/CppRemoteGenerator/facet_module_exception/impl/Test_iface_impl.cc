@@ -25,23 +25,20 @@ namespace europe {
 namespace austria {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-iface_impl::iface_impl(
-    world::europe::austria::ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_iface_impl::Test_iface_impl(world::europe::austria::ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-iface_impl::~iface_impl()
+Test_iface_impl::~Test_iface_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 long
-iface_impl::foo(const std::string& msg)
+Test_iface_impl::foo(const std::string& msg)
 throw(::Components::ccm::local::CCMException,
         world::europe::austria::ccm::local::SuperError,
         world::europe::austria::ccm::local::ErrorException,
@@ -77,8 +74,6 @@ throw(::Components::ccm::local::CCMException,
     return msg.length();
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace austria

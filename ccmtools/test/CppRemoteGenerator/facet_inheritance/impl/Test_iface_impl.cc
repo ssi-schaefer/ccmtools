@@ -22,65 +22,62 @@ using namespace wx::utils;
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-iface_impl::iface_impl(
-    ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_iface_impl::Test_iface_impl(ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-iface_impl::~iface_impl()
+Test_iface_impl::~Test_iface_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 const long
-iface_impl::attr3() const
+Test_iface_impl::attr3() const
     throw(::Components::ccm::local::CCMException)
 {
     return attr3_;
 }
 
 void
-iface_impl::attr3(const long value)
+Test_iface_impl::attr3(const long value)
     throw(::Components::ccm::local::CCMException)
 {
     attr3_ = value;
 }
 
 const long
-iface_impl::attr2() const
+Test_iface_impl::attr2() const
     throw(::Components::ccm::local::CCMException)
 {
     return attr2_;
 }
 
 void
-iface_impl::attr2(const long value)
+Test_iface_impl::attr2(const long value)
     throw(::Components::ccm::local::CCMException)
 {
     attr2_ = value;
 }
 
 const long
-iface_impl::attr1() const
+Test_iface_impl::attr1() const
     throw(::Components::ccm::local::CCMException)
 {
     return attr1_;
 }
 
 void
-iface_impl::attr1(const long value)
+Test_iface_impl::attr1(const long value)
     throw(::Components::ccm::local::CCMException)
 {
     attr1_ = value;
 }
 
 long
-iface_impl::op3(const std::string& str)
+Test_iface_impl::op3(const std::string& str)
 throw(::Components::ccm::local::CCMException)
 {
     cout << str << endl;
@@ -88,7 +85,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 long
-iface_impl::op2(const std::string& str)
+Test_iface_impl::op2(const std::string& str)
 throw(::Components::ccm::local::CCMException)
 {
     cout << str << endl;
@@ -96,14 +93,12 @@ throw(::Components::ccm::local::CCMException)
 }
 
 long
-iface_impl::op1(const std::string& str)
+Test_iface_impl::op1(const std::string& str)
 throw(::Components::ccm::local::CCMException)
 {
     cout << str << endl;
     return str.length();
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

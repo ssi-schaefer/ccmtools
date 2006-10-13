@@ -20,28 +20,26 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
 using namespace std;
 using namespace wx::utils;
 
 //==============================================================================
-// CCM_Test - component implementation
+// Test - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl()
+Test_impl::Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-CCM_Test_impl::~CCM_Test_impl()
+Test_impl::~Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::set_session_context(
+Test_impl::set_session_context(
     ::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
@@ -49,7 +47,7 @@ CCM_Test_impl::set_session_context(
 }
 
 void
-CCM_Test_impl::ccm_activate()
+Test_impl::ccm_activate()
     throw(::Components::ccm::local::CCMException)
 {
     string s = "Salomon.Automation";
@@ -97,14 +95,14 @@ CCM_Test_impl::ccm_activate()
 }
 
 void
-CCM_Test_impl::ccm_passivate()
+Test_impl::ccm_passivate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::ccm_remove()
+Test_impl::ccm_remove()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
@@ -115,14 +113,12 @@ CCM_Test_impl::ccm_remove()
 //==============================================================================
 
 ccm::local::CCM_Console*
-CCM_Test_impl::get_inPort()
+Test_impl::get_inPort()
 {
-    inPort_impl* facet = new inPort_impl(this);
+    Test_inPort_impl* facet = new Test_inPort_impl(this);
     return dynamic_cast< ccm::local::CCM_Console*>(facet);
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 

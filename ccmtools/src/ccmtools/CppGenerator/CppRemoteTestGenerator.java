@@ -63,9 +63,10 @@ public class CppRemoteTestGenerator
         if(generated_code.trim().equals(""))
             return;
 
-        String namespace = getRemoteNamespace(((MContained) currentNode),Text.MANGLING_SEPARATOR);
+        MContained contained = (MContained)currentNode;
+        String remoteName = getRemoteName(contained,Text.MANGLING_SEPARATOR);
         String file_dir = "test";
-        String file_name = "_check_" + namespace.substring(0, namespace.length()-1) + ".cc";
+        String file_name = "_check_" + remoteName + ".cc";
 
         writeFinalizedFile(file_dir, file_name, generated_code);
     }

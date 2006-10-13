@@ -22,23 +22,20 @@ using namespace wx::utils;
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-inPort_impl::inPort_impl(
-    ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_inPort_impl::Test_inPort_impl(ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-inPort_impl::~inPort_impl()
+Test_inPort_impl::~Test_inPort_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 long
-inPort_impl::print(const std::string& msg)
+Test_inPort_impl::print(const std::string& msg)
 throw(::Components::ccm::local::CCMException,
         ccm::local::FatalError,
         ccm::local::SuperError,
@@ -66,7 +63,5 @@ throw(::Components::ccm::local::CCMException,
     return msg.length();
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

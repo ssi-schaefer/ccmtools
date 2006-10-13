@@ -14,8 +14,8 @@ remote: local stubs
 	ccmtools c++remote ${IDL_INCLUDE} -o ${DEST_DIR}/Test ${IDL3REPO}/component/world/europe/Test*.idl
 
 stubs:
-	ccmidl -idl2 ${IDL_INCLUDE} -o ${DEST_DIR}/Test/CCM_corba_stubs ${IDL3REPO}/component/world/europe/Test*.idl
 	cp impl/Makefile ${DEST_DIR}/Test/CCM_corba_stubs/
+	ccmidl -idl2 ${IDL_INCLUDE} -o ${DEST_DIR}/Test/CCM_corba_stubs ${IDL3REPO}/component/world/europe/Test*.idl
 	make -C ${DEST_DIR}/Test/CCM_corba_stubs 
 
 

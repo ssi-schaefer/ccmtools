@@ -25,23 +25,20 @@ namespace europe {
 namespace austria {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-inBasicType_impl::inBasicType_impl(
-    world::europe::austria::ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_inBasicType_impl::Test_inBasicType_impl(world::europe::austria::ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-inBasicType_impl::~inBasicType_impl()
+Test_inBasicType_impl::~Test_inBasicType_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 short
-inBasicType_impl::f1(
+Test_inBasicType_impl::f1(
         const short p1,
         short& p2,
         short& p3)
@@ -53,7 +50,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 long
-inBasicType_impl::f2(
+Test_inBasicType_impl::f2(
         const long p1,
         long& p2,
         long& p3)
@@ -65,7 +62,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 unsigned short
-inBasicType_impl::f3(
+Test_inBasicType_impl::f3(
         const unsigned short p1,
         unsigned short& p2,
         unsigned short& p3)
@@ -77,7 +74,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 unsigned long
-inBasicType_impl::f4(
+Test_inBasicType_impl::f4(
         const unsigned long p1,
         unsigned long& p2,
         unsigned long& p3)
@@ -89,7 +86,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 float
-inBasicType_impl::f5(
+Test_inBasicType_impl::f5(
         const float p1,
         float& p2,
         float& p3)
@@ -101,7 +98,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 double
-inBasicType_impl::f6(
+Test_inBasicType_impl::f6(
         const double p1,
         double& p2,
         double& p3)
@@ -113,7 +110,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 char
-inBasicType_impl::f7(
+Test_inBasicType_impl::f7(
         const char p1,
         char& p2,
         char& p3)
@@ -125,7 +122,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 std::string
-inBasicType_impl::f8(
+Test_inBasicType_impl::f8(
         const std::string& p1,
         std::string& p2,
         std::string& p3)
@@ -137,7 +134,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 bool
-inBasicType_impl::f9(
+Test_inBasicType_impl::f9(
         const bool p1,
         bool& p2,
         bool& p3)
@@ -149,7 +146,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 unsigned char
-inBasicType_impl::f10(
+Test_inBasicType_impl::f10(
         const unsigned char p1,
         unsigned char& p2,
         unsigned char& p3)
@@ -160,8 +157,6 @@ throw(::Components::ccm::local::CCMException)
     return p3+p1;
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace austria

@@ -25,8 +25,6 @@ namespace europe {
 namespace austria {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
 using namespace std;
 using namespace wx::utils;
@@ -35,18 +33,18 @@ using namespace wx::utils;
 // CCM_Test - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl()
+Test_impl::Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-CCM_Test_impl::~CCM_Test_impl()
+Test_impl::~Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::set_session_context(
+Test_impl::set_session_context(
     ::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
@@ -54,7 +52,7 @@ CCM_Test_impl::set_session_context(
 }
 
 void
-CCM_Test_impl::ccm_activate()
+Test_impl::ccm_activate()
     throw(::Components::ccm::local::CCMException)
 {
   // ------------------------------------------------------------------
@@ -369,14 +367,14 @@ CCM_Test_impl::ccm_activate()
 }
 
 void
-CCM_Test_impl::ccm_passivate()
+Test_impl::ccm_passivate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::ccm_remove()
+Test_impl::ccm_remove()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
@@ -387,9 +385,9 @@ CCM_Test_impl::ccm_remove()
 //==============================================================================
 
 world::europe::austria::ccm::local::CCM_BasicTypeInterface*
-CCM_Test_impl::get_inBasicType()
+Test_impl::get_inBasicType()
 {
-    inBasicType_impl* facet = new inBasicType_impl(this);
+    Test_inBasicType_impl* facet = new Test_inBasicType_impl(this);
     return dynamic_cast< world::europe::austria::ccm::local::CCM_BasicTypeInterface*>(facet);
 }
 
@@ -398,9 +396,9 @@ CCM_Test_impl::get_inBasicType()
 //==============================================================================
 
 world::europe::austria::ccm::local::CCM_UserTypeInterface*
-CCM_Test_impl::get_inUserType()
+Test_impl::get_inUserType()
 {
-    inUserType_impl* facet = new inUserType_impl(this);
+    Test_inUserType_impl* facet = new Test_inUserType_impl(this);
     return dynamic_cast< world::europe::austria::ccm::local::CCM_UserTypeInterface*>(facet);
 }
 
@@ -409,14 +407,12 @@ CCM_Test_impl::get_inUserType()
 //==============================================================================
 
 world::europe::austria::ccm::local::CCM_VoidTypeInterface*
-CCM_Test_impl::get_inVoidType()
+Test_impl::get_inVoidType()
 {
-    inVoidType_impl* facet = new inVoidType_impl(this);
+    Test_inVoidType_impl* facet = new Test_inVoidType_impl(this);
     return dynamic_cast< world::europe::austria::ccm::local::CCM_VoidTypeInterface*>(facet);
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace austria

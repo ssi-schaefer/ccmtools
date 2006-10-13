@@ -16,7 +16,7 @@ stubs:
 	ccmidl -idl2 ${IDL_INCLUDE} -o ${DEST_DIR}/CCM_corba_stubs ${IDL3REPO}/interface/america/*.idl
 	ccmidl -idl2 ${IDL_INCLUDE} -o ${DEST_DIR}/CCM_corba_stubs ${IDL3REPO}/interface/world/*.idl
 	cp impl/Makefile ${DEST_DIR}/CCM_corba_stubs
-#	make -C ${DEST_DIR}/CCM_corba_stubs 
+	make -C ${DEST_DIR}/CCM_corba_stubs 
 
 
 install: 

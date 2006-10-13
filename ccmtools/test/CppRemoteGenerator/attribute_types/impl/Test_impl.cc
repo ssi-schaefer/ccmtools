@@ -21,8 +21,6 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
 using namespace std;
 using namespace wx::utils;
@@ -31,256 +29,256 @@ using namespace wx::utils;
 // CCM_Test - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl()
+Test_impl::Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-CCM_Test_impl::~CCM_Test_impl()
+Test_impl::~Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 const short
-CCM_Test_impl::short_value() const
+Test_impl::short_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return short_value_;
 }
 
 void
-CCM_Test_impl::short_value(const short value)
+Test_impl::short_value(const short value)
   throw(::Components::ccm::local::CCMException)
 {
     short_value_ = value;
 }
 
 const long
-CCM_Test_impl::long_value() const
+Test_impl::long_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return long_value_;
 }
 
 void
-CCM_Test_impl::long_value(const long value)
+Test_impl::long_value(const long value)
   throw(::Components::ccm::local::CCMException)
 {
     long_value_ = value;
 }
 
 const unsigned short
-CCM_Test_impl::ushort_value() const
+Test_impl::ushort_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return ushort_value_;
 }
 
 void
-CCM_Test_impl::ushort_value(const unsigned short value)
+Test_impl::ushort_value(const unsigned short value)
   throw(::Components::ccm::local::CCMException)
 {
     ushort_value_ = value;
 }
 
 const unsigned long
-CCM_Test_impl::ulong_value() const
+Test_impl::ulong_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return ulong_value_;
 }
 
 void
-CCM_Test_impl::ulong_value(const unsigned long value)
+Test_impl::ulong_value(const unsigned long value)
   throw(::Components::ccm::local::CCMException)
 {
     ulong_value_ = value;
 }
 
 const float
-CCM_Test_impl::float_value() const
+Test_impl::float_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return float_value_;
 }
 
 void
-CCM_Test_impl::float_value(const float value)
+Test_impl::float_value(const float value)
   throw(::Components::ccm::local::CCMException)
 {
     float_value_ = value;
 }
 
 const double
-CCM_Test_impl::double_value() const
+Test_impl::double_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return double_value_;
 }
 
 void
-CCM_Test_impl::double_value(const double value)
+Test_impl::double_value(const double value)
   throw(::Components::ccm::local::CCMException)
 {
     double_value_ = value;
 }
 
 const char
-CCM_Test_impl::char_value() const
+Test_impl::char_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return char_value_;
 }
 
 void
-CCM_Test_impl::char_value(const char value)
+Test_impl::char_value(const char value)
   throw(::Components::ccm::local::CCMException)
 {
     char_value_ = value;
 }
 
 const std::string
-CCM_Test_impl::string_value() const
+Test_impl::string_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return string_value_;
 }
 
 void
-CCM_Test_impl::string_value(const std::string value)
+Test_impl::string_value(const std::string value)
   throw(::Components::ccm::local::CCMException)
 {
     string_value_ = value;
 }
 
 const bool
-CCM_Test_impl::boolean_value() const
+Test_impl::boolean_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return boolean_value_;
 }
 
 void
-CCM_Test_impl::boolean_value(const bool value)
+Test_impl::boolean_value(const bool value)
   throw(::Components::ccm::local::CCMException)
 {
     boolean_value_ = value;
 }
 
 const unsigned char
-CCM_Test_impl::octet_value() const
+Test_impl::octet_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return octet_value_;
 }
 
 void
-CCM_Test_impl::octet_value(const unsigned char value)
+Test_impl::octet_value(const unsigned char value)
   throw(::Components::ccm::local::CCMException)
 {
     octet_value_ = value;
 }
 
 const ccm::local::Color
-CCM_Test_impl::color_value() const
+Test_impl::color_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return color_value_;
 }
 
 void
-CCM_Test_impl::color_value(const ccm::local::Color value)
+Test_impl::color_value(const ccm::local::Color value)
   throw(::Components::ccm::local::CCMException)
 {
     color_value_ = value;
 }
 
 const ccm::local::Person
-CCM_Test_impl::person_value() const
+Test_impl::person_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return person_value_;
 }
 
 void
-CCM_Test_impl::person_value(const ccm::local::Person value)
+Test_impl::person_value(const ccm::local::Person value)
   throw(::Components::ccm::local::CCMException)
 {
     person_value_ = value;
 }
 
 const ccm::local::Address
-CCM_Test_impl::address_value() const
+Test_impl::address_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return address_value_;
 }
 
 void
-CCM_Test_impl::address_value(const ccm::local::Address value)
+Test_impl::address_value(const ccm::local::Address value)
   throw(::Components::ccm::local::CCMException)
 {
     address_value_ = value;
 }
 
 const ccm::local::LongList
-CCM_Test_impl::longList_value() const
+Test_impl::longList_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return longList_value_;
 }
 
 void
-CCM_Test_impl::longList_value(const ccm::local::LongList value)
+Test_impl::longList_value(const ccm::local::LongList value)
   throw(::Components::ccm::local::CCMException)
 {
     longList_value_ = value;
 }
 
 const ccm::local::StringList
-CCM_Test_impl::stringList_value() const
+Test_impl::stringList_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return stringList_value_;
 }
 
 void
-CCM_Test_impl::stringList_value(const ccm::local::StringList value)
+Test_impl::stringList_value(const ccm::local::StringList value)
   throw(::Components::ccm::local::CCMException)
 {
     stringList_value_ = value;
 }
 
 const ccm::local::PersonList
-CCM_Test_impl::personList_value() const
+Test_impl::personList_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return personList_value_;
 }
 
 void
-CCM_Test_impl::personList_value(const ccm::local::PersonList value)
+Test_impl::personList_value(const ccm::local::PersonList value)
   throw(::Components::ccm::local::CCMException)
 {
     personList_value_ = value;
 }
 
 const ccm::local::time_t
-CCM_Test_impl::time_t_value() const
+Test_impl::time_t_value() const
     throw(::Components::ccm::local::CCMException)
 {
     return time_t_value_;
 }
 
 void
-CCM_Test_impl::time_t_value(const ccm::local::time_t value)
+Test_impl::time_t_value(const ccm::local::time_t value)
   throw(::Components::ccm::local::CCMException)
 {
     time_t_value_ = value;
 }
 
 void
-CCM_Test_impl::set_session_context(
+Test_impl::set_session_context(
     ::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
@@ -288,7 +286,7 @@ CCM_Test_impl::set_session_context(
 }
 
 void
-CCM_Test_impl::ccm_activate()
+Test_impl::ccm_activate()
     throw(::Components::ccm::local::CCMException)
 {
    cout << "==== Begin Test Case ====================================" << endl;
@@ -508,14 +506,14 @@ CCM_Test_impl::ccm_activate()
 
 
 void
-CCM_Test_impl::ccm_passivate()
+Test_impl::ccm_passivate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::ccm_remove()
+Test_impl::ccm_remove()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
@@ -526,9 +524,9 @@ CCM_Test_impl::ccm_remove()
 //==============================================================================
 
 ccm::local::CCM_BasicTypeInterface*
-CCM_Test_impl::get_inBasicType()
+Test_impl::get_inBasicType()
 {
-    inBasicType_impl* facet = new inBasicType_impl(this);
+    Test_inBasicType_impl* facet = new Test_inBasicType_impl(this);
     return dynamic_cast< ccm::local::CCM_BasicTypeInterface*>(facet);
 }
 
@@ -537,14 +535,12 @@ CCM_Test_impl::get_inBasicType()
 //==============================================================================
 
 ccm::local::CCM_UserTypeInterface*
-CCM_Test_impl::get_inUserType()
+Test_impl::get_inUserType()
 {
-    inUserType_impl* facet = new inUserType_impl(this);
+    Test_inUserType_impl* facet = new Test_inUserType_impl(this);
     return dynamic_cast< ccm::local::CCM_UserTypeInterface*>(facet);
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 

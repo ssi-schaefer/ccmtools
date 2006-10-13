@@ -25,37 +25,32 @@ namespace europe {
 namespace austria {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-inVoidType_impl::inVoidType_impl(
-    world::europe::austria::ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_inVoidType_impl::Test_inVoidType_impl(world::europe::austria::ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-inVoidType_impl::~inVoidType_impl()
+Test_inVoidType_impl::~Test_inVoidType_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-inVoidType_impl::f1(const long p1)
+Test_inVoidType_impl::f1(const long p1)
 throw(::Components::ccm::local::CCMException)
 {
   attr = p1;
 }
 
 long
-inVoidType_impl::f2()
+Test_inVoidType_impl::f2()
 throw(::Components::ccm::local::CCMException)
 {
   return attr;
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace austria

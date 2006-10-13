@@ -14,12 +14,10 @@
 #ifndef __COMPONENT_ccm_local_component_Test_Test_IMPL__H__
 #define __COMPONENT_ccm_local_component_Test_Test_IMPL__H__
 
-#include <ccm/local/component/Test/Test_share.h>
+#include <ccm/local/Test_share.h>
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
 /**
  * This class implements a component's equivalent and supported interfaces
@@ -33,7 +31,7 @@ namespace Test {
  * @author
  * @version 
  **/
-class CCM_Test_impl
+class Test_impl
     : virtual public CCM_Test
 {
   private:
@@ -42,12 +40,11 @@ class CCM_Test_impl
   // which are part of VoidTypeInterface.
   long attr_;
 		
-
   public:
     CCM_Test_Context* ctx;
 
-    CCM_Test_impl();
-    virtual ~CCM_Test_impl();
+    Test_impl();
+    virtual ~Test_impl();
 
     short 
     fb1(
@@ -187,8 +184,6 @@ class CCM_Test_impl
         throw(::Components::ccm::local::CCMException);
 };
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 

@@ -25,31 +25,26 @@ namespace europe {
 namespace austria {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-in_port_impl::in_port_impl(
-    world::europe::austria::ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_in_port_impl::Test_in_port_impl(world::europe::austria::ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-in_port_impl::~in_port_impl()
+Test_in_port_impl::~Test_in_port_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 long
-in_port_impl::op1(const std::string& str)
+Test_in_port_impl::op1(const std::string& str)
 throw(::Components::ccm::local::CCMException)
 {
     cout << str << endl;
     return str.length();
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace austria

@@ -13,23 +13,21 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-class inVoidType_impl
+class Test_inVoidType_impl
     : virtual public ccm::local::CCM_VoidTypeInterface
 {
   protected:
-    ccm::local::component::Test::CCM_Test_impl* component;
+    ccm::local::Test_impl* component;
 
     // This attribute is accessed by explicite set and get methods
     // which are part of VoidTypeInterface.
     long attr;
 
   public:
-    inVoidType_impl(
-        ccm::local::component::Test::CCM_Test_impl* component_impl);
-    virtual ~inVoidType_impl();
+    Test_inVoidType_impl(
+        ccm::local::Test_impl* component_impl);
+    virtual ~Test_inVoidType_impl();
 
     virtual 
     void 
@@ -43,8 +41,6 @@ class inVoidType_impl
 
 };
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 

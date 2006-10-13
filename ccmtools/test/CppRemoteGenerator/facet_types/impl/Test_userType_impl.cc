@@ -22,23 +22,20 @@ using namespace wx::utils;
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-userType_impl::userType_impl(
-    ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_userType_impl::Test_userType_impl(ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-userType_impl::~userType_impl()
+Test_userType_impl::~Test_userType_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 ccm::local::Color
-userType_impl::f1(
+Test_userType_impl::f1(
         const ccm::local::Color& p1,
         ccm::local::Color& p2,
         ccm::local::Color& p3)
@@ -50,7 +47,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::Person
-userType_impl::f2(
+Test_userType_impl::f2(
         const ccm::local::Person& p1,
         ccm::local::Person& p2,
         ccm::local::Person& p3)
@@ -65,7 +62,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::Address
-userType_impl::f3(
+Test_userType_impl::f3(
         const ccm::local::Address& p1,
         ccm::local::Address& p2,
         ccm::local::Address& p3)
@@ -82,7 +79,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::LongList
-userType_impl::f4(
+Test_userType_impl::f4(
         const ccm::local::LongList& p1,
         ccm::local::LongList& p2,
         ccm::local::LongList& p3)
@@ -98,7 +95,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::StringList
-userType_impl::f5(
+Test_userType_impl::f5(
         const ccm::local::StringList& p1,
         ccm::local::StringList& p2,
         ccm::local::StringList& p3)
@@ -114,7 +111,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::PersonList
-userType_impl::f6(
+Test_userType_impl::f6(
         const ccm::local::PersonList& p1,
         ccm::local::PersonList& p2,
         ccm::local::PersonList& p3)
@@ -133,7 +130,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::time_t
-userType_impl::f7(
+Test_userType_impl::f7(
         const ccm::local::time_t& t1,
         ccm::local::time_t& t2,
         ccm::local::time_t& t3)
@@ -144,7 +141,5 @@ throw(::Components::ccm::local::CCMException)
     return t3+t1; 
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

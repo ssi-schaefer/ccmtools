@@ -22,23 +22,20 @@ using namespace wx::utils;
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-iface_impl::iface_impl(
-    ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_iface_impl::Test_iface_impl(ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-iface_impl::~iface_impl()
+Test_iface_impl::~Test_iface_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 long
-iface_impl::foo(const std::string& msg)
+Test_iface_impl::foo(const std::string& msg)
 throw(::Components::ccm::local::CCMException,
         ccm::local::FatalError,
         ccm::local::SuperError,
@@ -78,7 +75,5 @@ throw(::Components::ccm::local::CCMException,
     return msg.length();
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

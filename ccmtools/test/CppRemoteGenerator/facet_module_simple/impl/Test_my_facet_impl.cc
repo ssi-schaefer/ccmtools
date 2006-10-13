@@ -23,31 +23,26 @@ using namespace wx::utils;
 namespace world {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-my_facet_impl::my_facet_impl(
-    world::ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_my_facet_impl::Test_my_facet_impl(world::ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-my_facet_impl::~my_facet_impl()
+Test_my_facet_impl::~Test_my_facet_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 long
-my_facet_impl::op1(const std::string& str)
+Test_my_facet_impl::op1(const std::string& str)
 throw(::Components::ccm::local::CCMException)
 {
     cout << ">>> " << str << endl;
     return str.length();
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace world

@@ -19,8 +19,6 @@
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
 using namespace std;
 using namespace wx::utils;
@@ -29,18 +27,18 @@ using namespace wx::utils;
 // CCM_Test - component implementation
 //==============================================================================
 
-CCM_Test_impl::CCM_Test_impl()
+Test_impl::Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-CCM_Test_impl::~CCM_Test_impl()
+Test_impl::~Test_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 short
-CCM_Test_impl::fb1(
+Test_impl::fb1(
         const short p1,
         short& p2,
         short& p3)
@@ -52,7 +50,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 long
-CCM_Test_impl::fb2(
+Test_impl::fb2(
         const long p1,
         long& p2,
         long& p3)
@@ -64,7 +62,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 unsigned short
-CCM_Test_impl::fb3(
+Test_impl::fb3(
         const unsigned short p1,
         unsigned short& p2,
         unsigned short& p3)
@@ -76,7 +74,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 unsigned long
-CCM_Test_impl::fb4(
+Test_impl::fb4(
         const unsigned long p1,
         unsigned long& p2,
         unsigned long& p3)
@@ -88,7 +86,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 float
-CCM_Test_impl::fb5(
+Test_impl::fb5(
         const float p1,
         float& p2,
         float& p3)
@@ -100,7 +98,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 double
-CCM_Test_impl::fb6(
+Test_impl::fb6(
         const double p1,
         double& p2,
         double& p3)
@@ -112,7 +110,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 char
-CCM_Test_impl::fb7(
+Test_impl::fb7(
         const char p1,
         char& p2,
         char& p3)
@@ -124,7 +122,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 std::string
-CCM_Test_impl::fb8(
+Test_impl::fb8(
         const std::string& p1,
         std::string& p2,
         std::string& p3)
@@ -136,7 +134,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 bool
-CCM_Test_impl::fb9(
+Test_impl::fb9(
         const bool p1,
         bool& p2,
         bool& p3)
@@ -148,7 +146,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 unsigned char
-CCM_Test_impl::fb10(
+Test_impl::fb10(
         const unsigned char p1,
         unsigned char& p2,
         unsigned char& p3)
@@ -161,7 +159,7 @@ throw(::Components::ccm::local::CCMException)
 
 
 ccm::local::Color
-CCM_Test_impl::fu1(
+Test_impl::fu1(
         const ccm::local::Color& p1,
         ccm::local::Color& p2,
         ccm::local::Color& p3)
@@ -173,7 +171,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::Person
-CCM_Test_impl::fu2(
+Test_impl::fu2(
         const ccm::local::Person& p1,
         ccm::local::Person& p2,
         ccm::local::Person& p3)
@@ -188,7 +186,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::Address
-CCM_Test_impl::fu3(
+Test_impl::fu3(
         const ccm::local::Address& p1,
         ccm::local::Address& p2,
         ccm::local::Address& p3)
@@ -205,7 +203,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::LongList
-CCM_Test_impl::fu4(
+Test_impl::fu4(
         const ccm::local::LongList& p1,
         ccm::local::LongList& p2,
         ccm::local::LongList& p3)
@@ -221,7 +219,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::StringList
-CCM_Test_impl::fu5(
+Test_impl::fu5(
         const ccm::local::StringList& p1,
         ccm::local::StringList& p2,
         ccm::local::StringList& p3)
@@ -237,7 +235,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::PersonList
-CCM_Test_impl::fu6(
+Test_impl::fu6(
         const ccm::local::PersonList& p1,
         ccm::local::PersonList& p2,
         ccm::local::PersonList& p3)
@@ -256,7 +254,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 ccm::local::time_t
-CCM_Test_impl::fu7(
+Test_impl::fu7(
         const ccm::local::time_t& t1,
         ccm::local::time_t& t2,
         ccm::local::time_t& t3)
@@ -269,21 +267,21 @@ throw(::Components::ccm::local::CCMException)
 
 
 void
-CCM_Test_impl::fv1(const long p1)
+Test_impl::fv1(const long p1)
 throw(::Components::ccm::local::CCMException)
 {
     attr_ = p1;
 }
 
 long
-CCM_Test_impl::fv2()
+Test_impl::fv2()
 throw(::Components::ccm::local::CCMException)
 {
   return attr_;
 }
 
 void
-CCM_Test_impl::set_session_context(
+Test_impl::set_session_context(
     ::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
@@ -291,28 +289,26 @@ CCM_Test_impl::set_session_context(
 }
 
 void
-CCM_Test_impl::ccm_activate()
+Test_impl::ccm_activate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::ccm_passivate()
+Test_impl::ccm_passivate()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_Test_impl::ccm_remove()
+Test_impl::ccm_remove()
     throw(::Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 

@@ -249,45 +249,45 @@ public class CppRemoteGenerator
 				code.append(separator);
 			}
 
-			if (node instanceof MComponentDef)
-			{
+//			if (node instanceof MComponentDef)
+//			{
 //				code.append(Constants.COMPONENT_NAMESPACE);
 //				code.append(separator);
-				code.append(node.getIdentifier());
-				code.append(separator);
-			}
-			else if (node instanceof MHomeDef)
-			{
-				MHomeDef home = (MHomeDef) node;
+//				code.append(node.getIdentifier());
+//				code.append(separator);
+//			}
+//			else if (node instanceof MHomeDef)
+//			{
+//				MHomeDef home = (MHomeDef) node;
 //				code.append(Constants.COMPONENT_NAMESPACE);
 //				code.append(separator);
-				code.append(home.getComponent().getIdentifier());
-				code.append(separator);
-			}
-			else if (node instanceof MProvidesDef)
-			{
-				MProvidesDef provides = (MProvidesDef) node;
+//				code.append(home.getComponent().getIdentifier());
+//				code.append(separator);
+//			}
+//			else if (node instanceof MProvidesDef)
+//			{
+//				MProvidesDef provides = (MProvidesDef) node;
 //				code.append(Constants.COMPONENT_NAMESPACE);
 //				code.append(separator);
-				code.append(provides.getComponent().getIdentifier());
-				code.append(separator);
-			}
-			else if (node instanceof MUsesDef)
-			{
-				MUsesDef uses = (MUsesDef) node;
+//				code.append(provides.getComponent().getIdentifier());
+//				code.append(separator);
+//			}
+//			else if (node instanceof MUsesDef)
+//			{
+//				MUsesDef uses = (MUsesDef) node;
 //				code.append(Constants.COMPONENT_NAMESPACE);
 //				code.append(separator);
-				code.append(uses.getComponent().getIdentifier());
-				code.append(separator);
-			}
-			else if (node instanceof MSupportsDef)
-			{
-				MSupportsDef supports = (MSupportsDef) node;
+//				code.append(uses.getComponent().getIdentifier());
+//				code.append(separator);
+//			}
+//			else if (node instanceof MSupportsDef)
+//			{
+//				MSupportsDef supports = (MSupportsDef) node;
 //				code.append(Constants.COMPONENT_NAMESPACE);
 //				code.append(separator);
-				code.append(supports.getComponent().getIdentifier());
-				code.append(separator);
-			}
+//				code.append(supports.getComponent().getIdentifier());
+//				code.append(separator);
+//			}
 			logger.fine("end");
 		}
 		catch (Exception e)
@@ -509,28 +509,42 @@ public class CppRemoteGenerator
     protected String generateCorbaConverterInclude(MContained base, MContained element, String baseType)
 	{
     		logger.fine("begin");
-    		// Here we use the remote namespace to compare because we have to
-    		// support these ugly *_component_ComponentName namespace artefact.
-		String baseNamespace = getRemoteNamespace(base, Text.INCLUDE_SEPARATOR);
-		String elementNamespace =  getRemoteNamespace(element, Text.INCLUDE_SEPARATOR);
-		
 		StringBuffer code = new StringBuffer();
-		if(baseNamespace.equals(elementNamespace))
-		{
-			code.append("#include \"");
-			code.append(baseType);
-			code.append("_remote.h\"\n");
-		}
-		else
-		{
-			code.append("#include <");
-			code.append(getRemoteNamespace(element, Text.INCLUDE_SEPARATOR));
-			code.append(baseType);
-			code.append("_remote.h>\n");
-		}
+		code.append("#include <");
+		code.append(getRemoteNamespace(element, Text.INCLUDE_SEPARATOR));
+		code.append(baseType);
+		code.append("_remote.h>\n");
 		logger.fine("end");
 		return code.toString();
 	}
+    
+
+    protected String generateCorbaConverterConfixInclude(MContained base, MContained element, String baseType)
+    {
+        logger.fine("begin");
+        // Here we use the remote namespace to compare because we have to
+        // support these ugly *_component_ComponentName namespace artefact.
+        String baseNamespace = getRemoteNamespace(base, Text.INCLUDE_SEPARATOR);
+        String elementNamespace =  getRemoteNamespace(element, Text.INCLUDE_SEPARATOR);
+        
+        StringBuffer code = new StringBuffer();
+        if(baseNamespace.equals(elementNamespace))
+        {
+            code.append("#include \"");
+            code.append(baseType);
+            code.append("_remote.h\"\n");
+        }
+        else
+        {
+            code.append("#include <");
+            code.append(getRemoteNamespace(element, Text.INCLUDE_SEPARATOR));
+            code.append(baseType);
+            code.append("_remote.h>\n");
+        }
+        logger.fine("end");
+        return code.toString();
+    }
+
     
     
     protected String getCorbaDebugNamespace(MContained contained, String separator)
@@ -605,7 +619,7 @@ public class CppRemoteGenerator
             code = getRemoteNamespace(contained,Text.INCLUDE_SEPARATOR);
         }
         else if(dataType.equals("LocalIncludeNamespace")) 
-        {
+        {           
             code = getLocalNamespace(contained, Text.INCLUDE_SEPARATOR);
         }
         else if(dataType.equals("StubsNamespace")) 
@@ -820,8 +834,12 @@ public class CppRemoteGenerator
                 return getCorbaDebugInclude();
             }
         }
-        
-        if (currentNode instanceof MAttributeDef) 
+       
+        if (currentNode instanceof MStructDef) 
+        {
+            return data_MStructDef(variable, value);
+        }
+        else if (currentNode instanceof MAttributeDef) 
         {
             return data_MAttributeDef(variable, value);
         }
@@ -831,16 +849,12 @@ public class CppRemoteGenerator
         }
         else if (currentNode instanceof MAliasDef) 
         {
+
             // determine the contained type of MaliasDef
             MTyped type = (MTyped) currentNode;
             MIDLType idlType = type.getIdlType();
-            if (idlType instanceof MPrimitiveDef 
-            			|| idlType instanceof MStringDef
-                    || idlType instanceof MWstringDef) 
-            {
-                return value;
-            }
-            else if (idlType instanceof MSequenceDef) 
+            
+            if(idlType instanceof MSequenceDef) 
             {
                 return data_MSequenceDef(variable, value);
             }
@@ -850,15 +864,68 @@ public class CppRemoteGenerator
             }
             else 
             {
-                // Signal an implementation bug
-                throw new RuntimeException("Unhandled alias type ("+ variable + ")!");
+                return data_MTypedefDef(variable, value);
             }
         }
         return value;
     }
 
+    protected String data_MTypedefDef(String dataType, String dataValue)
+    {
+        logger.fine("begin");       
+        logger.finer("dataType = " + dataType + ", dataValue = "+ dataValue);
+        MTyped type = (MTyped) currentNode;
+        MIDLType idlType = type.getIdlType();
+        MContained contained = (MContained) type;
+
+        if(dataType.equals("LocalIncludeNamespace")) //!!!!
+        {
+            dataValue = getLocalNamespace(contained, Text.INCLUDE_SEPARATOR);
+        }
+        if(dataType.equals("StubsIncludeNamespace")) 
+        {
+            dataValue = getCorbaNamespace(contained, Text.MANGLING_SEPARATOR);
+        }  
+        else if(dataType.equals("OpenNamespace"))  //!!!!!
+        {
+            dataValue = getOpenRemoteNamespace(contained);
+        }
+        else if(dataType.equals("CloseNamespace")) //!!!!!!
+        {
+            dataValue = getCloseRemoteNamespace(contained);
+        }        
+        logger.fine("end");
+        return dataValue;
+    }
     
- 
+
+    protected String data_MExceptionDef(String dataType, String dataValue)
+    {
+        logger.fine("begin");       
+        logger.finer("dataType = " + dataType + ", dataValue = "+ dataValue);
+        MExceptionDef ex = (MExceptionDef) currentNode;
+
+        if(dataType.equals("LocalIncludeNamespace")) //!!!!
+        {
+            dataValue = getLocalNamespace((MContained)ex, Text.INCLUDE_SEPARATOR);
+        }
+        if(dataType.equals("StubsIncludeNamespace")) 
+        {
+            dataValue = getCorbaNamespace((MContained)ex, Text.MANGLING_SEPARATOR);
+        }  
+        else if(dataType.equals("OpenNamespace"))  //!!!!!
+        {
+            dataValue = getOpenRemoteNamespace((MContained)ex);
+        }
+        else if(dataType.equals("CloseNamespace")) //!!!!!!
+        {
+            dataValue = getCloseRemoteNamespace((MContained)ex);
+        }        
+        logger.fine("end");
+        return dataValue;
+    }
+
+    
     protected String data_MSequenceDef(String dataType, String dataValue)
     {
         logger.fine("begin");       
@@ -918,6 +985,22 @@ public class CppRemoteGenerator
         {
             dataValue = getOutputCppType();
         }
+        else if(dataType.equals("LocalIncludeNamespace")) //!!!!
+        {
+            dataValue = getLocalNamespace(contained, Text.INCLUDE_SEPARATOR);
+        }
+        if(dataType.equals("StubsIncludeNamespace")) 
+        {
+            dataValue = getCorbaNamespace(contained, Text.MANGLING_SEPARATOR);
+        }  
+        else if(dataType.equals("OpenNamespace"))  //!!!!!
+        {
+            dataValue = getOpenRemoteNamespace(contained);
+        }
+        else if(dataType.equals("CloseNamespace")) //!!!!!!
+        {
+            dataValue = getCloseRemoteNamespace(contained);
+        }        
         logger.fine("end");
         return dataValue;
     }
@@ -1186,6 +1269,22 @@ public class CppRemoteGenerator
 		{
 			dataValue = getEnumMembersDebug(enumDef);
 		}
+        else if(dataType.equals("LocalIncludeNamespace")) //!!!!
+        {
+            dataValue = getLocalNamespace(enumDef, Text.INCLUDE_SEPARATOR);
+        }
+        if(dataType.equals("StubsIncludeNamespace")) 
+        {
+            dataValue = getCorbaNamespace((MContained)enumDef, Text.MANGLING_SEPARATOR);
+        }  
+        else if(dataType.equals("OpenNamespace"))  //!!!!!
+        {
+            dataValue = getOpenRemoteNamespace(enumDef);
+        }
+        else if(dataType.equals("CloseNamespace")) //!!!!!!
+        {
+            dataValue = getCloseRemoteNamespace(enumDef);
+        }        
 		else
 		{
 			dataValue = super.data_MEnumDef(dataType, dataValue);
@@ -1223,10 +1322,34 @@ public class CppRemoteGenerator
 		{
 			dataValue = component.getIdentifier();
 		}
+        else if(dataType.equals("RemoteNamespace")) //!!!
+        {
+            dataValue = getRemoteNamespace((MContained)home,Text.SCOPE_SEPARATOR);
+        }
 		else if (dataType.endsWith("AbsoluteRemoteHomeName"))
 		{
 			dataValue = getRemoteName(home, Text.MANGLING_SEPARATOR);
 		}
+        else if(dataType.equals("StubsNamespace")) 
+        {
+            dataValue = getCorbaNamespace((MContained)home, Text.SCOPE_SEPARATOR);
+        }
+        else if(dataType.equals("LocalIncludeNamespace")) //!!!!
+        {
+            dataValue = getLocalNamespace(home, Text.INCLUDE_SEPARATOR);
+        }
+        else if(dataType.equals("StubsIncludeNamespace")) 
+        {
+            dataValue = getCorbaNamespace((MContained)home, Text.MANGLING_SEPARATOR);
+        }  
+        else if(dataType.equals("OpenNamespace"))  //!!!!!
+        {
+            dataValue = getOpenRemoteNamespace(home);
+        }
+        else if(dataType.equals("CloseNamespace")) //!!!!!!
+        {
+            dataValue = getCloseRemoteNamespace(home);
+        }        
 		else
 		{
 			dataValue = super.data_MHomeDef(dataType, dataValue);
@@ -1265,6 +1388,26 @@ public class CppRemoteGenerator
 		{
 			dataValue = getCorbaNamespace((MContained) home, "::") + home.getIdentifier();
 		}
+        else if(dataType.equals("LocalIncludeNamespace"))
+        {
+            dataValue = getLocalNamespace(component, Text.INCLUDE_SEPARATOR);
+        }
+        else if(dataType.equals("RemoteIncludeNamespace"))
+        {
+            dataValue = getRemoteNamespace((MContained)component,Text.INCLUDE_SEPARATOR);
+        }
+        else if(dataType.equals("StubsIncludeNamespace")) 
+        {
+            dataValue = getCorbaNamespace((MContained)component, Text.MANGLING_SEPARATOR);
+        }           
+        else if(dataType.equals("OpenNamespace"))  //!!!!!
+        {
+            dataValue = getOpenRemoteNamespace(component);
+        }
+        else if(dataType.equals("CloseNamespace")) //!!!!!!
+        {
+            dataValue = getCloseRemoteNamespace(component);
+        }                
 		else
 		{
 			dataValue = super.data_MComponentDef(dataType, dataValue);
@@ -1288,6 +1431,30 @@ public class CppRemoteGenerator
 		{
 			dataValue = getCCM_LocalType(iface);
 		}
+		else if(dataType.equals("StubsIncludeNamespace")) 
+		{
+		    dataValue = getCorbaNamespace((MContained)iface, Text.MANGLING_SEPARATOR);
+		}  
+		else if(dataType.equals("LocalIncludeNamespace")) //!!!!
+		{
+		    dataValue = getLocalNamespace(iface, Text.INCLUDE_SEPARATOR);
+		}
+        else if(dataType.equals("LocalNamespace"))  //!!!!!
+        {
+            dataValue = getLocalNamespace(iface, Text.SCOPE_SEPARATOR);
+        }
+        else if(dataType.equals("StubsNamespace")) 
+        {
+            dataValue = getCorbaNamespace((MContained)iface, Text.SCOPE_SEPARATOR);
+        }
+        else if(dataType.equals("OpenNamespace"))  //!!!!!
+        {
+            dataValue = getOpenRemoteNamespace(iface);
+        }
+        else if(dataType.equals("CloseNamespace")) //!!!!!!
+        {
+            dataValue = getCloseRemoteNamespace(iface);
+        }        
 		else if (dataType.equals("AttributeBaseInterfaceAdapterFromCorbaHeader"))
 		{
 			List baseInterfaceList = iface.getBases();
@@ -1344,7 +1511,33 @@ public class CppRemoteGenerator
 		return dataValue;
     }
     
- 
+    protected String data_MStructDef(String dataType, String dataValue)
+    {
+        logger.fine("begin");
+        logger.finer("dataType = " + dataType + ", dataValue = "+ dataValue);
+        MStructDef struct = (MStructDef) currentNode;
+
+        if(dataType.equals("StubsIncludeNamespace")) 
+        {
+            dataValue = getCorbaNamespace((MContained)struct, Text.MANGLING_SEPARATOR);
+        }  
+        else if(dataType.equals("LocalIncludeNamespace")) //!!!!
+        {
+            dataValue = getLocalNamespace(struct, Text.INCLUDE_SEPARATOR);
+        }
+        else if(dataType.equals("OpenNamespace"))  //!!!!!
+        {
+            dataValue = getOpenRemoteNamespace(struct);
+        }
+        else if(dataType.equals("CloseNamespace")) //!!!!!!
+        {
+            dataValue = getCloseRemoteNamespace(struct);
+        }        
+        logger.fine("end");
+        return dataValue;
+    }
+    
+    
     protected String data_MSupportsDef(String dataType, String dataValue)
     {
         logger.fine("begin");
@@ -1900,7 +2093,7 @@ public class CppRemoteGenerator
         else
         {
         		MContained singleContained = (MContained) singleIdlType;
-        		code.append(generateCorbaConverterInclude((MContained)currentNode, singleContained, 
+        		code.append(generateCorbaConverterConfixInclude((MContained)currentNode, singleContained, 
         				singleContained.getIdentifier()));
         }
         logger.fine("end");
@@ -2040,7 +2233,7 @@ public class CppRemoteGenerator
         		{
         			throw new RuntimeException("MFieldDef without MStructDef or MExceptionDef!");
         		}
-        		code.append(generateCorbaConverterInclude(base, contained, contained.getIdentifier()));
+        		code.append(generateCorbaConverterConfixInclude(base, contained, contained.getIdentifier()));
         }
         else 
         {
@@ -2485,7 +2678,7 @@ public class CppRemoteGenerator
         }
         else if(idlType instanceof MContained)
         {   
-        		code.append(generateCorbaConverterInclude((MContained)currentNode, (MContained)idlType, baseType));
+        		code.append(generateCorbaConverterConfixInclude((MContained)currentNode, (MContained)idlType, baseType));
         }
         logger.fine("end");
         return code.toString(); 
@@ -2601,7 +2794,7 @@ public class CppRemoteGenerator
         }
         else if(idlType instanceof MContained)
         {
-        		code.append(generateCorbaConverterInclude((MContained)currentNode, (MContained)idlType, baseType));
+        		code.append(generateCorbaConverterConfixInclude((MContained)currentNode, (MContained)idlType, baseType));
         }
 	    logger.fine("end");
         return code.toString();
@@ -2623,7 +2816,7 @@ public class CppRemoteGenerator
             }
             else if(parameterIdlType instanceof MContained)
             {
-            		code.append(generateCorbaConverterInclude((MContained)currentNode, 
+            		code.append(generateCorbaConverterConfixInclude((MContained)currentNode, 
             				(MContained)parameterIdlType, getBaseIdlType(parameter)));
             }
         }
@@ -2638,7 +2831,7 @@ public class CppRemoteGenerator
         for (Iterator i = op.getExceptionDefs().iterator(); i.hasNext();) 
         {
         		MExceptionDef exception = (MExceptionDef) i.next();
-        		code.append(generateCorbaConverterInclude((MContained)currentNode, exception, 
+        		code.append(generateCorbaConverterConfixInclude((MContained)currentNode, exception, 
         				exception.getIdentifier()));
         }
         logger.fine("end");

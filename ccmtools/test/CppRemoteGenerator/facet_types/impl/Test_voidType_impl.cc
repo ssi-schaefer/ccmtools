@@ -22,36 +22,31 @@ using namespace wx::utils;
 
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-voidType_impl::voidType_impl(
-    ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_voidType_impl::Test_voidType_impl(ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-voidType_impl::~voidType_impl()
+Test_voidType_impl::~Test_voidType_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-voidType_impl::f1(const long p1)
+Test_voidType_impl::f1(const long p1)
 throw(::Components::ccm::local::CCMException)
 {
     attr = p1;
 }
 
 long
-voidType_impl::f2()
+Test_voidType_impl::f2()
 throw(::Components::ccm::local::CCMException)
 {
   return attr;
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm

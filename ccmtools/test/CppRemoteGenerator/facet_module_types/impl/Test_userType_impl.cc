@@ -25,23 +25,20 @@ namespace europe {
 namespace austria {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-userType_impl::userType_impl(
-    world::europe::austria::ccm::local::component::Test::CCM_Test_impl* component_impl)
+Test_userType_impl::Test_userType_impl(world::europe::austria::ccm::local::Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-userType_impl::~userType_impl()
+Test_userType_impl::~Test_userType_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 world::europe::austria::ccm::local::Color
-userType_impl::f1(
+Test_userType_impl::f1(
         const world::europe::austria::ccm::local::Color& p1,
         world::europe::austria::ccm::local::Color& p2,
         world::europe::austria::ccm::local::Color& p3)
@@ -53,7 +50,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 world::europe::austria::ccm::local::Person
-userType_impl::f2(
+Test_userType_impl::f2(
         const world::europe::austria::ccm::local::Person& p1,
         world::europe::austria::ccm::local::Person& p2,
         world::europe::austria::ccm::local::Person& p3)
@@ -68,7 +65,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 world::europe::austria::ccm::local::Address
-userType_impl::f3(
+Test_userType_impl::f3(
         const world::europe::austria::ccm::local::Address& p1,
         world::europe::austria::ccm::local::Address& p2,
         world::europe::austria::ccm::local::Address& p3)
@@ -85,7 +82,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 world::europe::austria::ccm::local::LongList
-userType_impl::f4(
+Test_userType_impl::f4(
         const world::europe::austria::ccm::local::LongList& p1,
         world::europe::austria::ccm::local::LongList& p2,
         world::europe::austria::ccm::local::LongList& p3)
@@ -101,7 +98,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 world::europe::austria::ccm::local::StringList
-userType_impl::f5(
+Test_userType_impl::f5(
         const world::europe::austria::ccm::local::StringList& p1,
         world::europe::austria::ccm::local::StringList& p2,
         world::europe::austria::ccm::local::StringList& p3)
@@ -117,7 +114,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 world::europe::austria::ccm::local::PersonList
-userType_impl::f6(
+Test_userType_impl::f6(
         const world::europe::austria::ccm::local::PersonList& p1,
         world::europe::austria::ccm::local::PersonList& p2,
         world::europe::austria::ccm::local::PersonList& p3)
@@ -136,7 +133,7 @@ throw(::Components::ccm::local::CCMException)
 }
 
 world::europe::austria::ccm::local::time_t
-userType_impl::f7(
+Test_userType_impl::f7(
         const world::europe::austria::ccm::local::time_t& t1,
         world::europe::austria::ccm::local::time_t& t2,
         world::europe::austria::ccm::local::time_t& t3)
@@ -147,8 +144,6 @@ throw(::Components::ccm::local::CCMException)
     return t3+t1; 
 }
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace austria

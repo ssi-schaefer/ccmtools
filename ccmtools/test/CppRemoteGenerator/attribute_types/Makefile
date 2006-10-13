@@ -23,10 +23,15 @@ remote: local stubs
 	ccmtools c++remote-test -o ${DEST_DIR}/src/component/Test Test.idl
 
 check: 
-	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "remote_attribute_types" -pversion "1.0.0" 
 	cp impl/Test_impl.cc ${DEST_DIR}/src/component/Test/
 	cp impl/_check_ccm_remote_component_Test.cc ${DEST_DIR}/src/component/Test/test/
+	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "remote_attribute_types" -pversion "1.0.0" 
 	confix.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
+
+check_empty:
+	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "remote_attribute_types" -pversion "1.0.0" 
+	confix.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
+
 
 clean: 
 	confix.py --packageroot=`pwd`/xxx/src --make --targets=clean	

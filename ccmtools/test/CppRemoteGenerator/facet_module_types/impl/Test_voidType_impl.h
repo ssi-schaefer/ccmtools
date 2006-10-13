@@ -16,22 +16,19 @@ namespace europe {
 namespace austria {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Test {
 
-class voidType_impl
+class Test_voidType_impl
     : virtual public world::europe::austria::ccm::local::CCM_VoidTypeInterface
 {
   protected:
-    world::europe::austria::ccm::local::component::Test::CCM_Test_impl* component;
+    world::europe::austria::ccm::local::Test_impl* component;
     // This attribute is accessed by explicite set and get methods
     // which are part of VoidTypeInterface.
     long attr;
 
   public:
-    voidType_impl(
-        world::europe::austria::ccm::local::component::Test::CCM_Test_impl* component_impl);
-    virtual ~voidType_impl();
+    Test_voidType_impl(world::europe::austria::ccm::local::Test_impl* component_impl);
+    virtual ~Test_voidType_impl();
 
     virtual 
     void 
@@ -45,8 +42,6 @@ class voidType_impl
 
 };
 
-} // /namespace Test
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace austria
