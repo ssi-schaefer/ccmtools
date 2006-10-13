@@ -24,13 +24,13 @@ check:
 	cp impl/MyObject.cc ${DEST_DIR}/src/component/TestMirror/
 	cp impl/TestMirror_impl.cc ${DEST_DIR}/src/component/TestMirror/
 	cp impl/_check_witout_mirror.cc ${DEST_DIR}/src/component/TestMirror/test
-	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "facet_types" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR}/src -pname "facet_types" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
 
 check_empty:
-	ccmconfix -makefiles -o ${DEST_DIR}/src -pname "facet_types" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR}/src -pname "facet_types" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR}/src --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR}/src --make --targets=clean	
+	confix2.py --packageroot=`pwd`/${DEST_DIR}/src --make --targets=clean	
 	rm -rf ${DEST_DIR}

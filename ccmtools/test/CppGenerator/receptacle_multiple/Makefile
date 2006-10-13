@@ -23,13 +23,13 @@ check:
 	cp impl/TestMirror_console0_impl.cc ${DEST_DIR}/component/TestMirror/
 	cp impl/TestMirror_console1_impl.cc ${DEST_DIR}/component/TestMirror/
 	cp impl/TestMirror_console2_impl.cc ${DEST_DIR}/component/TestMirror/
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "receptacle_multiple" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "receptacle_multiple" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 check_empty:
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "receptacle_multiple" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "receptacle_multiple" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}

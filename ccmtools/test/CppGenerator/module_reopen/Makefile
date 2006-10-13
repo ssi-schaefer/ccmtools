@@ -19,9 +19,9 @@ mirror: local
 	ccmtools c++local-test ${IDL_INCLUDE} -a -o ${DEST_DIR}/component/Test_mirror ${DEST_DIR}/idl/component/world/Test.idl 
 
 check: 
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "module_reopen" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "module_reopen" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}

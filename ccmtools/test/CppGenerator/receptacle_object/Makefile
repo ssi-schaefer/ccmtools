@@ -23,14 +23,14 @@ check:
 	cp impl/_check_ccm_local_Test.cc ${DEST_DIR}/component/TestMirror/test
 	cp impl/ReceptacleObject.h ${DEST_DIR}/component/TestMirror/test
 	cp impl/ReceptacleObject.cc ${DEST_DIR}/component/TestMirror/test
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "receptacle_object" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "receptacle_object" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 check_empty:
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "receptacle_object" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "receptacle_object" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}

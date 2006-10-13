@@ -21,13 +21,13 @@ mirror: local
 check: 
 	cp impl/Test_console_impl.cc ${DEST_DIR}/component/Test/
 	cp impl/TestMirror_impl.cc ${DEST_DIR}/component/TestMirror/
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "facet_attribute" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "facet_attribute" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 check_empty:
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "facet_attribute" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make 
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "facet_attribute" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make 
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}

@@ -20,16 +20,16 @@ check:
 	cp impl/DTO.h ${DEST_DIR}/interface/
 	cp impl/Test_facet_impl.cc ${DEST_DIR}/component/Test/
 	cp impl/_check_world_europe_ccm_local_Test.cc ${DEST_DIR}/component/Test/test/
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "any-plugin" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "any-plugin" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 check_empty:
 	cp impl/Person.h ${DEST_DIR}/interface/
 	cp impl/DTO.h ${DEST_DIR}/interface/
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "any-plugin" -pversion "1.0.0"
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make 
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "any-plugin" -pversion "1.0.0"
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make 
 
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}
