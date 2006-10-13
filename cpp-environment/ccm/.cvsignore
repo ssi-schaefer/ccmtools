@@ -15,3 +15,4 @@ ltmain.sh
 acinclude.m4
 ccm-runtime.repo
 confix-admin
+configure.ac

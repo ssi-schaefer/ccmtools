@@ -1,0 +1,5 @@
+import os
+if os.spawnlp(os.P_WAIT, 'make') != 0:
+    raise Exception('make failed in '+'/'.join(CURRENT_DIRECTORY().abspath()))
+
+INSTALLDIR_H('Components')
