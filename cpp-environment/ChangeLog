@@ -1,6 +1,13 @@
 HEAD
 ============================================================================
 
+RELEASE-0.7.3 (October 16, 2006)
+----------------------------------------------------------------------------
+*) Refactoring: Upgrade to Confix2
+	Added Confix2.pkg and Confix2.dir files to build the C++ runtime unsing
+	Confix2.
+	
+
 RELEASE-0.7.2 (October 5, 2006)
 ----------------------------------------------------------------------------
 *) Refactoring: Upgrade to wx-utils-3.1.0

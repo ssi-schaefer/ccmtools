@@ -2,6 +2,22 @@ HEAD
 ============================================================================
 
 
+RELEASE-0.7.3 (October 16, 2006)
+----------------------------------------------------------------------------
+*) Refactoring: Change to Confix2
+	Refactored all C++ test cases to support Confix2.
+	
+*) Refactoring: Changed namespace for a component's implementation classes
+	- from world::ccm::local::component::Test to world::ccm::local	
+	- from world::ccm::remote::component::Test to world::ccm::remote
+
+*) Refactoring: Changed names of a component's implementation classes
+	Now all classes have the same name as their source files, 
+	e.g. Test_impl (instead of CCM_Test_impl)
+	     Test_iface_impl (instead of iface_impl)
+	     
+
+
 RELEASE-0.7.2 (October 5, 2006)
 ----------------------------------------------------------------------------
 *) Refactoring: Changed namespace WX::Utils to wx::utils
