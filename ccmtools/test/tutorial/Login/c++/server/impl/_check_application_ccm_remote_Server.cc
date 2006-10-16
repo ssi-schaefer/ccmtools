@@ -20,17 +20,17 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <application/ccm/remote/component/Server/ServerHome_remote.h>
+#include <application/ccm/remote/ServerHome_remote.h>
 #include <application_Server.h>
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // Implementation of remote client test
@@ -66,8 +66,8 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_application_ccm_local_component_Server_ServerHome("ServerHome");
-    error += deploy_application_ccm_remote_component_Server_ServerHome(orb, "ServerHome");
+    error += deploy_application_ccm_local_ServerHome("ServerHome");
+    error += deploy_application_ccm_remote_ServerHome(orb, "ServerHome");
     if(!error) {
         cout << "ServerHome server is running..." << endl;
     }

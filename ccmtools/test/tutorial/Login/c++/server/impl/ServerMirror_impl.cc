@@ -13,44 +13,41 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "ServerMirror_impl.h"
 
 namespace application {
 namespace ccm {
 namespace local {
-namespace component {
-namespace ServerMirror {
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 //==============================================================================
 // CCM_ServerMirror - component implementation
 //==============================================================================
 
-CCM_ServerMirror_impl::CCM_ServerMirror_impl()
+ServerMirror_impl::ServerMirror_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-CCM_ServerMirror_impl::~CCM_ServerMirror_impl()
+ServerMirror_impl::~ServerMirror_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_ServerMirror_impl::set_session_context(
-    ::ccm::local::Components::SessionContext* context)
-    throw(::ccm::local::Components::CCMException)
+ServerMirror_impl::set_session_context(Components::ccm::local::SessionContext* context)
+    throw(Components::ccm::local::CCMException)
 {
     ctx = dynamic_cast<CCM_ServerMirror_Context*>(context);
 }
 
 void
-CCM_ServerMirror_impl::ccm_activate()
-    throw(::ccm::local::Components::CCMException)
+ServerMirror_impl::ccm_activate()
+    throw(Components::ccm::local::CCMException)
 {
       try
       {
@@ -95,28 +92,26 @@ CCM_ServerMirror_impl::ccm_activate()
 	    cout << "OK, caught InvalidPersonData exception!" << endl;
 	  }
       }
-      catch(::ccm::local::Components::Exception& e)
+      catch(Components::ccm::local::Exception& e)
       {
 	cerr << "ERROR: " << e.what() << endl;
       }
 }
 
 void
-CCM_ServerMirror_impl::ccm_passivate()
-    throw(::ccm::local::Components::CCMException)
+ServerMirror_impl::ccm_passivate()
+    throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
-CCM_ServerMirror_impl::ccm_remove()
-    throw(::ccm::local::Components::CCMException)
+ServerMirror_impl::ccm_remove()
+    throw(Components::ccm::local::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-} // /namespace ServerMirror
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace application

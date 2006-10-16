@@ -100,7 +100,7 @@ Login/c++/server
 `-- src
     |-- component
     |   `-- Server
-    |       |-- CCM_application_ccm_remote_component_Server
+    |       |-- CCM_application_ccm_remote
     |       |-- CCM_application_ccm_remote_corba_converter
     |       `-- CCM_corba_stubs
 \end{verbatim}
@@ -131,17 +131,17 @@ To keep things simple, we implement this CORBA server in a single
 \begin{footnotesize}
 \begin{lstlisting}[language=C++]
 #include <string>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <application/ccm/remote/component/Server/ServerHome_remote.h>
+#include <application/ccm/remote/ServerHome_remote.h>
 #include <application_Server.h>
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 int main (int argc, char *argv[])
 {
@@ -156,9 +156,8 @@ int main (int argc, char *argv[])
 
   // Deploy local and remote component homes	
   int error = 0;
-  error += deploy_application_ccm_local_component_Server_ServerHome("ServerHome");
-  error += deploy_application_ccm_remote_component_Server_ServerHome(orb, 
-                                                                    "ServerHome");
+  error += deploy_application_ccm_local_ServerHome("ServerHome");
+  error += deploy_application_ccm_remote_ServerHome(orb, "ServerHome");
   if(!error) 
   {
       cout << "ServerHome server is running..." << endl;
@@ -173,7 +172,7 @@ int main (int argc, char *argv[])
 \end{lstlisting}
 \end{footnotesize}
 
-We save this {\tt \_check\_application\_ccm\_remote\_component\_Server.cc} file
+We save this {\tt \_check\_application\_ccm\_remote\_Server.cc} file
 into the component's {\tt test} directory:
 \begin{footnotesize}
 \begin{verbatim}
@@ -182,7 +181,7 @@ Login/c++/server
     |-- component
     |   `-- Server
     |       `-- test
-    |           `-- _check_application_ccm_remote_component_Server.cc
+    |           `-- _check_application_ccm_remote_Server.cc
 \end{verbatim}
 \end{footnotesize}
 
@@ -202,9 +201,9 @@ which ist a Java tool):
 Finally, we run Confix to build all source files and to start the unit test:
 \begin{footnotesize}
 \begin{verbatim}
-> ccmconfix -makefiles -o src -pname "login" -pversion "1.0.0"
+> ccmconfix -confix2 -o src -pname "login" -pversion "1.0.0"
 
-> confix.py --packageroot=`pwd`/src --bootstrap --configure \
+> confix2.py --packageroot=`pwd`/src --bootstrap --configure \
             --make --targets=check
 \end{verbatim}
 \end{footnotesize}
@@ -257,7 +256,7 @@ uses the IDL to C++ mapping specified by the OMG.
 \begin{footnotesize}
 \begin{lstlisting}[language=C++]
 #include <string>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
@@ -267,7 +266,7 @@ uses the IDL to C++ mapping specified by the OMG.
 #include <application_ServerHome.h>
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 int main (int argc, char *argv[])
 {
@@ -340,9 +339,9 @@ int main (int argc, char *argv[])
 Again, we use Confix to build and run the test client:
 \begin{footnotesize}
 \begin{verbatim}
-> ccmconfix -makefiles -o src -pname "login-remote-client" -pversion "1.0.0"
+> ccmconfix -confix2 -o src -pname "login-remote-client" -pversion "1.0.0"
 
-> confix.py --packageroot=`pwd`/src --bootstrap --configure \
+> confix2.py --packageroot=`pwd`/src --bootstrap --configure \
             --make --targets=check
 \end{verbatim}
 \end{footnotesize}

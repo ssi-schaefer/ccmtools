@@ -139,15 +139,15 @@ Login/c++/server
     |-- component
     |   |-- Server
     |   `-- ServerMirror
-    |       |-- CCM_application_ccm_local_component_ServerMirror
-    |       |-- CCM_application_ccm_local_component_ServerMirror_share
+    |       |-- CCM_application_ccm_local
+    |       |-- CCM_application_ccm_local_share
     |       |-- ServerHomeMirror_impl.cc
     |       |-- ServerHomeMirror_impl.h
     |       |-- ServerMirror_impl.cc
     |       |-- ServerMirror_impl.h
-    |       |-- application_ccm_local_component_ServerMirror_ServerHomeMirror_entry.h
+    |       |-- application_ccm_local_ServerHomeMirror_entry.h
     |       `-- test
-    |           `-- _check_application_ccm_local_component_Server.cc
+    |           `-- _check_application_ccm_local_Server.cc
 \end{verbatim}
 \end{footnotesize}
 
@@ -164,8 +164,8 @@ In the {\tt ServerMirror\_impl.cc} class we implement the following code snippet
 \begin{footnotesize}
 \begin{lstlisting}[language=C++]
 void
-CCM_ServerMirror_impl::ccm_activate()
-    throw(::ccm::local::Components::CCMException)
+ServerMirror_impl::ccm_activate()
+    throw(::Components::ccm::local::CCMException)
 {
     try
     {
@@ -207,7 +207,7 @@ CCM_ServerMirror_impl::ccm_activate()
             cout << "OK, caught InvalidPersonData exception!" << endl;
         }
     }
-    catch(::ccm::local::Components::Exception& e)
+    catch(::Components::ccm::local::Exception& e)
     {
         cerr << "ERROR: " << e.what() << endl;
     }
@@ -225,9 +225,9 @@ in the mirror component test case to get the connected receptacle reference.
 Finally, we use Confix to build both components and to run the unit test:
 \begin{footnotesize}
 \begin{verbatim}
-> ccmconfix -makefiles -o src -pname "login" -pversion "1.0.0"
+> ccmconfix -confix2 -o src -pname "login" -pversion "1.0.0"
 
-> confix.py --packageroot=`pwd`/src --bootstrap --configure --make --targets=check
+> confix2.py --packageroot=`pwd`/src --bootstrap --configure --make --targets=check
 \end{verbatim}
 \end{footnotesize}
 Not surprisingly, you should see the following output on your command line:
@@ -235,7 +235,7 @@ Not surprisingly, you should see the following output on your command line:
 \begin{verbatim}
 Welcome eteinik
 OK, caught InvalidPersonData exception!
-PASS: login__check_application_ccm_local_component_Server
+PASS: login__check_application_ccm_local_Server
 ==================
 All 1 tests passed
 ==================

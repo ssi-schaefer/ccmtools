@@ -13,34 +13,31 @@
 
 #include <cassert>
 #include <iostream>
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 
 #include "Server_login_impl.h"
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 
 namespace application {
 namespace ccm {
 namespace local {
-namespace component {
-namespace Server {
 
-login_impl::login_impl(
-    application::ccm::local::component::Server::CCM_Server_impl* component_impl)
+Server_login_impl::Server_login_impl(application::ccm::local::Server_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-login_impl::~login_impl()
+Server_login_impl::~Server_login_impl()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 bool
-login_impl::isValidUser(const application::ccm::local::PersonData& person)
-throw(::ccm::local::Components::CCMException,
+Server_login_impl::isValidUser(const application::ccm::local::PersonData& person)
+throw(Components::ccm::local::CCMException,
         application::ccm::local::InvalidPersonData )
 {
   if(person.name.length() == 0)
@@ -56,8 +53,6 @@ throw(::ccm::local::Components::CCMException,
   }
 }
 
-} // /namespace Server
-} // /namespace component
 } // /namespace local
 } // /namespace ccm
 } // /namespace application

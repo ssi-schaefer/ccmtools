@@ -20,17 +20,17 @@
 #include <cassert>
 #include <iostream>
 
-#include <WX/Utils/debug.h>
-#include <WX/Utils/smartptr.h>
+#include <wx/utils/debug.h>
+#include <wx/utils/smartptr.h>
 
-#include <ccm/local/Components/CCM.h>
+#include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <application/ccm/local/component/Server/Server_gen.h>
-#include <application/ccm/local/component/Server/ServerHome_gen.h>
+#include <application/ccm/local/Server_gen.h>
+#include <application/ccm/local/ServerHome_gen.h>
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 using namespace ccm::local;
 
 using namespace application::ccm::local;
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<component::Server::Server> server;
+    SmartPtr<Server> server;
     SmartPtr<Login> login;
 
     // Component bootstrap:
@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
     // component- and mirror component home.
     // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    Components::HomeFinder* homeFinder = HomeFinder::Instance();
-    error = deploy_application_ccm_local_component_Server_ServerHome("ServerHome");
+    Components::ccm::local::HomeFinder* homeFinder = HomeFinder::Instance();
+    error = deploy_application_ccm_local_ServerHome("ServerHome");
              
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -57,8 +57,7 @@ int main(int argc, char *argv[])
 
 
     try {
-      SmartPtr<component::Server::ServerHome> serverHome(
-            dynamic_cast<component::Server::ServerHome*>
+      SmartPtr<ServerHome> serverHome(dynamic_cast<ServerHome*>
             (homeFinder->find_home_by_name("ServerHome").ptr()));
 
       server = serverHome->create();
@@ -101,16 +100,16 @@ int main(int argc, char *argv[])
       
       server->remove();
     } 
-    catch(Components::HomeNotFound ) {
+    catch(Components::ccm::local::HomeNotFound ) {
       cout << "TEARDOWN ERROR: can't find a home!" << endl;
       error = -1;
     } 
-    catch(Components::NotImplemented& e ) {
+    catch(Components::ccm::local::NotImplemented& e ) {
       cout << "TEARDOWN ERROR: function not implemented: " 
 	   << e.what (  ) << endl;
       error = -1;
     } 
-    catch(Components::InvalidName& e ) {
+    catch(Components::ccm::local::InvalidName& e ) {
       cout << "DEPLOYMENT ERROR: invalid name during connection: " 
 	   << e.what (  ) << endl;
       error = -1;
@@ -119,7 +118,7 @@ int main(int argc, char *argv[])
       cout << "TEARDOWN ERROR: there is something wrong!" << endl;
       error = -1;
     }
-    error += undeploy_application_ccm_local_component_Server_ServerHome("ServerHome");
+    error += undeploy_application_ccm_local_ServerHome("ServerHome");
     if(error) {
       cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
       return error;

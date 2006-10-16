@@ -57,9 +57,9 @@ Login/c++/server
   `-- src
     |-- component
     |   `-- Server
-    |       |-- CCM_application_ccm_local_component_Server
-    |       |-- CCM_application_ccm_local_component_Server_share
-    |       `-- application_ccm_local_component_Server_ServerHome_entry.h
+    |       |-- CCM_application_ccm_local
+    |       |-- CCM_application_ccm_local_share
+    |       `-- application_ccm_local_ServerHome_entry.h
     `-- interface
         |-- CCM_application_ccm_local
         `-- CCM_application_ccm_local_adapter
@@ -147,9 +147,9 @@ To implement the Login example's business logic, you open the
 \begin{footnotesize}
 \begin{lstlisting}[language=C++]
 bool
-login_impl::isValidUser(
+Server_login_impl::isValidUser(
     const application::ccm::local::PersonData& person)
-    throw(::ccm::local::Components::CCMException,
+    throw(::Components::ccm::local::CCMException,
           application::ccm::local::InvalidPersonData )
 {
     if(person.name.length() == 0)
@@ -170,12 +170,12 @@ login_impl::isValidUser(
 \end{footnotesize}
 
 Now, we can use Confix to build this component example. To tell Confix which
-directory should be built, a {\tt Makefile.py} file must be created in each
+directory should be built, {\tt Confix2.*} files must be created in each
 source code directory.
 Of course, you can delegate this work to the CCM Tools:
 \begin{footnotesize}
 \begin{verbatim}
-> ccmconfix -makefiles -o ./src -pname "login" -pversion "1.0.0"
+> ccmconfix -confix2 -o ./src -pname "login" -pversion "1.0.0"
 \end{verbatim}
 \end{footnotesize} 
 
@@ -183,7 +183,7 @@ Finally, you start Confix to build all generated and manually implemented source
 files:
 \begin{footnotesize}
 \begin{verbatim}
-> confix.py --packageroot=`pwd`/src --bootstrap --configure --make 
+> confix2.py --packageroot=`pwd`/src --bootstrap --configure --make 
 \end{verbatim}
 \end{footnotesize}
 
@@ -207,26 +207,26 @@ code in a file called {\tt \_check\_local\_component\_Server.cc}:
 #include <cassert>
 #include <iostream>
 
-#include <WX/Utils/debug.h>
+#include <wx/utils/debug.h>
 #include <WX/Utils/smartptr.h>
 
-#include <ccm/local/Components/CCM.h>
+#include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <application/ccm/local/component/Server/Server_gen.h>
-#include <application/ccm/local/component/Server/ServerHome_gen.h>
+#include <application/ccm/local/Server_gen.h>
+#include <application/ccm/local/ServerHome_gen.h>
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wx::utils;
 using namespace ccm::local;
 using namespace application::ccm::local;
 
 int main(int argc, char *argv[])
 {
-  SmartPtr<component::Server::Server> server;
+  SmartPtr<Server> server;
   SmartPtr<Login> login;
-  Components::HomeFinder* homeFinder = HomeFinder::Instance();
-  if(deploy_application_ccm_local_component_Server_ServerHome("ServerHome")) 
+  Components::ccm::local::HomeFinder* homeFinder = HomeFinder::Instance();
+  if(deploy_application_ccm_local_ServerHome("ServerHome")) 
   {
       cerr << "ERROR: Can't deploy component homes!" << endl;
       return -1;
@@ -234,8 +234,7 @@ int main(int argc, char *argv[])
 
   try 
   {
-      SmartPtr<component::Server::ServerHome> serverHome(
-        dynamic_cast<component::Server::ServerHome*>
+      SmartPtr<ServerHome> serverHome(dynamic_cast<ServerHome*>
           (homeFinder->find_home_by_name("ServerHome").ptr()));
 
       server = serverHome->create();
@@ -246,13 +245,13 @@ int main(int argc, char *argv[])
     
       server->remove();
   } 
-  catch(Components::Exception& e ) 
+  catch(::Components::ccm::local::Exception& e ) 
   {
       cout << "ERROR: " << e.what() << endl;
       return -2;
   } 
 
-  if(undeploy_application_ccm_local_component_Server_ServerHome("ServerHome")) 
+  if(undeploy_application_ccm_local_ServerHome("ServerHome")) 
   {
     cerr << "ERROR: Can't undeploy component home!" << endl;
     return -3;
@@ -346,8 +345,8 @@ for large applications you will need a lot of disk space.
 To run these unit tests, we use Confix again:
 \begin{footnotesize}
 \begin{verbatim}
-> touch src/component/Server/test/Makefile.py
-> confix.py --packageroot=`pwd`/src --bootstrap --configure \
+> touch src/component/Server/test/Confix2.dir
+> confix2.py --packageroot=`pwd`/src --bootstrap --configure \
             --make --targets=check 
 \end{verbatim}
 \end{footnotesize}
@@ -357,7 +356,7 @@ At the end of this build process, you hopefully see an output like:
 \begin{verbatim}
 Welcome eteinik
 OK, caught InvalidPersonData exception!
-PASS: login__check_local_component_Server
+PASS: login_component_Server_test__check_application_ccm_local_Server
 ==================
 All 1 tests passed
 ==================

@@ -14,11 +14,11 @@ stubs:
 	mkdir ${DEST_DIR}/test
 
 run: 
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "login-remote-client" -pversion "1.0.0" 
 	cp impl/_check_client.cc ${DEST_DIR}/test
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "login-remote-client" -pversion "1.0.0" 
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}
 

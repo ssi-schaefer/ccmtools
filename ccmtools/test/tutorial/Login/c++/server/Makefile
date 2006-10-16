@@ -12,10 +12,10 @@ local:
 
 check: 
 	ccmtools c++local-test ${INCLUDE} -o ${DEST_DIR}/component/Server ${IDL3_DIR}/component/application/Server.idl
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
 	cp impl/Server_login_impl.cc ${DEST_DIR}/component/Server/
-	cp impl/_check_application_ccm_local_component_Server.cc ${DEST_DIR}/component/Server/test/
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	cp impl/_check_application_ccm_local_Server.cc ${DEST_DIR}/component/Server/test/
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 
 mirror:
@@ -25,8 +25,8 @@ mirror:
 mirrorcheck:
 	cp impl/Server_login_impl.cc ${DEST_DIR}/component/Server/
 	cp impl/ServerMirror_impl.cc ${DEST_DIR}/component/ServerMirror/
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 
 stubs: #local
@@ -41,12 +41,12 @@ remote: stubs
 
 run: 
 	ccmtools c++remote-test ${INCLUDE} -o ${DEST_DIR}/component/Server ${IDL3_DIR}/component/application/Server.idl 
-	ccmconfix -makefiles -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
 	cp impl/Server_login_impl.cc ${DEST_DIR}/component/Server/
-	cp impl/_check_application_ccm_remote_component_Server.cc ${DEST_DIR}/component/Server/test/
-	confix.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+	cp impl/_check_application_ccm_remote_Server.cc ${DEST_DIR}/component/Server/test/
+	ccmconfix -confix2 -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 clean: 
-	confix.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
+	confix2.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	
 	rm -rf ${DEST_DIR}
 

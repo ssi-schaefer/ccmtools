@@ -8,12 +8,11 @@
 \section{ccmconfix}
 %------------------------------------------------------------------------------
 \begin{description}
-
 \item [NAME:] 
   {\tt ccmconfix} - Confix input files generator.
 
 \item [SYNOPSIS:] 
-  {\tt ccmconfix [OPTIONS]}
+  {\tt ccmconfix OPTIONS}
 
 \item [DESCRIPTION:]
 The {\tt ccmconfix} generator can be used to generate Confix input files.
@@ -28,7 +27,6 @@ Confix2 assumes {\tt Confix2.dir} and {\tt Confix.pkg} files instead of {\tt Mak
 
   \item {\tt -V, --version} \\
     Prints out the current version of installed CCM Tools.
-  \end{itemize}
 
   \item {\tt -o, --output <path> } \\
     Specifies the directory where the generation of Confix input files starts.
@@ -50,26 +48,130 @@ Confix2 assumes {\tt Confix2.dir} and {\tt Confix.pkg} files instead of {\tt Mak
   \item {\tt -pversion, --packageversion <version>} \\ 
     Specifies the used {\tt PACKAGE\_VERSION()} number. By default, a ``0.0.0'' string
     is used.
-  
+  \end{itemize}
+    
 \item [SEE ALSO:]
    {\tt Confix Manual}
 \end{description}
 
 
 
-\newpage
+
 %------------------------------------------------------------------------------
 \section{ccmidl}
 %------------------------------------------------------------------------------
-\dots
+\begin{description}
+\item [NAME:] 
+  {\tt ccmconfix} - Start script for IDL generators.
+
+\item [SYNOPSIS:] 
+  {\tt ccmidl OPTIONS FILES}
+
+\item [DESCRIPTION:]
+The {\tt ccmidl} script is used to run all kinds of IDL generator backends based
+on a given set of IDL input files. 
+
+\item [OPTIONS:]
+  The {\tt ccmtconfix} generator handles the following options:
+  \begin{itemize}
+  \item {\tt -h, --help} \\
+    Prints out a short description of the available command line parameters.
+
+  \item {\tt -V, --version} \\
+    Prints out the current version of installed CCM Tools.
+
+  \item {\tt -I <path>} \\
+    Specifies a path that will be used from a preprocessor to find 
+    included IDL files.
+  
+  \item {\tt -o, --output <path> } \\
+    Specifies the directory where the generated IDL files are stored to.
+
+  \item {\tt -idl3 } \\
+	Generates IDL3 source files for the IDL3 repository directory (for each IDL3
+	artefact a separate source file will be generated).
+
+  \item {\tt -idl3mirror } \\
+  	Generates IDL3 source files for a mirror component.
+  
+  \item {\tt -idl2 } \\
+  	Generates equivalent IDL2 source files which can be used as input for a
+  	regular IDL compiler.
+  \end{itemize}
+    
+  \item [FILES:]
+  CCM Tools start scripts can handle single IDL files or a list of IDL
+  files. The following examples show the usage of IDL files: 
+  \begin{verbatim}
+    ccmidl -idl3 -o idl3Repo *.idl
+    ccmidl -idl3mirror -o idl3Repo Test.idl
+    ccmidl -idl2 -o corba_stubs Test.idl Helper.idl 
+  \end{verbatim}  
+  
+\item [SEE ALSO:]
+\end{description}
 
 
 
-\newpage
+
 %------------------------------------------------------------------------------
 \section{ccmjava}
 %------------------------------------------------------------------------------
-\dots
+\begin{description}
+\item [NAME:] 
+  {\tt ccmjava} - Start script for Java generators.
+
+\item [SYNOPSIS:] 
+  {\tt ccmidl OPTIONS FILES}
+
+\item [DESCRIPTION:]
+The {\tt ccmidl} script is used to run all kinds of Java generator backends based
+on a given set of IDL input files. 
+
+\item [OPTIONS:]
+  The {\tt ccmtjava} generator handles the following options:
+  \begin{itemize}
+  \item {\tt -h, --help} \\
+    Print out a short description of the available command line parameters.
+
+  \item {\tt -V, --version} \\
+    Print out the current version of installed CCM Tools.
+
+  \item {\tt -I <path>} \\
+    Specify a path that will be used from a preprocessor to find 
+    included IDL files.
+  
+  \item {\tt -o, --output <path> } \\
+    Specify the directory where the generated IDL files are stored to.
+
+  \item {\tt -iface } \\
+	Generate local Java interface definitions from the given IDL files. 
+
+  \item {\tt -local } \\
+	Generate local Java component logic implementations for the given IDL files.  
+
+  \item {\tt -app } \\
+	Generate buisness logic skeletons for the given IDL files.
+
+  \item {\tt -remote } \\
+  	Generate remote Java component logic implementations for the given IDL files.
+  
+  \item {\tt -clientlib } \\
+	Generate local Java component proxies which are used to access remote
+	components via local Java interfaces.
+  \end{itemize}
+    
+  \item [FILES:]
+  CCM Tools start scripts can handle single IDL files or a list of IDL
+  files. The following examples show the usage of IDL files: 
+  \begin{verbatim}
+    ccmjava -iface -o  *.idl
+    ccmjava -iface -local -app -o src-gen Test.idl TestHome.idl
+  \end{verbatim}  
+  
+\item [SEE ALSO:]
+\end{description}
+
 
 
 
@@ -106,15 +208,6 @@ selected to create the desired output.
   \item {\tt c++dbc} \\
     Generates a set of Design by Contract adapters for a local
     C++ component.
-    
-  \item {\tt idl3 }\\
-    Generates IDL3 source files.
-
-  \item {\tt idl3mirror }\\
-    Generates IDL3 source files for a mirror component.
-    
-  \item {\tt idl2} \\
-    Generates equivalent IDL2 source files.
 
   \item {\tt c++remote} \\ 
     Generates a set of remote C++ adapters that establish a standard
@@ -122,6 +215,15 @@ selected to create the desired output.
 
   \item {\tt c++remote-test}\\
     Generates a test client for a pair of remote component and mirror component.
+    
+  \item {\tt idl3 }\\  (!!! deprecated !!!) \\
+    Generates IDL3 source files.
+
+  \item {\tt idl3mirror }\\ (!!! deprecated !!!)\\
+    Generates IDL3 source files for a mirror component.
+    
+  \item {\tt idl2}\\ (!!! deprecated !!!) \\
+    Generates equivalent IDL2 source files.
   \end{itemize}
   
 \item [OPTIONS:]
@@ -150,16 +252,16 @@ selected to create the desired output.
   This {\tt ccmtools} script can handle single IDL files or a list of IDL
   files. The following examples show the usage of IDL files: 
   \begin{verbatim}
-    ccmtools idl3mirror -o test/idl3mirror Test.idl
     ccmtools c++local -a -o test Test.idl Helper.idl 
     ccmtools c++local-test -o test *.idl
+    ccmtools idl3mirror -o test/idl3mirror Test.idl
   \end{verbatim}
-\item [SEE ALSO:]
+\item [SEE ALSO:] {\tt ccmidl}
 \end{description}
 
 
 
-\newpage
+
 %------------------------------------------------------------------------------
 \section{ccmtools-idl}
 %------------------------------------------------------------------------------
@@ -217,7 +319,6 @@ selected to create the desired output.
 
 
 
-\newpage
 %------------------------------------------------------------------------------
 \section{uml2idl}
 %------------------------------------------------------------------------------
