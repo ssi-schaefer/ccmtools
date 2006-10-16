@@ -24,7 +24,7 @@ remote: local stubs
 
 check: 
 	cp impl/Test_impl.cc ${DEST_DIR}/src/component/Test/
-	cp impl/_check_ccm_remote_component_Test.cc ${DEST_DIR}/src/component/Test/test/
+	cp impl/_check_ccm_remote_Test.cc ${DEST_DIR}/src/component/Test/test/
 	ccmconfix -confix2 -o ${DEST_DIR}/src -pname "remote_attribute_types" -pversion "1.0.0" 
 	confix2.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
 

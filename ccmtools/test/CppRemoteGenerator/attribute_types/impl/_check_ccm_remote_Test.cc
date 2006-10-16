@@ -26,7 +26,7 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <ccm/remote/component/Test/TestHome_remote.h>
+#include <ccm/remote/TestHome_remote.h>
 #include <Test.h>
 
 using namespace std;
@@ -64,8 +64,8 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_ccm_local_component_Test_TestHome("TestHome");
-    error += deploy_ccm_remote_component_Test_TestHome(orb, "TestHome:1.0");
+    error += deploy_ccm_local_TestHome("TestHome");
+    error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
     if(!error) {
         cout << "TestHome server is running..." << endl;
     }
