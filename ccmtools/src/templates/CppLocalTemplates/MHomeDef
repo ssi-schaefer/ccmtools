@@ -180,15 +180,12 @@ SmartPtr<%(ComponentType)s>
     if(assembly_factory != SmartPtr< ::Components::ccm::local::AssemblyFactory>()) {
         assembly = assembly_factory->create(); 
     }
-    SmartPtr<%(ComponentType)s> 
-        ret(dynamic_cast<%(ComponentType)s*>(
-            new %(ComponentType)s(this, 
-            dynamic_cast<CCM_%(ComponentType)s*>(
-                ((CCM_%(Identifier)sImplicit*)local_home)->create()),
-                assembly
-            )
-        )
-    );
+
+    ::Components::ccm::local::EnterpriseComponent* enterprise_component = local_home->create();
+    CCM_%(ComponentType)s* local_component = dynamic_cast<CCM_%(ComponentType)s*>(enterprise_component);
+    %(ComponentType)s* local_component_adapter = new %(ComponentType)s(this, local_component, assembly);
+    SmartPtr<%(ComponentType)s> ret(local_component_adapter);
+
     if(assembly_factory != SmartPtr< ::Components::ccm::local::AssemblyFactory>()) {
         assembly->build(ret);
     }
