@@ -1,2 +1,4 @@
     wx::utils::SmartPtr< %(CCMUsesType)s> get_connection_%(Identifier)s()
         throw(::Components::ccm::local::NoConnection);
+
+        

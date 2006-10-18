@@ -1,3 +1,4 @@
     (dynamic_cast<%(ProvidesType)sAdapter*>(
         %(Identifier)s_facet.ptr()))->validConnection(false);
 
+
