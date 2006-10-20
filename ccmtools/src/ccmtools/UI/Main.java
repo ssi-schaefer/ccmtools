@@ -218,7 +218,7 @@ public class Main
                 uiDriver.printMessage("parse " + idlfile.toString());
                 manager.reset();
                 manager.setOriginalFile(source.toString());
-                System.out.println("setOriginalFile = " + source.toString());
+                //System.out.println("setOriginalFile = " + source.toString());
                 ccmModel = manager.parseFile(idlfile.toString());
                 if(ccmModel == null) {
                     throw new CcmtoolsException("Parser error " + source + ":\n" 

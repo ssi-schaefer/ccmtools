@@ -2652,7 +2652,7 @@ PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
             String include = s.getText();
             if (include.length() > 0 && include.charAt(0) != '<') 
             {
-	            System.out.println("setSourceFile = " + include);
+	           // System.out.println("setSourceFile = " + include);
                 manager.setSourceFile(s.getText());
                 if ((debug & DEBUG_FILE) != 0) 
                 {

@@ -56,20 +56,21 @@ while index < len(sys.argv):
         sys.exit(0)
     elif arg.startswith('-I'):
         if IDL_COMPILER.startswith('idlj'):
-            INCLUDES += ' -i' + arg[2:]
+            INCLUDES += ' -i' + "\"" + arg[2:] + "\""
         elif IDL_COMPILER.startswith('idl'):    
-            INCLUDES += ' -I' + arg[2:]
+            INCLUDES += ' -I' + "\"" + arg[2:] + "\""
         start += 1
     elif  arg.startswith('-o'):
     	start += 1 
     	if IDL_COMPILER.startswith('idlj'):
-    		OUT_DIR = '-td ' + sys.argv[start]    		
+    		OUT_DIR = '-td ' + "\"" + sys.argv[start] + "\""    		
     	start += 1
 
 FILES = sys.argv[start:] 
 
 for x in FILES:
-  CMD = '%s %s %s ' % (IDL_COMPILER, INCLUDES, OUT_DIR) + x
-  print CMD
+  CMD = '%s %s %s ' % (IDL_COMPILER, INCLUDES, OUT_DIR)   
+  CMD += "\"" + x +  "\""
+  print CMD  
   os.system('%s' % (CMD))
 

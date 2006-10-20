@@ -26,13 +26,6 @@
 
 %(OpenNamespace)s
 
-class CCM_%(ComponentType)s;
-class %(ComponentType)s;
-class CCM_%(Identifier)sExplicit;
-class CCM_%(Identifier)sImplicit;
-class CCM_%(Identifier)s;
-class %(Identifier)s;
-
 //==============================================================================
 // explicit support classes
 //==============================================================================
@@ -104,17 +97,17 @@ class %(Identifier)s
 // entry point
 //==============================================================================
 
-extern "C" {
-    WX::Utils::SmartPtr< ::ccm::local::Components::CCMHome> 
-        create_%(AbsoluteLocalHomeName)sAdapter();
+WX::Utils::SmartPtr< ::ccm::local::Components::CCMHome> 
+create_%(AbsoluteLocalHomeName)sAdapter();
 
-    int deploy_%(AbsoluteLocalHomeName)s(char* name);
+int 
+deploy_%(AbsoluteLocalHomeName)s(char* name);
 
-    int deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,	
+int 
+deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,	
         WX::Utils::SmartPtr< ::ccm::local::Components::AssemblyFactory> assembly_factory);
 
-    int undeploy_%(AbsoluteLocalHomeName)s(char* name);
-}
+int undeploy_%(AbsoluteLocalHomeName)s(char* name);
 
 #endif
 
@@ -220,8 +213,6 @@ SmartPtr< ::ccm::local::Components::CCMObject>
 // entry point
 //==============================================================================
 
-extern "C" {
-
 WX::Utils::SmartPtr< ::ccm::local::Components::CCMHome>
 create_%(AbsoluteLocalHomeName)sAdapter()
 {
@@ -268,7 +259,6 @@ undeploy_%(AbsoluteLocalHomeName)s(char* name)
     return 0;
 }
 
-} // end of extern "C"
 
 
 <<<<<<<SPLIT>>>>>>>
@@ -340,10 +330,8 @@ class CCM_%(Identifier)s
 #ifndef __HOME_%(PreprocIdentifier)s_ENTRY__H__
 #define __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
-extern "C" {
-    ::ccm::local::Components::HomeExecutorBase* 
-        create_%(AbsoluteLocalHomeName)s();
-}
+::ccm::local::Components::HomeExecutorBase* 
+create_%(AbsoluteLocalHomeName)s();
 
 #endif // __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
@@ -452,8 +440,6 @@ CCM_%(Identifier)s_impl::create()
 // CCM_%(Identifier)s - home entry point
 //==============================================================================
 
-extern "C" {
-    
 ::ccm::local::Components::HomeExecutorBase*
 create_%(AbsoluteLocalHomeName)s()
 {
@@ -461,6 +447,5 @@ create_%(AbsoluteLocalHomeName)s()
         (new %(LocalNamespace)s::CCM_%(Identifier)s_impl());
 }
 
-} // end of extern "C"
 
 

@@ -54,12 +54,12 @@ class %(Identifier)s_impl :
 //==============================================================================
 // Remote entry point
 //==============================================================================
-extern "C" {
-    int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name);
-    int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior);
 
-    int undeploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name);
-}
+int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name);
+
+int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior);
+
+int undeploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name);
 
 #endif // HAVE_MICO
 #endif
@@ -172,84 +172,76 @@ Components::CCMObject_ptr
 // Remote entry point
 //==============================================================================
 
-extern "C" {
-    
-    int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name)
-    {
-        LDEBUGNL(CCM_CONTAINER, " deploy_%(AbsoluteRemoteHomeName)s(" 
-            << registration_name << ")");
+int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name)
+{
+    LDEBUGNL(CCM_CONTAINER, " deploy_%(AbsoluteRemoteHomeName)s(" << registration_name << ")");
 
-        CosNaming::NamingContextExt_var ns;
-        CORBA::Object_var nsobj;
-        int error = 0;
-        try {
-            nsobj = orb->resolve_initial_references ("NameService");
-            ns = CosNaming::NamingContextExt::_narrow (nsobj);
-            CORBA::String_var ior;
-            error = deploy_with_ior_%(AbsoluteRemoteHomeName)s(orb, ior.out());
-            if(error) 
-                return error;
-            CORBA::Object_var obj = orb->string_to_object(ior);
-            if(CORBA::is_nil(obj))
-	            return -2; // Can't create CORBA object from IOR
-            Components::CCMHome_var home = Components::CCMHome::_narrow(obj);
-            if(CORBA::is_nil(home))
-	            return -3; // Can't create Components::CCMHome object
-            CosNaming::Name_var n = ns->to_name(registration_name);
-            ns->rebind(n, home);
-            return 0;
-        }
-        catch (...) {
-            ns = CosNaming::NamingContextExt::_nil ();
-            return -1; // Can't connect to NameService
-        }
+    CosNaming::NamingContextExt_var ns;
+    CORBA::Object_var nsobj;
+    int error = 0;
+    try {
+        nsobj = orb->resolve_initial_references ("NameService");
+        ns = CosNaming::NamingContextExt::_narrow (nsobj);
+        CORBA::String_var ior;
+        error = deploy_with_ior_%(AbsoluteRemoteHomeName)s(orb, ior.out());
+        if(error) 
+            return error;
+        CORBA::Object_var obj = orb->string_to_object(ior);
+        if(CORBA::is_nil(obj))
+           return -2; // Can't create CORBA object from IOR
+        Components::CCMHome_var home = Components::CCMHome::_narrow(obj);
+        if(CORBA::is_nil(home))
+	       return -3; // Can't create Components::CCMHome object
+        CosNaming::Name_var n = ns->to_name(registration_name);
+        ns->rebind(n, home);
+        return 0;
     }
+    catch (...) {
+        ns = CosNaming::NamingContextExt::_nil ();
+        return -1; // Can't connect to NameService
+    }
+}
     
   
-    int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior)
-    {
-        LDEBUGNL(CCM_CONTAINER, " deploy_with_ior_%(Identifier)s()");
+int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior)
+{
+    LDEBUGNL(CCM_CONTAINER, " deploy_with_ior_%(Identifier)s()");
  
-        // Startup component home
-        SmartPtr<CCM::SessionContainer> 
-            container(new CCM::SessionContainer(orb));
-        CCM::SessionContainer::ComponentInfo info;
-        info.home_short_name = "%(Identifier)s";
-        info.home_absolute_name = "::%(Identifier)s";
-        info.home_id = "IDL::%(Identifier)s:1.0";
-        info.component_short_name = "%(ComponentType)s";
-        info.component_absolute_name = "::%(ComponentType)s";
-        info.component_id = "IDL:%(ComponentType)s:1.0";
-        info.home_glue = 
-            new %(RemoteNamespace)s%(Identifier)s_impl(container); 
-        container->load(info);
-        Components::CCMHome_var home = container->get_CCM_home(); 
-        ior = orb->object_to_string(home); 
-        container->activate();
-        return 0; // OK
-    }
+    // Startup component home
+    SmartPtr<CCM::SessionContainer> container(new CCM::SessionContainer(orb));
+    CCM::SessionContainer::ComponentInfo info;
+    info.home_short_name = "%(Identifier)s";
+    info.home_absolute_name = "::%(Identifier)s";
+    info.home_id = "IDL::%(Identifier)s:1.0";
+    info.component_short_name = "%(ComponentType)s";
+    info.component_absolute_name = "::%(ComponentType)s";
+    info.component_id = "IDL:%(ComponentType)s:1.0";
+    info.home_glue = new %(RemoteNamespace)s%(Identifier)s_impl(container); 
+    container->load(info);
+    Components::CCMHome_var home = container->get_CCM_home(); 
+    ior = orb->object_to_string(home); 
+    container->activate();
+    return 0; // OK
+}
  
  
-    int undeploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name)
-    {
-        LDEBUGNL(CCM_CONTAINER, " undeploy_%(AbsoluteRemoteHomeName)s(" 
-            << registration_name << ")");
+int undeploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_name)
+{
+    LDEBUGNL(CCM_CONTAINER, " undeploy_%(AbsoluteRemoteHomeName)s(" << registration_name << ")");
 
-        CosNaming::NamingContextExt_var ns;
-        CORBA::Object_var nsobj;
-        try {
-            nsobj = orb->resolve_initial_references ("NameService");
-            ns = CosNaming::NamingContextExt::_narrow (nsobj);
-            CosNaming::Name_var n = ns->to_name(registration_name);
-            ns->unbind(n);
-            return 0;
-        }
-        catch (...) {
-            ns = CosNaming::NamingContextExt::_nil ();
-            return -1; // Can't connect to NameService
-        }
+    CosNaming::NamingContextExt_var ns;
+    CORBA::Object_var nsobj;
+    try {
+        nsobj = orb->resolve_initial_references ("NameService");
+        ns = CosNaming::NamingContextExt::_narrow (nsobj);
+        CosNaming::Name_var n = ns->to_name(registration_name);
+        ns->unbind(n);
+        return 0;
     }
-  
+    catch (...) {
+        ns = CosNaming::NamingContextExt::_nil ();
+        return -1; // Can't connect to NameService
+    }
 }
 
 #endif // HAVE_MICO
