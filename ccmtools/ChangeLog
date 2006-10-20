@@ -1,5 +1,11 @@
-HEAD
+
+RELEASE-0_7-BRANCH
 ============================================================================
+
+
+RELEASE-0.7.4 (October , 2006)
+----------------------------------------------------------------------------
+*) Refactoring: merged changes from 0.6.15
 
 
 RELEASE-0.7.3 (October 16, 2006)
@@ -98,11 +104,51 @@ RELEASE-0.7.0 (August 17, 2006)
 	We have removed some source code relicts:
 	- Python generator prototype
 	- DbC generator prototype
-	
-		
-	
+
+
+
 BRANCH-0.6.x
 ============================================================================
+
+RELEASE-0.6.15 (October 20, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: ccmtools-idl script (reported by Duft Markus)
+	Using Interix, all path strings should be wrapped by "".
+
+*) Bugfix: Local C++ Generator (reported by Duft Markus)
+	Using Interix, there is a problem with 'extern "C"' code that uses C++ 
+	features like SmartPtr<>. So we better leave these 'extern "C"' declarations 
+	for global deployment and create operations.
+
+
+RELEASE-0.6.14 (September 11, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: Local C++ Generator (reported by Carlo Jennetten)
+	The CppLocalGenerator.getConfixInclude() method generates no #include<vector>
+	statement for sequences of struct and sequences of string.
+
+	
+RELEASE-0.6.13 (August 30, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: C++ and IDL generators
+	Generated include paths use the Java File.separator character. 
+	That does not work because the '/' separators are turned into '\'
+	characters wich causes problems...
+	(e.g. "world/europe/Color.idl" => worldeuropeColor.idl).
+	
+
+RELEASE-0.6.12 (August 29, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: ccmtools/IDL3Parser/idl3.g (reported by Duft Markus)
+	C preprocessor output lines (e.g. #line 12 "some/file.idl") generated
+	from interix (using the Windows cl command) are not parsed correctly.
+	
+*) Bugfix: ccm/CCM_Local/HomeFinder.cc 	(reported by Duft Markus)
+	A void method returns a result (ignored by gcc!!)
+
+*) Bugfix: ccm/utils/measurement/Timer.cc (reported by Duft Markus)
+	Some changes needed by interix.
+
 
 RELEASE-0.6.11 (August 10, 2006)
 ----------------------------------------------------------------------------
@@ -168,6 +214,7 @@ RELEASE-0.6.7 (June 8, 2006)
 	Refactored namespace arithmetics.
 		
 
+>>>>>>> 1.41.2.15
 RELEASE-0.6.6 (May 19, 2006)
 ----------------------------------------------------------------------------
 *) Feature: Remote Java Components

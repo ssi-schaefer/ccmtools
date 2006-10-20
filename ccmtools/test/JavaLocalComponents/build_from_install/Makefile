@@ -19,8 +19,8 @@ idl3: Test.idl
 # The ccmconfix generator gets the confix package name (-pn) and package 
 # version (-pv) settings as command line parameters. These parameters are used
 # to generate the toplevel Makefile.py file.
-	ccmconfix -makefiles -o ${IDL3_DIR} -pname "build_from_install" -pversion "1.0.0" 
-	confix.py --packageroot=`pwd`/${IDL3_DIR} --bootstrap --configure --make --targets=install
+	ccmconfix -confix2 -o ${IDL3_DIR} -pname "build_from_install" -pversion "1.0.0" 
+	confix2.py --packageroot=`pwd`/${IDL3_DIR} --bootstrap --configure --make --targets=install
 
 local: idl3
 	ccmjava -iface -local -o ${DEST_DIR}/src-gen ${INCLUDE} ${CCM_INSTALL}/include/world/europe/austria/*.idl
@@ -39,5 +39,5 @@ check:
 	bin/runClient
 
 clean: 
-	confix.py --packageroot=`pwd`/${IDL3_DIR} --make --targets=uninstall
+	confix2.py --packageroot=`pwd`/${IDL3_DIR} --make --targets=uninstall
 	rm -rf ${DEST_DIR}
