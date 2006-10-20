@@ -6,8 +6,15 @@ HEAD
 BRANCH-0.6.x
 ============================================================================
 
-RELEASE-0.6.15 (October , 2006)
+RELEASE-0.6.15 (October 20, 2006)
 ----------------------------------------------------------------------------
+*) Bugfix: ccmtools-idl script (reported by Duft Markus)
+	Using Interix, all path strings should be wrapped by "".
+
+*) Bugfix: Local C++ Generator (reported by Duft Markus)
+	Using Interix, there is a problem with 'extern "C"' code that uses C++ 
+	features like SmartPtr<>. So we better leave these 'extern "C"' declarations 
+	for global deployment and create operations.
 
 
 RELEASE-0.6.14 (September 11, 2006)
