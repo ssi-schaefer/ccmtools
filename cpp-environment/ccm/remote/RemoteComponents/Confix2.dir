@@ -1,5 +1,7 @@
 import os
-if os.spawnlp(os.P_WAIT, 'make') != 0:
+if os.spawnlp(os.P_WAIT, 'make', 'make', '-f', 'Makefile.mico') != 0:
     raise Exception('make failed in '+'/'.join(CURRENT_DIRECTORY().abspath()))
 
+RESCAN_CURRENT_DIRECTORY()
 INSTALLDIR_H('Components')
+ADD_EXTRA_DIST('Makefile.mico')
