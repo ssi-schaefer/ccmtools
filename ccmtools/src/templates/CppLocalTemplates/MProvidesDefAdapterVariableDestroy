@@ -1,2 +1,2 @@
-    delete %(Identifier)s_facet_impl;
+delete %(Identifier)s_facet_impl;
     

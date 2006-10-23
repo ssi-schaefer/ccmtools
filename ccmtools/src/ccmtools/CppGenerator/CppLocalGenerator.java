@@ -63,6 +63,7 @@ import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 import ccmtools.utils.Code;
+import ccmtools.utils.Confix;
 import ccmtools.utils.Text;
 
 /***
@@ -76,6 +77,9 @@ public class CppLocalGenerator
 	extends CppGenerator
 {
     protected AnyPluginManager anyManager = null;
+    
+    protected Set<String> OutputDirectories;
+    
     
     //====================================================================
     // Definition of arrays that determine the generator's behavior
@@ -1050,6 +1054,7 @@ public class CppLocalGenerator
 
         try 
         {
+            OutputDirectories = new HashSet<String>();
             Iterator path_iterator = out_paths.iterator();
             for(int i = 0; i < out_strings.length; i++) 
             {               
@@ -1096,12 +1101,27 @@ public class CppLocalGenerator
                     writeFinalizedFile(file_dir, file_name, generated_code);
                 }
             }
+            
+            Confix.writeConfix2Files(uiDriver, OutputDirectories);
         }
         catch(Exception e) 
         {
             uiDriver.printError("!!!Error " + e.getMessage());
         }
         logger.fine("leave writeOutput()");
+    }
+
+    
+    /**
+     * Overide writeFinalizedFile method to collect all output directories as input
+     * for the Confix file generation.
+     * 
+     */
+    protected void writeFinalizedFile(String directory, String file, String output) 
+        throws IOException
+    {
+        OutputDirectories.add(output_dir + File.separator + directory);        
+        super.writeFinalizedFile(directory, file, output);
     }
 
     

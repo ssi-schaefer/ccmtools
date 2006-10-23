@@ -32,7 +32,8 @@
 #include <ccm/local/UserTest_gen.h>
 #include <ccm/local/UserTestHome_gen.h>
 
-#include <ccm/local/assembly_factory.h>
+#include <ccm/local/AssemblyFactory.h>
+#include <ccm/local/assembly.h>
 
 using namespace std;
 using namespace wx::utils;
@@ -67,7 +68,7 @@ int main(int argc, char *argv[])
     error  += deploy_ccm_local_BasicTestHome("BasicTestHome");
     error  += deploy_ccm_local_UserTestHome("UserTestHome");
 
-    SmartPtr<Components::ccm::local::AssemblyFactory> assembly_factory(new AssemblyFactory());
+    SmartPtr<Components::ccm::local::AssemblyFactory> assembly_factory(new AssemblyFactory<Assembly>());
     error += deploy_with_assembly_ccm_local_SuperTestHome("SuperTestHome", assembly_factory);
 
     error += deploy_ccm_local_SuperTestHomeMirror("SuperTestHomeMirror");	

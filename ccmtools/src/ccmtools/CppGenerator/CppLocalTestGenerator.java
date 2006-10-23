@@ -31,6 +31,7 @@ import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MOperationDef;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Code;
+import ccmtools.utils.Confix;
 import ccmtools.utils.Text;
 
 public class CppLocalTestGenerator
@@ -93,6 +94,7 @@ public class CppLocalTestGenerator
         else 
         {
             writeFinalizedFile(file_dir, file_name, generated_code);
+            Confix.writeConfix2File(uiDriver, output_dir + File.separator + file_dir);
         }
         logger.fine("leave writeOutput()");
     }

@@ -30,7 +30,8 @@ stubs:
 
 remote: local stubs
 	ccmtools c++remote -o ${DEST_DIR}/src/component/Test Test.idl
-
+	ccmtools c++remote-test -o ${DEST_DIR}/src/component/Test Test.idl
+	
 check: check_local
 	cp impl/_check_world_europe_austria_ccm_remote_Test.cc ${DEST_DIR}/src/component/Test/test/
 	confix2.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
