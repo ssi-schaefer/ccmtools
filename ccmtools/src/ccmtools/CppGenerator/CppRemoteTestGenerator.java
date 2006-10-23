@@ -30,6 +30,7 @@ import java.io.IOException;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.ui.UserInterfaceDriver;
+import ccmtools.utils.Confix;
 import ccmtools.utils.Text;
 
 public class CppRemoteTestGenerator 
@@ -69,5 +70,7 @@ public class CppRemoteTestGenerator
         String file_name = "_check_" + remoteName + ".cc";
 
         writeFinalizedFile(file_dir, file_name, generated_code);
+        
+        Confix.writeConfix2File(uiDriver, output_dir + File.separator + file_dir);
     }
 }

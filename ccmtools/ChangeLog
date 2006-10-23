@@ -3,10 +3,15 @@ RELEASE-0_7-BRANCH
 ============================================================================
 
 
-RELEASE-0.7.4 (October , 2006)
+RELEASE-0.7.4 (October 23, 2006)
 ----------------------------------------------------------------------------
 *) Refactoring: merged changes from 0.6.15
 
+*) Bugfix: Added generation of Confix2.dir files (reported by Carlo Jennetten)
+	- Confix.dir files should be generated only in directories created by the
+		C++ generators. That behaviour is not the same as by using the ccmconfix 
+		generator.
+				
 
 RELEASE-0.7.3 (October 16, 2006)
 ----------------------------------------------------------------------------

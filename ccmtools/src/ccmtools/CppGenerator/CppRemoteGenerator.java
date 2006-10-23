@@ -24,10 +24,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import ccmtools.CodeGenerator.Template;
@@ -60,6 +62,7 @@ import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 import ccmtools.utils.Code;
+import ccmtools.utils.Confix;
 import ccmtools.utils.Text;
 
 /***
@@ -87,6 +90,9 @@ public class CppRemoteGenerator
     protected Map  corbaMappings;
    
     protected final String CORBA_CONVERTER_DIR = "corba_converter"; 
+   
+    protected Set<String> outputDirectories;
+    
     
     /**
      * Top level node types: Types for which we have a global template; that is,
@@ -1690,6 +1696,8 @@ public class CppRemoteGenerator
 
             try 
             {
+                outputDirectories = new HashSet<String>();
+                
                 if(currentNode instanceof MComponentDef) 
                 {
                     // write the component files
@@ -1697,7 +1705,7 @@ public class CppRemoteGenerator
                     String componentName = component.getIdentifier();
                     String namespace = getRemoteNamespace((MContained)component,Text.MANGLING_SEPARATOR);
                     String fileDir = generatorPrefix + namespace.substring(0, namespace.length()-1);
-                    Code.writeFile(uiDriver, output_dir, fileDir, componentName + remoteSuffix[i],
+                    writeFile(uiDriver, output_dir, fileDir, componentName + remoteSuffix[i],
                                    Code.prettifySourceCode(sourceFiles[i]));
                 }
                 else if(currentNode instanceof MHomeDef) 
@@ -1709,7 +1717,7 @@ public class CppRemoteGenerator
                     String namespace = getRemoteNamespace((MContained)component,Text.MANGLING_SEPARATOR);
                     String fileDir = generatorPrefix + namespace.substring(0, namespace.length()-1);
 
-                    Code.writeFile(uiDriver, output_dir, fileDir, homeName + remoteSuffix[i],
+                    writeFile(uiDriver, output_dir, fileDir, homeName + remoteSuffix[i],
                                    Code.prettifySourceCode(sourceFiles[i]));
                 }
                 else if(currentNode instanceof MInterfaceDef || currentNode instanceof MAliasDef
@@ -1722,13 +1730,15 @@ public class CppRemoteGenerator
                     String fileDir = generatorPrefix + getRemoteNamespace(contained, "_") 
                     		+ CORBA_CONVERTER_DIR;
 
-                    Code.writeFile(uiDriver, output_dir, fileDir, nodeName + remoteSuffix[i],
+                    writeFile(uiDriver, output_dir, fileDir, nodeName + remoteSuffix[i],
                                    Code.prettifySourceCode(sourceFiles[i]));
                 }
                 else 
                 {
                     throw new RuntimeException("Unhandled model element type!");
                 }
+                
+                Confix.writeConfix2Files(uiDriver, outputDirectories);
             }
             catch(Exception e) 
             {
@@ -1739,6 +1749,14 @@ public class CppRemoteGenerator
         logger.fine("end");
     }
 
+    
+    protected void writeFile(UserInterfaceDriver driver, File outDir, String directory, String file, String output) 
+        throws IOException
+    {
+        outputDirectories.add(output_dir + File.separator + directory);
+        Code.writeFile(driver, outDir, directory, file, output);
+    }
+    
     
     
     //====================================================================
