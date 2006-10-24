@@ -77,7 +77,7 @@ public class Idl2ComponentDefTemplate
     stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_20);
     stringBuffer.append(TEXT_21);
-    stringBuffer.append(model.generateModulesClose() );
+    stringBuffer.append(model.generateIdl2ModulesClose() );
     stringBuffer.append(TEXT_22);
     stringBuffer.append(TEXT_23);
     stringBuffer.append(model.generateIncludeGuardClose());

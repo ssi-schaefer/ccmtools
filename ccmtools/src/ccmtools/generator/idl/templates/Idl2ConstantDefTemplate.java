@@ -2,13 +2,13 @@ package ccmtools.generator.idl.templates;
 
 import ccmtools.generator.idl.metamodel.*;
 
-public class Idl2ExceptionDefFileTemplate
+public class Idl2ConstantDefTemplate
 {
   protected static String nl;
-  public static synchronized Idl2ExceptionDefFileTemplate create(String lineSeparator)
+  public static synchronized Idl2ConstantDefTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    Idl2ExceptionDefFileTemplate result = new Idl2ExceptionDefFileTemplate();
+    Idl2ConstantDefTemplate result = new Idl2ConstantDefTemplate();
     nl = null;
     return result;
   }
@@ -19,20 +19,21 @@ public class Idl2ExceptionDefFileTemplate
   protected final String TEXT_3 = NL;
   protected final String TEXT_4 = NL;
   protected final String TEXT_5 = NL;
-  protected final String TEXT_6 = NL;
+  protected final String TEXT_6 = NL + " ";
   protected final String TEXT_7 = NL;
-  protected final String TEXT_8 = NL + " ";
-  protected final String TEXT_9 = NL;
-  protected final String TEXT_10 = NL;
-  protected final String TEXT_11 = NL;
+  protected final String TEXT_8 = "const ";
+  protected final String TEXT_9 = " ";
+  protected final String TEXT_10 = " = ";
+  protected final String TEXT_11 = "; " + NL;
   protected final String TEXT_12 = NL;
   protected final String TEXT_13 = NL;
   protected final String TEXT_14 = NL;
+  protected final String TEXT_15 = NL;
 
   public String generate(Object argument)
   {
     final StringBuffer stringBuffer = new StringBuffer();
-     ExceptionDef model = (ExceptionDef) argument; 
+     ConstantDef model = (ConstantDef) argument; 
     stringBuffer.append(TEXT_1);
     stringBuffer.append(model.generateCcmtoolsVersion());
     stringBuffer.append(TEXT_2);
@@ -40,20 +41,23 @@ public class Idl2ExceptionDefFileTemplate
     stringBuffer.append(model.generateIncludeGuardOpen());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(model.generateIdl2IncludeStatements());
+    stringBuffer.append(model.generateModulesOpen() );
     stringBuffer.append(TEXT_6);
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(model.generateModulesOpen() );
+    stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_8);
+    stringBuffer.append(model.getType().generateIdlMapping());
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(model.generateException());
+    stringBuffer.append(model.getIdentifier());
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(model.generateConstantValue());
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(model.generateIdl2ModulesClose() );
     stringBuffer.append(TEXT_12);
+    stringBuffer.append(model.generateIdl2ModulesClose() );
     stringBuffer.append(TEXT_13);
-    stringBuffer.append(model.generateIncludeGuardClose());
     stringBuffer.append(TEXT_14);
+    stringBuffer.append(model.generateIncludeGuardClose());
+    stringBuffer.append(TEXT_15);
     return stringBuffer.toString();
   }
 }

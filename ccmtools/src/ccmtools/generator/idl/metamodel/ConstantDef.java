@@ -3,6 +3,7 @@ package ccmtools.generator.idl.metamodel;
 import java.util.List;
 
 import ccmtools.generator.idl.templates.ConstantDefTemplate;
+import ccmtools.generator.idl.templates.Idl2ConstantDefTemplate;
 
 public class ConstantDef
 	extends ModelElement
@@ -65,5 +66,9 @@ public class ConstantDef
     /*************************************************************************
      * IDL2 Generator Methods Implementation
      *************************************************************************/
-	
+
+    public String generateIdl2()
+    {
+        return new Idl2ConstantDefTemplate().generate(this); 
+    }
 }

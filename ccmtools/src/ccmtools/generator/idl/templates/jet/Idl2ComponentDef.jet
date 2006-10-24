@@ -25,6 +25,6 @@
 <%=model.generateIdl2UsedInterfaces()%>
 <%=model.indent()%>};
 
-<%=model.generateModulesClose() %>
+<%=model.generateIdl2ModulesClose() %>
 
 <%=model.generateIncludeGuardClose()%>

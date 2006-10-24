@@ -2,13 +2,13 @@ package ccmtools.generator.idl.templates;
 
 import ccmtools.generator.idl.metamodel.*;
 
-public class Idl2ExceptionDefFileTemplate
+public class Idl2EnumDefFileTemplate
 {
   protected static String nl;
-  public static synchronized Idl2ExceptionDefFileTemplate create(String lineSeparator)
+  public static synchronized Idl2EnumDefFileTemplate create(String lineSeparator)
   {
     nl = lineSeparator;
-    Idl2ExceptionDefFileTemplate result = new Idl2ExceptionDefFileTemplate();
+    Idl2EnumDefFileTemplate result = new Idl2EnumDefFileTemplate();
     nl = null;
     return result;
   }
@@ -19,20 +19,18 @@ public class Idl2ExceptionDefFileTemplate
   protected final String TEXT_3 = NL;
   protected final String TEXT_4 = NL;
   protected final String TEXT_5 = NL;
-  protected final String TEXT_6 = NL;
+  protected final String TEXT_6 = NL + " ";
   protected final String TEXT_7 = NL;
-  protected final String TEXT_8 = NL + " ";
+  protected final String TEXT_8 = NL;
   protected final String TEXT_9 = NL;
   protected final String TEXT_10 = NL;
   protected final String TEXT_11 = NL;
   protected final String TEXT_12 = NL;
-  protected final String TEXT_13 = NL;
-  protected final String TEXT_14 = NL;
 
   public String generate(Object argument)
   {
     final StringBuffer stringBuffer = new StringBuffer();
-     ExceptionDef model = (ExceptionDef) argument; 
+     EnumDef model = (EnumDef) argument; 
     stringBuffer.append(TEXT_1);
     stringBuffer.append(model.generateCcmtoolsVersion());
     stringBuffer.append(TEXT_2);
@@ -40,20 +38,17 @@ public class Idl2ExceptionDefFileTemplate
     stringBuffer.append(model.generateIncludeGuardOpen());
     stringBuffer.append(TEXT_4);
     stringBuffer.append(TEXT_5);
-    stringBuffer.append(model.generateIdl2IncludeStatements());
+    stringBuffer.append(model.generateModulesOpen() );
     stringBuffer.append(TEXT_6);
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(model.generateModulesOpen() );
+    stringBuffer.append(model.generateEnumeration());
     stringBuffer.append(TEXT_8);
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(model.generateException());
+    stringBuffer.append(model.generateIdl2ModulesClose() );
     stringBuffer.append(TEXT_10);
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(model.generateIdl2ModulesClose() );
-    stringBuffer.append(TEXT_12);
-    stringBuffer.append(TEXT_13);
     stringBuffer.append(model.generateIncludeGuardClose());
-    stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_12);
     return stringBuffer.toString();
   }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import ccmtools.generator.idl.templates.EnumDefFileTemplate;
 import ccmtools.generator.idl.templates.EnumDefTemplate;
+import ccmtools.generator.idl.templates.Idl2EnumDefFileTemplate;
 import ccmtools.utils.Text;
 
 public class EnumDef
@@ -59,4 +60,8 @@ public class EnumDef
      * IDL2 Generator Methods Implementation
      *************************************************************************/
     
+    public String generateIdl2()
+    {
+        return new Idl2EnumDefFileTemplate().generate(this); 
+    }
 }

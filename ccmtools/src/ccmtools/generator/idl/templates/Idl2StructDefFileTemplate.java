@@ -65,7 +65,7 @@ public class Idl2StructDefFileTemplate
     stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_16);
     stringBuffer.append(TEXT_17);
-    stringBuffer.append(model.generateModulesClose() );
+    stringBuffer.append(model.generateIdl2ModulesClose() );
     stringBuffer.append(TEXT_18);
     stringBuffer.append(TEXT_19);
     stringBuffer.append(model.generateIncludeGuardClose());

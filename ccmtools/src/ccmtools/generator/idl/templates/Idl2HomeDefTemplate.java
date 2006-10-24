@@ -113,7 +113,7 @@ public class Idl2HomeDefTemplate
     stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_34);
     stringBuffer.append(TEXT_35);
-    stringBuffer.append(model.generateModulesClose() );
+    stringBuffer.append(model.generateIdl2ModulesClose() );
     stringBuffer.append(TEXT_36);
     stringBuffer.append(TEXT_37);
     stringBuffer.append(model.generateIncludeGuardClose());

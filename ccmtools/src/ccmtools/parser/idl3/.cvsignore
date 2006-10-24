@@ -7,3 +7,5 @@ Idl3Parser.java
 Idl3TokenTypes.java
 Idl3TokenTypes.txt
 Idl3LexerTokenTypes.java
+Idl3Lexer.smap
+Idl3Parser.smap
