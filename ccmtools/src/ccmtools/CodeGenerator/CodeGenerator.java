@@ -1089,8 +1089,8 @@ abstract public class CodeGenerator implements TemplateHandler
         for(Iterator i = bool_attrs.iterator(); i.hasNext();) {
             try {
                 Class klass = currentNode.getClass();
-                Method method = klass.getMethod((String) i.next(), null);
-                Object result = method.invoke(currentNode, null);
+                Method method = klass.getMethod((String) i.next(), (Class[])null);
+                Object result = method.invoke(currentNode, (Object[])null);
                 Boolean hack = new Boolean(result.toString());
                 if(hack.booleanValue())
                     attrs += method.getName().substring(2);
