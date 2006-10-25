@@ -1,0 +1,17 @@
+#ifndef __world_IFACE__
+#define __world_IFACE__
+
+#include "Person.idl"
+#include "Day.idl"
+
+module world
+{
+  interface IFace
+  {
+    long op1(in Person person);
+    void op2(in Day day);
+  };
+
+}; // /module world
+
+#endif

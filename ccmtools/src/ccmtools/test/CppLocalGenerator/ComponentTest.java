@@ -2,6 +2,7 @@ package ccmtools.test.CppLocalGenerator;
 
 import junit.framework.Test;
 import ccmtools.test.CcmtoolsTestCase;
+import ccmtools.test.CcmtoolsTestCaseException;
 
 public class ComponentTest
 	extends CcmtoolsTestCase
@@ -19,71 +20,51 @@ public class ComponentTest
 
     public static Test suite()
     {
-    	return new junit.framework.TestSuite(ComponentTest.class);
+    	    return new junit.framework.TestSuite(ComponentTest.class);
     }
 	
     
     // ------------------------------------------------------------------------
     // Attribute test cases
     // ------------------------------------------------------------------------
-    //    make -C attribute_types test
     
-    public void testAttributeTypes()
+    public void testAttributeTypes() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/attribute_types test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/attribute_types test");
     }
     
     
     // ------------------------------------------------------------------------
     // Supports test cases
     // ------------------------------------------------------------------------
-    //    make -C supports_attribute test
-    //    make -C supports_exception test
-    //    make -C supports_inheritance test
-    //    make -C supports_types test
     
-    public void testSupportsAttribute()
+    public void testSupportsAttribute() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/supports_attribute test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/supports_attribute test");
     }
 
-    public void testSupportsException()
+    public void testSupportsException() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/supports_exception test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/supports_exception test");
     }
 
-    public void testSupportsInheritance()
+    public void testSupportsInheritance() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/supports_inheritance test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/supports_inheritance test");
     }
 
-    public void testSupportsTypes()
+    public void testSupportsTypes() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/supports_types test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/supports_types test");
     }    
+
+
+    // ------------------------------------------------------------------------
+    // Misc test cases
+    // ------------------------------------------------------------------------
+
+    public void testComponentDistributed() throws CcmtoolsTestCaseException
+    {
+        executeCommandLine("make -C " + testDir + "/component_distributed test");
+    }        
 }

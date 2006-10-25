@@ -213,29 +213,29 @@ public class CppLocalGenerator
         }
         else if(dataType.equals("FieldDefInclude"))
         {
-        		if(idlType instanceof MContained)
-        		{
-        			MFieldDef field = (MFieldDef)currentNode;
-        			MContained contained = (MContained)idlType;   
-        			MContained base;
-        			if(field.getStructure() != null)
-        			{
-        				base = field.getStructure();
-        	        	}
-        			else	 if(field.getException() != null)
-        			{
-        				base = field.getException();
-        	        	}
-        			else
-        			{
-        				throw new RuntimeException("MFieldDef without MStructDef or MExceptionDef!");
-        	        	}
-        	        	return getConfixInclude(base, contained, contained.getIdentifier());
-        		}
-        		else
-        		{
+//        		if(idlType instanceof MContained)
+//        		{
+//        			MFieldDef field = (MFieldDef)currentNode;
+//        			MContained contained = (MContained)idlType;   
+//        			MContained base;
+//        			if(field.getStructure() != null)
+//        			{
+//        				base = field.getStructure();
+//        	        	}
+//        			else	 if(field.getException() != null)
+//        			{
+//        				base = field.getException();
+//        	        	}
+//        			else
+//        			{
+//        				throw new RuntimeException("MFieldDef without MStructDef or MExceptionDef!");
+//        	        	}
+//        	        	return getConfixInclude(base, contained, contained.getIdentifier());
+//        		}
+//        		else
+//        		{
         			 return getLanguageTypeInclude(idlType);
-        		}
+//        		}
         }
         logger.fine("end");
         return dataValue;
@@ -259,7 +259,8 @@ public class CppLocalGenerator
             {
             		MTyped singleType = (MTyped) idlType;
             		MIDLType singleIdlType = singleType.getIdlType();
-            		dataValue = getConfixInclude(alias, singleIdlType);
+//            		dataValue = getConfixInclude(alias, singleIdlType);
+                    dataValue = getLanguageTypeInclude(singleIdlType);
             }
             else 
             {
@@ -371,13 +372,6 @@ public class CppLocalGenerator
         if(dataType.equals("InterfaceInclude")) {
             MContained contained = (MContained)currentNode;
             dataValue = getLocalCppName(contained, Text.INCLUDE_SEPARATOR);
-        }
-        else if(dataType.equals("InterfaceIncludes"))
-        {
-        		StringBuffer code = new StringBuffer();
-        		Set includeSet = getInterfaceIncludes(iface);
-        		includeSet.addAll(getBaseInterfaceIncludes(iface));
-        		dataValue = Text.join("\n", includeSet);
         }
         else if(dataType.equals("InterfaceIncludes"))
         {
@@ -578,7 +572,8 @@ public class CppLocalGenerator
     			{
     				MAttributeDef attr = (MAttributeDef)contained;
     				MTyped type = (MTyped)attr;    				
-    				includeSet.add(getConfixInclude(iface, contained, getUserTypeName(type.getIdlType())));    				
+    				//includeSet.add(getConfixInclude(iface, contained, getUserTypeName(type.getIdlType())));
+    				includeSet.add(getLanguageTypeInclude(type.getIdlType()));
     			}
     		}
     		return includeSet;
@@ -596,15 +591,16 @@ public class CppLocalGenerator
 				MTyped type = (MTyped)op;    												
 				if(op.getIdlType() instanceof MContained)
 				{
-					MContained containedResult = (MContained) op.getIdlType();
-					includeSet.add(getConfixInclude(iface, containedResult, 
-							containedResult.getIdentifier()));					
+					//MContained containedResult = (MContained) op.getIdlType();
+					//includeSet.add(getConfixInclude(iface, containedResult, containedResult.getIdentifier()));
+                    includeSet.add(getLanguageTypeInclude(op.getIdlType()));
 				}
 				
 				for(Iterator e = op.getExceptionDefs().iterator(); e.hasNext();)
 				{
 					MExceptionDef ex = (MExceptionDef)e.next();
-					includeSet.add(getConfixInclude(iface, ex, ex.getIdentifier()));
+					//includeSet.add(getConfixInclude(iface, ex, ex.getIdentifier()));
+                    includeSet.add(getLanguageTypeInclude(ex));
 				}
 				
 				for(Iterator p = op.getParameters().iterator(); p.hasNext();)
@@ -612,9 +608,9 @@ public class CppLocalGenerator
 					MParameterDef param = (MParameterDef)p.next();
 					if(param.getIdlType() instanceof MContained)
 					{
-						MContained containedParam = (MContained)param.getIdlType();
-						includeSet.add(getConfixInclude(iface, containedParam, 
-								containedParam.getIdentifier()));
+						//MContained containedParam = (MContained)param.getIdlType();
+						//includeSet.add(getConfixInclude(iface, containedParam,containedParam.getIdentifier()));
+                        includeSet.add(getLanguageTypeInclude(param.getIdlType()));
 					}
 				}
 			}
@@ -637,7 +633,8 @@ public class CppLocalGenerator
     		for(Iterator i = iface.getBases().iterator(); i.hasNext();)
     		{
     			MInterfaceDef base = (MInterfaceDef)i.next();
-    			includeSet.add(getConfixInclude(iface, base, base.getIdentifier()));
+    			//includeSet.add(getConfixInclude(iface, base, base.getIdentifier()));
+    			includeSet.add(getLanguageTypeInclude((MContained)base));
     		}
     		return includeSet;
     }
@@ -789,59 +786,59 @@ public class CppLocalGenerator
         return code.toString();
     }
 
-    protected String getConfixInclude(MIDLType base, MIDLType element)
-    {
-    		logger.fine("begin");	
-            
-        StringBuffer code = new StringBuffer();        
-        if(base instanceof MAliasDef)
-        {
-            MTyped type = (MTyped) base;
-            MIDLType idlType = type.getIdlType();
-            if(idlType instanceof MSequenceDef || idlType instanceof MArrayDef) 
-            {
-                code.append("#include <vector>\n");
-            }            
-        }
-        
-    		if(base instanceof MContained && element instanceof MContained)
-    		{
-    			code.append(getConfixInclude((MContained)base, (MContained)element, 
-    					((MContained)element).getIdentifier()));
-    		}
-    		else
-    		{
-    			code.append(getLanguageTypeInclude(element));
-    		}
-    		logger.fine("end");	
-    		return code.toString();
-    }
+//    protected String getConfixInclude(MIDLType base, MIDLType element)
+//    {
+//    		logger.fine("begin");	
+//            
+//        StringBuffer code = new StringBuffer();        
+//        if(base instanceof MAliasDef)
+//        {
+//            MTyped type = (MTyped) base;
+//            MIDLType idlType = type.getIdlType();
+//            if(idlType instanceof MSequenceDef || idlType instanceof MArrayDef) 
+//            {
+//                code.append("#include <vector>\n");
+//            }            
+//        }
+//        
+//    		if(base instanceof MContained && element instanceof MContained)
+//    		{
+//    			code.append(getConfixInclude((MContained)base, (MContained)element, 
+//    					((MContained)element).getIdentifier()));
+//    		}
+//    		else
+//    		{
+//    			code.append(getLanguageTypeInclude(element));
+//    		}
+//    		logger.fine("end");	
+//    		return code.toString();
+//    }
     
-    protected String getConfixInclude(MContained base, MContained element, String baseType)
-    {
-    		logger.fine("begin");	
-    		
-    		if(baseType.length() == 0)
-    			return ""; // No defined type => no include statement
-    		
-    		String baseNamespace = getLocalCppNamespace(base, Text.INCLUDE_SEPARATOR);
-		String elementNamespace =  getLocalCppNamespace(element, Text.INCLUDE_SEPARATOR);	
-		
-		StringBuffer code = new StringBuffer();        
-        if(baseNamespace.equals(elementNamespace))
-		{
-			code.append("#include \"");
-			code.append(baseType);
-			code.append(".h\"\n");
-		}
-		else
-		{
-			code.append(getScopedInclude(element));
-		}
-
-		logger.fine("end");
-		return code.toString();		
-    }
+//    protected String getConfixInclude(MContained base, MContained element, String baseType)
+//    {
+//    		logger.fine("begin");	
+//    		
+//    		if(baseType.length() == 0)
+//    			return ""; // No defined type => no include statement
+//    		
+//    		String baseNamespace = getLocalCppNamespace(base, Text.INCLUDE_SEPARATOR);
+//		String elementNamespace =  getLocalCppNamespace(element, Text.INCLUDE_SEPARATOR);	
+//		
+//		StringBuffer code = new StringBuffer();        
+//        if(baseNamespace.equals(elementNamespace))
+//		{
+//			code.append("#include \"");
+//			code.append(baseType);
+//			code.append(".h\"\n");
+//		}
+//		else
+//		{
+//			code.append(getScopedInclude(element));
+//		}
+//
+//		logger.fine("end");
+//		return code.toString();		
+//    }
     
 
     /***
@@ -853,11 +850,13 @@ public class CppLocalGenerator
     {
         logger.fine("begin");
         StringBuffer code = new StringBuffer();
-        if(idlType instanceof MStringDef) {
+        if(idlType instanceof MStringDef) 
+        {
             code.append("#include <string>\n");
         }
         else if(idlType instanceof MSequenceDef
-                || idlType instanceof MArrayDef) {
+                || idlType instanceof MArrayDef) 
+        {
             MTyped singleType = (MTyped)idlType;
             MIDLType singleIdlType = singleType.getIdlType();
             code.append("#include <vector>\n");
@@ -865,17 +864,23 @@ public class CppLocalGenerator
         }
         else if(idlType instanceof MPrimitiveDef)
         {
-        	MPrimitiveDef type = (MPrimitiveDef)idlType;
-        	if(type.getKind() == MPrimitiveKind.PK_ANY)
-        	{
-        		code.append("#include <wx/utils/Value.h>\n");
-        	}
+        	    MPrimitiveDef type = (MPrimitiveDef)idlType;
+        	    if(type.getKind() == MPrimitiveKind.PK_ANY)
+        	    {
+        	        code.append("#include <wx/utils/Value.h>\n");
+        	    }
         }
-        else if(idlType instanceof MContained) {
+        else if(idlType instanceof MContained)
+        {
             code.append(getScopedInclude((MContained) idlType));
         }
         logger.fine("end");
         return code.toString();
+    }
+        
+    protected String getLanguageTypeInclude(MContained contained) 
+    {
+        return getScopedInclude(contained);
     }
     
     
