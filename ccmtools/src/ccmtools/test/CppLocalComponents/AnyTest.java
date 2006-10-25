@@ -1,15 +1,16 @@
-package ccmtools.test.CppLocalGenerator;
+package ccmtools.test.CppLocalComponents;
 
 import junit.framework.Test;
 import ccmtools.test.CcmtoolsTestCase;
+import ccmtools.test.CcmtoolsTestCaseException;
 
-public class HomeTest
+public class AnyTest
 	extends CcmtoolsTestCase
 {
     private String ccmtoolsDir;
     private String testDir;
 
-    public HomeTest(String name)
+    public AnyTest(String name)
     {
         super(name);
         // get current working directory (this is where build.xml is executed)
@@ -19,31 +20,21 @@ public class HomeTest
 
     public static Test suite()
     {
-    	return new junit.framework.TestSuite(HomeTest.class);
+    	    return new junit.framework.TestSuite(AnyTest.class);
     }
 	
     
     // ------------------------------------------------------------------------
-    // Home test cases
+    // Any test cases
     // ------------------------------------------------------------------------
     
-    public void testHomeException()
+    public void testAny() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/home_exception test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
+        executeCommandLine("make -C " + testDir + "/any test");
+    }  
     
-    public void testHomeTypes()
+    public void testAnyPlugin() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/home_types test");
-        }
-        catch(Exception e) {
-            fail();
-        }
-    }
+        executeCommandLine("make -C " + testDir + "/any_plugin test");
+    }  
 }

@@ -1,7 +1,8 @@
-package ccmtools.test.CppLocalGenerator;
+package ccmtools.test.CppLocalComponents;
 
 import junit.framework.Test;
 import ccmtools.test.CcmtoolsTestCase;
+import ccmtools.test.CcmtoolsTestCaseException;
 
 public class AssemblyTest
 	extends CcmtoolsTestCase
@@ -19,7 +20,7 @@ public class AssemblyTest
 
     public static Test suite()
     {
-    	return new junit.framework.TestSuite(AssemblyTest.class);
+    	    return new junit.framework.TestSuite(AssemblyTest.class);
     }
 	
     
@@ -28,13 +29,8 @@ public class AssemblyTest
     // ------------------------------------------------------------------------
     //    make -C assembly_nested test
     
-    public void testAssemblyNested()
+    public void testAssemblyNested() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/assembly_nested test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/assembly_nested test");
     }
 }

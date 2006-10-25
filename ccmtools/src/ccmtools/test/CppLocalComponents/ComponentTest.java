@@ -1,4 +1,4 @@
-package ccmtools.test.CppLocalGenerator;
+package ccmtools.test.CppLocalComponents;
 
 import junit.framework.Test;
 import ccmtools.test.CcmtoolsTestCase;

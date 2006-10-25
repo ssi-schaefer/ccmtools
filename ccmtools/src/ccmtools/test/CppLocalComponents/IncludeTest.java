@@ -1,7 +1,8 @@
-package ccmtools.test.CppLocalGenerator;
+package ccmtools.test.CppLocalComponents;
 
 import junit.framework.Test;
 import ccmtools.test.CcmtoolsTestCase;
+import ccmtools.test.CcmtoolsTestCaseException;
 
 public class IncludeTest
 	extends CcmtoolsTestCase
@@ -19,7 +20,7 @@ public class IncludeTest
 
     public static Test suite()
     {
-    	return new junit.framework.TestSuite(IncludeTest.class);
+        return new junit.framework.TestSuite(IncludeTest.class);
     }
 	
     
@@ -28,13 +29,8 @@ public class IncludeTest
     // ------------------------------------------------------------------------
     //    make -C include_nested test
     
-    public void testIncludeNested()
+    public void testIncludeNested() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/include_nested test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/include_nested test");
     }    
 }

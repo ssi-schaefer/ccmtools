@@ -1,4 +1,4 @@
-package ccmtools.test.CppLocalGenerator;
+package ccmtools.test.CppLocalComponents;
 
 import junit.framework.Test;
 import ccmtools.test.CcmtoolsTestCase;
@@ -13,7 +13,7 @@ public class CliTest
 
     public static Test suite()
     {
-    	return new junit.framework.TestSuite(CliTest.class);
+        return new junit.framework.TestSuite(CliTest.class);
     }
     
     

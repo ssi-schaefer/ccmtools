@@ -1,7 +1,8 @@
-package ccmtools.test.CppLocalGenerator;
+package ccmtools.test.CppLocalComponents;
 
 import junit.framework.Test;
 import ccmtools.test.CcmtoolsTestCase;
+import ccmtools.test.CcmtoolsTestCaseException;
 
 public class ModuleTest
 	extends CcmtoolsTestCase
@@ -19,7 +20,7 @@ public class ModuleTest
 
     public static Test suite()
     {
-    	return new junit.framework.TestSuite(ModuleTest.class);
+        return new junit.framework.TestSuite(ModuleTest.class);
     }
 	
     
@@ -27,33 +28,18 @@ public class ModuleTest
     // Module test cases
     // ------------------------------------------------------------------------
     
-    public void testModuleMixed()
+    public void testModuleMixed() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/module_mixed test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/module_mixed test");
     }
 
-    public void testModuleNested()
+    public void testModuleNested() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/module_nested test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/module_nested test");
     }
 
-    public void testModuleReopen()
+    public void testModuleReopen() throws CcmtoolsTestCaseException
     {
-        try {
-            executeCommandLine("make -C " + testDir + "/module_reopen test");
-        }
-        catch(Exception e) {
-            fail();
-        }
+        executeCommandLine("make -C " + testDir + "/module_reopen test");
     }
 }

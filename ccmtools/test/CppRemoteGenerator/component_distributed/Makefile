@@ -1,6 +1,7 @@
 
 all: comp 
 
+test: comp clean
 
 idl3repo: 
 	make -C idl3 

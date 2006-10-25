@@ -1,4 +1,4 @@
-package ccmtools.test.CppRemoteGenerator;
+package ccmtools.test.CppRemoteComponents;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
