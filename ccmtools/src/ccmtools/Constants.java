@@ -23,11 +23,9 @@ package ccmtools;
 public class Constants 
 {
     public static final String PACKAGE  = "ccmtools";
-    public static final String VERSION  = "0.7.5";
+    public static final String VERSION  = "0.7.6";
     public static final String CPP_PATH = "cpp";
 
-//	public static final String COMPONENT_NAMESPACE = "component";
-    
     public static final String  CCMTOOLS_VERSION_TEXT = "CCM Tools version " + Constants.VERSION;
 
     public static final String  CCMTOOLS_COPYRIGHT_TEXT = 
