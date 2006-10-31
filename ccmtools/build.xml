@@ -151,14 +151,11 @@
 	
 			
   	<!-- Run test cases -->
-  	<target name="check.java.local" depends="compile.ccmtools"
-     	description="Run JUnit test cases." >
-     	<junit printsummary="yes" 
-     		   haltonfailure="yes" 
-     		   showoutput="yes">
+  	<target name="check.java"  >
+     	<junit printsummary="true" haltonfailure="true" showoutput="true">
           	<classpath refid="compile.classpath" />
-	  		<formatter type="xml" />
-	  		<test name="ccmtools.generator.java.test.local.JavaLocalComponentTestSuite" />
+	  		<formatter type="brief" />
+	  		<test name="ccmtools.generator.java.test.JavaComponentsTestSuite" />
      	</junit>
   	</target>
 	
