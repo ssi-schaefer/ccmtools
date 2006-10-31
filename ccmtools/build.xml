@@ -1,8 +1,4 @@
-<!--
-	$Id$
--->
-
-<project name="ccmtools" default="install">
+<project name="ccmtools" default="install" basedir=".">
 	
   	<!-- Define properties that are used in the following tasks.
          Note that a property can be set from command-line:
@@ -48,7 +44,7 @@
 	    	<classpath refid="compile.classpath" />
 		  	<arg value="${src}/uml2idl/UML.dtd" />
 		  	<arg value="uml_parser" />
-		  	<arg value="src" />
+		  	<arg value="${src}" />
 	    </java>
 	</target>
 	
