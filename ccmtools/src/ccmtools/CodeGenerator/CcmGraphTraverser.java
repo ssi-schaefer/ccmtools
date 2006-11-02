@@ -275,7 +275,7 @@ public class CcmGraphTraverser
 
             try 
             {
-                value = methods[i].invoke(node, null);
+                value = methods[i].invoke(node, (Object[])null);
             }
             catch(IllegalAccessException e) {
                 continue;

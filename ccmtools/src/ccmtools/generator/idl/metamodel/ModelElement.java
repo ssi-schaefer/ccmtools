@@ -257,6 +257,19 @@ public class ModelElement
 		return code.toString();
 	}
 
+    public String generateIdl2ModulesClose()
+    {
+        StringBuilder code = new StringBuilder();
+        List<String> modules = getIdlNamespaceList();
+        for(int i = modules.size()-1; i>= 0; --i)
+        {
+            code.append(Text.tab(i));
+            code.append("};").append(NL);
+        }
+        return code.toString();
+    }
+
+    
     
     public String generateIncludeGuardOpen()
     {

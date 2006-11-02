@@ -20,6 +20,6 @@
 <%=model.generateFieldList()%>
 <%=model.indent()%>};
 
-<%=model.generateModulesClose() %>
+<%=model.generateIdl2ModulesClose() %>
 
 <%=model.generateIncludeGuardClose()%>

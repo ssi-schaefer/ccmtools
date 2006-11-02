@@ -1,12 +1,30 @@
 
 RELEASE-0.8.0 (, 2006)
 ----------------------------------------------------------------------------
+*) Bugfix: Merged changes from RELEASE-0_7-BRANCH (0.7.5)
 
 
 
 
 RELEASE-0_7-BRANCH
 ============================================================================
+
+RELEASE-0.7.5 (October 30, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: C++ include statements in headerfiles (reported by Carlo Jennetten)
+	If we use different source directories for generated C++ header files which
+	contain definitions in the same namespace, the generated '#include"*.h"'
+	statements don't work.
+	Now all include statements within C++ header files use absolute paths 
+	(corresponding to the used namespaces).
+    See test case CppRemoteGenerator/component_distributed.
+
+*) Refactoring: C++ test cases
+	Removed redundant try{} catch statements.
+
+*) Bugfix: CodeGenerator reflection functionality
+	Changed to Java 1.5 API to eliminate compiler warnings.
+
 
 RELEASE-0.7.4 (October 23, 2006)
 ----------------------------------------------------------------------------
@@ -223,7 +241,6 @@ RELEASE-0.6.7 (June 8, 2006)
 	Refactored namespace arithmetics.
 		
 
->>>>>>> 1.41.2.15
 RELEASE-0.6.6 (May 19, 2006)
 ----------------------------------------------------------------------------
 *) Feature: Remote Java Components

@@ -1,8 +1,4 @@
-<!--
-	$Id$
--->
-
-<project name="ccmtools" default="install">
+<project name="ccmtools" default="install" basedir=".">
 	
   	<!-- Define properties that are used in the following tasks.
          Note that a property can be set from command-line:
@@ -48,7 +44,7 @@
 	    	<classpath refid="compile.classpath" />
 		  	<arg value="${src}/uml2idl/UML.dtd" />
 		  	<arg value="uml_parser" />
-		  	<arg value="src" />
+		  	<arg value="${src}" />
 	    </java>
 	</target>
 	
@@ -155,14 +151,11 @@
 	
 			
   	<!-- Run test cases -->
-  	<target name="check.java.local" depends="compile.ccmtools"
-     	description="Run JUnit test cases." >
-     	<junit printsummary="yes" 
-     		   haltonfailure="yes" 
-     		   showoutput="yes">
+  	<target name="check.java"  >
+     	<junit printsummary="true" haltonfailure="true" showoutput="true">
           	<classpath refid="compile.classpath" />
-	  		<formatter type="xml" />
-	  		<test name="ccmtools.generator.java.test.local.JavaLocalComponentTestSuite" />
+	  		<formatter type="brief" />
+	  		<test name="ccmtools.generator.java.test.JavaComponentsTestSuite" />
      	</junit>
   	</target>
 	

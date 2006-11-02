@@ -1,0 +1,15 @@
+
+#ifndef __world_Day__
+#define __world_Day__
+
+module world
+{
+
+  enum Day
+  {
+    Mo, Di, Mi, Do, Fr, Sa, So
+  };
+
+}; // /module world
+
+#endif

@@ -100,7 +100,7 @@ public class Idl2InterfaceDefTemplate
     stringBuffer.append(model.indent());
     stringBuffer.append(TEXT_30);
     stringBuffer.append(TEXT_31);
-    stringBuffer.append(model.generateModulesClose() );
+    stringBuffer.append(model.generateIdl2ModulesClose() );
     stringBuffer.append(TEXT_32);
     stringBuffer.append(TEXT_33);
     stringBuffer.append(model.generateIncludeGuardClose());

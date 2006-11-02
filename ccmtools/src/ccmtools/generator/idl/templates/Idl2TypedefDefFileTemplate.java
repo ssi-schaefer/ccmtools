@@ -49,7 +49,7 @@ public class Idl2TypedefDefFileTemplate
     stringBuffer.append(model.generateTypedef());
     stringBuffer.append(TEXT_10);
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(model.generateModulesClose() );
+    stringBuffer.append(model.generateIdl2ModulesClose() );
     stringBuffer.append(TEXT_12);
     stringBuffer.append(TEXT_13);
     stringBuffer.append(model.generateIncludeGuardClose());

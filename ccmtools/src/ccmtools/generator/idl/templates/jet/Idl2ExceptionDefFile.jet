@@ -17,6 +17,6 @@
  
 <%=model.generateException()%>
 
-<%=model.generateModulesClose() %>
+<%=model.generateIdl2ModulesClose() %>
 
 <%=model.generateIncludeGuardClose()%>
