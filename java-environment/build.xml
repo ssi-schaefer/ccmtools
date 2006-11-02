@@ -1,12 +1,4 @@
-<!--
-$Header$
--->
-<project name="java-stubs" default="stubs.jar">
-
-	<description>
-	</description>
-
-	<!-- Define different paths that are used in the following tasks -->
+<project name="java-stubs" default="stubs.jar"  basedir=".">
 
 	<!-- Define properties that are used in the following tasks.
 	       Note that a property can be set from command-line:
