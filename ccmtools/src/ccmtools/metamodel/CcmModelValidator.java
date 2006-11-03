@@ -41,7 +41,6 @@ import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MPublishesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
 /**
@@ -143,11 +142,11 @@ public class CcmModelValidator
         // Don't handle included files (included ModelElements store their filenames)
         if(!in.getSourceFile().equals(""))
         {
-            logger.fine("included " + Code.getRepositoryId(in));
+            logger.fine("included " + CcmModelHelper.getRepositoryId(in));
             return;
         }
         
-        logger.fine("MContained " +  Code.getRepositoryId(in));    
+        logger.fine("MContained " +  CcmModelHelper.getRepositoryId(in));    
         if(in instanceof MContainer)
         {
             check((MContainer)in);
@@ -592,7 +591,7 @@ public class CcmModelValidator
         if(primaryKey != null)
         {
             addError("primary keys for homes (e.g. " 
-                    + in.getIdentifier() + " primarykey " + Code.getRepositoryId(primaryKey) + ")");
+                    + in.getIdentifier() + " primarykey " + CcmModelHelper.getRepositoryId(primaryKey) + ")");
         }
 		for(Iterator i = in.getFactories().iterator(); i.hasNext();)
 		{
@@ -673,35 +672,35 @@ public class CcmModelValidator
         }
         else // MValueDef
         {
-            addError("'valuetype' definitions (e.g. " + Code.getRepositoryId(in.getIdentifier()) + ")");
+            addError("'valuetype' definitions (e.g. " + CcmModelHelper.getRepositoryId(in.getIdentifier()) + ")");
         }
     }
 
     private void check(MEventDef in)
     {
         logger.fine("MEventDef");
-        addError("'eventtype' definitions (e.g. " + Code.getRepositoryId(in.getIdentifier()) + ")");
+        addError("'eventtype' definitions (e.g. " + CcmModelHelper.getRepositoryId(in.getIdentifier()) + ")");
     }
     
     private void check(MEmitsDef in)
     {
         logger.fine("MEmitsDef");
         addError("'emits' definitions within components (e.g. " 
-                + Code.getRepositoryId(in.getComponent().getIdentifier()) + ")");
+                + CcmModelHelper.getRepositoryId(in.getComponent().getIdentifier()) + ")");
     }
     
     private void check(MPublishesDef in)
     {
         logger.fine("MPublishesDef");
         addError("'publishes' definitions within components (e.g. " 
-                + Code.getRepositoryId(in.getComponent().getIdentifier()) + ")");
+                + CcmModelHelper.getRepositoryId(in.getComponent().getIdentifier()) + ")");
     }
     
     private void check(MConsumesDef in)
     {
         logger.fine("MConsumesDef");
         addError("'consumes' definitions within components (e.g. " 
-                + Code.getRepositoryId(in.getComponent().getIdentifier()) + ")");
+                + CcmModelHelper.getRepositoryId(in.getComponent().getIdentifier()) + ")");
     }
     
     

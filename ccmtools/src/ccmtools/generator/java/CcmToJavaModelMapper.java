@@ -40,6 +40,7 @@ import ccmtools.generator.java.metamodel.SupportsDef;
 import ccmtools.generator.java.metamodel.Type;
 import ccmtools.generator.java.metamodel.UsesDef;
 import ccmtools.generator.java.metamodel.VoidType;
+import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
 import ccmtools.metamodel.BaseIDL.MAttributeDef;
@@ -64,7 +65,6 @@ import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
-import ccmtools.utils.Code;
 
 
 public class CcmToJavaModelMapper
@@ -145,56 +145,56 @@ public class CcmToJavaModelMapper
     	    else if (node instanceof MHomeDef)
         {
             MHomeDef home = (MHomeDef) node;
-            logger.finer("MHomeDef: " + Code.getRepositoryId(home));
+            logger.finer("MHomeDef: " + CcmModelHelper.getRepositoryId(home));
             HomeDef javaHome = transform(home);
             modelRepository.addHome(javaHome);
         }
         else if (node instanceof MComponentDef)
         {
             MComponentDef component = (MComponentDef) node;
-            logger.finer("MComponentDef: " + Code.getRepositoryId(component));
+            logger.finer("MComponentDef: " + CcmModelHelper.getRepositoryId(component));
             ComponentDef javaComponent = transform(component);
             modelRepository.addComponent(javaComponent);
         }
         else if (node instanceof MInterfaceDef)
         {
             MInterfaceDef iface = (MInterfaceDef) node;
-            logger.finer("MInterfaceDef: " + Code.getRepositoryId(iface));
+            logger.finer("MInterfaceDef: " + CcmModelHelper.getRepositoryId(iface));
             InterfaceDef javaIface = transform(iface);
             modelRepository.addInterface(javaIface);
         }
         else if (node instanceof MProvidesDef)
         {
             MProvidesDef provides = (MProvidesDef) node;
-            logger.finer("MProvidesDef: " + Code.getRepositoryId(provides));
+            logger.finer("MProvidesDef: " + CcmModelHelper.getRepositoryId(provides));
             ProvidesDef javaProvides = transform(provides);
             modelRepository.addProvides(javaProvides);
         }
         else if (node instanceof MUsesDef)
         {
             MUsesDef uses = (MUsesDef) node;
-            logger.finer("MUsesDef: " + Code.getRepositoryId(uses));
+            logger.finer("MUsesDef: " + CcmModelHelper.getRepositoryId(uses));
             UsesDef javaUses = transform(uses);
             modelRepository.addUses(javaUses);
         }
         else if (node instanceof MEnumDef)
         {
             MEnumDef enumeration = (MEnumDef) node;
-            logger.finer("MEnumDef: " + Code.getRepositoryId(enumeration));
+            logger.finer("MEnumDef: " + CcmModelHelper.getRepositoryId(enumeration));
             EnumDef javaEnum = transform(enumeration);
             modelRepository.addEnum(javaEnum);
         }
         else if (node instanceof MStructDef)
         {
             MStructDef struct = (MStructDef) node;
-            logger.finer("MStructDef: " + Code.getRepositoryId(struct));
+            logger.finer("MStructDef: " + CcmModelHelper.getRepositoryId(struct));
             StructDef javaStruct = transform(struct);
             modelRepository.addStruct(javaStruct);
         }
         else if (node instanceof MExceptionDef)
         {
             MExceptionDef exception = (MExceptionDef) node;
-            logger.finer("MExceptionDef: " + Code.getRepositoryId(exception));
+            logger.finer("MExceptionDef: " + CcmModelHelper.getRepositoryId(exception));
             ExceptionDef javaException = transform(exception);
             modelRepository.addException(javaException);
         }
@@ -203,19 +203,19 @@ public class CcmToJavaModelMapper
             // Note that only the MAiliasDef object knows the identifier of these
             // CCM model elements, thus, we have to handle MAliasDef nodes here!
             MAliasDef alias = (MAliasDef) node;
-            logger.finer("MAliasDef: " + Code.getRepositoryId(alias));
+            logger.finer("MAliasDef: " + CcmModelHelper.getRepositoryId(alias));
             MTyped typed = (MTyped) alias;
             MIDLType innerIdlType = typed.getIdlType();
             if (innerIdlType instanceof MSequenceDef)
             {
                 MSequenceDef sequence = (MSequenceDef) innerIdlType;
-                SequenceDef javaSequence = transform(sequence, alias.getIdentifier(), Code.getNamespaceList(alias));
+                SequenceDef javaSequence = transform(sequence, alias.getIdentifier(), CcmModelHelper.getNamespaceList(alias));
                 modelRepository.addSequence(javaSequence);
             }
             if (innerIdlType instanceof MArrayDef)
             {
                 MArrayDef array = (MArrayDef) innerIdlType;
-                ArrayDef javaArray = transform(array, alias.getIdentifier(), Code.getNamespaceList(alias));
+                ArrayDef javaArray = transform(array, alias.getIdentifier(), CcmModelHelper.getNamespaceList(alias));
                 modelRepository.addArray(javaArray);
             }
         }
@@ -236,7 +236,7 @@ public class CcmToJavaModelMapper
 	public HomeDef transform(MHomeDef in)
 	{		
 		HomeDef out;
-		String repoId = Code.getRepositoryId(in);
+		String repoId = CcmModelHelper.getRepositoryId(in);
 		logger.finer("MHomeDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
@@ -244,7 +244,7 @@ public class CcmToJavaModelMapper
 		}
 		else
 		{
-			out = new HomeDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out = new HomeDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 			out.setComponent(transform(in.getComponent()));
 			artifactCache.put(repoId, out);
 		}
@@ -255,7 +255,7 @@ public class CcmToJavaModelMapper
 	public ComponentDef transform(MComponentDef in)
 	{
 		ComponentDef out;
-		String repoId = Code.getRepositoryId(in);
+		String repoId = CcmModelHelper.getRepositoryId(in);
 		logger.finer("MComponentDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
@@ -263,7 +263,7 @@ public class CcmToJavaModelMapper
 		}
 		else
 		{
-			out = new ComponentDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out = new ComponentDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 			for (Iterator i = in.getContentss().iterator(); i.hasNext();)
 			{
 				MContained child = (MContained) i.next();
@@ -286,7 +286,7 @@ public class CcmToJavaModelMapper
 	InterfaceDef transform(MInterfaceDef in)
 	{
 		InterfaceDef out;
-		String repoId = Code.getRepositoryId(in);
+		String repoId = CcmModelHelper.getRepositoryId(in);
 		logger.finer("MInterfaceDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
@@ -294,7 +294,7 @@ public class CcmToJavaModelMapper
 		}
 		else
 		{
-			out = new InterfaceDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out = new InterfaceDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 	
 			// Transform base interface types
 			for(Iterator i = in.getBases().iterator(); i.hasNext(); )
@@ -332,7 +332,7 @@ public class CcmToJavaModelMapper
 	{
 		ProvidesDef out;
 		// ProvidesDef are scoped by their component too
-		String repoId = Code.getRepositoryId(in.getComponent()) + "/" + Code.getRepositoryId(in);
+		String repoId = CcmModelHelper.getRepositoryId(in.getComponent()) + "/" + CcmModelHelper.getRepositoryId(in);
 		logger.finer("MProvidesDef: " + repoId);		
 		if(artifactCache.containsKey(repoId))
 		{
@@ -340,7 +340,7 @@ public class CcmToJavaModelMapper
 		}
 		else 
 		{
-			out = new ProvidesDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out = new ProvidesDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 			out.setInterface(transform(in.getProvides()));
 			// Establish a bidirectional connection between ComponentDef and ProvidesDef
 			ComponentDef component = transform(in.getComponent());
@@ -356,7 +356,7 @@ public class CcmToJavaModelMapper
 	{
 		UsesDef out;
         // UsesDef are scoped by their component too
-        String repoId = Code.getRepositoryId(in.getComponent()) + "/" + Code.getRepositoryId(in);
+        String repoId = CcmModelHelper.getRepositoryId(in.getComponent()) + "/" + CcmModelHelper.getRepositoryId(in);
 		logger.finer("MUsesDef: " + repoId);
 		if(artifactCache.containsKey(repoId))
 		{
@@ -364,7 +364,7 @@ public class CcmToJavaModelMapper
 		}
 		else
 		{
-			out = new UsesDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out = new UsesDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 			out.setMultiple(in.isMultiple());
 			out.setInterface(transform(in.getUses()));
 			// Establish a bidirectional connection between ComponentDef and UsesDef
@@ -380,7 +380,7 @@ public class CcmToJavaModelMapper
 	public SupportsDef transform(MSupportsDef in)
 	{
 		logger.finer("MSupportsDef: " + in.getIdentifier());	
-		SupportsDef out = new SupportsDef(in.getIdentifier(), Code.getNamespaceList(in));
+		SupportsDef out = new SupportsDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 		out.setInterface(transform(in.getSupports()));
 		return out;
 	}
@@ -407,7 +407,7 @@ public class CcmToJavaModelMapper
 	public ExceptionDef transform(MExceptionDef in)
 	{
 		ExceptionDef out;
-		String repoId = Code.getRepositoryId(in);
+		String repoId = CcmModelHelper.getRepositoryId(in);
 		logger.finer("MExceptionDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
@@ -415,7 +415,7 @@ public class CcmToJavaModelMapper
 		}
 		else 
 		{
-			out = new ExceptionDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out = new ExceptionDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 			{
 				MFieldDef member = (MFieldDef)i.next();	
@@ -474,7 +474,7 @@ public class CcmToJavaModelMapper
 	public EnumDef transform(MEnumDef in)
 	{		
 		EnumDef out;
-		String repoId = Code.getRepositoryId(in);
+		String repoId = CcmModelHelper.getRepositoryId(in);
 		logger.finer("MEnumDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
@@ -482,7 +482,7 @@ public class CcmToJavaModelMapper
 		}
 		else 
 		{			
-			out = new EnumDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out = new EnumDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 			{
 				String member = (String)i.next();
@@ -496,7 +496,7 @@ public class CcmToJavaModelMapper
 	public StructDef transform(MStructDef in)
 	{		
 		StructDef out;
-		String repoId = Code.getRepositoryId(in);
+		String repoId = CcmModelHelper.getRepositoryId(in);
 		logger.finer("MStructDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
@@ -504,7 +504,7 @@ public class CcmToJavaModelMapper
 		}
 		else 
 		{
-			out = new StructDef(in.getIdentifier(), Code.getNamespaceList(in));
+			out = new StructDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 			for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 			{
 				MFieldDef member = (MFieldDef)i.next();	
@@ -560,7 +560,7 @@ public class CcmToJavaModelMapper
 	public Type transform(MAliasDef in)
 	{
 		Type out;
-		String repoId = Code.getRepositoryId(in);
+		String repoId = CcmModelHelper.getRepositoryId(in);
 		logger.finer("MAliasDef: " + repoId);
 		MTyped typed = (MTyped)in;
 		MIDLType innerIdlType = typed.getIdlType();			
@@ -579,12 +579,12 @@ public class CcmToJavaModelMapper
 		else if(innerIdlType instanceof MSequenceDef)
 		{
 			MSequenceDef sequence = (MSequenceDef)innerIdlType;
-			out =  transform(sequence, in.getIdentifier(), Code.getNamespaceList(in));
+			out =  transform(sequence, in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 		}			
 		else if(innerIdlType instanceof MArrayDef)
 		{
 			MArrayDef array = (MArrayDef)innerIdlType;
-			out = transform(array, in.getIdentifier(), Code.getNamespaceList(in));
+			out = transform(array, in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
 		}
 		else if(innerIdlType instanceof MStringDef)
 		{
@@ -603,7 +603,7 @@ public class CcmToJavaModelMapper
 	public SequenceDef transform(MSequenceDef in, String id, List<String> ns)
 	{
 		SequenceDef out;
-		String repoId = Code.getRepositoryId(ns,id);
+		String repoId = CcmModelHelper.getRepositoryId(ns,id);
 		logger.finer("MSequenceDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{
@@ -622,7 +622,7 @@ public class CcmToJavaModelMapper
 	public ArrayDef transform(MArrayDef in, String id, List<String> ns)
 	{
 		ArrayDef out;
-		String repoId = Code.getRepositoryId(ns,id);
+		String repoId = CcmModelHelper.getRepositoryId(ns,id);
 		logger.finer("MArrayDef: " + repoId);
 		if (artifactCache.containsKey(repoId))
 		{

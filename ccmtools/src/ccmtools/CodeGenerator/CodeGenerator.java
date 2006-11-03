@@ -42,6 +42,7 @@ import java.util.Stack;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
+import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MAttributeDef;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
@@ -68,7 +69,6 @@ import ccmtools.metamodel.ComponentIDL.MPublishesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.Code;
 import ccmtools.utils.Text;
 
 /**
@@ -534,7 +534,7 @@ abstract public class CodeGenerator implements TemplateHandler
         for(Iterator i = node.getBases().iterator(); i.hasNext();) 
         {
         	MInterfaceDef iface = (MInterfaceDef)i.next();
-        	names.add(Code.getAbsoluteName(iface, "::")); //!!!!
+        	names.add(CcmModelHelper.getAbsoluteName(iface, "::")); //!!!!
             //names.add(iface.getIdentifier());
         }
         logger.fine("leave joinBaseNames()");

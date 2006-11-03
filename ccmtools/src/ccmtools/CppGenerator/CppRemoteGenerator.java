@@ -61,8 +61,8 @@ import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
-import ccmtools.utils.Code;
 import ccmtools.utils.Confix;
+import ccmtools.utils.SourceFileHelper;
 import ccmtools.utils.Text;
 
 /***
@@ -1706,7 +1706,7 @@ public class CppRemoteGenerator
                     String namespace = getRemoteNamespace((MContained)component,Text.MANGLING_SEPARATOR);
                     String fileDir = generatorPrefix + namespace.substring(0, namespace.length()-1);
                     writeFile(uiDriver, output_dir, fileDir, componentName + remoteSuffix[i],
-                                   Code.prettifySourceCode(sourceFiles[i]));
+                                   SourceFileHelper.prettifySourceCode(sourceFiles[i]));
                 }
                 else if(currentNode instanceof MHomeDef) 
                 {
@@ -1718,7 +1718,7 @@ public class CppRemoteGenerator
                     String fileDir = generatorPrefix + namespace.substring(0, namespace.length()-1);
 
                     writeFile(uiDriver, output_dir, fileDir, homeName + remoteSuffix[i],
-                                   Code.prettifySourceCode(sourceFiles[i]));
+                                   SourceFileHelper.prettifySourceCode(sourceFiles[i]));
                 }
                 else if(currentNode instanceof MInterfaceDef || currentNode instanceof MAliasDef
                         || currentNode instanceof MStructDef || currentNode instanceof MExceptionDef
@@ -1731,7 +1731,7 @@ public class CppRemoteGenerator
                     		+ CORBA_CONVERTER_DIR;
 
                     writeFile(uiDriver, output_dir, fileDir, nodeName + remoteSuffix[i],
-                                   Code.prettifySourceCode(sourceFiles[i]));
+                                   SourceFileHelper.prettifySourceCode(sourceFiles[i]));
                 }
                 else 
                 {
@@ -1754,7 +1754,7 @@ public class CppRemoteGenerator
         throws IOException
     {
         outputDirectories.add(output_dir + File.separator + directory);
-        Code.writeFile(driver, outDir, directory, file, output);
+        SourceFileHelper.writeFile(driver, outDir, directory, file, output);
     }
     
     

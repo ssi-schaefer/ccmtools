@@ -8,7 +8,7 @@ import java.util.Set;
 import ccmtools.Constants;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
-import ccmtools.utils.Utility;
+import ccmtools.utils.SourceFileHelper;
 
 
 public class ModelElement
@@ -120,7 +120,7 @@ public class ModelElement
 			packageName = INTERFACE_PREFIX 
                 + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
 		}
-        String sourceCode = Utility.removeEmptyLines(generateIdl3());
+        String sourceCode = SourceFileHelper.removeEmptyLines(generateIdl3());
 		SourceFile sourceFile = new SourceFile(packageName, getIdentifier() + ".idl", sourceCode);
 		sourceFileList.add(sourceFile);		
 		return sourceFileList;
@@ -168,7 +168,7 @@ public class ModelElement
         String sourceCode = generateIdl2();
         if(sourceCode.length() > 0)
         {
-            SourceFile sourceFile = new SourceFile("", fileName, Utility.removeEmptyLines(sourceCode));
+            SourceFile sourceFile = new SourceFile("", fileName, SourceFileHelper.removeEmptyLines(sourceCode));
             sourceFileList.add(sourceFile);     
         }
         return sourceFileList;

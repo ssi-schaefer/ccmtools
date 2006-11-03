@@ -143,17 +143,17 @@ public class Text
      */
     public static List slice(List parts, int start)
     {
-        if (start == 0) 
-	    return parts;
-        if (parts == null) 
-	    return new ArrayList();
+        if (start == 0)
+            return parts;
+        if (parts == null)
+            return new ArrayList();
         int size = parts.size();
-        if (size == 0) 
-	    return new ArrayList();
-        if ((start >= size) || (start <= -size)) 
-	    return new ArrayList();
-        if (start < 0) 
-	    return parts.subList(0, size + start);
+        if (size == 0)
+            return new ArrayList();
+        if ((start >= size) || (start <= -size))
+            return new ArrayList();
+        if (start < 0)
+            return parts.subList(0, size + start);
         return parts.subList(start, size);
     }
 }

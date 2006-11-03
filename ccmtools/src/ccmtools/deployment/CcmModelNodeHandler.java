@@ -5,12 +5,12 @@ import ccmtools.deployment.metamodel.ComponentInterfaceDescription;
 import ccmtools.deployment.metamodel.ComponentPortDescription;
 import ccmtools.deployment.metamodel.DeploymentFactory;
 import ccmtools.deployment.metamodel.impl.CCMComponentPortKind;
+import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
-import ccmtools.utils.Code;
 
 
 public class CcmModelNodeHandler
@@ -45,12 +45,12 @@ public class CcmModelNodeHandler
     {        
         if(node instanceof MHomeDef) {
             MHomeDef home = (MHomeDef)node;
-            descriptor.setSpecificType(Code.getRepositoryId(home));
-            descriptor.getSupportedType().add(Code.getRepositoryId(home));
+            descriptor.setSpecificType(CcmModelHelper.getRepositoryId(home));
+            descriptor.getSupportedType().add(CcmModelHelper.getRepositoryId(home));
         }
         else if(node instanceof MComponentDef) {
             MComponentDef component = (MComponentDef)node;
-            descriptor.getSupportedType().add(Code.getRepositoryId(component));
+            descriptor.getSupportedType().add(CcmModelHelper.getRepositoryId(component));
         }
         else if(node instanceof MProvidesDef) {
             MProvidesDef provides = (MProvidesDef)node;
@@ -58,8 +58,8 @@ public class CcmModelNodeHandler
             ComponentPortDescription facet = factory.createComponentPortDescription();
             facet.setKind(CCMComponentPortKind.Facet);
             facet.setName(provides.getIdentifier());
-            facet.setSpecificType(Code.getRepositoryId(iface));
-            facet.getSupportedType().add(Code.getRepositoryId(iface));
+            facet.setSpecificType(CcmModelHelper.getRepositoryId(iface));
+            facet.getSupportedType().add(CcmModelHelper.getRepositoryId(iface));
             // TODO: add base interface types
             facet.setProvider(true);
             facet.setExclusiveProvider(false);
@@ -78,8 +78,8 @@ public class CcmModelNodeHandler
                 receptacle.setKind(CCMComponentPortKind.SimplexReceptacle);                
             }
             receptacle.setName(uses.getIdentifier());
-            receptacle.setSpecificType(Code.getRepositoryId(iface));
-            receptacle.getSupportedType().add(Code.getRepositoryId(iface));
+            receptacle.setSpecificType(CcmModelHelper.getRepositoryId(iface));
+            receptacle.getSupportedType().add(CcmModelHelper.getRepositoryId(iface));
             // TODO: add base interface types
             receptacle.setProvider(false);
             receptacle.setExclusiveProvider(false);

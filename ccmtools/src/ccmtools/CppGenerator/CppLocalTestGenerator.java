@@ -30,8 +30,8 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MOperationDef;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.Code;
 import ccmtools.utils.Confix;
+import ccmtools.utils.SourceFileHelper;
 import ccmtools.utils.Text;
 
 public class CppLocalTestGenerator
@@ -67,7 +67,7 @@ public class CppLocalTestGenerator
     {
         logger.fine("enter writeOutput()");
         // try to prittify generated code (eliminate empty lines etc.
-        String generated_code = Code.prettifySourceCode(template.substituteVariables(output_variables));
+        String generated_code = SourceFileHelper.prettifySourceCode(template.substituteVariables(output_variables));
 
         if(generated_code.trim().equals("")) 
             return;

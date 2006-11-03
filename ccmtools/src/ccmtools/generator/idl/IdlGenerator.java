@@ -12,7 +12,7 @@ import ccmtools.generator.idl.metamodel.Idl3MirrorGenerator;
 import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.SourceFile;
-import ccmtools.utils.Utility;
+import ccmtools.utils.SourceFileHelper;
 
 public class IdlGenerator
 {
@@ -95,7 +95,7 @@ public class IdlGenerator
             }
             
 			// Save all source file objects
-			Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+			SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 		}
 		catch (Exception e)
 		{
@@ -122,7 +122,7 @@ public class IdlGenerator
             }
             
             // Save all source file objects
-            Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+            SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
         }
         catch (Exception e)
         {
@@ -156,7 +156,7 @@ public class IdlGenerator
             }
             
             // Save all source file objects
-            Utility.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+            SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
         }
         catch (Exception e)
         {

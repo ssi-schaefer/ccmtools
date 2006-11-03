@@ -62,8 +62,8 @@ import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
-import ccmtools.utils.Code;
 import ccmtools.utils.Confix;
+import ccmtools.utils.SourceFileHelper;
 import ccmtools.utils.Text;
 
 /***
@@ -1064,7 +1064,7 @@ public class CppLocalGenerator
             for(int i = 0; i < out_strings.length; i++) 
             {               
                 // try to prittify generated code (eliminate empty lines etc).
-                String generated_code = Code.prettifySourceCode(out_strings[i]);
+                String generated_code = SourceFileHelper.prettifySourceCode(out_strings[i]);
 
                 // out_path = [directory, filename]
                 List out_path = (List) path_iterator.next();

@@ -11,7 +11,7 @@ import ccmtools.generator.idl.templates.HomeDefTemplate;
 import ccmtools.generator.idl.templates.Idl2HomeDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
-import ccmtools.utils.Utility;
+import ccmtools.utils.SourceFileHelper;
 
 public class HomeDef
 	extends InterfaceDef
@@ -186,7 +186,7 @@ public class HomeDef
         String packageName;
         packageName = COMPONENT_PREFIX 
                 + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
-        String sourceCode = Utility.removeEmptyLines(generateIdl3Mirror());
+        String sourceCode = SourceFileHelper.removeEmptyLines(generateIdl3Mirror());
         SourceFile sourceFile = new SourceFile(packageName, getIdentifier() + "Mirror.idl", sourceCode);
         sourceFileList.add(sourceFile);     
         return sourceFileList;

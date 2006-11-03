@@ -21,7 +21,6 @@ import ccmtools.deployment.metamodel.PackagedComponentImplementation;
 import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.Code;
 
 
 public class CDDGenerator
@@ -183,7 +182,7 @@ public class CDDGenerator
         if(parameters.getAssemblyObject() != null) {
             ComponentAssemblyArtifactDescription compAAD = 
                 factory.createComponentAssemblyArtifactDescription();
-            compAAD.setSpecifcType(Code.getRepositoryId(parameters.getAssemblyObject()));
+            compAAD.setSpecifcType(CcmModelHelper.getRepositoryId(parameters.getAssemblyObject()));
             compAAD.getLocations().add(parameters.getAssemblyFile());
             componentImpl.setAssemblyImpl(compAAD);
         }

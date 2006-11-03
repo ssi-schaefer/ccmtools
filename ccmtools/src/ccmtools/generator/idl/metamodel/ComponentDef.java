@@ -11,7 +11,7 @@ import ccmtools.generator.idl.templates.ComponentDefTemplate;
 import ccmtools.generator.idl.templates.Idl2ComponentDefTemplate;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
-import ccmtools.utils.Utility;
+import ccmtools.utils.SourceFileHelper;
 
 public class ComponentDef
 	extends InterfaceDef
@@ -234,7 +234,7 @@ public class ComponentDef
         String packageName;
         packageName = COMPONENT_PREFIX 
                 + File.separator + Text.joinList(File.separator, getIdlNamespaceList());
-        String sourceCode = Utility.removeEmptyLines(generateIdl3Mirror());
+        String sourceCode = SourceFileHelper.removeEmptyLines(generateIdl3Mirror());
         SourceFile sourceFile = new SourceFile(packageName, getIdentifier() + "Mirror.idl", sourceCode);
         sourceFileList.add(sourceFile);     
         return sourceFileList;    

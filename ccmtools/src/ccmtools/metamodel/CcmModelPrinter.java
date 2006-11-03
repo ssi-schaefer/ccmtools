@@ -36,7 +36,6 @@ import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.Code;
 
 
 public class CcmModelPrinter
@@ -102,11 +101,11 @@ public class CcmModelPrinter
         // Don't handle included files (included ModelElements store their filenames)
         if(!in.getSourceFile().equals(""))
         {
-            logger.fine("included " + Code.getRepositoryId(in));
+            logger.fine("included " + CcmModelHelper.getRepositoryId(in));
             return;
         }
         
-        logger.fine("MContained " +  Code.getRepositoryId(in));    
+        logger.fine("MContained " +  CcmModelHelper.getRepositoryId(in));    
         if(in instanceof MContainer)
         {
             print((MContainer)in);
@@ -184,7 +183,7 @@ public class CcmModelPrinter
 
     private void print(MAliasDef in)
     {
-        print(Code.getRepositoryId(in) + ":(MAliasDef)");
+        print(CcmModelHelper.getRepositoryId(in) + ":(MAliasDef)");
         MTyped typed = (MTyped) in;
         MIDLType innerIdlType = typed.getIdlType();
         print(innerIdlType);
@@ -225,11 +224,11 @@ public class CcmModelPrinter
         }
 		else if(in instanceof MStructDef)
 		{			
-			println(":" + Code.getRepositoryId((MStructDef)in));
+			println(":" + CcmModelHelper.getRepositoryId((MStructDef)in));
 		}
 		else if(in instanceof MInterfaceDef)
 		{
-			println(":" + Code.getRepositoryId((MInterfaceDef)in));
+			println(":" + CcmModelHelper.getRepositoryId((MInterfaceDef)in));
 		}
 		else if(in instanceof MAliasDef)
 		{
@@ -283,7 +282,7 @@ public class CcmModelPrinter
 	private void print(MConstantDef in)
 	{
         logger.fine("MConstantDef"); 
-		print(Code.getRepositoryId(in) + ":ConstantDef");
+		print(CcmModelHelper.getRepositoryId(in) + ":ConstantDef");
 		MIDLType idlType = in.getIdlType();
 		Object value = in.getConstValue();
 		print(idlType);
@@ -293,7 +292,7 @@ public class CcmModelPrinter
 	private void print(MEnumDef in)
 	{
         logger.fine("MEnumDef"); 
-		print(Code.getRepositoryId(in) + ":EnumDef {");
+		print(CcmModelHelper.getRepositoryId(in) + ":EnumDef {");
 		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 		{
 			String member = (String)i.next();
@@ -305,7 +304,7 @@ public class CcmModelPrinter
 	private void print(MStructDef in)
 	{
         logger.fine("MStructDef"); 
-		println(Code.getRepositoryId(in) + ":StructDef");
+		println(CcmModelHelper.getRepositoryId(in) + ":StructDef");
 		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 		{
 			MFieldDef member = (MFieldDef)i.next();
@@ -317,7 +316,7 @@ public class CcmModelPrinter
 	private void print(MExceptionDef in)
 	{
         logger.fine("MExceptionDef"); 
-		println(Code.getRepositoryId(in) + ":ExceptionDef");
+		println(CcmModelHelper.getRepositoryId(in) + ":ExceptionDef");
 		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 		{
 			MFieldDef member = (MFieldDef)i.next();
@@ -365,12 +364,12 @@ public class CcmModelPrinter
         for(Iterator i = in.getGetExceptions().iterator(); i.hasNext();)
         {
             MExceptionDef ex = (MExceptionDef)i.next();
-            println(TAB + "get raises: " + Code.getRepositoryId(ex));
+            println(TAB + "get raises: " + CcmModelHelper.getRepositoryId(ex));
         }
         for(Iterator i = in.getSetExceptions().iterator(); i.hasNext();)
         {
             MExceptionDef ex = (MExceptionDef)i.next();
-            println(TAB + "set raises: " + Code.getRepositoryId(ex));
+            println(TAB + "set raises: " + CcmModelHelper.getRepositoryId(ex));
         }        
     }
     
@@ -406,7 +405,7 @@ public class CcmModelPrinter
 	private void print(MInterfaceDef in)
 	{
         logger.fine("MInterfaceDef"); 
-		println(Code.getRepositoryId(in) + ":InterfaceDef");
+		println(CcmModelHelper.getRepositoryId(in) + ":InterfaceDef");
         if(in instanceof MHomeDef)
         {
             print((MHomeDef)in);
@@ -463,7 +462,7 @@ public class CcmModelPrinter
 	private void print(MComponentDef in)
 	{
         logger.fine("MComponentDef"); 
-		println(Code.getRepositoryId(in) + ":ComponentDef");
+		println(CcmModelHelper.getRepositoryId(in) + ":ComponentDef");
 		for(Iterator i = in.getBases().iterator(); i.hasNext();)
 		{
 			MInterfaceDef baseInterface = (MInterfaceDef)i.next();
@@ -516,7 +515,7 @@ public class CcmModelPrinter
 	private void print(MHomeDef in)
 	{
         logger.fine("MHomeDef"); 
-		println(Code.getRepositoryId(in) + ":HomeDef");
+		println(CcmModelHelper.getRepositoryId(in) + ":HomeDef");
 		for(Iterator i = in.getBases().iterator(); i.hasNext();)
 		{
 			MInterfaceDef baseInterface = (MInterfaceDef)i.next();
@@ -605,13 +604,13 @@ public class CcmModelPrinter
 	private void print(MValueDef in)
 	{
         logger.fine("MValueDef"); 
-		println(Code.getRepositoryId(in) + ":ValueDef");
+		println(CcmModelHelper.getRepositoryId(in) + ":ValueDef");
 		println(TAB + "isAbstract   : " + in.isAbstract());
 		println(TAB + "isCustom     : " + in.isCustom());
 		println(TAB + "isTruncatable: " + in.isTruncatable());
 		if(in.getBase() != null)
 		{
-			println("extends: " + Code.getRepositoryId(in.getBase()));
+			println("extends: " + CcmModelHelper.getRepositoryId(in.getBase()));
 		}
 		for(Iterator i = in.getAbstractBases().iterator(); i.hasNext();)
 		{
@@ -622,7 +621,7 @@ public class CcmModelPrinter
 		{
             for(Iterator i = in.getInterfaceDefs().iterator(); i.hasNext();)
             {
-                println("supports: " + Code.getRepositoryId((MInterfaceDef)i.next()));
+                println("supports: " + CcmModelHelper.getRepositoryId((MInterfaceDef)i.next()));
             }
 		}
 		for(Iterator i = in.getContentss().iterator(); i.hasNext();)
@@ -651,7 +650,7 @@ public class CcmModelPrinter
 			{
 				println(contained.toString());
 				throw new RuntimeException("Unhandled containment in valuedef "
-						+ Code.getRepositoryId(in));
+						+ CcmModelHelper.getRepositoryId(in));
 			}
 		}
 	}

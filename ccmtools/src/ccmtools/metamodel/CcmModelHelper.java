@@ -4,19 +4,27 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 
+import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.metamodel.BaseIDL.MModuleDef;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.Text;
 
 public class CcmModelHelper
 {
 
+    /*
+     * Handle IDL files  
+     */
+    
     public static  MContainer loadCcmModel(UserInterfaceDriver uiDriver, String fileName, List includes) 
         throws CcmtoolsException
     {
@@ -105,4 +113,131 @@ public class CcmModelHelper
         }
         return ccmModel;
     }
+
+
+    /*
+     * Handle IDL repository IDs
+     */
+    
+    public static String getRepositoryId(MContained node)
+    {
+    		return "IDL:" + CcmModelHelper.getAbsoluteName(node, "/") + ":1.0";
+    }
+
+
+    public static String getRepositoryId(String name)
+    {
+        return "IDL:" + name + ":1.0";
+    }
+
+
+    public static String getRepositoryId(String[] name)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("IDL:");
+        if(name != null && name.length > 0) 
+        {
+            buffer.append(name[0]);
+            if(name.length > 1) 
+            {
+                for(int i = 1; i < name.length; i++) 
+                {
+                    buffer.append("/");
+                    buffer.append(name[i]);
+                }
+            }
+        }
+        buffer.append(":1.0");
+        return buffer.toString();
+    }
+
+
+    public static String getRepositoryId(List ns, String name)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("IDL:");
+        buffer.append(Text.joinList("/", ns));
+        buffer.append("/").append(name);
+        buffer.append(":1.0");
+        return buffer.toString();
+    }
+
+    
+    /*
+     * Handle model element absolute names
+     */
+
+    public static List getListFromAbsoluteName(String name)
+    {
+        List<String> list = new ArrayList<String>();
+        if(name != null) 
+        {
+            String[] names = name.split("/");
+            for(int i = 0; i < names.length; i++) 
+            {
+                list.add(names[i]);
+            }
+        }
+        return list;
+    }
+
+    public static String[] getArrayFromAbsoluteName(String name)
+    {
+        return name.split("/");
+    }
+
+    public static String getNameFromRepositoryId(String repoId)
+    {
+        return repoId.substring(repoId.indexOf(':')+1, repoId.lastIndexOf(':'));
+    }
+
+
+    public static String getAbsoluteName(MContained node, String sep)
+    {
+        if (CcmModelHelper.getNamespaceList(node).size() == 0)
+        {
+            return node.getIdentifier();
+        }
+        else
+        {
+            return getNamespace(node, sep) + sep + node.getIdentifier();
+        }
+    }
+
+    
+
+    /*
+     * Handle model element namespaces
+     */
+    
+    public static String getNamespace(MContained node, String sep)
+    {
+        List nsList = CcmModelHelper.getNamespaceList(node);
+        return Text.join(sep, nsList);
+    }
+
+
+    /**
+     * Calculates the model element namespace by going back from the
+     * model element to the top container element and collecting the 
+     * names of all module definitions in-between.
+     *
+     * @param node
+     * @return
+     */
+    public static List<String> getNamespaceList(MContained node)
+    {        
+        List<String> scope = new ArrayList<String>();
+        MContainer c = node.getDefinedIn();
+        while(c.getDefinedIn() != null) 
+        {
+            if(c instanceof MModuleDef)
+            {
+                scope.add(0, c.getIdentifier());
+            }
+            c = c.getDefinedIn();
+        }
+        return scope;
+    }
+    
 }
