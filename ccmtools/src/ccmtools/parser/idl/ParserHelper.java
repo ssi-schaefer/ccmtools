@@ -74,6 +74,7 @@ import ccmtools.metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.metamodel.ComponentIDL.MFactoryDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.LogFormatter;
 import ccmtools.utils.Text;
 
 
@@ -130,14 +131,13 @@ public class ParserHelper
     
     private ParserHelper()
     {
-        logger = Logger.getLogger("ccmtools.parser.idl");
+        logger = Logger.getLogger("ccm.parser.idl");
         //!!!!!!!!!!
-//        logger.setLevel(Level.FINE);
-//        Handler handler = new ConsoleHandler();
-//        handler.setLevel(Level.ALL);
-//        handler.setFormatter(new ccm.local.MinimalFormatter());
-//        logger.addHandler(handler);
-//        ccm.local.ServiceLocator.instance().setLogger(logger);
+        logger.setLevel(Level.FINE);
+        Handler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        handler.setFormatter(new LogFormatter());
+        logger.addHandler(handler);
         //!!!!!!!!
         init();        
     }
