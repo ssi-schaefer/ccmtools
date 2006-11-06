@@ -1,6 +1,9 @@
 #ifndef __UNION_TEST__IDL__
 #define __UNION_TEST__IDL__
 
+
+#include <enum/Color.idl>
+
 union ColorCount switch(Color)
 {
 	case red:

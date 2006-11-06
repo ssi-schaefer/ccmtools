@@ -8,7 +8,7 @@ interface InterfaceBasicTypeOperation
   long long	lLongOp(in long long p1, inout long long p2, out long long p3);
   unsigned short uShortOp(in unsigned short p1, inout unsigned short p2, out unsigned short p3);
   unsigned long uLongOp(in unsigned long p1, inout unsigned long p2, out unsigned long p3);
-  //	unsigned long long uLLongOp(in unsigned long long p1, inout unsigned long long p2, out unsigned long long p3);
+  unsigned long long uLLongOp(in unsigned long long p1, inout unsigned long long p2, out unsigned long long p3);
 
   float         floatOp(in float p1, inout float p2, out float p3);
   double        doubleOp(in double p1, inout double p2, out double p3);

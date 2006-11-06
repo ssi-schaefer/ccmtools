@@ -19,7 +19,7 @@ interface InterfaceReadonlyAttribute
 	readonly attribute long long		roLLongValue;
 	readonly attribute unsigned short 	roUShortValue;
 	readonly attribute unsigned long 	roULongValue;
-//	readonly attribute unsigned long long roULLongValue;
+	readonly attribute unsigned long long roULLongValue;
 	
 	readonly attribute float 		roFloatValue;
 	readonly attribute double 		roDoubleValue;

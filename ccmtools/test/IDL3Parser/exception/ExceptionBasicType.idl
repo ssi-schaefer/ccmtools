@@ -5,14 +5,14 @@ exception ExceptionBasicType
 {
 	short 			shortMember;	
 	long 			longMember;
-	long long       lLongMember;
-	unsigned short 	uShortMember;
-	unsigned long 	uLongMember;
-//	unsigned long long uLLongMember; !!!
+	long long               lLongMember;
+	unsigned short 	        uShortMember;
+	unsigned long 	        uLongMember;
+	unsigned long long      uLLongMember; 
 	
 	float 			floatMember;
 	double 			doubleMember;
-	long double     lDoubleMember;
+	long double             lDoubleMember;
 	
 	char 			charMember;
 	wchar     		wcharMember;
@@ -21,9 +21,9 @@ exception ExceptionBasicType
 	wstring			wstringMember;
 	wstring<11>		wstringBoundedMember;	
 		
-	boolean 			booleanMember;
+	boolean 		booleanMember;
 	octet 			octetMember;	
-	any 				anyMember;
+	any 			anyMember;
 	Object			objectMember;
 	
 	fixed<9,2>      fixedMember;

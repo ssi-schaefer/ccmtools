@@ -10,6 +10,8 @@ public class InterfaceTestSuite
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(InterfaceTestSuite.class.getName());	
         
+        suite.addTest(InterfaceDefinedInTest.suite());
+        
         suite.addTest(InterfaceHeaderTest.suite());
         suite.addTest(InterfaceBodyTest.suite());
         suite.addTest(InterfaceForwardDeclarationTest.suite());

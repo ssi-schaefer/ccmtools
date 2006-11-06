@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java_cup.runtime.Symbol;
@@ -74,7 +71,6 @@ import ccmtools.metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.metamodel.ComponentIDL.MFactoryDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
-import ccmtools.utils.LogFormatter;
 import ccmtools.utils.Text;
 
 
@@ -133,11 +129,11 @@ public class ParserHelper
     {
         logger = Logger.getLogger("ccm.parser.idl");
         //!!!!!!!!!!
-        logger.setLevel(Level.FINE);
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        handler.setFormatter(new LogFormatter());
-        logger.addHandler(handler);
+//        logger.setLevel(Level.FINE);
+//        Handler handler = new ConsoleHandler();
+//        handler.setLevel(Level.ALL);
+//        handler.setFormatter(new LogFormatter());
+//        logger.addHandler(handler);
         //!!!!!!!!
         init();        
     }
@@ -165,7 +161,7 @@ public class ParserHelper
     public void reportError(String message, Object info)
     {
         StringBuilder out = new StringBuilder();
-        out.append("ERROR: ");
+        out.append("ERROR [IDL parser]: ");
         if(info instanceof Symbol)
         {
             out.append(getCurrentSourceFile());
@@ -210,7 +206,7 @@ public class ParserHelper
         currentSourceFile = value;
     }
     
-    public String getMajorSourceFile()
+    public String getMainSourceFile()
     {
         return mainSourceFile;
     }
@@ -218,19 +214,41 @@ public class ParserHelper
     {
         mainSourceFile = value;
     }
-
+    
+    /**
+     * Return the absolute filename if, this file has been included, thus, no code 
+     * should be generated. In the other case return an empty string.
+     */
+    public String getIncludedSourceFile()
+    {
+        logger.fine("");
+        if (getCurrentSourceFile().equals(getMainSourceFile()))
+        {
+            return "";
+        }
+        else
+        {
+            return getCurrentSourceFile();
+        }
+    }
     
     
     
-    /*************************************************************************
+    /***************************************************************************
      * Parser Utility Methods
-     *************************************************************************/
+     **************************************************************************/
 
     /* 1 */
     public MContainer parseSpecification(List definitions)
     {
         getLogger().fine("1: specification");
         MContainer container = new MContainerImpl();
+        for(Iterator i = definitions.iterator(); i.hasNext();)
+        {
+            // Each contained element knows its container
+            MContained contained = (MContained)i.next();
+            contained.setDefinedIn(container);
+        }
         container.setContentss(definitions);
         return container;
     }
@@ -285,6 +303,7 @@ public class ParserHelper
         getLogger().fine("6: T_INTERFACE T_IDENTIFIER = " + id);
         MInterfaceDef type = new MInterfaceDefImpl();
         type.setIdentifier(id);  
+        type.setSourceFile(getIncludedSourceFile());
         ScopedName identifier = new ScopedName(id);        
         getModelRepository().registerForwardDeclaration(identifier);
         getModelRepository().registerIdlType(identifier, type);        
@@ -325,6 +344,7 @@ public class ParserHelper
             getModelRepository().registerIdlType(identifier, iface);
         }
         iface.setIdentifier(id);
+        iface.setSourceFile(getIncludedSourceFile());
         return iface;
     }
 
@@ -471,7 +491,8 @@ public class ParserHelper
     {
         getLogger().fine("14: valuetype T_IDENTIFIER = " + id);        
         MValueDef value = new MValueDefImpl();
-        value.setIdentifier(id);  
+        value.setIdentifier(id); 
+        value.setSourceFile(getIncludedSourceFile());
         ScopedName identifier = new ScopedName(id);        
         getModelRepository().registerForwardDeclaration(identifier);
         getModelRepository().registerIdlType(identifier, value);
@@ -493,6 +514,7 @@ public class ParserHelper
         registerTypeId(id);
         MValueBoxDef value = new MValueBoxDefImpl();
         value.setIdentifier(id);
+        value.setSourceFile(getIncludedSourceFile());
         value.setIdlType(idlType);
         return value;
     }
@@ -764,6 +786,7 @@ public class ParserHelper
         getLogger().fine("23: factory T_IDENTIFIER ( ); = " + id);
         MFactoryDef factory = new MFactoryDefImpl();
         factory.setIdentifier(id);
+        factory.setSourceFile(getIncludedSourceFile());
         return factory;
     }
     
@@ -772,6 +795,7 @@ public class ParserHelper
         getLogger().fine("23: factory T_IDENTIFIER ( init_param_decls ); = " + id + ", " + parameters);
         MFactoryDef factory = new MFactoryDefImpl();
         factory.setIdentifier(id);
+        factory.setSourceFile(getIncludedSourceFile());
         Collections.reverse(parameters);
         factory.setParameters(parameters);
         return factory;
@@ -812,7 +836,7 @@ public class ParserHelper
         getLogger().fine("27: T_EQUAL const_exp = " + constExpr);
         MConstantDef constant = new MConstantDefImpl();
         constant.setIdentifier(identifier);
-        constant.setSourceFile(ParserHelper.getInstance().getCurrentSourceFile());
+        constant.setSourceFile(getIncludedSourceFile());
         if(constType instanceof MPrimitiveDef)
         {
             MPrimitiveDef primitive = (MPrimitiveDef)constType;
@@ -922,15 +946,17 @@ public class ParserHelper
     /* 41 */
     public Integer parsePositiveIntConst(Object constExp)
     {
-        getLogger().fine("41: const_exp = " + constExp);        
+        getLogger().fine("41: const_exp = " + constExp);     
+        Integer result = null;
         if(constExp instanceof Integer)
         {
-            return (Integer)constExp;
+            result = (Integer)constExp;
         }
         else
         {
-            throw new RuntimeException(constExp + " is not an integer constant!");
+            reportError(constExp + " is not an integer constant!");
         }
+        return result;
     }
     
     
@@ -940,13 +966,14 @@ public class ParserHelper
         getLogger().fine("42: T_TYPEDEF type_spec declarators = " + type + " " + declarators);
         if(declarators == null)
         {
-            throw new RuntimeException("Empty declarators list!");
+            reportError("Empty declarators list!");
         }
         
         MAliasDef alias = new MAliasDefImpl();
         Declarator declarator = (Declarator)declarators.get(0);
         ScopedName id = new ScopedName(declarator.toString());
         alias.setIdentifier(declarator.toString());
+        alias.setSourceFile(getIncludedSourceFile());
         if(declarator instanceof ArrayDeclarator)
         {
             MArrayDef array = ((ArrayDeclarator)declarator).getArray();
@@ -966,7 +993,8 @@ public class ParserHelper
     public MNativeDef parseNativeTypeDcl(Declarator declarator)
     {
         getLogger().fine("42:T_NATIVE simple_declarator = " + declarator);        
-        MNativeDef type = new MNativeDefImpl();        
+        MNativeDef type = new MNativeDefImpl();  
+        type.setSourceFile(getIncludedSourceFile());
         type.setNativeType(declarator.toString());
         ScopedName id = new ScopedName(declarator.toString());
         getModelRepository().registerIdlType(id, type);
@@ -1164,6 +1192,7 @@ public class ParserHelper
             getModelRepository().registerIdlType(identifier, type);
         }
         type.setIdentifier(id);
+        type.setSourceFile(getIncludedSourceFile());
         Collections.reverse(memberList);
         type.setMembers(memberList);
         return type;
@@ -1200,7 +1229,7 @@ public class ParserHelper
         }
         else
         {
-            throw new RuntimeException("No declarators defined for member type " + typeSpec);
+            reportError("No declarators defined for member type " + typeSpec);
         }
         return field;
     }
@@ -1223,6 +1252,7 @@ public class ParserHelper
             getModelRepository().registerIdlType(identifier, type);
         }
         type.setIdentifier(id);
+        type.setSourceFile(getIncludedSourceFile());
         type.setDiscriminatorType(discriminatorType);
         Collections.reverse(switchBody);
         type.setUnionMembers(switchBody);
@@ -1296,7 +1326,7 @@ public class ParserHelper
         ScopedName identifier = new ScopedName(id);
         MEnumDef enumeration = new MEnumDefImpl();
         enumeration.setIdentifier(id);
-        enumeration.setSourceFile(ParserHelper.getInstance().getCurrentSourceFile());
+        enumeration.setSourceFile(getIncludedSourceFile());
         if(enumerators.size() > 0)
         {
             Collections.reverse(enumerators);
@@ -1304,7 +1334,7 @@ public class ParserHelper
         }
         else
         {
-            throw new RuntimeException("Enumeration " + id + " has no members!");
+            reportError("Enumeration " + id + " has no members!");
         }           
         getModelRepository().registerIdlType(identifier, enumeration);
         return enumeration;
@@ -1412,6 +1442,7 @@ public class ParserHelper
         ScopedName identifier = new ScopedName(id);
         MExceptionDef type = new MExceptionDefImpl();
         type.setIdentifier(id);
+        type.setSourceFile(getIncludedSourceFile());
         Collections.reverse(members);
         type.setMembers(members);
         getModelRepository().registerException(identifier, type);
@@ -1455,6 +1486,7 @@ public class ParserHelper
         operation.setOneway(isOneway.booleanValue());        
         operation.setIdlType(type);
         operation.setIdentifier(id);
+        operation.setSourceFile(getIncludedSourceFile());
         Collections.reverse(parameters);
         operation.setParameters(parameters);
         // TODO: Semantic checks should be placed into the metamodel !!!!!!! 
@@ -1873,6 +1905,8 @@ public class ParserHelper
             File idlFile = new File(idlFileName);
             String tmpFileName = idlFile.getName() + ".tmp";
             File tmpIdlFile = new File(tmpFileName);
+            tmpIdlFile.deleteOnExit();
+            
             useCpp(uiDriver, idlFile.getAbsolutePath(), includePaths, tmpFileName);
 
             uiDriver.printMessage("parse " + tmpFileName);
@@ -1880,7 +1914,11 @@ public class ParserHelper
             ParserHelper.getInstance().setMainSourceFile(idlFile.getAbsolutePath());
             IdlScanner scanner = new IdlScanner(new FileReader(tmpIdlFile));
             IdlParser parser = new IdlParser(scanner);                    
-            MContainer ccmModel = (MContainer)parser.parse().value;    
+            MContainer ccmModel = (MContainer)parser.parse().value;   
+            
+            String identifier = idlFileName.substring(0, idlFileName.lastIndexOf(".idl"));
+            ccmModel.setIdentifier(identifier);
+            getLogger().fine("CCM Model = " + ccmModel);            
             uiDriver.printMessage("done");
             return ccmModel;
         }
@@ -1935,7 +1973,7 @@ public class ParserHelper
             preproc.waitFor();
             if (preproc.exitValue() != 0)
             {
-                throw new RuntimeException("Preprocessor Error: Please verify your include paths or file names ("
+                reportError("Preprocessor Error: Please verify your include paths or file names ("
                         + sourceFileName + ")!!");
             }
             else

@@ -9,6 +9,8 @@ public class StructTestSuite
 	public static Test suite()
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(StructTestSuite.class.getName());	
+        
+        suite.addTest(StructDefinedInTest.suite());
         suite.addTest(EmptyStructTest.suite());
         suite.addTest(StructOfBaseTypesTest.suite());
         suite.addTest(StructOfTempleateTypesTest.suite());

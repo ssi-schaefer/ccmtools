@@ -13,7 +13,7 @@
  */
 
 typedef sequence<LongType> 		LongTypeSeq;	
-typedef sequence<Color> 			EnumSeq;
+typedef sequence<Color> 		EnumSeq;
 typedef sequence<Address>   		StructSeq;
 typedef sequence<LongArray>		ArraySeq;
 typedef sequence<LongSeq>  		SequenceSeq;
@@ -25,11 +25,11 @@ typedef sequence<sequence<long> > AnonymousSequenceSeq;
  */
 
 typedef sequence<LongType, 10> 		LongTypeBSeq;	
-typedef sequence<Color, 10> 			EnumBSeq;
-typedef sequence<Address, 10>   		StructBSeq;
+typedef sequence<Color, 10> 		EnumBSeq;
+typedef sequence<Address, 10>   	StructBSeq;
 typedef sequence<LongArray, 10>		ArrayBSeq;
 typedef sequence<LongSeq, 10>  		SequenceBSeq;
-typedef sequence<sequence<long>,10 > AnonymousSequenceBSeq;
+typedef sequence<sequence<long>,10 >    AnonymousSequenceBSeq;
 
 
 #endif // __USER_TYPE_SEQUENCE__IDL__

@@ -384,10 +384,9 @@ public class CcmToIdlModelMapper
 	{
 		ArrayDef out = new ArrayDef();
 		logger.fine("MArrayDef: " + in);
-//		out.getBounds().addAll(in.getBounds());
 		for(Iterator i=in.getBounds().iterator(); i.hasNext();)
 		{
-			out.getBounds().add((Long)i.next());
+			out.getBounds().add((Integer)i.next());
 		}
 		out.setElementType(transform(in.getIdlType()));		
 		return out;

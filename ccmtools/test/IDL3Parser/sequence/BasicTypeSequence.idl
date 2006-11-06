@@ -10,7 +10,7 @@ typedef sequence<long> 		        LongSeq;
 typedef sequence<long long> 	        LLongSeq;
 typedef sequence<unsigned short>        UShortSeq;
 typedef sequence<unsigned long>         ULongSeq;
-//typedef sequence<unsigned long long>  ULLongSeq; !!!
+typedef sequence<unsigned long long>    ULLongSeq; 
  
 typedef sequence<float> 	        FloatSeq;
 typedef sequence<double> 		DoubleSeq;
@@ -38,7 +38,7 @@ typedef sequence<long,10> 		        LongBSeq;
 typedef sequence<long long, 10> 	        LLongBSeq;
 typedef sequence<unsigned short, 10> 	        UShortBSeq;
 typedef sequence<unsigned long, 10> 		ULongBSeq;
-//typedef sequence<unsigned long long, 10> 	ULLongBSeq; !!!
+typedef sequence<unsigned long long, 10> 	ULLongBSeq; 
  
 typedef sequence<float, 10> 			FloatBSeq;
 typedef sequence<double, 10> 			DoubleBSeq;
@@ -47,7 +47,7 @@ typedef sequence<long double, 10>     		LDoubleBSeq;
 typedef sequence<char, 10> 			CharBSeq;
 typedef sequence<wchar, 10>     		WCharBSeq;
 typedef sequence<string, 10> 			StringBSeq;
-typedef sequence<wstring	, 10>		WStringBSeq;
+typedef sequence<wstring , 10>		        WStringBSeq;
  
 typedef sequence<boolean, 10> 			BooleanBSeq;
 typedef sequence<octet, 10> 			OctetBSeq;	

@@ -9,6 +9,8 @@ public class ArrayTestSuite
 	public static Test suite()
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(ArrayTestSuite.class.getName());	
+        
+        suite.addTest(ArrayDefinedInTest.suite());
         suite.addTest(ArrayOfBaseTypesTest.suite());
         suite.addTest(ArrayDimensionsTest.suite());
         suite.addTest(ArrayOfTemplateTypesTest.suite());

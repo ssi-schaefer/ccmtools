@@ -9,6 +9,9 @@ public class SequenceTestSuite
 	public static Test suite()
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(SequenceTestSuite.class.getName());	
+        
+        suite.addTest(SequenceDefinedInTest.suite());
+        
         suite.addTest(SequenceOfBaseTypesTest.suite());
         suite.addTest(SequenceOfTemplateTypesTest.suite());
         suite.addTest(SequenceOfConstructedTypesTest.suite());

@@ -12,7 +12,7 @@ interface InterfaceBasicTypeAttributes
 	attribute long long		lLongValue;
 	attribute unsigned short 	uShortValue;
 	attribute unsigned long 	uLongValue;
-//	attribute unsigned long long uLLongValue;
+	attribute unsigned long long    uLLongValue;
 	
 	attribute float 		floatValue;
 	attribute double 		doubleValue;
@@ -30,7 +30,7 @@ interface InterfaceBasicTypeAttributes
 	attribute any			anyValue;
 	attribute Object		objectValue;
 	
-//	attribute fixed<9,2>			fixedValue; !!!
+	attribute fixed<9,2>		fixedValue; 
 };
 
 #endif // __INTERFACE_BASIC_TYPE_ATTRIBUTE__IDL__

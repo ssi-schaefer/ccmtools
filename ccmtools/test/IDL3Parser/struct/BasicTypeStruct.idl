@@ -6,14 +6,14 @@ struct BasicTypeStruct
 {
 	short 			shortMember;	
 	long 			longMember;
-	long long       llongMember;
-	unsigned short 	ushortMember;
-	unsigned long 	ulongMember;
-//	unsigned long long ullongMember; !!!
+	long long               llongMember;
+	unsigned short 	        ushortMember;
+	unsigned long 	        ulongMember;
+	unsigned long long      ullongMember; 
 	
 	float 			floatMember;
 	double 			doubleMember;
-	long double     ldoubleMember;
+	long double             ldoubleMember;
 	
 	char 			charMember;
 	wchar     		wcharMember;
@@ -22,9 +22,9 @@ struct BasicTypeStruct
 	wstring			wstringMember;
 	wstring<11>		wstringBoundedMember;	
 		
-	boolean 			booleanMember;
+	boolean 		booleanMember;
 	octet 			octetMember;	
-	any 				anyMember;
+	any 			anyMember;
 	Object			objectMember;
 	
 	fixed<9,2>      fixedMember;

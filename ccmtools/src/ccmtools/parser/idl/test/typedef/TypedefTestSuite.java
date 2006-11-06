@@ -9,6 +9,9 @@ public class TypedefTestSuite
 	public static Test suite()
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(TypedefTestSuite.class.getName());	
+
+        suite.addTest(TypedefDefinedInTest.suite());
+        
         suite.addTest(TypedefOfBaseTypesTest.suite());
         suite.addTest(TypedefOfTemplateTypesTest.suite());
         suite.addTest(TypedefOfConstructedTypesTest.suite());

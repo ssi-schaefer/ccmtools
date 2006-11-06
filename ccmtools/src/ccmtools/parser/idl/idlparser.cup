@@ -199,7 +199,7 @@ nonterminal	Object mult_expr;
 nonterminal	Object unary_expr;
 nonterminal	Object primary_expr;
 nonterminal	Object literal; 			
-nonterminal	Integer	positive_int_const; 			/* 41 */
+nonterminal	Integer positive_int_const; 			/* 41 */
 
 nonterminal	MIDLType	 type_dcl;
 nonterminal	MIDLType type_spec;

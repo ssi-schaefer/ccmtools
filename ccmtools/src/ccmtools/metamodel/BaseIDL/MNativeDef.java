@@ -21,7 +21,7 @@
 package ccmtools.metamodel.BaseIDL;
 
 public interface MNativeDef
-    extends MIDLType
+    extends MTypedefDef
 {
     // attribute nativeType:String  
     String getNativeType();          

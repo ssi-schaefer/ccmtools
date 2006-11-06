@@ -15,7 +15,7 @@ public class ArrayDef
 	private Type elementType;
 
 	/** Stores the bound of every array dimension */
-	private List<Long> bounds = new ArrayList<Long>();
+	private List<Integer> bounds = new ArrayList<Integer>();
 	
 	
 	public Type getElementType()
@@ -28,7 +28,7 @@ public class ArrayDef
 		this.elementType = type;
 	}
 	
-	public List<Long> getBounds()
+	public List<Integer> getBounds()
 	{
 		return bounds;
 	}
@@ -41,7 +41,7 @@ public class ArrayDef
 	public String generateIdlMapping()
 	{
 		StringBuilder code = new StringBuilder();
-		for(Long bound: getBounds())
+		for(Integer bound: getBounds())
 		{
 			code.append("[").append(bound.longValue()).append("]");
 		}		

@@ -28,9 +28,16 @@ public class MNativeDefImpl
     private final static MDefinitionKind definitionKind =
         MDefinitionKind.DK_NATIVE;
 
+    private String absoluteName;
+    private String identifier;
+    private String repositoryId;
+    private String version;
+    private String sourceFile;
+    private MContainer Contains;
+    
     private TypeCode typeCode_;
     private String nativeType_;
-
+    
     // override toString()
     public String toString()
     {        
@@ -51,5 +58,36 @@ public class MNativeDefImpl
     // attribute nativeType:String  
     public String getNativeType()               {return nativeType_;}
     public void setNativeType(String __arg)     {nativeType_ = __arg;}
+
+
+    // attribute absoluteName:String
+    public String getAbsoluteName()             {return absoluteName;}
+    public void setAbsoluteName(String __arg)   {absoluteName = __arg;}
+
+    // attribute identifier:String
+    public String getIdentifier()               {return identifier;}
+    public void setIdentifier(String __arg)     {identifier = __arg;}
+
+    // attribute repositoryId:String
+    public String getRepositoryId()             {return repositoryId;}
+    public void setRepositoryId(String __arg)   {repositoryId = __arg;}
+
+    // attribute version:String
+    public String getVersion()                  {return version;}
+    public void setVersion(String __arg)        {version = __arg;}
+
+    // attribute sourceFile:String
+    public String getSourceFile()               {return sourceFile;}
+    public void setSourceFile(String __arg)     {sourceFile = __arg;}
+
+    
+    //----------------------------------------------------------------
+    // implementation of navigation
+    //----------------------------------------------------------------
+
+    // association: direct role: contants[*] <-> opposite role: definedIn[0..1]
+    public MContainer getDefinedIn()            { return Contains;}
+    public void setDefinedIn(MContainer __arg)  { Contains = __arg;}
 }
+
 

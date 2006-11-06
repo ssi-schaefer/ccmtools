@@ -9,7 +9,9 @@ public class UnionTestSuite
 	public static Test suite()
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(UnionTestSuite.class.getName());	
-        suite.addTest(UnionTest.suite());
+        
+        suite.addTest(UnionDefinedInTest.suite());
+        suite.addTest(UnionDiscriminatorTest.suite());
 		return suite;
 	}
 }

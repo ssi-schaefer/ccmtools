@@ -5,7 +5,7 @@ interface InterfaceOnewayOperation
 {
 	oneway void of0();
 	oneway void of1(in long p1);
-	oneway long of2();  //!!!!! Should be void !!!! 
+  //	oneway long of2();  //!!!!! Should be void !!!! 
 };
 
 #endif // __INTERFACE_ONEWAY_OPERATION__IDL__

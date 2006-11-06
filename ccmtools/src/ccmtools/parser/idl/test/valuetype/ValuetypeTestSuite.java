@@ -12,6 +12,7 @@ public class ValuetypeTestSuite
 
 		suite.addTest(ValueBoxTest.suite());
         
+        suite.addTest(ValuetypeDefinedInTest.suite());
         
         suite.addTest(ValuetypeHeaderTest.suite());
         suite.addTest(ValuetypeFactoryTest.suite());

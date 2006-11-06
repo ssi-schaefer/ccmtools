@@ -6,7 +6,7 @@
 #include<exception/ExceptionUserType.idl>
 #include<struct/Person.idl>
 
-interface InterfaceBasicTypeAttributes
+interface InterfaceAttributeExceptions
 {
     attribute long longValue
 	getraises(ExceptionEmpty)
