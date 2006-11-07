@@ -9,6 +9,16 @@
 #include <WX/Utils/smartptr.h>
 #include <ccm/local/Components/CCM.h>
 
+#ifdef __WGCC
+    #if defined _BUILDING_CCM_RUNTIME_
+        #define _CCM_EXPORT_DECL_
+    #else
+        #define _CCM_EXPORT_DECL_ __declspec(dllimport)
+    #endif
+#else
+    #define _CCM_EXPORT_DECL_
+#endif
+
 namespace ccm {
 namespace local {
 
@@ -22,7 +32,7 @@ typedef std::map<std::string,
  *
  * Note: this is a simple hard coded version - there will be a dynamic map...
  ***/
-class HomeFinder
+class _CCM_EXPORT_DECL_ HomeFinder
   : public Components::HomeFinder
 {
  private:

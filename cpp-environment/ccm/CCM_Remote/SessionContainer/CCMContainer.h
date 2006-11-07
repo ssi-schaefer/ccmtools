@@ -43,16 +43,26 @@
 
 #include <Components/CCM.h>
 
+#ifdef __WGCC
+    #if defined _BUILDING_CCM_RUNTIME_
+        #define _CCM_EXPORT_DECL_
+    #else
+        #define _CCM_EXPORT_DECL_ __declspec(dllimport)
+    #endif
+#else
+    #define _CCM_EXPORT_DECL_
+#endif
+
 namespace CCM {
   
   //============================================================================
   // Base for all Containers
   //============================================================================
   
-    class ContainerBase
+    class _CCM_EXPORT_DECL_ ContainerBase
 	: virtual public WX::Utils::RefCounted
     {
-    protected:
+    	protected:
 	static CORBA::ULong globalContainerNumber_;
 	CORBA::ULong containerNumber_;
 	
@@ -163,7 +173,7 @@ namespace CCM {
   // Valuetype implementations
   //==========================================================================
   
-  class Cookie_impl 
+  class _CCM_EXPORT_DECL_ Cookie_impl 
     : virtual public OBV_Components::Cookie,
       virtual public CORBA::DefaultValueRefCountBase
     {
