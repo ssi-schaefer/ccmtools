@@ -104,8 +104,7 @@
 
 	
   	<!-- Create Java archive file from all package. -->				
-
-	<target name="jar.ccmtools" depends="compile.ccmtools, compile.uml2idl"
+	<target name="jar.ccmtools" depends="compile.ccmtools, compile.uml2idl" 
      	description="Create Java archive file from ccmtools package." >
       	<jar jarfile="${lib}/ccmtools.jar" basedir="${build}/classes" >
          	<manifest>

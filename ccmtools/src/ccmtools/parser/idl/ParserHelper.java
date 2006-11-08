@@ -67,6 +67,8 @@ import ccmtools.metamodel.BaseIDL.MValueMemberDef;
 import ccmtools.metamodel.BaseIDL.MValueMemberDefImpl;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.metamodel.BaseIDL.MWstringDefImpl;
+import ccmtools.metamodel.ComponentIDL.MComponentDef;
+import ccmtools.metamodel.ComponentIDL.MComponentDefImpl;
 import ccmtools.metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.metamodel.ComponentIDL.MFactoryDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
@@ -330,7 +332,7 @@ public class ParserHelper
     /* 7 */
     public MInterfaceDef parseInterfaceHeader(String id)
     {
-        getLogger().fine("7: T_INTERFACE T_IDENTIFIER = " + id);
+        getLogger().fine("7: interface T_IDENTIFIER = " + id);
         ScopedName identifier = new ScopedName(id);
         MInterfaceDef iface;
         if(getModelRepository().isForwardDeclaration(identifier))
@@ -1780,6 +1782,105 @@ public class ParserHelper
             }
         }        
         return exceptions;
+    }
+    
+    /* 113 */
+    public MComponentDef parseComponentDeclaration(MComponentDef component)
+    {
+        getLogger().fine("113: component_header {} = " + component);        
+        String id = component.getIdentifier();
+        ScopedName identifier = new ScopedName(component.getIdentifier());
+        registerTypeId(id);
+        getModelRepository().registerIdlType(identifier, component);
+        return component;
+    }
+    
+    
+    /* 114 */
+    public MComponentDef parseComponentHeader(String id)
+    {
+        getLogger().fine("114: component T_IDENTIFIER = " + id);
+        ScopedName identifier = new ScopedName(id);
+        MComponentDef component;
+        if(getModelRepository().isForwardDeclaration(identifier))
+        {
+            MIDLType forwardDcl = getModelRepository().findIdlType(identifier);
+            component = (MComponentDef)forwardDcl;
+        }
+        else
+        {
+            component = new MComponentDefImpl();
+            getModelRepository().registerIdlType(identifier, component);
+        }
+        component.setIdentifier(id);
+        component.setSourceFile(getIncludedSourceFile());        
+        return component;
+    }
+    
+    public MComponentDef parseComponentHeader(String id, ScopedName base)
+    {
+        getLogger().fine("114: component T_IDENTIFIER component_inheritance_spec = " + id + " " + base);
+        MComponentDef component = parseComponentHeader(id);
+        MIDLType type = getModelRepository().findIdlType(base);
+        if(type == null)
+        {
+            reportError("Base component " + base + " not found!");
+        }
+        else if(!(type instanceof MComponentDef))
+        {
+            reportError("Base component specification " + base + " isn't a component!");            
+        }        
+        else
+        {
+            component.addBase((MInterfaceDef)type);
+        }
+        return component;
+    }
+    
+    
+    public MComponentDef parseComponentHeader(String id, List ifaces)
+    {
+        getLogger().fine("114: component _IDENTIFIER supported_interface_spec" + id + " " + ifaces);
+        MComponentDef component = parseComponentHeader(id);
+        Collections.reverse(ifaces);
+        component.setSupportss(ifaces);
+        return component;
+    }
+    
+    
+    public MComponentDef parseComponentHeader(String id, ScopedName base, List ifaces)
+    {
+        getLogger().fine("114: component _IDENTIFIER component_inheritance_spec supported_interface_spec" + id + " " + ifaces);
+        MComponentDef component = parseComponentHeader(id, base);
+        Collections.reverse(ifaces);
+        component.setSupportss(ifaces);
+        return component;
+    }
+    
+    
+    /* 115 */
+    public List parseSupportedInterfaceSpec(List scopedNames)
+    {
+        getLogger().fine("115: supports interface_names = " + scopedNames);
+        List ifaces = new ArrayList();
+        for(Iterator i = scopedNames.iterator(); i.hasNext();)
+        {
+            ScopedName id = (ScopedName)i.next();
+            MIDLType type = getModelRepository().findIdlType(id); 
+            if(type == null)
+            {
+                reportError("Supported interface " + id + "not found!" );
+            }
+            else if(!(type instanceof MInterfaceDef))
+            {
+                reportError("Supported interface specification contains " + type + "which is not an interface!");
+            }
+            else
+            {
+                ifaces.add(type);
+            }            
+        }        
+        return ifaces;       
     }
     
     

@@ -3,6 +3,7 @@ package ccmtools.parser.idl;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import ccmtools.parser.idl.array.ArrayTestSuite;
+import ccmtools.parser.idl.component.ComponentTestSuite;
 import ccmtools.parser.idl.constant.ConstantTestSuite;
 import ccmtools.parser.idl.enumeration.EnumTestSuite;
 import ccmtools.parser.idl.exception.ExceptionTestSuite;
@@ -49,6 +50,8 @@ public class IdlParserTestSuite
         
         suite.addTest(NotSupportedTest.suite());
 
+        suite.addTest(ComponentTestSuite.suite());
+        
         return suite;
 	}
 }

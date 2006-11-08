@@ -295,12 +295,12 @@ nonterminal	List get_excep_expr;				// List<MExceptionDef>
 nonterminal	List set_excep_expr;				// List<MExceptionDef>
 nonterminal	List exception_list;				// List<MExceptionDef>		/* 110 */
 
-nonterminal		component;
-nonterminal		component_forward_dcl;
-nonterminal		component_dcl;
-nonterminal		component_header;
-nonterminal		supported_interface_spec;
-nonterminal		component_inheritance_spec;
+nonterminal	MComponentDef component;
+nonterminal	MComponentDef component_forward_dcl;
+nonterminal	MComponentDef component_dcl;
+nonterminal	MComponentDef component_header;
+nonterminal	List supported_interface_spec;
+nonterminal	ScopedName component_inheritance_spec;
 nonterminal		component_body;
 nonterminal		component_export;
 nonterminal		provides_dcl;
@@ -2307,24 +2307,41 @@ exception_list
 
 /* 112 */
 component
-	::= component_dcl
-	| component_forward_dcl
+	::= 
+		component_dcl:c
+		{:
+			RESULT = c;
+		:}
+	| 
+		component_forward_dcl:c
+		{:
+			RESULT = c;
+		:}
 	;
 
 
 /* 112 */
 component_forward_dcl
-	::= T_COMPONENT T_IDENTIFIER:id
+	::= 
+		T_COMPONENT T_IDENTIFIER:id
 		{:
-//			helper.getModelRepository().registerForwardDeclaration(id);
+
 		:}
 	;
 
 
 /* 113 */
 component_dcl
-	::= component_header T_LEFT_CURLY_BRACKET component_body T_RIGHT_CURLY_BRACKET
-	| component_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+	::= 
+		component_header T_LEFT_CURLY_BRACKET component_body T_RIGHT_CURLY_BRACKET
+		{:
+
+		:}		
+	| 
+		component_header:h T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+		{:
+			RESULT = helper.parseComponentDeclaration(h);
+		:}
 	;
 
 
@@ -2333,35 +2350,43 @@ component_header
 	::= 
 		T_COMPONENT T_IDENTIFIER:id
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseComponentHeader(id);
 		:}				
 	| 
-		T_COMPONENT T_IDENTIFIER:id component_inheritance_spec
+		T_COMPONENT T_IDENTIFIER:id component_inheritance_spec:b
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseComponentHeader(id, b);
 		:}				
 	| 
-		T_COMPONENT T_IDENTIFIER:id supported_interface_spec
+		T_COMPONENT T_IDENTIFIER:id supported_interface_spec:l
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseComponentHeader(id, l);
 		:}		
 	| 
-		T_COMPONENT T_IDENTIFIER:id component_inheritance_spec supported_interface_spec
+		T_COMPONENT T_IDENTIFIER:id component_inheritance_spec:b supported_interface_spec:l
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseComponentHeader(id, b, l);
 		:}		
 	;
 
 
 /* 115 */
 supported_interface_spec
-	::= T_SUPPORTS interface_names
+	::= 
+		T_SUPPORTS interface_names:l
+		{:
+			RESULT = helper.parseSupportedInterfaceSpec(l);
+		:}
 	;
 
 
 /* 116 */
 component_inheritance_spec
-	::= T_COLON scoped_name
+	::= 
+		T_COLON scoped_name:n
+		{:
+			RESULT = n;
+		:}
 	;
 
 
