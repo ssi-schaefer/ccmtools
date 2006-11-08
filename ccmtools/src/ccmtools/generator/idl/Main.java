@@ -63,8 +63,7 @@ public class Main
 				{
 					String idlFile = (String) i.next();
 //					MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
-                    MContainer ccmModel = 
-                        ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+                    MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
 
                     // Transform CCM Model to IDL Implementation Model
 					GraphTraverser traverser = new CcmGraphTraverser();
