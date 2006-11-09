@@ -314,15 +314,15 @@ nonterminal	MConsumesDef consumes_dcl;
 
 nonterminal	MHomeDef home_dcl;
 nonterminal MHomeDef home_header;
-nonterminal		home_inheritance_spec;
+nonterminal	ScopedName home_inheritance_spec;
 nonterminal		primary_key_spec;
-nonterminal		home_body;
+nonterminal	List home_body; // List<Object>
 
 /* 130 */
-nonterminal		home_exports;		
-nonterminal		home_export;
-nonterminal		factory_dcl;
-nonterminal		finder_dcl;
+nonterminal	List home_exports; // List<Object>		
+nonterminal	Object home_export;
+nonterminal	MFactoryDef factory_dcl;
+nonterminal	MFinderDef finder_dcl;
 
 
 nonterminal		event;
@@ -2507,52 +2507,55 @@ consumes_dcl
 /* 125 */
 home_dcl
 	::= 
-		home_header home_body
+		home_header:h home_body:b
+		{:
+			RESULT = helper.parseHomeDeclaration(h, b);
+		:}
 	;
 
 
 /* 126 */
 home_header
 	::= 
-		T_HOME T_IDENTIFIER:id T_MANAGES scoped_name
+		T_HOME T_IDENTIFIER:id T_MANAGES scoped_name:t
 		{:
-			helper.registerTypeId(id);
+			RESULT = helper.parseHomeHeader(id, t);
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id 
 			home_inheritance_spec T_MANAGES scoped_name
 		{:
-			helper.registerTypeId(id);
+
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id T_MANAGES scoped_name primary_key_spec
 		{:
-			helper.registerTypeId(id);
+
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id home_inheritance_spec T_MANAGES scoped_name primary_key_spec
 		{:
-			helper.registerTypeId(id);
+
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id supported_interface_spec T_MANAGES scoped_name
 		{:
-			helper.registerTypeId(id);
+
 		:}		
 	| 
 		T_HOME T_IDENTIFIER:id home_inheritance_spec supported_interface_spec T_MANAGES scoped_name
 		{:
-			helper.registerTypeId(id);
+
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id supported_interface_spec T_MANAGES scoped_name primary_key_spec
 		{:
-			helper.registerTypeId(id);
+
 		:}		
 	| 
 		T_HOME T_IDENTIFIER:id home_inheritance_spec supported_interface_spec T_MANAGES scoped_name primary_key_spec 
 		{:
-			helper.registerTypeId(id);
+
 		:}				
 	;
 
@@ -2577,6 +2580,9 @@ home_body
 		T_LEFT_CURLY_BRACKET home_exports T_RIGHT_CURLY_BRACKET
 	| 
 		T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+		{:
+			RESULT = helper.parseHomeBody();
+		:}
 	;
 
 

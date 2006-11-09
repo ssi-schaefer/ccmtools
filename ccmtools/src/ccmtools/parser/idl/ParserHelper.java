@@ -74,6 +74,8 @@ import ccmtools.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.metamodel.ComponentIDL.MComponentDefImpl;
 import ccmtools.metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.metamodel.ComponentIDL.MFactoryDefImpl;
+import ccmtools.metamodel.ComponentIDL.MHomeDef;
+import ccmtools.metamodel.ComponentIDL.MHomeDefImpl;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDefImpl;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
@@ -1829,11 +1831,15 @@ public class ParserHelper
             if(port instanceof MProvidesDef)
             {
                 MProvidesDef facet = (MProvidesDef)port;
+                facet.setDefinedIn(component);
+                facet.setComponent(component);
                 component.addFacet(facet);
             }
             else if(port instanceof MUsesDef)
             {
                 MUsesDef receptacle = (MUsesDef)port;
+                receptacle.setDefinedIn(component);
+                receptacle.setComponent(component);
                 component.addReceptacle(receptacle);
             }
             // TODO: handle other ports !!!!!
@@ -1843,6 +1849,7 @@ public class ParserHelper
                 for(Iterator j=content.iterator(); j.hasNext(); )
                 {
                     MContained contained = (MContained)j.next();
+                    contained.setDefinedIn(component);
                     component.addContents(contained);
                 }
             }
@@ -2016,6 +2023,71 @@ public class ParserHelper
         MUsesDef uses = parseUsesDeclaration(ifaceType,id);
         uses.setMultiple(true);
         return uses;
+    }
+    
+    
+    /* 125 */
+    public MHomeDef parseHomeDeclaration(MHomeDef header, List body)
+    {
+        getLogger().fine("125: home_header home_body = " + header + ", " + body);
+        Collections.reverse(body);
+        for(Iterator i = body.iterator(); i.hasNext();)
+        {
+            MContained content = (MContained)i.next();
+            content.setDefinedIn(header);
+            header.addContents(content);
+        }
+        String id = header.getIdentifier();
+        ScopedName identifier = new ScopedName(id);
+        registerTypeId(id);
+        getModelRepository().registerIdlType(identifier, header);
+        return header;
+    }
+    
+    
+    
+    /* 126 */
+    public MHomeDef parseHomeHeader(String id, ScopedName componentId)
+    {
+        getLogger().fine("126: home id manages component = " + id + ", " + componentId);
+        ScopedName identifier = new ScopedName(id);
+        MHomeDef home;
+        if(getModelRepository().isForwardDeclaration(identifier))
+        {
+            home = (MHomeDef)getModelRepository().findIdlType(identifier);
+        }
+        else
+        {
+            home = new MHomeDefImpl();
+            getModelRepository().registerIdlType(identifier, home);
+        }
+        home.setIdentifier(id);
+        home.setSourceFile(getIncludedSourceFile());
+        
+        MIDLType type = getModelRepository().findIdlType(componentId);
+        if(type == null)
+        {
+            reportError("Managed component " + componentId + " not found!");
+        }
+        else if(type instanceof MComponentDef)
+        {
+            MComponentDef component = (MComponentDef)type;
+            component.addHome(home);
+            home.setComponent(component);
+        }
+        else
+        {
+            reportError("Managed type " + componentId + " is not a component!");
+        }
+        return home;
+    }
+    
+    
+    /* 129 */
+    public List parseHomeBody()
+    {
+        getLogger().fine("129: {}"); 
+        return new ArrayList();
     }
     
     

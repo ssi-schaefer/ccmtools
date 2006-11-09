@@ -1,0 +1,13 @@
+#ifndef __HOME_SIMPLE__IDL__
+#define __HOME_SIMPLE__IDL__
+
+component ComponentSimple
+{
+    attribute long Id;
+};
+
+home HomeSimple manages ComponentSimple
+{
+};
+
+#endif // __HOME_SIMPLE__IDL__

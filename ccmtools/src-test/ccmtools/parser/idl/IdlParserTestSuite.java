@@ -8,6 +8,7 @@ import ccmtools.parser.idl.constant.ConstantTestSuite;
 import ccmtools.parser.idl.enumeration.EnumTestSuite;
 import ccmtools.parser.idl.exception.ExceptionTestSuite;
 import ccmtools.parser.idl.forward.ForwardDeclarationTestSuite;
+import ccmtools.parser.idl.home.HomeTestSuite;
 import ccmtools.parser.idl.iface.InterfaceTestSuite;
 import ccmtools.parser.idl.literal.LiteralTestSuite;
 import ccmtools.parser.idl.notsupported.NotSupportedTest;
@@ -51,6 +52,8 @@ public class IdlParserTestSuite
         suite.addTest(NotSupportedTest.suite());
 
         suite.addTest(ComponentTestSuite.suite());
+        
+        suite.addTest(HomeTestSuite.suite());
         
         return suite;
 	}
