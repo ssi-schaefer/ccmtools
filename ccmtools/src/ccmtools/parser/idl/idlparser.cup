@@ -301,18 +301,19 @@ nonterminal	MComponentDef component_dcl;
 nonterminal	MComponentDef component_header;
 nonterminal	List supported_interface_spec;
 nonterminal	ScopedName component_inheritance_spec;
-nonterminal		component_body;
-nonterminal		component_export;
-nonterminal		provides_dcl;
+nonterminal	List component_body;  // List<Object>
+nonterminal	Object component_export;
+nonterminal	MProvidesDef provides_dcl;
 
 /* 120 */
-nonterminal		interface_type;		
-nonterminal		uses_dcl;
-nonterminal		emits_dcl;
-nonterminal		publishes_dcl;
-nonterminal		consumes_dcl;
-nonterminal		home_dcl;
-nonterminal		home_header;
+nonterminal	ScopedName interface_type;		
+nonterminal	MUsesDef uses_dcl;
+nonterminal	MEmitsDef emits_dcl;
+nonterminal	MPublishesDef publishes_dcl;
+nonterminal	MConsumesDef consumes_dcl;
+
+nonterminal	MHomeDef home_dcl;
+nonterminal MHomeDef home_header;
 nonterminal		home_inheritance_spec;
 nonterminal		primary_key_spec;
 nonterminal		home_body;
@@ -322,6 +323,8 @@ nonterminal		home_exports;
 nonterminal		home_export;
 nonterminal		factory_dcl;
 nonterminal		finder_dcl;
+
+
 nonterminal		event;
 nonterminal		event_forward_dcl;
 nonterminal		event_abs_dcl;
@@ -2325,7 +2328,7 @@ component_forward_dcl
 	::= 
 		T_COMPONENT T_IDENTIFIER:id
 		{:
-
+			RESULT = helper.parseComponentForwardDeclaration(id);
 		:}
 	;
 
@@ -2333,9 +2336,9 @@ component_forward_dcl
 /* 113 */
 component_dcl
 	::= 
-		component_header T_LEFT_CURLY_BRACKET component_body T_RIGHT_CURLY_BRACKET
+		component_header:h T_LEFT_CURLY_BRACKET component_body:b T_RIGHT_CURLY_BRACKET
 		{:
-
+			RESULT = helper.parseComponentDeclaration(h,b);
 		:}		
 	| 
 		component_header:h T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
@@ -2392,71 +2395,126 @@ component_inheritance_spec
 
 /* 117 */
 component_body
-	::= component_export
-	| component_export component_body
+	::= 
+		component_export:e
+		{:
+			RESULT = helper.parseComponentBody(e);
+		:}
+	| 
+		component_export:e component_body:l
+		{:
+			RESULT = helper.parseComponentBody(e,l);
+		:}
 	;
 
 
 /* 118 */
 component_export
-	::= provides_dcl T_SEMICOLON
-	| uses_dcl T_SEMICOLON
-	| emits_dcl T_SEMICOLON
-	| publishes_dcl T_SEMICOLON
-	| consumes_dcl T_SEMICOLON
-	| attr_dcl T_SEMICOLON
+	::= 
+		provides_dcl:p T_SEMICOLON
+		{:
+			RESULT = p;
+		:}
+	| 
+		uses_dcl:u T_SEMICOLON
+		{:
+			RESULT = u;
+		:}	
+	| 
+		emits_dcl:e T_SEMICOLON
+		{:
+			RESULT = e;
+		:}
+	| 
+		publishes_dcl:p T_SEMICOLON
+		{:
+			RESULT = p;
+		:}
+	| 
+		consumes_dcl:c T_SEMICOLON
+		{:
+			RESULT = c;
+		:}
+	| 
+		attr_dcl:a T_SEMICOLON
+		{:
+			RESULT = a;
+		:}
 	;
 
 
 /* 119 */
 provides_dcl
-	::= T_PROVIDES interface_type T_IDENTIFIER
+	::= 
+		T_PROVIDES interface_type:t T_IDENTIFIER:id
+		{:
+			RESULT = helper.parseProvidesDeclaration(t, id);
+		:}
 	;
 
 
 /* 120 */
 interface_type
-	::= scoped_name
-	| T_OBJECT
+	::= 
+		scoped_name:t
+		{:
+			RESULT = t;
+		:}
+	| 
+		T_OBJECT
+		{:
+			RESULT = helper.parseInterfaceType();
+		:}
 	;
 
 
 /* 121 */
 uses_dcl
-	::= T_USES interface_type T_IDENTIFIER
-	| T_USES T_MULTIPLE interface_type T_IDENTIFIER
+	::= 
+		T_USES interface_type:t T_IDENTIFIER:id
+		{:
+			RESULT = helper.parseUsesDeclaration(t, id);
+		:}
+	| 
+		T_USES T_MULTIPLE interface_type:t T_IDENTIFIER:id
+		{:
+			RESULT = helper.parseMultipleUsesDeclaration(t, id);
+		:}
 	;
 
 
 /* 122 */
 emits_dcl
-	::= T_EMITS scoped_name T_IDENTIFIER
+	::= 
+		T_EMITS scoped_name T_IDENTIFIER
 	;
 
 
 /* 123 */
 publishes_dcl
-	::= T_PUBLISHES scoped_name T_IDENTIFIER
+	::= 
+		T_PUBLISHES scoped_name T_IDENTIFIER
 	;
 
 
 /* 124 */
 consumes_dcl
-	::= T_CONSUMES scoped_name T_IDENTIFIER
+	::= 
+		T_CONSUMES scoped_name T_IDENTIFIER
 	;
 
 
 /* 125 */
 home_dcl
-	::= home_header home_body
+	::= 
+		home_header home_body
 	;
 
 
 /* 126 */
 home_header
 	::= 
-		T_HOME T_IDENTIFIER:id 
-			T_MANAGES scoped_name
+		T_HOME T_IDENTIFIER:id T_MANAGES scoped_name
 		{:
 			helper.registerTypeId(id);
 		:}				
@@ -2467,38 +2525,32 @@ home_header
 			helper.registerTypeId(id);
 		:}				
 	| 
-		T_HOME T_IDENTIFIER:id 
-			T_MANAGES scoped_name primary_key_spec
+		T_HOME T_IDENTIFIER:id T_MANAGES scoped_name primary_key_spec
 		{:
 			helper.registerTypeId(id);
 		:}				
 	| 
-		T_HOME T_IDENTIFIER:id 
-			home_inheritance_spec T_MANAGES scoped_name primary_key_spec
+		T_HOME T_IDENTIFIER:id home_inheritance_spec T_MANAGES scoped_name primary_key_spec
 		{:
 			helper.registerTypeId(id);
 		:}				
 	| 
-		T_HOME T_IDENTIFIER:id 
-			supported_interface_spec T_MANAGES scoped_name
+		T_HOME T_IDENTIFIER:id supported_interface_spec T_MANAGES scoped_name
 		{:
 			helper.registerTypeId(id);
 		:}		
 	| 
-		T_HOME T_IDENTIFIER:id 
-			home_inheritance_spec supported_interface_spec T_MANAGES scoped_name
+		T_HOME T_IDENTIFIER:id home_inheritance_spec supported_interface_spec T_MANAGES scoped_name
 		{:
 			helper.registerTypeId(id);
 		:}				
 	| 
-		T_HOME T_IDENTIFIER:id 
-			supported_interface_spec T_MANAGES scoped_name primary_key_spec
+		T_HOME T_IDENTIFIER:id supported_interface_spec T_MANAGES scoped_name primary_key_spec
 		{:
 			helper.registerTypeId(id);
 		:}		
 	| 
-		T_HOME T_IDENTIFIER:id 
-			home_inheritance_spec supported_interface_spec T_MANAGES scoped_name primary_key_spec 
+		T_HOME T_IDENTIFIER:id home_inheritance_spec supported_interface_spec T_MANAGES scoped_name primary_key_spec 
 		{:
 			helper.registerTypeId(id);
 		:}				
@@ -2507,59 +2559,79 @@ home_header
 
 /* 127 */
 home_inheritance_spec
-	::= T_COLON scoped_name
+	::= 
+		T_COLON scoped_name
 	;
 
 
 /* 128 */
 primary_key_spec
-	::= T_PRIMARYKEY scoped_name
+	::= 
+		T_PRIMARYKEY scoped_name
 	;
 
 
 /* 129 */
 home_body
-	::= T_LEFT_CURLY_BRACKET home_exports T_RIGHT_CURLY_BRACKET
-	| T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+	::= 
+		T_LEFT_CURLY_BRACKET home_exports T_RIGHT_CURLY_BRACKET
+	| 
+		T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
 	;
 
 
 /* 130 */
 home_exports
-	::= home_export
-	| home_export home_exports
+	::= 
+		home_export
+	| 
+		home_export home_exports
 	;
 
 home_export
-	::= export
-	| factory_dcl T_SEMICOLON
-	| finder_dcl T_SEMICOLON
+	::= 
+		export
+	| 
+		factory_dcl T_SEMICOLON
+	| 
+		finder_dcl T_SEMICOLON
 	;
 
 
 /* 131 */
 factory_dcl
-	::= T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS raises_expr
-	| T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS raises_expr
-	| T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS
-	| T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+	::= 
+		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS raises_expr
+	| 
+		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS raises_expr
+	| 
+		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS
+	| 
+		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
 	;
 
 
 /* 132 */
 finder_dcl
-	::= T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS raises_expr
-	| T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS raises_expr
-	| T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS
-	| T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+	::= 
+		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS raises_expr
+	| 
+		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS raises_expr
+	| 
+		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS
+	| 
+		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
 	;
 
 
 /* 134 */
 event
-	::= event_dcl
-	| event_abs_dcl
-	| event_forward_dcl
+	::= 
+		event_dcl
+	| 
+		event_abs_dcl
+	| 
+		event_forward_dcl
 	;
 
 
@@ -2597,8 +2669,10 @@ event_abs_dcl
 
 /* 137 */
 event_dcl
-	::= event_header T_LEFT_CURLY_BRACKET value_elements T_RIGHT_CURLY_BRACKET
-	| event_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
+	::= 
+		event_header T_LEFT_CURLY_BRACKET value_elements T_RIGHT_CURLY_BRACKET
+	| 
+		event_header T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
 	;
 
 

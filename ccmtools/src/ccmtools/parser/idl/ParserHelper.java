@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java_cup.runtime.Symbol;
@@ -71,8 +74,13 @@ import ccmtools.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.metamodel.ComponentIDL.MComponentDefImpl;
 import ccmtools.metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.metamodel.ComponentIDL.MFactoryDefImpl;
+import ccmtools.metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.metamodel.ComponentIDL.MProvidesDefImpl;
+import ccmtools.metamodel.ComponentIDL.MUsesDef;
+import ccmtools.metamodel.ComponentIDL.MUsesDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.LogFormatter;
 import ccmtools.utils.Text;
 
 
@@ -131,11 +139,11 @@ public class ParserHelper
     {
         logger = Logger.getLogger("ccm.parser.idl");
         //!!!!!!!!!!
-//        logger.setLevel(Level.FINE);
-//        Handler handler = new ConsoleHandler();
-//        handler.setLevel(Level.ALL);
-//        handler.setFormatter(new LogFormatter());
-//        logger.addHandler(handler);
+        logger.setLevel(Level.FINE);
+        Handler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        handler.setFormatter(new LogFormatter());
+        logger.addHandler(handler);
         //!!!!!!!!
         init();        
     }
@@ -1784,10 +1792,61 @@ public class ParserHelper
         return exceptions;
     }
     
+    
+    /* 112 */
+    public MComponentDef parseComponentForwardDeclaration(String id)
+    {
+        getLogger().fine("112: component id = " + id);     
+        MComponentDef component = new MComponentDefImpl();
+        component.setIdentifier(id);
+        component.setSourceFile(getIncludedSourceFile()); 
+
+        ScopedName identifier = new ScopedName(id);
+        getModelRepository().registerForwardDeclaration(identifier);
+        getModelRepository().registerIdlType(identifier, component);
+        return component;
+    }
+    
+    
     /* 113 */
     public MComponentDef parseComponentDeclaration(MComponentDef component)
     {
         getLogger().fine("113: component_header {} = " + component);        
+        String id = component.getIdentifier();
+        ScopedName identifier = new ScopedName(component.getIdentifier());
+        registerTypeId(id);
+        getModelRepository().registerIdlType(identifier, component);
+        return component;
+    }
+    
+    public MComponentDef parseComponentDeclaration(MComponentDef component, List body)
+    {
+        getLogger().fine("113: component_header { component_body } = " + component + ", " + body);
+        Collections.reverse(body);
+        for(Iterator i = body.iterator(); i.hasNext();)
+        {
+            Object port = i.next();
+            if(port instanceof MProvidesDef)
+            {
+                MProvidesDef facet = (MProvidesDef)port;
+                component.addFacet(facet);
+            }
+            else if(port instanceof MUsesDef)
+            {
+                MUsesDef receptacle = (MUsesDef)port;
+                component.addReceptacle(receptacle);
+            }
+            // TODO: handle other ports !!!!!
+            else if(port instanceof List) // handle component attributes
+            {                                
+                List content = (List)port;
+                for(Iterator j=content.iterator(); j.hasNext(); )
+                {
+                    MContained contained = (MContained)j.next();
+                    component.addContents(contained);
+                }
+            }
+        }        
         String id = component.getIdentifier();
         ScopedName identifier = new ScopedName(component.getIdentifier());
         registerTypeId(id);
@@ -1881,6 +1940,82 @@ public class ParserHelper
             }            
         }        
         return ifaces;       
+    }
+    
+    
+    /* 117 */
+    public List parseComponentBody(Object exportElement)
+    {
+        List body = new ArrayList();
+        body.add(exportElement);
+        return body;
+    }
+        
+    public List parseComponentBody(Object exportElement, List body)
+    {
+        body.add(exportElement);
+        return body;
+    }
+
+        
+    /* 119 */
+    public MProvidesDef parseProvidesDeclaration(ScopedName ifaceType, String id)
+    {
+        MProvidesDef provides = new MProvidesDefImpl();
+        provides.setIdentifier(id);
+        MIDLType type = getModelRepository().findIdlType(ifaceType);
+        if(type == null)
+        {
+            reportError("Provided interface type " + ifaceType + " not found!");
+        }
+        else if(!(type instanceof MInterfaceDef))
+        {
+            reportError("Provided type " + ifaceType + " isn't an interface!");
+        }
+        else
+        {
+            MInterfaceDef iface = (MInterfaceDef)type;
+            provides.setProvides(iface);            
+        }        
+        return provides;
+    }
+    
+    
+    /* 120 */
+    public ScopedName parseInterfaceType()
+    {
+        return new ScopedName("Object");
+    }
+    
+    
+    /* 121 */
+    public MUsesDef parseUsesDeclaration(ScopedName ifaceType, String id)
+    {
+        MUsesDef uses = new MUsesDefImpl();
+        uses.setIdentifier(id);
+        uses.setMultiple(false);
+        MIDLType type = getModelRepository().findIdlType(ifaceType);
+        if(type == null)
+        {
+            reportError("Used interface type " + ifaceType + " not found!");
+        }
+        else if(!(type instanceof MInterfaceDef))
+        {
+            reportError("Used type " + ifaceType + " isn't an interface!");
+        }
+        else
+        {
+            MInterfaceDef iface = (MInterfaceDef)type;
+            uses.setUses(iface);            
+        }        
+        return uses;
+    }
+    
+    public MUsesDef parseMultipleUsesDeclaration(ScopedName ifaceType, String id)
+    {
+        MUsesDef uses = parseUsesDeclaration(ifaceType,id);
+        uses.setMultiple(true);
+        return uses;
     }
     
     

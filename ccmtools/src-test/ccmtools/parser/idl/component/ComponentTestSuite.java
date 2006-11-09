@@ -11,8 +11,9 @@ public class ComponentTestSuite
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(ComponentTestSuite.class.getName());	
         
         suite.addTest(ComponentHeaderTest.suite());
-
-        
+        suite.addTest(ComponentAttributeTest.suite());
+        suite.addTest(ComponentPortsTest.suite());
+        suite.addTest(ComponentForwardDeclarationTest.suite());
         return suite;
 	}
 }
