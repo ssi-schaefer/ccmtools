@@ -2081,6 +2081,46 @@ public class ParserHelper
         }
         return home;
     }
+        
+    public MHomeDef parseHomeHeader(String id, ScopedName componentTypeName, ScopedName baseTypeName)
+    {
+        getLogger().fine("126: home id manages component = " + id + ", " + componentTypeName + ", " + baseTypeName);
+
+        MHomeDef home =  parseHomeHeader(id, componentTypeName);
+        MIDLType type = getModelRepository().findIdlType(baseTypeName);
+        if(type == null)
+        {
+            reportError("Base home " + baseTypeName + " not found!");
+        }
+        else if(type instanceof MHomeDef)
+        {
+            home.addBase((MHomeDef)type);
+        }
+        else
+        {
+            reportError("Base type " + baseTypeName  + " is not a home!");
+        }
+        return home;
+    }
+        
+    public MHomeDef parseHomeHeader(String id, ScopedName componentTypeName, List ifaces)
+    {
+        getLogger().fine("126: home id manages component = " + id + ", " + componentTypeName + ", " + ifaces);
+        MHomeDef home =  parseHomeHeader(id, componentTypeName);
+        Collections.reverse(ifaces);
+        home.setSupportss(ifaces);
+        return home;
+    }
+    
+    public MHomeDef parseHomeHeader(String id, ScopedName componentTypeName, ScopedName baseTypeName, List ifaces)
+    {
+        getLogger().fine("126: T_IDENTIFIER home_inheritance_spec supported_interface_spec T_MANAGES scoped_name "
+                            + id + ", " + componentTypeName + ", " + baseTypeName + ", " + ifaces);
+        MHomeDef home = parseHomeHeader(id, componentTypeName, baseTypeName);
+        Collections.reverse(ifaces);
+        home.setSupportss(ifaces);        
+        return home;
+    }
     
     
     /* 129 */

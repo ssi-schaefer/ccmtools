@@ -2517,45 +2517,44 @@ home_dcl
 /* 126 */
 home_header
 	::= 
-		T_HOME T_IDENTIFIER:id T_MANAGES scoped_name:t
+		T_HOME T_IDENTIFIER:id T_MANAGES scoped_name:c
 		{:
-			RESULT = helper.parseHomeHeader(id, t);
+			RESULT = helper.parseHomeHeader(id, c);
 		:}				
 	| 
-		T_HOME T_IDENTIFIER:id 
-			home_inheritance_spec T_MANAGES scoped_name
+		T_HOME T_IDENTIFIER:id home_inheritance_spec:b T_MANAGES scoped_name:c
 		{:
-
+			RESULT = helper.parseHomeHeader(id, c, b);
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id T_MANAGES scoped_name primary_key_spec
 		{:
-
+			// Not supported
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id home_inheritance_spec T_MANAGES scoped_name primary_key_spec
 		{:
-
+			// Not supported
 		:}				
 	| 
-		T_HOME T_IDENTIFIER:id supported_interface_spec T_MANAGES scoped_name
+		T_HOME T_IDENTIFIER:id supported_interface_spec:l T_MANAGES scoped_name:c
 		{:
-
+			RESULT = helper.parseHomeHeader(id, c, l);
 		:}		
 	| 
-		T_HOME T_IDENTIFIER:id home_inheritance_spec supported_interface_spec T_MANAGES scoped_name
+		T_HOME T_IDENTIFIER:id home_inheritance_spec:b supported_interface_spec:l T_MANAGES scoped_name:c
 		{:
-
+			RESULT = helper.parseHomeHeader(id, c, b, l);
 		:}				
 	| 
 		T_HOME T_IDENTIFIER:id supported_interface_spec T_MANAGES scoped_name primary_key_spec
 		{:
-
+			// Not supported
 		:}		
 	| 
 		T_HOME T_IDENTIFIER:id home_inheritance_spec supported_interface_spec T_MANAGES scoped_name primary_key_spec 
 		{:
-
+			// Not supported
 		:}				
 	;
 
@@ -2563,7 +2562,10 @@ home_header
 /* 127 */
 home_inheritance_spec
 	::= 
-		T_COLON scoped_name
+		T_COLON scoped_name:n
+		{:
+			RESULT = n;
+		:}
 	;
 
 
@@ -2578,6 +2580,9 @@ primary_key_spec
 home_body
 	::= 
 		T_LEFT_CURLY_BRACKET home_exports T_RIGHT_CURLY_BRACKET
+		{:
+		
+		:}
 	| 
 		T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
 		{:
