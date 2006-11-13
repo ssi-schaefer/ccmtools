@@ -1,15 +1,34 @@
 package ccmtools.parser.idl;
 
+
 public class ScopedName
 {
-    private final String id; 
+    private String id; 
 
     
     public ScopedName(String id)
     {
-        this.id = id;
+        setId(id);
     }
 
+    public ScopedName(Scope scope, String id)
+    {
+        setId(scope + id);
+    }
+    
+    
+    private void setId(String id)
+    {
+        this.id = id;
+//        if(id.startsWith("::"))
+//        {
+//            this.id = id;
+//        }
+//        else
+//        {
+//            this.id = "::" + id;
+//        }
+    }
     
     /**
      * An Identifier has the same hash code as the stored String.

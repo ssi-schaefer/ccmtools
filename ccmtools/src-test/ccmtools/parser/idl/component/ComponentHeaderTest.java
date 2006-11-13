@@ -88,5 +88,5 @@ public class ComponentHeaderTest extends ComponentTest
             MInterfaceDef iface = (MInterfaceDef)component.getSupportss().get(1);
             assertEquals(iface.getIdentifier(), "Interface2");
         }        
-    }             
+    }       
 }

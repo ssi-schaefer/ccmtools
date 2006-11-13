@@ -442,7 +442,7 @@ module
 		:}
 		definitions:d
 		{:
-
+			RESULT = helper.parseModule(id, d);
 		:} 
 		T_RIGHT_CURLY_BRACKET
 		{:
@@ -651,7 +651,7 @@ scoped_name
 	| 
 		scoped_name:sn T_SCOPE T_IDENTIFIER:id
 		{:
-			RESULT = helper.parseScopedName(sn + "::" + id);
+			RESULT = helper.parseScopedName(sn, id);
 		:}
 	;
 
@@ -1131,7 +1131,8 @@ primary_expr
 	::= 
 		scoped_name:id
 		{:
-			RESULT = id;
+			//RESULT = id;
+			RESULT = helper.parseScopedName(id);
 		:}
 	| 
 		literal:l
@@ -1277,7 +1278,7 @@ simple_type_spec
 	| 
 		scoped_name:id
 		{:
-			RESULT = helper.getModelRepository().findIdlType(id);
+			RESULT = helper.parseScopedName(id);
 		:}
 	;
 

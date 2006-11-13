@@ -10,6 +10,7 @@ import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
 import ccmtools.metamodel.BaseIDL.MIDLType;
+import ccmtools.metamodel.BaseIDL.MModuleDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MStringDef;
@@ -102,4 +103,5 @@ public class StructTest extends TestCase
         }
         return null;
     }
+    
 }

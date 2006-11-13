@@ -41,6 +41,8 @@ import ccmtools.metamodel.BaseIDL.MFixedDefImpl;
 import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.metamodel.BaseIDL.MInterfaceDefImpl;
+import ccmtools.metamodel.BaseIDL.MModuleDef;
+import ccmtools.metamodel.BaseIDL.MModuleDefImpl;
 import ccmtools.metamodel.BaseIDL.MNativeDef;
 import ccmtools.metamodel.BaseIDL.MNativeDefImpl;
 import ccmtools.metamodel.BaseIDL.MOperationDef;
@@ -253,7 +255,7 @@ public class ParserHelper
     /* 1 */
     public MContainer parseSpecification(List definitions)
     {
-        getLogger().fine("1: specification");
+        getLogger().fine("1: specification " + definitions);
         MContainer container = new MContainerImpl();
         for(Iterator i = definitions.iterator(); i.hasNext();)
         {
@@ -290,6 +292,23 @@ public class ParserHelper
     }
     
     
+    /* 3 */
+    public MModuleDef parseModule(String id, List definitions)
+    {
+        
+        MModuleDef module = new MModuleDefImpl();
+        getLogger().fine("3: module { " + definitions + "}");
+        module.setIdentifier(id);
+        for(Iterator i = definitions.iterator(); i.hasNext(); )
+        {
+            MContained contained = (MContained)i.next();
+            contained.setDefinedIn(module);
+        }
+        module.setContentss(definitions);
+        return module;        
+    }
+    
+    
     /* 5 */
     public MInterfaceDef parseInterfaceDcl(MInterfaceDef iface, List body)
     {
@@ -302,7 +321,7 @@ public class ParserHelper
             iface.addContents(content);
         }
         String id = iface.getIdentifier();
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         registerTypeId(id);
         getModelRepository().registerIdlType(identifier, iface);
         return iface;
@@ -316,7 +335,7 @@ public class ParserHelper
         MInterfaceDef type = new MInterfaceDefImpl();
         type.setIdentifier(id);  
         type.setSourceFile(getIncludedSourceFile());
-        ScopedName identifier = new ScopedName(id);        
+        ScopedName identifier = new ScopedName(getScope(), id);        
         getModelRepository().registerForwardDeclaration(identifier);
         getModelRepository().registerIdlType(identifier, type);        
         return type;
@@ -343,7 +362,7 @@ public class ParserHelper
     public MInterfaceDef parseInterfaceHeader(String id)
     {
         getLogger().fine("7: interface T_IDENTIFIER = " + id);
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         MInterfaceDef iface;
         if(getModelRepository().isForwardDeclaration(identifier))
         {
@@ -497,6 +516,11 @@ public class ParserHelper
         return new ScopedName(id);
     }
 
+    public ScopedName parseScopedName(ScopedName scopedName, String id)
+    {
+        return new ScopedName(scopedName + "::" + id);
+    }
+
     
     /* 14 */
     public MValueDef parseValueForwardDeclaration(String id)
@@ -505,7 +529,7 @@ public class ParserHelper
         MValueDef value = new MValueDefImpl();
         value.setIdentifier(id); 
         value.setSourceFile(getIncludedSourceFile());
-        ScopedName identifier = new ScopedName(id);        
+        ScopedName identifier = new ScopedName(getScope(), id);        
         getModelRepository().registerForwardDeclaration(identifier);
         getModelRepository().registerIdlType(identifier, value);
         return value;
@@ -536,7 +560,7 @@ public class ParserHelper
     public MValueDef parseValueAbstractDeclaration(String id, List elementList)
     {
         getLogger().fine("16: T_ABSTRACT T_VALUETYPE T_IDENTIFIER:id = " + id);        
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         MValueDef value;
         if(getModelRepository().isForwardDeclaration(identifier))
         {
@@ -562,7 +586,7 @@ public class ParserHelper
     
     private void setAbstractValueDefinition(MValueDef value, String id, List elementList)
     {
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         value.setIdentifier(id);
         value.setAbstract(true);
         Collections.reverse(elementList);
@@ -577,7 +601,7 @@ public class ParserHelper
     {
         getLogger().fine("17: value_header { value_elements } = " + value + ", " + elementList);
         String id = value.getIdentifier();
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         registerTypeId(id);
         Collections.reverse(elementList);
         value.setContentss(elementList);
@@ -589,7 +613,7 @@ public class ParserHelper
     {
         getLogger().fine("17: value_header { } = " + value);
         String id = value.getIdentifier();
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         registerTypeId(id);
         getModelRepository().registerIdlType(identifier, value);
         return value;
@@ -642,7 +666,7 @@ public class ParserHelper
     public MValueDef parseValueHeader(String id)
     {
         getLogger().fine("18: T_VALUETYPE T_IDENTIFIER = " + id);
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         MValueDef value;
         if(getModelRepository().isForwardDeclaration(identifier))
         {
@@ -983,7 +1007,7 @@ public class ParserHelper
         
         MAliasDef alias = new MAliasDefImpl();
         Declarator declarator = (Declarator)declarators.get(0);
-        ScopedName id = new ScopedName(declarator.toString());
+        ScopedName id = new ScopedName(getScope(), declarator.toString());
         alias.setIdentifier(declarator.toString());
         alias.setSourceFile(getIncludedSourceFile());
         if(declarator instanceof ArrayDeclarator)
@@ -1008,11 +1032,19 @@ public class ParserHelper
         MNativeDef type = new MNativeDefImpl();  
         type.setSourceFile(getIncludedSourceFile());
         type.setNativeType(declarator.toString());
-        ScopedName id = new ScopedName(declarator.toString());
+        ScopedName id = new ScopedName(getScope(), declarator.toString());
         getModelRepository().registerIdlType(id, type);
         return type;
     }
-        
+    
+    
+    /* 38 *//* 45 */
+    public MIDLType parseScopedName(ScopedName scopedName)
+    {
+        getLogger().fine("45: scoped_name = " + scopedName);        
+        return getModelRepository().findIdlType(getScope(), scopedName);
+    }
+    
     
     /* 49 */
     public List parseDeclarators(Declarator declarator)
@@ -1191,7 +1223,7 @@ public class ParserHelper
     public MStructDef parseStructType(String id, List memberList)
     {
         getLogger().fine("69: T_LEFT_CURLY_BRACKET member_list T_RIGHT_CURLY_BRACKET");  
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         MStructDef type;
         if(getModelRepository().isForwardDeclaration(identifier))
         {
@@ -1251,7 +1283,7 @@ public class ParserHelper
     public MUnionDef parseUnionType(String id, MIDLType discriminatorType, List switchBody)
     {
         getLogger().fine("72: union_type = " + id );
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         MUnionDef type;
         if(getModelRepository().isForwardDeclaration(identifier))
         {
@@ -1335,7 +1367,7 @@ public class ParserHelper
     public MEnumDef parseEnumType(String id, List enumerators)
     {
         getLogger().fine("78: enumerators = " + enumerators);  
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         MEnumDef enumeration = new MEnumDefImpl();
         enumeration.setIdentifier(id);
         enumeration.setSourceFile(getIncludedSourceFile());
@@ -1451,7 +1483,7 @@ public class ParserHelper
     public MExceptionDef parseExceptionDcl(String id, List members) 
     {
         getLogger().fine("86: T_LEFT_CURLY_BRACKET members T_RIGHT_CURLY_BRACKET");  
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         MExceptionDef type = new MExceptionDefImpl();
         type.setIdentifier(id);
         type.setSourceFile(getIncludedSourceFile());
@@ -1652,7 +1684,7 @@ public class ParserHelper
         getLogger().fine("99: T_STRUCT T_IDENTIFIER = " + id);            
         MStructDef type = new MStructDefImpl();
         type.setIdentifier(id);  
-        ScopedName identifier = new ScopedName(id);        
+        ScopedName identifier = new ScopedName(getScope(), id);        
         getModelRepository().registerForwardDeclaration(identifier);
         getModelRepository().registerIdlType(identifier, type);
         return type;
@@ -1663,7 +1695,7 @@ public class ParserHelper
         getLogger().fine("99: T_UNION T_IDENTIFIER = " + id);    
         MUnionDef type = new MUnionDefImpl();
         type.setIdentifier(id);        
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         getModelRepository().registerForwardDeclaration(identifier);
         getModelRepository().registerIdlType(identifier, type);
         return type;
@@ -1803,7 +1835,7 @@ public class ParserHelper
         component.setIdentifier(id);
         component.setSourceFile(getIncludedSourceFile()); 
 
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         getModelRepository().registerForwardDeclaration(identifier);
         getModelRepository().registerIdlType(identifier, component);
         return component;
@@ -1815,7 +1847,7 @@ public class ParserHelper
     {
         getLogger().fine("113: component_header {} = " + component);        
         String id = component.getIdentifier();
-        ScopedName identifier = new ScopedName(component.getIdentifier());
+        ScopedName identifier = new ScopedName(getScope(), component.getIdentifier());
         registerTypeId(id);
         getModelRepository().registerIdlType(identifier, component);
         return component;
@@ -1855,7 +1887,7 @@ public class ParserHelper
             }
         }        
         String id = component.getIdentifier();
-        ScopedName identifier = new ScopedName(component.getIdentifier());
+        ScopedName identifier = new ScopedName(getScope(), component.getIdentifier());
         registerTypeId(id);
         getModelRepository().registerIdlType(identifier, component);
         return component;
@@ -1866,7 +1898,7 @@ public class ParserHelper
     public MComponentDef parseComponentHeader(String id)
     {
         getLogger().fine("114: component T_IDENTIFIER = " + id);
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         MComponentDef component;
         if(getModelRepository().isForwardDeclaration(identifier))
         {
@@ -2038,7 +2070,7 @@ public class ParserHelper
             header.addContents(content);
         }
         String id = header.getIdentifier();
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         registerTypeId(id);
         getModelRepository().registerIdlType(identifier, header);
         return header;
@@ -2050,7 +2082,7 @@ public class ParserHelper
     public MHomeDef parseHomeHeader(String id, ScopedName componentId)
     {
         getLogger().fine("126: home id manages component = " + id + ", " + componentId);
-        ScopedName identifier = new ScopedName(id);
+        ScopedName identifier = new ScopedName(getScope(), id);
         MHomeDef home;
         if(getModelRepository().isForwardDeclaration(identifier))
         {

@@ -14,62 +14,94 @@ public class ModelRepository
     private IdentifierTable forwardDclTable = new IdentifierTable();
 
     
-    public void registerForwardDeclaration(ScopedName id)
+    public void registerForwardDeclaration(ScopedName scopedName)
     {
-        forwardDclTable.register(id);
+        forwardDclTable.register(scopedName);
     }
 
-    public boolean isForwardDeclaration(ScopedName id)
+    public boolean isForwardDeclaration(ScopedName scopedName)
     {        
-        return forwardDclTable.contains(id);
+        return forwardDclTable.contains(scopedName);
     }
     
 
     
-    public void registerIdlType(ScopedName id, MIDLType element)
+    public void registerIdlType(ScopedName scopedName, MIDLType element)
     {
-        if(idlType.containsKey(id))
+        String id = scopedName.toString();        
+        if(!(id.startsWith("::")))
         {
-            System.out.println("+++ ModelRepository.contains: [" + id + "]");
-            System.out.println("+++ " + idlType);
+            scopedName = new ScopedName("::" + id);
+        }
+        
+        if(idlType.containsKey(scopedName))
+        {
+            System.out.println("+++ ModelRepository.contains: [" + scopedName + "]");
+//            System.out.println("+++ " + idlType);
         }
         else
         {
-            System.out.println("+++ ModelRepository.register: [" + id + ", " + element + "]");
-            System.out.println("+++ " + idlType);
-            idlType.put(id, element);
+            System.out.println("+++ ModelRepository.register: [" + scopedName + ", " + element + "]");
+//            System.out.println("+++ " + idlType);
+            idlType.put(scopedName, element);
         }
     }
     
-    public MIDLType findIdlType(ScopedName id)
+    
+    public MIDLType findIdlType(ScopedName scopedName)
     {
-        System.out.println("+++ ModelRepository.find: [" + id + "]");
-        System.out.println("+++ " + idlType);
-        MIDLType type = idlType.get(id); 
+        System.out.println("+++ ModelRepository.find: [" + scopedName + "]");
+//        System.out.println("+++ " + idlType);
+//        MIDLType type = idlType.get(scopedName); 
+//        if(type == null)
+//        {
+//            throw new RuntimeException("Unknown type " + scopedName + "!");
+//        }        
+//        return type;
+        return findIdlType(new Scope(), scopedName);
+    }
+
+
+    /*
+     * Try to find an IDL type descriped by the current scope and a scoped name
+     * (explore all combinations of the current scope). 
+     */
+    public MIDLType findIdlType(Scope currentScope, ScopedName scopedName)
+    {
+        System.out.println("+++ ModelRepository.find: [" + currentScope + ", " + scopedName + "]");
+        MIDLType type; 
+        if(scopedName.toString().startsWith("::")) // Absolute scoped name
+        {            
+            type = idlType.get(scopedName);
+        }
+        else 
+        {
+            type = exploreModules(currentScope.toString(), scopedName.toString());
+        }
+        
         if(type == null)
-        {
-            throw new RuntimeException("Unknown type " + id + "!");
-        }        
-        return type;
+            throw new RuntimeException("Unknown type " + scopedName + "!");
+        else
+            return type;
     }
+    
 
-
-    public void registerException(ScopedName id, MExceptionDef ex)
+    public void registerException(ScopedName scopedName, MExceptionDef ex)
     {
-        if(!idlType.containsKey(id) && !exceptions.containsKey(id))
+        if(!idlType.containsKey(scopedName) && !exceptions.containsKey(scopedName))
         {
-            System.out.println("+++ add: [" + id + ", " + ex + "]");
-            exceptions.put(id, ex);
+            System.out.println("+++ add: [" + scopedName + ", " + ex + "]");
+            exceptions.put(scopedName, ex);
         }
     }
     
-    public MExceptionDef findIdlException(ScopedName id)
+    public MExceptionDef findIdlException(ScopedName scopedName)
     {
-        System.out.println("+++ find: [" + id + "]");
-        MExceptionDef ex = exceptions.get(id); 
+        System.out.println("+++ find: [" + scopedName + "]");
+        MExceptionDef ex = exceptions.get(scopedName); 
         if(ex == null)
         {
-            throw new RuntimeException("Unknown exception " + id + "!");
+            throw new RuntimeException("Unknown exception " + scopedName + "!");
         }        
         return ex;
     }
@@ -81,4 +113,30 @@ public class ModelRepository
         exceptions.clear();
         forwardDclTable.clear();
     }
+    
+    
+    /** Utility Methods */
+    
+    protected MIDLType exploreModules(String scope, String name)
+    {
+        System.out.println("+++ explore: " + scope + ", " + name);
+        int index = scope.length();
+        String s = scope;
+        while(index != -1)
+        {
+            index = s.lastIndexOf("::");
+            if(index >= 0)
+            {
+                s = s.substring(0, index);
+                System.out.println("   try: " + s + "::" + name);
+                MIDLType type = idlType.get(new ScopedName(s + "::" + name));
+                if (type != null)
+                {
+                    return type;
+                }
+            }
+        }
+        return null;
+    }
+    
 }
