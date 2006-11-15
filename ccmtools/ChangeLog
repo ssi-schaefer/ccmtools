@@ -2,6 +2,13 @@
 RELEASE-0_7-BRANCH
 ============================================================================
 
+RELEASE-0.7.6 ( 2006)
+----------------------------------------------------------------------------
+*) Bugfix: gcc 4.1.1
+	Fixed local C++ test cases to make them run with gcc 4.1.1 (added 
+	#include<cmath> to use abs(double)).
+	  
+
 RELEASE-0.7.5 (October 30, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: C++ include statements in headerfiles (reported by Carlo Jennetten)

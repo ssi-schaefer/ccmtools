@@ -53,10 +53,10 @@ public class ComponentTest
         executeCommandLine("make -C " + testDir + "/supports_inheritance test");
     }
 
-    public void testSupportsTypes() throws CcmtoolsTestCaseException
-    {
-        executeCommandLine("make -C " + testDir + "/supports_types test");
-    }    
+//    public void testSupportsTypes() throws CcmtoolsTestCaseException
+//    {
+//        executeCommandLine("make -C " + testDir + "/supports_types test");
+//    }    
 
 
     // ------------------------------------------------------------------------

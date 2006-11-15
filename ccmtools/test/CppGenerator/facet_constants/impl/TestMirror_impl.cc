@@ -13,6 +13,8 @@
 
 #include <cassert>
 #include <iostream>
+#include <cmath>
+
 #include <wx/utils/debug.h>
 
 #include "TestMirror_impl.h"

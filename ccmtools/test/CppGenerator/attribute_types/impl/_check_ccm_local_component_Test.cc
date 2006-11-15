@@ -16,6 +16,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <cmath>
 
 #include <wx/utils/debug.h>
 #include <wx/utils/smartptr.h>
