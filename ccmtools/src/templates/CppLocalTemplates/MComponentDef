@@ -29,6 +29,10 @@
 %(MUsesDefInclude)s
 %(BaseInclude)s
 
+// BEGIN-HACK: Itanium
+#include <%(ComponentInclude)s/%(Identifier)s_impl.h>
+// END-HACK: Itanium
+
 %(OpenNamespace)s
 
 class %(HomeType)s;
@@ -90,7 +94,9 @@ class %(Identifier)s
  
    protected:
     %(HomeType)s* home_local_adapter;
-    CCM_%(Identifier)s* local_component;
+// BEGIN-HACK: Itanium
+    CCM_%(Identifier)s_impl* local_component;
+// END-HACK: Itanium    
     CCM_%(Identifier)s_Context* context;
     WX::Utils::SmartPtr< ::ccm::local::Components::Assembly> assembly;
     bool ValidConnection;
@@ -189,7 +195,9 @@ using namespace WX::Utils;
     SmartPtr< ::ccm::local::Components::Assembly> a)
     : %(MSupportsDefAdapterConstructor)s
     home_local_adapter(h), 
-    local_component(lc), 
+    // BEGIN-HACK: Itanium
+    local_component(dynamic_cast<CCM_%(Identifier)s_impl*>(lc)), 
+    // END-HACK: Itanium
     assembly(a)
 {
     LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s()");

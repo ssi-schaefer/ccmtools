@@ -24,6 +24,10 @@
 
 #include "%(ComponentType)s_gen.h"
 
+// BEGIN-HACK: Itanium
+#include <%(HomeInclude)s_impl.h> 
+// END-HACK: Itanium
+
 %(OpenNamespace)s
 
 //==============================================================================
@@ -84,7 +88,9 @@ class %(Identifier)s
               ::ccm::local::Components::CreateFailure);
 
   protected:
-    CCM_%(Identifier)s* local_home;
+    // BEGIN-HACK: Itanium
+    CCM_%(Identifier)s_impl* local_home;
+    // END-HACK: Itanium 
     WX::Utils::SmartPtr< ::ccm::local::Components::AssemblyFactory> assembly_factory;
     
   private:
@@ -142,7 +148,9 @@ using namespace WX::Utils;
 %(Identifier)s::%(Identifier)s()
 {
     LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s()");
-    local_home = dynamic_cast<CCM_%(Identifier)s*>(create_%(AbsoluteLocalHomeName)s());
+    // BEGIN-HACK: Itanium
+    local_home = dynamic_cast<CCM_%(Identifier)s_impl*>(create_%(AbsoluteLocalHomeName)s());
+    // END-HACK: Itanium
     assembly_factory = SmartPtr< ::ccm::local::Components::AssemblyFactory>();
 }
 
@@ -150,7 +158,9 @@ using namespace WX::Utils;
     : assembly_factory(f)
 {
     LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s(AssemblyFactory)");
-    local_home = dynamic_cast<CCM_%(Identifier)s*>(create_%(AbsoluteLocalHomeName)s());
+    // BEGIN-HACK: Itanium
+    local_home = dynamic_cast<CCM_%(Identifier)s_impl*>(create_%(AbsoluteLocalHomeName)s());
+    // END-HACK: Itanium
 }
 
 %(Identifier)s::~%(Identifier)s()
@@ -173,15 +183,12 @@ SmartPtr<%(ComponentType)s>
     if(assembly_factory != SmartPtr< ::ccm::local::Components::AssemblyFactory>()) {
         assembly = assembly_factory->create(); 
     }
-    SmartPtr<%(ComponentType)s> 
-        ret(dynamic_cast<%(ComponentType)s*>(
-            new %(ComponentType)s(this, 
-            dynamic_cast<CCM_%(ComponentType)s*>(
-                ((CCM_%(Identifier)sImplicit*)local_home)->create()),
-                assembly
-            )
-        )
-    );
+    
+    ::ccm::local::Components::EnterpriseComponent* enterprise_component = local_home->create();
+    CCM_%(ComponentType)s* local_component = dynamic_cast<CCM_%(ComponentType)s*>(enterprise_component);
+    %(ComponentType)s* adapter = new %(ComponentType)s(this, local_component, assembly);
+    SmartPtr<%(ComponentType)s> ret(adapter);    
+    
     if(assembly_factory != SmartPtr< ::ccm::local::Components::AssemblyFactory>()) {
         assembly->build(ret);
     }
