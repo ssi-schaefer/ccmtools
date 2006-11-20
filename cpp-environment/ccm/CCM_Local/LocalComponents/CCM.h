@@ -647,6 +647,8 @@ namespace Components {
   class CCMObject : virtual public Object,
     public Navigation, public Receptacles {
     public:
+    
+    virtual ~CCMObject() {}
 
     /*
      * The get_ccm_home() operation returns a CCMHome reference to the
@@ -724,7 +726,9 @@ namespace Components {
   class Assembly 
     : virtual public WX::Utils::RefCounted {
     public:
-
+	
+	virtual ~Assembly() {}
+	
     /*
      * Creates required component servers, creates required containers, installs
      * required component homes, instantiates components, configures and 
@@ -767,6 +771,9 @@ namespace Components {
   class AssemblyFactory
     : virtual public WX::Utils::RefCounted {
     public:
+    
+    virtual ~AssemblyFactory() {}
+    
     virtual WX::Utils::SmartPtr<Assembly> create() 
         throw(CreateFailure) = 0;
 
