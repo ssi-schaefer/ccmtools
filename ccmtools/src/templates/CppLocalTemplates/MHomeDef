@@ -38,6 +38,9 @@ class %(Identifier)sExplicit
     : virtual public ::ccm::local::Components::CCMHome
 {
   public:
+
+    virtual ~%(Identifier)sExplicit() {}
+
 %(MFactoryDefAdapterPrototypeVV)s
 };
 
@@ -49,6 +52,9 @@ class %(Identifier)sImplicit
     : virtual public ::ccm::local::Components::KeylessCCMHome
 {
   public:
+  
+    virtual ~%(Identifier)sImplicit() {}
+    
     virtual WX::Utils::SmartPtr<%(ComponentType)s> create()
         throw(::ccm::local::Components::CCMException, 
               ::ccm::local::Components::CreateFailure) = 0;
@@ -300,6 +306,9 @@ class CCM_%(Identifier)sExplicit
     : virtual public ::ccm::local::Components::HomeExecutorBase
 {
   public:
+  
+    virtual ~CCM_%(Identifier)sExplicit() {}
+    
 %(MFactoryDefPrototypeVV)s
 };
 
@@ -307,6 +316,9 @@ class CCM_%(Identifier)sExplicit
 class CCM_%(Identifier)sImplicit
 {
   public:
+  
+    virtual ~CCM_%(Identifier)sImplicit() {}  
+  
     virtual ::ccm::local::Components::EnterpriseComponent* create()
         throw(::ccm::local::Components::CCMException) = 0;
 };
@@ -316,6 +328,8 @@ class CCM_%(Identifier)s
     : virtual public CCM_%(Identifier)sExplicit, 
       virtual public CCM_%(Identifier)sImplicit%(BaseType)s%(MSupportsDefBase)s
 {
+  public:
+    virtual ~CCM_%(Identifier)s() {}
 };
 
 %(CloseNamespace)s

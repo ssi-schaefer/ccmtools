@@ -31,12 +31,6 @@ class %(Identifier)s
 %(MAttributeDefPrototypeVV)s
 
 %(MOperationDefPrototypeVV)s 
-
-  protected:
-     %(Identifier)s() {}
-  private:
-     %(Identifier)s(const %(Identifier)s&);
-     void operator=(const %(Identifier)s&);
 };
 
 
@@ -44,6 +38,8 @@ class %(Identifier)s
 class CCM_%(Identifier)s
   : virtual public %(Identifier)s
 {
+  public:
+    virtual ~CCM_%(Identifier)s() {}
 };
 
 
@@ -116,9 +112,6 @@ class %(Identifier)sAdapter
   protected:
     CCM_%(Identifier)s* facet_;
     bool validConnection_;
-
-  private:
-    void operator=(const %(Identifier)sAdapter&);
 };
  
 %(CloseNamespace)s

@@ -104,8 +104,6 @@ class %(Identifier)s
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
         
-  private:
-    void operator=(const %(Identifier)s&);
 };
 
 
@@ -132,8 +130,6 @@ class CCM_%(Identifier)s_Context_impl
   protected:
     %(Identifier)s* component_local_adapter;
         
-  private:
-    void operator=(const CCM_%(Identifier)s_Context_impl&);
 };
 
 %(CloseNamespace)s
@@ -392,6 +388,9 @@ class CCM_%(Identifier)s
     : virtual public ::ccm::local::Components::SessionComponent%(BaseType)s%(MSupportsDefBase)s
 {
   public:
+  
+    virtual ~CCM_%(Identifier)s() {}
+      
 %(MAttributeDefPrototypeVV)s
 %(MProvidesDefGetFacetPrototypeVV)s
 %(MSupportsDefImplPrototypeVV)s
@@ -408,6 +407,9 @@ class CCM_%(Identifier)s_Context
     : virtual public ::ccm::local::Components::SessionContext
 {
   public:
+  
+    virtual ~CCM_%(Identifier)s_Context() {}
+    
 %(MUsesDefGetConnectionPrototypeVV)s
 };
 
