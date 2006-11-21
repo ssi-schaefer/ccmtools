@@ -10,6 +10,7 @@ import ccmtools.metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.metamodel.BaseIDL.MModuleDef;
 import ccmtools.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.parser.idl.module.ModuleTest;
 
@@ -140,4 +141,41 @@ public class ComponentModuleTest extends ComponentTest
         assertEquals("IDL:IFace1:1.0", CcmModelHelper.getRepositoryId(iface));
     }
 
+    
+    public void testComponentSupportsModuleTest() throws CcmtoolsException, FileNotFoundException
+    {
+        MModuleDef module = ModuleTest.parseSource(
+                
+                "module world {" +                
+                "   interface IFace {}; " +
+                
+                "   component MyComponent " +
+                "       supports IFace" +
+                "   {" +
+                "   };" +
+
+                "   component YourComponent " +
+                "       supports world::IFace" +
+                "   {" +
+                "   };" +
+
+                "   component OurComponent " +
+                "       supports ::world::IFace" +
+                "   {" +
+                "   };" +
+
+                "};", "world");
+
+        assertEquals("IDL:world:1.0", CcmModelHelper.getRepositoryId(module));
+        
+        assertTrue(module.getContentss().get(1)  instanceof MComponentDef);
+        MComponentDef component = (MComponentDef)module.getContentss().get(1);
+        assertEquals("IDL:world/MyComponent:1.0", CcmModelHelper.getRepositoryId(component));
+        
+        System.out.println(component.getSupportss());
+        assertTrue(component.getSupportss().get(0) instanceof MInterfaceDef);
+        MInterfaceDef supports = (MInterfaceDef)component.getSupportss().get(0);
+        assertEquals("IDL:world/IFace:1.0", CcmModelHelper.getRepositoryId(supports));
+    }
+    
 }

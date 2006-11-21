@@ -364,7 +364,6 @@ public class ParserHelper
     {
         getLogger().fine("7: interface T_IDENTIFIER = " + id);
         ScopedName identifier = new ScopedName(getScope(), id);
-        System.out.println("### " + identifier);
         MInterfaceDef iface;
         if(getModelRepository().isForwardDeclaration(identifier))
         {
@@ -478,7 +477,7 @@ public class ParserHelper
         for(Iterator i = scopedNames.iterator(); i.hasNext();)
         {
             ScopedName id = (ScopedName)i.next();
-            MIDLType type = getModelRepository().findIdlType(id); 
+            MIDLType type = getModelRepository().findIdlType(getScope(), id); 
             if(type == null)
             {
                 reportError("Base interface " + id + "not found!" );
@@ -708,7 +707,7 @@ public class ParserHelper
         for(Iterator i = supports.iterator(); i.hasNext();)
         {
             ScopedName id = (ScopedName)i.next();
-            MIDLType idlType = getModelRepository().findIdlType(id);
+            MIDLType idlType = getModelRepository().findIdlType(getScope(), id);
             if(idlType instanceof MInterfaceDef)
             {
                 value.addInterfaceDef((MInterfaceDef)idlType);
@@ -760,7 +759,7 @@ public class ParserHelper
     
     private void setValueBase(MValueDef value, ScopedName id)
     {
-        MIDLType idlType = getModelRepository().findIdlType(id);
+        MIDLType idlType = getModelRepository().findIdlType(getScope(), id);
         if(idlType instanceof MValueDef)
         {
             MValueDef base = (MValueDef)idlType;
@@ -1834,7 +1833,7 @@ public class ParserHelper
         for(Iterator i = scopedNames.iterator(); i.hasNext();)
         {            
             ScopedName id = (ScopedName)i.next();
-            MExceptionDef ex = getModelRepository().findIdlException(id);
+            MExceptionDef ex = getModelRepository().findIdlException(getScope(),id);
             if(ex == null)
             {
                 reportError("Declared exception " + id + "not found!");
@@ -1940,7 +1939,7 @@ public class ParserHelper
     {
         getLogger().fine("114: component T_IDENTIFIER component_inheritance_spec = " + id + " " + base);
         MComponentDef component = parseComponentHeader(id);
-        MIDLType type = getModelRepository().findIdlType(base);
+        MIDLType type = getModelRepository().findIdlType(getScope(), base);
         if(type == null)
         {
             reportError("Base component " + base + " not found!");
@@ -1985,7 +1984,7 @@ public class ParserHelper
         for(Iterator i = scopedNames.iterator(); i.hasNext();)
         {
             ScopedName id = (ScopedName)i.next();
-            MIDLType type = getModelRepository().findIdlType(id); 
+            MIDLType type = getModelRepository().findIdlType(getScope(), id); 
             if(type == null)
             {
                 reportError("Supported interface " + id + "not found!" );

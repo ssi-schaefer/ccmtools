@@ -87,4 +87,86 @@ public class InterfaceModuleTest extends InterfaceTest
     }
 
 
+    public void testInterfaceExceptionsModule() throws CcmtoolsException, FileNotFoundException
+    {
+        MModuleDef module = ModuleTest.parseSource(
+                "module world {" +
+                "   exception SuperError{};" +
+                
+                "   interface IFace { " +
+                "       void foo() raises(SuperError);" +
+                "   };" +
+                "};", "world");
+
+        assertEquals("IDL:world:1.0", CcmModelHelper.getRepositoryId(module));
+        
+        assertTrue(module.getContentss().get(1) instanceof MInterfaceDef);
+        MInterfaceDef iface = (MInterfaceDef)module.getContentss().get(1);
+        assertEquals("IDL:world/IFace:1.0", CcmModelHelper.getRepositoryId(iface));
+    }
+
+    
+    public void testInterfaceInheritanceModule1() throws CcmtoolsException, FileNotFoundException
+    {
+        MModuleDef module = ModuleTest.parseSource(
+                "module world {" +
+                "   interface Base {};" +
+                
+                "   interface IFace : Base" +
+                "   { " +
+                "       void foo();" +
+                "   };" +
+                
+                "   interface IFace2 : world::Base" +
+                "   { " +
+                "       void foo();" +
+                "   };" +
+
+                "   interface IFace3 : ::world::Base" +
+                "   { " +
+                "       void foo();" +
+                "   };" +
+
+                "};", "world");
+
+        assertEquals("IDL:world:1.0", CcmModelHelper.getRepositoryId(module));
+        
+        assertTrue(module.getContentss().get(1) instanceof MInterfaceDef);
+        MInterfaceDef iface = (MInterfaceDef)module.getContentss().get(1);
+        assertEquals("IDL:world/IFace:1.0", CcmModelHelper.getRepositoryId(iface));
+        
+        assertTrue(iface.getBases().get(0) instanceof MInterfaceDef);
+        MInterfaceDef base = (MInterfaceDef)iface.getBases().get(0);
+        assertEquals("IDL:world/Base:1.0", CcmModelHelper.getRepositoryId(base));
+    }
+
+    public void testInterfaceInheritanceModule2() throws CcmtoolsException, FileNotFoundException
+    {
+        MModuleDef module = ModuleTest.parseSource(
+                "interface Base {};" +
+
+                "module world {" +
+                
+                "   interface IFace : Base" +
+                "   { " +
+                "       void foo();" +
+                "   };" +
+                
+                "   interface IFace2 : ::Base" +
+                "   { " +
+                "       void foo();" +
+                "   };" +
+                "};", "world");
+
+        assertEquals("IDL:world:1.0", CcmModelHelper.getRepositoryId(module));
+        
+        assertTrue(module.getContentss().get(0) instanceof MInterfaceDef);
+        MInterfaceDef iface = (MInterfaceDef)module.getContentss().get(0);
+        assertEquals("IDL:world/IFace:1.0", CcmModelHelper.getRepositoryId(iface));
+        
+        assertTrue(iface.getBases().get(0) instanceof MInterfaceDef);
+        MInterfaceDef base = (MInterfaceDef)iface.getBases().get(0);
+        assertEquals("IDL:Base:1.0", CcmModelHelper.getRepositoryId(base));
+    }
+    
 }
