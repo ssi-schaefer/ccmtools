@@ -83,7 +83,8 @@ public class Main
                         for (String idlFile : parameters.getIdlFiles())
                         {
                             MContainer ccmModel = 
-                                CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+                                //CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+                                ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
                             CcmModelValidator checker = new CcmModelValidator(uiDriver, parameters);
                             if(!checker.isValidModel(ccmModel))
                             {

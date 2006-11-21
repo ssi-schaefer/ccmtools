@@ -13,6 +13,9 @@ public class EnumTestSuite
         suite.addTest(EnumDefinedInTest.suite());
         suite.addTest(EmptyEnumTest.suite());
         suite.addTest(EnumColorTest.suite());
+        
+        suite.addTest(EnumModuleTest.suite());
+        
 		return suite;
 	}
 }

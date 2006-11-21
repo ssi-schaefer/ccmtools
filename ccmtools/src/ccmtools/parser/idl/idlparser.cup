@@ -1131,8 +1131,9 @@ primary_expr
 	::= 
 		scoped_name:id
 		{:
-			//RESULT = id;
-			RESULT = helper.parseScopedName(id);
+			RESULT = helper.parsePrimaryExpr(id);			
+			// RESULT = helper.parseScopedName(id);
+			
 		:}
 	| 
 		literal:l
@@ -2111,7 +2112,7 @@ param_type_spec
 	| 
 		scoped_name:id
 		{:
-			RESULT = helper.getModelRepository().findIdlType(id);	
+			RESULT = helper.parseParameterTypeSpec(id);
 		:}
 	;
 

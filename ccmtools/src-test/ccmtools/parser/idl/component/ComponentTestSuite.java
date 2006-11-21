@@ -14,6 +14,9 @@ public class ComponentTestSuite
         suite.addTest(ComponentAttributeTest.suite());
         suite.addTest(ComponentPortsTest.suite());
         suite.addTest(ComponentForwardDeclarationTest.suite());
+        
+        suite.addTest(ComponentModuleTest.suite());
+        
         return suite;
 	}
 }

@@ -37,12 +37,10 @@ public class ModelRepository
         if(idlType.containsKey(scopedName))
         {
             System.out.println("+++ ModelRepository.contains: [" + scopedName + "]");
-//            System.out.println("+++ " + idlType);
         }
         else
         {
             System.out.println("+++ ModelRepository.register: [" + scopedName + ", " + element + "]");
-//            System.out.println("+++ " + idlType);
             idlType.put(scopedName, element);
         }
     }
@@ -51,13 +49,6 @@ public class ModelRepository
     public MIDLType findIdlType(ScopedName scopedName)
     {
         System.out.println("+++ ModelRepository.find: [" + scopedName + "]");
-//        System.out.println("+++ " + idlType);
-//        MIDLType type = idlType.get(scopedName); 
-//        if(type == null)
-//        {
-//            throw new RuntimeException("Unknown type " + scopedName + "!");
-//        }        
-//        return type;
         return findIdlType(new Scope(), scopedName);
     }
 
@@ -76,7 +67,7 @@ public class ModelRepository
         }
         else 
         {
-            type = exploreModules(currentScope.toString(), scopedName.toString());
+            type = exploreModulesForIdlType(currentScope.toString(), scopedName.toString());
         }
         
         if(type == null)
@@ -86,24 +77,52 @@ public class ModelRepository
     }
     
 
-    public void registerException(ScopedName scopedName, MExceptionDef ex)
+    public void registerException(ScopedName scopedName, MExceptionDef element)
     {
-        if(!idlType.containsKey(scopedName) && !exceptions.containsKey(scopedName))
+        String id = scopedName.toString();        
+        if(!(id.startsWith("::")))
         {
-            System.out.println("+++ add: [" + scopedName + ", " + ex + "]");
-            exceptions.put(scopedName, ex);
+            scopedName = new ScopedName("::" + id);
+        }
+        
+        if(exceptions.containsKey(scopedName))
+        {
+            System.out.println("+++ ModelRepository.contains: [" + scopedName + "]");
+        }
+        else
+        {
+            System.out.println("+++ ModelRepository.register: [" + scopedName + ", " + element + "]");
+            exceptions.put(scopedName, element);
         }
     }
-    
+
     public MExceptionDef findIdlException(ScopedName scopedName)
     {
-        System.out.println("+++ find: [" + scopedName + "]");
-        MExceptionDef ex = exceptions.get(scopedName); 
-        if(ex == null)
+        System.out.println("+++ ModelRepository.find: [" + scopedName + "]");
+        return findIdlException(new Scope(), scopedName);        
+    }
+    
+    /*
+     * Try to find an IDL type descriped by the current scope and a scoped name
+     * (explore all combinations of the current scope). 
+     */
+    public MExceptionDef findIdlException(Scope currentScope, ScopedName scopedName)
+    {
+        System.out.println("+++ ModelRepository.find: [" + currentScope + ", " + scopedName + "]");
+        MExceptionDef type; 
+        if(scopedName.toString().startsWith("::")) // Absolute scoped name
+        {            
+            type = exceptions.get(scopedName);
+        }
+        else 
         {
+            type = exploreModulesForException(currentScope.toString(), scopedName.toString());
+        }
+        
+        if(type == null)
             throw new RuntimeException("Unknown exception " + scopedName + "!");
-        }        
-        return ex;
+        else
+            return type;
     }
     
     
@@ -117,7 +136,7 @@ public class ModelRepository
     
     /** Utility Methods */
     
-    protected MIDLType exploreModules(String scope, String name)
+    protected MIDLType exploreModulesForIdlType(String scope, String name)
     {
         System.out.println("+++ explore: " + scope + ", " + name);
         int index = scope.length();
@@ -139,4 +158,26 @@ public class ModelRepository
         return null;
     }
     
+    
+    protected MExceptionDef exploreModulesForException(String scope, String name)
+    {
+        System.out.println("+++ explore: " + scope + ", " + name);
+        int index = scope.length();
+        String s = scope;
+        while(index != -1)
+        {
+            index = s.lastIndexOf("::");
+            if(index >= 0)
+            {
+                s = s.substring(0, index);
+                System.out.println("   try: " + s + "::" + name);
+                MExceptionDef type = exceptions.get(new ScopedName(s + "::" + name));
+                if (type != null)
+                {
+                    return type;
+                }
+            }
+        }
+        return null;
+    }
 }

@@ -299,6 +299,7 @@ public class ParserHelper
         MModuleDef module = new MModuleDefImpl();
         getLogger().fine("3: module { " + definitions + "}");
         module.setIdentifier(id);
+        Collections.reverse(definitions);
         for(Iterator i = definitions.iterator(); i.hasNext(); )
         {
             MContained contained = (MContained)i.next();
@@ -363,6 +364,7 @@ public class ParserHelper
     {
         getLogger().fine("7: interface T_IDENTIFIER = " + id);
         ScopedName identifier = new ScopedName(getScope(), id);
+        System.out.println("### " + identifier);
         MInterfaceDef iface;
         if(getModelRepository().isForwardDeclaration(identifier))
         {
@@ -455,6 +457,7 @@ public class ParserHelper
     
     private void addExport(Object export, List exports)
     {
+        getLogger().fine("8: exports " + export + ", " + exports);
         if(export instanceof List)
         {
             List exportList = (List)export;
@@ -869,7 +872,7 @@ public class ParserHelper
     /* 27 */
     public MConstantDef parseConstDcl(MIDLType constType, String identifier, Object constExpr)
     {
-        getLogger().fine("27: T_EQUAL const_exp = " + constExpr);
+        getLogger().fine("27: T_EQUAL const_exp = " + constType + ", " + identifier + ", " + constExpr);
         MConstantDef constant = new MConstantDefImpl();
         constant.setIdentifier(identifier);
         constant.setSourceFile(getIncludedSourceFile());
@@ -950,6 +953,7 @@ public class ParserHelper
             MEnumDef type = (MEnumDef)constType;
             if(constExpr instanceof ScopedName)
             {
+                // check enum constExpr
                 constant.setIdlType(type);
                 constant.setConstValue(constExpr);
             }
@@ -976,6 +980,14 @@ public class ParserHelper
             result = new Double(-((Double)primaryExpr).doubleValue());
         }
         return result;
+    }
+    
+    
+    /* 38 */
+    public ScopedName parsePrimaryExpr(ScopedName scopedName)
+    {
+        getLogger().fine("38: scoped_name = " + scopedName);
+        return scopedName;
     }
     
     
@@ -1038,7 +1050,7 @@ public class ParserHelper
     }
     
     
-    /* 38 *//* 45 */
+    /* 45 */
     public MIDLType parseScopedName(ScopedName scopedName)
     {
         getLogger().fine("45: scoped_name = " + scopedName);        
@@ -1375,6 +1387,11 @@ public class ParserHelper
         {
             Collections.reverse(enumerators);
             enumeration.setMembers(enumerators);
+            for(Iterator i = enumerators.iterator(); i.hasNext();)
+            {
+                String enumerator = (String)i.next();
+                getModelRepository().registerIdlType(new ScopedName(getScope(), enumerator), enumeration); 
+            }
         }
         else
         {
@@ -1387,7 +1404,7 @@ public class ParserHelper
     public List parseEnumerator(String enumerator)
     {
         List l = new ArrayList();
-        l.add(enumerator);
+        l.add(enumerator);        
         return l;
     }
     
@@ -1608,10 +1625,6 @@ public class ParserHelper
     }
     
     
-    
-    
-    
-    
     /* 94?? */
     public List parseContextExpr(List literals)
     {
@@ -1654,6 +1667,14 @@ public class ParserHelper
     {
         getLogger().fine("94??:  T_WSTRING_LITERAL T_wstring_literal = " + s1 + " " + s2); 
         return s1+s2;    
+    }
+    
+    
+    /* 95 */
+    public MIDLType parseParameterTypeSpec(ScopedName scopedName)
+    {
+        getLogger().fine("95: param_type_spec scoped_name " + scopedName);        
+        return getModelRepository().findIdlType(getScope(), scopedName);
     }
     
     
@@ -2002,7 +2023,7 @@ public class ParserHelper
     {
         MProvidesDef provides = new MProvidesDefImpl();
         provides.setIdentifier(id);
-        MIDLType type = getModelRepository().findIdlType(ifaceType);
+        MIDLType type = getModelRepository().findIdlType(getScope(), ifaceType);
         if(type == null)
         {
             reportError("Provided interface type " + ifaceType + " not found!");
@@ -2033,7 +2054,7 @@ public class ParserHelper
         MUsesDef uses = new MUsesDefImpl();
         uses.setIdentifier(id);
         uses.setMultiple(false);
-        MIDLType type = getModelRepository().findIdlType(ifaceType);
+        MIDLType type = getModelRepository().findIdlType(getScope(),ifaceType);
         if(type == null)
         {
             reportError("Used interface type " + ifaceType + " not found!");
@@ -2096,7 +2117,7 @@ public class ParserHelper
         home.setIdentifier(id);
         home.setSourceFile(getIncludedSourceFile());
         
-        MIDLType type = getModelRepository().findIdlType(componentId);
+        MIDLType type = getModelRepository().findIdlType(getScope(), componentId);
         if(type == null)
         {
             reportError("Managed component " + componentId + " not found!");
@@ -2119,7 +2140,7 @@ public class ParserHelper
         getLogger().fine("126: home id manages component = " + id + ", " + componentTypeName + ", " + baseTypeName);
 
         MHomeDef home =  parseHomeHeader(id, componentTypeName);
-        MIDLType type = getModelRepository().findIdlType(baseTypeName);
+        MIDLType type = getModelRepository().findIdlType(getScope(), baseTypeName);
         if(type == null)
         {
             reportError("Base home " + baseTypeName + " not found!");

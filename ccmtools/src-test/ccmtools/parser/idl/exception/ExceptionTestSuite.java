@@ -14,6 +14,7 @@ public class ExceptionTestSuite
         suite.addTest(ExceptionOfTempleateTypesTest.suite());
         suite.addTest(ExceptionOfConstructedTypesTest.suite());
 
+        suite.addTest(ExceptionModuleTest.suite());
         return suite;
 	}
 }

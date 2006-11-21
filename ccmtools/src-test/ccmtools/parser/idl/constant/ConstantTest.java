@@ -1,11 +1,13 @@
 package ccmtools.parser.idl.constant;
 
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MConstantDef;
+import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.ConsoleDriver;
@@ -40,5 +42,22 @@ public class ConstantTest extends TestCase
         System.out.println(modelElements);
         return constant;
     }
-    
+
+    public static MConstantDef parseSource(String sourceCode, String id) throws CcmtoolsException, FileNotFoundException
+    {
+        UserInterfaceDriver uiDriver= new ConsoleDriver();
+        System.out.println("[" + sourceCode + "]");
+        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        List modelElements = ccmModel.getContentss();
+        System.out.println("#" + modelElements.size() + ":  " + modelElements);
+        for(Iterator i = modelElements.iterator(); i.hasNext(); )
+        {
+            MContained element = (MContained)i.next();
+            if(element.getIdentifier().equals(id))
+            {
+                return (MConstantDef)element;
+            }
+        }
+        return null;
+    }
 }
