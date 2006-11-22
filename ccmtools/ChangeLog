@@ -1,17 +1,15 @@
-HEAD
-============================================================================
-
-
-
 BRANCH-0.6.x
 ============================================================================
 
-RELEASE-0.6.16 (, 2006)
+RELEASE-0.6.16 (November 22, 2006)
 ----------------------------------------------------------------------------
 *) Hack: ia64-hp
 	Fixed local C++ generator to make it work on the Itanium platform very 
 	quickly (MComponentDef, MHomeDef).
 	
+*) Refactoring: CppLocalTemplates
+	Added virtual destructors to all generated component and home classes.
+		
 
 RELEASE-0.6.15 (October 20, 2006)
 ----------------------------------------------------------------------------
