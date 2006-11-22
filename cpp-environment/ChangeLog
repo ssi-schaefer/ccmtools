@@ -1,6 +1,16 @@
 BRANCH-0.6.x
 ============================================================================
 
+RELEASE-0.6.16 (November 22, 2006)
+----------------------------------------------------------------------------
+*) Refactoring: LocalComponents/CCM.h
+	Added virtual destructors to all classes.
+	
+*) Bugfix: Interix (reported by Duft Markus)
+	Added _CCM_EXPORT_DECL_ Makro to HomeFinder.h and CCMContainer.h which
+	uses static attributes.
+	
+
 RELEASE-0.6.14 (September 11, 2006)
 ----------------------------------------------------------------------------
 *) Bugfix: ccm/CCM_Remote/Makefile.py
