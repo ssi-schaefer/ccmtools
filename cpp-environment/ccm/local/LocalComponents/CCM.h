@@ -37,22 +37,18 @@ namespace local {
     : public std::exception
   {
   public:
-    Exception() 
-        throw()
+    Exception() throw()
       : message_("Components::ccm::local::Exception") 
     {}
 
-    Exception(const std::string& message) 
-        throw()
+    Exception(const std::string& message) throw()
       : message_(message)  
     {}
 
-    virtual ~Exception() 
-    	    throw() 
+    virtual ~Exception() throw() 
     	{}
 
-    virtual const char* what() const 
-      throw()
+    virtual const char* what() const throw()
     { return message_.c_str(); }
 
   private:
@@ -67,17 +63,13 @@ namespace local {
     : public Exception 
   {
   public:
-    NotImplemented() 
-      throw()
+    NotImplemented() throw()
       : Exception("Components::ccm::local::NotImplemented") 
-      {
-      }
+    {}
 
-    NotImplemented(const std::string& message) 
-      throw()
+    NotImplemented(const std::string& message) throw()
       : Exception(message) 
-      {
-      }
+    {}
   };
 
 
@@ -85,22 +77,18 @@ namespace local {
     : public Exception 
   {
   public:
-    InvalidName() 
-      throw()
+    InvalidName() throw()
       : Exception("Components::ccm::local::InvalidName" ) 
-      {
-      }
+    {}
   };
 
 
   class HomeNotFound 
     : public Exception {
   public:
-    HomeNotFound() 
-      throw()
+    HomeNotFound() throw()
       : Exception("Components::ccm::local::HomeNotFound")
-      {
-      }
+    {}
   };
 
 
@@ -108,11 +96,9 @@ namespace local {
     : public Exception 
   {
   public:
-    AlreadyConnected()
-      throw()
+    AlreadyConnected() throw()
       : Exception("Components::ccm::local::AlreadyConnected")
-      {
-      }
+    {}
   };
 
 
@@ -120,11 +106,9 @@ namespace local {
     : public Exception 
   {
   public:
-    InvalidConnection()
-      throw()
+    InvalidConnection() throw()
       : Exception("Components::ccm::local::InvalidConnection")
-      {
-      }
+    {}
   };
 
 
@@ -132,11 +116,9 @@ namespace local {
     : public Exception 
   {
   public:
-    NoConnection()
-      throw()
+    NoConnection() throw()
       : Exception("Components::ccm::local::NoConnection")
-      {
-      }
+    {}
   };
 
 
@@ -144,11 +126,9 @@ namespace local {
     : public Exception 
   {
   public:
-    ExceededConnectionLimit()
-      throw()
+    ExceededConnectionLimit() throw()
       : Exception("Components::ccm::local::ExceededConnectionLimit")
-      {
-      }
+    {}
   };
 
 
@@ -156,11 +136,9 @@ namespace local {
     : public Exception 
   {
   public:
-    CookieRequired()
-      throw()
+    CookieRequired() throw()
       : Exception("Components::ccm::local::CookieRequired")
-      {
-      }
+    {}
   };
 
 
@@ -168,11 +146,9 @@ namespace local {
     : public Exception 
   {
   public:
-    IllegalState()
-      throw()
+    IllegalState() throw()
       : Exception("Components::ccm::local::IllegalState")
-      {
-      }
+    {}
   };
 
 
@@ -180,11 +156,9 @@ namespace local {
     : public Exception 
   {
   public: 
-    InvalidConfiguration()
-      throw()
+    InvalidConfiguration() throw()
       : Exception("Components::ccm::local::InvalidConfiguration")
-      {
-      }    
+    {}    
   };
 
 
@@ -194,17 +168,13 @@ namespace local {
     : public Exception 
   {
   public:
-    CreateFailure () 
-      throw()
+    CreateFailure () throw()
       : Exception("Components::ccm::local::CreateFailure"), reason_(0) 
-      {
-      }
+    {}
 
-    CreateFailure(const FailureReason reason) 
-      throw()
+    CreateFailure(const FailureReason reason) throw()
       : Exception("Components::ccm::local::CreateFailure"), reason_(reason) 
-      {
-      }
+    {}
   private:
     FailureReason reason_;
   };
@@ -214,24 +184,21 @@ namespace local {
     : public Exception 
   {
   public:
-    RemoveFailure() 
-      throw()
+    RemoveFailure() throw()
       : Exception("Components::ccm::local::RemoveFailure"), reason_(0) 
-      {
-      }
+    {}
 
-    RemoveFailure(const FailureReason reason) 
-      throw()
+    RemoveFailure(const FailureReason reason) throw()
       : Exception("Components::ccm::local::RemoveFailure"), reason_(reason) 
-      {
-      }
+    {}
 
   private:
     FailureReason reason_;
   }; 
  
 
-  enum CCMExceptionReason {
+  enum CCMExceptionReason 
+  {
     SYSTEM_ERROR,
     CREATE_ERROR,
     REMOVE_ERROR,
@@ -247,17 +214,13 @@ namespace local {
     : public Exception 
   {
   public:
-    CCMException() 
-      throw()
+    CCMException() throw()
       : Exception("Components::ccm::local::CCMException"), reason_(SYSTEM_ERROR)
-      {
-      }
+    {}
     
-    CCMException(const CCMExceptionReason reason) 
-      throw() 
+    CCMException(const CCMExceptionReason reason) throw() 
       : Exception("Components::ccm::local::CCMException"), reason_(reason) 
-      {
-      }
+    {}
 
   private:
     CCMExceptionReason reason_;
@@ -677,8 +640,9 @@ namespace local {
   	: public Exception 
   {
   	public:
-  		WrongComponentType() throw()
-  		: Exception("Components::ccm::local::WrongComponentType" ) {} 
+      WrongComponentType() throw()
+  		: Exception("Components::ccm::local::WrongComponentType" ) 
+      {} 
   };
 
   
