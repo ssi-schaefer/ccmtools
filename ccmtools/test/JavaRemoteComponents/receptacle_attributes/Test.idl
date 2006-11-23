@@ -28,14 +28,6 @@ module world
   typedef sequence<string> StringList;
   typedef sequence<Person> PersonList;
 
-  //  typedef long LongArray[10];
-  //  typedef string StringArray[10];
-  //  typedef Person PersonArray[10];
-
-  //  typedef long LongMatrix[10][5];
-  //  typedef long LongCube[10][5][7];
-
-
   module europe 
   {
 
@@ -65,14 +57,6 @@ module world
       attribute PersonList personList_value;
       
       attribute time_t time_t_value;
-
-      //      attribute LongArray longArray_value;
-      //      attribute StringArray stringArray_value;
-      //      attribute PersonArray personArray_value;
-      
-
-      //      attribute LongMatrix longMatrix_value;
-      //      attribute LongCube longCube_value;
     };
     
 

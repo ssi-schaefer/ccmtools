@@ -76,6 +76,7 @@ import ccmtools.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.metamodel.ComponentIDL.MComponentDefImpl;
 import ccmtools.metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.metamodel.ComponentIDL.MFactoryDefImpl;
+import ccmtools.metamodel.ComponentIDL.MFinderDef;
 import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MHomeDefImpl;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
@@ -2079,21 +2080,36 @@ public class ParserHelper
     
     
     /* 125 */
-    public MHomeDef parseHomeDeclaration(MHomeDef header, List body)
+    public MHomeDef parseHomeDeclaration(MHomeDef home, List body)
     {
-        getLogger().fine("125: home_header home_body = " + header + ", " + body);
+        getLogger().fine("125: home_header home_body = " + home + ", " + body);
         Collections.reverse(body);
         for(Iterator i = body.iterator(); i.hasNext();)
         {
             MContained content = (MContained)i.next();
-            content.setDefinedIn(header);
-            header.addContents(content);
+            if(content instanceof MFactoryDef)
+            {
+                MFactoryDef factory = (MFactoryDef)content;
+                factory.setHome(home);
+                home.addFactory(factory);
+            }
+            else if(content instanceof MFinderDef)
+            {
+                MFinderDef finder = (MFinderDef)content;
+                finder.setHome(home);
+                home.addFinder(finder);
+            }
+            else
+            {
+                content.setDefinedIn(home);
+                home.addContents(content);
+            }
         }
-        String id = header.getIdentifier();
+        String id = home.getIdentifier();
         ScopedName identifier = new ScopedName(getScope(), id);
         registerTypeId(id);
-        getModelRepository().registerIdlType(identifier, header);
-        return header;
+        getModelRepository().registerIdlType(identifier, home);
+        return home;
     }
     
     
@@ -2182,7 +2198,49 @@ public class ParserHelper
         return new ArrayList();
     }
     
+    /* 130 */
+    public List parseHomeExports(Object export)
+    {
+        getLogger().fine("130: home_export " + export);
+        List l = new ArrayList();
+        l.add(export);
+        return l;
+    }
     
+    public List parseHomeExports(Object export, List l)
+    {
+        getLogger().fine("130: home_export home_exports" + export + " " + l);
+        l.add(export);
+        return l;
+    }
+    
+
+    /* 131 */    
+    public MFactoryDef parseFactoryDeclaration(String id, List parameters, List exceptions)
+    {
+        getLogger().fine("131: factory " + id + " ( "+ parameters + " ) " + exceptions);
+//        if(parameters == null) parameters = new ArrayList();
+        
+        MFactoryDef factory = new MFactoryDefImpl();
+        factory.setIdentifier(id);
+        if(parameters != null)
+        {
+            Collections.reverse(parameters);
+            for(Iterator i = parameters.iterator(); i.hasNext();)
+            {
+                MParameterDef p = (MParameterDef)i.next();
+                p.setOperation(factory);
+                factory.addParameter(p);
+            }
+        }        
+        if(exceptions != null)
+        {
+            Collections.reverse(exceptions);
+            factory.setExceptionDefs(exceptions);
+        }
+        return factory;
+    }
+   
     
     /*************************************************************************
      * Scanner Utility Methods

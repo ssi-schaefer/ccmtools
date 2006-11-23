@@ -2575,15 +2575,18 @@ home_inheritance_spec
 primary_key_spec
 	::= 
 		T_PRIMARYKEY scoped_name
+		{:
+			// Not supported
+		:}
 	;
 
 
 /* 129 */
 home_body
 	::= 
-		T_LEFT_CURLY_BRACKET home_exports T_RIGHT_CURLY_BRACKET
+		T_LEFT_CURLY_BRACKET home_exports:l T_RIGHT_CURLY_BRACKET
 		{:
-		
+			RESULT = l;
 		:}
 	| 
 		T_LEFT_CURLY_BRACKET T_RIGHT_CURLY_BRACKET
@@ -2596,44 +2599,87 @@ home_body
 /* 130 */
 home_exports
 	::= 
-		home_export
+		home_export:e
+		{:
+			RESULT = helper.parseHomeExports(e);
+		:}
 	| 
-		home_export home_exports
+		home_export:e home_exports:l
+		{:
+			RESULT = helper.parseHomeExports(e,l);
+		:}
 	;
 
 home_export
 	::= 
-		export
+		export:e
+		{:
+			RESULT = e;
+		:}		
 	| 
-		factory_dcl T_SEMICOLON
+		factory_dcl:f T_SEMICOLON
+		{:
+			RESULT = f;
+		:}
 	| 
-		finder_dcl T_SEMICOLON
+		finder_dcl:f T_SEMICOLON
+		{:
+			RESULT = f;
+		:}
 	;
 
 
 /* 131 */
 factory_dcl
 	::= 
-		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS raises_expr
+		T_FACTORY T_IDENTIFIER:id T_LEFT_PARANTHESIS init_param_decls:pl T_RIGHT_PARANTHESIS 
+			raises_expr:el
+		{:
+			RESULT = helper.parseFactoryDeclaration(id, pl, el);
+		:}
 	| 
-		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS raises_expr
+		T_FACTORY T_IDENTIFIER:id T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS 
+			raises_expr:el
+		{:
+			RESULT = helper.parseFactoryDeclaration(id, null, el);
+		:}
 	| 
-		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS
+		T_FACTORY T_IDENTIFIER:id T_LEFT_PARANTHESIS init_param_decls:pl T_RIGHT_PARANTHESIS
+		{:
+			RESULT = helper.parseFactoryDeclaration(id, pl, null);
+		:}
 	| 
-		T_FACTORY T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+		T_FACTORY T_IDENTIFIER:id T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+		{:
+			RESULT = helper.parseFactoryDeclaration(id, null, null);
+		:}
 	;
 
 
 /* 132 */
 finder_dcl
 	::= 
-		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS raises_expr
+		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS 
+			raises_expr
+		{:
+			// Not supported
+		:}		
 	| 
-		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS raises_expr
+		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS 
+			raises_expr
+		{:
+			// Not supported
+		:}			
 	| 
 		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS init_param_decls T_RIGHT_PARANTHESIS
+		{:
+			// Not supported
+		:}		
 	| 
 		T_FINDER T_IDENTIFIER T_LEFT_PARANTHESIS T_RIGHT_PARANTHESIS
+		{:
+			// Not supported
+		:}
 	;
 
 
