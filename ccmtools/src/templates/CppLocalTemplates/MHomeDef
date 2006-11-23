@@ -24,6 +24,10 @@
 
 #include "%(ComponentType)s_gen.h"
 
+// BEGIN-HACK: Itanium
+#include <%(HomeInclude)s_impl.h> 
+// END-HACK: Itanium
+
 %(OpenNamespace)s
 
 //==============================================================================
@@ -34,6 +38,9 @@ class %(Identifier)sExplicit
     : virtual public ::Components::ccm::local::CCMHome
 {
   public:
+
+    virtual ~%(Identifier)sExplicit() {}
+
 %(MFactoryDefAdapterPrototypeVV)s
 };
 
@@ -45,6 +52,8 @@ class %(Identifier)sImplicit
     : virtual public ::Components::ccm::local::KeylessCCMHome
 {
   public:
+    virtual ~%(Identifier)sImplicit() {}
+
     virtual wx::utils::SmartPtr<%(ComponentType)s> create()
         throw(::Components::ccm::local::CCMException, 
               ::Components::ccm::local::CreateFailure) = 0;
@@ -84,7 +93,9 @@ class %(Identifier)s
               ::Components::ccm::local::CreateFailure);
 
   protected:
-    CCM_%(Identifier)s* local_home;
+    // BEGIN-HACK: Itanium
+    CCM_%(Identifier)s_impl* local_home;
+//    CCM_%(Identifier)s* local_home;
     wx::utils::SmartPtr< ::Components::ccm::local::AssemblyFactory> assembly_factory;
     
   private:
@@ -142,7 +153,10 @@ using namespace wx::utils;
 %(Identifier)s::%(Identifier)s()
 {
     LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s()");
-    local_home = dynamic_cast<CCM_%(Identifier)s*>(create_%(AbsoluteLocalHomeName)s());
+    // BEGIN-HACK: Itanium
+    local_home = dynamic_cast<CCM_%(Identifier)s_impl*>(create_%(AbsoluteLocalHomeName)s());
+    // END-HACK: Itanium
+//    local_home = dynamic_cast<CCM_%(Identifier)s*>(create_%(AbsoluteLocalHomeName)s());
     assembly_factory = SmartPtr< ::Components::ccm::local::AssemblyFactory>();
 }
 
@@ -150,7 +164,9 @@ using namespace wx::utils;
     : assembly_factory(f)
 {
     LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s::%(Identifier)s(AssemblyFactory)");
-    local_home = dynamic_cast<CCM_%(Identifier)s*>(create_%(AbsoluteLocalHomeName)s());
+    // BEGIN-HACK: Itanium
+    local_home = dynamic_cast<CCM_%(Identifier)s_impl*>(create_%(AbsoluteLocalHomeName)s());
+    // END-HACK: Itanium
 }
 
 %(Identifier)s::~%(Identifier)s()
@@ -291,6 +307,9 @@ class CCM_%(Identifier)sExplicit
     : virtual public ::Components::ccm::local::HomeExecutorBase
 {
   public:
+  
+    virtual ~CCM_%(Identifier)sExplicit() {}
+    
 %(MFactoryDefPrototypeVV)s
 };
 
@@ -298,6 +317,8 @@ class CCM_%(Identifier)sExplicit
 class CCM_%(Identifier)sImplicit
 {
   public:
+    virtual ~CCM_%(Identifier)sImplicit() {}  
+
     virtual ::Components::ccm::local::EnterpriseComponent* create()
         throw(::Components::ccm::local::CCMException) = 0;
 };
@@ -307,6 +328,8 @@ class CCM_%(Identifier)s
     : virtual public CCM_%(Identifier)sExplicit, 
       virtual public CCM_%(Identifier)sImplicit%(BaseType)s%(MSupportsDefBase)s
 {
+  public:
+    virtual ~CCM_%(Identifier)s() {}
 };
 
 %(CloseNamespace)s

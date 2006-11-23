@@ -29,6 +29,10 @@
 %(MUsesDefInclude)s
 %(BaseInclude)s
 
+// BEGIN-HACK: Itanium
+#include <%(ComponentInclude)s/%(Identifier)s_impl.h>
+// END-HACK: Itanium
+
 %(OpenNamespace)s
 
 class %(HomeType)s;
@@ -90,7 +94,9 @@ class %(Identifier)s
  
    protected:
     %(HomeType)s* home_local_adapter;
-    CCM_%(Identifier)s* local_component;
+// BEGIN-HACK: Itanium
+    CCM_%(Identifier)s_impl* local_component;
+// END-HACK: Itanium    
     CCM_%(Identifier)s_Context* context;
     wx::utils::SmartPtr< ::Components::ccm::local::Assembly> assembly;
     bool ValidConnection;
@@ -98,8 +104,6 @@ class %(Identifier)s
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
         
-  private:
-    void operator=(const %(Identifier)s&);
 };
 
 
@@ -126,8 +130,6 @@ class CCM_%(Identifier)s_Context_impl
   protected:
     %(Identifier)s* component_local_adapter;
         
-  private:
-    void operator=(const CCM_%(Identifier)s_Context_impl&);
 };
 
 %(CloseNamespace)s
@@ -189,7 +191,9 @@ using namespace wx::utils;
     SmartPtr< ::Components::ccm::local::Assembly> a)
     : %(MSupportsDefAdapterConstructor)s
     home_local_adapter(h), 
-    local_component(lc), 
+    // BEGIN-HACK: Itanium
+    local_component(dynamic_cast<CCM_%(Identifier)s_impl*>(lc)), 
+    // END-HACK: Itanium
     assembly(a)
 {
     LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s()");
@@ -384,6 +388,9 @@ class CCM_%(Identifier)s
     : virtual public ::Components::ccm::local::SessionComponent%(BaseType)s%(MSupportsDefBase)s
 {
   public:
+  
+    virtual ~CCM_%(Identifier)s() {}
+      
 %(MAttributeDefPrototypeVV)s
 %(MProvidesDefGetFacetPrototypeVV)s
 %(MSupportsDefImplPrototypeVV)s
@@ -400,6 +407,9 @@ class CCM_%(Identifier)s_Context
     : virtual public ::Components::ccm::local::SessionContext
 {
   public:
+  
+    virtual ~CCM_%(Identifier)s_Context() {}
+    
 %(MUsesDefGetConnectionPrototypeVV)s
 };
 
