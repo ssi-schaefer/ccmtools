@@ -33,7 +33,7 @@ interface InterfaceTypes
 				in LongSeq p5);
 };
 
-
+/*
 interface InterfaceType2
 {
 	void foo(in InterfaceTypes::LongType p1, 
@@ -42,5 +42,5 @@ interface InterfaceType2
 				in InterfaceTypes::LongArray p4, 
 				in InterfaceTypes::LongSeq p5);
 };
-
+*/
 #endif // __INTERFACE_TYPE__IDL__

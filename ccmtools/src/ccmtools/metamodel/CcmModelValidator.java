@@ -29,6 +29,8 @@ import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStructDef;
 import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.metamodel.BaseIDL.MTypedefDef;
+import ccmtools.metamodel.BaseIDL.MUnionDef;
+import ccmtools.metamodel.BaseIDL.MValueBoxDef;
 import ccmtools.metamodel.BaseIDL.MValueDef;
 import ccmtools.metamodel.BaseIDL.MWstringDef;
 import ccmtools.metamodel.ComponentIDL.MComponentDef;
@@ -51,8 +53,8 @@ import ccmtools.utils.Text;
  */
 public class CcmModelValidator
 {		
-    public static final String MODEL_CHECKER_ID = "validator";
-    public static final String MODEL_CHECKER_TEXT = "Validate CCM model";
+    public static final String MODEL_VALIDATOR_ID = "validator";
+    public static final String MODEL_VALIDATOR_TEXT = "Validate CCM model";
     
     private static final String TAB = "    ";
     private static final String NL = "\n";
@@ -100,7 +102,7 @@ public class CcmModelValidator
     
     public String getErrorMessage()
     {
-        return "Invalid CCM Model" + NL + Text.join(NL, getErrorList());
+        return "Invalid CCM Model:" + NL + Text.join(NL, getErrorList());
     }
     
     public List<String> getWarningList()
@@ -127,7 +129,7 @@ public class CcmModelValidator
                     + ccmModel.getContentss().size() + " top level elements)");    
             for(Iterator i = ccmModel.getContentss().iterator(); i.hasNext();)
             {
-                check((MContained)i.next());
+                validate((MContained)i.next());
             }
         }
     }
@@ -136,8 +138,8 @@ public class CcmModelValidator
     /*************************************************************************
      * CCM Model Checker Methods 
      *************************************************************************/
-
-    private void check(MContained in)
+    
+    private void validate(MContained in)
     {
         // Don't handle included files (included ModelElements store their filenames)
         if(!in.getSourceFile().equals(""))
@@ -147,42 +149,52 @@ public class CcmModelValidator
         }
         
         logger.fine("MContained " +  CcmModelHelper.getRepositoryId(in));    
+
         if(in instanceof MContainer)
         {
-            check((MContainer)in);
+            validate((MContainer)in);
         }
         else if(in instanceof MConstantDef)
         {
-            check((MConstantDef)in);
+            validate((MConstantDef)in);
         }
         else if(in instanceof MTypedefDef)
         {
-            check((MTypedefDef)in);
+            validate((MTypedefDef)in);
+        }
+        else if(in instanceof MAttributeDef)
+        {
+            validate((MAttributeDef)in);
         }
         else if(in instanceof MExceptionDef)
         {
-            check((MExceptionDef)in);
+            validate((MExceptionDef)in);
         }
+        else if(in instanceof MOperationDef)
+        {
+            validate((MOperationDef)in);
+        }
+        // MValueMemberDef
         else
         {
             throw new RuntimeException("Unknown contained type " + in);
         }
     }
     
-    private void check(MContainer in)
+    private void validate(MContainer in)
     {    
         logger.fine("MContainer");    
         if(in instanceof MModuleDef)
         {
-            check((MModuleDef)in);
+            validate((MModuleDef)in);
         }
         else if(in instanceof MInterfaceDef)
         {
-            check((MInterfaceDef)in);
+            validate((MInterfaceDef)in);
         }
         else if(in instanceof MValueDef)
         {
-            check((MValueDef)in);               
+            validate((MValueDef)in);               
         }
         else
         {
@@ -190,98 +202,115 @@ public class CcmModelValidator
         }
     }
     
-    private void check(MModuleDef in)
+    private void validate(MModuleDef in)
     {
         logger.fine("MModuleDef");
         for(Iterator i = in.getContentss().iterator(); i.hasNext();)
         {
-            check((MContained)i.next());
+            validate((MContained)i.next());
         }
     }
+
     
-    private void check(MTypedefDef in)
+    private void validate(MIDLType in)
+    {
+        logger.fine("MIDLType"); 
+        if(in instanceof MPrimitiveDef)
+        {
+            validate((MPrimitiveDef)in);
+        }
+        else if(in instanceof MStringDef)
+        {
+            validate((MStringDef)in);
+        }
+        else if(in instanceof MWstringDef)
+        {
+            validate((MWstringDef)in);
+        }
+        else if(in instanceof MFixedDef)
+        {
+            validate((MFixedDef)in);
+        }       
+//      else if(in instanceof MEnumDef)
+//      {           
+//          validate((MEnumDef)in);
+//      }
+        else if(in instanceof MSequenceDef)
+        {
+            validate((MSequenceDef)in);
+        }
+        else if(in instanceof MArrayDef)
+        {
+            validate((MArrayDef)in);
+        }
+//      else if(in instanceof MStructDef)
+//      {           
+//            validate((MStructDef)in);
+//      }
+        else if(in instanceof MValueDef)
+        {
+            validate((MValueDef)in);
+        }
+        else if(in instanceof MInterfaceDef)
+        {
+            validate((MInterfaceDef)in);
+        }
+        else if(in instanceof MTypedefDef)
+        {
+            validate((MTypedefDef)in);
+        }
+        else
+        {
+            throw new RuntimeException("Unknown MIDLType " + in);
+        }
+    }
+
+    
+    private void validate(MTypedefDef in)
     {
         logger.fine("MTypedefDef");    
         if(in instanceof MEnumDef)
         {
-            check((MEnumDef)in);
+            validate((MEnumDef)in);
         }   
         else if(in instanceof MStructDef)
         {
-            check((MStructDef)in);
+            validate((MStructDef)in);
+        }
+        else if(in instanceof MUnionDef)
+        {
+            validate((MUnionDef)in);
+        }
+        else if(in instanceof MValueBoxDef)
+        {
+            validate((MValueBoxDef)in);
         }
         else if(in instanceof MAliasDef)
         {
-            check((MAliasDef)in);
+            validate((MAliasDef)in);
         }
-        // TODO: MUnionDef
         else
         {
             throw new RuntimeException("Unknown MTypedefDef " + in);
         }
     }
 
-    private void check(MAliasDef in)
+    private void validate(MAliasDef in)
     {
         MTyped typed = (MTyped) in;
         MIDLType innerIdlType = typed.getIdlType();
-        check(innerIdlType);
+        validate(innerIdlType);
     }
     	
-	private void check(MIDLType in)
-	{
-        logger.fine("MIDLType"); 
-		if(in instanceof MPrimitiveDef)
-		{
-			check((MPrimitiveDef)in);
-		}
-		else if(in instanceof MStringDef)
-		{
-			check((MStringDef)in);
-		}
-		else if(in instanceof MWstringDef)
-		{
-			check((MWstringDef)in);
-		}
-		else if(in instanceof MFixedDef)
-		{
-			check((MFixedDef)in);
-		}		
-		else if(in instanceof MEnumDef)
-		{			
-			check((MEnumDef)in);
-		}
-		else if(in instanceof MSequenceDef)
-		{
-			check((MSequenceDef)in);
-		}
-        else if(in instanceof MArrayDef)
-        {
-            check((MArrayDef)in);
-        }
-		else if(in instanceof MStructDef)
-		{			
-            check((MStructDef)in);
-		}
-		else if(in instanceof MInterfaceDef)
-		{
-            check((MInterfaceDef)in);
-		}
-		else if(in instanceof MAliasDef)
-		{
-			check((MAliasDef)in);
-		}
-		else
-		{
-			throw new RuntimeException("Unknown MIDLType " + in);
-		}
-	}
 
 
-    private void check(MPrimitiveDef in)
+    /*
+     * Basic Types
+     */
+    
+    private void validate(MPrimitiveDef in)
 	{
-        logger.fine("MPrimitiveDef"); 
-		
+        logger.fine("MPrimitiveDef"); 		
         StringBuilder msg = new StringBuilder();
         msg.append("CCM Tools does not support 64bit '");
         if(in.getKind() == MPrimitiveKind.PK_LONGLONG)
@@ -299,152 +328,169 @@ public class CcmModelValidator
 	}
 	
     
-	private void check(MStringDef in)
+    
+    
+    /*
+     * Template Types
+     */
+    
+	private void validate(MStringDef in)
 	{
         logger.fine("MStringDef"); 
 		if(in.getBound() != null)
 		{
-            addError("bounded string types");
+            addError("'bounded string' types");
 		}
 	}
 	
-	private void check(MWstringDef in)
+	private void validate(MWstringDef in)
 	{
         logger.fine("MWstringDef"); 
 		if(in.getBound() != null)
 		{
-            addError("bounded wstring types");
+            addError("'bounded wstring' types");
 		}
 	}
 	
-	private void check(MFixedDef in)
+	private void validate(MFixedDef in)
 	{
         logger.fine("MFixedDef"); 
-        addError("fixed-point types");
+        addError("'fixed-point' types");
 	}
 	
-	private void check(MConstantDef in)
-	{
-        logger.fine("MConstantDef"); 
-		MIDLType idlType = in.getIdlType();
-//		Object value = in.getConstValue();
-		check(idlType);
+    
+    /*
+     * Constructed Types
+     */
+    
+    private void validate(MStructDef in)
+    {
+        logger.fine("MStructDef"); 
+        for(Iterator i = in.getMembers().iterator(); i.hasNext();)
+        {
+            MFieldDef member = (MFieldDef)i.next();
+            validate(member.getIdlType());
+        }       
     }
-	
-	private void check(MEnumDef in)
+        
+    private void validate(MUnionDef in)
+    {
+        logger.fine("MUnionDef");
+        addError("'union' types like " + in.getIdentifier());
+    }
+    
+	private void validate(MEnumDef in)
 	{
         logger.fine("MEnumDef"); 
-//		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
-//		{
-//			String member = (String)i.next();
-//        }	
 	}
 	
-	private void check(MStructDef in)
-	{
-        logger.fine("MStructDef"); 
-		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
-		{
-			MFieldDef member = (MFieldDef)i.next();
-			check(member.getIdlType());
-        }		
-	}
 
-	private void check(MExceptionDef in)
+    
+    private void validate(MConstantDef in)
+    {
+        logger.fine("MConstantDef"); 
+        MIDLType idlType = in.getIdlType();
+        validate(idlType);
+    }
+    
+
+    
+	private void validate(MExceptionDef in)
 	{
         logger.fine("MExceptionDef"); 
 		for(Iterator i = in.getMembers().iterator(); i.hasNext();)
 		{
 			MFieldDef member = (MFieldDef)i.next();
-			check(member.getIdlType());
+			validate(member.getIdlType());
         }		
 	}
 
-	private void check(MArrayDef in)
+	private void validate(MArrayDef in)
 	{
         logger.fine("MArrayDef"); 
-//		check(in.getIdlType());
-//		for(int i=0; i < in.getBounds().size(); i++)
-//		{
-//			Long bound = (Long)in.getBounds().get(i);
-//            
-//        }
+        addError("'array' types");
 	}
 	
-	private void check(MSequenceDef in)
+	private void validate(MSequenceDef in)
 	{
         logger.fine("MSequenceDef"); 
 		if(in.getBound() != null)
 		{
-            addError("bounded sequence types");
+            addError("'bounded sequence' types");
 		}
-		check(in.getIdlType());
+		validate(in.getIdlType());
 	}
 
-    private void check(MAttributeDef in)
+    private void validate(MAttributeDef in)
     {
         logger.fine("MAttributeDef"); 
-//        if(in.isReadonly())
-//        {
-//
-//        }
-        check(in.getIdlType());
+        if(in.isReadonly())
+        {
+            addError("'readonly' attributes like " + 
+                    in.getDefinedIn().getIdentifier() + "::" +
+                    in.getIdentifier());
+        }
+        validate(in.getIdlType());
         for(Iterator i = in.getGetExceptions().iterator(); i.hasNext();)
         {
             MExceptionDef ex = (MExceptionDef)i.next();
-            check(ex);
+            validate(ex);
         }
         for(Iterator i = in.getSetExceptions().iterator(); i.hasNext();)
         {
             MExceptionDef ex = (MExceptionDef)i.next();
-            check(ex);
+            validate(ex);
         }        
     }
     
-	private void check(MOperationDef in)
+	private void validate(MOperationDef in)
 	{
         logger.fine("MOperationDef"); 
 		if(in.isOneway())
 		{
-            addError("'oneway' operations (e.g. " + in.getIdentifier() + "())");
+            addError("'oneway' operations like " + 
+                    in.getDefinedIn().getIdentifier() + "::" +
+                    in.getIdentifier() + "()'");
 		}
-		check(in.getIdlType());
+		validate(in.getIdlType());
 		for(Iterator i = in.getParameters().iterator(); i.hasNext();)
 		{
 			MParameterDef parameter = (MParameterDef)i.next();						
-			check(parameter.getIdlType());
+			validate(parameter.getIdlType());
 		}
 		for(Iterator i = in.getExceptionDefs().iterator(); i.hasNext();)
 		{
 			MExceptionDef ex = (MExceptionDef)i.next();
-			check(ex);
+			validate(ex);
 		}
 		if(in.getContexts() != null)
 		{
-            addError("operations with 'context' (e.g. " + in.getIdentifier() + "())");
+            addError("operations with 'context' like '" +
+                    in.getDefinedIn().getIdentifier() + "::" +
+                    in.getIdentifier() + "()'");
 		}
 	}
 	
-	private void check(MInterfaceDef in)
+	private void validate(MInterfaceDef in)
     {
         logger.fine("MInterfaceDef");
         if (in instanceof MHomeDef)
         {
-            check((MHomeDef) in);
+            validate((MHomeDef) in);
         }
         else if (in instanceof MComponentDef)
         {
-            check((MComponentDef) in);
+            validate((MComponentDef) in);
         }
         else // MInterfaceDef
         {
             if (in.isAbstract())
             {
-                addError("'abstract' interfaces (e.g. " + in.getIdentifier() + ")");
+                addError("'abstract' interfaces like '" + in.getIdentifier() + "'");
             }
             if (in.isLocal())
             {
-                addError("'local' interfaces (e.g. " + in.getIdentifier() + ")");
+                addError("'local' interfaces like '" + in.getIdentifier() + "'");
             }
 //            for (Iterator i = in.getBases().iterator(); i.hasNext();)
 //            {
@@ -456,25 +502,27 @@ public class CcmModelValidator
                 MContained contained = (MContained) i.next();
                 if (contained instanceof MAttributeDef)
                 {
-                    check((MAttributeDef) contained);
+                    validate((MAttributeDef) contained);
                 }
                 else if (contained instanceof MOperationDef)
                 {
-                    check((MOperationDef) contained);
+                    validate((MOperationDef) contained);
                 }
                 else if (contained instanceof MConstantDef)
                 {
-                    check((MConstantDef) contained);
+                    validate((MConstantDef) contained);
                 }
                 else if (contained instanceof MIDLType)
                 {
-                    addError("type definitions within interfaces (e.g. " + in.getIdentifier() + "::"
-                            + contained.getIdentifier() + ")");
+                    addError("type definitions within interfaces like '" + 
+                            in.getIdentifier() + "::" +
+                            contained.getIdentifier() + "'");
                 }
                 else if (contained instanceof MExceptionDef)
                 {
-                    addError("exception definitions within interfaces (e.g. " + in.getIdentifier() + "::"
-                            + contained.getIdentifier() + ")");
+                    addError("'exception' definitions within interfaces like '" + 
+                            in.getIdentifier() + "::" +
+                            contained.getIdentifier() + "'");
                 }
                 else
                 {
@@ -484,7 +532,7 @@ public class CcmModelValidator
         }
     }
 
-	private void check(MComponentDef in)
+	private void validate(MComponentDef in)
 	{
         logger.fine("MComponentDef"); 		
 //		for(Iterator i = in.getBases().iterator(); i.hasNext();)
@@ -524,17 +572,17 @@ public class CcmModelValidator
         for(Iterator i = in.getEmitss().iterator(); i.hasNext();)
         {
             MEmitsDef emits = (MEmitsDef)i.next();
-            check(emits);
+            validate(emits);
         }
         for(Iterator i = in.getPublishess().iterator(); i.hasNext();)
         {
             MPublishesDef publishes = (MPublishesDef)i.next();
-            check(publishes);
+            validate(publishes);
         }
         for(Iterator i = in.getConsumess().iterator(); i.hasNext();)
         {
             MConsumesDef consumes = (MConsumesDef)i.next();
-            check(consumes);
+            validate(consumes);
         }
 
         for(Iterator i = in.getContentss().iterator(); i.hasNext();)
@@ -542,7 +590,7 @@ public class CcmModelValidator
 			MContained contained = (MContained)i.next();					
 			if(contained instanceof MAttributeDef)
 			{
-				check((MAttributeDef)contained);
+				validate((MAttributeDef)contained);
 			}
             else if(contained instanceof MOperationDef)
             {               
@@ -571,7 +619,7 @@ public class CcmModelValidator
 		}
 	}
 
-	private void check(MHomeDef in)
+	private void validate(MHomeDef in)
 	{
         logger.fine("MHomeDef"); 
 //		for(Iterator i = in.getBases().iterator(); i.hasNext();)
@@ -596,19 +644,19 @@ public class CcmModelValidator
 		for(Iterator i = in.getFactories().iterator(); i.hasNext();)
 		{
 			MFactoryDef factory = (MFactoryDef)i.next();
-			check(factory);
+			validate(factory);
 		}
 		for(Iterator i = in.getFinders().iterator(); i.hasNext();)
 		{
 			MFinderDef finder = (MFinderDef)i.next();
-			check(finder);
+			validate(finder);
         }
         for(Iterator i = in.getContentss().iterator(); i.hasNext();)
         {
             MContained contained = (MContained)i.next();                    
             if(contained instanceof MAttributeDef)
             {
-                check((MAttributeDef)contained);
+                validate((MAttributeDef)contained);
             }
             else if(contained instanceof MOperationDef)
             {               
@@ -637,70 +685,74 @@ public class CcmModelValidator
         }
 	}
 	
-	private void check(MFactoryDef in)
+	private void validate(MFactoryDef in)
 	{
         logger.fine("MFactoryDef"); 
 		for(Iterator i = in.getParameters().iterator(); i.hasNext();)
 		{
 			MParameterDef parameter = (MParameterDef)i.next();
-			check(parameter.getIdlType());
+			validate(parameter.getIdlType());
 		}
 		for(Iterator i = in.getExceptionDefs().iterator(); i.hasNext();)
 		{
 			MExceptionDef ex = (MExceptionDef)i.next();
-			check(ex);
+			validate(ex);
 		}
 		if(in.getContexts() != null)
 		{
-            addError("factory methods with 'context' (e.g. " + in.getIdentifier() + "())");
+            addError("factory methods with 'context' like " + in.getIdentifier());
 		}
 	}
 	
-	private void check(MFinderDef in)
+	private void validate(MFinderDef in)
 	{
         logger.fine("MFinderDef"); 
-        addError("finder methods within homes (e.g. " 
-                + in.getHome().getIdentifier() + "::" + in.getIdentifier() + "())");
+        addError("finder methods within homes like " +
+                in.getHome().getIdentifier() + "::" + 
+                in.getIdentifier() + "())");
 	}
 	
-	private void check(MValueDef in)
+	private void validate(MValueDef in)
 	{       
         logger.fine("MValueDef");
         if(in instanceof MEventDef)
         {            
-            check((MEventDef)in);
+            validate((MEventDef)in);
         }
         else // MValueDef
         {
-            addError("'valuetype' definitions (e.g. " + CcmModelHelper.getRepositoryId(in.getIdentifier()) + ")");
+            addError("'valuetype' definitions like " + in.getIdentifier());
         }
     }
+    
+    private void validate(MValueBoxDef in)
+    {
+        logger.fine("MValueBoxDef");
+        addError("boxed 'valuetype' definitions like " + in.getIdentifier());        
+    }
 
-    private void check(MEventDef in)
+    private void validate(MEventDef in)
     {
         logger.fine("MEventDef");
-        addError("'eventtype' definitions (e.g. " + CcmModelHelper.getRepositoryId(in.getIdentifier()) + ")");
+        addError("'eventtype' definitions like " + in.getIdentifier());
     }
     
-    private void check(MEmitsDef in)
+    private void validate(MEmitsDef in)
     {
         logger.fine("MEmitsDef");
-        addError("'emits' definitions within components (e.g. " 
-                + CcmModelHelper.getRepositoryId(in.getComponent().getIdentifier()) + ")");
+        addError("'emits' definitions within components like " + in.getComponent().getIdentifier());
     }
     
-    private void check(MPublishesDef in)
+    private void validate(MPublishesDef in)
     {
         logger.fine("MPublishesDef");
-        addError("'publishes' definitions within components (e.g. " 
-                + CcmModelHelper.getRepositoryId(in.getComponent().getIdentifier()) + ")");
+        addError("'publishes' definitions within components like " + in.getComponent().getIdentifier());
     }
     
-    private void check(MConsumesDef in)
+    private void validate(MConsumesDef in)
     {
         logger.fine("MConsumesDef");
-        addError("'consumes' definitions within components (e.g. " 
-                + CcmModelHelper.getRepositoryId(in.getComponent().getIdentifier()) + ")");
+        addError("'consumes' definitions within components like " + in.getComponent().getIdentifier());
     }
     
     

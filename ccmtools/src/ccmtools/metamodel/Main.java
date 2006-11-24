@@ -67,28 +67,31 @@ public class Main
                             ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
                         }
                     }
-                    else if(actionId.equals(CcmModelPrinter.MODEL_PRINTER_ID))
+//                    else if(actionId.equals(CcmModelPrinter.MODEL_PRINTER_ID))
+//                    {
+//                        for (String idlFile : parameters.getIdlFiles())
+//                        {
+//                            MContainer ccmModel = 
+//                                //CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+//                                ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+//                            CcmModelPrinter printer = new CcmModelPrinter(uiDriver, parameters);
+//                            printer.traverse(ccmModel);
+//                        }
+//                    }
+                    else if(actionId.equals(CcmModelValidator.MODEL_VALIDATOR_ID))
                     {
                         for (String idlFile : parameters.getIdlFiles())
                         {
                             MContainer ccmModel = 
-                                //CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
                                 ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
-                            CcmModelPrinter printer = new CcmModelPrinter(uiDriver, parameters);
-                            printer.traverse(ccmModel);
-                        }
-                    }
-                    else if(actionId.equals(CcmModelValidator.MODEL_CHECKER_ID))
-                    {
-                        for (String idlFile : parameters.getIdlFiles())
-                        {
-                            MContainer ccmModel = 
-                                //CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
-                                ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
-                            CcmModelValidator checker = new CcmModelValidator(uiDriver, parameters);
-                            if(!checker.isValidModel(ccmModel))
+                            CcmModelValidator validator = new CcmModelValidator(uiDriver, parameters);
+                            if(!validator.isValidModel(ccmModel))
                             {
-                                uiDriver.printError(checker.getErrorMessage());
+                                uiDriver.printMessage(validator.getErrorMessage());
+                            }
+                            else
+                            {
+                                uiDriver.printMessage("done");
                             }
                         } 
                     }
@@ -144,8 +147,8 @@ public class Main
         // Define boolean options
         options.addOption("h", "help", false,"Display this help");
         options.addOption("V", "version", false, "Display CCM Tools version information");
-        options.addOption(CcmModelPrinter.MODEL_PRINTER_ID, false, CcmModelPrinter.MODEL_PRINTER_TEXT);
-        options.addOption(CcmModelValidator.MODEL_CHECKER_ID, false, CcmModelValidator.MODEL_CHECKER_TEXT);
+        //options.addOption(CcmModelPrinter.MODEL_PRINTER_ID, false, CcmModelPrinter.MODEL_PRINTER_TEXT);
+        options.addOption(CcmModelValidator.MODEL_VALIDATOR_ID, false, CcmModelValidator.MODEL_VALIDATOR_TEXT);
         options.addOption(PARSER_ID, false, PARSER_TEXT);
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
@@ -185,14 +188,14 @@ public class Main
             return false; // don't continue program execution
         }
         
-        if (cmd.hasOption(CcmModelPrinter.MODEL_PRINTER_ID))
-        {
-            parameters.getActionIds().add(CcmModelPrinter.MODEL_PRINTER_ID);
-        }
+//        if (cmd.hasOption(CcmModelPrinter.MODEL_PRINTER_ID))
+//        {
+//            parameters.getActionIds().add(CcmModelPrinter.MODEL_PRINTER_ID);
+//        }
         
-        if (cmd.hasOption(CcmModelValidator.MODEL_CHECKER_ID))
+        if (cmd.hasOption(CcmModelValidator.MODEL_VALIDATOR_ID))
         {
-            parameters.getActionIds().add(CcmModelValidator.MODEL_CHECKER_ID);
+            parameters.getActionIds().add(CcmModelValidator.MODEL_VALIDATOR_ID);
         }
 
         if (cmd.hasOption("parser"))

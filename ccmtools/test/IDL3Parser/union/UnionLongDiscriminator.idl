@@ -1,0 +1,10 @@
+#ifndef __UNION_LONG_DISCRIMINATOR__IDL__
+#define __UNION_LONG_DISCRIMINATOR__IDL__
+
+union UnionLongSwitch switch(long) 
+{
+ case 17:   long a;
+ case 3:  string b;
+};
+
+#endif // __UNION_LONG_DISCRIMINATOR__IDL
