@@ -2198,19 +2198,34 @@ public class ParserHelper
         return new ArrayList();
     }
     
+    
     /* 130 */
     public List parseHomeExports(Object export)
     {
         getLogger().fine("130: home_export " + export);
         List l = new ArrayList();
-        l.add(export);
+        if(export instanceof List)
+        {
+            l.addAll((List)export);
+        }
+        else
+        {
+            l.add(export);
+        }
         return l;
     }
     
     public List parseHomeExports(Object export, List l)
     {
         getLogger().fine("130: home_export home_exports" + export + " " + l);
-        l.add(export);
+        if(export instanceof List)
+        {
+            l.addAll((List)export);
+        }
+        else
+        {
+            l.add(export);
+        }
         return l;
     }
     

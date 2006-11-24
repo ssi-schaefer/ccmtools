@@ -11,6 +11,7 @@ public class HomeTestSuite
 		junit.framework.TestSuite suite = new junit.framework.TestSuite(HomeTestSuite.class.getName());	
         
         suite.addTest(HomeHeaderTest.suite());
+        suite.addTest(HomeAttributesTest.suite());
         suite.addTest(HomeFactoryTest.suite());
         suite.addTest(HomeModuleTest.suite());
         return suite;
