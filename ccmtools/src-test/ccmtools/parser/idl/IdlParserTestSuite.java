@@ -11,6 +11,7 @@ import ccmtools.parser.idl.forward.ForwardDeclarationTestSuite;
 import ccmtools.parser.idl.home.HomeTestSuite;
 import ccmtools.parser.idl.iface.InterfaceTestSuite;
 import ccmtools.parser.idl.literal.LiteralTestSuite;
+import ccmtools.parser.idl.module.ModuleTestSuite;
 import ccmtools.parser.idl.notsupported.NotSupportedTest;
 import ccmtools.parser.idl.sequence.SequenceTestSuite;
 import ccmtools.parser.idl.struct.StructTestSuite;
@@ -25,6 +26,8 @@ public class IdlParserTestSuite
 	{
 		junit.framework.TestSuite suite = new junit.framework.TestSuite("IDL Parser Test Suite");	
 
+        suite.addTest(ModuleTestSuite.suite());
+        
         suite.addTest(LiteralTestSuite.suite());
 		
         suite.addTest(ConstantTestSuite.suite());

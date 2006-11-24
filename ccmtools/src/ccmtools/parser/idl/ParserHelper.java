@@ -144,11 +144,11 @@ public class ParserHelper
     {
         logger = Logger.getLogger("ccm.parser.idl");
         //!!!!!!!!!!
-        logger.setLevel(Level.FINE);
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        handler.setFormatter(new LogFormatter());
-        logger.addHandler(handler);
+//        logger.setLevel(Level.FINE);
+//        Handler handler = new ConsoleHandler();
+//        handler.setLevel(Level.ALL);
+//        handler.setFormatter(new LogFormatter());
+//        logger.addHandler(handler);
         //!!!!!!!!
         init();        
     }
@@ -156,8 +156,8 @@ public class ParserHelper
     
     public void init()
     {
-        System.out.println("init ParserHelper");
-        
+        getLogger().fine("");
+
         typeIdTable.clear();
         getModelRepository().clear();
         scope.clear();
@@ -204,6 +204,7 @@ public class ParserHelper
     }
     private void setCurrentSourceLine(int value)
     {
+        getLogger().fine(Integer.toString(value));
         currentSourceLine = value;
     }
     public void incrementCurrentSourceLine()
@@ -218,6 +219,7 @@ public class ParserHelper
     }
     private void setCurrentSourceFile(String value)
     {
+        getLogger().fine(value);
         currentSourceFile = value;
     }
     
@@ -227,6 +229,7 @@ public class ParserHelper
     }
     public void setMainSourceFile(String value)
     {
+        getLogger().fine(value);
         mainSourceFile = value;
     }
     
@@ -272,41 +275,54 @@ public class ParserHelper
     /* 2 */
     public List parseDefinitions(Object definition)
     {
-        getLogger().fine("2: definition");
-        List l = new ArrayList();
-        l.add(definition);
-        return l;
+        getLogger().fine("2: (" + definition + ")");
+        return parseDefinitions(definition, new ArrayList());
     }
-    
-    public List parseDefinitions(Object definition, List definitions)
+        
+    public List parseDefinitions(Object definition, List l)
     {
-        getLogger().fine("2: definition definitions");
+        getLogger().fine("2: (" + definition + "," + l + ")");
         if(definition != null)
         {
-            definitions.add(definition);
+            l.add(definition);
+            getLogger().fine("    add " + definition);
         }
         else
         {
             // processed some T_INCLUDE or T_PRAGMA lines
         }
-        return definitions;
+        return l;
     }
-    
+        
     
     /* 3 */
+    public void parseModuleBegin(String id)
+    {
+        getLogger().fine("[3] (" + id + ")");
+        getScope().pushModule(id);
+    }
+    
+    public void parseModuleEnd(String id)
+    {
+        getLogger().fine("[3] (" + id + ")");
+        getScope().popModule();
+    }
+    
     public MModuleDef parseModule(String id, List definitions)
     {
-        
+        getLogger().fine("[3] (" + definitions + ")");      
+        //MModuleDef module = getModelRepository().getModule(getScope());
         MModuleDef module = new MModuleDefImpl();
-        getLogger().fine("3: module { " + definitions + "}");
         module.setIdentifier(id);
         Collections.reverse(definitions);
         for(Iterator i = definitions.iterator(); i.hasNext(); )
         {
-            MContained contained = (MContained)i.next();
-            contained.setDefinedIn(module);
+            MContained content = (MContained)i.next();
+            content.setDefinedIn(module);
+            module.addContents(content);
+            getLogger().fine("    add = " + content);
+            getLogger().fine("       source file = " + content.getSourceFile());
         }
-        module.setContentss(definitions);
         return module;        
     }
     
@@ -1851,7 +1867,7 @@ public class ParserHelper
     /* 112 */
     public MComponentDef parseComponentForwardDeclaration(String id)
     {
-        getLogger().fine("112: component id = " + id);     
+        getLogger().fine("112: (" + id + ")");     
         MComponentDef component = new MComponentDefImpl();
         component.setIdentifier(id);
         component.setSourceFile(getIncludedSourceFile()); 
@@ -1866,7 +1882,7 @@ public class ParserHelper
     /* 113 */
     public MComponentDef parseComponentDeclaration(MComponentDef component)
     {
-        getLogger().fine("113: component_header {} = " + component);        
+        getLogger().fine("113: (" + component + ")");        
         String id = component.getIdentifier();
         ScopedName identifier = new ScopedName(getScope(), component.getIdentifier());
         registerTypeId(id);
@@ -1876,7 +1892,7 @@ public class ParserHelper
     
     public MComponentDef parseComponentDeclaration(MComponentDef component, List body)
     {
-        getLogger().fine("113: component_header { component_body } = " + component + ", " + body);
+        getLogger().fine("113: (" + component + ", " + body + ")");
         Collections.reverse(body);
         for(Iterator i = body.iterator(); i.hasNext();)
         {
@@ -1918,7 +1934,7 @@ public class ParserHelper
     /* 114 */
     public MComponentDef parseComponentHeader(String id)
     {
-        getLogger().fine("114: component T_IDENTIFIER = " + id);
+        getLogger().fine("114: (" + id + ")");
         ScopedName identifier = new ScopedName(getScope(), id);
         MComponentDef component;
         if(getModelRepository().isForwardDeclaration(identifier))
@@ -1938,7 +1954,7 @@ public class ParserHelper
     
     public MComponentDef parseComponentHeader(String id, ScopedName base)
     {
-        getLogger().fine("114: component T_IDENTIFIER component_inheritance_spec = " + id + " " + base);
+        getLogger().fine("114: (" + id + "," + base + ")");
         MComponentDef component = parseComponentHeader(id);
         MIDLType type = getModelRepository().findIdlType(getScope(), base);
         if(type == null)
@@ -1959,7 +1975,7 @@ public class ParserHelper
     
     public MComponentDef parseComponentHeader(String id, List ifaces)
     {
-        getLogger().fine("114: component _IDENTIFIER supported_interface_spec" + id + " " + ifaces);
+        getLogger().fine("114: (" + id + "," + ifaces + ")");
         MComponentDef component = parseComponentHeader(id);
         Collections.reverse(ifaces);
         component.setSupportss(ifaces);
@@ -1969,7 +1985,7 @@ public class ParserHelper
     
     public MComponentDef parseComponentHeader(String id, ScopedName base, List ifaces)
     {
-        getLogger().fine("114: component _IDENTIFIER component_inheritance_spec supported_interface_spec" + id + " " + ifaces);
+        getLogger().fine("114: (" + id + "," + ifaces + ")");
         MComponentDef component = parseComponentHeader(id, base);
         Collections.reverse(ifaces);
         component.setSupportss(ifaces);
@@ -2194,7 +2210,7 @@ public class ParserHelper
     /* 129 */
     public List parseHomeBody()
     {
-        getLogger().fine("129: {}"); 
+        getLogger().fine("129: parseHomeBody()"); 
         return new ArrayList();
     }
     
@@ -2263,11 +2279,11 @@ public class ParserHelper
         
     // # linenumber filename flags
     // # 1 "/home/eteinik/sandbox/workspace-development/TelegramGenerator/examples/simple_test/example1.tgen"
+    // # 30 "/home/eteinik/sandbox/workspace-development/ccmtools/test/JavaLocalComponents/component_mirror/xxx/idl3/component/world/Test.idl"
     public void handlePreprocessorLine(String line)
     {
+        getLogger().fine("cpp(" + line + ")");
         line = line.substring(0, line.lastIndexOf('\n'));
-//        System.out.println("CPP: " + line);
-
         String[] elements = line.split(" ");
         if (elements[0].equals("#"))
         {
@@ -2291,6 +2307,7 @@ public class ParserHelper
     // #pragma 
     public void handlePragmaLine(String line)
     {
+        getLogger().fine("pragma(" + line + ")");
         line = line.substring(0, line.lastIndexOf('\n'));
         // TODO
         System.out.println("CPP: " + line);
@@ -2375,6 +2392,7 @@ public class ParserHelper
     {    
         try
         {
+            uiDriver.printMessage("Use JFlex&Cup based parser.");
             File idlFile = new File(idlFileName);
             String tmpFileName = idlFile.getName() + ".tmp";
             File tmpIdlFile = new File(tmpFileName);
@@ -2393,6 +2411,12 @@ public class ParserHelper
             ccmModel.setIdentifier(identifier);
             getLogger().fine("CCM Model = " + ccmModel);            
             uiDriver.printMessage("done");
+            
+            //!!!!!!!!!!!
+//            XStream xstream = new XStream();
+//            String xml = xstream.toXML(ccmModel);
+//            System.out.println(xml);
+            //!!!!!!!!!!!
             return ccmModel;
         }
         catch (Exception e)

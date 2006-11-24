@@ -10,7 +10,6 @@ import ccmtools.metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.metamodel.BaseIDL.MModuleDef;
 import ccmtools.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
-import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.parser.idl.module.ModuleTest;
 

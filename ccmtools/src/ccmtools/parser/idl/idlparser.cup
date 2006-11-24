@@ -367,8 +367,14 @@ definitions
 definition 
 	::=	
 		T_INCLUDE
+		{:
+			
+		:}
 	|	
 		T_PRAGMA
+		{:
+		
+		:}
 	|	
 		type_dcl:t T_SEMICOLON
 		{:
@@ -438,7 +444,7 @@ module
 		T_MODULE T_IDENTIFIER:id 
 		T_LEFT_CURLY_BRACKET 
 		{:
-			helper.getScope().pushModule(id);
+			helper.parseModuleBegin(id);
 		:}
 		definitions:d
 		{:
@@ -446,7 +452,7 @@ module
 		:} 
 		T_RIGHT_CURLY_BRACKET
 		{:
-			helper.getScope().popModule();
+			helper.parseModuleEnd(id);
 		:}
 	;
 	

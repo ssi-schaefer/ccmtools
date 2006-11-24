@@ -1,6 +1,8 @@
 package ccmtools.parser.idl.module;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -55,5 +57,26 @@ public class ModuleTest extends TestCase
             }
         }
         return null;
+    }
+    
+    public static List<MModuleDef> parseSourceList(String sourceCode) 
+        throws CcmtoolsException, FileNotFoundException
+    {
+        UserInterfaceDriver uiDriver = new ConsoleDriver();
+        System.out.println("[" + sourceCode + "]");
+        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        
+        List<MModuleDef> result = new ArrayList<MModuleDef>();
+        for(Iterator i = ccmModel.getContentss().iterator(); i.hasNext();)
+        {
+            Object o = i.next();
+            if(o instanceof MModuleDef)
+            {
+                result.add((MModuleDef)o);
+            }
+        }
+        Collections.reverse(result);
+        System.out.println(result);
+        return result;
     }
 }

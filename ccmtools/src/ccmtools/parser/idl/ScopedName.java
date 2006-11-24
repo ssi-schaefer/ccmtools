@@ -20,14 +20,6 @@ public class ScopedName
     private void setId(String id)
     {
         this.id = id;
-//        if(id.startsWith("::"))
-//        {
-//            this.id = id;
-//        }
-//        else
-//        {
-//            this.id = "::" + id;
-//        }
     }
     
     /**

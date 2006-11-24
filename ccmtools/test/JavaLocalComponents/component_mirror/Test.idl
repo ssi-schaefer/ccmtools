@@ -11,7 +11,7 @@ module world
   {
 	provides IFace inPort;
 	
-    uses IFace singlePort;
+	uses IFace singlePort;
 	
 	uses multiple IFace multiPort;
   };

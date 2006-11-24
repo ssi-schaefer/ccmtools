@@ -26,7 +26,9 @@
   		<pathelement path="${lib}/jdom.jar" />
   		<pathelement path="${lib}/dtd2java.jar" />
   		<pathelement path="${lib}/junit.jar" />
-  		<pathelement path="${build}/classes" />
+  	  	<pathelement path="${lib}/xstream-1.2.jar" />
+  		<pathelement path="${lib}/xpp3_min-1.1.2.4.0.jar" />
+		<pathelement path="${build}/classes" />
   	</path>
 
 

@@ -664,7 +664,8 @@ public class CcmToIdlModelMapper
 			}
 			for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
 			{
-				MInterfaceDef supportedInterface = ((MSupportsDef)i.next()).getSupports();
+				//MInterfaceDef supportedInterface = ((MSupportsDef)i.next()).getSupports();
+                MInterfaceDef supportedInterface = (MInterfaceDef)i.next();
 				out.getSupports().add(transform(supportedInterface));
 			}
 			for(Iterator i = in.getFacets().iterator(); i.hasNext();)

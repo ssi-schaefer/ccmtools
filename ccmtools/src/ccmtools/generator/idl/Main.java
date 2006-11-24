@@ -16,8 +16,8 @@ import ccmtools.CcmtoolsException;
 import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.generator.idl.metamodel.ModelRepository;
-import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 
@@ -62,8 +62,9 @@ public class Main
 				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
 				{
 					String idlFile = (String) i.next();
-					MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
-//                    MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+//					MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+                    MContainer ccmModel = 
+                        ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
 
                     // Transform CCM Model to IDL Implementation Model
 					GraphTraverser traverser = new CcmGraphTraverser();
@@ -74,7 +75,7 @@ public class Main
 					// Query the IDL implementation model and generate all
 					// IDL source file objects.
 					ModelRepository idlModel = nodeHandler.getIdlModel();
-
+                    
 					// Run the IDL generator which can handle all of
 					// the different generator flags (-idl3, -dl3mirror, -idl2).
 					generator.generate(idlModel);

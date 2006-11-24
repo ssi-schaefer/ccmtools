@@ -14,4 +14,9 @@ public class CharType
 	{
 		return "char";
 	}
+    
+    public String generateIdlConstant(Object value)
+    {
+        return "'" + value.toString() + "'";
+    }
 }

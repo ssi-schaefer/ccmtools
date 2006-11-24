@@ -2,17 +2,33 @@ package ccmtools.parser.idl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
+
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 import ccmtools.metamodel.BaseIDL.MExceptionDef;
 import ccmtools.metamodel.BaseIDL.MIDLType;
+import ccmtools.metamodel.BaseIDL.MModuleDef;
+import ccmtools.metamodel.BaseIDL.MModuleDefImpl;
 
 public class ModelRepository
 {
+    private Logger logger;
     private Map<ScopedName, MIDLType> idlType = new HashMap<ScopedName, MIDLType>();
     private Map<ScopedName, MExceptionDef> exceptions = new HashMap<ScopedName, MExceptionDef>();
+    private Map<ScopedName, MModuleDef> modules = new HashMap<ScopedName, MModuleDef>();
     
     private IdentifierTable forwardDclTable = new IdentifierTable();
 
+    public ModelRepository()
+    {
+        logger = Logger.getLogger("ccm.parser.idl");
+    }
+    
+    public Logger getLogger()
+    {
+        return logger;
+    }
     
     public void registerForwardDeclaration(ScopedName scopedName)
     {
@@ -36,11 +52,11 @@ public class ModelRepository
         
         if(idlType.containsKey(scopedName))
         {
-            System.out.println("+++ ModelRepository.contains: [" + scopedName + "]");
+            getLogger().fine("ModelRepository.contains: [" + scopedName + "]");
         }
         else
         {
-            System.out.println("+++ ModelRepository.register: [" + scopedName + ", " + element + "]");
+            getLogger().fine("ModelRepository.register: [" + scopedName + ", " + element + "]");
             idlType.put(scopedName, element);
         }
     }
@@ -48,7 +64,7 @@ public class ModelRepository
     
     public MIDLType findIdlType(ScopedName scopedName)
     {
-        System.out.println("+++ ModelRepository.find: [" + scopedName + "]");
+        getLogger().fine("ModelRepository.find: [" + scopedName + "]");
         return findIdlType(new Scope(), scopedName);
     }
 
@@ -59,7 +75,7 @@ public class ModelRepository
      */
     public MIDLType findIdlType(Scope currentScope, ScopedName scopedName)
     {
-        System.out.println("+++ ModelRepository.find: [" + currentScope + ", " + scopedName + "]");
+        getLogger().fine("ModelRepository.find: [" + currentScope + ", " + scopedName + "]");
         MIDLType type; 
         if(scopedName.toString().startsWith("::")) // Absolute scoped name
         {            
@@ -76,6 +92,8 @@ public class ModelRepository
             return type;
     }
     
+    
+    
 
     public void registerException(ScopedName scopedName, MExceptionDef element)
     {
@@ -87,18 +105,18 @@ public class ModelRepository
         
         if(exceptions.containsKey(scopedName))
         {
-            System.out.println("+++ ModelRepository.contains: [" + scopedName + "]");
+            getLogger().fine("ModelRepository.contains: [" + scopedName + "]");
         }
         else
         {
-            System.out.println("+++ ModelRepository.register: [" + scopedName + ", " + element + "]");
+            getLogger().fine("ModelRepository.register: [" + scopedName + ", " + element + "]");
             exceptions.put(scopedName, element);
         }
     }
 
     public MExceptionDef findIdlException(ScopedName scopedName)
     {
-        System.out.println("+++ ModelRepository.find: [" + scopedName + "]");
+        getLogger().fine("ModelRepository.find: [" + scopedName + "]");
         return findIdlException(new Scope(), scopedName);        
     }
     
@@ -108,7 +126,7 @@ public class ModelRepository
      */
     public MExceptionDef findIdlException(Scope currentScope, ScopedName scopedName)
     {
-        System.out.println("+++ ModelRepository.find: [" + currentScope + ", " + scopedName + "]");
+        getLogger().fine("ModelRepository.find: [" + currentScope + ", " + scopedName + "]");
         MExceptionDef type; 
         if(scopedName.toString().startsWith("::")) // Absolute scoped name
         {            
@@ -130,6 +148,7 @@ public class ModelRepository
     {
         idlType.clear();
         exceptions.clear();
+        modules.clear();
         forwardDclTable.clear();
     }
     
@@ -138,7 +157,7 @@ public class ModelRepository
     
     protected MIDLType exploreModulesForIdlType(String scope, String name)
     {
-        System.out.println("+++ explore: " + scope + ", " + name);
+        getLogger().fine("explore modules: " + scope + ", " + name);
         int index = scope.length();
         String s = scope;
         while(index != -1)
@@ -161,7 +180,7 @@ public class ModelRepository
     
     protected MExceptionDef exploreModulesForException(String scope, String name)
     {
-        System.out.println("+++ explore: " + scope + ", " + name);
+        getLogger().fine("explore modules: " + scope + ", " + name);
         int index = scope.length();
         String s = scope;
         while(index != -1)
@@ -170,7 +189,7 @@ public class ModelRepository
             if(index >= 0)
             {
                 s = s.substring(0, index);
-                System.out.println("   try: " + s + "::" + name);
+                getLogger().fine("   try: " + s + "::" + name);
                 MExceptionDef type = exceptions.get(new ScopedName(s + "::" + name));
                 if (type != null)
                 {

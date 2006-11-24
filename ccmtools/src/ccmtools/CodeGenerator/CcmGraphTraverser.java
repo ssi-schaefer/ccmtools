@@ -31,6 +31,7 @@ import java.util.Set;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MEnumDef;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
+import ccmtools.metamodel.BaseIDL.MModuleDef;
 import ccmtools.metamodel.BaseIDL.MParameterDef;
 import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
 
@@ -181,7 +182,9 @@ public class CcmGraphTraverser
         
         if(visited.contains(scopeId)) 
         {
-            return;
+            // There can be many modules with the same name !!!
+            if(!(node instanceof MModuleDef)) 
+                return;
         }
         else 
         {
