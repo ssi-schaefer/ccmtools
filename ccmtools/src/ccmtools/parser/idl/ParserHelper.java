@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java_cup.runtime.Symbol;
@@ -85,7 +82,6 @@ import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
-import ccmtools.utils.LogFormatter;
 import ccmtools.utils.Text;
 
 
@@ -2310,7 +2306,6 @@ public class ParserHelper
         getLogger().fine("pragma(" + line + ")");
         line = line.substring(0, line.lastIndexOf('\n'));
         // TODO
-        System.out.println("CPP: " + line);
     }
 
     
@@ -2392,7 +2387,7 @@ public class ParserHelper
     {    
         try
         {
-            uiDriver.printMessage("Use JFlex&Cup based parser.");
+            uiDriver.printMessage("Use JFlex&Cup based IDL parser");
             File idlFile = new File(idlFileName);
             String tmpFileName = idlFile.getName() + ".tmp";
             File tmpIdlFile = new File(tmpFileName);

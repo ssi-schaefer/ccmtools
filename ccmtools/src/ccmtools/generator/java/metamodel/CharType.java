@@ -19,7 +19,7 @@ public class CharType
 	
 	public String generateJavaConstant(Object value)
 	{
-		return value.toString();
+		return "'" + value.toString() + "'";
 	}
 
 	public String generateJavaMapping()

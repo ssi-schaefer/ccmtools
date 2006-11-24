@@ -14,7 +14,7 @@ public class IdentifierTable
     
     public boolean contains(ScopedName id)
     {
-        System.out.println("+++ IdentifierTable.contains " + id + ", " + identifiers);
+        // System.out.println("+++ IdentifierTable.contains " + id + ", " + identifiers);
         return identifiers.contains(id);
     }
     public void clear()

@@ -4,19 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
-
 import ccmtools.metamodel.BaseIDL.MExceptionDef;
 import ccmtools.metamodel.BaseIDL.MIDLType;
-import ccmtools.metamodel.BaseIDL.MModuleDef;
-import ccmtools.metamodel.BaseIDL.MModuleDefImpl;
 
 public class ModelRepository
 {
     private Logger logger;
     private Map<ScopedName, MIDLType> idlType = new HashMap<ScopedName, MIDLType>();
     private Map<ScopedName, MExceptionDef> exceptions = new HashMap<ScopedName, MExceptionDef>();
-    private Map<ScopedName, MModuleDef> modules = new HashMap<ScopedName, MModuleDef>();
     
     private IdentifierTable forwardDclTable = new IdentifierTable();
 
@@ -148,7 +143,6 @@ public class ModelRepository
     {
         idlType.clear();
         exceptions.clear();
-        modules.clear();
         forwardDclTable.clear();
     }
     
@@ -166,7 +160,7 @@ public class ModelRepository
             if(index >= 0)
             {
                 s = s.substring(0, index);
-                System.out.println("   try: " + s + "::" + name);
+                //System.out.println("   try: " + s + "::" + name);
                 MIDLType type = idlType.get(new ScopedName(s + "::" + name));
                 if (type != null)
                 {

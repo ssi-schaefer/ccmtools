@@ -16,8 +16,8 @@ import ccmtools.CcmtoolsException;
 import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.generator.java.metamodel.ModelRepository;
-import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.CcmtoolsProperties;
 
@@ -63,7 +63,9 @@ public class Main
 				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
 				{
 					String idlFile = (String) i.next();
-					MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+					//MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+                    MContainer ccmModel = 
+                        ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
 
 					// Transform CCM Model to Java Implementation Model
 					GraphTraverser traverser = new CcmGraphTraverser();
@@ -71,15 +73,12 @@ public class Main
 					traverser.addHandler(nodeHandler);
 					traverser.traverseGraph(ccmModel);
 
-					// Query the Java Implementation Model and generate all
-					// source
+					// Query the Java Implementation Model and generate all source
 					// file objects for the Java Client Library
 					ModelRepository javaModel = nodeHandler.getJavaModel();
 
 					// Run the Java component generator which can handle all of
-					// the
-					// different generator flags (-iface, -local, -app,
-					// -clientlib, etc.)
+					// the different generator flags (-iface, -local, -app, -clientlib, etc.)
 					generator.generate(javaModel);
 				}
 			}

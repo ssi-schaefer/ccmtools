@@ -8,14 +8,14 @@ public class Scope
     
     public void pushModule(String name)
     {
-        System.out.println("push Scope: " + name);
+        //System.out.println("push Scope: " + name);
         scope.push(name);
     }
     
     public String popModule()
     {
         String name = scope.pop();
-        System.out.println("pop Scope: " + name);
+        //System.out.println("pop Scope: " + name);
         return name;
     }
     

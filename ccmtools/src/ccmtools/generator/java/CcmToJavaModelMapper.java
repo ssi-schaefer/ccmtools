@@ -63,7 +63,6 @@ import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
-import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
 
 
@@ -275,7 +274,9 @@ public class CcmToJavaModelMapper
 			// Transform supported interfaces
 			for(Iterator i = in.getSupportss().iterator(); i.hasNext(); )
 			{
-				out.getSupports().add(transform((MSupportsDef)i.next())); 
+			    SupportsDef supports = new SupportsDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
+                supports.setInterface(transform((MInterfaceDef)i.next()));
+                out.getSupports().add(supports);
 			}
 			artifactCache.put(repoId, out);
 		}
@@ -376,16 +377,7 @@ public class CcmToJavaModelMapper
 		return out;
 	}
 	
-	
-	public SupportsDef transform(MSupportsDef in)
-	{
-		logger.finer("MSupportsDef: " + in.getIdentifier());	
-		SupportsDef out = new SupportsDef(in.getIdentifier(), CcmModelHelper.getNamespaceList(in));
-		out.setInterface(transform(in.getSupports()));
-		return out;
-	}
-
-	
+		
 	public OperationDef transform(MOperationDef in)
 	{
 		logger.finer("MOperationDef: " + in.getIdentifier());
