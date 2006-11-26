@@ -535,40 +535,12 @@ public class CcmModelValidator
 	private void validate(MComponentDef in)
 	{
         logger.fine("MComponentDef"); 		
-//		for(Iterator i = in.getBases().iterator(); i.hasNext();)
-//		{
-//			MInterfaceDef baseInterface = (MInterfaceDef)i.next();
-//
-//		}
-//		for(Iterator i = in.getHomes().iterator(); i.hasNext();)
-//		{
-//			MHomeDef home = (MHomeDef)i.next();
-//
-//        }
-//		for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
-//		{
-//			MSupportsDef supports = (MSupportsDef)i.next();
-//			MInterfaceDef supportedInterface = (MInterfaceDef)supports.getSupports();
-//
-//        }
-//		for(Iterator i = in.getFacets().iterator(); i.hasNext();)
-//		{
-//			MProvidesDef provides = (MProvidesDef)i.next();
-//			
-//		}
-//		for(Iterator i = in.getReceptacles().iterator(); i.hasNext();)
-//		{
-//			MUsesDef uses = (MUsesDef)i.next();
-//			if(uses.isMultiple())
-//			{
-//			
-//			}
-//			else
-//			{
-//			
-//			}
-//		}
         
+        if(in.getBases().size() != 0)
+        {
+            addError("component inheritance like " + in.getIdentifier());
+        }
+
         for(Iterator i = in.getEmitss().iterator(); i.hasNext();)
         {
             MEmitsDef emits = (MEmitsDef)i.next();
@@ -622,23 +594,22 @@ public class CcmModelValidator
 	private void validate(MHomeDef in)
 	{
         logger.fine("MHomeDef"); 
-//		for(Iterator i = in.getBases().iterator(); i.hasNext();)
-//		{
-//			MHomeDef baseHome = (MHomeDef)i.next();
-//
-//        }
-//		MComponentDef component = in.getComponent();		
-		for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
+        
+        if(in.getBases().size() > 0)
+        {
+            addError("home inheritance like " + in.getIdentifier());
+        }
+
+        for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
 		{
-			MSupportsDef supports = (MSupportsDef)i.next();
-			MInterfaceDef supportedInterface = (MInterfaceDef)supports.getSupports();
-            addError("supported interfaces for homes (e.g. " 
-                    + in.getIdentifier() + "::" + supportedInterface.getIdentifier() + ")");
+			MInterfaceDef supports = (MInterfaceDef)i.next();
+            addError("supported interfaces for homes like " 
+                    + in.getIdentifier() + "::" + supports.getIdentifier());
 		}
         MValueDef primaryKey = in.getPrimary_Key();
         if(primaryKey != null)
         {
-            addError("primary keys for homes (e.g. " 
+            addError("primary keys for homes like " 
                     + in.getIdentifier() + " primarykey " + CcmModelHelper.getRepositoryId(primaryKey) + ")");
         }
 		for(Iterator i = in.getFactories().iterator(); i.hasNext();)
@@ -660,23 +631,23 @@ public class CcmModelValidator
             }
             else if(contained instanceof MOperationDef)
             {               
-                addError("operation definitions within homes (e.g. " 
-                        + in.getIdentifier() + "::" + contained.getIdentifier() + ")");
+                addError("operation definitions within homes like " 
+                        + in.getIdentifier() + "::" + contained.getIdentifier());
             }
             else if(contained instanceof MConstantDef)
             {
-                addError("constant definitions within homes (e.g. " 
-                        + in.getIdentifier() + "::" + contained.getIdentifier() + ")");
+                addError("constant definitions within homes like " 
+                        + in.getIdentifier() + "::" + contained.getIdentifier());
             }
             else if(contained instanceof MIDLType)
             {
-                addError("type definitions within homes (e.g. " 
-                        + in.getIdentifier() + "::" + contained.getIdentifier() + ")");
+                addError("type definitions within homes like " 
+                        + in.getIdentifier() + "::" + contained.getIdentifier());
             }
             else if(contained instanceof MExceptionDef)
             {
-                addError("exception definitions within homes (e.g. " 
-                        + in.getIdentifier() + "::" + contained.getIdentifier() + ")");
+                addError("exception definitions within homes like " 
+                        + in.getIdentifier() + "::" + contained.getIdentifier());
             }            
             else
             {
