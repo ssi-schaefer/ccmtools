@@ -1,5 +1,3 @@
-// $Id$
-
 /***
  * This header file defines a bunch of exceptions and interfaces which
  * are used and implemented by generated component code.
@@ -39,28 +37,19 @@ namespace local {
     : public std::exception
   {
   public:
-    Exception()
-      throw()
-      : message_("ccm::local::Components::Exception")
-      {
-      }
+    Exception() throw()
+      : message_("Components::ccm::local::Exception") 
+    {}
 
-    Exception(const std::string& message)
-      throw()
-      : message_(message)
-      {
-      }
+    Exception(const std::string& message) throw()
+      : message_(message)  
+    {}
 
-    virtual ~Exception()
-      throw()
-      {
-      }
+    virtual ~Exception() throw() 
+    	{}
 
-    virtual const char* what() const 
-      throw()
-      {
-	return message_.c_str();
-      }
+    virtual const char* what() const throw()
+    { return message_.c_str(); }
 
   private:
     std::string message_;
@@ -74,17 +63,13 @@ namespace local {
     : public Exception 
   {
   public:
-    NotImplemented() 
-      throw()
-      : Exception("ccm::local::Components::NotImplemented") 
-      {
-      }
+    NotImplemented() throw()
+      : Exception("Components::ccm::local::NotImplemented") 
+    {}
 
-    NotImplemented(const std::string& message) 
-      throw()
+    NotImplemented(const std::string& message) throw()
       : Exception(message) 
-      {
-      }
+    {}
   };
 
 
@@ -92,22 +77,18 @@ namespace local {
     : public Exception 
   {
   public:
-    InvalidName() 
-      throw()
-      : Exception("ccm::local::Components::InvalidName" ) 
-      {
-      }
+    InvalidName() throw()
+      : Exception("Components::ccm::local::InvalidName" ) 
+    {}
   };
 
 
   class HomeNotFound 
     : public Exception {
   public:
-    HomeNotFound() 
-      throw()
-      : Exception("ccm::local::Components::HomeNotFound")
-      {
-      }
+    HomeNotFound() throw()
+      : Exception("Components::ccm::local::HomeNotFound")
+    {}
   };
 
 
@@ -115,11 +96,9 @@ namespace local {
     : public Exception 
   {
   public:
-    AlreadyConnected()
-      throw()
-      : Exception("ccm::local::Components::AlreadyConnected")
-      {
-      }
+    AlreadyConnected() throw()
+      : Exception("Components::ccm::local::AlreadyConnected")
+    {}
   };
 
 
@@ -127,11 +106,9 @@ namespace local {
     : public Exception 
   {
   public:
-    InvalidConnection()
-      throw()
-      : Exception("ccm::local::Components::InvalidConnection")
-      {
-      }
+    InvalidConnection() throw()
+      : Exception("Components::ccm::local::InvalidConnection")
+    {}
   };
 
 
@@ -139,11 +116,9 @@ namespace local {
     : public Exception 
   {
   public:
-    NoConnection()
-      throw()
-      : Exception("ccm::local::Components::NoConnection")
-      {
-      }
+    NoConnection() throw()
+      : Exception("Components::ccm::local::NoConnection")
+    {}
   };
 
 
@@ -151,11 +126,9 @@ namespace local {
     : public Exception 
   {
   public:
-    ExceededConnectionLimit()
-      throw()
-      : Exception("ccm::local::Components::ExceededConnectionLimit")
-      {
-      }
+    ExceededConnectionLimit() throw()
+      : Exception("Components::ccm::local::ExceededConnectionLimit")
+    {}
   };
 
 
@@ -163,11 +136,9 @@ namespace local {
     : public Exception 
   {
   public:
-    CookieRequired()
-      throw()
-      : Exception("ccm::local::Components::CookieRequired")
-      {
-      }
+    CookieRequired() throw()
+      : Exception("Components::ccm::local::CookieRequired")
+    {}
   };
 
 
@@ -175,11 +146,9 @@ namespace local {
     : public Exception 
   {
   public:
-    IllegalState()
-      throw()
-      : Exception("ccm::local::Components::IllegalState")
-      {
-      }
+    IllegalState() throw()
+      : Exception("Components::ccm::local::IllegalState")
+    {}
   };
 
 
@@ -187,11 +156,9 @@ namespace local {
     : public Exception 
   {
   public: 
-    InvalidConfiguration()
-      throw()
-      : Exception("ccm::local::Components::InvalidConfiguration")
-      {
-      }    
+    InvalidConfiguration() throw()
+      : Exception("Components::ccm::local::InvalidConfiguration")
+    {}    
   };
 
 
@@ -201,17 +168,13 @@ namespace local {
     : public Exception 
   {
   public:
-    CreateFailure () 
-      throw()
-      : Exception("ccm::local::Components::CreateFailure"), reason_(0) 
-      {
-      }
+    CreateFailure () throw()
+      : Exception("Components::ccm::local::CreateFailure"), reason_(0) 
+    {}
 
-    CreateFailure(const FailureReason reason) 
-      throw()
-      : Exception("ccm::local::Components::CreateFailure"), reason_(reason) 
-      {
-      }
+    CreateFailure(const FailureReason reason) throw()
+      : Exception("Components::ccm::local::CreateFailure"), reason_(reason) 
+    {}
   private:
     FailureReason reason_;
   };
@@ -221,24 +184,21 @@ namespace local {
     : public Exception 
   {
   public:
-    RemoveFailure() 
-      throw()
-      : Exception("ccm::local::Components::RemoveFailure"), reason_(0) 
-      {
-      }
+    RemoveFailure() throw()
+      : Exception("Components::ccm::local::RemoveFailure"), reason_(0) 
+    {}
 
-    RemoveFailure(const FailureReason reason) 
-      throw()
-      : Exception("ccm::local::Components::RemoveFailure"), reason_(reason) 
-      {
-      }
+    RemoveFailure(const FailureReason reason) throw()
+      : Exception("Components::ccm::local::RemoveFailure"), reason_(reason) 
+    {}
 
   private:
     FailureReason reason_;
   }; 
  
 
-  enum CCMExceptionReason {
+  enum CCMExceptionReason 
+  {
     SYSTEM_ERROR,
     CREATE_ERROR,
     REMOVE_ERROR,
@@ -254,17 +214,13 @@ namespace local {
     : public Exception 
   {
   public:
-    CCMException() 
-      throw()
-      : Exception("ccm::local::Components::CCMException"), reason_(SYSTEM_ERROR)
-      {
-      }
+    CCMException() throw()
+      : Exception("Components::ccm::local::CCMException"), reason_(SYSTEM_ERROR)
+    {}
     
-    CCMException(const CCMExceptionReason reason) 
-      throw() 
-      : Exception("ccm::local::Components::CCMException"), reason_(reason) 
-      {
-      }
+    CCMException(const CCMExceptionReason reason) throw() 
+      : Exception("Components::ccm::local::CCMException"), reason_(reason) 
+    {}
 
   private:
     CCMExceptionReason reason_;
@@ -284,12 +240,13 @@ namespace local {
     : virtual public wx::utils::RefCounted 
   {
   public:
-    virtual ~Object (  ) {}
+    virtual ~Object() {}
 
     // Simulates the CORBA::Object::get_component() operation defines
     // since CORBA 3.0 (CCM Spec. 1-9)	
-    virtual wx::utils::SmartPtr<Object> get_component() {
-	return wx::utils::SmartPtr<Object>();
+    virtual wx::utils::SmartPtr<Object> get_component() 
+    	{
+		return wx::utils::SmartPtr<Object>();
     };	
   };
 
@@ -303,7 +260,7 @@ namespace local {
     : virtual public wx::utils::RefCounted
   {
   public:
-    virtual ~EnterpriseComponent (  ) {}
+    virtual ~EnterpriseComponent() {}
   };
 
 
@@ -311,6 +268,7 @@ namespace local {
   //============================================================================
   // Home interfaces
   //============================================================================
+  
   class CCMObject;
 
   /***
@@ -367,7 +325,8 @@ namespace local {
    * HomeFinder
    * CCM Specification 4-34
    ***/
-  class HomeRegistration {
+  class HomeRegistration 
+  {
   public:
     virtual ~HomeRegistration() {}
 
@@ -398,7 +357,8 @@ namespace local {
    * CCM Spec. 1-42
    ***/
   class HomeFinder
-    : public HomeRegistration {
+    : public HomeRegistration 
+  {
   public:
     virtual ~HomeFinder() {}
 
@@ -429,7 +389,8 @@ namespace local {
   * CCM Spec. 4-22
   * Light Weight CCM 4.4.3.2
   ***/
-  class CCMContext {
+  class CCMContext 
+  {
   public:
     virtual ~CCMContext() {}
 
@@ -456,7 +417,7 @@ namespace local {
        * IllegalState exception is returned.
        ***/
       virtual Object* get_CCM_object()
-	throw (IllegalState) = 0;
+		throw (IllegalState) = 0;
     };
 
 
@@ -473,7 +434,8 @@ namespace local {
    * CCM Specification 4-28
    ***/
   class SessionComponent
-    : public EnterpriseComponent {
+    : virtual public EnterpriseComponent 
+    {
     public:
     virtual ~SessionComponent() {}
 
@@ -515,9 +477,10 @@ namespace local {
    * component to be notified of transaction boundaries by the container.
    * CCM Specification 4-29
    ***/
-  class SessionSynchronisation {
+  class SessionSynchronisation 
+  {
   public:
-    virtual ~SessionSynchronisation (  ) {}
+    virtual ~SessionSynchronisation() {}
 
     virtual void after_begin (  )
       throw ( CCMException ) = 0;
@@ -544,7 +507,8 @@ namespace local {
    * CCM Specification 1-10
    * Light Weight CCM 4.1.4
    ***/
-  class Navigation {
+  class Navigation 
+  {
   public:
     virtual ~Navigation() {}
 
@@ -568,32 +532,20 @@ namespace local {
 
   typedef std::string OctetSeq;
 
-  class Cookie {
+  class Cookie 
+  {
   private:
     OctetSeq _cookieValue;
   public:
-    Cookie() { 
-      _cookieValue = ""; 
-    }
-
-    Cookie(const std::string& value) { 
-      _cookieValue = value; 
-    }
-
+    Cookie() { _cookieValue = ""; }
+    Cookie(const std::string& value) { _cookieValue = value; }
     virtual ~Cookie() {}
 
-    bool operator< (const Cookie& ck) const { 
-      return _cookieValue < ck._cookieValue; 
-    }
+    bool operator< (const Cookie& ck) const { return _cookieValue < ck._cookieValue; }
 
   protected:
-    virtual OctetSeq cookieValue() const {  
-      return _cookieValue; 
-    }
-
-    virtual void cookieValue (const OctetSeq& cookieValue) { 
-      _cookieValue = cookieValue; 
-    }
+    virtual OctetSeq cookieValue() const { return _cookieValue; }
+    virtual void cookieValue (const OctetSeq& cookieValue) { _cookieValue = cookieValue; }
   };
 
 
@@ -604,7 +556,8 @@ namespace local {
    * CCM Specification 1-18
    * Light Weight CCM 4.1.5.3
    ***/
-  class Receptacles {
+  class Receptacles 
+  {
   public:
     virtual ~Receptacles() {}
 
@@ -644,9 +597,13 @@ namespace local {
    * CCM Specification 1-52
    * Light Weight CCM 4.1.11.1
    ***/
-  class CCMObject : virtual public Object,
-    public Navigation, public Receptacles {
+  class CCMObject 
+  	: virtual public Object,
+    	  public Navigation, 
+    	  public Receptacles 
+    {
     public:
+	virtual ~CCMObject() {}
 
     /*
      * The get_ccm_home() operation returns a CCMHome reference to the
@@ -679,8 +636,16 @@ namespace local {
   // Component configuration
   //============================================================================
 
-  class WrongComponentType {};
+  class WrongComponentType
+  	: public Exception 
+  {
+  	public:
+      WrongComponentType() throw()
+  		: Exception("Components::ccm::local::WrongComponentType" ) 
+      {} 
+  };
 
+  
   /***
    * A configurator is an object that encapsulates a specific attribute
    * configuration that can be reproduced an many instances of a component type.
@@ -688,9 +653,10 @@ namespace local {
    * component.
    * CCM Specification 1-47
    ***/
-  class Configurator {
+  class Configurator 
+  {
   public:
-    virtual ~Configurator (  ) {}
+    virtual ~Configurator() {}
 
     /*
      * The configure (  ) operation establishes its encapsulated configuration
@@ -708,11 +674,7 @@ namespace local {
   // Component assembling
   //============================================================================
 
-  enum AssemblyState { INACTIVE,
-		       INSERVICE};
-
-  class InvalidLocation {};
-  class InvalidAssembly {};
+  enum AssemblyState { INACTIVE, INSERVICE};
 
 
   /**
@@ -722,8 +684,10 @@ namespace local {
    * CCM Specification 6-73
    **/
   class Assembly 
-    : virtual public wx::utils::RefCounted {
+    : virtual public wx::utils::RefCounted 
+    {
     public:
+	virtual ~Assembly() {}
 
     /*
      * Creates required component servers, creates required containers, installs
@@ -765,8 +729,11 @@ namespace local {
 
 
   class AssemblyFactory
-    : virtual public wx::utils::RefCounted {
+    : virtual public wx::utils::RefCounted 
+    {
     public:
+    virtual ~AssemblyFactory() {}
+    
     virtual wx::utils::SmartPtr<Assembly> create() 
         throw(CreateFailure) = 0;
 

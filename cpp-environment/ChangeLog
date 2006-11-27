@@ -1,5 +1,13 @@
-HEAD
-============================================================================
+
+RELEASE-0.7.6 (, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: LocalComponents/CCM.h 
+	Added virtual destructors and virtual inheritance declarations.
+
+*) Bugfix: Interix (reported by Duft Markus)
+	Added _CCM_EXPORT_DECL_ Makro to HomeFinder.h and CCMContainer.h which
+	uses static attributes.
+
 
 
 BRANCH-0.7

@@ -43,13 +43,23 @@
 
 #include <Components/CCM.h>
 
+#ifdef __WGCC
+    #if defined _BUILDING_CCM_RUNTIME_
+        #define _CCM_EXPORT_DECL_
+    #else
+        #define _CCM_EXPORT_DECL_ __declspec(dllimport)
+    #endif
+#else
+    #define _CCM_EXPORT_DECL_
+#endif
+
 namespace CCM {
   
   //============================================================================
   // Base for all Containers
   //============================================================================
   
-    class ContainerBase
+    class _CCM_EXPORT_DECL_ ContainerBase
 	: virtual public wx::utils::RefCounted
     {
     protected:
