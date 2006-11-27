@@ -41,7 +41,6 @@ import ccmtools.metamodel.ComponentIDL.MFactoryDef;
 import ccmtools.metamodel.ComponentIDL.MFinderDef;
 import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MPublishesDef;
-import ccmtools.metamodel.ComponentIDL.MSupportsDef;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Text;
 
@@ -102,7 +101,7 @@ public class CcmModelValidator
     
     public String getErrorMessage()
     {
-        return "Invalid CCM Model:" + NL + Text.join(NL, getErrorList());
+        return "Failures:" + NL + Text.join(NL, getErrorList());
     }
     
     public List<String> getWarningList()

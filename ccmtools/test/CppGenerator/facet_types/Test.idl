@@ -16,8 +16,6 @@ struct Pair {
 
 typedef sequence<Pair> Map;
 
-typedef double doubleArray[10];
-
 interface Console 
 { 
   attribute string prompt;
@@ -51,7 +49,6 @@ interface TypeTest
   Color       op_u2(in Color p1, inout Color p2, out Color p3);
   Pair        op_u3(in Pair p1, inout Pair p2, out Pair p3);
   Map         op_u4(in Map p1, inout Map p2, out Map p3);
-  doubleArray op_u5(in doubleArray p1, inout doubleArray p2, out doubleArray p3);
 
   // interface types 
   Console op_i1(in Console p1, inout Console p2, out Console p3);

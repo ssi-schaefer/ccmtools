@@ -1,2 +1,0 @@
-PACKAGE_NAME('hello-client')
-PACKAGE_VERSION('0.0.0')

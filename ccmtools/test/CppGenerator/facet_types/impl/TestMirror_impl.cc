@@ -14,6 +14,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <cmath>
 #include <wx/utils/debug.h>
 #include <ccm/local/Debug.h>
 
@@ -184,18 +185,6 @@ TestMirror_impl::ccm_activate (  )
       assert(p.value == (long)(i+i));
     }
 
-    // Test case: typedef double doubleArray[10];
-    doubleArray Array_1(10), Array_2(10), Array_3(10), Array_r(10);
-    for(int i=0;i<10;i++) {
-      Array_1.at(i) = i;
-      Array_2.at(i) = i+i;
-    }
-    Array_r = type_test->op_u5(Array_1,Array_2,Array_3);
-    for(int i=0;i<10;i++) {
-      assert(Array_r.at(i) == i);
-      assert(Array_2.at(i) == i);
-      assert(Array_3.at(i) == i+i);
-    }
   }
 
   // Test interface types

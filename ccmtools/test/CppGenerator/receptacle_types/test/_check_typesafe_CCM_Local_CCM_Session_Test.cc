@@ -26,13 +26,8 @@
 #include <ccm/local/component/Test_mirror/Test_mirror_gen.h>
 #include <ccm/local/component/Test_mirror/TestHome_mirror_gen.h>
 
-#ifdef CCM_USE_DBC
-#include <ccm/local/component/Test/Test_dbc.h>
-#include <ccm/local/component/Test/TestHome_dbc.h>
-#else
 #include <ccm/local/component/Test/Test_gen.h>
 #include <ccm/local/component/Test/TestHome_gen.h>
-#endif
 
 using namespace std;
 using namespace WX::Utils;
@@ -54,13 +49,10 @@ int main(int argc, char *argv[])
   int error = 0;
   Components::HomeFinder* homeFinder;
   homeFinder = HomeFinder::Instance (  );
-#ifdef CCM_USE_DBC
-  error  = deploy_dbc_ccm_local_TestHome("TestHome", false);
-#else
   error  = deploy_ccm_local_TestHome("TestHome");
-#endif
   error += deploy_ccm_local_TestHome_mirror("TestHome_mirror");	
-  if(error) {
+  if(error) 
+  {
     cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
     return(error);
   }
@@ -74,7 +66,8 @@ int main(int argc, char *argv[])
   // The last step of deployment is to call configuration_complete() that 
   // forces components to run the ccm_set_session_context() and ccm_activate() 
   // callback methods.
-  try {
+  try 
+  {
     SmartPtr<component::Test::TestHome> 
       myTestHome(dynamic_cast<component::Test::TestHome*>
       (homeFinder->find_home_by_name("TestHome").ptr()));
@@ -91,30 +84,28 @@ int main(int argc, char *argv[])
     myTest->configuration_complete();
     myTestMirror->configuration_complete();
   } 
-  catch ( Components::HomeNotFound ) {
+  catch ( Components::HomeNotFound ) 
+  {
     cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
     error = -1;
   } 
-  catch ( Components::NotImplemented& e ) {
+  catch ( Components::NotImplemented& e ) 
+  {
     cout << "DEPLOYMENT ERROR: function not implemented: " << e.what (  ) << endl;
     error = -1;
   } 
-  catch ( Components::InvalidName& e ) {
+  catch ( Components::InvalidName& e ) 
+  {
     cout << "DEPLOYMENT ERROR: invalid name during connection: " << e.what (  ) << endl;
     error = -1;
   }
-#ifdef CCM_USE_DBC
-  catch(CCM_OCL::OclException& e)
+  catch ( ... )  
   {
-    cout << "DEPLOYMENT ERROR: 'design by contract' error:" << endl << e.what();
-    error = -1;
-  }
-#endif
-  catch ( ... )  {
     cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
     error = -1;
   }
-  if (error < 0) {
+  if (error < 0) 
+  {
     return error;
   }
 
@@ -123,29 +114,26 @@ int main(int argc, char *argv[])
   // Usually, the test cases for facets and receptacles are implemened in the
   // mirror component. But for supported interfaces and component attributes, 
   // we can realize test cases in the following section.
-  try {
+  try 
+  {
     cout << "== Begin Test Case =============================================" << endl;
 
     // TODO : IMPLEMENT YOUR TEST CASES HERE !
 
     cout << "== End Test Case ===============================================" << endl;
   } 
-  catch ( Components::NotImplemented& e ) {
+  catch ( Components::NotImplemented& e ) 
+  {
     cout << "TEST: function not implemented: " << e.what (  ) << endl;
     error = -1;
   }
-#ifdef CCM_USE_DBC
-  catch(CCM_OCL::OclException& e)
+  catch ( ... )  
   {
-    cout << "TEST: 'design by contract' error:" << endl << e.what();
-    error = -1;
-  }
-#endif
-  catch ( ... )  {
     cout << "TEST: there is something wrong!" << endl;
     error = -1;
   }
-  if (error < 0) {
+  if (error < 0) 
+  {
 	return error;
   }
   
@@ -160,21 +148,25 @@ int main(int argc, char *argv[])
     myTest->remove();
     myTestMirror->remove();
   } 
-  catch ( Components::HomeNotFound ) {
+  catch ( Components::HomeNotFound ) 
+  {
     cout << "TEARDOWN ERROR: can't find a home!" << endl;
     error = -1;
   } 
-  catch ( Components::NotImplemented& e ) {
+  catch ( Components::NotImplemented& e ) 
+  {
     cout << "TEARDOWN ERROR: function not implemented: " << e.what (  ) << endl;
     error = -1;
   } 
-  catch ( ... )  {
+  catch ( ... )  
+  {
     cout << "TEARDOWN ERROR: there is something wrong!" << endl;
     error = -1;
   }
   error += undeploy_ccm_local_TestHome("TestHome");
   error += undeploy_ccm_local_TestHome_mirror("TestHome_mirror");
-  if(error) {
+  if(error) 
+  {
     cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
     return error;
   }

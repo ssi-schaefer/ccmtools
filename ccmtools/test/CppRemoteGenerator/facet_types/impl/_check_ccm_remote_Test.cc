@@ -18,8 +18,10 @@
 #ifdef HAVE_MICO 
 
 #include <cstdlib> 
+#include <cmath>
 #include <iostream>
 #include <string>
+
 #include <wx/utils/debug.h>
 #include <CCM/CCMContainer.h>
 

@@ -88,6 +88,7 @@ public class Main
                             if(!validator.isValidModel(ccmModel))
                             {
                                 uiDriver.printMessage(validator.getErrorMessage());
+                                exitWithErrorStatus("Invalid CCM Tools Model!");
                             }
                             else
                             {

@@ -31,13 +31,6 @@ module world
   typedef sequence<string> StringList;
   typedef sequence<Person> PersonList;
 
-  //  typedef long LongArray[10];
-  //  typedef string StringArray[10];
-  //  typedef Person PersonArray[10];
-
-  //  typedef long LongMatrix[10][5];
-  //  typedef long LongCube[10][5][7];
-
   interface VoidTypeInterface
   {
     void f1(in long p1);
@@ -80,13 +73,6 @@ module world
         StringList f5(in StringList p1, inout StringList p2, out StringList p3);
         PersonList f6(in PersonList p1, inout PersonList p2, out PersonList p3);
         TimeStamp  f7(in TimeStamp t1, inout TimeStamp t2, out TimeStamp t3);
-
-        // LongArray   f8(in LongArray p1, inout LongArray p2, out LongArray p3);
-        // StringArray f9(in StringArray p1, inout StringArray p2, out StringArray p3);
-        // PersonArray f10(in PersonArray p1, inout PersonArray p2, out PersonArray p3);
-
-        // LongMatrix  f11(in LongMatrix p1, inout LongMatrix p2, out LongMatrix p3);
-        // LongCube    f12(in LongCube p1, inout LongCube p2, out LongCube p3);
       };
 
 

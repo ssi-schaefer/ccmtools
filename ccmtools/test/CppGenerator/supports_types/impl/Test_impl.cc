@@ -203,21 +203,6 @@ Test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
   return r;
 }
 
-doubleArray
-Test_impl::op_u5(const doubleArray& p1, doubleArray& p2, doubleArray& p3)
-  throw (::Components::ccm::local::CCMException)
-{
-  DEBUGNL(" Test_impl->op_u5(p1, p2, p3)");
-
-  doubleArray r(10);
-  for(unsigned int i=0; i<p1.size(); i++) {
-    r.at(i) = p1.at(i);
-    p3.at(i) = p2.at(i);
-    p2.at(i) = p1.at(i);
-  }
-  return r;
-}
-
 SmartPtr<Console>
 Test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2, 
 		     SmartPtr<Console>& p3)

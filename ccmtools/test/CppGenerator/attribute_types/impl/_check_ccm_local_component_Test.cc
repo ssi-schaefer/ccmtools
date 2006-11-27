@@ -16,6 +16,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <cmath>
 
 #include <wx/utils/debug.h>
 #include <wx/utils/smartptr.h>
@@ -201,18 +202,6 @@ int main(int argc, char *argv[])
         Pair p = map_result.at(i);
         assert((int)p.value == i);
       }
-
-      // Test Case for: typedef double doubleArray[10];
-      doubleArray array_value(10);
-      for(int i=0;i<10;i++) {
-        array_value.at(i) = i;
-      } 
-      myTest->array_value(array_value);
-      doubleArray array_result = myTest->array_value();
-      for(int i=0;i<10;i++) {
-        assert(array_result.at(i) == i);
-      }
-
     }
 
 

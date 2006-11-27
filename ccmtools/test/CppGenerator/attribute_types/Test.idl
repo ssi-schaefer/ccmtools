@@ -16,8 +16,6 @@ struct Pair {
 
 typedef sequence<Pair> Map;
 
-typedef double doubleArray[10];
-
 interface Console 
 { 
   attribute string prompt;
@@ -46,7 +44,6 @@ component Test
   attribute Color       enum_value;
   attribute Pair        struct_value;
   attribute Map         sequence_value;
-  attribute doubleArray array_value;
   
   // interface types
   attribute Console console_value;

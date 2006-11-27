@@ -13,6 +13,8 @@
 
 #include <cassert>
 #include <iostream>
+#include <cmath>
+
 #include <wx/utils/debug.h>
 
 #include "TestMirror_impl.h"
@@ -65,8 +67,8 @@ TestMirror_impl::ccm_activate()
    }
 
    {
-     //  const short SHORT_CONST = -7+10;
-     short initial = -7+10;
+     //  const short SHORT_CONST = -10;
+     short initial = -10;
      short result = constants->getShortValue();
      assert(initial == result);
    }
@@ -114,8 +116,8 @@ TestMirror_impl::ccm_activate()
    }
 
    {
-     //  const double DOUBLE_CONST = 3.1415926*2.0;
-     double initial =  3.1415926*2.0;
+     //  const double DOUBLE_CONST = 3.1415926;
+     double initial =  3.1415926;
      double result = constants->getDoubleValue();
      assert(abs(initial - result) < 0.0001);
    }
