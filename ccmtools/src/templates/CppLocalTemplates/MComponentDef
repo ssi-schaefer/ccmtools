@@ -384,6 +384,8 @@ class CCM_%(Identifier)s
     : virtual public ::Components::ccm::local::SessionComponent%(BaseType)s%(MSupportsDefBase)s
 {
   public:
+    virtual ~CCM_%(Identifier)s() {}
+    
 %(MAttributeDefPrototypeVV)s
 %(MProvidesDefGetFacetPrototypeVV)s
 %(MSupportsDefImplPrototypeVV)s
@@ -400,6 +402,8 @@ class CCM_%(Identifier)s_Context
     : virtual public ::Components::ccm::local::SessionContext
 {
   public:
+    virtual ~CCM_%(Identifier)s_Context() {}
+    
 %(MUsesDefGetConnectionPrototypeVV)s
 };
 
