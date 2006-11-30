@@ -1,10 +1,10 @@
     // Equivalent operations for multiple receptacle %(Identifier)s
     ::Components::ccm::local::Cookie 
-    connect_%(Identifier)s(wx::utils::SmartPtr< %(UsesType)s> connection)
+    connect_%(Identifier)s(wamas::platform::utils::SmartPtr< %(UsesType)s> connection)
         throw(::Components::ccm::local::ExceededConnectionLimit, 
               ::Components::ccm::local::InvalidConnection);
 
-    wx::utils::SmartPtr< %(UsesType)s> 
+    wamas::platform::utils::SmartPtr< %(UsesType)s> 
     disconnect_%(Identifier)s(::Components::ccm::local::Cookie ck)
         throw(::Components::ccm::local::InvalidConnection);
 

@@ -1,2 +1,2 @@
-      wx::utils::SmartPtr<CCM_Local::%(CCM_UsesType)s> get_connection_%(Identifier)s();
+      wamas::platform::utils::SmartPtr<CCM_Local::%(CCM_UsesType)s> get_connection_%(Identifier)s();
 

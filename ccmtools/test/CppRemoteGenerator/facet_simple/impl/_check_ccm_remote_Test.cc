@@ -5,10 +5,6 @@
  *         <http://ccmtools.sourceforge.net/>
  *
  * This test client is part of the remote component test concept. 
- *
- * To enable debug output use -DWXDEBUG compiler flag and set the
- * WX_DEBUG_LEVELS environment variable to "CCM_REMOTE".
- * (e.g. export WX_DEBUG_LEVELS="CCM_REMOTE")
  ***/
 
 #ifdef HAVE_CONFIG_H
@@ -20,7 +16,7 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
@@ -30,7 +26,7 @@
 #include <Test.h>
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 //==============================================================================
 // Implementation of remote client test

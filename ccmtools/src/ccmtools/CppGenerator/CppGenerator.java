@@ -88,7 +88,7 @@ abstract public class CppGenerator extends CodeGenerator
     // c++ language types that get mapped from corba primitive kinds.
 
     private final static String[] _language = {
-            "", "wx::utils::Value", // PK_ANY
+            "", "wamas::platform::utils::Value", // PK_ANY
             "bool", // PK_BOOLEAN
             "char", // PK_CHAR
             "double", // PK_DOUBLE
@@ -801,7 +801,7 @@ abstract public class CppGenerator extends CodeGenerator
         if(idl_type instanceof MInterfaceDef
                 || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
                         .getKind() == MPrimitiveKind.PK_ANY)) {
-            base_type = "wx::utils::SmartPtr< " + base_type + " > ";
+            base_type = "wamas::platform::utils::SmartPtr< " + base_type + " > ";
         }
 
         // This code defines the parameter passing rules for operations:

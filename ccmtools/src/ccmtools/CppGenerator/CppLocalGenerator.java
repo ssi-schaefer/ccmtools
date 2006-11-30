@@ -867,7 +867,7 @@ public class CppLocalGenerator
         	    MPrimitiveDef type = (MPrimitiveDef)idlType;
         	    if(type.getKind() == MPrimitiveKind.PK_ANY)
         	    {
-        	        code.append("#include <wx/utils/Value.h>\n");
+        	        code.append("#include <wamas/platform/utils/Value.h>\n");
         	    }
         }
         else if(idlType instanceof MContained)

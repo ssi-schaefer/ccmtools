@@ -15,7 +15,7 @@
 #include <iostream>
 #include <cmath>
 
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "TestMirror_impl.h"
 
@@ -23,7 +23,7 @@ namespace ccm {
 namespace local {
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_TestMirror - component implementation

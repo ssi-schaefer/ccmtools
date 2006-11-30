@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "SuperTestMirror_impl.h"
 #include "SuperTestMirror_innerBasicType_impl.h"
@@ -24,7 +24,7 @@ namespace ccm {
 namespace local {
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_SuperTestMirror - component implementation

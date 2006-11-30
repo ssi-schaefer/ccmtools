@@ -12,7 +12,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "Test_a_facet_impl.h"
 
@@ -21,7 +21,7 @@ namespace ccm {
 namespace local {
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 
 Test_a_facet_impl::Test_a_facet_impl(Test_impl* component_impl)

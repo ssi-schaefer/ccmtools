@@ -3,8 +3,8 @@
 #define ASSEMBLY_H
 
 
-#include <wx/utils/debug.h>
-#include <wx/utils/smartptr.h>
+#include <wamas/platform/utils/debug.h>
+#include <wamas/platform/utils/smartptr.h>
 
 #include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
@@ -32,17 +32,17 @@ private:
 	Components::ccm::local::AssemblyState state_;
 
 	// Super Component: SuperTest
-	wx::utils::SmartPtr<SuperTest> superTest;
-	wx::utils::SmartPtr<BasicTypeInterface> innerBasicType;
-	wx::utils::SmartPtr<UserTypeInterface> innerUserType;
+	wamas::platform::utils::SmartPtr<SuperTest> superTest;
+	wamas::platform::utils::SmartPtr<BasicTypeInterface> innerBasicType;
+	wamas::platform::utils::SmartPtr<UserTypeInterface> innerUserType;
 
 	// Inner Component: BasicTest
-	wx::utils::SmartPtr<BasicTest> basicTest;
-	wx::utils::SmartPtr<BasicTypeInterface> basicType;
+	wamas::platform::utils::SmartPtr<BasicTest> basicTest;
+	wamas::platform::utils::SmartPtr<BasicTypeInterface> basicType;
 
 	// Inner Component: UserTest
-	wx::utils::SmartPtr<UserTest> userTest;
-	wx::utils::SmartPtr<UserTypeInterface> userType;
+	wamas::platform::utils::SmartPtr<UserTest> userTest;
+	wamas::platform::utils::SmartPtr<UserTypeInterface> userType;
 
 public:
 	Assembly();
@@ -62,7 +62,7 @@ public:
 	 * Note: This is an CCM extension to support nested components.
 	 */
 	virtual void build(
-	wx::utils::SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
+	wamas::platform::utils::SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
 	    throw (Components::ccm::local::CreateFailure);
 
 	/*

@@ -14,7 +14,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "BasicTest_basicType_impl.h"
 
@@ -22,7 +22,7 @@ namespace ccm {
 namespace local {
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 BasicTest_basicType_impl::BasicTest_basicType_impl(BasicTest_impl* component_impl)
   : component(component_impl)

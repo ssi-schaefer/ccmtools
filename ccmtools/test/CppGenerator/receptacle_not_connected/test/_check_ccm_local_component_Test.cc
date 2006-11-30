@@ -20,8 +20,8 @@
 #include <cassert>
 #include <iostream>
 
-#include <WX/Utils/debug.h>
-#include <WX/Utils/smartptr.h>
+#include <wamas/platform/Utils/debug.h>
+#include <wamas/platform/Utils/smartptr.h>
 
 #include <ccm/local/Components/CCM.h>
 #include <ccm/local/HomeFinder.h>
@@ -29,16 +29,11 @@
 #include <ccm/local/component/Test_mirror/Test_mirror_gen.h>
 #include <ccm/local/component/Test_mirror/TestHome_mirror_gen.h>
 
-#ifdef CCM_USE_DBC
-#include <ccm/local/component/Test/Test_dbc.h>
-#include <ccm/local/component/Test/TestHome_dbc.h>
-#else
 #include <ccm/local/component/Test/Test_gen.h>
 #include <ccm/local/component/Test/TestHome_gen.h>
-#endif
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wamas::platform::Utils;
 using namespace ccm;
 using namespace local;
 

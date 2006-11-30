@@ -54,7 +54,7 @@
 
 #ifdef HAVE_MICO 
 
-#include <wx/utils/debug.h> 
+#include <wamas/platform/utils/debug.h> 
 	
 #include <ccm/remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"

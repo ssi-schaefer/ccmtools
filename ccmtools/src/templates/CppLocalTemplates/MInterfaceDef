@@ -50,7 +50,7 @@ class CCM_%(Identifier)s
 #ifdef WXDEBUG
 inline
 std::string 
-ccmDebug(const wx::utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
+ccmDebug(const wamas::platform::utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
 {
     std::ostringstream os;
     os << ::ccm::local::doIndent(indent) << "object %(Identifier)s" << std::endl;
@@ -73,7 +73,7 @@ ccmDebug(const wx::utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
 #ifndef __INTERFACE_ADAPTER_%(PreprocIdentifier)s__H__
 #define __INTERFACE_ADAPTER_%(PreprocIdentifier)s__H__
 
-#include <wx/utils/smartptr.h>
+#include <wamas/platform/utils/smartptr.h>
 #include <Components/ccm/local/CCM.h>
 
 #include <%(InterfaceInclude)s.h> 
@@ -132,7 +132,7 @@ class %(Identifier)sAdapter
  * DO NOT EDIT !
  */
 
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 %(DebugInclude)s
 
@@ -141,7 +141,7 @@ class %(Identifier)sAdapter
 %(OpenNamespace)s
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 //==============================================================================
 // %(Identifier)s interface constants (implementation)

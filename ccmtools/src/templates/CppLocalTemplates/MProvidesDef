@@ -48,12 +48,12 @@ class %(ComponentType)s_%(Identifier)s_impl
 
 #include <cassert>
 #include <iostream>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "%(ComponentType)s_%(Identifier)s_impl.h"
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 %(OpenNamespace)s
 

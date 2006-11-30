@@ -1,5 +1,5 @@
 #include "ReceptacleObject.h"
-#include <WX/Utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 using namespace std;
 using namespace ccm::local;

@@ -17,8 +17,8 @@
 #include <cassert>
 #include <iostream>
 
-#include <wx/utils/debug.h>
-#include <wx/utils/smartptr.h>
+#include <wamas/platform/utils/debug.h>
+#include <wamas/platform/utils/smartptr.h>
 
 #include <ccm/local/Components/CCM.h>
 #include <ccm/local/HomeFinder.h>
@@ -30,7 +30,7 @@
 #include <ccm/local/component/Test/TestHome_gen.h>
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 using namespace ccm::local;
 
 int main(int argc, char *argv[])

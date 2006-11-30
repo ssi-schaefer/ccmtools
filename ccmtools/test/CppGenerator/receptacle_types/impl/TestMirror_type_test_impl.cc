@@ -12,7 +12,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "MyObject.h"
 #include "TestMirror_type_test_impl.h"
@@ -22,7 +22,7 @@ namespace ccm {
 namespace local {
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 TestMirror_type_test_impl::TestMirror_type_test_impl(TestMirror_impl* component_impl)
   : component(component_impl)

@@ -31,10 +31,10 @@
       virtual public PortableServer::RefCountServantBase
   {
     protected:
-      wx::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> localInterface; 
+      wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> localInterface; 
     public:
       %(Identifier)sAdapterFromCorba(
-          wx::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> lif);
+          wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> lif);
       virtual ~%(Identifier)sAdapterFromCorba();
 
 %(AttributeBaseInterfaceAdapterFromCorbaHeader)s
@@ -83,8 +83,8 @@
  * DO NOT EDIT!
  */
  
-#include <wx/utils/smartptr.h>
-#include <wx/utils/debug.h> 
+#include <wamas/platform/utils/smartptr.h>
+#include <wamas/platform/utils/debug.h> 
 #include <CCM/CCMContainer.h>
 #include <ccm/remote/PrimitiveConverter.h>
 
@@ -93,7 +93,7 @@
 #include "%(Identifier)s_remote.h"
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 %(OpenNamespace)s
 
@@ -102,7 +102,7 @@ using namespace wx::utils;
 //============================================================================
 
 %(Identifier)sAdapterFromCorba::%(Identifier)sAdapterFromCorba(
-    wx::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> lif)
+    wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> lif)
     : localInterface(lif)
 {
     LDEBUGNL(CCM_CONTAINER, "+%(Identifier)sAdapterFromCorba::%(Identifier)sAdapterFromCorba()");

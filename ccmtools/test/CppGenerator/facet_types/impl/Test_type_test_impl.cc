@@ -12,7 +12,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "Test_type_test_impl.h"
 #include "MyObject.h"
@@ -21,7 +21,7 @@ namespace ccm {
 namespace local {
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 Test_type_test_impl::Test_type_test_impl(Test_impl* component_impl)
   : component(component_impl)

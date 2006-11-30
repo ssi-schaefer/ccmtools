@@ -17,22 +17,17 @@
 #include <cassert>
 #include <iostream>
 
-#include <WX/Utils/debug.h>
-#include <WX/Utils/smartptr.h>
+#include <wamas/platform/Utils/debug.h>
+#include <wamas/platform/Utils/smartptr.h>
 
 #include <ccm/local/Components/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#ifdef CCM_USE_DBC
-#include <ccm/local/component/Test/Test_dbc.h>
-#include <ccm/local/component/Test/TestHome_dbc.h>
-#else
 #include <ccm/local/component/Test/Test_gen.h>
 #include <ccm/local/component/Test/TestHome_gen.h>
-#endif
 
 using namespace std;
-using namespace WX::Utils;
+using namespace wamas::platform::Utils;
 using namespace ccm::local;
 
 int main(int argc, char *argv[])
@@ -48,11 +43,7 @@ int main(int argc, char *argv[])
     int error = 0;
     Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
-#ifdef CCM_USE_DBC
-    error  = deploy_dbc_ccm_local_component_Test_TestHome("TestHome", false);
-#else
     error  = deploy_ccm_local_component_Test_TestHome("TestHome");
-#endif
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
@@ -89,14 +80,6 @@ int main(int argc, char *argv[])
              << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(CCM_OCL::OclException& e)
-    {
-        cout << "DEPLOYMENT ERROR: 'design by contract' error:" 
-             << endl << e.what();
-        error = -1;
-    }
-#endif
     catch ( ... )  {
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         error = -1;
@@ -151,13 +134,6 @@ int main(int argc, char *argv[])
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(CCM_OCL::OclException& e)
-    {
-        cout << "TEST: 'design by contract' error:" << endl << e.what();
-        error = -1;
-    }
-#endif
     catch(...) {
         cout << "TEST: there is something wrong!" << endl;
         error = -1;

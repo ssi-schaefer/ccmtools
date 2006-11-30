@@ -14,12 +14,12 @@
 
 #include <cassert>
 #include <iostream>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "UserTest_userType_impl.h"
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 namespace ccm {
 namespace local {

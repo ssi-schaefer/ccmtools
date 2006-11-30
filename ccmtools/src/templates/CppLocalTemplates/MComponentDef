@@ -13,7 +13,7 @@
 
 #include <string>
 #include <map>
-#include <wx/utils/smartptr.h>
+#include <wamas/platform/utils/smartptr.h>
 #include <Components/ccm/local/CCM.h>
 
 #include <%(SelfInclude)s_share.h>
@@ -46,7 +46,7 @@ class %(Identifier)s
     %(Identifier)s();
     %(Identifier)s(%(HomeType)s* h, 
         CCM_%(Identifier)s* lc,  
-        wx::utils::SmartPtr< ::Components::ccm::local::Assembly> a);
+        wamas::platform::utils::SmartPtr< ::Components::ccm::local::Assembly> a);
     virtual ~%(Identifier)s();
 
 %(MAttributeDefPrototype)s
@@ -55,14 +55,14 @@ class %(Identifier)s
 %(MUsesDefGetConnectionPrototype)s
 
     // Navigation functions
-    wx::utils::SmartPtr< ::Components::ccm::local::Object> 
+    wamas::platform::utils::SmartPtr< ::Components::ccm::local::Object> 
     provide_facet(const std::string& name)
         throw(::Components::ccm::local::InvalidName);
 
     // Receptacle functions
     ::Components::ccm::local::Cookie 
     connect(const ::Components::ccm::local::FeatureName& name, 
-        wx::utils::SmartPtr< ::Components::ccm::local::Object> connection)
+        wamas::platform::utils::SmartPtr< ::Components::ccm::local::Object> connection)
         throw(::Components::ccm::local::InvalidName, 
               ::Components::ccm::local::InvalidConnection,
               ::Components::ccm::local::AlreadyConnected, 
@@ -92,7 +92,7 @@ class %(Identifier)s
     %(HomeType)s* home_local_adapter;
     CCM_%(Identifier)s* local_component;
     CCM_%(Identifier)s_Context* context;
-    wx::utils::SmartPtr< ::Components::ccm::local::Assembly> assembly;
+    wamas::platform::utils::SmartPtr< ::Components::ccm::local::Assembly> assembly;
     bool ValidConnection;
 
 %(MProvidesDefAdapterVariable)s
@@ -149,7 +149,7 @@ class CCM_%(Identifier)s_Context_impl
 #include <cassert>
 #include <iostream>
 #include <sstream>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -166,7 +166,7 @@ class CCM_%(Identifier)s_Context_impl
 %(OpenNamespace)s
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 //==============================================================================
 // local component adapter implementation
@@ -213,7 +213,7 @@ using namespace wx::utils;
 
 // Navigation functions
 
-wx::utils::SmartPtr< ::Components::ccm::local::Object>
+wamas::platform::utils::SmartPtr< ::Components::ccm::local::Object>
 %(Identifier)s::provide_facet(const std::string& name)
     throw(::Components::ccm::local::InvalidName)
 {
@@ -361,7 +361,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 #define __COMPONENT_%(PreprocIdentifier)s_SHARE__H__
 
 #include <map>
-#include <wx/utils/smartptr.h>
+#include <wamas/platform/utils/smartptr.h>
 #include <Components/ccm/local/CCM.h>
 
 %(MAttributeDefInclude)s
@@ -492,7 +492,7 @@ class %(Identifier)s_impl
 
 #include <cassert>
 #include <iostream>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "%(Identifier)s_impl.h"
 %(MProvidesDefImplInclude)s
@@ -500,7 +500,7 @@ class %(Identifier)s_impl
 %(OpenNamespace)s
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 //==============================================================================
 // %(Identifier)s - component implementation

@@ -7,7 +7,7 @@ namespace ccm {
 namespace local {
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
     
 Assembly::Assembly()
 	: state_ (Components::ccm::local::INACTIVE)
@@ -35,7 +35,7 @@ void
 Assembly::build(SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
   throw (Components::ccm::local::CreateFailure)
 {
-  DEBUGNL("+Assembly::build(wx::utils::SmartPtr<Components::"
+  DEBUGNL("+Assembly::build(wamas::platform::utils::SmartPtr<Components::"
 	  "CCMObject> facadeComponent)");
   int error = 0;
   Components::ccm::local::HomeFinder* homeFinder;

@@ -24,7 +24,6 @@
   		<pathelement path="${lib}/java-cup-11a.jar" />
   		<pathelement path="${lib}/antlr.jar" />
   		<pathelement path="${lib}/jdom.jar" />
-  		<pathelement path="${lib}/dtd2java.jar" />
   		<pathelement path="${lib}/junit.jar" />
   	  	<pathelement path="${lib}/xstream-1.2.jar" />
   		<pathelement path="${lib}/xpp3_min-1.1.2.4.0.jar" />
@@ -61,7 +60,7 @@
 	
 	<target name="generate.IdlParser" depends="init">
 		<java jar="${lib}/java-cup-11a.jar" fork="true"> 				
-			<arg line = "-destdir ${src-gen}/ccmtools/parser/idl -dump_grammar -package ccmtools.parser.idl -parser IdlParser ${src}/ccmtools/parser/idl/idlparser.cup" />
+			<arg line = "-destdir ${src-gen}/ccmtools/parser/idl -package ccmtools.parser.idl -parser IdlParser ${src}/ccmtools/parser/idl/idlparser.cup" />
 		</java>		
   	</target>
 
@@ -76,37 +75,9 @@
       	</javac>
   	</target>
 
-	
-	<!-- Generate and compile the uml2idl package. -->
-	
-	<target name="generate.uml_parser" depends="init" description="Use dtd2java to create the uml_parser package.">
-	 	<java classname="dtd2java.Main">
-	    	<classpath refid="compile.classpath" />
-		  	<arg value="${src}/uml2idl/UML.dtd" />
-		  	<arg value="uml_parser" />
-		  	<arg value="${src-gen}" />
-	    </java>
-	</target>
-
-	<target name="compile.uml_parser" depends="generate.uml_parser"
-		description="Compile the uml_parser package.">
-	 	<javac srcdir="${src-gen}/uml_parser" destdir="${build}/classes" 
-	 			debug="on" source="1.5" target="1.5" verbose="off">
-			<classpath refid="compile.classpath" />
-	    </javac>
-	</target>
-	
-	<target name="compile.uml2idl" depends="compile.uml_parser"
-		description="Compile the uml2idl package.">
-	    <javac srcdir="${src}/uml2idl" destdir="${build}/classes" 
-	    		debug="on" source="1.5" target="1.5" verbose="off">
-			<classpath refid="compile.classpath" />
-	    </javac>
-	</target>
-
-	
+			
   	<!-- Create Java archive file from all package. -->				
-	<target name="jar.ccmtools" depends="compile.ccmtools, compile.uml2idl" 
+	<target name="jar.ccmtools" depends="compile.ccmtools" 
      	description="Create Java archive file from ccmtools package." >
       	<jar jarfile="${lib}/ccmtools.jar" basedir="${build}/classes" >
          	<manifest>
@@ -135,7 +106,6 @@
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmns"/>         </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmdescriptor"/> </exec>
       	<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmtools-idl"/>  </exec>
-      	<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/uml2idl"/>       </exec>
   	</target>
 	
 

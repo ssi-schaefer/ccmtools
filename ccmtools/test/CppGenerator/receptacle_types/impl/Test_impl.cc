@@ -16,7 +16,7 @@
 #include <iostream>
 #include <cmath>
 
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "MyObject.h"
 #include "Test_impl.h"
@@ -25,7 +25,7 @@ namespace ccm {
 namespace local {
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
