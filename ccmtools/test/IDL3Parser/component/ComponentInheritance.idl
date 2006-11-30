@@ -6,13 +6,13 @@
 
 component SuperComponent
 {
-	provides InterfaceBasicTypeAttributes basicTypes;
+  provides InterfaceBasicTypeAttributes basicTypes;
 };
 
 component SubComponent
-	: SuperComponent
+: SuperComponent
 {
-	provides InterfaceUserTypeOperation userTypes;
+  provides InterfaceUserTypeOperation userTypes;
 };
 
 home SubComponentHome

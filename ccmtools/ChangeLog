@@ -1,8 +1,33 @@
+HEAD
+============================================================================
 
-RELEASE-0.8.0 (, 2006)
+
+RELEASE-0.8.0 (November 30, 2006)
 ----------------------------------------------------------------------------
-*) Bugfix: Merged changes from RELEASE-0_7-BRANCH (0.7.5)
+*) Feature: IDL parser based on JFlex+Cup
+	Implemented a new IDL parser based on the LR parser generator tools 
+	JFlex+Cup. Also a bunch of parser unit tests have been implemented.
 
+*) Feature: CCM Model Validator
+	Implemented a CCM Model Validator (ccmmodel -validator) which checks
+	a given CCM model be be conform to the supported CCM Tools model
+	(e.g. no events, nor arrays, etc.)
+	
+*) Refactoring: IDL parser integration
+	The new IDL parser has been integrated in the IDL and Java generators.
+
+*) Refactoring: Added Logger Formater to ccmtools.utils
+
+*) Refactoring: Changed Source Code Structure
+	Moved all unit tests to a separate src-test directory and refactored the
+	build.xml file.
+	
+*) Bugfix: Merged changes from RELEASE-0_7-BRANCH (0.7.5)
+	- Namespace refactorings
+	
+*) Bugfix: Virtual destructors
+	Added virtual destructors to MComponentDef and MHomeDef templates for
+	to local C++ generator.
 
 
 
