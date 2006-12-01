@@ -1,6 +1,8 @@
 #ifndef __CCM_LOCAL_ASSEMBLY_FACTORY_H__
 #define __CCM_LOCAL_ASSEMBLY_FACTORY_H__
 
+#include <wamas/platform/utils/smartptr.h>
+
 #include <Components/ccm/local/CCM.h>
 
 namespace ccm {
@@ -21,11 +23,11 @@ public:
   		LDEBUGNL(CCM_CONTAINER,"-AssemblyFactory::AssemblyFactory()" );
  	}
 
-  	virtual wx::utils::SmartPtr<Components::ccm::local::Assembly> create()
+  	virtual wamas::platform::utils::SmartPtr<Components::ccm::local::Assembly> create()
     		throw (Components::ccm::local::CreateFailure)
     {
     	  	LDEBUGNL(CCM_CONTAINER," AssemblyFactory::create()" );
-  		wx::utils::SmartPtr<Components::ccm::local::Assembly> assembly(new T());
+  		wamas::platform::utils::SmartPtr<Components::ccm::local::Assembly> assembly(new T());
   		return assembly;
     }
 };

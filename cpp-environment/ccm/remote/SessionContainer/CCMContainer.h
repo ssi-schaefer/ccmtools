@@ -38,7 +38,7 @@
 #include <map>
 #include <string>
 
-#include <wx/utils/smartptr.h>
+#include <wamas/platform/utils/smartptr.h>
 #include <Components/ccm/local/CCM.h>
 
 #include <Components/CCM.h>
@@ -60,7 +60,7 @@ namespace CCM {
   //============================================================================
   
     class _CCM_EXPORT_DECL_ ContainerBase
-	: virtual public wx::utils::RefCounted
+	: virtual public wamas::platform::utils::RefCounted
     {
     protected:
 	static CORBA::ULong globalContainerNumber_;

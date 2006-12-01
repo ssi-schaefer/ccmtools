@@ -31,12 +31,12 @@
 
 #ifdef HAVE_MICO  
 
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 
 #include "CCMContainer.h"
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 
 //============================================================================

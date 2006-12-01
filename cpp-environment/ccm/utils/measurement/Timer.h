@@ -18,14 +18,14 @@ namespace utils {
 	
 	/**
 	 * Starts a timer object by saving the current point in time in a set
-	 * of *TimeStart attributes.
+	 * of TimeStart attributes.
 	 */
 	virtual void start();
 	
 	
 	/**
 	 * Stops a timer object by saving the current point in time in a set
-	 * of *TimeStop attributes.
+	 * of TimeStop attributes.
 	 */
 	virtual void stop();
 	

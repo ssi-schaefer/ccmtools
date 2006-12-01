@@ -17,8 +17,8 @@
 #include <stdexcept>
 #include <iostream>
 
-#include <wx/utils/smartptr.h>
-#include <wx/utils/Value.h>
+#include <wamas/platform/utils/smartptr.h>
+//#include <wamas/platform/utils/Value.h>
 
 
 namespace Components {
@@ -237,16 +237,16 @@ namespace local {
    * Note: This interface is not part of the CCM specification!
    ***/
   class Object
-    : virtual public wx::utils::RefCounted 
+    : virtual public wamas::platform::utils::RefCounted 
   {
   public:
     virtual ~Object() {}
 
     // Simulates the CORBA::Object::get_component() operation defines
     // since CORBA 3.0 (CCM Spec. 1-9)	
-    virtual wx::utils::SmartPtr<Object> get_component() 
+    virtual wamas::platform::utils::SmartPtr<Object> get_component() 
     	{
-		return wx::utils::SmartPtr<Object>();
+		return wamas::platform::utils::SmartPtr<Object>();
     };	
   };
 
@@ -257,7 +257,7 @@ namespace local {
    * CCM Specification 3-39, 4-27
    ***/
   class EnterpriseComponent 
-    : virtual public wx::utils::RefCounted
+    : virtual public wamas::platform::utils::RefCounted
   {
   public:
     virtual ~EnterpriseComponent() {}
@@ -279,12 +279,12 @@ namespace local {
    * Extension to CCM-Spec: CCMException to remove_component()
    ***/
   class CCMHome
-    : virtual public wx::utils::RefCounted
+    : virtual public wamas::platform::utils::RefCounted
   {
   public:
     virtual ~CCMHome() {}
 
-    virtual void remove_component(wx::utils::SmartPtr<CCMObject> component)
+    virtual void remove_component(wamas::platform::utils::SmartPtr<CCMObject> component)
         throw(CCMException, RemoveFailure) = 0;
   };
 
@@ -297,12 +297,12 @@ namespace local {
    * Extension to CCM-Spec: CCMException to create_component()
    ***/
   class KeylessCCMHome 
-    : virtual public wx::utils::RefCounted
+    : virtual public wamas::platform::utils::RefCounted
   {
   public:
     virtual ~KeylessCCMHome() {}
 
-    virtual wx::utils::SmartPtr<CCMObject> create_component()
+    virtual wamas::platform::utils::SmartPtr<CCMObject> create_component()
         throw(CCMException, CreateFailure) = 0;
   };
 
@@ -312,7 +312,7 @@ namespace local {
    * CCM Specification 3-40
    ***/
   class HomeExecutorBase 
-    : virtual public wx::utils::RefCounted
+    : virtual public wamas::platform::utils::RefCounted
   {
   public:
     virtual ~HomeExecutorBase() {}
@@ -333,13 +333,13 @@ namespace local {
     /* The register_home operation is used to register a component home
      * with the HomeFinder so it can by located by a component client.
      */
-    virtual void register_home(wx::utils::SmartPtr<CCMHome> home_ref, 
+    virtual void register_home(wamas::platform::utils::SmartPtr<CCMHome> home_ref, 
 			       const std::string& home_name) = 0;
 
     /* The unregister_home operation is used to remove a component home
      * from the HomeFinder.
      */
-    virtual void unregister_home(wx::utils::SmartPtr<CCMHome> home_ref) = 0;
+    virtual void unregister_home(wamas::platform::utils::SmartPtr<CCMHome> home_ref) = 0;
 
     /*
      * This unregister_home operation is used to remove a component home
@@ -362,15 +362,15 @@ namespace local {
   public:
     virtual ~HomeFinder() {}
 
-    virtual wx::utils::SmartPtr<Components::ccm::local::CCMHome>
+    virtual wamas::platform::utils::SmartPtr<Components::ccm::local::CCMHome>
     find_home_by_component_type(const std::string& comp_repid)
         throw(HomeNotFound) = 0;
 
-    virtual wx::utils::SmartPtr<Components::ccm::local::CCMHome>
+    virtual wamas::platform::utils::SmartPtr<Components::ccm::local::CCMHome>
     find_home_by_name(const std::string& name)
         throw(HomeNotFound) = 0;
 
-    virtual wx::utils::SmartPtr<Components::ccm::local::CCMHome>
+    virtual wamas::platform::utils::SmartPtr<Components::ccm::local::CCMHome>
       find_home_by_type(const std::string& home_repid)
         throw(HomeNotFound) = 0;
   };
@@ -518,7 +518,7 @@ namespace local {
      * not correspond to one of the component's facets, the InvalidName
      * exception shall be raised.
      */
-    virtual wx::utils::SmartPtr<Object> provide_facet(const std::string& name)
+    virtual wamas::platform::utils::SmartPtr<Object> provide_facet(const std::string& name)
       throw(InvalidName) = 0;
   };
 
@@ -570,7 +570,7 @@ namespace local {
      * simplex receptacle: the return value is a nil.
      */
     virtual Cookie connect(const FeatureName& name, 
-			    wx::utils::SmartPtr<Object> connection)
+			    wamas::platform::utils::SmartPtr<Object> connection)
       throw(InvalidName, 
 	    InvalidConnection, 
 	    AlreadyConnected, 
@@ -684,7 +684,7 @@ namespace local {
    * CCM Specification 6-73
    **/
   class Assembly 
-    : virtual public wx::utils::RefCounted 
+    : virtual public wamas::platform::utils::RefCounted 
     {
     public:
 	virtual ~Assembly() {}
@@ -716,7 +716,7 @@ namespace local {
      *  
      * Note: This is an CCM extension to support nested components.
      */
-    virtual void build(wx::utils::SmartPtr<CCMObject> facadeComponent)
+    virtual void build(wamas::platform::utils::SmartPtr<CCMObject> facadeComponent)
         throw(CreateFailure) = 0;
 
     /*
@@ -729,12 +729,12 @@ namespace local {
 
 
   class AssemblyFactory
-    : virtual public wx::utils::RefCounted 
+    : virtual public wamas::platform::utils::RefCounted 
     {
     public:
     virtual ~AssemblyFactory() {}
     
-    virtual wx::utils::SmartPtr<Assembly> create() 
+    virtual wamas::platform::utils::SmartPtr<Assembly> create() 
         throw(CreateFailure) = 0;
 
   };

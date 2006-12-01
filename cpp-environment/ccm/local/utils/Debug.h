@@ -29,8 +29,9 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <wx/utils/Value.h>
-#include <wx/utils/smartptr.h>
+
+#include <wamas/platform/utils/Value.h>
+#include <wamas/platform/utils/smartptr.h>
 
 namespace ccm {
 namespace local {
@@ -184,12 +185,12 @@ namespace local {
 
     inline 
     std::string 
-    ccmDebug(const wx::utils::SmartPtr<wx::utils::Value>& in, 
+    ccmDebug(const wamas::platform::utils::SmartPtr<wamas::platform::utils::Value>& in, 
 	     int indent = 0)
     {
 	std::ostringstream os;
 	os << doIndent(indent);
-	os << ":wx::utils::SmartPtr<wx::utils::Value>"; // TODO !!!!!!
+	os << ":wamas::platform::utils::SmartPtr<wamas::platform::utils::Value>"; // TODO !!!!!!
 	return os.str();
     }
     
