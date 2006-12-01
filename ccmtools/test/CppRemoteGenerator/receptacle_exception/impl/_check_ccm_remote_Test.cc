@@ -5,10 +5,6 @@
  *         <http://ccmtools.sourceforge.net/>
  *
  * This test client is part of the remote component test concept. 
- *
- * To enable debug output use -DWXDEBUG compiler flag and set the
- * WX_DEBUG_LEVELS environment variable to "CCM_REMOTE".
- * (e.g. export WX_DEBUG_LEVELS="CCM_REMOTE")
  ***/
 
 #ifdef HAVE_CONFIG_H
@@ -20,7 +16,7 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
@@ -30,7 +26,7 @@
 #include <Test.h>
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 //==============================================================================
 // Implementation of remote client test
@@ -40,20 +36,10 @@ int main (int argc, char *argv[])
 {
     cout << "Enter C++ remote test client" << endl;
 
-    char* NameServiceLocation = getenv("CCM_NAME_SERVICE");
-    if(NameServiceLocation == NULL) { 
-        cerr << "Error: Environment variable CCM_NAME_SERVICE not set!" << endl;
-        return -1;
-    }
-
     // Initialize ORB 
-    ostringstream os;
-    os << "NameService=" << NameServiceLocation;
-    char* argv_[] = { "", "-ORBInitRef", (char*)os.str().c_str()}; 
-    int   argc_   = 3;
-    DEBUGNL(">> " << argv_[0] << " "<< argv_[1] << argv_[2]);
+    int argc_ = 3;
+    char* argv_[] = { "", "-ORBInitRef", "NameService=corbaloc:iiop:1.2@localhost:5050/NameService" }; 
     CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
-
 
     /**
      * Server-side code

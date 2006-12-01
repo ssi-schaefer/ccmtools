@@ -5,6 +5,7 @@
 
 module world
 {
+
   interface Constants
   {
     const boolean BOOLEAN_CONST = TRUE;

@@ -5,10 +5,6 @@
  *         <http://ccmtools.sourceforge.net/>
  *
  * This test client is part of the remote component test concept. 
- *
- * To enable debug output use -DWXDEBUG compiler flag and set the
- * WX_DEBUG_LEVELS environment variable to "CCM_REMOTE".
- * (e.g. export WX_DEBUG_LEVELS="CCM_REMOTE")
  ***/
 
 #ifdef HAVE_CONFIG_H
@@ -20,17 +16,17 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <wx/utils/debug.h>
+#include <wamas/platform/utils/debug.h>
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <ccm/remote/TestHome_remote.h>
-#include <Test.h>
+#include <world/europe/austria/ccm/remote/TestHome_remote.h>
+#include <world_europe_austria_Test.h>
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 
 //==============================================================================
 // Implementation of remote client test
@@ -40,20 +36,10 @@ int main (int argc, char *argv[])
 {
     cout << "Enter C++ remote test client" << endl;
 
-    char* NameServiceLocation = getenv("CCM_NAME_SERVICE");
-    if(NameServiceLocation == NULL) { 
-        cerr << "Error: Environment variable CCM_NAME_SERVICE not set!" << endl;
-        return -1;
-    }
-
     // Initialize ORB 
-    ostringstream os;
-    os << "NameService=" << NameServiceLocation;
-    char* argv_[] = { "", "-ORBInitRef", (char*)os.str().c_str()}; 
-    int   argc_   = 3;
-    DEBUGNL(">> " << argv_[0] << " "<< argv_[1] << argv_[2]);
+    int argc_ = 3;
+    char* argv_[] = { "", "-ORBInitRef", "NameService=corbaloc:iiop:1.2@localhost:5050/NameService" }; 
     CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
-
 
     /**
      * Server-side code
@@ -64,8 +50,8 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_ccm_local_TestHome("TestHome");
-    error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += deploy_world_europe_austria_ccm_local_TestHome("TestHome");
+    error += deploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
     if(!error) {
         cout << "TestHome server is running..." << endl;
     }
@@ -90,10 +76,10 @@ int main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    TestHome_var myTestHome = TestHome::_narrow (obj);
+    world::europe::austria::TestHome_var myTestHome = world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    Test_var myTest = myTestHome->create();
+    world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
 
@@ -113,16 +99,15 @@ int main (int argc, char *argv[])
     // Destroy component instances
     myTest->remove();
 
-    // Un-Deployment    
-    error = 0;
-    error += undeploy_ccm_local_TestHome("TestHome");
-    error += undeploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    // Un-Deployment
+	error = 0;
+    error += undeploy_world_europe_austria_ccm_local_TestHome("TestHome");
+    error += undeploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
     if(error) 
     {
-        cerr << "ERROR: Can't undeploy components!" << endl;
+        cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
-        
     cout << "Exit C++ remote test client" << endl; 	
 }
 

@@ -31,15 +31,10 @@ stubs:
 remote: local stubs
 	ccmtools c++remote -o ${DEST_DIR}/src/component/Test Test.idl
 	ccmtools c++remote-test -o ${DEST_DIR}/src/component/Test Test.idl
-	
-check: check_local
+
+check: 
 	cp impl/_check_world_europe_austria_ccm_remote_Test.cc ${DEST_DIR}/src/component/Test/test/
 	confix2.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
-
-
-check_server: check_local
-	cp server/_check_world_europe_austria_ccm_remote_Test.cc ${DEST_DIR}/src/component/Test/test/
-	confix.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
 
 check_empty:
 	ccmconfix -confix2 -o ${DEST_DIR}/src -pname "remote_facet_module_types" -pversion "1.0.0" 

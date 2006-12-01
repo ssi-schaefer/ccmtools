@@ -9,19 +9,14 @@
  * All component ports will be connected to the mirror component's ports. 
  * Additionally, developers can add some testing code to validate supported
  * interfaces as well as component attribute access.
- *
- * To enable debug output use -DWXDEBUG compiler flag and set the
- * WX_DEBUG_LEVELS environment variable to "CCM_LOCAL"
- * (e.g. export WX_DEBUG_LEVELS="CCM_LOCAL").
- *
- * To enable DbC adapter use -DCCM_USE_DBC compiler flag.
  ***/
 
+#include <cmath>
 #include <cassert>
 #include <iostream>
 
-#include <wx/utils/debug.h>
-#include <wx/utils/smartptr.h>
+#include <wamas/platform/utils/debug.h>
+#include <wamas/platform/utils/smartptr.h>
 
 #include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
@@ -30,7 +25,7 @@
 #include <world/europe/austria/ccm/local/TestHome_gen.h>
 
 using namespace std;
-using namespace wx::utils;
+using namespace wamas::platform::utils;
 using namespace ccm::local;
 
 using world::europe::austria::ccm::local::Test;
