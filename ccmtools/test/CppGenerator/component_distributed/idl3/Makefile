@@ -1,4 +1,4 @@
-DEST_DIR = idl3Repo
+DEST_DIR = CCM_idl3Repo
 
 all: install
 
