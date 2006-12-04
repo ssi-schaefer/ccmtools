@@ -4,8 +4,6 @@
  * Egon Teiniker <egon.teiniker@tugraz.at>
  * copyright (c) 2002, 2003 Salomon Automation
  *
- * $Id$
- *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
@@ -31,7 +29,7 @@
 
 #ifdef HAVE_MICO  
 
-#include <wamas/platform/utils/debug.h>
+#include <sstream>
 
 #include "CCMContainer.h"
 
@@ -54,13 +52,10 @@ CORBA::ULong CCM::ContainerBase::globalContainerNumber_ = 0;
 CCM::ContainerBase::ContainerBase()
 {
     containerNumber_ = ++globalContainerNumber_;
-    LDEBUGNL(CCM_CONTAINER, "+CCM::ContainerBase::ContainerBase() #" 
-	     << containerNumber_);
 }
 
 CCM::ContainerBase::~ContainerBase ()
 {    
-    LDEBUGNL(CCM_CONTAINER, "-CCM::ContainerBase::~ContainerBase()");
 }
 
 
@@ -71,8 +66,6 @@ CCM::ContainerBase::~ContainerBase ()
 
 CCM::SessionContainer::SessionContainer (CORBA::ORB_ptr orb)
 {
-    LDEBUGNL(CCM_CONTAINER, "+SessionContainer()");
-    
     CORBA::Object_var obj;
     _have_info = 0;
     orb_ = CORBA::ORB::_duplicate(orb);
@@ -101,14 +94,12 @@ CCM::SessionContainer::SessionContainer (CORBA::ORB_ptr orb)
 
 CCM::SessionContainer::~SessionContainer ()
 {
-    LDEBUGNL(CCM_CONTAINER, "-SessionContainer()");
 }
 
 
 void 
 CCM::SessionContainer::load(const ComponentInfo& info)
 {
-    LDEBUGNL(CCM_CONTAINER, " load()");
     _info = info;
     _have_info = 1;
 
@@ -130,8 +121,6 @@ CCM::SessionContainer::load(const ComponentInfo& info)
 void 
 CCM::SessionContainer::activate ()
 {
-    LDEBUGNL(CCM_CONTAINER, " activate()");
-
     // TODO:
     // Set instances to active, if their configuration is complete
     // iterate through an InstanceMap and call ccm_activate()
@@ -146,51 +135,25 @@ CCM::SessionContainer::activate ()
 void 
 CCM::SessionContainer::passivate ()
 {
-    LDEBUGNL(CCM_CONTAINER, " passivate()");
-    /*
     // TODO:
     // Set instances to inactive
     // iterate through an InstanceMap and call instance->ccm_passivate()
-
-    // Deactivate our POA
-    PortableServer::POAManager_var mgr = poa_->the_POAManager();
-    mgr->hold_requests (1);
-    */
 }
 
 
 void 
 CCM::SessionContainer::remove ()
 {
-    LDEBUGNL(CCM_CONTAINER, " remove()");
-
-    /*
     // TODO:
     // Prepare instances for destruction
     // iterate through an InstanceMap and call instance->ccm_remove()
-    passivate ();
-    poa_->destroy(1, 1);  // Destroy our POA
-    */
 }
 
 
 CORBA::Boolean 
 CCM::SessionContainer::compare(Components::CCMHome_ptr ohome)
 {
-    LDEBUGNL(CCM_CONTAINER, " compare()");
-    
-    /*
-    PortableServer::ObjectId_var myid = poa_->reference_to_id(_home_ref);
-    PortableServer::ObjectId_var oid;
-    try {
-	oid = poa_->reference_to_id (ohome);
-    }
-    catch (PortableServer::POA::WrongAdapter &) {
-	return 0;
-    }
-    //    return ((myid->length() == oid->length()) &&
-    // 	  memcmp (myid->get_buffer(), oid->get_buffer(), myid->length()) == 0);
-    */
+	// TODO
     return false;
 }
 
@@ -198,7 +161,6 @@ CCM::SessionContainer::compare(Components::CCMHome_ptr ohome)
 Components::CCMHome_ptr 
 CCM::SessionContainer::get_reference_for_home ()
 {
-    LDEBUGNL(CCM_CONTAINER, " get_reference_for_home()");
     return Components::CCMHome::_narrow (_home_ref.in());
 }
 
@@ -206,8 +168,6 @@ CCM::SessionContainer::get_reference_for_home ()
 Components::CCMObject_ptr
 CCM::SessionContainer::activate_component(PortableServer::Servant skel)
 {
-    LDEBUGNL(CCM_CONTAINER, " activate_component()");
-
 #ifdef CCM_PERSISTENT_POA
     PortableServer::ObjectId_var oid =
 	PortableServer::string_to_ObjectId(_info.component_short_name.c_str());
@@ -223,7 +183,6 @@ CCM::SessionContainer::activate_component(PortableServer::Servant skel)
 Components::CCMObject_ptr
 CCM::SessionContainer::get_reference_for_component(PortableServer::Servant s)
 {
-    LDEBUGNL(CCM_CONTAINER, " get_reference_for_component()");
     CORBA::Object_var o = poa_->servant_to_reference(s);
     return Components::CCMObject::_narrow(o);
 }
@@ -232,7 +191,6 @@ CCM::SessionContainer::get_reference_for_component(PortableServer::Servant s)
 PortableServer::Servant
 CCM::SessionContainer::get_skeleton_for_reference(CORBA::Object_ptr o)
 {
-    LDEBUGNL(CCM_CONTAINER, " get_skeleton_for_reference()");
     return poa_->reference_to_servant(o);
 }
 
@@ -240,8 +198,6 @@ CCM::SessionContainer::get_skeleton_for_reference(CORBA::Object_ptr o)
 void 
 CCM::SessionContainer::deactivate_component (CORBA::Object_ptr o)
 {
-    LDEBUGNL(CCM_CONTAINER, " deactivate_component()");
-    //PortableServer::ServantBase_var skel = get_skeleton_for_reference (o);
     PortableServer::Servant skel = get_skeleton_for_reference(o);
     deactivate_component(skel);
 }
@@ -250,20 +206,9 @@ CCM::SessionContainer::deactivate_component (CORBA::Object_ptr o)
 void 
 CCM::SessionContainer::deactivate_component (PortableServer::Servant skel)
 {
-    LDEBUGNL(CCM_CONTAINER, " deactivate_component()");
     PortableServer::ObjectId_var oid = poa_->servant_to_id (skel);
-    /*
-    PerComponentData & data = active_components[oid.in()];
-    map<string, PortableServer::ServantBase_var, less<string> >::iterator it;
-    
-    for (it=data.facet_glue.begin(); it!=data.facet_glue.end(); it++) {
-    PortableServer::ObjectId_var fid =
-    poa_->servant_to_id ((*it).second);
-    poa_->deactivate_object (fid.in());
-    }
-    */
+	// TODO
     poa_->deactivate_object (oid);
-    //active_components.erase (oid.in());
 }
 
 
@@ -273,8 +218,6 @@ CCM::SessionContainer::activate_facet(PortableServer::Servant comp_glue,
 				      void* facet_instance,
 				      PortableServer::Servant facet_glue)
 {
-    LDEBUGNL(CCM_CONTAINER, " activate_facet()");
-
 #ifdef CCM_PERSISTENT_POA
     PortableServer::ObjectId_var fid =
 	PortableServer::string_to_ObjectId(name);
@@ -294,10 +237,8 @@ CCM::SessionContainer::activate_facet(PortableServer::Servant comp_glue,
 void 
 CCM::SessionContainer::configuration_complete(PortableServer::Servant comp_glue)
 {
-    LDEBUGNL(CCM_CONTAINER, " configuration_complete()");
     PortableServer::ObjectId_var oid = poa_->servant_to_id (comp_glue);
-    //PerComponentData & data = active_components[oid.in()];
-    //data.configuration_complete = 1;
+	// TODO
 }
 
 
@@ -308,7 +249,6 @@ CCM::SessionContainer::configuration_complete(PortableServer::Servant comp_glue)
 Components::CCMHome_ptr 
 CCM::SessionContainer::get_CCM_home ()
 {
-    LDEBUGNL(CCM_CONTAINER, " get_CCM_home()");
     return get_reference_for_home ();
 }
 
@@ -316,10 +256,7 @@ CCM::SessionContainer::get_CCM_home ()
 CORBA::Object_ptr 
 CCM::SessionContainer::get_CCM_object(Components::ccm::local::EnterpriseComponent* o)
 {
-    LDEBUGNL(CCM_CONTAINER, " get_CCM_object()");
-    /*
-      TODO
-    */
+    // TODO
     return Components::CCMObject::_nil();
 }
 
@@ -333,7 +270,6 @@ long CCM::Cookie_impl::globalId_ = 0;
 
 CCM::Cookie_impl::Cookie_impl()
 {
-    LDEBUGNL(CCM_CONTAINER, " Cookie_impl()");
     id_ = ++globalId_;
 }
 
@@ -347,7 +283,6 @@ CCM::Cookie_impl::Cookie_impl()
 CORBA::ValueBase*
 CCM::Cookie_Factory::create_for_unmarshal()
 {
-    LDEBUGNL(CCM_CONTAINER, " create_for_unmarshal()");
     return new Cookie_impl;
 }
 
@@ -355,7 +290,6 @@ CCM::Cookie_Factory::create_for_unmarshal()
 void
 CCM::register_all_factories(CORBA::ORB_ptr orb)
 {
-    LDEBUGNL(CCM_CONTAINER, " register_all_factories()");
     CORBA::ValueFactoryBase_var vf;
     vf = new Cookie_Factory;
     orb->register_value_factory ("IDL:omg.org/Components/Cookie:1.0", vf);

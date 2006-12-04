@@ -2,6 +2,7 @@
 #define __CCM__LOCAL__HOMEFINDER__H__
 
 #include <map>
+
 #include <wamas/platform/utils/smartptr.h>
 
 #include <Components/ccm/local/CCM.h>
@@ -61,6 +62,7 @@ class _CCM_EXPORT_DECL_ HomeFinder
   void register_home(wamas::platform::utils::SmartPtr<Components::ccm::local::CCMHome> home_ref, 
 		     const std::string& home_name);
   void unregister_home(wamas::platform::utils::SmartPtr<Components::ccm::local::CCMHome> home_ref);
+
   void unregister_home(const std::string& home_name);
 };
 

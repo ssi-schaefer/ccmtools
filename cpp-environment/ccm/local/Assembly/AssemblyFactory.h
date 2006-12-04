@@ -15,18 +15,15 @@ class AssemblyFactory
 public:
 	AssemblyFactory()
   	{
-  		LDEBUGNL(CCM_CONTAINER,"+AssemblyFactory::AssemblyFactory()" );
   	}
   
   	virtual ~AssemblyFactory()
   	{
-  		LDEBUGNL(CCM_CONTAINER,"-AssemblyFactory::AssemblyFactory()" );
  	}
 
   	virtual wamas::platform::utils::SmartPtr<Components::ccm::local::Assembly> create()
     		throw (Components::ccm::local::CreateFailure)
     {
-    	  	LDEBUGNL(CCM_CONTAINER," AssemblyFactory::create()" );
   		wamas::platform::utils::SmartPtr<Components::ccm::local::Assembly> assembly(new T());
   		return assembly;
     }

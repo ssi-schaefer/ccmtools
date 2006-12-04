@@ -18,8 +18,6 @@
 #include <iostream>
 
 #include <wamas/platform/utils/smartptr.h>
-//#include <wamas/platform/utils/Value.h>
-
 
 namespace Components {
 namespace ccm {
@@ -357,7 +355,7 @@ namespace local {
    * CCM Spec. 1-42
    ***/
   class HomeFinder
-    : public HomeRegistration 
+    : virtual public HomeRegistration 
   {
   public:
     virtual ~HomeFinder() {}
@@ -405,8 +403,9 @@ namespace local {
    * it may require to implement its behavior.
    * CCM Spec. 4-27
    ***/
-  class SessionContext : public CCMContext
-    {
+  class SessionContext 
+  	: virtual public CCMContext
+  {
     public:
       virtual ~SessionContext() {}
 
@@ -435,7 +434,7 @@ namespace local {
    ***/
   class SessionComponent
     : virtual public EnterpriseComponent 
-    {
+  {
     public:
     virtual ~SessionComponent() {}
 
@@ -599,8 +598,8 @@ namespace local {
    ***/
   class CCMObject 
   	: virtual public Object,
-    	  public Navigation, 
-    	  public Receptacles 
+    	  virtual public Navigation, 
+    	  virtual public Receptacles 
     {
     public:
 	virtual ~CCMObject() {}
