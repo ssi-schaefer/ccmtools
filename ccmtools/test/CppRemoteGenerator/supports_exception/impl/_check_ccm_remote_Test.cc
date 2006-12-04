@@ -16,7 +16,7 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <wamas/platform/utils/debug.h>
+
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
@@ -99,15 +99,15 @@ int main (int argc, char *argv[])
       assert(false);
     } 
     catch(const ::SimpleError& e) {
+      cout << "caught SimpleError" << endl;                   
       ::ErrorInfoList infolist = e.info;
       for(unsigned long i = 0; i < infolist.length(); i++) {
-	cout << e.info[i].code << ": " 
+		cout << e.info[i].code << ": " 
 	     << e.info[i].message << endl;
       }
-      LDEBUGNL(CCM_REMOTE, ::ccm::remote::ccmDebug(e)); //!!!
     } 
     catch(const CORBA::SystemException& e) {
-      cout << "CORBA::SystemException catched!" << endl;
+      cout << "caught CORBA::SystemException" << endl;
       assert(false);
     }  
     
@@ -117,11 +117,10 @@ int main (int argc, char *argv[])
       assert(false);
     } 
     catch(const ::SuperError& e) {
-      cout << "SuperError" << endl;
-      LDEBUGNL(CCM_REMOTE, ::ccm::remote::ccmDebug(e));
+      cout << "caught SuperError" << endl;
     }   
     catch(const CORBA::SystemException& e) {
-      cout << "CORBA::SystemException catched!" << endl;
+      cout << "caught CORBA::SystemException" << endl;
       assert(false);
     }
     
@@ -131,10 +130,10 @@ int main (int argc, char *argv[])
       assert(false);
     } 
     catch(const ::FatalError& e) {
-      LDEBUGNL(CCM_REMOTE, ::ccm::remote::ccmDebug(e));
+      cout << "caught FatalErro" << endl;
     } 
     catch(const CORBA::SystemException& e) {
-      cout << "CORBA::SystemException catched!" << endl;
+      cout << "caught CORBA::SystemException" << endl;
       assert(false); 
     }
     

@@ -88,8 +88,6 @@
 #include <CCM/CCMContainer.h>
 #include <ccm/remote/PrimitiveConverter.h>
 
-%(CorbaDebugInclude)s
-
 #include "%(Identifier)s_remote.h"
 
 using namespace std;
@@ -105,13 +103,10 @@ using namespace wamas::platform::utils;
     wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> lif)
     : localInterface(lif)
 {
-    LDEBUGNL(CCM_CONTAINER, "+%(Identifier)sAdapterFromCorba::%(Identifier)sAdapterFromCorba()");
 }
 
 %(Identifier)sAdapterFromCorba::~%(Identifier)sAdapterFromCorba()
 {
-    LDEBUGNL(CCM_CONTAINER, "-%(Identifier)sAdapterFromCorba::~%(Identifier)sAdapterFromCorba()");
-    // Smart pointer local_facet_adapter goes out of scope
 }
 
 %(AttributeBaseInterfaceAdapterFromCorbaImpl)s
@@ -131,13 +126,11 @@ using namespace wamas::platform::utils;
 %(Identifier)sAdapterToCorba::%(Identifier)sAdapterToCorba(
     %(StubsNamespace)s%(Identifier)s_ptr rif)
 {
-    LDEBUGNL(CCM_CONTAINER, "+%(Identifier)sAdapterToCorba::%(Identifier)sAdapterToCorba()");
     remoteInterface = ::%(StubsNamespace)s%(Identifier)s::_duplicate(rif);
 }
 
 %(Identifier)sAdapterToCorba::~%(Identifier)sAdapterToCorba()
 {
-    LDEBUGNL(CCM_CONTAINER, "-%(Identifier)sAdapterToCorba::~%(Identifier)sAdapterToCorba()");
 }
 
 %(AttributeBaseInterfaceAdapterToCorbaImpl)s

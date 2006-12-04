@@ -13,7 +13,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "Test_impl.h"
 #include "Test_inPort_impl.h"
@@ -68,7 +67,6 @@ Test_impl::ccm_activate()
              << e.info[0].code << ", " 
              << e.info[0].message << ")" 
              << endl;
-      LDEBUGNL(CCM_LOCAL, ccmDebug(e));
     }
     
     try {
@@ -78,7 +76,6 @@ Test_impl::ccm_activate()
     }
     catch(SuperError& e) {
       cout << "OK: super_error exception catched!" << endl;
-      LDEBUGNL(CCM_LOCAL, ccmDebug(e));
     }
   
     try {
@@ -92,7 +89,6 @@ Test_impl::ccm_activate()
     }
     catch(FatalError& e) {
       cout << "OK: fatal_error exception catched!" << endl;
-      LDEBUGNL(CCM_LOCAL, ccmDebug(e));
     }
 }
 

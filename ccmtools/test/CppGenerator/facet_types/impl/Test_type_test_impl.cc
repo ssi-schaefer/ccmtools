@@ -12,7 +12,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "Test_type_test_impl.h"
 #include "MyObject.h"

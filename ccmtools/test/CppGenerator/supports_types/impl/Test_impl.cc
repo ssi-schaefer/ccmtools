@@ -14,7 +14,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "Test_impl.h"
 #include "MyObject.h"
@@ -31,20 +30,16 @@ using namespace wamas::platform::utils;
 
 Test_impl::Test_impl (  )
 {
-  DEBUGNL ( "+Test_impl->Test_impl (  )" );
 }
 
 Test_impl::~Test_impl (  )
 {
-  DEBUGNL ( "-Test_impl->~Test_impl (  )" );
 }
 
 short
 Test_impl::op_b1(const short p1, short& p2, short& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b1(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -54,8 +49,6 @@ long
 Test_impl::op_b2(const long p1, long& p2, long& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b2(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -65,8 +58,6 @@ unsigned short
 Test_impl::op_b3(const unsigned short p1, unsigned short& p2, unsigned short& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b3(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -76,8 +67,6 @@ unsigned long
 Test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsigned long& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b4(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -87,8 +76,6 @@ float
 Test_impl::op_b5(const float p1, float& p2, float& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b5(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -98,8 +85,6 @@ double
 Test_impl::op_b6(const double p1, double& p2, double& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b6(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -109,8 +94,6 @@ char
 Test_impl::op_b7(const char p1, char& p2, char& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b7(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -120,8 +103,6 @@ std::string
 Test_impl::op_b8(const std::string& p1, std::string& p2, std::string& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b8(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -131,8 +112,6 @@ bool
 Test_impl::op_b9(const bool p1, bool& p2, bool& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b9(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3 && p1;
@@ -142,8 +121,6 @@ unsigned char
 Test_impl::op_b10(const unsigned char p1, unsigned char& p2, unsigned char& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_b10(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -153,8 +130,6 @@ time_t
 Test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_u1(p1, p2, p3)");
-  
   p3=p2;
   p2=p1;
   return p3+p1;
@@ -164,8 +139,6 @@ Color
 Test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_u2(p1, p2, p3)");
-
   p3=p2;
   p2=p1;
   return p1;
@@ -175,8 +148,6 @@ Pair
 Test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_u3(p1, p2, p3)");
-
   Pair r;
   r.key = p1.key + p2.key;
   r.value = p1.value + p2.value;
@@ -189,8 +160,6 @@ Map
 Test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_u4(p1, p2, p3)");
-
   Map r;
   for(unsigned int i=0;i<p1.size();i++) {
     Pair p;
@@ -208,8 +177,6 @@ Test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2,
 		     SmartPtr<Console>& p3)
   throw (::Components::ccm::local::CCMException)
 {
-  DEBUGNL(" Test_impl->op_i1(p1, p2, p3)");
-
   MyObject* my_object3 = new MyObject;
   p3 = SmartPtr<Console>(my_object3);
   p3->prompt(p2->prompt());
@@ -228,7 +195,6 @@ void
 Test_impl::set_session_context ( Components::ccm::local::SessionContext* context )
   throw ( ::Components::ccm::local::CCMException )
 {
-  DEBUGNL ( " Test_impl->set_session_context (  )" );
   ctx = dynamic_cast<CCM_Test_Context*> ( context );
 }
 
@@ -236,21 +202,18 @@ void
 Test_impl::ccm_activate (  )
   throw ( ::Components::ccm::local::CCMException )
 {
-  DEBUGNL ( " Test_impl->ccm_activate (  )" );
 }
 
 void
 Test_impl::ccm_passivate (  )
   throw ( ::Components::ccm::local::CCMException )
 {
-  DEBUGNL ( " Test_impl->ccm_passivate (  )" );
 }
 
 void
 Test_impl::ccm_remove (  )
   throw ( ::Components::ccm::local::CCMException )
 {
-  DEBUGNL ( " Test_impl->ccm_remove (  )" );
 }
 
 } // /namespace local

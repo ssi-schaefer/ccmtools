@@ -14,7 +14,7 @@
 #ifdef HAVE_MICO 
 
 #include <wamas/platform/utils/smartptr.h>
-#include <wamas/platform/utils/debug.h> 
+
 #include <CCM/CCMContainer.h>
 
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
@@ -97,8 +97,6 @@ class %(Identifier)s_impl :
 
 #ifdef HAVE_MICO  
 
-%(CorbaDebugInclude)s
-
 #include <ccm/remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
@@ -115,16 +113,11 @@ using namespace wamas::platform::utils;
     SmartPtr<CCM::SessionContainer> c)
     : local_adapter(la), ccm_container (c)
 {
-    LDEBUGNL(CCM_CONTAINER, "+%(Identifier)s_impl::%(Identifier)s_impl()");
-
 %(MProvidesDefAdapterVariableInit)s
 }
 
 %(Identifier)s_impl::~%(Identifier)s_impl ()
 {
-    LDEBUGNL(CCM_CONTAINER, "-%(Identifier)s_impl::~%(Identifier)s_impl()");
-    // Smart pointer local_adapter goes out of scope 
-    // local_context is deleted by the local component
 }
 
 
@@ -163,8 +156,6 @@ using namespace wamas::platform::utils;
 CORBA::Object_ptr
 %(Identifier)s_impl::provide_facet(const char* name)
 {
-    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::provide_facet()");
-
 %(MProvidesDefNavigationFacet)s
     throw Components::InvalidName();
     return CORBA::Object::_nil ();
@@ -178,7 +169,6 @@ CORBA::Object_ptr
 Components::Cookie*
 %(Identifier)s_impl::connect(const char* name, CORBA::Object_ptr ref)
 {
-    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::connect()");
 %(MUsesDefReceptacleConnect)s
     throw Components::InvalidName();
     return new CCM::Cookie_impl;
@@ -187,7 +177,6 @@ Components::Cookie*
 void
 %(Identifier)s_impl::disconnect(const char* name, Components::Cookie* _ck)
 {
-    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::disconnect()");
 %(MUsesDefReceptacleDisconnect)s
     throw Components::InvalidName();
 }
@@ -200,14 +189,12 @@ void
 Components::CCMHome_ptr
 %(Identifier)s_impl::get_ccm_home()
 {
-    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::get_ccm_home()");
     return ccm_container->get_reference_for_home();
 }
 
 void
 %(Identifier)s_impl::configuration_complete()
 {
-    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::configuration_complete()");
     ccm_container->configuration_complete (this); 
     local_adapter->configuration_complete();
 }
@@ -215,7 +202,6 @@ void
 void
 %(Identifier)s_impl::remove()
 {
-    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::remove()");
     local_adapter->remove();
     Components::CCMHome_var myhome = get_ccm_home ();
     Components::CCMObject_var myself = ccm_container->get_reference_for_component (this);
@@ -230,7 +216,6 @@ void
 CORBA::Object_ptr
 %(Identifier)s_impl::_get_component()
 {
-    LDEBUGNL(CCM_CONTAINER, " %(Identifier)s_impl::_get_component()");
     return ccm_container->get_reference_for_component (this);
 }
 

@@ -13,7 +13,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "Test_my_facet_impl.h"
 

@@ -15,7 +15,6 @@
 #include <iostream>
 #include <cmath>
 
-#include <wamas/platform/utils/debug.h>
 #include <wamas/platform/utils/smartptr.h>
 
 #include <Components/ccm/local/CCM.h>

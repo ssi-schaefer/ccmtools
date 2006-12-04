@@ -53,20 +53,20 @@ public class PdlAnyMapping
         return code.toString();
     }
 
-    public String getDebugCode(MAliasDef alias)
-    {
-        StringBuffer code = new StringBuffer();
-        code.append("#ifdef WXDEBUG\n");
-        code.append("inline\n");
-        code.append("std::string\n");
-        code.append("ccmDebug(const ").append(getPdlType().getPdlName()).append("& in, int indent = 0)\n");
-        code.append("{\n");
-        code.append("    std::ostringstream os;\n");
-        code.append("    os << \"").append(getPdlType().getPdlName());
-        code.append(" (alias ").append(getPdlType().getCName()).append(")\";\n");
-        code.append("    return os.str();\n");
-        code.append("}\n");
-        code.append("#endif // WXDEBUG\n");
-        return code.toString();
-    }
+//    public String getDebugCode(MAliasDef alias)
+//    {
+//        StringBuffer code = new StringBuffer();
+//        code.append("#ifdef WXDEBUG\n");
+//        code.append("inline\n");
+//        code.append("std::string\n");
+//        code.append("ccmDebug(const ").append(getPdlType().getPdlName()).append("& in, int indent = 0)\n");
+//        code.append("{\n");
+//        code.append("    std::ostringstream os;\n");
+//        code.append("    os << \"").append(getPdlType().getPdlName());
+//        code.append(" (alias ").append(getPdlType().getCName()).append(")\";\n");
+//        code.append("    return os.str();\n");
+//        code.append("}\n");
+//        code.append("#endif // WXDEBUG\n");
+//        return code.toString();
+//    }
 }

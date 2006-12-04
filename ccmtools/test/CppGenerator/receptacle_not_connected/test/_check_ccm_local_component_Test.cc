@@ -9,18 +9,11 @@
  * All component ports will be connected to the mirror component's ports. 
  * Additionally, developers can add some testing code to validate supported
  * interfaces as well as component attribute access.
- *
- * To enable debug output use -DWXDEBUG compiler flag and set the
- * WX_DEBUG_LEVELS environment variable to "CCM_LOCAL"
- * (e.g. export WX_DEBUG_LEVELS="CCM_LOCAL").
- *
- * To enable DbC adapter use -DCCM_USE_DBC compiler flag.
  ***/
 
 #include <cassert>
 #include <iostream>
 
-#include <wamas/platform/Utils/debug.h>
 #include <wamas/platform/Utils/smartptr.h>
 
 #include <ccm/local/Components/CCM.h>
@@ -56,11 +49,7 @@ int main(int argc, char *argv[])
     int error = 0;
     Components::HomeFinder* homeFinder;
     homeFinder = HomeFinder::Instance();
-#ifdef CCM_USE_DBC
-    error  = deploy_dbc_ccm_local_component_Test_TestHome("TestHome", false);
-#else
     error  = deploy_ccm_local_component_Test_TestHome("TestHome");
-#endif
     error += deploy_ccm_local_component_Test_mirror_TestHome_mirror("TestHome_mirror");	
     if(error) {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -114,14 +103,6 @@ int main(int argc, char *argv[])
              << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(ccm::OCL::OclException& e)
-    {
-        cout << "DEPLOYMENT ERROR: 'design by contract' error:" 
-             << endl << e.what();
-        error = -1;
-    }
-#endif
     catch ( ... )  {
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         error = -1;
@@ -144,13 +125,6 @@ int main(int argc, char *argv[])
         cout << "TEST: function not implemented: " << e.what (  ) << endl;
         error = -1;
     }
-#ifdef CCM_USE_DBC
-    catch(ccm::OCL::OclException& e)
-    {
-        cout << "TEST: 'design by contract' error:" << endl << e.what();
-        error = -1;
-    }
-#endif
     catch(...) {
         cout << "TEST: there is something wrong!" << endl;
         error = -1;

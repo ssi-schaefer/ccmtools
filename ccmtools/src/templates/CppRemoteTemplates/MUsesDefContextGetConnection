@@ -1,7 +1,6 @@
 SmartPtr<CCM_Local::%(CCM_UsesType)s> 
 CCM_%(ComponentType)s_Context_impl::get_connection_%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER, " CCM_%(ComponentType)s_Context_impl->get_connection_%(Identifier)s()");
     return %(Identifier)s_adapter;
 }
 

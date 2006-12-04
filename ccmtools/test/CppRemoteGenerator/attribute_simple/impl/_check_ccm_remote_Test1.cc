@@ -16,14 +16,14 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <wamas/platform/utils/debug.h>
+
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <world/europe/austria/ccm/remote/TestHome_remote.h>
-#include <world_europe_austria_Test.h>
+#include <ccm/remote/TestHome_remote.h>
+#include <Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -50,8 +50,8 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_world_europe_austria_ccm_local_TestHome("TestHome");
-    error += deploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += deploy_ccm_local_TestHome("TestHome");
+    error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
     if(!error) {
         cout << "TestHome server is running..." << endl;
     }
@@ -76,10 +76,10 @@ int main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    world::europe::austria::TestHome_var myTestHome = world::europe::austria::TestHome::_narrow (obj);
+    TestHome_var myTestHome = TestHome::_narrow (obj);
 
     // Create component instances
-    world::europe::austria::Test_var myTest = myTestHome->create();
+    Test_var myTest = myTestHome->create();
 
     // Provide facets   
 
@@ -99,15 +99,16 @@ int main (int argc, char *argv[])
     // Destroy component instances
     myTest->remove();
 
-    // Un-Deployment
-	error = 0;
-    error += undeploy_world_europe_austria_ccm_local_TestHome("TestHome");
-    error += undeploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
+    // Un-Deployment    
+    error = 0;
+    error += undeploy_ccm_local_TestHome("TestHome");
+    error += undeploy_ccm_remote_TestHome(orb, "TestHome:1.0");
     if(error) 
     {
-        cerr << "ERROR: Can't deploy components!" << endl;
+        cerr << "ERROR: Can't undeploy components!" << endl;
         return -1;
     }
+        
     cout << "Exit C++ remote test client" << endl; 	
 }
 

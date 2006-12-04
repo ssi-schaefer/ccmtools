@@ -11,14 +11,15 @@
 class %(Identifier)s_impl
   : public %(CCMProvidesType)s
 {
-  private:
-    CCM_%(ComponentType)s_impl* component;
-
   public:
     %(Identifier)s_impl(CCM_%(ComponentType)s_impl* component_impl);
     virtual ~%(Identifier)s_impl();
+
 %(MAttributeProvidesPrototype)s
 %(MOperationProvidesPrototype)s
+
+  private:
+    CCM_%(ComponentType)s_impl* component;
 };
 
 

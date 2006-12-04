@@ -13,7 +13,7 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
+
 #include <wamas/platform/utils/value_simple.h>
 
 #include "Test_test_impl.h"

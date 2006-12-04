@@ -13,7 +13,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "TestMirror_impl.h"
 
@@ -62,7 +61,6 @@ TestMirror_impl::ccm_activate()
 	     << e.info[0].code << ", " 
 	     << e.info[0].message << ")" 
 	     << endl;
-      LDEBUGNL(CCM_LOCAL, ccmDebug(e));
     }
     
     try {
@@ -72,7 +70,6 @@ TestMirror_impl::ccm_activate()
     }
     catch(SuperError& e) {
       cout << "OK: super_error exception catched!" << endl;
-      LDEBUGNL(CCM_LOCAL, ccmDebug(e));
     }
   
     try {
@@ -86,7 +83,6 @@ TestMirror_impl::ccm_activate()
     }
     catch(FatalError& e) {
       cout << "OK: fatal_error exception catched!" << endl;
-      LDEBUGNL(CCM_LOCAL, ccmDebug(e));
     }
 }
 

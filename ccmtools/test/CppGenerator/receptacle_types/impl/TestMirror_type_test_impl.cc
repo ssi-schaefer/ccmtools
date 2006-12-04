@@ -12,7 +12,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "MyObject.h"
 #include "TestMirror_type_test_impl.h"

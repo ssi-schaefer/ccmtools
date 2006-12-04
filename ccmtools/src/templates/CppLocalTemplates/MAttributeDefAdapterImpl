@@ -2,8 +2,6 @@ const %(LanguageType)s
 %(InterfaceIdentifier)sAdapter::%(Identifier)s() const 
     throw(::Components::ccm::local::CCMException)
 {
-    LDEBUGNL(CCM_LOCAL, " %(InterfaceIdentifier)sAdapter::%(Identifier)s() = " 
-             << ::%(DebugNamespace)s::ccmDebug(facet_->%(Identifier)s()));
     if(!validConnection()) 
         throw ::Components::ccm::local::InvalidConnection();
     return facet_->%(Identifier)s();
@@ -13,8 +11,6 @@ void
 %(InterfaceIdentifier)sAdapter::%(Identifier)s(const %(LanguageType)s value)  
     throw(::Components::ccm::local::CCMException)
 {
-    LDEBUGNL(CCM_LOCAL, " %(InterfaceIdentifier)sAdapter::%(Identifier)s(" 
-             << ::%(DebugNamespace)s::ccmDebug(value) << ")");
     if(!validConnection()) 
         throw ::Components::ccm::local::InvalidConnection();
     facet_->%(Identifier)s(value);

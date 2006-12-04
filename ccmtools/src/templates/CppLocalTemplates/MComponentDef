@@ -155,10 +155,6 @@ class CCM_%(Identifier)s_Context_impl
 #include <config.h>
 #endif
 
-#ifdef WXDEBUG
-#include <ccm/local/Debug.h>
-#endif /* WXDEBUG */
-
 %(MProvidesDefAdapterInclude)s
 
 #include "%(Identifier)s_gen.h"
@@ -174,7 +170,6 @@ using namespace wamas::platform::utils;
 
 %(Identifier)s::%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s()");
     home_local_adapter = NULL;
     local_component = NULL;
     context = NULL;
@@ -192,7 +187,6 @@ using namespace wamas::platform::utils;
     local_component(lc), 
     assembly(a)
 {
-    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)s()");
     context = NULL; 
     ValidConnection = true;
 %(MProvidesDefAdapterVariableInit)s
@@ -201,7 +195,6 @@ using namespace wamas::platform::utils;
 
 %(Identifier)s::~%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER,"~%(Identifier)s()");
     delete context;
     delete local_component;
     %(MProvidesDefAdapterVariableDestroy)s
@@ -217,7 +210,6 @@ wamas::platform::utils::SmartPtr< ::Components::ccm::local::Object>
 %(Identifier)s::provide_facet(const std::string& name)
     throw(::Components::ccm::local::InvalidName)
 {
-    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::provide_facet(" << name << " )");
 %(MProvidesDefProvideFacet)s
     throw ::Components::ccm::local::InvalidName();
 }
@@ -233,7 +225,6 @@ wamas::platform::utils::SmartPtr< ::Components::ccm::local::Object>
           ::Components::ccm::local::AlreadyConnected, 
           ::Components::ccm::local::ExceededConnectionLimit)
 {
-    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::connect ( " << name << " )");
 %(MUsesDefConnectFacet)s
     throw ::Components::ccm::local::InvalidName();
 }
@@ -246,7 +237,6 @@ void
           ::Components::ccm::local::CookieRequired, 
           ::Components::ccm::local::NoConnection )
 {
-    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::disconnect ( " << name << " )");
     if(!ValidConnection) 
         throw ::Components::ccm::local::InvalidConnection();
 
@@ -260,7 +250,6 @@ void
 ::Components::ccm::local::HomeExecutorBase*
 %(Identifier)s::get_ccm_home (  )
 {
-    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::get_ccm_home()");
     throw ::Components::ccm::local::NotImplemented();
 }
 
@@ -269,7 +258,6 @@ void
 %(Identifier)s::configuration_complete()
     throw(::Components::ccm::local::InvalidConfiguration)
 {
-    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::configuration_complete()");
     configuration_complete(new CCM_%(Identifier)s_Context_impl(this));
 }
 
@@ -278,7 +266,6 @@ void
 %(Identifier)s::configuration_complete(CCM_%(Identifier)s_Context* ctx)
     throw(::Components::ccm::local::InvalidConfiguration)
 {
-    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::configuration_complete()");
     if(!ValidConnection) 
         throw ::Components::ccm::local::InvalidConnection();
     if(!context)
@@ -295,7 +282,6 @@ void
 %(Identifier)s::remove()
     throw(::Components::ccm::local::RemoveFailure)
 {
-    LDEBUGNL(CCM_CONTAINER," %(Identifier)s::remove()");
     if(!ValidConnection) 
         throw ::Components::ccm::local::InvalidConnection();
     local_component->ccm_remove();
@@ -318,12 +304,10 @@ void
 CCM_%(Identifier)s_Context_impl::CCM_%(Identifier)s_Context_impl(%(Identifier)s* c)
     : component_local_adapter(c)
 {
-    LDEBUGNL(CCM_CONTAINER,"+CCM_%(Identifier)s_Context_impl::CCM_%(Identifier)s_Context_impl()");
 }
 
 CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
 {
-    LDEBUGNL(CCM_CONTAINER,"-CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()");
 }
 
 %(MUsesDefGetConnectionCtxImplDefinition)s
@@ -331,7 +315,6 @@ CCM_%(Identifier)s_Context_impl::~CCM_%(Identifier)s_Context_impl()
 ::Components::ccm::local::HomeExecutorBase*
 CCM_%(Identifier)s_Context_impl::get_CCM_home()
 {
-    LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_home()");
     throw ::Components::ccm::local::NotImplemented();
 }
 
@@ -339,7 +322,6 @@ CCM_%(Identifier)s_Context_impl::get_CCM_home()
 CCM_%(Identifier)s_Context_impl::get_CCM_object()
     throw(::Components::ccm::local::IllegalState)
 {
-    LDEBUGNL(CCM_CONTAINER," CCM_%(Identifier)s_Context_impl::get_CCM_object()");
     throw ::Components::ccm::local::NotImplemented();
 }
 

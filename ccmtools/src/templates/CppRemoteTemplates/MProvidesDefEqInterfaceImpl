@@ -2,7 +2,6 @@
 ::%(IdlProvidesType)s_ptr 
 %(ComponentType)s_impl::provide_%(Identifier)s()
 {
-    LDEBUGNL(CCM_CONTAINER, " %(ComponentType)s_impl::provide_%(Identifier)s()");
     if (%(Identifier)s_facet_adapter == 0) {
     	wamas::platform::utils::SmartPtr<%(ProvidesType)s> 
     	    localFacetAdapter = local_adapter->provide_%(Identifier)s();

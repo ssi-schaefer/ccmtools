@@ -7,8 +7,6 @@
 #ifndef __ENUM_%(PreprocIdentifier)s__H__
 #define __ENUM_%(PreprocIdentifier)s__H__
 
-%(DebugInclude)s
-
 %(OpenNamespace)s
 
 enum %(Identifier)s
@@ -16,24 +14,7 @@ enum %(Identifier)s
 %(Members)s
 };
 
-#ifdef WXDEBUG
-inline
-std::string 
-ccmDebug(const %(Identifier)s& in, int indent = 0)
-{
-    std::ostringstream os;
-    os << ::ccm::local::doIndent(indent);
-    switch(in) { 
-%(MembersDebug)s
-    }
-    os << ":%(Identifier)s";
-    return os.str();
-}
-#endif
-
 %(CloseNamespace)s
 
 #endif // __ENUM_%(PreprocIdentifier)s__H__
-
-
 

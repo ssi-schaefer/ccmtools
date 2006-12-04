@@ -12,13 +12,11 @@ using namespace wamas::platform::utils;
 Assembly::Assembly()
 	: state_ (Components::ccm::local::INACTIVE)
 {
-  DEBUGNL("+Assembly::Assembly()");
 }
 
 
 Assembly::~Assembly()
 {
-  DEBUGNL("-Assembly::Assembly()");
 }
 
 
@@ -26,7 +24,6 @@ void
 Assembly::build()
   throw (Components::ccm::local::CreateFailure)
 {
-  DEBUGNL("+Assembly::build()");
   throw Components::ccm::local::CreateFailure();
 }
 
@@ -35,8 +32,6 @@ void
 Assembly::build(SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
   throw (Components::ccm::local::CreateFailure)
 {
-  DEBUGNL("+Assembly::build(wamas::platform::utils::SmartPtr<Components::"
-	  "CCMObject> facadeComponent)");
   int error = 0;
   Components::ccm::local::HomeFinder* homeFinder;
   homeFinder = HomeFinder::Instance ();
@@ -97,7 +92,6 @@ Assembly::build(SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
 void
 Assembly::configuration_complete()
 {
-  DEBUGNL("+StocktakeAssembly::configuration_complete()");
   basicTest->configuration_complete();
   userTest->configuration_complete();
 }
@@ -107,7 +101,6 @@ void
 Assembly::tear_down()
 	  throw (Components::ccm::local::RemoveFailure)
 {
-  DEBUGNL("+StocktakeAssembly::tear_down()");
   int error = 0;
   try {
     // disconnect components
@@ -119,16 +112,16 @@ Assembly::tear_down()
     userTest->remove();
   }
   catch (Components::ccm::local::HomeNotFound) {
-    cout << "TEARDOWN ERROR: can't find a home!" << endl;
+    cerr << "TEARDOWN ERROR: can't find a home!" << endl;
     error = -1;
   }
   catch (Components::ccm::local::NotImplemented& e) {
-    cout << "TEARDOWN ERROR: function not implemented: " << e.what()
+    cerr << "TEARDOWN ERROR: function not implemented: " << e.what()
 	 << endl;
     error = -1;
   }
   catch (...) {
-    cout << "TEARDOWN ERROR: there is something going wrong!" << endl;
+    cerr << "TEARDOWN ERROR: there is something going wrong!" << endl;
     error = -1;
   }
   

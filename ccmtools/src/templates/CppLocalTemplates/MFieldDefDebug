@@ -1,4 +1,0 @@
-    os << ::ccm::local::doIndent(indent+1) << "%(Identifier)s(" 
-       << ::%(DebugNamespace)s::ccmDebug(in.%(Identifier)s) 
-       << ")" << std::endl; 
-

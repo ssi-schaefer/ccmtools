@@ -9,8 +9,6 @@
 
 #include <Components/ccm/local/CCM.h>
 
-%(DebugInclude)s
-
 %(MFieldDefInclude)s
 
 %(OpenNamespace)s
@@ -28,21 +26,6 @@ class %(Identifier)s
     virtual ~%(Identifier)s() throw()
     {}
 };
-
-
-#ifdef WXDEBUG
-inline
-std::string 
-ccmDebug(const %(Identifier)s& in, int indent = 0)
-{
-    std::ostringstream os;
-    os << ::ccm::local::doIndent(indent) << "exception %(Identifier)s" << std::endl;
-    os << ::ccm::local::doIndent(indent) << "{" << std::endl;
-%(MFieldDefDebug)s
-    os << ::ccm::local::doIndent(indent) << "}";
-    return os.str();
-}
-#endif
 
 %(CloseNamespace)s
 

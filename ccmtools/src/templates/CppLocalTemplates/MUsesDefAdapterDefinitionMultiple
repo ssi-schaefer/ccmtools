@@ -3,7 +3,6 @@
     throw(::Components::ccm::local::ExceededConnectionLimit, 
           ::Components::ccm::local::InvalidConnection)
 {
-    LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::connect_%(Identifier)s()");
     if(!ValidConnection) 
         throw ::Components::ccm::local::InvalidConnection();
     stringstream s;
@@ -18,7 +17,6 @@ SmartPtr<%(UsesType)s>
 %(ComponentType)s::disconnect_%(Identifier)s(::Components::ccm::local::Cookie ck)
     throw(::Components::ccm::local::InvalidConnection)
 {
-    LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::disconnect_%(Identifier)s()");
     if(!ValidConnection) 
         throw ::Components::ccm::local::InvalidConnection();
     if(%(Identifier)s_receptacles.find(ck) != %(Identifier)s_receptacles.end()) {
@@ -33,7 +31,6 @@ SmartPtr<%(UsesType)s>
 %(Identifier)sConnections&
 %(ComponentType)s::get_connections_%(Identifier)s (  )
 {
-    LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::get_connections_%(Identifier)s()" );
     if(!ValidConnection) 
         throw ::Components::ccm::local::InvalidConnection();
     return %(Identifier)s_receptacles;

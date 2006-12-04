@@ -13,10 +13,8 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "TestMirror_a_receptacle_impl.h"
-
 
 namespace ccm {
 namespace local {

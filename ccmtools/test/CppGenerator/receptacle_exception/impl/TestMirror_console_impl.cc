@@ -12,7 +12,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "TestMirror_console_impl.h"
 

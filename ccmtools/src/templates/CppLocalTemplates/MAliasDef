@@ -11,8 +11,6 @@
 #ifndef __ALIAS_%(PreprocIdentifier)s__H__
 #define __ALIAS_%(PreprocIdentifier)s__H__
 
-%(DebugInclude)s
-
 %(TypedefInclude)s
 
 using namespace std;
@@ -20,8 +18,6 @@ using namespace std;
 %(OpenNamespace)s
 
 %(TypedefDefinition)s
-
-%(TypedefDebug)s
 
 %(CloseNamespace)s
 

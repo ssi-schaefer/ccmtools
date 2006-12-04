@@ -2,8 +2,6 @@ const %(LocalAttributeType)s
 %(InterfaceType)sAdapterToCorba::%(Identifier)s() const
     throw(::Components::ccm::local::CCMException)
 {
-    LDEBUGNL(CCM_REMOTE, " %(Object)sAdapterToCorba->%(Identifier)s()");
-    
 %(ConvertInterfaceGetAttributeToCorba)s    
 }
 
@@ -11,8 +9,6 @@ void
 %(InterfaceType)sAdapterToCorba::%(Identifier)s(const %(LocalAttributeType)s value)  
     throw(::Components::ccm::local::CCMException)
 {
-    LDEBUGNL(CCM_REMOTE, " %(Object)sAdapterToCorba->%(Identifier)s(value)");
-
 %(ConvertInterfaceSetAttributeToCorba)s  
 }
 

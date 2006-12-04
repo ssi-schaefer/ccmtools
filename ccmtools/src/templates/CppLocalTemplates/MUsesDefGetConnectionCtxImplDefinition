@@ -2,7 +2,6 @@ SmartPtr<%(CCMUsesType)s>
 CCM_%(ComponentType)s_Context_impl::get_connection_%(Identifier)s()
     throw(::Components::ccm::local::NoConnection)
 {
-    LDEBUGNL(CCM_CONTAINER," CCM_%(ComponentType)s_Context_impl::get_connection_%(Identifier)s()");
     SmartPtr< %(UsesType)s> r = component_local_adapter->get_connection_%(Identifier)s(); 
     return ( SmartPtr< %(CCMUsesType)s>(dynamic_cast< %(CCMUsesType)s*>(r.ptr())));
 }

@@ -2,8 +2,6 @@
 #ifndef ASSEMBLY_H
 #define ASSEMBLY_H
 
-
-#include <wamas/platform/utils/debug.h>
 #include <wamas/platform/utils/smartptr.h>
 
 #include <Components/ccm/local/CCM.h>

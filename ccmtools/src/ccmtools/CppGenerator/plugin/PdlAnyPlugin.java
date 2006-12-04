@@ -47,10 +47,10 @@ public class PdlAnyPlugin
 		{
 			code = findMapping(identifier).getDefinitionCode(alias);
 		}
-		else if(tag.equals("TypedefDebug"))
-		{
-			code = findMapping(identifier).getDebugCode(alias);
-		}
+//		else if(tag.equals("TypedefDebug"))
+//		{
+//			code = findMapping(identifier).getDebugCode(alias);
+//		}
 		else
 		{
 			throw new RuntimeException("Unknown Tag: " + tag + " !");

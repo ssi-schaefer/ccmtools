@@ -9,6 +9,7 @@
 #define __FACET__ccm_local_inVoidType__H__
 
 #include <ccm/local/VoidTypeInterface.h>
+
 #include "Test_impl.h"
 
 namespace ccm {

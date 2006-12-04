@@ -13,7 +13,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "SuperTestMirror_impl.h"
 #include "SuperTestMirror_innerBasicType_impl.h"

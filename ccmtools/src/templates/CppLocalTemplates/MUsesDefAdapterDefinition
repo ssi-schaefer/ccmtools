@@ -3,7 +3,6 @@ void
   	throw(::Components::ccm::local::AlreadyConnected, 
   	      ::Components::ccm::local::InvalidConnection)
 {
-  	LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::connect_%(Identifier)s()");
   	if(!ValidConnection) 
   		throw ::Components::ccm::local::InvalidConnection();
   	if(%(Identifier)s_receptacle) 
@@ -16,7 +15,6 @@ SmartPtr<%(UsesType)s>
 %(ComponentType)s::disconnect_%(Identifier)s()
   	throw(::Components::ccm::local::NoConnection)
 {
-  	LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::disconnect_%(Identifier)s()" );
   	if(!ValidConnection) throw 
   		::Components::ccm::local::InvalidConnection();
   	if(!%(Identifier)s_receptacle) 
@@ -30,7 +28,6 @@ SmartPtr<%(UsesType)s>
 %(ComponentType)s::get_connection_%(Identifier)s()
 	throw(::Components::ccm::local::NoConnection)
 {
-  	LDEBUGNL(CCM_CONTAINER," %(ComponentType)s::get_connection_%(Identifier)s()");
   	if(!ValidConnection) 
   		throw ::Components::ccm::local::InvalidConnection();
   	if(%(Identifier)s_receptacle == SmartPtr<%(CCMUsesType)s>())

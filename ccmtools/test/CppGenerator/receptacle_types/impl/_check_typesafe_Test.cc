@@ -17,7 +17,6 @@
 #include <cassert>
 #include <iostream>
 
-#include <wamas/platform/utils/debug.h>
 #include <wamas/platform/utils/smartptr.h>
 
 #include <ccm/local/Components/CCM.h>

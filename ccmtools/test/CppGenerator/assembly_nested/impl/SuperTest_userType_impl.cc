@@ -14,7 +14,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "SuperTest_userType_impl.h"
 

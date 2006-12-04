@@ -9,6 +9,7 @@
 #define __FACET__world_europe_austria_ccm_local_voidType__H__
 
 #include <world/europe/austria/ccm/local/VoidTypeInterface.h>
+
 #include "Test_impl.h"
 
 namespace world {

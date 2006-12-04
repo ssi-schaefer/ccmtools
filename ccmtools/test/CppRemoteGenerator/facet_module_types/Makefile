@@ -33,7 +33,12 @@ remote: local stubs
 	ccmtools c++remote-test -o ${DEST_DIR}/src/component/Test Test.idl
 
 check: 
+	cp impl/Test_basicType_impl.cc ${DEST_DIR}/src/component/Test/
+	cp impl/Test_userType_impl.cc ${DEST_DIR}/src/component/Test/
+	cp impl/Test_voidType_impl.h ${DEST_DIR}/src/component/Test/
+	cp impl/Test_voidType_impl.cc ${DEST_DIR}/src/component/Test/
 	cp impl/_check_world_europe_austria_ccm_remote_Test.cc ${DEST_DIR}/src/component/Test/test/
+	ccmconfix -confix2 -o ${DEST_DIR}/src -pname "remote_facet_module_types" -pversion "1.0.0"
 	confix2.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
 
 check_empty:

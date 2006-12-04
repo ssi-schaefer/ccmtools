@@ -16,7 +16,7 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <wamas/platform/utils/debug.h>
+
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
@@ -109,7 +109,6 @@ int main (int argc, char *argv[])
       cout << e.info[i].code << ": " 
            << e.info[i].message << endl;
       }
-      LDEBUGNL(CCM_REMOTE, ccm::remote::ccmDebug(e));
     }
 
     try {
@@ -118,7 +117,6 @@ int main (int argc, char *argv[])
     }
     catch(const ::SuperError& e) {
       cout << "SuperError" << endl;
-      LDEBUGNL(CCM_REMOTE, ccm::remote::ccmDebug(e));
     }
 
     try {
@@ -127,7 +125,6 @@ int main (int argc, char *argv[])
     }
     catch(const ::FatalError& e) {
       cout << e.what << endl;
-      LDEBUGNL(CCM_REMOTE, ccm::remote::ccmDebug(e));
     }
     cout << "==== End Test Case =====================================" << endl; 
 

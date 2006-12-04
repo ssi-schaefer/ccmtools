@@ -37,5 +37,3 @@ clean:
 	confix2.py --packageroot=`pwd`/xxx/src --make --targets=clean	
 	rm -rf xxx 
 
-
-

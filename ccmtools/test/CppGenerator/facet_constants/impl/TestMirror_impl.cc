@@ -15,8 +15,6 @@
 #include <iostream>
 #include <cmath>
 
-#include <wamas/platform/utils/debug.h>
-
 #include "TestMirror_impl.h"
 
 namespace ccm {

@@ -16,8 +16,6 @@
 #include <iostream>
 #include <cmath>
 
-#include <wamas/platform/utils/debug.h>
-
 #include "MyObject.h"
 #include "Test_impl.h"
 

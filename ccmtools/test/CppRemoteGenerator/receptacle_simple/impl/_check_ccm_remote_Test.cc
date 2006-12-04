@@ -16,7 +16,7 @@
 #include <cstdlib> 
 #include <iostream>
 #include <string>
-#include <wamas/platform/utils/debug.h>
+
 #include <CCM/CCMContainer.h>
 
 #include <CORBA.h>

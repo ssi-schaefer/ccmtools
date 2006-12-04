@@ -9,8 +9,6 @@
 
 #include <Components/ccm/local/CCM.h>
 
-%(DebugInclude)s
-
 %(InterfaceIncludes)s
 
 %(OpenNamespace)s
@@ -31,12 +29,6 @@ class %(Identifier)s
 %(MAttributeDefPrototypeVV)s
 
 %(MOperationDefPrototypeVV)s 
-
-  protected:
-     %(Identifier)s() {}
-  private:
-     %(Identifier)s(const %(Identifier)s&);
-     void operator=(const %(Identifier)s&);
 };
 
 
@@ -44,19 +36,9 @@ class %(Identifier)s
 class CCM_%(Identifier)s
   : virtual public %(Identifier)s
 {
+  public:
+    virtual ~CCM_%(Identifier)s() {}
 };
-
-
-#ifdef WXDEBUG
-inline
-std::string 
-ccmDebug(const wamas::platform::utils::SmartPtr<%(Identifier)s>& in, int indent = 0)
-{
-    std::ostringstream os;
-    os << ::ccm::local::doIndent(indent) << "object %(Identifier)s" << std::endl;
-    return os.str();
-}
-#endif // WXDEBUG
 
 %(CloseNamespace)s
 
@@ -134,8 +116,6 @@ class %(Identifier)sAdapter
 
 #include <wamas/platform/utils/debug.h>
 
-%(DebugInclude)s
-
 #include "%(Identifier)sAdapter.h"
  
 %(OpenNamespace)s
@@ -155,7 +135,6 @@ using namespace wamas::platform::utils;
 
 %(Identifier)sAdapter::%(Identifier)sAdapter()
 {
-    LDEBUGNL(CCM_CONTAINER,"+%(Identifier)sAdapter()");
     validConnection_ = false;
     facet_ = NULL;
 }
@@ -163,13 +142,11 @@ using namespace wamas::platform::utils;
 %(Identifier)sAdapter::%(Identifier)sAdapter(CCM_%(Identifier)s* f)
     : facet_(f)
 {
-    LDEBUGNL(CCM_CONTAINER,"+(Identifier)sAdapter()" );
     validConnection_ = true;
 }
 
 %(Identifier)sAdapter::~%(Identifier)sAdapter()
 {
-    LDEBUGNL(CCM_CONTAINER,"~%(Identifier)sAdapter()" );
 }
 
 %(BaseInterfaceAdapterAttributeImpl)s

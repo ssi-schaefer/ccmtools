@@ -28,12 +28,6 @@ check:
 	ccmconfix -confix2 -o ${DEST_DIR}/src -pname "remote_facet_module_simple" -pversion "1.0.0"
 	confix2.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
 
-check_server: 
-	cp impl/Test_my_facet_impl.cc ${DEST_DIR}/src/component/Test/
-	cp server/_check_world_ccm_remote_Test.cc ${DEST_DIR}/src/component/Test/test/
-	ccmconfix -confix2 -o ${DEST_DIR}/src -pname "remote_facet_module_simple" -pversion "1.0.0"
-	confix2.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check
-
 check_empty:
 	ccmconfix -confix2 -o ${DEST_DIR}/src -pname "remote_facet_module_simple" -pversion "1.0.0"
 	confix2.py --packageroot=`pwd`/xxx/src --bootstrap --configure --make --targets=check

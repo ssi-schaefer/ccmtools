@@ -12,10 +12,8 @@
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "TestMirror_console0_impl.h"
-
 
 namespace ccm {
 namespace local {

@@ -33,9 +33,6 @@ using namespace wamas::platform::utils;
 int
 main (int argc, char* argv[])
 {
-  Debug::set_global(true); 
-  DEBUGNL("%(Identifier)s_server::main()");
-
   // Init ORB and NameService
   CORBA::ORB_var orb = CORBA::ORB_init (argc, argv);
   CCM::register_all_factories (orb);

@@ -2,15 +2,11 @@
 FacetAdapter%(Object)s::%(Identifier)s(%(OperationParameterList)s)
 %(ExceptionThrows)s
 {
-    LDEBUGNL(CCM_LOCAL," FacetAdapter%(Object)s::%(Identifier)s(%(MParameterDefName)s)");
-%(DebugOperationInParameter)s
     if(!ValidConnection) 
         throw ::Components::ccm::local::InvalidConnection();
 
 %(OperationToFacetDelegation)s      
 
-%(DebugOperationOutParameter)s
-%(DebugOperationResult)s
 %(OperationResult)s
 }
 

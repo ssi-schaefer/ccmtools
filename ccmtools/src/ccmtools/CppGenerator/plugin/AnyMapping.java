@@ -20,5 +20,5 @@ public interface AnyMapping
 	
     String getIncludeCode(MAliasDef alias);
     String getDefinitionCode(MAliasDef alias);
-    String getDebugCode(MAliasDef alias);
+//    String getDebugCode(MAliasDef alias);
 }

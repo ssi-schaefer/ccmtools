@@ -11,8 +11,6 @@
 #ifndef __STRUCT__%(PreprocIdentifier)s__H__
 #define __STRUCT__%(PreprocIdentifier)s__H__
 
-%(DebugInclude)s
-
 %(MFieldDefInclude)s
 
 %(OpenNamespace)s
@@ -21,20 +19,6 @@ struct %(Identifier)s
 {
 %(MFieldDef)s
 };
-
-#ifdef WXDEBUG
-inline
-std::string 
-ccmDebug(const %(Identifier)s& in, int indent = 0)
-{
-    std::ostringstream os;
-    os << ::ccm::local::doIndent(indent) << "struct %(Identifier)s" << std::endl;
-    os << ::ccm::local::doIndent(indent) << "{" << std::endl;
-%(MFieldDefDebug)s
-    os << ::ccm::local::doIndent(indent) << "}";
-    return os.str();
-}
-#endif // WXDEBUG
 
 %(CloseNamespace)s
 
