@@ -15,10 +15,6 @@
 
 #include "Test_a_facet_impl.h"
 
-
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -100,6 +96,3 @@ Test_a_facet_impl::op1(const std::string& str)
     cout << str << endl;
     return str.length();
 }
-
-} // /namespace local
-} // /namespace ccm

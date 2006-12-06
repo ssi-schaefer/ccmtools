@@ -84,7 +84,7 @@
  */
  
 #include <wamas/platform/utils/smartptr.h>
-#include <wamas/platform/utils/debug.h> 
+
 #include <CCM/CCMContainer.h>
 #include <ccm/remote/PrimitiveConverter.h>
 

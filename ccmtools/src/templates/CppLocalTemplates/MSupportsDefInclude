@@ -1,2 +1,2 @@
-#include <%(SupportsInclude)sAdapter.h>
+#include <%(GenSupportsInclude)sAdapter.h>
 

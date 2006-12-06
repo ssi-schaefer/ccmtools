@@ -48,7 +48,6 @@ class %(ComponentType)s_%(Identifier)s_impl
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "%(ComponentType)s_%(Identifier)s_impl.h"
 

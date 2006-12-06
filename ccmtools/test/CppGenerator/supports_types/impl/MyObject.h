@@ -3,10 +3,10 @@
 #define __MY_OBJECT__H__
 
 #include <iostream>
-#include <ccm/local/Console.h>
+#include <Console.h>
 
 class MyObject 
-  : virtual public ccm::local::CCM_Console
+  : virtual public CCM_Console
 {
 public:
   MyObject();

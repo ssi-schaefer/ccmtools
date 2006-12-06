@@ -16,10 +16,6 @@
 
 #include "TestMirror_impl.h"
 
-
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -40,7 +36,7 @@ TestMirror_impl::set_session_context(
     Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_TestMirror_Context*>(context);
+    ctx = dynamic_cast<ccm::local::CCM_TestMirror_Context*>(context);
 }
 
 void
@@ -86,7 +82,4 @@ TestMirror_impl::ccm_remove()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
-
-} // /namespace local
-} // /namespace ccm
 

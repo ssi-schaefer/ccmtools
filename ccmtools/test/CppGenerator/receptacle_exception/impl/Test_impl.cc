@@ -16,9 +16,6 @@
 
 #include "Test_impl.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -39,7 +36,7 @@ Test_impl::set_session_context(
     Components::ccm::local::SessionContext* context)
     throw(Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -95,7 +92,4 @@ Test_impl::ccm_remove()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
-
-} // /namespace local
-} // /namespace ccm
 

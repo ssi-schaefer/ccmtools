@@ -21,11 +21,7 @@
 using namespace std;
 using namespace wamas::platform::utils;
 
-namespace ccm {
-namespace local {
-
-Test_test_impl::Test_test_impl(
-    ccm::local::Test_impl* component_impl)
+Test_test_impl::Test_test_impl(Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
@@ -48,11 +44,8 @@ throw(::Components::ccm::local::CCMException)
   	return p1;
 }
 
-ccm::local::AnyList
-Test_test_impl::op2(
-        const ccm::local::AnyList& p1,
-        ccm::local::AnyList& p2,
-        ccm::local::AnyList& p3)
+AnyList
+Test_test_impl::op2(const AnyList& p1, AnyList& p2, AnyList& p3)
 throw(::Components::ccm::local::CCMException)
 {
   	p3=p2;
@@ -60,11 +53,8 @@ throw(::Components::ccm::local::CCMException)
 	return p1;
 }
 
-ccm::local::Pair
-Test_test_impl::op3(
-        const ccm::local::Pair& p1,
-        ccm::local::Pair& p2,
-        ccm::local::Pair& p3)
+Pair
+Test_test_impl::op3(const Pair& p1, Pair& p2, Pair& p3)
 throw(::Components::ccm::local::CCMException)
 { 
   	p3=p2;
@@ -72,5 +62,3 @@ throw(::Components::ccm::local::CCMException)
 	return p1;
 }
 
-} // /namespace local
-} // /namespace ccm

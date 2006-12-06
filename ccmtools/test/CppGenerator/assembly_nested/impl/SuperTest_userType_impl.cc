@@ -20,9 +20,6 @@
 using namespace std;
 using namespace wamas::platform::utils;
 
-namespace ccm {
-namespace local {
-
 SuperTest_userType_impl::SuperTest_userType_impl(SuperTest_impl* component_impl)
   : component(component_impl)
 {
@@ -96,6 +93,3 @@ SuperTest_userType_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
       component->ctx->get_connection_innerUserType();
     return inner->f7(t1,t2,t3);
 }
-
-} // /namespace local
-} // /namespace ccm

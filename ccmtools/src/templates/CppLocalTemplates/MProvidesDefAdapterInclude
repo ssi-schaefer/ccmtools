@@ -1,3 +1,3 @@
-#include <%(ProvidesInclude)sAdapter.h> 
+#include <%(GenProvidesInclude)sAdapter.h> 
 
 

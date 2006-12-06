@@ -28,7 +28,7 @@ SmartPtr<%(UsesType)s>
         throw ::Components::ccm::local::InvalidConnection();
 }
 
-%(Identifier)sConnections&
+%(GenUsesName)sConnections&
 %(ComponentType)s::get_connections_%(Identifier)s (  )
 {
     if(!ValidConnection) 

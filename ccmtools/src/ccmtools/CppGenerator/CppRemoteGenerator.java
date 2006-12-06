@@ -172,8 +172,8 @@ public class CppRemoteGenerator
         logger = Logger.getLogger("ccm.generator.cpp.remote");
         logger.fine("begin");
 
-        baseNamespace.add("ccm");
-        baseNamespace.add("local");
+        cxxNamespace.add("ccm");
+        cxxNamespace.add("local");
 
         remoteNamespace = new ArrayList();
         remoteNamespace.add("ccm");
@@ -223,12 +223,12 @@ public class CppRemoteGenerator
     
     protected String getLocalNamespace(MContained contained, String separator)
     {
-        return getLocalCppNamespace(contained, separator);
+        return getLocalCxxGenNamespace(contained, separator);
     }
     
     protected String getLocalName(MContained contained, String separator)
     {
-        return getLocalCppName(contained, separator);
+        return getLocalCxxGenName(contained, separator);
     }
     
 

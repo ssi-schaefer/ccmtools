@@ -16,9 +16,6 @@
 #include "Test_type_test_impl.h"
 #include "MyObject.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -210,7 +207,7 @@ Test_type_test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2,
     p3 = SmartPtr<Console>(my_object3);
     p3->prompt(p2->prompt());
     
-    string p1_prompt = "prompt1> ";  // BUG: p1->prompt(); const !!!
+    string p1_prompt = "prompt1> ";  
     p2->prompt(p1_prompt);
     
     MyObject* my_object4 = new MyObject;
@@ -220,5 +217,3 @@ Test_type_test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2,
     return result;
 }
 
-} // /namespace local
-} // /namespace ccm

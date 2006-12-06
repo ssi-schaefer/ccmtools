@@ -15,10 +15,6 @@
 
 #include "Test_console_impl.h"
 
-
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -58,6 +54,3 @@ Test_console_impl::println(const std::string& msg)
 
     return msg.length();
 }
-
-} // /namespace local
-} // /namespace ccm

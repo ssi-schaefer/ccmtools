@@ -16,8 +16,8 @@
 #include <wamas/platform/utils/smartptr.h>
 #include <Components/ccm/local/CCM.h>
 
-#include <%(SelfInclude)s_share.h>
-#include <%(HomeInclude)s_share.h>
+#include <%(GenComponentInclude)s_share.h>
+#include <%(GenHomeInclude)s_share.h>
 
 %(MAttributeDefInclude)s
 %(MConstantDefInclude)s
@@ -45,7 +45,7 @@ class %(Identifier)s
   public:
     %(Identifier)s();
     %(Identifier)s(%(HomeType)s* h, 
-        CCM_%(Identifier)s* lc,  
+        %(LocalGenNamespace)sCCM_%(Identifier)s* lc,  
         wamas::platform::utils::SmartPtr< ::Components::ccm::local::Assembly> a);
     virtual ~%(Identifier)s();
 
@@ -82,7 +82,7 @@ class %(Identifier)s
     void configuration_complete()
         throw(::Components::ccm::local::InvalidConfiguration);
 
-    void configuration_complete(CCM_%(Identifier)s_Context* ctx)
+    void configuration_complete(%(LocalGenNamespace)sCCM_%(Identifier)s_Context* ctx)
         throw(::Components::ccm::local::InvalidConfiguration);
 
     void remove()
@@ -90,8 +90,8 @@ class %(Identifier)s
  
    protected:
     %(HomeType)s* home_local_adapter;
-    CCM_%(Identifier)s* local_component;
-    CCM_%(Identifier)s_Context* context;
+    %(LocalGenNamespace)sCCM_%(Identifier)s* local_component;
+    %(LocalGenNamespace)sCCM_%(Identifier)s_Context* context;
     wamas::platform::utils::SmartPtr< ::Components::ccm::local::Assembly> assembly;
     bool ValidConnection;
 
@@ -108,7 +108,7 @@ class %(Identifier)s
 //==============================================================================
 
 class CCM_%(Identifier)s_Context_impl
-    : public CCM_%(Identifier)s_Context
+    : public %(LocalGenNamespace)sCCM_%(Identifier)s_Context
 {
   public:
     CCM_%(Identifier)s_Context_impl(%(Identifier)s* c);
@@ -149,7 +149,6 @@ class CCM_%(Identifier)s_Context_impl
 #include <cassert>
 #include <iostream>
 #include <sstream>
-#include <wamas/platform/utils/debug.h>
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -180,7 +179,7 @@ using namespace wamas::platform::utils;
 }
 
 %(Identifier)s::%(Identifier)s(%(HomeType)s* h, 
-    CCM_%(Identifier)s* lc,
+    %(LocalGenNamespace)sCCM_%(Identifier)s* lc,
     SmartPtr< ::Components::ccm::local::Assembly> a)
     : %(MSupportsDefAdapterConstructor)s
     home_local_adapter(h), 
@@ -263,7 +262,7 @@ void
 
 
 void
-%(Identifier)s::configuration_complete(CCM_%(Identifier)s_Context* ctx)
+%(Identifier)s::configuration_complete(%(LocalGenNamespace)sCCM_%(Identifier)s_Context* ctx)
     throw(::Components::ccm::local::InvalidConfiguration)
 {
     if(!ValidConnection) 
@@ -356,7 +355,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 %(BaseInclude)s
 %(MUsesDefInclude)s
 
-%(OpenNamespace)s
+%(OpenGenNamespace)s
 
 //==============================================================================
 // Component class
@@ -389,7 +388,7 @@ class CCM_%(Identifier)s_Context
 %(MUsesDefGetConnectionPrototypeVV)s
 };
 
-%(CloseNamespace)s
+%(CloseGenNamespace)s
 
 #endif // __COMPONENT_%(PreprocIdentifier)s_SHARE__H__
 
@@ -410,7 +409,7 @@ class CCM_%(Identifier)s_Context
 #ifndef __COMPONENT_%(PreprocIdentifier)s_IMPL__H__
 #define __COMPONENT_%(PreprocIdentifier)s_IMPL__H__
 
-#include <%(ComponentInclude)s/%(Identifier)s_share.h>
+#include <%(GenComponentInclude)s_share.h>
 
 %(OpenNamespace)s
 
@@ -427,14 +426,14 @@ class CCM_%(Identifier)s_Context
  * @version 
  **/
 class %(Identifier)s_impl
-    : virtual public CCM_%(Identifier)s%(BaseType)s
+    : virtual public %(LocalGenNamespace)sCCM_%(Identifier)s%(BaseType)s
 {
   private:
 %(MAttributeDefVariable)s
 %(MSupportsDefVariable)s
 
   public:
-    CCM_%(Identifier)s_Context* ctx;
+    %(LocalGenNamespace)sCCM_%(Identifier)s_Context* ctx;
 
     %(Identifier)s_impl();
     virtual ~%(Identifier)s_impl();
@@ -474,7 +473,6 @@ class %(Identifier)s_impl
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "%(Identifier)s_impl.h"
 %(MProvidesDefImplInclude)s
@@ -506,7 +504,7 @@ void
     ::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_%(Identifier)s_Context*>(context);
+    ctx = dynamic_cast<%(LocalGenNamespace)sCCM_%(Identifier)s_Context*>(context);
 }
 
 void

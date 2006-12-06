@@ -14,7 +14,6 @@
 #include <cassert>
 #include <iostream>
 
-#include <wamas/platform/utils/debug.h>
 #include <wamas/platform/utils/smartptr.h>
 #include <wamas/platform/utils/Value.h>
 #include <wamas/platform/utils/value_simple.h>
@@ -22,88 +21,36 @@
 #include <Components/ccm/local/CCM.h>
 #include <ccm/local/HomeFinder.h>
 
-#include <ccm/local/Test_gen.h>
-#include <ccm/local/TestHome_gen.h>
+#include <TestHome_gen.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
-using namespace ccm::local;
 
 int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr< ccm::local::Test> myTest;
-    SmartPtr<ccm::local::AnyTest> test;
-
-    // Component bootstrap:
-    // We get an instance of the local HomeFinder and register the deployed
-    // component- and mirror component home.
-    // Here we can also decide to use a Design by Contract component.  	
     int error = 0;
-    Components::ccm::local::HomeFinder* homeFinder = HomeFinder::Instance();
-    error  = deploy_ccm_local_TestHome("TestHome");             
+    error  = deploy_TestHome("TestHome");             
     if(error) 
     {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
         return(error);
     }
 
-    // Component deployment:
-    // We use the HomeFinder method find_home_by_name() to get a smart pointer 
-    // to a component home. From a component home, we get a smart pointer to a 
-    // component instance using the create() method.
-    // Component and mirror component are connected via provide_facet() and 
-    // connect() methods.
-    // The last step of deployment is to call configuration_complete() that 
-    // forces components to run the ccm_set_session_context() and ccm_activate() 
-    // callback methods.
     try 
     {
-        SmartPtr< ccm::local::TestHome> myTestHome(
-            dynamic_cast< ccm::local::TestHome*>
+		Components::ccm::local::HomeFinder* homeFinder = ccm::local::HomeFinder::Instance();
+	    SmartPtr<Test> myTest;
+    		SmartPtr<AnyTest> test;
+    		
+        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
             (homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
-
         test = myTest->provide_test();
-
         myTest->configuration_complete();
-    } 
-    catch(::Components::ccm::local::HomeNotFound ) 
-    {
-        cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
-        error = -1;
-    } 
-    catch(::Components::ccm::local::NotImplemented& e ) 
-    {
-        cout << "DEPLOYMENT ERROR: function not implemented: " 
-	     << e.what (  ) << endl;
-        error = -1;
-    }  
-    catch(::Components::ccm::local::InvalidName& e ) 
-    {
-        cout << "DEPLOYMENT ERROR: invalid name during connection: " 
-             << e.what (  ) << endl;
-        error = -1;
-    }
-    catch ( ... )  
-    {
-        cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
-        error = -1;
-    }
-    if (error < 0) 
-    {
-        return error;
-    }
-
-    // Component test:
-    // After component deployment, we can access components and their facets.
-    // Usually, the test cases for facets and receptacles are implemened in the
-    // mirror component. But for supported interfaces and component attributes, 
-    // we can realize test cases in the following section.
-    try 
-    {
+        
 		{	// any op1(in any p1, inout any p2, out any p3);		
 			SmartPtr<Value> p1(new ShortValue(11));
 			SmartPtr<Value> p2(new ShortValue(22));
@@ -175,48 +122,33 @@ int main(int argc, char *argv[])
 			LongValue* resultValue = dynamic_cast<LongValue*>(result.value.ptr());
 			assert(resultValue->value() == 1);
       	}
-    } 
-    catch(::Components::ccm::local::NotImplemented& e ) 
-    {
-        cout << "TEST: function not implemented: " << e.what (  ) << endl;
-        error = -1;
-    }
-    catch(...) 
-    {
-        cout << "TEST: there is something wrong!" << endl;
-        error = -1;
-    }
-    if(error < 0) 
-    	{
-		return error;
-    }
-  
 
-    // Component tear down:
-    // Finally, the component and mirror component instances are disconnected 
-    // and removed. Thus component homes can be undeployed.
-    try 
-    {
         myTest->remove();
     } 
     catch(::Components::ccm::local::HomeNotFound ) 
     {
-        cout << "TEARDOWN ERROR: can't find a home!" << endl;
-        error = -1;
+        cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
+        return -1;
     } 
     catch(::Components::ccm::local::NotImplemented& e ) 
     {
-        cout << "TEARDOWN ERROR: function not implemented: " 
+        cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
-        error = -1;
-    } 
-    catch(...) 
+        return -1;
+    }  
+    catch(::Components::ccm::local::InvalidName& e ) 
     {
-        cout << "TEARDOWN ERROR: there is something wrong!" << endl;
-        error = -1;
+        cout << "DEPLOYMENT ERROR: invalid name during connection: " 
+             << e.what (  ) << endl;
+        return -1;
     }
-    error += undeploy_ccm_local_TestHome("TestHome");
+    catch ( ... )  
+    {
+        cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
+        return -1;
+    }
 
+    error += undeploy_TestHome("TestHome");
     if(error) 
     {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
@@ -224,7 +156,7 @@ int main(int argc, char *argv[])
     }
         
     // Clean up HomeFinder singleton
-    HomeFinder::destroy();
+    ccm::local::HomeFinder::destroy();
     
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 }

@@ -585,11 +585,6 @@ abstract public class CodeGenerator implements TemplateHandler
         logger.fine("enter handleNamespace()");
         
         List names = new ArrayList(namespaceStack);
-//        if(!local.equals("")) 
-//        {
-//            names.add(Constants.COMPONENT_NAMESPACE);
-//            names.add(local); 
-//        }
         if(data_type.equals("Namespace"))
             return join(Text.SCOPE_SEPARATOR, names);
 
@@ -940,7 +935,8 @@ abstract public class CodeGenerator implements TemplateHandler
         }
         else if(variable.equals("ProvidesInclude")
                 || variable.equals("SupportsInclude")
-                || variable.equals("UsesInclude")) {
+                || variable.equals("UsesInclude")) 
+        {
             MInterfaceDef iface = null;
 
             if(currentNode instanceof MProvidesDef)

@@ -20,7 +20,7 @@ mirror: local
 
 check: 
 	cp impl/Test_impl.cc ${DEST_DIR}/component/Test/
-	cp impl/_check_ccm_local_Test.cc ${DEST_DIR}/component/TestMirror/test
+	cp impl/_check_Test.cc ${DEST_DIR}/component/TestMirror/test
 	ccmconfix -confix2 -o ${DEST_DIR} -pname "receptacle_not_connected" -pversion "1.0.0"
 	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 

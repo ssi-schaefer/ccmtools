@@ -17,9 +17,6 @@
 
 #include "BasicTest_basicType_impl.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -123,6 +120,3 @@ BasicTest_basicType_impl::f10(const unsigned char p1, unsigned char& p2, unsigne
     p2=p1;
     return p3+p1;
 }
-
-} // /namespace local
-} // /namespace ccm

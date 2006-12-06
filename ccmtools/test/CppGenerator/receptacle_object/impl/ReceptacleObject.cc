@@ -1,7 +1,6 @@
 #include "ReceptacleObject.h"
 
 using namespace std;
-using namespace ccm::local;
 
 ReceptacleObject::ReceptacleObject()
 {

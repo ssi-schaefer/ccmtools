@@ -4,10 +4,10 @@
 
 #include <iostream>
 #include <Components/ccm/local/CCM.h>
-#include <ccm/local/Console.h>
+#include <Console.h>
 
 class MyObject 
-  : virtual public ccm::local::CCM_Console
+  : virtual public CCM_Console
 {
 public:
   MyObject();

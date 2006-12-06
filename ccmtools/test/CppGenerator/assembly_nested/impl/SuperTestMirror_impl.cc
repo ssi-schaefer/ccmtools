@@ -19,9 +19,6 @@
 #include "SuperTestMirror_innerUserType_impl.h"
 
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -42,7 +39,7 @@ SuperTestMirror_impl::set_session_context(
     Components::ccm::local::SessionContext* context)
     throw(Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_SuperTestMirror_Context*>(context);
+    ctx = dynamic_cast<ccm::local::CCM_SuperTestMirror_Context*>(context);
 }
 
 void
@@ -313,8 +310,8 @@ SuperTestMirror_impl::ccm_activate()
       
       {
 	// test case: typedef long time_t;
-	const ccm::local::time_t p1 = 7;
-	ccm::local::time_t p2 = 3, p3, result;
+	const time_t p1 = 7;
+	time_t p2 = 3, p3, result;
 	result = userType->f7(p1, p2, p3);
 	assert(p2 == 7);
 	assert(p3 == 3);
@@ -359,7 +356,4 @@ SuperTestMirror_impl::get_innerUserType()
     SuperTestMirror_innerUserType_impl* facet = new SuperTestMirror_innerUserType_impl(this);
     return dynamic_cast<CCM_UserTypeInterface*>(facet);
 }
-
-} // /namespace local
-} // /namespace ccm
 

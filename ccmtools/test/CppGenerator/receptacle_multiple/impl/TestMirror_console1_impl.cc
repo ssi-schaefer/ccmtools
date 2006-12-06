@@ -15,9 +15,6 @@
 
 #include "TestMirror_console1_impl.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -40,5 +37,3 @@ TestMirror_console1_impl::println(const std::string& s2)
     return s2.length();
 }
 
-} // /namespace local
-} // /namespace ccm

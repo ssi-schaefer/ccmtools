@@ -17,9 +17,6 @@
 #include "TestMirror_type_test_impl.h"
 
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -185,6 +182,3 @@ TestMirror_type_test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>&
     result->prompt(p3->prompt() + p1_prompt);
     return result;
 }
-
-} // /namespace local
-} // /namespace ccm

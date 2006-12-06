@@ -10,7 +10,7 @@ struct Value
   double dd;
 };
 
-typedef sequence<Value> map;
+typedef sequence<Value> StructSeq;
 
 interface LongCommon 
 {
@@ -35,7 +35,7 @@ component Test {
   attribute time_t typedef_value;
   attribute Color enum_value;
   attribute Value struct_value;
-  attribute map sequence_value;
+  attribute StructSeq sequence_value;
 
   /* interface types */
   //  attribute LongCommon the_long;
@@ -58,7 +58,7 @@ home TestHome manages Test {
   factory create_with_typedef(in time_t p);
   factory create_with_enum(in Color p);
   factory create_with_struct(in Value p);
-  factory create_with_sequence(in map p);
+  factory create_with_sequence(in StructSeq p);
 
   /* interface types */
   //factory copy_from(in LongCommon the_long);

@@ -19,9 +19,6 @@
 #include "MyObject.h"
 #include "Test_impl.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -41,7 +38,7 @@ void
 Test_impl::set_session_context ( Components::ccm::local::SessionContext* context )
   throw ( ::Components::ccm::local::CCMException )
 {
-  ctx = dynamic_cast<CCM_Test_Context*> ( context );
+  ctx = dynamic_cast<ccm::local::CCM_Test_Context*> ( context );
 }
 
 void
@@ -118,7 +115,7 @@ Test_impl::ccm_activate (  )
 
   {
     // test case: typedef long time_t;
-    ccm::local::time_t time_t_2 = 3, time_t_3, time_t_r;
+    time_t time_t_2 = 3, time_t_3, time_t_r;
     time_t_r = type_test->op_u1(7,time_t_2, time_t_3);
     assert(time_t_2 == 7);
     assert(time_t_3 == 3);
@@ -199,7 +196,4 @@ Test_impl::ccm_remove (  )
   throw ( ::Components::ccm::local::CCMException )
 {
 }
-
-} // /namespace local
-} // /namespace ccm
 

@@ -88,7 +88,7 @@ class %(Identifier)s
               ::Components::ccm::local::CreateFailure);
 
   protected:
-    CCM_%(Identifier)s* local_home;
+    %(LocalGenNamespace)sCCM_%(Identifier)s* local_home;
     wamas::platform::utils::SmartPtr< ::Components::ccm::local::AssemblyFactory> assembly_factory;
     
   private:
@@ -129,7 +129,6 @@ int undeploy_%(AbsoluteLocalHomeName)s(char* name);
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "%(Identifier)s_gen.h"
 #include <%(AbsoluteLocalHomeName)s_entry.h>
@@ -145,14 +144,16 @@ using namespace wamas::platform::utils;
 
 %(Identifier)s::%(Identifier)s()
 {
-    local_home = dynamic_cast<CCM_%(Identifier)s*>(create_%(AbsoluteLocalHomeName)s());
+    local_home = dynamic_cast<%(LocalGenNamespace)sCCM_%(Identifier)s*>(
+        create_%(AbsoluteLocalHomeName)s());
     assembly_factory = SmartPtr< ::Components::ccm::local::AssemblyFactory>();
 }
 
 %(Identifier)s::%(Identifier)s(SmartPtr< ::Components::ccm::local::AssemblyFactory> f)
     : assembly_factory(f)
 {
-    local_home = dynamic_cast<CCM_%(Identifier)s*>(create_%(AbsoluteLocalHomeName)s());
+    local_home = dynamic_cast<%(LocalGenNamespace)sCCM_%(Identifier)s*>(
+        create_%(AbsoluteLocalHomeName)s());
 }
 
 %(Identifier)s::~%(Identifier)s()
@@ -174,9 +175,12 @@ SmartPtr<%(ComponentType)s>
         assembly = assembly_factory->create(); 
     }
 
-    ::Components::ccm::local::EnterpriseComponent* enterprise_component = local_home->create();
-    CCM_%(ComponentType)s* local_component = dynamic_cast<CCM_%(ComponentType)s*>(enterprise_component);
-    %(ComponentType)s* local_component_adapter = new %(ComponentType)s(this, local_component, assembly);
+    ::Components::ccm::local::EnterpriseComponent* enterprise_component = 
+        local_home->create();
+    %(LocalGenComponent)sCCM_%(ComponentType)s* local_component = 
+        dynamic_cast<%(LocalGenComponent)sCCM_%(ComponentType)s*>(enterprise_component);
+    %(ComponentType)s* local_component_adapter = 
+        new %(ComponentType)s(this, local_component, assembly);
     SmartPtr<%(ComponentType)s> ret(local_component_adapter);
 
     if(assembly_factory != SmartPtr< ::Components::ccm::local::AssemblyFactory>()) {
@@ -213,7 +217,7 @@ wamas::platform::utils::SmartPtr< ::Components::ccm::local::CCMHome>
 create_%(AbsoluteLocalHomeName)sAdapter()
 {
     wamas::platform::utils::SmartPtr< ::Components::ccm::local::CCMHome>
-        ret(new %(LocalNamespace)s::%(Identifier)s());
+        ret(new %(LocalNamespace)s%(Identifier)s());
     return ret;
 }
 
@@ -230,7 +234,7 @@ deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,
 {
     try {
         wamas::platform::utils::SmartPtr< ::Components::ccm::local::CCMHome> 
-            ret(new %(LocalNamespace)s::%(Identifier)s(assembly_factory));
+            ret(new %(LocalNamespace)s%(Identifier)s(assembly_factory));
         ::ccm::local::HomeFinder::Instance()->register_home(ret, name);
     }
     catch (...) {
@@ -275,7 +279,7 @@ undeploy_%(AbsoluteLocalHomeName)s(char* name)
 %(MSupportsDefInclude)s
 %(BaseInclude)s
 
-%(OpenNamespace)s
+%(OpenGenNamespace)s
 
 //==============================================================================
 // home classes
@@ -309,7 +313,7 @@ class CCM_%(Identifier)s
     virtual ~CCM_%(Identifier)s() {}
 };
 
-%(CloseNamespace)s
+%(CloseGenNamespace)s
 
 #endif // __HOME_%(PreprocIdentifier)s_SHARE__H__
 
@@ -350,7 +354,7 @@ create_%(AbsoluteLocalHomeName)s();
 #ifndef __HOME_%(PreprocIdentifier)s_IMPL__H__
 #define __HOME_%(PreprocIdentifier)s_IMPL__H__
 
-#include <%(HomeInclude)s_share.h>
+#include <%(GenHomeInclude)s_share.h>
 
 %(OpenNamespace)s
 
@@ -364,7 +368,7 @@ create_%(AbsoluteLocalHomeName)s();
  * @version 
  **/
 class %(Identifier)s_impl
-    : virtual public CCM_%(Identifier)s%(BaseType)s
+    : virtual public %(LocalGenNamespace)sCCM_%(Identifier)s%(BaseType)s
 {
   public:
     %(Identifier)s_impl();
@@ -396,7 +400,6 @@ class %(Identifier)s_impl
 
 #include <cassert>
 #include <iostream>
-#include <wamas/platform/utils/debug.h>
 
 #include "%(ComponentType)s_impl.h"
 #include "%(Identifier)s_impl.h"
@@ -442,6 +445,6 @@ using namespace wamas::platform::utils;
 create_%(AbsoluteLocalHomeName)s()
 {
     return dynamic_cast< ::Components::ccm::local::HomeExecutorBase* >
-        (new %(LocalNamespace)s::%(Identifier)s_impl());
+        (new %(LocalNamespace)s%(Identifier)s_impl());
 }
 

@@ -60,7 +60,7 @@ class CCM_%(Identifier)s
 
 #include <%(InterfaceInclude)s.h> 
 
-%(OpenNamespace)s
+%(OpenGenNamespace)s
 
 //==============================================================================
 // %(Identifier)s adapter (header file)
@@ -103,7 +103,7 @@ class %(Identifier)sAdapter
     void operator=(const %(Identifier)sAdapter&);
 };
  
-%(CloseNamespace)s
+%(CloseGenNamespace)s
  
 #endif // __INTERFACE_ADAPTER_%(PreprocIdentifier)s__H__
  
@@ -114,21 +114,24 @@ class %(Identifier)sAdapter
  * DO NOT EDIT !
  */
 
-#include <wamas/platform/utils/debug.h>
-
 #include "%(Identifier)sAdapter.h"
  
 %(OpenNamespace)s
-
-using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // %(Identifier)s interface constants (implementation)
 //==============================================================================
 
 %(ConstantImplementation)s 
- 
+
+%(CloseNamespace)s
+
+
+%(OpenGenNamespace)s
+
+using namespace std;
+using namespace wamas::platform::utils;
+
 //==============================================================================
 // %(Identifier)s facet adapter (implementation)
 //==============================================================================
@@ -157,6 +160,6 @@ using namespace wamas::platform::utils;
 
 %(MOperationDefAdapterImpl)s
  
-%(CloseNamespace)s 
+%(CloseGenNamespace)s 
  
 

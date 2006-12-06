@@ -1,5 +1,5 @@
 const %(LanguageType)s
-%(ComponentType)s::%(Identifier)s() const 
+%(ComponentIdentifier)s::%(Identifier)s() const 
     throw(::Components::ccm::local::CCMException)
 {
     if(!ValidConnection) 
@@ -8,7 +8,7 @@ const %(LanguageType)s
 }
 
 void
-%(ComponentType)s::%(Identifier)s(const %(LanguageType)s value)
+%(ComponentIdentifier)s::%(Identifier)s(const %(LanguageType)s value)
     throw(::Components::ccm::local::CCMException)
 {
     if(!ValidConnection) 

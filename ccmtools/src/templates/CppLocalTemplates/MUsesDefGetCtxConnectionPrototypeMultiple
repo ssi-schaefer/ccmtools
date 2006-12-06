@@ -1,2 +1,2 @@
-    %(Identifier)sConnections& get_connections_%(Identifier)s();
+    %(GenUsesName)sConnections& get_connections_%(Identifier)s();
 

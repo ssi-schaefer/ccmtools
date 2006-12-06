@@ -98,13 +98,18 @@ public class CppLocalGenerator
     {
         super("CppLocal", uiDriver, outDir, LOCAL_OUTPUT_TEMPLATE_TYPES);
         logger = Logger.getLogger("ccm.generator.cpp.local");
-        logger.fine("enter CppLocalGenerator()");
-        baseNamespace.add("ccm");
-        baseNamespace.add("local");
+        logger.fine("begin");
+        
+        cxxGenNamespace.add("ccm");
+        cxxGenNamespace.add("local");
+        
         anyManager = new AnyPluginManager();
-        logger.fine("leave CppLocalGenerator()");
+        
+        logger.fine("end");
     }
 
+    
+    
     
     //====================================================================
     // Code generator core methods
@@ -294,9 +299,10 @@ public class CppLocalGenerator
     {
         logger.fine("enter data_MInterfaceDef()");
         MInterfaceDef iface = (MInterfaceDef) currentNode;
-        if(dataType.equals("InterfaceInclude")) {
+        if(dataType.equals("InterfaceInclude")) 
+        {
             MContained contained = (MContained)currentNode;
-            dataValue = getLocalCppName(contained, Text.INCLUDE_SEPARATOR);
+            dataValue = getLocalCxxName(contained, Text.INCLUDE_SEPARATOR);
         }
         else if(dataType.equals("InterfaceIncludes"))
         {
@@ -935,27 +941,27 @@ public class CppLocalGenerator
             if(currentNode instanceof MHomeDef) {
                 base_name = ((MHomeDef) currentNode).getComponent().getIdentifier();
             }
-            String base = getOutputDirectory(base_name);
-
+            String cxxGenNamespace = getCxxGenOutputDirectory(base_name);
+            String cxxNamespace = getCxxOutputDirectory(base_name);
+            
             f = new ArrayList();
-            f.add(base);
+            f.add(cxxGenNamespace);
             f.add(node_name + "_gen.h");
             files.add(f);
             f = new ArrayList();
-            f.add(base);
+            f.add(cxxGenNamespace);
             f.add(node_name + "_gen.cc");
             files.add(f);
 
             f = new ArrayList();
-            f.add(base + "_share");
+            f.add(cxxGenNamespace + "_share");
             f.add(node_name + "_share.h");
             files.add(f);
 
             if(currentNode instanceof MHomeDef) {
                 f = new ArrayList();
                 f.add(implDirectory);
-                f.add(getLocalCppName((MContained)currentNode, 
-                                      Text.MANGLING_SEPARATOR)
+                f.add(getLocalCxxName((MContained)currentNode,Text.MANGLING_SEPARATOR)
                 	+ "_entry.h");
                 files.add(f);
             }
@@ -987,31 +993,30 @@ public class CppLocalGenerator
                 || (currentNode instanceof MEnumDef)
                 || (currentNode instanceof MExceptionDef)) {
             f = new ArrayList();
-            f.add(getOutputDirectory(""));
+            f.add(getCxxOutputDirectory(""));
             f.add(node_name + ".h");
             files.add(f);
         }
         else if ((currentNode instanceof MInterfaceDef)) {
             // Interface part
             f = new ArrayList();
-            f.add(getOutputDirectory(""));
+            f.add(getCxxOutputDirectory(""));
             f.add(node_name + ".h");
             files.add(f);
             // Adapter part (header file)
             f = new ArrayList();
-            f.add(getOutputDirectory("") + "_adapter");
+            f.add(getCxxGenOutputDirectory(""));
             f.add(node_name + "Adapter.h");
             files.add(f);
             // Adapter part (impl file)
             f = new ArrayList();
-            f.add(getOutputDirectory("") + "_adapter");
+            f.add(getCxxGenOutputDirectory(""));
             f.add(node_name + "Adapter.cc");
             files.add(f);
         }
         else if((currentNode instanceof MProvidesDef)) {
             if((flags & FLAG_APPLICATION_FILES) != 0) {
-                MComponentDef component = ((MProvidesDef) currentNode)
-                        .getComponent();
+                MComponentDef component = ((MProvidesDef) currentNode).getComponent();
                 f = new ArrayList();
                 f.add(implDirectory);
                 f.add(component.getIdentifier() + "_" + node_name + "_impl.h");
@@ -1042,25 +1047,31 @@ public class CppLocalGenerator
         return files;
     }
 
-    /***
-     * Calculate the directory name for output files.
-     * 
-     * @param component name of a component which will be added to the 
-     * 		  directory name.
-     * @return A mangled name containing the namespace of a component
-     *         logic artifact.
-     */
-    protected String getOutputDirectory(String component)
+    protected String getCxxOutputDirectory(String component)
     {
-        logger.fine("enter getOutputDirectory()");
+        logger.fine("begin");
+        
         List modules = new ArrayList(namespaceStack);
-        modules.addAll(baseNamespace);
+        modules.addAll(cxxNamespace);
+        
         String generatorPrefix = CcmtoolsProperties.Instance().get("ccmtools.dir.gen");
-        logger.fine("leave getOutputDirectory()");
+        
+        logger.fine("end");
         return generatorPrefix + join("_", modules);
     }
 
-    
+    protected String getCxxGenOutputDirectory(String component)
+    {
+        logger.fine("begin");
+
+        List modules = new ArrayList(namespaceStack);
+        modules.addAll(cxxGenNamespace);
+        
+        String generatorPrefix = CcmtoolsProperties.Instance().get("ccmtools.dir.gen");
+        
+        logger.fine("end");
+        return generatorPrefix + join("_", modules);
+    }
     
     
     //====================================================================

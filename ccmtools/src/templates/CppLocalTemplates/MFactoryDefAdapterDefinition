@@ -10,8 +10,8 @@ SmartPtr<%(ComponentType)s>
     SmartPtr<%(ComponentType)s> 
         ret(dynamic_cast< %(ComponentType)s*> (
             new %(ComponentType)s (this, 
-            dynamic_cast<CCM_%(ComponentType)s*> (
-                ((CCM_%(HomeType)sExplicit*)local_home)->%(Identifier)s(%(MParameterDefName)s)),
+            dynamic_cast<%(GenCCMComponentType)s*> (
+                ((%(GenCCMHomeType)sExplicit*)local_home)->%(Identifier)s(%(MParameterDefName)s)),
                 assembly
             )
         )

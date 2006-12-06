@@ -20,9 +20,6 @@
 using namespace std;
 using namespace wamas::platform::utils;
 
-namespace ccm {
-namespace local {
-
 SuperTest_basicType_impl::SuperTest_basicType_impl(SuperTest_impl* component_impl)
   : component(component_impl)
 {
@@ -123,6 +120,3 @@ SuperTest_basicType_impl::f10(const unsigned char p1, unsigned char& p2, unsigne
       component->ctx->get_connection_innerBasicType();
     return inner->f10(p1,p2,p3);
 }
-
-} // /namespace local
-} // /namespace ccm

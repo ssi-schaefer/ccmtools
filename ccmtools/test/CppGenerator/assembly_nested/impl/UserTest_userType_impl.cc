@@ -20,9 +20,6 @@
 using namespace std;
 using namespace wamas::platform::utils;
 
-namespace ccm {
-namespace local {
-
 UserTest_userType_impl::UserTest_userType_impl(UserTest_impl* component_impl)
   : component(component_impl)
 {
@@ -121,5 +118,3 @@ UserTest_userType_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
     return t3+t1; 
 }
 
-} // /namespace local
-} // /namespace ccm
