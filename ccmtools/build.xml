@@ -119,7 +119,7 @@
       	description="Install ccmtools to prefix/.">
       	<mkdir dir="${prefix}" />
   		
-    	<copy file="${lib}/antlr.jar"        	todir="${prefix}/lib"  overwrite="true" />  
+    		<copy file="${lib}/antlr.jar"        	todir="${prefix}/lib"  overwrite="true" />  
   		<copy file="${lib}/commons-cli-1.0.jar"	todir="${prefix}/lib"  overwrite="true" />  
   		<copy file="${lib}/jdom.jar"         	todir="${prefix}/lib"  overwrite="true" />  
      	<copy file="${lib}/ccmtools.jar"     	todir="${prefix}/lib"  overwrite="true" />    		
