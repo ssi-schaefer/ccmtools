@@ -1,6 +1,14 @@
 BRANCH-0.6.x
 ============================================================================
 
+
+RELEASE-0.6.17 (December 7, 2006)
+----------------------------------------------------------------------------
+*) Bugfix: Interix (reported by Duft Markus)
+	Added _CCM_EXPORT_DECL_ Makro definition to the Makefile.py files in the 
+	CCM_Local/HomeFinder and CCM_Remote/SessionContainer directory.
+
+
 RELEASE-0.6.16 (November 22, 2006)
 ----------------------------------------------------------------------------
 *) Refactoring: LocalComponents/CCM.h

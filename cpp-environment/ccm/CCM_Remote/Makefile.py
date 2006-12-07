@@ -13,7 +13,7 @@ CONFIGURE_IN(
 
 try:
      PACKAGE_NAME('ccm-remote-runtime')
-     PACKAGE_VERSION('0.6.16')
+     PACKAGE_VERSION('0.6.17')
 except Error, e:
      # we'll get here if this is not the package root, and have to
      # ignore this.
