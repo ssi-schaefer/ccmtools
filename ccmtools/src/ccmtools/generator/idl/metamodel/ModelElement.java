@@ -7,8 +7,8 @@ import java.util.Set;
 
 import ccmtools.Constants;
 import ccmtools.utils.SourceFile;
-import ccmtools.utils.Text;
 import ccmtools.utils.SourceFileHelper;
+import ccmtools.utils.Text;
 
 
 public class ModelElement
@@ -22,17 +22,21 @@ public class ModelElement
 	private String identifier;
 
 	/** Namespace lists */
-	private List<String> idlNamespaceList = new ArrayList<String>();
-	
-	
+	private List<String> idlNamespaceList;
+    
+    private List<String> idlPrefixList;
+    
 	protected ModelElement()
 	{
-	}
+        idlNamespaceList = new ArrayList<String>();
+        idlPrefixList = new ArrayList<String>();
+    }
 
-	protected ModelElement(String identifier, List<String> namespace)
+	protected ModelElement(String identifier, List<String> namespaceList)
 	{
-		setIdentifier(identifier);
-		setIdlNamespaceList(namespace);
+	    this();
+        setIdentifier(identifier);
+		setIdlNamespaceList(namespaceList);
 	}
 	
 	
@@ -49,14 +53,27 @@ public class ModelElement
 	
 	public List<String> getIdlNamespaceList()
 	{
-		return idlNamespaceList;
+	    if(idlPrefixList.size() > 0)
+        {
+	        List<String> absoluteNamespaceList = new ArrayList<String>(idlPrefixList);
+	        absoluteNamespaceList.addAll(idlNamespaceList);
+	        return absoluteNamespaceList;
+        }
+        else
+        {
+            return idlNamespaceList;
+        }
 	}
 
 	public void setIdlNamespaceList(List<String> namespace)
 	{
 		idlNamespaceList.addAll(namespace);
 	}	
-	
+
+    public List<String> getIdlPrefixList()
+    {
+        return idlPrefixList;
+    }
 
 	
 	/*************************************************************************
@@ -155,6 +172,10 @@ public class ModelElement
 
     public List<SourceFile> generateIdl2SourceFiles()
     {
+        // Define a prefix list which is added to all IDL namespaces of this modelelement
+        getIdlPrefixList().add("ccm");
+        getIdlPrefixList().add("stubs");  
+        
         List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
         String fileName;
         if(getIdlNamespaceList().size() > 0)
@@ -165,12 +186,14 @@ public class ModelElement
         {
             fileName = getIdentifier() + ".idl";
         }
+        
         String sourceCode = generateIdl2();
         if(sourceCode.length() > 0)
         {
             SourceFile sourceFile = new SourceFile("", fileName, SourceFileHelper.removeEmptyLines(sourceCode));
             sourceFileList.add(sourceFile);     
         }
+        
         return sourceFileList;
     }
 

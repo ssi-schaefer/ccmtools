@@ -138,7 +138,7 @@ public class IdlGenerator
 	{
         logger.fine("begin");
         try
-        {
+        {            
             List<Idl2Generator> idl2ModelElements = new ArrayList<Idl2Generator>();
             idl2ModelElements.addAll(idlModelRepo.findAllTypedefs());
             idl2ModelElements.addAll(idlModelRepo.findAllEnums());

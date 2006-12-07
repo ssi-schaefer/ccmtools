@@ -62,7 +62,6 @@ public class Main
 				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
 				{
 					String idlFile = (String) i.next();
-//					MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
                     MContainer ccmModel = 
                         ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
 
