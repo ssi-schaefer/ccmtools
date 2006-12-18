@@ -15,7 +15,7 @@ import ccmtools.utils.SourceFileHelper;
 
 public class ComponentDef
 	extends InterfaceDef
-	implements Type, Idl3MirrorGenerator
+	implements Type, Idl3MirrorGeneratorElement
 {
 	/*************************************************************************
 	 * IDL Model Implementation
@@ -246,7 +246,7 @@ public class ComponentDef
      *************************************************************************/   
         
     public String generateIdl2()
-    {        
+    {    
         return new Idl2ComponentDefTemplate().generate(this); 
     }
     

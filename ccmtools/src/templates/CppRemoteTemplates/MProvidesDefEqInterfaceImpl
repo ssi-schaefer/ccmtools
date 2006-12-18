@@ -3,16 +3,14 @@
 %(ComponentType)s_impl::provide_%(Identifier)s()
 {
     if (%(Identifier)s_facet_adapter == 0) {
-    	wamas::platform::utils::SmartPtr<%(ProvidesType)s> 
+    	wamas::platform::utils::SmartPtr< %(ProvidesType)s> 
     	    localFacetAdapter = local_adapter->provide_%(Identifier)s();
         %(Identifier)s_facet_adapter = 
             new %(ProvidesConvertNamespace)s%(InterfaceType)sAdapterFromCorba(localFacetAdapter);
         CORBA::Object_var _facet_ref = 
-            ccm_container->activate_facet(this, "%(Identifier)s", NULL, 
-                %(Identifier)s_facet_adapter);
+            ccm_container->activate_facet(this, "%(Identifier)s", NULL, %(Identifier)s_facet_adapter);
         reference_for_facet_%(Identifier)s = 
             ::%(IdlProvidesType)s::_narrow(_facet_ref);
     }
-    return ::%(IdlProvidesType)s::_duplicate(
-        reference_for_facet_%(Identifier)s);
+    return ::%(IdlProvidesType)s::_duplicate(reference_for_facet_%(Identifier)s);
 }

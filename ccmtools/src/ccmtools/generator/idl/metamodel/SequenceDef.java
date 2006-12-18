@@ -66,6 +66,11 @@ public class SequenceDef
      * IDL2 Generator Methods Implementation
      *************************************************************************/
     
+    public String generateIdl2()
+    {
+        return generateIdl3();
+    }
+    
     public String generateIdl2IncludePath()
     {
         return getElementType().generateIdl2IncludePath();

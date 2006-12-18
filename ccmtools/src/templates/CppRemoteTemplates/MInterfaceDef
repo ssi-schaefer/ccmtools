@@ -13,7 +13,7 @@
 
 #ifdef HAVE_MICO 
 
-#include <%(LocalIncludeNamespace)s/%(Identifier)s.h> 
+#include <%(LocalIncludeNamespace)s%(Identifier)s.h> 
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
 
 %(MAttributeDefInclude)s
@@ -31,10 +31,10 @@
       virtual public PortableServer::RefCountServantBase
   {
     protected:
-      wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> localInterface; 
+      wamas::platform::utils::SmartPtr< ::%(LocalNamespace)s%(Identifier)s> localInterface; 
     public:
       %(Identifier)sAdapterFromCorba(
-          wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> lif);
+          wamas::platform::utils::SmartPtr< ::%(LocalNamespace)s%(Identifier)s> lif);
       virtual ~%(Identifier)sAdapterFromCorba();
 
 %(AttributeBaseInterfaceAdapterFromCorbaHeader)s
@@ -55,9 +55,9 @@
     : virtual public %(CCM_LocalType)s
   {
     protected:
-      %(StubsNamespace)s%(Identifier)s_var remoteInterface; 
+      ::%(StubsNamespace)s%(Identifier)s_var remoteInterface; 
     public:
-      %(Identifier)sAdapterToCorba(%(StubsNamespace)s%(Identifier)s_ptr rif);
+      %(Identifier)sAdapterToCorba(::%(StubsNamespace)s%(Identifier)s_ptr rif);
       virtual ~%(Identifier)sAdapterToCorba();
 
 %(AttributeBaseInterfaceAdapterToCorbaHeader)s
@@ -100,7 +100,7 @@ using namespace wamas::platform::utils;
 //============================================================================
 
 %(Identifier)sAdapterFromCorba::%(Identifier)sAdapterFromCorba(
-    wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> lif)
+    wamas::platform::utils::SmartPtr< ::%(LocalNamespace)s%(Identifier)s> lif)
     : localInterface(lif)
 {
 }
@@ -124,7 +124,7 @@ using namespace wamas::platform::utils;
 //============================================================================
 
 %(Identifier)sAdapterToCorba::%(Identifier)sAdapterToCorba(
-    %(StubsNamespace)s%(Identifier)s_ptr rif)
+    ::%(StubsNamespace)s%(Identifier)s_ptr rif)
 {
     remoteInterface = ::%(StubsNamespace)s%(Identifier)s::_duplicate(rif);
 }

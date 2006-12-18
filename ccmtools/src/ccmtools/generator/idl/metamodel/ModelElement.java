@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import ccmtools.Constants;
+import ccmtools.utils.ConfigurationLocator;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.SourceFileHelper;
 import ccmtools.utils.Text;
 
 
-public class ModelElement
-	implements Idl3Generator, Idl2Generator
+public abstract class ModelElement
+	implements Idl3GeneratorElement, Idl2GeneratorElement
 {
 	/*************************************************************************
 	 * IDL Model Implementation
@@ -24,12 +25,9 @@ public class ModelElement
 	/** Namespace lists */
 	private List<String> idlNamespaceList;
     
-    private List<String> idlPrefixList;
-    
 	protected ModelElement()
 	{
         idlNamespaceList = new ArrayList<String>();
-        idlPrefixList = new ArrayList<String>();
     }
 
 	protected ModelElement(String identifier, List<String> namespaceList)
@@ -53,10 +51,12 @@ public class ModelElement
 	
 	public List<String> getIdlNamespaceList()
 	{
-	    if(idlPrefixList.size() > 0)
+	    List<String> idlNamespaceExtension = ConfigurationLocator.getInstance().getIdlNamespaceExtension();
+        if(idlNamespaceExtension.size() > 0)
         {
-	        List<String> absoluteNamespaceList = new ArrayList<String>(idlPrefixList);
+	        List<String> absoluteNamespaceList = new ArrayList<String>();
 	        absoluteNamespaceList.addAll(idlNamespaceList);
+            absoluteNamespaceList.addAll(ConfigurationLocator.getInstance().getIdlNamespaceExtension());
 	        return absoluteNamespaceList;
         }
         else
@@ -70,10 +70,6 @@ public class ModelElement
 		idlNamespaceList.addAll(namespace);
 	}	
 
-    public List<String> getIdlPrefixList()
-    {
-        return idlPrefixList;
-    }
 
 	
 	/*************************************************************************
@@ -152,11 +148,20 @@ public class ModelElement
     /*************************************************************************
      * Default Implementations for the IDL2 Generator Interface
      *************************************************************************/
-    
-	public String generateIdl2()
+
+	public void setupIdl2Generator()
 	{
-	    return generateIdl3(); 
-	}
+	    //...
+    }
+	
+    public String runIdl2Generator()
+    {
+        setupIdl2Generator();
+        return generateIdl2();
+    }
+
+    /** Template method pattern */
+	public abstract String generateIdl2();
     
     public String generateIdl2IncludePath()
     {
@@ -172,10 +177,6 @@ public class ModelElement
 
     public List<SourceFile> generateIdl2SourceFiles()
     {
-        // Define a prefix list which is added to all IDL namespaces of this modelelement
-        getIdlPrefixList().add("ccm");
-        getIdlPrefixList().add("stubs");  
-        
         List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
         String fileName;
         if(getIdlNamespaceList().size() > 0)
@@ -187,7 +188,8 @@ public class ModelElement
             fileName = getIdentifier() + ".idl";
         }
         
-        String sourceCode = generateIdl2();
+        //String sourceCode = generateIdl2();
+        String sourceCode = runIdl2Generator();
         if(sourceCode.length() > 0)
         {
             SourceFile sourceFile = new SourceFile("", fileName, SourceFileHelper.removeEmptyLines(sourceCode));
@@ -198,6 +200,7 @@ public class ModelElement
     }
 
     
+
     
 	/*************************************************************************
 	 * Code Generator Utilities 

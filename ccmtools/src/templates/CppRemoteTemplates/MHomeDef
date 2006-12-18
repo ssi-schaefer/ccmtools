@@ -15,7 +15,7 @@
 
 #include "%(ComponentType)s_remote.h"
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h> 
-#include <%(LocalIncludeNamespace)s/%(Identifier)s_gen.h>
+#include <%(LocalIncludeNamespace)s%(Identifier)s_gen.h>
 
 %(OpenNamespace)s
 
@@ -28,7 +28,7 @@ class %(Identifier)s_impl :
     virtual public PortableServer::RefCountServantBase
 {
   protected:
-    wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> local_home;
+    wamas::platform::utils::SmartPtr< ::%(LocalNamespace)s%(Identifier)s> local_home;
     wamas::platform::utils::SmartPtr<CCM::SessionContainer> ccm_container;
       
   public:
@@ -85,11 +85,11 @@ int undeploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_n
 #include "%(Identifier)s_remote.h"
 #include <%(AbsoluteLocalHomeName)s_entry.h>
 
-using namespace wamas::platform::utils;
 
 %(OpenNamespace)s
 
 using namespace std;
+using namespace wamas::platform::utils;
 
 //============================================================================
 // Component home adapter
@@ -100,8 +100,8 @@ using namespace std;
 {
     ::Components::ccm::local::HomeFinder* homeFinder = 
         ::ccm::local::HomeFinder::Instance();
-    local_home = SmartPtr<%(LocalNamespace)s::%(Identifier)s>(
-        dynamic_cast<%(LocalNamespace)s::%(Identifier)s*>
+    local_home = SmartPtr< ::%(LocalNamespace)s%(Identifier)s>(
+        dynamic_cast< ::%(LocalNamespace)s%(Identifier)s*>
 	(homeFinder->find_home_by_name("%(Identifier)s").ptr()));
 }
 
@@ -118,7 +118,7 @@ using namespace std;
 %(Identifier)s_impl::create ()
 {
     // create the local_component
-    SmartPtr<%(LocalNamespace)s::%(ComponentType)s> local_component = 
+    SmartPtr< ::%(LocalNamespace)s%(ComponentType)s> local_component = 
         local_home->create();
     // create component remote adapter
     PortableServer::ServantBase_var component_adapter =
@@ -198,7 +198,7 @@ int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_nam
 int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior)
 {
     // Startup component home
-    SmartPtr<CCM::SessionContainer> container(new CCM::SessionContainer(orb));
+    wamas::platform::utils::SmartPtr<CCM::SessionContainer> container(new CCM::SessionContainer(orb));
     CCM::SessionContainer::ComponentInfo info;
     info.home_short_name = "%(Identifier)s";
     info.home_absolute_name = "::%(Identifier)s";

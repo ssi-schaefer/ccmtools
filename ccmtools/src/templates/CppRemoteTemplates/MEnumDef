@@ -19,7 +19,7 @@
 #include <sstream>
 
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
-#include <%(LocalIncludeNamespace)s/%(Identifier)s.h>
+#include <%(LocalIncludeNamespace)s%(Identifier)s.h>
 
 %(OpenNamespace)s
 

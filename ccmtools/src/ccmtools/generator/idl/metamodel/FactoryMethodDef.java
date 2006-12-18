@@ -38,5 +38,8 @@ public class FactoryMethodDef
      * IDL2 Generator Methods Implementation
      *************************************************************************/
 	
-
+    public String generateIdl2()
+    {
+        return generateIdl3();
+    }
 }

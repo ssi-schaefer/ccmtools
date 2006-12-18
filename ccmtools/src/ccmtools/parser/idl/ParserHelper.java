@@ -81,7 +81,7 @@ import ccmtools.metamodel.ComponentIDL.MProvidesDefImpl;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDefImpl;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.ConfigurationLocator;
 import ccmtools.utils.Text;
 
 
@@ -2428,9 +2428,9 @@ public class ParserHelper
         {
             // Run a C preprocessor on the input file, in a separate process.
             StringBuffer cmd = new StringBuffer();
-            if (CcmtoolsProperties.Instance().get("ccmtools.cpp").length() != 0)
+            if (ConfigurationLocator.getInstance().get("ccmtools.cpp").length() != 0)
             {
-                cmd.append(CcmtoolsProperties.Instance().get("ccmtools.cpp"));
+                cmd.append(ConfigurationLocator.getInstance().get("ccmtools.cpp"));
             }
             else
             {

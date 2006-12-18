@@ -52,10 +52,12 @@ int main (int argc, char *argv[])
     int error = 0;
     error += deploy_%(AbsoluteLocalHomeName)s("%(HomeType)s");
     error += deploy_%(AbsoluteRemoteHomeName)s(orb, "%(HomeType)s:1.0");
-    if(!error) {
+    if(!error) 
+    {
         cout << "%(HomeType)s server is running..." << endl;
     }
-    else {
+    else 
+    {
         cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
@@ -76,7 +78,8 @@ int main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("%(HomeType)s:1.0");
     assert (!CORBA::is_nil (obj));
-    %(IdlHomeType)s_var my%(HomeType)s = %(IdlHomeType)s::_narrow (obj);
+    %(IdlHomeType)s_var my%(HomeType)s = 
+        %(IdlHomeType)s::_narrow (obj);
 
     // Create component instances
     %(IdlIdentifier)s_var my%(Identifier)s = my%(HomeType)s->create();
@@ -96,7 +99,16 @@ int main (int argc, char *argv[])
     my%(Identifier)s->remove();
 
     // Un-Deployment
-    cout << "Exit C++ remote test client" << endl; 	
+    error  = undeploy_%(AbsoluteLocalHomeName)s("%(HomeType)s");
+    error += undeploy_%(AbsoluteRemoteHomeName)s(orb, "%(HomeType)s:1.0");
+    if(!error) 
+    {
+        cout << "%(HomeType)s server is running..." << endl;
+    }
+    else
+    {
+        cout << "Exit C++ remote test client" << endl; 	
+    }
 }
 
 #endif // HAVE_MICO

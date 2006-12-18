@@ -40,7 +40,7 @@ import ccmtools.CppGenerator.CppRemoteTestGenerator;
 import ccmtools.metamodel.CcmModelHelper;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.parser.idl3.ParserManager;
-import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.ConfigurationLocator;
 
 
 public class Main
@@ -217,29 +217,29 @@ public class Main
         }
         
         // Set C preprocessor 
-        if(CcmtoolsProperties.Instance().get("ccmtools.cpp") == null)
+        if(ConfigurationLocator.getInstance().get("ccmtools.cpp") == null)
         {
-            CcmtoolsProperties.Instance().set("ccmtools.cpp", Constants.CPP_PATH);
+            ConfigurationLocator.getInstance().set("ccmtools.cpp", Constants.CPP_PATH);
         }
         
-        if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.types")) 
+        if(!ConfigurationLocator.getInstance().isDefined("ccmtools.dir.plugin.any.types")) 
         {
             String s = System.getProperty("ccmtools.templates") + File.separator + "AnyTypes";
-            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types", s);
+            ConfigurationLocator.getInstance().set("ccmtools.dir.plugin.any.types", s);
         }
         
-        if(!CcmtoolsProperties.Instance().isDefined("ccmtools.dir.plugin.any.templates")) 
+        if(!ConfigurationLocator.getInstance().isDefined("ccmtools.dir.plugin.any.templates")) 
         {
             String s = System.getProperty("ccmtools.templates") + File.separator + "AnyPlugins";
-            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.templates", s);
+            ConfigurationLocator.getInstance().set("ccmtools.dir.plugin.any.templates", s);
         }
 
         // Log CCM Tools settings
         logger.config("exitOnReturn = " + isExitWithErrorStatus);
         logger.config("ccmtools.home = " + System.getProperty("ccmtools.home"));
-        logger.config("ccmtools.cpp = " + CcmtoolsProperties.Instance().get("ccmtools.cpp"));
+        logger.config("ccmtools.cpp = " + ConfigurationLocator.getInstance().get("ccmtools.cpp"));
         logger.config("ccmtools.templates = " + System.getProperty("ccmtools.templates"));
-        logger.config("ccmtools.impl.dir = " + CcmtoolsProperties.Instance().get("ccmtools.impl.dir"));
+        logger.config("ccmtools.impl.dir = " + ConfigurationLocator.getInstance().get("ccmtools.impl.dir"));
     }
 
     
@@ -432,14 +432,14 @@ public class Main
         File test = new File(name);
         if(test.isAbsolute()) 
         {
-            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types", test.toString());
+            ConfigurationLocator.getInstance().set("ccmtools.dir.plugin.any.types", test.toString());
         }
         else 
         {
             File f = new File(System.getProperty("user.dir"), name);
-            CcmtoolsProperties.Instance().set("ccmtools.dir.plugin.any.types", f.toString());            
+            ConfigurationLocator.getInstance().set("ccmtools.dir.plugin.any.types", f.toString());            
         }
-        checkAnyTypesFile(CcmtoolsProperties.Instance().get("ccmtools.dir.plugin.any.types"));
+        checkAnyTypesFile(ConfigurationLocator.getInstance().get("ccmtools.dir.plugin.any.types"));
         logger.fine("leave setAnyTypesFile()");
     }
     

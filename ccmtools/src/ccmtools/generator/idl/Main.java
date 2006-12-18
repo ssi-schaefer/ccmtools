@@ -19,7 +19,7 @@ import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.parser.idl.ParserHelper;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.ConfigurationLocator;
 
 public class Main
 {
@@ -116,7 +116,7 @@ public class Main
 		{
 			System.setProperty("ccmtools.home", System.getProperty("user.dir"));
 		}
-		CcmtoolsProperties.Instance().set("ccmtools.home", System.getProperty("ccmtools.home"));
+		ConfigurationLocator.getInstance().set("ccmtools.home", System.getProperty("ccmtools.home"));
 	}
 
     

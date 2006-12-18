@@ -11,7 +11,7 @@ import java.util.Map;
 
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MTypedefDef;
-import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.ConfigurationLocator;
 
 public class PdlAnyPlugin
 	implements AnyPlugin
@@ -88,7 +88,7 @@ public class PdlAnyPlugin
      */ 
     private void createAnyMappings()
     {
-   		File file = new File(CcmtoolsProperties.Instance().get("ccmtools.dir.plugin.any.types"));
+   		File file = new File(ConfigurationLocator.getInstance().get("ccmtools.dir.plugin.any.types"));
         List pdlTypeList = loadPdlTypes(file);
         for(Iterator i = pdlTypeList.iterator(); i.hasNext();) 
         {

@@ -23,8 +23,8 @@
 %(MProvidesDefInclude)s
 %(MUsesDefInclude)s
 
-#include <%(LocalIncludeNamespace)s/%(Identifier)s_gen.h> 
-#include <%(LocalIncludeNamespace)s/%(Identifier)s_share.h> 
+#include <%(LocalIncludeNamespace)s%(Identifier)s_gen.h> 
+#include <%(LocalGenIncludeNamespace)s%(Identifier)s_share.h> 
 
 %(OpenNamespace)s
 
@@ -38,14 +38,14 @@ class %(Identifier)s_impl :
     friend class CCM_%(Identifier)s_Context_impl;
 
   protected:
-    wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s> local_adapter;
+    wamas::platform::utils::SmartPtr< ::%(LocalNamespace)s%(Identifier)s> local_adapter;
     wamas::platform::utils::SmartPtr<CCM::SessionContainer> ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
   public:
-    %(Identifier)s_impl(wamas::platform::utils::SmartPtr<%(LocalNamespace)s::%(Identifier)s>, 
+    %(Identifier)s_impl(wamas::platform::utils::SmartPtr< ::%(LocalNamespace)s%(Identifier)s>, 
         wamas::platform::utils::SmartPtr<CCM::SessionContainer> );
     virtual ~%(Identifier)s_impl ();
 
@@ -109,7 +109,7 @@ using namespace wamas::platform::utils;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr<%(LocalNamespace)s::%(Identifier)s> la, 
+%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr< ::%(LocalNamespace)s%(Identifier)s> la, 
     SmartPtr<CCM::SessionContainer> c)
     : local_adapter(la), ccm_container (c)
 {

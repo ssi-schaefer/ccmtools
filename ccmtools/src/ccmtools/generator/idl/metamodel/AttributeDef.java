@@ -115,6 +115,11 @@ public class AttributeDef
      * IDL2 Generator Methods Implementation
      *************************************************************************/
     
+    public String generateIdl2()
+    {
+        return generateIdl3();
+    }
+    
     public Set<String> generateIdl2IncludePaths()
     {
         Set<String> includePaths = new TreeSet<String>();

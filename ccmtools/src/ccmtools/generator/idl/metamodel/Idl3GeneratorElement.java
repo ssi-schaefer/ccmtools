@@ -5,7 +5,7 @@ import java.util.List;
 import ccmtools.utils.SourceFile;
 
 
-public interface Idl3Generator
+public interface Idl3GeneratorElement
 {
 	String generateIdl3();
 	

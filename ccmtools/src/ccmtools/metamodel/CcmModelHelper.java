@@ -15,7 +15,7 @@ import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MModuleDef;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.ConfigurationLocator;
 import ccmtools.utils.Text;
 
 public class CcmModelHelper
@@ -50,9 +50,9 @@ public class CcmModelHelper
 
             // Run a C preprocessor on the input file, in a separate process.
             StringBuffer cmd = new StringBuffer();
-            if (CcmtoolsProperties.Instance().get("ccmtools.cpp").length() != 0)
+            if (ConfigurationLocator.getInstance().get("ccmtools.cpp").length() != 0)
             {
-                cmd.append(CcmtoolsProperties.Instance().get("ccmtools.cpp"));
+                cmd.append(ConfigurationLocator.getInstance().get("ccmtools.cpp"));
             }
             else
             {

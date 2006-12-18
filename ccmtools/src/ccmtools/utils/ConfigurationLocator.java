@@ -4,27 +4,29 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
 
-public class CcmtoolsProperties
+public class ConfigurationLocator
 {
     protected final String CCMTOOLS_PROPERTY_FILE_NAME = "ccmtools.properties";
     protected Properties properties;
     protected String propertyPath;
-    protected static CcmtoolsProperties instance = null;
+    protected static ConfigurationLocator instance = null;
     
-    public static CcmtoolsProperties Instance() 
+    public static ConfigurationLocator getInstance() 
     {
         if(instance == null) 
         {
             try 
             {
-                instance = new CcmtoolsProperties();
+                instance = new ConfigurationLocator();
             }
             catch(IOException e) 
             {
@@ -35,7 +37,7 @@ public class CcmtoolsProperties
     }
     
     
-    protected CcmtoolsProperties() 
+    protected ConfigurationLocator() 
         throws IOException
     {
         properties = new Properties();
@@ -47,6 +49,10 @@ public class CcmtoolsProperties
         }
     }
 
+    
+    /*
+     * Generic access methods
+     */
     
     public boolean isDefined(String key)
     {
@@ -96,7 +102,6 @@ public class CcmtoolsProperties
     	    throws IOException
     {
         File file = new File(propertyPath, CCMTOOLS_PROPERTY_FILE_NAME);
-//        System.out.println("> load properties from " + file);
         FileInputStream in = new FileInputStream(file);
         properties.load(in);
         in.close();
@@ -106,9 +111,43 @@ public class CcmtoolsProperties
     	    throws IOException
     {
         File file = new File(propertyPath, CCMTOOLS_PROPERTY_FILE_NAME);
-//        System.out.println("> store properties to " + file);
         FileOutputStream out = new FileOutputStream(file);
         properties.store(out, "");
         out.close();
+    }
+    
+    
+    /*
+     * Typed access methods
+     */
+
+    private List<String> idlNamespaceExtension = new ArrayList<String>();
+    
+    public List<String> getIdlNamespaceExtension()
+    {
+        return idlNamespaceExtension;
+    }    
+    public void setIdlNamespaceExtension(List<String> idlNamespaceExtension)
+    {
+        this.idlNamespaceExtension = idlNamespaceExtension;
+    }
+    
+    public List<String> getIdl2NamespaceExtension()
+    {
+        List<String> namespaceList = new ArrayList<String>();        
+        // TODO: Read these informations from a property file
+        namespaceList.add("ccm");
+        namespaceList.add("corba");
+        namespaceList.add("stubs");  
+        return namespaceList;
+    }
+    
+    public List<String> getCppRemoteNamespaceExtension()
+    {
+        List<String> namespaceList = new ArrayList<String>();        
+        // TODO: Read these informations from a property file
+        namespaceList.add("ccm");
+        namespaceList.add("remote");
+        return namespaceList;
     }
 }

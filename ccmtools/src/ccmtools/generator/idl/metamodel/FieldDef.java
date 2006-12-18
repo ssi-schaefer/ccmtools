@@ -34,5 +34,9 @@ public class FieldDef
     /*************************************************************************
      * IDL2 Generator Methods Implementation
      *************************************************************************/
-    
+   
+    public String generateIdl2()
+    {
+        return generateIdl3();
+    }
 }

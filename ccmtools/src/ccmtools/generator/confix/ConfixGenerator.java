@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.ConfigurationLocator;
 
 public class ConfixGenerator
 {
@@ -45,7 +45,7 @@ public class ConfixGenerator
     private Set<String> getIgnoredDirectories()
     {
         Set<String> ignoredDirectorySet = new HashSet<String>();
-        String ignoredDirString = CcmtoolsProperties.Instance().get("ccmtools.generator.confix.ignore");
+        String ignoredDirString = ConfigurationLocator.getInstance().get("ccmtools.generator.confix.ignore");
         String[] ignoredDirArray = ignoredDirString.split(",");
         for(int i = 0; i<ignoredDirArray.length;i++)
         {

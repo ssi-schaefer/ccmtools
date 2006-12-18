@@ -210,7 +210,7 @@ public class CcmToIdlModelMapper
         		MInterfaceDef iface = (MInterfaceDef)node;
         		logger.finer("MInterfaceDef: " + CcmModelHelper.getRepositoryId(iface));
         		InterfaceDef idlInterface = transform(iface);
-        		modelRepository.addInterface(idlInterface);    		
+            modelRepository.addInterface(idlInterface);    		
         	}
 		//...
 	}
@@ -507,6 +507,7 @@ public class CcmToIdlModelMapper
 	{		
 		InterfaceDef out;
 		String repoId = CcmModelHelper.getRepositoryId(in);
+        
 		if (artifactCache.containsKey(repoId))
 		{
 			out = (InterfaceDef)artifactCache.get(repoId);
@@ -646,14 +647,8 @@ public class CcmToIdlModelMapper
             {
                 MHomeDef home = (MHomeDef)i.next();
                 HomeDef idlHome = transform(home, out);                
-//                idlHome.setComponent(out);
 			    out.getHomes().add(idlHome);
             }
-//            for(HomeDef home : out.getHomes())
-//            {
-//                System.out.println("*** HomeDef: " + home + "  " + home.getIdentifier());
-//                System.out.println("*** ComponenDef: " + home.getComponent() + "  " + home.getComponent().getIdentifier() );
-//            }
 			if(in.getBases() != null)
 			{
 				if(in.getBases().size() == 1) // single inheritynce only
@@ -664,7 +659,6 @@ public class CcmToIdlModelMapper
 			}
 			for(Iterator i = in.getSupportss().iterator(); i.hasNext();)
 			{
-				//MInterfaceDef supportedInterface = ((MSupportsDef)i.next()).getSupports();
                 MInterfaceDef supportedInterface = (MInterfaceDef)i.next();
 				out.getSupports().add(transform(supportedInterface));
 			}

@@ -57,6 +57,11 @@ public class ParameterDef
      * IDL2 Generator Methods Implementation
      *************************************************************************/
    
+    public String generateIdl2()
+    {
+        return generateIdl3();
+    }
+    
     public String generateIdl2IncludePath()
     {
         return getType().generateIdl2IncludePath();

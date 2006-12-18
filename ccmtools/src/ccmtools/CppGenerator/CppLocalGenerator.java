@@ -60,7 +60,7 @@ import ccmtools.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.CcmtoolsProperties;
+import ccmtools.utils.ConfigurationLocator;
 import ccmtools.utils.Confix;
 import ccmtools.utils.SourceFileHelper;
 import ccmtools.utils.Text;
@@ -840,7 +840,7 @@ public class CppLocalGenerator
         List out_paths = getOutputFiles();
         String out_string = template.substituteVariables(output_variables);
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
-        String implDirectory = CcmtoolsProperties.Instance().get("ccmtools.dir.impl");
+        String implDirectory = ConfigurationLocator.getInstance().get("ccmtools.dir.impl");
 
         try 
         {
@@ -928,7 +928,7 @@ public class CppLocalGenerator
         String node_name = ((MContained) currentNode).getIdentifier();
         List files = new ArrayList();
         List f = null;
-        String implDirectory = CcmtoolsProperties.Instance().get("ccmtools.dir.impl");
+        String implDirectory = ConfigurationLocator.getInstance().get("ccmtools.dir.impl");
         
         if((currentNode instanceof MComponentDef)
                 || (currentNode instanceof MHomeDef)) {
@@ -1054,7 +1054,7 @@ public class CppLocalGenerator
         List modules = new ArrayList(namespaceStack);
         modules.addAll(cxxNamespace);
         
-        String generatorPrefix = CcmtoolsProperties.Instance().get("ccmtools.dir.gen");
+        String generatorPrefix = ConfigurationLocator.getInstance().get("ccmtools.dir.gen");
         
         logger.fine("end");
         return generatorPrefix + join("_", modules);
@@ -1067,7 +1067,7 @@ public class CppLocalGenerator
         List modules = new ArrayList(namespaceStack);
         modules.addAll(cxxGenNamespace);
         
-        String generatorPrefix = CcmtoolsProperties.Instance().get("ccmtools.dir.gen");
+        String generatorPrefix = ConfigurationLocator.getInstance().get("ccmtools.dir.gen");
         
         logger.fine("end");
         return generatorPrefix + join("_", modules);

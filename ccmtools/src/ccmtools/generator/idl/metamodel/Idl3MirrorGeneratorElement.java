@@ -5,7 +5,7 @@ import java.util.List;
 import ccmtools.utils.SourceFile;
 
 
-public interface Idl3MirrorGenerator
+public interface Idl3MirrorGeneratorElement
 {
 	String generateIdl3Mirror();
 	
