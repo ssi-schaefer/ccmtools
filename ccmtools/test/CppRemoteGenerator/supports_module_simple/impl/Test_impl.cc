@@ -19,8 +19,6 @@
 namespace world {
 namespace europe {
 namespace austria {
-namespace ccm {
-namespace local {
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -48,11 +46,10 @@ throw(::Components::ccm::local::CCMException)
 }
 
 void
-Test_impl::set_session_context(
-    ::Components::ccm::local::SessionContext* context)
+Test_impl::set_session_context(::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<world::europe::austria::ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -76,8 +73,6 @@ Test_impl::ccm_remove()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-} // /namespace local
-} // /namespace ccm
 } // /namespace austria
 } // /namespace europe
 } // /namespace world

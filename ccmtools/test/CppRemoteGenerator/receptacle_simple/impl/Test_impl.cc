@@ -17,9 +17,6 @@
 #include "Test_impl.h"
 #include "Test_in_port_impl.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -42,7 +39,7 @@ Test_impl::set_session_context(
     ::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -73,13 +70,10 @@ Test_impl::ccm_remove()
 // ccm::local::CCM_I2 facet implementation
 //==============================================================================
 
-ccm::local::CCM_I2*
+CCM_I2*
 Test_impl::get_in_port()
 {
     Test_in_port_impl* facet = new Test_in_port_impl(this);
-    return dynamic_cast< ccm::local::CCM_I2*>(facet);
+    return dynamic_cast< CCM_I2*>(facet);
 }
-
-} // /namespace local
-} // /namespace ccm
 

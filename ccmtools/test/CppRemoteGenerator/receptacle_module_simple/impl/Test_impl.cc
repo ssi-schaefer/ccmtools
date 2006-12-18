@@ -20,8 +20,6 @@
 namespace world {
 namespace europe {
 namespace austria {
-namespace ccm {
-namespace local {
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -44,7 +42,7 @@ void
 Test_impl::set_session_context(::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<world::europe::austria::ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -75,15 +73,13 @@ Test_impl::ccm_remove()
 // world::europe::austria::ccm::local::CCM_I2 facet implementation
 //==============================================================================
 
-world::europe::austria::ccm::local::CCM_I2*
+world::europe::austria::CCM_I2*
 Test_impl::get_in_port()
 {
     Test_in_port_impl* facet = new Test_in_port_impl(this);
-    return dynamic_cast< world::europe::austria::ccm::local::CCM_I2*>(facet);
+    return dynamic_cast< world::europe::austria::CCM_I2*>(facet);
 }
 
-} // /namespace local
-} // /namespace ccm
 } // /namespace austria
 } // /namespace europe
 } // /namespace world

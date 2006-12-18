@@ -19,11 +19,7 @@
 using namespace std;
 using namespace wamas::platform::utils;
 
-namespace ccm {
-namespace local {
-
-Test_in_port_impl::Test_in_port_impl(
-    ccm::local::Test_impl* component_impl)
+Test_in_port_impl::Test_in_port_impl(Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
@@ -42,5 +38,3 @@ throw(::Components::ccm::local::CCMException)
     return str.length();
 }
 
-} // /namespace local
-} // /namespace ccm
