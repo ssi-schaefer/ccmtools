@@ -150,4 +150,14 @@ public class ConfigurationLocator
         namespaceList.add("remote");
         return namespaceList;
     }
+
+    public List<String> getCppLocalNamespaceExtension()
+    {
+        List<String> namespaceList = new ArrayList<String>();        
+        // TODO: Read these informations from a property file
+        namespaceList.add("ccm");
+        namespaceList.add("local");
+        return namespaceList;
+    }
+
 }

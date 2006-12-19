@@ -129,7 +129,6 @@ abstract public class CppGenerator extends CodeGenerator
         logger = Logger.getLogger("ccm.generator.cpp");
         logger.fine("enter CppGenerator()");
         cxxNamespace = new ArrayList();
-        cxxGenNamespace = new ArrayList();
         logger.fine("leave CppGenerator()");
     }
     

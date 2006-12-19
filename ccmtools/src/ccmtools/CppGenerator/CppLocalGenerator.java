@@ -98,13 +98,9 @@ public class CppLocalGenerator
     {
         super("CppLocal", uiDriver, outDir, LOCAL_OUTPUT_TEMPLATE_TYPES);
         logger = Logger.getLogger("ccm.generator.cpp.local");
-        logger.fine("begin");
-        
-        cxxGenNamespace.add("ccm");
-        cxxGenNamespace.add("local");
-        
+        logger.fine("begin");        
+        cxxGenNamespace = ConfigurationLocator.getInstance().getCppLocalNamespaceExtension();        
         anyManager = new AnyPluginManager();
-        
         logger.fine("end");
     }
 

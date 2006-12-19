@@ -30,6 +30,7 @@ import ccmtools.CodeGenerator.Template;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MOperationDef;
 import ccmtools.ui.UserInterfaceDriver;
+import ccmtools.utils.ConfigurationLocator;
 import ccmtools.utils.Confix;
 import ccmtools.utils.SourceFileHelper;
 import ccmtools.utils.Text;
@@ -50,11 +51,8 @@ public class CppLocalTestGenerator
     {
         super("CppLocalTest", d, out_dir, local_output_types);
         logger = Logger.getLogger("ccm.generator.cpp.local.test");
-        logger.fine("begin");
-        
-        cxxGenNamespace.add("ccm");
-        cxxGenNamespace.add("local");
-        
+        logger.fine("begin");        
+        cxxGenNamespace = ConfigurationLocator.getInstance().getCppLocalNamespaceExtension();
         logger.fine("end");
     }
 

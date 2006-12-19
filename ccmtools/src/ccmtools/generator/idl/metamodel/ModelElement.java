@@ -55,8 +55,8 @@ public abstract class ModelElement
         if(idlNamespaceExtension.size() > 0)
         {
 	        List<String> absoluteNamespaceList = new ArrayList<String>();
+	        absoluteNamespaceList.addAll(idlNamespaceExtension);
 	        absoluteNamespaceList.addAll(idlNamespaceList);
-            absoluteNamespaceList.addAll(ConfigurationLocator.getInstance().getIdlNamespaceExtension());
 	        return absoluteNamespaceList;
         }
         else
