@@ -18,9 +18,6 @@
 #include "Test_inBasicType_impl.h"
 #include "Test_inUserType_impl.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -178,7 +175,7 @@ Test_impl::octet_value(const unsigned char value)
     octet_value_ = value;
 }
 
-const ccm::local::Color
+const Color
 Test_impl::color_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -186,13 +183,13 @@ Test_impl::color_value() const
 }
 
 void
-Test_impl::color_value(const ccm::local::Color value)
+Test_impl::color_value(const Color value)
   throw(::Components::ccm::local::CCMException)
 {
     color_value_ = value;
 }
 
-const ccm::local::Person
+const Person
 Test_impl::person_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -200,13 +197,13 @@ Test_impl::person_value() const
 }
 
 void
-Test_impl::person_value(const ccm::local::Person value)
+Test_impl::person_value(const Person value)
   throw(::Components::ccm::local::CCMException)
 {
     person_value_ = value;
 }
 
-const ccm::local::Address
+const Address
 Test_impl::address_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -214,13 +211,13 @@ Test_impl::address_value() const
 }
 
 void
-Test_impl::address_value(const ccm::local::Address value)
+Test_impl::address_value(const Address value)
   throw(::Components::ccm::local::CCMException)
 {
     address_value_ = value;
 }
 
-const ccm::local::LongList
+const LongList
 Test_impl::longList_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -228,13 +225,13 @@ Test_impl::longList_value() const
 }
 
 void
-Test_impl::longList_value(const ccm::local::LongList value)
+Test_impl::longList_value(const LongList value)
   throw(::Components::ccm::local::CCMException)
 {
     longList_value_ = value;
 }
 
-const ccm::local::StringList
+const StringList
 Test_impl::stringList_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -242,13 +239,13 @@ Test_impl::stringList_value() const
 }
 
 void
-Test_impl::stringList_value(const ccm::local::StringList value)
+Test_impl::stringList_value(const StringList value)
   throw(::Components::ccm::local::CCMException)
 {
     stringList_value_ = value;
 }
 
-const ccm::local::PersonList
+const PersonList
 Test_impl::personList_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -256,13 +253,13 @@ Test_impl::personList_value() const
 }
 
 void
-Test_impl::personList_value(const ccm::local::PersonList value)
+Test_impl::personList_value(const PersonList value)
   throw(::Components::ccm::local::CCMException)
 {
     personList_value_ = value;
 }
 
-const ccm::local::time_t
+const time_t
 Test_impl::time_t_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -270,18 +267,17 @@ Test_impl::time_t_value() const
 }
 
 void
-Test_impl::time_t_value(const ccm::local::time_t value)
+Test_impl::time_t_value(const time_t value)
   throw(::Components::ccm::local::CCMException)
 {
     time_t_value_ = value;
 }
 
 void
-Test_impl::set_session_context(
-    ::Components::ccm::local::SessionContext* context)
+Test_impl::set_session_context(::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -522,24 +518,21 @@ Test_impl::ccm_remove()
 // ccm::local::CCM_BasicTypeInterface facet implementation
 //==============================================================================
 
-ccm::local::CCM_BasicTypeInterface*
+CCM_BasicTypeInterface*
 Test_impl::get_inBasicType()
 {
     Test_inBasicType_impl* facet = new Test_inBasicType_impl(this);
-    return dynamic_cast< ccm::local::CCM_BasicTypeInterface*>(facet);
+    return dynamic_cast<CCM_BasicTypeInterface*>(facet);
 }
 
 //==============================================================================
 // ccm::local::CCM_UserTypeInterface facet implementation
 //==============================================================================
 
-ccm::local::CCM_UserTypeInterface*
+CCM_UserTypeInterface*
 Test_impl::get_inUserType()
 {
     Test_inUserType_impl* facet = new Test_inUserType_impl(this);
-    return dynamic_cast< ccm::local::CCM_UserTypeInterface*>(facet);
+    return dynamic_cast<CCM_UserTypeInterface*>(facet);
 }
-
-} // /namespace local
-} // /namespace ccm
 

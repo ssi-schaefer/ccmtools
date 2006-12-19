@@ -24,7 +24,7 @@
 #include <coss/CosNaming.h>
 
 #include <ccm/remote/TestHome_remote.h>
-#include <Test.h>
+#include <ccm_corba_stubs_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -51,12 +51,14 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_ccm_local_TestHome("TestHome");
+    error += deploy_TestHome("TestHome");
     error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
-    if(!error) {
+    if(!error) 
+    {
         cout << "TestHome server is running..." << endl;
     }
-    else {
+    else 
+    {
         cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
@@ -69,23 +71,20 @@ int main (int argc, char *argv[])
      * Client-side code
      */
     CORBA::Object_var obj = orb->resolve_initial_references("NameService");
-    CosNaming::NamingContextExt_var nc =
-        CosNaming::NamingContextExt::_narrow(obj);
+    CosNaming::NamingContextExt_var nc = CosNaming::NamingContextExt::_narrow(obj);
 
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
-    assert (!CORBA::is_nil (obj));
-    TestHome_var myTestHome = TestHome::_narrow (obj);
+    ccm::corba::stubs::TestHome_var myTestHome = ccm::corba::stubs::TestHome::_narrow (obj);
 
     // Create component instances
-    Test_var myTest = myTestHome->create();
+    ccm::corba::stubs::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::BasicTypeInterface_var inBasicType = myTest->provide_inBasicType();
-
-    ::UserTypeInterface_var inUserType = myTest->provide_inUserType();
+    ccm::corba::stubs::BasicTypeInterface_var inBasicType = myTest->provide_inBasicType();
+    ccm::corba::stubs::UserTypeInterface_var inUserType = myTest->provide_inUserType();
 
     // Connect receptacles
     myTest->connect_outBasicType(inBasicType);
@@ -161,8 +160,8 @@ int main (int argc, char *argv[])
 
       {
         // enum Color {red, green, blue, black, orange}
-        ::Color value = ::blue;
-        ::Color result;
+        ccm::corba::stubs::Color value = ccm::corba::stubs::blue;
+        ccm::corba::stubs::Color result;
         myTest->color_value(value);     
         result = myTest->color_value();
 
@@ -171,8 +170,8 @@ int main (int argc, char *argv[])
 
       {
         // struct Person { long id; string name; }
-        ::Person value;
-        ::Person_var result;
+        ccm::corba::stubs::Person value;
+        ccm::corba::stubs::Person_var result;
         value.name = CORBA::string_dup("Egon");   
         value.id = 3;
         myTest->person_value(value);
@@ -184,9 +183,9 @@ int main (int argc, char *argv[])
 
       {
         // struct Address { string street; long number; Person resident; }
-        ::Address value;
-        ::Address_var result;
-        ::Person person;
+        ccm::corba::stubs::Address value;
+        ccm::corba::stubs::Address_var result;
+        ccm::corba::stubs::Person person;
         value.street = CORBA::string_dup("Waltendorf");   
         value.number = 7;
         person.name = CORBA::string_dup("Egon");   
@@ -204,8 +203,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<long> LongList
         const int MAX_SIZE = 100; 
-        ::LongList_var value = new ::LongList;
-        ::LongList_var result;
+        ccm::corba::stubs::LongList_var value = new ccm::corba::stubs::LongList;
+        ccm::corba::stubs::LongList_var result;
         value->length(MAX_SIZE);
         for(int i=0;i<MAX_SIZE;i++) {
           (*value)[i] = i;
@@ -221,8 +220,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<string> StringList
         const int MAX_SIZE = 100; 
-        ::StringList_var value = new ::StringList;
-        ::StringList_var result;
+        ccm::corba::stubs::StringList_var value = new ccm::corba::stubs::StringList;
+        ccm::corba::stubs::StringList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i] = "Egon";
@@ -238,8 +237,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<Person> PersonList
         const int MAX_SIZE = 100; 
-        ::PersonList_var value = new ::PersonList;
-        ::PersonList_var result;
+        ccm::corba::stubs::PersonList_var value = new ccm::corba::stubs::PersonList;
+        ccm::corba::stubs::PersonList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i].name = "Andrea";
@@ -256,8 +255,8 @@ int main (int argc, char *argv[])
 
       {
         // typedef long time_t;
-        ::time_t value = -7777;
-        ::time_t result;
+        ccm::corba::stubs::time_t value = -7777;
+        ccm::corba::stubs::time_t result;
         myTest->long_value(value);
         result = myTest->long_value();
         assert(result == value);
@@ -332,8 +331,8 @@ int main (int argc, char *argv[])
 
       {
         // enum Color {red, green, blue, black, orange}
-        ::Color value = ::blue;
-        ::Color result;
+        ccm::corba::stubs::Color value = ccm::corba::stubs::blue;
+        ccm::corba::stubs::Color result;
         inUserType->color_value(value); 
         result = inUserType->color_value();
 
@@ -342,8 +341,8 @@ int main (int argc, char *argv[])
 
       {
         // struct Person { long id; string name; }
-        ::Person value;
-        ::Person_var result;
+        ccm::corba::stubs::Person value;
+        ccm::corba::stubs::Person_var result;
         value.name = CORBA::string_dup("Egon");   
         value.id = 3;
         inUserType->person_value(value);
@@ -355,9 +354,9 @@ int main (int argc, char *argv[])
 
       {
         // struct Address { string street; long number; Person resident; }
-        ::Address value;
-        ::Address_var result;
-        ::Person person;
+        ccm::corba::stubs::Address value;
+        ccm::corba::stubs::Address_var result;
+        ccm::corba::stubs::Person person;
         value.street = CORBA::string_dup("Waltendorf");   
         value.number = 7;
         person.name = CORBA::string_dup("Egon");   
@@ -375,8 +374,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<long> LongList
         const int MAX_SIZE = 100; 
-        ::LongList_var value = new ::LongList;
-        ::LongList_var result;
+        ccm::corba::stubs::LongList_var value = new ccm::corba::stubs::LongList;
+        ccm::corba::stubs::LongList_var result;
         value->length(MAX_SIZE);
         for(int i=0;i<MAX_SIZE;i++) {
           (*value)[i] = i;
@@ -392,8 +391,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<string> StringList
         const int MAX_SIZE = 100; 
-        ::StringList_var value = new ::StringList;
-        ::StringList_var result;
+        ccm::corba::stubs::StringList_var value = new ccm::corba::stubs::StringList;
+        ccm::corba::stubs::StringList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i] = "Egon";
@@ -409,8 +408,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<Person> PersonList
         const int MAX_SIZE = 100; 
-        ::PersonList_var value = new ::PersonList;
-        ::PersonList_var result;
+        ccm::corba::stubs::PersonList_var value = new ccm::corba::stubs::PersonList;
+        ccm::corba::stubs::PersonList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i].name = "Andrea";
@@ -427,8 +426,8 @@ int main (int argc, char *argv[])
 
       {
         // typedef long time_t;
-        ::time_t value = -7777;
-        ::time_t result;
+        ccm::corba::stubs::time_t value = -7777;
+        ccm::corba::stubs::time_t result;
         inUserType->time_t_value(value);
         result = inUserType->time_t_value();
         assert(result == value);
@@ -441,14 +440,22 @@ int main (int argc, char *argv[])
 
     // Un-Deployment
     myTest->disconnect_outBasicType();
-
     myTest->disconnect_outUserType();
 
     // Destroy component instances
     myTest->remove();
 
-
-    cout << "Exit C++ remote test client" << endl; 	
+    error  = undeploy_TestHome("TestHome");
+    error += undeploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    if(!error) 
+    {
+	    cout << "Exit C++ remote test client" << endl; 	
+    }
+    else 
+    {
+        cerr << "ERROR: Can't undeploy components!" << endl;
+        return -1;
+    }
 }
 
 #endif // HAVE_MICO

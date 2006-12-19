@@ -21,8 +21,6 @@
 namespace world {
 namespace europe {
 namespace austria {
-namespace ccm {
-namespace local {
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -181,7 +179,7 @@ Test_impl::octet_value(const unsigned char value)
     octet_value_ = value;
 }
 
-const world::europe::austria::ccm::local::Color
+const world::europe::austria::Color
 Test_impl::color_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -189,13 +187,13 @@ Test_impl::color_value() const
 }
 
 void
-Test_impl::color_value(const world::europe::austria::ccm::local::Color value)
+Test_impl::color_value(const world::europe::austria::Color value)
   throw(::Components::ccm::local::CCMException)
 {
     color_value_ = value;
 }
 
-const world::europe::austria::ccm::local::Person
+const world::europe::austria::Person
 Test_impl::person_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -203,13 +201,13 @@ Test_impl::person_value() const
 }
 
 void
-Test_impl::person_value(const world::europe::austria::ccm::local::Person value)
+Test_impl::person_value(const world::europe::austria::Person value)
   throw(::Components::ccm::local::CCMException)
 {
     person_value_ = value;
 }
 
-const world::europe::austria::ccm::local::Address
+const world::europe::austria::Address
 Test_impl::address_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -217,13 +215,13 @@ Test_impl::address_value() const
 }
 
 void
-Test_impl::address_value(const world::europe::austria::ccm::local::Address value)
+Test_impl::address_value(const world::europe::austria::Address value)
   throw(::Components::ccm::local::CCMException)
 {
     address_value_ = value;
 }
 
-const world::europe::austria::ccm::local::LongList
+const world::europe::austria::LongList
 Test_impl::longList_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -231,13 +229,13 @@ Test_impl::longList_value() const
 }
 
 void
-Test_impl::longList_value(const world::europe::austria::ccm::local::LongList value)
+Test_impl::longList_value(const world::europe::austria::LongList value)
   throw(::Components::ccm::local::CCMException)
 {
     longList_value_ = value;
 }
 
-const world::europe::austria::ccm::local::StringList
+const world::europe::austria::StringList
 Test_impl::stringList_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -245,13 +243,13 @@ Test_impl::stringList_value() const
 }
 
 void
-Test_impl::stringList_value(const world::europe::austria::ccm::local::StringList value)
+Test_impl::stringList_value(const world::europe::austria::StringList value)
   throw(::Components::ccm::local::CCMException)
 {
     stringList_value_ = value;
 }
 
-const world::europe::austria::ccm::local::PersonList
+const world::europe::austria::PersonList
 Test_impl::personList_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -259,13 +257,13 @@ Test_impl::personList_value() const
 }
 
 void
-Test_impl::personList_value(const world::europe::austria::ccm::local::PersonList value)
+Test_impl::personList_value(const world::europe::austria::PersonList value)
   throw(::Components::ccm::local::CCMException)
 {
     personList_value_ = value;
 }
 
-const world::europe::austria::ccm::local::time_t
+const world::europe::austria::time_t
 Test_impl::time_t_value() const
     throw(::Components::ccm::local::CCMException)
 {
@@ -273,7 +271,7 @@ Test_impl::time_t_value() const
 }
 
 void
-Test_impl::time_t_value(const world::europe::austria::ccm::local::time_t value)
+Test_impl::time_t_value(const world::europe::austria::time_t value)
   throw(::Components::ccm::local::CCMException)
 {
     time_t_value_ = value;
@@ -284,7 +282,7 @@ Test_impl::set_session_context(
     ::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<world::europe::austria::ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -522,26 +520,24 @@ Test_impl::ccm_remove()
 // world::europe::austria::ccm::local::CCM_BasicTypeInterface facet implementation
 //==============================================================================
 
-world::europe::austria::ccm::local::CCM_BasicTypeInterface*
+world::europe::austria::CCM_BasicTypeInterface*
 Test_impl::get_inBasicType()
 {
     Test_inBasicType_impl* facet = new Test_inBasicType_impl(this);
-    return dynamic_cast< world::europe::austria::ccm::local::CCM_BasicTypeInterface*>(facet);
+    return dynamic_cast< world::europe::austria::CCM_BasicTypeInterface*>(facet);
 }
 
 //==============================================================================
 // world::europe::austria::ccm::local::CCM_UserTypeInterface facet implementation
 //==============================================================================
 
-world::europe::austria::ccm::local::CCM_UserTypeInterface*
+world::europe::austria::CCM_UserTypeInterface*
 Test_impl::get_inUserType()
 {
     Test_inUserType_impl* facet = new Test_inUserType_impl(this);
-    return dynamic_cast< world::europe::austria::ccm::local::CCM_UserTypeInterface*>(facet);
+    return dynamic_cast< world::europe::austria::CCM_UserTypeInterface*>(facet);
 }
 
-} // /namespace local
-} // /namespace ccm
 } // /namespace austria
 } // /namespace europe
 } // /namespace world

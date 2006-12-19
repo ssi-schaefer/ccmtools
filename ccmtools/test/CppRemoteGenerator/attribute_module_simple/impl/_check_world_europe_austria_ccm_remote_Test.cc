@@ -23,7 +23,7 @@
 #include <coss/CosNaming.h>
 
 #include <world/europe/austria/ccm/remote/TestHome_remote.h>
-#include <world_europe_austria_ccm_corba_stubs_Test.h>
+#include <ccm_corba_stubs_world_europe_austria_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -77,11 +77,11 @@ int main (int argc, char *argv[])
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    world::europe::austria::ccm::corba::stubs::TestHome_var myTestHome = 
-    		world::europe::austria::ccm::corba::stubs::TestHome::_narrow (obj);
+    ccm::corba::stubs::world::europe::austria::TestHome_var myTestHome = 
+    		ccm::corba::stubs::world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    world::europe::austria::ccm::corba::stubs::Test_var myTest = myTestHome->create();
+    ccm::corba::stubs::world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
 
