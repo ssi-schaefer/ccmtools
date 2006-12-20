@@ -23,7 +23,7 @@
 #include <coss/CosNaming.h>
 
 #include <world/europe/austria/ccm/remote/TestHome_remote.h>
-#include <world_europe_austria_Test.h>
+#include <ccm_corba_stubs_world_europe_austria_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -50,12 +50,14 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_world_europe_austria_ccm_local_TestHome("TestHome");
+    error += deploy_world_europe_austria_TestHome("TestHome");
     error += deploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
-    if(!error) {
+    if(!error) 
+    {
         cout << "TestHome server is running..." << endl;
     }
-    else {
+    else 
+    {
         cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
@@ -68,23 +70,19 @@ int main (int argc, char *argv[])
      * Client-side code
      */
     CORBA::Object_var obj = orb->resolve_initial_references("NameService");
-    CosNaming::NamingContextExt_var nc =
-        CosNaming::NamingContextExt::_narrow(obj);
+    CosNaming::NamingContextExt_var nc = CosNaming::NamingContextExt::_narrow(obj);
 
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
-    assert (!CORBA::is_nil (obj));
-    world::europe::austria::TestHome_var myTestHome = 
-      world::europe::austria::TestHome::_narrow (obj);
+    ccm::corba::stubs::world::europe::austria::TestHome_var myTestHome = 
+    		ccm::corba::stubs::world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    world::europe::austria::Test_var myTest = myTestHome->create();
+    ccm::corba::stubs::world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-
-	
     myTest->configuration_complete();
 
     cout << "==== Begin Test Case ===================================" << endl;
@@ -94,45 +92,54 @@ int main (int argc, char *argv[])
     len = myTest->print(s);
     assert(strlen(s) == (unsigned long)len);
     
-    try {
+    try 
+    {
       char* s = CORBA::string_dup("SimpleError");
       myTest->print(s);
       assert(false);
     } 
-    catch(const ::world::europe::austria::SimpleError& e) {
-      ::world::europe::austria::ErrorInfoList infolist = e.info;
-      for(unsigned long i = 0; i < infolist.length(); i++) {
-        cout << e.info[i].code << ": " 
-             << e.info[i].message << endl;
+    catch(const ccm::corba::stubs::world::europe::austria::SimpleError& e) 
+    {
+      ccm::corba::stubs::world::europe::austria::ErrorInfoList infolist = e.info;
+      for(unsigned long i = 0; i < infolist.length(); i++) 
+      {
+        cout << e.info[i].code << ": " << e.info[i].message << endl;
       }
     } 
-    catch(const CORBA::SystemException& e) {
+    catch(const CORBA::SystemException& e) 
+    {
       cout << "caught CORBA::SystemException" << endl;
       assert(false);
     }  
     
-    try {
+    try 
+    {
       char* s = CORBA::string_dup("SuperError");
       myTest->print(s);
       assert(false);
     } 
-    catch(const ::world::europe::austria::SuperError& e) {
+    catch(const ccm::corba::stubs::world::europe::austria::SuperError& e) 
+    {
       cout << "caught world::europe::austria::SuperError" << endl;
     }   
-    catch(const CORBA::SystemException& e) {
+    catch(const CORBA::SystemException& e) 
+    {
       cout << "caught  CORBA::SystemException" << endl;
       assert(false);
     }
     
-    try {
+    try 
+    {
       char* s = CORBA::string_dup("FatalError");
       myTest->print(s);
       assert(false);
     } 
-    catch(const ::world::europe::austria::FatalError& e) {
+    catch(const ccm::corba::stubs::world::europe::austria::FatalError& e) 
+    {
 		cout << "caught world::europe::austria::FatalError" << endl;
     } 
-    catch(const CORBA::SystemException& e) {
+    catch(const CORBA::SystemException& e) 
+    {
       cout << "caught CORBA::SystemException" << endl;
       assert(false); 
     }
@@ -143,7 +150,17 @@ int main (int argc, char *argv[])
     myTest->remove();
 
     // Un-Deployment
-    cout << "Exit C++ remote test client" << endl; 	
+    error  = undeploy_world_europe_austria_TestHome("TestHome");
+    error += undeploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
+    if(!error) 
+    {
+	    cout << "Exit C++ remote test client" << endl; 	
+    }
+    else 
+    {
+        cerr << "ERROR: Can't undeploy components!" << endl;
+        return -1;
+    }
 }
 
 #endif // HAVE_MICO

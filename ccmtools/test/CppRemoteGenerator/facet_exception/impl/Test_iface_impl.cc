@@ -19,10 +19,8 @@
 using namespace std;
 using namespace wamas::platform::utils;
 
-namespace ccm {
-namespace local {
 
-Test_iface_impl::Test_iface_impl(ccm::local::Test_impl* component_impl)
+Test_iface_impl::Test_iface_impl(Test_impl* component_impl)
   : component(component_impl)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
@@ -35,10 +33,7 @@ Test_iface_impl::~Test_iface_impl()
 
 long
 Test_iface_impl::foo(const std::string& msg)
-throw(::Components::ccm::local::CCMException,
-        ccm::local::FatalError,
-        ccm::local::SuperError,
-        ccm::local::ErrorException )
+throw(::Components::ccm::local::CCMException, FatalError, SuperError, ErrorException )
 {
     if(msg == "Error") 
     {
@@ -74,5 +69,3 @@ throw(::Components::ccm::local::CCMException,
     return msg.length();
 }
 
-} // /namespace local
-} // /namespace ccm

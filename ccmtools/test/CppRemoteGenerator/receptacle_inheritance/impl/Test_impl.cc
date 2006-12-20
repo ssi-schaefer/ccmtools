@@ -17,9 +17,6 @@
 #include "Test_impl.h"
 #include "Test_ifaceIn_impl.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -42,7 +39,7 @@ Test_impl::set_session_context(
     ::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -104,16 +101,13 @@ Test_impl::ccm_remove()
 }
 
 //==============================================================================
-// ccm::local::CCM_SubType facet implementation
+// CCM_SubType facet implementation
 //==============================================================================
 
-ccm::local::CCM_SubType*
+CCM_SubType*
 Test_impl::get_ifaceIn()
 {
     Test_ifaceIn_impl* facet = new Test_ifaceIn_impl(this);
-    return dynamic_cast< ccm::local::CCM_SubType*>(facet);
+    return dynamic_cast< CCM_SubType*>(facet);
 }
-
-} // /namespace local
-} // /namespace ccm
 

@@ -5,6 +5,8 @@ all: remote
 
 test: remote check clean
 
+test_empty: remote check_empty clean
+
 idl3: Test.idl
 	ccmmodel -validator Test.idl
 	ccmidl -idl3 -o ${DEST_DIR}/idl Test.idl

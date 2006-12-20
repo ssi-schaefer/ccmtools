@@ -76,7 +76,6 @@ int main (int argc, char *argv[])
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
-    assert (!CORBA::is_nil (obj));
     ccm::corba::stubs::TestHome_var myTestHome = ccm::corba::stubs::TestHome::_narrow (obj);
 
     // Create component instances
@@ -99,15 +98,17 @@ int main (int argc, char *argv[])
     myTest->remove();
 
     // Un-Deployment
-    error = 0;
-    error += undeploy_TestHome("TestHome");
+    error  = undeploy_TestHome("TestHome");
     error += undeploy_ccm_remote_TestHome(orb, "TestHome:1.0");
     if(error) 
     {
         cerr << "ERROR: Can't undeploy components!" << endl;
         return -1;
     }
-    cout << "Exit C++ remote test client" << endl; 	
+    else
+    {
+    		cout << "Exit C++ remote test client" << endl;
+    } 	
 }
 
 #endif // HAVE_MICO

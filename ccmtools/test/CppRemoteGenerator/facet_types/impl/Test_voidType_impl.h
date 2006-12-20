@@ -8,18 +8,15 @@
 #ifndef __FACET__ccm_local_voidType__H__
 #define __FACET__ccm_local_voidType__H__
 
-#include <ccm/local/VoidTypeInterface.h>
+#include <VoidTypeInterface.h>
 
 #include "Test_impl.h"
 
-namespace ccm {
-namespace local {
-
 class Test_voidType_impl
-    : virtual public ccm::local::CCM_VoidTypeInterface
+    : virtual public CCM_VoidTypeInterface
 {
   protected:
-    ccm::local::Test_impl* component;
+    Test_impl* component;
 
     // This attribute is accessed by explicite set and get methods
     // which are part of VoidTypeInterface.
@@ -27,7 +24,7 @@ class Test_voidType_impl
 
 
   public:
-    Test_voidType_impl(ccm::local::Test_impl* component_impl);
+    Test_voidType_impl(Test_impl* component_impl);
     virtual ~Test_voidType_impl();
 
     virtual 
@@ -42,8 +39,6 @@ class Test_voidType_impl
 
 };
 
-} // /namespace local
-} // /namespace ccm
 
 #endif // __FACET__ccm_local_voidType__H__
 

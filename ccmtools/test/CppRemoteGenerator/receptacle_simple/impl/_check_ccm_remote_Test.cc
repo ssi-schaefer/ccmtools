@@ -108,8 +108,10 @@ int main (int argc, char *argv[])
         cerr << "ERROR: Can't undeploy components!" << endl;
         return -1;
     }
-    
-    cout << "Exit C++ remote test client" << endl; 	
+    else
+    {
+    		cout << "Exit C++ remote test client" << endl;
+    } 	
 }
 
 #endif // HAVE_MICO

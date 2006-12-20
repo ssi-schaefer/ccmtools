@@ -16,9 +16,6 @@
 
 #include <ccm/local/Test_share.h>
 
-namespace ccm {
-namespace local {
-
 /**
  * This class implements a component's equivalent and supported interfaces
  * as well as component attributes. Additionally, session component callback 
@@ -32,7 +29,7 @@ namespace local {
  * @version 
  **/
 class Test_impl
-    : virtual public CCM_Test
+    : virtual public ccm::local::CCM_Test
 {
   private:
   
@@ -41,7 +38,7 @@ class Test_impl
   long attr_;
 		
   public:
-    CCM_Test_Context* ctx;
+    ccm::local::CCM_Test_Context* ctx;
 
     Test_impl();
     virtual ~Test_impl();
@@ -116,53 +113,53 @@ class Test_impl
         unsigned char& p3) 
     throw(::Components::ccm::local::CCMException);
 
-    ccm::local::Color 
+    Color 
     fu1(
-        const ccm::local::Color& p1,
-        ccm::local::Color& p2,
-        ccm::local::Color& p3) 
+        const Color& p1,
+        Color& p2,
+        Color& p3) 
     throw(::Components::ccm::local::CCMException);
 
-    ccm::local::Person 
+    Person 
     fu2(
-        const ccm::local::Person& p1,
-        ccm::local::Person& p2,
-        ccm::local::Person& p3) 
+        const Person& p1,
+        Person& p2,
+        Person& p3) 
     throw(::Components::ccm::local::CCMException);
 
-    ccm::local::Address 
+    Address 
     fu3(
-        const ccm::local::Address& p1,
-        ccm::local::Address& p2,
-        ccm::local::Address& p3) 
+        const Address& p1,
+        Address& p2,
+        Address& p3) 
     throw(::Components::ccm::local::CCMException);
 
-    ccm::local::LongList 
+    LongList 
     fu4(
-        const ccm::local::LongList& p1,
-        ccm::local::LongList& p2,
-        ccm::local::LongList& p3) 
+        const LongList& p1,
+        LongList& p2,
+        LongList& p3) 
     throw(::Components::ccm::local::CCMException);
 
-    ccm::local::StringList 
+    StringList 
     fu5(
-        const ccm::local::StringList& p1,
-        ccm::local::StringList& p2,
-        ccm::local::StringList& p3) 
+        const StringList& p1,
+        StringList& p2,
+        StringList& p3) 
     throw(::Components::ccm::local::CCMException);
 
-    ccm::local::PersonList 
+    PersonList 
     fu6(
-        const ccm::local::PersonList& p1,
-        ccm::local::PersonList& p2,
-        ccm::local::PersonList& p3) 
+        const PersonList& p1,
+        PersonList& p2,
+        PersonList& p3) 
     throw(::Components::ccm::local::CCMException);
 
-    ccm::local::time_t 
+    time_t 
     fu7(
-        const ccm::local::time_t& t1,
-        ccm::local::time_t& t2,
-        ccm::local::time_t& t3) 
+        const time_t& t1,
+        time_t& t2,
+        time_t& t3) 
     throw(::Components::ccm::local::CCMException);
 
     void 
@@ -183,9 +180,6 @@ class Test_impl
     virtual void ccm_remove()
         throw(::Components::ccm::local::CCMException);
 };
-
-} // /namespace local
-} // /namespace ccm
 
 #endif
 

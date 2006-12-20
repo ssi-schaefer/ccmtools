@@ -5,10 +5,6 @@
  *         <http://ccmtools.sourceforge.net/>
  *
  * This test client is part of the remote component test concept. 
- *
- * To enable debug output use -DWXDEBUG compiler flag and set the
- * WX_DEBUG_LEVELS environment variable to "CCM_REMOTE".
- * (e.g. export WX_DEBUG_LEVELS="CCM_REMOTE")
  ***/
 
 #ifdef HAVE_CONFIG_H
@@ -28,7 +24,7 @@
 #include <coss/CosNaming.h>
 
 #include <world/europe/austria/ccm/remote/TestHome_remote.h>
-#include <world_europe_austria_Test.h>
+#include <ccm_corba_stubs_world_europe_austria_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -55,12 +51,14 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_world_europe_austria_ccm_local_TestHome("TestHome");
+    error += deploy_world_europe_austria_TestHome("TestHome");
     error += deploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
-    if(!error) {
+    if(!error) 
+    {
         cout << "TestHome server is running..." << endl;
     }
-    else {
+    else 
+    {
         cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
@@ -73,28 +71,27 @@ int main (int argc, char *argv[])
      * Client-side code
      */
     CORBA::Object_var obj = orb->resolve_initial_references("NameService");
-    CosNaming::NamingContextExt_var nc =
-        CosNaming::NamingContextExt::_narrow(obj);
+    CosNaming::NamingContextExt_var nc = CosNaming::NamingContextExt::_narrow(obj);
 
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
-    assert (!CORBA::is_nil (obj));
-    world::europe::austria::TestHome_var myTestHome = world::europe::austria::TestHome::_narrow (obj);
+    ccm::corba::stubs::world::europe::austria::TestHome_var myTestHome = 
+    		ccm::corba::stubs::world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    world::europe::austria::Test_var myTest = myTestHome->create();
+    ccm::corba::stubs::world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::world::europe::austria::BasicTypeInterface_var inBasicType = 
-	myTest->provide_inBasicType();
+    ccm::corba::stubs::world::europe::austria::BasicTypeInterface_var inBasicType = 
+		myTest->provide_inBasicType();
 
-    ::world::europe::austria::UserTypeInterface_var inUserType = 
-	myTest->provide_inUserType();
+    ccm::corba::stubs::world::europe::austria::UserTypeInterface_var inUserType = 
+		myTest->provide_inUserType();
 
-    ::world::europe::austria::VoidTypeInterface_var inVoidType = 
-	myTest->provide_inVoidType();
+    ccm::corba::stubs::world::europe::austria::VoidTypeInterface_var inVoidType = 
+		myTest->provide_inVoidType();
 
     // Connect receptacle
     myTest->connect_outBasicType(inBasicType);
@@ -118,7 +115,17 @@ int main (int argc, char *argv[])
     myTest->remove();
 
     // Un-Deployment
-    cout << "Exit C++ remote test client" << endl; 	
+    error  = undeploy_world_europe_austria_TestHome("TestHome");
+    error += undeploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
+    if(!error) 
+    {
+	    cout << "Exit C++ remote test client" << endl; 	
+    }
+    else 
+    {
+        cerr << "ERROR: Can't undeploy components!" << endl;
+        return -1;
+    }   
 }
 
 #endif // HAVE_MICO

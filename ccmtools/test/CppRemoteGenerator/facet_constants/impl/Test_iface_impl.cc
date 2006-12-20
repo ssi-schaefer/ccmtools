@@ -19,10 +19,8 @@
 using namespace std;
 using namespace wamas::platform::utils;
 
-namespace ccm {
-namespace local {
 
-Test_iface_impl::Test_iface_impl(ccm::local::Test_impl* component_impl)
+Test_iface_impl::Test_iface_impl(Test_impl* component_impl)
   : component(component_impl)
 {
   cout << "  BOOLEAN_CONST = " << Constants::BOOLEAN_CONST << endl; 
@@ -116,5 +114,3 @@ throw(::Components::ccm::local::CCMException)
   return Constants::DOUBLE_CONST;
 }
 
-} // /namespace local
-} // /namespace ccm

@@ -20,9 +20,6 @@
 #include "Test_inUserType_impl.h"
 #include "Test_inVoidType_impl.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -41,11 +38,10 @@ Test_impl::~Test_impl()
 }
 
 void
-Test_impl::set_session_context(
-    ::Components::ccm::local::SessionContext* context)
+Test_impl::set_session_context(::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -174,14 +170,14 @@ Test_impl::ccm_activate()
 
       // test case: enum Color {red, green, blue, black, orange};
       try { 
-	const ccm::local::Color p1 = ccm::local::red;
-	ccm::local::Color p2 = ccm::local::green;
-	ccm::local::Color p3;
-	ccm::local::Color result;
+	const Color p1 = red;
+	Color p2 = green;
+	Color p3;
+	Color result;
 	result = out->f1(p1, p2, p3);
-	assert(p2 == ccm::local::red);
-	assert(p3 == ccm::local::green);
-	assert(result == ccm::local::orange);
+	assert(p2 == red);
+	assert(p3 == green);
+	assert(result == orange);
       }
       catch(::Components::ccm::local::Exception& e) {
 	cerr << e.what() << endl;
@@ -349,8 +345,8 @@ Test_impl::ccm_activate()
 
       // test case: typedef long time_t;
       try { 
-	const ccm::local::time_t p1 = 7;
-	ccm::local::time_t p2 = 3, p3, result;
+	const time_t p1 = 7;
+	time_t p2 = 3, p3, result;
 	result = out->f7(p1, p2, p3);
 	assert(p2 == 7);
 	assert(p3 == 3);
@@ -379,38 +375,35 @@ Test_impl::ccm_remove()
 }
 
 //==============================================================================
-// ccm::local::CCM_BasicTypeInterface facet implementation
+// CCM_BasicTypeInterface facet implementation
 //==============================================================================
 
-ccm::local::CCM_BasicTypeInterface*
+CCM_BasicTypeInterface*
 Test_impl::get_inBasicType()
 {
     Test_inBasicType_impl* facet = new Test_inBasicType_impl(this);
-    return dynamic_cast< ccm::local::CCM_BasicTypeInterface*>(facet);
+    return dynamic_cast<CCM_BasicTypeInterface*>(facet);
 }
 
 //==============================================================================
-// ccm::local::CCM_UserTypeInterface facet implementation
+// CCM_UserTypeInterface facet implementation
 //==============================================================================
 
-ccm::local::CCM_UserTypeInterface*
+CCM_UserTypeInterface*
 Test_impl::get_inUserType()
 {
     Test_inUserType_impl* facet = new Test_inUserType_impl(this);
-    return dynamic_cast< ccm::local::CCM_UserTypeInterface*>(facet);
+    return dynamic_cast<CCM_UserTypeInterface*>(facet);
 }
 
 //==============================================================================
-// ccm::local::CCM_VoidTypeInterface facet implementation
+// CCM_VoidTypeInterface facet implementation
 //==============================================================================
 
-ccm::local::CCM_VoidTypeInterface*
+CCM_VoidTypeInterface*
 Test_impl::get_inVoidType()
 {	                             
     Test_inVoidType_impl* facet = new Test_inVoidType_impl(this);
-    return dynamic_cast< ccm::local::CCM_VoidTypeInterface*>(facet);
+    return dynamic_cast<CCM_VoidTypeInterface*>(facet);
 }
-
-} // /namespace local
-} // /namespace ccm
 

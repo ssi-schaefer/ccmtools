@@ -23,7 +23,7 @@
 #include <coss/CosNaming.h>
 
 #include <ccm/remote/TestHome_remote.h>
-#include <Test.h>
+#include <ccm_corba_stubs_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -50,12 +50,14 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_ccm_local_TestHome("TestHome");
+    error += deploy_TestHome("TestHome");
     error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
-    if(!error) {
+    if(!error) 
+    {
         cout << "TestHome server is running..." << endl;
     }
-    else {
+    else 
+    {
         cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
@@ -68,21 +70,19 @@ int main (int argc, char *argv[])
      * Client-side code
      */
     CORBA::Object_var obj = orb->resolve_initial_references("NameService");
-    CosNaming::NamingContextExt_var nc =
-        CosNaming::NamingContextExt::_narrow(obj);
+    CosNaming::NamingContextExt_var nc = CosNaming::NamingContextExt::_narrow(obj);
 
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
-    assert (!CORBA::is_nil (obj));
-    TestHome_var myTestHome = TestHome::_narrow (obj);
+    ccm::corba::stubs::TestHome_var myTestHome = ccm::corba::stubs::TestHome::_narrow (obj);
 
     // Create component instances
-    Test_var myTest = myTestHome->create();
+    ccm::corba::stubs::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::IFace_var iface = myTest->provide_iface();
+    ccm::corba::stubs::IFace_var iface = myTest->provide_iface();
 
 
 	
@@ -90,40 +90,48 @@ int main (int argc, char *argv[])
 
     cout << "==== Begin Test Case ===================================" << endl;
 
-    try {
+    try 
+    {
       CORBA::Long result;
       result = iface->foo("0123456789");
       assert(result == 10);
     }
-    catch(const ::ErrorException& e) {
+    catch(const ccm::corba::stubs::ErrorException& e) 
+    {
       assert(false);
     }
 
-    try {
+    try 
+    {
       iface->foo("Error");
       assert(false);
     }
-    catch(const ::ErrorException& e) {
-      ::ErrorInfoList infolist = e.info;
-      for(unsigned long i = 0; i < infolist.length(); i++) {
-      cout << e.info[i].code << ": " 
-           << e.info[i].message << endl;
+    catch(const ccm::corba::stubs::ErrorException& e) 
+    {
+      ccm::corba::stubs::ErrorInfoList infolist = e.info;
+      for(unsigned long i = 0; i < infolist.length(); i++) 
+      {
+      	cout << e.info[i].code << ": " << e.info[i].message << endl;
       }
     }
 
-    try {
+    try 
+    {
       iface->foo("SuperError");
       assert(false);
     }
-    catch(const ::SuperError& e) {
+    catch(const ccm::corba::stubs::SuperError& e) 
+    {
       cout << "SuperError" << endl;
     }
 
-    try {
+    try 
+    {
       iface->foo("FatalError");
       assert(false);
     }
-    catch(const ::FatalError& e) {
+    catch(const ccm::corba::stubs::FatalError& e) 
+    {
       cout << e.what << endl;
     }
     cout << "==== End Test Case =====================================" << endl; 
@@ -132,7 +140,17 @@ int main (int argc, char *argv[])
     myTest->remove();
 
     // Un-Deployment
-    cout << "Exit C++ remote test client" << endl; 	
+    error  = undeploy_TestHome("TestHome");
+    error += undeploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    if(!error) 
+    {
+	    cout << "Exit C++ remote test client" << endl; 	
+    }
+    else 
+    {
+        cerr << "ERROR: Can't undeploy components!" << endl;
+        return -1;
+    }
 }
 
 #endif // HAVE_MICO

@@ -23,7 +23,7 @@
 #include <coss/CosNaming.h>
 
 #include <world/europe/austria/ccm/remote/TestHome_remote.h>
-#include <world_europe_austria_ccm_corba_stubs_Test.h>
+#include <ccm_corba_stubs_world_europe_austria_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -52,10 +52,12 @@ int main (int argc, char *argv[])
     int error = 0;
     error += deploy_world_europe_austria_TestHome("TestHome");
     error += deploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
-    if(!error) {
+    if(!error) 
+    {
         cout << "TestHome server is running..." << endl;
     }
-    else {
+    else 
+    {
         cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
@@ -68,22 +70,21 @@ int main (int argc, char *argv[])
      * Client-side code
      */
     CORBA::Object_var obj = orb->resolve_initial_references("NameService");
-    CosNaming::NamingContextExt_var nc =
-        CosNaming::NamingContextExt::_narrow(obj);
+    CosNaming::NamingContextExt_var nc = CosNaming::NamingContextExt::_narrow(obj);
 
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    ::world::europe::austria::ccm::corba::stubs::TestHome_var myTestHome = 
-    		::world::europe::austria::ccm::corba::stubs::TestHome::_narrow (obj);
+    ccm::corba::stubs::world::europe::austria::TestHome_var myTestHome = 
+    		ccm::corba::stubs::world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    ::world::europe::austria::ccm::corba::stubs::Test_var myTest = myTestHome->create();
+    ccm::corba::stubs::world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::world::europe::austria::ccm::corba::stubs::I2_var in_port = myTest->provide_in_port();
+    ccm::corba::stubs::world::europe::austria::I2_var in_port = myTest->provide_in_port();
 
     // Connect receptacle
     myTest->connect_out_port(in_port);

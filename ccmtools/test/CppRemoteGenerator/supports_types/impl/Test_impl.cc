@@ -16,9 +16,6 @@
 
 #include "Test_impl.h"
 
-namespace ccm {
-namespace local {
-
 using namespace std;
 using namespace wamas::platform::utils;
 
@@ -157,23 +154,23 @@ throw(::Components::ccm::local::CCMException)
 }
 
 
-ccm::local::Color
+Color
 Test_impl::fu1(
-        const ccm::local::Color& p1,
-        ccm::local::Color& p2,
-        ccm::local::Color& p3)
+        const Color& p1,
+        Color& p2,
+        Color& p3)
 throw(::Components::ccm::local::CCMException)
 {
     p3=p2;
     p2=p1;
-    return ccm::local::orange;
+    return orange;
 }
 
-ccm::local::Person
+Person
 Test_impl::fu2(
-        const ccm::local::Person& p1,
-        ccm::local::Person& p2,
-        ccm::local::Person& p3)
+        const Person& p1,
+        Person& p2,
+        Person& p3)
 throw(::Components::ccm::local::CCMException)
 {
     Person r;
@@ -184,11 +181,11 @@ throw(::Components::ccm::local::CCMException)
     return r;
 }
 
-ccm::local::Address
+Address
 Test_impl::fu3(
-        const ccm::local::Address& p1,
-        ccm::local::Address& p2,
-        ccm::local::Address& p3)
+        const Address& p1,
+        Address& p2,
+        Address& p3)
 throw(::Components::ccm::local::CCMException)
 {
     Address r;
@@ -201,15 +198,16 @@ throw(::Components::ccm::local::CCMException)
     return r;
 }
 
-ccm::local::LongList
+LongList
 Test_impl::fu4(
-        const ccm::local::LongList& p1,
-        ccm::local::LongList& p2,
-        ccm::local::LongList& p3)
+        const LongList& p1,
+        LongList& p2,
+        LongList& p3)
 throw(::Components::ccm::local::CCMException)
 {
     LongList r;
-    for(unsigned long i=0;i<p1.size();i++) {
+    for(unsigned long i=0;i<p1.size();i++) 
+    {
       r.push_back(i);
       p3.push_back(p2.at(i));
       p2.at(i) = p1.at(i);
@@ -217,15 +215,16 @@ throw(::Components::ccm::local::CCMException)
     return r;
 }
 
-ccm::local::StringList
+StringList
 Test_impl::fu5(
-        const ccm::local::StringList& p1,
-        ccm::local::StringList& p2,
-        ccm::local::StringList& p3)
+        const StringList& p1,
+        StringList& p2,
+        StringList& p3)
 throw(::Components::ccm::local::CCMException)
 {
     StringList r;
-    for(unsigned long i=0;i<p1.size();i++) {
+    for(unsigned long i=0;i<p1.size();i++) 
+    {
       r.push_back("Test");
       p3.push_back(p2.at(i));
       p2.at(i) = p1.at(i);
@@ -233,15 +232,16 @@ throw(::Components::ccm::local::CCMException)
     return r;
 }
 
-ccm::local::PersonList
+PersonList
 Test_impl::fu6(
-        const ccm::local::PersonList& p1,
-        ccm::local::PersonList& p2,
-        ccm::local::PersonList& p3)
+        const PersonList& p1,
+        PersonList& p2,
+        PersonList& p3)
 throw(::Components::ccm::local::CCMException)
 {
       PersonList r;
-    for(unsigned long i=0; i < p1.size(); i++) {
+    	  for(unsigned long i=0; i < p1.size(); i++) 
+    	  {
       Person v;
       v.name = "Test";
       v.id = i;
@@ -252,11 +252,11 @@ throw(::Components::ccm::local::CCMException)
     return r;
 }
 
-ccm::local::time_t
+time_t
 Test_impl::fu7(
-        const ccm::local::time_t& t1,
-        ccm::local::time_t& t2,
-        ccm::local::time_t& t3)
+        const time_t& t1,
+        time_t& t2,
+        time_t& t3)
 throw(::Components::ccm::local::CCMException)
 {
     t3=t2;
@@ -280,11 +280,10 @@ throw(::Components::ccm::local::CCMException)
 }
 
 void
-Test_impl::set_session_context(
-    ::Components::ccm::local::SessionContext* context)
+Test_impl::set_session_context(::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -307,7 +306,4 @@ Test_impl::ccm_remove()
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
-
-} // /namespace local
-} // /namespace ccm
 

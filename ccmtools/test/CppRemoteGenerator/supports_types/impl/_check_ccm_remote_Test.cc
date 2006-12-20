@@ -24,10 +24,11 @@
 #include <coss/CosNaming.h>
 
 #include <ccm/remote/TestHome_remote.h>
-#include <Test.h>
+#include <ccm_corba_stubs_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
+using namespace ccm::corba::stubs;
 
 //==============================================================================
 // Implementation of remote client test
@@ -51,12 +52,14 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_ccm_local_TestHome("TestHome");
+    error  = deploy_TestHome("TestHome");
     error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
-    if(!error) {
+    if(!error) 
+    {
         cout << "TestHome server is running..." << endl;
     }
-    else {
+    else 
+    {
         cerr << "ERROR: Can't deploy components!" << endl;
         return -1;
     }
@@ -69,18 +72,17 @@ int main (int argc, char *argv[])
      * Client-side code
      */
     CORBA::Object_var obj = orb->resolve_initial_references("NameService");
-    CosNaming::NamingContextExt_var nc =
-        CosNaming::NamingContextExt::_narrow(obj);
+    CosNaming::NamingContextExt_var nc = CosNaming::NamingContextExt::_narrow(obj);
 
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome:1.0");
     assert (!CORBA::is_nil (obj));
-    TestHome_var myTestHome = TestHome::_narrow (obj);
+    ccm::corba::stubs::TestHome_var myTestHome = ccm::corba::stubs::TestHome::_narrow (obj);
 
     // Create component instances
-    Test_var myTest = myTestHome->create();
+    ccm::corba::stubs::Test_var myTest = myTestHome->create();
 
     // Provide facets   
 
@@ -206,22 +208,22 @@ int main (int argc, char *argv[])
       {
         // enum Color {red, green, blue, black, orange}
 
-        ::Color Color_2,Color_3, Color_r;
-        Color_2 = ::blue;
+        ccm::corba::stubs::Color Color_2,Color_3, Color_r;
+        Color_2 = ccm::corba::stubs::blue;
 
-        Color_r = myTest->fu1(::red,Color_2, Color_3);
+        Color_r = myTest->fu1(ccm::corba::stubs::red,Color_2, Color_3);
 
-        assert(Color_2 == ::red);
-        assert(Color_3 == ::blue);
-        assert(Color_r == ::orange);
+        assert(Color_2 == ccm::corba::stubs::red);
+        assert(Color_3 == ccm::corba::stubs::blue);
+        assert(Color_r == ccm::corba::stubs::orange);
       }
       
       {
         // struct Person { long id; string name; }   
-        ::Person p1;
-        ::Person_var p2 = new  ::Person;
-        ::Person_var p3;
-        ::Person_var result;
+        ccm::corba::stubs::Person p1;
+        ccm::corba::stubs::Person_var p2 = new ccm::corba::stubs::Person;
+        ccm::corba::stubs::Person_var p3;
+        ccm::corba::stubs::Person_var result;
         
         p1.name = CORBA::string_dup("Egon");   
         p1.id = 3;
@@ -239,11 +241,11 @@ int main (int argc, char *argv[])
 
       {
         // struct Address { string street; long number; Person resident; }
-        ::Address p1;
-        ::Address_var p2 = new  ::Address;
-        ::Address_var p3;
-        ::Address_var result;
-        ::Person person;
+        ccm::corba::stubs::Address p1;
+        ccm::corba::stubs::Address_var p2 = new  ccm::corba::stubs::Address;
+        ccm::corba::stubs::Address_var p3;
+        ccm::corba::stubs::Address_var result;
+        ccm::corba::stubs::Person person;
 
         p1.street = CORBA::string_dup("Waltendorf");   
         p1.number = 7;
@@ -277,85 +279,97 @@ int main (int argc, char *argv[])
 
       {
         // typedef sequence<long> LongList
-        ::LongList_var list_1 = new ::LongList;
-        ::LongList_var list_2 = new ::LongList;
+        ccm::corba::stubs::LongList_var list_1 = new ccm::corba::stubs::LongList;
+        ccm::corba::stubs::LongList_var list_2 = new ccm::corba::stubs::LongList;
         list_1->length(5);
         list_2->length(5);
-        for(int i=0;i<5;i++) {
+        for(int i=0;i<5;i++) 
+        {
           (*list_1)[i] = i;
           (*list_2)[i] = i+i;
         }
         
-        ::LongList_var list_3;
-        ::LongList_var list_r;
+        ccm::corba::stubs::LongList_var list_3;
+        ccm::corba::stubs::LongList_var list_r;
         
         list_r = myTest->fu4(list_1,list_2,list_3);
         
-        for(unsigned long i=0; i < list_r->length(); i++) {
+        for(unsigned long i=0; i < list_r->length(); i++) 
+        {
           assert((*list_r)[i]== (CORBA::Long)i);
         }
-        for(unsigned long i=0; i < list_2->length(); i++) {
+        for(unsigned long i=0; i < list_2->length(); i++) 
+        {
           assert((*list_2)[i]== (CORBA::Long)i);
         }
-        for(unsigned long i=0; i < list_3->length(); i++) {
+        for(unsigned long i=0; i < list_3->length(); i++) 
+        {
           assert((*list_3)[i]== (CORBA::Long)(i+i));
         }
       }
 
       {
         // typedef sequence<string> StringList
-        ::StringList_var list_1 = new ::StringList;
-        ::StringList_var list_2 = new ::StringList;
+        ccm::corba::stubs::StringList_var list_1 = new ccm::corba::stubs::StringList;
+        ccm::corba::stubs::StringList_var list_2 = new ccm::corba::stubs::StringList;
         list_1->length(5);
         list_2->length(5);
-        for(int i=0;i<5;i++) {
+        for(int i=0;i<5;i++) 
+        {
           (*list_1)[i] = "Egon";
           (*list_2)[i] = "Andrea";
         }
         
-        ::StringList_var list_3;
-        ::StringList_var list_r;
+        ccm::corba::stubs::StringList_var list_3;
+        ccm::corba::stubs::StringList_var list_r;
         
         list_r = myTest->fu5(list_1,list_2,list_3);
         
-        for(unsigned long i=0;i<list_r->length();i++) {
+        for(unsigned long i=0;i<list_r->length();i++) 
+        {
           assert(strcmp((*list_r)[i],"Test") == 0);
         }
-        for(unsigned long i=0;i<list_2->length();i++) {
+        for(unsigned long i=0;i<list_2->length();i++) 
+        {
           assert(strcmp((*list_2)[i],"Egon") == 0);
         }
-        for(unsigned long i=0;i<list_3->length();i++) {
+        for(unsigned long i=0;i<list_3->length();i++) 
+        {
           assert(strcmp((*list_3)[i],"Andrea") == 0);
         }
       }
 
       {
         // typedef sequence<Person> PersonList
-        ::PersonList_var list_1 = new ::PersonList;
-        ::PersonList_var list_2 = new ::PersonList;
+        ccm::corba::stubs::PersonList_var list_1 = new ccm::corba::stubs::PersonList;
+        ccm::corba::stubs::PersonList_var list_2 = new ccm::corba::stubs::PersonList;
         list_1->length(5);
         list_2->length(5);
-        for(int i=0;i<5;i++) {
+        for(int i=0;i<5;i++) 
+        {
           (*list_1)[i].name = "Andrea";
           (*list_1)[i].id   = i;
           (*list_2)[i].name = "Egon";
           (*list_2)[i].id   = i+i;
         }
         
-        ::PersonList_var list_3;
-        ::PersonList_var list_r;
+        ccm::corba::stubs::PersonList_var list_3;
+        ccm::corba::stubs::PersonList_var list_r;
         
         list_r = myTest->fu6(list_1,list_2,list_3);
         
-        for(unsigned long i=0; i < list_r->length(); i++) {
+        for(unsigned long i=0; i < list_r->length(); i++) 
+        {
           assert(strcmp((*list_r)[i].name,"Test") == 0);
           assert((*list_r)[i].id == (CORBA::Long)i);
         }
-        for(unsigned long i=0; i < list_2->length(); i++) {
+        for(unsigned long i=0; i < list_2->length(); i++) 
+        {
           assert(strcmp((*list_2)[i].name,"Andrea") == 0);
           assert((*list_2)[i].id == (CORBA::Long)i);
         }
-        for(unsigned long i=0; i < list_3->length(); i++) {
+        for(unsigned long i=0; i < list_3->length(); i++) 
+        {
           assert(strcmp((*list_3)[i].name,"Egon") == 0);
           assert((*list_3)[i].id == (CORBA::Long)(i+i));
         }
@@ -363,7 +377,7 @@ int main (int argc, char *argv[])
 
       {
         // typedef long time_t
-        ::time_t time_2=3, time_3, time_r;
+        ccm::corba::stubs::time_t time_2=3, time_3, time_r;
         time_r = myTest->fu7(7,time_2, time_3);
         assert(time_2 == 7);
         assert(time_3 == 3);
@@ -379,7 +393,17 @@ int main (int argc, char *argv[])
     myTest->remove();
 
     // Un-Deployment
-    cout << "Exit C++ remote test client" << endl; 	
+    error  = deploy_TestHome("TestHome");
+    error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    if(!error) 
+    {
+        cout << "Exit C++ remote test client" << endl; 	
+    }
+    else 
+    {
+        cerr << "ERROR: Can't undeploy components!" << endl;
+        return -1;
+    }
 }
 
 #endif // HAVE_MICO

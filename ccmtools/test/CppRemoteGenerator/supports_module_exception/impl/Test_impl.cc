@@ -19,8 +19,6 @@
 namespace world {
 namespace europe {
 namespace austria {
-namespace ccm {
-namespace local {
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -42,13 +40,14 @@ Test_impl::~Test_impl()
 long
 Test_impl::print(const std::string& msg)
 throw(::Components::ccm::local::CCMException,
-        world::europe::austria::ccm::local::SuperError,
-        world::europe::austria::ccm::local::SimpleError,
-        world::europe::austria::ccm::local::FatalError )
+        world::europe::austria::SuperError,
+        world::europe::austria::SimpleError,
+        world::europe::austria::FatalError )
 {
     cout << ">> " << msg << endl;
 
-    if(msg == "SimpleError") {
+    if(msg == "SimpleError") 
+    {
         SimpleError error;
         ErrorInfoList error_info_list;
         ErrorInfo error_info;
@@ -69,11 +68,10 @@ throw(::Components::ccm::local::CCMException,
 }
 
 void
-Test_impl::set_session_context(
-    ::Components::ccm::local::SessionContext* context)
+Test_impl::set_session_context(::Components::ccm::local::SessionContext* context)
     throw(::Components::ccm::local::CCMException)
 {
-    ctx = dynamic_cast<CCM_Test_Context*>(context);
+    ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
 }
 
 void
@@ -97,8 +95,6 @@ Test_impl::ccm_remove()
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-} // /namespace local
-} // /namespace ccm
 } // /namespace austria
 } // /namespace europe
 } // /namespace world
