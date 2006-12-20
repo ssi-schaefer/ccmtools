@@ -26,10 +26,10 @@
 %(OpenNamespace)s
 
 void 
-convertFromCorba(const ::%(CorbaStubName)s& in, %(LocalName)s& out);
+convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out);
 
 void 
-convertToCorba(const %(LocalName)s& in, ::%(CorbaStubName)s& out);
+convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out);
 
 %(CloseNamespace)s
 
@@ -62,13 +62,13 @@ convertToCorba(const %(LocalName)s& in, ::%(CorbaStubName)s& out);
 using namespace std;
 
 void 
-convertFromCorba(const ::%(CorbaStubName)s& in, %(LocalName)s& out)
+convertFromCorba(const %(CorbaStubName)s& in, %(LocalName)s& out)
 {
 %(MFieldDefFromCorba)s
 } 
 
 void 
-convertToCorba(const %(LocalName)s& in, ::%(CorbaStubName)s& out)
+convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out)
 {
 %(MFieldDefToCorba)s
 } 

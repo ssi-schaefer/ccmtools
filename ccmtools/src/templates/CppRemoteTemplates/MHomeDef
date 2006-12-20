@@ -24,7 +24,7 @@
 //==========================================================================
 
 class %(Identifier)s_impl :
-    virtual public POA_%(CorbaStubName)s,
+    virtual public POA_%(StubIdentifier)s,
     virtual public PortableServer::RefCountServantBase
 {
   protected:
