@@ -8,13 +8,13 @@
 #include <iostream>
 
 namespace ccm {
-namespace utils {
+namespace local {
 
     class Timer
     {
     public:
 	Timer();
-	virtual ~Timer();
+	virtual ~Timer() {}
 	
 	/**
 	 * Starts a timer object by saving the current point in time in a set
@@ -66,7 +66,7 @@ namespace utils {
     std::ostream&
     operator<<(std::ostream& o, const Timer& value);
     
-} // /namespace utils
+} // /namespace local
 } // /namespace ccm
 
 #endif /* __WX_UTILS_TIMER__H__ */

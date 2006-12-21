@@ -17,15 +17,20 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+/*
+ * This additional namespace ccm::corba is used to separate the CORBA stubs
+ * from the local interfaces.
+ */
+module ccm {
+module corba {
 
-module Components 
-{
-	/*
- 	 * This file defines interfaces which establish the component model used 
- 	 * by the CCM Tools component implementations.
- 	 * These definitions are strongly related to the CORBA Component Model 
- 	 * (CCM) Specification and the Lightweight CORBA Component Model (LwCCM).
- 	 */
+/*
+ * This file defines interfaces which establish the component model used 
+ * by the CCM Tools component implementations.
+ * These definitions are strongly related to the CORBA Component Model 
+ * (CCM) Specification and the Lightweight CORBA Component Model (LwCCM).
+ */
+module Components {
  	   
   	/**
    	 * Facet Definitions
@@ -391,4 +396,5 @@ module Components
 	*/
 	
 }; // /module Components
-
+}; // /module corba
+}; // /module ccm

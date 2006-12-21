@@ -33,9 +33,12 @@
 
 #include "CCMContainer.h"
 
+
+namespace ccm {
+namespace remote {
+	
 using namespace std;
 using namespace wamas::platform::utils;
-
 
 //============================================================================
 // CCM Containers
@@ -47,15 +50,11 @@ using namespace wamas::platform::utils;
  * the home, all components and all facets.
  */
 
-CORBA::ULong CCM::ContainerBase::globalContainerNumber_ = 0;
+CORBA::ULong ContainerBase::globalContainerNumber_ = 0;
 
-CCM::ContainerBase::ContainerBase()
+ContainerBase::ContainerBase()
 {
     containerNumber_ = ++globalContainerNumber_;
-}
-
-CCM::ContainerBase::~ContainerBase ()
-{    
 }
 
 
@@ -64,7 +63,7 @@ CCM::ContainerBase::~ContainerBase ()
 // Session Container Implementation 
 //============================================================================
 
-CCM::SessionContainer::SessionContainer (CORBA::ORB_ptr orb)
+SessionContainer::SessionContainer(CORBA::ORB_ptr orb)
 {
     CORBA::Object_var obj;
     _have_info = 0;
@@ -91,14 +90,8 @@ CCM::SessionContainer::SessionContainer (CORBA::ORB_ptr orb)
 
 }
 
-
-CCM::SessionContainer::~SessionContainer ()
-{
-}
-
-
 void 
-CCM::SessionContainer::load(const ComponentInfo& info)
+SessionContainer::load(const ComponentInfo& info)
 {
     _info = info;
     _have_info = 1;
@@ -119,7 +112,7 @@ CCM::SessionContainer::load(const ComponentInfo& info)
 
 
 void 
-CCM::SessionContainer::activate ()
+SessionContainer::activate()
 {
     // TODO:
     // Set instances to active, if their configuration is complete
@@ -133,7 +126,7 @@ CCM::SessionContainer::activate ()
 
 
 void 
-CCM::SessionContainer::passivate ()
+SessionContainer::passivate()
 {
     // TODO:
     // Set instances to inactive
@@ -142,7 +135,7 @@ CCM::SessionContainer::passivate ()
 
 
 void 
-CCM::SessionContainer::remove ()
+SessionContainer::remove()
 {
     // TODO:
     // Prepare instances for destruction
@@ -151,22 +144,22 @@ CCM::SessionContainer::remove ()
 
 
 CORBA::Boolean 
-CCM::SessionContainer::compare(Components::CCMHome_ptr ohome)
+SessionContainer::compare(::ccm::corba::Components::CCMHome_ptr ohome)
 {
 	// TODO
     return false;
 }
 
 
-Components::CCMHome_ptr 
-CCM::SessionContainer::get_reference_for_home ()
+::ccm::corba::Components::CCMHome_ptr 
+SessionContainer::get_reference_for_home()
 {
-    return Components::CCMHome::_narrow (_home_ref.in());
+    return ::ccm::corba::Components::CCMHome::_narrow(_home_ref.in());
 }
 
 
-Components::CCMObject_ptr
-CCM::SessionContainer::activate_component(PortableServer::Servant skel)
+::ccm::corba::Components::CCMObject_ptr
+SessionContainer::activate_component(PortableServer::Servant skel)
 {
 #ifdef CCM_PERSISTENT_POA
     PortableServer::ObjectId_var oid =
@@ -176,27 +169,27 @@ CCM::SessionContainer::activate_component(PortableServer::Servant skel)
     PortableServer::ObjectId_var oid = poa_->activate_object(skel);
 #endif
     CORBA::Object_var ref = poa_->id_to_reference(oid.in());
-    return Components::CCMObject::_narrow(ref);
+    return ::ccm::corba::Components::CCMObject::_narrow(ref);
 }
 
 
-Components::CCMObject_ptr
-CCM::SessionContainer::get_reference_for_component(PortableServer::Servant s)
+::ccm::corba::Components::CCMObject_ptr
+SessionContainer::get_reference_for_component(PortableServer::Servant s)
 {
     CORBA::Object_var o = poa_->servant_to_reference(s);
-    return Components::CCMObject::_narrow(o);
+    return ::ccm::corba::Components::CCMObject::_narrow(o);
 }
 
 
 PortableServer::Servant
-CCM::SessionContainer::get_skeleton_for_reference(CORBA::Object_ptr o)
+SessionContainer::get_skeleton_for_reference(CORBA::Object_ptr o)
 {
     return poa_->reference_to_servant(o);
 }
 
 
 void 
-CCM::SessionContainer::deactivate_component (CORBA::Object_ptr o)
+SessionContainer::deactivate_component(CORBA::Object_ptr o)
 {
     PortableServer::Servant skel = get_skeleton_for_reference(o);
     deactivate_component(skel);
@@ -204,7 +197,7 @@ CCM::SessionContainer::deactivate_component (CORBA::Object_ptr o)
 
 
 void 
-CCM::SessionContainer::deactivate_component (PortableServer::Servant skel)
+SessionContainer::deactivate_component(PortableServer::Servant skel)
 {
     PortableServer::ObjectId_var oid = poa_->servant_to_id (skel);
 	// TODO
@@ -213,10 +206,8 @@ CCM::SessionContainer::deactivate_component (PortableServer::Servant skel)
 
 
 CORBA::Object_ptr
-CCM::SessionContainer::activate_facet(PortableServer::Servant comp_glue,
-				      const char * name,
-				      void* facet_instance,
-				      PortableServer::Servant facet_glue)
+SessionContainer::activate_facet(PortableServer::Servant comp_glue, const char * name,
+				      void* facet_instance, PortableServer::Servant facet_glue)
 {
 #ifdef CCM_PERSISTENT_POA
     PortableServer::ObjectId_var fid =
@@ -235,7 +226,7 @@ CCM::SessionContainer::activate_facet(PortableServer::Servant comp_glue,
  */
 
 void 
-CCM::SessionContainer::configuration_complete(PortableServer::Servant comp_glue)
+SessionContainer::configuration_complete(PortableServer::Servant comp_glue)
 {
     PortableServer::ObjectId_var oid = poa_->servant_to_id (comp_glue);
 	// TODO
@@ -246,18 +237,18 @@ CCM::SessionContainer::configuration_complete(PortableServer::Servant comp_glue)
  * for Service Context
  */
 
-Components::CCMHome_ptr 
-CCM::SessionContainer::get_CCM_home ()
+::ccm::corba::Components::CCMHome_ptr 
+SessionContainer::get_CCM_home ()
 {
     return get_reference_for_home ();
 }
 
 
 CORBA::Object_ptr 
-CCM::SessionContainer::get_CCM_object(Components::ccm::local::EnterpriseComponent* o)
+SessionContainer::get_CCM_object(::Components::EnterpriseComponent* o)
 {
     // TODO
-    return Components::CCMObject::_nil();
+    return ::ccm::corba::Components::CCMObject::_nil();
 }
 
 
@@ -266,9 +257,9 @@ CCM::SessionContainer::get_CCM_object(Components::ccm::local::EnterpriseComponen
 // Valuetype implementations
 //============================================================================
 
-long CCM::Cookie_impl::globalId_ = 0;
+long Cookie_impl::globalId_ = 0;
 
-CCM::Cookie_impl::Cookie_impl()
+Cookie_impl::Cookie_impl()
 {
     id_ = ++globalId_;
 }
@@ -281,18 +272,21 @@ CCM::Cookie_impl::Cookie_impl()
  */
 
 CORBA::ValueBase*
-CCM::Cookie_Factory::create_for_unmarshal()
+Cookie_Factory::create_for_unmarshal()
 {
     return new Cookie_impl;
 }
 
 
 void
-CCM::register_all_factories(CORBA::ORB_ptr orb)
+register_all_factories(CORBA::ORB_ptr orb)
 {
     CORBA::ValueFactoryBase_var vf;
     vf = new Cookie_Factory;
     orb->register_value_factory ("IDL:omg.org/Components/Cookie:1.0", vf);
 }
+
+} // /namespace remote
+} // /namespace ccm
 
 #endif // HAVE_MICO

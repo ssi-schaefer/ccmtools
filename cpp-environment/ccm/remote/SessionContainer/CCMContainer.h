@@ -37,9 +37,9 @@
 #include <string>
 
 #include <wamas/platform/utils/smartptr.h>
-#include <Components/ccm/local/CCM.h>
 
 #include <Components/CCM.h>
+#include <ccm/corba/Components/CCM.h>
 
 #ifdef __WGCC
     #if defined _BUILDING_CCM_RUNTIME_
@@ -51,8 +51,9 @@
     #define _CCM_EXPORT_DECL_
 #endif
 
-namespace CCM {
-  
+namespace ccm {
+namespace remote {
+	  
   //============================================================================
   // Base for all Containers
   //============================================================================
@@ -66,16 +67,16 @@ namespace CCM {
 	
     public:
 	ContainerBase ();
-	virtual ~ContainerBase();
+	virtual ~ContainerBase() {}
+	
 	virtual void activate() = 0;
 	virtual void passivate() = 0;
 	virtual void remove() = 0;
 	
-	virtual CORBA::Boolean compare(Components::CCMHome_ptr) = 0;
+	virtual CORBA::Boolean compare(::ccm::corba::Components::CCMHome_ptr) = 0;
 	
-	virtual Components::CCMHome_ptr get_CCM_home () = 0;
-	virtual CORBA::Object_ptr
-	get_CCM_object(Components::ccm::local::EnterpriseComponent*) = 0;
+	virtual ::ccm::corba::Components::CCMHome_ptr get_CCM_home () = 0;
+	virtual CORBA::Object_ptr get_CCM_object(::Components::EnterpriseComponent*) = 0;
     };
     
 
@@ -92,14 +93,15 @@ namespace CCM {
 	PortableServer::POA_var poa_;
 	
     public:
-	struct ComponentInfo {
+	struct ComponentInfo 
+	{
 	    std::string home_short_name;
 	    std::string home_absolute_name;
 	    std::string home_id;
 	    std::string component_short_name;
 	    std::string component_absolute_name;
 	    std::string component_id;
-	    Components::ccm::local::HomeExecutorBase* home_instance;
+	    ::Components::HomeExecutorBase* home_instance;
 	    PortableServer::ServantBase_var home_glue;
 	};
 	
@@ -107,10 +109,11 @@ namespace CCM {
 	ComponentInfo _info;
 	bool _have_info;
 	
-	struct PerComponentData {
+	struct PerComponentData 
+	{
 	    CORBA::Boolean configuration_complete;
 	    PortableServer::ServantBase_var glue;
-	    Components::ccm::local::EnterpriseComponent* instance;
+	    ::Components::EnterpriseComponent* instance;
 	    CORBA::Object_var reference;
 	    std::map<std::string, PortableServer::ServantBase_var> facet_glue;
 	    std::map<std::string, void*> facet_instance;
@@ -123,43 +126,39 @@ namespace CCM {
 	
     public:
 	SessionContainer(CORBA::ORB_ptr orb);
-	~SessionContainer();
+	~SessionContainer() {}
 	
 	void load(const ComponentInfo & info); 
 	void activate();  
 	void passivate(); 
 	void remove();    
 	
-	virtual CORBA::Boolean compare (Components::CCMHome_ptr); 
+	virtual CORBA::Boolean compare(::ccm::corba::Components::CCMHome_ptr); 
 	
 	
 	// Session Container API
-	Components::CCMHome_ptr get_reference_for_home (); 
+	::ccm::corba::Components::CCMHome_ptr get_reference_for_home(); 
 	
-	Components::CCMObject_ptr
+	::ccm::corba::Components::CCMObject_ptr
 	activate_component(PortableServer::Servant skel);
 	
-	Components::CCMObject_ptr
+	::ccm::corba::Components::CCMObject_ptr
 	get_reference_for_component(PortableServer::Servant skel); 
 	
-	PortableServer::Servant
-	get_skeleton_for_reference(CORBA::Object_ptr ref); 
+	PortableServer::Servant 	get_skeleton_for_reference(CORBA::Object_ptr ref); 
 	
 	void deactivate_component(CORBA::Object_ptr ref); 
 	void deactivate_component(PortableServer::Servant skel);
 	
 	// for SessionContext
-	Components::CCMHome_ptr get_CCM_home (); 
+	::ccm::corba::Components::CCMHome_ptr get_CCM_home(); 
 	
 	CORBA::Object_ptr 
-	get_CCM_object(Components::ccm::local::EnterpriseComponent*); 
+	get_CCM_object(::Components::EnterpriseComponent*); 
 	
 	// Facet management
-	CORBA::Object_ptr
-	activate_facet(PortableServer::Servant comp_glue,  
-		       const char * name,
-		       void* facet_instance,
-		       PortableServer::Servant facet_glue);
+	CORBA::Object_ptr activate_facet(PortableServer::Servant comp_glue, const char * name,
+		       void* facet_instance, PortableServer::Servant facet_glue);
 	
 	// notify container of configuration_complete
 	void configuration_complete (PortableServer::Servant comp_glue); 
@@ -172,7 +171,7 @@ namespace CCM {
   //==========================================================================
   
   class Cookie_impl 
-    : virtual public OBV_Components::Cookie,
+    : virtual public OBV_ccm::corba::Components::Cookie,
       virtual public CORBA::DefaultValueRefCountBase
     {
     private:
@@ -191,11 +190,9 @@ namespace CCM {
     };
   
   void register_all_factories (CORBA::ORB_ptr);
-} // /namespace CCM
+
+} // /namespace remote
+} // /namespace ccm
 
 #endif // HAVE_MICO
 #endif // __CCM_CONTAINER_H__
-
-
-
-

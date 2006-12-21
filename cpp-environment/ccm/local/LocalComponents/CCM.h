@@ -19,9 +19,18 @@
 
 #include <wamas/platform/utils/smartptr.h>
 
+#ifdef __WGCC
+    #if defined _BUILDING_CCM_RUNTIME_
+        #define _CCM_EXPORT_DECL_
+    #else
+        #define _CCM_EXPORT_DECL_ __declspec(dllimport)
+    #endif
+#else
+    #define _CCM_EXPORT_DECL_
+#endif
+
+
 namespace Components {
-namespace ccm {
-namespace local {
 
   //============================================================================
   // Exceptions
@@ -36,7 +45,7 @@ namespace local {
   {
   public:
     Exception() throw()
-      : message_("Components::ccm::local::Exception")
+      : message_("Components::Exception")
     {}
 
     Exception(const std::string& message) throw()
@@ -62,7 +71,7 @@ namespace local {
   {
   public:
     NotImplemented() throw()
-      : Exception("Components::ccm::local::NotImplemented")
+      : Exception("Components::NotImplemented")
     {}
 
     NotImplemented(const std::string& message) throw()
@@ -76,7 +85,7 @@ namespace local {
   {
   public:
     InvalidName() throw()
-      : Exception("Components::ccm::local::InvalidName" )
+      : Exception("Components::InvalidName" )
     {}
   };
 
@@ -85,7 +94,7 @@ namespace local {
     : public Exception {
   public:
     HomeNotFound() throw()
-      : Exception("Components::ccm::local::HomeNotFound")
+      : Exception("Components::HomeNotFound")
     {}
   };
 
@@ -95,7 +104,7 @@ namespace local {
   {
   public:
     AlreadyConnected() throw()
-      : Exception("Components::ccm::local::AlreadyConnected")
+      : Exception("Components::AlreadyConnected")
     {}
   };
 
@@ -105,7 +114,7 @@ namespace local {
   {
   public:
     InvalidConnection() throw()
-      : Exception("Components::ccm::local::InvalidConnection")
+      : Exception("Components::InvalidConnection")
     {}
   };
 
@@ -115,7 +124,7 @@ namespace local {
   {
   public:
     NoConnection() throw()
-      : Exception("Components::ccm::local::NoConnection")
+      : Exception("Components::NoConnection")
     {}
   };
 
@@ -125,7 +134,7 @@ namespace local {
   {
   public:
     ExceededConnectionLimit() throw()
-      : Exception("Components::ccm::local::ExceededConnectionLimit")
+      : Exception("Components::ExceededConnectionLimit")
     {}
   };
 
@@ -135,7 +144,7 @@ namespace local {
   {
   public:
     CookieRequired() throw()
-      : Exception("Components::ccm::local::CookieRequired")
+      : Exception("Components::CookieRequired")
     {}
   };
 
@@ -145,7 +154,7 @@ namespace local {
   {
   public:
     IllegalState() throw()
-      : Exception("Components::ccm::local::IllegalState")
+      : Exception("Components::IllegalState")
     {}
   };
 
@@ -155,7 +164,7 @@ namespace local {
   {
   public:
     InvalidConfiguration() throw()
-      : Exception("Components::ccm::local::InvalidConfiguration")
+      : Exception("Components::InvalidConfiguration")
     {}
   };
 
@@ -167,11 +176,11 @@ namespace local {
   {
   public:
     CreateFailure () throw()
-      : Exception("Components::ccm::local::CreateFailure"), reason_(0)
+      : Exception("Components::CreateFailure"), reason_(0)
     {}
 
     CreateFailure(const FailureReason reason) throw()
-      : Exception("Components::ccm::local::CreateFailure"), reason_(reason)
+      : Exception("Components::CreateFailure"), reason_(reason)
     {}
   private:
     FailureReason reason_;
@@ -183,11 +192,11 @@ namespace local {
   {
   public:
     RemoveFailure() throw()
-      : Exception("Components::ccm::local::RemoveFailure"), reason_(0)
+      : Exception("Components::RemoveFailure"), reason_(0)
     {}
 
     RemoveFailure(const FailureReason reason) throw()
-      : Exception("Components::ccm::local::RemoveFailure"), reason_(reason)
+      : Exception("Components::RemoveFailure"), reason_(reason)
     {}
 
   private:
@@ -213,11 +222,11 @@ namespace local {
   {
   public:
     CCMException() throw()
-      : Exception("Components::ccm::local::CCMException"), reason_(SYSTEM_ERROR)
+      : Exception("Components::CCMException"), reason_(SYSTEM_ERROR)
     {}
 
     CCMException(const CCMExceptionReason reason) throw()
-      : Exception("Components::ccm::local::CCMException"), reason_(reason)
+      : Exception("Components::CCMException"), reason_(reason)
     {}
 
   private:
@@ -350,30 +359,34 @@ namespace local {
   };
 
 
-  /***
-   * Clients can use the HomeFinder interface to obtain homes for particular
-   * component types, of particularly homes, or homes that are bound to
-   * specific names in a naming service.
-   * CCM Spec. 1-42
-   ***/
-  class HomeFinder
-    : virtual public HomeRegistration
-  {
-  public:
-    virtual ~HomeFinder() {}
+/***
+ * Clients can use the HomeFinder interface to obtain homes for particular
+ * component types, of particularly homes, or homes that are bound to
+ * specific names in a naming service.
+ * CCM Spec. 1-42
+ ***/
+class _CCM_EXPORT_DECL_ HomeFinder
+	: virtual public HomeRegistration
+{
+	public:
+	static HomeFinder* Instance();
+	static void destroy();
+ 
+	virtual ~HomeFinder() {}
 
-    virtual wamas::platform::utils::SmartPtr<Components::ccm::local::CCMHome>
-    find_home_by_component_type(const std::string& comp_repid)
-        throw(HomeNotFound) = 0;
+	virtual wamas::platform::utils::SmartPtr<CCMHome> find_home_by_component_type(const std::string& comp_repid)
+		throw(HomeNotFound) = 0;
 
-    virtual wamas::platform::utils::SmartPtr<Components::ccm::local::CCMHome>
-    find_home_by_name(const std::string& name)
-        throw(HomeNotFound) = 0;
+	virtual wamas::platform::utils::SmartPtr<CCMHome> find_home_by_name(const std::string& name)
+		throw(HomeNotFound) = 0;
 
-    virtual wamas::platform::utils::SmartPtr<Components::ccm::local::CCMHome>
-      find_home_by_type(const std::string& home_repid)
-        throw(HomeNotFound) = 0;
-  };
+	virtual wamas::platform::utils::SmartPtr<CCMHome> find_home_by_type(const std::string& home_repid)
+		throw(HomeNotFound) = 0;
+        
+	protected:
+	static HomeFinder* instance_;  	  
+	HomeFinder();        
+};
 
 
 
@@ -445,7 +458,7 @@ namespace local {
      * of the component. The container calls this operation after a component
      * instance has been created.
      */
-    virtual void set_session_context (Components::ccm::local::SessionContext* ctx)
+    virtual void set_session_context (Components::SessionContext* ctx)
       throw (CCMException) = 0;
 
     /*
@@ -642,7 +655,7 @@ namespace local {
   {
   	public:
       WrongComponentType() throw()
-  		: Exception("Components::ccm::local::WrongComponentType" )
+  		: Exception("Components::WrongComponentType" )
       {}
   };
 
@@ -729,19 +742,21 @@ namespace local {
   };
 
 
-  class AssemblyFactory
-    : virtual public wamas::platform::utils::RefCounted
-    {
-    public:
-    virtual ~AssemblyFactory() {}
+	template<class T>
+	class AssemblyFactory
+		: virtual public wamas::platform::utils::RefCounted
+	{
+		public:
+		virtual ~AssemblyFactory() {}
 
-    virtual wamas::platform::utils::SmartPtr<Assembly> create()
-        throw(CreateFailure) = 0;
+		virtual wamas::platform::utils::SmartPtr<Assembly> create()
+			throw (CreateFailure)
+		{
+			wamas::platform::utils::SmartPtr<Assembly> assembly(new T());
+			return assembly;
+		}
+	};
 
-  };
-
-} // /namespace local
-} // /namespace ccm
 } // /namespace Components
 
 

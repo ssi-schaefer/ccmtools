@@ -12,49 +12,45 @@
 #endif
 
 namespace ccm {
-namespace utils {
+namespace local {
 
 using namespace std;
 
 Timer::Timer()
 {
-  realTimeStart = realTimeStop = 0;
-  userTimeStart = userTimeStop = 0;
-  systemTimeStart = systemTimeStop =0;
-}
-
-Timer::~Timer()
-{
+	realTimeStart = realTimeStop = 0;
+	userTimeStart = userTimeStop = 0;
+	systemTimeStart = systemTimeStop =0;
 }
 
 void
 Timer::start()
 {
-  tms timeStructure;
-  realTimeStart = times(&timeStructure);
-  userTimeStart = timeStructure.tms_utime;
-  systemTimeStart = timeStructure.tms_stime;
+	tms timeStructure;
+	realTimeStart = times(&timeStructure);
+	userTimeStart = timeStructure.tms_utime;
+	systemTimeStart = timeStructure.tms_stime;
 }
 
 void 
 Timer::stop()
 {
-  tms timeStructure;
-  realTimeStop = times(&timeStructure);
-  userTimeStop = timeStructure.tms_utime;
-  systemTimeStop = timeStructure.tms_stime;
+	tms timeStructure;
+	realTimeStop = times(&timeStructure);
+	userTimeStop = timeStructure.tms_utime;
+	systemTimeStop = timeStructure.tms_stime;
 }
 
 double 
 Timer::getRealTime() const
 {
-    return double(realTimeStop - realTimeStart) / CLK_TCK;
+	return double(realTimeStop - realTimeStart) / CLK_TCK;
 }
 
 double 
 Timer::getUserTime() const
 {
-    return double(userTimeStop - userTimeStart) / CLK_TCK;
+	return double(userTimeStop - userTimeStart) / CLK_TCK;
 }
 
 double 
@@ -66,20 +62,20 @@ Timer::getSystemTime() const
 string 
 Timer::toString() const
 {
-  ostringstream os;
-  os << "real(" << getRealTime() << ")s ";
-  os << "user(" << getUserTime() << ")s ";
-  os << "sys(" << getSystemTime() << ")s ";
-  return os.str();
+	ostringstream os;
+	os << "real(" << getRealTime() << ")s ";
+	os << "user(" << getUserTime() << ")s ";
+	os << "sys(" << getSystemTime() << ")s ";
+	return os.str();
 }
 
 
 ostream&
 operator<<(std::ostream& o, const Timer& value)
 {
-  o << value.toString();
-  return o;
+	o << value.toString();
+	return o;
 }
 
-} // /namespace utils
+} // /namespace local
 } // /namespace ccm

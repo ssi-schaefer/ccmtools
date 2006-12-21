@@ -138,7 +138,6 @@ public class ConfigurationLocator
         // TODO: Read these informations from a property file
         namespaceList.add("ccm");
         namespaceList.add("corba");
-        namespaceList.add("stubs");  
         return namespaceList;
     }
     

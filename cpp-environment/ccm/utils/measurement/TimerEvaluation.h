@@ -10,20 +10,17 @@
 #include "Timer.h"
 
 namespace ccm {
-namespace utils {
+namespace local {
 
-    class TimerEvaluation
-    {
-    public:
-	TimerEvaluation();
-	virtual ~TimerEvaluation();
+class TimerEvaluation
+{
+	public:
+	virtual ~TimerEvaluation() {}
 	
-	virtual std::string getTimerResult(const Timer& timer, 
-					   const long loops, 
-					   const long size);  
-    };
+	virtual std::string getTimerResult(const Timer& timer, const long loops, const long size);  
+};
     
-} // /namespace utils
+} // /namespace local
 } // /namespace ccm
 
 #endif /* __WX_UTILS_TIMEREVALUATION__H__ */
