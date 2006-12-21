@@ -31,19 +31,19 @@ namespace local {
    * This is the base class of all local CCM related exceptions.
    * (compare with CORBA::Exception in the remote case).
    */
-  class Exception 
+  class Exception
     : public std::exception
   {
   public:
     Exception() throw()
-      : message_("Components::ccm::local::Exception") 
+      : message_("Components::ccm::local::Exception")
     {}
 
     Exception(const std::string& message) throw()
-      : message_(message)  
+      : message_(message)
     {}
 
-    virtual ~Exception() throw() 
+    virtual ~Exception() throw()
     	{}
 
     virtual const char* what() const throw()
@@ -54,34 +54,34 @@ namespace local {
   };
 
 
-  /** 
-   * This NotImplemented is not part of the CCM specification 
+  /**
+   * This NotImplemented is not part of the CCM specification
    */
   class NotImplemented
-    : public Exception 
+    : public Exception
   {
   public:
     NotImplemented() throw()
-      : Exception("Components::ccm::local::NotImplemented") 
+      : Exception("Components::ccm::local::NotImplemented")
     {}
 
     NotImplemented(const std::string& message) throw()
-      : Exception(message) 
+      : Exception(message)
     {}
   };
 
 
-  class InvalidName 
-    : public Exception 
+  class InvalidName
+    : public Exception
   {
   public:
     InvalidName() throw()
-      : Exception("Components::ccm::local::InvalidName" ) 
+      : Exception("Components::ccm::local::InvalidName" )
     {}
   };
 
 
-  class HomeNotFound 
+  class HomeNotFound
     : public Exception {
   public:
     HomeNotFound() throw()
@@ -90,8 +90,8 @@ namespace local {
   };
 
 
-  class AlreadyConnected 
-    : public Exception 
+  class AlreadyConnected
+    : public Exception
   {
   public:
     AlreadyConnected() throw()
@@ -100,8 +100,8 @@ namespace local {
   };
 
 
-  class InvalidConnection 
-    : public Exception 
+  class InvalidConnection
+    : public Exception
   {
   public:
     InvalidConnection() throw()
@@ -110,8 +110,8 @@ namespace local {
   };
 
 
-  class NoConnection 
-    : public Exception 
+  class NoConnection
+    : public Exception
   {
   public:
     NoConnection() throw()
@@ -120,8 +120,8 @@ namespace local {
   };
 
 
-  class ExceededConnectionLimit 
-    : public Exception 
+  class ExceededConnectionLimit
+    : public Exception
   {
   public:
     ExceededConnectionLimit() throw()
@@ -130,8 +130,8 @@ namespace local {
   };
 
 
-  class CookieRequired 
-    : public Exception 
+  class CookieRequired
+    : public Exception
   {
   public:
     CookieRequired() throw()
@@ -140,8 +140,8 @@ namespace local {
   };
 
 
-  class IllegalState 
-    : public Exception 
+  class IllegalState
+    : public Exception
   {
   public:
     IllegalState() throw()
@@ -150,52 +150,52 @@ namespace local {
   };
 
 
-  class InvalidConfiguration 
-    : public Exception 
+  class InvalidConfiguration
+    : public Exception
   {
-  public: 
+  public:
     InvalidConfiguration() throw()
       : Exception("Components::ccm::local::InvalidConfiguration")
-    {}    
+    {}
   };
 
 
   typedef unsigned long FailureReason;
 
-  class CreateFailure 
-    : public Exception 
+  class CreateFailure
+    : public Exception
   {
   public:
     CreateFailure () throw()
-      : Exception("Components::ccm::local::CreateFailure"), reason_(0) 
+      : Exception("Components::ccm::local::CreateFailure"), reason_(0)
     {}
 
     CreateFailure(const FailureReason reason) throw()
-      : Exception("Components::ccm::local::CreateFailure"), reason_(reason) 
+      : Exception("Components::ccm::local::CreateFailure"), reason_(reason)
     {}
   private:
     FailureReason reason_;
   };
 
 
-  class RemoveFailure 
-    : public Exception 
+  class RemoveFailure
+    : public Exception
   {
   public:
     RemoveFailure() throw()
-      : Exception("Components::ccm::local::RemoveFailure"), reason_(0) 
+      : Exception("Components::ccm::local::RemoveFailure"), reason_(0)
     {}
 
     RemoveFailure(const FailureReason reason) throw()
-      : Exception("Components::ccm::local::RemoveFailure"), reason_(reason) 
+      : Exception("Components::ccm::local::RemoveFailure"), reason_(reason)
     {}
 
   private:
     FailureReason reason_;
-  }; 
- 
+  };
 
-  enum CCMExceptionReason 
+
+  enum CCMExceptionReason
   {
     SYSTEM_ERROR,
     CREATE_ERROR,
@@ -208,16 +208,16 @@ namespace local {
   };
 
 
-  class CCMException 
-    : public Exception 
+  class CCMException
+    : public Exception
   {
   public:
     CCMException() throw()
       : Exception("Components::ccm::local::CCMException"), reason_(SYSTEM_ERROR)
     {}
-    
-    CCMException(const CCMExceptionReason reason) throw() 
-      : Exception("Components::ccm::local::CCMException"), reason_(reason) 
+
+    CCMException(const CCMExceptionReason reason) throw()
+      : Exception("Components::ccm::local::CCMException"), reason_(reason)
     {}
 
   private:
@@ -235,17 +235,19 @@ namespace local {
    * Note: This interface is not part of the CCM specification!
    ***/
   class Object
-    : virtual public wamas::platform::utils::RefCounted 
+    : virtual public wamas::platform::utils::RefCounted
   {
   public:
     virtual ~Object() {}
 
+    typedef wamas::platform::utils::SmartPtr<Object> SmartPtr;
+
     // Simulates the CORBA::Object::get_component() operation defines
-    // since CORBA 3.0 (CCM Spec. 1-9)	
-    virtual wamas::platform::utils::SmartPtr<Object> get_component() 
+    // since CORBA 3.0 (CCM Spec. 1-9)
+    virtual SmartPtr get_component()
     	{
-		return wamas::platform::utils::SmartPtr<Object>();
-    };	
+		return SmartPtr();
+    };
   };
 
 
@@ -254,7 +256,7 @@ namespace local {
    * base for all component implementations.
    * CCM Specification 3-39, 4-27
    ***/
-  class EnterpriseComponent 
+  class EnterpriseComponent
     : virtual public wamas::platform::utils::RefCounted
   {
   public:
@@ -266,7 +268,7 @@ namespace local {
   //============================================================================
   // Home interfaces
   //============================================================================
-  
+
   class CCMObject;
 
   /***
@@ -294,7 +296,7 @@ namespace local {
    *
    * Extension to CCM-Spec: CCMException to create_component()
    ***/
-  class KeylessCCMHome 
+  class KeylessCCMHome
     : virtual public wamas::platform::utils::RefCounted
   {
   public:
@@ -309,7 +311,7 @@ namespace local {
    * The HomeExecutorBase is a common base for all home implementations.
    * CCM Specification 3-40
    ***/
-  class HomeExecutorBase 
+  class HomeExecutorBase
     : virtual public wamas::platform::utils::RefCounted
   {
   public:
@@ -323,7 +325,7 @@ namespace local {
    * HomeFinder
    * CCM Specification 4-34
    ***/
-  class HomeRegistration 
+  class HomeRegistration
   {
   public:
     virtual ~HomeRegistration() {}
@@ -331,7 +333,7 @@ namespace local {
     /* The register_home operation is used to register a component home
      * with the HomeFinder so it can by located by a component client.
      */
-    virtual void register_home(wamas::platform::utils::SmartPtr<CCMHome> home_ref, 
+    virtual void register_home(wamas::platform::utils::SmartPtr<CCMHome> home_ref,
 			       const std::string& home_name) = 0;
 
     /* The unregister_home operation is used to remove a component home
@@ -355,7 +357,7 @@ namespace local {
    * CCM Spec. 1-42
    ***/
   class HomeFinder
-    : virtual public HomeRegistration 
+    : virtual public HomeRegistration
   {
   public:
     virtual ~HomeFinder() {}
@@ -387,7 +389,7 @@ namespace local {
   * CCM Spec. 4-22
   * Light Weight CCM 4.4.3.2
   ***/
-  class CCMContext 
+  class CCMContext
   {
   public:
     virtual ~CCMContext() {}
@@ -403,7 +405,7 @@ namespace local {
    * it may require to implement its behavior.
    * CCM Spec. 4-27
    ***/
-  class SessionContext 
+  class SessionContext
   	: virtual public CCMContext
   {
     public:
@@ -433,7 +435,7 @@ namespace local {
    * CCM Specification 4-28
    ***/
   class SessionComponent
-    : virtual public EnterpriseComponent 
+    : virtual public EnterpriseComponent
   {
     public:
     virtual ~SessionComponent() {}
@@ -476,7 +478,7 @@ namespace local {
    * component to be notified of transaction boundaries by the container.
    * CCM Specification 4-29
    ***/
-  class SessionSynchronisation 
+  class SessionSynchronisation
   {
   public:
     virtual ~SessionSynchronisation() {}
@@ -506,7 +508,7 @@ namespace local {
    * CCM Specification 1-10
    * Light Weight CCM 4.1.4
    ***/
-  class Navigation 
+  class Navigation
   {
   public:
     virtual ~Navigation() {}
@@ -531,7 +533,7 @@ namespace local {
 
   typedef std::string OctetSeq;
 
-  class Cookie 
+  class Cookie
   {
   private:
     OctetSeq _cookieValue;
@@ -555,7 +557,7 @@ namespace local {
    * CCM Specification 1-18
    * Light Weight CCM 4.1.5.3
    ***/
-  class Receptacles 
+  class Receptacles
   {
   public:
     virtual ~Receptacles() {}
@@ -568,11 +570,11 @@ namespace local {
      * be used subsequently to disconnect the object reference.
      * simplex receptacle: the return value is a nil.
      */
-    virtual Cookie connect(const FeatureName& name, 
+    virtual Cookie connect(const FeatureName& name,
 			    wamas::platform::utils::SmartPtr<Object> connection)
-      throw(InvalidName, 
-	    InvalidConnection, 
-	    AlreadyConnected, 
+      throw(InvalidName,
+	    InvalidConnection,
+	    AlreadyConnected,
 	    ExceededConnectionLimit) = 0;
 
     /*
@@ -582,11 +584,11 @@ namespace local {
      * multiplex receptacle: the operation disassociates the object reference
      * associated with the cookie value from the receptacle.
      */
-    virtual void disconnect(const FeatureName& name, 
+    virtual void disconnect(const FeatureName& name,
 			    const Cookie& ck)
-      throw(InvalidName, 
-	    InvalidConnection, 
-	    CookieRequired, 
+      throw(InvalidName,
+	    InvalidConnection,
+	    CookieRequired,
 	    NoConnection) = 0;
   };
 
@@ -596,10 +598,10 @@ namespace local {
    * CCM Specification 1-52
    * Light Weight CCM 4.1.11.1
    ***/
-  class CCMObject 
+  class CCMObject
   	: virtual public Object,
-    	  virtual public Navigation, 
-    	  virtual public Receptacles 
+    	  virtual public Navigation,
+    	  virtual public Receptacles
     {
     public:
 	virtual ~CCMObject() {}
@@ -636,15 +638,15 @@ namespace local {
   //============================================================================
 
   class WrongComponentType
-  	: public Exception 
+  	: public Exception
   {
   	public:
       WrongComponentType() throw()
-  		: Exception("Components::ccm::local::WrongComponentType" ) 
-      {} 
+  		: Exception("Components::ccm::local::WrongComponentType" )
+      {}
   };
 
-  
+
   /***
    * A configurator is an object that encapsulates a specific attribute
    * configuration that can be reproduced an many instances of a component type.
@@ -652,7 +654,7 @@ namespace local {
    * component.
    * CCM Specification 1-47
    ***/
-  class Configurator 
+  class Configurator
   {
   public:
     virtual ~Configurator() {}
@@ -679,18 +681,18 @@ namespace local {
   /**
    * The Assembly interface represents an assembly instantion. It is used to
    * build up and tear down component assemblies.
-   *      
+   *
    * CCM Specification 6-73
    **/
-  class Assembly 
-    : virtual public wamas::platform::utils::RefCounted 
+  class Assembly
+    : virtual public wamas::platform::utils::RefCounted
     {
     public:
 	virtual ~Assembly() {}
 
     /*
      * Creates required component servers, creates required containers, installs
-     * required component homes, instantiates components, configures and 
+     * required component homes, instantiates components, configures and
      * interconnects them according to the assembly descriptor.
      */
     virtual void build()
@@ -698,7 +700,7 @@ namespace local {
 
     /*
      * Removes all connections between components and destroys all components,
-     * homes, containers, and component servers that were created by the build 
+     * homes, containers, and component servers that were created by the build
      * operation.
      */
     virtual void tear_down()
@@ -712,7 +714,7 @@ namespace local {
 
     /*
      * Build a component assembly based on a given facade component.
-     *  
+     *
      * Note: This is an CCM extension to support nested components.
      */
     virtual void build(wamas::platform::utils::SmartPtr<CCMObject> facadeComponent)
@@ -728,12 +730,12 @@ namespace local {
 
 
   class AssemblyFactory
-    : virtual public wamas::platform::utils::RefCounted 
+    : virtual public wamas::platform::utils::RefCounted
     {
     public:
     virtual ~AssemblyFactory() {}
-    
-    virtual wamas::platform::utils::SmartPtr<Assembly> create() 
+
+    virtual wamas::platform::utils::SmartPtr<Assembly> create()
         throw(CreateFailure) = 0;
 
   };
