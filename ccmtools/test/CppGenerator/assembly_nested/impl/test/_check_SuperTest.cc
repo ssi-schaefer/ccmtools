@@ -14,11 +14,7 @@
 #include <cassert>
 #include <iostream>
 
-#include <wamas/platform/utils/smartptr.h>
-
-#include <Components/ccm/local/CCM.h>
-#include <ccm/local/HomeFinder.h>
-#include <ccm/local/AssemblyFactory.h>
+#include <Components/CCM.h>
 
 #include <SuperTestHomeMirror_gen.h>
 #include <SuperTestHome_gen.h>
@@ -36,17 +32,17 @@ int main(int argc, char *argv[])
 
     SmartPtr<SuperTest> mySuperTest;
     SmartPtr<SuperTestMirror> mySuperTestMirror;
-    SmartPtr<Components::ccm::local::Object> SuperTest_provides_basicType;
-    SmartPtr<Components::ccm::local::Object> SuperTest_provides_userType;
+    SmartPtr< ::Components::Object> SuperTest_provides_basicType;
+    SmartPtr< ::Components::Object> SuperTest_provides_userType;
 
-    Components::ccm::local::Cookie SuperTest_ck_basicType;
-    Components::ccm::local::Cookie SuperTest_ck_userType;
+    ::Components::Cookie SuperTest_ck_basicType;
+    ::Components::Cookie SuperTest_ck_userType;
 
-    SmartPtr<Components::ccm::local::Object> SuperTest_uses_innerBasicType;
-    SmartPtr<Components::ccm::local::Object> SuperTest_uses_innerUserType;
+    SmartPtr< ::Components::Object> SuperTest_uses_innerBasicType;
+    SmartPtr< ::Components::Object> SuperTest_uses_innerUserType;
 
-    Components::ccm::local::Cookie SuperTest_ck_innerBasicType;
-    Components::ccm::local::Cookie SuperTest_ck_innerUserType;
+    ::Components::Cookie SuperTest_ck_innerBasicType;
+    ::Components::Cookie SuperTest_ck_innerUserType;
 
     int error = 0;
     
@@ -54,7 +50,7 @@ int main(int argc, char *argv[])
     error  += deploy_BasicTestHome("BasicTestHome");
     error  += deploy_UserTestHome("UserTestHome");
 
-    SmartPtr<Components::ccm::local::AssemblyFactory> assembly_factory(new ccm::local::AssemblyFactory<Assembly>());
+    SmartPtr< ::Components::AssemblyFactory> assembly_factory(new ::Components::AssemblyFactoryTemplate<Assembly>());
     error += deploy_with_assembly_SuperTestHome("SuperTestHome", assembly_factory);
 
     error += deploy_SuperTestHomeMirror("SuperTestHomeMirror");	
@@ -66,7 +62,7 @@ int main(int argc, char *argv[])
 
     try 
     {
-    		Components::ccm::local::HomeFinder* homeFinder = ccm::local::HomeFinder::Instance();
+    		::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
         SmartPtr<SuperTestHome> mySuperTestHome(dynamic_cast<SuperTestHome*>
             (homeFinder->find_home_by_name("SuperTestHome").ptr()));
 
@@ -92,18 +88,18 @@ int main(int argc, char *argv[])
       	mySuperTest->remove();
       	mySuperTestMirror->remove();
     } 
-    catch (Components::ccm::local::HomeNotFound ) 
+    catch (::Components::HomeNotFound ) 
     {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch (Components::ccm::local::NotImplemented& e ) 
+    catch (::Components::NotImplemented& e ) 
     {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         return -1;
     }  
-    catch (Components::ccm::local::InvalidName& e ) 
+    catch (::Components::InvalidName& e ) 
     {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;

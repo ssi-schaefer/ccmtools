@@ -14,6 +14,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <stdexcept>
 #include <iostream>
 
@@ -249,13 +250,15 @@ namespace Components {
   public:
     virtual ~Object() {}
 
-    typedef wamas::platform::utils::SmartPtr<Object> SmartPtr;
+//    typedef wamas::platform::utils::SmartPtr<Object> SmartPtr;
 
     // Simulates the CORBA::Object::get_component() operation defines
     // since CORBA 3.0 (CCM Spec. 1-9)
-    virtual SmartPtr get_component()
+//    virtual SmartPtr get_component()
+    virtual wamas::platform::utils::SmartPtr<Object> get_component()
     	{
-		return SmartPtr();
+		//return SmartPtr();
+		return wamas::platform::utils::SmartPtr<Object>();
     };
   };
 
@@ -359,6 +362,7 @@ namespace Components {
   };
 
 
+
 /***
  * Clients can use the HomeFinder interface to obtain homes for particular
  * component types, of particularly homes, or homes that are bound to
@@ -368,24 +372,33 @@ namespace Components {
 class _CCM_EXPORT_DECL_ HomeFinder
 	: virtual public HomeRegistration
 {
-	public:
+	typedef std::map<std::string, wamas::platform::utils::SmartPtr< ::Components::CCMHome> > HomePoolMap;
+
+  public:
 	static HomeFinder* Instance();
 	static void destroy();
  
 	virtual ~HomeFinder() {}
 
-	virtual wamas::platform::utils::SmartPtr<CCMHome> find_home_by_component_type(const std::string& comp_repid)
-		throw(HomeNotFound) = 0;
-
 	virtual wamas::platform::utils::SmartPtr<CCMHome> find_home_by_name(const std::string& name)
-		throw(HomeNotFound) = 0;
+		throw(HomeNotFound);
+
+	virtual wamas::platform::utils::SmartPtr<CCMHome> find_home_by_component_type(const std::string& comp_repid)
+		throw(HomeNotFound);
 
 	virtual wamas::platform::utils::SmartPtr<CCMHome> find_home_by_type(const std::string& home_repid)
-		throw(HomeNotFound) = 0;
+		throw(HomeNotFound);
+    
+        
+    // Methods defined in Components::HomeRegistration	
+	virtual void register_home(wamas::platform::utils::SmartPtr< ::Components::CCMHome> home_ref, const std::string& home_name);
+	virtual void unregister_home(wamas::platform::utils::SmartPtr< ::Components::CCMHome> home_ref);
+	virtual void unregister_home(const std::string& home_name);  	
         
 	protected:
-	static HomeFinder* instance_;  	  
-	HomeFinder();        
+	  static HomeFinder* instance_;  	  
+	  HomePoolMap HomePool;
+	  HomeFinder() {};        
 };
 
 
@@ -742,12 +755,24 @@ class _CCM_EXPORT_DECL_ HomeFinder
   };
 
 
-	template<class T>
+
 	class AssemblyFactory
 		: virtual public wamas::platform::utils::RefCounted
 	{
 		public:
 		virtual ~AssemblyFactory() {}
+
+		virtual wamas::platform::utils::SmartPtr<Assembly> create()
+			throw (CreateFailure) = 0;
+	};
+
+
+	template<class T>
+	class AssemblyFactoryTemplate
+		: virtual public AssemblyFactory
+	{
+		public:
+		virtual ~AssemblyFactoryTemplate() {}
 
 		virtual wamas::platform::utils::SmartPtr<Assembly> create()
 			throw (CreateFailure)

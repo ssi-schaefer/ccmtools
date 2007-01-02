@@ -5,6 +5,8 @@ all: mirror
 
 test: mirror check clean
 
+test_empty: local check_empty clean
+
 idl3: Console.idl Hello.idl Lcd.idl Message.idl
 	ccmmodel -validator Console.idl Hello.idl Lcd.idl Message.idl
 	ccmidl -idl3 -o ${DEST_DIR}/idl Console.idl Hello.idl Lcd.idl Message.idl

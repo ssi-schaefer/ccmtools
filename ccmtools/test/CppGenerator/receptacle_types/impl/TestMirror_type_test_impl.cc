@@ -33,7 +33,7 @@ TestMirror_type_test_impl::~TestMirror_type_test_impl()
 
 short
 TestMirror_type_test_impl::op_b1(const short p1, short& p2, short& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -42,7 +42,7 @@ TestMirror_type_test_impl::op_b1(const short p1, short& p2, short& p3)
 
 long
 TestMirror_type_test_impl::op_b2(const long p1, long& p2, long& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -51,7 +51,7 @@ TestMirror_type_test_impl::op_b2(const long p1, long& p2, long& p3)
 
 unsigned short
 TestMirror_type_test_impl::op_b3(const unsigned short p1, unsigned short& p2, unsigned short& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -60,7 +60,7 @@ TestMirror_type_test_impl::op_b3(const unsigned short p1, unsigned short& p2, un
 
 unsigned long
 TestMirror_type_test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsigned long& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -69,7 +69,7 @@ TestMirror_type_test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsi
 
 float
 TestMirror_type_test_impl::op_b5(const float p1, float& p2, float& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -78,7 +78,7 @@ TestMirror_type_test_impl::op_b5(const float p1, float& p2, float& p3)
 
 double
 TestMirror_type_test_impl::op_b6(const double p1, double& p2, double& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -87,7 +87,7 @@ TestMirror_type_test_impl::op_b6(const double p1, double& p2, double& p3)
 
 char
 TestMirror_type_test_impl::op_b7(const char p1, char& p2, char& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -96,7 +96,7 @@ TestMirror_type_test_impl::op_b7(const char p1, char& p2, char& p3)
 
 std::string
 TestMirror_type_test_impl::op_b8(const std::string& p1, std::string& p2, std::string& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -105,7 +105,7 @@ TestMirror_type_test_impl::op_b8(const std::string& p1, std::string& p2, std::st
 
 bool
 TestMirror_type_test_impl::op_b9(const bool p1, bool& p2, bool& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -114,7 +114,7 @@ TestMirror_type_test_impl::op_b9(const bool p1, bool& p2, bool& p3)
 
 unsigned char
 TestMirror_type_test_impl::op_b10(const unsigned char p1, unsigned char& p2, unsigned char& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -123,7 +123,7 @@ TestMirror_type_test_impl::op_b10(const unsigned char p1, unsigned char& p2, uns
 
 time_t
 TestMirror_type_test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -132,7 +132,7 @@ TestMirror_type_test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
 
 Color
 TestMirror_type_test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -141,7 +141,7 @@ TestMirror_type_test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
 
 Pair
 TestMirror_type_test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     Pair r;
     r.key = p1.key + p2.key;
@@ -153,7 +153,7 @@ TestMirror_type_test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
 
 Map
 TestMirror_type_test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     Map r;
     for(unsigned int i=0;i<p1.size();i++) {
@@ -170,7 +170,7 @@ TestMirror_type_test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
 
 SmartPtr<Console>
 TestMirror_type_test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2, SmartPtr<Console>& p3)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     MyObject* my_object3 = new MyObject;
     p3 = SmartPtr<Console>(my_object3);

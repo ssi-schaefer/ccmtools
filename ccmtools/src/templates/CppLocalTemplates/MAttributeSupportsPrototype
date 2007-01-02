@@ -1,6 +1,6 @@
     const %(LanguageType)s %(Identifier)s() const 
-        throw(::Components::ccm::local::CCMException);
+        throw(::Components::CCMException);
         
     void %(Identifier)s(const %(LanguageType)s value) 
-        throw(::Components::ccm::local::CCMException);
+        throw(::Components::CCMException);
 

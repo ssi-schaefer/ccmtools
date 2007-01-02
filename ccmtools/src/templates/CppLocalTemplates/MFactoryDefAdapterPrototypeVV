@@ -1,4 +1,3 @@
     virtual wamas::platform::utils::SmartPtr<%(ComponentType)s> %(Identifier)s(%(MParameterDefAll)s)
-        throw(::Components::ccm::local::CCMException, 
-              ::Components::ccm::local::CreateFailure) = 0;
+        throw(::Components::CCMException, ::Components::CreateFailure) = 0;
 

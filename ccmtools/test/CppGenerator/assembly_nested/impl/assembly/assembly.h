@@ -2,10 +2,7 @@
 #ifndef ASSEMBLY_H
 #define ASSEMBLY_H
 
-#include <wamas/platform/utils/smartptr.h>
-
-#include <Components/ccm/local/CCM.h>
-#include <ccm/local/HomeFinder.h>
+#include <Components/CCM.h>
 
 #include <BasicTestHome_gen.h>
 #include <UserTestHome_gen.h>
@@ -15,10 +12,10 @@ using namespace std;
 namespace wx = wamas::platform::utils;
 
 class Assembly
-: public Components::ccm::local::Assembly
+: public ::Components::Assembly
 {
 private:
-	Components::ccm::local::AssemblyState state_;
+	::Components::AssemblyState state_;
 
 	// Super Component: SuperTest
 	wx::SmartPtr<SuperTest> superTest;
@@ -43,15 +40,15 @@ public:
 	 * interconnects them according to the assembly descriptor.
 	 */
 	virtual void build()
-	    throw (Components::ccm::local::CreateFailure);
+	    throw (::Components::CreateFailure);
 
 	/*
 	 * Build a component assembly based on a given facade component.
 	 *
 	 * Note: This is an CCM extension to support nested components.
 	 */
-	virtual void build(wx::SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
-	    throw (Components::ccm::local::CreateFailure);
+	virtual void build(wx::SmartPtr< ::Components::CCMObject> facadeComponent)
+	    throw (::Components::CreateFailure);
 
 	/*
 	 * Call configuration_complete on every component instance in the 
@@ -67,12 +64,12 @@ public:
 	 * created by the build operation.
 	 */
 	virtual void tear_down()
-	    throw (Components::ccm::local::RemoveFailure);
+	    throw (::Components::RemoveFailure);
 
 	/*
 	 * Returns whether the assembly is active or inactive.
 	 */
-	virtual Components::ccm::local::AssemblyState get_state();
+	virtual ::Components::AssemblyState get_state();
 };
 
 #endif /* ASSEMBLY_H */

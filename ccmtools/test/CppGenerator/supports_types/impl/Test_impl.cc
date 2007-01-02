@@ -35,7 +35,7 @@ Test_impl::~Test_impl (  )
 
 short
 Test_impl::op_b1(const short p1, short& p2, short& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -44,7 +44,7 @@ Test_impl::op_b1(const short p1, short& p2, short& p3)
 
 long
 Test_impl::op_b2(const long p1, long& p2, long& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -53,7 +53,7 @@ Test_impl::op_b2(const long p1, long& p2, long& p3)
 
 unsigned short
 Test_impl::op_b3(const unsigned short p1, unsigned short& p2, unsigned short& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -62,7 +62,7 @@ Test_impl::op_b3(const unsigned short p1, unsigned short& p2, unsigned short& p3
 
 unsigned long
 Test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsigned long& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -71,7 +71,7 @@ Test_impl::op_b4(const unsigned long p1, unsigned long& p2, unsigned long& p3)
 
 float
 Test_impl::op_b5(const float p1, float& p2, float& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -80,7 +80,7 @@ Test_impl::op_b5(const float p1, float& p2, float& p3)
 
 double
 Test_impl::op_b6(const double p1, double& p2, double& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -89,7 +89,7 @@ Test_impl::op_b6(const double p1, double& p2, double& p3)
 
 char
 Test_impl::op_b7(const char p1, char& p2, char& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -98,7 +98,7 @@ Test_impl::op_b7(const char p1, char& p2, char& p3)
 
 std::string
 Test_impl::op_b8(const std::string& p1, std::string& p2, std::string& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -107,7 +107,7 @@ Test_impl::op_b8(const std::string& p1, std::string& p2, std::string& p3)
 
 bool
 Test_impl::op_b9(const bool p1, bool& p2, bool& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -116,7 +116,7 @@ Test_impl::op_b9(const bool p1, bool& p2, bool& p3)
 
 unsigned char
 Test_impl::op_b10(const unsigned char p1, unsigned char& p2, unsigned char& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -125,7 +125,7 @@ Test_impl::op_b10(const unsigned char p1, unsigned char& p2, unsigned char& p3)
 
 time_t
 Test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -134,7 +134,7 @@ Test_impl::op_u1(const time_t& p1, time_t& p2, time_t& p3)
 
 Color
 Test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   p3=p2;
   p2=p1;
@@ -143,7 +143,7 @@ Test_impl::op_u2(const Color& p1, Color& p2, Color& p3)
 
 Pair
 Test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   Pair r;
   r.key = p1.key + p2.key;
@@ -155,7 +155,7 @@ Test_impl::op_u3(const Pair& p1, Pair& p2, Pair& p3)
 
 Map
 Test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   Map r;
   for(unsigned int i=0;i<p1.size();i++) {
@@ -172,7 +172,7 @@ Test_impl::op_u4(const Map& p1, Map& p2, Map& p3)
 SmartPtr<Console>
 Test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2, 
 		     SmartPtr<Console>& p3)
-  throw (::Components::ccm::local::CCMException)
+  throw (::Components::CCMException)
 {
   MyObject* my_object3 = new MyObject;
   p3 = SmartPtr<Console>(my_object3);
@@ -189,27 +189,27 @@ Test_impl::op_i1(const SmartPtr<Console>& p1, SmartPtr<Console>& p2,
 }
 
 void
-Test_impl::set_session_context ( Components::ccm::local::SessionContext* context )
-  throw ( ::Components::ccm::local::CCMException )
+Test_impl::set_session_context ( ::Components::SessionContext* context )
+  throw ( ::Components::CCMException )
 {
   ctx = dynamic_cast<ccm::local::CCM_Test_Context*> ( context );
 }
 
 void
 Test_impl::ccm_activate (  )
-  throw ( ::Components::ccm::local::CCMException )
+  throw ( ::Components::CCMException )
 {
 }
 
 void
 Test_impl::ccm_passivate (  )
-  throw ( ::Components::ccm::local::CCMException )
+  throw ( ::Components::CCMException )
 {
 }
 
 void
 Test_impl::ccm_remove (  )
-  throw ( ::Components::ccm::local::CCMException )
+  throw ( ::Components::CCMException )
 {
 }
 

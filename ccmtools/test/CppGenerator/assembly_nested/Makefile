@@ -10,6 +10,8 @@ all: local
 
 test: local check clean
 
+test_empty: local check_empty clean
+
 local: interface basic user super super_mirror
 
 idl: Test.idl

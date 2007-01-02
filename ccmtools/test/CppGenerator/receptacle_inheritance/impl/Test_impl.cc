@@ -35,15 +35,15 @@ Test_impl::~Test_impl (  )
 }
 
 void
-Test_impl::set_session_context ( Components::ccm::local::SessionContext* context )
-  throw ( Components::ccm::local::CCMException )
+Test_impl::set_session_context ( ::Components::SessionContext* context )
+  throw ( ::Components::CCMException )
 {
   ctx = dynamic_cast<ccm::local::CCM_Test_Context*> ( context );
 }
 
 void
 Test_impl::ccm_activate (  )
-  throw ( Components::ccm::local::CCMException )
+  throw ( ::Components::CCMException )
 {
 
   SmartPtr<CCM_InterfaceType> receptacle = 
@@ -75,12 +75,12 @@ Test_impl::ccm_activate (  )
 
 void
 Test_impl::ccm_passivate (  )
-  throw ( Components::ccm::local::CCMException )
+  throw ( ::Components::CCMException )
 {
 }
 
 void
 Test_impl::ccm_remove (  )
-  throw ( Components::ccm::local::CCMException )
+  throw ( ::Components::CCMException )
 {
 }

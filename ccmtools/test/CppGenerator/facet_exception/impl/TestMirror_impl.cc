@@ -33,15 +33,15 @@ TestMirror_impl::~TestMirror_impl()
 
 void
 TestMirror_impl::set_session_context(
-    Components::ccm::local::SessionContext* context)
-    throw(::Components::ccm::local::CCMException)
+    ::Components::SessionContext* context)
+    throw(::Components::CCMException)
 {
     ctx = dynamic_cast<ccm::local::CCM_TestMirror_Context*>(context);
 }
 
 void
 TestMirror_impl::ccm_activate()
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     string s = "Salomon.Automation";
     long len =  ctx->get_connection_console()->println(s);
@@ -74,7 +74,7 @@ TestMirror_impl::ccm_activate()
         ctx->get_connection_console()->println(s);
         assert(0);
     }
-    catch(::Components::ccm::local::Exception& e) {
+    catch(::Components::Exception& e) {
       // catch base class exception 
       cout << e.what() << endl;
     }
@@ -85,14 +85,14 @@ TestMirror_impl::ccm_activate()
 
 void
 TestMirror_impl::ccm_passivate()
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 TestMirror_impl::ccm_remove()
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

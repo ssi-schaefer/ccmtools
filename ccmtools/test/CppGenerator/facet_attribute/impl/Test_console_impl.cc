@@ -31,21 +31,21 @@ Test_console_impl::~Test_console_impl()
 
 const long
 Test_console_impl::max_size() const
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     return max_size_;
 }
 
 void
 Test_console_impl::max_size(const long value)
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     max_size_ = value;
 }
 
 long
 Test_console_impl::print(const std::string& msg)
-    throw (Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     cout << ">> " << msg << endl;
     if(msg.length() < max_size())

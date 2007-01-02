@@ -1,13 +1,13 @@
 const %(LanguageType)s
 %(Object)s::%(Identifier)s() const
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     return local_component->%(Identifier)s();
 }
 
 void
 %(Object)s::%(Identifier)s(const %(LanguageType)s value)
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     local_component->%(Identifier)s(value);
 }

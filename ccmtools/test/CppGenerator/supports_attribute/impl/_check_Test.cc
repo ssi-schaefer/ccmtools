@@ -14,10 +14,7 @@
 #include <cassert>
 #include <iostream>
 
-#include <wamas/platform/utils/smartptr.h>
-
-#include <Components/ccm/local/CCM.h>
-#include <ccm/local/HomeFinder.h>
+#include <Components/CCM.h>
 
 #include <TestHome_gen.h>
 
@@ -31,7 +28,7 @@ int main(int argc, char *argv[])
     SmartPtr<Test> myTest;
 
     int error = 0;
-    Components::ccm::local::HomeFinder* homeFinder = ccm::local::HomeFinder::Instance();
+    ::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
     error  = deploy_TestHome("TestHome");
     if(error) 
     {
@@ -54,18 +51,18 @@ int main(int argc, char *argv[])
    
         myTest->remove();
     } 
-    catch ( ::Components::ccm::local::HomeNotFound ) 
+    catch ( ::Components::HomeNotFound ) 
     {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch ( ::Components::ccm::local::NotImplemented& e ) 
+    catch ( ::Components::NotImplemented& e ) 
     {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         return -1;
     }  
-    catch ( ::Components::ccm::local::InvalidName& e ) 
+    catch ( ::Components::InvalidName& e ) 
     {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;

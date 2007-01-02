@@ -5,6 +5,8 @@ all: mirror
 
 test: mirror check clean
 
+test_empty: local check_empty clean
+
 idl3: Test.idl
 	ccmmodel -validator Test.idl
 	ccmidl -idl3 -o ${DEST_DIR}/idl Test.idl
@@ -22,6 +24,8 @@ mirror: local
 check: 
 	ccmconfix -confix2 -o ${DEST_DIR} -pname "facet_module_exception" -pversion "1.0.0"
 	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
+
+check_empty: check
 
 clean: 
 	confix2.py --packageroot=`pwd`/${DEST_DIR} --make --targets=clean	

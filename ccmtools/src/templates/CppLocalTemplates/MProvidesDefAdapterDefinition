@@ -2,7 +2,7 @@ SmartPtr<%(ProvidesType)s>
 %(ComponentType)s::provide_%(Identifier)s()
 {
     if(!ValidConnection) 
-        throw ::Components::ccm::local::InvalidConnection();
+        throw ::Components::InvalidConnection();
     return %(Identifier)s_facet;
 }
 

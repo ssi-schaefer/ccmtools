@@ -7,7 +7,7 @@ using namespace std;
 namespace wx = wamas::platform::utils;
     
 Assembly::Assembly()
-	: state_ (Components::ccm::local::INACTIVE)
+	: state_ (::Components::INACTIVE)
 {
 }
 
@@ -19,18 +19,18 @@ Assembly::~Assembly()
 
 void 
 Assembly::build()
-  throw (Components::ccm::local::CreateFailure)
+  throw(::Components::CreateFailure)
 {
-  throw Components::ccm::local::CreateFailure();
+  throw ::Components::CreateFailure();
 }
 
 
 void 
-Assembly::build(wx::SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
-  throw (Components::ccm::local::CreateFailure)
+Assembly::build(wx::SmartPtr< ::Components::CCMObject> facadeComponent)
+  throw (::Components::CreateFailure)
 {
   int error = 0;
-  Components::ccm::local::HomeFinder* homeFinder = ccm::local::HomeFinder::Instance ();
+  ::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance ();
   
   try 
   {
@@ -55,18 +55,18 @@ Assembly::build(wx::SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
     
     
   }
-  catch (Components::ccm::local::HomeNotFound) 
+  catch (::Components::HomeNotFound) 
   {
     cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
     error = -1;
   }
-  catch (Components::ccm::local::NotImplemented& e) 
+  catch (::Components::NotImplemented& e) 
   {
     cout << "DEPLOYMENT ERROR: function not implemented: "
 	 << e.what () << endl;
     error = -1;
   }
-  catch (Components::ccm::local::InvalidName& e) 
+  catch (::Components::InvalidName& e) 
   {
     cout << "DEPLOYMENT ERROR: invalid name during connection: "
 	 << e.what () << endl;
@@ -85,11 +85,11 @@ Assembly::build(wx::SmartPtr<Components::ccm::local::CCMObject> facadeComponent)
   
   if (error < 0) 
   {
-    throw Components::ccm::local::CreateFailure();
+    throw ::Components::CreateFailure();
   } 
   else 
   {
-    state_ = Components::ccm::local::INSERVICE;
+    state_ = ::Components::INSERVICE;
   }
 }
 
@@ -104,7 +104,7 @@ Assembly::configuration_complete()
 
 void
 Assembly::tear_down()
-	  throw (Components::ccm::local::RemoveFailure)
+	  throw (::Components::RemoveFailure)
 {
   int error = 0;
   try 
@@ -117,12 +117,12 @@ Assembly::tear_down()
     basicTest->remove();
     userTest->remove();
   }
-  catch (Components::ccm::local::HomeNotFound) 
+  catch (::Components::HomeNotFound) 
   {
     cerr << "TEARDOWN ERROR: can't find a home!" << endl;
     error = -1;
   }
-  catch (Components::ccm::local::NotImplemented& e) 
+  catch (::Components::NotImplemented& e) 
   {
     cerr << "TEARDOWN ERROR: function not implemented: " << e.what()
 	 << endl;
@@ -134,11 +134,11 @@ Assembly::tear_down()
     error = -1;
   }
   
-  state_ = Components::ccm::local::INACTIVE;
+  state_ = ::Components::INACTIVE;
 }
 
 
-Components::ccm::local::AssemblyState 
+::Components::AssemblyState 
 Assembly::get_state()
 {
   return state_;

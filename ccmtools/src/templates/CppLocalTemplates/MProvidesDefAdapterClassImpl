@@ -29,11 +29,11 @@
 %(MOperationProvidesAdapterDefinition)s
 
 
-SmartPtr< ::Components::ccm::local::Object>
+SmartPtr< ::Components::Object>
 %(ComponentType)sFacetAdapter%(Identifier)s::get_component()
 {
-    return SmartPtr< ::Components::ccm::local::Object>
-        (dynamic_cast< ::Components::ccm::local::Object*> (component));
+    return SmartPtr< ::Components::Object>
+        (dynamic_cast< ::Components::Object*> (component));
 };
 
 

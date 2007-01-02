@@ -33,15 +33,15 @@ Test_impl::~Test_impl()
 
 void
 Test_impl::set_session_context(
-    Components::ccm::local::SessionContext* context)
-    throw(Components::ccm::local::CCMException)
+    ::Components::SessionContext* context)
+    throw(::Components::CCMException)
 {
     ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
 }
 
 void
 Test_impl::ccm_activate()
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     string s = "Salomon.Automation";
     long len =  ctx->get_connection_console()->print(s);
@@ -81,14 +81,14 @@ Test_impl::ccm_activate()
 
 void
 Test_impl::ccm_passivate()
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 Test_impl::ccm_remove()
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

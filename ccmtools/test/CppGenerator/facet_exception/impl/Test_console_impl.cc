@@ -31,19 +31,20 @@ Test_console_impl::~Test_console_impl()
 
 long
 Test_console_impl::println(const std::string& msg)
-    throw (::Components::ccm::local::CCMException, Error, SuperError, FatalError )
+    throw (::Components::CCMException, Error, SuperError, FatalError )
 {
     cout << ">> " << msg << endl;
 
-    if(msg == "Error") {
+    if(msg == "Error") 
+    {
         Error error;
-	ErrorInfoList error_info_list;
-	ErrorInfo error_info;
-	error_info.code = 7;
-	error_info.message = "A simple error!";
-	error_info_list.push_back(error_info);
-	error.info = error_info_list;
-	throw error;
+		ErrorInfoList error_info_list;
+		ErrorInfo error_info;
+		error_info.code = 7;
+		error_info.message = "A simple error!";
+		error_info_list.push_back(error_info);
+		error.info = error_info_list;
+		throw error;
     }
 
     if(msg == "SuperError")

@@ -33,7 +33,7 @@ SuperTest_userType_impl::~SuperTest_userType_impl()
 
 Color
 SuperTest_userType_impl::f1(const Color& p1, Color& p2, Color& p3)
-    throw (Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     SmartPtr<CCM_UserTypeInterface> inner = 
       component->ctx->get_connection_innerUserType();
@@ -42,7 +42,7 @@ SuperTest_userType_impl::f1(const Color& p1, Color& p2, Color& p3)
 
 Person
 SuperTest_userType_impl::f2(const Person& p1, Person& p2, Person& p3)
-    throw (Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     SmartPtr<CCM_UserTypeInterface> inner = 
       component->ctx->get_connection_innerUserType();
@@ -51,7 +51,7 @@ SuperTest_userType_impl::f2(const Person& p1, Person& p2, Person& p3)
 
 Address
 SuperTest_userType_impl::f3(const Address& p1, Address& p2, Address& p3)
-    throw (Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     SmartPtr<CCM_UserTypeInterface> inner = 
       component->ctx->get_connection_innerUserType();
@@ -60,7 +60,7 @@ SuperTest_userType_impl::f3(const Address& p1, Address& p2, Address& p3)
 
 LongList
 SuperTest_userType_impl::f4(const LongList& p1, LongList& p2, LongList& p3)
-    throw (Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     SmartPtr<CCM_UserTypeInterface> inner = 
       component->ctx->get_connection_innerUserType();
@@ -69,7 +69,7 @@ SuperTest_userType_impl::f4(const LongList& p1, LongList& p2, LongList& p3)
 
 StringList
 SuperTest_userType_impl::f5(const StringList& p1, StringList& p2, StringList& p3)
-    throw (Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     SmartPtr<CCM_UserTypeInterface> inner = 
       component->ctx->get_connection_innerUserType();
@@ -78,7 +78,7 @@ SuperTest_userType_impl::f5(const StringList& p1, StringList& p2, StringList& p3
 
 PersonList
 SuperTest_userType_impl::f6(const PersonList& p1, PersonList& p2, PersonList& p3)
-    throw (Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     SmartPtr<CCM_UserTypeInterface> inner = 
       component->ctx->get_connection_innerUserType();
@@ -87,7 +87,7 @@ SuperTest_userType_impl::f6(const PersonList& p1, PersonList& p2, PersonList& p3
 
 time_t
 SuperTest_userType_impl::f7(const time_t& t1, time_t& t2, time_t& t3)
-    throw (Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     SmartPtr<CCM_UserTypeInterface> inner = 
       component->ctx->get_connection_innerUserType();

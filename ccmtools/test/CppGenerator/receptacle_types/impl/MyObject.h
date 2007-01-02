@@ -3,7 +3,7 @@
 #define __MY_OBJECT__H__
 
 #include <iostream>
-#include <Components/ccm/local/CCM.h>
+#include <Components/CCM.h>
 #include <Console.h>
 
 class MyObject 
@@ -13,13 +13,13 @@ public:
   MyObject();
 
   const std::string prompt() const
-    throw(::Components::ccm::local::CCMException);
+    throw(::Components::CCMException);
 
   void prompt(const std::string value) 
-    throw(::Components::ccm::local::CCMException);
+    throw(::Components::CCMException);
 
   long println(const std::string& msg)
-    throw (::Components::ccm::local::CCMException);
+    throw (::Components::CCMException);
   
 private: 
   std::string prompt_;

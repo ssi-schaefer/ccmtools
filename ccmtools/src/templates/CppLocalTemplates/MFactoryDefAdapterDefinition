@@ -1,10 +1,10 @@
 SmartPtr<%(ComponentType)s>
 %(HomeType)s::%(Identifier)s(%(MParameterDefAll)s)
-    throw(::Components::ccm::local::CCMException, 
-          ::Components::ccm::local::CreateFailure)
+    throw(::Components::CCMException, 
+          ::Components::CreateFailure)
 {
-    SmartPtr< ::Components::ccm::local::Assembly> assembly;
-    if(assembly_factory != SmartPtr< ::Components::ccm::local::AssemblyFactory>()) {
+    SmartPtr< ::Components::Assembly> assembly;
+    if(assembly_factory != SmartPtr< ::Components::AssemblyFactory>()) {
         assembly = assembly_factory->create(); 
     }
     SmartPtr<%(ComponentType)s> 
@@ -16,7 +16,7 @@ SmartPtr<%(ComponentType)s>
             )
         )
     );
-    if(assembly_factory != SmartPtr< ::Components::ccm::local::AssemblyFactory>()) {
+    if(assembly_factory != SmartPtr< ::Components::AssemblyFactory>()) {
         assembly->build(ret);
     }
     return ret;

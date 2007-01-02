@@ -3,7 +3,7 @@
 %(ExceptionThrows)s
 {
     if(!validConnection()) 
-        throw ::Components::ccm::local::InvalidConnection();
+        throw ::Components::InvalidConnection();
 
 %(OperationToFacetDelegation)s      
 

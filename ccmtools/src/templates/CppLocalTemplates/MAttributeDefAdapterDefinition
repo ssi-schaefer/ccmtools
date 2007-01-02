@@ -1,18 +1,18 @@
 const %(LanguageType)s
 %(ComponentIdentifier)s::%(Identifier)s() const 
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     if(!ValidConnection) 
-        throw ::Components::ccm::local::InvalidConnection();
+        throw ::Components::InvalidConnection();
     return local_component->%(Identifier)s();
 }
 
 void
 %(ComponentIdentifier)s::%(Identifier)s(const %(LanguageType)s value)
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     if(!ValidConnection) 
-        throw ::Components::ccm::local::InvalidConnection();
+        throw ::Components::InvalidConnection();
     local_component->%(Identifier)s(value);
 }
 

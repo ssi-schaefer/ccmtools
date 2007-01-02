@@ -99,16 +99,16 @@ abstract public class CppGenerator extends CodeGenerator
             "double", // PK_LONGDOUBLE
             "long", // PK_LONGLONG
             "NULL", // PK_NULL
-            "::Components::ccm::local::Object*", // PK_OBJREF
+            "::Components::Object*", // PK_OBJREF
             "unsigned char", // PK_OCTET
             "(principal data type not implemented", // PK_PRINCIPAL
             "short", // PK_SHORT
             "std::string", // PK_STRING
-            "::Components::ccm::local::TypeCode", // PK_TYPECODE
+            "::Components::TypeCode", // PK_TYPECODE
             "unsigned long", // PK_ULONG
             "unsigned long", // PK_ULONGLONG
             "unsigned short", // PK_USHORT
-            "::Components::ccm::local::Object*", // PK_VALUEBASE
+            "::Components::Object*", // PK_VALUEBASE
             "void", // PK_VOID
             "wchar_t", // PK_WCHAR
             "std::wstring" // PK_WSTRING
@@ -1175,14 +1175,11 @@ abstract public class CppGenerator extends CodeGenerator
         if(ret.size() > 0) 
         {
             String indent = "\n" + Text.tab(2);
-            return "throw(::Components::ccm::local::CCMException," 
-            	+ indent
-            	+ join("," + indent, ret)
-                + " )";
+            return "throw(::Components::CCMException," + indent	+ join("," + indent, ret) + " )";
         }
         else 
         {
-            return "throw(::Components::ccm::local::CCMException)";
+            return "throw(::Components::CCMException)";
         }
     }
 }

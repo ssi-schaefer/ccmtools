@@ -12,7 +12,7 @@
 #endif
 
 namespace ccm {
-namespace local {
+namespace utils {
 
 using namespace std;
 
@@ -77,5 +77,5 @@ operator<<(std::ostream& o, const Timer& value)
 	return o;
 }
 
-} // /namespace local
+} // /namespace utils
 } // /namespace ccm

@@ -5,7 +5,7 @@
 #include "TimerEvaluation.h" 
 
 namespace ccm {
-namespace local {
+namespace utils {
 
 using namespace std;
 
@@ -21,5 +21,5 @@ TimerEvaluation::getTimerResult(const Timer& timer,	const long loops, const long
 	return os.str();
 }
 
-} // /namespace local
+} // /namespace utils
 } // /namespace ccm

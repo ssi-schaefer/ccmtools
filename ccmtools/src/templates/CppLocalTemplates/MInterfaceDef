@@ -7,7 +7,7 @@
 #ifndef __IFACE_%(PreprocIdentifier)s__H__
 #define __IFACE_%(PreprocIdentifier)s__H__
 
-#include <Components/ccm/local/CCM.h>
+#include <Components/CCM.h>
 
 %(InterfaceIncludes)s
 
@@ -19,7 +19,7 @@
 
 // External view of interface %(Identifier)s
 class %(Identifier)s
-  : virtual public ::Components::ccm::local::Object%(BaseType)s
+  : virtual public ::Components::Object%(BaseType)s
 {
   public:
     virtual ~%(Identifier)s() {}
@@ -54,9 +54,6 @@ class CCM_%(Identifier)s
  
 #ifndef __INTERFACE_ADAPTER_%(PreprocIdentifier)s__H__
 #define __INTERFACE_ADAPTER_%(PreprocIdentifier)s__H__
-
-#include <wamas/platform/utils/smartptr.h>
-#include <Components/ccm/local/CCM.h>
 
 #include <%(InterfaceInclude)s.h> 
 

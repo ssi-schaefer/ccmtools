@@ -37,7 +37,7 @@ Test_test_impl::op1(
         const SmartPtr< wamas::platform::utils::Value > & p1,
         SmartPtr< wamas::platform::utils::Value > & p2,
         SmartPtr< wamas::platform::utils::Value > & p3)
-throw(::Components::ccm::local::CCMException)
+throw(::Components::CCMException)
 {
   	p3=p2;
   	p2=p1;
@@ -46,7 +46,7 @@ throw(::Components::ccm::local::CCMException)
 
 AnyList
 Test_test_impl::op2(const AnyList& p1, AnyList& p2, AnyList& p3)
-throw(::Components::ccm::local::CCMException)
+throw(::Components::CCMException)
 {
   	p3=p2;
   	p2=p1;
@@ -55,7 +55,7 @@ throw(::Components::ccm::local::CCMException)
 
 Pair
 Test_test_impl::op3(const Pair& p1, Pair& p2, Pair& p3)
-throw(::Components::ccm::local::CCMException)
+throw(::Components::CCMException)
 { 
   	p3=p2;
   	p2=p1;

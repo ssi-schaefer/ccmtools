@@ -8,7 +8,7 @@
 #include <iostream>
 
 namespace ccm {
-namespace local {
+namespace utils {
 
     class Timer
     {
@@ -66,7 +66,7 @@ namespace local {
     std::ostream&
     operator<<(std::ostream& o, const Timer& value);
     
-} // /namespace local
+} // /namespace utils
 } // /namespace ccm
 
 #endif /* __WX_UTILS_TIMER__H__ */

@@ -1,10 +1,9 @@
     // Equivalent operations for single receptacle %(Identifier)s
 
     void connect_%(Identifier)s(wamas::platform::utils::SmartPtr<%(UsesType)s> i)
-        throw(::Components::ccm::local::AlreadyConnected, 
-              ::Components::ccm::local::InvalidConnection);
+        throw(::Components::AlreadyConnected, ::Components::InvalidConnection);
 
     wamas::platform::utils::SmartPtr<%(UsesType)s> disconnect_%(Identifier)s()
-        throw(::Components::ccm::local::NoConnection);
+        throw(::Components::NoConnection);
 
 

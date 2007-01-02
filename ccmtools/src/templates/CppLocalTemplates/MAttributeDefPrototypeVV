@@ -1,6 +1,6 @@
     virtual const %(LanguageType)s %(Identifier)s() const 
-        throw(::Components::ccm::local::CCMException) = 0;
+        throw(::Components::CCMException) = 0;
         
     virtual void %(Identifier)s(const %(LanguageType)s value) 
-        throw(::Components::ccm::local::CCMException) = 0;
+        throw(::Components::CCMException) = 0;
 

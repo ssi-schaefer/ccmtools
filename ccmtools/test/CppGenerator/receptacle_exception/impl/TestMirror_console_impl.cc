@@ -31,7 +31,7 @@ TestMirror_console_impl::~TestMirror_console_impl()
 
 long
 TestMirror_console_impl::print(const std::string& msg)
-    throw (Components::ccm::local::CCMException, SuperError, Error, FatalError )
+    throw (::Components::CCMException, SuperError, Error, FatalError )
 {
     cout << ">> " << msg << endl;
 

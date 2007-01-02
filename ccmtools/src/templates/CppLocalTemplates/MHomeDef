@@ -13,9 +13,8 @@
 
 #include <string>
 #include <map>
-#include <wamas/platform/utils/smartptr.h>
-#include <Components/ccm/local/CCM.h>
-#include <ccm/local/HomeFinder.h>
+
+#include <Components/CCM.h>
 
 %(MFactoryDefInclude)s
 %(MFinderDefInclude)s
@@ -31,7 +30,7 @@
 //==============================================================================
 
 class %(Identifier)sExplicit
-    : virtual public ::Components::ccm::local::CCMHome
+    : virtual public ::Components::CCMHome
 {
   public:
     virtual ~%(Identifier)sExplicit() {}
@@ -44,14 +43,14 @@ class %(Identifier)sExplicit
 //==============================================================================
 
 class %(Identifier)sImplicit
-    : virtual public ::Components::ccm::local::KeylessCCMHome
+    : virtual public ::Components::KeylessCCMHome
 {
   public:
     virtual ~%(Identifier)sImplicit() {}
     
     virtual wamas::platform::utils::SmartPtr<%(ComponentType)s> create()
-        throw(::Components::ccm::local::CCMException, 
-              ::Components::ccm::local::CreateFailure) = 0;
+        throw(::Components::CCMException, 
+              ::Components::CreateFailure) = 0;
 };
 
 
@@ -67,29 +66,26 @@ class %(Identifier)s
 {
   public:
     %(Identifier)s();
-    %(Identifier)s(wamas::platform::utils::SmartPtr< ::Components::ccm::local::AssemblyFactory> assembly_factory);	
+    %(Identifier)s(wamas::platform::utils::SmartPtr< ::Components::AssemblyFactory> assembly_factory);	
     virtual ~%(Identifier)s();
 
 %(MFactoryDefAdapterPrototypeV)s
 
     // CCMHome functions
     virtual wamas::platform::utils::SmartPtr<%(ComponentType)s> create()
-        throw(::Components::ccm::local::CCMException, 
-              ::Components::ccm::local::CreateFailure);
+        throw(::Components::CCMException, ::Components::CreateFailure);
 
     virtual void remove_component(
-	    wamas::platform::utils::SmartPtr< ::Components::ccm::local::CCMObject> component)
-        throw(::Components::ccm::local::CCMException, 
-              ::Components::ccm::local::RemoveFailure);
+	    wamas::platform::utils::SmartPtr< ::Components::CCMObject> component)
+        throw(::Components::CCMException, ::Components::RemoveFailure);
 
     // KeylessCCMHome functions
-    virtual wamas::platform::utils::SmartPtr< ::Components::ccm::local::CCMObject> create_component()
-        throw(::Components::ccm::local::CCMException, 
-              ::Components::ccm::local::CreateFailure);
+    virtual wamas::platform::utils::SmartPtr< ::Components::CCMObject> create_component()
+        throw(::Components::CCMException, ::Components::CreateFailure);
 
   protected:
     %(LocalGenNamespace)sCCM_%(Identifier)s* local_home;
-    wamas::platform::utils::SmartPtr< ::Components::ccm::local::AssemblyFactory> assembly_factory;
+    wamas::platform::utils::SmartPtr< ::Components::AssemblyFactory> assembly_factory;
     
   private:
     void operator=(const %(Identifier)s&);
@@ -101,7 +97,7 @@ class %(Identifier)s
 // entry point
 //==============================================================================
 
-wamas::platform::utils::SmartPtr< ::Components::ccm::local::CCMHome> 
+wamas::platform::utils::SmartPtr< ::Components::CCMHome> 
 create_%(AbsoluteLocalHomeName)sAdapter();
 
 int 
@@ -109,7 +105,7 @@ deploy_%(AbsoluteLocalHomeName)s(char* name);
 
 int 
 deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,	
-        wamas::platform::utils::SmartPtr< ::Components::ccm::local::AssemblyFactory> assembly_factory);
+        wamas::platform::utils::SmartPtr< ::Components::AssemblyFactory> assembly_factory);
 
 int undeploy_%(AbsoluteLocalHomeName)s(char* name);
 
@@ -146,10 +142,10 @@ using namespace wamas::platform::utils;
 {
     local_home = dynamic_cast<%(LocalGenNamespace)sCCM_%(Identifier)s*>(
         create_%(AbsoluteLocalHomeName)s());
-    assembly_factory = SmartPtr< ::Components::ccm::local::AssemblyFactory>();
+    assembly_factory = SmartPtr< ::Components::AssemblyFactory>();
 }
 
-%(Identifier)s::%(Identifier)s(SmartPtr< ::Components::ccm::local::AssemblyFactory> f)
+%(Identifier)s::%(Identifier)s(SmartPtr< ::Components::AssemblyFactory> f)
     : assembly_factory(f)
 {
     local_home = dynamic_cast<%(LocalGenNamespace)sCCM_%(Identifier)s*>(
@@ -167,15 +163,15 @@ using namespace wamas::platform::utils;
 
 SmartPtr<%(ComponentType)s>
 %(Identifier)s::create()
-    throw(::Components::ccm::local::CCMException, 
-          ::Components::ccm::local::CreateFailure)
+    throw(::Components::CCMException, ::Components::CreateFailure)
 {
-    SmartPtr< ::Components::ccm::local::Assembly> assembly;
-    if(assembly_factory != SmartPtr< ::Components::ccm::local::AssemblyFactory>()) {
+    SmartPtr< ::Components::Assembly> assembly;
+    if(assembly_factory != SmartPtr< ::Components::AssemblyFactory>()) 
+    {
         assembly = assembly_factory->create(); 
     }
 
-    ::Components::ccm::local::EnterpriseComponent* enterprise_component = 
+    ::Components::EnterpriseComponent* enterprise_component = 
         local_home->create();
     %(LocalGenComponent)sCCM_%(ComponentType)s* local_component = 
         dynamic_cast<%(LocalGenComponent)sCCM_%(ComponentType)s*>(enterprise_component);
@@ -183,7 +179,8 @@ SmartPtr<%(ComponentType)s>
         new %(ComponentType)s(this, local_component, assembly);
     SmartPtr<%(ComponentType)s> ret(local_component_adapter);
 
-    if(assembly_factory != SmartPtr< ::Components::ccm::local::AssemblyFactory>()) {
+    if(assembly_factory != SmartPtr< ::Components::AssemblyFactory>()) 
+    {
         assembly->build(ret);
     }
     return ret;
@@ -191,17 +188,15 @@ SmartPtr<%(ComponentType)s>
 
 void
 %(Identifier)s::remove_component(
-    SmartPtr< ::Components::ccm::local::CCMObject> component)
-    throw(::Components::ccm::local::CCMException, 
-          ::Components::ccm::local::RemoveFailure)
+    SmartPtr< ::Components::CCMObject> component)
+    throw(::Components::CCMException, ::Components::RemoveFailure)
 {
     component->remove();
 }
 
-SmartPtr< ::Components::ccm::local::CCMObject>
+SmartPtr< ::Components::CCMObject>
 %(Identifier)s::create_component()
-    throw(::Components::ccm::local::CCMException, 
-          ::Components::ccm::local::CreateFailure)
+    throw(::Components::CCMException, ::Components::CreateFailure)
 {
     return create();
 }
@@ -213,10 +208,10 @@ SmartPtr< ::Components::ccm::local::CCMObject>
 // entry point
 //==============================================================================
 
-wamas::platform::utils::SmartPtr< ::Components::ccm::local::CCMHome>
+wamas::platform::utils::SmartPtr< ::Components::CCMHome>
 create_%(AbsoluteLocalHomeName)sAdapter()
 {
-    wamas::platform::utils::SmartPtr< ::Components::ccm::local::CCMHome>
+    wamas::platform::utils::SmartPtr< ::Components::CCMHome>
         ret(new %(LocalNamespace)s%(Identifier)s());
     return ret;
 }
@@ -225,19 +220,21 @@ int
 deploy_%(AbsoluteLocalHomeName)s(char* name)
 {
     return deploy_with_assembly_%(AbsoluteLocalHomeName)s(
-        name, wamas::platform::utils::SmartPtr< ::Components::ccm::local::AssemblyFactory>());	
+        name, wamas::platform::utils::SmartPtr< ::Components::AssemblyFactory>());	
 }	
 
 int 
 deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,
-    wamas::platform::utils::SmartPtr< ::Components::ccm::local::AssemblyFactory> assembly_factory)
+    wamas::platform::utils::SmartPtr< ::Components::AssemblyFactory> assembly_factory)
 {
-    try {
-        wamas::platform::utils::SmartPtr< ::Components::ccm::local::CCMHome> 
+    try 
+    {
+        wamas::platform::utils::SmartPtr< ::Components::CCMHome> 
             ret(new %(LocalNamespace)s%(Identifier)s(assembly_factory));
-        ::ccm::local::HomeFinder::Instance()->register_home(ret, name);
+        ::Components::HomeFinder::Instance()->register_home(ret, name);
     }
-    catch (...) {
+    catch(...) 
+    {
         return -1;
     }
     return 0; 
@@ -246,10 +243,12 @@ deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,
 int 
 undeploy_%(AbsoluteLocalHomeName)s(char* name)
 {
-    try {
-        ::ccm::local::HomeFinder::Instance()->unregister_home(name);	
+    try 
+    {
+        ::Components::HomeFinder::Instance()->unregister_home(name);	
     } 
-    catch(...) {
+    catch(...) 
+    {
         return -1;
     }
     return 0;
@@ -271,8 +270,7 @@ undeploy_%(AbsoluteLocalHomeName)s(char* name)
 #ifndef __HOME_%(PreprocIdentifier)s_SHARE__H__
 #define __HOME_%(PreprocIdentifier)s_SHARE__H__
 
-#include <wamas/platform/utils/smartptr.h>
-#include <Components/ccm/local/CCM.h>
+#include <Components/CCM.h>
 
 %(MFactoryDefInclude)s
 %(MFinderDefInclude)s
@@ -286,7 +284,7 @@ undeploy_%(AbsoluteLocalHomeName)s(char* name)
 //==============================================================================
 
 class CCM_%(Identifier)sExplicit
-    : virtual public ::Components::ccm::local::HomeExecutorBase
+    : virtual public ::Components::HomeExecutorBase
 {
   public:
     virtual ~CCM_%(Identifier)sExplicit() {}
@@ -300,8 +298,8 @@ class CCM_%(Identifier)sImplicit
   public:
     virtual ~CCM_%(Identifier)sImplicit() {}
   
-    virtual ::Components::ccm::local::EnterpriseComponent* create()
-        throw(::Components::ccm::local::CCMException) = 0;
+    virtual ::Components::EnterpriseComponent* create()
+        throw(::Components::CCMException) = 0;
 };
 
 
@@ -332,7 +330,7 @@ class CCM_%(Identifier)s
 #ifndef __HOME_%(PreprocIdentifier)s_ENTRY__H__
 #define __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
-::Components::ccm::local::HomeExecutorBase* 
+::Components::HomeExecutorBase* 
 create_%(AbsoluteLocalHomeName)s();
 
 #endif // __HOME_%(PreprocIdentifier)s_ENTRY__H__
@@ -374,8 +372,8 @@ class %(Identifier)s_impl
     %(Identifier)s_impl();
     virtual ~%(Identifier)s_impl();
 
-    virtual ::Components::ccm::local::EnterpriseComponent* create()
-        throw(::Components::ccm::local::CCMException);
+    virtual ::Components::EnterpriseComponent* create()
+        throw(::Components::CCMException);
 
 %(MFactoryDefPrototypeV)s
 };
@@ -424,11 +422,11 @@ using namespace wamas::platform::utils;
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
-::Components::ccm::local::EnterpriseComponent*
+::Components::EnterpriseComponent*
 %(Identifier)s_impl::create()
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
-    return dynamic_cast< ::Components::ccm::local::EnterpriseComponent* >
+    return dynamic_cast< ::Components::EnterpriseComponent* >
         (new %(ComponentType)s_impl());
 }
 
@@ -441,10 +439,10 @@ using namespace wamas::platform::utils;
 // CCM_%(Identifier)s - home entry point
 //==============================================================================
 
-::Components::ccm::local::HomeExecutorBase*
+::Components::HomeExecutorBase*
 create_%(AbsoluteLocalHomeName)s()
 {
-    return dynamic_cast< ::Components::ccm::local::HomeExecutorBase* >
+    return dynamic_cast< ::Components::HomeExecutorBase* >
         (new %(LocalNamespace)s%(Identifier)s_impl());
 }
 

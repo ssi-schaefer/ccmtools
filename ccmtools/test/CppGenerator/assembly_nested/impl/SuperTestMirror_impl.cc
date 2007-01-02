@@ -35,16 +35,15 @@ SuperTestMirror_impl::~SuperTestMirror_impl()
 }
 
 void
-SuperTestMirror_impl::set_session_context(
-    Components::ccm::local::SessionContext* context)
-    throw(Components::ccm::local::CCMException)
+SuperTestMirror_impl::set_session_context(::Components::SessionContext* context)
+    throw(::Components::CCMException)
 {
     ctx = dynamic_cast<ccm::local::CCM_SuperTestMirror_Context*>(context);
 }
 
 void
 SuperTestMirror_impl::ccm_activate()
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     {
       // basic types test cases
@@ -323,14 +322,14 @@ SuperTestMirror_impl::ccm_activate()
 
 void
 SuperTestMirror_impl::ccm_passivate()
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 SuperTestMirror_impl::ccm_remove()
-    throw(Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

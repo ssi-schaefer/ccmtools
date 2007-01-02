@@ -31,7 +31,7 @@ TestMirror_console2_impl::~TestMirror_console2_impl()
 
 long
 TestMirror_console2_impl::println(const std::string& s2)
-    throw (::Components::ccm::local::CCMException)
+    throw (::Components::CCMException)
 {
     cout << "Console 2 : " << s2 << endl;
     return s2.length();

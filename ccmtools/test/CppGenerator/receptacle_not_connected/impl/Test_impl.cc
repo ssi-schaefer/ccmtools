@@ -35,15 +35,15 @@ Test_impl::~Test_impl()
 
 void
 Test_impl::set_session_context(
-    Components::ccm::local::SessionContext* context)
-    throw(::Components::ccm::local::CCMException)
+    ::Components::SessionContext* context)
+    throw(::Components::CCMException)
 {
     ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
 }
 
 void
 Test_impl::ccm_activate()
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
   try 
   {
@@ -51,21 +51,21 @@ Test_impl::ccm_activate()
     ctx->get_connection_console()->println(s);
     assert(false);
   }
-  catch(::Components::ccm::local::NoConnection& e) {
+  catch(::Components::NoConnection& e) {
     cerr << "!! NoConnection exception: Receptacle console is not connected!" << endl;
   }
 }
 
 void
 Test_impl::ccm_passivate()
-    throw(Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 Test_impl::ccm_remove()
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

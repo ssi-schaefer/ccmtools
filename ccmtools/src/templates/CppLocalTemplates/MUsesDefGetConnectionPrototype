@@ -1,4 +1,4 @@
     wamas::platform::utils::SmartPtr< %(UsesType)s> get_connection_%(Identifier)s()
-  		throw(::Components::ccm::local::NoConnection);
+  		throw(::Components::NoConnection);
 
 
