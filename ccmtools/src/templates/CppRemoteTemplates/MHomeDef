@@ -24,28 +24,28 @@
 //==========================================================================
 
 class %(Identifier)s_impl :
-    virtual public POA_%(StubIdentifier)s,
+    virtual public %(POAStubIdentifier)s,
     virtual public PortableServer::RefCountServantBase
 {
   protected:
-    wamas::platform::utils::SmartPtr< ::%(LocalNamespace)s%(Identifier)s> local_home;
-    wamas::platform::utils::SmartPtr<CCM::SessionContainer> ccm_container;
+    wamas::platform::utils::SmartPtr< %(LocalNamespace)s%(Identifier)s> local_home;
+    wamas::platform::utils::SmartPtr< ::ccmtools::remote::SessionContainer > ccm_container;
       
   public:
-    %(Identifier)s_impl(wamas::platform::utils::SmartPtr<CCM::SessionContainer> c);
+    %(Identifier)s_impl(wamas::platform::utils::SmartPtr< ::ccmtools::remote::SessionContainer > c);
     virtual ~%(Identifier)s_impl();
 
     // Implicit operations
-    ::%(StubsNamespace)s%(ComponentType)s_ptr create ();
+    %(StubsNamespace)s%(ComponentType)s_ptr create ();
 
     // Explicit operations
 %(MFactoryDefHeader)s
 
     // Inherited CCMHome interface
-    void remove_component(Components::CCMObject_ptr comp);
+    void remove_component(::ccmtools::corba::Components::CCMObject_ptr comp);
 
     // Inherited KeylessCCMHome interface
-    Components::CCMObject_ptr create_component ();
+    ::ccmtools::corba::Components::CCMObject_ptr create_component ();
 };
  
 %(CloseNamespace)s
@@ -95,13 +95,12 @@ using namespace wamas::platform::utils;
 // Component home adapter
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl (SmartPtr<CCM::SessionContainer> c)
+%(Identifier)s_impl::%(Identifier)s_impl (SmartPtr< ::ccmtools::remote::SessionContainer > c)
     : ccm_container (c)
 {
-    ::Components::ccm::local::HomeFinder* homeFinder = 
-        ::ccm::local::HomeFinder::Instance();
-    local_home = SmartPtr< ::%(LocalNamespace)s%(Identifier)s>(
-        dynamic_cast< ::%(LocalNamespace)s%(Identifier)s*>
+    ::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
+    local_home = SmartPtr< %(LocalNamespace)s%(Identifier)s>(
+        dynamic_cast< %(LocalNamespace)s%(Identifier)s*>
 	(homeFinder->find_home_by_name("%(Identifier)s").ptr()));
 }
 
@@ -114,18 +113,18 @@ using namespace wamas::platform::utils;
  * Implicit operations
  */
 
-::%(StubsNamespace)s%(ComponentType)s_ptr
+%(StubsNamespace)s%(ComponentType)s_ptr
 %(Identifier)s_impl::create ()
 {
     // create the local_component
-    SmartPtr< ::%(LocalNamespace)s%(ComponentType)s> local_component = 
+    SmartPtr< %(LocalNamespace)s%(ComponentType)s> local_component = 
         local_home->create();
     // create component remote adapter
     PortableServer::ServantBase_var component_adapter =
         new %(ComponentType)s_impl(local_component, ccm_container);
-    Components::CCMObject_var co = 
+    ::ccmtools::corba::Components::CCMObject_var co = 
         ccm_container->activate_component(component_adapter.in()); 
-    return ::%(StubsNamespace)s%(ComponentType)s::_narrow(co);
+    return %(StubsNamespace)s%(ComponentType)s::_narrow(co);
 }
 
 
@@ -141,7 +140,7 @@ using namespace wamas::platform::utils;
  */
 
 void
-%(Identifier)s_impl::remove_component(Components::CCMObject_ptr _co)
+%(Identifier)s_impl::remove_component(::ccmtools::corba::Components::CCMObject_ptr _co)
 {
     PortableServer::ServantBase_var _cs = ccm_container->get_skeleton_for_reference(_co);
     // TODO
@@ -153,7 +152,7 @@ void
  * Inherited KeylessCCMHome interface
  */
 
-Components::CCMObject_ptr
+::ccmtools::corba::Components::CCMObject_ptr
 %(Identifier)s_impl::create_component ()
 {
     return create ();
@@ -181,7 +180,8 @@ int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_nam
         CORBA::Object_var obj = orb->string_to_object(ior);
         if(CORBA::is_nil(obj))
            return -2; // Can't create CORBA object from IOR
-        Components::CCMHome_var home = Components::CCMHome::_narrow(obj);
+        ::ccmtools::corba::Components::CCMHome_var home = 
+            ::ccmtools::corba::Components::CCMHome::_narrow(obj);
         if(CORBA::is_nil(home))
 	       return -3; // Can't create Components::CCMHome object
         CosNaming::Name_var n = ns->to_name(registration_name);
@@ -198,8 +198,9 @@ int deploy_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char* registration_nam
 int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior)
 {
     // Startup component home
-    wamas::platform::utils::SmartPtr<CCM::SessionContainer> container(new CCM::SessionContainer(orb));
-    CCM::SessionContainer::ComponentInfo info;
+    wamas::platform::utils::SmartPtr< ::ccmtools::remote::SessionContainer > 
+        container(new ::ccmtools::remote::SessionContainer(orb));
+    ::ccmtools::remote::SessionContainer::ComponentInfo info;
     info.home_short_name = "%(Identifier)s";
     info.home_absolute_name = "::%(Identifier)s";
     info.home_id = "IDL::%(Identifier)s:1.0";
@@ -208,7 +209,7 @@ int deploy_with_ior_%(AbsoluteRemoteHomeName)s(CORBA::ORB_ptr orb, char*& ior)
     info.component_id = "IDL:%(ComponentType)s:1.0";
     info.home_glue = new %(RemoteNamespace)s%(Identifier)s_impl(container); 
     container->load(info);
-    Components::CCMHome_var home = container->get_CCM_home(); 
+    ::ccmtools::corba::Components::CCMHome_var home = container->get_CCM_home(); 
     ior = orb->object_to_string(home); 
     container->activate();
     return 0; // OK

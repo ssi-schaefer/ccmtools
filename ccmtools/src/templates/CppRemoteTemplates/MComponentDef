@@ -15,7 +15,7 @@
 
 #include <wamas/platform/utils/smartptr.h>
 
-#include <CCM/CCMContainer.h>
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
 
@@ -24,7 +24,7 @@
 %(MUsesDefInclude)s
 
 #include <%(LocalIncludeNamespace)s%(Identifier)s_gen.h> 
-#include <%(LocalGenIncludeNamespace)s%(Identifier)s_share.h> 
+#include <%(LocalIncludeNamespace)s%(Identifier)s_share.h> 
 
 %(OpenNamespace)s
 
@@ -32,21 +32,21 @@
 // Component remote adapter 
 //============================================================================
 class %(Identifier)s_impl :
-    virtual public POA_%(StubIdentifier)s,
+    virtual public %(POAStubIdentifier)s,
     virtual public PortableServer::RefCountServantBase
 {
     friend class CCM_%(Identifier)s_Context_impl;
 
   protected:
-    wamas::platform::utils::SmartPtr< ::%(LocalNamespace)s%(Identifier)s> local_adapter;
-    wamas::platform::utils::SmartPtr<CCM::SessionContainer> ccm_container;
+    wamas::platform::utils::SmartPtr< %(LocalNamespace)s%(Identifier)s> local_adapter;
+    wamas::platform::utils::SmartPtr< ::ccmtools::remote::SessionContainer > ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
   public:
-    %(Identifier)s_impl(wamas::platform::utils::SmartPtr< ::%(LocalNamespace)s%(Identifier)s>, 
-        wamas::platform::utils::SmartPtr<CCM::SessionContainer> );
+    %(Identifier)s_impl(wamas::platform::utils::SmartPtr< %(LocalNamespace)s%(Identifier)s>, 
+        wamas::platform::utils::SmartPtr< ::ccmtools::remote::SessionContainer > );
     virtual ~%(Identifier)s_impl ();
 
     // Component Attributes
@@ -66,11 +66,11 @@ class %(Identifier)s_impl :
     CORBA::Object_ptr provide_facet(const char *);
 
     // Inherited Receptacles interface
-    Components::Cookie* connect(const char*, CORBA::Object_ptr);
-    void disconnect(const char* name, Components::Cookie*);
+    ::ccmtools::corba::Components::Cookie* connect(const char*, CORBA::Object_ptr);
+    void disconnect(const char* name, ::ccmtools::corba::Components::Cookie*);
 
     // Inherited CCMObject interface
-    Components::CCMHome_ptr get_ccm_home();
+    ::ccmtools::corba::Components::CCMHome_ptr get_ccm_home();
     void configuration_complete();
     void remove();
 
@@ -97,7 +97,7 @@ class %(Identifier)s_impl :
 
 #ifdef HAVE_MICO  
 
-#include <ccm/remote/PrimitiveConverter.h>
+#include <ccmtools/remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
 %(OpenNamespace)s
@@ -109,8 +109,8 @@ using namespace wamas::platform::utils;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr< ::%(LocalNamespace)s%(Identifier)s> la, 
-    SmartPtr<CCM::SessionContainer> c)
+%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr< %(LocalNamespace)s%(Identifier)s> la, 
+    SmartPtr< ::ccmtools::remote::SessionContainer > c)
     : local_adapter(la), ccm_container (c)
 {
 %(MProvidesDefAdapterVariableInit)s
@@ -157,8 +157,8 @@ CORBA::Object_ptr
 %(Identifier)s_impl::provide_facet(const char* name)
 {
 %(MProvidesDefNavigationFacet)s
-    throw Components::InvalidName();
-    return CORBA::Object::_nil ();
+    throw ::ccmtools::corba::Components::InvalidName();
+    return CORBA::Object::_nil();
 }
 
 
@@ -166,19 +166,19 @@ CORBA::Object_ptr
  * Inherited Receptacles interface
  */
 
-Components::Cookie*
+::ccmtools::corba::Components::Cookie*
 %(Identifier)s_impl::connect(const char* name, CORBA::Object_ptr ref)
 {
 %(MUsesDefReceptacleConnect)s
-    throw Components::InvalidName();
-    return new CCM::Cookie_impl;
+    throw ::ccmtools::corba::Components::InvalidName();
+    return new ::ccmtools::remote::Cookie_impl();
 }
 
 void
-%(Identifier)s_impl::disconnect(const char* name, Components::Cookie* _ck)
+%(Identifier)s_impl::disconnect(const char* name, ::ccmtools::corba::Components::Cookie* _ck)
 {
 %(MUsesDefReceptacleDisconnect)s
-    throw Components::InvalidName();
+    throw ::ccmtools::corba::Components::InvalidName();
 }
 
 
@@ -186,7 +186,7 @@ void
  * Inherited CCMObject interface
  */
 
-Components::CCMHome_ptr
+::ccmtools::corba::Components::CCMHome_ptr
 %(Identifier)s_impl::get_ccm_home()
 {
     return ccm_container->get_reference_for_home();
@@ -203,8 +203,9 @@ void
 %(Identifier)s_impl::remove()
 {
     local_adapter->remove();
-    Components::CCMHome_var myhome = get_ccm_home ();
-    Components::CCMObject_var myself = ccm_container->get_reference_for_component (this);
+    ::ccmtools::corba::Components::CCMHome_var myhome = get_ccm_home ();
+    ::ccmtools::corba::Components::CCMObject_var myself = 
+        ccm_container->get_reference_for_component (this);
     myhome->remove_component (myself);
 }
 

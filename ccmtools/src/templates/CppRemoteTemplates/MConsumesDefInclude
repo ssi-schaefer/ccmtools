@@ -1,1 +1,1 @@
-#include <ccm/local/%(ConsumesType)s.h>
+#include <ccmtools/local/%(ConsumesType)s.h>

@@ -62,7 +62,7 @@ public class CppRemoteTestGenerator
         MContained contained = (MContained)currentNode;
         String remoteName = getRemoteName(contained,Text.MANGLING_SEPARATOR);
         String file_dir = "test";
-        String file_name = "_check_" + remoteName + ".cc";
+        String file_name = "_check" + remoteName + ".cc";
 
         writeFinalizedFile(file_dir, file_name, generated_code);
         

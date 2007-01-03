@@ -51,7 +51,7 @@ convertToCorba(const %(LocalName)s& in, %(CorbaStubName)s& out);
 
 #ifdef HAVE_MICO 
 
-#include <ccm/remote/PrimitiveConverter.h>
+#include <ccmtools/remote/PrimitiveConverter.h>
 #include "%(Identifier)s_remote.h"
 
 %(OpenNamespace)s

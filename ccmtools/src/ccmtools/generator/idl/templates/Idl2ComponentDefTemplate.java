@@ -19,7 +19,7 @@ public class Idl2ComponentDefTemplate
   protected final String TEXT_3 = NL;
   protected final String TEXT_4 = NL;
   protected final String TEXT_5 = NL;
-  protected final String TEXT_6 = NL + "#include <Components/CCM.idl>" + NL;
+  protected final String TEXT_6 = NL + "#include <ccmtools/corba/Components/CCM.idl>" + NL;
   protected final String TEXT_7 = NL;
   protected final String TEXT_8 = NL + " ";
   protected final String TEXT_9 = NL;

@@ -12,7 +12,7 @@
 <%=model.generateIncludeGuardOpen()%>
 
 <%=model.generateIdl2IncludeStatements()%>
-#include <Components/CCM.idl>
+#include <ccmtools/corba/Components/CCM.idl>
 
 <%=model.generateModulesOpen() %>
  

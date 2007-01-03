@@ -158,5 +158,4 @@ public class ConfigurationLocator
         namespaceList.add("local");
         return namespaceList;
     }
-
 }

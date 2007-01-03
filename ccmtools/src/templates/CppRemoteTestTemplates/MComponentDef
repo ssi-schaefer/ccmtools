@@ -17,7 +17,7 @@
 #include <iostream>
 #include <string>
 
-#include <CCM/CCMContainer.h>
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
@@ -46,12 +46,12 @@ int main (int argc, char *argv[])
      */ 
 
     // Register all value type factories with the ORB  
-    CCM::register_all_factories (orb);
+    ::ccmtools::remote::register_all_factories(orb);
 
     // Deploy local and remote component homes	
     int error = 0;
     error += deploy_%(AbsoluteLocalHomeName)s("%(HomeType)s");
-    error += deploy_%(AbsoluteRemoteHomeName)s(orb, "%(HomeType)s:1.0");
+    error += deploy_%(AbsoluteRemoteHomeName)s(orb, "%(HomeType)s");
     if(!error) 
     {
         cout << "%(HomeType)s server is running..." << endl;
@@ -76,8 +76,7 @@ int main (int argc, char *argv[])
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
-    obj = nc->resolve_str("%(HomeType)s:1.0");
-    assert (!CORBA::is_nil (obj));
+    obj = nc->resolve_str("%(HomeType)s");
     %(IdlHomeType)s_var my%(HomeType)s = 
         %(IdlHomeType)s::_narrow (obj);
 
@@ -100,7 +99,7 @@ int main (int argc, char *argv[])
 
     // Un-Deployment
     error  = undeploy_%(AbsoluteLocalHomeName)s("%(HomeType)s");
-    error += undeploy_%(AbsoluteRemoteHomeName)s(orb, "%(HomeType)s:1.0");
+    error += undeploy_%(AbsoluteRemoteHomeName)s(orb, "%(HomeType)s");
     if(!error) 
     {
         cout << "%(HomeType)s server is running..." << endl;

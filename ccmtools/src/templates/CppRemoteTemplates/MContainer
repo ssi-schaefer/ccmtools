@@ -10,7 +10,7 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <ccm/remote/CCM_Session_%(Identifier)s/%(Identifier)sHome_remote.h>
+#include <ccmtools/remote/CCM_Session_%(Identifier)s/%(Identifier)sHome_remote.h>
 
 #endif 
 

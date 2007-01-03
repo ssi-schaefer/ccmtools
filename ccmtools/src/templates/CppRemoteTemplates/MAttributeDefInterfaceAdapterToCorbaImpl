@@ -1,13 +1,13 @@
 const %(LocalAttributeType)s
 %(InterfaceType)sAdapterToCorba::%(Identifier)s() const
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
 %(ConvertInterfaceGetAttributeToCorba)s    
 }
 
 void
 %(InterfaceType)sAdapterToCorba::%(Identifier)s(const %(LocalAttributeType)s value)  
-    throw(::Components::ccm::local::CCMException)
+    throw(::Components::CCMException)
 {
 %(ConvertInterfaceSetAttributeToCorba)s  
 }

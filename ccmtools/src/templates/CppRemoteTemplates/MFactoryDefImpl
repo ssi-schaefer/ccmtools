@@ -1,5 +1,5 @@
 %(ComponentType)s_ptr
-ccm::remote::CCM_Session_%(ComponentType)s::
+ccmtools::remote::CCM_Session_%(ComponentType)s::
 %(HomeType)s_impl::%(Identifier)s(%(MParameterCORBA)s)
 {
   // TODO: convert parameter
@@ -13,7 +13,7 @@ ccm::remote::CCM_Session_%(ComponentType)s::
   PortableServer::ServantBase_var component_adapter =
     new %(ComponentType)s_impl(local_component, ccm_container);
 
-  Components::CCMObject_var co = 
+  ccmtools::corba::Components::CCMObject_var co = 
     ccm_container->activate_component(local_component,component_adapter.in()); 
   return Calculator::_narrow(co);
 }

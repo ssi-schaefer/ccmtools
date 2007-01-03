@@ -163,7 +163,13 @@ abstract public class CppGenerator extends CodeGenerator
         logger.fine("end");
         return code.toString() ;
     } 
-    
+
+    protected String getLocalCxxGenIncludeNamespace(MContained node, String separator)
+    {
+        logger.fine("");
+        return Text.joinList(separator, getLocalCxxGenNamespaceList(node)) + separator;
+    }
+
     protected String getLocalCxxGenIncludeName(MContained node, String separator)
     {
         logger.fine("begin");
@@ -217,7 +223,7 @@ abstract public class CppGenerator extends CodeGenerator
         return out.toString() ;
     } 
     
-    protected String getLocalCxxIncludeName(MContained node, String separator)
+    protected String getLocalCxxIncludeNamespace(MContained node, String separator)
     {
         logger.fine("begin");
         StringBuilder out = new StringBuilder();
@@ -225,9 +231,22 @@ abstract public class CppGenerator extends CodeGenerator
         {
             out.append(Text.joinList(separator, getLocalCxxNamespaceList(node))).append(separator);
         }
-        out.append(node.getIdentifier());
         logger.fine("end");
-        return out.toString();    
+        return out.toString();
+    }
+    
+    protected String getLocalCxxIncludeName(MContained node, String separator)
+    {
+//        logger.fine("begin");
+//        StringBuilder out = new StringBuilder();
+//        if(getLocalCxxNamespaceList(node).size() > 0)
+//        {
+//            out.append(Text.joinList(separator, getLocalCxxNamespaceList(node))).append(separator);
+//        }
+//        out.append(node.getIdentifier());
+//        logger.fine("end");
+//        return out.toString();    
+        return getLocalCxxIncludeNamespace(node, separator) + node.getIdentifier();
     } 
     
     protected String getLocalCxxIncludeName(MContained node)

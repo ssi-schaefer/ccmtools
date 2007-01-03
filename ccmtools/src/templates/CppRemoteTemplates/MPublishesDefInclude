@@ -1,1 +1,1 @@
-#include <ccm/local/%(PublishesType)s.h>
+#include <ccmtools/local/%(PublishesType)s.h>

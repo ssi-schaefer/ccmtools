@@ -1,19 +1,22 @@
 
 %(LanguageType)s 
 %(InterfaceType)sAdapterToCorba::%(Identifier)s(%(LocalParameters)s)
-    throw(::Components::ccm::local::CCMException %(LocalExceptions)s
+    throw(::Components::CCMException %(LocalExceptions)s
 {
 %(ConvertReceptacleParameterToCorba)s
 %(DeclareReceptacleCorbaResult)s
-    try {
+    try 
+    {
 %(ConvertReceptacleMethodToCorba)s
     }
 %(ConvertReceptacleExceptionsToCpp)s  
-    catch(const Components::NoConnection&) { 
-        throw ::Components::ccm::local::NoConnection();   
+    catch(const ::ccmtools::corba::Components::NoConnection&) 
+    { 
+        throw ::Components::NoConnection();   
     }                                       
-    catch(...) {
-        throw ::Components::ccm::local::CCMException();
+    catch(...) 
+    {
+        throw ::Components::CCMException();
     }
 %(ConvertReceptacleParameterToCpp)s
 %(ConvertReceptacleResultToCpp)s

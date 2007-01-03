@@ -1,54 +1,56 @@
 void 
 %(ComponentType)s_impl::connect_%(Identifier)s(::%(IdlUsesType)s_ptr value)
-    throw(Components::AlreadyConnected, Components::InvalidConnection )	
+    throw(::ccmtools::corba::Components::AlreadyConnected, 
+          ::ccmtools::corba::Components::InvalidConnection )	
 {
-    reference_for_receptacle_%(Identifier)s = 
-        ::%(IdlUsesType)s::_duplicate (value);
+    reference_for_receptacle_%(Identifier)s = ::%(IdlUsesType)s::_duplicate (value);
 
-    SmartPtr<%(UsesType)s> %(Identifier)s_adapter = 
-        SmartPtr<%(UsesType)s>(
-            dynamic_cast<%(UsesType)s*>
+    SmartPtr< %(UsesType)s > %(Identifier)s_adapter = 
+        SmartPtr< %(UsesType)s >(
+            dynamic_cast< %(UsesType)s* >
 	            (new %(UsesConvertNamespace)s%(InterfaceType)sAdapterToCorba(
 	                 reference_for_receptacle_%(Identifier)s)));
 
-    try {
+    try 
+    {
         local_adapter->connect_%(Identifier)s(%(Identifier)s_adapter);
     }
-    catch(const ::Components::ccm::local::AlreadyConnected&) {
-        throw Components::AlreadyConnected();
+    catch(const ::Components::AlreadyConnected&) 
+    {
+        throw ::ccmtools::corba::Components::AlreadyConnected();
     }
-    catch(const ::Components::ccm::local::InvalidConnection&) {
-        throw Components::InvalidConnection();
+    catch(const ::Components::InvalidConnection&) 
+    {
+        throw ::ccmtools::corba::Components::InvalidConnection();
     }
 }
 
 ::%(IdlUsesType)s_ptr 
 %(ComponentType)s_impl::disconnect_%(Identifier)s()
-    throw(Components::NoConnection)
+    throw(::ccmtools::corba::Components::NoConnection)
 {
-    try {
+    try 
+    {
         local_adapter->disconnect_%(Identifier)s();
     }
-    catch(const ::Components::ccm::local::NoConnection&) {
-        throw Components::NoConnection();
+    catch(const ::Components::NoConnection&) 
+    {
+        throw ::ccmtools::corba::Components::NoConnection();
     }
     
-    ::%(IdlUsesType)s_var _res = 
-        ::%(IdlUsesType)s::_duplicate(
-            reference_for_receptacle_%(Identifier)s);
-    reference_for_receptacle_%(Identifier)s = 
-        ::%(IdlUsesType)s::_nil();
+    ::%(IdlUsesType)s_var _res = ::%(IdlUsesType)s::_duplicate(
+        reference_for_receptacle_%(Identifier)s);
+    reference_for_receptacle_%(Identifier)s = ::%(IdlUsesType)s::_nil();
     return _res._retn();
 }
 
 ::%(IdlUsesType)s_ptr 
 %(ComponentType)s_impl::get_connection_%(Identifier)s()
-    throw(Components::NoConnection)
+    throw(::ccmtools::corba::Components::NoConnection)
 {
     if(reference_for_receptacle_%(Identifier)s == NULL)
-        throw Components::NoConnection();
-    return ::%(IdlUsesType)s::_duplicate(
-        reference_for_receptacle_%(Identifier)s);
+        throw ::ccmtools::corba::Components::NoConnection();
+    return ::%(IdlUsesType)s::_duplicate(reference_for_receptacle_%(Identifier)s);
 }
 
 
