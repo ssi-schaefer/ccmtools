@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 
-namespace ccm {
+namespace ccmtools {
 namespace utils {
 
     class Timer
@@ -67,6 +67,6 @@ namespace utils {
     operator<<(std::ostream& o, const Timer& value);
     
 } // /namespace utils
-} // /namespace ccm
+} // /namespace ccmtools
 
 #endif /* __WX_UTILS_TIMER__H__ */

@@ -11,7 +11,7 @@
 #define CLK_TCK sysconf(_SC_CLK_TCK)
 #endif
 
-namespace ccm {
+namespace ccmtools {
 namespace utils {
 
 using namespace std;
@@ -78,4 +78,4 @@ operator<<(std::ostream& o, const Timer& value)
 }
 
 } // /namespace utils
-} // /namespace ccm
+} // /namespace ccmtools

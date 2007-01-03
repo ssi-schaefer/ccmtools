@@ -31,7 +31,7 @@
 #include <CORBA.h>
 #include <string>
 
-namespace ccm {
+namespace ccmtools {
 namespace remote {
     
     //==========================================================================
@@ -150,7 +150,7 @@ namespace remote {
     }
     
 } // /namespace remote
-} // /namespace ccm
+} // /namespace ccmtools
 
 #endif // HAVE_MICO
 #endif // __PRIMITIVE_CONVERTER_H__

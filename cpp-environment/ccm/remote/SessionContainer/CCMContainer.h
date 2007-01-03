@@ -36,10 +36,8 @@
 #include <map>
 #include <string>
 
-#include <wamas/platform/utils/smartptr.h>
-
 #include <Components/CCM.h>
-#include <ccm/corba/Components/CCM.h>
+#include <ccmtools/corba/Components/CCM.h>
 
 #ifdef __WGCC
     #if defined _BUILDING_CCM_RUNTIME_
@@ -51,7 +49,7 @@
     #define _CCM_EXPORT_DECL_
 #endif
 
-namespace ccm {
+namespace ccmtools {
 namespace remote {
 	  
   //============================================================================
@@ -73,9 +71,9 @@ namespace remote {
 	virtual void passivate() = 0;
 	virtual void remove() = 0;
 	
-	virtual CORBA::Boolean compare(::ccm::corba::Components::CCMHome_ptr) = 0;
+	virtual CORBA::Boolean compare(::ccmtools::corba::Components::CCMHome_ptr) = 0;
 	
-	virtual ::ccm::corba::Components::CCMHome_ptr get_CCM_home () = 0;
+	virtual ::ccmtools::corba::Components::CCMHome_ptr get_CCM_home () = 0;
 	virtual CORBA::Object_ptr get_CCM_object(::Components::EnterpriseComponent*) = 0;
     };
     
@@ -133,16 +131,16 @@ namespace remote {
 	void passivate(); 
 	void remove();    
 	
-	virtual CORBA::Boolean compare(::ccm::corba::Components::CCMHome_ptr); 
+	virtual CORBA::Boolean compare(::ccmtools::corba::Components::CCMHome_ptr); 
 	
 	
 	// Session Container API
-	::ccm::corba::Components::CCMHome_ptr get_reference_for_home(); 
+	::ccmtools::corba::Components::CCMHome_ptr get_reference_for_home(); 
 	
-	::ccm::corba::Components::CCMObject_ptr
+	::ccmtools::corba::Components::CCMObject_ptr
 	activate_component(PortableServer::Servant skel);
 	
-	::ccm::corba::Components::CCMObject_ptr
+	::ccmtools::corba::Components::CCMObject_ptr
 	get_reference_for_component(PortableServer::Servant skel); 
 	
 	PortableServer::Servant 	get_skeleton_for_reference(CORBA::Object_ptr ref); 
@@ -151,7 +149,7 @@ namespace remote {
 	void deactivate_component(PortableServer::Servant skel);
 	
 	// for SessionContext
-	::ccm::corba::Components::CCMHome_ptr get_CCM_home(); 
+	::ccmtools::corba::Components::CCMHome_ptr get_CCM_home(); 
 	
 	CORBA::Object_ptr 
 	get_CCM_object(::Components::EnterpriseComponent*); 
@@ -171,7 +169,7 @@ namespace remote {
   //==========================================================================
   
   class Cookie_impl 
-    : virtual public OBV_ccm::corba::Components::Cookie,
+    : virtual public OBV_ccmtools::corba::Components::Cookie,
       virtual public CORBA::DefaultValueRefCountBase
     {
     private:
@@ -192,7 +190,7 @@ namespace remote {
   void register_all_factories (CORBA::ORB_ptr);
 
 } // /namespace remote
-} // /namespace ccm
+} // /namespace ccmtools
 
 #endif // HAVE_MICO
 #endif // __CCM_CONTAINER_H__

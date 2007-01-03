@@ -136,7 +136,7 @@ public class ConfigurationLocator
     {
         List<String> namespaceList = new ArrayList<String>();        
         // TODO: Read these informations from a property file
-        namespaceList.add("ccm");
+        namespaceList.add("ccmtools");
         namespaceList.add("corba");
         return namespaceList;
     }
@@ -145,7 +145,7 @@ public class ConfigurationLocator
     {
         List<String> namespaceList = new ArrayList<String>();        
         // TODO: Read these informations from a property file
-        namespaceList.add("ccm");
+        namespaceList.add("ccmtools");
         namespaceList.add("remote");
         return namespaceList;
     }
@@ -154,7 +154,7 @@ public class ConfigurationLocator
     {
         List<String> namespaceList = new ArrayList<String>();        
         // TODO: Read these informations from a property file
-        namespaceList.add("ccm");
+        namespaceList.add("ccmtools");
         namespaceList.add("local");
         return namespaceList;
     }

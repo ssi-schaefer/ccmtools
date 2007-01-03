@@ -17,11 +17,12 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
+
 /*
- * This additional namespace ccm::corba is used to separate the CORBA stubs
- * from the local interfaces.
+ * This additional namespace is used to separate the CORBA stubs
+ * from the local interfaces and implementation classes.
  */
-module ccm {
+module ccmtools {
 module corba {
 
 /*
@@ -397,4 +398,4 @@ module Components {
 	
 }; // /module Components
 }; // /module corba
-}; // /module ccm
+}; // /module ccmtools

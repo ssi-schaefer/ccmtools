@@ -34,7 +34,7 @@
 #include "CCMContainer.h"
 
 
-namespace ccm {
+namespace ccmtools {
 namespace remote {
 	
 using namespace std;
@@ -144,21 +144,21 @@ SessionContainer::remove()
 
 
 CORBA::Boolean 
-SessionContainer::compare(::ccm::corba::Components::CCMHome_ptr ohome)
+SessionContainer::compare(::ccmtools::corba::Components::CCMHome_ptr ohome)
 {
 	// TODO
     return false;
 }
 
 
-::ccm::corba::Components::CCMHome_ptr 
+::ccmtools::corba::Components::CCMHome_ptr 
 SessionContainer::get_reference_for_home()
 {
-    return ::ccm::corba::Components::CCMHome::_narrow(_home_ref.in());
+    return ::ccmtools::corba::Components::CCMHome::_narrow(_home_ref.in());
 }
 
 
-::ccm::corba::Components::CCMObject_ptr
+::ccmtools::corba::Components::CCMObject_ptr
 SessionContainer::activate_component(PortableServer::Servant skel)
 {
 #ifdef CCM_PERSISTENT_POA
@@ -169,15 +169,15 @@ SessionContainer::activate_component(PortableServer::Servant skel)
     PortableServer::ObjectId_var oid = poa_->activate_object(skel);
 #endif
     CORBA::Object_var ref = poa_->id_to_reference(oid.in());
-    return ::ccm::corba::Components::CCMObject::_narrow(ref);
+    return ::ccmtools::corba::Components::CCMObject::_narrow(ref);
 }
 
 
-::ccm::corba::Components::CCMObject_ptr
+::ccmtools::corba::Components::CCMObject_ptr
 SessionContainer::get_reference_for_component(PortableServer::Servant s)
 {
     CORBA::Object_var o = poa_->servant_to_reference(s);
-    return ::ccm::corba::Components::CCMObject::_narrow(o);
+    return ::ccmtools::corba::Components::CCMObject::_narrow(o);
 }
 
 
@@ -237,7 +237,7 @@ SessionContainer::configuration_complete(PortableServer::Servant comp_glue)
  * for Service Context
  */
 
-::ccm::corba::Components::CCMHome_ptr 
+::ccmtools::corba::Components::CCMHome_ptr 
 SessionContainer::get_CCM_home ()
 {
     return get_reference_for_home ();
@@ -248,7 +248,7 @@ CORBA::Object_ptr
 SessionContainer::get_CCM_object(::Components::EnterpriseComponent* o)
 {
     // TODO
-    return ::ccm::corba::Components::CCMObject::_nil();
+    return ::ccmtools::corba::Components::CCMObject::_nil();
 }
 
 
@@ -287,6 +287,6 @@ register_all_factories(CORBA::ORB_ptr orb)
 }
 
 } // /namespace remote
-} // /namespace ccm
+} // /namespace ccmtools
 
 #endif // HAVE_MICO

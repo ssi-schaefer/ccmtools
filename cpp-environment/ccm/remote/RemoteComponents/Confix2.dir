@@ -1,3 +1,3 @@
 CALL_MAKE_AND_RESCAN(filename='Makefile.mico')
 ADD_EXTRA_DIST('Makefile.mico')
-INSTALLDIR_H("ccm/corba/Components")
+INSTALLDIR_H("ccmtools/corba/Components")

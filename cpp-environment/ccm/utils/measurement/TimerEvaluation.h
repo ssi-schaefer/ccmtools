@@ -9,7 +9,7 @@
 
 #include "Timer.h"
 
-namespace ccm {
+namespace ccmtools {
 namespace utils {
 
 class TimerEvaluation
@@ -21,6 +21,6 @@ class TimerEvaluation
 };
     
 } // /namespace utils
-} // /namespace ccm
+} // /namespace ccmtools
 
 #endif /* __WX_UTILS_TIMEREVALUATION__H__ */
