@@ -64,11 +64,11 @@ class CCM_%(Identifier)s
 //==============================================================================
 
 class %(Identifier)sAdapter
-  : virtual public CCM_%(Identifier)s
+  : virtual public %(InterfaceCCMName)s
 {
  public:
     %(Identifier)sAdapter();
-    %(Identifier)sAdapter(CCM_%(Identifier)s* f);
+    %(Identifier)sAdapter(%(InterfaceCCMName)s* f);
     virtual ~%(Identifier)sAdapter();
 
     inline 
@@ -93,7 +93,7 @@ class %(Identifier)sAdapter
 %(MOperationDefAdapterHeader)s
 
   protected:
-    CCM_%(Identifier)s* facet_;
+    %(InterfaceCCMName)s* facet_;
     bool validConnection_;
 
   private:
@@ -139,7 +139,7 @@ using namespace wamas::platform::utils;
     facet_ = NULL;
 }
 
-%(Identifier)sAdapter::%(Identifier)sAdapter(CCM_%(Identifier)s* f)
+%(Identifier)sAdapter::%(Identifier)sAdapter(%(InterfaceCCMName)s* f)
     : facet_(f)
 {
     validConnection_ = true;

@@ -48,9 +48,8 @@ class %(Identifier)sImplicit
   public:
     virtual ~%(Identifier)sImplicit() {}
     
-    virtual wamas::platform::utils::SmartPtr<%(ComponentType)s> create()
-        throw(::Components::CCMException, 
-              ::Components::CreateFailure) = 0;
+    virtual wamas::platform::utils::SmartPtr< %(ComponentType)s> create()
+        throw(::Components::CCMException, ::Components::CreateFailure) = 0;
 };
 
 
@@ -140,16 +139,16 @@ using namespace wamas::platform::utils;
 
 %(Identifier)s::%(Identifier)s()
 {
-    local_home = dynamic_cast<%(LocalGenNamespace)sCCM_%(Identifier)s*>(
-        create_%(AbsoluteLocalHomeName)s());
+    local_home = dynamic_cast< %(LocalGenNamespace)sCCM_%(Identifier)s*>(
+        create%(AbsoluteLocalHomeName)s());
     assembly_factory = SmartPtr< ::Components::AssemblyFactory>();
 }
 
 %(Identifier)s::%(Identifier)s(SmartPtr< ::Components::AssemblyFactory> f)
     : assembly_factory(f)
 {
-    local_home = dynamic_cast<%(LocalGenNamespace)sCCM_%(Identifier)s*>(
-        create_%(AbsoluteLocalHomeName)s());
+    local_home = dynamic_cast< %(LocalGenNamespace)sCCM_%(Identifier)s*>(
+        create%(AbsoluteLocalHomeName)s());
 }
 
 %(Identifier)s::~%(Identifier)s()
@@ -174,10 +173,10 @@ SmartPtr<%(ComponentType)s>
     ::Components::EnterpriseComponent* enterprise_component = 
         local_home->create();
     %(LocalGenComponent)sCCM_%(ComponentType)s* local_component = 
-        dynamic_cast<%(LocalGenComponent)sCCM_%(ComponentType)s*>(enterprise_component);
+        dynamic_cast< %(LocalGenComponent)sCCM_%(ComponentType)s*>(enterprise_component);
     %(ComponentType)s* local_component_adapter = 
         new %(ComponentType)s(this, local_component, assembly);
-    SmartPtr<%(ComponentType)s> ret(local_component_adapter);
+    SmartPtr< %(ComponentType)s > ret(local_component_adapter);
 
     if(assembly_factory != SmartPtr< ::Components::AssemblyFactory>()) 
     {
@@ -331,7 +330,7 @@ class CCM_%(Identifier)s
 #define __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
 ::Components::HomeExecutorBase* 
-create_%(AbsoluteLocalHomeName)s();
+create%(AbsoluteLocalHomeName)s();
 
 #endif // __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
@@ -440,7 +439,7 @@ using namespace wamas::platform::utils;
 //==============================================================================
 
 ::Components::HomeExecutorBase*
-create_%(AbsoluteLocalHomeName)s()
+create%(AbsoluteLocalHomeName)s()
 {
     return dynamic_cast< ::Components::HomeExecutorBase* >
         (new %(LocalNamespace)s%(Identifier)s_impl());

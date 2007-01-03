@@ -1,4 +1,4 @@
-SmartPtr<%(ProvidesType)s>
+SmartPtr< %(ProvidesType)s >
 %(ComponentType)s::provide_%(Identifier)s()
 {
     if(!ValidConnection) 

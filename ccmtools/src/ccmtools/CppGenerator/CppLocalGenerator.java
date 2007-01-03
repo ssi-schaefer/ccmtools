@@ -298,7 +298,7 @@ public class CppLocalGenerator
         if(dataType.equals("InterfaceInclude")) 
         {
             MContained contained = (MContained)currentNode;
-            dataValue = getLocalCxxName(contained, Text.INCLUDE_SEPARATOR);
+            dataValue = getLocalCxxIncludeName(contained);
         }
         else if(dataType.equals("InterfaceIncludes"))
         {
@@ -340,7 +340,12 @@ public class CppLocalGenerator
             }
             dataValue = buffer.toString();
         }
-        else {
+        else if(dataType.equals("InterfaceCCMName")) 
+        {
+            dataValue = getLocalCxxNamespace(iface, "::") + "CCM_" + iface.getIdentifier();
+        }
+        else 
+        {
             dataValue = super.data_MInterfaceDef(dataType, dataValue);
         }
         logger.fine("leave data_MInterfaceDef()");
@@ -954,11 +959,12 @@ public class CppLocalGenerator
             f.add(node_name + "_share.h");
             files.add(f);
 
-            if(currentNode instanceof MHomeDef) {
+            if(currentNode instanceof MHomeDef) 
+            {
+                MHomeDef home = (MHomeDef)currentNode;    
                 f = new ArrayList();
                 f.add(implDirectory);
-                f.add(getLocalCxxName((MContained)currentNode,Text.MANGLING_SEPARATOR)
-                	+ "_entry.h");
+                f.add(getLocalCxxIncludeName(home, Text.MANGLING_SEPARATOR) + "_entry.h");
                 files.add(f);
             }
 
@@ -1047,8 +1053,9 @@ public class CppLocalGenerator
     {
         logger.fine("begin");
         
-        List modules = new ArrayList(namespaceStack);
+        List modules = new ArrayList();
         modules.addAll(cxxNamespace);
+        modules.addAll(namespaceStack);
         
         String generatorPrefix = ConfigurationLocator.getInstance().get("ccmtools.dir.gen");
         
@@ -1060,8 +1067,9 @@ public class CppLocalGenerator
     {
         logger.fine("begin");
 
-        List modules = new ArrayList(namespaceStack);
+        List modules = new ArrayList();
         modules.addAll(cxxGenNamespace);
+        modules.addAll(namespaceStack);
         
         String generatorPrefix = ConfigurationLocator.getInstance().get("ccmtools.dir.gen");
         

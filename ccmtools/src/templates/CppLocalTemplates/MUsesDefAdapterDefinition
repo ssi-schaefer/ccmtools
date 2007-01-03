@@ -1,5 +1,5 @@
 void
-%(ComponentType)s::connect_%(Identifier)s(SmartPtr<%(UsesType)s> f)
+%(ComponentType)s::connect_%(Identifier)s(SmartPtr< %(UsesType)s > f)
   	throw(::Components::AlreadyConnected, ::Components::InvalidConnection)
 {
   	if(!ValidConnection) 
@@ -7,29 +7,30 @@ void
   	if(%(Identifier)s_receptacle) 
   		throw ::Components::AlreadyConnected();
   	%(Identifier)s_receptacle = 
-    	SmartPtr<%(CCMUsesType)s>(dynamic_cast<%(CCMUsesType)s*>(f.ptr()));
+        SmartPtr< %(CCMUsesType)s >(
+            dynamic_cast< %(CCMUsesType)s* >(f.ptr()));
 }
 
-SmartPtr<%(UsesType)s>
+SmartPtr< %(UsesType)s >
 %(ComponentType)s::disconnect_%(Identifier)s()
   	throw(::Components::NoConnection)
 {
-  	if(!ValidConnection) throw 
-  		::Components::InvalidConnection();
+  	if(!ValidConnection) 
+  	    throw ::Components::InvalidConnection();
   	if(!%(Identifier)s_receptacle) 
   		throw ::Components::NoConnection();
-  	SmartPtr<%(UsesType)s> f = %(Identifier)s_receptacle;
-  	%(Identifier)s_receptacle = SmartPtr<%(CCMUsesType)s>();
+  	SmartPtr< %(UsesType)s > f = %(Identifier)s_receptacle;
+  	%(Identifier)s_receptacle = SmartPtr< %(CCMUsesType)s >();
   	return f;
 }
 
-SmartPtr<%(UsesType)s>
+SmartPtr< %(UsesType)s >
 %(ComponentType)s::get_connection_%(Identifier)s()
 	throw(::Components::NoConnection)
 {
   	if(!ValidConnection) 
   		throw ::Components::InvalidConnection();
-  	if(%(Identifier)s_receptacle == SmartPtr<%(CCMUsesType)s>())
+  	if(%(Identifier)s_receptacle == SmartPtr< %(CCMUsesType)s >())
     	throw ::Components::NoConnection();
   	return %(Identifier)s_receptacle;
 }

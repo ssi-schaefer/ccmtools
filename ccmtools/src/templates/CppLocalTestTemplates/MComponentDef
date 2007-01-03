@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr< %(LocalNamespace)s%(Identifier)s> my%(Identifier)s;
-    SmartPtr< %(LocalNamespace)s%(Identifier)sMirror> my%(Identifier)sMirror;
+    SmartPtr< %(LocalNamespace)s%(Identifier)s > my%(Identifier)s;
+    SmartPtr< %(LocalNamespace)s%(Identifier)sMirror > my%(Identifier)sMirror;
 %(MProvidesDefVariable)s
 %(MProvidesDefCookie)s
 %(MUsesDefVariable)s

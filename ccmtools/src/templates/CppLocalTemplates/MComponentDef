@@ -43,7 +43,7 @@ class %(Identifier)s
       %(BaseType)s 	
 {
   public:
-    %(Identifier)s();
+//    %(Identifier)s();
     %(Identifier)s(%(HomeType)s* h, 
         %(LocalGenNamespace)sCCM_%(Identifier)s* lc,  
         wamas::platform::utils::SmartPtr< ::Components::Assembly> a);
@@ -167,6 +167,7 @@ using namespace wamas::platform::utils;
 // local component adapter implementation
 //==============================================================================
 
+/*
 %(Identifier)s::%(Identifier)s()
 {
     home_local_adapter = NULL;
@@ -177,6 +178,7 @@ using namespace wamas::platform::utils;
 %(MProvidesDefAdapterVariableInitDefault)s
 %(MUsesDefAdapterVariableInitDefault)s
 }
+*/
 
 %(Identifier)s::%(Identifier)s(%(HomeType)s* h, 
     %(LocalGenNamespace)sCCM_%(Identifier)s* lc,
@@ -284,6 +286,7 @@ void
     if(!ValidConnection) 
         throw ::Components::InvalidConnection();
     local_component->ccm_remove();
+    
 %(MProvidesDefImplRemove)s
 
     if(assembly != SmartPtr< ::Components::Assembly>()) { 
@@ -504,7 +507,7 @@ void
     ::Components::SessionContext* context)
     throw(::Components::CCMException)
 {
-    ctx = dynamic_cast<%(LocalGenNamespace)sCCM_%(Identifier)s_Context*>(context);
+    ctx = dynamic_cast< %(LocalGenNamespace)sCCM_%(Identifier)s_Context* >(context);
 }
 
 void
