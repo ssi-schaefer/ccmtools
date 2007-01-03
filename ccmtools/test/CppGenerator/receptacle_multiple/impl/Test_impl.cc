@@ -35,7 +35,7 @@ void
 Test_impl::set_session_context ( ::Components::SessionContext* context )
   throw ( ::Components::CCMException )
 {
-  ctx = dynamic_cast<ccm::local::CCM_Test_Context*> ( context );
+  ctx = dynamic_cast<CCM_Test_Context*> ( context );
 }
 
 void
@@ -44,8 +44,8 @@ Test_impl::ccm_activate (  )
 {
   cout << "=== Begin test case =======================================" << endl;
 
-  ccm::local::consoleConnections multiCon = ctx->get_connections_console();
-  ccm::local::consoleConnections::const_iterator it;
+  consoleConnections multiCon = ctx->get_connections_console();
+  consoleConnections::const_iterator it;
   long size;
   
   for(it=multiCon.begin();it != multiCon.end(); ++it) 

@@ -797,7 +797,11 @@ abstract public class CppGenerator extends CodeGenerator
         {
             dataValue = getLocalCxxGenNamespace(component, Text.SCOPE_SEPARATOR) +
                             "CCM_" + component.getIdentifier();
-            //dataValue = factory.getHome().getComponent().getIdentifier();
+        }
+        if(dataType.equals("CCMComponentType")) 
+        {
+            dataValue = getLocalCxxNamespace(component, Text.SCOPE_SEPARATOR) +
+                            "CCM_" + component.getIdentifier();
         }
         else if(dataType.equals("HomeType")) 
         {
@@ -1050,13 +1054,17 @@ abstract public class CppGenerator extends CodeGenerator
         {
             return getLocalCxxNamespace(iface, Text.SCOPE_SEPARATOR) + "CCM_" + iface.getIdentifier();
         }
-        if(data_type.equals("UsesType")) 
+        else if(data_type.equals("UsesType")) 
         {
             return getLocalCxxName(iface, Text.SCOPE_SEPARATOR);
         }
-        if(data_type.equals("GenUsesName")) 
+        else if(data_type.equals("GenUsesName")) 
         {
             return getLocalCxxGenName((MUsesDef)currentNode, Text.SCOPE_SEPARATOR);
+        }
+        else if(data_type.equals("UsesName")) 
+        {
+            return getLocalCxxName((MUsesDef)currentNode, Text.SCOPE_SEPARATOR);
         }
         else if(data_type.startsWith("MOperation")) 
         {

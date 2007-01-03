@@ -32,11 +32,10 @@ Test_impl::~Test_impl()
 }
 
 void
-Test_impl::set_session_context(
-    ::Components::SessionContext* context)
+Test_impl::set_session_context(::Components::SessionContext* context)
     throw(::Components::CCMException)
 {
-    ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
+    ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
 void

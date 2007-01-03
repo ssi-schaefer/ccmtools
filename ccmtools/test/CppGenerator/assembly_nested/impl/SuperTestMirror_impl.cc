@@ -38,7 +38,7 @@ void
 SuperTestMirror_impl::set_session_context(::Components::SessionContext* context)
     throw(::Components::CCMException)
 {
-    ctx = dynamic_cast<ccm::local::CCM_SuperTestMirror_Context*>(context);
+    ctx = dynamic_cast<CCM_SuperTestMirror_Context*>(context);
 }
 
 void

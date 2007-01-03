@@ -5,7 +5,7 @@
  */
 
 //==============================================================================
-// %(Identifier)s - home class and support classes
+// %(Identifier)s - component home logic (header)
 //==============================================================================
 
 #ifndef __HOME_%(PreprocIdentifier)s_GEN__H__
@@ -83,10 +83,11 @@ class %(Identifier)s
         throw(::Components::CCMException, ::Components::CreateFailure);
 
   protected:
-    %(LocalGenNamespace)sCCM_%(Identifier)s* local_home;
+    %(LocalNamespace)sCCM_%(Identifier)s* local_home;
     wamas::platform::utils::SmartPtr< ::Components::AssemblyFactory> assembly_factory;
     
   private:
+    %(Identifier)s(const %(Identifier)s&);
     void operator=(const %(Identifier)s&);
 };
 
@@ -119,7 +120,7 @@ int undeploy_%(AbsoluteLocalHomeName)s(char* name);
  */
 
 //==============================================================================
-// %(Identifier)s - home class component logic implementation
+// %(Identifier)s - component home logic (implementation)
 //==============================================================================
 
 #include <cassert>
@@ -139,7 +140,7 @@ using namespace wamas::platform::utils;
 
 %(Identifier)s::%(Identifier)s()
 {
-    local_home = dynamic_cast< %(LocalGenNamespace)sCCM_%(Identifier)s*>(
+    local_home = dynamic_cast< %(LocalNamespace)sCCM_%(Identifier)s*>(
         create%(AbsoluteLocalHomeName)s());
     assembly_factory = SmartPtr< ::Components::AssemblyFactory>();
 }
@@ -147,7 +148,7 @@ using namespace wamas::platform::utils;
 %(Identifier)s::%(Identifier)s(SmartPtr< ::Components::AssemblyFactory> f)
     : assembly_factory(f)
 {
-    local_home = dynamic_cast< %(LocalGenNamespace)sCCM_%(Identifier)s*>(
+    local_home = dynamic_cast< %(LocalNamespace)sCCM_%(Identifier)s*>(
         create%(AbsoluteLocalHomeName)s());
 }
 
@@ -172,8 +173,8 @@ SmartPtr<%(ComponentType)s>
 
     ::Components::EnterpriseComponent* enterprise_component = 
         local_home->create();
-    %(LocalGenComponent)sCCM_%(ComponentType)s* local_component = 
-        dynamic_cast< %(LocalGenComponent)sCCM_%(ComponentType)s*>(enterprise_component);
+    %(LocalComponent)sCCM_%(ComponentType)s* local_component = 
+        dynamic_cast< %(LocalComponent)sCCM_%(ComponentType)s*>(enterprise_component);
     %(ComponentType)s* local_component_adapter = 
         new %(ComponentType)s(this, local_component, assembly);
     SmartPtr< %(ComponentType)s > ret(local_component_adapter);
@@ -276,7 +277,7 @@ undeploy_%(AbsoluteLocalHomeName)s(char* name)
 %(MSupportsDefInclude)s
 %(BaseInclude)s
 
-%(OpenGenNamespace)s
+%(OpenNamespace)s
 
 //==============================================================================
 // home classes
@@ -310,7 +311,7 @@ class CCM_%(Identifier)s
     virtual ~CCM_%(Identifier)s() {}
 };
 
-%(CloseGenNamespace)s
+%(CloseNamespace)s
 
 #endif // __HOME_%(PreprocIdentifier)s_SHARE__H__
 
@@ -351,7 +352,7 @@ create%(AbsoluteLocalHomeName)s();
 #ifndef __HOME_%(PreprocIdentifier)s_IMPL__H__
 #define __HOME_%(PreprocIdentifier)s_IMPL__H__
 
-#include <%(GenHomeInclude)s_share.h>
+#include <%(HomeInclude)s_share.h>
 
 %(OpenNamespace)s
 
@@ -365,7 +366,7 @@ create%(AbsoluteLocalHomeName)s();
  * @version 
  **/
 class %(Identifier)s_impl
-    : virtual public %(LocalGenNamespace)sCCM_%(Identifier)s%(BaseType)s
+    : virtual public %(LocalNamespace)sCCM_%(Identifier)s%(BaseType)s
 {
   public:
     %(Identifier)s_impl();

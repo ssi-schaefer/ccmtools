@@ -1,3 +1,3 @@
     long %(Identifier)s_receptacle_counter;
-    %(GenUsesName)sConnections %(Identifier)s_receptacles;
+    %(UsesName)sConnections %(Identifier)s_receptacles;
 

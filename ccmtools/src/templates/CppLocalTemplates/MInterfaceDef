@@ -71,13 +71,11 @@ class %(Identifier)sAdapter
     %(Identifier)sAdapter(%(InterfaceCCMName)s* f);
     virtual ~%(Identifier)sAdapter();
 
-    inline 
     void validConnection(const bool value) 
     {
         validConnection_ = value;
     }
     
-    inline 
     const bool validConnection() const 
     {
         return validConnection_;
@@ -97,6 +95,7 @@ class %(Identifier)sAdapter
     bool validConnection_;
 
   private:
+    %(Identifier)sAdapter(const %(Identifier)sAdapter&);
     void operator=(const %(Identifier)sAdapter&);
 };
  

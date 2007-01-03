@@ -30,7 +30,7 @@ SmartPtr< %(UsesType)s >
     }
 }
 
-%(GenUsesName)sConnections&
+%(UsesName)sConnections&
 %(ComponentType)s::get_connections_%(Identifier)s (  )
 {
     if(!ValidConnection) 

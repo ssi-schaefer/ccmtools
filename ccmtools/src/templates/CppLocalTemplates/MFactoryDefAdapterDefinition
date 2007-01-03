@@ -11,8 +11,8 @@ SmartPtr<%(ComponentType)s>
     ::Components::EnterpriseComponent* enterprise_component = 
         local_home->%(Identifier)s(%(MParameterDefName)s);
                 
-    %(GenCCMComponentType)s* local_component = 
-        dynamic_cast< %(GenCCMComponentType)s* >(enterprise_component);
+    %(CCMComponentType)s* local_component = 
+        dynamic_cast< %(CCMComponentType)s* >(enterprise_component);
     
     %(ComponentType)s* local_component_adapter = 
         new %(ComponentType)s(this, local_component, assembly);
