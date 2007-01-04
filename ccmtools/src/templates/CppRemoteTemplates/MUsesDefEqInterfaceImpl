@@ -1,9 +1,9 @@
 void 
-%(ComponentType)s_impl::connect_%(Identifier)s(::%(IdlUsesType)s_ptr value)
+%(ComponentType)s_impl::connect_%(Identifier)s(%(IdlUsesType)s_ptr value)
     throw(::ccmtools::corba::Components::AlreadyConnected, 
           ::ccmtools::corba::Components::InvalidConnection )	
 {
-    reference_for_receptacle_%(Identifier)s = ::%(IdlUsesType)s::_duplicate (value);
+    reference_for_receptacle_%(Identifier)s = %(IdlUsesType)s::_duplicate (value);
 
     SmartPtr< %(UsesType)s > %(Identifier)s_adapter = 
         SmartPtr< %(UsesType)s >(
@@ -25,7 +25,7 @@ void
     }
 }
 
-::%(IdlUsesType)s_ptr 
+%(IdlUsesType)s_ptr 
 %(ComponentType)s_impl::disconnect_%(Identifier)s()
     throw(::ccmtools::corba::Components::NoConnection)
 {
@@ -38,19 +38,19 @@ void
         throw ::ccmtools::corba::Components::NoConnection();
     }
     
-    ::%(IdlUsesType)s_var _res = ::%(IdlUsesType)s::_duplicate(
+    %(IdlUsesType)s_var _res = %(IdlUsesType)s::_duplicate(
         reference_for_receptacle_%(Identifier)s);
-    reference_for_receptacle_%(Identifier)s = ::%(IdlUsesType)s::_nil();
+    reference_for_receptacle_%(Identifier)s = %(IdlUsesType)s::_nil();
     return _res._retn();
 }
 
-::%(IdlUsesType)s_ptr 
+%(IdlUsesType)s_ptr 
 %(ComponentType)s_impl::get_connection_%(Identifier)s()
     throw(::ccmtools::corba::Components::NoConnection)
 {
     if(reference_for_receptacle_%(Identifier)s == NULL)
         throw ::ccmtools::corba::Components::NoConnection();
-    return ::%(IdlUsesType)s::_duplicate(reference_for_receptacle_%(Identifier)s);
+    return %(IdlUsesType)s::_duplicate(reference_for_receptacle_%(Identifier)s);
 }
 
 

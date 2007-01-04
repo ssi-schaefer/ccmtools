@@ -38,15 +38,15 @@ Test_impl::~Test_impl()
 }
 
 void
-Test_impl::set_session_context(::Components::ccm::local::SessionContext* context)
-    throw(::Components::ccm::local::CCMException)
+Test_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
-    ctx = dynamic_cast<ccm::local::CCM_Test_Context*>(context);
+    ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
 void
 Test_impl::ccm_activate()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
    // ------------------------------------------------------------------
     // Void Type Check
@@ -179,7 +179,7 @@ Test_impl::ccm_activate()
 	assert(p3 == green);
 	assert(result == orange);
       }
-      catch(::Components::ccm::local::Exception& e) {
+      catch(Components::Exception& e) {
 	cerr << e.what() << endl;
       }
 
@@ -198,7 +198,7 @@ Test_impl::ccm_activate()
 	assert(result.name  == "EgonAndrea");
 	assert(result.id == 26);
       }
-      catch(::Components::ccm::local::Exception& e) {
+      catch(Components::Exception& e) {
 	cerr << e.what() << endl;
       }
 
@@ -236,7 +236,7 @@ Test_impl::ccm_activate()
 	assert(result.resident.name == "EgonAndrea");
 	assert(result.resident.id == 26);
       }
-      catch(::Components::ccm::local::Exception& e) {
+      catch(Components::Exception& e) {
 	cerr << e.what() << endl;
       }
       
@@ -269,7 +269,7 @@ Test_impl::ccm_activate()
 	  assert(p == (long)(i+i));
 	}
       }
-      catch(::Components::ccm::local::Exception& e) {
+      catch(Components::Exception& e) {
 	cerr << e.what() << endl;
       }
 
@@ -302,7 +302,7 @@ Test_impl::ccm_activate()
 	  assert(p == "two");
 	}
       }
-      catch(::Components::ccm::local::Exception& e) {
+      catch(Components::Exception& e) {
 	cerr << e.what() << endl;
       }
       
@@ -339,7 +339,7 @@ Test_impl::ccm_activate()
 	  assert(p.name == "Andrea");
 	}
       }
-      catch(::Components::ccm::local::Exception& e) {
+      catch(Components::Exception& e) {
 	cerr  << e.what() << endl;
       }
 
@@ -352,7 +352,7 @@ Test_impl::ccm_activate()
 	assert(p3 == 3);
 	assert(result == 3+7);
       }
-      catch(::Components::ccm::local::Exception& e) {
+      catch(Components::Exception& e) {
 	cerr << e.what() << endl;
       }
 
@@ -362,14 +362,14 @@ Test_impl::ccm_activate()
 
 void
 Test_impl::ccm_passivate()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 Test_impl::ccm_remove()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

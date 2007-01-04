@@ -36,7 +36,7 @@ Test_inPort_impl::~Test_inPort_impl()
 
 long
 Test_inPort_impl::print(const std::string& msg)
-throw(::Components::ccm::local::CCMException,
+throw(Components::CCMException,
         world::europe::austria::SuperError,
         world::europe::austria::SimpleError,
         world::europe::austria::FatalError )

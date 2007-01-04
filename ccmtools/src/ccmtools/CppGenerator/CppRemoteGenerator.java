@@ -352,7 +352,7 @@ public class CppRemoteGenerator
 					|| idlType instanceof MWstringDef
 					|| idlType instanceof MFixedDef)
 			{
-				return getCorbaConverterNamespace(innerIdlType, separator) + separator;
+				return getCorbaConverterNamespace(innerIdlType, separator);
 			}
 		}
 		
@@ -364,7 +364,6 @@ public class CppRemoteGenerator
 		{
 			// PrimitiveDef, StringDef, WStringDef, FixedDef
             List remotePrefix = new ArrayList(ConfigurationLocator.getInstance().getCppRemoteNamespaceExtension());
-//			namespace = separator + "ccm" + separator + "remote" + separator;
             namespace = Text.SCOPE_SEPARATOR + Text.joinList(Text.SCOPE_SEPARATOR, remotePrefix) + separator;
 		}
     		logger.fine("end");
@@ -3335,7 +3334,7 @@ public class CppRemoteGenerator
             String stubNs = getCorbaStubNamespace((MIDLType)enumDef,Text.SCOPE_SEPARATOR);
             String localNs = getLocalCxxNamespace(enumDef,Text.SCOPE_SEPARATOR); 
             code.append(TAB).append("case "); 
-            code.append(Text.SCOPE_SEPARATOR).append(stubNs).append(member).append(":\n");
+            code.append(stubNs).append(member).append(":\n");
             code.append(TAB2).append("out = ");
             code.append(localNs).append(member).append(";\n");
             code.append(TAB2).append("break;\n");
@@ -3356,7 +3355,7 @@ public class CppRemoteGenerator
             code.append(TAB).append("case "); 
             code.append(lns).append(member).append(":\n");
             code.append(TAB2).append("out = "); 
-            code.append(Text.SCOPE_SEPARATOR).append(sns).append(member).append(";\n");
+            code.append(sns).append(member).append(";\n");
             code.append(TAB2).append("break;\n");
         }
         logger.fine("end");
@@ -3746,7 +3745,7 @@ public class CppRemoteGenerator
     		logger.fine("begin");
         StringBuffer code = new StringBuffer();
         code.append("#include <");
-        code.append(getLocalCxxNamespace(supports,Text.INCLUDE_SEPARATOR));
+        code.append(getLocalCxxIncludeNamespace(supports,Text.INCLUDE_SEPARATOR));
         code.append(supports.getSupports().getIdentifier());
         code.append(".h>\n");
         logger.fine("end");
@@ -3757,7 +3756,7 @@ public class CppRemoteGenerator
     {
     		logger.fine("begin");
         StringBuffer code = new StringBuffer();
-        code.append(generateCorbaConverterInclude((MContained)currentNode, 
+        code.append(generateCorbaConverterConfixInclude((MContained)currentNode, 
         		supports.getSupports(), supports.getSupports().getIdentifier()));
         logger.fine("end");
         return code.toString();
@@ -3872,7 +3871,7 @@ public class CppRemoteGenerator
         StringBuffer code = new StringBuffer();
         MInterfaceDef iface = ((MUsesDef) currentNode).getUses();
         code.append("#include <");
-        code.append(getLocalCxxNamespace(iface, Text.INCLUDE_SEPARATOR));
+        code.append(getLocalCxxIncludeNamespace(iface, Text.INCLUDE_SEPARATOR));
         code.append(usesDef.getUses().getIdentifier());
         code.append(".h>");
         logger.fine("end");
@@ -3883,7 +3882,7 @@ public class CppRemoteGenerator
     {
     		logger.fine("begin");
         StringBuffer code = new StringBuffer();
-        code.append(generateCorbaConverterInclude((MContained)currentNode, 
+        code.append(generateCorbaConverterConfixInclude((MContained)currentNode, 
         		usesDef.getUses(), usesDef.getUses().getIdentifier()));
         logger.fine("end");
         return code.toString();

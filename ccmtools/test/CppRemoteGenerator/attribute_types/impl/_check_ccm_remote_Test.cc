@@ -18,13 +18,13 @@
 #include <iostream>
 #include <string>
 
-#include <CCM/CCMContainer.h>
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <ccm/remote/TestHome_remote.h>
-#include <ccm_corba_stubs_Test.h>
+#include <ccmtools/remote/TestHome_remote.h>
+#include <ccmtools_corba_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -47,12 +47,12 @@ int main (int argc, char *argv[])
      */ 
 
     // Register all value type factories with the ORB  
-    CCM::register_all_factories (orb);
+    ::ccmtools::remote::register_all_factories(orb);
 
     // Deploy local and remote component homes	
     int error = 0;
     error += deploy_TestHome("TestHome");
-    error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += deploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
         cout << "TestHome server is running..." << endl;
@@ -76,15 +76,16 @@ int main (int argc, char *argv[])
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
-    obj = nc->resolve_str("TestHome:1.0");
-    ccm::corba::stubs::TestHome_var myTestHome = ccm::corba::stubs::TestHome::_narrow (obj);
+    obj = nc->resolve_str("TestHome");
+    ::ccmtools::corba::TestHome_var myTestHome = 
+    		::ccmtools::corba::TestHome::_narrow(obj);
 
     // Create component instances
-    ccm::corba::stubs::Test_var myTest = myTestHome->create();
+    ::ccmtools::corba::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ccm::corba::stubs::BasicTypeInterface_var inBasicType = myTest->provide_inBasicType();
-    ccm::corba::stubs::UserTypeInterface_var inUserType = myTest->provide_inUserType();
+    ::ccmtools::corba::BasicTypeInterface_var inBasicType = myTest->provide_inBasicType();
+    ::ccmtools::corba::UserTypeInterface_var inUserType = myTest->provide_inUserType();
 
     // Connect receptacles
     myTest->connect_outBasicType(inBasicType);
@@ -160,8 +161,8 @@ int main (int argc, char *argv[])
 
       {
         // enum Color {red, green, blue, black, orange}
-        ccm::corba::stubs::Color value = ccm::corba::stubs::blue;
-        ccm::corba::stubs::Color result;
+        ::ccmtools::corba::Color value = ::ccmtools::corba::blue;
+        ::ccmtools::corba::Color result;
         myTest->color_value(value);     
         result = myTest->color_value();
 
@@ -170,8 +171,8 @@ int main (int argc, char *argv[])
 
       {
         // struct Person { long id; string name; }
-        ccm::corba::stubs::Person value;
-        ccm::corba::stubs::Person_var result;
+        ::ccmtools::corba::Person value;
+        ::ccmtools::corba::Person_var result;
         value.name = CORBA::string_dup("Egon");   
         value.id = 3;
         myTest->person_value(value);
@@ -183,9 +184,9 @@ int main (int argc, char *argv[])
 
       {
         // struct Address { string street; long number; Person resident; }
-        ccm::corba::stubs::Address value;
-        ccm::corba::stubs::Address_var result;
-        ccm::corba::stubs::Person person;
+        ::ccmtools::corba::Address value;
+        ::ccmtools::corba::Address_var result;
+        ::ccmtools::corba::Person person;
         value.street = CORBA::string_dup("Waltendorf");   
         value.number = 7;
         person.name = CORBA::string_dup("Egon");   
@@ -203,8 +204,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<long> LongList
         const int MAX_SIZE = 100; 
-        ccm::corba::stubs::LongList_var value = new ccm::corba::stubs::LongList;
-        ccm::corba::stubs::LongList_var result;
+        ::ccmtools::corba::LongList_var value = new ::ccmtools::corba::LongList;
+        ::ccmtools::corba::LongList_var result;
         value->length(MAX_SIZE);
         for(int i=0;i<MAX_SIZE;i++) {
           (*value)[i] = i;
@@ -220,8 +221,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<string> StringList
         const int MAX_SIZE = 100; 
-        ccm::corba::stubs::StringList_var value = new ccm::corba::stubs::StringList;
-        ccm::corba::stubs::StringList_var result;
+        ::ccmtools::corba::StringList_var value = new ::ccmtools::corba::StringList;
+        ::ccmtools::corba::StringList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i] = "Egon";
@@ -237,8 +238,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<Person> PersonList
         const int MAX_SIZE = 100; 
-        ccm::corba::stubs::PersonList_var value = new ccm::corba::stubs::PersonList;
-        ccm::corba::stubs::PersonList_var result;
+        ::ccmtools::corba::PersonList_var value = new ::ccmtools::corba::PersonList;
+        ::ccmtools::corba::PersonList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i].name = "Andrea";
@@ -255,8 +256,8 @@ int main (int argc, char *argv[])
 
       {
         // typedef long time_t;
-        ccm::corba::stubs::time_t value = -7777;
-        ccm::corba::stubs::time_t result;
+        ::ccmtools::corba::time_t value = -7777;
+        ::ccmtools::corba::time_t result;
         myTest->long_value(value);
         result = myTest->long_value();
         assert(result == value);
@@ -331,8 +332,8 @@ int main (int argc, char *argv[])
 
       {
         // enum Color {red, green, blue, black, orange}
-        ccm::corba::stubs::Color value = ccm::corba::stubs::blue;
-        ccm::corba::stubs::Color result;
+        ::ccmtools::corba::Color value = ::ccmtools::corba::blue;
+        ::ccmtools::corba::Color result;
         inUserType->color_value(value); 
         result = inUserType->color_value();
 
@@ -341,8 +342,8 @@ int main (int argc, char *argv[])
 
       {
         // struct Person { long id; string name; }
-        ccm::corba::stubs::Person value;
-        ccm::corba::stubs::Person_var result;
+        ::ccmtools::corba::Person value;
+        ::ccmtools::corba::Person_var result;
         value.name = CORBA::string_dup("Egon");   
         value.id = 3;
         inUserType->person_value(value);
@@ -354,9 +355,9 @@ int main (int argc, char *argv[])
 
       {
         // struct Address { string street; long number; Person resident; }
-        ccm::corba::stubs::Address value;
-        ccm::corba::stubs::Address_var result;
-        ccm::corba::stubs::Person person;
+        ::ccmtools::corba::Address value;
+        ::ccmtools::corba::Address_var result;
+        ::ccmtools::corba::Person person;
         value.street = CORBA::string_dup("Waltendorf");   
         value.number = 7;
         person.name = CORBA::string_dup("Egon");   
@@ -374,8 +375,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<long> LongList
         const int MAX_SIZE = 100; 
-        ccm::corba::stubs::LongList_var value = new ccm::corba::stubs::LongList;
-        ccm::corba::stubs::LongList_var result;
+        ::ccmtools::corba::LongList_var value = new ::ccmtools::corba::LongList;
+        ::ccmtools::corba::LongList_var result;
         value->length(MAX_SIZE);
         for(int i=0;i<MAX_SIZE;i++) {
           (*value)[i] = i;
@@ -391,8 +392,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<string> StringList
         const int MAX_SIZE = 100; 
-        ccm::corba::stubs::StringList_var value = new ccm::corba::stubs::StringList;
-        ccm::corba::stubs::StringList_var result;
+        ::ccmtools::corba::StringList_var value = new ::ccmtools::corba::StringList;
+        ::ccmtools::corba::StringList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i] = "Egon";
@@ -408,8 +409,8 @@ int main (int argc, char *argv[])
       {
         // typedef sequence<Person> PersonList
         const int MAX_SIZE = 100; 
-        ccm::corba::stubs::PersonList_var value = new ccm::corba::stubs::PersonList;
-        ccm::corba::stubs::PersonList_var result;
+        ::ccmtools::corba::PersonList_var value = new ::ccmtools::corba::PersonList;
+        ::ccmtools::corba::PersonList_var result;
         value->length(MAX_SIZE);
         for(int i=0; i < MAX_SIZE; i++) {
           (*value)[i].name = "Andrea";
@@ -426,8 +427,8 @@ int main (int argc, char *argv[])
 
       {
         // typedef long time_t;
-        ccm::corba::stubs::time_t value = -7777;
-        ccm::corba::stubs::time_t result;
+        ::ccmtools::corba::time_t value = -7777;
+        ::ccmtools::corba::time_t result;
         inUserType->time_t_value(value);
         result = inUserType->time_t_value();
         assert(result == value);
@@ -446,7 +447,7 @@ int main (int argc, char *argv[])
     myTest->remove();
 
     error  = undeploy_TestHome("TestHome");
-    error += undeploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += undeploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
 	    cout << "Exit C++ remote test client" << endl; 	

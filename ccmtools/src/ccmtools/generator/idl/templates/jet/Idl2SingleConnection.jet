@@ -4,9 +4,9 @@
 %>
 <% ReceptacleDef model = (ReceptacleDef) argument; %>
 <%=model.indent()%>    void connect_<%=model.getIdentifier()%>(in <%=model.getInterface().generateAbsoluteIdlName()%> conxn)
-<%=model.indent()%>        raises(::Components::AlreadyConnected, ::Components::InvalidConnection);
+<%=model.indent()%>        raises(Components::AlreadyConnected, Components::InvalidConnection);
 
 <%=model.indent()%>    <%=model.getInterface().generateAbsoluteIdlName()%> disconnect_<%=model.getIdentifier()%>()
-<%=model.indent()%>        raises(::Components::NoConnection);
+<%=model.indent()%>        raises(Components::NoConnection);
 
 <%=model.indent()%>    <%=model.getInterface().generateAbsoluteIdlName()%> get_connection_<%=model.getIdentifier()%>();

@@ -36,14 +36,14 @@ Test_inVoidType_impl::~Test_inVoidType_impl()
 
 void
 Test_inVoidType_impl::f1(const long p1)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
   attr = p1;
 }
 
 long
 Test_inVoidType_impl::f2()
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
   return attr;
 }

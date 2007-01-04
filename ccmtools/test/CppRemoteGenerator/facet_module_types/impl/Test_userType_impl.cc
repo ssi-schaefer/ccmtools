@@ -39,7 +39,7 @@ Test_userType_impl::f1(
         const world::europe::austria::Color& p1,
         world::europe::austria::Color& p2,
         world::europe::austria::Color& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -51,7 +51,7 @@ Test_userType_impl::f2(
         const world::europe::austria::Person& p1,
         world::europe::austria::Person& p2,
         world::europe::austria::Person& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     Person r;
     r.name = p1.name + p2.name;
@@ -66,7 +66,7 @@ Test_userType_impl::f3(
         const world::europe::austria::Address& p1,
         world::europe::austria::Address& p2,
         world::europe::austria::Address& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     Address r;
     r.street = p1.street + p2.street;
@@ -83,7 +83,7 @@ Test_userType_impl::f4(
         const world::europe::austria::LongList& p1,
         world::europe::austria::LongList& p2,
         world::europe::austria::LongList& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     LongList r;
     for(unsigned long i=0;i<p1.size();i++) {
@@ -99,7 +99,7 @@ Test_userType_impl::f5(
         const world::europe::austria::StringList& p1,
         world::europe::austria::StringList& p2,
         world::europe::austria::StringList& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     StringList r;
     for(unsigned long i=0;i<p1.size();i++) {
@@ -115,7 +115,7 @@ Test_userType_impl::f6(
         const world::europe::austria::PersonList& p1,
         world::europe::austria::PersonList& p2,
         world::europe::austria::PersonList& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     PersonList r;
     for(unsigned long i=0; i < p1.size(); i++) {
@@ -134,7 +134,7 @@ Test_userType_impl::f7(
         const world::europe::austria::time_t& t1,
         world::europe::austria::time_t& t2,
         world::europe::austria::time_t& t3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     t3=t2;
     t2=t1;

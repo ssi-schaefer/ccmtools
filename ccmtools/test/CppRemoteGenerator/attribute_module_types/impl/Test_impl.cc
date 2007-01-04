@@ -41,253 +41,252 @@ Test_impl::~Test_impl()
 
 const short
 Test_impl::short_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return short_value_;
 }
 
 void
 Test_impl::short_value(const short value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     short_value_ = value;
 }
 
 const long
 Test_impl::long_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return long_value_;
 }
 
 void
 Test_impl::long_value(const long value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     long_value_ = value;
 }
 
 const unsigned short
 Test_impl::ushort_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return ushort_value_;
 }
 
 void
 Test_impl::ushort_value(const unsigned short value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     ushort_value_ = value;
 }
 
 const unsigned long
 Test_impl::ulong_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return ulong_value_;
 }
 
 void
 Test_impl::ulong_value(const unsigned long value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     ulong_value_ = value;
 }
 
 const float
 Test_impl::float_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return float_value_;
 }
 
 void
 Test_impl::float_value(const float value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     float_value_ = value;
 }
 
 const double
 Test_impl::double_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return double_value_;
 }
 
 void
 Test_impl::double_value(const double value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     double_value_ = value;
 }
 
 const char
 Test_impl::char_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return char_value_;
 }
 
 void
 Test_impl::char_value(const char value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     char_value_ = value;
 }
 
 const std::string
 Test_impl::string_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return string_value_;
 }
 
 void
 Test_impl::string_value(const std::string value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     string_value_ = value;
 }
 
 const bool
 Test_impl::boolean_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return boolean_value_;
 }
 
 void
 Test_impl::boolean_value(const bool value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     boolean_value_ = value;
 }
 
 const unsigned char
 Test_impl::octet_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return octet_value_;
 }
 
 void
 Test_impl::octet_value(const unsigned char value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     octet_value_ = value;
 }
 
 const world::europe::austria::Color
 Test_impl::color_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return color_value_;
 }
 
 void
 Test_impl::color_value(const world::europe::austria::Color value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     color_value_ = value;
 }
 
 const world::europe::austria::Person
 Test_impl::person_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return person_value_;
 }
 
 void
 Test_impl::person_value(const world::europe::austria::Person value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     person_value_ = value;
 }
 
 const world::europe::austria::Address
 Test_impl::address_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return address_value_;
 }
 
 void
 Test_impl::address_value(const world::europe::austria::Address value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     address_value_ = value;
 }
 
 const world::europe::austria::LongList
 Test_impl::longList_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return longList_value_;
 }
 
 void
 Test_impl::longList_value(const world::europe::austria::LongList value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     longList_value_ = value;
 }
 
 const world::europe::austria::StringList
 Test_impl::stringList_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return stringList_value_;
 }
 
 void
 Test_impl::stringList_value(const world::europe::austria::StringList value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     stringList_value_ = value;
 }
 
 const world::europe::austria::PersonList
 Test_impl::personList_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return personList_value_;
 }
 
 void
 Test_impl::personList_value(const world::europe::austria::PersonList value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     personList_value_ = value;
 }
 
 const world::europe::austria::time_t
 Test_impl::time_t_value() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return time_t_value_;
 }
 
 void
 Test_impl::time_t_value(const world::europe::austria::time_t value)
-  throw(::Components::ccm::local::CCMException)
+  throw(Components::CCMException)
 {
     time_t_value_ = value;
 }
 
 void
-Test_impl::set_session_context(
-    ::Components::ccm::local::SessionContext* context)
-    throw(::Components::ccm::local::CCMException)
+Test_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
-    ctx = dynamic_cast<world::europe::austria::ccm::local::CCM_Test_Context*>(context);
+    ctx = dynamic_cast<world::europe::austria::CCM_Test_Context*>(context);
 }
 
 void
 Test_impl::ccm_activate()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
    cout << "==== Begin Test Case ====================================" << endl;
 
@@ -504,14 +503,14 @@ Test_impl::ccm_activate()
 
 void
 Test_impl::ccm_passivate()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 Test_impl::ccm_remove()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

@@ -18,13 +18,13 @@
 #include <iostream>
 #include <string>
 
-#include <CCM/CCMContainer.h>
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <ccm/remote/TestHome_remote.h>
-#include <ccm_corba_stubs_Test.h>
+#include <ccmtools/remote/TestHome_remote.h>
+#include <ccmtools_corba_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -47,12 +47,12 @@ int main (int argc, char *argv[])
      */ 
 
     // Register all value type factories with the ORB  
-    CCM::register_all_factories (orb);
+    ::ccmtools::remote::register_all_factories (orb);
 
     // Deploy local and remote component homes	
     int error = 0;
     error += deploy_TestHome("TestHome");
-    error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += deploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
         cout << "TestHome server is running..." << endl;
@@ -76,16 +76,17 @@ int main (int argc, char *argv[])
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
-    obj = nc->resolve_str("TestHome:1.0");
-    ccm::corba::stubs::TestHome_var myTestHome = ccm::corba::stubs::TestHome::_narrow (obj);
+    obj = nc->resolve_str("TestHome");
+    ::ccmtools::corba::TestHome_var myTestHome = 
+    		ccmtools::corba::TestHome::_narrow (obj);
 
     // Create component instances
-    ccm::corba::stubs::Test_var myTest = myTestHome->create();
+    ::ccmtools::corba::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ccm::corba::stubs::BasicTypeInterface_var basicType = myTest->provide_basicType();
-    ccm::corba::stubs::UserTypeInterface_var userType = myTest->provide_userType();
-    ccm::corba::stubs::VoidTypeInterface_var voidType = myTest->provide_voidType();
+    ::ccmtools::corba::BasicTypeInterface_var basicType = myTest->provide_basicType();
+    ::ccmtools::corba::UserTypeInterface_var userType = myTest->provide_userType();
+    ::ccmtools::corba::VoidTypeInterface_var voidType = myTest->provide_voidType();
 	
     myTest->configuration_complete();
 
@@ -210,22 +211,22 @@ int main (int argc, char *argv[])
       {
         // enum Color {red, green, blue, black, orange}
 
-        ccm::corba::stubs::Color Color_2,Color_3, Color_r;
-        Color_2 = ccm::corba::stubs::blue;
+        ::ccmtools::corba::Color Color_2,Color_3, Color_r;
+        Color_2 = ::ccmtools::corba::blue;
 
-        Color_r = userType->f1(ccm::corba::stubs::red,Color_2, Color_3);
+        Color_r = userType->f1(::ccmtools::corba::red,Color_2, Color_3);
 
-        assert(Color_2 == ccm::corba::stubs::red);
-        assert(Color_3 == ccm::corba::stubs::blue);
-        assert(Color_r == ccm::corba::stubs::orange);
+        assert(Color_2 == ::ccmtools::corba::red);
+        assert(Color_3 == ::ccmtools::corba::blue);
+        assert(Color_r == ::ccmtools::corba::orange);
       }
       
       {
         // struct Person { long id; string name; }   
-        ccm::corba::stubs::Person p1;
-        ccm::corba::stubs::Person_var p2 = new  ccm::corba::stubs::Person;
-        ccm::corba::stubs::Person_var p3;
-        ccm::corba::stubs::Person_var result;
+        ::ccmtools::corba::Person p1;
+        ::ccmtools::corba::Person_var p2 = new  ::ccmtools::corba::Person;
+        ::ccmtools::corba::Person_var p3;
+        ::ccmtools::corba::Person_var result;
         
         p1.name = CORBA::string_dup("Egon");   
         p1.id = 3;
@@ -243,11 +244,11 @@ int main (int argc, char *argv[])
 
       {
         // struct Address { string street; long number; Person resident; }
-		ccm::corba::stubs::Address p1;
-        ccm::corba::stubs::Address_var p2 = new  ccm::corba::stubs::Address;
-        ccm::corba::stubs::Address_var p3;
-        ccm::corba::stubs::Address_var result;
-        ccm::corba::stubs::Person person;
+		::ccmtools::corba::Address p1;
+        ::ccmtools::corba::Address_var p2 = new  ::ccmtools::corba::Address;
+        ::ccmtools::corba::Address_var p3;
+        ::ccmtools::corba::Address_var result;
+        ::ccmtools::corba::Person person;
 
         p1.street = CORBA::string_dup("Waltendorf");   
         p1.number = 7;
@@ -282,8 +283,8 @@ int main (int argc, char *argv[])
 
       {
         // typedef sequence<long> LongList
-        ccm::corba::stubs::LongList_var list_1 = new ccm::corba::stubs::LongList;
-        ccm::corba::stubs::LongList_var list_2 = new ccm::corba::stubs::LongList;
+        ::ccmtools::corba::LongList_var list_1 = new ::ccmtools::corba::LongList;
+        ::ccmtools::corba::LongList_var list_2 = new ::ccmtools::corba::LongList;
         list_1->length(5);
         list_2->length(5);
         for(int i=0;i<5;i++) {
@@ -291,8 +292,8 @@ int main (int argc, char *argv[])
           (*list_2)[i] = i+i;
         }
         
-        ccm::corba::stubs::LongList_var list_3;
-        ccm::corba::stubs::LongList_var list_r;
+        ::ccmtools::corba::LongList_var list_3;
+        ::ccmtools::corba::LongList_var list_r;
         
         list_r = userType->f4(list_1,list_2,list_3);
         
@@ -310,8 +311,8 @@ int main (int argc, char *argv[])
 
       {
         // typedef sequence<string> StringList
-        ccm::corba::stubs::StringList_var list_1 = new ccm::corba::stubs::StringList;
-        ccm::corba::stubs::StringList_var list_2 = new ccm::corba::stubs::StringList;
+        ::ccmtools::corba::StringList_var list_1 = new ::ccmtools::corba::StringList;
+        ::ccmtools::corba::StringList_var list_2 = new ::ccmtools::corba::StringList;
         list_1->length(5);
         list_2->length(5);
         for(int i=0;i<5;i++) {
@@ -319,8 +320,8 @@ int main (int argc, char *argv[])
           (*list_2)[i] = "Andrea";
         }
         
-		ccm::corba::stubs::StringList_var list_3;
-        ccm::corba::stubs::StringList_var list_r;
+		::ccmtools::corba::StringList_var list_3;
+        ::ccmtools::corba::StringList_var list_r;
         
         list_r = userType->f5(list_1,list_2,list_3);
         
@@ -338,8 +339,8 @@ int main (int argc, char *argv[])
 
       {
         // typedef sequence<Person> PersonList
-        ccm::corba::stubs::PersonList_var list_1 = new ccm::corba::stubs::PersonList;
-        ccm::corba::stubs::PersonList_var list_2 = new ccm::corba::stubs::PersonList;
+        ::ccmtools::corba::PersonList_var list_1 = new ::ccmtools::corba::PersonList;
+        ::ccmtools::corba::PersonList_var list_2 = new ::ccmtools::corba::PersonList;
         list_1->length(5);
         list_2->length(5);
         for(int i=0;i<5;i++) {
@@ -349,8 +350,8 @@ int main (int argc, char *argv[])
           (*list_2)[i].id   = i+i;
         }
         
-        ccm::corba::stubs::PersonList_var list_3;
-		ccm::corba::stubs::PersonList_var list_r;
+        ::ccmtools::corba::PersonList_var list_3;
+		::ccmtools::corba::PersonList_var list_r;
         
         list_r = userType->f6(list_1,list_2,list_3);
         
@@ -370,7 +371,7 @@ int main (int argc, char *argv[])
 
       {
         // typedef long time_t
-        ccm::corba::stubs::time_t time_2=3, time_3, time_r;
+        ::ccmtools::corba::time_t time_2=3, time_3, time_r;
         time_r = userType->f7(7,time_2, time_3);
         assert(time_2 == 7);
         assert(time_3 == 3);
@@ -387,7 +388,7 @@ int main (int argc, char *argv[])
 
     // Un-Deployment
     error += undeploy_TestHome("TestHome");
-    error += undeploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += undeploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
 	    cout << "Exit C++ remote test client" << endl; 	

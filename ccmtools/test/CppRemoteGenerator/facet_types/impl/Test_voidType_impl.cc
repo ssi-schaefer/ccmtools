@@ -32,14 +32,14 @@ Test_voidType_impl::~Test_voidType_impl()
 
 void
 Test_voidType_impl::f1(const long p1)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     attr = p1;
 }
 
 long
 Test_voidType_impl::f2()
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
   return attr;
 }

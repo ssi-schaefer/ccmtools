@@ -35,7 +35,7 @@ Test_inUserType_impl::f1(
         const Color& p1,
         Color& p2,
         Color& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     p3=p2;
     p2=p1;
@@ -47,7 +47,7 @@ Test_inUserType_impl::f2(
         const Person& p1,
         Person& p2,
         Person& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     Person r;
     r.name = p1.name + p2.name;
@@ -62,7 +62,7 @@ Test_inUserType_impl::f3(
         const Address& p1,
         Address& p2,
         Address& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     Address r;
     r.street = p1.street + p2.street;
@@ -79,7 +79,7 @@ Test_inUserType_impl::f4(
         const LongList& p1,
         LongList& p2,
         LongList& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     LongList r;
     for(unsigned long i=0;i<p1.size();i++) {
@@ -95,7 +95,7 @@ Test_inUserType_impl::f5(
         const StringList& p1,
         StringList& p2,
         StringList& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     StringList r;
     for(unsigned long i=0;i<p1.size();i++) {
@@ -111,7 +111,7 @@ Test_inUserType_impl::f6(
         const PersonList& p1,
         PersonList& p2,
         PersonList& p3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     PersonList r;
     for(unsigned long i=0; i < p1.size(); i++) {
@@ -130,7 +130,7 @@ Test_inUserType_impl::f7(
         const time_t& t1,
         time_t& t2,
         time_t& t3)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     t3=t2;
     t2=t1;

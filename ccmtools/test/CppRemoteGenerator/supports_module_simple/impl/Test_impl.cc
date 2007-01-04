@@ -39,36 +39,36 @@ Test_impl::~Test_impl()
 
 long
 Test_impl::op1(const std::string& str)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     cout << str << endl;
     return str.length();
 }
 
 void
-Test_impl::set_session_context(::Components::ccm::local::SessionContext* context)
-    throw(::Components::ccm::local::CCMException)
+Test_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
-    ctx = dynamic_cast<world::europe::austria::ccm::local::CCM_Test_Context*>(context);
+    ctx = dynamic_cast<world::europe::austria::CCM_Test_Context*>(context);
 }
 
 void
 Test_impl::ccm_activate()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 Test_impl::ccm_passivate()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 Test_impl::ccm_remove()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

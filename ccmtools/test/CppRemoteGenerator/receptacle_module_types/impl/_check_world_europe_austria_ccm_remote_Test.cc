@@ -18,13 +18,13 @@
 #include <iostream>
 #include <string>
 
-#include <CCM/CCMContainer.h>
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <world/europe/austria/ccm/remote/TestHome_remote.h>
-#include <ccm_corba_stubs_world_europe_austria_Test.h>
+#include <ccmtools/remote/world/europe/austria/TestHome_remote.h>
+#include <ccmtools_corba_world_europe_austria_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -47,12 +47,12 @@ int main (int argc, char *argv[])
      */ 
 
     // Register all value type factories with the ORB  
-    CCM::register_all_factories (orb);
+    ::ccmtools::remote::register_all_factories (orb);
 
     // Deploy local and remote component homes	
     int error = 0;
     error += deploy_world_europe_austria_TestHome("TestHome");
-    error += deploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += deploy_ccmtools_remote_world_europe_austria_TestHome(orb, "TestHome");
     if(!error) 
     {
         cout << "TestHome server is running..." << endl;
@@ -76,21 +76,21 @@ int main (int argc, char *argv[])
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
-    obj = nc->resolve_str("TestHome:1.0");
-    ccm::corba::stubs::world::europe::austria::TestHome_var myTestHome = 
-    		ccm::corba::stubs::world::europe::austria::TestHome::_narrow (obj);
+    obj = nc->resolve_str("TestHome");
+    ::ccmtools::corba::world::europe::austria::TestHome_var myTestHome = 
+    		::ccmtools::corba::world::europe::austria::TestHome::_narrow (obj);
 
     // Create component instances
-    ccm::corba::stubs::world::europe::austria::Test_var myTest = myTestHome->create();
+    ::ccmtools::corba::world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ccm::corba::stubs::world::europe::austria::BasicTypeInterface_var inBasicType = 
+    ::ccmtools::corba::world::europe::austria::BasicTypeInterface_var inBasicType = 
 		myTest->provide_inBasicType();
 
-    ccm::corba::stubs::world::europe::austria::UserTypeInterface_var inUserType = 
+    ::ccmtools::corba::world::europe::austria::UserTypeInterface_var inUserType = 
 		myTest->provide_inUserType();
 
-    ccm::corba::stubs::world::europe::austria::VoidTypeInterface_var inVoidType = 
+    ::ccmtools::corba::world::europe::austria::VoidTypeInterface_var inVoidType = 
 		myTest->provide_inVoidType();
 
     // Connect receptacle
@@ -116,7 +116,7 @@ int main (int argc, char *argv[])
 
     // Un-Deployment
     error  = undeploy_world_europe_austria_TestHome("TestHome");
-    error += undeploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += undeploy_ccmtools_remote_world_europe_austria_TestHome(orb, "TestHome");
     if(!error) 
     {
 	    cout << "Exit C++ remote test client" << endl; 	

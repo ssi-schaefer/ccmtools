@@ -19,13 +19,13 @@ public class Idl2SingleConnectionTemplate
   protected final String TEXT_3 = "(in ";
   protected final String TEXT_4 = " conxn)";
   protected final String TEXT_5 = NL;
-  protected final String TEXT_6 = "        raises(::Components::AlreadyConnected, ::Components::InvalidConnection);" + NL;
+  protected final String TEXT_6 = "        raises(Components::AlreadyConnected, Components::InvalidConnection);" + NL;
   protected final String TEXT_7 = NL;
   protected final String TEXT_8 = "    ";
   protected final String TEXT_9 = " disconnect_";
   protected final String TEXT_10 = "()";
   protected final String TEXT_11 = NL;
-  protected final String TEXT_12 = "        raises(::Components::NoConnection);" + NL;
+  protected final String TEXT_12 = "        raises(Components::NoConnection);" + NL;
   protected final String TEXT_13 = NL;
   protected final String TEXT_14 = "    ";
   protected final String TEXT_15 = " get_connection_";

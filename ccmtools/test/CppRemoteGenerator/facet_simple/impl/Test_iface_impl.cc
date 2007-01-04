@@ -32,7 +32,7 @@ Test_iface_impl::~Test_iface_impl()
 
 long
 Test_iface_impl::op1(const std::string& str)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     cout << ">>> " << str << endl;
     return str.length();

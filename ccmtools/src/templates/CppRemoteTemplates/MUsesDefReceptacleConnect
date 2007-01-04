@@ -1,6 +1,8 @@
-  if(strcmp(name, "%(Identifier)s") == 0) { 
-    ::%(IdlUsesType)s_var _tref = ::%(IdlUsesType)s::_narrow (ref);
-    if (CORBA::is_nil (_tref) && !CORBA::is_nil(ref)) {
+  if(strcmp(name, "%(Identifier)s") == 0) 
+  { 
+    %(IdlUsesType)s_var _tref = %(IdlUsesType)s::_narrow (ref);
+    if (CORBA::is_nil (_tref) && !CORBA::is_nil(ref)) 
+    {
       throw Components::InvalidConnection();
     }
     connect_%(Identifier)s(_tref);

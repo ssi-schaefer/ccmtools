@@ -33,7 +33,7 @@ Test_my_facet_impl::~Test_my_facet_impl()
 
 long
 Test_my_facet_impl::op1(const std::string& str)
-	throw(::Components::CCMException)
+	throw(Components::CCMException)
 {
     cout << ">>> " << str << endl;
     return str.length();

@@ -34,63 +34,63 @@ Test_ifaceIn_impl::~Test_ifaceIn_impl()
 
 const long
 Test_ifaceIn_impl::attr3() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return attr3_;
 }
 
 void
 Test_ifaceIn_impl::attr3(const long value)
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     attr3_ = value;
 }
 
 const long
 Test_ifaceIn_impl::attr2() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return attr2_;
 }
 
 void
 Test_ifaceIn_impl::attr2(const long value)
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     attr2_ = value;
 }
 
 const long
 Test_ifaceIn_impl::attr1() const
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     return attr1_;
 }
 
 void
 Test_ifaceIn_impl::attr1(const long value)
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     attr1_ = value;
 }
 
 long
 Test_ifaceIn_impl::op3(const std::string& str)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     return str.length();
 }
 
 long
 Test_ifaceIn_impl::op2(const std::string& str)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     return str.length();
 }
 
 long
 Test_ifaceIn_impl::op1(const std::string& str)
-throw(::Components::ccm::local::CCMException)
+throw(Components::CCMException)
 {
     return str.length();
 }

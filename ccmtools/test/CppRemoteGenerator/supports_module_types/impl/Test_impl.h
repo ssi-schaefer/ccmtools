@@ -14,7 +14,7 @@
 #ifndef __COMPONENT_world_europe_austria_ccm_local_component_Test_Test_IMPL__H__
 #define __COMPONENT_world_europe_austria_ccm_local_component_Test_Test_IMPL__H__
 
-#include <world/europe/austria/ccm/local/Test_share.h>
+#include <world/europe/austria/Test_share.h>
 
 namespace world {
 namespace europe {
@@ -33,7 +33,7 @@ namespace austria {
  * @version 
  **/
 class Test_impl
-    : virtual public world::europe::austria::ccm::local::CCM_Test
+    : virtual public world::europe::austria::CCM_Test
 {
   private:
 
@@ -42,7 +42,7 @@ class Test_impl
   long attr_;
 
   public:
-    world::europe::austria::ccm::local::CCM_Test_Context* ctx;
+    world::europe::austria::CCM_Test_Context* ctx;
 
     Test_impl();
     virtual ~Test_impl();
@@ -52,137 +52,137 @@ class Test_impl
         const short p1,
         short& p2,
         short& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     long 
     fb2(
         const long p1,
         long& p2,
         long& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     unsigned short 
     fb3(
         const unsigned short p1,
         unsigned short& p2,
         unsigned short& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     unsigned long 
     fb4(
         const unsigned long p1,
         unsigned long& p2,
         unsigned long& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     float 
     fb5(
         const float p1,
         float& p2,
         float& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     double 
     fb6(
         const double p1,
         double& p2,
         double& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     char 
     fb7(
         const char p1,
         char& p2,
         char& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     std::string 
     fb8(
         const std::string& p1,
         std::string& p2,
         std::string& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     bool 
     fb9(
         const bool p1,
         bool& p2,
         bool& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     unsigned char 
     fb10(
         const unsigned char p1,
         unsigned char& p2,
         unsigned char& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     world::europe::austria::Color 
     fu1(
         const world::europe::austria::Color& p1,
         world::europe::austria::Color& p2,
         world::europe::austria::Color& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     world::europe::austria::Person 
     fu2(
         const world::europe::austria::Person& p1,
         world::europe::austria::Person& p2,
         world::europe::austria::Person& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     world::europe::austria::Address 
     fu3(
         const world::europe::austria::Address& p1,
         world::europe::austria::Address& p2,
         world::europe::austria::Address& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     world::europe::austria::LongList 
     fu4(
         const world::europe::austria::LongList& p1,
         world::europe::austria::LongList& p2,
         world::europe::austria::LongList& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     world::europe::austria::StringList 
     fu5(
         const world::europe::austria::StringList& p1,
         world::europe::austria::StringList& p2,
         world::europe::austria::StringList& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     world::europe::austria::PersonList 
     fu6(
         const world::europe::austria::PersonList& p1,
         world::europe::austria::PersonList& p2,
         world::europe::austria::PersonList& p3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     world::europe::austria::time_t 
     fu7(
         const world::europe::austria::time_t& t1,
         world::europe::austria::time_t& t2,
         world::europe::austria::time_t& t3) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     void 
     fv1(const long p1) 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     long 
     fv2() 
-    throw(::Components::ccm::local::CCMException);
+    throw(Components::CCMException);
 
     // CCM callback methods
-    virtual void set_session_context(::Components::ccm::local::SessionContext* ctx)
-        throw(::Components::ccm::local::CCMException);
+    virtual void set_session_context(Components::SessionContext* ctx)
+        throw(Components::CCMException);
     virtual void ccm_activate()
-        throw(::Components::ccm::local::CCMException);
+        throw(Components::CCMException);
     virtual void ccm_passivate()
-        throw(::Components::ccm::local::CCMException);
+        throw(Components::CCMException);
     virtual void ccm_remove()
-        throw(::Components::ccm::local::CCMException);
+        throw(Components::CCMException);
 };
 
 } // /namespace austria

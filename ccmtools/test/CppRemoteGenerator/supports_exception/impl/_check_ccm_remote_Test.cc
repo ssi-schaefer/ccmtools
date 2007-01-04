@@ -17,13 +17,13 @@
 #include <iostream>
 #include <string>
 
-#include <CCM/CCMContainer.h>
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <ccm/remote/TestHome_remote.h>
-#include <ccm_corba_stubs_Test.h>
+#include <ccmtools/remote/TestHome_remote.h>
+#include <ccmtools_corba_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -46,12 +46,12 @@ int main (int argc, char *argv[])
      */ 
 
     // Register all value type factories with the ORB  
-    CCM::register_all_factories (orb);
+    ::ccmtools::remote::register_all_factories(orb);
 
     // Deploy local and remote component homes	
     int error = 0;
     error += deploy_TestHome("TestHome");
-    error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += deploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
         cout << "TestHome server is running..." << endl;
@@ -75,11 +75,12 @@ int main (int argc, char *argv[])
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
-    obj = nc->resolve_str("TestHome:1.0");
-    ccm::corba::stubs::TestHome_var myTestHome = ccm::corba::stubs::TestHome::_narrow (obj);
+    obj = nc->resolve_str("TestHome");
+    ::ccmtools::corba::TestHome_var myTestHome = 
+    		::ccmtools::corba::TestHome::_narrow (obj);
 
     // Create component instances
-    ccm::corba::stubs::Test_var myTest = myTestHome->create();
+    ::ccmtools::corba::Test_var myTest = myTestHome->create();
 
     // Provide facets   
 	
@@ -98,10 +99,10 @@ int main (int argc, char *argv[])
       myTest->print(s);
       assert(false);
     } 
-    catch(const ccm::corba::stubs::SimpleError& e) 
+    catch(const ::ccmtools::corba::SimpleError& e) 
     {
       cout << "caught SimpleError" << endl;                   
-      ccm::corba::stubs::ErrorInfoList infolist = e.info;
+      ::ccmtools::corba::ErrorInfoList infolist = e.info;
       for(unsigned long i = 0; i < infolist.length(); i++) 
       {
 		cout << e.info[i].code << ": " << e.info[i].message << endl;
@@ -119,7 +120,7 @@ int main (int argc, char *argv[])
       myTest->print(s);
       assert(false);
     } 
-    catch(const ccm::corba::stubs::SuperError& e) 
+    catch(const ::ccmtools::corba::SuperError& e) 
     {
       cout << "caught SuperError" << endl;
     }   
@@ -135,7 +136,7 @@ int main (int argc, char *argv[])
       myTest->print(s);
       assert(false);
     } 
-    catch(const ccm::corba::stubs::FatalError& e) 
+    catch(const ::ccmtools::corba::FatalError& e) 
     {
       cout << "caught FatalErro" << endl;
     } 
@@ -152,7 +153,7 @@ int main (int argc, char *argv[])
 
     // Un-Deployment
     error  = undeploy_TestHome("TestHome");
-    error += undeploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += undeploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
 	    cout << "Exit C++ remote test client" << endl; 	

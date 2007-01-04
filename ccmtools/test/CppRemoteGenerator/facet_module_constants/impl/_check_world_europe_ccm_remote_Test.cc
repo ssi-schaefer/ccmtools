@@ -18,13 +18,13 @@
 #include <iostream>
 #include <string>
 
-#include <CCM/CCMContainer.h>
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <world/europe/ccm/remote/TestHome_remote.h>
-#include <ccm_corba_stubs_world_europe_Test.h>
+#include <ccmtools/remote/world/europe/TestHome_remote.h>
+#include <ccmtools_corba_world_europe_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -47,12 +47,12 @@ int main (int argc, char *argv[])
      */ 
 
     // Register all value type factories with the ORB  
-    CCM::register_all_factories (orb);
+    ::ccmtools::remote::register_all_factories (orb);
 
     // Deploy local and remote component homes	
     int error = 0;
     error += deploy_world_europe_TestHome("TestHome");
-    error += deploy_world_europe_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += deploy_ccmtools_remote_world_europe_TestHome(orb, "TestHome");
     if(!error) 
     {
         cout << "TestHome server is running..." << endl;
@@ -76,15 +76,15 @@ int main (int argc, char *argv[])
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
-    obj = nc->resolve_str("TestHome:1.0");
-    ccm::corba::stubs::world::europe::TestHome_var myTestHome = 
-    		ccm::corba::stubs::world::europe::TestHome::_narrow (obj);
+    obj = nc->resolve_str("TestHome");
+    ::ccmtools::corba::world::europe::TestHome_var myTestHome = 
+    		::ccmtools::corba::world::europe::TestHome::_narrow (obj);
 
     // Create component instances
-    ccm::corba::stubs::world::europe::Test_var myTest = myTestHome->create();
+    ::ccmtools::corba::world::europe::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ccm::corba::stubs::world::Constants_var constants = myTest->provide_iface();
+    ::ccmtools::corba::world::Constants_var constants = myTest->provide_iface();
 	
     myTest->configuration_complete();
 
@@ -92,70 +92,70 @@ int main (int argc, char *argv[])
 
     {
       //  const boolean BOOLEAN_CONST = TRUE;
-      CORBA::Boolean initial = ccm::corba::stubs::world::Constants::BOOLEAN_CONST;
+      CORBA::Boolean initial = ::ccmtools::corba::world::Constants::BOOLEAN_CONST;
       CORBA::Boolean result = constants->getBooleanValue();
       assert(initial == result);
     }
 
     {
       //  const octet OCTET_CONST = 255;
-      CORBA::Octet initial = ccm::corba::stubs::world::Constants::OCTET_CONST;
+      CORBA::Octet initial = ::ccmtools::corba::world::Constants::OCTET_CONST;
       CORBA::Octet result = constants->getOctetValue();
       assert(initial == result);
     }
 
     {
       //  const short SHORT_CONST = -7;
-      CORBA::Short initial = ccm::corba::stubs::world::Constants::SHORT_CONST;
+      CORBA::Short initial = ::ccmtools::corba::world::Constants::SHORT_CONST;
       CORBA::Short result = constants->getShortValue();
       assert(initial == result);
     }
 
     {
       //  const unsigned short USHORT_CONST = 7;
-      CORBA::UShort initial = ccm::corba::stubs::world::Constants::USHORT_CONST;
+      CORBA::UShort initial = ::ccmtools::corba::world::Constants::USHORT_CONST;
       CORBA::UShort result = constants->getUnsignedShortValue();
       assert(initial == result);
     }
 
     {
       //  const long LONG_CONST = -7777;
-      CORBA::Long initial = ccm::corba::stubs::world::Constants::LONG_CONST;
+      CORBA::Long initial = ::ccmtools::corba::world::Constants::LONG_CONST;
       CORBA::Long result = constants->getLongValue();
       assert(initial == result);
     }
 
     {
       //  const unsigned long ULONG_CONST = 7777;
-      CORBA::ULong initial = ccm::corba::stubs::world::Constants::ULONG_CONST;
+      CORBA::ULong initial = ::ccmtools::corba::world::Constants::ULONG_CONST;
       CORBA::ULong result = constants->getUnsignedLongValue();
       assert(initial == result);
     }
 
     {
       //  const char CHAR_CONST = 'c';
-      CORBA::Char initial = ccm::corba::stubs::world::Constants::CHAR_CONST;
+      CORBA::Char initial = ::ccmtools::corba::world::Constants::CHAR_CONST;
       CORBA::Char result = constants->getCharValue();
       assert(initial == result);
     }
 
     {
       //  const string STRING_CONST = "1234567890";
-      string initial = ccm::corba::stubs::world::Constants::STRING_CONST; 
+      string initial = ::ccmtools::corba::world::Constants::STRING_CONST; 
       char* result = constants->getStringValue();
       assert(strcmp(initial.c_str(),result) == 0);
     }
 
     {
       //  const float FLOAT_CONST = 3.14;
-      CORBA::Float initial = ccm::corba::stubs::world::Constants::FLOAT_CONST;
+      CORBA::Float initial = ::ccmtools::corba::world::Constants::FLOAT_CONST;
       CORBA::Float result = constants->getFloatValue();
       assert(abs(initial - result) < 0.001);
     }
 
     {
       //  const double DOUBLE_CONST = 3.1415926;
-      CORBA::Double initial = ccm::corba::stubs::world::Constants::DOUBLE_CONST;
+      CORBA::Double initial = ::ccmtools::corba::world::Constants::DOUBLE_CONST;
       CORBA::Double result = constants->getDoubleValue();
       assert(abs(initial - result) < 0.001);
     }
@@ -167,7 +167,7 @@ int main (int argc, char *argv[])
 
     // Un-Deployment
     error  = undeploy_world_europe_TestHome("TestHome");
-    error += undeploy_world_europe_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += undeploy_ccmtools_remote_world_europe_TestHome(orb, "TestHome");
     if(!error) 
     {
 	    cout << "Exit C++ remote test client" << endl; 	

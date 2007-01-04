@@ -18,13 +18,13 @@
 #include <iostream>
 #include <string>
 
-#include <CCM/CCMContainer.h>
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <world/europe/austria/ccm/remote/TestHome_remote.h>
-#include <ccm_corba_stubs_world_europe_austria_Test.h>
+#include <ccmtools/remote/world/europe/austria/TestHome_remote.h>
+#include <ccmtools_corba_world_europe_austria_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -47,12 +47,12 @@ int main (int argc, char *argv[])
      */ 
 
     // Register all value type factories with the ORB  
-    CCM::register_all_factories (orb);
+    ::ccmtools::remote::register_all_factories (orb);
 
     // Deploy local and remote component homes	
     int error = 0;
     error += deploy_world_europe_austria_TestHome("TestHome");
-    error += deploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += deploy_ccmtools_remote_world_europe_austria_TestHome(orb, "TestHome");
     if(!error) 
     {
         cout << "TestHome server is running..." << endl;
@@ -76,12 +76,12 @@ int main (int argc, char *argv[])
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
-    obj = nc->resolve_str("TestHome:1.0");
-    ccm::corba::stubs::world::europe::austria::TestHome_var myTestHome = 
-    		ccm::corba::stubs::world::europe::austria::TestHome::_narrow (obj);
+    obj = nc->resolve_str("TestHome");
+    ::ccmtools::corba::world::europe::austria::TestHome_var myTestHome = 
+    		::ccmtools::corba::world::europe::austria::TestHome::_narrow(obj);
 
     // Create component instances
-    ccm::corba::stubs::world::europe::austria::Test_var myTest = myTestHome->create();
+    ::ccmtools::corba::world::europe::austria::Test_var myTest = myTestHome->create();
 
     // Provide facets   
 	
@@ -205,23 +205,23 @@ int main (int argc, char *argv[])
 
       {
         // enum Color {red, green, blue, black, orange}
-        ccm::corba::stubs::world::europe::austria::Color Color_2,Color_3, Color_r;
-        Color_2 = ccm::corba::stubs::world::europe::austria::blue;
+        ::ccmtools::corba::world::europe::austria::Color Color_2,Color_3, Color_r;
+        Color_2 = ::ccmtools::corba::world::europe::austria::blue;
 
-        Color_r = myTest->fu1(ccm::corba::stubs::world::europe::austria::red,Color_2, Color_3);
+        Color_r = myTest->fu1(::ccmtools::corba::world::europe::austria::red,Color_2, Color_3);
 
-        assert(Color_2 == ccm::corba::stubs::world::europe::austria::red);
-        assert(Color_3 == ccm::corba::stubs::world::europe::austria::blue);
-        assert(Color_r == ccm::corba::stubs::world::europe::austria::orange);
+        assert(Color_2 == ::ccmtools::corba::world::europe::austria::red);
+        assert(Color_3 == ::ccmtools::corba::world::europe::austria::blue);
+        assert(Color_r == ::ccmtools::corba::world::europe::austria::orange);
       }
       
       {
         // struct Person { long id; string name; }   
-        ccm::corba::stubs::world::europe::austria::Person p1;
-        ccm::corba::stubs::world::europe::austria::Person_var p2 = 
-	   		new ccm::corba::stubs::world::europe::austria::Person;
-        ccm::corba::stubs::world::europe::austria::Person_var p3;
-        ccm::corba::stubs::world::europe::austria::Person_var result;
+        ::ccmtools::corba::world::europe::austria::Person p1;
+        ::ccmtools::corba::world::europe::austria::Person_var p2 = 
+	   		new ::ccmtools::corba::world::europe::austria::Person;
+        ::ccmtools::corba::world::europe::austria::Person_var p3;
+        ::ccmtools::corba::world::europe::austria::Person_var result;
         
         p1.name = CORBA::string_dup("Egon");   
         p1.id = 3;
@@ -239,12 +239,12 @@ int main (int argc, char *argv[])
 
       {
         // struct Address { string street; long number; Person resident; }
-        ccm::corba::stubs::world::europe::austria::Address p1;
-        ccm::corba::stubs::world::europe::austria::Address_var p2 = 
-	    		new ccm::corba::stubs::world::europe::austria::Address;
-        ccm::corba::stubs::world::europe::austria::Address_var p3;
-        ccm::corba::stubs::world::europe::austria::Address_var result;
-        ccm::corba::stubs::world::europe::austria::Person person;
+        ::ccmtools::corba::world::europe::austria::Address p1;
+        ::ccmtools::corba::world::europe::austria::Address_var p2 = 
+	    		new ::ccmtools::corba::world::europe::austria::Address;
+        ::ccmtools::corba::world::europe::austria::Address_var p3;
+        ::ccmtools::corba::world::europe::austria::Address_var result;
+        ::ccmtools::corba::world::europe::austria::Person person;
 
         p1.street = CORBA::string_dup("Waltendorf");   
         p1.number = 7;
@@ -278,10 +278,10 @@ int main (int argc, char *argv[])
 
       {
         // typedef sequence<long> LongList
-        ccm::corba::stubs::world::europe::austria::LongList_var list_1 = 
-	    		new ccm::corba::stubs::world::europe::austria::LongList;
-        	ccm::corba::stubs::world::europe::austria::LongList_var list_2 = 
-	    		new ccm::corba::stubs::world::europe::austria::LongList;
+        ::ccmtools::corba::world::europe::austria::LongList_var list_1 = 
+	    		new ::ccmtools::corba::world::europe::austria::LongList;
+        	::ccmtools::corba::world::europe::austria::LongList_var list_2 = 
+	    		new ::ccmtools::corba::world::europe::austria::LongList;
         list_1->length(5);
         list_2->length(5);
         for(int i=0;i<5;i++) {
@@ -289,8 +289,8 @@ int main (int argc, char *argv[])
           (*list_2)[i] = i+i;
         }
         
-        ccm::corba::stubs::world::europe::austria::LongList_var list_3;
-        ccm::corba::stubs::world::europe::austria::LongList_var list_r;
+        ::ccmtools::corba::world::europe::austria::LongList_var list_3;
+        ::ccmtools::corba::world::europe::austria::LongList_var list_r;
         
         list_r = myTest->fu4(list_1,list_2,list_3);
         
@@ -308,10 +308,10 @@ int main (int argc, char *argv[])
 
       {
         // typedef sequence<string> StringList
-        ccm::corba::stubs::world::europe::austria::StringList_var list_1 = 
-	    		new ccm::corba::stubs::world::europe::austria::StringList;
-        ccm::corba::stubs::world::europe::austria::StringList_var list_2 = 
-	    		new ccm::corba::stubs::world::europe::austria::StringList;
+        ::ccmtools::corba::world::europe::austria::StringList_var list_1 = 
+	    		new ::ccmtools::corba::world::europe::austria::StringList;
+        ::ccmtools::corba::world::europe::austria::StringList_var list_2 = 
+	    		new ::ccmtools::corba::world::europe::austria::StringList;
         list_1->length(5);
         list_2->length(5);
         for(int i=0;i<5;i++) {
@@ -319,8 +319,8 @@ int main (int argc, char *argv[])
           (*list_2)[i] = "Andrea";
         }
         
-        ccm::corba::stubs::world::europe::austria::StringList_var list_3;
-        ccm::corba::stubs::world::europe::austria::StringList_var list_r;
+        ::ccmtools::corba::world::europe::austria::StringList_var list_3;
+        ::ccmtools::corba::world::europe::austria::StringList_var list_r;
         
         list_r = myTest->fu5(list_1,list_2,list_3);
         
@@ -337,10 +337,10 @@ int main (int argc, char *argv[])
 
       {
         // typedef sequence<Person> PersonList
-        ccm::corba::stubs::world::europe::austria::PersonList_var list_1 = 
-	    		new ccm::corba::stubs::world::europe::austria::PersonList;
-        ccm::corba::stubs::world::europe::austria::PersonList_var list_2 = 
-	    		new ccm::corba::stubs::world::europe::austria::PersonList;
+        ::ccmtools::corba::world::europe::austria::PersonList_var list_1 = 
+	    		new ::ccmtools::corba::world::europe::austria::PersonList;
+        ::ccmtools::corba::world::europe::austria::PersonList_var list_2 = 
+	    		new ::ccmtools::corba::world::europe::austria::PersonList;
         list_1->length(5);
         list_2->length(5);
         for(int i=0;i<5;i++) {
@@ -350,8 +350,8 @@ int main (int argc, char *argv[])
           (*list_2)[i].id   = i+i;
         }
         
-        ccm::corba::stubs::world::europe::austria::PersonList_var list_3;
-        ccm::corba::stubs::world::europe::austria::PersonList_var list_r;
+        ::ccmtools::corba::world::europe::austria::PersonList_var list_3;
+        ::ccmtools::corba::world::europe::austria::PersonList_var list_r;
         
         list_r = myTest->fu6(list_1,list_2,list_3);
         
@@ -371,7 +371,7 @@ int main (int argc, char *argv[])
 
       {
         // typedef long time_t
-        ccm::corba::stubs::world::europe::austria::time_t time_2=3, time_3, time_r;
+        ::ccmtools::corba::world::europe::austria::time_t time_2=3, time_3, time_r;
         time_r = myTest->fu7(7,time_2, time_3);
         assert(time_2 == 7);
         assert(time_3 == 3);
@@ -389,7 +389,7 @@ int main (int argc, char *argv[])
 
     // Un-Deployment
     error += undeploy_world_europe_austria_TestHome("TestHome");
-    error += undeploy_world_europe_austria_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += undeploy_ccmtools_remote_world_europe_austria_TestHome(orb, "TestHome");
     if(!error) 
     {
 	    cout << "Exit C++ remote test client" << endl; 	

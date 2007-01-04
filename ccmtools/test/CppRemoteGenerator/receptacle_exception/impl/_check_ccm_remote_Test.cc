@@ -17,13 +17,13 @@
 #include <iostream>
 #include <string>
 
-#include <CCM/CCMContainer.h>
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <ccm/remote/TestHome_remote.h>
-#include <ccm_corba_stubs_Test.h>
+#include <ccmtools/remote/TestHome_remote.h>
+#include <ccmtools_corba_Test.h>
 
 using namespace std;
 using namespace wamas::platform::utils;
@@ -46,12 +46,12 @@ int main (int argc, char *argv[])
      */ 
 
     // Register all value type factories with the ORB  
-    CCM::register_all_factories (orb);
+    ::ccmtools::remote::register_all_factories (orb);
 
     // Deploy local and remote component homes	
     int error = 0;
     error += deploy_TestHome("TestHome");
-    error += deploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += deploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
         cout << "TestHome server is running..." << endl;
@@ -75,14 +75,14 @@ int main (int argc, char *argv[])
     // Deployment 
 
     // Find ComponentHomes in the Naming-Service
-    obj = nc->resolve_str("TestHome:1.0");
-    ccm::corba::stubs::TestHome_var myTestHome = ccm::corba::stubs::TestHome::_narrow (obj);
+    obj = nc->resolve_str("TestHome");
+    ::ccmtools::corba::TestHome_var myTestHome = ::ccmtools::corba::TestHome::_narrow (obj);
 
     // Create component instances
-    ccm::corba::stubs::Test_var myTest = myTestHome->create();
+    ::ccmtools::corba::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ccm::corba::stubs::Console_var inPort = myTest->provide_inPort();
+    ::ccmtools::corba::Console_var inPort = myTest->provide_inPort();
 
     // Connect receptacle
     myTest->connect_outPort(inPort);
@@ -103,7 +103,7 @@ int main (int argc, char *argv[])
 
     // Un-Deployment
     error  = undeploy_TestHome("TestHome");
-    error += undeploy_ccm_remote_TestHome(orb, "TestHome:1.0");
+    error += undeploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
 	    cout << "Exit C++ remote test client" << endl; 	
