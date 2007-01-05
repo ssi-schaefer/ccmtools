@@ -5,10 +5,9 @@ void
 {
     reference_for_receptacle_%(Identifier)s = %(IdlUsesType)s::_duplicate (value);
 
-    SmartPtr< %(UsesType)s > %(Identifier)s_adapter = 
-        SmartPtr< %(UsesType)s >(
-            dynamic_cast< %(UsesType)s* >
-	            (new %(UsesConvertNamespace)s%(InterfaceType)sAdapterToCorba(
+    %(UsesType)s::SmartPtr %(Identifier)s_adapter = 
+        %(UsesType)s::SmartPtr(dynamic_cast< %(UsesType)s* >(
+	            new %(UsesConvertNamespace)s%(InterfaceType)sAdapterToCorba(
 	                 reference_for_receptacle_%(Identifier)s)));
 
     try 

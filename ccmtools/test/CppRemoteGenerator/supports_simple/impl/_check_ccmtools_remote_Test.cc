@@ -26,7 +26,6 @@
 #include <ccmtools_corba_Test.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // Implementation of remote client test
@@ -40,7 +39,7 @@ int main (int argc, char *argv[])
     int argc_ = 3;
     char* argv_[] = { "", "-ORBInitRef", "NameService=corbaloc:iiop:1.2@localhost:5050/NameService" }; 
     CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
-        
+    
     /**
      * Server-side code
      */ 
@@ -76,76 +75,22 @@ int main (int argc, char *argv[])
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome");
-    ::ccmtools::corba::TestHome_var myTestHome = 
-    		::ccmtools::corba::TestHome::_narrow (obj);
+    ::ccmtools::corba::TestHome_var myTestHome = ::ccmtools::corba::TestHome::_narrow (obj);
 
     // Create component instances
     ::ccmtools::corba::Test_var myTest = myTestHome->create();
 
     // Provide facets   
+
 	
     myTest->configuration_complete();
 
     cout << "==== Begin Test Case ===================================" << endl;
 
-    char* s = CORBA::string_dup("Salomon.Automation");
-    CORBA::Long len;
-    len = myTest->print(s);
-    assert(strlen(s) == (unsigned long)len);
-    
-    try 
-    {
-      char* s = CORBA::string_dup("SimpleError");
-      myTest->print(s);
-      assert(false);
-    } 
-    catch(const ::ccmtools::corba::SimpleError& e) 
-    {
-      cout << "caught SimpleError" << endl;                   
-      ::ccmtools::corba::ErrorInfoList infolist = e.info;
-      for(unsigned long i = 0; i < infolist.length(); i++) 
-      {
-		cout << e.info[i].code << ": " << e.info[i].message << endl;
-      }
-    } 
-    catch(const CORBA::SystemException& e) 
-    {
-      cout << "caught CORBA::SystemException" << endl;
-      assert(false);
-    }  
-    
-    try 
-    {
-      char* s = CORBA::string_dup("SuperError");
-      myTest->print(s);
-      assert(false);
-    } 
-    catch(const ::ccmtools::corba::SuperError& e) 
-    {
-      cout << "caught SuperError" << endl;
-    }   
-    catch(const CORBA::SystemException& e) 
-    {
-      cout << "caught CORBA::SystemException" << endl;
-      assert(false);
-    }
-    
-    try 
-    {
-      char* s = CORBA::string_dup("FatalError");
-      myTest->print(s);
-      assert(false);
-    } 
-    catch(const ::ccmtools::corba::FatalError& e) 
-    {
-      cout << "caught FatalErro" << endl;
-    } 
-    catch(const CORBA::SystemException& e) 
-    {
-      cout << "caught CORBA::SystemException" << endl;
-      assert(false); 
-    }
-    
+    char* s = CORBA::string_dup("1234567890");
+    CORBA::Long size = myTest->op1(s);
+    assert(strlen(s) == (unsigned long)size);
+
     cout << "==== End Test Case =====================================" << endl; 
 
     // Destroy component instances
@@ -154,15 +99,15 @@ int main (int argc, char *argv[])
     // Un-Deployment
     error  = undeploy_TestHome("TestHome");
     error += undeploy_ccmtools_remote_TestHome(orb, "TestHome");
-    if(!error) 
-    {
-	    cout << "Exit C++ remote test client" << endl; 	
-    }
-    else 
+    if(error) 
     {
         cerr << "ERROR: Can't undeploy components!" << endl;
         return -1;
     }
+    else
+    {
+    		cout << "Exit C++ remote test client" << endl;
+    } 	
 }
 
 #endif // HAVE_MICO

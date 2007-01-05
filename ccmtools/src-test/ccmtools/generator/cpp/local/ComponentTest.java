@@ -39,8 +39,8 @@ public class ComponentTest
     // Misc test cases
     // ------------------------------------------------------------------------
 
-    public void testComponentDistributed() throws CcmtoolsTestCaseException
-    {
-        executeCommandLine("make -C " + testDir + "/component_distributed test");
-    }        
+//    public void testComponentDistributed() throws CcmtoolsTestCaseException
+//    {
+//        executeCommandLine("make -C " + testDir + "/component_distributed test");
+//    }        
 }

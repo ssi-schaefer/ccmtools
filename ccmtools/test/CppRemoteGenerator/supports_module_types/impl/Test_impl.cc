@@ -21,7 +21,6 @@ namespace europe {
 namespace austria {
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_Test - component implementation

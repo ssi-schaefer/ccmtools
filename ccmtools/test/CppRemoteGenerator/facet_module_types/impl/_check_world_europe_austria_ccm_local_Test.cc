@@ -15,15 +15,11 @@
 #include <cassert>
 #include <iostream>
 
-#include <wamas/platform/utils/smartptr.h>
-
-#include <Components/CCM.h>
-#include <Components/HomeFinder.h>
+#include <Components/ccmtools.h>
 
 #include <world/europe/austria/TestHome_gen.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 using world::europe::austria::Test;
 using world::europe::austria::TestHome;
@@ -43,11 +39,10 @@ int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<Test> myTest;
-
-    SmartPtr<BasicTypeInterface> basicType;
-    SmartPtr<UserTypeInterface> userType;
-    SmartPtr<VoidTypeInterface> voidType;
+    Test::SmartPtr myTest;
+    BasicTypeInterface::SmartPtr basicType;
+    UserTypeInterface::SmartPtr userType;
+    VoidTypeInterface::SmartPtr voidType;
 
     int error = 0;
     Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
@@ -60,7 +55,7 @@ int main(int argc, char *argv[])
 
     try 
     {
-        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>(
+        TestHome::SmartPtr myTestHome(dynamic_cast<TestHome*>(
 			     homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();

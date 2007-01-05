@@ -16,7 +16,6 @@
 #include "Test_my_facet_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 namespace world {
 

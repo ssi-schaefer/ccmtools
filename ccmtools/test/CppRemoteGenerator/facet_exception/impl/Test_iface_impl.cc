@@ -17,7 +17,6 @@
 #include "Test_iface_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 
 Test_iface_impl::Test_iface_impl(Test_impl* component_impl)
@@ -33,7 +32,7 @@ Test_iface_impl::~Test_iface_impl()
 
 long
 Test_iface_impl::foo(const std::string& msg)
-throw(Components::CCMException, FatalError, SuperError, ErrorException )
+	throw(Components::CCMException, FatalError, SuperError, ErrorException )
 {
     if(msg == "Error") 
     {

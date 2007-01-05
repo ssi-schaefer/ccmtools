@@ -17,7 +17,6 @@
 #include "Test_ifaceIn_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 namespace world {
 namespace europe {

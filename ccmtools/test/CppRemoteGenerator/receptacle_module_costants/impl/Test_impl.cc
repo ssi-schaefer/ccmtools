@@ -22,7 +22,6 @@ namespace world {
 namespace europe {
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -49,7 +48,7 @@ void
 Test_impl::ccm_activate()
     throw(Components::CCMException)
 {
-  SmartPtr<CCM_Constants> receptacle =
+    CCM_Constants::SmartPtr receptacle =
         ctx->get_connection_ifaceOut();
 
   {

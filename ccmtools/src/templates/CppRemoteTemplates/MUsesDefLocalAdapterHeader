@@ -1,2 +1,2 @@
-      wamas::platform::utils::SmartPtr<CCM_Local::%(CCM_UsesType)s> %(Identifier)s_adapter;
+      CCM_Local::%(CCM_UsesType)s::SmartPtr %(Identifier)s_adapter;
 

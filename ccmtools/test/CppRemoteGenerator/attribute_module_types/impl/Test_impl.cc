@@ -23,7 +23,6 @@ namespace europe {
 namespace austria {
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -296,8 +295,8 @@ Test_impl::ccm_activate()
 
     {
       cout << "Receptacle Attributes (Basic Types) Test...";
-      SmartPtr<CCM_BasicTypeInterface> outBasicType =
-        ctx->get_connection_outBasicType();
+      CCM_BasicTypeInterface::SmartPtr outBasicType = 
+          ctx->get_connection_outBasicType();
 
       {
         short value = -7;
@@ -383,8 +382,8 @@ Test_impl::ccm_activate()
 
     {
       cout << "Receptacle Attributes (User Types) Test...";
-      SmartPtr<CCM_UserTypeInterface> outUserType =
-        ctx->get_connection_outUserType();
+      CCM_UserTypeInterface::SmartPtr outUserType =
+          ctx->get_connection_outUserType();
       {
         // enum Color {red, green, blue, black, orange}
         Color value = blue;

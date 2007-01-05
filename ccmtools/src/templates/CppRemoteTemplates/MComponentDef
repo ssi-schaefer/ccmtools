@@ -13,8 +13,6 @@
 
 #ifdef HAVE_MICO 
 
-#include <wamas/platform/utils/smartptr.h>
-
 #include <ccmtools/remote/CCMContainer.h>
 
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
@@ -38,15 +36,15 @@ class %(Identifier)s_impl :
     friend class CCM_%(Identifier)s_Context_impl;
 
   protected:
-    wamas::platform::utils::SmartPtr< %(LocalNamespace)s%(Identifier)s> local_adapter;
-    wamas::platform::utils::SmartPtr< ::ccmtools::remote::SessionContainer > ccm_container;
+    %(LocalNamespace)s%(Identifier)s::SmartPtr local_adapter;
+    ::ccmtools::remote::SessionContainer::SmartPtr ccm_container;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
 
   public:
-    %(Identifier)s_impl(wamas::platform::utils::SmartPtr< %(LocalNamespace)s%(Identifier)s>, 
-        wamas::platform::utils::SmartPtr< ::ccmtools::remote::SessionContainer > );
+    %(Identifier)s_impl(%(LocalNamespace)s%(Identifier)s::SmartPtr, 
+        ::ccmtools::remote::SessionContainer::SmartPtr);
     virtual ~%(Identifier)s_impl ();
 
     // Component Attributes
@@ -109,8 +107,8 @@ using namespace wamas::platform::utils;
 // Component remote adapter 
 //============================================================================
 
-%(Identifier)s_impl::%(Identifier)s_impl(SmartPtr< %(LocalNamespace)s%(Identifier)s> la, 
-    SmartPtr< ::ccmtools::remote::SessionContainer > c)
+%(Identifier)s_impl::%(Identifier)s_impl(%(LocalNamespace)s%(Identifier)s::SmartPtr la, 
+    ::ccmtools::remote::SessionContainer::SmartPtr c)
     : local_adapter(la), ccm_container (c)
 {
 %(MProvidesDefAdapterVariableInit)s

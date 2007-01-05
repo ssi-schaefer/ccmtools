@@ -56,14 +56,16 @@ namespace remote {
   // Base for all Containers
   //============================================================================
   
-    class _CCM_EXPORT_DECL_ ContainerBase
+class _CCM_EXPORT_DECL_ ContainerBase
 	: virtual public wamas::platform::utils::RefCounted
-    {
-    protected:
+{
+  protected:
 	static CORBA::ULong globalContainerNumber_;
 	CORBA::ULong containerNumber_;
 	
-    public:
+  public:
+    typedef wamas::platform::utils::SmartPtr<ContainerBase> SmartPtr;
+    
 	ContainerBase ();
 	virtual ~ContainerBase() {}
 	
@@ -75,22 +77,20 @@ namespace remote {
 	
 	virtual ::ccmtools::corba::Components::CCMHome_ptr get_CCM_home () = 0;
 	virtual CORBA::Object_ptr get_CCM_object(::Components::EnterpriseComponent*) = 0;
-    };
+};
     
 
 
-    //==========================================================================
-    // Session Container
-    //==========================================================================
+//==========================================================================
+// Session Container
+//==========================================================================
     
-    class SessionContainer 
-	: virtual public ContainerBase 
-    {
-    private:
-	CORBA::ORB_var orb_;
-	PortableServer::POA_var poa_;
-	
-    public:
+class SessionContainer 
+  : virtual public ContainerBase 
+{
+  public:
+    typedef wamas::platform::utils::SmartPtr<SessionContainer> SmartPtr;
+  
 	struct ComponentInfo 
 	{
 	    std::string home_short_name;
@@ -102,25 +102,6 @@ namespace remote {
 	    ::Components::HomeExecutorBase* home_instance;
 	    PortableServer::ServantBase_var home_glue;
 	};
-	
-    private:
-	ComponentInfo _info;
-	bool _have_info;
-	
-	struct PerComponentData 
-	{
-	    CORBA::Boolean configuration_complete;
-	    PortableServer::ServantBase_var glue;
-	    ::Components::EnterpriseComponent* instance;
-	    CORBA::Object_var reference;
-	    std::map<std::string, PortableServer::ServantBase_var> facet_glue;
-	    std::map<std::string, void*> facet_instance;
-	    std::map<std::string, CORBA::Object_var> facet_reference;
-	};
-      
-	CORBA::Object_var _home_ref;
-	typedef std::map<std::string, PortableServer::ObjectId> InstanceMap;
-	InstanceMap active_components;
 	
     public:
 	SessionContainer(CORBA::ORB_ptr orb);
@@ -160,34 +141,55 @@ namespace remote {
 	
 	// notify container of configuration_complete
 	void configuration_complete (PortableServer::Servant comp_glue); 
-    };
+
+  private:
+	CORBA::ORB_var orb_;
+	PortableServer::POA_var poa_;
+	ComponentInfo _info;
+	bool _have_info;
+	CORBA::Object_var _home_ref;
+	typedef std::map<std::string, PortableServer::ObjectId> InstanceMap;
+	InstanceMap active_components;
+	
+	struct PerComponentData 
+	{
+	    CORBA::Boolean configuration_complete;
+	    PortableServer::ServantBase_var glue;
+	    ::Components::EnterpriseComponent* instance;
+	    CORBA::Object_var reference;
+	    std::map<std::string, PortableServer::ServantBase_var> facet_glue;
+	    std::map<std::string, void*> facet_instance;
+	    std::map<std::string, CORBA::Object_var> facet_reference;
+	};      
+};
   
   
 
-  //==========================================================================
-  // Valuetype implementations
-  //==========================================================================
+//==========================================================================
+// Valuetype implementations
+//==========================================================================
   
-  class Cookie_impl 
-    : virtual public OBV_ccmtools::corba::Components::Cookie,
-      virtual public CORBA::DefaultValueRefCountBase
-    {
-    private:
+class Cookie_impl 
+  : virtual public OBV_ccmtools::corba::Components::Cookie,
+    virtual public CORBA::DefaultValueRefCountBase
+{
+  private:
       static long globalId_;
       long id_;
-    public:
+  public:
       Cookie_impl();
-  };
+};
   
-  // Valuetype factories
-  class Cookie_Factory 
-    : virtual public CORBA::ValueFactoryBase
-    {
-    public:
+
+// Valuetype factories
+class Cookie_Factory 
+  : virtual public CORBA::ValueFactoryBase
+{
+  public:
       CORBA::ValueBase* create_for_unmarshal ();
-    };
+};
   
-  void register_all_factories (CORBA::ORB_ptr);
+void register_all_factories (CORBA::ORB_ptr);
 
 } // /namespace remote
 } // /namespace ccmtools

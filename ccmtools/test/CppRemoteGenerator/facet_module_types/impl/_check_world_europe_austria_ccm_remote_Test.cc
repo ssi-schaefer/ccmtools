@@ -27,7 +27,6 @@
 #include <ccmtools_corba_world_europe_austria_Test.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 using ::ccmtools::corba::world::europe::austria::Color;
 using ::ccmtools::corba::world::europe::austria::red;

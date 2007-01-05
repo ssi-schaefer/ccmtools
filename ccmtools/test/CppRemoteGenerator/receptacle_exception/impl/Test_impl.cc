@@ -18,7 +18,6 @@
 #include "Test_inPort_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // Test - component implementation

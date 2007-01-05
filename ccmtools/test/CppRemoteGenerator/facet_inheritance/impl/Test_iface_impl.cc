@@ -17,8 +17,6 @@
 #include "Test_iface_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
-
 
 Test_iface_impl::Test_iface_impl(Test_impl* component_impl)
   : component(component_impl)

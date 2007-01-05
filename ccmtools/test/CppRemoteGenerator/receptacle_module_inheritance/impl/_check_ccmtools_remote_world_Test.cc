@@ -13,7 +13,6 @@
 
 #ifdef HAVE_MICO 
 
-#include <cmath>
 #include <cstdlib> 
 #include <iostream>
 #include <string>
@@ -23,11 +22,10 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <ccmtools/remote/TestHome_remote.h>
-#include <ccmtools_corba_Test.h>
+#include <ccmtools/remote/world/TestHome_remote.h>
+#include <ccmtools_corba_world_Test.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // Implementation of remote client test
@@ -47,12 +45,12 @@ int main (int argc, char *argv[])
      */ 
 
     // Register all value type factories with the ORB  
-    ::ccmtools::remote::register_all_factories (orb);
+    ::ccmtools::remote::register_all_factories(orb);
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_TestHome("TestHome");
-    error += deploy_ccmtools_remote_TestHome(orb, "TestHome");
+    error  = deploy_world_TestHome("TestHome");
+    error += deploy_ccmtools_remote_world_TestHome(orb, "TestHome");
     if(!error) 
     {
         cout << "TestHome server is running..." << endl;
@@ -77,22 +75,17 @@ int main (int argc, char *argv[])
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome");
-    ::ccmtools::corba::TestHome_var myTestHome = 
-    		::ccmtools::corba::TestHome::_narrow (obj);
+    ::ccmtools::corba::world::TestHome_var myTestHome = 
+    		::ccmtools::corba::world::TestHome::_narrow (obj);
 
     // Create component instances
-    ::ccmtools::corba::Test_var myTest = myTestHome->create();
+    ::ccmtools::corba::world::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::ccmtools::corba::BasicTypeInterface_var inBasicType = myTest->provide_inBasicType();
-    ::ccmtools::corba::UserTypeInterface_var inUserType = myTest->provide_inUserType();
-    ::ccmtools::corba::VoidTypeInterface_var inVoidType = myTest->provide_inVoidType();
+    ::ccmtools::corba::world::america::SubType_var ifaceIn = myTest->provide_ifaceIn();
 
-    // Connect receptacle
-    myTest->connect_outBasicType(inBasicType);
-    myTest->connect_outUserType(inUserType);
-    myTest->connect_outVoidType(inVoidType);
-	
+    // Connect receptacles
+    myTest->connect_ifaceOut(ifaceIn);
     myTest->configuration_complete();
 
     cout << "==== Begin Test Case ===================================" << endl;
@@ -101,17 +94,12 @@ int main (int argc, char *argv[])
 
     cout << "==== End Test Case =====================================" << endl; 
 
-    // Un-Deployment
-    myTest->disconnect_outBasicType();
-    myTest->disconnect_outUserType();
-    myTest->disconnect_outVoidType();
-
     // Destroy component instances
     myTest->remove();
 
     // Un-Deployment
-    error  = undeploy_TestHome("TestHome");
-    error += undeploy_ccmtools_remote_TestHome(orb, "TestHome");
+    error  = undeploy_world_TestHome("TestHome");
+    error += undeploy_ccmtools_remote_world_TestHome(orb, "TestHome");
     if(!error) 
     {
 	    cout << "Exit C++ remote test client" << endl; 	

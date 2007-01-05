@@ -23,11 +23,10 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <ccmtools/remote/world/europe/austria/TestHome_remote.h>
-#include <ccmtools_corba_world_europe_austria_Test.h>
+#include <ccmtools/remote/TestHome_remote.h>
+#include <ccmtools_corba_Test.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // Implementation of remote client test
@@ -41,7 +40,7 @@ int main (int argc, char *argv[])
     int argc_ = 3;
     char* argv_[] = { "", "-ORBInitRef", "NameService=corbaloc:iiop:1.2@localhost:5050/NameService" }; 
     CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
-    
+
     /**
      * Server-side code
      */ 
@@ -51,8 +50,8 @@ int main (int argc, char *argv[])
 
     // Deploy local and remote component homes	
     int error = 0;
-    error += deploy_world_europe_austria_TestHome("TestHome");
-    error += deploy_ccmtools_remote_world_europe_austria_TestHome(orb, "TestHome");
+    error += deploy_TestHome("TestHome");
+    error += deploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
         cout << "TestHome server is running..." << endl;
@@ -77,21 +76,16 @@ int main (int argc, char *argv[])
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("TestHome");
-    ::ccmtools::corba::world::europe::austria::TestHome_var myTestHome = 
-    		::ccmtools::corba::world::europe::austria::TestHome::_narrow (obj);
+    ::ccmtools::corba::TestHome_var myTestHome = 
+    		::ccmtools::corba::TestHome::_narrow (obj);
 
     // Create component instances
-    ::ccmtools::corba::world::europe::austria::Test_var myTest = myTestHome->create();
+    ::ccmtools::corba::Test_var myTest = myTestHome->create();
 
     // Provide facets   
-    ::ccmtools::corba::world::europe::austria::BasicTypeInterface_var inBasicType = 
-		myTest->provide_inBasicType();
-
-    ::ccmtools::corba::world::europe::austria::UserTypeInterface_var inUserType = 
-		myTest->provide_inUserType();
-
-    ::ccmtools::corba::world::europe::austria::VoidTypeInterface_var inVoidType = 
-		myTest->provide_inVoidType();
+    ::ccmtools::corba::BasicTypeInterface_var inBasicType = myTest->provide_inBasicType();
+    ::ccmtools::corba::UserTypeInterface_var inUserType = myTest->provide_inUserType();
+    ::ccmtools::corba::VoidTypeInterface_var inVoidType = myTest->provide_inVoidType();
 
     // Connect receptacle
     myTest->connect_outBasicType(inBasicType);
@@ -115,8 +109,8 @@ int main (int argc, char *argv[])
     myTest->remove();
 
     // Un-Deployment
-    error  = undeploy_world_europe_austria_TestHome("TestHome");
-    error += undeploy_ccmtools_remote_world_europe_austria_TestHome(orb, "TestHome");
+    error  = undeploy_TestHome("TestHome");
+    error += undeploy_ccmtools_remote_TestHome(orb, "TestHome");
     if(!error) 
     {
 	    cout << "Exit C++ remote test client" << endl; 	
@@ -125,7 +119,7 @@ int main (int argc, char *argv[])
     {
         cerr << "ERROR: Can't undeploy components!" << endl;
         return -1;
-    }   
+    }
 }
 
 #endif // HAVE_MICO

@@ -1,4 +1,4 @@
-SmartPtr<CCM_Local::%(CCM_UsesType)s> 
+CCM_Local::%(CCM_UsesType)s::SmartPtr
 CCM_%(ComponentType)s_Context_impl::get_connection_%(Identifier)s()
 {
     return %(Identifier)s_adapter;

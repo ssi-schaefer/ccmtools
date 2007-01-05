@@ -18,7 +18,6 @@
 #include "Test_ifaceIn_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -45,7 +44,7 @@ void
 Test_impl::ccm_activate()
     throw(Components::CCMException)
 {
-    SmartPtr<CCM_SubType> receptacle = 
+    CCM_SubType::SmartPtr receptacle = 
         ctx->get_connection_ifaceOut();
 
     {

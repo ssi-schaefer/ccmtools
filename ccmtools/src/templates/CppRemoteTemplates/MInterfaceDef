@@ -31,10 +31,10 @@
       virtual public PortableServer::RefCountServantBase
   {
     protected:
-      wamas::platform::utils::SmartPtr< %(LocalNamespace)s%(Identifier)s> localInterface; 
+      %(LocalNamespace)s%(Identifier)s::SmartPtr localInterface; 
     public:
       %(Identifier)sAdapterFromCorba(
-          wamas::platform::utils::SmartPtr< %(LocalNamespace)s%(Identifier)s> lif);
+          %(LocalNamespace)s%(Identifier)s::SmartPtr lif);
       virtual ~%(Identifier)sAdapterFromCorba();
 
 %(AttributeBaseInterfaceAdapterFromCorbaHeader)s
@@ -100,7 +100,7 @@ using namespace wamas::platform::utils;
 //============================================================================
 
 %(Identifier)sAdapterFromCorba::%(Identifier)sAdapterFromCorba(
-    wamas::platform::utils::SmartPtr< %(LocalNamespace)s%(Identifier)s> lif)
+    %(LocalNamespace)s%(Identifier)s::SmartPtr lif)
     : localInterface(lif)
 {
 }

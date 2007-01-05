@@ -27,7 +27,6 @@
 #include <ccmtools_corba_Test.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // Implementation of remote client test
