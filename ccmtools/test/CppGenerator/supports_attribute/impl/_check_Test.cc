@@ -14,22 +14,21 @@
 #include <cassert>
 #include <iostream>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <TestHome_gen.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<Test> myTest;
+    Test::SmartPtr myTest;
 
     int error = 0;
-    ::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
-    error  = deploy_TestHome("TestHome");
+    Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
+    error = deploy_TestHome("TestHome");
     if(error) 
     {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -38,8 +37,9 @@ int main(int argc, char *argv[])
 
     try 
     {
-        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
-            (homeFinder->find_home_by_name("TestHome").ptr()));
+        TestHome::SmartPtr myTestHome(dynamic_cast<TestHome*>(
+            homeFinder->find_home_by_name("TestHome").ptr()));
+            
         myTest = myTestHome->create();
         myTest->configuration_complete();
     
@@ -51,18 +51,18 @@ int main(int argc, char *argv[])
    
         myTest->remove();
     } 
-    catch ( ::Components::HomeNotFound ) 
+    catch ( Components::HomeNotFound ) 
     {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch ( ::Components::NotImplemented& e ) 
+    catch ( Components::NotImplemented& e ) 
     {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         return -1;
     }  
-    catch ( ::Components::InvalidName& e ) 
+    catch ( Components::InvalidName& e ) 
     {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
@@ -73,7 +73,8 @@ int main(int argc, char *argv[])
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         return -1;
     }
-    if (error < 0) {
+    if (error < 0) 
+    {
         return error;
     }
 

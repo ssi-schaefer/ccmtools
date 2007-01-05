@@ -414,10 +414,15 @@ abstract public class CppGenerator extends CodeGenerator
         
         // Handle interfaces using smart pointers
         // (Any ia handled as interface
-        if(idl_type instanceof MInterfaceDef
-                || (idl_type instanceof MPrimitiveDef && ((MPrimitiveDef) idl_type)
-                        .getKind() == MPrimitiveKind.PK_ANY)) {
-            base_type = "wamas::platform::utils::SmartPtr< " + base_type + " > ";
+        if(idl_type instanceof MPrimitiveDef 
+                && ((MPrimitiveDef) idl_type).getKind() == MPrimitiveKind.PK_ANY) 
+        {
+            // TODO: Use any plugin manager
+            base_type = "wamas::platform::utils::SmartPtr< " + base_type + " >";
+        }
+        else if(idl_type instanceof MInterfaceDef)
+        {
+            base_type = base_type + "::SmartPtr";
         }
 
         // This code defines the parameter passing rules for operations:

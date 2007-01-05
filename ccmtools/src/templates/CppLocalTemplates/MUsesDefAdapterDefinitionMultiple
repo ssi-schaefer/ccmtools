@@ -1,26 +1,30 @@
 ::Components::Cookie
-%(ComponentType)s::connect_%(Identifier)s(SmartPtr< %(UsesType)s > f)
+%(ComponentType)s::connect_%(Identifier)s(%(UsesType)s::SmartPtr f)
     throw(::Components::ExceededConnectionLimit, ::Components::InvalidConnection)
 {
     if(!ValidConnection) 
+    {
         throw ::Components::InvalidConnection();
+    }
     stringstream s;
     s << "CCM_%(Identifier)s:" << %(Identifier)s_receptacle_counter++;
     ::Components::Cookie ck(s.str());
-    SmartPtr< %(CCMUsesType)s > ccmf(dynamic_cast< %(CCMUsesType)s* >(f.ptr()));
+    %(CCMUsesType)s::SmartPtr ccmf(dynamic_cast< %(CCMUsesType)s* >(f.ptr()));
     %(Identifier)s_receptacles.insert(make_pair(ck, ccmf));
     return ck;
 }
 
-SmartPtr< %(UsesType)s >
+%(UsesType)s::SmartPtr
 %(ComponentType)s::disconnect_%(Identifier)s(::Components::Cookie ck)
     throw(::Components::InvalidConnection)
 {
     if(!ValidConnection) 
+    {
         throw ::Components::InvalidConnection();
+    }
     if(%(Identifier)s_receptacles.find(ck) != %(Identifier)s_receptacles.end()) 
     {
-        SmartPtr< %(CCMUsesType)s > f(%(Identifier)s_receptacles[ck]);
+        %(CCMUsesType)s::SmartPtr f(%(Identifier)s_receptacles[ck]);
         %(Identifier)s_receptacles.erase(ck);
         return f;
     } 
@@ -34,7 +38,9 @@ SmartPtr< %(UsesType)s >
 %(ComponentType)s::get_connections_%(Identifier)s (  )
 {
     if(!ValidConnection) 
+    {
         throw ::Components::InvalidConnection();
+    }
     return %(Identifier)s_receptacles;
 }
 

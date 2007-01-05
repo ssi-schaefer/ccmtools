@@ -2,33 +2,32 @@
 #ifndef ASSEMBLY_H
 #define ASSEMBLY_H
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <BasicTestHome_gen.h>
 #include <UserTestHome_gen.h>
 #include <SuperTestHome_gen.h>
 
 using namespace std;
-namespace wx = wamas::platform::utils;
 
 class Assembly
-: public ::Components::Assembly
+  : public Components::Assembly
 {
 private:
-	::Components::AssemblyState state_;
+	Components::AssemblyState state_;
 
 	// Super Component: SuperTest
-	wx::SmartPtr<SuperTest> superTest;
-	wx::SmartPtr<BasicTypeInterface> innerBasicType;
-	wx::SmartPtr<UserTypeInterface> innerUserType;
+	SuperTest::SmartPtr superTest;
+	BasicTypeInterface::SmartPtr innerBasicType;
+	UserTypeInterface::SmartPtr innerUserType;
 
 	// Inner Component: BasicTest
-	wx::SmartPtr<BasicTest> basicTest;
-	wx::SmartPtr<BasicTypeInterface> basicType;
+	BasicTest::SmartPtr basicTest;
+	BasicTypeInterface::SmartPtr basicType;
 
 	// Inner Component: UserTest
-	wx::SmartPtr<UserTest> userTest;
-	wx::SmartPtr<UserTypeInterface> userType;
+	UserTest::SmartPtr userTest;
+	UserTypeInterface::SmartPtr userType;
 
 public:
 	Assembly();
@@ -40,15 +39,15 @@ public:
 	 * interconnects them according to the assembly descriptor.
 	 */
 	virtual void build()
-	    throw (::Components::CreateFailure);
+	    throw (Components::CreateFailure);
 
 	/*
 	 * Build a component assembly based on a given facade component.
 	 *
 	 * Note: This is an CCM extension to support nested components.
 	 */
-	virtual void build(wx::SmartPtr< ::Components::CCMObject> facadeComponent)
-	    throw (::Components::CreateFailure);
+	virtual void build(Components::CCMObject::SmartPtr facadeComponent)
+	    throw(Components::CreateFailure);
 
 	/*
 	 * Call configuration_complete on every component instance in the 
@@ -64,12 +63,12 @@ public:
 	 * created by the build operation.
 	 */
 	virtual void tear_down()
-	    throw (::Components::RemoveFailure);
+	    throw(Components::RemoveFailure);
 
 	/*
 	 * Returns whether the assembly is active or inactive.
 	 */
-	virtual ::Components::AssemblyState get_state();
+	virtual Components::AssemblyState get_state();
 };
 
 #endif /* ASSEMBLY_H */

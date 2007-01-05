@@ -17,7 +17,6 @@
 #include "TestMirror_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // TestMirror - component implementation
@@ -32,17 +31,17 @@ TestMirror_impl::~TestMirror_impl()
 }
 
 void
-TestMirror_impl::set_session_context(::Components::SessionContext* context)
-    throw(::Components::CCMException)
+TestMirror_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
     ctx = dynamic_cast<CCM_TestMirror_Context*>(context);
 }
 
 void
 TestMirror_impl::ccm_activate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
-    SmartPtr<CCM_InterfaceType> receptacle = ctx->get_connection_a_facet();
+    CCM_InterfaceType::SmartPtr receptacle = ctx->get_connection_a_facet();
     string str1 = "Hallo to first op()";
     long size1 = receptacle->op1(str1);
     assert(size1 == str1.length());
@@ -70,14 +69,14 @@ TestMirror_impl::ccm_activate()
 
 void
 TestMirror_impl::ccm_passivate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 TestMirror_impl::ccm_remove()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

@@ -1,9 +1,9 @@
     // Equivalent operations for multiple receptacle %(Identifier)s
     ::Components::Cookie 
-    connect_%(Identifier)s(wamas::platform::utils::SmartPtr< %(UsesType)s > connection)
+    connect_%(Identifier)s(%(UsesType)s::SmartPtr connection)
         throw(::Components::ExceededConnectionLimit, ::Components::InvalidConnection);
 
-    wamas::platform::utils::SmartPtr< %(UsesType)s > 
+    %(UsesType)s::SmartPtr 
     disconnect_%(Identifier)s(::Components::Cookie ck)
         throw(::Components::InvalidConnection);
 

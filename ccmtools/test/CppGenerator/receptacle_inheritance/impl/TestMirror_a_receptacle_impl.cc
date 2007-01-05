@@ -17,8 +17,6 @@
 #include "TestMirror_a_receptacle_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
-
 
 TestMirror_a_receptacle_impl::TestMirror_a_receptacle_impl(TestMirror_impl* component_impl)
   : component(component_impl)
@@ -34,42 +32,42 @@ TestMirror_a_receptacle_impl::~TestMirror_a_receptacle_impl()
 
 const long
 TestMirror_a_receptacle_impl::attr3() const
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     return attr3_;
 }
 
 void
 TestMirror_a_receptacle_impl::attr3(const long value)
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     attr3_ = value;
 }
 
 const long
 TestMirror_a_receptacle_impl::attr2() const
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     return attr2_;
 }
 
 void
 TestMirror_a_receptacle_impl::attr2(const long value)
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     attr2_ = value;
 }
 
 const long
 TestMirror_a_receptacle_impl::attr1() const
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     return attr1_;
 }
 
 void
 TestMirror_a_receptacle_impl::attr1(const long value)
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     attr1_ = value;
 }
@@ -77,7 +75,7 @@ TestMirror_a_receptacle_impl::attr1(const long value)
 
 long
 TestMirror_a_receptacle_impl::op3(const std::string& str)
-    throw (::Components::CCMException)
+    throw (Components::CCMException)
 {
   cout << str << endl;
   return str.length();
@@ -85,7 +83,7 @@ TestMirror_a_receptacle_impl::op3(const std::string& str)
 
 long
 TestMirror_a_receptacle_impl::op2(const std::string& str)
-    throw (::Components::CCMException)
+    throw (Components::CCMException)
 {
   cout << str << endl;
   return str.length();
@@ -93,7 +91,7 @@ TestMirror_a_receptacle_impl::op2(const std::string& str)
 
 long
 TestMirror_a_receptacle_impl::op1(const std::string& str)
-    throw (::Components::CCMException)
+    throw (Components::CCMException)
 {
   cout << str << endl;
   return str.length();

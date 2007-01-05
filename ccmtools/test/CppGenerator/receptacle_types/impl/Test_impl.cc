@@ -20,7 +20,6 @@
 #include "Test_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -35,18 +34,17 @@ Test_impl::~Test_impl (  )
 }
 
 void
-Test_impl::set_session_context ( ::Components::SessionContext* context )
-  throw ( ::Components::CCMException )
+Test_impl::set_session_context ( Components::SessionContext* context )
+  throw ( Components::CCMException )
 {
   ctx = dynamic_cast<CCM_Test_Context*> ( context );
 }
 
 void
 Test_impl::ccm_activate (  )
-  throw ( ::Components::CCMException )
+  throw ( Components::CCMException )
 {
-  SmartPtr<CCM_TypeTest> type_test = 
-    ctx->get_connection_type_test();
+    CCM_TypeTest::SmartPtr type_test = ctx->get_connection_type_test();
   
   {
     // basic types test cases
@@ -167,15 +165,15 @@ Test_impl::ccm_activate (  )
   // Test interface types
   {
     MyObject* my_object1 = new MyObject;
-    SmartPtr<Console> console1(my_object1);
+    Console::SmartPtr console1(my_object1);
     console1->prompt("prompt1> ");
 
     MyObject* my_object2 = new MyObject;
-    SmartPtr<Console> console2(my_object2);
+    Console::SmartPtr console2(my_object2);
     console2->prompt("prompt2> ");
 
-    SmartPtr<Console> console3;
-    SmartPtr<Console> console4;
+    Console::SmartPtr console3;
+    Console::SmartPtr console4;
 
     console4 = type_test->op_i1(console1,console2,console3);
 
@@ -187,13 +185,13 @@ Test_impl::ccm_activate (  )
 
 void
 Test_impl::ccm_passivate (  )
-  throw ( ::Components::CCMException )
+  throw ( Components::CCMException )
 {
 }
 
 void
 Test_impl::ccm_remove (  )
-  throw ( ::Components::CCMException )
+  throw ( Components::CCMException )
 {
 }
 

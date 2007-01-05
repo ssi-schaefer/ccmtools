@@ -15,14 +15,13 @@
 #include <iostream>
 #include <cmath>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <TestHome_gen.h>
 
 #include "MyObject.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 int main(int argc, char *argv[])
 {
@@ -38,11 +37,11 @@ int main(int argc, char *argv[])
 
   	try 
   	{
-		::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
-  		SmartPtr<Test> myTest;
+		Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
+  		Test::SmartPtr myTest;
   
-    		SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
-      		(homeFinder->find_home_by_name("TestHome").ptr()));
+    		TestHome::SmartPtr myTestHome(dynamic_cast<TestHome*>(
+      		homeFinder->find_home_by_name("TestHome").ptr()));
 
     		myTest = myTestHome->create();
     		myTest->configuration_complete();
@@ -169,13 +168,13 @@ int main(int argc, char *argv[])
     		// Test interface types
     		{
       		MyObject* my_object1 = new MyObject;
-      		SmartPtr<Console> console1(my_object1);
+      		Console::SmartPtr console1(my_object1);
       		console1->prompt("prompt1> ");
       		MyObject* my_object2 = new MyObject;
-      		SmartPtr<Console> console2(my_object2);
+      		Console::SmartPtr console2(my_object2);
       		console2->prompt("prompt2> ");
-      		SmartPtr<Console> console3;
-      		SmartPtr<Console> console4;
+      		Console::SmartPtr console3;
+      		Console::SmartPtr console4;
       		console4 = myTest->op_i1(console1,console2,console3);
       		assert(console2->prompt()=="prompt1> ");
       		assert(console3->prompt()=="prompt2> ");
@@ -185,17 +184,17 @@ int main(int argc, char *argv[])
 
 		myTest->remove();
 	} 
-  	catch ( ::Components::HomeNotFound ) 
+  	catch ( Components::HomeNotFound ) 
   	{
     		cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
     		return -1;
   	} 
-  	catch ( ::Components::NotImplemented& e ) 
+  	catch ( Components::NotImplemented& e ) 
   	{
     		cout << "DEPLOYMENT ERROR: function not implemented: " << e.what (  ) << endl;
     		return -1;
   	} 
-  	catch ( ::Components::InvalidName& e ) 
+  	catch ( Components::InvalidName& e ) 
   	{
     		cout << "DEPLOYMENT ERROR: invalid name during connection: " << e.what (  ) << endl;
     		return -1;

@@ -38,23 +38,5 @@ public class DefaultAnyMapping
         code.append(typedef.getIdentifier());
         code.append(";\n");
         return code.toString();
-    }
-    
-//    public String getDebugCode(MAliasDef alias)
-//    {
-//        StringBuffer code = new StringBuffer();
-//        code.append("#ifdef WXDEBUG\n");
-//        code.append("inline\n");
-//        code.append("std::string\n");
-//        code.append("ccmDebug(const ").append(alias.getIdentifier()).append("& in, int indent = 0)\n");
-//        code.append("{\n");
-//        code.append(TAB).append("// TODO: use ccmDebug(const wamas::platform::utils::SmartPtr<wamas::platform::utils::Value>&)\n");
-//        code.append(TAB).append("// defined in ccm/CCM_Local/utils/Debug.h\n");
-//        code.append(TAB).append("std::ostringstream os;\n");
-//        code.append(TAB).append("os << \"").append(alias.getIdentifier()).append(" (alias wamas::platform::utils::Value)\";\n");
-//        code.append(TAB).append("return os.str();\n");
-//        code.append("}\n");        
-//        code.append("#endif\n");
-//        return code.toString();
-//    }
+    }    
 }

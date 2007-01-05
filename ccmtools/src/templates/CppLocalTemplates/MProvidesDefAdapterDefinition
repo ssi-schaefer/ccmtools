@@ -1,8 +1,10 @@
-SmartPtr< %(ProvidesType)s >
+%(ProvidesType)s::SmartPtr
 %(ComponentType)s::provide_%(Identifier)s()
 {
     if(!ValidConnection) 
+    {
         throw ::Components::InvalidConnection();
+    }
     return %(Identifier)s_facet;
 }
 

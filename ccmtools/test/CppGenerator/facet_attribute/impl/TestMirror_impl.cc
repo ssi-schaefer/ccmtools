@@ -18,7 +18,6 @@
 #include "TestMirror_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_Test_mirror - component implementation
@@ -33,15 +32,15 @@ TestMirror_impl::~TestMirror_impl()
 }
 
 void
-TestMirror_impl::set_session_context(::Components::SessionContext* context)
-    throw(::Components::CCMException)
+TestMirror_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
     ctx = dynamic_cast<CCM_TestMirror_Context*>(context);
 }
 
 void
 TestMirror_impl::ccm_activate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     {
       const long maxSize = 10;
@@ -66,14 +65,14 @@ TestMirror_impl::ccm_activate()
 
 void
 TestMirror_impl::ccm_passivate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 TestMirror_impl::ccm_remove()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

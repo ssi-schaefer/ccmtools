@@ -14,10 +14,7 @@
 #include <cassert>
 #include <iostream>
 
-#include <wamas/platform/utils/debug.h>
-#include <wamas/platform/utils/smartptr.h>
-
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <world/europe/TestHome_gen.h>
 
@@ -39,12 +36,13 @@ int main(int argc, char *argv[])
 
     try 
     {
-    		::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();	
-	    SmartPtr<world::europe::Test> myTest;
-    		SmartPtr<world::europe::IFace> facet;
+    		Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();	
+	    world::europe::Test::SmartPtr myTest;
+    		world::europe::IFace::SmartPtr facet;
     
-        SmartPtr< world::europe::TestHome> myTestHome(dynamic_cast< world::europe::TestHome*>
-            (homeFinder->find_home_by_name("TestHome").ptr()));
+        world::europe::TestHome::SmartPtr myTestHome(
+            dynamic_cast< world::europe::TestHome*>(
+                homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
         facet = myTest->provide_facet();
@@ -132,24 +130,24 @@ int main(int argc, char *argv[])
         
         myTest->remove();               
     } 
-    catch(::Components::HomeNotFound ) 
+    catch(Components::HomeNotFound& e) 
     {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch(::Components::NotImplemented& e ) 
+    catch(Components::NotImplemented& e) 
     {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         return -1;
     }  
-    catch(::Components::InvalidName& e ) 
+    catch(Components::InvalidName& e) 
     {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
-             << e.what (  ) << endl;
+             << e.what() << endl;
         return -1;
     }
-    catch ( ... )  
+    catch (...)  
     {
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         return -1;

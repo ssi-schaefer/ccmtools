@@ -17,7 +17,6 @@
 #include "TestMirror_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_TestMirror - component implementation
@@ -32,26 +31,28 @@ TestMirror_impl::~TestMirror_impl()
 }
 
 void
-TestMirror_impl::set_session_context(::Components::SessionContext* context)
-    throw(::Components::CCMException)
+TestMirror_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
     ctx = dynamic_cast<CCM_TestMirror_Context*>(context);
 }
 
 void
 TestMirror_impl::ccm_activate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     string s = "Salomon.Automation";
     long len =  ctx->get_connection_console()->println(s);
     assert(len == (long)s.length());
   
-    try {
+    try 
+    {
         string s = "Error";
         ctx->get_connection_console()->println(s);
         assert(0);
     }
-    catch(Error& e) {
+    catch(Error& e) 
+    {
         cout << "OK: error exception catched! ";
         cout << "(" 
 	     << e.info[0].code << ", " 
@@ -59,7 +60,8 @@ TestMirror_impl::ccm_activate()
 	     << endl;
     }
     
-    try {
+    try 
+    {
         string s = "SuperError";
         ctx->get_connection_console()->println(s);
         assert(0);
@@ -68,30 +70,33 @@ TestMirror_impl::ccm_activate()
       cout << "OK: super_error exception catched!" << endl;
     }
   
-    try {
+    try 
+    {
         string s = "FatalError";
         ctx->get_connection_console()->println(s);
         assert(0);
     }
-    catch(::Components::Exception& e) {
+    catch(Components::Exception& e) 
+    {
       // catch base class exception 
       cout << e.what() << endl;
     }
-    catch(FatalError& e) {
+    catch(FatalError& e) 
+    {
       cout << "OK: fatal_error exception catched!" << endl;
     }
 }
 
 void
 TestMirror_impl::ccm_passivate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 TestMirror_impl::ccm_remove()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

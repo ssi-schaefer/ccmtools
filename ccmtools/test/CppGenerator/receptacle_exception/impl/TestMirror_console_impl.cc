@@ -16,7 +16,6 @@
 #include "TestMirror_console_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 TestMirror_console_impl::TestMirror_console_impl(TestMirror_impl* component_impl)
   : component(component_impl)
@@ -31,7 +30,7 @@ TestMirror_console_impl::~TestMirror_console_impl()
 
 long
 TestMirror_console_impl::print(const std::string& msg)
-    throw (::Components::CCMException, SuperError, Error, FatalError )
+    throw (Components::CCMException, SuperError, Error, FatalError )
 {
     cout << ">> " << msg << endl;
 

@@ -18,8 +18,6 @@
 #include "Test_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
-
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -34,15 +32,15 @@ Test_impl::~Test_impl()
 }
 
 void
-Test_impl::set_session_context(::Components::SessionContext* context)
-    throw(::Components::CCMException)
+Test_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
 void
 Test_impl::ccm_activate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // basic types test cases
     long long_2=3, long_3, long_r;
@@ -60,14 +58,14 @@ Test_impl::ccm_activate()
 
 void
 Test_impl::ccm_passivate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 Test_impl::ccm_remove()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

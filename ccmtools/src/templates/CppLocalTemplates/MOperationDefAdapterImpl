@@ -3,8 +3,10 @@
 %(ExceptionThrows)s
 {
     if(!validConnection()) 
+    {
         throw ::Components::InvalidConnection();
-
+    }
+    
 %(OperationToFacetDelegation)s      
 
 %(OperationResult)s

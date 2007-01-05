@@ -20,8 +20,6 @@
 #include "MyObject.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
-
 
 //==============================================================================
 // CCM_Test_mirror - component implementation
@@ -36,17 +34,17 @@ TestMirror_impl::~TestMirror_impl (  )
 }
 
 void
-TestMirror_impl::set_session_context (::Components::SessionContext* context )
-  throw ( ::Components::CCMException )
+TestMirror_impl::set_session_context (Components::SessionContext* context )
+  throw ( Components::CCMException )
 {
   ctx = dynamic_cast<CCM_TestMirror_Context*> ( context );
 }
 
 void
 TestMirror_impl::ccm_activate (  )
-  throw ( ::Components::CCMException )
+  throw ( Components::CCMException )
 {
-  SmartPtr<CCM_TypeTest> type_test = ctx->get_connection_type_test();
+  CCM_TypeTest::SmartPtr type_test = ctx->get_connection_type_test();
 
   {
     // no types test case
@@ -184,15 +182,15 @@ TestMirror_impl::ccm_activate (  )
   // Test interface types
   {
     MyObject* my_object1 = new MyObject;
-    SmartPtr<Console> console1(my_object1);
+    Console::SmartPtr console1(my_object1);
     console1->prompt("prompt1> ");
 
     MyObject* my_object2 = new MyObject;
-    SmartPtr<Console> console2(my_object2);
+    Console::SmartPtr console2(my_object2);
     console2->prompt("prompt2> ");
 
-    SmartPtr<Console> console3;
-    SmartPtr<Console> console4;
+    Console::SmartPtr console3;
+    Console::SmartPtr console4;
 
     console4 = type_test->op_i1(console1,console2,console3);
 
@@ -204,13 +202,13 @@ TestMirror_impl::ccm_activate (  )
 
 void
 TestMirror_impl::ccm_passivate (  )
-  throw ( ::Components::CCMException )
+  throw ( Components::CCMException )
 {
 }
 
 void
 TestMirror_impl::ccm_remove (  )
-  throw ( ::Components::CCMException )
+  throw ( Components::CCMException )
 {
 }
 

@@ -1,4 +1,4 @@
-    wamas::platform::utils::SmartPtr< %(CCMUsesType)s> get_connection_%(Identifier)s()
+    %(CCMUsesType)s::SmartPtr get_connection_%(Identifier)s()
         throw(::Components::NoConnection);
 
         

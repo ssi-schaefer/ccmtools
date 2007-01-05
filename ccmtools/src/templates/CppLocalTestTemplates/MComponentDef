@@ -14,20 +14,19 @@
 #include <cassert>
 #include <iostream>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <%(HomeInclude)s_gen.h>
 #include <%(HomeInclude)sMirror_gen.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr< %(LocalNamespace)s%(Identifier)s > my%(Identifier)s;
-    SmartPtr< %(LocalNamespace)s%(Identifier)sMirror > my%(Identifier)sMirror;
+    %(LocalNamespace)s%(Identifier)s::SmartPtr my%(Identifier)s;
+    %(LocalNamespace)s%(Identifier)sMirror::SmartPtr my%(Identifier)sMirror;
 %(MProvidesDefVariable)s
 %(MProvidesDefCookie)s
 %(MUsesDefVariable)s
@@ -35,7 +34,7 @@ int main(int argc, char *argv[])
 
 
     int error = 0;
-    ::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
+    Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
     error  = deploy_%(AbsoluteLocalHomeName)s("%(HomeType)s");
     error += deploy_%(AbsoluteLocalHomeName)sMirror("%(HomeType)sMirror");	             
     if(error) 
@@ -47,13 +46,13 @@ int main(int argc, char *argv[])
 
     try 
     {
-        SmartPtr< %(LocalNamespace)s%(HomeType)s> my%(HomeType)s(
-            dynamic_cast< %(LocalNamespace)s%(HomeType)s*>
-            (homeFinder->find_home_by_name("%(HomeType)s").ptr()));
+        %(LocalNamespace)s%(HomeType)s::SmartPtr my%(HomeType)s(
+            dynamic_cast< %(LocalNamespace)s%(HomeType)s*>(
+                homeFinder->find_home_by_name("%(HomeType)s").ptr()));
 
-        SmartPtr< %(LocalNamespace)s%(HomeType)sMirror> 
-            my%(HomeType)sMirror(dynamic_cast< %(LocalNamespace)s%(HomeType)sMirror*>
-            (homeFinder->find_home_by_name("%(HomeType)sMirror").ptr()));
+        %(LocalNamespace)s%(HomeType)sMirror::SmartPtr my%(HomeType)sMirror(
+            dynamic_cast< %(LocalNamespace)s%(HomeType)sMirror*>(
+                homeFinder->find_home_by_name("%(HomeType)sMirror").ptr()));
 
         my%(Identifier)s = my%(HomeType)s->create();
         my%(Identifier)sMirror = my%(HomeType)sMirror->create();
@@ -73,17 +72,17 @@ int main(int argc, char *argv[])
         my%(Identifier)s->remove();
         my%(Identifier)sMirror->remove();
     } 
-    catch(::Components::HomeNotFound) 
+    catch(Components::HomeNotFound) 
     {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch(::Components::NotImplemented& e) 
+    catch(Components::NotImplemented& e) 
     {
         cout << "DEPLOYMENT ERROR: function not implemented: " << e.what() << endl;
         return -1;
     }  
-    catch(::Components::InvalidName& e) 
+    catch(Components::InvalidName& e) 
     {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " << e.what() << endl;
         return -1;
@@ -103,7 +102,7 @@ int main(int argc, char *argv[])
     }
     else
     {    
-        ::Components::HomeFinder::destroy(); // Clean up HomeFinder singleton
+        Components::HomeFinder::destroy(); // Clean up HomeFinder singleton
     }
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 }

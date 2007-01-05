@@ -15,12 +15,11 @@
 #include <iostream>
 #include <cmath>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <TestHome_gen.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 int main(int argc, char *argv[])
 {
@@ -36,11 +35,12 @@ int main(int argc, char *argv[])
 
   	try 
   	{
-  		::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
+  		Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
   		
-    		SmartPtr<Test> myTest;	
-    		SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*> (
+    		Test::SmartPtr myTest;	
+    		TestHome::SmartPtr myTestHome(dynamic_cast<TestHome*> (
     			homeFinder->find_home_by_name("TestHome").ptr()));
+    		
     		myTest = myTestHome->create();
     		myTest->configuration_complete();
     		
@@ -155,22 +155,22 @@ int main(int argc, char *argv[])
 
 	    myTest->remove();
   	} 
-  	catch ( ::Components::HomeNotFound ) 
+  	catch (Components::HomeNotFound) 
   	{
     		cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
     		return -1;
   	} 
-  	catch ( ::Components::NotImplemented& e ) 
+  	catch (Components::NotImplemented& e) 
   	{
-    		cout << "DEPLOYMENT ERROR: function not implemented: " << e.what (  ) << endl;
+    		cout << "DEPLOYMENT ERROR: function not implemented: " << e.what() << endl;
     		return -1;
   	} 
-  	catch ( ::Components::InvalidName& e ) 
+  	catch (Components::InvalidName& e) 
   	{
-    		cout << "DEPLOYMENT ERROR: invalid name during connection: " << e.what (  ) << endl;
+    		cout << "DEPLOYMENT ERROR: invalid name during connection: " << e.what() << endl;
     		return -1;
   	}
-  	catch ( ... )  
+  	catch (...)  
   	{
     		cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
     		return -1;

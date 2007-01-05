@@ -52,7 +52,6 @@ class %(ComponentType)s_%(Identifier)s_impl
 #include "%(ComponentType)s_%(Identifier)s_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 %(OpenNamespace)s
 

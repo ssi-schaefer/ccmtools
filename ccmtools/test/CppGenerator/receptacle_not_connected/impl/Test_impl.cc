@@ -17,7 +17,6 @@
 #include "Test_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_Test - component implementation
@@ -34,15 +33,15 @@ Test_impl::~Test_impl()
 }
 
 void
-Test_impl::set_session_context(::Components::SessionContext* context)
-    throw(::Components::CCMException)
+Test_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
     ctx = dynamic_cast<CCM_Test_Context*>(context);
 }
 
 void
 Test_impl::ccm_activate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
   try 
   {
@@ -50,7 +49,7 @@ Test_impl::ccm_activate()
     ctx->get_connection_console()->println(s);
     assert(false);
   }
-  catch(::Components::NoConnection& e) {
+  catch(Components::NoConnection& e) {
     cerr << "!! NoConnection exception: Receptacle console is not connected!" << endl;
   }
 }
@@ -64,7 +63,7 @@ Test_impl::ccm_passivate()
 
 void
 Test_impl::ccm_remove()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

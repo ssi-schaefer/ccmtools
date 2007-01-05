@@ -20,7 +20,6 @@
 
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // CCM_SuperTestMirror - component implementation
@@ -35,19 +34,20 @@ SuperTestMirror_impl::~SuperTestMirror_impl()
 }
 
 void
-SuperTestMirror_impl::set_session_context(::Components::SessionContext* context)
-    throw(::Components::CCMException)
+SuperTestMirror_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
     ctx = dynamic_cast<CCM_SuperTestMirror_Context*>(context);
 }
 
 void
 SuperTestMirror_impl::ccm_activate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     {
       // basic types test cases
-      SmartPtr<CCM_BasicTypeInterface> basicType = ctx->get_connection_basicType();
+      CCM_BasicTypeInterface::SmartPtr basicType = 
+          ctx->get_connection_basicType();
 
       {
 	short short_2=3, short_3, short_r;
@@ -143,7 +143,8 @@ SuperTestMirror_impl::ccm_activate()
 
     {
       // user types test cases
-      SmartPtr<CCM_UserTypeInterface> userType = ctx->get_connection_userType();
+      CCM_UserTypeInterface::SmartPtr userType = 
+          ctx->get_connection_userType();
       {
 	// Test case: enum Color {red, green, blue, black, orange}; 
 	Color Color_2,Color_3, Color_r;
@@ -322,14 +323,14 @@ SuperTestMirror_impl::ccm_activate()
 
 void
 SuperTestMirror_impl::ccm_passivate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 SuperTestMirror_impl::ccm_remove()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

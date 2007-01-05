@@ -1,5 +1,5 @@
     // Equivalent operations for facet %(Identifier)s
 
-    wamas::platform::utils::SmartPtr< %(ProvidesType)s> provide_%(Identifier)s();
+    %(ProvidesType)s::SmartPtr provide_%(Identifier)s();
 
 

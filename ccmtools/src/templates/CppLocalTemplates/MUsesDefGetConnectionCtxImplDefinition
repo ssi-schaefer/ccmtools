@@ -1,10 +1,10 @@
-SmartPtr< %(CCMUsesType)s >
+%(CCMUsesType)s::SmartPtr
 CCM_%(ComponentType)s_Context_impl::get_connection_%(Identifier)s()
     throw(::Components::NoConnection)
 {
-    SmartPtr< %(UsesType)s > r = 
+    %(UsesType)s::SmartPtr r = 
         component_local_adapter->get_connection_%(Identifier)s(); 
-    return SmartPtr< %(CCMUsesType)s >(dynamic_cast< %(CCMUsesType)s*>(r.ptr()));
+    return %(CCMUsesType)s::SmartPtr(dynamic_cast< %(CCMUsesType)s*>(r.ptr()));
 }
 
 

@@ -1,5 +1,5 @@
 typedef std::map< ::Components::Cookie, 
-                 wamas::platform::utils::SmartPtr< %(CCMUsesType)s> > %(Identifier)sConnections;
+                  %(CCMUsesType)s::SmartPtr> %(Identifier)sConnections;
 
 
 

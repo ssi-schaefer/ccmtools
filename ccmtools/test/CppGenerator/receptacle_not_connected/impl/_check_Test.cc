@@ -14,27 +14,23 @@
 #include <cassert>
 #include <iostream>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <TestHomeMirror_gen.h>
 #include <TestHome_gen.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<Test> myTest;
-    SmartPtr<TestMirror> myTestMirror;
-
-    SmartPtr< ::Components::Object> Test_uses_console;
-
-    ::Components::Cookie Test_ck_console;
+    Test::SmartPtr myTest;
+    TestMirror::SmartPtr myTestMirror;
+    Components::Object::SmartPtr Test_uses_console;
+    Components::Cookie Test_ck_console;
 
     int error = 0;
-    ::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
     error  = deploy_TestHome("TestHome");
     error += deploy_TestHomeMirror("TestHomeMirror");	
     if(error) 
@@ -45,11 +41,12 @@ int main(int argc, char *argv[])
 
     try 
     {
-        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
-            (homeFinder->find_home_by_name("TestHome").ptr()));
+	    Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
+        TestHome::SmartPtr myTestHome(dynamic_cast<TestHome*>(
+            homeFinder->find_home_by_name("TestHome").ptr()));
 
-        SmartPtr<TestHomeMirror>myTestHomeMirror(dynamic_cast<TestHomeMirror*>
-            (homeFinder->find_home_by_name("TestHomeMirror").ptr()));
+        TestHomeMirror::SmartPtr myTestHomeMirror(dynamic_cast<TestHomeMirror*>(
+            homeFinder->find_home_by_name("TestHomeMirror").ptr()));
 
         myTest = myTestHome->create();
         myTestMirror = myTestHomeMirror->create();
@@ -72,16 +69,16 @@ int main(int argc, char *argv[])
         myTestMirror->remove();
 
     } 
-    catch(::Components::HomeNotFound ) {
+    catch(Components::HomeNotFound ) {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch(::Components::NotImplemented& e ) {
+    catch(Components::NotImplemented& e ) {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         return -1;
     }  
-    catch(::Components::InvalidName& e ) 
+    catch(Components::InvalidName& e ) 
     {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;

@@ -14,24 +14,23 @@
 #include <cassert>
 #include <iostream>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <TestHome_gen.h>
 
 #include "ReceptacleObject.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<Test> myTest;
-    SmartPtr<IFace> iface;
+    Test::SmartPtr myTest;
+    IFace::SmartPtr iface;
 
     int error = 0;
-    ::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
+    Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
     error  = deploy_TestHome("TestHome");
     if(error) 
     {
@@ -41,29 +40,29 @@ int main(int argc, char *argv[])
 
     try 
     {
-        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
-            (homeFinder->find_home_by_name("TestHome").ptr()));
+        TestHome::SmartPtr myTestHome(dynamic_cast<TestHome*>(
+            homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
-		iface = SmartPtr<IFace>(new ReceptacleObject());
+		iface = IFace::SmartPtr(new ReceptacleObject());
         myTest->connect_iface(iface);
         myTest->configuration_complete();
         
         myTest->disconnect_iface();
         myTest->remove();
     } 
-    catch ( ::Components::HomeNotFound ) 
+    catch ( Components::HomeNotFound ) 
     {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch ( ::Components::NotImplemented& e ) 
+    catch ( Components::NotImplemented& e ) 
     {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         return -1;
     }  
-    catch ( ::Components::InvalidName& e ) 
+    catch ( Components::InvalidName& e ) 
     {	
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
@@ -80,7 +79,8 @@ int main(int argc, char *argv[])
     }
 
     error += undeploy_TestHome("TestHome");
-    if(error) {
+    if(error) 
+    {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
     }

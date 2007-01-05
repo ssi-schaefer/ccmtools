@@ -10,7 +10,8 @@
     facet = NULL;
 }
 
-%(ComponentType)sFacetAdapter%(Identifier)s::%(ComponentType)sFacetAdapter%(Identifier)s(%(ComponentType)s* c, CCM_%(ComponentType)s* lc)
+%(ComponentType)sFacetAdapter%(Identifier)s::%(ComponentType)sFacetAdapter%(Identifier)s(
+    %(ComponentType)s* c, CCM_%(ComponentType)s* lc)
     : component(c), local_component(lc)
 {
     ValidConnection = true;
@@ -29,11 +30,11 @@
 %(MOperationProvidesAdapterDefinition)s
 
 
-SmartPtr< ::Components::Object>
+::Components::Object::SmartPtr
 %(ComponentType)sFacetAdapter%(Identifier)s::get_component()
 {
-    return SmartPtr< ::Components::Object>
-        (dynamic_cast< ::Components::Object*> (component));
+    return ::Components::Object::SmartPtr
+        (dynamic_cast< ::Components::Object*>(component));
 };
 
 

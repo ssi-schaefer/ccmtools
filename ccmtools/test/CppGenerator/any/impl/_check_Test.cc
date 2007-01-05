@@ -17,7 +17,7 @@
 #include <wamas/platform/utils/Value.h>
 #include <wamas/platform/utils/value_simple.h>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <TestHome_gen.h>
 
@@ -38,12 +38,12 @@ int main(int argc, char *argv[])
 
     try 
     {
-		::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
-	    SmartPtr<Test> myTest;
-    		SmartPtr<AnyTest> test;
+		Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
+	    Test::SmartPtr myTest;
+    		AnyTest::SmartPtr test;
     		
-        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>
-            (homeFinder->find_home_by_name("TestHome").ptr()));
+        TestHome::SmartPtr myTestHome(dynamic_cast<TestHome*>(
+            homeFinder->find_home_by_name("TestHome").ptr()));
 
         myTest = myTestHome->create();
         test = myTest->provide_test();
@@ -123,24 +123,24 @@ int main(int argc, char *argv[])
 
         myTest->remove();
     } 
-    catch(::Components::HomeNotFound ) 
+    catch(Components::HomeNotFound& e) 
     {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch(::Components::NotImplemented& e ) 
+    catch(Components::NotImplemented& e) 
     {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         return -1;
     }  
-    catch(::Components::InvalidName& e ) 
+    catch(Components::InvalidName& e) 
     {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
-             << e.what (  ) << endl;
+             << e.what() << endl;
         return -1;
     }
-    catch ( ... )  
+    catch(...)  
     {
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         return -1;
@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
     }
         
     // Clean up HomeFinder singleton
-    ::Components::HomeFinder::destroy();
+    Components::HomeFinder::destroy();
     
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 }

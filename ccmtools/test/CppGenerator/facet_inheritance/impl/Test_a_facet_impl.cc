@@ -16,8 +16,6 @@
 #include "Test_a_facet_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
-
 
 Test_a_facet_impl::Test_a_facet_impl(Test_impl* component_impl)
   : component(component_impl)
@@ -32,42 +30,42 @@ Test_a_facet_impl::~Test_a_facet_impl()
 
 const long
 Test_a_facet_impl::attr3() const
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     return attr3_;
 }
 
 void
 Test_a_facet_impl::attr3(const long value)
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     attr3_ = value;
 }
 
 const long
 Test_a_facet_impl::attr2() const
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     return attr2_;
 }
 
 void
 Test_a_facet_impl::attr2(const long value)
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     attr2_ = value;
 }
 
 const long
 Test_a_facet_impl::attr1() const
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     return attr1_;
 }
 
 void
 Test_a_facet_impl::attr1(const long value)
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     attr1_ = value;
 }
@@ -75,7 +73,7 @@ Test_a_facet_impl::attr1(const long value)
 
 long
 Test_a_facet_impl::op3(const std::string& str)
-    throw (::Components::CCMException)
+    throw (Components::CCMException)
 {
     cout << str << endl;
     return str.length();
@@ -83,7 +81,7 @@ Test_a_facet_impl::op3(const std::string& str)
 
 long
 Test_a_facet_impl::op2(const std::string& str)
-    throw (::Components::CCMException)
+    throw (Components::CCMException)
 {
     cout << str << endl;
     return str.length();
@@ -91,7 +89,7 @@ Test_a_facet_impl::op2(const std::string& str)
 
 long
 Test_a_facet_impl::op1(const std::string& str)
-    throw (::Components::CCMException)
+    throw (Components::CCMException)
 {
     cout << str << endl;
     return str.length();

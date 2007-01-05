@@ -14,7 +14,7 @@
 #include <cassert>
 #include <iostream>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <SuperTestHomeMirror_gen.h>
 #include <SuperTestHome_gen.h>
@@ -24,25 +24,24 @@
 #include <assembly.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
-    SmartPtr<SuperTest> mySuperTest;
-    SmartPtr<SuperTestMirror> mySuperTestMirror;
-    SmartPtr< ::Components::Object> SuperTest_provides_basicType;
-    SmartPtr< ::Components::Object> SuperTest_provides_userType;
+    SuperTest::SmartPtr mySuperTest;
+    SuperTestMirror::SmartPtr mySuperTestMirror;
+    Components::Object::SmartPtr SuperTest_provides_basicType;
+    Components::Object::SmartPtr SuperTest_provides_userType;
 
-    ::Components::Cookie SuperTest_ck_basicType;
-    ::Components::Cookie SuperTest_ck_userType;
+    Components::Cookie SuperTest_ck_basicType;
+    Components::Cookie SuperTest_ck_userType;
 
-    SmartPtr< ::Components::Object> SuperTest_uses_innerBasicType;
-    SmartPtr< ::Components::Object> SuperTest_uses_innerUserType;
+    Components::Object::SmartPtr SuperTest_uses_innerBasicType;
+    Components::Object::SmartPtr SuperTest_uses_innerUserType;
 
-    ::Components::Cookie SuperTest_ck_innerBasicType;
-    ::Components::Cookie SuperTest_ck_innerUserType;
+    Components::Cookie SuperTest_ck_innerBasicType;
+    Components::Cookie SuperTest_ck_innerUserType;
 
     int error = 0;
     
@@ -50,7 +49,9 @@ int main(int argc, char *argv[])
     error  += deploy_BasicTestHome("BasicTestHome");
     error  += deploy_UserTestHome("UserTestHome");
 
-    SmartPtr< ::Components::AssemblyFactory> assembly_factory(new ::Components::AssemblyFactoryTemplate<Assembly>());
+    Components::AssemblyFactory::SmartPtr assembly_factory(
+    		new Components::AssemblyFactoryTemplate<Assembly>());
+    
     error += deploy_with_assembly_SuperTestHome("SuperTestHome", assembly_factory);
 
     error += deploy_SuperTestHomeMirror("SuperTestHomeMirror");	
@@ -62,12 +63,14 @@ int main(int argc, char *argv[])
 
     try 
     {
-    		::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
-        SmartPtr<SuperTestHome> mySuperTestHome(dynamic_cast<SuperTestHome*>
-            (homeFinder->find_home_by_name("SuperTestHome").ptr()));
+    		Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
+        SuperTestHome::SmartPtr 
+        		mySuperTestHome(dynamic_cast<SuperTestHome*>(
+                homeFinder->find_home_by_name("SuperTestHome").ptr()));
 
-        SmartPtr<SuperTestHomeMirror> mySuperTestHomeMirror(dynamic_cast<SuperTestHomeMirror*>
-            (homeFinder->find_home_by_name("SuperTestHomeMirror").ptr()));
+        SuperTestHomeMirror::SmartPtr 
+        		mySuperTestHomeMirror(dynamic_cast<SuperTestHomeMirror*>(
+                homeFinder->find_home_by_name("SuperTestHomeMirror").ptr()));
 
         mySuperTest = mySuperTestHome->create();
         mySuperTestMirror = mySuperTestHomeMirror->create();
@@ -88,24 +91,24 @@ int main(int argc, char *argv[])
       	mySuperTest->remove();
       	mySuperTestMirror->remove();
     } 
-    catch (::Components::HomeNotFound ) 
+    catch (Components::HomeNotFound& e) 
     {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch (::Components::NotImplemented& e ) 
+    catch (Components::NotImplemented& e) 
     {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
-	     << e.what (  ) << endl;
+	     << e.what() << endl;
         return -1;
     }  
-    catch (::Components::InvalidName& e ) 
+    catch (Components::InvalidName& e) 
     {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
-             << e.what (  ) << endl;
+             << e.what() << endl;
         return -1;
     }
-    catch ( ... )  
+    catch (...)  
     {
         cout << "DEPLOYMENT ERROR: there is something wrong!" << endl;
         return -1;

@@ -17,7 +17,6 @@
 #include "Test_iface_impl.h"
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 Test_iface_impl::Test_iface_impl(Test_impl* component_impl)
   : component(component_impl)
@@ -45,70 +44,70 @@ Test_iface_impl::~Test_iface_impl()
 
 bool
 Test_iface_impl::getBooleanValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::BOOLEAN_CONST;
 }
 
 unsigned char
 Test_iface_impl::getOctetValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::OCTET_CONST;
 }
 
 short
 Test_iface_impl::getShortValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::SHORT_CONST;
 }
 
 unsigned short
 Test_iface_impl::getUnsignedShortValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::USHORT_CONST;
 }
 
 long
 Test_iface_impl::getLongValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::LONG_CONST;
 }
 
 unsigned long
 Test_iface_impl::getUnsignedLongValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::ULONG_CONST;
 }
 
 char
 Test_iface_impl::getCharValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::CHAR_CONST;
 }
 
 std::string
 Test_iface_impl::getStringValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::STRING_CONST;
 }
 
 float
 Test_iface_impl::getFloatValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::FLOAT_CONST; 
 }
 
 double
 Test_iface_impl::getDoubleValue()
-throw(::Components::CCMException)
+throw(Components::CCMException)
 {
   return Constants::DOUBLE_CONST;
 }

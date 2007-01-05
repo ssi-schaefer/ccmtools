@@ -7,7 +7,7 @@
 #ifndef __EXCEPTION__%(PreprocIdentifier)s__H__
 #define __EXCEPTION__%(PreprocIdentifier)s__H__
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 %(MFieldDefInclude)s
 

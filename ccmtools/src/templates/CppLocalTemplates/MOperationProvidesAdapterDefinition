@@ -2,9 +2,11 @@
 FacetAdapter%(Object)s::%(Identifier)s(%(OperationParameterList)s)
 %(ExceptionThrows)s
 {
-    if(!ValidConnection) 
+    if(!ValidConnection)
+    { 
         throw ::Components::InvalidConnection();
-
+    }
+    
 %(OperationToFacetDelegation)s      
 
 %(OperationResult)s

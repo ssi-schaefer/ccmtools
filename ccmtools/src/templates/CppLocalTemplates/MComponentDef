@@ -14,7 +14,7 @@
 #include <string>
 #include <map>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <%(ComponentInclude)s_share.h>
 #include <%(HomeInclude)s_share.h>
@@ -43,9 +43,10 @@ class %(Identifier)s
       %(BaseType)s 	
 {
   public:
+    typedef wamas::platform::utils::SmartPtr<%(Identifier)s> SmartPtr;
+    
     %(Identifier)s(%(HomeType)s* h, 
-        %(LocalNamespace)sCCM_%(Identifier)s* lc,  
-        wamas::platform::utils::SmartPtr< ::Components::Assembly> a);
+        %(LocalNamespace)sCCM_%(Identifier)s* lc, ::Components::Assembly::SmartPtr a);
     virtual ~%(Identifier)s();
 
 %(MAttributeDefPrototype)s
@@ -54,14 +55,14 @@ class %(Identifier)s
 %(MUsesDefGetConnectionPrototype)s
 
     // Navigation functions
-    wamas::platform::utils::SmartPtr< ::Components::Object> 
+    ::Components::Object::SmartPtr 
     provide_facet(const std::string& name)
         throw(::Components::InvalidName);
 
     // Receptacle functions
     ::Components::Cookie 
     connect(const ::Components::FeatureName& name, 
-        wamas::platform::utils::SmartPtr< ::Components::Object> connection)
+        ::Components::Object::SmartPtr connection)
         throw(::Components::InvalidName, 
               ::Components::InvalidConnection,
               ::Components::AlreadyConnected, 
@@ -91,7 +92,7 @@ class %(Identifier)s
     %(HomeType)s* home_local_adapter;
     %(LocalNamespace)sCCM_%(Identifier)s* local_component;
     %(LocalNamespace)sCCM_%(Identifier)s_Context* context;
-    wamas::platform::utils::SmartPtr< ::Components::Assembly> assembly;
+    ::Components::Assembly::SmartPtr assembly;
     bool ValidConnection;
 
 %(MProvidesDefAdapterVariable)s
@@ -162,19 +163,15 @@ class CCM_%(Identifier)s_Context_impl
 %(OpenNamespace)s
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // local component adapter implementation
 //==============================================================================
 
 %(Identifier)s::%(Identifier)s(%(HomeType)s* h, 
-    %(LocalNamespace)sCCM_%(Identifier)s* lc,
-    SmartPtr< ::Components::Assembly> a)
+    %(LocalNamespace)sCCM_%(Identifier)s* lc, ::Components::Assembly::SmartPtr a)
     : %(MSupportsDefAdapterConstructor)s
-    home_local_adapter(h), 
-    local_component(lc), 
-    assembly(a)
+    home_local_adapter(h), local_component(lc), assembly(a)
 {
     context = NULL; 
     ValidConnection = true;
@@ -195,7 +192,7 @@ using namespace wamas::platform::utils;
 
 // Navigation functions
 
-wamas::platform::utils::SmartPtr< ::Components::Object>
+::Components::Object::SmartPtr
 %(Identifier)s::provide_facet(const std::string& name)
     throw(::Components::InvalidName)
 {
@@ -208,7 +205,7 @@ wamas::platform::utils::SmartPtr< ::Components::Object>
 
 ::Components::Cookie
 %(Identifier)s::connect(const ::Components::FeatureName& name, 
-                        SmartPtr< ::Components::Object> connection)
+                        ::Components::Object::SmartPtr connection)
     throw(::Components::InvalidName, 
           ::Components::InvalidConnection,
           ::Components::AlreadyConnected, 
@@ -237,7 +234,7 @@ void
 // CCMObject functions
 
 ::Components::HomeExecutorBase*
-%(Identifier)s::get_ccm_home (  )
+%(Identifier)s::get_ccm_home()
 {
     throw ::Components::NotImplemented();
 }
@@ -259,7 +256,8 @@ void
         throw ::Components::InvalidConnection();
     if(!context)
       context = ctx;
-    if(assembly != SmartPtr< ::Components::Assembly>()) { 
+    if(assembly != ::Components::Assembly::SmartPtr()) 
+    { 
         assembly->configuration_complete(); 
     }
     local_component->set_session_context(context);
@@ -277,11 +275,12 @@ void
     
 %(MProvidesDefImplRemove)s
 
-    if(assembly != SmartPtr< ::Components::Assembly>()) { 
+    if(assembly != ::Components::Assembly::SmartPtr()) 
+    { 
         assembly->tear_down(); 
         // To resolve a cyclic smart pointer reference between a component
         // and an assembly object, the assembly smart pointer must be cleaned.
-        assembly = SmartPtr< ::Components::Assembly>();
+        assembly = ::Components::Assembly::SmartPtr();
     }
     ValidConnection = false;
 }
@@ -334,7 +333,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 
 #include <map>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 %(MAttributeDefInclude)s
 %(MConstantDefInclude)s
@@ -356,6 +355,8 @@ class CCM_%(Identifier)s
     : virtual public ::Components::SessionComponent%(BaseType)s%(MSupportsDefBase)s
 {
   public:
+    typedef wamas::platform::utils::SmartPtr<CCM_%(Identifier)s> SmartPtr;
+    
     virtual ~CCM_%(Identifier)s() {}
     
 %(MAttributeDefPrototypeVV)s
@@ -374,6 +375,8 @@ class CCM_%(Identifier)s_Context
     : virtual public ::Components::SessionContext
 {
   public:
+    typedef wamas::platform::utils::SmartPtr<CCM_%(Identifier)s_Context> SmartPtr;  
+  
     virtual ~CCM_%(Identifier)s_Context() {}
     
 %(MUsesDefGetConnectionPrototypeVV)s
@@ -435,17 +438,17 @@ class %(Identifier)s_impl
 
     // CCM callback methods
 
-    virtual void set_session_context(::Components::SessionContext* ctx)
-        throw(::Components::CCMException);
+    virtual void set_session_context(Components::SessionContext* ctx)
+        throw(Components::CCMException);
 
     virtual void ccm_activate()
-        throw(::Components::CCMException);
+        throw(Components::CCMException);
 
     virtual void ccm_passivate()
-        throw(::Components::CCMException);
+        throw(Components::CCMException);
 
     virtual void ccm_remove()
-        throw(::Components::CCMException);
+        throw(Components::CCMException);
 };
 
 %(CloseNamespace)s
@@ -475,7 +478,6 @@ class %(Identifier)s_impl
 %(OpenNamespace)s
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 //==============================================================================
 // %(Identifier)s - component implementation
@@ -495,29 +497,29 @@ using namespace wamas::platform::utils;
 %(MSupportsDefImplDefinition)s
 
 void
-%(Identifier)s_impl::set_session_context(::Components::SessionContext* context)
-    throw(::Components::CCMException)
+%(Identifier)s_impl::set_session_context(Components::SessionContext* context)
+    throw(Components::CCMException)
 {
     ctx = dynamic_cast< %(LocalNamespace)sCCM_%(Identifier)s_Context* >(context);
 }
 
 void
 %(Identifier)s_impl::ccm_activate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 %(Identifier)s_impl::ccm_passivate()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }
 
 void
 %(Identifier)s_impl::ccm_remove()
-    throw(::Components::CCMException)
+    throw(Components::CCMException)
 {
     // OPTIONAL : IMPLEMENT ME HERE !
 }

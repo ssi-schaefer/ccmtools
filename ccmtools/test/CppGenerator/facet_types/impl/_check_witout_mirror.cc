@@ -14,19 +14,18 @@
 #include <cassert>
 #include <iostream>
 
-#include <Components/CCM.h>
+#include <Components/ccmtools.h>
 
 #include <TestHome_gen.h>
 
 using namespace std;
-using namespace wamas::platform::utils;
 
 int main(int argc, char *argv[])
 {
     cout << ">>>> Start Test Client: " << __FILE__ << endl;
 
     int error = 0;
-    ::Components::HomeFinder* homeFinder = ::Components::HomeFinder::Instance();
+    Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
 
     error = deploy_TestHome("TestHome");
     if(error) {
@@ -36,15 +35,16 @@ int main(int argc, char *argv[])
 
     try 
     {
-        SmartPtr<TestHome> myTestHome(dynamic_cast<TestHome*>(homeFinder->find_home_by_name("TestHome").ptr()));
+        TestHome::SmartPtr myTestHome(dynamic_cast<TestHome*>(
+        		homeFinder->find_home_by_name("TestHome").ptr()));
     		
-    		SmartPtr<Test> myTest;
+    		Test::SmartPtr myTest;
         myTest = myTestHome->create();
         
         myTest->configuration_complete();
 
 		{	        
-			SmartPtr<TypeTest> type_test;
+			TypeTest::SmartPtr type_test;
 			type_test = myTest->provide_type_test();
 			long long_2=3, long_3, long_r;
 			long_r = type_test->op_b2(7,long_2, long_3);
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 			assert(long_r == 3+7);
       	}
       	{	
-			SmartPtr<TypeTest> type_test;
+			TypeTest::SmartPtr type_test;
 			type_test = myTest->provide_type_test();
 			long long_2=3, long_3, long_r;
 			long_r = type_test->op_b2(7,long_2, long_3);
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 			assert(long_r == 3+7);
       	}
       	{	
-			SmartPtr<TypeTest> type_test;
+			TypeTest::SmartPtr type_test;
 			type_test = myTest->provide_type_test();
 			long long_2=3, long_3, long_r;
 			long_r = type_test->op_b2(7,long_2, long_3);
@@ -73,18 +73,18 @@ int main(int argc, char *argv[])
 
         myTest->remove();
     } 
-    catch ( ::Components::HomeNotFound ) 
+    catch ( Components::HomeNotFound ) 
     {
         cout << "DEPLOYMENT ERROR: can't find a home!" << endl;
         return -1;
     } 
-    catch ( ::Components::NotImplemented& e ) 
+    catch ( Components::NotImplemented& e ) 
     {
         cout << "DEPLOYMENT ERROR: function not implemented: " 
 	     << e.what (  ) << endl;
         return -1;
     }  
-    catch ( ::Components::InvalidName& e ) 
+    catch ( Components::InvalidName& e ) 
     {
         cout << "DEPLOYMENT ERROR: invalid name during connection: " 
              << e.what (  ) << endl;
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
         return error;
     }
 
-    ::Components::HomeFinder::destroy(); // Clean up HomeFinder singleton
+    Components::HomeFinder::destroy(); // Clean up HomeFinder singleton
 
     cout << ">>>> Stop Test Client: " << __FILE__ << endl;
 }
