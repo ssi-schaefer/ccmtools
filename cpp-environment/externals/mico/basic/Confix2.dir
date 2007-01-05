@@ -1,0 +1,24 @@
+# -*- python -*-
+
+PROVIDE_SYMBOL('MICO_BASIC')
+REQUIRE_SYMBOL('MICO_ENTRY', REQUIRED)
+
+PROVIDE_H('CORBA.h')
+
+ACINCLUDE_M4(
+    lines=['AC_DEFUN([CONFIX_MICO_BASIC], [AC_REQUIRE([CONFIX_MICO])])'],
+    flags=[PROPAGATE])
+
+CONFIGURE_AC(
+    lines=['CONFIX_MICO_BASIC'],
+    order=AC_LIBRARIES,
+    flags=[PROPAGATE])
+
+EXTERNAL_LIBRARY(
+
+    # note that these are AC_SUBST'ed by AC_PKG_MICO (which is called
+    # by the module in mico/entry/Makefile.py)
+
+    incpath=['@MICO_INCLUDE@'],
+    libs=['@MICO_LIB@']
+    )

@@ -1,2 +1,2 @@
 all: 
-	idl ${CCMTOOLS_HOME}/idl/Components/CCM.idl
+	idl ${CCMTOOLS_HOME}/idl/ccmtools/corba/Components/ccmtools.idl

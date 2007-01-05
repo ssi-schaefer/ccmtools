@@ -1,0 +1,19 @@
+/*
+    CoCo (confix configurator) input
+    which describes the installation
+    of this package version
+*/
+package wx_toolsbox
+{
+    /*
+        installation in Unix systems (and cygwin)
+    */
+    installation Unix
+    {
+        // installs the package with confix
+        install
+        {
+            confix "--boo --configu --make --targets=install";
+        }
+    }
+}

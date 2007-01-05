@@ -1,0 +1,4 @@
+# -*- python -*-
+
+PACKAGE_NAME('mico')
+PACKAGE_VERSION('0.1.0')

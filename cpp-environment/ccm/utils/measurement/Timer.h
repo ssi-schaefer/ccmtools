@@ -10,9 +10,10 @@
 namespace ccmtools {
 namespace utils {
 
-    class Timer
-    {
-    public:
+class Timer
+{
+  public:
+
 	Timer();
 	virtual ~Timer() {}
 	
@@ -61,10 +62,10 @@ namespace utils {
 	clock_t realTimeStop;
 	clock_t userTimeStop;
 	clock_t systemTimeStop;
-    };
+};
     
-    std::ostream&
-    operator<<(std::ostream& o, const Timer& value);
+std::ostream&
+operator<<(std::ostream& o, const Timer& value);
     
 } // /namespace utils
 } // /namespace ccmtools

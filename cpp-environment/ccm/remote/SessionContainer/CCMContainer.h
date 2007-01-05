@@ -36,8 +36,8 @@
 #include <map>
 #include <string>
 
-#include <Components/CCM.h>
-#include <ccmtools/corba/Components/CCM.h>
+#include <Components/ccmtools.h>
+#include <ccmtools/corba/Components/ccmtools.h>
 
 #ifdef __WGCC
     #if defined _BUILDING_CCM_RUNTIME_

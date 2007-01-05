@@ -1,7 +1,7 @@
 #ifndef __HOME_FINDER__CC__
 #define __HOME_FINDER__CC__
 
-#include "CCM.h"
+#include "ccmtools.h"
 
 namespace Components {
 
@@ -28,7 +28,7 @@ HomeFinder::destroy()
 }
 
 
-wamas::platform::utils::SmartPtr<CCMHome> 
+CCMHome::SmartPtr 
 HomeFinder::find_home_by_name(const std::string& name)
 	throw(HomeNotFound) 
 {
@@ -36,7 +36,7 @@ HomeFinder::find_home_by_name(const std::string& name)
 	it = HomePool.find(name);
 	if(it == HomePool.end())
 	{
-		throw ::Components::HomeNotFound();
+		throw HomeNotFound();
 	}
 	else
 	{
@@ -45,7 +45,7 @@ HomeFinder::find_home_by_name(const std::string& name)
 }
 
 
-wamas::platform::utils::SmartPtr<CCMHome> 
+CCMHome::SmartPtr  
 HomeFinder::find_home_by_component_type(const std::string& comp_repid)
 	throw(HomeNotFound)
 {
@@ -53,7 +53,7 @@ HomeFinder::find_home_by_component_type(const std::string& comp_repid)
 }
 
 
-wamas::platform::utils::SmartPtr<CCMHome> 
+CCMHome::SmartPtr  
 HomeFinder::find_home_by_type(const std::string& home_repid)
 	throw(HomeNotFound)
 {
@@ -62,22 +62,22 @@ HomeFinder::find_home_by_type(const std::string& home_repid)
 
 
 void
-HomeFinder::register_home(SmartPtr< ::Components::CCMHome> home_ref, const string& home_name)
+HomeFinder::register_home(CCMHome::SmartPtr home_ref, const string& home_name)
 {
-	if(home_ref == SmartPtr< ::Components::CCMHome>())
+	if(home_ref == CCMHome::SmartPtr())
 	{
-		throw ::Components::HomeNotFound();
+		throw HomeNotFound();
 	}
 	HomePool.insert(make_pair(home_name,home_ref));
 }
 
 void
-HomeFinder::unregister_home(SmartPtr< ::Components::CCMHome> home_ref)
+HomeFinder::unregister_home(CCMHome::SmartPtr home_ref)
 {
 	HomePoolMap::iterator it;
 	for(it = HomePool.begin(); it != HomePool.end();) 
 	{
-		if(it->second ==  home_ref) 
+		if(it->second == home_ref) 
 		{
 			HomePool.erase(it++);
 		}
@@ -95,7 +95,7 @@ HomeFinder::unregister_home(const string& home_name)
 	pos = HomePool.find(home_name);
 	if(pos == HomePool.end())
 	{
-		throw ::Components::HomeNotFound();
+		throw HomeNotFound();
 	}
 	else
 	{

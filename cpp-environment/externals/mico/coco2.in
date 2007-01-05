@@ -1,0 +1,19 @@
+/*
+    CoCo2 (confix configurator V2) input
+    which describes the installation
+    of this package
+*/
+package mico
+{
+    /*
+        installation in Unix systems (and cygwin)
+    */
+    installation Unix
+    {
+        // installs the package with confix
+        install
+        {
+            confix "--boo --configu --make --targets=install";
+        }
+    }
+}

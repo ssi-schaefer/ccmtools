@@ -1,0 +1,10 @@
+aclocal.m4
+Makefile.am
+acinclude.m4
+configure
+config.h.in
+Makefile.in
+configure.ac
+ccm-externals.repo
+autom4te.cache
+confix-admin
