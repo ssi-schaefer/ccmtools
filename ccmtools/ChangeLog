@@ -1,6 +1,24 @@
 HEAD
 ============================================================================
 
+RELEASE-0.8.2 (January 8, 2007)
+RELEASE-0.8.1 (December 21, 2006) 
+----------------------------------------------------------------------------
+*) Refactoring: Namespaces
+	Changed generated namespaces of C++ components to support the same schema 
+	as used in the cpp-environment.
+	+ Removed ccm::local namespace from local interfaces.
+	+ Added ccmtools::corba to IDL2 artefacts.
+	+ Changed ccm:remote namespace to ccmtools::remote namespace.
+	+ Changed the namespace order from e.g. world::ccmtools::remote 
+	  to ccmtools::remote::world.
+	
+*) Refactoring: typedef SmartPtr<class> SmartPtr
+	Added generation of "typedef SmartPtr<class> SmartPtr" for interfaces.
+	
+*) Refactoring: Prefix of generated directories
+	Changed the prefix of generated directories from CCM_ to GEN_
+		
 
 RELEASE-0.8.0 (November 30, 2006)
 ----------------------------------------------------------------------------

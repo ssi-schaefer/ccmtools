@@ -1,3 +1,28 @@
+BRANCH-0.8
+============================================================================
+
+RELEASE-0.8.2 (January 8, 2007)
+RELEASE-0.8.1 (December 21, 2006) 
+----------------------------------------------------------------------------
+*) Refactoring: Namespaces
+	+ Removed ccm::local namespace from local Components interfaces.
+	+ Added ccmtools::corba to IDL Components interfaces.
+	+ Changed ccm:remote namespace to ccmtools::remote namespace.
+	+ Changed the namespace order from e.g. world::ccmtools::remote 
+	  to ccmtools::remote::world.
+
+*) Refactoring: CCM.h
+	+ Moved all implementations in separate *.cc files.
+	+ Added "typedef SmartPtr<class> SmartPtr" to each C++ class. 
+	+ Changed the name from CCM.h to ccmtools.h
+	+ Changed the name from CCM.idl to ccmtools.idl
+	
+*) Refactoring: HomeFinder
+	Implemented HomeFinder singleton within the Components namespace.
+	
+
+BRANCH-0.7
+============================================================================
 
 RELEASE-0.7.6 (, 2006)
 ----------------------------------------------------------------------------
@@ -8,10 +33,6 @@ RELEASE-0.7.6 (, 2006)
 	Added _CCM_EXPORT_DECL_ Makro to HomeFinder.h and CCMContainer.h which
 	uses static attributes.
 
-
-
-BRANCH-0.7
-============================================================================
 
 RELEASE-0.7.3 (October 16, 2006)
 ----------------------------------------------------------------------------
