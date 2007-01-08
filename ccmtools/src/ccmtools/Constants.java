@@ -23,15 +23,15 @@ package ccmtools;
 public class Constants 
 {
     public static final String PACKAGE  = "ccmtools";
-    public static final String VERSION  = "0.8.2";
+    public static final String VERSION  = "0.8.3";
     public static final String CPP_PATH = "cpp";
 
     public static final String  CCMTOOLS_VERSION_TEXT = "CCM Tools version " + Constants.VERSION;
 
     public static final String  CCMTOOLS_COPYRIGHT_TEXT = 
-        "Copyright (C) 2002 - 2006 Salomon Automation \n"   +
-        "The CCM Tools library is distributed under the \n" +
-        "terms of the GNU Lesser General Public License.";
+        "Copyright (C) 2002 - 2007 ccmtools.sourceforge.net \n"   +
+        "This framework is distributed under the terms of\n" +
+        "the GNU Lesser General Public License.";
 
     public static final String  VERSION_TEXT = CCMTOOLS_VERSION_TEXT + "\n" + CCMTOOLS_COPYRIGHT_TEXT;
     
