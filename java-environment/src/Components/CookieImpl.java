@@ -2,52 +2,58 @@ package Components;
 
 import java.util.Arrays;
 
+
 public class CookieImpl
-    extends Cookie
+	implements Cookie
 {
-	private static final long serialVersionUID = 8713831906953804415L;
-	private static int nextId = 0;
+	private static long nextId = 0L;
+	private final byte[] cookieValue;
 	
 	public CookieImpl()
 	{
 		this(++nextId);
 	}
 	
-	public CookieImpl(int id)
-    {
-		CookieValue = new byte[4];
-		CookieValue[0] = (byte)(id & 0xff);
-		CookieValue[1] = (byte)(id & 0xff00);
-		CookieValue[2] = (byte)(id & 0xff0000);
-		CookieValue[3] = (byte)(id & 0xff000000);
-    }
+	public CookieImpl(long id)
+	{
+		cookieValue = new byte[4];
+		cookieValue[0] = (byte)(id & 0xff);
+		cookieValue[1] = (byte)(id & 0xff00);
+		cookieValue[2] = (byte)(id & 0xff0000);
+		cookieValue[3] = (byte)(id & 0xff000000);
+	}
 	
 	public CookieImpl(byte[] value)
     {		
-		CookieValue = new byte[value.length];
+		cookieValue = new byte[value.length];
 		for(int i=0; i < value.length; i++)
 		{
-			CookieValue[i] = value[i];
+			cookieValue[i] = value[i];
 		}
+	}
+	
+	public byte[] getCookieValue()
+	{
+		return cookieValue;
 	}
 
     public boolean equals(Object obj) 
     {
-    		if (obj instanceof Cookie) 
+    		if (obj instanceof CookieImpl) 
     		{
-    			byte[] value = ((Cookie)obj).CookieValue;
-    			return Arrays.equals(CookieValue,value);
+    			byte[] value = ((CookieImpl)obj).getCookieValue();
+    			return Arrays.equals(getCookieValue(),value);
     		}
     		return false;
     }
     
     public int hashCode() 
     {
-    		return Arrays.hashCode(CookieValue);
+    		return Arrays.hashCode(getCookieValue());
     }
     
     public String toString()
     {
-    		return Arrays.toString(CookieValue);
+    		return Arrays.toString(getCookieValue());
     }
 }
