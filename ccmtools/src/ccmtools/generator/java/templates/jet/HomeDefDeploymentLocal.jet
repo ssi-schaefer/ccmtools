@@ -13,12 +13,12 @@ package <%=home.generateJavaNamespace()%>;
 
 import java.util.logging.Logger;
 
-import Components.ccm.local.CCMHome;
-import Components.ccm.local.CCMException;
-import Components.ccm.local.AssemblyFactory;
+import Components.CCMHome;
+import Components.CCMException;
+import Components.AssemblyFactory;
+import Components.HomeFinder;
 
-import ccm.local.HomeFinder;
-import ccm.local.ServiceLocator;
+import ccmtools.local.ServiceLocator;
 
 
 public class <%=home.getIdentifier()%>Deployment 

@@ -12,6 +12,6 @@
 package <%=home.generateJavaNamespace()%>;
                  
 public interface <%=home.generateCcmIdentifier()%>Explicit 
-    extends Components.ccm.local.HomeExecutorBase
+    extends Components.HomeExecutorBase
 {
 }

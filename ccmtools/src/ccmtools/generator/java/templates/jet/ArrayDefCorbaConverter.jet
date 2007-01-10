@@ -11,7 +11,7 @@
  
 package <%=array.generateJavaRemoteNamespace()%>;
 
-import ccm.local.CorbaConverterException;
+import ccmtools.local.CorbaConverterException;
 
 public class <%=array.getIdentifier()%>CorbaConverter
 {

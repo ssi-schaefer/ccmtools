@@ -3,10 +3,10 @@ package client;
 import java.util.List;
 import java.util.ArrayList;
 
-import Components.ccm.local.CCMException;
+import Components.CCMException;
 
-import world.ccm.local.*;
-import world.europe.ccm.local.*;
+import world.*;
+import world.europe.*;
 
 public class MyUserTypeImpl
     implements UserTypeInterface

@@ -6,5 +6,5 @@
         else if(name.equals("<%=uses.getIdentifier()%>"))
         {
             connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteIdlName()%>Helper.narrow(obj));
-            return new Components.CookieImpl();
+            return new ccmtools.corba.Components.CookieImpl();
         }

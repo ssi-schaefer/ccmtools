@@ -12,7 +12,7 @@
 package <%=iface.generateJavaRemoteNamespace()%>;
                  
 import java.util.logging.Logger;
-import ccm.local.ServiceLocator;
+import ccmtools.local.ServiceLocator;
 
 import org.omg.CORBA.BAD_OPERATION;
 

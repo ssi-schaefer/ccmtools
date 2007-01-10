@@ -44,7 +44,7 @@ public class ParameterDef
 		if(getDirection() == PassingDirection.INOUT
 				|| getDirection() == PassingDirection.OUT)
 		{
-			importStatements.add("ccm.local.Holder");
+			importStatements.add("Components.Holder");
 		}
 		return importStatements;
 	}

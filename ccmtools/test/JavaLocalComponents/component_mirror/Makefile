@@ -25,17 +25,18 @@ local: idl3mirror metainf
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
 build: 
-	cp impl/Client.java ${DEST_DIR}/src/
-	cp impl/TestImpl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/TestMirrorImpl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/TestinPortImpl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/TestMirrorsinglePortImpl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/TestMirrormultiPort0Impl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/TestMirrormultiPort1Impl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/TestMirrormultiPort2Impl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
 
-check: build
+check: 
+	cp impl/Client.java ${DEST_DIR}/src/
+	cp impl/TestImpl.java ${DEST_DIR}/src/world/
+	cp impl/TestMirrorImpl.java ${DEST_DIR}/src/world/
+	cp impl/TestinPortImpl.java ${DEST_DIR}/src/world/
+	cp impl/TestMirrorsinglePortImpl.java ${DEST_DIR}/src/world/
+	cp impl/TestMirrormultiPort0Impl.java ${DEST_DIR}/src/world/
+	cp impl/TestMirrormultiPort1Impl.java ${DEST_DIR}/src/world/
+	cp impl/TestMirrormultiPort2Impl.java ${DEST_DIR}/src/world/
+	ant -f ./build.xml
 	bin/runClient
 
 clean: 

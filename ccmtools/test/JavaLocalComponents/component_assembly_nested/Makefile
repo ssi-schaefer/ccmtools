@@ -17,12 +17,15 @@ local: idl3
 
 	ccmjava -app -o ${DEST_DIR}/src ${INCLUDE} ${IDL3_DIR}/component/world/*.idl
 
+build:
+	ant -f ./build.xml
+
 check: 
 	cp impl/Assembly.java ${DEST_DIR}/src/world/
-	cp impl/SuperTestbasicTypeImpl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/SuperTestuserTypeImpl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/BasicTestbasicTypeImpl.java ${DEST_DIR}/src/world/ccm/local/
-	cp impl/UserTestuserTypeImpl.java ${DEST_DIR}/src/world/ccm/local/
+	cp impl/SuperTestbasicTypeImpl.java ${DEST_DIR}/src/world/
+	cp impl/SuperTestuserTypeImpl.java ${DEST_DIR}/src/world/
+	cp impl/BasicTestbasicTypeImpl.java ${DEST_DIR}/src/world/
+	cp impl/UserTestuserTypeImpl.java ${DEST_DIR}/src/world/
 	cp impl/Client.java ${DEST_DIR}/src/
 	ant -f ./build.xml
 	bin/runClient

@@ -16,18 +16,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 
-import Components.ccm.local.AlreadyConnected;
-import Components.ccm.local.Cookie;
-import Components.ccm.local.CookieImpl;
-import Components.ccm.local.CCMException;   
-import Components.ccm.local.ExceededConnectionLimit;
-import Components.ccm.local.InvalidConfiguration;
-import Components.ccm.local.InvalidConnection;
-import Components.ccm.local.NoConnection;
-import Components.ccm.local.RemoveFailure;
+import Components.AlreadyConnected;
+import Components.Cookie;
+import Components.CookieImpl;
+import Components.CCMException;   
+import Components.ExceededConnectionLimit;
+import Components.InvalidConfiguration;
+import Components.InvalidConnection;
+import Components.NoConnection;
+import Components.RemoveFailure;
 
-import ccm.local.ServiceLocator;
-import ccm.remote.CCMSessionContainer;
+import ccmtools.local.ServiceLocator;
+import ccmtools.remote.CCMSessionContainer;
 
 import org.omg.PortableServer.Servant;
 import org.omg.CORBA.BAD_OPERATION;
@@ -176,14 +176,14 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
      * interface.
      */
     
-    public Components.CCMHome get_ccm_home()
+    public ccmtools.corba.Components.CCMHome get_ccm_home()
     {
         logger.fine("");
         return container.getCorbaHome();
     }
 
     public void configuration_complete()
-        throws Components.InvalidConfiguration
+        throws ccmtools.corba.Components.InvalidConfiguration
     {
         logger.fine("");
         try
@@ -193,20 +193,20 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         catch(InvalidConfiguration e)
         {
             e.printStackTrace();
-            throw new Components.InvalidConfiguration();
+            throw new ccmtools.corba.Components.InvalidConfiguration();
         }
     }
 
     public void remove()
-        throws Components.RemoveFailure
+        throws ccmtools.corba.Components.RemoveFailure
     {
         logger.fine("");
         try
         {
             if(localInterface == null)
             {
-                throw new Components.RemoveFailure("Can't remove component because its " 
-                       + "local reference is null!");
+                throw new ccmtools.corba.Components.RemoveFailure(
+                    "Can't remove component because its local reference is null!");
             }
             else
             {
@@ -216,7 +216,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         catch(RemoveFailure e)
         {
         	    e.printStackTrace();
-            throw new Components.RemoveFailure(e.getMessage());
+            throw new ccmtools.corba.Components.RemoveFailure(e.getMessage());
         }
     }
     
@@ -227,12 +227,12 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
      */
 
     public org.omg.CORBA.Object provide_facet(String name) 
-        throws Components.InvalidName
+        throws ccmtools.corba.Components.InvalidName
     {
         logger.fine("");	
         if(name == null)
         {
-            throw new Components.InvalidName();
+            throw new ccmtools.corba.Components.InvalidName();
         }
 <%		
 for(Iterator i = component.getFacet().iterator(); i.hasNext();) 
@@ -245,7 +245,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 %>
         else
         {
-            throw new Components.InvalidName();
+            throw new ccmtools.corba.Components.InvalidName();
         }
     }
 
@@ -255,16 +255,16 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
      * interface.
      */
      
-    public Components.Cookie connect(String name, org.omg.CORBA.Object obj) 
-        throws Components.InvalidName, 
-        Components.InvalidConnection, 
-        Components.AlreadyConnected, 
-        Components.ExceededConnectionLimit
+    public ccmtools.corba.Components.Cookie connect(String name, org.omg.CORBA.Object obj) 
+        throws ccmtools.corba.Components.InvalidName, 
+        ccmtools.corba.Components.InvalidConnection, 
+        ccmtools.corba.Components.AlreadyConnected, 
+        ccmtools.corba.Components.ExceededConnectionLimit
     {
         logger.fine("name = " + name + ", obj = " + obj);
         if(name == null) 
         {
-            throw new Components.InvalidName("connection name is null!");
+            throw new ccmtools.corba.Components.InvalidName("connection name is null!");
         }
 <%		
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
@@ -277,20 +277,20 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 %>
         else
         {
-            throw new Components.InvalidName(name);
+            throw new ccmtools.corba.Components.InvalidName(name);
         }	
     }
 
-    public void disconnect(String name, Components.Cookie ck) 
-        throws Components.InvalidName, 
-        Components.InvalidConnection, 
-        Components.CookieRequired, 
-        Components.NoConnection
+    public void disconnect(String name, ccmtools.corba.Components.Cookie ck) 
+        throws ccmtools.corba.Components.InvalidName, 
+        ccmtools.corba.Components.InvalidConnection, 
+        ccmtools.corba.Components.CookieRequired, 
+        ccmtools.corba.Components.NoConnection
     {
         logger.fine("name = " + name + ", ck = " + ck);
         if(name == null)
         {
-            throw new Components.InvalidName("connection name is null!");
+            throw new ccmtools.corba.Components.InvalidName("connection name is null!");
         }
 <%		
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
@@ -303,7 +303,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 %>
         else
         {
-            throw new Components.InvalidName(name);
+            throw new ccmtools.corba.Components.InvalidName(name);
         }	
     }
 }

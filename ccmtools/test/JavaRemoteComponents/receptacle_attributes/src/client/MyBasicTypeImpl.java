@@ -1,9 +1,9 @@
 package client;
 
-import Components.ccm.local.CCMException;
+import Components.CCMException;
 
-import world.ccm.local.*;
-import world.europe.ccm.local.*;
+import world.*;
+import world.europe.*;
 
 public class MyBasicTypeImpl
     implements BasicTypeInterface

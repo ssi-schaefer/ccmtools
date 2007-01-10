@@ -158,4 +158,24 @@ public class ConfigurationLocator
         namespaceList.add("local");
         return namespaceList;
     }
+
+    
+    public List<String> getJavaLocalNamespaceExtension()
+    {
+        List<String> namespaceList = new ArrayList<String>();        
+        // TODO: Read these informations from a property file
+        namespaceList.add("ccmtools");
+        namespaceList.add("local");
+        return namespaceList;
+    }
+
+    public List<String> getJavaRemoteNamespaceExtension()
+    {
+        List<String> namespaceList = new ArrayList<String>();        
+        // TODO: Read these informations from a property file
+        namespaceList.add("ccmtools");
+        namespaceList.add("remote");
+        return namespaceList;
+    }
+
 }

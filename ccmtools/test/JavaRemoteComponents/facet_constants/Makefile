@@ -5,7 +5,7 @@ INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
 all: metainf remote clientlib
 
-test: metainf remote clientlib check_local check clean 
+test: metainf remote clientlib check clean 
 
 idl3: Test.idl
 	ccmmodel -validator Test.idl
@@ -33,13 +33,12 @@ clientlib: idl3
 	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/europe/Test*.idl
 
 build:
-	cp impl/TestifaceImpl.java ${DEST_DIR}/src/world/europe/ccm/local/
 	ant -f ./build.xml
 
-check_local: build 
+check:
+	cp impl/TestifaceImpl.java ${DEST_DIR}/src/world/europe/
+	ant -f ./build.xml
 	bin/runLocalClient
-
-check: build
 	bin/runClient
 
 clean: 

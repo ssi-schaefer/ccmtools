@@ -10,12 +10,13 @@
  * @version
  */
 
-package world.europe.austria.ccm.local;
+package world.europe.austria;
 
 import java.util.List;                 
 import java.util.ArrayList;                 
-import Components.ccm.local.*;
- 
+
+import Components.*;
+
 /** 
  * This class implements a component facet's methods.
  *
@@ -25,12 +26,12 @@ import Components.ccm.local.*;
  * @version
  */
 public class TestifaceImpl 
-    implements world.europe.austria.ccm.local.CCM_IFace
+    implements CCM_IFace
 {
     /** Reference to the facet's component implementation */
-    private world.europe.austria.ccm.local.TestImpl component;
+    private world.europe.austria.TestImpl component;
 
-    public TestifaceImpl(world.europe.austria.ccm.local.TestImpl component)
+    public TestifaceImpl(TestImpl component)
     {
         this.component = component;
     }
@@ -40,27 +41,23 @@ public class TestifaceImpl
     /** Business logic implementations */
    
     
-    public int foo(String msg)
-        throws CCMException, 
-	       FatalError, 
-	       SuperError, 
-	       ErrorException
+    public int foo(String msg) throws CCMException, FatalError, SuperError, ErrorException
     {
-	if(msg.equals("Error"))
-	{
-	    ErrorInfo errorInfo = new ErrorInfo(7, "A simple error!");
-	    List<ErrorInfo> errorInfoList = new ArrayList<ErrorInfo>();
-	    errorInfoList.add(errorInfo);
-	    throw new ErrorException(errorInfoList);
-	}
-	
-	if(msg.equals("SuperError"))
-	    throw new SuperError();
-	
-	if(msg.equals("FatalError"))
-	    throw new FatalError();
-	
-	return msg.length();
-    }    
+        if (msg.equals("Error"))
+        {
+            ErrorInfo errorInfo = new ErrorInfo(7, "A simple error!");
+            List<ErrorInfo> errorInfoList = new ArrayList<ErrorInfo>();
+            errorInfoList.add(errorInfo);
+            throw new ErrorException(errorInfoList);
+        }
+
+        if (msg.equals("SuperError"))
+            throw new SuperError();
+
+        if (msg.equals("FatalError"))
+            throw new FatalError();
+
+        return msg.length();
+    }
 
 }

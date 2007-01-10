@@ -1,9 +1,9 @@
 package client;
 
-import Components.ccm.local.CCMException;
+import Components.CCMException;
 
 public class MySubTypeImpl
-    implements world.america.ccm.local.SubType
+    implements world.america.SubType
 {
     private int attr1;
     private int attr2;
@@ -75,4 +75,4 @@ public class MySubTypeImpl
         System.out.println("MySubTypeImpl.op3()");
         return str.length();
     }
-};
+}

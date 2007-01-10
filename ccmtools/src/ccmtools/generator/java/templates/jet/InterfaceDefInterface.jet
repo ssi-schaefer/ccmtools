@@ -11,7 +11,7 @@
 
 package <%= iface.generateJavaNamespace() %>;
 
-import Components.ccm.local.CCMException;             
+import Components.CCMException;             
 <%=iface.generateJavaImportStatements()%> 
  
 /** 

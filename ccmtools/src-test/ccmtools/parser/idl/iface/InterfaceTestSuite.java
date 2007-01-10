@@ -12,6 +12,8 @@ public class InterfaceTestSuite
         
         suite.addTest(InterfaceDefinedInTest.suite());
         
+        suite.addTest(InterfaceConstantsTest.suite());
+        
         suite.addTest(InterfaceHeaderTest.suite());
         suite.addTest(InterfaceBodyTest.suite());
         suite.addTest(InterfaceForwardDeclarationTest.suite());

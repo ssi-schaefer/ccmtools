@@ -17,7 +17,7 @@ public class UsesDefMultipleReceptacleConnectMethodAdapterFromCorbaTemplate
   protected final String TEXT_1 = "        else if(name.equals(\"";
   protected final String TEXT_2 = "\"))" + NL + "        {" + NL + "            connect_";
   protected final String TEXT_3 = "(";
-  protected final String TEXT_4 = "Helper.narrow(obj));" + NL + "            return new Components.CookieImpl();" + NL + "        }";
+  protected final String TEXT_4 = "Helper.narrow(obj));" + NL + "            return new ccmtools.corba.Components.CookieImpl();" + NL + "        }";
   protected final String TEXT_5 = NL;
 
   public String generate(Object argument)

@@ -1,9 +1,9 @@
 import java.util.List;
 import java.util.ArrayList;
 
-import world.europe.austria.ccm.local.*;
-import Components.ccm.local.*;
-import ccm.local.*;
+import world.europe.austria.*;
+import Components.*;
+import ccmtools.local.ServiceLocator;
 
 import java.util.logging.*;
 
@@ -16,9 +16,9 @@ public class Client
 	    logger.setLevel(Level.FINE);	    
 	    Handler handler = new ConsoleHandler();
 	    handler.setLevel(Level.ALL);
-	    handler.setFormatter(new ccm.local.MinimalFormatter());
+	    handler.setFormatter(new ccmtools.utils.SimpleFormatter());
 	    logger.addHandler(handler);
-	    ccm.local.ServiceLocator.instance().setLogger(logger);
+	    ServiceLocator.instance().setLogger(logger);
 
 		// Deploy local Java component
 		try
@@ -33,7 +33,7 @@ public class Client
 		// Use local Java component
 		try
 		{
-			TestHome home = (TestHome) ccm.local.HomeFinder.instance().find_home_by_name("TestHome");
+			TestHome home = (TestHome) HomeFinder.instance().find_home_by_name("TestHome");
 			Test component = home.create();
 
 			System.out.println("Facet Void Types Test...");

@@ -13,14 +13,14 @@ package <%=home.generateJavaNamespace()%>;
    
 import java.util.logging.Logger;
 
-import Components.ccm.local.Assembly;
-import Components.ccm.local.AssemblyFactory;
-import Components.ccm.local.CCMException;
-import Components.ccm.local.CCMObject;
-import Components.ccm.local.CreateFailure;
-import Components.ccm.local.RemoveFailure;
+import Components.Assembly;
+import Components.AssemblyFactory;
+import Components.CCMException;
+import Components.CCMObject;
+import Components.CreateFailure;
+import Components.RemoveFailure;
 
-import ccm.local.ServiceLocator;
+import ccmtools.local.ServiceLocator;
 
 public class <%=home.getIdentifier()%>Adapter 
     implements <%=home.getIdentifier()%>

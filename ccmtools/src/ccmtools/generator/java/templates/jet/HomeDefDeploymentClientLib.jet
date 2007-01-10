@@ -13,10 +13,10 @@ package <%=home.generateJavaNamespace()%>;
 
 import java.util.logging.Logger;
 
-import Components.ccm.local.CCMException;
-import Components.ccm.local.CCMExceptionReason;
-import ccm.local.ServiceLocatorException;
-import ccm.local.ServiceLocator;    
+import Components.CCMException;
+import Components.CCMExceptionReason;
+import ccmtools.local.ServiceLocatorException;
+import ccmtools.local.ServiceLocator;    
                               
 public class <%=home.getIdentifier()%>ClientLibDeployment 
 {
@@ -30,9 +30,9 @@ public class <%=home.getIdentifier()%>ClientLibDeployment
         logger.fine("name = " + name);
         try
         {
-            Components.CCMHome remoteHome = ServiceLocator.instance().findCCMHome(name);
+            ccmtools.corba.Components.CCMHome remoteHome = ServiceLocator.instance().findCCMHome(name);
             <%=home.getIdentifier()%> localHome = new <%=home.getIdentifier()%>AdapterToCorba(remoteHome);
-            ccm.local.HomeFinder.instance().register_home(localHome, name);    
+            Components.HomeFinder.instance().register_home(localHome, name);    
         }
         catch(ServiceLocatorException e)
         {
@@ -46,15 +46,16 @@ public class <%=home.getIdentifier()%>ClientLibDeployment
     {
         logger.fine("name = " + name + ", ior = " + ior);
         org.omg.CORBA.Object obj = ServiceLocator.instance().getCorbaOrb().string_to_object(ior);
-        Components.CCMHome remoteHome = Components.CCMHomeHelper.narrow(obj);
+        ccmtools.corba.Components.CCMHome remoteHome = 
+            ccmtools.corba.Components.CCMHomeHelper.narrow(obj);
         <%=home.getIdentifier()%> localHome = new <%=home.getIdentifier()%>AdapterToCorba(remoteHome);
-        ccm.local.HomeFinder.instance().register_home(localHome, name);    
+        Components.HomeFinder.instance().register_home(localHome, name);    
     }
 
     
     public static void undeploy(String name)
     {
         logger.fine("name = " + name);
-        ccm.local.HomeFinder.instance().unregister_home(name);    
+        Components.HomeFinder.instance().unregister_home(name);    
     }
 }

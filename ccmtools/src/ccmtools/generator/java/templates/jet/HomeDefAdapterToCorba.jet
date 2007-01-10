@@ -13,12 +13,12 @@ package <%=home.generateJavaNamespace()%>;
 
 import java.util.logging.Logger;
 
-import Components.ccm.local.CCMException;
-import Components.ccm.local.CCMObject;
-import Components.ccm.local.CreateFailure;
-import Components.ccm.local.RemoveFailure;
+import Components.CCMException;
+import Components.CCMObject;
+import Components.CreateFailure;
+import Components.RemoveFailure;
 
-import ccm.local.ServiceLocator;
+import ccmtools.local.ServiceLocator;
            
 public class <%=home.getIdentifier()%>AdapterToCorba
     implements <%=home.getIdentifier()%>
@@ -29,7 +29,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     private <%=home.generateAbsoluteIdlName()%> remoteHome;
     
          
-    public <%=home.getIdentifier()%>AdapterToCorba(Components.CCMHome ccmHome)
+    public <%=home.getIdentifier()%>AdapterToCorba(ccmtools.corba.Components.CCMHome ccmHome)
         throws CCMException
     {
         logger.fine("ccmHome = " + ccmHome);
@@ -53,7 +53,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
         }
     } 
     
-    // This operation is defined in ccm.local.Components.KeylessCCMHomeOperations
+    // This operation is defined in Components.KeylessCCMHomeOperations
     public CCMObject create_component()
         throws CCMException, CreateFailure
     {
@@ -64,7 +64,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     
     /** Home explicit operations */
         
-    // This operation is defined in ccm.local.Components.CCMHome
+    // This operation is defined in Components.CCMHome
     public void remove_component(CCMObject component)
         throws CCMException, RemoveFailure
     {

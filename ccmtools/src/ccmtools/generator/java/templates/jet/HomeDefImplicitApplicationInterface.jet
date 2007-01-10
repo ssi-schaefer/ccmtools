@@ -13,6 +13,6 @@ package <%=home.generateJavaNamespace()%>;
                  
 public interface <%=home.generateCcmIdentifier()%>Implicit 
 {
-    Components.ccm.local.EnterpriseComponent create()
-        throws Components.ccm.local.CCMException;
+    Components.EnterpriseComponent create()
+        throws Components.CCMException;
 }

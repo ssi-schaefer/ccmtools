@@ -7,19 +7,19 @@ import java.util.logging.Logger;
 
 import org.omg.CORBA.ORB;
 
-import world.ccm.local.Color;
-import world.ccm.local.Person;
-import world.ccm.local.VoidTypeInterface;
-import world.europe.austria.ccm.local.Address;
-import world.europe.austria.ccm.local.Test;
-import world.europe.austria.ccm.local.TestHome;
-import world.europe.austria.ccm.local.TestHomeClientLibDeployment;
-import world.europe.austria.ccm.local.TestHomeDeployment;
-import world.europe.austria.ccm.local.UserTypeInterface;
-import world.europe.ccm.local.BasicTypeInterface;
-import Components.ccm.local.HomeFinder;
-import ccm.local.Holder;
-import ccm.local.ServiceLocator;
+import world.Color;
+import world.Person;
+import world.VoidTypeInterface;
+import world.europe.austria.Address;
+import world.europe.austria.Test;
+import world.europe.austria.TestHome;
+import world.europe.austria.TestHomeClientLibDeployment;
+import world.europe.austria.TestHomeDeployment;
+import world.europe.austria.UserTypeInterface;
+import world.europe.BasicTypeInterface;
+import Components.HomeFinder;
+import Components.Holder;
+import ccmtools.local.ServiceLocator;
 
 public class Client
 {
@@ -34,9 +34,9 @@ public class Client
 		logger.setLevel(Level.FINER);
 		Handler handler = new ConsoleHandler();
 		handler.setLevel(Level.ALL);
-		handler.setFormatter(new ccm.local.MinimalFormatter());
+		handler.setFormatter(new ccmtools.utils.SimpleFormatter());
 		logger.addHandler(handler);
-		ccm.local.ServiceLocator.instance().setLogger(logger);
+		ServiceLocator.instance().setLogger(logger);
 
 		try
 		{
@@ -53,7 +53,7 @@ public class Client
 				ORB orb = ORB.init(args, null);
 				ServiceLocator.instance().setCorbaOrb(orb);
 
-				world.europe.austria.ccm.remote.TestHomeDeployment.deploy("TestHome");
+                ccmtools.remote.world.europe.austria.TestHomeDeployment.deploy("TestHome");
 				TestHomeClientLibDeployment.deploy("TestHome");
 				System.out.println("> Server is running...");
 				// orb.run();
@@ -69,7 +69,7 @@ public class Client
 			/**
 			 * Client-side code (co-located with clientlib)
 			 */
-			HomeFinder homeFinder = ccm.local.HomeFinder.instance();
+			HomeFinder homeFinder = Components.HomeFinder.instance();
 			TestHome home = (TestHome) homeFinder.find_home_by_name("TestHome");
 			Test component = home.create();
 			component.configuration_complete();
@@ -442,7 +442,7 @@ public class Client
 			else
 			{
 				TestHomeClientLibDeployment.undeploy("TestHome");
-				world.europe.austria.ccm.remote.TestHomeDeployment.undeploy("TestHome");
+                ccmtools.remote.world.europe.austria.TestHomeDeployment.undeploy("TestHome");
 			}
 			System.out.println("OK!");
 		}

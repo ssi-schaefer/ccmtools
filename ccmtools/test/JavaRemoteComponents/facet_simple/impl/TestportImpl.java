@@ -10,9 +10,9 @@
  * @version
  */
 
-package world.ccm.local;
+package world;
 
-import Components.ccm.local.CCMException;
+import Components.CCMException;
    
 
 /** 
@@ -39,8 +39,8 @@ public class TestportImpl
     public int foo(String str)
         throws CCMException
     {
-	System.out.println(">>> " + str);
-	return str.length();
+        System.out.println(">>> " + str);
+        return str.length();
     }    
 
 }

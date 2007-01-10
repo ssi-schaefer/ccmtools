@@ -32,11 +32,11 @@
 		{
 			throw new InvalidConnection();
 		}
-		catch (Components.AlreadyConnected e)
+		catch (ccmtools.corba.Components.AlreadyConnected e)
 		{
 			throw new AlreadyConnected();
 		}
-		catch (Components.InvalidConnection e)
+		catch (ccmtools.corba.Components.InvalidConnection e)
 		{
 			throw new InvalidConnection();
 		}

@@ -8,8 +8,7 @@ InterfaceDef iface = uses.getInterface();
 %>
 
     public Cookie connect_<%=uses.getIdentifier()%>(<%=iface.generateAbsoluteJavaName()%> localObject)
-        throws ExceededConnectionLimit, 
-               InvalidConnection
+        throws ExceededConnectionLimit, InvalidConnection
     {
         logger.fine("Object reference = " + localObject);
         try
@@ -22,7 +21,8 @@ InterfaceDef iface = uses.getInterface();
             {
             	    Servant servant = new <%=iface.generateAbsoluteJavaRemoteName()%>AdapterFromCorba(localObject);
                 org.omg.CORBA.Object remoteObject =  componentPoa.servant_to_reference(servant);
-                Components.Cookie rck = remoteInterface.connect_<%=uses.getIdentifier()%>(<%=iface.generateAbsoluteIdlName()%>Helper.narrow(remoteObject));
+                ccmtools.corba.Components.Cookie rck = 
+                    remoteInterface.connect_<%=uses.getIdentifier()%>(<%=iface.generateAbsoluteIdlName()%>Helper.narrow(remoteObject));
                 Cookie ck = new CookieImpl(rck.CookieValue);
                 portReceptacleMap.put(ck, localObject);
                 return ck;
@@ -30,22 +30,18 @@ InterfaceDef iface = uses.getInterface();
         }
         catch (ServantNotActive e)
         {
-            e.printStackTrace();
             throw new InvalidConnection();
         }
         catch (WrongPolicy e)
         {
-            e.printStackTrace();
             throw new InvalidConnection();
         }
-        catch(Components.ExceededConnectionLimit e)
+        catch(ccmtools.corba.Components.ExceededConnectionLimit e)
         {
-            e.printStackTrace();
             throw new ExceededConnectionLimit();
         }
-        catch (Components.InvalidConnection e)
+        catch(ccmtools.corba.Components.InvalidConnection e)
         {
-            e.printStackTrace();
             throw new InvalidConnection();
         }
     }
@@ -62,14 +58,15 @@ InterfaceDef iface = uses.getInterface();
             }
             else
             {
-                Components.Cookie rck = new Components.CookieImpl(ck.getCookieValue());
+                ccmtools.corba.Components.Cookie rck = 
+                    new ccmtools.corba.Components.CookieImpl(ck.getCookieValue());
                 remoteInterface.disconnect_port(rck);	
                 <%=iface.generateAbsoluteJavaName()%> obj = <%=uses.getIdentifier()%>ReceptacleMap.get(ck);
                 <%=uses.getIdentifier()%>ReceptacleMap.remove(ck);	
                 return obj;
             }
         }
-        catch (Components.InvalidConnection e)
+        catch(ccmtools.corba.Components.InvalidConnection e)
         {
             e.printStackTrace();
             throw new InvalidConnection();

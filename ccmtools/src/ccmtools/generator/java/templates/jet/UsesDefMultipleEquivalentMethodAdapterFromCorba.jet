@@ -7,46 +7,46 @@ UsesDef uses = (UsesDef) argument;
 InterfaceDef iface = uses.getInterface();
 %>
 
-    public Components.Cookie connect_<%=uses.getIdentifier()%>(<%=iface.generateAbsoluteIdlName()%> obj)
-        throws Components.ExceededConnectionLimit, Components.InvalidConnection
+    public ccmtools.corba.Components.Cookie connect_<%=uses.getIdentifier()%>(<%=iface.generateAbsoluteIdlName()%> obj)
+        throws ccmtools.corba.Components.ExceededConnectionLimit, 
+               ccmtools.corba.Components.InvalidConnection
     {
         logger.fine("Object reference = " + obj);
         if(obj == null)
         {
-            throw new Components.InvalidConnection("Given object reference is null!");
+            throw new ccmtools.corba.Components.InvalidConnection("Given object reference is null!");
         }
         else
         {
             try
             {
                 <%=iface.generateAbsoluteJavaName()%> localInterfaceAdapter =
-                    new world.ccm.local.IFaceAdapterToCorba(obj);
+                    new  <%=iface.generateAbsoluteJavaName()%>AdapterToCorba(obj);
                 Cookie lck = localInterface.connect_<%=uses.getIdentifier()%>(localInterfaceAdapter);
-                Components.Cookie ck = new Components.CookieImpl(lck.getCookieValue());
+                ccmtools.corba.Components.Cookie ck = 
+                    new ccmtools.corba.Components.CookieImpl(lck.getCookieValue());
                 <%=uses.getIdentifier()%>ReceptacleMap.put(ck, obj);
                 return ck;
             }
             catch(ExceededConnectionLimit e)
             {
-                e.printStackTrace();
-                throw new Components.ExceededConnectionLimit(e.getMessage());
+                throw new ccmtools.corba.Components.ExceededConnectionLimit(e.getMessage());
             }
             catch(InvalidConnection e)
             {
-                e.printStackTrace();
-                throw new Components.InvalidConnection(e.getMessage());
+                throw new ccmtools.corba.Components.InvalidConnection(e.getMessage());
             }
         }    
     }
 
-    public <%=iface.generateAbsoluteIdlName()%> disconnect_<%=uses.getIdentifier()%>(Components.Cookie ck)
-        throws Components.InvalidConnection
+    public <%=iface.generateAbsoluteIdlName()%> disconnect_<%=uses.getIdentifier()%>(ccmtools.corba.Components.Cookie ck)
+        throws ccmtools.corba.Components.InvalidConnection
     {
         logger.fine("Cookie = " + ck);
 
         if(ck == null || !portReceptacleMap.containsKey(ck))
         {
-            throw new Components.InvalidConnection();
+            throw new ccmtools.corba.Components.InvalidConnection();
         }
         else
         {
@@ -60,8 +60,7 @@ InterfaceDef iface = uses.getInterface();
             }
             catch(InvalidConnection e)
             {
-                e.printStackTrace();
-                throw new Components.InvalidConnection(e.getMessage());
+                throw new ccmtools.corba.Components.InvalidConnection(e.getMessage());
             }
         }    
     }
@@ -73,7 +72,7 @@ InterfaceDef iface = uses.getInterface();
             new <%=uses.getComponent().generateAbsoluteIdlName()%>Package.<%=uses.getIdentifier()%>Connection[portReceptacleMap.size()];
         for(Iterator i = <%=uses.getIdentifier()%>ReceptacleMap.keySet().iterator(); i.hasNext();)
         {
-            Components.Cookie ck = (Components.Cookie)i.next();
+            ccmtools.corba.Components.Cookie ck = (ccmtools.corba.Components.Cookie)i.next();
             <%=iface.generateAbsoluteIdlName()%> obj = <%=uses.getIdentifier()%>ReceptacleMap.get(ck);
             <%=uses.getComponent().generateAbsoluteIdlName()%>Package.<%=uses.getIdentifier()%>Connection c = new
                 <%=uses.getComponent().generateAbsoluteIdlName()%>Package.<%=uses.getIdentifier()%>Connection(obj, ck);

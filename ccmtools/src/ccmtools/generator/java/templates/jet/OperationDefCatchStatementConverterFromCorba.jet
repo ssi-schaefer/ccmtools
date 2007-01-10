@@ -16,7 +16,7 @@ for(Iterator i = op.getException().iterator(); i.hasNext(); )
 	             <%=ex.generateCorbaConverterType()%>(eLocal);
 	        throw eRemote;
 	    }
-	    catch(ccm.local.CorbaConverterException eConvert)
+	    catch(ccmtools.local.CorbaConverterException eConvert)
 	    {
 	        throw new BAD_OPERATION(eConvert.getMessage());
 	    }

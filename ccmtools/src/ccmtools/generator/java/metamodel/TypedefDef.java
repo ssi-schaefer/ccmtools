@@ -55,7 +55,7 @@ public class TypedefDef
 	
 	public String generateJavaHolderType()
 	{
-		return "ccm.local.Holder<" + generateJavaMappingObject() + ">";
+		return "Components.Holder<" + generateJavaMappingObject() + ">";
 	}	
 	
 	

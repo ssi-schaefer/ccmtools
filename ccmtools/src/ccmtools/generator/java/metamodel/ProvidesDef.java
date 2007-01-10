@@ -55,7 +55,7 @@ public class ProvidesDef
 		importStatements.add(getInterface().generateAbsoluteJavaCcmName());
 		importStatements.add(getInterface().generateAbsoluteJavaName());
 		importStatements.add(getComponent().generateAbsoluteJavaName() + "Impl");
-		importStatements.add("Components.ccm.local.CCMException");
+		importStatements.add("Components.CCMException");
 		return importStatements;
 	}
 	

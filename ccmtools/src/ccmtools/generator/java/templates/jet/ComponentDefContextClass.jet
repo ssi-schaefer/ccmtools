@@ -11,12 +11,12 @@
 
 package <%=component.generateJavaNamespace()%>;
             
-import Components.ccm.local.HomeExecutorBase;
-import Components.ccm.local.IllegalState;       
-import Components.ccm.local.NoConnection;
+import Components.HomeExecutorBase;
+import Components.IllegalState;       
+import Components.NoConnection;
             
 import java.util.logging.Logger;
-import ccm.local.ServiceLocator;
+import ccmtools.local.ServiceLocator;
                      
 public class <%=component.generateCcmIdentifier()%>_ContextImpl 
     implements <%=component.generateAbsoluteJavaCcmName()%>_Context

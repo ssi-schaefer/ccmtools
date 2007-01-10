@@ -13,10 +13,10 @@ package <%=home.generateJavaRemoteNamespace()%>;
 
 import java.util.logging.Logger;
 
-import Components.ccm.local.CCMException;
-import Components.ccm.local.CCMExceptionReason;
-import ccm.local.ServiceLocator;
-import ccm.remote.CCMSessionContainer;
+import Components.CCMException;
+import Components.CCMExceptionReason;
+import ccmtools.local.ServiceLocator;
+import ccmtools.remote.CCMSessionContainer;
 
 import org.omg.PortableServer.POA;
 import org.omg.CosNaming.NamingContextExt;

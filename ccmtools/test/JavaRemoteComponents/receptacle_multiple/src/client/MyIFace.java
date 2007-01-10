@@ -1,7 +1,7 @@
 package client;
 
 public class MyIFace
-    implements world.ccm.local.IFace
+    implements world.IFace
 {
     private String prefix;
 

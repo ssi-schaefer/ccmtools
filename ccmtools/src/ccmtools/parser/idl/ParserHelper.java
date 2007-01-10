@@ -470,6 +470,9 @@ public class ParserHelper
     private void addExport(Object export, List exports)
     {
         getLogger().fine("8: exports " + export + ", " + exports);
+        if(export == null)
+            return;
+        
         if(export instanceof List)
         {
             List exportList = (List)export;

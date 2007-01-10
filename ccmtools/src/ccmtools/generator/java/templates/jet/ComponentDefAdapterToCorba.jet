@@ -20,22 +20,22 @@ import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 import org.omg.PortableServer.Servant;
 
-import Components.ccm.local.AlreadyConnected;
-import Components.ccm.local.CCMException;
-import Components.ccm.local.CCMExceptionReason;
-import Components.ccm.local.Cookie;
-import Components.ccm.local.CookieImpl;
-import Components.ccm.local.CookieRequired;
-import Components.ccm.local.ExceededConnectionLimit;
-import Components.ccm.local.CCMHome;
-import Components.ccm.local.InvalidName;
-import Components.ccm.local.InvalidConnection;
-import Components.ccm.local.InvalidConfiguration; 
-import Components.ccm.local.NoConnection;
-import Components.ccm.local.RemoveFailure; 
+import Components.AlreadyConnected;
+import Components.CCMException;
+import Components.CCMExceptionReason;
+import Components.Cookie;
+import Components.CookieImpl;
+import Components.CookieRequired;
+import Components.ExceededConnectionLimit;
+import Components.CCMHome;
+import Components.InvalidName;
+import Components.InvalidConnection;
+import Components.InvalidConfiguration; 
+import Components.NoConnection;
+import Components.RemoveFailure; 
 
-import ccm.local.ServiceLocator;
-import ccm.local.ServiceLocatorException;
+import ccmtools.local.ServiceLocator;
+import ccmtools.local.ServiceLocatorException;
 
 <%=component.generateJavaImportStatements()%>  
                  
@@ -172,7 +172,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
             {
                 remoteInterface.configuration_complete();
             }
-            catch(Components.InvalidConfiguration e)
+            catch(ccmtools.corba.Components.InvalidConfiguration e)
             {
                 e.printStackTrace();
                 throw new InvalidConfiguration();
@@ -196,7 +196,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
                 remoteInterface.remove();
             }
         }
-        catch(Components.RemoveFailure e)
+        catch(ccmtools.corba.Components.RemoveFailure e)
         {
             throw new RemoveFailure();
         }

@@ -1,13 +1,11 @@
 import java.util.List;
 import java.util.ArrayList;
 
-import world.ccm.local.*;
-import Components.ccm.local.*;
-import ccm.local.*;
+import world.*;
+import Components.*;
+import ccmtools.local.ServiceLocator;
 
 import java.util.logging.*;
-
-import ccm.local.AssemblyFactory;
 
 public class Client
 {
@@ -20,12 +18,12 @@ public class Client
 	    logger.setLevel(Level.FINE);	    
 	    Handler handler = new ConsoleHandler();
 	    handler.setLevel(Level.ALL);
-	    handler.setFormatter(new ccm.local.MinimalFormatter());
+	    handler.setFormatter(new ccmtools.utils.SimpleFormatter());
 	    logger.addHandler(handler);
-	    ccm.local.ServiceLocator.instance().setLogger(logger);
+	    ServiceLocator.instance().setLogger(logger);
 
 	    // Deploy local Java component
-         try
+        try
         {
             TestHomeDeployment.deploy("TestHome");
             TestHomeMirrorDeployment.deploy("TestHomeMirror");
@@ -38,8 +36,8 @@ public class Client
 	    // Use local Java component
 	    try
 	    {
-	        TestHome home = (TestHome) ccm.local.HomeFinder.instance().find_home_by_name("TestHome");		
-            TestHomeMirror mirrorHome = (TestHomeMirror) ccm.local.HomeFinder.instance().find_home_by_name("TestHomeMirror"); 
+	        TestHome home = (TestHome) HomeFinder.instance().find_home_by_name("TestHome");		
+            TestHomeMirror mirrorHome = (TestHomeMirror) HomeFinder.instance().find_home_by_name("TestHomeMirror"); 
 
             Test component = home.create();
             TestMirror mirrorComponent = mirrorHome.create();

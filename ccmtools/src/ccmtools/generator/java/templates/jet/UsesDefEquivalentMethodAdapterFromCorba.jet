@@ -5,7 +5,8 @@
 <% UsesDef uses = (UsesDef) argument;  %>
 
     public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteIdlName()%> obj)
-        throws Components.AlreadyConnected, Components.InvalidConnection
+        throws ccmtools.corba.Components.AlreadyConnected, 
+               ccmtools.corba.Components.InvalidConnection
     {
         logger.fine("");
         try
@@ -17,18 +18,16 @@
         }
         catch(AlreadyConnected e)
         {
-            e.printStackTrace();
-            throw new Components.AlreadyConnected(e.getMessage());
+            throw new ccmtools.corba.Components.AlreadyConnected(e.getMessage());
         }
         catch(InvalidConnection e)
         {
-            e.printStackTrace();
-            throw new Components.InvalidConnection(e.getMessage());
+            throw new ccmtools.corba.Components.InvalidConnection(e.getMessage());
         }
     }
 
     public <%=uses.getInterface().generateAbsoluteIdlName()%> disconnect_<%=uses.getIdentifier()%>()
-        throws Components.NoConnection
+        throws ccmtools.corba.Components.NoConnection
     {
         logger.fine("");
         try
@@ -40,8 +39,7 @@
         }
         catch(NoConnection e)
         {
-            e.printStackTrace();
-            throw new Components.NoConnection(e.getMessage());
+            throw new ccmtools.corba.Components.NoConnection(e.getMessage());
         }
     }
      

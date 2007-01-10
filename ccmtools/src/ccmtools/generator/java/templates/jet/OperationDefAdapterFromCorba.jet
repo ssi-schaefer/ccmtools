@@ -29,6 +29,6 @@
 <%=op.generateCatchStatementConverterFromCorba()%>
         catch(java.lang.Exception e)
         {
-    	    throw new BAD_OPERATION(e.getMessage());
+    	        throw new BAD_OPERATION(e.getMessage());
         }
     }

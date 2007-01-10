@@ -3,14 +3,14 @@ package client;
 import java.util.List;
 import java.util.ArrayList;
 
-import world.europe.austria.ccm.local.*;
-import Components.ccm.local.CCMException;
-import Components.ccm.local.CCMExceptionReason;
-import ccm.local.Holder;
+import world.europe.austria.*;
+import Components.CCMException;
+import Components.CCMExceptionReason;
+import Components.Holder;
 
 
 public class MyUserTypeImpl
-        implements world.europe.austria.ccm.local.UserTypeInterface
+        implements world.europe.austria.UserTypeInterface
 {
 
         public MyUserTypeImpl()
@@ -34,6 +34,7 @@ public class MyUserTypeImpl
                         throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
+        
         public Person f2(Person p1, Holder<Person> p2, Holder<Person> p3)
                 throws CCMException
         {
@@ -53,6 +54,7 @@ public class MyUserTypeImpl
                         throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
+        
         public Address f3(Address p1, Holder<Address> p2, Holder<Address> p3)
                 throws CCMException
         {
@@ -98,6 +100,7 @@ public class MyUserTypeImpl
                         throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
+        
         public List<String> f5(List<String> p1, Holder<List<String>> p2, Holder<List<String>> p3)
                         throws CCMException
         {
@@ -120,6 +123,7 @@ public class MyUserTypeImpl
                         throw new CCMException(e.getMessage(), CCMExceptionReason.SYSTEM_ERROR);
                 }
         }
+        
         public List<Person> f6(List<Person> p1, Holder<List<Person>> p2, Holder<List<Person>> p3)
                 throws CCMException
         {
@@ -212,7 +216,5 @@ public class MyUserTypeImpl
         }
         return result;
     }
-
-
     */
 }

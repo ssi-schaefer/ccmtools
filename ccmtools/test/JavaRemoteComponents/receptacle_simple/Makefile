@@ -33,13 +33,12 @@ clientlib: idl3
 	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/world/Test*.idl
 
 build:
-	cp impl/TestImpl.java ${DEST_DIR}/src/world/ccm/local/
 	ant -f ./build.xml
 
-check_local: build
+check: 
+	cp impl/TestImpl.java ${DEST_DIR}/src/world/
+	ant -f ./build.xml
 	bin/runLocalClient
-
-check: build
 	bin/runClient
 
 clean: 

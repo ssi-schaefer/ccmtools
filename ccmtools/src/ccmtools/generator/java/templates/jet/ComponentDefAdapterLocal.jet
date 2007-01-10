@@ -13,20 +13,20 @@ package <%=component.generateJavaNamespace()%>;
 
 import java.util.logging.Logger;
 
-import Components.ccm.local.AlreadyConnected;
-import Components.ccm.local.Assembly;
-import Components.ccm.local.CCMException;     
-import Components.ccm.local.CCMHome;
-import Components.ccm.local.Cookie;
-import Components.ccm.local.CookieImpl;
-import Components.ccm.local.CookieRequired;
-import Components.ccm.local.ExceededConnectionLimit;
-import Components.ccm.local.InvalidConfiguration;
-import Components.ccm.local.InvalidConnection;
-import Components.ccm.local.InvalidName;
-import Components.ccm.local.NoConnection;
-import Components.ccm.local.RemoveFailure;
-import ccm.local.ServiceLocator;
+import Components.AlreadyConnected;
+import Components.Assembly;
+import Components.CCMException;     
+import Components.CCMHome;
+import Components.Cookie;
+import Components.CookieImpl;
+import Components.CookieRequired;
+import Components.ExceededConnectionLimit;
+import Components.InvalidConfiguration;
+import Components.InvalidConnection;
+import Components.InvalidName;
+import Components.NoConnection;
+import Components.RemoveFailure;
+import ccmtools.local.ServiceLocator;
 
 <%=component.generateJavaImportStatements()%>  
                  

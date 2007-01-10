@@ -13,8 +13,8 @@ package <%=home.generateJavaRemoteNamespace()%>;
 
 import java.util.logging.Logger;
 
-import ccm.local.ServiceLocator;
-import ccm.remote.CCMSessionContainer;
+import ccmtools.local.ServiceLocator;
+import ccmtools.remote.CCMSessionContainer;
 
 import org.omg.PortableServer.Servant;
 
@@ -45,7 +45,7 @@ public class <%=home.getIdentifier()%>AdapterFromCorba
     /** Home implicit operations */
 
     public <%=home.getComponent().generateAbsoluteIdlName()%> create () 
-        throws Components.CreateFailure
+        throws ccmtools.corba.Components.CreateFailure
     {
         logger.fine("");
         try
@@ -53,22 +53,22 @@ public class <%=home.getIdentifier()%>AdapterFromCorba
             <%=home.getComponent().getIdentifier()%> localComponent = localHome.create();
             Servant servant = 
                 new <%=home.getComponent().getIdentifier()%>AdapterFromCorba(container,localComponent);
-            Components.CCMObject obj = 
+            ccmtools.corba.Components.CCMObject obj = 
                 container.getCorbaComponentFromServant(servant); 
             return <%=home.getComponent().generateAbsoluteIdlName()%>Helper.narrow(obj);
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            throw new Components.CreateFailure();
+            throw new ccmtools.corba.Components.CreateFailure();
         }
     }
 
     /** 
      * This operation is defined in the Components::KeylessCCMHome interface
      */
-    public Components.CCMObject create_component()
-        throws Components.CreateFailure
+    public ccmtools.corba.Components.CCMObject create_component()
+        throws ccmtools.corba.Components.CreateFailure
     {
         logger.fine("");
         return create();
@@ -80,13 +80,13 @@ public class <%=home.getIdentifier()%>AdapterFromCorba
     /**
      * This operation is defined in the Components::CCMHome interface
      */ 
-    public void remove_component(Components.CCMObject component)
-        throws Components.RemoveFailure
+    public void remove_component(ccmtools.corba.Components.CCMObject component)
+        throws ccmtools.corba.Components.RemoveFailure
     {
         logger.fine("");
         if(component == null)
         {
-            throw new Components.RemoveFailure("Can't remove component because its reference is null!");
+            throw new ccmtools.corba.Components.RemoveFailure("Can't remove component because its reference is null!");
         }
         else
         {

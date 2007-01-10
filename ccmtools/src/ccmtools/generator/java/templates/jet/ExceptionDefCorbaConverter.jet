@@ -11,7 +11,7 @@
  
 package <%=exception.generateJavaRemoteNamespace()%>;
 
-import ccm.local.CorbaConverterException;
+import ccmtools.local.CorbaConverterException;
 
 <%=exception.generateJavaImportStatements(exception.generateJavaRemoteNamespace())%>
 

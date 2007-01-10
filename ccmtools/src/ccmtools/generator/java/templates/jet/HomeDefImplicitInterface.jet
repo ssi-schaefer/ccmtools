@@ -11,8 +11,8 @@
 
 package <%=home.generateJavaNamespace()%>;
 
-import Components.ccm.local.KeylessCCMHome;
-import Components.ccm.local.CreateFailure;
+import Components.KeylessCCMHome;
+import Components.CreateFailure;
 
 public interface <%=home.getIdentifier()%>Implicit 
     extends KeylessCCMHome

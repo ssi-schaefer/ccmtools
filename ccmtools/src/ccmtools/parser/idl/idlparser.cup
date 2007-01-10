@@ -367,14 +367,8 @@ definitions
 definition 
 	::=	
 		T_INCLUDE
-		{:
-			
-		:}
 	|	
 		T_PRAGMA
-		{:
-		
-		:}
 	|	
 		type_dcl:t T_SEMICOLON
 		{:
@@ -571,6 +565,10 @@ exports
 /* 9 */
 export
 	::= 
+	    T_PRAGMA 
+	|
+	    T_INCLUDE 
+	|
 		type_dcl:t T_SEMICOLON
 		{:
 			RESULT = t;
@@ -948,11 +946,7 @@ init_param_attribute
 /* 27 */
 const_dcl
 	::= 
-		T_CONST const_type:t T_IDENTIFIER:id
-		{:
-			helper.registerTypeId(id);
-		:}		
-	 	T_EQUAL const_exp:e
+		T_CONST const_type:t T_IDENTIFIER:id T_EQUAL const_exp:e
 	 	{:
 	 		RESULT = helper.parseConstDcl(t, id, e);
 	 	:}
@@ -1662,6 +1656,10 @@ member_list
 /* 71 */
 member
 	::= 
+	    T_PRAGMA 
+	|
+	    T_INCLUDE 
+	|
 		type_spec:t declarators:d T_SEMICOLON
 		{:
 			RESULT = helper.parseMember(t,d);

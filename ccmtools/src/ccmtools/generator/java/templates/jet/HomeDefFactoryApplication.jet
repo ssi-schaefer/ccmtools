@@ -11,8 +11,8 @@
 
 package <%=home.generateJavaNamespace()%>;
 
-import Components.ccm.local.HomeExecutorBase;
-import Components.ccm.local.CCMException;
+import Components.HomeExecutorBase;
+import Components.CCMException;
 
 <%=home.generateJavaImportStatements()%>
 

@@ -3,12 +3,12 @@ package client;
 import java.util.List;
 import java.util.ArrayList;
 
-import Components.ccm.local.CCMException;
+import Components.CCMException;
 
-import world.europe.austria.ccm.local.*;
+import world.europe.austria.*;
 
 public class MyIFaceImpl
-        implements world.europe.austria.ccm.local.IFace
+        implements world.europe.austria.IFace
 {
         public MyIFaceImpl()
         {

@@ -259,7 +259,7 @@ public class UsesDef
 	{
 		if(isMultiple())
 		{
-			return TAB +  "private Map<Components.Cookie, " 
+			return TAB +  "private Map<ccmtools.corba.Components.Cookie, " 
 				+ getInterface().generateAbsoluteIdlName() + "> " 
 				+ getIdentifier() + "ReceptacleMap;\n";
 		}
@@ -274,7 +274,8 @@ public class UsesDef
 	{
 		if(isMultiple())
 		{
-			return TAB2 + getIdentifier() + "ReceptacleMap = new HashMap<Components.Cookie, " 
+			return TAB2 + getIdentifier()  
+                + "ReceptacleMap = new HashMap<ccmtools.corba.Components.Cookie, " 
 				+ getInterface().generateAbsoluteIdlName() + ">();\n";	
 		}
 		else

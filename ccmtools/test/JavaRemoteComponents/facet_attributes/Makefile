@@ -5,7 +5,7 @@ INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
 all: metainf remote clientlib
 
-test: metainf remote clientlib check_local check clean 
+test: metainf remote clientlib check clean 
 
 idl3: Test.idl
 	ccmmodel -validator Test.idl
@@ -38,11 +38,10 @@ clientlib: idl3
 build:
 	ant -f ./build.xml
 
-check_local: build
-	bin/runLocalClient
-
-check: build
+check:
+	ant -f ./build.xml
 	bin/runClient
+	bin/runLocalClient
 
 clean: 
 	rm -rf ${DEST_DIR}

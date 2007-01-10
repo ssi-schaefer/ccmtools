@@ -3,10 +3,10 @@ import org.omg.CORBA.StringHolder;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 
-import world.europe.austria.ccm.local.*;
+import world.europe.austria.*;
 
-import Components.ccm.local.HomeFinder;
-import ccm.local.ServiceLocator;
+import Components.HomeFinder;
+import ccmtools.local.ServiceLocator;
 
 import java.util.logging.*;
 
@@ -16,139 +16,131 @@ public class Client
 
     public static void main(String[] args)
     {
-	System.out.println("facet exception test case:");
+        System.out.println("facet exception test case:");
 
-	// Configure Logger
-	Logger logger = Logger.getLogger("ccm.local");
-	logger.setLevel(Level.FINER);
-	Handler handler = new ConsoleHandler();
-	handler.setLevel(Level.ALL);
-	handler.setFormatter(new ccm.local.MinimalFormatter());
-	logger.addHandler(handler);
-	ccm.local.ServiceLocator.instance().setLogger(logger);
-	
-        try 
-	{
-	    /**
-	     * Server-side code (Part 1)
-	     */
-	    if(args.length == 0)
+        // Configure Logger
+        Logger logger = Logger.getLogger("ccm.local");
+        logger.setLevel(Level.FINER);
+        Handler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        handler.setFormatter(new ccmtools.utils.SimpleFormatter());
+        logger.addHandler(handler);
+        ServiceLocator.instance().setLogger(logger);
+
+        try
+        {
+            /**
+             * Server-side code (Part 1)
+             */
+            if (args.length == 0)
             {
                 TestHomeDeployment.deploy("TestHome");
             }
             else
             {
-		// Set up the ServiceLocator singleton
-		ORB orb = ORB.init(args, null);
-		ServiceLocator.instance().setCorbaOrb(orb);
-		
-		world.europe.austria.ccm.remote.TestHomeDeployment.deploy("TestHome");
-		TestHomeClientLibDeployment.deploy("TestHome");
-		System.out.println("> Server is running...");
-		// orb.run();
-	    }
-	}
-        catch(Exception e) 
+                // Set up the ServiceLocator singleton
+                ORB orb = ORB.init(args, null);
+                ServiceLocator.instance().setCorbaOrb(orb);
+
+                ccmtools.remote.world.europe.austria.TestHomeDeployment.deploy("TestHome");
+                TestHomeClientLibDeployment.deploy("TestHome");
+                System.out.println("> Server is running...");
+                // orb.run();
+            }
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }
 
-
-        try 
-	{
-	    /**
-	     * Client-side code (co-located with clientlib)
-	     **/
-	    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
+        try
+        {
+            /**
+             * Client-side code (co-located with clientlib)
+             */
+            HomeFinder homeFinder = Components.HomeFinder.instance();
             TestHome home = (TestHome) homeFinder.find_home_by_name("TestHome");
             Test component = home.create();
             component.configuration_complete();
-	    IFace iface = component.provide_iface();
-
+            IFace iface = component.provide_iface();
 
             try
             {
                 int result = iface.foo("0123456789");
-                assert(result == 10);
+                assert (result == 10);
             }
-            catch(ErrorException e)
+            catch (ErrorException e)
             {
                 e.printStackTrace();
-                assert(false);
+                assert (false);
             }
-
 
             try
             {
                 int result = iface.foo("Error");
-                assert(false);
+                assert (false);
             }
-            catch(ErrorException e)
+            catch (ErrorException e)
             {
                 System.out.println("catched: " + e.getMessage());
-                for(int i = 0; i < e.getInfo().size(); i++)
+                for (int i = 0; i < e.getInfo().size(); i++)
                 {
-                    System.out.println(e.getInfo().get(i).getCode() + ": " +
-                                       e.getInfo().get(i).getMessage());
+                    System.out.println(e.getInfo().get(i).getCode() + ": " + e.getInfo().get(i).getMessage());
                 }
             }
-	    
 
-	    try
+            try
             {
                 int result = iface.foo("SuperError");
-                assert(false);
+                assert (false);
             }
-            catch(SuperError e)
+            catch (SuperError e)
             {
                 System.out.println("catched: " + e.getMessage());
             }
-
 
             try
             {
                 int result = iface.foo("FatalError");
-                assert(false);
+                assert (false);
             }
-            catch(FatalError e)
+            catch (FatalError e)
             {
                 System.out.println("catched: " + e.getMessage());
             }
 
-	    component.remove();
+            component.remove();
         }
-        catch(Exception e) 
+        catch (Exception e)
         {
             e.printStackTrace();
         }
 
-	
-	try
-	{
+        try
+        {
 
-	    /**
-	     * Server-side code (Part 2)
-	     */
-            if(args.length == 0)
+            /**
+             * Server-side code (Part 2)
+             */
+            if (args.length == 0)
             {
                 TestHomeDeployment.undeploy("TestHome");
             }
             else
             {
-		TestHomeClientLibDeployment.undeploy("TestHome");
-		world.europe.austria.ccm.remote.TestHomeDeployment.undeploy("TestHome");
-	    }
-	    System.out.println("OK!");
-	}
-	catch (Exception e)
-	{
-	    e.printStackTrace();
-	}
-	finally
-	{
-
-	    // Tear down the ServiceLocator singleton
-	    ServiceLocator.instance().destroy();
-	}
+                TestHomeClientLibDeployment.undeploy("TestHome");
+                ccmtools.remote.world.europe.austria.TestHomeDeployment.undeploy("TestHome");
+            }
+            System.out.println("OK!");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            // Tear down the ServiceLocator singleton
+            ServiceLocator.instance().destroy();
+        }
     }
 }

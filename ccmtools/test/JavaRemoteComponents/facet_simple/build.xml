@@ -2,12 +2,11 @@
 
   <property name="dest" location="xxx" />
   <property name="idl2" location="${dest}/idl2" />
-  <property name="src-gen-local" location="${dest}/src-gen-local" />
-  <property name="src-gen-remote" location="${dest}/src-gen-remote" />
+  <property name="src-gen" location="${dest}/src-gen" />
   <property name="src-app" location="${dest}/src" />
   <property name="build" location="${dest}/build" />
   <property name="src" location="src" />
-
+	
   <path id="compile.classpath">
       <pathelement path="${java.class.path}" />
   </path>
@@ -21,7 +20,7 @@
 
   <!-- Compile generated Java files-->
   <target name="compile" depends="init" description="" >
-      <javac srcdir="${src-gen-local}:${src-gen-remote}:${src-app}:${src}" destdir="${build}" 
+      <javac srcdir="${src-gen}:${src-app}:${src}" destdir="${build}" 
              debug="on" source="1.5" target="1.5">
           <classpath refid="compile.classpath" />  
       </javac>

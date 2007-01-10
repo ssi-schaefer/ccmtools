@@ -11,13 +11,13 @@
 
 package <%=component.generateJavaNamespace()%>;
            
-import Components.ccm.local.AlreadyConnected;
-import Components.ccm.local.CCMObject;
-import Components.ccm.local.CCMException;
-import Components.ccm.local.Cookie;             
-import Components.ccm.local.ExceededConnectionLimit;
-import Components.ccm.local.InvalidConnection;
-import Components.ccm.local.NoConnection;
+import Components.AlreadyConnected;
+import Components.CCMObject;
+import Components.CCMException;
+import Components.Cookie;             
+import Components.ExceededConnectionLimit;
+import Components.InvalidConnection;
+import Components.NoConnection;
 
 <%=component.generateJavaImportStatements()%>  
                  

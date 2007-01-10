@@ -20,7 +20,7 @@ public class ExceptionDefImplementationTemplate
   protected final String TEXT_3 = ";" + NL + " ";
   protected final String TEXT_4 = NL;
   protected final String TEXT_5 = NL + " " + NL + "public class ";
-  protected final String TEXT_6 = " " + NL + "    extends Components.ccm.local.UserException" + NL + "{" + NL + "    private static final String REPOSITORY_ID = \"";
+  protected final String TEXT_6 = " " + NL + "    extends Components.UserException" + NL + "{" + NL + "    private static final String REPOSITORY_ID = \"";
   protected final String TEXT_7 = "\";" + NL + "    ";
   protected final String TEXT_8 = NL + "    ";
   protected final String TEXT_9 = NL;

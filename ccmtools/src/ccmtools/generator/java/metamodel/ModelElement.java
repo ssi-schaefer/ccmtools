@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import ccmtools.Constants;
+import ccmtools.utils.ConfigurationLocator;
 import ccmtools.utils.Text;
 
 public class ModelElement
@@ -53,10 +54,10 @@ public class ModelElement
 
 	public void setIdlNamespaceList(List<String> namespace)
 	{
+	    setJavaNamespaceList(namespace);
+	    setJavaRemoteNamespaceList(namespace);
+        idlNamespaceList.addAll(ConfigurationLocator.getInstance().getIdl2NamespaceExtension());
 		idlNamespaceList.addAll(namespace);
-		// javaNamespace directly depends on the idlNamesapce
-		setJavaNamespaceList(namespace);
-		setJavaRemoteNamespaceList(namespace);
 	}	
 	
 	
@@ -67,13 +68,21 @@ public class ModelElement
 	
 	public void setJavaNamespaceList(List<String> namespace)
 	{
+        javaNamespaceList = new ArrayList<String>();
 		javaNamespaceList.addAll(namespace);		
-		// Set implicit Java namespace elements
-		getJavaNamespaceList().add("ccm");
-		getJavaNamespaceList().add("local");		
-	}
+//		getJavaNamespaceList().add("ccm");
+//		getJavaNamespaceList().add("local");		
+    }
 
-	
+    public List<String> getJavaGenNamespaceList()
+    {        
+        List<String> namespaces = new ArrayList<String>();
+        namespaces.addAll(ConfigurationLocator.getInstance().getJavaLocalNamespaceExtension());
+        namespaces.addAll(getJavaNamespaceList());
+        return namespaces;
+    }
+    
+    	
 	public List<String> getJavaRemoteNamespaceList()
 	{
 		return javaRemoteNamespaceList;
@@ -81,10 +90,11 @@ public class ModelElement
 	
 	public void setJavaRemoteNamespaceList(List<String> namespace)
 	{
-		javaRemoteNamespaceList.addAll(namespace);		
-		// Set implicit Java namespace elements
-		getJavaRemoteNamespaceList().add("ccm");
-		getJavaRemoteNamespaceList().add("remote");		
+        javaRemoteNamespaceList = new ArrayList<String>();
+        javaRemoteNamespaceList.addAll(ConfigurationLocator.getInstance().getJavaRemoteNamespaceExtension());
+        javaRemoteNamespaceList.addAll(namespace);		
+//		getJavaRemoteNamespaceList().add("ccm");
+//		getJavaRemoteNamespaceList().add("remote");		
 	}
 	
 	
@@ -97,9 +107,9 @@ public class ModelElement
 	/**
 	 * An import statement is needed if the imported model element has been
 	 * defined in a different package than the current model element.
-	 * E.g. package world.ccm.local.Address;
-	 *      import  world.ccm.local.Person; // not needed
-	 *      import  world.europe.ccm.local.Color; // is needed
+	 * E.g. package world.Address;
+	 *      import  world.Person; // not needed
+	 *      import  world.europe.Color; // is needed
 	 */
 	public boolean isNeededJavaImportStatement(String namespace, String statement)
 	{
@@ -176,7 +186,7 @@ public class ModelElement
 	
 	public String generateJavaNamespace()
 	{
-		return Text.joinList(".", javaNamespaceList);
+		return Text.joinList(".", getJavaNamespaceList());
 	}
 
 	public String generateAbsoluteJavaName()
@@ -191,6 +201,25 @@ public class ModelElement
 		}
 	}	
 
+    
+    public String generateJavaGenNamespace()
+    {
+        return Text.joinList(".", getJavaGenNamespaceList());
+    }
+
+    public String generateAbsoluteJavaGenName()
+    {
+        if(getJavaGenNamespaceList().size() == 0)
+        {
+            return getIdentifier();
+        }
+        else 
+        {
+            return generateJavaGenNamespace() + "." + getIdentifier();
+        }
+    }   
+
+    
 	public String generateCcmIdentifier()
 	{
 		return "CCM_" + getIdentifier();
