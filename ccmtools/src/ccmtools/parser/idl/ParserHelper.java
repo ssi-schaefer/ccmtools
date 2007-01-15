@@ -2038,6 +2038,7 @@ public class ParserHelper
     {
         MProvidesDef provides = new MProvidesDefImpl();
         provides.setIdentifier(id);
+        provides.setSourceFile(getIncludedSourceFile()); 
         MIDLType type = getModelRepository().findIdlType(getScope(), ifaceType);
         if(type == null)
         {

@@ -63,7 +63,6 @@ public class Main
 				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
 				{
 					String idlFile = (String) i.next();
-					//MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
                     MContainer ccmModel = 
                         ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
 
@@ -137,7 +136,7 @@ public class Main
         options.addOption(ComponentGenerator.INTERFACE_GENERATOR_ID, 
         					false, "Run the Java interface generator");
         options.addOption(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID, 
-							false, "Run the Java CORBA component generator");
+						false, "Run the Java CORBA component generator");
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
         // Define single valued options

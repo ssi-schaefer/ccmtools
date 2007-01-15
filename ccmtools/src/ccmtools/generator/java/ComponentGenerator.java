@@ -189,7 +189,6 @@ public class ComponentGenerator
             {
                 sourceFileList.addAll(javaHome.generateApplicationSourceFiles());
             }
-
             // Save all source file objects
             SourceFileHelper.writeApplicationFiles(uiDriver, parameters.getOutDir(), sourceFileList);
         }

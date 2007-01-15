@@ -27,9 +27,9 @@ public class ModelRepository
 	
 	public void addHome(HomeDef home)
 	{
-		homeList.add(home);
-	}
-	
+        if(!homeList.contains(home)) 
+            homeList.add(home);
+	}	
 	public List<HomeDef> findAllHomes()
 	{
 		return homeList;
@@ -38,9 +38,9 @@ public class ModelRepository
 	
 	public void addComponent(ComponentDef component)
 	{
-		componentList.add(component);
+        if(!componentList.contains(component)) 
+            componentList.add(component);
 	}
-
 	public List<ComponentDef> findAllComponents()
 	{
 		return componentList;
@@ -49,9 +49,9 @@ public class ModelRepository
 	
 	public void addInterface(InterfaceDef iface)
 	{
-		interfaceList.add(iface);
+        if(!interfaceList.contains(iface)) 
+            interfaceList.add(iface);
 	}
-
 	public List<InterfaceDef> findAllInterfaces()
 	{
 		return interfaceList;
@@ -60,9 +60,9 @@ public class ModelRepository
 	
 	public void addProvides(ProvidesDef provides)
 	{
-		providesList.add(provides);
-	}
-	
+        if(!providesList.contains(provides)) 
+            providesList.add(provides);
+	}	
 	public List<ProvidesDef> findAllProvides()
 	{
 		return providesList;
@@ -71,9 +71,9 @@ public class ModelRepository
 	
 	public void addUses(UsesDef uses)
 	{
-		usesList.add(uses);
-	}
-	
+        if(!usesList.contains(uses)) 
+            usesList.add(uses);
+	}	
 	public List<UsesDef> findAllUses()
 	{
 		return usesList;
@@ -82,9 +82,9 @@ public class ModelRepository
 		
 	public void addGlobalConstant(ConstantDef value)
 	{
-		constantList.add(value);
+        if(!constantList.contains(value)) 
+            constantList.add(value);
 	}
-
 	public List<ConstantDef> findAllGlobalConstants()
 	{
 		return constantList;
@@ -93,9 +93,9 @@ public class ModelRepository
 	
 	public void addEnum(EnumDef value)
 	{
-		enumList.add(value);
+        if(!enumList.contains(value)) 
+            enumList.add(value);
 	}
-
 	public List<EnumDef> findAllEnums()
 	{
 		return enumList;
@@ -104,9 +104,9 @@ public class ModelRepository
 	
 	public void addStruct(StructDef value)
 	{
-		structList.add(value);
+        if(!structList.contains(value)) 
+            structList.add(value);
 	}
-
 	public List<StructDef> findAllStructs()
 	{
 		return structList;
@@ -115,9 +115,9 @@ public class ModelRepository
 	
 	public void addException(ExceptionDef value)
 	{
-		exceptionList.add(value);
+        if(!exceptionList.contains(value)) 
+            exceptionList.add(value);
 	}
-
 	public List<ExceptionDef> findAllExceptions()
 	{
 		return exceptionList;
@@ -126,9 +126,9 @@ public class ModelRepository
 	
 	public void addSequence(SequenceDef value)
 	{
-		sequenceList.add(value);
+        if(!sequenceList.contains(value)) 
+            sequenceList.add(value);
 	}
-
 	public List<SequenceDef> findAllSequences()
 	{
 		return sequenceList;
@@ -136,9 +136,9 @@ public class ModelRepository
 	
 	public void addArray(ArrayDef value)
 	{
-		arrayList.add(value);
+        if(!arrayList.contains(value)) 
+            arrayList.add(value);
 	}
-
 	public List<ArrayDef> findAllArrays()
 	{
 		return arrayList;
