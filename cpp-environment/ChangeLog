@@ -1,6 +1,12 @@
 BRANCH-0.6.x
 ============================================================================
 
+RELEASE-0.6.18 (January 15, 2007)
+----------------------------------------------------------------------------
+*) Bugfix: wchar, wstring (reported by Elmar Rudigier)
+	Added #ifdef _GLIBCXX_USE_WCHAR_T for ccmDebug methods which use wchar
+	and wstring types.
+
 
 RELEASE-0.6.17 (December 7, 2006)
 ----------------------------------------------------------------------------

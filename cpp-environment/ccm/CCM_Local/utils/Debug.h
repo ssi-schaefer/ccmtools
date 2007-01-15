@@ -161,7 +161,11 @@ namespace local {
 	os << in << ":unsigned short";
 	return os.str();         
     }
-    
+
+// We include these ccmDebug methods if and only if the wchar and wstring
+// types are defined in the glibc++.
+#ifdef _GLIBCXX_USE_WCHAR_T
+	
     inline 
     std::string 
     ccmDebug(const wchar_t& in, int indent = 0)
@@ -181,6 +185,8 @@ namespace local {
 	os << ":wstring"; // TODO !!!!!!
 	return os.str();
     }
+
+#endif
 
     inline 
     std::string 
