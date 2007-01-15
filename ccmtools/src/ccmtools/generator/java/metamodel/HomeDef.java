@@ -24,7 +24,14 @@ import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class HomeDef
-	extends ModelElement
+	extends 
+        ModelElement 
+    implements 
+        JavaLocalInterfaceGeneratorElement, 
+        JavaLocalAdapterGeneratorElement,
+        JavaClientLibGeneratorElement,
+        JavaCorbaAdapterGeneratorElement,
+        JavaApplicationGeneratorElement
 {
 	private ComponentDef component;
 	
@@ -142,7 +149,7 @@ public class HomeDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateLocalComponentSourceFiles()
+	public List<SourceFile> generateLocalAdapterSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
@@ -190,6 +197,9 @@ public class HomeDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
+	/* (non-Javadoc)
+     * @see ccmtools.generator.java.metamodel.JavaApplicationGeneratorElement#generateApplicationSourceFiles()
+     */
 	public List<SourceFile> generateApplicationSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
@@ -225,7 +235,7 @@ public class HomeDef
 
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateClientLibComponentSourceFiles()
+	public List<SourceFile> generateClientLibSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();		
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
@@ -260,7 +270,7 @@ public class HomeDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaAdapterSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();		
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());

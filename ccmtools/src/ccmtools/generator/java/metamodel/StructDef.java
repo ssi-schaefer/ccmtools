@@ -14,8 +14,12 @@ import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class StructDef
-	extends ModelElement
-	implements Type
+	extends 
+        ModelElement
+	implements 
+        Type, 
+        JavaLocalInterfaceGeneratorElement,
+        JavaCorbaAdapterGeneratorElement
 {
 	private List<FieldDef> fields = new ArrayList<FieldDef>();
 		
@@ -186,7 +190,7 @@ public class StructDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaAdapterSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());

@@ -15,7 +15,11 @@ import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class ExceptionDef
-	extends ModelElement
+	extends 
+        ModelElement
+    implements 
+        JavaLocalInterfaceGeneratorElement,
+        JavaCorbaAdapterGeneratorElement
 {
 	private List<FieldDef> fields = new ArrayList<FieldDef>();
 	
@@ -146,7 +150,7 @@ public class ExceptionDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaAdapterSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());		

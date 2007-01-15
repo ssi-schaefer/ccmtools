@@ -58,7 +58,7 @@ public class Main
 			{
 				parameters.validate();
 				setCcmtoolsProperties();
-				ComponentGenerator generator = new ComponentGenerator(parameters, uiDriver);
+				JavaComponentGenerator generator = new JavaComponentGenerator(parameters, uiDriver);
 
 				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
 				{
@@ -127,15 +127,15 @@ public class Main
         // Define boolean options
         options.addOption("h", "help", false,"Display this help");
         options.addOption("V", "version", false, "Display CCM Tools version information");
-        options.addOption(ComponentGenerator.CLIENT_LIB_GENERATOR_ID, 
+        options.addOption(JavaComponentGenerator.CLIENT_LIB_GENERATOR_ID, 
         					false, "Run the Java client library generator");
-        options.addOption(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID, 
+        options.addOption(JavaComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID, 
         					false, "Run the Java local component generator");
-        options.addOption(ComponentGenerator.APPLICATION_GENERATOR_ID, 
+        options.addOption(JavaComponentGenerator.APPLICATION_GENERATOR_ID, 
         					false, "Run the Java application stubs generator");
-        options.addOption(ComponentGenerator.INTERFACE_GENERATOR_ID, 
+        options.addOption(JavaComponentGenerator.INTERFACE_GENERATOR_ID, 
         					false, "Run the Java interface generator");
-        options.addOption(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID, 
+        options.addOption(JavaComponentGenerator.CORBA_COMPONENT_GENERATOR_ID, 
 						false, "Run the Java CORBA component generator");
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
@@ -177,33 +177,33 @@ public class Main
         
         if(cmd.hasOption("V")) 
         {
-            ComponentGenerator.printVersion(uiDriver);
+            JavaComponentGenerator.printVersion(uiDriver);
             return false; // don't continue program execution
         }
         
-        if (cmd.hasOption(ComponentGenerator.CLIENT_LIB_GENERATOR_ID))
+        if (cmd.hasOption(JavaComponentGenerator.CLIENT_LIB_GENERATOR_ID))
 		{
-			parameters.getGeneratorIds().add(ComponentGenerator.CLIENT_LIB_GENERATOR_ID);
+			parameters.getGeneratorIds().add(JavaComponentGenerator.CLIENT_LIB_GENERATOR_ID);
 		}
 
-		if (cmd.hasOption(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID))
+		if (cmd.hasOption(JavaComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID))
 		{
-			parameters.getGeneratorIds().add(ComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID);
+			parameters.getGeneratorIds().add(JavaComponentGenerator.LOCAL_COMPONENT_GENERATOR_ID);
 		}
 
-		if (cmd.hasOption(ComponentGenerator.APPLICATION_GENERATOR_ID))
+		if (cmd.hasOption(JavaComponentGenerator.APPLICATION_GENERATOR_ID))
 		{
-			parameters.getGeneratorIds().add(ComponentGenerator.APPLICATION_GENERATOR_ID);
+			parameters.getGeneratorIds().add(JavaComponentGenerator.APPLICATION_GENERATOR_ID);
 		}
 
-		if (cmd.hasOption(ComponentGenerator.INTERFACE_GENERATOR_ID))
+		if (cmd.hasOption(JavaComponentGenerator.INTERFACE_GENERATOR_ID))
 		{
-			parameters.getGeneratorIds().add(ComponentGenerator.INTERFACE_GENERATOR_ID);
+			parameters.getGeneratorIds().add(JavaComponentGenerator.INTERFACE_GENERATOR_ID);
 		}
 
-		if (cmd.hasOption(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID))
+		if (cmd.hasOption(JavaComponentGenerator.CORBA_COMPONENT_GENERATOR_ID))
 		{
-			parameters.getGeneratorIds().add(ComponentGenerator.CORBA_COMPONENT_GENERATOR_ID);
+			parameters.getGeneratorIds().add(JavaComponentGenerator.CORBA_COMPONENT_GENERATOR_ID);
 		}
 
 		if (cmd.hasOption("noexit"))

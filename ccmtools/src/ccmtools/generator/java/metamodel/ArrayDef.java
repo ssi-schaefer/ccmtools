@@ -10,8 +10,11 @@ import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class ArrayDef
-	extends ModelElement
-	implements Type
+	extends 
+        ModelElement
+	implements 
+        Type,
+        JavaCorbaAdapterGeneratorElement
 {
 	/** Array type which is the same for all elements staored in an array. */
 	private Type type;
@@ -184,7 +187,7 @@ public class ArrayDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaAdapterSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());

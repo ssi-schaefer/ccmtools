@@ -70,8 +70,6 @@ public class ModelElement
 	{
         javaNamespaceList = new ArrayList<String>();
 		javaNamespaceList.addAll(namespace);		
-//		getJavaNamespaceList().add("ccm");
-//		getJavaNamespaceList().add("local");		
     }
 
     public List<String> getJavaGenNamespaceList()
@@ -93,8 +91,6 @@ public class ModelElement
         javaRemoteNamespaceList = new ArrayList<String>();
         javaRemoteNamespaceList.addAll(ConfigurationLocator.getInstance().getJavaRemoteNamespaceExtension());
         javaRemoteNamespaceList.addAll(namespace);		
-//		getJavaRemoteNamespaceList().add("ccm");
-//		getJavaRemoteNamespaceList().add("remote");		
 	}
 	
 	

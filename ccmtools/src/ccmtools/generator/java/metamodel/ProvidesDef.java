@@ -17,7 +17,8 @@ import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class ProvidesDef
-	extends ModelElement
+    extends ModelElement
+    implements JavaApplicationGeneratorElement
 {
 	private ComponentDef component;
 	private InterfaceDef iface;

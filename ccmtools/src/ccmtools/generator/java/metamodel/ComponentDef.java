@@ -18,13 +18,20 @@ import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class ComponentDef
-	extends ModelElement
+	extends 
+        ModelElement
+    implements 
+        JavaLocalInterfaceGeneratorElement, 
+        JavaLocalAdapterGeneratorElement,
+        JavaClientLibGeneratorElement,
+        JavaCorbaAdapterGeneratorElement,
+        JavaApplicationGeneratorElement
 {
 	private List<AttributeDef> attributes = new ArrayList<AttributeDef>();
 	private List<ProvidesDef> facet = new ArrayList<ProvidesDef>();
 	private List<UsesDef> receptacle = new ArrayList<UsesDef>();
 	private List<SupportsDef> supports = new ArrayList<SupportsDef>();
-	private HomeDef home;
+	private JavaApplicationGeneratorElement home;
 	
 	
 	public ComponentDef(String identifier, List<String> namespace)
@@ -54,12 +61,12 @@ public class ComponentDef
 	}
 
 
-	public HomeDef getHome()
+	public JavaApplicationGeneratorElement getHome()
 	{
 		return home;
 	}
 	
-	public void setHome(HomeDef home)
+	public void setHome(JavaApplicationGeneratorElement home)
 	{
 		this.home = home;
 	}
@@ -179,7 +186,7 @@ public class ComponentDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateLocalComponentSourceFiles()
+	public List<SourceFile> generateLocalAdapterSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
@@ -245,7 +252,7 @@ public class ComponentDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateClientLibComponentSourceFiles()
+	public List<SourceFile> generateClientLibSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
@@ -271,7 +278,7 @@ public class ComponentDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaAdapterSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String remotePackageName = Text.joinList(File.separator, getJavaRemoteNamespaceList());

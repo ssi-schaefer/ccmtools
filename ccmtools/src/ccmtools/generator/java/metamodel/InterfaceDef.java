@@ -15,7 +15,12 @@ import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
 public class InterfaceDef
-	extends ModelElement
+	extends 
+        ModelElement
+    implements 
+        JavaLocalInterfaceGeneratorElement, 
+        JavaLocalAdapterGeneratorElement,
+        JavaCorbaAdapterGeneratorElement
 {
 	private List<InterfaceDef> baseInterfaces = new ArrayList<InterfaceDef>(); 
 	private List<ConstantDef> constants = new ArrayList<ConstantDef>();
@@ -174,7 +179,7 @@ public class InterfaceDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateLocalComponentSourceFiles()
+	public List<SourceFile> generateLocalAdapterSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
@@ -210,7 +215,7 @@ public class InterfaceDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	public List<SourceFile> generateCorbaComponentSourceFiles()
+	public List<SourceFile> generateCorbaAdapterSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
 		String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());

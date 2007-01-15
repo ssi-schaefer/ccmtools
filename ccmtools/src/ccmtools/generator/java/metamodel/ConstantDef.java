@@ -11,6 +11,7 @@ import ccmtools.utils.Text;
 
 public class ConstantDef
 	extends ModelElement
+    implements JavaLocalInterfaceGeneratorElement
 {
 	private Type type;
 	private Object value;
