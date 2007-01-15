@@ -1,2 +1,2 @@
 PACKAGE_NAME('ccm-runtime-local')
-PACKAGE_VERSION('0.8.3')
+PACKAGE_VERSION('0.8.4')
