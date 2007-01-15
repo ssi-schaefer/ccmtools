@@ -11,6 +11,7 @@
  * @version 
  ***/
 
+#include <cmath>
 #include <cassert>
 #include <iostream>
 #include <WX/Utils/debug.h>

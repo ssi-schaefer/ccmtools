@@ -14,6 +14,7 @@
  * To enable DbC adapter use -DCCM_USE_DBC compiler flag
  ***/
 
+#include <cmath>
 #include <cassert>
 #include <iostream>
 
