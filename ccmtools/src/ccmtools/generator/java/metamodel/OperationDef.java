@@ -68,7 +68,6 @@ public class OperationDef
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateDeclaration()
@@ -168,8 +167,7 @@ public class OperationDef
 	
 	
 	/*************************************************************************
-	 * Local Component Generator Methods
-	 * 
+	 * Local Adapter Generator Methods
 	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
@@ -184,7 +182,6 @@ public class OperationDef
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	// Generator methods ------------------------------------------------------
@@ -209,8 +206,7 @@ public class OperationDef
 	
 
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 	
 	public String generateCorbaReturnType()

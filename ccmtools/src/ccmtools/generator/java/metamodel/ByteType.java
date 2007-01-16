@@ -14,7 +14,6 @@ public class ByteType
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaConstant(Object value)
@@ -54,7 +53,6 @@ public class ByteType
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 		
 	public String generateJavaDefaultReturnValue()
@@ -64,8 +62,7 @@ public class ByteType
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 
 	public String generateCorbaMapping()

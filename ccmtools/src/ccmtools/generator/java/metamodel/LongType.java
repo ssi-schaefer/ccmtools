@@ -14,7 +14,6 @@ public class LongType
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaConstant(Object value)
@@ -54,7 +53,6 @@ public class LongType
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
@@ -64,8 +62,7 @@ public class LongType
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 
 	public String generateCorbaMapping()

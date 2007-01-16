@@ -53,7 +53,6 @@ public class AttributeDef
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 
 	public String generateDeclaration()
@@ -64,8 +63,7 @@ public class AttributeDef
 	
 	
 	/*************************************************************************
-	 * Local Component Generator
-	 * 
+	 * Local Adapter Generator
 	 *************************************************************************/
 	
 	public String generateAdapterLocal()
@@ -76,7 +74,6 @@ public class AttributeDef
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateApplicationDeclaration()
@@ -91,8 +88,7 @@ public class AttributeDef
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 	
 	public String generateAdapterFromCorba()

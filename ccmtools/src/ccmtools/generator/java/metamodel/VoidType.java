@@ -14,7 +14,6 @@ public class VoidType
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaConstant(Object value)
@@ -53,7 +52,6 @@ public class VoidType
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
@@ -64,8 +62,7 @@ public class VoidType
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 
 	public String generateCorbaMapping()

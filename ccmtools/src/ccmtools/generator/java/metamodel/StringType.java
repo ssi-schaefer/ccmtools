@@ -14,7 +14,6 @@ public class StringType
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaConstant(Object value)
@@ -54,7 +53,6 @@ public class StringType
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
@@ -65,8 +63,7 @@ public class StringType
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 
 	public String generateCorbaMapping()

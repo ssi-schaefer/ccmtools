@@ -64,7 +64,6 @@ public class HomeDef
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaImportStatements()
@@ -117,8 +116,7 @@ public class HomeDef
 	
 	
 	/*************************************************************************
-	 * Local Component Generator Methods
-	 * 
+	 * Local Adapter Generator Methods
 	 *************************************************************************/
 	
 	public String generateApplicationInterface()
@@ -181,7 +179,6 @@ public class HomeDef
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateApplicationClass()
@@ -197,9 +194,6 @@ public class HomeDef
 	
 	// Generate SourceFile objects --------------------------------------------
 	
-	/* (non-Javadoc)
-     * @see ccmtools.generator.java.metamodel.JavaApplicationGeneratorElement#generateApplicationSourceFiles()
-     */
 	public List<SourceFile> generateApplicationSourceFiles()
 	{
 		List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
@@ -219,8 +213,7 @@ public class HomeDef
 	
 	
 	/*************************************************************************
-	 * Client Library Component Generator Methods
-	 * 
+	 * Client Library Generator Methods
 	 *************************************************************************/
 		
 	public String generateAdapterToCorba()
@@ -254,8 +247,7 @@ public class HomeDef
 	
 
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 		
 	public String generateAdapterFromCorba()

@@ -58,7 +58,6 @@ public class SequenceDef
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaImportStatements()
@@ -114,7 +113,6 @@ public class SequenceDef
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
@@ -124,8 +122,7 @@ public class SequenceDef
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 
 	public String generateCorbaMapping()

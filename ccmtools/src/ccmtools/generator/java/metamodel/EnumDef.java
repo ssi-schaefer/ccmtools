@@ -43,7 +43,6 @@ public class EnumDef
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaImportStatements()
@@ -114,7 +113,6 @@ public class EnumDef
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
@@ -124,8 +122,7 @@ public class EnumDef
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 	
 	public String generateCorbaMapping()

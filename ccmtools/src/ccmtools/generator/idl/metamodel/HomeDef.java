@@ -14,8 +14,10 @@ import ccmtools.utils.Text;
 import ccmtools.utils.SourceFileHelper;
 
 public class HomeDef
-	extends InterfaceDef
-    implements Idl3MirrorGeneratorElement
+	extends 
+        InterfaceDef
+    implements 
+        Idl3MirrorGeneratorElement
 {
 	/*************************************************************************
 	 * IDL Model Implementation

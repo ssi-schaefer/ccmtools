@@ -49,7 +49,6 @@ public class ExceptionDef
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 
 	public String generateJavaImportStatements()
@@ -118,7 +117,6 @@ public class ExceptionDef
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaDefaultReturnValue()
@@ -128,8 +126,7 @@ public class ExceptionDef
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 	
 	public String generateCorbaMapping()

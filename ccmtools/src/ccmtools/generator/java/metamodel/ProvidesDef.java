@@ -64,7 +64,6 @@ public class ProvidesDef
 	
 	/*************************************************************************
 	 * Local Interface Generator
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaImportStatements()
@@ -85,8 +84,7 @@ public class ProvidesDef
 	
 	
 	/*************************************************************************
-	 * Local Component Generator
-	 * 
+	 * Local Adapter Generator
 	 *************************************************************************/
 		
 	public String generateFacetAdapterReference()
@@ -110,7 +108,6 @@ public class ProvidesDef
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
@@ -149,8 +146,7 @@ public class ProvidesDef
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 	
 	public String generateEquivalentMethodAdapterToCorba()

@@ -72,7 +72,6 @@ public class UsesDef
 	
 	/*************************************************************************
 	 * Local Interface Generator
-	 * 
 	 *************************************************************************/
 	
 	public String generateEquivalentMethodDeclaration()
@@ -90,8 +89,7 @@ public class UsesDef
 
 	
 	/*************************************************************************
-	 * Local Component Generator
-	 * 
+	 * Local Adapter Generator
 	 *************************************************************************/
 	
 	public String generateReceptacleAdapterReference()
@@ -169,8 +167,7 @@ public class UsesDef
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 
 	public String generateReceptacleReferenceAdapterToCorba()

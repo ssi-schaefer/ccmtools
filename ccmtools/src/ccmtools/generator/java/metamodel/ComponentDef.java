@@ -91,7 +91,6 @@ public class ComponentDef
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateJavaImportStatements()
@@ -159,8 +158,7 @@ public class ComponentDef
 	
 	
 	/*************************************************************************
-	 * Local Component Generator Methods
-	 * 
+	 * Local Adapter Generator Methods
 	 *************************************************************************/
 	
 	public String generateApplicationInterface()
@@ -214,7 +212,6 @@ public class ComponentDef
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	public String generateApplicationClass()
@@ -240,8 +237,7 @@ public class ComponentDef
 	
 	
 	/*************************************************************************
-	 * Client Library Component Generator Methods
-	 * 
+	 * Client Library Generator Methods
 	 *************************************************************************/
 	
 	public String generateAdapterToCorba()
@@ -266,8 +262,7 @@ public class ComponentDef
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 	
 	public String generateAdapterFromCorba()

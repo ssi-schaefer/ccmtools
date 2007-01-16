@@ -12,7 +12,6 @@ import ccmtools.generator.idl.metamodel.Idl3MirrorGeneratorElement;
 import ccmtools.generator.idl.metamodel.ModelRepository;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.ConfigurationLocator;
-import ccmtools.utils.SourceFile;
 import ccmtools.utils.SourceFileHelper;
 
 public class IdlGenerator
@@ -79,26 +78,25 @@ public class IdlGenerator
 		logger.fine("begin");
 		try
 		{
+            // IDL3 model elements don't have a namespace extension
             ConfigurationLocator.getInstance().setIdlNamespaceExtension(new ArrayList<String>());
 
-            List<Idl3GeneratorElement> idl3ModelElements = new ArrayList<Idl3GeneratorElement>();
-            idl3ModelElements.addAll(idlModelRepo.findAllTypedefs());
-            idl3ModelElements.addAll(idlModelRepo.findAllEnums());
-            idl3ModelElements.addAll(idlModelRepo.findAllStructs());
-            idl3ModelElements.addAll(idlModelRepo.findAllGlobalConstants());
-            idl3ModelElements.addAll(idlModelRepo.findAllExceptions());
-            idl3ModelElements.addAll(idlModelRepo.findAllInterfaces());
-            idl3ModelElements.addAll(idlModelRepo.findAllComponents());
-            idl3ModelElements.addAll(idlModelRepo.findAllHomes());
+            List<Idl3GeneratorElement> generatorElements = new ArrayList<Idl3GeneratorElement>();
+            generatorElements.addAll(idlModelRepo.findAllTypedefs());
+            generatorElements.addAll(idlModelRepo.findAllEnums());
+            generatorElements.addAll(idlModelRepo.findAllStructs());
+            generatorElements.addAll(idlModelRepo.findAllGlobalConstants());
+            generatorElements.addAll(idlModelRepo.findAllExceptions());
+            generatorElements.addAll(idlModelRepo.findAllInterfaces());
+            generatorElements.addAll(idlModelRepo.findAllComponents());
+            generatorElements.addAll(idlModelRepo.findAllHomes());
             
-            List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-            for(Idl3GeneratorElement idl3Element : idl3ModelElements)
+            // Save all source file objects
+            for(Idl3GeneratorElement element : generatorElements)
             {
-                sourceFileList.addAll(idl3Element.generateIdl3SourceFiles());
+                SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(), 
+                        element.generateIdl3SourceFiles()); 
             }
-            
-			// Save all source file objects
-			SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
 		}
 		catch (Exception e)
 		{
@@ -114,24 +112,22 @@ public class IdlGenerator
         logger.fine("begin");
         try
         {
+            // IDL3Mirror model elements don't have a namespace extension
             ConfigurationLocator.getInstance().setIdlNamespaceExtension(new ArrayList<String>());
 
-            List<Idl3MirrorGeneratorElement> idl3ModelElements = new ArrayList<Idl3MirrorGeneratorElement>();
-            idl3ModelElements.addAll(idlModelRepo.findAllComponents());
-            idl3ModelElements.addAll(idlModelRepo.findAllHomes());
+            List<Idl3MirrorGeneratorElement> generatorElements = new ArrayList<Idl3MirrorGeneratorElement>();
+            generatorElements.addAll(idlModelRepo.findAllComponents());
+            generatorElements.addAll(idlModelRepo.findAllHomes());
 
-            List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-            for(Idl3MirrorGeneratorElement idl3Element : idl3ModelElements)
-            {
-                sourceFileList.addAll(idl3Element.generateIdl3MirrorSourceFiles());
-            }
-            
             // Save all source file objects
-            SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+            for(Idl3MirrorGeneratorElement element : generatorElements)
+            {
+                SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(),
+                        element.generateIdl3MirrorSourceFiles());
+            }
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             throw new CcmtoolsException("[IDL3Mirror Generator] " + e.getMessage());
         }
         logger.fine("end"); 
@@ -144,31 +140,29 @@ public class IdlGenerator
         logger.fine("begin");
         try
         {            
+            // Inject a namespace extension for IDL2 model elements, e.g. "ccmtools::corba"
             List<String> idlNamespaceExtension = ConfigurationLocator.getInstance().getIdl2NamespaceExtension();
             ConfigurationLocator.getInstance().setIdlNamespaceExtension(idlNamespaceExtension);
 
-            List<Idl2GeneratorElement> idl2ModelElements = new ArrayList<Idl2GeneratorElement>();
-            idl2ModelElements.addAll(idlModelRepo.findAllTypedefs());
-            idl2ModelElements.addAll(idlModelRepo.findAllEnums());
-            idl2ModelElements.addAll(idlModelRepo.findAllStructs());
-            idl2ModelElements.addAll(idlModelRepo.findAllGlobalConstants());
-            idl2ModelElements.addAll(idlModelRepo.findAllExceptions());
-            idl2ModelElements.addAll(idlModelRepo.findAllInterfaces());
-            idl2ModelElements.addAll(idlModelRepo.findAllComponents());
-            idl2ModelElements.addAll(idlModelRepo.findAllHomes());
-            
-            List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-            for(Idl2GeneratorElement idl2Element : idl2ModelElements)
-            {
-                sourceFileList.addAll(idl2Element.generateIdl2SourceFiles());
-            }
+            List<Idl2GeneratorElement> generatorElements = new ArrayList<Idl2GeneratorElement>();
+            generatorElements.addAll(idlModelRepo.findAllTypedefs());
+            generatorElements.addAll(idlModelRepo.findAllEnums());
+            generatorElements.addAll(idlModelRepo.findAllStructs());
+            generatorElements.addAll(idlModelRepo.findAllGlobalConstants());
+            generatorElements.addAll(idlModelRepo.findAllExceptions());
+            generatorElements.addAll(idlModelRepo.findAllInterfaces());
+            generatorElements.addAll(idlModelRepo.findAllComponents());
+            generatorElements.addAll(idlModelRepo.findAllHomes());
             
             // Save all source file objects
-            SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(), sourceFileList);
+            for(Idl2GeneratorElement element : generatorElements)
+            {
+                SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(), 
+                        element.generateIdl2SourceFiles());
+            }            
         }
         catch (Exception e)
         {
-            e.printStackTrace();
             throw new CcmtoolsException("[IDL2 Generator] " + e.getMessage());
         }
         logger.fine("end"); 	

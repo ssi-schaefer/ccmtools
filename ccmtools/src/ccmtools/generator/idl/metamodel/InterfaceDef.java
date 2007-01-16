@@ -11,8 +11,10 @@ import ccmtools.utils.Text;
 
 
 public class InterfaceDef
-	extends ModelElement
-	implements Type
+	extends 
+        ModelElement
+	implements 
+        Type
 {
 	/*************************************************************************
 	 * IDL Model Implementation

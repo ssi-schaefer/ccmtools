@@ -6,7 +6,6 @@ public interface Type
 {
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 	
 	Set<String> getJavaImportStatements();
@@ -59,7 +58,6 @@ public interface Type
 	
 	/*************************************************************************
 	 * Application Generator Methods
-	 * 
 	 *************************************************************************/
 		
 	/**
@@ -74,8 +72,7 @@ public interface Type
 
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 	
 	String generateCorbaMapping();

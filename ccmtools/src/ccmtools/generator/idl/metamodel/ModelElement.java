@@ -13,7 +13,9 @@ import ccmtools.utils.Text;
 
 
 public abstract class ModelElement
-	implements Idl3GeneratorElement, Idl2GeneratorElement
+	implements 
+        Idl3GeneratorElement, 
+        Idl2GeneratorElement
 {
 	/*************************************************************************
 	 * IDL Model Implementation

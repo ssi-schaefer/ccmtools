@@ -109,7 +109,6 @@ public class InterfaceDef
 	
 	/*************************************************************************
 	 * Local Interface Generator Methods
-	 * 
 	 *************************************************************************/
 
 	public String generateJavaImportStatements()
@@ -160,8 +159,7 @@ public class InterfaceDef
 	
 	
 	/*************************************************************************
-	 * Local Component Generator Methods
-	 * 
+	 * Local Adapter Generator Methods
 	 *************************************************************************/
 	
 	// Code generator methods -------------------------------------------------
@@ -198,8 +196,7 @@ public class InterfaceDef
 	
 	
 	/*************************************************************************
-	 * CORBA Component Generator Methods
-	 * 
+	 * CORBA Adapter Generator Methods
 	 *************************************************************************/
 		
 	public String generateAdapterFromCorba()
