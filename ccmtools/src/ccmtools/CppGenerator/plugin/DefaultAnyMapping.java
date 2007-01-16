@@ -13,12 +13,9 @@ import ccmtools.metamodel.BaseIDL.MTypedefDef;
 public class DefaultAnyMapping
     implements AnyMapping
 {
-	public static final String DEFAULT_ANY_MAPPING = "wamas::platform::utils::Value";
-    private static final String TAB = "    ";
-    
     public String getIdlTypeName()
     {
-        return DEFAULT_ANY_MAPPING; 
+        return "::wamas::platform::utils::Value"; 
     }
         
     public String getIncludeCode(MAliasDef alias)
@@ -33,7 +30,7 @@ public class DefaultAnyMapping
         MTypedefDef typedef = (MTypedefDef) alias;
         StringBuffer code = new StringBuffer();
         code.append("typedef ");
-        code.append("wamas::platform::utils::SmartPtr<wamas::platform::utils::Value>");
+        code.append("::wamas::platform::utils::SmartPtr< ::wamas::platform::utils::Value >");
         code.append(" ");
         code.append(typedef.getIdentifier());
         code.append(";\n");
