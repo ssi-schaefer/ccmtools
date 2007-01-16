@@ -1,15 +1,22 @@
 HEAD
 ============================================================================
+
 RELEASE-0.8.4 (January 16, 2007) 
-----------------------------------------------------------------------------
-
-
+RELEASE-0.8.3 (January 10, 2007) 
 RELEASE-0.8.2 (January 8, 2007)
 RELEASE-0.8.1 (December 21, 2006) 
 ----------------------------------------------------------------------------
+*) Refactoring: Java generator - changed metamodel 
+
+*) Refactoring: IDL generator - changed metamodel 
+
+*) Bugfix: IDL Parser 
+	Java facet impl files will be generated twice.
+	=> Set SourceFile to ProvidesDef model element.
+
 *) Refactoring: Namespaces
-	Changed generated namespaces of C++ components to support the same schema 
-	as used in the cpp-environment.
+	Changed generated namespaces of C++ and Java components to support the 
+	same schema 	as used in the cpp- and java-environment.
 	+ Removed ccm::local namespace from local interfaces.
 	+ Added ccmtools::corba to IDL2 artefacts.
 	+ Changed ccm:remote namespace to ccmtools::remote namespace.
