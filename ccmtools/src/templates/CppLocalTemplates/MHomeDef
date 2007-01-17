@@ -145,7 +145,7 @@ using namespace std;
 %(Identifier)s::%(Identifier)s()
 {
     local_home = dynamic_cast< %(LocalNamespace)sCCM_%(Identifier)s*>(
-        create%(AbsoluteLocalHomeName)s());
+        create_%(AbsoluteLocalHomeName)s());
     assembly_factory = ::Components::AssemblyFactory::SmartPtr();
 }
 
@@ -153,7 +153,7 @@ using namespace std;
     : assembly_factory(f)
 {
     local_home = dynamic_cast< %(LocalNamespace)sCCM_%(Identifier)s*>(
-        create%(AbsoluteLocalHomeName)s());
+        create_%(AbsoluteLocalHomeName)s());
 }
 
 %(Identifier)s::~%(Identifier)s()
@@ -340,7 +340,7 @@ class CCM_%(Identifier)s
 #define __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
 ::Components::HomeExecutorBase* 
-create%(AbsoluteLocalHomeName)s();
+create_%(AbsoluteLocalHomeName)s();
 
 #endif // __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
@@ -448,7 +448,7 @@ using namespace std;
 //==============================================================================
 
 Components::HomeExecutorBase*
-create%(AbsoluteLocalHomeName)s()
+create_%(AbsoluteLocalHomeName)s()
 {
     return dynamic_cast<Components::HomeExecutorBase*>(
         new %(LocalNamespace)s%(Identifier)s_impl());

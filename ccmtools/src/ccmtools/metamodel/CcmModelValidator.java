@@ -445,12 +445,12 @@ public class CcmModelValidator
 	private void validate(MOperationDef in)
 	{
         logger.fine("MOperationDef"); 
-		if(in.isOneway())
-		{
-            addError("'oneway' operations like " + 
-                    in.getDefinedIn().getIdentifier() + "::" +
-                    in.getIdentifier() + "()'");
-		}
+//		if(in.isOneway())
+//		{
+//            addError("'oneway' operations like " + 
+//                    in.getDefinedIn().getIdentifier() + "::" +
+//                    in.getIdentifier() + "()'");
+//		}
 		validate(in.getIdlType());
 		for(Iterator i = in.getParameters().iterator(); i.hasNext();)
 		{
