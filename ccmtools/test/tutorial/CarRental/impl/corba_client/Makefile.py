@@ -1,2 +1,0 @@
-PACKAGE_NAME('corba_client')
-PACKAGE_VERSION('1.0.0')

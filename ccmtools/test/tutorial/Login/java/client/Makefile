@@ -6,7 +6,6 @@ INCLUDE  = -I${IDL3_DIR}/interface -I${IDL3_DIR}/component
 
 all: clientlib run
 
-
 idl3: ${IDL_SOURCE}
 	ccmidl -idl3 -o ${IDL3_DIR} ${IDL_SOURCE}
 
@@ -17,7 +16,7 @@ stubs:
 clientlib: idl3 stubs
 	ccmjava -iface -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/application/*.idl
 	ccmjava -iface -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
-	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/application/*.idl
+	ccmjava -clientlib -remote -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/interface/application/*.idl
 	ccmjava -clientlib -o ${DEST_DIR}/src-gen ${INCLUDE} ${IDL3_DIR}/component/application/Server*.idl
 
 run: 

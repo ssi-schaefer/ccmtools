@@ -14,11 +14,11 @@ local:
 
 check: 
 	cp impl/ClientLocal.java ${DEST_DIR}/src
-	cp impl/ServerloginImpl.java ${DEST_DIR}/src/application/ccm/local/
+	cp impl/ServerloginImpl.java ${DEST_DIR}/src/application/
 	ant -f ./build.xml
 	bin/runClientLocal 
 
-stubs: #local
+stubs: 
 	ccmidl -idl2 ${INCLUDE} -o ${IDL2_DIR} ${IDL3_DIR}/interface/application/*.idl
 	ccmidl -idl2 ${INCLUDE} -o ${IDL2_DIR} ${IDL3_DIR}/component/application/Server*.idl
 	ccmtools-idl -java -o ${DEST_DIR}/src-gen -I${CCMTOOLS_HOME}/idl -I${IDL2_DIR} ${IDL2_DIR}/*.idl
@@ -29,7 +29,7 @@ remote: stubs
 
 run:
 	cp impl/Server.java ${DEST_DIR}/src 
-	cp impl/ServerloginImpl.java ${DEST_DIR}/src/application/ccm/local/
+	cp impl/ServerloginImpl.java ${DEST_DIR}/src/application/
 	ant -f ./build.xml
 	bin/runServer
 

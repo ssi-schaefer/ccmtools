@@ -5,15 +5,15 @@ import java.util.logging.Logger;
 
 import org.omg.CORBA.ORB;
 
-import application.ccm.local.Group;
-import application.ccm.local.Login;
-import application.ccm.local.PersonData;
-import application.ccm.local.InvalidPersonData;
-import application.ccm.local.Server;
-import application.ccm.local.ServerHome;
-import application.ccm.local.ServerHomeClientLibDeployment;
-import Components.ccm.local.HomeFinder;
-import ccm.local.ServiceLocator;
+import application.Group;
+import application.Login;
+import application.PersonData;
+import application.InvalidPersonData;
+import application.Server;
+import application.ServerHome;
+import application.ServerHomeClientLibDeployment;
+import Components.HomeFinder;
+import ccmtools.local.ServiceLocator;
 
 public class Client
 {
@@ -28,9 +28,9 @@ public class Client
         logger.setLevel(Level.FINER);
         Handler handler = new ConsoleHandler();
         handler.setLevel(Level.ALL);
-        handler.setFormatter(new ccm.local.MinimalFormatter());
+        handler.setFormatter(new ccmtools.utils.SimpleFormatter());
         logger.addHandler(handler);
-        ccm.local.ServiceLocator.instance().setLogger(logger);
+        ServiceLocator.instance().setLogger(logger);
 
         /**
          * Setup code (Part 1)
@@ -53,7 +53,7 @@ public class Client
          */
         try
         {            
-            HomeFinder homeFinder = ccm.local.HomeFinder.instance();
+            HomeFinder homeFinder = HomeFinder.instance();
             ServerHome home = (ServerHome) homeFinder.find_home_by_name(COMPONENT_HOME_NAME);
             Server server = home.create();
             server.configuration_complete();

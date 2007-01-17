@@ -1,5 +1,4 @@
 
-APP_NAME = Hello
 CCMTOOLS_CMD = ccmtools
 DEST_DIR = xxx
 IDL_INCLUDE=-I${DEST_DIR}/idl/interface -I${DEST_DIR}/idl/component
@@ -17,7 +16,7 @@ local: idl
 
 check: 
 	cp impl/Server_hello_impl.cc ${DEST_DIR}/component/Server/
-	cp impl/_check_world_ccm_local_Server.cc ${DEST_DIR}/component/Server/test/
+	cp impl/_check_world_Server.cc ${DEST_DIR}/component/Server/test/
 	ccmconfix -confix2 -o ${DEST_DIR} -pname "hello_world" -pversion "1.0.0"
 	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 

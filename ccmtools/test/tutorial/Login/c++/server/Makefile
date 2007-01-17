@@ -13,7 +13,7 @@ local:
 check: 
 	ccmtools c++local-test ${INCLUDE} -o ${DEST_DIR}/component/Server ${IDL3_DIR}/component/application/Server.idl
 	cp impl/Server_login_impl.cc ${DEST_DIR}/component/Server/
-	cp impl/_check_application_ccm_local_Server.cc ${DEST_DIR}/component/Server/test/
+	cp impl/_check_application_Server.cc ${DEST_DIR}/component/Server/test/
 	ccmconfix -confix2 -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
 	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
@@ -29,11 +29,11 @@ mirrorcheck:
 	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 
 
-stubs: #local
-	ccmidl -idl2 ${INCLUDE} -o ${DEST_DIR}/component/Server/CCM_corba_stubs ${IDL3_DIR}/interface/application/*.idl
-	ccmidl -idl2 ${INCLUDE} -o ${DEST_DIR}/component/Server/CCM_corba_stubs ${IDL3_DIR}/component/application/Server*.idl
-	cp impl/Makefile ${DEST_DIR}/component/Server/CCM_corba_stubs
-	make -C ${DEST_DIR}/component/Server/CCM_corba_stubs 
+stubs: 
+	ccmidl -idl2 ${INCLUDE} -o ${DEST_DIR}/component/Server/GEN_ccmtools_corba_stubs ${IDL3_DIR}/interface/application/*.idl
+	ccmidl -idl2 ${INCLUDE} -o ${DEST_DIR}/component/Server/GEN_ccmtools_corba_stubs ${IDL3_DIR}/component/application/Server*.idl
+	cp impl/Makefile ${DEST_DIR}/component/Server/GEN_ccmtools_corba_stubs
+	make -C ${DEST_DIR}/component/Server/GEN_ccmtools_corba_stubs 
 
 remote: stubs
 	ccmtools c++remote ${INCLUDE} -o ${DEST_DIR}/component/Server/ ${IDL3_DIR}/interface/application/*.idl 
@@ -42,7 +42,7 @@ remote: stubs
 run: 
 	ccmtools c++remote-test ${INCLUDE} -o ${DEST_DIR}/component/Server ${IDL3_DIR}/component/application/Server.idl 
 	cp impl/Server_login_impl.cc ${DEST_DIR}/component/Server/
-	cp impl/_check_application_ccm_remote_Server.cc ${DEST_DIR}/component/Server/test/
+	cp impl/_check_ccmtools_remote_application_Server.cc ${DEST_DIR}/component/Server/test/
 	ccmconfix -confix2 -o ${DEST_DIR} -pname "login" -pversion "1.0.0" 
 	confix2.py --packageroot=`pwd`/${DEST_DIR} --bootstrap --configure --make --targets=check
 

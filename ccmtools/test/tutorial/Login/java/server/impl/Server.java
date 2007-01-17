@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 
 import org.omg.CORBA.ORB;
 
-import ccm.local.ServiceLocator;
+import ccmtools.local.ServiceLocator;
 
 public class Server
 {
@@ -24,9 +24,9 @@ public class Server
         logger.setLevel(Level.FINER);
         Handler handler = new ConsoleHandler();
         handler.setLevel(Level.ALL);
-        handler.setFormatter(new ccm.local.MinimalFormatter());
+        handler.setFormatter(new ccmtools.utils.SimpleFormatter());
         logger.addHandler(handler);
-        ccm.local.ServiceLocator.instance().setLogger(logger);
+        ServiceLocator.instance().setLogger(logger);
 
         
         try
@@ -35,7 +35,7 @@ public class Server
             ORB orb = ORB.init(args, null);
             ServiceLocator.instance().setCorbaOrb(orb);
 
-            application.ccm.remote.ServerHomeDeployment.deploy(COMPONENT_HOME_NAME);
+            ccmtools.remote.application.ServerHomeDeployment.deploy(COMPONENT_HOME_NAME);
             System.out.println("> Server is running...");
             orb.run();
         }

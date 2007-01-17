@@ -1,2 +1,0 @@
-PACKAGE_NAME('CarRental')
-PACKAGE_VERSION('1.0.0')
