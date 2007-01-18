@@ -11,4 +11,3 @@ Things that should be checked:
 o) "onway" operations must be of type void, declare no inout or out parameters and throw
 	no exceptions.
 	
-o) 	
