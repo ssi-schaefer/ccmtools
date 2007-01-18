@@ -10,7 +10,7 @@ import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MIDLType;
 import ccmtools.metamodel.BaseIDL.MSequenceDef;
 import ccmtools.metamodel.BaseIDL.MTyped;
-import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ParserManager;
 import ccmtools.parser.idl.primitive.PrimitiveTest;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
@@ -79,7 +79,7 @@ public class SequenceTest extends TestCase
         throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
         return (MAliasDef)modelElements.get(0);

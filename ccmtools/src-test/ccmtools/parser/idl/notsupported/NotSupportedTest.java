@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ParserManager;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
@@ -70,7 +70,7 @@ public class NotSupportedTest extends TestCase
         throws CcmtoolsException
     {
         System.out.println("[" + sourceLine + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceLine);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceLine);
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
     }

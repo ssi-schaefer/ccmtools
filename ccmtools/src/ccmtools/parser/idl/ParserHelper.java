@@ -1,11 +1,5 @@
 package ccmtools.parser.idl;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,8 +8,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import java_cup.runtime.Symbol;
-import ccmtools.CcmtoolsException;
-import ccmtools.Constants;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MAliasDefImpl;
 import ccmtools.metamodel.BaseIDL.MArrayDef;
@@ -80,8 +72,6 @@ import ccmtools.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.metamodel.ComponentIDL.MProvidesDefImpl;
 import ccmtools.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.metamodel.ComponentIDL.MUsesDefImpl;
-import ccmtools.ui.UserInterfaceDriver;
-import ccmtools.utils.ConfigurationLocator;
 import ccmtools.utils.Text;
 
 
@@ -2280,6 +2270,9 @@ public class ParserHelper
     // # linenumber filename flags
     // # 1 "/home/eteinik/sandbox/workspace-development/TelegramGenerator/examples/simple_test/example1.tgen"
     // # 30 "/home/eteinik/sandbox/workspace-development/ccmtools/test/JavaLocalComponents/component_mirror/xxx/idl3/component/world/Test.idl"
+
+    // #line 1 "c:\\temp\\Message.idl"
+    
     public void handlePreprocessorLine(String line)
     {
         getLogger().fine("cpp(" + line + ")");
@@ -2364,126 +2357,4 @@ public class ParserHelper
     {
         return in.substring(in.indexOf('"')+1, in.lastIndexOf('"'));
     }
-
-    public MContainer loadCcmModel(UserInterfaceDriver uiDriver, String idlSource)
-        throws CcmtoolsException
-    {
-        try
-        {
-            uiDriver.printMessage("parse");
-            ParserHelper.getInstance().init();
-            IdlScanner scanner = new IdlScanner(new StringReader(idlSource));
-            IdlParser parser = new IdlParser(scanner);
-            MContainer ccmModel = (MContainer) parser.parse().value;
-            uiDriver.printMessage("done");
-            return ccmModel;
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            throw new CcmtoolsException(e.getMessage());
-        }
-    }
-
-
-    public MContainer loadCcmModel(UserInterfaceDriver uiDriver, String idlFileName, List<String> includePaths)
-        throws CcmtoolsException
-    {    
-        try
-        {
-            uiDriver.printMessage("Use JFlex&Cup based IDL parser");
-            File idlFile = new File(idlFileName);
-            String tmpFileName = idlFile.getName() + ".tmp";
-            File tmpIdlFile = new File(tmpFileName);
-            tmpIdlFile.deleteOnExit();
-            
-            useCpp(uiDriver, idlFile.getAbsolutePath(), includePaths, tmpFileName);
-
-            uiDriver.printMessage("parse " + tmpFileName);
-            ParserHelper.getInstance().init();
-            ParserHelper.getInstance().setMainSourceFile(idlFile.getAbsolutePath());
-            IdlScanner scanner = new IdlScanner(new FileReader(tmpIdlFile));
-            IdlParser parser = new IdlParser(scanner);                    
-            MContainer ccmModel = (MContainer)parser.parse().value;   
-            
-            String identifier = idlFileName.substring(0, idlFileName.lastIndexOf(".idl"));
-            ccmModel.setIdentifier(identifier);
-            getLogger().fine("CCM Model = " + ccmModel);            
-            uiDriver.printMessage("done");
-            
-            //!!!!!!!!!!!
-//            XStream xstream = new XStream();
-//            String xml = xstream.toXML(ccmModel);
-//            System.out.println(xml);
-            //!!!!!!!!!!!
-            return ccmModel;
-        }
-        catch (Exception e)
-        {
-            throw new CcmtoolsException(e.getMessage());
-        }
-    }
-    
-    private void useCpp(UserInterfaceDriver uiDriver, String sourceFileName, List<String> includes, String tmpFileName)
-        throws CcmtoolsException
-    {
-        File tmpFile = new File(System.getProperty("user.dir"), tmpFileName);
-        try
-        {
-            // Run a C preprocessor on the input file, in a separate process.
-            StringBuffer cmd = new StringBuffer();
-            if (ConfigurationLocator.getInstance().get("ccmtools.cpp").length() != 0)
-            {
-                cmd.append(ConfigurationLocator.getInstance().get("ccmtools.cpp"));
-            }
-            else
-            {
-                cmd.append(Constants.CPP_PATH);
-            }
-            cmd.append(" ");
-            for (String includePath : includes)
-            {
-                cmd.append("-I").append(includePath).append(" ");
-            }
-            cmd.append(sourceFileName);
-            uiDriver.printMessage(cmd.toString()); // print cpp command line
-
-            Process preproc = Runtime.getRuntime().exec(cmd.toString());
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(preproc.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(preproc.getErrorStream()));
-
-            // Read the output and any errors from the command
-            String s;
-            StringBuffer code = new StringBuffer();
-            while ((s = stdInput.readLine()) != null)
-            {
-                code.append(s).append("\n");
-            }
-            while ((s = stdError.readLine()) != null)
-            {
-                uiDriver.printMessage(s);
-            }
-
-            // Wait for the process to complete and evaluate the return
-            // value of the attempted command
-            preproc.waitFor();
-            if (preproc.exitValue() != 0)
-            {
-                reportError("Preprocessor Error: Please verify your include paths or file names ("
-                        + sourceFileName + ")!!");
-            }
-            else
-            {
-                FileWriter writer = new FileWriter(tmpFile);
-                writer.write(code.toString(), 0, code.toString().length());
-                writer.close();
-            }
-//          tmpFile.deleteOnExit();
-        }
-        catch (Exception e)
-        {
-            throw new CcmtoolsException(e.getMessage());
-        }
-    }
-
 }

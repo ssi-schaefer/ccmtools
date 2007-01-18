@@ -10,13 +10,12 @@ import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.BaseIDL.MFieldDef;
 import ccmtools.metamodel.BaseIDL.MIDLType;
-import ccmtools.metamodel.BaseIDL.MModuleDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
 import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.metamodel.BaseIDL.MStringDef;
 import ccmtools.metamodel.BaseIDL.MStructDef;
 import ccmtools.metamodel.BaseIDL.MTyped;
-import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ParserManager;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
@@ -81,7 +80,7 @@ public class StructTest extends TestCase
         throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
         return (MStructDef)modelElements.get(0);
@@ -90,7 +89,7 @@ public class StructTest extends TestCase
     public MStructDef parseSource(String sourceCode, String id) throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println("#" + modelElements.size() + ":  " + modelElements);
         for(Iterator i = modelElements.iterator(); i.hasNext(); )

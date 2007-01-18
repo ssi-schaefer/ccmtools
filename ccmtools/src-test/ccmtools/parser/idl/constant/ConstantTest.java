@@ -9,7 +9,7 @@ import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MConstantDef;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ParserManager;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
@@ -36,7 +36,7 @@ public class ConstantTest extends TestCase
         throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         MConstantDef constant = (MConstantDef)modelElements.get(0);            
         System.out.println(modelElements);
@@ -47,7 +47,7 @@ public class ConstantTest extends TestCase
     {
         UserInterfaceDriver uiDriver= new ConsoleDriver();
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println("#" + modelElements.size() + ":  " + modelElements);
         for(Iterator i = modelElements.iterator(); i.hasNext(); )

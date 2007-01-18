@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ParserManager;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
@@ -32,7 +32,7 @@ public class TypedefTest extends TestCase
         throws CcmtoolsException
     {
         System.out.println("[" + sourceLine + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceLine);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceLine);
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
         return (MAliasDef)modelElements.get(0);

@@ -13,7 +13,7 @@ import org.apache.commons.cli.ParseException;
 
 import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ParserManager;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.ConfigurationLocator;
 
@@ -64,7 +64,7 @@ public class Main
                     {
                         for (String idlFile : parameters.getIdlFiles())
                         {
-                            ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+                            ParserManager.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
                         }
                     }
 //                    else if(actionId.equals(CcmModelPrinter.MODEL_PRINTER_ID))
@@ -83,7 +83,7 @@ public class Main
                         for (String idlFile : parameters.getIdlFiles())
                         {
                             MContainer ccmModel = 
-                                ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+                                ParserManager.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
                             CcmModelValidator validator = new CcmModelValidator(uiDriver, parameters);
                             if(!validator.isValidModel(ccmModel))
                             {

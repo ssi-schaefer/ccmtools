@@ -19,7 +19,7 @@ import ccmtools.metamodel.BaseIDL.MValueBoxDef;
 import ccmtools.metamodel.BaseIDL.MValueDef;
 import ccmtools.metamodel.BaseIDL.MValueMemberDef;
 import ccmtools.metamodel.ComponentIDL.MFactoryDef;
-import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ParserManager;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
@@ -35,7 +35,6 @@ public class ValuetypeTest extends TestCase
         super(title);
         uiDriver = new ConsoleDriver();
     }
-
     
     
     public static String getValuetypePersonSource()
@@ -84,7 +83,7 @@ public class ValuetypeTest extends TestCase
     public MValueBoxDef parseBoxSource(String sourceCode, String id) throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println("#" + modelElements.size() + ":  " + modelElements);
         for(Iterator i = modelElements.iterator(); i.hasNext(); )
@@ -101,7 +100,7 @@ public class ValuetypeTest extends TestCase
     public MValueBoxDef parseBoxSource(String sourceCode) throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
         return (MValueBoxDef) modelElements.get(0);
@@ -111,7 +110,7 @@ public class ValuetypeTest extends TestCase
     public MValueDef parseSource(String sourceCode) throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
         return (MValueDef)modelElements.get(0);
@@ -121,7 +120,7 @@ public class ValuetypeTest extends TestCase
     public MValueDef parseSource(String sourceCode, String id) throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println("#" + modelElements.size() + ":  " + modelElements);
         for(Iterator i = modelElements.iterator(); i.hasNext(); )

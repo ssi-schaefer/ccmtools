@@ -17,7 +17,7 @@ import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.generator.java.metamodel.ModelRepository;
 import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ParserManager;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.ConfigurationLocator;
 
@@ -63,8 +63,7 @@ public class Main
 				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
 				{
 					String idlFile = (String) i.next();
-                    MContainer ccmModel = 
-                        ParserHelper.getInstance().loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
+                    MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
 
 					// Transform CCM Model to Java Implementation Model
 					GraphTraverser traverser = new CcmGraphTraverser();

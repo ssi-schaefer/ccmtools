@@ -43,7 +43,14 @@ InputCharacter 				= 	[^\r\n]
 WhiteSpace 					= 	[ \t\f]
 PreprocessorLine 			= 	"#" {InputCharacter}* {LineTerminator}
 PragmaLine 					= 	"#pragma" {InputCharacter}* {LineTerminator}
-EndOfLineComment 			= 	"//" {InputCharacter}* {LineTerminator}
+
+Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
+TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}
+DocumentationComment = "/**" {CommentContent} "*"+ "/"
+CommentContent       = ( [^*] | \*+ [^/*] )*
+
+
 
 Digits 						= 	[0-9]+
 Oct_Digit 					= 	[0-7]
@@ -86,7 +93,7 @@ CORBA_Identifier				= 	[a-zA-Z_][a-zA-Z0-9_]*
 {
 	{WhiteSpace}			{ /* no actions*/ }		
 	
-	{EndOfLineComment}	{ /* no actions*/ }
+	{Comment}         	{ /* no actions*/ }
 						
 	{LineTerminator}		{
 							ParserHelper.getInstance().incrementCurrentSourceLine();

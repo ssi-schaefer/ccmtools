@@ -9,7 +9,7 @@ import ccmtools.CcmtoolsException;
 import ccmtools.metamodel.BaseIDL.MContained;
 import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.metamodel.ComponentIDL.MComponentDef;
-import ccmtools.parser.idl.ParserHelper;
+import ccmtools.parser.idl.ParserManager;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 
@@ -35,7 +35,7 @@ public class ComponentTest extends TestCase
         throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println(modelElements);
         return (MComponentDef)modelElements.get(0);
@@ -45,7 +45,7 @@ public class ComponentTest extends TestCase
         throws CcmtoolsException
     {
         System.out.println("[" + sourceCode + "]");
-        MContainer ccmModel = ParserHelper.getInstance().loadCcmModel(uiDriver, sourceCode);
+        MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, sourceCode);
         List modelElements = ccmModel.getContentss();
         System.out.println("#" + modelElements.size() + ":  " + modelElements);
         for(Iterator i = modelElements.iterator(); i.hasNext(); )
