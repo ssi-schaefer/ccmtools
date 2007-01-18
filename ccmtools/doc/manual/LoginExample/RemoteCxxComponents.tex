@@ -1,4 +1,3 @@
-% $Id$
 %==============================================================================
 \section{Use Case 2: Remote C++ Components}
 \label{section:RemoteC++ComponentImplementation}
@@ -43,32 +42,32 @@ the CCM specification:
 \begin{footnotesize}
 \begin{verbatim}
 > ccmidl -idl2 -I../../idl3repo/interface -I../../idl3repo/component \
-         -o src/component/Server/CCM_corba_stubs                     \  
+         -o src/component/Server/GEN_ccmtools_corba_stubs            \  
          ../../idl3repo/interface/application/*.idl
 
 > ccmidl -idl2 -I../../idl3repo/interface -I../../idl3repo/component \
-         -o src/component/Server/CCM_corba_stubs                     \
+         -o src/component/Server/GEN_ccmtools_corba_stubs            \
          ../../idl3repo/component/application/Server*.idl
 \end{verbatim}
 \end{footnotesize}
 
-In this example, all generated IDL2 files are stored in a directory called {\tt
-CCM\_corba\_stubs}:
+In this example, all generated IDL2 files are stored in a directory called 
+{\tt GEN\_ccmtools\_corba\_stubs}:
 \begin{footnotesize}
 \begin{verbatim}
     Login/c++/server
     |-- component
     |   `-- Server
-    |       |-- CCM_corba_stubs
+    |       |-- GEN_ccmtools_corba_stubs
 \end{verbatim}
 \end{footnotesize}
 
-In this {\tt CCM\_corba\_stubs} directory we call the IDL compiler for
+In this {\tt GEN\_ccmtools\_corba\_stubs} directory we call the IDL compiler for
 every single file (the CCM Tools provide a script that can do this
 in a single call):
 \begin{footnotesize}
 \begin{verbatim}
-> cd src/component/Server/CCM_corba_stubs
+> cd src/component/Server/GEN_ccmtools_corba_stubs
 > ccmtools-idl -mico -I${CCMTOOLS_HOME}/idl *.idl
 > cd ../../../../
 \end{verbatim}
@@ -93,16 +92,15 @@ generate CORBA adapters and converters:
 \end{verbatim}
 \end{footnotesize}
 
-All generated source files are stored in {\tt CCM\_*\_remote\_*} directories:
+All generated source files are stored in the {\tt GEN\_ccmtools\_remote\_*} directory:
 \begin{footnotesize}
 \begin{verbatim}
 Login/c++/server
 `-- src
     |-- component
     |   `-- Server
-    |       |-- CCM_application_ccm_remote
-    |       |-- CCM_application_ccm_remote_corba_converter
-    |       `-- CCM_corba_stubs
+    |       |-- GEN_ccmtools_remote_application
+    |       `-- GEN_ccmtools_corba_stubs
 \end{verbatim}
 \end{footnotesize}
 
@@ -127,37 +125,40 @@ middleware.
 Before implementing a remote client, the remote component must be started as a
 stand-alone CORBA server.
 To keep things simple, we implement this CORBA server in a single 
-{\tt \_check\_*.cc} file:
+{\tt \_check\_ccmtools\_remote\_application\_Server.cc} file:
 \begin{footnotesize}
 \begin{lstlisting}[language=C++]
+#include <cstdlib> 
+#include <iostream>
 #include <string>
-#include <wx/utils/debug.h>
-#include <CCM/CCMContainer.h>
+
+#include <ccmtools/remote/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <application/ccm/remote/ServerHome_remote.h>
-#include <application_Server.h>
+#include <ccmtools/remote/application/ServerHome_remote.h>
+#include <ccmtools_corba_application_Server.h>
 
 using namespace std;
-using namespace wx::utils;
-
 int main (int argc, char *argv[])
 {
-  char* argv_[] = { "", 
-                    "-ORBInitRef", 
-                    "NameService=corbaloc:iiop:1.2@localhost:5050/NameService"}; 
-  int   argc_ = 3;
+  int argc_ = 3;
+  char* argv_[] = 
+  { 
+    "", 
+    "-ORBInitRef", 
+    "NameService=corbaloc:iiop:1.2@localhost:5050/NameService"
+  }; 
   CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
 
   // Register all value type factories with the ORB  
-  CCM::register_all_factories(orb);
+  ::ccmtools::remote::register_all_factories(orb);
 
   // Deploy local and remote component homes	
   int error = 0;
-  error += deploy_application_ccm_local_ServerHome("ServerHome");
-  error += deploy_application_ccm_remote_ServerHome(orb, "ServerHome");
+  error += deploy_application_ServerHome("ServerHome");
+  error += deploy_ccmtools_remote_application_ServerHome(orb, "ServerHome");
   if(!error) 
   {
       cout << "ServerHome server is running..." << endl;
@@ -181,7 +182,7 @@ Login/c++/server
     |-- component
     |   `-- Server
     |       `-- test
-    |           `-- _check_application_ccm_remote_Server.cc
+    |           `-- _check_ccmtools_remote_application_Server.cc
 \end{verbatim}
 \end{footnotesize}
 
@@ -227,26 +228,27 @@ again:
 \begin{footnotesize}
 \begin{verbatim}
 > ccmidl -idl2 -I../../idl3repo/interface -I../../idl3repo/component \
-         -o src/component/Server/CCM_corba_stubs                     \  
+         -o src/component/Server/GEN_ccmtools_corba_stubs            \  
          ../../idl3repo/interface/application/*.idl
 
 > ccmidl -idl2 -I../../idl3repo/interface -I../../idl3repo/component \
-         -o src/component/Server/CCM_corba_stubs                     \
+         -o src/component/Server/GEN_ccmtools_corba_stubs            \
          ../../idl3repo/component/application/Server*.idl
 \end{verbatim}
 \end{footnotesize}
 
 In addition to the generated stubs and skeletons, we store the remote test
-client in a file named {\tt \_check\_client.cc} in the following directory structure:
+client in a file named {\tt \_check\_ccmtools\_remote\_client.cc} in the 
+following directory structure:
 \begin{footnotesize}
 \begin{verbatim}
 Login/c++/client
 `-- src
     |-- component
     |   `-- Server
-    |       `-- CCM_corba_stubs
+    |       `-- GEN_ccmtools_corba_stubs
     `-- test
-        `-- _check_client.cc
+        `-- _check_ccmtools_remote_client.cc
 \end{verbatim}
 \end{footnotesize}
 
@@ -255,48 +257,52 @@ uses the IDL to C++ mapping specified by the OMG.
 
 \begin{footnotesize}
 \begin{lstlisting}[language=C++]
+#include <cstdlib> 
+#include <iostream>
 #include <string>
-#include <wx/utils/debug.h>
-#include <CCM/CCMContainer.h>
 
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
-#include <application_Server.h>
-#include <application_ServerHome.h>
+#include <ccmtools/remote/CCMContainer.h>
+#include <ccmtools_corba_application_ServerHome.h>
 
 using namespace std;
-using namespace wx::utils;
+using namespace ccmtools::corba::application;
 
 int main (int argc, char *argv[])
 {
     int   argc_   = 3;
-    char* argv_[] = { "", 
-                    "-ORBInitRef", 
-                    "NameService=corbaloc:iiop:1.2@localhost:5050/NameService"};
- 
+    char* argv_[] = 
+    { 
+        "", 
+        "-ORBInitRef", 
+        "NameService=corbaloc:iiop:1.2@localhost:5050/NameService"
+    };
     CORBA::ORB_var orb = CORBA::ORB_init(argc_, argv_);
 
-    CORBA::Object_var obj = orb->resolve_initial_references("NameService");
-    CosNaming::NamingContextExt_var nc = CosNaming::NamingContextExt::_narrow(obj);
+    CORBA::Object_var obj = 
+        orb->resolve_initial_references("NameService");
+    CosNaming::NamingContextExt_var nc = 
+        CosNaming::NamingContextExt::_narrow(obj);
 
     // Find ComponentHomes in the Naming-Service
     obj = nc->resolve_str("ServerHome");
-    ::application::ServerHome_var home = ::application::ServerHome::_narrow(obj);
+    ServerHome_var home = ServerHome::_narrow(obj);
 
     // Create component instances
-    ::application::Server_var server = home->create();
-    ::application::Login_var login = server->provide_login();
+    Server_var server = home->create();
+    Login_var login = server->provide_login();
     server->configuration_complete();
 
 	// Run test cases
     try 
     {
-      ::application::PersonData person;
+      PersonData person;
       person.id = 277;
       person.name = CORBA::string_dup("eteinik");
       person.password = CORBA::string_dup("eteinik");   
-      person.group =  ::application::USER;       
+      person.group = USER;       
       
       CORBA::Boolean result = login->isValidUser(person);
       
@@ -309,23 +315,23 @@ int main (int argc, char *argv[])
           cout << "We don't know you !!!" << endl;
       }
     }
-    catch(::application::InvalidPersonData& e)
+    catch(InvalidPersonData& e)
     {
       cout << "Error: InvalidPersonData" << endl;	
     }
 
     try 
     {
-      ::application::PersonData person;
+      PersonData person;
       person.id = 0;
       person.name = CORBA::string_dup(""); // Here we create an error!!!
       person.password = CORBA::string_dup("");   
-      person.group =  ::application::USER;       
+      person.group = USER;       
       
       login->isValidUser(person);
       assert(false); 
     }
-    catch(::application::InvalidPersonData& e)
+    catch(InvalidPersonData& e)
     {
       cout << "OK, caught InvalidPersonData exception!" << endl;	
     }
@@ -352,7 +358,7 @@ implemented the first distributed component application:
 \begin{verbatim}
 Welcome eteinik
 OK, caught InvalidPersonData exception!
-PASS: login-remote-client__check_client
+PASS: login-remote-client_test__check_ccmtools_remote_client
 ==================
 All 1 tests passed
 ==================

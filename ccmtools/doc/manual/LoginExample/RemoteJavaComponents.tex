@@ -1,4 +1,3 @@
-% $Id$
 %==============================================================================
 \section{Use Case 4: Remote Java Components}
 \label{section:RemoteJavaComponentImplementation}
@@ -104,7 +103,7 @@ component home and runs the ORB.
 \begin{footnotesize}
 \begin{lstlisting}[language=Java]
 import org.omg.CORBA.ORB;
-import ccm.local.ServiceLocator;
+import ccmtools.local.ServiceLocator;
 
 public class Server
 {
@@ -116,7 +115,7 @@ public class Server
             ORB orb = ORB.init(args, null);
             ServiceLocator.instance().setCorbaOrb(orb);
 
-            application.ccm.remote.ServerHomeDeployment.deploy("ServerHome");
+            ccmtools.remote.application.ServerHomeDeployment.deploy("ServerHome");
             System.out.println("ServerHome server is running...");
             orb.run();
         }
@@ -210,7 +209,7 @@ remote component and client on the same box.
 On top of CORBA stubs and skeletons we generate the client library component:
 \begin{footnotesize}
 \begin{verbatim}
-> ccmjava -iface -clientlib                                     \
+> ccmjava -iface -clientlib -remote                             \
           -I../../idl3repo/interface -I../../idl3repo/component \
           -o ./src-gen                                          \
           ../../idl3repo/interface/application/*.idl
@@ -239,9 +238,9 @@ sections are different to a local component client implementation:
 \begin{footnotesize}
 \begin{lstlisting}[language=Java]
 import org.omg.CORBA.ORB;
-import application.ccm.local.*;
-import Components.ccm.local.HomeFinder;
-import ccm.local.ServiceLocator;
+import application.*;
+import Components.HomeFinder;
+import ccmtools.local.ServiceLocator;
 
 public class Client
 {

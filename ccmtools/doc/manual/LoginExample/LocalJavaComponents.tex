@@ -1,4 +1,3 @@
-% $Id$
 %==============================================================================
 \section{Use Case 3: Local Java Components}
 \label{section:LocalJavaComponentImplementation}
@@ -55,8 +54,6 @@ These code generation steps result in the following file structure:
 Login/java/server
 `-- src-gen
     `-- application
-        `-- ccm
-            `-- local
 \end{verbatim}
 \end{footnotesize}
 
@@ -94,12 +91,10 @@ should use a CVS like code versioning system for this directory.
 Login/java/server
 |-- src
 |   `-- application
-|       `-- ccm
-|           `-- local
-|               |-- ServerHomeFactory.java
-|               |-- ServerHomeImpl.java
-|               |-- ServerImpl.java
-|               `-- ServerloginImpl.java
+|         |-- ServerHomeFactory.java
+|         |-- ServerHomeImpl.java
+|         |-- ServerImpl.java
+|         `-- ServerloginImpl.java
 `-- src-gen
 \end{verbatim}
 \end{footnotesize}
@@ -130,7 +125,7 @@ Note that these implementation files can not be overwritten by the CCM Tools.
 Generators replaces only untouched implementation files, otherwise the 
 re--generated files are stored with a '{\tt .new}' suffix.
 
- \vspace{3mm}
+\vspace{3mm}
 To implement the Login example's business logic, you can open the 
 {\tt ServerloginImpl.java} file and implement the following code snippet:
 \begin{footnotesize}
@@ -223,9 +218,9 @@ object.
 	
 \begin{footnotesize}
 \begin{lstlisting}[language=Java]
-import application.ccm.local.*;
-import Components.ccm.local.HomeFinder;
-import ccm.local.ServiceLocator;
+import application.*;
+import Components.HomeFinder;
+import ccmtools.local.ServiceLocator;
 
 public class ClientLocal
 {
@@ -262,7 +257,7 @@ interactions between client and component are based on generated interfaces.
 \begin{lstlisting}[language=Java]
 try
 {            
-    HomeFinder homeFinder = ccm.local.HomeFinder.instance();
+    HomeFinder homeFinder = HomeFinder.instance();
     ServerHome home = (ServerHome) homeFinder.find_home_by_name("ServerHome");
     Server server = home.create();
     server.configuration_complete();

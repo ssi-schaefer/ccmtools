@@ -87,7 +87,7 @@ structure:
 \noindent
 CCM Tools generate the following file structure which represents a local
 component's implementation.
-Code contained in the {\tt CCM\_*} directories establishes the component's
+Code contained in the {\tt GEN\_*} directories establishes the component's
 structure (= {\it component logic}), while code stored in the {\tt Server} 
 directory represents the functional part of a component (= {\it business
 logic}).
@@ -98,18 +98,18 @@ logic}).
     |-- idl
     |-- component
     |   `-- Server
-    |       |-- CCM_world_ccm_local
-    |       |-- CCM_world_ccm_local_share
+    |       |-- GEN_ccmtools_local_world
+    |       |-- GEN_ccmtools_local_world_share
     |       |-- ServerHome_impl.cc
     |       |-- ServerHome_impl.h
     |       |-- Server_hello_impl.cc
     |       |-- Server_hello_impl.h
     |       |-- Server_impl.cc
     |       |-- Server_impl.h
-    |       `-- world_ccm_local_ServerHome_entry.h
+    |       `-- world_ServerHome_entry.h
     `-- interface
-        |-- CCM_world_ccm_local
-        `-- CCM_world_ccm_local_adapter
+        |-- GEN_ccmtools_local_world
+        `-- GEN_world
 \end{verbatim}
 \end{small}
 
@@ -123,7 +123,7 @@ we extend the generated {\tt Server\_hello\_impl.cc} file:
 \begin{verbatim}
 std::string
 Server_hello_impl::sayHello()
-    throw(Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     // TODO : IMPLEMENT ME HERE !
     return "Hello from Server component!";
@@ -141,37 +141,27 @@ file that will be automatically executed from a {\tt make check} command.
 \begin{verbatim}
    server/component/server
     |-- test
-    |   `-- _check_world_ccm_local_Server.cc
+    |   `-- _check_world_Server.cc
 \end{verbatim}
 \end{small}
 
 \noindent
 The following client code snippets are stored in the 
-{\tt \_check\_world\_ccm\_local\_Server.cc} file:
+{\tt \_check\_world\_Server.cc} file:
 \begin{small}
 \begin{verbatim}
 #include <cassert>
 #include <iostream>
 
-#include <wx/utils/debug.h>
-#include <wx/utils/smartptr.h>
-
-#include <Components/ccm/local/CCM.h>
-#include <ccm/local/HomeFinder.h>
-
-#include <world/ccm/local/Server_gen.h>
-#include <world/ccm/local/ServerHome_gen.h>
+#include <Components/ccmtools.h>
+#include <world/ServerHome_gen.h>
 
 using namespace std;
-using namespace wx::utils;
-using namespace world::ccm::local;
+using namespace world;
 
 int main(int argc, char *argv[])
 {
-    int error = 0;
-    Components::ccm::local::HomeFinder* homeFinder = 
-        ccm::local::HomeFinder::Instance();
-    error = deploy_world_ccm_local_ServerHome("ServerHome");
+    int error = deploy_world_ServerHome("ServerHome");
     if(error)
     {
         cerr << "BOOTSTRAP ERROR: Can't deploy component homes!" << endl;
@@ -180,12 +170,14 @@ int main(int argc, char *argv[])
 
     try
     {
-        SmartPtr<ServerHome> home(
-            dynamic_cast<ServerHome*>(
-                homeFinder->find_home_by_name("ServerHome").ptr()));
+        Components::HomeFinder* homeFinder = 
+            Components::HomeFinder::Instance();
 
-        SmartPtr<Server> component;
-        SmartPtr<Hello> hello;
+        ServerHome::SmartPtr home(dynamic_cast<ServerHome*>(
+            homeFinder->find_home_by_name("ServerHome").ptr()));
+
+        Server::SmartPtr component;
+        Hello::SmartPtr hello;
 
         component = home->create();
         hello = component->provide_hello();
@@ -198,25 +190,25 @@ int main(int argc, char *argv[])
 
         component->remove();
     }
-    catch(Components::ccm::local::Exception& e)
+    catch(Components::Exception& e)
     {
-        cout << "CCMTOOLS ERROR: " << e.what() << endl;
+        cerr << "CCMTOOLS ERROR: " << e.what() << endl;
         return -1;
     }
-    catch ( ... )
+    catch(...)
     {
-        cout << "UNKNOWN ERROR!" << endl;
+        cerr << "UNKNOWN ERROR!" << endl;
         return -1;
     }
 
-    error = undeploy_world_ccm_local_ServerHome("ServerHome");
+    error = undeploy_world_ServerHome("ServerHome");
     if(error)
     {
         cerr << "TEARDOWN ERROR: Can't undeploy component homes!" << endl;
         return error;
     }
 
-    ccm::local::HomeFinder::destroy();
+    Components::HomeFinder::destroy();
 }
 \end{verbatim}
 \end{small}
@@ -247,7 +239,7 @@ build process:
 \begin{small}
 \begin{verbatim}
 sayHello(): Hello from Server component!
-PASS: hello_world_component_Server_test__check_world_ccm_local_Server
+PASS: hello_world_component_Server_test__check_world_Server
 ==================
 All 1 tests passed
 ==================

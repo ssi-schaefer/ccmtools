@@ -1,4 +1,3 @@
-% $Id$
 %==============================================================================
 \section{Use Case 5: Mirror Component Concept}
 \label{section:MirrorComponentConcept}
@@ -139,15 +138,15 @@ Login/c++/server
     |-- component
     |   |-- Server
     |   `-- ServerMirror
-    |       |-- CCM_application_ccm_local
-    |       |-- CCM_application_ccm_local_share
+    |       |-- GEN_ccmtools_local_application
+    |       |-- GEN_ccmtools_local_application_share
     |       |-- ServerHomeMirror_impl.cc
     |       |-- ServerHomeMirror_impl.h
     |       |-- ServerMirror_impl.cc
     |       |-- ServerMirror_impl.h
-    |       |-- application_ccm_local_ServerHomeMirror_entry.h
+    |       |-- application_ServerHomeMirror_entry.h
     |       `-- test
-    |           `-- _check_application_ccm_local_Server.cc
+    |           `-- _check_application_Server.cc
 \end{verbatim}
 \end{footnotesize}
 
@@ -165,7 +164,7 @@ In the {\tt ServerMirror\_impl.cc} class we implement the following code snippet
 \begin{lstlisting}[language=C++]
 void
 ServerMirror_impl::ccm_activate()
-    throw(::Components::ccm::local::CCMException)
+    throw(Components::CCMException)
 {
     try
     {
@@ -207,7 +206,7 @@ ServerMirror_impl::ccm_activate()
             cout << "OK, caught InvalidPersonData exception!" << endl;
         }
     }
-    catch(::Components::ccm::local::Exception& e)
+    catch(Components::Exception& e)
     {
         cerr << "ERROR: " << e.what() << endl;
     }
@@ -235,7 +234,7 @@ Not surprisingly, you should see the following output on your command line:
 \begin{verbatim}
 Welcome eteinik
 OK, caught InvalidPersonData exception!
-PASS: login__check_application_ccm_local_Server
+PASS: login_component_ServerMirror_test__check_application_Server
 ==================
 All 1 tests passed
 ==================

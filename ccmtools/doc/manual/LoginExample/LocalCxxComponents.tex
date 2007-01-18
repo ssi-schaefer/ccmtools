@@ -1,4 +1,3 @@
-% $Id$
 %==============================================================================
 \section{Use Case 1: Local C++ Components}
 \label{section:LocalC++ComponentImplementation}
@@ -57,16 +56,16 @@ Login/c++/server
   `-- src
     |-- component
     |   `-- Server
-    |       |-- CCM_application_ccm_local
-    |       |-- CCM_application_ccm_local_share
-    |       `-- application_ccm_local_ServerHome_entry.h
+    |       |-- GEN_ccmtools_local_application
+    |       |-- GEN_ccmtools_local_application_share
+    |       `-- application_ServerHome_entry.h
     `-- interface
-        |-- CCM_application_ccm_local
-        `-- CCM_application_ccm_local_adapter
+        |-- GEN_application
+        `-- GEN_ccmtools_local_application
 \end{verbatim}
 \end{footnotesize}
 
-Basically, all directories starting with '{\tt CCM\_}' contain component logic
+Basically, all directories starting with '{\tt GEN\_}' contain component logic
 which is completely generated (so there is no need to check--in these directories
 into a CVS like system).
 The component logic fills the gap between a component's interfaces and its
@@ -117,7 +116,7 @@ There is a direct relationship between IDL and these business logic files:
 	implementation of the default {\tt create()} operation.
 	Additionally, the {\tt ServerHome\_impl.cc} file contains the implementation of
 	the global: \\
-    {\tt create\_application\_ccm\_local\_component\_Server\_ServerHome()} 
+    {\tt create\_application\_ServerHome()} 
  	function which represents the business logic entry point used by the generated 
  	component logic. 
 
@@ -147,13 +146,11 @@ To implement the Login example's business logic, you open the
 \begin{footnotesize}
 \begin{lstlisting}[language=C++]
 bool
-Server_login_impl::isValidUser(
-    const application::ccm::local::PersonData& person)
-    throw(::Components::ccm::local::CCMException,
-          application::ccm::local::InvalidPersonData )
+Server_login_impl::isValidUser(const application::PersonData& person)
+    throw(Components::CCMException, application::InvalidPersonData )
 {
     if(person.name.length() == 0)
-        throw application::ccm::local::InvalidPersonData();
+        throw application::InvalidPersonData();
 
     if(person.id == 277 
        && person.name == "eteinik"
@@ -200,33 +197,19 @@ the component we have built in the last section.
 
 \vspace{3mm}
 We create a {\tt src/component/Server/test} directory and store the following
-code in a file called {\tt \_check\_local\_component\_Server.cc}:
+code in a file called {\tt \_check\_application\_Server.cc}:
  
 \begin{footnotesize} 
 \begin{lstlisting}[language=C++]
-#include <cassert>
-#include <iostream>
-
-#include <wx/utils/debug.h>
-#include <WX/Utils/smartptr.h>
-
-#include <Components/ccm/local/CCM.h>
-#include <ccm/local/HomeFinder.h>
-
-#include <application/ccm/local/Server_gen.h>
-#include <application/ccm/local/ServerHome_gen.h>
+#include <Components/ccmtools.h>
+#include <application/ServerHome_gen.h>
 
 using namespace std;
-using namespace wx::utils;
-using namespace ccm::local;
-using namespace application::ccm::local;
+using namespace application;
 
 int main(int argc, char *argv[])
 {
-  SmartPtr<Server> server;
-  SmartPtr<Login> login;
-  Components::ccm::local::HomeFinder* homeFinder = HomeFinder::Instance();
-  if(deploy_application_ccm_local_ServerHome("ServerHome")) 
+  if(deploy_application_ServerHome("ServerHome")) 
   {
       cerr << "ERROR: Can't deploy component homes!" << endl;
       return -1;
@@ -234,9 +217,14 @@ int main(int argc, char *argv[])
 
   try 
   {
-      SmartPtr<ServerHome> serverHome(dynamic_cast<ServerHome*>
-          (homeFinder->find_home_by_name("ServerHome").ptr()));
+      Components::HomeFinder* homeFinder = Components::HomeFinder::Instance();
 
+      ServerHome::SmartPtr serverHome(dynamic_cast<ServerHome*>(
+          homeFinder->find_home_by_name("ServerHome").ptr()));
+
+      Server::SmartPtr server;
+      Login::SmatrPtr login;
+      
       server = serverHome->create();
       login = server->provide_login();
       server->configuration_complete();
@@ -245,13 +233,13 @@ int main(int argc, char *argv[])
     
       server->remove();
   } 
-  catch(::Components::ccm::local::Exception& e ) 
+  catch(Components::Exception& e ) 
   {
-      cout << "ERROR: " << e.what() << endl;
+      cerr << "ERROR: " << e.what() << endl;
       return -2;
   } 
 
-  if(undeploy_application_ccm_local_ServerHome("ServerHome")) 
+  if(undeploy_application_ServerHome("ServerHome")) 
   {
     cerr << "ERROR: Can't undeploy component home!" << endl;
     return -3;
@@ -356,7 +344,7 @@ At the end of this build process, you hopefully see an output like:
 \begin{verbatim}
 Welcome eteinik
 OK, caught InvalidPersonData exception!
-PASS: login_component_Server_test__check_application_ccm_local_Server
+PASS: login_component_Server_test__check_application_Server
 ==================
 All 1 tests passed
 ==================
