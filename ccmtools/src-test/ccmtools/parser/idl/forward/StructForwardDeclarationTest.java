@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MFieldDef;
-import ccmtools.metamodel.BaseIDL.MStructDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MFieldDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MStructDef;
 import ccmtools.parser.idl.struct.StructTest;
 
 

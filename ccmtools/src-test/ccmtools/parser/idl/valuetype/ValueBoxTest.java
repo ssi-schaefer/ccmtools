@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MSequenceDef;
-import ccmtools.metamodel.BaseIDL.MValueBoxDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MSequenceDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MValueBoxDef;
 import ccmtools.parser.idl.primitive.PrimitiveTest;
 import ccmtools.parser.idl.struct.StructTest;
 

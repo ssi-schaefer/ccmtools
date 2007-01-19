@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MConstantDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MConstantDef;
 
 
 public class LiteralOfBaseTypesTest extends LiteralTest

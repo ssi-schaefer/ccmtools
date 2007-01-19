@@ -8,10 +8,10 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MContained;
-import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.metamodel.BaseIDL.MModuleDef;
 import ccmtools.parser.idl.ParserManager;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContained;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.metamodel.BaseIDL.MModuleDef;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 

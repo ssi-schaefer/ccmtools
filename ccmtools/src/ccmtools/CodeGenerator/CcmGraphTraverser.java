@@ -28,12 +28,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import ccmtools.metamodel.BaseIDL.MContained;
-import ccmtools.metamodel.BaseIDL.MEnumDef;
-import ccmtools.metamodel.BaseIDL.MFieldDef;
-import ccmtools.metamodel.BaseIDL.MModuleDef;
-import ccmtools.metamodel.BaseIDL.MParameterDef;
-import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContained;
+import ccmtools.parser.idl.metamodel.BaseIDL.MEnumDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MFieldDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MModuleDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MParameterDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MUnionFieldDef;
 
 /**
  * A CCM MOF graph traverser similar in pattern to the SAX XML parser.

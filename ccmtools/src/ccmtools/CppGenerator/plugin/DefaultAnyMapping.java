@@ -1,7 +1,7 @@
 package ccmtools.CppGenerator.plugin;
 
-import ccmtools.metamodel.BaseIDL.MAliasDef;
-import ccmtools.metamodel.BaseIDL.MTypedefDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MAliasDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MTypedefDef;
 
 
 /***

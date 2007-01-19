@@ -5,12 +5,12 @@ import ccmtools.deployment.metamodel.ComponentInterfaceDescription;
 import ccmtools.deployment.metamodel.ComponentPortDescription;
 import ccmtools.deployment.metamodel.DeploymentFactory;
 import ccmtools.deployment.metamodel.impl.CCMComponentPortKind;
-import ccmtools.metamodel.CcmModelHelper;
-import ccmtools.metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.metamodel.ComponentIDL.MComponentDef;
-import ccmtools.metamodel.ComponentIDL.MHomeDef;
-import ccmtools.metamodel.ComponentIDL.MProvidesDef;
-import ccmtools.metamodel.ComponentIDL.MUsesDef;
+import ccmtools.parser.idl.metamodel.CcmModelHelper;
+import ccmtools.parser.idl.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MHomeDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MUsesDef;
 
 
 public class CcmModelNodeHandler

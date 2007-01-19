@@ -20,7 +20,7 @@
 
 package ccmtools.parser.idl3;
 
-import ccmtools.metamodel.BaseIDL.MArrayDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MArrayDef;
 
 class DeclaratorHelper
 {

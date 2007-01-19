@@ -5,11 +5,11 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.metamodel.BaseIDL.MEnumDef;
-import ccmtools.metamodel.BaseIDL.MIDLType;
-import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.ParserManager;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.metamodel.BaseIDL.MEnumDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MIDLType;
+import ccmtools.parser.idl.metamodel.BaseIDL.MTyped;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 

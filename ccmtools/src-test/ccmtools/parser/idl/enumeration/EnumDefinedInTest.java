@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MEnumDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MEnumDef;
 
 
 public class EnumDefinedInTest extends EnumTest

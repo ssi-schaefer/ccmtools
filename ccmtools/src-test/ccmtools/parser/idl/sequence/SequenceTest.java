@@ -5,12 +5,12 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MAliasDef;
-import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.metamodel.BaseIDL.MIDLType;
-import ccmtools.metamodel.BaseIDL.MSequenceDef;
-import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.ParserManager;
+import ccmtools.parser.idl.metamodel.BaseIDL.MAliasDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.metamodel.BaseIDL.MIDLType;
+import ccmtools.parser.idl.metamodel.BaseIDL.MSequenceDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.primitive.PrimitiveTest;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;

@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.metamodel.BaseIDL.MValueDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MValueDef;
 
 
 public class ValuetypeHeaderTest extends ValuetypeTest

@@ -1,6 +1,6 @@
 package ccmtools.CppGenerator.plugin;
 
-import ccmtools.metamodel.BaseIDL.MAliasDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MAliasDef;
 
 /**
  * This interface defines the methods a generator can call to generate

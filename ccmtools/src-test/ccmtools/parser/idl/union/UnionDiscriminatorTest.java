@@ -6,10 +6,10 @@ import java.util.List;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MUnionDef;
-import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.parser.idl.ScopedName;
 import ccmtools.parser.idl.enumeration.EnumTest;
+import ccmtools.parser.idl.metamodel.BaseIDL.MUnionDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MUnionFieldDef;
 import ccmtools.parser.idl.primitive.PrimitiveTest;
 
 

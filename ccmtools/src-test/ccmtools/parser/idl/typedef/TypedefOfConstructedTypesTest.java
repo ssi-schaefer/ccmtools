@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MAliasDef;
 import ccmtools.parser.idl.enumeration.EnumTest;
+import ccmtools.parser.idl.metamodel.BaseIDL.MAliasDef;
 import ccmtools.parser.idl.struct.StructTest;
 import ccmtools.parser.idl.union.UnionTest;
 

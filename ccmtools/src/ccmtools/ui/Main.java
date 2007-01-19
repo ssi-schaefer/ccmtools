@@ -37,8 +37,8 @@ import ccmtools.CppGenerator.CppLocalGenerator;
 import ccmtools.CppGenerator.CppLocalTestGenerator;
 import ccmtools.CppGenerator.CppRemoteGenerator;
 import ccmtools.CppGenerator.CppRemoteTestGenerator;
-import ccmtools.metamodel.CcmModelHelper;
-import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.metamodel.CcmModelHelper;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
 import ccmtools.parser.idl3.ParserManager;
 import ccmtools.utils.ConfigurationLocator;
 

@@ -6,8 +6,8 @@ import java.io.StringReader;
 import java.util.List;
 
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.parser.cpp.CppManager;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
 import ccmtools.ui.UserInterfaceDriver;
 
 public class ParserManager

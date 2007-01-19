@@ -9,26 +9,26 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import antlr.TokenStreamException;
-import ccmtools.metamodel.BaseIDL.MContained;
-import ccmtools.metamodel.BaseIDL.MContainedImpl;
-import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.metamodel.BaseIDL.MEnumDef;
-import ccmtools.metamodel.BaseIDL.MExceptionDef;
-import ccmtools.metamodel.BaseIDL.MFieldDef;
-import ccmtools.metamodel.BaseIDL.MIDLType;
-import ccmtools.metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.metamodel.BaseIDL.MModuleDef;
-import ccmtools.metamodel.BaseIDL.MOperationDef;
-import ccmtools.metamodel.BaseIDL.MParameterDef;
-import ccmtools.metamodel.BaseIDL.MStructDef;
-import ccmtools.metamodel.BaseIDL.MTyped;
-import ccmtools.metamodel.BaseIDL.MUnionDef;
-import ccmtools.metamodel.BaseIDL.MUnionFieldDef;
-import ccmtools.metamodel.BaseIDL.MValueDef;
-import ccmtools.metamodel.ComponentIDL.MComponentDef;
-import ccmtools.metamodel.ComponentIDL.MHomeDef;
-import ccmtools.metamodel.ComponentIDL.MSupportsDef;
-import ccmtools.metamodel.ComponentIDL.MSupportsDefImpl;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContained;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainedImpl;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.metamodel.BaseIDL.MEnumDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MExceptionDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MFieldDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MIDLType;
+import ccmtools.parser.idl.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MModuleDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MOperationDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MParameterDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MStructDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MTyped;
+import ccmtools.parser.idl.metamodel.BaseIDL.MUnionDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MUnionFieldDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MValueDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MHomeDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MSupportsDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MSupportsDefImpl;
 
 public class ParserHelper
 {

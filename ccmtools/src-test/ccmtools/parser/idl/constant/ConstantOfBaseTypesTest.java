@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MConstantDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.parser.idl.metamodel.BaseIDL.MConstantDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MPrimitiveKind;
 
 public class ConstantOfBaseTypesTest extends ConstantTest
 {

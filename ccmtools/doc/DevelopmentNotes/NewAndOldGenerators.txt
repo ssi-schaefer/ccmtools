@@ -1,0 +1,56 @@
+New and Old Generators
+======================
+
+The New Generators
+------------------
+
+During the last year, we have implemented (and reimplemented) the following generators 
+by using JET technology:
+
+- IDL3, IDL3mirror, IDL2
+- Java local, Java remote, Java clientlib
+
+All these new generators supports the following package structure (where xxx must be
+substituted by a particular generator name):
+
+ccmtools.generator.xxx
+- Main: represents the entrypoint for a shell script to start the generator.
+- CommandLineParameter: encapsulates all passed parameters from the shell script.
+- CcmToxxxModelMapper: realizes a model to model transformation between the CCM model
+	(created by the IDL parser) and the generator's implementation model.
+- xxxGenerator: represents the generator front-end that manages all the subtasks needed
+	to create source code from a given CCM model.
+
+ccmtools.generator.xxx.metamodel
+This package contains all model elements of the generator's implementation metamodel.
+
+ccmtools.generator.xxx.templates.jet
+This package contains JET templates which are used by the metamodel elements.
+Note that JET templates will be transformed into stand-alone Java classes by the
+Eclipse EMF tools.
+
+ccmtools.generator.xxx.templates
+This package contains the generated template classes which do not have runtime 
+dependencies to the Eclipse platform. 
+To be able to build the ccmtools using ant, we also check in these generated classes.
+
+
+The Old Generators 
+-------------------
+The C++ local and C++ remote generators use the selfmade Python template engine 
+based on the visitor pattern.
+So, we should replace these old generators as soon as possible to provide
+a uniform framework structure.
+
+Thus, the following packages should 	disappear in the near future:
+ccmtools.CodeGenerator
+ccmtools.CppGenerator
+ccmtools.CppGenerator.plugin
+ccmtools.parser.idl3
+ccmtools.ui
+templates.CppLocalTemplates
+templates.CppLocalTestTemplates
+templates.CppRemoteTemplates
+templates.CppRemoteTestTemplates
+
+

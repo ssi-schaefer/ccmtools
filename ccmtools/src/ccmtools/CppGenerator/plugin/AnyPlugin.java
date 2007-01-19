@@ -1,6 +1,6 @@
 package ccmtools.CppGenerator.plugin;
 
-import ccmtools.metamodel.BaseIDL.MAliasDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MAliasDef;
 
 public interface AnyPlugin
 {

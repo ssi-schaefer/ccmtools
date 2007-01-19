@@ -1,14 +1,14 @@
 package ccmtools.parser.idl.primitive;
 
 import junit.framework.TestCase;
-import ccmtools.metamodel.BaseIDL.MFixedDef;
-import ccmtools.metamodel.BaseIDL.MIDLType;
-import ccmtools.metamodel.BaseIDL.MNativeDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
-import ccmtools.metamodel.BaseIDL.MStringDef;
-import ccmtools.metamodel.BaseIDL.MTyped;
-import ccmtools.metamodel.BaseIDL.MWstringDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MFixedDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MIDLType;
+import ccmtools.parser.idl.metamodel.BaseIDL.MNativeDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.parser.idl.metamodel.BaseIDL.MStringDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MTyped;
+import ccmtools.parser.idl.metamodel.BaseIDL.MWstringDef;
 
 public class PrimitiveTest extends TestCase
 {

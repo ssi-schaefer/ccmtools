@@ -1,6 +1,6 @@
 package ccmtools.parser.idl;
 
-import ccmtools.metamodel.BaseIDL.MArrayDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MArrayDef;
 
 public class ArrayDeclarator
     extends Declarator

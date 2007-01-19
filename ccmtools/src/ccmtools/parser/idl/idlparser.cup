@@ -5,8 +5,8 @@ import java.util.*;
 import java.math.*;
 import java_cup.runtime.*;
 
-import ccmtools.metamodel.BaseIDL.*;
-import ccmtools.metamodel.ComponentIDL.*;
+import ccmtools.parser.idl.metamodel.BaseIDL.*;
+import ccmtools.parser.idl.metamodel.ComponentIDL.*;
 
 parser code 
 {:

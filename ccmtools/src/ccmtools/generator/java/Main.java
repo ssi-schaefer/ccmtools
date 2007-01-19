@@ -16,8 +16,8 @@ import ccmtools.CcmtoolsException;
 import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.generator.java.metamodel.ModelRepository;
-import ccmtools.metamodel.BaseIDL.MContainer;
 import ccmtools.parser.idl.ParserManager;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.ConfigurationLocator;
 

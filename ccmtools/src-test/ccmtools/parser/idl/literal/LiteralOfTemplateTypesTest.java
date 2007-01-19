@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MConstantDef;
-import ccmtools.metamodel.BaseIDL.MStringDef;
-import ccmtools.metamodel.BaseIDL.MWstringDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MConstantDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MStringDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MWstringDef;
 
 
 public class LiteralOfTemplateTypesTest extends LiteralTest

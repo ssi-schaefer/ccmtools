@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.metamodel.ComponentIDL.MComponentDef;
-import ccmtools.metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MProvidesDef;
 
 
 public class ComponentForwardDeclarationTest extends ComponentTest

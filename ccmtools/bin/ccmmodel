@@ -19,7 +19,7 @@ if [ -x $JAVA_LAUNCHER ]; then
 	else
 		CLASSPATH="$CCMTOOLS_HOME/lib/java-cup-11a.jar:$CCMTOOLS_HOME/lib/antlr.jar:$CCMTOOLS_HOME/lib/commons-cli-1.0.jar:$CCMTOOLS_HOME/lib/ccmtools.jar:$CCMTOOLS_HOME/lib/ccm-runtime.jar:$CLASSPATH"
 	fi	
-	exec "$JAVA_HOME/bin/java" -cp $CLASSPATH -Dccmtools.home="$CCMTOOLS_HOME" -Djava.util.logging.config.file="$CCMTOOLS_HOME/etc/logging.properties" ccmtools.metamodel.Main $@  
+	exec "$JAVA_HOME/bin/java" -cp $CLASSPATH -Dccmtools.home="$CCMTOOLS_HOME" -Djava.util.logging.config.file="$CCMTOOLS_HOME/etc/logging.properties" ccmtools.parser.idl.metamodel.Main $@  
 else
 	echo "ERROR!"
 	echo "Java executable not found in" "$JAVA_HOME/bin"

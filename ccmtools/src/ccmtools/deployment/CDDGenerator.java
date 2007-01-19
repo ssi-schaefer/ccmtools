@@ -18,8 +18,8 @@ import ccmtools.deployment.metamodel.ComponentInterfaceDescription;
 import ccmtools.deployment.metamodel.ComponentPackageDescription;
 import ccmtools.deployment.metamodel.DeploymentFactory;
 import ccmtools.deployment.metamodel.PackagedComponentImplementation;
-import ccmtools.metamodel.CcmModelHelper;
-import ccmtools.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.metamodel.CcmModelHelper;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
 import ccmtools.ui.UserInterfaceDriver;
 
 

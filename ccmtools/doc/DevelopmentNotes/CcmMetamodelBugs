@@ -5,7 +5,6 @@ o) MOperationDef stores MExceptionDef objects in a set (there is no order!!) - w
 	use a list.
 
 
-
 Things that should be checked:
 ------------------------------
 o) "onway" operations must be of type void, declare no inout or out parameters and throw

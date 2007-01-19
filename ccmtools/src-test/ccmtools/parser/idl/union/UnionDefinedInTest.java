@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MUnionDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MUnionDef;
 
 
 public class UnionDefinedInTest extends UnionTest

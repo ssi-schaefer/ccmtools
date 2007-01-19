@@ -27,8 +27,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import ccmtools.CodeGenerator.Template;
-import ccmtools.metamodel.BaseIDL.MContained;
-import ccmtools.metamodel.BaseIDL.MOperationDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContained;
+import ccmtools.parser.idl.metamodel.BaseIDL.MOperationDef;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.ConfigurationLocator;
 import ccmtools.utils.Confix;

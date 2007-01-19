@@ -6,16 +6,16 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MContained;
-import ccmtools.metamodel.BaseIDL.MContainer;
-import ccmtools.metamodel.BaseIDL.MFieldDef;
-import ccmtools.metamodel.BaseIDL.MIDLType;
-import ccmtools.metamodel.BaseIDL.MPrimitiveDef;
-import ccmtools.metamodel.BaseIDL.MPrimitiveKind;
-import ccmtools.metamodel.BaseIDL.MStringDef;
-import ccmtools.metamodel.BaseIDL.MStructDef;
-import ccmtools.metamodel.BaseIDL.MTyped;
 import ccmtools.parser.idl.ParserManager;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContained;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.metamodel.BaseIDL.MFieldDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MIDLType;
+import ccmtools.parser.idl.metamodel.BaseIDL.MPrimitiveDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MPrimitiveKind;
+import ccmtools.parser.idl.metamodel.BaseIDL.MStringDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MStructDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MTyped;
 import ccmtools.ui.ConsoleDriver;
 import ccmtools.ui.UserInterfaceDriver;
 

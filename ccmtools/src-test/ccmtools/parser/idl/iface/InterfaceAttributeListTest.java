@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MAttributeDef;
-import ccmtools.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MAttributeDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MInterfaceDef;
 import ccmtools.parser.idl.primitive.PrimitiveTest;
 
 

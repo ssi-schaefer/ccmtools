@@ -52,8 +52,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import ccmtools.metamodel.BaseIDL.*;
-import ccmtools.metamodel.ComponentIDL.*;
+import ccmtools.parser.idl.metamodel.BaseIDL.*;
+import ccmtools.parser.idl.metamodel.ComponentIDL.*;
 
 }
 

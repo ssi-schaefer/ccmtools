@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import ccmtools.metamodel.BaseIDL.MAliasDef;
-import ccmtools.metamodel.BaseIDL.MTypedefDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MAliasDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MTypedefDef;
 import ccmtools.utils.ConfigurationLocator;
 
 public class PdlAnyPlugin

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import ccmtools.metamodel.BaseIDL.MExceptionDef;
-import ccmtools.metamodel.BaseIDL.MIDLType;
+import ccmtools.parser.idl.metamodel.BaseIDL.MExceptionDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MIDLType;
 
 public class ModelRepository
 {

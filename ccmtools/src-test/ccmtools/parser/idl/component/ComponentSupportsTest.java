@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.CcmModelHelper;
-import ccmtools.metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.metamodel.ComponentIDL.MComponentDef;
+import ccmtools.parser.idl.metamodel.CcmModelHelper;
+import ccmtools.parser.idl.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
 
 
 public class ComponentSupportsTest extends ComponentTest

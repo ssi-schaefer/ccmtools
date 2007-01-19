@@ -23,7 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import ccmtools.CodeGenerator.Template;
-import ccmtools.metamodel.BaseIDL.MContained;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContained;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Confix;
 import ccmtools.utils.Text;

@@ -5,11 +5,11 @@ import java.io.FileNotFoundException;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.CcmtoolsException;
-import ccmtools.metamodel.BaseIDL.MInterfaceDef;
-import ccmtools.metamodel.BaseIDL.MOperationDef;
-import ccmtools.metamodel.BaseIDL.MParameterDef;
-import ccmtools.metamodel.BaseIDL.MParameterMode;
 import ccmtools.parser.idl.enumeration.EnumTest;
+import ccmtools.parser.idl.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MOperationDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MParameterDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MParameterMode;
 import ccmtools.parser.idl.struct.StructTest;
 import ccmtools.parser.idl.union.UnionTest;
 
