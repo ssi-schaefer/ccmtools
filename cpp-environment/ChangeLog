@@ -1,6 +1,13 @@
 BRANCH-0.8
 ============================================================================
 
+RELEASE-0.8.5 (January , 2007)
+----------------------------------------------------------------------------
+o) Added the externals and utils package which are used as a substitute for
+	the wx-toolsbox and wx-utils packages which are distributed with Confix.
+	
+
+
 RELEASE-0.8.2 (January 8, 2007)
 RELEASE-0.8.1 (December 21, 2006) 
 ----------------------------------------------------------------------------
