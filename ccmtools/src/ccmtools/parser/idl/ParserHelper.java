@@ -2240,7 +2240,6 @@ public class ParserHelper
     public MFactoryDef parseFactoryDeclaration(String id, List parameters, List exceptions)
     {
         getLogger().fine("131: factory " + id + " ( "+ parameters + " ) " + exceptions);
-//        if(parameters == null) parameters = new ArrayList();
         
         MFactoryDef factory = new MFactoryDefImpl();
         factory.setIdentifier(id);
@@ -2278,7 +2277,8 @@ public class ParserHelper
         getLogger().fine("cpp(" + line + ")");
         line = line.substring(0, line.lastIndexOf('\n'));
         String[] elements = line.split(" ");
-        if (elements[0].equals("#"))
+        
+        if (elements[0].equals("#") || elements[0].equals("#line"))
         {
             if (elements.length >= 3)
             {

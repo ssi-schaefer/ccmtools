@@ -1,0 +1,62 @@
+#line 1 "Hello.idl"
+
+
+
+
+
+
+
+
+#line 1 "c:\\temp\\Console.idl"
+
+
+
+
+
+
+
+#line 1 "c:\\temp\\Message.idl"
+
+
+
+
+
+
+
+struct Message 
+{
+  string header;
+  string body;
+};
+#line 9 "c:\\temp\\Console.idl"
+
+interface Console {
+  string read_string(in Message m);
+};
+
+#line 10 "Hello.idl"
+#line 1 "c:\\temp\\Lcd.idl"
+
+
+
+
+
+
+
+interface Lcd {
+  long write_text(in string s2);
+};
+#line 11 "Hello.idl"
+
+component Hello
+{
+  attribute string prompt;
+
+  provides Console console;
+  uses Lcd lcd;
+};
+
+home HelloHome manages Hello
+{
+};
+

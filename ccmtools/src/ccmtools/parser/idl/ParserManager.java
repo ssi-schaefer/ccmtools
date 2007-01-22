@@ -48,17 +48,25 @@ public class ParserManager
         }
     }
 
-    
+
     public static MContainer parseIdlFile(UserInterfaceDriver uiDriver, String idlFileName)
+        throws CcmtoolsException
+    {
+        return  parseIdlFile(uiDriver,idlFileName, true);
+    }
+    
+    public static MContainer parseIdlFile(UserInterfaceDriver uiDriver, String idlFileName, boolean deleteOnExit)
         throws CcmtoolsException
     {
         try
         {
             File idlFile = new File(idlFileName);
             File tmpIdlFile = new File(idlFileName + ".tmp");
-            tmpIdlFile.deleteOnExit();
-
-            uiDriver.printMessage("use JFlex&Cup based IDL parser");
+            if(deleteOnExit)
+            {
+                tmpIdlFile.deleteOnExit();
+            }
+            uiDriver.printMessage("use JFlex&Cup based IDL parser: " + tmpIdlFile);
             ParserHelper.getInstance().init();
             ParserHelper.getInstance().setMainSourceFile(idlFile.getAbsolutePath());
             IdlScanner scanner = new IdlScanner(new FileReader(tmpIdlFile));
