@@ -1,15 +1,15 @@
 package ccmtools.deployment;
 
 import junit.framework.TestCase;
-import ccmtools.deployment.metamodel.ComponentAssemblyArtifactDescription;
-import ccmtools.deployment.metamodel.ComponentImplementationDescription;
-import ccmtools.deployment.metamodel.ComponentInterfaceDescription;
-import ccmtools.deployment.metamodel.ComponentPackageDescription;
-import ccmtools.deployment.metamodel.DeploymentFactory;
-import ccmtools.deployment.metamodel.ImplementationArtifactDescription;
-import ccmtools.deployment.metamodel.MonolithicImplementationDescription;
-import ccmtools.deployment.metamodel.NamedImplementationArtifact;
-import ccmtools.deployment.metamodel.PackagedComponentImplementation;
+import ccmtools.generator.deployment.metamodel.ComponentAssemblyArtifactDescription;
+import ccmtools.generator.deployment.metamodel.ComponentImplementationDescription;
+import ccmtools.generator.deployment.metamodel.ComponentInterfaceDescription;
+import ccmtools.generator.deployment.metamodel.ComponentPackageDescription;
+import ccmtools.generator.deployment.metamodel.DeploymentFactory;
+import ccmtools.generator.deployment.metamodel.ImplementationArtifactDescription;
+import ccmtools.generator.deployment.metamodel.MonolithicImplementationDescription;
+import ccmtools.generator.deployment.metamodel.NamedImplementationArtifact;
+import ccmtools.generator.deployment.metamodel.PackagedComponentImplementation;
 
 public class ModelTest extends TestCase
 {
