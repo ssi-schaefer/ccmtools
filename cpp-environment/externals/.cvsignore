@@ -8,3 +8,4 @@ configure.ac
 ccm-externals.repo
 autom4te.cache
 confix-admin
+ccm-runtime-externals.repo
