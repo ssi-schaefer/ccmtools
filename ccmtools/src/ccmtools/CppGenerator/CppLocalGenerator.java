@@ -2,7 +2,7 @@
  * CCM Tools : C++ Code Generator Library 
  * Leif Johnson <leif@ambient.2y.net>
  * Egon Teiniker <egon.teiniker@salomon.at> 
- * Copyright (C) 2002 - 2005 Salomon Automation
+ * Copyright (C) 2002 - 2007 ccmtools.sf.net
  * 
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -174,6 +174,9 @@ public class CppLocalGenerator
         if (currentNode instanceof MAttributeDef) {
             return data_MAttributeDef(variable, value);
         }
+        else if (currentNode instanceof MStructDef) {
+            return data_MStructDef(variable, value);
+        }
         else if (currentNode instanceof MFieldDef) {
             return data_MFieldDef(variable, value);
         }
@@ -184,6 +187,22 @@ public class CppLocalGenerator
         return value;
     }
             
+    protected String data_MStructDef(String dataType, String dataValue) 
+    {
+        logger.fine("begin");
+        MStructDef struct = (MStructDef)currentNode;
+        if(dataType.equals("StructDefaultConstructor"))
+        {
+            return generateStructDefaultConstructor(struct);
+        }
+        else if(dataType.equals("StructInitConstructor"))
+        {
+            return generateStructInitConstructor(struct);
+        }
+        logger.fine("end");
+        return dataValue;        
+    }
+    
     
     protected String data_MFieldDef(String dataType, String dataValue) 
     {
@@ -216,7 +235,7 @@ public class CppLocalGenerator
             {
             		MTyped singleType = (MTyped) idlType;
             		MIDLType singleIdlType = singleType.getIdlType();
-                dataValue = getLanguageTypeInclude(singleIdlType);
+                dataValue = "#include <vector>\n" + getLanguageTypeInclude(singleIdlType);
             }
             else 
             {
@@ -381,6 +400,16 @@ public class CppLocalGenerator
         return code.toString();
     }
     
+    protected String data_MConstantDef(String dataType, String dataValue)
+    {
+        MConstantDef constant = (MConstantDef) currentNode;
+        
+        return dataValue;
+    }
+    
+
+
+    
     
     protected List<MAttributeDef> getAttributeList(MInterfaceDef iface)
     {
@@ -542,14 +571,6 @@ public class CppLocalGenerator
     		return includeSet;
     }
     
-    protected String data_MConstantDef(String dataType, String dataValue)
-    {
-        MConstantDef constant = (MConstantDef) currentNode;
-        
-        return dataValue;
-    }
-    
-
     protected String generateConstantImpl(MInterfaceDef iface, MConstantDef constant)
     {
         if(constant == null) return "";
@@ -1082,7 +1103,182 @@ public class CppLocalGenerator
     // Simple %(tag)s helper methods
     //====================================================================
 
+    
+    //====================================================================
+    // MStructDef %(tag)s helper methods
+    //====================================================================
 
+    
+    protected String generateStructDefaultConstructor(MStructDef struct)
+    {
+        StringBuilder out = new StringBuilder();
+        out.append(Text.TAB).append(struct.getIdentifier()).append("()").append(Text.NL);
+        out.append(Text.TAB).append("  :").append(generateStructConstructorDefaultValueList(struct)).append(Text.NL);
+        out.append(Text.TAB).append("{").append(Text.NL);
+        out.append(Text.TAB).append("}").append(Text.NL);
+        return out.toString();
+    }
+    
+    protected String generateStructInitConstructor(MStructDef struct)
+    {
+        StringBuilder out = new StringBuilder();
+        out.append(Text.TAB).append(struct.getIdentifier()).append("(");        
+        out.append(generateStructConstructorParameterList(struct)).append(")").append(Text.NL);
+        out.append(Text.TAB).append("  :").append(generateStructConstructorInitList(struct)).append(Text.NL);        
+        out.append(Text.TAB).append("{").append(Text.NL);
+        out.append(Text.TAB).append("}").append(Text.NL);
+        return out.toString();        
+    }
+    
+    protected String generateStructConstructorParameterList(MStructDef struct)
+    {
+       StringBuilder out = new StringBuilder();
+       for(Iterator i = struct.getMembers().iterator(); i.hasNext();)
+       {
+           MFieldDef field = (MFieldDef)i.next();
+           out.append(Text.NL).append(Text.tab(2));
+           out.append(getLanguageType(field)).append(" ");
+           out.append(field.getIdentifier()).append("_").append(",");
+       }
+       String s = out.toString();
+       return s.substring(0,s.length()-1);         
+    }
+    
+    
+    protected String generateStructConstructorInitList(MStructDef struct)
+    {
+        StringBuilder out = new StringBuilder();
+        for(Iterator i = struct.getMembers().iterator(); i.hasNext();)
+        {
+            MFieldDef field = (MFieldDef)i.next();
+            out.append(Text.NL).append(Text.tab(2));
+            out.append(field.getIdentifier()).append("(");
+            out.append(field.getIdentifier()).append("_").append("),");
+        }        
+        String s = out.toString();
+        return s.substring(0, s.length()-1);
+    }
+    
+    protected String generateStructConstructorDefaultValueList(MStructDef struct)
+    {
+        StringBuilder out = new StringBuilder();
+        for(Iterator i = struct.getMembers().iterator(); i.hasNext();)
+        {
+            MFieldDef field = (MFieldDef)i.next();
+            String defaultValue = generateDefaultValue(field.getIdlType());
+            if(defaultValue != null)
+            {
+                out.append(Text.NL).append(Text.tab(2));
+                out.append(field.getIdentifier()).append("(").append(defaultValue).append(")").append(",");
+            }
+        }        
+        String s =  out.toString();
+        return s.substring(0, s.length()-1);
+    }
+    
+    protected String generateDefaultValue(MIDLType type)
+    {
+        if(type instanceof MInterfaceDef)
+        {
+            MInterfaceDef iface = (MInterfaceDef)type;
+            return getLocalCxxName(iface,Text.SCOPE_SEPARATOR) + "::SmartPtr()";
+        }
+        else if(type instanceof MAliasDef)
+        {
+            MAliasDef alias = (MAliasDef)type;
+            MIDLType idlType = ((MTyped)type).getIdlType();
+            if(idlType instanceof MSequenceDef)
+            {
+                return getLocalCxxName(alias, Text.SCOPE_SEPARATOR) + "()";
+            }
+            else
+            {
+                return generateDefaultValue(idlType);
+            }
+        }
+        else if(type instanceof MStringDef)
+        {
+            return "\"\"";
+        }
+        else if(type instanceof MWstringDef)
+        {
+            return "L\"\"";
+        }
+        else if(type instanceof MPrimitiveDef)
+        {
+            MPrimitiveDef primitive = (MPrimitiveDef)type;
+            return generateDefaultValue(primitive);
+        }
+        return null;
+    }
+    
+    protected String generateDefaultValue(MPrimitiveDef primitive)
+    {
+        if(primitive.getKind() == MPrimitiveKind.PK_ANY)
+        {
+            return " ::wamas::platform::utils::SmartPtr< ::wamas::platform::utils::Value>()";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_BOOLEAN)
+        {
+            return "false";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_CHAR)
+        {
+            return "' '";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_DOUBLE)
+        {
+            return "0.0";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_FLOAT)
+        {
+            return "0.0F";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_LONG)
+        {
+            return "0L";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_LONGDOUBLE)
+        {
+            return "0.0";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_LONGLONG)
+        {
+            return "0L";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_OCTET)
+        {
+            return "0x0";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_SHORT)
+        {
+            return "0";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_STRING)
+        {
+            return "\"\"";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_ULONG)
+        {
+            return "0U";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_ULONGLONG)
+        {
+            return "0U";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_USHORT)
+        {
+            return "0U";
+        }
+        else if(primitive.getKind() == MPrimitiveKind.PK_WCHAR)
+        {
+            return "L' '";
+        }
+        else
+        {
+            return null;
+        }
+    }
     
     
     //====================================================================

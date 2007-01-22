@@ -17,6 +17,10 @@
 
 struct %(Identifier)s
 {
+%(StructDefaultConstructor)s
+
+%(StructInitConstructor)s
+
 %(MFieldDef)s
 };
 

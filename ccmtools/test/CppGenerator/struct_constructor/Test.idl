@@ -1,0 +1,37 @@
+
+
+typedef long TimeStamp;
+
+enum Color {red, green, blue, black, orange};
+
+typedef sequence<string> StringSeq;
+
+interface EmptyInterface {};
+
+
+struct BasicTypesStructure 
+{
+  short shortMember;
+  long longMember;
+  unsigned short ushortMember;
+  unsigned long uLongMember;
+  float floatMember;
+  double doubleMember;
+  char charMember;
+  string stringMember;
+  boolean booleanMember;
+  octet octetMember;
+  wchar wcharMember;
+  wstring wstringMember;
+};
+
+
+struct UserTypesStructure
+{
+  any anyMember;
+  TimeStamp typedefMember;
+  Color enumMember;
+  BasicTypesStructure structMember;
+  StringSeq sequenceMember;
+  EmptyInterface interfaceMember;
+};
