@@ -6,13 +6,15 @@
 #include <wamas/platform/utils/Value.h>
 #include <wamas/platform/utils/StringValue.h>
 
-#include <BasicTypesStructure.h>
-#include <UserTypesStructure.h>
+#include <world/BasicTypesStructure.h>
+#include <world/UserTypesStructure.h>
 
 using namespace std;
 using wamas::platform::utils::SmartPtr;
 using wamas::platform::utils::Value;
 using wamas::platform::utils::StringValue;
+using namespace world;
+
 
 int main(int argc, char** argv)
 {
@@ -60,7 +62,7 @@ int main(int argc, char** argv)
 
     assert(s.anyMember.ptr() == NULL);    
     assert(s.typedefMember == 0L);
-    // assert(s.enumMember == ???);
+    assert(s.enumMember == red); // set enum to the first value
     assert(s.structMember.charMember == ' ');
     assert(s.structMember.stringMember == "");
     assert(s.sequenceMember.empty() == true);

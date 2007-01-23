@@ -1183,6 +1183,11 @@ public class CppLocalGenerator
             MInterfaceDef iface = (MInterfaceDef)type;
             return getLocalCxxName(iface,Text.SCOPE_SEPARATOR) + "::SmartPtr()";
         }
+        else if(type instanceof MEnumDef)
+        {
+            MEnumDef enumeration = (MEnumDef)type;            
+            return enumeration.getMember(0); // Set enum to the first value.
+        }
         else if(type instanceof MAliasDef)
         {
             MAliasDef alias = (MAliasDef)type;

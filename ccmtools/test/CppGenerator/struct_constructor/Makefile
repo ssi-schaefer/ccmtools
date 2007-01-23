@@ -10,7 +10,7 @@ idl3: Test.idl
 	ccmidl -idl3 -o ${DEST_DIR}/idl Test.idl
 
 local: idl3
-	ccmtools c++local ${IDL_INCLUDE} -o ${DEST_DIR}/src/interface ${DEST_DIR}/idl/interface/*.idl
+	ccmtools c++local ${IDL_INCLUDE} -o ${DEST_DIR}/src/interface ${DEST_DIR}/idl/interface/world/*.idl
 	mkdir ${DEST_DIR}/src/test
 
 check: 
