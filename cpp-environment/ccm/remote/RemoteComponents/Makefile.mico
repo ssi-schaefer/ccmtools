@@ -1,2 +1,7 @@
 all: 
-	idl ${CCMTOOLS_HOME}/idl/ccmtools/corba/Components/ccmtools.idl
+	if test "`uname`" = "Interix"; then \
+		idl `unixpath2win ${CCMTOOLS_HOME}/idl/ccmtools/corba/Components/ccmtools.idl`; \
+	else \
+		idl ${CCMTOOLS_HOME}/idl/ccmtools/corba/Components/ccmtools.idl; \
+	fi
+	
