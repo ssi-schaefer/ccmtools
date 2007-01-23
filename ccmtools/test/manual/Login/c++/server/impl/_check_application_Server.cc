@@ -54,44 +54,32 @@ int main(int argc, char *argv[])
 
       try 
       {
-	PersonData person;
-	person.id = 0;
-	person.name = "";
-	person.password = "";
-	person.group = USER;
-	
-	login->isValidUser(person);
-	assert(false);
+		PersonData person(0, "", "", USER);	
+		login->isValidUser(person);
+		assert(false);
       }
       catch(InvalidPersonData& e) 
       {
-	cout << "Caught InvalidPersonData exception!" << endl;
+		cout << "Caught InvalidPersonData exception!" << endl;
       }
 
       try 
       {
-	PersonData person;
-	person.id = 277;
-	person.name = "eteinik";
-	person.password = "eteinik";
-	person.group = USER;
-	
-	bool result = login->isValidUser(person);
-	if(result) 
-	{
-	  cout << "Welcome " << person.name << endl;
-	}
-	else 
-	{
-	  cout << "We don't know you !!!" << endl;
-	}
+		PersonData person(277, "eteinik", "eteinik", USER);
+		bool result = login->isValidUser(person);
+		if(result) 
+		{	
+	  		cout << "Welcome " << person.name << endl;
+		}
+		else 
+		{
+	  		cout << "We don't know you !!!" << endl;
+		}
       }
       catch(InvalidPersonData& e) 
       {
-	cout << "Error: InvalidPersonData!!" << endl;
-      }
-      
-      
+		cout << "Error: InvalidPersonData!!" << endl;
+      }      
       server->remove();
     } 
     catch(Components::HomeNotFound ) 

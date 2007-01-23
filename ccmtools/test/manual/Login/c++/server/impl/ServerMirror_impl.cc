@@ -51,11 +51,7 @@ ServerMirror_impl::ccm_activate()
 
 	  try 
 	  {
-	    PersonData person;
-	    person.id = 277;
-	    person.name = "eteinik";
-	    person.password = "eteinik";
-	    person.group = USER;
+	    PersonData person(277, "eteinik", "eteinik", USER);
 
 	    bool result = login->isValidUser(person);
 	    if(result) 
@@ -74,12 +70,7 @@ ServerMirror_impl::ccm_activate()
 
 	  try 
 	  {
-	       PersonData person;
-	       person.id = 0;
-	       person.name = "";
-	       person.password = "";
-	       person.group = USER;
-	       
+	       PersonData person(0, "", "", USER);	       
 	       login->isValidUser(person);
 	       assert(false);
 	  }
@@ -90,7 +81,7 @@ ServerMirror_impl::ccm_activate()
       }
       catch(Components::Exception& e)
       {
-	cerr << "ERROR: " << e.what() << endl;
+		cerr << "ERROR: " << e.what() << endl;
       }
 }
 

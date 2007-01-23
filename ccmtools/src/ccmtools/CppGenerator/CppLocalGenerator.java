@@ -1260,11 +1260,11 @@ public class CppLocalGenerator
         }
         else if(primitive.getKind() == MPrimitiveKind.PK_ULONG)
         {
-            return "0U";
+            return "0UL";
         }
         else if(primitive.getKind() == MPrimitiveKind.PK_ULONGLONG)
         {
-            return "0U";
+            return "0UL";
         }
         else if(primitive.getKind() == MPrimitiveKind.PK_USHORT)
         {

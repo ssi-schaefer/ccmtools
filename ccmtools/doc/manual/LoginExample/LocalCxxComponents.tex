@@ -275,11 +275,7 @@ a message to the console.
 \begin{lstlisting}[language=C++]
     try 
     {
-        PersonData person;
-        person.id = 277;
-        person.name = "eteinik";
-        person.password = "eteinik";
-        person.group = USER;
+        PersonData person(277, "eteinik", "eteinik", USER);
 	
         bool result = login->isValidUser(person);
         if(result) 
@@ -306,11 +302,7 @@ exception to succeed.
 \begin{lstlisting}[language=C++]
     try 
     {
-        PersonData person;
-        person.id = 0;
-        person.name = "";
-        person.password = "";
-        person.group = USER;
+        PersonData person(0, "", "", USER);
 
         login->isValidUser(person);
         assert(false);
