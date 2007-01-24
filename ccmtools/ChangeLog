@@ -1,11 +1,17 @@
 HEAD
 ============================================================================
 
+RELEASE-0.8.5 (January 24, 2007) 
 RELEASE-0.8.4 (January 16, 2007) 
 RELEASE-0.8.3 (January 10, 2007) 
 RELEASE-0.8.2 (January 8, 2007)
 RELEASE-0.8.1 (December 21, 2006) 
 ----------------------------------------------------------------------------
+*) Feature: Added IDL chapter to the manual
+
+*) Feature: C++ generator - struct constructors
+	Added default and init constructors to generated IDL structures.
+	
 *) Refactoring: Java generator - changed metamodel 
 
 *) Refactoring: IDL generator - changed metamodel 
