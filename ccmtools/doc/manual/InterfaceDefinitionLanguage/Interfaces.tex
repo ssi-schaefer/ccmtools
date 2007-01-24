@@ -1,28 +1,253 @@
-% $Id$
 %=============================================================================
 \section{Interfaces}
 %=============================================================================
 
-%-----------------------------------------------------------------------------
-\subsection{Constant Definitions and Literals}
-%-----------------------------------------------------------------------------
+The focus of IDL is on interfaces and operations. 
+IDL interfaces define only the interface to an object and say nothing about the
+object's implementation. This has the following consequences:
+\begin{itemize}
+\item By definition, everything in an interface is public. 
+Things are made private by simply not saying anything about them.
+
+\item IDL interfaces don't have member variables.
+Member variables store state, and the state of an object is an implementation
+concern.
+\end{itemize}
+
+IDL interfaces form a namespace. You can nest the following constructs inside 
+an interface: constant definitions, attribute definitions, and operation definitions.
+
+\newpage
+Example:
+\begin{verbatim}
+    module world
+    {
+        interface IFace
+        {
+            /** Constant definitions  */
+        
+            /** Attibute definitions  */
+        
+            /** Operation definitions */
+        };
+    }; // end of module world
+\end{verbatim}
+
+It is important to note that IDL operations and attributes define the only 
+communication path between objects.
+The kinds of information traveling along the communication path are the
+parameters, return value, and exceptions of an operation.
+
 
 %-----------------------------------------------------------------------------
-\subsection{Operations}
+\subsection{Constant Definitions}
 %-----------------------------------------------------------------------------
+
+IDL permits the definition of constants, thus, you can define floating--point,
+integer, character, string, boolean, and octet constants.
+IDL does not allow you to define a constant of type {\tt any} nor a user--defined 
+complex type.
+
+\vspace{2mm}
+Example:
+\begin{verbatim}
+    module europe
+    {
+        interface ConstantsTest
+        {
+            const boolean BOOLEAN_CONST = TRUE;
+            const octet OCTET_CONST = 255;
+            const short SHORT_CONST = -10;
+            const unsigned short USHORT_CONST = 7;
+            const long LONG_CONST = -7777;
+            const unsigned long ULONG_CONST = 7777;
+            const char CHAR_CONST = 'c';
+            const string STRING_CONST = "1234567890";  
+            const float FLOAT_CONST = 3.14;
+            const double DOUBLE_CONST = 3.1415926;        
+        };
+    }; // end of module europe
+\end{verbatim}
+
 
 %-----------------------------------------------------------------------------
 \subsection{Attributes}
 %-----------------------------------------------------------------------------
 
+An attribute can be used to create something like a public member variable.
+In fact, an attribute defines a pair of operations the client can call to
+sent and receive a value.
+Note that IDL attributes don't define storage or state.
+
+\vspace{2mm}
+Example:
+\begin{verbatim}
+    module america
+    {
+        struct Person 
+        {
+            long id;
+            string name;
+        };  
+    
+        interface AttributeInterface
+        {
+            attribute long longAttr;
+            attribute double doubleAttr;
+            attribute string stringAttr;
+            attribute Person personAttr;
+        };
+    }; // end of module america    
+\end{verbatim}
+
+Attributes can be of any type, including user--defined complex types.
+
+
 %-----------------------------------------------------------------------------
-\subsection{User Exceptions}
+\subsection{Operations}
 %-----------------------------------------------------------------------------
+
+An operation definition can occur only as part of an interface definition, and
+must contain:
+
+\begin{itemize}
+\item A return result type
+\item An operation name
+\item Zero or more parameter declarations
+\end{itemize}
+
+\vspace{2mm}
+Example:
+\begin{verbatim}
+    module austria
+    {
+        interface SimpleInterface
+        {
+            /**
+             * This is the simplest possible operation, because
+             * op requires no parameters and does not return a value.
+             */
+            void op(); 
+        };
+    }; // end of module austria
+\end{verbatim}
+
+Notice that a parameter must be qualified with one of three 
+{\bf directional attributes}:
+\begin{itemize} 
+\item {\bf in}\\
+	The {\tt in} attribute indicates that the parameter is sent from
+	the client to the server.
+\item {\bf out}\\
+	The {\tt out} attribute indicates that the parameter is sent from 
+	the server to the client.
+\item {\bf inout}\\
+	The {\tt inout} attribute indicates a parameter that is initialized by 
+	the client and sent to the server.
+	The server can modify the parameter value, so, after the operation
+	completes, the client--supplied parameter value may have been changed 
+	by the server.
+\end{itemize} 
+
+\vspace{2mm}
+Example:
+\begin{verbatim}
+    module styria
+    {
+        interface AnotherInterface
+        {
+            long op(in long p1, inout string p2, out double p3);
+        };
+    }; // end of module styria
+\end{verbatim}
+
+Operation names are scoped by their enclosing interface and must be unique
+within that interface, so {\bf overloading of operations is not possible in IDL}.
+
+
+
+%-----------------------------------------------------------------------------
+\subsection{Exceptions}
+%-----------------------------------------------------------------------------
+
+IDL uses exceptions as a standard way to indicate error conditions.
+Basically, an exception is defined much like an IDL structure,
+and can contain an arbitrary amount of error information of
+arbitrary type.
+
+Operations may raise more than one type of exception, and
+must indicate all the exceptions they may possible raise.
+It is illegal for an operation to throw an exception that is
+not listed in the {\tt raises} expression.
+
+\newpage
+Example:
+\begin{verbatim}
+    module world
+    {
+        exception SuperError
+        {
+        };
+
+        exception FatalError
+        {
+            string message;
+        };
+
+        module europe
+        {
+            interface IFace
+            {
+                long op(in string name) raises (SuperError, FatalError);
+            };
+        }; // end of module europe
+    };
+\end{verbatim}
+ 
+{\bf IDL does not support exception inheritance.} 
+That means that you cannot arrange error conditions into logical 
+hierarchies and catch all exceptions in a subtree by catching a
+base exception.
+
 
 %-----------------------------------------------------------------------------
 \subsection{Inheritance}
 %-----------------------------------------------------------------------------
 
+IDL interfaces can inherit from each other. A derived interface can be
+treated as if it were a base interface, so in all contexts in which a
+base interface is expected, a derived interface can actually be passed
+at runtime (some call it polymorphism).
 
-\newpage
+\vspace{2mm}
+Example:
+\begin{verbatim}
+    module america
+    {
+        interface SuperType1
+        {
+            attribute long attr1;
+            long op1(in string str);
+        };
+    }; // end of module america
+
+    module europe
+    {
+        interface SuperType2
+        {
+            attribute long attr2;
+            long op2(in string str);
+        };
+
+        interface SubType : america::SuperType1, SuperType2 
+        {
+            attribute long attr3;
+            long op3(in string str);
+        };
+    }; // end of module europe
+\end{verbatim}
+ 
+As shown in the example, IDL supports multiple inheritance too.
+
+Note that any form of {\bf operation or attribute overloading is illegal} in IDL.
 

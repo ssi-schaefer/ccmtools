@@ -1,4 +1,3 @@
-% $Id$
 %=============================================================================
 \section{Basic IDL Types}
 %=============================================================================
@@ -68,5 +67,12 @@ value of type {\tt any}).
 Type {\tt any} is useful when you don't know at compile time what IDL types you
 will eventually need to transmit between client and server, you can find out at
 runtime what type of value is contained in the {\tt any}.
+It is recommended to use a {\tt typedef} construct to introduce any types in your
+interface definition files. 
 
-\newpage
+\vspace{2mm}
+Example:
+\begin{verbatim}
+    typedef any GenericType;
+\end{verbatim}
+  

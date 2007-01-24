@@ -1,4 +1,3 @@
-% $Id$
 %=============================================================================
 \section{Source Files}
 %=============================================================================
@@ -9,7 +8,7 @@ IDL source files.
 \subsection{File Naming}
 %-----------------------------------------------------------------------------
 The names of source files containing IDL definitions must end in {\bf \tt .idl}
-(for example, we can define a file named {\tt Components.idl}).
+(for example, we can define a file named {\tt ccmtools.idl}).
 
 %-----------------------------------------------------------------------------
 \subsection{File Format}
@@ -47,7 +46,7 @@ file:
 %-----------------------------------------------------------------------------
 IDL constructs (modules, interfaces, type definitions) can appear in any order
 you prefer.
-However, identifiers must be declared befor they can be use.
+However, identifiers must be declared before they can be use.
 
 
 %-----------------------------------------------------------------------------
@@ -80,13 +79,14 @@ Identifiers begin with an alphabetic character followed by any number of
 alphabetics, digits, or underscores. Unlike C++ identifiers, IDL identifiers
 can't have a leading underscore.
 
+\vspace{2mm}
 Identifiers are case--insensitive but must be capitalized consistently. 
 This rule exists to permit mappings of IDL to languages that ignore case in
 identifiers (e.g. Pascal) as well as to languages that treat differently
 capitalized identifiers as distinct (e.g. C++, Java).
 
+\vspace{2mm}
 IDL permits you to create identifiers that happen to be keywords in one or more
 implementation languages, but to make life easier, you should try to avoid IDL
 identifiers that are likely to be implementation language keywords.
 
-\newpage

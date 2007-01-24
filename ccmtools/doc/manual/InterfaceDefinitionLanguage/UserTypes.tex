@@ -1,10 +1,11 @@
-% $Id$
 %=============================================================================
 \section{User--Defined IDL Types}
 %=============================================================================
 In addition to providing the build--in basic types, IDL permits you to define
 complex types: enumerations, structures and sequences. You can also use {\tt 
 typedef} to explicitly name a type.
+\vspace{5mm}
+
 
 %-----------------------------------------------------------------------------
 \subsection{Named Types}
@@ -13,9 +14,13 @@ typedef} to explicitly name a type.
 You can use {\tt typedef} to create a new name for a type or to rename an
 existing type.
 
+\vspace{2mm}
 Example:
 \begin{verbatim}
-    typedef long TimeStamp;
+    module world
+    {
+        typedef long TimeStamp;
+    }; // end of module world
 \end{verbatim}
 
 Be careful about the semantics of IDL {\tt typedef}. It depends on the language
@@ -30,14 +35,18 @@ and then use that definition consistently throughout your specification.
 %-----------------------------------------------------------------------------
 An IDL enumerated type definition looks much like the C++ version.
 
+\vspace{2mm}
 Example:
 \begin{verbatim}
-    enum Color 
+    module world
     {
-        red, 
-        green, 
-        blue
-    };
+        enum Color 
+        {
+            red, 
+            green, 
+            blue
+        };
+    }; // end of module world
 \end{verbatim}
 
 This example introduces a type named {\tt Color} that becomes a new type in its
@@ -48,16 +57,20 @@ own right - there is no need to use a {\tt typedef} to name the type.
 \subsection{Structures}
 %-----------------------------------------------------------------------------
 IDL supports structures containing one or more named members of arbitrary type,
-includeing user--defined complex types.
+including user--defined complex types.
 
+\vspace{4mm}
 Example:
 \begin{verbatim}
-    struct TimeOfDay
+    module world
     {
-        short hh;
-        short mm;
-        short ss;
-    };
+        struct TimeOfDay
+        {
+            short hh;
+            short mm;
+            short ss;
+        };
+    }; // end of module world
 \end{verbatim}
 
 This definition introduces a new type called {\tt TimeOfDay}.
@@ -69,12 +82,17 @@ need to be unique only within their enclosing structure.
 %-----------------------------------------------------------------------------
 Sequences are variable--length vectors that can contain any element type. 
 
+\vspace{2mm}
 Example:
 \begin{verbatim}
-    typedef sequence<Color> Colors; 
+    module world
+    {
+        typedef sequence<Color> Colors; 
+    }; // end of module world
 \end{verbatim}
 
 A sequence can hold any number of elements up to the memory limits of your
 platform. 
 
-\newpage
+\vspace{5mm}
+
