@@ -1112,8 +1112,12 @@ public class CppLocalGenerator
     protected String generateStructDefaultConstructor(MStructDef struct)
     {
         StringBuilder out = new StringBuilder();
+        String defaultValueList = generateStructConstructorDefaultValueList(struct);
         out.append(Text.TAB).append(struct.getIdentifier()).append("()").append(Text.NL);
-        out.append(Text.TAB).append("  :").append(generateStructConstructorDefaultValueList(struct)).append(Text.NL);
+        if(defaultValueList != null)
+        {
+            out.append(Text.TAB).append("  :").append(defaultValueList).append(Text.NL);
+        }
         out.append(Text.TAB).append("{").append(Text.NL);
         out.append(Text.TAB).append("}").append(Text.NL);
         return out.toString();
@@ -1172,8 +1176,15 @@ public class CppLocalGenerator
                 out.append(field.getIdentifier()).append("(").append(defaultValue).append(")").append(",");
             }
         }        
-        String s =  out.toString();
-        return s.substring(0, s.length()-1);
+        String s = out.toString();
+        if(s.length() > 0)
+        {
+            return s.substring(0, s.length()-1);
+        }
+        else
+        {
+            return null; // no defalut value list
+        }
     }
     
     protected String generateDefaultValue(MIDLType type)
