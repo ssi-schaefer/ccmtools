@@ -404,6 +404,18 @@ public class CppLocalGenerator
     {
         MConstantDef constant = (MConstantDef) currentNode;
         
+        if(dataType.equals("ConstantValue"))
+        {
+            MIDLType idlType = constant.getIdlType();
+            if(idlType instanceof MStringDef || idlType instanceof MWstringDef)
+            {
+                dataValue = "\"" + constant.getConstValue().toString() + "\";";
+            }
+            else
+            {
+                dataValue = constant.getConstValue().toString() + ";";
+            }
+        }
         return dataValue;
     }
     
