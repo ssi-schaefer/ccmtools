@@ -1,3 +1,3 @@
 PACKAGE_NAME('ccm-runtime-externals')
-PACKAGE_VERSION('0.8.5')
+PACKAGE_VERSION('0.8.6')
 
