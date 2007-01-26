@@ -53,52 +53,52 @@ Test_impl::ccm_activate()
 
   {
     bool result = receptacle->getBooleanValue();
-    assert(result == Constants::BOOLEAN_CONST);
+    assert(result == Constants::BOOLEAN_CONST());
   }
   
   {
     unsigned char result = receptacle->getOctetValue();
-    assert(result == Constants::OCTET_CONST);
+    assert(result == Constants::OCTET_CONST());
   }
 
   {
     short result = receptacle->getShortValue();
-    assert(result == Constants::SHORT_CONST);
+    assert(result == Constants::SHORT_CONST());
   }
 
   {
     unsigned short result = receptacle->getUnsignedShortValue();
-    assert(result == Constants::USHORT_CONST);
+    assert(result == Constants::USHORT_CONST());
   }
   
   {
     long result = receptacle->getLongValue();
-    assert(result == Constants::LONG_CONST);
+    assert(result == Constants::LONG_CONST());
   }
   
   {
     unsigned long result = receptacle->getUnsignedLongValue();
-    assert(result == Constants::ULONG_CONST);
+    assert(result == Constants::ULONG_CONST());
   }
 
   {
     char result = receptacle->getCharValue();
-    assert(result == Constants::CHAR_CONST);
+    assert(result == Constants::CHAR_CONST());
   }
 
   {
     string result = receptacle->getStringValue();
-    assert(result == Constants::STRING_CONST);
+    assert(result == Constants::STRING_CONST());
   }
 
   {
     float result = receptacle->getFloatValue();
-    assert(abs(result - Constants::FLOAT_CONST) < 0.001);
+    assert(abs(result - Constants::FLOAT_CONST()) < 0.001);
   }
   
   {
     double result = receptacle->getDoubleValue();
-    assert(abs(result - Constants::DOUBLE_CONST) < 0.0001);
+    assert(abs(result - Constants::DOUBLE_CONST()) < 0.0001);
   }
 }
 

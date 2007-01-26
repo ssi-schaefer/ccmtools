@@ -122,8 +122,6 @@ class %(Identifier)sAdapter
 // %(Identifier)s interface constants (implementation)
 //==============================================================================
 
-%(ConstantImplementation)s 
-
 %(CloseNamespace)s
 
 
