@@ -98,6 +98,7 @@
       	<copy todir="${prefix}/etc" overwrite="true"> <fileset dir="${etc}"/> </copy>
   		
       	<copy todir="${prefix}/bin" overwrite="true"> <fileset dir="${bin}"/> </copy>
+		<!-- for linux only
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmtools"/>      </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmjava"/>       </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmidl"/>        </exec>
@@ -106,6 +107,7 @@
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmns"/>         </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmdescriptor"/> </exec>
       	<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmtools-idl"/>  </exec>
+		-->
   	</target>
 	
 
