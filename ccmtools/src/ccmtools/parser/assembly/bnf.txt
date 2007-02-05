@@ -1,0 +1,6 @@
+BNF for ccmtools assemblies
+---------------------------
+
+
+model := (model_element)*
+
