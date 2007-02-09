@@ -164,7 +164,7 @@ PREPROC_DIRECTIVE options { paraphrase = "a preprocessor directive"; }
                 helper.setSourceFile(s.getText());
             }
         }
-        ( ' ' ( DIGIT )+ )? ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
+        ( ' ' ( DIGIT )+ )* ( ' ' | '\t' | '\f' )* ( '\n' | '\r' ( '\n' )? )
         { $setType(Token.SKIP); } 
 	;
 
