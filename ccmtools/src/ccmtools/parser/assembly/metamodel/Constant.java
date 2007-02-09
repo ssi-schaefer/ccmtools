@@ -1,5 +1,5 @@
 /*
- * Created on Feb 5, 2007
+ * Created on Feb 9, 2007
  * 
  * R&D Salomon Automation (http://www.salomon.at)
  * 
@@ -9,15 +9,15 @@
  */
 package ccmtools.parser.assembly.metamodel;
 
-public class VariableAttribute extends Attribute
+public class Constant extends AssemblyElement
 {
-    private String name_;
-
     private Port target_;
 
-    public VariableAttribute( String name, Port target )
+    private Value value_;
+
+    public Constant( Port target, Value value )
     {
-        name_ = name;
         target_ = target;
+        value_ = value;
     }
 }

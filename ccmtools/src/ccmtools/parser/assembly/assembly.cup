@@ -1,0 +1,226 @@
+// CUP parser definition for ccmtools assembly descriptions
+
+package ccmtools.parser.assembly;
+
+import java.util.Vector;
+import java_cup.runtime.*;
+import ccmtools.parser.assembly.metamodel.*;
+
+parser code
+{:
+    String current_input_filename = "(filename not set)";
+
+    /**
+     * This method overides the original report_error() method
+     * and generates a useful error message.
+     */
+    public void report_error(String message, Object info)
+    {
+        StringBuilder out = new StringBuilder();
+        out.append(current_input_filename);
+        if(info instanceof Symbol)
+        {
+            Symbol s = (Symbol)info;
+            if(s.left != -1)
+            {
+                out.append(" line ");
+                out.append(s.left+1);
+            }
+        }
+        out.append(": ");
+        out.append(message);
+        throw new RuntimeException(out.toString());
+    }
+
+    public void report_fatal_error(String message, Object info)
+    {
+        System.err.println("FATAL ERROR: "+message);
+        System.exit(1);
+    }
+
+:};
+
+
+terminal    ASSEMBLY, ATTRIBUTE;
+terminal    COMPONENT, CONNECT, CONSTANT;
+terminal    IMPLEMENTS, MODULE, THIS, TO;
+terminal    SEMICOLON, DOT, LBRACE, RBRACE, EQUAL;
+
+terminal String STRING, NUMBER, QN, NAME;
+
+
+nonterminal Model model;
+nonterminal ModelElement model_element, module, assembly;
+nonterminal Vector<ModelElement> model_element_list;
+nonterminal AssemblyElement assembly_element;
+nonterminal Vector<AssemblyElement> assembly_element_list;
+nonterminal QualifiedName qualified_name;
+nonterminal Port port, internal_port, external_port;
+nonterminal Value value;
+
+
+start with model;
+
+
+model
+    ::=
+        model:v1 model_element:v2
+        {:
+            v1.add(v2);
+            RESULT=v1;
+        :}
+    |
+        {:
+            RESULT = new Model();
+        :}
+    ;
+
+
+model_element
+    ::=
+        module:v1
+        {:
+            RESULT=v1;
+        :}
+    |
+        assembly:v1
+        {:
+            RESULT=v1;
+        :}
+    ;
+
+
+model_element_list
+    ::=
+        model_element_list:v1 model_element:v2
+        {:
+            v1.add(v2);
+            RESULT=v1;
+        :}
+    |
+        {:
+            RESULT = new Vector<ModelElement>();
+        :}
+    ;
+
+
+module
+    ::=
+        MODULE NAME:v1 LBRACE model_element_list:v2 RBRACE
+        {:
+            RESULT = new Module(v1, v2);
+        :}
+    ;
+
+
+assembly
+    ::=
+        ASSEMBLY NAME:v1 IMPLEMENTS qualified_name:v2 LBRACE assembly_element_list:v3 RBRACE
+        {:
+            RESULT = new Assembly(v1, v2, v3);
+        :}
+    ;
+
+
+qualified_name
+    ::=
+        QN:v1
+        {:
+            RESULT = new QualifiedName(v1);
+        :}
+    |
+        NAME:v1
+        {:
+            RESULT = new QualifiedName(v1);
+        :}
+    ;
+
+
+assembly_element_list
+    ::=
+        assembly_element_list:v1 assembly_element:v2
+        {:
+            v1.add(v2);
+            RESULT=v1;
+        :}
+    |
+        {:
+            RESULT = new Vector<AssemblyElement>();
+        :}
+    ;
+
+
+assembly_element
+    ::=
+        COMPONENT qualified_name:v1 NAME:v2 SEMICOLON
+        {:
+            RESULT = new Component(v1, v2);
+        :}
+    |
+        CONNECT port:v1 TO port:v2 SEMICOLON
+        {:
+            RESULT = new Connection(v1, v2);
+        :}
+    |
+        ATTRIBUTE internal_port:v1 EQUAL external_port:v2 SEMICOLON
+        {:
+            RESULT = new Attribute(v1, v2);
+        :}
+    |
+        CONSTANT internal_port:v1 EQUAL value:v2 SEMICOLON
+        {:
+            RESULT = new Constant(v1, v2);
+        :}
+    ;
+
+
+port
+    ::=
+        internal_port:v1
+        {:
+            RESULT = v1;
+        :}
+    |
+        external_port:v2
+        {:
+            RESULT = v2;
+        :}
+    ;
+
+
+internal_port
+    ::=
+        NAME:v1 DOT NAME:v2
+        {:
+            RESULT = new Port(v1, v2);
+        :}
+    ;
+
+
+external_port
+    ::=
+        NAME:v1
+        {:
+            RESULT = new Port(v1);
+        :}
+    |
+        THIS DOT NAME:v1
+        {:
+            RESULT = new Port(v1);
+        :}
+    ;
+
+
+value
+    ::=
+        STRING:v1
+        {:
+            RESULT = new Text(v1);
+        :}
+    |
+        NUMBER:v1
+        {:
+            RESULT = new Number(v1);
+        :}
+    ;
+
