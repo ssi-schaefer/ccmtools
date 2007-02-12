@@ -24,4 +24,21 @@ public abstract class ModelElement
     }
 
     public abstract void prettyPrint( PrintStream out, String offset );
+    
+    protected Module parent_;
+    
+    /**
+     * returns the parent Module of this element (or null)
+     */
+    public Module getParent()
+    {
+        return parent_;
+    }
+
+    /**
+     * call this method after model creation
+     * 
+     * @param parent namespace or null
+     */
+    abstract void postProcessing( Module parent );
 }

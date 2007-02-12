@@ -9,6 +9,8 @@
  */
 package ccmtools.parser.assembly.metamodel;
 
+import java.util.Map;
+
 /**
  * facet or receptacle
  */
@@ -47,5 +49,16 @@ public final class Port
             return "this." + connector_;
         else
             return component_ + "." + connector_;
+    }
+
+    void postProcessing( Map<String, Component> components )
+    {
+        if (component_ != null)
+        {
+            if (!components.containsKey(component_))
+            {
+                throw new RuntimeException("inner component \"" + component_ + "\" is undefined");
+            }
+        }
     }
 }

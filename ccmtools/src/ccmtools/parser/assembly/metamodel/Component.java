@@ -10,6 +10,7 @@
 package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
+import java.util.Map;
 
 /**
  * defines an inner component
@@ -24,6 +25,17 @@ public class Component extends AssemblyElement
     {
         idl_name_ = idl_name;
         name_ = name;
+    }
+
+    void postProcessing( Assembly parent, Map<String, Component> components )
+    {
+        parent_ = parent;
+        idl_name_.postProcessing(parent.getParent());
+        if (components.containsKey(name_))
+        {
+            throw new RuntimeException("inner component \"" + name_ + "\" already exists");
+        }
+        components.put(name_, this);
     }
 
     public void prettyPrint( PrintStream out, String offset )

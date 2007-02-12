@@ -25,6 +25,15 @@ public class Module extends ModelElement
         children_ = children;
     }
 
+    void postProcessing( Module parent )
+    {
+        parent_ = parent;
+        for (int i = 0; i < children_.size(); ++i)
+        {
+            children_.get(i).postProcessing(this);
+        }
+    }
+
     public void prettyPrint( PrintStream out, String offset )
     {
         out.println(offset + "module " + name_ + " {");

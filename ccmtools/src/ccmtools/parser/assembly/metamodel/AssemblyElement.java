@@ -10,6 +10,7 @@
 package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
+import java.util.Map;
 
 /**
  * One line of an assembly description.
@@ -17,4 +18,14 @@ import java.io.PrintStream;
 public abstract class AssemblyElement
 {
     public abstract void prettyPrint( PrintStream out, String offset );
+
+    protected Assembly parent_;
+
+    /**
+     * call this method after model creation
+     * 
+     * @param parent the assembly
+     * @param components map with all known inner components
+     */
+    abstract void postProcessing( Assembly parent, Map<String, Component> components );
 }

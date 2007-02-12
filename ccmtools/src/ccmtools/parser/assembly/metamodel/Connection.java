@@ -10,6 +10,7 @@
 package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
+import java.util.Map;
 
 /**
  * connects a facet with a receptacle
@@ -24,6 +25,13 @@ public class Connection extends AssemblyElement
     {
         facet_ = facet;
         receptacle_ = receptacle;
+    }
+
+    void postProcessing( Assembly parent, Map<String, Component> components )
+    {
+        parent_ = parent;
+        facet_.postProcessing(components);
+        receptacle_.postProcessing(components);
     }
 
     public void prettyPrint( PrintStream out, String offset )

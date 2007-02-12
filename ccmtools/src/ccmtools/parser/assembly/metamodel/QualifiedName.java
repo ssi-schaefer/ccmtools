@@ -20,9 +20,16 @@ public final class QualifiedName
     {
         qn_ = qn;
     }
-    
+
     public String toString()
     {
         return qn_;
+    }
+
+    private Module container_;
+
+    void postProcessing( Module container )
+    {
+        container_ = container;
     }
 }

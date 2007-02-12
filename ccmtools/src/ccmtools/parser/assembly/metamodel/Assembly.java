@@ -10,8 +10,12 @@
 package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Vector;
 
+/**
+ * defines one assembly
+ */
 public class Assembly extends ModelElement
 {
     private QualifiedName idl_name_;
@@ -23,6 +27,19 @@ public class Assembly extends ModelElement
         super(name);
         idl_name_ = idl_name;
         elements_ = elements;
+    }
+
+    private HashMap<String, Component> components_;
+
+    void postProcessing( Module parent )
+    {
+        parent_ = parent;
+        idl_name_.postProcessing(parent);
+        components_ = new HashMap<String, Component>();
+        for (int i = 0; i < elements_.size(); ++i)
+        {
+            elements_.get(i).postProcessing(this, components_);
+        }
     }
 
     public void prettyPrint( PrintStream out, String offset )

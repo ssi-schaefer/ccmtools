@@ -48,6 +48,8 @@ public final class Main
         if (!(root.value instanceof Model))
             throw new IllegalStateException("invalid root element: "
                     + root.value.getClass().getName());
-        return (Model) root.value;
+        Model result = (Model) root.value;
+        result.postProcessing();
+        return result;
     }
 }

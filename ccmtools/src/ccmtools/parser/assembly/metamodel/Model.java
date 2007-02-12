@@ -28,13 +28,24 @@ public class Model
     }
 
     /**
+     * call this method after model creation
+     */
+    public void postProcessing()
+    {
+        for (int i = 0; i < elements_.size(); ++i)
+        {
+            elements_.get(i).postProcessing(null);
+        }
+    }
+
+    /**
      * prints the model to an output stream
      * 
      * @param out the output stream
      */
     public void prettyPrint( PrintStream out )
     {
-        for(int i=0; i<elements_.size(); ++i)
+        for (int i = 0; i < elements_.size(); ++i)
         {
             elements_.get(i).prettyPrint(out, "");
         }

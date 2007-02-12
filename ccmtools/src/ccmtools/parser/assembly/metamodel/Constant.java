@@ -10,6 +10,7 @@
 package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
+import java.util.Map;
 
 /**
  * sets the attribute of an inner component to a constant value
@@ -24,6 +25,12 @@ public class Constant extends AssemblyElement
     {
         target_ = target;
         value_ = value;
+    }
+
+    void postProcessing( Assembly parent, Map<String, Component> components )
+    {
+        parent_ = parent;
+        target_.postProcessing(components);
     }
 
     public void prettyPrint( PrintStream out, String offset )
