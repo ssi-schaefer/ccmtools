@@ -17,4 +17,9 @@ public class Text extends Value
     {
         value_ = value;
     }
+
+    public String toString()
+    {
+        return "\"" + value_ + "\"";
+    }
 }

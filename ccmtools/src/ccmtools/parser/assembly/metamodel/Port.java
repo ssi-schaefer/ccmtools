@@ -9,6 +9,9 @@
  */
 package ccmtools.parser.assembly.metamodel;
 
+/**
+ * facet or receptacle
+ */
 public final class Port
 {
     private String component_;
@@ -36,5 +39,13 @@ public final class Port
     {
         component_ = null;
         connector_ = connector;
+    }
+
+    public String toString()
+    {
+        if (component_ == null)
+            return "this." + connector_;
+        else
+            return component_ + "." + connector_;
     }
 }

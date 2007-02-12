@@ -2,3 +2,4 @@ Makefile
 Makefile.in
 ccmtools.jar
 uml2idl.jar
+assembly.jar

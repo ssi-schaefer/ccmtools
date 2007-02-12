@@ -9,6 +9,11 @@
  */
 package ccmtools.parser.assembly.metamodel;
 
+import java.io.PrintStream;
+
+/**
+ * Top level element of the model.
+ */
 public abstract class ModelElement
 {
     protected String name_;
@@ -17,4 +22,6 @@ public abstract class ModelElement
     {
         name_ = name;
     }
+
+    public abstract void prettyPrint( PrintStream out, String offset );
 }

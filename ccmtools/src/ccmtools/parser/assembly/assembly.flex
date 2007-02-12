@@ -28,7 +28,7 @@ import java_cup.runtime.*;
     public void error(String message)
     {
         StringBuilder out = new StringBuilder();
-        out.append(file_name);
+        out.append(current_input_filename);
         out.append(" line ");
         out.append(yyline);
         out.append(": ");

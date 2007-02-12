@@ -79,6 +79,24 @@
         </java>
     </target>
 
+    <target name="compile.AssemblyMain" depends="generate.AssemblyLexer, generate.AssemblyParser">
+        <javac srcdir="${src}/ccmtools/parser/assembly:${src-gen}/ccmtools/parser/assembly"
+               destdir="${build}/classes"
+               debug="on" source="1.5" target="1.5" verbose="off">
+            <classpath refid="compile.classpath" />
+        </javac>
+    </target>
+
+    <target name="jar.AssemblyMain" depends="compile.AssemblyMain">
+        <jar jarfile="${lib}/assembly.jar"
+             basedir="${build}/classes"
+             includes="ccmtools/parser/assembly/**">
+            <manifest>
+                <attribute name="Main-Class" value="ccmtools.parser.assembly.Main" />
+            </manifest>
+        </jar>
+    </target>
+
 
 	<!-- Compile ccmtools source code -->
 

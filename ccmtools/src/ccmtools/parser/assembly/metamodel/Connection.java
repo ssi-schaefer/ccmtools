@@ -9,6 +9,11 @@
  */
 package ccmtools.parser.assembly.metamodel;
 
+import java.io.PrintStream;
+
+/**
+ * connects a facet with a receptacle
+ */
 public class Connection extends AssemblyElement
 {
     private Port facet_;
@@ -19,5 +24,10 @@ public class Connection extends AssemblyElement
     {
         facet_ = facet;
         receptacle_ = receptacle;
+    }
+
+    public void prettyPrint( PrintStream out, String offset )
+    {
+        out.println(offset + "connect " + facet_ + " to " + receptacle_ + " ;");
     }
 }

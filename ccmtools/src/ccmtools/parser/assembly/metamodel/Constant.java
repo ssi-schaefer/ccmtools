@@ -9,6 +9,11 @@
  */
 package ccmtools.parser.assembly.metamodel;
 
+import java.io.PrintStream;
+
+/**
+ * sets the attribute of an inner component to a constant value
+ */
 public class Constant extends AssemblyElement
 {
     private Port target_;
@@ -19,5 +24,10 @@ public class Constant extends AssemblyElement
     {
         target_ = target;
         value_ = value;
+    }
+
+    public void prettyPrint( PrintStream out, String offset )
+    {
+        out.println(offset + "constant " + target_ + " = " + value_ + " ;");
     }
 }

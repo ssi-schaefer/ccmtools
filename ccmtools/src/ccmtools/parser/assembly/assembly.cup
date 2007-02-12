@@ -4,7 +4,6 @@ package ccmtools.parser.assembly;
 
 import java.util.Vector;
 import java_cup.runtime.*;
-import ccmtools.parser.assembly.metamodel.*;
 
 parser code
 {:
@@ -49,14 +48,14 @@ terminal    SEMICOLON, DOT, LBRACE, RBRACE, EQUAL;
 terminal String STRING, NUMBER, QN, NAME;
 
 
-nonterminal Model model;
-nonterminal ModelElement model_element, module, assembly;
-nonterminal Vector<ModelElement> model_element_list;
-nonterminal AssemblyElement assembly_element;
-nonterminal Vector<AssemblyElement> assembly_element_list;
-nonterminal QualifiedName qualified_name;
-nonterminal Port port, internal_port, external_port;
-nonterminal Value value;
+nonterminal ccmtools.parser.assembly.metamodel.Model model;
+nonterminal ccmtools.parser.assembly.metamodel.ModelElement model_element, module, assembly;
+nonterminal Vector<ccmtools.parser.assembly.metamodel.ModelElement> model_element_list;
+nonterminal ccmtools.parser.assembly.metamodel.AssemblyElement assembly_element;
+nonterminal Vector<ccmtools.parser.assembly.metamodel.AssemblyElement> assembly_element_list;
+nonterminal ccmtools.parser.assembly.metamodel.QualifiedName qualified_name;
+nonterminal ccmtools.parser.assembly.metamodel.Port port, internal_port, external_port;
+nonterminal ccmtools.parser.assembly.metamodel.Value value;
 
 
 start with model;
@@ -71,7 +70,7 @@ model
         :}
     |
         {:
-            RESULT = new Model();
+            RESULT = new ccmtools.parser.assembly.metamodel.Model();
         :}
     ;
 
@@ -99,25 +98,25 @@ model_element_list
         :}
     |
         {:
-            RESULT = new Vector<ModelElement>();
+            RESULT = new Vector<ccmtools.parser.assembly.metamodel.ModelElement>();
         :}
     ;
 
 
 module
     ::=
-        MODULE NAME:v1 LBRACE model_element_list:v2 RBRACE
+        MODULE NAME:v1 LBRACE model_element_list:v2 RBRACE SEMICOLON
         {:
-            RESULT = new Module(v1, v2);
+            RESULT = new ccmtools.parser.assembly.metamodel.Module(v1, v2);
         :}
     ;
 
 
 assembly
     ::=
-        ASSEMBLY NAME:v1 IMPLEMENTS qualified_name:v2 LBRACE assembly_element_list:v3 RBRACE
+        ASSEMBLY NAME:v1 IMPLEMENTS qualified_name:v2 LBRACE assembly_element_list:v3 RBRACE SEMICOLON
         {:
-            RESULT = new Assembly(v1, v2, v3);
+            RESULT = new ccmtools.parser.assembly.metamodel.Assembly(v1, v2, v3);
         :}
     ;
 
@@ -126,12 +125,12 @@ qualified_name
     ::=
         QN:v1
         {:
-            RESULT = new QualifiedName(v1);
+            RESULT = new ccmtools.parser.assembly.metamodel.QualifiedName(v1);
         :}
     |
         NAME:v1
         {:
-            RESULT = new QualifiedName(v1);
+            RESULT = new ccmtools.parser.assembly.metamodel.QualifiedName(v1);
         :}
     ;
 
@@ -145,7 +144,7 @@ assembly_element_list
         :}
     |
         {:
-            RESULT = new Vector<AssemblyElement>();
+            RESULT = new Vector<ccmtools.parser.assembly.metamodel.AssemblyElement>();
         :}
     ;
 
@@ -154,22 +153,22 @@ assembly_element
     ::=
         COMPONENT qualified_name:v1 NAME:v2 SEMICOLON
         {:
-            RESULT = new Component(v1, v2);
+            RESULT = new ccmtools.parser.assembly.metamodel.Component(v1, v2);
         :}
     |
         CONNECT port:v1 TO port:v2 SEMICOLON
         {:
-            RESULT = new Connection(v1, v2);
+            RESULT = new ccmtools.parser.assembly.metamodel.Connection(v1, v2);
         :}
     |
         ATTRIBUTE internal_port:v1 EQUAL external_port:v2 SEMICOLON
         {:
-            RESULT = new Attribute(v1, v2);
+            RESULT = new ccmtools.parser.assembly.metamodel.Attribute(v1, v2);
         :}
     |
         CONSTANT internal_port:v1 EQUAL value:v2 SEMICOLON
         {:
-            RESULT = new Constant(v1, v2);
+            RESULT = new ccmtools.parser.assembly.metamodel.Constant(v1, v2);
         :}
     ;
 
@@ -192,7 +191,7 @@ internal_port
     ::=
         NAME:v1 DOT NAME:v2
         {:
-            RESULT = new Port(v1, v2);
+            RESULT = new ccmtools.parser.assembly.metamodel.Port(v1, v2);
         :}
     ;
 
@@ -201,12 +200,12 @@ external_port
     ::=
         NAME:v1
         {:
-            RESULT = new Port(v1);
+            RESULT = new ccmtools.parser.assembly.metamodel.Port(v1);
         :}
     |
         THIS DOT NAME:v1
         {:
-            RESULT = new Port(v1);
+            RESULT = new ccmtools.parser.assembly.metamodel.Port(v1);
         :}
     ;
 
@@ -215,12 +214,12 @@ value
     ::=
         STRING:v1
         {:
-            RESULT = new Text(v1);
+            RESULT = new ccmtools.parser.assembly.metamodel.Text(v1);
         :}
     |
         NUMBER:v1
         {:
-            RESULT = new Number(v1);
+            RESULT = new ccmtools.parser.assembly.metamodel.Number(v1);
         :}
     ;
 

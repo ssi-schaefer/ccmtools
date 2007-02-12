@@ -9,14 +9,34 @@
  */
 package ccmtools.parser.assembly.metamodel;
 
+import java.io.PrintStream;
 import java.util.Vector;
 
+/**
+ * The root element of the ccmtools assembly metamodel.
+ */
 public class Model
 {
     private Vector<ModelElement> elements_ = new Vector<ModelElement>();
 
+    /**
+     * adds a new ModelElement
+     */
     public void add( ModelElement e )
     {
         elements_.add(e);
+    }
+
+    /**
+     * prints the model to an output stream
+     * 
+     * @param out the output stream
+     */
+    public void prettyPrint( PrintStream out )
+    {
+        for(int i=0; i<elements_.size(); ++i)
+        {
+            elements_.get(i).prettyPrint(out, "");
+        }
     }
 }

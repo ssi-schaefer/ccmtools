@@ -6,9 +6,9 @@ model := (model_element)*
 
 model_element := module | assembly
 
-module := "module" NAME "{" (model_element)* "}"
+module := "module" NAME "{" (model_element)* "}" ";"
 
-assembly := "assembly" NAME "implements" QN "{" (assembly_element)* "}"
+assembly := "assembly" NAME "implements" QN "{" (assembly_element)* "}" ";"
 
 assembly_element := component | connection | attribute | constant
 

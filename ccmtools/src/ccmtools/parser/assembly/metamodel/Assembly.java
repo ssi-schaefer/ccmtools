@@ -9,6 +9,7 @@
  */
 package ccmtools.parser.assembly.metamodel;
 
+import java.io.PrintStream;
 import java.util.Vector;
 
 public class Assembly extends ModelElement
@@ -22,5 +23,15 @@ public class Assembly extends ModelElement
         super(name);
         idl_name_ = idl_name;
         elements_ = elements;
+    }
+
+    public void prettyPrint( PrintStream out, String offset )
+    {
+        out.println(offset + "assembly " + name_ + " implements " + idl_name_ + " {");
+        for (int i = 0; i < elements_.size(); ++i)
+        {
+            elements_.get(i).prettyPrint(out, offset + "  ");
+        }
+        out.println(offset + "};");
     }
 }
