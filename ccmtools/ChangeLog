@@ -1,6 +1,17 @@
 HEAD
 ============================================================================
 
+RELEASE-0.8.7 (February 13, 2007)
+----------------------------------------------------------------------------
+*) Bugfix: Windows paths, parser rule for preprocessor lines
+
+RELEASE-0.8.6 (January 26, 2007) 
+----------------------------------------------------------------------------
+*) Refactoring: Interface constants in C++
+	Changed the mapping of IDL interface constants from static const members
+	to static getter methods (using the same name sa the defined constants).
+	This refactoring was triggert by an Interix problem reported by Duft Markus. 
+
 RELEASE-0.8.5 (January 24, 2007) 
 RELEASE-0.8.4 (January 16, 2007) 
 RELEASE-0.8.3 (January 10, 2007) 
