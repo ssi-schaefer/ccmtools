@@ -24,20 +24,20 @@ namespace europe {
 Test_ifaceIn_impl::Test_ifaceIn_impl(Test_impl* component_impl)
   : component(component_impl)
 {
-  cout << "  BOOLEAN_CONST = " << Constants::BOOLEAN_CONST << endl;
-  cout << "  OCTET_CONST = " << (int)Constants::OCTET_CONST << endl;
-  cout << "  SHORT_CONST = " << Constants::SHORT_CONST << endl;
+  cout << "  BOOLEAN_CONST = " << Constants::BOOLEAN_CONST() << endl;
+  cout << "  OCTET_CONST = " << (int)Constants::OCTET_CONST() << endl;
+  cout << "  SHORT_CONST = " << Constants::SHORT_CONST() << endl;
 
-  cout << "  SHORT_CONST = " << Constants::SHORT_CONST << endl;
-  cout << "  USHORT_CONST = " << Constants::USHORT_CONST << endl;
-  cout << "  LONG_CONST = " << Constants::LONG_CONST << endl;
-  cout << "  ULONG_CONST = " << Constants::ULONG_CONST << endl;
+  cout << "  SHORT_CONST = " << Constants::SHORT_CONST() << endl;
+  cout << "  USHORT_CONST = " << Constants::USHORT_CONST() << endl;
+  cout << "  LONG_CONST = " << Constants::LONG_CONST() << endl;
+  cout << "  ULONG_CONST = " << Constants::ULONG_CONST() << endl;
 
-  cout << "  CHAR_CONST = " << Constants::CHAR_CONST << endl;
-  cout << "  STRING_CONST = " << Constants::STRING_CONST << endl;
+  cout << "  CHAR_CONST = " << Constants::CHAR_CONST() << endl;
+  cout << "  STRING_CONST = " << Constants::STRING_CONST() << endl;
 
-  cout << "  FLOAT_CONST = " << Constants::FLOAT_CONST << endl;
-  cout << "  DOUBLE_CONST = " << Constants::DOUBLE_CONST << endl;
+  cout << "  FLOAT_CONST = " << Constants::FLOAT_CONST() << endl;
+  cout << "  DOUBLE_CONST = " << Constants::DOUBLE_CONST() << endl;
 }
 
 Test_ifaceIn_impl::~Test_ifaceIn_impl()
@@ -49,70 +49,70 @@ bool
 Test_ifaceIn_impl::getBooleanValue()
 throw(Components::CCMException)
 {
-  return Constants::BOOLEAN_CONST;
+  return Constants::BOOLEAN_CONST();
 }
 
 unsigned char
 Test_ifaceIn_impl::getOctetValue()
 throw(Components::CCMException)
 {
-  return Constants::OCTET_CONST;
+  return Constants::OCTET_CONST();
 }
 
 short
 Test_ifaceIn_impl::getShortValue()
 throw(Components::CCMException)
 {
-  return Constants::SHORT_CONST;
+  return Constants::SHORT_CONST();
 }
 
 unsigned short
 Test_ifaceIn_impl::getUnsignedShortValue()
 throw(Components::CCMException)
 {
-  return Constants::USHORT_CONST;
+  return Constants::USHORT_CONST();
 }
 
 long
 Test_ifaceIn_impl::getLongValue()
 throw(Components::CCMException)
 {
-  return Constants::LONG_CONST;
+  return Constants::LONG_CONST();
 }
 
 unsigned long
 Test_ifaceIn_impl::getUnsignedLongValue()
 throw(Components::CCMException)
 {
-  return Constants::ULONG_CONST;
+  return Constants::ULONG_CONST();
 }
 
 char
 Test_ifaceIn_impl::getCharValue()
 throw(Components::CCMException)
 {
-  return Constants::CHAR_CONST;
+  return Constants::CHAR_CONST();
 }
 
 std::string
 Test_ifaceIn_impl::getStringValue()
 throw(Components::CCMException)
 {
-  return Constants::STRING_CONST;
+  return Constants::STRING_CONST();
 }
 
 float
 Test_ifaceIn_impl::getFloatValue()
 throw(Components::CCMException)
 {
-  return Constants::FLOAT_CONST;
+  return Constants::FLOAT_CONST();
 }
 
 double
 Test_ifaceIn_impl::getDoubleValue()
 throw(Components::CCMException)
 {
-  return Constants::DOUBLE_CONST;
+  return Constants::DOUBLE_CONST();
 }
 
 } // /namespace europe

@@ -1,5 +1,6 @@
 package ccmtools.parser.idl;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -2289,14 +2290,21 @@ public class ParserHelper
                 else
                 {
                     setCurrentSourceLine(Integer.parseInt(elements[1]));
-                    String fileName = elements[2];
-                    setCurrentSourceFile(fileName.substring(fileName.indexOf('\"')+1, fileName.lastIndexOf('\"')));
+                    
+                    /*
+                     * Here we normalize pathological path strings.
+                     * e.g. C:\\path\\to\\file.idl => C:\path\to\file.idl  
+                     */
+                    String fileName = (new File(elements[2])).toString();
+                    
+                    String currentSourceFile = fileName.substring(fileName.indexOf('\"')+1, fileName.lastIndexOf('\"')); 
+                    setCurrentSourceFile(currentSourceFile);
                 }
             }
         }
     }
- 
-    
+
+
     // #pragma 
     public void handlePragmaLine(String line)
     {

@@ -1,2 +1,7 @@
 
-    static const %(LanguageType)s %(Identifier)s;
+    static %(LanguageType)s %(Identifier)s() 
+    {
+        return %(ConstantValue)s
+    }
+    
+    
