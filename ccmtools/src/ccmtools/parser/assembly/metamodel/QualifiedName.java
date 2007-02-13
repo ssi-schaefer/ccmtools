@@ -26,10 +26,15 @@ public final class QualifiedName
         return qn_;
     }
 
-    private Module container_;
+    private Module scope_;
 
-    void postProcessing( Module container )
+    /**
+     * defines the scope of this qualified name
+     * 
+     * @param scope scope of this qualified name (or null for global scope)
+     */
+    void postProcessing( Module scope )
     {
-        container_ = container;
+        scope_ = scope;
     }
 }
