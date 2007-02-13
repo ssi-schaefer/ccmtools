@@ -1,0 +1,39 @@
+CCM Tools TODOs
+===============
+
+o) Start Scripts (ccmtools/bin)
+	- add Windows start scripts 
+	- add Ant tasks for ccmtools generators
+	
+o) IDL Parser
+	- improve ccmmodel -validator 
+	- add support for List, Set and Map types which could be mapped to IDL sequences
+		in the remote case.
+		
+o) Java Generators
+	- generate local adapters into a ccmtools::local namespace
+	- improve Any-Plugin mechanism - use the IDL 'native' keyword and separate the
+		Plugin implementation from the ccmtools implementations.		 
+	- add multi-threading support for business logic (e.g. synchronized local adapters)
+	- provides a get_session_context() methods which can throw a CCMException in the case
+	 	that a client did not call configuration_complete().
+	- separate interface Type from CCM_Type. 	
+
+o) C++ Generators
+	- refactor CppGenerator and CppRemoteGenerator test cases - remove redundant
+		tests.
+	- refactor generator implementation towards JET templates (see Java generators).
+	- improve Any-Plugin mechanism - use the IDL 'native' keyword and separate the
+		Plugin implementation from the ccmtools implementations.		 
+	- together with the new C++ generator, we can use the new IDL parser and remove the
+		old one (ANTLR based) from the project.
+	- add multi-threading support for business logic (e.g. synchronized local adapters
+		or single threaded POA policy)
+	- provides a get_session_context() methods which can throw a CCMException in the case
+	 	that a client did not call configuration_complete().
+	- use SmartPtr for the facet factory methods get_facet()	 of a component's impl class.
+	- For a given interface, separate Type from CCM_Type and eliminate exception declarations 
+		from CCM_Type.
+		Local adapters have to catch all known and unknown business logic exceptions and 
+		convert them into legal exceptions of the Type interface.	
+		

@@ -1,0 +1,32 @@
+BNF for ccmtools assemblies
+---------------------------
+
+
+model := (model_element)*
+
+model_element := module | assembly
+
+module := "module" NAME "{" (model_element)* "}" ";"
+
+assembly := "assembly" NAME "implements" QN "{" (assembly_element)* "}" ";"
+
+assembly_element := component | connection | attribute | constant
+
+component := "component" QN NAME ";"
+
+connection := "connect" port "to" port ";"
+
+port := external_port | internal_port
+
+external_port := NAME
+               | "this" "." NAME
+
+internal_port := NAME "." NAME
+
+attribute := "attribute" internal_port "=" external_port ";"
+
+constant := "constant" internal_port "=" TEXT ";"
+
+
+QN := ("::")? NAME ("::" NAME)*
+

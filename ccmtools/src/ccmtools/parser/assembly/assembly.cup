@@ -1,0 +1,225 @@
+// CUP parser definition for ccmtools assembly descriptions
+
+package ccmtools.parser.assembly;
+
+import java.util.Vector;
+import java_cup.runtime.*;
+
+parser code
+{:
+    String current_input_filename = "(filename not set)";
+
+    /**
+     * This method overides the original report_error() method
+     * and generates a useful error message.
+     */
+    public void report_error(String message, Object info)
+    {
+        StringBuilder out = new StringBuilder();
+        out.append(current_input_filename);
+        if(info instanceof Symbol)
+        {
+            Symbol s = (Symbol)info;
+            if(s.left != -1)
+            {
+                out.append(" line ");
+                out.append(s.left+1);
+            }
+        }
+        out.append(": ");
+        out.append(message);
+        throw new RuntimeException(out.toString());
+    }
+
+    public void report_fatal_error(String message, Object info)
+    {
+        System.err.println("FATAL ERROR: "+message);
+        System.exit(1);
+    }
+
+:};
+
+
+terminal    ASSEMBLY, ATTRIBUTE;
+terminal    COMPONENT, CONNECT, CONSTANT;
+terminal    IMPLEMENTS, MODULE, THIS, TO;
+terminal    SEMICOLON, DOT, LBRACE, RBRACE, EQUAL;
+
+terminal String STRING, NUMBER, QN, NAME;
+
+
+nonterminal ccmtools.parser.assembly.metamodel.Model model;
+nonterminal ccmtools.parser.assembly.metamodel.ModelElement model_element, module, assembly;
+nonterminal Vector<ccmtools.parser.assembly.metamodel.ModelElement> model_element_list;
+nonterminal ccmtools.parser.assembly.metamodel.AssemblyElement assembly_element;
+nonterminal Vector<ccmtools.parser.assembly.metamodel.AssemblyElement> assembly_element_list;
+nonterminal ccmtools.parser.assembly.metamodel.QualifiedName qualified_name;
+nonterminal ccmtools.parser.assembly.metamodel.Port port, internal_port, external_port;
+nonterminal ccmtools.parser.assembly.metamodel.Value value;
+
+
+start with model;
+
+
+model
+    ::=
+        model:v1 model_element:v2
+        {:
+            v1.add(v2);
+            RESULT=v1;
+        :}
+    |
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Model();
+        :}
+    ;
+
+
+model_element
+    ::=
+        module:v1
+        {:
+            RESULT=v1;
+        :}
+    |
+        assembly:v1
+        {:
+            RESULT=v1;
+        :}
+    ;
+
+
+model_element_list
+    ::=
+        model_element_list:v1 model_element:v2
+        {:
+            v1.add(v2);
+            RESULT=v1;
+        :}
+    |
+        {:
+            RESULT = new Vector<ccmtools.parser.assembly.metamodel.ModelElement>();
+        :}
+    ;
+
+
+module
+    ::=
+        MODULE NAME:v1 LBRACE model_element_list:v2 RBRACE SEMICOLON
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Module(v1, v2);
+        :}
+    ;
+
+
+assembly
+    ::=
+        ASSEMBLY NAME:v1 IMPLEMENTS qualified_name:v2 LBRACE assembly_element_list:v3 RBRACE SEMICOLON
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Assembly(v1, v2, v3);
+        :}
+    ;
+
+
+qualified_name
+    ::=
+        QN:v1
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.QualifiedName(v1);
+        :}
+    |
+        NAME:v1
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.QualifiedName(v1);
+        :}
+    ;
+
+
+assembly_element_list
+    ::=
+        assembly_element_list:v1 assembly_element:v2
+        {:
+            v1.add(v2);
+            RESULT=v1;
+        :}
+    |
+        {:
+            RESULT = new Vector<ccmtools.parser.assembly.metamodel.AssemblyElement>();
+        :}
+    ;
+
+
+assembly_element
+    ::=
+        COMPONENT qualified_name:v1 NAME:v2 SEMICOLON
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Component(v1, v2);
+        :}
+    |
+        CONNECT port:v1 TO port:v2 SEMICOLON
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Connection(v1, v2);
+        :}
+    |
+        ATTRIBUTE internal_port:v1 EQUAL external_port:v2 SEMICOLON
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Attribute(v1, v2);
+        :}
+    |
+        CONSTANT internal_port:v1 EQUAL value:v2 SEMICOLON
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Constant(v1, v2);
+        :}
+    ;
+
+
+port
+    ::=
+        internal_port:v1
+        {:
+            RESULT = v1;
+        :}
+    |
+        external_port:v2
+        {:
+            RESULT = v2;
+        :}
+    ;
+
+
+internal_port
+    ::=
+        NAME:v1 DOT NAME:v2
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Port(v1, v2);
+        :}
+    ;
+
+
+external_port
+    ::=
+        NAME:v1
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Port(v1);
+        :}
+    |
+        THIS DOT NAME:v1
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Port(v1);
+        :}
+    ;
+
+
+value
+    ::=
+        STRING:v1
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Text(v1);
+        :}
+    |
+        NUMBER:v1
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Number(v1);
+        :}
+    ;
+
