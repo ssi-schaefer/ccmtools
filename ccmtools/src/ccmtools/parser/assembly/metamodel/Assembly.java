@@ -11,6 +11,7 @@ package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -18,23 +19,28 @@ import java.util.Vector;
  */
 public class Assembly extends ModelElement
 {
-    private QualifiedName idl_name_;
+    private String opt_name_;
 
     private Vector<AssemblyElement> elements_;
 
-    public Assembly( String name, QualifiedName idl_name, Vector<AssemblyElement> elements )
+    public Assembly( String name, String opt_name, Vector<AssemblyElement> elements )
     {
         super(name);
-        idl_name_ = idl_name;
+        opt_name_ = opt_name;
         elements_ = elements;
     }
 
     private HashMap<String, Component> components_;
 
-    void postProcessing( Module parent )
+    void postProcessing( Module parent, Map<String, Assembly> assemblies )
     {
         parent_ = parent;
-        idl_name_.postProcessing(parent);
+        String key = getGlobalName();
+        if (assemblies.containsKey(key))
+        {
+            throw new RuntimeException("an assembly of type \"" + key + "\" already exists");
+        }
+        assemblies.put(key, this);
         components_ = new HashMap<String, Component>();
         for (int i = 0; i < elements_.size(); ++i)
         {
@@ -44,7 +50,10 @@ public class Assembly extends ModelElement
 
     public void prettyPrint( PrintStream out, String offset )
     {
-        out.println(offset + "assembly " + name_ + " implements " + idl_name_ + " {");
+        out.print(offset + "assembly ");
+        if (opt_name_ != null)
+            out.print(opt_name_ + " ");
+        out.println("implements " + name_ + " {");
         for (int i = 0; i < elements_.size(); ++i)
         {
             elements_.get(i).prettyPrint(out, offset + "  ");

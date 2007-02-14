@@ -26,4 +26,9 @@ public class CcmtoolsException
     {
         super(message);
     }
+
+    public CcmtoolsException(String message, Throwable cause)
+    {
+        super(message, cause);
+    }
 }

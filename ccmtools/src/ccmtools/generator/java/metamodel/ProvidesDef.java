@@ -13,6 +13,7 @@ import ccmtools.generator.java.templates.ProvidesDefGetMethodImplementationTempl
 import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterToCorbaTemplate;
+import ccmtools.parser.assembly.metamodel.Model;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -142,7 +143,14 @@ public class ProvidesDef
 					
 		return sourceFileList;
 	}	
-	
+    
+    public List<SourceFile> generateAssemblySourceFiles(Model assemblies)
+    {
+        List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+        // TODO
+        return sourceFileList;
+    }
+
 	
 	
 	/*************************************************************************

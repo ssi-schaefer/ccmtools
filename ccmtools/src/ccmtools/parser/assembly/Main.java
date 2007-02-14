@@ -10,6 +10,8 @@
 package ccmtools.parser.assembly;
 
 import java.io.FileReader;
+import java.util.List;
+import ccmtools.CcmtoolsException;
 import ccmtools.parser.assembly.metamodel.Model;
 
 public final class Main
@@ -50,6 +52,24 @@ public final class Main
                     + root.value.getClass().getName());
         Model result = (Model) root.value;
         result.postProcessing();
+        return result;
+    }
+
+    public static Model parse( List<String> files ) throws Exception
+    {
+        Model result = new Model();
+        for (String f : files)
+        {
+            try
+            {
+                Model m = parse(f);
+                result.merge(m);
+            }
+            catch (Exception e)
+            {
+                throw new CcmtoolsException("problem with: " + f, e);
+            }
+        }
         return result;
     }
 }

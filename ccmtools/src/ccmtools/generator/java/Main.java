@@ -3,7 +3,6 @@ package ccmtools.generator.java;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.GnuParser;
@@ -11,11 +10,11 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-
 import ccmtools.CcmtoolsException;
 import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.generator.java.metamodel.ModelRepository;
+import ccmtools.parser.assembly.metamodel.Model;
 import ccmtools.parser.idl.ParserManager;
 import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
 import ccmtools.ui.UserInterfaceDriver;
@@ -59,6 +58,8 @@ public class Main
 				parameters.validate();
 				setCcmtoolsProperties();
 				JavaComponentGenerator generator = new JavaComponentGenerator(parameters, uiDriver);
+                
+                Model assemblies = ccmtools.parser.assembly.Main.parse(parameters.getAssemblyFiles());
 
 				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
 				{
@@ -77,7 +78,7 @@ public class Main
 
 					// Run the Java component generator which can handle all of
 					// the different generator flags (-iface, -local, -app, -clientlib, etc.)
-					generator.generate(javaModel);
+					generator.generate(javaModel, assemblies);
 				}
 			}
 		}
@@ -136,6 +137,8 @@ public class Main
         					false, "Run the Java interface generator");
         options.addOption(JavaComponentGenerator.CORBA_COMPONENT_GENERATOR_ID, 
 						false, "Run the Java CORBA component generator");
+        options.addOption(JavaComponentGenerator.ASSEMBLY_GENERATOR_ID, 
+            false, "Run the Java assembly generator");
         options.addOption("noexit", false, "Don't exit Java VM with error status");
         
         // Define single valued options
@@ -192,8 +195,15 @@ public class Main
 
 		if (cmd.hasOption(JavaComponentGenerator.APPLICATION_GENERATOR_ID))
 		{
+            if (cmd.hasOption(JavaComponentGenerator.ASSEMBLY_GENERATOR_ID))
+                throw new ParseException("cannot use impl. skeletons"+
+                    " and assemblies together");
 			parameters.getGeneratorIds().add(JavaComponentGenerator.APPLICATION_GENERATOR_ID);
 		}
+        else if (cmd.hasOption(JavaComponentGenerator.ASSEMBLY_GENERATOR_ID))
+        {
+            parameters.getGeneratorIds().add(JavaComponentGenerator.ASSEMBLY_GENERATOR_ID);
+        }
 
 		if (cmd.hasOption(JavaComponentGenerator.INTERFACE_GENERATOR_ID))
 		{
@@ -240,7 +250,13 @@ public class Main
         	parameters.getIdlFiles().clear();
         	 for(int i = 0; i < arguments.length; i++) 
              {
-                 parameters.getIdlFiles().add(arguments[i]);
+                 String x = arguments[i].toLowerCase();
+                 if(x.endsWith(".idl"))
+                     parameters.getIdlFiles().add(arguments[i]);
+                 else if(x.endsWith(".assembly"))
+                     parameters.getAssemblyFiles().add(arguments[i]);
+                 else
+                     throw new ParseException("unknown file type: "+arguments[i]);
              }
         	
         }

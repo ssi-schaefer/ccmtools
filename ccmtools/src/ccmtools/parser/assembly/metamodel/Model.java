@@ -10,6 +10,7 @@
 package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Vector;
 
 /**
@@ -27,14 +28,17 @@ public class Model
         elements_.add(e);
     }
 
+    private HashMap<String, Assembly> assemblies_;
+
     /**
      * call this method after model creation
      */
     public void postProcessing()
     {
-        for (int i = 0; i < elements_.size(); ++i)
+        assemblies_ = new HashMap<String, Assembly>();
+        for (ModelElement e : elements_)
         {
-            elements_.get(i).postProcessing(null);
+            e.postProcessing(null, assemblies_);
         }
     }
 
@@ -45,9 +49,29 @@ public class Model
      */
     public void prettyPrint( PrintStream out )
     {
-        for (int i = 0; i < elements_.size(); ++i)
+        for (ModelElement e : elements_)
         {
-            elements_.get(i).prettyPrint(out, "");
+            e.prettyPrint(out, "");
         }
+    }
+
+    /**
+     * adds all elements of the give model to this model
+     */
+    public void merge( Model m )
+    {
+        elements_.addAll(m.elements_);
+        if (assemblies_ == null)
+            assemblies_ = new HashMap<String, Assembly>(m.assemblies_);
+        else
+            for (String key : m.assemblies_.keySet())
+            {
+                if (assemblies_.containsKey(key))
+                {
+                    throw new RuntimeException("an assembly of type \"" + key + "\" already exists");
+                }
+                Assembly a = m.assemblies_.get(key);
+                assemblies_.put(key, a);
+            }
     }
 }

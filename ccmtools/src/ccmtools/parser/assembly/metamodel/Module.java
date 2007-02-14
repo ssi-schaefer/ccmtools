@@ -10,6 +10,7 @@
 package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -25,12 +26,12 @@ public class Module extends ModelElement
         children_ = children;
     }
 
-    void postProcessing( Module parent )
+    void postProcessing( Module parent, Map<String, Assembly> assemblies )
     {
         parent_ = parent;
         for (int i = 0; i < children_.size(); ++i)
         {
-            children_.get(i).postProcessing(this);
+            children_.get(i).postProcessing(this, assemblies);
         }
     }
 

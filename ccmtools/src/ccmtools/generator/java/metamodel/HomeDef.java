@@ -20,6 +20,7 @@ import ccmtools.generator.java.templates.HomeDefFactoryApplicationTemplate;
 import ccmtools.generator.java.templates.HomeDefImplicitApplicationInterfaceTemplate;
 import ccmtools.generator.java.templates.HomeDefImplicitInterfaceTemplate;
 import ccmtools.generator.java.templates.HomeDefInterfaceTemplate;
+import ccmtools.parser.assembly.metamodel.Model;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -209,6 +210,12 @@ public class HomeDef
 		
 		return sourceFileList;
 	}
+    
+    public List<SourceFile> generateAssemblySourceFiles(Model assemblies)
+    {
+        // no special home implementation for assemblies
+        return generateApplicationSourceFiles();
+    }
 	
 	
 	

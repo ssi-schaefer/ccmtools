@@ -14,6 +14,7 @@ import ccmtools.generator.java.templates.ComponentDefApplicationInterfaceTemplat
 import ccmtools.generator.java.templates.ComponentDefContextClassTemplate;
 import ccmtools.generator.java.templates.ComponentDefContextInterfaceTemplate;
 import ccmtools.generator.java.templates.ComponentDefInterfaceTemplate;
+import ccmtools.parser.assembly.metamodel.Model;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -233,6 +234,13 @@ public class ComponentDef
 		
 		return sourceFileList;
 	}
+    
+    public List<SourceFile> generateAssemblySourceFiles(Model assemblies)
+    {
+        List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
+        // TODO
+        return sourceFileList;
+    }
 	
 	
 	

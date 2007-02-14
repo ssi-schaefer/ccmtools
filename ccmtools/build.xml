@@ -37,6 +37,7 @@
       	<mkdir dir="${src-gen}" />
   		<mkdir dir="${build}" />
       	<mkdir dir="${build}/classes" />
+        <delete file="${lib}/assembly.jar" />
   	</target>
 
 

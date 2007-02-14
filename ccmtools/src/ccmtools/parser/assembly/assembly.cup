@@ -114,9 +114,14 @@ module
 
 assembly
     ::=
-        ASSEMBLY NAME:v1 IMPLEMENTS qualified_name:v2 LBRACE assembly_element_list:v3 RBRACE SEMICOLON
+        ASSEMBLY NAME:x IMPLEMENTS NAME:n LBRACE assembly_element_list:l RBRACE SEMICOLON
         {:
-            RESULT = new ccmtools.parser.assembly.metamodel.Assembly(v1, v2, v3);
+            RESULT = new ccmtools.parser.assembly.metamodel.Assembly(n, x, l);
+        :}
+    |
+        ASSEMBLY IMPLEMENTS NAME:n LBRACE assembly_element_list:l RBRACE SEMICOLON
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Assembly(n, null, l);
         :}
     ;
 

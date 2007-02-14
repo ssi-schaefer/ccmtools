@@ -3,7 +3,6 @@ package ccmtools.generator.java;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.generator.java.metamodel.JavaApplicationGeneratorElement;
@@ -12,6 +11,7 @@ import ccmtools.generator.java.metamodel.JavaCorbaAdapterGeneratorElement;
 import ccmtools.generator.java.metamodel.JavaLocalAdapterGeneratorElement;
 import ccmtools.generator.java.metamodel.JavaLocalInterfaceGeneratorElement;
 import ccmtools.generator.java.metamodel.ModelRepository;
+import ccmtools.parser.assembly.metamodel.Model;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.SourceFileHelper;
 
@@ -23,6 +23,7 @@ public class JavaComponentGenerator
     public static final String LOCAL_COMPONENT_GENERATOR_ID = "local";
     public static final String CLIENT_LIB_GENERATOR_ID = "clientlib";
     public static final String CORBA_COMPONENT_GENERATOR_ID = "remote";
+    public static final String ASSEMBLY_GENERATOR_ID = "assembly";
 	
 	/** UI driver for generator messages */
 	protected UserInterfaceDriver uiDriver;
@@ -53,7 +54,7 @@ public class JavaComponentGenerator
     }
     
     
-	public void generate(ModelRepository javaModel) throws CcmtoolsException
+	public void generate(ModelRepository javaModel, Model assemblies) throws CcmtoolsException
 	{
 		logger.fine("enter");
 		for (String generatorId : parameters.getGeneratorIds())
@@ -78,6 +79,10 @@ public class JavaComponentGenerator
 			{
 				generateApplication(javaModel);
 			}
+            else if (generatorId.equals(ASSEMBLY_GENERATOR_ID))
+            {
+                generateAssembly(javaModel, assemblies);
+            }
 		}
 		logger.fine("leave");
 	}
@@ -167,7 +172,32 @@ public class JavaComponentGenerator
 		}
 		logger.fine("leave");
 	}
-	
+    
+    public void generateAssembly(ModelRepository javaModelRepo, Model assemblies)
+        throws CcmtoolsException
+    {
+        logger.fine("enter");
+        try
+        {
+            List<JavaApplicationGeneratorElement> generatorElements = 
+                new ArrayList<JavaApplicationGeneratorElement>();
+            generatorElements.addAll(javaModelRepo.findAllProvides());
+            generatorElements.addAll(javaModelRepo.findAllComponents());
+            generatorElements.addAll(javaModelRepo.findAllHomes());
+            
+            // Save all source file objects
+            for(JavaApplicationGeneratorElement element : generatorElements)
+            {
+                SourceFileHelper.writeApplicationFiles(uiDriver, parameters.getOutDir(), 
+                        element.generateAssemblySourceFiles(assemblies));
+            }
+        }
+        catch (Exception e)
+        {
+            throw new CcmtoolsException("[Java Assembly Generator] " + e.getMessage());
+        }
+        logger.fine("leave");
+    }
 	
 	public void generateClientLibComponent(ModelRepository javaModelRepo)
 		throws CcmtoolsException

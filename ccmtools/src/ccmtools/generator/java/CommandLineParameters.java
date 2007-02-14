@@ -23,6 +23,9 @@ public class CommandLineParameters
     /** List of IDL input files */
     private List<String> idlFiles = new ArrayList<String>();
     
+    /** List of assembly input files */
+    private List<String> assemblyFiles = new ArrayList<String>();
+    
     
     // Parameter getter and setter methods ------------------------------------
     
@@ -59,6 +62,12 @@ public class CommandLineParameters
 		return idlFiles;
 	}
 
+    
+    public List<String> getAssemblyFiles()
+    {
+        return assemblyFiles;
+    }
+
 
 	public List<String> getGeneratorIds()
 	{
@@ -73,6 +82,7 @@ public class CommandLineParameters
 	{
 		checkOutputPath();
 		checkIdlFiles();
+        checkAssemblyFiles();
 	}
 	
     
@@ -92,18 +102,32 @@ public class CommandLineParameters
 	    
     /**
      * Check if the given IDL file exists.
+     * 
      * @throws CcmtoolsException
      */
-    private void checkIdlFiles() 
-        throws CcmtoolsException
+    private void checkIdlFiles() throws CcmtoolsException
     {
-    	     for(String idlFile : getIdlFiles()) 
-    	     {
-             if(!isExistingFile(idlFile, getIncludePaths())) 
-             {
-                 throw new CcmtoolsException("Invalid IDL input file " + idlFile);
-             }
-         }
+        for (String idlFile : getIdlFiles())
+        {
+            if (!isExistingFile(idlFile, getIncludePaths()))
+            {
+                throw new CcmtoolsException("Invalid IDL input file " + idlFile);
+            }
+        }
+    }
+
+    /**
+     * Check if the given assembly file exists.
+     * 
+     * @throws CcmtoolsException
+     */
+    private void checkAssemblyFiles() throws CcmtoolsException
+    {
+        for (String f : getAssemblyFiles())
+        {
+            if (f == null || !(new File(f)).exists())
+                throw new CcmtoolsException("Invalid assembly input file " + f);
+        }
     }
     
     private boolean isExistingFile(String fileName, List<String> includePaths)
@@ -160,6 +184,11 @@ public class CommandLineParameters
 		{
 			buffer.append("IDL input files: ").append(idlFile).append("\n");
 		}
+        
+        for(String f : getAssemblyFiles())
+        {
+            buffer.append("assembly input files: ").append(f).append("\n");
+        }
 		
 		return buffer.toString();
 	}
