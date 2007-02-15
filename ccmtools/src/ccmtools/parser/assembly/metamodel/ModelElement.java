@@ -17,14 +17,12 @@ import java.util.Map;
  */
 public abstract class ModelElement
 {
-    public static final String IDL_SCOPE = "::";
-
     protected String name_;
 
     protected ModelElement( String name )
     {
         name_ = name;
-        if (name.indexOf(IDL_SCOPE) >= 0)
+        if (name.indexOf(Model.IDL_SCOPE) >= 0)
             throw new RuntimeException("scoped name!");
     }
 
@@ -44,11 +42,11 @@ public abstract class ModelElement
     {
         if (parent_ != null)
         {
-            return parent_.getGlobalName() + IDL_SCOPE + name_;
+            return parent_.getGlobalName() + Model.IDL_SCOPE + name_;
         }
         else
         {
-            return IDL_SCOPE + name_;
+            return Model.IDL_SCOPE + name_;
         }
     }
 

@@ -188,7 +188,7 @@ public class JavaComponentGenerator
             // Save all source file objects
             for(JavaApplicationGeneratorElement element : generatorElements)
             {
-                SourceFileHelper.writeApplicationFiles(uiDriver, parameters.getOutDir(), 
+                SourceFileHelper.writeSourceFiles(uiDriver, parameters.getOutDir(), 
                         element.generateAssemblySourceFiles(assemblies));
             }
         }

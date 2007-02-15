@@ -11,7 +11,6 @@ package ccmtools.parser.assembly;
 
 import java.io.FileReader;
 import java.util.List;
-import ccmtools.CcmtoolsException;
 import ccmtools.parser.assembly.metamodel.Model;
 
 public final class Main
@@ -67,7 +66,7 @@ public final class Main
             }
             catch (Exception e)
             {
-                throw new CcmtoolsException("problem with: " + f, e);
+                throw new RuntimeException("problem with: " + f, e);
             }
         }
         return result;

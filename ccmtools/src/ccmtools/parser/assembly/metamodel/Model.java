@@ -18,6 +18,8 @@ import java.util.Vector;
  */
 public class Model
 {
+    public static final String IDL_SCOPE = "::";
+
     private Vector<ModelElement> elements_ = new Vector<ModelElement>();
 
     /**
@@ -73,5 +75,18 @@ public class Model
                 Assembly a = m.assemblies_.get(key);
                 assemblies_.put(key, a);
             }
+    }
+
+    /**
+     * searches for an assembly description
+     * 
+     * @param key qualified IDL name of the component
+     * @return the assembly description (or null)
+     */
+    public Assembly getAssembly( String key )
+    {
+        if (!key.startsWith(IDL_SCOPE))
+            key = IDL_SCOPE + key;
+        return assemblies_.get(key);
     }
 }
