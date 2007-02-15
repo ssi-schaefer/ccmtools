@@ -12,6 +12,7 @@ package ccmtools.parser.assembly.metamodel;
 import java.io.PrintStream;
 import java.util.Map;
 import java.util.Vector;
+import ccmtools.parser.idl.metamodel.BaseIDL.MModuleDef;
 
 /**
  * a namespace
@@ -29,10 +30,15 @@ public class Module extends ModelElement
     void postProcessing( Module parent, Map<String, Assembly> assemblies )
     {
         parent_ = parent;
-        for (int i = 0; i < children_.size(); ++i)
+        for (ModelElement e : children_)
         {
-            children_.get(i).postProcessing(this, assemblies);
+            e.postProcessing(this, assemblies);
         }
+    }
+
+    void updateCcmModel( MModuleDef module )
+    {
+        Model.updateCcmModel(module.getContentss(), children_, getGlobalName());
     }
 
     public void prettyPrint( PrintStream out, String offset )

@@ -26,6 +26,11 @@ public class Component extends AssemblyElement
         idl_name_ = idl_name;
         name_ = name;
     }
+    
+    public QualifiedName getCcmName()
+    {
+        return idl_name_;
+    }
 
     void postProcessing( Assembly parent, Map<String, Component> components )
     {

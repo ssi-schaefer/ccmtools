@@ -11,7 +11,11 @@ package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
+import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
+import ccmtools.parser.idl.metamodel.BaseIDL.MModuleDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
 
 /**
  * The root element of the ccmtools assembly metamodel.
@@ -75,6 +79,57 @@ public class Model
                 Assembly a = m.assemblies_.get(key);
                 assemblies_.put(key, a);
             }
+    }
+
+    /**
+     * the key is a qualified IDL name (starting with "::")
+     */
+    static HashMap<String, MComponentDef> ccm_component_repository = new HashMap<String, MComponentDef>();
+
+    static void updateCcmModel( List ccm_elements, List<ModelElement> this_elements,
+            String parent_name )
+    {
+        for (Object root : ccm_elements)
+        {
+            if (root instanceof MModuleDef)
+            {
+                MModuleDef module = (MModuleDef) root;
+                String name = module.getIdentifier();
+                boolean found = false;
+                for (ModelElement e : this_elements)
+                {
+                    if (e instanceof Module && e.name().equals(name))
+                    {
+                        ((Module) e).updateCcmModel(module);
+                        found = true;
+                    }
+                }
+                if (!found)
+                {
+                    String pn = parent_name + IDL_SCOPE + name;
+                    final List<ModelElement> dummy = new Vector<ModelElement>();
+                    updateCcmModel(module.getContentss(), dummy, pn);
+                }
+            }
+            else if (root instanceof MComponentDef)
+            {
+                MComponentDef component = (MComponentDef) root;
+                String name = component.getIdentifier();
+                ccm_component_repository.put(parent_name + IDL_SCOPE + name, component);
+                for (ModelElement e : this_elements)
+                {
+                    if (e instanceof Assembly && e.name().equals(name))
+                    {
+                        ((Assembly) e).updateCcmModel(component);
+                    }
+                }
+            }
+        }
+    }
+
+    public void updateCcmModel( MContainer ccmModel )
+    {
+        updateCcmModel(ccmModel.getContentss(), elements_, "");
     }
 
     /**

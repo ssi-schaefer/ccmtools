@@ -13,6 +13,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
 
 /**
  * defines one assembly
@@ -31,6 +32,11 @@ public class Assembly extends ModelElement
     }
 
     private HashMap<String, Component> components_;
+    
+    public Map<String, Component> getComponents()
+    {
+        return components_;
+    }
 
     void postProcessing( Module parent, Map<String, Assembly> assemblies )
     {
@@ -46,6 +52,18 @@ public class Assembly extends ModelElement
         {
             elements_.get(i).postProcessing(this, components_);
         }
+    }
+    
+    private MComponentDef ccmComponent_;
+    
+    void updateCcmModel(MComponentDef component)
+    {
+        ccmComponent_ = component;
+    }
+    
+    public MComponentDef getCcmComponent()
+    {
+        return ccmComponent_;
     }
 
     public void prettyPrint( PrintStream out, String offset )

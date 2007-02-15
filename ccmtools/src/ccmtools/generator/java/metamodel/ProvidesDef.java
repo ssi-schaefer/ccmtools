@@ -130,7 +130,7 @@ public class ProvidesDef extends ModelElement implements JavaApplicationGenerato
 
     public List<SourceFile> generateAssemblySourceFiles( Model assemblies )
     {
-        Assembly assembly = component.getAssemblyDescription(assemblies, false);
+        Assembly assembly = component.getAssemblyDescription(assemblies);
         List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
         if (assembly != null)
         {

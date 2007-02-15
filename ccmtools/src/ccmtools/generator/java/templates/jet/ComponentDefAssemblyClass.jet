@@ -14,6 +14,7 @@
 package <%=component.generateJavaNamespace()%>;
    
 import Components.CCMException;     
+import Components.CCMExceptionReason;
 import Components.SessionContext; 
 
 <%=component.generateJavaImportStatements()%>  
@@ -23,10 +24,6 @@ import Components.SessionContext;
  * as well as component attributes.
  * Additionally, session component callback methods must be implemented.
  *
- * // TODO: WRITE YOUR DESCRIPTION HERE !
- *
- * @author
- * @version
  */   
 public class <%=component.getIdentifier()%>Impl 
     implements <%=component.generateCcmIdentifier()%>
@@ -56,6 +53,15 @@ for(Iterator i=component.getAttributes().iterator(); i.hasNext();)
     AttributeDef attr = (AttributeDef)i.next();
 %>
 <%=attr.generateApplicationDeclaration()%>
+<%
+}
+%> 
+    
+<%
+for(Iterator i=component.getAssemblyAttributeDeclarations(); i.hasNext();)
+{
+%>
+<%=i.next().toString()%>
 <%
 }
 %> 

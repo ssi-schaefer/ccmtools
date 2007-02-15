@@ -2,7 +2,10 @@ package ccmtools.generator.java.metamodel;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import ccmtools.generator.java.templates.ComponentDefAdapterFromCorbaTemplate;
@@ -10,11 +13,15 @@ import ccmtools.generator.java.templates.ComponentDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.ComponentDefAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.ComponentDefApplicationClassTemplate;
 import ccmtools.generator.java.templates.ComponentDefApplicationInterfaceTemplate;
+import ccmtools.generator.java.templates.ComponentDefAssemblyClassTemplate;
 import ccmtools.generator.java.templates.ComponentDefContextClassTemplate;
 import ccmtools.generator.java.templates.ComponentDefContextInterfaceTemplate;
 import ccmtools.generator.java.templates.ComponentDefInterfaceTemplate;
 import ccmtools.parser.assembly.metamodel.Assembly;
+import ccmtools.parser.assembly.metamodel.Component;
 import ccmtools.parser.assembly.metamodel.Model;
+import ccmtools.parser.idl.metamodel.CcmModelHelper;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -198,11 +205,9 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
         return new ComponentDefApplicationClassTemplate().generate(this);
     }
 
-    public String generateAssemblyClass(Assembly assembly)
+    public String generateAssemblyClass()
     {
-        //return new ComponentDefAssemblyClassTemplate().generate(this);
-        // TODO
-        return new ComponentDefApplicationClassTemplate().generate(this);
+        return new ComponentDefAssemblyClassTemplate().generate(this);
     }
 
     // Generate SourceFile objects --------------------------------------------
@@ -216,37 +221,73 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
         return sourceFileList;
     }
 
+    private Assembly assembly_;
+
     public List<SourceFile> generateAssemblySourceFiles( Model assemblies )
     {
-        Assembly assembly = getAssemblyDescription(assemblies, true);
+        assembly_ = getAssemblyDescription(assemblies);
         List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
-        if (assembly != null)
+        if (assembly_ != null)
         {
             String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
             SourceFile applicationClass = new SourceFile(localPackageName, getIdentifier()
-                    + "Impl.java", generateAssemblyClass(assembly));
+                    + "Impl.java", generateAssemblyClass());
             sourceFileList.add(applicationClass);
         }
         return sourceFileList;
+    }
+
+    private String getQualifiedCcmName()
+    {
+        return Text.joinList(Model.IDL_SCOPE, getJavaNamespaceList()) + Model.IDL_SCOPE
+                + getIdentifier();
     }
 
     /**
      * searches for the assembly description
      * 
      * @param assemblies the assembly model
-     * @param check true if we tell the user about unknown components
      * @return the assembly description (or null)
      */
-    Assembly getAssemblyDescription( Model assemblies, boolean check )
+    Assembly getAssemblyDescription( Model assemblies )
     {
-        String n = Text.joinList(Model.IDL_SCOPE, getIdlNamespaceList());
-        Assembly a = assemblies.getAssembly(n);
-        if (a == null && check)
+        return assemblies.getAssembly(getQualifiedCcmName());
+    }
+
+    private HashMap<String, MComponentDef> assembly_local_components_;
+
+    Map<String, MComponentDef> getAssemblyLocalComponents()
+    {
+        if (assembly_local_components_ == null)
         {
-            // TODO: how could we handle that?
-            System.err.println("cannot find an assembly for component " + n);
+            assembly_local_components_ = new HashMap<String, MComponentDef>();
+            Map<String, Component> local_comps = assembly_.getComponents();
+            for (String key : local_comps.keySet())
+            {
+                Component comp_decl = local_comps.get(key);
+                MComponentDef comp_def = comp_decl.getCcmName().getCcmComponent();
+                if (comp_def == null)
+                {
+                    throw new RuntimeException("cannot find component " + key + " of type "
+                            + comp_decl.getCcmName());
+                }
+                assembly_local_components_.put(key, comp_def);
+            }
         }
-        return a;
+        return assembly_local_components_;
+    }
+
+    public Iterator getAssemblyAttributeDeclarations()
+    {
+        ArrayList<String> list = new ArrayList<String>();
+        for (String key : getAssemblyLocalComponents().keySet())
+        {
+            MComponentDef comp_def = assembly_local_components_.get(key);
+            String java_type = CcmModelHelper.getAbsoluteName(comp_def, ".");
+            String code = TAB + "private " + java_type + " " + key + "_;";
+            list.add(code);
+        }
+        return list.iterator();
     }
 
     /***********************************************************************************************

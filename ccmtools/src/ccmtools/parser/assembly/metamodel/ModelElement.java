@@ -26,6 +26,11 @@ public abstract class ModelElement
             throw new RuntimeException("scoped name!");
     }
 
+    public String name()
+    {
+        return name_;
+    }
+
     public abstract void prettyPrint( PrintStream out, String offset );
 
     protected Module parent_;
