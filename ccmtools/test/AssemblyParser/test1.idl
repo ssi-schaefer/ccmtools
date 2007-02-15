@@ -1,42 +1,42 @@
 module wamas {
 
 
-module Test {
+    module Test {
 
-interface I1 {
-    /* empty */
-};
+        interface I1 {
+            /* empty */
+        };
 
-interface I2 {
-    /* empty */
-};
+        interface I2 {
+            /* empty */
+        };
 
-interface I3 {
-    /* empty */
-};
+        interface I3 {
+            /* empty */
+        };
 
-component C1 {
-    attribute string a1;
-    attribute long a2;
-    provides I1 i1;
-    uses I2 i2;
-};
+        component C1 {
+            attribute string a1;
+            attribute long a2;
+            provides I1 i1;
+            uses I2 i2;
+        };
 
-component C2 {
-    attribute long b;
-    provides I2 i2;
-    uses I3 i3;
-};
+        component C2 {
+            attribute long b;
+            provides I2 i2;
+            uses I3 i3;
+        };
 
-};  // /module Test
+    };  // /module Test
 
 
-component C3
-{
-    attribute long b;
-    provides I1 i1;
-    uses I3 i3;
-};
+    component C3
+    {
+        attribute long b;
+        provides Test::I1 i1;
+        uses Test::I3 i3;
+    };
 
 
 };  // /module wamas
