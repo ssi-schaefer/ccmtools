@@ -5,21 +5,21 @@
  */
 
 package wamas.Test;
-                 
+
 import java.util.logging.Logger;
 
-import Components.CCMException;  
+import Components.CCMException;
 import ccmtools.local.ServiceLocator;
 
-                  
-                  
-public class I1Adapter 
+
+
+public class I1Adapter
     implements I1
 {
     private Logger logger = ServiceLocator.instance().getLogger();
-    
+
     private CCM_I1 localInterface;
-    
+
     protected I1Adapter()
     {
         logger.fine("");
@@ -30,15 +30,15 @@ public class I1Adapter
         logger.fine("localInterface = " + localInterface);
         this.localInterface = localInterface;
     }
-            
-    
 
-    public String value() 
-        throws CCMException 
+
+
+    public String value()
+        throws CCMException
     {
         logger.fine("");
         return localInterface.value();
     }
-    
-    
+
+
 }

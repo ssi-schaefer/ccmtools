@@ -11,7 +11,7 @@ assembly A3 implements C3 {
     connect i3 to comp2.i3;
 
     constant comp1.a1 = "Hello World";
-    constant comp1.a1 = 642;
+    constant comp1.a2 = 642;
 
     attribute comp2.b = this.b;
 };
