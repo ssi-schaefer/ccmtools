@@ -42,4 +42,11 @@ public class C1i1Impl
     
      
 
+    public String value()
+        throws CCMException
+    {
+    	// TODO: IMPLEMENT ME HERE !
+    	return "";
+    }    
+
 }

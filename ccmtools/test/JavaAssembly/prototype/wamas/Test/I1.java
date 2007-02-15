@@ -17,4 +17,7 @@ public interface I1
 {
 
 
+    String value ()     
+        throws CCMException;    
+
 }

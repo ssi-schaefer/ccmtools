@@ -4,7 +4,7 @@ module wamas {
     module Test {
 
         interface I1 {
-            /* empty */
+            string value();
         };
 
         interface I2 {

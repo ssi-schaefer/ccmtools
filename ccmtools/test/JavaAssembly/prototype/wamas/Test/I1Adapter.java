@@ -31,6 +31,14 @@ public class I1Adapter
         this.localInterface = localInterface;
     }
             
-        
+    
+
+    public String value() 
+        throws CCMException 
+    {
+        logger.fine("");
+        return localInterface.value();
+    }
+    
     
 }
