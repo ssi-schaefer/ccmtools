@@ -20,12 +20,19 @@
  */
 package ccmtools.parser.cpp;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.StringTokenizer;
 import java.util.Hashtable;
-import java.util.Vector;
 import java.util.Stack;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
  * JPP as Java PreProcessor.
@@ -93,13 +100,14 @@ public class JPP {
       Stack nameStack = null;
       Stack nbStack  = null;
       
-      DataInputStream fCur = null;
+      BufferedReader fCur = null;
       String nameCur = null;
       int nbCur = -1;
       
       
       JPPExpandedStream (String fileName, Vector includeDirs)  throws java.io.IOException {
-         fCur = new DataInputStream(new BufferedInputStream(new FileInputStream(fileName)));
+         //fCur = new DataInputStream(new BufferedInputStream(new FileInputStream(fileName)));
+         fCur=new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
          iDirs = includeDirs;
          fStack = new Stack();
          nameStack = new Stack();
@@ -118,7 +126,7 @@ public class JPP {
                nbCur = ((Integer) nbStack.pop()).intValue();
                line = "# "+nbCur+" "+"\""+nameCur+"\""+"      2";
                nameCur = (String) nameStack.pop();
-               fCur = (DataInputStream) fStack.pop();
+               fCur = (BufferedReader) fStack.pop();
             }
          } else {
             if (line.startsWith("#include")) {
@@ -137,7 +145,8 @@ public class JPP {
                   nameStack.push(nameCur);
                   nbStack.push(new Integer(nbCur));
                   
-                  fCur = new DataInputStream(new BufferedInputStream(new FileInputStream(fiName)));
+                  //fCur = new DataInputStream(new BufferedInputStream(new FileInputStream(fiName)));
+                  fCur=new BufferedReader(new InputStreamReader(new FileInputStream(fiName)));
                   nameCur = new String(fiName);
                   line = "# "+nbCur+" "+"\""+fiName+"\""+"      1";
                   nbCur = 0;
