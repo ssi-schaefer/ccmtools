@@ -1,9 +1,0 @@
-<%@ jet package="ccmtools.generator.java.templates" 
-	    class="ExceptionDefReasonConstructorTemplate" 
-		imports="ccmtools.generator.java.metamodel.* "	    
-%>
-<% ExceptionDef exception = (ExceptionDef) argument; %>
-    public <%=exception.getIdentifier()%>(String reason)    
-    {
-        super(REPOSITORY_ID + " " + reason);
-    }

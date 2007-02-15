@@ -1,7 +1,0 @@
-%(UsesName)sConnections&
-CCM_%(ComponentType)s_Context_impl::get_connections_%(Identifier)s()
-{
-    return component_local_adapter->get_connections_%(Identifier)s();
-}
-
-

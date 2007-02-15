@@ -1,7 +1,0 @@
-    virtual const %(LocalAttributeType)s %(Identifier)s() const
-        throw(::Components::CCMException);
-
-    virtual void %(Identifier)s(const %(LocalAttributeType)s value)
-        throw(::Components::CCMException);
-
-

@@ -1,6 +1,0 @@
-<%@ jet package="ccmtools.generator.java.templates" 
-	    class="ConstantDefDeclarationTemplate" 
-		imports="ccmtools.generator.java.metamodel.* "	    
-%>
-<% ConstantDef constant = (ConstantDef) argument;  %>
-    final public static <%=constant.getType().generateJavaMapping()%> <%=constant.getIdentifier()%> = (<%=constant.getType().generateJavaMapping()%>) <%=constant.generateJavaValue()%>;

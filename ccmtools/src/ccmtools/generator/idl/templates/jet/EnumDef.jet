@@ -1,9 +1,0 @@
-<%@ jet package="ccmtools.generator.idl.templates" 
-	    class="EnumDefTemplate" 
-		imports="ccmtools.generator.idl.metamodel.* "	    
-%>
-<% EnumDef model = (EnumDef) argument; %>
-<%=model.indent()%>enum <%=model.getIdentifier() %> 
-<%=model.indent()%>{
-<%=model.indent()%><%=model.generateMemberList()%>
-<%=model.indent()%>};

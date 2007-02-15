@@ -1,5 +1,0 @@
-    %(LanguageType)s 
-    %(Identifier)s(%(OperationParameterList)s) 
-    %(ExceptionThrows)s;
-
-

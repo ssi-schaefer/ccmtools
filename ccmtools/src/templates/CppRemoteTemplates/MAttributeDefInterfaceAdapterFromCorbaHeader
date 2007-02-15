@@ -1,7 +1,0 @@
-      virtual %(CORBAAttributeResult)s %(Identifier)s()
-          throw(CORBA::SystemException);
-
-      virtual void %(Identifier)s(const %(CORBAAttributeParameter)s value)
-          throw(CORBA::SystemException);
-
-

@@ -1,8 +1,0 @@
-#ifndef __INTERFACE_ABSTRACT__IDL__
-#define __INTERFACE_ABSTRACT__IDL__
-
-abstract interface InterfaceAbstract
-{
-};
-
-#endif // __INTERFACE_ABSTRACT__IDL__

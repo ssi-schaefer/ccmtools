@@ -1,5 +1,0 @@
-    %(ProvidesType)s::SmartPtr %(Identifier)s_facet;
-    %(CCMProvidesType)s* %(Identifier)s_facet_impl;
-    
-
-

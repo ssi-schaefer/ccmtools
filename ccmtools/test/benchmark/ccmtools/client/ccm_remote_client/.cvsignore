@@ -1,9 +1,0 @@
-Makefile.am
-Makefile.in
-acinclude.m4
-aclocal.m4
-autom4te.cache
-ccm_remote_client.repo
-config.h.in
-configure
-configure.in

@@ -1,9 +1,0 @@
-
-
-typedef long LongArray[10];
-
-typedef LongArray ArrayArray[10];
-
-typedef LongArray ArrayMatrix[10][20];
-
-typedef LongArray ArrayCube[10][20][30];

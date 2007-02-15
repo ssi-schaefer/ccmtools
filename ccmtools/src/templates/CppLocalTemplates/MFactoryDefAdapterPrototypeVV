@@ -1,3 +1,0 @@
-    virtual %(ComponentType)s::SmartPtr %(Identifier)s(%(MParameterDefAll)s)
-        throw(::Components::CCMException, ::Components::CreateFailure) = 0;
-

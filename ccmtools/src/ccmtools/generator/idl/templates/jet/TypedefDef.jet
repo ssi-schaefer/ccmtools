@@ -1,6 +1,0 @@
-<%@ jet package="ccmtools.generator.idl.templates" 
-	    class="TypedefDefTemplate" 
-		imports="ccmtools.generator.idl.metamodel.* "	    
-%>
-<% TypedefDef model = (TypedefDef) argument; %>
-<%=model.indent()%>typedef <%=model.getAlias().generateIdlMapping()%> <%=model.getIdentifier()%>; 

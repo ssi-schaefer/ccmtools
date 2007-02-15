@@ -1,2 +1,0 @@
-PACKAGE_NAME('ccm_server')
-PACKAGE_VERSION('1.0.0')

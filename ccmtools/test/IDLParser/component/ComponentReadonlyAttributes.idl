@@ -1,9 +1,0 @@
-#ifndef __COMPONENT_READONLY_ATTRIBUTE__IDL__
-#define __COMPONENT_READONLY_ATTRIBUTE__IDL__
-
-component ComponentAttributeBasicTypes
-{
-	readonly attribute short shortValue;
-};
-
-#endif // __COMPONENT_READONLY_ATTRIBUTE__IDL__

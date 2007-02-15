@@ -1,6 +1,0 @@
-    virtual 
-    %(LanguageType)s 
-    %(Identifier)s(%(OperationParameterList)s) 
-    %(ExceptionThrows)s = 0;
-
-

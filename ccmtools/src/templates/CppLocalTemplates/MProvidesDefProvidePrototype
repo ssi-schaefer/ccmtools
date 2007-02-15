@@ -1,5 +1,0 @@
-    // Equivalent operations for facet %(Identifier)s
-
-    %(ProvidesType)s::SmartPtr provide_%(Identifier)s();
-
-

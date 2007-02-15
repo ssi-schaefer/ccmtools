@@ -1,7 +1,0 @@
-#ifndef __BOXED_VALUETYPE_TEST__IDL__
-#define __BOXED_VALUETYPE_TEST__IDL__
-
-valuetype LongSequence sequence<long>;
-
-
-#endif // __BOXED_VALUETYPE_TEST__IDL__

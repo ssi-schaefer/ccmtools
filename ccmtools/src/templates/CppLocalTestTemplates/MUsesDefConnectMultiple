@@ -1,6 +1,0 @@
-        %(ComponentType)s_ck_%(Identifier)s_0 = 
-            my%(ComponentType)s->connect("%(Identifier)s", %(ComponentType)s_uses_%(Identifier)s0);
-        %(ComponentType)s_ck_%(Identifier)s_1 = 
-            my%(ComponentType)s->connect("%(Identifier)s", %(ComponentType)s_uses_%(Identifier)s1);
-        %(ComponentType)s_ck_%(Identifier)s_2 = 
-            my%(ComponentType)s->connect("%(Identifier)s", %(ComponentType)s_uses_%(Identifier)s2);

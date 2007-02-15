@@ -1,2 +1,0 @@
-        my%(ComponentType)sMirror->disconnect("%(Identifier)s", %(ComponentType)s_ck_%(Identifier)s);
-

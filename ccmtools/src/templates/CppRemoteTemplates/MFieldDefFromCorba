@@ -1,2 +1,0 @@
-    %(CorbaConverterNamespace)sconvertFromCorba(in.%(CORBATypeIn)s, out.%(Identifier)s);
-

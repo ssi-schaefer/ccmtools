@@ -1,8 +1,0 @@
-#ifndef __EXCEPTION_EMPTY__IDL__
-#define __EXCEPTION_EMPTY__IDL__
-
-exception ExceptionEmpty
-{
-};
-
-#endif // __EXCEPTION_EMPTY__IDL__

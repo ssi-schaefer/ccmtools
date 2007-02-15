@@ -1,3 +1,0 @@
-    %(Identifier)s_facet = %(ProvidesType)s::SmartPtr();
-
-

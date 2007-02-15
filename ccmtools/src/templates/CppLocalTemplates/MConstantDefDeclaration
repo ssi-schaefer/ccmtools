@@ -1,7 +1,0 @@
-
-    static %(LanguageType)s %(Identifier)s() 
-    {
-        return %(ConstantValue)s
-    }
-    
-    

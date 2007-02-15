@@ -1,3 +1,0 @@
-      %(IdlUsesType)s_ptr get_connection_%(Identifier)s()
-      		throw(::ccmtools::corba::Components::NoConnection);
-

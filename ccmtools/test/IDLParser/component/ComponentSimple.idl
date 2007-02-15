@@ -1,9 +1,0 @@
-#ifndef __COMPONENT_SIMPLE__IDL__
-#define __COMPONENT_SIMPLE__IDL__
-
-component ComponentSimple
-{
-    attribute long Id;
-};
-
-#endif // __COMPONENT_SIMPLE__IDL__

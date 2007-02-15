@@ -1,2 +1,0 @@
-    virtual %(CCMUsesType)s::SmartPtr get_connection_%(Identifier)s() = 0;
-

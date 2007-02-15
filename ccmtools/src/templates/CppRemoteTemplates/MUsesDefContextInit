@@ -1,5 +1,0 @@
-  %(Identifier)s_adapter = CCM_Local::%(CCM_UsesType)s::SmartPtr(
-      dynamic_cast<CCM_Local::%(CCM_UsesType)s*>(
-         new %(Identifier)sReceptacleAdapter(component_adapter)));
-
-

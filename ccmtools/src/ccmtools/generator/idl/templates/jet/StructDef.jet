@@ -1,9 +1,0 @@
-<%@ jet package="ccmtools.generator.idl.templates" 
-	    class="StructDefTemplate" 
-		imports="ccmtools.generator.idl.metamodel.* "	    
-%>
-<% StructDef model = (StructDef) argument; %>
-<%=model.indent()%>struct <%=model.getIdentifier() %> 
-<%=model.indent()%>{
-<%=model.generateFieldList()%>
-<%=model.indent()%>};

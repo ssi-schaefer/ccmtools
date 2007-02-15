@@ -1,8 +1,0 @@
-#ifndef __EMPTY_INTERFACE__IDL__
-#define __EMPTY_INTERFACE__IDL__
-
-interface EmptyInterface
-{
-};
-
-#endif // __EMPTY_INTERFACE__IDL__

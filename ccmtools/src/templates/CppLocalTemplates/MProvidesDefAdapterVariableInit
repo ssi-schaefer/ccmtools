@@ -1,5 +1,0 @@
-    %(Identifier)s_facet_impl = local_component->get_%(Identifier)s();
-    %(Identifier)s_facet = %(ProvidesType)s::SmartPtr(
-        new %(GenProvidesType)sAdapter(%(Identifier)s_facet_impl));
-
-

@@ -1,5 +1,0 @@
-    if(name == "%(Identifier)s")
-        return ::Components::Object::SmartPtr
-            (dynamic_cast< ::Components::Object*> (provide_%(Identifier)s().ptr()));
-
-

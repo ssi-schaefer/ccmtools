@@ -1,8 +1,0 @@
-%(LanguageType)s
-%(Object)s_impl::%(Identifier)s(%(OperationParameterList)s)
-%(ExceptionThrows)s
-{
-    // TODO : IMPLEMENT ME HERE !
-}
-
-

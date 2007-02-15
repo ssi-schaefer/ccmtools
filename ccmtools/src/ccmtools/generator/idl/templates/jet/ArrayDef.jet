@@ -1,9 +1,0 @@
-<%@ jet package="ccmtools.generator.idl.templates" 
-	    class="ArrayDefTemplate" 
-		imports="ccmtools.generator.idl.metamodel.* "	    
-%>
-<% 
-	TypedefDef model = (TypedefDef) argument; 
-	ArrayDef array = (ArrayDef) model.getAlias();
-%>
-<%=model.indent()%>typedef <%=array.getElementType().generateIdlMapping()%> <%=model.getIdentifier()%><%=array.generateIdlMapping()%>; 

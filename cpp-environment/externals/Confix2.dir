@@ -1,4 +1,0 @@
-# -*- python -*-
-
-ADD_EXTRA_DIST('coco.in')
-ADD_EXTRA_DIST('coco2.in')

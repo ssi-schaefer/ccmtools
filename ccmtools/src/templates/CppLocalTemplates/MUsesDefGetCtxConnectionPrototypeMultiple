@@ -1,2 +1,0 @@
-    %(UsesName)sConnections& get_connections_%(Identifier)s();
-

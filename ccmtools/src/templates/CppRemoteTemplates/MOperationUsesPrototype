@@ -1,3 +1,0 @@
-      virtual %(LanguageType)s %(Identifier)s(%(ParameterDefLocal)s) 
-          throw(LocalComponents::CCMException %(LocalExceptions)s;
-

@@ -1,2 +1,0 @@
-      CCM_Local::%(CCM_UsesType)s::SmartPtr %(Identifier)s_adapter;
-

@@ -1,3 +1,0 @@
-    %(IdlProvidesType)s_var %(Identifier)s = my%(ComponentType)s->provide_%(Identifier)s();
-
-

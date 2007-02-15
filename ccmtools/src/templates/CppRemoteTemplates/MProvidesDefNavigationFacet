@@ -1,3 +1,0 @@
-    if(strcmp(name, "%(Identifier)s") == 0) {
-        return provide_%(Identifier)s();
-    }

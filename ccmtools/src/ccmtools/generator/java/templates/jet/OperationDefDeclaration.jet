@@ -1,7 +1,0 @@
-<%@ jet package="ccmtools.generator.java.templates" 
-	    class="OperationDefDeclarationTemplate" 
-		imports="ccmtools.generator.java.metamodel.* "	    
-%>
-<% OperationDef op = (OperationDef) argument;  %>
-    <%=op.generateReturnType()%> <%=op.getIdentifier()%> (<%=op.generateParameterDeclarationList()%>)     
-        <%=op.generateThrowsStatementLocal()%>;    

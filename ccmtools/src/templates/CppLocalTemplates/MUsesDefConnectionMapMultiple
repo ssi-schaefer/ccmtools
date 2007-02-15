@@ -1,6 +1,0 @@
-typedef std::map< ::Components::Cookie, 
-                  %(CCMUsesType)s::SmartPtr> %(Identifier)sConnections;
-
-
-
-

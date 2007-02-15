@@ -1,3 +1,0 @@
-    Components::Object::SmartPtr %(ComponentType)s_uses_%(Identifier)s0;
-    Components::Object::SmartPtr %(ComponentType)s_uses_%(Identifier)s1;
-    Components::Object::SmartPtr %(ComponentType)s_uses_%(Identifier)s2;

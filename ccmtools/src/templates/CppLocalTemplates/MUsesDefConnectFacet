@@ -1,8 +1,0 @@
-    if(name == "%(Identifier)s") 
-    {
-        connect_%(Identifier)s(%(CCMUsesType)s::SmartPtr(
-            dynamic_cast< %(CCMUsesType)s*> (connection.ptr())));
-        ::Components::Cookie ck;
-        return ck;
-    }
-
