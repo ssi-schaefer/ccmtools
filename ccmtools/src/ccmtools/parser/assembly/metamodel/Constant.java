@@ -25,6 +25,18 @@ public class Constant extends AssemblyElement
     {
         target_ = target;
         value_ = value;
+        if(target.getComponent()==null)
+            throw new RuntimeException("target must be an inner component");
+    }
+    
+    public Port getTarget()
+    {
+        return target_;
+    }
+    
+    public Value getValue()
+    {
+        return value_;
     }
 
     void postProcessing( Assembly parent, Map<String, Component> components )

@@ -25,6 +25,20 @@ public class Attribute extends AssemblyElement
     {
         target_ = target;
         source_ = source;
+        if(target.getComponent()==null)
+            throw new RuntimeException("target must be an inner component");
+        if(source.getComponent()!=null)
+            throw new RuntimeException("source must not be an inner component");
+    }
+    
+    public Port getTarget()
+    {
+        return target_;
+    }
+    
+    public String getSource()
+    {
+        return source_.getConnector();
     }
 
     void postProcessing( Assembly parent, Map<String, Component> components )

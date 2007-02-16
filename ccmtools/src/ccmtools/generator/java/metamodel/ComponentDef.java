@@ -331,14 +331,61 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
             if (e instanceof Connection)
             {
                 Connection c = (Connection) e;
+                Port target = c.getReceptacle();
+                if (target.getComponent() != null)
+                {
+                    StringBuffer code = new StringBuffer();
+                    code.append(TAB3);
+                    code.append(target.getComponent());
+                    code.append("_.connect_");
+                    code.append(target.getConnector());
+                    code.append("(");
+                    Port source = c.getFacet();
+                    if (source.getComponent() == null)
+                    {
+                        // connect an outer receptacle to the receptacle of an inner component
+                        code.append("ctx.get_connection_");
+                    }
+                    else
+                    {
+                        // connect facet and receptacle if inner components
+                        code.append(source.getComponent());
+                        code.append("_.provide_");
+                    }
+                    code.append(source.getConnector());
+                    code.append("());");
+                    list.add(code.toString());
+                }
             }
             else if (e instanceof Attribute)
             {
                 Attribute a = (Attribute) e;
+                Port target = a.getTarget();
+                String source = a.getSource();
+                StringBuffer code = new StringBuffer();
+                code.append(TAB3);
+                code.append(target.getComponent());
+                code.append("_.");
+                code.append(target.getConnector());
+                code.append("(this.");
+                code.append(source);
+                code.append("_);");
+                list.add(code.toString());
             }
             else if (e instanceof Constant)
             {
                 Constant c = (Constant) e;
+                Port target = c.getTarget();
+                String value = c.getValue().toString();
+                StringBuffer code = new StringBuffer();
+                code.append(TAB3);
+                code.append(target.getComponent());
+                code.append("_.");
+                code.append(target.getConnector());
+                code.append("(");
+                code.append(value);
+                code.append(");");
+                list.add(code.toString());
             }
         }
         return list.iterator();

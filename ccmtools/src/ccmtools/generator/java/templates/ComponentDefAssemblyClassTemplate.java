@@ -39,9 +39,9 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_22 = "    " + NL + "" + NL + "" + NL + "    /** Facet implementation factory methods */" + NL + "    ";
   protected final String TEXT_23 = NL;
   protected final String TEXT_24 = "    " + NL + "" + NL + "    /** Component callback methods */" + NL + "    " + NL + "    public void set_session_context(SessionContext ctx) " + NL + "        throws CCMException" + NL + "    {" + NL + "        this.ctx = (";
-  protected final String TEXT_25 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {";
+  protected final String TEXT_25 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {" + NL + "\t\t\t// create inner components    \t";
   protected final String TEXT_26 = NL;
-  protected final String TEXT_27 = " " + NL;
+  protected final String TEXT_27 = " " + NL + "" + NL + "\t\t\t// setup inner components    \t";
   protected final String TEXT_28 = NL;
   protected final String TEXT_29 = " " + NL + "" + NL + "\t\t\t// finish configuration    \t";
   protected final String TEXT_30 = NL + "\t\t\t";

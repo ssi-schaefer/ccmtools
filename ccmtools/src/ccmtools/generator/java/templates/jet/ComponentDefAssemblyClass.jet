@@ -150,6 +150,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
         throws CCMException
     {
     	try {
+			// create inner components    	
 <%
 for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
 {
@@ -159,6 +160,7 @@ for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
 }
 %> 
 
+			// setup inner components    	
 <%
 for(Iterator i=component.getAssemblyAttributeSetup(); i.hasNext();)
 {
