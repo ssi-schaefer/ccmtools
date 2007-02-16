@@ -31,6 +31,22 @@ public final class Port
         component_ = component;
         connector_ = connector;
     }
+    
+    /**
+     * returns the name of the inner component or null if this is a port of the outer component
+     */
+    public String getComponent()
+    {
+        return component_;
+    }
+    
+    /**
+     * returns the name of this facet or receptacle
+     */
+    public String getConnector()
+    {
+        return connector_;
+    }
 
     /**
      * external port (port of the assembly)

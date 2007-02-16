@@ -11,6 +11,7 @@ package ccmtools.parser.assembly.metamodel;
 
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
@@ -30,9 +31,14 @@ public class Assembly extends ModelElement
         opt_name_ = opt_name;
         elements_ = elements;
     }
+    
+    public List<AssemblyElement> getElements()
+    {
+        return elements_;
+    }
 
     private HashMap<String, Component> components_;
-    
+
     public Map<String, Component> getComponents()
     {
         return components_;
@@ -53,14 +59,14 @@ public class Assembly extends ModelElement
             elements_.get(i).postProcessing(this, components_);
         }
     }
-    
+
     private MComponentDef ccmComponent_;
-    
-    void updateCcmModel(MComponentDef component)
+
+    void updateCcmModel( MComponentDef component )
     {
         ccmComponent_ = component;
     }
-    
+
     public MComponentDef getCcmComponent()
     {
         return ccmComponent_;

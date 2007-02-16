@@ -3,11 +3,11 @@ package ccmtools.generator.java.metamodel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import ccmtools.generator.java.templates.OperationDefAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.OperationDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.OperationDefAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.OperationDefApplicationImplementationTemplate;
+import ccmtools.generator.java.templates.OperationDefAssemblyImplementationTemplate;
 import ccmtools.generator.java.templates.OperationDefCatchStatementConverterFromCorbaTemplate;
 import ccmtools.generator.java.templates.OperationDefCatchStatementConverterToCorbaTemplate;
 import ccmtools.generator.java.templates.OperationDefDeclarationTemplate;
@@ -202,7 +202,24 @@ public class OperationDef
 			return "return " + getType().generateJavaDefaultReturnValue() + ";";
 		}
 	}
+    
+    public String generateAssemblyImplementation()
+    {
+        return new OperationDefAssemblyImplementationTemplate().generate(this);
+    }
 	
+    public String generateAssemblyReturnStatement()
+    {
+        StringBuffer code = new StringBuffer();
+        if(!(getType() instanceof VoidType))
+            code.append("return ");
+        code.append("target.");
+        code.append(getIdentifier());
+        code.append("(");
+        code.append(generateParameterList());
+        code.append(");");
+        return code.toString();
+    }
 	
 
 	/*************************************************************************

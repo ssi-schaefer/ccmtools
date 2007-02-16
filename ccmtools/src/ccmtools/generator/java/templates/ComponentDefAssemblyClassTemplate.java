@@ -39,8 +39,15 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_22 = "    " + NL + "" + NL + "" + NL + "    /** Facet implementation factory methods */" + NL + "    ";
   protected final String TEXT_23 = NL;
   protected final String TEXT_24 = "    " + NL + "" + NL + "    /** Component callback methods */" + NL + "    " + NL + "    public void set_session_context(SessionContext ctx) " + NL + "        throws CCMException" + NL + "    {" + NL + "        this.ctx = (";
-  protected final String TEXT_25 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "}";
+  protected final String TEXT_25 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {";
   protected final String TEXT_26 = NL;
+  protected final String TEXT_27 = " " + NL;
+  protected final String TEXT_28 = NL;
+  protected final String TEXT_29 = " " + NL + "" + NL + "\t\t\t// finish configuration    \t";
+  protected final String TEXT_30 = NL + "\t\t\t";
+  protected final String TEXT_31 = "_.configuration_complete();";
+  protected final String TEXT_32 = " " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "}";
+  protected final String TEXT_33 = NL;
 
   public String generate(Object argument)
   {
@@ -147,14 +154,45 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     ProvidesDef provides = (ProvidesDef)i.next();
 
     stringBuffer.append(TEXT_23);
-    stringBuffer.append(provides.generateGetMethodImplementation());
+    stringBuffer.append(provides.generateGetMethodAssemblyImplementation(component.getInnerFacet(provides)));
     
 }
 
     stringBuffer.append(TEXT_24);
     stringBuffer.append(component.generateCcmIdentifier());
     stringBuffer.append(TEXT_25);
+    
+for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
+{
+
     stringBuffer.append(TEXT_26);
+    stringBuffer.append(i.next().toString());
+    
+}
+
+    stringBuffer.append(TEXT_27);
+    
+for(Iterator i=component.getAssemblyAttributeSetup(); i.hasNext();)
+{
+
+    stringBuffer.append(TEXT_28);
+    stringBuffer.append(i.next().toString());
+    
+}
+
+    stringBuffer.append(TEXT_29);
+    
+for (String key : component.getAssemblyLocalComponents().keySet())
+{
+
+    stringBuffer.append(TEXT_30);
+    stringBuffer.append(key);
+    stringBuffer.append(TEXT_31);
+    
+}
+
+    stringBuffer.append(TEXT_32);
+    stringBuffer.append(TEXT_33);
     return stringBuffer.toString();
   }
 }

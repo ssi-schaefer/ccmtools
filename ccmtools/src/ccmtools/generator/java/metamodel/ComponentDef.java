@@ -18,10 +18,16 @@ import ccmtools.generator.java.templates.ComponentDefContextClassTemplate;
 import ccmtools.generator.java.templates.ComponentDefContextInterfaceTemplate;
 import ccmtools.generator.java.templates.ComponentDefInterfaceTemplate;
 import ccmtools.parser.assembly.metamodel.Assembly;
+import ccmtools.parser.assembly.metamodel.AssemblyElement;
+import ccmtools.parser.assembly.metamodel.Attribute;
 import ccmtools.parser.assembly.metamodel.Component;
+import ccmtools.parser.assembly.metamodel.Connection;
+import ccmtools.parser.assembly.metamodel.Constant;
 import ccmtools.parser.assembly.metamodel.Model;
+import ccmtools.parser.assembly.metamodel.Port;
 import ccmtools.parser.idl.metamodel.CcmModelHelper;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -256,7 +262,7 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
 
     private HashMap<String, MComponentDef> assembly_local_components_;
 
-    Map<String, MComponentDef> getAssemblyLocalComponents()
+    public Map<String, MComponentDef> getAssemblyLocalComponents()
     {
         if (assembly_local_components_ == null)
         {
@@ -288,6 +294,78 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
             list.add(code);
         }
         return list.iterator();
+    }
+
+    public Iterator getAssemblyAttributeInitialisation()
+    {
+        ArrayList<String> list = new ArrayList<String>();
+        for (String key : getAssemblyLocalComponents().keySet())
+        {
+            MComponentDef comp_def = assembly_local_components_.get(key);
+            List homes = comp_def.getHomes();
+            if (homes.size() > 0)
+            {
+                // using first home
+                MHomeDef home = (MHomeDef) homes.get(0);
+                String hn = CcmModelHelper.getAbsoluteName(home, ".");
+                String code = TAB3 + key + "_ = ((" + hn + ")" + hn
+                        + "Deployment.create()).create();";
+                list.add(code);
+            }
+            else
+            {
+                // no home
+                String cn = CcmModelHelper.getAbsoluteName(comp_def, ".");
+                String code = TAB3 + key + "_ = new " + cn + "Adapter(new " + cn + "Impl());";
+                list.add(code);
+            }
+        }
+        return list.iterator();
+    }
+
+    public Iterator getAssemblyAttributeSetup()
+    {
+        ArrayList<String> list = new ArrayList<String>();
+        for (AssemblyElement e : assembly_.getElements())
+        {
+            if (e instanceof Connection)
+            {
+                Connection c = (Connection) e;
+            }
+            else if (e instanceof Attribute)
+            {
+                Attribute a = (Attribute) e;
+            }
+            else if (e instanceof Constant)
+            {
+                Constant c = (Constant) e;
+            }
+        }
+        return list.iterator();
+    }
+
+    public String getInnerFacet( ProvidesDef facet )
+    {
+        String name = facet.getIdentifier();
+        for (AssemblyElement e : assembly_.getElements())
+        {
+            if (e instanceof Connection)
+            {
+                Connection c = (Connection) e;
+                Port target = c.getReceptacle();
+                if (target.getComponent() == null && target.getConnector().equals(name))
+                {
+                    Port source = c.getFacet();
+                    if (source.getComponent() == null)
+                    {
+                        // special case: connect an outer facet to an outer receptacle
+                        return "ctx.get_connection_" + source.getConnector() + "()";
+                    }
+                    return source.getComponent() + "_.provide_" + source.getConnector() + "()";
+                }
+            }
+        }
+        throw new RuntimeException("facet \"" + name + "\" is not connected");
     }
 
     /***********************************************************************************************

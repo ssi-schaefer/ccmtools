@@ -133,7 +133,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 %>
-<%=provides.generateGetMethodImplementation()%>
+<%=provides.generateGetMethodAssemblyImplementation(component.getInnerFacet(provides))%>
 <%
 }
 %>    
@@ -149,7 +149,37 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     public void ccm_activate() 
         throws CCMException
     {
-        // OPTIONAL: IMPLEMENT ME HERE !
+    	try {
+<%
+for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
+{
+%>
+<%=i.next().toString()%>
+<%
+}
+%> 
+
+<%
+for(Iterator i=component.getAssemblyAttributeSetup(); i.hasNext();)
+{
+%>
+<%=i.next().toString()%>
+<%
+}
+%> 
+
+			// finish configuration    	
+<%
+for (String key : component.getAssemblyLocalComponents().keySet())
+{
+%>
+			<%=key%>_.configuration_complete();
+<%
+}
+%> 
+    	} catch(Exception e) {
+    		throw new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);
+    	}
     }
 
     public void ccm_passivate() 

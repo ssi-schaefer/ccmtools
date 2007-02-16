@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import ccmtools.generator.java.templates.ProvidesDefApplicationClassTemplate;
+import ccmtools.generator.java.templates.ProvidesDefAssemblyClassTemplate;
 import ccmtools.generator.java.templates.ProvidesDefEquivalentMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.ProvidesDefEquivalentMethodAdapterLocalTemplate;
 import ccmtools.generator.java.templates.ProvidesDefEquivalentMethodAdapterToCorbaTemplate;
+import ccmtools.generator.java.templates.ProvidesDefGetMethodAssemblyImplementationTemplate;
 import ccmtools.generator.java.templates.ProvidesDefGetMethodImplementationTemplate;
 import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.ProvidesDefNavigationMethodAdapterLocalTemplate;
@@ -116,6 +118,24 @@ public class ProvidesDef extends ModelElement implements JavaApplicationGenerato
         return new ProvidesDefApplicationClassTemplate().generate(this);
     }
 
+    public String generateAssemblyClass()
+    {
+        return new ProvidesDefAssemblyClassTemplate().generate(this);
+    }
+
+    public String generateGetMethodAssemblyImplementation(String inner_facet)
+    {
+        inner_facet_ = inner_facet;
+        return new ProvidesDefGetMethodAssemblyImplementationTemplate().generate(this);
+    }
+    
+    private String inner_facet_;
+    
+    public String getAssemblyFacet()
+    {
+        return inner_facet_;
+    }
+
     // Generate SourceFile objects --------------------------------------------
     public List<SourceFile> generateApplicationSourceFiles()
     {
@@ -134,7 +154,11 @@ public class ProvidesDef extends ModelElement implements JavaApplicationGenerato
         List<SourceFile> sourceFileList = new ArrayList<SourceFile>();
         if (assembly != null)
         {
-            // TODO
+            String localPackageName = Text.joinList(File.separator, getJavaNamespaceList());
+            String facetName = getComponent().getIdentifier() + getIdentifier();
+            SourceFile applicationClass = new SourceFile(localPackageName, facetName + "Impl.java",
+                    generateAssemblyClass());
+            sourceFileList.add(applicationClass);
         }
         return sourceFileList;
     }

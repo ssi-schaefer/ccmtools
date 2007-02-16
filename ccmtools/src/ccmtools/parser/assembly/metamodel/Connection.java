@@ -27,15 +27,30 @@ public class Connection extends AssemblyElement
         receptacle_ = receptacle;
     }
 
+    public Port getFacet()
+    {
+        return facet_;
+    }
+
+    public Port getReceptacle()
+    {
+        return receptacle_;
+    }
+
     void postProcessing( Assembly parent, Map<String, Component> components )
     {
         parent_ = parent;
         facet_.postProcessing(components);
         receptacle_.postProcessing(components);
     }
+    
+    public String toString()
+    {
+        return "connect " + facet_ + " to " + receptacle_;
+    }
 
     public void prettyPrint( PrintStream out, String offset )
     {
-        out.println(offset + "connect " + facet_ + " to " + receptacle_ + " ;");
+        out.println(offset + toString() + " ;");
     }
 }
