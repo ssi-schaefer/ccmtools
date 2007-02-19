@@ -66,7 +66,7 @@ public final class Main
             }
             catch (Exception e)
             {
-                throw new RuntimeException("problem with: " + f, e);
+                throw new RuntimeException("file \""+f+"\": "+e.getMessage());
             }
         }
         return result;
