@@ -87,10 +87,13 @@ public class C3Impl
     /** Facet implementation factory methods */
 
 
+    private wamas.C3i1Impl i1_;
+
     public wamas.Test.CCM_I1 get_i1()
     {
-        // connect comp1.i1 to this.i1;
-        return new wamas.C3i1Impl(this, comp1_.provide_i1());
+        if(i1_==null)
+            i1_ = new wamas.C3i1Impl(this);
+        return i1_;
     }
 
 
@@ -121,6 +124,10 @@ public class C3Impl
 
             // connect comp2.i2 to comp1.i2;
             comp1_.connect_i2(comp2_.provide_i2());
+
+            // connect comp1.i1 to this.i1;
+            if(i1_!=null)
+                i1_.target = comp1_.provide_i1();
 
             // connect this.i3 to comp2.i3;
             comp2_.connect_i3(ctx.get_connection_i3());

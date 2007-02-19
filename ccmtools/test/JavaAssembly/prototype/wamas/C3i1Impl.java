@@ -31,19 +31,18 @@ public class C3i1Impl
     /** Reference to the facet's component implementation */
     private C3Impl component;
 
-    public C3i1Impl(C3Impl component, wamas.Test.I1 target)
+    // connect comp1.i1 to this.i1;
+    wamas.Test.I1 target;
+
+    public C3i1Impl(C3Impl component)
     {
         this.component = component;
-        this.target = target;
     }
 
 
 
     /** Business logic implementations */
 
-
-    // connect comp1.i1 to this.i1;
-    private wamas.Test.I1 target;
 
     public String value()
         throws CCMException
