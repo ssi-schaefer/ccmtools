@@ -58,8 +58,7 @@ QualifiedName = {GlobalName} | {ScopedName}
 GlobalName = "::" {Identifier}
 ScopedName = "::"? {Identifier} "::" {Identifier} ("::" {Identifier})*
 
-OctDigit        = [0-7]
-StringCharacter = [^\r\n\"\\]
+StringCharacter = [^\r\n\"]
 
 Number = {DecInteger} | {HexInteger} | {Double}
 DecInteger = ("+" | "-")? {Digit}+
@@ -126,20 +125,5 @@ Double4 = ({Double1} | {Double2}) ("e" | "E") {DecInteger}
 
   {StringCharacter}+             { string.append( yytext() ); }
 
-  /* escape sequences */
-  "\\b"                          { string.append( '\b' ); }
-  "\\t"                          { string.append( '\t' ); }
-  "\\n"                          { string.append( '\n' ); }
-  "\\f"                          { string.append( '\f' ); }
-  "\\r"                          { string.append( '\r' ); }
-  "\\\""                         { string.append( '\"' ); }
-  "\\'"                          { string.append( '\'' ); }
-  "\\\\"                         { string.append( '\\' ); }
-  \\[0-3]?{OctDigit}?{OctDigit}  { char val = (char) Integer.parseInt(yytext().substring(1),8);
-                                           string.append( val ); }
-
-  /* error cases */
-  \\.                            { throw new RuntimeException("Illegal escape sequence \""
-                                                              +yytext()+"\""); }
   {LineTerminator}               { throw new RuntimeException("Unterminated string at end of line"); }
 }
