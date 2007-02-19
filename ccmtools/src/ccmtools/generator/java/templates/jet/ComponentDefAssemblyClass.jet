@@ -22,8 +22,6 @@ import Components.SessionContext;
 /**
  * This class implements component equivalent and supported interfaces
  * as well as component attributes.
- * Additionally, session component callback methods must be implemented.
- *
  */   
 public class <%=component.getIdentifier()%>Impl 
     implements <%=component.generateCcmIdentifier()%>
@@ -71,7 +69,6 @@ for(Iterator i=component.getAssemblyAttributeDeclarations(); i.hasNext();)
     
     public <%=component.getIdentifier()%>Impl()
     {
-        // OPTIONAL: IMPLEMENT ME HERE !
     }
 
 
@@ -133,7 +130,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 %>
-<%=provides.generateGetMethodAssemblyImplementation(component.getInnerFacet(provides))%>
+<%=provides.generateGetMethodAssemblyImplementation()%>
 <%
 }
 %>    

@@ -23,11 +23,11 @@ public class ProvidesDefAssemblyClassTemplate
   protected final String TEXT_6 = "   " + NL + "" + NL + "/** " + NL + " * This class implements a component facet's methods." + NL + " *" + NL + " */" + NL + "public class ";
   protected final String TEXT_7 = "Impl " + NL + "    implements ";
   protected final String TEXT_8 = NL + "{" + NL + "    /** Reference to the facet's component implementation */" + NL + "    private ";
-  protected final String TEXT_9 = "Impl component;" + NL + "    " + NL + "    /** the facet of the inner component we delegate to */" + NL + "    private ";
-  protected final String TEXT_10 = " target;" + NL + "" + NL + "    public ";
-  protected final String TEXT_11 = "Impl(" + NL + "    \t";
-  protected final String TEXT_12 = "Impl component," + NL + "    \t";
-  protected final String TEXT_13 = " target)" + NL + "    {" + NL + "        this.component = component;" + NL + "        this.target = target;" + NL + "    }" + NL;
+  protected final String TEXT_9 = "Impl component;" + NL + "    " + NL + "    /** the facet of the inner component we delegate to */";
+  protected final String TEXT_10 = NL + "    ";
+  protected final String TEXT_11 = " target;" + NL + "" + NL + "    public ";
+  protected final String TEXT_12 = "Impl(" + NL + "    \t";
+  protected final String TEXT_13 = "Impl component)" + NL + "    {" + NL + "        this.component = component;" + NL + "    }" + NL;
   protected final String TEXT_14 = "    " + NL + "// TODO: assembly implementation";
   protected final String TEXT_15 = NL;
   protected final String TEXT_16 = NL + "// TODO: assembly implementation";
@@ -70,14 +70,13 @@ InterfaceDef iface = provides.getInterface();
     stringBuffer.append(TEXT_8);
     stringBuffer.append(provides.getComponent().getIdentifier());
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(iface.generateAbsoluteJavaName());
     stringBuffer.append(TEXT_10);
-    stringBuffer.append(provides.getComponent().getIdentifier());
-    stringBuffer.append(provides.getIdentifier());
+    stringBuffer.append(iface.generateAbsoluteJavaName());
     stringBuffer.append(TEXT_11);
     stringBuffer.append(provides.getComponent().getIdentifier());
+    stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_12);
-    stringBuffer.append(iface.generateAbsoluteJavaName());
+    stringBuffer.append(provides.getComponent().getIdentifier());
     stringBuffer.append(TEXT_13);
     
 for(Iterator i=iface.getBaseInterfaces().iterator(); i.hasNext();)

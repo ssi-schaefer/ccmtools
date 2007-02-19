@@ -29,14 +29,12 @@ public class <%=provides.getComponent().getIdentifier()%><%=provides.getIdentifi
     private <%=provides.getComponent().getIdentifier()%>Impl component;
     
     /** the facet of the inner component we delegate to */
-    private <%=iface.generateAbsoluteJavaName()%> target;
+    <%=iface.generateAbsoluteJavaName()%> target;
 
     public <%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(
-    	<%=provides.getComponent().getIdentifier()%>Impl component,
-    	<%=iface.generateAbsoluteJavaName()%> target)
+    	<%=provides.getComponent().getIdentifier()%>Impl component)
     {
         this.component = component;
-        this.target = target;
     }
 
 <%

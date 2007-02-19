@@ -20,7 +20,7 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_3 = " component business logic." + NL + " *" + NL + " */" + NL + "" + NL + "package ";
   protected final String TEXT_4 = ";" + NL + "   " + NL + "import Components.CCMException;     " + NL + "import Components.CCMExceptionReason;" + NL + "import Components.SessionContext; " + NL;
   protected final String TEXT_5 = NL;
-  protected final String TEXT_6 = "  " + NL + "   " + NL + "/**" + NL + " * This class implements component equivalent and supported interfaces" + NL + " * as well as component attributes." + NL + " * Additionally, session component callback methods must be implemented." + NL + " *" + NL + " */   " + NL + "public class ";
+  protected final String TEXT_6 = "  " + NL + "   " + NL + "/**" + NL + " * This class implements component equivalent and supported interfaces" + NL + " * as well as component attributes." + NL + " */   " + NL + "public class ";
   protected final String TEXT_7 = "Impl " + NL + "    implements ";
   protected final String TEXT_8 = NL + "{" + NL + "    /** Supported interface attribute variables */" + NL;
   protected final String TEXT_9 = NL;
@@ -30,7 +30,7 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_13 = NL;
   protected final String TEXT_14 = " " + NL + "" + NL + "    public ";
   protected final String TEXT_15 = "_Context ctx;" + NL + "    " + NL + "    " + NL + "    public ";
-  protected final String TEXT_16 = "Impl()" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
+  protected final String TEXT_16 = "Impl()" + NL + "    {" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
   protected final String TEXT_17 = NL;
   protected final String TEXT_18 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */" + NL + "    ";
   protected final String TEXT_19 = NL;
@@ -154,7 +154,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     ProvidesDef provides = (ProvidesDef)i.next();
 
     stringBuffer.append(TEXT_23);
-    stringBuffer.append(provides.generateGetMethodAssemblyImplementation(component.getInnerFacet(provides)));
+    stringBuffer.append(provides.generateGetMethodAssemblyImplementation());
     
 }
 

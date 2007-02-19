@@ -6,7 +6,11 @@
     ProvidesDef provides = (ProvidesDef) argument;
 %>
 
+	private <%=provides.generateJavaNamespace()%>.<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl <%=provides.getIdentifier()%>_;
+
     public <%=provides.getInterface().generateAbsoluteJavaCcmName()%> get_<%=provides.getIdentifier()%>()
     {
-        return new <%=provides.generateJavaNamespace()%>.<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(this, <%=provides.getAssemblyFacet()%>);
+    	if(<%=provides.getIdentifier()%>_==null)
+    		<%=provides.getIdentifier()%>_ = new <%=provides.generateJavaNamespace()%>.<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(this);
+    	return <%=provides.getIdentifier()%>_;
     }

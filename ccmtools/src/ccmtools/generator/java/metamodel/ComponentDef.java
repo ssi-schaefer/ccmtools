@@ -331,31 +331,46 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
             if (e instanceof Connection)
             {
                 Connection c = (Connection) e;
+                StringBuffer code = new StringBuffer();
+                String code_tail;
                 Port target = c.getReceptacle();
-                if (target.getComponent() != null)
+                String target_name=target.getConnector();
+                if(target.getComponent()==null)
                 {
-                    StringBuffer code = new StringBuffer();
+                    // connect to an outer facet
+                    String check=TAB3+"if("+target_name+"_!=null)";
+                    list.add(check);
+                    code.append(TAB4);
+                    code.append(target_name);
+                    code.append("_.target = ");
+                    code_tail = ";";
+                }
+                else
+                {
+                    // connect to the receptacle of an inner component
                     code.append(TAB3);
                     code.append(target.getComponent());
                     code.append("_.connect_");
-                    code.append(target.getConnector());
+                    code.append(target_name);
                     code.append("(");
-                    Port source = c.getFacet();
-                    if (source.getComponent() == null)
-                    {
-                        // connect an outer receptacle to the receptacle of an inner component
-                        code.append("ctx.get_connection_");
-                    }
-                    else
-                    {
-                        // connect facet and receptacle if inner components
-                        code.append(source.getComponent());
-                        code.append("_.provide_");
-                    }
-                    code.append(source.getConnector());
-                    code.append("());");
-                    list.add(code.toString());
+                    code_tail = ");";
                 }
+                Port source = c.getFacet();
+                if (source.getComponent() == null)
+                {
+                    // connect from an outer receptacle
+                    code.append("ctx.get_connection_");
+                }
+                else
+                {
+                    // connect from the facet of an inner component
+                    code.append(source.getComponent());
+                    code.append("_.provide_");
+                }
+                code.append(source.getConnector());
+                code.append("()");
+                code.append(code_tail);
+                list.add(code.toString());
             }
             else if (e instanceof Attribute)
             {
@@ -391,29 +406,6 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
         return list.iterator();
     }
 
-    public String getInnerFacet( ProvidesDef facet )
-    {
-        String name = facet.getIdentifier();
-        for (AssemblyElement e : assembly_.getElements())
-        {
-            if (e instanceof Connection)
-            {
-                Connection c = (Connection) e;
-                Port target = c.getReceptacle();
-                if (target.getComponent() == null && target.getConnector().equals(name))
-                {
-                    Port source = c.getFacet();
-                    if (source.getComponent() == null)
-                    {
-                        // special case: connect an outer facet to an outer receptacle
-                        return "ctx.get_connection_" + source.getConnector() + "()";
-                    }
-                    return source.getComponent() + "_.provide_" + source.getConnector() + "()";
-                }
-            }
-        }
-        throw new RuntimeException("facet \"" + name + "\" is not connected");
-    }
 
     /***********************************************************************************************
      * Client Library Generator Methods

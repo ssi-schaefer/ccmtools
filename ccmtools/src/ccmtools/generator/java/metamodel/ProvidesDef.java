@@ -123,17 +123,9 @@ public class ProvidesDef extends ModelElement implements JavaApplicationGenerato
         return new ProvidesDefAssemblyClassTemplate().generate(this);
     }
 
-    public String generateGetMethodAssemblyImplementation(String inner_facet)
+    public String generateGetMethodAssemblyImplementation()
     {
-        inner_facet_ = inner_facet;
         return new ProvidesDefGetMethodAssemblyImplementationTemplate().generate(this);
-    }
-    
-    private String inner_facet_;
-    
-    public String getAssemblyFacet()
-    {
-        return inner_facet_;
     }
 
     // Generate SourceFile objects --------------------------------------------
