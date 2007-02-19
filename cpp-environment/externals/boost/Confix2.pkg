@@ -1,4 +1,0 @@
-# -*- python -*-
-
-PACKAGE_NAME('boost')
-PACKAGE_VERSION('1.2.10.p1')

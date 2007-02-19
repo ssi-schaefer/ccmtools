@@ -1,7 +1,0 @@
-build
-dist
-.classpath
-.project
-src-gen
-.settings
-build-ant

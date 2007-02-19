@@ -1,2 +1,0 @@
-ADD_EXTRA_DIST('coco2.in')
-ADD_EXTRA_DIST('Confix2.pkg')
