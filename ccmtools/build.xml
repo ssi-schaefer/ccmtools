@@ -101,7 +101,7 @@
 
 	<!-- Compile ccmtools source code -->
 
-	<target name="compile.ccmtools" depends="generate.IDL3Parser, generate.IdlScanner, generate.IdlParser"
+	<target name="compile.ccmtools" depends="generate.IDL3Parser, generate.IdlScanner, generate.IdlParser, generate.AssemblyLexer, generate.AssemblyParser"
      	description="Compile the ccmtools package." >
       	<javac srcdir="${src}/ccmtools:${src-gen}" destdir="${build}/classes"
       		  	debug="on" source="1.5" target="1.5" verbose="off">

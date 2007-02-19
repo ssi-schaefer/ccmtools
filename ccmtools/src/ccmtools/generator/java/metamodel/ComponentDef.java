@@ -3,6 +3,7 @@ package ccmtools.generator.java.metamodel;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -325,6 +326,7 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
 
     public Iterator getAssemblyAttributeSetup()
     {
+        HashSet<String> outer_facets = new HashSet<String>();
         ArrayList<String> list = new ArrayList<String>();
         for (AssemblyElement e : assembly_.getElements())
         {
@@ -334,16 +336,17 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
                 StringBuffer code = new StringBuffer();
                 String code_tail;
                 Port target = c.getReceptacle();
-                String target_name=target.getConnector();
-                if(target.getComponent()==null)
+                String target_name = target.getConnector();
+                if (target.getComponent() == null)
                 {
                     // connect to an outer facet
-                    String check=TAB3+"if("+target_name+"_!=null)";
+                    String check = TAB3 + "if(" + target_name + "_!=null)";
                     list.add(check);
                     code.append(TAB4);
                     code.append(target_name);
                     code.append("_.target = ");
                     code_tail = ";";
+                    outer_facets.add(target_name);
                 }
                 else
                 {
@@ -403,9 +406,17 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
                 list.add(code.toString());
             }
         }
+        for (ProvidesDef p : getFacet())
+        {
+            String name = p.getIdentifier();
+            if (!outer_facets.contains(name))
+            {
+                throw new RuntimeException("facet " + name
+                        + " is not connected to an inner component");
+            }
+        }
         return list.iterator();
     }
-
 
     /***********************************************************************************************
      * Client Library Generator Methods
