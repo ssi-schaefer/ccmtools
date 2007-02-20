@@ -897,33 +897,8 @@ public class CppLocalGenerator
                 // don't add blank output files. this lets us discard parts of
                 // the templates that we don't want to output (see the component
                 // section of the getOutputFiles function)
-                if(file_name.equals(""))
-                    continue;
-
-                File outFile = new File(output_dir + File.separator + file_dir, file_name);
-                if((file_dir == implDirectory) && outFile.isFile()) 
-                {
-                    if(outFile.getName().endsWith("_entry.h")) 
-                    {
-                        // *_entry.h files must be overwritten by every generator
-                        // call because they are part of the component logic
-                        writeFinalizedFile(file_dir, file_name, generated_code);
-                    }
-                    else if(!isCodeEqualWithFile(generated_code, outFile)) 
-                    {
-                        uiDriver.printMessage("WARNING: " + outFile + " already exists!");
-                        file_name += ".new";
-                        outFile = new File(output_dir + File.separator + file_dir, file_name);
-                    }
-                }
-                if(isCodeEqualWithFile(generated_code, outFile)) 
-                {
-                    uiDriver.printMessage("Skipping " + outFile);
-                }
-                else 
-                {
-                    writeFinalizedFile(file_dir, file_name, generated_code);
-                }
+                if(file_name.length()>0)
+                    writeSourceFile(implDirectory, generated_code, file_dir, file_name);
             }
             
             Confix.writeConfix2Files(uiDriver, OutputDirectories);
@@ -934,6 +909,35 @@ public class CppLocalGenerator
             uiDriver.printError("!!!Error " + e.getMessage());
         }
         logger.fine("leave writeOutput()");
+    }
+    
+    protected void writeSourceFile( String implDirectory, String generated_code, String file_dir,
+            String file_name ) throws IOException
+    {
+        File outFile = new File(output_dir + File.separator + file_dir, file_name);
+        if ((file_dir == implDirectory) && outFile.isFile())
+        {
+            if (outFile.getName().endsWith("_entry.h"))
+            {
+                // *_entry.h files must be overwritten by every generator
+                // call because they are part of the component logic
+                writeFinalizedFile(file_dir, file_name, generated_code);
+            }
+            else if (!isCodeEqualWithFile(generated_code, outFile))
+            {
+                uiDriver.printMessage("WARNING: " + outFile + " already exists!");
+                file_name += ".new";
+                outFile = new File(output_dir + File.separator + file_dir, file_name);
+            }
+        }
+        if (isCodeEqualWithFile(generated_code, outFile))
+        {
+            uiDriver.printMessage("Skipping " + outFile);
+        }
+        else
+        {
+            writeFinalizedFile(file_dir, file_name, generated_code);
+        }
     }
 
     

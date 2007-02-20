@@ -404,6 +404,7 @@ class CCM_%(Identifier)s_Context
 #define __COMPONENT_%(PreprocIdentifier)s_IMPL__H__
 
 #include <%(ComponentInclude)s_share.h>
+%(AssemblyInnerComponentInclude)s
 
 %(OpenNamespace)s
 
@@ -425,6 +426,7 @@ class %(Identifier)s_impl
   private:
 %(MAttributeDefVariable)s
 %(MSupportsDefVariable)s
+%(AssemblyInnerComponentVariable)s
 
   public:
     %(LocalNamespace)sCCM_%(Identifier)s_Context* ctx;
@@ -485,12 +487,12 @@ using namespace std;
 
 %(Identifier)s_impl::%(Identifier)s_impl()
 {
-    // OPTIONAL : IMPLEMENT ME HERE !
+%(AssemblyInnerComponentVariableCreation)s
 }
 
 %(Identifier)s_impl::~%(Identifier)s_impl()
 {
-    // OPTIONAL : IMPLEMENT ME HERE !
+%(AssemblyInnerComponentVariableDestruction)s
 }
 
 %(MAttributeDefImplDefinition)s

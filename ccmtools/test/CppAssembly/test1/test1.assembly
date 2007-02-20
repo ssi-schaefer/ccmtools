@@ -1,0 +1,20 @@
+module wamas {
+
+
+assembly A3 implements C3 {
+
+    component Test::C1 comp1;
+    component wamas::Test::C2 comp2;
+
+    connect comp2.i2 to comp1.i2;
+    connect comp1.i1 to this.i1;
+    connect i3 to comp2.i3;
+
+    constant comp1.a1 = "Hello World";
+    constant comp1.a2 = 642;
+
+    attribute comp2.b = this.b;
+};
+
+
+};  // /module wamas
