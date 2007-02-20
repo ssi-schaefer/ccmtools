@@ -930,6 +930,7 @@ public class CppLocalGenerator
         }
         catch(Exception e) 
         {
+            e.printStackTrace();
             uiDriver.printError("!!!Error " + e.getMessage());
         }
         logger.fine("leave writeOutput()");
@@ -1004,11 +1005,11 @@ public class CppLocalGenerator
             if((flags & FLAG_APPLICATION_FILES) != 0) {
                 f = new ArrayList();
                 f.add(implDirectory);
-                f.add(node_name + "_impl.h");
+                f.add(node_name + IMPL_SUFFIX_H);
                 files.add(f);
                 f = new ArrayList();
                 f.add(implDirectory);
-                f.add(node_name + "_impl.cc");
+                f.add(node_name + IMPL_SUFFIX_CC);
                 files.add(f);
             }
             else {
@@ -1054,11 +1055,11 @@ public class CppLocalGenerator
                 MComponentDef component = ((MProvidesDef) currentNode).getComponent();
                 f = new ArrayList();
                 f.add(implDirectory);
-                f.add(component.getIdentifier() + "_" + node_name + "_impl.h");
+                f.add(component.getIdentifier() + "_" + node_name + IMPL_SUFFIX_H);
                 files.add(f);
                 f = new ArrayList();
                 f.add(implDirectory);
-                f.add(component.getIdentifier() + "_" + node_name + "_impl.cc");
+                f.add(component.getIdentifier() + "_" + node_name + IMPL_SUFFIX_CC);
                 files.add(f);
             }
             else {
@@ -1081,6 +1082,9 @@ public class CppLocalGenerator
         logger.fine("leave getOutputFiles()");
         return files;
     }
+    
+    protected static final String IMPL_SUFFIX_H = "_impl.h";
+    protected static final String IMPL_SUFFIX_CC = "_impl.cc";
 
     protected String getCxxOutputDirectory(String component)
     {

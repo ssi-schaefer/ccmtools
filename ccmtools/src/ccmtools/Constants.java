@@ -50,13 +50,15 @@ public class Constants
        + "Available GENERATOR types:\n"
        + "  c++local        Generate local C++ components \n"
        + "  c++local-test   Generate local C++ test client\n"
+       + "  c++assembly     Generate local C++ assemblies \n"
 	   + "  c++dbc          Generate local C++ components with DbC (experimental)\n"
 	   + "  c++remote       Generate remote C++ components (for Mico ORB)";
 
     public static final String[] GENERATOR_TYPES = 
     {
-            "c++local", "c++local-test", "c++dbc", "c++remote",
-            "c++remote-test", "idl3", "idl3mirror", "idl2"
+            "c++local", "c++local-test", "c++dbc", "c++assembly",
+            "c++remote", "c++remote-test",
+            "idl3", "idl3mirror", "idl2"
     };
 }
 

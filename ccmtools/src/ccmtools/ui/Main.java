@@ -26,17 +26,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
-
 import ccmtools.CcmtoolsException;
 import ccmtools.Constants;
 import ccmtools.CodeGenerator.CcmGraphTraverser;
 import ccmtools.CodeGenerator.CodeGenerator;
 import ccmtools.CodeGenerator.GraphTraverser;
 import ccmtools.CodeGenerator.TemplateHandler;
+import ccmtools.CppGenerator.CppAssemblyGenerator;
 import ccmtools.CppGenerator.CppLocalGenerator;
 import ccmtools.CppGenerator.CppLocalTestGenerator;
 import ccmtools.CppGenerator.CppRemoteGenerator;
 import ccmtools.CppGenerator.CppRemoteTestGenerator;
+import ccmtools.parser.assembly.metamodel.Model;
 import ccmtools.parser.idl.metamodel.CcmModelHelper;
 import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
 import ccmtools.parser.idl3.ParserManager;
@@ -59,11 +60,15 @@ public class Main
     private static List<String> usedGeneratorTypes = null;
 
     private static String includePath;
-    private static List<String> filenames;
+    private static List<String> idl_filenames;
+    private static List<String> assembly_filenames;
     private static File outputDirectory = new File(System.getProperty("user.dir"));
     private static File baseOutputDirectory = new File(outputDirectory, "");
 
     private static int generateFlags = 0;
+    
+    // assembly model
+    private static Model assemblies;
 
     
     // Begin Hack!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
@@ -165,11 +170,12 @@ public class Main
                 traverser.addHandler(handler);
             }
 
-            MContainer ccmModel = null;
-            for(Iterator f = filenames.iterator(); f.hasNext();) 
+            for(Iterator f = idl_filenames.iterator(); f.hasNext();) 
             {
                 String fileName = (String)f.next();
-                ccmModel = CcmModelHelper.loadCcmModel(uiDriver, fileName, includePath); 
+                MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, fileName, includePath);
+                if(assemblies!=null)
+                    assemblies.updateCcmModel(ccmModel);
                 uiDriver.printMessage("traverse CCM model");
                 traverser.traverseGraph(ccmModel);
                 uiDriver.printMessage("done.");
@@ -265,6 +271,14 @@ public class Main
             {
                 handler = new CppLocalGenerator(driver, outputDirectory);
             }
+            else if(generatorType.equalsIgnoreCase("c++assembly")) 
+            {
+                if(assemblies==null)
+                {
+                    assemblies = ccmtools.parser.assembly.Main.parse(assembly_filenames);
+                }
+                handler = new CppAssemblyGenerator(driver, outputDirectory, assemblies);
+            }
             else if(generatorType.equalsIgnoreCase("c++local-test")) 
             {
                 handler = new CppLocalTestGenerator(driver, outputDirectory);
@@ -325,7 +339,8 @@ public class Main
         logger.fine("enter parseArgs()");
         usedGeneratorTypes = new ArrayList<String>();
         availableGeneratorTypes = new ArrayList<String>();
-        filenames = new ArrayList<String>();
+        idl_filenames = new ArrayList<String>();
+        assembly_filenames = new ArrayList<String>();
         includePath = "";
 
         for(int i = 0; i < Constants.GENERATOR_TYPES.length; i++) {
@@ -388,7 +403,13 @@ public class Main
                 usedGeneratorTypes.add(arg);
             }
             else {
-                filenames.add(arg);
+                String x = arg.toLowerCase();
+                if(x.endsWith(".idl"))
+                    idl_filenames.add(arg);
+                else if(x.endsWith(".assembly"))
+                    assembly_filenames.add(arg);
+                else
+                    throw new IllegalArgumentException("unknown file type: "+arg);
             }
         }
 
