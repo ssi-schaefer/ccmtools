@@ -27,7 +27,6 @@ import ccmtools.parser.assembly.metamodel.Constant;
 import ccmtools.parser.assembly.metamodel.Model;
 import ccmtools.parser.assembly.metamodel.Port;
 import ccmtools.parser.idl.metamodel.CcmModelHelper;
-import ccmtools.parser.idl.metamodel.BaseIDL.MContained;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.utils.SourceFile;
