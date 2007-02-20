@@ -46,8 +46,11 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_29 = " " + NL + "" + NL + "\t\t\t// finish configuration    \t";
   protected final String TEXT_30 = NL + "\t\t\t";
   protected final String TEXT_31 = "_.configuration_complete();";
-  protected final String TEXT_32 = " " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "}";
-  protected final String TEXT_33 = NL;
+  protected final String TEXT_32 = " " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // Who calls this method?" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {";
+  protected final String TEXT_33 = NL + "\t\t\t";
+  protected final String TEXT_34 = "_.remove();";
+  protected final String TEXT_35 = NL + "\t\t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.REMOVE_ERROR);" + NL + "\t\t} " + NL + "    }" + NL + "}";
+  protected final String TEXT_36 = NL;
 
   public String generate(Object argument)
   {
@@ -192,7 +195,18 @@ for (String key : component.getAssemblyLocalComponents().keySet())
 }
 
     stringBuffer.append(TEXT_32);
+    
+for (String key : component.getAssemblyLocalComponents().keySet())
+{
+
     stringBuffer.append(TEXT_33);
+    stringBuffer.append(key);
+    stringBuffer.append(TEXT_34);
+    
+}
+
+    stringBuffer.append(TEXT_35);
+    stringBuffer.append(TEXT_36);
     return stringBuffer.toString();
   }
 }
