@@ -132,6 +132,12 @@ public class Model
         updateCcmModel(ccmModel.getContentss(), elements_, "");
     }
 
+    public void updateCcmModels( List<MContainer> models )
+    {
+        for (MContainer ccmModel : models)
+            updateCcmModel(ccmModel);
+    }
+
     /**
      * searches for an assembly description
      * 

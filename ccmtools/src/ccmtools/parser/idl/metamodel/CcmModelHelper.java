@@ -113,7 +113,18 @@ public class CcmModelHelper
         }
         return ccmModel;
     }
-
+    
+    public static List<MContainer> loadCcmModels( UserInterfaceDriver uiDriver,
+            List<String> fileNames, String includePath ) throws CcmtoolsException
+    {
+        ArrayList<MContainer> result = new ArrayList<MContainer>();
+        for (String fileName : fileNames)
+        {
+            MContainer model = loadCcmModel(uiDriver, fileName, includePath);
+            result.add(model);
+        }
+        return result;
+    }
 
     /*
      * Handle IDL repository IDs

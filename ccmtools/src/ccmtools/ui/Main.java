@@ -169,13 +169,15 @@ public class Main
                 handlers.add(handler);
                 traverser.addHandler(handler);
             }
+            
+            List<MContainer> models = CcmModelHelper.loadCcmModels(uiDriver, idl_filenames,
+                includePath);
+            
+            if (assemblies != null)
+                assemblies.updateCcmModels(models);
 
-            for(Iterator f = idl_filenames.iterator(); f.hasNext();) 
+            for (MContainer ccmModel : models)
             {
-                String fileName = (String)f.next();
-                MContainer ccmModel = CcmModelHelper.loadCcmModel(uiDriver, fileName, includePath);
-                if(assemblies!=null)
-                    assemblies.updateCcmModel(ccmModel);
                 uiDriver.printMessage("traverse CCM model");
                 traverser.traverseGraph(ccmModel);
                 uiDriver.printMessage("done.");

@@ -3,8 +3,8 @@ package ccmtools.parser.idl;
 import java.io.File;
 import java.io.FileReader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
-
 import ccmtools.CcmtoolsException;
 import ccmtools.parser.cpp.CppManager;
 import ccmtools.parser.idl.metamodel.BaseIDL.MContainer;
@@ -47,7 +47,18 @@ public class ParserManager
             throw new CcmtoolsException(e.getMessage());
         }
     }
-
+    
+    public static List<MContainer> loadCcmModels( UserInterfaceDriver uiDriver,
+            List<String> idlFileNames, List<String> includePaths ) throws CcmtoolsException
+    {
+        ArrayList<MContainer> result = new ArrayList<MContainer>();
+        for (String idlFileName : idlFileNames)
+        {
+            MContainer model = loadCcmModel(uiDriver, idlFileName, includePaths);
+            result.add(model);
+        }
+        return result;
+    }
 
     public static MContainer parseIdlFile(UserInterfaceDriver uiDriver, String idlFileName)
         throws CcmtoolsException

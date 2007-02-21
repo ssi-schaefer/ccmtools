@@ -2,6 +2,7 @@ package ccmtools.generator.java;
 
 import java.io.FileNotFoundException;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -56,31 +57,29 @@ public class Main
 			if (parseCommandLineArgs(args, parameters))
 			{
 				parameters.validate();
-				setCcmtoolsProperties();
-				JavaComponentGenerator generator = new JavaComponentGenerator(parameters, uiDriver);
-                
-                Model assemblies = ccmtools.parser.assembly.Main.parse(parameters.getAssemblyFiles());
+                setCcmtoolsProperties();
+                JavaComponentGenerator generator = new JavaComponentGenerator(parameters, uiDriver);
+                Model assemblies = ccmtools.parser.assembly.Main.parse(parameters
+                        .getAssemblyFiles());
+                List<MContainer> models = ParserManager.loadCcmModels(uiDriver, parameters
+                        .getIdlFiles(), parameters.getIncludePaths());
+                assemblies.updateCcmModels(models);
+                for (MContainer ccmModel : models)
+                {
+                    // Transform CCM Model to Java Implementation Model
+                    GraphTraverser traverser = new CcmGraphTraverser();
+                    CcmToJavaModelMapper nodeHandler = new CcmToJavaModelMapper();
+                    traverser.addHandler(nodeHandler);
+                    traverser.traverseGraph(ccmModel);
 
-				for (Iterator i = parameters.getIdlFiles().iterator(); i.hasNext();)
-				{
-					String idlFile = (String) i.next();
-                    MContainer ccmModel = ParserManager.loadCcmModel(uiDriver, idlFile, parameters.getIncludePaths());
-                    assemblies.updateCcmModel(ccmModel);
+                    // Query the Java Implementation Model and generate all source
+                    // file objects for the Java Client Library
+                    ModelRepository javaModel = nodeHandler.getJavaModel();
 
-					// Transform CCM Model to Java Implementation Model
-					GraphTraverser traverser = new CcmGraphTraverser();
-					CcmToJavaModelMapper nodeHandler = new CcmToJavaModelMapper();
-					traverser.addHandler(nodeHandler);
-					traverser.traverseGraph(ccmModel);
-
-					// Query the Java Implementation Model and generate all source
-					// file objects for the Java Client Library
-					ModelRepository javaModel = nodeHandler.getJavaModel();
-
-					// Run the Java component generator which can handle all of
-					// the different generator flags (-iface, -local, -app, -clientlib, etc.)
-					generator.generate(javaModel, assemblies);
-				}
+                    // Run the Java component generator which can handle all of
+                    // the different generator flags (-iface, -local, -app, -clientlib, etc.)
+                    generator.generate(javaModel, assemblies);
+                }
 			}
 		}
 		catch (ParseException e)
