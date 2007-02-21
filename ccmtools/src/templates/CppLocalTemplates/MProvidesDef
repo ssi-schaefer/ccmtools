@@ -16,8 +16,12 @@
 class %(ComponentType)s_%(Identifier)s_impl
     : virtual public %(CCMProvidesType)s
 {
+  public:
+    friend class %(ComponentType)s_impl;
+  
   protected:
     %(ComponentType)s_impl* component;
+%(AssemblyTargetVariable)s
 %(MAttributeDefVariable)s
 
   public:

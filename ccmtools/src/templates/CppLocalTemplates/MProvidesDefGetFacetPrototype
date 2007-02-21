@@ -1,2 +1,5 @@
+private:
+    %(CCMProvidesType)s* %(Identifier)s_;
+public:
     virtual %(CCMProvidesType)s* get_%(Identifier)s();
 

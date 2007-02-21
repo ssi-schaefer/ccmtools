@@ -1002,7 +1002,7 @@ public class CppLocalGenerator
                 MHomeDef home = (MHomeDef)currentNode;    
                 f = new ArrayList();
                 f.add(implDirectory);
-                f.add(getLocalCxxIncludeName(home, Text.MANGLING_SEPARATOR) + "_entry.h");
+                f.add(getHomeEntryHeaderFile(home));
                 files.add(f);
             }
 
@@ -1085,6 +1085,11 @@ public class CppLocalGenerator
         }
         logger.fine("leave getOutputFiles()");
         return files;
+    }
+    
+    protected String getHomeEntryHeaderFile(MHomeDef home)
+    {
+        return getLocalCxxIncludeName(home, Text.MANGLING_SEPARATOR) + "_entry.h";
     }
     
     protected static final String IMPL_SUFFIX_H = "_impl.h";

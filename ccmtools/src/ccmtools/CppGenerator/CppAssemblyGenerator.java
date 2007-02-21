@@ -17,15 +17,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import ccmtools.CcmtoolsException;
+import ccmtools.generator.java.metamodel.ProvidesDef;
 import ccmtools.parser.assembly.metamodel.Assembly;
+import ccmtools.parser.assembly.metamodel.AssemblyElement;
+import ccmtools.parser.assembly.metamodel.Attribute;
 import ccmtools.parser.assembly.metamodel.Component;
+import ccmtools.parser.assembly.metamodel.Connection;
+import ccmtools.parser.assembly.metamodel.Constant;
 import ccmtools.parser.assembly.metamodel.Model;
+import ccmtools.parser.assembly.metamodel.Port;
 import ccmtools.parser.idl.metamodel.CcmModelHelper;
 import ccmtools.parser.idl.metamodel.BaseIDL.MContained;
+import ccmtools.parser.idl.metamodel.BaseIDL.MInterfaceDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MOperationDef;
+import ccmtools.parser.idl.metamodel.BaseIDL.MPrimitiveKind;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MProvidesDef;
 import ccmtools.ui.UserInterfaceDriver;
+import ccmtools.utils.Text;
 
 /**
  * local C++ assembly generator
@@ -126,6 +136,10 @@ public class CppAssemblyGenerator extends CppLocalGenerator
 
     protected static final String TAB = "    ";
 
+    protected static final String TAB2 = TAB + TAB;
+
+    protected static final String TAB3 = TAB2 + TAB;
+
     protected String data_MComponentDef( String data_type, String data_value )
     {
         if (data_type.equals("AssemblyInnerComponentVariable"))
@@ -136,13 +150,21 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         {
             return variable_AssemblyInnerComponentVariableCreation();
         }
-        if (data_type.equals("AssemblyInnerComponentVariableDestruction"))
-        {
-            return variable_AssemblyInnerComponentVariableDestruction();
-        }
         if (data_type.equals("AssemblyInnerComponentInclude"))
         {
             return variable_AssemblyInnerComponentInclude();
+        }
+        if (data_type.equals("AssemblyInnerHomeInclude"))
+        {
+            return variable_AssemblyInnerHomeInclude();
+        }
+        if (data_type.equals("AssemblyCcmActivate"))
+        {
+            return variable_AssemblyCcmActivate();
+        }
+        if (data_type.equals("AssemblyCcmRemove"))
+        {
+            return variable_AssemblyCcmRemove();
         }
         return super.data_MComponentDef(data_type, data_value);
     }
@@ -155,7 +177,7 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         {
             MComponentDef comp_def = map.get(key);
             String cpp_type = getLocalCxxName(comp_def, "::");
-            code.append(TAB + cpp_type + "* " + key + "_;\n");
+            code.append(TAB + cpp_type + "::SmartPtr " + key + "_;\n");
             for (Object o : comp_def.getFacets())
             {
                 MProvidesDef p = (MProvidesDef) o;
@@ -171,26 +193,35 @@ public class CppAssemblyGenerator extends CppLocalGenerator
 
     protected String variable_AssemblyInnerComponentVariableCreation()
     {
-        StringBuffer code = new StringBuffer();
+        StringBuffer code_homes = new StringBuffer();
+        StringBuffer code_creation = new StringBuffer();
+        HashMap<String, String> home_map = new HashMap<String, String>();
+        int counter = 0;
         Map<String, MComponentDef> map = getAssemblyLocalComponents();
         for (String key : map.keySet())
         {
             MComponentDef comp_def = map.get(key);
-            // TODO
-            code.append(TAB + key + "_ = 0; // TODO\n");
+            MHomeDef home = getHome(comp_def);
+            String home_type = getLocalCxxName(home, "::");
+            String home_var = home_map.get(home_type);
+            if (home_var == null)
+            {
+                home_var = "home" + counter;
+                ++counter;
+                home_map.put(home_type, home_var);
+                code_homes.append(TAB);
+                code_homes.append(home_type);
+                code_homes.append(" ");
+                code_homes.append(home_var);
+                code_homes.append(";\n");
+            }
+            code_creation.append(TAB);
+            code_creation.append(key);
+            code_creation.append("_ = ");
+            code_creation.append(home_var);
+            code_creation.append(".create();\n");
         }
-        return code.toString();
-    }
-
-    protected String variable_AssemblyInnerComponentVariableDestruction()
-    {
-        StringBuffer code = new StringBuffer();
-        Map<String, MComponentDef> map = getAssemblyLocalComponents();
-        for (String key : map.keySet())
-        {
-            code.append(TAB + "delete " + key + "_;\n");
-        }
-        return code.toString();
+        return code_homes.toString() + code_creation.toString();
     }
 
     protected String variable_AssemblyInnerComponentInclude()
@@ -204,9 +235,142 @@ public class CppAssemblyGenerator extends CppLocalGenerator
             String inc_name = getLocalCxxIncludeName(comp_def);
             if (!include_set.contains(inc_name))
             {
-                code.append("#include <" + inc_name + ".h>\n");
+                code.append("#include <" + inc_name + "_gen.h>\n");
                 include_set.add(inc_name);
             }
+        }
+        return code.toString();
+    }
+
+    protected String variable_AssemblyInnerHomeInclude()
+    {
+        HashSet<String> include_set = new HashSet<String>();
+        StringBuffer code = new StringBuffer();
+        Map<String, MComponentDef> map = getAssemblyLocalComponents();
+        for (String key : map.keySet())
+        {
+            MComponentDef comp_def = map.get(key);
+            MHomeDef home = getHome(comp_def);
+            String inc_name = getLocalCxxIncludeName(home);
+            if (!include_set.contains(inc_name))
+            {
+                code.append("#include <" + inc_name + "_gen.h>\n");
+                include_set.add(inc_name);
+            }
+        }
+        return code.toString();
+    }
+
+    protected String variable_AssemblyCcmActivate()
+    {
+        if (currentAssembly == null)
+            return "";
+        MComponentDef comp_def = (MComponentDef) currentNode;
+        StringBuilder activation_code = new StringBuilder();
+        HashSet<String> outer_facets = new HashSet<String>();
+        for (AssemblyElement e : currentAssembly.getElements())
+        {
+            if (e instanceof Connection)
+            {
+                Connection c = (Connection) e;
+                StringBuilder code = new StringBuilder();
+                String code_tail;
+                Port target = c.getReceptacle();
+                String target_name = target.getConnector();
+                if (target.getComponent() == null)
+                {
+                    // connect to an outer facet
+                    code.append(TAB2 + "if(" + target_name + "_) {\n");
+                    String real_type = comp_def.getIdentifier() + "_" + target_name + "_impl";
+                    code.append(TAB3 + real_type + "* facet = dynamic_cast<" + real_type + "*>("
+                            + target_name + "_);\n");
+                    code.append(TAB3 + "facet->target = ");
+                    code_tail = ";\n" + TAB2 + "}\n";
+                    outer_facets.add(target_name);
+                }
+                else
+                {
+                    // connect to the receptacle of an inner component
+                    code.append(TAB2);
+                    code.append(target.getComponent());
+                    code.append("_->connect_");
+                    code.append(target_name);
+                    code.append("(");
+                    code_tail = ");\n";
+                }
+                Port source = c.getFacet();
+                if (source.getComponent() == null)
+                {
+                    // connect from an outer receptacle
+                    code.append("ctx->get_connection_");
+                }
+                else
+                {
+                    // connect from the facet of an inner component
+                    code.append(source.getComponent());
+                    code.append("_->provide_");
+                }
+                code.append(source.getConnector());
+                code.append("()");
+                code.append(code_tail);
+                activation_code.append(code);
+            }
+            else if (e instanceof Attribute)
+            {
+                Attribute a = (Attribute) e;
+                Port target = a.getTarget();
+                String source = a.getSource();
+                StringBuilder code = new StringBuilder();
+                code.append(TAB2);
+                code.append(target.getComponent());
+                code.append("_->");
+                code.append(target.getConnector());
+                code.append("(this->");
+                code.append(source);
+                code.append("_);\n");
+                activation_code.append(code);
+            }
+            else if (e instanceof Constant)
+            {
+                Constant c = (Constant) e;
+                Port target = c.getTarget();
+                String value = c.getValue().toString();
+                StringBuilder code = new StringBuilder();
+                code.append(TAB2);
+                code.append(target.getComponent());
+                code.append("_->");
+                code.append(target.getConnector());
+                code.append("(");
+                code.append(value);
+                code.append(");\n");
+                activation_code.append(code);
+            }
+        }
+        for (Object o : comp_def.getFacets())
+        {
+            MProvidesDef p = (MProvidesDef) o;
+            String name = p.getIdentifier();
+            if (!outer_facets.contains(name))
+            {
+                throw new RuntimeException("facet " + name
+                        + " is not connected to an inner component");
+            }
+        }
+        Map<String, MComponentDef> map = getAssemblyLocalComponents();
+        for (String key : map.keySet())
+        {
+            activation_code.append(TAB2 + key + "_->configuration_complete();\n");
+        }
+        return activation_code.toString();
+    }
+
+    protected String variable_AssemblyCcmRemove()
+    {
+        StringBuilder code = new StringBuilder();
+        Map<String, MComponentDef> map = getAssemblyLocalComponents();
+        for (String key : map.keySet())
+        {
+            code.append(TAB2 + key + "_->remove();\n");
         }
         return code.toString();
     }
@@ -256,5 +420,56 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         {
             writeFinalizedFile(file_dir, file_name, generated_code);
         }
+    }
+
+    protected static MHomeDef getHome( MComponentDef comp )
+    {
+        MHomeDef result = null;
+        for (Object o : comp.getHomes())
+        {
+            if (result == null)
+                result = (MHomeDef) o;
+        }
+        if (result == null)
+            throw new RuntimeException("component \"" + comp.getIdentifier() + "\" has no home");
+        return result;
+    }
+
+    protected String data_MProvidesDef( String dataType, String dataValue )
+    {
+        if (dataType.equals("AssemblyTargetVariable"))
+        {
+            return variable_AssemblyTargetVariable();
+        }
+        return super.data_MProvidesDef(dataType, dataValue);
+    }
+
+    protected String variable_AssemblyTargetVariable()
+    {
+        MProvidesDef provides = (MProvidesDef) currentNode;
+        MInterfaceDef iface = provides.getProvides();
+        String iface_type = getLocalCxxName(iface, Text.SCOPE_SEPARATOR);
+        return TAB + iface_type + "::SmartPtr target;\n";
+    }
+
+    protected String generateOperationImpl( MProvidesDef provides, MOperationDef op )
+    {
+        StringBuilder code = new StringBuilder();
+        String return_type = getLanguageType(op);
+        code.append(return_type).append("\n");
+        code.append(provides.getComponent().getIdentifier()).append("_").append(
+            provides.getIdentifier());
+        code.append("_impl::").append(op.getIdentifier()).append("(");
+        code.append(getOperationParams(op)).append(")\n");
+        code.append("    ").append(getOperationExcepts(op)).append("\n");
+        code.append("{\n");
+        code.append(TAB);
+        if (!return_type.equals("void"))
+            code.append("return ");
+        code.append("this->target->").append(op.getIdentifier()).append("(");
+        code.append(getOperationParamNames(op));
+        code.append(");\n");
+        code.append("}\n\n");
+        return code.toString();
     }
 }

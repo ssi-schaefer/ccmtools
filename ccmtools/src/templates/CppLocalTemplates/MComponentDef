@@ -476,6 +476,7 @@ class %(Identifier)s_impl
 
 #include "%(Identifier)s_impl.h"
 %(MProvidesDefImplInclude)s
+%(AssemblyInnerHomeInclude)s
 
 %(OpenNamespace)s
 
@@ -487,12 +488,12 @@ using namespace std;
 
 %(Identifier)s_impl::%(Identifier)s_impl()
 {
+%(MProvidesDefGetFacetPointerInit)s
 %(AssemblyInnerComponentVariableCreation)s
 }
 
 %(Identifier)s_impl::~%(Identifier)s_impl()
 {
-%(AssemblyInnerComponentVariableDestruction)s
 }
 
 %(MAttributeDefImplDefinition)s
@@ -509,21 +510,29 @@ void
 %(Identifier)s_impl::ccm_activate()
     throw(Components::CCMException)
 {
-    // OPTIONAL : IMPLEMENT ME HERE !
+    try {
+%(AssemblyCcmActivate)s
+    } catch(...) {
+        throw Components::CCMException(Components::CREATE_ERROR);
+    }
 }
 
 void
 %(Identifier)s_impl::ccm_passivate()
     throw(Components::CCMException)
 {
-    // OPTIONAL : IMPLEMENT ME HERE !
+    // Who calls this method?
 }
 
 void
 %(Identifier)s_impl::ccm_remove()
     throw(Components::CCMException)
 {
-    // OPTIONAL : IMPLEMENT ME HERE !
+    try {
+%(AssemblyCcmRemove)s
+    } catch(...) {
+        throw Components::CCMException(Components::REMOVE_ERROR);
+    }
 }
 
 %(MProvidesDefGetFacetDefinition)s

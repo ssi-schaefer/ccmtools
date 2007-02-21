@@ -5,6 +5,7 @@ module wamas {
 
         interface I1 {
             string value();
+			void run(in long x);
         };
 
         interface I2 {
