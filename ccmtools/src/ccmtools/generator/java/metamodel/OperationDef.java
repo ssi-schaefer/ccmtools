@@ -213,7 +213,7 @@ public class OperationDef
         StringBuffer code = new StringBuffer();
         if(!(getType() instanceof VoidType))
             code.append("return ");
-        code.append("target.");
+        code.append("this.target.");
         code.append(getIdentifier());
         code.append("(");
         code.append(generateParameterList());
