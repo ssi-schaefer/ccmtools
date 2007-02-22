@@ -1,0 +1,29 @@
+#ifndef wamas_logger_IDL
+#define wamas_logger_IDL
+
+#include "io.idl"
+
+module wamas {
+module io {
+
+
+interface LoggerItf
+{
+    void print(in string message);
+};
+
+
+component OutputStreamLogger
+{
+    provides LoggerItf logger;
+    uses OutputStream stream;
+};
+
+
+home OutputStreamLoggerHome manages OutputStreamLogger {};
+
+
+}; // /module io
+}; // /module wamas
+
+#endif

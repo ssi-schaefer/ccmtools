@@ -1,0 +1,18 @@
+#include "logger.idl"
+#include "console.idl"
+
+module wamas {
+module helpers {
+
+
+component StdErrLogger
+{
+    provides wamas::io::LoggerItf logger;
+};
+
+
+home StdErrLoggerHome manages StdErrLogger {};
+
+
+}; // /module helpers
+}; // /module wamas

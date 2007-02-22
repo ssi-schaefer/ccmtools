@@ -1,0 +1,24 @@
+#ifndef wamas_console_IDL
+#define wamas_console_IDL
+
+#include "io.idl"
+
+module wamas {
+module system {
+
+
+component Console
+{
+    provides wamas::io::InputStream stdin;
+    provides wamas::io::OutputStream stdout;
+    provides wamas::io::OutputStream stderr;
+};
+
+
+home ConsoleHome manages Console {};
+
+
+}; // /module system
+}; // /module wamas
+
+#endif

@@ -1,0 +1,23 @@
+#ifndef wamas_io_IDL
+#define wamas_io_IDL
+
+module wamas {
+module io {
+
+
+interface InputStream
+{
+    char read();
+};
+
+
+interface OutputStream
+{
+    void write(in char c);
+};
+
+
+}; // /module io
+}; // /module wamas
+
+#endif
