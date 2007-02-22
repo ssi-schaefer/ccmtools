@@ -14,8 +14,12 @@ local: idl
 	ccmtools c++assembly -o gen/helpers stderr_logger.idl stderr_logger.assembly
 
 check: local
+	cp -p Console_stderr_impl.cc `find gen -name Console_stderr_impl.cc`
+	cp -p OutputStreamLogger_logger_impl.cc `find gen -name OutputStreamLogger_logger_impl.cc`
+	mkdir -p gen/bin
+	cp -p _check_main.cc gen/bin/_check_main.cc
 	ccmconfix -confix2 -o gen -pname "assembly-sample_logger" -pversion "0.0.1"
-	cd gen && confix2.py --bootstrap --configure --make
+	cd gen && confix2.py --bootstrap --configure --make --targets=check
 
 clean:
 	cd gen && confix2.py --make --targets=clean
