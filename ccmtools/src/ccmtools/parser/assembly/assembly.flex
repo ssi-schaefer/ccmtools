@@ -58,7 +58,7 @@ QualifiedName = {GlobalName} | {ScopedName}
 GlobalName = "::" {Identifier}
 ScopedName = "::"? {Identifier} "::" {Identifier} ("::" {Identifier})*
 
-StringCharacter = [^\r\n\"]
+StringCharacter = [^\r\n\"] | \\\"
 
 Number = {DecInteger} | {HexInteger} | {Double}
 DecInteger = ("+" | "-")? {Digit}+
@@ -120,10 +120,10 @@ Double4 = ({Double1} | {Double2}) ("e" | "E") {DecInteger}
 
 <STRING>
 {
+  {StringCharacter}+             { string.append( yytext() ); }
+
   "\""                           { yybegin(YYINITIAL);
                                    return symbol(sym.STRING, string.toString()); }
-
-  {StringCharacter}+             { string.append( yytext() ); }
 
   {LineTerminator}               { throw new RuntimeException("Unterminated string at end of line"); }
 }

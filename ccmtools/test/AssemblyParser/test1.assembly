@@ -10,7 +10,7 @@ assembly A3 implements C3 {
     connect comp1.i1 to this.i1;
     connect i3 to comp2.i3;
 
-    constant comp1.a1 = "Hello World";
+    constant comp1.a1 = "Hello \"World\"";
     constant comp1.a1 = 642;
 
     attribute comp2.b = this.b;
