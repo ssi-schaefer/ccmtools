@@ -8,11 +8,11 @@ model_element := module | assembly
 
 module := "module" NAME "{" (model_element)* "}" ";"
 
-assembly := "assembly" NAME "implements" QN "{" (assembly_element)* "}" ";"
+assembly := "assembly" (NAME)? "implements" NAME "{" (assembly_element)* "}" ";"
 
 assembly_element := component | connection | attribute | constant
 
-component := "component" QN NAME ";"
+component := "component" QN ("alias" STRING)? NAME ";"
 
 connection := "connect" port "to" port ";"
 
@@ -25,7 +25,9 @@ internal_port := NAME "." NAME
 
 attribute := "attribute" internal_port "=" external_port ";"
 
-constant := "constant" internal_port "=" TEXT ";"
+constant := "constant" internal_port "=" value ";"
+
+value := STRING | NUMBER
 
 
 QN := ("::")? NAME ("::" NAME)*

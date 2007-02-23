@@ -76,6 +76,7 @@ Double4 = ({Double1} | {Double2}) ("e" | "E") {DecInteger}
 <YYINITIAL>
 {
     /* reserved words */
+    "alias"         { return symbol(sym.ALIAS); }
     "assembly"      { return symbol(sym.ASSEMBLY); }
     "attribute"     { return symbol(sym.ATTRIBUTE); }
     "component"     { return symbol(sym.COMPONENT); }

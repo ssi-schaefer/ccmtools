@@ -4,7 +4,7 @@ module helpers {
 
 assembly implements StdErrLogger
 {
-    component wamas::system::Console console;
+    component wamas::system::Console alias "Console" console;
     component wamas::io::OutputStreamLogger os_logger;
 
     connect console.stderr to os_logger.stream;

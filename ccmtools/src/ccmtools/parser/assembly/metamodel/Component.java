@@ -17,19 +17,42 @@ import java.util.Map;
  */
 public class Component extends AssemblyElement
 {
+    /**
+     * qualified IDL name of the component
+     */
     private QualifiedName idl_name_;
 
+    /**
+     * name of the instance
+     */
     private String name_;
+
+    /**
+     * the component will be deployed under that name (or null if we have to instantiate the home
+     * directly)
+     */
+    private String alias_;
 
     public Component( QualifiedName idl_name, String name )
     {
+        this(idl_name, name, null);
+    }
+
+    public Component( QualifiedName idl_name, String name, String alias )
+    {
         idl_name_ = idl_name;
         name_ = name;
+        alias_ = alias;
     }
-    
+
     public QualifiedName getCcmName()
     {
         return idl_name_;
+    }
+    
+    public String getAlias()
+    {
+        return alias_;
     }
 
     void postProcessing( Assembly parent, Map<String, Component> components )
@@ -45,6 +68,19 @@ public class Component extends AssemblyElement
 
     public void prettyPrint( PrintStream out, String offset )
     {
-        out.println(offset + "component " + idl_name_ + " " + name_ + " ;");
+        StringBuilder text = new StringBuilder();
+        text.append(offset);
+        text.append("component ");
+        text.append(idl_name_);
+        if (alias_ != null)
+        {
+            text.append(" alias \"");
+            text.append(alias_);
+            text.append("\"");
+        }
+        text.append(" ");
+        text.append(name_);
+        text.append(" ;");
+        out.println(text.toString());
     }
 }

@@ -311,22 +311,37 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
         for (String key : getAssemblyLocalComponents().keySet())
         {
             MComponentDef comp_def = assembly_local_components_.get(key);
-            List homes = comp_def.getHomes();
-            if (homes.size() > 0)
+            String comp_alias = assembly_.getComponents().get(key).getAlias();
+            if (comp_alias != null)
             {
-                // using first home
-                MHomeDef home = (MHomeDef) homes.get(0);
-                String hn = CcmModelHelper.getAbsoluteName(home, ".");
-                String code = TAB3 + key + "_ = ((" + hn + ")" + hn
-                        + "Deployment.create()).create();";
-                list.add(code);
+                // calling home-finder
+                String cn = CcmModelHelper.getAbsoluteName(comp_def, ".");
+                StringBuilder code = new StringBuilder();
+                code.append(TAB3).append(key).append("_ = (").append(cn).append("Adapter)");
+                code.append("((Components.KeylessCCMHome)");
+                code.append("Components.HomeFinder.instance().find_home_by_name(\"");
+                code.append(comp_alias).append("\")).create_component();");
+                list.add(code.toString());
             }
             else
             {
-                // no home
-                String cn = CcmModelHelper.getAbsoluteName(comp_def, ".");
-                String code = TAB3 + key + "_ = new " + cn + "Adapter(new " + cn + "Impl());";
-                list.add(code);
+                List homes = comp_def.getHomes();
+                if (homes.size() > 0)
+                {
+                    // using first home
+                    MHomeDef home = (MHomeDef) homes.get(0);
+                    String hn = CcmModelHelper.getAbsoluteName(home, ".");
+                    String code = TAB3 + key + "_ = ((" + hn + ")" + hn
+                            + "Deployment.create()).create();";
+                    list.add(code);
+                }
+                else
+                {
+                    // no home
+                    String cn = CcmModelHelper.getAbsoluteName(comp_def, ".");
+                    String code = TAB3 + key + "_ = new " + cn + "Adapter(new " + cn + "Impl());";
+                    list.add(code);
+                }
             }
         }
         return list.iterator();

@@ -40,7 +40,7 @@ parser code
 :};
 
 
-terminal    ASSEMBLY, ATTRIBUTE;
+terminal    ALIAS, ASSEMBLY, ATTRIBUTE;
 terminal    COMPONENT, CONNECT, CONSTANT;
 terminal    IMPLEMENTS, MODULE, THIS, TO;
 terminal    SEMICOLON, DOT, LBRACE, RBRACE, EQUAL;
@@ -159,6 +159,11 @@ assembly_element
         COMPONENT qualified_name:v1 NAME:v2 SEMICOLON
         {:
             RESULT = new ccmtools.parser.assembly.metamodel.Component(v1, v2);
+        :}
+    |
+        COMPONENT qualified_name:v1 ALIAS STRING:v3 NAME:v2 SEMICOLON
+        {:
+            RESULT = new ccmtools.parser.assembly.metamodel.Component(v1, v2, v3);
         :}
     |
         CONNECT port:v1 TO port:v2 SEMICOLON
