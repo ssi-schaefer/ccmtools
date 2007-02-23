@@ -1,9 +1,11 @@
 all:
-	ccmjava -iface -local *.idl
-	ccmjava -assembly *.assembly *.idl
-	javac `find -name '*.java'`
-	rm `find -name '*.class'`
+	ccmjava -iface -local -app -o gen *.idl
+	ccmjava -assembly -o gen *.assembly *.idl
+	cp ConsolestderrImpl.java gen/wamas/system
+	cp OutputStreamLoggerloggerImpl.java gen/wamas/io
+	cp Main.java gen/wamas
+	cd gen && javac `find . -name '*.java'`
+	cd gen && java wamas.Main
 
-setup:
-	rm -rf wamas
-	ccmjava -app *.idl
+clean:
+	rm -rf gen
