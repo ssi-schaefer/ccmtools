@@ -6,12 +6,12 @@ This package uses Confix for all tasks related to building and installation.
 For the uninformed, please read the Confix documentation at
 http://confix.sf.net/. Then you will be informed ;-)
 
-Here is an example of a possible Confix profile (stored in ~/.confix):
+Here is an example of a possible Confix profile (stored in ~/.confix2/config):
 
 # The Confix profile for CCM Tools
 ccmtools_profile = {
-    'PREFIX': '/home/eteinik/install/ccmtools_install',
-    'BUILDROOT': '/home/eteinik/tmp/ccmtools_build',
+    'PREFIX': '/your/path/to/confix_install',
+    'BUILDROOT': '/your/path/to/confix_build',
     'ADVANCED': 'true',
     'USE_LIBTOOL': 'true',
     'CONFIX': {
@@ -20,16 +20,17 @@ ccmtools_profile = {
        'ENV': {
           'CC': 'gcc',
           'CXX': 'g++',      
-          'CFLAGS': "-g -O0 -Wall -DWXDEBUG",
-          'CXXFLAGS': "-g -O0 -Wall -DWXDEBUG",
+          'CFLAGS': "-g -O0 -Wall",
+          'CXXFLAGS': "-g -O0 -Wall",
        },
        'ARGS': [
-        '--with-mico=/opt/gcc-3.3.4/mico-2.3.11-debug/lib/mico-setup.sh'
+        '--with-mico=/your/path/to/mico/lib/mico-setup.sh'
         ]
     },
 }
 
 Note that you have to set your own paths for PREFIX, BUILDROOT and --with-mico.
+
 
 
 Install from source code:
@@ -39,31 +40,23 @@ For the informed, use the following :
 
    # Install the CCM Tolls runtime libraries
    # (be sure that you have already installed Mico - http://mico.org)
-   $ confix.py --packageroot=`pwd`/ccm --bootstrap --configure --make --targets=install
 
+   # Check out the source from CVS repository
+   $ cvs -d :pserver:anonymous@ccmtools.cvs.sf.net:/cvsroot/ccmtools co cpp-environment
+   # or for registered developers
+   $ cvs -d :ext:<username>@ccmtools.cvs.sf.net:/cvsroot/ccmtools co cpp-environment
+   
+   # Change to the cpp-environment directory      
+   $ cd cpp-environment
 
+   # 1. Install the externals package (Confix references to external libraries)
+   $ confix2.py --packageroot=`pwd`/externals --bootstrap --configure --make --targets=install
+   
+   # 2. Install the utils package
+   $ confix2.py --packageroot=`pwd`/utils --bootstrap --configure --make --targets=install
+      
+   # 3. Install the ccm-runtime package
+   $ confix2.py --packageroot=`pwd`/ccm --bootstrap --configure --make --targets=install
 
-Install CCM Tools runtime environment from dist files:
-------------------------------------------------------
-
-To establish a proper C++ runtime environment from dist files, you have to
-install three packages:
-
-a) wx-toolsbox-0.2.1.tar.bz2 
-     $ tar xvjf wx-toolsbox-0.2.1.tar.bz2
-     $ cd wx-toolsbox-0.2.1
-	 $ confix --packageroot=`pwd`/ccm --bootstrap --configure --make --targets="install"
-     $ make install
-
-b) wx-utils-1.2.0.tar.bz2 
-     $ tar xvjf wx-utils-1.2.0.tar.bz2
-     $ cd wx-utils-1.2.0
-	 $ confix --packageroot=`pwd`/ccm --bootstrap --configure --make --targets="install"
-     $ make install     
-  
-c) ccm-runtime-0.7.0.tar.gz 
-     $ tar xvzf ccm-runtime-0.7.0.tar.gz
-     $ cd ccm-runtime-0.7.0
-     $ confix --packageroot=`pwd`/ccm --bootstrap --configure --make --targets="install"
-     $ make install          
-
+   # That's it!
+   # Now, we are ready to generate and build C++ components.
