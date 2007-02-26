@@ -68,7 +68,21 @@ for(Iterator i=component.getAssemblyAttributeDeclarations(); i.hasNext();)
     
     
     public <%=component.getIdentifier()%>Impl()
+        throws CCMException
     {
+    	try {
+			// create inner components    	
+<%
+for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
+{
+%>
+<%=i.next().toString()%>
+<%
+}
+%> 
+    	} catch(Exception e) {
+    		throw new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);
+    	}
     }
 
 
@@ -147,16 +161,6 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
         throws CCMException
     {
     	try {
-			// create inner components    	
-<%
-for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
-{
-%>
-<%=i.next().toString()%>
-<%
-}
-%> 
-
 			// setup inner components    	
 <%
 for(Iterator i=component.getAssemblyAttributeSetup(); i.hasNext();)

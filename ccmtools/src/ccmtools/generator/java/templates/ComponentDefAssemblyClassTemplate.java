@@ -30,18 +30,18 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_13 = NL;
   protected final String TEXT_14 = " " + NL + "" + NL + "    public ";
   protected final String TEXT_15 = "_Context ctx;" + NL + "    " + NL + "    " + NL + "    public ";
-  protected final String TEXT_16 = "Impl()" + NL + "    {" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
+  protected final String TEXT_16 = "Impl()" + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {" + NL + "\t\t\t// create inner components    \t";
   protected final String TEXT_17 = NL;
-  protected final String TEXT_18 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */" + NL + "    ";
+  protected final String TEXT_18 = " " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
   protected final String TEXT_19 = NL;
-  protected final String TEXT_20 = "    " + NL + "" + NL + "" + NL + "    /** Component attribute accessor methods */" + NL;
+  protected final String TEXT_20 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */" + NL + "    ";
   protected final String TEXT_21 = NL;
-  protected final String TEXT_22 = "    " + NL + "" + NL + "" + NL + "    /** Facet implementation factory methods */" + NL + "    ";
+  protected final String TEXT_22 = "    " + NL + "" + NL + "" + NL + "    /** Component attribute accessor methods */" + NL;
   protected final String TEXT_23 = NL;
-  protected final String TEXT_24 = "    " + NL + "" + NL + "    /** Component callback methods */" + NL + "    " + NL + "    public void set_session_context(SessionContext ctx) " + NL + "        throws CCMException" + NL + "    {" + NL + "        this.ctx = (";
-  protected final String TEXT_25 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {" + NL + "\t\t\t// create inner components    \t";
-  protected final String TEXT_26 = NL;
-  protected final String TEXT_27 = " " + NL + "" + NL + "\t\t\t// setup inner components    \t";
+  protected final String TEXT_24 = "    " + NL + "" + NL + "" + NL + "    /** Facet implementation factory methods */" + NL + "    ";
+  protected final String TEXT_25 = NL;
+  protected final String TEXT_26 = "    " + NL + "" + NL + "    /** Component callback methods */" + NL + "    " + NL + "    public void set_session_context(SessionContext ctx) " + NL + "        throws CCMException" + NL + "    {" + NL + "        this.ctx = (";
+  protected final String TEXT_27 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {" + NL + "\t\t\t// setup inner components    \t";
   protected final String TEXT_28 = NL;
   protected final String TEXT_29 = " " + NL + "" + NL + "\t\t\t// finish configuration    \t";
   protected final String TEXT_30 = NL + "\t\t\t";
@@ -111,6 +111,16 @@ for(Iterator i=component.getAssemblyAttributeDeclarations(); i.hasNext();)
     stringBuffer.append(component.getIdentifier());
     stringBuffer.append(TEXT_16);
     
+for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
+{
+
+    stringBuffer.append(TEXT_17);
+    stringBuffer.append(i.next().toString());
+    
+}
+
+    stringBuffer.append(TEXT_18);
+    
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
@@ -118,13 +128,13 @@ for(Iterator i = component.getSupports().iterator(); i.hasNext();)
     {
     	AttributeDef attr = (AttributeDef)j.next();
 
-    stringBuffer.append(TEXT_17);
+    stringBuffer.append(TEXT_19);
     stringBuffer.append(attr.generateApplicationImplementation());
     
 	}
 }
 
-    stringBuffer.append(TEXT_18);
+    stringBuffer.append(TEXT_20);
     
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
@@ -133,46 +143,36 @@ for(Iterator i = component.getSupports().iterator(); i.hasNext();)
     {
     	OperationDef op = (OperationDef)j.next();
 
-    stringBuffer.append(TEXT_19);
+    stringBuffer.append(TEXT_21);
     stringBuffer.append(op.generateApplicationImplementation());
     
 	}
 }
 
-    stringBuffer.append(TEXT_20);
+    stringBuffer.append(TEXT_22);
     
 for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 
-    stringBuffer.append(TEXT_21);
+    stringBuffer.append(TEXT_23);
     stringBuffer.append(attr.generateApplicationImplementation());
     
 }
 
-    stringBuffer.append(TEXT_22);
+    stringBuffer.append(TEXT_24);
     
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 
-    stringBuffer.append(TEXT_23);
+    stringBuffer.append(TEXT_25);
     stringBuffer.append(provides.generateGetMethodAssemblyImplementation());
     
 }
 
-    stringBuffer.append(TEXT_24);
-    stringBuffer.append(component.generateCcmIdentifier());
-    stringBuffer.append(TEXT_25);
-    
-for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
-{
-
     stringBuffer.append(TEXT_26);
-    stringBuffer.append(i.next().toString());
-    
-}
-
+    stringBuffer.append(component.generateCcmIdentifier());
     stringBuffer.append(TEXT_27);
     
 for(Iterator i=component.getAssemblyAttributeSetup(); i.hasNext();)

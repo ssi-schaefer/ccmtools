@@ -68,6 +68,7 @@ for(Iterator i=component.getAttributes().iterator(); i.hasNext();)
     
     
     public <%=component.getIdentifier()%>Impl()
+        throws CCMException
     {
         // OPTIONAL: IMPLEMENT ME HERE !
     }

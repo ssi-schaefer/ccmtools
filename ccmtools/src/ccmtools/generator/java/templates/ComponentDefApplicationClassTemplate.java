@@ -28,7 +28,7 @@ public class ComponentDefApplicationClassTemplate
   protected final String TEXT_11 = NL;
   protected final String TEXT_12 = " " + NL + "" + NL + "    public ";
   protected final String TEXT_13 = "_Context ctx;" + NL + "    " + NL + "    " + NL + "    public ";
-  protected final String TEXT_14 = "Impl()" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
+  protected final String TEXT_14 = "Impl()" + NL + "        throws CCMException" + NL + "    {" + NL + "        // OPTIONAL: IMPLEMENT ME HERE !" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
   protected final String TEXT_15 = NL;
   protected final String TEXT_16 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */" + NL + "    ";
   protected final String TEXT_17 = NL;
