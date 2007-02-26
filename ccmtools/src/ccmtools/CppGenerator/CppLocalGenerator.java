@@ -363,6 +363,10 @@ public class CppLocalGenerator
         {
             dataValue = getLocalCxxNamespace(iface, "::") + "CCM_" + iface.getIdentifier();
         }
+        else if(dataType.equals("InterfaceName")) 
+        {
+            dataValue = getLocalCxxNamespace(iface, "::") + iface.getIdentifier();
+        }
         else 
         {
             dataValue = super.data_MInterfaceDef(dataType, dataValue);

@@ -68,7 +68,7 @@ class CCM_%(Identifier)s
 //==============================================================================
 
 class %(Identifier)sAdapter
-  : virtual public %(InterfaceCCMName)s
+  : virtual public %(InterfaceName)s
 {
  public:
     %(Identifier)sAdapter();
