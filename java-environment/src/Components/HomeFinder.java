@@ -44,7 +44,7 @@ public class HomeFinder
         }
         else 
         {
-            throw new HomeNotFound();
+            throw new HomeNotFound(name);
         }
     }
     
