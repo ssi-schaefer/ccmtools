@@ -25,7 +25,7 @@ internal_port := NAME "." NAME
 
 attribute := "attribute" internal_port "=" external_port ";"
 
-constant := "constant" internal_port "=" value ";"
+constant := ("constant" | "const") internal_port "=" value ";"
 
 value := STRING | NUMBER
 

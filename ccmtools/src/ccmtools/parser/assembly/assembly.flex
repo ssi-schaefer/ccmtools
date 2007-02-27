@@ -86,6 +86,9 @@ Double4 = ({Double1} | {Double2}) ("e" | "E") {DecInteger}
     "module"        { return symbol(sym.MODULE); }
     "this"          { return symbol(sym.THIS); }
     "to"            { return symbol(sym.TO); }
+    
+    /* aliases */
+    "const"         { return symbol(sym.CONSTANT); }
 
     /* operators and separators */
     ";"             { return symbol(sym.SEMICOLON); }
