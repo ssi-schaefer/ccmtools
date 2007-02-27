@@ -308,6 +308,7 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
     public Iterator getAssemblyAttributeInitialisation()
     {
         ArrayList<String> list = new ArrayList<String>();
+        list.add(TAB3 + "// create inner components");
         for (String key : getAssemblyLocalComponents().keySet())
         {
             MComponentDef comp_def = assembly_local_components_.get(key);
@@ -342,6 +343,25 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
                     String code = TAB3 + key + "_ = new " + cn + "Adapter(new " + cn + "Impl());";
                     list.add(code);
                 }
+            }
+        }
+        list.add("\n" + TAB3 + "// set constant attributes");
+        for (AssemblyElement e : assembly_.getElements())
+        {
+            if (e instanceof Constant)
+            {
+                Constant c = (Constant) e;
+                Port target = c.getTarget();
+                String value = c.getValue().toString();
+                StringBuffer code = new StringBuffer();
+                code.append(TAB3);
+                code.append(target.getComponent());
+                code.append("_.");
+                code.append(target.getConnector());
+                code.append("(");
+                code.append(value);
+                code.append(");");
+                list.add(code.toString());
             }
         }
         return list.iterator();
@@ -401,21 +421,6 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
                 code.append("_);");
                 list.add(code.toString());
             }
-            else if (e instanceof Constant)
-            {
-                Constant c = (Constant) e;
-                Port target = c.getTarget();
-                String value = c.getValue().toString();
-                StringBuffer code = new StringBuffer();
-                code.append(TAB3);
-                code.append(target.getComponent());
-                code.append("_.");
-                code.append(target.getConnector());
-                code.append("(");
-                code.append(value);
-                code.append(");");
-                list.add(code.toString());
-            }
         }
         for (ProvidesDef p : getFacet())
         {
@@ -427,6 +432,40 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
             }
         }
         return list.iterator();
+    }
+
+    public List<String> getAssemblyAttributeTarget( String source )
+    {
+        ArrayList<String> list = new ArrayList<String>();
+        boolean empty = true;
+        for (AssemblyElement e : assembly_.getElements())
+        {
+            if (e instanceof Attribute)
+            {
+                Attribute a = (Attribute) e;
+                if (a.getSource().equals(source))
+                {
+                    Port target = a.getTarget();
+                    StringBuilder code = new StringBuilder();
+                    code.append(TAB3);
+                    code.append(target.getComponent());
+                    code.append("_.");
+                    code.append(target.getConnector());
+                    code.append("(this.");
+                    code.append(source);
+                    code.append("_);");
+                    if (empty)
+                    {
+                        list.add(TAB2 + "if(ccm_activate_ok) {");
+                        empty = false;
+                    }
+                    list.add(code.toString());
+                }
+            }
+        }
+        if (!empty)
+            list.add(TAB2 + "}");
+        return list;
     }
 
     private static String getFacetValue( Port source )

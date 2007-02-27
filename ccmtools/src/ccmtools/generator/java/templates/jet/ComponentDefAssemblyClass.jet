@@ -73,7 +73,6 @@ for(Iterator i=component.getAssemblyAttributeDeclarations(); i.hasNext();)
         throws CCMException
     {
     	try {
-			// create inner components    	
 <%
 for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
 {
@@ -133,7 +132,7 @@ for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 %>
-<%=attr.generateApplicationImplementation()%>
+<%=attr.generateAssemblyImplementation(component.getAssemblyAttributeTarget(attr.getIdentifier()))%>
 <%
 }
 %>    

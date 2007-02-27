@@ -1,11 +1,12 @@
 package ccmtools.generator.java.metamodel;
 
+import java.util.List;
 import java.util.Set;
-
 import ccmtools.generator.java.templates.AttributeDefAdapterFromCorbaTemplate;
 import ccmtools.generator.java.templates.AttributeDefAdapterLocalTemplate;
 import ccmtools.generator.java.templates.AttributeDefAdapterToCorbaTemplate;
 import ccmtools.generator.java.templates.AttributeDefApplicationImplementationTemplate;
+import ccmtools.generator.java.templates.AttributeDefAssemblyImplementationTemplate;
 import ccmtools.generator.java.templates.AttributeDefDeclarationTemplate;
 
 
@@ -85,6 +86,14 @@ public class AttributeDef
 	{
 		return new AttributeDefApplicationImplementationTemplate().generate(this);
 	}
+    
+    public String generateAssemblyImplementation(List<String> assembly_extra_code)
+    {
+        this.assembly_extra_code = assembly_extra_code;
+        return new AttributeDefAssemblyImplementationTemplate().generate(this);
+    }
+    
+    public List<String> assembly_extra_code;
 	
 	
 	/*************************************************************************

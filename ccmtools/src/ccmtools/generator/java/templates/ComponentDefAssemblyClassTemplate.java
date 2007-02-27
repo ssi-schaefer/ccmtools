@@ -30,7 +30,7 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_13 = NL;
   protected final String TEXT_14 = " " + NL + "" + NL + "    public ";
   protected final String TEXT_15 = "_Context ctx;" + NL + "    " + NL + "    private boolean ccm_activate_ok;" + NL + "" + NL + "    " + NL + "    public ";
-  protected final String TEXT_16 = "Impl()" + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {" + NL + "\t\t\t// create inner components    \t";
+  protected final String TEXT_16 = "Impl()" + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {";
   protected final String TEXT_17 = NL;
   protected final String TEXT_18 = " " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
   protected final String TEXT_19 = NL;
@@ -156,7 +156,7 @@ for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
     AttributeDef attr = (AttributeDef)i.next();
 
     stringBuffer.append(TEXT_23);
-    stringBuffer.append(attr.generateApplicationImplementation());
+    stringBuffer.append(attr.generateAssemblyImplementation(component.getAssemblyAttributeTarget(attr.getIdentifier())));
     
 }
 
