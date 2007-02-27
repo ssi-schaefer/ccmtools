@@ -427,6 +427,7 @@ class %(Identifier)s_impl
 %(MAttributeDefVariable)s
 %(MSupportsDefVariable)s
 %(AssemblyInnerComponentVariable)s
+    bool ccm_activate_ok;
 
   public:
     %(LocalNamespace)sCCM_%(Identifier)s_Context* ctx;
@@ -487,6 +488,7 @@ using namespace std;
 //==============================================================================
 
 %(Identifier)s_impl::%(Identifier)s_impl()
+: ccm_activate_ok(false)
 {
 %(MProvidesDefGetFacetPointerInit)s
 %(AssemblyInnerComponentVariableCreation)s
@@ -515,6 +517,7 @@ void
     } catch(...) {
         throw Components::CCMException(Components::CREATE_ERROR);
     }
+    ccm_activate_ok = true;
 }
 
 void

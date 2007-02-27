@@ -10,6 +10,7 @@ void
   throw(::Components::CCMException)
 {
     %(Identifier)s_ = value;
+%(AssemblyAttributeSetterCode)s
 }
 
 
