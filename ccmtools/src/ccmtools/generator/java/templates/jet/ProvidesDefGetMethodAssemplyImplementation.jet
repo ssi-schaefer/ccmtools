@@ -10,7 +10,6 @@
 
     public <%=provides.getInterface().generateAbsoluteJavaCcmName()%> get_<%=provides.getIdentifier()%>()
     {
-    	if(<%=provides.getIdentifier()%>_==null)
-    		<%=provides.getIdentifier()%>_ = new <%=provides.generateJavaNamespace()%>.<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(this);
+    	<%=provides.getIdentifier()%>_ = new <%=provides.generateJavaNamespace()%>.<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(this);
     	return <%=provides.getIdentifier()%>_;
     }

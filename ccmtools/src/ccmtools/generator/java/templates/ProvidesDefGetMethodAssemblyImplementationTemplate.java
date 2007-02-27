@@ -19,13 +19,12 @@ public class ProvidesDefGetMethodAssemblyImplementationTemplate
   protected final String TEXT_3 = "Impl ";
   protected final String TEXT_4 = "_;" + NL + "" + NL + "    public ";
   protected final String TEXT_5 = " get_";
-  protected final String TEXT_6 = "()" + NL + "    {" + NL + "    \tif(";
-  protected final String TEXT_7 = "_==null)" + NL + "    \t\t";
-  protected final String TEXT_8 = "_ = new ";
-  protected final String TEXT_9 = ".";
-  protected final String TEXT_10 = "Impl(this);" + NL + "    \treturn ";
-  protected final String TEXT_11 = "_;" + NL + "    }";
-  protected final String TEXT_12 = NL;
+  protected final String TEXT_6 = "()" + NL + "    {" + NL + "    \t";
+  protected final String TEXT_7 = "_ = new ";
+  protected final String TEXT_8 = ".";
+  protected final String TEXT_9 = "Impl(this);" + NL + "    \treturn ";
+  protected final String TEXT_10 = "_;" + NL + "    }";
+  protected final String TEXT_11 = NL;
 
   public String generate(Object argument)
   {
@@ -47,16 +46,14 @@ public class ProvidesDefGetMethodAssemblyImplementationTemplate
     stringBuffer.append(TEXT_6);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_7);
-    stringBuffer.append(provides.getIdentifier());
-    stringBuffer.append(TEXT_8);
     stringBuffer.append(provides.generateJavaNamespace());
-    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_8);
     stringBuffer.append(provides.getComponent().getIdentifier());
     stringBuffer.append(provides.getIdentifier());
-    stringBuffer.append(TEXT_10);
+    stringBuffer.append(TEXT_9);
     stringBuffer.append(provides.getIdentifier());
+    stringBuffer.append(TEXT_10);
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(TEXT_12);
     return stringBuffer.toString();
   }
 }
