@@ -5,3 +5,6 @@ all:
 	javac `find -name '*.java'`
 	java wamas.Main
 	rm `find -name '*.class'`
+
+clean:
+	rm -rf wamas
