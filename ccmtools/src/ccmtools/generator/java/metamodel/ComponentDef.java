@@ -382,19 +382,7 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
                     code_tail = ");";
                 }
                 Port source = c.getFacet();
-                if (source.getComponent() == null)
-                {
-                    // connect from an outer receptacle
-                    code.append("ctx.get_connection_");
-                }
-                else
-                {
-                    // connect from the facet of an inner component
-                    code.append(source.getComponent());
-                    code.append("_.provide_");
-                }
-                code.append(source.getConnector());
-                code.append("()");
+                code.append(getFacetValue(source));
                 code.append(code_tail);
                 list.add(code.toString());
             }
@@ -439,6 +427,44 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
             }
         }
         return list.iterator();
+    }
+
+    private static String getFacetValue( Port source )
+    {
+        StringBuilder code = new StringBuilder();
+        if (source.getComponent() == null)
+        {
+            // connect from an outer receptacle
+            code.append("ctx.get_connection_");
+        }
+        else
+        {
+            // connect from the facet of an inner component
+            code.append(source.getComponent());
+            code.append("_.provide_");
+        }
+        code.append(source.getConnector());
+        code.append("()");
+        return code.toString();
+    }
+
+    public String getAssemblyInitFacetTargetValue( ProvidesDef provides )
+    {
+        String name = provides.getIdentifier();
+        for (AssemblyElement e : assembly_.getElements())
+        {
+            if (e instanceof Connection)
+            {
+                Connection c = (Connection) e;
+                Port target = c.getReceptacle();
+                if (target.getComponent() == null && target.getConnector().equals(name))
+                {
+                    Port source = c.getFacet();
+                    return getFacetValue(source);
+                }
+            }
+        }
+        throw new RuntimeException("facet " + name + " is not connected to an inner component");
     }
 
     /***********************************************************************************************

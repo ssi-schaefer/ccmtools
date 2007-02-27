@@ -29,7 +29,7 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_12 = " " + NL + "    ";
   protected final String TEXT_13 = NL;
   protected final String TEXT_14 = " " + NL + "" + NL + "    public ";
-  protected final String TEXT_15 = "_Context ctx;" + NL + "    " + NL + "    " + NL + "    public ";
+  protected final String TEXT_15 = "_Context ctx;" + NL + "    " + NL + "    private boolean ccm_activate_ok;" + NL + "" + NL + "    " + NL + "    public ";
   protected final String TEXT_16 = "Impl()" + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {" + NL + "\t\t\t// create inner components    \t";
   protected final String TEXT_17 = NL;
   protected final String TEXT_18 = " " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
@@ -46,7 +46,7 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_29 = " " + NL + "" + NL + "\t\t\t// finish configuration    \t";
   protected final String TEXT_30 = NL + "\t\t\t";
   protected final String TEXT_31 = "_.configuration_complete();";
-  protected final String TEXT_32 = " " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // Who calls this method?" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {";
+  protected final String TEXT_32 = NL + NL + "\t\t\tccm_activate_ok = true; " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws CCMException" + NL + "    {" + NL + "        // Who calls this method?" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws CCMException" + NL + "    {" + NL + "    \ttry {";
   protected final String TEXT_33 = NL + "\t\t\t";
   protected final String TEXT_34 = "_.remove();";
   protected final String TEXT_35 = NL + "\t\t} catch(Exception e) {" + NL + "    \t\tthrow new CCMException(e.getMessage(), CCMExceptionReason.REMOVE_ERROR);" + NL + "\t\t} " + NL + "    }" + NL + "}";

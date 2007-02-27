@@ -22,9 +22,11 @@ public class ProvidesDefGetMethodAssemblyImplementationTemplate
   protected final String TEXT_6 = "()" + NL + "    {" + NL + "    \t";
   protected final String TEXT_7 = "_ = new ";
   protected final String TEXT_8 = ".";
-  protected final String TEXT_9 = "Impl(this);" + NL + "    \treturn ";
-  protected final String TEXT_10 = "_;" + NL + "    }";
-  protected final String TEXT_11 = NL;
+  protected final String TEXT_9 = "Impl(this);" + NL + "    \tif(ccm_activate_ok) {" + NL + "    \t\t";
+  protected final String TEXT_10 = "_.target = ";
+  protected final String TEXT_11 = ";" + NL + "    \t}" + NL + "    \treturn ";
+  protected final String TEXT_12 = "_;" + NL + "    }";
+  protected final String TEXT_13 = NL;
 
   public String generate(Object argument)
   {
@@ -53,7 +55,11 @@ public class ProvidesDefGetMethodAssemblyImplementationTemplate
     stringBuffer.append(TEXT_9);
     stringBuffer.append(provides.getIdentifier());
     stringBuffer.append(TEXT_10);
+    stringBuffer.append(provides.getComponent().getAssemblyInitFacetTargetValue(provides));
     stringBuffer.append(TEXT_11);
+    stringBuffer.append(provides.getIdentifier());
+    stringBuffer.append(TEXT_12);
+    stringBuffer.append(TEXT_13);
     return stringBuffer.toString();
   }
 }

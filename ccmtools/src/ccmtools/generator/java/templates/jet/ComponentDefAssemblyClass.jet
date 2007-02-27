@@ -66,6 +66,8 @@ for(Iterator i=component.getAssemblyAttributeDeclarations(); i.hasNext();)
 
     public <%=component.generateCcmIdentifier()%>_Context ctx;
     
+    private boolean ccm_activate_ok;
+
     
     public <%=component.getIdentifier()%>Impl()
         throws CCMException
@@ -179,7 +181,9 @@ for (String key : component.getAssemblyLocalComponents().keySet())
 			<%=key%>_.configuration_complete();
 <%
 }
-%> 
+%>
+
+			ccm_activate_ok = true; 
     	} catch(Exception e) {
     		throw new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);
     	}
