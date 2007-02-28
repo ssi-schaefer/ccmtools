@@ -10,8 +10,7 @@ void
   	{ 
   		throw ::Components::AlreadyConnected();
   	}
-  	%(Identifier)s_receptacle = %(CCMUsesType)s::SmartPtr(
-            dynamic_cast< %(CCMUsesType)s* >(f.ptr()));
+  	%(Identifier)s_receptacle = f;
 }
 
 %(UsesType)s::SmartPtr
@@ -27,7 +26,7 @@ void
   		throw ::Components::NoConnection();
   	}
   	%(UsesType)s::SmartPtr f = %(Identifier)s_receptacle;
-  	%(Identifier)s_receptacle = %(CCMUsesType)s::SmartPtr();
+  	%(Identifier)s_receptacle.forget();
   	return f;
 }
 
@@ -39,7 +38,7 @@ void
   	{
   		throw ::Components::InvalidConnection();
   	}
-  	if(%(Identifier)s_receptacle == %(CCMUsesType)s::SmartPtr())
+  	if(!%(Identifier)s_receptacle)
     	throw ::Components::NoConnection();
   	return %(Identifier)s_receptacle;
 }

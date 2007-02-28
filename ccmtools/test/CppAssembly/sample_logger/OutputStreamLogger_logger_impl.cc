@@ -37,7 +37,7 @@ void
 OutputStreamLogger_logger_impl::print(const std::string& message)
     throw(::Components::CCMException)
 {
-    ::wamas::io::CCM_OutputStream::SmartPtr os = component->ctx->get_connection_stream();
+    ::wamas::io::OutputStream::SmartPtr os = component->ctx->get_connection_stream();
     for(std::string::const_iterator it=message.begin(); it!=message.end(); ++it)
     {
         os->write(*it);

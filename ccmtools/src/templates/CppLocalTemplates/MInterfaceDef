@@ -134,15 +134,15 @@ using namespace std;
 //==============================================================================
 
 %(Identifier)sAdapter::%(Identifier)sAdapter()
+: facet_(NULL)
+, validConnection_(false)
 {
-    validConnection_ = false;
-    facet_ = NULL;
 }
 
 %(Identifier)sAdapter::%(Identifier)sAdapter(%(InterfaceCCMName)s* f)
-    : facet_(f)
+: facet_(f)
+, validConnection_(f!=NULL)
 {
-    validConnection_ = true;
 }
 
 %(Identifier)sAdapter::~%(Identifier)sAdapter()

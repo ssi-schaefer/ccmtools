@@ -12,9 +12,13 @@ int main()
     // setup
     try
     {
+        std::cout << "# creating home" << std::endl;
         StdErrLoggerHome home;
+        std::cout << "# creating component" << std::endl;
         comp = home.create();
+        std::cout << "# provide logger" << std::endl;
         logger = comp->provide_logger();
+        std::cout << "# configuration complete" << std::endl;
         comp->configuration_complete();
     }
     catch(...)
@@ -26,6 +30,7 @@ int main()
     // business logic
     try
     {
+        std::cout << "# business logic" << std::endl;
         logger->print("Hello World!");
     }
     catch(...)
@@ -37,6 +42,7 @@ int main()
     // tear down
     try
     {
+        std::cout << "# tear down" << std::endl;
         comp->remove();
     }
     catch(...)

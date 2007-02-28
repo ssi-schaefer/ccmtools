@@ -1,4 +1,4 @@
-    %(CCMUsesType)s::SmartPtr get_connection_%(Identifier)s()
+    %(UsesType)s::SmartPtr get_connection_%(Identifier)s()
         throw(::Components::NoConnection);
 
         
