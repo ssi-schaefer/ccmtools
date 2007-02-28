@@ -190,14 +190,34 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         return code.toString();
     }
 
+    private static int local_var_counter_;
+
+    private static String createLocalVar( Map<String, String> var_map, String var_type,
+            StringBuilder code )
+    {
+        String local_var = var_map.get(var_type);
+        if (local_var == null)
+        {
+            local_var = "var" + local_var_counter_;
+            ++local_var_counter_;
+            var_map.put(var_type, local_var);
+            code.append(TAB);
+            code.append(var_type);
+            code.append(" ");
+            code.append(local_var);
+            code.append(";\n");
+        }
+        return local_var;
+    }
+
     protected String variable_AssemblyInnerComponentVariableCreation()
     {
         if (currentAssembly == null)
             return "";
         StringBuilder code_homes = new StringBuilder();
         StringBuilder code_creation = new StringBuilder();
-        HashMap<String, String> home_map = new HashMap<String, String>();
-        int counter = 0;
+        HashMap<String, String> local_var_map = new HashMap<String, String>();
+        boolean have_finder = false;
         Map<String, MComponentDef> map = getAssemblyLocalComponents();
         for (String key : map.keySet())
         {
@@ -206,30 +226,52 @@ public class CppAssemblyGenerator extends CppLocalGenerator
             if (comp_alias != null)
             {
                 // calling home-finder
-                throw new RuntimeException("no yet implemented"); // TODO
+                final String finder_type = "::Components::HomeFinder*";
+                String finder_var = createLocalVar(local_var_map, finder_type, code_homes);
+                if (!have_finder)
+                {
+                    code_creation.append(TAB).append(finder_var);
+                    code_creation.append(" = ::Components::HomeFinder::Instance();\n");
+                    code_creation.append(TAB).append("assert(");
+                    code_creation.append(finder_var).append(");\n");
+                    have_finder = true;
+                }
+                final String home_type = "::Components::CCMHome::SmartPtr";
+                String home_var = createLocalVar(local_var_map, home_type, code_homes);
+                code_creation.append(TAB).append(home_var);
+                code_creation.append(" = ").append(finder_var);
+                code_creation.append("->find_home_by_name(\"");
+                code_creation.append(comp_alias).append("\");\n");
+                final String keyless_type = "::Components::KeylessCCMHome*";
+                String keyless_var = createLocalVar(local_var_map, keyless_type, code_homes);
+                code_creation.append(TAB).append(keyless_var);
+                code_creation.append(" = dynamic_cast< ").append(keyless_type);
+                code_creation.append(">(").append(home_var).append(".ptr());\n");
+                code_creation.append(TAB).append("assert(");
+                code_creation.append(keyless_var).append(");\n");
+                final String obj_type = "::wamas::platform::utils::SmartPtr< ::Components::CCMObject>";
+                String obj_var = createLocalVar(local_var_map, obj_type, code_homes);
+                code_creation.append(TAB).append(obj_var);
+                code_creation.append(" = ").append(keyless_var).append("->create_component();\n");
+                String cpp_type = getLocalCxxName(comp_def, "::");
+                code_creation.append(TAB).append(key);
+                code_creation.append("_.eat(dynamic_cast< ").append(cpp_type);
+                code_creation.append("*>(").append(obj_var).append(".ptr()));\n");
             }
             else
             {
+                // using first home
                 MHomeDef home = getHome(comp_def);
                 String home_type = getLocalCxxName(home, "::");
-                String home_var = home_map.get(home_type);
-                if (home_var == null)
-                {
-                    home_var = "home" + counter;
-                    ++counter;
-                    home_map.put(home_type, home_var);
-                    code_homes.append(TAB);
-                    code_homes.append(home_type);
-                    code_homes.append(" ");
-                    code_homes.append(home_var);
-                    code_homes.append(";\n");
-                }
+                String home_var = createLocalVar(local_var_map, home_type, code_homes);
                 code_creation.append(TAB);
                 code_creation.append(key);
                 code_creation.append("_ = ");
                 code_creation.append(home_var);
                 code_creation.append(".create();\n");
             }
+            code_creation.append(TAB).append("assert(");
+            code_creation.append(key).append("_);\n");
         }
         StringBuilder result = new StringBuilder();
         result.append(code_homes);
