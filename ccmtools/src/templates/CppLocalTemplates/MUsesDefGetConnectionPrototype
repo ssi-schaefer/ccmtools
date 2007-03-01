@@ -1,4 +1,4 @@
     %(UsesType)s::SmartPtr get_connection_%(Identifier)s()
-  		throw(::Components::NoConnection);
+  		throw(::Components::NoConnection, ::Components::InvalidConnection);
 
 

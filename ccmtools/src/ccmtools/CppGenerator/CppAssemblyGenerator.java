@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import ccmtools.CcmtoolsException;
 import ccmtools.parser.assembly.metamodel.Assembly;
@@ -33,6 +34,7 @@ import ccmtools.parser.idl.metamodel.BaseIDL.MOperationDef;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MHomeDef;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MProvidesDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.ui.UserInterfaceDriver;
 import ccmtools.utils.Text;
 
@@ -164,6 +166,10 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         if (data_type.equals("AssemblyCcmRemove"))
         {
             return variable_AssemblyCcmRemove();
+        }
+        if (data_type.equals("AssemblyDisconnect"))
+        {
+            return variable_AssemblyDisconnect();
         }
         return super.data_MComponentDef(data_type, data_value);
     }
@@ -352,34 +358,7 @@ public class CppAssemblyGenerator extends CppLocalGenerator
             if (e instanceof Connection)
             {
                 Connection c = (Connection) e;
-                StringBuilder code = new StringBuilder();
-                String code_tail;
-                Port target = c.getReceptacle();
-                String target_name = target.getConnector();
-                if (target.getComponent() == null)
-                {
-                    // connect to an outer facet
-                    code.append(TAB2 + "if(" + target_name + "_) {\n");
-                    String real_type = comp_def.getIdentifier() + "_" + target_name + "_impl";
-                    code.append(TAB3 + real_type + "* facet = dynamic_cast<" + real_type + "*>("
-                            + target_name + "_);\n");
-                    code.append(TAB3 + "facet->target = ");
-                    code_tail = ";\n" + TAB2 + "}\n";
-                    outer_facets.add(target_name);
-                }
-                else
-                {
-                    // connect to the receptacle of an inner component
-                    code.append(TAB2);
-                    code.append(target.getComponent());
-                    code.append("_->connect_");
-                    code.append(target_name);
-                    code.append("(");
-                    code_tail = ");\n";
-                }
-                Port source = c.getFacet();
-                code.append(getFacetValue(source));
-                code.append(code_tail);
+                StringBuilder code = generate_AssemblyCcmActivate(c, comp_def, outer_facets);
                 activation_code.append(code);
             }
             else if (e instanceof Attribute)
@@ -416,6 +395,95 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         return activation_code.toString();
     }
 
+    private StringBuilder generate_AssemblyCcmActivate( Connection c, MComponentDef comp_def,
+            Set<String> outer_facets )
+    {
+        StringBuilder code = new StringBuilder();
+        Port source = c.getFacet();
+        String source_value = getFacetValue(source, comp_def);
+        Port target = c.getReceptacle();
+        String target_name = target.getConnector();
+        if (target.getComponent() == null)
+        {
+            // connect to an outer facet
+            if (outer_multiple_receptacle_)
+            {
+                throw new RuntimeException("invalid loop");
+            }
+            code.append(TAB2 + "if(" + target_name + "_) {\n");
+            String real_type = comp_def.getIdentifier() + "_" + target_name + "_impl";
+            code.append(TAB3 + real_type + "* facet = dynamic_cast<" + real_type + "*>("
+                    + target_name + "_);\n");
+            code.append(TAB3 + "facet->target = ");
+            outer_facets.add(target_name);
+            code.append(source_value);
+            code.append(";\n" + TAB2 + "}\n");
+        }
+        else
+        {
+            // connect to the receptacle of an inner component
+            if (outer_multiple_receptacle_)
+            {
+                // TODO
+                code.append(TAB2 + "// TODO: multiple receptacle\n");
+            }
+            else
+            {
+                code.append(TAB2);
+                code.append(target.getComponent());
+                code.append("_->connect_");
+                code.append(target_name);
+                code.append("(");
+                code.append(source_value);
+                code.append(");\n");
+            }
+        }
+        return code;
+    }
+
+    private static MUsesDef outer_receptacle_;
+
+    private static boolean outer_multiple_receptacle_;
+
+    private static String getFacetValue( Port source, MComponentDef comp_def )
+    {
+        outer_receptacle_ = null;
+        outer_multiple_receptacle_ = false;
+        StringBuilder code = new StringBuilder();
+        String source_name = source.getConnector();
+        if (source.getComponent() == null)
+        {
+            // connect from an outer receptacle
+            for (Object o : comp_def.getReceptacles())
+            {
+                MUsesDef u = (MUsesDef) o;
+                if (u.getIdentifier().equals(source_name))
+                {
+                    outer_receptacle_ = u;
+                    break;
+                }
+            }
+            if (outer_receptacle_ == null)
+            {
+                throw new RuntimeException("cannot find receptacle: " + source_name);
+            }
+            outer_multiple_receptacle_ = outer_receptacle_.isMultiple();
+            if (outer_multiple_receptacle_)
+                code.append("ctx->get_connections_");
+            else
+                code.append("ctx->get_connection_");
+        }
+        else
+        {
+            // connect from the facet of an inner component
+            code.append(source.getComponent());
+            code.append("_->provide_");
+        }
+        code.append(source_name);
+        code.append("()");
+        return code.toString();
+    }
+
     protected String variable_AssemblyCcmRemove()
     {
         StringBuilder code = new StringBuilder();
@@ -423,6 +491,58 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         for (String key : map.keySet())
         {
             code.append(TAB2 + key + "_->remove();\n");
+        }
+        return code.toString();
+    }
+
+    protected String variable_AssemblyDisconnect()
+    {
+        if (currentAssembly == null)
+            return "";
+        StringBuilder code = new StringBuilder();
+        for (AssemblyElement e : currentAssembly.getElements())
+        {
+            if (e instanceof Connection)
+            {
+                Connection c = (Connection) e;
+                Port source = c.getFacet();
+                if (source.getComponent() == null)
+                {
+                    code.append(TAB).append("if(receptacle==\"");
+                    code.append(source.getConnector()).append("\") {\n");
+                    Port target = c.getReceptacle();
+                    if (target.getComponent() == null)
+                    {
+                        // the user disconnects a receptacle which has been
+                        // connected to a facet implementation of the assembly
+                        code.append(TAB2).append("throw ::Components::Exception(");
+                        code.append("\"cannnot disconnect loop\");\n");
+                    }
+                    else
+                    {
+                        // disconnect from inner component
+                        {
+                            // calculate 'outer_multiple_receptacle_'
+                            getFacetValue(source, currentAssembly.getCcmComponent());
+                        }
+                        code.append(TAB2).append("try {\n");
+                        if (outer_multiple_receptacle_)
+                        {
+                            // TODO disconnect multiple receptacle
+                            code.append(TAB3 + "// TODO: multiple receptacle\n");
+                        }
+                        else
+                        {
+                            code.append(TAB3).append(target.getComponent());
+                            code.append("_->disconnect_").append(target.getConnector());
+                            code.append("();\n");
+                        }
+                        code.append(TAB2).append("} catch(...) {/* OOPS */}\n");
+                        code.append(TAB2).append("return;\n");
+                    }
+                    code.append(TAB).append("}\n");
+                }
+            }
         }
         return code.toString();
     }
@@ -532,31 +652,13 @@ public class CppAssemblyGenerator extends CppLocalGenerator
                 Port target = c.getReceptacle();
                 if (target.getComponent() == null && target.getConnector().equals(name))
                 {
+                    MComponentDef comp_def = currentAssembly.getCcmComponent();
                     Port source = c.getFacet();
-                    return getFacetValue(source);
+                    return getFacetValue(source, comp_def);
                 }
             }
         }
         throw new RuntimeException("facet " + name + " is not connected to an inner component");
-    }
-
-    private static String getFacetValue( Port source )
-    {
-        StringBuilder code = new StringBuilder();
-        if (source.getComponent() == null)
-        {
-            // connect from an outer receptacle
-            code.append("ctx->get_connection_");
-        }
-        else
-        {
-            // connect from the facet of an inner component
-            code.append(source.getComponent());
-            code.append("_->provide_");
-        }
-        code.append(source.getConnector());
-        code.append("()");
-        return code.toString();
     }
 
     protected String generateOperationImpl( MProvidesDef provides, MOperationDef op )

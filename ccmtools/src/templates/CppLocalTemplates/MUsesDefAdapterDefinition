@@ -15,7 +15,7 @@ void
 
 %(UsesType)s::SmartPtr
 %(ComponentType)s::disconnect_%(Identifier)s()
-  	throw(::Components::NoConnection)
+  	throw(::Components::NoConnection, ::Components::InvalidConnection)
 {
   	if(!ValidConnection)
   	{ 
@@ -25,6 +25,7 @@ void
   	{ 
   		throw ::Components::NoConnection();
   	}
+    local_component->disconnect("%(Identifier)s");
   	%(UsesType)s::SmartPtr f = %(Identifier)s_receptacle;
   	%(Identifier)s_receptacle.forget();
   	return f;
@@ -32,7 +33,7 @@ void
 
 %(UsesType)s::SmartPtr
 %(ComponentType)s::get_connection_%(Identifier)s()
-	throw(::Components::NoConnection)
+	throw(::Components::NoConnection, ::Components::InvalidConnection)
 {
   	if(!ValidConnection) 
   	{

@@ -1090,6 +1090,25 @@ abstract public class CppGenerator extends CodeGenerator
         {
             return getLocalCxxName((MUsesDef)currentNode, Text.SCOPE_SEPARATOR);
         }
+        else if (data_type.equals("MultipleReceptacleType"))
+        {
+            MUsesDef uses = (MUsesDef) currentNode;
+            MComponentDef component = uses.getComponent();
+            return component.getIdentifier() + "_" + uses.getIdentifier() + "_Connections";
+        }
+        else if (data_type.equals("MultipleReceptacleName"))
+        {
+            MUsesDef uses = (MUsesDef) currentNode;
+            MComponentDef component = uses.getComponent();
+            MContainer module = component.getDefinedIn();
+            if (module == null)
+            {
+                return Text.SCOPE_SEPARATOR + component.getIdentifier() + "_"
+                        + uses.getIdentifier() + "_Connections";
+            }
+            return getLocalCxxName(module, Text.SCOPE_SEPARATOR) + Text.SCOPE_SEPARATOR
+                    + component.getIdentifier() + "_" + uses.getIdentifier() + "_Connections";
+        }
         else if(data_type.startsWith("MOperation")) 
         {
             return fillTwoStepTemplates(iface, data_type, false);

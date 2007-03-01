@@ -1,2 +1,2 @@
-    %(UsesName)sConnections& get_connections_%(Identifier)s();
+    %(MultipleReceptacleName)s& get_connections_%(Identifier)s();
 

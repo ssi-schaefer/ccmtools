@@ -1,2 +1,2 @@
-    virtual %(Identifier)sConnections& get_connections_%(Identifier)s() = 0;
+    virtual %(MultipleReceptacleType)s& get_connections_%(Identifier)s() = 0;
 

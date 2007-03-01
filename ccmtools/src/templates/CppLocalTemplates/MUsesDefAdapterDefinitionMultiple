@@ -34,7 +34,7 @@
     }
 }
 
-%(UsesName)sConnections&
+%(MultipleReceptacleName)s&
 %(ComponentType)s::get_connections_%(Identifier)s (  )
 {
     if(!ValidConnection) 

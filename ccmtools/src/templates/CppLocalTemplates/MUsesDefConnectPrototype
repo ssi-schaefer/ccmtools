@@ -4,6 +4,6 @@
         throw(::Components::AlreadyConnected, ::Components::InvalidConnection);
 
     %(UsesType)s::SmartPtr disconnect_%(Identifier)s()
-        throw(::Components::NoConnection);
+        throw(::Components::NoConnection, ::Components::InvalidConnection);
 
 

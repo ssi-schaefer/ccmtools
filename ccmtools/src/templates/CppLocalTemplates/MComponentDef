@@ -358,6 +358,8 @@ class CCM_%(Identifier)s
     typedef wamas::platform::utils::SmartPtr<CCM_%(Identifier)s> SmartPtr;
     
     virtual ~CCM_%(Identifier)s() {}
+
+    virtual void disconnect(const std::string& receptacle) = 0;
     
 %(MAttributeDefPrototypeVV)s
 %(MProvidesDefGetFacetPrototypeVV)s
@@ -452,6 +454,8 @@ class %(Identifier)s_impl
 
     virtual void ccm_remove()
         throw(Components::CCMException);
+
+    virtual void disconnect(const std::string& receptacle);
 };
 
 %(CloseNamespace)s
@@ -536,6 +540,12 @@ void
     } catch(...) {
         throw Components::CCMException(Components::REMOVE_ERROR);
     }
+}
+
+void
+%(Identifier)s_impl::disconnect(const std::string& receptacle)
+{
+%(AssemblyDisconnect)s
 }
 
 %(MProvidesDefGetFacetDefinition)s
