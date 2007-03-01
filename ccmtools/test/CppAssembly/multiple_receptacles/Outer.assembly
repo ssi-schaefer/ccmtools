@@ -1,0 +1,13 @@
+module wamas {
+
+	assembly implements Outer
+	{
+		component Inner inner;
+
+		connect inner.input to this.input;
+		connect this.out1 to inner.out1;
+		connect this.out2 to inner.out2;
+	};
+
+};
+

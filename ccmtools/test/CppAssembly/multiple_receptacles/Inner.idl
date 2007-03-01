@@ -1,0 +1,15 @@
+#include "Pusher.idl"
+
+module wamas {
+
+	component Inner
+	{
+		provides Pusher input;
+		uses Pusher out1;
+		uses multiple Pusher out2;
+	};
+
+	home InnerHome manages Inner {};
+
+};
+
