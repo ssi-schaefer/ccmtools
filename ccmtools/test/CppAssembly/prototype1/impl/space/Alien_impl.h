@@ -36,6 +36,7 @@ class Alien_impl
     Alien_impl();
     virtual ~Alien_impl();
 
+    // ComponentDelegator implementation
     virtual ::Components::Object::SmartPtr provide(const char* facet);
     virtual ::Components::Cookie connect(const char* receptacle, ::Components::Object::SmartPtr facet);
     virtual ::Components::Object::SmartPtr disconnect(const char* receptacle, ::Components::Cookie cookie);
