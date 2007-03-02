@@ -40,7 +40,8 @@ class Alien_impl
     virtual ::Components::Object::SmartPtr provide(const char* facet);
     virtual ::Components::Cookie connect(const char* receptacle, ::Components::Object::SmartPtr facet);
     virtual ::Components::Object::SmartPtr disconnect(const char* receptacle, ::Components::Cookie cookie);
-    virtual ::Components::ComponentDelegator::Connections const& get_connections(const char* receptacle);
+    virtual Object::SmartPtr get_single_connection(const char* receptacle);
+    virtual Connections const& get_multiple_connections(const char* receptacle);
 
 private:
     ::World::CCM_Data* Ap1_;
