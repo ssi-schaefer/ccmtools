@@ -1,0 +1,27 @@
+module Space {
+
+assembly implements Alien
+{
+    component World::Worker alias "Worker" inner;
+
+    connect inner.p1 to Ap1;
+
+    connect inner.p2 to inner.r2;
+
+    connect Ar3 to inner.r3;
+
+    connect Ar4 to inner.r4;
+
+    connect inner.p5a to inner.r5;
+    connect inner.p5b to inner.r5;
+
+    connect Ar10 to Ap10;
+
+    connect Ar6a to inner.r6;
+    connect Ar6b to inner.r6;
+
+    connect Ar7a to inner.r7;
+    connect Ar7b to inner.r7;
+};
+
+};  // /module Space
