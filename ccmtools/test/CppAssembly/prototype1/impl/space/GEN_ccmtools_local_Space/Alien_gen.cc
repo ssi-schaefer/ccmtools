@@ -111,6 +111,7 @@ Alien::connect_Ar3(::World::Data::SmartPtr f)
     if(delegator)
     {
         delegator->connect("Ar3", f);
+        Ar3_receptacle = f;
     }
     else
     {
@@ -133,6 +134,7 @@ Alien::disconnect_Ar3()
     if(delegator)
     {
         ::Components::Object::SmartPtr o = delegator->disconnect("Ar3");
+        Ar3_receptacle.forget();
         ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
         return f;
     }
@@ -156,18 +158,9 @@ Alien::get_connection_Ar3()
   	{
   		throw ::Components::InvalidConnection();
   	}
-    if(delegator)
-    {
-        Object::SmartPtr o = delegator->get_single_connection("Ar3");
-        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
-        return f;
-    }
-    else
-    {
-        if(!Ar3_receptacle)
-            throw ::Components::NoConnection();
-        return Ar3_receptacle;
-    }
+    if(!Ar3_receptacle)
+        throw ::Components::NoConnection();
+    return Ar3_receptacle;
 }
 
 ::Components::Cookie
@@ -178,12 +171,22 @@ Alien::connect_Ar4(::World::Data::SmartPtr f)
     {
         throw ::Components::InvalidConnection();
     }
-    stringstream s;
-    s << "CCM_Ar4:" << Ar4_receptacle_counter++;
-    ::Components::Cookie ck(s.str());
-    ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
-    Ar4_receptacles.insert(make_pair(ck, ccmf));
-    return ck;
+    if(delegator)
+    {
+        ::Components::Cookie ck = delegator->connect("Ar4", f);
+        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
+        Ar4_receptacles.insert(make_pair(ck, ccmf));
+        return ck;
+    }
+    else
+    {
+        stringstream s;
+        s << "CCM_Ar4:" << Ar4_receptacle_counter++;
+        ::Components::Cookie ck(s.str());
+        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
+        Ar4_receptacles.insert(make_pair(ck, ccmf));
+        return ck;
+    }
 }
 
 ::World::Data::SmartPtr
@@ -194,15 +197,25 @@ Alien::disconnect_Ar4(::Components::Cookie ck)
     {
         throw ::Components::InvalidConnection();
     }
-    if(Ar4_receptacles.find(ck) != Ar4_receptacles.end())
+    if(delegator)
     {
-        ::World::CCM_Data::SmartPtr f(Ar4_receptacles[ck]);
+        ::Components::Object::SmartPtr o = delegator->disconnect("Ar4", ck);
         Ar4_receptacles.erase(ck);
+        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
         return f;
     }
     else
     {
-        throw ::Components::InvalidConnection();
+        if(Ar4_receptacles.find(ck) != Ar4_receptacles.end())
+        {
+            ::World::CCM_Data::SmartPtr f(Ar4_receptacles[ck]);
+            Ar4_receptacles.erase(ck);
+            return f;
+        }
+        else
+        {
+            throw ::Components::InvalidConnection();
+        }
     }
 }
 

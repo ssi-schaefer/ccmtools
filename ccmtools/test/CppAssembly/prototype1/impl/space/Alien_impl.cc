@@ -29,6 +29,18 @@ Alien_impl::~Alien_impl()
 {
 }
 
+::Components::Object::SmartPtr Alien_impl::provide(const char* facet)
+{
+}
+
+::Components::Cookie Alien_impl::connect(const char* receptacle, ::Components::Object::SmartPtr facet)
+{
+}
+
+::Components::Object::SmartPtr Alien_impl::disconnect(const char* receptacle, ::Components::Cookie const& cookie)
+{
+}
+
 void
 Alien_impl::set_session_context(Components::SessionContext* context)
     throw(Components::CCMException)
