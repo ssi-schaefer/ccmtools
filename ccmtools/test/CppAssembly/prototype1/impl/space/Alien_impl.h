@@ -27,7 +27,7 @@ class Alien_impl
     , virtual public ::Components::ComponentDelegator
 {
   private:
-    ::wamas::platform::utils::SmartPtr< ::Components::CCMObject> inner_;
+    ::Components::CCMObject::SmartPtr inner_;
 
     ::Components::Cookie Ar6a_;
     ::Components::Cookie Ar6b_;

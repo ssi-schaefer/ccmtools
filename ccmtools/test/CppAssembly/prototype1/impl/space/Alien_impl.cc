@@ -141,6 +141,11 @@ Alien_impl::ccm_activate()
 
         inner_->connect("r2", inner_->provide_facet("p2"));
 
+        inner_->connect("r5", inner_->provide_facet("p5a"));
+        inner_->connect("r5", inner_->provide_facet("p5b"));
+
+        inner_->configuration_complete();
+
     } catch(...) {
         throw Components::CCMException(Components::CREATE_ERROR);
     }
@@ -159,6 +164,8 @@ Alien_impl::ccm_remove()
     throw(Components::CCMException)
 {
     try {
+
+        inner_->remove();
 
     } catch(...) {
         throw Components::CCMException(Components::REMOVE_ERROR);

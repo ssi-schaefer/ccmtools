@@ -103,7 +103,7 @@ Alien::provide_Ap10()
 }
 
 template<typename T>
-void
+static void
 generic_single_connect(T& receptacle, const std::string& name, const T& f,
     ::Components::ComponentDelegator* delegator)
 {
@@ -133,7 +133,7 @@ Alien::connect_Ar3(::World::Data::SmartPtr f)
 }
 
 template<typename T>
-T
+static T
 generic_single_disconnect(T& receptacle, const std::string& name,
     ::Components::ComponentDelegator* delegator)
 {
@@ -178,7 +178,7 @@ Alien::get_connection_Ar3()
 }
 
 template<typename MAP, typename T>
-::Components::Cookie
+static ::Components::Cookie
 generic_multiple_connect(MAP& receptacles, long& receptacle_counter,
     const std::string& name, const T& f,
     ::Components::ComponentDelegator* delegator)
@@ -211,7 +211,7 @@ Alien::connect_Ar4(::World::Data::SmartPtr f)
 }
 
 template<typename MAP, typename T>
-T
+static T
 generic_multiple_disconnect(MAP& receptacles, const std::string& name,
     const ::Components::Cookie& ck,
     ::Components::ComponentDelegator* delegator)
