@@ -237,11 +237,19 @@ Alien::connect_Ar10(::World::Data::SmartPtr f)
   	{
   		throw ::Components::InvalidConnection();
     }
-  	if(Ar10_receptacle)
-  	{
-  		throw ::Components::AlreadyConnected();
-  	}
-  	Ar10_receptacle = f;
+    if(delegator)
+    {
+        delegator->connect("Ar10", f);
+        Ar10_receptacle = f;
+    }
+    else
+    {
+        if(Ar10_receptacle)
+        {
+            throw ::Components::AlreadyConnected();
+        }
+        Ar10_receptacle = f;
+    }
 }
 
 ::World::Data::SmartPtr
@@ -252,14 +260,23 @@ Alien::disconnect_Ar10()
   	{
   	    throw ::Components::InvalidConnection();
   	}
-  	if(!Ar10_receptacle)
-  	{
-  		throw ::Components::NoConnection();
-  	}
-    // local_component->disconnect("Ar10");
-  	::World::Data::SmartPtr f = Ar10_receptacle;
-  	Ar10_receptacle.forget();
-  	return f;
+    if(delegator)
+    {
+        ::Components::Object::SmartPtr o = delegator->disconnect("Ar10");
+        Ar10_receptacle.forget();
+        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
+        return f;
+    }
+    else
+    {
+        if(!Ar10_receptacle)
+        {
+            throw ::Components::NoConnection();
+        }
+        ::World::Data::SmartPtr f = Ar10_receptacle;
+        Ar10_receptacle.forget();
+        return f;
+    }
 }
 
 ::World::Data::SmartPtr
@@ -283,11 +300,19 @@ Alien::connect_Ar6a(::World::Data::SmartPtr f)
   	{
   		throw ::Components::InvalidConnection();
     }
-  	if(Ar6a_receptacle)
-  	{
-  		throw ::Components::AlreadyConnected();
-  	}
-  	Ar6a_receptacle = f;
+    if(delegator)
+    {
+        delegator->connect("Ar6a", f);
+        Ar6a_receptacle = f;
+    }
+    else
+    {
+        if(Ar6a_receptacle)
+        {
+            throw ::Components::AlreadyConnected();
+        }
+        Ar6a_receptacle = f;
+    }
 }
 
 ::World::Data::SmartPtr
@@ -298,14 +323,23 @@ Alien::disconnect_Ar6a()
   	{
   	    throw ::Components::InvalidConnection();
   	}
-  	if(!Ar6a_receptacle)
-  	{
-  		throw ::Components::NoConnection();
-  	}
-    // local_component->disconnect("Ar6a");
-  	::World::Data::SmartPtr f = Ar6a_receptacle;
-  	Ar6a_receptacle.forget();
-  	return f;
+    if(delegator)
+    {
+        ::Components::Object::SmartPtr o = delegator->disconnect("Ar6a");
+        Ar6a_receptacle.forget();
+        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
+        return f;
+    }
+    else
+    {
+        if(!Ar6a_receptacle)
+        {
+            throw ::Components::NoConnection();
+        }
+        ::World::Data::SmartPtr f = Ar6a_receptacle;
+        Ar6a_receptacle.forget();
+        return f;
+    }
 }
 
 ::World::Data::SmartPtr
@@ -329,11 +363,19 @@ Alien::connect_Ar6b(::World::Data::SmartPtr f)
   	{
   		throw ::Components::InvalidConnection();
     }
-  	if(Ar6b_receptacle)
-  	{
-  		throw ::Components::AlreadyConnected();
-  	}
-  	Ar6b_receptacle = f;
+    if(delegator)
+    {
+        delegator->connect("Ar6b", f);
+        Ar6b_receptacle = f;
+    }
+    else
+    {
+        if(Ar6b_receptacle)
+        {
+            throw ::Components::AlreadyConnected();
+        }
+        Ar6b_receptacle = f;
+    }
 }
 
 ::World::Data::SmartPtr
@@ -344,14 +386,23 @@ Alien::disconnect_Ar6b()
   	{
   	    throw ::Components::InvalidConnection();
   	}
-  	if(!Ar6b_receptacle)
-  	{
-  		throw ::Components::NoConnection();
-  	}
-    // local_component->disconnect("Ar6b");
-  	::World::Data::SmartPtr f = Ar6b_receptacle;
-  	Ar6b_receptacle.forget();
-  	return f;
+    if(delegator)
+    {
+        ::Components::Object::SmartPtr o = delegator->disconnect("Ar6b");
+        Ar6b_receptacle.forget();
+        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
+        return f;
+    }
+    else
+    {
+        if(!Ar6b_receptacle)
+        {
+            throw ::Components::NoConnection();
+        }
+        ::World::Data::SmartPtr f = Ar6b_receptacle;
+        Ar6b_receptacle.forget();
+        return f;
+    }
 }
 
 ::World::Data::SmartPtr
@@ -375,12 +426,22 @@ Alien::connect_Ar7a(::World::Data::SmartPtr f)
     {
         throw ::Components::InvalidConnection();
     }
-    stringstream s;
-    s << "CCM_Ar7a:" << Ar7a_receptacle_counter++;
-    ::Components::Cookie ck(s.str());
-    ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
-    Ar7a_receptacles.insert(make_pair(ck, ccmf));
-    return ck;
+    if(delegator)
+    {
+        ::Components::Cookie ck = delegator->connect("Ar7a", f);
+        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
+        Ar7a_receptacles.insert(make_pair(ck, ccmf));
+        return ck;
+    }
+    else
+    {
+        stringstream s;
+        s << "CCM_Ar7a:" << Ar7a_receptacle_counter++;
+        ::Components::Cookie ck(s.str());
+        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
+        Ar7a_receptacles.insert(make_pair(ck, ccmf));
+        return ck;
+    }
 }
 
 ::World::Data::SmartPtr
@@ -391,15 +452,25 @@ Alien::disconnect_Ar7a(::Components::Cookie ck)
     {
         throw ::Components::InvalidConnection();
     }
-    if(Ar7a_receptacles.find(ck) != Ar7a_receptacles.end())
+    if(delegator)
     {
-        ::World::CCM_Data::SmartPtr f(Ar7a_receptacles[ck]);
+        ::Components::Object::SmartPtr o = delegator->disconnect("Ar7a", ck);
         Ar7a_receptacles.erase(ck);
+        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
         return f;
     }
     else
     {
-        throw ::Components::InvalidConnection();
+        if(Ar7a_receptacles.find(ck) != Ar7a_receptacles.end())
+        {
+            ::World::CCM_Data::SmartPtr f(Ar7a_receptacles[ck]);
+            Ar7a_receptacles.erase(ck);
+            return f;
+        }
+        else
+        {
+            throw ::Components::InvalidConnection();
+        }
     }
 }
 
@@ -421,12 +492,22 @@ Alien::connect_Ar7b(::World::Data::SmartPtr f)
     {
         throw ::Components::InvalidConnection();
     }
-    stringstream s;
-    s << "CCM_Ar7b:" << Ar7b_receptacle_counter++;
-    ::Components::Cookie ck(s.str());
-    ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
-    Ar7b_receptacles.insert(make_pair(ck, ccmf));
-    return ck;
+    if(delegator)
+    {
+        ::Components::Cookie ck = delegator->connect("Ar7b", f);
+        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
+        Ar7b_receptacles.insert(make_pair(ck, ccmf));
+        return ck;
+    }
+    else
+    {
+        stringstream s;
+        s << "CCM_Ar7b:" << Ar7b_receptacle_counter++;
+        ::Components::Cookie ck(s.str());
+        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
+        Ar7b_receptacles.insert(make_pair(ck, ccmf));
+        return ck;
+    }
 }
 
 ::World::Data::SmartPtr
@@ -437,15 +518,25 @@ Alien::disconnect_Ar7b(::Components::Cookie ck)
     {
         throw ::Components::InvalidConnection();
     }
-    if(Ar7b_receptacles.find(ck) != Ar7b_receptacles.end())
+    if(delegator)
     {
-        ::World::CCM_Data::SmartPtr f(Ar7b_receptacles[ck]);
+        ::Components::Object::SmartPtr o = delegator->disconnect("Ar7b", ck);
         Ar7b_receptacles.erase(ck);
+        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
         return f;
     }
     else
     {
-        throw ::Components::InvalidConnection();
+        if(Ar7b_receptacles.find(ck) != Ar7b_receptacles.end())
+        {
+            ::World::CCM_Data::SmartPtr f(Ar7b_receptacles[ck]);
+            Ar7b_receptacles.erase(ck);
+            return f;
+        }
+        else
+        {
+            throw ::Components::InvalidConnection();
+        }
     }
 }
 
