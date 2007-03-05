@@ -165,7 +165,7 @@ class Alien
     ::Space::CCM_Alien_Context* context;
     ::Components::Assembly::SmartPtr assembly;
     bool ValidConnection;
-    ::Components::ComponentDelegator delegator;
+    ::Components::ComponentDelegator* delegator;
 
     ::World::Data::SmartPtr Ap1_facet;
     ::World::CCM_Data* Ap1_facet_impl;

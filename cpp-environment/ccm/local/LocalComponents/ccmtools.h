@@ -78,7 +78,7 @@ class InvalidName
 
 
 class HomeNotFound
-  : public Exception 
+  : public Exception
 {
   public:
     HomeNotFound() throw();
@@ -171,7 +171,7 @@ class RemoveFailure
     RemoveFailure() throw();
     RemoveFailure(const FailureReason reason) throw();
 	virtual ~RemoveFailure() throw();
-	
+
   private:
     FailureReason reason_;
 };
@@ -197,7 +197,7 @@ class CCMException
     CCMException() throw();
     CCMException(const CCMExceptionReason reason) throw();
 	virtual ~CCMException() throw();
-	
+
   private:
     CCMExceptionReason reason_;
 };
@@ -236,7 +236,7 @@ class EnterpriseComponent
 {
   public:
   	typedef wamas::platform::utils::SmartPtr<EnterpriseComponent> SmartPtr;
-  	
+
     virtual ~EnterpriseComponent() {}
 };
 
@@ -259,12 +259,12 @@ class CCMHome
   : virtual public wamas::platform::utils::RefCounted
 {
   public:
-    typedef wamas::platform::utils::SmartPtr<CCMHome> SmartPtr;    
+    typedef wamas::platform::utils::SmartPtr<CCMHome> SmartPtr;
 
     virtual ~CCMHome() {}
 
     virtual void remove_component(wamas::platform::utils::SmartPtr<CCMObject> component)
-        throw(CCMException, RemoveFailure) = 0;        
+        throw(CCMException, RemoveFailure) = 0;
 };
 
 
@@ -279,8 +279,8 @@ class KeylessCCMHome
   : virtual public wamas::platform::utils::RefCounted
 {
   public:
-    typedef wamas::platform::utils::SmartPtr<KeylessCCMHome> SmartPtr;    
-        
+    typedef wamas::platform::utils::SmartPtr<KeylessCCMHome> SmartPtr;
+
     virtual ~KeylessCCMHome() {}
 
     virtual wamas::platform::utils::SmartPtr<CCMObject> create_component()
@@ -298,7 +298,7 @@ class HomeExecutorBase
   public:
     typedef wamas::platform::utils::SmartPtr<HomeExecutorBase> SmartPtr;
 
-    virtual ~HomeExecutorBase() {}    
+    virtual ~HomeExecutorBase() {}
 };
 
 
@@ -332,7 +332,7 @@ class HomeRegistration
      * (defined by the home_name) from the HomeFinder.
      * Note: this method is NOT defined in the CCM specification!!
      */
-    virtual void unregister_home(const std::string& home_name) = 0;    
+    virtual void unregister_home(const std::string& home_name) = 0;
 };
 
 
@@ -352,7 +352,7 @@ class _CCM_EXPORT_DECL_ HomeFinder
   public:
 	static HomeFinder* Instance();
 	static void destroy();
-	
+
 	virtual ~HomeFinder() {}
 
 	virtual CCMHome::SmartPtr find_home_by_name(const std::string& name)
@@ -363,16 +363,16 @@ class _CCM_EXPORT_DECL_ HomeFinder
 
 	virtual CCMHome::SmartPtr find_home_by_type(const std::string& home_repid)
 		throw(HomeNotFound);
-            
-    // Methods defined in Components::HomeRegistration	
+
+    // Methods defined in Components::HomeRegistration
 	virtual void register_home(CCMHome::SmartPtr home_ref, const std::string& home_name);
 	virtual void unregister_home(CCMHome::SmartPtr home_ref);
-	virtual void unregister_home(const std::string& home_name);  	
-        
+	virtual void unregister_home(const std::string& home_name);
+
   protected:
-	  static HomeFinder* instance_;  	  
+	  static HomeFinder* instance_;
 	  HomePoolMap HomePool;
-	  HomeFinder() {};        
+	  HomeFinder() {};
 };
 
 
@@ -396,7 +396,7 @@ class CCMContext
     typedef wamas::platform::utils::SmartPtr<CCMContext> SmartPtr;
 
     virtual ~CCMContext() {}
-    virtual HomeExecutorBase* get_CCM_home() = 0;    
+    virtual HomeExecutorBase* get_CCM_home() = 0;
 };
 
 
@@ -411,7 +411,7 @@ class SessionContext
   : virtual public CCMContext
 {
   public:
-	typedef wamas::platform::utils::SmartPtr<SessionContext> SmartPtr;	
+	typedef wamas::platform::utils::SmartPtr<SessionContext> SmartPtr;
 
     virtual ~SessionContext() {}
 
@@ -422,7 +422,7 @@ class SessionContext
      * IllegalState exception is returned.
      ***/
     virtual Object* get_CCM_object()
-		throw (IllegalState) = 0;		
+		throw (IllegalState) = 0;
 };
 
 
@@ -442,7 +442,7 @@ class SessionComponent
   : virtual public EnterpriseComponent
 {
   public:
-    typedef wamas::platform::utils::SmartPtr<SessionComponent> SmartPtr; 
+    typedef wamas::platform::utils::SmartPtr<SessionComponent> SmartPtr;
 
     virtual ~SessionComponent() {}
 
@@ -473,7 +473,7 @@ class SessionComponent
      * servant is about to be destroyed.
      */
     virtual void ccm_remove()
-      throw (CCMException) = 0;      
+      throw (CCMException) = 0;
 };
 
 
@@ -488,8 +488,8 @@ class SessionSynchronisation
   : virtual public wamas::platform::utils::RefCounted
 {
   public:
-    typedef wamas::platform::utils::SmartPtr<SessionSynchronisation> SmartPtr; 
-    
+    typedef wamas::platform::utils::SmartPtr<SessionSynchronisation> SmartPtr;
+
     virtual ~SessionSynchronisation() {}
 
     virtual void after_begin()
@@ -522,7 +522,7 @@ class Navigation
   : virtual public wamas::platform::utils::RefCounted
 {
   public:
-    typedef wamas::platform::utils::SmartPtr<Navigation> SmartPtr;  
+    typedef wamas::platform::utils::SmartPtr<Navigation> SmartPtr;
 
     virtual ~Navigation() {}
 
@@ -533,7 +533,7 @@ class Navigation
      * exception shall be raised.
      */
     virtual Object::SmartPtr provide_facet(const std::string& name)
-      throw(InvalidName) = 0;      
+      throw(InvalidName) = 0;
 };
 
 
@@ -555,7 +555,7 @@ class Cookie
     Cookie(const std::string& value);
     virtual ~Cookie();
     bool operator< (const Cookie& ck) const;
-	
+
   protected:
     virtual OctetSeq cookieValue() const;
     virtual void cookieValue(const OctetSeq& cookieValue);
@@ -576,7 +576,7 @@ class Receptacles
   : virtual public wamas::platform::utils::RefCounted
 {
   public:
-	typedef wamas::platform::utils::SmartPtr<Receptacles> SmartPtr;    
+	typedef wamas::platform::utils::SmartPtr<Receptacles> SmartPtr;
 
     virtual ~Receptacles() {}
 
@@ -591,7 +591,7 @@ class Receptacles
     virtual Cookie connect(const FeatureName& name, Object::SmartPtr connection)
         throw(InvalidName, InvalidConnection, AlreadyConnected, ExceededConnectionLimit) = 0;
 
-    /* 
+    /*
      * Simplex receptacle: the operation will disassociate any object
      * reference currently connected to the receptacle - the cookie
      * parameter is ignored.
@@ -599,7 +599,7 @@ class Receptacles
      * associated with the cookie value from the receptacle.
      */
     virtual void disconnect(const FeatureName& name, const Cookie& ck)
-        throw(InvalidName, InvalidConnection, CookieRequired, NoConnection) = 0;	    
+        throw(InvalidName, InvalidConnection, CookieRequired, NoConnection) = 0;
 };
 
 
@@ -614,7 +614,7 @@ class CCMObject
     	  virtual public Receptacles
 {
   public:
-    typedef wamas::platform::utils::SmartPtr<CCMObject> SmartPtr;    
+    typedef wamas::platform::utils::SmartPtr<CCMObject> SmartPtr;
 
 	virtual ~CCMObject() {}
 
@@ -640,7 +640,7 @@ class CCMObject
      * exception.
      */
     virtual void remove()
-        throw(RemoveFailure) = 0;        
+        throw(RemoveFailure) = 0;
 };
 
 
@@ -741,7 +741,7 @@ class Assembly
      *
      * Note: This is an CCM extension to support nested components.
      */
-    virtual void configuration_complete() = 0;    
+    virtual void configuration_complete() = 0;
 };
 
 
@@ -749,8 +749,8 @@ class AssemblyFactory
   : virtual public wamas::platform::utils::RefCounted
 {
   public:
-	typedef wamas::platform::utils::SmartPtr<AssemblyFactory> SmartPtr;	
-  
+	typedef wamas::platform::utils::SmartPtr<AssemblyFactory> SmartPtr;
+
 	virtual ~AssemblyFactory() {}
 
 	virtual Assembly::SmartPtr create()
@@ -772,7 +772,25 @@ class AssemblyFactoryTemplate
 	{
 		Assembly::SmartPtr assembly(new T());
 		return assembly;
-	}		
+	}
+};
+
+
+/**
+@interface ComponentDelegator
+*/
+class ComponentDelegator
+{
+public:
+    virtual ~ComponentDelegator() {}
+
+    typedef std::map<Cookie, Object::SmartPtr> Connections;
+
+    virtual Object::SmartPtr provide(const std::string& facet) = 0;
+    virtual Cookie connect(const FeatureName& receptacle, Object::SmartPtr facet) = 0;
+    virtual void disconnect(const FeatureName& receptacle, const Cookie& cookie) = 0;
+
+    void disconnect(const FeatureName& receptacle);
 };
 
 } // /namespace Components

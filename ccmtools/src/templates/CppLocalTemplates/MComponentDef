@@ -359,8 +359,6 @@ class CCM_%(Identifier)s
     
     virtual ~CCM_%(Identifier)s() {}
 
-    virtual void disconnect(const std::string& receptacle) = 0;
-    
 %(MAttributeDefPrototypeVV)s
 %(MProvidesDefGetFacetPrototypeVV)s
 %(MSupportsDefImplPrototypeVV)s
@@ -423,7 +421,7 @@ class CCM_%(Identifier)s_Context
  * @version 
  **/
 class %(Identifier)s_impl
-    : virtual public %(LocalNamespace)sCCM_%(Identifier)s%(BaseType)s
+    : virtual public %(LocalNamespace)sCCM_%(Identifier)s%(BaseType)s%(AssemblyImplBase)s
 {
   private:
 %(MAttributeDefVariable)s
@@ -437,6 +435,7 @@ class %(Identifier)s_impl
     %(Identifier)s_impl();
     virtual ~%(Identifier)s_impl();
 
+%(AssemblyImplPrototype)s
 %(MAttributeDefPrototype)s
 %(MProvidesDefGetFacetPrototype)s
 %(MSupportsDefImplPrototype)s
@@ -454,8 +453,6 @@ class %(Identifier)s_impl
 
     virtual void ccm_remove()
         throw(Components::CCMException);
-
-    virtual void disconnect(const std::string& receptacle);
 };
 
 %(CloseNamespace)s
@@ -542,12 +539,7 @@ void
     }
 }
 
-void
-%(Identifier)s_impl::disconnect(const std::string& receptacle)
-{
-%(AssemblyDisconnect)s
-}
-
+%(AssemblyImplDefinition)s
 %(MProvidesDefGetFacetDefinition)s
 
 %(CloseNamespace)s

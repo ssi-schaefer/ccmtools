@@ -167,9 +167,20 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         {
             return variable_AssemblyCcmRemove();
         }
-        if (data_type.equals("AssemblyDisconnect"))
+        if(data_type.equals("AssemblyImplBase"))
         {
-            return variable_AssemblyDisconnect();
+            // TODO
+            return "/* AssemblyImplBase */";
+        }
+        if(data_type.equals("AssemblyImplPrototype"))
+        {
+            // TODO
+            return "// AssemblyImplPrototype";
+        }
+        if(data_type.equals("AssemblyImplDefinition"))
+        {
+            // TODO
+            return "// AssemblyImplDefinition";
         }
         return super.data_MComponentDef(data_type, data_value);
     }
@@ -495,7 +506,7 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         return code.toString();
     }
 
-    protected String variable_AssemblyDisconnect()
+    private String variable_AssemblyDisconnect()
     {
         if (currentAssembly == null)
             return "";

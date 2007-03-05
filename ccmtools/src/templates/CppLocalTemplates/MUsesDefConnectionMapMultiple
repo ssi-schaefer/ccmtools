@@ -1,5 +1,5 @@
 typedef std::map< ::Components::Cookie, 
-                  %(CCMUsesType)s::SmartPtr> %(MultipleReceptacleType)s;
+                  %(UsesType)s::SmartPtr> %(MultipleReceptacleType)s;
 
 
 

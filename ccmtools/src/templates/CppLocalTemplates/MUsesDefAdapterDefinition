@@ -25,7 +25,7 @@ void
   	{ 
   		throw ::Components::NoConnection();
   	}
-    local_component->disconnect("%(Identifier)s");
+    // local_component->disconnect("%(Identifier)s");
   	%(UsesType)s::SmartPtr f = %(Identifier)s_receptacle;
   	%(Identifier)s_receptacle.forget();
   	return f;

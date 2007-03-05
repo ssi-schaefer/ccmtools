@@ -27,6 +27,7 @@ class Alien_impl
     , virtual public ::Components::ComponentDelegator
 {
   private:
+    ::wamas::platform::utils::SmartPtr< ::Components::CCMObject> inner_;
 
     bool ccm_activate_ok;
 
@@ -37,9 +38,9 @@ class Alien_impl
     virtual ~Alien_impl();
 
     // ComponentDelegator implementation
-    virtual ::Components::Object::SmartPtr provide(const char* facet);
-    virtual ::Components::Cookie connect(const char* receptacle, ::Components::Object::SmartPtr facet);
-    virtual ::Components::Object::SmartPtr disconnect(const char* receptacle, ::Components::Cookie const& cookie);
+    virtual ::Components::Object::SmartPtr provide(const std::string& facet);
+    virtual ::Components::Cookie connect(const ::Components::FeatureName& receptacle, ::Components::Object::SmartPtr facet);
+    virtual void disconnect(const ::Components::FeatureName& receptacle, ::Components::Cookie const& cookie);
 
 private:
     ::World::CCM_Data* Ap1_;

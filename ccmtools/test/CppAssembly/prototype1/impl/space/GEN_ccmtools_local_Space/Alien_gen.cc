@@ -35,7 +35,7 @@ Alien::Alien(AlienHome* h,
 {
     context = NULL;
     ValidConnection = local_component!=NULL;
-    delegator = dynamic_cast< ::Components::ComponentDelegator>(local_component);
+    delegator = dynamic_cast< ::Components::ComponentDelegator*>(local_component);
 
     Ar4_receptacle_counter = 0;
     Ar7a_receptacle_counter = 0;
@@ -100,54 +100,66 @@ Alien::provide_Ap10()
     return Ap10_facet;
 }
 
+template<typename T>
 void
-Alien::connect_Ar3(::World::Data::SmartPtr f)
-  	throw(::Components::AlreadyConnected, ::Components::InvalidConnection)
+generic_single_connect(T& receptacle, const std::string& name, const T& f,
+    ::Components::ComponentDelegator* delegator)
 {
-  	if(!ValidConnection)
-  	{
-  		throw ::Components::InvalidConnection();
-    }
     if(delegator)
     {
-        delegator->connect("Ar3", f);
-        Ar3_receptacle = f;
+        delegator->connect(name, f);
     }
     else
     {
-        if(Ar3_receptacle)
+        if(receptacle)
         {
             throw ::Components::AlreadyConnected();
         }
-        Ar3_receptacle = f;
     }
+    receptacle = f;
+}
+
+void
+Alien::connect_Ar3(::World::Data::SmartPtr f)
+    throw(::Components::AlreadyConnected, ::Components::InvalidConnection)
+{
+    if(!ValidConnection)
+    {
+        throw ::Components::InvalidConnection();
+    }
+    generic_single_connect(Ar3_receptacle, "Ar3", f, delegator);
+}
+
+template<typename T>
+T
+generic_single_disconnect(T& receptacle, const std::string& name,
+    ::Components::ComponentDelegator* delegator)
+{
+    if(delegator)
+    {
+        delegator->disconnect(name);
+    }
+    else
+    {
+        if(!receptacle)
+        {
+            throw ::Components::NoConnection();
+        }
+    }
+    T f = receptacle;
+    receptacle.forget();
+    return f;
 }
 
 ::World::Data::SmartPtr
 Alien::disconnect_Ar3()
-  	throw(::Components::NoConnection, ::Components::InvalidConnection)
+    throw(::Components::NoConnection, ::Components::InvalidConnection)
 {
-  	if(!ValidConnection)
-  	{
-  	    throw ::Components::InvalidConnection();
-  	}
-    if(delegator)
+    if(!ValidConnection)
     {
-        ::Components::Object::SmartPtr o = delegator->disconnect("Ar3");
-        Ar3_receptacle.forget();
-        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
-        return f;
+        throw ::Components::InvalidConnection();
     }
-    else
-    {
-        if(!Ar3_receptacle)
-        {
-            throw ::Components::NoConnection();
-        }
-        ::World::Data::SmartPtr f = Ar3_receptacle;
-        Ar3_receptacle.forget();
-        return f;
-    }
+    return generic_single_disconnect(Ar3_receptacle, "Ar3", delegator);
 }
 
 ::World::Data::SmartPtr
@@ -163,6 +175,28 @@ Alien::get_connection_Ar3()
     return Ar3_receptacle;
 }
 
+template<typename MAP, typename T>
+::Components::Cookie
+generic_multiple_connect(MAP& receptacles, long& receptacle_counter,
+    const std::string& name, const T& f,
+    ::Components::ComponentDelegator* delegator)
+{
+    if(delegator)
+    {
+        ::Components::Cookie ck = delegator->connect(name, f);
+        receptacles.insert(make_pair(ck, f));
+        return ck;
+    }
+    else
+    {
+        stringstream s;
+        s << "CCM_" << name << ":" << receptacle_counter++;
+        ::Components::Cookie ck(s.str());
+        receptacles.insert(make_pair(ck, f));
+        return ck;
+    }
+}
+
 ::Components::Cookie
 Alien::connect_Ar4(::World::Data::SmartPtr f)
     throw(::Components::ExceededConnectionLimit, ::Components::InvalidConnection)
@@ -171,21 +205,34 @@ Alien::connect_Ar4(::World::Data::SmartPtr f)
     {
         throw ::Components::InvalidConnection();
     }
+    return generic_multiple_connect(Ar4_receptacles, Ar4_receptacle_counter, "Ar4", f, delegator);
+}
+
+template<typename MAP, typename T>
+T
+generic_multiple_disconnect(MAP& receptacles, const std::string& name,
+    const ::Components::Cookie& ck,
+    ::Components::ComponentDelegator* delegator)
+{
     if(delegator)
     {
-        ::Components::Cookie ck = delegator->connect("Ar4", f);
-        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
-        Ar4_receptacles.insert(make_pair(ck, ccmf));
-        return ck;
+        delegator->disconnect(name, ck);
+        T f = receptacles[ck];
+        receptacles.erase(ck);
+        return f;
     }
     else
     {
-        stringstream s;
-        s << "CCM_Ar4:" << Ar4_receptacle_counter++;
-        ::Components::Cookie ck(s.str());
-        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
-        Ar4_receptacles.insert(make_pair(ck, ccmf));
-        return ck;
+        if(receptacles.find(ck) != receptacles.end())
+        {
+            T f = receptacles[ck];
+            receptacles.erase(ck);
+            return f;
+        }
+        else
+        {
+            throw ::Components::InvalidConnection();
+        }
     }
 }
 
@@ -197,26 +244,7 @@ Alien::disconnect_Ar4(::Components::Cookie ck)
     {
         throw ::Components::InvalidConnection();
     }
-    if(delegator)
-    {
-        ::Components::Object::SmartPtr o = delegator->disconnect("Ar4", ck);
-        Ar4_receptacles.erase(ck);
-        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
-        return f;
-    }
-    else
-    {
-        if(Ar4_receptacles.find(ck) != Ar4_receptacles.end())
-        {
-            ::World::CCM_Data::SmartPtr f(Ar4_receptacles[ck]);
-            Ar4_receptacles.erase(ck);
-            return f;
-        }
-        else
-        {
-            throw ::Components::InvalidConnection();
-        }
-    }
+    return generic_multiple_disconnect< ::Space::Alien_Ar4_Connections, ::World::Data::SmartPtr>(Ar4_receptacles, "Ar4", ck, delegator);
 }
 
 ::Space::Alien_Ar4_Connections&
@@ -237,19 +265,7 @@ Alien::connect_Ar10(::World::Data::SmartPtr f)
   	{
   		throw ::Components::InvalidConnection();
     }
-    if(delegator)
-    {
-        delegator->connect("Ar10", f);
-        Ar10_receptacle = f;
-    }
-    else
-    {
-        if(Ar10_receptacle)
-        {
-            throw ::Components::AlreadyConnected();
-        }
-        Ar10_receptacle = f;
-    }
+    generic_single_connect(Ar10_receptacle, "Ar10", f, delegator);
 }
 
 ::World::Data::SmartPtr
@@ -260,23 +276,7 @@ Alien::disconnect_Ar10()
   	{
   	    throw ::Components::InvalidConnection();
   	}
-    if(delegator)
-    {
-        ::Components::Object::SmartPtr o = delegator->disconnect("Ar10");
-        Ar10_receptacle.forget();
-        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
-        return f;
-    }
-    else
-    {
-        if(!Ar10_receptacle)
-        {
-            throw ::Components::NoConnection();
-        }
-        ::World::Data::SmartPtr f = Ar10_receptacle;
-        Ar10_receptacle.forget();
-        return f;
-    }
+    return generic_single_disconnect(Ar10_receptacle, "Ar10", delegator);
 }
 
 ::World::Data::SmartPtr
@@ -300,19 +300,7 @@ Alien::connect_Ar6a(::World::Data::SmartPtr f)
   	{
   		throw ::Components::InvalidConnection();
     }
-    if(delegator)
-    {
-        delegator->connect("Ar6a", f);
-        Ar6a_receptacle = f;
-    }
-    else
-    {
-        if(Ar6a_receptacle)
-        {
-            throw ::Components::AlreadyConnected();
-        }
-        Ar6a_receptacle = f;
-    }
+    generic_single_connect(Ar6a_receptacle, "Ar6a", f, delegator);
 }
 
 ::World::Data::SmartPtr
@@ -323,23 +311,7 @@ Alien::disconnect_Ar6a()
   	{
   	    throw ::Components::InvalidConnection();
   	}
-    if(delegator)
-    {
-        ::Components::Object::SmartPtr o = delegator->disconnect("Ar6a");
-        Ar6a_receptacle.forget();
-        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
-        return f;
-    }
-    else
-    {
-        if(!Ar6a_receptacle)
-        {
-            throw ::Components::NoConnection();
-        }
-        ::World::Data::SmartPtr f = Ar6a_receptacle;
-        Ar6a_receptacle.forget();
-        return f;
-    }
+    return generic_single_disconnect(Ar6a_receptacle, "Ar6a", delegator);
 }
 
 ::World::Data::SmartPtr
@@ -363,19 +335,7 @@ Alien::connect_Ar6b(::World::Data::SmartPtr f)
   	{
   		throw ::Components::InvalidConnection();
     }
-    if(delegator)
-    {
-        delegator->connect("Ar6b", f);
-        Ar6b_receptacle = f;
-    }
-    else
-    {
-        if(Ar6b_receptacle)
-        {
-            throw ::Components::AlreadyConnected();
-        }
-        Ar6b_receptacle = f;
-    }
+    generic_single_connect(Ar6b_receptacle, "Ar6b", f, delegator);
 }
 
 ::World::Data::SmartPtr
@@ -386,23 +346,7 @@ Alien::disconnect_Ar6b()
   	{
   	    throw ::Components::InvalidConnection();
   	}
-    if(delegator)
-    {
-        ::Components::Object::SmartPtr o = delegator->disconnect("Ar6b");
-        Ar6b_receptacle.forget();
-        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
-        return f;
-    }
-    else
-    {
-        if(!Ar6b_receptacle)
-        {
-            throw ::Components::NoConnection();
-        }
-        ::World::Data::SmartPtr f = Ar6b_receptacle;
-        Ar6b_receptacle.forget();
-        return f;
-    }
+    return generic_single_disconnect(Ar6b_receptacle, "Ar6b", delegator);
 }
 
 ::World::Data::SmartPtr
@@ -426,22 +370,7 @@ Alien::connect_Ar7a(::World::Data::SmartPtr f)
     {
         throw ::Components::InvalidConnection();
     }
-    if(delegator)
-    {
-        ::Components::Cookie ck = delegator->connect("Ar7a", f);
-        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
-        Ar7a_receptacles.insert(make_pair(ck, ccmf));
-        return ck;
-    }
-    else
-    {
-        stringstream s;
-        s << "CCM_Ar7a:" << Ar7a_receptacle_counter++;
-        ::Components::Cookie ck(s.str());
-        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
-        Ar7a_receptacles.insert(make_pair(ck, ccmf));
-        return ck;
-    }
+    return generic_multiple_connect(Ar7a_receptacles, Ar7a_receptacle_counter, "Ar7a", f, delegator);
 }
 
 ::World::Data::SmartPtr
@@ -452,26 +381,7 @@ Alien::disconnect_Ar7a(::Components::Cookie ck)
     {
         throw ::Components::InvalidConnection();
     }
-    if(delegator)
-    {
-        ::Components::Object::SmartPtr o = delegator->disconnect("Ar7a", ck);
-        Ar7a_receptacles.erase(ck);
-        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
-        return f;
-    }
-    else
-    {
-        if(Ar7a_receptacles.find(ck) != Ar7a_receptacles.end())
-        {
-            ::World::CCM_Data::SmartPtr f(Ar7a_receptacles[ck]);
-            Ar7a_receptacles.erase(ck);
-            return f;
-        }
-        else
-        {
-            throw ::Components::InvalidConnection();
-        }
-    }
+    return generic_multiple_disconnect< ::Space::Alien_Ar7a_Connections, ::World::Data::SmartPtr>(Ar7a_receptacles, "Ar7a", ck, delegator);
 }
 
 ::Space::Alien_Ar7a_Connections&
@@ -492,22 +402,7 @@ Alien::connect_Ar7b(::World::Data::SmartPtr f)
     {
         throw ::Components::InvalidConnection();
     }
-    if(delegator)
-    {
-        ::Components::Cookie ck = delegator->connect("Ar7b", f);
-        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
-        Ar7b_receptacles.insert(make_pair(ck, ccmf));
-        return ck;
-    }
-    else
-    {
-        stringstream s;
-        s << "CCM_Ar7b:" << Ar7b_receptacle_counter++;
-        ::Components::Cookie ck(s.str());
-        ::World::CCM_Data::SmartPtr ccmf(dynamic_cast< ::World::CCM_Data* >(f.ptr()));
-        Ar7b_receptacles.insert(make_pair(ck, ccmf));
-        return ck;
-    }
+    return generic_multiple_connect(Ar7b_receptacles, Ar7b_receptacle_counter, "Ar7b", f, delegator);
 }
 
 ::World::Data::SmartPtr
@@ -518,26 +413,7 @@ Alien::disconnect_Ar7b(::Components::Cookie ck)
     {
         throw ::Components::InvalidConnection();
     }
-    if(delegator)
-    {
-        ::Components::Object::SmartPtr o = delegator->disconnect("Ar7b", ck);
-        Ar7b_receptacles.erase(ck);
-        ::World::Data::SmartPtr f(dynamic_cast< ::World::Data*>(o.ptr()));
-        return f;
-    }
-    else
-    {
-        if(Ar7b_receptacles.find(ck) != Ar7b_receptacles.end())
-        {
-            ::World::CCM_Data::SmartPtr f(Ar7b_receptacles[ck]);
-            Ar7b_receptacles.erase(ck);
-            return f;
-        }
-        else
-        {
-            throw ::Components::InvalidConnection();
-        }
-    }
+    return generic_multiple_disconnect< ::Space::Alien_Ar7b_Connections, ::World::Data::SmartPtr>(Ar7b_receptacles, "Ar7b", ck, delegator);
 }
 
 ::Space::Alien_Ar7b_Connections&

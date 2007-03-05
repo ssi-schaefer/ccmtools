@@ -9,8 +9,7 @@
     stringstream s;
     s << "CCM_%(Identifier)s:" << %(Identifier)s_receptacle_counter++;
     ::Components::Cookie ck(s.str());
-    %(CCMUsesType)s::SmartPtr ccmf(dynamic_cast< %(CCMUsesType)s* >(f.ptr()));
-    %(Identifier)s_receptacles.insert(make_pair(ck, ccmf));
+    %(Identifier)s_receptacles.insert(make_pair(ck, f));
     return ck;
 }
 
@@ -24,7 +23,7 @@
     }
     if(%(Identifier)s_receptacles.find(ck) != %(Identifier)s_receptacles.end()) 
     {
-        %(CCMUsesType)s::SmartPtr f(%(Identifier)s_receptacles[ck]);
+        %(UsesType)s::SmartPtr f(%(Identifier)s_receptacles[ck]);
         %(Identifier)s_receptacles.erase(ck);
         return f;
     } 

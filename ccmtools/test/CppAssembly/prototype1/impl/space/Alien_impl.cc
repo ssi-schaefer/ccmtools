@@ -23,23 +23,47 @@ Alien_impl::Alien_impl()
 {
     Ap1_ = NULL;    Ap10_ = NULL;
 
+    ::Components::HomeFinder* finder = ::Components::HomeFinder::Instance();
+    ::Components::CCMHome::SmartPtr hp = finder->find_home_by_name("Worker");
+    ::Components::KeylessCCMHome* home = dynamic_cast< ::Components::KeylessCCMHome*>(hp.ptr());
+    inner_ = home->create_component();
 }
 
 Alien_impl::~Alien_impl()
 {
 }
 
-::Components::Object::SmartPtr Alien_impl::provide(const char* facet)
+
+::Components::Object::SmartPtr Alien_impl::provide(const std::string& facet)
 {
+    if(facet=="Ap1")
+    {
+        return inner_->provide_facet("p1");
+    }
+    // TODO
 }
 
-::Components::Cookie Alien_impl::connect(const char* receptacle, ::Components::Object::SmartPtr facet)
+
+::Components::Cookie Alien_impl::connect(const ::Components::FeatureName& receptacle, ::Components::Object::SmartPtr facet)
 {
+    if(receptacle=="Ar3")
+    {
+        return inner_->connect("r3", facet);
+    }
+    // TODO
 }
 
-::Components::Object::SmartPtr Alien_impl::disconnect(const char* receptacle, ::Components::Cookie const& cookie)
+
+void Alien_impl::disconnect(const ::Components::FeatureName& receptacle, ::Components::Cookie const& cookie)
 {
+    if(receptacle=="Ar3")
+    {
+        inner_->disconnect("r3", cookie);
+        return;
+    }
+    // TODO
 }
+
 
 void
 Alien_impl::set_session_context(Components::SessionContext* context)
