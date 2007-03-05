@@ -29,6 +29,9 @@ class Alien_impl
   private:
     ::wamas::platform::utils::SmartPtr< ::Components::CCMObject> inner_;
 
+    ::Components::Cookie Ar6a_;
+    ::Components::Cookie Ar6b_;
+
     bool ccm_activate_ok;
 
   public:

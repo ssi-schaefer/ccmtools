@@ -64,14 +64,15 @@ Alien::provide_Ap1()
         if(delegator)
         {
             ::Components::Object::SmartPtr o = delegator->provide("Ap1");
-            Ap1_facet.eat(dynamic_cast< ::World::Data*>(o.ptr()));
+            if(o)
+            {
+                Ap1_facet.eat(dynamic_cast< ::World::Data*>(o.ptr()));
+                return Ap1_facet;
+            }
         }
-        else
-        {
-            Ap1_facet_impl = local_component->get_Ap1();
-            Ap1_facet = ::World::Data::SmartPtr(
-                new ::ccmtools::local::World::DataAdapter(Ap1_facet_impl));
-        }
+        Ap1_facet_impl = local_component->get_Ap1();
+        Ap1_facet = ::World::Data::SmartPtr(
+            new ::ccmtools::local::World::DataAdapter(Ap1_facet_impl));
     }
     return Ap1_facet;
 }
@@ -88,14 +89,15 @@ Alien::provide_Ap10()
         if(delegator)
         {
             ::Components::Object::SmartPtr o = delegator->provide("Ap10");
-            Ap10_facet.eat(dynamic_cast< ::World::Data*>(o.ptr()));
+            if(o)
+            {
+                Ap10_facet.eat(dynamic_cast< ::World::Data*>(o.ptr()));
+                return Ap10_facet;
+            }
         }
-        else
-        {
-            Ap10_facet_impl = local_component->get_Ap10();
-            Ap10_facet = ::World::Data::SmartPtr(
-                new ::ccmtools::local::World::DataAdapter(Ap10_facet_impl));
-        }
+        Ap10_facet_impl = local_component->get_Ap10();
+        Ap10_facet = ::World::Data::SmartPtr(
+            new ::ccmtools::local::World::DataAdapter(Ap10_facet_impl));
     }
     return Ap10_facet;
 }
