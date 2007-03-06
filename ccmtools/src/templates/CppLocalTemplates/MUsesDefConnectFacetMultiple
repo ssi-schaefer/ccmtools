@@ -1,6 +1,6 @@
     if(name == "%(Identifier)s")
     {
-        return connect_%(Identifier)s(%(CCMUsesType)s::SmartPtr
-            (dynamic_cast< %(CCMUsesType)s*> (connection.ptr())));
+        return connect_%(Identifier)s(%(UsesType)s::SmartPtr
+            (dynamic_cast< %(UsesType)s*> (connection.ptr())));
     }
 
