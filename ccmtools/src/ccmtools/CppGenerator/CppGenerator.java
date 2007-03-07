@@ -1021,12 +1021,16 @@ abstract public class CppGenerator extends CodeGenerator
         }
         else if (data_type.equals("MultipleReceptacleType"))
         {
-            return create_MultipleReceptacleName();
+            MUsesDef uses = (MUsesDef) currentNode;
+            MComponentDef component = uses.getComponent();
+            return getMultipleReceptacleType(component, uses);
         }
         else if (data_type.equals("MultipleReceptacleName"))
         {
-            return getLocalCxxNamespace(iface, Text.SCOPE_SEPARATOR)
-                    + create_MultipleReceptacleName();
+            MUsesDef uses = (MUsesDef) currentNode;
+            MComponentDef component = uses.getComponent();
+            return getLocalCxxNamespace(component, Text.SCOPE_SEPARATOR)
+                    + getMultipleReceptacleType(component, uses);
         }
         else if (data_type.startsWith("MOperation"))
         {
@@ -1045,10 +1049,8 @@ abstract public class CppGenerator extends CodeGenerator
         return data_value;
     }
 
-    private String create_MultipleReceptacleName()
+    private static String getMultipleReceptacleType( MComponentDef component, MUsesDef uses )
     {
-        MUsesDef uses = (MUsesDef) currentNode;
-        MComponentDef component = uses.getComponent();
         return component.getIdentifier() + "_" + uses.getIdentifier() + "_Connections";
     }
 
