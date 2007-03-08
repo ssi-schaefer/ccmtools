@@ -37,6 +37,9 @@ Alien::Alien(AlienHome* h,
     ValidConnection = local_component!=NULL;
     delegator = dynamic_cast< ::Components::ComponentDelegator*>(local_component);
 
+    Ap1_facet_impl = NULL;
+    Ap10_facet_impl = NULL;
+
     Ar4_receptacle_counter = 0;
     Ar7a_receptacle_counter = 0;
     Ar7b_receptacle_counter = 0;
@@ -457,46 +460,46 @@ Alien::connect(const ::Components::FeatureName& name,
 {
     if(name == "Ar3")
     {
-        connect_Ar3(::World::CCM_Data::SmartPtr(
-            dynamic_cast< ::World::CCM_Data*> (connection.ptr())));
+        connect_Ar3(::World::Data::SmartPtr(
+            dynamic_cast< ::World::Data*> (connection.ptr())));
         ::Components::Cookie ck;
         return ck;
     }
     if(name == "Ar4")
     {
-        return connect_Ar4(::World::CCM_Data::SmartPtr
-            (dynamic_cast< ::World::CCM_Data*> (connection.ptr())));
+        return connect_Ar4(::World::Data::SmartPtr
+            (dynamic_cast< ::World::Data*> (connection.ptr())));
     }
     if(name == "Ar10")
     {
-        connect_Ar10(::World::CCM_Data::SmartPtr(
-            dynamic_cast< ::World::CCM_Data*> (connection.ptr())));
+        connect_Ar10(::World::Data::SmartPtr(
+            dynamic_cast< ::World::Data*> (connection.ptr())));
         ::Components::Cookie ck;
         return ck;
     }
     if(name == "Ar6a")
     {
-        connect_Ar6a(::World::CCM_Data::SmartPtr(
-            dynamic_cast< ::World::CCM_Data*> (connection.ptr())));
+        connect_Ar6a(::World::Data::SmartPtr(
+            dynamic_cast< ::World::Data*> (connection.ptr())));
         ::Components::Cookie ck;
         return ck;
     }
     if(name == "Ar6b")
     {
-        connect_Ar6b(::World::CCM_Data::SmartPtr(
-            dynamic_cast< ::World::CCM_Data*> (connection.ptr())));
+        connect_Ar6b(::World::Data::SmartPtr(
+            dynamic_cast< ::World::Data*> (connection.ptr())));
         ::Components::Cookie ck;
         return ck;
     }
     if(name == "Ar7a")
     {
-        return connect_Ar7a(::World::CCM_Data::SmartPtr
-            (dynamic_cast< ::World::CCM_Data*> (connection.ptr())));
+        return connect_Ar7a(::World::Data::SmartPtr
+            (dynamic_cast< ::World::Data*> (connection.ptr())));
     }
     if(name == "Ar7b")
     {
-        return connect_Ar7b(::World::CCM_Data::SmartPtr
-            (dynamic_cast< ::World::CCM_Data*> (connection.ptr())));
+        return connect_Ar7b(::World::Data::SmartPtr
+            (dynamic_cast< ::World::Data*> (connection.ptr())));
     }
 
     throw ::Components::InvalidName();

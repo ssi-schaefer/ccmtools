@@ -1,0 +1,55 @@
+module World {
+
+interface Data
+{
+    long work(in string text);
+};
+
+component Worker
+{
+    provides Data p1;
+
+    provides Data p2;
+    uses Data r2;
+
+    uses Data r3;
+
+    uses multiple Data r4;
+
+    provides Data p5a;
+    provides Data p5b;
+    uses multiple Data r5;
+
+    uses multiple Data r6;
+
+    uses multiple Data r7;
+};
+
+home WorkerHome manages Worker {};
+
+};  // /module World
+
+
+module Space {
+
+component Alien
+{
+    provides World::Data Ap1;
+
+    uses World::Data Ar3;
+
+    uses multiple World::Data Ar4;
+
+    provides World::Data Ap10;
+    uses World::Data Ar10;
+
+    uses World::Data Ar6a;
+    uses World::Data Ar6b;
+
+    uses multiple World::Data Ar7a;
+    uses multiple World::Data Ar7b;
+};
+
+home AlienHome manages Alien {};
+
+};  // /module Space

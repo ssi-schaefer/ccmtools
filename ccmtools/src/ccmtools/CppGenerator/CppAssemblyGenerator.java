@@ -319,8 +319,33 @@ public class CppAssemblyGenerator extends CppLocalGenerator
             return "";
         HashSet<String> include_set = new HashSet<String>();
         StringBuilder code = new StringBuilder();
-        // TODO
+        for (AssemblyElement e : currentAssembly.getElements())
+        {
+            if (e instanceof Constant)
+            {
+                Constant c = (Constant) e;
+                generateAssemblyInnerComponentInclude(c.getTarget(), include_set, code);
+            }
+            else if (e instanceof Attribute)
+            {
+                Attribute a = (Attribute) e;
+                generateAssemblyInnerComponentInclude(a.getTarget(), include_set, code);
+            }
+        }
         return code.toString();
+    }
+
+    private void generateAssemblyInnerComponentInclude( Port target, Set<String> include_set,
+            StringBuilder code )
+    {
+        String target_comp = target.getComponent();
+        MComponentDef target_def = getAssemblyLocalComponents().get(target_comp);
+        String inc_name = getLocalCxxIncludeName(target_def);
+        if (!include_set.contains(inc_name))
+        {
+            code.append("#include <" + inc_name + "_gen.h>\n");
+            include_set.add(inc_name);
+        }
     }
 
     protected String variable_AssemblyInnerHomeInclude()
@@ -486,6 +511,7 @@ public class CppAssemblyGenerator extends CppLocalGenerator
                     + target_name + "());\n";
             connect_code.append(impl_code);
             connect_code.append(TAB2 + "impl->target = f;\n");
+            connect_code.append(TAB2 + "return ::Components::Cookie();\n");
             disconnect_code.append(impl_code);
             disconnect_code.append(TAB2 + "impl->target.forget();\n");
         }
@@ -504,7 +530,6 @@ public class CppAssemblyGenerator extends CppLocalGenerator
                 connect_code.append(target_name + "\", f);\n");
                 disconnect_code.append(TAB2 + target_comp + "_->disconnect(\"");
                 disconnect_code.append(target_name + "\", ck);\n");
-                disconnect_code.append(TAB2 + "return;\n");
             }
             else
             {
@@ -520,10 +545,10 @@ public class CppAssemblyGenerator extends CppLocalGenerator
                 connect_code.append(TAB2 + "return " + source_name + "_;\n");
                 disconnect_code.append(TAB2 + target_comp + "_->disconnect(\"");
                 disconnect_code.append(target_name + "\", " + source_name + "_);\n");
-                disconnect_code.append(TAB2 + "return;\n");
             }
         }
         connect_code.append(TAB + "}\n");
+        disconnect_code.append(TAB2 + "return;\n");
         disconnect_code.append(TAB + "}\n");
     }
 
@@ -687,17 +712,9 @@ public class CppAssemblyGenerator extends CppLocalGenerator
     {
         if (dataType.equals("AssemblyTargetVariable"))
         {
-            return variable_AssemblyTargetVariable();
+            return TAB + "::Components::Object::SmartPtr target;\n";
         }
         return super.data_MProvidesDef(dataType, dataValue);
-    }
-
-    protected String variable_AssemblyTargetVariable()
-    {
-        MProvidesDef provides = (MProvidesDef) currentNode;
-        MInterfaceDef iface = provides.getProvides();
-        String iface_type = getLocalCxxName(iface, Text.SCOPE_SEPARATOR);
-        return TAB + iface_type + "::SmartPtr target;\n";
     }
 
     protected String generateOperationImpl( MProvidesDef provides, MOperationDef op )
@@ -711,12 +728,21 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         code.append(getOperationParams(op)).append(")\n");
         code.append("    ").append(getOperationExcepts(op)).append("\n");
         code.append("{\n");
+        //
+        MInterfaceDef iface = provides.getProvides();
+        String iface_type = getLocalCxxName(iface, Text.SCOPE_SEPARATOR);
+        code.append(TAB + iface_type + "* f_a_c_e_t = dynamic_cast< ");
+        code.append(iface_type + "*>(this->target.ptr());\n");
+        code.append(TAB + "if(!f_a_c_e_t)\n");
+        code.append(TAB2 + "throw ::Components::CCMException(::Components::SYSTEM_ERROR);\n");
+        //
         code.append(TAB);
         if (!return_type.equals("void"))
             code.append("return ");
-        code.append("this->target->").append(op.getIdentifier()).append("(");
+        code.append("f_a_c_e_t->").append(op.getIdentifier()).append("(");
         code.append(getOperationParamNames(op));
         code.append(");\n");
+        //
         code.append("}\n\n");
         return code.toString();
     }
@@ -738,7 +764,6 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         String source = attr.getIdentifier();
         StringBuilder result = new StringBuilder();
         boolean empty = true;
-        Map<String, MComponentDef> map = getAssemblyLocalComponents();
         for (AssemblyElement e : currentAssembly.getElements())
         {
             if (e instanceof Attribute)

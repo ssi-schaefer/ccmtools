@@ -2,7 +2,7 @@ ITF="gen/idl/interface"
 COMP="gen/idl/component"
 SPACE_GEN="space/GEN_ccmtools_local_Space"
 
-all: local
+all: local assembly
 
 local:
 	ccmidl -idl3 -o gen/idl prototype1.idl
@@ -16,11 +16,10 @@ confix:
 
 manual: local confix
 
-copy:
-	cp -p impl/space/*.h impl/space/*.cc gen/space/
-	cp -p impl/$(SPACE_GEN)/*.h impl/$(SPACE_GEN)/*.cc gen/$(SPACE_GEN)/
+assembly:
+	ccmtools c++assembly -o gen/space prototype1.idl prototype1.assembly
 
-check: local copy confix
+check: local assembly confix
 
 clean:
 	cd gen && confix2.py --make --targets=clean
