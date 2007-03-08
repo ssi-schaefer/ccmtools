@@ -6,11 +6,20 @@
     {
         throw ::Components::InvalidConnection();
     }
-    stringstream s;
-    s << "CCM_%(Identifier)s:" << %(Identifier)s_receptacle_counter++;
-    ::Components::Cookie ck(s.str());
-    %(Identifier)s_receptacles.insert(make_pair(ck, f));
-    return ck;
+    if(delegator)
+    {
+        ::Components::Cookie ck = delegator->connect("%(Identifier)s", f);
+        %(Identifier)s_receptacles.insert(make_pair(ck, f));
+        return ck;
+    }
+    else
+    {
+        std::stringstream s;
+        s << "CCM_" "%(Identifier)s" ":" << %(Identifier)s_receptacle_counter++;
+        ::Components::Cookie ck(s.str());
+        %(Identifier)s_receptacles.insert(make_pair(ck, f));
+        return ck;
+    }
 }
 
 %(UsesType)s::SmartPtr
@@ -21,15 +30,25 @@
     {
         throw ::Components::InvalidConnection();
     }
-    if(%(Identifier)s_receptacles.find(ck) != %(Identifier)s_receptacles.end()) 
+    if(delegator)
     {
-        %(UsesType)s::SmartPtr f(%(Identifier)s_receptacles[ck]);
+        delegator->disconnect("%(Identifier)s", ck);
+        %(UsesType)s::SmartPtr f = %(Identifier)s_receptacles[ck];
         %(Identifier)s_receptacles.erase(ck);
         return f;
-    } 
-    else 
+    }
+    else
     {
-        throw ::Components::InvalidConnection();
+        if(%(Identifier)s_receptacles.find(ck) != %(Identifier)s_receptacles.end())
+        {
+            %(UsesType)s::SmartPtr f = %(Identifier)s_receptacles[ck];
+            %(Identifier)s_receptacles.erase(ck);
+            return f;
+        }
+        else
+        {
+            throw ::Components::InvalidConnection();
+        }
     }
 }
 

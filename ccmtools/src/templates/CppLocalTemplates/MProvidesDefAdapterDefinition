@@ -5,6 +5,21 @@
     {
         throw ::Components::InvalidConnection();
     }
+    if(!%(Identifier)s_facet)
+    {
+        if(delegator)
+        {
+            ::Components::Object::SmartPtr o = delegator->provide("%(Identifier)s");
+            if(o)
+            {
+                %(Identifier)s_facet.eat(dynamic_cast< %(ProvidesType)s*>(o.ptr()));
+                return %(Identifier)s_facet;
+            }
+        }
+	    %(Identifier)s_facet_impl = local_component->get_%(Identifier)s();
+	    %(Identifier)s_facet = %(ProvidesType)s::SmartPtr(
+	        new %(GenProvidesType)sAdapter(%(Identifier)s_facet_impl));
+    }
     return %(Identifier)s_facet;
 }
 

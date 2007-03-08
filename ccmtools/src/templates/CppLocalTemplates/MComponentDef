@@ -94,6 +94,7 @@ class %(Identifier)s
     %(LocalNamespace)sCCM_%(Identifier)s_Context* context;
     ::Components::Assembly::SmartPtr assembly;
     bool ValidConnection;
+    ::Components::ComponentDelegator* delegator;
 
 %(MProvidesDefAdapterVariable)s
 %(MUsesDefAdapterVariable)s
@@ -174,7 +175,8 @@ using namespace std;
     home_local_adapter(h), local_component(lc), assembly(a)
 {
     context = NULL; 
-    ValidConnection = true;
+    ValidConnection = local_component!=NULL;
+    delegator = dynamic_cast< ::Components::ComponentDelegator*>(local_component);
 %(MProvidesDefAdapterVariableInit)s
 %(MUsesDefAdapterVariableInit)s
 }
@@ -404,7 +406,6 @@ class CCM_%(Identifier)s_Context
 #define __COMPONENT_%(PreprocIdentifier)s_IMPL__H__
 
 #include <%(ComponentInclude)s_share.h>
-%(AssemblyInnerComponentInclude)s
 
 %(OpenNamespace)s
 
@@ -426,7 +427,7 @@ class %(Identifier)s_impl
   private:
 %(MAttributeDefVariable)s
 %(MSupportsDefVariable)s
-%(AssemblyInnerComponentVariable)s
+%(AssemblyImplVariable)s
     bool ccm_activate_ok;
 
   public:
@@ -478,7 +479,7 @@ class %(Identifier)s_impl
 
 #include "%(Identifier)s_impl.h"
 %(MProvidesDefImplInclude)s
-%(AssemblyInnerHomeInclude)s
+%(AssemblyInnerComponentInclude)s
 
 %(OpenNamespace)s
 

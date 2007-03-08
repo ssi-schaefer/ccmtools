@@ -6,11 +6,18 @@ void
   	{
   		throw ::Components::InvalidConnection();
     }
-  	if(%(Identifier)s_receptacle)
-  	{ 
-  		throw ::Components::AlreadyConnected();
-  	}
-  	%(Identifier)s_receptacle = f;
+    if(delegator)
+    {
+        delegator->connect("%(Identifier)s", f);
+    }
+    else
+    {
+        if(%(Identifier)s_receptacle)
+        {
+            throw ::Components::AlreadyConnected();
+        }
+    }
+    %(Identifier)s_receptacle = f;
 }
 
 %(UsesType)s::SmartPtr
@@ -21,14 +28,20 @@ void
   	{ 
   	    throw ::Components::InvalidConnection();
   	}
-  	if(!%(Identifier)s_receptacle)
-  	{ 
-  		throw ::Components::NoConnection();
-  	}
-    // local_component->disconnect("%(Identifier)s");
-  	%(UsesType)s::SmartPtr f = %(Identifier)s_receptacle;
-  	%(Identifier)s_receptacle.forget();
-  	return f;
+    if(delegator)
+    {
+        delegator->disconnect("%(Identifier)s");
+    }
+    else
+    {
+        if(!%(Identifier)s_receptacle)
+        {
+            throw ::Components::NoConnection();
+        }
+    }
+    %(UsesType)s::SmartPtr f = %(Identifier)s_receptacle;
+    %(Identifier)s_receptacle.forget();
+    return f;
 }
 
 %(UsesType)s::SmartPtr

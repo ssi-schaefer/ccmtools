@@ -5,10 +5,12 @@
 %(CCMProvidesType)s*
 %(ComponentType)s_impl::get_%(Identifier)s()
 {
-    %(ComponentType)s_%(Identifier)s_impl* facet = 
-        new %(ComponentType)s_%(Identifier)s_impl(this);
-%(AssemblyGetFacetCode)s
-    %(Identifier)s_ = dynamic_cast< %(CCMProvidesType)s* >(facet);
+    if(%(Identifier)s_==NULL)
+    {
+	    %(ComponentType)s_%(Identifier)s_impl* facet = 
+	        new %(ComponentType)s_%(Identifier)s_impl(this);
+	    %(Identifier)s_ = dynamic_cast< %(CCMProvidesType)s* >(facet);
+    }
     return %(Identifier)s_;
 }
 
