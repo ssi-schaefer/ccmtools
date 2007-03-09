@@ -4,11 +4,11 @@
  * <http://ccmtools.sourceforge.net/>
  *
  * TestMirror component business logic implementation.
- * 
- * // TODO: WRITE YOUR DESCRIPTION HERE! 
+ *
+ * // TODO: WRITE YOUR DESCRIPTION HERE!
  *
  * @author
- * @version 
+ * @version
  ***/
 
 #include <cassert>
@@ -44,7 +44,7 @@ void
 TestMirror_impl::ccm_activate()
     throw(Components::CCMException)
 {
-   CCM_Constants::SmartPtr constants = ctx->get_connection_iface();
+   Constants::SmartPtr constants = ctx->get_connection_iface();
    {
      //  const boolean BOOLEAN_CONST = TRUE;
      bool initial = true;
@@ -54,7 +54,7 @@ TestMirror_impl::ccm_activate()
 
    {
      //  const octet OCTET_CONST = 255;
-     unsigned char initial = 255; 
+     unsigned char initial = 255;
      unsigned char result = constants->getOctetValue();
      assert(initial == result);
    }
@@ -95,7 +95,7 @@ TestMirror_impl::ccm_activate()
    }
 
    {
-     //  const string STRING_CONST = "1234567890";  
+     //  const string STRING_CONST = "1234567890";
      string initial = "1234567890";
      string result = constants->getStringValue();
      assert(initial == result);
