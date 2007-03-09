@@ -38,9 +38,7 @@ class %(HomeType)s;
 //==============================================================================
 
 class %(Identifier)s
-    : virtual public ::Components::CCMObject 
-      %(MSupportsDefBase)s
-      %(BaseType)s 	
+    : virtual public ::Components::CCMObject %(BaseType)s %(MSupportsDefBase)s
 {
   public:
     typedef wamas::platform::utils::SmartPtr<%(Identifier)s> SmartPtr;
@@ -354,7 +352,7 @@ CCM_%(Identifier)s_Context_impl::get_CCM_object()
 //==============================================================================
 
 class CCM_%(Identifier)s
-    : virtual public ::Components::SessionComponent%(BaseType)s%(MSupportsDefBase)s
+    : virtual public ::Components::SessionComponent %(BaseType)s %(MSupportsDefImplBase)s
 {
   public:
     typedef wamas::platform::utils::SmartPtr<CCM_%(Identifier)s> SmartPtr;

@@ -1,1 +1,2 @@
-, virtual public %(GenSupportsType)sAdapter
+
+    , virtual public %(GenSupportsType)sAdapter
