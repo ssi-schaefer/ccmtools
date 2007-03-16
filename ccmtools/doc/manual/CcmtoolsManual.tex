@@ -6,17 +6,26 @@
 
 \usepackage[latin1]{inputenc}
 \usepackage{listings}
-\usepackage{hyperref}
-\usepackage[pdftex]{graphicx}
-\DeclareGraphicsExtensions{.pdf,.png,.gif,.jpg}
+
 
 % PDF Document Info
-\hypersetup
-{ 
-    pdftitle={CCM Tools Manual}
-	pdfauthor={Egon Teiniker},
-}
-\pdfcompresslevel=9
+\expandafter\ifx\csname pdfoutput\endcsname\relax
+    \usepackage[draft]{hyperref}
+    \usepackage{graphicx}
+    \DeclareGraphicsExtensions{.eps,.fig}
+\else
+    \usepackage{hyperref}
+    \hypersetup{
+        pdfauthor={Egon Teiniker},
+        pdftitle={CCM Tools Manual},
+        pdfsubject={CORBA Component Model Tools},
+        pdfkeywords={CCM, CORBA, components}
+    }
+    \pdfcompresslevel=9
+    \usepackage[pdftex]{graphicx}
+    \DeclareGraphicsExtensions{.pdf,.png,.gif,.jpg}
+\fi
+
 
 \setlength{\textwidth}{15 true cm}
 \setlength{\textheight}{22 true cm}
