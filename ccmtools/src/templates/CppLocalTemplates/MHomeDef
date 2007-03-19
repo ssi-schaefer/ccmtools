@@ -73,6 +73,10 @@ class %(Identifier)s
     %(Identifier)s();
     %(Identifier)s(::Components::AssemblyFactory::SmartPtr assembly_factory);	
     virtual ~%(Identifier)s();
+    
+    /// calling the home finder
+    static SmartPtr find_by_name(const std::string& name)
+    	throw(::Components::HomeNotFound);
 
 %(MFactoryDefAdapterPrototypeV)s
 
@@ -159,6 +163,23 @@ using namespace std;
 %(Identifier)s::~%(Identifier)s()
 {
     delete local_home;
+}
+
+%(Identifier)s::SmartPtr %(Identifier)s::find_by_name(const std::string& name)
+    	throw(::Components::HomeNotFound)
+{
+	::Components::HomeFinder* finder = ::Components::HomeFinder::Instance();
+	assert(finder);
+	::Components::CCMHome::SmartPtr sp = finder->find_home_by_name(name);
+	%(Identifier)s* hp = dynamic_cast< %(Identifier)s*>(sp.ptr());
+	if(!hp)
+	{
+		std::string msg("home \"");
+		msg += name;
+		msg += "\" is not of type %(Identifier)s";
+		throw ::Components::HomeNotFound(msg);
+	}
+	return SmartPtr(hp);
 }
 
 %(MFactoryDefAdapterDefinition)s
