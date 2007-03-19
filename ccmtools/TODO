@@ -1,0 +1,14 @@
+C++: no "using" or "using namespace"; always generate absolute names
+Java: no "import";  always generate absolute names
+
+Assemblies: "import" statement; no cmd. line paramter for IDL files
+
+Java: generate thread-safe local adapters; the component is the sync. object
+
+Java and C++: general concept for interface-proxies
+
+Java and C++: general concept for singletons
+
+C++: local adapter: try/catch to ensure the "throw" declaration;
+     no "throw" declaration in impl. interface
+     
