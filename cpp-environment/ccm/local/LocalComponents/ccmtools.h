@@ -82,6 +82,7 @@ class HomeNotFound
 {
   public:
     HomeNotFound() throw();
+    HomeNotFound(const std::string& message) throw();
     virtual ~HomeNotFound() throw();
 };
 

@@ -14,6 +14,12 @@ HomeNotFound::HomeNotFound()
 {
 }
 
+HomeNotFound::HomeNotFound(const std::string& message)
+    throw()
+  : Exception(message)
+{
+}
+
 HomeNotFound::~HomeNotFound() 
 	throw()
 {

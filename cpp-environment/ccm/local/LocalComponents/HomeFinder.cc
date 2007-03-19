@@ -36,7 +36,10 @@ HomeFinder::find_home_by_name(const std::string& name)
 	it = HomePool.find(name);
 	if(it == HomePool.end())
 	{
-		throw HomeNotFound();
+        std::string msg("HomeNotFound: \"");
+        msg += name;
+        msg += "\"";
+		throw HomeNotFound(msg);
 	}
 	else
 	{
