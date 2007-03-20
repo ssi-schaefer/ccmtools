@@ -6,5 +6,11 @@ all:
 	java wamas.Main
 	rm `find -name '*.class'`
 
+doc:
+	javadoc -d doc `find wamas -name '*.java'`
+
 clean:
+	rm -rf wamas doc
+
+test: clean all
 	rm -rf wamas

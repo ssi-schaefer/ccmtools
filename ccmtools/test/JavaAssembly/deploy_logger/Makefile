@@ -9,3 +9,6 @@ all:
 
 clean:
 	rm -rf gen
+
+test: clean all
+	rm -rf gen
