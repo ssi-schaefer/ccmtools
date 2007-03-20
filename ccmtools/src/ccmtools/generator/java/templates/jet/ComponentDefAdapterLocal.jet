@@ -11,33 +11,16 @@
 
 package <%=component.generateJavaNamespace()%>;
 
-import java.util.logging.Logger;
-
-import Components.AlreadyConnected;
-import Components.Assembly;
-import Components.CCMException;     
-import Components.CCMHome;
-import Components.Cookie;
-import Components.CookieImpl;
-import Components.CookieRequired;
-import Components.ExceededConnectionLimit;
-import Components.InvalidConfiguration;
-import Components.InvalidConnection;
-import Components.InvalidName;
-import Components.NoConnection;
-import Components.RemoveFailure;
-import ccmtools.local.ServiceLocator;
-
 <%=component.generateJavaImportStatements()%>  
                  
 public class <%=component.getIdentifier()%>Adapter 
     implements <%=component.getIdentifier()%>
 {
-    private Logger logger = ServiceLocator.instance().getLogger();
+    private java.util.logging.Logger logger = ccmtools.local.ServiceLocator.instance().getLogger();
     
     private <%=component.generateCcmIdentifier()%> localInterface;
     private <%=component.generateCcmIdentifier()%>_Context ctx;
-    private Assembly assembly;
+    private Components.Assembly assembly;
 
     /** Facet adapter references */
 <%
@@ -72,7 +55,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         this(localInterface, null);
     }
 	
-    public <%=component.getIdentifier()%>Adapter(<%=component.generateCcmIdentifier()%> localInterface, Assembly assembly)
+    public <%=component.getIdentifier()%>Adapter(<%=component.generateCcmIdentifier()%> localInterface, Components.Assembly assembly)
     {
         logger.fine("localInterface = " + localInterface + ", " + assembly);
         this.localInterface = localInterface;
@@ -156,7 +139,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     /** CCMObject interface methods */
 	
     public void configuration_complete()
-        throws InvalidConfiguration
+        throws Components.InvalidConfiguration
     {
         logger.fine("");
         ctx = new <%=component.generateCcmIdentifier()%>_ContextImpl(this); 
@@ -169,14 +152,14 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
             localInterface.set_session_context(ctx);
             localInterface.ccm_activate();
         }
-        catch(CCMException e)
+        catch(Components.CCMException e)
         {
-            throw new InvalidConfiguration();
+            throw new Components.InvalidConfiguration();
         }
     }
 
     public void remove()
-        throws RemoveFailure
+        throws Components.RemoveFailure
     { 
         logger.fine("");
         try 
@@ -188,13 +171,13 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
                 assembly = null;
             }
         }
-        catch(CCMException e)
+        catch(Components.CCMException e)
         {
-            throw new RemoveFailure();
+            throw new Components.RemoveFailure();
         }
     }
     
-    public CCMHome get_ccm_home()
+    public Components.CCMHome get_ccm_home()
     {
         throw new RuntimeException("Not implemented!");
     }
@@ -203,12 +186,12 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
     /** Navigation interface methods */
     
     public Object provide_facet(String name)
-        throws InvalidName
+        throws Components.InvalidName
     {
         logger.fine("name = " + name);
         if(name == null)
         {
-            throw new InvalidName();
+            throw new Components.InvalidName();
         }
 <%
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
@@ -219,24 +202,24 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 <%
 }
 %>   
-        throw new InvalidName();
+        throw new Components.InvalidName();
     }
     
     
     /** Receptacle methods */
     
-    public Cookie connect(String name, Object obj)
-        throws InvalidName, InvalidConnection, 
-        AlreadyConnected, ExceededConnectionLimit
+    public Components.Cookie connect(String name, Object obj)
+        throws Components.InvalidName, Components.InvalidConnection, 
+        Components.AlreadyConnected, Components.ExceededConnectionLimit
     {
         logger.fine("name = " + name + ", obj = " + obj);
         if(name == null)
         {
-            throw new InvalidName();
+            throw new Components.InvalidName();
         }
         if(obj == null)
         {
-            throw new InvalidConnection();
+            throw new Components.InvalidConnection();
         }    
 <%
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
@@ -249,22 +232,22 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 %>     
         else
         {
-            throw new InvalidName();
+            throw new Components.InvalidName();
         }
     }
     
-    public void disconnect(String name, Cookie ck)
-        throws InvalidName, InvalidConnection, 
-        CookieRequired, NoConnection
+    public void disconnect(String name, Components.Cookie ck)
+        throws Components.InvalidName, Components.InvalidConnection, 
+        Components.CookieRequired, Components.NoConnection
     {
         logger.fine("name = " + name + ", ck = " + ck );
         if(name == null)
         {
-            throw new InvalidName();
+            throw new Components.InvalidName();
         }
         if(ck == null)
         {
-            throw new CookieRequired();
+            throw new Components.CookieRequired();
         } 
 <%
 for(Iterator i = component.getReceptacle().iterator(); i.hasNext();) 
@@ -277,7 +260,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 %>     
         else
         {
-            throw new InvalidName();
+            throw new Components.InvalidName();
         }
     }    
 }
