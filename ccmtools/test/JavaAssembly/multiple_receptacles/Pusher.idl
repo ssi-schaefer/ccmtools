@@ -1,0 +1,9 @@
+module wamas {
+
+	interface Pusher
+	{
+		void push(in string value);
+	};
+
+};
+
