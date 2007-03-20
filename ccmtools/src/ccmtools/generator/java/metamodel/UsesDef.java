@@ -96,10 +96,10 @@ public class UsesDef
 	{
 		if(isMultiple())
 		{
-			return TAB + "private java.util.Map<Cookie, " + getInterface().generateAbsoluteJavaName() 
+			return TAB + "private java.util.Map<Components.Cookie, " + getInterface().generateAbsoluteJavaName() 
 					+ "> " + getIdentifier() 
 					+ "ReceptacleMap = " + NL + TAB2 
-					+ " new java.util.HashMap<Cookie, " + getInterface().generateAbsoluteJavaName() 
+					+ " new java.util.HashMap<Components.Cookie, " + getInterface().generateAbsoluteJavaName() 
 					+ ">();";
 		}
 		else
@@ -119,7 +119,7 @@ public class UsesDef
 		{
 			return TAB + getInterface().generateAbsoluteJavaName() + 
 				" get_connection_" + getIdentifier() + "()\n" + 
-				TAB2 + "throws NoConnection;";
+				TAB2 + "throws Components.NoConnection;";
 		}	
 	}
 	
@@ -174,10 +174,10 @@ public class UsesDef
 	{
 		if(isMultiple())
 		{
-			return TAB +  "private Map<Cookie, " 
+			return TAB +  "private java.util.Map<Components.Cookie, " 
 				+ getInterface().generateAbsoluteJavaName() + "> " 
 				+ getIdentifier() + "ReceptacleMap = " + NL + TAB2 
-				+ "new HashMap<Cookie, " 
+				+ "new java.util.HashMap<Components.Cookie, " 
 				+ getInterface().generateAbsoluteJavaName() + ">();\n";
 		}
 		else
@@ -256,7 +256,7 @@ public class UsesDef
 	{
 		if(isMultiple())
 		{
-			return TAB +  "private Map<ccmtools.corba.Components.Cookie, " 
+			return TAB +  "private java.util.Map<ccmtools.corba.Components.Cookie, " 
 				+ getInterface().generateAbsoluteIdlName() + "> " 
 				+ getIdentifier() + "ReceptacleMap;\n";
 		}
@@ -272,7 +272,7 @@ public class UsesDef
 		if(isMultiple())
 		{
 			return TAB2 + getIdentifier()  
-                + "ReceptacleMap = new HashMap<ccmtools.corba.Components.Cookie, " 
+                + "ReceptacleMap = new java.util.HashMap<ccmtools.corba.Components.Cookie, " 
 				+ getInterface().generateAbsoluteIdlName() + ">();\n";	
 		}
 		else

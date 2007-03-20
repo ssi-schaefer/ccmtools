@@ -11,15 +11,12 @@
 
 package <%=home.generateJavaNamespace()%>;
 
-import Components.HomeExecutorBase;
-import Components.CCMException;
-
 <%=home.generateJavaImportStatements()%>
 
 public class <%=home.getIdentifier()%>Factory 
 {
-    public static HomeExecutorBase create()
-        throws CCMException
+    public static Components.HomeExecutorBase create()
+        throws Components.CCMException
     {
         return new <%=home.getIdentifier()%>Impl();
     }

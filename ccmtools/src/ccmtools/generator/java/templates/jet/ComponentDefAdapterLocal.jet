@@ -21,6 +21,7 @@ public class <%=component.getIdentifier()%>Adapter
     private <%=component.generateCcmIdentifier()%> localInterface;
     private <%=component.generateCcmIdentifier()%>_Context ctx;
     private Components.Assembly assembly;
+    private Components.ComponentDelegator delegator;
 
     /** Facet adapter references */
 <%
@@ -60,6 +61,8 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         logger.fine("localInterface = " + localInterface + ", " + assembly);
         this.localInterface = localInterface;
         this.assembly = assembly;
+        if(localInterface!=null && (localInterface instanceof Components.ComponentDelegator))
+        	this.delegator = (Components.ComponentDelegator)localInterface;
     }
 	
 	

@@ -149,7 +149,7 @@ public class OperationDef
 	public String generateThrowsStatementLocal()
 	{
 		StringBuilder code = new StringBuilder();
-		code.append("throws CCMException");
+		code.append("throws Components.CCMException");
 		if(getException().size() != 0)
 		{
 			code.append(",").append(NL).append(TAB3);

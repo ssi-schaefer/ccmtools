@@ -11,41 +11,34 @@
 
 package <%=home.generateJavaNamespace()%>;
 
-import java.util.logging.Logger;
-
-import Components.CCMException;
-import Components.CCMExceptionReason;
-import ccmtools.local.ServiceLocatorException;
-import ccmtools.local.ServiceLocator;    
-                              
 public class <%=home.getIdentifier()%>ClientLibDeployment 
 {
    /** Default logger instance */
-    private static Logger logger = ServiceLocator.instance().getLogger();
+    private static java.util.logging.Logger logger = ccmtools.local.ServiceLocator.instance().getLogger();
     
     
     public static void deploy(String name)
-        throws CCMException
+        throws Components.CCMException
     {
         logger.fine("name = " + name);
         try
         {
-            ccmtools.corba.Components.CCMHome remoteHome = ServiceLocator.instance().findCCMHome(name);
+            ccmtools.corba.Components.CCMHome remoteHome = ccmtools.local.ServiceLocator.instance().findCCMHome(name);
             <%=home.getIdentifier()%> localHome = new <%=home.getIdentifier()%>AdapterToCorba(remoteHome);
             Components.HomeFinder.instance().register_home(localHome, name);    
         }
-        catch(ServiceLocatorException e)
+        catch(ccmtools.local.ServiceLocatorException e)
         {
-            throw new CCMException(e.getMessage(),CCMExceptionReason.SYSTEM_ERROR);
+            throw new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.SYSTEM_ERROR);
         }
     }
 
     
     public static void deployWithIor(String name, String ior)
-        throws CCMException
+        throws Components.CCMException
     {
         logger.fine("name = " + name + ", ior = " + ior);
-        org.omg.CORBA.Object obj = ServiceLocator.instance().getCorbaOrb().string_to_object(ior);
+        org.omg.CORBA.Object obj = ccmtools.local.ServiceLocator.instance().getCorbaOrb().string_to_object(ior);
         ccmtools.corba.Components.CCMHome remoteHome = 
             ccmtools.corba.Components.CCMHomeHelper.narrow(obj);
         <%=home.getIdentifier()%> localHome = new <%=home.getIdentifier()%>AdapterToCorba(remoteHome);

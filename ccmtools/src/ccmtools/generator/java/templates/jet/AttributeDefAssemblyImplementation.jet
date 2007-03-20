@@ -5,13 +5,13 @@
 <% AttributeDef attr = (AttributeDef) argument;  %>
 
     public <%=attr.getType().generateJavaMapping()%> <%=attr.getIdentifier()%>()
-        throws CCMException
+        throws Components.CCMException
     {
         return this.<%=attr.getIdentifier()%>_;
     }     
 
     public void <%=attr.getIdentifier()%>(<%=attr.getType().generateJavaMapping()%> value)
-        throws CCMException
+        throws Components.CCMException
     {
         this.<%=attr.getIdentifier()%>_ = value;
 <%

@@ -11,12 +11,9 @@
 
 package <%=home.generateJavaNamespace()%>;
 
-import Components.KeylessCCMHome;
-import Components.CreateFailure;
-
 public interface <%=home.getIdentifier()%>Implicit 
-    extends KeylessCCMHome
+    extends Components.KeylessCCMHome
 {
     <%=home.getComponent().getIdentifier()%> create()
-        throws CreateFailure;
+        throws Components.CreateFailure;
 }

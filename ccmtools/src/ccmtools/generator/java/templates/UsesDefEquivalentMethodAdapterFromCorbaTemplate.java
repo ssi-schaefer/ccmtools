@@ -22,7 +22,7 @@ public class UsesDefEquivalentMethodAdapterFromCorbaTemplate
   protected final String TEXT_6 = NL + "            ";
   protected final String TEXT_7 = " localInterfaceAdapter = " + NL + "                new ";
   protected final String TEXT_8 = "AdapterToCorba(obj);" + NL + "            localInterface.connect_";
-  protected final String TEXT_9 = "(localInterfaceAdapter);" + NL + "        }" + NL + "        catch(AlreadyConnected e)" + NL + "        {" + NL + "            throw new ccmtools.corba.Components.AlreadyConnected(e.getMessage());" + NL + "        }" + NL + "        catch(InvalidConnection e)" + NL + "        {" + NL + "            throw new ccmtools.corba.Components.InvalidConnection(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "" + NL + "    public ";
+  protected final String TEXT_9 = "(localInterfaceAdapter);" + NL + "        }" + NL + "        catch(Components.AlreadyConnected e)" + NL + "        {" + NL + "            throw new ccmtools.corba.Components.AlreadyConnected(e.getMessage());" + NL + "        }" + NL + "        catch(Components.InvalidConnection e)" + NL + "        {" + NL + "            throw new ccmtools.corba.Components.InvalidConnection(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "" + NL + "    public ";
   protected final String TEXT_10 = " disconnect_";
   protected final String TEXT_11 = "()" + NL + "        throws ccmtools.corba.Components.NoConnection" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        try" + NL + "        {" + NL + "            localInterface.disconnect_";
   protected final String TEXT_12 = "();";
@@ -30,7 +30,7 @@ public class UsesDefEquivalentMethodAdapterFromCorbaTemplate
   protected final String TEXT_14 = " result = ";
   protected final String TEXT_15 = "Receptacle;";
   protected final String TEXT_16 = NL + "            ";
-  protected final String TEXT_17 = "Receptacle = null; " + NL + "            return result;" + NL + "        }" + NL + "        catch(NoConnection e)" + NL + "        {" + NL + "            throw new ccmtools.corba.Components.NoConnection(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "     " + NL + "    public ";
+  protected final String TEXT_17 = "Receptacle = null; " + NL + "            return result;" + NL + "        }" + NL + "        catch(Components.NoConnection e)" + NL + "        {" + NL + "            throw new ccmtools.corba.Components.NoConnection(e.getMessage());" + NL + "        }" + NL + "    }" + NL + "     " + NL + "    public ";
   protected final String TEXT_18 = " get_connection_";
   protected final String TEXT_19 = "()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        return ";
   protected final String TEXT_20 = "Receptacle;" + NL + "    }";

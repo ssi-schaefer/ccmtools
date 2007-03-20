@@ -17,9 +17,9 @@ public class AttributeDefDeclarationTemplate
   protected final String TEXT_1 = "";
   protected final String TEXT_2 = NL + "    ";
   protected final String TEXT_3 = " ";
-  protected final String TEXT_4 = "()" + NL + "        throws CCMException;     " + NL + "" + NL + "    void ";
+  protected final String TEXT_4 = "()" + NL + "        throws Components.CCMException;     " + NL + "" + NL + "    void ";
   protected final String TEXT_5 = "(";
-  protected final String TEXT_6 = " value)" + NL + "        throws CCMException;     ";
+  protected final String TEXT_6 = " value)" + NL + "        throws Components.CCMException;     ";
   protected final String TEXT_7 = NL;
 
   public String generate(Object argument)

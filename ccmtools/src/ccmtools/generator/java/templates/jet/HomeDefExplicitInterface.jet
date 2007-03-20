@@ -11,9 +11,7 @@
 
 package <%=home.generateJavaNamespace()%>;
 
-import Components.CCMHome;              
-
 public interface <%=home.getIdentifier()%>Explicit 
-    extends CCMHome
+    extends Components.CCMHome
 {
 }

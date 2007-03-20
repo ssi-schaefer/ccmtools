@@ -5,7 +5,7 @@
 <% UsesDef uses = (UsesDef) argument; %>
 
     public <%=uses.getInterface().generateAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>()
-        throws NoConnection
+        throws Components.NoConnection
     {
         logger.fine("");
         return component.get_connection_<%=uses.getIdentifier()%>();

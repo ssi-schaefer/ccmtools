@@ -16,10 +16,10 @@ public class AttributeDefAssemblyImplementationTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = NL + "    public ";
   protected final String TEXT_2 = " ";
-  protected final String TEXT_3 = "()" + NL + "        throws CCMException" + NL + "    {" + NL + "        return this.";
+  protected final String TEXT_3 = "()" + NL + "        throws Components.CCMException" + NL + "    {" + NL + "        return this.";
   protected final String TEXT_4 = "_;" + NL + "    }     " + NL + "" + NL + "    public void ";
   protected final String TEXT_5 = "(";
-  protected final String TEXT_6 = " value)" + NL + "        throws CCMException" + NL + "    {" + NL + "        this.";
+  protected final String TEXT_6 = " value)" + NL + "        throws Components.CCMException" + NL + "    {" + NL + "        this.";
   protected final String TEXT_7 = "_ = value;";
   protected final String TEXT_8 = NL;
   protected final String TEXT_9 = "    " + NL + "    }";

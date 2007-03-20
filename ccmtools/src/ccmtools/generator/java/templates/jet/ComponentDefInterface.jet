@@ -11,18 +11,10 @@
 
 package <%=component.generateJavaNamespace()%>;
            
-import Components.AlreadyConnected;
-import Components.CCMObject;
-import Components.CCMException;
-import Components.Cookie;             
-import Components.ExceededConnectionLimit;
-import Components.InvalidConnection;
-import Components.NoConnection;
-
 <%=component.generateJavaImportStatements()%>  
                  
 public interface <%=component.getIdentifier()%> 
-    extends CCMObject<%=component.generateSupportsDeclarations()%>
+    extends Components.CCMObject<%=component.generateSupportsDeclarations()%>
 {
     /** Attribute equivalent methods */
 <%

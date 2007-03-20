@@ -11,13 +11,10 @@
 
 package <%=component.generateJavaNamespace()%>;
 
-import Components.CCMException;     
-import Components.SessionComponent;
-
 <%=component.generateJavaImportStatements()%>              
               
 public interface <%=component.generateCcmIdentifier()%> 
-    extends SessionComponent<%=component.generateSupportsCcmDeclarations()%>
+    extends Components.SessionComponent<%=component.generateSupportsCcmDeclarations()%>
 {
     /** Component attribute accessor methods */
     

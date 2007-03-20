@@ -11,15 +11,13 @@
  
 package <%=struct.generateJavaRemoteNamespace()%>;
 
-import ccmtools.local.CorbaConverterException;
-
 <%=struct.generateJavaImportStatements(struct.generateJavaRemoteNamespace())%>
 
 public class <%=struct.getIdentifier()%>CorbaConverter
 {
     /** Convert a local Java type into a CORBA type */
     public static <%=struct.generateCorbaMapping()%> convert(<%=struct.generateJavaMapping()%> in)
-        throws CorbaConverterException
+        throws ccmtools.local.CorbaConverterException
     {
         <%=struct.generateCorbaMapping()%> out = new <%=struct.generateCorbaMapping()%>();
 
@@ -38,7 +36,7 @@ for(Iterator i=struct.getFields().iterator(); i.hasNext();)
 
     /** Convert a CORBA type into a local Java type */
     public static <%=struct.generateJavaMapping()%> convert(<%=struct.generateCorbaMapping()%> in)
-        throws CorbaConverterException
+        throws ccmtools.local.CorbaConverterException
     {
         <%=struct.generateJavaMapping()%> out = new <%=struct.generateJavaMapping()%>();
 <%

@@ -16,11 +16,11 @@
                 new <%=uses.getInterface().generateAbsoluteJavaName()%>AdapterToCorba(obj);
             localInterface.connect_<%=uses.getIdentifier()%>(localInterfaceAdapter);
         }
-        catch(AlreadyConnected e)
+        catch(Components.AlreadyConnected e)
         {
             throw new ccmtools.corba.Components.AlreadyConnected(e.getMessage());
         }
-        catch(InvalidConnection e)
+        catch(Components.InvalidConnection e)
         {
             throw new ccmtools.corba.Components.InvalidConnection(e.getMessage());
         }
@@ -37,7 +37,7 @@
             <%=uses.getIdentifier()%>Receptacle = null; 
             return result;
         }
-        catch(NoConnection e)
+        catch(Components.NoConnection e)
         {
             throw new ccmtools.corba.Components.NoConnection(e.getMessage());
         }

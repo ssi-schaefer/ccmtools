@@ -11,26 +11,17 @@
 
 package <%=home.generateJavaNamespace()%>;
 
-import java.util.logging.Logger;
-
-import Components.CCMException;
-import Components.CCMObject;
-import Components.CreateFailure;
-import Components.RemoveFailure;
-
-import ccmtools.local.ServiceLocator;
-           
 public class <%=home.getIdentifier()%>AdapterToCorba
     implements <%=home.getIdentifier()%>
 {
-    private Logger logger = ServiceLocator.instance().getLogger();
+    private java.util.logging.Logger logger = ccmtools.local.ServiceLocator.instance().getLogger();
 
     /** CORBA reference to the remote home */
     private <%=home.generateAbsoluteIdlName()%> remoteHome;
     
          
     public <%=home.getIdentifier()%>AdapterToCorba(ccmtools.corba.Components.CCMHome ccmHome)
-        throws CCMException
+        throws Components.CCMException
     {
         logger.fine("ccmHome = " + ccmHome);
         remoteHome = <%=home.generateAbsoluteIdlName()%>Helper.narrow(ccmHome);
@@ -40,7 +31,7 @@ public class <%=home.getIdentifier()%>AdapterToCorba
     /** Home implicit operations */
         
     public <%=home.getComponent().generateAbsoluteJavaName()%> create()
-        throws CreateFailure
+        throws Components.CreateFailure
     {
         logger.fine("");
         try
@@ -49,29 +40,29 @@ public class <%=home.getIdentifier()%>AdapterToCorba
         }
         catch(java.lang.Exception e)
         {
-            throw new CreateFailure();
+            throw new Components.CreateFailure();
         }
     } 
     
     // This operation is defined in Components.KeylessCCMHomeOperations
-    public CCMObject create_component()
-        throws CCMException, CreateFailure
+    public Components.CCMObject create_component()
+        throws Components.CCMException, Components.CreateFailure
     {
         logger.fine("");
-        return (CCMObject)create();
+        return (Components.CCMObject)create();
     }
     
     
     /** Home explicit operations */
         
     // This operation is defined in Components.CCMHome
-    public void remove_component(CCMObject component)
-        throws CCMException, RemoveFailure
+    public void remove_component(Components.CCMObject component)
+        throws Components.CCMException, Components.RemoveFailure
     {
         logger.fine("component = " + component);
         if(component == null)
         {
-            throw new RemoveFailure("Can't remove component because its reference is null!");
+            throw new Components.RemoveFailure("Can't remove component because its reference is null!");
         }
         else
         {

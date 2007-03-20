@@ -13,10 +13,6 @@
 
 package <%=component.generateJavaNamespace()%>;
    
-import Components.CCMException;     
-import Components.CCMExceptionReason;
-import Components.SessionContext; 
-
 <%=component.generateJavaImportStatements()%>  
    
 /**
@@ -70,7 +66,7 @@ for(Iterator i=component.getAssemblyAttributeDeclarations(); i.hasNext();)
 
     
     public <%=component.getIdentifier()%>Impl()
-        throws CCMException
+        throws Components.CCMException
     {
     	try {
 <%
@@ -82,7 +78,7 @@ for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
 }
 %> 
     	} catch(Exception e) {
-    		throw new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);
+    		throw new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.CREATE_ERROR);
     	}
     }
 
@@ -152,14 +148,14 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 
     /** Component callback methods */
     
-    public void set_session_context(SessionContext ctx) 
-        throws CCMException
+    public void set_session_context(Components.SessionContext ctx) 
+        throws Components.CCMException
     {
         this.ctx = (<%=component.generateCcmIdentifier()%>_Context)ctx; 
     }
 
     public void ccm_activate() 
-        throws CCMException
+        throws Components.CCMException
     {
     	try {
 			// setup inner components    	
@@ -184,18 +180,18 @@ for (String key : component.getAssemblyLocalComponents().keySet())
 
 			ccm_activate_ok = true; 
     	} catch(Exception e) {
-    		throw new CCMException(e.getMessage(), CCMExceptionReason.CREATE_ERROR);
+    		throw new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.CREATE_ERROR);
     	}
     }
 
     public void ccm_passivate() 
-        throws CCMException
+        throws Components.CCMException
     {
         // Who calls this method?
     }
 
     public void ccm_remove() 
-        throws CCMException
+        throws Components.CCMException
     {
     	try {
 <%
@@ -207,7 +203,7 @@ for (String key : component.getAssemblyLocalComponents().keySet())
 }
 %>
 		} catch(Exception e) {
-    		throw new CCMException(e.getMessage(), CCMExceptionReason.REMOVE_ERROR);
+    		throw new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.REMOVE_ERROR);
 		} 
     }
 }

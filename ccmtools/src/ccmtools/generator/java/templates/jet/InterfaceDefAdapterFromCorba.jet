@@ -11,11 +11,6 @@
  
 package <%=iface.generateJavaRemoteNamespace()%>;
                  
-import java.util.logging.Logger;
-import ccmtools.local.ServiceLocator;
-
-import org.omg.CORBA.BAD_OPERATION;
-
 <%=iface.generateJavaImportStatements(iface.generateJavaRemoteNamespace())%>
 
 /**
@@ -24,7 +19,7 @@ import org.omg.CORBA.BAD_OPERATION;
 public class <%=iface.getIdentifier()%>AdapterFromCorba
     extends <%=iface.generateAbsoluteIdlName()%>POA
 {
-    private Logger logger = ServiceLocator.instance().getLogger();
+    private java.util.logging.Logger logger = ccmtools.local.ServiceLocator.instance().getLogger();
     
     /** Java reference to the local interface */
     private <%=iface.getIdentifier()%> localInterface;

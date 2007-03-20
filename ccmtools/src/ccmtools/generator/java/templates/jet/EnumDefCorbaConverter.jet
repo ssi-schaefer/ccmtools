@@ -11,15 +11,13 @@
  
 package <%=enumeration.generateJavaRemoteNamespace()%>;
 
-import ccmtools.local.CorbaConverterException;
-
 <%=enumeration.generateJavaImportStatements(enumeration.generateJavaRemoteNamespace())%>
 
 public class <%=enumeration.getIdentifier()%>CorbaConverter
 {
     /** Convert a local Java type into a CORBA type */
     public static <%=enumeration.generateCorbaMapping()%> convert(<%=enumeration.generateJavaMapping()%> in)
-       throws CorbaConverterException
+       throws ccmtools.local.CorbaConverterException
     {
         <%=enumeration.generateCorbaMapping()%> out;
         switch(in)
@@ -34,7 +32,7 @@ public class <%=enumeration.getIdentifier()%>CorbaConverter
 
     /** Convert a CORBA type into a local Java type */
     public static <%=enumeration.generateJavaMapping()%> convert(<%=enumeration.generateCorbaMapping()%> in)
-       throws CorbaConverterException
+       throws ccmtools.local.CorbaConverterException
     {
         <%=enumeration.generateJavaMapping()%> out; 
         switch(in.value())

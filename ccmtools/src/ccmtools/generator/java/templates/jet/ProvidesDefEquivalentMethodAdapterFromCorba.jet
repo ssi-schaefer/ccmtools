@@ -13,14 +13,14 @@
             {
                 <%=provides.getInterface().generateAbsoluteJavaName()%> localAdapter = 
                     localInterface.provide_<%=provides.getIdentifier()%>();
-                Servant servant = 
+                org.omg.PortableServer.Servant servant = 
                     new <%=provides.getInterface().generateAbsoluteJavaRemoteName()%>AdapterFromCorba(localAdapter);
                 org.omg.CORBA.Object obj = 
                     container.getCorbaObjectFromServant(servant);
                 <%=provides.getIdentifier()%>Facet = <%=provides.getInterface().generateAbsoluteIdlName()%>Helper.narrow(obj);
             }
         }
-        catch(CCMException e)
+        catch(Components.CCMException e)
         {
             e.printStackTrace();
         }

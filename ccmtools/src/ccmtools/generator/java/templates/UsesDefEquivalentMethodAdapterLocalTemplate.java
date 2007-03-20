@@ -16,13 +16,13 @@ public class UsesDefEquivalentMethodAdapterLocalTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = NL + "    public void connect_";
   protected final String TEXT_2 = "(";
-  protected final String TEXT_3 = " localObj)" + NL + "        throws AlreadyConnected, " + NL + "               InvalidConnection" + NL + "    {" + NL + "        logger.fine(\"obj = \" + localObj);" + NL + "        if(";
-  protected final String TEXT_4 = "Receptacle != null)" + NL + "        {" + NL + "            throw new AlreadyConnected();" + NL + "        }\t" + NL + "        else" + NL + "        {";
+  protected final String TEXT_3 = " localObj)" + NL + "        throws Components.AlreadyConnected, " + NL + "               Components.InvalidConnection" + NL + "    {" + NL + "        logger.fine(\"obj = \" + localObj);" + NL + "        if(";
+  protected final String TEXT_4 = "Receptacle != null)" + NL + "        {" + NL + "            throw new Components.AlreadyConnected();" + NL + "        }\t" + NL + "        else" + NL + "        {";
   protected final String TEXT_5 = NL + "            ";
   protected final String TEXT_6 = "Receptacle = localObj;" + NL + "        }" + NL + "    }" + NL + "" + NL + "    public ";
   protected final String TEXT_7 = " disconnect_";
-  protected final String TEXT_8 = "()" + NL + "        throws NoConnection" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        if(";
-  protected final String TEXT_9 = "Receptacle == null)" + NL + "        {" + NL + "            throw new NoConnection();" + NL + "        }" + NL + "        else" + NL + "        {";
+  protected final String TEXT_8 = "()" + NL + "        throws Components.NoConnection" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        if(";
+  protected final String TEXT_9 = "Receptacle == null)" + NL + "        {" + NL + "            throw new Components.NoConnection();" + NL + "        }" + NL + "        else" + NL + "        {";
   protected final String TEXT_10 = NL + "            ";
   protected final String TEXT_11 = " f = ";
   protected final String TEXT_12 = "Receptacle;";

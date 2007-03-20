@@ -11,13 +11,11 @@
  
 package <%=array.generateJavaRemoteNamespace()%>;
 
-import ccmtools.local.CorbaConverterException;
-
 public class <%=array.getIdentifier()%>CorbaConverter
 {
     /** Convert a local Java type into a CORBA type */
     public static <%=array.generateCorbaMapping()%> convert(<%=array.generateJavaMapping()%> in)
-       throws CorbaConverterException
+       throws ccmtools.local.CorbaConverterException
     {
         <%=array.generateCorbaMapping()%> out = new <%=array.generateCorbaMappingImpl()%>;
         for(int i = 0; i< in.length; i++)
@@ -30,7 +28,7 @@ public class <%=array.getIdentifier()%>CorbaConverter
 
     /** Convert a CORBA type into a local Java type */
     public static <%=array.generateJavaMapping()%> convert(<%=array.generateCorbaMapping()%> in)
-       throws CorbaConverterException
+       throws ccmtools.local.CorbaConverterException
     {
         <%=array.generateJavaMapping()%> out = new <%=array.generateJavaMappingImpl()%>; 
         for(int i = 0; i< in.length;i++)

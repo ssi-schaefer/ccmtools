@@ -11,15 +11,13 @@
  
 package <%=seq.generateJavaRemoteNamespace()%>;
 
-import ccmtools.local.CorbaConverterException;
-
 <%=seq.generateJavaImportStatements(seq.generateJavaRemoteNamespace())%>
 
 public class <%=seq.getIdentifier()%>CorbaConverter
 {
     /** Convert a local Java type into a CORBA type */
     public static <%=seq.generateCorbaMapping()%> convert(<%=seq.generateJavaMapping()%> in)
-       throws CorbaConverterException
+       throws ccmtools.local.CorbaConverterException
     {
         <%=seq.generateCorbaMapping()%> out = new <%=seq.getElementType().generateCorbaMapping()%>[in.size()];
         for(int i = 0; i< in.size(); i++)
@@ -32,7 +30,7 @@ public class <%=seq.getIdentifier()%>CorbaConverter
 
 	/** Convert a CORBA type into a local Java type */
     public static <%=seq.generateJavaMapping()%> convert(<%=seq.generateCorbaMapping()%> in)
-       throws CorbaConverterException
+       throws ccmtools.local.CorbaConverterException
     {
         <%=seq.generateJavaMapping()%> out = new <%=seq.generateJavaMappingImpl()%>();
         for(int i = 0; i< in.length;i++)

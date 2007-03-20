@@ -20,11 +20,11 @@ public class ProvidesDefEquivalentMethodAdapterFromCorbaTemplate
   protected final String TEXT_4 = "Facet == null)" + NL + "            {";
   protected final String TEXT_5 = NL + "                ";
   protected final String TEXT_6 = " localAdapter = " + NL + "                    localInterface.provide_";
-  protected final String TEXT_7 = "();" + NL + "                Servant servant = " + NL + "                    new ";
+  protected final String TEXT_7 = "();" + NL + "                org.omg.PortableServer.Servant servant = " + NL + "                    new ";
   protected final String TEXT_8 = "AdapterFromCorba(localAdapter);" + NL + "                org.omg.CORBA.Object obj = " + NL + "                    container.getCorbaObjectFromServant(servant);";
   protected final String TEXT_9 = NL + "                ";
   protected final String TEXT_10 = "Facet = ";
-  protected final String TEXT_11 = "Helper.narrow(obj);" + NL + "            }" + NL + "        }" + NL + "        catch(CCMException e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "        }" + NL + "        return ";
+  protected final String TEXT_11 = "Helper.narrow(obj);" + NL + "            }" + NL + "        }" + NL + "        catch(Components.CCMException e)" + NL + "        {" + NL + "            e.printStackTrace();" + NL + "        }" + NL + "        return ";
   protected final String TEXT_12 = "Facet;" + NL + "    }";
   protected final String TEXT_13 = NL;
 

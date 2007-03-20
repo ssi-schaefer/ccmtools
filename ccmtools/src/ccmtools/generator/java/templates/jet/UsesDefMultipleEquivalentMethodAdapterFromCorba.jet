@@ -22,17 +22,17 @@ InterfaceDef iface = uses.getInterface();
             {
                 <%=iface.generateAbsoluteJavaName()%> localInterfaceAdapter =
                     new  <%=iface.generateAbsoluteJavaName()%>AdapterToCorba(obj);
-                Cookie lck = localInterface.connect_<%=uses.getIdentifier()%>(localInterfaceAdapter);
+                Components.Cookie lck = localInterface.connect_<%=uses.getIdentifier()%>(localInterfaceAdapter);
                 ccmtools.corba.Components.Cookie ck = 
                     new ccmtools.corba.Components.CookieImpl(lck.getCookieValue());
                 <%=uses.getIdentifier()%>ReceptacleMap.put(ck, obj);
                 return ck;
             }
-            catch(ExceededConnectionLimit e)
+            catch(Components.ExceededConnectionLimit e)
             {
                 throw new ccmtools.corba.Components.ExceededConnectionLimit(e.getMessage());
             }
-            catch(InvalidConnection e)
+            catch(Components.InvalidConnection e)
             {
                 throw new ccmtools.corba.Components.InvalidConnection(e.getMessage());
             }
@@ -52,13 +52,13 @@ InterfaceDef iface = uses.getInterface();
         {
             try
             { 
-                Cookie lck = new CookieImpl(ck.CookieValue);
+                Components.Cookie lck = new Components.CookieImpl(ck.CookieValue);
                 localInterface.disconnect_port(lck);
                 <%=iface.generateAbsoluteIdlName()%> f = <%=uses.getIdentifier()%>ReceptacleMap.get(ck);
                 <%=uses.getIdentifier()%>ReceptacleMap.remove(ck);
                 return f;
             }
-            catch(InvalidConnection e)
+            catch(Components.InvalidConnection e)
             {
                 throw new ccmtools.corba.Components.InvalidConnection(e.getMessage());
             }

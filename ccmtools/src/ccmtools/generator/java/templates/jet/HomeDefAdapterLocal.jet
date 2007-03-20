@@ -11,24 +11,13 @@
 
 package <%=home.generateJavaNamespace()%>;
    
-import java.util.logging.Logger;
-
-import Components.Assembly;
-import Components.AssemblyFactory;
-import Components.CCMException;
-import Components.CCMObject;
-import Components.CreateFailure;
-import Components.RemoveFailure;
-
-import ccmtools.local.ServiceLocator;
-
 public class <%=home.getIdentifier()%>Adapter 
     implements <%=home.getIdentifier()%>
 {
-    private Logger logger = ServiceLocator.instance().getLogger();
+    private java.util.logging.Logger logger = ccmtools.local.ServiceLocator.instance().getLogger();
     
     private <%=home.generateCcmIdentifier()%> localInterface;
-    private AssemblyFactory assemblyFactory;
+    private Components.AssemblyFactory assemblyFactory;
     
     protected <%=home.getIdentifier()%>Adapter()
     {
@@ -41,7 +30,7 @@ public class <%=home.getIdentifier()%>Adapter
     }
     
     public <%=home.getIdentifier()%>Adapter(<%=home.generateCcmIdentifier()%> localInterface, 
-            AssemblyFactory assemblyFactory)
+            Components.AssemblyFactory assemblyFactory)
     {
         logger.fine("localInterface = " + localInterface + ", " + assemblyFactory);
         this.localInterface = localInterface;
@@ -50,7 +39,7 @@ public class <%=home.getIdentifier()%>Adapter
 
     
     public <%=home.getComponent().getIdentifier()%> create()
-        throws CreateFailure
+        throws Components.CreateFailure
     {
         logger.fine("");
         try
@@ -59,7 +48,7 @@ public class <%=home.getIdentifier()%>Adapter
             <%=home.getComponent().getIdentifier()%> component;
             if(assemblyFactory != null)
             {
-                Assembly assembly = assemblyFactory.create();
+                Components.Assembly assembly = assemblyFactory.create();
                 component = new <%=home.getComponent().getIdentifier()%>Adapter(c, assembly);
                 assembly.build(component);
             }
@@ -69,21 +58,21 @@ public class <%=home.getIdentifier()%>Adapter
             }
             return component;
         }
-        catch(CCMException e)
+        catch(Components.CCMException e)
         {
-            throw new CreateFailure();
+            throw new Components.CreateFailure();
         }    
     }
     
-    public void remove_component(CCMObject component) 
-        throws CCMException, RemoveFailure
+    public void remove_component(Components.CCMObject component) 
+        throws Components.CCMException, Components.RemoveFailure
     {
         logger.fine("");	
         component.remove();
     }
 
-    public CCMObject create_component() 
-        throws CCMException, CreateFailure
+    public Components.CCMObject create_component() 
+        throws Components.CCMException, Components.CreateFailure
     {
         logger.fine("");
         return create();

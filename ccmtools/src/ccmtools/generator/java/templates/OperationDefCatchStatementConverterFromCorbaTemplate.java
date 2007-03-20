@@ -18,7 +18,7 @@ public class OperationDefCatchStatementConverterFromCorbaTemplate
   protected final String TEXT_1 = "\tcatch(";
   protected final String TEXT_2 = " eLocal)" + NL + "\t{" + NL + "\t    try" + NL + "\t    {" + NL + "\t        ";
   protected final String TEXT_3 = " eRemote =" + NL + "\t             ";
-  protected final String TEXT_4 = "(eLocal);" + NL + "\t        throw eRemote;" + NL + "\t    }" + NL + "\t    catch(ccmtools.local.CorbaConverterException eConvert)" + NL + "\t    {" + NL + "\t        throw new BAD_OPERATION(eConvert.getMessage());" + NL + "\t    }" + NL + "\t}" + NL;
+  protected final String TEXT_4 = "(eLocal);" + NL + "\t        throw eRemote;" + NL + "\t    }" + NL + "\t    catch(ccmtools.local.CorbaConverterException eConvert)" + NL + "\t    {" + NL + "\t        throw new org.omg.CORBA.BAD_OPERATION(eConvert.getMessage());" + NL + "\t    }" + NL + "\t}" + NL;
   protected final String TEXT_5 = NL;
 
   public String generate(Object argument)

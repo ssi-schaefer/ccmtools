@@ -23,7 +23,7 @@ public class ComponentDefAdapterLocalTemplate
   protected final String TEXT_6 = "Adapter " + NL + "    implements ";
   protected final String TEXT_7 = NL + "{" + NL + "    private java.util.logging.Logger logger = ccmtools.local.ServiceLocator.instance().getLogger();" + NL + "    " + NL + "    private ";
   protected final String TEXT_8 = " localInterface;" + NL + "    private ";
-  protected final String TEXT_9 = "_Context ctx;" + NL + "    private Components.Assembly assembly;" + NL + "" + NL + "    /** Facet adapter references */";
+  protected final String TEXT_9 = "_Context ctx;" + NL + "    private Components.Assembly assembly;" + NL + "    private Components.ComponentDelegator delegator;" + NL + "" + NL + "    /** Facet adapter references */";
   protected final String TEXT_10 = NL;
   protected final String TEXT_11 = "  " + NL + "\t" + NL + "    /** Receptacle references */";
   protected final String TEXT_12 = NL;
@@ -32,7 +32,7 @@ public class ComponentDefAdapterLocalTemplate
   protected final String TEXT_15 = "Adapter(";
   protected final String TEXT_16 = " localInterface)" + NL + "    {" + NL + "        this(localInterface, null);" + NL + "    }" + NL + "\t" + NL + "    public ";
   protected final String TEXT_17 = "Adapter(";
-  protected final String TEXT_18 = " localInterface, Components.Assembly assembly)" + NL + "    {" + NL + "        logger.fine(\"localInterface = \" + localInterface + \", \" + assembly);" + NL + "        this.localInterface = localInterface;" + NL + "        this.assembly = assembly;" + NL + "    }" + NL + "\t" + NL + "\t" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */";
+  protected final String TEXT_18 = " localInterface, Components.Assembly assembly)" + NL + "    {" + NL + "        logger.fine(\"localInterface = \" + localInterface + \", \" + assembly);" + NL + "        this.localInterface = localInterface;" + NL + "        this.assembly = assembly;" + NL + "        if(localInterface!=null && (localInterface instanceof Components.ComponentDelegator))" + NL + "        \tthis.delegator = (Components.ComponentDelegator)localInterface;" + NL + "    }" + NL + "\t" + NL + "\t" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */";
   protected final String TEXT_19 = NL;
   protected final String TEXT_20 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */";
   protected final String TEXT_21 = NL;

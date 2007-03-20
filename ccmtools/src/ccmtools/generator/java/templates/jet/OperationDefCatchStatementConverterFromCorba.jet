@@ -18,7 +18,7 @@ for(Iterator i = op.getException().iterator(); i.hasNext(); )
 	    }
 	    catch(ccmtools.local.CorbaConverterException eConvert)
 	    {
-	        throw new BAD_OPERATION(eConvert.getMessage());
+	        throw new org.omg.CORBA.BAD_OPERATION(eConvert.getMessage());
 	    }
 	}
 

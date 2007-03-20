@@ -11,17 +11,12 @@
 
 package <%= iface.generateJavaNamespace() %>;
                  
-import java.util.logging.Logger;
-
-import Components.CCMException;  
-import ccmtools.local.ServiceLocator;
-
 <%=iface.generateJavaImportStatements()%>                  
                   
 public class <%=iface.getIdentifier()%>Adapter 
     implements <%=iface.getIdentifier()%>
 {
-    private Logger logger = ServiceLocator.instance().getLogger();
+    private java.util.logging.Logger logger = ccmtools.local.ServiceLocator.instance().getLogger();
     
     private <%=iface.generateCcmIdentifier()%> localInterface;
     

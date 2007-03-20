@@ -11,37 +11,20 @@
 
 package <%=component.generateJavaRemoteNamespace()%>;
 
-import java.util.logging.Logger;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 
-import Components.AlreadyConnected;
-import Components.Cookie;
-import Components.CookieImpl;
-import Components.CCMException;   
-import Components.ExceededConnectionLimit;
-import Components.InvalidConfiguration;
-import Components.InvalidConnection;
-import Components.NoConnection;
-import Components.RemoveFailure;
-
-import ccmtools.local.ServiceLocator;
-import ccmtools.remote.CCMSessionContainer;
-
-import org.omg.PortableServer.Servant;
-import org.omg.CORBA.BAD_OPERATION;
-          
 <%=component.generateJavaImportStatements(component.generateJavaRemoteNamespace())%>
 
 public class <%=component.getIdentifier()%>AdapterFromCorba 
      extends <%=component.generateAbsoluteIdlName()%>POA
 {
     /** Default logger instance */
-    private Logger logger = ServiceLocator.instance().getLogger();
+    private java.util.logging.Logger logger = ccmtools.local.ServiceLocator.instance().getLogger();
   
     /** CCM session container instance */  
-    private CCMSessionContainer container;
+    private ccmtools.remote.CCMSessionContainer container;
 
     /** Local component instance */
     private <%=component.getIdentifier()%> localInterface;
@@ -68,7 +51,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
 }
 %>   
         
-    public <%=component.getIdentifier()%>AdapterFromCorba(CCMSessionContainer container, 
+    public <%=component.getIdentifier()%>AdapterFromCorba(ccmtools.remote.CCMSessionContainer container, 
         <%=component.getIdentifier()%> localComponent)
     {    
         logger.fine("localComponent = " + localComponent);
@@ -190,7 +173,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
         {
             localInterface.configuration_complete();
         }
-        catch(InvalidConfiguration e)
+        catch(Components.InvalidConfiguration e)
         {
             e.printStackTrace();
             throw new ccmtools.corba.Components.InvalidConfiguration();
@@ -213,7 +196,7 @@ for(Iterator i = component.getReceptacle().iterator(); i.hasNext();)
                 localInterface.remove();
             }
         }
-        catch(RemoveFailure e)
+        catch(Components.RemoveFailure e)
         {
         	    e.printStackTrace();
             throw new ccmtools.corba.Components.RemoveFailure(e.getMessage());

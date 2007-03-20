@@ -31,7 +31,7 @@ public class OperationDefAdapterFromCorbaTemplate
   protected final String TEXT_15 = NL;
   protected final String TEXT_16 = NL + "        }";
   protected final String TEXT_17 = NL;
-  protected final String TEXT_18 = NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t        throw new BAD_OPERATION(e.getMessage());" + NL + "        }" + NL + "    }";
+  protected final String TEXT_18 = NL + "        catch(java.lang.Exception e)" + NL + "        {" + NL + "    \t        throw new org.omg.CORBA.BAD_OPERATION(e.getMessage());" + NL + "        }" + NL + "    }";
   protected final String TEXT_19 = NL;
 
   public String generate(Object argument)

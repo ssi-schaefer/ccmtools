@@ -17,9 +17,6 @@
 
 package <%=home.generateJavaNamespace()%>;
 
-import Components.CCMException;           
-import Components.EnterpriseComponent;
-
 <%=home.generateJavaImportStatements()%>
       
 /**
@@ -38,9 +35,9 @@ public class <%=home.getIdentifier()%>Impl
         // OPTIONAL: IMPLEMENT ME HERE !
     }
     
-    public EnterpriseComponent create()
-        throws CCMException
+    public Components.EnterpriseComponent create()
+        throws Components.CCMException
     {
-        return (EnterpriseComponent) new <%=home.getComponent().getIdentifier()%>Impl();
+        return (Components.EnterpriseComponent) new <%=home.getComponent().getIdentifier()%>Impl();
     }
 }

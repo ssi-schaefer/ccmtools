@@ -5,13 +5,13 @@
 <% UsesDef uses = (UsesDef) argument;  %>
 
     public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> localObj)
-        throws AlreadyConnected, 
-               InvalidConnection
+        throws Components.AlreadyConnected, 
+               Components.InvalidConnection
     {
         logger.fine("obj = " + localObj);
         if(<%=uses.getIdentifier()%>Receptacle != null)
         {
-            throw new AlreadyConnected();
+            throw new Components.AlreadyConnected();
         }	
         else
         {
@@ -20,12 +20,12 @@
     }
 
     public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
-        throws NoConnection
+        throws Components.NoConnection
     {
         logger.fine("");
         if(<%=uses.getIdentifier()%>Receptacle == null)
         {
-            throw new NoConnection();
+            throw new Components.NoConnection();
         }
         else
         {

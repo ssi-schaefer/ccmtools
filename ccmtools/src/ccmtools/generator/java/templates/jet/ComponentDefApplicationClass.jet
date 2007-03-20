@@ -17,9 +17,6 @@
 
 package <%=component.generateJavaNamespace()%>;
    
-import Components.CCMException;     
-import Components.SessionContext; 
-
 <%=component.generateJavaImportStatements()%>  
    
 /**
@@ -68,7 +65,7 @@ for(Iterator i=component.getAttributes().iterator(); i.hasNext();)
     
     
     public <%=component.getIdentifier()%>Impl()
-        throws CCMException
+        throws Components.CCMException
     {
         // OPTIONAL: IMPLEMENT ME HERE !
     }
@@ -139,26 +136,26 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 
     /** Component callback methods */
     
-    public void set_session_context(SessionContext ctx) 
-        throws CCMException
+    public void set_session_context(Components.SessionContext ctx) 
+        throws Components.CCMException
     {
         this.ctx = (<%=component.generateCcmIdentifier()%>_Context)ctx; 
     }
 
     public void ccm_activate() 
-        throws CCMException
+        throws Components.CCMException
     {
         // OPTIONAL: IMPLEMENT ME HERE !
     }
 
     public void ccm_passivate() 
-        throws CCMException
+        throws Components.CCMException
     {
         // OPTIONAL: IMPLEMENT ME HERE !
     }
 
     public void ccm_remove() 
-        throws CCMException
+        throws Components.CCMException
     {
         // OPTIONAL: IMPLEMENT ME HERE !
     }

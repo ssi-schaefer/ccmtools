@@ -7,30 +7,30 @@ UsesDef uses = (UsesDef) argument;
 InterfaceDef iface = uses.getInterface();
 %>
 
-    public Cookie connect_<%=uses.getIdentifier()%>(<%=iface.generateAbsoluteJavaName()%> obj)
-        throws ExceededConnectionLimit, 
-               InvalidConnection
+    public Components.Cookie connect_<%=uses.getIdentifier()%>(<%=iface.generateAbsoluteJavaName()%> obj)
+        throws Components.ExceededConnectionLimit, 
+               Components.InvalidConnection
     {
         logger.fine("Object reference = " + obj);
         if(obj == null)
         {
-            throw new InvalidConnection();
+            throw new Components.InvalidConnection();
         }	
         else
         {
-            Cookie ck = new CookieImpl();            
+            Components.Cookie ck = new Components.CookieImpl();            
             <%=uses.getIdentifier()%>ReceptacleMap.put(ck, obj);
             return ck;
         }
     }
 
-    public <%=iface.generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(Cookie ck)
-        throws InvalidConnection
+    public <%=iface.generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(Components.Cookie ck)
+        throws Components.InvalidConnection
     {
 	    logger.fine("Cookie = " + ck);        
         if(ck == null || !<%=uses.getIdentifier()%>ReceptacleMap.containsKey(ck))
         {
-            throw new InvalidConnection();
+            throw new Components.InvalidConnection();
         }
         else
         {
@@ -40,9 +40,9 @@ InterfaceDef iface = uses.getInterface();
         }
     }
         
-    public java.util.Map<Cookie, <%=iface.generateAbsoluteJavaName()%>> get_connections_<%=uses.getIdentifier()%>()
+    public java.util.Map<Components.Cookie, <%=iface.generateAbsoluteJavaName()%>> get_connections_<%=uses.getIdentifier()%>()
     {
         logger.fine("");
         // return a copy of the receptacle map
-        return new java.util.HashMap<Cookie, <%=iface.generateAbsoluteJavaName()%>>(<%=uses.getIdentifier()%>ReceptacleMap);
+        return new java.util.HashMap<Components.Cookie, <%=iface.generateAbsoluteJavaName()%>>(<%=uses.getIdentifier()%>ReceptacleMap);
     }

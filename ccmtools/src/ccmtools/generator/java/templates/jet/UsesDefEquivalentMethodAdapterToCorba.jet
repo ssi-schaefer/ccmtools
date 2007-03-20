@@ -5,7 +5,7 @@
 <% UsesDef uses = (UsesDef) argument;  %>
 
     public void connect_<%=uses.getIdentifier()%>(<%=uses.getInterface().generateAbsoluteJavaName()%> localObject)
-        throws AlreadyConnected, InvalidConnection
+        throws Components.AlreadyConnected, Components.InvalidConnection
     {
         logger.fine("localInterface = " + localObject);
         // Create CORBA objects and connect them to the remote component
@@ -21,29 +21,29 @@
 			}
 			else
 			{
-				throw new AlreadyConnected();
+				throw new Components.AlreadyConnected();
 			}
 		}
 		catch (org.omg.PortableServer.POAPackage.ServantNotActive e)
 		{
-			throw new InvalidConnection();
+			throw new Components.InvalidConnection();
 		}
 		catch (org.omg.PortableServer.POAPackage.WrongPolicy e)
 		{
-			throw new InvalidConnection();
+			throw new Components.InvalidConnection();
 		}
 		catch (ccmtools.corba.Components.AlreadyConnected e)
 		{
-			throw new AlreadyConnected();
+			throw new Components.AlreadyConnected();
 		}
 		catch (ccmtools.corba.Components.InvalidConnection e)
 		{
-			throw new InvalidConnection();
+			throw new Components.InvalidConnection();
 		}
     }
 
     public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
-        throws NoConnection
+        throws Components.NoConnection
     {
         logger.fine("");
    		try
@@ -55,12 +55,12 @@
 			}
 			else 
 			{
-				throw new NoConnection();
+				throw new Components.NoConnection();
 			}
 		}
 		catch (java.lang.Exception e)
 		{
-			throw new NoConnection();
+			throw new Components.NoConnection();
 		}
     
     }

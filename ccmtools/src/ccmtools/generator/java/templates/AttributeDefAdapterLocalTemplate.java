@@ -16,12 +16,12 @@ public class AttributeDefAdapterLocalTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = NL + "    public ";
   protected final String TEXT_2 = " ";
-  protected final String TEXT_3 = "()" + NL + "        throws CCMException" + NL + "    {";
+  protected final String TEXT_3 = "()" + NL + "        throws Components.CCMException" + NL + "    {";
   protected final String TEXT_4 = NL + "        ";
   protected final String TEXT_5 = " result = localInterface.";
   protected final String TEXT_6 = "();" + NL + "        logger.fine(\"result = \" + result);" + NL + "        return result;" + NL + "    }" + NL + "     " + NL + "    public void ";
   protected final String TEXT_7 = "(";
-  protected final String TEXT_8 = " value)" + NL + "        throws CCMException" + NL + "    {" + NL + "        logger.fine(\"value = \" + value);" + NL + "        localInterface.";
+  protected final String TEXT_8 = " value)" + NL + "        throws Components.CCMException" + NL + "    {" + NL + "        logger.fine(\"value = \" + value);" + NL + "        localInterface.";
   protected final String TEXT_9 = "(value);" + NL + "    } ";
   protected final String TEXT_10 = NL;
 

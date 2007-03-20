@@ -11,8 +11,6 @@
 
 package <%=component.generateJavaNamespace()%>;
                  
-import Components.NoConnection;             
-
 public interface <%=component.generateCcmIdentifier()%>_Context 
     extends Components.SessionContext
 {

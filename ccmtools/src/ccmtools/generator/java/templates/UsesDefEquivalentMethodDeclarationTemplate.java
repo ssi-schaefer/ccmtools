@@ -16,10 +16,10 @@ public class UsesDefEquivalentMethodDeclarationTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = NL + "    void connect_";
   protected final String TEXT_2 = "(";
-  protected final String TEXT_3 = " localObj)" + NL + "        throws AlreadyConnected, InvalidConnection;" + NL;
+  protected final String TEXT_3 = " localObj)" + NL + "        throws Components.AlreadyConnected, Components.InvalidConnection;" + NL;
   protected final String TEXT_4 = NL + "    ";
   protected final String TEXT_5 = " disconnect_";
-  protected final String TEXT_6 = "()" + NL + "        throws NoConnection;" + NL + "        ";
+  protected final String TEXT_6 = "()" + NL + "        throws Components.NoConnection;" + NL + "        ";
   protected final String TEXT_7 = NL + "    ";
   protected final String TEXT_8 = " get_connection_";
   protected final String TEXT_9 = "();";

@@ -11,29 +11,22 @@
 
 package <%=home.generateJavaRemoteNamespace()%>;
 
-import java.util.logging.Logger;
-
-import ccmtools.local.ServiceLocator;
-import ccmtools.remote.CCMSessionContainer;
-
-import org.omg.PortableServer.Servant;
-
 <%=home.generateJavaImportStatements(home.generateJavaRemoteNamespace())%>
            
 public class <%=home.getIdentifier()%>AdapterFromCorba
    extends <%=home.generateAbsoluteIdlName()%>POA
 {
     /** Default logger instance */
-    private Logger logger = ServiceLocator.instance().getLogger();
+    private java.util.logging.Logger logger = ccmtools.local.ServiceLocator.instance().getLogger();
 
     /** CCM session container instance */
-    private CCMSessionContainer container;
+    private ccmtools.remote.CCMSessionContainer container;
 
     /** Java reference to the local interface */
     private <%=home.getIdentifier()%> localHome;
     
     
-    public <%=home.getIdentifier()%>AdapterFromCorba(CCMSessionContainer container, 
+    public <%=home.getIdentifier()%>AdapterFromCorba(ccmtools.remote.CCMSessionContainer container, 
         <%=home.getIdentifier()%> localHome)
     {
         logger.fine("localHome = " + localHome);
@@ -51,7 +44,7 @@ public class <%=home.getIdentifier()%>AdapterFromCorba
         try
         {
             <%=home.getComponent().getIdentifier()%> localComponent = localHome.create();
-            Servant servant = 
+            org.omg.PortableServer.Servant servant = 
                 new <%=home.getComponent().getIdentifier()%>AdapterFromCorba(container,localComponent);
             ccmtools.corba.Components.CCMObject obj = 
                 container.getCorbaComponentFromServant(servant); 
