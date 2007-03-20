@@ -9,6 +9,16 @@
         logger.fine("");
         if(<%=provides.getIdentifier()%>FacetAdapter == null)
         {
+        	if(delegator!=null)
+        	{
+        		Object o = delegator.provide("<%=provides.getIdentifier()%>");
+        		if(o!=null)
+        		{
+        			<%=provides.getIdentifier()%>FacetAdapter =
+        				(<%=provides.getInterface().generateAbsoluteJavaName()%>)o;
+        			return <%=provides.getIdentifier()%>FacetAdapter;
+        		}
+        	}
             <%=provides.getIdentifier()%>FacetAdapter = 
                 new <%=provides.getInterface().generateAbsoluteJavaName()%>Adapter(localInterface.get_<%=provides.getIdentifier()%>());
         }

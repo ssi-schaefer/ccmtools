@@ -9,30 +9,64 @@
                Components.InvalidConnection
     {
         logger.fine("obj = " + localObj);
-        if(<%=uses.getIdentifier()%>Receptacle != null)
+        if(delegator!=null)
         {
-            throw new Components.AlreadyConnected();
-        }	
+        	try
+        	{
+        		delegator.connect("<%=uses.getIdentifier()%>", localObj);
+        	}
+        	catch(Components.InvalidName e)
+        	{
+        		throw new Components.InvalidConnection(e.getMessage());
+        	}
+        	catch(Components.ExceededConnectionLimit e)
+        	{
+        		throw new Components.AlreadyConnected(e.getMessage());
+        	}
+        }
         else
         {
-            <%=uses.getIdentifier()%>Receptacle = localObj;
+            if(<%=uses.getIdentifier()%>Receptacle != null)
+            {
+                throw new Components.AlreadyConnected();
+            }	
         }
+        <%=uses.getIdentifier()%>Receptacle = localObj;
     }
 
     public <%=uses.getInterface().generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>()
         throws Components.NoConnection
     {
         logger.fine("");
-        if(<%=uses.getIdentifier()%>Receptacle == null)
+        if(delegator!=null)
         {
-            throw new Components.NoConnection();
+        	try
+        	{
+        		delegator.disconnect("<%=uses.getIdentifier()%>", null);
+        	}
+        	catch(Components.InvalidName e)
+        	{
+        		throw new Components.NoConnection(e.getMessage());
+        	}
+        	catch(Components.InvalidConnection e)
+        	{
+        		throw new Components.NoConnection(e.getMessage());
+        	}
+        	catch(Components.CookieRequired e)
+        	{
+        		throw new Components.NoConnection(e.getMessage());
+        	}
         }
         else
         {
-            <%=uses.getInterface().generateAbsoluteJavaName()%> f = <%=uses.getIdentifier()%>Receptacle;
-            <%=uses.getIdentifier()%>Receptacle = null;
-            return f;
+            if(<%=uses.getIdentifier()%>Receptacle == null)
+            {
+                throw new Components.NoConnection();
+            }
         }
+        <%=uses.getInterface().generateAbsoluteJavaName()%> f = <%=uses.getIdentifier()%>Receptacle;
+        <%=uses.getIdentifier()%>Receptacle = null;
+        return f;
     }
         
     public <%=uses.getInterface().generateAbsoluteJavaName()%> get_connection_<%=uses.getIdentifier()%>()

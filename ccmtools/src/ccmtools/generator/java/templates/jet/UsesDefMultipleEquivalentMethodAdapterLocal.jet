@@ -15,29 +15,61 @@ InterfaceDef iface = uses.getInterface();
         if(obj == null)
         {
             throw new Components.InvalidConnection();
-        }	
+        }
+        Components.Cookie ck;
+        if(delegator!=null)
+        {
+        	try
+        	{
+        		ck = delegator.connect("<%=uses.getIdentifier()%>", obj);
+        	}
+        	catch(Components.InvalidName e)
+        	{
+        		throw new Components.InvalidConnection(e.getMessage());
+        	}
+        	catch(Components.AlreadyConnected e)
+        	{
+        		throw new Components.ExceededConnectionLimit(e.getMessage());
+        	}
+        }
         else
         {
-            Components.Cookie ck = new Components.CookieImpl();            
-            <%=uses.getIdentifier()%>ReceptacleMap.put(ck, obj);
-            return ck;
+            ck = new Components.CookieImpl();            
         }
+        <%=uses.getIdentifier()%>ReceptacleMap.put(ck, obj);
+        return ck;
     }
 
     public <%=iface.generateAbsoluteJavaName()%> disconnect_<%=uses.getIdentifier()%>(Components.Cookie ck)
         throws Components.InvalidConnection
     {
 	    logger.fine("Cookie = " + ck);        
-        if(ck == null || !<%=uses.getIdentifier()%>ReceptacleMap.containsKey(ck))
+        if(!<%=uses.getIdentifier()%>ReceptacleMap.containsKey(ck))
         {
             throw new Components.InvalidConnection();
         }
-        else
+        if(delegator!=null)
         {
-            <%=uses.getInterface().generateAbsoluteJavaName()%> f = <%=uses.getIdentifier()%>ReceptacleMap.get(ck);
-            <%=uses.getIdentifier()%>ReceptacleMap.remove(ck);
-            return f;
+        	try
+        	{
+        		delegator.disconnect("<%=uses.getIdentifier()%>", ck);
+        	}
+        	catch(Components.InvalidName e)
+        	{
+        		throw new Components.InvalidConnection(e.getMessage());
+        	}
+        	catch(Components.CookieRequired e)
+        	{
+        		throw new Components.InvalidConnection(e.getMessage());
+        	}
+        	catch(Components.NoConnection e)
+        	{
+        		throw new Components.InvalidConnection(e.getMessage());
+        	}
         }
+        <%=uses.getInterface().generateAbsoluteJavaName()%> f = <%=uses.getIdentifier()%>ReceptacleMap.get(ck);
+        <%=uses.getIdentifier()%>ReceptacleMap.remove(ck);
+        return f;
     }
         
     public java.util.Map<Components.Cookie, <%=iface.generateAbsoluteJavaName()%>> get_connections_<%=uses.getIdentifier()%>()
