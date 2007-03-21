@@ -5,6 +5,10 @@
 <% UsesDef uses = (UsesDef) argument;  %>
         else if(name.equals("<%=uses.getIdentifier()%>"))
         {
+<% if(uses.isMultiple()) { %>
+            return connect_<%=uses.getIdentifier()%>((<%=uses.getInterface().generateAbsoluteJavaName()%>) obj);
+<% } else { %>
             connect_<%=uses.getIdentifier()%>((<%=uses.getInterface().generateAbsoluteJavaName()%>) obj);
             return new Components.CookieImpl();
+<% } %>
         }

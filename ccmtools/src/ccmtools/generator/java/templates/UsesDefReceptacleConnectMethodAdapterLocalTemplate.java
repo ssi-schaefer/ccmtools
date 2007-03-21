@@ -15,10 +15,15 @@ public class UsesDefReceptacleConnectMethodAdapterLocalTemplate
 
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "        else if(name.equals(\"";
-  protected final String TEXT_2 = "\"))" + NL + "        {" + NL + "            connect_";
-  protected final String TEXT_3 = "((";
-  protected final String TEXT_4 = ") obj);" + NL + "            return new Components.CookieImpl();" + NL + "        }";
-  protected final String TEXT_5 = NL;
+  protected final String TEXT_2 = "\"))" + NL + "        {";
+  protected final String TEXT_3 = NL + "            return connect_";
+  protected final String TEXT_4 = "((";
+  protected final String TEXT_5 = ") obj);";
+  protected final String TEXT_6 = NL + "            connect_";
+  protected final String TEXT_7 = "((";
+  protected final String TEXT_8 = ") obj);" + NL + "            return new Components.CookieImpl();";
+  protected final String TEXT_9 = NL + "        }";
+  protected final String TEXT_10 = NL;
 
   public String generate(Object argument)
   {
@@ -27,11 +32,21 @@ public class UsesDefReceptacleConnectMethodAdapterLocalTemplate
     stringBuffer.append(TEXT_1);
     stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_2);
-    stringBuffer.append(uses.getIdentifier());
+     if(uses.isMultiple()) { 
     stringBuffer.append(TEXT_3);
-    stringBuffer.append(uses.getInterface().generateAbsoluteJavaName());
+    stringBuffer.append(uses.getIdentifier());
     stringBuffer.append(TEXT_4);
+    stringBuffer.append(uses.getInterface().generateAbsoluteJavaName());
     stringBuffer.append(TEXT_5);
+     } else { 
+    stringBuffer.append(TEXT_6);
+    stringBuffer.append(uses.getIdentifier());
+    stringBuffer.append(TEXT_7);
+    stringBuffer.append(uses.getInterface().generateAbsoluteJavaName());
+    stringBuffer.append(TEXT_8);
+     } 
+    stringBuffer.append(TEXT_9);
+    stringBuffer.append(TEXT_10);
     return stringBuffer.toString();
   }
 }
