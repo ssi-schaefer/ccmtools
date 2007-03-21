@@ -29,6 +29,7 @@ import ccmtools.parser.assembly.metamodel.Port;
 import ccmtools.parser.idl.metamodel.CcmModelHelper;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MComponentDef;
 import ccmtools.parser.idl.metamodel.ComponentIDL.MHomeDef;
+import ccmtools.parser.idl.metamodel.ComponentIDL.MUsesDef;
 import ccmtools.utils.SourceFile;
 import ccmtools.utils.Text;
 
@@ -302,7 +303,68 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
                 }
             }
         }
+        for (AssemblyElement e : assembly_.getElements())
+        {
+            if (e instanceof Connection)
+            {
+                Connection c = (Connection) e;
+                Port source = c.getFacet();
+                if (source.getComponent() == null)
+                {
+                    // connect from an outer receptacle
+                    Port target = c.getReceptacle();
+                    String target_comp = target.getComponent();
+                    if (target_comp != null)
+                    {
+                        // connect to an inner receptacle
+                        MComponentDef target_def = getAssemblyLocalComponents().get(target_comp);
+                        MUsesDef inner = getReceptacle(target_def, target.getConnector());
+                        UsesDef outer = getReceptacle(this, source.getConnector());
+                        if (outer.isMultiple())
+                        {
+                            if (!inner.isMultiple())
+                            {
+                                StringBuilder msg = new StringBuilder();
+                                msg.append("cannot connect outer multiple receptacle \"");
+                                msg.append(source.getConnector());
+                                msg.append("\" to inner single receptacle \"");
+                                msg.append(target.getConnector());
+                                msg.append("\"");
+                                throw new RuntimeException(msg.toString());
+                            }
+                        }
+                        else if (inner.isMultiple())
+                        {
+                            String code = TAB + "private Components.Cookie "
+                                    + source.getConnector() + "_;";
+                            list.add(code);
+                        }
+                    }
+                }
+            }
+        }
         return list.iterator();
+    }
+
+    private static UsesDef getReceptacle( ComponentDef comp_def, String name )
+    {
+        for (UsesDef u : comp_def.getReceptacle())
+        {
+            if (u.getIdentifier().equals(name))
+                return u;
+        }
+        throw new RuntimeException("cannot find receptacle: " + name);
+    }
+
+    private static MUsesDef getReceptacle( MComponentDef comp_def, String name )
+    {
+        for (Object o : comp_def.getReceptacles())
+        {
+            MUsesDef u = (MUsesDef) o;
+            if (u.getIdentifier().equals(name))
+                return u;
+        }
+        throw new RuntimeException("cannot find receptacle: " + name);
     }
 
     public Iterator getAssemblyAttributeInitialisation()
@@ -318,8 +380,8 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
                 // calling home-finder
                 String cn = CcmModelHelper.getAbsoluteName(comp_def, ".");
                 StringBuilder code = new StringBuilder();
-                code.append(TAB3).append(key).append("_ = (").append(cn).append("Adapter)");
-                code.append("((Components.KeylessCCMHome)");
+                code.append(TAB3).append(key).append("_ = (").append(cn);
+                code.append(")((Components.KeylessCCMHome)");
                 code.append("Components.HomeFinder.instance().find_home_by_name(\"");
                 code.append(comp_alias).append("\")).create_component();");
                 list.add(code.toString());
@@ -367,44 +429,29 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
         return list.iterator();
     }
 
-    public Iterator getAssemblyAttributeSetup()
+    public Iterator getAssemblyActivate()
     {
-        HashSet<String> outer_facets = new HashSet<String>();
         ArrayList<String> list = new ArrayList<String>();
         for (AssemblyElement e : assembly_.getElements())
         {
             if (e instanceof Connection)
             {
                 Connection c = (Connection) e;
-                StringBuffer code = new StringBuffer();
-                String code_tail;
                 Port target = c.getReceptacle();
-                String target_name = target.getConnector();
-                if (target.getComponent() == null)
-                {
-                    // connect to an outer facet
-                    String check = TAB3 + "if(" + target_name + "_!=null)";
-                    list.add(check);
-                    code.append(TAB4);
-                    code.append(target_name);
-                    code.append("_.target = ");
-                    code_tail = ";";
-                    outer_facets.add(target_name);
-                }
-                else
+                String target_comp = target.getComponent();
+                if (target_comp != null)
                 {
                     // connect to the receptacle of an inner component
-                    code.append(TAB3);
-                    code.append(target.getComponent());
-                    code.append("_.connect_");
-                    code.append(target_name);
-                    code.append("(");
-                    code_tail = ");";
+                    Port source = c.getFacet();
+                    String source_comp = source.getComponent();
+                    if (source_comp != null)
+                    {
+                        // connect from the facet of an inner component
+                        list.add(TAB3 + target_comp + "_.connect(\"" + target.getConnector()
+                                + "\", " + source_comp + "_.provide_facet(\""
+                                + source.getConnector() + "\"));");
+                    }
                 }
-                Port source = c.getFacet();
-                code.append(getFacetValue(source));
-                code.append(code_tail);
-                list.add(code.toString());
             }
             else if (e instanceof Attribute)
             {
@@ -422,13 +469,153 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
                 list.add(code.toString());
             }
         }
+        return list.iterator();
+    }
+
+    public Iterator getAssemblyDynamicProvide()
+    {
+        ArrayList<String> list = new ArrayList<String>();
+        HashSet<String> outer_facets = new HashSet<String>();
+        for (AssemblyElement e : assembly_.getElements())
+        {
+            if (e instanceof Connection)
+            {
+                Connection c = (Connection) e;
+                Port target = c.getReceptacle();
+                if (target.getComponent() == null)
+                {
+                    // connect to an outer facet
+                    String target_name = target.getConnector();
+                    outer_facets.add(target_name);
+                    list.add(TAB2 + "if(name.equals(\"" + target_name + "\"))");
+                    list.add(TAB2 + "{");
+                    Port source = c.getFacet();
+                    String source_comp = source.getComponent();
+                    if (source_comp != null)
+                    {
+                        // connect from the facet of an inner component
+                        list.add(TAB3 + "return " + source_comp + "_.provide_facet(\""
+                                + source.getConnector() + "\");");
+                    }
+                    else
+                    {
+                        // connect from an outer receptacle
+                        list.add(TAB3 + "return null;");
+                    }
+                    list.add(TAB2 + "}");
+                }
+            }
+        }
         for (ProvidesDef p : getFacet())
         {
             String name = p.getIdentifier();
             if (!outer_facets.contains(name))
             {
-                throw new RuntimeException("facet " + name
-                        + " is not connected to an inner component");
+                throw new RuntimeException("facet \"" + name
+                        + "\" is not connected to an inner component");
+            }
+        }
+        return list.iterator();
+    }
+
+    public Iterator getAssemblyDynamicConnect()
+    {
+        ArrayList<String> list = new ArrayList<String>();
+        for (AssemblyElement e : assembly_.getElements())
+        {
+            if (e instanceof Connection)
+            {
+                Connection c = (Connection) e;
+                Port source = c.getFacet();
+                if (source.getComponent() == null)
+                {
+                    // connect from an outer receptacle
+                    String src_conn = source.getConnector();
+                    UsesDef outer = getReceptacle(this, src_conn);
+                    list.add(TAB2 + "if(name.equals(\"" + src_conn + "\"))");
+                    list.add(TAB2 + "{");
+                    Port target = c.getReceptacle();
+                    String target_comp = target.getComponent();
+                    if (target_comp != null)
+                    {
+                        // connect to an inner receptacle
+                        MComponentDef target_def = getAssemblyLocalComponents().get(target_comp);
+                        MUsesDef inner = getReceptacle(target_def, target.getConnector());
+                        if (inner.isMultiple() && !outer.isMultiple())
+                        {
+                            list.add(TAB3 + src_conn + "_ = " + target_comp + "_.connect(\""
+                                    + target.getConnector() + "\", connection);");
+                            list.add(TAB3 + "return " + src_conn + "_;");
+                        }
+                        else
+                        {
+                            list.add(TAB3 + "return " + target_comp + "_.connect(\""
+                                    + target.getConnector() + "\", connection);");
+                        }
+                    }
+                    else
+                    {
+                        // connect to an outer facet
+                        String tgt_conn = target.getConnector();
+                        String facet = outer.getInterface().generateAbsoluteJavaName();
+                        list.add(TAB3 + "if(" + tgt_conn + "_==null) get_" + tgt_conn + "();");
+                        list.add(TAB3 + tgt_conn + "_.target = (" + facet + ")connection;");
+                        list.add(TAB3 + "return new Components.CookieImpl();");
+                    }
+                    list.add(TAB2 + "}");
+                }
+            }
+        }
+        return list.iterator();
+    }
+
+    public Iterator getAssemblyDynamicDisconnect()
+    {
+        ArrayList<String> list = new ArrayList<String>();
+        for (AssemblyElement e : assembly_.getElements())
+        {
+            if (e instanceof Connection)
+            {
+                Connection c = (Connection) e;
+                Port source = c.getFacet();
+                if (source.getComponent() == null)
+                {
+                    // connect from an outer receptacle
+                    String src_conn = source.getConnector();
+                    list.add(TAB2 + "if(name.equals(\"" + src_conn + "\"))");
+                    list.add(TAB2 + "{");
+                    Port target = c.getReceptacle();
+                    String target_comp = target.getComponent();
+                    if (target_comp != null)
+                    {
+                        // connect to an inner receptacle
+                        MComponentDef target_def = getAssemblyLocalComponents().get(target_comp);
+                        MUsesDef inner = getReceptacle(target_def, target.getConnector());
+                        UsesDef outer = getReceptacle(this, src_conn);
+                        StringBuilder code = new StringBuilder();
+                        code.append(TAB3).append(target_comp);
+                        code.append("_.disconnect(\"");
+                        code.append(target.getConnector()).append("\", ");
+                        if (inner.isMultiple() && !outer.isMultiple())
+                        {
+                            code.append(src_conn).append("_");
+                        }
+                        else
+                        {
+                            code.append("ck");
+                        }
+                        code.append(");");
+                        list.add(code.toString());
+                    }
+                    else
+                    {
+                        // connect to an outer facet
+                        String tgt_conn = target.getConnector();
+                        list.add(TAB3 + tgt_conn + "_.target = null;");
+                    }
+                    list.add(TAB3 + "return;");
+                    list.add(TAB2 + "}");
+                }
             }
         }
         return list.iterator();
@@ -466,44 +653,6 @@ public class ComponentDef extends ModelElement implements JavaLocalInterfaceGene
         if (!empty)
             list.add(TAB2 + "}");
         return list;
-    }
-
-    private static String getFacetValue( Port source )
-    {
-        StringBuilder code = new StringBuilder();
-        if (source.getComponent() == null)
-        {
-            // connect from an outer receptacle
-            code.append("ctx.get_connection_");
-        }
-        else
-        {
-            // connect from the facet of an inner component
-            code.append(source.getComponent());
-            code.append("_.provide_");
-        }
-        code.append(source.getConnector());
-        code.append("()");
-        return code.toString();
-    }
-
-    public String getAssemblyInitFacetTargetValue( ProvidesDef provides )
-    {
-        String name = provides.getIdentifier();
-        for (AssemblyElement e : assembly_.getElements())
-        {
-            if (e instanceof Connection)
-            {
-                Connection c = (Connection) e;
-                Port target = c.getReceptacle();
-                if (target.getComponent() == null && target.getConnector().equals(name))
-                {
-                    Port source = c.getFacet();
-                    return getFacetValue(source);
-                }
-            }
-        }
-        throw new RuntimeException("facet " + name + " is not connected to an inner component");
     }
 
     /***********************************************************************************************

@@ -11,7 +11,12 @@
         {
         	if(delegator!=null)
         	{
-        		Object o = delegator.provide("<%=provides.getIdentifier()%>");
+        		Object o;
+        		try {
+        			o = delegator.provide("<%=provides.getIdentifier()%>");
+        		} catch(Components.InvalidName e) {
+        			throw new RuntimeException("internal error: "+e.getMessage());
+        		}
         		if(o!=null)
         		{
         			<%=provides.getIdentifier()%>FacetAdapter =

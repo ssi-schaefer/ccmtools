@@ -20,7 +20,7 @@ package <%=component.generateJavaNamespace()%>;
  * as well as component attributes.
  */   
 public class <%=component.getIdentifier()%>Impl 
-    implements <%=component.generateCcmIdentifier()%>
+    implements <%=component.generateCcmIdentifier()%>, Components.ComponentDelegator
 {
     /** Supported interface attribute variables */
 
@@ -80,6 +80,54 @@ for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
     	} catch(Exception e) {
     		throw new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.CREATE_ERROR);
     	}
+    }
+    
+    
+    /*
+     * Components.ComponentDelegator implementation
+     */
+	
+	public Object provide( String name ) throws Components.InvalidName
+	{
+<%
+for(Iterator i=component.getAssemblyDynamicProvide(); i.hasNext();)
+{
+%>
+<%=i.next().toString()%>
+<%
+}
+%> 
+		throw new Components.InvalidName("unknown facet: "+name);
+	}
+
+    public Components.Cookie connect( String name, Object connection )
+		throws Components.InvalidName, Components.InvalidConnection,
+            Components.AlreadyConnected, Components.ExceededConnectionLimit
+    {
+<%
+for(Iterator i=component.getAssemblyDynamicConnect(); i.hasNext();)
+{
+%>
+<%=i.next().toString()%>
+<%
+}
+%> 
+		throw new Components.InvalidName("unknown receptacle: "+name);
+    }
+    
+    public void disconnect( String name, Components.Cookie ck )
+    	throws Components.InvalidName, Components.InvalidConnection,
+            Components.CookieRequired, Components.NoConnection
+    {
+<%
+for(Iterator i=component.getAssemblyDynamicDisconnect(); i.hasNext();)
+{
+%>
+<%=i.next().toString()%>
+<%
+}
+%> 
+		throw new Components.InvalidName("unknown receptacle: "+name);
     }
 
 
@@ -160,7 +208,7 @@ for(Iterator i = component.getFacet().iterator(); i.hasNext();)
     	try {
 			// setup inner components    	
 <%
-for(Iterator i=component.getAssemblyAttributeSetup(); i.hasNext();)
+for(Iterator i=component.getAssemblyActivate(); i.hasNext();)
 {
 %>
 <%=i.next().toString()%>
@@ -180,7 +228,8 @@ for (String key : component.getAssemblyLocalComponents().keySet())
 
 			ccm_activate_ok = true; 
     	} catch(Exception e) {
-    		throw new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.CREATE_ERROR);
+    		throw new Components.CCMException(e.getMessage(),
+    			Components.CCMExceptionReason.CREATE_ERROR);
     	}
     }
 
@@ -203,7 +252,8 @@ for (String key : component.getAssemblyLocalComponents().keySet())
 }
 %>
 		} catch(Exception e) {
-    		throw new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.REMOVE_ERROR);
+    		throw new Components.CCMException(e.getMessage(),
+    			Components.CCMExceptionReason.REMOVE_ERROR);
 		} 
     }
 }

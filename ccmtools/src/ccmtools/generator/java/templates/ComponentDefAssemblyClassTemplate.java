@@ -22,7 +22,7 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_5 = NL;
   protected final String TEXT_6 = "  " + NL + "   " + NL + "/**" + NL + " * This class implements component equivalent and supported interfaces" + NL + " * as well as component attributes." + NL + " */   " + NL + "public class ";
   protected final String TEXT_7 = "Impl " + NL + "    implements ";
-  protected final String TEXT_8 = NL + "{" + NL + "    /** Supported interface attribute variables */" + NL;
+  protected final String TEXT_8 = ", Components.ComponentDelegator" + NL + "{" + NL + "    /** Supported interface attribute variables */" + NL;
   protected final String TEXT_9 = NL;
   protected final String TEXT_10 = "    " + NL + "    " + NL + "" + NL + "    /** Component attribute variables */" + NL + "    ";
   protected final String TEXT_11 = NL;
@@ -32,25 +32,31 @@ public class ComponentDefAssemblyClassTemplate
   protected final String TEXT_15 = "_Context ctx;" + NL + "    " + NL + "    private boolean ccm_activate_ok;" + NL + "" + NL + "    " + NL + "    public ";
   protected final String TEXT_16 = "Impl()" + NL + "        throws Components.CCMException" + NL + "    {" + NL + "    \ttry {";
   protected final String TEXT_17 = NL;
-  protected final String TEXT_18 = " " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
+  protected final String TEXT_18 = " " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "    " + NL + "    " + NL + "    /*" + NL + "     * Components.ComponentDelegator implementation" + NL + "     */" + NL + "\t" + NL + "\tpublic Object provide( String name ) throws Components.InvalidName" + NL + "\t{";
   protected final String TEXT_19 = NL;
-  protected final String TEXT_20 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */" + NL + "    ";
+  protected final String TEXT_20 = " " + NL + "\t\tthrow new Components.InvalidName(\"unknown facet: \"+name);" + NL + "\t}" + NL + "" + NL + "    public Components.Cookie connect( String name, Object connection )" + NL + "\t\tthrows Components.InvalidName, Components.InvalidConnection," + NL + "            Components.AlreadyConnected, Components.ExceededConnectionLimit" + NL + "    {";
   protected final String TEXT_21 = NL;
-  protected final String TEXT_22 = "    " + NL + "" + NL + "" + NL + "    /** Component attribute accessor methods */" + NL;
+  protected final String TEXT_22 = " " + NL + "\t\tthrow new Components.InvalidName(\"unknown receptacle: \"+name);" + NL + "    }" + NL + "    " + NL + "    public void disconnect( String name, Components.Cookie ck )" + NL + "    \tthrows Components.InvalidName, Components.InvalidConnection," + NL + "            Components.CookieRequired, Components.NoConnection" + NL + "    {";
   protected final String TEXT_23 = NL;
-  protected final String TEXT_24 = "    " + NL + "" + NL + "" + NL + "    /** Facet implementation factory methods */" + NL + "    ";
+  protected final String TEXT_24 = " " + NL + "\t\tthrow new Components.InvalidName(\"unknown receptacle: \"+name);" + NL + "    }" + NL + "" + NL + "" + NL + "    /* " + NL + "     * Supported interface methods " + NL + "     */" + NL + "" + NL + "    /** Supported interface attributes */" + NL;
   protected final String TEXT_25 = NL;
-  protected final String TEXT_26 = "    " + NL + "" + NL + "    /** Component callback methods */" + NL + "    " + NL + "    public void set_session_context(Components.SessionContext ctx) " + NL + "        throws Components.CCMException" + NL + "    {" + NL + "        this.ctx = (";
-  protected final String TEXT_27 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws Components.CCMException" + NL + "    {" + NL + "    \ttry {" + NL + "\t\t\t// setup inner components    \t";
-  protected final String TEXT_28 = NL;
-  protected final String TEXT_29 = " " + NL + "" + NL + "\t\t\t// finish configuration    \t";
-  protected final String TEXT_30 = NL + "\t\t\t";
-  protected final String TEXT_31 = "_.configuration_complete();";
-  protected final String TEXT_32 = NL + NL + "\t\t\tccm_activate_ok = true; " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws Components.CCMException" + NL + "    {" + NL + "        // Who calls this method?" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws Components.CCMException" + NL + "    {" + NL + "    \ttry {";
-  protected final String TEXT_33 = NL + "\t\t\t";
-  protected final String TEXT_34 = "_.remove();";
-  protected final String TEXT_35 = NL + "\t\t} catch(Exception e) {" + NL + "    \t\tthrow new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.REMOVE_ERROR);" + NL + "\t\t} " + NL + "    }" + NL + "}";
-  protected final String TEXT_36 = NL;
+  protected final String TEXT_26 = "    " + NL + "    " + NL + "    " + NL + "    /** Supported interface methods */" + NL + "    ";
+  protected final String TEXT_27 = NL;
+  protected final String TEXT_28 = "    " + NL + "" + NL + "" + NL + "    /** Component attribute accessor methods */" + NL;
+  protected final String TEXT_29 = NL;
+  protected final String TEXT_30 = "    " + NL + "" + NL + "" + NL + "    /** Facet implementation factory methods */" + NL + "    ";
+  protected final String TEXT_31 = NL;
+  protected final String TEXT_32 = "    " + NL + "" + NL + "    /** Component callback methods */" + NL + "    " + NL + "    public void set_session_context(Components.SessionContext ctx) " + NL + "        throws Components.CCMException" + NL + "    {" + NL + "        this.ctx = (";
+  protected final String TEXT_33 = "_Context)ctx; " + NL + "    }" + NL + "" + NL + "    public void ccm_activate() " + NL + "        throws Components.CCMException" + NL + "    {" + NL + "    \ttry {" + NL + "\t\t\t// setup inner components    \t";
+  protected final String TEXT_34 = NL;
+  protected final String TEXT_35 = " " + NL + "" + NL + "\t\t\t// finish configuration    \t";
+  protected final String TEXT_36 = NL + "\t\t\t";
+  protected final String TEXT_37 = "_.configuration_complete();";
+  protected final String TEXT_38 = NL + NL + "\t\t\tccm_activate_ok = true; " + NL + "    \t} catch(Exception e) {" + NL + "    \t\tthrow new Components.CCMException(e.getMessage()," + NL + "    \t\t\tComponents.CCMExceptionReason.CREATE_ERROR);" + NL + "    \t}" + NL + "    }" + NL + "" + NL + "    public void ccm_passivate() " + NL + "        throws Components.CCMException" + NL + "    {" + NL + "        // Who calls this method?" + NL + "    }" + NL + "" + NL + "    public void ccm_remove() " + NL + "        throws Components.CCMException" + NL + "    {" + NL + "    \ttry {";
+  protected final String TEXT_39 = NL + "\t\t\t";
+  protected final String TEXT_40 = "_.remove();";
+  protected final String TEXT_41 = NL + "\t\t} catch(Exception e) {" + NL + "    \t\tthrow new Components.CCMException(e.getMessage()," + NL + "    \t\t\tComponents.CCMExceptionReason.REMOVE_ERROR);" + NL + "\t\t} " + NL + "    }" + NL + "}";
+  protected final String TEXT_42 = NL;
 
   public String generate(Object argument)
   {
@@ -121,6 +127,36 @@ for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
 
     stringBuffer.append(TEXT_18);
     
+for(Iterator i=component.getAssemblyDynamicProvide(); i.hasNext();)
+{
+
+    stringBuffer.append(TEXT_19);
+    stringBuffer.append(i.next().toString());
+    
+}
+
+    stringBuffer.append(TEXT_20);
+    
+for(Iterator i=component.getAssemblyDynamicConnect(); i.hasNext();)
+{
+
+    stringBuffer.append(TEXT_21);
+    stringBuffer.append(i.next().toString());
+    
+}
+
+    stringBuffer.append(TEXT_22);
+    
+for(Iterator i=component.getAssemblyDynamicDisconnect(); i.hasNext();)
+{
+
+    stringBuffer.append(TEXT_23);
+    stringBuffer.append(i.next().toString());
+    
+}
+
+    stringBuffer.append(TEXT_24);
+    
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
     SupportsDef supports = (SupportsDef)i.next();
@@ -128,13 +164,13 @@ for(Iterator i = component.getSupports().iterator(); i.hasNext();)
     {
     	AttributeDef attr = (AttributeDef)j.next();
 
-    stringBuffer.append(TEXT_19);
+    stringBuffer.append(TEXT_25);
     stringBuffer.append(attr.generateApplicationImplementation());
     
 	}
 }
 
-    stringBuffer.append(TEXT_20);
+    stringBuffer.append(TEXT_26);
     
 for(Iterator i = component.getSupports().iterator(); i.hasNext();)
 {
@@ -143,70 +179,70 @@ for(Iterator i = component.getSupports().iterator(); i.hasNext();)
     {
     	OperationDef op = (OperationDef)j.next();
 
-    stringBuffer.append(TEXT_21);
+    stringBuffer.append(TEXT_27);
     stringBuffer.append(op.generateApplicationImplementation());
     
 	}
 }
 
-    stringBuffer.append(TEXT_22);
+    stringBuffer.append(TEXT_28);
     
 for(Iterator i = component.getAttributes().iterator(); i.hasNext();)
 {
     AttributeDef attr = (AttributeDef)i.next();
 
-    stringBuffer.append(TEXT_23);
+    stringBuffer.append(TEXT_29);
     stringBuffer.append(attr.generateAssemblyImplementation(component.getAssemblyAttributeTarget(attr.getIdentifier())));
     
 }
 
-    stringBuffer.append(TEXT_24);
+    stringBuffer.append(TEXT_30);
     
 for(Iterator i = component.getFacet().iterator(); i.hasNext();)
 {
     ProvidesDef provides = (ProvidesDef)i.next();
 
-    stringBuffer.append(TEXT_25);
+    stringBuffer.append(TEXT_31);
     stringBuffer.append(provides.generateGetMethodAssemblyImplementation());
     
 }
 
-    stringBuffer.append(TEXT_26);
+    stringBuffer.append(TEXT_32);
     stringBuffer.append(component.generateCcmIdentifier());
-    stringBuffer.append(TEXT_27);
+    stringBuffer.append(TEXT_33);
     
-for(Iterator i=component.getAssemblyAttributeSetup(); i.hasNext();)
+for(Iterator i=component.getAssemblyActivate(); i.hasNext();)
 {
 
-    stringBuffer.append(TEXT_28);
+    stringBuffer.append(TEXT_34);
     stringBuffer.append(i.next().toString());
     
 }
 
-    stringBuffer.append(TEXT_29);
-    
-for (String key : component.getAssemblyLocalComponents().keySet())
-{
-
-    stringBuffer.append(TEXT_30);
-    stringBuffer.append(key);
-    stringBuffer.append(TEXT_31);
-    
-}
-
-    stringBuffer.append(TEXT_32);
-    
-for (String key : component.getAssemblyLocalComponents().keySet())
-{
-
-    stringBuffer.append(TEXT_33);
-    stringBuffer.append(key);
-    stringBuffer.append(TEXT_34);
-    
-}
-
     stringBuffer.append(TEXT_35);
+    
+for (String key : component.getAssemblyLocalComponents().keySet())
+{
+
     stringBuffer.append(TEXT_36);
+    stringBuffer.append(key);
+    stringBuffer.append(TEXT_37);
+    
+}
+
+    stringBuffer.append(TEXT_38);
+    
+for (String key : component.getAssemblyLocalComponents().keySet())
+{
+
+    stringBuffer.append(TEXT_39);
+    stringBuffer.append(key);
+    stringBuffer.append(TEXT_40);
+    
+}
+
+    stringBuffer.append(TEXT_41);
+    stringBuffer.append(TEXT_42);
     return stringBuffer.toString();
   }
 }

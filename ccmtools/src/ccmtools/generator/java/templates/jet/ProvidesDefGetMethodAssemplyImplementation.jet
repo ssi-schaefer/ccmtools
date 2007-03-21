@@ -10,9 +10,7 @@
 
     public <%=provides.getInterface().generateAbsoluteJavaCcmName()%> get_<%=provides.getIdentifier()%>()
     {
-    	<%=provides.getIdentifier()%>_ = new <%=provides.generateJavaNamespace()%>.<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(this);
-    	if(ccm_activate_ok) {
-    		<%=provides.getIdentifier()%>_.target = <%=provides.getComponent().getAssemblyInitFacetTargetValue(provides)%>;
-    	}
+    	if(<%=provides.getIdentifier()%>_ == null)
+    		<%=provides.getIdentifier()%>_ = new <%=provides.generateJavaNamespace()%>.<%=provides.getComponent().getIdentifier()%><%=provides.getIdentifier()%>Impl(this);
     	return <%=provides.getIdentifier()%>_;
     }

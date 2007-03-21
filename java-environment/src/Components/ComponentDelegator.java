@@ -19,16 +19,17 @@ public interface ComponentDelegator
      * provides a facet
      * 
      * @param name name of the facet
-     * @return facet adapter (or null if the facet is unknown)
+     * @return facet adapter (or null if the facet is not supported)
+     * @throws InvalidName if a facet of that name is not known
      */
-    Object provide( String name );
+    Object provide( String name ) throws InvalidName;
 
     /**
      * connect a facet into a receptacle
      * 
      * @param name name of the receptacle
      * @param connection the facet
-     * @return cookie for multiple receptacles; null for single receptacles
+     * @return cookie for multiple receptacles
      */
     Cookie connect( String name, Object connection ) throws InvalidName, InvalidConnection,
             AlreadyConnected, ExceededConnectionLimit;

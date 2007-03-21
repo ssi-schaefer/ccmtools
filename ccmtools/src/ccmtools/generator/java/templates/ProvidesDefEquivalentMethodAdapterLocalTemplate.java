@@ -17,8 +17,8 @@ public class ProvidesDefEquivalentMethodAdapterLocalTemplate
   protected final String TEXT_1 = NL + "    public ";
   protected final String TEXT_2 = " provide_";
   protected final String TEXT_3 = "()" + NL + "    {" + NL + "        logger.fine(\"\");" + NL + "        if(";
-  protected final String TEXT_4 = "FacetAdapter == null)" + NL + "        {" + NL + "        \tif(delegator!=null)" + NL + "        \t{" + NL + "        \t\tObject o = delegator.provide(\"";
-  protected final String TEXT_5 = "\");" + NL + "        \t\tif(o!=null)" + NL + "        \t\t{" + NL + "        \t\t\t";
+  protected final String TEXT_4 = "FacetAdapter == null)" + NL + "        {" + NL + "        \tif(delegator!=null)" + NL + "        \t{" + NL + "        \t\tObject o;" + NL + "        \t\ttry {" + NL + "        \t\t\to = delegator.provide(\"";
+  protected final String TEXT_5 = "\");" + NL + "        \t\t} catch(Components.InvalidName e) {" + NL + "        \t\t\tthrow new RuntimeException(\"internal error: \"+e.getMessage());" + NL + "        \t\t}" + NL + "        \t\tif(o!=null)" + NL + "        \t\t{" + NL + "        \t\t\t";
   protected final String TEXT_6 = "FacetAdapter =" + NL + "        \t\t\t\t(";
   protected final String TEXT_7 = ")o;" + NL + "        \t\t\treturn ";
   protected final String TEXT_8 = "FacetAdapter;" + NL + "        \t\t}" + NL + "        \t}";
