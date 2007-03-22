@@ -64,6 +64,13 @@ public class CppAssemblyGenerator extends CppLocalGenerator
      * the assembly model
      */
     protected Model assemblies;
+    
+    public void startGraph()
+    {
+        currentAssembly = null;
+        assembly_local_components_ = new HashMap<String, Map<String, MComponentDef>>();
+        super.startGraph();
+    }
 
     /**
      * the assembly description of the current component (or null)
@@ -104,12 +111,6 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         else
             kill_all_files(files);
         return files;
-    }
-
-    protected void writeOutput( Template template )
-    {
-        super.writeOutput(template);
-        currentAssembly = null;
     }
 
     protected static void keep_only_impls( List files )
@@ -655,7 +656,7 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         return code.toString();
     }
 
-    private Map<String, Map<String, MComponentDef>> assembly_local_components_ = new HashMap<String, Map<String, MComponentDef>>();
+    private Map<String, Map<String, MComponentDef>> assembly_local_components_;
 
     protected Map<String, MComponentDef> getAssemblyLocalComponents()
     {
