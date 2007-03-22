@@ -54,6 +54,11 @@ public abstract class ModelElement
             return Model.IDL_SCOPE + name_;
         }
     }
+    
+    public String toString()
+    {
+        return getGlobalName();
+    }
 
     /**
      * call this method after model creation
