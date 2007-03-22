@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import ccmtools.CcmtoolsException;
+import ccmtools.CodeGenerator.Template;
 import ccmtools.parser.assembly.metamodel.Assembly;
 import ccmtools.parser.assembly.metamodel.AssemblyElement;
 import ccmtools.parser.assembly.metamodel.Attribute;
@@ -103,6 +104,12 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         else
             kill_all_files(files);
         return files;
+    }
+
+    protected void writeOutput( Template template )
+    {
+        super.writeOutput(template);
+        currentAssembly = null;
     }
 
     protected static void keep_only_impls( List files )
@@ -448,7 +455,7 @@ public class CppAssemblyGenerator extends CppLocalGenerator
             String name = p.getIdentifier();
             if (!outer_facets.contains(name))
             {
-                throw new RuntimeException("facet " + name
+                throw new RuntimeException("facet " + getQualifiedCcmName(comp_def) + "." + name
                         + " is not connected to an inner component");
             }
         }
