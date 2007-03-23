@@ -1,6 +1,7 @@
 #include <iostream>
+#include <wamas_system_ConsoleHome_entry.h>
+#include <wamas_helpers_StdErrLoggerHome_entry.h>
 #include <wamas/helpers/StdErrLoggerHome_gen.h>
-#include <wamas/system/ConsoleHome_gen.h>
 
 using namespace wamas::helpers;
 
@@ -15,14 +16,18 @@ int main()
     {
         {
             std::cout << "# register Console" << std::endl;
-            ::Components::CCMHome::SmartPtr sp(new ::wamas::system::ConsoleHome);
-            ::Components::HomeFinder::Instance()->register_home(sp, "Console");
+            if(::deploy_wamas_system_ConsoleHome("Console")!=0)
+            {
+                std::cerr << "registration failed\n";
+                return 1;
+            }
         }
         {
             std::cout << "# creating home" << std::endl;
-            StdErrLoggerHome home;
+            ::Components::CCMHome::SmartPtr sp = create_wamas_helpers_StdErrLoggerHomeAdapter();
+            StdErrLoggerHome* home = dynamic_cast<StdErrLoggerHome*>(sp.ptr());;
             std::cout << "# creating component" << std::endl;
-            comp = home.create();
+            comp = home->create();
         }
         std::cout << "# provide logger" << std::endl;
         logger = comp->provide_logger();

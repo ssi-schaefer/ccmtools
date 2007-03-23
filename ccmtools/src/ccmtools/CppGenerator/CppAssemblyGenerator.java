@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import ccmtools.CcmtoolsException;
-import ccmtools.CodeGenerator.Template;
 import ccmtools.parser.assembly.metamodel.Assembly;
 import ccmtools.parser.assembly.metamodel.AssemblyElement;
 import ccmtools.parser.assembly.metamodel.Attribute;
@@ -64,7 +63,7 @@ public class CppAssemblyGenerator extends CppLocalGenerator
      * the assembly model
      */
     protected Model assemblies;
-    
+
     public void startGraph()
     {
         currentAssembly = null;
@@ -248,6 +247,10 @@ public class CppAssemblyGenerator extends CppLocalGenerator
         for (String key : map.keySet())
         {
             MComponentDef comp_def = map.get(key);
+            final String home_type = "::Components::CCMHome::SmartPtr";
+            String home_var = createLocalVar(local_var_map, home_type, code_homes);
+            final String keyless_type = "::Components::KeylessCCMHome*";
+            String keyless_var = createLocalVar(local_var_map, keyless_type, code_homes);
             String comp_alias = currentAssembly.getComponents().get(key).getAlias();
             if (comp_alias != null)
             {
@@ -262,34 +265,27 @@ public class CppAssemblyGenerator extends CppLocalGenerator
                     code_creation.append(finder_var).append(");\n");
                     have_finder = true;
                 }
-                final String home_type = "::Components::CCMHome::SmartPtr";
-                String home_var = createLocalVar(local_var_map, home_type, code_homes);
                 code_creation.append(TAB).append(home_var);
                 code_creation.append(" = ").append(finder_var);
                 code_creation.append("->find_home_by_name(\"");
                 code_creation.append(comp_alias).append("\");\n");
-                final String keyless_type = "::Components::KeylessCCMHome*";
-                String keyless_var = createLocalVar(local_var_map, keyless_type, code_homes);
-                code_creation.append(TAB).append(keyless_var);
-                code_creation.append(" = dynamic_cast< ").append(keyless_type);
-                code_creation.append(">(").append(home_var).append(".ptr());\n");
-                code_creation.append(TAB).append("assert(");
-                code_creation.append(keyless_var).append(");\n");
-                code_creation.append(TAB).append(key).append("_ = ");
-                code_creation.append(keyless_var).append("->create_component();\n");
             }
             else
             {
                 // using first home
                 MHomeDef home = getHome(comp_def);
-                String home_type = getLocalCxxName(home, "::");
-                String home_var = createLocalVar(local_var_map, home_type, code_homes);
-                code_creation.append(TAB);
-                code_creation.append(key);
-                code_creation.append("_ = ");
-                code_creation.append(home_var);
-                code_creation.append(".create();\n");
+                String absoluteLocalHomeName = getLocalCxxIncludeName(home, Text.MANGLING_SEPARATOR);
+                String func = "::create_" + absoluteLocalHomeName + "Adapter()";
+                code_creation.append(TAB).append(home_var);
+                code_creation.append(" = ").append(func).append(";\n");
             }
+            code_creation.append(TAB).append(keyless_var);
+            code_creation.append(" = dynamic_cast< ").append(keyless_type);
+            code_creation.append(">(").append(home_var).append(".ptr());\n");
+            code_creation.append(TAB).append("assert(");
+            code_creation.append(keyless_var).append(");\n");
+            code_creation.append(TAB).append(key).append("_ = ");
+            code_creation.append(keyless_var).append("->create_component();\n");
             code_creation.append(TAB).append("assert(");
             code_creation.append(key).append("_);\n");
         }
@@ -370,10 +366,11 @@ public class CppAssemblyGenerator extends CppLocalGenerator
             {
                 MComponentDef comp_def = map.get(key);
                 MHomeDef home = getHome(comp_def);
-                String inc_name = getLocalCxxIncludeName(home);
+                String absoluteLocalHomeName = getLocalCxxIncludeName(home, Text.MANGLING_SEPARATOR);
+                String inc_name = absoluteLocalHomeName + "_entry.h";
                 if (!include_set.contains(inc_name))
                 {
-                    code.append("#include <" + inc_name + "_gen.h>\n");
+                    code.append("#include <" + inc_name + ">\n");
                     include_set.add(inc_name);
                 }
             }

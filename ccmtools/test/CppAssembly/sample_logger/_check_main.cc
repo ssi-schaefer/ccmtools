@@ -1,5 +1,6 @@
 #include <iostream>
 #include <wamas/helpers/StdErrLoggerHome_gen.h>
+#include <wamas_helpers_StdErrLoggerHome_entry.h>
 
 using namespace wamas::helpers;
 
@@ -13,9 +14,10 @@ int main()
     try
     {
         std::cout << "# creating home" << std::endl;
-        StdErrLoggerHome home;
+        ::Components::CCMHome::SmartPtr sp = create_wamas_helpers_StdErrLoggerHomeAdapter();
+        StdErrLoggerHome* home = dynamic_cast<StdErrLoggerHome*>(sp.ptr());;
         std::cout << "# creating component" << std::endl;
-        comp = home.create();
+        comp = home->create();
         std::cout << "# provide logger" << std::endl;
         logger = comp->provide_logger();
         std::cout << "# configuration complete" << std::endl;

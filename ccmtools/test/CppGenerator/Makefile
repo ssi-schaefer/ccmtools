@@ -3,7 +3,11 @@ all: clean-stamps stamp.attribute
 clean-stamps:
 	rm -f stamp.*
 
-full: stamp.attribute\
+clean-xxx:
+	find . -name xxx | xargs rm -rf
+
+full: clean-xxx\
+	stamp.attribute\
 	stamp.supports\
 	stamp.facet\
 	stamp.receptacle\

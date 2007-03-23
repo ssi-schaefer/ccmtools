@@ -16,6 +16,11 @@
 
 #include <Components/ccmtools.h>
 
+// entry points for '%(AbsoluteLocalHomeName)s'
+#include <%(AbsoluteLocalHomeName)s_entry.h>
+#include <%(AbsoluteLocalHomeName)sMirror_entry.h>
+
+// local adapters
 #include <%(HomeInclude)s_gen.h>
 #include <%(HomeInclude)sMirror_gen.h>
 

@@ -70,8 +70,9 @@ class %(Identifier)s
   public:
     typedef wamas::platform::utils::SmartPtr<%(Identifier)s> SmartPtr;
       
-    %(Identifier)s();
-    %(Identifier)s(::Components::AssemblyFactory::SmartPtr assembly_factory);	
+    %(Identifier)s(%(LocalNamespace)sCCM_%(Identifier)s* lh);
+    %(Identifier)s(%(LocalNamespace)sCCM_%(Identifier)s* lh,
+                   ::Components::AssemblyFactory::SmartPtr assembly_factory);	
     virtual ~%(Identifier)s();
     
     /// calling the home finder
@@ -102,22 +103,6 @@ class %(Identifier)s
 
 %(CloseNamespace)s
 
-//==============================================================================
-// entry point
-//==============================================================================
-
-::Components::CCMHome::SmartPtr
-create_%(AbsoluteLocalHomeName)sAdapter();
-
-int 
-deploy_%(AbsoluteLocalHomeName)s(char* name);
-
-int 
-deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,	
-    ::Components::AssemblyFactory::SmartPtr assembly_factory);
-
-int undeploy_%(AbsoluteLocalHomeName)s(char* name);
-
 #endif
 
 
@@ -136,7 +121,6 @@ int undeploy_%(AbsoluteLocalHomeName)s(char* name);
 #include <iostream>
 
 #include "%(Identifier)s_gen.h"
-#include <%(AbsoluteLocalHomeName)s_entry.h>
 
 %(OpenNamespace)s
 
@@ -146,18 +130,16 @@ using namespace std;
 // home adapter implementation
 //==============================================================================
 
-%(Identifier)s::%(Identifier)s()
+%(Identifier)s::%(Identifier)s(%(LocalNamespace)sCCM_%(Identifier)s* lh)
+: local_home(lh)
 {
-    local_home = dynamic_cast< %(LocalNamespace)sCCM_%(Identifier)s*>(
-        create_%(AbsoluteLocalHomeName)s());
-    assembly_factory = ::Components::AssemblyFactory::SmartPtr();
 }
 
-%(Identifier)s::%(Identifier)s(::Components::AssemblyFactory::SmartPtr f)
-    : assembly_factory(f)
+%(Identifier)s::%(Identifier)s(%(LocalNamespace)sCCM_%(Identifier)s* lh,
+		::Components::AssemblyFactory::SmartPtr f)
+: local_home(lh)
+, assembly_factory(f)
 {
-    local_home = dynamic_cast< %(LocalNamespace)sCCM_%(Identifier)s*>(
-        create_%(AbsoluteLocalHomeName)s());
 }
 
 %(Identifier)s::~%(Identifier)s()
@@ -226,57 +208,6 @@ void
 }
 
 %(CloseNamespace)s
-
-
-//==============================================================================
-// entry point
-//==============================================================================
-
-::Components::CCMHome::SmartPtr
-create_%(AbsoluteLocalHomeName)sAdapter()
-{
-    ::Components::CCMHome::SmartPtr
-        ret(new %(LocalNamespace)s%(Identifier)s());
-    return ret;
-}
-
-int 
-deploy_%(AbsoluteLocalHomeName)s(char* name)
-{
-    return deploy_with_assembly_%(AbsoluteLocalHomeName)s(
-        name, ::Components::AssemblyFactory::SmartPtr());	
-}	
-
-int 
-deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,
-    ::Components::AssemblyFactory::SmartPtr assembly_factory)
-{
-    try 
-    {
-        ::Components::CCMHome::SmartPtr 
-            ret(new %(LocalNamespace)s%(Identifier)s(assembly_factory));
-        ::Components::HomeFinder::Instance()->register_home(ret, name);
-    }
-    catch(...) 
-    {
-        return -1;
-    }
-    return 0; 
-}	
-
-int 
-undeploy_%(AbsoluteLocalHomeName)s(char* name)
-{
-    try 
-    {
-        ::Components::HomeFinder::Instance()->unregister_home(name);	
-    } 
-    catch(...) 
-    {
-        return -1;
-    }
-    return 0;
-}
 
 
 
@@ -353,15 +284,31 @@ class CCM_%(Identifier)s
  * DO NOT EDIT !
  */
 
-//==============================================================================
-// %(Identifier)s - entry point
-//==============================================================================
+/*****************************************************************************
+*
+*  %(Identifier)s - entry point
+*
+\****************************************************************************/
 
 #ifndef __HOME_%(PreprocIdentifier)s_ENTRY__H__
 #define __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
+#include <Components/ccmtools.h>
+
 ::Components::HomeExecutorBase* 
 create_%(AbsoluteLocalHomeName)s();
+
+::Components::CCMHome::SmartPtr
+create_%(AbsoluteLocalHomeName)sAdapter();
+
+int 
+deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,	
+    ::Components::AssemblyFactory::SmartPtr assembly_factory);
+
+/// deploy the implementation of %(Identifier)s 
+int deploy_%(AbsoluteLocalHomeName)s(char* name);
+
+int undeploy_%(AbsoluteLocalHomeName)s(char* name);
 
 #endif // __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
@@ -429,6 +376,7 @@ class %(Identifier)s_impl
 #include <cassert>
 #include <iostream>
 
+#include <%(HomeInclude)s_gen.h>
 #include "%(ComponentType)s_impl.h"
 #include "%(Identifier)s_impl.h"
 #include "%(AbsoluteLocalHomeName)s_entry.h"
@@ -473,5 +421,56 @@ create_%(AbsoluteLocalHomeName)s()
 {
     return dynamic_cast<Components::HomeExecutorBase*>(
         new %(LocalNamespace)s%(Identifier)s_impl());
+}
+
+
+
+::Components::CCMHome::SmartPtr
+create_%(AbsoluteLocalHomeName)sAdapter()
+{
+    ::Components::CCMHome::SmartPtr
+        ret(new %(LocalNamespace)s%(Identifier)s(
+        		new %(LocalNamespace)s%(Identifier)s_impl()));
+    return ret;
+}
+
+int 
+deploy_%(AbsoluteLocalHomeName)s(char* name)
+{
+    return deploy_with_assembly_%(AbsoluteLocalHomeName)s(
+        name, ::Components::AssemblyFactory::SmartPtr());	
+}	
+
+int 
+deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,
+    ::Components::AssemblyFactory::SmartPtr assembly_factory)
+{
+    try 
+    {
+        ::Components::CCMHome::SmartPtr 
+            ret(new %(LocalNamespace)s%(Identifier)s(
+            		new %(LocalNamespace)s%(Identifier)s_impl(),
+            		assembly_factory));
+        ::Components::HomeFinder::Instance()->register_home(ret, name);
+    }
+    catch(...) 
+    {
+        return -1;
+    }
+    return 0; 
+}	
+
+int 
+undeploy_%(AbsoluteLocalHomeName)s(char* name)
+{
+    try 
+    {
+        ::Components::HomeFinder::Instance()->unregister_home(name);	
+    } 
+    catch(...) 
+    {
+        return -1;
+    }
+    return 0;
 }
 
