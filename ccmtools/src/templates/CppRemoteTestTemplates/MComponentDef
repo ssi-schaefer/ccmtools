@@ -22,6 +22,7 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
+#include <%(AbsoluteLocalHomeName)s_entry.h>
 #include <%(RemoteIncludeNamespace)s%(HomeType)s_remote.h>
 #include <%(StubsIncludeNamespace)s%(Identifier)s.h>
 
