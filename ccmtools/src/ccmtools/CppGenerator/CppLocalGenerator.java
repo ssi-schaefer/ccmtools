@@ -1,19 +1,19 @@
 /*
- * CCM Tools : C++ Code Generator Library 
+ * CCM Tools : C++ Code Generator Library
  * Leif Johnson <leif@ambient.2y.net>
- * Egon Teiniker <egon.teiniker@salomon.at> 
+ * Egon Teiniker <egon.teiniker@salomon.at>
  * Copyright (C) 2002 - 2007 ccmtools.sf.net
- * 
+ *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; either version 2.1 of the License, or (at your option)
  * any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
@@ -67,23 +67,23 @@ import ccmtools.utils.Text;
 
 /***
  * Local C++ component generator
- * 
+ *
  * This generator creates local C++ interfaces and component implementations
  * that conforms to the CORBA Component Model but does not use CORBA types
  * and libraries.
  ***/
-public class CppLocalGenerator 
+public class CppLocalGenerator
 	extends CppGenerator
 {
     protected AnyPluginManager anyManager = null;
-    
+
     protected Set<String> OutputDirectories;
-    
-    
+
+
     //====================================================================
     // Definition of arrays that determine the generator's behavior
     //====================================================================
-    
+
     // types for which we have a global template ; that is, a template that is
     // not contained inside another template.
     protected final static String[] LOCAL_OUTPUT_TEMPLATE_TYPES = {
@@ -92,30 +92,30 @@ public class CppLocalGenerator
             "MProvidesDef"
     };
 
-    
-    public CppLocalGenerator(UserInterfaceDriver uiDriver, File outDir) 
+
+    public CppLocalGenerator(UserInterfaceDriver uiDriver, File outDir)
     		throws IOException, CcmtoolsException
     {
         super("CppLocal", uiDriver, outDir, LOCAL_OUTPUT_TEMPLATE_TYPES);
         logger = Logger.getLogger("ccm.generator.cpp.local");
-        logger.fine("begin");        
-        cxxGenNamespace = ConfigurationLocator.getInstance().getCppLocalNamespaceExtension();        
+        logger.fine("begin");
+        cxxGenNamespace = ConfigurationLocator.getInstance().getCppLocalNamespaceExtension();
         anyManager = new AnyPluginManager();
         logger.fine("end");
     }
 
-    
-    
-    
+
+
+
     //====================================================================
     // Code generator core methods
     //====================================================================
-       
+
     /**
      * Get a variable hash table sutable for filling in the template from the
      * fillTwoStepTemplates function. This version of the function fills in
      * operation information from the given interface.
-     * 
+     *
      * @param operation
      *            the particular interface operation that we're filling in a
      *            template for.
@@ -134,20 +134,20 @@ public class CppLocalGenerator
         vars.put("Object", container.getIdentifier());
         vars.put("Identifier", operation.getIdentifier());
         vars.put("LanguageType", langType);
-        
+
         vars.put("ExceptionThrows", getOperationExcepts(operation));
         vars.put("OperationParameterList", getOperationParams(operation));
         vars.put("MParameterDefName", getOperationParamNames(operation));
-        
+
         // these tags are used to generate local adapter implementations
-        vars.put("OperationToFacetDelegation", 
+        vars.put("OperationToFacetDelegation",
                  getOperationDelegation(operation,"facet"));
         vars.put("OperationToLocalComponentDelegation",
                  getOperationDelegation(operation,"local_component"));
-        vars.put("OperationResult", 
-                 getOperationResult(operation));         
+        vars.put("OperationResult",
+                 getOperationResult(operation));
         vars.put("Return", getOperationReturn(operation));
-        
+
         logger.fine("leave getTwoStepOperationVariables()");
         return vars;
     }
@@ -159,16 +159,16 @@ public class CppLocalGenerator
     protected String getLocalValue(String variable)
     {
         logger.fine("getLocalValue()");
-        // Get local value of CppGenerator 
+        // Get local value of CppGenerator
         String value = super.getLocalValue(variable);
-        
-        if(variable.equals("LanguageTypeInclude")) 
+
+        if(variable.equals("LanguageTypeInclude"))
         {
             MTyped type = (MTyped) currentNode;
             MIDLType idlType = type.getIdlType();
             return getLanguageTypeInclude(idlType);
         }
-        
+
         // Handle simple tags from templates which are related to
         // the c++local generator
         if (currentNode instanceof MAttributeDef) {
@@ -183,11 +183,11 @@ public class CppLocalGenerator
         else if(currentNode instanceof MConstantDef) {
             return data_MConstantDef(variable, value);
         }
-        
+
         return value;
     }
-            
-    protected String data_MStructDef(String dataType, String dataValue) 
+
+    protected String data_MStructDef(String dataType, String dataValue)
     {
         logger.fine("begin");
         MStructDef struct = (MStructDef)currentNode;
@@ -200,11 +200,11 @@ public class CppLocalGenerator
             return generateStructInitConstructor(struct);
         }
         logger.fine("end");
-        return dataValue;        
+        return dataValue;
     }
-    
-    
-    protected String data_MFieldDef(String dataType, String dataValue) 
+
+
+    protected String data_MFieldDef(String dataType, String dataValue)
     {
         logger.fine("begin");
         MTyped type = (MTyped) currentNode;
@@ -216,18 +216,18 @@ public class CppLocalGenerator
         logger.fine("end");
         return dataValue;
     }
-    
-    
-    protected String data_MAliasDef(String dataType, String dataValue) 
+
+
+    protected String data_MAliasDef(String dataType, String dataValue)
     {
         logger.fine("enter data_MAliasDef()");
         MAliasDef alias = (MAliasDef)currentNode;
         MTyped type = (MTyped) alias;
         MIDLType idlType = type.getIdlType();
 
-        if(dataType.equals("TypedefInclude")) 
+        if(dataType.equals("TypedefInclude"))
         {
-            if(anyManager.isTypedefToAny(idlType)) 
+            if(anyManager.isTypedefToAny(idlType))
             {
             		dataValue = anyManager.generateCode(alias, dataType);
             }
@@ -237,31 +237,31 @@ public class CppLocalGenerator
             		MIDLType singleIdlType = singleType.getIdlType();
                 dataValue = "#include <vector>\n" + getLanguageTypeInclude(singleIdlType);
             }
-            else 
+            else
             {
                 dataValue = getLanguageTypeInclude(idlType);
             }
         }
-        else if(dataType.equals("TypedefDefinition")) 
+        else if(dataType.equals("TypedefDefinition"))
         {
-            if(anyManager.isTypedefToAny(idlType)) 
+            if(anyManager.isTypedefToAny(idlType))
             {
             		dataValue = anyManager.generateCode(alias, dataType);
             }
-            else 
+            else
             {
                 dataValue = getTypedef(alias);
             }
         }
-        else 
+        else
         { // fallback to super class
             dataValue = super.data_MAliasDef(dataType,dataValue);
         }
         logger.fine("leave data_MAliasDef()");
         return dataValue;
     }
-      
-        
+
+
     protected String data_MEnumDef(String dataType, String dataValue)
     {
         logger.fine("enter data_MEnumDef()");
@@ -269,8 +269,8 @@ public class CppLocalGenerator
         logger.fine("leave data_MEnumDef()");
         return dataValue;
     }
-    
-    
+
+
     protected String data_MAttributeDef(String dataType, String dataValue)
     {
         logger.fine("enter data_MAttributeDef()");
@@ -285,7 +285,7 @@ public class CppLocalGenerator
         return dataValue;
     }
 
-    
+
     protected String data_MOperationDef(String dataType, String dataValue)
     {
         logger.fine("enter data_MOperationDef()");
@@ -308,13 +308,13 @@ public class CppLocalGenerator
         logger.fine("leave data_MOperationDef()");
         return dataValue;
     }
-        
-    
+
+
     protected String data_MInterfaceDef(String dataType, String dataValue)
     {
         logger.fine("enter data_MInterfaceDef()");
         MInterfaceDef iface = (MInterfaceDef) currentNode;
-        if(dataType.equals("InterfaceInclude")) 
+        if(dataType.equals("InterfaceInclude"))
         {
             MContained contained = (MContained)currentNode;
             dataValue = getLocalCxxIncludeName(contained);
@@ -354,16 +354,16 @@ public class CppLocalGenerator
                 MContained contained = (MContained)i.next();
                 if(contained instanceof MConstantDef) {
                     MConstantDef constant = (MConstantDef)contained;
-                    buffer.append(generateConstantImpl(iface,constant));                    
+                    buffer.append(generateConstantImpl(iface,constant));
                 }
             }
             dataValue = buffer.toString();
         }
-        else if(dataType.equals("InterfaceCCMName")) 
+        else if(dataType.equals("InterfaceCCMName"))
         {
             dataValue = getLocalCxxNamespace(iface, "::") + "CCM_" + iface.getIdentifier();
         }
-        else 
+        else
         {
             dataValue = super.data_MInterfaceDef(dataType, dataValue);
         }
@@ -371,27 +371,27 @@ public class CppLocalGenerator
         return dataValue;
     }
 
-    
+
     protected String data_MProvidesDef(String dataType, String dataValue)
     {
         MProvidesDef provides = (MProvidesDef)currentNode;
         StringBuilder code = new StringBuilder();
-        
+
         if(dataType.equals("generateOperationsImpl"))
         {
             List<MOperationDef> opList = getOperationList(provides.getProvides());
             for(MOperationDef op : opList)
             {
-                code.append(generateOperationImpl(provides,op));                
-            }            
+                code.append(generateOperationImpl(provides,op));
+            }
         }
         else if(dataType.equals("generateAttributeImpl"))
         {
             List<MAttributeDef> attrList = getAttributeList(provides.getProvides());
             for(MAttributeDef attr : attrList)
             {
-                code.append(generateAttributeImpl(provides,attr));                
-            }    
+                code.append(generateAttributeImpl(provides,attr));
+            }
         }
         else
         {
@@ -399,11 +399,11 @@ public class CppLocalGenerator
         }
         return code.toString();
     }
-    
+
     protected String data_MConstantDef(String dataType, String dataValue)
     {
         MConstantDef constant = (MConstantDef) currentNode;
-        
+
         if(dataType.equals("ConstantValue"))
         {
             MIDLType idlType = constant.getIdlType();
@@ -418,11 +418,11 @@ public class CppLocalGenerator
         }
         return dataValue;
     }
-    
 
 
-    
-    
+
+
+
     protected List<MAttributeDef> getAttributeList(MInterfaceDef iface)
     {
         List<MAttributeDef> attrList = new ArrayList<MAttributeDef>();
@@ -437,12 +437,12 @@ public class CppLocalGenerator
             if(contained instanceof MAttributeDef)
             {
                 attrList.add((MAttributeDef)contained);
-            }     
+            }
         }
         return attrList;
     }
-    
-    
+
+
     protected List<MOperationDef> getOperationList(MInterfaceDef iface)
     {
         List<MOperationDef> opList = new ArrayList<MOperationDef>();
@@ -457,14 +457,14 @@ public class CppLocalGenerator
             if(contained instanceof MOperationDef)
             {
                 opList.add((MOperationDef)contained);
-            }     
+            }
         }
         return opList;
     }
-    
+
     protected String generateOperationImpl(MProvidesDef provides, MOperationDef op)
     {
-        StringBuilder code = new StringBuilder();        
+        StringBuilder code = new StringBuilder();
         code.append(getLanguageType(op)).append("\n");
         code.append(provides.getComponent().getIdentifier()).append("_").append(provides.getIdentifier());
         code.append("_impl::").append(op.getIdentifier()).append("(");
@@ -479,7 +479,7 @@ public class CppLocalGenerator
 
     protected String generateAttributeImpl(MProvidesDef provides, MAttributeDef attr)
     {
-        StringBuilder code = new StringBuilder(); 
+        StringBuilder code = new StringBuilder();
         code.append("const ").append(getLanguageType(attr)).append("\n");
         code.append(provides.getComponent().getIdentifier()).append("_").append(provides.getIdentifier());
         code.append("_impl::").append(attr.getIdentifier()).append("() const\n");
@@ -497,14 +497,14 @@ public class CppLocalGenerator
         code.append("}\n\n");
         return code.toString();
     }
-    
+
     protected String getUserTypeName(MIDLType idlType)
     {
-    		if(idlType instanceof MPrimitiveDef || 
+    		if(idlType instanceof MPrimitiveDef ||
     				idlType instanceof MStringDef ||
     				idlType instanceof MWstringDef)
     		{
-    			return "";    			
+    			return "";
     		}
     		else if(idlType instanceof MContained)
     		{
@@ -515,7 +515,7 @@ public class CppLocalGenerator
     			throw new RuntimeException("Unhandled IDLType: " + idlType);
     		}
     }
-    
+
     protected Set getAttributeIncludes(MInterfaceDef iface)
     {
     		Set includeSet = new HashSet();
@@ -525,13 +525,13 @@ public class CppLocalGenerator
     			if(contained instanceof MAttributeDef)
     			{
     				MAttributeDef attr = (MAttributeDef)contained;
-    				MTyped type = (MTyped)attr;    				
+    				MTyped type = (MTyped)attr;
     				includeSet.add(getLanguageTypeInclude(type.getIdlType()));
     			}
     		}
     		return includeSet;
     }
-    
+
     protected Set getOperationIncludes(MInterfaceDef iface)
     {
     		Set includeSet = new HashSet();
@@ -541,18 +541,18 @@ public class CppLocalGenerator
 			if(contained instanceof MOperationDef)
 			{
 				MOperationDef op = (MOperationDef)contained;
-				MTyped type = (MTyped)op;    												
+				MTyped type = (MTyped)op;
 				if(op.getIdlType() instanceof MContained)
 				{
                     includeSet.add(getLanguageTypeInclude(op.getIdlType()));
 				}
-				
+
 				for(Iterator e = op.getExceptionDefs().iterator(); e.hasNext();)
 				{
 					MExceptionDef ex = (MExceptionDef)e.next();
                     includeSet.add(getLanguageTypeInclude(ex));
 				}
-				
+
 				for(Iterator p = op.getParameters().iterator(); p.hasNext();)
 				{
 					MParameterDef param = (MParameterDef)p.next();
@@ -560,21 +560,21 @@ public class CppLocalGenerator
 				}
 			}
 		}
-		return includeSet;	
+		return includeSet;
     }
-    
+
     protected Set getInterfaceIncludes(MInterfaceDef iface)
     {
-    		Set includeSet = new HashSet(); 
+    		Set includeSet = new HashSet();
     		includeSet.addAll(getAttributeIncludes(iface));
 		includeSet.addAll(getOperationIncludes(iface));
 		return includeSet;
     }
-    
+
     protected Set getBaseInterfaceIncludes(MInterfaceDef iface)
     {
-    		Set includeSet = new HashSet(); 
-    		
+    		Set includeSet = new HashSet();
+
     		for(Iterator i = iface.getBases().iterator(); i.hasNext();)
     		{
     			MInterfaceDef base = (MInterfaceDef)i.next();
@@ -582,7 +582,7 @@ public class CppLocalGenerator
     		}
     		return includeSet;
     }
-    
+
     protected String generateConstantImpl(MInterfaceDef iface, MConstantDef constant)
     {
         if(constant == null) return "";
@@ -590,14 +590,14 @@ public class CppLocalGenerator
         StringBuffer code = new StringBuffer();
         String type = generateConstantType(constant);
         String value = generateConstantValue(constant);
-        code.append("const ");        
+        code.append("const ");
         code.append(" ").append(type).append(" ").append(iface.getIdentifier());
         code.append(Text.SCOPE_SEPARATOR);
         code.append(constant.getIdentifier()).append(" = ");
         code.append(value).append(";\n");
         return code.toString();
     }
-    
+
     protected String generateConstantType(MConstantDef constant)
     {
         MIDLType idlType = constant.getIdlType();
@@ -613,7 +613,7 @@ public class CppLocalGenerator
         }
         else {
             throw new RuntimeException("generateConstantValue(): Unhandled constant type!");
-        }        
+        }
         return type;
     }
 
@@ -622,8 +622,8 @@ public class CppLocalGenerator
         MIDLType idlType = constant.getIdlType();
         Object valueObject = constant.getConstValue();
         String value;
-        try { 
-            if(idlType instanceof MStringDef 
+        try {
+            if(idlType instanceof MStringDef
                     || idlType instanceof MWstringDef) {
                 value = "\"" + (String) valueObject + "\"";
             }
@@ -671,9 +671,9 @@ public class CppLocalGenerator
         }
         return value;
     }
-    
-    
-    
+
+
+
     //====================================================================
     // Code generator utility methods
     //====================================================================
@@ -683,16 +683,16 @@ public class CppLocalGenerator
      * with full scope.
      * e.g: #include <world/europe/austria/ccm/local/Person.h>
      */
-    protected String getLanguageTypeInclude(MIDLType idlType) 
+    protected String getLanguageTypeInclude(MIDLType idlType)
     {
         logger.fine("begin");
         StringBuffer code = new StringBuffer();
-        if(idlType instanceof MStringDef) 
+        if(idlType instanceof MStringDef)
         {
             code.append("#include <string>\n");
         }
         else if(idlType instanceof MSequenceDef
-                || idlType instanceof MArrayDef) 
+                || idlType instanceof MArrayDef)
         {
             MTyped singleType = (MTyped)idlType;
             MIDLType singleIdlType = singleType.getIdlType();
@@ -714,18 +714,18 @@ public class CppLocalGenerator
         logger.fine("end");
         return code.toString();
     }
-        
-    protected String getLanguageTypeInclude(MContained contained) 
+
+    protected String getLanguageTypeInclude(MContained contained)
     {
         return getScopedInclude(contained);
     }
-    
-    
+
+
     //====================================================================
     // Code generation methods
-    //====================================================================    
+    //====================================================================
 
-    protected String getTypedef(MAliasDef alias) 
+    protected String getTypedef(MAliasDef alias)
     {
         StringBuffer code = new StringBuffer();
         MTyped type = (MTyped) alias;
@@ -737,8 +737,8 @@ public class CppLocalGenerator
         code.append(";\n");
         return code.toString();
     }
-    
-    
+
+
     protected String getBaseInterfaceOperations(boolean isImpl, MInterfaceDef iface, List baseInterfaceList)
     {
         StringBuffer code = new StringBuffer();
@@ -746,15 +746,15 @@ public class CppLocalGenerator
             MInterfaceDef baseIface = (MInterfaceDef) i.next();
             List contentList = baseIface.getContentss();
             for(Iterator j = contentList.iterator(); j.hasNext();) {
-                MContained contained = (MContained)j.next();	
+                MContained contained = (MContained)j.next();
                 if(contained instanceof MOperationDef) {
-                    MOperationDef op = (MOperationDef)contained;	
+                    MOperationDef op = (MOperationDef)contained;
                     if(isImpl) {
                         // generate code for C++ impl file
                         code.append(getAdapterOperationImpl(iface,op));
                     }
-                    else { 
-                        // generate code for C++ header file 
+                    else {
+                        // generate code for C++ header file
                         code.append(getAdapterOperationHeader(op));
                     }
                 }
@@ -763,8 +763,8 @@ public class CppLocalGenerator
         }
         return code.toString();
     }
-    
-    protected String getAdapterOperationHeader(MOperationDef op) 
+
+    protected String getAdapterOperationHeader(MOperationDef op)
     {
         StringBuffer code = new StringBuffer();
         code.append(Text.TAB).append("virtual").append("\n");
@@ -775,7 +775,7 @@ public class CppLocalGenerator
         code.append(Text.tab(2)).append(getOperationExcepts(op)).append(";\n");
         return code.toString();
     }
-    
+
     protected String getAdapterOperationImpl(MInterfaceDef iface, MOperationDef op)
     {
         StringBuffer code = new StringBuffer();
@@ -793,7 +793,7 @@ public class CppLocalGenerator
         return code.toString();
     }
 
-    
+
     protected String getBaseInterfaceAttributes(boolean isImpl, MInterfaceDef iface, List baseInterfaceList)
     {
         StringBuffer code = new StringBuffer();
@@ -801,7 +801,7 @@ public class CppLocalGenerator
             MInterfaceDef baseIface = (MInterfaceDef) i.next();
             List contentList = baseIface.getContentss();
             for(Iterator j = contentList.iterator(); j.hasNext();) {
-                MContained contained = (MContained)j.next();	
+                MContained contained = (MContained)j.next();
                 if(contained instanceof MAttributeDef) {
                     MAttributeDef attr = (MAttributeDef)contained;
                     if(isImpl) {
@@ -809,7 +809,7 @@ public class CppLocalGenerator
                         code.append(getAdapterAttributeImpl(iface,attr));
                     }
                     else {
-                        // generate code for C++ header file 
+                        // generate code for C++ header file
 	                    code.append(getAdapterAttributeHeader(attr));
                     }
                 }
@@ -818,8 +818,8 @@ public class CppLocalGenerator
         }
         return code.toString();
     }
-    
-    protected String getAdapterAttributeHeader(MAttributeDef attr) 
+
+    protected String getAdapterAttributeHeader(MAttributeDef attr)
     {
         StringBuffer code = new StringBuffer();
         code.append(Text.TAB).append("virtual\n");
@@ -833,8 +833,8 @@ public class CppLocalGenerator
         code.append(Text.tab(2)).append("throw(::Components::CCMException);\n\n");
         return code.toString();
     }
-    
-    protected String getAdapterAttributeImpl(MInterfaceDef iface, MAttributeDef attr) 
+
+    protected String getAdapterAttributeImpl(MInterfaceDef iface, MAttributeDef attr)
     {
         StringBuffer code = new StringBuffer();
         code.append("const ").append(getLanguageType(attr)).append("\n");
@@ -845,9 +845,9 @@ public class CppLocalGenerator
         code.append(Text.TAB).append("if(!validConnection())\n");
         code.append(Text.tab(2)).append("throw ::Components::InvalidConnection();\n");
         code.append(Text.TAB).append("return facet_->").append(attr.getIdentifier());
-        code.append("();\n");       
+        code.append("();\n");
         code.append("}\n\n");
-        
+
         code.append("void\n");
         code.append(iface.getIdentifier()).append("Adapter::").append(attr.getIdentifier());
         code.append("(const ").append(getLanguageType(attr)).append(" value)\n");
@@ -856,14 +856,14 @@ public class CppLocalGenerator
         code.append(Text.TAB).append("if(!validConnection())\n");
         code.append(Text.tab(2)).append("throw ::Components::InvalidConnection();\n");
         code.append(Text.TAB).append("facet_->").append(attr.getIdentifier());
-        code.append("(value);\n");       
+        code.append("(value);\n");
         code.append("}\n\n");
         return code.toString();
     }
-    
+
     /**
      * Write generated code to an output file.
-     * 
+     *
      * @param template
      *            the template object to get the generated code structure from ;
      *            variable values should come from the node handler object.
@@ -876,12 +876,12 @@ public class CppLocalGenerator
         String[] out_strings = out_string.split("<<<<<<<SPLIT>>>>>>>");
         String implDirectory = ConfigurationLocator.getInstance().get("ccmtools.dir.impl");
 
-        try 
+        try
         {
             OutputDirectories = new HashSet<String>();
             Iterator path_iterator = out_paths.iterator();
-            for(int i = 0; i < out_strings.length; i++) 
-            {               
+            for(int i = 0; i < out_strings.length; i++)
+            {
                 // try to prittify generated code (eliminate empty lines etc).
                 String generated_code = SourceFileHelper.prettifySourceCode(out_strings[i]);
 
@@ -901,58 +901,58 @@ public class CppLocalGenerator
                     continue;
 
                 File outFile = new File(output_dir + File.separator + file_dir, file_name);
-                if((file_dir == implDirectory) && outFile.isFile()) 
+                if((file_dir == implDirectory) && outFile.isFile())
                 {
-                    if(outFile.getName().endsWith("_entry.h")) 
+                    if(outFile.getName().endsWith("_entry.h"))
                     {
                         // *_entry.h files must be overwritten by every generator
                         // call because they are part of the component logic
                         writeFinalizedFile(file_dir, file_name, generated_code);
                     }
-                    else if(!isCodeEqualWithFile(generated_code, outFile)) 
+                    else if(!isCodeEqualWithFile(generated_code, outFile))
                     {
                         uiDriver.printMessage("WARNING: " + outFile + " already exists!");
                         file_name += ".new";
                         outFile = new File(output_dir + File.separator + file_dir, file_name);
                     }
                 }
-                if(isCodeEqualWithFile(generated_code, outFile)) 
+                if(isCodeEqualWithFile(generated_code, outFile))
                 {
                     uiDriver.printMessage("Skipping " + outFile);
                 }
-                else 
+                else
                 {
                     writeFinalizedFile(file_dir, file_name, generated_code);
                 }
             }
-            
+
             Confix.writeConfix2Files(uiDriver, OutputDirectories);
         }
-        catch(Exception e) 
+        catch(Exception e)
         {
             uiDriver.printError("!!!Error " + e.getMessage());
         }
         logger.fine("leave writeOutput()");
     }
 
-    
+
     /**
      * Overide writeFinalizedFile method to collect all output directories as input
      * for the Confix file generation.
-     * 
+     *
      */
-    protected void writeFinalizedFile(String directory, String file, String output) 
+    protected void writeFinalizedFile(String directory, String file, String output)
         throws IOException
     {
-        OutputDirectories.add(output_dir + File.separator + directory);        
+        OutputDirectories.add(output_dir + File.separator + directory);
         super.writeFinalizedFile(directory, file, output);
     }
 
-    
+
     /**
      * Create a list of lists of pathname components for output files needed by
      * the current node type.
-     * 
+     *
      * @return a list of List objects containing file names for all output files
      *         to be generated for the current node.
      */
@@ -963,7 +963,7 @@ public class CppLocalGenerator
         List files = new ArrayList();
         List f = null;
         String implDirectory = ConfigurationLocator.getInstance().get("ccmtools.dir.impl");
-        
+
         if((currentNode instanceof MComponentDef)
                 || (currentNode instanceof MHomeDef)) {
             String base_name = node_name;
@@ -977,7 +977,7 @@ public class CppLocalGenerator
             }
             String cxxGenNamespace = getCxxGenOutputDirectory(base_name);
             String cxxNamespace = getCxxOutputDirectory(base_name);
-            
+
             f = new ArrayList();
             f.add(cxxGenNamespace);
             f.add(node_name + "_gen.h");
@@ -992,9 +992,9 @@ public class CppLocalGenerator
             f.add(node_name + "_share.h");
             files.add(f);
 
-            if(currentNode instanceof MHomeDef) 
+            if(currentNode instanceof MHomeDef)
             {
-                MHomeDef home = (MHomeDef)currentNode;    
+                MHomeDef home = (MHomeDef)currentNode;
                 f = new ArrayList();
                 f.add(implDirectory);
                 f.add(getLocalCxxIncludeName(home, Text.MANGLING_SEPARATOR) + "_entry.h");
@@ -1085,13 +1085,13 @@ public class CppLocalGenerator
     protected String getCxxOutputDirectory(String component)
     {
         logger.fine("begin");
-        
+
         List modules = new ArrayList();
         modules.addAll(cxxNamespace);
         modules.addAll(namespaceStack);
-        
+
         String generatorPrefix = ConfigurationLocator.getInstance().get("ccmtools.dir.gen");
-        
+
         logger.fine("end");
         return generatorPrefix + join("_", modules);
     }
@@ -1103,24 +1103,24 @@ public class CppLocalGenerator
         List modules = new ArrayList();
         modules.addAll(cxxGenNamespace);
         modules.addAll(namespaceStack);
-        
+
         String generatorPrefix = ConfigurationLocator.getInstance().get("ccmtools.dir.gen");
-        
+
         logger.fine("end");
         return generatorPrefix + join("_", modules);
     }
-    
-    
+
+
     //====================================================================
     // Simple %(tag)s helper methods
     //====================================================================
 
-    
+
     //====================================================================
     // MStructDef %(tag)s helper methods
     //====================================================================
 
-    
+
     protected String generateStructDefaultConstructor(MStructDef struct)
     {
         StringBuilder out = new StringBuilder();
@@ -1134,18 +1134,18 @@ public class CppLocalGenerator
         out.append(Text.TAB).append("}").append(Text.NL);
         return out.toString();
     }
-    
+
     protected String generateStructInitConstructor(MStructDef struct)
     {
         StringBuilder out = new StringBuilder();
-        out.append(Text.TAB).append(struct.getIdentifier()).append("(");        
+        out.append(Text.TAB).append(struct.getIdentifier()).append("(");
         out.append(generateStructConstructorParameterList(struct)).append(")").append(Text.NL);
-        out.append(Text.TAB).append("  :").append(generateStructConstructorInitList(struct)).append(Text.NL);        
+        out.append(Text.TAB).append("  :").append(generateStructConstructorInitList(struct)).append(Text.NL);
         out.append(Text.TAB).append("{").append(Text.NL);
         out.append(Text.TAB).append("}").append(Text.NL);
-        return out.toString();        
+        return out.toString();
     }
-    
+
     protected String generateStructConstructorParameterList(MStructDef struct)
     {
        StringBuilder out = new StringBuilder();
@@ -1153,14 +1153,14 @@ public class CppLocalGenerator
        {
            MFieldDef field = (MFieldDef)i.next();
            out.append(Text.NL).append(Text.tab(2));
-           out.append(getLanguageType(field)).append(" ");
+           out.append(getLanguageType(field)).append(" const& ");
            out.append(field.getIdentifier()).append("_").append(",");
        }
        String s = out.toString();
-       return s.substring(0,s.length()-1);         
+       return s.substring(0,s.length()-1);
     }
-    
-    
+
+
     protected String generateStructConstructorInitList(MStructDef struct)
     {
         StringBuilder out = new StringBuilder();
@@ -1170,11 +1170,11 @@ public class CppLocalGenerator
             out.append(Text.NL).append(Text.tab(2));
             out.append(field.getIdentifier()).append("(");
             out.append(field.getIdentifier()).append("_").append("),");
-        }        
+        }
         String s = out.toString();
         return s.substring(0, s.length()-1);
     }
-    
+
     protected String generateStructConstructorDefaultValueList(MStructDef struct)
     {
         StringBuilder out = new StringBuilder();
@@ -1187,7 +1187,7 @@ public class CppLocalGenerator
                 out.append(Text.NL).append(Text.tab(2));
                 out.append(field.getIdentifier()).append("(").append(defaultValue).append(")").append(",");
             }
-        }        
+        }
         String s = out.toString();
         if(s.length() > 0)
         {
@@ -1198,17 +1198,12 @@ public class CppLocalGenerator
             return null; // no defalut value list
         }
     }
-    
+
     protected String generateDefaultValue(MIDLType type)
     {
-        if(type instanceof MInterfaceDef)
+        if(type instanceof MEnumDef)
         {
-            MInterfaceDef iface = (MInterfaceDef)type;
-            return getLocalCxxName(iface,Text.SCOPE_SEPARATOR) + "::SmartPtr()";
-        }
-        else if(type instanceof MEnumDef)
-        {
-            MEnumDef enumeration = (MEnumDef)type;            
+            MEnumDef enumeration = (MEnumDef)type;
             return enumeration.getMember(0); // Set enum to the first value.
         }
         else if(type instanceof MAliasDef)
@@ -1217,20 +1212,12 @@ public class CppLocalGenerator
             MIDLType idlType = ((MTyped)type).getIdlType();
             if(idlType instanceof MSequenceDef)
             {
-                return getLocalCxxName(alias, Text.SCOPE_SEPARATOR) + "()";
+                return null;
             }
             else
             {
                 return generateDefaultValue(idlType);
             }
-        }
-        else if(type instanceof MStringDef)
-        {
-            return "\"\"";
-        }
-        else if(type instanceof MWstringDef)
-        {
-            return "L\"\"";
         }
         else if(type instanceof MPrimitiveDef)
         {
@@ -1239,14 +1226,10 @@ public class CppLocalGenerator
         }
         return null;
     }
-    
+
     protected String generateDefaultValue(MPrimitiveDef primitive)
     {
-        if(primitive.getKind() == MPrimitiveKind.PK_ANY)
-        {
-            return " ::wamas::platform::utils::SmartPtr< ::wamas::platform::utils::Value>()";
-        }
-        else if(primitive.getKind() == MPrimitiveKind.PK_BOOLEAN)
+        if(primitive.getKind() == MPrimitiveKind.PK_BOOLEAN)
         {
             return "false";
         }
@@ -1307,12 +1290,12 @@ public class CppLocalGenerator
             return null;
         }
     }
-    
-    
+
+
     //====================================================================
     // MOperationDef %(tag)s helper methods
     //====================================================================
-       
+
     public String getOperationDelegation(MOperationDef op, String target)
     {
         logger.finer("enter getOperationDelegation()");
@@ -1333,8 +1316,8 @@ public class CppLocalGenerator
         code.append(Text.join(",", parameterList)).append(");");
         logger.finer("leave getOperationDelegation()");
         return code.toString();
-    }    
-    
+    }
+
     public String getOperationResult(MOperationDef op)
     {
         logger.finer("enter getOperationResult()");
@@ -1346,7 +1329,7 @@ public class CppLocalGenerator
         logger.finer("leave getOperationResult()");
         return code.toString();
     }
-    
+
     public String getOperationReturn(MOperationDef op)
     {
         logger.finer("enter getOperationReturn()");
@@ -1355,7 +1338,7 @@ public class CppLocalGenerator
         if(!langType.equals("void")) {
             code = "return ";
         }
-        else {	
+        else {
             code = "";
         }
         logger.finer("leave getOperationReturn()");
