@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import ccmtools.CcmtoolsException;
 import ccmtools.CodeGenerator.Template;
 import ccmtools.CppGenerator.plugin.AnyPluginManager;
@@ -1218,36 +1217,22 @@ public class CppLocalGenerator
     
     protected String generateDefaultValue(MIDLType type)
     {
-        if(type instanceof MInterfaceDef)
+        if(type instanceof MEnumDef)
         {
-            MInterfaceDef iface = (MInterfaceDef)type;
-            return getLocalCxxName(iface,Text.SCOPE_SEPARATOR) + "::SmartPtr()";
-        }
-        else if(type instanceof MEnumDef)
-        {
-            MEnumDef enumeration = (MEnumDef)type;            
+            MEnumDef enumeration = (MEnumDef)type;
             return enumeration.getMember(0); // Set enum to the first value.
         }
         else if(type instanceof MAliasDef)
         {
-            MAliasDef alias = (MAliasDef)type;
             MIDLType idlType = ((MTyped)type).getIdlType();
             if(idlType instanceof MSequenceDef)
             {
-                return getLocalCxxName(alias, Text.SCOPE_SEPARATOR) + "()";
+                return null;
             }
             else
             {
                 return generateDefaultValue(idlType);
             }
-        }
-        else if(type instanceof MStringDef)
-        {
-            return "\"\"";
-        }
-        else if(type instanceof MWstringDef)
-        {
-            return "L\"\"";
         }
         else if(type instanceof MPrimitiveDef)
         {
@@ -1256,14 +1241,10 @@ public class CppLocalGenerator
         }
         return null;
     }
-    
+
     protected String generateDefaultValue(MPrimitiveDef primitive)
     {
-        if(primitive.getKind() == MPrimitiveKind.PK_ANY)
-        {
-            return " ::wamas::platform::utils::SmartPtr< ::wamas::platform::utils::Value>()";
-        }
-        else if(primitive.getKind() == MPrimitiveKind.PK_BOOLEAN)
+        if(primitive.getKind() == MPrimitiveKind.PK_BOOLEAN)
         {
             return "false";
         }
