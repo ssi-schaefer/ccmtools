@@ -293,6 +293,8 @@ class CCM_%(Identifier)s
 #ifndef __HOME_%(PreprocIdentifier)s_ENTRY__H__
 #define __HOME_%(PreprocIdentifier)s_ENTRY__H__
 
+#ifdef __cplusplus
+
 #include <Components/ccmtools.h>
 
 ::Components::HomeExecutorBase* 
@@ -305,12 +307,17 @@ int
 deploy_with_assembly_%(AbsoluteLocalHomeName)s(char* name,	
     ::Components::AssemblyFactory::SmartPtr assembly_factory);
 
-/// deploy the implementation of %(Identifier)s 
-int deploy_%(AbsoluteLocalHomeName)s(char* name);
+extern "C" {
+#endif
 
+int deploy_%(AbsoluteLocalHomeName)s(char* name);
 int undeploy_%(AbsoluteLocalHomeName)s(char* name);
 
-#endif // __HOME_%(PreprocIdentifier)s_ENTRY__H__
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __HOME_%(PreprocIdentifier)s_ENTRY__H__ */
 
 
 <<<<<<<SPLIT>>>>>>>
