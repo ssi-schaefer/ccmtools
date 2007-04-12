@@ -112,15 +112,13 @@
 	    </javac>
 		
 		<java classname="Client" classpathref="compile.classpath" failonerror="true" fork="true">
-			<assertions> <enable/></assertions>
+			<assertions><enable/></assertions>
 		</java>
 		
 		<java classname="Client" classpathref="compile.classpath" failonerror="true" fork="true">
-			<assertions> <enable/></assertions>
-			<arg value="-ORBInitRef"/>
-			<arg value="NameService=corbaloc:iiop:1.2@localhost:5050/NameService"/>
-			<arg value="-ORBServerHost"/>
-			<arg value="localhost"/>
+			<assertions><enable/></assertions>
+			<arg line="-ORBInitRef NameService=corbaloc:iiop:1.2@localhost:5050/NameService"/>
+			<arg line="-ORBServerHost localhost"/>
 		</java>
 	</target>
 </project>
