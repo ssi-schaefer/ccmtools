@@ -1,5 +1,7 @@
 package ccmtools.generator.java.remote;
 
+import java.io.File;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import ccmtools.test.CcmtoolsTestCase;
@@ -7,6 +9,7 @@ import ccmtools.test.CcmtoolsTestCase;
 public class FacetTest 
 	extends CcmtoolsTestCase
 {
+	private final String SEP = File.separator;
     private String ccmtoolsDir;
     private String testDir;
 
@@ -77,8 +80,8 @@ public class FacetTest
     public void testFacetSimple()
     {
         try 
-        {
-            executeCommandLine("make -C " + testDir + "/facet_simple test");
+        {        	
+            executeCommandLine("ant -f " + testDir + SEP + "facet_simple" + SEP + "Makefile.xml");            
         }
         catch(Exception e) 
         {
