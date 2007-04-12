@@ -16,7 +16,7 @@ public class ExceptionDefDefaultConstructorTemplate
 
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "    public ";
-  protected final String TEXT_2 = "() " + NL + "    {" + NL + "        super(REPOSITORY_ID);";
+  protected final String TEXT_2 = "() " + NL + "    {" + NL + "        super();";
   protected final String TEXT_3 = NL + "        ";
   protected final String TEXT_4 = "(";
   protected final String TEXT_5 = ");";

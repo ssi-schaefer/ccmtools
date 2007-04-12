@@ -17,13 +17,13 @@ public class ExceptionDefConstructorTemplate
   protected final String NL = nl == null ? (System.getProperties().getProperty("line.separator")) : nl;
   protected final String TEXT_1 = "    public ";
   protected final String TEXT_2 = "(";
-  protected final String TEXT_3 = ") " + NL + "    {" + NL + "        super(REPOSITORY_ID);";
+  protected final String TEXT_3 = ") " + NL + "    {" + NL + "        super();";
   protected final String TEXT_4 = NL + "        ";
   protected final String TEXT_5 = "(";
   protected final String TEXT_6 = ");";
   protected final String TEXT_7 = NL + "    }" + NL + "        " + NL + "    public ";
-  protected final String TEXT_8 = "(String reason, ";
-  protected final String TEXT_9 = ")    " + NL + "    {" + NL + "        super(REPOSITORY_ID + \" \" + reason);";
+  protected final String TEXT_8 = "(String _reason, ";
+  protected final String TEXT_9 = ")    " + NL + "    {" + NL + "        super(_reason);";
   protected final String TEXT_10 = NL + "        ";
   protected final String TEXT_11 = "(";
   protected final String TEXT_12 = ");";

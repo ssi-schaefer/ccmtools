@@ -5,7 +5,7 @@
 <% ExceptionDef exception = (ExceptionDef) argument; %>
     public <%=exception.getIdentifier()%>(<%=exception.generateConstructorParameterList()%>) 
     {
-        super(REPOSITORY_ID);
+        super();
 <%
 for(Iterator i=exception.getFields().iterator(); i.hasNext();)
 {
@@ -17,9 +17,9 @@ for(Iterator i=exception.getFields().iterator(); i.hasNext();)
 %>
     }
         
-    public <%=exception.getIdentifier()%>(String reason, <%=exception.generateConstructorParameterList()%>)    
+    public <%=exception.getIdentifier()%>(String _reason, <%=exception.generateConstructorParameterList()%>)    
     {
-        super(REPOSITORY_ID + " " + reason);
+        super(_reason);
 <%
 for(Iterator i=exception.getFields().iterator(); i.hasNext();)
 {

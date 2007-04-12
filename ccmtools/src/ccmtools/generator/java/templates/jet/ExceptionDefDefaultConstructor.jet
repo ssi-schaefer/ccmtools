@@ -5,7 +5,7 @@
 <% ExceptionDef exception = (ExceptionDef) argument; %>
     public <%=exception.getIdentifier()%>() 
     {
-        super(REPOSITORY_ID);
+        super();
 <%
 for(Iterator i=exception.getFields().iterator(); i.hasNext();)
 {

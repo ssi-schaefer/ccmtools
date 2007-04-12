@@ -20,17 +20,16 @@ public class ExceptionDefImplementationTemplate
   protected final String TEXT_3 = ";" + NL + " ";
   protected final String TEXT_4 = NL;
   protected final String TEXT_5 = NL + " " + NL + "public class ";
-  protected final String TEXT_6 = " " + NL + "    extends Components.UserException" + NL + "{" + NL + "    private static final String REPOSITORY_ID = \"";
-  protected final String TEXT_7 = "\";" + NL + "    ";
-  protected final String TEXT_8 = NL + "    ";
+  protected final String TEXT_6 = " " + NL + "    extends Components.UserException" + NL + "{";
+  protected final String TEXT_7 = NL + "    ";
+  protected final String TEXT_8 = NL;
   protected final String TEXT_9 = NL;
   protected final String TEXT_10 = NL;
   protected final String TEXT_11 = NL;
   protected final String TEXT_12 = NL;
   protected final String TEXT_13 = NL;
-  protected final String TEXT_14 = NL;
-  protected final String TEXT_15 = NL + NL + "}";
-  protected final String TEXT_16 = NL;
+  protected final String TEXT_14 = NL + NL + "}";
+  protected final String TEXT_15 = NL;
 
   public String generate(Object argument)
   {
@@ -46,37 +45,35 @@ public class ExceptionDefImplementationTemplate
     stringBuffer.append(TEXT_5);
     stringBuffer.append( exception.getIdentifier() );
     stringBuffer.append(TEXT_6);
-    stringBuffer.append(exception.generateRepositoryId());
-    stringBuffer.append(TEXT_7);
     
 for(Iterator i=exception.getFields().iterator(); i.hasNext();)
 {
 	FieldDef field = (FieldDef)i.next();
 
-    stringBuffer.append(TEXT_8);
+    stringBuffer.append(TEXT_7);
     stringBuffer.append(field.generateDeclaration());
     
 }
 
+    stringBuffer.append(TEXT_8);
     stringBuffer.append(TEXT_9);
-    stringBuffer.append(TEXT_10);
     stringBuffer.append(exception.generateDefaultConstructor());
+    stringBuffer.append(TEXT_10);
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(TEXT_12);
     stringBuffer.append(exception.generateConstructor());
-    stringBuffer.append(TEXT_13);
+    stringBuffer.append(TEXT_12);
     
 for(Iterator i=exception.getFields().iterator(); i.hasNext();)
 {
 	FieldDef field = (FieldDef)i.next();
 
-    stringBuffer.append(TEXT_14);
+    stringBuffer.append(TEXT_13);
     stringBuffer.append(field.generateAccessors());
     
 }
 
+    stringBuffer.append(TEXT_14);
     stringBuffer.append(TEXT_15);
-    stringBuffer.append(TEXT_16);
     return stringBuffer.toString();
   }
 }

@@ -16,8 +16,6 @@ package <%=exception.generateJavaNamespace() %>;
 public class <%= exception.getIdentifier() %> 
     extends Components.UserException
 {
-    private static final String REPOSITORY_ID = "<%=exception.generateRepositoryId()%>";
-    
 <%
 for(Iterator i=exception.getFields().iterator(); i.hasNext();)
 {

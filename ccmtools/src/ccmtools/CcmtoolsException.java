@@ -22,6 +22,8 @@ package ccmtools;
 public class CcmtoolsException 
 	extends Exception
 {
+    private static final long serialVersionUID = 8213556447461784040L;
+
     public CcmtoolsException(String message)
     {
         super(message);

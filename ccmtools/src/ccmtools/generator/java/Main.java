@@ -1,7 +1,6 @@
 package ccmtools.generator.java;
 
 import java.io.FileNotFoundException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import org.apache.commons.cli.CommandLine;

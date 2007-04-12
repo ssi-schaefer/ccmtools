@@ -78,7 +78,9 @@ for(Iterator i=component.getAssemblyAttributeInitialisation(); i.hasNext();)
 }
 %> 
     	} catch(Exception e) {
-    		throw new Components.CCMException(e.getMessage(), Components.CCMExceptionReason.CREATE_ERROR);
+    		throw new Components.CCMException(
+    			"assembly creation failed: "+e.getMessage(),
+    			Components.CCMExceptionReason.CREATE_ERROR, e);
     	}
     }
     
@@ -228,8 +230,9 @@ for (String key : component.getAssemblyLocalComponents().keySet())
 
 			ccm_activate_ok = true; 
     	} catch(Exception e) {
-    		throw new Components.CCMException(e.getMessage(),
-    			Components.CCMExceptionReason.CREATE_ERROR);
+    		throw new Components.CCMException(
+    			"assembly configuration failed: "+e.getMessage(),
+    			Components.CCMExceptionReason.CREATE_ERROR, e);
     	}
     }
 

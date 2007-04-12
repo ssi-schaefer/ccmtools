@@ -1,0 +1,21 @@
+module MyModule {
+
+exception MyException
+{
+	string reason;
+};
+
+interface MyInterface
+{
+	double sqrt(in double x) raises(MyException);
+};
+
+component MyComponent
+{
+	provides MyInterface myFacet;
+};
+
+home MyComponentHome manages MyComponent {};
+
+};	// /module MyModule
+
