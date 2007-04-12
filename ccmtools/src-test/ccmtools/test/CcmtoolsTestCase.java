@@ -46,6 +46,29 @@ public class CcmtoolsTestCase extends TestCase
         super(name);
     }
 
+    
+    /**
+     * Run the ant build tool with the given command line.
+     * Note that Windows needs the '.bat' suffix to be happy.
+     * 
+     * @param cmdline A String containing all options and parameters used for the ant call.
+     * @throws CcmtoolsTestCaseException 
+     */
+    protected void runAnt(String cmdline) 
+        throws CcmtoolsTestCaseException
+    {
+        String os = System.getProperty("os.name");
+        if(os.startsWith("Windows"))
+        {
+            executeCommandLine("ant.bat " + cmdline);
+        }
+        else
+        {
+            executeCommandLine("ant " + cmdline);
+        }
+    }    
+    
+    
     /**
      * Run the ccmtools generator by calling ccmtools.UI.ConsoleCodeGenerator's
      * main function.
@@ -173,7 +196,7 @@ public class CcmtoolsTestCase extends TestCase
                 throw new CcmtoolsTestCaseException("exec error: result != 0");
         }
         catch(Exception e) {
-            throw new CcmtoolsTestCaseException("exec error");
+            throw new CcmtoolsTestCaseException("exec error:" + e.getMessage());
         }
         
     }

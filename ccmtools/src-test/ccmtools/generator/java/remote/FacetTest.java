@@ -18,7 +18,7 @@ public class FacetTest
         super(name);
         // get current working directory (this is where build.xml is executed)
         ccmtoolsDir = System.getProperty("user.dir");
-        testDir = ccmtoolsDir + "/test/JavaRemoteComponents";
+        testDir = ccmtoolsDir + SEP + "test" + SEP + "JavaRemoteComponents";
     }
 
     public static Test suite()
@@ -80,12 +80,12 @@ public class FacetTest
     public void testFacetSimple()
     {
         try 
-        {        	
-            executeCommandLine("ant -f " + testDir + SEP + "facet_simple" + SEP + "Makefile.xml");            
+        {     
+            runAnt("-f "  + testDir + SEP + "facet_simple" + SEP + "Makefile.xml");
         }
         catch(Exception e) 
         {
-            fail();
+            fail(e.getMessage());
         }
     }
     
