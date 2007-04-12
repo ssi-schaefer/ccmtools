@@ -1,18 +1,18 @@
 package Components;
 
-public class InvalidAssembly
-	extends Components.UserException
+public class InvalidAssembly extends Components.UserException
 {
-	private static final long serialVersionUID = 4478890731019313469L;
-	private static final String REPOSITORY_ID = "IDL:Components/InvalidAssembly:1.0";
-	
-	public InvalidAssembly() 
+    private static final long serialVersionUID = 4478890731019313469L;
+
+    private static final String DEFAULT_MESSAGE = "invalid assembly";
+
+    public InvalidAssembly()
     {
-		super(REPOSITORY_ID);
+        super(DEFAULT_MESSAGE);
     }
-	
-    public InvalidAssembly(String reason) 
+
+    public InvalidAssembly( String _reason )
     {
-    	    super(REPOSITORY_ID + " " + reason);
+        super(_reason);
     }
 }

@@ -1,18 +1,18 @@
 package Components;
 
-public class WrongComponentType
-	extends Components.UserException
+public class WrongComponentType extends Components.UserException
 {
-	private static final long serialVersionUID = 2208948298152201554L;
-	private static final String REPOSITORY_ID = "IDL:Components/WrongComponentType:1.0";
-	
-	public WrongComponentType() 
+    private static final long serialVersionUID = 2208948298152201554L;
+
+    private static final String DEFAULT_MESSAGE = "wrong component type";
+
+    public WrongComponentType()
     {
-		super(REPOSITORY_ID); 
+        super(DEFAULT_MESSAGE);
     }
-	
-    public WrongComponentType(String reason) 
+
+    public WrongComponentType( String reason )
     {
-    	    super(REPOSITORY_ID + " " + reason);
+        super(reason);
     }
 }

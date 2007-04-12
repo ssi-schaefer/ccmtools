@@ -1,18 +1,18 @@
 package Components;
 
-public class NoConnection
-	extends Components.UserException
+public class NoConnection extends Components.UserException
 {
-	private static final long serialVersionUID = 8687891271765409198L;
-	private static final String REPOSITORY_ID = "IDL:Components/NoConnection:1.0";
-	
-	public NoConnection() 
+    private static final long serialVersionUID = 8687891271765409198L;
+
+    private static final String DEFAULT_MESSAGE = "no connection";
+
+    public NoConnection()
     {
-		super(REPOSITORY_ID);
+        super(DEFAULT_MESSAGE);
     }
-	
-    public NoConnection(String reason) 
+
+    public NoConnection( String reason )
     {
-    	    super(REPOSITORY_ID + " " + reason);
+        super(reason);
     }
 }

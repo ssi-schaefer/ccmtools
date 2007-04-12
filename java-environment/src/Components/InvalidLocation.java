@@ -1,18 +1,18 @@
 package Components;
 
-public class InvalidLocation
-	extends Components.UserException
+public class InvalidLocation extends Components.UserException
 {
-	private static final long serialVersionUID = 292325942395365465L;
-	private static final String REPOSITORY_ID = "IDL:Components/InvalidLocation:1.0";
-	
-	public InvalidLocation() 
+    private static final long serialVersionUID = 292325942395365465L;
+
+    private static final String DEFAULT_MESSAGE = "invalid location";
+
+    public InvalidLocation()
     {
-		super(REPOSITORY_ID);
+        super(DEFAULT_MESSAGE);
     }
-	
-	public InvalidLocation(String reason) 
-	{
-		super(REPOSITORY_ID + " " + reason);
-	}
+
+    public InvalidLocation( String _reason )
+    {
+        super(_reason);
+    }
 }

@@ -1,18 +1,18 @@
 package Components;
 
-public class ExceededConnectionLimit
-	extends Components.UserException
+public class ExceededConnectionLimit extends Components.UserException
 {
-	private static final long serialVersionUID = -5714895177604126672L;
-	private static final String REPOSITORY_ID = "IDL:Components/ExceededConnectionLimit:1.0";
-	
-	public ExceededConnectionLimit() 
+    private static final long serialVersionUID = -5714895177604126672L;
+
+    private static final String DEFAULT_MESSAGE = "exceeded connection limit";
+
+    public ExceededConnectionLimit()
     {
-		super(REPOSITORY_ID);
+        super(DEFAULT_MESSAGE);
     }
-	
-    public ExceededConnectionLimit(String reason) 
+
+    public ExceededConnectionLimit( String _reason )
     {
-    	    super(REPOSITORY_ID + " " + reason);
+        super(_reason);
     }
 }

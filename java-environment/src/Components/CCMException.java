@@ -1,37 +1,49 @@
 package Components;
 
-public class CCMException
-	extends Components.UserException
+public class CCMException extends Components.UserException
 {
-	private static final long serialVersionUID = -9007924014999270105L;
-    private static final String REPOSITORY_ID = "IDL:Components/CCMException:1.0";
-    
+    private static final long serialVersionUID = -9007924014999270105L;
+
+    private static final String DEFAULT_MESSAGE = "CCM exception";
+
     private CCMExceptionReason reason;
 
-    public CCMException() 
+    public CCMException()
     {
-        super(REPOSITORY_ID);
+        super(DEFAULT_MESSAGE);
         setReason(null);
     }
 
-    public CCMException(CCMExceptionReason r) 
+    public CCMException( CCMExceptionReason r )
     {
-        super(REPOSITORY_ID);
+        super(DEFAULT_MESSAGE);
         setReason(r);
     }
-        
-    public CCMException(String reason, CCMExceptionReason r)    
+
+    public CCMException( String message, CCMExceptionReason r )
     {
-        super(REPOSITORY_ID + " " + reason);
-        setReason(r);       
+        super(message);
+        setReason(r);
+    }
+
+    public CCMException( String message, CCMExceptionReason r, Throwable cause )
+    {
+        super(message, cause);
+        setReason(r);
+    }
+
+    public CCMException( CCMExceptionReason r, Throwable cause )
+    {
+        super(DEFAULT_MESSAGE, cause);
+        setReason(r);
     }
 
     public CCMExceptionReason getReason()
     {
         return this.reason;
-    }     
+    }
 
-    public void setReason(CCMExceptionReason value)
+    public void setReason( CCMExceptionReason value )
     {
         this.reason = value;
     }

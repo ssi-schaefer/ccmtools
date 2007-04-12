@@ -1,18 +1,18 @@
 package Components;
 
-public class InvalidConnection
-	extends Components.UserException
+public class InvalidConnection extends Components.UserException
 {
-	private static final long serialVersionUID = -3095009263968067357L;
-	private static final String REPOSITORY_ID = "IDL:Components/InvalidConnection:1.0";
-		
-	public InvalidConnection() 
+    private static final long serialVersionUID = -3095009263968067357L;
+
+    private static final String DEFAULT_MESSAGE = "invalid connection";
+
+    public InvalidConnection()
     {
-		super(REPOSITORY_ID);
+        super(DEFAULT_MESSAGE);
     }
-	
-	public InvalidConnection(String reason) 
-	{
-		super(REPOSITORY_ID + " " + reason);
-	}
+
+    public InvalidConnection( String _reason )
+    {
+        super(_reason);
+    }
 }

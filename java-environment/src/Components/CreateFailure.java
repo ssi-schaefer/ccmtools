@@ -1,18 +1,18 @@
 package Components;
 
-public class CreateFailure
-	extends Components.UserException
+public class CreateFailure extends Components.UserException
 {
-	private static final long serialVersionUID = -4139103203013279104L;
-	private static final String REPOSITORY_ID = "IDL:Components/CreateFailure:1.0";
-	
-	public CreateFailure() 
+    private static final long serialVersionUID = -4139103203013279104L;
+
+    private static final String DEFAULT_MESSAGE = "create failure";
+
+    public CreateFailure()
     {
-		super(REPOSITORY_ID);
+        super(DEFAULT_MESSAGE);
     }
-	
-	public CreateFailure(String reason) 
-	{
-		super(REPOSITORY_ID + " " + reason);
-	}	
+
+    public CreateFailure( String _reason )
+    {
+        super(_reason);
+    }
 }

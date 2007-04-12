@@ -1,18 +1,34 @@
 package Components;
 
-public class UserException
-	extends java.lang.Exception
+public class UserException extends java.lang.Exception
 {
-	private static final long serialVersionUID = -1127609876865983434L;
-	private static final String REPOSITORY_ID = "IDL:Components/UserException:1.0";
-	
-	public UserException() 
+    private static final long serialVersionUID = -1127609876865983434L;
+
+    private static final String DEFAULT_MESSAGE = "ccmtools user exception";
+
+    public UserException()
     {
-		super(REPOSITORY_ID);
+        super(DEFAULT_MESSAGE);
     }
-    
-    public UserException(String reason) 
+
+    public UserException( String message )
     {
-	    super(reason);
+        super(message);
+    }
+
+    public UserException( String message, Throwable cause )
+    {
+        super(message, cause);
+    }
+
+    public UserException( Throwable cause )
+    {
+        super(DEFAULT_MESSAGE, cause);
+    }
+
+    public String getRepoId()
+    {
+        String cls = this.getClass().getName();
+        return "IDL:ccmtools/" + cls + ":1.0";
     }
 }
