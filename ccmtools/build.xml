@@ -16,9 +16,15 @@
   	<property name="prefix" location="dist" />
   	<property name="test" location="test" />
 
+	<!-- 
+		If this build is running in a Unix like system the isUnix property 
+		will be set to true.
+	-->
+	<condition property="isUnix"> <os family="unix"/> </condition>
 
-  	<!-- Define different paths that are used in the following tasks -->
-
+  	<!-- 
+  		Define different paths that are used in the following tasks 
+  	-->
 	<path id="compile.classpath">
   		<pathelement path="${lib}/commons-cli-1.0.jar" />
   		<pathelement path="${lib}/java-cup-11a.jar" />
@@ -31,8 +37,9 @@
   	</path>
 
 
-  	<!-- Set up directories for the build process -->
-
+  	<!-- 
+  		Set up directories for the build process 
+  	-->
 	<target name="init" >
       	<mkdir dir="${src-gen}" />
   		<mkdir dir="${build}" />
@@ -40,9 +47,28 @@
         <delete file="${lib}/assembly.jar" />
   	</target>
 
+	
+	<!-- 
+		Clean up all generated files and directories
+	-->
+  	<target name="clean" description="Clean up the build and lib directory." >
+      	<delete file="${src}/${PACKAGE}/Constants.java" />
+      	<delete file="${src}/ccmtools/parser/idl3/Idl3Lexer.java" />
+      	<delete file="${src}/ccmtools/parser/idl3/Idl3Parser.java" />
+      	<delete file="${src}/ccmtools/parser/idl3/Idl3TokenTypes.java" />
+      	<delete file="${src}/ccmtools/parser/idl3/Idl3TokenTypes.txt" />
+  		<delete dir="${src}/uml_parser" />
+      	<delete dir="${src-gen}" />
+      	<delete dir="${build}" />
+      	<delete dir="${test}/CppRemoteGenerator/sandbox" />
+      	<delete file="${lib}/ccmtools.jar" />
+  		<delete file="${lib}/assembly.jar" />
+  	</target>
 
-  	<!-- Generate IDL3 parser source code using ANTLR -->
 
+  	<!-- 
+  		Generate IDL3 parser source code using ANTLR 
+  	-->
 	<target name="generate.IDL3Parser" depends="init">
       	<antlr target="${src}/ccmtools/parser/idl3/idl3new.g"
       		      dir="${src}/ccmtools/parser/idl3" >
@@ -51,8 +77,9 @@
   	</target>
 
 
-	<!-- Generate IDL parser source code using JFlex+Cup -->
-
+	<!-- 
+		Generate IDL parser source code using JFlex+Cup 
+	-->
 	<target name="generate.IdlScanner" depends="init">
 		<java jar="${lib}/JFlex.jar" fork="true">
 			<arg line = "-d ${src-gen}/ccmtools/parser/idl ${src}/ccmtools/parser/idl/idlscanner.flex" />
@@ -66,8 +93,9 @@
   	</target>
 
 
-    <!-- Generate assembly parser source code using JFlex+Cup -->
-
+    <!-- 
+    	Generate assembly parser source code using JFlex+Cup 
+    -->
     <target name="generate.AssemblyLexer" depends="init">
         <java jar="${lib}/JFlex.jar" fork="true">
             <arg line = "-d ${src-gen}/ccmtools/parser/assembly ${src}/ccmtools/parser/assembly/assembly.flex" />
@@ -99,8 +127,9 @@
     </target>
 
 
-	<!-- Compile ccmtools source code -->
-
+	<!-- 
+		Compile ccmtools source code 
+	-->
 	<target name="compile.ccmtools" depends="generate.IDL3Parser, generate.IdlScanner, generate.IdlParser, generate.AssemblyLexer, generate.AssemblyParser"
      	description="Compile the ccmtools package." >
       	<javac srcdir="${src}/ccmtools:${src-gen}" destdir="${build}/classes"
@@ -110,7 +139,9 @@
   	</target>
 
 
-  	<!-- Create Java archive file from all package. -->
+  	<!-- 
+  		Create a Java archive file from compiled ccmtools packages 
+  	-->
 	<target name="jar.ccmtools" depends="compile.ccmtools"
      	description="Create Java archive file from ccmtools package." >
       	<jar jarfile="${lib}/ccmtools.jar" basedir="${build}/classes" >
@@ -121,18 +152,29 @@
   	</target>
 
 
-  	<!-- Install ccmtools -->
-
-	<target name="install"  depends="jar.ccmtools" description="Install ccmtools to prefix/.">
+  	<!-- 
+  		Install ccmtools 
+  	-->
+	<target name="install.copy"  depends="jar.ccmtools" 
+		description="Install ccmtools to prefix/.">
       	<mkdir dir="${prefix}" />
-
-  		<copy todir="${prefix}/lib" overwrite="true"> <fileset dir="${lib}"/> </copy>
+		<copy todir="${prefix}/lib" overwrite="true"> 
+			<fileset dir="${lib}">
+				<include name="ccmtools.jar"/>
+				<include name="commons-cli-1.0.jar"/>
+				<include name="java-cup-11a.jar"/>
+				<include name="antlr.jar"/>
+				<include name="jdom.jar"/>					
+			</fileset>	
+  		</copy>
       	<copy todir="${prefix}/templates" overwrite="true"> <fileset dir="${src}/templates"/> </copy>
       	<copy todir="${prefix}/idl" overwrite="true"> <fileset dir="${idl}"/> </copy>
       	<copy todir="${prefix}/etc" overwrite="true"> <fileset dir="${etc}"/> </copy>
-
       	<copy todir="${prefix}/bin" overwrite="true"> <fileset dir="${bin}"/> </copy>
-  		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmtools"/>      </exec>
+  	</target>
+	
+	<target name="install.setup" depends="install.copy" if="isUnix">
+		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmtools"/>      </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmjava"/>       </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmidl"/>        </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmmodel"/>      </exec>
@@ -140,11 +182,19 @@
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmns"/>         </exec>
   		<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmdescriptor"/> </exec>
       	<exec executable="chmod"> <arg value="+x"/> <arg value="${prefix}/bin/ccmtools-idl"/>  </exec>
+	</target>
+
+	<target name="install.doc" >
+      	<mkdir dir="${prefix}/doc" />
+		<copy file="${doc}/manual/CcmtoolsManual.pdf" todir="${prefix}/doc" overwrite="true"/> 
   	</target>
-
-
-  	<!-- Generate JavaDoc -->
-
+		
+	<target name="install" depends="install.doc,install.setup"></target>	
+  	
+	
+	<!-- 
+		Generate JavaDoc 
+	-->
 	<target name="javadoc" depends="javadoc.ccmtools, javadoc.uml2idl"/>
 
 	<target name="javadoc.ccmtools" description="Generate javadoc for the ccmtools package.">
@@ -158,8 +208,9 @@
 	</target>
 
 
-  	<!-- Run test cases -->
-
+  	<!-- 
+  		Run test cases 
+  	-->
 	<target name="test" depends="compile.tests, test.idl.parser, test.java.components, test.cpp.components"/>
 
   	<target name="compile.tests" depends="compile.ccmtools" >
@@ -191,25 +242,6 @@
 	  		<formatter type="brief" />
 	  		<test name="ccmtools.generator.cpp.CppComponentsTestSuite" />
      	</junit>
-  	</target>
-
-
-	<!-- Clean up -->
-
-  	<target name="clean" description="Clean up the build and lib directory." >
-
-      	<delete file="${src}/${PACKAGE}/Constants.java" />
-
-      	<delete file="${src}/ccmtools/parser/idl3/Idl3Lexer.java" />
-      	<delete file="${src}/ccmtools/parser/idl3/Idl3Parser.java" />
-      	<delete file="${src}/ccmtools/parser/idl3/Idl3TokenTypes.java" />
-      	<delete file="${src}/ccmtools/parser/idl3/Idl3TokenTypes.txt" />
-
-  		<delete dir="${src}/uml_parser" />
-      	<delete dir="${src-gen}" />
-      	<delete dir="${build}" />
-      	<delete dir="${test}/CppRemoteGenerator/sandbox" />
-      	<delete file="${lib}/ccmtools.jar" />
   	</target>
 
 </project>
