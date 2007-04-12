@@ -111,9 +111,12 @@
 	    	<classpath refid="compile.classpath" />  
 	    </javac>
 		
-		<java classname="Client" classpathref="compile.classpath" failonerror="true"/>
+		<java classname="Client" classpathref="compile.classpath" failonerror="true" fork="true">
+			<assertions> <enable/></assertions>
+		</java>
 		
-		<java classname="Client" classpathref="compile.classpath" failonerror="true">
+		<java classname="Client" classpathref="compile.classpath" failonerror="true" fork="true">
+			<assertions> <enable/></assertions>
 			<arg value="-ORBInitRef"/>
 			<arg value="NameService=corbaloc:iiop:1.2@localhost:5050/NameService"/>
 			<arg value="-ORBServerHost"/>
