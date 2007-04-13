@@ -1,4 +1,4 @@
-/* CCM Tools : ccmtools ant tasks
+/* CCM Tools : ant tasks
  * Egon Teiniker <egon.teiniker@fh-joanneum.at>
  * Copyright (C) 2002 - 2007 ccmtools.sourceforge.net
  *
@@ -21,21 +21,31 @@ package ccmtools.ant;
 
 import org.apache.tools.ant.types.Path;
 
+/**
+ * This class implements the nested <include> element of the <ccmtools>
+ * ant task.
+ */
 public class IncludePath
-{
-    
-    public String[] getPaths()
-    {
-        return path.list();
-    }
-
-    /** Handle path attribute */
+{   
+    /** 
+     * Attribute: path 
+     * Specifies a Path object which is used to define include paths for a
+     * ccmtools generator call.
+     */
     private Path path;
     public void setPath(Path path)
     {
         this.path = path;
     }
-            
+
+    /**
+     * Getter method that returns all stored include paths as a string array.
+     */
+    public String[] getPaths()
+    {
+        return path.list();
+    }
+    
             
     public String toString()
     {

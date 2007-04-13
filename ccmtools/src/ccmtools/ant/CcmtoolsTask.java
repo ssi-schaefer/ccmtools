@@ -1,4 +1,4 @@
-/* CCM Tools : ccmtools ant tasks
+/* CCM Tools : ant tasks
  * Egon Teiniker <egon.teiniker@fh-joanneum.at>
  * Copyright (C) 2002 - 2007 ccmtools.sourceforge.net
  *
@@ -30,23 +30,39 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 
+/**
+ * This <ccmtools> ant task is used to execute different ccmtools generators 
+ * from an ant build file.
+ */
 public class CcmtoolsTask
     extends Task
 {        
     /** 
-     * Handle attribute generator 
-     * 
+     * attribute: generator 
+     * Defines the ccmtools generator type (see GeneratorType)
      */
     private String generator;
     public void setGenerator(GeneratorType generator)
     {
         this.generator=generator.getValue();
     }
-            
+       
     
     /** 
-     * Handle attribute destdir 
-     * 
+     * Attribute: validate 
+     * Forces the execution of ccmtools' model validator which ensures
+     * that a given IDL file conforms to the supported ccmtools metamodel.
+     */    
+    private boolean validate = false;
+    public void setValidate(boolean validate)
+    {
+        this.validate=validate;
+    }
+    
+    
+    /** 
+     * Attribute: destdir 
+     * Defines the generator's output directory.
      */
     private File destDir = new File("./");
     public void setDestdir(File destDir)
@@ -56,8 +72,9 @@ public class CcmtoolsTask
 
     
     /** 
-     * Handle nested includepath elements 
-     * 
+     * Nested element: <include>  
+     * Contains a path attribute to specify an include path for the given
+     * generator (see IncludePath).
      */
     private List<String> includePaths;
     private List<IncludePath> includes = new ArrayList<IncludePath>();
@@ -70,8 +87,8 @@ public class CcmtoolsTask
 
     
     /** 
-     * Handle file sets 
-     * 
+     * Nested element: <fileset> 
+     * Specifies a set of input files for the given generator.
      */
     private List<FileSet> filesets = new ArrayList<FileSet>();    
     public void addFileset(FileSet fileset)
@@ -79,7 +96,13 @@ public class CcmtoolsTask
         filesets.add(fileset);
     }
     
-
+    
+    /**
+     * Execute the <ccmtools> task based on the given attributes and
+     * nested elements.
+     * To run the ccmtools generators, their static main methods are called
+     * with a particular args array.
+     */
     public void execute()
     {
         includePaths = new ArrayList<String>();
@@ -104,7 +127,7 @@ public class CcmtoolsTask
         // Call ccmtools generators
         if(generator.startsWith("model"))
         {
-            executeModelTools();
+            executeModelTools(generator);
         }
         else if(generator.startsWith("idl"))
         {
@@ -116,16 +139,19 @@ public class CcmtoolsTask
         }
     }
 
-    
-    protected void executeModelTools()
+
+    /**
+     * Helper method to execute the ccmtools.parser.idl.metamodel.Main class. 
+     */
+    protected void executeModelTools(String type)
     {
         StringBuilder cmd = new StringBuilder();
         
-        if(generator.equals("model.validator"))
+        if(type.equals("model.validator"))
         {
             cmd.append("-validator");
         }
-        else if(generator.equals("model.parser"))
+        else if(type.equals("model.parser"))
         {
             cmd.append("-parser");
         }
@@ -147,14 +173,22 @@ public class CcmtoolsTask
             }            
         }
         
-        log("command line = " + cmd.toString(), Project.MSG_VERBOSE);
+        log(">> ccmmodel " + cmd.toString());
         String[] args = cmd.toString().split(" ");
         ccmtools.parser.idl.metamodel.Main.main(args);                
     }
     
-    
+
+    /**
+     * Helper method to execute the ccmtools.generator.idl.Main class. 
+     */
     protected void executeIdlGenerator()
     {
+        if(validate)
+        {
+            executeModelTools("model.validator");
+        }
+        
         StringBuilder cmd = new StringBuilder();
         
         if(generator.equals("idl3"))
@@ -189,29 +223,41 @@ public class CcmtoolsTask
             }            
         }
         
-        log("command line = " + cmd.toString(), Project.MSG_VERBOSE);
+        log(">> ccmidl " + cmd.toString());
         String[] args = cmd.toString().split(" ");
         ccmtools.generator.idl.Main.main(args);                
     }
 
 
+    /**
+     * Helper method to execute the ccmtools.generator.java.Main class. 
+     */
     protected void executeJavaGenerator()
     {
+        if(validate)
+        {
+            executeModelTools("model.validator");
+        }
+
         StringBuilder cmd = new StringBuilder();
         
-        if(generator.equals("java.iface"))
+        if(generator.equals("java.local"))
+        {
+            cmd.append("-iface -local");
+        }        
+        else if(generator.equals("java.local.iface"))
         {
             cmd.append("-iface");
         }
-        else if(generator.equals("java.local"))
+        else if(generator.equals("java.local.adapter"))
         {
             cmd.append("-local");
         }
-        else if(generator.equals("java.app"))
+        else if(generator.equals("java.impl"))
         {
             cmd.append("-app");
         }
-        else if(generator.equals("java.remote"))
+        else if(generator.equals("java.remote.adapter"))
         {
             cmd.append("-remote");
         }
@@ -239,18 +285,23 @@ public class CcmtoolsTask
             }            
         }
         
-        log("command line = " + cmd.toString(), Project.MSG_VERBOSE);
+        log(">> ccmjava " + cmd.toString());
         String[] args = cmd.toString().split(" ");
         ccmtools.generator.java.Main.main(args);                
     }
 
     
+    /**
+     * Helper class to log the given attributes and nested elements of
+     * the <ccmtools> task (shown in ant's verbose mode).
+     */
     public void logTask()
     {
         // Log ant task parameters
         String home = getProject().getProperty("ccmtools.home");
         log("property ccmtools.home = " + home, Project.MSG_VERBOSE);        
         log("attribute generator =  " + generator, Project.MSG_VERBOSE);
+        log("attribute validate =  " + validate, Project.MSG_VERBOSE);
         if(destDir != null)
             log("attribute destdir = " + destDir.getAbsolutePath(), Project.MSG_VERBOSE);
             

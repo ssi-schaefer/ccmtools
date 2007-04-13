@@ -1,4 +1,4 @@
-/* CCM Tools : ccmtools ant tasks
+/* CCM Tools : ant tasks
  * Egon Teiniker <egon.teiniker@fh-joanneum.at>
  * Copyright (C) 2002 - 2007 ccmtools.sourceforge.net
  *
@@ -21,10 +21,14 @@ package ccmtools.ant;
 
 import org.apache.tools.ant.types.EnumeratedAttribute;
 
+/**
+ * This class is used by the Ant framework to define the possible 
+ * values of the <ccmtools> task's generator attribute. 
+ * Each value represents one or more ccmtools generator calls.
+ */
 public class GeneratorType
     extends EnumeratedAttribute
 {
-
     public String[] getValues()
     {
         return new String[]  
@@ -39,10 +43,11 @@ public class GeneratorType
                 "idl2",
                 
                 // ccmtools.generator.java
-                "java.iface",
-                "java.local",
-                "java.app",
-                "java.remote",
+                "java.local",   // => "java.local.iface" + "java.local.adapter"
+                "java.local.iface",
+                "java.local.adapter",
+                "java.impl",
+                "java.remote.adapter",
                 "java.clientlib",
                 
                 // ccmtools.generator.deployment

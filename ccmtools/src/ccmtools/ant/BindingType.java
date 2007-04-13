@@ -1,4 +1,4 @@
-/* CCM Tools : ccmtools ant tasks
+/* CCM Tools : ant tasks
  * Egon Teiniker <egon.teiniker@fh-joanneum.at>
  * Copyright (C) 2002 - 2007 ccmtools.sourceforge.net
  *
@@ -24,7 +24,10 @@ import org.apache.tools.ant.types.EnumeratedAttribute;
 public class BindingType
     extends EnumeratedAttribute
 {
-
+    /**
+     * This class is used by the Ant framework to define the possible 
+     * values of the <idlj> task's binding attribute. 
+     */
     public String[] getValues()
     {
         return new String[]  
