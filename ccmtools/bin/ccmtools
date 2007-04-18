@@ -15,11 +15,11 @@ fi
 JAVA_LAUNCHER="$JAVA_HOME/bin/java"
 if [ -x $JAVA_LAUNCHER ]; then 
 	if [ "`uname`" = "Interix" ]; then
-		CLASSPATH="$CCMTOOLS_HOME/lib/antlr.jar;$CCMTOOLS_HOME/lib/java-cup-11a.jar;$CCMTOOLS_HOME/lib/commons-cli-1.0.jar;$CCMTOOLS_HOME/lib/ccmtools.jar;$CLASSPATH"
+		export CLASSPATH="$CCMTOOLS_HOME/lib/antlr.jar;$CCMTOOLS_HOME/lib/java-cup-11a.jar;$CCMTOOLS_HOME/lib/commons-cli-1.0.jar;$CCMTOOLS_HOME/lib/ccmtools.jar;$CLASSPATH"
 	else
-		CLASSPATH="$CCMTOOLS_HOME/lib/antlr.jar:$CCMTOOLS_HOME/lib/java-cup-11a.jar:$CCMTOOLS_HOME/lib/commons-cli-1.0.jar:$CCMTOOLS_HOME/lib/ccmtools.jar:$CLASSPATH"
+		export CLASSPATH="$CCMTOOLS_HOME/lib/antlr.jar:$CCMTOOLS_HOME/lib/java-cup-11a.jar:$CCMTOOLS_HOME/lib/commons-cli-1.0.jar:$CCMTOOLS_HOME/lib/ccmtools.jar:$CLASSPATH"
 	fi	
-	exec "$JAVA_HOME/bin/java" -cp $CLASSPATH -Dccmtools.home="$CCMTOOLS_HOME" -Dccmtools.templates="$CCMTOOLS_HOME/templates" -Djava.util.logging.config.file="$CCMTOOLS_HOME/etc/logging.properties" ccmtools.ui.Main $@  
+	exec "$JAVA_HOME/bin/java" -Dccmtools.home="$CCMTOOLS_HOME" -Dccmtools.templates="$CCMTOOLS_HOME/templates" -Djava.util.logging.config.file="$CCMTOOLS_HOME/etc/logging.properties" ccmtools.ui.Main $@  
 else
 	echo "ERROR!"
 	echo "Java executable not found in" "$JAVA_HOME/bin"
