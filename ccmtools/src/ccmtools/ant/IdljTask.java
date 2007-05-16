@@ -265,12 +265,12 @@ public class IdljTask
         
         
         cmdline.createArgument().setValue("-" + binding);
-        cmdline.createArgument().setLine("-td " + destDir.getAbsolutePath());
+        cmdline.createArgument().setLine("-td \"" + destDir.getAbsolutePath() + "\"");
         for(String s : includePaths)
         {
-            cmdline.createArgument().setLine("-i " + s);
+            cmdline.createArgument().setLine("-i \"" + s + "\"");
         }
-        cmdline.createArgument().setValue(idlFile.getAbsolutePath());
+        cmdline.createArgument().setValue("\"" + idlFile.getAbsolutePath() + "\"");
         log("command line = " + cmdline, Project.MSG_VERBOSE);
         
         // Configure the Execute object

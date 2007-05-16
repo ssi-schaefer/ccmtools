@@ -159,7 +159,7 @@ public class CcmtoolsTask
         
         for(String s : includePaths)
         {
-            cmd.append(" -I" + s);
+            cmd.append(" -I\"").append(s).append("\"");
         }        
         
         for(FileSet fs: filesets)
@@ -207,10 +207,10 @@ public class CcmtoolsTask
 
         for(String s : includePaths)
         {
-            cmd.append(" -I" + s);
+            cmd.append(" -I\"").append(s).append("\"");
         }
         
-        cmd.append(" -o " + destDir.getAbsolutePath());
+        cmd.append(" -o ").append(destDir.getAbsolutePath());
 
         for(FileSet fs: filesets)
         {
@@ -269,10 +269,10 @@ public class CcmtoolsTask
         
         for(String s : includePaths)
         {
-            cmd.append(" -I" + s);
+            cmd.append(" -I\"").append(s).append("\"");
         }
         
-        cmd.append(" -o " + destDir.getAbsolutePath());
+        cmd.append(" -o ").append(destDir.getAbsolutePath());
         
         for(FileSet fs: filesets)
         {
