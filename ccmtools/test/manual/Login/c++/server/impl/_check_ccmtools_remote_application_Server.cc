@@ -22,6 +22,7 @@
 #include <CORBA.h>
 #include <coss/CosNaming.h>
 
+#include <application_ServerHome_entry.h>
 #include <ccmtools/remote/application/ServerHome_remote.h>
 #include <ccmtools_corba_application_Server.h>
 

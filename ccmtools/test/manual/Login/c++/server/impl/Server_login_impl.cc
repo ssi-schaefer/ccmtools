@@ -36,6 +36,8 @@ bool
 Server_login_impl::isValidUser(const application::PersonData& person)
 throw(Components::CCMException, application::InvalidPersonData)
 {
+  cout << "Server_login_impl::isValidUser()" << endl;	
+  
   if(person.name.length() == 0)
     throw application::InvalidPersonData();
 

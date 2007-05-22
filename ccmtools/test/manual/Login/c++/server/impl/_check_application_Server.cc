@@ -16,6 +16,7 @@
 
 #include <Components/ccmtools.h>
 
+#include <application_ServerHome_entry.h>
 #include <application/ServerHome_gen.h>
 
 using namespace std;
