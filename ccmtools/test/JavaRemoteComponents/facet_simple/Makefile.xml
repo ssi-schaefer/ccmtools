@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="FacetSimplExample" basedir="." default="test">
+
+	<property environment="env"/>
+	<property name="ccmtools.home" location="${env.CCMTOOLS_HOME}"/>
+	<property name="dest.dir" location="xxx"/>
+	<property name="idl3.dir" location="${dest.dir}/idl3"/>
+	<property name="idl2.dir" location="${dest.dir}/idl2"/>
+	<property name="src" location="${dest.dir}/src"/>
+	<property name="src.gen" location="${dest.dir}/src-gen"/>
+	<property name="src.client" location="src"/>	
+	<property name="src.impl" location="impl"/>	
+	<property name="build" location="${dest.dir}/build" />
+	<property name="bin" location="bin" />
+		
+	<path id="compile.classpath">
+		<fileset dir="${ccmtools.home}/lib" includes="*.jar"/>
+	</path>
+
+	<path id="run.classpath">
+		<pathelement path="${ccmtools.home}/lib/ccm-runtime.jar" />
+		<pathelement path="${build}" />
+	</path>
+
+	<taskdef name="ccmtools" classname="ccmtools.ant.CcmtoolsTask" >
+		<classpath refid="compile.classpath" />  
+	</taskdef>
+
+	<taskdef name="idlj" classname="ccmtools.ant.IdljTask" >
+		<classpath refid="compile.classpath" />  
+	</taskdef>
+
+	
+	<target name="init" description="" >
+		<mkdir dir="${build}" />
+	</target>
+	
+	<target name="clean" description="" >
+		<delete dir="${dest.dir}" />
+	</target>
+	
+	
+	<!--
+		Generate IDL3 repository directory
+	-->
+	<target name="idl3repo">		
+		<ccmtools generator="idl3" destdir="${idl3.dir}" validate="true">
+			<fileset dir="." includes="*.idl" />
+		</ccmtools>	
+	</target>
+
+	
+	<!--
+		Generate a local Java component.
+	-->
+	<target name="local" depends="idl3repo">		
+		<ccmtools generator="java.local" destdir="${src.gen}">
+			<include path="${idl3.dir}/interface:${idl3.dir}/component" /> 
+			<fileset dir="${idl3.dir}" includes="**/*.idl" />
+		</ccmtools>	
+	
+		<ccmtools generator="java.impl" destdir="${src}">
+			<include path="${idl3.dir}/interface:${idl3.dir}/component" /> 
+			<fileset dir="${idl3.dir}/component" includes="**/*.idl" />
+		</ccmtools>	
+	</target>
+	
+	
+	<!--
+		Generate a remote Java component.
+	-->
+	<target name="remote" depends="local">		
+		<ccmtools generator="idl2" destdir="${idl2.dir}">
+			<include path="${idl3.dir}/interface:${idl3.dir}/component" /> 
+			<fileset dir="${idl3.dir}" includes="**/*.idl" />
+		</ccmtools>	
+	
+		<idlj destdir="${src.gen}" binding="fall">
+			<include path="${ccmtools.home}/idl:${idl2.dir}" /> 
+			<fileset dir="${idl2.dir}" includes="*.idl" />
+		</idlj>
+
+		<ccmtools generator="java.remote.adapter" destdir="${src.gen}">
+			<include path="${idl3.dir}/interface:${idl3.dir}/component" /> 
+			<fileset dir="${idl3.dir}" includes="**/*.idl" />
+		</ccmtools>			
+	</target>
+	
+
+	<!--
+		Generate Java clinetlib component.
+	-->
+	<target name="clientlib" depends="remote">		
+		<ccmtools generator="java.clientlib" destdir="${src.gen}">
+			<include path="${idl3.dir}/interface:${idl3.dir}/component" /> 
+			<fileset dir="${idl3.dir}" includes="**/*.idl" />
+		</ccmtools>				
+	</target>
+		
+	
+	<!--
+		Check
+	-->
+	<target name="check" depends="init, clientlib">
+		<copy todir="${src}/world" overwrite="true"> 
+			<fileset dir="${src.impl}" includes="*.java" />
+  		</copy>
+
+		<javac srcdir="${src.gen}:${src}:${src.client}" destdir="${build}" 
+	             debug="on" source="1.5" target="1.5">
+	    	<classpath refid="compile.classpath" />  
+	    </javac>
+		
+		<java classname="Client" classpathref="run.classpath" failonerror="true" fork="true">
+			<assertions><enable/></assertions>
+		</java>
+		
+		<java classname="Client" classpathref="run.classpath" failonerror="true" fork="true">
+			<assertions><enable/></assertions>
+			<arg line="-ORBInitRef NameService=corbaloc:iiop:1.2@localhost:5050/NameService"/>
+			<arg line="-ORBServerHost localhost"/>
+		</java>
+	</target>
+	
+	<target name="test" depends="check, clean"/>
+	
+</project>
