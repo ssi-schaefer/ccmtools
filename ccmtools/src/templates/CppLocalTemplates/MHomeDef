@@ -23,6 +23,10 @@
 
 #include "%(ComponentType)s_gen.h"
 
+// BEGIN-HACK: Itanium
+#include <%(HomeInclude)s_impl.h>
+// END-HACK: Itanium
+
 %(OpenNamespace)s
 
 //==============================================================================
@@ -88,7 +92,10 @@ class %(Identifier)s
         throw(::Components::CCMException, ::Components::CreateFailure);
 
   protected:
-    %(LocalNamespace)sCCM_%(Identifier)s* local_home;
+    // BEGIN-HACK: Itanium
+    %(LocalNamespace)s%(Identifier)s_impl* local_home;
+    // END-HACK: Itanium
+
     ::Components::AssemblyFactory::SmartPtr assembly_factory;
     
   private:
@@ -144,16 +151,20 @@ using namespace std;
 
 %(Identifier)s::%(Identifier)s()
 {
-    local_home = dynamic_cast< %(LocalNamespace)sCCM_%(Identifier)s*>(
+// BEGIN-HACK: Itanium
+    local_home = dynamic_cast< %(LocalNamespace)s%(Identifier)s_impl*>(
         create_%(AbsoluteLocalHomeName)s());
+// END-HACK: Itanium
     assembly_factory = ::Components::AssemblyFactory::SmartPtr();
 }
 
 %(Identifier)s::%(Identifier)s(::Components::AssemblyFactory::SmartPtr f)
     : assembly_factory(f)
 {
-    local_home = dynamic_cast< %(LocalNamespace)sCCM_%(Identifier)s*>(
+// BEGIN-HACK: Itanium
+    local_home = dynamic_cast< %(LocalNamespace)s%(Identifier)s_impl*>(
         create_%(AbsoluteLocalHomeName)s());
+// END-HACK: Itanium
 }
 
 %(Identifier)s::~%(Identifier)s()

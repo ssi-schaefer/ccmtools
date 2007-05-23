@@ -29,6 +29,10 @@
 %(MUsesDefInclude)s
 %(BaseInclude)s
 
+// BEGIN-HACK: Itanium
+#include <%(ComponentInclude)s_impl.h>
+// END-HACK: Itanium
+
 %(OpenNamespace)s
 
 class %(HomeType)s;
@@ -90,7 +94,10 @@ class %(Identifier)s
  
    protected:
     %(HomeType)s* home_local_adapter;
-    %(LocalNamespace)sCCM_%(Identifier)s* local_component;
+// BEGIN-HACK: Itanium
+    %(LocalNamespace)s%(Identifier)s_impl* local_component;
+// END-HACK: Itanium
+
     %(LocalNamespace)sCCM_%(Identifier)s_Context* context;
     ::Components::Assembly::SmartPtr assembly;
     bool ValidConnection;
@@ -171,7 +178,11 @@ using namespace std;
 %(Identifier)s::%(Identifier)s(%(HomeType)s* h, 
     %(LocalNamespace)sCCM_%(Identifier)s* lc, ::Components::Assembly::SmartPtr a)
     : %(MSupportsDefAdapterConstructor)s
-    home_local_adapter(h), local_component(lc), assembly(a)
+    home_local_adapter(h),
+    // BEGIN-HACK: Itanium
+    local_component(dynamic_cast< %(LocalNamespace)s%(Identifier)s_impl*>(lc)),
+    // END-HACK: Itanium
+	assembly(a)
 {
     context = NULL; 
     ValidConnection = true;
