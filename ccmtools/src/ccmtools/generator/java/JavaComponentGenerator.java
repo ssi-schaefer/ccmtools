@@ -141,6 +141,7 @@ public class JavaComponentGenerator
 		}
 		catch (Exception e)
 		{
+            e.printStackTrace();
 			throw new CcmtoolsException("[Java Local Component Generator] " + e.getMessage());
 		}
 		logger.fine("leave");
@@ -168,6 +169,7 @@ public class JavaComponentGenerator
         }
 		catch (Exception e)
 		{
+            e.printStackTrace();
 			throw new CcmtoolsException("[Java Application Skeleton Generator] " + e.getMessage());
 		}
 		logger.fine("leave");
@@ -194,6 +196,7 @@ public class JavaComponentGenerator
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             throw new CcmtoolsException("[Java Assembly Generator] " + e.getMessage());
         }
         logger.fine("leave");
@@ -220,6 +223,7 @@ public class JavaComponentGenerator
 		}
 		catch (Exception e)
 		{
+            e.printStackTrace();
 			throw new CcmtoolsException("[Java Client Library Generator] " + e.getMessage());
 		}
 	}
@@ -253,6 +257,7 @@ public class JavaComponentGenerator
 		}
 		catch (Exception e)
 		{
+            e.printStackTrace();
 			throw new CcmtoolsException("[Java CORBA Component Generator] " + e.getMessage());
 		}	
 	}
