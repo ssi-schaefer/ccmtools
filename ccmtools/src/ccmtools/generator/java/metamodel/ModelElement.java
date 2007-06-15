@@ -106,14 +106,15 @@ public class ModelElement
 	 *      import  world.Person; // not needed
 	 *      import  world.europe.Color; // is needed
 	 */
-	public boolean isNeededJavaImportStatement(String namespace, String statement)
-	{
-		String packages = statement.substring(0, statement.lastIndexOf("."));
-		if(packages.equals(namespace))
-			return false;
-		else
-			return true;
-	}
+	public boolean isNeededJavaImportStatement( String namespace, String statement )
+    {
+        int index = statement.lastIndexOf(".");
+        String packages = index < 1 ? "" : statement.substring(0, index);
+        if (packages.equals(namespace))
+            return false;
+        else
+            return true;
+    }
 
 	public String generateJavaImportStatements(Set<String> importStatements)
 	{
