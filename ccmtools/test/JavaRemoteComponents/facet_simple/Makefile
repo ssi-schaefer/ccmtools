@@ -13,6 +13,7 @@ idl3: Test.idl
 
 # Generate component metadata in a component descriptor file.
 metainf: idl3
+	rm -rf ${DEST_DIR}/META-INF
 	mkdir ${DEST_DIR}/META-INF
 	ccmdescriptor -o ${DEST_DIR}/META-INF -name TestHome ${INCLUDE} ${IDL3_DIR}/component/world/TestHome.idl
 
