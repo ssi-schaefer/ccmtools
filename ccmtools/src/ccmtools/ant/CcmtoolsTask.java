@@ -159,7 +159,7 @@ public class CcmtoolsTask
         
         for(String s : includePaths)
         {
-            cmd.append(" -I\"").append(s).append("\"");
+            appendIncludePath(cmd, s);
         }        
         
         for(FileSet fs: filesets)
@@ -176,6 +176,19 @@ public class CcmtoolsTask
         log(">> ccmmodel " + cmd.toString());
         String[] args = cmd.toString().split(" ");
         ccmtools.parser.idl.metamodel.Main.main(args);                
+    }
+    
+    
+    /**
+     * adds an include path to an external command
+     */
+    static void appendIncludePath( StringBuilder cmd, String s )
+    {
+        // TODO: replace this ugly check for Windows
+        if (java.io.File.separatorChar == '\\')
+            cmd.append(" -I\"").append(s).append("\"");
+        else
+            cmd.append(" -I").append(s);
     }
     
 
@@ -207,7 +220,7 @@ public class CcmtoolsTask
 
         for(String s : includePaths)
         {
-            cmd.append(" -I\"").append(s).append("\"");
+            appendIncludePath(cmd, s);
         }
         
         cmd.append(" -o ").append(destDir.getAbsolutePath());
@@ -269,7 +282,7 @@ public class CcmtoolsTask
         
         for(String s : includePaths)
         {
-            cmd.append(" -I\"").append(s).append("\"");
+            appendIncludePath(cmd, s);
         }
         
         cmd.append(" -o ").append(destDir.getAbsolutePath());
