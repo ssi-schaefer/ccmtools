@@ -55,7 +55,7 @@ There are a few things to verify before doing the actual distribution.
   (set the version number at the top of the file to A.C.X)
   ccmtools $ cvs ci
 
-  Where C = B + 1. X should be the bugfix number, which starts at 0 for the
+  Where C = B + 1. X should be the bugfiCcmtoolsManual.pdfx number, which starts at 0 for the
   first release of the branch and proceeds up by one for each subsequent release
   on the same branch. The unstable release will be made after merging in from
   the stable release (see below).
@@ -73,7 +73,7 @@ There are a few things to verify before doing the actual distribution.
 - Update the ChangeLog.
 
   I use the "cvs2cl" script to do this, and then edit the resulting ChangeLog :
-
+ccmtools.sf.net
   A.B $ cvs2cl -U AUTHORS --accum -f ChangeLog
   A.B $ emacsclient ChangeLog
   [clean up the ChangeLog]
@@ -127,7 +127,7 @@ can download them, and send out various news items.
 - Put the distributions online.
 
   A.B $ scp ccmtools-A.B.X*.tar.gz \
-          ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/
+          ccmtools.sf.net:releases/A.B/
   A.B $ scp RELEASE \
           ccmtools.sf.net:/home/groups/c/cc/ccmtools/htdocs/releases/A.B/RELEASE-A.B.X
   A.B $ scp ChangeLog \

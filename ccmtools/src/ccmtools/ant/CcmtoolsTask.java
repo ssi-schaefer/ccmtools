@@ -30,6 +30,8 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.FileSet;
 
+import ccmtools.utils.ConfigurationLocator;
+
 /**
  * This <ccmtools> ant task is used to execute different ccmtools generators 
  * from an ant build file.
@@ -184,9 +186,8 @@ public class CcmtoolsTask
      */
     static void appendIncludePath( StringBuilder cmd, String s )
     {
-        // TODO: replace this ugly check for Windows
-        if (java.io.File.separatorChar == '\\')
-            cmd.append(" -I\"").append(s).append("\"");
+    	if(ConfigurationLocator.getInstance().isWindows())
+    		cmd.append(" -I\"").append(s).append("\"");
         else
             cmd.append(" -I").append(s);
     }

@@ -34,6 +34,8 @@ import org.apache.tools.ant.taskdefs.LogStreamHandler;
 import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.FileSet;
 
+import ccmtools.utils.ConfigurationLocator;
+
 
 /**
  * This <idlj> ant task is used to execute java's IDL compiler 
@@ -265,12 +267,24 @@ public class IdljTask
         
         
         cmdline.createArgument().setValue("-" + binding);
-        cmdline.createArgument().setLine("-td \"" + destDir.getAbsolutePath() + "\"");
+
+        if(ConfigurationLocator.getInstance().isWindows())
+        	cmdline.createArgument().setLine("-td \"" + destDir.getAbsolutePath() + "\"");
+        else
+        	cmdline.createArgument().setLine("-td " + destDir.getAbsolutePath());
+        
         for(String s : includePaths)
         {
-            cmdline.createArgument().setLine("-i \"" + s + "\"");
+        	if(ConfigurationLocator.getInstance().isWindows())
+        		cmdline.createArgument().setLine("-i \"" + s + "\"");
+        	else
+        		cmdline.createArgument().setLine("-i " + s);
         }
-        cmdline.createArgument().setValue("\"" + idlFile.getAbsolutePath() + "\"");
+        
+        if(ConfigurationLocator.getInstance().isWindows())
+        	cmdline.createArgument().setValue("\"" + idlFile.getAbsolutePath() + "\"");
+        else
+        	cmdline.createArgument().setValue(idlFile.getAbsolutePath());
         log("command line = " + cmdline, Project.MSG_VERBOSE);
         
         // Configure the Execute object

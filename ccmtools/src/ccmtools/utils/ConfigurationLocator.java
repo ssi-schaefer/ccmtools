@@ -178,4 +178,19 @@ public class ConfigurationLocator
         return namespaceList;
     }
 
+    
+    
+    /*
+     * System Properties 
+     */
+    
+    /**
+     * This method is used to determine if the tools are running on a Windows box.
+     * Usually, this information is important for calculating file paths and things
+     * like this.
+     */
+    public boolean isWindows()
+    {
+    	return System.getProperty("os.name").startsWith("Windows");
+    }
 }
